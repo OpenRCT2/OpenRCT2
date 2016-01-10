@@ -572,7 +572,6 @@
 		D41B72431C21015A0080A7B9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				D4B8C2A51C41EADF00B006AC /* argparse */,
 				D4EC46D81C26342F0024B507 /* audio */,
 				D4EC46E51C26342F0024B507 /* core */,
 				D4EC46F31C26342F0024B507 /* drawing */,
@@ -671,16 +670,6 @@
 			);
 			name = Resources;
 			path = OpenRCT2;
-			sourceTree = "<group>";
-		};
-		D4B8C2A51C41EADF00B006AC /* argparse */ = {
-			isa = PBXGroup;
-			children = (
-				D4B8C2A61C41EADF00B006AC /* argparse.c */,
-				D4B8C2A71C41EADF00B006AC /* argparse.h */,
-			);
-			name = argparse;
-			path = src/argparse;
 			sourceTree = "<group>";
 		};
 		D4C1EDD01C266A0B00F71B63 /* data */ = {
@@ -1443,7 +1432,6 @@
 				D4EC483C1C26342F0024B507 /* finances.c in Sources */,
 				D4EC47F01C26342F0024B507 /* supports.c in Sources */,
 				D4EC47FC1C26342F0024B507 /* title_sequences.c in Sources */,
-				D4B8C2A81C41EADF00B006AC /* argparse.c in Sources */,
 				D4EC48421C26342F0024B507 /* land.c in Sources */,
 				D4EC48791C26342F0024B507 /* map_animation.c in Sources */,
 				D4EC480D1C26342F0024B507 /* marketing.c in Sources */,

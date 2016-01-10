@@ -16,8 +16,9 @@ private:
     uint16               _index;
 
 public:
-    uint16 GetCount() const { return _count; }
-    uint16 GetIndex() const { return _index; }
+    const char * const * GetArguments() const { return _arguments; }
+    uint16               GetCount()     const { return _count; }
+    uint16               GetIndex()     const { return _index; }
 
     CommandLineArgEnumerator(const char * const * arguments, int count);
 

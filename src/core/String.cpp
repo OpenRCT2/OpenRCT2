@@ -25,6 +25,32 @@ namespace String
         }
     }
 
+    bool StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase)
+    {
+        if (ignoreCase)
+        {
+            while (*str != '\0' && *match != '\0')
+            {
+                if (tolower(*str++) != tolower(*match++))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            while (*str != '\0' && *match != '\0')
+            {
+                if (*str++ != *match++)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
     size_t LengthOf(const utf8 * str)
     {
         return utf8_length(str);

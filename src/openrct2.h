@@ -31,6 +31,9 @@ enum {
 	STARTUP_ACTION_EDIT
 };
 
+/** The exit code for OpenRCT2 when it exits. */
+extern int gExitCode;
+
 extern int gOpenRCT2StartupAction;
 extern utf8 gOpenRCT2StartupActionPath[512];
 extern utf8 gExePath[MAX_PATH];
@@ -51,5 +54,7 @@ void openrct2_launch();
 void openrct2_dispose();
 void openrct2_finish();
 void openrct2_reset_object_tween_locations();
+
+int cmdline_run(const char **argv, int argc);
 
 #endif
