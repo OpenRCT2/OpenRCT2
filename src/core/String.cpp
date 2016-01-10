@@ -74,7 +74,7 @@ namespace String
         {
             *dst++ = *src;
             if (*src == '\0') break;
-            *src++;
+            src++;
         }
         *dst = '\0';
         return buffer;
@@ -87,7 +87,7 @@ namespace String
 
     utf8 * Format(utf8 * buffer, size_t bufferSize, const utf8 * format, ...)
     {
-	    va_list args;
+        va_list args;
 
         va_start(args, format);
         vsnprintf(buffer, bufferSize, format, args);
@@ -101,7 +101,7 @@ namespace String
 
     utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...)
     {
-	    va_list args;
+        va_list args;
 
         utf8 * dst = buffer;
         size_t i;

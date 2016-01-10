@@ -515,7 +515,7 @@ namespace CommandLine
         {
             return true;
         }
-        if (String::StartsWith("-psn_"))
+        if (String::StartsWith(argument, "-psn_"))
         {
             return true;
         }
