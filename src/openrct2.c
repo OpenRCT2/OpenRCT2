@@ -21,7 +21,6 @@
 #include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
-#include "cmdline.h"
 #include "config.h"
 #include "editor.h"
 #include "game.h"
@@ -48,6 +47,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #endif // defined(__unix__)
+
+int gExitCode;
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };

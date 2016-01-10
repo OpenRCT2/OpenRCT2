@@ -26,7 +26,6 @@
 #include <SDL_syswm.h>
 #include <sys/stat.h>
 #include "../addresses.h"
-#include "../cmdline.h"
 #include "../openrct2.h"
 #include "../localisation/language.h"
 #include "../localisation/currency.h"

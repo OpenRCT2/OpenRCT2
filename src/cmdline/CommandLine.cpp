@@ -105,6 +105,8 @@ namespace CommandLine
     static bool ParseLongOption(const CommandLineOptionDefinition * options, CommandLineArgEnumerator * argEnumerator, const char * argument);
     static bool ParseOptionValue(const CommandLineOptionDefinition * option, const char * valueString);
 
+    static bool HandleSpecialArgument(const char * argument);
+
     void PrintHelp(bool allCommands)
     {
         PrintHelpFor(RootCommands);
@@ -313,6 +315,7 @@ namespace CommandLine
             }
         }
 
+        argEnumerator->Backtrack();
         return fallback;
     }
 
@@ -323,6 +326,11 @@ namespace CommandLine
         const char * argument;
         while (argEnumerator->TryPopString(&argument))
         {
+            if (HandleSpecialArgument(argument))
+            {
+                continue;
+            }
+
             if (argument[0] == '-')
             {
                 if (argument[1] == '-')
@@ -500,6 +508,22 @@ namespace CommandLine
         }
     }
 
+    static bool HandleSpecialArgument(const char * argument)
+    {
+#if defined(__APPLE__) && defined(__MACH__)
+        if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
+        {
+            return true;
+        }
+        if (String::StartsWith("-psn_"))
+        {
+            return true;
+        }
+#endif
+        return false;
+    }
+
+
     const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, char shortName)
     {
         for (const CommandLineOptionDefinition * option = options; option->Type != 255; option++)
@@ -543,7 +567,7 @@ extern "C"
                 return EXITCODE_FAIL;
             }
         }
-        if (command == CommandLine::RootCommands || command->Func == nullptr)
+        if (command == CommandLine::RootCommands && command->Func == nullptr)
         {
             return CommandLine::HandleCommandDefault();
         }
