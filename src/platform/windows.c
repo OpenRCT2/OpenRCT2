@@ -94,7 +94,7 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	}
 	free(argv);
 
-	if (runGame) {
+	if (runGame == 1) {
 		openrct2_launch();
 	}
 

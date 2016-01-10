@@ -8,6 +8,8 @@ extern "C"
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
 
+#pragma region CommandLineArgEnumerator
+
 CommandLineArgEnumerator::CommandLineArgEnumerator(const char * const * arguments, int count)
 {
     _arguments = arguments;
@@ -18,6 +20,19 @@ CommandLineArgEnumerator::CommandLineArgEnumerator(const char * const * argument
 void CommandLineArgEnumerator::Reset()
 {
     _index = 0;
+}
+
+bool CommandLineArgEnumerator::Backtrack()
+{
+    if (_index > 0)
+    {
+        _index--;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool CommandLineArgEnumerator::TryPop()
@@ -71,6 +86,8 @@ bool CommandLineArgEnumerator::TryPopString(const char * * result)
     }
 }
 
+#pragma endregion
+
 namespace CommandLine
 {
     constexpr const char * HelpText = "openrct2 -ha shows help for all commands. "
@@ -79,6 +96,13 @@ namespace CommandLine
     static void   PrintOptions(const CommandLineOptionDefinition *options);
     static void   PrintExamples(const CommandLineExample *examples);
     static utf8 * GetOptionCaption(utf8 * buffer, size_t bufferSize, const CommandLineOptionDefinition *option);
+
+    static const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, char shortName);
+    static const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, const char * longName);
+
+    static bool ParseShortOption(const CommandLineOptionDefinition * options, CommandLineArgEnumerator *argEnumerator, const char *argument);
+    static bool ParseLongOption(const CommandLineOptionDefinition * options, CommandLineArgEnumerator * argEnumerator, const char * argument);
+    static bool ParseOptionValue(const CommandLineOptionDefinition * option, const char * valueString);
 
     void PrintHelp()
     {
@@ -215,19 +239,23 @@ namespace CommandLine
         return buffer;
     }
 
-    const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, const char * const * arguments, int count)
+    void PrintUsageFor(const char * command)
     {
-        // Check if there are any arguments
-        if (count == 0)
-        {
-            return nullptr;
-        }
 
-        // Check if options have started
-        const char * firstArgument = arguments[0];
+    }
+
+    const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, CommandLineArgEnumerator *argEnumerator)
+    {
+        // Check if end of arguments or options have started
+        const char * firstArgument;
+        if (!argEnumerator->TryPopString(&firstArgument))
+        {
+            return commands;
+        }
         if (firstArgument[0] == '-')
         {
-            return nullptr;
+            argEnumerator->Backtrack();
+            return commands;
         }
 
         // Search through defined commands for one that matches
@@ -250,25 +278,241 @@ namespace CommandLine
                 else
                 {
                     // Recurse for the sub command table
-                    return FindCommandFor(command->SubCommands, &arguments[1], count - 1);
+                    return FindCommandFor(command->SubCommands, argEnumerator);
                 }
             }
         }
 
         return fallback;
     }
-}
 
-void CommandLineDisplayUsageFor(const char * command)
-{
+    static bool ParseOptions(const CommandLineOptionDefinition * options, CommandLineArgEnumerator *argEnumerator)
+    {
+        const char * argument;
+        if (argEnumerator->TryPopString(&argument))
+        {
+            if (argument[0] == '-')
+            {
+                if (argument[1] == '-')
+                {
+                    if (!ParseLongOption(options, argEnumerator, &argument[2]))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!ParseShortOption(options, argEnumerator, argument))
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                Console::WriteLineError("All options must be passed at the end of the command line.");
+                return false;
+            }
+        }
 
+        return true;
+    }
+
+    static bool ParseLongOption(const CommandLineOptionDefinition * options,
+                                CommandLineArgEnumerator *argEnumerator,
+                                const char *argument)
+    {
+        // Get just the option name
+        char optionName[64];
+        const char * equalsCh = strchr(argument, '=');
+        if (equalsCh != nullptr)
+        {
+            String::Set(optionName, sizeof(optionName), argument, equalsCh - argument);
+        }
+        else
+        {
+            String::Set(optionName, sizeof(optionName), argument);
+        }
+
+        // Find a matching option definition
+        const CommandLineOptionDefinition * option = FindOption(options, optionName);
+        if (option == nullptr)
+        {
+            Console::WriteError("Unknown option: --");
+            Console::WriteLineError(optionName);
+            return false;
+        }
+
+        if (equalsCh == nullptr)
+        {
+            if (option->Type == CMDLINE_TYPE_SWITCH)
+            {
+                ParseOptionValue(option, nullptr);
+            }
+            else
+            {
+                const char * valueString = nullptr;
+                if (!argEnumerator->TryPopString(&valueString))
+                {
+                    Console::WriteError("Expected value for option: ");
+                    Console::WriteLineError(optionName);
+                    return false;
+                }
+                
+                if (!ParseOptionValue(option, valueString))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            if (option->Type == CMDLINE_TYPE_SWITCH)
+            {
+                Console::WriteError("Option is a switch: ");
+                Console::WriteLineError(optionName);
+                return false;
+            }
+            else
+            {
+                if (!ParseOptionValue(option, equalsCh + 1))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    static bool ParseShortOption(const CommandLineOptionDefinition * options,
+                                 CommandLineArgEnumerator *argEnumerator,
+                                 const char *argument)
+    {
+        const CommandLineOptionDefinition * option = nullptr;
+
+        const char * shortOption = &argument[1];
+        for (; *shortOption != '\0'; shortOption++)
+        {
+            option = FindOption(options, shortOption[0]);
+            if (option == nullptr)
+            {
+                Console::WriteError("Unknown option: -");
+                Console::WriteError(shortOption[0]);
+                Console::WriteLineError();
+                return false;
+            }
+            if (option->Type == CMDLINE_TYPE_SWITCH)
+            {
+                if (!ParseOptionValue(option, nullptr))
+                {
+                    return false;
+                }
+            }
+            else if (shortOption[1] != '\0')
+            {
+                if (!ParseOptionValue(option, &shortOption[1]))
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        if (option != nullptr && option->Type != CMDLINE_TYPE_SWITCH)
+        {
+            const char * valueString = nullptr;
+            if (!argEnumerator->TryPopString(&valueString))
+            {
+                Console::WriteError("Expected value for option: ");
+                Console::WriteError(option->ShortName);
+                Console::WriteLineError();
+                return false;
+            }
+                
+            if (!ParseOptionValue(option, valueString))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static bool ParseOptionValue(const CommandLineOptionDefinition * option, const char * valueString)
+    {
+        if (option->OutAddress == nullptr) return true;
+
+        switch (option->Type) {
+        case CMDLINE_TYPE_SWITCH:
+            *((bool *)option->OutAddress) = true;
+            return true;
+        case CMDLINE_TYPE_INTEGER:
+            *((sint32 *)option->OutAddress) = (sint32)atol(valueString);
+            return true;
+        case CMDLINE_TYPE_REAL:
+            *((float *)option->OutAddress) = (float)atof(valueString);
+            return true;
+        case CMDLINE_TYPE_STRING:
+            *((utf8 * *)option->OutAddress) = String::Duplicate(valueString);
+            return true;
+        default:
+            Console::WriteError("Unknown CMDLINE_TYPE for: ");
+            Console::WriteLineError(option->LongName);
+            return false;
+        }
+    }
+
+    const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, char shortName)
+    {
+        for (const CommandLineOptionDefinition * option = options; option->Type != 255; option++)
+        {
+            if (option->ShortName == shortName)
+            {
+                return option;
+            }
+        }
+        return nullptr;
+    }
+
+    const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, const char * longName)
+    {
+        for (const CommandLineOptionDefinition * option = options; option->Type != 255; option++)
+        {
+            if (String::Equals(option->LongName, longName))
+            {
+                return option;
+            }
+        }
+        return nullptr;
+    }
 }
 
 extern "C"
 {
     int cmdline_run(const char * * argv, int argc)
     {
-        CommandLine::PrintHelp();
-        return 0;
+        auto argEnumerator = CommandLineArgEnumerator(argv, argc);
+
+        // Pop process path
+        argEnumerator.TryPop();
+
+        const CommandLineCommand * command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
+        if (command->Options != nullptr)
+        {
+            auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
+            if (!CommandLine::ParseOptions(command->Options, &argEnumeratorForOptions))
+            {
+                return EXITCODE_FAIL;
+            }
+        }
+        if (command == CommandLine::RootCommands || command->Func == nullptr)
+        {
+            return CommandLine::HandleCommandDefault();
+        }
+        else
+        {
+            return command->Func(&argEnumerator);
+        }
     }
 }
