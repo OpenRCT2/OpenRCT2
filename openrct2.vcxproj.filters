@@ -564,8 +564,9 @@
     <ClCompile Include="src\argparse\argparse.c">
       <Filter>Source\argparse</Filter>
     </ClCompile>
-    <ClCompile Include="src\cmdline\CommandLineDefinitions.cpp" />
     <ClCompile Include="src\cmdline\CommandLine.cpp" />
+    <ClCompile Include="src\cmdline\RootCommands.cpp" />
+    <ClCompile Include="src\core\Console.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">

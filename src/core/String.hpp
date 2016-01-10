@@ -7,6 +7,8 @@ extern "C"
     #include "../util/util.h"
 }
 
+#include "Memory.hpp"
+
 namespace String
 {
     bool Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false)
@@ -32,6 +34,25 @@ namespace String
     size_t SizeOf(const utf8 * str)
     {
         return strlen(str);
+    }
+
+    utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    {
+        return safe_strncpy(buffer, src, bufferSize);
+    }
+
+    utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t srcSize)
+    {
+        utf8 * dst = buffer;
+        size_t minSize = Math::Min(bufferSize - 1, srcSize);
+        for (size_t i = 0; i < minSize; i++)
+        {
+            *dst++ = *src;
+            if (*src == '\0') break;
+            *src++;
+        }
+        *dst = '\0';
+        return buffer;
     }
 
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
@@ -76,5 +97,11 @@ namespace String
         }
 
         return buffer;
+    }
+
+    utf8 * Duplicate(const utf8 * src)
+    {
+        size_t srcSize = SizeOf(src);
+        return Memory::DuplicateArray(src, srcSize + 1);
     }
 }

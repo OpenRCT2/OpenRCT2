@@ -7,26 +7,13 @@ extern "C"
 
 namespace Console
 {
-    void Write(const utf8 * str)
-    {
-        fputs(str, stdout);
-    }
-
-    void WriteSpace(size_t count)
-    {
-        for (size_t i = 0; i < count; i++)
-        {
-            fputc(' ', stdout);
-        }
-    }
-
-    void WriteLine()
-    {
-        puts("");
-    }
-
-    void WriteLine(const utf8 * str)
-    {
-        puts(str);
-    }
+    void Write(char c);
+    void Write(const utf8 * str);
+    void WriteSpace(size_t count);
+    void WriteLine();
+    void WriteLine(const utf8 * str);
+    void WriteError(char c);
+    void WriteError(const utf8 * str);
+    void WriteLineError();
+    void WriteLineError(const utf8 * str);
 }
