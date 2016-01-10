@@ -143,14 +143,12 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator)
     }
 
     const char * parkUri;
-    if (!enumerator->TryPopString(&parkUri))
+    if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
     {
-        Console::WriteLineError("Expected path or URL to a saved park.");
-        return EXITCODE_FAIL;
+        String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
+        gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     }
-    String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-    gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     return EXITCODE_CONTINUE; 
 }
 
