@@ -74,7 +74,7 @@ namespace String
         {
             *dst++ = *src;
             if (*src == '\0') break;
-            *src++;
+			src++;
         }
         *dst = '\0';
         return buffer;

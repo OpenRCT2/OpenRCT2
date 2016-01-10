@@ -75,7 +75,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     CommandTableEnd
 };
 
-static const CommandLineExample CommandLine::RootExamples[]
+const CommandLineExample CommandLine::RootExamples[]
 {
     { "./my_park.sv6",                              "open a saved park"                      },
     { "./SnowyPark.sc6",                            "install and open a scenario"            },
