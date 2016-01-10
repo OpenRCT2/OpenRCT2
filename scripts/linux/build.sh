@@ -7,52 +7,56 @@ mkdir -p $cachedir
 
 # Sets default target to "linux", if none specified
 TARGET=${TARGET-linux}
+SYSTEM=$(uname -s)
 
 if [[ ! -d build ]]; then
 	mkdir -p build
 fi
 
-# keep in sync with version in install.sh
-if [[ $(uname -s) == "Darwin" ]]; then
-	# keep in sync with version in Xcode project
-	sha256sum=6562ce9e1f37f125e3345bfd8b961777800436bf607b30dc7c964e0e6991ad2c
-else
-	sha256sum=31c5e19d9f794bd5f0e75f20c2b4c3c4664d736b0a4d50c8cde14a9a9007b62d
-fi
-libVFile="./libversion"
-libdir="./lib"
-currentversion=0
-needsdownload="true"
-
-if [ -f $libVFile ]; then
-    while read line; do
-        currentversion=$line
-        continue
-    done < $libVFile
-fi
-
-if [ "z$currentversion" == "z$sha256sum" ]; then
-    needsdownload="false"
-fi
-
-if [ ! -d $libdir ]; then
-    needsdownload="true"
-fi
-
-if [[ "$needsdownload" = "true" ]]; then
-	echo "Found library had sha256sum $currentversion, expected $sha256sum"
-	echo "New libraries need to be downloaded. Clearing cache and calling ./install.sh"
-	rm -rf ./lib
-	if [[ -f $cachedir/orctlibs.zip ]]; then
-		rm -rf $cachedir/orctlibs.zip
+if [[ $TARGET != "linux" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; then
+	# keep in sync with version in install.sh
+	if [[ $SYSTEM == "Darwin" ]]; then
+		# keep in sync with version in Xcode project
+		sha256sum=6562ce9e1f37f125e3345bfd8b961777800436bf607b30dc7c964e0e6991ad2c
+	else
+		sha256sum=31c5e19d9f794bd5f0e75f20c2b4c3c4664d736b0a4d50c8cde14a9a9007b62d
 	fi
-	if [[ -d /usr/local/cross-tools/orctlibs ]]; then
-		sudo rm -rf /usr/local/cross-tools/orctlibs
+	libVFile="./libversion"
+	libdir="./lib"
+	currentversion=0
+	needsdownload="true"
+
+	if [ -f $libVFile ]; then
+		while read line; do
+			currentversion=$line
+			continue
+		done < $libVFile
 	fi
-	if [[ -d $cachedir/orctlibs ]]; then
-		rm -rf $cachedir/orctlibs
+
+	if [ "z$currentversion" == "z$sha256sum" ]; then
+		needsdownload="false"
 	fi
-	scripts/linux/install.sh
+
+	if [ ! -d $libdir ]; then
+		needsdownload="true"
+	fi
+
+	if [[ "$needsdownload" = "true" ]]; then
+		echo "Found library had sha256sum $currentversion, expected $sha256sum"
+		echo "New libraries need to be downloaded. Clearing cache and calling ./install.sh"
+		rm -rf ./lib
+		if [[ -f $cachedir/orctlibs.zip ]]; then
+			rm -rf $cachedir/orctlibs.zip
+		fi
+		if [[ -d /usr/local/cross-tools/orctlibs ]]; then
+			sudo rm -rf /usr/local/cross-tools/orctlibs
+		fi
+		if [[ -d $cachedir/orctlibs ]]; then
+			rm -rf $cachedir/orctlibs
+		fi
+		scripts/linux/install.sh
+	fi
+# if [[ $TARGET != "linux" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; then
 fi
 
 pushd build

@@ -26,6 +26,7 @@ project(${PROJECT})
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
+add_definitions(-DUSE_LIBPNG)
 
 INCLUDE(FindPkgConfig)
 
@@ -48,15 +49,8 @@ option(STATIC "Create a static build.")
 # Not required yet
 PKG_CHECK_MODULES(PNG libpng>=1.6)
 if (NOT PNG_FOUND)
-	PKG_CHECK_MODULES(PNG libpng16)
+	PKG_CHECK_MODULES(PNG REQUIRED libpng16)
 endif (NOT PNG_FOUND)
-
-if (PNG_FOUND)
-	set (USE_LODEPNG FALSE)
-else (PNG_FOUND)
-	set (USE_LODEPNG TRUE)
-	message("Falling back to deprecated Lodepng for PNG support. Please upgrade your system to libpng 1.6")
-endif (PNG_FOUND)
 
 # Handle creating the rct2 text and data files on OS X and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
@@ -109,16 +103,10 @@ set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
-if (USE_LODEPNG)
-	set (LODEPNG_SOURCES "lib/lodepng/*.c")
-else (USE_LODEPNG)
-	add_definitions(-DUSE_LIBPNG)
-endif (USE_LODEPNG)
-
 # include lib
 include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "lib/argparse/*.c" "lib/cutest/*.c" ${LODEPNG_SOURCES})
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp")
 if (APPLE)
 	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
@@ -225,7 +213,7 @@ endif (UNIX AND NOT APPLE)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${ORCTLIBS_LIB} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${PNGLIBS})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${PNGLIBS})
 
 if (APPLE OR STATIC)
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)

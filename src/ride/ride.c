@@ -5766,95 +5766,115 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
  */
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	if(*ebx & GAME_COMMAND_FLAG_APPLY){
-		uint8 ride_id = *edx;
-		uint8 type = *ebx >> 8;
-		uint8 value = *edx >> 8;
-		int index = *edi;
-		if (index < 0) {
+	bool apply = (*ebx & GAME_COMMAND_FLAG_APPLY);
+
+	uint8 ride_id = *edx;
+	uint8 type = *ebx >> 8;
+	uint8 value = *edx >> 8;
+	int index = *edi;
+
+	if (index < 0) {
+		log_warning("Invalid game command, index %d out of bounds", index);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	rct_ride *ride = GET_RIDE(ride_id);
+	if (ride->type == RIDE_TYPE_NULL) {
+		log_warning("Invalid game command, ride_id = %u", ride_id);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	*ebx = 0;
+	switch(type) {
+	case 0:
+		if (index >= countof(ride->track_colour_main)) {
 			log_warning("Invalid game command, index %d out of bounds", index);
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
-		rct_ride *ride = GET_RIDE(ride_id);
-		if (ride->type == RIDE_TYPE_NULL) {
-			log_warning("Invalid game command, ride_id = %u", ride_id);
+		if (apply) {
+			ride->track_colour_main[index] = value;
+			gfx_invalidate_screen();
+		}
+		break;
+	case 1:
+		if (index >= countof(ride->track_colour_additional)) {
+			log_warning("Invalid game command, index %d out of bounds", index);
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
-		*ebx = 0;
-		switch(type){
-			case 0:
-				if (index >= countof(ride->track_colour_main)) {
-					log_warning("Invalid game command, index %d out of bounds", index);
-					*ebx = MONEY32_UNDEFINED;
-					break;
-				}
-				ride->track_colour_main[index] = value;
-				gfx_invalidate_screen();
-				break;
-			case 1:
-				if (index >= countof(ride->track_colour_additional)) {
-					log_warning("Invalid game command, index %d out of bounds", index);
-					*ebx = MONEY32_UNDEFINED;
-					break;
-				}
-				ride->track_colour_additional[index] = value;
-				gfx_invalidate_screen();
-				break;
-			case 2:
-				if (index >= countof(ride->vehicle_colours)) {
-					log_warning("Invalid game command, index %d out of bounds", index);
-					*ebx = MONEY32_UNDEFINED;
-					break;
-				}
-				*((uint8*)(&ride->vehicle_colours[index])) = value;
-				ride_update_vehicle_colours(ride_id);
-				break;
-			case 3:
-				if (index >= countof(ride->vehicle_colours)) {
-					log_warning("Invalid game command, index %d out of bounds", index);
-					*ebx = MONEY32_UNDEFINED;
-					break;
-				}
-				*((uint8*)(&ride->vehicle_colours[index]) + 1) = value;
-				ride_update_vehicle_colours(ride_id);
-				break;
-			case 4:
-				if (index >= countof(ride->track_colour_supports)) {
-					log_warning("Invalid game command, index %d out of bounds", index);
-					*ebx = MONEY32_UNDEFINED;
-					break;
-				}
-				ride->track_colour_supports[index] = value;
-				gfx_invalidate_screen();
-				break;
-			case 5:
-				ride->colour_scheme_type &= ~(RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR);
-				ride->colour_scheme_type |= value;
-				for(int i = 1; i < countof(ride->vehicle_colours); i++){
-					ride->vehicle_colours[i] = ride->vehicle_colours[0];
-					ride->vehicle_colours_extended[i] = ride->vehicle_colours_extended[0];
-				}
-				ride_update_vehicle_colours(ride_id);
-				break;
-			case 6:
-				ride->entrance_style = value;
-				RCT2_GLOBAL(0x01358840, uint8) = value;
-				gfx_invalidate_screen();
-				break;
-			case 7:
-				if (index >= countof(ride->vehicle_colours_extended)) {
-					log_warning("Invalid game command, index %d out of bounds", index);
-					*ebx = MONEY32_UNDEFINED;
-					break;
-				}
+		if (apply) {
+			ride->track_colour_additional[index] = value;
+			gfx_invalidate_screen();
+		}
+		break;
+	case 2:
+		if (index >= countof(ride->vehicle_colours)) {
+			log_warning("Invalid game command, index %d out of bounds", index);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		if (apply) {
+			*((uint8*)(&ride->vehicle_colours[index])) = value;
+			ride_update_vehicle_colours(ride_id);
+		}
+		break;
+	case 3:
+		if (index >= countof(ride->vehicle_colours)) {
+			log_warning("Invalid game command, index %d out of bounds", index);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		if (apply) {
+			*((uint8*)(&ride->vehicle_colours[index]) + 1) = value;
+			ride_update_vehicle_colours(ride_id);
+		}
+		break;
+	case 4:
+		if (index >= countof(ride->track_colour_supports)) {
+			log_warning("Invalid game command, index %d out of bounds", index);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		if (apply) {
+			ride->track_colour_supports[index] = value;
+			gfx_invalidate_screen();
+		}
+		break;
+	case 5:
+		if (apply) {
+			ride->colour_scheme_type &= ~(RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR);
+			ride->colour_scheme_type |= value;
+			for (int i = 1; i < countof(ride->vehicle_colours); i++) {
+				ride->vehicle_colours[i] = ride->vehicle_colours[0];
+				ride->vehicle_colours_extended[i] = ride->vehicle_colours_extended[0];
+			}
+			ride_update_vehicle_colours(ride_id);
+		}
+		break;
+	case 6:
+		if (apply) {
+			ride->entrance_style = value;
+			RCT2_GLOBAL(0x01358840, uint8) = value;
+			gfx_invalidate_screen();
+		}
+		break;
+	case 7:
+		if (index >= countof(ride->vehicle_colours_extended)) {
+			log_warning("Invalid game command, index %d out of bounds", index);
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		} else {
+			if (apply) {
 				ride->vehicle_colours_extended[index] = value;
 				ride_update_vehicle_colours(ride_id);
-				break;
+			}
 		}
-		window_invalidate_by_number(WC_RIDE, ride_id);
+		break;
 	}
+	window_invalidate_by_number(WC_RIDE, ride_id);
 }
 
 /**

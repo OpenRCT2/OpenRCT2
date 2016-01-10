@@ -1601,7 +1601,8 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	if(flags & GAME_COMMAND_FLAG_APPLY)
 	{
 		footpath_remove_litter(x, y, map_element_height(x, y));
-		map_remove_walls_at(x, y, height * 8 - 16, height * 8 + 32);
+		if(!gCheatsDisableClearanceChecks)
+			map_remove_walls_at(x, y, height * 8 - 16, height * 8 + 32);
 	}
 	RCT2_GLOBAL(0x9E2E18, money32) += MONEY(20, 0);
 
@@ -2498,7 +2499,8 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 	if(*ebx & GAME_COMMAND_FLAG_APPLY){
 		int element_height = map_element_height(x, y);
 		footpath_remove_litter(x, y, element_height);
-		map_remove_walls_at_z(x, y, element_height);
+		if(!gCheatsDisableClearanceChecks)
+			map_remove_walls_at_z(x, y, element_height);
 	}
 
 	rct_map_element* map_element = map_get_surface_element_at(x / 32, y / 32);

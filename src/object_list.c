@@ -484,16 +484,20 @@ void object_create_identifier_name(char* string_buffer, const rct_object_entry* 
  *
  *  rct2: 0x675827
  */
-void set_load_objects_fail_reason(){
+void set_load_objects_fail_reason()
+{
+	rct_string_id expansionNameId;
+
 	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
 	int expansion = (object->flags & 0xFF) >> 4;
+
 	if (expansion == 0
 		|| expansion == 8
 		|| RCT2_GLOBAL(0x9AB4C0, uint16) & (1 << expansion)){
 
 		char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
 
-		format_string(string_buffer, 3323, 0); //Missing object data, ID:
+		format_string(string_buffer, STR_MISSING_OBJECT_DATA_ID, 0);
 
 		object_create_identifier_name(string_buffer, object);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
@@ -501,17 +505,23 @@ void set_load_objects_fail_reason(){
 		return;
 	}
 
-	char* exapansion_name = &RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[128 * expansion];
-	if (*exapansion_name == '\0'){
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3325;
-		return;
+	switch(expansion) {
+		case 1: // Wacky Worlds
+			expansionNameId = STR_OBJECT_FILTER_WW;
+			break;
+		case 2: // Time Twister
+			expansionNameId = STR_OBJECT_FILTER_TT;
+			break;
+		default:
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_REQUIRES_AN_ADDON_PACK;
+			return;
 	}
 
 	char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
 
-	format_string(string_buffer, 3324, 0); // Requires expansion pack
-	strcat(string_buffer, exapansion_name);
+	format_string(string_buffer, STR_REQUIRES_THE_FOLLOWING_ADDON_PACK, &expansionNameId);
+
 	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 }

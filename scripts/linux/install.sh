@@ -193,11 +193,14 @@ elif [[ $(uname) == "Linux" ]]; then
 	fi
 fi
 
-download_libs
-calculate_sha256 "$cachedir/orctlibs.zip" > "$libVFile"
-echo "Downloaded library with sha256sum: $(cat "$libVFile")"
-# Local libs are required for all targets
-install_local_libs
+if [[ $TARGET == "windows" || $(uname -s) == "Darwin" ]]; then
+	download_libs
+	calculate_sha256 "$cachedir/orctlibs.zip" > "$libVFile"
+	echo "Downloaded library with sha256sum: $(cat "$libVFile")"
+	# Local libs are required for all targets
+	install_local_libs
+# $TARGET == "windows" || $(uname -s) == "Darwin"
+fi
 
 if [[ $TARGET == "windows" ]]; then
 	download_sdl

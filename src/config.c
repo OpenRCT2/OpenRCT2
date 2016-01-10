@@ -331,6 +331,11 @@ static void rwopswritec(SDL_RWops *file, char c)
 	SDL_RWwrite(file, &c, 1, 1);
 }
 
+static void rwopswritestr(SDL_RWops *file, const char *str)
+{
+	SDL_RWwrite(file, str, strlen(str), 1);
+}
+
 static void rwopsprintf(SDL_RWops *file, const char *format, ...)
 {
 	va_list args;
@@ -342,6 +347,11 @@ static void rwopsprintf(SDL_RWops *file, const char *format, ...)
 	SDL_RWwrite(file, buffer, strlen(buffer), 1);
 
 	va_end(args);
+}
+
+static void rwopswritenewline(SDL_RWops *file)
+{
+	rwopswritestr(file, platform_get_new_line());
 }
 
 void config_set_defaults()
@@ -478,24 +488,24 @@ bool config_save(const utf8string path)
 		config_section_definition *section = &_sectionDefinitions[i];
 
 		rwopswritec(file, '[');
-		SDL_RWwrite(file, section->section_name, strlen(section->section_name), 1);
+		rwopswritestr(file, section->section_name);
 		rwopswritec(file, ']');
-		rwopswritec(file, '\n');
+		rwopswritenewline(file);
 
 		for (j = 0; j < section->property_definitions_count; j++) {
 			config_property_definition *property = &section->property_definitions[j];
 
-			SDL_RWwrite(file, property->property_name, strlen(property->property_name), 1);
-			SDL_RWwrite(file, " = ", 3, 1);
+			rwopswritestr(file, property->property_name);
+			rwopswritestr(file, " = ");
 
 			value = (value_union*)((size_t)section->base_address + (size_t)property->offset);
 			if (property->enum_definitions != NULL)
 				config_write_enum(file, property->type, value, property->enum_definitions);
 			else
 				config_save_property_value(file, property->type, value);
-			rwopswritec(file, '\n');
+			rwopswritenewline(file);
 		}
-		rwopswritec(file, '\n');
+		rwopswritenewline(file);
 	}
 
 	SDL_RWclose(file);
@@ -506,8 +516,8 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 {
 	switch (type) {
 	case CONFIG_VALUE_TYPE_BOOLEAN:
-		if (value->value_boolean) SDL_RWwrite(file, "true", 4, 1);
-		else SDL_RWwrite(file, "false", 5, 1);
+		if (value->value_boolean) rwopswritestr(file, "true");
+		else rwopswritestr(file, "false");
 		break;
 	case CONFIG_VALUE_TYPE_UINT8:
 		rwopsprintf(file, "%u", value->value_uint8);
@@ -535,8 +545,9 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 		break;
 	case CONFIG_VALUE_TYPE_STRING:
 		rwopswritec(file, '"');
-		if (value->value_string != NULL)
-			SDL_RWwrite(file, value->value_string, strlen(value->value_string), 1);
+		if (value->value_string != NULL) {
+			rwopswritestr(file, value->value_string);
+		}
 		rwopswritec(file, '"');
 		break;
 	}
@@ -728,7 +739,7 @@ static void config_write_enum(SDL_RWops *file, uint8 type, value_union *value, c
 	uint32 enumValue = (value->value_uint32) & ((1 << (_configValueTypeSize[type] * 8)) - 1);
 	while (enumDefinitions->key != NULL) {
 		if (enumDefinitions->value.value_uint32 == enumValue) {
-			SDL_RWwrite(file, enumDefinitions->key, strlen(enumDefinitions->key), 1);
+			rwopswritestr(file, enumDefinitions->key);
 			return;
 		}
 		enumDefinitions++;
@@ -1231,15 +1242,15 @@ static bool themes_save(const_utf8string path, int preset)
 		theme_section_definition *section = &_themeSectionDefinitions[i];
 
 		rwopswritec(file, '[');
-		SDL_RWwrite(file, section->section_name, strlen(section->section_name), 1);
+		rwopswritestr(file, section->section_name);
 		rwopswritec(file, ']');
-		rwopswritec(file, '\n');
+		rwopswritenewline(file);
 
 		for (j = 0; j < section->property_definitions_count; j++) {
 			theme_property_definition *property = &section->property_definitions[j];
 
-			SDL_RWwrite(file, property->property_name, strlen(property->property_name), 1);
-			SDL_RWwrite(file, " = ", 3, 1);
+			rwopswritestr(file, property->property_name);
+			rwopswritestr(file, " = ");
 
 			value = (value_union*)((size_t)&gConfigThemes.presets[preset] + (size_t)section->offset + (size_t)property->offset);
 
@@ -1247,24 +1258,24 @@ static bool themes_save(const_utf8string path, int preset)
 				config_write_enum(file, property->type, value, property->enum_definitions);
 			else
 				config_save_property_value(file, property->type, value);
-			rwopswritec(file, '\n');
+			rwopswritenewline(file);
 		}
-		rwopswritec(file, '\n');
+		rwopswritenewline(file);
 	}
 
 	for (i = 0; i < (int)gNumThemeWindows; i++) {
 		theme_section_definition *section = &_themeSectionDefinitions[0];
 
 		rwopswritec(file, '[');
-		SDL_RWwrite(file, gThemeWindowDefinitions[i].section_name, strlen(gThemeWindowDefinitions[i].section_name), 1);
+		rwopswritestr(file, gThemeWindowDefinitions[i].section_name);
 		rwopswritec(file, ']');
-		rwopswritec(file, '\n');
+		rwopswritenewline(file);
 
 		for (j = 0; j < section->property_definitions_count; j++) {
 			theme_property_definition *property = &section->property_definitions[j];
 
-			SDL_RWwrite(file, property->property_name, strlen(property->property_name), 1);
-			SDL_RWwrite(file, " = ", 3, 1);
+			rwopswritestr(file, property->property_name);
+			rwopswritestr(file, " = ");
 
 			value = (value_union*)((size_t)gConfigThemes.presets[preset].windows + (size_t)(sizeof(theme_window) * i) + (size_t)property->offset);
 
@@ -1272,7 +1283,7 @@ static bool themes_save(const_utf8string path, int preset)
 				config_write_enum(file, property->type, value, property->enum_definitions);
 			else
 				config_save_property_value(file, property->type, value);
-			rwopswritec(file, '\n');
+			rwopswritenewline(file);
 		}
 	}
 
@@ -1627,33 +1638,34 @@ void title_sequence_save_preset_script(int preset)
 		switch (command->command) {
 		case TITLE_SCRIPT_LOAD:
 			if (command->saveIndex == 0xFF)
-				rwopsprintf(file, "LOAD <No save file>\r\n");
+				rwopsprintf(file, "LOAD <No save file>");
 			else
-				rwopsprintf(file, "LOAD %s\r\n", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
+				rwopsprintf(file, "LOAD %s", gConfigTitleSequences.presets[preset].saves[command->saveIndex]);
 			break;
 		case TITLE_SCRIPT_LOCATION:
-			rwopsprintf(file, "LOCATION %i %i\r\n", command->x, command->y);
+			rwopsprintf(file, "LOCATION %i %i", command->x, command->y);
 			break;
 		case TITLE_SCRIPT_ROTATE:
-			rwopsprintf(file, "ROTATE %i\r\n", command->rotations);
+			rwopsprintf(file, "ROTATE %i", command->rotations);
 			break;
 		case TITLE_SCRIPT_ZOOM:
-			rwopsprintf(file, "ZOOM %i\r\n", command->zoom);
+			rwopsprintf(file, "ZOOM %i", command->zoom);
 			break;
 		case TITLE_SCRIPT_SPEED:
-			rwopsprintf(file, "SPEED %i\r\n", command->speed);
+			rwopsprintf(file, "SPEED %i", command->speed);
 			break;
 		case TITLE_SCRIPT_WAIT:
-			rwopsprintf(file, "WAIT %i\r\n\r\n", command->seconds);
+			rwopsprintf(file, "WAIT %i", command->seconds);
+			rwopswritenewline(file);
 			break;
 		case TITLE_SCRIPT_RESTART:
-			rwopsprintf(file, "RESTART\r\n");
+			rwopsprintf(file, "RESTART");
 			break;
 		case TITLE_SCRIPT_END:
-			rwopsprintf(file, "END\r\n");
+			rwopsprintf(file, "END");
 			break;
-
 		}
+		rwopswritenewline(file);
 	}
 
 	SDL_RWclose(file);
