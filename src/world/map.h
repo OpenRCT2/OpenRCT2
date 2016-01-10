@@ -141,6 +141,7 @@ enum {
 enum {
 	MAP_ELEMENT_FLAG_GHOST = (1 << 4),
 	MAP_ELEMENT_FLAG_BROKEN = (1 << 5),
+	MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED = (1 << 5),
 	MAP_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 
@@ -395,5 +396,6 @@ bool map_large_scenery_get_origin(
 
 rct_map_element *map_get_track_element_at(int x, int y, int z);
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType);
+rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int trackType, int sequence);
 
 #endif

@@ -275,18 +275,23 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
  *
  *  rct2: 0x00673200
  */
-static void sprite_misc_0_update(rct_sprite *sprite)
+static void sprite_steam_particle_update(rct_steam_particle *steam)
 {
-	invalidate_sprite_2(sprite);
+	invalidate_sprite_2((rct_sprite*)steam);
 
-	int original_var24 = sprite->unknown.var_24;
-	sprite->unknown.var_24 += 0x5555;
-	if (sprite->unknown.var_24 < 0x5555) {
-		sprite_move(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z + 1, sprite);
+	int original_var24 = steam->var_24;
+	steam->var_24 += 0x5555;
+	if (steam->var_24 < 0x5555) {
+		sprite_move(
+			steam->x,
+			steam->y,
+			steam->z + 1,
+			(rct_sprite*)steam
+		);
 	}
-	sprite->unknown.var_26 += 64;
-	if (sprite->unknown.var_26 >= (56 * 64)) {
-		sprite_remove(sprite);
+	steam->var_26 += 64;
+	if (steam->var_26 >= (56 * 64)) {
+		sprite_remove((rct_sprite*)steam);
 	}
 }
 
@@ -359,8 +364,8 @@ static void sprite_misc_5_update(rct_sprite *sprite)
 void sprite_misc_update(rct_sprite *sprite)
 {
 	switch (sprite->unknown.misc_identifier) {
-	case SPRITE_MISC_0:
-		sprite_misc_0_update(sprite);
+	case SPRITE_MISC_STEAM_PARTICLE:
+		sprite_steam_particle_update((rct_steam_particle*)sprite);
 		break;
 	case SPRITE_MISC_MONEY_EFFECT:
 		money_effect_update(&sprite->money_effect);

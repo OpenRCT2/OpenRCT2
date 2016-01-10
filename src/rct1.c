@@ -712,7 +712,7 @@ static void rct1_fix_z()
 		for (int i = 0; i < 4; i++) {
 			ride->station_heights[i] /= 2;
 		}
-		ride->var_116 /= 2;
+		ride->start_drop_height /= 2;
 		ride->highest_drop_height = 1;
 		if (ride->var_11F != 255) {
 			ride->var_11F /= 2;

@@ -82,7 +82,7 @@ static rct_xy16 loc_7667AC[] = {
 
 /**
  *
- *  rct2: 0x0142811C 
+ *  rct2: 0x0142811C
  * Can be calculated as Rounddown(34*sin(x)+0.5)
  * where x is in 7.5 deg segments.
  */
@@ -178,9 +178,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 
 	uint32 seatImageId;
 
-	if (vehicle != NULL && vehicle->var_B5 >= 64) {
+	if (vehicle != NULL && vehicle->restraints_position >= 64) {
 		// Open Restraints
-		image_id = (vehicle->var_B5 - 64) >> 6;
+		image_id = (vehicle->restraints_position - 64) >> 6;
 		image_id += direction * 3;
 		image_id += rideEntry->vehicles[0].base_image_id;
 		image_id += 64;
@@ -1028,7 +1028,7 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98199C(0, 45, imageId, 0, height, 28, 28, rotation);	
+		sub_98199C(0, 45, imageId, 0, height, 28, 28, rotation);
 	} else {
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
@@ -1099,7 +1099,7 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98199C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);	
+		sub_98199C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);
 	} else {
 		// Door image or base
 		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;

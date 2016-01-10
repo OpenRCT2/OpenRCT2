@@ -75,28 +75,33 @@ typedef struct {
  * size: unknown
  */
 typedef struct {
-	rct_string_id name;									// 0x000
-	rct_string_id description;							// 0x002
-	uint32 images_offset;								// 0x004
-	uint32 flags;										// 0x008
-	uint8 ride_type[3];									// 0x00C
-	uint8 min_cars_in_train;							// 0x00F
-	uint8 max_cars_in_train;							// 0x010
-	uint8 cars_per_flat_ride;							// 0x011
-	uint8 zero_cars;									// 0x012
-	uint8 tab_vehicle;									// 0x013
-	uint8 default_vehicle;								// 0x014
-	uint8 front_vehicle;								// 0x015
-	uint8 second_vehicle;								// 0x016
-	uint8 rear_vehicle;									// 0x017
-	uint8 third_vehicle;								// 0x018
+	rct_string_id name;						// 0x000
+	rct_string_id description;				// 0x002
+	uint32 images_offset;					// 0x004
+	uint32 flags;							// 0x008
+	uint8 ride_type[3];						// 0x00C
+	uint8 min_cars_in_train;				// 0x00F
+	uint8 max_cars_in_train;				// 0x010
+	uint8 cars_per_flat_ride;				// 0x011
+	// Number of cars that can't hold passengers
+	uint8 zero_cars;						// 0x012
+	// The index to the vehicle type displayed in
+	// the vehicle tab.
+	uint8 tab_vehicle;						// 0x013
+	uint8 default_vehicle;					// 0x014
+	// Convert from first - fourth vehicle to
+	// vehicle structure
+	uint8 front_vehicle;					// 0x015
+	uint8 second_vehicle;					// 0x016
+	uint8 rear_vehicle;						// 0x017
+	uint8 third_vehicle;					// 0x018
 	uint8 pad_019;
-	rct_ride_type_vehicle vehicles[4];					// 0x01A
+	rct_ride_type_vehicle vehicles[4];		// 0x1A
 	vehicle_colour_preset_list *vehicle_preset_list;	// 0x1AE
-	sint8 excitement_multipler;							// 0x1B2
-	sint8 intensity_multipler;							// 0x1B3
-	sint8 nausea_multipler;								// 0x1B4
-	uint8 max_height;									// 0x1B5
+	sint8 excitement_multipler;				// 0x1B2
+	sint8 intensity_multipler;				// 0x1B3
+	sint8 nausea_multipler;					// 0x1B4
+	uint8 max_height;			// 0x1B5
 	union {
 		uint64 enabledTrackPieces;						// 0x1B6
 		struct {
@@ -138,7 +143,9 @@ typedef struct {
 	uint8 station_heights[4];		// 0x05A
 	uint8 station_length[4];		// 0x05E
 	uint8 station_depart[4];		// 0x062
-	uint8 var_066[4];
+	// ride->vehicle index for current train waiting for passengers
+	// at station
+	uint8 train_at_station[4];		// 0x066
 	uint16 entrances[4];			// 0x06A
 	uint16 exits[4];				// 0x072
 	uint16 last_peep_in_queue[4];	// 0x07A
@@ -177,16 +184,24 @@ typedef struct {
 	// (in RCT2, display_speed = (max_speed * 9) >> 18)
 	sint32 max_speed;				// 0x0D8
 	sint32 average_speed;			// 0x0DC
-	uint8 pad_0E0[4];
+	uint8 current_test_segment;		// 0x0E0
+	uint8 var_0E1;
+	uint8 pad_0E2[0x2];
 	sint32 length[4];				// 0x0E4
 	uint16 time[4];					// 0x0F4
 	fixed16_2dp max_positive_vertical_g;	// 0x0FC
 	fixed16_2dp max_negative_vertical_g;	// 0x0FE
 	fixed16_2dp max_lateral_g;		// 0x100
-	uint8 pad_102[0xC];
-	uint16 var_10E;
-	uint16 var_110;
-	uint16 var_112;
+	fixed16_2dp previous_vertical_g;// 0x102
+	fixed16_2dp previous_lateral_g;	// 0x104
+	uint8 pad_106[0x2];
+	uint32 testing_flags;			// 0x108
+	// x y map location
+	uint16 var_10C;
+	// Next 3 variables are related (XXXX XYYY ZZZa aaaa)
+	uint16 turn_count_default;		// 0x10E X = current turn count
+	uint16 turn_count_banked;		// 0x110
+	uint16 turn_count_sloped;		// 0x112 X = number turns > 3 elements
 	union {
 		uint8 inversions;			// 0x114 (???X XXXX)
 		uint8 holes;				// 0x114 (???X XXXX)
@@ -194,12 +209,14 @@ typedef struct {
 		// It reaches the maximum value of 7 at about 50% undercover and doesn't increase beyond that.
 		uint8 undercover_portion;	// 0x114 (XXX?-????)
 	};
-	uint8 drops;					// 0x115 (??XX XXXX)
-	uint8 var_116;
+	// Y is number of powered lifts, X is drops
+	uint8 drops;					// 0x115 (YYXX XXXX)
+	uint8 start_drop_height;		// 0x116
 	uint8 highest_drop_height;		// 0x117
 	sint32 sheltered_length;		// 0x118
-	uint8 pad_11C[0x2];
-	uint8 num_sheltered_sections;   // 0x11E
+	uint16 var_11C;
+	uint8 num_sheltered_sections;   // 0x11E (?abY YYYY)
+	// z related to var_10C
 	uint8 var_11F;
 	// Customer counter in the current 960 game tick (about 30 seconds) interval
 	uint16 cur_num_customers;       // 0x120
@@ -297,7 +314,7 @@ typedef struct {
 	uint32 lifecycle_flags;			// 0x1D0
 	uint8 vehicle_colours_extended[32];	// 0x1D4
 	uint16 total_air_time;			// 0x1F4
-	uint8 pad_1F6;
+	uint8 var_1F6;
 	uint8 num_circuits;				// 0x1F7
 	sint16 cable_lift_x;			// 0x1F8
 	sint16 cable_lift_y;			// 0x1FA
@@ -376,9 +393,11 @@ enum {
 	RIDE_ENTRY_FLAG_NO_INVERSIONS = 1 << 1, // 0x2
 	RIDE_ENTRY_FLAG_NO_BANKED_TRACK = 1 << 2, // 0x4
 	RIDE_ENTRY_FLAG_3 = 1 << 3, // 0x8
-	RIDE_ENTRY_FLAG_4 = 1 << 4, // 0x10
-	RIDE_ENTRY_FLAG_5 = 1 << 5, // 0x20
-	RIDE_ENTRY_FLAG_6 = 1 << 6, // 0x40
+	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1 = 1 << 4, // 0x10
+	// Twist type rotation ride
+	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1 = 1 << 5, // 0x20
+	// Lifting arm rotation ride (enterprise)
+	RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2 = 1 << 6, // 0x40
 	RIDE_ENTRY_FLAG_7 = 1 << 7, // 0x80
 	RIDE_ENTRY_FLAG_8 = 1 << 8, // 0x100
 	RIDE_ENTRY_FLAG_9 = 1 << 9, // 0x200
@@ -392,7 +411,8 @@ enum {
 	RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES = 1 << 17, // 0x20000
 	RIDE_ENTRY_FLAG_18 = 1 << 18, // 0x40000
 	RIDE_ENTRY_FLAG_19 = 1 << 19, // 0x80000
-	RIDE_ENTRY_FLAG_20 = 1 << 20, // 0x100000
+	// Must be set with swing mode 1 as well.
+	RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 = 1 << 20, // 0x100000
 	RIDE_ENTRY_FLAG_21 = 1 << 21, // 0x200000
 	RIDE_ENTRY_FLAG_22 = 1 << 22, // 0x400000
 	RIDE_ENTRY_FLAG_23 = 1 << 23, // 0x800000
@@ -404,6 +424,17 @@ enum {
 	RIDE_ENTRY_FLAG_29 = 1 << 29, // 0x20000000
 	RIDE_ENTRY_FLAG_30 = 1 << 30, // 0x40000000
 	RIDE_ENTRY_FLAG_31 = 1 << 31, // 0x80000000
+};
+
+enum{
+	RIDE_TESTING_SHELTERED = (1 << 0),
+	RIDE_TESTING_TURN_LEFT = (1 << 1),
+	RIDE_TESTING_TURN_RIGHT = (1 << 2),
+	RIDE_TESTING_TURN_BANKED = (1 << 3),
+	RIDE_TESTING_TURN_SLOPED = (1 << 4),
+	RIDE_TESTING_DROP_DOWN = (1 << 5),
+	RIDE_TESTING_POWERED_LIFT = (1 << 6),
+	RIDE_TESTING_DROP_UP = (1 << 7),
 };
 
 enum {
@@ -518,7 +549,7 @@ enum {
 	RIDE_MODE_ROTATING_LIFT,
 	RIDE_MODE_STATION_TO_STATION,
 	RIDE_MODE_SINGLE_RIDE_PER_ADMISSION,
-	RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION,
+	RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION = 10,
 	RIDE_MODE_MAZE,
 	RIDE_MODE_RACE,
 	RIDE_MODE_BUMPERCAR,
@@ -528,7 +559,7 @@ enum {
 	RIDE_MODE_FORWARD_ROTATION,
 	RIDE_MODE_BACKWARD_ROTATION,
 	RIDE_MODE_FILM_AVENGING_AVIATORS,
-	RIDE_MODE_3D_FILM_MOUSE_TAILS,
+	RIDE_MODE_3D_FILM_MOUSE_TAILS = 20,
 	RIDE_MODE_SPACE_RINGS,
 	RIDE_MODE_BEGINNERS,
 	RIDE_MODE_LIM_POWERED_LAUNCH,
@@ -538,7 +569,7 @@ enum {
 	RIDE_MODE_INTENSE,
 	RIDE_MODE_BERSERK,
 	RIDE_MODE_HAUNTED_HOUSE,
-	RIDE_MODE_CIRCUS_SHOW,
+	RIDE_MODE_CIRCUS_SHOW = 30,
 	RIDE_MODE_DOWNWARD_LAUNCH,
 	RIDE_MODE_CROOKED_HOUSE,
 	RIDE_MODE_FREEFALL_DROP,
@@ -813,6 +844,12 @@ enum {
 #define STATION_DEPART_FLAG (1 << 7)
 #define STATION_DEPART_MASK (~STATION_DEPART_FLAG)
 
+#define CURRENT_TURN_COUNT_MASK 0xF800
+#define TURN_MASK_1_ELEMENT		0x001F
+#define TURN_MASK_2_ELEMENTS	0x00E0
+#define TURN_MASK_3_ELEMENTS	0x0700
+#define TURN_MASK_4_PLUS_ELEMENTS 0xF800
+
 // rct2: 0x009ACFA4
 extern rct_ride_type **gRideTypeList;
 
@@ -934,6 +971,7 @@ void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, in
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
 void ride_clear_for_construction(int rideIndex);
 void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images);
 void invalidate_test_results(int rideIndex);
@@ -941,16 +979,14 @@ void invalidate_test_results(int rideIndex);
 void ride_select_next_section();
 void ride_select_previous_section();
 
-int get_var_10E_unk_1(rct_ride* ride);
-int get_var_10E_unk_2(rct_ride* ride);
-int get_var_10E_unk_3(rct_ride* ride);
-int get_var_110_unk_1(rct_ride* ride);
-int get_var_110_unk_2(rct_ride* ride);
-int get_var_110_unk_3(rct_ride* ride);
-int get_var_112_unk_1(rct_ride* ride);
-int get_var_112_unk_2(rct_ride* ride);
-int get_var_112_unk_3(rct_ride* ride);
-int get_var_112_unk_4(rct_ride* ride);
+void increment_turn_count_1_element(rct_ride* ride, uint8 type);
+void increment_turn_count_2_elements(rct_ride* ride, uint8 type);
+void increment_turn_count_3_elements(rct_ride* ride, uint8 type);
+void increment_turn_count_4_plus_elements(rct_ride* ride, uint8 type);
+int get_turn_count_1_element(rct_ride* ride, uint8 type);
+int get_turn_count_2_elements(rct_ride* ride, uint8 type);
+int get_turn_count_3_elements(rct_ride* ride, uint8 type);
+int get_turn_count_4_plus_elements(rct_ride* ride, uint8 type);
 
 uint8 ride_get_helix_sections(rct_ride *ride);
 bool ride_has_spinning_tunnel(rct_ride *ride);
@@ -999,7 +1035,7 @@ void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int 
 void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void sub_6CB945(int rideIndex);
-void ride_crash(int rideIndex, int vehicleIndex);
+void ride_crash(uint8 rideIndex, uint8 vehicleIndex);
 
 bool ride_type_is_intamin(int rideType);
 void sub_6C94D8();

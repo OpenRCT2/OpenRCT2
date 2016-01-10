@@ -543,8 +543,11 @@
     <ClCompile Include="src\addresses.c">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\ride\cable_lift.c">
+      <Filter>Source\Ride</Filter>
+    </ClCompile>
     <ClCompile Include="src\drawing\supports.c">
-      <Filter>Source</Filter>
+      <Filter>Source\Drawing</Filter>
     </ClCompile>
     <ClCompile Include="src\windows\news_options.c">
       <Filter>Source\Windows</Filter>
@@ -829,6 +832,12 @@
     </ClInclude>
     <ClInclude Include="src\interface\colour.h">
       <Filter>Source\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ride\cable_lift.h">
+      <Filter>Source\Ride</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Util.hpp">
+      <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\drawing\supports.h">
       <Filter>Source\Drawing</Filter>

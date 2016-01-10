@@ -282,6 +282,35 @@ typedef struct {
 	uint16 var_26;
 } rct_crash_splash;
 
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 var_0C;
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8  sprite_direction;		// 0x1E
+	uint8 pad_1F[3];				// 0x1F
+	uint16 name_string_idx;			// 0x22
+	uint16 var_24;
+	uint16 var_26;
+} rct_steam_particle;
+
 /**
  * Sprite structure.
  * size: 0x0100
@@ -298,6 +327,7 @@ typedef union {
 	rct_money_effect money_effect;
 	rct_crashed_vehicle_particle crashed_vehicle_particle;
 	rct_crash_splash crash_splash;
+	rct_steam_particle steam_particle;
 } rct_sprite;
 
 typedef struct {
@@ -318,7 +348,7 @@ typedef struct {
 } rct_sprite_entry;
 
 enum {
-	SPRITE_MISC_0,
+	SPRITE_MISC_STEAM_PARTICLE,
 	SPRITE_MISC_MONEY_EFFECT,
 	SPRITE_MISC_CRASHED_VEHICLE_PARTICLE,
 	SPRITE_MISC_3,							// (related to vehicle crash, probably crash particles)

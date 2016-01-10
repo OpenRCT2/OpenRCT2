@@ -2385,33 +2385,16 @@ int track_delete()
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
 {
 	int trackType, aBank, aAngle, bBank, bAngle;
-	rct_ride *ride;
 
-	ride = GET_RIDE(a->properties.track.ride_index);
 	trackType = a->properties.track.type;
 	aBank = gTrackDefinitions[trackType].bank_end;
 	aAngle = gTrackDefinitions[trackType].vangle_end;
-	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
-		if (a->properties.track.colour & 4) {
-			if (aBank == TRACK_BANK_NONE)
-				aBank = TRACK_BANK_UPSIDE_DOWN;
-			else if (aBank == TRACK_BANK_UPSIDE_DOWN)
-				aBank = TRACK_BANK_NONE;
-		}
-	}
+	aBank = track_get_actual_bank(a, aBank);
 
-	ride = GET_RIDE(b->properties.track.ride_index);
 	trackType = b->properties.track.type;
 	bBank = gTrackDefinitions[trackType].bank_start;
 	bAngle = gTrackDefinitions[trackType].vangle_start;
-	if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_3) {
-		if (b->properties.track.colour & 4) {
-			if (bBank == TRACK_BANK_NONE)
-				bBank = TRACK_BANK_UPSIDE_DOWN;
-			else if (bBank == TRACK_BANK_UPSIDE_DOWN)
-				bBank = TRACK_BANK_NONE;
-		}
-	}
+	bBank = track_get_actual_bank(b, bBank);
 
 	return aBank == bBank && aAngle == bAngle;
 }
@@ -4939,6 +4922,30 @@ bool track_element_is_lift_hill(rct_map_element *trackElement)
 	return trackElement->type & 0x80;
 }
 
+/**
+ * Checks if a track element is recognised as the beginning of a block.
+ * A beginning of a block can be the end of a station, the end of a lift hill,
+ * or a block brake.
+ */
+bool track_element_is_block_start(rct_map_element *trackElement)
+{
+	switch (trackElement->properties.track.type) {
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_CABLE_LIFT_HILL:
+	case 216:
+		return true;
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+	case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+		if (track_element_is_lift_hill(trackElement)) {
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
 bool track_element_is_cable_lift(rct_map_element *trackElement) {
 	return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
@@ -4949,4 +4956,75 @@ void track_element_set_cable_lift(rct_map_element *trackElement) {
 
 void track_element_clear_cable_lift(rct_map_element *trackElement) {
 	trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+int track_get_actual_bank(rct_map_element *mapElement, int bank)
+{
+	rct_ride *ride = GET_RIDE(mapElement->properties.track.ride_index);
+	int trackColour = mapElement->properties.track.colour;
+	return track_get_actual_bank_2(ride->type, trackColour, bank);
+}
+
+int track_get_actual_bank_2(int rideType, int trackColour, int bank)
+{
+	if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_3) {
+		if (trackColour & 4) {
+			if (bank == TRACK_BANK_NONE) {
+				bank = TRACK_BANK_UPSIDE_DOWN;
+			} else if (bank == TRACK_BANK_UPSIDE_DOWN) {
+				bank = TRACK_BANK_NONE;
+			}
+		}
+	}
+	return bank;
+}
+
+int track_get_actual_bank_3(rct_vehicle *vehicle, rct_map_element *mapElement)
+{
+	uint8 colourThingToXor = (vehicle->update_flags >> 9) & 0xFF;
+	int trackType = mapElement->properties.track.type;
+	int rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
+	int trackColour = mapElement->properties.track.colour ^ colourThingToXor;
+	int bankStart = gTrackDefinitions[trackType].bank_start;
+	return track_get_actual_bank_2(rideType, trackColour, bankStart);
+}
+
+bool track_element_is_station(rct_map_element *trackElement)
+{
+	switch (trackElement->properties.track.type) {
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return true;
+	default:
+		return false;
+	}
+}
+
+bool track_element_is_covered(int trackElementType)
+{
+	switch (trackElementType) {
+	case TRACK_ELEM_FLAT_COVERED:
+	case TRACK_ELEM_25_DEG_UP_COVERED:
+	case TRACK_ELEM_60_DEG_UP_COVERED:
+	case TRACK_ELEM_FLAT_TO_25_DEG_UP_COVERED:
+	case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED:
+	case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED:
+	case TRACK_ELEM_25_DEG_UP_TO_FLAT_COVERED:
+	case TRACK_ELEM_25_DEG_DOWN_COVERED:
+	case TRACK_ELEM_60_DEG_DOWN_COVERED:
+	case TRACK_ELEM_FLAT_TO_25_DEG_DOWN_COVERED:
+	case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED:
+	case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED:
+	case TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
+	case TRACK_ELEM_S_BEND_LEFT_COVERED:
+	case TRACK_ELEM_S_BEND_RIGHT_COVERED:
+	case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED:
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED:
+		return true;
+	default:
+		return false;
+	}
 }

@@ -501,14 +501,14 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 
 		if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
 			int al = 1;
-			if (vehicleEntry->var_14 & 2) {
+			if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SWINGING) {
 				al = 13;
-				if ((vehicleEntry->var_14 & 0x820) != 0x820) {
+				if ((vehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11)) != (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11)) {
 					al = 7;
-					if (!(vehicleEntry->var_14 & 0x20)) {
-						if (!(vehicleEntry->var_14 & 0x800)) {
+					if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_5)) {
+						if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_11)) {
 							al = 5;
-							if (vehicleEntry->var_14 & 0x200) {
+							if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) {
 								al = 3;
 							}
 						}
@@ -519,18 +519,18 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 			// 0x6DE90B
 
 			al = 0x20;
-			if (!(vehicleEntry->var_12 & 0x4000)) {
+			if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14)) {
 				al = 1;
-				if (vehicleEntry->var_14 & 0x80) {
+				if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_7) {
 					if (vehicleEntry->var_11 != 6) {
 						al = 2;
-						if (!(vehicleEntry->var_12 & 0x80)) {
+						if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_7)) {
 							al = 4;
 						}
 					}
 				}
 			}
-			if (vehicleEntry->var_12 & 0x1000) {
+			if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_12) {
 				al = vehicleEntry->special_frames;
 			}
 			vehicleEntry->var_02 = al;
@@ -543,7 +543,7 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 			if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS) {
 				int b = vehicleEntry->var_16 * 32;
 
-				if (vehicleEntry->var_12 & 0x800) b /= 2;
+				if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) b /= 2;
 				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
 
 				image_index += b;
@@ -552,7 +552,7 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
 					vehicleEntry->var_20 = image_index;
 					b = vehicleEntry->var_16 * 72;
-					if (vehicleEntry->var_12 & 0x4000)
+					if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14)
 						b = vehicleEntry->var_16 * 16;
 
 					image_index += b;
@@ -564,12 +564,14 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 					b = vehicleEntry->var_16 * 80;
 					image_index += b;
 				}
+
 				// Verticle
 				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
 					vehicleEntry->var_28 = image_index;
 					b = vehicleEntry->var_16 * 116;
 					image_index += b;
 				}
+
 				// Unknown
 				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
 					vehicleEntry->var_2C = image_index;
@@ -596,12 +598,14 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 					b = vehicleEntry->var_16 * 128;
 					image_index += b;
 				}
+
 				// Unknown
 				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
 					vehicleEntry->var_3C = image_index;
 					b = vehicleEntry->var_16 * 16;
 					image_index += b;
 				}
+
 				// Unknown
 				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
 					vehicleEntry->var_40 = image_index;
@@ -626,6 +630,7 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 					b = vehicleEntry->var_16 * 80;
 					image_index += b;
 				}
+
 				// Unknown
 				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) {
 					vehicleEntry->var_1C = image_index;
@@ -649,9 +654,9 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 			cur_vehicle_images_offset = image_index + vehicleEntry->no_seating_rows * vehicleEntry->no_vehicle_images;
 			// 0x6DEB0D
 
-			if (!(vehicleEntry->var_12 & 0x400)) {
+			if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10)) {
 				int num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
-				if (vehicleEntry->var_12 & 0x2000) {
+				if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_13) {
 					num_images *= 2;
 				}
 
@@ -734,7 +739,7 @@ static void object_type_ride_unload(void *objectEntry)
 		rideVehicleEntry->no_vehicle_images = 0;
 		rideVehicleEntry->var_16 = 0;
 
-		if (!(rideVehicleEntry->var_12 & 0x400)) {
+		if (!(rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10)) {
 			rideVehicleEntry->sprite_width = 0;
 			rideVehicleEntry->sprite_height_negative = 0;
 			rideVehicleEntry->sprite_height_positive = 0;

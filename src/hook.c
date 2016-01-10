@@ -87,7 +87,7 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	data[i++] = 0x89; //mov eax, esp
 	data[i++] = 0xE0;
 	data[i++] = 0x83; //sub eax, (0xC + numargs*4) & 0xF
-	data[i++] = 0xE8; 
+	data[i++] = 0xE8;
 	data[i++] = (0xC + numrargs * 4) & 0xF;
 	data[i++] = 0x83; //and eax, 0xC
 	data[i++] = 0xE0;
@@ -95,7 +95,7 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	data[i++] = 0xA3; //mov [0x9ABDA8], eax
 	data[i++] = 0xA8;
 	data[i++] = 0xBD;
-	data[i++] = 0x9A; 
+	data[i++] = 0x9A;
 	data[i++] = 0x00;
 	data[i++] = 0x58; //pop eax
 	data[i++] = 0x2B; //sub esp, [0x9ABDA8]

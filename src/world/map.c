@@ -5061,7 +5061,7 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 }
 
 /**
- * Gets the map element at x, y, z.
+ * Gets the track element at x, y, z.
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
@@ -5080,10 +5080,11 @@ rct_map_element *map_get_track_element_at(int x, int y, int z)
 }
 
 /**
- * Gets the map element at x, y, z.
+ * Gets the track element at x, y, z that is the given track type.
  * @param x x units, not tiles.
  * @param y y units, not tiles.
  * @param z Base height.
+ * @param trackType
  */
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType)
 {
@@ -5092,6 +5093,29 @@ rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int track
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->base_height != z) continue;
 		if (mapElement->properties.track.type != trackType) continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+}
+
+/**
+ * Gets the track element at x, y, z that is the given track type and sequence.
+ * @param x x units, not tiles.
+ * @param y y units, not tiles.
+ * @param z Base height.
+ * @param trackType
+ * @param sequence
+ */
+rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int trackType, int sequence)
+{
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+		if (mapElement->base_height != z) continue;
+		if (mapElement->properties.track.type != trackType) continue;
+		if ((mapElement->properties.track.sequence & 0x0F) != sequence) continue;
 
 		return mapElement;
 	} while (!map_element_is_last_for_tile(mapElement++));

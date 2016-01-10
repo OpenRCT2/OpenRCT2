@@ -105,7 +105,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 		dh = (dx >> 8) & 0xFF;
 		for (i = 0; i < ride->num_vehicles; i++) {
 			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
-			if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->var_51 > dl))
+			if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
 				continue;
 
 			// End match

@@ -45,6 +45,7 @@
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
+#include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "track.h"
@@ -929,7 +930,7 @@ static void ride_remove_vehicles(rct_ride *ride)
 		}
 
 		for (i = 0; i < 4; i++)
-			ride->var_066[i] = 255;
+			ride->train_at_station[i] = 255;
 	}
 }
 
@@ -2693,7 +2694,12 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	}
 
 	uint8 trackType = (vehicle->track_type >> 2) & 0xFF;
-	if (trackType == 216 || trackType == 123 || trackType == 9 || trackType == 63 || trackType == 147 || trackType == 155)
+	if (trackType == 216 ||
+		trackType == TRACK_ELEM_CABLE_LIFT_HILL ||
+		trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT ||
+		trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT ||
+		trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
+		trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
 		if (vehicle->velocity == 0)
 			return;
 
@@ -4279,7 +4285,7 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 	for (int i = 0; i < ride->num_vehicles; i++) {
 		train = GET_VEHICLE(ride->vehicles[i]);
 		if (i == 0) {
-			sub_6DAB4C(train, NULL);
+			vehicle_update_track_motion(train, NULL);
 			vehicle_unset_var_48_b1(train);
 			continue;
 		}
@@ -4289,9 +4295,9 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 			car = train;
 			while (true) {
 				car->velocity = 0;
-				car->var_2C = 0;
+				car->acceleration = 0;
 				car->var_4A = 0;
-				car->var_24 += 13962;
+				car->remaining_distance += 13962;
 
 				uint16 spriteIndex = car->next_vehicle_on_train;
 				if (spriteIndex == SPRITE_INDEX_NULL) {
@@ -4299,7 +4305,7 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 				}
 				car = GET_VEHICLE(spriteIndex);
 			}
-		} while (sub_6DAB4C(train, NULL) & 0x400);
+		} while (vehicle_update_track_motion(train, NULL) & 0x400);
 
 		mapElement->flags |= (1 << 5);
 		car = train;
@@ -4480,10 +4486,10 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 		uint16 var_44 = edx & 0xFFFF;
 		edx = rol32(edx, 10) >> 1;
 		ebx -= edx;
-		uint32 var_24 = ebx;
+		sint32 remaining_distance = ebx;
 		ebx -= edx;
 
-		rct_vehicle *current = cable_lift_segment_create(rideIndex, x, y, z, direction, var_44, var_24, i == 0);
+		rct_vehicle *current = cable_lift_segment_create(rideIndex, x, y, z, direction, var_44, remaining_distance, i == 0);
 		current->next_vehicle_on_train = SPRITE_INDEX_NULL;
 		if (i == 0) {
 			head = current;
@@ -4498,7 +4504,7 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 	tail->next_vehicle_on_ride = head->sprite_index;
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
-	sub_6DEF56(head);
+	cable_lift_update_track_motion(head);
 	return true;
 }
 
@@ -5373,7 +5379,7 @@ foundRideEntry:
 		ride->station_starts[i] = 0xFFFF;
 		ride->entrances[i] = 0xFFFF;
 		ride->exits[i] = 0xFFFF;
-		ride->var_066[i] = 255;
+		ride->train_at_station[i] = 255;
 		ride->queue_time[i] = 0;
 	}
 
@@ -5405,7 +5411,7 @@ foundRideEntry:
 		RCT2_GLOBAL(0x0097CF40 + 5 + (ride->type * 8), uint8)
 	) / 4;
 
-	ride->lift_hill_speed = RCT2_ADDRESS(0x0097D7C9, uint8)[ride->type * 4];
+	ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
 
 	ride->measurement_index = 255;
 	ride->excitement = (ride_rating)-1;
@@ -5978,53 +5984,182 @@ bool ride_type_has_flag(int rideType, int flag)
 	return (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (rideType * 8), uint32) & flag) != 0;
 }
 
-/**
- * The next six functions are helpers to access ride data at the offset 10E &
- * 110. We believe it stores three distinct values in the following format:
+/*
+ * The next eight functions are helpers to access ride data at the offset 10E &
+ * 110. Known as the turn counts. There are 3 different types (default, banked, sloped)
+ * and there are 4 counts as follows:
  *
- * unknown1: bits 9-11
- * unknown2: bits 6-8
- * unknown3: low 5 bits
+ * 1 element turns: low 5 bits
+ * 2 element turns: bits 6-8
+ * 3 element turns: bits 9-11
+ * 4 element or more turns: bits 12-15
+ *
+ * 4 plus elements only possible on sloped type. Falls back to 3 element
+ * if by some miracle you manage 4 element none sloped.
  */
 
-int get_var_10E_unk_1(rct_ride* ride) {
-	return (ride->var_10E >> 8) & 0x7;
+void increment_turn_count_1_element(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return;
+	}
+	uint16 value = (*turn_count & TURN_MASK_1_ELEMENT) + 1;
+	*turn_count &= ~TURN_MASK_1_ELEMENT;
+
+	if (value > TURN_MASK_1_ELEMENT)
+		value = TURN_MASK_1_ELEMENT;
+	*turn_count |= value;
 }
 
-int get_var_10E_unk_2(rct_ride* ride) {
-	return (ride->var_10E >> 5) & 0x7;
+void increment_turn_count_2_elements(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return;
+	}
+	uint16 value = (*turn_count & TURN_MASK_2_ELEMENTS) + 0x20;
+	*turn_count &= ~TURN_MASK_2_ELEMENTS;
+
+	if (value > TURN_MASK_2_ELEMENTS)
+		value = TURN_MASK_2_ELEMENTS;
+	*turn_count |= value;
 }
 
-int get_var_10E_unk_3(rct_ride* ride) {
-	return ride->var_10E & 0x1F;
+void increment_turn_count_3_elements(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return;
+	}
+	uint16 value = (*turn_count & TURN_MASK_3_ELEMENTS) + 0x100;
+	*turn_count &= ~TURN_MASK_3_ELEMENTS;
+
+	if (value > TURN_MASK_3_ELEMENTS)
+		value = TURN_MASK_3_ELEMENTS;
+	*turn_count |= value;
 }
 
-int get_var_110_unk_1(rct_ride* ride) {
-	return (ride->var_110 >> 8) & 0x7;
+void increment_turn_count_4_plus_elements(rct_ride* ride, uint8 type){
+	uint16* turn_count;
+	switch (type){
+	case 0:
+	case 1:
+		// Just incase fallback to 3 element turn
+		increment_turn_count_3_elements(ride, type);
+		return;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return;
+	}
+	uint16 value = (*turn_count & TURN_MASK_4_PLUS_ELEMENTS) + 0x800;
+	*turn_count &= ~TURN_MASK_4_PLUS_ELEMENTS;
+
+	if (value > TURN_MASK_4_PLUS_ELEMENTS)
+		value = TURN_MASK_4_PLUS_ELEMENTS;
+	*turn_count |= value;
 }
 
-int get_var_110_unk_2(rct_ride* ride) {
-	return (ride->var_110 >> 5) & 0x7;
+int get_turn_count_1_element(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return 0;
+	}
+
+	return (*turn_count) & TURN_MASK_1_ELEMENT;
 }
 
-int get_var_110_unk_3(rct_ride* ride) {
-	return ride->var_110 & 0x1F;
+int get_turn_count_2_elements(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return 0;
+	}
+
+	return ((*turn_count) & TURN_MASK_2_ELEMENTS) >> 5;
 }
 
-int get_var_112_unk_1(rct_ride* ride) {
-	return (ride->var_112 >> 11) & 0x3F;
+int get_turn_count_3_elements(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+		turn_count = &ride->turn_count_default;
+		break;
+	case 1:
+		turn_count = &ride->turn_count_banked;
+		break;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return 0;
+	}
+
+	return ((*turn_count) & TURN_MASK_3_ELEMENTS) >> 8;
 }
 
-int get_var_112_unk_2(rct_ride* ride) {
-	return (ride->var_112 >> 8) & 7;
-}
+int get_turn_count_4_plus_elements(rct_ride* ride, uint8 type) {
+	uint16* turn_count;
+	switch (type){
+	case 0:
+	case 1:
+		return 0;
+	case 2:
+		turn_count = &ride->turn_count_sloped;
+		break;
+	default:
+		return 0;
+	}
 
-int get_var_112_unk_3(rct_ride* ride) {
-	return (ride->var_112 >> 5) & 7;
-}
-
-int get_var_112_unk_4(rct_ride* ride) {
-	return ride->var_112 & 0x1F;
+	return ((*turn_count) & TURN_MASK_4_PLUS_ELEMENTS) >> 11;
 }
 
 bool ride_has_spinning_tunnel(rct_ride *ride) {
@@ -6183,7 +6318,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int n
 
 	// Moved from object paint
 
-	if (vehicle_type->var_12 & 0x2000){
+	if (vehicle_type->flags_a & VEHICLE_ENTRY_FLAG_A_13){
 		bl += 16;
 	}
 
@@ -6704,7 +6839,7 @@ void ride_update_max_vehicles(int rideIndex)
 			int totalFriction = 0;
 			for (int i = 0; i < numCars; i++) {
 				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
-				trainLength += vehicleEntry->var_04;
+				trainLength += vehicleEntry->spacing;
 				totalFriction += vehicleEntry->car_friction;
 			}
 
@@ -6736,7 +6871,7 @@ void ride_update_max_vehicles(int rideIndex)
 			trainLength = 0;
 			for (int i = 0; i < newCarsPerTrain; i++) {
 				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
-				trainLength += vehicleEntry->var_04;
+				trainLength += vehicleEntry->spacing;
 			}
 
 			int totalLength = trainLength / 2;
@@ -6762,7 +6897,7 @@ void ride_update_max_vehicles(int rideIndex)
 				int totalSpacing = 0;
 				for (int i = 0; i < newCarsPerTrain; i++) {
 					vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
-					totalSpacing += vehicleEntry->var_04;
+					totalSpacing += vehicleEntry->spacing;
 				}
 
 				totalSpacing >>= 13;
@@ -7294,15 +7429,11 @@ void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int
  *
  *  rct2: 0x006B752C
  */
-void ride_crash(int rideIndex, int vehicleIndex)
+void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 {
 	rct_ride *ride;
 	rct_vehicle *vehicle;
 	rct_window *w;
-
-	// TODO Remove these when hook is no longer used
-	rideIndex &= 0xFF;
-	vehicleIndex &= 0xFF;
 
 	ride = GET_RIDE(rideIndex);
 	vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);

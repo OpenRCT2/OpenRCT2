@@ -1059,7 +1059,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		spriteIndex = 32;
 		if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
 			spriteIndex += w->frame_no;
-		spriteIndex /= (rideVehicleEntry->var_12 & 0x800) ? 4 : 2;
+		spriteIndex /= (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) ? 4 : 2;
 		spriteIndex &= rideVehicleEntry->rotation_frame_mask;
 		spriteIndex *= rideVehicleEntry->var_16;
 		spriteIndex += rideVehicleEntry->base_image_id;
@@ -2114,7 +2114,12 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
 	if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED) {
 		int trackType = vehicle->track_type >> 2;
-		if (trackType == 216 || trackType == 123 || trackType == 9 || trackType == 63 || trackType == 147 || trackType == 155) {
+		if (trackType == 216 ||
+			trackType == TRACK_ELEM_CABLE_LIFT_HILL ||
+			trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT ||
+			trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT ||
+			trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
+			trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT) {
 			if ((RCT2_ADDRESS(0x01357644, uint32)[ride->type] & 0x40) && vehicle->velocity == 0) {
 				RCT2_GLOBAL((int)arguments + 0, uint16) = STR_STOPPED_BY_BLOCK_BRAKES;
 				return 1191;
@@ -2647,8 +2652,8 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 		// For each car in train
 		for (j = 0; j < ride->num_cars_per_train; j++) {
 			rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[trainLayout[j]];
-			x += rideVehicleEntry->var_04 / 17432;
-			y -= (rideVehicleEntry->var_04 / 2) / 17432;
+			x += rideVehicleEntry->spacing / 17432;
+			y -= (rideVehicleEntry->spacing / 2) / 17432;
 
 			// Get colour of vehicle
 			switch (ride->colour_scheme_type & 3) {
@@ -2665,7 +2670,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 			vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
 			spriteIndex = 16;
-			if (rideVehicleEntry->var_12 & 0x800)
+			if (rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11)
 				spriteIndex /= 2;
 
 			spriteIndex &= rideVehicleEntry->rotation_frame_mask;
@@ -2680,8 +2685,8 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 			nextSpriteToDraw->tertiary_colour = vehicleColour.additional_2;
 			nextSpriteToDraw++;
 
-			x += rideVehicleEntry->var_04 / 17432;
-			y -= (rideVehicleEntry->var_04 / 2) / 17432;
+			x += rideVehicleEntry->spacing / 17432;
+			y -= (rideVehicleEntry->spacing / 2) / 17432;
 		}
 
 		if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER) {
@@ -2931,11 +2936,11 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_mode_tweak_decrease(w);
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
-		parameter_check = gConfigCheat.fast_lift_hill ? 255 : RCT2_GLOBAL(0x0097D7CA + (ride->type * 4), uint8);
+		parameter_check = gConfigCheat.fast_lift_hill ? 255 : RideLiftData[ride->type].maximum_speed;
 		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, parameter_check));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
-		parameter_check = gConfigCheat.fast_lift_hill ? 0 : RCT2_GLOBAL(0x0097D7C9 + (ride->type * 4), uint8);
+		parameter_check = gConfigCheat.fast_lift_hill ? 0 : RideLiftData[ride->type].minimum_speed;
 		set_operating_setting(w->number, 8, max(ride->lift_hill_speed - 1, parameter_check));
 		break;
 	case WIDX_MINIMUM_LENGTH_INCREASE:
@@ -4138,9 +4143,9 @@ static void window_ride_colour_invalidate(rct_window *w)
 		for (int i = 0; i < ride->num_cars_per_train; i++) {
 			uint8 vehicleTypeIndex = trainLayout[i];
 
-			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].var_14;
+			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_b;
 			colourFlags = ror32(colourFlags, 16);
-			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].var_12;
+			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_a;
 			colourFlags = ror32(colourFlags, 16);
 		}
 
@@ -4330,7 +4335,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	y += rideVehicleEntry->tab_height;
 
 	// Draw the coloured spinning vehicle
-	spriteIndex = rideVehicleEntry->var_12 & 0x800 ? w->frame_no / 4 : w->frame_no / 2;
+	spriteIndex = rideVehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11 ? w->frame_no / 4 : w->frame_no / 2;
 	spriteIndex &= rideVehicleEntry->rotation_frame_mask;
 	spriteIndex *= rideVehicleEntry->var_16;
 	spriteIndex += rideVehicleEntry->base_image_id;
