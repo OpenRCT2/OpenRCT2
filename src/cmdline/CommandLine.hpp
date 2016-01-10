@@ -83,10 +83,11 @@ constexpr char NAC = '\0';
 namespace CommandLine
 {
     extern const CommandLineCommand RootCommands[];
+    extern const CommandLineCommand ScreenshotCommands[];
+    extern const CommandLineCommand SpriteCommands[];
+
     extern const CommandLineExample RootExamples[];
 
-    void PrintHelp();
-    void PrintUsageFor(const char * command);
-
+    void PrintHelp(bool allCommands = false);
     exitcode_t HandleCommandDefault();
 }

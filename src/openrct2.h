@@ -39,6 +39,12 @@ extern utf8 gCustomOpenrctDataPath[MAX_PATH];
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2ShowChangelog;
 
+#ifndef DISABLE_NETWORK
+extern int gNetworkStart;
+extern char gNetworkStartHost[128];
+extern int gNetworkStartPort;
+#endif
+
 void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize);
 bool openrct2_initialise();
 void openrct2_launch();
