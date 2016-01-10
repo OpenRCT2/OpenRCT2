@@ -70,7 +70,7 @@ static const char *const usage[] = {
  * will then terminate before any initialisation has even been done.
  * @returns 1 if the game should run, otherwise 0.
  */
-int cmdline_run(const char **argv, int argc)
+int cmdline_run_old(const char **argv, int argc)
 {
 	//
 	int version = 0, headless = 0, verbose = 0, width = 0, height = 0, port = 0;
