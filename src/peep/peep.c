@@ -9485,3 +9485,91 @@ void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		(uint8*)edi
 		);
 }
+
+bool validate_peep(rct_peep *peep, bool fix)
+{
+	if (peep == NULL)
+	{
+		log_error("found NULL peep");
+		return false;
+	}
+	switch (peep->type) {
+		case PEEP_TYPE_GUEST:
+		case PEEP_TYPE_STAFF:
+			break;
+		default:
+			log_error("peep %p has wrong type (%d)", peep, peep->type);
+			return false;
+	}
+	for (int i = 0; i < sizeof(peep->item_standard_flags) * 8; i++)
+	{
+		switch (peep->item_standard_flags & (1u << i)) {
+			case 0:
+			case PEEP_ITEM_BALLOON:
+			case PEEP_ITEM_TOY:
+			case PEEP_ITEM_MAP:
+			case PEEP_ITEM_PHOTO:
+			case PEEP_ITEM_UMBRELLA:
+			case PEEP_ITEM_DRINK:
+			case PEEP_ITEM_BURGER:
+			case PEEP_ITEM_FRIES:
+			case PEEP_ITEM_ICE_CREAM:
+			case PEEP_ITEM_COTTON_CANDY:
+			case PEEP_ITEM_EMPTY_CAN:
+			case PEEP_ITEM_RUBBISH:
+			case PEEP_ITEM_EMPTY_BURGER_BOX:
+			case PEEP_ITEM_PIZZA:
+			case PEEP_ITEM_VOUCHER:
+			case PEEP_ITEM_POPCORN:
+			case PEEP_ITEM_HOT_DOG:
+			case PEEP_ITEM_TENTACLE:
+			case PEEP_ITEM_HAT:
+			case PEEP_ITEM_CANDY_APPLE:
+			case PEEP_ITEM_TSHIRT:
+			case PEEP_ITEM_DONUT:
+			case PEEP_ITEM_COFFEE:
+			case PEEP_ITEM_EMPTY_CUP:
+			case PEEP_ITEM_CHICKEN:
+			case PEEP_ITEM_LEMONADE:
+			case PEEP_ITEM_EMPTY_BOX:
+			case PEEP_ITEM_EMPTY_BOTTLE:
+				break;
+			default:
+				log_error("unknown peep item_standard_flags: 0x%x for peep %p", peep->item_standard_flags, peep);
+				return false;
+		}
+		for (int i = 0; i < sizeof(peep->item_extra_flags) * 8; i++)
+		{
+			switch (peep->item_extra_flags & (1u << i)) {
+				case 0:
+				case PEEP_ITEM_PHOTO2:
+				case PEEP_ITEM_PHOTO3:
+				case PEEP_ITEM_PHOTO4:
+				case PEEP_ITEM_PRETZEL:
+				case PEEP_ITEM_CHOCOLATE:
+				case PEEP_ITEM_ICED_TEA:
+				case PEEP_ITEM_FUNNEL_CAKE:
+				case PEEP_ITEM_SUNGLASSES:
+				case PEEP_ITEM_BEEF_NOODLES:
+				case PEEP_ITEM_FRIED_RICE_NOODLES:
+				case PEEP_ITEM_WONTON_SOUP:
+				case PEEP_ITEM_MEATBALL_SOUP:
+				case PEEP_ITEM_FRUIT_JUICE:
+				case PEEP_ITEM_SOYBEAN_MILK:
+				case PEEP_ITEM_SU_JONGKWA:
+				case PEEP_ITEM_SUB_SANDWICH:
+				case PEEP_ITEM_COOKIE:
+				case PEEP_ITEM_EMPTY_BOWL_RED:
+				case PEEP_ITEM_EMPTY_DRINK_CARTON:
+				case PEEP_ITEM_EMPTY_JUICE_CUP:
+				case PEEP_ITEM_ROAST_SAUSAGE:
+				case PEEP_ITEM_EMPTY_BOWL_BLUE:
+					break;
+				default:
+					log_error("unknown peep item_extra_flags: 0x%x for peep %p", peep->item_extra_flags, peep);
+					return false;
+			}
+		}
+	}
+	return true;
+}

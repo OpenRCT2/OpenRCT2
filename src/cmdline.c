@@ -27,6 +27,7 @@
 #include "openrct2.h"
 #include "platform/platform.h"
 #include "util/util.h"
+#include "world/park.h"
 
 #ifdef ENABLE_TESTS
 	#include "../test/tests.h"
@@ -88,7 +89,7 @@ int cmdline_run(const char **argv, int argc)
 		OPT_INTEGER(0, "port", &port, "Port to use. If used with --server, it will connect to specified server at this port, otherwise it will start the server"),
 		OPT_STRING(0, "user-data-path", &userDataPath, "path to the user data directory (containing config.ini)"),
 		OPT_STRING(0, "openrct-data-path", &openrctDataPath, "path to the OpenRCT2 data directory (containing languages)"),
-		OPT_END()
+		OPT_END(),
 	};
 
 	argparse_t argparse;
@@ -247,6 +248,7 @@ struct { const char *firstArg; cmdline_action action; } cmdline_table[] = {
 	{ "edit", cmdline_for_edit },
 	{ "sprite", cmdline_for_sprite },
 	{ "screenshot", cmdline_for_screenshot },
+	{ "validate-only", cmdline_for_validate },
 
 #ifdef ENABLE_TESTS
 	{ "test", cmdline_for_test },

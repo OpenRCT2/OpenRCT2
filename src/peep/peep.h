@@ -645,4 +645,6 @@ void peep_update_names(bool realNames);
 
 void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
+bool validate_peep(rct_peep *peep, bool fix);
+
 #endif

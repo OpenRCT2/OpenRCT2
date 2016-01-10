@@ -7629,3 +7629,195 @@ const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 	             + ride->num_customers[9];
 	return sum;
 }
+
+bool validate_ride(rct_ride *ride, bool fix)
+{
+	if (ride == NULL)
+	{
+		log_error("found NULL ride");
+		return false;
+	}
+	switch (ride->type) {
+		case RIDE_TYPE_NULL:
+		case RIDE_TYPE_SPIRAL_ROLLER_COASTER:
+		case RIDE_TYPE_STAND_UP_ROLLER_COASTER:
+		case RIDE_TYPE_SUSPENDED_SWINGING_COASTER:
+		case RIDE_TYPE_INVERTED_ROLLER_COASTER:
+		case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
+		case RIDE_TYPE_MINIATURE_RAILWAY:
+		case RIDE_TYPE_MONORAIL:
+		case RIDE_TYPE_MINI_SUSPENDED_COASTER:
+		case RIDE_TYPE_BOAT_RIDE:
+		case RIDE_TYPE_WOODEN_WILD_MOUSE:
+		case RIDE_TYPE_STEEPLECHASE:
+		case RIDE_TYPE_CAR_RIDE:
+		case RIDE_TYPE_LAUNCHED_FREEFALL:
+		case RIDE_TYPE_BOBSLEIGH_COASTER:
+		case RIDE_TYPE_OBSERVATION_TOWER:
+		case RIDE_TYPE_LOOPING_ROLLER_COASTER:
+		case RIDE_TYPE_DINGHY_SLIDE:
+		case RIDE_TYPE_MINE_TRAIN_COASTER:
+		case RIDE_TYPE_CHAIRLIFT:
+		case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
+		case RIDE_TYPE_MAZE:
+		case RIDE_TYPE_SPIRAL_SLIDE:
+		case RIDE_TYPE_GO_KARTS:
+		case RIDE_TYPE_LOG_FLUME:
+		case RIDE_TYPE_RIVER_RAPIDS:
+		case RIDE_TYPE_DODGEMS:
+		case RIDE_TYPE_PIRATE_SHIP:
+		case RIDE_TYPE_SWINGING_INVERTER_SHIP:
+		case RIDE_TYPE_FOOD_STALL:
+		case RIDE_TYPE_1D:
+		case RIDE_TYPE_DRINK_STALL:
+		case RIDE_TYPE_1F:
+		case RIDE_TYPE_SHOP:
+		case RIDE_TYPE_MERRY_GO_ROUND:
+		case RIDE_TYPE_22:
+		case RIDE_TYPE_INFORMATION_KIOSK:
+		case RIDE_TYPE_TOILETS:
+		case RIDE_TYPE_FERRIS_WHEEL:
+		case RIDE_TYPE_MOTION_SIMULATOR:
+		case RIDE_TYPE_3D_CINEMA:
+		case RIDE_TYPE_TOP_SPIN:
+		case RIDE_TYPE_SPACE_RINGS:
+		case RIDE_TYPE_REVERSE_FREEFALL_COASTER:
+		case RIDE_TYPE_LIFT:
+		case RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER:
+		case RIDE_TYPE_CASH_MACHINE:
+		case RIDE_TYPE_TWIST:
+		case RIDE_TYPE_HAUNTED_HOUSE:
+		case RIDE_TYPE_FIRST_AID:
+		case RIDE_TYPE_CIRCUS_SHOW:
+		case RIDE_TYPE_GHOST_TRAIN:
+		case RIDE_TYPE_TWISTER_ROLLER_COASTER:
+		case RIDE_TYPE_WOODEN_ROLLER_COASTER:
+		case RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER:
+		case RIDE_TYPE_WILD_MOUSE:
+		case RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER:
+		case RIDE_TYPE_38:
+		case RIDE_TYPE_FLYING_ROLLER_COASTER:
+		case RIDE_TYPE_3A:
+		case RIDE_TYPE_VIRGINIA_REEL:
+		case RIDE_TYPE_SPLASH_BOATS:
+		case RIDE_TYPE_MINI_HELICOPTERS:
+		case RIDE_TYPE_LAY_DOWN_ROLLER_COASTER:
+		case RIDE_TYPE_SUSPENDED_MONORAIL:
+		case RIDE_TYPE_40:
+		case RIDE_TYPE_REVERSER_ROLLER_COASTER:
+		case RIDE_TYPE_HEARTLINE_TWISTER_COASTER:
+		case RIDE_TYPE_MINI_GOLF:
+		case RIDE_TYPE_GIGA_COASTER:
+		case RIDE_TYPE_ROTO_DROP:
+		case RIDE_TYPE_FLYING_SAUCERS:
+		case RIDE_TYPE_CROOKED_HOUSE:
+		case RIDE_TYPE_MONORAIL_CYCLES:
+		case RIDE_TYPE_COMPACT_INVERTED_COASTER:
+		case RIDE_TYPE_WATER_COASTER:
+		case RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER:
+		case RIDE_TYPE_INVERTED_HAIRPIN_COASTER:
+		case RIDE_TYPE_MAGIC_CARPET:
+		case RIDE_TYPE_SUBMARINE_RIDE:
+		case RIDE_TYPE_RIVER_RAFTS:
+		case RIDE_TYPE_50:
+		case RIDE_TYPE_ENTERPRISE:
+		case RIDE_TYPE_52:
+		case RIDE_TYPE_53:
+		case RIDE_TYPE_54:
+		case RIDE_TYPE_55:
+		case RIDE_TYPE_INVERTED_IMPULSE_COASTER:
+		case RIDE_TYPE_MINI_ROLLER_COASTER:
+		case RIDE_TYPE_MINE_RIDE:
+		case RIDE_TYPE_59:
+		case RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER:
+			break;
+		default:
+			log_error("wrong ride type (%d) for ride %p", ride->type, ride);
+			return false;
+	}
+	switch (ride->status)
+	{
+		case RIDE_STATUS_CLOSED:
+		case RIDE_STATUS_OPEN:
+		case RIDE_STATUS_TESTING:
+			break;
+		default:
+			log_error("wrong ride status (%d) for ride %p", ride->status, ride);
+			return false;
+	}
+	switch (ride->mode)
+	{
+		case RIDE_MODE_NORMAL:
+		case RIDE_MODE_CONTINUOUS_CIRCUIT:
+		case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
+		case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
+		case RIDE_MODE_SHUTTLE:
+		case RIDE_MODE_BOAT_HIRE:
+		case RIDE_MODE_UPWARD_LAUNCH:
+		case RIDE_MODE_ROTATING_LIFT:
+		case RIDE_MODE_STATION_TO_STATION:
+		case RIDE_MODE_SINGLE_RIDE_PER_ADMISSION:
+		case RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION:
+		case RIDE_MODE_MAZE:
+		case RIDE_MODE_RACE:
+		case RIDE_MODE_BUMPERCAR:
+		case RIDE_MODE_SWING:
+		case RIDE_MODE_SHOP_STALL:
+		case RIDE_MODE_ROTATION:
+		case RIDE_MODE_FORWARD_ROTATION:
+		case RIDE_MODE_BACKWARD_ROTATION:
+		case RIDE_MODE_FILM_AVENGING_AVIATORS:
+		case RIDE_MODE_3D_FILM_MOUSE_TAILS:
+		case RIDE_MODE_SPACE_RINGS:
+		case RIDE_MODE_BEGINNERS:
+		case RIDE_MODE_LIM_POWERED_LAUNCH:
+		case RIDE_MODE_FILM_THRILL_RIDERS:
+		case RIDE_MODE_3D_FILM_STORM_CHASERS:
+		case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
+		case RIDE_MODE_INTENSE:
+		case RIDE_MODE_BERSERK:
+		case RIDE_MODE_HAUNTED_HOUSE:
+		case RIDE_MODE_CIRCUS_SHOW:
+		case RIDE_MODE_DOWNWARD_LAUNCH:
+		case RIDE_MODE_CROOKED_HOUSE:
+		case RIDE_MODE_FREEFALL_DROP:
+		case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
+		case RIDE_MODE_POWERED_LAUNCH:
+		case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
+			break;
+		default:
+			log_error("wrong ride mode (%d) for ride %p", ride->mode, ride);
+			return false;
+	}
+	// Ride has exit
+	{
+		int stationIndex;
+
+		// Find first station
+		stationIndex = -1;
+		for (int i = 0; i < 4; i++) {
+			if (ride->station_starts[i] != 0xFFFF) {
+				stationIndex = i;
+				break;
+			}
+		}
+
+		if (stationIndex != -1) {
+			uint16 xy = ride->exits[stationIndex];
+			if (xy != 0xFFFF) {
+				int exitX, exitY, exitZ;
+				exitX = xy & 0xFF;
+				exitY = xy >> 8;
+				exitZ = ride->station_heights[stationIndex];
+				rct_map_element *mapElement;
+				mapElement = ride_get_station_exit_element(ride, exitX, exitY, exitZ);
+				if (mapElement == NULL)
+				{
+					log_warning("ride %p has no exit", ride);
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
