@@ -567,6 +567,9 @@
     <ClCompile Include="src\cmdline\CommandLine.cpp" />
     <ClCompile Include="src\cmdline\RootCommands.cpp" />
     <ClCompile Include="src\core\Console.cpp" />
+    <ClCompile Include="src\cmdline\ScreenshotCommands.cpp" />
+    <ClCompile Include="src\cmdline\SpriteCommands.cpp" />
+    <ClCompile Include="src\core\String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">

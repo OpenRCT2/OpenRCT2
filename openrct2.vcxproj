@@ -27,10 +27,13 @@
     <ClCompile Include="src\cmdline.c" />
     <ClCompile Include="src\cmdline\CommandLine.cpp" />
     <ClCompile Include="src\cmdline\RootCommands.cpp" />
+    <ClCompile Include="src\cmdline\ScreenshotCommands.cpp" />
+    <ClCompile Include="src\cmdline\SpriteCommands.cpp" />
     <ClCompile Include="src\cmdline_sprite.c" />
     <ClCompile Include="src\config.c" />
     <ClCompile Include="src\core\Console.cpp" />
     <ClCompile Include="src\core\Stopwatch.cpp" />
+    <ClCompile Include="src\core\String.cpp" />
     <ClCompile Include="src\cursors.c" />
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />

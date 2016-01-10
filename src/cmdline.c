@@ -47,12 +47,6 @@ typedef int (*cmdline_action)(const char **argv, int argc);
 int gExitCode = 0;
 int sprite_mode;
 
-#ifndef DISABLE_NETWORK
-int gNetworkStart = NETWORK_MODE_NONE;
-char gNetworkStartHost[128];
-int gNetworkStartPort = NETWORK_DEFAULT_PORT;
-#endif // DISABLE_NETWORK
-
 static void print_launch_information();
 static void print_version();
 static int cmdline_call_action(const char **argv, int argc);

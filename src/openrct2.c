@@ -283,6 +283,9 @@ void openrct2_launch()
 
 #ifndef DISABLE_NETWORK
 			if (gNetworkStart == NETWORK_MODE_SERVER) {
+				if (gNetworkStartPort == 0) {
+					gNetworkStartPort = gConfigNetwork.default_port;
+				}
 				network_begin_server(gNetworkStartPort);
 			}
 #endif // DISABLE_NETWORK
@@ -298,6 +301,9 @@ void openrct2_launch()
 
 #ifndef DISABLE_NETWORK
 		if (gNetworkStart == NETWORK_MODE_CLIENT) {
+			if (gNetworkStartPort == 0) {
+				gNetworkStartPort = gConfigNetwork.default_port;
+			}
 			network_begin_client(gNetworkStartHost, gNetworkStartPort);
 		}
 #endif // DISABLE_NETWORK

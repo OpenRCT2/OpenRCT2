@@ -93,6 +93,7 @@ namespace CommandLine
     constexpr const char * HelpText = "openrct2 -ha shows help for all commands. "
                                       "openrct2 <command> -h will show help and details for a given command.";
 
+    static void   PrintHelpFor(const CommandLineCommand * commands);
     static void   PrintOptions(const CommandLineOptionDefinition *options);
     static void   PrintExamples(const CommandLineExample *examples);
     static utf8 * GetOptionCaption(utf8 * buffer, size_t bufferSize, const CommandLineOptionDefinition *option);
@@ -104,27 +105,61 @@ namespace CommandLine
     static bool ParseLongOption(const CommandLineOptionDefinition * options, CommandLineArgEnumerator * argEnumerator, const char * argument);
     static bool ParseOptionValue(const CommandLineOptionDefinition * option, const char * valueString);
 
-    void PrintHelp()
+    void PrintHelp(bool allCommands)
+    {
+        PrintHelpFor(RootCommands);
+        PrintExamples(RootExamples);
+
+        if (allCommands)
+        {
+            const CommandLineCommand * command;
+            for (command = RootCommands; command->Name != nullptr; command++)
+            {
+                if (command->SubCommands != nullptr)
+                {
+                    size_t commandNameLength = String::LengthOf(command->Name);
+                    for (size_t i = 0; i < commandNameLength; i++)
+                    {
+                        Console::Write("-");
+                    }
+                    Console::WriteLine();
+                    Console::WriteLine(command->Name);
+                    for (size_t i = 0; i < commandNameLength; i++)
+                    {
+                        Console::Write("-");
+                    }
+                    Console::WriteLine();
+                    PrintHelpFor(command->SubCommands);
+                }
+            }
+        }
+        else
+        {
+            Console::WriteLine(HelpText);
+        }
+    }
+
+    static void PrintHelpFor(const CommandLineCommand * commands)
     {
         const CommandLineCommand * command;
-        size_t maxNameLength = 0;
-        size_t maxParamsLength = 0;
+
+        // Print usage
+        const char * usageString = "usage: openrct2 ";
+        const size_t usageStringLength = String::LengthOf(usageString);
+        Console::Write(usageString);
 
         // Get the largest command name length and parameter length
-        for (command = RootCommands; command->Name != nullptr; command++)
+        size_t maxNameLength = 0;
+        size_t maxParamsLength = 0;
+        for (command = commands; command->Name != nullptr; command++)
         {
             maxNameLength = Math::Max(maxNameLength, String::LengthOf(command->Name));
             maxParamsLength = Math::Max(maxParamsLength, String::LengthOf(command->Parameters));
         }
 
-        // Print usage / main commands
-        const char * usageString = "usage: openrct2 ";
-        const size_t usageStringLength = String::LengthOf(usageString);
-
-        Console::Write(usageString);
-        for (command = RootCommands; command->Name != nullptr; command++)
+        for (command = commands; command->Name != nullptr; command++)
         {
-            if (command != RootCommands)
+            if (command != commands)
             {
                 Console::WriteSpace(usageStringLength);
             }
@@ -150,10 +185,10 @@ namespace CommandLine
         }
         Console::WriteLine();
 
-        PrintOptions(RootCommands->Options);
-        PrintExamples(RootExamples);
-
-        Console::WriteLine(HelpText);
+        if (commands->Options != nullptr)
+        {
+            PrintOptions(commands->Options);
+        }
     }
 
     static void PrintOptions(const CommandLineOptionDefinition *options)
@@ -169,7 +204,7 @@ namespace CommandLine
             maxOptionLength = Math::Max(maxOptionLength, optionCaptionLength);
         }
 
-        option = RootCommands->Options;
+        option = options;
         for (; option->Type != 255; option++)
         {
             Console::WriteSpace(4);
@@ -239,11 +274,6 @@ namespace CommandLine
         return buffer;
     }
 
-    void PrintUsageFor(const char * command)
-    {
-
-    }
-
     const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, CommandLineArgEnumerator *argEnumerator)
     {
         // Check if end of arguments or options have started
@@ -288,8 +318,10 @@ namespace CommandLine
 
     static bool ParseOptions(const CommandLineOptionDefinition * options, CommandLineArgEnumerator *argEnumerator)
     {
+        bool firstOption = true;
+
         const char * argument;
-        if (argEnumerator->TryPopString(&argument))
+        while (argEnumerator->TryPopString(&argument))
         {
             if (argument[0] == '-')
             {
@@ -308,11 +340,16 @@ namespace CommandLine
                     }
                 }
             }
-            else
+            else if (!firstOption)
             {
                 Console::WriteLineError("All options must be passed at the end of the command line.");
                 return false;
             }
+            else
+            {
+                break;
+            }
+            firstOption = false;
         }
 
         return true;
