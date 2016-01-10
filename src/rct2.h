@@ -111,6 +111,35 @@ typedef utf16* utf16string;
 #pragma pack(1)
 #endif
 
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#include <unistd.h>
+#define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#define _strcmpi _stricmp
+#define _stricmp(x, y) strcasecmp((x), (y))
+#define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
+#define _strdup(x) strdup((x))
+
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
+#define LOBYTE(w) ((uint8_t)(w))
+#define HIBYTE(w) ((uint8_t)(((uint16_t)(w)>>8)&0xFF))
+#endif // __BYTE_ORDER__
+
+#ifndef RCT2_ENDIANESS
+#error Unknown endianess!
+#endif // RCT2_ENDIANESS
+
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+
+#if !(_POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+	char *strndup(const char *src, size_t size);
+#endif // !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+
+// BSD and OS X has MAP_ANON instead of MAP_ANONYMOUS
+#ifndef MAP_ANONYMOUS
+	#define MAP_ANONYMOUS MAP_ANON
+#endif
+
 #include "version.h"
 
 #define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"

@@ -19,15 +19,19 @@
     <None Include="openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\argparse\argparse.c" />
     <ClCompile Include="src\addresses.c" />
     <ClCompile Include="src\audio\audio.c" />
     <ClCompile Include="src\audio\mixer.cpp" />
     <ClCompile Include="src\cheats.c" />
-    <ClCompile Include="src\cmdline.c" />
+    <ClCompile Include="src\cmdline\CommandLine.cpp" />
+    <ClCompile Include="src\cmdline\RootCommands.cpp" />
+    <ClCompile Include="src\cmdline\ScreenshotCommands.cpp" />
+    <ClCompile Include="src\cmdline\SpriteCommands.cpp" />
     <ClCompile Include="src\cmdline_sprite.c" />
     <ClCompile Include="src\config.c" />
+    <ClCompile Include="src\core\Console.cpp" />
     <ClCompile Include="src\core\Stopwatch.cpp" />
+    <ClCompile Include="src\core\String.cpp" />
     <ClCompile Include="src\cursors.c" />
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />
@@ -186,13 +190,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\addresses.h" />
-    <ClInclude Include="src\argparse\argparse.h" />
     <ClInclude Include="src\audio\audio.h" />
     <ClInclude Include="src\audio\mixer.h" />
     <ClInclude Include="src\cheats.h" />
-    <ClInclude Include="src\cmdline.h" />
+    <ClInclude Include="src\cmdline\CommandLine.hpp" />
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\config.h" />
+    <ClInclude Include="src\core\Console.hpp" />
     <ClInclude Include="src\core\Exception.hpp" />
     <ClInclude Include="src\core\FileStream.hpp" />
     <ClInclude Include="src\core\IDisposable.hpp" />
@@ -201,6 +205,7 @@
     <ClInclude Include="src\core\Memory.hpp" />
     <ClInclude Include="src\core\stopwatch.h" />
     <ClInclude Include="src\core\Stopwatch.hpp" />
+    <ClInclude Include="src\core\String.hpp" />
     <ClInclude Include="src\core\StringBuilder.hpp" />
     <ClInclude Include="src\core\StringReader.hpp" />
     <ClInclude Include="src\core\Util.hpp" />

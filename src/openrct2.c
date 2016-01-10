@@ -21,7 +21,6 @@
 #include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
-#include "cmdline.h"
 #include "config.h"
 #include "editor.h"
 #include "game.h"
@@ -48,6 +47,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #endif // defined(__unix__)
+
+int gExitCode;
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
@@ -283,6 +284,9 @@ void openrct2_launch()
 
 #ifndef DISABLE_NETWORK
 			if (gNetworkStart == NETWORK_MODE_SERVER) {
+				if (gNetworkStartPort == 0) {
+					gNetworkStartPort = gConfigNetwork.default_port;
+				}
 				network_begin_server(gNetworkStartPort);
 			}
 #endif // DISABLE_NETWORK
@@ -298,6 +302,9 @@ void openrct2_launch()
 
 #ifndef DISABLE_NETWORK
 		if (gNetworkStart == NETWORK_MODE_CLIENT) {
+			if (gNetworkStartPort == 0) {
+				gNetworkStartPort = gConfigNetwork.default_port;
+			}
 			network_begin_client(gNetworkStartHost, gNetworkStartPort);
 		}
 #endif // DISABLE_NETWORK

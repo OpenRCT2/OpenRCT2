@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "cmdline.h"
 #include "drawing/drawing.h"
 #include "image_io.h"
 #include "openrct2.h"
@@ -28,6 +27,8 @@
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1
 #define MODE_DITHERING 2
+
+extern int gSpriteMode;
 
 typedef struct {
 	uint32 num_entries;
@@ -554,7 +555,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		rct_g1_element spriteElement;
 		uint8 *buffer;
 		int bufferLength;
-		if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, sprite_mode))
+		if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, gSpriteMode))
 			return -1;
 
 		if (!sprite_file_open(spriteFilePath)) {
@@ -613,7 +614,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 				rct_g1_element spriteElement;
 				uint8 *buffer;
 				int bufferLength;
-				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, sprite_mode)) {
+				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
 					fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
 					return -1;
 				}
