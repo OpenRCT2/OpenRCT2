@@ -20,24 +20,23 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-#include <libgen.h>
-#include <SDL_syswm.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include <pwd.h>
-#include "../addresses.h"
-#include "../cmdline.h"
-#include "../openrct2.h"
-#include "../localisation/language.h"
-#include "../localisation/currency.h"
-#include "../config.h"
-#include "platform.h"
-#include "../util/util.h"
 #include <dirent.h>
+#include <errno.h>
 #include <fnmatch.h>
+#include <libgen.h>
 #include <locale.h>
+#include <sys/stat.h>
 #include <sys/time.h>
+#include <pwd.h>
 #include <time.h>
+#include <SDL_syswm.h>
+#include "../addresses.h"
+#include "../config.h"
+#include "../localisation/currency.h"
+#include "../localisation/language.h"
+#include "../openrct2.h"
+#include "../util/util.h"
+#include "platform.h"
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
