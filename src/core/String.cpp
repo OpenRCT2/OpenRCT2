@@ -17,7 +17,7 @@ namespace String
 
         if (ignoreCase)
         {
-            return _strcmpi(a, b) == 0;
+            return _stricmp(a, b) == 0;
         }
         else
         {
