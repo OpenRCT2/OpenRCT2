@@ -151,10 +151,10 @@ bool platform_ensure_directory_exists(const utf8 *path)
 	mode_t mask = getumask();
 
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
-	buffer[len - 1] = '\0';
+	buffer[len] = '\0';
 	free(wPath);
 	log_verbose("%s", buffer);
 	const int result = mkdir(buffer, mask);
