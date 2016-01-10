@@ -77,12 +77,12 @@ const CommandLineCommand CommandLine::RootCommands[]
 
 const CommandLineExample CommandLine::RootExamples[]
 {
-    { "./my_park.sv6",                              "open a saved park"                      },
-    { "./SnowyPark.sc6",                            "install and open a scenario"            },
-    { "./ShuttleLoop.td6",                          "install a track"                        },
-    { "http:/openrct2.website/files/SnowyPark.sv6", "download and open a saved park"         },
+    { "./my_park.sv6",                                "open a saved park"                      },
+    { "./SnowyPark.sc6",                              "install and open a scenario"            },
+    { "./ShuttleLoop.td6",                            "install a track"                        },
+    { "https://openrct2.website/files/SnowyPark.sv6", "download and open a saved park"         },
 #ifndef DISABLE_NETWORK
-    { "host ./my_park.sv6 --port 11753 --headless", "run a headless server for a saved park" },
+    { "host ./my_park.sv6 --port 11753 --headless",   "run a headless server for a saved park" },
 #endif
     ExampleTableEnd
 };
