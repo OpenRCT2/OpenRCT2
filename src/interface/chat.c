@@ -89,13 +89,15 @@ void chat_draw()
 		safe_strncpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
 		y = _chatBottom - 10;
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
+		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 		if (_chatCaretTicks < 15) {
+			memcpy(lineBuffer, _chatCurrentLine, gTextInputCursorPosition);
+			lineBuffer[gTextInputCursorPosition] = 0;
 			int caretX = x + gfx_get_string_width(lineBuffer);
 			int caretY = y + 10;
 
 			gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, 0x38);
 		}
-		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 	}
 }
 
