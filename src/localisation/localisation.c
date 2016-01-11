@@ -838,7 +838,7 @@ void error_string_quit(int error, rct_string_id format)
 	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
 
 	char* error_string = RCT2_ADDRESS(0x1424080, char);
-	void* args = RCT2_ADDRESS(0x13CE952, void);
+	void* args = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void);
 	*error_string = 0;
 
 	if (format != 0xFFFF){

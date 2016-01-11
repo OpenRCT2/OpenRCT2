@@ -1884,7 +1884,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		}
 
 		if (bh != 0 && !(flags&(1 << 1))){
-			uint32* arguments = RCT2_ADDRESS(0x0013CE952, uint32);
+			uint32* arguments = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32);
 			object_create_identifier_name((char*)0x009BC95A, installedObject);
 			*arguments = (uint32)0x009BC95A;
 			set_object_selection_error(bh, 3172);

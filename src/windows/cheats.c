@@ -1124,8 +1124,8 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		RCT2_GLOBAL(0x0013CE952, money32) = CHEATS_MONEY_INCREMENT;
-		gfx_draw_string_left(dpi, STR_CHEAT_TIP_5K_MONEY,	(void*)0x0013CE952,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = CHEATS_MONEY_INCREMENT;
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_5K_MONEY,	(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
 		gfx_draw_string_left(dpi, STR_CHEAT_TIP_CLEAR_LOAN,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){

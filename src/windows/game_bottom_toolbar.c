@@ -220,7 +220,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 	switch (widgetIndex) {
 	case WIDX_MONEY:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
-		RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
 		break;
 	case WIDX_PARK_RATING:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
@@ -230,7 +230,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
-		RCT2_GLOBAL(0x013CE954, short) = STR_MONTH_MARCH + month;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = STR_MONTH_MARCH + month;
 		break;
 	}
 }
@@ -456,8 +456,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
-	RCT2_GLOBAL(0x013CE954, short) = month;
-	RCT2_GLOBAL(0x013CE956, short) = year;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = month;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, short) = year;
 	gfx_draw_string_centred(
 		dpi,
 		stringId,
