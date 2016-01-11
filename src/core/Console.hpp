@@ -13,8 +13,13 @@ namespace Console
     void WriteFormat(const utf8 * format, ...);
     void WriteLine();
     void WriteLine(const utf8 * str);
-    void WriteError(char c);
-    void WriteError(const utf8 * str);
-    void WriteLineError();
-    void WriteLineError(const utf8 * str);
+
+    namespace Error
+    {
+        void Write(char c);
+        void Write(const utf8 * str);
+        void WriteFormat(const utf8 * format, ...);
+        void WriteLine();
+        void WriteLine(const utf8 * str);
+    }
 }
