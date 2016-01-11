@@ -44,24 +44,36 @@ namespace Console
         puts(str);
     }
 
-    void WriteError(char c)
+    namespace Error
     {
-        fputc(c, stderr);
-    }
+        void Write(char c)
+        {
+            fputc(c, stderr);
+        }
 
-    void WriteError(const utf8 * str)
-    {
-        fputs(str, stderr);
-    }
+        void Write(const utf8 * str)
+        {
+            fputs(str, stderr);
+        }
 
-    void WriteLineError()
-    {
-        fputs(platform_get_new_line(), stderr);
-    }
+        void WriteFormat(const utf8 * format, ...)
+        {
+            va_list args;
 
-    void WriteLineError(const utf8 * str)
-    {
-        fputs(str, stderr);
-        WriteLineError();
+            va_start(args, format);
+            vfprintf(stderr, format, args);
+            va_end(args);
+        }
+
+        void WriteLine()
+        {
+            fputs(platform_get_new_line(), stderr);
+        }
+
+        void WriteLine(const utf8 * str)
+        {
+            fputs(str, stderr);
+            WriteLine();
+        }
     }
 }

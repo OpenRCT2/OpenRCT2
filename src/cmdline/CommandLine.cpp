@@ -350,7 +350,7 @@ namespace CommandLine
             }
             else if (!firstOption)
             {
-                Console::WriteLineError("All options must be passed at the end of the command line.");
+                Console::Error::WriteLine("All options must be passed at the end of the command line.");
                 return false;
             }
             else
@@ -383,8 +383,8 @@ namespace CommandLine
         const CommandLineOptionDefinition * option = FindOption(options, optionName);
         if (option == nullptr)
         {
-            Console::WriteError("Unknown option: --");
-            Console::WriteLineError(optionName);
+            Console::Error::Write("Unknown option: --");
+            Console::Error::WriteLine(optionName);
             return false;
         }
 
@@ -399,8 +399,8 @@ namespace CommandLine
                 const char * valueString = nullptr;
                 if (!argEnumerator->TryPopString(&valueString))
                 {
-                    Console::WriteError("Expected value for option: ");
-                    Console::WriteLineError(optionName);
+                    Console::Error::Write("Expected value for option: ");
+                    Console::Error::WriteLine(optionName);
                     return false;
                 }
                 
@@ -414,8 +414,8 @@ namespace CommandLine
         {
             if (option->Type == CMDLINE_TYPE_SWITCH)
             {
-                Console::WriteError("Option is a switch: ");
-                Console::WriteLineError(optionName);
+                Console::Error::Write("Option is a switch: ");
+                Console::Error::WriteLine(optionName);
                 return false;
             }
             else
@@ -442,9 +442,9 @@ namespace CommandLine
             option = FindOption(options, shortOption[0]);
             if (option == nullptr)
             {
-                Console::WriteError("Unknown option: -");
-                Console::WriteError(shortOption[0]);
-                Console::WriteLineError();
+                Console::Error::Write("Unknown option: -");
+                Console::Error::Write(shortOption[0]);
+                Console::Error::WriteLine();
                 return false;
             }
             if (option->Type == CMDLINE_TYPE_SWITCH)
@@ -469,9 +469,9 @@ namespace CommandLine
             const char * valueString = nullptr;
             if (!argEnumerator->TryPopString(&valueString))
             {
-                Console::WriteError("Expected value for option: ");
-                Console::WriteError(option->ShortName);
-                Console::WriteLineError();
+                Console::Error::Write("Expected value for option: ");
+                Console::Error::Write(option->ShortName);
+                Console::Error::WriteLine();
                 return false;
             }
                 
@@ -502,8 +502,8 @@ namespace CommandLine
             *((utf8 * *)option->OutAddress) = String::Duplicate(valueString);
             return true;
         default:
-            Console::WriteError("Unknown CMDLINE_TYPE for: ");
-            Console::WriteLineError(option->LongName);
+            Console::Error::Write("Unknown CMDLINE_TYPE for: ");
+            Console::Error::WriteLine(option->LongName);
             return false;
         }
     }

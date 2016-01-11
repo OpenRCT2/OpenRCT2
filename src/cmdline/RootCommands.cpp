@@ -163,7 +163,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
     const char * parkUri;
     if (!enumerator->TryPopString(&parkUri))
     {
-        Console::WriteLineError("Expected path or URL to a saved park.");
+        Console::Error::WriteLine("Expected path or URL to a saved park.");
         return EXITCODE_FAIL;
     }
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
@@ -197,7 +197,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
     const char * parkUri;
     if (!enumerator->TryPopString(&parkUri))
     {
-        Console::WriteLineError("Expected path or URL to a saved park.");
+        Console::Error::WriteLine("Expected path or URL to a saved park.");
         return EXITCODE_FAIL;
     }
 
@@ -220,7 +220,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
     const char * hostname;
     if (!enumerator->TryPopString(&hostname))
     {
-        Console::WriteLineError("Expected a hostname or IP address to the server to connect to.");
+        Console::Error::WriteLine("Expected a hostname or IP address to the server to connect to.");
         return EXITCODE_FAIL;
     }
 
