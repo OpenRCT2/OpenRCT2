@@ -87,7 +87,7 @@ void window_error_open(rct_string_id title, rct_string_id message)
 
 	window_close_by_class(WC_ERROR);
 	dst = _window_error_text;
-	args = (char*)0x0013CE952;
+	args = (char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
 
 	// Format the title
 	dst = utf8_write_codepoint(dst, FORMAT_BLACK);

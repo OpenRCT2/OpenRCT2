@@ -1350,7 +1350,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		map_element->properties.entrance.ride_index != 0xFF){
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
-		RCT2_GLOBAL(0x13CE956, uint32) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = 0;
 
 		rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
 
@@ -1453,12 +1453,12 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 			break;
 
 		rct_string_id park_text_id = 1730;
-		RCT2_GLOBAL(0x0013CE952, uint32) = 0;
-		RCT2_GLOBAL(0x0013CE956, uint32) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = 0;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN){
-			RCT2_GLOBAL(0x0013CE952, rct_string_id) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-			RCT2_GLOBAL(0x0013CE954, rct_string_id) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, rct_string_id);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, rct_string_id);
 
 			park_text_id = 1731;
 		}
@@ -1710,7 +1710,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	scrollingMode += direction;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
-	RCT2_GLOBAL(0x13CE956, uint32_t) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32_t) = 0;
 
 	rct_string_id string_id = STR_NO_ENTRY;
 	if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))

@@ -682,12 +682,12 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			continue;
 
 		// Month heading
-		RCT2_GLOBAL(0x0013CE952, uint16) = STR_FINANCES_SUMMARY_MONTH_HEADING;
-		RCT2_GLOBAL(0x0013CE952 + 2, uint16) = monthyear;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_FINANCES_SUMMARY_MONTH_HEADING;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = monthyear;
 		draw_string_right_underline(
 			dpi,
 			monthyear == currentMonthYear ? 1193 : 1191,
-			(void*)0x0013CE952,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			0,
 			x + 80,
 			y - 1
@@ -734,12 +734,12 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Loan and interest rate
 	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, 0, w->x + 4, w->y + 229);
-	RCT2_GLOBAL(0x0013CE952, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8);
-	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, (void*)0x0013CE952, 0, w->x + 156, w->y + 229);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8);
+	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 156, w->y + 229);
 
 	// Current cash
-	RCT2_GLOBAL(0x0013CE952, money32) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
-	gfx_draw_string_left(dpi, STR_CASH_LABEL, (void*)0x0013CE952, 0, w->x + 4, w->y + 244);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	gfx_draw_string_left(dpi, STR_CASH_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 4, w->y + 244);
 
 	// Objective related financial information
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_MONTHLY_FOOD_INCOME) {
@@ -751,8 +751,8 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			lastMonthProfit += RCT2_GLOBAL(0x013578A0, money32);
 			lastMonthProfit += RCT2_GLOBAL(0x013578A4, money32);
 		}
-		RCT2_GLOBAL(0x0013CE952, money32) = lastMonthProfit;
-		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, (void*)0x0013CE952, 0, w->x + 280, w->y + 229);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = lastMonthProfit;
+		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 280, w->y + 229);
 	} else {
 		// Park value and company value
 		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_PARK_VALUE, 0, w->x + 280, w->y + 229);

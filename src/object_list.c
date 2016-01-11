@@ -488,7 +488,7 @@ void set_load_objects_fail_reason()
 {
 	rct_string_id expansionNameId;
 
-	rct_object_entry* object = RCT2_ADDRESS(0x13CE952, rct_object_entry);
+	rct_object_entry* object = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_object_entry);
 	int expansion = (object->flags & 0xFF) >> 4;
 
 	if (expansion == 0
@@ -560,7 +560,7 @@ int object_read_and_load_entries(SDL_RWops* rw)
 		// Load the obect
 		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
-			memcpy((char*)0x13CE952, &entries[i], sizeof(rct_object_entry));
+			memcpy((char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, &entries[i], sizeof(rct_object_entry));
 			load_fail = 1;
 		}
 	}

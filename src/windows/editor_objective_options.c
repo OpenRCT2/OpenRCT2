@@ -402,7 +402,7 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PARK_NAME:
-		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:

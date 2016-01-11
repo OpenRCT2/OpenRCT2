@@ -76,7 +76,7 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 		if (
 			scrollText->string_id == stringId &&
 			scrollText->string_args_0 == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) &&
-			scrollText->string_args_1 == RCT2_GLOBAL(0x13CE956, uint32) &&
+			scrollText->string_args_1 == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) &&
 			scrollText->position == scroll &&
 			scrollText->mode == scrollingMode
 		) {
@@ -152,7 +152,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 
 void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)
 {
-	uint8 characterColour = scrolling_text_get_colour(RCT2_GLOBAL(0x013CE959, uint8));
+	uint8 characterColour = scrolling_text_get_colour(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 7, uint8));
 
 	utf8 *ch = text;
 	while (true) {
@@ -228,7 +228,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, si
 	*dstCh = 0;
 
 	if (colour == 0) {
-		colour = scrolling_text_get_colour(RCT2_GLOBAL(0x013CE959, uint8));
+		colour = scrolling_text_get_colour(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 7, uint8));
 	} else {
 		colour = RCT2_GLOBAL(0x009FF048, uint8*)[(colour - FORMAT_COLOUR_CODE_START) * 4];
 	}

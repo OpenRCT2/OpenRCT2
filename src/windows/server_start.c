@@ -252,7 +252,7 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 static void window_server_start_invalidate(rct_window *w)
 {
 	widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
-	RCT2_GLOBAL(0x013CE964, uint16) = gConfigNetwork.maxplayers;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = gConfigNetwork.maxplayers;
 }
 
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)
