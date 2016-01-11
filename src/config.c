@@ -306,8 +306,8 @@ notification_configuration gConfigNotifications;
 themes_configuration gConfigThemes;
 title_sequences_configuration gConfigTitleSequences;
 
-bool config_open(const utf8string path);
-bool config_save(const utf8string path);
+static bool config_open(const utf8string path);
+static bool config_save(const utf8string path);
 static void config_read_properties(config_section_definition **currentSection, const_utf8string line);
 static void config_save_property_value(SDL_RWops *file, uint8 type, value_union *value);
 static bool config_read_enum(void *dest, int destSize, const utf8 *key, int keySize, config_enum_definition *enumDefinitions);
@@ -396,12 +396,17 @@ void config_set_defaults()
 	}
 }
 
+void config_get_default_path(utf8 *outPath)
+{
+	platform_get_user_directory(outPath, NULL);
+	strcat(outPath, "config.ini");
+}
+
 bool config_open_default()
 {
 	utf8 path[MAX_PATH];
 
-	platform_get_user_directory(path, NULL);
-	strcat(path, "config.ini");
+	config_get_default_path(path);
 	if (config_open(path)) {
 		config_apply_to_old_addresses();
 		return true;
@@ -414,8 +419,7 @@ bool config_save_default()
 {
 	utf8 path[MAX_PATH];
 
-	platform_get_user_directory(path, NULL);
-	strcat(path, "config.ini");
+	config_get_default_path(path);
 	if (config_save(path)) {
 		config_apply_to_old_addresses();
 		return true;
