@@ -290,7 +290,7 @@ static void window_new_ride_populate_list()
 
 	uint8 currentCategory = _window_new_ride_current_tab;
 	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_ride_type **rideEntries = (rct_ride_type**)RCT2_ADDRESS_RIDE_ENTRIES;
 
 	// For each ride type in the view order list
 	for (i = 0; i < countof(RideTypeViewOrder); i++) {
@@ -773,7 +773,7 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_ride_type **rideEntries = (rct_ride_type**)RCT2_ADDRESS_RIDE_ENTRIES;
 
 	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
 		return;
@@ -863,7 +863,7 @@ static int get_num_track_designs(ride_list_item item)
  */
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, int x, int y, int width)
 {
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
+	rct_ride_type **rideEntries = (rct_ride_type**)RCT2_ADDRESS_RIDE_ENTRIES;
 	rct_ride_type *rideEntry = rideEntries[item.entry_index];
 
 	// Ride name and description
