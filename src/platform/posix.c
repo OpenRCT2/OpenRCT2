@@ -37,9 +37,18 @@
 #include "../openrct2.h"
 #include "../util/util.h"
 #include "platform.h"
+#include <dirent.h>
+#include <fnmatch.h>
+#include <locale.h>
+#include <sys/time.h>
+#include <time.h>
+#include <fts.h>
+#include <sys/file.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-#define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
+#define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
+
+#define FILE_BUFFER_SIZE 4096
 
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
@@ -165,13 +174,85 @@ bool platform_ensure_directory_exists(const utf8 *path)
 
 bool platform_directory_delete(const utf8 *path)
 {
-	STUB();
+	log_verbose("Recursively deleting directory %s", path);
+
+	FTS *ftsp;
+	FTSENT *p, *chp;
+
+	// fts_open only accepts non const paths, so we have to take a copy
+	char* ourPath = (char*)malloc(strlen(path) + 1);
+	strcpy(ourPath, path);
+
+	utf8* const patharray[2] = {ourPath, NULL};
+	if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == NULL) {
+		log_error("fts_open returned NULL");
+		free(ourPath);
+		return false;
+	}
+
+	chp = fts_children(ftsp, 0);
+	if (chp == NULL) {
+		log_verbose("No files to traverse, deleting directory %s", path);
+		remove(path);
+		free(ourPath);
+		return true; // No files to traverse
+	}
+
+	while ((p = fts_read(ftsp)) != NULL) {
+		switch (p->fts_info) {
+			case FTS_DP: // Directory postorder, which means
+						 // the directory is empty
+						 
+			case FTS_F:  // File
+				if(remove(p->fts_path)) {
+					log_error("Could not remove %s", p->fts_path);
+					fts_close(ftsp);
+					free(ourPath);
+					return false;
+				}
+				break;
+			case FTS_ERR:
+				log_error("Error traversing %s", path);
+				fts_close(ftsp);
+				free(ourPath);
+				return false;
+		}
+	}
+
+	free(ourPath);
+	fts_close(ftsp);
+
 	return true;
 }
 
 bool platform_lock_single_instance()
 {
-	STUB();
+	char pidFilePath[MAX_PATH];
+	char separator = platform_get_path_separator();
+
+	strncpy(pidFilePath, _userDataDirectoryPath, MAX_PATH);
+	strncat(pidFilePath, &separator, 1);
+	strncat(pidFilePath, SINGLE_INSTANCE_MUTEX_NAME, 
+			MAX_PATH - strnlen(pidFilePath, MAX_PATH) - 1);
+
+	// We will never close this file manually. The operating system will
+	// take care of that, because flock keeps the lock as long as the 
+	// file is open and closes it automatically on file close.
+	// This is intentional.
+	int pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
+
+	if (pidFile == -1) {
+		log_warning("Cannot open lock file for writing.");
+		return false;
+	}
+	if (flock(pidFile, LOCK_EX | LOCK_NB) == -1) {
+		if (errno == EWOULDBLOCK) {
+			log_warning("Another OpenRCT2 session has been found running.");
+			return false;
+		}
+		log_error("flock returned an uncatched errno: %d", errno);
+		return false;
+	}
 	return true;
 }
 
@@ -483,23 +564,57 @@ void platform_enumerate_directories_end(int handle)
 }
 
 int platform_get_drives(){
-	/*
-	return GetLogicalDrives();
-	*/
-	STUB();
+	// POSIX systems do not know drives. Return 0.
 	return 0;
 }
 
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
 {
-	STUB();
+	log_verbose("Copying %s to %s", srcPath, dstPath);
+
+	FILE *dstFile;
+
+ 	if (overwrite) {
+		dstFile = fopen(dstPath, "wb");
+	} else {
+		dstFile = fopen(dstPath, "wbx");
+	}
+
+	if (dstFile != NULL) {
+		if (errno == EEXIST) {
+			log_warning("platform_file_copy: Not overwriting %s, because overwrite flag == false", dstPath);
+			return 0;
+		}
+
+		log_error("Could not open destination file %s for copying", dstPath);
+		return 0;
+	}
+
+	// Open both files and check whether they are opened correctly
+	FILE *srcFile = fopen(srcPath, "rb");
+	if (!srcFile) {
+		fclose(dstFile);
+		log_error("Could not open source file %s for copying", srcPath);
+		return 0;
+	}
+
+	size_t amount_read = 0;
+
+	char* buffer = (char*) malloc(FILE_BUFFER_SIZE);
+	while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile))) {
+		fwrite(buffer, amount_read, 1, dstFile);
+	}
+
+	fclose(srcFile);
+	fclose(dstFile);
+	free(buffer);
+
 	return 0;
 }
 
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 {
-	STUB();
-	return 0;
+	return rename(srcPath, dstPath) == 0;
 }
 
 bool platform_file_delete(const utf8 *path)

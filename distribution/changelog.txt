@@ -7,6 +7,8 @@
 - Feature: Allow enabling / disabling of different notifications.
 - Feature: Improved tile inspector.
 - Feature: Integrate RCT1 style scenario select with optional unlock progression.
+- Fix: Dated autosave files are not created on OSX and Linux.
+- Fix: Title sequence directories are not deleted when title sequence is deleted on OSX and Linux.
 - Fix: [#1333] Rides never become safe again after a crash.
 - Fix: [#2126] Ferris Wheels set to "backward rotation" stop working (original bug)
 - Fix: [#2449] Turning off Day/Night Circle while it is night doesn't reset back to day
