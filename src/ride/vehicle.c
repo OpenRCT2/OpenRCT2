@@ -3130,7 +3130,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 	}
 	int flags = vehicle_update_track_motion(vehicle, NULL);
 
-	if (flags & (1 << 11)) {
+	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_11) {
 		vehicle->status = VEHICLE_STATUS_TRAVELLING;
 		vehicle_invalidate_window(vehicle);
 		vehicle->sub_state = 1;
@@ -3141,7 +3141,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 	if (vehicle->sub_state == 2)
 		return;
 
-	if (flags & (1 << 3) && vehicle->current_station == RCT2_GLOBAL(0x00F64E1C, uint8))
+	if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3 && vehicle->current_station == RCT2_GLOBAL(0x00F64E1C, uint8))
 		return;
 
 	vehicle->sub_state = 2;
@@ -5427,6 +5427,10 @@ static void vehicle_update_block_breaks_open_previous_section(rct_vehicle *vehic
 		mapElement = trackBeginEnd.begin_element;
 	} while (!track_element_is_block_start(trackBeginEnd.begin_element));
 
+	// Get the start of the track block instead of the end
+	x = trackBeginEnd.begin_x;
+	y = trackBeginEnd.begin_y;
+	z = trackBeginEnd.begin_z;
 	mapElement = map_get_track_element_at(x, y, z >> 3);
 	if (mapElement == NULL) {
 		return;
