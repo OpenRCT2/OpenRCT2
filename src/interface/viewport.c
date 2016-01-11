@@ -1276,7 +1276,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
-		image_id = RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(0x9AACBF, uint8)];
+		image_id = RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8)];
 		RCT2_GLOBAL(0x009E32BC, uint32) = image_id;
 		if (transparant_image_id)
 			transparant_image_id = image_id;
@@ -1417,7 +1417,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	uint32 image_id, ghost_id = 0;
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
-		ghost_id = RCT2_ADDRESS(0x993CC4, uint32)[RCT2_GLOBAL(0x9AACBF, uint8)];
+		ghost_id = RCT2_ADDRESS(0x993CC4, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8)];
 		RCT2_GLOBAL(0x009E32BC, uint32) = ghost_id;
 	}
 
@@ -1686,7 +1686,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST)//if being placed
 	{
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
-		image_id |= RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(0x9AACBF, uint8)];
+		image_id |= RCT2_ADDRESS(0x993CC4, uint32_t)[RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8)];
 	}
 	else{
 		image_id |=

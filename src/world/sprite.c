@@ -87,7 +87,7 @@ void invalidate_sprite_2(rct_sprite *sprite)
  *  rct2: 0x0069EB13
  */
 void reset_sprite_list(){
-	RCT2_GLOBAL(0x1388698, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = 0;
 	memset(g_sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
 	for (int i = 0; i < 6; ++i){
@@ -186,7 +186,7 @@ rct_sprite *create_sprite(uint8 bl)
 	if ((bl & 2) != 0)
 	{
 		// 69EC96;
-		uint16 cx = 0x12C - RCT2_GLOBAL(0x13573CE, uint16);
+		uint16 cx = 0x12C - RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
 		if (cx >= RCT2_GLOBAL(0x13573C8, uint16))
 		{
 			return NULL;

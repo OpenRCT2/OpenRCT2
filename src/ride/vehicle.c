@@ -6886,7 +6886,7 @@ loc_6DAEB9:
 	if ((trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) ||
 		(trackType == TRACK_ELEM_POWERED_LIFT)
 		) {
-		vehicle->acceleration = RCT2_GLOBAL(0x0097CF40 + (ride->type * 8) + 7, uint8) << 16;
+		vehicle->acceleration = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 7, uint8) << 16;
 	}
 	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
 		if (!vehicle->is_child) {

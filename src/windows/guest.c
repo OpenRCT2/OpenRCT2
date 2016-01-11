@@ -1263,7 +1263,7 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 
 	sub_693B58(peep);
 	tool_cancel();
-	RCT2_GLOBAL(0x9DE550, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 }
 
 /**

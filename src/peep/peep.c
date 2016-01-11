@@ -6101,13 +6101,13 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 
 	uint8 thought_type = PEEP_THOUGHT_TYPE_HUNGRY;
 
-	if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x800000)){
+	if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride_type * 2] & 0x800000)){
 		thought_type = PEEP_THOUGHT_TYPE_THIRSTY;
-		if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x1000000)){
+		if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride_type * 2] & 0x1000000)){
 			thought_type = PEEP_THOUGHT_RUNNING_OUT;
 			if (ride_type != RIDE_TYPE_CASH_MACHINE){
 				thought_type = PEEP_THOUGHT_TYPE_BATHROOM;
-				if (!(RCT2_ADDRESS(0x97CF40, uint32)[ride_type * 2] & 0x2000000)){
+				if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride_type * 2] & 0x2000000)){
 					return;
 				}
 			}
@@ -7001,7 +7001,7 @@ static uint8 loc_6949B9(
 			if (z != mapElement->base_height) continue;
 			int rideIndex = inputMapElement->properties.path.ride_index;
 			rct_ride *ride = GET_RIDE(rideIndex);
-			if (RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x20000) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x20000) {
 				*outRideIndex = rideIndex;
 				return PATH_SEARCH_RIDE_ENTRANCE;
 			}
@@ -8060,7 +8060,7 @@ static void peep_update_ride_nausea_growth(rct_peep *peep, rct_ride *ride)
 
 static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
 {
-	if (!(RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32) & 0x100000)) return false;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32) & 0x100000)) return false;
 	if (ride->excitement == (ride_rating)0xFFFF) return false;
 	if (ride->intensity > RIDE_RATING(10,00) && !gConfigCheat.ignore_ride_intensity) return false;
 	if (peep->happiness < 180) return false;
@@ -9326,7 +9326,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 
 	rct_peep* peep = GET_PEEP(sprite_index);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = peep->id;
-	utf8* curName = RCT2_ADDRESS(0x00141ED68, utf8);
+	utf8* curName = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
 	rct_string_id curId = peep->name_string_idx;
 	format_string(curName, curId, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
 
@@ -9334,7 +9334,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		return 0;
 
 	if (*fullText == '\0') {
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 1455;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 1455;
 		return MONEY32_UNDEFINED;
 	}
 

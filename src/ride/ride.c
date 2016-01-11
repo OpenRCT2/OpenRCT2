@@ -5429,10 +5429,10 @@ foundRideEntry:
 	ride->music = RCT2_ADDRESS(0x0097D4F4, uint8)[ride->type * 8];
 
 	ride->operation_option = (
-		RCT2_GLOBAL(0x0097CF40 + 4 + (ride->type * 8), uint8) +
-		RCT2_GLOBAL(0x0097CF40 + 4 + (ride->type * 8), uint8) +
-		RCT2_GLOBAL(0x0097CF40 + 4 + (ride->type * 8), uint8) +
-		RCT2_GLOBAL(0x0097CF40 + 5 + (ride->type * 8), uint8)
+		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 4 + (ride->type * 8), uint8) +
+		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 4 + (ride->type * 8), uint8) +
+		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 4 + (ride->type * 8), uint8) +
+		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 5 + (ride->type * 8), uint8)
 	) / 4;
 
 	ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;

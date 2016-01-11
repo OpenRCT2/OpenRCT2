@@ -1172,7 +1172,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		peep->var_C4 = 0;
 
 		tool_cancel();
-		RCT2_GLOBAL(0x9DE550, sint32) = -1;
+		RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 	}
 	else if (widgetIndex == WIDX_PATROL){
 		int dest_x, dest_y;

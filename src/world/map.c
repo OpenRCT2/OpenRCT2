@@ -4657,7 +4657,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	}
 
 	if (x <= 32 || y <= 32 || x >= (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) - 32) || y >= (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) - 32)) {
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3215;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 3215;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -4670,7 +4670,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	}
 
 	if (entranceNum == -1) {
-		RCT2_GLOBAL(0x00141E9AC, rct_string_id) = 3227;
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 3227;
 		return MONEY32_UNDEFINED;
 	}
 

@@ -54,7 +54,7 @@ money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money
  * Pay an amount of money.
  *  rct2: 0x069C674
  * @param amount (eax)
- * @param type passed via global var 0x0141F56C, our type is that var/4.
+ * @param type passed via global var 0x0141F56C (RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE), our type is that var/4.
  */
 void finance_payment(money32 amount, rct_expenditure_type type)
 {
