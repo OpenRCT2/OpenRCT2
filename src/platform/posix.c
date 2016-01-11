@@ -185,14 +185,16 @@ bool platform_directory_delete(const utf8 *path)
 	utf8* const patharray[2] = {ourPath, NULL};
 	if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == NULL) {
 		log_error("fts_open returned NULL");
-		return 0;
+		free(ourPath);
+		return false;
 	}
 
 	chp = fts_children(ftsp, 0);
 	if (chp == NULL) {
 		log_verbose("No files to traverse, deleting directory %s", path);
 		remove(path);
-		return 1; // No files to traverse
+		free(ourPath);
+		return true; // No files to traverse
 	}
 
 	while ((p = fts_read(ftsp)) != NULL) {
@@ -205,21 +207,21 @@ bool platform_directory_delete(const utf8 *path)
 					log_error("Could not remove %s", p->fts_path);
 					fts_close(ftsp);
 					free(ourPath);
-					return 0;
+					return false;
 				}
 				break;
 			case FTS_ERR:
 				log_error("Error traversing %s", path);
 				fts_close(ftsp);
 				free(ourPath);
-				return 0;
+				return false;
 		}
 	}
 
 	free(ourPath);
 	fts_close(ftsp);
 
-	return 1;
+	return true;
 }
 
 bool platform_lock_single_instance()
