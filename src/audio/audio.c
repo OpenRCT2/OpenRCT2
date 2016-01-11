@@ -78,18 +78,26 @@ void audio_populate_devices()
 	if (gAudioDeviceCount <= 0)
 		return;
 
-		gAudioDeviceCount++;
-		gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
-		safe_strncpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
-
-	for (int i = 1; i < gAudioDeviceCount; i++) {
-		const char *utf8Name = SDL_GetAudioDeviceName(i - 1, SDL_FALSE);
+	audio_device *systemAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	for (int i = 0; i < gAudioDeviceCount; i++) {
+		const char *utf8Name = SDL_GetAudioDeviceName(i, SDL_FALSE);
 		if (utf8Name == NULL)
 			utf8Name = language_get_string(5511);
 
-		safe_strncpy(gAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
-		}
+		safe_strncpy(systemAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
 	}
+#ifndef __linux__
+	gAudioDeviceCount++;
+	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	safe_strncpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
+	memcpy(&gAudioDevices[1], systemAudioDevices, (gAudioDeviceCount - 1) * sizeof(audio_device));
+#else
+	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	memcpy(gAudioDevices, systemAudioDevices, gAudioDeviceCount * sizeof(audio_device));
+#endif // __linux__
+
+	free(systemAudioDevices);
+}
 
 int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z)
 {
