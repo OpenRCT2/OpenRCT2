@@ -3329,7 +3329,7 @@ STR_3320    :Szenariodatei kann nicht gespeichert werden...
 STR_3321    :Neue Objekte erfolgreich installiert
 STR_3322    :{WINDOW_COLOUR_2}Ziel: {BLACK}{STRINGID}
 STR_3323    :Fehlende Objektdaten, ID:
-STR_3324    :Erfordert Add-On-Pack:
+STR_3324    :Erfordert Add-On-Pack: {STRINGID}
 STR_3325    :Erfordert ein Add-On-Pack
 STR_3326    :{WINDOW_COLOUR_2}(kein Bild)
 STR_3327    :Startpositionen für Personen nicht eingestellt

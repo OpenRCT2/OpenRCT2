@@ -3325,7 +3325,7 @@ STR_3320    :Kan scenariobestand niet opslaan...
 STR_3321    :Nieuwe objecten succesvol geïnstalleerd
 STR_3322    :{WINDOW_COLOUR_2}Doelstelling: {BLACK}{STRINGID}
 STR_3323    :Ontbrekende objectdata, ID: 
-STR_3324    :Vereist uitbreidingspakket:
+STR_3324    :Vereist het uitbreidingspakket {STRINGID}
 STR_3325    :Vereist een uitbreidingspakket
 STR_3326    :{WINDOW_COLOUR_2}(geen plaatje)
 STR_3327    :Startpositie voor bezoekers niet aangegeven
@@ -4085,27 +4085,27 @@ STR_DTLS    :Gewoon voor de lol!
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :Ontwikkel het rotsgebied bij de kust tot een bloeiend pretpark.
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :Het middelpunt van dit grote park in ontwikkeling is een enorme duellerende stalen achtbaan met drie banen.
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its minature railway and a pair of vertical drop roller coasters
+STR_DTLS    :Deze verlaten mijn bezit, met een miniatuurspoorweg en een paar verticale achtbanen, reeds de kenmerken van een toeristische attractie.
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :Je hebt de beschikking over een oude, niet meer gebruikte brug. Verander deze in een pretpark.
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+STR_DTLS    :Dit park beslaat land aan beide zijden van een snelweg en beschikt reeds over enkele functionerende attracties.
 
 <Haunted Harbor>
 STR_SCNR    :Haunted Harbor
