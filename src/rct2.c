@@ -202,7 +202,9 @@ int rct2_init_directories()
 	if (!platform_original_game_data_exists(gConfigGeneral.game_path)) {
 		log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.game_path);
 		if (!config_find_or_browse_install_directory()) {
-			log_fatal("Invalid RCT2 installation path. Please correct in config.ini.");
+			utf8 path[MAX_PATH];
+			config_get_default_path(path);
+			log_fatal("Invalid RCT2 installation path. Please correct \"game_path\" in %s.", path);
 			return 0;
 	}
 	}

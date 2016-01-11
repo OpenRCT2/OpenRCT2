@@ -196,7 +196,11 @@ bool openrct2_initialise()
 	config_set_defaults();
 	if (!config_open_default()) {
 		if (!config_find_or_browse_install_directory()) {
-			log_fatal("An RCT2 install directory must be specified!");
+			gConfigGeneral.last_run_version = strndup(OPENRCT2_VERSION, strlen(OPENRCT2_VERSION));
+			config_save_default();
+			utf8 path[MAX_PATH];
+			config_get_default_path(path);
+			log_fatal("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
 			return false;
 		}
 	}
