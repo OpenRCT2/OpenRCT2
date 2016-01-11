@@ -388,9 +388,6 @@ static bool scenario_scores_legacy_load(const utf8 *path)
 				highscore->timestamp = DATETIME64_MIN;
 				highscoresDirty = true;
 			}
-
-			// Exit loop
-			break;
 		}
 	}
 	SDL_RWclose(file);
