@@ -850,7 +850,7 @@ enum {
 #define TURN_MASK_3_ELEMENTS	0x0700
 #define TURN_MASK_4_PLUS_ELEMENTS 0xF800
 
-// rct2: 0x009ACFA4
+// rct2: 0x009ACFA4 (RCT2_ADDRESS_RIDE_ENTRIES)
 extern rct_ride_type **gRideTypeList;
 
 // rct2: 0x013628F8

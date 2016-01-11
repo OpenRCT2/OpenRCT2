@@ -350,7 +350,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 			if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) != RESEARCH_STAGE_DESIGNING) {
 				uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32);
 				if (typeId >= 0x10000) {
-					rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+					rct_ride_type *rideEntry = GET_RIDE_ENTRY(typeId & 0xFF);
 					stringId = (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) ?
 						rideEntry->name :
 						((typeId >> 8) & 0xFF) + 2;
@@ -388,7 +388,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 	int lastDevelopmentFormat;
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
-			rct_ride_type *rideEntry = RCT2_GLOBAL(0x009ACFA4 + (typeId & 0xFF) * 4, rct_ride_type*);
+			rct_ride_type *rideEntry = GET_RIDE_ENTRY(typeId & 0xFF);
 			stringId = (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) ?
 				rideEntry->name :
 				((typeId >> 8) & 0xFF) + 2;

@@ -290,7 +290,6 @@ static void window_new_ride_populate_list()
 
 	uint8 currentCategory = _window_new_ride_current_tab;
 	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
 
 	// For each ride type in the view order list
 	for (i = 0; i < countof(RideTypeViewOrder); i++) {
@@ -326,7 +325,7 @@ static void window_new_ride_populate_list()
 					continue;
 
 				// Ride entries
-				rct_ride_type *rideEntry = rideEntries[rideEntryIndex];
+				rct_ride_type *rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
 
 				// Check if ride is in this category
 				if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
@@ -773,8 +772,6 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
-
 	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
 		return;
 
@@ -793,7 +790,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], 0x80 | flags);
 
 		// Draw ride image with feathered border
-		rideEntry = rideEntries[listItem->entry_index];
+		rideEntry = GET_RIDE_ENTRY(listItem->entry_index);
 		int image_id = rideEntry->images_offset;
 		if (listItem->type != rideEntry->ride_type[0]) {
 			image_id++;
@@ -863,8 +860,7 @@ static int get_num_track_designs(ride_list_item item)
  */
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, int x, int y, int width)
 {
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
-	rct_ride_type *rideEntry = rideEntries[item.entry_index];
+	rct_ride_type *rideEntry = GET_RIDE_ENTRY(item.entry_index);
 
 	// Ride name and description
 	rct_string_id rideName = rideEntry->name;

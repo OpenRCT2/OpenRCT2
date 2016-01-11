@@ -1114,7 +1114,7 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 		return;
 	}
 
-	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)[map_element->properties.scenerymultiple.type & 0x3FF];
+	rct_scenery_entry *scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & 0x3FF];
 
 	// Work out the base tile coordinates (Tile with index 0)
 	rct_xyz16 baseTile = {
@@ -1615,7 +1615,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			continue;
 		if(height + 4 < mapElement->base_height)
 			continue;
-		rct_scenery_entry *sceneryEntry = RCT2_ADDRESS(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES, rct_scenery_entry *)[mapElement->properties.scenery.type]; //sceneryEntry = eax
+		rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type]; //sceneryEntry = eax
 		if(sceneryEntry->small_scenery.height > 64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL)
 		{
 				map_obstruction_set_error_text(mapElement);
@@ -3333,7 +3333,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		return;
 	}
 
-	rct_scenery_entry* scenery_entry = RCT2_ADDRESS(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES, rct_scenery_entry*)[entry_index];
+	rct_scenery_entry *scenery_entry = g_largeSceneryEntries[entry_index];
 	if (scenery_entry == (rct_scenery_entry *)0xFFFFFFFF)
 	{
 		log_warning("Invalid game command for scenery placement, entry_index = %u", entry_index);
