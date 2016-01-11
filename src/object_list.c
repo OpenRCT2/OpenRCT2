@@ -77,16 +77,16 @@ int object_entry_group_encoding[] = {
 // 0x98D97C chunk address', 0x98D980 object_entries
 rct_object_entry_group object_entry_groups[] = {
 	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES            ), (rct_object_entry_extended*)(0x00F3F03C             ),	// rides
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (128 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// small scenery	0x009AD1A4, 0xF2FA3C
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (380 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (380 * 20)),	// large scenery	0x009AD594, 0xF40DEC
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (508 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (508 * 20)),	// walls			0x009AD794, 0xF417EC
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (636 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (636 * 20)),	// banners			0x009AD994, 0xF421EC
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (668 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (668 * 20)),	// paths			0x009ADA14, 0xF4246C
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (684 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (684 * 20)),	// path bits		0x009ADA54, 0xF425AC
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (699 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (699 * 20)),	// scenery sets		0x009ADA90, 0xF426D8
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (718 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (718 * 20)),	// park entrance	0x009ADADC, 0xF42854
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (719 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water			0x009ADAE0, 0xF42868
-	(uint8**)(RCT2_ADDRESS_RIDE_ENTRIES + (720 * 4)), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text	0x009ADAE4, 0xF4287C
+	(uint8**)(RCT2_ADDRESS_SMALL_SCENERY_ENTRIES   ), (rct_object_entry_extended*)(0x00F3F03C + (128 * 20)),	// small scenery	0x009AD1A4, 0xF2FA3C
+	(uint8**)(RCT2_ADDRESS_LARGE_SCENERY_ENTRIES   ), (rct_object_entry_extended*)(0x00F3F03C + (380 * 20)),	// large scenery	0x009AD594, 0xF40DEC
+	(uint8**)(RCT2_ADDRESS_WALL_SCENERY_ENTRIES    ), (rct_object_entry_extended*)(0x00F3F03C + (508 * 20)),	// walls			0x009AD794, 0xF417EC
+	(uint8**)(RCT2_ADDRESS_BANNER_SCENERY_ENTRIES  ), (rct_object_entry_extended*)(0x00F3F03C + (636 * 20)),	// banners			0x009AD994, 0xF421EC
+	(uint8**)(RCT2_ADDRESS_PATH_TYPES              ), (rct_object_entry_extended*)(0x00F3F03C + (668 * 20)),	// paths			0x009ADA14, 0xF4246C
+	(uint8**)(RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES), (rct_object_entry_extended*)(0x00F3F03C + (684 * 20)),	// path bits		0x009ADA54, 0xF425AC
+	(uint8**)(RCT2_ADDRESS_SCENERY_SET_ENTRIES     ), (rct_object_entry_extended*)(0x00F3F03C + (699 * 20)),	// scenery sets		0x009ADA90, 0xF426D8
+	(uint8**)(RCT2_ADDRESS_PARK_ENTRANCE_ENTRIES   ), (rct_object_entry_extended*)(0x00F3F03C + (718 * 20)),	// park entrance	0x009ADADC, 0xF42854
+	(uint8**)(RCT2_ADDRESS_WATER_ENTRIES           ), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water			0x009ADAE0, 0xF42868
+	(uint8**)(RCT2_ADDRESS_SCENARIO_TEXT_ENTRIES   ), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text	0x009ADAE4, 0xF4287C
 };
 
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum);
