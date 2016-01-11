@@ -761,7 +761,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 				// Draw guest count
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = STR_GUESTS_COUNT_COMMA_SEP;
-				gfx_draw_string_right(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, 0, 326, y - 1);
+				gfx_draw_string_right(dpi, format, (void*)(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8), 0, 326, y - 1);
 			}
 			y += 21;
 		}
