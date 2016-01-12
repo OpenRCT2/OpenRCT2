@@ -17,4 +17,14 @@ namespace String
     utf8 * Format(utf8 * buffer, size_t bufferSize, const utf8 * format, ...);
     utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...);
     utf8 * Duplicate(const utf8 * src);
+
+    /**
+     * Helper method to free the string a string pointer points to and set it to a replacement string.
+     */
+    utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement);
+
+    /**
+     * Helper method to free the string a string pointer points to and set it to a copy of a replacement string.
+     */
+    utf8 * DiscardDuplicate(utf8 * * ptr, utf8 * replacement);
 }
