@@ -7215,7 +7215,7 @@ loc_6DBA33:;
 	uint16 trackType = vehicle->track_type >> 2;
 	if (trackType == TRACK_ELEM_FLAT && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER) {
 		sint32 unkVelocity = RCT2_GLOBAL(0x00F64E08, sint32);
-		if (unkVelocity > 0xFFF80000) {
+		if (unkVelocity < -524288) {
 			unkVelocity = abs(unkVelocity);
 			vehicle->acceleration = unkVelocity * 2;
 		}
