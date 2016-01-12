@@ -51,6 +51,7 @@ typedef enum {
 
 // Currency format specification - inspired by OpenTTD
 typedef struct {
+	char isoCode[4];
 	// Rate is relative to 0.10 GBP
 	int rate;
 	uint8 affix_unicode;

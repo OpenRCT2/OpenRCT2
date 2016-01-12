@@ -32,7 +32,6 @@
 #include <SDL_syswm.h>
 #include "../addresses.h"
 #include "../config.h"
-#include "../localisation/currency.h"
 #include "../localisation/language.h"
 #include "../openrct2.h"
 #include "../util/util.h"
@@ -818,26 +817,13 @@ time_t platform_file_get_modified_time(const utf8* path){
 uint8 platform_get_locale_currency(){
 	char *langstring = setlocale(LC_MONETARY, "");
 
-	if(langstring != NULL){
-		struct lconv *lc = localeconv();
-
-		//Only works if g_currency_specs contains the actual (local) symbol
-		for(int i = 0; i < CURRENCY_END; ++i){
-			if(!strcmp(lc->currency_symbol, CurrencyDescriptors[i].symbol_unicode)){
-				return i;
-			}
-		}
-		//TODO: can be removed when CurrencyDescriptors contains the actual symbols for won and rubel
-		//Won should remain a special case, beacause some (or all?) systems use the full width won sign (e.g. Gentoo)
-		if(!strncmp(lc->int_curr_symbol, "KRW", 3)){
-			return CURRENCY_WON;
-		}
-		else if(!strncmp(lc->int_curr_symbol, "RUB", 3)){
-			return CURRENCY_ROUBLE;
-		}
+	if (langstring == NULL) {
+		return platform_get_currency_value(NULL);
 	}
-	//All other currencies are historic
-	return CURRENCY_POUNDS;
+	
+	struct lconv *lc = localeconv();
+	
+	return platform_get_currency_value(lc->int_curr_symbol);
 }
 
 uint8 platform_get_locale_measurement_format(){

@@ -160,6 +160,7 @@ void platform_show_messagebox(utf8 *message);
 int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName);
 utf8 *platform_open_directory_browser(utf8 *title);
 uint8 platform_get_locale_currency();
+uint8 platform_get_currency_value(const char *currencyCode);
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();

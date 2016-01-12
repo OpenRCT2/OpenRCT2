@@ -28,7 +28,6 @@
 #include "../addresses.h"
 #include "../openrct2.h"
 #include "../localisation/language.h"
-#include "../localisation/currency.h"
 #include "../util/util.h"
 #include "../config.h"
 #include "platform.h"
@@ -842,45 +841,15 @@ time_t platform_file_get_modified_time(const utf8* path)
 uint8 platform_get_locale_currency()
 {
 	CHAR currCode[4];
-
 	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
 		LOCALE_SINTLSYMBOL,
 		(LPSTR)&currCode,
 		sizeof(currCode)) == 0
 	) {
-		return CURRENCY_POUNDS;
+		return platform_get_currency_value(NULL);
 	}
-	if (strcmp(currCode, "GBP") == 0){
-		return CURRENCY_POUNDS;
-	}
-	else if (strcmp(currCode, "USD") == 0){
-		return CURRENCY_DOLLARS;
-	}
-	else if (strcmp(currCode, "EUR") == 0){
-		return CURRENCY_EUROS;
-	}
-	else if (strcmp(currCode, "SEK") == 0){
-		return CURRENCY_KRONA;
-	}
-	else if (strcmp(currCode, "DEM") == 0){
-		return CURRENCY_DEUTSCHMARK;
-	}
-	else if (strcmp(currCode, "ITL") == 0){
-		return CURRENCY_LIRA;
-	}
-	else if (strcmp(currCode, "JPY") == 0){
-		return CURRENCY_YEN;
-	}
-	else if (strcmp(currCode, "ESP") == 0){
-		return CURRENCY_PESETA;
-	}
-	else if (strcmp(currCode, "FRF") == 0){
-		return CURRENCY_FRANC;
-	}
-	else if (strcmp(currCode, "NLG") == 0){
-		return CURRENCY_GUILDERS;
-	}
-	return CURRENCY_POUNDS;
+	
+	return platform_get_currency_value(currCode);
 }
 
 uint8 platform_get_locale_measurement_format()
