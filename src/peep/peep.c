@@ -7183,7 +7183,7 @@ static int guest_pathfind_choose_direction(sint16 x, sint16 y, sint16 z, rct_pee
 
 		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
 			edges &= ~(1 << test_edge);
-			uint8 height = z;
+			uint8 height = (uint8)z;
 			int k = RCT2_GLOBAL(0x00F1AEDC, int);
 			if (footpath_element_is_sloped(dest_map_element) &&
 					footpath_element_get_slope_direction(dest_map_element) == test_edge)
@@ -7232,7 +7232,7 @@ static int guest_pathfind_choose_direction(sint16 x, sint16 y, sint16 z, rct_pee
 	peep->pathfind_goal.direction &= 0x3;
 	peep->pathfind_history[i].x = x / 32;
 	peep->pathfind_history[i].y = y / 32;
-	peep->pathfind_history[i].z = z;
+	peep->pathfind_history[i].z = (uint8)z;
 	peep->pathfind_history[i].direction = 0xF;
 	peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
 
