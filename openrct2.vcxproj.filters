@@ -576,6 +576,9 @@
     <ClCompile Include="src\core\String.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\Path.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -873,6 +876,9 @@
       <Filter>Source\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\String.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Path.hpp">
       <Filter>Source\Core</Filter>
     </ClInclude>
   </ItemGroup>

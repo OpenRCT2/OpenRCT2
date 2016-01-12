@@ -129,4 +129,16 @@ namespace String
         size_t srcSize = SizeOf(src);
         return Memory::DuplicateArray(src, srcSize + 1);
     }
+
+    utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement)
+    {
+        Memory::Free(*ptr);
+        *ptr = replacement;
+        return replacement;
+    }
+
+    utf8 * DiscardDuplicate(utf8 * * ptr, utf8 * replacement)
+    {
+        return DiscardUse(ptr, String::Duplicate(replacement));
+    }
 }
