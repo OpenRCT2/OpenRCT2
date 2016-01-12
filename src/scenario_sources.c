@@ -14,6 +14,7 @@ const scenario_alias ScenarioAliases[] = {
 	{ "Mystic Mountain",						"Mothball Mountain"							},
 	{ "Paradise Pier",							"Big Pier"									},
 	{ "Paradise Pier 2",						"Big Pier 2"								},
+	{ "Haunted Harbour",						"Haunted Harbor"							},
 	{ "Mythological - Cradle of Civilisation",	"Mythological - Cradle of Civilization"		},
 
 	// RCT1 pack by RCTScenarioLover has a mistake:
@@ -59,7 +60,7 @@ const scenario_title_desc ScenarioTitlesRCT1AA[] = {
 	{ SC_CANARY_MINES,				"Canary Mines",			SCENARIO_CATEGORY_BEGINNER		},
 	{ SC_BARONY_BRIDGE,				"Barony Bridge",		SCENARIO_CATEGORY_BEGINNER		},
 	{ SC_FUNTOPIA,					"Funtopia",				SCENARIO_CATEGORY_BEGINNER		},
-	{ SC_HAUNTED_HARBOR,			"Haunted Harbor",		SCENARIO_CATEGORY_BEGINNER		},
+	{ SC_HAUNTED_HARBOUR,			"Haunted Harbour",		SCENARIO_CATEGORY_BEGINNER		},
 	{ SC_FUN_FORTRESS,				"Fun Fortress",			SCENARIO_CATEGORY_BEGINNER		},
 	{ SC_FUTURE_WORLD,				"Future World",			SCENARIO_CATEGORY_BEGINNER		},
 	{ SC_GENTLE_GLEN,				"Gentle Glen",			SCENARIO_CATEGORY_BEGINNER		},
