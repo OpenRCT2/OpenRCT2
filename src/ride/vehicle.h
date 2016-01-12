@@ -67,7 +67,7 @@ typedef struct {
 	uint8 no_seating_rows;			// 0x54 , 0x6E
 	uint8 spinning_inertia;			// 0x55 , 0x6F
 	uint8 spinning_friction;		// 0x56 , 0x70
-	uint8 var_57;					// 0x57 , 0x71
+	uint8 friction_sound_id;		// 0x57 , 0x71
 	uint8 var_58;					// 0x58 , 0x72
 	uint8 sound_range;				// 0x59 , 0x73
 	uint8 var_5A;					// 0x5A , 0x74
