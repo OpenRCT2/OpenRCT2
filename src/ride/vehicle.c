@@ -2553,8 +2553,8 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 		lastVehicle = trainVehicle;
 
 		trainVehicle->sub_state = 0;
-		int x = RCT2_ADDRESS(0x009A3AC4, sint16)[trainVehicle->sprite_direction * 2];
-		int	y = RCT2_ADDRESS(0x009A3AC6, sint16)[trainVehicle->sprite_direction * 2];
+		int x = RCT2_ADDRESS(0x009A3AC4, sint16)[trainVehicle->sprite_direction & 0xFE];
+		int	y = RCT2_ADDRESS(0x009A3AC6, sint16)[trainVehicle->sprite_direction & 0xFE];
 
 		int ecx = RCT2_ADDRESS(0x009A37E4, uint32)[trainVehicle->var_1F] >> 15;
 		x *= ecx;
