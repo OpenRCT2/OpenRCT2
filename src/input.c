@@ -1391,6 +1391,8 @@ void title_handle_keyboard_input()
 				gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
 			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
 				gInputPlaceObjectModifier |= 4;
+			if (gKeysState[SDL_SCANCODE_LGUI] || gKeysState[SDL_SCANCODE_RGUI])
+				gInputPlaceObjectModifier |= 8;
 		}
 	}
 
@@ -1450,6 +1452,9 @@ void game_handle_keyboard_input()
 			}
 			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT]) {
 				gInputPlaceObjectModifier |= 4;
+			}
+			if (gKeysState[SDL_SCANCODE_LGUI] || gKeysState[SDL_SCANCODE_RGUI]) {
+				gInputPlaceObjectModifier |= 8;
 			}
 			game_handle_key_scroll();
 		}
@@ -1634,6 +1639,7 @@ void game_handle_key_scroll()
 		const int SHIFT = 0x100;
 		const int CTRL = 0x200;
 		const int ALT = 0x400;
+		const int CMD = 0x800;
 
 		uint16 shortcutKey = gShortcutKeys[shortcutId];
 		uint8 scancode = shortcutKey & 0xFF;
@@ -1649,6 +1655,9 @@ void game_handle_key_scroll()
 		}
 		if (shortcutKey & ALT) {
 			if (!gKeysState[SDL_SCANCODE_LALT] && !gKeysState[SDL_SCANCODE_RALT]) continue;
+		}
+		if (shortcutKey & CMD) {
+			if (!gKeysState[SDL_SCANCODE_LGUI] && !gKeysState[SDL_SCANCODE_RGUI]) continue;
 		}
 
 		switch (shortcutId) {

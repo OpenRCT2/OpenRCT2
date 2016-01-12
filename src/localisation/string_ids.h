@@ -2256,6 +2256,8 @@ enum {
 
 	STR_DLC_PARKS = 5631,
 	STR_BUILD_YOUR_OWN_PARKS = 5632,
+	
+	STR_CMD_PLUS = 5633,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

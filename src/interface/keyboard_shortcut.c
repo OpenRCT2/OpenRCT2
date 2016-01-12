@@ -100,6 +100,10 @@ void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
 		format_string(formatBuffer, STR_ALT_PLUS, NULL);
 		strcat(buffer, formatBuffer);
 	}
+	if (shortcutKey & 0x800) {
+		format_string(formatBuffer, STR_CMD_PLUS, NULL);
+		strcat(buffer, formatBuffer);
+	}
 	strcat(buffer, SDL_GetScancodeName(shortcutKey & 0xFF));
 }
 
