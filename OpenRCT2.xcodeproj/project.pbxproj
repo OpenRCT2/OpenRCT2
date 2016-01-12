@@ -22,6 +22,7 @@
 		D4B63B951C43028200367A37 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4B63B931C43028200367A37 /* Console.cpp */; };
 		D4B63B981C43028F00367A37 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4B63B961C43028F00367A37 /* String.cpp */; };
 		D4B85B5B1C41C7F3005C568A /* cable_lift.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B85B591C41C7F3005C568A /* cable_lift.c */; };
+		D4D35E2C1C45BD9B00AAFCB4 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4D35E2A1C45BD9B00AAFCB4 /* Path.cpp */; };
 		D4D4DF141C34697B0048BE43 /* image_io.c in Sources */ = {isa = PBXBuildFile; fileRef = D4D4DF121C34697B0048BE43 /* image_io.c */; };
 		D4EC47DF1C26342F0024B507 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46D61C26342F0024B507 /* addresses.c */; };
 		D4EC47E01C26342F0024B507 /* audio.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46D91C26342F0024B507 /* audio.c */; };
@@ -237,6 +238,8 @@
 		D4B63B971C43028F00367A37 /* String.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
 		D4B85B591C41C7F3005C568A /* cable_lift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cable_lift.c; sourceTree = "<group>"; };
 		D4B85B5A1C41C7F3005C568A /* cable_lift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cable_lift.h; sourceTree = "<group>"; };
+		D4D35E2A1C45BD9B00AAFCB4 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
+		D4D35E2B1C45BD9B00AAFCB4 /* Path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Path.hpp; sourceTree = "<group>"; };
 		D4D4DF121C34697B0048BE43 /* image_io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_io.c; path = src/image_io.c; sourceTree = "<group>"; };
 		D4D4DF131C34697B0048BE43 /* image_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image_io.h; path = src/image_io.h; sourceTree = "<group>"; };
 		D4EC46D61C26342F0024B507 /* addresses.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = addresses.c; path = src/addresses.c; sourceTree = "<group>"; };
@@ -726,6 +729,8 @@
 				D4EC46E91C26342F0024B507 /* IStream.hpp */,
 				D4EC46EA1C26342F0024B507 /* Math.hpp */,
 				D4EC46EB1C26342F0024B507 /* Memory.hpp */,
+				D4D35E2A1C45BD9B00AAFCB4 /* Path.cpp */,
+				D4D35E2B1C45BD9B00AAFCB4 /* Path.hpp */,
 				D4B63B961C43028F00367A37 /* String.cpp */,
 				D4B63B971C43028F00367A37 /* String.hpp */,
 				D4EC46EC1C26342F0024B507 /* StringBuilder.hpp */,
@@ -1354,6 +1359,7 @@
 				D4EC484F1C26342F0024B507 /* options.c in Sources */,
 				D4EC485C1C26342F0024B507 /* shortcut_keys.c in Sources */,
 				D4EC481A1C26342F0024B507 /* posix.c in Sources */,
+				D4D35E2C1C45BD9B00AAFCB4 /* Path.cpp in Sources */,
 				D4B63B981C43028F00367A37 /* String.cpp in Sources */,
 				D4EC47E31C26342F0024B507 /* cmdline_sprite.c in Sources */,
 				D4EC48611C26342F0024B507 /* text_input.c in Sources */,
