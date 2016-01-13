@@ -2,11 +2,13 @@
 
 extern "C"
 {
+    #include "../config.h"
     #include "../openrct2.h"
 }
 
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../network/network.h"
 #include "CommandLine.hpp"
@@ -52,6 +54,7 @@ static exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
+static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 
 static void PrintAbout();
 static void PrintVersion();
@@ -60,13 +63,14 @@ static void PrintLaunchInformation();
 const CommandLineCommand CommandLine::RootCommands[]
 {
     // Main commands
-    DefineCommand("",      "<uri>",      StandardOptions, HandleNoCommand   ),
-    DefineCommand("edit",  "<uri>",      StandardOptions, HandleCommandEdit ),
-    DefineCommand("intro", "",           StandardOptions, HandleCommandIntro),
-#ifndef DISABLE_NETWORK
-    DefineCommand("host",  "<uri>",      StandardOptions, HandleCommandHost ),
-    DefineCommand("join",  "<hostname>", StandardOptions, HandleCommandJoin ),
+    DefineCommand("",         "<uri>",      StandardOptions, HandleNoCommand     ),
+    DefineCommand("edit",     "<uri>",      StandardOptions, HandleCommandEdit   ),
+    DefineCommand("intro",    "",           StandardOptions, HandleCommandIntro  ),
+#ifndef DISABLE_NETWORK 
+    DefineCommand("host",     "<uri>",      StandardOptions, HandleCommandHost   ),
+    DefineCommand("join",     "<hostname>", StandardOptions, HandleCommandJoin   ),
 #endif
+    DefineCommand("set-rct2", "<path>",     StandardOptions, HandleCommandSetRCT2),
 
     // Sub-commands
     DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
@@ -163,7 +167,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator)
     const char * parkUri;
     if (!enumerator->TryPopString(&parkUri))
     {
-        Console::WriteLineError("Expected path or URL to a saved park.");
+        Console::Error::WriteLine("Expected path or URL to a saved park.");
         return EXITCODE_FAIL;
     }
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
@@ -197,7 +201,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
     const char * parkUri;
     if (!enumerator->TryPopString(&parkUri))
     {
-        Console::WriteLineError("Expected path or URL to a saved park.");
+        Console::Error::WriteLine("Expected path or URL to a saved park.");
         return EXITCODE_FAIL;
     }
 
@@ -220,7 +224,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
     const char * hostname;
     if (!enumerator->TryPopString(&hostname))
     {
-        Console::WriteLineError("Expected a hostname or IP address to the server to connect to.");
+        Console::Error::WriteLine("Expected a hostname or IP address to the server to connect to.");
         return EXITCODE_FAIL;
     }
 
@@ -231,6 +235,84 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
 }
 
 #endif // DISABLE_NETWORK
+
+static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
+{
+    exitcode_t result = CommandLine::HandleCommandDefault();
+    if (result != EXITCODE_CONTINUE)
+    {
+        return result;
+    }
+
+    // Get the path that was passed
+    const utf8 * rawPath;
+    if (!enumerator->TryPopString(&rawPath))
+    {
+        Console::Error::WriteLine("Expected a path.");
+        return EXITCODE_FAIL;
+    }
+
+    utf8 path[MAX_PATH];
+    Path::GetAbsolute(path, sizeof(path), rawPath);
+
+    // Check if path exists
+    Console::WriteLine("Checking path...");
+    if (!platform_directory_exists(path))
+    {
+        Console::Error::WriteFormat("The path '%s' does not exist", path);
+        Console::Error::WriteLine();
+        return EXITCODE_FAIL;
+    }
+
+    // Check if g1.dat exists (naive but good check)
+    Console::WriteLine("Checking g1.dat...");
+
+    utf8 pathG1Check[MAX_PATH];
+    String::Set(pathG1Check, sizeof(pathG1Check), path);
+    Path::Append(pathG1Check, sizeof(pathG1Check), "Data");
+    Path::Append(pathG1Check, sizeof(pathG1Check), "g1.dat");
+    if (!platform_file_exists(pathG1Check))
+    {
+        Console::Error::WriteLine("RCT2 path not valid.");
+        Console::Error::WriteFormat("Unable to find %s.", pathG1Check);
+        Console::Error::WriteLine();
+        return EXITCODE_FAIL;
+    }
+
+    // Check user path that will contain the config
+    utf8 userPath[MAX_PATH];
+    platform_resolve_user_data_path();
+    platform_get_user_directory(userPath, NULL);
+    if (!platform_ensure_directory_exists(userPath)) {
+        Console::Error::WriteFormat("Unable to access or create directory '%s'.", userPath);
+        Console::Error::WriteLine();
+        return EXITCODE_FAIL;
+    }
+
+    // Update RCT2 path in config
+
+    // TODO remove this when we get rid of config_apply_to_old_addresses
+    if (!openrct2_setup_rct2_segment()) {
+        Console::Error::WriteLine("Unable to load RCT2 data sector");
+        return EXITCODE_FAIL;
+    }
+
+    config_set_defaults();
+    config_open_default();
+    String::DiscardDuplicate(&gConfigGeneral.game_path, path);
+    if (config_save_default())
+    {
+        Console::WriteFormat("Updating RCT2 path to '%s'.", path);
+        Console::WriteLine();
+        Console::WriteLine("Updated config.ini");
+        return EXITCODE_OK;
+    }
+    else
+    {
+        Console::Error::WriteLine("Unable to update config.ini");
+        return EXITCODE_FAIL;
+    }
+}
 
 static void PrintAbout()
 {
