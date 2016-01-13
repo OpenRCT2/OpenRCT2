@@ -1,11 +1,4 @@
-#ifdef _WIN32
-#ifndef WIN32_LEAN_AND_MEAN
-	#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#else
-#include "../platform/platform.h"
-#endif
+#include <SDL_timer.h>
 
 #include "Stopwatch.hpp"
 
@@ -80,40 +73,12 @@ void Stopwatch::Stop()
 
 uint64 Stopwatch::QueryFrequency()
 {
-#ifdef _WIN32
-	LARGE_INTEGER frequency;
-	if (QueryPerformanceFrequency(&frequency))
-	{
-		return frequency.QuadPart;
-	}
-	else
-	{
-		log_error("QueryPerformanceFrequency failed.");
-		return 0;
-	}
-#else
-	STUB();
-	return 0;
-#endif
+	return SDL_GetPerformanceFrequency();
 }
 
 uint64 Stopwatch::QueryCurrentTicks()
 {
-#ifdef _WIN32
-	LARGE_INTEGER counter;
-	if (QueryPerformanceCounter(&counter))
-	{
-		return counter.QuadPart;
-	}
-	else
-	{
-		log_error("QueryPerformanceCounter failed.");
-		return 0;
-	}
-#else
-	STUB();
-	return 0;
-#endif
+	return SDL_GetPerformanceCounter();
 }
 
 extern "C" {
