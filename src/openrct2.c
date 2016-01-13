@@ -83,11 +83,8 @@ void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
 	if (!str_is_null_or_empty(OPENRCT2_BRANCH)) {
 		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
 	}
-	if (!str_is_null_or_empty(OPENRCT2_BUILD_NUMBER)) {
-		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_BUILD_NUMBER);
-	}
 	if (!str_is_null_or_empty(OPENRCT2_COMMIT_SHA1_SHORT)) {
-		sprintf(strchr(buffer, 0), " (%s)", OPENRCT2_COMMIT_SHA1_SHORT);
+		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_COMMIT_SHA1_SHORT);
 	}
 	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER)) {
 		sprintf(strchr(buffer, 0), " provided by %s", OPENRCT2_BUILD_SERVER);
