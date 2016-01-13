@@ -63,7 +63,7 @@ extern "C" {
 
 #ifndef DISABLE_NETWORK
 
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	#include <winsock2.h>
 	#include <ws2tcpip.h>
 	#define LAST_SOCKET_ERROR() WSAGetLastError()
@@ -88,7 +88,7 @@ extern "C" {
 	#define LAST_SOCKET_ERROR() errno
 	#define closesocket close
 	#define ioctlsocket ioctl
-#endif // _WIN32
+#endif // __WINDOWS__
 
 // Fixes issues on OS X
 #if defined(_RCT2_H_) && !defined(_MSC_VER)

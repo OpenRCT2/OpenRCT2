@@ -21,6 +21,8 @@
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
+#include <SDL_platform.h>
+
 #ifndef _USE_MATH_DEFINES
 	#define _USE_MATH_DEFINES
 #endif

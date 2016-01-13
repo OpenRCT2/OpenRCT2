@@ -306,7 +306,7 @@ bool NetworkConnection::SetNonBlocking(bool on)
 
 bool NetworkConnection::SetNonBlocking(SOCKET socket, bool on)
 {
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	u_long nonblocking = on;
 	return ioctlsocket(socket, FIONBIO, &nonblocking) == 0;
 #else
@@ -429,7 +429,7 @@ Network::~Network()
 
 bool Network::Init()
 {
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	if (!wsa_initialized) {
 		log_verbose("Initialising WSA");
 		WSADATA wsa_data;
@@ -468,7 +468,7 @@ void Network::Close()
 	game_command_queue.clear();
 	player_list.clear();
 
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	if (wsa_initialized) {
 		WSACleanup();
 		wsa_initialized = false;
@@ -1249,7 +1249,7 @@ NetworkPlayer* Network::AddPlayer(const char* name)
 
 void Network::PrintError()
 {
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	wchar_t *s = NULL;
 	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, LAST_SOCKET_ERROR(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);

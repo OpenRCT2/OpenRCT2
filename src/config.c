@@ -895,7 +895,7 @@ void config_apply_to_old_addresses()
 #define CTRL 0x200
 #define ALT 0x400
 #define CMD 0x800
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __MACOSX__
 	#define PLATFORM_MODIFIER CMD
 #else
 	#define PLATFORM_MODIFIER CTRL

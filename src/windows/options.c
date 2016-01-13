@@ -522,7 +522,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_HARDWARE_DISPLAY_CHECKBOX:
 			gConfigGeneral.hardware_display ^= 1;
-#ifdef _WIN32
+#ifdef __WINDOWS__
 			// Windows is apparently able to switch to hardware rendering on the fly although
 			// using the same window in an unaccelerated and accelerated context is unsupported by SDL2
 			gHardwareDisplay = gConfigGeneral.hardware_display;
@@ -1316,11 +1316,11 @@ static void window_options_invalidate(rct_window *w)
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SOUND_NONE;
 		}
 		else {
-#ifndef __linux__
+#ifndef __LINUX__
 			if (currentSoundDevice == 0)
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 5510;
 			else
-#endif // __linux__
+#endif // __LINUX__
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 1170;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;

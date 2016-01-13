@@ -21,13 +21,15 @@
 #ifndef _ADDRESSES_H_
 #define _ADDRESSES_H_
 
+#include "common.h"
+
 #ifdef _MSC_VER
 #pragma warning(disable : 4731)
 #endif
 
 #define RCT2_ADDRESS(address, type)				((type*)(address))
 #define RCT2_GLOBAL(address, type)				(*((type*)(address)))
-#ifdef _WIN32
+#ifdef __WINDOWS__
 #define RCT2_CALLPROC(address)					(((void(*)())(address))())
 #define RCT2_CALLFUNC(address, returnType)		(((returnType(*)())(address))())
 
@@ -46,7 +48,7 @@
 #define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)
 #define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
 #define RCT2_CALLFUNC_6(address, returnType, a1, a2, a3, a4, a5, a6, v1, v2, v3, v4, v5, v6)
-#endif // _WIN32
+#endif // __WINDOWS__
 
 #define RCT2_CALLPROC_1(address, a1, v1)									RCT2_CALLFUNC_1(address, void, a1, v1)
 #define RCT2_CALLPROC_2(address, a1, a2, v1, v2)							RCT2_CALLFUNC_2(address, void, a1, a2, v1, v2)

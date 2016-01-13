@@ -18,13 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#if defined(__linux__)
+#include "../common.h"
 
-#include "platform.h"
+#ifdef __LINUX__
+
 #include <dlfcn.h>
-#include <stdlib.h>
+#include <fontconfig/fontconfig.h>
+
 #include "../util/util.h"
-#include "fontconfig/fontconfig.h"
+#include "platform.h"
 
 // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
 struct lmap {

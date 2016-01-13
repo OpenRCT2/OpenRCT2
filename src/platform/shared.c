@@ -902,7 +902,7 @@ void platform_set_cursor(char cursor)
 static void platform_load_cursors()
 {
 	RCT2_GLOBAL(0x14241BC, uint32) = 2;
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	HINSTANCE hInst = RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE);
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ARROW,				HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x74));
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_BLANK,				HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA1));
@@ -933,7 +933,7 @@ static void platform_load_cursors()
 	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_CLOSED,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA5));
 #else
 	STUB();
-#endif // _WIN32
+#endif // __WINDOWS__
 
 	_cursors[0] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
 	_cursors[1] = SDL_CreateCursor(blank_cursor_data, blank_cursor_mask, 32, 32, BLANK_CURSOR_HOTX, BLANK_CURSOR_HOTY);

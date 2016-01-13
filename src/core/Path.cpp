@@ -19,7 +19,7 @@ namespace Path
 
     utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)
     {
-#if _WIN32
+#if __WINDOWS__
         wchar_t * relativePathW = utf8_to_widechar(relativePath);
         wchar_t   absolutePathW[MAX_PATH];
         DWORD length = GetFullPathNameW(relativePathW, Util::CountOf(absolutePathW), absolutePathW, NULL);
