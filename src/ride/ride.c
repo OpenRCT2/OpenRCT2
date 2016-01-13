@@ -3596,6 +3596,12 @@ void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
 
 	uint8 ride_id = *edx & 0xFF;
+	if (ride_id >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", ride_id);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rct_ride* ride = GET_RIDE(ride_id);
 	if (ride->type == RIDE_TYPE_NULL)
 	{
@@ -4879,6 +4885,12 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 	rct_ride *ride;
 
 	rideIndex = *edx & 0xFF;
+	if (rideIndex >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", rideIndex);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	targetStatus = (*edx >> 8) & 0xFF;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
@@ -4962,6 +4974,12 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	static char newName[128];
 
 	int rideIndex = (*ebx >> 8) & 0xFF;
+	if (rideIndex >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", rideIndex);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	int nameChunkIndex = *eax & 0xFFFF;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
@@ -4982,6 +5000,12 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 
 	ride = GET_RIDE(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid game command for ride %u", rideIndex);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	format_string(oldName, ride->name, &ride->name_arguments);
 	if (strcmp(oldName, newName) == 0) {
 		*ebx = 0;
@@ -5633,6 +5657,12 @@ void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, in
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	uint8 ride_id = *(uint8*)edx;
+	if (ride_id >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", ride_id);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = 0;
@@ -5769,6 +5799,12 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 	bool apply = (*ebx & GAME_COMMAND_FLAG_APPLY);
 
 	uint8 ride_id = *edx;
+	if (ride_id >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", ride_id);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	uint8 type = *ebx >> 8;
 	uint8 value = *edx >> 8;
 	int index = *edi;
@@ -5892,7 +5928,19 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 
 	flags = *ebx;
 	ride_number = (*edx & 0xFF);
+	if (ride_number >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", ride_number);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	ride = GET_RIDE(ride_number);
+	if (ride->type == RIDE_TYPE_NULL)
+	{
+		log_warning("Invalid game command for ride %u", ride_number);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	rideEntry = GET_RIDE_ENTRY(ride->subtype);
 	price = *edi;
 	secondary_price = (*edx >> 8);
@@ -6989,6 +7037,12 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 
 	commandType = (*ebx >> 8) & 0xFF;
 	rideIndex = *edx & 0xFF;
+	if (rideIndex >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", rideIndex);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	value = (*edx >> 8) & 0xFF;
 
 	ride = GET_RIDE(rideIndex);
@@ -7190,7 +7244,17 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 			return MONEY32_UNDEFINED;
 		}
 	} else {
+		if (rideIndex >= MAX_RIDES)
+		{
+			log_warning("Invalid game command for ride %u", rideIndex);
+			return MONEY32_UNDEFINED;
+		}
 		rct_ride* ride = GET_RIDE(rideIndex);
+		if (ride->type == RIDE_TYPE_NULL)
+		{
+			log_warning("Invalid game command for ride %u", rideIndex);
+			return MONEY32_UNDEFINED;
+		}
 		if (ride->status != RIDE_STATUS_CLOSED) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
 			return MONEY32_UNDEFINED;
@@ -7338,6 +7402,11 @@ void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int 
 }
 
 money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 station_num, uint8 flags){
+	if (rideIndex >= MAX_RIDES)
+	{
+		log_warning("Invalid game command for ride %u", rideIndex);
+		return MONEY32_UNDEFINED;
+	}
 	rct_ride* ride = GET_RIDE(rideIndex);
 	if (ride->type == RIDE_TYPE_NULL)
 	{
