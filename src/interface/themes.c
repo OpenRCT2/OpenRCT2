@@ -171,18 +171,24 @@ void colour_scheme_update_by_class(rct_window *window, rct_windowclass classific
 	window->flags |= WF_TRANSPARENT;
 }
 
+static void theme_set_preset_string(const utf8string preset)
+{
+	SafeFree(gConfigInterface.current_theme_preset);
+	gConfigInterface.current_theme_preset = strdup(preset);
+}
+
 void theme_change_preset(int preset)
 {
 	if (preset >= 0 && preset < gConfigThemes.num_presets) {
 		switch (preset) {
 		case 0:
-			gConfigInterface.current_theme_preset = "*RCT2";
+			theme_set_preset_string("*RCT2");
 			break;
 		case 1:
-			gConfigInterface.current_theme_preset = "*RCT1";
+			theme_set_preset_string("*RCT1");
 			break;
 		default:
-			gConfigInterface.current_theme_preset = gConfigThemes.presets[preset].name;
+			theme_set_preset_string(gConfigThemes.presets[preset].name);
 			break;
 		}
 		gCurrentTheme = preset;

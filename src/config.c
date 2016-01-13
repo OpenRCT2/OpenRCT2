@@ -396,6 +396,21 @@ void config_set_defaults()
 	}
 }
 
+void config_release()
+{
+	for (int i = 0; i < countof(_sectionDefinitions); i++) {
+		config_section_definition *section = &_sectionDefinitions[i];
+		for (int j = 0; j < section->property_definitions_count; j++) {
+			config_property_definition *property = &section->property_definitions[j];
+			value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
+			if (property->type == CONFIG_VALUE_TYPE_STRING) {
+				utf8 **dst = (utf8**)&(destValue->value_string);
+				SafeFree(*dst);
+			}
+		}
+	}
+}
+
 void config_get_default_path(utf8 *outPath)
 {
 	platform_get_user_directory(outPath, NULL);
