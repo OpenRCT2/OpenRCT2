@@ -3971,6 +3971,8 @@ STR_5629    :Difficulty level
 STR_5630    :Enable unlocking of scenarios
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own...
+STR_5633    :CMD + 
+STR_5634    :OPTION + 
 
 #############
 # Scenarios #

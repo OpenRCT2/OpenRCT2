@@ -97,7 +97,15 @@ void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
 		strcat(buffer, formatBuffer);
 	}
 	if (shortcutKey & 0x400) {
+#if defined(__APPLE__) && defined(__MACH__)
+		format_string(formatBuffer, STR_OPTION_PLUS, NULL);
+#else
 		format_string(formatBuffer, STR_ALT_PLUS, NULL);
+#endif
+		strcat(buffer, formatBuffer);
+	}
+	if (shortcutKey & 0x800) {
+		format_string(formatBuffer, STR_CMD_PLUS, NULL);
 		strcat(buffer, formatBuffer);
 	}
 	strcat(buffer, SDL_GetScancodeName(shortcutKey & 0xFF));

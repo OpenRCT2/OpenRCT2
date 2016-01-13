@@ -15,6 +15,7 @@
 - Fix: [#2650] Server did not validate actions send from clients (caused error box and desynchronisation)
 - Fix: [#2651] Ride was not removed when multiplayer client aborted ride construction.
 - Fix: [#2654] Free transport rides can prevent guests from properly leaving the park
+- Fix: [#2704] OSX Command Key not read for keyboard shortcuts.
 
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
