@@ -7680,7 +7680,7 @@ loc_6DC462:
 	goto loc_6DC985;
 
 loc_6DC476:
-	if (!(vehicle->var_D5 & (1 << 2))) {
+	if (vehicle->var_D5 & (1 << 2)) {
 		regs.edi = RCT2_ADDRESS(0x008B8F74, uint32)[vehicle->var_D4];
 		regs.al = vehicle->var_C5 + 1;
 		if ((uint8)regs.al < ((uint8*)regs.edi)[-1]) {
