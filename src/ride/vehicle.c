@@ -2062,6 +2062,7 @@ void vehicle_test_reset(rct_vehicle* vehicle) {
 	ride->special_track_elements = 0;
 	memset(&ride->length, 0, 4 * 4);
 	memset(&ride->time, 0, 4 * 2);
+	ride->total_air_time = 0;
 	ride->var_1F6 = vehicle->current_station;
 	window_invalidate_by_number(WC_RIDE, vehicle->ride);
 }
