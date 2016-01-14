@@ -770,7 +770,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			ride->length[test_segment] += distance;
 		}
 
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_HAS_G_FORCES){
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES)){
 			int vertical_g, lateral_g;
 			vehicle_get_g_forces(vehicle, &vertical_g, &lateral_g);
 
@@ -1396,7 +1396,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 
 		num_seats_on_train &= 0x7F;
 
-		if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_NO_TEST_MODE)){
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE)){
 			if (vehicle->var_C0 < 20){
 				train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
 				return;
@@ -1409,7 +1409,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 			}
 		}
 
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS){
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)){
 			if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH){
 				if (ride->min_waiting_time * 32 > vehicle->var_C0){
 					train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
@@ -1448,7 +1448,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 			}
 		}
 
-		if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2] & RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS &&
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS) &&
 			ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD){
 
 			if (num_peeps_on_train == num_seats_on_train){
@@ -1619,8 +1619,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 			return;
 	}
 
-	if (RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride->type * 2]
-		& RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS)) {
 		if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
 			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT) {
 				if (vehicle_can_depart_synchronised(vehicle)) {

@@ -470,8 +470,7 @@ static void setup_track_manager_objects(){
 				if (ride_type == 0xFF)
 					continue;
 
-				if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride_type * 2] &
-					RIDE_TYPE_FLAG_HAS_TRACK))
+				if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK))
 					continue;
 
 				if (pos[3] & (1 << 0)){
