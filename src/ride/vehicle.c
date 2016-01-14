@@ -1321,7 +1321,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8 num_peeps_on_train
 		if (vehicle->peep[peep] != 0xFFFF){
 			ride->train_at_station[vehicle->current_station] = 0xFF;
 			vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
-			vehicle->sub_state = 2;
+			vehicle->sub_state = 0;
 			vehicle_invalidate_window(vehicle);
 			return;
 		}
@@ -1338,8 +1338,8 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8 num_peeps_on_train
 		return;
 
 	ride->train_at_station[vehicle->current_station] = 0xFF;
-	vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
-	vehicle->sub_state = 2;
+	vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
+	vehicle->sub_state = 0;
 	vehicle_invalidate_window(vehicle);
 }
 
