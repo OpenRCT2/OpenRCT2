@@ -4196,7 +4196,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 		window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_EMPTY;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 140, uint16) = STR_MAIN_COLOUR_SCHEME + colourScheme;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 14, uint16) = STR_MAIN_COLOUR_SCHEME + colourScheme;
 
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
