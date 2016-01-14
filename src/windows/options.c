@@ -1253,7 +1253,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
 		// construction marker: white/translucent
-		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8);
+		window_options_display_widgets[WIDX_CONSTRUCTION_MARKER].image = STR_WHITE + gConfigGeneral.construction_marker_colour;
 
 		window_options_display_widgets[WIDX_RESOLUTION].type = WWT_DROPDOWN;
 		window_options_display_widgets[WIDX_RESOLUTION_DROPDOWN].type = WWT_DROPDOWN_BUTTON;

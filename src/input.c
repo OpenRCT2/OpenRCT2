@@ -397,7 +397,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 			break;
 		case MOUSE_STATE_LEFT_RELEASE:
 			gInputState = INPUT_STATE_RESET;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_WINDOWNUMBER, rct_windownumber) == w->number) {
+			if (_dragWidget.window_number == w->number) {
 				if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE)) {
 					w = window_find_by_number(
 						RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
