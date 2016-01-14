@@ -1925,7 +1925,7 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :不能再借貸更多錢!
 STR_1919    :沒有足夠的現金!
 STR_1920    :不能償還貸款!
-STR_1921    :{SMALLFONT}{BLACK}開新遊戲
+STR_1921    :{SMALLFONT}{BLACK}開始新遊戲
 STR_1922    :{SMALLFONT}{BLACK}繼續遊玩存檔
 STR_1923    :{SMALLFONT}{BLACK}開始教學
 STR_1924    :{SMALLFONT}{BLACK}退出遊戲
@@ -3331,7 +3331,7 @@ STR_3320    :無法儲存劇情檔案...
 STR_3321    :成功安裝新物件
 STR_3322    :{WINDOW_COLOUR_2}目標: {BLACK}{STRINGID}
 STR_3323    :缺少物件資料, ID為: 
-STR_3324    :需要資料片: 
+STR_3324    :需要資料片: {STRINGID}
 STR_3325    :需要一隻資料片
 STR_3326    :{WINDOW_COLOUR_2}(暫無圖片)
 STR_3327    :尚未設定遊客的開始步行位置
@@ -3972,7 +3972,124 @@ STR_5629    :困難程度
 STR_5630    :允許劇情解鎖
 STR_5631    :額外下載的官方樂園
 STR_5632    :建設你的..
+STR_5633    :CMD + 
+STR_5634    :OPTION + 
 
+
+#############
+# Scenarios #
+################
+# RCT Original #
+################
+<Forest Frontiers>
+STR_SCNR    :Forest Frontiers
+STR_PARK    :Forest Frontiers
+STR_DTLS    :在隱藏於森林深處的清空範圍中, 建造一個很受歡迎的樂園
+
+<Dynamite Dunes>
+STR_SCNR    :Dynamite Dunes
+STR_PARK    :Dynamite Dunes
+STR_DTLS    :這個座立於沙漠中的樂園只有一座雲霄飛車, 但不缺乏可供擴充的位置
+
+<Leafy Lake>
+STR_SCNR    :Leafy Lake
+STR_PARK    :Leafy Lake
+STR_DTLS    :在一個大型湖泊的旁邊, 由零開始建造一個樂園
+
+<Diamond Heights>
+STR_SCNR    :Diamond Heights
+STR_PARK    :Diamond Heights
+STR_DTLS    :Diamond Heights已經是一個擁有極佳遊樂設施, 並且很發展得很成功的樂園 - 繼續發展它讓它的價值翻倍
+
+<Evergreen Gardens>
+STR_SCNR    :Evergreen Gardens
+STR_PARK    :Evergreen Gardens
+STR_DTLS    :將景色優美的Evergreen Gardens轉型成一個很受歡迎的樂園
+
+<Bumbly Beach>
+STR_SCNR    :Bumbly Beach
+STR_PARK    :Bumbly Beach
+STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+
+<Trinity Islands>
+STR_SCNR    :Trinity Islands
+STR_PARK    :Trinity Islands
+STR_DTLS    :Several islands form the basis for this new park
+
+<Katie's Dreamland>
+STR_SCNR    :Katie's Dreamland
+STR_PARK    :Katie's Dreamland
+STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+
+<Pokey Park>
+STR_SCNR    :Pokey Park
+STR_PARK    :Pokey Park
+STR_DTLS    :A small, cramped amusement park which requires major expansion
+
+<White Water Park>
+STR_SCNR    :White Water Park
+STR_PARK    :White Water Park
+STR_DTLS    :A park with some excellent water-based rides requires expansion
+
+<Millennium Mines>
+STR_SCNR    :Millennium Mines
+STR_PARK    :Millennium Mines
+STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+
+<Karts & Coasters>
+STR_SCNR    :Karts & Coasters
+STR_PARK    :Karts & Coasters
+STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+
+<Mel's World>
+STR_SCNR    :Mel's World
+STR_PARK    :Mel's World
+STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+
+<Mystic Mountain>
+STR_SCNR    :Mystic Mountain
+STR_PARK    :Mystic Mountain
+STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+
+<Pacific Pyramids>
+STR_SCNR    :Pacific Pyramids
+STR_PARK    :Pacific Pyramids
+STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+
+<Crumbly Woods>
+STR_SCNR    :Crumbly Woods
+STR_PARK    :Crumbly Woods
+STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+
+<Paradise Pier>
+STR_SCNR    :Paradise Pier
+STR_PARK    :Paradise Pier
+STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+
+<Lightning Peaks>
+STR_SCNR    :Lightning Peaks
+STR_PARK    :Lightning Peaks
+STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+
+<Ivory Towers>
+STR_SCNR    :Ivory Towers
+STR_PARK    :Ivory Towers
+STR_DTLS    :一個有數項問題的知名樂園
+
+<Rainbow Valley>
+STR_SCNR    :Rainbow Valley
+STR_PARK    :Rainbow Valley
+STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+
+<Thunder Rock>
+STR_SCNR    :Thunder Rock
+STR_PARK    :Thunder Rock
+STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+
+<Mega Park>
+STR_SCNR    :Mega Park
+STR_PARK    :Mega Park
+STR_DTLS    :盡情玩吧!
 
 #####################
 # Rides/attractions # 
