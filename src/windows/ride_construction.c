@@ -2094,7 +2094,7 @@ static void window_ride_construction_invalidate(rct_window *w)
  */
 static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_drawpixelinfo *clipdpi;
+	rct_drawpixelinfo clipdpi;
 	rct_widget *widget;
 	int x, y, width, height;
 
@@ -2113,10 +2113,8 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 	y = w->y + widget->top + 1;
 	width = widget->right - widget->left - 1;
 	height = widget->bottom - widget->top - 1;
-	clipdpi = clip_drawpixelinfo(dpi, x, width, y, height);
-	if (clipdpi != NULL) {
-		window_ride_construction_draw_track_piece(w, clipdpi, rideIndex, trackType, trackDirection, edxRS16, width, height);
-		rct2_free(clipdpi);
+	if (clip_drawpixelinfo(&clipdpi, dpi, x, y, width, height)) {
+		window_ride_construction_draw_track_piece(w, &clipdpi, rideIndex, trackType, trackDirection, edxRS16, width, height);
 	}
 
 	// Draw cost

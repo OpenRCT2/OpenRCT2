@@ -667,7 +667,7 @@ static void setup_in_use_selection_flags(){
 static int sub_6AB211(){
 	uint32 total_objects = gInstalledObjectsCount;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = rct2_malloc(total_objects);
+	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = malloc(total_objects);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
 		log_error("Failed to allocate memory for object flag list.");
@@ -717,12 +717,9 @@ static int sub_6AB211(){
  *
  *  rct2: 0x006AB316
  */
-static void editor_object_flags_free(){
-	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
-		return;
-	}
-	rct2_free(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*));
-	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = NULL;
+static void editor_object_flags_free()
+{
+	SafeFree(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*));
 }
 
 /**

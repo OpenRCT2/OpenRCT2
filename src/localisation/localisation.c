@@ -18,12 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef _WIN32
+#include "../common.h"
+
+#ifdef __WINDOWS__
 #include <windows.h>
 #else
 #include <iconv.h>
 #include <errno.h>
-#endif // _WIN32
+#endif // __WINDOWS__
+
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -936,7 +939,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 {
 	size_t srcLength = strlen(src);
 
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	utf16 stackBuffer[256];
 	utf16 *heapBuffer = NULL;
 	utf16 *intermediateBuffer = stackBuffer;
@@ -1005,7 +1008,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 	//log_warning("converted %s of size %d, %d", dst, byte_diff, strlen(dst));
 	int result = byte_diff;
 	free(buffer_orig);
-#endif // _WIN32
+#endif // __WINDOWS__
 
 	return result;
 }

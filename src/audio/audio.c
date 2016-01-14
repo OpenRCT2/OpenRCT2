@@ -86,7 +86,7 @@ void audio_populate_devices()
 
 		safe_strncpy(systemAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
 	}
-#ifndef __linux__
+#ifndef __LINUX__
 	gAudioDeviceCount++;
 	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
 	safe_strncpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
@@ -94,7 +94,7 @@ void audio_populate_devices()
 #else
 	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
 	memcpy(gAudioDevices, systemAudioDevices, gAudioDeviceCount * sizeof(audio_device));
-#endif // __linux__
+#endif // __LINUX__
 
 	free(systemAudioDevices);
 }

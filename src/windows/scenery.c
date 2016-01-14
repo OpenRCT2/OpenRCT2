@@ -1091,8 +1091,8 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 			gfx_draw_sprite(dpi, imageId, left + 0x21, top, w->colours[1]);
 		} else if (currentSceneryGlobalId >= 0x200) {
 			sceneryEntry = g_wallSceneryEntries[currentSceneryGlobalId - 0x200];
-			rct_drawpixelinfo* clipdpi = clip_drawpixelinfo(dpi, left + 1, 64, top + 1, 78);
-			if (clipdpi != NULL) {
+			rct_drawpixelinfo clipdpi;
+			if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, 64, 78)) {
 				uint32 imageId = sceneryEntry->image;
 				uint8 tertiaryColour = w->colours[1];
 
@@ -1102,11 +1102,11 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
 						imageId |= (window_scenery_secondary_colour << 24) | 0x80000000;
 					}
-					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+					gfx_draw_sprite(&clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 						tertiaryColour);
 
 					imageId = (sceneryEntry->image + 0x40000006) | ((window_scenery_primary_colour + 0x70) << 19);
-					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+					gfx_draw_sprite(&clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 						tertiaryColour);
 				}
 				else {
@@ -1121,17 +1121,14 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 						}
 
 					}
-					gfx_draw_sprite(clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+					gfx_draw_sprite(&clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 					tertiaryColour);
 
 					if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG5){
-						gfx_draw_sprite(clipdpi, imageId + 1, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
+						gfx_draw_sprite(&clipdpi, imageId + 1, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 							tertiaryColour);
 					}
 				}
-
-
-				rct2_free(clipdpi);
 			}
 		} else if (currentSceneryGlobalId >= 0x100) {
 			sceneryEntry = g_pathBitSceneryEntries[currentSceneryGlobalId - 0x100];
@@ -1140,9 +1137,8 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 			gfx_draw_sprite(dpi, imageId, left + 0x0B, top + 0x10, w->colours[1]);
 		} else {
 			sceneryEntry = g_smallSceneryEntries[currentSceneryGlobalId];
-			rct_drawpixelinfo* clipdpi = clip_drawpixelinfo(dpi, left + 1, SCENERY_BUTTON_WIDTH - 2, top + 1, SCENERY_BUTTON_HEIGHT - 2);
-			if (clipdpi != NULL) {
-
+			rct_drawpixelinfo clipdpi;
+			if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2)) {
 				uint32 imageId = sceneryEntry->image + window_scenery_rotation;
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR) {
@@ -1160,21 +1156,19 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 					spriteTop -= 0x0C;
 				}
 
-				gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+				gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 
 				if (sceneryEntry->small_scenery.flags & 0x200) {
 					imageId = ((sceneryEntry->image + window_scenery_rotation) + 0x40000004) +
 						((window_scenery_primary_colour + 0x70) << 19);
 
-					gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+					gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
 					imageId = (sceneryEntry->image + window_scenery_rotation) + 4;
-					gfx_draw_sprite(clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+					gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}
-
-				rct2_free(clipdpi);
 			}
 		}
 

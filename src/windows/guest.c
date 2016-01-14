@@ -819,8 +819,10 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	int y = widget->top + 1 + w->y;
 	if (w->page == WINDOW_GUEST_OVERVIEW) height++;
 
-	rct_drawpixelinfo* clip_dpi = clip_drawpixelinfo(dpi, x, width, y, height );
-	if (!clip_dpi) return;
+	rct_drawpixelinfo clip_dpi;
+	if (!clip_drawpixelinfo(&clip_dpi, dpi, x, y, width, height)) {
+		return;
+	}
 
 	x = 14;
 	y = 20;
@@ -841,30 +843,28 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	ebx += eax;
 
 	int sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
-	gfx_draw_sprite( clip_dpi, sprite_id, x, y, 0);
+	gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
 	// If holding a balloon
 	if (ebx >= 0x2A1D && ebx < 0x2A3D){
 		ebx += 32;
 		ebx |= (peep->balloon_colour << 19) | 0x20000000;
-		gfx_draw_sprite( clip_dpi, ebx, x, y, 0);
+		gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
 	}
 
 	// If holding umbrella
 	if (ebx >= 0x2BBD && ebx < 0x2BDD){
 		ebx += 32;
 		ebx |= (peep->umbrella_colour << 19) | 0x20000000;
-		gfx_draw_sprite(clip_dpi, ebx, x, y, 0);
+		gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
 	}
 
 	// If wearing hat
 	if (ebx >= 0x29DD && ebx < 0x29FD){
 		ebx += 32;
 		ebx |= (peep->hat_colour << 19) | 0x20000000;
-		gfx_draw_sprite( clip_dpi, ebx, x, y, 0);
+		gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
 	}
-
-	rct2_free(clip_dpi);
 }
 
 /**
@@ -1016,14 +1016,15 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int left = widget->left + 2 + w->x;
 	int top = widget->top + w->y;
 	int height = widget->bottom - widget->top;
-	rct_drawpixelinfo* dpi_marquee = clip_drawpixelinfo(dpi, left, width, top, height);
+	rct_drawpixelinfo dpi_marquee;
+	if (!clip_drawpixelinfo(&dpi_marquee, dpi, left, top, width, height)) {
+		return;
+	}
 
-	if (!dpi_marquee)return;
 	int i = 0;
 	for (; i < PEEP_MAX_THOUGHTS; ++i){
 		if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE){
 			w->list_information_type = 0;
-			rct2_free(dpi_marquee);
 			return;
 		}
 		if (peep->thoughts[i].var_2 == 1){ // If a fresh thought
@@ -1032,7 +1033,6 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 	if (i == PEEP_MAX_THOUGHTS){
 		w->list_information_type = 0;
-		rct2_free(dpi_marquee);
 		return;
 	}
 
@@ -1043,9 +1043,7 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = 0;
 
 	x = widget->right - widget->left - w->list_information_type;
-	gfx_draw_string_left(dpi_marquee, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, 0);
-
-	rct2_free(dpi_marquee);
+	gfx_draw_string_left(&dpi_marquee, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, 0);
 }
 
 /**

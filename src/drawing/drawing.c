@@ -338,57 +338,53 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 * height (dx)
 * drawpixelinfo (edi)
 */
-rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height)
+bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height)
 {
-	rct_drawpixelinfo* newDrawPixelInfo = rct2_malloc(sizeof(rct_drawpixelinfo));
+	int right = x + width;
+	int bottom = y + height;
 
-	int right = left + width;
-	int bottom = top + height;
+	dst->bits = src->bits;
+	dst->x = src->x;
+	dst->y = src->y;
+	dst->width = src->width;
+	dst->height = src->height;
+	dst->pitch = src->pitch;
+	dst->zoom_level = 0;
 
-	newDrawPixelInfo->bits = dpi->bits;
-	newDrawPixelInfo->x = dpi->x;
-	newDrawPixelInfo->y = dpi->y;
-	newDrawPixelInfo->width = dpi->width;
-	newDrawPixelInfo->height = dpi->height;
-	newDrawPixelInfo->pitch = dpi->pitch;
-	newDrawPixelInfo->zoom_level = 0;
-
-	if (left > newDrawPixelInfo->x) {
-		uint16 clippedFromLeft = left - newDrawPixelInfo->x;
-		newDrawPixelInfo->width -= clippedFromLeft;
-		newDrawPixelInfo->x = left;
-		newDrawPixelInfo->pitch += clippedFromLeft;
-		newDrawPixelInfo->bits += clippedFromLeft;
+	if (x > dst->x) {
+		uint16 clippedFromLeft = x - dst->x;
+		dst->width -= clippedFromLeft;
+		dst->x = x;
+		dst->pitch += clippedFromLeft;
+		dst->bits += clippedFromLeft;
 	}
 
-	int stickOutWidth = newDrawPixelInfo->x + newDrawPixelInfo->width - right;
+	int stickOutWidth = dst->x + dst->width - right;
 	if (stickOutWidth > 0) {
-		newDrawPixelInfo->width -= stickOutWidth;
-		newDrawPixelInfo->pitch += stickOutWidth;
+		dst->width -= stickOutWidth;
+		dst->pitch += stickOutWidth;
 	}
 
-	if (top > newDrawPixelInfo->y) {
-		uint16 clippedFromTop = top - newDrawPixelInfo->y;
-		newDrawPixelInfo->height -= clippedFromTop;
-		newDrawPixelInfo->y = top;
-		uint32 bitsPlus = (newDrawPixelInfo->pitch + newDrawPixelInfo->width) * clippedFromTop;
-		newDrawPixelInfo->bits += bitsPlus;
+	if (y > dst->y) {
+		uint16 clippedFromTop = y - dst->y;
+		dst->height -= clippedFromTop;
+		dst->y = y;
+		uint32 bitsPlus = (dst->pitch + dst->width) * clippedFromTop;
+		dst->bits += bitsPlus;
 	}
 
-	int bp = newDrawPixelInfo->y + newDrawPixelInfo->height - bottom;
+	int bp = dst->y + dst->height - bottom;
 	if (bp > 0) {
-		newDrawPixelInfo->height -= bp;
+		dst->height -= bp;
 	}
 
-	if (newDrawPixelInfo->width > 0 && newDrawPixelInfo->height > 0) {
-		newDrawPixelInfo->x -= left;
-		newDrawPixelInfo->y -= top;
-
-		return newDrawPixelInfo;
+	if (dst->width > 0 && dst->height > 0) {
+		dst->x -= x;
+		dst->y -= y;
+		return true;
 	}
 
-	rct2_free(newDrawPixelInfo);
-	return NULL;
+	return false;
 }
 
 /***

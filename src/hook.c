@@ -18,11 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef _WIN32
+#include "common.h"
+
+#ifdef __WINDOWS__
 	#include <windows.h>
 #else
 	#include <sys/mman.h>
-#endif // _WIN32
+#endif // __WINDOWS__
+
 #include "hook.h"
 #include "platform/platform.h"
 
@@ -200,19 +203,19 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 
 	data[i++] = 0xC3; // retn
 
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
 	memcpy((void *)address, data, i);
-#endif // _WIN32
+#endif // __WINDOWS__
 }
 
 void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
 	if (!g_hooktableaddress) {
 		size_t size = g_maxhooks * 100;
-#ifdef _WIN32
+#ifdef __WINDOWS__
 		g_hooktableaddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 #else
 		g_hooktableaddress = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -221,7 +224,7 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 			perror("mmap");
 			exit(1);
 		}
-#endif // _WIN32
+#endif // __WINDOWS__
 	}
 	if (g_hooktableoffset > g_maxhooks) {
 		return;
@@ -235,12 +238,12 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	i += 4;
 
 	data[i++] = 0xC3; // retn
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
 	memcpy((void *)address, data, i);
-#endif // _WIN32
+#endif // __WINDOWS__
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
 }

@@ -1,18 +1,20 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
+#include "common.h"
+
 #define OPENRCT2_NAME				"OpenRCT2"
 #define OPENRCT2_VERSION			"0.0.4"
 #define OPENRCT2_ARCHITECTURE		"x86"
 
 // Platform
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	#define OPENRCT2_PLATFORM		"Windows"
-#endif // _WIN32
-#ifdef __linux__
+#endif
+#ifdef __LINUX__
 	#define OPENRCT2_PLATFORM		"Linux"
 #endif
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __MACOSX__
 	#define OPENRCT2_PLATFORM		"OS X"
 #endif
 #ifndef OPENRCT2_PLATFORM

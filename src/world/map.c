@@ -3654,7 +3654,7 @@ void map_reorganise_elements()
 {
 	platform_set_cursor(CURSOR_ZZZ);
 
-	rct_map_element* new_map_elements = rct2_malloc(0x30000 * sizeof(rct_map_element));
+	rct_map_element* new_map_elements = malloc(0x30000 * sizeof(rct_map_element));
 	rct_map_element* new_elements_pointer = new_map_elements;
 
 	if (new_map_elements == NULL || new_map_elements == (rct_map_element*)-1){
@@ -3680,7 +3680,7 @@ void map_reorganise_elements()
 	memcpy(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element), new_map_elements, num_elements * sizeof(rct_map_element));
 	memset(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element) + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
 
-	rct2_free(new_map_elements);
+	free(new_map_elements);
 
 	map_update_tile_pointers();
 }

@@ -1391,7 +1391,7 @@ void title_handle_keyboard_input()
 				gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
 			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT])
 				gInputPlaceObjectModifier |= 4;
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __MACOSX__
 			if (gKeysState[SDL_SCANCODE_LGUI] || gKeysState[SDL_SCANCODE_RGUI]) {
 				gInputPlaceObjectModifier |= 8;
 			}
@@ -1456,7 +1456,7 @@ void game_handle_keyboard_input()
 			if (gKeysState[SDL_SCANCODE_LALT] || gKeysState[SDL_SCANCODE_RALT]) {
 				gInputPlaceObjectModifier |= 4;
 			}
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __MACOSX__
 			if (gKeysState[SDL_SCANCODE_LGUI] || gKeysState[SDL_SCANCODE_RGUI]) {
 				gInputPlaceObjectModifier |= 8;
 			}
@@ -1661,7 +1661,7 @@ void game_handle_key_scroll()
 		if (shortcutKey & ALT) {
 			if (!gKeysState[SDL_SCANCODE_LALT] && !gKeysState[SDL_SCANCODE_RALT]) continue;
 		}
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __MACOSX__
 		if (shortcutKey & CMD) {
 			if (!gKeysState[SDL_SCANCODE_LGUI] && !gKeysState[SDL_SCANCODE_RGUI]) continue;
 		}

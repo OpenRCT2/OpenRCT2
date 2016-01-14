@@ -517,7 +517,7 @@ bool openrct2_setup_rct2_segment()
 	if (err != 0)
 	{
 		err = errno;
-#ifdef __linux__
+#ifdef __LINUX__
 		// On Linux ENOMEM means all requested range is unmapped
 		if (err != ENOMEM)
 		{
@@ -527,7 +527,7 @@ bool openrct2_setup_rct2_segment()
 #else
 		pagesMissing = true;
 		perror("mincore");
-#endif // __linux__
+#endif // __LINUX__
 	} else {
 		for (int i = 0; i < numPages; i++)
 		{

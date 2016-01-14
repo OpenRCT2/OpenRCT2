@@ -10,11 +10,12 @@ void http_dispose() { }
 
 #else
 
-#include <SDL.h>
 #include "../core/Math.hpp"
 
-// cURL includes windows.h, but we don't need all of it.
-#define WIN32_LEAN_AND_MEAN
+#ifdef __WINDOWS__
+	// cURL includes windows.h, but we don't need all of it.
+	#define WIN32_LEAN_AND_MEAN
+#endif
 #include <curl/curl.h>
 
 #define MIME_TYPE_APPLICATION_JSON "application/json"
@@ -117,7 +118,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	// On GNU/Linux (and OS X), curl will use the system certs by default
 	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
 #endif

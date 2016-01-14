@@ -21,20 +21,21 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
-#ifdef _WIN32
+#include "../common.h"
+
+#ifdef __WINDOWS__
 #define HAVE_MATH_H
-#endif // _WIN32
+#endif // __WINDOWS__
 
 #include <SDL.h>
 
-#include "../common.h"
 #include "../drawing/font.h"
 
 #ifndef MAX_PATH
 #define MAX_PATH 260
 #endif
 
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __MACOSX__
 #define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
 #else
 #define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
@@ -171,7 +172,7 @@ bool platform_check_steam_overlay_attached();
 datetime64 platform_get_datetime_now_utc();
 
 // Windows specific definitions
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	#ifndef WIN32_LEAN_AND_MEAN
 		#define WIN32_LEAN_AND_MEAN
 	#endif
@@ -179,6 +180,6 @@ datetime64 platform_get_datetime_now_utc();
 
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
-#endif // _WIN32
+#endif // __WINDOWS__
 
 #endif

@@ -574,27 +574,19 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].bottom - 6 + w->y, 0
 	);
 
-	rct_drawpixelinfo* sprite_dpi = clip_drawpixelinfo(
+	rct_drawpixelinfo sprite_dpi;
+	if (clip_drawpixelinfo(
+		&sprite_dpi,
 		dpi,
 		window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left + w->x + 1,
-		window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].right - window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left - 1,
 		window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top + w->y + 1,
+		window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].right - window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left - 1,
 		window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].bottom - window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top - 1
-		);
-
-
-
-	if (sprite_dpi != NULL) {
+	)) {
 		// Entertainers tab image
 		i = (selectedTab == 3 ? w->list_information_type & 0x0FFFFFFFC : 0);
 		i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982738, int), int)[0] + 1;
-		gfx_draw_sprite(
-			sprite_dpi,
-			i,
-			0x0F,
-			0x17, 0
-			);
-		rct2_free(sprite_dpi);
+		gfx_draw_sprite(&sprite_dpi, i, 0x0F, 0x17, 0);
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {

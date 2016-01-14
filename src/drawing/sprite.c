@@ -54,7 +54,7 @@ int gfx_load_g1()
 			SDL_RWread(file, g1Elements, header.num_entries * sizeof(rct_g1_element), 1);
 
 			// Read element data
-			_g1Buffer = rct2_malloc(header.total_size);
+			_g1Buffer = malloc(header.total_size);
 			SDL_RWread(file, _g1Buffer, header.total_size, 1);
 
 			SDL_RWclose(file);

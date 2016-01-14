@@ -21,6 +21,8 @@
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
+#include <SDL_platform.h>
+
 #ifndef _USE_MATH_DEFINES
 	#define _USE_MATH_DEFINES
 #endif
@@ -270,9 +272,6 @@ const char *get_file_path(int pathId);
 void get_system_info();
 void get_system_time();
 void get_local_time();
-void *rct2_malloc(size_t numBytes);
-void *rct2_realloc(void *block, size_t numBytes);
-void rct2_free(void *block);
 void rct2_quit();
 
 int rct2_open_file(const char *path);

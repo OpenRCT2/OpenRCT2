@@ -510,7 +510,7 @@ namespace CommandLine
 
     static bool HandleSpecialArgument(const char * argument)
     {
-#if defined(__APPLE__) && defined(__MACH__)
+#ifdef __MACOSX__
         if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
         {
             return true;
