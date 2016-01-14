@@ -1028,9 +1028,10 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		x += w->x;
 		y += w->y;
 
-		dpi = clip_drawpixelinfo(dpi, x, width, y, height);
-		if (dpi == NULL)
+		rct_drawpixelinfo clipDPI;
+		if (!clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
 			return;
+		}
 
 		x = (widget->right - widget->left) / 2;
 		y = (widget->bottom - widget->top) - 12;
@@ -1042,13 +1043,13 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 
 		rideEntry = ride_get_entry(ride);
 		if (rideEntry->flags & RIDE_ENTRY_FLAG_0) {
-			dpi->zoom_level = 1;
-			dpi->width *= 2;
-			dpi->height *= 2;
+			clipDPI.zoom_level = 1;
+			clipDPI.width *= 2;
+			clipDPI.height *= 2;
 			x *= 2;
 			y *= 2;
-			dpi->x *= 2;
-			dpi->y *= 2;
+			clipDPI.x *= 2;
+			clipDPI.y *= 2;
 		}
 
 		rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[trainLayout[rideEntry->tab_vehicle]];
@@ -1066,8 +1067,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
 		spriteIndex |= 0x80000000;
 
-		gfx_draw_sprite(dpi, spriteIndex, x, y, vehicleColour.additional_2);
-		rct2_free(dpi);
+		gfx_draw_sprite(&clipDPI, spriteIndex, x, y, vehicleColour.additional_2);
 	}
 }
 
@@ -4208,7 +4208,7 @@ static void window_ride_colour_invalidate(rct_window *w)
  */
 static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_drawpixelinfo *clippedDpi;
+	rct_drawpixelinfo clippedDpi;
 	rct_widget *widget;
 	rct_ride *ride;
 	rct_ride_type *rideEntry;
@@ -4265,11 +4265,15 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	trackColour = ride_get_track_colour(ride, 0);
 	widget = &w->widgets[WIDX_ENTRANCE_PREVIEW];
 	if (widget->type != WWT_EMPTY) {
-		clippedDpi = clip_drawpixelinfo(
-			dpi, w->x + widget->left + 1, widget->right - widget->left, w->y + widget->top + 1, widget->bottom - widget->top
-		);
-		if (clippedDpi != NULL) {
-			gfx_clear(clippedDpi, 0x0C0C0C0C);
+		if (clip_drawpixelinfo(
+			&clippedDpi, 
+			dpi,
+			w->x + widget->left + 1,
+			w->y + widget->top + 1,
+			widget->right - widget->left,
+			widget->bottom - widget->top
+		)) {
+			gfx_clear(&clippedDpi, 0x0C0C0C0C);
 
 			if (ride->entrance_style != RIDE_ENTRANCE_STYLE_NONE) {
 				const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -4284,17 +4288,15 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				spriteIndex += RideEntranceDefinitions[ride->entrance_style].sprite_index;
 
 				// Back
-				gfx_draw_sprite(clippedDpi, spriteIndex, 34, 20, terniaryColour);
+				gfx_draw_sprite(&clippedDpi, spriteIndex, 34, 20, terniaryColour);
 
 				// Front
-				gfx_draw_sprite(clippedDpi, spriteIndex + 4, 34, 20, terniaryColour);
+				gfx_draw_sprite(&clippedDpi, spriteIndex + 4, 34, 20, terniaryColour);
 
 				// ?
 				if (terniaryColour != 0)
-					gfx_draw_sprite(clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, 34, 20, terniaryColour);
+					gfx_draw_sprite(&clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, 34, 20, terniaryColour);
 			}
-
-			rct2_free(clippedDpi);
 		}
 	}
 }

@@ -328,8 +328,10 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 			case NEWS_ITEM_PEEP:
 			case NEWS_ITEM_PEEP_ON_RIDE:
 			{
-				rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo(dpi, x + 1, 22, yy + 1, 22);
-				if (!cliped_dpi) break;
+				rct_drawpixelinfo cliped_dpi;
+				if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, yy + 1, 22, 22)) {
+					break;
+				}
 
 				rct_peep* peep = GET_PEEP(newsItem->assoc);
 				int clip_x = 10, clip_y = 19;
@@ -348,9 +350,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 				image_id += 0xA0000001;
 				image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
-				gfx_draw_sprite(cliped_dpi, image_id, clip_x, clip_y, 0);
-
-				rct2_free(cliped_dpi);
+				gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
 				break;
 			}
 			case NEWS_ITEM_MONEY:

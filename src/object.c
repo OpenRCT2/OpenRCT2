@@ -859,8 +859,8 @@ static bool object_type_small_scenery_test(void *objectEntry)
 static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
-	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
-	if (dpi == NULL) {
+	rct_drawpixelinfo clipDPI;
+	if (!clip_drawpixelinfo(&clipDPI, dpi, x - 56, y - 56, 112, 112)) {
 		return;
 	}
 
@@ -880,14 +880,14 @@ static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo
 		}
 	}
 
-	gfx_draw_sprite(dpi, imageId, x, y, 0);
+	gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG10) {
 		imageId = sceneryEntry->image + 0x44500004;
 		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
 			imageId |= 0x92000000;
 		}
 
-		gfx_draw_sprite(dpi, imageId, x, y, 0);
+		gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	}
 
 	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
@@ -896,10 +896,8 @@ static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo
 			imageId |= 0x92000000;
 		}
 
-		gfx_draw_sprite(dpi, imageId, x, y, 0);
+		gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	}
-
-	rct2_free(dpi);
 }
 
 static rct_string_id object_type_small_scenery_desc(void *objectEntry)
@@ -1059,8 +1057,8 @@ static bool object_type_wall_test(void *objectEntry)
 static void object_type_wall_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
 	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
-	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
-	if (dpi == NULL) {
+	rct_drawpixelinfo clipDPI;
+	if (!clip_drawpixelinfo(&clipDPI, dpi, x - 56, y - 56, 112, 112)) {
 		return;
 	}
 
@@ -1072,17 +1070,15 @@ static void object_type_wall_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 
 	x = 70;
 	y = sceneryEntry->wall.height * 2 + 72;
-	gfx_draw_sprite(dpi, imageId, x, y, 0);
+	gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	
 	if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2){
 		imageId = sceneryEntry->image + 0x44500006;
-		gfx_draw_sprite(dpi, imageId, x, y, 0);
+		gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	} else if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG5){
 		imageId++;
-		gfx_draw_sprite(dpi, imageId, x, y, 0);
+		gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	}
-
-	rct2_free(dpi);
 }
 
 static rct_string_id object_type_wall_desc(void *objectEntry)
@@ -1428,17 +1424,15 @@ static void object_type_park_entrance_paint(void *objectEntry, rct_drawpixelinfo
 {
 	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
 
-	dpi = clip_drawpixelinfo(dpi, x - 56, 112, y - 56, 112);
-	if (dpi == NULL) {
+	rct_drawpixelinfo clipDPI;
+	if (!clip_drawpixelinfo(&clipDPI, dpi, x - 56, y - 56, 112, 112)) {
 		return;
 	}
 
 	int imageId = entranceType->image_id;
-	gfx_draw_sprite(dpi, imageId + 1, 24, 68, 0);
-	gfx_draw_sprite(dpi, imageId, 56, 84, 0);
-	gfx_draw_sprite(dpi, imageId + 2, 88, 100, 0);
-
-	rct2_free(dpi);
+	gfx_draw_sprite(&clipDPI, imageId + 1, 24, 68, 0);
+	gfx_draw_sprite(&clipDPI, imageId, 56, 84, 0);
+	gfx_draw_sprite(&clipDPI, imageId + 2, 88, 100, 0);
 }
 
 static rct_string_id object_type_park_entrance_desc(void *objectEntry)

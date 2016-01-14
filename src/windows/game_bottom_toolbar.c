@@ -537,8 +537,10 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		if (newsItem->flags & 1)
 			break;
 
-		rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo(dpi, x + 1, 22, y + 1, 22);
-		if (!cliped_dpi) break;
+		rct_drawpixelinfo cliped_dpi;
+		if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, y + 1, 22, 22)) {
+			break;
+		}
 
 		rct_peep* peep = GET_PEEP(newsItem->assoc);
 		int clip_x = 10, clip_y = 19;
@@ -556,28 +558,26 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		uint32 image_id = image_id_base;
 		image_id |= 0xA0000000 | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
-		gfx_draw_sprite(cliped_dpi, image_id, clip_x, clip_y, 0);
+		gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
 
 		if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D){
 			image_id_base += 32;
 			image_id_base |= 0x20000000 | (peep->balloon_colour << 19);
 
-			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+			gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
 		}
 		else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD){
 			image_id_base += 32;
 			image_id_base |= 0x20000000 | (peep->umbrella_colour << 19);
 
-			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+			gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
 		}
 		else if (image_id_base >= 0x29DD && image_id_base < 0x29FD){
 			image_id_base += 32;
 			image_id_base |= 0x20000000 | (peep->hat_colour << 19);
 
-			gfx_draw_sprite(cliped_dpi, image_id_base, clip_x, clip_y, 0);
+			gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
 		}
-
-		rct2_free(cliped_dpi);
 		break;
 	case NEWS_ITEM_MONEY:
 		gfx_draw_sprite(dpi, SPR_FINANCE, x, y, 0);
