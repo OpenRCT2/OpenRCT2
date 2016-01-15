@@ -5305,6 +5305,12 @@ money32 ride_create(int type, int subType, int flags, int *outRideIndex, int *ou
 	rct_ride_type *rideEntry;
 	int rideIndex, rideEntryIndex;
 
+	if (type > 90)
+	{
+		log_warning("Invalid request for ride type %u", type);
+		return MONEY32_UNDEFINED;
+	}
+
 	if (subType == 255) {
 		uint8 *availableRideEntries = get_ride_entry_indices_for_ride_type(type);
 		for (uint8 *rei = availableRideEntries; *rei != 255; rei++) {
