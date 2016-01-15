@@ -120,6 +120,8 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 // sprite
 int gfx_load_g1();
 int gfx_load_g2();
+void gfx_unload_g1();
+void gfx_unload_g2();
 void sub_68371D();
 void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type);
 void gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer, uint8* dest_bits_pointer, const uint8* palette_pointer, const rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width);

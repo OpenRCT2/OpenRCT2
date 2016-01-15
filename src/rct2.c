@@ -126,6 +126,13 @@ void rct2_quit()
 	window_save_prompt_open();
 }
 
+void rct2_dispose()
+{
+	gfx_unload_g2();
+	gfx_unload_g1();
+	object_unload_all();
+}
+
 int rct2_init()
 {
 	log_verbose("initialising game");

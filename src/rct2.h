@@ -261,6 +261,7 @@ extern const char * const RCT2FilePaths[PATH_ID_END];
 extern uint32 gCurrentDrawCount;
 
 int rct2_init();
+void rct2_dispose();
 void rct2_update();
 void rct2_draw();
 void substitute_path(char *dest, const char *path, const char *filename);

@@ -322,6 +322,8 @@ void openrct2_dispose()
 	network_close();
 	http_dispose();
 	language_close_all();
+	rct2_dispose();
+	config_release();
 	platform_free();
 }
 

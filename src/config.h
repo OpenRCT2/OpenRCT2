@@ -339,6 +339,7 @@ extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
 void config_get_default_path(utf8 *outPath);
 void config_set_defaults();
+void config_release();
 bool config_open_default();
 bool config_save_default();
 
