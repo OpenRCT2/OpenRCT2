@@ -74,6 +74,16 @@ int gfx_load_g1()
 	return 0;
 }
 
+void gfx_unload_g1()
+{
+	SafeFree(_g1Buffer);
+}
+
+void gfx_unload_g2()
+{
+	SafeFree(g2.elements);
+}
+
 int gfx_load_g2()
 {
 	log_verbose("loading g2 graphics");

@@ -128,6 +128,8 @@ void rct2_quit()
 
 void rct2_dispose()
 {
+	gfx_unload_g2();
+	gfx_unload_g1();
 	object_unload_all();
 }
 
