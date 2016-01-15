@@ -3965,6 +3965,8 @@ STR_5629    :Moeilijkheidsgraad
 STR_5630    :Moeilijke scenario's worden ontgrendeld door gemakkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen...
+STR_5633    :CMD + 
+STR_5634    :OPTION + 
 
 #############
 # Scenarios #

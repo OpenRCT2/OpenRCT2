@@ -837,10 +837,9 @@ STR_0831    :{SMALLFONT}{BLACK}Oddal widok
 STR_0832    :{SMALLFONT}{BLACK}Obróć widok o 90{DEGREE}
 STR_0833    :{SMALLFONT}{BLACK}Pauza
 STR_0834    :{SMALLFONT}{BLACK}Menu zapisu i opcji
-# ------------------------------------------ Polish end
-STR_0835    :Game initialization failed
-STR_0836    :Unable to start game in a minimized state
-STR_0837    :Unable to initialize graphics system
+STR_0835    :Inicjalizacja gry nie powiodła się
+STR_0836    :Nie można uruchomić gry w trybie zminimalizowanym
+STR_0837    :Nie można zainicjalizować systemu graficznego
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
@@ -851,8 +850,9 @@ STR_0843    :<not used anymore>
 STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
-STR_0847    :About 'OpenRCT2'
+STR_0847    :O 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
+# ------------------------------------------ Polish end
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
@@ -994,31 +994,29 @@ STR_0983    :Badania i rozwój
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-# ------------------------------------------ Polish end
-STR_0987    :Too many rides/attractions
-STR_0988    :Can't create new ride/attraction...
+STR_0987    :Zbyt wiele atrakcji
+STR_0988    :Nie można stworzyć nowej atrakcji...
 STR_0989    :{STRINGID}
+# ------------------------------------------ Polish end
 STR_0990    :{SMALLFONT}{BLACK}Construction
-STR_0991    :Station platform
 # ------------------------------------------ Polish start
+STR_0991    :Platforma ze stacją
 STR_0992    :{SMALLFONT}{BLACK}Zniszcz całą atrakcję
 STR_0993    :Zniszcz atrakcję
 STR_0994    :Zniszcz
 STR_0995    :{WINDOW_COLOUR_1}Jesteś pewien, że chcesz zniszczyć {STRINGID}?
 STR_0996    :Widok ogólny
 STR_0997    :{SMALLFONT}{BLACK}Wybór widoku
-# ------------------------------------------ Polish end
-STR_0998    :No more stations allowed on this ride
-STR_0999    :Requires a station platform
-STR_1000    :Track is not a complete circuit
-STR_1001    :Track unsuitable for type of train
-STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
-STR_1006    :Must be closed first
-STR_1007    :Unable to create enough vehicles
-# ------------------------------------------ Polish start
+STR_0998    :Nie można utworzyć więcej stacji dla tej atrakcji
+STR_0999    :Wymaga platformy ze stacją
+STR_1000    :Tor nie jest obwodem zamkniętym
+STR_1001    :Tor nieodpowiedni dla tego typu kolejki
+STR_1002    :Nie można otworzyć {POP16}{POP16}{POP16}{STRINGID}...
+STR_1003    :Nie można testować {POP16}{POP16}{POP16}{STRINGID}...
+STR_1004    :Nie można zamknąć {POP16}{POP16}{POP16}{STRINGID}...
+STR_1005    :Nie można rozpocząć konstrukcji {POP16}{POP16}{POP16}{STRINGID}...
+STR_1006    :Musi być najpierw zamknięte
+STR_1007    :Nie można utworzyć wystarczająco wagonów
 STR_1008    :{SMALLFONT}{BLACK}Otwórz, zamknij lub testuj atrakcję
 STR_1009    :{SMALLFONT}{BLACK}Otwórz / zamknij wszystkie atrakcje
 STR_1010    :{SMALLFONT}{BLACK}Otwórz / zamknij park
@@ -1070,11 +1068,11 @@ STR_1053    :{SMALLFONT}{BLACK}Atrakcje w parku
 STR_1054    :{SMALLFONT}{BLACK}Nazwij atrakcję
 STR_1055    :{SMALLFONT}{BLACK}Nazwij osobę
 STR_1056    :{SMALLFONT}{BLACK}Nazwij pracownika
+STR_1057    :Nazwa kolejki/atrakcji
+STR_1058    :Wprowadź nową nazwę dla tej kolejki/atrakcji
+STR_1059    :Nie można zmienić nazwy kolejki/atrakcji...
+STR_1060    :Nieprawidłowa nazwa kolejki/atrakcji
 # ------------------------------------------ Polish end
-STR_1057    :Ride/attraction name
-STR_1058    :Enter new name for this ride/attraction:
-STR_1059    :Can't rename ride/attraction...
-STR_1060    :Invalid ride/attraction name
 STR_1061    :Normal mode
 STR_1062    :Continuous circuit mode
 STR_1063    :Reverse-Incline launched shuttle mode

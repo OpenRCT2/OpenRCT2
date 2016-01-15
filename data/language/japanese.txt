@@ -3,12 +3,12 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Spiral Roller Coaster
-STR_0003    :Stand-up Roller Coaster
+STR_0002    :スパイラルコースター
+STR_0003    :スタンディングコースター
 STR_0004    :Suspended Swinging Coaster
 STR_0005    :Inverted Roller Coaster
 STR_0006    :ジュニアジェットコースター
-STR_0007    :Miniature Railway
+STR_0007    :ミニ列車
 STR_0008    :モノレール
 STR_0009    :Mini Suspended Coaster
 STR_0010    :Boat Ride
@@ -17,14 +17,14 @@ STR_0012    :Steeplechase
 STR_0013    :Car Ride
 STR_0014    :Launched Freefall
 STR_0015    :Bobsleigh Coaster
-STR_0016    :Observation Tower
-STR_0017    :Looping Roller Coaster
+STR_0016    :展望塔
+STR_0017    :ループコースター
 STR_0018    :Dinghy Slide
 STR_0019    :Mine Train Coaster
 STR_0020    :スキーリフト
-STR_0021    :Corkscrew Roller Coaster
+STR_0021    :コルクスクリューコースター
 STR_0022    :迷路
-STR_0023    :Spiral Slide
+STR_0023    :スパイラル滑り台
 STR_0024    :ゴーカート
 STR_0025    :Log Flume
 STR_0026    :River Rapids
@@ -41,7 +41,7 @@ STR_0036    :Unknown Stall (22)
 STR_0037    :Information Kiosk
 STR_0038    :トイレ
 STR_0039    :観覧車
-STR_0040    :Motion Simulator
+STR_0040    :モーションシミュレーター
 STR_0041    :3Dシネマ
 STR_0042    :Top Spin
 STR_0043    :Space Rings
@@ -90,7 +90,7 @@ STR_0085    :Unknown Ride (53)
 STR_0086    :Unknown Ride (54)
 STR_0087    :Unknown Ride (55)
 STR_0088    :Inverted Impulse Coaster
-STR_0089    :Mini Roller Coaster
+STR_0089    :ミニジェットコースター
 STR_0090    :Mine Ride
 STR_0091    :Unknown Ride (59)
 STR_0092    :LIM Launched Roller Coaster
@@ -770,8 +770,8 @@ STR_0765    :来客{INT32}
 STR_0766    :来客{INT32}
 STR_0767    :来客{INT32}
 STR_0768    :便利屋 {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
+STR_0769    :修理工 {INT32}
+STR_0770    :警備員 {INT32}
 STR_0771    :Entertainer {INT32}
 STR_0772    :Unnamed park{POP16}{POP16}
 STR_0773    :Unnamed park{POP16}{POP16}
@@ -884,9 +884,9 @@ STR_0878    :高すぎる!
 STR_0879    :Can't lower land here...
 STR_0880    :Can't raise land here...
 STR_0881    :Object in the way
-STR_0882    :ゲームを再更新する
+STR_0882    :ゲームをロードする
 STR_0883    :ゲームをセーブする
-STR_0884    :景色を再更新する
+STR_0884    :景色をロードする
 STR_0885    :景色をセーブする
 STR_0886    :ゲームを閉じる
 STR_0887    :Scenario Editorを閉じる
@@ -946,12 +946,12 @@ STR_0940    :Remove Base Land
 STR_0941    :Remove Vertical Faces
 STR_0942    :See-Through Rides
 STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
-STR_0947    :Save this before loading ?
-STR_0948    :Save this before quitting ?
-STR_0949    :Save this before quitting ?
+STR_0944    :保存する
+STR_0945    :保存しない
+STR_0946    :キャンセル
+STR_0947    :ロードする前に保存しますか？
+STR_0948    :終了する前に保存しますか？
+STR_0949    :終了する前に保存しますか？
 STR_0950    :ゲームを再更新する
 STR_0951    :ゲームを閉じる
 STR_0952    :ゲームを閉じる
@@ -1112,11 +1112,11 @@ STR_1106    :Crashing!
 STR_1107    :Crashed!
 STR_1108    :Travelling at {VELOCITY}
 STR_1109    :Swinging
-STR_1110    :回転させる
-STR_1111    :回転させる
+STR_1110    :回転中
+STR_1111    :回転中
 STR_1112    :Operating
-STR_1113    :Showing film
-STR_1114    :回転させる
+STR_1113    :上映中
+STR_1114    :回転中
 STR_1115    :Operating
 STR_1116    :Operating
 STR_1117    :Doing circus show
@@ -1703,7 +1703,7 @@ STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
 STR_1699    :Too many people in game
 STR_1700    :便利屋を雇います
-STR_1701    :Hire new Mechanic
+STR_1701    :Hire new 修理工
 STR_1702    :Hire new Security Guard
 STR_1703    :Hire new Entertainer
 STR_1704    :Can't hire new staff...
@@ -1829,23 +1829,23 @@ STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
 STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
 STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
 STR_1826    :Status
-STR_1827    :Popularity
-STR_1828    :Satisfaction
-STR_1829    :Profit
-STR_1830    :Queue length
-STR_1831    :Queue time
-STR_1832    :Reliability
-STR_1833    :Down-time
-STR_1834    :Guests favourite
-STR_1835    :Popularity: Unknown
-STR_1836    :Popularity: {COMMA16}%
-STR_1837    :Satisfaction: Unknown
-STR_1838    :Satisfaction: {COMMA16}%
-STR_1839    :Reliability: {COMMA16}%
-STR_1840    :Down-time: {COMMA16}%
-STR_1841    :Profit: {CURRENCY2DP} per hour
-STR_1842    :Favourite of: {COMMA16} guest
-STR_1843    :Favourite of: {COMMA16} guests
+STR_1827    :人気度
+STR_1828    :満足度
+STR_1829    :利益
+STR_1830    :列の長さ
+STR_1831    :待ち時間
+STR_1832    :信頼度
+STR_1833    :停車時間
+STR_1834    :来客のお気に入り
+STR_1835    :人気度: 未知
+STR_1836    :人気度: {COMMA16}%
+STR_1837    :満足度: 未知
+STR_1838    :満足度: {COMMA16}%
+STR_1839    :信頼度: {COMMA16}%
+STR_1840    :ダウンタイム: {COMMA16}%
+STR_1841    :利益: {CURRENCY2DP}/時間
+STR_1842    :{COMMA16}人の来客のお気に入り
+STR_1843    :{COMMA16}人の来客のお気に入り
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16}人の来客
@@ -1862,16 +1862,16 @@ STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY2DP} per month
 STR_1859    :便利屋
-STR_1860    :Mechanics
-STR_1861    :Security Guards
+STR_1860    :修理工
+STR_1861    :警備員
 STR_1862    :Entertainers
 STR_1863    :便利屋
-STR_1864    :Mechanic
-STR_1865    :Security Guard
+STR_1864    :修理工
+STR_1865    :警備員
 STR_1866    :Entertainer
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
-STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
+STR_1868    :回転数が変更できない...
+STR_1869    :{WINDOW_COLOUR_2}回転数:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
@@ -1928,8 +1928,8 @@ STR_1920    :Can't pay back loan!
 STR_1921    :{SMALLFONT}{BLACK}Start a new game
 STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
 STR_1923    :{SMALLFONT}{BLACK}Show tutorial
-STR_1924    :{SMALLFONT}{BLACK}Exit
-STR_1925    :Can't place person here...
+STR_1924    :{SMALLFONT}{BLACK}終了
+STR_1925    :ここに人を置けない...
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} has broken down
 STR_1928    :{RED}{STRINGID} has crashed!
@@ -2020,11 +2020,11 @@ STR_2012    :フライドチキン
 STR_2013    :レモネード
 STR_2014    :空の箱
 STR_2015    :空き瓶
-STR_2016    :Balloons
+STR_2016    :風船
 STR_2017    :Cuddly Toys
-STR_2018    :Park Maps
+STR_2018    :地図
 STR_2019    :On-Ride Photos
-STR_2020    :Umbrellas
+STR_2020    :傘
 STR_2021    :ドリンク
 STR_2022    :バーガー
 STR_2023    :フライ
@@ -2034,7 +2034,7 @@ STR_2026    :空き缶
 STR_2027    :ごみ
 STR_2028    :Empty Burger Boxes
 STR_2029    :ピザ
-STR_2030    :Vouchers
+STR_2030    :無料券
 STR_2031    :ポップコーン
 STR_2032    :ホットドッグ
 STR_2033    :Tentacles
@@ -2044,10 +2044,10 @@ STR_2036    :ティーシャツ
 STR_2037    :ドーナツ
 STR_2038    :コーヒー
 STR_2039    :Empty Cups
-STR_2040    :Fried Chicken
-STR_2041    :Lemonade
+STR_2040    :フライドチキン
+STR_2041    :レモネード
 STR_2042    :Empty Boxes
-STR_2043    :Empty Bottles
+STR_2043    :空き瓶
 STR_2044    :a Balloon
 STR_2045    :a Cuddly Toy
 STR_2046    :a Park Map
@@ -2133,7 +2133,7 @@ STR_2125    :プレッツェル
 STR_2126    :ホットココア
 STR_2127    :アイスティー
 STR_2128    :Funnel Cake
-STR_2129    :Sunglasses
+STR_2129    :サングラス
 STR_2130    :Beef Noodles
 STR_2131    :Fried Rice Noodles
 STR_2132    :Wonton Soup
@@ -3114,9 +3114,9 @@ STR_3103    :Can't re-paint this...
 STR_3104    :{SMALLFONT}{BLACK}List rides
 STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
 STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
-STR_3107    :Close
-STR_3108    :Test
-STR_3109    :Open
+STR_3107    :閉鎖
+STR_3108    :テスト
+STR_3109    :オープン
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
 STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
