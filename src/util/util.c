@@ -265,7 +265,7 @@ char *safe_strcat_path(char *destination, const char *source, size_t size)
 {
 	const char pathSeparator = platform_get_path_separator();
 
-	size_t length = strlen(destination);
+	size_t length = strnlen(destination, size);
 	if (length >= size - 1) {
 		return destination;
 	}

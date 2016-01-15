@@ -192,7 +192,10 @@ bool platform_directory_delete(const utf8 *path)
 	chp = fts_children(ftsp, 0);
 	if (chp == NULL) {
 		log_verbose("No files to traverse, deleting directory %s", path);
-		remove(path);
+		if (remove(path) != 0)
+		{
+			log_error("Failed to remove %s, errno = %d", path, errno);
+		}
 		free(ourPath);
 		return true; // No files to traverse
 	}
@@ -227,12 +230,9 @@ bool platform_directory_delete(const utf8 *path)
 bool platform_lock_single_instance()
 {
 	char pidFilePath[MAX_PATH];
-	char separator = platform_get_path_separator();
 
-	strncpy(pidFilePath, _userDataDirectoryPath, MAX_PATH);
-	strncat(pidFilePath, &separator, 1);
-	strncat(pidFilePath, SINGLE_INSTANCE_MUTEX_NAME, 
-			MAX_PATH - strnlen(pidFilePath, MAX_PATH) - 1);
+	safe_strncpy(pidFilePath, _userDataDirectoryPath, sizeof(pidFilePath));
+	safe_strcat_path(pidFilePath, SINGLE_INSTANCE_MUTEX_NAME, sizeof(pidFilePath));
 
 	// We will never close this file manually. The operating system will
 	// take care of that, because flock keeps the lock as long as the 
@@ -576,10 +576,11 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
  	if (overwrite) {
 		dstFile = fopen(dstPath, "wb");
 	} else {
+		// Portability note: check your libc's support for "wbx"
 		dstFile = fopen(dstPath, "wbx");
 	}
 
-	if (dstFile != NULL) {
+	if (dstFile == NULL) {
 		if (errno == EEXIST) {
 			log_warning("platform_file_copy: Not overwriting %s, because overwrite flag == false", dstPath);
 			return 0;
@@ -591,7 +592,7 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 
 	// Open both files and check whether they are opened correctly
 	FILE *srcFile = fopen(srcPath, "rb");
-	if (!srcFile) {
+	if (srcFile == NULL) {
 		fclose(dstFile);
 		log_error("Could not open source file %s for copying", srcPath);
 		return 0;
