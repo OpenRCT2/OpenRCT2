@@ -333,7 +333,20 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 		int x = *eax;
 		int y = *ecx;
 		uint16 sprite_id = *edx;
-		rct_peep *peep = &g_sprite_list[sprite_id].peep;
+		if (sprite_id >= MAX_SPRITES)
+		{
+			*ebx = MONEY32_UNDEFINED;
+			log_warning("Invalid sprite id %u", sprite_id);
+			return;
+		}
+		rct_sprite *sprite = &g_sprite_list[sprite_id];
+		if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_PEEP || sprite->peep.type != PEEP_TYPE_STAFF)
+		{
+			*ebx = MONEY32_UNDEFINED;
+			log_warning("Invalid type of sprite %u for game command", sprite_id);
+			return;
+		}
+		rct_peep *peep = &sprite->peep;
 		int patrolOffset = peep->staff_id * (64 * 64 / 8);
 		int patrolIndex = ((x & 0x1F80) >> 7) | ((y & 0x1F80) >> 1);
 		int mask = 1u << (patrolIndex & 0x1F);
