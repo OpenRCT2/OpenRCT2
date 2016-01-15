@@ -720,7 +720,7 @@ int backup_map(){
 	memcpy(RCT2_GLOBAL(0xF440F1, uint32*), tile_map_pointers, 0x40000);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
-	*(uint32*)backup_info = RCT2_GLOBAL(0x0140E9A4, uint32);
+	*(uint32*)backup_info = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32);
 	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
 	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16);
 	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
@@ -740,7 +740,7 @@ void reload_map_backup(){
 	memcpy(tile_map_pointers, RCT2_GLOBAL(0xF440F1, uint32*), 0x40000);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
-	RCT2_GLOBAL(0x0140E9A4, uint32) = *(uint32*)backup_info;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32) = *(uint32*)backup_info;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = *(uint16*)(backup_info + 4);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = *(uint16*)(backup_info + 6);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = *(uint16*)(backup_info + 8);
@@ -1229,7 +1229,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 0xE9;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0x80;
 
-					RCT2_GLOBAL(0x00141E9AE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
 
 					cost = game_do_command(
 						mapCoord.x,
@@ -1288,7 +1288,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
-					RCT2_GLOBAL(0x00141E9AE, rct_string_id) = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 
 					cost = game_do_command(
 						mapCoord.x,
@@ -3077,7 +3077,7 @@ int save_track_design(uint8 rideIndex){
 	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
 
 	// Save track design
-	format_string(RCT2_ADDRESS(0x141ED68, char), 2306, NULL);
+	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), 2306, NULL);
 
 	// Track design files
 	format_string(RCT2_ADDRESS(0x141EE68, char), 2305, NULL);
@@ -3086,7 +3086,7 @@ int save_track_design(uint8 rideIndex){
 
 	int result = platform_open_common_file_dialog(
 		0,
-		RCT2_ADDRESS(0x141ED68, char),
+		RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char),
 		path,
 		"*.TD?",
 		RCT2_ADDRESS(0x141EE68, char));
@@ -3977,7 +3977,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & RCT2_ADDRESS(0x01357644, uint32)[ride->type];
 	enabledTrackPieces <<= 32;
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & RCT2_ADDRESS(0x01357444, uint32)[ride->type];
-	uint32 rideTypeFlags = RCT2_GLOBAL(0x0097CF40 + (ride->type * 8), uint32);
+	uint32 rideTypeFlags = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
 	RCT2_GLOBAL(0x00F44068, uint32) = rideTypeFlags;
 
 	if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {
@@ -4481,7 +4481,7 @@ static bool sub_6C494B(int x, int y, int z, int direction, int rideIndex, int fl
 }
 
 money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
-	RCT2_GLOBAL(0x00141F56C, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = originX + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = originY + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = originZ;

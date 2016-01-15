@@ -318,7 +318,7 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		if (tool_set(w, widgetIndex, 2))
 			break;
 
-		RCT2_GLOBAL(0x9E32D2, sint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, sint8) = 0;
 		gInputFlags |= INPUT_FLAG_6;
 
 		show_gridlines();

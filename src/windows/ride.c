@@ -1123,23 +1123,23 @@ void window_ride_disable_tabs(rct_window *w)
 
 	uint8 ride_type = ride->type; // ecx
 
-	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x200) == 0)
+	if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
 		disabled_tabs |= (1 << WIDX_TAB_8); // 0x800
 
 	if (ride_type == RIDE_TYPE_MINI_GOLF)
 		disabled_tabs |= (1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4); // 0xE0
 
-	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x2000) != 0)
+	if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_13))
 		disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
 
 	if (
-		!(RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x4000007) &&
+		ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_26) &&
 		!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT)
 	) {
 		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
 	}
 
-	if ((RCT2_GLOBAL(0x97CF40 + ride_type * 8, uint32) & 0x20000) != 0)
+	if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_SHOP))
 		disabled_tabs |= (1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_7); // 0x4C0
 
 	if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MUSIC)) {

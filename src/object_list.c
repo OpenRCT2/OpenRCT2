@@ -493,7 +493,7 @@ void set_load_objects_fail_reason()
 
 	if (expansion == 0
 		|| expansion == 8
-		|| RCT2_GLOBAL(0x9AB4C0, uint16) & (1 << expansion)){
+		|| RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << expansion)){
 
 		char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
 

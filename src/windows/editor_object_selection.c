@@ -470,8 +470,7 @@ static void setup_track_manager_objects(){
 				if (ride_type == 0xFF)
 					continue;
 
-				if (!(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_FLAGS, uint32)[ride_type * 2] &
-					RIDE_TYPE_FLAG_HAS_TRACK))
+				if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK))
 					continue;
 
 				if (pos[3] & (1 << 0)){
@@ -1479,7 +1478,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 			x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
-			char *bufferWithColour = (char*)0x0141ED68;
+			char *bufferWithColour = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 			char *buffer = utf8_write_codepoint(bufferWithColour, colour);
 			if (*listItem->flags & OBJECT_SELECTION_FLAG_6) {
 				colour = w->colours[1] & 0x7F;

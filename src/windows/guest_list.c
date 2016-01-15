@@ -217,7 +217,7 @@ void window_guest_list_open_with_filter(int type, int index)
 
 		eax = (eax << 16) + 1435;
 
-		if ((RCT2_GLOBAL(0x97CF40 + ride->type * 8, uint32) & 0x400000) != 0)
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
 			eax++;
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;

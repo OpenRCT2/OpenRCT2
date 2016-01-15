@@ -357,7 +357,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 
 	uint8 rideIndex = RCT2_GLOBAL(0x00F44192, uint8);
 	uint8 is_exit = RCT2_GLOBAL(0x00F44191, uint8);
-	RCT2_GLOBAL(0x00141E9AE, rct_string_id) = is_exit ? 1144 : 1145;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = is_exit ? 1144 : 1145;
 
 	money32 cost = game_do_command(
 		x,

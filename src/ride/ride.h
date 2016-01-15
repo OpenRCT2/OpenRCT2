@@ -889,7 +889,7 @@ extern const uint8 gRideClassifications[255];
 #define _currentTrackBeginX							RCT2_GLOBAL(0x00F440A8, uint16)
 #define _currentTrackBeginY							RCT2_GLOBAL(0x00F440AA, uint16)
 #define _currentTrackBeginZ							RCT2_GLOBAL(0x00F440AC, uint16)
-#define _currentTrackPieceDirection					RCT2_GLOBAL(0x00F440AE, uint8)
+#define _currentTrackPieceDirection					RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)
 #define _currentTrackPieceType						RCT2_GLOBAL(0x00F440AF, uint8)
 #define _currentTrackSelectionFlags					RCT2_GLOBAL(0x00F440B0, uint8)
 #define _rideConstructionArrowPulseTime				RCT2_GLOBAL(0x00F440B1, sint8)

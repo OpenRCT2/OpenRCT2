@@ -612,7 +612,7 @@ static void rct1_clear_extra_tile_entries()
 		*tilePointer++ = nextFreeMapElement++;
 	}
 
-	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = nextFreeMapElement;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = nextFreeMapElement;
 }
 
 /**
@@ -661,7 +661,7 @@ static void rct1_fix_colours()
 	}
 
 	mapElement = gMapElements;
-	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+	while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)) {
 		if (mapElement->base_height != 255) {
 			switch (map_element_get_type(mapElement)) {
 			case MAP_ELEMENT_TYPE_SCENERY:
@@ -745,7 +745,7 @@ static void rct1_fix_z()
 	}
 
 	mapElement = gMapElements;
-	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+	while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)) {
 		if (mapElement->base_height != 255) {
 			mapElement->base_height /= 2;
 			mapElement->clearance_height /= 2;
@@ -765,7 +765,7 @@ static void rct1_fix_paths()
 	int pathType, secondaryType, additions;
 
 	mapElement = gMapElements;
-	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+	while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)) {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_PATH:
 			// Type
