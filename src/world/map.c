@@ -1748,6 +1748,11 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 
 	RCT2_GLOBAL(0x009E2E28, uint8) = 0;
 
+	// Clamp to maximum addressable element to prevent long loop spamming the log
+	x1 = clamp(0, x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
+	y1 = clamp(0, x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
+	x2 = min(x2, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
+	y2 = min(y2, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
 	for (sint16 y = y1; y <= y2; y += 32) {
 		for (sint16 x = x1; x <= x2; x += 32) {
 			if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16))
@@ -1853,6 +1858,12 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
+	}
+
+	if (selectionType < 0 || selectionType >= 5)
+	{
+		log_warning("Improper selection type %d", selectionType);
+		return MONEY32_UNDEFINED;
 	}
 
 	uint8 max_height = 0;
@@ -2192,8 +2203,8 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 	// Cap bounds to map
 	mapLeft = max(mapLeft, 32);
 	mapTop = max(mapTop, 32);
-	mapRight = min(mapRight, 255 * 32);
-	mapBottom = min(mapBottom, 255 * 32);
+	mapRight = clamp(0, mapRight, 255 * 32);
+	mapBottom = clamp(0, mapBottom, 255 * 32);
 
 	int commandType;
 	int centreZ = map_element_height(centreX, centreY);
