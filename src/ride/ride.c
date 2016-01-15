@@ -155,6 +155,7 @@ static void ride_update(int rideIndex);
 static void ride_update_vehicle_colours(int rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
 static void maze_entrance_hedge_removal(int x, int y, rct_map_element *mapElement);
+void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
 
 rct_ride *get_ride(int index)
 {
@@ -4265,11 +4266,11 @@ rct_vehicle *vehicle_create_car(
 
 	vehicle->vehicle_type = vehicleEntryIndex;
 	vehicle->is_child = carIndex == 0 ? 0 : 1;
-	vehicle->var_44 = ror32(vehicleEntry->var_04, 10) & 0xFFFF;
-	regs.edx = vehicleEntry->var_04 >> 1;
+	vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
+	regs.edx = vehicleEntry->spacing >> 1;
 	regs.ebx = carIndex - regs.edx;
-	vehicle->var_24 = regs.ebx;
-	if (!(vehicleEntry->var_14 & 0x4000)) {
+	vehicle->remaining_distance = regs.ebx;
+	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14)) {
 		regs.ebx -= regs.edx;
 	}
 
@@ -4280,13 +4281,13 @@ rct_vehicle *vehicle_create_car(
 	vehicle->friction = vehicleEntry->car_friction;
 	vehicle->num_seats = vehicleEntry->num_seats;
 	vehicle->speed = vehicleEntry->powered_max_speed;
-	vehicle->acceleration = vehicleEntry->powered_acceleration;
+	vehicle->powered_acceleration = vehicleEntry->powered_acceleration;
 	vehicle->velocity = 0;
-	vehicle->var_2C = 0;
+	vehicle->acceleration = 0;
 	vehicle->var_4A = 0;
-	vehicle->var_4C = 0;
+	vehicle->swinging_car_var_0 = 0;
 	vehicle->var_4E = 0;
-	vehicle->var_B5 = 0;
+	vehicle->restraints_position = 0;
 	vehicle->var_BA = 0;
 	vehicle->var_B6 = 0;
 	vehicle->var_B8 = 0;
@@ -4296,7 +4297,7 @@ rct_vehicle *vehicle_create_car(
 	vehicle->var_C4 = 0;
 	vehicle->var_C5 = 0;
 	vehicle->var_C8 = 0;
-	vehicle->var_CC = 255;
+	vehicle->scream_sound_id = 255;
 	vehicle->var_1F = 0;
 	vehicle->var_20 = 0;
 	vehicle->var_D9 = 4;
@@ -4305,7 +4306,7 @@ rct_vehicle *vehicle_create_car(
 		vehicle->peep[i] = SPRITE_INDEX_NULL;
 	}
 
-	if (vehicleEntry->var_14 & 0x8000) {
+	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_15) {
 		// loc_6DDCA4:
 		vehicle->var_CD = 0;
 		int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
@@ -4319,11 +4320,11 @@ rct_vehicle *vehicle_create_car(
 		
 		z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
-		vehicle->var_36 = mapElement->properties.track.type << 2;
+		vehicle->track_type = mapElement->properties.track.type << 2;
 		vehicle->var_34 = 0;
 		vehicle->status = 0;
-		vehicle->var_51 = 0;
-		vehicle->var_48 = 0;
+		vehicle->sub_state = 0;
+		vehicle->update_flags = 0;
 
 		// loc_6DDD26:
 		do {
@@ -4333,33 +4334,33 @@ rct_vehicle *vehicle_create_car(
 			regs.cx += regs.ax;
 			regs.eax = (regs.eax >> 16) & 0xFF;
 			regs.ax += *x;
-		} while (sub_6DD365(vehicle));
+		} while (vehicle_update_bumper_car_collision(vehicle, regs.ax, regs.cx, NULL));
 
 		sprite_move(*x, *y, z, (rct_sprite*)vehicle);
 	} else {
 		regs.dl = 0;
-		if (vehicleEntry->var_14 & 0x1000) {
+		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13) {
 			regs.dl = 1;
 		}
 
-		if (vehicleEntry->var_14 & 0x4000) {
+		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14) {
 			regs.dl = 5;
 			if (!(ride->num_vehicles & 1)) {
 				regs.dl = 6;
 			}
 		}
-		if (vehicleEntry->var_12 & 8) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_3) {
 			regs.dl = 9;
 			vehicle->var_D3 = 0;
 			vehicle->var_D4 = 0;
 			vehicle->var_D5 = 0;
 		}
-		if (vehicleEntry->var_12 & 0x10) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_4) {
 			if (!vehicle->is_child) {
 				regs.dl = 15;
 			}
 		}
-		if (vehicleEntry->var_12 & 0x20) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_5) {
 			regs.dl = 16;
 		}
 		vehicle->var_CD = regs.dl;
@@ -4395,19 +4396,19 @@ rct_vehicle *vehicle_create_car(
 		z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
 
 		sprite_move(*x, *y, z, (rct_sprite*)vehicle);
-		vehicle->var_36 = (mapElement->properties.track.type << 2) | (vehicle->sprite_direction >> 3);
+		vehicle->track_type = (mapElement->properties.track.type << 2) | (vehicle->sprite_direction >> 3);
 		vehicle->var_34 = 31;
-		if (vehicleEntry->var_12 & 8) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_3) {
 			vehicle->var_34 = 15;
 		}
-		vehicle->var_48 = 2;
-		if (vehicleEntry->var_12 & 0x40) {
+		vehicle->update_flags = VEHICLE_UPDATE_FLAG_1;
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_6) {
 			if (mapElement->properties.track.colour & 4) {
-				vehicle->var_48 |= 0x800;
+				vehicle->update_flags |= VEHICLE_UPDATE_FLAG_11;
 			}
 		}
 		vehicle->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
-		vehicle->var_51 = 0;
+		vehicle->sub_state = 0;
 	}
 
 	// loc_6DDD5E:
@@ -4478,12 +4479,6 @@ void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_element *
 	// Link the first train and last train together
 	firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->sprite_index;
 	lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
-}
-
-rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)
-{
-	rct_ride_type *rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
-	return &rideEntry->vehicles[vehicle->vehicle_type];
 }
 
 void vehicle_unset_var_48_b1(rct_vehicle *head)
@@ -4573,59 +4568,6 @@ void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element *outXY
 
 /**
  *
- *  rct2: 0x006DDF9C
- */
-void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
-{
-	registers regs;
-	rct_vehicle *train, *car;
-
-	for (int i = 0; i < ride->num_vehicles; i++) {
-		train = GET_VEHICLE(ride->vehicles[i]);
-		if (i == 0) {
-			sub_6DAB4C(train, NULL);
-			vehicle_unset_var_48_b1(train);
-			continue;
-		}
-
-		do {
-			mapElement->flags |= (1 << 5);
-			car = train;
-			while (true) {
-				car->velocity = 0;
-				car->var_2C = 0;
-				car->var_4A = 0;
-				car->var_24 += 13962;
-
-				uint16 spriteIndex = car->next_vehicle_on_train;
-				if (spriteIndex == SPRITE_INDEX_NULL) {
-					break;
-				}
-				car = GET_VEHICLE(spriteIndex);
-			}
-		} while (sub_6DAB4C(train, NULL) & 0x400);
-
-		mapElement->flags |= (1 << 5);
-		car = train;
-		while (true) {
-			car->var_48 &= ~(1 << 1);
-			car->status = VEHICLE_STATUS_TRAVELLING;
-			regs.ax = car->var_36 >> 2;
-			if (regs.al == 1) {
-				car->status = VEHICLE_STATUS_MOVING_TO_END_OF_STATION;
-			}
-
-			uint16 spriteIndex = car->next_vehicle_on_train;
-			if (spriteIndex == SPRITE_INDEX_NULL) {
-				break;
-			}
-			car = GET_VEHICLE(spriteIndex);
-		}
-	}
-}
-
-/**
- *
  *  rct2: 0x006DD84C
  */
 bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element, int isApplying)
@@ -4694,8 +4636,8 @@ bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element
 				rct_ride_type *rideType = GET_RIDE_ENTRY(vehicle->vehicle_type);
 				rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-				if (!(vehicleEntry->var_14 & 0x8000)) {
-					sub_6DAB4C(vehicle, NULL);
+				if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_15)) {
+					vehicle_update_track_motion(vehicle, NULL);
 				}
 
 				vehicle_unset_var_48_b1(vehicle);
@@ -4755,16 +4697,6 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 			car = GET_VEHICLE(spriteIndex);
 		}
 	}
-}
-
-/**
- *
- *  rct2: 0x006DD84C
- */
-bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element, int isApplying)
-{
-	bool b = !(RCT2_CALLPROC_X(0x006DD84C, element->x, isApplying, element->y, rideIndex, (int)ride, (int)element->element, 0) & 0x100);
-	return b;
 }
 
 /**

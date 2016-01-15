@@ -69,7 +69,6 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
 static void vehicle_update_crash_setup(rct_vehicle* vehicle);
 static void vehicle_update_collision_setup(rct_vehicle* vehicle);
 static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle);
-static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 static void sub_6D63D4(rct_vehicle *vehicle);
 static bool vehicle_update_motion_collision_detection(rct_vehicle *vehicle, sint16 x, sint16 y, sint16 z, uint16 *otherVehicleIndex);
 static void vehicle_update_sound(rct_vehicle *vehicle);
@@ -5187,7 +5186,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006DD365
  */
-static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
+bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
 {
 	uint16 bp = (vehicle->var_44 * 30) >> 9;
 	uint32 trackType = vehicle->track_type >> 2;
