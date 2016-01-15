@@ -612,7 +612,7 @@ static void window_game_bottom_toolbar_update(rct_window* w){
 
 /**
  *
- *  rct2: 0x006C644
+ *  rct2: 0x0066C644
  */
 static void window_game_bottom_toolbar_cursor(rct_window *w, int widgetIndex, int x, int y, int *cursorId)
 {

@@ -233,7 +233,7 @@ void viewport_update_pointers()
 
 /**
  *
- *  rct2: 0x0068914
+ *  rct2: 0x00689174
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */

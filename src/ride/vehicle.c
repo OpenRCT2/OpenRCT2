@@ -1559,7 +1559,7 @@ static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
 
 /**
  *
- *  rct2: 0x006D808BE
+ *  rct2: 0x006D80BE
  */
 static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	rct_ride* ride = GET_RIDE(vehicle->ride);
