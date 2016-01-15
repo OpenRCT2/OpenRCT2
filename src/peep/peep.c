@@ -6999,7 +6999,7 @@ static uint8 loc_6949B9(
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_TRACK:
 			if (z != mapElement->base_height) continue;
-			int rideIndex = inputMapElement->properties.path.ride_index;
+			int rideIndex = mapElement->properties.track.ride_index;
 			rct_ride *ride = GET_RIDE(rideIndex);
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
 				*outRideIndex = rideIndex;
