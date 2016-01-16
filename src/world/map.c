@@ -985,9 +985,8 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 	uint8 color1 = *ebp;
 	uint8 color2 = *ebp >> 8;
 	uint8 flags = *ebx & 0xFF;
-	// Note this is not just the type it also contains quadrant information
-	// for small tiles that take up less than a full tile.
-	uint8 type = (*ebx >> 8) & 0xFF;
+	// Note this function is passed type.
+	uint8 quadrant = ((*ebx >> 8) & 0xFF) >> 6;
 	int z = base_height * 8;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
@@ -1001,26 +1000,9 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 	}
 
 	bool found = false;
-	rct_map_element *map_element = map_get_first_element_at(x >> 5, y >> 5);
+	rct_map_element *map_element = map_get_small_scenery_element_at(x, y, base_height, scenery_type, quadrant);
 
 	if (map_element == NULL) {
-		*ebx = 0;
-		return;
-	}
-
-	do {
-		// Note this is not just checking for type. See above.
-		if (map_element->type != type)
-			continue;
-		if (map_element->base_height != base_height)
-			continue;
-		if (map_element->properties.scenery.type != scenery_type)
-			continue;
-		found = true;
-		break;
-	} while (!map_element_is_last_for_tile(map_element++));
-
-	if (found == false) {
 		*ebx = 0;
 		return;
 	}
@@ -4389,11 +4371,13 @@ rct_map_element *map_get_fence_element_at(int x, int y, int z, int direction)
 	return NULL;
 }
 
-rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type)
+rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type, uint8 quadrant)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+			continue;
+		if (mapElement->type >> 6 != quadrant)
 			continue;
 		if (mapElement->base_height != z)
 			continue;
