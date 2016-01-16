@@ -682,15 +682,16 @@ static void window_top_toolbar_invalidate(rct_window *w)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 
 		switch (network_get_mode()) {
-		case NETWORK_MODE_SERVER:
-			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+		case NETWORK_MODE_NONE:
+			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 			break;
 		case NETWORK_MODE_CLIENT:
 			window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+		// Fall-through
+		case NETWORK_MODE_SERVER:
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
 			break;
-		default:
-			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 		}
 	}
 
