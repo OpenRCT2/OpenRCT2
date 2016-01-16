@@ -7133,17 +7133,96 @@ uint8 sub_69A60A(rct_peep* peep){
  *
  *  rct2: 0x0069A997
  */
-static int sub_69A997(sint16 x, sint16 y, uint8 z, int test_edge) {
-	int eax = x, ebx, ecx = y, edx = z, esi, edi = 0xFFFF, ebp = test_edge;
-	RCT2_CALLFUNC_X(0x0069A997, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	return edi;
+static int sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 score, int test_edge) {
+	x += TileDirectionDelta[test_edge].x;
+	y += TileDirectionDelta[test_edge].y;
+
+	if (--RCT2_GLOBAL(0x00F1AED4, sint32) < 0) return score;
+	if (++counter > 200) return score;
+
+	uint16 x_delta = abs(RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) - x);
+	uint16 y_delta = abs(RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) - y);
+	if (x_delta < y_delta) x_delta >>= 4;
+	else y_delta >>= 4;
+	uint16 new_score = x_delta + y_delta;
+	uint16 z_delta = abs(RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) - z);
+	z_delta <<= 1;
+	new_score += z_delta;
+
+	if (new_score < score || (new_score == score && counter < RCT2_GLOBAL(0x00F1AED3, uint8))) {
+		score = new_score;
+		RCT2_GLOBAL(0x00F1AED3, uint8) = counter;
+		if (score == 0) return score;
+	}
+
+	bool found = false;
+	rct_map_element *path = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(path) != MAP_ELEMENT_TYPE_PATH) continue;
+
+		uint8 slope_dir;
+		if (footpath_element_is_sloped(path) &&
+			(slope_dir = footpath_element_get_slope_direction(path)) != test_edge) {
+			slope_dir ^= 2;
+			if (slope_dir != test_edge) continue;
+			if (path->base_height + 2 != z) continue;
+		} else {
+			if (z != path->base_height) continue;
+			if (footpath_element_is_wide(path)) continue;
+		}
+
+		if ((!footpath_element_is_queue(path) ||
+			 RCT2_GLOBAL(0x00F1AEE1, uint8) != path->properties.path.ride_index) &&
+			(path->type & RCT2_GLOBAL(0x00F1AEE0, uint8))) continue;
+
+		found = true;
+		break;
+	} while (map_element_is_last_for_tile(path++));
+	if (!found) return score;
+
+	uint8 edges = path_get_permitted_edges(path);
+	z = path->base_height;
+	edges &= ~(1 << (test_edge ^ 2));
+	test_edge = bitscanforward(edges);
+	if (test_edge == -1) return score;
+
+	edges &= ~(1 << test_edge);
+	if (edges == 0) {
+		if (footpath_element_is_sloped(path) &&
+			footpath_element_get_slope_direction(path) == test_edge) {
+			z += 2;
+		}
+		++RCT2_GLOBAL(0x00F1AEDE, sint16);
+		return sub_69A997(x, y, z, counter, score, test_edge);
+	}
+
+	if (RCT2_GLOBAL(0x00F1AEDE, sint16) != 0) {
+		--RCT2_GLOBAL(0x00F1AEDC, sint8);
+	}
+	--RCT2_GLOBAL(0x00F1AEDC, sint8);
+	if (RCT2_GLOBAL(0x00F1AEDC, sint8) < 0) return score;
+
+	do {
+		edges &= ~(1 << test_edge);
+		int saved_f1aedc = RCT2_GLOBAL(0x00F1AEDC, int);
+		uint8 height = z;
+		RCT2_GLOBAL(0x00F1AEDE, sint16) = 0;
+		if (footpath_element_is_sloped(path) &&
+			footpath_element_get_slope_direction(path) == test_edge) {
+			height += 2;
+		}
+		sub_69A997(x, y, height, counter, score, test_edge);
+		RCT2_GLOBAL(0x00F1AEDC, int) = saved_f1aedc;
+	} while ((test_edge = bitscanforward(edges)) != -1);
+
+	return score;
 }
 
 /**
  *
  *  rct2: 0x0069A5F0
  */
-static int guest_pathfind_choose_direction(sint16 x, sint16 y, sint16 z, rct_peep *peep, rct_map_element *map_element) {
+static int guest_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep, rct_map_element *map_element) {
 	RCT2_GLOBAL(0x00F1AEDC, uint8) = sub_69A60A(peep);
 	uint8 x_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) / 32;
 	uint8 y_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) / 32;
@@ -7183,8 +7262,8 @@ static int guest_pathfind_choose_direction(sint16 x, sint16 y, sint16 z, rct_pee
 
 		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
 			edges &= ~(1 << test_edge);
-			uint8 height = (uint8)z;
-			int k = RCT2_GLOBAL(0x00F1AEDC, int);
+			uint8 height = z;
+			int saved_f1aedc = RCT2_GLOBAL(0x00F1AEDC, int);
 			if (footpath_element_is_sloped(dest_map_element) &&
 					footpath_element_get_slope_direction(dest_map_element) == test_edge)
 				height += 0x2;
@@ -7192,8 +7271,8 @@ static int guest_pathfind_choose_direction(sint16 x, sint16 y, sint16 z, rct_pee
 			RCT2_GLOBAL(0x00F1AED3, uint8) = 0xFF;
 			RCT2_GLOBAL(0x00F1AED4, int) = RCT2_GLOBAL(0x00F1AED8, int);
 			RCT2_GLOBAL(0x00F1AEDE, uint16) = 0;
-			uint16 score = sub_69A997(x, y, height, test_edge);
-			RCT2_GLOBAL(0x00F1AEDC, int) = k;
+			uint16 score = sub_69A997(x, y, height, 0, 0xFFFF, test_edge);
+			RCT2_GLOBAL(0x00F1AEDC, int) = saved_f1aedc;
 
 			if (score < best_score || (score == best_score && RCT2_GLOBAL(0x00F1AED3, uint8) < best_sub)) {
                 chosen_edge = test_edge;
