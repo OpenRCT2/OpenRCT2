@@ -174,7 +174,7 @@ void colour_scheme_update_by_class(rct_window *window, rct_windowclass classific
 static void theme_set_preset_string(const utf8string preset)
 {
 	SafeFree(gConfigInterface.current_theme_preset);
-	gConfigInterface.current_theme_preset = strdup(preset);
+	gConfigInterface.current_theme_preset = _strdup(preset);
 }
 
 void theme_change_preset(int preset)
