@@ -346,6 +346,11 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		// Skip over the actual string entry to get to the next entry
 		while (*(*pStringTable)++ != 0);
 	}
+	// Fall back in case language does not get set.
+	if (pString == NULL)
+	{
+		pString = (char*)(*pStringTable);
+	}
 
 	char name[9];
 	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
