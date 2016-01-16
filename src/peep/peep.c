@@ -9318,13 +9318,84 @@ static void peep_give_real_name(rct_peep *peep)
 	peep->name_string_idx = dx;
 }
 
+static int peep_name_compare(const utf8 *a, const utf8 *b)
+{
+	// TODO be smarter about numbers being on the end
+	//      e.g. Handyman 10 should go after Handyman 4
+	return _stricmp(a, b);
+}
+
 /**
  *
  *  rct2: 0x00699115
  */
 void peep_update_name_sort(rct_peep *peep)
 {
-	RCT2_CALLPROC_X(0x00699115, 0, 0, 0, 0, (int)peep, 0, 0);
+	RCT2_GLOBAL(0x009C383C, uint8) = 49;
+
+	// Remove peep from sprite list
+	uint16 nextSpriteIndex = peep->next;
+	uint16 prevSpriteIndex = peep->previous;
+	if (prevSpriteIndex != SPRITE_INDEX_NULL) {
+		rct_peep *prevPeep = GET_PEEP(prevSpriteIndex);
+		prevPeep->next = nextSpriteIndex;
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = nextSpriteIndex;
+	}
+
+	if (nextSpriteIndex != SPRITE_INDEX_NULL) {
+		rct_peep *nextPeep = GET_PEEP(nextSpriteIndex);
+		nextPeep->previous = prevSpriteIndex;
+	}
+
+	// Get peep name
+	utf8 name[256];
+	uint32 peepIndex = peep->id;
+	format_string_to_upper(name, peep->name_string_idx, &peepIndex);
+	
+	rct_peep *otherPeep;
+	uint16 spriteIndex;
+	FOR_ALL_PEEPS(spriteIndex, otherPeep) {
+		// Get other peep name
+		utf8 otherName[256];
+		peepIndex = otherPeep->id;
+		format_string_to_upper(otherName, otherPeep->name_string_idx, &peepIndex);
+
+		// Check if peep should go before this one
+		if (peep_name_compare(name, otherName) >= 0) {
+			continue;
+		}
+
+		// Place peep before this one
+		peep->previous = otherPeep->previous;
+		otherPeep->previous = peep->sprite_index;
+		if (peep->previous != SPRITE_INDEX_NULL) {
+			rct_peep *prevPeep = GET_PEEP(peep->previous);
+			peep->next = prevPeep->next;
+			prevPeep->next = peep->sprite_index;
+		} else {
+			peep->next = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+			RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = peep->sprite_index;
+		}
+		goto finish_peep_sort;
+	}
+
+	// Place peep at the end
+	FOR_ALL_PEEPS(spriteIndex, otherPeep) {
+		if (otherPeep->next == SPRITE_INDEX_NULL) {
+			otherPeep->next = peep->sprite_index;
+			peep->previous = otherPeep->sprite_index;
+			peep->next = SPRITE_INDEX_NULL;
+			goto finish_peep_sort;
+		}
+	}
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = peep->sprite_index;
+	peep->next = SPRITE_INDEX_NULL;
+	peep->previous = SPRITE_INDEX_NULL;
+
+finish_peep_sort:
+	RCT2_GLOBAL(0x009C383C, uint8) = 48;
 
 	// This is required at the moment because this function reorders peeps in the sprite list
 	openrct2_reset_object_tween_locations();
