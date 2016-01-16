@@ -148,7 +148,7 @@ typedef struct {
 			sint8 ferris_wheel_var_1;	// 0x4D
 		};
 	};
-	uint16 var_4E;
+	sint16 var_4E;
 	uint8 status;					// 0x50
 	uint8 sub_state;				// 0x51
 	uint16 peep[32];				// 0x52
