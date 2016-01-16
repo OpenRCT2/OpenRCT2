@@ -790,7 +790,7 @@ void load_track_scenery_objects(){
 	memcpy(copied_entry, object_entry, sizeof(rct_object_entry));
 
 	object_unload_all();
-	object_load(-1, copied_entry, 0);
+	object_load_chunk(-1, copied_entry, 0);
 	uint8 entry_type;
 	find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
 	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
@@ -817,7 +817,7 @@ void load_track_scenery_objects(){
 		rct_track_scenery* scenery_entry = (rct_track_scenery*)track_elements;
 
 		if (!find_object_in_entry_group(&scenery_entry->scenery_object, &entry_type, &entry_index)){
-			object_load(-1, &scenery_entry->scenery_object, 0);
+			object_load_chunk(-1, &scenery_entry->scenery_object, 0);
 		}
 		// Skip object and location/direction/colour
 		track_elements += sizeof(rct_track_scenery);
