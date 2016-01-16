@@ -419,8 +419,8 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 			repeatCount = 0;
 			maxRepeatCount = min(7, searchEnd - repeatIndex);
 			for (j = 0; j <= maxRepeatCount; j++) {
-				assert(repeatIndex + j < sizeof(rct_s6_data) - offsetof(rct_s6_data, dword_010E63B8));
-				assert(i + j < sizeof(rct_s6_data) - offsetof(rct_s6_data, dword_010E63B8));
+				assert(repeatIndex + j < length);
+				assert(i + j < length);
 				if (src_buffer[repeatIndex + j] == src_buffer[i + j]) {
 					repeatCount++;
 				} else {
