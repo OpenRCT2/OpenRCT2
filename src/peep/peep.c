@@ -3398,7 +3398,9 @@ static void peep_update_ride(rct_peep* peep){
 		peep_update_ride_sub_state_21(peep);
 		break;
 	default:
-		RCT2_CALLPROC_X(RCT2_ADDRESS(0x9820DC, int)[peep->sub_state], 0, 0, 0, 0, (int)peep, 0, 0);
+		// Invalid peep sub-state
+		assert(false);
+		break;
 	}
 }
 
