@@ -382,6 +382,7 @@ void litter_create(int x, int y, int z, int direction, int type);
 void litter_remove_at(int x, int y, int z);
 void sprite_misc_3_create(int x, int y, int z);
 void sprite_misc_5_create(int x, int y, int z);
+uint16 sprite_get_first_in_quadrant(int x, int y);
 
 ///////////////////////////////////////////////////////////////
 // Balloon

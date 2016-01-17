@@ -232,6 +232,7 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_STAFF_FIX_2 = 16,
 	PEEP_ACTION_STAFF_FIX_GROUND = 17,
 	PEEP_ACTION_STAFF_WATERING = 19,
+	PEEP_ACTION_JOY = 20,
 	PEEP_ACTION_READ_MAP = 21,
 	PEEP_ACTION_WAVE = 22,
 	PEEP_ACTION_STAFF_EMPTY_BIN = 23,
@@ -265,7 +266,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
 	PEEP_FLAGS_NAUSEA = (1 << 15), // Makes the peep feel sick (e.g. after an extreme ride)
 	PEEP_FLAGS_PURPLE = (1 << 16), // Makes surrounding peeps purple
-	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
+	PEEP_FLAGS_PIZZA = (1 << 17), // Gives passing peeps pizza
 	PEEP_FLAGS_EXPLODE = (1 << 18),
 	PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE = (1 << 19),
 	PEEP_FLAGS_PARK_ENTRANCE_CHOSEN = (1 << 20), //Set when the nearest park entrance has been chosen
@@ -273,7 +274,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_CONTAGIOUS = (1 << 22), // Makes any peeps in surrounding tiles sick
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
-	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives the peeps infront of them in queue ice cream
+	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives passing peeps ice cream and they wave back
 	PEEP_FLAGS_NICE_RIDE = (1 << 26), // Makes the peep think "Nice ride! But not as good as the Phoenix..." on exiting a ride
 	PEEP_FLAGS_INTAMIN = (1 << 27), // Makes the peep think "I'm so excited - It's an Intamin ride!" while riding on a Intamin
 	PEEP_FLAGS_HERE_WE_ARE = (1 << 28), // Makes the peep think  "...and here we are on X!" while riding a ride
