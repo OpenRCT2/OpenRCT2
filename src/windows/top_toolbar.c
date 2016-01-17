@@ -120,6 +120,16 @@ enum {
 	DDIDX_DISABLE_SUPPORT_LIMITS
 };
 
+enum {
+	DDIDX_SHOW_MAP,
+	DDIDX_OPEN_VIEWPORT,
+};
+
+enum {
+	DDIDX_ROTATE_CLOCKWISE,
+	DDIDX_ROTATE_ANTI_CLOCKWISE,
+};
+
 #pragma region Toolbar_widget_ordering
 
 // from left to right
@@ -446,7 +456,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		if (gCheatsDisableSupportLimits) {
 			dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
 		}
-		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
+		gDropdownDefaultIndex = DDIDX_CHEATS;
 		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_init_view_menu(w, widget);
@@ -469,7 +479,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			0,
 			numItems
 			);
-		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
+		gDropdownDefaultIndex = DDIDX_SHOW_MAP;
 		break;
 	case WIDX_FASTFORWARD:
 		top_toolbar_init_fastforward_menu(w, widget);
@@ -549,7 +559,6 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		}
 		break;
 	case WIDX_CHEATS:
-		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
 		switch (dropdownIndex) {
 		case DDIDX_CHEATS:
 			window_cheats_open();
@@ -569,9 +578,6 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		top_toolbar_view_menu_dropdown(dropdownIndex);
 		break;
 	case WIDX_MAP:
-		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
-
 		switch (dropdownIndex) {
 		case 0:
 			window_map_open();
@@ -2858,14 +2864,18 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 		dropdown_set_checked(5, true);
 	}
 
-	if (gConfigGeneral.debugging_tools)
-		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed == 8 ? 0 : gGameSpeed);
-	else
-		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed >= 4 ? 0 : gGameSpeed);
+	if (gConfigGeneral.debugging_tools) {
+		gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
+	} else {
+		gDropdownDefaultIndex = (gGameSpeed >= 4 ? 0 : gGameSpeed);
+	}
+	if (gDropdownDefaultIndex == 4) {
+		gDropdownDefaultIndex = 5;
+	}
 }
 
-void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_fastforward_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		if (dropdownIndex >= 0 && dropdownIndex <= 5) {
@@ -2877,7 +2887,8 @@ void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
 	}
 }
 
-void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget) {
+void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget)
+{
 	gDropdownItemsFormat[0] = STR_ROTATE_CLOCKWISE;
 	gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
 
@@ -2888,13 +2899,13 @@ void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget) {
 		w->colours[1] | 0x80,
 		0,
 		2
-		);
+	);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
 }
 
-void top_toolbar_rotate_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_rotate_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		if (dropdownIndex == 0) {
@@ -2908,7 +2919,8 @@ void top_toolbar_rotate_menu_dropdown(short dropdownIndex) {
 	}
 }
 
-void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
+void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
+{
 	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
 	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
 	gDropdownItemsFormat[2] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
@@ -2924,10 +2936,11 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 		5
 	);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_CONSOLE;
 }
 
-void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget) {
+void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
+{
 	gDropdownItemsFormat[0] = STR_PLAYER_LIST;
 
 	window_dropdown_show_text(
@@ -2939,11 +2952,11 @@ void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget) {
 		1
 	);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_PLAYER_LIST;
 }
 
-void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_debug_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		switch (dropdownIndex) {
@@ -2967,8 +2980,8 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 	}
 }
 
-void top_toolbar_network_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_network_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		switch (dropdownIndex) {
@@ -3040,15 +3053,15 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
 		dropdown_set_checked(11, true);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 }
 
 /**
  *
  *  rct2: 0x0066CF8A
  */
-void top_toolbar_view_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_view_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		switch (dropdownIndex) {

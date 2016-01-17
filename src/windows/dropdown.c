@@ -56,10 +56,16 @@ uint64 gDropdownItemsDisabled;
 bool gDropdownIsColour;
 int gDropdownLastColourHover;
 int gDropdownHighlightedIndex;
+int gDropdownDefaultIndex;
 
 bool dropdown_is_checked(int index)
 {
 	return gDropdownItemsChecked & (1ULL << index);
+}
+
+bool dropdown_is_disabled(int index)
+{
+	return gDropdownItemsDisabled & (1ULL << index);
 }
 
 void dropdown_set_checked(int index, bool value)
@@ -204,6 +210,7 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
 	gDropdownIsColour = false;
+	gDropdownDefaultIndex = -1;
 	gInputState = INPUT_STATE_DROPDOWN_ACTIVE;
 }
 
@@ -274,11 +281,9 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	gDropdownHighlightedIndex = -1;
 	gDropdownItemsDisabled = 0;
 	gDropdownItemsChecked = 0;
-	gInputState = INPUT_STATE_DROPDOWN_ACTIVE;
-
-	// Copy the following properties until all use of it is decompiled
-	gDropdownHighlightedIndex = gDropdownHighlightedIndex;
 	gDropdownIsColour = false;
+	gDropdownDefaultIndex = -1;
+	gInputState = INPUT_STATE_DROPDOWN_ACTIVE;
 }
 
 void window_dropdown_close()
@@ -292,7 +297,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 
-	gDropdownHighlightedIndex = gDropdownHighlightedIndex;
+	int highlightedIndex = gDropdownHighlightedIndex;
 	for (int i = 0; i < gDropdownNumItems; i++) {
 		cell_x = i % _dropdown_num_columns;
 		cell_y = i / _dropdown_num_columns;
@@ -313,7 +318,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			}
 		} else {
 			//
-			if (i == gDropdownHighlightedIndex) {
+			if (i == highlightedIndex) {
 				l = w->x + 2 + (cell_x * _dropdown_item_width);
 				t = w->y + 2 + (cell_y * _dropdown_item_height);
 				r = l + _dropdown_item_width - 1;
@@ -325,7 +330,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			if (item == (uint16)-1 || item == (uint16)-2) {
 				// Image item
 				image = (uint32)gDropdownItemsArgs[i];
-				if (item == (uint16)-2 && gDropdownHighlightedIndex == i)
+				if (item == (uint16)-2 && highlightedIndex == i)
 					image++;
 
 				gfx_draw_sprite(
@@ -344,9 +349,9 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 				// Calculate colour
 				colour = w->colours[0] & 0x7F;
-				if (i == gDropdownHighlightedIndex)
+				if (i == highlightedIndex)
 					colour = 2;
-				if (gDropdownItemsDisabled & (1ULL << i))
+				if (dropdown_is_disabled(i))
 					if (i < 64)
 						colour = (w->colours[0] & 0x7F) | 0x40;
 

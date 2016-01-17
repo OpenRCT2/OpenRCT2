@@ -40,7 +40,10 @@ extern uint64 gDropdownItemsDisabled;
 extern bool gDropdownIsColour;
 extern int gDropdownLastColourHover;
 extern int gDropdownHighlightedIndex;
+extern int gDropdownDefaultIndex;
 
+bool dropdown_is_checked(int index);
+bool dropdown_is_disabled(int index);
 void dropdown_set_checked(int index, bool value);
 void dropdown_set_disabled(int index, bool value);
 
