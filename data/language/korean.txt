@@ -21,7 +21,7 @@ STR_0016    :전망탑
 STR_0017    :루핑 롤러코스터
 STR_0018    :미니 슬라이드
 STR_0019    :마인 트레인 코스터
-STR_0020    :체어리프트
+STR_0020    :체어 리프트
 STR_0021    :코르크스크류 롤러코스터
 STR_0022    :미로
 STR_0023    :나선 미끄럼틀
@@ -89,7 +89,7 @@ STR_0084    :알 수 없는 놀이기구 (52)
 STR_0085    :알 수 없는 놀이기구 (53)
 STR_0086    :알 수 없는 놀이기구 (54)
 STR_0087    :알 수 없는 놀이기구 (55)
-STR_0088    :인버티트 임펄스 코스터
+STR_0088    :인버티드 임펄스 코스터
 STR_0089    :미니 롤러코스터
 STR_0090    :마인 라이드
 STR_0091    :알 수 없는 놀이기구 (59)
@@ -3331,7 +3331,7 @@ STR_3320    :시나리오 파일을 저장할 수 없습니다...
 STR_3321    :새 오브젝트가 성공적으로 설치되었습니다
 STR_3322    :{WINDOW_COLOUR_2}목표: {BLACK}{STRINGID}
 STR_3323    :오브젝트 데이터가 존재하지 않음, ID:
-STR_3324    :확장팩이 필요합니다:
+STR_3324    :확장팩이 필요합니다: {STRINGID}
 STR_3325    :확장팩이 필요합니다
 STR_3326    :{WINDOW_COLOUR_2}(이미지 없음)
 STR_3327    :손님이 나타나는 위치가 지정되지 않았습니다
@@ -3969,6 +3969,8 @@ STR_5629    :난이도별
 STR_5630    :시나리오 클리어시 새 시나리오 열기 켜기
 STR_5631    :오리지널 다운로드 콘텐츠 공원
 STR_5632    :직접 만들기...
+STR_5633    :CMD +
+STR_5634    :OPTION +
 
 #############
 # Scenarios #
@@ -4421,13 +4423,13 @@ STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기
 STR_CPTY    :차량당 6명의 승객
 
 [CLIFT1]
-STR_NAME    :체어리프트 차량
-STR_DESC    :체어리프트를 위한 개방형 차량
+STR_NAME    :체어 리프트 차량
+STR_DESC    :체어 리프트를 위한 개방형 차량
 STR_CPTY    :차량당 2명의 승객
 
 [CLIFT2]
 STR_NAME    :스키 리프트 의자
-STR_DESC    :체어리프트를 위한 개방형 차량
+STR_DESC    :체어 리프트를 위한 개방형 차량
 STR_CPTY    :차량당 2명의 승객
 
 [LIFT1]
@@ -4681,7 +4683,7 @@ STR_DESC    :90m 이상의 부드러운 낙하와 상승이 가능한 거대한 
 STR_CPTY    :차량당 4명의 승객
 
 [IVMC1]
-STR_NAME    :인버티트 헤어핀 코스터
+STR_NAME    :인버티드 헤어핀 코스터
 STR_DESC    :급회전과 급경사를 가진 지그재그 모양의 트랙 아래를 달리는 개별 차량
 STR_CPTY    :차량당 4명의 승객
 
@@ -4782,27 +4784,27 @@ STR_CPTY    :차량당 4명의 승객
 
 [SPDRCR]
 STR_NAME    :스파이럴 롤러코스터
-STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
+STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는, 짜임새 있는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 6명의 승객
 
 [STEEP1]
 STR_NAME    :스티플체이스
-STR_DESC    :Riders ride horse-shaped vehicles which run along a single-rail roller coaster track
+STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 말 모양의 차량에 탑승하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [STEEP2]
 STR_NAME    :모터바이크 레이스
-STR_DESC    :Riders ride motorbike-shaped roller coaster vehicles along a single-rail track
+STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 오토바이 모양의 차량에 탑승하는 놀이기구
 STR_CPTY    :자전거당 2명의 승객
 
 [THCAR]
 STR_NAME    :에어 파워드 버티컬 코스터
-STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착합니다
+STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착하는 놀이기구
 STR_CPTY    :차량당 2명의 승객
 
 [TOGST]
 STR_NAME    :스탠드 업 롤러코스터
-STR_DESC    :A looping roller coaster where the riders ride in a standing position
+STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [UTCAR]
@@ -4817,52 +4819,52 @@ STR_CPTY    :차량당 4명의 승객
 
 [VEKDV]
 STR_NAME    :인버티드 버티컬 셔틀
-STR_DESC    :Riders sit in cars suspended beneath the track, pulled backwards up a vertical track and then dropped to loop and twist around tight inversions
+STR_DESC    :트랙 밑에 매달린 차량에 앉아서, 수직 트랙을 따라 뒤쪽 방향으로 올라간 다음 루프와 트위스트를 향해 낙하하는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
 [VEKST]
 STR_NAME    :레이 다운 롤러코스터
-STR_DESC    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
+STR_DESC    :누운 자세로 탑승하는 특수 차량에 탑승하여 꼬인 트랙과 전이를 앞이나 뒤로 누운 자세로 즐기는 놀이기구
 STR_CPTY    :차량당 4명의 승객
 
 [VEKVAMP]
-STR_NAME    :바닥 없이 흔들리는 차량
-STR_DESC    :Suspended roller coaster train consisting of chairlift style seats able to swing freely as the train goes around corners
+STR_NAME    :스윙잉 플로어리스 차량
+STR_DESC    :코너를 돌면 차량이 자유롭게 흔들리고, 체어 리프트 스타일의 좌석이 있는 매달린 롤러코스터 차량
 STR_CPTY    :차량당 2명의 승객
 
 [VREEL]
 STR_NAME    :버지니아 릴
-STR_DESC    :Circular cars spin around as they travel along the zig-zagging wooden track
+STR_DESC    :나무 트랙을 이리 저리 따라 이동함에 따라 빙글빙글 돌아가는 원형 차량
 STR_CPTY    :차량당 4명의 승객
 
 [WCATC]
 STR_NAME    :자동차 차량
-STR_DESC    :Roller coaster cars in the shape of automobiles
+STR_DESC    :자동차 모양의 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [WMMINE]
 STR_NAME    :우든 와일드 광산 차량
-STR_DESC    :Tiny mine trucks run on zig-zagging wooden track, tilting precariously around hairpin turns and vicious drops
+STR_DESC    :지그재그 모양의 나무 트랙을 달리면서 급격한 커브와 낙하를 통과하면 트랙을 벗어날 듯 위태롭게 기울어지는 작은 광산 트럭.
 STR_CPTY    :차량당 2명의 승객
 
 [WMOUSE]
 STR_NAME    :우든 와일드 마우스
-STR_DESC    :Small mouse shaped cars run on a wooden track, the cars leaning over precariously as they traverse hairpin corners and sharp dips
+STR_DESC    :나무 트랙 위를 달리면서 급격한 헤어핀 코너와 급등·급락을 지나면서 트랙을 벗어날 듯 위태롭게 기울어지는 작은 쥐 모양의 차량
 STR_CPTY    :차량당 2명의 승객
 
 [WMSPIN]
 STR_NAME    :회전 와일드 마우스
-STR_DESC    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
+STR_DESC    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
 STR_CPTY    :차량당 4명의 승객
 
 [ZLDB]
 STR_NAME    :무당벌레 차량
-STR_DESC    :Roller coaster trains with small ladybird shaped cars
+STR_DESC    :작은 무당벌레 모양의 롤러코스터 차량
 STR_CPTY    :차량당 2명의 승객
 
 [ZLOG]
-STR_NAME    :나무 차량
-STR_DESC    :Roller coaster trains with small log shaped cars
+STR_NAME    :통나무 차량
+STR_DESC    :작은 통나무 모양의 롤러코스터 차량
 STR_CPTY    :차량당 2명의 승객
 
 [C3D]
@@ -4872,12 +4874,12 @@ STR_CPTY    :손님 20명
 
 [ENTERP]
 STR_NAME    :엔터프라이즈
-STR_DESC    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
+STR_DESC    :원형 놀이기구에 매달린 객실에 탑승하면 처음에 회전하기 시작하여 이후에 지지대에 의해 기울어진 채로 회전하는 놀이기구
 STR_CPTY    :승객 16명
 
 [GDROP1]
 STR_NAME    :자이로드롭
-STR_DESC    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
+STR_DESC    :고리 모양의 좌석이 부드럽게 회전하면서 탑 꼭대기로 들어올려진 뒤에 자유낙하하고, 자기 제동에 의해 바닥에 부드럽게 정지하는 놀이기구
 STR_CPTY    :승객 16명
 
 [KART1]
@@ -4887,17 +4889,17 @@ STR_CPTY    :1인승
 
 [MCARPET1]
 STR_NAME    :마법의 양탄자
-STR_DESC    :A large flying-carpet themed car which moves up and down cyclically on the ends of 4 arms
+STR_DESC    :양쪽 끝에 있는 4개의 관절 구조에 의해 원형으로 오르락 내리락하는 커다란 마법 양탄자 테마의 차량
 STR_CPTY    :승객 12명
 
 [SIMPOD]
 STR_NAME    :모션 시뮬레이터
-STR_DESC    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
+STR_DESC    :수압식 관절에 의해 흔들리고 움직이는 모션 시뮬레이터 안에서 영화를 보는 놀이기구
 STR_CPTY    :승객 8명
 
 [SSC1]
 STR_NAME    :런치드 프리폴
-STR_DESC    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
+STR_DESC    :압축 공기에 의해 높은 철제 탑을 향해 쏘아올려진 다음 자유 낙하하는 자유 낙하 차량
 STR_CPTY    :승객 8명
 
 [SWSH1]
@@ -4907,32 +4909,32 @@ STR_CPTY    :승객 16명
 
 [SWSH2]
 STR_NAME    :360도 바이킹
-STR_DESC    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
+STR_DESC    :반대편에 균형추가 있는 지지대에 달려있어 완전히 360도로 회전하는 배 모양의 놀이기구
 STR_CPTY    :승객 12명
 
 [TOPSP1]
 STR_NAME    :톱 스핀
-STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heals
+STR_DESC    :대형 회전 팔 구조에 매달려있고 앞뒤로 공중제비를 도는 곤돌라에 탑승하는 놀이기구
 STR_CPTY    :승객 8명
 
 [TWIST1]
 STR_NAME    :트위스트
-STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_DESC    :탑승객이 세 개의 긴 회전 팔 구조 끝에 있는 좌석에 짝지어 앉아 빙글빙글 도는 놀이기구
 STR_CPTY    :승객 18명
 
 [TWIST2]
 STR_NAME    :스노우 컵
-STR_DESC    :Riders ride in pairs of seats rotating around a central snowman
+STR_DESC    :탑승객이 짝지어 좌석에 앉아 눈사람을 기준으로 빙글빙글 도는 놀이기구
 STR_CPTY    :승객 18명
 
 [BBOAT]
 STR_NAME    :범퍼 보트
-STR_DESC    :Small circular dinghies powered by a centrally-mounted motor controlled by the passengers
+STR_DESC    :중앙 모터에 의해 움직이며 탑승객이 조종할 수 있는 원형의 작은 보트
 STR_CPTY    :보트당 2명의 승객
 
 [CBOAT]
 STR_NAME    :카누
-STR_DESC    :Long canoes which the passengers paddle themselves
+STR_DESC    :탑승객이 스스로 페달을 밟는 긴 카누
 STR_CPTY    :카누당 2명의 승객
 
 [CSTBOAT]
@@ -4942,42 +4944,42 @@ STR_CPTY    :보트당 6명의 승객
 
 [DING1]
 STR_NAME    :보트 슬라이드
-STR_DESC    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
+STR_DESC    :반원형 또는 밀폐형 원형 튜브 트랙을 따라 이동하는 공기 주입식 고무 보트
 STR_CPTY    :보트당 2명의 승객
 
 [JSKI]
 STR_NAME    :제트 스키
-STR_DESC    :Single-seater jet skis which riders can drive themselves
+STR_DESC    :탑승객이 스스로 운전할 수 있는 단일 좌석의 제트 스키
 STR_CPTY    :차량당 1명의 탑승자
 
 [LFB1]
 STR_NAME    :통나무 수로
-STR_DESC    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_DESC    :수로를 따라 이동하다가 긴 낙하를 지나며 물을 튀겨 탑승객을 홀딱 젖게 만드는 통나무 모양의 보트
 STR_CPTY    :보트당 4명의 승객
 
 [RAPBOAT]
 STR_NAME    :리버 래피드
-STR_DESC    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_DESC    :구불구불한 광폭형 수로를 따라 이동하다가 폭포를 통과하면서 탑승객을 젖게 만들고, 거품 급류를 지나며 스릴을 선사하는 원형 보트
 STR_CPTY    :보트당 8명의 승객
 
 [RBOAT]
 STR_NAME    :보트 대여
-STR_DESC    :Rowing boats which passengers row themselves
+STR_DESC    :탑승객들이 스스로 노를 저을 수 있는 보트
 STR_CPTY    :보트당 2명의 승객
 
 [RFTBOAT]
 STR_NAME    :리버 래프트
-STR_DESC    :Raft-shaped boats gently meander around a river track
+STR_DESC    :구불구불한 강 모양의 트랙을 따라 얌전히 이동하는 뗏목 모양의 보트
 STR_CPTY    :래프트당 4명의 승객
 
 [SPBOAT]
 STR_NAME    :스플래시 보트
-STR_DESC    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
+STR_DESC    :광폭형 수로를 따라 이동하며 컨베이어 벨트로 경사를 오른 다음, 급경사로 가속하여 탑승객을 커다란 물보라로 홀딱 젖게 만드는 대용량의 보트
 STR_CPTY    :보트당 16명의 승객
 
 [SWANS]
-STR_NAME    :백조
-STR_DESC    :Swan shaped boat, propelled by the pedalling front seat passengers
+STR_NAME    :백조 보트
+STR_DESC    :앞쪽 좌석의 탑승객이 페달을 직접 밟아 움직이는 백조 모양의 보트
 STR_CPTY    :보트당 4명의 승객
 
 [TRIKE]
@@ -8100,19 +8102,19 @@ STR_NAME    :잃어버린 도시 벽 구석 조각
 STR_NAME    :잃어버린 도시 벽 구석 조각
 
 [WNAUTI01]
-STR_NAME    :Nautical 지붕 조각
+STR_NAME    :해상 지붕 조각
 
 [WNAUTI02]
-STR_NAME    :Nautical 지붕 조각
+STR_NAME    :해상 지붕 조각
 
 [WNAUTI03]
-STR_NAME    :Nautical 지붕 조각
+STR_NAME    :해상 지붕 조각
 
 [WNAUTI04]
-STR_NAME    :Nautical 지붕 조각
+STR_NAME    :해상 지붕 조각
 
 [WNAUTI05]
-STR_NAME    :Nautical 지붕 조각
+STR_NAME    :해상 지붕 조각
 
 [WTUDOR12]
 STR_NAME    :튜더식 벽 조각 4
@@ -8226,10 +8228,10 @@ STR_NAME    :Animated Balloons
 STR_NAME    :기념물 Fountain
 
 [WROPECOR]
-STR_NAME    :Nautical 구석 지붕 Railing
+STR_NAME    :해상 구석 지붕 Railing
 
 [WROPESWA]
-STR_NAME    :Nautical 지붕 Railing
+STR_NAME    :해상 지붕 Railing
 
 [1X2ABR01]
 STR_NAME    :Aboriginal Plain Tile
@@ -8286,13 +8288,13 @@ STR_NAME    :Mangrove Tree
 STR_NAME    :1950's Rocket
 
 [BamboRf1]
-STR_NAME    :Bamboo 지붕
+STR_NAME    :대나무 지붕
 
 [BAMBORF2]
-STR_NAME    :Bamboo 지붕
+STR_NAME    :대나무 지붕
 
 [BamboRf3]
-STR_NAME    :Bamboo 지붕
+STR_NAME    :대나무 지붕
 
 [BIGGEOSP]
 STR_NAME    :Big Geosphere
@@ -8370,88 +8372,88 @@ STR_NAME    :튜더식 지붕 조각 3
 STR_NAME    :튜더식 지붕 조각 4
 
 [SHIVA]
-STR_NAME    :Shiva
+STR_NAME    :시바
 
 [SOFLIBRT]
-STR_NAME    :동상 of Liberty
+STR_NAME    :자유의 여신상
 
 [SPUTNIK]
-STR_NAME    :Sputnik
+STR_NAME    :스푸트니크
 
 [TAJMCBSE]
-STR_NAME    :마하라자 궁전 Tower 기본
+STR_NAME    :마하라자 궁전 탑 기본
 
 [TAJMCOLM]
-STR_NAME    :마하라자 궁전 Tower Column
+STR_NAME    :마하라자 궁전 탑 기둥
 
 [TAJMCTOP]
-STR_NAME    :마하라자 궁전 Tower Top
+STR_NAME    :마하라자 궁전 탑 상단
 
 [1X2GLAMA]
-STR_NAME    :Gold Llama
+STR_NAME    :황금 라마
 
 [3X3ALTRE]
-STR_NAME    :Jungle Tree with Leopards
+STR_NAME    :표범이 있는 정글의 나무
 
 [3X3ATRE2]
-STR_NAME    :Jungle Tree 1
+STR_NAME    :정글의 나무 1
 
 [3X3ATRE3]
-STR_NAME    :Jungle Tree with Vines
+STR_NAME    :포도가 열린 정글의 나무
 
 [3X3EUCAL]
-STR_NAME    :Eucalyptus Tree
+STR_NAME    :유칼립투스 나무
 
 [3X3HMSEN]
-STR_NAME    :HMS Endeavour
+STR_NAME    :HMS 인데버
 
 [ADULTELE]
-STR_NAME    :Adult Indian Elephant
+STR_NAME    :인도 코끼리 성체
 
 [ATOMIUM]
-STR_NAME    :Atomium
+STR_NAME    :아토미움
 
 [BIGBEN]
-STR_NAME    :Big Ben and the Houses of Parliament
+STR_NAME    :빅벤과 영국 국회 의사당
 
 [BIGDISH]
-STR_NAME    :Satellite Dish
+STR_NAME    :위성 접시
 
 [CDRAGON]
-STR_NAME    :Chinese Dragon
+STR_NAME    :용
 
 [EASERLND]
-STR_NAME    :Easter Island Statue
+STR_NAME    :이스터 섬 조각상
 
 [EVILSAM]
-STR_NAME    :Evil Samurai
+STR_NAME    :나쁜 사무라이
 
 [GDSTAUE1]
-STR_NAME    :Gold Statue 1
+STR_NAME    :황금 조각상 1
 
 [GDSTAUE2]
-STR_NAME    :Gold Statue 2
+STR_NAME    :황금 조각상 2
 
 [GEISHA]
-STR_NAME    :Geisha
+STR_NAME    :게이샤
 
 [GOODSAM]
-STR_NAME    :Good Samurai
+STR_NAME    :좋은 사무라이
 
 [GWOCTUR1]
-STR_NAME    :Great 벽 Of China Turret Straight
+STR_NAME    :중국 만리장성 직선 탑
 
 [GWOCTUR2]
-STR_NAME    :Great 벽 Of China Turret 구석
+STR_NAME    :중국 만리장성 구석 탑
 
 [HELIPAD]
-STR_NAME    :Helipad
+STR_NAME    :헬리패드
 
 [ICEFOR01]
-STR_NAME    :Ice Formation
+STR_NAME    :얼음 Formation
 
 [ICEFOR02]
-STR_NAME    :Ice Formation
+STR_NAME    :얼음 Formation
 
 [MBSKYR01]
 STR_NAME    :마천루 지붕 조각
@@ -8460,40 +8462,40 @@ STR_NAME    :마천루 지붕 조각
 STR_NAME    :마천루 Tip
 
 [OVRGRWNT]
-STR_NAME    :Old Overgrown Tree
+STR_NAME    :오래된 잡초 나무
 
 [POGODAL]
-STR_NAME    :Pagoda
+STR_NAME    :탑
 
 [PAGODAM]
-STR_NAME    :Pagoda
+STR_NAME    :탑
 
 [PAGODAS]
-STR_NAME    :Pagoda
+STR_NAME    :탑
 
 [PAGODATW]
-STR_NAME    :Pagoda Tower
+STR_NAME    :탑
 
 [RADAR]
-STR_NAME    :Radar Dish
+STR_NAME    :레이더 접시
 
 [SPACEORB]
-STR_NAME    :Space Orbs
+STR_NAME    :천체
 
 [SUNKEN]
-STR_NAME    :Sunken Ship
+STR_NAME    :침몰선
 
 [TAJMDOME]
-STR_NAME    :마하라자 궁전 Dome
+STR_NAME    :마하라자 궁전 돔
 
 [WINDMILL]
-STR_NAME    :Windmill
+STR_NAME    :풍차
 
 [TMARCH1]
-STR_NAME    :마하라자 궁전 Arch 1
+STR_NAME    :마하라자 궁전 아치 1
 
 [TMARCH2]
-STR_NAME    :마하라자 궁전 Arch 2
+STR_NAME    :마하라자 궁전 아치 2
 
 [W2CORR01]
 STR_NAME    :물결 무늬 벽 조각
@@ -8544,46 +8546,46 @@ STR_NAME    :물결 무늬 벽 조각
 STR_NAME    :물결 무늬 벽 조각
 
 [WALLNA01]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA02]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA03]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA04]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA05]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA06]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA07]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA08]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA09]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA10]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA11]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA12]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA13]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WALLNA14]
-STR_NAME    :Nautical 벽 조각
+STR_NAME    :해상 벽 조각
 
 [WWDAUB01]
 STR_NAME    :초벽 벽
@@ -8607,37 +8609,37 @@ STR_NAME    :초벽 벽
 STR_NAME    :초벽 벽
 
 [WBambo01]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo02]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo03]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBAMBO04]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo05]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo11]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo12]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo13]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo14]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo15]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBambo21]
-STR_NAME    :Bamboo 벽
+STR_NAME    :대나무 벽
 
 [WBRICK01]
 STR_NAME    :붉은 벽돌 벽 조각 1
@@ -8742,58 +8744,58 @@ STR_NAME    :칙칙한 벽 조각 8
 STR_NAME    :조지아식 벽 조각 1
 
 [WGEORG02]
-STR_NAME    :조지아식 Ground Floor 벽 조각 1
+STR_NAME    :조지아식 지면 바닥 벽 조각 1
 
 [WGEORG03]
 STR_NAME    :조지아식 벽 조각 2
 
 [WGEORG04]
-STR_NAME    :조지아식 Ground Floor 벽 조각 2
+STR_NAME    :조지아식 지면 바닥 벽 조각 2
 
 [WGEORG05]
 STR_NAME    :조지아식 벽 조각 3
 
 [WGEORG06]
-STR_NAME    :조지아식 Ground Floor 벽 조각 3
+STR_NAME    :조지아식 지면 바닥 벽 조각 3
 
 [WGWOC1]
-STR_NAME    :Great 벽 Of China Front 벽 Section
+STR_NAME    :중국 만리장성 앞쪽 벽 조각
 
 [WGWOC2]
-STR_NAME    :Great 벽 Of China Rear 벽 Section
+STR_NAME    :중국 만리장성 뒤쪽 벽 조각
 
 [WGWOC3]
-STR_NAME    :Great 벽 Of China Step up 벽 Section
+STR_NAME    :중국 만리장성 중간 벽 조각
 
 [WALLICE1]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE2]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE3]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE4]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE5]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE6]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE7]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE8]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLICE9]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WALLIC10]
-STR_NAME    :Ice 벽
+STR_NAME    :얼음 벽
 
 [WIGLOO1]
 STR_NAME    :이글루 벽
@@ -8832,43 +8834,43 @@ STR_NAME    :통나무집 벽 조각
 STR_NAME    :통나무집 벽 조각
 
 [WMARBLE1]
-STR_NAME    :Ornate 대리석 벽
+STR_NAME    :화려하게 장식된 대리석 벽
 
 [WMARBLE2]
-STR_NAME    :Ornate 대리석 벽
+STR_NAME    :화려하게 장식된 대리석 벽
 
 [WMARBLE3]
-STR_NAME    :Ornate 대리석 벽
+STR_NAME    :화려하게 장식된 대리석 벽
 
 [WMARBLE4]
-STR_NAME    :Ornate 대리석 벽
+STR_NAME    :화려하게 장식된 대리석 벽
 
 [WMARBLE5]
-STR_NAME    :Ornate 대리석 벽
+STR_NAME    :화려하게 장식된 대리석 벽
 
 [WMARBLE6]
-STR_NAME    :Ornate 대리석 벽
+STR_NAME    :화려하게 장식된 대리석 벽
 
 [WMARBPL1]
-STR_NAME    :Plain 대리석 벽
+STR_NAME    :평탄한 대리석 벽
 
 [WMARBPL2]
-STR_NAME    :Plain 대리석 벽
+STR_NAME    :평탄한 대리석 벽
 
 [WMARBPL3]
-STR_NAME    :Plain 대리석 벽
+STR_NAME    :평탄한 대리석 벽
 
 [WMARBPL4]
-STR_NAME    :Plain 대리석 벽
+STR_NAME    :평탄한 대리석 벽
 
 [WMARBPL5]
-STR_NAME    :Plain 대리석 벽
+STR_NAME    :평탄한 대리석 벽
 
 [WMARBPL6]
-STR_NAME    :Plain 대리석 벽
+STR_NAME    :평탄한 대리석 벽
 
 [WMARBPL7]
-STR_NAME    :Plain 대리석 벽
+STR_NAME    :평탄한 대리석 벽
 
 [WMUD01]
 STR_NAME    :진흙 벽 조각
@@ -8910,55 +8912,55 @@ STR_NAME    :탈의실 벽 조각
 STR_NAME    :탈의실 벽 조각
 
 [WSHOGI01]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI02]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI03]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI04]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI05]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI06]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI07]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI08]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI09]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI10]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI11]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI12]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI13]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI14]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI15]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI16]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSHOGI17]
-STR_NAME    :Shogi 벽
+STR_NAME    :쇼기 벽
 
 [WSKYSC01]
 STR_NAME    :마천루 철제 세트 2 벽 조각
@@ -11220,7 +11222,7 @@ STR_SCNR    :남극 - 버려진 환경 복구
 STR_PARK    :얼음에 뒤덮인 모험
 STR_DTLS    :환경부에서 눈꼴사납고 낡은 정유 시설을 최고의 관광 명소로 만들어달라고 합니다. 땅값은 싸지만 대출 이자는 높습니다. 오래된 건물은 고철로 팔아 버릴 수 있습니다.
 
-<Asia - Great 벽 of China Tourism Enhancement>
+<Asia - Great Wall of China Tourism Enhancement>
 STR_SCNR    :아시아 - 중국 만리장성의 관광 진흥
 STR_PARK    :만리장성
 STR_DTLS    :관광 당국이 만리장성 주변의 땅에 놀이공원을 지어서 관광객 수를 늘리기로 결정했습니다. 돈이 문제가 아니군요!
@@ -11255,7 +11257,7 @@ STR_SCNR    :유럽 - 혁신
 STR_PARK    :잿더미를 딛고
 STR_DTLS    :방치되어 있는 낡은 공원이 있습니다. 이 공원이 과거에 누렸던 영광을 재현하기 위해 유럽 연합의 허가를 받았습니다! 허가를 받은 만큼 공원을 혁신해서 보답하세요.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :북 아메리카 - 최고의 하와이 섬
 STR_PARK    :왁자지껄 와이키키
 STR_DTLS    :하와이 주민들이 이제 파도타기가 지겨워져서 좀 더 자극적인 뭔가를 원하고 있습니다. 주민들도 만족시키면서 이 지역의 관광객들이 찾아오고 싶어하는 공원을 만드세요.
