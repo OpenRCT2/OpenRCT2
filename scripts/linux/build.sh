@@ -69,7 +69,7 @@ pushd build
 		# CMAKE and MAKE opts from environment
 		docker run -u travis -v $PARENT:/work/openrct2 -w /work/openrct2/build -i -t openrct2/openrct2:32bit-only bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && make $OPENRCT_MAKE_OPTS"
 	else
-		cmake -DCMAKE_BUILD_TYPE=Debug $OPENRCT2_CMAKE_OPTS ..
+		cmake $OPENRCT2_CMAKE_OPTS ..
 		# NOT the same variable as above
 		make $OPENRCT2_MAKE_OPTS
 	fi
