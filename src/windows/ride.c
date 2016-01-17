@@ -1133,7 +1133,10 @@ void window_ride_disable_tabs(rct_window *w)
 		disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
 
 	if (
-		ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_26) &&
+		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN) &&
+		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL) &&
+		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS) &&
+		!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_26) &&
 		!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT)
 	) {
 		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
