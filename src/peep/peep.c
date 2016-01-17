@@ -6915,6 +6915,7 @@ rct_map_element* get_banner_on_path(rct_map_element *path_element)
 
 static int banner_clear_path_edges(rct_map_element *mapElement, int edges)
 {
+	if (RCT2_GLOBAL(0x00F1AEDD, uint8) & 0x80) return edges;
 	rct_map_element *bannerElement = get_banner_on_path(mapElement);
 	if (bannerElement != NULL) {
 		do {
@@ -7134,12 +7135,13 @@ uint8 sub_69A60A(rct_peep* peep){
  *
  *  rct2: 0x0069A997
  */
-static int sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 score, int test_edge) {
+static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 score, int test_edge) {
 	x += TileDirectionDelta[test_edge].x;
 	y += TileDirectionDelta[test_edge].y;
 
+	++counter;
 	if (--RCT2_GLOBAL(0x00F1AED4, sint32) < 0) return score;
-	if (++counter > 200) return score;
+	if (counter > 200) return score;
 
 	uint16 x_delta = abs(RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) - x);
 	uint16 y_delta = abs(RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) - y);
@@ -7161,24 +7163,23 @@ static int sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 score, 
 	do {
 		if (map_element_get_type(path) != MAP_ELEMENT_TYPE_PATH) continue;
 
-		uint8 slope_dir;
 		if (footpath_element_is_sloped(path) &&
-			(slope_dir = footpath_element_get_slope_direction(path)) != test_edge) {
-			slope_dir ^= 2;
-			if (slope_dir != test_edge) continue;
+			footpath_element_get_slope_direction(path) != test_edge) {
+			if ((footpath_element_get_slope_direction(path) ^ 2) != test_edge) continue;
 			if (path->base_height + 2 != z) continue;
 		} else {
-			if (z != path->base_height) continue;
+			if (path->base_height != z) continue;
 			if (footpath_element_is_wide(path)) continue;
 		}
 
-		if ((!footpath_element_is_queue(path) ||
-			 RCT2_GLOBAL(0x00F1AEE1, uint8) != path->properties.path.ride_index) &&
-			(path->type & RCT2_GLOBAL(0x00F1AEE0, uint8))) continue;
+		if (!footpath_element_is_queue(path) ||
+			RCT2_GLOBAL(0x00F1AEE1, uint8) != path->properties.path.ride_index) {
+			if (path->type & RCT2_GLOBAL(0x00F1AEE0, uint8)) continue;
+		}
 
 		found = true;
 		break;
-	} while (map_element_is_last_for_tile(path++));
+	} while (!map_element_is_last_for_tile(path++));
 	if (!found) return score;
 
 	uint8 edges = path_get_permitted_edges(path);
@@ -7187,8 +7188,7 @@ static int sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 score, 
 	test_edge = bitscanforward(edges);
 	if (test_edge == -1) return score;
 
-	edges &= ~(1 << test_edge);
-	if (edges == 0) {
+	if ((edges & ~(1 << test_edge)) == 0) {
 		if (footpath_element_is_sloped(path) &&
 			footpath_element_get_slope_direction(path) == test_edge) {
 			z += 2;
@@ -7212,7 +7212,7 @@ static int sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 score, 
 			footpath_element_get_slope_direction(path) == test_edge) {
 			height += 2;
 		}
-		sub_69A997(x, y, height, counter, score, test_edge);
+		score = sub_69A997(x, y, height, counter, score, test_edge);
 		RCT2_GLOBAL(0x00F1AEDC, int) = saved_f1aedc;
 	} while ((test_edge = bitscanforward(edges)) != -1);
 
@@ -7282,11 +7282,6 @@ static int guest_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep
 			}
 		}
 	}
-
-    // May be redundant, but shouldn't be removed until it's confirmed that sub_69A997 doesn't modify them
-	x_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) / 32;
-	y_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) / 32;
-	z_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8);
 
 	if (peep->pathfind_goal.direction > 3 ||
 			peep->pathfind_goal.x != x_goal ||
