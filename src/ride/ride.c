@@ -4248,9 +4248,10 @@ rct_vehicle *vehicle_create_car(
 	int rideIndex,
 	int vehicleEntryIndex,
 	int carIndex,
-	int *x,
-	int *y,
-	int z,
+	int x,
+	int y,
+	int z,	
+	int *remainingDistance,
 	rct_map_element *mapElement
 ) {
 	registers regs = { 0 };
@@ -4268,10 +4269,10 @@ rct_vehicle *vehicle_create_car(
 	vehicle->is_child = carIndex == 0 ? 0 : 1;
 	vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
 	regs.edx = vehicleEntry->spacing >> 1;
-	regs.ebx = carIndex - regs.edx;
-	vehicle->remaining_distance = regs.ebx;
+	*remainingDistance -= regs.edx;
+	vehicle->remaining_distance = *remainingDistance;
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14)) {
-		regs.ebx -= regs.edx;
+		*remainingDistance -= regs.edx;
 	}
 
 	// loc_6DD9A5:
@@ -4310,11 +4311,11 @@ rct_vehicle *vehicle_create_car(
 		// loc_6DDCA4:
 		vehicle->var_CD = 0;
 		int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
-		*x += word_9A3AB4[direction].x;
-		*y += word_9A3AB4[direction].y;
+		x += word_9A3AB4[direction].x;
+		y += word_9A3AB4[direction].y;
 		z = mapElement->base_height * 8;
-		vehicle->track_x = *x;
-		vehicle->track_y = *y;
+		vehicle->track_x = x;
+		vehicle->track_y = y;
 		vehicle->track_z = z;
 		vehicle->current_station = (mapElement->properties.track.sequence & 0x70) << 4;
 		
@@ -4326,17 +4327,15 @@ rct_vehicle *vehicle_create_car(
 		vehicle->sub_state = 0;
 		vehicle->update_flags = 0;
 
+		rct_xy16 chosenLoc;
 		// loc_6DDD26:
 		do {
-			regs.al = scenario_rand() & 0x1E;
-			vehicle->sprite_direction = regs.al;
-			regs.eax = (regs.eax >> 5) & 0xFF;
-			regs.cx += regs.ax;
-			regs.eax = (regs.eax >> 16) & 0xFF;
-			regs.ax += *x;
-		} while (vehicle_update_bumper_car_collision(vehicle, regs.ax, regs.cx, NULL));
+			vehicle->sprite_direction = scenario_rand() & 0x1E;
+			chosenLoc.y = y + (scenario_rand() & 0xFF);
+			chosenLoc.x = x + (scenario_rand() & 0xFF);
+		} while (vehicle_update_bumper_car_collision(vehicle, chosenLoc.x, chosenLoc.y, NULL));
 
-		sprite_move(*x, *y, z, (rct_sprite*)vehicle);
+		sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
 	} else {
 		regs.dl = 0;
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13) {
@@ -4349,7 +4348,7 @@ rct_vehicle *vehicle_create_car(
 				regs.dl = 6;
 			}
 		}
-		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_3) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
 			regs.dl = 9;
 			vehicle->var_D3 = 0;
 			vehicle->var_D4 = 0;
@@ -4365,8 +4364,8 @@ rct_vehicle *vehicle_create_car(
 		}
 		vehicle->var_CD = regs.dl;
 
-		vehicle->track_x = *x;
-		vehicle->track_y = *y;
+		vehicle->track_x = x;
+		vehicle->track_y = y;
 
 		int direction = mapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 		vehicle->sprite_direction = direction << 3;
@@ -4387,18 +4386,18 @@ rct_vehicle *vehicle_create_car(
 			}
 		}
 
-		*x += word_9A2A60[direction].x;
-		*y += word_9A2A60[direction].y;
+		x += word_9A2A60[direction].x;
+		y += word_9A2A60[direction].y;
 		vehicle->track_z = mapElement->base_height * 8;
 
 		vehicle->current_station = map_get_station(mapElement);
 		z = mapElement->base_height * 8;
 		z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
 
-		sprite_move(*x, *y, z, (rct_sprite*)vehicle);
+		sprite_move(x, y, z, (rct_sprite*)vehicle);
 		vehicle->track_type = (mapElement->properties.track.type << 2) | (vehicle->sprite_direction >> 3);
 		vehicle->var_34 = 31;
-		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_3) {
+		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
 			vehicle->var_34 = 15;
 		}
 		vehicle->update_flags = VEHICLE_UPDATE_FLAG_1;
@@ -4421,19 +4420,16 @@ rct_vehicle *vehicle_create_car(
  *
  *  rct2: 0x006DD84C
  */
-train_ref vehicle_create_train(int rideIndex, int x, int y, int z, rct_map_element *mapElement)
+train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int *remainingDistance, rct_map_element *mapElement)
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
 
 	uint8 trainLayout[42];
 	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
 
-	int sx = x;
-	int sy = y;
-
 	train_ref train = { NULL, NULL };
 	for (int carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++) {
-		rct_vehicle *car = vehicle_create_car(rideIndex, trainLayout[carIndex], carIndex, &sx, &sy, z, mapElement);
+		rct_vehicle *car = vehicle_create_car(rideIndex, trainLayout[carIndex], carIndex, x, y, z, remainingDistance, mapElement);
 		if (carIndex == 0) {
 			train.head = car;
 		} else {
@@ -4451,12 +4447,13 @@ void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_element *
 {
 	rct_ride *ride = GET_RIDE(rideIndex);
 	train_ref firstTrain, lastTrain;
+	int remainingDistance = 0;
 
 	for (int vehicleIndex = 0; vehicleIndex < ride->num_vehicles; vehicleIndex++) {
 		if (ride_is_block_sectioned(ride)) {
-			// regs.ebx = 0;
+			remainingDistance = 0;
 		}
-		train_ref train = vehicle_create_train(rideIndex, x, y, z, mapElement);
+		train_ref train = vehicle_create_train(rideIndex, x, y, z, &remainingDistance, mapElement);
 		if (vehicleIndex == 0) {
 			firstTrain = train;
 		} else {
@@ -4664,6 +4661,8 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 			continue;
 		}
 
+		vehicle_update_track_motion(train, NULL);
+
 		do {
 			mapElement->flags |= (1 << 5);
 			car = train;
@@ -4679,7 +4678,7 @@ void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement)
 				}
 				car = GET_VEHICLE(spriteIndex);
 			}
-		} while (vehicle_update_track_motion(train, NULL) & 0x400);
+		} while (!(vehicle_update_track_motion(train, NULL) & 0x400));
 
 		mapElement->flags |= (1 << 5);
 		car = train;
