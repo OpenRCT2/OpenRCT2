@@ -3394,13 +3394,135 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	*edi = rideIndex;
 }
 
+money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16 x, sint16 y, sint16 z)
+{
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x + 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y + 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = z;
+	RCT2_GLOBAL(0x00F4413E, uint32) = 0;
+	if (!sub_68B044()) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if ((z & 15) != 0) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
+			footpath_remove_litter(x, y, z);
+			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
+		}
+	}
+
+	if (!gCheatsSandboxMode) {
+		if (!map_is_location_owned(floor2(x, 32), floor2(y, 32), z)) {
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	// Check support height
+	if (!gCheatsDisableSupportLimits) {
+		rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+		uint8 supportZ = (z + 32) >> 8;
+		if (supportZ > mapElement->base_height) {
+			uint8 supportHeight = (supportZ - mapElement->base_height) / 2;
+			uint8 maxSupportHeight = RCT2_GLOBAL(0x0097D218 + (RIDE_TYPE_MAZE * 8), uint8);
+			if (supportHeight > maxSupportHeight) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
+				return MONEY32_UNDEFINED;
+			}
+		}
+	}
+
+	// Clearance checks
+	if (!gCheatsDisableClearanceChecks) {
+		int fx = floor2(x, 32);
+		int fy = floor2(y, 32);
+		int fz0 = z >> 3;
+		int fz1 = fz0 + 4;
+
+		uint8 stack_F4412F[13];
+		stack_F4412F[0x0C] = flags;
+
+		RCT2_GLOBAL(0x00F4412B, uint16) = fx;
+		RCT2_GLOBAL(0x00F4412D, uint16) = fy;
+		RCT2_GLOBAL(0x00F4412F, uint8*) = stack_F4412F;
+		RCT2_GLOBAL(0x00F4413E, money32) = 0;
+		if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, (void*)0x006CDE57, 15)) {
+			return MONEY32_UNDEFINED;
+		}
+
+		uint8 elctgaw = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
+		if (elctgaw & 4) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			return MONEY32_UNDEFINED;
+		}
+		if (elctgaw & 2) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	rct_ride *ride = GET_RIDE(rideIndex);
+	
+	// Calculate price
+	money32 price = 0;
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2] * RCT2_GLOBAL(0x0099DBC8, money32);
+		price = (price >> 17) * 10;
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		// Place track element
+		int fx = floor2(x, 32);
+		int fy = floor2(y, 32);
+		int fz = z >> 3;
+		rct_map_element *mapElement = map_element_insert(fx >> 5, fy >> 5, fz, 15);
+		mapElement->clearance_height = fz + 4;
+		mapElement->type = MAP_ELEMENT_TYPE_TRACK;
+		mapElement->properties.track.type = 101;
+		mapElement->properties.track.ride_index = rideIndex;
+		mapElement->properties.track.maze_entry = mazeEntry;
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+		}
+
+		map_invalidate_element(fx, fy, mapElement);
+
+		ride->maze_tiles++;
+		ride->station_heights[0] = mapElement->base_height;
+		ride->station_starts[0] = 0;
+		if (ride->maze_tiles == 1) {
+			ride->overall_view = (fx >> 5) | ((fy >> 5) << 8);
+		}
+	}
+
+	return price;
+}
+
 /**
  *
  *  rct2: 0x006CDEE4
  */
 void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	RCT2_CALLFUNC_X(0x006CDEE4, eax, ebx, ecx, edx, esi, edi, ebp);
+	*ebx = place_maze_design(
+		*ebx & 0xFF,
+		*edx & 0xFF,
+		((*ebx >> 8) & 0xFF) | (((*edx >> 8) & 0xFF) << 8),
+		*eax & 0xFFFF,
+		*ecx & 0xFFFF,
+		*edi & 0xFFFF
+	);
 }
 
 /**
