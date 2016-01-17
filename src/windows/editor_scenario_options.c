@@ -444,10 +444,9 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, int 
 		window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_NO_MONEY:
-		if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_NO_MONEY_SCENARIO;
-		}
-		else {
+		} else {
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_NO_MONEY;
 			// Invalidate all windows that have anything to do with finance
 			window_invalidate_by_class(WC_RIDE);
@@ -455,6 +454,7 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, int 
 			window_invalidate_by_class(WC_PARK_INFORMATION);
 			window_invalidate_by_class(WC_FINANCES);
 			window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+			window_invalidate_by_class(WC_TOP_TOOLBAR);
 		}
 		window_invalidate(w);
 		break;
