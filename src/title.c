@@ -381,7 +381,7 @@ static void title_do_next_script_opcode()
 
 			// Construct full relative path
 			if (gConfigTitleSequences.presets[_scriptCurrentPreset].path[0]) {
-				safe_strncpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path, MAX_PATH);
+				safe_strcpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path, MAX_PATH);
 			}
 			else {
 				platform_get_user_directory(path, "title sequences");

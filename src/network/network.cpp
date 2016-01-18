@@ -192,7 +192,7 @@ bool NetworkPacket::CommandRequiresAuth()
 
 NetworkPlayer::NetworkPlayer(const char* name)
 {
-	safe_strncpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
+	safe_strcpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
 	NetworkPlayer::name[sizeof(NetworkPlayer::name) - 1] = 0;
 	ping = 0;
 	flags = 0;
@@ -776,13 +776,13 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-		safe_strncpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
+		safe_strcpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
 		strcat(lineCh, ": ");
 		lineCh = strchr(lineCh, '\0');
 	}
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-	safe_strncpy(lineCh, text, 800);
+	safe_strcpy(lineCh, text, 800);
 	return formatted;
 }
 

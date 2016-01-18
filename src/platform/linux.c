@@ -60,7 +60,7 @@ void platform_get_exe_path(utf8 *outPath)
 	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
 
 	exePath[exeDelimiterIndex] = '\0';
-	safe_strncpy(outPath, exePath, exeDelimiterIndex + 1);
+	safe_strcpy(outPath, exePath, exeDelimiterIndex + 1);
 }
 
 bool platform_check_steam_overlay_attached() {
@@ -140,7 +140,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 		if (platform_directory_exists(searchLocations[i]))
 		{
 			out[0] = '\0';
-			safe_strncpy(out, searchLocations[i], MAX_PATH);
+			safe_strcpy(out, searchLocations[i], MAX_PATH);
 			return;
 		}
 	}
@@ -196,7 +196,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 		if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
 		{
 			found = true;
-			safe_strncpy(buffer, (utf8*) filename, MAX_PATH);
+			safe_strcpy(buffer, (utf8*) filename, MAX_PATH);
 			log_verbose("FontConfig provided font %s", filename);
 		}
 		FcPatternDestroy(match);

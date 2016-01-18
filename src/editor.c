@@ -91,7 +91,7 @@ void editor_load()
 	gfx_invalidate_screen();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 
-	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749), 0x40);
+	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749), 0x40);
 }
 
 /**
@@ -119,8 +119,8 @@ void editor_convert_save_to_scenario_callback(int result)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
 
-	safe_strncpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME, 64);
-	safe_strncpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS, 256);
+	safe_strcpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME, 64);
+	safe_strcpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS, 256);
 	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);

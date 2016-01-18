@@ -360,7 +360,7 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_TITLE_EDITOR_LOAD:
 		if (w->selected_list_item != -1) {
 			if (gConfigTitleSequences.presets[gCurrentTitleSequence].path[0]) {
-				safe_strncpy(path, gConfigTitleSequences.presets[gCurrentTitleSequence].path, MAX_PATH);
+				safe_strcpy(path, gConfigTitleSequences.presets[gCurrentTitleSequence].path, MAX_PATH);
 			}
 			else {
 				platform_get_user_directory(path, "title sequences");

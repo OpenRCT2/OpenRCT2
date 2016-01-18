@@ -49,7 +49,7 @@ void platform_get_exe_path(utf8 *outPath)
 	}
 	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
 
-	safe_strncpy(outPath, exePath, exeDelimiterIndex + 1);
+	safe_strcpy(outPath, exePath, exeDelimiterIndex + 1);
 	outPath[exeDelimiterIndex] = '\0';
 }
 
@@ -92,7 +92,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 			if (platform_directory_exists(resources))
 			{
 				out[0] = '\0';
-				safe_strncpy(out, resources, MAX_PATH);
+				safe_strcpy(out, resources, MAX_PATH);
 				return;
 			}
 		}

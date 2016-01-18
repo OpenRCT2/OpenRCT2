@@ -2028,7 +2028,7 @@ static void window_editor_object_selection_textinput(rct_window *w, int widgetIn
 	}
 	else {
 		memset(_filter_string, 0, sizeof(_filter_string));
-		safe_strncpy(_filter_string, text, sizeof(_filter_string));
+		safe_strcpy(_filter_string, text, sizeof(_filter_string));
 	}
 
 	filter_update_counts();
@@ -2057,9 +2057,9 @@ static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
 	char name_lower[MAX_PATH];
 	char type_lower[MAX_PATH];
 	char filter_lower[sizeof(_filter_string)];
-	safe_strncpy(name_lower, name, MAX_PATH);
-	safe_strncpy(type_lower, ride_type, MAX_PATH);
-	safe_strncpy(filter_lower, _filter_string, sizeof(_filter_string));
+	safe_strcpy(name_lower, name, MAX_PATH);
+	safe_strcpy(type_lower, ride_type, MAX_PATH);
+	safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
 
 	// Make use of lowercase characters only
 	for (int i = 0; name_lower[i] != '\0'; i++)

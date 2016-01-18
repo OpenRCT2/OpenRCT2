@@ -287,9 +287,9 @@ void scenario_normalise_name(utf8 *name)
 	if (nameLength >= 3 && (name[0] == 'R' && name[1] == 'C' && name[2] == 'T')) {
 		if (nameLength >= 4 && (name[3] == '1' || name[3] == '2')) {
 			log_verbose("Stripping RCT/1/2 from name: %s", name);
-			safe_strncpy(name, name + 4, 64);
+			safe_strcpy(name, name + 4, 64);
 		} else {
-			safe_strncpy(name, name + 3, 64);
+			safe_strcpy(name, name + 3, 64);
 		}
 	}
 	
@@ -301,7 +301,7 @@ void scenario_normalise_name(utf8 *name)
 	for (int i = 0; i < countof(ScenarioAliases); i++) {
 		if (strcmp(ScenarioAliases[i].alternative, name) == 0) {
 			log_verbose("Found alias: %s; will treat as: %s", name, ScenarioAliases[i].original);
-			safe_strncpy(name, ScenarioAliases[i].original, 64);
+			safe_strcpy(name, ScenarioAliases[i].original, 64);
 		}
 	}
 }

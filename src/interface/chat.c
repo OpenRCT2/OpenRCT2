@@ -79,14 +79,14 @@ void chat_draw()
 		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
 			break;
 		}
-		safe_strncpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+		safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer), y + 12);
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 	}
 	if (gChatOpen) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
-		safe_strncpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
+		safe_strcpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
 		y = _chatBottom - 10;
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);

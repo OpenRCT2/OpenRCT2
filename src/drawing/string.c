@@ -1386,7 +1386,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 
 	// Return full string if it fits
 	if (gfx_get_string_width((char*)path) <= availableWidth) {
-		safe_strncpy(buffer, path, bufferSize);
+		safe_strcpy(buffer, path, bufferSize);
 		return;
 	}
 
@@ -1399,7 +1399,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 	}
 
 	// TODO: Replace with unicode ellipsis when supported
-	safe_strncpy(buffer, "...", bufferSize);
+	safe_strcpy(buffer, "...", bufferSize);
 
 	// Abreviate beginning with xth separator
 	int begin = -1;
@@ -1408,11 +1408,11 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 			begin++;
 		} while (path[begin] != platform_get_path_separator());
 
-		safe_strncpy(buffer + 3, path + begin, bufferSize - 3);
+		safe_strcpy(buffer + 3, path + begin, bufferSize - 3);
 		if (gfx_get_string_width(buffer) <= availableWidth) {
 			return;
 		}
 	}
 
-	safe_strncpy(buffer, path, bufferSize);
+	safe_strcpy(buffer, path, bufferSize);
 }

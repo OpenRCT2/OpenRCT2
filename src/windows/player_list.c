@@ -298,7 +298,7 @@ static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			int colour = 0;
 			if (i == w->selected_list_item) {
 				gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
-				safe_strncpy(&buffer[0], network_get_player_name(i), sizeof(buffer));
+				safe_strcpy(&buffer[0], network_get_player_name(i), sizeof(buffer));
 				colour = w->colours[2];
 			} else {
 				if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER) {
@@ -306,7 +306,7 @@ static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 				} else {
 					lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
 				}
-				safe_strncpy(lineCh, network_get_player_name(i), sizeof(buffer) - (lineCh - buffer));
+				safe_strcpy(lineCh, network_get_player_name(i), sizeof(buffer) - (lineCh - buffer));
 			}
 			gfx_clip_string(buffer, 230);
 			gfx_draw_string(dpi, buffer, colour, 0, y - 1);

@@ -201,7 +201,7 @@ void theme_create_preset(int duplicate, const char *name)
 	int preset = gConfigThemes.num_presets;
 	gConfigThemes.num_presets++;
 	gConfigThemes.presets = realloc(gConfigThemes.presets, sizeof(theme_preset) * gConfigThemes.num_presets);
-	safe_strncpy(gConfigThemes.presets[preset].name, name, THEME_PRESET_NAME_SIZE);
+	safe_strcpy(gConfigThemes.presets[preset].name, name, THEME_PRESET_NAME_SIZE);
 	gConfigThemes.presets[preset].windows = malloc(sizeof(theme_window) * gNumThemeWindows);
 	for (int i = 0; i < (int)gNumThemeWindows; i++) {
 		gConfigThemes.presets[preset].windows[i] = gConfigThemes.presets[duplicate].windows[i];
@@ -242,7 +242,7 @@ void theme_rename_preset(int preset, const char *newName)
 		strcat(dest, ".ini");
 		platform_file_move(src, dest);
 
-		safe_strncpy(gConfigThemes.presets[preset].name, newName, THEME_PRESET_NAME_SIZE);
+		safe_strcpy(gConfigThemes.presets[preset].name, newName, THEME_PRESET_NAME_SIZE);
 
 		if (preset == gCurrentTheme) {
 			gConfigInterface.current_theme_preset = gConfigThemes.presets[preset].name;

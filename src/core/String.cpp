@@ -63,7 +63,7 @@ namespace String
 
     utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src)
     {
-        return safe_strncpy(buffer, src, bufferSize);
+        return safe_strcpy(buffer, src, bufferSize);
     }
 
     utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t srcSize)

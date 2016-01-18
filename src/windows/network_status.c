@@ -84,7 +84,7 @@ void window_network_status_open(const char* text)
 {
 	rct_window* window;
 
-	safe_strncpy(window_network_status_text, text, sizeof(window_network_status_text));
+	safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
 
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
@@ -146,7 +146,7 @@ static void window_network_status_textinput(rct_window *w, int widgetIndex, char
 	switch (widgetIndex) {
 	case WIDX_PASSWORD:
 		if (text != NULL)
-			safe_strncpy(_password, text, sizeof(_password));
+			safe_strcpy(_password, text, sizeof(_password));
 		break;
 	}
 	if (text == NULL) {

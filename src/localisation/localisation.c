@@ -442,7 +442,7 @@ void format_currency(char **dest, long long value)
 
 	// Prefix
 	if (affix == CURRENCY_PREFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
@@ -450,7 +450,7 @@ void format_currency(char **dest, long long value)
 
 	// Currency symbol suffix
 	if (affix == CURRENCY_SUFFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }
@@ -478,7 +478,7 @@ void format_currency_2dp(char **dest, long long value)
 
 	// Prefix
 	if (affix == CURRENCY_PREFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
@@ -491,7 +491,7 @@ void format_currency_2dp(char **dest, long long value)
 
 	// Currency symbol suffix
 	if (affix == CURRENCY_SUFFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }

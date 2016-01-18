@@ -231,7 +231,7 @@ bool platform_lock_single_instance()
 {
 	char pidFilePath[MAX_PATH];
 
-	safe_strncpy(pidFilePath, _userDataDirectoryPath, sizeof(pidFilePath));
+	safe_strcpy(pidFilePath, _userDataDirectoryPath, sizeof(pidFilePath));
 	safe_strcat_path(pidFilePath, SINGLE_INSTANCE_MUTEX_NAME, sizeof(pidFilePath));
 
 	// We will never close this file manually. The operating system will
@@ -325,7 +325,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			safe_strncpy(enumFileInfo->pattern, npattern, sizeof(enumFileInfo->pattern));
+			safe_strcpy(enumFileInfo->pattern, npattern, sizeof(enumFileInfo->pattern));
 			cnt = scandir(dir_name, &enumFileInfo->fileListTemp, winfilter, alphasort);
 			if (cnt < 0)
 			{
@@ -465,7 +465,7 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			safe_strncpy(enumFileInfo->pattern, npattern, length);
+			safe_strcpy(enumFileInfo->pattern, npattern, length);
 			cnt = scandir(npattern, &enumFileInfo->fileListTemp, dirfilter, alphasort);
 			if (cnt < 0)
 			{
@@ -534,7 +534,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 			return false;
 		}
 		// so very, very wrong
-		safe_strncpy(path, basename(fileName), MAX_PATH);
+		safe_strcpy(path, basename(fileName), MAX_PATH);
 		strncat(path, "/", MAX_PATH - strlen(path) - 1);
 		return true;
 	} else {
@@ -681,13 +681,13 @@ void platform_resolve_user_data_path()
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);
 	free(w_buffer);
-	safe_strncpy(_userDataDirectoryPath, path, MAX_PATH);
+	safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
 	free(path);
 }
 
 void platform_get_openrct_data_path(utf8 *outPath)
 {
-	safe_strncpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
+	safe_strcpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
 }
 
 void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
@@ -722,7 +722,7 @@ void platform_resolve_openrct_data_path()
 	if (platform_directory_exists(buffer))
 	{
 		_openrctDataDirectoryPath[0] = '\0';
-		safe_strncpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
+		safe_strcpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
 		log_verbose("Found OpenRCT2 data in %s", _openrctDataDirectoryPath);
 		return;
 	}
@@ -735,7 +735,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 {
 	const char separator[2] = { platform_get_path_separator(), 0 };
 	char buffer[MAX_PATH];
-	safe_strncpy(buffer, _userDataDirectoryPath, sizeof(buffer));
+	safe_strcpy(buffer, _userDataDirectoryPath, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
 		log_verbose("adding subDirectory '%s'", subDirectory);
 		strncat(buffer, subDirectory, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
@@ -746,7 +746,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);
 	free(w_buffer);
-	safe_strncpy(outPath, path, MAX_PATH);
+	safe_strcpy(outPath, path, MAX_PATH);
 	free(path);
 	log_verbose("outPath + subDirectory = '%s'", buffer);
 }

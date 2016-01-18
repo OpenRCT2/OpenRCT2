@@ -687,7 +687,7 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_TEXTEDITING:
-			safe_strncpy(gTextInputComposition, e.edit.text, min(e.edit.length, 32));
+			safe_strcpy(gTextInputComposition, e.edit.text, min(e.edit.length, 32));
 			gTextInputCompositionStart = e.edit.start;
 			gTextInputCompositionLength = e.edit.length;
 			gTextInputCompositionActive = gTextInputComposition[0] != 0;
