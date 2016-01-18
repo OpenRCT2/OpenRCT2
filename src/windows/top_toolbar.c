@@ -73,19 +73,20 @@ enum {
 };
 
 typedef enum {
-	DDIDX_LOAD_GAME = 0,
-	DDIDX_SAVE_GAME = 1,
-	DDIDX_SAVE_GAME_AS = 2,
+	DDIDX_NEW_GAME = 0,
+	DDIDX_LOAD_GAME = 1,
+	DDIDX_SAVE_GAME = 2,
+	DDIDX_SAVE_GAME_AS = 3,
 	// separator
-	DDIDX_ABOUT = 4,
-	DDIDX_OPTIONS = 5,
-	DDIDX_SCREENSHOT = 6,
-	DDIDX_GIANT_SCREENSHOT = 7,
+	DDIDX_ABOUT = 5,
+	DDIDX_OPTIONS = 6,
+	DDIDX_SCREENSHOT = 7,
+	DDIDX_GIANT_SCREENSHOT = 8,
 	// separator
-	DDIDX_QUIT_TO_MENU = 9,
-	DDIDX_EXIT_OPENRCT2 = 10,
+	DDIDX_QUIT_TO_MENU = 10,
+	DDIDX_EXIT_OPENRCT2 = 11,
 	// separator
-	DDIDX_ENABLE_TWITCH = 12
+	DDIDX_ENABLE_TWITCH = 13
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -391,26 +392,27 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
 			numItems = 10;
 		} else {
-			gDropdownItemsFormat[0] = STR_LOAD_GAME;
-			gDropdownItemsFormat[1] = STR_SAVE_GAME;
-			gDropdownItemsFormat[2] = STR_SAVE_GAME_AS;
-			gDropdownItemsFormat[3] = 0;
-			gDropdownItemsFormat[4] = STR_ABOUT;
-			gDropdownItemsFormat[5] = STR_OPTIONS;
-			gDropdownItemsFormat[6] = STR_SCREENSHOT;
-			gDropdownItemsFormat[7] = STR_GIANT_SCREENSHOT;
-			gDropdownItemsFormat[8] = 0;
-			gDropdownItemsFormat[9] = STR_QUIT_TO_MENU;
-			gDropdownItemsFormat[10] = STR_EXIT_OPENRCT2;
-			numItems = 11;
+			gDropdownItemsFormat[0] = STR_NEW_GAME;
+			gDropdownItemsFormat[1] = STR_LOAD_GAME;
+			gDropdownItemsFormat[2] = STR_SAVE_GAME;
+			gDropdownItemsFormat[3] = STR_SAVE_GAME_AS;
+			gDropdownItemsFormat[4] = 0;
+			gDropdownItemsFormat[5] = STR_ABOUT;
+			gDropdownItemsFormat[6] = STR_OPTIONS;
+			gDropdownItemsFormat[7] = STR_SCREENSHOT;
+			gDropdownItemsFormat[8] = STR_GIANT_SCREENSHOT;
+			gDropdownItemsFormat[9] = 0;
+			gDropdownItemsFormat[10] = STR_QUIT_TO_MENU;
+			gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
+			numItems = 12;
 
 		#ifndef DISABLE_TWITCH
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
-				gDropdownItemsFormat[11] = 0;
-				gDropdownItemsFormat[12] = 1156;
-				gDropdownItemsArgs[12] = STR_TWITCH_ENABLE;
-				numItems = 13;
+				gDropdownItemsFormat[12] = 0;
+				gDropdownItemsFormat[13] = 1156;
+				gDropdownItemsArgs[13] = STR_TWITCH_ENABLE;
+				numItems = 14;
 			}
 		#endif
 		}
@@ -425,7 +427,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 
 #ifndef DISABLE_TWITCH
 		if (_menuDropdownIncludesTwitch && gTwitchEnable) {
-			dropdown_set_checked(11, true);
+			dropdown_set_checked(13, true);
 		}
 #endif
 		break;
@@ -505,6 +507,10 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
 
+		// New game is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR))
+			dropdownIndex += 1;
+		
 		// Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR) && dropdownIndex > DDIDX_LOAD_GAME)
 			dropdownIndex += 1;
@@ -514,6 +520,9 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			dropdownIndex += DDIDX_ABOUT;
 
 		switch (dropdownIndex) {
+		case DDIDX_NEW_GAME:
+			window_scenarioselect_open();
+			break;
 		case DDIDX_LOAD_GAME:
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			break;
