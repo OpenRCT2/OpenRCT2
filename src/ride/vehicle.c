@@ -7223,8 +7223,8 @@ loc_6DBA33:;
 
 	if (trackType == TRACK_ELEM_BRAKES) {
 		regs.eax = -(vehicle->var_CF << 16);
-		if (regs.eax <= RCT2_GLOBAL(0x00F64E08, sint32)) {
-			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -4;
+		if (regs.eax > RCT2_GLOBAL(0x00F64E08, sint32)) {
+			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -16;
 			vehicle->acceleration = regs.eax;
 		}
 	}
