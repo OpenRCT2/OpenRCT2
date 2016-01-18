@@ -483,7 +483,7 @@ void platform_resolve_openrct_data_path()
 			exit(-1);
 		}
 		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
 		free(outPathTemp);
 		free(customUserDataPathW);
 
@@ -503,7 +503,7 @@ void platform_resolve_openrct_data_path()
 	if (platform_directory_exists(buffer))
 	{
 		_openrctDataDirectoryPath[0] = '\0';
-		safe_strncpy(_openrctDataDirectoryPath, buffer, sizeof(_openrctDataDirectoryPath));
+		safe_strcpy(_openrctDataDirectoryPath, buffer, sizeof(_openrctDataDirectoryPath));
 		return;
 	} else {
 		log_fatal("Unable to resolve openrct data path.");
@@ -513,7 +513,7 @@ void platform_resolve_openrct_data_path()
 
 void platform_get_openrct_data_path(utf8 *outPath)
 {
-	safe_strncpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
+	safe_strcpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
 }
 
 /**
@@ -533,7 +533,7 @@ void platform_resolve_user_data_path()
 			exit(-1);
 		}
 		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
 		free(outPathTemp);
 		free(customUserDataPathW);
 
@@ -547,7 +547,7 @@ void platform_resolve_user_data_path()
 
 	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
 		utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-		safe_strncpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
+		safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
 		free(outPathTemp);
 
 		strcat(_userDataDirectoryPath, separator);

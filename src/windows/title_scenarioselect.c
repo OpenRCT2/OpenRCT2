@@ -388,13 +388,13 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Scenario name
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
-	safe_strncpy((char*)0x009BC677, scenario->name, 64);
+	safe_strcpy((char*)0x009BC677, scenario->name, 64);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
 	gfx_draw_string_centred_clipped(dpi, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
-	safe_strncpy((char*)0x009BC677, scenario->details, 256);
+	safe_strcpy((char*)0x009BC677, scenario->details, 256);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
 	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, 1191, 0) + 5;
 
@@ -411,7 +411,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (!str_is_null_or_empty(scenario->highscore->name)) {
 			completedByName = scenario->highscore->name;
 		}
-		safe_strncpy((char*)0x009BC677, completedByName, 64);
+		safe_strcpy((char*)0x009BC677, completedByName, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->highscore->company_value;
 		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
@@ -457,7 +457,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 			// Draw scenario name
 			rct_string_id placeholderStringId = 3165;
-			safe_strncpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
+			safe_strcpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
 			int format = isDisabled ? 865 : (isHighlighted ? highlighted_format : unhighlighted_format);
 			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
 			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
@@ -472,7 +472,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				if (!str_is_null_or_empty(scenario->highscore->name)) {
 					completedByName = scenario->highscore->name;
 				}
-				safe_strncpy((char*)language_get_string(placeholderStringId), completedByName, 64);
+				safe_strcpy((char*)language_get_string(placeholderStringId), completedByName, 64);
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
 				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);

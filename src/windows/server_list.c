@@ -184,7 +184,7 @@ void window_server_list_open()
 
 	window_set_resize(window, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-	safe_strncpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
+	safe_strcpy(_playerName, gConfigNetwork.player_name, sizeof(_playerName));
 
 	server_list_load_saved_servers();
 	window->no_list_items = _numSavedServers;
@@ -325,7 +325,7 @@ static void window_server_list_textinput(rct_window *w, int widgetIndex, char *t
 			memset(_playerName, 0, sizeof(_playerName));
 		} else {
 			memset(_playerName, 0, sizeof(_playerName));
-			safe_strncpy(_playerName, text, sizeof(_playerName));
+			safe_strcpy(_playerName, text, sizeof(_playerName));
 		}
 
 		if (strlen(_playerName) > 0) {

@@ -422,14 +422,14 @@ static void twitch_parse_chat_message(const char *message)
 
 	message++;
 	ch = strchrm(message, " \t");
-	safe_strncpy(buffer, message, ch - message);
+	safe_strcpy(buffer, message, ch - message);
 	buffer[ch - message] = 0;
 	if (_strcmpi(buffer, "news") == 0) {
 		if (gConfigTwitch.enable_news) {
 			ch = strskipwhitespace(ch);
 
 			buffer[0] = (char)FORMAT_TOPAZ;
-			safe_strncpy(buffer + 1, ch, sizeof(buffer) - 2);
+			safe_strcpy(buffer + 1, ch, sizeof(buffer) - 2);
 			buffer[sizeof(buffer) - 2] = 0;
 
 			// Remove unsupport characters

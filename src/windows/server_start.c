@@ -141,7 +141,7 @@ void window_server_start_open()
 	window->colours[2] = 26;
 
 	sprintf(_port, "%u", gConfigNetwork.default_port);
-	safe_strncpy(_name, gConfigNetwork.server_name, sizeof(_name));
+	safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
 }
 
 static void window_server_start_close(rct_window *w)
@@ -210,7 +210,7 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 		memset(_port, 0, sizeof(_port));
 		if (strlen(text) > 0) {
-			safe_strncpy(_port, text, sizeof(_port));
+			safe_strcpy(_port, text, sizeof(_port));
 		}
 
 		gConfigNetwork.default_port = atoi(_port);
@@ -224,7 +224,7 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 		memset(_name, 0, sizeof(_name));
 		if (strlen(text) > 0) {
-			safe_strncpy(_name, text, sizeof(_name));
+			safe_strcpy(_name, text, sizeof(_name));
 		}
 
 		if (strlen(_name) > 0) {
@@ -241,7 +241,7 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 		memset(_password, 0, sizeof(_password));
 		if (strlen(text) > 0) {
-			safe_strncpy(_password, text, sizeof(_password));
+			safe_strcpy(_password, text, sizeof(_password));
 		}
 
 		widget_invalidate(w, WIDX_PASSWORD_INPUT);

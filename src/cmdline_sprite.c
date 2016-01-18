@@ -490,7 +490,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int maxIndex = (int)spriteFileHeader.num_entries;
 		int numbers = (int)floor(log(maxIndex));
 
-		safe_strncpy(outputPath, argv[2], MAX_PATH);
+		safe_strcpy(outputPath, argv[2], MAX_PATH);
 		int pathLen = strlen(outputPath);
 
 		if (pathLen >= MAX_PATH - numbers - 5){
@@ -501,7 +501,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		for (int x = 0; x < numbers; x++){
 			outputPath[pathLen + x] = '0';
 		}
-		safe_strncpy(outputPath + pathLen + numbers, ".png", MAX_PATH);
+		safe_strcpy(outputPath + pathLen + numbers, ".png", MAX_PATH);
 
 		for (int spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++){
 
@@ -603,7 +603,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int i = 0;
 		do {
 			// Create image path
-			safe_strncpy(imagePath, resourcePath, MAX_PATH);
+			safe_strcpy(imagePath, resourcePath, MAX_PATH);
 			if (resourcePath[resourceLength - 1] == '/' || resourcePath[resourceLength - 1] == '\\')
 				imagePath[resourceLength - 1] = 0;
 			sprintf(imagePath, "%s%c%d.png", imagePath, platform_get_path_separator(), i);

@@ -157,7 +157,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	_defaultName[0] = '\0';
 
 	if (!str_is_null_or_empty(defaultName)) {
-		safe_strncpy(_defaultName, defaultName, sizeof(_defaultName));
+		safe_strcpy(_defaultName, defaultName, sizeof(_defaultName));
 	}
 
 	w = window_bring_to_front_by_class(WC_LOADSAVE);
@@ -239,7 +239,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		}
 		*/
 
-		safe_strncpy(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), MAX_PATH);
+		safe_strcpy(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), MAX_PATH);
 		ch = strchr(path, '*');
 		if (ch != NULL)
 			*ch = 0;
@@ -276,7 +276,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		char directory[MAX_PATH];
 		int includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 		
-		safe_strncpy(directory, _parentDirectory, sizeof(directory));
+		safe_strcpy(directory, _parentDirectory, sizeof(directory));
 		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
 		window_init_scroll_widgets(w);
 		w->no_list_items = _listItemsCount;
@@ -293,13 +293,13 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		break;
 	}
 	case WIDX_BROWSE:
-		safe_strncpy(path, _directory, MAX_PATH);
+		safe_strcpy(path, _directory, MAX_PATH);
 		if (_type & LOADSAVETYPE_SAVE) {
 			strcat(path, _defaultName);
 		}
 
 		memset(filter, '\0', MAX_PATH);
-		safe_strncpy(filter, "*", MAX_PATH);
+		safe_strcpy(filter, "*", MAX_PATH);
 		strncat(filter, _extension, MAX_PATH - strnlen(filter, MAX_PATH) - 1);
 
 		switch (_type) {
@@ -385,7 +385,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, int scrollIndex, int 
 		includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
 		char directory[MAX_PATH];
-		safe_strncpy(directory, _listItems[selectedItem].path, sizeof(directory));
+		safe_strcpy(directory, _listItems[selectedItem].path, sizeof(directory));
 
 		window_loadsave_populate_list(w, includeNewItem, directory, _extension);
 		window_init_scroll_widgets(w);
@@ -437,7 +437,7 @@ static void window_loadsave_textinput(rct_window *w, int widgetIndex, char *text
 		return;
 	}
 
-	safe_strncpy(path, _directory, sizeof(path));
+	safe_strcpy(path, _directory, sizeof(path));
 	strncat(path, text, sizeof(path) - strnlen(path, MAX_PATH) - 1);
 	strncat(path, _extension, sizeof(path) - strnlen(path, MAX_PATH) - 1);
 
@@ -479,7 +479,7 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	utf8 *ch = buffer;
 	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
 	ch = utf8_write_codepoint(ch, FORMAT_BLACK);
-	safe_strncpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
+	safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
 	// Draw shadow
 	gfx_draw_string(dpi, buffer, 0, w->x + 4, w->y + 20);
@@ -567,14 +567,14 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 	loadsave_list_item *listItem;
 	char filter[MAX_PATH];
 	
-	safe_strncpy(_directory, directory, sizeof(_directory));
+	safe_strcpy(_directory, directory, sizeof(_directory));
 	if (_extension != extension) {
-		safe_strncpy(_extension, extension, sizeof(_extension));
+		safe_strcpy(_extension, extension, sizeof(_extension));
 		_extension[sizeof(_extension) - 1] = '\0';
 	}
 	_shortenedDirectory[0] = '\0';
 
-	safe_strncpy(filter, directory, sizeof(filter));
+	safe_strcpy(filter, directory, sizeof(filter));
 	strncat(filter, "*", sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
 	strncat(filter, extension, sizeof(filter) - strnlen(filter, MAX_PATH) - 1);
 
@@ -615,7 +615,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			if(directory[i]==separator)
 				break;
 		}
-		safe_strncpy(_parentDirectory, directory, sizeof(_parentDirectory));
+		safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
 		_parentDirectory[i+1] = '\0';
 		if(_parentDirectory[0]=='\0' && platform_get_drives()==0)
 			w->disabled_widgets |= (1<<WIDX_UP);
@@ -638,9 +638,9 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 
 			listItem = &_listItems[_listItemsCount];
 			memset(listItem->path, '\0', MAX_PATH);
-			safe_strncpy(listItem->path, directory, MAX_PATH);
+			safe_strcpy(listItem->path, directory, MAX_PATH);
 			strncat(listItem->path, subDir, MAX_PATH - strnlen(listItem->path, MAX_PATH) - 1);
-			safe_strncpy(listItem->name, subDir, sizeof(listItem->name));
+			safe_strcpy(listItem->name, subDir, sizeof(listItem->name));
 			listItem->type = TYPE_DIRECTORY;
 			_listItemsCount++;
 		}
@@ -654,7 +654,7 @@ static void window_loadsave_populate_list(rct_window *w, int includeNewItem, con
 			}
 
 			listItem = &_listItems[_listItemsCount];
-			safe_strncpy(listItem->path, directory, sizeof(listItem->path));
+			safe_strcpy(listItem->path, directory, sizeof(listItem->path));
 			strncat(listItem->path, fileInfo.path, sizeof(listItem->path) - strnlen(listItem->path, MAX_PATH) - 1);
 			listItem->type = TYPE_FILE;
 			listItem->date_modified = platform_file_get_modified_time(listItem->path);
@@ -692,7 +692,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		if (gLoadSaveTitleSequenceSave) {
 			utf8 newName[MAX_PATH];
 			char *extension = (char*)path_get_extension(path);
-			safe_strncpy(newName, path_get_filename(path), MAX_PATH);
+			safe_strcpy(newName, path_get_filename(path), MAX_PATH);
 			if (_stricmp(extension, ".sv6") != 0 && _stricmp(extension, ".sc6") != 0)
 				strcat(newName, ".sv6");
 			if (title_sequence_save_exists(gCurrentTitleSequence, newName)) {
@@ -709,7 +709,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				network_begin_server(gConfigNetwork.default_port);
 			}
 
-			safe_strncpy(gScenarioSavePath, path, MAX_PATH);
+			safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 			gFirstTimeSave = 0;
 
 			window_close(w);
@@ -727,7 +727,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			int success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 1 : 0);
 			SDL_RWclose(rw);
 			if (success) {
-				safe_strncpy(gScenarioSavePath, path, MAX_PATH);
+				safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 				gFirstTimeSave = 0;
 
 				window_close_by_class(WC_LOADSAVE);
@@ -880,8 +880,8 @@ static rct_window *window_overwrite_prompt_open(const char *name, const char *pa
 	w->flags |= WF_TRANSPARENT;
 	w->colours[0] = 154;
 
-	safe_strncpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
-	safe_strncpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
+	safe_strcpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
+	safe_strcpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
 
 	return w;
 }

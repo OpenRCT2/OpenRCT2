@@ -107,7 +107,7 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	}
 
 	// Create filter path
-	safe_strncpy(filter, originalDirectory, MAX_PATH);
+	safe_strcpy(filter, originalDirectory, MAX_PATH);
 	ch = strchr(filter, '*');
 	if (ch != NULL)
 		*ch = 0;
@@ -116,10 +116,10 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-		safe_strncpy(newPath, newDirectory, MAX_PATH);
+		safe_strcpy(newPath, newDirectory, MAX_PATH);
 		strcat(newPath, fileInfo.path);
 
-		safe_strncpy(oldPath, originalDirectory, MAX_PATH);
+		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;
@@ -132,10 +132,10 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 	fileEnumHandle = platform_enumerate_directories_begin(originalDirectory);
 	while (platform_enumerate_directories_next(fileEnumHandle, filter)) {
-		safe_strncpy(newPath, newDirectory, MAX_PATH);
+		safe_strcpy(newPath, newDirectory, MAX_PATH);
 		strcat(newPath, filter);
 
-		safe_strncpy(oldPath, originalDirectory, MAX_PATH);
+		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;

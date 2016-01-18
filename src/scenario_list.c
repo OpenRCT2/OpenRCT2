@@ -60,7 +60,7 @@ void scenario_load_list()
 	gScenarioListCount = 0;
 
 	// Get scenario directory from RCT2
-	safe_strncpy(directory, gConfigGeneral.game_path, sizeof(directory));
+	safe_strcpy(directory, gConfigGeneral.game_path, sizeof(directory));
 	safe_strcat_path(directory, "Scenarios", sizeof(directory));
 	scenario_list_include(directory);
 
@@ -84,13 +84,13 @@ static void scenario_list_include(const utf8 *directory)
 
 	// Scenarios in this directory
 	utf8 pattern[MAX_PATH];
-	safe_strncpy(pattern, directory, sizeof(pattern));
+	safe_strcpy(pattern, directory, sizeof(pattern));
 	safe_strcat_path(pattern, "*.sc6", sizeof(pattern));
 
 	handle = platform_enumerate_files_begin(pattern);
 	while (platform_enumerate_files_next(handle, &fileInfo)) {
 		utf8 path[MAX_PATH];
-		safe_strncpy(path, directory, sizeof(pattern));
+		safe_strcpy(path, directory, sizeof(pattern));
 		safe_strcat_path(path, fileInfo.path, sizeof(pattern));
 		scenario_list_add(path, fileInfo.last_modified);
 	}
@@ -101,7 +101,7 @@ static void scenario_list_include(const utf8 *directory)
 	handle = platform_enumerate_directories_begin(directory);
 	while (platform_enumerate_directories_next(handle, subDirectory)) {
 		utf8 path[MAX_PATH];
-		safe_strncpy(path, directory, sizeof(pattern));
+		safe_strcpy(path, directory, sizeof(pattern));
 		safe_strcat_path(path, subDirectory, sizeof(pattern));
 		scenario_list_include(path);
 	}
@@ -152,7 +152,7 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 	}
 
 	// Set new entry
-	safe_strncpy(newEntry->path, path, sizeof(newEntry->path));
+	safe_strcpy(newEntry->path, path, sizeof(newEntry->path));
 	newEntry->timestamp = timestamp;
 	newEntry->category = s6Info.category;
 	newEntry->objective_type = s6Info.objective_type;
@@ -160,8 +160,8 @@ static void scenario_list_add(const utf8 *path, uint64 timestamp)
 	newEntry->objective_arg_2 = s6Info.objective_arg_2;
 	newEntry->objective_arg_3 = s6Info.objective_arg_3;
 	newEntry->highscore = NULL;
-	safe_strncpy(newEntry->name, s6Info.name, sizeof(newEntry->name));
-	safe_strncpy(newEntry->details, s6Info.details, sizeof(newEntry->details));
+	safe_strcpy(newEntry->name, s6Info.name, sizeof(newEntry->name));
+	safe_strcpy(newEntry->details, s6Info.details, sizeof(newEntry->details));
 
 	// Normalise the name to make the scenario as recognisable as possible.
 	scenario_normalise_name(newEntry->name);
@@ -191,10 +191,10 @@ static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_ob
 	rct_string_id localisedStringIds[3];
 	if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds)) {
 		if (localisedStringIds[0] != STR_NONE) {
-			safe_strncpy(scenarioEntry->name, language_get_string(localisedStringIds[0]), 64);
+			safe_strcpy(scenarioEntry->name, language_get_string(localisedStringIds[0]), 64);
 		}
 		if (localisedStringIds[2] != STR_NONE) {
-			safe_strncpy(scenarioEntry->details, language_get_string(localisedStringIds[2]), 256);
+			safe_strcpy(scenarioEntry->details, language_get_string(localisedStringIds[2]), 256);
 		}
 	} else {
 		// Checks for a scenario string object (possibly for localisation)

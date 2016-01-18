@@ -111,7 +111,7 @@ void path_append_extension(utf8 *path, const utf8 *newExtension)
 		*endOfString++ = '.';
 
 	// Append the extension to the path
-	safe_strncpy(endOfString, newExtension, MAX_PATH - (endOfString - path) - 1);
+	safe_strcpy(endOfString, newExtension, MAX_PATH - (endOfString - path) - 1);
 }
 
 void path_remove_extension(utf8 *path)
@@ -192,7 +192,7 @@ int strcicmp(char const *a, char const *b)
 	}
 }
 
-char *safe_strncpy(char * destination, const char * source, size_t size)
+char *safe_strcpy(char * destination, const char * source, size_t size)
 {
 	assert(destination != NULL);
 	assert(source != NULL);
@@ -265,7 +265,7 @@ char *safe_strcat_path(char *destination, const char *source, size_t size)
 {
 	const char pathSeparator = platform_get_path_separator();
 
-	size_t length = strlen(destination);
+	size_t length = strnlen(destination, size);
 	if (length >= size - 1) {
 		return destination;
 	}
@@ -283,7 +283,7 @@ char *safe_strtrimleft(char *destination, const char *source, size_t size)
 	while (*source == ' ' && *source != '\0') {
 		source++;
 	}
-	return safe_strncpy(destination, source, size);
+	return safe_strcpy(destination, source, size);
 }
 
 bool utf8_is_bom(const char *str)

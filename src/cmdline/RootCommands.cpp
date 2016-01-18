@@ -132,7 +132,7 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (_openrctDataPath != NULL) {
         String::Set(gCustomOpenrctDataPath, sizeof(gCustomOpenrctDataPath), _openrctDataPath);
-        Memory::Free(gCustomOpenrctDataPath);
+        Memory::Free(_openrctDataPath);
     }
 
     return result;
