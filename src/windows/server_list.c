@@ -211,6 +211,13 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_PLAYER_NAME_INPUT:
 		window_start_textbox(w, widgetIndex, 1170, (uint32)_playerName, 63);
 		break;
+	case WIDX_LIST:{
+		int serverIndex = w->selected_list_item;
+		if (serverIndex >= 0 && serverIndex < _numSavedServers) {
+			char *serverAddress = _savedServers[serverIndex].address;
+			join_server(serverAddress);
+		}
+		}break;
 	case WIDX_FETCH_SERVERS:
 		fetch_servers();
 		break;
@@ -270,8 +277,8 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 	char *serverAddress = _savedServers[serverIndex].address;
 
 	rct_widget *listWidget = &w->widgets[WIDX_LIST];
-	int ddx = w->x + listWidget->left + x;
-	int ddy = w->y + listWidget->top + y;
+	int ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
+	int ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
 
 	gDropdownItemsFormat[0] = STR_JOIN_GAME;
 	if (_savedServers[serverIndex].favorite) {

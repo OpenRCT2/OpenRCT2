@@ -885,6 +885,9 @@ bool game_load_save(const utf8 *path)
 		if (network_get_mode() == NETWORK_MODE_SERVER) {
 			network_send_map();
 		}
+		if (network_get_mode() == NETWORK_MODE_CLIENT) {
+			network_close();
+		}
 		return true;
 	} else {
 		// If loading the SV6 failed, the current park state will be corrupted
