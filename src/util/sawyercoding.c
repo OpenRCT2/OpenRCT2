@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../platform/platform.h"
 #include "sawyercoding.h"
+#include "../scenario.h"
 
 static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length);
 static size_t decode_chunk_repeat(uint8 *buffer, size_t length);
@@ -418,6 +419,8 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 			repeatCount = 0;
 			maxRepeatCount = min(7, searchEnd - repeatIndex);
 			for (j = 0; j <= maxRepeatCount; j++) {
+				assert(repeatIndex + j < length);
+				assert(i + j < length);
 				if (src_buffer[repeatIndex + j] == src_buffer[i + j]) {
 					repeatCount++;
 				} else {
