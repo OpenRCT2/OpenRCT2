@@ -417,7 +417,7 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 		bestRepeatCount = 0;
 		for (repeatIndex = searchIndex; repeatIndex <= searchEnd; repeatIndex++) {
 			repeatCount = 0;
-			maxRepeatCount = min(7, searchEnd - repeatIndex);
+			maxRepeatCount = min(min(7, searchEnd - repeatIndex), length - i - 1);
 			for (j = 0; j <= maxRepeatCount; j++) {
 				assert(repeatIndex + j < length);
 				assert(i + j < length);
