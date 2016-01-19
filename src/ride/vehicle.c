@@ -3104,20 +3104,17 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 		vehicle->sub_state = 1;
 		vehicle_peep_easteregg_here_we_are(vehicle);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)) {
-			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)) {
-				if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)) {
-					vehicle_test_reset(vehicle);
+			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING) {
+				if (ride->current_test_segment + 1 < ride->num_stations) {
+					ride->current_test_segment++;
+					ride->var_1F6 = vehicle->current_station;
 				}
 				else {
-					uint8 currentSegment = ride->current_test_segment + 1;
-					if (currentSegment >= ride->num_stations) {
-						vehicle_update_test_finish(vehicle);
-					}
-					else {
-						ride->current_test_segment = currentSegment;
-						ride->var_1F6 = vehicle->current_station;
-					}
+					vehicle_update_test_finish(vehicle);
 				}
+			}
+			else if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TEST_IN_PROGRESS)) {
+				vehicle_test_reset(vehicle);
 			}
 		}
 	}
