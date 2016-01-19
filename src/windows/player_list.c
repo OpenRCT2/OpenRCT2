@@ -218,8 +218,8 @@ static void window_player_list_scrollmousedown(rct_window *w, int scrollIndex, i
 	window_invalidate(w);
 
 	rct_widget *listWidget = &w->widgets[WIDX_LIST];
-	int ddx = w->x + listWidget->left + x;
-	int ddy = w->y + listWidget->top + y;
+	int ddx = w->x + listWidget->left + x - w->scrolls[0].h_left;
+	int ddy = w->y + listWidget->top + y - w->scrolls[0].v_top;
 
 	if (index == 0) {
 		return;

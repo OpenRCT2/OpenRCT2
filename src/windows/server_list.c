@@ -277,8 +277,8 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 	char *serverAddress = _savedServers[serverIndex].address;
 
 	rct_widget *listWidget = &w->widgets[WIDX_LIST];
-	int ddx = w->x + listWidget->left + x + 2;
-	int ddy = w->y + listWidget->top + y + 2;
+	int ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
+	int ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
 
 	gDropdownItemsFormat[0] = STR_JOIN_GAME;
 	if (_savedServers[serverIndex].favorite) {
