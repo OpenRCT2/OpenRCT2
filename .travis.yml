@@ -8,11 +8,21 @@ before_install:
 
 sudo: required
 dist: trusty
+env:
+    - OPENRCT2_VERSION="0.0.4"
 
 matrix:
     include:
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
+          env:
+            - OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8 -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+            - OPENRCT2_MAKE_OPTS="-j2"
+            - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
+          after_success:
+            - cd build
+            - make package
+            - mv openrct2*.tar.gz openrct2-linux.tar.gz
+            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" ]] ; then curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=openrct2-${OPENRCT2_VERSION}-linux-${TRAVIS_COMMIT:0:8}.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$TRAVIS_BRANCH" --form "flavourId=4" --form "file=@openrct2-linux.tar.gz" "http://openrct2.org/altapi/?command=push-build"; fi
         - os: linux
           env: OPENRCT2_CMAKE_OPTS="-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++"
         - os: linux
@@ -27,17 +37,12 @@ matrix:
             - docker
         - os: osx
           osx_image: xcode7.2
+          env:
+            - secure: "OXn/i72FxW/oh6RGlaN+gHSbkt1ToFe36etaiDOsJQznt6fe9CpFdnE8U1XBHlGokcEjbGNErRU7CFDKYHQuGrPZyHXwgqG2/0emIqFaFt5ti5ypyYKf5qH9x1LLLfdZxDyHkxXdlJ7Etxbp3G7qrV8CGRQiYRNHm1f98AmuufE="
           after_success:
             - cd build/Release
-            - hdiutil create -size 64m -fs HFS+ -volname "OpenRCT2 OS X" myimg.dmg
-            - hdiutil attach myimg.dmg
-            - export DEVS=$(hdiutil attach myimg.dmg | cut -f 1)
-            - export DEV=$(echo $DEVS | cut -f 1 -d ' ')
-            - cp -rv OpenRCT2.app "/Volumes/OpenRCT2 OS X"
-            - sync
-            - hdiutil detach $DEV
-            - hdiutil convert myimg.dmg -format UDZO -o OpenRCT2.dmg
-            - curl --upload-file OpenRCT2.dmg http://transfer.sh/OpenRCT2.dmg
+            - zip -r openrct2-osx.zip OpenRCT2.app
+            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" ]] ; then curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=openrct2-${OPENRCT2_VERSION}-osx-${TRAVIS_COMMIT:0:8}.zip" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$TRAVIS_BRANCH" --form "flavourId=3" --form "file=@openrct2-osx.zip" "http://openrct2.org/altapi/?command=push-build"; fi
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux
