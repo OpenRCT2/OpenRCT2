@@ -731,7 +731,6 @@ static void window_loadsave_select(rct_window *w, const char *path)
 				gFirstTimeSave = 0;
 
 				window_close_by_class(WC_LOADSAVE);
-				game_do_command(0, 1047, 0, -1, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
 				gfx_invalidate_screen();
 
 				window_loadsave_invoke_callback(MODAL_RESULT_OK);
