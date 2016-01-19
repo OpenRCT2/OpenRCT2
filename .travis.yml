@@ -9,7 +9,8 @@ before_install:
 sudo: required
 dist: trusty
 env:
-    - OPENRCT2_VERSION="0.0.4"
+    global:
+        - OPENRCT2_VERSION="0.0.4"
 
 matrix:
     include:
