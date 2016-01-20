@@ -164,15 +164,7 @@ if (NOT DISABLE_HTTP_TWITCH)
 	endif (STATIC)
 endif (NOT DISABLE_HTTP_TWITCH)
 
-# speex v1.1.15 is supplied in our zipped library, but distributions provide
-# updated version, with required functions extracted out to libspeexdsp.
-# This largely takes care of the problem
-if (WIN32)
-	include_directories("lib/libspeex/")
-	file(GLOB_RECURSE SPEEX_SOURCES "lib/libspeex/*.c")
-else (WIN32)
-	PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
-endif (WIN32)
+PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 
 if (UNIX)
 	# Include libdl for dlopen
