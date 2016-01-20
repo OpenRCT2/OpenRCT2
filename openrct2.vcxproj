@@ -320,14 +320,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <LinkIncremental />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
