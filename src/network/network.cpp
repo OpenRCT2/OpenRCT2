@@ -988,8 +988,11 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 {
 	int buffersize = 0x600000;
 	std::vector<uint8> buffer(buffersize);
+	bool RLEState = gUseRLE;
+	gUseRLE = false;
 	SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
 	scenario_save_network(rw);
+	gUseRLE = RLEState;
 	int size = (int)SDL_RWtell(rw);
 	size_t chunksize = 1000;
 	size_t out_size;

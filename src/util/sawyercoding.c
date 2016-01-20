@@ -22,6 +22,7 @@
 #include "../platform/platform.h"
 #include "sawyercoding.h"
 #include "../scenario.h"
+#include "util.h"
 
 static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length);
 static size_t decode_chunk_repeat(uint8 *buffer, size_t length);
@@ -138,6 +139,11 @@ size_t sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
 size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, uint8* buffer, sawyercoding_chunk_header chunkHeader){
 	uint8 *encode_buffer, *encode_buffer2;
 
+	if (gUseRLE == false) {
+		if (chunkHeader.encoding == CHUNK_ENCODING_RLE || chunkHeader.encoding == CHUNK_ENCODING_RLECOMPRESSED) {
+			chunkHeader.encoding = CHUNK_ENCODING_NONE;
+		}
+	}
 	switch (chunkHeader.encoding){
 	case CHUNK_ENCODING_NONE:
 		memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
