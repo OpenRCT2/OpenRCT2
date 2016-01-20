@@ -114,11 +114,6 @@ function install_pkg_config {
 	cat /usr/local/bin/i686-w64-mingw32-pkg-config
 }
 
-function install_local_libs {
-	mkdir -p lib
-	cp -rf $cachedir/orctlibs/local/* ./lib/.
-}
-
 function os_x_install_mingw_32 {
 	local mingw_name="mingw-w32-bin_i686-darwin"
 	local mingw_tar="${mingw_name}_20130531.tar.bz2"
@@ -198,7 +193,6 @@ if [[ $TARGET == "windows" || $(uname -s) == "Darwin" ]]; then
 	calculate_sha256 "$cachedir/orctlibs.zip" > "$libVFile"
 	echo "Downloaded library with sha256sum: $(cat "$libVFile")"
 	# Local libs are required for all targets
-	install_local_libs
 # $TARGET == "windows" || $(uname -s) == "Darwin"
 fi
 

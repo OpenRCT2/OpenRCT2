@@ -21,6 +21,9 @@
 #include "util.h"
 #include <SDL.h>
 #include "../platform/platform.h"
+#include "zlib.h"
+
+bool gUseRLE = true;
 
 int squaredmetres_to_squaredfeet(int squaredMetres)
 {
@@ -312,4 +315,70 @@ uint32 util_rand() {
 	srand2 = srand3;
 	srand3 = srand3 ^ (srand3 >> 19) ^ temp ^ (temp >> 8);
 	return srand3;
+}
+
+#define CHUNK 128*1024
+#define MAX_ZLIB_REALLOC 4*1024*1024
+
+/**
+ * @brief Inflates zlib-compressed data
+ * @param data Data to be decompressed
+ * @param data_in_size Size of data to be decompressed
+ * @param data_out_size Pointer to a variable where output size will be written. If not 0, it will be used to set initial output buffer size.
+ * @return Returns a pointer to memory holding decompressed data or NULL on failure.
+ * @note It is caller's responsibility to free() the returned pointer once done with it.
+ */
+unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
+{
+	int ret = Z_OK;
+	uLongf out_size = *data_out_size;
+	if (out_size == 0)
+	{
+		// Try to guesstimate the size needed for output data by applying the
+		// same ratio it would take to compress data_in_size.
+		out_size = data_in_size * data_in_size / compressBound(data_in_size);
+		out_size = min(MAX_ZLIB_REALLOC, out_size);
+	}
+	size_t buffer_size = out_size;
+	unsigned char *buffer = malloc(buffer_size);
+	do {
+		if (ret == Z_BUF_ERROR)
+		{
+			buffer_size *= 2;
+			out_size = buffer_size;
+			buffer = realloc(buffer, buffer_size);
+		}
+		ret = uncompress(buffer, &out_size, data, data_in_size);
+	} while (ret != Z_OK);
+	buffer = realloc(buffer, out_size);
+	*data_out_size = out_size;
+	return buffer;
+}
+
+/**
+ * @brief Deflates input using zlib
+ * @param data Data to be compressed
+ * @param data_in_size Size of data to be compressed
+ * @param data_out_size Pointer to a variable where output size will be written
+ * @return Returns a pointer to memory holding compressed data or NULL on failure.
+ * @note It is caller's responsibility to free() the returned pointer once done with it.
+ */
+unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
+{
+	int ret = Z_OK;
+	uLongf out_size = *data_out_size;
+	size_t buffer_size = compressBound(data_in_size);
+	unsigned char *buffer = malloc(buffer_size);
+	do {
+		if (ret == Z_BUF_ERROR)
+		{
+			buffer_size *= 2;
+			out_size = buffer_size;
+			buffer = realloc(buffer, buffer_size);
+		}
+		ret = compress(buffer, &out_size, data, data_in_size);
+	} while (ret != Z_OK);
+	*data_out_size = out_size;
+	buffer = realloc(buffer, *data_out_size);
+	return buffer;
 }

@@ -23,6 +23,8 @@
 
 #include "../common.h"
 
+extern bool gUseRLE;
+
 int squaredmetres_to_squaredfeet(int squaredMetres);
 int metres_to_feet(int metres);
 int mph_to_kmph(int mph);
@@ -51,5 +53,8 @@ bool str_is_null_or_empty(const char *str);
 
 void util_srand(int source);
 uint32 util_rand();
+
+unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
+unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
 
 #endif

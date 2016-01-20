@@ -46,11 +46,12 @@ endif (DISABLE_NETWORK)
 
 option(STATIC "Create a static build.")
 
-# Not required yet
 PKG_CHECK_MODULES(PNG libpng>=1.6)
 if (NOT PNG_FOUND)
 	PKG_CHECK_MODULES(PNG REQUIRED libpng16)
 endif (NOT PNG_FOUND)
+
+PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
 
 # Handle creating the rct2 text and data files on OS X and Linux
 # See details in src/openrct2.c:openrct2_setup_rct2_segment for how the values
@@ -143,9 +144,9 @@ else (STATIC)
 endif (STATIC)
 
 if (STATIC)
-	SET(PNGLIBS ${PNG_STATIC_LIBRARIES})
+	SET(REQUIREDLIBS ${PNG_STATIC_LIBRARIES} ${ZLIB_STATIC_LIBRARIES})
 else (STATIC)
-	SET(PNGLIBS ${PNG_LIBRARIES})
+	SET(REQUIREDLIBS ${PNG_LIBRARIES} ${ZLIB_LIBRARIES})
 endif (STATIC)
 
 if (NOT DISABLE_HTTP_TWITCH)
@@ -163,24 +164,16 @@ if (NOT DISABLE_HTTP_TWITCH)
 	endif (STATIC)
 endif (NOT DISABLE_HTTP_TWITCH)
 
-# speex v1.1.15 is supplied in our zipped library, but distributions provide
-# updated version, with required functions extracted out to libspeexdsp.
-# This largely takes care of the problem
-if (WIN32)
-	include_directories("lib/libspeex/")
-	file(GLOB_RECURSE SPEEX_SOURCES "lib/libspeex/*.c")
-else (WIN32)
-	PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
-endif (WIN32)
+PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 
 if (UNIX)
 	# Include libdl for dlopen
 	set(DLLIB dl)
 endif (UNIX)
 
-INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS})
 
-LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS})
+LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS})
 
 if (WIN32)
 	# build as library for now, replace with add_executable
@@ -213,7 +206,7 @@ endif (UNIX AND NOT APPLE)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${PNGLIBS})
+TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${REQUIREDLIBS})
 
 if (APPLE OR STATIC)
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)

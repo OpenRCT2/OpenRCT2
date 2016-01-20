@@ -988,21 +988,34 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 {
 	int buffersize = 0x600000;
 	std::vector<uint8> buffer(buffersize);
+	bool RLEState = gUseRLE;
+	gUseRLE = false;
 	SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
 	scenario_save_network(rw);
+	gUseRLE = RLEState;
 	int size = (int)SDL_RWtell(rw);
-	int chunksize = 1000;
-	for (int i = 0; i < size; i += chunksize) {
-		int datasize = (std::min)(chunksize, size - i);
+	size_t chunksize = 1000;
+	size_t out_size;
+	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
+	unsigned char *header = (unsigned char *)strdup("open2_sv6_zlib");
+	size_t header_len = strlen((char *)header) + 1; // account for null terminator
+	header = (unsigned char *)realloc(header, header_len + out_size);
+	memcpy(&header[header_len], compressed, out_size);
+	out_size += header_len;
+	free(compressed);
+	log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
+	for (int i = 0; i < out_size; i += chunksize) {
+		int datasize = (std::min)(chunksize, out_size - i);
 		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)size << (uint32)i;
-		packet->Write(&buffer[i], datasize);
+		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
+		packet->Write(&header[i], datasize);
 		if (connection) {
 			connection->QueuePacket(std::move(packet));
 		} else {
 			SendPacketToClients(*packet);
 		}
 	}
+	free(header);
 	SDL_RWclose(rw);
 }
 
@@ -1349,8 +1362,26 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 		if (offset + chunksize == size) {
 			window_network_status_close();
+			bool has_to_free = false;
+			unsigned char *data = &chunk_buffer[0];
+			size_t data_size = size;
+			// zlib-compressed
+			if (strcmp("open2_sv6_zlib", (char *)&chunk_buffer[0]) == 0)
+			{
+				log_warning("Received zlib-compressed sv6 map");
+				has_to_free = true;
+				size_t header_len = strlen("open2_sv6_zlib") + 1;
+				data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
+				if (data == NULL)
+				{
+					log_warning("Failed to decompress data sent from server.");
+					return 0;
+				}
+			} else {
+				log_warning("Assuming received map is in plain sv6 format");
+			}
 
-			SDL_RWops* rw = SDL_RWFromMem(&chunk_buffer[0], size);
+			SDL_RWops* rw = SDL_RWFromMem(data, data_size);
 			if (game_load_network(rw)) {
 				game_load_init();
 				game_command_queue.clear();
@@ -1360,6 +1391,10 @@ int Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pac
 				_desynchronised = false;
 			}
 			SDL_RWclose(rw);
+			if (has_to_free)
+			{
+				free(data);
+			}
 		}
 	}
 	return 1;

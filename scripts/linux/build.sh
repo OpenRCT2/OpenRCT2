@@ -19,7 +19,7 @@ if [[ $TARGET != "linux" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; the
 		# keep in sync with version in Xcode project
 		sha256sum=6562ce9e1f37f125e3345bfd8b961777800436bf607b30dc7c964e0e6991ad2c
 	else
-		sha256sum=31c5e19d9f794bd5f0e75f20c2b4c3c4664d736b0a4d50c8cde14a9a9007b62d
+		sha256sum=f124c954bbd0b58c93e5fba46902806bd3637d3a1c5fb8e4b67441052f182df2
 	fi
 	libVFile="./libversion"
 	libdir="./lib"
