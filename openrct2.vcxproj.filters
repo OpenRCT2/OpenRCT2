@@ -498,9 +498,6 @@
     <ClCompile Include="src\windows\network_status.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\windows\player_list.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="src\interface\chat.c">
       <Filter>Source\Interface</Filter>
     </ClCompile>
@@ -578,6 +575,12 @@
     </ClCompile>
     <ClCompile Include="src\core\Path.cpp">
       <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\windows\player.c">
+      <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\windows\multiplayer.c">
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -145,10 +145,27 @@ class NetworkPlayer
 {
 public:
 	NetworkPlayer(const char* name);
+	void AddMoneySpent(money32 cost);
 	uint8 id;
 	uint8 name[32 + 1];
 	uint16 ping;
-	uint32 flags;
+	uint8 flags;
+	uint8 group;
+	uint16 reserved;
+	money32 money_spent;
+	unsigned int commands_ran;
+};
+
+class NetworkGroup
+{
+public:
+	NetworkGroup();
+	~NetworkGroup();
+	bool CanRun(int command);
+	std::string name;
+	uint32 permissions;
+	uint8 id;
+	rct_string_id name_string_id;
 };
 
 class NetworkConnection
@@ -220,7 +237,10 @@ public:
 	uint32 GetServerTick();
 	uint8 GetPlayerID();
 	void Update();
-	NetworkPlayer* GetPlayerByID(int id);
+	std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8 id);
+	NetworkPlayer* GetPlayerByID(uint8 id);
+	std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
+	NetworkGroup* GetGroupByID(uint8 id);
 	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
@@ -229,6 +249,8 @@ public:
 	void ShutdownClient();
 	void AdvertiseRegister();
 	void AdvertiseHeartbeat();
+	uint8 GetDefaultGroup();
+	void SetDefaultGroup(uint8 id);
 
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
@@ -244,8 +266,10 @@ public:
 	void Server_Send_PINGLIST();
 	void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
 	void Server_Send_GAMEINFO(NetworkConnection& connection);
+	void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
+	std::vector<std::unique_ptr<NetworkGroup>> group_list;
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
@@ -255,7 +279,7 @@ private:
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
 	NetworkPlayer* AddPlayer(const char* name);
 	void PrintError();
-	const char *GetMasterServerUrl();
+	const char* GetMasterServerUrl();
 	std::string GenerateAdvertiseKey();
 
 	struct GameCommand
@@ -294,6 +318,7 @@ private:
 	std::string advertise_key;
 	int advertise_status;
 	uint32 last_heartbeat_time;
+	uint8 default_group;
 
 	void UpdateServer();
 	void UpdateClient();
@@ -315,6 +340,7 @@ private:
 	int Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
 	int Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
 	int Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
+	int Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
@@ -340,6 +366,20 @@ const char* network_get_player_name(unsigned int index);
 uint32 network_get_player_flags(unsigned int index);
 int network_get_player_ping(unsigned int index);
 int network_get_player_id(unsigned int index);
+money32 network_get_player_money_spent(unsigned int index);
+void network_add_player_money_spent(unsigned int index, money32 cost);
+unsigned int network_get_player_commands_ran(unsigned int index);
+int network_get_player_index(uint8 id);
+uint8 network_get_player_group(unsigned int index);
+void network_set_player_group(unsigned int index, unsigned int groupindex);
+int network_get_group_index(uint8 id);
+uint8 network_get_group_id(unsigned int index);
+int network_get_num_groups();
+const char* network_get_group_name(unsigned int index);
+rct_string_id network_get_group_name_string_id(unsigned int index);
+void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+uint8 network_get_default_group();
+void network_set_default_group(uint8 id);
 
 void network_send_map();
 void network_send_chat(const char* text);

@@ -3894,7 +3894,7 @@ STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {M
 STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
-STR_5556    :Kick Player
+STR_5556    :{SMALLFONT}{BLACK}Kick Player
 STR_5557    :Stay connected after desynchronisation (Multiplayer)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
@@ -3973,6 +3973,14 @@ STR_5631    :Original DLC Parks
 STR_5632    :Build your own...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
+STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
+STR_5637    :Can't do this...
+STR_5638    :Permission denied
+STR_5639    :{SMALLFONT}{BLACK}Show list of players
+STR_5640    :{SMALLFONT}{BLACK}Manage groups
+STR_5641    :Default Group:
+STR_5642    :Group:
 
 #############
 # Scenarios #

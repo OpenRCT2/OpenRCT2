@@ -418,7 +418,7 @@ static int game_check_affordability(int cost)
 	return MONEY32_UNDEFINED;
 }
 
-static GAME_COMMAND_POINTER* new_game_command_table[62];
+static GAME_COMMAND_POINTER* new_game_command_table[63];
 
 /**
  *
@@ -450,6 +450,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	original_esi = *esi;
 	original_edi = *edi;
 	original_ebp = *ebp;
+
+	if (command >= countof(new_game_command_table)) {
+		return MONEY32_UNDEFINED;
+	}
 
 	flags = *ebx;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
@@ -531,6 +535,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 					if (cost != 0)
 						money_effect_create(cost);
 				}
+			}
+
+			if (network_get_mode() == NETWORK_MODE_SERVER && !(flags & GAME_COMMAND_FLAG_NETWORKED)) {
+				network_add_player_money_spent(network_get_current_player_id(), cost);
 			}
 
 			return cost;
@@ -1169,7 +1177,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-static GAME_COMMAND_POINTER* new_game_command_table[62] = {
+static GAME_COMMAND_POINTER* new_game_command_table[63] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1231,5 +1239,6 @@ static GAME_COMMAND_POINTER* new_game_command_table[62] = {
 	game_command_set_banner_name,
 	game_command_set_sign_name,
 	game_command_set_banner_style,
-	game_command_set_sign_style
+	game_command_set_sign_style,
+	game_command_set_player_group
 };

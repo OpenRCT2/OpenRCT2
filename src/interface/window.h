@@ -451,8 +451,8 @@ enum {
 	WC_CHANGELOG = 121,
 	WC_TITLE_EDITOR = 122,
 	WC_TITLE_COMMAND_EDITOR = 123,
-	WC_CHAT_HOST = 124,
-	WC_PLAYER_LIST = 125,
+	WC_MULTIPLAYER = 124,
+	WC_PLAYER = 125,
 	WC_NETWORK_STATUS = 126,
 	WC_SERVER_LIST = 127,
 	WC_SERVER_START = 128,
@@ -632,7 +632,8 @@ void window_sign_open(rct_windownumber number);
 void window_sign_small_open(rct_windownumber number);
 void window_news_options_open();
 void window_cheats_open();
-void window_player_list_open();
+void window_multiplayer_open();
+void window_player_open(uint8 id);
 void window_network_status_open(const char* text);
 void window_network_status_close();
 void window_network_status_open_password();
