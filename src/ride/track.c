@@ -4921,14 +4921,244 @@ void game_command_remove_track(int *eax, int *ebx, int *ecx, int *edx, int *esi,
 	return;
 }
 
+uint8 maze_element_get_segment_bit(uint16 x, uint16 y) {
+	uint8 minorX = x & 0x1F; // 0 or 16
+	uint8 minorY = y & 0x1F; // 0 or 16
+
+	if (minorX == 0 && minorY == 0) {
+		return 3;
+	}
+
+	if (minorY == 16 && minorX == 16) {
+		return 11;
+	}
+
+	if (minorY == 0) {
+		return 15;
+	}
+
+	return 7;
+}
+
+money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 rideIndex, uint8 mode, uint16 z) {
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
+
+	RCT2_GLOBAL(0xF4413E, money32) = 0;
+
+	if (!sub_68B044()) {
+		return MONEY32_UNDEFINED;
+	}
+
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !gCheatsBuildInPauseMode && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		return MONEY32_UNDEFINED;
+	}
+
+	if ((z & 0xF) != 0) {
+		// ‘Can't construct this here…’
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = 954;
+		return MONEY32_UNDEFINED;
+	}
+
+	if ((flags & GAME_COMMAND_FLAG_APPLY) != 0) {
+		if ((flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) == 0) {
+			footpath_remove_litter(x, y, z);
+			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
+		}
+	}
+
+	if (!map_is_location_owned(floor2(x, 32), floor2(y, 32), z) && !gCheatsSandboxMode) {
+		return MONEY32_UNDEFINED;
+	}
+
+	rct_map_element *mapElement = map_get_surface_element_at(x / 32, y / 32);
+	if (mapElement == NULL) {
+		return MONEY32_UNDEFINED;
+	}
+
+	uint8 baseHeight = z >> 3;
+	uint8 clearanceHeight = (z + 32) >> 3;
+
+	sint8 heightDifference = baseHeight - mapElement->base_height;
+	if (heightDifference >= 0 && !gCheatsDisableSupportLimits) {
+		heightDifference = heightDifference >> 1;
+
+		if (heightDifference > RCT2_GLOBAL(0x0097D218 + (RIDE_TYPE_MAZE * 8), uint8)) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
+			return MONEY32_UNDEFINED;
+		}
+	}
+
+	mapElement = map_get_track_element_at_of_type_from_ride(x, y, baseHeight, 0x65, rideIndex);
+	if (mapElement == NULL) {
+		if (mode != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = 0;
+			return MONEY32_UNDEFINED;
+		}
+
+		if (!map_can_construct_at(floor2(x, 32), floor2(y, 32), baseHeight, clearanceHeight, 0x0F)) {
+			return MONEY32_UNDEFINED;
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			return MONEY32_UNDEFINED;
+		}
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x02) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+			return MONEY32_UNDEFINED;
+		}
+
+		rct_ride *ride = get_ride(rideIndex);
+
+		money32 price = (((RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2] * RCT2_GLOBAL(0x0099DBC8, money32)) >> 16));
+		RCT2_GLOBAL(0x00F4413E, money32) = price / 2 * 10;
+
+		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+				return 0;
+			}
+
+			return RCT2_GLOBAL(0xF4413E, money32);
+		}
+
+		uint16 flooredX = floor2(x, 32);
+		uint16 flooredY = floor2(y, 32);
+
+		mapElement = map_element_insert(x / 32, y / 32, baseHeight, 0xF);
+		mapElement->clearance_height = clearanceHeight;
+		mapElement->type = MAP_ELEMENT_TYPE_TRACK;
+		mapElement->properties.track.type = 0x65;
+		mapElement->properties.track.ride_index = rideIndex;
+		mapElement->properties.track.maze_entry = 0xFFFF;
+
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+		}
+
+		map_invalidate_tile_full(flooredX, flooredY);
+
+		ride->maze_tiles++;
+		ride->station_heights[0] = mapElement->base_height;
+		ride->station_starts[0] = 0;
+
+		if (direction == 4) {
+			if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
+				ride->overall_view = (flooredX >> 5) | (flooredY << 3);
+			}
+		}
+	}
+
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+			return 0;
+		}
+
+		return RCT2_GLOBAL(0xF4413E, money32);
+	}
+
+
+	if (mode == 0) {
+		// Build mode
+		uint8 segmentOffset = maze_element_get_segment_bit(x, y);
+
+		mapElement->properties.track.maze_entry &= ~(1 << segmentOffset);
+
+		if (direction != 4) {
+			segmentOffset = RCT2_GLOBAL(0x993ce9 + (direction + segmentOffset), uint8);
+			mapElement->properties.track.maze_entry &= ~(1 << segmentOffset);
+
+			uint8 temp_edx = RCT2_GLOBAL(0x993cfc + segmentOffset, uint8);
+			if (temp_edx != 0xFF) {
+				uint16 previousElementX = floor2(x, 32) - TileDirectionDelta[direction].x;
+				uint16 previousElementY = floor2(y, 32) - TileDirectionDelta[direction].y;
+
+				rct_map_element *previousMapElement = map_get_track_element_at_of_type_from_ride(previousElementX, previousElementY, baseHeight, 0x65, rideIndex);
+				if (previousMapElement != NULL) {
+					previousMapElement->properties.track.maze_entry &= ~(1 << temp_edx);
+				} else {
+					mapElement->properties.track.maze_entry |= (1 << segmentOffset);
+				}
+			}
+		}
+	} else if (mode == 1) {
+		// Move mode
+	} else {
+		// Fill-in mode
+		if (direction != 4) {
+			uint16 previousSegmentX = x - TileDirectionDelta[direction].x / 2;
+			uint16 previousSegmentY = y - TileDirectionDelta[direction].y / 2;
+
+			mapElement = map_get_track_element_at_of_type_from_ride(previousSegmentX, previousSegmentY, baseHeight, 0x65, rideIndex);
+			map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
+			if (mapElement == NULL) {
+				log_error("No surface found");
+				return MONEY32_UNDEFINED;
+			}
+
+			uint32 segmentBit = maze_element_get_segment_bit(previousSegmentX, previousSegmentY);
+
+			mapElement->properties.track.maze_entry |= (1 << segmentBit);
+			segmentBit--;
+			mapElement->properties.track.maze_entry |= (1 << segmentBit);
+			segmentBit = (segmentBit - 4) & 0x0F;
+			mapElement->properties.track.maze_entry |= (1 << segmentBit);
+			segmentBit = (segmentBit + 3) & 0x0F;
+
+			do {
+				mapElement->properties.track.maze_entry |= (1 << segmentBit);
+
+				uint32 direction1 = RCT2_GLOBAL(0x00993D0C + segmentBit, uint8_t);
+				uint16 nextElementX = floor2(previousSegmentX, 32) + TileDirectionDelta[direction1].x;
+				uint16 nextElementY = floor2(previousSegmentY, 32) + TileDirectionDelta[direction1].y;
+
+				rct_map_element *tmp_mapElement = map_get_track_element_at_of_type_from_ride(nextElementX, nextElementY, baseHeight, 0x65, rideIndex);
+				if (tmp_mapElement != NULL) {
+					uint8 edx11 = RCT2_GLOBAL(0x993CFC + segmentBit, uint8);
+					tmp_mapElement->properties.track.maze_entry |= 1 << (edx11);
+				}
+
+				segmentBit--;
+			} while ((segmentBit & 0x3) != 0x3);
+		}
+	}
+
+	map_invalidate_tile(floor2(x, 32), floor2(y, 32), mapElement->base_height * 8, mapElement->clearance_height * 8);
+
+	if ((mapElement->properties.track.maze_entry & 0x8888) == 0x8888) {
+		map_element_remove(mapElement);
+		sub_6CB945(rideIndex);
+		get_ride(rideIndex)->maze_tiles--;
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		return 0;
+	}
+
+	return RCT2_GLOBAL(0xF4413E, money32);
+}
+
 /**
  *
  *  rct2: 0x006CD8CE
  */
 void game_command_set_maze_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_CALLFUNC_X(0x006CD8CE, eax, ebx, ecx, edx, esi, edi, ebp);
+	uint16 x = (*eax & 0xFFFF); // AX
+	uint8 flags = (*ebx & 0xFF); // BL
+	uint8 direction = ((*ebx & 0xFF00) >> 8); // BH
+	uint16 y = (*ecx & 0xFFFF); // CX
+	uint8 rideIndex = (*edx & 0xFF); // DL
+	uint8 mode = ((*edx & 0xFF00) >> 8); // DH
+	uint16 z = (*edi & 0xFFFF); // DI
+
+	*ebx = set_maze_track(x, flags, direction, y, rideIndex, mode, z);
 }
+
 
 /**
  *

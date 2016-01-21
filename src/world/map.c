@@ -5280,3 +5280,25 @@ rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int t
 
 	return NULL;
 }
+
+/**
+ * Gets the track element at x, y, z that is the given track type and sequence.
+ * @param x x units, not tiles.
+ * @param y y units, not tiles.
+ * @param z Base height.
+ * @param trackType
+ * @param ride index
+ */
+rct_map_element *map_get_track_element_at_of_type_from_ride(int x, int y, int z, int trackType, int rideIndex) {
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+		if (mapElement->base_height != z) continue;
+		if (mapElement->properties.track.ride_index != rideIndex) continue;
+		if (mapElement->properties.track.type != trackType) continue;
+
+		return mapElement;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return NULL;
+};
