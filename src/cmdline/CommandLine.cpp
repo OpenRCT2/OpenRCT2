@@ -347,6 +347,7 @@ namespace CommandLine
                         return false;
                     }
                 }
+                firstOption = false;
             }
             else if (!firstOption)
             {
@@ -355,9 +356,8 @@ namespace CommandLine
             }
             else
             {
-                break;
+                continue;
             }
-            firstOption = false;
         }
 
         return true;
