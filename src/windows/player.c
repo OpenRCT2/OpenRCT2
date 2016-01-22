@@ -215,7 +215,7 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 		window_player_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_KICK:
-		network_kick_player(w->number);
+		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
 		break;
 	}
 }
@@ -308,17 +308,20 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		return;
 	}
 
-	rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(network_get_player_group(player));
+	int groupindex = network_get_group_index(network_get_player_group(player));
+	if (groupindex != -1) {
+		rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(groupindex);
 
-	gfx_draw_string_centred(
-		dpi,
-		1193,
-		w->x + (widget->left + widget->right - 11) / 2,
-		w->y + widget->top,
-		0,
-		(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
-	);
+		gfx_draw_string_centred(
+			dpi,
+			1193,
+			w->x + (widget->left + widget->right - 11) / 2,
+			w->y + widget->top,
+			0,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
+		);
+	}
 
 	int x = w->x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	int y = w->y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4 + 13;

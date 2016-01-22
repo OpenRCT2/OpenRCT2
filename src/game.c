@@ -72,6 +72,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_ride_construct_placed_back,
 	game_command_callback_ride_remove_track_piece,
 };
+uint8 game_command_playerid = 0;
 
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
@@ -467,6 +468,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		command == GAME_COMMAND_PLACE_BANNER ||
 		command == GAME_COMMAND_PLACE_PATH)) {
 		scenery_remove_ghost_tool_placement();
+	}
+
+	if (!(flags & GAME_COMMAND_FLAG_NETWORKED)) {
+		game_command_playerid = network_get_current_player_id();
 	}
 
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
@@ -1175,7 +1180,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-GAME_COMMAND_POINTER* new_game_command_table[64] = {
+GAME_COMMAND_POINTER* new_game_command_table[65] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1239,5 +1244,6 @@ GAME_COMMAND_POINTER* new_game_command_table[64] = {
 	game_command_set_banner_style,
 	game_command_set_sign_style,
 	game_command_set_player_group,
-	game_command_modify_groups
+	game_command_modify_groups,
+	game_command_kick_player
 };

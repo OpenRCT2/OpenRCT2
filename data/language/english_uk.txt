@@ -4044,6 +4044,14 @@ STR_5702    :Set Banner Style
 STR_5703    :Set Sign Style
 STR_5704    :Set Player Group
 STR_5705    :Modify Groups
+STR_5706    :Can't remove group that players belong to
+STR_5707    :This group cannot be modified
+STR_5708    :Can't change the group that the host belongs to
+STR_5709    :Rename Group
+STR_5710    :Group name
+STR_5711    :Enter new name for this group:
+STR_5712    :Can't set permission that you do not have yourself
+STR_5713    :Kick Player
 
 #############
 # Scenarios #

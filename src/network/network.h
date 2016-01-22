@@ -237,7 +237,8 @@ public:
 		{STR_ACTION_SET_BANNER_STYLE, GAME_COMMAND_SET_BANNER_STYLE},
 		{STR_ACTION_SET_SIGN_STYLE, GAME_COMMAND_SET_SIGN_STYLE},
 		{STR_ACTION_SET_PLAYER_GROUP, GAME_COMMAND_SET_PLAYER_GROUP},
-		{STR_ACTION_MODIFY_GROUPS, GAME_COMMAND_MODIFY_GROUPS}
+		{STR_ACTION_MODIFY_GROUPS, GAME_COMMAND_MODIFY_GROUPS},
+		{STR_ACTION_KICK_PLAYER, GAME_COMMAND_KICK_PLAYER}
 	};
 };
 
@@ -251,11 +252,11 @@ public:
 	void FreeNameStringId();
 	void ToggleActionPermission(size_t index);
 	bool CanPerformAction(size_t index);
-	bool CanPerformGameCommand(uint32 command);
+	bool CanPerformGameCommand(int command);
 	std::string& GetName();
 	void SetName(std::string name);
 	rct_string_id GetNameStringId();
-	std::array<uint8, 16> actions_allowed = {0};
+	std::array<uint8, 16> actions_allowed;
 	uint8 id;
 
 private:
@@ -345,6 +346,7 @@ public:
 	void AdvertiseRegister();
 	void AdvertiseHeartbeat();
 	NetworkGroup* AddGroup();
+	void RemoveGroup(uint8 id);
 	uint8 GetDefaultGroup();
 	void SetDefaultGroup(uint8 id);
 
@@ -363,7 +365,7 @@ public:
 	void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
 	void Server_Send_GAMEINFO(NetworkConnection& connection);
 	void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
-	void Server_Send_GROUPLIST();
+	void Server_Send_GROUPLIST(NetworkConnection& connection);
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
@@ -421,23 +423,24 @@ private:
 	void UpdateClient();
 
 private:
-	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
-	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
-	int Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
+	std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
+	std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
+	void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
@@ -476,8 +479,8 @@ const char* network_get_group_name(unsigned int index);
 rct_string_id network_get_group_name_string_id(unsigned int index);
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 uint8 network_get_default_group();
-void network_set_default_group(uint8 id);
 int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);
 int network_can_perform_action(unsigned int groupindex, unsigned int index);
@@ -487,7 +490,6 @@ void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 void network_send_password(const char* password);
 
-void network_kick_player(int playerId);
 void network_set_password(const char* password);
 
 void network_print_error();

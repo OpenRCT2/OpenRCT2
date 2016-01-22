@@ -46,6 +46,7 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 	WIDX_DEFAULT_GROUP_DROPDOWN,
 	WIDX_ADD_GROUP,
 	WIDX_REMOVE_GROUP,
+	WIDX_RENAME_GROUP,
 	WIDX_SELECTED_GROUP,
 	WIDX_SELECTED_GROUP_DROPDOWN,
 	WIDX_PERMISSIONS_LIST,
@@ -71,8 +72,9 @@ static rct_widget window_multiplayer_groups_widgets[] = {
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_GROUPS_TIP },							// tab
 	{ WWT_DROPDOWN,			1,	141,	315,	46,		57,		0x0FFFFFFFF,				STR_NONE },									// default group
 	{ WWT_DROPDOWN_BUTTON,	1,	305,	315,	47,		56,		876,						STR_NONE },									//
-	{ WWT_DROPDOWN_BUTTON,	1,	44,		134,	65,		76,		STR_ADD_GROUP,				STR_NONE },									// add group button
-	{ WWT_DROPDOWN_BUTTON,	1,	178,	268,	65,		76,		STR_REMOVE_GROUP,			STR_NONE },									// remove group button
+	{ WWT_DROPDOWN_BUTTON,	1,	11,		102,	65,		76,		STR_ADD_GROUP,				STR_NONE },									// add group button
+	{ WWT_DROPDOWN_BUTTON,	1,	113,	204,	65,		76,		STR_REMOVE_GROUP,			STR_NONE },									// remove group button
+	{ WWT_DROPDOWN_BUTTON,	1,	215,	306,	65,		76,		STR_RENAME_GROUP,			STR_NONE },									// rename group button
 	{ WWT_DROPDOWN,			1,	72,		246,	80,		91,		0x0FFFFFFFF,				STR_NONE },									// selected group
 	{ WWT_DROPDOWN_BUTTON,	1,	236,	246,	81,		90,		876,						STR_NONE },									//
 	{ WWT_SCROLL,			1,	3,		316,	94,		300,	2,							STR_NONE },									// permissions list
@@ -86,7 +88,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
  
 const uint64 window_multiplayer_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN)
 };
 
 static uint8 _selectedGroup = 0;
@@ -110,6 +112,7 @@ static void window_multiplayer_groups_update(rct_window *w);
 static void window_multiplayer_groups_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
 static void window_multiplayer_groups_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
 static void window_multiplayer_groups_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_multiplayer_groups_text_input(rct_window *w, int widgetIndex, char *text);
 static void window_multiplayer_groups_invalidate(rct_window *w);
 static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
@@ -165,7 +168,7 @@ static rct_window_event_list window_multiplayer_groups_events = {
 	window_multiplayer_groups_scrollmousedown,
 	NULL,
 	window_multiplayer_groups_scrollmouseover,
-	NULL,
+	window_multiplayer_groups_text_input,
 	NULL,
 	NULL,
 	NULL,
@@ -455,6 +458,15 @@ static void window_multiplayer_groups_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
+	case WIDX_ADD_GROUP:
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
+		break;
+	case WIDX_REMOVE_GROUP:
+		game_do_command(1 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
+		break;
+	case WIDX_RENAME_GROUP:
+		window_text_input_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, 0, 0, 32);
+		break;
 	}
 }
 
@@ -495,9 +507,7 @@ static void window_multiplayer_groups_dropdown(rct_window *w, int widgetIndex, i
 
 	switch(widgetIndex){
 	case WIDX_DEFAULT_GROUP_DROPDOWN:
-		if (network_get_mode() == NETWORK_MODE_SERVER) {
-			network_set_default_group(network_get_group_id(dropdownIndex));
-		}
+		game_do_command(4 | (network_get_group_id(dropdownIndex) << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
 		break;
 	case WIDX_SELECTED_GROUP_DROPDOWN:
 		_selectedGroup = network_get_group_id(dropdownIndex);
@@ -562,6 +572,19 @@ static void window_multiplayer_groups_scrollmouseover(rct_window *w, int scrollI
 	window_invalidate(w);
 }
 
+static void window_multiplayer_groups_text_input(rct_window *w, int widgetIndex, char *text)
+{
+	if (widgetIndex != WIDX_RENAME_GROUP)
+		return;
+
+	if (text == NULL)
+		return;
+
+	game_do_command(3 | (_selectedGroup << 8) | (1 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_MODIFY_GROUPS, *((int*)(text + 8)), *((int*)(text + 4)));
+	game_do_command(3 | (_selectedGroup << 8) | (2 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_MODIFY_GROUPS, *((int*)(text + 20)), *((int*)(text + 16)));
+	game_do_command(3 | (_selectedGroup << 8) | (0 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_MODIFY_GROUPS, *((int*)(text + 32)), *((int*)(text + 28)));
+}
+
 static void window_multiplayer_groups_invalidate(rct_window *w)
 {
 	window_multiplayer_set_pressed_tab(w);
@@ -569,6 +592,11 @@ static void window_multiplayer_groups_invalidate(rct_window *w)
 	window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].right = w->width - 4;
 	window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].bottom = w->height - 0x0F;
 	window_align_tabs(w, WIDX_TAB1, WIDX_TAB2);
+
+	// select other group if one is removed
+	while (network_get_group_index(_selectedGroup) == -1 && _selectedGroup > 0) {
+		_selectedGroup--;
+	}
 }
 
 static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -644,16 +672,6 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 			// Draw action name
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(i);
 			gfx_draw_string_left(dpi, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 10, y - 1);
-
-			/*
-			char buffer[300];
-			char* lineCh;
-			lineCh = buffer;
-			int group = i;
-			lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-			safe_strcpy(lineCh, network_get_action_name(group), sizeof(buffer) - (lineCh - buffer));
-			gfx_clip_string(buffer, 80);
-			gfx_draw_string(dpi, buffer, 0, 0, y - 1);*/
 		}
 		y += 10;
 	}
