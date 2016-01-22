@@ -4050,7 +4050,7 @@ STR_5708    :Can't change the group that the host belongs to
 STR_5709    :Rename Group
 STR_5710    :Group name
 STR_5711    :Enter new name for this group:
-STR_5712    :Can't set permission that you do not have yourself
+STR_5712    :Can't modify permission that you do not have yourself
 STR_5713    :Kick Player
 
 #############

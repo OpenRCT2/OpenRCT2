@@ -114,7 +114,7 @@ typedef void (GAME_COMMAND_CALLBACK_POINTER)(int eax, int ebx, int ecx, int edx,
 extern GAME_COMMAND_CALLBACK_POINTER* game_command_callback;
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
-extern uint8 game_command_playerid;
+extern int game_command_playerid;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[65];
 

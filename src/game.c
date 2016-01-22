@@ -72,7 +72,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_ride_construct_placed_back,
 	game_command_callback_ride_remove_track_piece,
 };
-uint8 game_command_playerid = 0;
+int game_command_playerid = -1;
 
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
@@ -470,7 +470,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		scenery_remove_ghost_tool_placement();
 	}
 
-	if (!(flags & GAME_COMMAND_FLAG_NETWORKED)) {
+	if (game_command_playerid == -1) {
 		game_command_playerid = network_get_current_player_id();
 	}
 
@@ -513,6 +513,8 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 			// Second call to actually perform the operation
 			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+
+			game_command_playerid = -1;
 
 			if (game_command_callback) {
 				game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);

@@ -1424,6 +1424,7 @@ void Network::ProcessGameCommandQueue()
 		if (GetPlayerID() == gc.playerid) {
 			game_command_callback = game_command_callback_get_callback(gc.callback);
 		}
+		game_command_playerid = gc.playerid;
 		money32 cost = game_do_command_p(gc.esi, (int*)&gc.eax, (int*)&gc.ebx, (int*)&gc.ecx, (int*)&gc.edx, (int*)&gc.esi, (int*)&gc.edi, (int*)&gc.ebp);
 		if (cost != MONEY32_UNDEFINED) {
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
@@ -2038,7 +2039,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			mygroup = gNetwork.GetGroupByID(player->group);
 			if (mygroup) {
 				if (!all && !mygroup->CanPerformAction(index)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_SET_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
+					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
 					*ebx = MONEY32_UNDEFINED;
 					return;
 				}
