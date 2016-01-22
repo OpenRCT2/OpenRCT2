@@ -44,6 +44,11 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 
 	WIDX_DEFAULT_GROUP = 6,
 	WIDX_DEFAULT_GROUP_DROPDOWN,
+	WIDX_ADD_GROUP,
+	WIDX_REMOVE_GROUP,
+	WIDX_SELECTED_GROUP,
+	WIDX_SELECTED_GROUP_DROPDOWN,
+	WIDX_PERMISSIONS_LIST,
 };
 
 static rct_widget window_multiplayer_players_widgets[] = {
@@ -66,6 +71,11 @@ static rct_widget window_multiplayer_groups_widgets[] = {
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_GROUPS_TIP },							// tab
 	{ WWT_DROPDOWN,			1,	141,	315,	46,		57,		0x0FFFFFFFF,				STR_NONE },									// default group
 	{ WWT_DROPDOWN_BUTTON,	1,	305,	315,	47,		56,		876,						STR_NONE },									//
+	{ WWT_DROPDOWN_BUTTON,	1,	44,		134,	65,		76,		STR_ADD_GROUP,				STR_NONE },									// add group button
+	{ WWT_DROPDOWN_BUTTON,	1,	178,	268,	65,		76,		STR_REMOVE_GROUP,			STR_NONE },									// remove group button
+	{ WWT_DROPDOWN,			1,	72,		246,	80,		91,		0x0FFFFFFFF,				STR_NONE },									// selected group
+	{ WWT_DROPDOWN_BUTTON,	1,	236,	246,	81,		90,		876,						STR_NONE },									//
+	{ WWT_SCROLL,			1,	3,		316,	94,		300,	2,							STR_NONE },									// permissions list
 	{ WIDGETS_END }
 };
 
@@ -76,8 +86,10 @@ static rct_widget *window_multiplayer_page_widgets[] = {
  
 const uint64 window_multiplayer_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2),
-	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN)
+	(1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN)
 };
+
+static uint8 _selectedGroup = 0;
 
 static void window_multiplayer_players_mouseup(rct_window *w, int widgetIndex);
 static void window_multiplayer_players_resize(rct_window *w);
@@ -95,8 +107,12 @@ static void window_multiplayer_groups_resize(rct_window *w);
 static void window_multiplayer_groups_mousedown(int widgetIndex, rct_window* w, rct_widget* widget);
 static void window_multiplayer_groups_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 static void window_multiplayer_groups_update(rct_window *w);
+static void window_multiplayer_groups_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_multiplayer_groups_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
+static void window_multiplayer_groups_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
 static void window_multiplayer_groups_invalidate(rct_window *w);
 static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
 static rct_window_event_list window_multiplayer_players_events = {
 	NULL,
@@ -145,10 +161,10 @@ static rct_window_event_list window_multiplayer_groups_events = {
 	NULL,
 	NULL,
 	NULL,
+	window_multiplayer_groups_scrollgetsize,
+	window_multiplayer_groups_scrollmousedown,
 	NULL,
-	NULL,
-	NULL,
-	NULL,
+	window_multiplayer_groups_scrollmouseover,
 	NULL,
 	NULL,
 	NULL,
@@ -157,7 +173,7 @@ static rct_window_event_list window_multiplayer_groups_events = {
 	NULL,
 	window_multiplayer_groups_invalidate,
 	window_multiplayer_groups_paint,
-	NULL,
+	window_multiplayer_groups_scrollpaint
 };
 
 static rct_window_event_list *window_multiplayer_page_events[] = {
@@ -168,7 +184,6 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
 const int window_multiplayer_animation_divisor[] = { 4, 4 };
 const int window_multiplayer_animation_frames[] = { 8, 16 };
 
-static void window_multiplayer_players_refresh_list(rct_window *w);
 static void window_multiplayer_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_multiplayer_set_page(rct_window* w, int page);
 
@@ -228,7 +243,7 @@ static void window_multiplayer_set_pressed_tab(rct_window *w)
 	w->pressed_widgets |= 1LL << (WIDX_TAB1 + w->page);
 }
 
-static void window_multiplayer_groups_show_defaultgroup_dropdown(rct_window *w, rct_widget *widget)
+static void window_multiplayer_groups_show_group_dropdown(rct_window *w, rct_widget *widget)
 {
 	rct_widget *dropdownWidget;
 	int numItems, i;
@@ -251,8 +266,12 @@ static void window_multiplayer_groups_show_defaultgroup_dropdown(rct_window *w, 
 		gDropdownItemsFormat[i] = 1142;
 		gDropdownItemsArgs[i] = network_get_group_name_string_id(i);
 	}
-
-	dropdown_set_checked(network_get_group_index(network_get_default_group()), true);
+	if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN]) {
+		dropdown_set_checked(network_get_group_index(network_get_default_group()), true);
+	} else
+	if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN]) {
+		dropdown_set_checked(network_get_group_index(_selectedGroup), true);
+	}
 }
 
 static void window_multiplayer_players_mouseup(rct_window *w, int widgetIndex)
@@ -268,7 +287,11 @@ static void window_multiplayer_players_resize(rct_window *w)
 {
 	window_set_resize(w, 320, 124, 500, 450);
 
-	window_multiplayer_players_refresh_list(w);
+	w->no_list_items = network_get_num_players();
+	w->list_item_positions[0] = 0;
+
+	w->selected_list_item = -1;
+	window_invalidate(w);
 }
 
 static void window_multiplayer_players_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
@@ -371,8 +394,6 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 {
 	int y;
 
-	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
-
 	y = 0;
 	for (int i = 0; i < network_get_num_players(); i++) {
 		if (y > dpi->y + dpi->height) {
@@ -439,7 +460,13 @@ static void window_multiplayer_groups_mouseup(rct_window *w, int widgetIndex)
 
 static void window_multiplayer_groups_resize(rct_window *w)
 {
-	window_set_resize(w, 320, 61, 320, 61);
+	window_set_resize(w, 320, 200, 320, 500);
+
+	w->no_list_items = network_get_num_actions();
+	w->list_item_positions[0] = 0;
+
+	w->selected_list_item = -1;
+	window_invalidate(w);
 }
 
 static void window_multiplayer_groups_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
@@ -452,7 +479,10 @@ static void window_multiplayer_groups_mousedown(int widgetIndex, rct_window* w, 
 		}
 		break;
 	case WIDX_DEFAULT_GROUP_DROPDOWN:
-		window_multiplayer_groups_show_defaultgroup_dropdown(w, widget);
+		window_multiplayer_groups_show_group_dropdown(w, widget);
+		break;
+	case WIDX_SELECTED_GROUP_DROPDOWN:
+		window_multiplayer_groups_show_group_dropdown(w, widget);
 		break;
 	}
 }
@@ -462,9 +492,18 @@ static void window_multiplayer_groups_dropdown(rct_window *w, int widgetIndex, i
 	if (dropdownIndex == -1) {
 		return;
 	}
-	if (network_get_mode() == NETWORK_MODE_SERVER) {
-		network_set_default_group(network_get_group_id(dropdownIndex));
+
+	switch(widgetIndex){
+	case WIDX_DEFAULT_GROUP_DROPDOWN:
+		if (network_get_mode() == NETWORK_MODE_SERVER) {
+			network_set_default_group(network_get_group_id(dropdownIndex));
+		}
+		break;
+	case WIDX_SELECTED_GROUP_DROPDOWN:
+		_selectedGroup = network_get_group_id(dropdownIndex);
+		break;
 	}
+
 	window_invalidate(w);
 }
 
@@ -474,10 +513,61 @@ static void window_multiplayer_groups_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB1 + w->page);
 }
 
+static void window_multiplayer_groups_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+{
+	int i;
+
+	if (w->selected_list_item != -1) {
+		w->selected_list_item = -1;
+		window_invalidate(w);
+	}
+
+	*height = network_get_num_actions() * 10;
+	i = *height - window_multiplayer_groups_widgets[WIDX_LIST].bottom + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
+	if (i < 0)
+		i = 0;
+	if (i < w->scrolls[0].v_top) {
+		w->scrolls[0].v_top = i;
+		window_invalidate(w);
+	}
+}
+
+static void window_multiplayer_groups_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
+{
+	int index;
+
+	index = y / 10;
+	if (index >= w->no_list_items)
+		return;
+
+	w->selected_list_item = index;
+	window_invalidate(w);
+
+	rct_widget *listWidget = &w->widgets[WIDX_LIST];
+	int ddx = w->x + listWidget->left + x - w->scrolls[0].h_left;
+	int ddy = w->y + listWidget->top + y - w->scrolls[0].v_top;
+
+	game_do_command(2 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, index, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
+}
+
+static void window_multiplayer_groups_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
+{
+	int index;
+
+	index = y / 10;
+	if (index >= w->no_list_items)
+		return;
+
+	w->selected_list_item = index;
+	window_invalidate(w);
+}
+
 static void window_multiplayer_groups_invalidate(rct_window *w)
 {
 	window_multiplayer_set_pressed_tab(w);
 	window_multiplayer_anchor_border_widgets(w);
+	window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].right = w->width - 4;
+	window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].bottom = w->height - 0x0F;
 	window_align_tabs(w, WIDX_TAB1, WIDX_TAB2);
 }
 
@@ -500,16 +590,73 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 		);
 	}
 
-	gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, NULL, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
+	int x = w->x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
+	int y = w->y + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4;
+
+	gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, NULL, w->colours[2], x, y);
+
+	y += 20;
+
+	gfx_fill_rect_inset(dpi, x, y - 6, x + 310, y - 5, w->colours[1], 32);
+
+	widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
+	group = network_get_group_index(_selectedGroup);
+	if (group != -1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(group);
+		gfx_draw_string_centred(
+			dpi,
+			1193,
+			w->x + (widget->left + widget->right - 11) / 2,
+			w->y + widget->top,
+			0,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
+		);
+	}
 }
 
-static void window_multiplayer_players_refresh_list(rct_window *w)
+static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	w->no_list_items = network_get_num_players();
-	w->list_item_positions[0] = 0;
+	int y = 0;
 
-	w->selected_list_item = -1;
-	window_invalidate(w);
+	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+
+	for (int i = 0; i < network_get_num_actions(); i++) {
+		if (i == w->selected_list_item) {
+			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
+		}
+		if (y > dpi->y + dpi->height) {
+			break;
+		}
+
+		if (y + 11 >= dpi->y) {
+			char buffer[300];
+			char* lineCh;
+			int groupindex = network_get_group_index(_selectedGroup);
+			if (groupindex != -1){
+				if (network_can_perform_action(groupindex, i)) {
+					lineCh = buffer;
+					lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
+					safe_strcpy(lineCh, "x", sizeof(buffer) - (lineCh - buffer));
+					gfx_draw_string(dpi, buffer, 0, 0, y - 1);
+				}
+			}
+
+			// Draw action name
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(i);
+			gfx_draw_string_left(dpi, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 10, y - 1);
+
+			/*
+			char buffer[300];
+			char* lineCh;
+			lineCh = buffer;
+			int group = i;
+			lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
+			safe_strcpy(lineCh, network_get_action_name(group), sizeof(buffer) - (lineCh - buffer));
+			gfx_clip_string(buffer, 80);
+			gfx_draw_string(dpi, buffer, 0, 0, y - 1);*/
+		}
+		y += 10;
+	}
 }
 
 static void window_multiplayer_draw_tab_image(rct_window *w, rct_drawpixelinfo *dpi, int page, int spriteIndex)

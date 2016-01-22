@@ -88,7 +88,8 @@ enum GAME_COMMAND {
 	GAME_COMMAND_SET_SIGN_NAME,
 	GAME_COMMAND_SET_BANNER_STYLE,
 	GAME_COMMAND_SET_SIGN_STYLE,
-	GAME_COMMAND_SET_PLAYER_GROUP
+	GAME_COMMAND_SET_PLAYER_GROUP,
+	GAME_COMMAND_MODIFY_GROUPS
 };
 
 enum {
@@ -112,6 +113,8 @@ typedef void (GAME_COMMAND_CALLBACK_POINTER)(int eax, int ebx, int ecx, int edx,
 extern GAME_COMMAND_CALLBACK_POINTER* game_command_callback;
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
+
+extern GAME_COMMAND_POINTER* new_game_command_table[64];
 
 extern int gGameSpeed;
 extern float gDayNightCycle;

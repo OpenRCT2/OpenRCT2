@@ -56,7 +56,9 @@ enum {
 extern "C" {
 #endif // __cplusplus
 #include "../common.h"
+#include "../game.h"
 #include "../platform/platform.h"
+#include "../localisation/string_ids.h"
 #ifdef __cplusplus
 }
 #endif // __cplusplus
@@ -98,6 +100,7 @@ extern "C" {
 
 #ifdef __cplusplus
 
+#include <array>
 #include <list>
 #include <set>
 #include <memory>
@@ -144,7 +147,10 @@ public:
 class NetworkPlayer
 {
 public:
-	NetworkPlayer(const char* name);
+	NetworkPlayer();
+	void Read(NetworkPacket& packet);
+	void Write(NetworkPacket& packet);
+	void SetName(const char* name);
 	void AddMoneySpent(money32 cost);
 	uint8 id;
 	uint8 name[32 + 1];
@@ -156,15 +162,104 @@ public:
 	unsigned int commands_ran;
 };
 
+class NetworkAction
+{
+public:
+	rct_string_id name;
+	int game_command;
+};
+
+class NetworkActions
+{
+public:
+	int FindGameCommand(int command);
+	const std::vector<NetworkAction> actions = {
+		{STR_ACTION_CHAT, -1},
+		{STR_ACTION_SET_RIDE_APPEARANCE, GAME_COMMAND_SET_RIDE_APPEARANCE},
+		//{STR_NONE, GAME_COMMAND_SET_LAND_HEIGHT},
+		{STR_ACTION_TOGGLE_PAUSE, GAME_COMMAND_TOGGLE_PAUSE},
+		{STR_ACTION_PLACE_TRACK, GAME_COMMAND_PLACE_TRACK},
+		{STR_ACTION_REMOVE_TRACK, GAME_COMMAND_REMOVE_TRACK},
+		//{STR_NONE, GAME_COMMAND_LOAD_OR_QUIT},
+		{STR_ACTION_CREATE_RIDE, GAME_COMMAND_CREATE_RIDE},
+		{STR_ACTION_REMOVE_RIDE, GAME_COMMAND_DEMOLISH_RIDE},
+		{STR_ACTION_SET_RIDE_STATUS, GAME_COMMAND_SET_RIDE_STATUS},
+		{STR_ACTION_SET_RIDE_VEHICLES, GAME_COMMAND_SET_RIDE_VEHICLES},
+		{STR_ACTION_SET_RIDE_NAME, GAME_COMMAND_SET_RIDE_NAME},
+		{STR_ACTION_SET_RIDE_SETTING, GAME_COMMAND_SET_RIDE_SETTING},
+		{STR_ACTION_PLACE_RIDE_ENTRANCE_EXIT, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT},
+		{STR_ACTION_REMOVE_RIDE_ENTRANCE_EXIT, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT},
+		{STR_ACTION_REMOVE_SCENERY, GAME_COMMAND_REMOVE_SCENERY},
+		{STR_ACTION_PLACE_SCENERY, GAME_COMMAND_PLACE_SCENERY},
+		//{STR_NONE, GAME_COMMAND_SET_WATER_HEIGHT},
+		{STR_ACTION_PLACE_PATH, GAME_COMMAND_PLACE_PATH},
+		{STR_ACTION_PLACE_PATH_FROM_TRACK, GAME_COMMAND_PLACE_PATH_FROM_TRACK},
+		{STR_ACTION_REMOVE_PATH, GAME_COMMAND_REMOVE_PATH},
+		{STR_ACTION_CHANGE_SURFACE_STYLE, GAME_COMMAND_CHANGE_SURFACE_STYLE},
+		{STR_ACTION_SET_RIDE_PRICE, GAME_COMMAND_SET_RIDE_PRICE},
+		{STR_ACTION_SET_PEEP_NAME, GAME_COMMAND_SET_PEEP_NAME},
+		{STR_ACTION_RAISE_LAND, GAME_COMMAND_RAISE_LAND},
+		{STR_ACTION_LOWER_LAND, GAME_COMMAND_LOWER_LAND},
+		{STR_ACTION_SMOOTH_LAND, GAME_COMMAND_EDIT_LAND_SMOOTH},
+		{STR_ACTION_RAISE_WATER, GAME_COMMAND_RAISE_WATER},
+		{STR_ACTION_LOWER_WATER, GAME_COMMAND_LOWER_WATER},
+		{STR_ACTION_SET_BRAKES_SPEED, GAME_COMMAND_SET_BRAKES_SPEED},
+		{STR_ACTION_HIRE_NEW_STAFF, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER},
+		{STR_ACTION_SET_STAFF_PATROL, GAME_COMMAND_SET_STAFF_PATROL},
+		{STR_ACTION_FIRE_STAFF, GAME_COMMAND_FIRE_STAFF_MEMBER},
+		{STR_ACTION_SET_STAFF_ORDER, GAME_COMMAND_SET_STAFF_ORDER},
+		{STR_ACTION_SET_PARK_NAME, GAME_COMMAND_SET_PARK_NAME},
+		{STR_ACTION_OPEN_CLOSE_PARK, GAME_COMMAND_SET_PARK_OPEN},
+		{STR_ACTION_BUY_LAND_RIGHTS, GAME_COMMAND_BUY_LAND_RIGHTS},
+		{STR_ACTION_PLACE_PARK_ENTRANCE, GAME_COMMAND_PLACE_PARK_ENTRANCE},
+		{STR_ACTION_REMOVE_PARK_ENTRANCE, GAME_COMMAND_REMOVE_PARK_ENTRANCE},
+		{STR_ACTION_SET_MAZE_TRACK, GAME_COMMAND_SET_MAZE_TRACK},
+		{STR_ACTION_SET_PARK_ENTRANCE_FEE, GAME_COMMAND_SET_PARK_ENTRANCE_FEE},
+		{STR_ACTION_SET_STAFF_COLOUR, GAME_COMMAND_SET_STAFF_COLOUR},
+		{STR_ACTION_PLACE_FENCE, GAME_COMMAND_PLACE_FENCE},
+		{STR_ACTION_REMOVE_FENCE, GAME_COMMAND_REMOVE_FENCE},
+		{STR_ACTION_PLACE_LARGE_SCENERY, GAME_COMMAND_PLACE_LARGE_SCENERY},
+		{STR_ACTION_SET_CURRENT_LOAN, GAME_COMMAND_SET_CURRENT_LOAN},
+		{STR_ACTION_SET_RESEARCH_FUNDING, GAME_COMMAND_SET_RESEARCH_FUNDING},
+		{STR_ACTION_PLACE_TRACK_DESIGN, GAME_COMMAND_PLACE_TRACK_DESIGN},
+		{STR_ACTION_START_MARKETING_CAMPAIGN, GAME_COMMAND_START_MARKETING_CAMPAIGN},
+		{STR_ACTION_PLACE_MAZE_DESIGN, GAME_COMMAND_PLACE_MAZE_DESIGN},
+		{STR_ACTION_PLACE_BANNER, GAME_COMMAND_PLACE_BANNER},
+		{STR_ACTION_REMOVE_BANNER, GAME_COMMAND_REMOVE_BANNER},
+		{STR_ACTION_SET_SCENERY_COLOUR, GAME_COMMAND_SET_SCENERY_COLOUR},
+		{STR_ACTION_SET_FENCE_COLOUR, GAME_COMMAND_SET_FENCE_COLOUR},
+		{STR_ACTION_SET_LARGE_SCENERY_COLOUR, GAME_COMMAND_SET_LARGE_SCENERY_COLOUR},
+		{STR_ACTION_SET_BANNER_COLOUR, GAME_COMMAND_SET_BANNER_COLOUR},
+		{STR_ACTION_SET_LAND_OWNERSHIP, GAME_COMMAND_SET_LAND_OWNERSHIP},
+		{STR_ACTION_CLEAR_SCENERY, GAME_COMMAND_CLEAR_SCENERY},
+		{STR_ACTION_SET_BANNER_NAME, GAME_COMMAND_SET_BANNER_NAME},
+		{STR_ACTION_SET_SIGN_NAME, GAME_COMMAND_SET_SIGN_NAME},
+		{STR_ACTION_SET_BANNER_STYLE, GAME_COMMAND_SET_BANNER_STYLE},
+		{STR_ACTION_SET_SIGN_STYLE, GAME_COMMAND_SET_SIGN_STYLE},
+		{STR_ACTION_SET_PLAYER_GROUP, GAME_COMMAND_SET_PLAYER_GROUP},
+		{STR_ACTION_MODIFY_GROUPS, GAME_COMMAND_MODIFY_GROUPS}
+	};
+};
+
 class NetworkGroup
 {
 public:
 	NetworkGroup();
 	~NetworkGroup();
-	bool CanRun(int command);
-	std::string name;
-	uint32 permissions;
+	void Read(NetworkPacket& packet);
+	void Write(NetworkPacket& packet);
+	void FreeNameStringId();
+	void ToggleActionPermission(size_t index);
+	bool CanPerformAction(size_t index);
+	bool CanPerformGameCommand(uint32 command);
+	std::string& GetName();
+	void SetName(std::string name);
+	rct_string_id GetNameStringId();
+	std::array<uint8, 16> actions_allowed = {0};
 	uint8 id;
+
+private:
+	std::string name;
 	rct_string_id name_string_id;
 };
 
@@ -249,6 +344,7 @@ public:
 	void ShutdownClient();
 	void AdvertiseRegister();
 	void AdvertiseHeartbeat();
+	NetworkGroup* AddGroup();
 	uint8 GetDefaultGroup();
 	void SetDefaultGroup(uint8 id);
 
@@ -267,6 +363,7 @@ public:
 	void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
 	void Server_Send_GAMEINFO(NetworkConnection& connection);
 	void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
+	void Server_Send_GROUPLIST();
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
@@ -277,7 +374,7 @@ private:
 	void ProcessGameCommandQueue();
 	void AddClient(SOCKET socket);
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
-	NetworkPlayer* AddPlayer(const char* name);
+	NetworkPlayer* AddPlayer();
 	void PrintError();
 	const char* GetMasterServerUrl();
 	std::string GenerateAdvertiseKey();
@@ -378,8 +475,12 @@ int network_get_num_groups();
 const char* network_get_group_name(unsigned int index);
 rct_string_id network_get_group_name_string_id(unsigned int index);
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 uint8 network_get_default_group();
 void network_set_default_group(uint8 id);
+int network_get_num_actions();
+rct_string_id network_get_action_name_string_id(unsigned int index);
+int network_can_perform_action(unsigned int groupindex, unsigned int index);
 
 void network_send_map();
 void network_send_chat(const char* text);

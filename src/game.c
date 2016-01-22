@@ -418,8 +418,6 @@ static int game_check_affordability(int cost)
 	return MONEY32_UNDEFINED;
 }
 
-static GAME_COMMAND_POINTER* new_game_command_table[63];
-
 /**
  *
  *  rct2: 0x006677F2
@@ -1177,7 +1175,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-static GAME_COMMAND_POINTER* new_game_command_table[63] = {
+GAME_COMMAND_POINTER* new_game_command_table[64] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1240,5 +1238,6 @@ static GAME_COMMAND_POINTER* new_game_command_table[63] = {
 	game_command_set_sign_name,
 	game_command_set_banner_style,
 	game_command_set_sign_style,
-	game_command_set_player_group
+	game_command_set_player_group,
+	game_command_modify_groups
 };

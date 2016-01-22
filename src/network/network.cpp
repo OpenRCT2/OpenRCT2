@@ -53,6 +53,7 @@ extern "C" {
 #pragma comment(lib, "Ws2_32.lib")
 
 Network gNetwork;
+NetworkActions gNetworkActions;
 
 enum {
 	NETWORK_READPACKET_SUCCESS,
@@ -73,6 +74,7 @@ enum {
 	NETWORK_COMMAND_SETDISCONNECTMSG,
 	NETWORK_COMMAND_GAMEINFO,
 	NETWORK_COMMAND_SHOWERROR,
+	NETWORK_COMMAND_GROUPLIST,
 	NETWORK_COMMAND_MAX,
 	NETWORK_COMMAND_INVALID = -1
 };
@@ -180,15 +182,34 @@ bool NetworkPacket::CommandRequiresAuth()
 	}
 }
 
-NetworkPlayer::NetworkPlayer(const char* name)
+NetworkPlayer::NetworkPlayer()
 {
-	safe_strcpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
-	NetworkPlayer::name[sizeof(NetworkPlayer::name) - 1] = 0;
+	name[0] = 0;
 	ping = 0;
 	flags = 0;
 	money_spent = MONEY(0, 0);
 	commands_ran = 0;
 	group = 0;
+	reserved = 0;
+}
+
+void NetworkPlayer::Read(NetworkPacket& packet)
+{
+	const char* name = packet.ReadString();
+	SetName(name);
+	packet >> id >> flags >> group >> reserved;
+}
+
+void NetworkPlayer::Write(NetworkPacket& packet)
+{
+	packet.WriteString((const char*)name);
+	packet << id << flags << group << reserved;
+}
+
+void NetworkPlayer::SetName(const char* name)
+{
+	safe_strcpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
+	NetworkPlayer::name[sizeof(NetworkPlayer::name) - 1] = 0;
 }
 
 void NetworkPlayer::AddMoneySpent(money32 cost)
@@ -198,23 +219,100 @@ void NetworkPlayer::AddMoneySpent(money32 cost)
 	window_invalidate_by_number(WC_PLAYER, id);
 }
 
+int NetworkActions::FindGameCommand(int command)
+{
+	auto it = std::find_if(actions.begin(), actions.end(), [&command](NetworkAction const& action) { return action.game_command == command; });
+	if (it != actions.end()) {
+		return it - actions.begin();
+	}
+	return -1;
+}
+
 NetworkGroup::NetworkGroup()
 {
-	permissions = 0;
 	name_string_id = STR_NONE;
 }
 
 NetworkGroup::~NetworkGroup()
 {
-	user_string_free(name_string_id);
+	FreeNameStringId();
 }
 
-bool NetworkGroup::CanRun(int command)
+void NetworkGroup::Read(NetworkPacket& packet)
 {
-	if (permissions) {
-		return true;
+	packet >> id;
+	SetName(packet.ReadString());
+	for (size_t i = 0; i < actions_allowed.size(); i++) {
+		packet >> actions_allowed[i];
+	}
+}
+
+void NetworkGroup::Write(NetworkPacket& packet) 
+{
+	packet << id;
+	packet.WriteString(GetName().c_str());
+	for (size_t i = 0; i < actions_allowed.size(); i++) {
+		packet << actions_allowed[i];
+	}
+}
+
+void NetworkGroup::FreeNameStringId()
+{
+	if (name_string_id != STR_NONE) {
+		user_string_free(name_string_id);
+		name_string_id = STR_NONE;
+	}
+}
+
+void NetworkGroup::ToggleActionPermission(size_t index)
+{
+	size_t byte = index / 8;
+	size_t bit = index % 8;
+	if (byte >= actions_allowed.size()) {
+		return;
+	}
+	actions_allowed[byte] ^= (1 << bit);
+}
+
+bool NetworkGroup::CanPerformAction(size_t index)
+{
+	size_t byte = index / 8;
+	size_t bit = index % 8;
+	if (byte >= actions_allowed.size()) {
+		return false;
+	}
+	return (actions_allowed[byte] & (1 << bit)) ? true : false;
+}
+
+bool NetworkGroup::CanPerformGameCommand(uint32 command)
+{
+	if ((size_t)command >= Util::CountOf(new_game_command_table)) {
+		return false;
+	}
+	int action = gNetworkActions.FindGameCommand(command);
+	if (action != -1) {
+		return CanPerformAction(action);
 	}
 	return false;
+}
+
+std::string& NetworkGroup::GetName()
+{
+	return name;
+}
+
+void NetworkGroup::SetName(std::string name)
+{
+	FreeNameStringId();
+	NetworkGroup::name = name;
+}
+
+rct_string_id NetworkGroup::GetNameStringId()
+{
+	if (name_string_id == STR_NONE) {
+		name_string_id = user_string_allocate(128, name.c_str());
+	}
+	return name_string_id;
 }
 
 NetworkConnection::NetworkConnection()
@@ -462,17 +560,17 @@ bool Network::Init()
 #endif
 
 	// Hardcoded permission groups
+	std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
+	admin->SetName("Admin");
+	admin->actions_allowed.fill(0xFF);
+	admin->id = 0;
+	group_list.push_back(std::move(admin));
 	std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
-	spectator->name = "Spectator";
-	spectator->permissions = 0;
-	spectator->id = 0;
+	spectator->SetName("Spectator");
+	spectator->ToggleActionPermission(0);
+	spectator->id = 1;
 	group_list.push_back(std::move(spectator));
-	std::unique_ptr<NetworkGroup> fullaccess(new NetworkGroup()); // change to make_unique in c++14
-	fullaccess->name = "Full Access";
-	fullaccess->permissions = 1;
-	fullaccess->id = 1;
-	group_list.push_back(std::move(fullaccess));
-	SetDefaultGroup(0);
+	SetDefaultGroup(1);
 
 	status = NETWORK_STATUS_READY;
 	return true;
@@ -573,9 +671,10 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		return false;
 	}
 
-	NetworkPlayer* player = AddPlayer(gConfigNetwork.player_name);
+	NetworkPlayer* player = AddPlayer();
+	player->SetName(gConfigNetwork.player_name);
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
-	player->group = 1;
+	player->group = 0;
 	player_id = player->id;
 
 	printf("Ready for clients...\n");
@@ -1022,6 +1121,30 @@ void Network::AdvertiseHeartbeat()
 #endif
 }
 
+NetworkGroup* Network::AddGroup()
+{
+	NetworkGroup* addedgroup = nullptr;
+	int newid = -1;
+	// Find first unused group id
+	for (int id = 0; id < 255; id++) {
+		if (std::find_if(group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) { return group->id == id; }) == group_list.end()) {
+			newid = id;
+			break;
+		}
+	}
+	if (newid != -1) {
+		std::unique_ptr<NetworkGroup> group(new NetworkGroup); // change to make_unique in c++14
+		group->id = newid;
+		group->SetName("Group #" + std::to_string(newid));
+		addedgroup = group.get();
+		group_list.push_back(std::move(group));
+		if (GetMode() == NETWORK_MODE_SERVER) {
+			Server_Send_GROUPLIST();
+		}
+	}
+	return addedgroup;
+}
+
 uint8 Network::GetDefaultGroup()
 {
 	return default_group;
@@ -1073,14 +1196,14 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	size_t chunksize = 1000;
 	size_t out_size;
 	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
-	unsigned char *header = (unsigned char *)strdup("open2_sv6_zlib");
+	unsigned char *header = (unsigned char *)_strdup("open2_sv6_zlib");
 	size_t header_len = strlen((char *)header) + 1; // account for null terminator
 	header = (unsigned char *)realloc(header, header_len + out_size);
 	memcpy(&header[header_len], compressed, out_size);
 	out_size += header_len;
 	free(compressed);
 	log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
-	for (int i = 0; i < out_size; i += chunksize) {
+	for (size_t i = 0; i < out_size; i += chunksize) {
 		int datasize = (std::min)(chunksize, out_size - i);
 		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
@@ -1138,8 +1261,7 @@ void Network::Server_Send_PLAYERLIST()
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PLAYERLIST << (uint32)player_list.size();
 	for (unsigned int i = 0; i < player_list.size(); i++) {
-		packet->WriteString((const char*)player_list[i]->name);
-		*packet << player_list[i]->id << player_list[i]->flags << player_list[i]->group << player_list[i]->reserved;
+		player_list[i]->Write(*packet);
 	}
 	SendPacketToClients(*packet);
 }
@@ -1212,6 +1334,13 @@ void Network::Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_SHOWERROR << title << message;
 	connection.QueuePacket(std::move(packet));
+}
+
+void Network::Server_Send_GROUPLIST()
+{
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_GROUPLIST;
+	SendPacketToClients(*packet);
 }
 
 bool Network::ProcessConnection(NetworkConnection& connection)
@@ -1321,7 +1450,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	Server_Send_PLAYERLIST();
 }
 
-NetworkPlayer* Network::AddPlayer(const char* name)
+NetworkPlayer* Network::AddPlayer()
 {
 	NetworkPlayer* addedplayer = nullptr;
 	int newid = -1;
@@ -1337,14 +1466,11 @@ NetworkPlayer* Network::AddPlayer(const char* name)
 		newid = 0;
 	}
 	if (newid != -1) {
-		std::unique_ptr<NetworkPlayer> player(new NetworkPlayer(name)); // change to make_unique in c++14
+		std::unique_ptr<NetworkPlayer> player(new NetworkPlayer); // change to make_unique in c++14
 		player->id = newid;
 		player->group = GetDefaultGroup();
 		addedplayer = player.get();
 		player_list.push_back(std::move(player));
-		if (GetMode() == NETWORK_MODE_SERVER) {
-			Server_Send_PLAYERLIST();
-		}
 	}
 	return addedplayer;
 }
@@ -1412,17 +1538,19 @@ int Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& pa
 			connection.authstatus = NETWORK_AUTH_FULL;
 		} else {
 			connection.authstatus = NETWORK_AUTH_OK;
-			NetworkPlayer* player = AddPlayer(name);
+			NetworkPlayer* player = AddPlayer();
 			connection.player = player;
 			if (player) {
+				player->SetName(name);
 				char text[256];
 				char* lineCh = text;
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
 				sprintf(lineCh, "%s has joined the game", player->name);
 				chat_history_add(text);
-				gNetwork.Server_Send_CHAT(text);
 				Server_Send_MAP(&connection);
+				gNetwork.Server_Send_CHAT(text);
+				Server_Send_PLAYERLIST();
 			}
 		}
 		Server_Send_AUTH(connection);
@@ -1541,7 +1669,7 @@ int Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.player->group);
-	if (group && !group->CanRun(commandCommand)) {
+	if (group && !group->CanPerformGameCommand(commandCommand)) {
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return 0;
 	}
@@ -1582,20 +1710,13 @@ int Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPack
 	packet >> size;
 	std::vector<uint8> ids;
 	for (unsigned int i = 0; i < size; i++) {
-		const char* name = packet.ReadString();
-		uint8 id;
-		uint8 flags;
-		uint8 group;
-		uint16 reserved;
-		packet >> id >> flags >> group >> reserved;
-		ids.push_back(id);
-		if (!GetPlayerByID(id)) {
-			NetworkPlayer* player = AddPlayer(name);
+		NetworkPlayer tempplayer;
+		tempplayer.Read(packet);
+		ids.push_back(tempplayer.id);
+		if (!GetPlayerByID(tempplayer.id)) {
+			NetworkPlayer* player = AddPlayer();
 			if (player) {
-				player->id = id;
-				player->flags = flags;
-				player->group = group;
-				player->reserved = reserved;
+				*player = tempplayer;
 				if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 					server_connection.player = player;
 				}
@@ -1810,15 +1931,12 @@ int network_get_num_groups()
 
 const char* network_get_group_name(unsigned int index)
 {
-	return gNetwork.group_list[index]->name.c_str();
+	return gNetwork.group_list[index]->GetName().c_str();
 }
 
 rct_string_id network_get_group_name_string_id(unsigned int index)
 {
-	if (gNetwork.group_list[index]->name_string_id == STR_NONE) {
-		gNetwork.group_list[index]->name_string_id = user_string_allocate(128, gNetwork.group_list[index]->name.c_str());
-	}
-	return gNetwork.group_list[index]->name_string_id;
+	return gNetwork.group_list[index]->GetNameStringId();
 }
 
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
@@ -1846,6 +1964,90 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	*ebx = 0;
 }
 
+void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
+{
+	uint8 action = (uint8)*eax;
+	uint8 groupid = (uint8)(*eax >> 8);
+	uint8 nameChunkIndex = (uint8)(*eax >> 16);
+
+	rct_string_id newUserStringId;
+	char oldName[128];
+	static char newName[128];
+
+	switch (action)
+	{
+	case 0:{ // add group
+		NetworkGroup* newgroup = gNetwork.AddGroup();
+		if (!newgroup) {
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+	}break;
+	case 1:{ // remove group
+		
+	}break;
+	case 2:{ // toggle permission
+		if (groupid == 0) { // cant change admin group permissions
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_DO_THIS;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			int index = *ecx;
+			NetworkGroup* group = gNetwork.GetGroupByID(groupid);
+			if (group) {
+				group->ToggleActionPermission(index);
+			}
+		}
+	}break;
+	case 3:{ // set group name
+		size_t nameChunkOffset = nameChunkIndex - 1;
+		if (nameChunkOffset < 0)
+			nameChunkOffset = 2;
+		nameChunkOffset *= 12;
+		nameChunkOffset = min(nameChunkOffset, Util::CountOf(newName) - 12);
+		RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
+		RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
+		RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
+
+		if (nameChunkIndex != 0) {
+			*ebx = 0;
+			return;
+		}
+
+		if (strcmp(oldName, newName) == 0) {
+			*ebx = 0;
+			return;
+		}
+
+		if (newName[0] == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_RIDE_ATTRACTION_NAME;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+
+		newUserStringId = user_string_allocate(4, newName);
+		if (newUserStringId == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_NAME_FOR_PARK;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			// Free the old ride name
+			user_string_free(RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id));
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = newUserStringId;
+
+			gfx_invalidate_screen();
+		} else {
+			user_string_free(newUserStringId);
+		}
+	}break;
+	}
+
+	*ebx = 0;
+}
+
 uint8 network_get_default_group()
 {
 	return gNetwork.GetDefaultGroup();
@@ -1854,6 +2056,21 @@ uint8 network_get_default_group()
 void network_set_default_group(uint8 id)
 {
 	gNetwork.SetDefaultGroup(id);
+}
+
+int network_get_num_actions()
+{
+	return gNetworkActions.actions.size();
+}
+
+rct_string_id network_get_action_name_string_id(unsigned int index)
+{
+	return gNetworkActions.actions[index].name;
+}
+
+int network_can_perform_action(unsigned int groupindex, unsigned int index)
+{
+	return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
 
 void network_send_map()
@@ -1930,6 +2147,9 @@ rct_string_id network_get_group_name_string_id(unsigned int index) { return -1; 
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) { }
 uint8 network_get_default_group() { return 0; }
 void network_set_default_group(uint8 id) { }
+int network_get_num_actions() { return 0; }
+rct_string_id network_get_action_name_string_id(unsigned int index) { return -1; }
+int network_can_perform_action(unsigned int groupindex, unsigned int index) { return 0; }
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
