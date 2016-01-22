@@ -137,7 +137,7 @@ static void ride_ratings_update_state_0()
 	if (_rideRatingsCurrentRide == 255)
 		_rideRatingsCurrentRide = 0;
 
-	ride = GET_RIDE(_rideRatingsCurrentRide);
+	ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type != RIDE_TYPE_NULL && ride->status != RIDE_STATUS_CLOSED)
 		_rideRatingsState = RIDE_RATINGS_STATE_INITIALISE;
 }
@@ -170,7 +170,7 @@ static void ride_ratings_update_state_2()
 	rct_xy_element trackElement, nextTrackElement;
 	int x, y, z, trackType, entranceIndex;
 
-	ride = GET_RIDE(_rideRatingsCurrentRide);
+	ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
@@ -233,7 +233,7 @@ static void ride_ratings_update_state_3()
 {
 	rct_ride *ride;
 
-	ride = GET_RIDE(_rideRatingsCurrentRide);
+	ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
@@ -267,7 +267,7 @@ static void ride_ratings_update_state_5()
 	track_begin_end trackBeginEnd;
 	int x, y, z, trackType;
 
-	ride = GET_RIDE(_rideRatingsCurrentRide);
+	ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
@@ -322,7 +322,7 @@ static void ride_ratings_begin_proximity_loop()
 	rct_ride *ride;
 	int i, x, y, z;
 
-	ride = GET_RIDE(_rideRatingsCurrentRide);
+	ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
@@ -786,7 +786,7 @@ static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings
 {
 	rct_ride_type *rideEntry;
 
-	rideEntry = gRideTypeList[ride->subtype];
+	rideEntry = get_ride_entry(ride->subtype);
 
 	// Apply ride entry multipliers
 	ratings->excitement += ((ratings->excitement * rideEntry->excitement_multipler) >> 7);
@@ -920,7 +920,7 @@ static int sub_65E72D(rct_ride *ride)
 	}
 
 	int dh = numShelteredEighths;
-	rct_ride_type *rideType = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type *rideType = get_ride_entry(ride->subtype);
 	if (rideType->flags & RIDE_ENTRY_FLAG_COVERED_RIDE)
 		numShelteredEighths = 7;
 

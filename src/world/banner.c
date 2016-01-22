@@ -101,7 +101,7 @@ static int banner_get_ride_index_at(int x, int y, int z)
 			continue;
 
 		rideIndex = mapElement->properties.track.ride_index;
-		ride = GET_RIDE(rideIndex);
+		ride = get_ride(rideIndex);
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
 			continue;
 

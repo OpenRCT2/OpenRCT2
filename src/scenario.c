@@ -787,7 +787,7 @@ int scenario_get_num_packed_objects_to_write()
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 
 	for (i = 0; i < 721; i++, entry++) {
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
+		if (get_ride_entry(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
 		count++;
@@ -805,7 +805,7 @@ int scenario_write_packed_objects(SDL_RWops* rw)
 	int i;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 	for (i = 0; i < 721; i++, entry++) {
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
+		if (get_ride_entry(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
 		if (!write_object_file(rw, (rct_object_entry*)entry))
@@ -845,7 +845,7 @@ int scenario_write_available_objects(FILE *file)
 	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
 	for (i = 0; i < 721; i++) {
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF)
+		if (get_ride_entry(i) == (void *)0xFFFFFFFF)
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
 		else
 			*dstEntry = *((rct_object_entry*)srcEntry);
@@ -993,7 +993,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 	for (int i = 0; i < 721; i++) {
 		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
 
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF) {
+		if (get_ride_entry(i) == (void *)0xFFFFFFFF) {
 			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
 		} else {
 			s6->objects[i] = *((rct_object_entry*)entry);
@@ -1066,7 +1066,7 @@ int scenario_save_network(SDL_RWops* rw)
 	for (int i = 0; i < 721; i++) {
 		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
 
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF) {
+		if (get_ride_entry(i) == (void *)0xFFFFFFFF) {
 			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
 		} else {
 			s6->objects[i] = *((rct_object_entry*)entry);
@@ -1263,7 +1263,7 @@ static void scenario_objective_check_10_rollercoasters()
 
 	FOR_ALL_RIDES(i, ride) {
 		uint8 subtype_id = ride->subtype;
-		rct_ride_type *rideType = gRideTypeList[subtype_id];
+		rct_ride_type *rideType = get_ride_entry(subtype_id);
 
 		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
 			ride->status == RIDE_STATUS_OPEN &&
@@ -1340,7 +1340,7 @@ static void scenario_objective_check_10_rollercoasters_length()
 
 	FOR_ALL_RIDES(i, ride) {
 		uint8 subtype_id = ride->subtype;
-		rct_ride_type *rideType = gRideTypeList[subtype_id];
+		rct_ride_type *rideType = get_ride_entry(subtype_id);
 		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
 			ride->status == RIDE_STATUS_OPEN &&
 			ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){

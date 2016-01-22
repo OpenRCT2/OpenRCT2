@@ -139,7 +139,7 @@ static int award_is_deserved_best_rollercoasters(int awardType, int activeAwardT
 
 	rollerCoasters = 0;
 	FOR_ALL_RIDES(i, ride) {
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
 		if (rideType->category[0] != RIDE_GROUP_ROLLERCOASTER && rideType->category[1] != RIDE_GROUP_ROLLERCOASTER)
 			continue;
 
@@ -295,7 +295,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 			continue;
 
 		shops++;
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
 		if (!(shopTypes & (1ULL << rideType->shop_item))) {
 			shopTypes |= (1ULL << rideType->shop_item);
 			uniqueShops++;
@@ -341,7 +341,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 			continue;
 
 		shops++;
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
 		if (!(shopTypes & (1ULL << rideType->shop_item))) {
 			shopTypes |= (1ULL << rideType->shop_item);
 			uniqueShops++;
@@ -438,7 +438,7 @@ static int award_is_deserved_best_water_rides(int awardType, int activeAwardType
 
 	waterRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
 		if (rideType->category[0] != RIDE_GROUP_WATER && rideType->category[1] != RIDE_GROUP_WATER)
 			continue;
 
@@ -538,7 +538,7 @@ static int award_is_deserved_best_gentle_rides(int awardType, int activeAwardTyp
 
 	gentleRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
 		if (rideType->category[0] != RIDE_GROUP_GENTLE && rideType->category[1] != RIDE_GROUP_GENTLE)
 			continue;
 

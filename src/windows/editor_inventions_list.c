@@ -179,7 +179,7 @@ static void research_rides_setup(){
 
 	// Set research required for rides in use
 	for (uint16 rideIndex = 0; rideIndex < 255; rideIndex++){
-		rct_ride* ride = &g_ride_list[rideIndex];
+		rct_ride* ride = get_ride(rideIndex);
 		if (ride->type == RIDE_TYPE_NULL)continue;
 		RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
 	}
@@ -195,13 +195,13 @@ static void research_rides_setup(){
 		uint8 ride_base_type = (research->entryIndex >> 8) & 0xFF;
 
 		uint8 object_index = research->entryIndex & 0xFF;
-		rct_ride_type* ride_entry = GET_RIDE_ENTRY(object_index);
+		rct_ride_type* ride_entry = get_ride_entry(object_index);
 
 		uint8 master_found = 0;
 		if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)){
 
 			for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++){
-				rct_ride_type* master_ride = GET_RIDE_ENTRY(rideType);
+				rct_ride_type* master_ride = get_ride_entry(rideType);
 				if (master_ride == NULL || (uint32)master_ride == 0xFFFFFFFF)
 					continue;
 
@@ -316,7 +316,7 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 		return sceneryEntry->name;
 	}
 
-	rideEntry = GET_RIDE_ENTRY(researchItem & 0xFF);
+	rideEntry = get_ride_entry(researchItem & 0xFF);
 	if (rideEntry == NULL || rideEntry == (rct_ride_type*)0xFFFFFFFF)
 		return 0;
 

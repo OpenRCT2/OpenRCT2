@@ -735,7 +735,7 @@ static void rct1_fix_z()
 	}
 
 	for (int i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
-		rideMeasurement = GET_RIDE_MEASUREMENT(i);
+		rideMeasurement = get_ride_measurement(i);
 		if (rideMeasurement->ride_index == 255)
 			continue;
 

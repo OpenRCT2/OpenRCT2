@@ -177,7 +177,7 @@ void research_finish_item(sint32 entryIndex)
 		// Ride
 		base_ride_type = (entryIndex >> 8) & 0xFF;
 		rideEntryIndex = entryIndex & 0xFF;
-		rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
+		rideEntry = get_ride_entry(rideEntryIndex);
 		RCT2_ADDRESS(0x01357404, uint32)[base_ride_type >> 5] |= (1u << (base_ride_type & 0x1F));
 		RCT2_ADDRESS(0x01357444, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C468, uint32)[base_ride_type];
 		RCT2_ADDRESS(0x01357644, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C5D4, uint32)[base_ride_type];
@@ -189,7 +189,7 @@ void research_finish_item(sint32 entryIndex)
 		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1u << (rideEntryIndex & 0x1F);
 		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
 			for (i = 0; i < 128; i++) {
-				rideEntry2 = GET_RIDE_ENTRY(i);
+				rideEntry2 = get_ride_entry(i);
 				if (rideEntry2 == (rct_ride_type*)-1)
 					continue;
 				if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
@@ -363,7 +363,7 @@ void research_remove_non_separate_vehicle_types()
 			researchItem->entryIndex != RESEARCHED_ITEMS_END &&
 			researchItem->entryIndex >= 0x10000
 		) {
-			rct_ride_type *rideEntry = GET_RIDE_ENTRY(researchItem->entryIndex & 0xFF);
+			rct_ride_type *rideEntry = get_ride_entry(researchItem->entryIndex & 0xFF);
 			if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
 				// Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
 				researchItem2 = researchItem - 1;
@@ -372,7 +372,7 @@ void research_remove_non_separate_vehicle_types()
 						researchItem2->entryIndex != RESEARCHED_ITEMS_SEPARATOR &&
 						researchItem2->entryIndex >= 0x10000
 					) {
-						rideEntry = GET_RIDE_ENTRY(researchItem2->entryIndex & 0xFF);
+						rideEntry = get_ride_entry(researchItem2->entryIndex & 0xFF);
 						if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
 
 							if (((researchItem->entryIndex >> 8) & 0xFF) == ((researchItem2->entryIndex >> 8) & 0xFF)) {
@@ -484,7 +484,7 @@ void research_populate_list_random()
 
 	// Rides
 	for (int i = 0; i < 128; i++) {
-		rideEntry = GET_RIDE_ENTRY(i);
+		rideEntry = get_ride_entry(i);
 		if (rideEntry == (rct_ride_type*)-1)
 			continue;
 
@@ -515,7 +515,7 @@ void research_populate_list_researched()
 
 	// Rides
 	for (int i = 0; i < 128; i++) {
-		rideEntry = GET_RIDE_ENTRY(i);
+		rideEntry = get_ride_entry(i);
 		if (rideEntry == (rct_ride_type*)-1)
 			continue;
 

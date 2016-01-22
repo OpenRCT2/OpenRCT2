@@ -359,8 +359,8 @@ void track_list_populate(ride_list_item item, uint8* track_list_cache){
 		}
 		else{
 			if (find_object_in_entry_group(track_object, &entry_type, &entry_index)){
-				if ((GET_RIDE_ENTRY(entry_index)->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME | RIDE_ENTRY_FLAG_SEPARATE_RIDE)) &&
-					!rideTypeShouldLoseSeparateFlag(GET_RIDE_ENTRY(entry_index)))
+				if ((get_ride_entry(entry_index)->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME | RIDE_ENTRY_FLAG_SEPARATE_RIDE)) &&
+					!rideTypeShouldLoseSeparateFlag(get_ride_entry(entry_index)))
 					continue;
 			}
 			else{
@@ -408,7 +408,7 @@ void track_load_list(ride_list_item item)
 	RCT2_GLOBAL(0xF635ED, uint8) = 0;
 
 	if (item.type < 0x80){
-		rct_ride_type* ride_type = gRideTypeList[item.entry_index];
+		rct_ride_type* ride_type = get_ride_entry(item.entry_index);
 		if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(ride_type)){
 			item.entry_index = 0xFF;
 		}
@@ -1913,7 +1913,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
 		sub_6CB945(RCT2_GLOBAL(0x00F440A7, uint8));
-		rct_ride* ride = GET_RIDE(RCT2_GLOBAL(0x00F440A7, uint8));
+		rct_ride* ride = get_ride(RCT2_GLOBAL(0x00F440A7, uint8));
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
 	}
@@ -2027,7 +2027,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	// bh
 	*ride_id = edi & 0xFF;
 
-	rct_ride* ride = GET_RIDE(*ride_id);
+	rct_ride* ride = get_ride(*ride_id);
 
 	const utf8* ride_name = RCT2_ADDRESS(0x9E3504, const utf8);
 	rct_string_id new_ride_name = user_string_allocate(132, ride_name);
@@ -2104,7 +2104,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
  *  rct2: 0x006D235B
  */
 void sub_6D235B(uint8 ride_id){
-	rct_ride* ride = GET_RIDE(ride_id);
+	rct_ride* ride = get_ride(ride_id);
 	user_string_free(ride->name);
 	ride->type = RIDE_TYPE_NULL;
 }
@@ -2572,7 +2572,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 		x = 0;
 	}
 
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	uint16 location = ride->entrances[0];
 
 	if (location == 0xFFFF){
@@ -2673,7 +2673,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
  */
 int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_elements)
 {
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	rct_xy_element trackElement;
 	track_begin_end trackBeginEnd;
 
@@ -2933,7 +2933,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
  *  rct2: 0x006CE44F
  */
 int ride_to_td6(uint8 rideIndex){
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
 
 	track_design->type = ride->type;
@@ -3039,7 +3039,7 @@ int save_track_to_file(rct_track_td6* track_design, char* path)
  *  rct2: 0x006D2804, 0x006D264D
  */
 int save_track_design(uint8 rideIndex){
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
 		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
@@ -3292,7 +3292,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		rideIndex = _edi & 0xFF;
 	}
 
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_NULL)
 	{
 		log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
@@ -3472,7 +3472,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		}
 	}
 
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 	
 	// Calculate price
 	money32 price = 0;
@@ -4067,7 +4067,7 @@ const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, int track
 
 const rct_preview_track *get_track_def_from_ride_index(int rideIndex, int trackType)
 {
-	return get_track_def_from_ride(GET_RIDE(rideIndex), trackType);
+	return get_track_def_from_ride(get_ride(rideIndex), trackType);
 }
 
 /**
@@ -4081,8 +4081,8 @@ static bool sub_6C4D89(int x, int y, int z, int direction, int rideIndex, int fl
 
 static money32 track_place(int rideIndex, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
-	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride *ride = get_ride(rideIndex);
+	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
 	rct_map_element *mapElement;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
@@ -4673,7 +4673,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 	RCT2_GLOBAL(0x00F44138, uint8) = rideIndex;
 	RCT2_GLOBAL(0x00F4414C, uint8) = mapElement->type;
 
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
 	trackBlock += mapElement->properties.track.sequence & 0xF;
 
@@ -5082,7 +5082,7 @@ void track_element_clear_cable_lift(rct_map_element *trackElement) {
 
 int track_get_actual_bank(rct_map_element *mapElement, int bank)
 {
-	rct_ride *ride = GET_RIDE(mapElement->properties.track.ride_index);
+	rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 	int trackColour = mapElement->properties.track.colour;
 	return track_get_actual_bank_2(ride->type, trackColour, bank);
 }
@@ -5105,7 +5105,7 @@ int track_get_actual_bank_3(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
 	uint8 colourThingToXor = (vehicle->update_flags >> 9) & 0xFF;
 	int trackType = mapElement->properties.track.type;
-	int rideType = GET_RIDE(mapElement->properties.track.ride_index)->type;
+	int rideType = get_ride(mapElement->properties.track.ride_index)->type;
 	int trackColour = mapElement->properties.track.colour ^ colourThingToXor;
 	int bankStart = gTrackDefinitions[trackType].bank_start;
 	return track_get_actual_bank_2(rideType, trackColour, bankStart);

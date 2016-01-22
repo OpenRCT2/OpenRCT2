@@ -222,7 +222,7 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 					num_scenery++;
 					break;
 				case MAP_ELEMENT_TYPE_TRACK:
-					ride = GET_RIDE(mapElement->properties.track.ride_index);
+					ride = get_ride(mapElement->properties.track.ride_index);
 					if (ride->type == RIDE_TYPE_MERRY_GO_ROUND &&
 						ride->music_tune_id != 0xFF){
 						nearby_music |= 1;
@@ -474,7 +474,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 				peep->happiness_growth_rate = min(0, peep->happiness_growth_rate - 5);
 
 				if (peep->time_on_ride > 22){
-					rct_ride* ride = GET_RIDE(peep->current_ride);
+					rct_ride* ride = get_ride(peep->current_ride);
 
 					uint8 thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ?
 						PEEP_THOUGHT_TYPE_GET_OUT :
@@ -1075,7 +1075,7 @@ void peep_decrement_num_riders(rct_peep* peep){
 	if (peep->state == PEEP_STATE_ON_RIDE
 		|| peep->state == PEEP_STATE_ENTERING_RIDE){
 
-		rct_ride* ride = GET_RIDE(peep->current_ride);
+		rct_ride* ride = get_ride(peep->current_ride);
 		ride->num_riders--;
 		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 	}
@@ -1268,7 +1268,7 @@ void peep_window_state_update(rct_peep* peep){
 		widget_invalidate_by_number(WC_PEEP, peep->sprite_index, 12);
 
 		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
-			rct_ride* ride = GET_RIDE(peep->current_ride);
+			rct_ride* ride = get_ride(peep->current_ride);
 			ride->num_riders++;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 		}
@@ -1569,7 +1569,7 @@ void peep_update_sitting(rct_peep* peep){
  */
 void remove_peep_from_queue(rct_peep* peep)
 {
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	uint8 cur_station = peep->current_ride_station;
 	ride->queue_length[cur_station]--;
@@ -1657,7 +1657,7 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 	sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2];
 
 	uint8 shift_multiplier = 21;
-	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type* ride_type = get_ride_entry(ride->subtype);
 	if (ride_type->vehicles[ride_type->default_vehicle].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
 		ride_type->vehicles[ride_type->default_vehicle].flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
 		shift_multiplier = 32;
@@ -1689,7 +1689,7 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
  *  rct2: 0x00691A3B
  */
 static void peep_update_ride_sub_state_0(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (peep->destination_tolerence != 0){
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -1856,8 +1856,8 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 void peep_update_ride_sub_state_1(rct_peep* peep){
 	sint16 x, y, xy_distance;
 
-	rct_ride* ride = GET_RIDE(peep->current_ride);
-	rct_ride_type* ride_entry = gRideTypeList[ride->subtype];
+	rct_ride* ride = get_ride(peep->current_ride);
+	rct_ride_type* ride_entry = get_ride_entry(ride->subtype);
 
 	if (peep_update_action(&x, &y, &xy_distance, peep))
 	{
@@ -1962,7 +1962,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 	}
 
-	ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	ride_entry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 	if (vehicle_type->flags_b & VEHICLE_ENTRY_FLAG_B_10){
@@ -1983,7 +1983,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		uint8 direction_track = (map_element == NULL ? 0 : map_element->type & MAP_ELEMENT_DIRECTION_MASK);
 
 		vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
-		ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		ride_entry = get_ride_entry(vehicle->ride_subtype);
 		vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 		uint8 cl = peep->current_seat;
@@ -2073,7 +2073,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
 
 	sint16 shift_multiplier = 20;
 
-	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type* ride_type = get_ride_entry(ride->subtype);
 	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
 		vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
@@ -2205,7 +2205,7 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep* peep, rct_ride* 
  * separate functions.
  */
 static void peep_update_ride_sub_state_2(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13)){
 		if (ride->status != RIDE_STATUS_OPEN ||
@@ -2225,7 +2225,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 	}
 
-	rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type* ride_entry = get_ride_entry(vehicle->ride_subtype);
 
 	if (ride_entry->vehicles[0].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF){
 		vehicle->var_D5 &= ~(1 << 5);
@@ -2290,7 +2290,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 }
 
 static void peep_update_ride_sub_state_5(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 	for (int i = peep->current_car; i != 0; --i){
@@ -2347,7 +2347,7 @@ static void peep_update_ride_sub_state_5(rct_peep* peep){
  *  rct2: 0x00693028
  */
 void peep_update_ride_sub_state_7(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 	uint8 ride_station = vehicle->current_station;
@@ -2375,7 +2375,7 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 
 	peep->current_ride_station = ride_station;
 
-	rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type* ride_entry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_type_vehicle* vehicle_entry = &ride_entry->vehicles[vehicle->vehicle_type];
 
 	if (!(vehicle_entry->flags_b & VEHICLE_ENTRY_FLAG_B_10)){
@@ -2409,7 +2409,7 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 					break;
 			}
 
-			ride_entry = GET_RIDE_ENTRY(ride->subtype);
+			ride_entry = get_ride_entry(ride->subtype);
 			vehicle_entry = &ride_entry->vehicles[ride_entry->default_vehicle];
 
 			uint8 shift_multiplier = 12;
@@ -2481,7 +2481,7 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 
 	vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
 
-	ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	ride_entry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 	uint8 cl = peep->current_seat;
@@ -2537,7 +2537,7 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
  *  rct2: 0x0069376A
  */
 static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	sint16 x = ride->exits[peep->current_ride_station] & 0xFF;
 	sint16 y = ride->exits[peep->current_ride_station] >> 8;
@@ -2557,7 +2557,7 @@ static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
 
 	sint16 shift_multiplier = 20;
 
-	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type* ride_type = get_ride_entry(ride->subtype);
 	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
 		shift_multiplier = 32;
@@ -2597,7 +2597,7 @@ static void peep_update_ride_sub_state_8(rct_peep* peep){
  */
 static void peep_update_ride_sub_state_9(rct_peep* peep){
 	sint16 x, y, xy_distance;
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -2631,7 +2631,7 @@ static void peep_update_ride_sub_state_9(rct_peep* peep){
  */
 static void peep_update_ride_sub_state_12(rct_peep* peep){
 	sint16 x, y, xy_distance;
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		sint16 z;
@@ -2679,7 +2679,7 @@ static void peep_update_ride_sub_state_12(rct_peep* peep){
 		y = vehicle->y;
 	}
 
-	rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+	rct_ride_type* ride_entry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 	x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
@@ -2695,7 +2695,7 @@ static void peep_update_ride_sub_state_12(rct_peep* peep){
  */
 static void peep_update_ride_sub_state_13(rct_peep* peep){
 	sint16 x, y, xy_distance;
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		sint16 z;
@@ -2741,7 +2741,7 @@ static void peep_update_ride_sub_state_13(rct_peep* peep){
 			y = vehicle->y;
 		}
 
-		rct_ride_type* ride_entry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		rct_ride_type* ride_entry = get_ride_entry(vehicle->ride_subtype);
 		rct_ride_type_vehicle* vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
 		x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
@@ -2773,7 +2773,7 @@ static void peep_update_ride_sub_state_13(rct_peep* peep){
 
 	sint16 shift_multiplier = 20;
 
-	rct_ride_type* ride_type = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type* ride_type = get_ride_entry(ride->subtype);
 	rct_ride_type_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
 	if (vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
 		shift_multiplier = 32;
@@ -2795,7 +2795,7 @@ static void peep_update_ride_sub_state_13(rct_peep* peep){
  */
 static void peep_update_ride_sub_state_14(rct_peep* peep){
 	sint16 x, y, xy_distance;
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -2870,7 +2870,7 @@ static void peep_update_ride_sub_state_14(rct_peep* peep){
  *  rct2: 0x00692D83
  */
 static void peep_update_ride_sub_state_15(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (ride->type != RIDE_TYPE_SPIRAL_SLIDE)
 		return;
@@ -2966,7 +2966,7 @@ static void peep_update_ride_sub_state_16(rct_peep* peep){
 		return;
 	}
 
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if ((peep->var_37 & 0x3) != 0){
 		if ((peep->var_37 & 0x3) == 3){
@@ -3035,7 +3035,7 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
 		return;
 	}
 
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 	if (peep->var_37 == 16){
 		peep_update_ride_prepare_for_state_9(peep);
 		return;
@@ -3168,7 +3168,7 @@ static void peep_update_ride_sub_state_17(rct_peep* peep){
  */
 static void peep_update_ride_sub_state_18(rct_peep* peep){
 	sint16 x, y, xy_distance;
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (peep_update_action(&x, &y, &xy_distance, peep)){
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -3240,7 +3240,7 @@ static void peep_update_ride_sub_state_19(rct_peep* peep){
  */
 static void peep_update_ride_sub_state_20(rct_peep* peep){
 	sint16 x, y;
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (ride->type == RIDE_TYPE_FIRST_AID){
 		if (peep->nausea <= 35){
@@ -3309,7 +3309,7 @@ static void peep_update_ride_sub_state_21(rct_peep* peep){
 	peep->state = PEEP_STATE_WALKING;
 	peep_window_state_update(peep);
 
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 	ride->total_customers++;
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
@@ -3410,7 +3410,7 @@ static void peep_update_ride(rct_peep* peep){
  * Also used by inspecting.
  */
 static void peep_update_fixing(int steps, rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (ride->type == RIDE_TYPE_NULL)
 	{
@@ -3432,7 +3432,7 @@ static void peep_update_queuing(rct_peep* peep){
 		remove_peep_from_queue(peep);
 		return;
 	}
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 	if (ride->status == RIDE_STATUS_CLOSED || ride->status == RIDE_STATUS_TESTING){
 		remove_peep_from_queue(peep);
 		peep_decrement_num_riders(peep);
@@ -4142,7 +4142,7 @@ static void peep_update_buying(rct_peep* peep)
 {
 	if (!checkForPath(peep))return;
 
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 	if (ride->type == RIDE_TYPE_NULL || ride->status != RIDE_STATUS_OPEN){
 		peep_decrement_num_riders(peep);
 		peep->state = PEEP_STATE_FALLING;
@@ -4194,7 +4194,7 @@ static void peep_update_buying(rct_peep* peep)
 			}
 		}
 		else{
-			rct_ride_type* ride_type = gRideTypeList[ride->subtype];
+			rct_ride_type* ride_type = get_ride_entry(ride->subtype);
 			if (ride_type->shop_item_secondary != 0xFF){
 				money16 price = ride->price_secondary;
 
@@ -4363,7 +4363,7 @@ static void peep_update_using_bin(rct_peep* peep){
  *  rct2: 0x006C16D7
  */
 static void peep_update_heading_to_inspect(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (ride->type == RIDE_TYPE_NULL){
 		peep_decrement_num_riders(peep);
@@ -4472,7 +4472,7 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
  *  rct2: 0x006C0CB8
  */
 static void peep_update_answering(rct_peep* peep){
-	rct_ride* ride = GET_RIDE(peep->current_ride);
+	rct_ride* ride = get_ride(peep->current_ride);
 
 	if (ride->type == RIDE_TYPE_NULL ||
 		ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING){
@@ -5225,7 +5225,7 @@ void peep_problem_warnings_update()
 				hunger_counter++;
 				break;
 			}
-			ride = &g_ride_list[peep->guest_heading_to_ride_id];
+			ride = get_ride(peep->guest_heading_to_ride_id);
 			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
 				hunger_counter++;
 			break;
@@ -5235,7 +5235,7 @@ void peep_problem_warnings_update()
 				thirst_counter++;
 				break;
 			}
-			ride = &g_ride_list[peep->guest_heading_to_ride_id];
+			ride = get_ride(peep->guest_heading_to_ride_id);
 			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_DRINKS))
 				thirst_counter++;
 			break;
@@ -5245,7 +5245,7 @@ void peep_problem_warnings_update()
 				bathroom_counter++;
 				break;
 			}
-			ride = &g_ride_list[peep->guest_heading_to_ride_id];
+			ride = get_ride(peep->guest_heading_to_ride_id);
 			if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_BATHROOM))
 				bathroom_counter++;
 			break;
@@ -5630,7 +5630,7 @@ rct_peep *peep_generate(int x, int y, int z)
 * argument_2 (edx)
 */
 void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argument_2){
-	rct_ride ride;
+	rct_ride *ride;
 
 	switch (peep->state){
 	case PEEP_STATE_FALLING:
@@ -5645,23 +5645,23 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 	case PEEP_STATE_LEAVING_RIDE:
 	case PEEP_STATE_ENTERING_RIDE:
 		*argument_1 = STR_ON_RIDE;
-		ride = g_ride_list[peep->current_ride];
-		if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IN_RIDE))
+		ride = get_ride(peep->current_ride);
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
 			*argument_1 = STR_IN_RIDE;
-		*argument_1 |= (ride.name << 16);
-		*argument_2 = ride.name_arguments;
+		*argument_1 |= (ride->name << 16);
+		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_BUYING:
-		ride = g_ride_list[peep->current_ride];
-		*argument_1 = STR_AT_RIDE | (ride.name << 16);
-		*argument_2 = ride.name_arguments;
+		ride = get_ride(peep->current_ride);
+		*argument_1 = STR_AT_RIDE | (ride->name << 16);
+		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_WALKING:
 	case PEEP_STATE_USING_BIN:
 		if (peep->guest_heading_to_ride_id != 0xFF){
-			ride = g_ride_list[peep->guest_heading_to_ride_id];
-			*argument_1 = STR_HEADING_FOR | (ride.name << 16);
-			*argument_2 = ride.name_arguments;
+			ride = get_ride(peep->guest_heading_to_ride_id);
+			*argument_1 = STR_HEADING_FOR | (ride->name << 16);
+			*argument_2 = ride->name_arguments;
 		}
 		else{
 			*argument_1 = peep->flags & PEEP_FLAGS_LEAVING_PARK ? STR_LEAVING_PARK : STR_WALKING;
@@ -5670,9 +5670,9 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		break;
 	case PEEP_STATE_QUEUING_FRONT:
 	case PEEP_STATE_QUEUING:
-		ride = g_ride_list[peep->current_ride];
-		*argument_1 = STR_QUEUING_FOR | (ride.name << 16);
-		*argument_2 = ride.name_arguments;
+		ride = get_ride(peep->current_ride);
+		*argument_1 = STR_QUEUING_FOR | (ride->name << 16);
+		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_SITTING:
 		*argument_1 = STR_SITTING;
@@ -5680,13 +5680,13 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		break;
 	case PEEP_STATE_WATCHING:
 		if (peep->current_ride != 0xFF){
-			ride = g_ride_list[peep->current_ride];
-			*argument_1 = STR_WATCHING_RIDE | (ride.name << 16);
-			*argument_2 = ride.name_arguments;
+			ride = get_ride(peep->current_ride);
+			*argument_1 = STR_WATCHING_RIDE | (ride->name << 16);
+			*argument_2 = ride->name_arguments;
 			if (peep->current_seat & 0x1)
-				*argument_1 = STR_WATCHING_CONSTRUCTION_OF | (ride.name << 16);
+				*argument_1 = STR_WATCHING_CONSTRUCTION_OF | (ride->name << 16);
 			else
-				*argument_1 = STR_WATCHING_RIDE | (ride.name << 16);
+				*argument_1 = STR_WATCHING_RIDE | (ride->name << 16);
 		}
 		else{
 			*argument_1 = peep->current_seat & 0x1 ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
@@ -5729,25 +5729,25 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 			*argument_2 = 0;
 		}
 		else{
-			ride = g_ride_list[peep->current_ride];
-			*argument_1 = STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL | (ride.name << 16);
-			*argument_2 = ride.name_arguments;
+			ride = get_ride(peep->current_ride);
+			*argument_1 = STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL | (ride->name << 16);
+			*argument_2 = ride->name_arguments;
 		}
 		break;
 	case PEEP_STATE_FIXING:
-		ride = g_ride_list[peep->current_ride];
-		*argument_1 = STR_FIXING_RIDE | (ride.name << 16);
-		*argument_2 = ride.name_arguments;
+		ride = get_ride(peep->current_ride);
+		*argument_1 = STR_FIXING_RIDE | (ride->name << 16);
+		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_HEADING_TO_INSPECTION:
-		ride = g_ride_list[peep->current_ride];
-		*argument_1 = STR_HEADING_TO_RIDE_FOR_INSPECTION | (ride.name << 16);
-		*argument_2 = ride.name_arguments;
+		ride = get_ride(peep->current_ride);
+		*argument_1 = STR_HEADING_TO_RIDE_FOR_INSPECTION | (ride->name << 16);
+		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_INSPECTING:
-		ride = g_ride_list[peep->current_ride];
-		*argument_1 = STR_INSPECTING_RIDE | (ride.name << 16);
-		*argument_2 = ride.name_arguments;
+		ride = get_ride(peep->current_ride);
+		*argument_1 = STR_INSPECTING_RIDE | (ride->name << 16);
+		*argument_2 = ride->name_arguments;
 		break;
 	}
 
@@ -5765,7 +5765,7 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 	int esi = 0x009AC86C;
 
 	if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 1) {
-		rct_ride* ride = &g_ride_list[thought.item];
+		rct_ride* ride = get_ride(thought.item);
 		esi = (int)(&(ride->name));
 	} else if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 2) {
 		RCT2_GLOBAL(0x009AC86C, uint16) = ShopItemStringIds[thought.item].singular;
@@ -6302,7 +6302,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		peep->action_sprite_image_offset = RCT2_GLOBAL(0x00F1AEF0, uint8);
 		peep->var_79 = rideIndex;
 
-		rct_ride* ride = GET_RIDE(rideIndex);
+		rct_ride* ride = get_ride(rideIndex);
 		uint16 previous_last = ride->last_peep_in_queue[stationNum];
 		ride->last_peep_in_queue[stationNum] = peep->sprite_index;
 		peep->next_in_queue = previous_last;
@@ -6680,7 +6680,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		}
 
 		peep->var_79 = rideIndex;
-		rct_ride* ride = GET_RIDE(rideIndex);
+		rct_ride* ride = get_ride(rideIndex);
 
 		uint16 old_last_peep = ride->last_peep_in_queue[stationNum];
 		ride->last_peep_in_queue[stationNum] = peep->sprite_index;
@@ -6727,7 +6727,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
  */
 static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_element* map_element){
 	uint8 rideIndex = map_element->properties.track.ride_index;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
 		return 0;
@@ -7002,7 +7002,7 @@ static uint8 loc_6949B9(
 		case MAP_ELEMENT_TYPE_TRACK:
 			if (z != mapElement->base_height) continue;
 			int rideIndex = mapElement->properties.track.ride_index;
-			rct_ride *ride = GET_RIDE(rideIndex);
+			rct_ride *ride = get_ride(rideIndex);
 			if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
 				*outRideIndex = rideIndex;
 				return PATH_SEARCH_RIDE_ENTRANCE;
@@ -7677,7 +7677,7 @@ static int guest_path_finding(rct_peep* peep)
 		return guest_path_find_aimless(peep, edges);
 
 	uint8 rideIndex = peep->guest_heading_to_ride_id;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (ride->status != RIDE_STATUS_OPEN)
 		return guest_path_find_aimless(peep, edges);
@@ -7895,7 +7895,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 static void peep_set_has_ridden(rct_peep *peep, int rideIndex)
 {
 	peep->rides_been_on[rideIndex / 8] |= 1 << (rideIndex % 8);
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 	peep_set_has_ridden_ride_type(peep, ride->type);
 }
 
@@ -7921,7 +7921,7 @@ static bool peep_has_ridden_ride_type(rct_peep *peep, int rideType)
  */
 static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 
 	// Calculate how satisfying the ride is for the peep. Can range from -140 to +140.
 	sint8 satisfaction = peep_calculate_ride_satisfaction(peep, ride);
@@ -8177,7 +8177,7 @@ static bool peep_really_liked_ride(rct_peep *peep, rct_ride *ride)
  */
 static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 
 	if (peep->flags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE) {
 		peep->flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
@@ -8255,7 +8255,7 @@ static void peep_on_enter_or_exit_ride(rct_peep *peep, int rideIndex, int flags)
  */
 static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 price)
 {
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	money32 value;
 
 	bool has_voucher = false;
@@ -8504,7 +8504,7 @@ static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
 	if (115 + (scenario_rand() % 128) > peep->happiness) return false;
 	if (peep->energy < 80) return false;
 
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 	ride_update_satisfaction(ride, peep->happiness >> 6);
 	ride->cur_num_customers++;
 	ride->total_customers++;
@@ -8733,7 +8733,7 @@ static void peep_reset_ride_heading(rct_peep *peep)
  */
 static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNum, int flags)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 
 	// Indicates if the peep is about to enter a queue (as opposed to entering an entrance directly from a path)
 	bool peepAtQueue = flags & PEEP_RIDE_DECISION_AT_QUEUE;
@@ -8982,7 +8982,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 static void peep_ride_is_too_intense(rct_peep *peep, int rideIndex, bool peepAtRide)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 
 	if (peepAtRide) {
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_INTENSE, rideIndex);
@@ -9013,7 +9013,7 @@ static void peep_chose_not_to_go_on_ride(rct_peep *peep, int rideIndex, bool pee
  */
 static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
 	peep->previous_ride = rideIndex;
@@ -9022,7 +9022,7 @@ static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex)
 
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 
 	// Peeps won't go to the same shop twice in a row.
 	if (rideIndex == peep->previous_ride) {
@@ -9152,7 +9152,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
-		rct_ride *ride = GET_RIDE(i);
+		rct_ride *ride = get_ride(i);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
 			if (peep_should_go_on_ride(peep, i, 0, PEEP_RIDE_DECISION_THINKING)) {
 				*nextPotentialRide++ = i;
@@ -9165,7 +9165,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 	int mostExcitingRideIndex = -1;
 	ride_rating mostExcitingRideRating = 0;
 	for (int i = 0; i < numPotentialRides; i++) {
-		ride = GET_RIDE(potentialRides[i]);
+		ride = get_ride(potentialRides[i]);
 		if (ride->excitement == (ride_rating)0xFFFF) continue;
 		if (ride->excitement > mostExcitingRideRating) {
 			mostExcitingRideIndex = potentialRides[i];
@@ -9207,7 +9207,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return;
 	if (peep->x == (sint16)0x8000) return;
 	if (peep->guest_heading_to_ride_id != 255) {
-		ride = GET_RIDE(peep->guest_heading_to_ride_id);
+		ride = get_ride(peep->guest_heading_to_ride_id);
 		if (ride->type == rideType) {
 			return;
 		}
@@ -9243,7 +9243,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
 						int rideIndex = mapElement->properties.track.ride_index;
-						ride = GET_RIDE(rideIndex);
+						ride = get_ride(rideIndex);
 						if (ride->type == rideType) {
 							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 						}
@@ -9261,7 +9261,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
-		rct_ride *ride = GET_RIDE(i);
+		rct_ride *ride = get_ride(i);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
 			if (peep_should_go_on_ride(peep, i, 0, PEEP_RIDE_DECISION_THINKING)) {
 				*nextPotentialRide++ = i;
@@ -9274,7 +9274,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	int closestRideIndex = -1;
 	int closestRideDistance = INT_MAX;
 	for (int i = 0; i < numPotentialRides; i++) {
-		ride = GET_RIDE(potentialRides[i]);
+		ride = get_ride(potentialRides[i]);
 		int rideX = (ride->station_starts[0] & 0xFF) * 32;
 		int rideY = (ride->station_starts[0] >> 8) * 32;
 		int distance = abs(rideX - peep->x) + abs(rideY - peep->y);
@@ -9315,7 +9315,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return;
 	if (peep->x == (sint16)0x8000) return;
 	if (peep->guest_heading_to_ride_id != 255) {
-		ride = GET_RIDE(peep->guest_heading_to_ride_id);
+		ride = get_ride(peep->guest_heading_to_ride_id);
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_BATHROOM | RIDE_TYPE_FLAG_SELLS_DRINKS | RIDE_TYPE_FLAG_SELLS_FOOD)) {
 			return;
 		}
@@ -9355,7 +9355,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 						if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 
 						int rideIndex = mapElement->properties.track.ride_index;
-						ride = GET_RIDE(rideIndex);
+						ride = get_ride(rideIndex);
 						if (ride_type_has_flag(ride->type, rideTypeFlags)) {
 							RCT2_ADDRESS(0x00F1AD98, uint32)[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
 						}
@@ -9373,7 +9373,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 		if (!(RCT2_ADDRESS(0x00F1AD98, uint32)[i >> 5] & (1u << (i & 0x1F))))
 			continue;
 
-		rct_ride *ride = GET_RIDE(i);
+		rct_ride *ride = get_ride(i);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL)) {
 			if (peep_should_go_on_ride(peep, i, 0, PEEP_RIDE_DECISION_THINKING)) {
 				*nextPotentialRide++ = i;
@@ -9386,7 +9386,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	int closestRideIndex = -1;
 	int closestRideDistance = INT_MAX;
 	for (int i = 0; i < numPotentialRides; i++) {
-		ride = GET_RIDE(potentialRides[i]);
+		ride = get_ride(potentialRides[i]);
 		int rideX = (ride->station_starts[0] & 0xFF) * 32;
 		int rideY = (ride->station_starts[0] >> 8) * 32;
 		int distance = abs(rideX - peep->x) + abs(rideY - peep->y);

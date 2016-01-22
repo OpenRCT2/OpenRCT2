@@ -250,7 +250,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
-		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		rideEntry = get_ride_entry(vehicle->ride_subtype);
 
 		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 

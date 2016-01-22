@@ -506,7 +506,7 @@ rct_window *window_ride_construction_open()
 	sub_6B2FA9(rideIndex);
 
 	rct_window *w;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (ride->type == RIDE_TYPE_MAZE)
 		return window_maze_construction_open();
@@ -583,7 +583,7 @@ static void window_ride_construction_close(rct_window *w)
 
 	uint8 rideIndex = _currentRideIndex;
 	if (ride_try_get_origin_element(rideIndex, NULL)) {
-		rct_ride *ride = GET_RIDE(rideIndex);
+		rct_ride *ride = get_ride(rideIndex);
 		if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops) {
 			ride->status = RIDE_STATUS_OPEN;
 		}
@@ -648,7 +648,7 @@ static void window_ride_construction_resize(rct_window *w)
 		w->enabled_widgets |= (1 << WIDX_CONSTRUCT);
 	}
 
-	rct_ride *ride = GET_RIDE(_currentRideIndex);
+	rct_ride *ride = get_ride(_currentRideIndex);
 	int rideType = ride_get_alternative_type(ride);
 
 	uint64 disabledWidgets = 0;
@@ -1208,7 +1208,7 @@ static void window_ride_construction_resize(rct_window *w)
  */
 static void window_ride_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
-	rct_ride *ride = GET_RIDE(_currentRideIndex);
+	rct_ride *ride = get_ride(_currentRideIndex);
 	int rideType;
 
 	window_ride_construction_update_enabled_track_pieces();
@@ -2064,7 +2064,7 @@ static void window_ride_construction_invalidate(rct_window *w)
 	rct_ride *ride;
 	rct_string_id stringId;
 
-	ride = GET_RIDE(_currentRideIndex);
+	ride = get_ride(_currentRideIndex);
 
 	stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
 	if (_currentTrackCurve >= 256) {
@@ -2140,7 +2140,7 @@ static void window_ride_construction_draw_track_piece(
 	const rct_preview_track *trackBlock;
 	rct_ride *ride;
 
-	ride = GET_RIDE(rideIndex);
+	ride = get_ride(rideIndex);
 
 	trackBlock = get_track_def_from_ride(ride, trackType);
 	while ((trackBlock + 1)->index != 0xFF)
@@ -2240,7 +2240,7 @@ static void sub_6CBCE2(
 	RCT2_GLOBAL(0x00EE7880, uint32) = 0x00F1A4CC;
 	painter_setup();
 
-	ride = GET_RIDE(rideIndex);
+	ride = get_ride(rideIndex);
 
 	preserve_map_size_vars = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint64);
 
@@ -2404,7 +2404,7 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
  */
 static void window_ride_construction_update_enabled_track_pieces()
 {
-	rct_ride *ride = GET_RIDE(_currentRideIndex);
+	rct_ride *ride = get_ride(_currentRideIndex);
 	rct_ride_type *rideEntry = ride_get_entry(ride);
 
 	int rideType = _currentTrackCovered & 2 ? RCT2_ADDRESS(0x0097D4F5, uint8)[ride->type * 8] : ride->type;
@@ -2422,7 +2422,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 	money32 result;
 
 	sub_6C96C0();
-	ride = GET_RIDE(rideIndex);
+	ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_MAZE) {
 		result = game_do_command(x, 105 | (4 << 8), y, rideIndex | (trackType << 8) | (edxRS16 << 16), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
 		if (result == MONEY32_UNDEFINED)
@@ -2594,7 +2594,7 @@ static void window_ride_construction_update_map_selection()
 		break;
 	}
 
-	ride = GET_RIDE(_currentRideIndex);
+	ride = get_ride(_currentRideIndex);
 	window_ride_construction_select_map_tiles(ride, trackType, trackDirection, x, y);
 	map_invalidate_map_selection_tiles();
 }
@@ -2609,7 +2609,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 	int trackType;
 	int edx, edi;
 
-	ride = GET_RIDE(_currentRideIndex);
+	ride = get_ride(_currentRideIndex);
 
 	RCT2_GLOBAL(0x00F440D3, uint8) = 0;
 	if (_currentTrackCovered & 2)
@@ -2697,7 +2697,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 static void window_ride_construction_update_widgets(rct_window *w)
 {
 	uint8 rideIndex = _currentRideIndex;
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 	int rideType = ride_get_alternative_type(ride);
 
 	w->hold_down_widgets = 0;
@@ -3194,7 +3194,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		uint8 trackPiece = _currentPossibleRideConfigurations[i];
 		rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
 		if (trackPieceStringId == STR_RAPIDS) {
-			rct_ride *ride = GET_RIDE(_currentRideIndex);
+			rct_ride *ride = get_ride(_currentRideIndex);
 			if (ride->type == RIDE_TYPE_CAR_RIDE)
 				trackPieceStringId = STR_LOG_BUMPS;
 		}
@@ -3314,7 +3314,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 		return;
 	}
 	_currentTrackPieceType = trackType;
-	ride = GET_RIDE(_currentRideIndex);
+	ride = get_ride(_currentRideIndex);
 
 	// Re-using this other code, very slight difference from original
 	//   - Original code checks for MSB mask instead of 255 on trackPart->var_00
@@ -3502,7 +3502,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 	tool_cancel();
 
-	rct_ride *ride = GET_RIDE(_currentRideIndex);
+	rct_ride *ride = get_ride(_currentRideIndex);
 	if (_trackPlaceZ == 0) {
 		const rct_preview_track *trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
 		int bx = 0;
@@ -3696,7 +3696,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16)
 	);
 
-	rct_ride *ride = GET_RIDE(RCT2_GLOBAL(0x00F44192, uint8));
+	rct_ride *ride = get_ride(RCT2_GLOBAL(0x00F44192, uint8));
 	if (ride_are_all_possible_entrances_and_exits_built(ride)) {
 		tool_cancel();
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15)) {

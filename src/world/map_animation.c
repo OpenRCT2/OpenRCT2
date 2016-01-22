@@ -125,7 +125,7 @@ static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ)
 		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
 			continue;
 
-		ride = GET_RIDE(mapElement->properties.entrance.ride_index);
+		ride = get_ride(mapElement->properties.entrance.ride_index);
 		entranceDefinition = &RideEntranceDefinitions[ride->entrance_style];
 
 		int height = (mapElement->base_height * 8) + entranceDefinition->height + 8;

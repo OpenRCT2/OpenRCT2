@@ -196,7 +196,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 		mapElement += 6;
-		ride = GET_RIDE(mapElement->type);
+		ride = get_ride(mapElement->type);
 		if (ride->status == RIDE_STATUS_CLOSED) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
@@ -210,7 +210,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-		ride = GET_RIDE(mapElement->properties.track.ride_index);
+		ride = get_ride(mapElement->properties.track.ride_index);
 		if (ride->status != RIDE_STATUS_CLOSED)
 			return info->type;
 

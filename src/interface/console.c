@@ -783,7 +783,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 								rct_ride_type *rideEntry;
 								int rideType;
 
-								rideEntry = GET_RIDE_ENTRY(entryGroupIndex);
+								rideEntry = get_ride_entry(entryGroupIndex);
 
 								for (int j = 0; j < 3; j++) {
 									rideType = rideEntry->ride_type[j];

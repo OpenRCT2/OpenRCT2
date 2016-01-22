@@ -11,7 +11,7 @@ static void cable_lift_update_arriving(rct_vehicle *vehicle);
 
 rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int direction, uint16 var_44, sint32 remaining_distance, bool head)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 	rct_vehicle *current = &(create_sprite(1)->vehicle);
 	current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
 	current->ride = rideIndex;
@@ -200,7 +200,7 @@ static void cable_lift_update_arriving(rct_vehicle *vehicle)
 }
 
 bool sub_6DF01A_loop(rct_vehicle* vehicle) {
-	rct_ride* ride = GET_RIDE(vehicle->ride);
+	rct_ride* ride = get_ride(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
 	for (; vehicle->remaining_distance >= 13962; RCT2_GLOBAL(0x00F64E10, uint32)++) {
@@ -287,7 +287,7 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 }
 
 bool sub_6DF21B_loop(rct_vehicle* vehicle) {
-	rct_ride* ride = GET_RIDE(vehicle->ride);
+	rct_ride* ride = get_ride(vehicle->ride);
 	rct_xyz16 *unk_F64E20 = RCT2_ADDRESS(0x00F64E20, rct_xyz16);
 
 	for (; vehicle->remaining_distance < 0; RCT2_GLOBAL(0x00F64E10, uint32)++) {
@@ -378,9 +378,9 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
  */
 int cable_lift_update_track_motion(rct_vehicle *cableLift)
 {
-	rct_ride_type* rideEntry = GET_RIDE_ENTRY(cableLift->ride_subtype);
+	rct_ride_type* rideEntry = get_ride_entry(cableLift->ride_subtype);
 	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[cableLift->vehicle_type];
-	rct_ride* ride = GET_RIDE(cableLift->ride);
+	rct_ride* ride = get_ride(cableLift->ride);
 
 	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
 	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = cableLift;

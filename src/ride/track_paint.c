@@ -104,8 +104,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 
 	height += 3;
 
-	rct_ride* ride = GET_RIDE(rideIndex);
-	rct_ride_type* rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride* ride = get_ride(rideIndex);
+	rct_ride_type* rideEntry = get_ride_entry(ride->subtype);
 	rct_vehicle* vehicle = NULL;
 
 	uint8 seatRotation = 0;
@@ -357,7 +357,7 @@ static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 di
 		(((y / 32) + loc_7667AE[get_current_rotation()].y) << 8);
 
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 
@@ -426,7 +426,7 @@ static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 di
 		(((y / 32) + loc_7667AC[get_current_rotation()].y) << 8);
 
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 
@@ -476,7 +476,7 @@ static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 di
 		(((y / 32) + loc_7667AE[get_current_rotation()].y) << 8);
 
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 
@@ -526,7 +526,7 @@ static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 di
 		(((y / 32) + loc_7667AC[get_current_rotation()].y) << 8);
 
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 
@@ -591,7 +591,7 @@ static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 di
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	uint16 entranceLoc =
 		((x / 32) + loc_7667AC[(get_current_rotation() + 3) & 3].x) |
@@ -646,7 +646,7 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 		(((y / 32) + loc_7667AE[get_current_rotation()].y) << 8);
 
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 
@@ -711,7 +711,7 @@ static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 di
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	uint16 entranceLoc =
 		((x / 32) + loc_7667AE[(get_current_rotation() + 1) & 3].x) |
@@ -780,7 +780,7 @@ static void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 di
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 
 	uint16 entranceLoc =
 		((x / 32) + loc_7667AE[(get_current_rotation() + 1) & 3].x) |
@@ -1003,8 +1003,8 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
 	RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
 
-	rct_ride *ride = GET_RIDE(rideIndex);
-	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride *ride = get_ride(rideIndex);
+	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
 	rct_ride_type_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
 
 	uint32 imageId = RCT2_GLOBAL(0x00F44198, uint32);
@@ -1074,8 +1074,8 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 	RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
 	RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
 
-	rct_ride *ride = GET_RIDE(rideIndex);
-	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride *ride = get_ride(rideIndex);
+	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
 	rct_ride_type_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
 
 	uint32 imageId = RCT2_GLOBAL(0x00F44198, uint32);
