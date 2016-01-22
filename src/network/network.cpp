@@ -2063,7 +2063,7 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}break;
 	case 3:{ // set group name
 		size_t nameChunkOffset = nameChunkIndex - 1;
-		if (nameChunkOffset < 0)
+		if (nameChunkIndex == 0)
 			nameChunkOffset = 2;
 		nameChunkOffset *= 12;
 		nameChunkOffset = (std::min)(nameChunkOffset, Util::CountOf(newName) - 12);
