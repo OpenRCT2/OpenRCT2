@@ -26,7 +26,6 @@ project(${PROJECT})
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
-add_definitions(-DUSE_LIBPNG)
 
 INCLUDE(FindPkgConfig)
 

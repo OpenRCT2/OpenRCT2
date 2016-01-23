@@ -1,20 +1,13 @@
-#ifdef USE_LIBPNG
-	#include <png.h>
-#else
-	#include <lodepng/lodepng.h>
-#endif
+#include <png.h>
 
 #include "image_io.h"
 
-#ifdef USE_LIBPNG
-	static void my_png_read_data(png_structp png_ptr, png_bytep data, png_size_t length);
-	static void my_png_write_data(png_structp png_ptr, png_bytep data, png_size_t length);
-	static void my_png_flush(png_structp png_ptr);
-#endif
+static void my_png_read_data(png_structp png_ptr, png_bytep data, png_size_t length);
+static void my_png_write_data(png_structp png_ptr, png_bytep data, png_size_t length);
+static void my_png_flush(png_structp png_ptr);
 
 bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8 *path)
 {
-#ifdef USE_LIBPNG
 	png_structp png_ptr;
 	png_infop info_ptr;
 	unsigned int sig_read = 0;
@@ -91,28 +84,10 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
 	if (width != NULL) *width = pngWidth;
 	if (height != NULL) *height = pngHeight;
 	return true;
-#else
-	// Read the pixels as 32bpp RGBA
-	unsigned char *pngPixels;
-	unsigned int pngWidth, pngHeight;
-	unsigned int pngError = lodepng_decode_file(&pngPixels, &pngWidth, &pngHeight, path, LCT_RGBA, 8);
-	if (pngError != 0) {
-		free(pngPixels);
-		log_error("Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
-		return false;
-	}
-
-	// Return the output data
-	*pixels = (uint8*)pngPixels;
-	if (width != NULL) *width = pngWidth;
-	if (height != NULL) *height = pngHeight;
-	return true;
-#endif
 }
 
 bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette, const utf8 *path)
 {
-#ifdef USE_LIBPNG
 	// Get image size
 	int stride = dpi->width + dpi->pitch;
 
@@ -178,49 +153,7 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 	png_free(png_ptr, png_palette);
 	png_destroy_write_struct(&png_ptr, &info_ptr);
 	return true;
-#else
-	unsigned int error;
-	unsigned char* png;
-	size_t pngSize;
-	LodePNGState state;
-
-	lodepng_state_init(&state);
-	state.info_raw.colortype = LCT_PALETTE;
-
-	// Get image size
-	int stride = dpi->width + dpi->pitch;
-
-	lodepng_palette_add(&state.info_raw, 0, 0, 0, 0);
-	for (int i = 1; i < 256; i++) {
-		const rct_palette_entry *entry = &palette->entries[i];
-		uint8 r = entry->red;
-		uint8 g = entry->green;
-		uint8 b = entry->blue;
-		uint8 a = 255;
-		lodepng_palette_add(&state.info_raw, r, g, b, a);
-	}
-
-	error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
-	if (error != 0) {
-		log_error("Error creating PNG data, %u: %s", error, lodepng_error_text(error));
-		free(png);
-		return false;
-	} else {
-		SDL_RWops *file = SDL_RWFromFile(path, "wb");
-		if (file == NULL) {
-			free(png);
-			return false;
-		}
-		SDL_RWwrite(file, png, pngSize, 1);
-		SDL_RWclose(file);
-	}
-
-	free(png);
-	return true;
-#endif
 }
-
-#ifdef USE_LIBPNG
 
 static void my_png_read_data(png_structp png_ptr, png_bytep data, png_size_t length)
 {
@@ -238,8 +171,6 @@ static void my_png_flush(png_structp png_ptr)
 {
 
 }
-
-#endif
 
 // Bitmap header structs, for cross platform purposes
 typedef struct {
