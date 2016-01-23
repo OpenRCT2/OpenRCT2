@@ -5480,7 +5480,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
 	case TRACK_ELEM_S_BEND_LEFT:
 	case TRACK_ELEM_S_BEND_LEFT_COVERED:
 		// loc_6D67EF
-		if (vehicle->var_34 < 48) {
+		if (vehicle->track_progress < 48) {
 			return 14;
 		} else {
 			return -15;
@@ -5489,7 +5489,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
 	case TRACK_ELEM_S_BEND_RIGHT:
 	case TRACK_ELEM_S_BEND_RIGHT_COVERED:
 		// loc_6D67CC
-		if (vehicle->var_34 < 48) {
+		if (vehicle->track_progress < 48) {
 			return -14;
 		} else {
 			return 15;

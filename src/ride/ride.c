@@ -4322,7 +4322,7 @@ rct_vehicle *vehicle_create_car(
 		z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 
 		vehicle->track_type = mapElement->properties.track.type << 2;
-		vehicle->var_34 = 0;
+		vehicle->track_progress = 0;
 		vehicle->status = 0;
 		vehicle->sub_state = 0;
 		vehicle->update_flags = 0;
@@ -4338,7 +4338,7 @@ rct_vehicle *vehicle_create_car(
 		sprite_move(chosenLoc.x, chosenLoc.y, z, (rct_sprite*)vehicle);
 	} else {
 		regs.dl = 0;
-		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13) {
+		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_12) {
 			regs.dl = 1;
 		}
 
@@ -4396,9 +4396,9 @@ rct_vehicle *vehicle_create_car(
 
 		sprite_move(x, y, z, (rct_sprite*)vehicle);
 		vehicle->track_type = (mapElement->properties.track.type << 2) | (vehicle->sprite_direction >> 3);
-		vehicle->var_34 = 31;
+		vehicle->track_progress = 31;
 		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
-			vehicle->var_34 = 15;
+			vehicle->track_progress = 15;
 		}
 		vehicle->update_flags = VEHICLE_UPDATE_FLAG_1;
 		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_6) {
