@@ -29,6 +29,7 @@ static bool   _headless        = false;
 #ifndef DISABLE_NETWORK
 static uint32 _port            = 0;
 #endif
+static utf8 * _password        = nullptr;
 static utf8 * _userDataPath    = nullptr;
 static utf8 * _openrctDataPath = nullptr;
 
@@ -44,6 +45,7 @@ static const CommandLineOptionDefinition StandardOptions[]
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
 #endif
+	{ CMDLINE_TYPE_STRING,  &_password,		   NAC, "password",			 "Server password"                                            },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
     { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
     OptionTableEnd
@@ -135,6 +137,10 @@ exitcode_t CommandLine::HandleCommandDefault()
         Memory::Free(_openrctDataPath);
     }
 
+	if (_password != NULL) {
+		String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
+		Memory::Free(_password);
+	}
     return result;
 }
 
