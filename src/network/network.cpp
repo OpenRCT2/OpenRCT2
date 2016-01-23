@@ -219,9 +219,16 @@ void NetworkPlayer::AddMoneySpent(money32 cost)
 	window_invalidate_by_number(WC_PLAYER, id);
 }
 
-int NetworkActions::FindGameCommand(int command)
+int NetworkActions::FindCommand(int command)
 {
-	auto it = std::find_if(actions.begin(), actions.end(), [&command](NetworkAction const& action) { return action.game_command == command; });
+	auto it = std::find_if(actions.begin(), actions.end(), [&command](NetworkAction const& action) {
+		for (auto it = action.commands.begin(); it != action.commands.end(); it++) {
+			if ((*it) == command) {
+				return true;
+			}
+		}
+		return false;
+	});
 	if (it != actions.end()) {
 		return it - actions.begin();
 	}
@@ -285,9 +292,9 @@ bool NetworkGroup::CanPerformAction(size_t index)
 	return (actions_allowed[byte] & (1 << bit)) ? true : false;
 }
 
-bool NetworkGroup::CanPerformGameCommand(int command)
+bool NetworkGroup::CanPerformCommand(int command)
 {
-	int action = gNetworkActions.FindGameCommand(command);
+	int action = gNetworkActions.FindCommand(command);
 	if (action != -1) {
 		return CanPerformAction(action);
 	}
@@ -566,15 +573,15 @@ bool Network::Init()
 	group_list.push_back(std::move(admin));
 	std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
 	spectator->SetName("Spectator");
-	spectator->ToggleActionPermission(0);
+	spectator->ToggleActionPermission(0); // Chat
 	spectator->id = 1;
 	group_list.push_back(std::move(spectator));
 	std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
 	user->SetName("User");
 	user->actions_allowed.fill(0xFF);
-	user->ToggleActionPermission(59);
-	user->ToggleActionPermission(60);
-	user->ToggleActionPermission(61);
+	user->ToggleActionPermission(14); // Kick Player
+	user->ToggleActionPermission(15); // Modify Groups
+	user->ToggleActionPermission(16); // Set Player Group
 	user->id = 2;
 	group_list.push_back(std::move(user));
 	SetDefaultGroup(1);
@@ -1643,10 +1650,8 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
 {
 	if (connection.player) {
 		NetworkGroup* group = GetGroupByID(connection.player->group);
-		if (group) {
-			if (!group->CanPerformGameCommand(-1)) {
-				return;
-			}
+		if (!group || (group && !group->CanPerformCommand(-1))) {
+			return;
 		}
 	}
 	const char* text = packet.ReadString();
@@ -1688,7 +1693,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.player->group);
-	if (group && !group->CanPerformGameCommand(commandCommand)) {
+	if (!group || (group && !group->CanPerformCommand(commandCommand))) {
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
 	}
@@ -1967,6 +1972,7 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	uint8 playerid = (uint8)*ecx;
 	uint8 groupid = (uint8)*edx;
 	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
+	NetworkGroup* fromgroup = gNetwork.GetGroupByID(game_command_playerid);
 	if (!player) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -1977,6 +1983,11 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	}
 	if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+	if (groupid == 0 && fromgroup && fromgroup->id != 0) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_SET_TO_THIS_GROUP;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -2035,14 +2046,12 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		}
 		NetworkGroup* mygroup = nullptr;
 		NetworkPlayer* player = gNetwork.GetPlayerByID(game_command_playerid);
-		if (player) {
+		if (player && !all) {
 			mygroup = gNetwork.GetGroupByID(player->group);
-			if (mygroup) {
-				if (!all && !mygroup->CanPerformAction(index)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
-					*ebx = MONEY32_UNDEFINED;
-					return;
-				}
+			if (!mygroup || (mygroup && !mygroup->CanPerformAction(index))) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
+				*ebx = MONEY32_UNDEFINED;
+				return;
 			}
 		}
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
@@ -2096,6 +2105,11 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		}
 	}break;
 	case 4:{ // set default group
+		if (groupid == 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_SET_TO_THIS_GROUP;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
 		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 			gNetwork.SetDefaultGroup(groupid);
 		}
