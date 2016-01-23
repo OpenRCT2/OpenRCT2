@@ -1600,7 +1600,7 @@
 					"-segprot",
 					rct2_text,
 					rwx,
-					rwx,
+					rx,
 					"-sectcreate",
 					rct2_data,
 					__data,
@@ -1610,8 +1610,8 @@
 					0x8a4000,
 					"-segprot",
 					rct2_data,
-					rwx,
-					rwx,
+					rw,
+					rw,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = website.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1646,7 +1646,7 @@
 					"-segprot",
 					rct2_text,
 					rwx,
-					rwx,
+					rx,
 					"-sectcreate",
 					rct2_data,
 					__data,
@@ -1656,8 +1656,8 @@
 					0x8a4000,
 					"-segprot",
 					rct2_data,
-					rwx,
-					rwx,
+					rw,
+					rw,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = website.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";

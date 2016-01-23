@@ -548,7 +548,7 @@ bool openrct2_setup_rct2_segment()
 		log_error("At least one of required pages was not found in memory. This can cause segfaults later on.");
 	}
 	// section: text
-	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE | PROT_EXEC);
+	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
 	if (err != 0)
 	{
 		perror("mprotect");

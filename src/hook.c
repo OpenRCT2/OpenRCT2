@@ -242,7 +242,19 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
+	int err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
+	
 	memcpy((void *)address, data, i);
+	
+	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
 #endif // __WINDOWS__
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
