@@ -32,8 +32,6 @@
 #include "world/scenery.h"
 #include "world/water.h"
 
-#define OBJECT_ENTRY_GROUP_COUNT 11
-#define OBJECT_ENTRY_COUNT 721
 #define FILTER_VERSION 1
 
 typedef struct {
@@ -88,6 +86,8 @@ rct_object_entry_group object_entry_groups[] = {
 	(uint8**)(RCT2_ADDRESS_WATER_ENTRIES           ), (rct_object_entry_extended*)(0x00F3F03C + (719 * 20)),	// water			0x009ADAE0, 0xF42868
 	(uint8**)(RCT2_ADDRESS_SCENARIO_TEXT_ENTRIES   ), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text	0x009ADAE4, 0xF4287C
 };
+
+void **gObjectList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, void*);
 
 static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int fileDateModifiedChecksum);
 static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileDateModifiedChecksum, int currentItemOffset);

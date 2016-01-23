@@ -51,6 +51,9 @@ typedef enum{
 	OBJECT_SELECTION_FLAG_8 = (1 << 7),
 }OBJECT_SELECTION_FLAGS;
 
+#define OBJECT_ENTRY_GROUP_COUNT 11
+#define OBJECT_ENTRY_COUNT 721
+
 /**
  * Object entry structure.
  * size: 0x10
@@ -92,6 +95,7 @@ typedef struct {
 } rct_object_filters;
 
 extern rct_object_entry_group object_entry_groups[];
+extern void** gObjectList;
 extern char gTempObjectLoadName[9];
 
 extern uint32 gInstalledObjectsCount;
