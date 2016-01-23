@@ -378,8 +378,6 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
  */
 int cable_lift_update_track_motion(rct_vehicle *cableLift)
 {
-	rct_ride_type* rideEntry = get_ride_entry(cableLift->ride_subtype);
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[cableLift->vehicle_type];
 	rct_ride* ride = get_ride(cableLift->ride);
 
 	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;

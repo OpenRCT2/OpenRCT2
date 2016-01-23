@@ -367,6 +367,7 @@ void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
 const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset);
+bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 
 /** Helper macro until rides are stored in this module. */
 #define GET_VEHICLE(sprite_index) &(g_sprite_list[sprite_index].vehicle)

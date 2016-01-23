@@ -69,7 +69,6 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle);
 static void vehicle_update_crash_setup(rct_vehicle* vehicle);
 static void vehicle_update_collision_setup(rct_vehicle* vehicle);
 static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle);
-static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 static void sub_6D63D4(rct_vehicle *vehicle);
 static bool vehicle_update_motion_collision_detection(rct_vehicle *vehicle, sint16 x, sint16 y, sint16 z, uint16 *otherVehicleIndex);
 static void vehicle_update_sound(rct_vehicle *vehicle);
@@ -1185,8 +1184,6 @@ static void vehicle_update(rct_vehicle *vehicle)
 
 	vehicle_update_sound(vehicle);
 }
-
-
 
 /**
  *
@@ -5189,7 +5186,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
  *
  *  rct2: 0x006DD365
  */
-static bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
+bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId)
 {
 	uint16 bp = (vehicle->var_44 * 30) >> 9;
 	uint32 trackType = vehicle->track_type >> 2;
@@ -5483,7 +5480,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
 	case TRACK_ELEM_S_BEND_LEFT:
 	case TRACK_ELEM_S_BEND_LEFT_COVERED:
 		// loc_6D67EF
-		if (vehicle->var_34 < 48) {
+		if (vehicle->track_progress < 48) {
 			return 14;
 		} else {
 			return -15;
@@ -5492,7 +5489,7 @@ static int vehicle_get_swing_amount(rct_vehicle *vehicle)
 	case TRACK_ELEM_S_BEND_RIGHT:
 	case TRACK_ELEM_S_BEND_RIGHT_COVERED:
 		// loc_6D67CC
-		if (vehicle->var_34 < 48) {
+		if (vehicle->track_progress < 48) {
 			return -14;
 		} else {
 			return 15;
