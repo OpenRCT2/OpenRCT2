@@ -2142,6 +2142,12 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
 	uint8 playerid = (uint8)*eax;
+	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
+	if (player && player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
+		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_KICK_THE_HOST;
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
 			gNetwork.KickPlayer(playerid);
