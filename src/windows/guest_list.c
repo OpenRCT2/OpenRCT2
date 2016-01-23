@@ -205,7 +205,7 @@ void window_guest_list_open_with_filter(int type, int index)
 
 	rct_ride *ride = NULL;
 	if (type != 3) {	// common for cases 0, 1, 2
-		ride = GET_RIDE(index & 0x000000FF);
+		ride = get_ride(index & 0x000000FF);
 		eax = ride->name;
 		edx = ride->name_arguments;
 	}

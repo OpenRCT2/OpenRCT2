@@ -1122,7 +1122,7 @@ static void loc_6A6D7E(
 				break;
 			case MAP_ELEMENT_TYPE_TRACK:
 				if (z == mapElement->base_height) {
-					rct_ride *ride = GET_RIDE(mapElement->properties.track.ride_index);
+					rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 					if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 						continue;
 					}
@@ -1213,7 +1213,7 @@ static void loc_6A6C85(
 	}
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
-		rct_ride *ride = GET_RIDE(mapElement->properties.track.ride_index);
+		rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			return;
 		}
@@ -1406,7 +1406,7 @@ void sub_6A759F()
 
 	for (esi = (uint8*)0x00F3EFF8; esi < RCT2_GLOBAL(0x00F3EFF4, uint8*); esi++) {
 		rideIndex = *esi;
-		ride = GET_RIDE(rideIndex);
+		ride = get_ride(rideIndex);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
 
@@ -1967,7 +1967,7 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
 		int rideIndex = mapElement->properties.track.ride_index;
-		ride = GET_RIDE(rideIndex);
+		ride = get_ride(rideIndex);
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
 			return;
 	}

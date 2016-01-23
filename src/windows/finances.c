@@ -1189,7 +1189,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 		switch (i) {
 		case ADVERTISING_CAMPAIGN_RIDE_FREE:
 		case ADVERTISING_CAMPAIGN_RIDE:
-			ride = GET_RIDE(gMarketingCampaignRideIndex[i]);
+			ride = get_ride(gMarketingCampaignRideIndex[i]);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 			break;

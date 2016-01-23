@@ -629,7 +629,7 @@ static void setup_in_use_selection_flags(){
 	} while (map_element_iterator_next(&iter));
 
 	for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++){
-		rct_ride* ride = GET_RIDE(ride_index);
+		rct_ride* ride = get_ride(ride_index);
 		if (ride->type == RIDE_TYPE_NULL)
 			continue;
 
@@ -1955,7 +1955,7 @@ static void window_editor_object_selection_manage_tracks()
 
 	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
-	rct_ride_type* ride_entry = GET_RIDE_ENTRY(entry_index);
+	rct_ride_type* ride_entry = get_ride_entry(entry_index);
 	uint8* ride_type_array = &ride_entry->ride_type[0];
 
 	int ride_type;

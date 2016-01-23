@@ -464,7 +464,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		}
 
 		// Get ride
-		ride = &g_ride_list[w->list_item_positions[i]];
+		ride = get_ride(w->list_item_positions[i]);
 
 		// Ride name
 		gfx_draw_string_left_clipped(dpi, format, &ride->name, 0, 0, y - 1, 159);
@@ -613,7 +613,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			bufferB = (char*)0x0141EF68;
 			format_string_to_upper(bufferA, ride->name, &ride->name_arguments);
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				format_string_to_upper(bufferB, otherRide->name, &otherRide->name_arguments);
 				if (strcmp(bufferA, bufferB) >= 0)
 					break;
@@ -623,7 +623,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride->popularity * 4 <= otherRide->popularity * 4)
 					break;
 
@@ -632,7 +632,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
 					break;
 
@@ -641,7 +641,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_PROFIT:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride->profit <= otherRide->profit)
 					break;
 
@@ -650,7 +650,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_QUEUE_LENGTH:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
 					break;
 
@@ -659,7 +659,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_QUEUE_TIME:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
 					break;
 
@@ -668,7 +668,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride->reliability >> 8 <= otherRide->reliability >> 8)
 					break;
 
@@ -677,7 +677,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride->downtime <= otherRide->downtime)
 					break;
 
@@ -686,7 +686,7 @@ static void window_ride_list_refresh_list(rct_window *w)
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
 			while (--current_list_position >= 0) {
-				otherRide = &g_ride_list[w->list_item_positions[current_list_position]];
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride->guests_favourite <= otherRide->guests_favourite)
 					break;
 

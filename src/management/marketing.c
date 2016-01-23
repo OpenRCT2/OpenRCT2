@@ -59,7 +59,7 @@ int marketing_get_campaign_guest_generation_probability(int campaign)
 			probability /= 8;
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
-		ride = &g_ride_list[gMarketingCampaignRideIndex[campaign]];
+		ride = get_ride(gMarketingCampaignRideIndex[campaign]);
 		if (ride->price < 3)
 			probability /= 8;
 		break;
@@ -94,7 +94,7 @@ void marketing_update()
 
 		// This sets the string parameters for the marketing types that have an argument.
 		if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE) {
-			rct_ride* ride = GET_RIDE(campaignItem);
+			rct_ride* ride = get_ride(campaignItem);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 		} else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
@@ -209,7 +209,7 @@ bool marketing_is_campaign_type_applicable(int campaignType)
 	case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
 		// Check if any food or drink stalls exist
 		FOR_ALL_RIDES(i, ride) {
-			rideEntry = GET_RIDE_ENTRY(ride->subtype);
+			rideEntry = get_ride_entry(ride->subtype);
 			if (
 				shop_item_is_food_or_drink(rideEntry->shop_item) ||
 				shop_item_is_food_or_drink(rideEntry->shop_item_secondary)

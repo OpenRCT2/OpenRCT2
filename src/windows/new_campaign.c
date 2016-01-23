@@ -106,8 +106,8 @@ int ride_value_compare(const void *a, const void *b)
 {
 	rct_ride *rideA, *rideB;
 
-	rideA = GET_RIDE(*((uint8*)a));
-	rideB = GET_RIDE(*((uint8*)b));
+	rideA = get_ride(*((uint8*)a));
+	rideB = get_ride(*((uint8*)b));
 	return rideB->value - rideA->value;
 }
 
@@ -116,8 +116,8 @@ int ride_name_compare(const void *a, const void *b)
 	char rideAName[256], rideBName[256];
 	rct_ride *rideA, *rideB;
 
-	rideA = GET_RIDE(*((uint8*)a));
-	rideB = GET_RIDE(*((uint8*)b));
+	rideA = get_ride(*((uint8*)a));
+	rideB = get_ride(*((uint8*)b));
 
 	format_string(rideAName, rideA->name, &rideA->name_arguments);
 	format_string(rideBName, rideB->name, &rideB->name_arguments);
@@ -199,7 +199,7 @@ static void window_new_campaign_get_shop_items()
 
 	uint64 items = 0;
 	FOR_ALL_RIDES(i, ride) {
-		rct_ride_type *rideType = gRideTypeList[ride->subtype];
+		rct_ride_type *rideType = get_ride_entry(ride->subtype);
 		uint8 itemType = rideType->shop_item;
 		if (itemType != 255)
 			items |= 1LL << itemType;
@@ -274,7 +274,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 				if (window_new_campaign_rides[i] == 255)
 					break;
 
-				rct_ride *ride = GET_RIDE(window_new_campaign_rides[i]);
+				rct_ride *ride = get_ride(window_new_campaign_rides[i]);
 				gDropdownItemsFormat[i] = 1142;
 				gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
 				numItems++;
@@ -341,7 +341,7 @@ static void window_new_campaign_invalidate(rct_window *w)
 		window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_new_campaign_widgets[WIDX_RIDE_LABEL].image = STR_MARKETING_RIDE;
 		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
-			rct_ride *ride = GET_RIDE(w->campaign.ride_id);
+			rct_ride *ride = get_ride(w->campaign.ride_id);
 			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ride->name;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = ride->name_arguments;
 		}

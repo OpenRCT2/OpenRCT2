@@ -176,7 +176,7 @@ static void window_maze_construction_close(rct_window *w)
 	hide_gridlines();
 
 	uint8 rideIndex = _currentRideIndex;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	if (ride->overall_view == 0xFFFF) {
 		int savedPausedState = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
@@ -377,7 +377,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16),
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	if (ride_are_all_possible_entrances_and_exits_built(ride)){
 		tool_cancel();
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15))
@@ -413,7 +413,7 @@ static void window_maze_construction_tooldown(rct_window* w, int widgetIndex, in
  */
 static void window_maze_construction_invalidate(rct_window *w)
 {
-	rct_ride *ride = GET_RIDE(_currentRideIndex);
+	rct_ride *ride = get_ride(_currentRideIndex);
 
 	// Set window title arguments
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, rct_string_id) = ride->name;

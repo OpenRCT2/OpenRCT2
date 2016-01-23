@@ -1588,7 +1588,7 @@ static uint16 map_window_get_pixel_colour_ride(int x, int y)
 				break;
 			// fall-through
 		case MAP_ELEMENT_TYPE_TRACK:
-			ride = GET_RIDE(mapElement->properties.track.ride_index);
+			ride = get_ride(mapElement->properties.track.ride_index);
 			colour = RideKeyColours[RideColourKey[ride->type]];
 			break;
 		}

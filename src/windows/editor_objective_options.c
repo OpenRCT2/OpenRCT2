@@ -1118,7 +1118,7 @@ static void window_editor_objective_options_rides_scrollmousedown(rct_window *w,
 	if (i < 0 || i >= w->no_list_items)
 		return;
 
-	ride = GET_RIDE(i);
+	ride = get_ride(i);
 	ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
 	window_invalidate(w);
 }
@@ -1208,7 +1208,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		}
 
 		// Checkbox mark
-		ride = GET_RIDE(i);
+		ride = get_ride(i);
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = stringId == 1193 ? 0xFFFE : 0xFFFF;
 			gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);

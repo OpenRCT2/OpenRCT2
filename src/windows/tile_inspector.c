@@ -561,7 +561,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				sprintf(
 					buffer,
 					"Track (%s)",
-					language_get_string(2 + GET_RIDE(element->properties.track.ride_index)->type)
+					language_get_string(2 + get_ride(element->properties.track.ride_index)->type)
 				);
 				type_name = buffer;
 				break;

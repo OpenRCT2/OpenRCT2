@@ -1635,9 +1635,9 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 				continue;
 			int rideIndex = mapElement->properties.track.ride_index;
-			int maxHeight = GET_RIDE_ENTRY(GET_RIDE(rideIndex)->subtype)->max_height;
+			int maxHeight = get_ride_entry(get_ride(rideIndex)->subtype)->max_height;
 			if(maxHeight == 0)
-				maxHeight = RCT2_GLOBAL(0x97D218 + 8 * GET_RIDE(rideIndex)->type, uint8);
+				maxHeight = RCT2_GLOBAL(0x97D218 + 8 * get_ride(rideIndex)->type, uint8);
 			int zDelta = mapElement->clearance_height - height;
 			if(zDelta >= 0 && zDelta/2 > maxHeight)
 			{
@@ -2886,7 +2886,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 	int sequence = trackElement->properties.track.sequence & 0x0F;
 	int typeAndSequence = (trackType << 4) | sequence;
 	direction = (edge - trackElement->type) & 3;
-	rct_ride *ride = GET_RIDE(trackElement->properties.track.ride_index);
+	rct_ride *ride = get_ride(trackElement->properties.track.ride_index);
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 		if (RCT2_ADDRESS(0x0099AA94, uint8)[typeAndSequence] & (1 << direction)) {
@@ -2910,7 +2910,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		return false;
 	}
 
-	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_16) {
 		return false;
 	}
@@ -3796,7 +3796,7 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
 		errorStringId = STR_FOOTPATH_IN_THE_WAY;
 		break;
 	case MAP_ELEMENT_TYPE_TRACK:
-		ride = GET_RIDE(mapElement->properties.track.ride_index);
+		ride = get_ride(mapElement->properties.track.ride_index);
 		errorStringId = STR_X_IN_THE_WAY;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;

@@ -850,23 +850,17 @@ enum {
 #define TURN_MASK_3_ELEMENTS	0x0700
 #define TURN_MASK_4_PLUS_ELEMENTS 0xF800
 
-// rct2: 0x009ACFA4 (RCT2_ADDRESS_RIDE_ENTRIES)
-extern rct_ride_type **gRideTypeList;
-
-// rct2: 0x013628F8
-extern rct_ride* g_ride_list;
-
 /** Helper macros until rides are stored in this module. */
-#define GET_RIDE(x) (&g_ride_list[x])
-#define GET_RIDE_MEASUREMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[x]))
-#define GET_RIDE_ENTRY(x) gRideTypeList[x]
+rct_ride *get_ride(int index);
+rct_ride_type *get_ride_entry(int index);
+rct_ride_measurement *get_ride_measurement(int index);
 
 /**
  * Helper macro loop for enumerating through all the non null rides.
  */
 #define FOR_ALL_RIDES(i, ride) \
 	for (i = 0; i < MAX_RIDES; i++) \
-		if ((ride = &g_ride_list[i])->type != RIDE_TYPE_NULL)
+		if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
 extern const uint8 gRideClassifications[255];
 

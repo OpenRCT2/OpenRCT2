@@ -1099,7 +1099,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	if (vehicle->ride_subtype == 0xFF) {
 		vehicleEntry = &CableLiftVehicle;
 	} else {
-		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		rideEntry = get_ride_entry(vehicle->ride_subtype);
 		vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_11) {
@@ -1255,7 +1255,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 			return;
 	}
 
-	rct_ride* ride = GET_RIDE(map_element->properties.entrance.ride_index);
+	rct_ride* ride = get_ride(map_element->properties.entrance.ride_index);
 	if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE) return;
 
 	const rct_ride_entrance_definition *style = &RideEntranceDefinitions[ride->entrance_style];
@@ -1530,7 +1530,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 	int rideIndex, trackType, trackColourScheme, trackSequence;
 
 	rideIndex = mapElement->properties.track.ride_index;
-	ride = GET_RIDE(rideIndex);
+	ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_NULL) {
 		log_error("Attempted to paint invalid ride: %d", rideIndex);
 		return;

@@ -342,7 +342,7 @@ static void window_track_list_invalidate(rct_window *w)
 
 	colour_scheme_update(w);
 
-	entry = GET_RIDE_ENTRY(_window_track_list_item.entry_index);
+	entry = get_ride_entry(_window_track_list_item.entry_index);
 
 	stringId = entry->name;
 	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
