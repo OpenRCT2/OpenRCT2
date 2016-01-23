@@ -196,6 +196,7 @@ NetworkPlayer::NetworkPlayer(const char* name)
 	NetworkPlayer::name[sizeof(NetworkPlayer::name) - 1] = 0;
 	ping = 0;
 	flags = 0;
+        lastCommandType = -1;
 }
 
 NetworkConnection::NetworkConnection()
@@ -1428,6 +1429,8 @@ int Network::Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 	uint8 callback;
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> playerid >> callback;
 
+        if (args[4] != 255)
+            gNetwork.player_list[playerid]->lastCommandType = args[4];
 	GameCommand gc = GameCommand(tick, args, playerid, callback);
 	game_command_queue.insert(gc);
 	return 1;
@@ -1445,6 +1448,8 @@ int Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket&
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> callback;
 
 	int commandCommand = args[4];
+        if (commandCommand != 255)
+            gNetwork.player_list[playerid]->lastCommandType = commandCommand;
 
 	// Don't let clients send pause or quit
 	if (commandCommand != GAME_COMMAND_TOGGLE_PAUSE &&
@@ -1603,6 +1608,11 @@ int network_get_num_players()
 const char* network_get_player_name(unsigned int index)
 {
 	return (const char*)gNetwork.player_list[index]->name;
+}
+
+uint8 network_get_player_last_command_type(unsigned int index)
+{
+	return gNetwork.player_list[index]->lastCommandType;
 }
 
 uint32 network_get_player_flags(unsigned int index)

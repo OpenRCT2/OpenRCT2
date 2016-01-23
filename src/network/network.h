@@ -149,6 +149,7 @@ public:
 	uint8 name[32 + 1];
 	uint16 ping;
 	uint32 flags;
+        uint8 lastCommandType;
 };
 
 class NetworkConnection
@@ -337,6 +338,7 @@ uint32 network_get_server_tick();
 uint8 network_get_current_player_id();
 int network_get_num_players();
 const char* network_get_player_name(unsigned int index);
+uint8 network_get_player_last_command_type(unsigned int index);
 uint32 network_get_player_flags(unsigned int index);
 int network_get_player_ping(unsigned int index);
 int network_get_player_id(unsigned int index);
