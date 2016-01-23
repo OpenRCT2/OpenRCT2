@@ -720,9 +720,9 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	cost = entry->small_scenery.removal_price * 10;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = base_height * 8;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = base_height * 8;
 
 	if (!(flags & GAME_COMMAND_FLAG_GHOST) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gConfigCheat.build_in_pause_mode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
@@ -1847,9 +1847,9 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 	return cost;
 }
 
@@ -1920,9 +1920,9 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 	return cost;
 }
 
@@ -1984,9 +1984,9 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		z = water_height_z;
 		if (z != 0)
 			z = base_height_z;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = z;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 		audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
 	}
 
@@ -2049,9 +2049,9 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		z = water_height_z;
 		if (z == 0)
 			z = base_height_z;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = z;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 		audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
 	}
 
@@ -2252,9 +2252,9 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 		slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
 		if (slope != 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = centreX;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = centreY;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = centreZ;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = centreX;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = centreY;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = centreZ;
 			return totalCost * 4;
 		}
 	}
@@ -2408,9 +2408,9 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = centreX;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = centreY;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = centreZ;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = centreX;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = centreY;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = centreZ;
 	return totalCost * 4;
 }
 
@@ -2606,9 +2606,9 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	uint8 edge = *edx >> 8;
 	uint8 colour = *edi;
 	uint8 type = *ebx >> 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint32) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint32) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = base_height * 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = base_height * 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode){
 		if(sub_68B044() && x < 8192 && y < 8192){

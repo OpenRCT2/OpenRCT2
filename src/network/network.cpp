@@ -2256,7 +2256,7 @@ money32 network_get_player_money_spent(unsigned int index) { return MONEY(0, 0);
 void network_add_player_money_spent(unsigned int index, money32 cost) { }
 int network_get_player_last_action(unsigned int index) { return -999; }
 void network_set_player_last_action(unsigned int index, int command) { }
-rct_xyz16 network_get_player_last_action_coord(unsigned int index) { return rct_xyz16(0, 0, 0); }
+rct_xyz16 network_get_player_last_action_coord(unsigned int index) { return {0, 0, 0}; }
 void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord) { }
 unsigned int network_get_player_commands_ran(unsigned int index) { return 0; }
 int network_get_player_index(uint8 id) { return -1; }
