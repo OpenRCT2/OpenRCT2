@@ -55,6 +55,7 @@ utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
 utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
 utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
+utf8 gCustomPassword[MAX_PATH] = { 0 };
 
 // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
 bool gOpenRCT2Headless = false;
@@ -287,6 +288,13 @@ void openrct2_launch()
 				if (gNetworkStartPort == 0) {
 					gNetworkStartPort = gConfigNetwork.default_port;
 				}
+
+				if (str_is_null_or_empty(gCustomPassword)) {
+					network_set_password(gConfigNetwork.default_password);
+				}
+				else {
+					network_set_password(gCustomPassword);
+				}
 				network_begin_server(gNetworkStartPort);
 			}
 #endif // DISABLE_NETWORK
@@ -305,6 +313,7 @@ void openrct2_launch()
 			if (gNetworkStartPort == 0) {
 				gNetworkStartPort = gConfigNetwork.default_port;
 			}
+
 			network_begin_client(gNetworkStartHost, gNetworkStartPort);
 		}
 #endif // DISABLE_NETWORK

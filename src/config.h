@@ -226,6 +226,7 @@ typedef struct {
 typedef struct {
 	utf8string player_name;
 	uint32 default_port;
+	utf8string default_password;
 	uint8 stay_connected;
 	uint8 advertise;
 	uint8 maxplayers;
