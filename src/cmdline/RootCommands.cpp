@@ -137,10 +137,11 @@ exitcode_t CommandLine::HandleCommandDefault()
         Memory::Free(_openrctDataPath);
     }
 
- if (_password != NULL) {
-  String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
-  Memory::Free(_password);
- }
+    if (_password != NULL) {
+        String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
+        Memory::Free(_password);
+    }
+
     return result;
 }
 
@@ -214,7 +215,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
     gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
- gNetworkStart = NETWORK_MODE_SERVER;
+    gNetworkStart = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
     return EXITCODE_CONTINUE;
 }
@@ -234,9 +235,9 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
         return EXITCODE_FAIL;
     }
 
- gNetworkStart = NETWORK_MODE_CLIENT;
+    gNetworkStart = NETWORK_MODE_CLIENT;
     gNetworkStartPort = _port;
- String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
+    String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
     return EXITCODE_CONTINUE;
 }
 
