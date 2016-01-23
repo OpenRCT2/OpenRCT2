@@ -36,6 +36,74 @@ enum WINDOW_PLAYER_LIST_WIDGET_IDX {
 	WIDX_LIST,
 };
 
+
+const uint8 NUMBER_GAME_COMMANDS = 62;
+const char * const GAME_COMMAND_VERBS[] = {
+	"Changing ride appearance",
+	"Changing land height",
+	"Toggling pause",
+	"Placing track",
+	"Removing track",
+	"Quitting or loading",
+	"Placing a ride",
+	"Demolishing a ride",
+	"Changing ride status",
+	"Setting ride vehicles",
+	"Setting ride name",
+	"Changing ride settings",
+	"Placing entrances/exits",
+	"Removing entrances/exits",
+	"Removing scenery",
+	"Placing scenery",
+	"Changing water",
+	"Placing path",
+	"Placing path from track",
+	"Removing path",
+	"Changing land style",
+	"Setting ride price",
+	"Setting guest name",
+	"Raising land",
+	"Lowering land",
+	"Changing land height (mountain tool)",
+	"Raising water",
+	"Lowering water",
+	"Setting break speed",
+	"Hiring staff",
+	"Setting staff patrols",
+	"Firing staff",
+	"Setting staff order",
+	"Setting park name",
+	"Changing park open/close status",
+	"Buying land rights",
+	"Placing park entrance",
+	"Removing park entrance",
+	"Setting maze track",
+	"Setting entrance fee",
+	"Setting staff color",
+	"Placing fence",
+	"Removing fence",
+	"Placing large scenery",
+	"Removing large scenery",
+	"Changing loan amount",
+	"Setting research funding",
+	"Placing track design",
+	"Starting a marketing campaign",
+	"Placing a maze design",
+	"Placing a banner",
+	"Removing a banner",
+	"Setting scenery color",
+	"Setting fence color",
+	"Setting large scenery color",
+	"Setting banner color",
+	"Setting land ownership",
+	"Clearing scenery",
+	"Setting banner name",
+	"Setting sign name",
+	"Setting banner style",
+        "Setting sign style"
+};
+
+
 static rct_widget window_player_list_widgets[] = {
 	{ WWT_FRAME,			0,	0,		339,	0,		239,	0x0FFFFFFFF,				STR_NONE },									// panel / background
 	{ WWT_CAPTION,			0,	1,		338,	1,		14,		STR_PLAYER_LIST,			STR_WINDOW_TITLE_TIP },						// title bar
@@ -271,7 +339,8 @@ static void window_player_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Columns
 	gfx_draw_string_left(dpi, STR_PLAYER, NULL, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
-	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 246, 58 - 12 + w->y + 1);
+	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 146, 58 - 12 + w->y + 1);
+	gfx_draw_string_left(dpi, STR_LAST_ACTION, NULL, w->colours[2], w->x + 206, 58 - 12 + w->y + 1);
 
 	// Number of players
 	stringId = w->no_list_items == 1 ? STR_X_PLAYER : STR_X_PLAYERS;
@@ -308,9 +377,10 @@ static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 				}
 				safe_strcpy(lineCh, network_get_player_name(i), sizeof(buffer) - (lineCh - buffer));
 			}
-			gfx_clip_string(buffer, 230);
+			gfx_clip_string(buffer, 100);
 			gfx_draw_string(dpi, buffer, colour, 0, y - 1);
 			lineCh = buffer;
+                        // Limit to max length of 6 chars (9999ms)
 			int ping = network_get_player_ping(i);
 			if (ping <= 100) {
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
@@ -318,10 +388,21 @@ static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			if (ping <= 250) {
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_YELLOW);
 			} else {
+                                if (ping >= 10000) {
+                                    ping = 9999;
+                                }
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
 			}
+
 			sprintf(lineCh, "%d ms", ping);
-			gfx_draw_string(dpi, buffer, colour, 240, y - 1);
+			gfx_draw_string(dpi, buffer, colour, 140, y - 1);
+
+                        uint8 lastCT = network_get_player_last_command_type(i);
+                        char * action = "N/A";
+                        if (lastCT > -1 && lastCT < NUMBER_GAME_COMMANDS) {
+                            action = GAME_COMMAND_VERBS[lastCT];
+                        }
+                        gfx_draw_string(dpi, action, colour, 206, y - 1);
 		}
 		y += 10;
 	}
