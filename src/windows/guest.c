@@ -618,6 +618,15 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		window_guest_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PICKUP:
+		{ // remove this block when peep pick up is finally converted to a game command
+			int player = network_get_player_index(network_get_current_player_id());
+			if (player != -1) {
+				if (!network_can_perform_action(network_get_group_index(network_get_player_group(player)), 11/*Guest action*/)) {
+					window_error_open(STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+					return;
+				}
+			}
+		} //
 		if (!peep_can_be_picked_up(peep)) {
 			return;
 		}
