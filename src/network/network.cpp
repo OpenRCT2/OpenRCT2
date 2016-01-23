@@ -579,9 +579,9 @@ bool Network::Init()
 	std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
 	user->SetName("User");
 	user->actions_allowed.fill(0xFF);
-	user->ToggleActionPermission(14); // Kick Player
-	user->ToggleActionPermission(15); // Modify Groups
-	user->ToggleActionPermission(16); // Set Player Group
+	user->ToggleActionPermission(15); // Kick Player
+	user->ToggleActionPermission(16); // Modify Groups
+	user->ToggleActionPermission(17); // Set Player Group
 	user->id = 2;
 	group_list.push_back(std::move(user));
 	SetDefaultGroup(1);
@@ -1432,11 +1432,12 @@ void Network::ProcessGameCommandQueue()
 			game_command_callback = game_command_callback_get_callback(gc.callback);
 		}
 		game_command_playerid = gc.playerid;
-		money32 cost = game_do_command_p(gc.esi, (int*)&gc.eax, (int*)&gc.ebx, (int*)&gc.ecx, (int*)&gc.edx, (int*)&gc.esi, (int*)&gc.edi, (int*)&gc.ebp);
+		int command = gc.esi;
+		money32 cost = game_do_command_p(command, (int*)&gc.eax, (int*)&gc.ebx, (int*)&gc.ecx, (int*)&gc.edx, (int*)&gc.esi, (int*)&gc.edi, (int*)&gc.ebp);
 		if (cost != MONEY32_UNDEFINED) {
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
 			if (player) {
-				player->last_action = gNetworkActions.FindCommand(gc.esi);
+				player->last_action = gNetworkActions.FindCommand(command);
 				player->last_action_time = SDL_GetTicks();
 				player->AddMoneySpent(cost);
 			}
