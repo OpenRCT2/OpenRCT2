@@ -161,6 +161,7 @@ public:
 	unsigned int commands_ran;
 	int last_action;
 	uint32 last_action_time;
+	rct_xyz16 last_action_coord;
 };
 
 class NetworkAction
@@ -424,6 +425,8 @@ money32 network_get_player_money_spent(unsigned int index);
 void network_add_player_money_spent(unsigned int index, money32 cost);
 int network_get_player_last_action(unsigned int index);
 void network_set_player_last_action(unsigned int index, int command);
+rct_xyz16 network_get_player_last_action_coord(unsigned int index);
+void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord);
 unsigned int network_get_player_commands_ran(unsigned int index);
 int network_get_player_index(uint8 id);
 uint8 network_get_player_group(unsigned int index);

@@ -191,6 +191,7 @@ NetworkPlayer::NetworkPlayer()
 	commands_ran = 0;
 	group = 0;
 	last_action = -999;
+	last_action_coord = {0};
 }
 
 void NetworkPlayer::Read(NetworkPacket& packet)
@@ -1439,6 +1440,11 @@ void Network::ProcessGameCommandQueue()
 			if (player) {
 				player->last_action = gNetworkActions.FindCommand(command);
 				player->last_action_time = SDL_GetTicks();
+				rct_xyz16 coord;
+				coord.x = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16);
+				coord.y = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16);
+				coord.z = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16);
+				player->last_action_coord = coord;
 				player->AddMoneySpent(cost);
 			}
 		}
@@ -1718,6 +1724,11 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	connection.player->last_action = gNetworkActions.FindCommand(commandCommand);
 	connection.player->last_action_time = SDL_GetTicks();
+	rct_xyz16 coord;
+	coord.x = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16);
+	coord.y = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16);
+	coord.z = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16);
+	connection.player->last_action_coord = coord;
 	connection.player->AddMoneySpent(cost);
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 }
@@ -1932,6 +1943,16 @@ void network_set_player_last_action(unsigned int index, int command)
 {
 	gNetwork.player_list[index]->last_action = gNetworkActions.FindCommand(command);
 	gNetwork.player_list[index]->last_action_time = SDL_GetTicks();
+}
+
+rct_xyz16 network_get_player_last_action_coord(unsigned int index)
+{
+	return gNetwork.player_list[index]->last_action_coord;
+}
+
+void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord)
+{
+	gNetwork.player_list[index]->last_action_coord = coord;
 }
 
 unsigned int network_get_player_commands_ran(unsigned int index)
@@ -2235,6 +2256,8 @@ money32 network_get_player_money_spent(unsigned int index) { return MONEY(0, 0);
 void network_add_player_money_spent(unsigned int index, money32 cost) { }
 int network_get_player_last_action(unsigned int index) { return -999; }
 void network_set_player_last_action(unsigned int index, int command) { }
+rct_xyz16 network_get_player_last_action_coord(unsigned int index) { return rct_xyz16(0, 0, 0); }
+void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord) { }
 unsigned int network_get_player_commands_ran(unsigned int index) { return 0; }
 int network_get_player_index(uint8 id) { return -1; }
 uint8 network_get_player_group(unsigned int index) { return 0; }

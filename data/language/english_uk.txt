@@ -3894,7 +3894,7 @@ STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {M
 STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
-STR_5556    :{SMALLFONT}{BLACK}Kick Player
+STR_5556    :{SMALLFONT}{BLACK}Kick player
 STR_5557    :Stay connected after desynchronisation (Multiplayer)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
@@ -4002,6 +4002,7 @@ STR_5660    :Modify Groups
 STR_5661    :Set Player Group
 STR_5662    :N/A
 STR_5663    :Clear Landscape
+STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
 STR_5704    :Last Action:
 STR_5705    :Can't set to this group

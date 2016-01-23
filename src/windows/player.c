@@ -54,6 +54,7 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 	WIDX_TAB_1,
 	WIDX_GROUP,
 	WIDX_GROUP_DROPDOWN,
+	WIDX_LOCATE,
 	WIDX_KICK
 };
 
@@ -65,7 +66,8 @@ rct_widget window_player_overview_widgets[] = {
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,		STR_NONE },				// Tab 1
 	{ WWT_DROPDOWN,			1,	3,		177,	46,		57,		0x0FFFFFFFF,	STR_NONE },				// Permission group
 	{ WWT_DROPDOWN_BUTTON,	1,	167,	177,	47,		56,		876,			STR_NONE },				//
-	{ WWT_FLATBTN,			1,	179,	190,	45,		68,		SPR_DEMOLISH,	STR_KICK_PLAYER_TIP },	// Kick button
+	{ WWT_FLATBTN,			1,	179,	190,	45,		68,		SPR_LOCATE,		STR_LOCATE_PLAYER_TIP },// Locate button
+	{ WWT_FLATBTN,			1,	179,	190,	69,		92,		SPR_DEMOLISH,	STR_KICK_PLAYER_TIP },	// Kick button
 	{ WIDGETS_END },
 };
 
@@ -124,6 +126,7 @@ uint32 window_player_page_enabled_widgets[] = {
 	(1 << WIDX_TAB_1) |
 	(1 << WIDX_GROUP) |
 	(1 << WIDX_GROUP_DROPDOWN) |
+	(1 << WIDX_LOCATE) |
 	(1 << WIDX_KICK)
 };
 
@@ -214,6 +217,15 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 	case WIDX_TAB_1:
 		window_player_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
+	case WIDX_LOCATE:{
+		rct_window* mainWindow = window_get_main();
+		if (mainWindow != NULL) {
+			rct_xyz16 coord = network_get_player_last_action_coord(w->number);
+			if (coord.x && coord.y && coord.z) {
+				window_scroll_to_location(mainWindow, coord.x, coord.y, coord.z);
+			}
+		}
+	}break;
 	case WIDX_KICK:
 		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
 		break;
@@ -371,8 +383,10 @@ void window_player_overview_invalidate(rct_window *w)
 	window_player_overview_widgets[WIDX_CLOSE].left = w->width - 13;
 	window_player_overview_widgets[WIDX_CLOSE].right = w->width - 3;
 
-	window_player_overview_widgets[WIDX_KICK].right = w->width - 2;
+	window_player_overview_widgets[WIDX_LOCATE].right = w->width - 2;
+	window_player_overview_widgets[WIDX_LOCATE].left = w->width - 25;
 
+	window_player_overview_widgets[WIDX_KICK].right = w->width - 2;
 	window_player_overview_widgets[WIDX_KICK].left = w->width - 25;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_1);
