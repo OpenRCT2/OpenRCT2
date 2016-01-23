@@ -254,6 +254,7 @@ static void window_new_ride_select(rct_window *w);
 
 static ride_list_item _lastTrackDesignCountRideType;
 static int _lastTrackDesignCount;
+static bool _trackSelectionByType;
 
 /**
 *
@@ -372,6 +373,7 @@ static void window_new_ride_populate_list()
 
 	nextListItem->type = 255;
 	nextListItem->entry_index = 255;
+	_trackSelectionByType = gConfigInterface.select_by_track_type;
 }
 
 /**
@@ -651,6 +653,11 @@ static void window_new_ride_update(rct_window *w)
 
 	if (w->new_ride.selected_ride_id != -1 && w->new_ride.selected_ride_countdown-- == 0)
 		window_new_ride_select(w);
+
+	if (_trackSelectionByType != gConfigInterface.select_by_track_type) {
+		window_new_ride_populate_list();
+		widget_invalidate(w, WIDX_RIDE_LIST);
+	}
 }
 
 /**
