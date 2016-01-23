@@ -4256,8 +4256,8 @@ rct_vehicle *vehicle_create_car(
 ) {
 	registers regs = { 0 };
 
-	rct_ride *ride = GET_RIDE(rideIndex);
-	rct_ride_type *rideEntry = GET_RIDE_ENTRY(ride->subtype);
+	rct_ride *ride = get_ride(rideIndex);
+	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
 	rct_ride_type_vehicle *vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
 
 	rct_vehicle *vehicle = (rct_vehicle*)create_sprite(1);
@@ -4422,7 +4422,7 @@ rct_vehicle *vehicle_create_car(
  */
 train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int *remainingDistance, rct_map_element *mapElement)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 
 	uint8 trainLayout[42];
 	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
@@ -4445,7 +4445,7 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int *remainin
 
 void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_element *mapElement)
 {
-	rct_ride *ride = GET_RIDE(rideIndex);
+	rct_ride *ride = get_ride(rideIndex);
 	train_ref firstTrain, lastTrain;
 	int remainingDistance = 0;
 
@@ -4512,8 +4512,8 @@ void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element *outXY
 	rct_map_element *trackElement = firstElement;
 	track_begin_end trackBeginEnd;
 	while (track_block_get_previous(x, y, trackElement, &trackBeginEnd)) {
-		x = trackBeginEnd.begin_x;
-		y = trackBeginEnd.begin_y;
+		x = trackBeginEnd.end_x;
+		y = trackBeginEnd.end_y;
 		trackElement = trackBeginEnd.begin_element;
 		if (x == firstX && y == firstY && trackElement == firstElement) {
 			break;
@@ -4630,7 +4630,7 @@ bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element
 			for (int i = 0; i < ride->num_vehicles; i++) {
 				rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[i]);
 
-				rct_ride_type *rideType = GET_RIDE_ENTRY(vehicle->vehicle_type);
+				rct_ride_type *rideType = get_ride_entry(vehicle->vehicle_type);
 				rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 				if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_15)) {
