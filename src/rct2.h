@@ -58,6 +58,8 @@ typedef const utf8* const_utf8string;
 typedef wchar_t utf16;
 typedef utf16* utf16string;
 
+typedef uint32 codepoint_t;
+
 #define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
 #define ror8(x, shift)		(((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
 #define rol16(x, shift)		(((uint16)(x) << (shift)) | ((uint16)(x) >> (16 - (shift))))

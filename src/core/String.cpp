@@ -141,4 +141,38 @@ namespace String
     {
         return DiscardUse(ptr, String::Duplicate(replacement));
     }
+
+    utf8 * SkipBOM(utf8 * buffer)
+    {
+        return (utf8*)SkipBOM(buffer);
+    }
+
+    const utf8 * SkipBOM(const utf8 * buffer)
+    {
+        if (buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
+        {
+            return buffer + 3;
+        }
+        return buffer;
+    }
+
+    size_t GetCodepointLength(codepoint_t codepoint)
+    {
+        return utf8_get_codepoint_length(codepoint);
+    }
+
+    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr)
+    {
+        return GetNextCodepoint((const utf8 *)ptr, (const utf8 * *)nextPtr);
+    }
+
+    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr)
+    {
+        return utf8_get_next(ptr, nextPtr);
+    }
+
+    utf8 * WriteCodepoint(utf8 * dst, codepoint_t codepoint)
+    {
+        return utf8_write_codepoint(dst, codepoint);
+    }
 }

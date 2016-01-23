@@ -1,7 +1,8 @@
 #pragma once
 
-extern "C" {
-#include "../common.h"
+extern "C"
+{
+    #include "../common.h"
 }
 
 /**
@@ -10,26 +11,26 @@ extern "C" {
 class Stopwatch
 {
 private:
-	/** Number of ticks in a second. */
-	static uint64 Frequency;
+    /** Number of ticks in a second. */
+    static uint64 Frequency;
 
-	uint64 _total;
-	uint64 _last;
-	bool _isRunning;
+    uint64 _total;
+    uint64 _last;
+    bool   _isRunning;
 
-	static uint64 QueryFrequency();
-	static uint64 QueryCurrentTicks();
+    static uint64 QueryFrequency();
+    static uint64 QueryCurrentTicks();
 
 public:
-	bool IsRunning() { return _isRunning; }
+    bool IsRunning() const { return _isRunning; }
 
-	Stopwatch();
+    Stopwatch();
 
-	uint64 GetElapsedTicks();
-	uint64 GetElapsedMilliseconds();
+    uint64 GetElapsedTicks()        const;
+    uint64 GetElapsedMilliseconds() const;
 
-	void Reset();
-	void Start();
-	void Restart();
-	void Stop();
+    void Reset();
+    void Start();
+    void Restart();
+    void Stop();
 };
