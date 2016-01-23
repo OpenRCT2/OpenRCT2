@@ -436,7 +436,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 			}
 
 			// Draw last action
-			int action = network_get_player_last_action(i);
+			int action = network_get_player_last_action(i, 2000);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_ACTION_NA;
 			if (action != -999) {
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(action);

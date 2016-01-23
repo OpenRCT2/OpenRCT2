@@ -1931,9 +1931,9 @@ void network_add_player_money_spent(unsigned int index, money32 cost)
 	gNetwork.player_list[index]->AddMoneySpent(cost);
 }
 
-int network_get_player_last_action(unsigned int index)
+int network_get_player_last_action(unsigned int index, int time)
 {
-	if (SDL_TICKS_PASSED(SDL_GetTicks(), gNetwork.player_list[index]->last_action_time + 2000)) {
+	if (time && SDL_TICKS_PASSED(SDL_GetTicks(), gNetwork.player_list[index]->last_action_time + time)) {
 		return -999;
 	}
 	return gNetwork.player_list[index]->last_action;
@@ -2254,7 +2254,7 @@ int network_get_player_ping(unsigned int index) { return 0; }
 int network_get_player_id(unsigned int index) { return 0; }
 money32 network_get_player_money_spent(unsigned int index) { return MONEY(0, 0); }
 void network_add_player_money_spent(unsigned int index, money32 cost) { }
-int network_get_player_last_action(unsigned int index) { return -999; }
+int network_get_player_last_action(unsigned int index, int time) { return -999; }
 void network_set_player_last_action(unsigned int index, int command) { }
 rct_xyz16 network_get_player_last_action_coord(unsigned int index) { return {0, 0, 0}; }
 void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord) { }

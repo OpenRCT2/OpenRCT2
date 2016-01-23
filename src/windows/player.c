@@ -354,6 +354,15 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = network_get_player_money_spent(player);
 	gfx_draw_string_left(dpi, STR_MONEY_SPENT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
+
+	y += 10;
+	
+	int lastaction = network_get_player_last_action(player, 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_ACTION_NA;
+	if (lastaction != -999) {
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(lastaction);
+	}
+	gfx_draw_string_left(dpi, STR_LAST_ACTION_RAN, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
 }
 
 void window_player_overview_invalidate(rct_window *w)

@@ -423,7 +423,7 @@ int network_get_player_ping(unsigned int index);
 int network_get_player_id(unsigned int index);
 money32 network_get_player_money_spent(unsigned int index);
 void network_add_player_money_spent(unsigned int index, money32 cost);
-int network_get_player_last_action(unsigned int index);
+int network_get_player_last_action(unsigned int index, int time);
 void network_set_player_last_action(unsigned int index, int command);
 rct_xyz16 network_get_player_last_action_coord(unsigned int index);
 void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord);
