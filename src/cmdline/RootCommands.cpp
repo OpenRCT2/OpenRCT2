@@ -45,7 +45,7 @@ static const CommandLineOptionDefinition StandardOptions[]
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
 #endif
-	{ CMDLINE_TYPE_STRING,  &_password,		   NAC, "password",			 "Server password"                                            },
+    { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "Server password"                                            },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
     { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
     OptionTableEnd
@@ -137,10 +137,10 @@ exitcode_t CommandLine::HandleCommandDefault()
         Memory::Free(_openrctDataPath);
     }
 
-	if (_password != NULL) {
-		String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
-		Memory::Free(_password);
-	}
+ if (_password != NULL) {
+  String::Set(gCustomPassword, sizeof(gCustomPassword), _password);
+  Memory::Free(_password);
+ }
     return result;
 }
 
@@ -214,7 +214,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
     gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-	gNetworkStart = NETWORK_MODE_SERVER;
+ gNetworkStart = NETWORK_MODE_SERVER;
     gNetworkStartPort = _port;
     return EXITCODE_CONTINUE;
 }
@@ -234,9 +234,9 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator)
         return EXITCODE_FAIL;
     }
 
-	gNetworkStart = NETWORK_MODE_CLIENT;
+ gNetworkStart = NETWORK_MODE_CLIENT;
     gNetworkStartPort = _port;
-	String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
+ String::Set(gNetworkStartHost, sizeof(gNetworkStartHost), hostname);
     return EXITCODE_CONTINUE;
 }
 

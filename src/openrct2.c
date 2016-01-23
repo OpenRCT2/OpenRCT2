@@ -289,7 +289,7 @@ void openrct2_launch()
 					gNetworkStartPort = gConfigNetwork.default_port;
 				}
 
-				if (strlen(gCustomPassword) == 0) {	
+				if (str_is_null_or_empty(gCustomPassword)) {
 					network_set_password(gConfigNetwork.default_password);
 				}
 				else {
