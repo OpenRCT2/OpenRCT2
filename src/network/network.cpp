@@ -190,20 +190,20 @@ NetworkPlayer::NetworkPlayer()
 	money_spent = MONEY(0, 0);
 	commands_ran = 0;
 	group = 0;
-	reserved = 0;
+	last_action = -999;
 }
 
 void NetworkPlayer::Read(NetworkPacket& packet)
 {
 	const char* name = packet.ReadString();
 	SetName(name);
-	packet >> id >> flags >> group >> reserved;
+	packet >> id >> flags >> group;
 }
 
 void NetworkPlayer::Write(NetworkPacket& packet)
 {
 	packet.WriteString((const char*)name);
-	packet << id << flags << group << reserved;
+	packet << id << flags << group;
 }
 
 void NetworkPlayer::SetName(const char* name)
@@ -1436,6 +1436,8 @@ void Network::ProcessGameCommandQueue()
 		if (cost != MONEY32_UNDEFINED) {
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
 			if (player) {
+				player->last_action = gNetworkActions.FindCommand(gc.esi);
+				player->last_action_time = SDL_GetTicks();
 				player->AddMoneySpent(cost);
 			}
 		}
@@ -1712,6 +1714,9 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	if (cost == MONEY32_UNDEFINED) {
 		return;
 	}
+
+	connection.player->last_action = gNetworkActions.FindCommand(commandCommand);
+	connection.player->last_action_time = SDL_GetTicks();
 	connection.player->AddMoneySpent(cost);
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 }
@@ -1912,6 +1917,20 @@ money32 network_get_player_money_spent(unsigned int index)
 void network_add_player_money_spent(unsigned int index, money32 cost)
 {
 	gNetwork.player_list[index]->AddMoneySpent(cost);
+}
+
+int network_get_player_last_action(unsigned int index)
+{
+	if (SDL_TICKS_PASSED(SDL_GetTicks(), gNetwork.player_list[index]->last_action_time + 2000)) {
+		return -999;
+	}
+	return gNetwork.player_list[index]->last_action;
+}
+
+void network_set_player_last_action(unsigned int index, int command)
+{
+	gNetwork.player_list[index]->last_action = gNetworkActions.FindCommand(command);
+	gNetwork.player_list[index]->last_action_time = SDL_GetTicks();
 }
 
 unsigned int network_get_player_commands_ran(unsigned int index)
@@ -2207,8 +2226,10 @@ int network_get_player_ping(unsigned int index) { return 0; }
 int network_get_player_id(unsigned int index) { return 0; }
 money32 network_get_player_money_spent(unsigned int index) { return MONEY(0, 0); }
 void network_add_player_money_spent(unsigned int index, money32 cost) { }
+int network_get_player_last_action(unsigned int index) { return -999; }
+void network_set_player_last_action(unsigned int index, int command) { }
 unsigned int network_get_player_commands_ran(unsigned int index) { return 0; }
-int network_get_player_index(uint8 id) { return -1; };
+int network_get_player_index(uint8 id) { return -1; }
 uint8 network_get_player_group(unsigned int index) { return 0; }
 void network_set_player_group(unsigned int index, unsigned int groupindex) { }
 int network_get_group_index(uint8 id) { return -1; }

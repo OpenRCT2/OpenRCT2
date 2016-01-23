@@ -288,7 +288,7 @@ static void window_multiplayer_players_mouseup(rct_window *w, int widgetIndex)
 
 static void window_multiplayer_players_resize(rct_window *w)
 {
-	window_set_resize(w, 320, 124, 500, 450);
+	window_set_resize(w, 420, 124, 500, 450);
 
 	w->no_list_items = network_get_num_players();
 	w->list_item_positions[0] = 0;
@@ -384,7 +384,8 @@ static void window_multiplayer_players_paint(rct_window *w, rct_drawpixelinfo *d
 	// Columns
 	gfx_draw_string_left(dpi, STR_PLAYER, NULL, w->colours[2], w->x + 6, 58 - 12 + w->y + 1);
 	gfx_draw_string_left(dpi, STR_GROUP, NULL, w->colours[2], w->x + 180, 58 - 12 + w->y + 1);
-	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 263, 58 - 12 + w->y + 1);
+	gfx_draw_string_left(dpi, STR_LAST_ACTION, NULL, w->colours[2], w->x + 263, 58 - 12 + w->y + 1);
+	gfx_draw_string_left(dpi, STR_PING, NULL, w->colours[2], w->x + 363, 58 - 12 + w->y + 1);
 
 	// Number of players
 	stringId = w->no_list_items == 1 ? STR_X_PLAYER : STR_X_PLAYERS;
@@ -434,6 +435,14 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 				gfx_draw_string(dpi, buffer, colour, 173, y - 1);
 			}
 
+			// Draw last action
+			int action = network_get_player_last_action(i);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_ACTION_NA;
+			if (action != -999) {
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(action);
+			}
+			gfx_draw_string_left(dpi, 1191, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 256, y - 1);
+
 			// Draw ping
 			lineCh = buffer;
 			int ping = network_get_player_ping(i);
@@ -446,7 +455,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 				lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
 			}
 			sprintf(lineCh, "%d ms", ping);
-			gfx_draw_string(dpi, buffer, colour, 256, y - 1);
+			gfx_draw_string(dpi, buffer, colour, 356, y - 1);
 		}
 		y += 10;
 	}

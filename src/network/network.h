@@ -157,9 +157,10 @@ public:
 	uint16 ping;
 	uint8 flags;
 	uint8 group;
-	uint16 reserved;
 	money32 money_spent;
 	unsigned int commands_ran;
+	int last_action;
+	uint32 last_action_time;
 };
 
 class NetworkAction
@@ -208,7 +209,7 @@ public:
 	std::string& GetName();
 	void SetName(std::string name);
 	rct_string_id GetNameStringId();
-	std::array<uint8, 16> actions_allowed;
+	std::array<uint8, 8> actions_allowed;
 	uint8 id;
 
 private:
@@ -420,6 +421,8 @@ int network_get_player_ping(unsigned int index);
 int network_get_player_id(unsigned int index);
 money32 network_get_player_money_spent(unsigned int index);
 void network_add_player_money_spent(unsigned int index, money32 cost);
+int network_get_player_last_action(unsigned int index);
+void network_set_player_last_action(unsigned int index, int command);
 unsigned int network_get_player_commands_ran(unsigned int index);
 int network_get_player_index(uint8 id);
 uint8 network_get_player_group(unsigned int index);

@@ -543,6 +543,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			}
 
 			if (network_get_mode() == NETWORK_MODE_SERVER && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+				network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
 				network_add_player_money_spent(network_get_current_player_id(), cost);
 			}
 

@@ -4000,6 +4000,8 @@ STR_5658    :Park Funding
 STR_5659    :Kick Player
 STR_5660    :Modify Groups
 STR_5661    :Set Player Group
+STR_5662    :N/A
+STR_5704    :Last Action:
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
