@@ -23,6 +23,8 @@
 		D4B63B951C43028200367A37 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4B63B931C43028200367A37 /* Console.cpp */; };
 		D4B63B981C43028F00367A37 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4B63B961C43028F00367A37 /* String.cpp */; };
 		D4B85B5B1C41C7F3005C568A /* cable_lift.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B85B591C41C7F3005C568A /* cable_lift.c */; };
+		D4C0EDCF1C52EA5000A03A06 /* multiplayer.c in Sources */ = {isa = PBXBuildFile; fileRef = D4C0EDCE1C52EA5000A03A06 /* multiplayer.c */; };
+		D4C0EDD11C52EA6400A03A06 /* player.c in Sources */ = {isa = PBXBuildFile; fileRef = D4C0EDD01C52EA6400A03A06 /* player.c */; };
 		D4D35E2C1C45BD9B00AAFCB4 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4D35E2A1C45BD9B00AAFCB4 /* Path.cpp */; };
 		D4D4DF141C34697B0048BE43 /* image_io.c in Sources */ = {isa = PBXBuildFile; fileRef = D4D4DF121C34697B0048BE43 /* image_io.c */; };
 		D4EC47DF1C26342F0024B507 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC46D61C26342F0024B507 /* addresses.c */; };
@@ -136,7 +138,6 @@
 		D4EC484E1C26342F0024B507 /* news.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC479D1C26342F0024B507 /* news.c */; };
 		D4EC484F1C26342F0024B507 /* options.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC479E1C26342F0024B507 /* options.c */; };
 		D4EC48501C26342F0024B507 /* park.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC479F1C26342F0024B507 /* park.c */; };
-		D4EC48511C26342F0024B507 /* player_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47A01C26342F0024B507 /* player_list.c */; };
 		D4EC48521C26342F0024B507 /* publisher_credits.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47A11C26342F0024B507 /* publisher_credits.c */; };
 		D4EC48531C26342F0024B507 /* research.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47A21C26342F0024B507 /* research.c */; };
 		D4EC48541C26342F0024B507 /* ride.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EC47A31C26342F0024B507 /* ride.c */; };
@@ -240,6 +241,8 @@
 		D4B63B971C43028F00367A37 /* String.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
 		D4B85B591C41C7F3005C568A /* cable_lift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cable_lift.c; sourceTree = "<group>"; };
 		D4B85B5A1C41C7F3005C568A /* cable_lift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cable_lift.h; sourceTree = "<group>"; };
+		D4C0EDCE1C52EA5000A03A06 /* multiplayer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = multiplayer.c; sourceTree = "<group>"; };
+		D4C0EDD01C52EA6400A03A06 /* player.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = player.c; sourceTree = "<group>"; };
 		D4D35E2A1C45BD9B00AAFCB4 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
 		D4D35E2B1C45BD9B00AAFCB4 /* Path.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Path.hpp; sourceTree = "<group>"; };
 		D4D4DF121C34697B0048BE43 /* image_io.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = image_io.c; path = src/image_io.c; sourceTree = "<group>"; };
@@ -429,7 +432,6 @@
 		D4EC479D1C26342F0024B507 /* news.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = news.c; sourceTree = "<group>"; };
 		D4EC479E1C26342F0024B507 /* options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = options.c; sourceTree = "<group>"; };
 		D4EC479F1C26342F0024B507 /* park.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = park.c; sourceTree = "<group>"; };
-		D4EC47A01C26342F0024B507 /* player_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = player_list.c; sourceTree = "<group>"; };
 		D4EC47A11C26342F0024B507 /* publisher_credits.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = publisher_credits.c; sourceTree = "<group>"; };
 		D4EC47A21C26342F0024B507 /* research.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = research.c; sourceTree = "<group>"; };
 		D4EC47A31C26342F0024B507 /* ride.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ride.c; sourceTree = "<group>"; };
@@ -949,6 +951,7 @@
 				D4EC47961C26342F0024B507 /* map_tooltip.c */,
 				D4EC47971C26342F0024B507 /* mapgen.c */,
 				D4EC47981C26342F0024B507 /* maze_construction.c */,
+				D4C0EDCE1C52EA5000A03A06 /* multiplayer.c */,
 				D4EC47991C26342F0024B507 /* music_credits.c */,
 				D4EC479A1C26342F0024B507 /* network_status.c */,
 				D4EC479B1C26342F0024B507 /* new_campaign.c */,
@@ -957,7 +960,7 @@
 				D4EC479D1C26342F0024B507 /* news.c */,
 				D4EC479E1C26342F0024B507 /* options.c */,
 				D4EC479F1C26342F0024B507 /* park.c */,
-				D4EC47A01C26342F0024B507 /* player_list.c */,
+				D4C0EDD01C52EA6400A03A06 /* player.c */,
 				D4EC47A11C26342F0024B507 /* publisher_credits.c */,
 				D4EC47A21C26342F0024B507 /* research.c */,
 				D4EC47A31C26342F0024B507 /* ride.c */,
@@ -1369,7 +1372,6 @@
 				D4EC48611C26342F0024B507 /* text_input.c in Sources */,
 				D4EC48431C26342F0024B507 /* land_rights.c in Sources */,
 				D4EC486B1C26342F0024B507 /* tooltip.c in Sources */,
-				D4EC48511C26342F0024B507 /* player_list.c in Sources */,
 				D4EC48231C26342F0024B507 /* station.c in Sources */,
 				D4EC484D1C26342F0024B507 /* new_ride.c in Sources */,
 				D4EC484A1C26342F0024B507 /* music_credits.c in Sources */,
@@ -1390,6 +1392,7 @@
 				D4EC47ED1C26342F0024B507 /* scrolling_text.c in Sources */,
 				D4EC483D1C26342F0024B507 /* footpath.c in Sources */,
 				D4EC47E81C26342F0024B507 /* drawing.c in Sources */,
+				D4C0EDCF1C52EA5000A03A06 /* multiplayer.c in Sources */,
 				D4EC47F71C26342F0024B507 /* console.c in Sources */,
 				D4EC47FA1C26342F0024B507 /* screenshot.c in Sources */,
 				D4EC485A1C26342F0024B507 /* server_start.c in Sources */,
@@ -1448,6 +1451,7 @@
 				D4EC47E11C26342F0024B507 /* mixer.cpp in Sources */,
 				D4B63B951C43028200367A37 /* Console.cpp in Sources */,
 				D4EC481E1C26342F0024B507 /* rct2.c in Sources */,
+				D4C0EDD11C52EA6400A03A06 /* player.c in Sources */,
 				D4EC48801C26342F0024B507 /* sprite.c in Sources */,
 				D4EC486C1C26342F0024B507 /* top_toolbar.c in Sources */,
 				D4EC48621C26342F0024B507 /* themes.c in Sources */,

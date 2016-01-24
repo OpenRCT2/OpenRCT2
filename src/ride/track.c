@@ -4905,9 +4905,9 @@ void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *
 	brakesSpeed = ((*ebx >> 8) & 0xFF);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint8) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint8) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint8) = z;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		*ebx = 0;

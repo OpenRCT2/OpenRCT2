@@ -110,7 +110,7 @@ typedef enum {
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 typedef enum {
-	DDIDX_PLAYER_LIST = 0
+	DDIDX_MULTIPLAYER = 0
 } TOP_TOOLBAR_NETWORK_DDIDX;
 
 enum {
@@ -1405,6 +1405,15 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	}
 }
 
+void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	if (ebx != MONEY32_UNDEFINED) {
+		int bannerId = edi;
+
+		audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		window_banner_open(bannerId);
+	}
+}
 /**
  *
  *  rct2: 0x006E2CC6
@@ -1619,13 +1628,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			.esi = GAME_COMMAND_PLACE_BANNER,
 			.edi = parameter_3
 		};
-		money32 cost = game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
-		if (cost != MONEY32_UNDEFINED) {
-			int bannerId = regs.edi;
-
-			audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
-			window_banner_open(bannerId);
-		}
+		game_command_callback = game_command_callback_place_banner;
+		game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
 		break;
 	}
 	}
@@ -2941,7 +2945,7 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 
 void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
-	gDropdownItemsFormat[0] = STR_PLAYER_LIST;
+	gDropdownItemsFormat[0] = STR_MULTIPLAYER;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2952,7 +2956,7 @@ void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 		1
 	);
 
-	gDropdownDefaultIndex = DDIDX_PLAYER_LIST;
+	gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
 
 void top_toolbar_debug_menu_dropdown(short dropdownIndex)
@@ -2985,8 +2989,8 @@ void top_toolbar_network_menu_dropdown(short dropdownIndex)
 	rct_window* w = window_get_main();
 	if (w) {
 		switch (dropdownIndex) {
-		case DDIDX_PLAYER_LIST:
-			window_player_list_open();
+		case DDIDX_MULTIPLAYER:
+			window_multiplayer_open();
 			break;
 		}
 	}

@@ -658,7 +658,7 @@ void park_set_open(int open)
  */
 void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
 		*ebx = 0;
 		return;
 	}

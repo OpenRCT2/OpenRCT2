@@ -64,6 +64,8 @@ int gGameSpeed = 1;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 
+extern void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	0,
@@ -71,7 +73,9 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_ride_construct_placed_front,
 	game_command_callback_ride_construct_placed_back,
 	game_command_callback_ride_remove_track_piece,
+	game_command_callback_place_banner,
 };
+int game_command_playerid = -1;
 
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
@@ -418,8 +422,6 @@ static int game_check_affordability(int cost)
 	return MONEY32_UNDEFINED;
 }
 
-static GAME_COMMAND_POINTER* new_game_command_table[62];
-
 /**
  *
  *  rct2: 0x006677F2
@@ -451,6 +453,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	original_edi = *edi;
 	original_ebp = *ebp;
 
+	if (command >= countof(new_game_command_table)) {
+		return MONEY32_UNDEFINED;
+	}
+
 	flags = *ebx;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
 
@@ -465,6 +471,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		command == GAME_COMMAND_PLACE_BANNER ||
 		command == GAME_COMMAND_PLACE_PATH)) {
 		scenery_remove_ghost_tool_placement();
+	}
+
+	if (game_command_playerid == -1) {
+		game_command_playerid = network_get_current_player_id();
 	}
 
 	*ebx &= ~GAME_COMMAND_FLAG_APPLY;
@@ -507,10 +517,12 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			// Second call to actually perform the operation
 			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
-			if (game_command_callback) {
+			if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 				game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
 				game_command_callback = 0;
 			}
+
+			game_command_playerid = -1;
 
 			*edx = *ebx;
 
@@ -531,6 +543,16 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 					if (cost != 0)
 						money_effect_create(cost);
 				}
+			}
+
+			if (network_get_mode() == NETWORK_MODE_SERVER && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+				network_set_player_last_action(network_get_player_index(network_get_current_player_id()), command);
+				rct_xyz16 coord;
+				coord.x = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16);
+				coord.y = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16);
+				coord.z = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16);
+				network_set_player_last_action_coord(network_get_player_index(network_get_current_player_id()), coord);
+				network_add_player_money_spent(network_get_current_player_id(), cost);
 			}
 
 			return cost;
@@ -1169,7 +1191,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-static GAME_COMMAND_POINTER* new_game_command_table[62] = {
+GAME_COMMAND_POINTER* new_game_command_table[65] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1231,5 +1253,8 @@ static GAME_COMMAND_POINTER* new_game_command_table[62] = {
 	game_command_set_banner_name,
 	game_command_set_sign_name,
 	game_command_set_banner_style,
-	game_command_set_sign_style
+	game_command_set_sign_style,
+	game_command_set_player_group,
+	game_command_modify_groups,
+	game_command_kick_player
 };
