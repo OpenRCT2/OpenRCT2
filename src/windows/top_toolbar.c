@@ -1405,6 +1405,15 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	}
 }
 
+void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	if (ebx != MONEY32_UNDEFINED) {
+		int bannerId = edi;
+
+		audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		window_banner_open(bannerId);
+	}
+}
 /**
  *
  *  rct2: 0x006E2CC6
@@ -1619,13 +1628,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			.esi = GAME_COMMAND_PLACE_BANNER,
 			.edi = parameter_3
 		};
-		money32 cost = game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
-		if (cost != MONEY32_UNDEFINED) {
-			int bannerId = regs.edi;
-
-			audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
-			window_banner_open(bannerId);
-		}
+		game_command_callback = game_command_callback_place_banner;
+		game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
 		break;
 	}
 	}

@@ -4850,6 +4850,11 @@ void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* e
 		return;
 	}
 
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+		return;
+	}
+
 	utf8 *buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
 	utf8 *dst = buffer;
 	dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
@@ -4903,6 +4908,11 @@ void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		return;
 	}
 
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+		return;
+	}
+
 	if (newName[0] != 0) {
 		rct_string_id string_id = user_string_allocate(128, newName);
 		if (string_id != 0) {
@@ -4944,6 +4954,12 @@ void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* 
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
+
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+		*ebx = 0;
+		return;
+	}
+
 	rct_banner* banner = &gBanners[*ecx];
 
 	banner->colour = (uint8)*edx;
@@ -5037,6 +5053,12 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
+
+		if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+			*ebx = 0;
+			return;
+		}
+
 		map_element->flags &= 0x9F;
 		map_element->properties.fence.item[1] =
 			mainColour |
@@ -5049,6 +5071,11 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 		if (mapElement == NULL || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 2984;
 			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+
+		if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+			*ebx = 0;
 			return;
 		}
 
