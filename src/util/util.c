@@ -347,6 +347,14 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 			buffer_size *= 2;
 			out_size = buffer_size;
 			buffer = realloc(buffer, buffer_size);
+		} else if (ret == Z_STREAM_ERROR) {
+			log_error("Your build is shipped with broken zlib. Please use the official build.");
+			log_error("Falling back to non-compressed sv6.");
+			buffer = realloc(buffer, data_in_size);
+			memcpy(buffer, data, data_in_size);
+			out_size = data_in_size;
+			ret = Z_OK;
+			break;
 		}
 		ret = uncompress(buffer, &out_size, data, data_in_size);
 	} while (ret != Z_OK);
