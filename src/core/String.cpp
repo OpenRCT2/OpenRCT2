@@ -149,7 +149,7 @@ namespace String
 
     const utf8 * SkipBOM(const utf8 * buffer)
     {
-        if (buffer[0] == 0xEF && buffer[1] == 0xBB && buffer[2] == 0xBF)
+        if ((unsigned char)buffer[0] == 0xEF && (unsigned char)buffer[1] == 0xBB && (unsigned char)buffer[2] == 0xBF)
         {
             return buffer + 3;
         }
