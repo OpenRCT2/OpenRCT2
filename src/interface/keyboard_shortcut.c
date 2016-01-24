@@ -43,9 +43,9 @@ void keyboard_shortcut_set(int key)
 	int i;
 
 	// Unmap shortcut that already uses this key
-	for (i = 0; i < 32; i++) {
+	for (i = 0; i < SHORTCUT_COUNT; i++) {
 		if (key == gShortcutKeys[i]) {
-			gShortcutKeys[i] = 0xFFFF;
+			gShortcutKeys[i] = SHORTCUT_UNDEFINED;
 			break;
 		}
 	}
@@ -87,7 +87,7 @@ void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
 	char formatBuffer[256];
 
 	*buffer = 0;
-	if (shortcutKey == 0xFFFF) return;
+	if (shortcutKey == SHORTCUT_UNDEFINED) return;
 	if (shortcutKey & 0x100) {
 		format_string(formatBuffer, STR_SHIFT_PLUS, NULL);
 		strcat(buffer, formatBuffer);
