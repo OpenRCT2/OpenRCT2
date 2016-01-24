@@ -1278,13 +1278,22 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	size_t chunksize = 1000;
 	size_t out_size;
 	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
-	unsigned char *header = (unsigned char *)_strdup("open2_sv6_zlib");
-	size_t header_len = strlen((char *)header) + 1; // account for null terminator
-	header = (unsigned char *)realloc(header, header_len + out_size);
-	memcpy(&header[header_len], compressed, out_size);
-	out_size += header_len;
-	free(compressed);
-	log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
+	unsigned char *header;
+	if (compressed != NULL)
+	{
+		header = (unsigned char *)_strdup("open2_sv6_zlib");
+		size_t header_len = strlen((char *)header) + 1; // account for null terminator
+		header = (unsigned char *)realloc(header, header_len + out_size);
+		memcpy(&header[header_len], compressed, out_size);
+		out_size += header_len;
+		free(compressed);
+		log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
+	} else {
+		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
+		header = (unsigned char *)malloc(size);
+		out_size = size;
+		memcpy(header, &buffer[0], size);
+	}
 	for (size_t i = 0; i < out_size; i += chunksize) {
 		int datasize = (std::min)(chunksize, out_size - i);
 		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
