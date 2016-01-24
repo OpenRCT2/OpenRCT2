@@ -1421,7 +1421,7 @@ void Network::Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id
 void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GROUPLIST << (uint8)group_list.size();
+	*packet << (uint32)NETWORK_COMMAND_GROUPLIST << (uint8)group_list.size() << default_group;
 	for (unsigned int i = 0; i < group_list.size(); i++) {
 		group_list[i]->Write(*packet);
 	}
@@ -1894,7 +1894,7 @@ void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPack
 {
 	group_list.clear();
 	uint8 size;
-	packet >> size;
+	packet >> size >> default_group;
 	for (unsigned int i = 0; i < size; i++) {
 		NetworkGroup group;
 		group.Read(packet);
