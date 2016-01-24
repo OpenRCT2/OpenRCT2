@@ -2706,7 +2706,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	vehicle = GET_VEHICLE(spriteIndex);
 
 	if (measurement->flags & RIDE_MEASUREMENT_FLAG_UNLOADING) {
-		if (vehicle->status != VEHICLE_STATUS_DEPARTING && vehicle->status != VEHICLE_STATUS_STOPPING)
+		if (vehicle->status != VEHICLE_STATUS_DEPARTING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
 			return;
 
 		measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
@@ -2798,7 +2798,7 @@ void ride_measurements_update()
 					continue;
 
 				vehicle = GET_VEHICLE(spriteIndex);
-				if (vehicle->status == VEHICLE_STATUS_DEPARTING || vehicle->status == VEHICLE_STATUS_STOPPING) {
+				if (vehicle->status == VEHICLE_STATUS_DEPARTING || vehicle->status == VEHICLE_STATUS_TRAVELLING_CABLE_LIFT) {
 					measurement->vehicle_index = j;
 					measurement->current_station = vehicle->current_station;
 					measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
