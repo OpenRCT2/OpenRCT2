@@ -1801,6 +1801,12 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 {
 	money32 cost = 0;
 
+	if (selectionType < 0 || selectionType >= countof(map_element_raise_styles))
+	{
+		log_warning("Invalid selection type %d for raising land", selectionType);
+		return MONEY32_UNDEFINED;
+	}
+
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 	}

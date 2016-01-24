@@ -4082,7 +4082,17 @@ static bool sub_6C4D89(int x, int y, int z, int direction, int rideIndex, int fl
 static money32 track_place(int rideIndex, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
 {
 	rct_ride *ride = get_ride(rideIndex);
+	if (ride == NULL)
+	{
+		log_warning("Invalid ride for track placement, rideIndex = %d", rideIndex);
+		return MONEY32_UNDEFINED;
+	}
 	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
+	if (rideEntry == (rct_ride_type *)0xFFFFFFFF)
+	{
+		log_warning("Invalid ride type for track placement, rideIndex = %d", rideIndex);
+		return MONEY32_UNDEFINED;
+	}
 	rct_map_element *mapElement;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;

@@ -559,8 +559,14 @@ void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, i
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RESEARCH * 4;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		if (!setPriorities)
+		if (!setPriorities) {
+			if (fundingAmount < 0 || fundingAmount >= countof(_researchRate)) {
+				*ebx = MONEY32_UNDEFINED;
+				log_warning("Invalid research rate %d", fundingAmount);
+				return;
+			}
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = fundingAmount;
+		}
 		else
 			RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8) = activeCategories;
 
