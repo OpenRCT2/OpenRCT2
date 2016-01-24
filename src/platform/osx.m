@@ -164,9 +164,11 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 		panel.allowedFileTypes = extensions;
 		panel.directoryURL = [NSURL fileURLWithPath:directory];
 		if ([panel runModal] == NSFileHandlingPanelCancelButton){
+			SDL_RaiseWindow(gWindow);
 			return 0;
 		} else {
 			strcpy(filename, panel.URL.path.UTF8String);
+			SDL_RaiseWindow(gWindow);
 			return 1;
 		}
 	}
