@@ -2304,6 +2304,8 @@ enum {
 	STR_ENTER_NEW_NAME_FOR_THIS_GROUP = 5711,
 	STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF = 5712,
 
+	STR_SHORTCUT_SHOW_OPTIONS = 5714,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
