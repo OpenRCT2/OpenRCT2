@@ -6142,8 +6142,8 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 			vehicle->var_C8 += 0x3333;
 		} else {
 			vehicle->var_C8 += 0x3333;
-			vehicle->var_C8 += 1;
-			vehicle->var_C8 &= 7;
+			vehicle->var_C5 += 1;
+			vehicle->var_C5 &= 7;
 			vehicle_invalidate(vehicle);
 		}
 		break;
