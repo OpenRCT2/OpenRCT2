@@ -304,6 +304,8 @@ public:
 	void RemoveGroup(uint8 id);
 	uint8 GetDefaultGroup();
 	void SetDefaultGroup(uint8 id);
+	void SaveGroups();
+	void LoadGroups();
 
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);

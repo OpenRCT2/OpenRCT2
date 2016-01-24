@@ -566,27 +566,6 @@ bool Network::Init()
 	}
 #endif
 
-	// Hardcoded permission groups
-	std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
-	admin->SetName("Admin");
-	admin->actions_allowed.fill(0xFF);
-	admin->id = 0;
-	group_list.push_back(std::move(admin));
-	std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
-	spectator->SetName("Spectator");
-	spectator->ToggleActionPermission(0); // Chat
-	spectator->id = 1;
-	group_list.push_back(std::move(spectator));
-	std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
-	user->SetName("User");
-	user->actions_allowed.fill(0xFF);
-	user->ToggleActionPermission(15); // Kick Player
-	user->ToggleActionPermission(16); // Modify Groups
-	user->ToggleActionPermission(17); // Set Player Group
-	user->id = 2;
-	group_list.push_back(std::move(user));
-	SetDefaultGroup(1);
-
 	status = NETWORK_STATUS_READY;
 	return true;
 }
@@ -685,6 +664,8 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		log_error("Failed to set non-blocking mode.");
 		return false;
 	}
+
+	LoadGroups();
 
 	NetworkPlayer* player = AddPlayer();
 	player->SetName(gConfigNetwork.player_name);
@@ -1175,6 +1156,87 @@ void Network::SetDefaultGroup(uint8 id)
 	if (GetGroupByID(id)) {
 		default_group = id;
 	}
+}
+
+void Network::SaveGroups()
+{
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		utf8 path[MAX_PATH];
+		SDL_RWops *file;
+
+		platform_get_user_directory(path, NULL);
+		strcat(path, "groups.cfg");
+
+		file = SDL_RWFromFile(path, "wb");
+		if (file == NULL) {
+			return;
+		}
+
+		std::unique_ptr<NetworkPacket> stream = std::move(NetworkPacket::Allocate());
+		*stream << (uint8)group_list.size();
+		*stream << default_group;
+		for (auto it = group_list.begin(); it != group_list.end(); it++) {
+			(*it)->Write(*stream);
+		}
+
+		SDL_RWwrite(file, stream->GetData(), stream->data->size(), 1);
+
+		SDL_RWclose(file);
+	}
+}
+
+void Network::LoadGroups()
+{
+	group_list.clear();
+
+	utf8 path[MAX_PATH];
+	SDL_RWops *file;
+
+	platform_get_user_directory(path, NULL);
+	strcat(path, "groups.cfg");
+
+	file = SDL_RWFromFile(path, "rb");
+	if (file == NULL) {
+		// Hardcoded permission groups
+		std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
+		admin->SetName("Admin");
+		admin->actions_allowed.fill(0xFF);
+		admin->id = 0;
+		group_list.push_back(std::move(admin));
+		std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
+		spectator->SetName("Spectator");
+		spectator->ToggleActionPermission(0); // Chat
+		spectator->id = 1;
+		group_list.push_back(std::move(spectator));
+		std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
+		user->SetName("User");
+		user->actions_allowed.fill(0xFF);
+		user->ToggleActionPermission(15); // Kick Player
+		user->ToggleActionPermission(16); // Modify Groups
+		user->ToggleActionPermission(17); // Set Player Group
+		user->id = 2;
+		group_list.push_back(std::move(user));
+		SetDefaultGroup(1);
+		return;
+	}
+
+	std::unique_ptr<NetworkPacket> stream = std::move(NetworkPacket::Allocate());
+	uint8 byte;
+	while(SDL_RWread(file, &byte, sizeof(byte), 1)){
+		*stream << byte;
+	}
+	stream->size = (uint16)stream->data->size();
+
+	uint8 num;
+	*stream >> num >> default_group;
+	for (unsigned int i = 0; i < num; i++) {
+		NetworkGroup group;
+		group.Read(*stream);
+		std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(group)); // change to make_unique in c++14
+		group_list.push_back(std::move(newgroup));
+	}
+
+	SDL_RWclose(file);
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password)
@@ -2156,6 +2218,8 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		}
 	}break;
 	}
+
+	gNetwork.SaveGroups();
 
 	*ebx = 0;
 }
