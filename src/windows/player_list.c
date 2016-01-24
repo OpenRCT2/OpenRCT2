@@ -27,6 +27,8 @@
 #include "../windows/dropdown.h"
 #include "../util/util.h"
 
+static char _password[33];
+
 enum WINDOW_PLAYER_LIST_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -34,6 +36,8 @@ enum WINDOW_PLAYER_LIST_WIDGET_IDX {
 	WIDX_CONTENT_PANEL,
 	WIDX_TAB1,
 	WIDX_LIST,
+	WIDX_ADDPW,
+	WIDX_PASSWORD,
 };
 
 static rct_widget window_player_list_widgets[] = {
@@ -43,6 +47,7 @@ static rct_widget window_player_list_widgets[] = {
 	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0x0FFFFFFFF,				STR_NONE },									// content panel
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x02000144E,				STR_NONE },									// tab
 	{ WWT_SCROLL,			1,	3,		336,	60,		236,	2,							STR_NONE },									// list
+	{ WWT_DROPDOWN_BUTTON,	0,	155,	11,	    17,		29,		STR_NONE,		STR_HIRE_STAFF_TIP },				// hire button
 	{ WIDGETS_END },
 };
 
@@ -54,6 +59,7 @@ static void window_player_list_update(rct_window *w);
 static void window_player_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
 static void window_player_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
 static void window_player_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
+static void window_player_list_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_player_list_invalidate(rct_window *w);
 static void window_player_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_player_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
@@ -78,7 +84,7 @@ static rct_window_event_list window_player_list_events = {
 	window_player_list_scrollmousedown,
 	NULL,
 	window_player_list_scrollmouseover,
-	NULL,
+	window_player_list_textinput,
 	NULL,
 	NULL,
 	NULL,
@@ -113,7 +119,7 @@ void window_player_list_open()
 	window = window_create_auto_pos(320, 144, &window_player_list_events, WC_PLAYER_LIST, WF_10 | WF_RESIZABLE);
 
 	window->widgets = window_player_list_widgets;
-	window->enabled_widgets = 1 << WIDX_CLOSE;
+	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ADDPW);
 	window_init_scroll_widgets(window);
 	window->no_list_items = 0;
 	window->selected_list_item = -1;
@@ -135,6 +141,9 @@ static void window_player_list_mouseup(rct_window *w, int widgetIndex)
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
+		break;
+	case WIDX_ADDPW:
+		window_text_input_raw_open(w, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, _password, 32);
 		break;
 	}
 }
@@ -259,6 +268,10 @@ static void window_player_list_invalidate(rct_window *w)
 	window_player_list_widgets[WIDX_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
 	window_player_list_widgets[WIDX_LIST].right = w->width - 4;
 	window_player_list_widgets[WIDX_LIST].bottom = w->height - 0x0F;
+	
+	window_player_list_widgets[WIDX_ADDPW].image = STR_HIRE_HANDYMAN;
+	window_player_list_widgets[WIDX_ADDPW].left = w->width - 155;
+	window_player_list_widgets[WIDX_ADDPW].right = w->width - 11;
 }
 
 static void window_player_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -356,4 +369,17 @@ static void window_player_list_draw_tab_image(rct_window *w, rct_drawpixelinfo *
 static void window_player_list_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_player_list_draw_tab_image(w, dpi, 0, SPR_TAB_GUESTS_0);
+}
+
+
+static void window_player_list_textinput(rct_window *w, int widgetIndex, char *text)
+{
+	strcpy(_password, "");
+	switch (widgetIndex) {
+		case WIDX_PASSWORD:
+			if (text != NULL)
+				safe_strncpy(_password, text, sizeof(_password));
+			network_set_password(_password);
+			break;
+	}
 }
