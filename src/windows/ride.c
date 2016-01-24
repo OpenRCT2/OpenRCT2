@@ -1851,7 +1851,7 @@ static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
 	}
 
 	dropdown_set_checked(checkedIndex, true);
-	gDropdownHighlightedIndex = highlightedIndex;
+	gDropdownDefaultIndex = highlightedIndex;
 }
 
 /**
@@ -4740,7 +4740,7 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 		0,
 		2
 	);
-	gDropdownHighlightedIndex = 0;
+	gDropdownDefaultIndex = 0;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 		gDropdownItemsDisabled |= 2;
 }

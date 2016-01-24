@@ -3190,6 +3190,7 @@ static void window_ride_construction_select_map_tiles(rct_ride *ride, int trackT
  */
 static void window_ride_construction_show_special_track_dropdown(rct_window *w, rct_widget *widget)
 {
+	int defaultIndex = -1;
 	for (int i = 0; i < _numCurrentPossibleRideConfigurations; i++) {
 		uint8 trackPiece = _currentPossibleRideConfigurations[i];
 		rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
@@ -3200,7 +3201,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 		}
 		gDropdownItemsFormat[i] = trackPieceStringId;
 		if ((trackPiece | 0x100) == _currentTrackCurve) {
-			gDropdownHighlightedIndex = i;
+			defaultIndex = i;
 		}
 	}
 
@@ -3215,6 +3216,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
 	);
 
 	gDropdownItemsDisabled = (uint64)RCT2_GLOBAL(0x00F4409C, uint32);
+	gDropdownDefaultIndex = defaultIndex;
 }
 
 /**

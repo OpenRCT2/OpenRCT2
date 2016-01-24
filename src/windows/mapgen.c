@@ -509,7 +509,7 @@ static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
 static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
 	int i;
-
+	int defaultIndex = -1;
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_UP:
 		_mapSize = min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
@@ -540,7 +540,7 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + window_land_floor_texture_order[i];
 			if (window_land_floor_texture_order[i] == _floorTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -551,13 +551,14 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[14]
 		);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	case WIDX_WALL_TEXTURE:
 		for (i = 0; i < 4; i++) {
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + window_land_wall_texture_order[i];
 			if (window_land_wall_texture_order[i] == _wallTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -568,6 +569,7 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[4]
 		);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	}
 }
@@ -818,7 +820,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
 static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
 	int i;
-
+	int defaultIndex = -1;
 	switch (widgetIndex) {
 	case WIDX_SIMPLEX_LOW_UP:
 		_simplex_low = min(_simplex_low + 1, 24);
@@ -873,7 +875,7 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + window_land_floor_texture_order[i];
 			if (window_land_floor_texture_order[i] == _floorTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -884,13 +886,14 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[14]
 			);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	case WIDX_SIMPLEX_WALL_TEXTURE:
 		for (i = 0; i < 4; i++) {
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + window_land_wall_texture_order[i];
 			if (window_land_wall_texture_order[i] == _wallTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -901,6 +904,7 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[4]
 			);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	}
 }

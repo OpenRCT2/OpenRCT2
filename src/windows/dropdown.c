@@ -420,11 +420,12 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 		if (availableColours & (1 << i))
 			numItems++;
 
+	int defaultIndex = -1;
 	// Set items
 	for (i = 0; i < 32; i++) {
 		if (availableColours & (1 << i)) {
 			if (selectedColour == i)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 
 			gDropdownItemsFormat[i] = 0xFFFE;
 			gDropdownItemsArgs[i] = ((uint64)i << 32) | (0x20000000 | (i << 19) | 5059);
@@ -446,4 +447,5 @@ void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, ui
 
 	gDropdownIsColour = true;
 	gDropdownLastColourHover = -1;
+	gDropdownDefaultIndex = defaultIndex;
 }
