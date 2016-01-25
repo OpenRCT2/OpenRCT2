@@ -4017,6 +4017,7 @@ STR_5712    :Can't modify permission that you do not have yourself
 STR_5713    :Kick Player
 STR_5714    :Show options window
 STR_5715    :New Game
+STR_5716    :Not allowed in multiplayer mode
 
 #############
 # Scenarios #

@@ -36,6 +36,7 @@
 #include "../world/scenery.h"
 #include "../interface/themes.h"
 #include "../cheats.h"
+#include "../network/network.h"
 #include "error.h"
 
 #define CHEATS_MONEY_INCREMENT MONEY(5000,00)
@@ -760,6 +761,13 @@ static void cheat_set_staff_speed(uint8 value)
 
 void window_cheats_open()
 {
+#ifndef DISABLE_NETWORK
+	if (network_get_mode() != NETWORK_MODE_NONE)
+	{
+		window_error_open(STR_WARNING_IN_CAPS, STR_NOT_ALLOWED_IN_MULTIPLAYER);
+		return;
+	}
+#endif
 	rct_window* window;
 
 	// Check if window is already open
