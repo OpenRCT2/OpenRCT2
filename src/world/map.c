@@ -28,6 +28,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../network/network.h"
 #include "../openrct2.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
@@ -770,6 +771,14 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 	// Remove element
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+			rct_xyz16 coord;
+			coord.x = x + 16;
+			coord.y = y + 16;
+			coord.z = map_element_height(coord.x, coord.y);
+			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+		}
+
 		map_invalidate_tile_full(x, y);
 		map_element_remove(map_element);
 	}
@@ -911,6 +920,14 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		}
 	}
 
+	if (flags & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+		rct_xyz16 coord;
+		coord.x = x + 16;
+		coord.y = y + 16;
+		coord.z = map_element_height(coord.x, coord.y);
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
+
 	*ebx = scenery_entry->large_scenery.removal_price * 10;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ||
 		calculate_cost == false){
@@ -959,6 +976,14 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	rct_scenery_entry *scenery_entry = g_bannerSceneryEntries[banner->type];
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+			rct_xyz16 coord;
+			coord.x = x + 16;
+			coord.y = y + 16;
+			coord.z = map_element_height(coord.x, coord.y);
+			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+		}
+
 		map_element_remove_banner_entry(map_element);
 		map_invalidate_tile_zoom1(x, y, z, z + 32);
 		map_element_remove(map_element);
@@ -1372,6 +1397,14 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
 		}
 	}
 
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && flags & GAME_COMMAND_FLAG_APPLY) {
+		rct_xyz16 coord;
+		coord.x = ((x0 + x1) / 2) + 16;
+		coord.y = ((y0 + y1) / 2) + 16;
+		coord.z = map_element_height(coord.x, coord.y);
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
+
 	if (clear & (1 << 1)) {
 		map_reset_clear_large_scenery_flag();
 	}
@@ -1499,6 +1532,14 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 				}
 			}
 		}
+	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+		rct_xyz16 coord;
+		coord.x = ((x0 + x1) / 2) + 16;
+		coord.y = ((y0 + y1) / 2) + 16;
+		coord.z = map_element_height(coord.x, coord.y);
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 	}
 
 	cost *= 100;
@@ -1714,6 +1755,14 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 
 	if(flags & GAME_COMMAND_FLAG_APPLY)
 	{
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+			rct_xyz16 coord;
+			coord.x = x + 16;
+			coord.y = y + 16;
+			coord.z = map_element_height(coord.x, coord.y);
+			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+		}
+
 		surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 		surfaceElement->base_height = height;
 		surfaceElement->clearance_height = height;
@@ -1990,6 +2039,13 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		z = water_height_z;
 		if (z != 0)
 			z = base_height_z;
+
+		rct_xyz16 coord;
+		coord.x = x;
+		coord.y = y;
+		coord.z = z;
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
@@ -2055,6 +2111,13 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		z = water_height_z;
 		if (z == 0)
 			z = base_height_z;
+
+		rct_xyz16 coord;
+		coord.x = x;
+		coord.y = y;
+		coord.z = z;
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
@@ -2244,6 +2307,15 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 		log_warning("Invalid coordinates for land smoothing, x = %d, y = %d", x, y);
 		return MONEY32_UNDEFINED;
 	}
+
+	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		rct_xyz16 coord;
+		coord.x = centreX + 16;
+		coord.y = centreY + 16;
+		coord.z = map_element_height(coord.x, coord.y);
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
+
 	int slope = mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
 	if (slope != 0) {
 		commandType = command == 0xFFFF ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
@@ -2594,6 +2666,14 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		return;
 	}
 
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+		rct_xyz16 coord;
+		coord.x = x + 16;
+		coord.y = y + 16;
+		coord.z = map_element_height(coord.x, coord.y);
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
+
 	map_element_remove_banner_entry(map_element);
 	map_invalidate_tile_zoom1(x, y, map_element->base_height * 8, (map_element->base_height * 8) + 72);
 	map_element_remove(map_element);
@@ -2649,6 +2729,14 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 					}
 					*edi = banner_index;
 					if(*ebx & GAME_COMMAND_FLAG_APPLY){
+						if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+							rct_xyz16 coord;
+							coord.x = x + 16;
+							coord.y = y + 16;
+							coord.z = map_element_height(coord.x, coord.y);
+							network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+						}
+
 						rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, (base_height + 1) * 2, 0);
 						gBanners[banner_index].type = type;
 						gBanners[banner_index].colour = colour;
@@ -2823,6 +2911,13 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 						if(gCheatsDisableClearanceChecks || map_can_construct_with_clear_at(x, y, zLow, zHigh, (void*)0x006E0D6E, bl)){
 							RCT2_GLOBAL(0x00F64F14, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x3;
 							if(*ebx & GAME_COMMAND_FLAG_APPLY){
+								if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+									rct_xyz16 coord;
+									coord.x = x + 16;
+									coord.y = y + 16;
+									coord.z = map_element_height(coord.x, coord.y);
+									network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+								}
 								int flags = (bl & 0xf);
 								rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, zLow, flags);
 								RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*) = new_map_element;
@@ -3252,6 +3347,14 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY){
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+			rct_xyz16 coord;
+			coord.x = position.x + 16;
+			coord.y = position.y + 16;
+			coord.z = map_element_height(coord.x, coord.y);
+			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+		}
+
 		map_element = map_element_insert(position.x / 32, position.y / 32, position.z / 8, 0);
 
 		map_animation_create(MAP_ANIMATION_TYPE_WALL, position.x, position.y, position.z / 8);
@@ -3492,6 +3595,14 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 					map_remove_walls_at(curTile.x, curTile.y, zLow * 8, zHigh * 8);
 				}
 			}
+			if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+				rct_xyz16 coord;
+				coord.x = x + 16;
+				coord.y = y + 16;
+				coord.z = map_element_height(coord.x, coord.y);
+				network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+			}
+
 			rct_map_element *new_map_element = map_element_insert(curTile.x / 32, curTile.y / 32, zLow, F43887);
 			map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
 
