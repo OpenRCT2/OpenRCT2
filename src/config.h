@@ -206,16 +206,6 @@ typedef struct {
 } sound_configuration;
 
 typedef struct {
-	uint8 fast_lift_hill;
-	uint8 disable_brakes_failure;
-	uint8 disable_all_breakdowns;
-	uint8 unlock_all_prices;
-	uint8 build_in_pause_mode;
-	uint8 ignore_ride_intensity;
-	uint8 disable_vandalism;
-} cheat_configuration;
-
-typedef struct {
 	utf8string channel;
 	uint8 enable_follower_peep_names;
 	uint8 enable_follower_peep_tracking;
@@ -330,7 +320,6 @@ typedef struct {
 extern general_configuration gConfigGeneral;
 extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
-extern cheat_configuration gConfigCheat;
 extern twitch_configuration gConfigTwitch;
 extern network_configuration gConfigNetwork;
 extern notification_configuration gConfigNotifications;

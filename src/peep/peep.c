@@ -38,6 +38,7 @@
 #include "../management/marketing.h"
 #include "../game.h"
 #include "../ride/track.h"
+#include "../cheats.h"
 #include "peep.h"
 #include "staff.h"
 
@@ -4068,7 +4069,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
  *  rct2: 0x00690848
  */
 static void peep_update_walking_break_scenery(rct_peep* peep){
-	if(gConfigCheat.disable_vandalism)
+	if(gCheatsDisableVandalism)
 		return;
 
 	if (!(peep->flags & PEEP_FLAGS_ANGRY)){
@@ -8137,7 +8138,7 @@ static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
 {
 	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_20)) return false;
 	if (ride->excitement == (ride_rating)0xFFFF) return false;
-	if (ride->intensity > RIDE_RATING(10,00) && !gConfigCheat.ignore_ride_intensity) return false;
+	if (ride->intensity > RIDE_RATING(10,00) && !gCheatsIgnoreRideIntensity) return false;
 	if (peep->happiness < 180) return false;
 	if (peep->energy < 100) return false;
 	if (peep->nausea > 160) return false;
@@ -8168,7 +8169,7 @@ static bool peep_really_liked_ride(rct_peep *peep, rct_ride *ride)
 		peep->happiness >= 215 &&
 		((peep->nausea <= 120 &&
 		ride->excitement != (ride_rating)0xFFFF &&
-		ride->intensity <= RIDE_RATING(10,00))||gConfigCheat.ignore_ride_intensity);
+		ride->intensity <= RIDE_RATING(10,00))||gCheatsIgnoreRideIntensity);
 }
 
 /**
@@ -8842,7 +8843,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 					// If a peep has already decided that they're going to go on a ride, they'll skip the weather and
 					// excitment check and will only do a basic intensity check when they arrive at the ride itself.
 					if (rideIndex == peep->guest_heading_to_ride_id) {
-						if (ride->intensity > RIDE_RATING(10, 00) && !gConfigCheat.ignore_ride_intensity) {
+						if (ride->intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity) {
 							peep_ride_is_too_intense(peep, rideIndex, peepAtRide);
 							return false;
 						}
@@ -8862,7 +8863,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						return false;
 					}
 
-					if (!gConfigCheat.ignore_ride_intensity) {
+					if (!gCheatsIgnoreRideIntensity) {
 						// Intensity calculations. Even though the max intensity can go up to 15, it's capped
 						// at 10.0 (before happiness calculations). A full happiness bar will increase the max
 						// intensity and decrease the min intensity by about 2.5.
@@ -8916,7 +8917,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						return false;
 					}
 
-					if (!gConfigCheat.ignore_ride_intensity) {
+					if (!gCheatsIgnoreRideIntensity) {
 						if (ride->max_positive_vertical_g > FIXED_2DP(5, 00)
 							|| ride->max_negative_vertical_g < FIXED_2DP(-4, 00)
 							|| ride->max_lateral_g > FIXED_2DP(4, 00)) {

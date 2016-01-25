@@ -30,6 +30,7 @@
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../interface/themes.h"
+#include "../cheats.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78
@@ -485,7 +486,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 
 	// Get base Z position
 	mapZ = window_track_place_get_base_z(mapX, mapY);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
 		window_track_place_clear_provisional();
 
 		// Try increasing Z until a feasible placement is found
