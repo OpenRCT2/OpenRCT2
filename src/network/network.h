@@ -306,6 +306,7 @@ public:
 	void SetDefaultGroup(uint8 id);
 	void SaveGroups();
 	void LoadGroups();
+	void FreeStringIds();
 
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
@@ -445,6 +446,7 @@ uint8 network_get_default_group();
 int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);
 int network_can_perform_action(unsigned int groupindex, unsigned int index);
+void network_free_string_ids();
 
 void network_send_map();
 void network_send_chat(const char* text);

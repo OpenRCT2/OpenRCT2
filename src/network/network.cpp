@@ -1239,6 +1239,13 @@ void Network::LoadGroups()
 	SDL_RWclose(file);
 }
 
+void Network::FreeStringIds()
+{
+	for (auto it = group_list.begin(); it != group_list.end(); it++) {
+		(*it)->FreeNameStringId();
+	}
+}
+
 void Network::Client_Send_AUTH(const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
@@ -1511,11 +1518,6 @@ void Network::ProcessGameCommandQueue()
 			if (player) {
 				player->last_action = gNetworkActions.FindCommand(command);
 				player->last_action_time = SDL_GetTicks();
-				rct_xyz16 coord;
-				coord.x = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16);
-				coord.y = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16);
-				coord.z = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16);
-				player->last_action_coord = coord;
 				player->AddMoneySpent(cost);
 			}
 		}
@@ -1795,11 +1797,6 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	connection.player->last_action = gNetworkActions.FindCommand(commandCommand);
 	connection.player->last_action_time = SDL_GetTicks();
-	rct_xyz16 coord;
-	coord.x = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16);
-	coord.y = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16);
-	coord.z = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16);
-	connection.player->last_action_coord = coord;
 	connection.player->AddMoneySpent(cost);
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 }
@@ -2023,7 +2020,9 @@ rct_xyz16 network_get_player_last_action_coord(unsigned int index)
 
 void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord)
 {
-	gNetwork.player_list[index]->last_action_coord = coord;
+	if (index >= 0 && index < gNetwork.player_list.size()) {
+		gNetwork.player_list[index]->last_action_coord = coord;
+	}
 }
 
 unsigned int network_get_player_commands_ran(unsigned int index)
@@ -2270,6 +2269,11 @@ int network_can_perform_action(unsigned int groupindex, unsigned int index)
 	return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
 
+void network_free_string_ids()
+{
+	gNetwork.FreeStringIds();
+}
+
 void network_send_map()
 {
 	gNetwork.Server_Send_MAP();
@@ -2347,6 +2351,7 @@ uint8 network_get_default_group() { return 0; }
 int network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(unsigned int index) { return -1; }
 int network_can_perform_action(unsigned int groupindex, unsigned int index) { return 0; }
+void network_free_string_ids() {}
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}

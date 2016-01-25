@@ -26,6 +26,7 @@
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../network/network.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
 #include "../util/sawyercoding.h"
@@ -3482,6 +3483,14 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+			rct_xyz16 coord;
+			coord.x = x + 8;
+			coord.y = y + 8;
+			coord.z = z;
+			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+		}
+
 		// Place track element
 		int fx = floor2(x, 32);
 		int fy = floor2(y, 32);
@@ -4099,6 +4108,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = originX + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = originY + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = originZ;
+	sint16 trackpieceZ = originZ;
 	direction &= 3;
 	RCT2_GLOBAL(0x00F441D5, uint32) = properties_1;
 	RCT2_GLOBAL(0x00F441D9, uint32) = properties_2;
@@ -4250,6 +4260,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		x = originX + offsetX;
 		y = originY + offsetY;
 		z = originZ + trackBlock->z;
+
+		trackpieceZ = z;
 
 		if (z < 16) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
@@ -4566,6 +4578,14 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		map_invalidate_tile_full(x, y);
 	}
 
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+		rct_xyz16 coord;
+		coord.x = originX + 16;
+		coord.y = originY + 16;
+		coord.z = trackpieceZ;
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
+
 	money32 price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2];
 	price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
 		RCT2_ADDRESS(0x0099DE34, money32)[type] :
@@ -4617,6 +4637,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = originX + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = originY + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = originZ;
+	sint16 trackpieceZ = originZ;
 	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
 
 	switch (type){
@@ -4739,6 +4760,8 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		map_invalidate_tile_full(x, y);
 		RCT2_GLOBAL(0x00F441C4, sint16) = x;
 		RCT2_GLOBAL(0x00F441C6, sint16) = y;
+
+		trackpieceZ = z;
 
 		found = 0;
 		mapElement = map_get_first_element_at(x / 32, y / 32);
@@ -4865,6 +4888,14 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		price *= -7;
 	else
 		price *= -10;
+
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+		rct_xyz16 coord;
+		coord.x = originX + 16;
+		coord.y = originY + 16;
+		coord.z = trackpieceZ;
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
 		return 0;

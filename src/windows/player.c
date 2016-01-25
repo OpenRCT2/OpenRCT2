@@ -220,8 +220,12 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 	case WIDX_LOCATE:{
 		rct_window* mainWindow = window_get_main();
 		if (mainWindow != NULL) {
-			rct_xyz16 coord = network_get_player_last_action_coord(w->number);
-			if (coord.x && coord.y && coord.z) {
+			int player = network_get_player_index((uint8)w->number);
+			if (player == -1) {
+				return;
+			}
+			rct_xyz16 coord = network_get_player_last_action_coord(player);
+			if (coord.x || coord.y || coord.z) {
 				window_scroll_to_location(mainWindow, coord.x, coord.y, coord.z);
 			}
 		}

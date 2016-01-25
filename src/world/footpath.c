@@ -24,6 +24,7 @@
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../network/network.h"
 #include "../util/util.h"
 #include "footpath.h"
 #include "map.h"
@@ -350,6 +351,14 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	// Force ride construction to recheck area
 	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
 
+	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+		rct_xyz16 coord;
+		coord.x = x + 16;
+		coord.y = y + 16;
+		coord.z = map_element_height(coord.x, coord.y);
+		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+	}
+
 	footpath_provisional_remove();
 	mapElement = map_get_footpath_element_slope((x / 32), (y / 32), z, slope);
 	if (mapElement == NULL) {
@@ -397,6 +406,14 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 
 	mapElement = map_get_footpath_element(x / 32, y / 32, z);
 	if (mapElement != NULL && (flags & GAME_COMMAND_FLAG_APPLY)) {
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+			rct_xyz16 coord;
+			coord.x = x + 16;
+			coord.y = y + 16;
+			coord.z = map_element_height(coord.x, coord.y);
+			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+		}
+
 		RCT2_GLOBAL(0x00F3EFF4, uint32) = 0x00F3EFF8;
 		remove_banners_at_element(x, y, mapElement);
 		footpath_remove_edges_at(x, y, mapElement);
@@ -498,6 +515,14 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	RCT2_GLOBAL(0x00F3EFD9, money32) += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
+		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+			rct_xyz16 coord;
+			coord.x = x + 16;
+			coord.y = y + 16;
+			coord.z = map_element_height(coord.x, coord.y);
+			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
+		}
+
 		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
 		mapElement->type = MAP_ELEMENT_TYPE_PATH;
 		mapElement->clearance_height = z + 4 + (slope & 4 ? 2 : 0);
