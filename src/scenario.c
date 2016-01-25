@@ -30,6 +30,7 @@
 #include "management/marketing.h"
 #include "management/research.h"
 #include "management/news_item.h"
+#include "network/network.h"
 #include "object.h"
 #include "openrct2.h"
 #include "peep/staff.h"
@@ -215,6 +216,12 @@ int scenario_load_and_play_from_path(const char *path)
 
 	log_verbose("starting scenario, %s", path);
 	scenario_begin();
+	if (network_get_mode() == NETWORK_MODE_SERVER) {
+		network_send_map();
+	}
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		network_close();
+	}
 
 	return 1;
 }
