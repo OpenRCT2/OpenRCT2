@@ -212,6 +212,9 @@ if (APPLE OR STATIC)
 	TARGET_LINK_LIBRARIES(${PROJECT} ${ICONV_LIBRARIES})
 endif (APPLE OR STATIC)
 
+# Don't recurse, grab all *.txt and *.md files
+file(GLOB DOC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/distribution/*.txt")
+list(APPEND DOC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/contributors.md" "${CMAKE_CURRENT_SOURCE_DIR}/licence.txt")
 
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
@@ -219,6 +222,7 @@ install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CUR
 install(TARGETS ${PROJECT} RUNTIME DESTINATION bin)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION share/${PROJECT})
 install(DIRECTORY data/ DESTINATION share/${PROJECT})
+install(FILES ${DOC_FILES} DESTINATION share/doc/${PROJECT})
 
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 0)

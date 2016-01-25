@@ -22,7 +22,8 @@ matrix:
           after_success:
             - cd build
             - make install
-            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data
+            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
+            - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
             - tar cvzf openrct2-linux.tar.gz OpenRCT2/
             - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" ]] ; then curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}-linux-${TRAVIS_COMMIT:0:7}.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$TRAVIS_BRANCH" --form "flavourId=4" --form "file=@openrct2-linux.tar.gz" "https://openrct2.org/altapi/?command=push-build"; fi
         - os: linux
