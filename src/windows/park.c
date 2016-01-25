@@ -689,10 +689,10 @@ static void window_park_entrance_mousedown(int widgetIndex, rct_window*w, rct_wi
 		);
 
 		if (park_is_open()) {
-			gDropdownHighlightedIndex = 0;
+			gDropdownDefaultIndex = 0;
 			dropdown_set_checked(1, true);
 		} else {
-			gDropdownHighlightedIndex = 1;
+			gDropdownDefaultIndex = 1;
 			dropdown_set_checked(0, true);
 		}
 	}
