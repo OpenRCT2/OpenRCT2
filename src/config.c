@@ -597,8 +597,8 @@ bool config_get_section(const utf8string line, const utf8 **sectionName, int *se
 
 bool config_get_property_name_value(const utf8string line, utf8 **propertyName, int *propertyNameSize, utf8 **value, int *valueSize)
 {
-	utf8 *ch;
-	int c, lastC;
+	utf8 *ch, *clast;
+	int c;
 	bool quotes;
 
 	ch = line;
@@ -607,8 +607,10 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 	if (*ch == 0) return false;
 	*propertyName = ch;
 
+	bool equals = false;
 	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
 		if (isspace(c) || c == '=') {
+			if (c == '=') equals = true;
 			*propertyNameSize = ch - *propertyName - 1;
 			break;
 		} else if (c == '#') {
@@ -618,9 +620,11 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 
 	if (*ch == 0) return false;
 	utf8_skip_whitespace(&ch);
-	if (*ch != '=') return false;
-	ch++;
-	utf8_skip_whitespace(&ch);
+	if (!equals) {
+		if (*ch != '=') return false;
+		ch++;
+		utf8_skip_whitespace(&ch);
+	}
 	if (*ch == 0) return false;
 
 	if (*ch == '"') {
@@ -631,13 +635,15 @@ bool config_get_property_name_value(const utf8string line, utf8 **propertyName, 
 	}
 	*value = ch;
 
+	clast = ch;
 	while ((c = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
-		if (isspace(c) || c == '#') {
-			if (!quotes) break;
+		if (!quotes) {
+			if (c == '#') break;
+			if (c != ' ') clast = ch;
 		}
-		lastC = c;
 	}
-	*valueSize = ch - *value - 1;
+	if (!quotes) *valueSize = clast - *value;
+	else *valueSize = ch - *value - 1;
 	if (quotes) (*valueSize)--;
 	return true;
 }
