@@ -353,12 +353,12 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 {
 	int font_height, line_height, line_width, line_y, num_lines;
 	// Location of font sprites
-	uint16* current_font_sprite_base;
+	sint16* current_font_sprite_base;
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 
-	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	*current_font_sprite_base = 0xE0;
+	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
+	if (*current_font_sprite_base >= 0) *current_font_sprite_base = 0xE0;
 
 	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
 
