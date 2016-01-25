@@ -3406,11 +3406,15 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 			edx = -edx;
 		}
 		edx >>= 5;
-		int eax = ((vehicle->velocity >> 1) + edx) / vehicle->friction;
+
+		// Hack to fix people messing with boat hire
+		int friction = vehicle->friction == 0 ? 1 : vehicle->friction;
+
+		int eax = ((vehicle->velocity >> 1) + edx) / friction;
 		int ecx = -eax;
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3) {
 			eax = vehicle->speed << 14;
-			int ebx = (vehicle->speed * vehicle->friction) >> 2;
+			int ebx = (vehicle->speed * friction) >> 2;
 			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3) {
 				eax = -eax;
 			}
@@ -6424,6 +6428,10 @@ static bool vehicle_update_motion_collision_detection(
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)){
 		vehicle->var_C4 = 0;
+
+		// If hacking boat hire rides you can end up here
+		if (otherVehicleIndex == NULL) return false;
+
 		rct_vehicle* collideVehicle = GET_VEHICLE(*otherVehicleIndex);
 
 		if (vehicle == collideVehicle) return false;
