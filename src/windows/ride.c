@@ -2752,10 +2752,10 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 	rct_ride *ride = get_ride(w->number);
 	uint8 value = ride->operation_option;
 	//fast_lift_hill is the cheat that allows maxing out many limits on the Operating tab.
-	uint8 max_value = gConfigCheat.fast_lift_hill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
+	uint8 max_value = gCheatsFastLiftHill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
 
 	//Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
-	if(ride->mode == RIDE_MODE_MAZE && !gConfigCheat.fast_lift_hill)
+	if(ride->mode == RIDE_MODE_MAZE && !gCheatsFastLiftHill)
 		max_value = 64;
 
 	if (value < max_value)
@@ -2773,7 +2773,7 @@ static void window_ride_mode_tweak_decrease(rct_window *w)
 	rct_ride *ride = get_ride(w->number);
 	uint8 value = ride->operation_option;
 	//fast_lift_hill is the cheat that allows maxing many limits on the Operating tab.
-	uint8 min_value = gConfigCheat.fast_lift_hill ? 0 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
+	uint8 min_value = gCheatsFastLiftHill ? 0 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
 
 	if (value > min_value)
 		value -= ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
@@ -2939,11 +2939,11 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_mode_tweak_decrease(w);
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
-		parameter_check = gConfigCheat.fast_lift_hill ? 255 : RideLiftData[ride->type].maximum_speed;
+		parameter_check = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
 		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, parameter_check));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
-		parameter_check = gConfigCheat.fast_lift_hill ? 0 : RideLiftData[ride->type].minimum_speed;
+		parameter_check = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
 		set_operating_setting(w->number, 8, max(ride->lift_hill_speed - 1, parameter_check));
 		break;
 	case WIDX_MINIMUM_LENGTH_INCREASE:
@@ -2965,7 +2965,7 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		window_ride_load_dropdown(w, widget);
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-		parameter_check = gConfigCheat.fast_lift_hill ? 255 : 20;
+		parameter_check = gCheatsFastLiftHill ? 255 : 20;
 		set_operating_setting(w->number, 9, min(ride->num_circuits + 1, parameter_check));
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
@@ -5499,7 +5499,7 @@ static void window_ride_income_increase_primary_price(rct_window *w)
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
 		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
-			if (!gConfigCheat.unlock_all_prices)
+			if (!gCheatsUnlockAllPrices)
 				return;
 		}
 	}
@@ -5524,7 +5524,7 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
 		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
-			if (!gConfigCheat.unlock_all_prices)
+			if (!gCheatsUnlockAllPrices)
 				return;
 		}
 	}
@@ -5687,7 +5687,7 @@ static void window_ride_income_invalidate(rct_window *w)
 
 	//If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
 	if ((!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == 255 && ride->type != RIDE_TYPE_TOILETS)
-		&& (!gConfigCheat.unlock_all_prices))
+		&& (!gCheatsUnlockAllPrices))
 	{
 		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
 	}

@@ -36,6 +36,7 @@
 #include "../world/scenery.h"
 #include "../interface/themes.h"
 #include "../cheats.h"
+#include "../network/network.h"
 #include "error.h"
 
 #define CHEATS_MONEY_INCREMENT MONEY(5000,00)
@@ -760,6 +761,13 @@ static void cheat_set_staff_speed(uint8 value)
 
 void window_cheats_open()
 {
+#ifndef DISABLE_NETWORK
+	if (network_get_mode() != NETWORK_MODE_NONE)
+	{
+		window_error_open(STR_WARNING_IN_CAPS, STR_NOT_ALLOWED_IN_MULTIPLAYER);
+		return;
+	}
+#endif
 	rct_window* window;
 
 	// Check if window is already open
@@ -878,12 +886,12 @@ static void window_cheats_guests_mouseup(rct_window *w, int widgetIndex)
 		cheat_give_all_guests(OBJECT_UMBRELLA);
 		break;
 	case WIDX_GUEST_IGNORE_RIDE_INTENSITY:
-		gConfigCheat.ignore_ride_intensity ^= 1;
+		gCheatsIgnoreRideIntensity ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
 	case WIDX_DISABLE_VANDALISM:
-		gConfigCheat.disable_vandalism ^= 1;
+		gCheatsDisableVandalism ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
@@ -937,7 +945,7 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = OBJECTIVE_HAVE_FUN;
 		break;
 	case WIDX_UNLOCK_ALL_PRICES:
-		gConfigCheat.unlock_all_prices ^= 1;
+		gCheatsUnlockAllPrices ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		window_invalidate_by_class(WC_RIDE);
@@ -1004,22 +1012,22 @@ static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
 		cheat_fix_rides();
 		break;
 	case WIDX_FAST_LIFT_HILL:
-		gConfigCheat.fast_lift_hill ^= 1;
+		gCheatsFastLiftHill ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
 	case WIDX_DISABLE_BRAKES_FAILURE:
-		gConfigCheat.disable_brakes_failure ^= 1;
+		gCheatsDisableBrakesFailure ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
 	case WIDX_DISABLE_ALL_BREAKDOWNS:
-		gConfigCheat.disable_all_breakdowns ^= 1;
+		gCheatsDisableAllBreakdowns ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
 	case WIDX_BUILD_IN_PAUSE_MODE:
-		gConfigCheat.build_in_pause_mode ^= 1;
+		gCheatsBuildInPauseMode ^= 1;
 		config_save_default();
 		window_invalidate(w);
 		break;
@@ -1089,21 +1097,21 @@ static void window_cheats_invalidate(rct_window *w)
 		break;
 	case WINDOW_CHEATS_PAGE_GUESTS:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = 10000;
-		widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gConfigCheat.ignore_ride_intensity);
-		widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gConfigCheat.disable_vandalism);
+		widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
+		widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
 		break;
 	case WINDOW_CHEATS_PAGE_MISC:
 		w->widgets[WIDX_OPEN_CLOSE_PARK].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN ?
 			STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
-		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gConfigCheat.unlock_all_prices);
+		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gCheatsUnlockAllPrices);
 		widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 255;
-		widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gConfigCheat.fast_lift_hill);
-		widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gConfigCheat.disable_brakes_failure);
-		widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gConfigCheat.disable_all_breakdowns);
-		widget_set_checkbox_value(w, WIDX_BUILD_IN_PAUSE_MODE, gConfigCheat.build_in_pause_mode);
+		widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
+		widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
+		widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
+		widget_set_checkbox_value(w, WIDX_BUILD_IN_PAUSE_MODE, gCheatsBuildInPauseMode);
 		widget_set_checkbox_value(w, WIDX_SHOW_ALL_OPERATING_MODES, gCheatsShowAllOperatingModes);
 		widget_set_checkbox_value(w, WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gCheatsShowVehiclesFromOtherTrackTypes);
 		break;

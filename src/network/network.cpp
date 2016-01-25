@@ -48,6 +48,7 @@ extern "C" {
 #include "../scenario.h"
 #include "../windows/error.h"
 #include "../util/util.h"
+#include "../cheats.h"
 }
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -665,6 +666,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		return false;
 	}
 
+	cheats_reset();
 	LoadGroups();
 
 	NetworkPlayer* player = AddPlayer();
@@ -852,6 +854,7 @@ void Network::UpdateClient()
 			if (error == 0) {
 				status = NETWORK_STATUS_CONNECTED;
 				server_connection.ResetLastPacketTime();
+				cheats_reset();
 				Client_Send_AUTH(gConfigNetwork.player_name, "");
 				window_network_status_open("Authenticating...");
 			}

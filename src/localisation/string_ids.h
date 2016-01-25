@@ -2308,6 +2308,8 @@ enum {
 	
 	STR_NEW_GAME = 5715,
 
+	STR_NOT_ALLOWED_IN_MULTIPLAYER = 5716,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
