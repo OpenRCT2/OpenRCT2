@@ -3228,16 +3228,16 @@ STR_3217    :已擁有的土地
 STR_3218    :已擁有建造權的土地
 STR_3219    :可供購買的土地
 STR_3220    :可供購買建造權的土地
-STR_3221    :{SMALLFONT}{BLACK}將樂園設置成為土地的擁有者
-STR_3222    :{SMALLFONT}{BLACK}尤樂園擁有土地的建造權
+STR_3221    :{SMALLFONT}{BLACK}令樂園成為土地的擁有者
+STR_3222    :{SMALLFONT}{BLACK}令樂園擁有土地的建造權
 STR_3223    :{SMALLFONT}{BLACK}將土地設置成為可供樂園購買
 STR_3224    :{SMALLFONT}{BLACK}將土地的建造權設置成為可供樂園購買
-STR_3225    :{SMALLFONT}{BLACK}設置是否在選中的位置中建造一些隨機物件
+STR_3225    :{SMALLFONT}{BLACK}設置是否在選中的位置中隨機建造一些物件
 STR_3226    :{SMALLFONT}{BLACK}建造樂園入口
 STR_3227    :太多樂園入口!
 STR_3228    :{SMALLFONT}{BLACK}設置遊客的開始步行位置
 STR_3229    :區域煞車不能建造在車站之後
-STR_3230    :區域煞車不能建造在自己之後
+STR_3230    :區域煞車不能建造在另一個區域煞車之後
 STR_3231    :區域煞車不能建造在這個鏈條坡道的頂部之後
 STR_3232    :選項 - 財政
 STR_3233    :選項 - 遊客
@@ -3281,9 +3281,9 @@ STR_3270    :{SMALLFONT}{BLACK}禁止對地形作任何調整
 STR_3271    :禁止高空建造
 STR_3272    :{SMALLFONT}{BLACK}禁止任何高空發展
 STR_3273    :較高難度的樂園評價公式
-STR_3274    :{SMALLFONT}{BLACK}使增加樂園評價更加有挑戰性
+STR_3274    :{SMALLFONT}{BLACK}使增加樂園評價更具挑戰性
 STR_3275    :較難生成遊客
-STR_3276    :{SMALLFONT}{BLACK}使吸引遊客更加有挑戰性
+STR_3276    :{SMALLFONT}{BLACK}使吸引遊客更具挑戰性
 STR_3277    :{WINDOW_COLOUR_2}購買土地的費用:
 STR_3278    :{WINDOW_COLOUR_2}購買建造權利的費用:
 STR_3279    :免費進入樂園 / 需費乘搭遊樂設施
@@ -3341,7 +3341,7 @@ STR_3330    :樂園必需有一些己擁有的土地
 STR_3331    :由地圖邊緣到樂園入口的道路尚未連接好, 或者太複雜 - 這些道路必需是一格寬度, 並以越少交界及彎位越好
 STR_3332    :樂園入口倒轉了, 或沒有道路連接至地圖邊緣
 STR_3333    :在存檔中導出附加物件
-STR_3334    :{SMALLFONT}{BLACK}選擇是否儲存附加物件(額外加入的附加物件)到存檔, 以便存檔給沒有那些附加物件的人載入
+STR_3334    :{SMALLFONT}{BLACK}選擇是否儲存附加物件(額外加入的附加物件)到存檔, 以便沒有那些附加物件的人載入存檔
 STR_3335    :雲霄飛車設計工具 - 選擇要設計的雲霄飛車的類型及車輛種類
 STR_3336    :軌道設計管理工具 - 選擇要管理的遊樂設施的類型
 STR_3337    :<not used anymore>
@@ -3360,8 +3360,8 @@ STR_3349    :刪除
 STR_3350    :軌道設計名稱
 STR_3351    :請輸入這個軌道設計的新名稱:
 STR_3352    :不能重命名這個軌道設計...
-STR_3353    :新名稱含有不適合的字符
-STR_3354    :已有另外一個檔案為相同名稱, 或檔案被寫入保護
+STR_3353    :新名稱含有不合適的字符
+STR_3354    :已有另外一個相同名稱的檔案, 或檔案被寫入保護
 STR_3355    :檔案被寫入保護或被鎖定
 STR_3356    :刪除檔案
 STR_3357    :{WINDOW_COLOUR_2}你確定要永久刪除{STRINGID} ?
@@ -3617,14 +3617,14 @@ STR_5275    :搜尋物件
 STR_5276    :請輸入你要搜尋的物件名稱
 STR_5277    :清除
 STR_5278    :沙盒模式
-STR_5279    :沙盒模式關閉
+STR_5279    :關閉沙盒模式
 STR_5280    :{SMALLFONT}{BLACK}允許從地圖視窗中修改土地擁有權, 以及其他平常只適用於劇情編輯工具的選項
 STR_5281    :{SMALLFONT}{BLACK}功能
 STR_5282    :夢幻遊樂場 (RCT1)遊樂設施開關燈號
 STR_5283    :夢幻遊樂場 (RCT1)樂園開關燈號
 STR_5284    :夢幻遊樂場 (RCT1)選擇劇情字體
 STR_5285    :人肉炸彈!!!
-STR_5286    :{SMALLFONT}{BLACK}將某些遊客爆炸，嘻嘻！
+STR_5286    :{SMALLFONT}{BLACK}令某些遊客立即爆炸, 嘻嘻!
 STR_5287    :遊樂設施已經故障了
 STR_5288    :遊樂設施已關閉了
 STR_5289    :沒有故障可適用於此遊樂設施
@@ -3642,7 +3642,7 @@ STR_5300    :{SMALLFONT}{BLACK}一鍵解僱員工
 STR_5301    :{MEDIUMFONT}{BLACK}付清你的貸款
 STR_5302    :付清貸款
 STR_5303    :暫停時可以建造物件
-STR_5304    :主畫面動畫:
+STR_5304    :主選單動畫:
 STR_5305    :夢幻遊樂場 (RCT1)
 STR_5306    :夢幻遊樂場 (RCT1) (+資料片1 - AA)
 STR_5307    :夢幻遊樂場 (RCT1) (+資料片1&2 - AA+LL)
@@ -3742,7 +3742,7 @@ STR_5399    :按'暫停'按鈕繼續編輯
 STR_5400    :不能更改此主選單動畫
 STR_5401    :建立新的主選單動畫, 並作出更改
 STR_5402    :載入主選單動畫失敗
-STR_5403    :非法的存檔或沒有'Load'或'Wait'指令
+STR_5403    :非法的存檔或沒有'載入'或'等候'指令
 STR_5404    :名稱已經存在
 STR_5405    :請輸入存檔名稱
 STR_5406    :請輸入主選單動畫存檔名稱
@@ -4009,47 +4009,47 @@ STR_DTLS    :將景色優美的Evergreen Gardens轉型成一個很受歡迎的�
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+STR_DTLS    :將Bumbly Beach這個小型樂園發展成一個很受歡迎的樂園
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :Several islands form the basis for this new park
+STR_DTLS    :幾個鄰近的島嶼組成了這個新樂園的基本地勢
 
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
 STR_PARK    :Katie's Dreamland
-STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+STR_DTLS    :一個只有幾個遊樂設施但有擴展空間的小型樂園 - 你的目標是讓它的價值翻倍
 
 <Pokey Park>
 STR_SCNR    :Pokey Park
 STR_PARK    :Pokey Park
-STR_DTLS    :A small, cramped amusement park which requires major expansion
+STR_DTLS    :一個擠迫的小型樂園, 它需要重大擴張
 
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :White Water Park
-STR_DTLS    :A park with some excellent water-based rides requires expansion
+STR_DTLS    :一個附有優良水文類遊樂設施的樂園, 它需要重大擴張
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+STR_DTLS    :將一個已被遺棄的大型礦坑由景點轉型成一個樂園
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :Karts & Coasters
-STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+STR_DTLS    :一個隱藏在森林的大型樂園, 但當中只有小型賽車及木製雲霄飛車
 
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+STR_DTLS    :這個樂園已經有一些既優秀又現代的遊樂設施, 但它亦有很大的擴充空間
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
 STR_PARK    :Mystic Mountain
-STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+STR_DTLS    :在Mystic Mountain的崎嶇不平森林中, 由零開始建造一個樂園
 
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
@@ -4064,7 +4064,7 @@ STR_DTLS    :A large park with well-designed but rather old rides - Replace the 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
 STR_PARK    :Paradise Pier
-STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+STR_DTLS    :將這個平凡無奇的小鎮碼頭轉型成一個很受歡迎的樂園
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
@@ -4084,7 +4084,7 @@ STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+STR_DTLS    :Thunder Rock豎立一個在沙漠中部, 並因此吸引遊客 - 將可用的空間建造遊樂設施來吸引更多遊客
 
 <Mega Park>
 STR_SCNR    :Mega Park
@@ -4100,92 +4100,92 @@ STR_DTLS    :盡情玩吧!
 [AML1]
 STR_NAME    :美式蒸氣火車
 STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著帶有帆布車頂的木製車廂
-STR_CPTY    :每車廂6個乘客
+STR_CPTY    :每車廂6位乘客
 
 [CLIFT1]
 STR_NAME    :纜車車卡
 STR_DESC    :供纜車使用的開放式車卡
-STR_CPTY    :每車卡2個乘客
+STR_CPTY    :每車卡2位乘客
 
 [CLIFT2]
 STR_NAME    :登頂滑雪纜車車椅
 STR_DESC    :供纜車使用的開放式車卡
-STR_CPTY    :每車卡2個乘客
+STR_CPTY    :每車卡2位乘客
 
 [LIFT1]
 STR_NAME    :升降機
 STR_DESC    :遊客乘搭升降機上下穿梭於垂直的管道中, 並借此訪問另一層
-STR_CPTY    :16個乘客
+STR_CPTY    :16位乘客
 
 [MONO1]
 STR_NAME    :流線型單軌電車
 STR_DESC    :大載客量的單軌電車, 車頭車尾都配備著流線型設計
-STR_CPTY    :每車卡5或10個乘客
+STR_CPTY    :每車卡5或10位乘客
 
 [MONO2]
 STR_NAME    :小型單軌電車
 STR_DESC    :附有開放式側邊的小型單軌電車
-STR_CPTY    :每車卡4個乘客
+STR_CPTY    :每車卡4位乘客
 
 [MONO3]
 STR_NAME    :懷舊風格單軌電車
 STR_DESC    :使用開放式設計車廂的單軌電車
-STR_CPTY    :每車卡4個乘客
+STR_CPTY    :每車卡4位乘客
 
 [NRL]
 STR_NAME    :蒸氣火車
 STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著開放式的木製車廂
-STR_CPTY    :每車廂6個乘客
+STR_CPTY    :每車廂6位乘客
 
 [NRL2]
 STR_NAME    :有蓋蒸氣火車
 STR_DESC    :配備著復刻蒸氣火車頭及煤水車的小型蒸氣火車, 拉著帶有織布車頂的木製車廂
-STR_CPTY    :每車廂6個乘客
+STR_CPTY    :每車廂6位乘客
 
 [SMONO]
 STR_NAME    :懸掛式單軌電車
 STR_DESC    :大載客量的單軌電車
-STR_CPTY    :每車卡8個乘客
+STR_CPTY    :每車卡8位乘客
 
 [TRAM1]
 STR_NAME    :電車
 STR_DESC    :復刻的懷舊電車
-STR_CPTY    :每車卡10個乘客
+STR_CPTY    :每車卡10位乘客
 
 [4X4]
 STR_NAME    :怪獸卡車
 STR_DESC    :能爬上陡斜坡道, 而且帶有動力的巨型4 x 4卡車
-STR_CPTY    :每卡車2個乘客
+STR_CPTY    :每卡車2位乘客
 
 [CHBUILD]
 STR_NAME    :古怪屋
 STR_DESC    :一座建築物, 含有扭曲房間及傾斜走道使人於行走中失去方向感
-STR_CPTY    :5個遊客
+STR_CPTY    :5位遊客
 
 [CIRCUS1]
 STR_NAME    :馬戲團
 STR_DESC    :於大型帳幕內進行動物馬戲團表演
-STR_CPTY    :30個遊客
+STR_CPTY    :30位遊客
 
 [CTCAR]
 STR_NAME    :笑臉貓遊
 STR_DESC    :帶有動力的貓型車輛跟隨著軌道的路線遊覽周邊
-STR_CPTY    :每輛車2個乘客
+STR_CPTY    :每輛車2位乘客
 
 [DODG1]
 STR_NAME    :碰碰車
 STR_DESC    :自助駕駛的電力碰碰車
-STR_CPTY    :每車輛1個乘客
+STR_CPTY    :每車輛1位乘客
 
 [FSAUC]
 STR_NAME    :碰碰飛碟
 STR_DESC    :自助駕駛的飛碟型車輛
-STR_CPTY    :每飛碟1個乘客
+STR_CPTY    :每飛碟1位乘客
 
 [FWH1]
 STR_NAME    :摩天輪
 STR_DESC    :不斷旋轉, 附有露天座椅的巨大輪環
-STR_CPTY    :32乘客
+STR_CPTY    :32位乘客
 
 [GOLF1]
 STR_NAME    :迷你高爾夫
@@ -4196,4 +4196,4 @@ STR_CPTY    :
 [CONDORRD]
 STR_NAME    :神鷹暢遊
 STR_DESC    :乘客乘坐於軌道下的神鷹造型列車上, 將會於飛馳中體驗飛一般的快感
-STR_CPTY    :每車卡4個乘客
+STR_CPTY    :每車卡4位乘客

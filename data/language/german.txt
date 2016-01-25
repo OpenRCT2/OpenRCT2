@@ -3889,7 +3889,7 @@ STR_5552    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {M
 STR_5553    :Spiel bei geöffnetem Steam Overlay pausieren
 STR_5554    :{SMALLFONT}{BLACK}Gebirgswerkzeug aktivieren
 STR_5555    :Fahrzeuge anderer Streckentyp. anzeigen
-STR_5556    :Spieler entfernen
+STR_5556    :{SMALLFONT}{BLACK}Spieler entfernen
 STR_5557    :Nach Desync. verbunden bleiben (Mehrspieler)
 STR_5558    :Damit diese Einstellung wirksam wird, ist ein Neustart erforderlich
 STR_5559    :10 Min. Inspektionen
@@ -3966,6 +3966,51 @@ STR_5629    :Schwierigkeitsgrad
 STR_5630    :Freispielen der Szenarios aktivieren
 STR_5631    :Originale DLC Parks
 STR_5632    :Bauen Sie Ihren eigenen...
+STR_5633    :CMD + 
+STR_5634    :OPTION + 
+STR_5635    :{WINDOW_COLOUR_2}Geld ausgegeben: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Befehle ausgeführt: {BLACK}{COMMA16}
+STR_5637    :Nicht möglich...
+STR_5638    :Keine Berechtigung
+STR_5639    :{SMALLFONT}{BLACK}Spielerliste anzeigen
+STR_5640    :{SMALLFONT}{BLACK}Gruppen verwalten
+STR_5641    :Standardgruppe:
+STR_5642    :Gruppe:
+STR_5643    :Gruppe hinzuf.
+STR_5644    :Gruppe entf.
+STR_5645    :Chat
+STR_5646    :Landschaft anpassen
+STR_5647    :Spiel pausieren/fortsetzen
+STR_5648    :Wasserniveau festlegen
+STR_5649    :Attraktion entwerfen
+STR_5650    :Attraktion abreißen
+STR_5651    :Attraktion bauen
+STR_5652    :Attraktionseigenschaften
+STR_5653    :Szenerie
+STR_5654    :Fußwege
+STR_5655    :Besucher
+STR_5656    :Mitarbeiter
+STR_5657    :Parkeigenschaften
+STR_5658    :Parkfinanzierung
+STR_5659    :Spieler entfernen
+STR_5660    :Gruppen anpassen
+STR_5661    :Spielergruppe festlegen
+STR_5662    :N/A
+STR_5663    :Landschaft leeren
+STR_5701    :{WINDOW_COLOUR_2}Letzte Aktion: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Lokalisiert die letzte Aktion des Spielers
+STR_5703    :Host kann nicht entfernt werden
+STR_5704    :Letzte Aktion:
+STR_5705    :Diese Gruppe kann nicht{NEWLINE}eingestellt werden
+STR_5706    :Diese Gruppe kann nicht entfernt werden, solange ihr Spieler angehören
+STR_5707    :Diese Gruppe kann nicht{NEWLINE}angepasst werden
+STR_5708    :Die Gruppe des Hosts kann{NEWLINE}nicht geändert werden
+STR_5709    :Gruppe umbenen.
+STR_5710    :Gruppenname
+STR_5711    :Neuen Namen für diese Gruppe eingeben:
+STR_5712    :Berechtigung kann nicht bearbeitet werden, da Sie diese selbst nicht besitzen
+STR_5713    :Spieler entfernen
+STR_5714    :Optionen anzeigen
 
 #############
 # Scenarios #
