@@ -1239,6 +1239,13 @@ void Network::LoadGroups()
 	SDL_RWclose(file);
 }
 
+void Network::FreeStringIds()
+{
+	for (auto it = group_list.begin(); it != group_list.end(); it++) {
+		(*it)->FreeNameStringId();
+	}
+}
+
 void Network::Client_Send_AUTH(const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
@@ -2270,6 +2277,11 @@ int network_can_perform_action(unsigned int groupindex, unsigned int index)
 	return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
 
+void network_free_string_ids()
+{
+	gNetwork.FreeStringIds();
+}
+
 void network_send_map()
 {
 	gNetwork.Server_Send_MAP();
@@ -2347,6 +2359,7 @@ uint8 network_get_default_group() { return 0; }
 int network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(unsigned int index) { return -1; }
 int network_can_perform_action(unsigned int groupindex, unsigned int index) { return 0; }
+void network_free_string_ids() {}
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
 void network_close() {}
