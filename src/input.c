@@ -1211,6 +1211,7 @@ void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_wi
 		if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED) {
 			if (gInputState == INPUT_STATE_DROPDOWN_ACTIVE) {
 				gDropdownHighlightedIndex = gDropdownDefaultIndex;
+				window_invalidate_by_class(WC_DROPDOWN);
 			}
 			return;
 		}
