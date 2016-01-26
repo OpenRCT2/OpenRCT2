@@ -165,7 +165,7 @@ function Do-Installer()
         if (-not (Sign-Binary($installerPath))) { return 1 }
     }
 
-    Move-Item -Force $installerPath $artifactsDir
+    Move-Item -Force $installerPath "$artifactsDir\openrct2-install.exe"
     return 0
 }
 

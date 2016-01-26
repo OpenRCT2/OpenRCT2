@@ -5,10 +5,12 @@ environment:
     secure: saYAIpqXzpq0U+JH+MNi/isRQ6Y51PZhm4BrnePDiAPptFO5htxFOLegrYqxdy67
   CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD:
     secure: bzYmf0ElxisSGyZnIjUOYQ==
+  OPENRCT2.ORG_TOKEN:
+    secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
 install:
 - nuget install secure-file -ExcludeVersion
-- secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret %enckey%
-- cinst nsis.portable -pre
+- secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret %ENCKEY%
+- cinst nsis.portable -pre > nul
 - ps: >-
     curl "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" -OutFile nsisxtra.zip
 
