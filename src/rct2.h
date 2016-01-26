@@ -59,6 +59,7 @@ typedef wchar_t utf16;
 typedef utf16* utf16string;
 
 typedef uint32 codepoint_t;
+typedef uint8 colour_t;
 
 #define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
 #define ror8(x, shift)		(((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
