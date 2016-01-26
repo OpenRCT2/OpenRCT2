@@ -853,6 +853,8 @@ int game_load_network(SDL_RWops* rw)
 
 	// Read other data not in normal save files
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) = SDL_ReadLE32(rw);
+	_guestGenerationProbability = SDL_ReadLE32(rw);
+	_suggestedGuestMaximum = SDL_ReadLE32(rw);
 
 	if (!load_success){
 		set_load_objects_fail_reason();
