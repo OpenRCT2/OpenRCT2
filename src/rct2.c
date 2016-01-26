@@ -565,7 +565,7 @@ void get_rct2_directory(utf8 *outPath, const utf8 *subDirectory)
 {
 	const char separator[2] = {platform_get_path_separator(), 0};
 	utf8 buffer[MAX_PATH];
-	safe_strncpy(buffer, gConfigGeneral.game_path, sizeof(buffer));
+	safe_strcpy(buffer, gConfigGeneral.game_path, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
 		log_verbose("adding subDirectory '%s'", subDirectory);
 		safe_strcat_path(buffer, subDirectory, MAX_PATH);
@@ -573,6 +573,6 @@ void get_rct2_directory(utf8 *outPath, const utf8 *subDirectory)
 	}
 	int len = strnlen(buffer, MAX_PATH);
 	buffer[len] = '\0';
-	safe_strncpy(outPath, buffer, MAX_PATH);
+	safe_strcpy(outPath, buffer, MAX_PATH);
 	log_verbose("outPath + subDirectory = '%s'", buffer);
 }
