@@ -62,12 +62,7 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 
 # 2 Downloading the game / Building the source code
 
-Several third party build servers offer precompiled builds and installers of the latest stable and the develop branch.
-[OpenRCT2.com](https://openrct2.com/download)
-[OpenRCT.net](https://openrct.net/builds.php)
-[UrsaLabs](https://openrct.ursalabs.co)
-
-There is also a Launcher available from [OpenRCT.net](https://openrct.net/download) that will automatically update your build so that you always have the current version as they are released.
+[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest stable and the develop branch. There is also a Launcher available that will automatically update your build so that you always have the current version as they are released.
 
 ## 2.1 Building prerequisites
 
@@ -155,9 +150,8 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 
 # 5 More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
+- [OpenRCT2.org](https://openrct2.org)
 - [Forums](https://openrct2.org/forums/)
 - [Facebook](https://www.facebook.com/OpenRCT2)
-- [OpenRCT2.com](https://openrct2.com)
-- [OpenRCT.net](https://openrct.net)
 - [rct subreddit](http://www.reddit.com/r/rct/)
 - [openrct2 subreddit](http://www.reddit.com/r/openrct2/)
