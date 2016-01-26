@@ -11,7 +11,8 @@ param (
     [string]$Server  = "",
     [string]$BuildNumber = "",
     [string]$GitBranch = "",
-    [switch]$Installer = $false
+    [switch]$Installer = $false,
+    [switch]$CodeSign = $false
 )
 
 # Setup
@@ -59,7 +60,23 @@ function Do-Build()
 {
     Write-Host "Building OpenRCT2..." -ForegroundColor Cyan
     & "$scriptsPath\build.ps1" all -Rebuild
-    return $LASTEXITCODE
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-Host "Failed to build OpenRCT2" -ForegroundColor Red
+        return 1
+    }
+
+    if ($CodeSign)
+    {
+        $releaseDir = "$rootPath\bin"
+        $exePath    = "$releaseDir\openrct2.exe"
+        $dllPath    = "$releaseDir\openrct2.dll"
+
+        if (-not (Sign-Binary($exePath))) { return 1 }
+        if (-not (Sign-Binary($dllPath))) { return 1 }
+    }
+
+    return 0
 }
 
 # Package
@@ -121,7 +138,9 @@ function Do-Installer()
     New-Item -Force -ItemType Directory $artifactsDir > $null
 
     # Create installer
-    & "$installerDir\build.ps1" -BuildNumber $BuildNumber -GitBranch $GitBranch
+    $GitCommitSha1Short = (git rev-parse --short HEAD)
+    $VersionExtra       = "$GitBranch-$GitCommitSha1Short"
+    & "$installerDir\build.ps1" -VersionExtra $VersionExtra
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create installer." -ForegroundColor Red
@@ -139,7 +158,14 @@ function Do-Installer()
         return 1
     }
 
-    Move-Item $binaries[0].FullName $artifactsDir
+    $installerPath = $binaries[0].FullName
+
+    if ($CodeSign)
+    {
+        if (-not (Sign-Binary($installerPath))) { return 1 }
+    }
+
+    Move-Item -Force $installerPath $artifactsDir
     return 0
 }
 
@@ -167,6 +193,47 @@ function Do-Task-All()
 {
     if (($result = (Do-Task-Build  )) -ne 0) { return $result }
     if (($result = (Do-Task-Package)) -ne 0) { return $result }
+    return 0
+}
+
+function Sign-Binary($binaryPath)
+{
+    $pfxPath      = "$rootPath\distribution\windows\code-sign-key-openrct2.org.pfx"
+    $pfxPassword  = ${env:CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD}
+    $timestampUrl = "http://timestamp.comodoca.com/authenticode"
+
+    if (-not (Test-Path -PathType Leaf $pfxPath))
+    {
+        Write-Host "Unable to sign, code signature key was not found." -ForegroundColor Red
+        return 1
+    }
+
+    if ($pfxPassword -eq $null)
+    {
+        Write-Host "Unable to sign, %CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD% was not set." -ForegroundColor Red
+        return 1
+    }
+
+    # Resolve signtool path
+    $signtoolcmd = "signtool"
+    if (-not (AppExists($signtoolcmd)))
+    {
+        $signtoolcmd = "C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\SignTool.exe"
+        if (-not (AppExists($signtoolcmd)))
+        {
+            Write-Host "Publish script requires signtool to be in PATH" -ForegroundColor Red
+            return 1
+        }
+    }
+
+    # Sign the binary
+    & $signtoolcmd sign /f $pfxPath /p $pfxPassword /t $timestampUrl $binaryPath
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-Host "Failed to sign binary." -ForegroundColor Red
+        return 1
+    }
+
     return 0
 }
 

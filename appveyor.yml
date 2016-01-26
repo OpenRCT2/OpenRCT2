@@ -1,12 +1,27 @@
 version: 0.0.4.{build}
-os: Previous Visual Studio 2015
+os: Visual Studio 2015
+environment:
+  ENCKEY:
+    secure: saYAIpqXzpq0U+JH+MNi/isRQ6Y51PZhm4BrnePDiAPptFO5htxFOLegrYqxdy67
+  CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD:
+    secure: bzYmf0ElxisSGyZnIjUOYQ==
+install:
+- nuget install secure-file -ExcludeVersion
+- secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret %enckey%
+- cinst nsis.portable -pre
+- ps: >-
+    curl "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" -OutFile nsisxtra.zip
+
+    7z x nsisxtra.zip
+
+    cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
 build_script:
 - ps: >-
     .\setenv.ps1
 
-    install
-
-    publish -Server AppVeyor -BuildNumber $env:APPVEYOR_BUILD_NUMBER -GitBranch $env:APPVEYOR_REPO_BRANCH
+    appveyor_run
 artifacts:
 - path: .\artifacts\openrct2.zip
-  name: OpenRCT2
+  name: OpenRCT2-portable
+- path: .\artifacts\*.exe
+  name: OpenRCT2-installer
