@@ -582,6 +582,9 @@
     <ClCompile Include="src\windows\multiplayer.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\interface\Theme.cpp">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">

@@ -51,6 +51,7 @@
     <ClCompile Include="src\input.c" />
     <ClCompile Include="src\interface\chat.c" />
     <ClCompile Include="src\interface\colour.c" />
+    <ClCompile Include="src\interface\Theme.cpp" />
     <ClCompile Include="src\interface\themes.c" />
     <ClCompile Include="src\interface\console.c" />
     <ClCompile Include="src\interface\graph.c" />
