@@ -8376,7 +8376,7 @@ static int sub_693C9E(rct_peep *peep)
 			result = guest_path_finding(peep);
 		}
 		else{
-			result = RCT2_CALLPROC_X(0x006BF926, x, 0, y, 0, (int)peep, 0, 0) & 0x100;
+			result = staff_path_finding(peep);
 		}
 
 		if (result != 0)

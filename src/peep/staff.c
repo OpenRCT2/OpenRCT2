@@ -460,7 +460,7 @@ void staff_update_greyed_patrol_areas()
 	}
 }
 
-int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
+static int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
 {
 	// Patrol quads are stored in a bit map (8 patrol quads per byte)
 	// Each patrol quad is 4x4
@@ -478,17 +478,52 @@ int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
  *
  *  rct2: 0x006C0905
  */
-int mechanic_is_location_in_patrol(rct_peep *mechanic, int x, int y)
+int staff_is_location_in_patrol(rct_peep *staff, int x, int y)
 {
 	// Check if location is in the park
-	if (!map_is_location_owned(x, y, mechanic->z))
+	if (!map_is_location_owned(x, y, staff->z))
 		return 0;
 
-	// Check if mechanic has patrol area
-	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[mechanic->staff_id] & 2))
+	// Check if staff has patrol area
+	if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[staff->staff_id] & 2))
 		return 1;
 
-	return staff_is_location_in_patrol_area(mechanic, x, y);
+	return staff_is_location_in_patrol_area(staff, x, y);
+}
+
+/**
+ *
+ *  rct2: 0x006C095B
+ *  returns 0xF if not in a valid patrol area
+ */
+static uint8 staff_get_valid_patrol_directions(rct_peep* peep, sint16 x, sint16 y) {
+	uint8 directions = 0;
+
+	if (staff_is_location_in_patrol(peep, x - 32, y)) {
+		directions |= (1 << 0);
+	}
+
+	if (staff_is_location_in_patrol(peep, x, y + 32)) {
+		directions |= (1 << 1);
+	}
+
+	if (staff_is_location_in_patrol(peep, x + 32, y)) {
+		directions |= (1 << 2);
+	}
+
+	if (staff_is_location_in_patrol(peep, x, y - 32)) {
+		directions |= (1 << 3);
+	}
+
+	if (directions == 0) {
+		directions = 0xF;
+	}
+
+	// For backwards compatibility. 
+	// Remove when all references to 0x00F43910 removed
+	RCT2_GLOBAL(0x00F43910, uint32) = directions;
+
+	return directions;
 }
 
 /**
@@ -520,4 +555,42 @@ bool staff_is_patrol_area_set(int staffIndex, int x, int y)
 	int offset = (x | y) >> 5;
 	int bitIndex = (x | y) & 0x1F;
 	return gStaffPatrolAreas[peepOffset + offset] & (1 << bitIndex);
+}
+
+/**
+*
+*  rct2: 0x006BFBA8
+*/
+static int staff_path_finding_handyman(rct_peep* peep) {
+	peep->var_E2++;
+
+	RCT2_GLOBAL(0x00F43918, uint8) = 0xFF;
+	uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+
+	if (peep->staff_orders & STAFF_ORDERS_SWEEPING &&
+		((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + peep->sprite_index) & 0xFFF) > 110) {
+		//6bfbe8
+	}
+	//6bfd82
+}
+
+/**
+*
+*  rct2: 0x006BF926
+*/
+int staff_path_finding(rct_peep* peep) {
+	switch (peep->staff_type) {
+	case STAFF_TYPE_HANDYMAN:
+		return RCT2_CALLPROC_X(0x006BFBA8, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100;
+	case STAFF_TYPE_MECHANIC:
+		return RCT2_CALLPROC_X(0x006BFF2C, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100;
+	case STAFF_TYPE_SECURITY:
+		return RCT2_CALLPROC_X(0x006C0351, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100;
+	case STAFF_TYPE_ENTERTAINER:
+		return RCT2_CALLPROC_X(0x006C05AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100;
+
+	default:
+		assert(false);
+		return 0;
+	}
 }

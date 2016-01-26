@@ -2521,7 +2521,7 @@ rct_peep *find_closest_mechanic(int x, int y, int forInspection)
 		}
 
 		if (map_is_location_in_park(x, y))
-			if (!mechanic_is_location_in_patrol(peep, x & 0xFFE0, y & 0xFFE0))
+			if (!staff_is_location_in_patrol(peep, x & 0xFFE0, y & 0xFFE0))
 				continue;
 
 		if (peep->x == (sint16)0x8000)
