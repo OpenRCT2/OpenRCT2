@@ -429,7 +429,7 @@ void network_add_player_money_spent(unsigned int index, money32 cost);
 int network_get_player_last_action(unsigned int index, int time);
 void network_set_player_last_action(unsigned int index, int command);
 rct_xyz16 network_get_player_last_action_coord(unsigned int index);
-void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord);
+void network_set_player_last_action_coord(int index, rct_xyz16 coord);
 unsigned int network_get_player_commands_ran(unsigned int index);
 int network_get_player_index(uint8 id);
 uint8 network_get_player_group(unsigned int index);

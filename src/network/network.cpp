@@ -2021,7 +2021,7 @@ rct_xyz16 network_get_player_last_action_coord(unsigned int index)
 	return gNetwork.player_list[index]->last_action_coord;
 }
 
-void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord)
+void network_set_player_last_action_coord(int index, rct_xyz16 coord)
 {
 	if (index >= 0 && index < gNetwork.player_list.size()) {
 		gNetwork.player_list[index]->last_action_coord = coord;
@@ -2337,7 +2337,7 @@ void network_add_player_money_spent(unsigned int index, money32 cost) { }
 int network_get_player_last_action(unsigned int index, int time) { return -999; }
 void network_set_player_last_action(unsigned int index, int command) { }
 rct_xyz16 network_get_player_last_action_coord(unsigned int index) { return {0, 0, 0}; }
-void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord) { }
+void network_set_player_last_action_coord(int index, rct_xyz16 coord) { }
 unsigned int network_get_player_commands_ran(unsigned int index) { return 0; }
 int network_get_player_index(uint8 id) { return -1; }
 uint8 network_get_player_group(unsigned int index) { return 0; }
