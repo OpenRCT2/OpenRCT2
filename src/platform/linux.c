@@ -154,8 +154,8 @@ utf8 *platform_open_directory_browser(utf8 *title)
 
 void platform_show_messagebox(char *message)
 {
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "OpenRCT2", message, gWindow);
-	log_verbose(message);
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message, gWindow);
+	log_warning(message);
 }
 
 /**
