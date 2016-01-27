@@ -2310,6 +2310,16 @@ enum {
 
 	STR_NOT_ALLOWED_IN_MULTIPLAYER = 5716,
 
+	STR_SUNNY = 5717,
+	STR_PARTIALLY_CLOUDY = STR_SUNNY + 1,
+	STR_CLOUDY = STR_SUNNY + 2,
+	STR_RAIN = STR_SUNNY + 3,
+	STR_HEAVY_RAIN = STR_SUNNY + 4,
+	STR_THUNDERSTORM = STR_SUNNY + 5,
+	STR_FORCE_WEATHER = 5723,
+	STR_FORCE_WEATHER_TOOLTIP = 5724,
+
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
