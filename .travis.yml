@@ -2,9 +2,7 @@ language: c
 
 before_install:
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/install.sh; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then gem install xcpretty-travis-formatter; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then curl -L https://openrct2.website/files/MacOSX10.10.sdk.tar.xz -o MacOSX10.10.sdk.tar.xz; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo tar xf MacOSX10.10.sdk.tar.xz -C /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/; fi
+    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then sudo gem install xcpretty-travis-formatter; fi
 
 sudo: required
 dist: trusty
@@ -39,7 +37,7 @@ matrix:
           services:
             - docker
         - os: osx
-          osx_image: xcode7.1
+          osx_image: xcode7.2
           env:
             - secure: "OXn/i72FxW/oh6RGlaN+gHSbkt1ToFe36etaiDOsJQznt6fe9CpFdnE8U1XBHlGokcEjbGNErRU7CFDKYHQuGrPZyHXwgqG2/0emIqFaFt5ti5ypyYKf5qH9x1LLLfdZxDyHkxXdlJ7Etxbp3G7qrV8CGRQiYRNHm1f98AmuufE="
           after_success:
@@ -65,7 +63,7 @@ matrix:
 
 script:
     - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild -sdk macosx10.10 | xcpretty -f `xcpretty-travis-formatter`; fi
+    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild | xcpretty -f `xcpretty-travis-formatter`; fi
 
 notifications:
     on_failure: change
