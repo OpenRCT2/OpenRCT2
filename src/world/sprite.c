@@ -186,7 +186,7 @@ rct_sprite *create_sprite(uint8 bl)
 	if ((bl & 2) != 0)
 	{
 		// 69EC96;
-		uint16 cx = 0x12C - RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
+		sint16 cx = 0x12C - RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
 		if (cx >= RCT2_GLOBAL(0x13573C8, uint16))
 		{
 			return NULL;
