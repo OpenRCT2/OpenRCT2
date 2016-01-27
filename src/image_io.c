@@ -142,7 +142,7 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 	// Write pixels
 	uint8 *bits = dpi->bits;
 	for (int y = 0; y < dpi->height; y++) {
-		png_write_row(png_ptr, (png_const_bytep)bits);
+		png_write_row(png_ptr, (png_byte *)bits);
 		bits += stride;
 	}
 
