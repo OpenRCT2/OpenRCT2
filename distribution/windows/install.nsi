@@ -461,7 +461,9 @@ Function .onInit
     ; Starts Setup - let's look for an older version of OpenRCT2
     ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
 
-    IfErrors ShowWelcomeMessage ShowUpgradeMessage
+	; Skip upgrade checking for now
+    ;IfErrors ShowWelcomeMessage ShowUpgradeMessage
+	Goto ShowWelcomeMessage
 ShowWelcomeMessage:
     ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
     IfErrors FinishCallback
@@ -488,6 +490,8 @@ DoUninstall: ; You have the same version as this installer.  This allows you to 
     Quit
 
 InstallerIsOlder:
+	; A newer version was found.  Let's let the user know there's an downgrade that will take place.
+    ReadRegStr $OLDVERSION HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "DisplayVersion"
     ;MessageBox MB_OK|MB_ICONSTOP \
     ;    "You have a newer version of ${APPNAME}.$\nSetup will now exit."
 	;Quit
