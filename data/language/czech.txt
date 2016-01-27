@@ -44,19 +44,19 @@ STR_0039    :Ruské kolo
 STR_0040    :Simulátor pohybu
 STR_0041    :3D Kino
 STR_0042    :Top Spin
-STR_0043    :Space Rings
-STR_0044    :Reverse Freefall Coaster
+STR_0043    :Vesmírné kruhy
+STR_0044    :Horská dráha s volným pádem pozpíátku
 STR_0045    :Výtah
-STR_0046    :Vertical Drop Roller Coaster
+STR_0046    :Horská dráha s vertikálním pádem
 STR_0047    :Bankomat
 STR_0048    :Twist
 STR_0049    :Strašidelný dům
 STR_0050    :První pomoc
 STR_0051    :Cirkus
 STR_0052    :Vlak duchů
-STR_0053    :Steel Twister Roller Coaster
+STR_0053    :Ocelová horská dráha
 STR_0054    :Dřevěná horská dráha
-STR_0055    :Side-Friction Roller Coaster
+STR_0055    :Horská dráha s bočním třením
 STR_0056    :Divoká myš
 STR_0057    :Mnohorozměrná horská dráha
 STR_0058    :Neznámá atrakce (38)
@@ -601,9 +601,9 @@ STR_0596    :
 STR_0597    :
 STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
-STR_0600    :Powered mine trains career along a smooth and twisted track layout
+STR_0600    :Motorizované dulní vláčky jezdí po hladké a spletité trati
 STR_0601    :
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0602    :Vozy horské dráhy jsou vystřeleny ze stanice za použití lineární indukčních motorů, aby mohly prosvištět tratí
 STR_0603    :Host {INT32}
 STR_0604    :Host {INT32}
 STR_0605    :Host {INT32}
@@ -836,9 +836,9 @@ STR_0831    :{SMALLFONT}{BLACK}Oddálit pohled
 STR_0832    :{SMALLFONT}{BLACK}Otočit o 90{DEGREE} po směru hod. ruč.
 STR_0833    :{SMALLFONT}{BLACK}Pozastavit hru
 STR_0834    :{SMALLFONT}{BLACK}Uložení a nastavení hry
-STR_0835    :Game initialisation failed
+STR_0835    :Inicializace hry selhala
 STR_0836    :Nelze spustit hru minimalizovanou.
-STR_0837    :Unable to initialise graphics system
+STR_0837    :Inicializace grafického systému selhala
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
@@ -895,8 +895,8 @@ STR_0889    :Ukončit Track Designs Manager
 STR_0890    :SCR{COMMA16}.BMP
 STR_0891    :Snímek obrazovky
 STR_0892    :Snímek obrazovky byl uložen jako '{STRINGID}'
-STR_0893    :Snímaní obrazovky selhalo !
-STR_0894    :Landscape data area full !
+STR_0893    :Snímaní obrazovky selhalo!
+STR_0894    :Datová oblast krajiny zaplněna!
 STR_0895    :Nelze stavět částečně pod a nad zemí
 STR_0896    :{POP16}{POP16}{STRINGID} - stavba
 STR_0897    :Směr
@@ -1064,16 +1064,16 @@ STR_1058    :Zadejte nové jméno atrakce:
 STR_1059    :Tuto atrakci nelze přejmenovat...
 STR_1060    :Neplatný název atrakce
 STR_1061    :Normalní běh
-STR_1062    :Continuous circuit mode
-STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch (passing station)
-STR_1065    :Shuttle mode
-STR_1066    :Boat hire mode
-STR_1067    :Upward launch
-STR_1068    :Rotating lift mode
-STR_1069    :Station to station mode
-STR_1070    :Single ride per admission
-STR_1071    :Unlimited rides per admission
+STR_1062    :Mód okruhu
+STR_1063    :Mód jízdy pozpátku s konečnou stanicí
+STR_1064    :Rychlý start (s průjezdem stanicí)
+STR_1065    :Mód konečné stanice
+STR_1066    :Mód lodě k pronájmu
+STR_1067    :Start nahorů
+STR_1068    :Mód rotujícího výtahu
+STR_1069    :Mód stanice-stanice
+STR_1070    :Jedna jízda za vstupné
+STR_1071    :Neomezené jízdy za vstupné
 STR_1072    :Mód bludiště
 STR_1073    :Mód závodů
 STR_1074    :Mód autodronu
@@ -1084,9 +1084,9 @@ STR_1078    :Dopředná rotace
 STR_1079    :Zpětná rotace
 STR_1080    :Film: {ENDQUOTES}Pomsta letců{ENDQUOTES}
 STR_1081    :3D film: {ENDQUOTES}Myší ocásky{ENDQUOTES}
-STR_1082    :Space rings mode
+STR_1082    :Mód vesmírnýh kruhů
 STR_1083    :Mód pro začátečníky
-STR_1084    :LIM-powered launch
+STR_1084    :Start s LIM
 STR_1085    :Film: {ENDQUOTES}Adrenaliňáci{ENDQUOTES}
 STR_1086    :3D film: {ENDQUOTES}Páni bouřek{ENDQUOTES}
 STR_1087    :3D film: {ENDQUOTES}Vesmírní piráti{ENDQUOTES}
@@ -1094,12 +1094,12 @@ STR_1088    :Intenzivní mód
 STR_1089    :Masakr
 STR_1090    :Mód strašidelného domu
 STR_1091    :Mód cirkusového představení
-STR_1092    :Downward launch
+STR_1092    :Start dolů
 STR_1093    :Mód křivého domu
 STR_1094    :Mód volného pádu
-STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch (without passing station)
-STR_1097    :Powered launch block sectioned mode
+STR_1095    :Mód okruhu se sekcemi
+STR_1096    :Rychlý start (bez průjezdu stanicí)
+STR_1097    :Rychlý start módu se sekcemi
 STR_1098    :Přesouvá se na konec {POP16}{STRINGID}
 STR_1099    :Čeká na návštěvníky na {POP16}{STRINGID}
 STR_1100    :Čeká na odjedz {POP16}{STRINGID}
@@ -1114,20 +1114,20 @@ STR_1108    :Jede rychlostí {VELOCITY}
 STR_1109    :Houpe se
 STR_1110    :Rotuje
 STR_1111    :Rotuje
-STR_1112    :Operating
+STR_1112    :V provozu
 STR_1113    :Promítá film
 STR_1114    :Rotuje
-STR_1115    :Operating
-STR_1116    :Operating
+STR_1115    :V provozu
+STR_1116    :V provozu
 STR_1117    :Předvádí cirkusové představení
-STR_1118    :Operating
+STR_1118    :V provozu
 STR_1119    :Čeká na výtah
 STR_1120    :Jede rychlostí {VELOCITY}
 STR_1121    :Zastavuje
 STR_1122    :Čeká na návštěvníky
 STR_1123    :Čeká na start
 STR_1124    :Startuje
-STR_1125    :Operating
+STR_1125    :V provozu
 STR_1126    :Zastavuje
 STR_1127    :Vykládá návštěvníky
 STR_1128    :Zastavuje na brzdících blocích
@@ -1476,13 +1476,13 @@ STR_1469    :Dráha musí začínat a končit stanicí
 STR_1470    :Stanice není dost dlouhá
 STR_1471    :{WINDOW_COLOUR_2}Rychlost:
 STR_1472    :{SMALLFONT}{BLACK}Rychlost této atrakce
-STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Zatím neznámé
-STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Zatím neznámé
-STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
-STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Zatím neznámé
+STR_1473    :{WINDOW_COLOUR_2}Nadšení: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Nadšení: {BLACK}Zatím neznámé
+STR_1475    :{WINDOW_COLOUR_2}Intenzita: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intenzita: {BLACK}Zatím neznámá
+STR_1477    :{WINDOW_COLOUR_2}Intenzita: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Nevolnost: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Nevolnost: {BLACK}Zatím neznámá
 STR_1480    :{SMALLFONT}{OPENQUOTES}Nemohu si dovolit {STRINGID}{ENDQUOTES}
 STR_1481    :{SMALLFONT}{OPENQUOTES}Utratil jsem všechny své peníze{ENDQUOTES}
 STR_1482    :{SMALLFONT}{OPENQUOTES}Je mi špatně{ENDQUOTES}
@@ -1523,7 +1523,7 @@ STR_1516    :{SMALLFONT}{OPENQUOTES}Ty fontány jsou opravdu pěkné{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}Hraje tu hezká hudba{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Tenhle balónek z {STRINGID} je skutečně výhodný{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Tenhle plyšák z {STRINGID} se opravdu vyplatí{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Tahle mapa parku z {STRINGID} se opravdu vyplatíENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Tahle mapa parku z {STRINGID} se opravdu vyplatí{ENDQUOTES}
 STR_1521    :{SMALLFONT}{OPENQUOTES}This fotka z atrakce {STRINGID} se orpavdu vyplatí{ENDQUOTES}
 STR_1522    :{SMALLFONT}{OPENQUOTES}Tenhle deštník z {STRINGID} se opravdu vyplatí{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}Tohle pití od {STRINGID} se opravdu vyplatí{ENDQUOTES}
@@ -1676,7 +1676,7 @@ STR_1669    :{WINDOW_COLOUR_2}Uspokojení: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Návštěvníků celkem: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Výdělek celkem: {BLACK}{CURRENCY2DP}
 STR_1672    :Brzdy
-STR_1673    :Spinning Control Toggle Track
+STR_1673    :Přepnutí točení trati
 STR_1674    :Rychlost brzd
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}Nastavit rychlostní omezení brzd
@@ -1769,8 +1769,8 @@ STR_1762    :Vodopády
 STR_1763    :Peřeje
 STR_1764    :Nárazy
 STR_1765    :Fotobuňka
-STR_1766    :Reverser turntable
-STR_1767    :Spinning tunnel
+STR_1766    :Otáčející blok
+STR_1767    :Točící se tunel
 STR_1768    :Nelze změnit počet zhoupnutí...
 STR_1769    :{WINDOW_COLOUR_2}Počet zhoupnutí:
 STR_1770    :{SMALLFONT}{BLACK}Počet zhoupnutí
@@ -1932,27 +1932,27 @@ STR_1923    :{SMALLFONT}{BLACK}Zobrazit tutoriál
 STR_1924    :{SMALLFONT}{BLACK}Ukončit hru
 STR_1925    :Sem tuto osobu nelze umístit...
 STR_1926    :{SMALLFONT}
-STR_1927    :{YELLOW}{STRINGID} se rozbil
+STR_1927    :{YELLOW}{STRINGID} má poruchu
 STR_1928    :{RED}{STRINGID} havaroval!
-STR_1929    :{RED}{STRINGID} je stále rozbité!{NEWLINE}Zkontrolujte, kde jsou vaši a zkuste je lépe organizovat
-STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
+STR_1929    :{RED}{STRINGID} má stále poruchu!{NEWLINE}Zkontrolujte, kde jsou vaši mechanici a zkuste je lépe organizovat
+STR_1930    :{SMALLFONT}{BLACK}Přepnout sledování tohoto návštěvníka - (Pokud je sledování zapnuté, pohyby návštěvníka budou nahlašovány do zpráv)
 STR_1931    :{STRINGID} je ve frontě na {STRINGID}
 STR_1932    :{STRINGID} je na {STRINGID}
 STR_1933    :{STRINGID} je v {STRINGID}
 STR_1934    :{STRINGID} opusil(a) {STRINGID}
 STR_1935    :{STRINGID} opusil(a) park
 STR_1936    :{STRINGID} si koupil(a) {STRINGID}
-STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
+STR_1937    :{SMALLFONT}{BLACK}Zobrazit informace o předmětu zprávy
 STR_1938    :{SMALLFONT}{BLACK}Zobrazit pohled na návštěvníka
 STR_1939    :{SMALLFONT}{BLACK}Zobrazit pohled na zaměstnance
-STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this guest
+STR_1940    :{SMALLFONT}{BLACK}Zobrazit náladu, energii, hlad atd. tohoto návštěvníka
 STR_1941    :{SMALLFONT}{BLACK}Zobrazit atrakce, které návštěvník navštívil
 STR_1942    :{SMALLFONT}{BLACK}Zobrazit informace o financích návštěvníka
 STR_1943    :{SMALLFONT}{BLACK}Zobrazit poslední myšlenky návštěvníka
 STR_1944    :{SMALLFONT}{BLACK}Zobrazit věci, které návštěvník nese
 STR_1945    :{SMALLFONT}{BLACK}Zobrazit rozkazy a nastavení zaměstnance
 STR_1946    :{SMALLFONT}{BLACK}Vybrat kostým maskota
-STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
+STR_1947    :{SMALLFONT}{BLACK}Zobrazit oblasti pochůzek vybraného typu personálu a najít nejbližšího
 STR_1948    :{SMALLFONT}{BLACK}Přijmout nového zaměstnance
 STR_1949    :Přehled financí
 STR_1950    :Graf financí
@@ -2316,9 +2316,9 @@ STR_2307    :Vyberte návrh {STRINGID}
 STR_2308    :Návrhy trati {STRINGID}
 STR_2309    :Nainstalvoat nový návrh trati
 STR_2310    :Vytvořit vlastní návrh
-STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
-STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
+STR_2311    :{WINDOW_COLOUR_2}Nadšení: asi {BLACK}{COMMA2DP32}
+STR_2312    :{WINDOW_COLOUR_2}Intenzita: asi {BLACK}{COMMA2DP32}
+STR_2313    :{WINDOW_COLOUR_2}Nevolnost: asi {BLACK}{COMMA2DP32}
 STR_2314    :{WINDOW_COLOUR_2}Délka jízdy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cena: {BLACK}okolo {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vyžadovaný prostor: {BLACK}{COMMA16} x {COMMA16} dlaždic
@@ -2691,11 +2691,11 @@ STR_2681    :{MEDIUMFONT}{BLACK}Přidat {CURRENCY} hotovosti
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Dorazí velká skupina návštěvníků
-STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Low:
-STR_2687    :{WINDOW_COLOUR_2}High:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2685    :Parametry simplex noise
+STR_2686    :{WINDOW_COLOUR_2}Hloubky:
+STR_2687    :{WINDOW_COLOUR_2}Výšky:
+STR_2688    :{WINDOW_COLOUR_2}Základní frekvence:
+STR_2689    :{WINDOW_COLOUR_2}Oktávy:
 STR_2690    :Generování mapy
 STR_2691    :{WINDOW_COLOUR_2}Výška povrchu:
 STR_2692    :{WINDOW_COLOUR_2}Výška vodní hladiny:
@@ -2749,7 +2749,7 @@ STR_2739    :Žádná
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nenalezen
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :Nakopírujte data\css17.dat z vaší instalace RCT1 do to data\css50.dat ve vaší instalaci RCT2.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2766,7 +2766,7 @@ STR_2755    :Opravit vandalismy
 STR_2756    :Odebrat odpadky
 STR_2757    :Vynutit slunečno
 STR_2758    :Vynutit bouřku
-STR_2759    :Zero Clearance
+STR_2759    :Povolit křížení staveb
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
 STR_2762    :<not used anymore>
@@ -2810,7 +2810,7 @@ STR_2798    :{SMALLFONT}{BLACK}Vyberte, zda posouvat pohled když ukazatel myši
 STR_2799    :{SMALLFONT}{BLACK}Zobrazit a upravit přiřazení controlu
 STR_2800    :{WINDOW_COLOUR_2}Celkem vstupů: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Příjem ze vstupů: {BLACK}{CURRENCY2DP}
-STR_2802    :Map
+STR_2802    :Mapa
 STR_2803    :{SMALLFONT}{BLACK}Zobrazit tyto návštěvníky zvýrazněné na mapě
 STR_2804    :{SMALLFONT}{BLACK}Zobrazit tento personál zvýrazněné na mapě
 STR_2805    :{SMALLFONT}{BLACK}Zobazit mapu parku
@@ -3070,14 +3070,14 @@ STR_3058    :Cihlová zeď
 STR_3059    :Živý plot
 STR_3060    :Kusy ledu
 STR_3061    :Dřevený plot
-STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
+STR_3062    :{SMALLFONT}{BLACK}Standardní trať horské dráhy
 STR_3063    :{SMALLFONT}{BLACK}Vodní kanál (trať potopena)
 STR_3064    :Začátečnické parky
 STR_3065    :Středně obtížné parky
 STR_3066    :Parky pro experty
 STR_3067    :{OPENQUOTES}Skutečné{ENDQUOTES} parky
 STR_3068    :Ostatní parky
-STR_3069    :Top Section
+STR_3069    :Top výběr
 STR_3070    :Přechod sklonu do roviny
 STR_3071    :{WINDOW_COLOUR_2}Stejná cena všude v parku
 STR_3072    :{SMALLFONT}{BLACK}Nastaví stejnou cenu všude v parku
@@ -3119,12 +3119,12 @@ STR_3107    :Zavřít
 STR_3108    :Testovat
 STR_3109    :Otevřít
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
-STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
-STR_3113    :Select a different design
-STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3111    :{SMALLFONT}{BLACK}Pro postavení klikněte na návrh
+STR_3112    :{SMALLFONT}{BLACK}Pro přejmenování nebo smazaní klikněte na návrh
+STR_3113    :Vybrat jiný návrh
+STR_3114    :{SMALLFONT}{BLACK}Jít zpět do okna výběru návrhů
+STR_3115    :{SMALLFONT}{BLACK}Uložit návrh trati
+STR_3116    :{SMALLFONT}{BLACK}Uložit návrh trati (Možné pouze po otestování trati a naměření hodnot)
 STR_3117    :{BLACK}Volá se mechanik...
 STR_3118    :{BLACK}{STRINGID} jde k atrakci
 STR_3119    :{BLACK}{STRINGID} opravuje atrakci
@@ -3132,10 +3132,10 @@ STR_3120    :{SMALLFONT}{BLACK}Najít nejbližsího dostupného mechanika, nebo 
 STR_3121    :Nepodařilo se najít dostupného mechanika
 STR_3122    :{WINDOW_COLOUR_2}Oblíbená atrakce {BLACK}{COMMA16} návštěvníka
 STR_3123    :{WINDOW_COLOUR_2}Oblíbená atrakce {BLACK}{COMMA16} návštěvníků
-STR_3124    :Broken {STRINGID}
-STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
+STR_3124    :Porucha na {STRINGID}
+STR_3125    :{WINDOW_COLOUR_2}Faktor nadšení: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Faktor intenzity: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Faktor nevolnosti: {BLACK}+{COMMA16}%
 STR_3128    :Uložit návrh trati
 STR_3129    :Uložit návrh trati s kulisami
 STR_3130    :Uložit
@@ -3316,7 +3316,7 @@ STR_3304    :{WINDOW_COLOUR_2}Hodnota parku:
 STR_3305    :{WINDOW_COLOUR_2}Měsíční příjem:
 STR_3306    :{WINDOW_COLOUR_2}Měsíční zisk:
 STR_3307    :{WINDOW_COLOUR_2}Minimální délka:
-STR_3308    :{WINDOW_COLOUR_2}Excitement rating:
+STR_3308    :{WINDOW_COLOUR_2}Nadšení:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
@@ -3373,7 +3373,7 @@ STR_3361    :Příliš mnoho návrhů tratí tohoto typu - některé nejsou zobr
 STR_3362    :<not used anymore>
 STR_3363    :<not used anymore>
 STR_3364    :Pokročilé
-STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
+STR_3365    :{SMALLFONT}{BLACK}Povolit výběr jednotlvých kulis společně se skupinami kulis
 STR_3366    :{BLACK}= Atrakce
 STR_3367    :{BLACK}= Stánek s jídlem
 STR_3368    :{BLACK}= Stánek s pitím
@@ -3490,8 +3490,8 @@ STR_5147    :Cheaty
 STR_5148    :{SMALLFONT}{BLACK}Změnit rychlost hry
 STR_5149    :{SMALLFONT}{BLACK}Zobrazit možnosti cheatů
 STR_5150    :Zapnout debug nástroje
-STR_5151    :,
-STR_5152    :.
+STR_5151    :
+STR_5152    :,
 STR_5153    :Upravit motivy...
 STR_5154    :Hardwarové zobrazování
 STR_5155    :Povolit testování nedostavěných atrakcí
@@ -3507,15 +3507,15 @@ STR_5164    :Název Twitch kanálu
 STR_5165    :Pojmenovávat návstěvníky podle followerů
 STR_5166    :{SMALLFONT}{BLACK}Pojmenovávat návstěvníky podle followerů Twitch kanálu
 STR_5167    :Sledovat návštěvníky-followery
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
-STR_5169    :Name peeps after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
-STR_5171    :Track chat peeps
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
-STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
+STR_5168    :{SMALLFONT}{BLACK}Zapne sledování návštěvníků, pojmenovaných po Twitch followerech
+STR_5169    :Pojmenovávat návštěvníky podle lidí v Twitch chatu
+STR_5170    :{SMALLFONT}{BLACK}Bude pojmenovávat návštěvníky podle lidí v Twitch chatu
+STR_5171    :Sledovat návštěvníky z chatu
+STR_5172    :{SMALLFONT}{BLACK}Zapne sledování návštěvníků, pojmenovaných po lidech v Twitch chatu
+STR_5173    :Použít Twitch chat jako zprávy
+STR_5174    :{SMALLFONT}{BLACK}Bude používat zprávy z Twitch chatu, začínající !news pro herní notifikace
+STR_5175    :Zadejte název vašeho Twitch kanálu
+STR_5176    :Povolit Twitch integraci
 STR_5177    :Režim zobrazení:
 STR_5178    :{SMALLFONT}{BLACK}Zobrazit cheaty financí
 STR_5179    :{SMALLFONT}{BLACK}Zobrazit cheaty návštěvníků
@@ -3539,23 +3539,23 @@ STR_5196    :Pozemková práva
 STR_5197    :Kulisy
 STR_5198    :Cesty
 STR_5199    :Stavba atrakcí
-STR_5200    :Track Design Place
+STR_5200    :Umístění návrhu trati
 STR_5201    :Nová atrakce
-STR_5202    :Track Design Selection
+STR_5202    :Výběr návrhu trati
 STR_5203    :Atrakce
 STR_5204    :Seznam atrakcí
 STR_5205    :Návštěvník
 STR_5206    :Seznam návštěvníků
 STR_5207    :Personál
 STR_5208    :Seznam personálu
-STR_5209    :Banner
+STR_5209    :Baner
 STR_5210    :Výběr objektu
 STR_5211    :Seznam vynálezů
 STR_5212    :Nastavení sénáře
 STR_5213    :Nastavení cílů
 STR_5214    :Vytváření mapy
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
+STR_5215    :Správce návrhů tratí
+STR_5216    :Správce seznamu návrhů tratí
 STR_5217    :Cheaty
 STR_5218    :Motivy
 STR_5219    :Nastavení
@@ -3565,7 +3565,7 @@ STR_5222    :Načíst/uložit
 STR_5223    :Výzva k uložení
 STR_5224    :Výzva k odstranění atrakce
 STR_5225    :Výzva k vyhazovu personálu
-STR_5226    :Track Delete Prompt
+STR_5226    :Výzva k odstranění trati
 STR_5227    :Výzva k přepisu uložené hry
 STR_5228    :{SMALLFONT}{BLACK}Hlavní UI
 STR_5229    :{SMALLFONT}{BLACK}Park
@@ -3586,16 +3586,16 @@ STR_5243    :Použity neplatné znaky
 STR_5244    :Motivy
 STR_5245    :Vrchní nástrojová lišta
 STR_5246    :Dolní nástrojová lišta
-STR_5247    :Track Editor Bottom Toolbar
+STR_5247    :Dolní nástrojová lišta editoru tratě
 STR_5248    :Dolní nástrojová lišta editoru scénářů
-STR_5249    :Title Menu Buttons
-STR_5250    :Title Exit Button
-STR_5251    :Title Options Button
-STR_5252    :Title Scenario Selection
+STR_5249    :Tlačítka titulního menu
+STR_5250    :Tlačítko titulního menu pro odchod
+STR_5251    :Tlačítko titulního menu pro nastavení
+STR_5252    :Tlačítko titulního menu pro výběr scénáře
 STR_5253    :Informace o zábavním parku
 STR_5254    :Vytvořit
-STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
-STR_5256    :Create a new theme to make changes to
+STR_5255    :{SMALLFONT}{BLACK}Vytvořit novou herní sekvenci
+STR_5256    :Vytvořit nový motiv
 STR_5257    :{SMALLFONT}{BLACK}Vytvořit nový motiv na základě současného
 STR_5258    :{SMALLFONT}{BLACK}Odstranit současný motiv
 STR_5259    :{SMALLFONT}{BLACK}Přejmenovat současný motiv
@@ -3603,7 +3603,7 @@ STR_5260    :Snímek celého parku
 STR_5261    :Filtr
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
-STR_5264    :Custom
+STR_5264    :Vlastní
 STR_5265    :{SMALLFONT}{BLACK}Vyberte viditelné zdroje obsahu
 STR_5266    :{SMALLFONT}{BLACK}Zobrazení
 STR_5267    :{SMALLFONT}{BLACK}Lokalizace
@@ -3621,9 +3621,9 @@ STR_5278    :Sandbox mód
 STR_5279    :Sandbox mód vypnutý
 STR_5280    :{SMALLFONT}{BLACK}Povolit pomocí okna s mapou úpravy nastavení práv pozemků dalších možností, která jsou jinak možná jen v editoru scénáře
 STR_5281    :{SMALLFONT}{BLACK}Funkce
-STR_5282    :RCT1 Ride Open/Close Lights
-STR_5283    :RCT1 Park Open/Close Lights
-STR_5284    :RCT1 Scenario Selection Font
+STR_5282    :RCT1 světla atrakcí otevřeno/zavřeno
+STR_5283    :RCT1 světla parku otevřeno/zavřeno
+STR_5284    :RCT1 výber fontu scénáře
 STR_5285    :VÝBUCH!!!
 STR_5286    :{SMALLFONT}{BLACK}Vyhodit několik návštěvníků do povětří
 STR_5287    :Atrakce už má poruchu
@@ -3643,7 +3643,7 @@ STR_5300    :{SMALLFONT}{BLACK}Propustit zaměstnance
 STR_5301    :{MEDIUMFONT}{BLACK}Vyrovnání dluhů
 STR_5302    :Vyrovnat dluh
 STR_5303    :Povolit stavění, když je hra pozastavená
-STR_5304    :Title Sequence:
+STR_5304    :Herní sekvence:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
@@ -3669,7 +3669,7 @@ STR_5326    :Mřížka (zelená)
 STR_5327    :Písek (tmavý)
 STR_5328    :Písek (světlý)
 STR_5329    :Šachovnice (obrácená)
-STR_5330    :Underground view
+STR_5330    :Podzemní pohled
 STR_5331    :Kámen
 STR_5332    :Dřevo (červené)
 STR_5333    :Dřevo (černé)
@@ -3677,12 +3677,12 @@ STR_5334    :Led
 STR_5335    :Vstup na atrakci
 STR_5336    :Východ z atrakce
 STR_5337    :Vstup do zábavního parku
-STR_5338    :Element type
-STR_5339    :Base height
-STR_5340    :Clearance height
+STR_5338    :Typ prvku
+STR_5339    :Výška povrchu
+STR_5340    :Výška objektu
 STR_5341    :Vlajky
 STR_5342    :Výběr dlaždice
-STR_5343    :Automatically place staff
+STR_5343    :Automaticky umisťovat personál
 STR_5344    :Seznam změn
 STR_5345    :Cheaty financí
 STR_5346    :Cheaty návštěvníků
@@ -3707,85 +3707,85 @@ STR_5364    :Méně než 15
 STR_5365    :{BLACK}Rychlost personálu:
 STR_5366    :Normální
 STR_5367    :Vysoká
-STR_5368    :Reset crash status
+STR_5368    :Vymazat havárii
 STR_5369    :Parametry parku...
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :Object Selection
+STR_5370    :{SMALLFONT}{BLACK}Klikněte na toto tlačítko pro   {NEWLINE}úpravy parametrů jako omezení parku,{NEWLINE} generování návštěvníků a peněz.
+STR_5371    :Výběr objektu
 STR_5372    :Obrátit směr posouvání pohledu pravým tlačítkem
-STR_5373    :Name {STRINGID}
-STR_5374    :Date {STRINGID}
+STR_5373    :Název {STRINGID}
+STR_5374    :Datum {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
-STR_5377    :{SMALLFONT}{BLACK}Saves
-STR_5378    :{SMALLFONT}{BLACK}Script
-STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
-STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
-STR_5381    :{SMALLFONT}{BLACK}Stop playing title sequence
-STR_5382    :{SMALLFONT}{BLACK}Restart title sequence
-STR_5383    :{SMALLFONT}{BLACK}Create a new title sequence based on the current one
-STR_5384    :{SMALLFONT}{BLACK}Delete the current title sequence
-STR_5385    :{SMALLFONT}{BLACK}Rename the current title sequence
-STR_5386    :{SMALLFONT}{BLACK}Insert a new command
-STR_5387    :{SMALLFONT}{BLACK}Edit the selected command
-STR_5388    :{SMALLFONT}{BLACK}Delete the selected command
-STR_5389    :{SMALLFONT}{BLACK}Skip to the selected command in the title sequence
-STR_5390    :{SMALLFONT}{BLACK}Move the selected command down
-STR_5391    :{SMALLFONT}{BLACK}Move the selected command up
-STR_5392    :{SMALLFONT}{BLACK}Add a save to the title sequence
-STR_5393    :{SMALLFONT}{BLACK}Remove the selected save from the title sequence
-STR_5394    :{SMALLFONT}{BLACK}Rename the selected save
-STR_5395    :{SMALLFONT}{BLACK}Load the selected save in game
-STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
-STR_5397    :Can only be used on the title screen
-STR_5398    :Cannot edit title sequence while it's playing
-STR_5399    :Press the stop button to continue editing
-STR_5400    :Can't change this title sequence
-STR_5401    :Create a new title sequence to make changes to
-STR_5402    :Failed to load title sequence
-STR_5403    :There may be no Load or Wait command or a save may be invalid
-STR_5404    :Name already exists
+STR_5377    :{SMALLFONT}{BLACK}Uložené hry
+STR_5378    :{SMALLFONT}{BLACK}Skripty
+STR_5379    :{SMALLFONT}{BLACK}Přeskočit na následující příkaz "Čekat"
+STR_5380    :{SMALLFONT}{BLACK}Spustit herní sekvenci
+STR_5381    :{SMALLFONT}{BLACK}Zastavit herní sekvenci
+STR_5382    :{SMALLFONT}{BLACK}Restartovat herní sekvenci
+STR_5383    :{SMALLFONT}{BLACK}Vytvořit stejnou novou herní sekvenci
+STR_5384    :{SMALLFONT}{BLACK}Odebrat herní sekvenci
+STR_5385    :{SMALLFONT}{BLACK}Přejmenovat herní sekvenci
+STR_5386    :{SMALLFONT}{BLACK}Vložit nový příkaz
+STR_5387    :{SMALLFONT}{BLACK}Upravit vybraný příkaz
+STR_5388    :{SMALLFONT}{BLACK}Odebrat vybraný příkaz
+STR_5389    :{SMALLFONT}{BLACK}Přeskočit na následující příkaz v sekvenci
+STR_5390    :{SMALLFONT}{BLACK}Přesunout příkaz níže
+STR_5391    :{SMALLFONT}{BLACK}Přesunout příkaz výše
+STR_5392    :{SMALLFONT}{BLACK}Přidat uloženou hru do sekvence
+STR_5393    :{SMALLFONT}{BLACK}Odebrat uloženou hru ze sekvence
+STR_5394    :{SMALLFONT}{BLACK}Přejmenovat uloženou hru
+STR_5395    :{SMALLFONT}{BLACK}Načíst vybranou uloženou hru
+STR_5396    :{SMALLFONT}{BLACK}Znovu načíst herní sekvenci, pokud byla upravována mimo hru
+STR_5397    :Může být použito pouze na titulní obrazovce
+STR_5398    :Nelze upravovat herní sekvenci, když právě hraje
+STR_5399    :Stiskněte tlačítko "stop" pro pokračování v úpravách
+STR_5400    :Tuto herní sekvenci nelze měnit
+STR_5401    :Vytvořit novou herní sekvenci
+STR_5402    :Nepodařilo se načíst herní sekvenci
+STR_5403    :Patrně chybí příkaz Načti, Čekej, nebo je uložená hra neplatná
+STR_5404    :Název již existuje
 STR_5405    :Zadejte název pro uloženou hru
-STR_5406    :Enter a name for the title sequence
-STR_5407    :Add
-STR_5408    :Remove
-STR_5409    :Insert
-STR_5410    :Edit
-STR_5411    :Reload
-STR_5412    :Skip to
-STR_5413    :Load
-STR_5414    :Load{MOVE_X}{87}Six Flags Magic Mountain.SC6
-STR_5415    :Load{MOVE_X}{87}{STRING}
-STR_5416    :Load{MOVE_X}{87}No save selected
-STR_5417    :Location
-STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Rotate
-STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Wait
-STR_5424    :Wait{MOVE_X}{87}{COMMA16}
+STR_5406    :Zadejte název herní sekvence
+STR_5407    :Přidat
+STR_5408    :Odebrat
+STR_5409    :Vložit
+STR_5410    :Upravit
+STR_5411    :Znovu načíst
+STR_5412    :Přeskočit na
+STR_5413    :Načíst
+STR_5414    :Načíst{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :Načíst{MOVE_X}{87}{STRING}
+STR_5416    :Načíst{MOVE_X}{87}No save selected
+STR_5417    :Umístění
+STR_5418    :Umístění{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5419    :Otočit
+STR_5420    :Otočit{MOVE_X}{87}{COMMA16}
+STR_5421    :Přiblížit
+STR_5422    :Přiblížit{MOVE_X}{87}{COMMA16}
+STR_5423    :Čekat
+STR_5424    :Čekat{MOVE_X}{87}{COMMA16}
 STR_5425    :Restart
-STR_5426    :End
-STR_5427    :Coordinates:
-STR_5428    :Anticlockwise rotations:
-STR_5429    :Zoom level:
-STR_5430    :Seconds to wait:
-STR_5431    :Save to load:
-STR_5432    :Command:
-STR_5433    :Title Sequences
-STR_5434    :Command Editor
-STR_5435    :Rename save
-STR_5436    :Edit Title Sequences...
-STR_5437    :No save selected
-STR_5438    :Can't make changes while command editor is open
-STR_5439    :A wait command with at least 4 seconds is required with a restart command
+STR_5426    :Konec
+STR_5427    :Souřadnice:
+STR_5428    :Počet otočení proti směru hod.ruč.:
+STR_5429    :Úroveň přiblížení:
+STR_5430    :Délka čekání (v sekundách):
+STR_5431    :Uložená hra k načtení:
+STR_5432    :Příkaz:
+STR_5433    :Herní sekvence
+STR_5434    :Editor příkazů
+STR_5435    :Přejmenovat uloženou hru
+STR_5436    :Upravit herní sekvence...
+STR_5437    :Nevybrána žádná ulžoená hra
+STR_5438    :Nelze vytvářet změny, když je otevřený editor příkazů
+STR_5439    :Příkaz "Čekat" alespoň 4 vteřiny je vyžadován společně s příkazem "Restart"
 STR_5440    :Minimalizovat celoobrazovkový režim při přepnutí ze hry
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identifikovat atrakce podle typu,{NEWLINE}potom lze později měnit vozy,{NEWLINE}tak jako v RCT1.
 STR_5442    :Hodnocení parku:
 STR_5443    :Rychlost{MOVE_X}{87}{STRINGID}
 STR_5444    :Rychlost:
 STR_5445    :Rychlost
-STR_5446    :Get
+STR_5446    :Získat
 STR_5447    :Typ {STRINGID}
 STR_5448    :Atrakce/vůz {STRINGID}
 STR_5449    :Snížit rychlost hry
@@ -3795,8 +3795,8 @@ STR_5452    :Skrýt/zobrazit lištu s nástroji
 STR_5453    :Vybrat jinou atrakci
 STR_5454    :Neomezovat FPS
 STR_5455    :Zapnout sandbox mód
-STR_5456    :Disable clearance checks
-STR_5457    :Disable support limits
+STR_5456    :Vypnout kontroly křížení
+STR_5457    :Vypnout limity podpěr
 STR_5458    :Otočit po směru hod. ruč.
 STR_5459    :Otočit proti směru hod. ruč.
 STR_5460    :Otočit pohled proti směru hod. ruč.
@@ -3837,13 +3837,13 @@ STR_5494    :<not used anymore>
 STR_5495    :Seznam hráčů
 STR_5496    :Hráč:
 STR_5497    :Ping:
-STR_5498    :Seznam Serverů
+STR_5498    :Seznam serverů
 STR_5499    :Jméno hráče:
-STR_5500    :Přidat Server
-STR_5501    :Spustit Server
+STR_5500    :Přidat server
+STR_5501    :Spustit server
 STR_5502    :Hra více hráčů
-STR_5503    :Enter hostname or IP address:
-STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
+STR_5503    :Zadejte hostname, nebo IP adresu:
+STR_5504    :{SMALLFONT}{BLACK}Zobrazit stav hry více hráčů
 STR_5505    :Nelze se připojit k serveru.
 STR_5506    :Návštěvníci ingnorují intenzitu atrakcí
 STR_5507    :Údržbáři nyní sekají trávu ve výchozím nastavení
@@ -4017,7 +4017,8 @@ STR_5711    :Zadejte nový název skupiny:
 STR_5712    :Nelze upravit oprávnění, které nemáte
 STR_5713    :Vyhodit hráče
 STR_5714    :Zobrazit nastavení
-
+STR_5715    :Nová hra
+STR_5716    :Není povoleno ve hře více hráčů
 
 #####################
 # Rides/attractions # 
