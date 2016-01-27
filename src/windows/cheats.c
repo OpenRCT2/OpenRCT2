@@ -186,7 +186,7 @@ enum {
 static rct_widget window_cheats_money_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_5K_MONEY,					STR_NONE },								// high money
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(5),			HPL(5),			STR_CHEAT_CLEAR_LOAN,				STR_NONE },								// Clear loan
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(3),			HPL(3),			STR_CHEAT_CLEAR_LOAN,				STR_NONE },								// Clear loan
 	{ WIDGETS_END },
 };
 
@@ -1134,7 +1134,7 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = CHEATS_MONEY_INCREMENT;
 		gfx_draw_string_left(dpi, STR_CHEAT_TIP_5K_MONEY,	(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_TIP_CLEAR_LOAN,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(4) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_TIP_CLEAR_LOAN,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
 		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(15) + TXTO);
