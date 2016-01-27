@@ -2313,6 +2313,15 @@ enum {
 	STR_NETWORK_VERSION = 5717,
 	STR_NETWORK_VERSION_TIP = 5718,
 
+	STR_SUNNY = 5719,
+	STR_PARTIALLY_CLOUDY = STR_SUNNY + 1,
+	STR_CLOUDY = STR_SUNNY + 2,
+	STR_RAIN = STR_SUNNY + 3,
+	STR_HEAVY_RAIN = STR_SUNNY + 4,
+	STR_THUNDERSTORM = STR_SUNNY + 5,
+	STR_FORCE_WEATHER = 5725,
+	STR_FORCE_WEATHER_TOOLTIP = 5726,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
