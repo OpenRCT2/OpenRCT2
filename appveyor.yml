@@ -14,7 +14,7 @@ install:
 - ps: >-
     curl "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" -OutFile nsisxtra.zip
 
-    7z x nsisxtra.zip
+    7z x nsisxtra.zip > $null
 
     cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
 build_script:

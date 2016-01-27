@@ -6,14 +6,32 @@
 #########################################################
 param (
     [Parameter(Position = 1)]
-    [string]$Task = "all",
+    [string]$Task         = "all",
 
-    [string]$Server  = "",
-    [string]$BuildNumber = "",
-    [string]$GitBranch = "",
-    [switch]$Installer = $false,
-    [switch]$CodeSign = $false
+    [string]$Server       = "",
+    [string]$GitTag       = "",
+    [string]$GitBranch    = "",
+    [string]$GitSha1      = "",
+    [string]$GitSha1Short = "",
+    [bool]  $CodeSign     = $false,
+    [switch]$Installer    = $false
 )
+
+if ($GitTag -eq "")
+{
+    if ($GitBranch -eq $null)
+    {
+        $GitBranch = (git rev-parse --abbrev-ref HEAD)
+    }
+    if ($GitCommitSha1 -eq $null)
+    {
+        $GitCommitSha1 = (git rev-parse HEAD)
+    }
+    if ($GitCommitSha1Short -eq $null)
+    {
+        $GitCommitSha1Short = (git rev-parse --short HEAD)
+    }
+}
 
 # Setup
 $ErrorActionPreference = "Stop"
@@ -27,19 +45,18 @@ $rootPath = Get-RootPath
 function Do-PrepareSource()
 {
     Write-Host "Setting build #defines..." -ForegroundColor Cyan
-    if ($GitBranch -eq "")
-    {
-        $GitBranch = (git rev-parse --abbrev-ref HEAD)
-    }
-    $GitCommitSha1 = (git rev-parse HEAD)
-    $GitCommitSha1Short = (git rev-parse --short HEAD)
-
     $defines = @{ }
-    $defines["OPENRCT2_BUILD_NUMBER"]      = $BuildNumber;
-    $defines["OPENRCT2_BUILD_SERVER"]      = $Server;
-    $defines["OPENRCT2_BRANCH"]            = $GitBranch;
-    $defines["OPENRCT2_COMMIT_SHA1"]       = $GitCommitSha1;
-    $defines["OPENRCT2_COMMIT_SHA1_SHORT"] = $GitCommitSha1Short;
+    $defines["OPENRCT2_BUILD_SERVER"] = $Server;
+    if ($GitTag -ne "")
+    {
+        $defines["OPENRCT2_BRANCH"]            = $GitTag;
+    }
+    else
+    {
+        $defines["OPENRCT2_BRANCH"]            = $GitBranch;
+        $defines["OPENRCT2_COMMIT_SHA1"]       = $GitCommitSha1;
+        $defines["OPENRCT2_COMMIT_SHA1_SHORT"] = $GitCommitSha1Short;
+    }
 
     $defineString = ""
     foreach ($key in $defines.Keys) {
@@ -52,6 +69,7 @@ function Do-PrepareSource()
 
     # Set the environment variable which the msbuild project will use
     $env:OPENRCT2_DEFINES = $defineString;
+
     return 0
 }
 
@@ -115,7 +133,7 @@ function Do-Package()
             return 1
         }
     }
-    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*" | Write-Host
+    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*" > $null
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create zip." -ForegroundColor Red
@@ -137,9 +155,18 @@ function Do-Installer()
     # Create artifacts directory
     New-Item -Force -ItemType Directory $artifactsDir > $null
 
+    # Resolve version extension
+    $VersionExtra = ""
+    if ($GitTag -ne "")
+    {
+        $VersionExtra = "$GitTag"
+    }
+    else
+    {
+        $VersionExtra = "$GitBranch-$GitCommitSha1Short"
+    }
+
     # Create installer
-    $GitCommitSha1Short = (git rev-parse --short HEAD)
-    $VersionExtra       = "$GitBranch-$GitCommitSha1Short"
     & "$installerDir\build.ps1" -VersionExtra $VersionExtra
     if ($LASTEXITCODE -ne 0)
     {
