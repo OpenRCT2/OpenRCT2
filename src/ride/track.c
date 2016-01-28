@@ -3433,7 +3433,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	// Check support height
 	if (!gCheatsDisableSupportLimits) {
 		rct_map_element *mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-		uint8 supportZ = (z + 32) >> 8;
+		uint8 supportZ = (z + 32) >> 3;
 		if (supportZ > mapElement->base_height) {
 			uint8 supportHeight = (supportZ - mapElement->base_height) / 2;
 			uint8 maxSupportHeight = RCT2_GLOBAL(0x0097D218 + (RIDE_TYPE_MAZE * 8), uint8);
