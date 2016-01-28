@@ -2391,19 +2391,19 @@ STR_2383    :Água
 STR_2384    :{WINDOW_COLOUR_2}Seu objetivo:
 STR_2385    :{BLACK}Nenhum
 STR_2386    :{BLACK}Ter pelo menos {COMMA16} visitantes em seu parque até o fim de {MONTHYEAR}, com classificação de parque de pelo menos 600
-STR_2387    :{BLACK}Alcançar um valor de parque de pelo menos {POP16}{POP16}{CURRENCY} até o fim de {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
+STR_2387    :{BLACK}Alcançar um valor do parque de pelo menos {POP16}{POP16}{CURRENCY} até o fim de {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Divirta-se!
 STR_2389    :{BLACK}Construir o melhor {STRINGID} que puder!
-STR_2390    :{BLACK}Ter 10 tipos de montanha-russa diferentes operandoo em seu parque, cada uma com um valor de emoção de pelo menos 6.00
+STR_2390    :{BLACK}Ter 10 tipos de montanha-russa diferentes operando em seu parque, cada uma com um valor de emoção de pelo menos 6.00
 STR_2391    :{BLACK}Ter pelo menos {COMMA16} visitantes em seu parque. Você não pode deixar a classificação de parque abaixo de 700 em momento algum!
 STR_2392    :{BLACK}Alcançar um rendimento mensal de ingressos de atrações de pelo menos {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}Ter 10 tipos de montanha-russa diferentes operandoo em seu parque, cada uma com um comprimento mínimo de {LENGTH}, e um valor de emoção de no mínimo 7.00
+STR_2393    :{BLACK}Ter 10 tipos de montanha-russa diferentes operando em seu parque, cada uma com um comprimento mínimo de {LENGTH}, e um valor de emoção de no mínimo 7.00
 STR_2394    :{BLACK}Terminar de construir todas as 5 montanhas-russas parcialmente construídas neste parque, projetando-as para alcançar um valor de emoção de pelo menos {POP16}{POP16}{COMMA2DP32} cada
-STR_2395    :{BLACK}Pagar o empréstimo e alcançar um valor de parque de pelo menos {POP16}{POP16}{CURRENCY}
+STR_2395    :{BLACK}Pagar o empréstimo e alcançar um valor do parque de pelo menos {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}Alcançar um lucro mensal de comida, bebida e vendas de mercadorias de pelo menos {POP16}{POP16}{CURRENCY}
 STR_2397    :Nenhum
 STR_2398    :Número de visitantes numa data estabelecida
-STR_2399    :Valor de parque numa data estabelecida
+STR_2399    :Valor do parque numa data estabelecida
 STR_2400    :Divirta-se
 STR_2401    :Construa a melhor atração que puder
 STR_2402    :Construa 10 montanhas-russas
@@ -2411,7 +2411,7 @@ STR_2403    :Número de visitantes no parque
 STR_2404    :Rendimento mensal de ingressos de atrações
 STR_2405    :Construa 10 montanhas-russas com um comprimento estebelecido
 STR_2406    :Termine de construir 5 montanhas-russas
-STR_2407    :Pague o empréstimo e alcance um valor de parque estebelecido
+STR_2407    :Pague o empréstimo e alcance um valor do parque estebelecido
 STR_2408    :Lucro mensal de comida/mercadoria
 STR_2409    :{WINDOW_COLOUR_2}Campanhas de marketing em operação
 STR_2410    :{BLACK}Nenhum
@@ -3973,6 +3973,51 @@ STR_5631    :Parques Originais Baixados (DLC)
 STR_5632    :Construa seu próprio...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
+STR_5635    :{WINDOW_COLOUR_2}Dinheiro gasto: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Comandos executados: {BLACK}{COMMA16}
+STR_5637    :Não é possível fazer isto...
+STR_5638    :Permissão negada
+STR_5639    :{SMALLFONT}{BLACK}Mostrar lista de jogadores
+STR_5640    :{SMALLFONT}{BLACK}Gerenciar grupos
+STR_5641    :Grupo Padrão:
+STR_5642    :Grupo:
+STR_5643    :Adicionar Grupo
+STR_5644    :Remover Grupo
+STR_5645    :Bate-Papo
+STR_5646    :Terraform
+STR_5647    :Alternar Pausa
+STR_5648    :Definir Nível da Água
+STR_5649    :Criar Atração
+STR_5650    :Remover Atração
+STR_5651    :Construir Atração
+STR_5652    :Propriedades da Atração
+STR_5653    :Cenário
+STR_5654    :Calçada
+STR_5655    :Visitante
+STR_5656    :Funcionário
+STR_5657    :Propriedades do Parque
+STR_5658    :Financiamento do Parque
+STR_5659    :Expulsar Jogador
+STR_5660    :Modificar Grupos
+STR_5661    :Definir Grupo do Jogador
+STR_5662    :N/A
+STR_5663    :Limpar Paisagem
+STR_5701    :{WINDOW_COLOUR_2}Última ação: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Localizar ação mais recente do jogador
+STR_5703    :Não é possível expulsar o anfitrião
+STR_5704    :Última Ação:
+STR_5705    :Impossível definir para este grupo
+STR_5706    :Impossível remover grupo que os jogadores pertencem
+STR_5707    :Este grupo não pode ser modificado
+STR_5708    :Impossível remover grupo que o anfitrião pertence
+STR_5709    :Renomear Grupo
+STR_5710    :Nome do grupo
+STR_5711    :Insira um novo nome para este grupo:
+STR_5712    :Impossível modificar permissão que não é sua
+STR_5713    :Expulsar Jogador
+STR_5714    :Mostrar janela de opções
+STR_5715    :Novo Jogo
+STR_5716    :Não é permitido no modo multijogador
 
 #############
 # Scenarios #
@@ -4087,7 +4132,7 @@ STR_DTLS    :Thunder Rock fica no meio de um deserto e atrai muitos turistas - U
 <Mega Park>
 STR_SCNR    :Mega Park
 STR_PARK    :Mega Park
-STR_DTLS    :Divirta-se!
+STR_DTLS    :Apenas por diversão!
 
 ## Added Attractions
 <Whispering Cliffs>

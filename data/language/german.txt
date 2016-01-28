@@ -4011,6 +4011,8 @@ STR_5711    :Neuen Namen für diese Gruppe eingeben:
 STR_5712    :Berechtigung kann nicht bearbeitet werden, da Sie diese selbst nicht besitzen
 STR_5713    :Spieler entfernen
 STR_5714    :Optionen anzeigen
+STR_5715    :Neues Spiel
+STR_5716    :Im Mehrspielermodus nicht erlaubt
 
 #############
 # Scenarios #

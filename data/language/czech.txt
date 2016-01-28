@@ -4020,12 +4020,6945 @@ STR_5714    :Zobrazit nastavení
 STR_5715    :Nová hra
 STR_5716    :Není povoleno ve hře více hráčů
 
-#####################
-# Rides/attractions # 
-#####################
+###############################################################################
+## RCT2 Objects
+###############################################################################
+[AML1]
+STR_NAME    :Americké parní vlaky
+STR_DESC    :Miniaturní replika parní lokomotivy s tendrem táhne dřevěné vagóny s plátěnými střechami
+STR_CPTY    :6 míst v každém vagónu
 
-#WW
+[CLIFT1]
+STR_NAME    :Kryté sedačkové lanovky
+STR_DESC    :Lanovka se sedačkami se střechou
+STR_CPTY    :2 místa na jedné sedačce
+
+[CLIFT2]
+STR_NAME    :Sedačkové lanovky
+STR_DESC    :Lanovka se sedačkami
+STR_CPTY    :2 místa na jedné sedačce
+
+[LIFT1]
+STR_NAME    :Výtahy
+STR_DESC    :Návštěvníci jezdí ve výtahu nahoru nebo dolů, aby se dostali z jednoho patra do druhého
+STR_CPTY    :16 návštěvníků
+
+[MONO1]
+STR_NAME    :Aerodynamické jednokolejné vlaky
+STR_DESC    :Velkokapacitní jodnokolejné vlaky s aerodynamickou přídí a zádí
+STR_CPTY    :5 nebo 10 míst v každém vagónu
+
+[MONO2]
+STR_NAME    :Malé jednokolejné vozy
+STR_DESC    :Malé jednokolejné vozy bez dveří
+STR_CPTY    :4 místa v každém voze
+
+[MONO3]
+STR_NAME    :Retro jednokolejné vlaky
+STR_DESC    :Retro jednokolejné vlaky bez oken
+STR_CPTY    :4 místa v každém voze
+
+[NRL]
+STR_NAME    :Parní vlaky
+STR_DESC    :Miniaturní replika parní lokomotivy s tendrem táhne dřevěné vagóny
+STR_CPTY    :6 míst v každém vagónu
+
+[NRL2]
+STR_NAME    :Parní vlaky s krytými vozy
+STR_DESC    :Miniaturní replika parní lokomotivy s tendrem táhne dřevěné vagóny s plátěnými střechami
+STR_CPTY    :6 míst v každém vagónu
+
+[SMONO]
+STR_NAME    :Zavěšené jednokolejné vlaky
+STR_DESC    :Velkokapacitní jodnokolejné vlaky
+STR_CPTY    :8 míst v každém vozu
+
+[TRAM1]
+STR_NAME    :Tramvaje
+STR_DESC    :Retro repliky tramvají
+STR_CPTY    :10 míst v každém vozu
+
+[4X4]
+STR_NAME    :Monster Trucks
+STR_DESC    :Obří auta s pohonem 4x4, které jsou schopna vyjíždět velmi strmé svahy
+STR_CPTY    :2 místa v každém vozu
+
+[CHBUILD]
+STR_NAME    :Křívý dům
+STR_DESC    :Budova s pokřivenými místnostmi a nakloněnými chodbami, které dezorientují návštěvníky
+STR_CPTY    :5 návštěvníků
+
+[CIRCUS1]
+STR_NAME    :Cirkus
+STR_DESC    :Zvířecí představení uvnitř velkého stanu
+STR_CPTY    :30 návštěvníků
+
+[CTCAR]
+STR_NAME    :Autodráha
+STR_DESC    :Malá autíčka jezdí po postavené dráze
+STR_CPTY    :2 místa v každém vozu
+
+[DODG1]
+STR_NAME    :Autodrom
+STR_DESC    :Autodrom s lektrickými autíčky
+STR_CPTY    :1 místo v každém vozu
+
+[FSAUC]
+STR_NAME    :Létající talíře
+STR_DESC    :Autodrom se vznášedly
+STR_CPTY    :1 místo v každém vozu
+
+[FWH1]
+STR_NAME    :Ruské kolo
+STR_DESC    :Velké otáčející se kolo s otevřenými sedadly
+STR_CPTY    :32 návštěvníků
+
+[GOLF1]
+STR_NAME    :Mini Golf
+STR_DESC    :Příjemná hra miniaturního golfu
+STR_CPTY    : 
+
+[GTC]
+STR_NAME    :Vlak duchů
+STR_DESC    :Vozy ve tvaru příšer jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
+STR_CPTY    :2 místa v každém vozu
+
+[HELICAR]
+STR_NAME    :Mini vrtulníky
+STR_DESC    :Po ocelové kolejnici jezdí miniaturní helikoptéry, ovládané šlapáním návštěvníků
+STR_CPTY    :2 místa v každém vozu
+
+[HHBUILD]
+STR_NAME    :Dům hrůzy
+STR_DESC    :Velká stará budova se stašidelnými chodbami a děsivými pokoji
+STR_CPTY    :15 návštěvníků
+
+[HMAZE]
+STR_NAME    :Bludiště
+STR_DESC    :Bludiště je postavené z 2 metrů vysokého živého plotu, nebo zdí. Návštěvníci v něm bloudí, dokud nenaleznou východ
+STR_CPTY    : 
+
+[HMCAR]
+STR_NAME    :Strašidelná jízda velkým domem
+STR_DESC    :Vozy jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
+STR_CPTY    :2 místa v každém vozu
+
+[HSKELT]
+STR_NAME    :Točitá skluzavka
+STR_DESC    :Dřevěná budova se schodištěm uvnitř a venkovní točitou skluzavkou, na které se jezdí s podložkami
+STR_CPTY    : 
+
+[MGR1]
+STR_NAME    :Kolotoč
+STR_DESC    :Klasický kolotoč s vyřezávanými koníky
+STR_CPTY    :16 návštěvníků
+
+[MONBK]
+STR_NAME    :Jednokolejná jízdní kola
+STR_DESC    :Po ocelové kolejnici jezdí speciální jízdní kola, ovládané šlapáním návštěvníků
+STR_CPTY    :1 místo na každém kole
+
+[OBS1]
+STR_NAME    :Pozorovací věž
+STR_DESC    :Otáčející se pozorovací věž, která postupně vyjíždí na vysokou věž
+STR_CPTY    :20 návštěvníků
+
+[OBS2]
+STR_NAME    :Dvoupatrová pozorovací věž
+STR_DESC    :Otáčející se dvoupatrová pozorovací věž, která postupně vyjíždí na vysokou věž
+STR_CPTY    :32 návštěvníků
+
+[RCR]
+STR_NAME    :Závodní auta
+STR_DESC    :Vozy ve tvaru závodních aut
+STR_CPTY    :1 místo v každém voze
+
+[SPCAR]
+STR_NAME    :Sportovní auta
+STR_DESC    :Vozy ve tvaru sportovních aut
+STR_CPTY    :2 místa v každém vozu
+
+[SRINGS]
+STR_NAME    :Vesmírné kruhy
+STR_DESC    :Tři v sobě zasazené rotující kruhy dají návštěvníkům možnost volného pohybu ve všech třech rozměrech
+STR_CPTY    :1 místo v každém kruhu
+
+[SUBMAR]
+STR_NAME    :Jízda ponorkou
+STR_DESC    :Návštěvníci vyrazí na podvodní jízdu v ponorce
+STR_CPTY    :4 návštěvníci v každé ponorce
+
+[TRUCK1]
+STR_NAME    :Pickupy
+STR_DESC    :Vozy ve tvaru nákladních aut (pickupů)
+STR_CPTY    :1 místo v každém voze
+
+[VCR]
+STR_NAME    :Veteráni
+STR_DESC    :Vozy ve tvaru veteránů jezdí po postavené dráze
+STR_CPTY    :2 místa v každém vozu
+
+[AMT1]
+STR_NAME    :Dulní horská dráha Mine Train Coaster
+STR_DESC    :Horská dráha ve stylu dulních vlaků jezdí po ocelové horské dráze maskované jako staré koleje
+STR_CPTY    :2 nebo 4 místa v každém voze
+
+[ARRSW1]
+STR_NAME    :Zavěšené houpající se vozy
+STR_DESC    :Zavěšená horská dráha z volné zavěšených vozů, které se naklání při jízdě do zatáček
+STR_CPTY    :4 místa v každém voze
+
+[ARRSW2]
+STR_NAME    :Zavěšené houpající se aeroplány
+STR_DESC    :Zavěšená horská dráha z volné zavěšených vozů ve tvaru aeroplánu, které se naklání při jízdě do zatáček
+STR_CPTY    :4 místa v každém voze
+
+[ARRT1]
+STR_NAME    :Vývrtková horská dráha
+STR_DESC    :Malá ocelová horská dráha, na které vozy jezdí skrze lopinky a jezdí ve vývrtce
+STR_CPTY    :4 místa v každém voze
+
+[ARRT2]
+STR_NAME    :Hyper horská dráha
+STR_DESC    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
+STR_CPTY    :6 míst v každém voze
+
+[ARRX]
+STR_NAME    :Vícerozměrná horská dráha
+STR_DESC    :Vozy se sedadly schopny otáčet návštěvníky vzhůru nohama
+STR_CPTY    :4 místa v každém voze
+
+[BATFL]
+STR_NAME    :Houpající se vozy
+STR_DESC    :Málé houpající se vozy zavěšené na kolejnici
+STR_CPTY    :2 místa v každém vozu
+
+[BMAIR]
+STR_NAME    :Létající horská dráha
+STR_DESC    :Návštěvníci sedí v pohodlných sedadlech pod tratí cestující skrze propletenou dráhu, poskytující pocit letu
+STR_CPTY    :4 místa v každém voze
+
+[BMFL]
+STR_NAME    :Horská dráha bez podlahy
+STR_DESC    :Široká horská dráha bez podlahy poskytují návštěvníkům pocit volného vzduchu během jízdy skrze propletenou dráhu
+STR_CPTY    :4 místa v každém voze
+
+[BMRB]
+STR_NAME    :Hyperzakroucená dráha (široké vozy)
+STR_DESC    :Široké 4-místné vozy s vystouplým sezením a jednoduchou opěrkou v klíně
+STR_CPTY    :4 místa v každém voze
+
+[BMSD]
+STR_NAME    :Zakroucená horská dráha
+STR_DESC    :Široká ocelová horská dráha, na které vozy jedou po hladkých kolejnících skrze propletenou dráhu
+STR_CPTY    :4 místa v každém voze
+
+[BMSU]
+STR_NAME    :Horská dráha "na stojáka"
+STR_DESC    :Návětěvníci jedou ve stoje v širokých vozech se speciálně navrženým držením po propletené dráze s pády
+STR_CPTY    :4 místa v každém voze
+
+[BMVD]
+STR_NAME    :Horská dráha s volným pádem
+STR_DESC    :Extra-široké vozy letí dolů po zcela kolmé dráze a poskytují tím pocit volného pádu
+STR_CPTY    :4 míst v každém voze
+
+[BOB1]
+STR_NAME    :Horská bobová dráha
+STR_DESC    :Návštěvníci jedou po propletené bobové dráze
+STR_CPTY    :2 místa v každém vozu
+
+[GOLTR]
+STR_NAME    :Hyperzakroucená dráha
+STR_DESC    :Prostorné vozy trains s jednoduchou opěrkou v klíně
+STR_CPTY    :6 míst v každém voze
+
+[INTBOB]
+STR_NAME    :Létající zatáčky
+STR_DESC    :Návštěvníci jedou po propletené bobové dráze
+STR_CPTY    :6 míst v každém voze
+
+[INTINV]
+STR_NAME    :Horská dráha ve tvaru "U"
+STR_DESC    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpátku stanicí a vyletí až na druhý konec trati
+STR_CPTY    :4 místa v každém voze
+
+[INTST]
+STR_NAME    :Giga dráha
+STR_DESC    :Gigantická horská dráha schopna volných pádů a kopců přes 90 metrů dlouhých
+STR_CPTY    :4 místa v každém voze
+
+[IVMC1]
+STR_NAME    :Ostrá zavěšená horská dráha
+STR_DESC    :Vozy jsou zavěšeny na kolejnicích s ostrými zatáčkami a ostrými pády
+STR_CPTY    :4 místa v každém voze
+
+[JSTAR1]
+STR_NAME    :Tobogánová horská dráha
+STR_DESC    :Horská dráha ve stylu tobogánu s vozy se sedačkami za sebou
+STR_CPTY    :4 místa v každém voze
+
+[MFT]
+STR_NAME    :Horská dráha s malými vozy
+STR_DESC    :Horská dráha s dvoumístnými vozy bez předků
+STR_CPTY    :2 místa v každém vozu
+
+[NEMT]
+STR_NAME    :Zavěšená horská dráha
+STR_DESC    :Vozy jsou zavěšeny na kolejnicích se zatáčkami, pády a lopinky
+STR_CPTY    :4 místa v každém voze
+
+[PMT1]
+STR_NAME    :Důlní jízda
+STR_DESC    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnících skrze propletenou dráhu
+STR_CPTY    :2 nebo 4 místa v každém voze
+
+[PREMT1]
+STR_NAME    :Horská dráha s elektromotorem
+STR_DESC    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
+STR_CPTY    :4 místa v každém voze
+
+[PTCT1]
+STR_NAME    :Dřevěná horská dráha
+STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klína
+STR_CPTY    :4 místa v každém voze
+
+[PTCT2]
+STR_NAME    :Dřevěná horská dráha (6 sedadel)
+STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klína
+STR_CPTY    :6 míst v každém voze
+
+[PTCT2R]
+STR_NAME    :Dřevěná horská dráha (6 sedadel, pozpátku)
+STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klína, na které se jezdí pozpátku
+STR_CPTY    :6 míst v každém voze
+
+[RCKC]
+STR_NAME    :Raketová auta
+STR_DESC    :Horská dráha s vozy vypadjícími jako rakety
+STR_CPTY    :4 místa v každém voze
+
+[REVCAR]
+STR_NAME    :Otáčivá horská dráha
+STR_DESC    :Po dřevěné dráze jedou vozy, které se ve speciálních místech se otočí a jedou pozpátku
+STR_CPTY    :6 míst v každém voze
+
+[REVF1]
+STR_NAME    :Volný pád pozpátku
+STR_DESC    :Velká dráha s vozem pro volný pád pozpátku
+STR_CPTY    :8 návštěvníků
+
+[SBOX]
+STR_NAME    :Závodní dřevěné vozy
+STR_DESC    :Návštěvníci jezdí v dřevených závodních vozech po jednokolejné horské dráze
+STR_CPTY    :4 místa v každém voze
+
+[SCHT1]
+STR_NAME    :Horská dráha
+STR_DESC    :Horská dráha s lopinky, po které jezdí vozy s opěrkou v klíně
+STR_CPTY    :4 místa v každém voze
+
+[SFRIC1]
+STR_NAME    :Horská dráha s bočním uchycením
+STR_DESC    :Po dráze jezdí vozy, které mají kola horizontálně uložená pod podlahou a opírají se jimi o stěny dráhy
+STR_CPTY    :4 místa v každém voze
+
+[SKYTR]
+STR_NAME    :Mini zavěšená létající horská dráha
+STR_DESC    :Návštěvníci jedou na jednokolejné trati vleže hlavou dolů, zavěšeni ve speciálním voze, který se v zatáčkách houpe
+STR_CPTY    :1 místo v každém voze
+
+[SLCFO]
+STR_NAME    :Obrácená zavěšená horská dráha
+STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a vidí dopředu nebo dozadu podle toho, jak zrovna jedou skrze lopinky a ostré zatáčky
+STR_CPTY    :4 místa v každém voze
+
+[SLCT]
+STR_NAME    :Malá zavěšená horská dráha
+STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze lopinky a ostré zatáčky
+STR_CPTY    :2 místa v každém vozu
+
+[SMC1]
+STR_NAME    :Myší vozy
+STR_DESC    :Vozy ve tvaru myší
+STR_CPTY    :4 místa v každém voze
+
+[SMC2]
+STR_NAME    :Dulní vozy
+STR_DESC    :Vozy ve tvaru dřevěných dulních vagónů
+STR_CPTY    :4 místa v každém voze
+
+[SPDRCR]
+STR_NAME    :Spiralní horská dráha
+STR_DESC    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
+STR_CPTY    :6 míst v každém voze
+
+[STEEP1]
+STR_NAME    :Dostihy
+STR_DESC    :Vozy ve tvaru koní vozí návštěvníky po jednokolejné trati
+STR_CPTY    :2 místa na každém koni
+
+[STEEP2]
+STR_NAME    :Závody motorek
+STR_DESC    :Vozy ve tvaru motorek vozí návštěvníky po jednokolejné trati
+STR_CPTY    :2 místa na každé motorce
+
+[THCAR]
+STR_NAME    :Svislá dráha na stlačený vzduch
+STR_DESC    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
+STR_CPTY    :2 místa v každém vozu
+
+[TOGST]
+STR_NAME    :Horská dráha "na stojáka"
+STR_DESC    :Návětěvníci jedou po horské dráze ve stoje
+STR_CPTY    :4 místa v každém voze
+
+[UTCAR]
+STR_NAME    :Zatočené vozy
+STR_DESC    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě.
+STR_CPTY    :4 místa v každém voze
+
+[UTCARR]
+STR_NAME    :Zatočené vozy (pozpátku)
+STR_DESC    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě.
+STR_CPTY    :4 místa v každém voze
+
+[VEKDV]
+STR_NAME    :Zavěšená svislá dráha
+STR_DESC    :Návštěvníci sedí ve vozrech zavěšených pod tratí, jedou pozpátku nahoru po svislé dráze, padají dolů a jezdí skrze lopinky s ostrými zatáčkami
+STR_CPTY    :4 místa v každém voze
+
+[VEKST]
+STR_NAME    :Horská dráha "na ležáka"
+STR_DESC    :Návštěvníci jedou v leže zavěšeni do speciálního držení, ve kterém na břiše projedou trať s ostrými zatáčkami
+STR_CPTY    :4 místa v každém voze
+
+[VEKVAMP]
+STR_NAME    :Houpající se vozy bez podlahy
+STR_DESC    :Zavěšená horská dráha připomínající sedačkovou lanovku, houpající se v zatáčkách
+STR_CPTY    :2 místa v každém vozu
+
+[VREEL]
+STR_NAME    :Virginský moták
+STR_DESC    :Kulaté vozy se točí během jízdy po cik-cak dřevěné trati
+STR_CPTY    :4 místa v každém voze
+
+[WCATC]
+STR_NAME    :Automobilové vozy
+STR_DESC    :Horská dráha s vozy, které připomínají automobily
+STR_CPTY    :4 místa v každém voze
+
+[WMMINE]
+STR_NAME    :Dřevěná divoká dulní jízda
+STR_DESC    :Malinké dulí vozy jedou po cik-cak dřevěné trati a silně se naklání v ostrých zatáčkách a drsných pádech
+STR_CPTY    :2 místa v každém vozu
+
+[WMOUSE]
+STR_NAME    :Dřevěná divoká myš
+STR_DESC    :Malé vozy ve tvaru myší jedou po dřevěné trati a silně se naklání v ostrých zatáčkách a drsných pádech
+STR_CPTY    :2 místa v každém vozu
+
+[WMSPIN]
+STR_NAME    :Točící se divoká myš
+STR_DESC    :Vozy ve tvaru myší jedou po dřevěné trati a pro dezorientaci návštěvníků se točí, zatímco se naklání v ostrých zatáčkách a drsných pádech
+STR_CPTY    :4 místa v každém voze
+
+[ZLDB]
+STR_NAME    :Beruščiny vozy
+STR_DESC    :Horská dráha s vozy ve tvaru malých berušek
+STR_CPTY    :2 místa v každém vozu
+
+[ZLOG]
+STR_NAME    :Kládové vozy
+STR_DESC    :Horská dráha s vozy ve tvaru klád
+STR_CPTY    :2 místa v každém vozu
+
+[C3D]
+STR_NAME    :3D Kino
+STR_DESC    :Kin promítající 3D filmy uvnitř duté kulovité konstrukce
+STR_CPTY    :20 návštěvníků
+
+[ENTERP]
+STR_NAME    :Loď Enterprise
+STR_DESC    :Otáčející se kolo se zavěšenými kabinami, které se napřed roztočí a pak se zvedne na pomocné podpěře
+STR_CPTY    :16 návštěvníků
+
+[GDROP1]
+STR_NAME    :Roto-pád
+STR_DESC    :Kruh sedadel je za pomalé rotace vytažen navrchol vysoké věže, spuštěn volným pádem k zemi a opatrně zastaven pomocí magnetických brzd
+STR_CPTY    :16 návštěvníků
+
+[KART1]
+STR_NAME    :Motokáry
+STR_DESC    :Benzínové ovladatelné motokáry
+STR_CPTY    :1 místo v každém voze
+
+[MCARPET1]
+STR_NAME    :Kouzelný koberec
+STR_DESC    :Velký vůz připomínající koberec se pohybuje krouživými pohyby hýbe nahoru a dolů za pomoci 4 ramen
+STR_CPTY    :12 návštěvníků
+
+[SIMPOD]
+STR_NAME    :Simulátor pohybu
+STR_DESC    :Návštěvníci sledují film uvnitř simulátoru pohybu, zatímco se simulátorem hýbe hydraulika
+STR_CPTY    :8 návštěvníků
+
+[SSC1]
+STR_NAME    :Volný pád
+STR_DESC    :Vůz pro volný pád je pneumaticky vystřeleno vzhůru po vysoké ocelové věži a následně volně padá k zemi
+STR_CPTY    :8 návštěvníků
+
+[SWSH1]
+STR_NAME    :Piratská loď
+STR_DESC    :Velká houpající se pirátská loď
+STR_CPTY    :16 návštěvníků
+
+[SWSH2]
+STR_NAME    :Houpající se obrácená loď
+STR_DESC    :Loď je připevněna na porpěru, která se chová jako protizávaží a otáčí se o 360 stupňů
+STR_CPTY    :12 návštěvníků
+
+[TOPSP1]
+STR_NAME    :Top Spin
+STR_DESC    :Návštěvníci sedí v gondole zavěšené na podpěrách, otáčející se dopředu a dozadu vzhůru nohama
+STR_CPTY    :8 návštěvníků
+
+[TWIST1]
+STR_NAME    :Twist
+STR_DESC    :Návštěvníci sedí po dvou v jedné ze tří kabin, které kolem sebe rotují
+STR_CPTY    :18 návštěvníků
+
+[TWIST2]
+STR_NAME    :Sněhové kalíšky
+STR_DESC    :Návštěvníci sedí po dvou v kalíšcích, které se otáčejí okolo sněhuláka uprostřed
+STR_CPTY    :18 návštěvníků
+
+[BBOAT]
+STR_NAME    :Malé čluny
+STR_DESC    :Malé čluny s motorovým pohonem ovládaným návštěvníky
+STR_CPTY    :2 místa v každé lodi
+
+[CBOAT]
+STR_NAME    :Kánoe
+STR_DESC    :Dlouhé kánoe, u kterých musí návštěvníci pádlovat
+STR_CPTY    :2 místa v každé lodi
+
+[CSTBOAT]
+STR_NAME    :Lodě horské dráhy
+STR_DESC    :Lodě ve tvaru vozů horské dráhy
+STR_CPTY    :6 míst v každé lodi
+
+[DING1]
+STR_NAME    :Nafukovací čluny
+STR_DESC    :Návštěvníci jedou v nafukovacích člunech po tobogánu
+STR_CPTY    :2 místa v každé lodi
+
+[JSKI]
+STR_NAME    :Vodní lyže
+STR_DESC    :Návštěvníci jezdí na vodních lyžích
+STR_CPTY    :1 místo na každých lyžích
+
+[LFB1]
+STR_NAME    :Divoká řeka
+STR_DESC    :Lodě ve tvaru klád se plaví po vodním kanálu a cákají. Nikdo nezůstane suchý
+STR_CPTY    :4 místa v každé lodi
+
+[RAPBOAT]
+STR_NAME    :Divoká voda
+STR_DESC    :Kulaté lodě se plaví po meandrech na vodním kanále a sjíždějí pěnící peřeje
+STR_CPTY    :8 míst v každé lodi
+
+[RBOAT]
+STR_NAME    :Veslice
+STR_DESC    :Veslice, u kterých musí návštěvníci veslovat
+STR_CPTY    :2 místa v každé lodi
+
+[RFTBOAT]
+STR_NAME    :Říční rafty
+STR_DESC    :Rafty se plaví po meandrech na vodním kanále
+STR_CPTY    :4 místa na každém raftu
+
+[SPBOAT]
+STR_NAME    :Cákající lodě
+STR_DESC    :Velkokapacitní lodě se plaví po vodním kanále, poháněny do pásem do strmých úseků, zrychlují sjíždením svahů a namočí návštěvníky pořádným šplouchnutím
+STR_CPTY    :16 míst na každé lodi
+
+[SWANS]
+STR_NAME    :Swans
+STR_DESC    :Swan shaped boat, propelled by the pedalling front seat passengers
+STR_CPTY    :4 místa na každém raftu
+
+[TRIKE]
+STR_NAME    :Vodní tricykly
+STR_DESC    :Šlapadla ve tvaru tricyklů s velkými plovoucími koly
+STR_CPTY    :2 místa na každém kole
+
+[ATM1]
+STR_NAME    :Bankomat
+STR_DESC    :Bankomat pro návštěvníky, kterým by došla hotovost
+
+[BALLN]
+STR_NAME    :Stánek s balónky
+STR_DESC    :Stánek se suvenýry - balónky, plněnými héliem
+
+[BNOODLES]
+STR_NAME    :Stánek s hovězími nudlemi
+STR_DESC    :Stánek prodávající čínské hovězí nudle
+
+[BURGB]
+STR_NAME    :Stánek s burgery
+STR_DESC    :Stánek ve tvaru burgeru podávající burgery
+
+[CHCKS]
+STR_NAME    :Stánek se smaženým kuřetem
+STR_DESC    :Stánek prodávající kyblíky smaženého kuřete
+
+[CHKNUG]
+STR_NAME    :Stánek s kuřecími nugety
+STR_DESC    :Stánek prodávající kuřecí nugety
+
+[CHPSH]
+STR_NAME    :Stánek s brambůrky
+STR_DESC    :Stánek prodávající brambůrky
+
+[CHPSH2]
+STR_NAME    :Stánek s hranolkami
+STR_DESC    :Stánek prodávající hranolky
+
+[CINDR]
+STR_NAME    :Stánek s suzungkwa
+STR_DESC    :Stánek prodávající suzungkwa
+
+[CNDYF]
+STR_NAME    :Stánek s cukrovou vatou
+STR_DESC    :Stánek prodávající cukrovou vatu
+
+[COFFS]
+STR_NAME    :Stánek s kávou
+STR_DESC    :Hezky vypadající stánek prodávající kávu
+
+[COOKST]
+STR_NAME    :Stánek se sušenkami
+STR_DESC    :Stánek prodávající gigantické sušenky
+
+[DOUGH]
+STR_NAME    :Stánek s koblížky
+STR_DESC    :Stánek prodávající americké koblížky
+
+[DRNKS]
+STR_NAME    :Stánek s pitím
+STR_DESC    :Stánek ve tvaru plechovky prodávající perlivé nápoje
+
+[FAID1]
+STR_NAME    :První pomoc
+STR_DESC    :Místo pro návštěvníky, kterým by se udělalo nevolno, které napomáhá brzkému uzdravení
+
+[FRNOOD]
+STR_NAME    :Stánek se smaženými nudlemi
+STR_DESC    :Stánek prodávající čínské rýžové smažené nudle
+
+[FUNCAKE]
+STR_NAME    :Stánek s palačinkami
+STR_DESC    :Stánek prodávající palačinky
+
+[HATST]
+STR_NAME    :Stánek s čepicemi
+STR_DESC    :Stánek se suvenýry - pěnovými čepicemi
+
+[HCHOC]
+STR_NAME    :Stánek s horkou čokoládou
+STR_DESC    :Stánek prodávající horkou čokoládu
+
+[HOTDS]
+STR_NAME    :Stánek s párky v rohlíku
+STR_DESC    :Stánek prodávající párky v rohlíku
+
+[ICECR1]
+STR_NAME    :Stánek s nanuky
+STR_DESC    :Stánek prodávající různé druhy nanuků
+
+[ICECR2]
+STR_NAME    :Stánek se zmrzlinou
+STR_DESC    :Stánek prodávající kornouty zmrzliny
+
+[ICETST]
+STR_NAME    :Stánek s ledovým čajem
+STR_DESC    :Stánek prodávající různé druhy ledového čaje
+
+[INFOK]
+STR_NAME    :Kiosek
+STR_DESC    :Stínek s informacemi o parku, prodávající mapy a deštníky
+
+[LEMST]
+STR_NAME    :Stánek s limonádou
+STR_DESC    :Stánek prodávající osvěžující citronádu
+
+[MBSOUP]
+STR_NAME    :Stánek s polévkou
+STR_DESC    :Stánek prodávající čínskou knedlíčkovou polévku
+
+[PIZZS]
+STR_NAME    :Stánek s pizzou
+STR_DESC    :Stánek prodávající kusy pizzy
+
+[POPCS]
+STR_NAME    :Stánek s popcornem
+STR_DESC    :Stánek prodávající obrovské kelímky popcornu
+
+[PRETST]
+STR_NAME    :Stánek s preclíky
+STR_DESC    :Stánek prodávající křupavé preclíky
+
+[RSAUS]
+STR_NAME    :Stánek s klobásami
+STR_DESC    :Stánek prodávající grilované klobásy
+
+[SOUVS]
+STR_NAME    :Stánek se suvenýry
+STR_DESC    :Stánek prodávající seuvenýry - plyšáky a deštníky
+
+[SOYBEAN]
+STR_NAME    :Stánek s mlékem
+STR_DESC    :Stánek prodávající kelímky sojového mléka
+
+[SQDST]
+STR_NAME    :Stánek s plody moře
+STR_DESC    :Stánek prodávající smažená chapadla
+
+[STARFRDR]
+STR_NAME    :Stánek s džusy
+STR_DESC    :Stánek prodávající ovocné nápoje
+
+[SUBSTL]
+STR_NAME    :Stánek se sendviči
+STR_DESC    :Stánek prodávající čerstvé sendviče
+
+[SUNGST]
+STR_NAME    :Stánek s brýlemi
+STR_DESC    :Stánek prodávající mnoho různých druhů slunečních brýlí
+
+[TLT1]
+STR_NAME    :Toalety
+STR_DESC    :Toalety, usazené v betonové zástavbě
+
+[TLT2]
+STR_NAME    :Toalety
+STR_DESC    :Toilets, usazené v dřevěné zástavbě
+
+[TOFFS]
+STR_NAME    :Stánek s jablky v županu
+STR_DESC    :Stánek prodávající jablka v županu na tyčce
+
+[TSHRT]
+STR_NAME    :Stánek s tričky
+STR_DESC    :Stánek se suvenýry - tričky
+
+[WONTON]
+STR_NAME    :Stánek s čínskou polévkou
+STR_DESC    :Stánek prodávající čínskou knedlíčkovou polévku
+
+[ALLSORT1]
+STR_NAME    :Cukroví
+
+[ALLSORT2]
+STR_NAME    :Cukroví
+
+[BADSHUT]
+STR_NAME    :Pérák
+
+[BADSHUT2]
+STR_NAME    :Pérák
+
+[BALL1]
+STR_NAME    :Americký fotbal
+
+[BALL2]
+STR_NAME    :Americký fotbal
+
+[BALL3]
+STR_NAME    :Fotbal
+
+[BALL4]
+STR_NAME    :Tenisový míček
+
+[BEANST1]
+STR_NAME    :Obrovský stonek
+
+[BEANST2]
+STR_NAME    :Obrovský stonek
+
+[BRBASE]
+STR_NAME    :Základní blok
+
+[BRBASE2]
+STR_NAME    :Základní blok
+
+[BRBASE3]
+STR_NAME    :Základní blok
+
+[BRCRRF1]
+STR_NAME    :Zatočená střecha
+
+[BRCRRF2]
+STR_NAME    :Zatočená střecha
+
+[CARROT]
+STR_NAME    :Obrovská mrkev
+
+[CHBBASE]
+STR_NAME    :Blok šachovnice
+
+[CHEST1]
+STR_NAME    :Truhla s pokladem
+
+[CHEST2]
+STR_NAME    :Truhla s pokladem
+
+[CHOCROOF]
+STR_NAME    :Tabulka čokolády
+
+[CNBALLS]
+STR_NAME    :Kanónové koule
+
+[CNDYRK1]
+STR_NAME    :Sladká tyčinka
+
+[COLAGUM]
+STR_NAME    :Gumové cukrovinky
+
+[CORROOF]
+STR_NAME    :Kovová střecha
+
+[CORROOF2]
+STR_NAME    :Kovová stěna
+
+[CWBCRV32]
+STR_NAME    :Zatočená stěna
+
+[CWBCRV33]
+STR_NAME    :Zatočený blok
+
+[CWFCRV32]
+STR_NAME    :Zatočená stěna
+
+[CWFCRV33]
+STR_NAME    :Zatočený blok
+
+[FERN1]
+STR_NAME    :Obrovská kapradina
+
+[GGRS1]
+STR_NAME    :Obrovská tráva
+
+[HANG1]
+STR_NAME    :Gilotina
+
+[HELMET1]
+STR_NAME    :Helma na americký fotbal
+
+[ICECUBE]
+STR_NAME    :Koskta ledu
+
+[IGROOF]
+STR_NAME    :Střecha iglů
+
+[JBEAN1]
+STR_NAME    :Lentilka
+
+[JELBAB1]
+STR_NAME    :Želatinový medvídci
+
+[JELDROP1]
+STR_NAME    :Ovocné bonbony
+
+[JELDROP2]
+STR_NAME    :Ovocné bonbony
+
+[JNGROOF1]
+STR_NAME    :Střecha
+
+[LOLLY1]
+STR_NAME    :Lízátko
+
+[MALLOW1]
+STR_NAME    :Maršmeloun
+
+[MALLOW2]
+STR_NAME    :Maršmeloun
+
+[MINROOF1]
+STR_NAME    :Střecha
+
+[MINT1]
+STR_NAME    :Máta
+
+[MMENT1]
+STR_NAME    :Ornament
+
+[MMENT2]
+STR_NAME    :Ornament
+
+[MMENT3]
+STR_NAME    :Ornament
+
+[PAGROOF1]
+STR_NAME    :Střecha
+
+[PIPE32]
+STR_NAME    :Část trubky
+
+[PIPE32J]
+STR_NAME    :Část trubky
+
+[PIPE8]
+STR_NAME    :Část trubky
+
+[PIRFLAG]
+STR_NAME    :Pirátská vlajka
+
+[PIRROOF1]
+STR_NAME    :Střecha
+
+[PIRROOF2]
+STR_NAME    :Střecha
+
+[PRCAN]
+STR_NAME    :Kanón
+
+[ROMROOF1]
+STR_NAME    :Střecha
+
+[ROMROOF2]
+STR_NAME    :Sloup
+
+[ROOF1]
+STR_NAME    :Střecha
+
+[ROOF10]
+STR_NAME    :Střecha
+
+[ROOF11]
+STR_NAME    :Střecha
+
+[ROOF12]
+STR_NAME    :Střecha
+
+[ROOF13]
+STR_NAME    :Střecha
+
+[ROOF14]
+STR_NAME    :Střecha
+
+[ROOF2]
+STR_NAME    :Střecha
+
+[ROOF3]
+STR_NAME    :Střecha
+
+[ROOF4]
+STR_NAME    :Střecha
+
+[ROOF5]
+STR_NAME    :Střecha
+
+[ROOF6]
+STR_NAME    :Střecha
+
+[ROOF7]
+STR_NAME    :Střecha
+
+[ROOF8]
+STR_NAME    :Střecha
+
+[ROOF9]
+STR_NAME    :Střecha
+
+[SKTBASE]
+STR_NAME    :Blok
+
+[SKTBASET]
+STR_NAME    :Blok
+
+[SKTDW]
+STR_NAME    :Stěna
+
+[SKTDW2]
+STR_NAME    :Stěna
+
+[SMSKULL]
+STR_NAME    :Lebka
+
+[SPCROOF1]
+STR_NAME    :Střecha
+
+[STBASE]
+STR_NAME    :Ocelový blok
+
+[STLBASET]
+STR_NAME    :Ocelový blok
+
+[STLDW]
+STR_NAME    :Ocelová stěna
+
+[STLDW2]
+STR_NAME    :Ocelová stěna
+
+[SUMRF]
+STR_NAME    :Střecha
+
+[SUPPLEG1]
+STR_NAME    :Tyč
+
+[SUPPLEG2]
+STR_NAME    :Tyč
+
+[SUPPW1]
+STR_NAME    :Podpěra
+
+[SUPPW2]
+STR_NAME    :Podpěra
+
+[SUPPW3]
+STR_NAME    :Podpěra
+
+[TAC]
+STR_NAME    :Cypřiš
+
+[TAL]
+STR_NAME    :Strom ve tvaru aligátora
+
+[TAP]
+STR_NAME    :Borovice
+
+[TAS]
+STR_NAME    :Osika
+
+[TAS1]
+STR_NAME    :Strom sladkostí
+
+[TAS2]
+STR_NAME    :Strom sladkostí
+
+[TAS3]
+STR_NAME    :Strom sladkostí
+
+[TAS4]
+STR_NAME    :Cukroví
+
+[TB1]
+STR_NAME    :Bílý střelec
+
+[TB2]
+STR_NAME    :Černý střelec
+
+[TBC]
+STR_NAME    :Kaktus
+
+[TBN]
+STR_NAME    :Kost
+
+[TBN1]
+STR_NAME    :Kosti
+
+[TBP]
+STR_NAME    :Topol
+
+[TBR]
+STR_NAME    :Rákos
+
+[TBR1]
+STR_NAME    :Barel
+
+[TBR2]
+STR_NAME    :Barel
+
+[TBR3]
+STR_NAME    :Barel
+
+[TBR4]
+STR_NAME    :Barel
+
+[TBW]
+STR_NAME    :Rozbité kolo
+
+[TCB]
+STR_NAME    :Strom ve tvaru kyje
+
+[TCC]
+STR_NAME    :Cedr
+
+[TCD]
+STR_NAME    :Kotel
+
+[TCE]
+STR_NAME    :Jilm
+
+[TCF]
+STR_NAME    :Jedle
+
+[TCFS]
+STR_NAME    :Zasněžená Jedle
+
+[TCJ]
+STR_NAME    :Jalovec
+
+[TCL]
+STR_NAME    :Libanonský cedr
+
+[TCN]
+STR_NAME    :Kanón
+
+[TCO]
+STR_NAME    :Dub
+
+[TCRP]
+STR_NAME    :Borovice
+
+[TCT]
+STR_NAME    :Zelný strom
+
+[TCT1]
+STR_NAME    :Hradní věž
+
+[TCT2]
+STR_NAME    :Hradní věž
+
+[TCY]
+STR_NAME    :Tis
+
+[TDM]
+STR_NAME    :Strom ve tvaru diamantu
+
+[TDN4]
+STR_NAME    :Dinosaurus
+
+[TDN5]
+STR_NAME    :Dinosaurus
+
+[TDT1]
+STR_NAME    :Uschlý strom
+
+[TDT2]
+STR_NAME    :Uschlý strom
+
+[TDT3]
+STR_NAME    :Uschlý strom
+
+[TEEPEE1]
+STR_NAME    :Týpí
+
+[TEL]
+STR_NAME    :Modřín
+
+[TEN]
+STR_NAME    :Kleopatřina jehla
+
+[TEP]
+STR_NAME    :Egyptský sloup
+
+[TERB]
+STR_NAME    :Kamenný blok
+
+[TERS]
+STR_NAME    :Rozbitá socha
+
+[TES1]
+STR_NAME    :Egyptská socha
+
+[TF1]
+STR_NAME    :Ovocný strom
+
+[TF2]
+STR_NAME    :Ovocný strom
+
+[TGC1]
+STR_NAME    :Socha
+
+[TGC2]
+STR_NAME    :Socha
+
+[TGG]
+STR_NAME    :Gong
+
+[TGHC]
+STR_NAME    :Hinoki cypřiš
+
+[TGHC2]
+STR_NAME    :Maďarský cypřiš
+
+[TGS]
+STR_NAME    :Socha žirafy
+
+[TGS1]
+STR_NAME    :Náhrobek
+
+[TGS2]
+STR_NAME    :Náhrobek
+
+[TGS3]
+STR_NAME    :Náhrobek
+
+[TGS4]
+STR_NAME    :Náhrobek
+
+[TH1]
+STR_NAME    :Palma
+
+[TH2]
+STR_NAME    :Palma
+
+[THL]
+STR_NAME    :Dřezovec trojtrnný
+
+[THRS]
+STR_NAME    :Socha jezdce
+
+[THT]
+STR_NAME    :Strom ve tvaru srdce
+
+[TIC]
+STR_NAME    :Cedr
+
+[TIG]
+STR_NAME    :Iglů
+
+[TITC]
+STR_NAME    :Italský cypřiš
+
+[TJB1]
+STR_NAME    :Křoví
+
+[TJB2]
+STR_NAME    :Křoví
+
+[TJB3]
+STR_NAME    :Křoví
+
+[TJB4]
+STR_NAME    :Křoví
+
+[TJF]
+STR_NAME    :Květina
+
+[TJP1]
+STR_NAME    :Rostlina
+
+[TJP2]
+STR_NAME    :Rostlina
+
+[TJT1]
+STR_NAME    :Strom
+
+[TJT2]
+STR_NAME    :Strom
+
+[TJT3]
+STR_NAME    :Strom
+
+[TJT4]
+STR_NAME    :Strom
+
+[TJT5]
+STR_NAME    :Strom
+
+[TJT6]
+STR_NAME    :Strom
+
+[TK1]
+STR_NAME    :Bílý kůň
+
+[TK2]
+STR_NAME    :Černý kůň
+
+[TK3]
+STR_NAME    :Bílý král
+
+[TK4]
+STR_NAME    :Černý král
+
+[TL0]
+STR_NAME    :Strom
+
+[TL1]
+STR_NAME    :Strom
+
+[TL2]
+STR_NAME    :Strom
+
+[TL3]
+STR_NAME    :Strom
+
+[TLC]
+STR_NAME    :Lawsonův cypřiš
+
+[TLP]
+STR_NAME    :Lombardský topol
+
+[TLY]
+STR_NAME    :Lilie
+
+[TM0]
+STR_NAME    :Strom
+
+[TM1]
+STR_NAME    :Strom
+
+[TM2]
+STR_NAME    :Strom
+
+[TM3]
+STR_NAME    :Strom
+
+[TMBJ]
+STR_NAME    :Modrý jalovec
+
+[TMC]
+STR_NAME    :Montereyův cypřiš
+
+[TMG]
+STR_NAME    :Mongolský strom
+
+[TMJ]
+STR_NAME    :Odpad
+
+[TML]
+STR_NAME    :Polena
+
+[TMM1]
+STR_NAME    :Velký náhrobek
+
+[TMM2]
+STR_NAME    :Velký náhrobek
+
+[TMM3]
+STR_NAME    :Velký náhrobek
+
+[TMO1]
+STR_NAME    :Marťanský objekt
+
+[TMO2]
+STR_NAME    :Marťanský objekt
+
+[TMO3]
+STR_NAME    :Marťanský objekt
+
+[TMO4]
+STR_NAME    :Marťanský objekt
+
+[TMO5]
+STR_NAME    :Marťanský objekt
+
+[TMP]
+STR_NAME    :Blahočet chilský
+
+[TMS1]
+STR_NAME    :Muchomůrka
+
+[TMW]
+STR_NAME    :Kola
+
+[TMZP]
+STR_NAME    :Borovice Montezumova
+
+[TNS]
+STR_NAME    :Smrk ztepilý
+
+[TNSS]
+STR_NAME    :Zasněžený smrk ztepilý
+
+[TNTROOF1]
+STR_NAME    :Plátěná střecha
+
+[TOH1]
+STR_NAME    :Dům
+
+[TOH2]
+STR_NAME    :Dům
+
+[TOH3]
+STR_NAME    :Budova
+
+[TORN1]
+STR_NAME    :Ornamentální strom
+
+[TORN2]
+STR_NAME    :Ornamentální strom
+
+[TOS]
+STR_NAME    :Socha
+
+[TOT1]
+STR_NAME    :Strom
+
+[TOT2]
+STR_NAME    :Strom
+
+[TOT3]
+STR_NAME    :Strom
+
+[TOT4]
+STR_NAME    :Strom
+
+[TOTEM1]
+STR_NAME    :Totem
+
+[TP1]
+STR_NAME    :Bílá pěšák
+
+[TP2]
+STR_NAME    :Černý pěšák
+
+[TPM]
+STR_NAME    :Palma
+
+[TQ1]
+STR_NAME    :Bílá královna
+
+[TQ2]
+STR_NAME    :Černá královna
+
+[TR1]
+STR_NAME    :Bílá věž
+
+[TR2]
+STR_NAME    :Černá věž
+
+[TRC]
+STR_NAME    :Římský sloup
+
+[TRF]
+STR_NAME    :Jedle nádherná
+
+[TRF2]
+STR_NAME    :Jedle nádherná
+
+[TRF3]
+STR_NAME    :Zasněžená jedle nádherná
+
+[TRFS]
+STR_NAME    :Zasněžená jedle nádherná
+
+[TRMS]
+STR_NAME    :Římská socha
+
+[TROPT1]
+STR_NAME    :Strom
+
+[TRWS]
+STR_NAME    :Římská socha
+
+[TS0]
+STR_NAME    :Strom
+
+[TS1]
+STR_NAME    :Strom
+
+[TS2]
+STR_NAME    :Strom
+
+[TS3]
+STR_NAME    :Strom
+
+[TS4]
+STR_NAME    :Ornamentální strom
+
+[TS5]
+STR_NAME    :Ornamentální strom
+
+[TS6]
+STR_NAME    :Ornamentální strom
+
+[TSB]
+STR_NAME    :Bříza bělokorá
+
+[TSC]
+STR_NAME    :Kaktus
+
+[TSC2]
+STR_NAME    :Stavba
+
+[TSCP]
+STR_NAME    :Vesmírná loď
+
+[TSD]
+STR_NAME    :Strom ve tvaru listu
+
+[TSF1]
+STR_NAME    :Obrovská vločka
+
+[TSF2]
+STR_NAME    :Obrovská vločka
+
+[TSF3]
+STR_NAME    :Obrovská vločka
+
+[TSH]
+STR_NAME    :Socha koně
+
+[TSH0]
+STR_NAME    :Křoví
+
+[TSH1]
+STR_NAME    :Keř
+
+[TSH2]
+STR_NAME    :Křoví
+
+[TSH3]
+STR_NAME    :Křoví
+
+[TSH4]
+STR_NAME    :Keř
+
+[TSH5]
+STR_NAME    :Křoví
+
+[TSM]
+STR_NAME    :Sněhulák
+
+[TSNB]
+STR_NAME    :Sněhová koule
+
+[TSNC]
+STR_NAME    :Dřevostavba
+
+[TSP]
+STR_NAME    :Borovice lesní
+
+[TSP1]
+STR_NAME    :Strom
+
+[TSP2]
+STR_NAME    :Strom
+
+[TSPH]
+STR_NAME    :Dům
+
+[TSQ]
+STR_NAME    :Squirrel Shaped Tree
+
+[TST1]
+STR_NAME    :Muchomůrka
+
+[TST2]
+STR_NAME    :Muchomůrka
+
+[TST3]
+STR_NAME    :Muchomůrka
+
+[TST4]
+STR_NAME    :Muchomůrka
+
+[TST5]
+STR_NAME    :Muchomůrka
+
+[TSTD]
+STR_NAME    :Socha delfína
+
+[TT1]
+STR_NAME    :Římský palác
+
+[TTG]
+STR_NAME    :Cíl
+
+[TUS]
+STR_NAME    :Socha jednorožce
+
+[TVL]
+STR_NAME    :Štědřenec
+
+[TWH1]
+STR_NAME    :Dům
+
+[TWH2]
+STR_NAME    :Dýňový dům
+
+[TWN]
+STR_NAME    :Ořešák královský
+
+[TWP]
+STR_NAME    :Topol bílý
+
+[TWW]
+STR_NAME    :Vrba
+
+[WAG1]
+STR_NAME    :Vagón
+
+[WAG2]
+STR_NAME    :Vagón
+
+[WDBASE]
+STR_NAME    :Dřevěný blok
+
+[TDF]
+STR_NAME    :Fontána delfína
+
+[TEF]
+STR_NAME    :Fontána slona
+
+[TQF]
+STR_NAME    :Fontána amorka
+
+[TTF]
+STR_NAME    :Fontána
+
+[TWF]
+STR_NAME    :Geometrická fontána
+
+[TCK]
+STR_NAME    :Hodiny
+
+[TG1]
+STR_NAME    :Zahrady
+
+[TG10]
+STR_NAME    :Zahrady
+
+[TG11]
+STR_NAME    :Zahrady
+
+[TG12]
+STR_NAME    :Zahrady
+
+[TG13]
+STR_NAME    :Zahrady
+
+[TG14]
+STR_NAME    :Zahrady
+
+[TG15]
+STR_NAME    :Zahrady
+
+[TG16]
+STR_NAME    :Zahrady
+
+[TG17]
+STR_NAME    :Zahrady
+
+[TG18]
+STR_NAME    :Zahrady
+
+[TG19]
+STR_NAME    :Zahrady
+
+[TG2]
+STR_NAME    :Zahrady
+
+[TG20]
+STR_NAME    :Zahrady
+
+[TG21]
+STR_NAME    :Zahrady
+
+[TG3]
+STR_NAME    :Zahrady
+
+[TG4]
+STR_NAME    :Zahrady
+
+[TG5]
+STR_NAME    :Zahrady
+
+[TG6]
+STR_NAME    :Zahrady
+
+[TG7]
+STR_NAME    :Zahrady
+
+[TG8]
+STR_NAME    :Zahrady
+
+[TG9]
+STR_NAME    :Zahrady
+
+[BUTTFLY]
+STR_NAME    :Motýl
+
+[COG1]
+STR_NAME    :Ozubené kolo
+
+[COG1R]
+STR_NAME    :Ozubené kolo
+
+[COG1U]
+STR_NAME    :Ozubené kolo
+
+[COG1UR]
+STR_NAME    :Ozubené kolo
+
+[COG2]
+STR_NAME    :Malé ozubené kolo
+
+[COG2R]
+STR_NAME    :Malé ozubené kolo
+
+[COG2U]
+STR_NAME    :Malé ozubené kolo
+
+[COG2UR]
+STR_NAME    :Malé ozubené kolo
+
+[FIRE1]
+STR_NAME    :Plameny
+
+[SNAIL]
+STR_NAME    :Šnek
+
+[SPIDER1]
+STR_NAME    :Pavouk
+
+[TGH1]
+STR_NAME    :Socha
+
+[TGH2]
+STR_NAME    :Socha
+
+[TSG]
+STR_NAME    :Bažina
+
+[TSK]
+STR_NAME    :Lebka
+
+[TSMP]
+STR_NAME    :Dýně
+
+[WASP]
+STR_NAME    :Vosa
+
+[WDIAG]
+STR_NAME    :Fontána
+
+[WHORIZ]
+STR_NAME    :Vodní proud
+
+[WSPOUT]
+STR_NAME    :Vodní chrlič
+
+[GEOROOF1]
+STR_NAME    :Skleněná střecha
+
+[GEOROOF2]
+STR_NAME    :Skleněná střecha
+
+[TGE1]
+STR_NAME    :Geometrická socha
+
+[TGE2]
+STR_NAME    :Geometrická socha
+
+[TGE3]
+STR_NAME    :Geometrická socha
+
+[TGE4]
+STR_NAME    :Geometrická socha
+
+[TGE5]
+STR_NAME    :Geometrická socha
+
+[BADRACK]
+STR_NAME    :Raketa na badminton
+
+[GENSTORE]
+STR_NAME    :Obchod se smíšeným zbožím
+
+[MDSAENT]
+STR_NAME    :'Medusa' cedule
+
+[NITROENT]
+STR_NAME    :'Nitro' cedule
+
+[SAH]
+STR_NAME    :Dům
+
+[SAH2]
+STR_NAME    :Dům
+
+[SAH3]
+STR_NAME    :Činžovní dům
+
+[SALOON]
+STR_NAME    :Salón
+
+[SCLN]
+STR_NAME    :Kolonáda
+
+[SCT]
+STR_NAME    :Stan
+
+[SDN1]
+STR_NAME    :Dinosaurus
+
+[SDN2]
+STR_NAME    :Dinosaurus
+
+[SDN3]
+STR_NAME    :Dinosaurus
+
+[SGP]
+STR_NAME    :Obrovská dýně
+
+[SHS1]
+STR_NAME    :Řadový dům
+
+[SHS2]
+STR_NAME    :Dům
+
+[SMH1]
+STR_NAME    :Hornická chatrč
+
+[SMH2]
+STR_NAME    :Hornická chatrč
+
+[SMN1]
+STR_NAME    :Důlní štola
+
+[SOB]
+STR_NAME    :Kancelářský blok
+
+[SOH1]
+STR_NAME    :Dům
+
+[SOH2]
+STR_NAME    :Dům
+
+[SOH3]
+STR_NAME    :Dům
+
+[SPS]
+STR_NAME    :Čerpací stanice
+
+[SSH]
+STR_NAME    :Vesmírná loď
+
+[SSK1]
+STR_NAME    :Koslivec
+
+[SST]
+STR_NAME    :Satelit
+
+[STB1]
+STR_NAME    :Hradní věž
+
+[STB2]
+STR_NAME    :Hradní věž
+
+[STG1]
+STR_NAME    :Hradní věž
+
+[STG2]
+STR_NAME    :Hradní věž
+
+[STH]
+STR_NAME    :Radnice
+
+[TAVERN]
+STR_NAME    :Hospoda
+
+[WWBANK]
+STR_NAME    :Banka
+
+[SSIG2]
+STR_NAME    :3D cedule
+
+[SSIG3]
+STR_NAME    :vertikální 3D cedule
+
+[SSIG4]
+STR_NAME    :3D cedule
+
+[SSIG1]
+STR_NAME    :Posuvná cedule
+
+[GLTHENT]
+STR_NAME    :'Goliath' cedule
+
+[PRSHIP]
+STR_NAME    :Pirátská loď
+
+[SCOL]
+STR_NAME    :Římské koloseum
+
+[SIP]
+STR_NAME    :Ledový palác
+
+[SMB]
+STR_NAME    :Marťanská stavba
+
+[SPG]
+STR_NAME    :Pagoda
+
+[SPYR]
+STR_NAME    :Pyramida
+
+[SSPX]
+STR_NAME    :Sfinga
+
+[SSR]
+STR_NAME    :Vesmírná raketa
+
+[SVLC]
+STR_NAME    :Sopka
+
+[WALLBADM]
+STR_NAME    :Badmintonová raketa
+
+[WALLBB16]
+STR_NAME    :Stěna
+
+[WALLBB32]
+STR_NAME    :Stěna
+
+[WALLBB33]
+STR_NAME    :Stěna
+
+[WALLBB34]
+STR_NAME    :Kamenná stěna
+
+[WALLBB8]
+STR_NAME    :Stěna
+
+[WALLBR16]
+STR_NAME    :Stěna
+
+[WALLBR32]
+STR_NAME    :Stěna
+
+[WALLBR8]
+STR_NAME    :Stěna
+
+[WALLBRWN]
+STR_NAME    :Okno
+
+[WALLCB16]
+STR_NAME    :Stěna
+
+[WALLCB32]
+STR_NAME    :Stěna
+
+[WALLCB8]
+STR_NAME    :Stěna
+
+[WALLCBWN]
+STR_NAME    :Okno
+
+[WALLCF16]
+STR_NAME    :Stěna
+
+[WALLCF32]
+STR_NAME    :Stěna
+
+[WALLCF8]
+STR_NAME    :Stěna
+
+[WALLCFAR]
+STR_NAME    :Stěna
+
+[WALLCFWN]
+STR_NAME    :Okno
+
+[WALLCO16]
+STR_NAME    :Ocelová stěna
+
+[WALLCW32]
+STR_NAME    :Stěna
+
+[WALLCX32]
+STR_NAME    :Stěna
+
+[WALLCY32]
+STR_NAME    :Stěna
+
+[WALLCZ32]
+STR_NAME    :Stěna
+
+[WALLIG16]
+STR_NAME    :Stěna iglů
+
+[WALLIG24]
+STR_NAME    :Stěna iglů
+
+[WALLJB16]
+STR_NAME    :Lentilková stěna
+
+[WALLJN32]
+STR_NAME    :Stěna
+
+[WALLLT32]
+STR_NAME    :Ocelová kosntrukce
+
+[WALLMM16]
+STR_NAME    :Zábradlí
+
+[WALLMM17]
+STR_NAME    :Zábradlí
+
+[WALLMN32]
+STR_NAME    :Stěna
+
+[WALLNT32]
+STR_NAME    :Síť na tenis
+
+[WALLNT33]
+STR_NAME    :Síť na tenis
+
+[WALLPG32]
+STR_NAME    :Stěna
+
+[WALLPOST]
+STR_NAME    :Sloup
+
+[WALLPR32]
+STR_NAME    :Lanoví
+
+[WALLPR33]
+STR_NAME    :Stěna
+
+[WALLPR34]
+STR_NAME    :Stěna
+
+[WALLPR35]
+STR_NAME    :Stěna
+
+[WALLRH32]
+STR_NAME    :Stěna
+
+[WALLRK32]
+STR_NAME    :Kamenná stěna
+
+[WALLRS16]
+STR_NAME    :Stěna
+
+[WALLRS32]
+STR_NAME    :Stěna
+
+[WALLRS8]
+STR_NAME    :Stěna
+
+[WALLSC16]
+STR_NAME    :Zábradlí
+
+[WALLSK16]
+STR_NAME    :Stěna
+
+[WALLSK32]
+STR_NAME    :Stěna
+
+[WALLSP32]
+STR_NAME    :Stěna
+
+[WALLST16]
+STR_NAME    :Ocelová stěna
+
+[WALLST32]
+STR_NAME    :Ocelová stěna
+
+[WALLST8]
+STR_NAME    :Ocelová stěna
+
+[WALLSTFN]
+STR_NAME    :Ocelový plot
+
+[WALLSTWN]
+STR_NAME    :Ocelová stěna
+
+[WALLTN32]
+STR_NAME    :Tyče
+
+[WALLTXGT]
+STR_NAME    :'Texas Giant' cedule
+
+[WALLU132]
+STR_NAME    :Stěna
+
+[WALLU232]
+STR_NAME    :Stěna
+
+[WALLWD16]
+STR_NAME    :Dřevěná stěna
+
+[WALLWD32]
+STR_NAME    :Dřevěná stěna
+
+[WALLWD33]
+STR_NAME    :Dřevěná stěna
+
+[WALLWD8]
+STR_NAME    :Dřevěná stěna
+
+[WALLWDPS]
+STR_NAME    :Dřevěný sloup v plotě
+
+[WBR1]
+STR_NAME    :Cihlová stěna
+
+[WBR1A]
+STR_NAME    :Cihlová stěna
+
+[WBR2]
+STR_NAME    :Kamenná stěna
+
+[WBR2A]
+STR_NAME    :Kamenná stěna
+
+[WBR3]
+STR_NAME    :Kamenná stěna
+
+[WBRG]
+STR_NAME    :Cihlová stěna
+
+[WBW]
+STR_NAME    :Plot z kostí
+
+[WC1]
+STR_NAME    :Hradní stěna
+
+[WC10]
+STR_NAME    :Hradní stěna
+
+[WC11]
+STR_NAME    :Hradní stěna
+
+[WC12]
+STR_NAME    :Hradní stěna
+
+[WC13]
+STR_NAME    :Hradní stěna
+
+[WC14]
+STR_NAME    :Stěna
+
+[WC15]
+STR_NAME    :Stěna
+
+[WC16]
+STR_NAME    :Fence
+
+[WC17]
+STR_NAME    :Dřevěný plot
+
+[WC18]
+STR_NAME    :Dřevěný sloup v plotě
+
+[WC2]
+STR_NAME    :Hradní stěna
+
+[WC3]
+STR_NAME    :Stěna římských sloupů
+
+[WC4]
+STR_NAME    :Hradní stěna
+
+[WC5]
+STR_NAME    :Hradní stěna
+
+[WC6]
+STR_NAME    :Hradní stěna
+
+[WC7]
+STR_NAME    :Hradní stěna
+
+[WC8]
+STR_NAME    :Hradní stěna
+
+[WC9]
+STR_NAME    :Hradní stěna
+
+[WCH]
+STR_NAME    :Živý plot
+
+[WCHG]
+STR_NAME    :Živý plot
+
+[WCW1]
+STR_NAME    :Stěna z hracích karet
+
+[WCW2]
+STR_NAME    :Stěna z hracích karet
+
+[WEW]
+STR_NAME    :Egyptská stěna
+
+[WFW1]
+STR_NAME    :Dřevěný plot
+
+[WFWG]
+STR_NAME    :Dřevěný plot
+
+[WHG]
+STR_NAME    :Živý plot
+
+[WHGG]
+STR_NAME    :Živý plot
+
+[WJF]
+STR_NAME    :Jungle plot
+
+[WMF]
+STR_NAME    :Drátěný plot
+
+[WMFG]
+STR_NAME    :Drátěný plot
+
+[WMW]
+STR_NAME    :Marťanská zeď
+
+[WMWW]
+STR_NAME    :Dřevěný plot
+
+[WPF]
+STR_NAME    :Plot
+
+[WPFG]
+STR_NAME    :Plot
+
+[WPW1]
+STR_NAME    :Zeď dřevených sloupů
+
+[WPW2]
+STR_NAME    :Zeď dřevených sloupů
+
+[WPW3]
+STR_NAME    :Dřevěný plot
+
+[WRW]
+STR_NAME    :Římská zeď
+
+[WRWA]
+STR_NAME    :Římská zeď
+
+[WSW]
+STR_NAME    :Zábradlí
+
+[WSW1]
+STR_NAME    :Zábradlí
+
+[WSW2]
+STR_NAME    :Zábradlí
+
+[WSWG]
+STR_NAME    :Zábradlí
+
+[WWTW]
+STR_NAME    :Vysoký dřevěný plot
+
+[WWTWA]
+STR_NAME    :Stěna ze dřevěného plotu
+
+[WALLBRDR]
+STR_NAME    :Brána
+
+[WALLCBDR]
+STR_NAME    :Brána
+
+[WALLCBPC]
+STR_NAME    :Padací brána
+
+[WALLCFDR]
+STR_NAME    :Brána
+
+[WALLCFPC]
+STR_NAME    :Padací brána
+
+[WALLWF32]
+STR_NAME    :Vodopád
+
+[WALLGL16]
+STR_NAME    :Skleněná stěna
+
+[WALLGL32]
+STR_NAME    :Skleněná stěna
+
+[WALLGL8]
+STR_NAME    :Skleněná stěna
+
+[WGW2]
+STR_NAME    :Skleněná stěna
+
+[WALLSIGN]
+STR_NAME    :Posuvná cedule
+
+[BN1]
+STR_NAME    :Cedule
+
+[BN2]
+STR_NAME    :Cedule v jungle stylu
+
+[BN3]
+STR_NAME    :Cedule v klasickém stylu
+
+[BN4]
+STR_NAME    :Cedule v egyptském stylu
+
+[BN5]
+STR_NAME    :Dřevěná cedule
+
+[BN6]
+STR_NAME    :Cedule v jurském stylu
+
+[BN7]
+STR_NAME    :Cedule v pagoda stylu
+
+[BN8]
+STR_NAME    :Zasněžená cedule
+
+[BN9]
+STR_NAME    :Cedule ve vesmírném stylu
+
+[PATHASH]
+STR_NAME    :Popelavá cesta
+
+[PATHCRZY]
+STR_NAME    :Šílená cesta
+
+[PATHDIRT]
+STR_NAME    :Blátivá cesta
+
+[PATHSPCE]
+STR_NAME    :Cesta ve vesmírném stylu
+
+[ROAD]
+STR_NAME    :Silnice
+
+[TARMAC]
+STR_NAME    :Asfaltová cesta
+
+[TARMACB]
+STR_NAME    :Hnědá asfaltová cesta
+
+[TARMACG]
+STR_NAME    :Zelená asfaltová cesta
+
+[LAMP1]
+STR_NAME    :Lampaa
+
+[LAMP2]
+STR_NAME    :Lampa
+
+[LAMP3]
+STR_NAME    :Lampa
+
+[LAMP4]
+STR_NAME    :Lampa
+
+[LAMPDSY]
+STR_NAME    :Květinová lampa
+
+[LAMPPIR]
+STR_NAME    :Lampa
+
+[LITTER1]
+STR_NAME    :Odpadkový koš
+
+[LITTERMN]
+STR_NAME    :Odpadkový koš
+
+[LITTERSP]
+STR_NAME    :Odpadkový koš
+
+[LITTERWW]
+STR_NAME    :Odpadkový koš
+
+[BENCH1]
+STR_NAME    :Lavička
+
+[BENCHLOG]
+STR_NAME    :Lavička
+
+[BENCHPL]
+STR_NAME    :Sedadla
+
+[BENCHSPC]
+STR_NAME    :Lavička
+
+[BENCHSTN]
+STR_NAME    :Kamenná lavička
+
+[JUMPFNT1]
+STR_NAME    :Skákající fontány
+
+[JUMPSNW1]
+STR_NAME    :Skákající sněhové koule
+
+[QTV1]
+STR_NAME    :TV ve frontě
+
+[SCGABSTR]
+STR_NAME    :Abstraktí kulisy
+
+[SCGCANDY]
+STR_NAME    :Kulisy obrovského cukroví
+
+[SCGCLASS]
+STR_NAME    :Klasické/Římské kulisy
+
+[SCGEGYPT]
+STR_NAME    :Egyptské motivy
+
+[SCGFENCE]
+STR_NAME    :Ploty a stěny
+
+[SCGGARDN]
+STR_NAME    :Zahrady
+
+[SCGGIANT]
+STR_NAME    :Kulisy obrovských zahrad
+
+[SCGHALLO]
+STR_NAME    :Strašidelné kulisy
+
+[SCGINDUS]
+STR_NAME    :Mechanické kulisy
+
+[SCGJUNGL]
+STR_NAME    :Jungle kulisy
+
+[SCGJURAS]
+STR_NAME    :Jurské kulisy
+
+[SCGMART]
+STR_NAME    :Marťanské kulisy
+
+[SCGMEDIE]
+STR_NAME    :Středověké kulisy
+
+[SCGMINE]
+STR_NAME    :Dulní kulisy
+
+[SCGORIEN]
+STR_NAME    :Pagoda kulisy
+
+[SCGPATHX]
+STR_NAME    :Cedule a věci na cesty
+
+[SCGPIRAT]
+STR_NAME    :Pirátské kulisy
+
+[SCGSHRUB]
+STR_NAME    :Keře a ornamenty
+
+[SCGSIXFL]
+STR_NAME    :Six Flags kulisy
+
+[SCGSNOW]
+STR_NAME    :Ledové a sněhové kulisy
+
+[SCGSPACE]
+STR_NAME    :Vesmírné kulisy
+
+[SCGSPOOK]
+STR_NAME    :Strašidelné kulisy
+
+[SCGSPORT]
+STR_NAME    :Sportovní kulisy
+
+[SCGTREES]
+STR_NAME    :Stromy
+
+[SCGURBAN]
+STR_NAME    :Urban kulisy
+
+[SCGWALLS]
+STR_NAME    :Stěny and střechy
+
+[SCGWATER]
+STR_NAME    :Vodní kulisy
+
+[SCGWOND]
+STR_NAME    :Kulisy říše divů
+
+[SCGWWEST]
+STR_NAME    :Kulisy divokého západu
+
+[PKEMM]
+STR_NAME    :Brány pro vstup do parku
+
+[PKENT1]
+STR_NAME    :Tradiční brána pro vstup do parku
+
+[PKESFH]
+STR_NAME    :Budova vstupu do parku
+
+[WTRCYAN]
+STR_NAME    :Obyčejná voda
+
+[WTRGREEN]
+STR_NAME    :Jedovatě zelená voda
+
+[WTRGRN]
+STR_NAME    :Zelená voda
+
+[WTRORNG]
+STR_NAME    :Oranžová voda
+
+###############################################################################
+## Wacky Worlds Objects
+###############################################################################
+[LONDONBS]
+STR_NAME    :London Bus Tram
+STR_DESC    :Replica trams
+STR_CPTY    :10 passengers per car
+
+[MINELIFT]
+STR_NAME    :Mine Lift
+STR_DESC    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_CPTY    :16 passengers
+
+[SANFTRAM]
+STR_NAME    :San Francisco Tram
+STR_DESC    :Replica trams
+STR_CPTY    :10 passengers per car
+
+[STEAMTRN]
+STR_NAME    :Maharaja Steam Train
+STR_DESC    :Miniature steam trains consisting of a replica steam locomotive and tender, pulling closed-top wooden carriages
+STR_CPTY    :6 passengers per carriage
+
+[BLACKCAB]
+STR_NAME    :London Taxi Black Cab Ride
+STR_DESC    :Powered vehicles in the shape of London Taxis
+STR_CPTY    :2 passengers per car
+
+[CRNVBFLY]
+STR_NAME    :Carnival Float Ride - Butterfly Cars
+STR_DESC    :Roller coaster cars in the shape of butterfly carnival floats
+STR_CPTY    :2 passengers per car
+
+[CRNVFROG]
+STR_NAME    :Carnival Float Ride - Frog Cars
+STR_DESC    :Roller coaster cars in the shape of frog carnival floats
+STR_CPTY    :2 passengers per car
+
+[CRNVLZRD]
+STR_NAME    :Carnival Float Ride - Lizard Cars
+STR_DESC    :Roller coaster cars in the shape of lizard carnival floats
+STR_CPTY    :2 passengers per car
+
+[DRAGDODG]
+STR_NAME    :Chinese Dragonhead Ride
+STR_DESC    :Self-drive electric dodgem cars
+STR_CPTY    :1 person per car
+
+[HIPPORID]
+STR_NAME    :Hippo Ride
+STR_DESC    :Riders ride in a submerged submarine through an underwater course
+STR_CPTY    :5 passengers per car
+
+[HUSKIE]
+STR_NAME    :Huskie Car
+STR_DESC    :Powered vehicles in the shape of Huskie sleds which follow a track-based route
+STR_CPTY    :2 passengers per car
+
+[KILLWHAL]
+STR_NAME    :Killer Whale
+STR_DESC    :Riders ride in a submerged submarine through an underwater course
+STR_CPTY    :5 passengers per car
+
+[SKIDOO]
+STR_NAME    :Skidoo Dodgems
+STR_DESC    :Self-drive electric dodgem cars
+STR_CPTY    :1 person per car
+
+[ANACONDA]
+STR_NAME    :Anaconda Ride
+STR_DESC    :Spacious trains with simple lap restraints
+STR_CPTY    :6 passengers per car
+
+[BOMERANG]
+STR_NAME    :Boomerang Coaster
+STR_DESC    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
+STR_CPTY    :2 passengers per car
+
+[BULLET]
+STR_NAME    :Bullet Coaster
+STR_DESC    :Roller coaster with Japanese Bullet Train themed cars
+STR_CPTY    :4 passengers per car
+
+[CADDILAC]
+STR_NAME    :Limousine Rollercoaster
+STR_DESC    :Roller coaster with Limousine themed cars
+STR_CPTY    :4 passengers per car
+
 [CONDORRD]
 STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
+STR_DESC    :Passengers ride face-down in a lying position, suspended in a Condor-shaped car from the single-rail track, swinging freely from side to side around corners
+STR_CPTY    :1 passenger per car
+
+[CONGAEEL]
+STR_NAME    :Conga Eel Coaster
+STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
 STR_CPTY    :4 passengers per car
+
+[DRAGON]
+STR_NAME    :Dragon Coaster
+STR_DESC    :Roller coaster with dragon-themed cars
+STR_CPTY    :4 passengers per car
+
+[FOOTBALL]
+STR_NAME    :Football Ride
+STR_DESC    :Suspended roller coaster train consisting of football-shaped cars able to swing freely as the train goes around corners
+STR_CPTY    :4 passengers per car
+
+[GORILLA]
+STR_NAME    :Gorilla Ride
+STR_DESC    :Suspended roller coaster train consisting of gorilla-shaped cars able to swing freely as the train goes around corners
+STR_CPTY    :4 passengers per car
+
+[GRATWHTE]
+STR_NAME    :Great White Shark Ride
+STR_DESC    :Spacious trains with simple lap restraints
+STR_CPTY    :6 passengers per car
+
+[JAGUARRD]
+STR_NAME    :Jaguar Ride
+STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops.
+STR_CPTY    :4 passengers per car
+
+[KOLARIDE]
+STR_NAME    :Koala Ride
+STR_DESC    :Large coaster car for the Reverse Freefall Coaster
+STR_CPTY    :8 passengers per car
+
+[LIONRIDE]
+STR_NAME    :Lion Ride
+STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops.
+STR_CPTY    :4 passengers per car
+
+[MINECART]
+STR_NAME    :Mine Cart Ride
+STR_DESC    :Wooden roller coaster trains with padded seats and lap bar restraints
+STR_CPTY    :4 passengers per car
+
+[OSTRICH]
+STR_NAME    :Ostrich Ride
+STR_DESC    :A looping roller coaster where the riders ride in a standing position
+STR_CPTY    :4 passengers per car
+
+[PENGUINB]
+STR_NAME    :Penguin Bobsleigh
+STR_DESC    :Riders career down a twisting track in penguin-shaped cars guided only by the curvature and banking of the semi-circular track
+STR_CPTY    :2 passengers per car
+
+[POLARBER]
+STR_NAME    :Polar Bear Rollercoaster
+STR_DESC    :Riders sit in pairs facing either forwards or backwards as they loop and twist through tight inversions
+STR_CPTY    :4 passengers per car
+
+[RHINORID]
+STR_NAME    :Rhino Ride
+STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
+STR_CPTY    :6 passengers per car
+
+[ROCKET]
+STR_NAME    :1950's Rocket Ride
+STR_DESC    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
+STR_CPTY    :4 passengers per car
+
+[RSSNCRRD]
+STR_NAME    :Russian Cars
+STR_DESC    :Roller coaster cars in the shape of automobiles
+STR_CPTY    :4 passengers per car
+
+[SEALS]
+STR_NAME    :Seals Rollercoaster
+STR_DESC    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_CPTY    :4 passengers per car
+
+[SLOTH]
+STR_NAME    :Sloth Ride
+STR_DESC    :Suspended roller coaster train consisting of Sloth-shaped cars able to swing freely as the train goes around corners
+STR_CPTY    :4 passengers per car
+
+[SPUTNIKR]
+STR_NAME    :Sputnik Suspended Flying Coaster
+STR_DESC    :Passengers ride face-down in a lying position, suspended in a specially designed car from the single-rail track, swinging freely from side to side around corners
+STR_CPTY    :2 passenger per car
+
+[STGCCSTR]
+STR_NAME    :Stage Coach Rollercoaster
+STR_DESC    :Wooden roller coaster trains with padded seats and lap bar restraints
+STR_CPTY    :4 passengers per car
+
+[SURFBRDC]
+STR_NAME    :Surfing Coaster
+STR_DESC    :Riders ride in a standing position in wide coaster trains with specially designed restraints as they race down smooth drops and through multiple inversions
+STR_CPTY    :4 passengers per car
+
+[TAXICSTR]
+STR_NAME    :Yellow Taxi Coaster
+STR_DESC    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
+STR_CPTY    :4 passengers per car
+
+[TGVTRAIN]
+STR_NAME    :TGV Train Roller Coaster
+STR_DESC    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_CPTY    :4 passengers per car
+
+[TIGRTWST]
+STR_NAME    :Bengal Tiger Rollercoaster
+STR_DESC    :Roller coaster cars capable of heartline twists
+STR_CPTY    :4 passengers per car
+
+[WHICGRUB]
+STR_NAME    :Witchity Grub Ride
+STR_DESC    :Roller coaster trains with small Grub-shaped cars
+STR_CPTY    :2 passengers per car
+
+[COFFEECU]
+STR_NAME    :Coffee Cup Ride
+STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_CPTY    :18 passengers
+
+[DIAMONDR]
+STR_NAME    :Diamond Ride
+STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_CPTY    :18 passengers
+
+[FABERGE]
+STR_NAME    :Faberge Egg Ride
+STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_CPTY    :18 passengers
+
+[FIGHTKIT]
+STR_NAME    :Fighting Kite Ride
+STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_CPTY    :18 passengers
+
+[FIRECRAK]
+STR_NAME    :Fire Cracker Ride
+STR_DESC    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
+STR_CPTY    :16 passengers
+
+[ITALYPOR]
+STR_NAME    :Italian Police Ride
+STR_DESC    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
+STR_CPTY    :18 passengers
+
+[JUNKSWNG]
+STR_NAME    :Chinese Junk Swing Ride
+STR_DESC    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
+STR_CPTY    :12 passengers
+
+[CROCFLUM]
+STR_NAME    :Crocodile Ride
+STR_DESC    :Crocodile-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_CPTY    :4 passengers per boat
+
+[DHOWWATR]
+STR_NAME    :Dhow water ride
+STR_DESC    :Decorative fishing boat, which the passengers paddle themselves
+STR_CPTY    :2 passengers per boat
+
+[DOLPHINR]
+STR_NAME    :Dolphin Ride
+STR_DESC    :Single-seater Dolphin-shaped vehicles which riders can drive themselves
+STR_CPTY    :1 rider per vehicle
+
+[MANDARIN]
+STR_NAME    :Mandarin Duck Water Ride
+STR_DESC    :Swan shaped boat, propelled by the pedalling front seat passengers
+STR_CPTY    :4 passengers per boat
+
+[MANTARAY]
+STR_NAME    :Manta Ray Ride
+STR_DESC    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
+STR_CPTY    :16 passengers per boat
+
+[OUTRIGGR]
+STR_NAME    :Outrigger Ride
+STR_DESC    :Long canoes which the passengers paddle themselves
+STR_CPTY    :2 passengers per canoe
+
+[TUTLBOAT]
+STR_NAME    :Turtle Water Ride
+STR_DESC    :Small circular dinghies powered by a centrally-mounted motor controlled by the passengers
+STR_CPTY    :2 passengers per boat
+
+[1X1ATRE2]
+STR_NAME    :Vine Tree
+
+[1X1ATREE]
+STR_NAME    :Low Bush
+
+[1X1BRANG]
+STR_NAME    :Boomerang
+
+[1X1DIDGE]
+STR_NAME    :Digeridoo
+
+[1X1EMUXX]
+STR_NAME    :Emu
+
+[1X1JUGT2]
+STR_NAME    :Small Rainforest Tree 1
+
+[1X1JUGT3]
+STR_NAME    :Small Rainforest Tree 2
+
+[1X1KANGA]
+STR_NAME    :Kangaroo
+
+[1X1TERMM]
+STR_NAME    :Termite Mound
+
+[ADPANDA]
+STR_NAME    :Adult Panda
+
+[ANTILOPF]
+STR_NAME    :Antelope Female
+
+[ANTILOPM]
+STR_NAME    :Antelope Male
+
+[ANTILOPP]
+STR_NAME    :Antelope Pair
+
+[BABPANDA]
+STR_NAME    :Baby Panda
+
+[BABYELE]
+STR_NAME    :Baby Indian Elephant
+
+[BALLLAN2]
+STR_NAME    :Ball Lantern
+
+[BALLLANT]
+STR_NAME    :Ball Lantern
+
+[BambooBs]
+STR_NAME    :Bamboo Bush
+
+[BAMBOOPL]
+STR_NAME    :Bamboo Plinth
+
+[BSTATUE1]
+STR_NAME    :Broken Statue
+
+[FSTATUE1]
+STR_NAME    :Fixed Statue
+
+[JACHTREE]
+STR_NAME    :Japanese Cherry Tree
+
+[JAPCHBLO]
+STR_NAME    :Japanese Cherry Blossom Tree
+
+[JAPPINTR]
+STR_NAME    :Japanese Pine Tree
+
+[JAPSNOTR]
+STR_NAME    :Japanese Snowball Tree
+
+[ORIEGONG]
+STR_NAME    :Asian Gong
+
+[PCG]
+STR_NAME    :Pipe
+
+[PCO]
+STR_NAME    :Pipe
+
+[POSTBOX]
+STR_NAME    :British Post Box
+
+[PST]
+STR_NAME    :Pipe
+
+[PTJ]
+STR_NAME    :Pipe
+
+[PTK]
+STR_NAME    :Pipe
+
+[PVA]
+STR_NAME    :Pipe
+
+[RBRICK01]
+STR_NAME    :Red Brick Inverted Roof Piece
+
+[RBRICK02]
+STR_NAME    :Red Brick Corner Roof Piece
+
+[RBRICK03]
+STR_NAME    :Red Brick Flat Roof Edge Piece
+
+[RBRICK04]
+STR_NAME    :Red Brick Flat Roof Corner
+
+[RBRICK05]
+STR_NAME    :Red Brick Roof Piece 2
+
+[RBRICK07]
+STR_NAME    :Red Brick Roof Piece 3
+
+[RBRICK08]
+STR_NAME    :Red Brick Roof Piece 1
+
+[RCORR01]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR02]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR03]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR04]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR05]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR07]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR08]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR09]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR10]
+STR_NAME    :Corrugated Roof Piece
+
+[RCORR11]
+STR_NAME    :Corrugated Roof Piece
+
+[RDRAB05]
+STR_NAME    :Drab Small Tower Minaret Base
+
+[RDRAB06]
+STR_NAME    :Drab Small Tower Top or Mid-Section
+
+[RDRAB07]
+STR_NAME    :Drab Small Tower Base
+
+[RDRAB08]
+STR_NAME    :Drab Minaret Piece 1
+
+[RDRAB09]
+STR_NAME    :Drab Minaret Piece 2
+
+[RDRAB10]
+STR_NAME    :Drab Minaret Piece 3
+
+[RDRAB11]
+STR_NAME    :Drab Roof Piece 1
+
+[RDRAB12]
+STR_NAME    :Drab Roof Piece 2
+
+[RDRAB13]
+STR_NAME    :Drab Roof Piece 3
+
+[RDRAB14]
+STR_NAME    :Drab Roof Piece 4
+
+[RGEORG01]
+STR_NAME    :Georgian Roof End Piece 1
+
+[RGEORG02]
+STR_NAME    :Georgian Roof End Piece 2
+
+[RGEORG03]
+STR_NAME    :Georgian Roof Piece 1
+
+[RGEORG04]
+STR_NAME    :Georgian Roof Piece 2
+
+[RGEORG05]
+STR_NAME    :Georgian Roof Piece 3
+
+[RGEORG06]
+STR_NAME    :Georgian Roof Piece 4
+
+[RGEORG07]
+STR_NAME    :Georgian Roof Piece 5
+
+[RGEORG08]
+STR_NAME    :Georgian Ground Floor Wall Piece 7
+
+[RGEORG09]
+STR_NAME    :Georgian Flat Roof Edge 1
+
+[RGEORG10]
+STR_NAME    :Georgian Flat Roof Edge 2
+
+[RGEORG11]
+STR_NAME    :Georgian Flat Roof Corner
+
+[RGEORG12]
+STR_NAME    :Georgian Roof Piece 7
+
+[ROOFICE1]
+STR_NAME    :Ice Roof
+
+[ROOFICE2]
+STR_NAME    :Ice Roof
+
+[ROOFICE3]
+STR_NAME    :Ice Roof
+
+[ROOFICE4]
+STR_NAME    :Ice Roof
+
+[ROOFICE5]
+STR_NAME    :Ice Roof
+
+[ROOFICE6]
+STR_NAME    :Ice Roof
+
+[RKREML01]
+STR_NAME    :Kremlin Minaret Piece 1
+
+[RKREML02]
+STR_NAME    :Kremlin Minaret Piece 2
+
+[RKREML03]
+STR_NAME    :Kremlin Minaret Piece 3
+
+[RKREML04]
+STR_NAME    :Kremlin Roof Piece 1
+
+[RKREML05]
+STR_NAME    :Kremlin Roof Piece 2
+
+[RKREML06]
+STR_NAME    :Kremlin Small Tower Mid-Section
+
+[RKREML07]
+STR_NAME    :Kremlin Small Tower Base
+
+[RKREML11]
+STR_NAME    :Kremlin Small Tower Minaret Base
+
+[RLOG01]
+STR_NAME    :Log Cabin Roof Piece
+
+[RLOG02]
+STR_NAME    :Log Cabin Roof Piece
+
+[RLOG03]
+STR_NAME    :Log Cabin Wall Piece
+
+[RLOG04]
+STR_NAME    :Log Cabin Wall Piece
+
+[RLOG05]
+STR_NAME    :Log Cabin Roof Piece
+
+[RMARBLE1]
+STR_NAME    :Marble Roof
+
+[RMARBLE2]
+STR_NAME    :Marble Roof
+
+[RMARBLE3]
+STR_NAME    :Marble Roof
+
+[RMARBLE4]
+STR_NAME    :Marble Roof
+
+[RMUD01]
+STR_NAME    :Curved Mud Wall Piece
+
+[RMUD02]
+STR_NAME    :Curved Mud Wall Piece
+
+[RMUD03]
+STR_NAME    :Curved Mud Wall Piece
+
+[RMUD05]
+STR_NAME    :Mud Roof Piece
+
+[ROOFIG01]
+STR_NAME    :Igloo Wall
+
+[ROOFIG02]
+STR_NAME    :Igloo Wall
+
+[ROOFIG03]
+STR_NAME    :Igloo Wall
+
+[ROOFIG04]
+STR_NAME    :Igloo Wall
+
+[ROOFIG06]
+STR_NAME    :Igloo Wall
+
+[RSHOGI1]
+STR_NAME    :Shogi Roof
+
+[RSHOGI2]
+STR_NAME    :Shogi Roof
+
+[RSHOGI3]
+STR_NAME    :Shogi Roof
+
+[SMALLGEO]
+STR_NAME    :Small Geosphere
+
+[VERTPIPE]
+STR_NAME    :Ice Pipe Section
+
+[ICEBARL1]
+STR_NAME    :Iced Barrels
+
+[ICEBARL2]
+STR_NAME    :Iced Barrels
+
+[ICEBARL3]
+STR_NAME    :Iced Barrels
+
+[PIPEVENT]
+STR_NAME    :Ice Pipe Vent
+
+[PIPEBASE]
+STR_NAME    :Ice Pipe Base
+
+[RTUDOR01]
+STR_NAME    :Tudor Roof Piece 1
+
+[RTUDOR02]
+STR_NAME    :Tudor Roof Piece 1 Extender Piece
+
+[RTUDOR03]
+STR_NAME    :Tudor Roof Piece 2
+
+[RWDAUB01]
+STR_NAME    :Wattle & Daub Roof
+
+[RWDAUB02]
+STR_NAME    :Wattle & Daub Roof
+
+[RWDAUB03]
+STR_NAME    :Wattle & Daub Roof
+
+[SB1HSPB1]
+STR_NAME    :Suspension Bridge Base Piece
+
+[SB1HSPB2]
+STR_NAME    :Suspension Bridge Base Spacer Piece
+
+[SB1HSPB3]
+STR_NAME    :Suspension Bridge Mid Section Piece
+
+[SB2PALM1]
+STR_NAME    :Cabana Porch
+
+[SB2SKY01]
+STR_NAME    :Stone Skyscraper Stairway Base
+
+[SBH1TEPE]
+STR_NAME    :Tee Pee
+
+[SBH1WGWH]
+STR_NAME    :Wagon Wheel
+
+[SBH2SHLT]
+STR_NAME    :Search Light
+
+[SBH3CAC1]
+STR_NAME    :Cactus
+
+[SBH3CAC2]
+STR_NAME    :Cactus
+
+[SBH3CAC3]
+STR_NAME    :Cactus
+
+[SBH3CSKL]
+STR_NAME    :Cattle Skull
+
+[SBH3OSCR]
+STR_NAME    :Rollercoaster Award Statue
+
+[SBH3PLM1]
+STR_NAME    :Palm Tree
+
+[SBH3PLM2]
+STR_NAME    :Palm Tree
+
+[SBH3PLM3]
+STR_NAME    :Palm Tree
+
+[SBH3RT66]
+STR_NAME    :Route 66 Sign
+
+[SBH4TOTM]
+STR_NAME    :Large Totem Pole
+
+[SBSKYS01]
+STR_NAME    :Stone Skyscaper Wall Piece
+
+[SBSKYS02]
+STR_NAME    :Stone Skyscaper Wall Piece
+
+[SBSKYS03]
+STR_NAME    :Skyscraper Lift Piece
+
+[SBSKYS04]
+STR_NAME    :Skyscraper Lift Piece
+
+[SBSKYS05]
+STR_NAME    :Skyscaper Metal Set 1 Convex Piece
+
+[SBSKYS06]
+STR_NAME    :Skyscaper Metal Set 1 Concave Piece
+
+[SBSKYS07]
+STR_NAME    :Skyscaper Metal Set 2 Convex Piece
+
+[SBSKYS08]
+STR_NAME    :Skyscaper Metal Set 2 Concave Piece
+
+[SBSKYS09]
+STR_NAME    :Skyscaper Metal Set 2 Concave Piece
+
+[SBSKYS10]
+STR_NAME    :Skyscaper Concave Piece
+
+[SBSKYS11]
+STR_NAME    :Skyscraper Concave Roof
+
+[SBSKYS12]
+STR_NAME    :Skyscaper Convex Piece
+
+[SBSKYS13]
+STR_NAME    :Skyscaper Convex Roof
+
+[SBSKYS14]
+STR_NAME    :Sky Scraper Roof Piece
+
+[SBSKYS15]
+STR_NAME    :Sky Scraper Roof Piece
+
+[SBSKYS16]
+STR_NAME    :Sky Scraper Roof Piece
+
+[SBSKYS17]
+STR_NAME    :Sky Scraper Roof Piece
+
+[SBSKYS18]
+STR_NAME    :Sky Scraper Roof Piece
+
+[SBWIND01]
+STR_NAME    :Wind Sculpted Concave Wall Corner
+
+[SBWIND02]
+STR_NAME    :Wind Sculpted Concave Roof Corner
+
+[SBWIND03]
+STR_NAME    :Wind Sculpted Concave Wall Corner
+
+[SBWIND04]
+STR_NAME    :Wind Sculpted Convex Wall Corner
+
+[SBWIND05]
+STR_NAME    :Wind Sculpted Convex Roof Corner
+
+[SBWIND06]
+STR_NAME    :Wind Sculpted Convex Wall Corner
+
+[SBWIND07]
+STR_NAME    :Wind Sculpted Rock Formation Base
+
+[SBWIND08]
+STR_NAME    :Wind Sculpted Rock Formation Base
+
+[SBWIND09]
+STR_NAME    :Wind Sculpted Rock Formation Mid Section
+
+[SBWIND10]
+STR_NAME    :Wind Sculpted Rock Formation Mid Section
+
+[SBWIND11]
+STR_NAME    :Wind Sculpted Rock Formation Mid Section
+
+[SBWIND12]
+STR_NAME    :Wind Sculpted Rock Formation Mid Section
+
+[SBWIND13]
+STR_NAME    :Wind Sculpted Rock Formation Top
+
+[SBWIND14]
+STR_NAME    :Wind Sculpted Rock Formation Top
+
+[SBWIND15]
+STR_NAME    :Wind Sculpted Roof Flat Roof Piece
+
+[SBWIND16]
+STR_NAME    :Wind Sculpted Roof Flat Roof Piece
+
+[SBWIND17]
+STR_NAME    :Wind Sculpted Roof Flat Roof Piece
+
+[SBWIND18]
+STR_NAME    :Wind Sculpted Floor Piece
+
+[SBWIND19]
+STR_NAME    :Wind Sculpted Floor Piece
+
+[SBWIND20]
+STR_NAME    :Wind Sculpted Wall Base
+
+[SBWIND21]
+STR_NAME    :Wind Sculpted Wall Base
+
+[SBWPLM01]
+STR_NAME    :Cabana Top
+
+[SBWPLM02]
+STR_NAME    :Cabana Porch
+
+[SBWPLM03]
+STR_NAME    :Cabana Roof Piece
+
+[SBWPLM04]
+STR_NAME    :Cabana Roof Piece
+
+[SBWPLM05]
+STR_NAME    :Cabana Roof Piece
+
+[SBWPLM06]
+STR_NAME    :Cabana Wall Piece
+
+[SBWPLM07]
+STR_NAME    :Cabana Wall Piece
+
+[SBWPLM08]
+STR_NAME    :Cabana Wall Piece
+
+[TALLLAN1]
+STR_NAME    :Tall Lantern
+
+[TALLLAN2]
+STR_NAME    :Tall Lantern
+
+[TERRARMY]
+STR_NAME    :Terracotta Army
+
+[TJBLOCK1]
+STR_NAME    :Maharaja Palace Piece
+
+[TJBLOCK2]
+STR_NAME    :Maharaja Palace Piece
+
+[TJBLOCK3]
+STR_NAME    :Maharaja Palace Piece
+
+[TNT1]
+STR_NAME    :TNT Stack
+
+[TNT2]
+STR_NAME    :TNT Barrels
+
+[TNT3]
+STR_NAME    :TNT Detonator
+
+[TNT4]
+STR_NAME    :TNT Crates
+
+[TRCKPRT1]
+STR_NAME    :Diamond Cart
+
+[TRCKPRT2]
+STR_NAME    :Empty Cart
+
+[TRCKPRT3]
+STR_NAME    :Diamond Shaft
+
+[TRCKPRT4]
+STR_NAME    :Cart Shaft
+
+[TRCKPRT5]
+STR_NAME    :Track Bend
+
+[TRCKPRT6]
+STR_NAME    :Track Broke
+
+[TRCKPRT7]
+STR_NAME    :Track End
+
+[TRCKPRT8]
+STR_NAME    :Track Split
+
+[TRCKPRT9]
+STR_NAME    :Track Straight
+
+[UKPHONE]
+STR_NAME    :British Telephone Box
+
+[WABORG01]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WABORG02]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WABORG03]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WABORG04]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WABORG05]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WABORG06]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WABORG07]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WABORG08]
+STR_NAME    :Aboriginal Art Set Piece
+
+[WAZTEC01]
+STR_NAME    :Temple Roof Piece
+
+[WAZTEC02]
+STR_NAME    :Temple Roof Piece
+
+[WAZTEC03]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC04]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC05]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC06]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC07]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC08]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC09]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC10]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC11]
+STR_NAME    :Temple Wall Corner Piece
+
+[WAZTEC12]
+STR_NAME    :Temple Wall Corner Piece
+
+[WAZTEC13]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC14]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC15]
+STR_NAME    :Temple Roof Piece
+
+[WAZTEC16]
+STR_NAME    :Temple Roof Piece
+
+[WAZTEC17]
+STR_NAME    :Temple Roof Piece
+
+[WAZTEC18]
+STR_NAME    :Temple Roof Piece
+
+[WAZTEC19]
+STR_NAME    :Temple Roof Piece
+
+[WAZTEC20]
+STR_NAME    :Temple Stairway Piece
+
+[WAZTEC21]
+STR_NAME    :Temple Stairway Piece
+
+[WAZTEC22]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC23]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC24]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC25]
+STR_NAME    :Temple Wall Piece
+
+[WAZTEC26]
+STR_NAME    :Temple Wall Corner Piece
+
+[WAZTEC27]
+STR_NAME    :Temple Wall Corner Piece
+
+[WCUZCO01]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO02]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO03]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO04]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO05]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO06]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO07]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO08]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO09]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO10]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO11]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO12]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO13]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO14]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO15]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO16]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO17]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO18]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WCUZCO19]
+STR_NAME    :Monumental Stairway Piece
+
+[WCUZCO20]
+STR_NAME    :Monumental Stairway Piece
+
+[WCUZCO21]
+STR_NAME    :Monumental Wall Corner Piece
+
+[WCUZCO22]
+STR_NAME    :Monumental Wall Corner Piece
+
+[WCUZCO23]
+STR_NAME    :Monumental Wall Corner Piece
+
+[WCUZCO24]
+STR_NAME    :Monumental Wall Corner Piece
+
+[WCUZCO25]
+STR_NAME    :Monumental Stairway Piece
+
+[WCUZCO26]
+STR_NAME    :Monumental Stairway Piece
+
+[WCUZCO27]
+STR_NAME    :Monumental Wall Piece
+
+[WCUZCO28]
+STR_NAME    :Monumental Broken Wall Piece
+
+[WDRAB09]
+STR_NAME    :Drab Step-up Piece 1
+
+[WDRAB10]
+STR_NAME    :Drab Wall Piece 9
+
+[WDRAB11]
+STR_NAME    :Drab Wall Piece 10
+
+[WDRAB12]
+STR_NAME    :Drab Wall Piece 11
+
+[WDRAB13]
+STR_NAME    :Drab Step-up Piece 2
+
+[WGEORG07]
+STR_NAME    :Georgian Ground Floor Wall Piece 4
+
+[WGEORG08]
+STR_NAME    :Georgian Ground Floor Wall Piece 5
+
+[WGEORG09]
+STR_NAME    :Georgian Ground Floor Wall Piece 6
+
+[WGEORG10]
+STR_NAME    :Georgian Wall Piece 4
+
+[WGEORG11]
+STR_NAME    :Georgian Wall Piece 5
+
+[WGEORG12]
+STR_NAME    :Georgian Wall Piece 6
+
+[WKREML01]
+STR_NAME    :Kremlin Step-up Wall Piece 1
+
+[WKREML02]
+STR_NAME    :Kremlin Step-up Wall Piece 2
+
+[WKREML03]
+STR_NAME    :Kremlin Wall Piece 1
+
+[WKREML04]
+STR_NAME    :Kremlin Wall Piece 2
+
+[WKREML05]
+STR_NAME    :Kremlin Wall Piece 3
+
+[WKREML06]
+STR_NAME    :Kremlin Wall Piece 4
+
+[WMAYAN01]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN02]
+STR_NAME    :Lost City Flat Roof Piece
+
+[WMAYAN03]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN04]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN05]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN06]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN07]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN08]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN09]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN10]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN11]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN12]
+STR_NAME    :Lost City Stairway Piece
+
+[WMAYAN13]
+STR_NAME    :Lost City Stairway Piece
+
+[WMAYAN14]
+STR_NAME    :Lost City Stairway Piece
+
+[WMAYAN15]
+STR_NAME    :Lost City Stairway Piece
+
+[WMAYAN16]
+STR_NAME    :Lost City Stairway Piece
+
+[WMAYAN17]
+STR_NAME    :Lost City Column Piece
+
+[WMAYAN18]
+STR_NAME    :Lost City Column Piece
+
+[WMAYAN20]
+STR_NAME    :Lost City Wall Piece
+
+[WMAYAN21]
+STR_NAME    :Lost City Flat Roof Piece
+
+[WMAYAN22]
+STR_NAME    :Lost City Flat Roof Piece
+
+[WMAYAN23]
+STR_NAME    :Lost City Wall Corner Piece
+
+[WMAYAN24]
+STR_NAME    :Lost City Wall Corner Piece
+
+[WMAYAN25]
+STR_NAME    :Lost City Wall Corner Piece
+
+[WMAYAN26]
+STR_NAME    :Lost City Wall Corner Piece
+
+[WNAUTI01]
+STR_NAME    :Nautical Roof Piece
+
+[WNAUTI02]
+STR_NAME    :Nautical Roof Piece
+
+[WNAUTI03]
+STR_NAME    :Nautical Roof Piece
+
+[WNAUTI04]
+STR_NAME    :Nautical Roof Piece
+
+[WNAUTI05]
+STR_NAME    :Nautical Roof Piece
+
+[WTUDOR12]
+STR_NAME    :Tudor Wall Piece 4
+
+[WTUDOR13]
+STR_NAME    :Tudor Ground Bay Wall Piece
+
+[WTUDOR14]
+STR_NAME    :Tudor Ground Floor Wall Piece 1
+
+[WTUDOR15]
+STR_NAME    :Tudor Ground Floor Wall Piece 2
+
+[WTUDOR16]
+STR_NAME    :Tudor Ground Floor Wall Piece 3
+
+[WTUDOR17]
+STR_NAME    :Tudor Ground Floor Wall Piece 4
+
+[WTUDOR18]
+STR_NAME    :Tudor Ground Floor Wall Piece 5
+
+[CAMPFANI]
+STR_NAME    :Animated Camp Fire
+
+[CONVEYR1]
+STR_NAME    :Conveyer Belt Corner
+
+[CONVEYR2]
+STR_NAME    :Conveyer Belt Rise
+
+[CONVEYR3]
+STR_NAME    :Conveyer Belt End
+
+[CONVEYR4]
+STR_NAME    :Conveyer Belt Straight
+
+[CONVEYR5]
+STR_NAME    :Conveyer Belt Corner Reverse
+
+[FISHHOLE]
+STR_NAME    :Fish Hole
+
+[FLAMNGO1]
+STR_NAME    :Flamingo Feeding
+
+[FLAMNGO2]
+STR_NAME    :Flamingo Looking
+
+[FLAMNGO3]
+STR_NAME    :Flamingo Preening
+
+[FOUNTARC]
+STR_NAME    :Australian Fountain Set 2
+
+[FOUNTROW]
+STR_NAME    :Australian Fountain Set 2
+
+[G1DANCER]
+STR_NAME    :Mardi Gras Dancer
+
+[G2DANCER]
+STR_NAME    :Mardi Gras Dancer
+
+[INUIT]
+STR_NAME    :Inuit
+
+[INUIT2]
+STR_NAME    :Inuit
+
+[INFLAG01]
+STR_NAME    :Indian Silk Flag
+
+[INFLAG02]
+STR_NAME    :Indian Silk Flag
+
+[INFLAG03]
+STR_NAME    :Indian Silk Flag
+
+[INFLAG04]
+STR_NAME    :Indian Silk Flag
+
+[INFLAG05]
+STR_NAME    :Indian Silk Flag
+
+[JPFLAG01]
+STR_NAME    :Japanese Silk Flag
+
+[JPFLAG02]
+STR_NAME    :Japanese Silk Flag
+
+[JPFLAG03]
+STR_NAME    :Japanese Silk Flag
+
+[JPFLAG04]
+STR_NAME    :Japanese Silk Flag
+
+[JPFLAG05]
+STR_NAME    :Japanese Silk Flag
+
+[JPFLAG06]
+STR_NAME    :Japanese Silk Flag
+
+[OILPUMP]
+STR_NAME    :Oil Pump
+
+[SBALLOON]
+STR_NAME    :Animated Balloons
+
+[WCUZFOUN]
+STR_NAME    :Monumental Fountain
+
+[WROPECOR]
+STR_NAME    :Nautical Corner Roof Railing
+
+[WROPESWA]
+STR_NAME    :Nautical Roof Railing
+
+[1X2ABR01]
+STR_NAME    :Aboriginal Plain Tile
+
+[1X2ABR02]
+STR_NAME    :Aboriginal Snake Artwork
+
+[1X2ABR03]
+STR_NAME    :Aboriginal Spirit Artwork
+
+[1X2AZT01]
+STR_NAME    :Temple Wall Piece with Head
+
+[1X2AZT02]
+STR_NAME    :Temple Broken Wall Piece with Head
+
+[1X2LGCHM]
+STR_NAME    :Log Cabin Side Chimney
+
+[AFRCLION]
+STR_NAME    :Lion
+
+[AFRRHINO]
+STR_NAME    :Rhino
+
+[ATRACTOR]
+STR_NAME    :Tractor
+
+[AFRZEBRA]
+STR_NAME    :Zebra
+
+[1X4BRG01]
+STR_NAME    :Suspension Bridge Start side 1
+
+[1X4BRG02]
+STR_NAME    :Suspension Bridge Start side 2
+
+[1X4BRG03]
+STR_NAME    :Suspension Bridge Tower side 1
+
+[1X4BRG04]
+STR_NAME    :Suspension Bridge Tower side 2
+
+[1X4BRG05]
+STR_NAME    :Suspension Bridge Cable Section
+
+[3X3ATRE1]
+STR_NAME    :Jungle Tree 2
+
+[3X3MANTR]
+STR_NAME    :Mangrove Tree
+
+[50ROCKET]
+STR_NAME    :1950's Rocket
+
+[BamboRf1]
+STR_NAME    :Bamboo Roof
+
+[BAMBORF2]
+STR_NAME    :Bamboo Roof
+
+[BamboRf3]
+STR_NAME    :Bamboo Roof
+
+[BIGGEOSP]
+STR_NAME    :Big Geosphere
+
+[CIRCUS]
+STR_NAME    :Circus
+
+[COWBOY01]
+STR_NAME    :Cowboy 1
+
+[COWBOY02]
+STR_NAME    :Cowboy 2
+
+[DAMTOWER]
+STR_NAME    :Dam Tower
+
+[EIFFEL]
+STR_NAME    :Eiffel Tower
+
+[FATBUDDA]
+STR_NAME    :Fat Buddha
+
+[GIRAFFE1]
+STR_NAME    :Giraffe 1
+
+[GIRAFFE2]
+STR_NAME    :Giraffe 2
+
+[GOLDBUDA]
+STR_NAME    :Golden Buddha
+
+[HIPPO01]
+STR_NAME    :Hippo 1
+
+[HIPPO02]
+STR_NAME    :Hippo 2
+
+[INDIANST]
+STR_NAME    :Native American
+
+[LARGEJU1]
+STR_NAME    :Large Rainforest Tree
+
+[LINCOLNS]
+STR_NAME    :Washington Statue
+
+[RDRAB01]
+STR_NAME    :Drab Large Tower Mid-Section
+
+[RDRAB02]
+STR_NAME    :Drab Large Tower Base
+
+[RDRAB03]
+STR_NAME    :Drab Large Tower Top
+
+[RDRAB04]
+STR_NAME    :Drab Large Tower Broken Base
+
+[REDWOOD]
+STR_NAME    :Redwood Tree
+
+[RKREML08]
+STR_NAME    :Kremlin Large Tower Base
+
+[RKREML09]
+STR_NAME    :Kremlin Large Tower Top
+
+[RKREML10]
+STR_NAME    :Kremlin Large Tower Mid-Section
+
+[RTUDOR05]
+STR_NAME    :Tudor Roof Piece 3
+
+[RTUDOR06]
+STR_NAME    :Tudor Roof Piece 4
+
+[SHIVA]
+STR_NAME    :Shiva
+
+[SOFLIBRT]
+STR_NAME    :Statue of Liberty
+
+[SPUTNIK]
+STR_NAME    :Sputnik
+
+[TAJMCBSE]
+STR_NAME    :Maharaja Palace Tower Base
+
+[TAJMCOLM]
+STR_NAME    :Maharaja Palace Tower Column
+
+[TAJMCTOP]
+STR_NAME    :Maharaja Palace Tower Top
+
+[1X2GLAMA]
+STR_NAME    :Gold Llama
+
+[3X3ALTRE]
+STR_NAME    :Jungle Tree with Leopards
+
+[3X3ATRE2]
+STR_NAME    :Jungle Tree 1
+
+[3X3ATRE3]
+STR_NAME    :Jungle Tree with Vines
+
+[3X3EUCAL]
+STR_NAME    :Eucalyptus Tree
+
+[3X3HMSEN]
+STR_NAME    :HMS Endeavour
+
+[ADULTELE]
+STR_NAME    :Adult Indian Elephant
+
+[ATOMIUM]
+STR_NAME    :Atomium
+
+[BIGBEN]
+STR_NAME    :Big Ben and the Houses of Parliament
+
+[BIGDISH]
+STR_NAME    :Satellite Dish
+
+[CDRAGON]
+STR_NAME    :Chinese Dragon
+
+[EASERLND]
+STR_NAME    :Easter Island Statue
+
+[EVILSAM]
+STR_NAME    :Evil Samurai
+
+[GDSTAUE1]
+STR_NAME    :Gold Statue 1
+
+[GDSTAUE2]
+STR_NAME    :Gold Statue 2
+
+[GEISHA]
+STR_NAME    :Geisha
+
+[GOODSAM]
+STR_NAME    :Good Samurai
+
+[GWOCTUR1]
+STR_NAME    :Great Wall Of China Turret Straight
+
+[GWOCTUR2]
+STR_NAME    :Great Wall Of China Turret Corner
+
+[HELIPAD]
+STR_NAME    :Helipad
+
+[ICEFOR01]
+STR_NAME    :Ice Formation
+
+[ICEFOR02]
+STR_NAME    :Ice Formation
+
+[MBSKYR01]
+STR_NAME    :Sky Scraper Roof Piece
+
+[MBSKYR02]
+STR_NAME    :Sky Scraper Tip
+
+[OVRGRWNT]
+STR_NAME    :Old Overgrown Tree
+
+[POGODAL]
+STR_NAME    :Pagoda
+
+[PAGODAM]
+STR_NAME    :Pagoda
+
+[PAGODAS]
+STR_NAME    :Pagoda
+
+[PAGODATW]
+STR_NAME    :Pagoda Tower
+
+[RADAR]
+STR_NAME    :Radar Dish
+
+[SPACEORB]
+STR_NAME    :Space Orbs
+
+[SUNKEN]
+STR_NAME    :Sunken Ship
+
+[TAJMDOME]
+STR_NAME    :Maharaja Palace Dome
+
+[WINDMILL]
+STR_NAME    :Windmill
+
+[TMARCH1]
+STR_NAME    :Maharaja Palace Arch 1
+
+[TMARCH2]
+STR_NAME    :Maharaja Palace Arch 2
+
+[W2CORR01]
+STR_NAME    :Corrugated Wall Piece
+
+[W2CORR02]
+STR_NAME    :Corrugated Wall Piece
+
+[W2CORR03]
+STR_NAME    :Corrugated Wall Piece
+
+[W2CORR04]
+STR_NAME    :Corrugated Wall Piece
+
+[W2CORR05]
+STR_NAME    :Corrugated Wall Piece
+
+[W2CORR06]
+STR_NAME    :Corrugated Wall Piece
+
+[W2CORR07]
+STR_NAME    :Corrugated Wall Piece
+
+[W2CORR08]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR01]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR02]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR03]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR04]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR05]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR06]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR07]
+STR_NAME    :Corrugated Wall Piece
+
+[W3CORR08]
+STR_NAME    :Corrugated Wall Piece
+
+[WALLNA01]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA02]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA03]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA04]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA05]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA06]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA07]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA08]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA09]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA10]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA11]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA12]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA13]
+STR_NAME    :Nautical Wall Piece
+
+[WALLNA14]
+STR_NAME    :Nautical Wall Piece
+
+[WWDAUB01]
+STR_NAME    :Wattle & Daub Wall
+
+[WWDAUB02]
+STR_NAME    :Wattle & Daub Wall
+
+[WWDAUB03]
+STR_NAME    :Wattle & Daub Wall
+
+[WWDAUB04]
+STR_NAME    :Wattle & Daub Wall
+
+[WWDAUB05]
+STR_NAME    :Wattle & Daub Wall
+
+[WWDAUB06]
+STR_NAME    :Wattle & Daub Wall
+
+[WWDAUB07]
+STR_NAME    :Wattle & Daub Wall
+
+[WBambo01]
+STR_NAME    :Bamboo Wall
+
+[WBambo02]
+STR_NAME    :Bamboo Wall
+
+[WBambo03]
+STR_NAME    :Bamboo Wall
+
+[WBAMBO04]
+STR_NAME    :Bamboo Wall
+
+[WBambo05]
+STR_NAME    :Bamboo Wall
+
+[WBambo11]
+STR_NAME    :Bamboo Wall
+
+[WBambo12]
+STR_NAME    :Bamboo Wall
+
+[WBambo13]
+STR_NAME    :Bamboo Wall
+
+[WBambo14]
+STR_NAME    :Bamboo Wall
+
+[WBambo15]
+STR_NAME    :Bamboo Wall
+
+[WBambo21]
+STR_NAME    :Bamboo Wall
+
+[WBRICK01]
+STR_NAME    :Red Brick Wall Piece 1
+
+[WBRICK02]
+STR_NAME    :Red Brick Wall Piece 2
+
+[WBRICK03]
+STR_NAME    :Red Brick Wall Piece 3
+
+[WBRICK04]
+STR_NAME    :Red Brick Wall Piece 4
+
+[WBRICK05]
+STR_NAME    :Red Brick Wall Piece 5
+
+[WBRICK08]
+STR_NAME    :Red Brick Wall Piece 8
+
+[WBRICK11]
+STR_NAME    :Red Brick Wall Piece 11
+
+[WBRICK12]
+STR_NAME    :Red Brick Wall Piece 12
+
+[WBRICK13]
+STR_NAME    :Red Brick Wall Piece 13
+
+[WCORR01]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR02]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR03]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR04]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR05]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR06]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR07]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR08]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR09]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR10]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR11]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR12]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR13]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR14]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR15]
+STR_NAME    :Corrugated Wall Piece
+
+[WCORR16]
+STR_NAME    :Corrugated Wall Piece
+
+[WDRAB01]
+STR_NAME    :Drab Wall Piece 1
+
+[WDRAB02]
+STR_NAME    :Drab Wall Piece 2
+
+[WDRAB03]
+STR_NAME    :Drab Wall Piece 3
+
+[WDRAB04]
+STR_NAME    :Drab Wall Piece 4
+
+[WDRAB05]
+STR_NAME    :Drab Wall Piece 5
+
+[WDRAB06]
+STR_NAME    :Drab Wall Piece 6
+
+[WDRAB07]
+STR_NAME    :Drab Wall Piece 7
+
+[WDRAB08]
+STR_NAME    :Drab Wall Piece 8
+
+[WGEORG01]
+STR_NAME    :Georgian Wall Piece 1
+
+[WGEORG02]
+STR_NAME    :Georgian Ground Floor Wall Piece 1
+
+[WGEORG03]
+STR_NAME    :Georgian Wall Piece 2
+
+[WGEORG04]
+STR_NAME    :Georgian Ground Floor Wall Piece 2
+
+[WGEORG05]
+STR_NAME    :Georgian Wall Piece 3
+
+[WGEORG06]
+STR_NAME    :Georgian Ground Floor Wall Piece 3
+
+[WGWOC1]
+STR_NAME    :Great Wall Of China Front Wall Section
+
+[WGWOC2]
+STR_NAME    :Great Wall Of China Rear Wall Section
+
+[WGWOC3]
+STR_NAME    :Great Wall Of China Step up Wall Section
+
+[WALLICE1]
+STR_NAME    :Ice Wall
+
+[WALLICE2]
+STR_NAME    :Ice Wall
+
+[WALLICE3]
+STR_NAME    :Ice Wall
+
+[WALLICE4]
+STR_NAME    :Ice Wall
+
+[WALLICE5]
+STR_NAME    :Ice Wall
+
+[WALLICE6]
+STR_NAME    :Ice Wall
+
+[WALLICE7]
+STR_NAME    :Ice Wall
+
+[WALLICE8]
+STR_NAME    :Ice Wall
+
+[WALLICE9]
+STR_NAME    :Ice Wall
+
+[WALLIC10]
+STR_NAME    :Ice Wall
+
+[WIGLOO1]
+STR_NAME    :Igloo Wall
+
+[WIGLOO2]
+STR_NAME    :Igloo Wall
+
+[WKREML07]
+STR_NAME    :Kremlin Wall Piece 5
+
+[WKREML08]
+STR_NAME    :Kremlin Wall Piece 6
+
+[WKREML09]
+STR_NAME    :Kremlin Wall Piece 7
+
+[WKREML10]
+STR_NAME    :Kremlin Wall Piece 8
+
+[WLOG01]
+STR_NAME    :Log Cabin Wall Piece
+
+[WLOG02]
+STR_NAME    :Log Cabin Wall Piece
+
+[WLOG03]
+STR_NAME    :Log Cabin Wall Piece
+
+[WLOG04]
+STR_NAME    :Log Cabin Wall Piece
+
+[WLOG05]
+STR_NAME    :Log Cabin Wall Piece
+
+[WLOG06]
+STR_NAME    :Log Cabin Wall Piece
+
+[WMARBLE1]
+STR_NAME    :Ornate Marble Wall
+
+[WMARBLE2]
+STR_NAME    :Ornate Marble Wall
+
+[WMARBLE3]
+STR_NAME    :Ornate Marble Wall
+
+[WMARBLE4]
+STR_NAME    :Ornate Marble Wall
+
+[WMARBLE5]
+STR_NAME    :Ornate Marble Wall
+
+[WMARBLE6]
+STR_NAME    :Ornate Marble Wall
+
+[WMARBPL1]
+STR_NAME    :Plain Marble Wall
+
+[WMARBPL2]
+STR_NAME    :Plain Marble Wall
+
+[WMARBPL3]
+STR_NAME    :Plain Marble Wall
+
+[WMARBPL4]
+STR_NAME    :Plain Marble Wall
+
+[WMARBPL5]
+STR_NAME    :Plain Marble Wall
+
+[WMARBPL6]
+STR_NAME    :Plain Marble Wall
+
+[WMARBPL7]
+STR_NAME    :Plain Marble Wall
+
+[WMUD01]
+STR_NAME    :Mud Wall Piece
+
+[WMUD02]
+STR_NAME    :Mud Wall Piece
+
+[WMUD03]
+STR_NAME    :Mud Wall Piece
+
+[WMUD04]
+STR_NAME    :Mud Wall Piece
+
+[WMUD05]
+STR_NAME    :Mud Wall Piece
+
+[WMUD06]
+STR_NAME    :Mud Wall Piece
+
+[WMUD07]
+STR_NAME    :Mud Wall Piece
+
+[WMUD08]
+STR_NAME    :Mud Wall Piece
+
+[WPALM01]
+STR_NAME    :Cabana Wall Piece
+
+[WPALM02]
+STR_NAME    :Cabana Wall Piece
+
+[WPALM03]
+STR_NAME    :Cabana Wall Piece
+
+[WPALM04]
+STR_NAME    :Cabana Wall Piece
+
+[WPALM05]
+STR_NAME    :Cabana Wall Piece
+
+[WSHOGI01]
+STR_NAME    :Shogi Wall
+
+[WSHOGI02]
+STR_NAME    :Shogi Wall
+
+[WSHOGI03]
+STR_NAME    :Shogi Wall
+
+[WSHOGI04]
+STR_NAME    :Shogi Wall
+
+[WSHOGI05]
+STR_NAME    :Shogi Wall
+
+[WSHOGI06]
+STR_NAME    :Shogi Wall
+
+[WSHOGI07]
+STR_NAME    :Shogi Wall
+
+[WSHOGI08]
+STR_NAME    :Shogi Wall
+
+[WSHOGI09]
+STR_NAME    :Shogi Wall
+
+[WSHOGI10]
+STR_NAME    :Shogi Wall
+
+[WSHOGI11]
+STR_NAME    :Shogi Wall
+
+[WSHOGI12]
+STR_NAME    :Shogi Wall
+
+[WSHOGI13]
+STR_NAME    :Shogi Wall
+
+[WSHOGI14]
+STR_NAME    :Shogi Wall
+
+[WSHOGI15]
+STR_NAME    :Shogi Wall
+
+[WSHOGI16]
+STR_NAME    :Shogi Wall
+
+[WSHOGI17]
+STR_NAME    :Shogi Wall
+
+[WSKYSC01]
+STR_NAME    :Skyscaper Metal Set 2 Wall Piece
+
+[WSKYSC02]
+STR_NAME    :Skyscaper Metal Set 2 Wall Piece
+
+[WSKYSC03]
+STR_NAME    :Skyscaper Metal Set 1 Wall Piece
+
+[WSKYSC04]
+STR_NAME    :Skyscaper Lift Section Piece
+
+[WSKYSC05]
+STR_NAME    :Skyscaper Lift Section Piece
+
+[WSKYSC06]
+STR_NAME    :Sky Scraper Wall Piece
+
+[WSKYSC07]
+STR_NAME    :Skyscaper Lift Section Piece
+
+[WSKYSC08]
+STR_NAME    :Sky Scraper Wall Piece
+
+[WSKYSC09]
+STR_NAME    :Sky Scraper Wall Piece
+
+[WSKYSC10]
+STR_NAME    :Stone Skyscaper Wall Piece
+
+[WSKYSC11]
+STR_NAME    :Stone Skyscaper Wall Piece
+
+[WSKYSC12]
+STR_NAME    :Stone Skyscaper Wall Piece
+
+[WTUDOR01]
+STR_NAME    :Tudor Ground Floor Wall Piece 1
+
+[WTUDOR02]
+STR_NAME    :Tudor Ground Floor Wall Piece 2
+
+[WTUDOR03]
+STR_NAME    :Tudor Ground Floor Wall Piece 3
+
+[WTUDOR04]
+STR_NAME    :Tudor Ground Floor Wall Piece 4
+
+[WTUDOR05]
+STR_NAME    :Tudor Ground Floor Wall Piece 5
+
+[WTUDOR06]
+STR_NAME    :Tudor Ground Floor Wall Piece 6
+
+[WTUDOR07]
+STR_NAME    :Tudor Ground Floor Wall Piece 7
+
+[WTUDOR08]
+STR_NAME    :Tudor Ground Floor Wall Piece 8
+
+[WTUDOR09]
+STR_NAME    :Tudor Wall Piece 1
+
+[WTUDOR10]
+STR_NAME    :Tudor Wall Piece 2
+
+[WTUDOR11]
+STR_NAME    :Tudor Wall Piece 3
+
+[WWIND03]
+STR_NAME    :Wind Sculpted Wall Piece
+
+[WWIND04]
+STR_NAME    :Wind Sculpted Wall Piece
+
+[WWIND05]
+STR_NAME    :Wind Sculpted Wall Piece
+
+[WWIND06]
+STR_NAME    :Wind Sculpted Wall Piece
+
+[WBamboPC]
+STR_NAME    :Bamboo Wall
+
+[SCGAFRIC]
+STR_NAME    : Africa Themeing
+
+[SCGARTIC]
+STR_NAME    : Antarctic Themeing
+
+[SCGASIA]
+STR_NAME    : Asia Themeing
+
+[SCGAUSTR]
+STR_NAME    : Australasian Themeing
+
+[SCGEUROP]
+STR_NAME    : Europe Themeing
+
+[SCGNAMRC]
+STR_NAME    : North America Themeing
+
+[SCGSAMER]
+STR_NAME    : South America Themeing
+
+[AFRICENT]
+STR_NAME    :Africa Park Entrance
+
+[EUROENT]
+STR_NAME    :European Park Entrance
+
+[ICEENT]
+STR_NAME    :Ice Park Entrance
+
+[JAPENT]
+STR_NAME    :Japanese Park Entrance
+
+[NAENT]
+STR_NAME    :North America Park Entrance
+
+[OZENTRAN]
+STR_NAME    :Australasian Park Entrance
+
+[SAMERENT]
+STR_NAME    :South American Park Entrance
+
+###############################################################################
+## Time Twister Objects
+###############################################################################
+[SCHOOLBS]
+STR_NAME    :School Bus Ride
+STR_DESC    :Replica Yellow Bus themed trams
+STR_CPTY    :10 passengers per car
+
+[TELEPTER]
+STR_NAME    :Teleporter
+STR_DESC    :Guests are transported up or down from one level to another
+STR_CPTY    :16 passengers
+
+[ZEPLELIN]
+STR_NAME    :Airship Themed Monorail Trains
+STR_DESC    :Large capacity themed monorail trains with streamlined front and rear cars
+STR_CPTY    :5 or 10 passengers per car
+
+[BMVOCTPS]
+STR_NAME    :Blob from Outer Space Ride
+STR_DESC    :A themed rotating observation cabin which travels up a tall tower
+STR_CPTY    :20 passengers
+
+[CYCLOPSX]
+STR_NAME    :Cyclops Ride
+STR_DESC    :Riders drive the Eye of a Giant Cyclops
+STR_CPTY    :1 person per car
+
+[FIGTKNIT]
+STR_NAME    :Fighting Knights Dodgem Cars
+STR_DESC    :Riders joust on Horse-themed dodgem cars
+STR_CPTY    :1 person per car
+
+[FLWRPOWR]
+STR_NAME    :Flower Power Ride
+STR_DESC    :Small flower shaped dinghies powered by a centrally-mounted motor controlled by the passengers
+STR_CPTY    :1 passenger per car
+
+[FUNHOUSE]
+STR_NAME    :Fun House
+STR_DESC    :Building containing moving walls and floors to disorientate people walking through it
+STR_CPTY    :5 guests
+
+[HALOFMRS]
+STR_NAME    :Hall of Mirrors
+STR_DESC    :Building containing warped mirrors which distort the reflection of the viewer
+STR_CPTY    :5 guests
+
+[HOVERCAR]
+STR_NAME    :Hover Car Ride
+STR_DESC    :Mag Lev technology has been implemented to create the illusion of futuristic hover cars
+STR_CPTY    :2 passengers per car
+
+[MGR2]
+STR_NAME    :Double Deck Carousel
+STR_DESC    :Traditional enclosed double-deck carousel with carved wooden horses
+STR_CPTY    :32 passengers
+
+[PEGASUSX]
+STR_NAME    :Pegasus Ride
+STR_DESC    :Powered vehicles in the shape of Pegasus drawing a cart, follow a track-based route
+STR_CPTY    :2 passengers per car
+
+[SPOKPRSN]
+STR_NAME    :Haunted Jail House
+STR_DESC    :Building containing dungeons and mannequins of incarcerated figures, to scare people walking through it
+STR_CPTY    :16 Guests
+
+[TIMEMACH]
+STR_NAME    :Time Machine
+STR_DESC    :Guests sit in a specially designed sphere, and experience the illusion of time travel
+STR_CPTY    :1 per guest
+
+[TRICATOP]
+STR_NAME    :Triceratops Dodgem Cars
+STR_DESC    :Riders lock horns with each other in Triceratops dodgem cars
+STR_CPTY    :1 person per car
+
+[BARNSTRM]
+STR_NAME    :BarnStorming Coaster
+STR_DESC    :Riders sit in seats suspended beneath the track as they speed through giant loops, twists, and large swooping drops
+STR_CPTY    :4 passengers per car
+
+[BATTRRAM]
+STR_NAME    :Battering Ram Coaster
+STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
+STR_CPTY    :6 passengers per car
+
+[BLCKDETH]
+STR_NAME    :Black Death Ride
+STR_DESC    :Riders career down a twisting track in Rat-shaped cars guided only by the curvature and banking of the semi-circular track
+STR_CPTY    :2 passengers per car
+
+[CERBERUS]
+STR_NAME    :Cerberus Coaster
+STR_DESC    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_CPTY    :4 passengers per car
+
+[DRAGNFLY]
+STR_NAME    :Dragonfly Coaster
+STR_DESC    :Passengers ride suspended in a specially designed car from the single-rail track, swinging freely from side to side around corners
+STR_CPTY    :2 passenger per car
+
+[GANSTRCR]
+STR_NAME    :Gangster Car Coaster
+STR_DESC    :1920s Themed Gangster cars are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_CPTY    :4 passengers per car
+
+[HARPIESX]
+STR_NAME    :Harpies Coaster
+STR_DESC    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
+STR_CPTY    :4 passengers per car
+
+[HOTRODXX]
+STR_NAME    :Hot Rod Coaster
+STR_DESC    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
+STR_CPTY    :2 passengers per car
+
+[HOVERBKE]
+STR_NAME    :Hover Bike Ride
+STR_DESC    :Riders sit on futuristic bike-shaped vehicles which travel along a single-rail track
+STR_CPTY    :2 riders per vehicle
+
+[HOVRBORD]
+STR_NAME    :Hoverboard Coaster
+STR_DESC    :Guests ride on a futuristic hoverboard, swinging freely from side to side around corners
+STR_CPTY    :2 passenger per car
+
+[JETPACKX]
+STR_NAME    :Jet Pack Booster
+STR_DESC    :Riders sit in a vehicle which is launched up a vertical section of track
+STR_CPTY    :8 passengers per car
+
+[JETPLANE]
+STR_NAME    :Jet Plane Coaster
+STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops
+STR_CPTY    :4 passengers per car
+
+[JOUSTING]
+STR_NAME    :Jousting Knights Coaster
+STR_DESC    :Riders sit on the back of Horse-shaped vehicles along a single-rail track
+STR_CPTY    :2 riders per vehicle
+
+[POLCHASE]
+STR_NAME    :Police Chase Coaster
+STR_DESC    :A looping roller coaster where the riders ride in a sitting position
+STR_CPTY    :4 passengers per car
+
+[POLICECR]
+STR_NAME    :Police Car Coaster
+STR_DESC    :1960s Themed Police cars run on wooden tracks, turning around on special reversing sections
+STR_CPTY    :6 passengers per car
+
+[PTERODAC]
+STR_NAME    :Pterodactyl Coaster
+STR_DESC    :Riders are held in comfortable seats below the track, travelling through twisted track to give the ultimate prehistoric flying experience
+STR_CPTY    :4 passengers per car
+
+[RAPTORXX]
+STR_NAME    :Raptor Racers Coaster
+STR_DESC    :Riders sit on the back of Raptor-shaped vehicles along a single-rail track
+STR_CPTY    :2 riders per vehicle
+
+[SEAPLANE]
+STR_NAME    :Seaplane Ride
+STR_DESC    :Suspended roller coaster train consisting of cars able to swing freely as the train goes around corners
+STR_CPTY    :4 passengers per car
+
+[STAMPHRD]
+STR_NAME    :Stampeding Herd Coaster
+STR_DESC    :A looping roller coaster with vehicles in the shape of a stampeding dinosaur herd.
+STR_CPTY    :4 passengers per car
+
+[VALKYRIE]
+STR_NAME    :Valkyries Coaster
+STR_DESC    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
+STR_CPTY    :6 passengers per car
+
+[1920RACR]
+STR_NAME    :1920's Racing Cars
+STR_DESC    :Riders race each other in a 1920's Race Car themed Go-Kart
+STR_CPTY    :Single-seater
+
+[CAVMNCAR]
+STR_NAME    :Caveman Cars
+STR_DESC    :Riders race each other in Stone-Age Go-Karts
+STR_CPTY    :Single-seater
+
+[DINOEGGS]
+STR_NAME    :Dinosaur Egg Ride
+STR_DESC    :Riders ride in pairs, in themed seats rotating around an animated mother Dinosaur.
+STR_CPTY    :18 passengers
+
+[FLALMACE]
+STR_NAME    :Mace Ride
+STR_DESC    :Riders sit on a themed chair which is attached to a motor driven spinning arm.
+STR_CPTY    :1 guest per chair
+
+[GINTSPDR]
+STR_NAME    :B-Movie Giant Spider Ride
+STR_DESC    :Riders ride in pairs of themed seats which rotate around a large B-Movie Spider.
+STR_CPTY    :18 passengers
+
+[MICROBUS]
+STR_NAME    :MicroBus Ride
+STR_DESC    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
+STR_CPTY    :8 passengers
+
+[NEPTUNEX]
+STR_NAME    :Neptune Ride
+STR_DESC    :Riders ride in pairs, in themed seats rotating around an animated statue of Neptune.
+STR_CPTY    :18 passengers
+
+[TOMMYGUN]
+STR_NAME    :Tommy Gun Ride
+STR_DESC    :Riders ride in pairs of themed seats which rotate around a large replica Tommy Gun.
+STR_CPTY    :18 passengers
+
+[TREBUCHT]
+STR_NAME    :Trebuchet Ride
+STR_DESC    :Passengers ride in a carriage suspended by two large arms, based on a Dark Age Siege Weapon
+STR_CPTY    :8 passengers
+
+[FLYGBOAT]
+STR_NAME    :Flying Boat Ride
+STR_DESC    :Flying Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_CPTY    :16 passengers per boat
+
+[OAKBAREL]
+STR_NAME    :Oak Barrel Ride
+STR_DESC    :Oak Barrels meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_CPTY    :8 passengers per boat
+
+[RIVRSTYX]
+STR_NAME    :River Styx
+STR_DESC    :Raft-shaped boats gently meander around a river track
+STR_CPTY    :4 passengers per raft
+
+[TRILOBTE]
+STR_NAME    :Trilobite Boats
+STR_DESC    :Trilobite shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_CPTY    :16 passengers per boat
+
+[1920SAND]
+STR_NAME    :Art Deco Food Stall
+STR_DESC    :A stall selling Noodles and Fresh Lemonade
+
+[1960TSRT]
+STR_NAME    :Flower Power T-Shirts
+STR_DESC    :Stall selling T-shirts with a flower motif
+
+[MEDISOUP]
+STR_NAME    :Witches Brew Soup
+STR_DESC    :A Stall selling a thick broth style soup
+
+[MKTSTAL1]
+STR_NAME    :Toffee Apple Market Stall
+STR_DESC    :A themed stall selling sticky toffee apples.
+
+[MKTSTAL2]
+STR_NAME    :Lemonade Market Stall
+STR_DESC    :A themed stall selling old style, fresh lemonade.
+
+[MOONJUCE]
+STR_NAME    :Moon Juice
+STR_DESC    :A stall selling the latest soft drinks
+
+[MYTHOSEA]
+STR_NAME    :Neptune's Seafood Stall
+STR_DESC    :A stall selling Neptunes salty treats
+
+[SOFTOYST]
+STR_NAME    :Soft Toy Stall
+STR_DESC    :A stall selling a cute soft toy Dinosaur
+
+[1920SLMP]
+STR_NAME    :Period Street Lamps
+
+[ALENTRE1]
+STR_NAME    :Alien Tree
+
+[ALENTRE2]
+STR_NAME    :Alien Tree
+
+[ARMRBODY]
+STR_NAME    :Magical Armour
+
+[ARMRHELM]
+STR_NAME    :Magical Helmet
+
+[ARMRSHLD]
+STR_NAME    :Magical Shield
+
+[ARMRSWRD]
+STR_NAME    :Magical Sword
+
+[ARTDEC01]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC02]
+STR_NAME    :Art Deco Inverted Corner Section
+
+[ARTDEC03]
+STR_NAME    :Art Deco Wall with Door
+
+[ARTDEC04]
+STR_NAME    :Art Deco Wall with Windows
+
+[ARTDEC05]
+STR_NAME    :Art Deco Wall with Windows
+
+[ARTDEC06]
+STR_NAME    :Art Deco Top Section
+
+[ARTDEC07]
+STR_NAME    :Art Deco Corner Section
+
+[ARTDEC08]
+STR_NAME    :Art Deco Top Corner Section
+
+[ARTDEC09]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC10]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC11]
+STR_NAME    :Art Deco Corner with Windows
+
+[ARTDEC12]
+STR_NAME    :Art Deco Corner with Railings
+
+[ARTDEC13]
+STR_NAME    :Art Deco Top Corner Section
+
+[ARTDEC14]
+STR_NAME    :Art Deco Corner with Windows
+
+[ARTDEC15]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC16]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC17]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC18]
+STR_NAME    :Art Deco Top Section
+
+[ARTDEC19]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC20]
+STR_NAME    :Art Deco Wall Section
+
+[ARTDEC21]
+STR_NAME    :Art Deco Wall with Railings
+
+[ARTDEC22]
+STR_NAME    :Art Deco Wall with Railings
+
+[ARTDEC23]
+STR_NAME    :Art Deco Wall with Railings
+
+[ARTDEC24]
+STR_NAME    :Art Deco Wall with Railings
+
+[ARTDEC28]
+STR_NAME    :Art Deco Roof Section
+
+[ARTDEC29]
+STR_NAME    :Art Deco Inverted Corner Section
+
+[BIGBASSX]
+STR_NAME    :Giant Bass Guitar
+
+[BIGGUTAR]
+STR_NAME    :Giant Guitar
+
+[CHPRBKE1]
+STR_NAME    :Motorcycle
+
+[CHPRBKE2]
+STR_NAME    :Motorcycle
+
+[ELECFEN5]
+STR_NAME    :Electric Fence Inverted Corner Piece
+
+[FIREMANX]
+STR_NAME    :Animatronic Fireman
+
+[FUTSKY16]
+STR_NAME    :Sandstone Skyscraper Mid Slope Corner
+
+[FUTSKY17]
+STR_NAME    :Sandstone Skyscraper Filler
+
+[FUTSKY18]
+STR_NAME    :Sandstone Skyscraper Doorway
+
+[FUTSKY19]
+STR_NAME    :Sandstone Skyscraper Bottom Corner
+
+[FUTSKY21]
+STR_NAME    :Sandstone Skyscraper Mid Wall Section
+
+[FUTSKY23]
+STR_NAME    :Sandstone Skyscraper Inverted Corner Top
+
+[FUTSKY29]
+STR_NAME    :Sandstone Skyscraper Bottom Curved Slope
+
+[FUTSKY34]
+STR_NAME    :Sandstone Skyscraper Roof
+
+[FUTSKY35]
+STR_NAME    :Sandstone Skyscraper Mid Curved Slope
+
+[FUTSKY42]
+STR_NAME    :Sandstone Skyscraper Curved Slope Top
+
+[FUTSKY52]
+STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+
+[FUTSKY53]
+STR_NAME    :Sandstone Skyscraper Mid Corner
+
+[FUTSKY54]
+STR_NAME    :Obsidian SkyScraper Roof Piece
+
+[GLDCHEST]
+STR_NAME    :Treasure Chest
+
+[GOLDFLEC]
+STR_NAME    :Golden Fleece
+
+[HAYBAILS]
+STR_NAME    :Hay Bale
+
+[HEVBTH05]
+STR_NAME    :Heavenly Baths Arch
+
+[HEVBTH06]
+STR_NAME    :Heavenly Baths Arch
+
+[HEVBTH07]
+STR_NAME    :Heavenly Baths Arch
+
+[HEVBTH08]
+STR_NAME    :Heavenly Baths Stairway
+
+[HEVBTH09]
+STR_NAME    :Heavenly Baths Stairway
+
+[HEVBTH10]
+STR_NAME    :Heavenly Baths Architecture
+
+[HEVBTH11]
+STR_NAME    :Heavenly Baths Architecture
+
+[HEVBTH12]
+STR_NAME    :Heavenly Baths Architecture
+
+[HEVBTH13]
+STR_NAME    :Heavenly Baths Architecture
+
+[HEVBTH14]
+STR_NAME    :Heavenly Bath Window
+
+[HEVBTH15]
+STR_NAME    :Heavenly Bath Floor
+
+[HEVROF01]
+STR_NAME    :Heavenly Bath Roof
+
+[HEVROF02]
+STR_NAME    :Heavenly Bath Roof
+
+[HEVROF03]
+STR_NAME    :Heavenly Bath Roof
+
+[HEVROF04]
+STR_NAME    :Heavenly Bath Roof
+
+[HRBWAL01]
+STR_NAME    :Harbour Wall
+
+[HRBWAL02]
+STR_NAME    :Harbour Wall with Fishing Gear
+
+[HRBWAL03]
+STR_NAME    :Harbour Wall with Moor
+
+[HRBWAL04]
+STR_NAME    :Harbour Wall with Moor
+
+[HRBWAL05]
+STR_NAME    :Harbour Wall with Moor
+
+[HRBWAL06]
+STR_NAME    :Harbour Wall with Moor
+
+[HURCLULS]
+STR_NAME    :Hercules
+
+[INDWAL01]
+STR_NAME    :Industrial Wall Set
+
+[INDWAL02]
+STR_NAME    :Industrial Wall Set
+
+[INDWAL03]
+STR_NAME    :Industrial Wall Set
+
+[INDWAL04]
+STR_NAME    :Industrial Wall Set
+
+[INDWAL05]
+STR_NAME    :Industrial Roof Corner Piece
+
+[INDWAL06]
+STR_NAME    :Industrial Roof Corner Piece
+
+[INDWAL07]
+STR_NAME    :Industrial Wall with Doorway
+
+[INDWAL08]
+STR_NAME    :Industrial Wall with Doorway
+
+[INDWAL09]
+STR_NAME    :Industrial Wall with Doorway
+
+[INDWAL10]
+STR_NAME    :Industrial Wall with Doorway
+
+[INDWAL11]
+STR_NAME    :Industrial Wall with Doorway
+
+[INDWAL12]
+STR_NAME    :Industrial Wall with Doorway
+
+[INDWAL13]
+STR_NAME    :Industrial Wall with Doorway
+
+[INDWAL14]
+STR_NAME    :Industrial Wall Corner Piece
+
+[INDWAL15]
+STR_NAME    :Industrial Wall Corner Piece
+
+[INDWAL16]
+STR_NAME    :Industrial Wall with Window
+
+[INDWAL17]
+STR_NAME    :Industrial Wall with Window
+
+[INDWAL18]
+STR_NAME    :Industrial Wall with Window
+
+[INDWAL19]
+STR_NAME    :Industrial Wall with Window
+
+[INDWAL20]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL21]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL22]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL23]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL24]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL25]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL26]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL27]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL28]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL29]
+STR_NAME    :Industrial Roof Piece
+
+[INDWAL30]
+STR_NAME    :Industrial Wall with Window
+
+[INDWAL31]
+STR_NAME    :Industrial Wall with Window
+
+[INDWAL32]
+STR_NAME    :Industrial Wall with Window
+
+[JAILXX01]
+STR_NAME    :Prison Wall Piece
+
+[JAILXX02]
+STR_NAME    :Prison Wall Piece
+
+[JAILXX03]
+STR_NAME    :Prison Wall Piece
+
+[JAILXX04]
+STR_NAME    :Prison Wall Piece
+
+[JAILXX05]
+STR_NAME    :Prison Wall Piece
+
+[JAILXX06]
+STR_NAME    :Prison Wall Piece
+
+[JAILXX07]
+STR_NAME    :Prison Wall Roof
+
+[JAILXX08]
+STR_NAME    :Prison Inverted Piece
+
+[JAILXX09]
+STR_NAME    :Prison Inverted Piece
+
+[JAILXX10]
+STR_NAME    :Prison Inverted Piece
+
+[JAILXX11]
+STR_NAME    :Prison Inverted Piece
+
+[JAILXX12]
+STR_NAME    :Prison Inverted Piece
+
+[JAILXX13]
+STR_NAME    :Prison Inverted Piece
+
+[JAILXX14]
+STR_NAME    :Prison Watch Tower Stairs
+
+[JAILXX15]
+STR_NAME    :Prison Watch Tower Stairs
+
+[JAILXX16]
+STR_NAME    :Prison Watch Tower
+
+[JAILXX20]
+STR_NAME    :Prison Wall Corner
+
+[JAILXX21]
+STR_NAME    :Prison Wall Corner
+
+[JAZZMBR1]
+STR_NAME    :Jazz Band Member
+
+[JAZZMBR2]
+STR_NAME    :Jazz Band Member
+
+[JAZZMBR3]
+STR_NAME    :Jazz Band Member
+
+[JAZZMBR4]
+STR_NAME    :Jazz Band Member
+
+[MAMTHW01]
+STR_NAME    :Large Mammoth Fence
+
+[MAMTHW02]
+STR_NAME    :Large Mammoth Fence
+
+[MAMTHW03]
+STR_NAME    :Large Angled Mammoth Fence
+
+[MAMTHW04]
+STR_NAME    :Large Angled Mammoth Fence
+
+[MAMTHW05]
+STR_NAME    :Small Angled Mammoth Fence
+
+[MAMTHW06]
+STR_NAME    :Small Angled Mammoth Fence
+
+[MCASTL02]
+STR_NAME    :Castle Wall
+
+[MCASTL03]
+STR_NAME    :Castle Wall
+
+[MCASTL04]
+STR_NAME    :Castle Wall
+
+[MCASTL05]
+STR_NAME    :Castle Ramparts Corner
+
+[MCASTL06]
+STR_NAME    :Castle Ramparts
+
+[MCASTL07]
+STR_NAME    :Castle Ramparts Corner
+
+[MCASTL08]
+STR_NAME    :Castle Ramparts Inverted Corner
+
+[MCASTL09]
+STR_NAME    :Castle Corner Piece
+
+[MCASTL10]
+STR_NAME    :Castle Ramparts Corner
+
+[MCASTL19]
+STR_NAME    :Castle Corner Piece
+
+[MDBUCKET]
+STR_NAME    :Bucket
+
+[MEDSTOOL]
+STR_NAME    :Stool
+
+[MEDTOOLS]
+STR_NAME    :Farm Tools
+
+[MEDTRGET]
+STR_NAME    :Archery Target
+
+[METEORCR]
+STR_NAME    :Meteor Crater Corner
+
+[METEORST]
+STR_NAME    :Meteor Crater Wall
+
+[METRCRS1]
+STR_NAME    :Meteor Crater Wall with Crystals
+
+[METRCRS2]
+STR_NAME    :Meteor Crater Wall with Crystals
+
+[MINOTAUR]
+STR_NAME    :Minotaur Statue
+
+[OLDNYK01]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK02]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK03]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK04]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK05]
+STR_NAME    :New York Roof Piece
+
+[OLDNYK06]
+STR_NAME    :New York Corner Filler
+
+[OLDNYK07]
+STR_NAME    :New York Inverted Corner Piece
+
+[OLDNYK08]
+STR_NAME    :New York Inverted Corner Piece
+
+[OLDNYK09]
+STR_NAME    :New York Inverted Corner Piece
+
+[OLDNYK10]
+STR_NAME    :New York Inverted Corner Piece
+
+[OLDNYK11]
+STR_NAME    :New York Wall with Line
+
+[OLDNYK12]
+STR_NAME    :New York Washing Line
+
+[OLDNYK13]
+STR_NAME    :New York Wall with Line
+
+[OLDNYK14]
+STR_NAME    :New York Washing Line
+
+[OLDNYK15]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK16]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK17]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK18]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK19]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK31]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK33]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK34]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK35]
+STR_NAME    :New York Roof Piece
+
+[PRIMWAL1]
+STR_NAME    :Wood Fence with Dead Vines
+
+[PRIMWAL2]
+STR_NAME    :Wood Fence with Dead Vines
+
+[PRIMWAL3]
+STR_NAME    :Wood Fence with Dead Vines
+
+[PSNTWL02]
+STR_NAME    :Dark Age Village Lower Wall Piece
+
+[PSNTWL03]
+STR_NAME    :Dark Age Village Lower Wall Piece
+
+[PSNTWL04]
+STR_NAME    :Dark Age Village Lower Wall Piece
+
+[PSNTWL05]
+STR_NAME    :Dark Age Village Lower Wall Piece
+
+[PSNTWL06]
+STR_NAME    :Dark Age Village Lower Wall Piece
+
+[PSNTWL07]
+STR_NAME    :Dark Age Village Lower Wall Piece
+
+[PSNTWL08]
+STR_NAME    :Dark Age Village Lower Corner Piece
+
+[PSNTWL09]
+STR_NAME    :Dark Age Village Upper Wall Piece
+
+[PSNTWL10]
+STR_NAME    :Dark Age Village Upper Wall Piece
+
+[PSNTWL11]
+STR_NAME    :Dark Age Village Upper Wall Piece
+
+[PSNTWL12]
+STR_NAME    :Dark Age Village Upper Wall Piece
+
+[PSNTWL13]
+STR_NAME    :Dark Age Village Upper Wall Piece
+
+[PSNTWL14]
+STR_NAME    :Dark Age Village Roof Piece
+
+[PSNTWL15]
+STR_NAME    :Dark Age Village Inverted Roof Piece
+
+[PSNTWL16]
+STR_NAME    :Dark Age Village Roof Piece
+
+[PSNTWL17]
+STR_NAME    :Dark Age Village Roof Piece
+
+[PSNTWL20]
+STR_NAME    :Dark Age Village Window Box Roof
+
+[PSNTWL21]
+STR_NAME    :Dark Age Village Window Box Roof
+
+[PSNTWL23]
+STR_NAME    :Dark Age Village Upper Corner Piece
+
+[PSNTWL24]
+STR_NAME    :Dark Age Village Window Box
+
+[PSNTWL25]
+STR_NAME    :Dark Age Village Window Box
+
+[PSNTWL29]
+STR_NAME    :Dark Age Village Window Box Roof
+
+[PSNTWL30]
+STR_NAME    :Dark Age Village Window Box Roof
+
+[PSNTWL31]
+STR_NAME    :Dark Age Village Corner Roof Piece
+
+[RDMETO03]
+STR_NAME    :Red Meteor Crater Wall
+
+[RDMETO04]
+STR_NAME    :Red Meteor Crater Inverted Corner
+
+[RUNWAY01]
+STR_NAME    :Runway Piece
+
+[RUNWAY02]
+STR_NAME    :Runway Piece
+
+[RUNWAY03]
+STR_NAME    :Runway Corner Piece
+[RUNWAY04]
+STR_NAME    :Runway Edge Piece
+
+[RUNWAY05]
+STR_NAME    :Runway Piece
+
+[RUNWAY06]
+STR_NAME    :Runway Inverted Corner Piece
+
+[SCHNCRSH]
+STR_NAME    :Wrecked Seaplane
+
+[SCHNDRUM]
+STR_NAME    :Oil Barrel
+
+[SCHNPL05]
+STR_NAME    :Sea Plane
+
+[SCHNPL06]
+STR_NAME    :Sea Plane
+
+[SCHNTNNY]
+STR_NAME    :Racing Tannoy
+
+[SHWDFRST]
+STR_NAME    :Forest Trees
+
+[SMOKSK02]
+STR_NAME    :Smoke Stack Mid
+
+[SMOKSK03]
+STR_NAME    :Smoke Stack Base
+
+[SPCSHP06]
+STR_NAME    :Space Ship Cross Section
+
+[SPCSHP09]
+STR_NAME    :Space Ship Docking Section
+
+[SPCSHP10]
+STR_NAME    :Space Ship Engine Section
+
+[SPCSHP11]
+STR_NAME    :Space Ship Living Section
+
+[STNESTA1]
+STR_NAME    :Men Turned to Stone
+
+[STNESTA2]
+STR_NAME    :Men Turned to Stone
+
+[STNESTA3]
+STR_NAME    :Men Turned to Stone
+
+[STNESTA4]
+STR_NAME    :Men Turned to Stone
+
+[STOOLSET]
+STR_NAME    :Stools
+
+[SWAMPLT1]
+STR_NAME    :Swamp Plant
+
+[SWAMPLT2]
+STR_NAME    :Swamp Fern
+
+[SWAMPLT3]
+STR_NAME    :Swamp Fern
+
+[SWAMPLT4]
+STR_NAME    :Swamp Plant
+
+[SWAMPLT5]
+STR_NAME    :Swamp Plant
+
+[SWAMPLT6]
+STR_NAME    :Swamp Fern
+
+[SWAMPLT7]
+STR_NAME    :Swamp Fern
+
+[SWAMPLT8]
+STR_NAME    :Swamp Fern
+
+[SWAMPLT9]
+STR_NAME    :Swamp Fern
+
+[SWRDSTNE]
+STR_NAME    :Sword in the Stone
+
+[TARPIT04]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT05]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT06]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT07]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT08]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT09]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT10]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT11]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT12]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT13]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT14]
+STR_NAME    :Bubbling Tarpit
+
+[VALKRI01]
+STR_NAME    :Valkyrie
+
+[VALKRI02]
+STR_NAME    :Valkyrie
+
+[WDNCART2]
+STR_NAME    :Wooden Cart
+
+[WEPNRACK]
+STR_NAME    :Weapon Set
+
+[WISKYBL1]
+STR_NAME    :Whisky Barrel
+
+[WISKYBL2]
+STR_NAME    :Whisky Barrels
+
+[YEWTREEX]
+STR_NAME    :Yew Tree
+
+[ZEUSSTAT]
+STR_NAME    :Zeus Statue
+
+[ALENPLT1]
+STR_NAME    :Alien Plant
+
+[ALENPLT2]
+STR_NAME    :Alien Plant
+
+[ALLSEEYE]
+STR_NAME    :Animatronic All Seeing Eye
+
+[ALNSTR01]
+STR_NAME    :Alien Structure Small
+
+[ALNSTR02]
+STR_NAME    :Alien Structure Small
+
+[ALNSTR03]
+STR_NAME    :Alien Structure Small
+
+[ALNSTR04]
+STR_NAME    :Alien Skylight Small
+
+[ALNSTR05]
+STR_NAME    :Alien Tower Bottom
+
+[ALNSTR06]
+STR_NAME    :Alien Tower Middle
+
+[ALNSTR07]
+STR_NAME    :Alien Tower Top
+
+[ARGONAU1]
+STR_NAME    :Animatronic Argonaut
+
+[ARGONAU2]
+STR_NAME    :Animatronic Argonaut
+
+[ARGONAU3]
+STR_NAME    :Animatronic Argonaut
+
+[ASTRONGT]
+STR_NAME    :Animatronic Astronaut
+
+[BKRGANG1]
+STR_NAME    :Biker
+
+[BOLPOT01]
+STR_NAME    :Boiling Pot
+
+[CAGDSTAT]
+STR_NAME    :Animatronic Eagle on Cage
+
+[CAVEMENX]
+STR_NAME    :Animatronic Caveman lighting Fire
+
+[CHANMAID]
+STR_NAME    :Animatronic Chained Maiden
+
+[CLNSMEN1]
+STR_NAME    :Animatronic Clansman
+
+[COMPEYEX]
+STR_NAME    :Super Computer Monitor
+
+[COOKSPIT]
+STR_NAME    :Animal cooking on Spit
+
+[DINSIGN1]
+STR_NAME    :Neon Diner Sign
+
+[DINSIGN2]
+STR_NAME    :Neon Diner Sign
+
+[DINSIGN3]
+STR_NAME    :Neon Diner Sign
+
+[DINSIGN4]
+STR_NAME    :Neon Diner Sign
+
+[DKFIGHT1]
+STR_NAME    :Animatronic Knight
+
+[DKFIGHT2]
+STR_NAME    :Animatronic Knight
+
+[DRGNATTK]
+STR_NAME    :Dragon Attacking
+
+[ELECFEN1]
+STR_NAME    :Electric Fence Corner Piece
+
+[ELECFEN2]
+STR_NAME    :Electric Fence
+
+[ELECFEN3]
+STR_NAME    :Electric Fence with Light
+
+[ELECFEN4]
+STR_NAME    :Electric Fence Broken
+
+[EVALIEN1]
+STR_NAME    :Animatronic Evil Alien
+
+[EVALIEN2]
+STR_NAME    :Animatronic Evil Alien
+
+[EVALIEN3]
+STR_NAME    :Animatronic Evil Alien
+
+[FIRCANON]
+STR_NAME    :Animatronic Firing Cannon
+
+[FLTSIGN1]
+STR_NAME    :Anti-Gravity LCD Billboard
+
+[FLTSIGN2]
+STR_NAME    :Anti-Gravity LCD Billboard
+
+[FRBEACON]
+STR_NAME    :Fiery Beacon
+
+[FUROBOT1]
+STR_NAME    :Robot
+
+[FUROBOT2]
+STR_NAME    :Robot
+
+[FUTSKY01]
+STR_NAME    :Sandstone Skyscraper Walkway
+
+[FUTSKY02]
+STR_NAME    :Sandstone Skyscraper Filler
+
+[FUTSKY03]
+STR_NAME    :Sandstone Skyscraper Bottom Corner
+
+[FUTSKY04]
+STR_NAME    :Sandstone Skyscraper Curved Slope Top
+
+[FUTSKY05]
+STR_NAME    :Sandstone Skyscraper Corner Top
+
+[FUTSKY06]
+STR_NAME    :Sandstone Skyscraper Mid Curved Slope
+
+[FUTSKY07]
+STR_NAME    :Sandstone Skyscraper Mid Wall Section
+
+[FUTSKY08]
+STR_NAME    :Sandstone Skyscraper Mid Wall Section
+
+[FUTSKY09]
+STR_NAME    :Sandstone Skyscraper Mid Wall Section
+
+[FUTSKY10]
+STR_NAME    :Sandstone Skyscraper Bottom Slope Base
+
+[FUTSKY11]
+STR_NAME    :Sandstone Skyscraper Mid Corner
+
+[FUTSKY12]
+STR_NAME    :Sandstone Skyscraper Mid Wall Section
+
+[FUTSKY13]
+STR_NAME    :Sandstone Skyscraper Roof Spire
+
+[FUTSKY14]
+STR_NAME    :Sandstone Skyscraper Roof Spire
+
+[FUTSKY15]
+STR_NAME    :Sandstone Skyscraper Docking Bay
+
+[FUTSKY33]
+STR_NAME    :Sandstone Skyscraper Walkway
+
+[FUTSKY36]
+STR_NAME    :Obsidian SkyScraper Door Piece
+
+[FUTSKY37]
+STR_NAME    :Obsidian SkyScraper Shallow Slope Corner
+
+[FUTSKY38]
+STR_NAME    :Obsidian SkyScraper Shallow Sloped Wall
+
+[FUTSKY39]
+STR_NAME    :Obsidian SkyScraper Shallow Slope Corner
+
+[FUTSKY40]
+STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+
+[FUTSKY41]
+STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+
+[FUTSKY44]
+STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+
+[FUTSKY46]
+STR_NAME    :Obsidian SkyScraper Steep Slope Corner
+
+[FUTSKY47]
+STR_NAME    :Obsidian SkyScraper Wall
+
+[FUTSKY48]
+STR_NAME    :Obsidian SkyScraper Wall with Window
+
+[FWRPRDC1]
+STR_NAME    :Groovy Dancer
+
+[GANGSTER]
+STR_NAME    :Animatronic Gangster
+
+[GDALIEN1]
+STR_NAME    :Animatronic Good Alien
+
+[GDALIEN2]
+STR_NAME    :Animatronic Good Alien
+
+[GDALIEN3]
+STR_NAME    :Animatronic Good Alien
+
+[GEYSERXX]
+STR_NAME    :Geysers
+
+[GGNTOCTO]
+STR_NAME    :B-Movie Giant Octopus
+
+[GGNTSPID]
+STR_NAME    :B-Movie Giant Spider
+
+[GSCORPO2]
+STR_NAME    :Animatronic attacking Scorpion
+
+[GSCORPON]
+STR_NAME    :Animatronic attacking Scorpion
+
+[GUYQWIFX]
+STR_NAME    :Singer with Quiff
+
+[HEVBTH01]
+STR_NAME    :Heavenly Bath Pool
+
+[HEVBTH02]
+STR_NAME    :Heavenly Bath Pool Corner
+
+[HEVBTH03]
+STR_NAME    :Heavenly Baths Fountain
+
+[HEVBTH04]
+STR_NAME    :Heavenly Baths Fountain
+
+[HEVBTH16]
+STR_NAME    :Heavenly Bath Pool Steps
+
+[HEVBTH17]
+STR_NAME    :Heavenly Bath Pool Edge
+
+[HORSECRT]
+STR_NAME    :Horse
+
+[HOVRCAR1]
+STR_NAME    :Hovercar on Stand
+
+[HOVRCAR2]
+STR_NAME    :Hovercar on Stand
+
+[HOVRCAR3]
+STR_NAME    :Hovercar Flying
+
+[HOVRCAR4]
+STR_NAME    :Hovercar Flying
+
+[HVRBIKE1]
+STR_NAME    :Hoverbike on Stand
+
+[HVRBIKE2]
+STR_NAME    :Hoverbike on Stand
+
+[HVRBIKE3]
+STR_NAME    :Hoverbike Flying
+
+[HVRBIKE4]
+STR_NAME    :Hoverbike Flying
+
+[KILLRVIN]
+STR_NAME    :Climbing Vine Tree
+
+[KNFIGHT1]
+STR_NAME    :Animatronic Dark Knight
+
+[KNFIGHT2]
+STR_NAME    :Animatronic Dark Knight
+
+[LARGECPU]
+STR_NAME    :Super Computer Large CPU
+
+[LASERX01]
+STR_NAME    :Laser Fence
+
+[LASERX02]
+STR_NAME    :Laser Fence Corner
+
+[MDUSASTA]
+STR_NAME    :Animatronic Medusa
+
+[PDFLAG02]
+STR_NAME    :Period Flag
+
+[PDFLAG03]
+STR_NAME    :Period Flag
+
+[PDFLAG04]
+STR_NAME    :Period Flag
+
+[PDFLAG05]
+STR_NAME    :Period Flag
+
+[PDFLAG06]
+STR_NAME    :Period Flag
+
+[PDFLAG08]
+STR_NAME    :Period Flag
+
+[PDFLAG13]
+STR_NAME    :Period Flag
+
+[PDFLAG14]
+STR_NAME    :Period Flag
+
+[PDFLAG15]
+STR_NAME    :Period Flag
+
+[PDFLAG16]
+STR_NAME    :Period Flag
+
+[POLWTBTN]
+STR_NAME    :Animatronic Police Officer
+
+[PRIMHEAD]
+STR_NAME    :Wood Fence with Man Eating Plant
+
+[PRIMHEAR]
+STR_NAME    :Wood Fence with Man Eating Plant
+
+[PRIMROOR]
+STR_NAME    :Wood Fence with Climbing Vines
+
+[PRIMROOT]
+STR_NAME    :Wood Fence with Climbing Vines
+
+[PRIMSCRN]
+STR_NAME    :Wood Fence with Man Eating Plant
+
+[PRIMST01]
+STR_NAME    :Wood Fence with Man Eating Plant
+
+[PRIMST02]
+STR_NAME    :Wood Fence with Man Eating Plant
+
+[PRIMST03]
+STR_NAME    :Wood Fence with Man Eating Plant
+
+[PRIMTALL]
+STR_NAME    :Wood Fence with Man Eating Plant
+
+[PSNTWL01]
+STR_NAME    :Dark Age Village Roof with Chimney
+
+[RCKNROLR]
+STR_NAME    :Cool Dude
+
+[ROBNHOOD]
+STR_NAME    :Animatronic Robin Hood
+
+[RSWATRES]
+STR_NAME    :Rollerskating Waitress
+
+[SCHNBOST]
+STR_NAME    :Buoy
+
+[SCHNBOUY]
+STR_NAME    :Buoy
+
+[SCHNPL01]
+STR_NAME    :Sea Plane
+
+[SCHNPL02]
+STR_NAME    :Sea Plane
+
+[SCHNPL03]
+STR_NAME    :Sea Plane
+
+[SCHNPL04]
+STR_NAME    :Sea Plane
+
+[SDRAGFLY]
+STR_NAME    :Animatronic Dragonflies
+
+[SKELETO1]
+STR_NAME    :Animatronic Skeletal Army
+
+[SKELETO2]
+STR_NAME    :Animatronic Skeletal Army
+
+[SKELETO3]
+STR_NAME    :Animatronic Skeletal Army
+
+[SMALLCPU]
+STR_NAME    :Super Computer Small CPU
+
+[SMOKSK01]
+STR_NAME    :Large Smoking Chimney
+
+[SOUPCRN2]
+STR_NAME    :Primordial Soup
+
+[SOUPCRNR]
+STR_NAME    :Primordial Soup
+
+[SOUPED01]
+STR_NAME    :Primordial Soup
+
+[SOUPED02]
+STR_NAME    :Primordial Soup
+
+[SOUPTL01]
+STR_NAME    :Primordial Soup
+
+[SOUPTL02]
+STR_NAME    :Primordial Soup
+
+[SPACRANG]
+STR_NAME    :Animatronic Space Ranger
+
+[SPCSHP01]
+STR_NAME    :Space Ship Cargo Section
+
+[SPCSHP02]
+STR_NAME    :Space Ship Comms Section
+
+[SPCSHP03]
+STR_NAME    :Space Ship Solar Section
+
+[SPCSHP04]
+STR_NAME    :Space Ship Solar Panels
+
+[SPCSHP05]
+STR_NAME    :Space Ship Gravity Section
+
+[SPCSHP07]
+STR_NAME    :Space Ship Control Deck
+
+[SPCSHP08]
+STR_NAME    :Space Ship Fuel Section
+
+[SPCSHP12]
+STR_NAME    :Space Ship Science Section
+
+[SPEAKR01]
+STR_NAME    :Small Speaker
+
+[SPEAKR02]
+STR_NAME    :Large Speaker
+
+[SPIKTAIL]
+STR_NAME    :Animatronic Stegosaurus
+
+[SPTERDAC]
+STR_NAME    :Animatronic flapping Pterodactyl
+
+[STGBAND1]
+STR_NAME    :Band Member
+
+[STGBAND2]
+STR_NAME    :Band Member
+
+[STGBAND3]
+STR_NAME    :Band Member
+
+[STGBAND4]
+STR_NAME    :Band Member
+
+[STMDRAN1]
+STR_NAME    :Steaming Drains
+
+[STRICTOP]
+STR_NAME    :Animatronic Triceratops
+
+[TARPIT01]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT02]
+STR_NAME    :Bubbling Tarpit
+
+[TARPIT03]
+STR_NAME    :Bubbling Tarpit
+
+[TITANSTA]
+STR_NAME    :Atlas Statue
+
+[TYRANREX]
+STR_NAME    :Animatronic T-Rex
+
+[VOLCVENT]
+STR_NAME    :Active Volcanic Vent
+
+[WAVEKING]
+STR_NAME    :Animatronic Waving King
+
+[WHCCOLDS]
+STR_NAME    :Witches around Cauldron
+
+[ARTDEC25]
+STR_NAME    :Art Deco Corner with Windows
+
+[ARTDEC26]
+STR_NAME    :Art Deco Corner with Railings
+
+[ARTDEC27]
+STR_NAME    :Art Deco Top Corner Section
+
+[FUTSKY20]
+STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+
+[FUTSKY22]
+STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+
+[FUTSKY24]
+STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+
+[FUTSKY25]
+STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+
+[FUTSKY26]
+STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+
+[FUTSKY28]
+STR_NAME    :Sandstone Walkway T-Junction
+
+[FUTSKY30]
+STR_NAME    :Sandstone Walkway Corner
+
+[FUTSKY31]
+STR_NAME    :Sandstone Walkway Cross Section
+
+[FUTSKY32]
+STR_NAME    :Sandstone Walkway End Section
+
+[JAILXX17]
+STR_NAME    :Prison Door
+
+[MAJOROAK]
+STR_NAME    :Large Oak
+
+[MCASTL01]
+STR_NAME    :Castle Inverted Corner
+
+[MCASTL11]
+STR_NAME    :Castle Portcullis
+
+[MCASTL12]
+STR_NAME    :Castle Entrance
+
+[MELMTREE]
+STR_NAME    :Large Elm Tree
+
+[OLDNYK24]
+STR_NAME    :New York Inverted Corner Roof
+
+[OLDNYK25]
+STR_NAME    :New York Roof Piece
+
+[OLDNYK26]
+STR_NAME    :New York Entrance
+
+[OLDNYK32]
+STR_NAME    :New York Roof Piece
+
+[1950SCAR]
+STR_NAME    :1950s Car
+
+[4X4DINER]
+STR_NAME    :Period Diner
+
+[4X4GMANT]
+STR_NAME    :Giant Mangrove Tree
+
+[4X4STNHN]
+STR_NAME    :Stone Age Temple
+
+[4X4TRPIT]
+STR_NAME    :Bubbling Tarpit
+
+[4X4VOLCA]
+STR_NAME    :Volcano with small trees
+
+[ALENCRSH]
+STR_NAME    :UFO Crash Site
+
+[ALNSTR08]
+STR_NAME    :Alien Structure Large
+
+[ALNSTR09]
+STR_NAME    :Alien Structure Large
+
+[ALNSTR10]
+STR_NAME    :Alien Structure Large
+
+[ALNSTR11]
+STR_NAME    :Alien Skylight Large
+
+[ASHNYMPH]
+STR_NAME    :Ash Tree with Nymphs
+
+[BANDBUSX]
+STR_NAME    :Rock Band Tour Bus
+
+[BIGDRUMS]
+STR_NAME    :Giant Drum Kit
+
+[CAVENTRA]
+STR_NAME    :Cave Entrance
+
+[CORNS2X2]
+STR_NAME    :Roman Palace Corner Piece
+
+[CORVS2X2]
+STR_NAME    :Roman Palace Corner Piece
+
+[CRATR2X2]
+STR_NAME    :Small Meteor Crater
+
+[CRATR4X4]
+STR_NAME    :Large Meteor Crater
+
+[CRSSS2X2]
+STR_NAME    :Roman Palace Cross Section
+
+[CRSVS2X2]
+STR_NAME    :Roman Palace Cross Section
+
+[CYCLOPSS]
+STR_NAME    :Cyclops Statue
+
+[FEASTABL]
+STR_NAME    :Feast Table
+
+[FOOTPRNT]
+STR_NAME    :Giant Dinosaur Footprint
+
+[FORBIDFT]
+STR_NAME    :Forbidden Fruit Tree
+
+[GBEETLEX]
+STR_NAME    :1950s Car
+
+[GHOTROD1]
+STR_NAME    :Hot Rod Car
+
+[GHOTROD2]
+STR_NAME    :Hot Rod Car
+
+[GSCHLBUS]
+STR_NAME    :School Bus
+
+[HADESXXX]
+STR_NAME    :Hades Statue
+
+[HISTFIX1]
+STR_NAME    :Alien Historical Structures
+
+[HISTFIX2]
+STR_NAME    :Alien Historical Structures
+
+[HODSHUT1]
+STR_NAME    :Robin Hood's Hut
+
+[HODSHUT2]
+STR_NAME    :Robin Hood's Hut
+
+[HRBWAL07]
+STR_NAME    :Harbour Wall Corner Piece
+
+[HRBWAL08]
+STR_NAME    :Harbour Wall Corner Piece
+
+[HRBWAL09]
+STR_NAME    :Harbour Wall with Dock
+
+[HRBWAL11]
+STR_NAME    :Harbour Dock
+
+[JAILXX18]
+STR_NAME    :Prison Water Tower
+
+[JETPLAN1]
+STR_NAME    :Jet Aeroplane
+
+[JETPLAN2]
+STR_NAME    :Jet Aeroplane
+
+[JETPLAN3]
+STR_NAME    :Jet Aeroplane
+
+[MCASTL13]
+STR_NAME    :Castle Tower Corner Piece
+
+[MCASTL14]
+STR_NAME    :Castle Tower Corner Piece
+
+[MCASTL15]
+STR_NAME    :Castle Tower Cross Piece
+
+[MCASTL16]
+STR_NAME    :Castle Tower Straight Piece
+
+[MCASTL17]
+STR_NAME    :Castle Tower T Piece
+
+[MCASTL18]
+STR_NAME    :Castle Tower T Piece
+
+[METOAN01]
+STR_NAME    :Meteor Crater Corner
+
+[METOAN02]
+STR_NAME    :Meteor Crater Inverted Corner
+
+[OLDNYK20]
+STR_NAME    :New York Roof Piece
+
+[OLDNYK21]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK22]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK23]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK27]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK28]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK29]
+STR_NAME    :New York Wall Piece
+
+[OLDNYK30]
+STR_NAME    :New York Wall Piece
+
+[PEASTHUT]
+STR_NAME    :Peasant Hut
+
+[PERAMOB1]
+STR_NAME    :Period Automobile
+
+[PERAMOB2]
+STR_NAME    :Period Automobile
+
+[PERDTK01]
+STR_NAME    :Period Truck
+
+[PERDTK02]
+STR_NAME    :Period Truck
+
+[PLOUGHXX]
+STR_NAME    :Plough
+
+[PRDYACHT]
+STR_NAME    :Period Sailing Yacht
+
+[PSNTWL26]
+STR_NAME    :Dark Age Village Roof Piece
+
+[PSNTWL27]
+STR_NAME    :Dark Age Village Corner Roof Piece
+
+[PSNTWL28]
+STR_NAME    :Dark Age Village Inverted Roof Piece
+
+[RDMET2X2]
+STR_NAME    :Small Red Meteor Crater
+
+[RDMET4X4]
+STR_NAME    :Large Red Meteor Crater
+
+[RDMETO01]
+STR_NAME    :Red Meteor Crater Corner
+
+[RDMETO02]
+STR_NAME    :Red Meteor Crater Corner
+
+[ROBNCAMP]
+STR_NAME    :Robin Hood's Camp
+
+[ROMNC2X2]
+STR_NAME    :Roman Palace Corner Piece
+
+[ROMNE2X1]
+STR_NAME    :Roman Palace End Piece
+
+[ROMNM2X2]
+STR_NAME    :Roman Palace Cross Section
+
+[ROMNS2X2]
+STR_NAME    :Roman Palace Straight Piece
+
+[ROMVC2X2]
+STR_NAME    :Roman Palace Corner Piece
+
+[ROMVE2X1]
+STR_NAME    :Roman Palace End Piece
+
+[ROMVM2X2]
+STR_NAME    :Roman Palace Cross Section
+
+[ROMVS2X2]
+STR_NAME    :Roman Palace Straight Piece
+
+[SCHNPIT2]
+STR_NAME    :Seaplane Pits
+
+[SCHNPITS]
+STR_NAME    :Seaplane Pits
+
+[SCHNTENT]
+STR_NAME    :Marquee
+
+[SHIPB4X4]
+STR_NAME    :Luxury Liner Bow
+
+[SHIPM4X4]
+STR_NAME    :Luxury Liner Mid Section
+
+[SHIPS4X4]
+STR_NAME    :Luxury Liner Stern
+
+[STRGS2X2]
+STR_NAME    :Roman Palace Straight Piece
+
+[STRVS2X2]
+STR_NAME    :Roman Palace Straight Piece
+
+[TAVERNXX]
+STR_NAME    :Dark Ages Tavern
+
+[TRAVLR01]
+STR_NAME    :Traveller Van
+
+[TRAVLR02]
+STR_NAME    :Microbus
+
+[JAILXX19]
+STR_NAME    :Prison Fence
+
+[MSPKWA01]
+STR_NAME    :Spiked Fence
+
+[1920PATH]
+STR_NAME    :Sidewalk FootPath
+
+[FUTRPAT2]
+STR_NAME    :Sky Walk FootPath
+
+[FUTRPATH]
+STR_NAME    :Circuit FootPath
+
+[JURRPATH]
+STR_NAME    :Rocky FootPath
+
+[MEDIPATH]
+STR_NAME    :Wooden FootPath
+
+[MYTHPATH]
+STR_NAME    :Mosaic FootPath
+
+[RANBPATH]
+STR_NAME    :Rainbow FootPath
+
+[FIRHYDRT]
+STR_NAME    :Fire Hydrant
+
+[MEDBENCH]
+STR_NAME    :Benches
+
+[SCG1920S]
+STR_NAME    :  Roaring Twenties Themeing
+
+[SCG1920W]
+STR_NAME    :  Roaring Twenties Wall Sets
+
+[SCG1960S]
+STR_NAME    :  Rock 'n' Roll Themeing
+
+[SCGFUTUR]
+STR_NAME    :  Future Themeing
+
+[SCGJURRA]
+STR_NAME    :  Prehistoric Themeing
+
+[SCGMEDIV]
+STR_NAME    :  Dark Age Themeing
+
+[SCGMYTHO]
+STR_NAME    :  Mythological Themeing
+
+[1920SENT]
+STR_NAME    :Roaring Twenties Park Entrance
+
+[FUTURENT]
+STR_NAME    :Futuristic Park Entrance
+
+[GLDYRENT]
+STR_NAME    :Rock 'n' Roll Park Entrance
+
+[JURASENT]
+STR_NAME    :Prehistoric Entrance
+
+[MEDIENTR]
+STR_NAME    :Dark Age Entrance
+
+[MYTHENTR]
+STR_NAME    :Mythological Entrance
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
+<Alpine Adventures>
+STR_SCNR    :Alpine Adventures
+STR_PARK    :Alpine Adventures
+STR_DTLS    :Convert a small mountain ski resort into a snow-themed amusement park
+
+<Amity Airfield>
+STR_SCNR    :Amity Airfield
+STR_PARK    :Amity Airfield
+STR_DTLS    :Build a flying-themed amusement park in this abandoned airport
+
+<Botany Breakers>
+STR_SCNR    :Botany Breakers
+STR_PARK    :Botany Breakers
+STR_DTLS    :Your challenge is to build a high-profit park on this paradise island
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :Build your own Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Build your own version of this European Six Flags park
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :Build your own Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Use your design skills to recreate this Six Flags park
+
+<Build your own Six Flags Holland>
+STR_SCNR    :Build your own Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Build this European Six Flags park the way you want to
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :Build your own Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Create your own version of this massive Six Flags park
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :Build your own Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Starting from scratch, build the rides in this Six Flags park
+
+<Build your own Six Flags Park>
+STR_SCNR    :Build your own Six Flags Park
+STR_PARK    :Six Flags
+STR_DTLS    :Build your own design of Six Flags park - Either build rides from other Six Flags parks or design and build your own rides
+
+<Bumbly Bazaar>
+STR_SCNR    :Bumbly Bazaar
+STR_PARK    :Bumbly Bazaar
+STR_DTLS    :Starting with a small market bazaar, your challenge is to increase the profit from shops and stalls by building rides and roller coasters to attract more customers
+
+<Crazy Castle>
+STR_SCNR    :Crazy Castle
+STR_PARK    :Crazy Castle
+STR_DTLS    :You have inherited a large castle - Your job is to convert it into a small theme park.
+
+<Dusty Greens>
+STR_SCNR    :Dusty Greens
+STR_PARK    :Dusty Greens
+STR_DTLS    :Situated near a highway junction in the desert, Dusty Greens is an opportunity to develop a small golf resort into a thriving theme park
+
+<Electric Fields>
+STR_SCNR    :Electric Fields
+STR_PARK    :Electric Fields
+STR_DTLS    :You have inherited a small farm, and your challenge is to build a small theme park amongst the fields and farm buildings
+
+<Extreme Heights>
+STR_SCNR    :Extreme Heights
+STR_PARK    :Extreme Heights
+STR_DTLS    :Free of financial restrictions, your challenge is to expand this desert park to attract people seeking the ultimate thrills
+
+<Factory Capers>
+STR_SCNR    :Factory Capers
+STR_PARK    :Factory Capers
+STR_DTLS    :An abandoned factory complex is an opportunity to build a mechanical-themed amusement park
+
+<Fungus Woods>
+STR_SCNR    :Fungus Woods
+STR_PARK    :Fungus Woods
+STR_DTLS    :Restricted to only older-style wooden rides, your challenge is to build a thriving theme park in Fungus Woods
+
+<Ghost Town>
+STR_SCNR    :Ghost Town
+STR_PARK    :Ghost Town
+STR_DTLS    :Hired by a large amusement park chain, your task is to build them a giant roller coaster park around an abandoned mining town
+
+<Gravity Gardens>
+STR_SCNR    :Gravity Gardens
+STR_PARK    :Gravity Gardens
+STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens - No other rides, just roller coasters!
+
+<Infernal Views>
+STR_SCNR    :Infernal Views
+STR_PARK    :Infernal Views
+STR_DTLS    :A park nestled precariously on lava rock with streams of magma
+
+<Lucky Lake>
+STR_SCNR    :Lucky Lake
+STR_PARK    :Lucky Lake
+STR_DTLS    :With unlimited funds but a challenging lake location, this park will be a challenge to expand and manage
+
+<Rainbow Summit>
+STR_SCNR    :Rainbow Summit
+STR_PARK    :Rainbow Summit
+STR_DTLS    :Built on a hillside, this park is forbidden from building anything tall. Can you expand the park and make it successful?
+
+<Six Flags Belgium>
+STR_SCNR    :Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Great Adventure>
+STR_SCNR    :Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+
+<Six Flags Holland>
+STR_SCNR    :Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Magic Mountain>
+STR_SCNR    :Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To repay your loan while keeping the park value up!
+
+<Six Flags over Texas>
+STR_SCNR    :Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+
+###############################################################################
+## Wacky Worlds Scenarios
+###############################################################################
+<Africa - African Diamond Mine>
+STR_SCNR    :Africa - African Diamond Mine
+STR_PARK    :Mines of Africa
+STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond.  You decide to invest that money to build a world-famous theme park.
+
+<Africa - Oasis>
+STR_SCNR    :Africa - Oasis
+STR_PARK    :Mirage Madness
+STR_DTLS    :A desert Oasis has been discovered and would provide a beautiful location for a park. Transport to the oasis has been provided.
+
+<Africa - Victoria Falls>
+STR_SCNR    :Africa - Victoria Falls
+STR_PARK    :Over The Edge
+STR_DTLS    :A dam has been built offering abundant, cheap hydroelectric power with which to run a park. You need to reach a high park value to help repay the loan for the dam.
+
+<Antarctic - Ecological Salvage>
+STR_SCNR    :Antarctic - Ecological Salvage
+STR_PARK    :Icy Adventures
+STR_DTLS    :The environment agency has turned to you to transform an old oil refinery ecological eyesore into a top tourist attraction. Land is cheap but loan interest is high. You can sell the old buildings for salvage.
+
+<Asia - Great Wall of China Tourism Enhancement>
+STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_PARK    :Great Wall of China
+STR_DTLS    :The authorities have decided to enhance tourism around the Great Wall by building a theme park on the adjacent land. Money is no object!
+
+<Asia - Japanese Coastal Reclaim>
+STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_PARK    :Okinawa Coast
+STR_DTLS    :An existing park has run out of space. Your only option is to build out into the sea, and so you have taken out a loan. Height restrictions on your building are enforced due to foundations and earthquake risk.
+
+<Asia - Maharaja Palace>
+STR_SCNR    :Asia - Maharaja Palace
+STR_PARK    :Park Maharaja
+STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+
+<Australasia - Ayers Rock>
+STR_SCNR    :Australasia - Ayers Rock
+STR_PARK    :Ayers Adventure
+STR_DTLS    :You are helping Aboriginal people to build a park as part of a cultural awareness program. You need to get a large number of guests to educate them in the unique heritage of the Aboriginal people.
+
+<Australasia - Fun at the Beach>
+STR_SCNR    :Australasia - Fun at the Beach
+STR_PARK    :Beach Barbecue Blast
+STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+
+<Europe - European Cultural Festival>
+STR_SCNR    :Europe - European Cultural Festival
+STR_PARK    :European Extravaganza
+STR_DTLS    :You have been brought in to take over a European Cultural Visitor Attraction and must increase the number of guests in order to pay back the EU subsidy by the end of the current European parliament term.
+
+<Europe - Renovation>
+STR_SCNR    :Europe - Renovation
+STR_PARK    :From The Ashes
+STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
+
+<N America - Extreme Hawaiian Island>
+STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_PARK    :Wacky Waikiki
+STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+
+<North America - Grand Canyon>
+STR_SCNR    :North America - Grand Canyon
+STR_PARK    :Canyon Calamities
+STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+
+<North America - Rollercoaster Heaven>
+STR_SCNR    :North America - Rollercoaster Heaven
+STR_PARK    :Rollercoaster Heaven
+STR_DTLS    :You are a successful business tycoon on long sabbatical who desires to use this time transforming the city park into Rollercoaster Heaven. Money is no object!
+
+<South America - Inca Lost City>
+STR_SCNR    :South America - Inca Lost City
+STR_PARK    :Lost City Founder
+STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings, and has height restrictions.
+
+<South America - Rain Forest Plateau>
+STR_SCNR    :South America - Rain Forest Plateau
+STR_PARK    :Rainforest Romp
+STR_DTLS    :Space is limited in the precious rainforest - you must cram as much as possible into the existing clearing, in order to provide a viable alternative to the local timber industry.
+
+<South America - Rio Carnival>
+STR_SCNR    :South America - Rio Carnival
+STR_PARK    :Sugarloaf Shores
+STR_DTLS    :You run a small park near Rio but the bank has called in your loan. You need to quickly increase your earning capacity to repay this unexpected debt.
+
+###############################################################################
+## Time Twister Scenarios
+###############################################################################
+<Dark Age - Castle>
+STR_SCNR    :Dark Age - Castle
+STR_PARK    :Cliffside Castle
+STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They've entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
+
+<Dark Age - Robin Hood>
+STR_SCNR    :Dark Age - Robin Hood
+STR_PARK    :Sherwood Forest
+STR_DTLS    :To liberate wealth from the rich and distribute it to the needy, you and your Merry Men have decided to build a theme park in Sherwood Forest.
+
+<Future - First Encounters>
+STR_SCNR    :Future - First Encounters
+STR_PARK    :Extraterrestrial Extravaganza
+STR_DTLS    :Life has been discovered on a distant planet Build an alien theme park to cash in on the unprecedented wave of interest.
+
+<Future - Future World>
+STR_SCNR    :Future - Future World
+STR_PARK    :Gemini City
+STR_DTLS    :Show off your inventive, utopian vision of the future - come up with a futuristic park design that incorporates state-of-the-art attractions.
+
+<Mythological - Animatronic Film Set>
+STR_SCNR    :Mythological - Animatronic Film Set
+STR_PARK    :Animatronic Antics
+STR_DTLS    :You have been given the task of running and improving an existing theme park, which has been built on an old film set. Build a tribute to the pioneering stop-motion animators who first brought mythical creatures to life on the silver screen.
+
+<Mythological - Cradle of Civilization>
+STR_SCNR    :Mythological - Cradle of Civilisation
+STR_PARK    :Mythological Madness
+STR_DTLS    :You own an island of particular archaeological value. You've decided to fund its preservation by constructing a theme park based on the area's rich Mythological heritage.
+
+<Prehistoric - After the Asteroid>
+STR_SCNR    :Prehistoric - After the Asteroid
+STR_PARK    :Crater Carnage
+STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you've decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
+
+<Prehistoric - Jurassic Safari>
+STR_SCNR    :Prehistoric - Jurassic Safari
+STR_PARK    :Coastersaurus
+STR_DTLS    :You've been given the task of constructing a Jurassic era theme park. To optimize your visitors' access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
+
+<Prehistoric - Stone Age>
+STR_SCNR    :Prehistoric - Stone Age
+STR_PARK    :Rocky Rambles
+STR_DTLS    :To thwart the highway developers and preserve the mysterious ancient stone circles, you will need to construct a Stone Age theme park and turn a profit. However, attracting visitors may pose a challenge, as the terrain is a tad inhospitable.
+
+<Roaring Twenties - Prison Island>
+STR_SCNR    :Roaring Twenties - Prison Island
+STR_PARK    :Alcatraz
+STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object
+
+<Roaring Twenties - Schneider Cup>
+STR_SCNR    :Roaring Twenties - Schneider Cup
+STR_PARK    :Schneider Shores
+STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honour his achievement by building a theme park based on the famous seaplane race.
+
+<Roaring Twenties - Skyscrapers>
+STR_SCNR    :Roaring Twenties - Skyscrapers
+STR_PARK    :Metropolis
+STR_DTLS    :You own an empty lot near the low-rise part of town. To squeeze the most out of your urban property, build a skyscraper theme park inspired by the soaring art deco architecture of the twenties.
+
+<Rock 'n' Roll - Flower Power>
+STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_PARK    :Woodstock
+STR_DTLS    :A large annual music festival takes place on your land. Build a hip theme park to keep the free-spirited audience entertained.
+
+<Rock 'n' Roll - Rock 'n' Roll>
+STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
+STR_PARK    :Rock 'n' Roll Revival
+STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.
