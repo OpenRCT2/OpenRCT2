@@ -3971,6 +3971,51 @@ STR_5631    :오리지널 다운로드 콘텐츠 공원
 STR_5632    :직접 만들기...
 STR_5633    :CMD +
 STR_5634    :OPTION +
+STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
+STR_5637    :Can't do this...
+STR_5638    :Permission denied
+STR_5639    :{SMALLFONT}{BLACK}Show list of players
+STR_5640    :{SMALLFONT}{BLACK}Manage groups
+STR_5641    :Default Group:
+STR_5642    :Group:
+STR_5643    :Add Group
+STR_5644    :Remove Group
+STR_5645    :Chat
+STR_5646    :Terraform
+STR_5647    :Toggle Pause
+STR_5648    :Set Water Level
+STR_5649    :Create Ride
+STR_5650    :Remove Ride
+STR_5651    :Build Ride
+STR_5652    :Ride Properties
+STR_5653    :Scenery
+STR_5654    :Path
+STR_5655    :Guest
+STR_5656    :Staff
+STR_5657    :Park Properties
+STR_5658    :Park Funding
+STR_5659    :Kick Player
+STR_5660    :Modify Groups
+STR_5661    :Set Player Group
+STR_5662    :N/A
+STR_5663    :Clear Landscape
+STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
+STR_5703    :Can't kick the host
+STR_5704    :Last Action:
+STR_5705    :Can't set to this group
+STR_5706    :Can't remove group that players belong to
+STR_5707    :This group cannot be modified
+STR_5708    :Can't change the group that the host belongs to
+STR_5709    :Rename Group
+STR_5710    :Group name
+STR_5711    :Enter new name for this group:
+STR_5712    :Can't modify permission that you do not have yourself
+STR_5713    :Kick Player
+STR_5714    :Show options window
+STR_5715    :New Game
+STR_5716    :Not allowed in multiplayer mode
 
 #############
 # Scenarios #
