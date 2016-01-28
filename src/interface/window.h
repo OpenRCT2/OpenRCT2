@@ -498,6 +498,7 @@ enum {
 };
 
 typedef void (*modal_callback)(int result);
+typedef void (*scenarioselect_callback)(const utf8 *path);
 
 extern bool gLoadSaveTitleSequenceSave;
 extern modal_callback gLoadSaveCallback;
@@ -585,7 +586,7 @@ void window_title_exit_open();
 void window_title_options_open();
 void window_title_logo_open();
 void window_news_open();
-void window_scenarioselect_open();
+void window_scenarioselect_open(scenarioselect_callback callback);
 void window_track_list_open(ride_list_item item);
 void window_clear_scenery_open();
 void window_land_open();

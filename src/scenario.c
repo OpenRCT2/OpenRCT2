@@ -217,6 +217,7 @@ int scenario_load_and_play_from_path(const char *path)
 
 	log_verbose("starting scenario, %s", path);
 	scenario_begin();
+	network_free_string_ids();
 	if (network_get_mode() == NETWORK_MODE_SERVER) {
 		network_send_map();
 	}
