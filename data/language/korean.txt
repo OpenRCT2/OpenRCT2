@@ -3991,31 +3991,31 @@ STR_5651    :Build Ride
 STR_5652    :Ride Properties
 STR_5653    :Scenery
 STR_5654    :Path
-STR_5655    :Guest
-STR_5656    :Staff
+STR_5655    :손님
+STR_5656    :직원
 STR_5657    :Park Properties
 STR_5658    :Park Funding
-STR_5659    :Kick Player
-STR_5660    :Modify Groups
+STR_5659    :플레이어 추방
+STR_5660    :그룹 변경
 STR_5661    :Set Player Group
 STR_5662    :N/A
 STR_5663    :Clear Landscape
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
-STR_5703    :Can't kick the host
+STR_5703    :호스트는 추방할 수 없습니다
 STR_5704    :Last Action:
 STR_5705    :Can't set to this group
-STR_5706    :Can't remove group that players belong to
-STR_5707    :This group cannot be modified
-STR_5708    :Can't change the group that the host belongs to
-STR_5709    :Rename Group
-STR_5710    :Group name
+STR_5706    :플레이어가 속한 그룹은 제거할 수 없습니다
+STR_5707    :이 그룹은 변경할 수 없습니다
+STR_5708    :호스트가 속한 그룹은 변경할 수 없습니다
+STR_5709    :그룹 이름 변경
+STR_5710    :그룹 이름
 STR_5711    :Enter new name for this group:
 STR_5712    :Can't modify permission that you do not have yourself
-STR_5713    :Kick Player
-STR_5714    :Show options window
-STR_5715    :New Game
-STR_5716    :Not allowed in multiplayer mode
+STR_5713    :플레이어 추방
+STR_5714    :설정창 보이기
+STR_5715    :새 게임
+STR_5716    :멀티플레이 모드에선 허용되지 않습니다
 
 #############
 # Scenarios #
