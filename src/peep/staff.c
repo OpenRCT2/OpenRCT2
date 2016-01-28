@@ -569,7 +569,28 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 
 	if (peep->staff_orders & STAFF_ORDERS_SWEEPING &&
 		((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + peep->sprite_index) & 0xFFF) > 110) {
-		//6bfbe8
+		// Split into seperate function
+		uint16 nearestLitterDist = (uint16)-1;
+		rct_litter* nearestLitter = NULL;
+		rct_litter* litter = NULL;
+		
+		for(uint16 litterIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); litterIndex != 0xFFFF; litterIndex = litter->next){
+			litter = &g_sprite_list[litterIndex].litter;
+			
+			uint16 distance = 
+				abs(litter->x - peep->x) + 
+				abs(litter->y - peep->y) + 
+				abs(litter->z - peep->z) / 4;
+		
+			if (distance < nearestLitterDist){
+				nearestLitterDist = distance;
+				nearestLitter = litter;
+			}
+		}
+		
+		if (nearestLitterDist > 0x60){
+			//goto 6bfd82
+		}
 	}
 	//6bfd82
 }
