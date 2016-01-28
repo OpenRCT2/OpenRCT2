@@ -3977,10 +3977,10 @@ STR_5637    :Can't do this...
 STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}Show list of players
 STR_5640    :{SMALLFONT}{BLACK}Manage groups
-STR_5641    :기본 그룹:
-STR_5642    :그룹:
-STR_5643    :그룹 추가
-STR_5644    :그룹 제거
+STR_5641    :Default Group:
+STR_5642    :Group:
+STR_5643    :Add Group
+STR_5644    :Remove Group
 STR_5645    :Chat
 STR_5646    :Terraform
 STR_5647    :Toggle Pause
@@ -9313,13 +9313,13 @@ STR_CPTY    :차량당 6명의 승객
 
 [1920RACR]
 STR_NAME    :1920년대 레이싱 카
-STR_DESC    :승객들이 1920년대 레이스카 테마의 고-카트를 타고 서로 경주합니다
-STR_CPTY    :차량당 1명의 승객
+STR_DESC    :Riders race each other in a 1920's Race Car themed Go-Kart
+STR_CPTY    :Single-seater
 
 [CAVMNCAR]
 STR_NAME    :석기시대 차
-STR_DESC    :승객들이 석기시대 고-카트를 타고 서로 경주합니다
-STR_CPTY    :차량당 1명의 승객
+STR_DESC    :Riders race each other in Stone-Age Go-Karts
+STR_CPTY    :Single-seater
 
 [DINOEGGS]
 STR_NAME    :공룡 알 라이드
@@ -9418,16 +9418,16 @@ STR_NAME    :Alien Tree
 STR_NAME    :Alien Tree
 
 [ARMRBODY]
-STR_NAME    :마법의 갑옷
+STR_NAME    :Magical Armour
 
 [ARMRHELM]
-STR_NAME    :마법의 투구
+STR_NAME    :Magical Helmet
 
 [ARMRSHLD]
-STR_NAME    :마법의 방패
+STR_NAME    :Magical Shield
 
 [ARMRSWRD]
-STR_NAME    :마법의 검
+STR_NAME    :Magical Sword
 
 [ARTDEC01]
 STR_NAME    :Art Deco 벽 Section
@@ -9736,25 +9736,25 @@ STR_NAME    :Industrial 벽 with Window
 STR_NAME    :Industrial 벽 with Window
 
 [JAILXX01]
-STR_NAME    :감옥 벽 조각
+STR_NAME    :Prison 벽 조각
 
 [JAILXX02]
-STR_NAME    :감옥 벽 조각
+STR_NAME    :Prison 벽 조각
 
 [JAILXX03]
-STR_NAME    :감옥 벽 조각
+STR_NAME    :Prison 벽 조각
 
 [JAILXX04]
-STR_NAME    :감옥 벽 조각
+STR_NAME    :Prison 벽 조각
 
 [JAILXX05]
-STR_NAME    :감옥 벽 조각
+STR_NAME    :Prison 벽 조각
 
 [JAILXX06]
-STR_NAME    :감옥 벽 조각
+STR_NAME    :Prison 벽 조각
 
 [JAILXX07]
-STR_NAME    :감옥 벽 지붕
+STR_NAME    :Prison 벽 지붕
 
 [JAILXX08]
 STR_NAME    :Prison Inverted 조각
@@ -9775,19 +9775,19 @@ STR_NAME    :Prison Inverted 조각
 STR_NAME    :Prison Inverted 조각
 
 [JAILXX14]
-STR_NAME    :감옥 감시탑 계단
+STR_NAME    :Prison Watch Tower Stairs
 
 [JAILXX15]
-STR_NAME    :감옥 감시탑 계단
+STR_NAME    :Prison Watch Tower Stairs
 
 [JAILXX16]
-STR_NAME    :감옥 감시탑
+STR_NAME    :Prison Watch Tower
 
 [JAILXX20]
-STR_NAME    :감옥 벽 구석
+STR_NAME    :Prison 벽 구석
 
 [JAILXX21]
-STR_NAME    :감옥 벽 구석
+STR_NAME    :Prison 벽 구석
 
 [JAZZMBR1]
 STR_NAME    :Jazz Band Member
@@ -9862,16 +9862,16 @@ STR_NAME    :Farm Tools
 STR_NAME    :Archery Target
 
 [METEORCR]
-STR_NAME    :운석 크레이터 구석
+STR_NAME    :Meteor Crater 구석
 
 [METEORST]
-STR_NAME    :운석 크레이터 벽
+STR_NAME    :Meteor Crater 벽
 
 [METRCRS1]
-STR_NAME    :운석 크레이터 벽 with Crystals
+STR_NAME    :Meteor Crater 벽 with Crystals
 
 [METRCRS2]
-STR_NAME    :운석 크레이터 벽 with Crystals
+STR_NAME    :Meteor Crater 벽 with Crystals
 
 [MINOTAUR]
 STR_NAME    :Minotaur Statue
@@ -10027,7 +10027,7 @@ STR_NAME    :Dark Age Village Window Box 지붕
 STR_NAME    :Dark Age Village 구석 지붕 조각
 
 [RDMETO03]
-STR_NAME    :붉은색 운석 크레이터 벽
+STR_NAME    :Red Meteor Crater 벽
 
 [RDMETO04]
 STR_NAME    :Red Meteor Crater Inverted 구석
@@ -10053,7 +10053,7 @@ STR_NAME    :Runway Inverted 구석 조각
 STR_NAME    :Wrecked Seaplane
 
 [SCHNDRUM]
-STR_NAME    :기름통
+STR_NAME    :Oil Barrel
 
 [SCHNPL05]
 STR_NAME    :Sea Plane
@@ -10128,7 +10128,7 @@ STR_NAME    :Swamp Fern
 STR_NAME    :Swamp Fern
 
 [SWRDSTNE]
-STR_NAME    :바위에 박힌 검
+STR_NAME    :Sword in the Stone
 
 [TARPIT04]
 STR_NAME    :Bubbling Tarpit
@@ -10164,10 +10164,10 @@ STR_NAME    :Bubbling Tarpit
 STR_NAME    :Bubbling Tarpit
 
 [VALKRI01]
-STR_NAME    :발키리
+STR_NAME    :Valkyrie
 
 [VALKRI02]
-STR_NAME    :발키리
+STR_NAME    :Valkyrie
 
 [WDNCART2]
 STR_NAME    :Wooden Cart
@@ -10176,10 +10176,10 @@ STR_NAME    :Wooden Cart
 STR_NAME    :Weapon Set
 
 [WISKYBL1]
-STR_NAME    :위스키 통
+STR_NAME    :Whisky Barrel
 
 [WISKYBL2]
-STR_NAME    :위스키 통 여러개
+STR_NAME    :Whisky Barrels
 
 [YEWTREEX]
 STR_NAME    :Yew Tree
@@ -10266,10 +10266,10 @@ STR_NAME    :Neon Diner Sign
 STR_NAME    :Neon Diner Sign
 
 [DKFIGHT1]
-STR_NAME    :움직이는 기사
+STR_NAME    :Animatronic Knight
 
 [DKFIGHT2]
-STR_NAME    :움직이는 기사
+STR_NAME    :Animatronic Knight
 
 [DRGNATTK]
 STR_NAME    :Dragon Attacking
@@ -10308,10 +10308,10 @@ STR_NAME    :Anti-Gravity LCD Billboard
 STR_NAME    :Fiery Beacon
 
 [FUROBOT1]
-STR_NAME    :로봇
+STR_NAME    :Robot
 
 [FUROBOT2]
-STR_NAME    :로봇
+STR_NAME    :Robot
 
 [FUTSKY01]
 STR_NAME    :Sandstone Skyscraper Walkway
@@ -10473,22 +10473,22 @@ STR_NAME    :Hoverbike Flying
 STR_NAME    :Climbing Vine Tree
 
 [KNFIGHT1]
-STR_NAME    :움직이는 흑기사
+STR_NAME    :Animatronic Dark Knight
 
 [KNFIGHT2]
-STR_NAME    :움직이는 흑기사
+STR_NAME    :Animatronic Dark Knight
 
 [LARGECPU]
 STR_NAME    :Super Computer Large CPU
 
 [LASERX01]
-STR_NAME    :레이저 울타리
+STR_NAME    :Laser Fence
 
 [LASERX02]
-STR_NAME    :레이저 울타리 구석
+STR_NAME    :Laser Fence 구석
 
 [MDUSASTA]
-STR_NAME    :움직이는 메두사
+STR_NAME    :Animatronic Medusa
 
 [PDFLAG02]
 STR_NAME    :Period Flag
@@ -10584,13 +10584,13 @@ STR_NAME    :Sea Plane
 STR_NAME    :Animatronic Dragonflies
 
 [SKELETO1]
-STR_NAME    :움직이는 뼈다귀 군대
+STR_NAME    :Animatronic Skeletal Army
 
 [SKELETO2]
-STR_NAME    :움직이는 뼈다귀 군대
+STR_NAME    :Animatronic Skeletal Army
 
 [SKELETO3]
-STR_NAME    :움직이는 뼈다귀 군대
+STR_NAME    :Animatronic Skeletal Army
 
 [SMALLCPU]
 STR_NAME    :Super Computer Small CPU
@@ -10644,13 +10644,13 @@ STR_NAME    :Space Ship Fuel Section
 STR_NAME    :Space Ship Science Section
 
 [SPEAKR01]
-STR_NAME    :작은 스피커
+STR_NAME    :Small Speaker
 
 [SPEAKR02]
-STR_NAME    :커다란 스피커
+STR_NAME    :Large Speaker
 
 [SPIKTAIL]
-STR_NAME    :움직이는 스테고사우루스
+STR_NAME    :Animatronic Stegosaurus
 
 [SPTERDAC]
 STR_NAME    :Animatronic flapping Pterodactyl
@@ -10671,7 +10671,7 @@ STR_NAME    :Band Member
 STR_NAME    :Steaming Drains
 
 [STRICTOP]
-STR_NAME    :움직이는 트리케라톱스
+STR_NAME    :Animatronic Triceratops
 
 [TARPIT01]
 STR_NAME    :Bubbling Tarpit
@@ -10686,7 +10686,7 @@ STR_NAME    :Bubbling Tarpit
 STR_NAME    :Atlas Statue
 
 [TYRANREX]
-STR_NAME    :움직이는 티-렉스
+STR_NAME    :Animatronic T-Rex
 
 [VOLCVENT]
 STR_NAME    :Active Volcanic Vent
@@ -10734,7 +10734,7 @@ STR_NAME    :Sandstone Walkway Cross Section
 STR_NAME    :Sandstone Walkway End Section
 
 [JAILXX17]
-STR_NAME    :감옥 문
+STR_NAME    :Prison Door
 
 [MAJOROAK]
 STR_NAME    :Large Oak
@@ -10770,10 +10770,10 @@ STR_NAME    :1950s Car
 STR_NAME    :Period Diner
 
 [4X4GMANT]
-STR_NAME    :대형 망그로브 나무
+STR_NAME    :대형 Mangrove Tree
 
 [4X4STNHN]
-STR_NAME    :석기시대 사원
+STR_NAME    :Stone Age Temple
 
 [4X4TRPIT]
 STR_NAME    :Bubbling Tarpit
@@ -10782,7 +10782,7 @@ STR_NAME    :Bubbling Tarpit
 STR_NAME    :Volcano with small trees
 
 [ALENCRSH]
-STR_NAME    :UFO 추락 지점
+STR_NAME    :UFO Crash Site
 
 [ALNSTR08]
 STR_NAME    :Alien Structure Large
@@ -10800,13 +10800,13 @@ STR_NAME    :Alien Skylight Large
 STR_NAME    :Ash Tree with Nymphs
 
 [BANDBUSX]
-STR_NAME    :락밴드 투어 버스
+STR_NAME    :Rock Band Tour Bus
 
 [BIGDRUMS]
 STR_NAME    :대형 Drum Kit
 
 [CAVENTRA]
-STR_NAME    :동굴 입구
+STR_NAME    :Cave Entrance
 
 [CORNS2X2]
 STR_NAME    :Roman Palace 구석 조각
@@ -10815,10 +10815,10 @@ STR_NAME    :Roman Palace 구석 조각
 STR_NAME    :Roman Palace 구석 조각
 
 [CRATR2X2]
-STR_NAME    :작은 운석 크레이터
+STR_NAME    :Small Meteor Crater
 
 [CRATR4X4]
-STR_NAME    :커다란 운석 크레이터
+STR_NAME    :Large Meteor Crater
 
 [CRSSS2X2]
 STR_NAME    :Roman Palace Cross Section
@@ -10833,7 +10833,7 @@ STR_NAME    :Cyclops Statue
 STR_NAME    :Feast Table
 
 [FOOTPRNT]
-STR_NAME    :대형 공룡 발자국
+STR_NAME    :대형 Dinosaur Footprint
 
 [FORBIDFT]
 STR_NAME    :Forbidden Fruit Tree
@@ -10860,10 +10860,10 @@ STR_NAME    :Alien Historical Structures
 STR_NAME    :Alien Historical Structures
 
 [HODSHUT1]
-STR_NAME    :로빈후드의 오두막
+STR_NAME    :Robin Hood's Hut
 
 [HODSHUT2]
-STR_NAME    :로빈후드의 오두막
+STR_NAME    :Robin Hood's Hut
 
 [HRBWAL07]
 STR_NAME    :Harbour 벽 구석 조각
@@ -10908,7 +10908,7 @@ STR_NAME    :Castle Tower T 조각
 STR_NAME    :Castle Tower T 조각
 
 [METOAN01]
-STR_NAME    :운석 크레이터 구석
+STR_NAME    :Meteor Crater 구석
 
 [METOAN02]
 STR_NAME    :Meteor Crater Inverted 구석
@@ -10938,7 +10938,7 @@ STR_NAME    :뉴욕 벽 조각
 STR_NAME    :뉴욕 벽 조각
 
 [PEASTHUT]
-STR_NAME    :농촌 오두막
+STR_NAME    :Peasant Hut
 
 [PERAMOB1]
 STR_NAME    :Period Automobile
@@ -10968,19 +10968,19 @@ STR_NAME    :Dark Age Village 구석 지붕 조각
 STR_NAME    :Dark Age Village Inverted 지붕 조각
 
 [RDMET2X2]
-STR_NAME    :작은 붉은색 운석 크레이터
+STR_NAME    :Small Red Meteor Crater
 
 [RDMET4X4]
-STR_NAME    :커다란 붉은색 운석 크레이터
+STR_NAME    :Large Red Meteor Crater
 
 [RDMETO01]
-STR_NAME    :붉은색 운석 크레이터 구석
+STR_NAME    :Red Meteor Crater 구석
 
 [RDMETO02]
-STR_NAME    :붉은색 운석 크레이터 구석
+STR_NAME    :Red Meteor Crater 구석
 
 [ROBNCAMP]
-STR_NAME    :로빈후드의 야영지
+STR_NAME    :Robin Hood's Camp
 
 [ROMNC2X2]
 STR_NAME    :Roman Palace 구석 조각
@@ -11037,10 +11037,10 @@ STR_NAME    :Dark Ages Tavern
 STR_NAME    :Traveller Van
 
 [TRAVLR02]
-STR_NAME    :마이크로버스
+STR_NAME    :Microbus
 
 [JAILXX19]
-STR_NAME    :감옥 울타리
+STR_NAME    :Prison Fence
 
 [MSPKWA01]
 STR_NAME    :Spiked Fence
