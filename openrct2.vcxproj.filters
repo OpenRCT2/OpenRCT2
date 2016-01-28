@@ -585,6 +585,7 @@
     <ClCompile Include="src\interface\Theme.cpp">
       <Filter>Source\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\Json.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -890,5 +891,6 @@
     <ClInclude Include="src\core\List.hpp" />
     <ClInclude Include="src\core\Guard.hpp" />
     <ClInclude Include="src\core\Diagnostics.hpp" />
+    <ClInclude Include="src\core\Json.hpp" />
   </ItemGroup>
 </Project>
