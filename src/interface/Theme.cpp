@@ -6,7 +6,8 @@ extern "C"
     #include "window.h"
 }
 
-#include "../core/FileStream.hpp"
+#include "../core/Json.hpp"
+#include "../core/List.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
@@ -41,28 +42,32 @@ struct UIThemeEntry
     WindowTheme     Theme;
 
 
-           json_t *       ToJson() const;
-    static UIThemeEntry * FromJson(const WindowThemeDesc * wtDesc, const json_t * json);
+           json_t *     ToJson() const;
+    static UIThemeEntry FromJson(const WindowThemeDesc * wtDesc, const json_t * json);
 };
 
 /**
  * Represents a user interface theme. Contains window colour schemes and appearance features.
  */
-struct UITheme
+class UITheme
 {
-    utf8 *         Name;
-    UIThemeEntry * Entries;
-    uint8          Flags;
+public:
+    utf8 *             Name;
+    List<UIThemeEntry> Entries;
+    uint8              Flags;
 
+    UITheme(const utf8 * name);
+    UITheme(const UITheme & name);
+    ~UITheme();
 
-           void      SetEntry(const UIThemeEntry * entry);
-           void      RemoveEntry(rct_windowclass windowClass);
-           json_t *  ToJson() const;
-           bool      WriteToFile(const utf8 * path) const;
-    static UITheme * Create(const utf8 * name);
-    static void      Free(UITheme * theme);
+    void     SetEntry(const UIThemeEntry * entry);
+    void     RemoveEntry(rct_windowclass windowClass);
+    json_t * ToJson() const;
+    bool     WriteToFile(const utf8 * path) const;
+
     static UITheme * FromJson(const json_t * json);
     static UITheme * FromFile(const utf8 * path);
+    static UITheme   CreatePredefined(const utf8 * name, const UIThemeEntry * entries, uint8 flags);
 };
 
 /**
@@ -178,8 +183,13 @@ UIThemeEntry PredefinedThemeRCT2_Entries[] =
     THEME_DEF_END
 };
 
-const UITheme PredefinedThemeRCT1 = { "RCT1", PredefinedThemeRCT1_Entries, UITHEME_FLAG_PREDEFINED };
-const UITheme PredefinedThemeRCT2 = { "RCT2", PredefinedThemeRCT2_Entries, UITHEME_FLAG_PREDEFINED };
+const UITheme PredefinedThemeRCT1 = UITheme::CreatePredefined(
+    "RCT1", PredefinedThemeRCT1_Entries, UITHEME_FLAG_USE_LIGHTS_RIDE |
+                                         UITHEME_FLAG_USE_LIGHTS_PARK |
+                                         UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+
+const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined(
+    "RCT2", PredefinedThemeRCT2_Entries, 0);
 
 const UITheme * PredefinedThemes[] = {
     &PredefinedThemeRCT1,
@@ -238,7 +248,7 @@ json_t * UIThemeEntry::ToJson() const
     return jsonEntry;
 }
 
-UIThemeEntry * UIThemeEntry::FromJson(const WindowThemeDesc * wtDesc, const json_t * json)
+UIThemeEntry UIThemeEntry::FromJson(const WindowThemeDesc * wtDesc, const json_t * json)
 {
     json_t * jsonColours = json_object_get(json, "colours");
     if (jsonColours == nullptr)
@@ -249,96 +259,78 @@ UIThemeEntry * UIThemeEntry::FromJson(const WindowThemeDesc * wtDesc, const json
     uint8 numColours = (uint8)json_array_size(jsonColours);
     numColours = Math::Min(numColours, wtDesc->NumColours);
 
-    UIThemeEntry * result = Memory::Allocate<UIThemeEntry>();
-    result->WindowClass = wtDesc->WindowClass;
-    result->Theme = wtDesc->DefaultTheme;
+    UIThemeEntry result;
+    result.WindowClass = wtDesc->WindowClass;
+    result.Theme = wtDesc->DefaultTheme;
     
     for (uint8 i = 0; i < numColours; i++)
     {
-        result->Theme.Colours[i] = (colour_t)json_integer_value(json_array_get(jsonColours, i));
+        result.Theme.Colours[i] = (colour_t)json_integer_value(json_array_get(jsonColours, i));
     }
 
     return result;
-}
-
-UITheme * UITheme::Create(const utf8 * name)
-{
-    UITheme * theme = Memory::Allocate<UITheme>();
-    theme->Name = String::Duplicate(name);
-    theme->Entries = Memory::AllocateArray<UIThemeEntry>(1);
-    theme->Entries[0].WindowClass = 255;
-    theme->Flags = 0;
-    return theme;
 }
 
 #pragma endregion
 
 #pragma region UITheme
 
-void UITheme::Free(UITheme * theme)
+UITheme::UITheme(const utf8 * name)
 {
-    assert(!(theme->Flags & UITHEME_FLAG_PREDEFINED));
+    Name = String::Duplicate(name);
+    Flags = 0;
+}
 
-    Memory::Free(theme->Name);
-    Memory::Free(theme->Entries);
+UITheme::UITheme(const UITheme & copy)
+{
+    Name = String::Duplicate(copy.Name);
+    Flags = copy.Flags;
+    Entries = copy.Entries;
+}
+
+UITheme::~UITheme()
+{
+    Memory::Free(Name);
 }
 
 void UITheme::SetEntry(const UIThemeEntry * newEntry)
 {
     // Try to replace existing entry
-    size_t numEntries = 0;
-    for (UIThemeEntry * entry = Entries; entry->WindowClass != 0xFF; entry++)
+    for (size_t i = 0; i < Entries.GetCount(); i++)
     {
+        UIThemeEntry * entry = &Entries[i];
         if (entry->WindowClass == newEntry->WindowClass)
         {
             *entry = *newEntry;
             return;
         }
-
-        numEntries++;
     }
 
-    // Increase size of entry list
-    Entries = Memory::ReallocateArray(Entries, numEntries + 2);
-    Entries[numEntries] = *newEntry;
-    Entries[numEntries + 1].WindowClass = 255;
+    Entries.Add(*newEntry);
 }
 
 void UITheme::RemoveEntry(rct_windowclass windowClass)
 {
     // Remove existing entry
-    bool found = false;
-    for (UIThemeEntry * entry = Entries; entry->WindowClass != 0xFF; entry++)
+    for (size_t i = 0; i < Entries.GetCount(); i++)
     {
+        UIThemeEntry * entry = &Entries[i];
         if (entry->WindowClass == windowClass)
         {
-            for (UIThemeEntry * entry2 = entry; entry2->WindowClass != 0xFF; entry2++)
-            {
-                *entry2 = *(entry2 + 1);
-            }
-            found = true;
+            Entries.RemoveAt(i);
             break;
         }
     }
-    if (!found) return;
-
-    // Reduce size of entry list
-    size_t numEntries = 0;
-    for (UIThemeEntry * entry = Entries; entry->WindowClass != 0xFF; entry++)
-    {
-        numEntries++;
-    }
-    Entries = Memory::ReallocateArray(Entries, numEntries);
 }
 
 json_t * UITheme::ToJson() const
 {
     // Create entries
     json_t * jsonEntries = json_object();
-    for (UIThemeEntry * entry = Entries; entry->WindowClass != 0xFF; entry++)
+    for (const UIThemeEntry & entry : Entries)
     {
-        const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(entry->WindowClass);
-        json_object_set_new(jsonEntries, wtDesc->WindowClassSZ, entry->ToJson());
+        const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
+        json_object_set_new(jsonEntries, wtDesc->WindowClassSZ, entry.ToJson());
     }
 
     // Create theme object
@@ -357,26 +349,21 @@ json_t * UITheme::ToJson() const
 
 bool UITheme::WriteToFile(const utf8 * path) const
 {
-    const char * jsonOutput;
-
-    // Serialise theme object as JSON
     json_t * jsonTheme = ToJson();
-    jsonOutput = json_dumps(jsonTheme, JSON_INDENT(4));
-    json_decref(jsonTheme);
-
+    bool     result;
     try
     {
-        auto fs = FileStream(path, FILE_MODE_WRITE);
-        size_t jsonOutputSize = String::SizeOf(jsonOutput);
-        fs.Write(jsonOutput, jsonOutputSize);
-
-        return true;
+        Json::WriteToFile(path, jsonTheme, JSON_INDENT(4));
+        result = true;
     }
     catch (Exception ex)
     {
         log_error("Unable to save %s: %s", path, ex.GetMessage());
-        return false;
+        result = false;
     }
+
+    json_decref(jsonTheme);
+    return result;
 }
 
 UITheme * UITheme::FromJson(const json_t * json)
@@ -397,7 +384,7 @@ UITheme * UITheme::FromJson(const json_t * json)
     UITheme * result = nullptr;
     try
     {
-        result = UITheme::Create(themeName);
+        result = new UITheme(themeName);
 
         if (json_is_true(json_object_get(json, "useLightsRide")))
         {
@@ -420,16 +407,15 @@ UITheme * UITheme::FromJson(const json_t * json)
             const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(jkey);
             if (wtDesc == nullptr) continue;
 
-            UIThemeEntry * entry = UIThemeEntry::FromJson(wtDesc, jvalue);
-            result->SetEntry(entry);
-            Memory::Free(entry);
+            UIThemeEntry entry = UIThemeEntry::FromJson(wtDesc, jvalue);
+            result->SetEntry(&entry);
         }
 
         return result;
     }
     catch (Exception ex)
     {
-        UITheme::Free(result);
+        delete result;
         throw ex;
     }
 }
@@ -440,26 +426,8 @@ UITheme * UITheme::FromFile(const utf8 * path)
     UITheme * result = nullptr;
     try
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
-
-        size_t fileLength = (size_t)fs.GetLength();
-        if (fileLength > MAX_THEME_SIZE)
-        {
-            throw IOException("Language file too large.");
-        }
-
-        utf8 * fileData = Memory::Allocate<utf8>(fileLength + 1);
-        fs.Read(fileData, fileLength);
-        fileData[fileLength] = '\0';
-
-        json_error_t jsonLoadError;
-        json = json_loads(fileData, 0, &jsonLoadError);
-        Memory::Free(fileData);
-
-        if (json != nullptr)
-        {
-            result = UITheme::FromJson(json);
-        }
+        json = Json::ReadFromFile(path);
+        result = UITheme::FromJson(json);
     }
     catch (Exception ex)
     {
@@ -470,5 +438,19 @@ UITheme * UITheme::FromFile(const utf8 * path)
     return result;
 }
 
-#pragma endregion
+UITheme UITheme::CreatePredefined(const utf8 * name, const UIThemeEntry * entries, uint8 flags)
+{
+    auto theme = UITheme(name);
+    theme.Flags = flags | UITHEME_FLAG_PREDEFINED;
 
+    size_t numEntries = 0;
+    for (const UIThemeEntry * entry = entries; entry->WindowClass != 255; entry++)
+    {
+        numEntries++;
+    }
+
+    theme.Entries = List<UIThemeEntry>(entries, numEntries);
+    return theme;
+}
+
+#pragma endregion
