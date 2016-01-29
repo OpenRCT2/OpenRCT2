@@ -36,6 +36,8 @@
 #include "error.h"
 #include "../util/util.h"
 
+#if 0
+
 enum {
 	WINDOW_THEMES_TAB_SETTINGS,
 	WINDOW_THEMES_TAB_MAIN_UI,
@@ -890,4 +892,10 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 
 		y += _row_height;
 	}
+}
+
+#endif
+
+void window_themes_open()
+{
 }

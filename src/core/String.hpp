@@ -7,6 +7,8 @@ extern "C"
 
 namespace String
 {
+    constexpr utf8 * Empty = "";
+
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
     bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
 

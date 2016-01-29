@@ -18,11 +18,37 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#ifndef _COLOUR_SCHEMES_H_
-#define _COLOUR_SCHEMES_H_
+#ifndef _THEMES_H_
+#define _THEMES_H_
 
 #include "../common.h"
 #include "window.h"
+
+enum {
+    UITHEME_FLAG_PREDEFINED                            = 1 << 0,
+    UITHEME_FLAG_USE_LIGHTS_RIDE                       = 1 << 1,
+    UITHEME_FLAG_USE_LIGHTS_PARK                       = 1 << 2,
+    UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT  = 1 << 3,
+};
+
+void colour_scheme_update(rct_window *window);
+void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
+
+void         theme_manager_initialise();
+void         theme_manager_load_available_themes();
+size_t       theme_manager_get_num_available_themes();
+const utf8 * theme_manager_get_available_theme_path(size_t index);
+const utf8 * theme_manager_get_available_theme_name(size_t index);
+size_t       theme_manager_get_active_available_theme_index();
+void         theme_manager_set_active_available_theme(size_t index);
+
+uint8        theme_get_flags();
+
+
+#if 0
+
+
+
 #include "../config.h"
 
 typedef struct {
@@ -52,13 +78,12 @@ theme_preset* theme_get_preset();
 theme_window_definition* theme_window_definition_get_by_class(rct_windowclass classification);
 theme_window* theme_window_get_by_class(rct_windowclass classification);
 
-void colour_scheme_update(rct_window *window);
-void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
-
 void theme_change_preset(int preset);
 void theme_create_preset(int duplicate, const char *name);
 void theme_delete_preset(int preset);
 void theme_rename_preset(int preset, const char *newName);
+
+#endif
 
 
 #endif

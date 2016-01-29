@@ -3,6 +3,7 @@
 extern "C"
 {
     #include "../common.h"
+    #include "themes.h"
     #include "window.h"
 }
 
@@ -18,13 +19,6 @@ struct WindowThemeDesc;
 
 // Don't try to load theme files that exceed 64 MiB
 constexpr uint64 MAX_THEME_SIZE = 64 * 1024 * 1024;
-
-enum {
-    UITHEME_FLAG_PREDEFINED                            = 1 << 0,
-    UITHEME_FLAG_USE_LIGHTS_RIDE                       = 1 << 1,
-    UITHEME_FLAG_USE_LIGHTS_PARK                       = 1 << 2,
-    UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT  = 1 << 3,
-};
 
 /**
  * Represents a window theming style such as the colour scheme.
@@ -473,17 +467,35 @@ UITheme UITheme::CreatePredefined(const utf8 * name, const UIThemeWindowEntry * 
 
 namespace ThemeManager
 {
-    const utf8 * CurrentThemePath;
-    UITheme *    CurrentTheme;
-
     struct AvailableTheme
     {
         utf8 Path[MAX_PATH];
         utf8 Name[64];
     };
 
+    const utf8 *         CurrentThemePath;
+    UITheme *            CurrentTheme;
+    List<AvailableTheme> AvailableThemes;
+    size_t               ActiveAvailableThemeIndex = SIZE_MAX;
+    size_t               NumPredefinedThemes = 0;
+
     void GetAvailableThemes(List<AvailableTheme> * outThemes)
     {
+        Guard::ArgumentNotNull(outThemes);
+
+        outThemes->Clear();
+
+        NumPredefinedThemes = 0;
+        for (const UITheme * * predefinedTheme = PredefinedThemes; *predefinedTheme != nullptr; predefinedTheme++)
+        {
+            AvailableTheme theme;
+            String::Set(theme.Path, sizeof(theme.Path), String::Empty);
+            String::Set(theme.Name, sizeof(theme.Name), (*predefinedTheme)->Name);
+            outThemes->Add(theme);
+
+            NumPredefinedThemes++;
+        }
+
         utf8 themesPattern[MAX_PATH];
         platform_get_user_directory(themesPattern, "themes");
         Path::Append(themesPattern, sizeof(themesPattern), "*.json");
@@ -496,12 +508,99 @@ namespace ThemeManager
             String::Set(theme.Path, sizeof(theme.Path), path);
             Path::GetFileNameWithoutExtension(theme.Path, sizeof(theme.Path), path);
             outThemes->Add(theme);
+
+            if (Path::Equals(CurrentThemePath, path))
+            {
+                ActiveAvailableThemeIndex = outThemes->GetCount() - 1;
+            }
         }
+    }
+
+    void LoadTheme(UITheme * theme)
+    {
+        if (CurrentTheme != nullptr)
+        {
+            if (!(theme->Flags & UITHEME_FLAG_PREDEFINED))
+            {
+                delete CurrentTheme;
+            }
+        }
+
+        CurrentTheme = theme;
+
+        gfx_invalidate_screen();
+    }
+
+    void LoadTheme(const utf8 * path)
+    {
+        UITheme * theme = UITheme::FromFile(path);
+        if (theme == nullptr)
+        {
+            // Fall-back to default
+            theme = (UITheme *)&PredefinedThemeRCT2;
+        }
+        LoadTheme(theme);
+    }
+
+    void Initialise()
+    {
+        ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
+        LoadTheme((UITheme *)&PredefinedThemeRCT2);
+        ActiveAvailableThemeIndex = 1;
     }
 }
 
 extern "C"
 {
+    void theme_manager_load_available_themes()
+    {
+        ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
+    }
+
+    size_t theme_manager_get_num_available_themes()
+    {
+        return ThemeManager::AvailableThemes.GetCount();
+    }
+
+    const utf8 * theme_manager_get_available_theme_path(size_t index)
+    {
+        return ThemeManager::AvailableThemes[index].Path;
+    }
+
+    const utf8 * theme_manager_get_available_theme_name(size_t index)
+    {
+        return ThemeManager::AvailableThemes[index].Name;
+    }
+
+    size_t theme_manager_get_active_available_theme_index()
+    {
+        return ThemeManager::ActiveAvailableThemeIndex;
+    }
+
+    void theme_manager_set_active_available_theme(size_t index)
+    {
+        if (index < ThemeManager::NumPredefinedThemes)
+        {
+            ThemeManager::LoadTheme((UITheme *)PredefinedThemes[index]);
+        }
+        else
+        {
+            const utf8 * path = ThemeManager::AvailableThemes[index].Path;
+            ThemeManager::LoadTheme(path);
+        }
+        ThemeManager::ActiveAvailableThemeIndex = index;
+    }
+
+    uint8 theme_get_flags()
+    {
+        return ThemeManager::CurrentTheme->Flags;
+    }
+
+    void theme_manager_initialise()
+    {
+        ThemeManager::Initialise();
+    }
+
     void colour_scheme_update(rct_window * window)
     {
         colour_scheme_update_by_class(window, window->classification);

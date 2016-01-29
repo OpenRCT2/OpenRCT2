@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include "../config.h"
 #include "../interface/colour.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"

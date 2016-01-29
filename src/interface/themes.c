@@ -1,3 +1,5 @@
+#if 0
+
 /*****************************************************************************
 * Copyright (c) 2014 Ted John, Peter Hill
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
@@ -249,3 +251,5 @@ void theme_rename_preset(int preset, const char *newName)
 		}
 	}
 }
+
+#endif
