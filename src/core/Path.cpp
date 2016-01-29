@@ -5,6 +5,7 @@ extern "C"
     #include "../util/util.h"
 }
 
+#include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
 #include "String.hpp"
@@ -15,6 +16,29 @@ namespace Path
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
     {
         return safe_strcat_path(buffer, src, bufferSize);
+    }
+
+    utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
+    {
+        const utf8 * lastDot = nullptr;
+        const utf8 * ch = path;
+        for (; ch != '\0'; ch++)
+        {
+            if (*ch == '.')
+            {
+                lastDot = ch;
+            }
+        }
+
+        if (lastDot == nullptr)
+        {
+            return String::Set(buffer, bufferSize, path);
+        }
+
+        size_t truncatedLength = Math::Min<size_t>(bufferSize - 1, lastDot - path);
+        Memory::Copy(buffer, path, truncatedLength);
+        buffer[truncatedLength] = '\0';
+        return buffer;
     }
 
     utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)

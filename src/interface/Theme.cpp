@@ -10,6 +10,7 @@ extern "C"
 #include "../core/List.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 
@@ -36,14 +37,14 @@ struct WindowTheme
 /**
  * Represents the style for a particular type of window.
  */
-struct UIThemeEntry
+struct UIThemeWindowEntry
 {
     rct_windowclass WindowClass;
     WindowTheme     Theme;
 
 
-           json_t *     ToJson() const;
-    static UIThemeEntry FromJson(const WindowThemeDesc * wtDesc, const json_t * json);
+           json_t *           ToJson() const;
+    static UIThemeWindowEntry FromJson(const WindowThemeDesc * wtDesc, const json_t * json);
 };
 
 /**
@@ -52,22 +53,24 @@ struct UIThemeEntry
 class UITheme
 {
 public:
-    utf8 *             Name;
-    List<UIThemeEntry> Entries;
-    uint8              Flags;
+    utf8 *                   Name;
+    List<UIThemeWindowEntry> Entries;
+    uint8                    Flags;
 
     UITheme(const utf8 * name);
     UITheme(const UITheme & name);
     ~UITheme();
 
-    void     SetEntry(const UIThemeEntry * entry);
-    void     RemoveEntry(rct_windowclass windowClass);
+    const UIThemeWindowEntry * GetEntry(rct_windowclass windowClass) const;
+    void                       SetEntry(const UIThemeWindowEntry * entry);
+    void                       RemoveEntry(rct_windowclass windowClass);
+
     json_t * ToJson() const;
     bool     WriteToFile(const utf8 * path) const;
 
     static UITheme * FromJson(const json_t * json);
     static UITheme * FromFile(const utf8 * path);
-    static UITheme   CreatePredefined(const utf8 * name, const UIThemeEntry * entries, uint8 flags);
+    static UITheme   CreatePredefined(const utf8 * name, const UIThemeWindowEntry * entries, uint8 flags);
 };
 
 /**
@@ -159,7 +162,7 @@ WindowThemeDesc WindowThemeDescriptors[] =
 
 #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
-UIThemeEntry PredefinedThemeRCT1_Entries[] =
+UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
 {
     { WC_TOP_TOOLBAR,     COLOURS_RCT1(COLOUR_GREY,               COLOUR_GREY,                COLOUR_GREY,                COLOUR_GREY,     COLOUR_BLACK,    COLOUR_BLACK)    },
     { WC_BOTTOM_TOOLBAR,  COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,               COLOUR_YELLOW,   COLOUR_BLACK,    COLOUR_BLACK)    },
@@ -178,7 +181,7 @@ UIThemeEntry PredefinedThemeRCT1_Entries[] =
     THEME_DEF_END
 };
 
-UIThemeEntry PredefinedThemeRCT2_Entries[] =
+UIThemeWindowEntry PredefinedThemeRCT2_Entries[] =
 {
     THEME_DEF_END
 };
@@ -232,7 +235,7 @@ static void ThrowThemeLoadException()
 
 #pragma region UIThemeEntry
 
-json_t * UIThemeEntry::ToJson() const
+json_t * UIThemeWindowEntry::ToJson() const
 {
     const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(WindowClass);
         
@@ -248,7 +251,7 @@ json_t * UIThemeEntry::ToJson() const
     return jsonEntry;
 }
 
-UIThemeEntry UIThemeEntry::FromJson(const WindowThemeDesc * wtDesc, const json_t * json)
+UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, const json_t * json)
 {
     json_t * jsonColours = json_object_get(json, "colours");
     if (jsonColours == nullptr)
@@ -259,7 +262,7 @@ UIThemeEntry UIThemeEntry::FromJson(const WindowThemeDesc * wtDesc, const json_t
     uint8 numColours = (uint8)json_array_size(jsonColours);
     numColours = Math::Min(numColours, wtDesc->NumColours);
 
-    UIThemeEntry result;
+    UIThemeWindowEntry result;
     result.WindowClass = wtDesc->WindowClass;
     result.Theme = wtDesc->DefaultTheme;
     
@@ -293,12 +296,25 @@ UITheme::~UITheme()
     Memory::Free(Name);
 }
 
-void UITheme::SetEntry(const UIThemeEntry * newEntry)
+const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
+{
+    for (size_t i = 0; i < Entries.GetCount(); i++)
+    {
+        const UIThemeWindowEntry * entry = &Entries[i];
+        if (entry->WindowClass == windowClass)
+        {
+            return entry;
+        }
+    }
+    return nullptr;
+}
+
+void UITheme::SetEntry(const UIThemeWindowEntry * newEntry)
 {
     // Try to replace existing entry
     for (size_t i = 0; i < Entries.GetCount(); i++)
     {
-        UIThemeEntry * entry = &Entries[i];
+        UIThemeWindowEntry * entry = &Entries[i];
         if (entry->WindowClass == newEntry->WindowClass)
         {
             *entry = *newEntry;
@@ -314,7 +330,7 @@ void UITheme::RemoveEntry(rct_windowclass windowClass)
     // Remove existing entry
     for (size_t i = 0; i < Entries.GetCount(); i++)
     {
-        UIThemeEntry * entry = &Entries[i];
+        UIThemeWindowEntry * entry = &Entries[i];
         if (entry->WindowClass == windowClass)
         {
             Entries.RemoveAt(i);
@@ -327,7 +343,7 @@ json_t * UITheme::ToJson() const
 {
     // Create entries
     json_t * jsonEntries = json_object();
-    for (const UIThemeEntry & entry : Entries)
+    for (const UIThemeWindowEntry & entry : Entries)
     {
         const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
         json_object_set_new(jsonEntries, wtDesc->WindowClassSZ, entry.ToJson());
@@ -407,7 +423,7 @@ UITheme * UITheme::FromJson(const json_t * json)
             const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(jkey);
             if (wtDesc == nullptr) continue;
 
-            UIThemeEntry entry = UIThemeEntry::FromJson(wtDesc, jvalue);
+            UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jvalue);
             result->SetEntry(&entry);
         }
 
@@ -438,19 +454,82 @@ UITheme * UITheme::FromFile(const utf8 * path)
     return result;
 }
 
-UITheme UITheme::CreatePredefined(const utf8 * name, const UIThemeEntry * entries, uint8 flags)
+UITheme UITheme::CreatePredefined(const utf8 * name, const UIThemeWindowEntry * entries, uint8 flags)
 {
     auto theme = UITheme(name);
     theme.Flags = flags | UITHEME_FLAG_PREDEFINED;
 
     size_t numEntries = 0;
-    for (const UIThemeEntry * entry = entries; entry->WindowClass != 255; entry++)
+    for (const UIThemeWindowEntry * entry = entries; entry->WindowClass != 255; entry++)
     {
         numEntries++;
     }
 
-    theme.Entries = List<UIThemeEntry>(entries, numEntries);
+    theme.Entries = List<UIThemeWindowEntry>(entries, numEntries);
     return theme;
 }
 
 #pragma endregion
+
+namespace ThemeManager
+{
+    const utf8 * CurrentThemePath;
+    UITheme *    CurrentTheme;
+
+    struct AvailableTheme
+    {
+        utf8 Path[MAX_PATH];
+        utf8 Name[64];
+    };
+
+    void GetAvailableThemes(List<AvailableTheme> * outThemes)
+    {
+        utf8 themesPattern[MAX_PATH];
+        platform_get_user_directory(themesPattern, "themes");
+        Path::Append(themesPattern, sizeof(themesPattern), "*.json");
+
+        utf8 path[MAX_PATH];
+        int handle = platform_enumerate_files_begin(themesPattern);
+        while (platform_enumerate_directories_next(handle, path))
+        {
+            AvailableTheme theme;
+            String::Set(theme.Path, sizeof(theme.Path), path);
+            Path::GetFileNameWithoutExtension(theme.Path, sizeof(theme.Path), path);
+            outThemes->Add(theme);
+        }
+    }
+}
+
+extern "C"
+{
+    void colour_scheme_update(rct_window * window)
+    {
+        colour_scheme_update_by_class(window, window->classification);
+    }
+
+    void colour_scheme_update_by_class(rct_window * window, rct_windowclass classification)
+    {
+        const WindowTheme *        windowTheme;
+        const UIThemeWindowEntry * entry = ThemeManager::CurrentTheme->GetEntry(classification);
+        if (entry != nullptr)
+        {
+            windowTheme = &entry->Theme;
+        }
+        else
+        {
+            const WindowThemeDesc * desc = GetWindowThemeDescriptor(classification);
+            windowTheme = &desc->DefaultTheme;
+        }
+
+        bool transparent = false;
+        for (int i = 0; i < 6; i++) {
+            window->colours[i] = windowTheme->Colours[i];
+            if (windowTheme->Colours[i] & COLOUR_FLAG_TRANSLUCENT) {
+                transparent = true;
+            }
+        }
+        // Some windows need to be transparent even if the colours aren't.
+        // There doesn't seem to be any side-effects for all windows being transparent
+        window->flags |= WF_TRANSPARENT;
+    }
+}
