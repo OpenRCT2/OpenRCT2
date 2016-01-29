@@ -128,6 +128,7 @@ config_enum_definition _currencyEnum[] = {
 	{ "EUR", CURRENCY_EUROS },
 	{ "KRW", CURRENCY_WON },
 	{ "RUB", CURRENCY_ROUBLE },
+	{ "CZK", CURRENCY_CZECH_KORUNA },
 	END_OF_ENUM
 };
 
@@ -149,12 +150,15 @@ config_enum_definition _languageEnum[] = {
 	{ "ko", 	LANGUAGE_KOREAN },
 	{ "ru-RU", 	LANGUAGE_RUSSIAN },
 	{ "cz-CZ", 	LANGUAGE_CZECH },
+	{ "jp-JP", 	LANGUAGE_JAPANESE },
 	END_OF_ENUM
 };
 
 config_enum_definition _dateFormatEnum[] = {
 	{ "DD/MM/YY", DATE_FORMAT_DMY },
 	{ "MM/DD/YY", DATE_FORMAT_MDY },
+	{ "YY/MM/DD", DATE_FORMAT_YMD },
+	{ "YY/DD/MM", DATE_FORMAT_YDM },
 	END_OF_ENUM
 };
 
