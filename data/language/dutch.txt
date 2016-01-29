@@ -3888,7 +3888,7 @@ STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {M
 STR_5553    :Spel pauzeren als de Steam-overlay open staat
 STR_5554    :{SMALLFONT}{BLACK}Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
-STR_5556    :Speler verwijderen
+STR_5556    :{SMALLFONT}{BLACK}Speler verwijderen
 STR_5557    :Verbinding behouden na desynchronisatie (multiplayer)
 STR_5558    :Om deze instelling van kracht te laten worden is een herstart vereist.
 STR_5559    :Elke 10 min. inspect.
@@ -3967,6 +3967,51 @@ STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
+STR_5635    :{WINDOW_COLOUR_2}Uitgegeven geld: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Uitgevoerde commando's: {BLACK}{COMMA16}
+STR_5637    :Kan dit niet uitvoeren...
+STR_5638    :Geen toestemming
+STR_5639    :{SMALLFONT}{BLACK}Spelerslijst tonen
+STR_5640    :{SMALLFONT}{BLACK}Groepen beheren
+STR_5641    :Standaardgroep:
+STR_5642    :Groep:
+STR_5643    :Groep toevoegen
+STR_5644    :Groep verwijderen
+STR_5645    :Chatten
+STR_5646    :Landschap wijzigen
+STR_5647    :Spel (de)pauzeren
+STR_5648    :Waterniveau aanpassen
+STR_5649    :Create Ride
+STR_5650    :Attractie verwijderen
+STR_5651    :Build Ride
+STR_5652    :Ride Properties
+STR_5653    :Decor
+STR_5654    :Pad
+STR_5655    :Bezoekers
+STR_5656    :Werknemers
+STR_5657    :Parkeigenschappen
+STR_5658    :Park Funding
+STR_5659    :Speler verwijderen
+STR_5660    :Groepen aanpassen
+STR_5661    :Spelersgroep instellingen
+STR_5662    :n.v.t.
+STR_5663    :Landschap leegmaken
+STR_5701    :{WINDOW_COLOUR_2}Laatste actie: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Laatste actie van deze speler localiseren
+STR_5703    :De host kan niet worden verwijderd
+STR_5704    :Laatste actie:
+STR_5705    :Kan de speler niet aan deze groep toewijzen
+STR_5706    :Kan geen groepen verwijderen waarin spelers zijn toegewezen
+STR_5707    :Deze groep kan niet worden aangepast
+STR_5708    :Kan de groep waartoe de host behoort niet aanpassen
+STR_5709    :Groep hernoemen
+STR_5710    :Groepnaam
+STR_5711    :Voer een nieuwe naam voor deze groep in:
+STR_5712    :Kan geen rechten aanpassen die je zelf niet hebt
+STR_5713    :Speler verwijderen
+STR_5714    :Optiesvenster tonen
+STR_5715    :Nieuw spel
+STR_5716    :Niet toegestaan in multiplayer
 
 #############
 # Scenarios #
