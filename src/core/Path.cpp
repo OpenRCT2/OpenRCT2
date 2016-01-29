@@ -18,11 +18,26 @@ namespace Path
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
+    utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path)
+    {
+        const char pathSeperator = platform_get_path_separator();
+        size_t lastPathSepIndex = String::LastIndexOf(path, pathSeperator);
+        if (lastPathSepIndex == SIZE_MAX)
+        {
+            return String::Set(buffer, bufferSize, String::Empty);
+        }
+
+        size_t copyLength = Math::Min(lastPathSepIndex, bufferSize - 1);
+        Memory::Copy(buffer, path, copyLength);
+        buffer[copyLength] = '\0';
+        return buffer;
+    }
+
     utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
         const utf8 * lastDot = nullptr;
         const utf8 * ch = path;
-        for (; ch != '\0'; ch++)
+        for (; *ch != '\0'; ch++)
         {
             if (*ch == '.')
             {

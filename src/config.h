@@ -253,13 +253,6 @@ typedef struct {
 	bool guest_died;
 } notification_configuration;
 
-typedef struct theme_window {
-	uint8 colours[6];
-
-	// Define any other settings for all windows here
-
-} theme_window;
-
 // Define structures for any other settings here
 typedef struct {
 	uint8 rct1_ride_lights;
