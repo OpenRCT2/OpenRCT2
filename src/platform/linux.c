@@ -162,7 +162,7 @@ void platform_show_messagebox(char *message)
  *
  *  rct2: 0x004080EA
  */
-int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
+int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
 {
 	STUB();
 	return 0;

@@ -3086,7 +3086,7 @@ int save_track_design(uint8 rideIndex){
 	audio_pause_sounds();
 
 	int result = platform_open_common_file_dialog(
-		0,
+		FD_SAVE,
 		RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char),
 		path,
 		"*.TD?",
