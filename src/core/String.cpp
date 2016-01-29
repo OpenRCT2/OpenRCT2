@@ -144,7 +144,7 @@ namespace String
 
     utf8 * SkipBOM(utf8 * buffer)
     {
-        return (utf8*)SkipBOM(buffer);
+        return (utf8*)SkipBOM((const utf8 *)buffer);
     }
 
     const utf8 * SkipBOM(const utf8 * buffer)

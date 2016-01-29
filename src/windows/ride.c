@@ -1696,7 +1696,7 @@ static void window_ride_main_resize(rct_window *w)
 
 	w->flags |= WF_RESIZABLE;
 	int minHeight = 180;
-	if (theme_get_preset()->features.rct1_ride_lights)
+	if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
 		minHeight = 200 + RCT1_LIGHT_OFFSET - (ride_type_has_flag(get_ride(w->number)->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? 14 : 0);
 	window_set_resize(w, 316, minHeight, 500, 450);
 
@@ -2037,7 +2037,7 @@ static void window_ride_main_invalidate(rct_window *w)
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-	if (theme_get_preset()->features.rct1_ride_lights) {
+	if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE) {
 		window_ride_main_widgets[WIDX_OPEN].type = WWT_EMPTY;
 		window_ride_main_widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
 		window_ride_main_widgets[WIDX_TEST_LIGHT].type = (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE) ? WWT_EMPTY : WWT_IMGBTN);

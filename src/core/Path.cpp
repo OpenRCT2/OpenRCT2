@@ -73,4 +73,13 @@ namespace Path
         }
 #endif
     }
+
+    bool Equals(const utf8 * a, const utf8 * b)
+    {
+        bool ignoreCase = false;
+#if __WINDOWS__
+        ignoreCase = true;
+#endif
+        return String::Equals(a, b, ignoreCase);
+    }
 }

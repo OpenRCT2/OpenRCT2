@@ -73,4 +73,16 @@ public:
     {
         return Memory::DuplicateArray(this->data(), this->size());
     }
+
+    const_reference operator[](size_t index) const
+    {
+        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1);
+        return std::vector<T>::operator[](index);
+    }
+
+    reference operator[](size_t index)
+    {
+        Guard::ArgumentInRange(index, (size_t)0, this->size() - 1);
+        return std::vector<T>::operator[](index);
+    }
 };

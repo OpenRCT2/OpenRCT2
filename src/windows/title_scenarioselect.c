@@ -351,7 +351,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 
-	format = (theme_get_preset()->features.rct1_scenario_font) ? 5138 : 1193;
+	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5138 : 1193;
 
 	// Text for each tab
 	for (i = 0; i < 8; i++) {
@@ -426,8 +426,8 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	int highlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1193;
-	int unhighlighted_format = (theme_get_preset()->features.rct1_scenario_font) ? 5139 : 1191;
+	int highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : 1193;
+	int unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : 1191;
 
 	bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
 
