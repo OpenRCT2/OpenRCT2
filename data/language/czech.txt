@@ -587,7 +587,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :Speciální kola jezdí po ocelové koleji, poháněná šlapáním jezdců
 STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sekces of water for gentle river sekces
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
@@ -3118,7 +3118,7 @@ STR_3106    :{SMALLFONT}{BLACK}Seznam kiosků a jiných zařízení
 STR_3107    :Zavřít
 STR_3108    :Testovat
 STR_3109    :Otevřít
-STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
+STR_3110    :{WINDOW_COLOUR_2}Block sekces: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Pro postavení klikněte na návrh
 STR_3112    :{SMALLFONT}{BLACK}Pro přejmenování nebo smazaní klikněte na návrh
 STR_3113    :Vybrat jiný návrh
@@ -3417,8 +3417,8 @@ STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open
 STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
 STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
 STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
-STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
+STR_3408    :{SMALLFONT}{BLACK}The sekce of track we've just built is a 'station platform', to allow guests to get on and off the ride...
+STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sekces...
 STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
 STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
 STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
@@ -3495,7 +3495,7 @@ STR_5152    :,
 STR_5153    :Upravit motivy...
 STR_5154    :Hardwarové zobrazování
 STR_5155    :Povolit testování nedostavěných atrakcí
-STR_5156    :{SMALLFONT}{BLACK}Povolí testování většiny typů atrakcí, i přesto, že atrakce není dostavěna. Netýká se block sectioned modes
+STR_5156    :{SMALLFONT}{BLACK}Povolí testování většiny typů atrakcí, i přesto, že atrakce není dostavěna. Netýká se block sekceed modes
 STR_5157    :Odemknout všechny ceny
 STR_5158    :Odejiít do menu
 STR_5159    :Vypnout OpenRCT2
@@ -3504,10 +3504,10 @@ STR_5161    :Formát data:
 STR_5162    :Den/Měsíc/Rok
 STR_5163    :Měsíc/Den/Rok
 STR_5164    :Název Twitch kanálu
-STR_5165    :Pojmenovávat návstěvníky podle followerů
-STR_5166    :{SMALLFONT}{BLACK}Pojmenovávat návstěvníky podle followerů Twitch kanálu
-STR_5167    :Sledovat návštěvníky-followery
-STR_5168    :{SMALLFONT}{BLACK}Zapne sledování návštěvníků, pojmenovaných po Twitch followerech
+STR_5165    :Pojmenovávat návstěvníky podle foldolníů
+STR_5166    :{SMALLFONT}{BLACK}Pojmenovávat návstěvníky podle foldolníů Twitch kanálu
+STR_5167    :Sledovat návštěvníky-foldolníy
+STR_5168    :{SMALLFONT}{BLACK}Zapne sledování návštěvníků, pojmenovaných po Twitch foldolníech
 STR_5169    :Pojmenovávat návštěvníky podle lidí v Twitch chatu
 STR_5170    :{SMALLFONT}{BLACK}Bude pojmenovávat návštěvníky podle lidí v Twitch chatu
 STR_5171    :Sledovat návštěvníky z chatu
@@ -4101,12 +4101,12 @@ STR_CPTY    :2 místa v každém vozu
 [DODG1]
 STR_NAME    :Autodrom
 STR_DESC    :Autodrom s lektrickými autíčky
-STR_CPTY    :1 místo v každém vozu
+STR_CPTY    :1 místo v každém voze
 
 [FSAUC]
 STR_NAME    :Létající talíře
 STR_DESC    :Autodrom se vznášedly
-STR_CPTY    :1 místo v každém vozu
+STR_CPTY    :1 místo v každém voze
 
 [FWH1]
 STR_NAME    :Ruské kolo
@@ -4844,7 +4844,7 @@ STR_NAME    :Zatočená stěna
 [CWFCRV33]
 STR_NAME    :Zatočený blok
 
-[FERN1]
+[Tráva1]
 STR_NAME    :Obrovská kapradina
 
 [GGRS1]
@@ -8695,935 +8695,935 @@ STR_NAME    :Vstup do parku ve stylu jižní Ameriky
 ## Time Twister Objects
 ###############################################################################
 [SCHOOLBS]
-STR_NAME    :School Bus Ride
-STR_DESC    :Replica Yellow Bus themed trams
-STR_CPTY    :10 passengers per car
+STR_NAME    :Školní autobus - tramvaj
+STR_DESC    :Replika amerických žlutých školních autobusů
+STR_CPTY    :10 míst v každém voze
 
 [TELEPTER]
-STR_NAME    :Teleporter
-STR_DESC    :Guests are transported up or down from one level to another
-STR_CPTY    :16 passengers
+STR_NAME    :Teleportér
+STR_DESC    :Návštěvníci jsou transportování z jednoho patra do druhého
+STR_CPTY    :16 návštěvníků
 
 [ZEPLELIN]
-STR_NAME    :Airship Themed Monorail Trains
-STR_DESC    :Large capacity themed monorail trains with streamlined front and rear cars
-STR_CPTY    :5 or 10 passengers per car
+STR_NAME    :Jednokolejné vlaky připomínající vzducholoď
+STR_DESC    :Velkokapacitní jodnokolejné vlaky s aerodynamickou přídí a zádí
+STR_CPTY    :5 nebo 10 míst v každém vagónu
 
 [BMVOCTPS]
-STR_NAME    :Blob from Outer Space Ride
-STR_DESC    :A themed rotating observation cabin which travels up a tall tower
-STR_CPTY    :20 passengers
+STR_NAME    :Mimozemská hmota
+STR_DESC    :Tématická pozorovací věž s kabinou, která postupně vyjede až na vrchol a zpět dolů
+STR_CPTY    :20 návštěvníků
 
 [CYCLOPSX]
-STR_NAME    :Cyclops Ride
-STR_DESC    :Riders drive the Eye of a Giant Cyclops
-STR_CPTY    :1 person per car
+STR_NAME    :Kyklopský autodrom
+STR_DESC    :Autodrom s elektrickými autíčky ve tvaru oka gigantického kyklopa
+STR_CPTY    :1 místo v každém voze
 
 [FIGTKNIT]
-STR_NAME    :Fighting Knights Dodgem Cars
-STR_DESC    :Riders joust on Horse-themed dodgem cars
-STR_CPTY    :1 person per car
+STR_NAME    :Rytířský autodrom
+STR_DESC    :Autodrom s elektrickými autíčky ve tvaru koní
+STR_CPTY    :1 místo v každém voze
 
 [FLWRPOWR]
-STR_NAME    :Flower Power Ride
-STR_DESC    :Small flower shaped dinghies powered by a centrally-mounted motor controlled by the passengers
-STR_CPTY    :1 passenger per car
+STR_NAME    :Květinová vznášedla
+STR_DESC    :Autodrom se vznášedly ve tvaru květů květin
+STR_CPTY    :1 místo v každém voze
 
 [FUNHOUSE]
-STR_NAME    :Fun House
-STR_DESC    :Building containing moving walls and floors to disorientate people walking through it
-STR_CPTY    :5 guests
+STR_NAME    :Dům zábavy
+STR_DESC    :Budova s pohybujícími se zdmi a podlahou, což dezorientuje procházející návštěvníky
+STR_CPTY    :5 návštěvníků
 
 [HALOFMRS]
-STR_NAME    :Hall of Mirrors
-STR_DESC    :Building containing warped mirrors which distort the reflection of the viewer
-STR_CPTY    :5 guests
+STR_NAME    :Zrcadlové bludiště
+STR_DESC    :Budova s pokřivenými zrdcadly
+STR_CPTY    :5 návštěvníků
 
 [HOVERCAR]
-STR_NAME    :Hover Car Ride
-STR_DESC    :Mag Lev technology has been implemented to create the illusion of futuristic hover cars
-STR_CPTY    :2 passengers per car
+STR_NAME    :Autodráha se vznášedly
+STR_DESC    :Vozy ve tvaru futuristických vznášedel jezdí po postavené dráze
+STR_CPTY    :2 místa v každém voze
 
 [MGR2]
-STR_NAME    :Double Deck Carousel
-STR_DESC    :Traditional enclosed double-deck carousel with carved wooden horses
-STR_CPTY    :32 passengers
+STR_NAME    :Dvoupatrový kolotoč
+STR_DESC    :Klasický dvoupatrový kolotoč s vyřezávanými koníky
+STR_CPTY    :32 návštěvníků
 
 [PEGASUSX]
-STR_NAME    :Pegasus Ride
-STR_DESC    :Powered vehicles in the shape of Pegasus drawing a cart, follow a track-based route
-STR_CPTY    :2 passengers per car
+STR_NAME    :Autodráha s Pegasem
+STR_DESC    :Vozy ve tvaru povozů tažených Pegasem jezdí po postavené dráze
+STR_CPTY    :2 místa v každém voze
 
 [SPOKPRSN]
-STR_NAME    :Haunted Jail House
-STR_DESC    :Building containing dungeons and mannequins of incarcerated figures, to scare people walking through it
-STR_CPTY    :16 Guests
+STR_NAME    :Strašidelná věznice
+STR_DESC    :Budova s podzemím a figurínami vězňů straší procházející návštěvníky
+STR_CPTY    :16 návštěvníků
 
 [TIMEMACH]
-STR_NAME    :Time Machine
-STR_DESC    :Guests sit in a specially designed sphere, and experience the illusion of time travel
-STR_CPTY    :1 per guest
+STR_NAME    :Stroj času
+STR_DESC    :Návštěvníci sedí ve speciálně navržené kruhovité konstrucki a zažívají pocit cestování šasem
+STR_CPTY    :1 místo v každém stroji času
 
 [TRICATOP]
-STR_NAME    :Triceratops Dodgem Cars
-STR_DESC    :Riders lock horns with each other in Triceratops dodgem cars
-STR_CPTY    :1 person per car
+STR_NAME    :Autodrom s Triceratopsem
+STR_DESC    :Autodrom s vozy ve tvaru Triceratopsů
+STR_CPTY    :1 místo v každém voze
 
 [BARNSTRM]
-STR_NAME    :BarnStorming Coaster
-STR_DESC    :Riders sit in seats suspended beneath the track as they speed through giant loops, twists, and large swooping drops
-STR_CPTY    :4 passengers per car
+STR_NAME    :Stodolní střela
+STR_DESC    :Vozy jsou zavěšeny na kolejnicích s ostrými zatáčkami a ostrými pády
+STR_CPTY    :4 místa v každém voze
 
 [BATTRRAM]
-STR_NAME    :Battering Ram Coaster
-STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
-STR_CPTY    :6 passengers per car
+STR_NAME    :Beranidlová horská dráha
+STR_DESC    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
+STR_CPTY    :6 míst v každém voze
 
 [BLCKDETH]
-STR_NAME    :Black Death Ride
-STR_DESC    :Riders career down a twisting track in Rat-shaped cars guided only by the curvature and banking of the semi-circular track
-STR_CPTY    :2 passengers per car
+STR_NAME    :Morová horská dráha
+STR_DESC    :Návštěvníci jedou po propletené bobové dráze
+STR_CPTY    :2 místa v každém voze
 
 [CERBERUS]
-STR_NAME    :Cerberus Coaster
-STR_DESC    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_CPTY    :4 passengers per car
+STR_NAME    :Kerberosova horská dráha
+STR_DESC    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně, která přelétává vrcholky kopců
+STR_CPTY    :4 místa v každém voze
 
 [DRAGNFLY]
-STR_NAME    :Dragonfly Coaster
-STR_DESC    :Passengers ride suspended in a specially designed car from the single-rail track, swinging freely from side to side around corners
-STR_CPTY    :2 passenger per car
+STR_NAME    :Šídlí horská dráha
+STR_DESC    :Návštěvníci jedou na jednokolejné trati zavěšeni ve speciálním voze, který se v zatáčkách houpe
+STR_CPTY    :2 místa v každém voze
 
 [GANSTRCR]
-STR_NAME    :Gangster Car Coaster
-STR_DESC    :1920s Themed Gangster cars are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_CPTY    :4 passengers per car
+STR_NAME    :Gangsterská horská dráha
+STR_DESC    :Horská dráha s vozy ve stylu gangstrů 20. let, poháněnými elektromotorem, které sviští skrze propletenou dráhu
+STR_CPTY    :4 místa v každém voze
 
 [HARPIESX]
-STR_NAME    :Harpies Coaster
-STR_DESC    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
-STR_CPTY    :4 passengers per car
+STR_NAME    :Horská dráha harpií
+STR_DESC    :Návštěvníci jedou v leže zavěšeni do speciálního držení, ve kterém na břiše nebo na zádech projedou trať s ostrými zatáčkami
+STR_CPTY    :4 místa v každém voze
 
 [HOTRODXX]
-STR_NAME    :Hot Rod Coaster
-STR_DESC    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_CPTY    :2 passengers per car
+STR_NAME    :Hot Rod horská dráha
+STR_DESC    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
+STR_CPTY    :2 místa v každém voze
 
 [HOVERBKE]
-STR_NAME    :Hover Bike Ride
-STR_DESC    :Riders sit on futuristic bike-shaped vehicles which travel along a single-rail track
-STR_CPTY    :2 riders per vehicle
+STR_NAME    :Vznášedlová moto horská dráha
+STR_DESC    :Návštěvníci sedí na futuristických motorkách, která jedou po jednokolejné dráze
+STR_CPTY    :2 místa na každé motorce
 
 [HOVRBORD]
-STR_NAME    :Hoverboard Coaster
-STR_DESC    :Guests ride on a futuristic hoverboard, swinging freely from side to side around corners
-STR_CPTY    :2 passenger per car
+STR_NAME    :Vznášedlová horská dráha
+STR_DESC    :Návštěvníci jezdí na futuristickách vznášedlech, houpajících se v zatáčkách ze strany na stranu
+STR_CPTY    :2 místa v každém voze
 
 [JETPACKX]
 STR_NAME    :Jet Pack Booster
-STR_DESC    :Riders sit in a vehicle which is launched up a vertical section of track
-STR_CPTY    :8 passengers per car
+STR_DESC    :Návštěvníci sedí ve voze, který je vystřelen po kolmé dráze
+STR_CPTY    :8 míst v každém voze
 
 [JETPLANE]
-STR_NAME    :Jet Plane Coaster
-STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops
-STR_CPTY    :4 passengers per car
+STR_NAME    :Stíhačková horské dráha
+STR_DESC    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
+STR_CPTY    :4 místa v každém voze
 
 [JOUSTING]
-STR_NAME    :Jousting Knights Coaster
-STR_DESC    :Riders sit on the back of Horse-shaped vehicles along a single-rail track
-STR_CPTY    :2 riders per vehicle
+STR_NAME    :Turnajová horská dráha
+STR_DESC    :Návštěvníci sedí na zádi vozů ve tvaru koní, které jedou po jednokolejné dráze
+STR_CPTY    :2 místa v každém voze
 
 [POLCHASE]
-STR_NAME    :Police Chase Coaster
-STR_DESC    :A looping roller coaster where the riders ride in a sitting position
-STR_CPTY    :4 passengers per car
+STR_NAME    :Policejní honička
+STR_DESC    :Horská dráha s lopinky, na které návštěvníci ve vozech sedí
+STR_CPTY    :4 místa v každém voze
 
 [POLICECR]
-STR_NAME    :Police Car Coaster
-STR_DESC    :1960s Themed Police cars run on wooden tracks, turning around on special reversing sections
-STR_CPTY    :6 passengers per car
+STR_NAME    :Horská dráha policejních vozů
+STR_DESC    :Po dřevěné dráze jedou vozy ve tvaru policejních aut 60. let, které se ve speciálních místech se otočí a jedou pozpátku
+STR_CPTY    :6 míst v každém voze
 
 [PTERODAC]
-STR_NAME    :Pterodactyl Coaster
-STR_DESC    :Riders are held in comfortable seats below the track, travelling through twisted track to give the ultimate prehistoric flying experience
-STR_CPTY    :4 passengers per car
+STR_NAME    :Pterodaktylská horská dráha
+STR_DESC    :Návštěvníci sedí v pohodlných sedadlech pod tratí cestující skrze propletenou dráhu, poskytující pocit prehistorického letu
+STR_CPTY    :4 místa v každém voze
 
 [RAPTORXX]
-STR_NAME    :Raptor Racers Coaster
-STR_DESC    :Riders sit on the back of Raptor-shaped vehicles along a single-rail track
-STR_CPTY    :2 riders per vehicle
+STR_NAME    :Raptorská horská dráha
+STR_DESC    :Návštěvníci sedí na zádi vozů ve tvaru pterodaktylů, které jedou po jednokolejné dráze
+STR_CPTY    :2 místa v každém voze
 
 [SEAPLANE]
-STR_NAME    :Seaplane Ride
-STR_DESC    :Suspended roller coaster train consisting of cars able to swing freely as the train goes around corners
-STR_CPTY    :4 passengers per car
+STR_NAME    :Hydroplánská horská dráha
+STR_DESC    :Zavěšená horská dráha z volné zavěšených vozů, které se naklání při jízdě do zatáček
+STR_CPTY    :4 místa v každém voze
 
 [STAMPHRD]
-STR_NAME    :Stampeding Herd Coaster
-STR_DESC    :A looping roller coaster with vehicles in the shape of a stampeding dinosaur herd.
-STR_CPTY    :4 passengers per car
+STR_NAME    :Horská dráha splašeného stáda
+STR_DESC    :Horská dráha s lopinky a vozy ve tvaru splašeného stáda dinosaurů
+STR_CPTY    :4 místa v každém voze
 
 [VALKYRIE]
-STR_NAME    :Valkyries Coaster
-STR_DESC    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
-STR_CPTY    :6 passengers per car
+STR_NAME    :Valkýrská horská dráha
+STR_DESC    :Extra-široké vozy letí dolů po zcela kolmé dráze a poskytují tím pocit volného pádu
+STR_CPTY    :6 míst v každém voze
 
 [1920RACR]
-STR_NAME    :1920's Racing Cars
-STR_DESC    :Riders race each other in a 1920's Race Car themed Go-Kart
-STR_CPTY    :Single-seater
+STR_NAME    :Motokáry z 20. let
+STR_DESC    :Benzínové ovladatelné motokáry ve stylu 20. let
+STR_CPTY    :1 místo v každém voze
 
 [CAVMNCAR]
-STR_NAME    :Caveman Cars
-STR_DESC    :Riders race each other in Stone-Age Go-Karts
-STR_CPTY    :Single-seater
+STR_NAME    :Prehistorické motokáry
+STR_DESC    :Benzínové ovladatelné motokáry ve stylu pravěku
+STR_CPTY    :1 místo v každém voze
 
 [DINOEGGS]
-STR_NAME    :Dinosaur Egg Ride
-STR_DESC    :Riders ride in pairs, in themed seats rotating around an animated mother Dinosaur.
-STR_CPTY    :18 passengers
+STR_NAME    :Jízda dinsouřích vajec
+STR_DESC    :Návštěvníci sedí po dvou ve vejcích, které se otáčejí okolo dinosaura-matky uprostřed
+STR_CPTY    :18 návštěvníků
 
 [FLALMACE]
-STR_NAME    :Mace Ride
-STR_DESC    :Riders sit on a themed chair which is attached to a motor driven spinning arm.
-STR_CPTY    :1 guest per chair
+STR_NAME    :Palicová jízda
+STR_DESC    :Návštěvníci sedí na židlích připevněných na otáčející se ramena
+STR_CPTY    :1 místo na každé židli
 
 [GINTSPDR]
-STR_NAME    :B-Movie Giant Spider Ride
-STR_DESC    :Riders ride in pairs of themed seats which rotate around a large B-Movie Spider.
-STR_CPTY    :18 passengers
+STR_NAME    :Béčková pavoučí jízda
+STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo velkého pavouka z béčkového filmu uprostřed
+STR_CPTY    :18 návštěvníků
 
 [MICROBUS]
-STR_NAME    :MicroBus Ride
-STR_DESC    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
-STR_CPTY    :8 passengers
+STR_NAME    :Jízda v MicroBusu
+STR_DESC    :Návštěvníci sledují film uvnitř simulátoru pohybu, zatímco se simulátorem hýbe hydraulika
+STR_CPTY    :8 návštěvníků
 
 [NEPTUNEX]
-STR_NAME    :Neptune Ride
-STR_DESC    :Riders ride in pairs, in themed seats rotating around an animated statue of Neptune.
-STR_CPTY    :18 passengers
+STR_NAME    :Neptunská jízda
+STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo suchy Neptuna uprostřed
+STR_CPTY    :18 návštěvníků
 
 [TOMMYGUN]
-STR_NAME    :Tommy Gun Ride
-STR_DESC    :Riders ride in pairs of themed seats which rotate around a large replica Tommy Gun.
-STR_CPTY    :18 passengers
+STR_NAME    :Jízda s Thompsonem
+STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo velké repliky samopalu Thompson uprostřed
+STR_CPTY    :18 návštěvníků
 
 [TREBUCHT]
-STR_NAME    :Trebuchet Ride
-STR_DESC    :Passengers ride in a carriage suspended by two large arms, based on a Dark Age Siege Weapon
-STR_CPTY    :8 passengers
+STR_NAME    :Katapultující jízda
+STR_DESC    :Návštěvníci sedí v gondole zavěšené na podpěrách, otáčející se dopředu a dozadu vzhůru nohama, která vypadá jako obléhací zbraň z dávných dob
+STR_CPTY    :8 návštěvníků
 
 [FLYGBOAT]
-STR_NAME    :Flying Boat Ride
-STR_DESC    :Flying Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_CPTY    :16 passengers per boat
+STR_NAME    :Létající lodě
+STR_DESC    :Vozy ve tvaru létajících lodí jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
+STR_CPTY    :16 míst v každé lodi
 
 [OAKBAREL]
-STR_NAME    :Oak Barrel Ride
-STR_DESC    :Oak Barrels meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
-STR_CPTY    :8 passengers per boat
+STR_NAME    :Jízda v dubovém sudu
+STR_DESC    :Lodě ve tvaru dubových barelů se plaví po meandrech na vodním kanále a sjíždějí pěnící peřeje
+STR_CPTY    :8 míst v každé lodi
 
 [RIVRSTYX]
-STR_NAME    :River Styx
-STR_DESC    :Raft-shaped boats gently meander around a river track
-STR_CPTY    :4 passengers per raft
+STR_NAME    :Řeka Styx
+STR_DESC    :Rafty se plaví po meandrech na vodním kanále
+STR_CPTY    :4 místa na každém raftu
 
 [TRILOBTE]
-STR_NAME    :Trilobite Boats
-STR_DESC    :Trilobite shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_CPTY    :16 passengers per boat
+STR_NAME    :Trilobití lodě
+STR_DESC    :Vozy ve tvaru trilobitů jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
+STR_CPTY    :16 míst v každé lodi
 
 [1920SAND]
-STR_NAME    :Art Deco Food Stall
-STR_DESC    :A stall selling Noodles and Fresh Lemonade
+STR_NAME    :Art Deco stánek
+STR_DESC    :Malý stánek s nudlemi a čerstvou limonádou
 
 [1960TSRT]
-STR_NAME    :Flower Power T-Shirts
-STR_DESC    :Stall selling T-shirts with a flower motif
+STR_NAME    :Hippie trička
+STR_DESC    :Stánek prodávající batikovaná trička s hippie motivy
 
 [MEDISOUP]
-STR_NAME    :Witches Brew Soup
-STR_DESC    :A Stall selling a thick broth style soup
+STR_NAME    :Čarodějnický kotlík
+STR_DESC    :Stánek prodávající hustou polévku
 
 [MKTSTAL1]
-STR_NAME    :Toffee Apple Market Stall
-STR_DESC    :A themed stall selling sticky toffee apples.
+STR_NAME    :Jarmarkový stánek s jablky v županu
+STR_DESC    :Stánek prodávající jablka v županu
 
 [MKTSTAL2]
-STR_NAME    :Lemonade Market Stall
-STR_DESC    :A themed stall selling old style, fresh lemonade.
+STR_NAME    :Jarmarkový stánek s citronádou
+STR_DESC    :Stánek prodávající starou dobrou čerstvou citronádu
 
 [MOONJUCE]
-STR_NAME    :Moon Juice
-STR_DESC    :A stall selling the latest soft drinks
+STR_NAME    :Šťáva z Měsíce
+STR_DESC    :Stánek prodávající nejnovější slazené nápoje
 
 [MYTHOSEA]
-STR_NAME    :Neptune's Seafood Stall
-STR_DESC    :A stall selling Neptunes salty treats
+STR_NAME    :Neptunův stánek s plody moře
+STR_DESC    :Stánek prodávající Neptunovy mořské dobroty
 
 [SOFTOYST]
-STR_NAME    :Soft Toy Stall
-STR_DESC    :A stall selling a cute soft toy Dinosaur
+STR_NAME    :Stánek s plyšáky-dinosaury
+STR_DESC    :Stánek prodávající roztomilé plyšáky-dinosaury
 
 [1920SLMP]
-STR_NAME    :Period Street Lamps
+STR_NAME    :Stará pouliční lampa
 
 [ALENTRE1]
-STR_NAME    :Alien Tree
+STR_NAME    :Mimozemský strom
 
 [ALENTRE2]
-STR_NAME    :Alien Tree
+STR_NAME    :Mimozemský strom
 
 [ARMRBODY]
-STR_NAME    :Magical Armour
+STR_NAME    :Magické brnění
 
 [ARMRHELM]
-STR_NAME    :Magical Helmet
+STR_NAME    :Magická helma
 
 [ARMRSHLD]
-STR_NAME    :Magical Shield
+STR_NAME    :Magický štít
 
 [ARMRSWRD]
-STR_NAME    :Magical Sword
+STR_NAME    :Magický meč
 
 [ARTDEC01]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC02]
-STR_NAME    :Art Deco Inverted Corner Section
+STR_NAME    :Art Deco roh
 
 [ARTDEC03]
-STR_NAME    :Art Deco Wall with Door
+STR_NAME    :Art Deco dveřní rám
 
 [ARTDEC04]
-STR_NAME    :Art Deco Wall with Windows
+STR_NAME    :Art Deco okno
 
 [ARTDEC05]
-STR_NAME    :Art Deco Wall with Windows
+STR_NAME    :Art Deco okno
 
 [ARTDEC06]
-STR_NAME    :Art Deco Top Section
+STR_NAME    :Art Deco vrchní část
 
 [ARTDEC07]
-STR_NAME    :Art Deco Corner Section
+STR_NAME    :Art Deco rohová část
 
 [ARTDEC08]
-STR_NAME    :Art Deco Top Corner Section
+STR_NAME    :Art Deco vrchní rohová část
 
 [ARTDEC09]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC10]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC11]
-STR_NAME    :Art Deco Corner with Windows
+STR_NAME    :Art Deco roh s okny
 
 [ARTDEC12]
-STR_NAME    :Art Deco Corner with Railings
+STR_NAME    :Art Deco roh se zábradlím
 
 [ARTDEC13]
-STR_NAME    :Art Deco Top Corner Section
+STR_NAME    :Art Deco vrchní rohová část
 
 [ARTDEC14]
-STR_NAME    :Art Deco Corner with Windows
+STR_NAME    :Art Deco roh s okny
 
 [ARTDEC15]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC16]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC17]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC18]
-STR_NAME    :Art Deco Top Section
+STR_NAME    :Art Deco vrchní část
 
 [ARTDEC19]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC20]
-STR_NAME    :Art Deco Wall Section
+STR_NAME    :Art Deco stěna
 
 [ARTDEC21]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco stěna se zábradlím
 
 [ARTDEC22]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco stěna se zábradlím
 
 [ARTDEC23]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco stěna se zábradlím
 
 [ARTDEC24]
-STR_NAME    :Art Deco Wall with Railings
+STR_NAME    :Art Deco stěna se zábradlím
 
 [ARTDEC28]
-STR_NAME    :Art Deco Roof Section
+STR_NAME    :Art Deco střešní část
 
 [ARTDEC29]
-STR_NAME    :Art Deco Inverted Corner Section
+STR_NAME    :Art Deco roh
 
 [BIGBASSX]
-STR_NAME    :Giant Bass Guitar
+STR_NAME    :Obrovská baskytara
 
 [BIGGUTAR]
-STR_NAME    :Giant Guitar
+STR_NAME    :Obrovská kytara
 
 [CHPRBKE1]
-STR_NAME    :Motorcycle
+STR_NAME    :Motorka
 
 [CHPRBKE2]
-STR_NAME    :Motorcycle
+STR_NAME    :Motorka
 
 [ELECFEN5]
-STR_NAME    :Electric Fence Inverted Corner Piece
+STR_NAME    :Elektrický plot - obrácená rohová část
 
 [FIREMANX]
-STR_NAME    :Animatronic Fireman
+STR_NAME    :Pohybující se hasič
 
 [FUTSKY16]
-STR_NAME    :Sandstone Skyscraper Mid Slope Corner
+STR_NAME    :Pískovcový mrakodrap - roh
 
 [FUTSKY17]
-STR_NAME    :Sandstone Skyscraper Filler
+STR_NAME    :Pískovcový mrakodrap - výplň
 
 [FUTSKY18]
-STR_NAME    :Sandstone Skyscraper Doorway
+STR_NAME    :Pískovcový mrakodrap - dveřní rám
 
 [FUTSKY19]
-STR_NAME    :Sandstone Skyscraper Bottom Corner
+STR_NAME    :Pískovcový mrakodrap - dolní roh
 
 [FUTSKY21]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Pískovcový mrakodrap - střední stěna
 
 [FUTSKY23]
-STR_NAME    :Sandstone Skyscraper Inverted Corner Top
+STR_NAME    :Pískovcový mrakodrap - obrácený vrchní roh
 
 [FUTSKY29]
-STR_NAME    :Sandstone Skyscraper Bottom Curved Slope
+STR_NAME    :Pískovcový mrakodrap - dolní zaoblená část
 
 [FUTSKY34]
-STR_NAME    :Sandstone Skyscraper Roof
+STR_NAME    :Pískovcový mrakodrap - střecha
 
 [FUTSKY35]
-STR_NAME    :Sandstone Skyscraper Mid Curved Slope
+STR_NAME    :Pískovcový mrakodrap - střední zaoblená část
 
 [FUTSKY42]
-STR_NAME    :Sandstone Skyscraper Curved Slope Top
+STR_NAME    :Pískovcový mrakodrap - horní zaoblená část
 
 [FUTSKY52]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Pískovcový mrakodrap - dolní obrácený roh
 
 [FUTSKY53]
-STR_NAME    :Sandstone Skyscraper Mid Corner
+STR_NAME    :Pískovcový mrakodrap - střední roh
 
 [FUTSKY54]
-STR_NAME    :Obsidian SkyScraper Roof Piece
+STR_NAME    :Mrakodrap ze sopečného skla - střecha
 
 [GLDCHEST]
-STR_NAME    :Treasure Chest
+STR_NAME    :Truhla s pokladem
 
 [GOLDFLEC]
-STR_NAME    :Golden Fleece
+STR_NAME    :Zlatá ovčí vlna
 
 [HAYBAILS]
-STR_NAME    :Hay Bale
+STR_NAME    :Kopa sena
 
 [HEVBTH05]
-STR_NAME    :Heavenly Baths Arch
+STR_NAME    :Nebeská koupel - Oblouk
 
 [HEVBTH06]
-STR_NAME    :Heavenly Baths Arch
+STR_NAME    :Nebeská koupel - Oblouk
 
 [HEVBTH07]
-STR_NAME    :Heavenly Baths Arch
+STR_NAME    :Nebeská koupel - Oblouk
 
 [HEVBTH08]
-STR_NAME    :Heavenly Baths Stairway
+STR_NAME    :Nebeská koupel - Schodiště
 
 [HEVBTH09]
-STR_NAME    :Heavenly Baths Stairway
+STR_NAME    :Nebeská koupel - Schodiště
 
 [HEVBTH10]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :Nebeská koupel - Architektura
 
 [HEVBTH11]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :Nebeská koupel - Architektura
 
 [HEVBTH12]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :Nebeská koupel - Architektura
 
 [HEVBTH13]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :Nebeská koupel - Architektura
 
 [HEVBTH14]
-STR_NAME    :Heavenly Bath Window
+STR_NAME    :Nebeská koupel - Okno
 
 [HEVBTH15]
-STR_NAME    :Heavenly Bath Floor
+STR_NAME    :Nebeská koupel - Podlaha
 
 [HEVROF01]
-STR_NAME    :Heavenly Bath Roof
+STR_NAME    :Nebeská koupel - střecha
 
 [HEVROF02]
-STR_NAME    :Heavenly Bath Roof
+STR_NAME    :Nebeská koupel - střecha
 
 [HEVROF03]
-STR_NAME    :Heavenly Bath Roof
+STR_NAME    :Nebeská koupel - střecha
 
 [HEVROF04]
-STR_NAME    :Heavenly Bath Roof
+STR_NAME    :Nebeská koupel - střecha
 
 [HRBWAL01]
-STR_NAME    :Harbour Wall
+STR_NAME    :Přístav - stěna
 
 [HRBWAL02]
-STR_NAME    :Harbour Wall with Fishing Gear
+STR_NAME    :Přístav - stěna s rybářským načiním
 
 [HRBWAL03]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Přístav - stěna s vřešem
 
 [HRBWAL04]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Přístav - stěna s vřešem
 
 [HRBWAL05]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Přístav - stěna s vřešem
 
 [HRBWAL06]
-STR_NAME    :Harbour Wall with Moor
+STR_NAME    :Přístav - stěna s vřešem
 
 [HURCLULS]
-STR_NAME    :Hercules
+STR_NAME    :Herkules
 
 [INDWAL01]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industriální stěny - set
 
 [INDWAL02]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industriální stěny - set
 
 [INDWAL03]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industriální stěny - set
 
 [INDWAL04]
-STR_NAME    :Industrial Wall Set
+STR_NAME    :Industriální stěny - set
 
 [INDWAL05]
-STR_NAME    :Industrial Roof Corner Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL06]
-STR_NAME    :Industrial Roof Corner Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL07]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industriální dveřní rám
 
 [INDWAL08]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industriální dveřní rám
 
 [INDWAL09]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industriální dveřní rám
 
 [INDWAL10]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industriální dveřní rám
 
 [INDWAL11]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industriální dveřní rám
 
 [INDWAL12]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industriální dveřní rám
 
 [INDWAL13]
-STR_NAME    :Industrial Wall with Doorway
+STR_NAME    :Industriální dveřní rám
 
 [INDWAL14]
-STR_NAME    :Industrial Wall Corner Piece
+STR_NAME    :Industriální roh
 
 [INDWAL15]
-STR_NAME    :Industrial Wall Corner Piece
+STR_NAME    :Industriální roh
 
 [INDWAL16]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industriální okno
 
 [INDWAL17]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industriální okno
 
 [INDWAL18]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industriální okno
 
 [INDWAL19]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industriální okno
 
 [INDWAL20]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL21]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL22]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL23]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL24]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL25]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL26]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL27]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL28]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL29]
-STR_NAME    :Industrial Roof Piece
+STR_NAME    :Industriální střecha
 
 [INDWAL30]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industriální okno
 
 [INDWAL31]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industriální okno
 
 [INDWAL32]
-STR_NAME    :Industrial Wall with Window
+STR_NAME    :Industriální okno
 
 [JAILXX01]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Věznice - stěna
 
 [JAILXX02]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Věznice - stěna
 
 [JAILXX03]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Věznice - stěna
 
 [JAILXX04]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Věznice - stěna
 
 [JAILXX05]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Věznice - stěna
 
 [JAILXX06]
-STR_NAME    :Prison Wall Piece
+STR_NAME    :Věznice - stěna
 
 [JAILXX07]
-STR_NAME    :Prison Wall Roof
+STR_NAME    :Věznice - střecha
 
 [JAILXX08]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Věznice - obrácená část
 
 [JAILXX09]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Věznice - obrácená část
 
 [JAILXX10]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Věznice - obrácená část
 
 [JAILXX11]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Věznice - obrácená část
 
 [JAILXX12]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Věznice - obrácená část
 
 [JAILXX13]
-STR_NAME    :Prison Inverted Piece
+STR_NAME    :Věznice - obrácená část
 
 [JAILXX14]
-STR_NAME    :Prison Watch Tower Stairs
+STR_NAME    :Věznice - schodiště na rozhlednu
 
 [JAILXX15]
-STR_NAME    :Prison Watch Tower Stairs
+STR_NAME    :Věznice - schodiště na rozhlednu
 
 [JAILXX16]
-STR_NAME    :Prison Watch Tower
+STR_NAME    :Věznice - Rozhledna
 
 [JAILXX20]
-STR_NAME    :Prison Wall Corner
+STR_NAME    :Věznice - roh
 
 [JAILXX21]
-STR_NAME    :Prison Wall Corner
+STR_NAME    :Věznice - roh
 
 [JAZZMBR1]
-STR_NAME    :Jazz Band Member
+STR_NAME    :Člen jazzové kapely
 
 [JAZZMBR2]
-STR_NAME    :Jazz Band Member
+STR_NAME    :Člen jazzové kapely
 
 [JAZZMBR3]
-STR_NAME    :Jazz Band Member
+STR_NAME    :Člen jazzové kapely
 
 [JAZZMBR4]
-STR_NAME    :Jazz Band Member
+STR_NAME    :Člen jazzové kapely
 
 [MAMTHW01]
-STR_NAME    :Large Mammoth Fence
+STR_NAME    :Velký mamutí plot
 
 [MAMTHW02]
-STR_NAME    :Large Mammoth Fence
+STR_NAME    :Velký mamutí plot
 
 [MAMTHW03]
-STR_NAME    :Large Angled Mammoth Fence
+STR_NAME    :Velký nahnutý mamutí plot
 
 [MAMTHW04]
-STR_NAME    :Large Angled Mammoth Fence
+STR_NAME    :Velký nahnutý mamutí plot
 
 [MAMTHW05]
-STR_NAME    :Small Angled Mammoth Fence
+STR_NAME    :Malý nahnutý mamutí plot
 
 [MAMTHW06]
-STR_NAME    :Small Angled Mammoth Fence
+STR_NAME    :Malý nahnutý mamutí plot
 
 [MCASTL02]
-STR_NAME    :Castle Wall
+STR_NAME    :Hradní stěna
 
 [MCASTL03]
-STR_NAME    :Castle Wall
+STR_NAME    :Hradní stěna
 
 [MCASTL04]
-STR_NAME    :Castle Wall
+STR_NAME    :Hradní stěna
 
 [MCASTL05]
-STR_NAME    :Castle Ramparts Corner
+STR_NAME    :Hradní opevnění Corner
 
 [MCASTL06]
-STR_NAME    :Castle Ramparts
+STR_NAME    :Hradní opevnění
 
 [MCASTL07]
-STR_NAME    :Castle Ramparts Corner
+STR_NAME    :Hradní opevnění - roh
 
 [MCASTL08]
-STR_NAME    :Castle Ramparts Inverted Corner
+STR_NAME    :Hradní opevnění - obrácený roh
 
 [MCASTL09]
-STR_NAME    :Castle Corner Piece
+STR_NAME    :Hradní rohová část
 
 [MCASTL10]
-STR_NAME    :Castle Ramparts Corner
+STR_NAME    :Hradní opevnění - roh
 
 [MCASTL19]
-STR_NAME    :Castle Corner Piece
+STR_NAME    :Hradní rohová část
 
 [MDBUCKET]
-STR_NAME    :Bucket
+STR_NAME    :Kbelík
 
 [MEDSTOOL]
-STR_NAME    :Stool
+STR_NAME    :Stolička
 
 [MEDTOOLS]
-STR_NAME    :Farm Tools
+STR_NAME    :Farmářské náčiní
 
 [MEDTRGET]
-STR_NAME    :Archery Target
+STR_NAME    :Terč
 
 [METEORCR]
-STR_NAME    :Meteor Crater Corner
+STR_NAME    :Kráter
 
 [METEORST]
-STR_NAME    :Meteor Crater Wall
+STR_NAME    :Kráter - stěna
 
 [METRCRS1]
-STR_NAME    :Meteor Crater Wall with Crystals
+STR_NAME    :Kráter - stěna s krystaly
 
 [METRCRS2]
-STR_NAME    :Meteor Crater Wall with Crystals
+STR_NAME    :Kráter - stěna s krystaly
 
 [MINOTAUR]
-STR_NAME    :Minotaur Statue
+STR_NAME    :Socha minotaura
 
 [OLDNYK01]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK02]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK03]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK04]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK05]
-STR_NAME    :New York Roof Piece
+STR_NAME    :New York střecha
 
 [OLDNYK06]
-STR_NAME    :New York Corner Filler
+STR_NAME    :New York výpň rohu
 
 [OLDNYK07]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :New York obrácený roh
 
 [OLDNYK08]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :New York obrácený roh
 
 [OLDNYK09]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :New York obrácený roh
 
 [OLDNYK10]
-STR_NAME    :New York Inverted Corner Piece
+STR_NAME    :New York obrácený roh
 
 [OLDNYK11]
-STR_NAME    :New York Wall with Line
+STR_NAME    :New York stěna s linkou
 
 [OLDNYK12]
-STR_NAME    :New York Washing Line
+STR_NAME    :New York stěna
 
 [OLDNYK13]
-STR_NAME    :New York Wall with Line
+STR_NAME    :New York stěna s linkou
 
 [OLDNYK14]
-STR_NAME    :New York Washing Line
+STR_NAME    :New York stěna
 
 [OLDNYK15]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK16]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK17]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK18]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK19]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK31]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK33]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK34]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK35]
-STR_NAME    :New York Roof Piece
+STR_NAME    :New York střecha
 
 [PRIMWAL1]
-STR_NAME    :Wood Fence with Dead Vines
+STR_NAME    :Dřevěný plot s révou
 
 [PRIMWAL2]
-STR_NAME    :Wood Fence with Dead Vines
+STR_NAME    :Dřevěný plot s révou
 
 [PRIMWAL3]
-STR_NAME    :Wood Fence with Dead Vines
+STR_NAME    :Dřevěný plot s révou
 
 [PSNTWL02]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Starodávná vesnice - dolní stěna
 
 [PSNTWL03]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Starodávná vesnice - dolní stěna
 
 [PSNTWL04]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Starodávná vesnice - dolní stěna
 
 [PSNTWL05]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Starodávná vesnice - dolní stěna
 
 [PSNTWL06]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Starodávná vesnice - dolní stěna
 
 [PSNTWL07]
-STR_NAME    :Dark Age Village Lower Wall Piece
+STR_NAME    :Starodávná vesnice - dolní stěna
 
 [PSNTWL08]
-STR_NAME    :Dark Age Village Lower Corner Piece
+STR_NAME    :Starodávná vesnice - dolní roh
 
 [PSNTWL09]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Starodávná vesnice - horní stěna
 
 [PSNTWL10]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Starodávná vesnice - horní stěna
 
 [PSNTWL11]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Starodávná vesnice - horní stěna
 
 [PSNTWL12]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Starodávná vesnice - horní stěna
 
 [PSNTWL13]
-STR_NAME    :Dark Age Village Upper Wall Piece
+STR_NAME    :Starodávná vesnice - horní stěna
 
 [PSNTWL14]
-STR_NAME    :Dark Age Village Roof Piece
+STR_NAME    :Starodávná vesnice - střecha
 
 [PSNTWL15]
-STR_NAME    :Dark Age Village Inverted Roof Piece
+STR_NAME    :Starodávná vesnice - obrácená střecha
 
 [PSNTWL16]
-STR_NAME    :Dark Age Village Roof Piece
+STR_NAME    :Starodávná vesnice - střecha
 
 [PSNTWL17]
-STR_NAME    :Dark Age Village Roof Piece
+STR_NAME    :Starodávná vesnice - střecha
 
 [PSNTWL20]
-STR_NAME    :Dark Age Village Window Box Roof
+STR_NAME    :Starodávná vesnice - strešní okno
 
 [PSNTWL21]
-STR_NAME    :Dark Age Village Window Box Roof
+STR_NAME    :Starodávná vesnice - strešní okno
 
 [PSNTWL23]
-STR_NAME    :Dark Age Village Upper Corner Piece
+STR_NAME    :Starodávná vesnice - horní roh
 
 [PSNTWL24]
-STR_NAME    :Dark Age Village Window Box
+STR_NAME    :Starodávná vesnice - okno
 
 [PSNTWL25]
-STR_NAME    :Dark Age Village Window Box
+STR_NAME    :Starodávná vesnice - okno
 
 [PSNTWL29]
-STR_NAME    :Dark Age Village Window Box Roof
+STR_NAME    :Starodávná vesnice - strešní okno
 
 [PSNTWL30]
-STR_NAME    :Dark Age Village Window Box Roof
+STR_NAME    :Starodávná vesnice - strešní okno
 
 [PSNTWL31]
-STR_NAME    :Dark Age Village Corner Roof Piece
+STR_NAME    :Starodávná vesnice - rohová střecha
 
 [RDMETO03]
-STR_NAME    :Red Meteor Crater Wall
+STR_NAME    :Kráter - stěna
 
 [RDMETO04]
-STR_NAME    :Red Meteor Crater Inverted Corner
+STR_NAME    :Kráter - obrácený roh
 
 [RUNWAY01]
-STR_NAME    :Runway Piece
+STR_NAME    :Ranvej
 
 [RUNWAY02]
-STR_NAME    :Runway Piece
+STR_NAME    :Ranvej
 
 [RUNWAY03]
-STR_NAME    :Runway Corner Piece
+STR_NAME    :Ranvej
 [RUNWAY04]
-STR_NAME    :Runway Edge Piece
+STR_NAME    :Ranvej
 
 [RUNWAY05]
-STR_NAME    :Runway Piece
+STR_NAME    :Ranvej
 
 [RUNWAY06]
-STR_NAME    :Runway Inverted Corner Piece
+STR_NAME    :Ranvej
 
 [SCHNCRSH]
-STR_NAME    :Wrecked Seaplane
+STR_NAME    :Rozbitý hydroplán
 
 [SCHNDRUM]
-STR_NAME    :Oil Barrel
+STR_NAME    :Barel ropy
 
 [SCHNPL05]
-STR_NAME    :Sea Plane
+STR_NAME    :Hydroplán
 
 [SCHNPL06]
-STR_NAME    :Sea Plane
+STR_NAME    :Hydroplán
 
 [SCHNTNNY]
-STR_NAME    :Racing Tannoy
+STR_NAME    :Závodní tannoy
 
 [SHWDFRST]
-STR_NAME    :Forest Trees
+STR_NAME    :Stromy
 
 [SMOKSK02]
 STR_NAME    :Smoke Stack Mid
@@ -9632,238 +9632,238 @@ STR_NAME    :Smoke Stack Mid
 STR_NAME    :Smoke Stack Base
 
 [SPCSHP06]
-STR_NAME    :Space Ship Cross Section
+STR_NAME    :Vesmírná loď - střední část
 
 [SPCSHP09]
-STR_NAME    :Space Ship Docking Section
+STR_NAME    :Vesmírná loď - dok
 
 [SPCSHP10]
-STR_NAME    :Space Ship Engine Section
+STR_NAME    :Vesmírná loď - motory
 
 [SPCSHP11]
-STR_NAME    :Space Ship Living Section
+STR_NAME    :Vesmírná loď - obývací část
 
 [STNESTA1]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :Člověk přeměněný na kámen
 
 [STNESTA2]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :Člověk přeměněný na kámen
 
 [STNESTA3]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :Člověk přeměněný na kámen
 
 [STNESTA4]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :Člověk přeměněný na kámen
 
 [STOOLSET]
-STR_NAME    :Stools
+STR_NAME    :Stoličky
 
 [SWAMPLT1]
-STR_NAME    :Swamp Plant
+STR_NAME    :Bažina - Rostlina
 
 [SWAMPLT2]
-STR_NAME    :Swamp Fern
+STR_NAME    :Bažina - Tráva
 
 [SWAMPLT3]
-STR_NAME    :Swamp Fern
+STR_NAME    :Bažina - Tráva
 
 [SWAMPLT4]
-STR_NAME    :Swamp Plant
+STR_NAME    :Bažina - Rostlina
 
 [SWAMPLT5]
-STR_NAME    :Swamp Plant
+STR_NAME    :Bažina - Rostlina
 
 [SWAMPLT6]
-STR_NAME    :Swamp Fern
+STR_NAME    :Bažina - Tráva
 
 [SWAMPLT7]
-STR_NAME    :Swamp Fern
+STR_NAME    :Bažina - Tráva
 
 [SWAMPLT8]
-STR_NAME    :Swamp Fern
+STR_NAME    :Bažina - Tráva
 
 [SWAMPLT9]
-STR_NAME    :Swamp Fern
+STR_NAME    :Bažina - Tráva
 
 [SWRDSTNE]
-STR_NAME    :Sword in the Stone
+STR_NAME    :Meč v kameni
 
 [TARPIT04]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT05]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT06]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT07]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT08]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT09]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT10]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT11]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT12]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT13]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT14]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [VALKRI01]
-STR_NAME    :Valkyrie
+STR_NAME    :Valkýra
 
 [VALKRI02]
-STR_NAME    :Valkyrie
+STR_NAME    :Valkýra
 
 [WDNCART2]
-STR_NAME    :Wooden Cart
+STR_NAME    :Dřevěný povoz
 
 [WEPNRACK]
-STR_NAME    :Weapon Set
+STR_NAME    :Set zbraní
 
 [WISKYBL1]
-STR_NAME    :Whisky Barrel
+STR_NAME    :Whisky barel
 
 [WISKYBL2]
-STR_NAME    :Whisky Barrels
+STR_NAME    :Whisky barely
 
 [YEWTREEX]
-STR_NAME    :Yew Tree
+STR_NAME    :Tis
 
 [ZEUSSTAT]
-STR_NAME    :Zeus Statue
+STR_NAME    :Socha Dia
 
 [ALENPLT1]
-STR_NAME    :Alien Plant
+STR_NAME    :Mimozemská Rostlina
 
 [ALENPLT2]
-STR_NAME    :Alien Plant
+STR_NAME    :Mimozemská Rostlina
 
 [ALLSEEYE]
-STR_NAME    :Animatronic All Seeing Eye
+STR_NAME    :Pohybující se vševidící oko
 
 [ALNSTR01]
-STR_NAME    :Alien Structure Small
+STR_NAME    :Mimozemská stavba
 
 [ALNSTR02]
-STR_NAME    :Alien Structure Small
+STR_NAME    :Mimozemská stavba
 
 [ALNSTR03]
-STR_NAME    :Alien Structure Small
+STR_NAME    :Mimozemská stavba
 
 [ALNSTR04]
-STR_NAME    :Alien Skylight Small
+STR_NAME    :Mimozemské světlo
 
 [ALNSTR05]
-STR_NAME    :Alien Tower Bottom
+STR_NAME    :Mimozemská věž - dolní díl
 
 [ALNSTR06]
-STR_NAME    :Alien Tower Middle
+STR_NAME    :Mimozemská věž - střední díl
 
 [ALNSTR07]
-STR_NAME    :Alien Tower Top
+STR_NAME    :Mimozemská věž - vrchní díl
 
 [ARGONAU1]
-STR_NAME    :Animatronic Argonaut
+STR_NAME    :Pohyblivá chobotnice
 
 [ARGONAU2]
-STR_NAME    :Animatronic Argonaut
+STR_NAME    :Pohyblivá chobotnice
 
 [ARGONAU3]
-STR_NAME    :Animatronic Argonaut
+STR_NAME    :Pohyblivá chobotnice
 
 [ASTRONGT]
-STR_NAME    :Animatronic Astronaut
+STR_NAME    :Pohyblivý astronaut
 
 [BKRGANG1]
-STR_NAME    :Biker
+STR_NAME    :Cyklista
 
 [BOLPOT01]
-STR_NAME    :Boiling Pot
+STR_NAME    :Hrnec s horkou vodou
 
 [CAGDSTAT]
-STR_NAME    :Animatronic Eagle on Cage
+STR_NAME    :Pohybující se orel na kleci
 
 [CAVEMENX]
-STR_NAME    :Animatronic Caveman lighting Fire
+STR_NAME    :Pohybující se jeskynní muž zapalující oheň
 
 [CHANMAID]
-STR_NAME    :Animatronic Chained Maiden
+STR_NAME    :Pohybující se Andromeda (spoutaná žena)
 
 [CLNSMEN1]
-STR_NAME    :Animatronic Clansman
+STR_NAME    :Pohybující se člen klanu
 
 [COMPEYEX]
-STR_NAME    :Super Computer Monitor
+STR_NAME    :Super monitor
 
 [COOKSPIT]
-STR_NAME    :Animal cooking on Spit
+STR_NAME    :Pečeně na rožni
 
 [DINSIGN1]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :Neonová cedule jídelny
 
 [DINSIGN2]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :Neonová cedule jídelny
 
 [DINSIGN3]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :Neonová cedule jídelny
 
 [DINSIGN4]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :Neonová cedule jídelny
 
 [DKFIGHT1]
-STR_NAME    :Animatronic Knight
+STR_NAME    :Pohybující se rytíř
 
 [DKFIGHT2]
-STR_NAME    :Animatronic Knight
+STR_NAME    :Pohybující se rytíř
 
 [DRGNATTK]
-STR_NAME    :Dragon Attacking
+STR_NAME    :Útočící drak
 
 [ELECFEN1]
-STR_NAME    :Electric Fence Corner Piece
+STR_NAME    :Elektrický ohradník - roh
 
 [ELECFEN2]
-STR_NAME    :Electric Fence
+STR_NAME    :Elektrický ohradník
 
 [ELECFEN3]
-STR_NAME    :Electric Fence with Light
+STR_NAME    :Elektrický ohradník se světlem
 
 [ELECFEN4]
-STR_NAME    :Electric Fence Broken
+STR_NAME    :Elektrický ohradník - rozbitý
 
 [EVALIEN1]
-STR_NAME    :Animatronic Evil Alien
+STR_NAME    :Pohybující se ďábelský mimozemšťan
 
 [EVALIEN2]
-STR_NAME    :Animatronic Evil Alien
+STR_NAME    :Pohybující se ďábelský mimozemšťan
 
 [EVALIEN3]
-STR_NAME    :Animatronic Evil Alien
+STR_NAME    :Pohybující se ďábelský mimozemšťan
 
 [FIRCANON]
-STR_NAME    :Animatronic Firing Cannon
+STR_NAME    :Pohybující se vystřelující kanón
 
 [FLTSIGN1]
-STR_NAME    :Anti-Gravity LCD Billboard
+STR_NAME    :Antigravitační LCD Billboard
 
 [FLTSIGN2]
-STR_NAME    :Anti-Gravity LCD Billboard
+STR_NAME    :Antigravitační LCD Billboard
 
 [FRBEACON]
-STR_NAME    :Fiery Beacon
+STR_NAME    :Pochodeň / svíce
 
 [FUROBOT1]
 STR_NAME    :Robot
@@ -9872,802 +9872,802 @@ STR_NAME    :Robot
 STR_NAME    :Robot
 
 [FUTSKY01]
-STR_NAME    :Sandstone Skyscraper Walkway
+STR_NAME    :Pískovcový mrakodrap - brána
 
 [FUTSKY02]
-STR_NAME    :Sandstone Skyscraper Filler
+STR_NAME    :Pískovcový mrakodrap - výplň
 
 [FUTSKY03]
-STR_NAME    :Sandstone Skyscraper Bottom Corner
+STR_NAME    :Pískovcový mrakodrap - dolní roh
 
 [FUTSKY04]
-STR_NAME    :Sandstone Skyscraper Curved Slope Top
+STR_NAME    :Pískovcový mrakodrap - zaoblený vršek
 
 [FUTSKY05]
-STR_NAME    :Sandstone Skyscraper Corner Top
+STR_NAME    :Pískovcový mrakodrap - zaoblený vršek
 
 [FUTSKY06]
-STR_NAME    :Sandstone Skyscraper Mid Curved Slope
+STR_NAME    :Pískovcový mrakodrap - zaoblený střed
 
 [FUTSKY07]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Pískovcový mrakodrap - střední stěna
 
 [FUTSKY08]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Pískovcový mrakodrap - střední stěna
 
 [FUTSKY09]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Pískovcový mrakodrap - střední stěna
 
 [FUTSKY10]
-STR_NAME    :Sandstone Skyscraper Bottom Slope Base
+STR_NAME    :Pískovcový mrakodrap - zaoblený spodek
 
 [FUTSKY11]
-STR_NAME    :Sandstone Skyscraper Mid Corner
+STR_NAME    :Pískovcový mrakodrap - střední roh
 
 [FUTSKY12]
-STR_NAME    :Sandstone Skyscraper Mid Wall Section
+STR_NAME    :Pískovcový mrakodrap - střední stěna
 
 [FUTSKY13]
-STR_NAME    :Sandstone Skyscraper Roof Spire
+STR_NAME    :Pískovcový mrakodrap - střešní díl
 
 [FUTSKY14]
-STR_NAME    :Sandstone Skyscraper Roof Spire
+STR_NAME    :Pískovcový mrakodrap - střešní díl
 
 [FUTSKY15]
-STR_NAME    :Sandstone Skyscraper Docking Bay
+STR_NAME    :Pískovcový mrakodrap - dok
 
 [FUTSKY33]
-STR_NAME    :Sandstone Skyscraper Walkway
+STR_NAME    :Pískovcový mrakodrap - brána
 
 [FUTSKY36]
-STR_NAME    :Obsidian SkyScraper Door Piece
+STR_NAME    :Mrakodrap ze sopečného skla - dveře
 
 [FUTSKY37]
-STR_NAME    :Obsidian SkyScraper Shallow Slope Corner
+STR_NAME    :Mrakodrap ze sopečného skla - zaoblený roh
 
 [FUTSKY38]
-STR_NAME    :Obsidian SkyScraper Shallow Sloped Wall
+STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
 
 [FUTSKY39]
-STR_NAME    :Obsidian SkyScraper Shallow Slope Corner
+STR_NAME    :Mrakodrap ze sopečného skla - nakloněný roh
 
 [FUTSKY40]
-STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
 
 [FUTSKY41]
-STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
 
 [FUTSKY44]
-STR_NAME    :Obsidian SkyScraper Steep Sloped Wall
+STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
 
 [FUTSKY46]
-STR_NAME    :Obsidian SkyScraper Steep Slope Corner
+STR_NAME    :Mrakodrap ze sopečného skla - nakloněný roh
 
 [FUTSKY47]
-STR_NAME    :Obsidian SkyScraper Wall
+STR_NAME    :Mrakodrap ze sopečného skla - stěna
 
 [FUTSKY48]
-STR_NAME    :Obsidian SkyScraper Wall with Window
+STR_NAME    :Mrakodrap ze sopečného skla - okno
 
 [FWRPRDC1]
-STR_NAME    :Groovy Dancer
+STR_NAME    :Senzační tanečnice
 
 [GANGSTER]
-STR_NAME    :Animatronic Gangster
+STR_NAME    :Pohybující se Gangster
 
 [GDALIEN1]
-STR_NAME    :Animatronic Good Alien
+STR_NAME    :Pohybující se hodný mimozemšťan
 
 [GDALIEN2]
-STR_NAME    :Animatronic Good Alien
+STR_NAME    :Pohybující se hodný mimozemšťan
 
 [GDALIEN3]
-STR_NAME    :Animatronic Good Alien
+STR_NAME    :Pohybující se hodný mimozemšťan
 
 [GEYSERXX]
-STR_NAME    :Geysers
+STR_NAME    :Gejzíry
 
 [GGNTOCTO]
-STR_NAME    :B-Movie Giant Octopus
+STR_NAME    :Béčková obrovská chobotnice
 
 [GGNTSPID]
-STR_NAME    :B-Movie Giant Spider
+STR_NAME    :Béčkový obrovský pavouk
 
 [GSCORPO2]
-STR_NAME    :Animatronic attacking Scorpion
+STR_NAME    :Pohybující se útočící škorpion
 
 [GSCORPON]
-STR_NAME    :Animatronic attacking Scorpion
+STR_NAME    :Pohybující se útočící škorpion
 
 [GUYQWIFX]
-STR_NAME    :Singer with Quiff
+STR_NAME    :Zpěvák s patkou
 
 [HEVBTH01]
-STR_NAME    :Heavenly Bath Pool
+STR_NAME    :Nebeská koupel - bazén
 
 [HEVBTH02]
-STR_NAME    :Heavenly Bath Pool Corner
+STR_NAME    :Nebeská koupel - roh bazénu
 
 [HEVBTH03]
-STR_NAME    :Heavenly Baths Fountain
+STR_NAME    :Nebeská koupel - fontána
 
 [HEVBTH04]
-STR_NAME    :Heavenly Baths Fountain
+STR_NAME    :Nebeská koupel - fontána
 
 [HEVBTH16]
-STR_NAME    :Heavenly Bath Pool Steps
+STR_NAME    :Nebeská koupel - schody do bazénu
 
 [HEVBTH17]
-STR_NAME    :Heavenly Bath Pool Edge
+STR_NAME    :Nebeská koupel - hrana bazénu
 
 [HORSECRT]
-STR_NAME    :Horse
+STR_NAME    :Kůň
 
 [HOVRCAR1]
-STR_NAME    :Hovercar on Stand
+STR_NAME    :Zaparkované vznášedlo
 
 [HOVRCAR2]
-STR_NAME    :Hovercar on Stand
+STR_NAME    :Zaparkované vznášedlo
 
 [HOVRCAR3]
-STR_NAME    :Hovercar Flying
+STR_NAME    :Letící vznášedlo
 
 [HOVRCAR4]
-STR_NAME    :Hovercar Flying
+STR_NAME    :Letící vznášedlo
 
 [HVRBIKE1]
-STR_NAME    :Hoverbike on Stand
+STR_NAME    :Zaparkované vznášedlo
 
 [HVRBIKE2]
-STR_NAME    :Hoverbike on Stand
+STR_NAME    :Zaparkované vznášedlo
 
 [HVRBIKE3]
-STR_NAME    :Hoverbike Flying
+STR_NAME    :Letící vznášedlo
 
 [HVRBIKE4]
-STR_NAME    :Hoverbike Flying
+STR_NAME    :Letící vznášedlo
 
 [KILLRVIN]
-STR_NAME    :Climbing Vine Tree
+STR_NAME    :Viná réva
 
 [KNFIGHT1]
-STR_NAME    :Animatronic Dark Knight
+STR_NAME    :Pohybující se temný rytíř
 
 [KNFIGHT2]
-STR_NAME    :Animatronic Dark Knight
+STR_NAME    :Pohybující se temný rytíř
 
 [LARGECPU]
-STR_NAME    :Super Computer Large CPU
+STR_NAME    :Superpočítač
 
 [LASERX01]
-STR_NAME    :Laser Fence
+STR_NAME    :Laserový plot
 
 [LASERX02]
-STR_NAME    :Laser Fence Corner
+STR_NAME    :Laserový plot - roh
 
 [MDUSASTA]
-STR_NAME    :Animatronic Medusa
+STR_NAME    :Pohybující se Medusa
 
 [PDFLAG02]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG03]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG04]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG05]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG06]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG08]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG13]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG14]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG15]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [PDFLAG16]
-STR_NAME    :Period Flag
+STR_NAME    :Stará vlajka
 
 [POLWTBTN]
-STR_NAME    :Animatronic Police Officer
+STR_NAME    :Pohybující se policista
 
 [PRIMHEAD]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
 
 [PRIMHEAR]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
 
 [PRIMROOR]
-STR_NAME    :Wood Fence with Climbing Vines
+STR_NAME    :Dřevěný plot s vinou révou
 
 [PRIMROOT]
-STR_NAME    :Wood Fence with Climbing Vines
+STR_NAME    :Dřevěný plot s vinou révou
 
 [PRIMSCRN]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
 
 [PRIMST01]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
 
 [PRIMST02]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
 
 [PRIMST03]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
 
 [PRIMTALL]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
 
 [PSNTWL01]
-STR_NAME    :Dark Age Village Roof with Chimney
+STR_NAME    :Starodávná vesnice - střecha s komínem
 
 [RCKNROLR]
-STR_NAME    :Cool Dude
+STR_NAME    :Frajer
 
 [ROBNHOOD]
-STR_NAME    :Animatronic Robin Hood
+STR_NAME    :Pohybující se Robin Hood
 
 [RSWATRES]
-STR_NAME    :Rollerskating Waitress
+STR_NAME    :Bruslící číšnice
 
 [SCHNBOST]
-STR_NAME    :Buoy
+STR_NAME    :Bóje
 
 [SCHNBOUY]
-STR_NAME    :Buoy
+STR_NAME    :Bóje
 
 [SCHNPL01]
-STR_NAME    :Sea Plane
+STR_NAME    :Hydroplán
 
 [SCHNPL02]
-STR_NAME    :Sea Plane
+STR_NAME    :Hydroplán
 
 [SCHNPL03]
-STR_NAME    :Sea Plane
+STR_NAME    :Hydroplán
 
 [SCHNPL04]
-STR_NAME    :Sea Plane
+STR_NAME    :Hydroplán
 
 [SDRAGFLY]
-STR_NAME    :Animatronic Dragonflies
+STR_NAME    :Pohybující se vášky
 
 [SKELETO1]
-STR_NAME    :Animatronic Skeletal Army
+STR_NAME    :Pohybující se armáda kostlivců
 
 [SKELETO2]
-STR_NAME    :Animatronic Skeletal Army
+STR_NAME    :Pohybující se armáda kostlivců
 
 [SKELETO3]
-STR_NAME    :Animatronic Skeletal Army
+STR_NAME    :Pohybující se armáda kostlivců
 
 [SMALLCPU]
-STR_NAME    :Super Computer Small CPU
+STR_NAME    :Superpočítač
 
 [SMOKSK01]
-STR_NAME    :Large Smoking Chimney
+STR_NAME    :Velký kouřící komín
 
 [SOUPCRN2]
-STR_NAME    :Primordial Soup
+STR_NAME    :Prebiotická polévka
 
 [SOUPCRNR]
-STR_NAME    :Primordial Soup
+STR_NAME    :Prebiotická polévka
 
 [SOUPED01]
-STR_NAME    :Primordial Soup
+STR_NAME    :Prebiotická polévka
 
 [SOUPED02]
-STR_NAME    :Primordial Soup
+STR_NAME    :Prebiotická polévka
 
 [SOUPTL01]
-STR_NAME    :Primordial Soup
+STR_NAME    :Prebiotická polévka
 
 [SOUPTL02]
-STR_NAME    :Primordial Soup
+STR_NAME    :Prebiotická polévka
 
 [SPACRANG]
-STR_NAME    :Animatronic Space Ranger
+STR_NAME    :Pohybující se Vesmírný kovboj
 
 [SPCSHP01]
-STR_NAME    :Space Ship Cargo Section
+STR_NAME    :Vesmírná loď - nákladní sekce
 
 [SPCSHP02]
-STR_NAME    :Space Ship Comms Section
+STR_NAME    :Vesmírná loď - komunikační sekce
 
 [SPCSHP03]
-STR_NAME    :Space Ship Solar Section
+STR_NAME    :Vesmírná loď - solární sekce
 
 [SPCSHP04]
-STR_NAME    :Space Ship Solar Panels
+STR_NAME    :Vesmírná loď - solární panely
 
 [SPCSHP05]
-STR_NAME    :Space Ship Gravity Section
+STR_NAME    :Vesmírná loď - gravitační sekce
 
 [SPCSHP07]
-STR_NAME    :Space Ship Control Deck
+STR_NAME    :Vesmírná loď - kontrolní panel
 
 [SPCSHP08]
-STR_NAME    :Space Ship Fuel Section
+STR_NAME    :Vesmírná loď - palivová sekce
 
 [SPCSHP12]
-STR_NAME    :Space Ship Science Section
+STR_NAME    :Vesmírná loď - vědecká sekce
 
 [SPEAKR01]
-STR_NAME    :Small Speaker
+STR_NAME    :Malý reproduktor
 
 [SPEAKR02]
-STR_NAME    :Large Speaker
+STR_NAME    :Velký reproduktor
 
 [SPIKTAIL]
-STR_NAME    :Animatronic Stegosaurus
+STR_NAME    :Pohybující se stegosaurus
 
 [SPTERDAC]
-STR_NAME    :Animatronic flapping Pterodactyl
+STR_NAME    :Pohybující se letící pterodaktyl
 
 [STGBAND1]
-STR_NAME    :Band Member
+STR_NAME    :Člen kapely
 
 [STGBAND2]
-STR_NAME    :Band Member
+STR_NAME    :Člen kapely
 
 [STGBAND3]
-STR_NAME    :Band Member
+STR_NAME    :Člen kapely
 
 [STGBAND4]
-STR_NAME    :Band Member
+STR_NAME    :Člen kapely
 
 [STMDRAN1]
-STR_NAME    :Steaming Drains
+STR_NAME    :Kouřící kanály
 
 [STRICTOP]
-STR_NAME    :Animatronic Triceratops
+STR_NAME    :Pohybující se triceratops
 
 [TARPIT01]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT02]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TARPIT03]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [TITANSTA]
-STR_NAME    :Atlas Statue
+STR_NAME    :Socha Atlase
 
 [TYRANREX]
-STR_NAME    :Animatronic T-Rex
+STR_NAME    :Pohybující se T-Rex
 
 [VOLCVENT]
-STR_NAME    :Active Volcanic Vent
+STR_NAME    :Aktivní sopka
 
 [WAVEKING]
-STR_NAME    :Animatronic Waving King
+STR_NAME    :Pohybující se mávající král
 
 [WHCCOLDS]
-STR_NAME    :Witches around Cauldron
+STR_NAME    :Čarodějnice s kotlíkem
 
 [ARTDEC25]
-STR_NAME    :Art Deco Corner with Windows
+STR_NAME    :Art Deco roh s okny
 
 [ARTDEC26]
-STR_NAME    :Art Deco Corner with Railings
+STR_NAME    :Art Deco roh se zábradlím
 
 [ARTDEC27]
-STR_NAME    :Art Deco Top Corner Section
+STR_NAME    :Art Deco vrchní rohová část
 
 [FUTSKY20]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Pískovcový mrakodrap - dolní obrácenž roh
 
 [FUTSKY22]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Pískovcový mrakodrap - dolní obrácenž roh
 
 [FUTSKY24]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Pískovcový mrakodrap - dolní obrácenž roh
 
 [FUTSKY25]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Pískovcový mrakodrap - dolní obrácenž roh
 
 [FUTSKY26]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted Corner
+STR_NAME    :Pískovcový mrakodrap - dolní obrácenž roh
 
 [FUTSKY28]
-STR_NAME    :Sandstone Walkway T-Junction
+STR_NAME    :Pískovcová brána - T-křižovatka
 
 [FUTSKY30]
-STR_NAME    :Sandstone Walkway Corner
+STR_NAME    :Pískovcová brána - roh
 
 [FUTSKY31]
-STR_NAME    :Sandstone Walkway Cross Section
+STR_NAME    :Pískovcová brána - středová část
 
 [FUTSKY32]
-STR_NAME    :Sandstone Walkway End Section
+STR_NAME    :Pískovcová brána - koncová sekce
 
 [JAILXX17]
-STR_NAME    :Prison Door
+STR_NAME    :Věznice - dveře
 
 [MAJOROAK]
-STR_NAME    :Large Oak
+STR_NAME    :Velký dub
 
 [MCASTL01]
-STR_NAME    :Castle Inverted Corner
+STR_NAME    :Hradní obrácený roh
 
 [MCASTL11]
-STR_NAME    :Castle Portcullis
+STR_NAME    :Hradní padací most
 
 [MCASTL12]
-STR_NAME    :Castle Entrance
+STR_NAME    :Hradní brána
 
 [MELMTREE]
-STR_NAME    :Large Elm Tree
+STR_NAME    :Americký Jilm
 
 [OLDNYK24]
-STR_NAME    :New York Inverted Corner Roof
+STR_NAME    :New York - obrácený roh střechy
 
 [OLDNYK25]
-STR_NAME    :New York Roof Piece
+STR_NAME    :New York střecha
 
 [OLDNYK26]
-STR_NAME    :New York Entrance
+STR_NAME    :New York vstup
 
 [OLDNYK32]
-STR_NAME    :New York Roof Piece
+STR_NAME    :New York střecha
 
 [1950SCAR]
-STR_NAME    :1950s Car
+STR_NAME    :Auto z 50. let
 
 [4X4DINER]
-STR_NAME    :Period Diner
+STR_NAME    :Stará jídelna
 
 [4X4GMANT]
-STR_NAME    :Giant Mangrove Tree
+STR_NAME    :Mangrove
 
 [4X4STNHN]
-STR_NAME    :Stone Age Temple
+STR_NAME    :Chrám doby kamenné
 
 [4X4TRPIT]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :Bublající bažina
 
 [4X4VOLCA]
-STR_NAME    :Volcano with small trees
+STR_NAME    :Sopka s malými stromy
 
 [ALENCRSH]
-STR_NAME    :UFO Crash Site
+STR_NAME    :UFO havárie
 
 [ALNSTR08]
-STR_NAME    :Alien Structure Large
+STR_NAME    :Mimozemská velká struktura
 
 [ALNSTR09]
-STR_NAME    :Alien Structure Large
+STR_NAME    :Mimozemská velká struktura
 
 [ALNSTR10]
-STR_NAME    :Alien Structure Large
+STR_NAME    :Mimozemská velká struktura
 
 [ALNSTR11]
-STR_NAME    :Alien Skylight Large
+STR_NAME    :Mimozemské světlo
 
 [ASHNYMPH]
-STR_NAME    :Ash Tree with Nymphs
+STR_NAME    :Jasan s bludičkami
 
 [BANDBUSX]
-STR_NAME    :Rock Band Tour Bus
+STR_NAME    :Autobus rokové kapely
 
 [BIGDRUMS]
-STR_NAME    :Giant Drum Kit
+STR_NAME    :Obrovské bubny
 
 [CAVENTRA]
-STR_NAME    :Cave Entrance
+STR_NAME    :Vstup do jeskyně
 
 [CORNS2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Římský palác - roh
 
 [CORVS2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Římský palác - roh
 
 [CRATR2X2]
-STR_NAME    :Small Meteor Crater
+STR_NAME    :Malý kráter
 
 [CRATR4X4]
-STR_NAME    :Large Meteor Crater
+STR_NAME    :Velký kráter
 
 [CRSSS2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :Římský palác - střední sekce
 
 [CRSVS2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :Římský palác - střední sekce
 
 [CYCLOPSS]
-STR_NAME    :Cyclops Statue
+STR_NAME    :Socha kyklopa
 
 [FEASTABL]
-STR_NAME    :Feast Table
+STR_NAME    :Stůl (hody)
 
 [FOOTPRNT]
-STR_NAME    :Giant Dinosaur Footprint
+STR_NAME    :Stopa velkého dinosaura
 
 [FORBIDFT]
-STR_NAME    :Forbidden Fruit Tree
+STR_NAME    :Zakázané ovoce
 
 [GBEETLEX]
-STR_NAME    :1950s Car
+STR_NAME    :Auto z 50. let
 
 [GHOTROD1]
-STR_NAME    :Hot Rod Car
+STR_NAME    :Hot Rod auto
 
 [GHOTROD2]
-STR_NAME    :Hot Rod Car
+STR_NAME    :Hot Rod auto
 
 [GSCHLBUS]
-STR_NAME    :School Bus
+STR_NAME    :Americký školní autobus
 
 [HADESXXX]
-STR_NAME    :Hades Statue
+STR_NAME    :Socha Hadese
 
 [HISTFIX1]
-STR_NAME    :Alien Historical Structures
+STR_NAME    :Mimozemská historická struktura
 
 [HISTFIX2]
-STR_NAME    :Alien Historical Structures
+STR_NAME    :Mimozemská historická struktura
 
 [HODSHUT1]
-STR_NAME    :Robin Hood's Hut
+STR_NAME    :Chata Robina Hooda
 
 [HODSHUT2]
-STR_NAME    :Robin Hood's Hut
+STR_NAME    :Chata Robina Hooda
 
 [HRBWAL07]
-STR_NAME    :Harbour Wall Corner Piece
+STR_NAME    :Přístav - roh
 
 [HRBWAL08]
-STR_NAME    :Harbour Wall Corner Piece
+STR_NAME    :Přístav - roh
 
 [HRBWAL09]
-STR_NAME    :Harbour Wall with Dock
+STR_NAME    :Přístav - stěna s dokem
 
 [HRBWAL11]
-STR_NAME    :Harbour Dock
+STR_NAME    :Přístav - dok
 
 [JAILXX18]
-STR_NAME    :Prison Water Tower
+STR_NAME    :Věznice - vodní věž
 
 [JETPLAN1]
-STR_NAME    :Jet Aeroplane
+STR_NAME    :Stíhačka
 
 [JETPLAN2]
-STR_NAME    :Jet Aeroplane
+STR_NAME    :Stíhačka
 
 [JETPLAN3]
-STR_NAME    :Jet Aeroplane
+STR_NAME    :Stíhačka
 
 [MCASTL13]
-STR_NAME    :Castle Tower Corner Piece
+STR_NAME    :Hradní věž - roh
 
 [MCASTL14]
-STR_NAME    :Castle Tower Corner Piece
+STR_NAME    :Hradní věž - roh
 
 [MCASTL15]
-STR_NAME    :Castle Tower Cross Piece
+STR_NAME    :Hradní věž - střední část
 
 [MCASTL16]
-STR_NAME    :Castle Tower Straight Piece
+STR_NAME    :Hradní věž - rovná část
 
 [MCASTL17]
-STR_NAME    :Castle Tower T Piece
+STR_NAME    :Hradní věž - T-křižovatka
 
 [MCASTL18]
-STR_NAME    :Castle Tower T Piece
+STR_NAME    :Hradní věž - T-křižovatka
 
 [METOAN01]
-STR_NAME    :Meteor Crater Corner
+STR_NAME    :Roh kráteru
 
 [METOAN02]
-STR_NAME    :Meteor Crater Inverted Corner
+STR_NAME    :Roh kráteru - obrácený
 
 [OLDNYK20]
-STR_NAME    :New York Roof Piece
+STR_NAME    :New York střecha
 
 [OLDNYK21]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK22]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK23]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK27]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK28]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK29]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [OLDNYK30]
-STR_NAME    :New York Wall Piece
+STR_NAME    :New York stěna
 
 [PEASTHUT]
-STR_NAME    :Peasant Hut
+STR_NAME    :Rolnická chatrč
 
 [PERAMOB1]
-STR_NAME    :Period Automobile
+STR_NAME    :Staré auto
 
 [PERAMOB2]
-STR_NAME    :Period Automobile
+STR_NAME    :Staré auto
 
 [PERDTK01]
-STR_NAME    :Period Truck
+STR_NAME    :Staré nákladní auto
 
 [PERDTK02]
-STR_NAME    :Period Truck
+STR_NAME    :Staré nákladní auto
 
 [PLOUGHXX]
-STR_NAME    :Plough
+STR_NAME    :Pluh
 
 [PRDYACHT]
-STR_NAME    :Period Sailing Yacht
+STR_NAME    :Stará plachetnice
 
 [PSNTWL26]
-STR_NAME    :Dark Age Village Roof Piece
+STR_NAME    :Starodávná vesnice - střecha
 
 [PSNTWL27]
-STR_NAME    :Dark Age Village Corner Roof Piece
+STR_NAME    :Starodávná vesnice - rohová střecha
 
 [PSNTWL28]
-STR_NAME    :Dark Age Village Inverted Roof Piece
+STR_NAME    :Starodávná vesnice - obrácená střecha
 
 [RDMET2X2]
-STR_NAME    :Small Red Meteor Crater
+STR_NAME    :Malý kráter
 
 [RDMET4X4]
-STR_NAME    :Large Red Meteor Crater
+STR_NAME    :Velký kráter
 
 [RDMETO01]
-STR_NAME    :Red Meteor Crater Corner
+STR_NAME    :Kráter - roh
 
 [RDMETO02]
-STR_NAME    :Red Meteor Crater Corner
+STR_NAME    :Kráter - roh
 
 [ROBNCAMP]
-STR_NAME    :Robin Hood's Camp
+STR_NAME    :Kemp Robina Hooda
 
 [ROMNC2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Římský palác - roh
 
 [ROMNE2X1]
-STR_NAME    :Roman Palace End Piece
+STR_NAME    :Římský palác - koncová část
 
 [ROMNM2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :Římský palác - střední část
 
 [ROMNS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Římský palác - rovná část
 
 [ROMVC2X2]
-STR_NAME    :Roman Palace Corner Piece
+STR_NAME    :Římský palác - roh
 
 [ROMVE2X1]
-STR_NAME    :Roman Palace End Piece
+STR_NAME    :Římský palác - koncová část
 
 [ROMVM2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :Římský palác - střední část
 
 [ROMVS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Římský palác - rovná část
 
 [SCHNPIT2]
-STR_NAME    :Seaplane Pits
+STR_NAME    :Hydroplán
 
 [SCHNPITS]
-STR_NAME    :Seaplane Pits
+STR_NAME    :Hydroplán
 
 [SCHNTENT]
-STR_NAME    :Marquee
+STR_NAME    :Stan
 
 [SHIPB4X4]
-STR_NAME    :Luxury Liner Bow
+STR_NAME    :Luxusní parník - loďka
 
 [SHIPM4X4]
-STR_NAME    :Luxury Liner Mid Section
+STR_NAME    :Luxusní parník - střední část
 
 [SHIPS4X4]
-STR_NAME    :Luxury Liner Stern
+STR_NAME    :Luxusní parník - záď
 
 [STRGS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Římský palác - rovná část
 
 [STRVS2X2]
-STR_NAME    :Roman Palace Straight Piece
+STR_NAME    :Římský palác - rovná část
 
 [TAVERNXX]
-STR_NAME    :Dark Ages Tavern
+STR_NAME    :Starodávný hostinec
 
 [TRAVLR01]
-STR_NAME    :Traveller Van
+STR_NAME    :Cestovatelský vůz
 
 [TRAVLR02]
 STR_NAME    :Microbus
 
 [JAILXX19]
-STR_NAME    :Prison Fence
+STR_NAME    :Věznice - plot
 
 [MSPKWA01]
-STR_NAME    :Spiked Fence
+STR_NAME    :Ostnatý plot
 
 [1920PATH]
-STR_NAME    :Sidewalk FootPath
+STR_NAME    :Chodník
 
 [FUTRPAT2]
-STR_NAME    :Sky Walk FootPath
+STR_NAME    :Sky Walk cesta
 
 [FUTRPATH]
-STR_NAME    :Circuit FootPath
+STR_NAME    :Elektronická cesta
 
 [JURRPATH]
-STR_NAME    :Rocky FootPath
+STR_NAME    :Kamenitá cesta
 
 [MEDIPATH]
-STR_NAME    :Wooden FootPath
+STR_NAME    :Dřevená cesta
 
 [MYTHPATH]
-STR_NAME    :Mosaic FootPath
+STR_NAME    :Mosaická cesta
 
 [RANBPATH]
-STR_NAME    :Rainbow FootPath
+STR_NAME    :Duhová cesta
 
 [FIRHYDRT]
-STR_NAME    :Fire Hydrant
+STR_NAME    :Požární hydrant
 
 [MEDBENCH]
-STR_NAME    :Benches
+STR_NAME    :Lavičky
 
 [SCG1920S]
-STR_NAME    :  Roaring Twenties Themeing
+STR_NAME    :  Bouřlivá 20. léta
 
 [SCG1920W]
-STR_NAME    :  Roaring Twenties Wall Sets
+STR_NAME    :  Bouřlivá 20. léta - stěny
 
 [SCG1960S]
-STR_NAME    :  Rock 'n' Roll Themeing
+STR_NAME    :  Rock 'n' Roll
 
 [SCGFUTUR]
-STR_NAME    :  Future Themeing
+STR_NAME    :  Budoucnost
 
 [SCGJURRA]
-STR_NAME    :  Prehistoric Themeing
+STR_NAME    :  Pravěk
 
 [SCGMEDIV]
-STR_NAME    :  Dark Age Themeing
+STR_NAME    :  Starodávné časy
 
 [SCGMYTHO]
-STR_NAME    :  Mythological Themeing
+STR_NAME    :  Mytologie
 
 [1920SENT]
-STR_NAME    :Roaring Twenties Park Entrance
+STR_NAME    :Bouřlivá 20. léta - vstup do parku
 
 [FUTURENT]
-STR_NAME    :Futuristic Park Entrance
+STR_NAME    :Futuristický vstup do parku
 
 [GLDYRENT]
-STR_NAME    :Rock 'n' Roll Park Entrance
+STR_NAME    :Rock 'n' Roll - vstup do parku
 
 [JURASENT]
-STR_NAME    :Prehistoric Entrance
+STR_NAME    :Pravěký vstup
 
 [MEDIENTR]
-STR_NAME    :Dark Age Entrance
+STR_NAME    :Starodávný vstup
 
 [MYTHENTR]
-STR_NAME    :Mythological Entrance
+STR_NAME    :Mytologický vsutp
 
 ###############################################################################
 ## RCT2 Scenarios
@@ -10675,132 +10675,132 @@ STR_NAME    :Mythological Entrance
 <Alpine Adventures>
 STR_SCNR    :Alpine Adventures
 STR_PARK    :Alpine Adventures
-STR_DTLS    :Convert a small mountain ski resort into a snow-themed amusement park
+STR_DTLS    :Přestavte malý horský ski-resort na sněžný zábavní park
 
 <Amity Airfield>
 STR_SCNR    :Amity Airfield
 STR_PARK    :Amity Airfield
-STR_DTLS    :Build a flying-themed amusement park in this abandoned airport
+STR_DTLS    :Postavte letecky-orientovaný zábavní park na tomto opuštěném letišti
 
 <Botany Breakers>
 STR_SCNR    :Botany Breakers
 STR_PARK    :Botany Breakers
-STR_DTLS    :Your challenge is to build a high-profit park on this paradise island
+STR_DTLS    :Vaším úkolem je postavit vysoce výnosný zábavní park na tomto rajském ostrově
 
 <Build your own Six Flags Belgium>
-STR_SCNR    :Build your own Six Flags Belgium
+STR_SCNR    :Postavte si svůj vlastní Six Flags Belgium
 STR_PARK    :Six Flags Belgium
-STR_DTLS    :Build your own version of this European Six Flags park
+STR_DTLS    :Postavte si svou vlastní verzi tohoto evropského Six Flags zábavního parku
 
 <Build your own Six Flags Great Adventure>
-STR_SCNR    :Build your own Six Flags Great Adventure
+STR_SCNR    :Postavte si svůj vlastní Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Use your design skills to recreate this Six Flags park
+STR_DTLS    :Využijte svých návrhářských dovedností a vytvořte tento Six Flags zábavní park
 
 <Build your own Six Flags Holland>
-STR_SCNR    :Build your own Six Flags Holland
+STR_SCNR    :Postavte si svůj vlastní Six Flags Holland
 STR_PARK    :Six Flags Holland
-STR_DTLS    :Build this European Six Flags park the way you want to
+STR_DTLS    :Postavte tento evropský Six Flags zábavní park tak, jak jen budete chtít
 
 <Build your own Six Flags Magic Mountain>
-STR_SCNR    :Build your own Six Flags Magic Mountain
+STR_SCNR    :Postavte si svůj vlastní Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Create your own version of this massive Six Flags park
+STR_DTLS    :Postavte si svou vlastní verzi tohoto masivního Six Flags zábavního parku
 
 <Build your own Six Flags over Texas>
-STR_SCNR    :Build your own Six Flags over Texas
+STR_SCNR    :Postavte si svůj vlastní Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Starting from scratch, build the rides in this Six Flags park
+STR_DTLS    :Postavte atrakce tohoto Six Flags zábavního parku na zelené louce
 
 <Build your own Six Flags Park>
-STR_SCNR    :Build your own Six Flags Park
+STR_SCNR    :Postavte si svůj vlastní Six Flags Park
 STR_PARK    :Six Flags
-STR_DTLS    :Build your own design of Six Flags park - Either build rides from other Six Flags parks or design and build your own rides
+STR_DTLS    :Postavte si svůj vlastní návrh Six Flags zábavního parku - použijte buď atrakce z jiných Six Flags parků, nebo si navrhněte vlastní
 
 <Bumbly Bazaar>
 STR_SCNR    :Bumbly Bazaar
 STR_PARK    :Bumbly Bazaar
-STR_DTLS    :Starting with a small market bazaar, your challenge is to increase the profit from shops and stalls by building rides and roller coasters to attract more customers
+STR_DTLS    :Začínáte s malým bazarem, přičemž vaším úkolem je zvýšit zisky z obchodů a stánků stavbou nových atrakcí k přilákání nových zákazníků
 
 <Crazy Castle>
 STR_SCNR    :Crazy Castle
 STR_PARK    :Crazy Castle
-STR_DTLS    :You have inherited a large castle - Your job is to convert it into a small theme park.
+STR_DTLS    :Zdědili jste velký hrad - a vaším úkolem je přeměnit ho na malý zábavní park
 
 <Dusty Greens>
 STR_SCNR    :Dusty Greens
 STR_PARK    :Dusty Greens
-STR_DTLS    :Situated near a highway junction in the desert, Dusty Greens is an opportunity to develop a small golf resort into a thriving theme park
+STR_DTLS    :Poblíž pouštního dálničního křížení představuje Dusty Greens možnost přestavět malý golfový resort na vzkvétající zábavní park
 
 <Electric Fields>
 STR_SCNR    :Electric Fields
 STR_PARK    :Electric Fields
-STR_DTLS    :You have inherited a small farm, and your challenge is to build a small theme park amongst the fields and farm buildings
+STR_DTLS    :Zdědili jste malou farmu - a vaším úkolem je postavit malý zábavní park mezi poli a farmářskými budovami
 
 <Extreme Heights>
 STR_SCNR    :Extreme Heights
 STR_PARK    :Extreme Heights
-STR_DTLS    :Free of financial restrictions, your challenge is to expand this desert park to attract people seeking the ultimate thrills
+STR_DTLS    :Bez finančních omezení - vaším úkolem je rozšířit tento pouštní zábavní park pro přilákání většího počtu návštěvníků, vyhledávajících pořádnou dávku adrenalinu
 
 <Factory Capers>
 STR_SCNR    :Factory Capers
 STR_PARK    :Factory Capers
-STR_DTLS    :An abandoned factory complex is an opportunity to build a mechanical-themed amusement park
+STR_DTLS    :Opuštěný tovární komplex nabízí možnost postavit mechanicky-zaměřený zábavní park
 
 <Fungus Woods>
 STR_SCNR    :Fungus Woods
 STR_PARK    :Fungus Woods
-STR_DTLS    :Restricted to only older-style wooden rides, your challenge is to build a thriving theme park in Fungus Woods
+STR_DTLS    :Omezeni pouze na starší, dřevěné, dráhy, postavte vzkvétající zábavní park ve Fungus Woods
 
 <Ghost Town>
 STR_SCNR    :Ghost Town
 STR_PARK    :Ghost Town
-STR_DTLS    :Hired by a large amusement park chain, your task is to build them a giant roller coaster park around an abandoned mining town
+STR_DTLS    :Velký řetěze zábavních parků si vás najal, abyste postavili obrovský zábavní park plný horských drah v okolí opuštěného dulního městečka
 
 <Gravity Gardens>
 STR_SCNR    :Gravity Gardens
 STR_PARK    :Gravity Gardens
-STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens - No other rides, just roller coasters!
+STR_DTLS    :Postavte zábavní park s horskými drahami v nádherných Gravity Gardens - Jen horské dráhy, nic jiného!
 
 <Infernal Views>
 STR_SCNR    :Infernal Views
 STR_PARK    :Infernal Views
-STR_DTLS    :A park nestled precariously on lava rock with streams of magma
+STR_DTLS    :Zábavní park, postavený na úpatní neklidné sopky
 
 <Lucky Lake>
 STR_SCNR    :Lucky Lake
 STR_PARK    :Lucky Lake
-STR_DTLS    :With unlimited funds but a challenging lake location, this park will be a challenge to expand and manage
+STR_DTLS    :S neomezenými financemi v nesnadném terénu okolo jezera - bude obtížné zábavní park dále rozšiřovat
 
 <Rainbow Summit>
 STR_SCNR    :Rainbow Summit
 STR_PARK    :Rainbow Summit
-STR_DTLS    :Built on a hillside, this park is forbidden from building anything tall. Can you expand the park and make it successful?
+STR_DTLS    :Zábavní park vybudovaný na straně kopce má zakázány výškové stavby. Dokážete i přes to park rozšířit a dosáhnout úspěchu?
 
 <Six Flags Belgium>
 STR_SCNR    :Six Flags Belgium
 STR_PARK    :Six Flags Belgium
-STR_DTLS    :Try your hand at running and improving this Six Flags park
+STR_DTLS    :Vyzkoušejte si provoz a vylepšování tohoto Six Flags zábavního parku
 
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_DTLS    :Postavte chybějící Six Flags atrakce, nebo vytvořte své vlastní! Nezapomeňte ale na hlavní cíl - přilákat co nejvíce návštěvníků!
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holland
 STR_PARK    :Six Flags Holland
-STR_DTLS    :Try your hand at running and improving this Six Flags park
+STR_DTLS    :Vyzkoušejte si provoz a vylepšování tohoto Six Flags zábavního parku
 
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To repay your loan while keeping the park value up!
+STR_DTLS    :Postavte chybějící Six Flags atrakce, nebo vytvořte své vlastní! Nezapomeňte ale na hlavní cíl - vyrovnat dluhy bez propadu hodnoty parku!
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_DTLS    :Postavte chybějící Six Flags atrakce, nebo vytvořte své vlastní! Nezapomeňte ale na hlavní cíl - přilákat co nejvíce návštěvníků!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -10808,87 +10808,87 @@ STR_DTLS    :Build the missing Six Flags rides, or create your own designs to im
 <Africa - African Diamond Mine>
 STR_SCNR    :Africa - African Diamond Mine
 STR_PARK    :Mines of Africa
-STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond.  You decide to invest that money to build a world-famous theme park.
+STR_DTLS    :Zdědili jste diamantový důl mimo provoz a nalezli hodnotný diamant. Rozhodli jste se tedy investovat peníze do stavby světoznámého zábavního parku.
 
 <Africa - Oasis>
 STR_SCNR    :Africa - Oasis
 STR_PARK    :Mirage Madness
-STR_DTLS    :A desert Oasis has been discovered and would provide a beautiful location for a park. Transport to the oasis has been provided.
+STR_DTLS    :Byla objevena pouštní oáza, která nabízí nádherné místo pro zábavní park. Přeprava do oázy zajištěna.
 
 <Africa - Victoria Falls>
 STR_SCNR    :Africa - Victoria Falls
 STR_PARK    :Over The Edge
-STR_DTLS    :A dam has been built offering abundant, cheap hydroelectric power with which to run a park. You need to reach a high park value to help repay the loan for the dam.
+STR_DTLS    :Postavená přehrada zajišťuje velké množství levné hydroelektrické energie pro váš zábavní park. Dosáhněte vysokého hodnoce parku, abyste snáze splatili půjčku na přehradu.
 
 <Antarctic - Ecological Salvage>
 STR_SCNR    :Antarctic - Ecological Salvage
 STR_PARK    :Icy Adventures
-STR_DTLS    :The environment agency has turned to you to transform an old oil refinery ecological eyesore into a top tourist attraction. Land is cheap but loan interest is high. You can sell the old buildings for salvage.
+STR_DTLS    :Obrátili se na vás ochranáři životního prostředí s prosbou, abyste přeměnili neekologickou rafinerii na vysoce navštěvovanou turistickou destinaci. Pozemky jsou levné, ale úrok z půjčky vysoký. Zkuste prodat staré budovy.
 
 <Asia - Great Wall of China Tourism Enhancement>
 STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
 STR_PARK    :Great Wall of China
-STR_DTLS    :The authorities have decided to enhance tourism around the Great Wall by building a theme park on the adjacent land. Money is no object!
+STR_DTLS    :Místní správa se rozhodla podpořit cestovní ruch a vytvořit Velkou zeď stavbou přilehlého zábavního parku. Peníze nehrají roli.
 
 <Asia - Japanese Coastal Reclaim>
 STR_SCNR    :Asia - Japanese Coastal Reclaim
 STR_PARK    :Okinawa Coast
-STR_DTLS    :An existing park has run out of space. Your only option is to build out into the sea, and so you have taken out a loan. Height restrictions on your building are enforced due to foundations and earthquake risk.
+STR_DTLS    :Současnému zábavnímu parku došlo místo. Jedinou možností je začít stavět na moři, takže budete potřebovat velkou půjčku. V této oblasti jsou častá zemětřesení, proto nesmíte stavět vysoké budovy.
 
 <Asia - Maharaja Palace>
 STR_SCNR    :Asia - Maharaja Palace
 STR_PARK    :Park Maharaja
-STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+STR_DTLS    :Mahárádža vás vybral, abyste přinesli zábavu pro místní velkou populaci. Postavte záabavní park inspirovaný Mahárádžovým palácem
 
 <Australasia - Ayers Rock>
 STR_SCNR    :Australasia - Ayers Rock
 STR_PARK    :Ayers Adventure
-STR_DTLS    :You are helping Aboriginal people to build a park as part of a cultural awareness program. You need to get a large number of guests to educate them in the unique heritage of the Aboriginal people.
+STR_DTLS    :Pomáháte domorodcům postavit zábavní park pro upozornění na jejich kuluru. Musíte poučit co nejvíce lidí o unikátní kultuře domorodých obyvatel.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :Australasia - Fun at the Beach
 STR_PARK    :Beach Barbecue Blast
-STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+STR_DTLS    :Místní mořský svět bankrotoval a vy jste ho odkoupili. Vám už ale jeden malý park patří - postavte tedy ze dvou malých parků jeden obrovský!
 
 <Europe - European Cultural Festival>
 STR_SCNR    :Europe - European Cultural Festival
 STR_PARK    :European Extravaganza
-STR_DTLS    :You have been brought in to take over a European Cultural Visitor Attraction and must increase the number of guests in order to pay back the EU subsidy by the end of the current European parliament term.
+STR_DTLS    :Byli jste přizváni, abyste převzali kontorlu nad Evropskou Kulturní Návštěvnickou Atrakcí a musíte zajistit nárůst návštěvnosti, jinak nebudete moci zaplatit za EU dotaci do konce vládního období.
 
 <Europe - Renovation>
 STR_SCNR    :Europe - Renovation
 STR_PARK    :From The Ashes
-STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
+STR_DTLS    :Evropská Unie vám dala grant, abyste zajistil obnovu starého, neudržovaného zábavního parku a přinesl zpět jeho tehdejší slávu. Musíte celý park renovovat a splatit grant.
 
 <N America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
-STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+STR_DTLS    :Havajané jsou znudění ze surfování a chtějí zažít něco adrenalinovějšího. Postavte zábavní park a nezapomeňte na to - pomůže vám to s dosažením dobrého hodnocení parku.
 
 <North America - Grand Canyon>
 STR_SCNR    :North America - Grand Canyon
 STR_PARK    :Canyon Calamities
-STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+STR_DTLS    :Omezený terén vás nutí vybudovat zábavní park po stranách národní památky. Můžete ale od Indiánů nakupovat pozemky. Abyste si udrželi hodnocení místní správy, splňte cíl!
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :North America - Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
-STR_DTLS    :You are a successful business tycoon on long sabbatical who desires to use this time transforming the city park into Rollercoaster Heaven. Money is no object!
+STR_DTLS    :Jste úspěšný obchodní magnát, který si přeje přetvořit městský park v místo nebeských horských dráh. Peníze nehrají žádnou roli!
 
 <South America - Inca Lost City>
 STR_SCNR    :South America - Inca Lost City
 STR_PARK    :Lost City Founder
-STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings, and has height restrictions.
+STR_DTLS    :Abyste zvýšili počet místních turistů, musíte potavit zábavní park, který zapadá do okolí a nemá žádné výškové budovy.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :South America - Rain Forest Plateau
 STR_PARK    :Rainforest Romp
-STR_DTLS    :Space is limited in the precious rainforest - you must cram as much as possible into the existing clearing, in order to provide a viable alternative to the local timber industry.
+STR_DTLS    :Prostor je limitovaný drahoceným deštným pralesem - musíte toho namáčknout co nejvíce do dosavadních pozemků, abyste mohli konkurovat místním dřevorubeckým společnostem.
 
 <South America - Rio Carnival>
 STR_SCNR    :South America - Rio Carnival
 STR_PARK    :Sugarloaf Shores
-STR_DTLS    :You run a small park near Rio but the bank has called in your loan. You need to quickly increase your earning capacity to repay this unexpected debt.
+STR_DTLS    :Provozujete malý zábavní park poblíž Ria, ale banka chce vrátit půjčku. Musíte rychle zvýšit vaše příjmy, abyste mohli dluh splatit.
 
 ###############################################################################
 ## Time Twister Scenarios
@@ -10896,69 +10896,69 @@ STR_DTLS    :You run a small park near Rio but the bank has called in your loan.
 <Dark Age - Castle>
 STR_SCNR    :Dark Age - Castle
 STR_PARK    :Cliffside Castle
-STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They've entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
+STR_DTLS    :Členové místní skupiny pro rekonstrukci historických bitev berou své hobby trochu moc vážně. Svěřili vám stavbu starověkého zábavního parku na území Cliffside Castle.
 
 <Dark Age - Robin Hood>
 STR_SCNR    :Dark Age - Robin Hood
 STR_PARK    :Sherwood Forest
-STR_DTLS    :To liberate wealth from the rich and distribute it to the needy, you and your Merry Men have decided to build a theme park in Sherwood Forest.
+STR_DTLS    :Abyste mohli brát mohatým a dávat chudým, rozhodli jste se postavit zábavní park v Sherwood Forest.
 
 <Future - First Encounters>
 STR_SCNR    :Future - First Encounters
 STR_PARK    :Extraterrestrial Extravaganza
-STR_DTLS    :Life has been discovered on a distant planet Build an alien theme park to cash in on the unprecedented wave of interest.
+STR_DTLS    :Byl objeven život na vzdálené planetě. Postavte mimozemsky zaměřený zábavní park, abyste se svezli na vlně nového nepřevídaného zájmu.
 
 <Future - Future World>
 STR_SCNR    :Future - Future World
 STR_PARK    :Gemini City
-STR_DTLS    :Show off your inventive, utopian vision of the future - come up with a futuristic park design that incorporates state-of-the-art attractions.
+STR_DTLS    :Ukažte svou vynalézavou, utopickou vizi budoucnosti - přijďte s futuristickým zábavním parkem, který zahrnuje ty nejnovější atrakce.
 
 <Mythological - Animatronic Film Set>
 STR_SCNR    :Mythological - Animatronic Film Set
 STR_PARK    :Animatronic Antics
-STR_DTLS    :You have been given the task of running and improving an existing theme park, which has been built on an old film set. Build a tribute to the pioneering stop-motion animators who first brought mythical creatures to life on the silver screen.
+STR_DTLS    :Byl vám zadán úkol správy a vylepšování stávajícího zábavního parku, který byl postaven na starém filmařském místě. Vybudujte odkaz průkopníkům-animátorům, kteří poprvé přinesli mýtické postavy k životu na stříbrném plátně.
 
 <Mythological - Cradle of Civilization>
 STR_SCNR    :Mythological - Cradle of Civilisation
 STR_PARK    :Mythological Madness
-STR_DTLS    :You own an island of particular archaeological value. You've decided to fund its preservation by constructing a theme park based on the area's rich Mythological heritage.
+STR_DTLS    :Vlastníte ostrov velké archeologické hodnoty. Rozhodli jste se podpořit jeho zachování vybudováním zábavního parku založném na mytologii tohoto místa.
 
 <Prehistoric - After the Asteroid>
 STR_SCNR    :Prehistoric - After the Asteroid
 STR_PARK    :Crater Carnage
-STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you've decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
+STR_DTLS    :Vlastníte velký kráter a jakožto opravdový průkopník jste se rozhodl vybudovat zábavní park ve stylu asteroidů a přeměnit tuto zdánlivě bezcenou půdu v profitující a vyledávanou oblast.
 
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :Prehistoric - Jurassic Safari
 STR_PARK    :Coastersaurus
-STR_DTLS    :You've been given the task of constructing a Jurassic era theme park. To optimize your visitors' access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
+STR_DTLS    :Byli jste zaúkolování stavbou zábavního parku ve stylu období Jura. Pro zlepšení přístupu návštěvníků k exotickým rostlinám a zvířatům budete muset postavit mosty do a přes údolí.
 
 <Prehistoric - Stone Age>
 STR_SCNR    :Prehistoric - Stone Age
 STR_PARK    :Rocky Rambles
-STR_DTLS    :To thwart the highway developers and preserve the mysterious ancient stone circles, you will need to construct a Stone Age theme park and turn a profit. However, attracting visitors may pose a challenge, as the terrain is a tad inhospitable.
+STR_DTLS    :Abyste se vyhnuli stavbě dálnice a zachovali mysteriózní prehistorické kamenné kruhy, budete muset postavit zábavní park ve stylu doby kamenné a začít vydělávat. Nicméně přiláakt návštěvníky bude těžké, protože terén je opravdu nehostinný.
 
 <Roaring Twenties - Prison Island>
 STR_SCNR    :Roaring Twenties - Prison Island
 STR_PARK    :Alcatraz
-STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object
+STR_DTLS    :Nechvalně proslavená ostrovní věznice - jejíž populace jednou překypovala pašeráky a vyděrači - je nyný na prodej. Rozhodli jste se jí přetvořit na velkou turistickou atrakci - na peníze berte ohled!
 
 <Roaring Twenties - Schneider Cup>
 STR_SCNR    :Roaring Twenties - Schneider Cup
 STR_PARK    :Schneider Shores
-STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honour his achievement by building a theme park based on the famous seaplane race.
+STR_DTLS    :75. leté výročí výhry Schneider Cup vašeho dědečka se blíží a zbývá už jen pár let. Poctíte jeho úspěch stavbou zábavního parku založeném na proslulém závodu hydroplánů.
 
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :Roaring Twenties - Skyscrapers
 STR_PARK    :Metropolis
-STR_DTLS    :You own an empty lot near the low-rise part of town. To squeeze the most out of your urban property, build a skyscraper theme park inspired by the soaring art deco architecture of the twenties.
+STR_DTLS    :Vlastníte volný pozemek v městské oblasti téměř bez růstu. Abyste vymačkali co nejvíce z vaší nemovitosti, postavíte mrakodrap-zábavní park inspirovaný architekturou dvacátých let.
 
 <Rock 'n' Roll - Flower Power>
 STR_SCNR    :Rock 'n' Roll - Flower Power
 STR_PARK    :Woodstock
-STR_DTLS    :A large annual music festival takes place on your land. Build a hip theme park to keep the free-spirited audience entertained.
+STR_DTLS    :Obrovský každoroční hudební festival se bude konat na vašem pozemku. Postavte pořádný park, abyste zabavili návštěvníky.
 
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Rock 'n' Roll Revival
-STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.
+STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomocte majiteli dát parku retro rock 'n' roll vzhled a udělat z něho vyhledávané místo.
