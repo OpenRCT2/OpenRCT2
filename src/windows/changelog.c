@@ -1,14 +1,15 @@
 #include "../addresses.h"
 #include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/viewport.h"
-#include "../world/scenery.h"
-#include "../world/map.h"
-#include "../world/footpath.h"
-#include "../util/util.h"
 #include "../openrct2.h"
 #include "../platform/platform.h"
+#include "../util/util.h"
+#include "../world/footpath.h"
+#include "../world/map.h"
+#include "../world/scenery.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -105,9 +106,6 @@ rct_window *window_changelog_open()
 	window->enabled_widgets = (1 << WIDX_CLOSE);
 
 	window_init_scroll_widgets(window);
-	window->colours[0] = 7;
-	window->colours[1] = 7;
-	window->colours[2] = 7;
 	window->min_width = MIN_WW;
 	window->min_height = MIN_WH;
 	window->max_width = MIN_WW;
@@ -157,6 +155,8 @@ static void window_changelog_scrollgetsize(rct_window *w, int scrollIndex, int *
 
 static void window_changelog_invalidate(rct_window *w)
 {
+	colour_scheme_update(w);
+
 	window_changelog_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_changelog_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_changelog_widgets[WIDX_TITLE].right = w->width - 2;

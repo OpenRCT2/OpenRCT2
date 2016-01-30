@@ -4040,6 +4040,8 @@ STR_5733    :Use NN scaling at integer scales
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 
+STR_5719    :Network Status
+
 #############
 # Scenarios #
 ################
