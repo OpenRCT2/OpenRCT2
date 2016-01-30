@@ -1253,7 +1253,7 @@ void Network::Client_Send_AUTH(const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH;
-	packet->WriteString(OPENRCT2_VERSION);
+	packet->WriteString(NETWORK_STREAM_ID);
 	packet->WriteString(name);
 	packet->WriteString(password);
 	server_connection.authstatus = NETWORK_AUTH_REQUESTED;
@@ -1411,7 +1411,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 	json_t* obj = json_object();
 	json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name));
 	json_object_set_new(obj, "requiresPassword", json_boolean(password.size() > 0));
-	json_object_set_new(obj, "version", json_string(OPENRCT2_VERSION));
+	json_object_set_new(obj, "version", json_string(NETWORK_STREAM_ID));
 	json_object_set_new(obj, "players", json_integer(player_list.size()));
 	json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
 	json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description));
@@ -1629,7 +1629,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		const char* gameversion = packet.ReadString();
 		const char* name = packet.ReadString();
 		const char* password = packet.ReadString();
-		if (!gameversion || strcmp(gameversion, OPENRCT2_VERSION) != 0) {
+		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADVERSION;
 		} else
 		if (!name) {

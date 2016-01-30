@@ -4018,6 +4018,9 @@ STR_5713    :Kick Player
 STR_5714    :Show options window
 STR_5715    :New Game
 STR_5716    :Not allowed in multiplayer mode
+# For identifying client network version in server list window
+STR_5717    :Network version: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
 
 #############
 # Scenarios #

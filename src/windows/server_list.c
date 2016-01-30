@@ -27,6 +27,7 @@
 #include "../network/network.h"
 #include "../sprites.h"
 #include "../windows/dropdown.h"
+#include "../windows/tooltip.h"
 #include "../util/util.h"
 #include "error.h"
 
@@ -289,6 +290,8 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 	window_dropdown_show_text(ddx, ddy, 0, COLOUR_GREY, 0, 2);
 }
 
+char *gVersion = NULL;
+
 static void window_server_list_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	// Item
@@ -312,9 +315,18 @@ static void window_server_list_scroll_mouseover(rct_window *w, int scrollIndex, 
 		}
 	}
 
+	int width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+	int right = width - 3 - 14 - 10;
+	if (x < right)
+	{
+		w->widgets[WIDX_LIST].tooltip = STR_NONE;
+		window_tooltip_close();
+	}
+
 	if (w->selected_list_item != index || _hoverButtonIndex != hoverButtonIndex) {
 		w->selected_list_item = index;
 		_hoverButtonIndex = hoverButtonIndex;
+		window_tooltip_close();
 		window_invalidate(w);
 	}
 }
@@ -354,6 +366,7 @@ static void window_server_list_textinput(rct_window *w, int widgetIndex, char *t
 
 static void window_server_list_invalidate(rct_window *w)
 {
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, char *) = gVersion;
 	window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
@@ -379,6 +392,8 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	gfx_draw_string_left(dpi, STR_PLAYER_NAME, NULL, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
+	char *version = NETWORK_STREAM_ID;
+	gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&version, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
 }
 
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -392,6 +407,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	int width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
 
 	int y = 0;
+	w->widgets[WIDX_LIST].tooltip = STR_NONE;
 	for (int i = 0; i < w->no_list_items; i++) {
 		if (y >= dpi->y + dpi->height) continue;
 		// if (y + ITEM_HEIGHT < dpi->y) continue;
@@ -402,6 +418,8 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		// Draw hover highlight
 		if (highlighted) {
 			gfx_fill_rect(dpi, 0, y, width, y + ITEM_HEIGHT, 0x02000031);
+			gVersion = serverDetails->version;
+			w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
 		}
 
 		int colour = w->colours[1];
@@ -426,7 +444,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 			compatibilitySpriteId = SPR_G2_RCT1_CLOSE_BUTTON_0;
 		} else {
 			// Server online... check version
-			bool correctVersion = strcmp(serverDetails->version, OPENRCT2_VERSION) == 0;
+			bool correctVersion = strcmp(serverDetails->version, NETWORK_STREAM_ID) == 0;
 			compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
 		}
 		gfx_draw_sprite(dpi, compatibilitySpriteId, right, y + 1, 0);
