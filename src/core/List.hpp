@@ -47,7 +47,7 @@ public:
     void Insert(T item, size_t index)
     {
         Guard::ArgumentInRange(index, (size_t)0, this->size());
-        this->insert()
+        this->insert(this->begin() + index, item);
     }
 
     bool Remove(T item)
