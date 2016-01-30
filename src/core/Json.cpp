@@ -13,7 +13,7 @@ namespace Json
         size_t fileLength = (size_t)fs.GetLength();
         if (fileLength > maxSize)
         {
-            throw IOException("Language file too large.");
+            throw IOException("Json file too large.");
         }
 
         utf8 * fileData = Memory::Allocate<utf8>(fileLength + 1);
