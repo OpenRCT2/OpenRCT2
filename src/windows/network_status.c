@@ -106,9 +106,6 @@ void window_network_status_open(const char* text)
 
 	window->page = 0;
 	window->list_information_type = 0;
-	window->colours[0] = 7;
-	window->colours[1] = 7;
-	window->colours[2] = 7;
 }
 
 void window_network_status_close()
@@ -158,6 +155,8 @@ static void window_network_status_textinput(rct_window *w, int widgetIndex, char
 
 static void window_network_status_invalidate(rct_window *w)
 {
+	colour_scheme_update(w);
+
 	window_network_status_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_network_status_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_network_status_widgets[WIDX_TITLE].right = w->width - 2;

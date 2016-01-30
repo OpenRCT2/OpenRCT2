@@ -238,12 +238,17 @@ static rct_windowclass window_themes_tab_5_classes[] = {
 
 static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_CHEATS,
+	WC_TILE_INSPECTOR,
 	WC_THEMES,
 	WC_TITLE_EDITOR,
 	WC_OPTIONS,
 	WC_KEYBOARD_SHORTCUT_LIST,
 	WC_CHANGE_KEYBOARD_SHORTCUT,
-	WC_LOADSAVE
+	WC_LOADSAVE,
+	WC_CHANGELOG,
+	WC_SERVER_LIST,
+	WC_MULTIPLAYER,
+	WC_PLAYER,
 };
 
 static rct_windowclass window_themes_tab_7_classes[] = {
@@ -251,7 +256,8 @@ static rct_windowclass window_themes_tab_7_classes[] = {
 	WC_DEMOLISH_RIDE_PROMPT,
 	WC_FIRE_PROMPT,
 	WC_TRACK_DELETE_PROMPT,
-	WC_LOADSAVE_OVERWRITE_PROMPT
+	WC_LOADSAVE_OVERWRITE_PROMPT,
+	WC_NETWORK_STATUS,
 };
 
 static rct_windowclass *window_themes_tab_classes[] = {

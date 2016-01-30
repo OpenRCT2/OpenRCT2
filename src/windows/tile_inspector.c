@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/viewport.h"
@@ -170,9 +171,6 @@ void window_tile_inspector_open()
 	window->disabled_widgets = (1 << WIDX_CORRUPT) | (1 << WIDX_MOVE_UP) | (1 << WIDX_MOVE_DOWN) | (1 << WIDX_REMOVE);
 
 	window_init_scroll_widgets(window);
-	window->colours[0] = 7;
-	window->colours[1] = 7;
-	window->colours[2] = 7;
 	window->min_width = MIN_WW;
 	window->min_height = MIN_WH;
 	window->max_width = MAX_WW;
@@ -433,6 +431,8 @@ static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex
 
 static void window_tile_inspector_invalidate(rct_window *w)
 {
+	colour_scheme_update(w);
+
 	window_tile_inspector_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_tile_inspector_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_tile_inspector_widgets[WIDX_CLOSE].left = w->width - 13;

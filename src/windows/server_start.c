@@ -136,9 +136,6 @@ void window_server_start_open()
 
 	window->page = 0;
 	window->list_information_type = 0;
-	window->colours[0] = 1;
-	window->colours[1] = 26;
-	window->colours[2] = 26;
 
 	sprintf(_port, "%u", gConfigNetwork.default_port);
 	safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
@@ -251,6 +248,8 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 static void window_server_start_invalidate(rct_window *w)
 {
+	colour_scheme_update_by_class(w, WC_SERVER_LIST);
+
 	widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = gConfigNetwork.maxplayers;
 }

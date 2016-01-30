@@ -4022,6 +4022,8 @@ STR_5716    :Not allowed in multiplayer mode
 STR_5717    :Network version: {STRING}
 STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
 
+STR_5719    :Network Status
+
 #############
 # Scenarios #
 ################

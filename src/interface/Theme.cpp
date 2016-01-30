@@ -150,6 +150,12 @@ WindowThemeDesc WindowThemeDescriptors[] =
     { THEME_WC(WC_EDITOR_TRACK_BOTTOM_TOOLBAR),    5247,       COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BLUE),  TRANSLUCENT(COLOUR_LIGHT_BLUE),  TRANSLUCENT(COLOUR_LIGHT_BLUE)                     ) },
     { THEME_WC(WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR), 5248,       COLOURS_3(TRANSLUCENT(COLOUR_LIGHT_BROWN), TRANSLUCENT(COLOUR_LIGHT_BROWN), TRANSLUCENT(COLOUR_MOSS_GREEN)                     ) },
     { THEME_WC(WC_TITLE_EDITOR),                   5433,       COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
+    { THEME_WC(WC_TILE_INSPECTOR),                 5314,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_CHANGELOG),                      5344,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
+    { THEME_WC(WC_MULTIPLAYER),                    5502,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_PLAYER),                         5496,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_NETWORK_STATUS),                 5719,       COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
+    { THEME_WC(WC_SERVER_LIST),                    5498,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
 };
 
 #pragma endregion
