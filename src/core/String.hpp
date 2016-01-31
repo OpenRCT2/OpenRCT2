@@ -7,7 +7,7 @@ extern "C"
 
 namespace String
 {
-    constexpr utf8 * Empty = "";
+    constexpr const utf8 * Empty = "";
 
     bool   IsNullOrEmpty(const utf8 * str);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);

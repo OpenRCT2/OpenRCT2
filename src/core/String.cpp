@@ -60,7 +60,7 @@ namespace String
     {
         const utf8 * lastOccurance = nullptr;
         const utf8 * ch = str;
-        for (; ch != '\0'; ch++)
+        for (; *ch != '\0'; ch++)
         {
             if (*ch == match)
             {
