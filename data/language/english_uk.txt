@@ -4037,6 +4037,9 @@ STR_5731    :Linear
 STR_5732    :Anisotropic
 STR_5733    :Use NN scaling at integer scales
 
+# tooltip for tab in options window
+STR_5727    :{SMALLFONT}{BLACK}Rendering
+
 #############
 # Scenarios #
 ################
