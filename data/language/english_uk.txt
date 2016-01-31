@@ -2364,7 +2364,7 @@ STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
 STR_2357    :House
 STR_2358    :Units
 STR_2359    :Real Values
-STR_2360    :{WINDOW_COLOUR_2}Display Resolution:
+STR_2360    :Display Resolution:
 STR_2361    :Landscape Smoothing
 STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
 STR_2363    :Gridlines on Landscape
@@ -4036,9 +4036,8 @@ STR_5730    :Nearest neighbour
 STR_5731    :Linear
 STR_5732    :Anisotropic
 STR_5733    :Use NN scaling at integer scales
-
 # tooltip for tab in options window
-STR_5727    :{SMALLFONT}{BLACK}Rendering
+STR_5734    :{SMALLFONT}{BLACK}Rendering
 
 #############
 # Scenarios #

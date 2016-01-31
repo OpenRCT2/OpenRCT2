@@ -76,21 +76,21 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 	// Display
 	WIDX_HARDWARE_GROUP = WIDX_PAGE_START,
-	WIDX_RESOLUTION,
-	WIDX_RESOLUTION_DROPDOWN,
 	WIDX_FULLSCREEN,
 	WIDX_FULLSCREEN_DROPDOWN,
-	WIDX_HARDWARE_DISPLAY_CHECKBOX,
-	WIDX_UNCAP_FPS_CHECKBOX,
-	WIDX_SHOW_FPS_CHECKBOX,
-	WIDX_MINIMIZE_FOCUS_LOSS,
-	WIDX_STEAM_OVERLAY_PAUSE,
+	WIDX_RESOLUTION,
+	WIDX_RESOLUTION_DROPDOWN,
 	WIDX_SCALE,
 	WIDX_SCALE_UP,
 	WIDX_SCALE_DOWN,
+	WIDX_HARDWARE_DISPLAY_CHECKBOX,
 	WIDX_SCALE_QUALITY,
 	WIDX_SCALE_QUALITY_DROPDOWN,
 	WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX,
+	WIDX_STEAM_OVERLAY_PAUSE,
+	WIDX_UNCAP_FPS_CHECKBOX,
+	WIDX_SHOW_FPS_CHECKBOX,
+	WIDX_MINIMIZE_FOCUS_LOSS,
 
 	// Rendering
 	WIDX_RENDERING_GROUP = WIDX_PAGE_START,
@@ -189,22 +189,31 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,		205,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
-	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		STR_RESOLUTION_X_BY_Y,	STR_NONE },					// resolution
+	{ WWT_GROUPBOX,			1,	5,		304,	53,		205,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
+
+	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,					STR_NONE },					// fullscreen
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		871,					STR_NONE },					// fullscreen
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_CHECKBOX,			1,	10,		290,	99,		110,	STR_HARDWARE_DISPLAY,	STR_NONE },					// hardware display
-	{ WWT_CHECKBOX,			1,	10,		290,	114,	125,	STR_UNCAP_FPS,			STR_NONE },					// uncap fps
-	{ WWT_CHECKBOX,			1,	155,	299,	114,	125,	STR_SHOW_FPS,			STR_NONE },					// show fps
-	{ WWT_CHECKBOX,			1,	10,		290,	129,	140,	STR_MININISE_FULL_SCREEN_ON_FOCUS_LOSS,	STR_NONE },	// minimise fullscreen focus loss
-	{ WWT_CHECKBOX,			1,	10,		290,	144,	155,	STR_STEAM_OVERLAY_PAUSE,	STR_NONE },				// pause on steam overlay
-	{ WWT_SPINNER,			1,	155,	299,	159,	170,	STR_NONE,				STR_NONE },					// scale spinner
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	164,	STR_NUMERIC_UP,			STR_NONE },					// scale spinner up
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	165,	169,	STR_NUMERIC_DOWN,		STR_NONE },					// scale spinner down
-	{ WWT_DROPDOWN,			1,	155,	299,	174,	185,	STR_NONE,				STR_REQUIRES_HW_DISPLAY },	// scaling quality hint
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	175,	184,	STR_DROPDOWN_GLYPH,		STR_REQUIRES_HW_DISPLAY_TIP },
-	{ WWT_CHECKBOX,			1,	10,		290,	189,	200,	STR_USE_NN_AT_INTEGER_SCALE,	STR_NONE },			// use nn scaling at integer scales
+
+		{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		STR_RESOLUTION_X_BY_Y,	STR_NONE },					// resolution
+		{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
+
+	{ WWT_SPINNER,			1,	155,	299,	98,		109,	STR_NONE,				STR_NONE },					// scale spinner
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		103,	STR_NUMERIC_UP,			STR_NONE },					// scale spinner up
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	104,	108,	STR_NUMERIC_DOWN,		STR_NONE },					// scale spinner down
+
+	{ WWT_CHECKBOX,			1,	10,		290,	113,	124,	STR_HARDWARE_DISPLAY,	STR_NONE },					// hardware display
+
+		{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,				STR_REQUIRES_HW_DISPLAY },	// scaling quality hint
+		{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	STR_DROPDOWN_GLYPH,		STR_REQUIRES_HW_DISPLAY_TIP },
+		{ WWT_CHECKBOX,			1,	25,		290,	143,	154,	STR_USE_NN_AT_INTEGER_SCALE,	STR_REQUIRES_HW_DISPLAY_TIP },	// use nn scaling at integer scales
+
+		{ WWT_CHECKBOX,			1,	25,		290,	158,	169,	STR_STEAM_OVERLAY_PAUSE,	STR_NONE },				// pause on steam overlay
+
+	{ WWT_CHECKBOX,			1,	10,		290,	174,	185,	STR_UNCAP_FPS,			STR_NONE },					// uncap fps
+	{ WWT_CHECKBOX,			1,	155,	299,	174,	185,	STR_SHOW_FPS,			STR_NONE },					// show fps
+	{ WWT_CHECKBOX,			1,	10,		290,	189,	200,	STR_MININISE_FULL_SCREEN_ON_FOCUS_LOSS,	STR_NONE },	// minimise fullscreen focus loss
+
+
 	{ WIDGETS_END },
 };
 
@@ -1310,6 +1319,18 @@ static void window_options_invalidate(rct_window *w)
 			w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
 		}
 
+		if (gConfigGeneral.hardware_display == false) {
+			w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
+			w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
+			w->disabled_widgets |= (1 << WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX);
+			w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
+		} else {
+			w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
+			w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
+			w->disabled_widgets &= ~(1 << WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX);
+			w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
+		}
+
 		widget_set_checkbox_value(w, WIDX_HARDWARE_DISPLAY_CHECKBOX, gConfigGeneral.hardware_display);
 		widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
 		widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
@@ -1560,13 +1581,24 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
-		gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
 		gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
+
+		int colour = w->colours[1];
+		// disable resolution dropdown on "Fullscreen (desktop)"
+		if (gConfigGeneral.fullscreen_mode == 2) {
+			colour |= 0x40;
+		}
+		gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, colour, w->x + 10 + 15, w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
 		gfx_draw_string_left(dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE].top + 1);
-		gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
 
 		int scale = (int)(gConfigGeneral.window_scale * 100);
 		gfx_draw_string_left(dpi, 3311, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
+
+		colour = w->colours[1];
+		if (gConfigGeneral.hardware_display == false) {
+			colour |= 0x40;
+		}
+		gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
 		break;
 	case WINDOW_OPTIONS_PAGE_RENDERING:
 		gfx_draw_string_left(dpi, STR_CONSTRUCTION_MARKER, w, w->colours[1], w->x + 10, w->y + window_options_rendering_widgets[WIDX_CONSTRUCTION_MARKER].top + 1);
