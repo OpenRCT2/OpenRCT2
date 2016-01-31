@@ -2322,6 +2322,13 @@ enum {
 	STR_FORCE_WEATHER = 5725,
 	STR_FORCE_WEATHER_TOOLTIP = 5726,
 
+	STR_SCALING_QUALITY = 5727,
+	STR_REQUIRES_HW_DISPLAY = 5728,
+	STR_REQUIRES_HW_DISPLAY_TIP = 5729,
+	STR_SCALING_QUALITY_NN = 5730,
+	STR_SCALING_QUALITY_LINEAR = 5731,
+	STR_SCALING_QUALITY_ANISOTROPIC = 5732,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
