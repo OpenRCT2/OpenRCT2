@@ -360,9 +360,13 @@ static void platform_resize(int width, int height)
  */
 void platform_trigger_resize()
 {
-	char scale_quality[4]; // just to make sure we can hold whole uint8
-	snprintf(scale_quality, sizeof(scale_quality), "%u", gConfigGeneral.scale_quality);
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scale_quality);
+	char scale_quality_buffer[4]; // just to make sure we can hold whole uint8
+	uint8 scale_quality = gConfigGeneral.scale_quality;
+	if (gConfigGeneral.use_nn_at_integer_scales && gConfigGeneral.window_scale == floor(gConfigGeneral.window_scale)) {
+		scale_quality = 0;
+	}
+	snprintf(scale_quality_buffer, sizeof(scale_quality_buffer), "%u", scale_quality);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scale_quality_buffer);
 
 	int w, h;
 	SDL_GetWindowSize(gWindow, &w, &h);

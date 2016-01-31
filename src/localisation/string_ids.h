@@ -2328,6 +2328,7 @@ enum {
 	STR_SCALING_QUALITY_NN = 5730,
 	STR_SCALING_QUALITY_LINEAR = 5731,
 	STR_SCALING_QUALITY_ANISOTROPIC = 5732,
+	STR_USE_NN_AT_INTEGER_SCALE = 5733,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

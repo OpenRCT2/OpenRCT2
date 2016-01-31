@@ -88,6 +88,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SCALE_DOWN,
 	WIDX_SCALE_QUALITY,
 	WIDX_SCALE_QUALITY_DROPDOWN,
+	WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX,
 	WIDX_RENDERING_GROUP,
 	WIDX_TILE_SMOOTHING_CHECKBOX,
 	WIDX_GRIDLINES_CHECKBOX,
@@ -167,7 +168,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 };
 
 #define WW 			310
-#define WH 			317
+#define WH 			332
 
 #define MAIN_OPTIONS_WIDGETS \
 	{ WWT_FRAME,			0,	0,		WW-1,	0,		WH-1,	STR_NONE,			STR_NONE }, \
@@ -183,7 +184,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,		190,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
+	{ WWT_GROUPBOX,			1,	5,      304,	53,		205,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
 	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		STR_RESOLUTION_X_BY_Y,	STR_NONE },					// resolution
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE },
 	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		871,					STR_NONE },					// fullscreen
@@ -198,8 +199,9 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	165,	169,	STR_NUMERIC_DOWN,		STR_NONE },					// scale spinner down
 	{ WWT_DROPDOWN,			1,	155,	299,	174,	185,	STR_NONE,				STR_REQUIRES_HW_DISPLAY },	// scaling quality hint
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	175,	184,	STR_DROPDOWN_GLYPH,		STR_REQUIRES_HW_DISPLAY_TIP },
+	{ WWT_CHECKBOX,			1,	10,		290,	189,	200,	STR_USE_NN_AT_INTEGER_SCALE,	STR_NONE },			// use nn scaling at integer scales
 
-#define FRAME_RENDERING_START 194
+#define FRAME_RENDERING_START 209
 	{ WWT_GROUPBOX,			1,	5,      304,	FRAME_RENDERING_START + 0,	FRAME_RENDERING_START + 91,	STR_RENDERING_GROUP,	STR_NONE },					// Rendering group
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 15,	FRAME_RENDERING_START + 26,	STR_TILE_SMOOTHING, 	STR_TILE_SMOOTHING_TIP },	// landscape smoothing
 	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 30,	FRAME_RENDERING_START + 41,	STR_GRIDLINES,			STR_GRIDLINES_TIP },		// gridlines
@@ -392,9 +394,10 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_SCALE_DOWN) |
 	(1 << WIDX_SCALE_QUALITY) |
 	(1 << WIDX_SCALE_QUALITY_DROPDOWN) |
+	(1 << WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX) |
 	(1 << WIDX_CONSTRUCTION_MARKER) |
 	(1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
-	(1 << WIDX_DAY_NIGHT_CHECKBOX) |
+	(1u << WIDX_DAY_NIGHT_CHECKBOX) |
 	(1u << WIDX_UPPER_CASE_BANNERS_CHECKBOX),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -563,6 +566,12 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			gConfigGeneral.steam_overlay_pause ^= 1;
 			config_save_default();
 			window_invalidate(w);
+			break;
+		case WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX:
+			gConfigGeneral.use_nn_at_integer_scales ^= 1;
+			config_save_default();
+			gfx_invalidate_screen();
+			platform_trigger_resize();
 			break;
 		case WIDX_DAY_NIGHT_CHECKBOX:
 			gConfigGeneral.day_night_cycle ^= 1;
@@ -1277,6 +1286,7 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
 		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
 		widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+		widget_set_checkbox_value(w, WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX, gConfigGeneral.use_nn_at_integer_scales);
 		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
 		widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
