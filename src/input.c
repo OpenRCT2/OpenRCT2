@@ -896,12 +896,12 @@ static void input_widget_over(int x, int y, rct_window *w, int widgetIndex)
 	input_widget_over_change_check(windowClass, windowNumber, widgetIndex);
 
 	if (w != NULL && widgetIndex != -1 && widget->type == WWT_SCROLL) {
-		int eax, ebx, ecx, edx;
-		widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &ecx, &edx);
+		int eax, ebx, scroll_part, edx;
+		widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &scroll_part, &edx);
 
-		if (ecx < 0)
-			input_update_tooltip(w, widgetIndex, x, y);
-		else if (ecx == 0) {
+		if (scroll_part != SCROLL_PART_VIEW)
+			window_tooltip_close();
+		else {
 			window_event_scroll_mouseover_call(w, edx, eax, ebx);
 			input_update_tooltip(w, widgetIndex, x, y);
 		}
