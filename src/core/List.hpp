@@ -14,6 +14,8 @@ template<typename T>
 class List : public std::vector<T>
 {
 public:
+    typedef typename std::vector<T>::const_reference const_reference;
+    typedef typename std::vector<T>::reference reference;
     size_t    GetCapacity() const { return this->capacity(); }
     size_t    GetCount()    const { return this->size(); }
     const T * GetItems()    const { return this->data(); }
@@ -54,7 +56,7 @@ public:
     {
         for (size_t i = 0; i < this->size(); i++)
         {
-            if (_items[i] == item)
+            if (*this[i] == item)
             {
                 RemoveAt(i);
                 return true;

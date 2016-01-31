@@ -31,7 +31,7 @@ namespace Memory
     template<typename T>
     T * Reallocate(T * ptr, size_t size)
     {
-        if (ptr == NULL)
+        if (ptr == nullptr)
         {
             return (T*)malloc(size);
         }
@@ -44,7 +44,7 @@ namespace Memory
     template<typename T>
     T * ReallocateArray(T * ptr, size_t count)
     {
-        if (ptr == NULL)
+        if (ptr == nullptr)
         {
             return (T*)malloc(count * sizeof(T));
         }
@@ -105,7 +105,7 @@ namespace Memory
     {
         for (size_t i = 0; i < count; i++)
         {
-            ptr[i]::~T();
+            ptr[i].~T();
         }
         Free(ptr);
     }
