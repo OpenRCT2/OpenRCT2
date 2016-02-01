@@ -3981,16 +3981,16 @@ STR_5645    :Chatten
 STR_5646    :Landschap wijzigen
 STR_5647    :Spel (de)pauzeren
 STR_5648    :Waterniveau aanpassen
-STR_5649    :Create Ride
-STR_5650    :Attractie verwijderen
-STR_5651    :Build Ride
-STR_5652    :Ride Properties
+STR_5649    :Attracties aanmaken
+STR_5650    :Attracties verwijderen
+STR_5651    :Attracties verbouwen
+STR_5652    :Attractie-eigenschappen aanpassen
 STR_5653    :Decor
 STR_5654    :Pad
 STR_5655    :Bezoekers
 STR_5656    :Werknemers
 STR_5657    :Parkeigenschappen
-STR_5658    :Park Funding
+STR_5658    :Parkfinanciëring
 STR_5659    :Speler verwijderen
 STR_5660    :Groepen aanpassen
 STR_5661    :Spelersgroep instellingen
@@ -4012,6 +4012,9 @@ STR_5713    :Speler verwijderen
 STR_5714    :Optiesvenster tonen
 STR_5715    :Nieuw spel
 STR_5716    :Niet toegestaan in multiplayer
+# For identifying client network version in server list window
+STR_5717    :Netwerkversie: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Netwerkversie: {STRING}
 
 #############
 # Scenarios #

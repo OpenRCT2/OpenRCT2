@@ -5,40 +5,40 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :スパイラルコースター
 STR_0003    :スタンディングコースター
-STR_0004    :Suspended Swinging Coaster
-STR_0005    :Inverted Roller Coaster
+STR_0004    :揺れるサスペンデッドコースター
+STR_0005    :インバーテッドコースター
 STR_0006    :ジュニアジェットコースター
 STR_0007    :ミニ列車
 STR_0008    :モノレール
-STR_0009    :Mini Suspended Coaster
+STR_0009    :ミニサスペンデッドコースター
 STR_0010    :Boat Ride
-STR_0011    :Wooden Wild Mouse
+STR_0011    :木製ワイルドマウス
 STR_0012    :Steeplechase
 STR_0013    :Car Ride
 STR_0014    :Launched Freefall
-STR_0015    :Bobsleigh Coaster
+STR_0015    :ボブスレーコースター
 STR_0016    :展望塔
 STR_0017    :ループコースター
 STR_0018    :Dinghy Slide
-STR_0019    :Mine Train Coaster
+STR_0019    :暴走トロッコ
 STR_0020    :スキーリフト
 STR_0021    :コルクスクリューコースター
 STR_0022    :迷路
 STR_0023    :スパイラル滑り台
 STR_0024    :ゴーカート
 STR_0025    :Log Flume
-STR_0026    :River Rapids
-STR_0027    :Dodgems
+STR_0026    :川の急流
+STR_0027    :バンパーカー
 STR_0028    :海賊船
 STR_0029    :Swinging Inverter Ship
 STR_0030    :Food Stall
 STR_0031    :Unknown Stall (1D)
 STR_0032    :Drink Stall
 STR_0033    :Unknown Stall (1F)
-STR_0034    :Shop
+STR_0034    :ショップ
 STR_0035    :メリーゴーラウンド
 STR_0036    :Unknown Stall (22)
-STR_0037    :Information Kiosk
+STR_0037    :案内所
 STR_0038    :トイレ
 STR_0039    :観覧車
 STR_0040    :モーションシミュレーター
@@ -46,14 +46,14 @@ STR_0041    :3Dシネマ
 STR_0042    :Top Spin
 STR_0043    :Space Rings
 STR_0044    :Reverse Freefall Coaster
-STR_0045    :Lift
+STR_0045    :エレベーター
 STR_0046    :Vertical Drop Roller Coaster
 STR_0047    :ATM
 STR_0048    :ツイスト
 STR_0049    :お化け屋敷
 STR_0050    :救護所
 STR_0051    :Circus Show
-STR_0052    :Ghost Train
+STR_0052    :幻の列車
 STR_0053    :Steel Twister Roller Coaster
 STR_0054    :木製ジェットコースター
 STR_0055    :Side-Friction Roller Coaster
@@ -64,7 +64,7 @@ STR_0059    :Flying Roller Coaster
 STR_0060    :Unknown Ride (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Splash Boats
-STR_0063    :Mini Helicopters
+STR_0063    :ミニヘリコプター
 STR_0064    :Lay-down Roller Coaster
 STR_0065    :Suspended Monorail
 STR_0066    :Unknown Ride (40)
@@ -84,7 +84,7 @@ STR_0079    :魔法のじゅうたん
 STR_0080    :Submarine Ride
 STR_0081    :River Rafts
 STR_0082    :Unknown Ride (50)
-STR_0083    :Enterprise
+STR_0083    :エンタープライズ
 STR_0084    :Unknown Ride (52)
 STR_0085    :Unknown Ride (53)
 STR_0086    :Unknown Ride (54)
@@ -952,7 +952,7 @@ STR_0946    :キャンセル
 STR_0947    :ロードする前に保存しますか？
 STR_0948    :終了する前に保存しますか？
 STR_0949    :終了する前に保存しますか？
-STR_0950    :ゲームを再更新する
+STR_0950    :ゲームをリロードする
 STR_0951    :ゲームを閉じる
 STR_0952    :ゲームを閉じる
 STR_0953    :Load Landscape
@@ -976,9 +976,9 @@ STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
 STR_0972    :キャンセル
 STR_0973    :OK
-STR_0974    :Rides
+STR_0974    :乗り物
 STR_0975    :Shops and Stalls
-STR_0976    :Toilets and Information Kiosks
+STR_0976    :トイレと案内所
 STR_0977    :New Transport Rides
 STR_0978    :New Gentle Rides
 STR_0979    :New Roller Coasters

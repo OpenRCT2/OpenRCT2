@@ -4019,6 +4019,9 @@ STR_5713    :Vyhodit hráče
 STR_5714    :Zobrazit nastavení
 STR_5715    :Nová hra
 STR_5716    :Není povoleno ve hře více hráčů
+# For identifying client network version in server list window
+STR_5717    :Verze síťové hry: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Verze síťové hry: {STRING}
 
 ###############################################################################
 ## RCT2 Objects

@@ -4013,6 +4013,8 @@ STR_5713    :Spieler entfernen
 STR_5714    :Optionen anzeigen
 STR_5715    :Neues Spiel
 STR_5716    :Im Mehrspielermodus nicht erlaubt
+STR_5717    :Netzwerkversion: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Netzwerkversion: {STRING}
 
 #############
 # Scenarios #
