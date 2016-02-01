@@ -177,6 +177,8 @@ typedef struct {
 	uint8 allow_loading_with_incorrect_checksum;
 	uint8 steam_overlay_pause;
 	float window_scale;
+	uint8 scale_quality;
+	uint8 use_nn_at_integer_scales;
 	uint8 show_fps;
 	uint8 trap_cursor;
 	uint8 auto_open_shops;

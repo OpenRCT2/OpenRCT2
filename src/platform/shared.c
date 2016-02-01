@@ -352,8 +352,22 @@ static void platform_resize(int width, int height)
 	}
 }
 
+/**
+ * @brief platform_trigger_resize
+ * Helper function to set various render target features.
+ *
+ * Does not get triggered on resize, but rather manually on config changes.
+ */
 void platform_trigger_resize()
 {
+	char scale_quality_buffer[4]; // just to make sure we can hold whole uint8
+	uint8 scale_quality = gConfigGeneral.scale_quality;
+	if (gConfigGeneral.use_nn_at_integer_scales && gConfigGeneral.window_scale == floor(gConfigGeneral.window_scale)) {
+		scale_quality = 0;
+	}
+	snprintf(scale_quality_buffer, sizeof(scale_quality_buffer), "%u", scale_quality);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scale_quality_buffer);
+
 	int w, h;
 	SDL_GetWindowSize(gWindow, &w, &h);
 	platform_resize(w, h);
@@ -766,7 +780,6 @@ static void platform_create_window()
 		exit(-1);
 	}
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
 	platform_load_cursors();
@@ -809,6 +822,7 @@ static void platform_create_window()
 
 	// Check if steam overlay renderer is loaded into the process
 	gSteamOverlayActive = platform_check_steam_overlay_attached();
+	platform_trigger_resize();
 }
 
 int platform_scancode_to_rct_keycode(int sdl_key)
