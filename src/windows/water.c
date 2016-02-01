@@ -29,6 +29,7 @@
 
 #define MINIMUM_TOOL_SIZE 1
 #define MAXIMUM_TOOL_SIZE 64
+#define MAXIMUM_SELECTION_GRID_SPRITE 7
 
 enum WINDOW_WATER_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -42,7 +43,7 @@ enum WINDOW_WATER_WIDGET_IDX {
 static rct_widget window_water_widgets[] = {
 	{ WWT_FRAME,	0,	0,	75,	0,	76,	-1,										STR_NONE },							// panel / background
 	{ WWT_CAPTION,	0,	1,	74,	1,	14,	STR_WATER,								STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,	0,	63,	73,	2,	13,	824,									STR_CLOSE_WINDOW_TIP },				// close x button
+	{ WWT_CLOSEBOX,	0,	63,	73,	2,	13,	STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },				// close x button
 	{ WWT_IMGBTN,	0,	16,	59,	17,	48,	SPR_LAND_TOOL_SIZE_0,					STR_NONE },							// preview box
 	{ WWT_TRNBTN,	2,	17,	32,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_WATER_TIP },		// decrement size
 	{ WWT_TRNBTN,	2,	43,	58,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_WATER_TIP },		// increment size
@@ -183,7 +184,7 @@ static void window_water_inputsize(rct_window *w)
 {
 	TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
 	TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
+	window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
 }
 
 /**
@@ -230,7 +231,7 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 	// Draw number for tool sizes bigger than 7
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > MAXIMUM_SELECTION_GRID_SPRITE) {
 		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
 	}
 	y = w->y + window_water_widgets[WIDX_PREVIEW].bottom + 5;
