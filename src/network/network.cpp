@@ -814,6 +814,8 @@ void Network::UpdateClient()
 				connectfailed = true;
 				break;
 			}
+		} else if (server_address.GetResolveStatus() == NetworkAddress::RESOLVE_INPROGRESS) {
+			break;
 		} else {
 			log_error("Could not resolve address.");
 			connectfailed = true;
