@@ -591,8 +591,53 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 		if (nearestLitterDist > 0x60){
 			//goto 6bfd82
 		}
+		
+		rct_xy16 litterTile = { 
+			.x = litter->x & 0xFFE0,
+			.y = litter->y & 0xFFE0
+		};
+		
+		if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y)){
+			//goto 6bfd82
+		}
+		
+		litterTile.x += 16;
+		litterTile.y += 16;
+		
+		sint16 x_diff = litterTile.x - peep->x;
+		sint16 y_diff = litterTile.y - peep->y;
+		
+		uint8 nextDirection = 0;
+		
+		if (abs(x_diff) <= abs(y_diff)){
+			nextDirection = y_diff < 0 ? 3 : 1;
+		}
+		else {
+			nextDirection = x_diff < 0 ? 0 : 2;
+		}
+		
+		rct_xy16 nextTile = {
+			.x = (litter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x;
+			.y = (litter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y;
+		};
+		
+		sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
+		
+		rct_map_element* mapElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+		
+		do {
+			if (mapElement->base_height != nextZ)
+				continue;
+			if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE ||
+				map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK){
+				//goto 6bfd82
+			}
+		} while(!map_element_is_last_for_tile(mapElement++));
+		
+		// 6bfd13
 	}
 	//6bfd82
+	return 0;
 }
 
 /**
