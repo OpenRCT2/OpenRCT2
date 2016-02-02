@@ -2313,6 +2313,11 @@ enum {
 	STR_NETWORK_VERSION = 5717,
 	STR_NETWORK_VERSION_TIP = 5718,
 
+	STR_MULTIPLAYER_AUTHENTICATING = 5719,
+	STR_MULTIPLAYER_CONNECTING = 5720,
+	STR_MULTIPLAYER_RESOLVING = 5721,
+	STR_MULTIPLAYER_DESYNC = 5722,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

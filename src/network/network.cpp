@@ -619,7 +619,9 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	server_address.Resolve(host, port);
 	status = NETWORK_STATUS_RESOLVING;
 
-	window_network_status_open("Resolving...");
+	char str_resolving[13];
+	format_string(str_resolving, STR_MULTIPLAYER_RESOLVING, 0);
+	window_network_status_open(str_resolving);
 
 	mode = NETWORK_MODE_CLIENT;
 
@@ -806,7 +808,9 @@ void Network::UpdateClient()
 			}
 
 			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss), (*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
-				window_network_status_open("Connecting...");
+				char str_connecting[30];
+				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, 0);
+				window_network_status_open(str_connecting);
 				server_connect_time = SDL_GetTicks();
 				status = NETWORK_STATUS_CONNECTING;
 			} else {
@@ -856,7 +860,9 @@ void Network::UpdateClient()
 				server_connection.ResetLastPacketTime();
 				cheats_reset();
 				Client_Send_AUTH(gConfigNetwork.player_name, "");
-				window_network_status_open("Authenticating...");
+				char str_authenticating[30];
+				format_string(str_authenticating, STR_MULTIPLAYER_AUTHENTICATING, 0);
+				window_network_status_open(str_authenticating);
 			}
 		}
 	}break;
@@ -879,7 +885,9 @@ void Network::UpdateClient()
 		// Check synchronisation
 		if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
 			_desynchronised = true;
-			window_network_status_open("Network desync detected");
+			char str_desync[24];
+			format_string(str_desync, STR_MULTIPLAYER_DESYNC, 0);
+			window_network_status_open(str_desync);
 			if (!gConfigNetwork.stay_connected) {
 				Close();
 			}
