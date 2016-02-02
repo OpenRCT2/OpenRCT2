@@ -379,6 +379,8 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Scenario path
 	if (gConfigGeneral.debugging_tools) {
 		utf8 path[MAX_PATH];
+
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 		shorten_path(path, sizeof(path), scenario->path, w->width - 6);
 
 		const utf8 *pathPtr = path;
