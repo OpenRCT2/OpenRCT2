@@ -2764,8 +2764,8 @@ STR_2753    :Posekat trávu
 STR_2754    :Zalít květiny
 STR_2755    :Opravit vandalismy
 STR_2756    :Odebrat odpadky
-STR_2757    :Vynutit slunečno
-STR_2758    :Vynutit bouřku
+STR_2757    :<not used anymore>
+STR_2758    :<not used anymore>
 STR_2759    :Povolit křížení staveb
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
@@ -4022,6 +4022,14 @@ STR_5716    :Není povoleno ve hře více hráčů
 # For identifying client network version in server list window
 STR_5717    :Verze síťové hry: {STRING}
 STR_5718    :{SMALLFONT}{BLACK}Verze síťové hry: {STRING}
+STR_5719    :Slunečno
+STR_5720    :Polojasno
+STR_5721    :Zataženo
+STR_5722    :Přeháňky
+STR_5723    :Déšť
+STR_5724    :Bouřka
+STR_5725    :{BLACK}Vynutit počasí:
+STR_5726    :{SMALLFONT}{BLACK}Nastaví momentální počasí v parku
 
 ###############################################################################
 ## RCT2 Objects
