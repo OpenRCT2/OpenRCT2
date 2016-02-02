@@ -1716,6 +1716,12 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 				// window_network_status_open("Loaded new map from network");
 				_desynchronised = false;
 			}
+			else
+			{
+				//Something went wrong, game is not loaded. Return to main screen.
+				game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+			}
+
 			SDL_RWclose(rw);
 			if (has_to_free)
 			{
