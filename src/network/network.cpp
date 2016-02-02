@@ -1279,14 +1279,23 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 
 void Network::Server_Send_MAP(NetworkConnection* connection)
 {
-	int buffersize = 0x600000;
-	std::vector<uint8> buffer(buffersize);
 	bool RLEState = gUseRLE;
 	gUseRLE = false;
-	SDL_RWops* rw = SDL_RWFromMem(&buffer[0], buffersize);
+	FILE* temp = tmpfile();
+	if (!temp) {
+		log_warning("Failed to create temporary file to save map.");
+		return;
+	}
+	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
 	scenario_save_network(rw);
 	gUseRLE = RLEState;
 	int size = (int)SDL_RWtell(rw);
+	std::vector<uint8> buffer(size);
+	SDL_RWseek(rw, 0, RW_SEEK_SET);
+	if (SDL_RWread(rw, &buffer[0], size, 1) == 0) {
+		log_warning("Failed to read temporary map file into memory.");
+		return;
+	}
 	size_t chunksize = 1000;
 	size_t out_size;
 	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
@@ -1671,62 +1680,55 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 {
 	uint32 size, offset;
 	packet >> size >> offset;
-	if (offset > 0x600000) {
-		// too big
+	int chunksize = packet.size - packet.read;
+	if (chunksize <= 0) {
 		return;
-	} else {
-		int chunksize = packet.size - packet.read;
-		if (chunksize <= 0) {
-			return;
+	}
+	if (offset + chunksize > chunk_buffer.size()) {
+		chunk_buffer.resize(offset + chunksize);
+	}
+	char status[256];
+	sprintf(status, "Downloading map ... (%u / %u)", (offset + chunksize) / 1000, size / 1000);
+	window_network_status_open(status);
+	memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
+	if (offset + chunksize == size) {
+		window_network_status_close();
+		bool has_to_free = false;
+		unsigned char *data = &chunk_buffer[0];
+		size_t data_size = size;
+		// zlib-compressed
+		if (strcmp("open2_sv6_zlib", (char *)&chunk_buffer[0]) == 0)
+		{
+			log_warning("Received zlib-compressed sv6 map");
+			has_to_free = true;
+			size_t header_len = strlen("open2_sv6_zlib") + 1;
+			data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
+			if (data == NULL)
+			{
+				log_warning("Failed to decompress data sent from server.");
+				return;
+			}
+		} else {
+			log_warning("Assuming received map is in plain sv6 format");
 		}
-		if (offset + chunksize > chunk_buffer.size()) {
-			chunk_buffer.resize(offset + chunksize);
+		SDL_RWops* rw = SDL_RWFromMem(data, data_size);
+		if (game_load_network(rw)) {
+			game_load_init();
+			game_command_queue.clear();
+			server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
+			server_srand0_tick = 0;
+			// window_network_status_open("Loaded new map from network");
+			_desynchronised = false;
 		}
-		char status[256];
-		sprintf(status, "Downloading map ... (%u / %u)", (offset + chunksize) / 1000, size / 1000);
-		window_network_status_open(status);
-		memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
-		if (offset + chunksize == size) {
-			window_network_status_close();
-			bool has_to_free = false;
-			unsigned char *data = &chunk_buffer[0];
-			size_t data_size = size;
-			// zlib-compressed
-			if (strcmp("open2_sv6_zlib", (char *)&chunk_buffer[0]) == 0)
-			{
-				log_warning("Received zlib-compressed sv6 map");
-				has_to_free = true;
-				size_t header_len = strlen("open2_sv6_zlib") + 1;
-				data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
-				if (data == NULL)
-				{
-					log_warning("Failed to decompress data sent from server.");
-					return;
-				}
-			} else {
-				log_warning("Assuming received map is in plain sv6 format");
-			}
-
-			SDL_RWops* rw = SDL_RWFromMem(data, data_size);
-			if (game_load_network(rw)) {
-				game_load_init();
-				game_command_queue.clear();
-				server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
-				server_srand0_tick = 0;
-				// window_network_status_open("Loaded new map from network");
-				_desynchronised = false;
-			}
-			else
-			{
-				//Something went wrong, game is not loaded. Return to main screen.
-				game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
-			}
-
-			SDL_RWclose(rw);
-			if (has_to_free)
-			{
-				free(data);
-			}
+		else
+		{
+			//Something went wrong, game is not loaded. Return to main screen.
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
+		}
+		SDL_RWclose(rw);
+		if (has_to_free)
+		{
+			free(data);
 		}
 	}
 }
