@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "cheats.h"
 #include "config.h"
 #include "game.h"
 #include "world/climate.h"
@@ -1093,6 +1094,18 @@ int scenario_save_network(SDL_RWops* rw)
 	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
 	SDL_WriteLE32(rw, _guestGenerationProbability);
 	SDL_WriteLE32(rw, _suggestedGuestMaximum);
+	SDL_WriteU8(rw, gCheatsSandboxMode);
+	SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
+	SDL_WriteU8(rw, gCheatsDisableSupportLimits);
+	SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
+	SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
+	SDL_WriteU8(rw, gCheatsFastLiftHill);
+	SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
+	SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
+	SDL_WriteU8(rw, gCheatsUnlockAllPrices);
+	SDL_WriteU8(rw, gCheatsBuildInPauseMode);
+	SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
+	SDL_WriteU8(rw, gCheatsDisableVandalism);
 
 	gfx_invalidate_screen();
 	return 1;
