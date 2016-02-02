@@ -7135,10 +7135,13 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 		input.x = x;
 		input.y = y;
 		input.element = mapElement;
-		if (track_block_get_next(&input, &output, &outputZ, &direction)) {
+		if (!track_block_get_next(&input, &output, &outputZ, &direction)) {
 			return false;
 		}
 		mapElement = output.element;
+		x = output.x;
+		y = output.y;
+		z = outputZ;
 	}
 
 //loc_6DBC3B:
