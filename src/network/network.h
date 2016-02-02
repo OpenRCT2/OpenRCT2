@@ -68,7 +68,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "0"
+#define NETWORK_STREAM_VERSION "1"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #ifdef __WINDOWS__
@@ -199,7 +199,8 @@ public:
 		{STR_ACTION_PARK_FUNDING, {GAME_COMMAND_SET_CURRENT_LOAN, GAME_COMMAND_SET_RESEARCH_FUNDING, GAME_COMMAND_START_MARKETING_CAMPAIGN}},
 		{STR_ACTION_KICK_PLAYER, {GAME_COMMAND_KICK_PLAYER}},
 		{STR_ACTION_MODIFY_GROUPS, {GAME_COMMAND_MODIFY_GROUPS}},
-		{STR_ACTION_SET_PLAYER_GROUP, {GAME_COMMAND_SET_PLAYER_GROUP}}
+		{STR_ACTION_SET_PLAYER_GROUP, {GAME_COMMAND_SET_PLAYER_GROUP}},
+		{STR_ACTION_CHEAT, {GAME_COMMAND_CHEAT}}
 	};
 };
 
@@ -437,7 +438,7 @@ void network_add_player_money_spent(unsigned int index, money32 cost);
 int network_get_player_last_action(unsigned int index, int time);
 void network_set_player_last_action(unsigned int index, int command);
 rct_xyz16 network_get_player_last_action_coord(unsigned int index);
-void network_set_player_last_action_coord(int index, rct_xyz16 coord);
+void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord);
 unsigned int network_get_player_commands_ran(unsigned int index);
 int network_get_player_index(uint8 id);
 uint8 network_get_player_group(unsigned int index);

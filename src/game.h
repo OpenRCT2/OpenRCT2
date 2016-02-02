@@ -90,7 +90,8 @@ enum GAME_COMMAND {
 	GAME_COMMAND_SET_SIGN_STYLE,
 	GAME_COMMAND_SET_PLAYER_GROUP,
 	GAME_COMMAND_MODIFY_GROUPS,
-	GAME_COMMAND_KICK_PLAYER
+	GAME_COMMAND_KICK_PLAYER,
+	GAME_COMMAND_CHEAT
 };
 
 enum {
@@ -116,7 +117,7 @@ int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
 extern int game_command_playerid;
 
-extern GAME_COMMAND_POINTER* new_game_command_table[65];
+extern GAME_COMMAND_POINTER* new_game_command_table[66];
 
 extern int gGameSpeed;
 extern float gDayNightCycle;

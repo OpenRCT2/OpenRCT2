@@ -7206,7 +7206,7 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
 
 	do {
 		edges &= ~(1 << test_edge);
-		int saved_f1aedc = RCT2_GLOBAL(0x00F1AEDC, int);
+		int saved_f1aedc = *RCT2_ADDRESS(0x00F1AEDC, int);
 		uint8 height = z;
 		RCT2_GLOBAL(0x00F1AEDE, sint16) = 0;
 		if (footpath_element_is_sloped(path) &&
@@ -7214,7 +7214,7 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
 			height += 2;
 		}
 		score = sub_69A997(x, y, height, counter, score, test_edge);
-		RCT2_GLOBAL(0x00F1AEDC, int) = saved_f1aedc;
+		*RCT2_ADDRESS(0x00F1AEDC, int) = saved_f1aedc;
 	} while ((test_edge = bitscanforward(edges)) != -1);
 
 	return score;
@@ -7265,7 +7265,7 @@ static int guest_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep
 		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
 			edges &= ~(1 << test_edge);
 			uint8 height = z;
-			int saved_f1aedc = RCT2_GLOBAL(0x00F1AEDC, int);
+			int saved_f1aedc = *RCT2_ADDRESS(0x00F1AEDC, int);
 			if (footpath_element_is_sloped(dest_map_element) &&
 					footpath_element_get_slope_direction(dest_map_element) == test_edge)
 				height += 0x2;
@@ -7274,7 +7274,7 @@ static int guest_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep
 			RCT2_GLOBAL(0x00F1AED4, int) = RCT2_GLOBAL(0x00F1AED8, int);
 			RCT2_GLOBAL(0x00F1AEDE, uint16) = 0;
 			uint16 score = sub_69A997(x, y, height, 0, 0xFFFF, test_edge);
-			RCT2_GLOBAL(0x00F1AEDC, int) = saved_f1aedc;
+			*RCT2_ADDRESS(0x00F1AEDC, int) = saved_f1aedc;
 
 			if (score < best_score || (score == best_score && RCT2_GLOBAL(0x00F1AED3, uint8) < best_sub)) {
                 chosen_edge = test_edge;

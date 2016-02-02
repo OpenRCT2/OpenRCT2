@@ -49,8 +49,10 @@ enum {
 
 extern uint8 *gParkRatingHistory;
 extern uint8 *gGuestsInParkHistory;
+extern int _guestGenerationProbability;
+extern int _suggestedGuestMaximum;
 
-void set_forced_park_rating();
+void set_forced_park_rating(int rating);
 int get_forced_park_rating();
 
 int park_is_open();

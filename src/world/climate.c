@@ -287,7 +287,7 @@ static void climate_update_thunder_sound()
 		climate_update_thunder();
 	} else if (_climateCurrentWeatherEffect == 2) {
 		// Create new thunder and lightning
-		unsigned int randomNumber = scenario_rand();
+		unsigned int randomNumber = util_rand();
 		if ((randomNumber & 0xFFFF) <= 0x1B4) {
 			randomNumber >>= 16;
 			_thunderTimer = 43 + (randomNumber % 64);
@@ -314,7 +314,7 @@ static void climate_update_lightning()
 
 	_lightningTimer--;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) == 0)
-		if ((scenario_rand() & 0xFFFF) <= 0x2000)
+		if ((util_rand() & 0xFFFF) <= 0x2000)
 			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) = 1;
 }
 
@@ -324,7 +324,7 @@ static void climate_update_thunder()
 	if (_thunderTimer != 0)
 		return;
 
-	unsigned int randomNumber = scenario_rand();
+	unsigned int randomNumber = util_rand();
 	if (randomNumber & 0x10000) {
 		if (_thunderStatus[0] == THUNDER_STATUS_NULL && _thunderStatus[1] == THUNDER_STATUS_NULL) {
 			// Play thunder on left side

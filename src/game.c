@@ -20,6 +20,7 @@
 
 #include "addresses.h"
 #include "audio/audio.h"
+#include "cheats.h"
 #include "config.h"
 #include "game.h"
 #include "editor.h"
@@ -853,6 +854,20 @@ int game_load_network(SDL_RWops* rw)
 
 	// Read other data not in normal save files
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) = SDL_ReadLE32(rw);
+	_guestGenerationProbability = SDL_ReadLE32(rw);
+	_suggestedGuestMaximum = SDL_ReadLE32(rw);
+	gCheatsSandboxMode = SDL_ReadU8(rw);
+	gCheatsDisableClearanceChecks = SDL_ReadU8(rw);
+	gCheatsDisableSupportLimits = SDL_ReadU8(rw);
+	gCheatsShowAllOperatingModes = SDL_ReadU8(rw);
+	gCheatsShowVehiclesFromOtherTrackTypes = SDL_ReadU8(rw);
+	gCheatsFastLiftHill = SDL_ReadU8(rw);
+	gCheatsDisableBrakesFailure = SDL_ReadU8(rw);
+	gCheatsDisableAllBreakdowns = SDL_ReadU8(rw);
+	gCheatsUnlockAllPrices = SDL_ReadU8(rw);
+	gCheatsBuildInPauseMode = SDL_ReadU8(rw);
+	gCheatsIgnoreRideIntensity = SDL_ReadU8(rw);
+	gCheatsDisableVandalism = SDL_ReadU8(rw);
 
 	if (!load_success){
 		set_load_objects_fail_reason();
@@ -1187,7 +1202,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-GAME_COMMAND_POINTER* new_game_command_table[65] = {
+GAME_COMMAND_POINTER* new_game_command_table[66] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1252,5 +1267,6 @@ GAME_COMMAND_POINTER* new_game_command_table[65] = {
 	game_command_set_sign_style,
 	game_command_set_player_group,
 	game_command_modify_groups,
-	game_command_kick_player
+	game_command_kick_player,
+	game_command_cheat
 };

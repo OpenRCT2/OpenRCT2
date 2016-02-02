@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "cheats.h"
 #include "config.h"
 #include "game.h"
 #include "world/climate.h"
@@ -1084,13 +1085,32 @@ int scenario_save_network(SDL_RWops* rw)
 	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
+	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
+
 	scenario_fix_ghosts(s6);
+	game_convert_strings_to_rct2(s6);
 	scenario_save_s6(rw, s6);
 
 	free(s6);
 
+	reset_loaded_objects();
+
 	// Write other data not in normal save files
 	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
+	SDL_WriteLE32(rw, _guestGenerationProbability);
+	SDL_WriteLE32(rw, _suggestedGuestMaximum);
+	SDL_WriteU8(rw, gCheatsSandboxMode);
+	SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
+	SDL_WriteU8(rw, gCheatsDisableSupportLimits);
+	SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
+	SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
+	SDL_WriteU8(rw, gCheatsFastLiftHill);
+	SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
+	SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
+	SDL_WriteU8(rw, gCheatsUnlockAllPrices);
+	SDL_WriteU8(rw, gCheatsBuildInPauseMode);
+	SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
+	SDL_WriteU8(rw, gCheatsDisableVandalism);
 
 	gfx_invalidate_screen();
 	return 1;
