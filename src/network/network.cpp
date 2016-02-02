@@ -1294,6 +1294,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 	SDL_RWseek(rw, 0, RW_SEEK_SET);
 	if (SDL_RWread(rw, &buffer[0], size, 1) == 0) {
 		log_warning("Failed to read temporary map file into memory.");
+		SDL_RWclose(rw);
 		return;
 	}
 	size_t chunksize = 1000;
@@ -1699,7 +1700,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 		// zlib-compressed
 		if (strcmp("open2_sv6_zlib", (char *)&chunk_buffer[0]) == 0)
 		{
-			log_warning("Received zlib-compressed sv6 map");
+			log_verbose("Received zlib-compressed sv6 map");
 			has_to_free = true;
 			size_t header_len = strlen("open2_sv6_zlib") + 1;
 			data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
@@ -1709,7 +1710,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 				return;
 			}
 		} else {
-			log_warning("Assuming received map is in plain sv6 format");
+			log_verbose("Assuming received map is in plain sv6 format");
 		}
 		SDL_RWops* rw = SDL_RWFromMem(data, data_size);
 		if (game_load_network(rw)) {
