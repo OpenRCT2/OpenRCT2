@@ -646,9 +646,61 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 }
 
 /**
-*
-*  rct2: 0x006BFBA8
-*/
+ *
+ *  rct2: 0x006BF931
+ */
+static uint8 staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8 valid_directions) {
+	if (!(peep->next_var_29 & 0x18)) {
+
+		rct_map_element* mapElement = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+
+		if (peep->next_z != mapElement->base_height)
+			return 0xFF;
+
+		if (peep->next_var_29 & 0x4) {
+			if ((mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != RCT2_ADDRESS(0x0098D800, uint8)[peep->next_var_29 & 0x3])
+				return 0xFF;
+		}
+		else if ((mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != 0)
+			return 0xFF;
+	}
+
+	uint8 chosenDirection = scenario_rand() & 0x3;
+	for (uint8 i = 0; i < 4; ++i, ++chosenDirection) {
+		chosenDirection &= 0x3;
+
+		if (!(valid_directions & (1 << chosenDirection))) {
+			continue;
+		}
+
+		rct_xy16 chosenTile = {
+			.x = peep->next_x + TileDirectionDelta[chosenDirection].x,
+			.y = peep->next_y + TileDirectionDelta[chosenDirection].y,
+		};
+
+		if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
+			continue;
+
+		rct_map_element* mapElement = map_get_surface_element_at(chosenTile.x / 32, chosenTile.y / 32);
+
+		if (map_element_get_terrain(mapElement) != 0)
+			continue;
+
+		if (abs(mapElement->base_height - peep->next_z) > 2)
+			continue;
+
+		if (!(mapElement->properties.surface.grass_length & GRASS_LENGTH_CLUMPS_2))
+			continue;
+
+		return chosenDirection;
+	}
+	return 0xFF;
+}
+
+/**
+ *
+ *  rct2: 0x006BFBA8
+ */
 static int staff_path_finding_handyman(rct_peep* peep) {
 	peep->var_E2++;
 
@@ -660,17 +712,24 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 		RCT2_GLOBAL(0x00F43918, uint8) = staff_handyman_direction_to_nearest_litter(peep);
 	}
 	
-	if (RCT2_GLOBAL(0x00F43918, uint8) == 0xFF){
-		//6bfd82
+	uint8 direction = 0xFF;
+	if (RCT2_GLOBAL(0x00F43918, uint8) == 0xFF && 
+		(peep->staff_orders & STAFF_ORDERS_MOWING) &&
+		peep->var_E2 >= 12) {
+		direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
 	}
-	//6bfd90
+
+	if (direction == 0xFF) {
+		//6bfd90
+	}
+	//6bfecf
 	return 0;
 }
 
 /**
-*
-*  rct2: 0x006BF926
-*/
+ *
+ *  rct2: 0x006BF926
+ */
 int staff_path_finding(rct_peep* peep) {
 	switch (peep->staff_type) {
 	case STAFF_TYPE_HANDYMAN:
