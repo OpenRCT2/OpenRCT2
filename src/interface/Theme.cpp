@@ -153,8 +153,8 @@ WindowThemeDesc WindowThemeDescriptors[] =
     { THEME_WC(WC_TILE_INSPECTOR),                 5314,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_CHANGELOG),                      5344,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_MULTIPLAYER),                    5502,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_PLAYER),                         5496,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
-    { THEME_WC(WC_NETWORK_STATUS),                 5719,       COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
+    { THEME_WC(WC_PLAYER),                         5736,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { THEME_WC(WC_NETWORK_STATUS),                 5735,       COLOURS_1(COLOUR_LIGHT_BLUE                                                                                                    ) },
     { THEME_WC(WC_SERVER_LIST),                    5498,       COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
 };
 
