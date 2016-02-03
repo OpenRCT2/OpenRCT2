@@ -205,9 +205,6 @@ void window_multiplayer_open()
 
 	window->page = WINDOW_MULTIPLAYER_PAGE_PLAYERS;
 	window->list_information_type = 0;
-	window->colours[0] = 7;
-	window->colours[1] = 7;
-	window->colours[2] = 7;
 }
 
 static void window_multiplayer_set_page(rct_window* w, int page){
@@ -366,6 +363,8 @@ static void window_multiplayer_players_scrollmouseover(rct_window *w, int scroll
 
 static void window_multiplayer_players_invalidate(rct_window *w)
 {
+	colour_scheme_update(w);
+
 	window_multiplayer_set_pressed_tab(w);
 	window_multiplayer_anchor_border_widgets(w);
 	window_multiplayer_players_widgets[WIDX_LIST].right = w->width - 4;

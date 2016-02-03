@@ -238,12 +238,17 @@ static rct_windowclass window_themes_tab_5_classes[] = {
 
 static rct_windowclass window_themes_tab_6_classes[] = {
 	WC_CHEATS,
+	WC_TILE_INSPECTOR,
 	WC_THEMES,
 	WC_TITLE_EDITOR,
 	WC_OPTIONS,
 	WC_KEYBOARD_SHORTCUT_LIST,
 	WC_CHANGE_KEYBOARD_SHORTCUT,
-	WC_LOADSAVE
+	WC_LOADSAVE,
+	WC_CHANGELOG,
+	WC_SERVER_LIST,
+	WC_MULTIPLAYER,
+	WC_PLAYER,
 };
 
 static rct_windowclass window_themes_tab_7_classes[] = {
@@ -251,7 +256,19 @@ static rct_windowclass window_themes_tab_7_classes[] = {
 	WC_DEMOLISH_RIDE_PROMPT,
 	WC_FIRE_PROMPT,
 	WC_TRACK_DELETE_PROMPT,
-	WC_LOADSAVE_OVERWRITE_PROMPT
+	WC_LOADSAVE_OVERWRITE_PROMPT,
+	WC_NETWORK_STATUS,
+};
+
+static rct_windowclass *window_themes_tab_classes[] = {
+	NULL,
+	window_themes_tab_1_classes,
+	window_themes_tab_2_classes,
+	window_themes_tab_3_classes,
+	window_themes_tab_4_classes,
+	window_themes_tab_5_classes,
+	window_themes_tab_6_classes,
+	window_themes_tab_7_classes,
 };
 
 static uint8 _selected_tab = 0;
@@ -267,57 +284,10 @@ void window_themes_init_vars()
 	_selected_tab = WINDOW_THEMES_TAB_SETTINGS;
 }
 
-static theme_window_definition* get_colour_scheme_tab_definition()
+static rct_windowclass get_window_class_tab_index(int index)
 {
-	switch (_selected_tab) {
-	case 1: return theme_window_definition_get_by_class(window_themes_tab_1_classes[_color_index_1]);
-	case 2: return theme_window_definition_get_by_class(window_themes_tab_2_classes[_color_index_1]);
-	case 3: return theme_window_definition_get_by_class(window_themes_tab_3_classes[_color_index_1]);
-	case 4: return theme_window_definition_get_by_class(window_themes_tab_4_classes[_color_index_1]);
-	case 5: return theme_window_definition_get_by_class(window_themes_tab_5_classes[_color_index_1]);
-	case 6: return theme_window_definition_get_by_class(window_themes_tab_6_classes[_color_index_1]);
-	case 7: return theme_window_definition_get_by_class(window_themes_tab_7_classes[_color_index_1]);
-	}
-	return NULL;
-}
-static theme_window_definition* get_colour_scheme_tab_definition_by_index(int index)
-{
-	switch (_selected_tab) {
-	case 1: return theme_window_definition_get_by_class(window_themes_tab_1_classes[index]);
-	case 2: return theme_window_definition_get_by_class(window_themes_tab_2_classes[index]);
-	case 3: return theme_window_definition_get_by_class(window_themes_tab_3_classes[index]);
-	case 4: return theme_window_definition_get_by_class(window_themes_tab_4_classes[index]);
-	case 5: return theme_window_definition_get_by_class(window_themes_tab_5_classes[index]);
-	case 6: return theme_window_definition_get_by_class(window_themes_tab_6_classes[index]);
-	case 7: return theme_window_definition_get_by_class(window_themes_tab_7_classes[index]);
-	}
-	return NULL;
-}
-static theme_window* get_colour_scheme_tab()
-{
-	switch (_selected_tab) {
-	case 1: return theme_window_get_by_class(window_themes_tab_1_classes[_color_index_1]);
-	case 2: return theme_window_get_by_class(window_themes_tab_2_classes[_color_index_1]);
-	case 3: return theme_window_get_by_class(window_themes_tab_3_classes[_color_index_1]);
-	case 4: return theme_window_get_by_class(window_themes_tab_4_classes[_color_index_1]);
-	case 5: return theme_window_get_by_class(window_themes_tab_5_classes[_color_index_1]);
-	case 6: return theme_window_get_by_class(window_themes_tab_6_classes[_color_index_1]);
-	case 7: return theme_window_get_by_class(window_themes_tab_7_classes[_color_index_1]);
-	}
-	return NULL;
-}
-static theme_window* get_colour_scheme_tab_by_index(int index)
-{
-	switch (_selected_tab) {
-	case 1: return theme_window_get_by_class(window_themes_tab_1_classes[index]);
-	case 2: return theme_window_get_by_class(window_themes_tab_2_classes[index]);
-	case 3: return theme_window_get_by_class(window_themes_tab_3_classes[index]);
-	case 4: return theme_window_get_by_class(window_themes_tab_4_classes[index]);
-	case 5: return theme_window_get_by_class(window_themes_tab_5_classes[index]);
-	case 6: return theme_window_get_by_class(window_themes_tab_6_classes[index]);
-	case 7: return theme_window_get_by_class(window_themes_tab_7_classes[index]);
-	}
-	return NULL;
+	rct_windowclass * classes = window_themes_tab_classes[_selected_tab];
+	return classes[index];
 }
 
 static int get_colour_scheme_tab_count()
@@ -333,19 +303,6 @@ static int get_colour_scheme_tab_count()
 	}
 	return 0;
 }
-
-/*static int get_colour_scheme_index() {
-	switch (_selected_tab) {
-	case 1: return theme_window_get_index_by_class(window_themes_tab_1_classes[_color_index_1]);
-	case 2: return theme_window_get_index_by_class(window_themes_tab_2_classes[_color_index_1]);
-	case 3: return theme_window_get_index_by_class(window_themes_tab_3_classes[_color_index_1]);
-	case 4: return theme_window_get_index_by_class(window_themes_tab_4_classes[_color_index_1]);
-	case 5: return theme_window_get_index_by_class(window_themes_tab_5_classes[_color_index_1]);
-	case 6: return theme_window_get_index_by_class(window_themes_tab_6_classes[_color_index_1]);
-	case 7: return theme_window_get_index_by_class(window_themes_tab_7_classes[_color_index_1]);
-	}
-	return -1;
-}*/
 
 static void window_themes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
@@ -405,27 +362,32 @@ void window_themes_open()
 
 static void window_themes_mouseup(rct_window *w, int widgetIndex)
 {
+	int activeAvailableThemeIndex;
+	const utf8 * activeThemeName;
+
 	switch (widgetIndex) {
 	case WIDX_THEMES_CLOSE:
 		window_close(w);
 		break;
-	case WIDX_THEMES_DUPLICATE_BUTTON:
-		window_text_input_open(w, widgetIndex, 5239, 5240, 1170, (uint32)&gConfigThemes.presets[gCurrentTheme].name, 64);
+	case WIDX_THEMES_DUPLICATE_BUTTON:;
+		activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+		activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+		window_text_input_open(w, widgetIndex, 5239, 5240, 1170, (uint32)activeThemeName, 64);
 		break;
 	case WIDX_THEMES_DELETE_BUTTON:
-		if (gCurrentTheme >= 2) {
-			theme_delete_preset(gCurrentTheme);
-		}
-		else {
+		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 			window_error_open(5241, STR_NONE);
+		} else {
+			theme_delete();
 		}
 		break;
 	case WIDX_THEMES_RENAME_BUTTON:
-		if (gCurrentTheme >= 2) {
-			window_text_input_open(w, widgetIndex, 3348, 5240, 1170, (uint32)&gConfigThemes.presets[gCurrentTheme].name, 64);
-		}
-		else {
+		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 			window_error_open(5241, STR_NONE);
+		} else {
+			activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+			activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+			window_text_input_open(w, widgetIndex, 3348, 5240, 1170, (uint32)activeThemeName, 64);
 		}
 		break;
 	}
@@ -507,7 +469,7 @@ static void window_themes_resize(rct_window *w)
 static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* widget)
 {
 	short newSelectedTab;
-	int num_items, i;
+	int num_items;
 
 	switch (widgetIndex) {
 	case WIDX_THEMES_SETTINGS_TAB:
@@ -529,19 +491,15 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		window_invalidate(w);
 		break;
 	case WIDX_THEMES_PRESETS_DROPDOWN:
-		num_items = gConfigThemes.num_presets;
+		theme_manager_load_available_themes();
+		num_items = (int)theme_manager_get_num_available_themes();
 
 		widget--;
-		gDropdownItemsFormat[0] = 2777;
-		gDropdownItemsArgs[0] = (uint32)&gConfigThemes.presets[1].name;
-		gDropdownItemsFormat[1] = 2777;
-		gDropdownItemsArgs[1] = (uint32)&gConfigThemes.presets[0].name;
-
-		for (i = 2; i < num_items; i++) {
+		for (int i = 0; i < num_items; i++) {
 			gDropdownItemsFormat[i] = 2777;
-			gDropdownItemsArgs[i] = (uint32)&gConfigThemes.presets[i].name;
+			gDropdownItemsArgs[i] = (uint32)theme_manager_get_available_theme_name(i);
 		}
-
+		
 		window_dropdown_show_text_custom_width(
 			w->x + widget->left,
 			w->y + widget->top,
@@ -550,42 +508,35 @@ static void window_themes_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			DROPDOWN_FLAG_STAY_OPEN,
 			num_items,
 			widget->right - widget->left - 3
-			);
+		);
 
-		if (gCurrentTheme == 0 || gCurrentTheme == 1) {
-			dropdown_set_checked(gCurrentTheme ^ 1, true);
-		} else {
-			dropdown_set_checked(gCurrentTheme, true);
-		}
+		dropdown_set_checked(theme_manager_get_active_available_theme_index(), true);
 		break;
 	case WIDX_THEMES_RCT1_RIDE_LIGHTS:
-		if (gCurrentTheme >= 2) {
-			theme_get_preset()->features.rct1_ride_lights ^= 1;
-			themes_save_preset(gCurrentTheme);
-			window_invalidate_all();
-		}
-		else {
+		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 			window_error_open(5241, STR_NONE);
+		} else {
+			theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_LIGHTS_RIDE);
+			theme_save();
+			window_invalidate_all();
 		}
 		break;
 	case WIDX_THEMES_RCT1_PARK_LIGHTS:
-		if (gCurrentTheme >= 2) {
-			theme_get_preset()->features.rct1_park_lights ^= 1;
-			themes_save_preset(gCurrentTheme);
-			window_invalidate_all();
-		}
-		else {
+		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 			window_error_open(5241, STR_NONE);
+		} else {
+			theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_LIGHTS_PARK);
+			theme_save();
+			window_invalidate_all();
 		}
 		break;
 	case WIDX_THEMES_RCT1_SCENARIO_FONT:
-		if (gCurrentTheme >= 2) {
-			theme_get_preset()->features.rct1_scenario_font ^= 1;
-			themes_save_preset(gCurrentTheme);
-			window_invalidate_all();
-		}
-		else {
+		if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 			window_error_open(5241, STR_NONE);
+		} else {
+			theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
+			theme_save();
+			window_invalidate_all();
 		}
 		break;
 	}
@@ -596,22 +547,22 @@ static void window_themes_dropdown(rct_window *w, int widgetIndex, int dropdownI
 	switch (widgetIndex) {
 	case WIDX_THEMES_LIST:
 		if (dropdownIndex != -1) {
-			get_colour_scheme_tab()->colours[_color_index_2] = dropdownIndex | (get_colour_scheme_tab()->colours[_color_index_2] & 0x80);
+			rct_windowclass wc = get_window_class_tab_index(_color_index_1);
+			uint8 colour = theme_get_colour(wc, _color_index_2);
+			colour = (colour & COLOUR_FLAG_TRANSLUCENT) | dropdownIndex;
+			theme_set_colour(wc, _color_index_2, colour);
 			window_invalidate_all();
 			_color_index_1 = -1;
 			_color_index_2 = -1;
 
-			if (gCurrentTheme >= 2)
-				themes_save_preset(gCurrentTheme);
+			// if (gCurrentTheme >= 2)
+			// 	themes_save_preset(gCurrentTheme);
 		}
 		break;
 	case WIDX_THEMES_PRESETS_DROPDOWN:
 		if (dropdownIndex != -1) {
-			if (dropdownIndex == 0 || dropdownIndex == 1)
-				dropdownIndex ^= 1;
-			theme_change_preset(dropdownIndex);
+			theme_manager_set_active_available_theme(dropdownIndex);
 		}
-		config_save_default();
 		break;
 	}
 
@@ -651,33 +602,36 @@ void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 		int y2 = y % _row_height;
 		_color_index_1 = y / _row_height;
 		_color_index_2 = ((x - _button_offset_x) / 12);
-		if (_color_index_2 < get_colour_scheme_tab_definition()->num_colours) {
+
+		rct_windowclass wc = get_window_class_tab_index(_color_index_1);
+		int numColours = theme_desc_get_num_colours(wc);
+		if (_color_index_2 < numColours) {
 			if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y && y2 < _button_offset_y + 11) {
-				if (gCurrentTheme >= 2) {
+				if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
+					window_error_open(5241, 5256);
+				} else {
 					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].left = _button_offset_x + _color_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
 					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].top = _color_index_1 * _row_height + _button_offset_y - w->scrolls[0].v_top + window_themes_widgets[WIDX_THEMES_LIST].top;
 					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].right = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].left + 12;
 					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].bottom = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].top + 12;
-					window_dropdown_show_colour(w, &(window_themes_widgets[WIDX_THEMES_COLORBTN_MASK]), w->colours[1], get_colour_scheme_tab()->colours[_color_index_2]);
+
+					uint8 colour = theme_get_colour(wc, _color_index_2);
+					window_dropdown_show_colour(w, &(window_themes_widgets[WIDX_THEMES_COLORBTN_MASK]), w->colours[1], colour);
 					widget_invalidate(w, WIDX_THEMES_LIST);
-				}
-				else {
-					window_error_open(5241, 5256);
 				}
 			}
 			else if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y && y2 < _check_offset_y + 11) {
-				if (gCurrentTheme >= 2) {
-					if (get_colour_scheme_tab()->colours[_color_index_2] & 0x80) {
-						get_colour_scheme_tab()->colours[_color_index_2] &= 0x7F;
-					}
-					else {
-						get_colour_scheme_tab()->colours[_color_index_2] |= 0x80;
-					}
-						themes_save_preset(gCurrentTheme);
-					window_invalidate_all();
-				}
-				else {
+				if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 					window_error_open(5241, 5256);
+				} else {
+					uint8 colour = theme_get_colour(wc, _color_index_2);
+					if (colour & COLOUR_FLAG_TRANSLUCENT) {
+						colour &= ~COLOUR_FLAG_TRANSLUCENT;
+					} else {
+						colour |= COLOUR_FLAG_TRANSLUCENT;
+					}
+					theme_set_colour(wc, _color_index_2, colour);
+					window_invalidate_all();
 				}
 			}
 		}
@@ -700,25 +654,26 @@ static void window_themes_textinput(rct_window *w, int widgetIndex, char *text)
 	case WIDX_THEMES_RENAME_BUTTON:
 		if (filename_valid_characters(text)) {
 			bool nameTaken = false;
-			for (int i = 0; i < gConfigThemes.num_presets; i++) {
-				if (strcmp(gConfigThemes.presets[i].name, text) == 0) {
-					window_error_open(5242, STR_NONE);
+			int numAvailableThemes = (int)theme_manager_get_num_available_themes();
+			for (int i = 0; i < numAvailableThemes; i++) {
+				const utf8 * themeName = theme_manager_get_available_theme_name(i);
+				if (strcmp(themeName, text) == 0) {
+					if (widgetIndex != WIDX_THEMES_RENAME_BUTTON) {
+					    window_error_open(5242, STR_NONE);
+					}
 					nameTaken = true;
 					break;
 				}
 			}
 			if (!nameTaken) {
 				if (widgetIndex == WIDX_THEMES_DUPLICATE_BUTTON) {
-					theme_create_preset(gCurrentTheme, text);
+					theme_duplicate(text);
+				} else {
+					theme_rename(text);
 				}
-				else {
-					theme_rename_preset(gCurrentTheme, text);
-				}
-				config_save_default();
 				window_invalidate(w);
 			}
-		}
-		else {
+		} else {
 			window_error_open(5243, STR_NONE);
 		}
 		break;
@@ -787,9 +742,9 @@ void window_themes_invalidate(rct_window *w)
 		window_themes_widgets[WIDX_THEMES_PRESETS].type = WWT_EMPTY;
 		window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_EMPTY;
 
-		widget_set_checkbox_value(w, WIDX_THEMES_RCT1_RIDE_LIGHTS, theme_get_preset()->features.rct1_ride_lights);
-		widget_set_checkbox_value(w, WIDX_THEMES_RCT1_PARK_LIGHTS, theme_get_preset()->features.rct1_park_lights);
-		widget_set_checkbox_value(w, WIDX_THEMES_RCT1_SCENARIO_FONT, theme_get_preset()->features.rct1_scenario_font);
+		widget_set_checkbox_value(w, WIDX_THEMES_RCT1_RIDE_LIGHTS, theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
+		widget_set_checkbox_value(w, WIDX_THEMES_RCT1_PARK_LIGHTS, theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK);
+		widget_set_checkbox_value(w, WIDX_THEMES_RCT1_SCENARIO_FONT, theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
 	}
 	else {
 		window_themes_widgets[WIDX_THEMES_LIST].type = WWT_SCROLL;
@@ -811,7 +766,9 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_themes_draw_tab_images(dpi, w);
 
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigThemes.presets[gCurrentTheme].name;
+		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)activeThemeName;
 		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
@@ -821,7 +778,7 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
 			w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top,
 			w->x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4
-			);
+		);
 	}
 	else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES) {
 
@@ -869,18 +826,20 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 				}
 			}
 
-			for (int j = 0; j < get_colour_scheme_tab_definition_by_index(i)->num_colours; j++) {
+			rct_windowclass wc = get_window_class_tab_index(i);
+			int numColours = theme_desc_get_num_colours(wc);
+			for (uint8 j = 0; j < numColours; j++) {
+				gfx_draw_string_left(dpi, theme_desc_get_name(wc), NULL, w->colours[1], 2, y + 4);
 
-				gfx_draw_string_left(dpi, get_colour_scheme_tab_definition_by_index(i)->name, NULL, w->colours[1], 2, y + 4);
-
-				uint32 image = ((get_colour_scheme_tab_by_index(i)->colours[j] & 0x7F) << 19) + 0x600013C3;
+				uint8 colour = theme_get_colour(wc, j);
+				uint32 image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) + 0x600013C3;
 				if (i == _color_index_1 && j == _color_index_2) {
-					image = ((get_colour_scheme_tab_by_index(i)->colours[j] & 0x7F) << 19) + 0x600013C4;
+					image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) + 0x600013C4;
 				}
 				gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);
 
 				gfx_fill_rect_inset(dpi, _button_offset_x + 12 * j, y + _check_offset_y, _button_offset_x + 12 * j + 9, y + _check_offset_y + 10, w->colours[1], 0xE0);
-				if (get_colour_scheme_tab_by_index(i)->colours[j] & 0x80) {
+				if (colour & COLOUR_FLAG_TRANSLUCENT) {
 					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
 					gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, _button_offset_x + 12 * j, y + _check_offset_y);
 				}

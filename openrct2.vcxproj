@@ -30,6 +30,7 @@
     <ClCompile Include="src\cmdline_sprite.c" />
     <ClCompile Include="src\config.c" />
     <ClCompile Include="src\core\Console.cpp" />
+    <ClCompile Include="src\core\Json.cpp" />
     <ClCompile Include="src\core\Path.cpp" />
     <ClCompile Include="src\core\Stopwatch.cpp" />
     <ClCompile Include="src\core\String.cpp" />
@@ -51,7 +52,7 @@
     <ClCompile Include="src\input.c" />
     <ClCompile Include="src\interface\chat.c" />
     <ClCompile Include="src\interface\colour.c" />
-    <ClCompile Include="src\interface\themes.c" />
+    <ClCompile Include="src\interface\Theme.cpp" />
     <ClCompile Include="src\interface\console.c" />
     <ClCompile Include="src\interface\graph.c" />
     <ClCompile Include="src\interface\keyboard_shortcut.c" />
@@ -108,6 +109,7 @@
     <ClCompile Include="src\windows\player.c" />
     <ClCompile Include="src\windows\server_list.c" />
     <ClCompile Include="src\windows\server_start.c" />
+    <ClCompile Include="src\windows\themes.c" />
     <ClCompile Include="src\windows\title_command_editor.c" />
     <ClCompile Include="src\windows\title_editor.c" />
     <ClCompile Include="src\windows\maze_construction.c" />
@@ -177,7 +179,6 @@
     <ClCompile Include="src\windows\track_place.c" />
     <ClCompile Include="src\windows\viewport.c" />
     <ClCompile Include="src\windows\water.c" />
-    <ClCompile Include="src\windows\themes.c" />
     <ClCompile Include="src\world\banner.c" />
     <ClCompile Include="src\world\climate.c" />
     <ClCompile Include="src\world\footpath.c" />
@@ -199,10 +200,14 @@
     <ClInclude Include="src\common.h" />
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\core\Console.hpp" />
+    <ClInclude Include="src\core\Diagnostics.hpp" />
     <ClInclude Include="src\core\Exception.hpp" />
     <ClInclude Include="src\core\FileStream.hpp" />
+    <ClInclude Include="src\core\Guard.hpp" />
     <ClInclude Include="src\core\IDisposable.hpp" />
     <ClInclude Include="src\core\IStream.hpp" />
+    <ClInclude Include="src\core\Json.hpp" />
+    <ClInclude Include="src\core\List.hpp" />
     <ClInclude Include="src\core\Math.hpp" />
     <ClInclude Include="src\core\Memory.hpp" />
     <ClInclude Include="src\core\Path.hpp" />

@@ -10,6 +10,11 @@ extern "C"
 
 namespace String
 {
+    bool IsNullOrEmpty(const utf8 * str)
+    {
+        return str == nullptr || str[0] == '\0';
+    }
+
     bool Equals(const utf8 * a, const utf8 * b, bool ignoreCase)
     {
         if (a == b) return true;
@@ -48,6 +53,28 @@ namespace String
                 }
             }
             return true;
+        }
+    }
+
+    size_t LastIndexOf(const utf8 * str, utf8 match)
+    {
+        const utf8 * lastOccurance = nullptr;
+        const utf8 * ch = str;
+        for (; *ch != '\0'; ch++)
+        {
+            if (*ch == match)
+            {
+                lastOccurance = ch;
+            }
+        }
+
+        if (lastOccurance == nullptr)
+        {
+            return SIZE_MAX;
+        }
+        else
+        {
+            return (size_t)(lastOccurance - str);
         }
     }
 
@@ -137,14 +164,14 @@ namespace String
         return replacement;
     }
 
-    utf8 * DiscardDuplicate(utf8 * * ptr, utf8 * replacement)
+    utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement)
     {
         return DiscardUse(ptr, String::Duplicate(replacement));
     }
 
     utf8 * SkipBOM(utf8 * buffer)
     {
-        return (utf8*)SkipBOM(buffer);
+        return (utf8*)SkipBOM((const utf8 *)buffer);
     }
 
     const utf8 * SkipBOM(const utf8 * buffer)

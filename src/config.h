@@ -253,35 +253,12 @@ typedef struct {
 	bool guest_died;
 } notification_configuration;
 
-typedef struct theme_window {
-	uint8 colours[6];
-
-	// Define any other settings for all windows here
-
-} theme_window;
-
 // Define structures for any other settings here
 typedef struct {
 	uint8 rct1_ride_lights;
 	uint8 rct1_park_lights;
 	uint8 rct1_scenario_font;
 } theme_features;
-
-#define THEME_PRESET_NAME_SIZE 256
-
-typedef struct theme_preset {
-	char name[THEME_PRESET_NAME_SIZE];
-	theme_window *windows;
-
-	// Add structures for any other settings here
-	theme_features features;
-
-} theme_preset;
-
-typedef struct {
-	theme_preset *presets;
-	uint16 num_presets;
-} themes_configuration;
 
 #define TITLE_SEQUENCE_MAX_SAVE_LENGTH 51
 
@@ -327,7 +304,6 @@ extern sound_configuration gConfigSound;
 extern twitch_configuration gConfigTwitch;
 extern network_configuration gConfigNetwork;
 extern notification_configuration gConfigNotifications;
-extern themes_configuration gConfigThemes;
 extern title_sequences_configuration gConfigTitleSequences;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
@@ -345,10 +321,6 @@ bool config_shortcut_keys_load();
 bool config_shortcut_keys_save();
 
 bool config_find_or_browse_install_directory();
-
-void themes_set_default();
-void themes_load_presets();
-bool themes_save_preset(int preset);
 
 void title_sequences_set_default();
 void title_sequences_load_presets();

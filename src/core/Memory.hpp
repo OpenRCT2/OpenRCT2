@@ -31,7 +31,7 @@ namespace Memory
     template<typename T>
     T * Reallocate(T * ptr, size_t size)
     {
-        if (ptr == NULL)
+        if (ptr == nullptr)
         {
             return (T*)malloc(size);
         }
@@ -44,7 +44,7 @@ namespace Memory
     template<typename T>
     T * ReallocateArray(T * ptr, size_t count)
     {
-        if (ptr == NULL)
+        if (ptr == nullptr)
         {
             return (T*)malloc(count * sizeof(T));
         }
@@ -68,13 +68,6 @@ namespace Memory
     }
 
     template<typename T>
-    T * CopyArray(T *dst, const T * src, size_t count)
-    {
-        if (count == 0) return (T*)dst;
-        return (T*)memcpy((void*)dst, (const void*)src, count * sizeof(T));
-    }
-
-    template<typename T>
     T * Duplicate(const T * src, size_t size)
     {
         T *result = Allocate<T>(size);
@@ -82,15 +75,38 @@ namespace Memory
     }
 
     template<typename T>
+    T * Set(T * dst, uint8 value, size_t size)
+    {
+        return (T*)memset((void*)dst, (int)value, size);
+    }
+
+    template<typename T>
+    T * CopyArray(T * dst, const T * src, size_t count)
+    {
+        // Use a loop so that copy constructors are called
+        // compiler should optimise to memcpy if possible
+        T * result = dst;
+        for (; count > 0; count--)
+        {
+            *dst++ = *src++;
+        }
+        return result;
+    }
+
+    template<typename T>
     T * DuplicateArray(const T * src, size_t count)
     {
-        T *result = AllocateArray<T>(count);
+        T * result = AllocateArray<T>(count);
         return CopyArray(result, src, count);
     }
 
     template<typename T>
-    T * Set(T * dst, uint8 value, size_t size)
+    void FreeArray(T * ptr, size_t count)
     {
-        return (T*)memset((void*)dst, (int)value, size);
+        for (size_t i = 0; i < count; i++)
+        {
+            ptr[i].~T();
+        }
+        Free(ptr);
     }
 }

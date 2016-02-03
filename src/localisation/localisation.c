@@ -662,8 +662,10 @@ void format_string_code(unsigned int format_code, char **dest, char **args)
 		value = *((uint32*)*args);
 		*args += 4;
 
-		strcpy(*dest, (char*)value);
-		*dest += strlen(*dest);
+		if (value != 0) {
+			strcpy(*dest, (char*)value);
+			*dest += strlen(*dest);
+		}
 		break;
 	case FORMAT_MONTHYEAR:
 		// Pop argument

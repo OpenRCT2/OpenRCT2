@@ -26,6 +26,7 @@
 #include "game.h"
 #include "hook.h"
 #include "interface/chat.h"
+#include "interface/themes.h"
 #include "interface/window.h"
 #include "interface/viewport.h"
 #include "localisation/localisation.h"
@@ -229,8 +230,7 @@ bool openrct2_initialise()
 	}
 	http_init();
 
-	themes_set_default();
-	themes_load_presets();
+	theme_manager_initialise();
 	title_sequences_set_default();
 	title_sequences_load_presets();
 

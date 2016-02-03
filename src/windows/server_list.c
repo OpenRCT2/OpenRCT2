@@ -18,6 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
+#include "../config.h"
 #include "../interface/colour.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -366,6 +367,8 @@ static void window_server_list_textinput(rct_window *w, int widgetIndex, char *t
 
 static void window_server_list_invalidate(rct_window *w)
 {
+	colour_scheme_update(w);
+
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, char *) = gVersion;
 	window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;

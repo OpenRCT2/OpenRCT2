@@ -5,6 +5,7 @@ extern "C"
     #include "../util/util.h"
 }
 
+#include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
 #include "String.hpp"
@@ -15,6 +16,44 @@ namespace Path
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
     {
         return safe_strcat_path(buffer, src, bufferSize);
+    }
+
+    utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path)
+    {
+        const char pathSeperator = platform_get_path_separator();
+        size_t lastPathSepIndex = String::LastIndexOf(path, pathSeperator);
+        if (lastPathSepIndex == SIZE_MAX)
+        {
+            return String::Set(buffer, bufferSize, String::Empty);
+        }
+
+        size_t copyLength = Math::Min(lastPathSepIndex, bufferSize - 1);
+        Memory::Copy(buffer, path, copyLength);
+        buffer[copyLength] = '\0';
+        return buffer;
+    }
+
+    utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
+    {
+        const utf8 * lastDot = nullptr;
+        const utf8 * ch = path;
+        for (; *ch != '\0'; ch++)
+        {
+            if (*ch == '.')
+            {
+                lastDot = ch;
+            }
+        }
+
+        if (lastDot == nullptr)
+        {
+            return String::Set(buffer, bufferSize, path);
+        }
+
+        size_t truncatedLength = Math::Min<size_t>(bufferSize - 1, lastDot - path);
+        Memory::Copy(buffer, path, truncatedLength);
+        buffer[truncatedLength] = '\0';
+        return buffer;
     }
 
     utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)
@@ -48,5 +87,14 @@ namespace Path
             return buffer;
         }
 #endif
+    }
+
+    bool Equals(const utf8 * a, const utf8 * b)
+    {
+        bool ignoreCase = false;
+#if __WINDOWS__
+        ignoreCase = true;
+#endif
+        return String::Equals(a, b, ignoreCase);
     }
 }

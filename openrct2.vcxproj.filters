@@ -453,12 +453,6 @@
     <ClCompile Include="src\network\http.cpp">
       <Filter>Source\Network</Filter>
     </ClCompile>
-    <ClCompile Include="src\interface\themes.c">
-      <Filter>Source\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="src\windows\themes.c">
-      <Filter>Source\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="src\windows\tile_inspector.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
@@ -582,6 +576,11 @@
     <ClCompile Include="src\windows\multiplayer.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\interface\Theme.cpp">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Json.cpp" />
+    <ClCompile Include="src\windows\themes.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -884,5 +883,9 @@
     <ClInclude Include="src\core\Path.hpp">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\core\List.hpp" />
+    <ClInclude Include="src\core\Guard.hpp" />
+    <ClInclude Include="src\core\Diagnostics.hpp" />
+    <ClInclude Include="src\core\Json.hpp" />
   </ItemGroup>
 </Project>

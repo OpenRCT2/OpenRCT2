@@ -989,16 +989,12 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
 		switch (widgetIndex) {
 		case WIDX_THEMES_DROPDOWN:
-			num_items = gConfigThemes.num_presets;
+			theme_manager_get_num_available_themes();
+			num_items = (int)theme_manager_get_num_available_themes();
 
-			gDropdownItemsFormat[0] = 2777;
-			gDropdownItemsArgs[0] = (uint32)&gConfigThemes.presets[1].name;
-			gDropdownItemsFormat[1] = 2777;
-			gDropdownItemsArgs[1] = (uint32)&gConfigThemes.presets[0].name;
-
-			for (i = 2; i < num_items; i++) {
+			for (int i = 0; i < num_items; i++) {
 				gDropdownItemsFormat[i] = 2777;
-				gDropdownItemsArgs[i] = (uint32)&gConfigThemes.presets[i].name;
+				gDropdownItemsArgs[i] = (uint32)theme_manager_get_available_theme_name(i);
 			}
 
 			window_dropdown_show_text_custom_width(
@@ -1009,13 +1005,10 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 				DROPDOWN_FLAG_STAY_OPEN,
 				num_items,
 				widget->right - widget->left - 3
-				);
+			);
 
-			if (gCurrentTheme == 0 || gCurrentTheme == 1) {
-				dropdown_set_checked(gCurrentTheme ^ 1, true);
-			} else {
-				dropdown_set_checked(gCurrentTheme, true);
-			}
+			dropdown_set_checked(theme_manager_get_active_available_theme_index(), true);
+			widget_invalidate(w, WIDX_THEMES_DROPDOWN);
 			break;
 
 		case WIDX_SCENARIO_GROUPING_DROPDOWN:
@@ -1243,9 +1236,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 		switch (widgetIndex) {
 		case WIDX_THEMES_DROPDOWN:
 			if (dropdownIndex != -1) {
-				if (dropdownIndex == 0 || dropdownIndex == 1)
-					dropdownIndex ^= 1;
-				theme_change_preset(dropdownIndex);
+				theme_manager_set_active_available_theme(dropdownIndex);
 			}
 			config_save_default();
 			break;
@@ -1642,7 +1633,11 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		break;
 	case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
 		gfx_draw_string_left(dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigThemes.presets[gCurrentTheme].name;
+
+		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)activeThemeName;
+
 		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,

@@ -21,6 +21,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -33,10 +34,10 @@
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "../scenario.h"
-#include "dropdown.h"
-#include "error.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
+#include "dropdown.h"
+#include "error.h"
 
 enum {
 	FILTER_RCT2 = (1 << 0),

@@ -376,9 +376,7 @@ void window_player_overview_invalidate(rct_window *w)
 		window_init_scroll_widgets(w);
 	}
 
-	w->colours[0] = 7;
-	w->colours[1] = 7;
-	w->colours[2] = 7;
+	colour_scheme_update(w);
 
 	w->pressed_widgets &= ~(WIDX_TAB_1);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);

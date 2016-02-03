@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
+#include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../input.h"

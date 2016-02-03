@@ -7,8 +7,12 @@ extern "C"
 
 namespace String
 {
+    constexpr const utf8 * Empty = "";
+
+    bool   IsNullOrEmpty(const utf8 * str);
     bool   Equals(const utf8 * a, const utf8 * b, bool ignoreCase = false);
     bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
+    size_t LastIndexOf(const utf8 * str, utf8 match);
 
     /**
      * Gets the length of the given string in codepoints.
@@ -35,7 +39,7 @@ namespace String
     /**
      * Helper method to free the string a string pointer points to and set it to a copy of a replacement string.
      */
-    utf8 * DiscardDuplicate(utf8 * * ptr, utf8 * replacement);
+    utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement);
 
     utf8 *       SkipBOM(utf8 * buffer);
     const utf8 * SkipBOM(const utf8 * buffer);

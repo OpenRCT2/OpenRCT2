@@ -4039,6 +4039,8 @@ STR_5732    :Anisotropic
 STR_5733    :Use NN scaling at integer scales
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
+STR_5735    :Network Status
+STR_5736    :Player
 
 #############
 # Scenarios #
