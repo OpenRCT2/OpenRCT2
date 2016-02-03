@@ -7104,6 +7104,9 @@ void invalidate_test_results(int rideIndex)
 /**
  *
  *  rct2: 0x006B7481
+ *
+ * @param rideIndex (dl)
+ * @param reliabilityIncreaseFactor (ax)
  */
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 {

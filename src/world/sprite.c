@@ -74,9 +74,11 @@ void invalidate_sprite_1(rct_sprite *sprite)
 }
 
 /**
-* Invalidate sprite if not at furthest zoom.
-*  rct2: 0x006EC473
-*/
+ * Invalidate sprite if not at furthest zoom.
+ *  rct2: 0x006EC473
+ *
+ * @param sprite (esi)
+ */
 void invalidate_sprite_2(rct_sprite *sprite)
 {
 	invalidate_sprite_max_zoom(sprite, 2);
