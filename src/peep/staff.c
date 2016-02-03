@@ -631,7 +631,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 	nextTile.x = (peep->x & 0xFFE0) + TileDirectionDelta[nextDirection].x;
 	nextTile.y = (peep->y & 0xFFE0) + TileDirectionDelta[nextDirection].y;
 	
-	rct_map_element* mapElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+	mapElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
 			
 	do {
 		if (mapElement->base_height != nextZ)
