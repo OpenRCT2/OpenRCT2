@@ -53,7 +53,7 @@ public:
     uint8                    Flags;
 
     UITheme(const utf8 * name);
-    UITheme(const UITheme & name);
+    UITheme(const UITheme & copy);
     ~UITheme();
 
     void                       SetName(const utf8 * name);
@@ -750,11 +750,15 @@ extern "C"
         utf8 newPath[MAX_PATH];
 
         ThemeManager::GetThemeFileName(newPath, sizeof(newPath), name);
-        String::DiscardDuplicate(&ThemeManager::CurrentThemePath, newPath);
 
-        ThemeManager::CurrentTheme->SetName(name);
-        ThemeManager::CurrentTheme->Flags &= ~UITHEME_FLAG_PREDEFINED;
-        ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
+        // Copy the theme, save it and then load it back in
+        UITheme * newTheme = new UITheme(*ThemeManager::CurrentTheme);
+        newTheme->SetName(name);
+        newTheme->Flags &= ~UITHEME_FLAG_PREDEFINED;
+        newTheme->WriteToFile(newPath);
+        delete newTheme;
+
+        ThemeManager::LoadTheme(newPath);
 
         theme_manager_load_available_themes();
         for (size_t i = 0; i < ThemeManager::AvailableThemes.GetCount(); i++)
