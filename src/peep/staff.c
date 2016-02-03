@@ -699,6 +699,34 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8 valid
 
 /**
  *
+ *  rct2: 0x006BFD9C
+ */
+static int staff_handyman_direction_rand_surface(rct_peep* peep, uint8 validDirections) {
+	uint8 direction = scenario_rand() & 3;
+	for (int i = 0; i < 4; ++i, ++direction) {
+		direction &= 3;
+		if (!(validDirections & (1 << direction)))
+			continue;
+
+		rct_xy16 chosenTile = {
+			.x = peep->next_x + TileDirectionDelta[direction].x,
+			.y = peep->next_y + TileDirectionDelta[direction].y,
+		};
+
+		if (map_surface_is_blocked(chosenTile.x, chosenTile.y))
+			continue;
+
+		break;
+	}
+	// If it tries all directions this is required
+	// to make it back to the first direction and 
+	// override validDirections
+	direction &= 3;
+	return direction;
+}
+
+/**
+ *
  *  rct2: 0x006BFBA8
  */
 static int staff_path_finding_handyman(rct_peep* peep) {
@@ -719,10 +747,71 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 		direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
 	}
 
+
+
 	if (direction == 0xFF) {
-		//6bfd90
+		if (peep->next_var_29 & 0x18) {
+			direction = staff_handyman_direction_rand_surface(peep, validDirections);
+		}
+		else {
+			rct_map_element* mapElement = map_get_path_element_at(
+				peep->next_x / 32,
+				peep->next_y / 32,
+				peep->next_z);
+
+			if (mapElement == NULL)
+				return 1;
+
+			uint8 pathDirections = mapElement->properties.path.edges & validDirections;
+			if (pathDirections == 0) {
+				direction = staff_handyman_direction_rand_surface(peep, validDirections);
+			}
+			else {
+				bool chooseRandom = true;
+				if (RCT2_GLOBAL(0x00F43918, uint8) != 0xFF &&
+					pathDirections & (1 << RCT2_GLOBAL(0x00F43918, uint8))) {
+
+					if ((scenario_rand() & 0xFFFF) >= 0x1999) {
+						chooseRandom = false;
+						direction = RCT2_GLOBAL(0x00F43918, uint8);
+					}
+				}
+				else {
+					pathDirections &= ~(1 << (peep->var_78 ^ (1 << 1)));
+					if (pathDirections == 0) {
+						pathDirections |= 1 << (peep->var_78 ^ (1 << 1));
+					}
+				}
+
+
+				if (chooseRandom == true) {
+					do {
+						direction = scenario_rand() & 3;
+					} while ((pathDirections & (1 << direction)) == 0);
+				}
+			}
+		}
+
 	}
-	//6bfecf
+
+	rct_xy16 chosenTile = {
+		.x = peep->next_x + TileDirectionDelta[direction].x,
+		.y = peep->next_y + TileDirectionDelta[direction].y
+	};
+
+	while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF) {
+		direction = staff_handyman_direction_rand_surface(peep, validDirections);
+		chosenTile.x = peep->next_x + TileDirectionDelta[direction].x;
+		chosenTile.y = peep->next_y + TileDirectionDelta[direction].y;
+	}
+
+	peep->var_78 = direction;
+	peep->destination_x = chosenTile.x + 16;
+	peep->destination_y = chosenTile.y + 16;
+	peep->destination_tolerence = 3;
+	if (peep->state == PEEP_STATE_QUEUING) {
+		peep->destination_tolerence = (scenario_rand() & 7) + 2;
+	}
 	return 0;
 }
 
@@ -733,7 +822,7 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 int staff_path_finding(rct_peep* peep) {
 	switch (peep->staff_type) {
 	case STAFF_TYPE_HANDYMAN:
-		return RCT2_CALLPROC_X(0x006BFBA8, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100;
+		return staff_path_finding_handyman(peep);
 	case STAFF_TYPE_MECHANIC:
 		return RCT2_CALLPROC_X(0x006BFF2C, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100;
 	case STAFF_TYPE_SECURITY:
