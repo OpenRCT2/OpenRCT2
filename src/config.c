@@ -129,6 +129,9 @@ config_enum_definition _currencyEnum[] = {
 	{ "KRW", CURRENCY_WON },
 	{ "RUB", CURRENCY_ROUBLE },
 	{ "CZK", CURRENCY_CZECH_KORUNA },
+	{ "HKD", CURRENCY_HKD },
+	{ "TWD", CURRENCY_TWD },
+	{ "CNY", CURRENCY_YUAN },
 	END_OF_ENUM
 };
 

@@ -4039,6 +4039,9 @@ STR_5732    :Anisotropic
 STR_5733    :Use NN scaling at integer scales
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
+STR_5735    :Hong Kong Dollars (HK$)
+STR_5736    :New Taiwan Dollar (NT$)
+STR_5737    :Chinese Yuan (CN{YEN})
 
 #############
 # Scenarios #
