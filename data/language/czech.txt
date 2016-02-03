@@ -2365,7 +2365,7 @@ STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA16}
 STR_2357    :Dům
 STR_2358    :Jednotky
 STR_2359    :Reálné hodnoty
-STR_2360    :{WINDOW_COLOUR_2}Rozlišení displeje:
+STR_2360    :Rozlišení displeje:
 STR_2361    :Vyhlazování krajiny
 STR_2362    :{SMALLFONT}{BLACK}Přepíná vyhlazování hran krajiny
 STR_2363    :Vykreslit mřížku na krajině
@@ -4030,6 +4030,15 @@ STR_5723    :Déšť
 STR_5724    :Bouřka
 STR_5725    :{BLACK}Vynutit počasí:
 STR_5726    :{SMALLFONT}{BLACK}Nastaví momentální počasí v parku
+STR_5727    :Metoda škálování
+STR_5728    :Vyžaduje hardwarové zobrazování
+STR_5729    :{SMALLFONT}{BLACK}Vyžaduje hardwarové zobrazování
+STR_5730    :Nejbližší sousedi
+STR_5731    :Lineární
+STR_5732    :Anizotropní
+STR_5733    :U celočíselného škálování používat NS metodu
+# tooltip for tab in options window
+STR_5734    :{SMALLFONT}{BLACK}Vykreslování
 
 ###############################################################################
 ## RCT2 Objects

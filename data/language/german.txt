@@ -2361,7 +2361,7 @@ STR_2356    :{WINDOW_COLOUR_2}Inspizierte Bahnen: {BLACK}{COMMA16}
 STR_2357    :Haus
 STR_2358    :Einheiten
 STR_2359    :Echte Werte
-STR_2360    :{WINDOW_COLOUR_2}Bildschirmauflösung:
+STR_2360    :Bildschirmauflösung:
 STR_2361    :Landschaftsglättung
 STR_2362    :{SMALLFONT}{BLACK}Kantenglättung des Landschaftsquadrats ein-/ausschalten
 STR_2363    :Gitterlinien auf Landschaft
@@ -4023,6 +4023,14 @@ STR_5723    :Starker Regen
 STR_5724    :Gewitter
 STR_5725    :{BLACK}Wetter erzwingen:
 STR_5726    :{SMALLFONT}{BLACK}Stellt das aktuelle Wetter im Park ein
+STR_5727    :Skalierungsmethode:
+STR_5728    :Setzt Anzeige durch Hardware voraus
+STR_5729    :{SMALLFONT}{BLACK}Setzt Anzeige durch Hardware voraus
+STR_5730    :Pixelwiederholung
+STR_5731    :Linear
+STR_5732    :Anisotrop
+STR_5733    :Pixelwdh. bei ganzzahligem Skalierungsfaktor
+STR_5734    :{SMALLFONT}{BLACK}Darstellung
 
 #############
 # Scenarios #
