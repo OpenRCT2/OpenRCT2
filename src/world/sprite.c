@@ -417,9 +417,11 @@ void sprite_misc_update_all()
 /**
  * Moves a sprite to a new location.
  *  rct2: 0x0069E9D3
- * ax: x
- * cx: y
- * dx: z
+ *
+ * @param x (ax)
+ * @param y (cx)
+ * @param z (dx)
+ * @param sprite (esi)
  */
 void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF)

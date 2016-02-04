@@ -1002,6 +1002,11 @@ void peep_check_cant_find_exit(rct_peep* peep){
  * start an action. Returns 1 if the correct destination
  * has not yet been reached. xy_distance is how close the
  * peep is to the target.
+ *
+ * @param x (ax)
+ * @param y (cx)
+ * @param distance (bp)
+ * @param peep (esi)
  */
 int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep){
 	RCT2_GLOBAL(0xF1AEF0, uint8) = peep->action_sprite_image_offset;
