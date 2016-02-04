@@ -835,8 +835,8 @@ static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
 		}
 
 		rct_xy16 chosenTile = {
-			.x = location & 0xFF,
-			.y = location >> 8
+			.x = (location & 0xFF) * 32,
+			.y = (location >> 8) * 32
 		};
 
 		sint16 x_diff = chosenTile.x - peep->x;
@@ -940,9 +940,28 @@ static int staff_path_finding_mechanic(rct_peep* peep) {
 
 		pathDirections |= (1 << direction);
 
-		//6c01c0
+		if (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) {
+			rct_ride* ride = get_ride(peep->current_ride);
+			RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = ride->station_heights[peep->current_ride_station];
+
+			uint16 location = ride->exits[peep->current_ride_station];
+			if (location == 0xFFFF) {
+				location = ride->entrances[peep->current_ride_station];
+			}
+
+			rct_xy16 chosenTile = {
+				.x = (location & 0xFF) * 32,
+				.y = (location >> 8) * 32
+			};
+
+			RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = chosenTile.x;
+			RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = chosenTile.y;
+			//6c0225
+		}
+		//6c02d1
 	}
 
+	return 0;
 	//6c02fa
 }
 
