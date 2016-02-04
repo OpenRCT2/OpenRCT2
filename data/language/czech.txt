@@ -10,27 +10,27 @@ STR_0005    :Obrácená horská dráha
 STR_0006    :Dorostenecká horská dráha
 STR_0007    :Miniaturní železnice
 STR_0008    :Vysutá jednokolejka
-STR_0009    :Malá zavěsná dráha
-STR_0010    :Lodní dráha
-STR_0011    :Divoká myš
-STR_0012    :Překážkový dostih
-STR_0013    :Automobilová dráha
-STR_0014    :Vystřelovaný volný pád
+STR_0009    :Malá zavěšená dráha
+STR_0010    :Půjčovna lodí
+STR_0011    :Dřevěná divoká myš
+STR_0012    :Dostihy
+STR_0013    :Autodráha
+STR_0014    :Volný pád
 STR_0015    :Bobová dráha
-STR_0016    :Vyhlídková věž
-STR_0017    :Smyčkující horská dráha
-STR_0018    :Sjezd na člunech
-STR_0019    :Dráha důlního vlaku
+STR_0016    :Pozorovací věž
+STR_0017    :Horská dráha s lopinky
+STR_0018    :Nafukovací čluny
+STR_0019    :Dulní horská dráha
 STR_0020    :Lanovka
 STR_0021    :Vývrtková horská dráha
 STR_0022    :Bludiště
 STR_0023    :Točitá skluzavka
 STR_0024    :Motokáry
-STR_0025    :Žlab s kládamy
-STR_0026    :Říční peřeje
+STR_0025    :Divoká řeka
+STR_0026    :Divoká voda
 STR_0027    :Autodrom
 STR_0028    :Pirátská loď
-STR_0029    :Houpací obracecí loď
+STR_0029    :Houpající se obrácená loď
 STR_0030    :Stánek s jídlem
 STR_0031    :Neznámý obchod (1D)
 STR_0032    :Stánek s pitím
@@ -38,19 +38,19 @@ STR_0033    :Neznámý obchod (1F)
 STR_0034    :Obchod
 STR_0035    :Kolotoč
 STR_0036    :Neznámý obchod (22)
-STR_0037    :Informačí kiosek
+STR_0037    :Informační kiosek
 STR_0038    :Toalety
 STR_0039    :Ruské kolo
 STR_0040    :Simulátor pohybu
 STR_0041    :3D Kino
 STR_0042    :Top Spin
 STR_0043    :Vesmírné kruhy
-STR_0044    :Horská dráha s volným pádem pozpíátku
+STR_0044    :Horská dráha s volným pádem pozpátku
 STR_0045    :Výtah
 STR_0046    :Horská dráha s vertikálním pádem
 STR_0047    :Bankomat
 STR_0048    :Twist
-STR_0049    :Strašidelný dům
+STR_0049    :Dům hrůzy
 STR_0050    :První pomoc
 STR_0051    :Cirkus
 STR_0052    :Vlak duchů
@@ -72,28 +72,28 @@ STR_0067    :Obrácená horská dráha
 STR_0068    :Heartline Twister Coaster
 STR_0069    :Mini Golf
 STR_0070    :Obří dráha
-STR_0071    :Roto-Drop
+STR_0071    :Roto-pád
 STR_0072    :Létající talíř
 STR_0073    :Křivý dům
-STR_0074    :Jenostopá kola
-STR_0075    :Compact Inverted Coaster
-STR_0076    :Vodní dráha
-STR_0077    :Air Powered Vertical Coaster
-STR_0078    :Inverted Hairpin Coaster
+STR_0074    :Jednokolejná jízdní kola
+STR_0075    :Malá zavěšená horská dráha
+STR_0076    :Vodní atrakce
+STR_0077    :Svislá dráha na stlačený vzduch
+STR_0078    :Ostrá zavěšená horská dráha
 STR_0079    :Kouzelný koberec
 STR_0080    :Podmořská jízda
-STR_0081    :Rafty
+STR_0081    :Říční rafty
 STR_0082    :Neznámá atrakce (50)
-STR_0083    :Enterprise
+STR_0083    :Loď Enterprise
 STR_0084    :Neznámá atrakce (52)
 STR_0085    :Neznámá atrakce (53)
 STR_0086    :Neznámá atrakce (54)
 STR_0087    :Neznámá atrakce (55)
-STR_0088    :Inverted Impulse Coaster
+STR_0088    :Horská dráha ve tvaru "U"
 STR_0089    :Malá horská dráha
 STR_0090    :Mini dráha
 STR_0091    :Neznámá atrakce (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0092    :Horská dráha s elektromotorem
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :Horská dráha se smyčkami, na které se jezdí ve stoje
+STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
+STR_0513    :Návětěvníci jedou po horské dráze s lopinky ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
 STR_0515    :Ocelová horská dráha s vlaky držícími zespod tratí, s mnoha složitími a otáčivímy prvky
 STR_0516    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
 STR_0517    :Pasažeři jedou v miniaturních vlacích po úzkorozchodné koleji.
 STR_0518    :Cestujíci jedou v elektických vlacích po vysuté jednokolejné dráze.
-STR_0519    :Cestujíci jedou zavěšení pod jednou kolejí  v malích kabinách, volně se houpajících ze strany na stranu
+STR_0519    :Cestujíci jedou zavěšení pod jednou kolejí v malích kabinách, volně se houpajících ze strany na stranu
 STR_0520    :Přístavní molo, kde návštěvníci mohou řídit osobní plavidlo na vodní hladině
-STR_0521    :Rychlá a mrštná horská dráha s ostrými zákrutami a strmími svahy. Dráha je předurčená k vysoké intenzitě.
+STR_0521    :Rychlá a mrštná horská dráha s ostrými zatáčkami a strmými svahy. Dráha je předurčená k vysoké intenzitě.
 STR_0522    :Menší horská dráha, na které návštěvníci sedí nad dráhou bez kabiny kolem sebe
-STR_0523    :Návštěvníci jedou pomalu v hnaných vozidlech po určené trati.
-STR_0524    :Kabina Freefall je pneumaticky vstřelena nahorů po vysoké ocelové věži a pak padá zpět volným pádem
-STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Pasažéři jsou v otáčející se rozhledně která vyjede na vysokou věž
-STR_0527    :Plynulá ocelová pásová horská dráha schopná vertikálních smyček
-STR_0528    :Návštěvníci sjíždí v nafukovacích člunech zatáčejícím korytem nebo uzavřenou trubicí
-STR_0529    :Ocelová horská dráha ve stylu důlního vlaku s věrnými důlními kolejemi.
-STR_0530    :Kabiny vysí na ocelovém laně které nepřetržitě jede z jednoho konce na druhý a zpět
-STR_0531    :Kompaktní ocelová horská dráha na které vlak projíždí smyčky a vývrtky
+STR_0523    :Návštěvníci jedou pomalu ve vozidlech po postavené dráze.
+STR_0524    :Kabina pro volný pád je pneumaticky vystřelena vzhůru po vysoké ocelové věži a následně volně padá k zemi
+STR_0525    :Návštěvníci jedou po propletené bobové dráze
+STR_0526    :Otáčející se pozorovací kabina, která postupně vyjíždí na vysokou věž
+STR_0527    :Plynulá ocelová horská dráha s lopinky
+STR_0528    :Návštěvníci jedou v nafukovacích člunech po tobogánu
+STR_0529    :Ocelová horská dráha ve stylu důlního vlaku s věrně vypadjícími důlními kolejemi.
+STR_0530    :Kabiny visí na ocelovém laně, které nepřetržitě jede z jednoho konce na druhý a zpět
+STR_0531    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
 STR_0532    :
 STR_0533    :
 STR_0534    :Návštěvníci sami řídí benzínové motokáry
-STR_0535    :Lodě ve tvaru klády se plaví po vodní kanále a sjíždí strmé úseky. Žádný návštěvník nezůstane suchý.
-STR_0536    :Loď pluje po šírokých maeandrech, přes stříkající vodpoády a po vzrušujících pěnících přejích
+STR_0535    :Lodě ve tvaru klády se plaví po vodní kanále a sjíždí strmé úseky. Žádný návštěvník nezůstane suchý
+STR_0536    :Loď pluje po širokých meandrech, přes stříkající vodpoády a po vzrušujících pěnících přejích
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
+STR_0554    :Po mocném startu pomocí elektromotorů se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
 STR_0555    :Návštěvníci jezdí ve výtahu nahoru a dolů
 STR_0556    :Extra široké vozy se vrhají střemhlav dolů za zážitky úplného volného pádu na horské dráze
 STR_0557    :
@@ -563,212 +563,212 @@ STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :Hnané vozy jedou po několika-patrové dráze plné strašidelných kulis a speciálních efektů
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Při jízdou po dřevěné dráze je tato horská dráha rychlá, drsná, hlučná a poskytuje pocit „vymuknutí řízení“ s mnoha „pocity beztíže“
+STR_0562    :Vozy jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
+STR_0563    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně, která přelétává vrcholky kopců
+STR_0564    :Dřevěná, rychlá, hlučná a drsná horská dráha jede jako utržená ze řetězů a přelétává vrcholky kopců
 STR_0565    :Jednoduchá dřevěná horská tráha schopná jen mírných kopců a zatáček, na které je vůz držen jen bočnímy kolečky a gravitací
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0566    :Malá horská dráha, na které vozy po jednom projíždí cik-cak trať s kroucenými pády a ostrými zatáčkami
+STR_0567    :Vozy se sedadly schopny otáčet návštěvníky vzhůru nohama
 STR_0568    :
-STR_0569    :Jíza ve speciálních postrojích zavěšených pod tratí, poskytuje pocit letu, jako když se vrhnete do prázdna
+STR_0569    :Jízda ve speciálních postrojích zavěšených pod tratí, poskytuje pocit letu jako pták
 STR_0570    :
-STR_0571    :Kulaté vozy se otáčeí dokola tím jak projíždějí dřevěnou klikatou tratí
-STR_0572    :Lodě s velkou kapacitou jedou po širokém vodním kanále, vzhůru poháněné bežícím pásem, zrychlují z prudkých svahů, aby obrovským šplouchnutím namočili všechny návštěvníky
-STR_0573    :Hnané vozy ve tvaru helikoptér jedou na ocelové trati
-STR_0574    :Návštěvníci ve speciálních postrojích zavěšení v leže pod tratí, jedou přes zákruty a obraty pozadu nebo čelem k zemi
-STR_0575    :Poháněné vlaky vysící pod vysuto kolejí převážejí lidi po parku
+STR_0571    :Kulaté vozy se otáčeí dokola tím, jak projíždějí dřevěnou klikatou tratí
+STR_0572    :Lodě s velkou kapacitou jedou po širokém vodním kanále, vzhůru poháněné bežícím pásem, zrychlují z prudkých svahů, aby obrovským šplouchnutím namočily všechny návštěvníky
+STR_0573    :Vozy ve tvaru helikoptér jedou na postavení dráze
+STR_0574    :Návštěvníci ve speciálních postrojích zavěšení v leže pod tratí, jedou přes zatáčky a obraty pozadu, nebo čelem k zemi
+STR_0575    :Poháněné vlaky vysící pod vysutou kolejí převážejí návštěvníky po parku
 STR_0576    :
 STR_0577    :Vozy s dvěma podvozky jedou po dřevěné trati, otáčející se dokola na speciálních místech
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0578    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě.
 STR_0579    :
-STR_0580    :Obrovská ocelová horská dráha s hladkými obraty a svahy přes 90 metrů
-STR_0581    :Kruh sedadel je za pomalého otáčení vyzdvyhnut na vrchol věže, poté se vrátí volným pádem a postupně zastaví ve stanici pomocí magnetických brzd
+STR_0580    :Gigantická ocelová horská dráha schopna volných pádů a kopců přes 90 metrů dlouhých
+STR_0581    :Kruh sedadel je za pomalé rotace vytažen navrchol vysoké věže, spuštěn volným pádem k zemi a opatrně zastaven pomocí magnetických brzd
 STR_0582    :
 STR_0583    :
 STR_0584    :Speciální kola jezdí po ocelové koleji, poháněná šlapáním jezdců
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sekces of water for gentle river sekces
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
+STR_0585    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze lopinky a ostré zatáčky
+STR_0586    :Vozy ve tvaru lodí jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
+STR_0587    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
+STR_0588    :Vozy po jednom jedou pod cik-cak tratí s ostrými zatáčkami a pády
 STR_0589    :
-STR_0590    :Riders ride in a submerged submarine through an underwater course
-STR_0591    :Raft-shaped boats gently meander around a river track
+STR_0590    :Návštěvníci vyrazí na podvodní jízdu v ponorce
+STR_0591    :Rafty se plaví po meandrech na vodním kanále
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
-STR_0600    :Motorizované dulní vláčky jezdí po hladké a spletité trati
+STR_0598    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpátku stanicí a vyletí až na druhý konec trati
+STR_0599    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
+STR_0600    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnících skrze propletenou dráhu
 STR_0601    :
-STR_0602    :Vozy horské dráhy jsou vystřeleny ze stanice za použití lineární indukčních motorů, aby mohly prosvištět tratí
-STR_0603    :Host {INT32}
-STR_0604    :Host {INT32}
-STR_0605    :Host {INT32}
-STR_0606    :Host {INT32}
-STR_0607    :Host {INT32}
-STR_0608    :Host {INT32}
-STR_0609    :Host {INT32}
-STR_0610    :Host {INT32}
-STR_0611    :Host {INT32}
-STR_0612    :Host {INT32}
-STR_0613    :Host {INT32}
-STR_0614    :Host {INT32}
-STR_0615    :Host {INT32}
-STR_0616    :Host {INT32}
-STR_0617    :Host {INT32}
-STR_0618    :Host {INT32}
-STR_0619    :Host {INT32}
-STR_0620    :Host {INT32}
-STR_0621    :Host {INT32}
-STR_0622    :Host {INT32}
-STR_0623    :Host {INT32}
-STR_0624    :Host {INT32}
-STR_0625    :Host {INT32}
-STR_0626    :Host {INT32}
-STR_0627    :Host {INT32}
-STR_0628    :Host {INT32}
-STR_0629    :Host {INT32}
-STR_0630    :Host {INT32}
-STR_0631    :Host {INT32}
-STR_0632    :Host {INT32}
-STR_0633    :Host {INT32}
-STR_0634    :Host {INT32}
-STR_0635    :Host {INT32}
-STR_0636    :Host {INT32}
-STR_0637    :Host {INT32}
-STR_0638    :Host {INT32}
-STR_0639    :Host {INT32}
-STR_0640    :Host {INT32}
-STR_0641    :Host {INT32}
-STR_0642    :Host {INT32}
-STR_0643    :Host {INT32}
-STR_0644    :Host {INT32}
-STR_0645    :Host {INT32}
-STR_0646    :Host {INT32}
-STR_0647    :Host {INT32}
-STR_0648    :Host {INT32}
-STR_0649    :Host {INT32}
-STR_0650    :Host {INT32}
-STR_0651    :Host {INT32}
-STR_0652    :Host {INT32}
-STR_0653    :Host {INT32}
-STR_0654    :Host {INT32}
-STR_0655    :Host {INT32}
-STR_0656    :Host {INT32}
-STR_0657    :Host {INT32}
-STR_0658    :Host {INT32}
-STR_0659    :Host {INT32}
-STR_0660    :Host {INT32}
-STR_0661    :Host {INT32}
-STR_0662    :Host {INT32}
-STR_0663    :Host {INT32}
-STR_0664    :Host {INT32}
-STR_0665    :Host {INT32}
-STR_0666    :Host {INT32}
-STR_0667    :Host {INT32}
-STR_0668    :Host {INT32}
-STR_0669    :Host {INT32}
-STR_0670    :Host {INT32}
-STR_0671    :Host {INT32}
-STR_0672    :Host {INT32}
-STR_0673    :Host {INT32}
-STR_0674    :Host {INT32}
-STR_0675    :Host {INT32}
-STR_0676    :Host {INT32}
-STR_0677    :Host {INT32}
-STR_0678    :Host {INT32}
-STR_0679    :Host {INT32}
-STR_0680    :Host {INT32}
-STR_0681    :Host {INT32}
-STR_0682    :Host {INT32}
-STR_0683    :Host {INT32}
-STR_0684    :Host {INT32}
-STR_0685    :Host {INT32}
-STR_0686    :Host {INT32}
-STR_0687    :Host {INT32}
-STR_0688    :Host {INT32}
-STR_0689    :Host {INT32}
-STR_0690    :Host {INT32}
-STR_0691    :Host {INT32}
-STR_0692    :Host {INT32}
-STR_0693    :Host {INT32}
-STR_0694    :Host {INT32}
-STR_0695    :Host {INT32}
-STR_0696    :Host {INT32}
-STR_0697    :Host {INT32}
-STR_0698    :Host {INT32}
-STR_0699    :Host {INT32}
-STR_0700    :Host {INT32}
-STR_0701    :Host {INT32}
-STR_0702    :Host {INT32}
-STR_0703    :Host {INT32}
-STR_0704    :Host {INT32}
-STR_0705    :Host {INT32}
-STR_0706    :Host {INT32}
-STR_0707    :Host {INT32}
-STR_0708    :Host {INT32}
-STR_0709    :Host {INT32}
-STR_0710    :Host {INT32}
-STR_0711    :Host {INT32}
-STR_0712    :Host {INT32}
-STR_0713    :Host {INT32}
-STR_0714    :Host {INT32}
-STR_0715    :Host {INT32}
-STR_0716    :Host {INT32}
-STR_0717    :Host {INT32}
-STR_0718    :Host {INT32}
-STR_0719    :Host {INT32}
-STR_0720    :Host {INT32}
-STR_0721    :Host {INT32}
-STR_0722    :Host {INT32}
-STR_0723    :Host {INT32}
-STR_0724    :Host {INT32}
-STR_0725    :Host {INT32}
-STR_0726    :Host {INT32}
-STR_0727    :Host {INT32}
-STR_0728    :Host {INT32}
-STR_0729    :Host {INT32}
-STR_0730    :Host {INT32}
-STR_0731    :Host {INT32}
-STR_0732    :Host {INT32}
-STR_0733    :Host {INT32}
-STR_0734    :Host {INT32}
-STR_0735    :Host {INT32}
-STR_0736    :Host {INT32}
-STR_0737    :Host {INT32}
-STR_0738    :Host {INT32}
-STR_0739    :Host {INT32}
-STR_0740    :Host {INT32}
-STR_0741    :Host {INT32}
-STR_0742    :Host {INT32}
-STR_0743    :Host {INT32}
-STR_0744    :Host {INT32}
-STR_0745    :Host {INT32}
-STR_0746    :Host {INT32}
-STR_0747    :Host {INT32}
-STR_0748    :Host {INT32}
-STR_0749    :Host {INT32}
-STR_0750    :Host {INT32}
-STR_0751    :Host {INT32}
-STR_0752    :Host {INT32}
-STR_0753    :Host {INT32}
-STR_0754    :Host {INT32}
-STR_0755    :Host {INT32}
-STR_0756    :Host {INT32}
-STR_0757    :Host {INT32}
-STR_0758    :Host {INT32}
-STR_0759    :Host {INT32}
-STR_0760    :Host {INT32}
-STR_0761    :Host {INT32}
-STR_0762    :Host {INT32}
-STR_0763    :Host {INT32}
-STR_0764    :Host {INT32}
-STR_0765    :Host {INT32}
-STR_0766    :Host {INT32}
-STR_0767    :Host {INT32}
+STR_0602    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
+STR_0603    :Návštěvník {INT32}
+STR_0604    :Návštěvník {INT32}
+STR_0605    :Návštěvník {INT32}
+STR_0606    :Návštěvník {INT32}
+STR_0607    :Návštěvník {INT32}
+STR_0608    :Návštěvník {INT32}
+STR_0609    :Návštěvník {INT32}
+STR_0610    :Návštěvník {INT32}
+STR_0611    :Návštěvník {INT32}
+STR_0612    :Návštěvník {INT32}
+STR_0613    :Návštěvník {INT32}
+STR_0614    :Návštěvník {INT32}
+STR_0615    :Návštěvník {INT32}
+STR_0616    :Návštěvník {INT32}
+STR_0617    :Návštěvník {INT32}
+STR_0618    :Návštěvník {INT32}
+STR_0619    :Návštěvník {INT32}
+STR_0620    :Návštěvník {INT32}
+STR_0621    :Návštěvník {INT32}
+STR_0622    :Návštěvník {INT32}
+STR_0623    :Návštěvník {INT32}
+STR_0624    :Návštěvník {INT32}
+STR_0625    :Návštěvník {INT32}
+STR_0626    :Návštěvník {INT32}
+STR_0627    :Návštěvník {INT32}
+STR_0628    :Návštěvník {INT32}
+STR_0629    :Návštěvník {INT32}
+STR_0630    :Návštěvník {INT32}
+STR_0631    :Návštěvník {INT32}
+STR_0632    :Návštěvník {INT32}
+STR_0633    :Návštěvník {INT32}
+STR_0634    :Návštěvník {INT32}
+STR_0635    :Návštěvník {INT32}
+STR_0636    :Návštěvník {INT32}
+STR_0637    :Návštěvník {INT32}
+STR_0638    :Návštěvník {INT32}
+STR_0639    :Návštěvník {INT32}
+STR_0640    :Návštěvník {INT32}
+STR_0641    :Návštěvník {INT32}
+STR_0642    :Návštěvník {INT32}
+STR_0643    :Návštěvník {INT32}
+STR_0644    :Návštěvník {INT32}
+STR_0645    :Návštěvník {INT32}
+STR_0646    :Návštěvník {INT32}
+STR_0647    :Návštěvník {INT32}
+STR_0648    :Návštěvník {INT32}
+STR_0649    :Návštěvník {INT32}
+STR_0650    :Návštěvník {INT32}
+STR_0651    :Návštěvník {INT32}
+STR_0652    :Návštěvník {INT32}
+STR_0653    :Návštěvník {INT32}
+STR_0654    :Návštěvník {INT32}
+STR_0655    :Návštěvník {INT32}
+STR_0656    :Návštěvník {INT32}
+STR_0657    :Návštěvník {INT32}
+STR_0658    :Návštěvník {INT32}
+STR_0659    :Návštěvník {INT32}
+STR_0660    :Návštěvník {INT32}
+STR_0661    :Návštěvník {INT32}
+STR_0662    :Návštěvník {INT32}
+STR_0663    :Návštěvník {INT32}
+STR_0664    :Návštěvník {INT32}
+STR_0665    :Návštěvník {INT32}
+STR_0666    :Návštěvník {INT32}
+STR_0667    :Návštěvník {INT32}
+STR_0668    :Návštěvník {INT32}
+STR_0669    :Návštěvník {INT32}
+STR_0670    :Návštěvník {INT32}
+STR_0671    :Návštěvník {INT32}
+STR_0672    :Návštěvník {INT32}
+STR_0673    :Návštěvník {INT32}
+STR_0674    :Návštěvník {INT32}
+STR_0675    :Návštěvník {INT32}
+STR_0676    :Návštěvník {INT32}
+STR_0677    :Návštěvník {INT32}
+STR_0678    :Návštěvník {INT32}
+STR_0679    :Návštěvník {INT32}
+STR_0680    :Návštěvník {INT32}
+STR_0681    :Návštěvník {INT32}
+STR_0682    :Návštěvník {INT32}
+STR_0683    :Návštěvník {INT32}
+STR_0684    :Návštěvník {INT32}
+STR_0685    :Návštěvník {INT32}
+STR_0686    :Návštěvník {INT32}
+STR_0687    :Návštěvník {INT32}
+STR_0688    :Návštěvník {INT32}
+STR_0689    :Návštěvník {INT32}
+STR_0690    :Návštěvník {INT32}
+STR_0691    :Návštěvník {INT32}
+STR_0692    :Návštěvník {INT32}
+STR_0693    :Návštěvník {INT32}
+STR_0694    :Návštěvník {INT32}
+STR_0695    :Návštěvník {INT32}
+STR_0696    :Návštěvník {INT32}
+STR_0697    :Návštěvník {INT32}
+STR_0698    :Návštěvník {INT32}
+STR_0699    :Návštěvník {INT32}
+STR_0700    :Návštěvník {INT32}
+STR_0701    :Návštěvník {INT32}
+STR_0702    :Návštěvník {INT32}
+STR_0703    :Návštěvník {INT32}
+STR_0704    :Návštěvník {INT32}
+STR_0705    :Návštěvník {INT32}
+STR_0706    :Návštěvník {INT32}
+STR_0707    :Návštěvník {INT32}
+STR_0708    :Návštěvník {INT32}
+STR_0709    :Návštěvník {INT32}
+STR_0710    :Návštěvník {INT32}
+STR_0711    :Návštěvník {INT32}
+STR_0712    :Návštěvník {INT32}
+STR_0713    :Návštěvník {INT32}
+STR_0714    :Návštěvník {INT32}
+STR_0715    :Návštěvník {INT32}
+STR_0716    :Návštěvník {INT32}
+STR_0717    :Návštěvník {INT32}
+STR_0718    :Návštěvník {INT32}
+STR_0719    :Návštěvník {INT32}
+STR_0720    :Návštěvník {INT32}
+STR_0721    :Návštěvník {INT32}
+STR_0722    :Návštěvník {INT32}
+STR_0723    :Návštěvník {INT32}
+STR_0724    :Návštěvník {INT32}
+STR_0725    :Návštěvník {INT32}
+STR_0726    :Návštěvník {INT32}
+STR_0727    :Návštěvník {INT32}
+STR_0728    :Návštěvník {INT32}
+STR_0729    :Návštěvník {INT32}
+STR_0730    :Návštěvník {INT32}
+STR_0731    :Návštěvník {INT32}
+STR_0732    :Návštěvník {INT32}
+STR_0733    :Návštěvník {INT32}
+STR_0734    :Návštěvník {INT32}
+STR_0735    :Návštěvník {INT32}
+STR_0736    :Návštěvník {INT32}
+STR_0737    :Návštěvník {INT32}
+STR_0738    :Návštěvník {INT32}
+STR_0739    :Návštěvník {INT32}
+STR_0740    :Návštěvník {INT32}
+STR_0741    :Návštěvník {INT32}
+STR_0742    :Návštěvník {INT32}
+STR_0743    :Návštěvník {INT32}
+STR_0744    :Návštěvník {INT32}
+STR_0745    :Návštěvník {INT32}
+STR_0746    :Návštěvník {INT32}
+STR_0747    :Návštěvník {INT32}
+STR_0748    :Návštěvník {INT32}
+STR_0749    :Návštěvník {INT32}
+STR_0750    :Návštěvník {INT32}
+STR_0751    :Návštěvník {INT32}
+STR_0752    :Návštěvník {INT32}
+STR_0753    :Návštěvník {INT32}
+STR_0754    :Návštěvník {INT32}
+STR_0755    :Návštěvník {INT32}
+STR_0756    :Návštěvník {INT32}
+STR_0757    :Návštěvník {INT32}
+STR_0758    :Návštěvník {INT32}
+STR_0759    :Návštěvník {INT32}
+STR_0760    :Návštěvník {INT32}
+STR_0761    :Návštěvník {INT32}
+STR_0762    :Návštěvník {INT32}
+STR_0763    :Návštěvník {INT32}
+STR_0764    :Návštěvník {INT32}
+STR_0765    :Návštěvník {INT32}
+STR_0766    :Návštěvník {INT32}
+STR_0767    :Návštěvník {INT32}
 STR_0768    :Údržbář {INT32}
 STR_0769    :Mechanik {INT32}
 STR_0770    :Hlídač {INT32}
@@ -828,7 +828,7 @@ STR_0823    :Chybějicí nebo nedostupný soubor
 STR_0824    :{BLACK}{CROSS}
 STR_0825    :Zvolené jméno je již používáno
 STR_0826    :Definováno příliš mnoho jmen
-STR_0827    :Nedostatek financí - potřeba {CURRENCY2DP}
+STR_0827    :Nedostatek financí - je potřeba {CURRENCY2DP}
 STR_0828    :{SMALLFONT}{BLACK}Zavřít okno
 STR_0829    :{SMALLFONT}{BLACK}Titulek okna - lze s ním posunout okno
 STR_0830    :{SMALLFONT}{BLACK}Přiblížit pohled
@@ -849,7 +849,7 @@ STR_0843    :<not used anymore>
 STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
-STR_0847    :O 'OpenRCT2'
+STR_0847    :O hře OpenRCT2
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Verze 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, všechna práva vyhrazena
@@ -883,7 +883,7 @@ STR_0877    :Příliš nízko!
 STR_0878    :Moc vysoko!
 STR_0879    :Tady nelze zemi snížit...
 STR_0880    :Tady nelze zemi zvíšit...
-STR_0881    :Předmět v cestě
+STR_0881    :Objekt v cestě
 STR_0882    :Nahrát hru
 STR_0883    :Uložit hru
 STR_0884    :Nahrát krajinu
@@ -3332,7 +3332,7 @@ STR_3320    :Nepodařilo se uložit scénář...
 STR_3321    :Nové objekty byly úspěšně nainstalovány
 STR_3322    :{WINDOW_COLOUR_2}Cíl scénáře: {BLACK}{STRINGID}
 STR_3323    :Chybějící data objektu, ID: 
-STR_3324    :Vyžaduje Add-On Pack: 
+STR_3324    :Vyžaduje Add-On Pack: {STRINGID}
 STR_3325    :Vyžaduje Add-On Pack
 STR_3326    :{WINDOW_COLOUR_2}(bez obrázku)
 STR_3327    :Nenastavena počáteční pozice návštěvníků
@@ -3964,7 +3964,7 @@ STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_5625    :{OPENQUOTES}Reálné{ENDQUOTES} parky
 STR_5626    :Ostatní parky
 STR_5627    :Seskupit scénáře podle:
 STR_5628    :Původní hry
@@ -4003,6 +4003,7 @@ STR_5660    :Upravit skupiny
 STR_5661    :Nastavit skupinu hráče
 STR_5662    :N/A
 STR_5663    :Vyčistit krajinu
+STR_5664    :Cheaty
 STR_5701    :{WINDOW_COLOUR_2}Poslední akce: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Najít hráčovu poslední akci
 STR_5703    :Nelze vyhodit zakladatele hry
@@ -4180,7 +4181,7 @@ STR_CPTY    :1 místo na každém kole
 
 [OBS1]
 STR_NAME    :Pozorovací věž
-STR_DESC    :Otáčející se pozorovací věž, která postupně vyjíždí na vysokou věž
+STR_DESC    :Otáčející se pozorovací kabina, která postupně vyjíždí na vysokou věž
 STR_CPTY    :20 návštěvníků
 
 [OBS2]
@@ -4219,7 +4220,7 @@ STR_DESC    :Vozy ve tvaru veteránů jezdí po postavené dráze
 STR_CPTY    :2 místa v každém vozu
 
 [AMT1]
-STR_NAME    :Dulní horská dráha Mine Train Coaster
+STR_NAME    :Dulní horská dráha
 STR_DESC    :Horská dráha ve stylu dulních vlaků jezdí po ocelové horské dráze maskované jako staré koleje
 STR_CPTY    :2 nebo 4 místa v každém voze
 
@@ -4638,8 +4639,8 @@ STR_NAME    :Stánek s kuřecími nugety
 STR_DESC    :Stánek prodávající kuřecí nugety
 
 [CHPSH]
-STR_NAME    :Stánek s brambůrky
-STR_DESC    :Stánek prodávající brambůrky
+STR_NAME    :Stánek s hranolkami
+STR_DESC    :Stánek prodávající hranolky
 
 [CHPSH2]
 STR_NAME    :Stánek s hranolkami

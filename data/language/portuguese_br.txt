@@ -2364,7 +2364,7 @@ STR_2356    :{WINDOW_COLOUR_2}Atrações Inspecionadas: {BLACK}{COMMA16}
 STR_2357    :Casa
 STR_2358    :Unidades
 STR_2359    :Valores Reais
-STR_2360    :{WINDOW_COLOUR_2}Resolução de Tela:
+STR_2360    :Resolução de Tela:
 STR_2361    :Suavizar Terreno
 STR_2362    :{SMALLFONT}{BLACK}Liga/Desliga suavização do azulejo do terreno
 STR_2363    :Grades no terreno
@@ -2763,8 +2763,8 @@ STR_2753    :Cortar grama
 STR_2754    :Regar plantas
 STR_2755    :Consertar vandalismo
 STR_2756    :Remover vomitos
-STR_2757    :Forçar Sol
-STR_2758    :Forçar Chuva
+STR_2757    :<not used anymore>
+STR_2758    :<not used anymore>
 STR_2759    :Apuramento Zero
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
@@ -4002,6 +4002,7 @@ STR_5660    :Modificar Grupos
 STR_5661    :Definir Grupo do Jogador
 STR_5662    :N/A
 STR_5663    :Limpar Paisagem
+STR_5664    :Trapaças
 STR_5701    :{WINDOW_COLOUR_2}Última ação: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizar ação mais recente do jogador
 STR_5703    :Não é possível expulsar o anfitrião
@@ -4018,6 +4019,26 @@ STR_5713    :Expulsar Jogador
 STR_5714    :Mostrar janela de opções
 STR_5715    :Novo Jogo
 STR_5716    :Não é permitido no modo multijogador
+# For identifying client network version in server list window
+STR_5717    :Versão da rede: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Versão da rede: {STRING}
+STR_5719    :Ensolarado
+STR_5720    :Parcialmente Nublado
+STR_5721    :Nublado
+STR_5722    :Chuva
+STR_5723    :Chuva Forte
+STR_5724    :Tempestade
+STR_5725    :{BLACK}Forçar clima:
+STR_5726    :{SMALLFONT}{BLACK}Define o clima atual no parque
+STR_5727    :Qualidade da escala
+STR_5728    :Requer opção de exibição de hardware
+STR_5729    :{SMALLFONT}{BLACK}Requer opção de exibição de hardware
+STR_5730    :Vizinho mais próximo
+STR_5731    :Linear
+STR_5732    :Anisotrópica
+STR_5733    :Usar escala NN em escalas inteiras
+# tooltip for tab in options window
+STR_5734    :{SMALLFONT}{BLACK}Renderizando
 
 #############
 # Scenarios #

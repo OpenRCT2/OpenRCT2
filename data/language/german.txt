@@ -848,7 +848,7 @@ STR_0843    :<not used anymore>
 STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
-STR_0847    :Infos zu `OpenRCT2'
+STR_0847    :Über `OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.032
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle Rechte vorbehalten
@@ -1197,7 +1197,7 @@ STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
 STR_1194    :Geschlossen
 STR_1195    :Testlauf
-STR_1196    :Offen
+STR_1196    :Geöffnet
 STR_1197    :Defekt
 STR_1198    :Verunglückt!
 STR_1199    :{COMMA16} Person auf Fahrt
@@ -1657,7 +1657,7 @@ STR_1652    :{SMALLFONT}{OPENQUOTES}Ich bin ja so aufgeregt - eine Bahn von Inta
 STR_1653    :{SMALLFONT}{OPENQUOTES}...und hier sind wir bei d. {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Aktuelle Gedanken:
 STR_1655    :{SMALLFONT}{BLACK}Fußweg auf Gelände anlegen
-STR_1656    :{SMALLFONT}{BLACK}Brücke bauen oder Tunnelfußweg anlegen
+STR_1656    :{SMALLFONT}{BLACK}Brücke bauen oder Tunnel anlegen
 STR_1657    :{WINDOW_COLOUR_2}Bevorzugte Bahn-
 STR_1658    :{WINDOW_COLOUR_2}intensität: {BLACK}weniger als {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intensität: {BLACK}zwischen {COMMA16} und {COMMA16}
@@ -1713,8 +1713,8 @@ STR_1708    :{SMALLFONT}{BLACK}Patrouillenbereich für diesen{NEWLINE}Mitarbeite
 STR_1709    :Mitarbeiter entlassen
 STR_1710    :Ja
 STR_1711    :{WINDOW_COLOUR_1}Möchten Sie {STRINGID} wirklich entlassen?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Fußwege kehren
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Beete wässern
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Fußwege fegen
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Beete bewässern
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Mülleimer leeren
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Gras mähen
 STR_1716    :Ungültiger Name für Park
@@ -1793,7 +1793,7 @@ STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffkostüm
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratenkostüm
 STR_1790    :{SMALLFONT}{BLACK}Uniformfarbe für diesen{NEWLINE}Mitarbeiter auswählen
 STR_1791    :{WINDOW_COLOUR_2}Uniformfarbe:
-STR_1792    :Antwortet auf Störung von {STRINGID}
+STR_1792    :Unterwegs zur Reparatur von {STRINGID}
 STR_1793    :Unterwegs zur Inspektion von {STRINGID}
 STR_1794    :Repariert {STRINGID}
 STR_1795    :Beantwortet einen Funkspruch
@@ -1877,8 +1877,8 @@ STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Einkünfte: {BLACK}{CURRENCY2DP} pro Stunde
 STR_1874    :{WINDOW_COLOUR_2}Gewinn: {BLACK}{CURRENCY2DP} pro Stunde
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Bahnen inspizieren
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Bahnen reparieren
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Attraktionen inspizieren
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Attraktionen reparieren
 STR_1878    :{WINDOW_COLOUR_2}Inspektion:
 STR_1879    :Alle 10 Minuten
 STR_1880    :Alle 20 Minuten
@@ -1887,7 +1887,7 @@ STR_1882    :Alle 45 Minuten
 STR_1883    :Jede Stunde
 STR_1884    :Alle 2 Stunden
 STR_1885    :Nie
-STR_1886    :Inspektion bei {STRINGID}
+STR_1886    :Inspiziert {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Letzte Inspektion vor: {BLACK}{COMMA16} Minuten
 STR_1888    :{WINDOW_COLOUR_2}Letzte Inspektion vor: {BLACK}mehr als 4 Stunden
 STR_1889    :{WINDOW_COLOUR_2}Ausfallzeit: {MOVE_X}{255}{BLACK}{COMMA16}%
@@ -1939,8 +1939,8 @@ STR_1934    :{STRINGID} hat {STRINGID} verlassen
 STR_1935    :{STRINGID} hat den Park verlassen
 STR_1936    :{STRINGID} hat {STRINGID} gekauft
 STR_1937    :{SMALLFONT}{BLACK}Informationen zum Thema dieser{NEWLINE}Nachricht anzeigen
-STR_1938    :{SMALLFONT}{BLACK}Ansicht des Besuchers anzeigen
-STR_1939    :{SMALLFONT}{BLACK}Ansicht des Mitarbeiters anzeigen
+STR_1938    :{SMALLFONT}{BLACK}Ansicht des Besuchers
+STR_1939    :{SMALLFONT}{BLACK}Ansicht des Mitarbeiters
 STR_1940    :{SMALLFONT}{BLACK}Vergnügen, Energie, Hunger, usw.{NEWLINE}dieses Besuchers anzeigen
 STR_1941    :{SMALLFONT}{BLACK}Gefahrene Bahnen dieses Besuchers anzeigen
 STR_1942    :{SMALLFONT}{BLACK}Finanzinformationen zu diesem{NEWLINE}Besucher anzeigen
@@ -2225,8 +2225,8 @@ STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkbewertung: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Besucher im Park: {BLACK}{COMMA16}
-STR_2224    :{WINDOW_COLOUR_2}Geld: {BLACK}{CURRENCY2DP}
-STR_2225    :{WINDOW_COLOUR_2}Geld: {RED}{CURRENCY2DP}
+STR_2224    :{WINDOW_COLOUR_2}Kontostand: {BLACK}{CURRENCY2DP}
+STR_2225    :{WINDOW_COLOUR_2}Kontostand: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Verkehrswert: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Firmenwert: {BLACK}{CURRENCY}
 STR_2228    :{WINDOW_COLOUR_2}Gewinne des letzten Monats aus Speisen/Getränke und {NEWLINE}-Werbeartikeln: {BLACK}{CURRENCY}
@@ -2351,13 +2351,13 @@ STR_2346    :Anzeigen
 STR_2347    :{RED}{STRINGID} ist ertrunken!
 STR_2348    :{SMALLFONT}{BLACK}Statistiken für diesen Mitarbeiter anzeigen
 STR_2349    :{WINDOW_COLOUR_2}Lohn: {BLACK}{CURRENCY} pro Monat
-STR_2350    :{WINDOW_COLOUR_2}Angestellt: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gemähte Rasen: {BLACK}{COMMA16}
+STR_2350    :{WINDOW_COLOUR_2}Angestellt seit: {BLACK}{MONTHYEAR}
+STR_2351    :{WINDOW_COLOUR_2}Gemähte Rasenflächen: {BLACK}{COMMA16}
 STR_2352    :{WINDOW_COLOUR_2}Bewässerte Beete: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Beseitigter Abfall: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Gefegte Fußwege: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Geleerte Mülleimer: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Reparierte Bahnen: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspizierte Bahnen: {BLACK}{COMMA16}
+STR_2355    :{WINDOW_COLOUR_2}Reparierte Attraktionen: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}Inspizierte Attraktionen: {BLACK}{COMMA16}
 STR_2357    :Haus
 STR_2358    :Einheiten
 STR_2359    :Echte Werte
@@ -2453,17 +2453,17 @@ STR_2448    :{YELLOW}Ihre Marketingkampagne für einen halben Parkeintrittspreis
 STR_2449    :{YELLOW}Ihre Marketingkampange für Gratis-{STRINGID} ist zu Ende
 STR_2450    :{YELLOW}Ihre Werbekampagne für den Park ist zu Ende
 STR_2451    :{YELLOW}Ihre Werbekampagne für d. {STRINGID} ist zu Ende
-STR_2452    :{WINDOW_COLOUR_2}Geld (abzüglich Darlehen): {BLACK}{CURRENCY2DP}
-STR_2453    :{WINDOW_COLOUR_2}Geld (abzüglich Darlehen): {RED}{CURRENCY2DP}
+STR_2452    :{WINDOW_COLOUR_2}Kontostand (abzüglich Darlehen): {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}Kontostand (abzüglich Darlehen): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Finanzkonten anzeigen
-STR_2458    :{SMALLFONT}{BLACK}Gelddiagramm (abzüglich Darlehen){NEWLINE}im Zeitverlauf anzeigen
+STR_2458    :{SMALLFONT}{BLACK}Kontostand (abzüglich Darlehen){NEWLINE}im Zeitverlauf anzeigen
 STR_2459    :{SMALLFONT}{BLACK}Verkehrswertdiagramm im{NEWLINE}Zeitverlauf anzeigen
-STR_2460    :{SMALLFONT}{BLACK}Diagramm zu Wochengewinn anzeigen
+STR_2460    :{SMALLFONT}{BLACK}Diagramm zum Wochengewinn anzeigen
 STR_2461    :{SMALLFONT}{BLACK}Marketingkampagnen anzeigen
-STR_2462    :{SMALLFONT}{BLACK}Ansicht von Parkeingang anzeigen
+STR_2462    :{SMALLFONT}{BLACK}Ansicht des Parkeingangs
 STR_2463    :{SMALLFONT}{BLACK}Parkbewertungsdiagramm{NEWLINE}im Zeitverlauf anzeigen
 STR_2464    :{SMALLFONT}{BLACK}Besucherzahlendiagramm{NEWLINE}im Zeitverlauf anzeigen
 STR_2465    :{SMALLFONT}{BLACK}Parkeintrittspreis und -informationen anzeigen
@@ -2684,7 +2684,7 @@ STR_2677    :???
 STR_2678    :???
 STR_2679    :???
 STR_2680    :Alle Forschungen beendet
-STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihr Geld um {CURRENCY}
+STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihren Kontostand um {CURRENCY}
 STR_2682    :{MEDIUMFONT}{BLACK}Zw. freiem und kostenpfl. Eintritt umsch.
 STR_2683    :{MEDIUMFONT}{BLACK}Erhöht das Vergnügen der Besucher maximal
 STR_2684    :{SMALLFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
@@ -2754,8 +2754,8 @@ STR_2747    :{ENDQUOTES}
 STR_2748    :Leiste
 STR_2749    :Mein neues Szenario
 # New strings used in the cheats window previously these were ???
-STR_2750    :Alle Gegenstände nach oben bewegen
-STR_2751    :Alle Gegenstände nach unten bewegen
+STR_2750    :Alle Objekte nach oben bewegen
+STR_2751    :Alle Objekte nach unten bewegen
 STR_2752    :Gras beseitigen
 STR_2753    :Rasen mähen
 STR_2754    :Pflanzen gießen
@@ -2805,7 +2805,7 @@ STR_2796    :{SMALLFONT}{BLACK}Sortieren Sie die Bahnliste in die richtige Reihe
 STR_2797    :Ansicht rollen, wenn Zeiger am Bildschirmrand ist
 STR_2798    :{SMALLFONT}{BLACK}Wählen Sie aus, ob die Ansicht gerollt werden soll, wenn sich der Mauszeiger am Bildschirmrand befindet
 STR_2799    :{SMALLFONT}{BLACK}Tastenkürzel anzeigen oder ändern
-STR_2800    :{WINDOW_COLOUR_2}Besucher gesammt: {BLACK}{COMMA32}
+STR_2800    :{WINDOW_COLOUR_2}Besucher gesamt: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Einkünfte d. Eintrittskarten: {BLACK}{CURRENCY2DP}
 STR_2802    :Karte
 STR_2803    :{SMALLFONT}{BLACK}Diese Besucher auf Karte hervorheben
@@ -3233,7 +3233,7 @@ STR_3224    :{SMALLFONT}{BLACK}Legen Sie die Baurechte fest, die vom{NEWLINE}Par
 STR_3225    :{SMALLFONT}{BLACK}Bau einer zufälligen Objektgruppe{NEWLINE}um ausgewählte Position herum ein-/ausschalten
 STR_3226    :{SMALLFONT}{BLACK}Parkeingang bauen
 STR_3227    :Zu viele Parkeingänge!
-STR_3228    :{SMALLFONT}{BLACK}Legen Sie die Startpositionen{NEWLINE}für Personen fest
+STR_3228    :{SMALLFONT}{BLACK}Legen Sie die Startpositionen{NEWLINE}der Besucher fest
 STR_3229    :Blockbremsen können nicht unmittelbar nach der Station eingesetzt werden
 STR_3230    :Blockbremsen können nicht unmittelbar hintereinander eingesetzt werden
 STR_3231    :Blockbremsen können nicht unmittelbar nach der Anstiegsspitze eingesetzt werden
@@ -3245,32 +3245,32 @@ STR_3236    :{SMALLFONT}{BLACK}Besucheroptionen anzeigen
 STR_3237    :{SMALLFONT}{BLACK}Parkoptionen anzeigen
 STR_3238    :Kein Geld
 STR_3239    :{SMALLFONT}{BLACK}Machen Sie diesen Park zu einem Park, bei dem keine finanziellen Einschränkungen gelten
-STR_3240    :{WINDOW_COLOUR_2}Anfangsgeldstand:
-STR_3241    :{WINDOW_COLOUR_2}Anfangsdarlehen:
-STR_3242    :{WINDOW_COLOUR_2}Max. Darlehensgröße:
+STR_3240    :{WINDOW_COLOUR_2}Kontostand zu Beginn:
+STR_3241    :{WINDOW_COLOUR_2}Darlehen zu Beginn:
+STR_3242    :{WINDOW_COLOUR_2}Maximales Darlehen:
 STR_3243    :{WINDOW_COLOUR_2}Jährliche Zinsrate:
 STR_3244    :Marketingkampagnen verbieten
 STR_3245    :{SMALLFONT}{BLACK}Werbung, Werbeschemas und sonstige Marketingkampagnen verbieten
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
-STR_3248    :Anfangsgeldstand kann nicht weiter erhöht werden!
-STR_3249    :Anfangsgeldstand kann nicht weiter reduziert werden!
-STR_3250    :Anfangsdarlehen kann nicht weiter erhöht werden!
-STR_3251    :Anfangsdarlehen kann nicht weiter reduziert werden!
-STR_3252    :Max. Darlehensgröße kann nicht weiter erhöht werden!
-STR_3253    :Max. Darlehensgröße kann nicht weiter reduziert werden!
-STR_3254    :Zinsrate kann nicht weiter erhöht werden!
-STR_3255    :Zinsrate kann nicht weiter reduziert werden!
-STR_3256    :Weniger aufregendere Bahnen bevorzugt
+STR_3248    :Anfangskontostand kann nicht{NEWLINE}weiter erhöht werden!
+STR_3249    :Anfangskontostand kann nicht{NEWLINE}weiter reduziert werden!
+STR_3250    :Anfangsdarlehen kann nicht{NEWLINE}weiter erhöht werden!
+STR_3251    :Anfangsdarlehen kann nicht{NEWLINE}weiter reduziert werden!
+STR_3252    :Maximales Darlehen kann nicht{NEWLINE}weiter erhöht werden!
+STR_3253    :Maximales Darlehen kann nicht{NEWLINE}weiter reduziert werden!
+STR_3254    :Zinsrate kann nicht weiter{NEWLINE}erhöht werden!
+STR_3255    :Zinsrate kann nicht weiter{NEWLINE}reduziert werden!
+STR_3256    :Weniger aufregende Bahnen bevorzugt
 STR_3257    :{SMALLFONT}{BLACK}Wählen Sie aus, ob die Besucher im Allgemeinen weniger aufregende{NEWLINE}Bahnen vorziehen
 STR_3258    :Aufregendere Bahnen bevorzugt
 STR_3259    :{SMALLFONT}{BLACK}Wählen Sie aus, ob die Besucher im Allgemeinen aufregendere{NEWLINE}Bahnen vorziehen
 STR_3260    :{WINDOW_COLOUR_2}Durchschnittliches Geld pro Besucher:
-STR_3261    :{WINDOW_COLOUR_2}Anfangsvergnügen der Besucher:
-STR_3262    :{WINDOW_COLOUR_2}Anfangshunger der Besucher:
-STR_3263    :{WINDOW_COLOUR_2}Anfangsdurst der Besucher:
-STR_3264    :Dies kann nicht weiter erhöht werden!
-STR_3265    :Dies kann nicht weiter reduziert werden!
+STR_3261    :{WINDOW_COLOUR_2}Vergnügen der Besucher zu Beginn:
+STR_3262    :{WINDOW_COLOUR_2}Hunger der Besucher zu Beginn:
+STR_3263    :{WINDOW_COLOUR_2}Durst der Besucher zu Beginn:
+STR_3264    :Dies kann nicht weiter{NEWLINE}erhöht werden!
+STR_3265    :Dies kann nicht weiter{NEWLINE}reduziert werden!
 STR_3266    :{SMALLFONT}{BLACK}Wählen Sie aus, was der Park für{NEWLINE}Eintritt und Fahrten verlangt
 STR_3267    :Entfernen von Bäumen verbieten
 STR_3268    :{SMALLFONT}{BLACK}Entfernen von hohen Bäumen verbieten
@@ -3278,9 +3278,9 @@ STR_3269    :Landschaftsänderungen verbieten
 STR_3270    :{SMALLFONT}{BLACK}Jegliche Änderungen an der{NEWLINE}Landschaft verbieten
 STR_3271    :Hohe Bauten verbieten
 STR_3272    :{SMALLFONT}{BLACK}Jegliche hohe Bauten verbieten
-STR_3273    :Höhere Schwierigkeitsgrad für Parkbewertung
+STR_3273    :Höherer Schwierigkeitsgrad für Parkbewertung
 STR_3274    :{SMALLFONT}{BLACK}Machen Sie die Parkbewertung schwieriger
-STR_3275    :Höhere Schwierigkeitsgrad für Besuchergewinnung
+STR_3275    :Höherer Schwierigkeitsgrad für Besuchergewinnung
 STR_3276    :{SMALLFONT}{BLACK}Machen Sie das Anlocken von{NEWLINE}Besuchern schwieriger
 STR_3277    :{WINDOW_COLOUR_2}Kosten für Landkauf:
 STR_3278    :{WINDOW_COLOUR_2}Kosten für Erwerb v. Baurechten:
@@ -3319,7 +3319,7 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Attraktionen unter Beibehaltungsauftrag:
 STR_3313    :Szenarioname
-STR_3314    :Namen für Szenario eingeben:
+STR_3314    :Namen für dieses Szenario eingeben:
 STR_3315    :Park-/Szenariodetails
 STR_3316    :Beschreibung für dieses Szenario eingeben:
 STR_3317    :Noch keine Details
@@ -3343,9 +3343,9 @@ STR_3334    :{SMALLFONT}{BLACK}Wählen Sie aus, ob zusätzliche Plugin-Objektdat
 STR_3335    :Achterbahn-Designer - Bahnarten & Fahrzeuge auswählen
 STR_3336    :Streckenentwurf-Manager - Bahnart auswählen
 STR_3337    :Six Flags-Park
-STR_3338    :{BLACK}Eigenes Layout
-STR_3339    :{BLACK}{COMMA16} Entwurf verfügbar oder eigenes Layout
-STR_3340    :{BLACK}{COMMA16} Entwürfe verfügbar oder eigenes Layout
+STR_3338    :{BLACK}Eigenes Layout entwerfen
+STR_3339    :{BLACK}{COMMA16} Entwurf verfügbar oder eigenes Layout entwerfen
+STR_3340    :{BLACK}{COMMA16} Entwürfe verfügbar oder eigenes Layout entwerfen
 STR_3341    :{SMALLFONT}{BLACK}Spielwerkzeuge
 STR_3342    :Szenario-Editor
 STR_3343    :Gespeichertes Spiel in Szenario umwandeln
@@ -3997,6 +3997,7 @@ STR_5660    :Gruppen anpassen
 STR_5661    :Spielergruppe festlegen
 STR_5662    :N/A
 STR_5663    :Landschaft leeren
+STR_5664    :Cheats
 STR_5701    :{WINDOW_COLOUR_2}Letzte Aktion: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Lokalisiert die letzte Aktion des Spielers
 STR_5703    :Host kann nicht entfernt werden

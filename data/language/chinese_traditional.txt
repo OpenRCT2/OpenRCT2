@@ -2748,7 +2748,7 @@ STR_2739    :無
 STR_2740    :夢幻遊樂園 (RCT1)
 STR_2741    :模擬樂園 (RCT2)
 STR_2742    :找不到css50.dat
-STR_2743    :複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat'.
+STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat'.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2763,8 +2763,8 @@ STR_2753    :除好草的草地
 STR_2754    :灌溉花圃
 STR_2755    :修復被毀壞的物件
 STR_2756    :移除垃圾
-STR_2757    :強制晴天
-STR_2758    :強制雷暴
+STR_2757    :<not used anymore>
+STR_2758    :<not used anymore>
 STR_2759    :無'擋在路上'檢查
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
@@ -4003,6 +4003,7 @@ STR_5660    :修改組別
 STR_5661    :將玩家分配到個別組別
 STR_5662    :N/A
 STR_5663    :清除景物
+STR_5664    :密技
 STR_5701    :{WINDOW_COLOUR_2}最近的動作: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}將這個玩家的最近的動作定位
 STR_5703    :無法踢除架設者
@@ -4013,12 +4014,32 @@ STR_5707    :無法修改此組別
 STR_5708    :無法改變架設者身處的組別
 STR_5709    :重命名組別
 STR_5710    :組別名稱
-STR_5711    :請輸入這個組別的新名稱E:
+STR_5711    :請輸入這個組別的新名稱:
 STR_5712    :無法修改你沒有的權限
 STR_5713    :踢除玩家
 STR_5714    :顯示設定視窗
 STR_5715    :開新遊戲
-STR_5716    :無法於多人遊玩模式中使用
+STR_5716    :無法於多人連線模式中使用
+# For identifying client network version in server list window
+STR_5717    :多人連線版本: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}多人連線版本: {STRING}
+STR_5719    :晴天
+STR_5720    :間中陰天
+STR_5721    :陰天
+STR_5722    :有雨
+STR_5723    :大雨
+STR_5724    :雷暴
+STR_5725    :{BLACK}強制設定天氣為:
+STR_5726    :{SMALLFONT}{BLACK}設定樂園目前的天氣
+STR_5727    :縮放品質
+STR_5728    :需要啟用硬體渲染
+STR_5729    :{SMALLFONT}{BLACK}需要啟用硬體渲染
+STR_5730    :最鄰近
+STR_5731    :線性
+STR_5732    :各向異性
+STR_5733    :以整數比例調整最鄰近式縮放
+# tooltip for tab in options window
+STR_5734    :{SMALLFONT}{BLACK}渲染
 
 #############
 # Scenarios #
