@@ -25,7 +25,9 @@
 #include "../interface/viewport.h"
 #include "../localisation/string_ids.h"
 #include "../management/finance.h"
+#include "../util/util.h"
 #include "../world/sprite.h"
+#include "../world/footpath.h"
 #include "peep.h"
 #include "staff.h"
 
@@ -762,7 +764,7 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 			if (mapElement == NULL)
 				return 1;
 
-			uint8 pathDirections = mapElement->properties.path.edges & validDirections;
+			uint8 pathDirections = (mapElement->properties.path.edges & validDirections) & 0xF;
 			if (pathDirections == 0) {
 				direction = staff_handyman_direction_rand_surface(peep, validDirections);
 			}
@@ -813,6 +815,135 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 		peep->destination_tolerence = (scenario_rand() & 7) + 2;
 	}
 	return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006BFF45
+ */
+static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
+	uint8 direction = scenario_rand() & 3;
+
+	if ((peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) &&
+		scenario_rand() & 1) {
+
+		rct_ride* ride = get_ride(peep->current_ride);
+
+		uint16 location = ride->exits[peep->current_ride_station];
+		if (location == 0xFFFF) {
+			location = ride->entrances[peep->current_ride_station];
+		}
+
+		rct_xy16 chosenTile = {
+			.x = location & 0xFF,
+			.y = location >> 8
+		};
+
+		sint16 x_diff = chosenTile.x - peep->x;
+		sint16 y_diff = chosenTile.y - peep->y;
+
+		if (abs(x_diff) <= abs(y_diff)) {
+			direction = y_diff < 0 ? 3 : 1;
+		}
+		else {
+			direction = x_diff < 0 ? 0 : 2;
+		}
+	}
+
+	uint8 initialDirection = direction;
+	for (int i = 0; i < 2; ++i) {
+		// Looks left and right from initial direction
+		switch (i) {
+		case 1:
+			direction++;
+			if (scenario_rand() & 1) {
+				direction -= 2;
+			}
+			break;
+		case 2:
+			direction -= 2;
+			break;
+		}
+
+		direction &= 3;
+
+		if (fence_in_the_way(
+			peep->next_x,
+			peep->next_y,
+			peep->next_z,
+			peep->next_z + 4,
+			direction) == true)
+			continue;
+
+		if (fence_in_the_way(
+			peep->next_x,
+			peep->next_y,
+			peep->next_z,
+			peep->next_z + 4,
+			direction ^ (1 << 1)) == true)
+			continue;
+
+		rct_xy16 chosenTile = {
+			.x = peep->next_x + TileDirectionDelta[direction].x,
+			.y = peep->next_y + TileDirectionDelta[direction].y
+		};
+
+		if (map_surface_is_blocked(chosenTile.x, chosenTile.y) == false) {
+			return direction;
+		}
+	}
+	return initialDirection;
+}
+
+/**
+ *
+ *  rct2: 0x006BFF2C
+ */
+static int staff_path_finding_mechanic(rct_peep* peep) {
+	uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+	uint8 direction = 0xFF;
+	if (peep->next_var_29 & 0x18) {
+		direction = staff_mechanic_direction_surface(peep);
+	}
+	else {
+		rct_map_element* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+		if (pathElement == NULL)
+			return 1;
+
+		uint8 pathDirections = pathElement->properties.path.edges & 0xF;
+		if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION) {
+			pathDirections &= validDirections;
+		}
+
+		if (pathDirections == 0) {
+			direction = staff_mechanic_direction_surface(peep);
+			// goto 6c02fa
+		}
+
+		pathDirections &= ~(1 << peep->var_78);
+		if (pathDirections == 0) {
+			pathDirections |= (1 << peep->var_78);
+		}
+
+		direction = bitscanforward(pathDirections);
+		pathDirections &= ~(1 << direction);
+		if (pathDirections == 0) {
+			if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION) {
+				// goto 6c02fa with direction
+			}
+
+			if (peep->sub_state != 2) {
+				// goto 6c02fa with direction
+			}
+			peep->sub_state = 3;
+		}
+
+		pathDirections |= (1 << direction);
+
+		//6c01c0
+	}
+
+	//6c02fa
 }
 
 /**
