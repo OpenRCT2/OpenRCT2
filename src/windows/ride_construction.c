@@ -2876,6 +2876,10 @@ static void window_ride_construction_update_widgets(rct_window *w)
 		window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_DOWN].right;
 		window_ride_construction_widgets[WIDX_SLOPE_DOWN].right = tmp;
 
+		tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left;
+		window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_UP].left;
+		window_ride_construction_widgets[WIDX_SLOPE_UP].left = tmp;
+
 		tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right;
 		window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_UP].right;
 		window_ride_construction_widgets[WIDX_SLOPE_UP].right = tmp;
