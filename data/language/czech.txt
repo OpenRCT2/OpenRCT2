@@ -3570,7 +3570,7 @@ STR_5227    :Výzva k přepisu uložené hry
 STR_5228    :{SMALLFONT}{BLACK}Hlavní UI
 STR_5229    :{SMALLFONT}{BLACK}Park
 STR_5230    :{SMALLFONT}{BLACK}Nástroje
-STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5231    :{SMALLFONT}{BLACK}Atrakce a návštěvníci
 STR_5232    :{SMALLFONT}{BLACK}Editory
 STR_5233    :{SMALLFONT}{BLACK}Ostatní
 STR_5234    :{SMALLFONT}{BLACK}Výzvy
@@ -3975,7 +3975,7 @@ STR_5632    :Postav si vlastní...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}Utracená hotovost: {BLACK}{CURRENCY2DP}
-STR_5636    :{WINDOW_COLOUR_2}Spuštění příkazy: {BLACK}{COMMA16}
+STR_5636    :{WINDOW_COLOUR_2}Spuštěné příkazy: {BLACK}{COMMA16}
 STR_5637    :Toto nelze provést...
 STR_5638    :Přístup zamítnut
 STR_5639    :{SMALLFONT}{BLACK}Zobrazit seznam hráčů
@@ -4040,6 +4040,8 @@ STR_5732    :Anizotropní
 STR_5733    :U celočíselného škálování používat NS metodu
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Vykreslování
+STR_5735    :Stav připojení
+STR_5736    :Hráč
 
 ###############################################################################
 ## RCT2 Objects

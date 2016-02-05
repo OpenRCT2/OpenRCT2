@@ -4040,6 +4040,8 @@ STR_5732    :各向異性
 STR_5733    :以整數比例調整最鄰近式縮放
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}渲染
+STR_5735    :網絡狀況
+STR_5736    :玩家
 
 #############
 # Scenarios #

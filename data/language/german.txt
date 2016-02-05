@@ -4032,6 +4032,8 @@ STR_5731    :Linear
 STR_5732    :Anisotrop
 STR_5733    :Pixelwdh. bei ganzzahligem Skalierungsfaktor
 STR_5734    :{SMALLFONT}{BLACK}Darstellung
+STR_5735    :Netzwerkstatus
+STR_5736    :Spieler
 
 #############
 # Scenarios #
