@@ -4002,7 +4002,6 @@ STR_5660    :Modify Groups
 STR_5661    :Set Player Group
 STR_5662    :N/A
 STR_5663    :Clear Landscape
-STR_5664    :Cheat
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
@@ -4039,6 +4038,7 @@ STR_5732    :Anisotropic
 STR_5733    :Use NN scaling at integer scales
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
+<<<<<<< HEAD
 STR_5735    :Network Status
 STR_5736    :Player
 STR_5737    :Closed, {COMMA16} person still on ride
@@ -4070,6 +4070,20 @@ STR_5762    :Chinese Yuan (CN{YEN})
 STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
+STR_5766    :{SMALLFONT}{BLACK}Paint land height
+STR_5767    :Income
+STR_5768    :Total customers
+STR_5769    :Total profit
+STR_5770    :Customers per hour
+STR_5771    :Running cost
+STR_5772    :Age
+STR_5773    :Total customers: {COMMA32}
+STR_5774    :Total profit: {CURRENCY2DP}
+STR_5775    :Customers: {COMMA32} per hour
+STR_5776    :Age: {COMMA16} year(s)
+STR_5777    :Income: {CURRENCY2DP} per hour
+STR_5778    :Running cost: {CURRENCY2DP} per hour
+STR_5779    :Running cost: Unknown
 
 #############
 # Scenarios #
