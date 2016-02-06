@@ -1490,8 +1490,6 @@ static void window_park_price_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_park_price_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_park_price_widgets[WIDX_PAGE_BACKGROUND].top + 30;
 
-	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, (void*)RCT2_ADDRESS_TOTAL_ADMISSIONS, 0, x, y);
-	y += 10;
 	gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, (void*)RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, 0, x, y);
 }
 
@@ -1610,6 +1608,8 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Draw number of guests in park
 	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, (void*)RCT2_ADDRESS_GUESTS_IN_PARK, 0, x, y);
+	y += 10;
+	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, (void*)RCT2_ADDRESS_TOTAL_ADMISSIONS, 0, x, y);
 }
 
 #pragma endregion
