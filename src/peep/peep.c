@@ -7820,7 +7820,7 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
  *
  *  rct2: 0x0069A5F0
  */
-static int guest_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep, rct_map_element *map_element) {
+int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep) {
 	RCT2_GLOBAL(0x00F1AEDC, uint8) = sub_69A60A(peep);
 	uint8 x_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) / 32;
 	uint8 y_goal = RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) / 32;
@@ -7945,7 +7945,7 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
 
-	int chosenDirection = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
+	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
 	if (chosenDirection == -1)
 		return guest_path_find_aimless(peep, edges);
@@ -7980,7 +7980,7 @@ static int guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_ele
 
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
-	direction = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
+	direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 	if (direction == 0xFF)
 		return guest_path_find_aimless(peep, edges);
 	else
@@ -8035,7 +8035,7 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
 
-	int chosenDirection = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, map_element);
+	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
 	if (chosenDirection == -1)
 		return guest_path_find_aimless(peep, edges);
@@ -8344,7 +8344,7 @@ static int guest_path_finding(rct_peep* peep)
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = (uint8)z;
 	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
 
-	direction = guest_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep, mapElement);
+	direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 	if (direction == -1){
 		return guest_path_find_aimless(peep, edges);
 	}
