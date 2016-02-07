@@ -3838,9 +3838,9 @@ STR_5498    :서버 목록
 STR_5499    :플레이어 이름:
 STR_5500    :서버 추가
 STR_5501    :서버 열기
-STR_5502    :멀티플레이
+STR_5502    :접속자 목록
 STR_5503    :호스트네임이나 IP 주소를 입력하세요:
-STR_5504    :{SMALLFONT}{BLACK}멀티플레이 창을 엽니다
+STR_5504    :{SMALLFONT}{BLACK}접속자 목록 창을 엽니다
 STR_5505    :서버에 접속할 수 없습니다
 STR_5506    :손님이 격렬도를 무시하고 탐
 STR_5507    :미화원이 기본적으로 잔디를 깎음
@@ -4036,6 +4036,8 @@ STR_5732    :비등방성으로
 STR_5733    :정수배 확대시 NN 스케일링 사용
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}렌더링
+STR_5735    :네트워크 상태
+STR_5736    :플레이어
 
 #############
 # Scenarios #
