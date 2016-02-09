@@ -2361,7 +2361,7 @@ STR_2356    :{WINDOW_COLOUR_2}Inspecties: {BLACK}{COMMA16}
 STR_2357    :Huis
 STR_2358    :Eenheden
 STR_2359    :Echte waarden
-STR_2360    :{WINDOW_COLOUR_2}Schermresolutie:
+STR_2360    :Schermresolutie:
 STR_2361    :Landschapslijnen verzachten
 STR_2362    :{SMALLFONT}{BLACK}Verzachting van lijnen tussen landschapstegels aan- of uitzetten
 STR_2363    :Raster weergeven op landschap
@@ -2758,8 +2758,8 @@ STR_2753    :Gras maaien
 STR_2754    :Bloemen water gev.
 STR_2755    :Vandal. repareren
 STR_2756    :Afval verwijderen
-STR_2757    :Mooi weer
-STR_2758    :Regen
+STR_2757    :<not used anymore>
+STR_2758    :<not used anymore>
 STR_2759    :Hoogtes op nul
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
@@ -3996,6 +3996,7 @@ STR_5660    :Groepen aanpassen
 STR_5661    :Spelersgroep instellingen
 STR_5662    :n.v.t.
 STR_5663    :Landschap leegmaken
+STR_5664    :Cheaten
 STR_5701    :{WINDOW_COLOUR_2}Laatste actie: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Laatste actie van deze speler localiseren
 STR_5703    :De host kan niet worden verwijderd
@@ -4015,6 +4016,25 @@ STR_5716    :Niet toegestaan in multiplayer
 # For identifying client network version in server list window
 STR_5717    :Netwerkversie: {STRING}
 STR_5718    :{SMALLFONT}{BLACK}Netwerkversie: {STRING}
+STR_5719    :Zon
+STR_5720    :Lichte bewolking
+STR_5721    :Bewolkt
+STR_5722    :Regen
+STR_5723    :Flinke regen
+STR_5724    :Onweer
+STR_5725    :{BLACK}Weer forceren:
+STR_5726    :{SMALLFONT}{BLACK}Stelt het huidige weer in het park in
+STR_5727    :Opschaalkwaliteit
+STR_5728    :Dit vereist 'weergave door hardware'
+STR_5729    :{SMALLFONT}{BLACK}Dit vereist 'weergave door hardware'
+STR_5730    :Nearest neighbour
+STR_5731    :Lineair
+STR_5732    :Anisotropisch
+STR_5733    :Bij opschalen met gehele getallen NN gebruiken
+# tooltip for tab in options window
+STR_5734    :{SMALLFONT}{BLACK}Rendering
+STR_5735    :Netwerkstatus
+STR_5736    :Speler
 
 #############
 # Scenarios #
