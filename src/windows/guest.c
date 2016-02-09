@@ -1207,13 +1207,11 @@ void window_guest_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 
 	rct_peep* peep;
 	peep = GET_PEEP(w->number);
+
 	uint32 imageId = g_sprite_entries[peep->sprite_type].sprite_image[11].base_image;
 	imageId += w->picked_peep_frame >> 2;
 
-	int ebp = peep->tshirt_colour << 19;
-	int ecx = peep->trousers_colour << 24;
-
-	imageId |= ebp | ecx | 0xA0000000;
+	imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32) = imageId;
 }
 
