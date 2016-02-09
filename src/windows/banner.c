@@ -257,13 +257,13 @@ static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownI
 		if (dropdownIndex == -1)
 			break;
 
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, 0);
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, banner->flags);
 		break;
 	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
 		if (dropdownIndex == -1)
 			break;
 
-		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, dropdownIndex + 1, 0);
+		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, dropdownIndex + 1, banner->flags);
 		break;
 	}
 }
