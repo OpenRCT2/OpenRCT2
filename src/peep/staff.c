@@ -1061,7 +1061,7 @@ static int staff_path_finding_mechanic(rct_peep* peep) {
 *
 *  rct2: 0x006C050B
 */
-static uint8 staff_security_direction_path(rct_peep* peep, uint8 validDirections, rct_map_element* pathElement) {
+static uint8 staff_direction_path(rct_peep* peep, uint8 validDirections, rct_map_element* pathElement) {
 	uint8 direction = 0xFF;
 	uint8 pathDirections = pathElement->properties.path.edges & 0xF;
 	if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION) {
@@ -1100,7 +1100,7 @@ static uint8 staff_security_direction_path(rct_peep* peep, uint8 validDirections
  *
  *  rct2: 0x006C0351
  */
-static int staff_path_finding_security(rct_peep* peep) {
+static int staff_path_finding_misc(rct_peep* peep) {
 	uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
 	uint8 direction = 0xFF;
@@ -1112,7 +1112,7 @@ static int staff_path_finding_security(rct_peep* peep) {
 		if (pathElement == NULL)
 			return 1;
 
-		direction = staff_security_direction_path(peep, validDirections, pathElement);
+		direction = staff_direction_path(peep, validDirections, pathElement);
 	}
 
 	rct_xy16 chosenTile = {
@@ -1136,6 +1136,64 @@ static int staff_path_finding_security(rct_peep* peep) {
 
 /**
  *
+ *  rct2: 0x006C086D
+ */
+static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
+	uint16 spriteIndex;
+	rct_peep* guest;
+
+	FOR_ALL_GUESTS(spriteIndex, guest) {
+		if (guest->x == SPRITE_LOCATION_NULL)
+			continue;
+
+		sint16 z_dist = abs(peep->z - guest->z);
+		if (z_dist > 48)
+			continue;
+
+		sint16 x_dist = abs(peep->x - guest->x);
+		sint16 y_dist = abs(peep->y - guest->y);
+
+		if (x_dist > 96)
+			continue;
+
+		if (y_dist > 96)
+			continue;
+
+		if (peep->state == PEEP_STATE_WALKING) {
+			peep->happiness_growth_rate = min(peep->happiness_growth_rate + 4, 255);
+		}
+		else if (peep->state == PEEP_STATE_QUEUING) {
+			peep->time_in_queue -= 200;
+			peep->happiness_growth_rate = min(peep->happiness_growth_rate + 3, 255);
+		}
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006C05AE
+ */
+static int staff_path_finding_entertainer(rct_peep* peep) {
+
+	if (((scenario_rand() & 0xFFFF) <= 0x4000) &&
+		(peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2)) {
+		
+		invalidate_sprite_2((rct_sprite*)peep);
+		
+		peep->action = scenario_rand() & 1 ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
+		peep->action_frame = 0;
+		peep->action_sprite_image_offset = 0;
+
+		sub_693B58(peep);
+		invalidate_sprite_2((rct_sprite*)peep);
+		staff_entertainer_update_nearby_peeps(peep);
+	}
+
+	return staff_path_finding_misc(peep);
+}
+
+/**
+ *
  *  rct2: 0x006BF926
  */
 int staff_path_finding(rct_peep* peep) {
@@ -1145,9 +1203,9 @@ int staff_path_finding(rct_peep* peep) {
 	case STAFF_TYPE_MECHANIC:
 		return staff_path_finding_mechanic(peep);
 	case STAFF_TYPE_SECURITY:
-		return staff_path_finding_security(peep);
+		return staff_path_finding_misc(peep);
 	case STAFF_TYPE_ENTERTAINER:
-		return RCT2_CALLPROC_X(0x006C05AE, 0, 0, 0, 0, (int)peep, 0, 0) & 0x100;
+		return staff_path_finding_entertainer(peep);
 
 	default:
 		assert(false);
