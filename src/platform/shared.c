@@ -712,6 +712,10 @@ void platform_process_messages()
 				if (e.text.text[0] == '`' && gConsoleOpen)
 					break;
 
+				// Entering formatting characters is not allowed
+				if (utf8_is_format_code((int)e.text.text[0]))
+					break;
+
 				utf8 *newText = e.text.text;
 				int newTextLength = strlen(newText);
 
