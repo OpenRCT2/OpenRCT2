@@ -23,7 +23,7 @@
 #ifdef __WINDOWS__
 
 #include <windows.h>
-#include <Lmcons.h>
+#include <lmcons.h>
 #include <psapi.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
