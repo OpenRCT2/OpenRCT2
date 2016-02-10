@@ -720,6 +720,12 @@ static void window_ride_construction_resize(rct_window *w)
 			(1ULL << WIDX_BANK_STRAIGHT) |
 			(1ULL << WIDX_BANK_RIGHT);
 	}
+	// Disable banking if the start track is steep and the end of the track becomes flat.
+	if ((_previousTrackSlopeEnd == TRACK_SLOPE_DOWN_60 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60) && _currentTrackSlopeEnd == TRACK_SLOPE_NONE) {
+		disabledWidgets |=
+			(1ULL << WIDX_BANK_LEFT) |
+			(1ULL << WIDX_BANK_RIGHT);
+	}
 	if (!is_track_enabled(TRACK_SLOPE) && !is_track_enabled(TRACK_SLOPE_STEEP)) {
 		if (rideType != RIDE_TYPE_REVERSE_FREEFALL_COASTER && rideType != RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER) {
 			// Disable all slopes
@@ -2875,6 +2881,10 @@ static void window_ride_construction_update_widgets(rct_window *w)
 		tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right;
 		window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_DOWN].right;
 		window_ride_construction_widgets[WIDX_SLOPE_DOWN].right = tmp;
+
+		tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left;
+		window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_UP].left;
+		window_ride_construction_widgets[WIDX_SLOPE_UP].left = tmp;
 
 		tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right;
 		window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_UP].right;
