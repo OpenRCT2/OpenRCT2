@@ -31,6 +31,7 @@
 #include "../addresses.h"
 #include "../openrct2.h"
 #include "../localisation/language.h"
+#include "../localisation/string_ids.h"
 #include "../util/util.h"
 #include "../config.h"
 #include "platform.h"
@@ -981,7 +982,7 @@ utf8* platform_get_username() {
 
 	DWORD usernameLength = UNLEN + 1;
 	if (!GetUserName(username, &usernameLength)) {
-		strcpy(username, "Player");
+		strcpy(username, language_get_string(STR_PLAYER_DEFAULT_NAME));
 	}
 
 	return username;
