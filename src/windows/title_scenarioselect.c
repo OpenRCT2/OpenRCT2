@@ -135,15 +135,19 @@ static void initialise_list_items(rct_window *w);
 static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario);
 static bool is_locking_enabled(rct_window *w);
 
+static scenarioselect_callback _callback;
+
 /**
  *
  *  rct2: 0x006781B5
  */
-void window_scenarioselect_open()
+void window_scenarioselect_open(scenarioselect_callback callback)
 {
 	rct_window* window;
 	int windowWidth;
 	int windowHeight = 334;
+
+	_callback = callback;
 
 	if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != NULL)
 		return;
@@ -275,9 +279,7 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
 			y -= 24;
 			if (y < 0 && !listItem->scenario.is_locked) {
 				audio_play_sound_panned(SOUND_CLICK_1, w->width / 2 + w->x, 0, 0, 0);
-				if (!scenario_load_and_play_from_path(listItem->scenario.scenario->path)) {
-					title_load();
-				}
+				_callback(listItem->scenario.scenario->path);
 			}
 			break;
 		}
