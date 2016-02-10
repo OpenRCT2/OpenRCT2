@@ -43,7 +43,6 @@
 #include <time.h>
 #include <fts.h>
 #include <sys/file.h>
-#include <unistd.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
@@ -878,10 +877,10 @@ datetime64 platform_get_datetime_now_utc()
 }
 
 utf8* platform_get_username() {
-	char* username = getlogin();
+	struct passwd* pw = getpwuid(getuid());
 
-	if (username) {
-		return username;
+	if (pw) {
+		return pw->pw_name;
 	} else {
 		return "Player";
 	}
