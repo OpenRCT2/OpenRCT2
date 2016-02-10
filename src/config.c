@@ -374,6 +374,9 @@ void config_set_defaults()
 			else if (strcmp(property->property_name, "temperature_format") == 0){
 				destValue->value_uint8 = platform_get_locale_temperature_format();
 			}
+			else if (strcmp(property->property_name, "player_name") == 0) {
+				destValue->value_string = _strdup(platform_get_username());
+			}
 			else {
 				// Use static default
 				if (property->type == CONFIG_VALUE_TYPE_STRING) {
