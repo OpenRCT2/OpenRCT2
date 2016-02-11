@@ -199,6 +199,9 @@ int language_open(int id)
 			}
 		}
 
+		// Objects and their localized strings need to be refreshed
+		reset_loaded_objects();
+
 		return 1;
 	}
 
