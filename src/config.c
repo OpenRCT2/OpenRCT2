@@ -375,7 +375,13 @@ void config_set_defaults()
 				destValue->value_uint8 = platform_get_locale_temperature_format();
 			}
 			else if (strcmp(property->property_name, "player_name") == 0) {
-				destValue->value_string = _strdup(platform_get_username());
+				utf8* username = platform_get_username();
+
+				if (username) {
+					destValue->value_string = _strdup(username);
+				} else {
+					destValue->value_string = _strdup(language_get_string(STR_PLAYER_DEFAULT_NAME));
+				}				
 			}
 			else {
 				// Use static default

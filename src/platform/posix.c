@@ -33,7 +33,6 @@
 #include "../addresses.h"
 #include "../config.h"
 #include "../localisation/language.h"
-#include "../localisation/string_ids.h"
 #include "../openrct2.h"
 #include "../util/util.h"
 #include "platform.h"
@@ -883,7 +882,7 @@ utf8* platform_get_username() {
 	if (pw) {
 		return pw->pw_name;
 	} else {
-		return language_get_string(STR_PLAYER_DEFAULT_NAME);
+		return NULL;
 	}
 }
 
