@@ -677,6 +677,7 @@ void platform_process_messages()
 						}
 						gTextInputCursorPosition++;
 					}
+					gTextInput[gTextInputLength] = '\0';
 					window_update_textbox();
 				}
 			}
