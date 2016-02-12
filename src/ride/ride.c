@@ -8138,3 +8138,18 @@ const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 	             + ride->num_customers[9];
 	return sum;
 }
+
+rct_vehicle *ride_get_broken_vehicle(rct_ride *ride) {
+	uint16 vehicleIndex = ride->vehicles[ride->broken_vehicle];
+
+	if (vehicleIndex == 0xFFFF) {
+		return NULL;
+	}
+
+	rct_vehicle *vehicle = GET_VEHICLE(vehicleIndex);
+	for (uint8 i = 0; i < ride->broken_car; i++) {
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+	}
+
+	return vehicle;
+}

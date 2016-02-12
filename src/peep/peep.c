@@ -97,12 +97,7 @@ static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep *peep, rct
 static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep *peep);
-
 static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ride *ride);
-
-static bool loc_6C1288(rct_peep *peep, rct_ride *ride, uint16 stationX, uint16 stationY, uint8 currentRide, uint8 stationZ);
-
-static bool peep_update_fixing_sub_state_9_a(rct_peep *peep);
 static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_ride *ride);
@@ -3444,86 +3439,85 @@ static void peep_update_fixing(int steps, rct_peep* peep){
 		return;
 	}
 
-	bool do_6c1653 = true;
+	bool progressToNextSubstate = true;
 	bool firstRun = true;
 
-	while (do_6c1653) {
+	while (progressToNextSubstate) {
 		switch (peep->sub_state) {
 			case 0:
-				do_6c1653 = peep_update_fixing_sub_state_0(ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_0(ride);
 				break;
 
 			case 1:
-				do_6c1653 = peep_update_fixing_sub_state_1(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_1(firstRun, peep, ride);
 				break;
 
 			case 2:
 			case 3:
 			case 4:
 			case 5:
-				do_6c1653 = peep_update_fixing_sub_state_2345(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_2345(firstRun, peep, ride);
 				break;
 
 			case 6:
-				do_6c1653 = peep_update_fixing_sub_state_6(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_6(firstRun, peep, ride);
 				break;
 
 			case 7:
-				do_6c1653 = peep_update_fixing_sub_state_7(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_7(firstRun, peep, ride);
 				break;
 
 			case 8:
-				do_6c1653 = peep_update_fixing_sub_state_8(firstRun, peep);
+				progressToNextSubstate = peep_update_fixing_sub_state_8(firstRun, peep);
 				break;
 
 			case 9:
-				do_6c1653 = peep_update_fixing_sub_state_9(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_9(firstRun, peep, ride);
 				break;
 
 			case 10:
-				do_6c1653 = peep_update_fixing_sub_state_10(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_10(firstRun, peep, ride);
 				break;
 
 			case 11:
-				do_6c1653 = peep_update_fixing_sub_state_11(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_11(firstRun, peep, ride);
 				break;
 
 			case 12:
-				do_6c1653 = peep_update_fixing_sub_state_12(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_12(firstRun, peep, ride);
 				break;
 
 			case 13:
-				do_6c1653 = peep_update_fixing_sub_state_13(firstRun, steps, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_13(firstRun, steps, peep, ride);
 				break;
 
 			case 14:
-				do_6c1653 = peep_update_fixing_sub_state_14(firstRun, peep, ride);
+				progressToNextSubstate = peep_update_fixing_sub_state_14(firstRun, peep, ride);
 				break;
 
 			default:
 				log_error("Invalid substate");
-				do_6c1653 = false;
+				progressToNextSubstate = false;
 		}
 
 		firstRun = false;
 
-		if (!do_6c1653) {
+		if (!progressToNextSubstate) {
 			break;
 		}
 
-		int edx = peep->sub_state;
+		int subState = peep->sub_state;
 		uint32 ebp = RCT2_ADDRESS(0x992A18, uint32)[8];
 
 		if (peep->state != PEEP_STATE_INSPECTING) {
 			ebp = RCT2_ADDRESS(0x992A18, uint32)[ride->breakdown_reason_pending];
 		}
 
-		// loc_6C167B
 		do {
-			edx++;
-		} while ((ebp & (1 << edx)) == 0);
+			subState++;
+		} while ((ebp & (1 << subState)) == 0);
 
-		peep->sub_state = edx & 0xFF;
+		peep->sub_state = subState & 0xFF;
 	}
 }
 
@@ -3544,15 +3538,9 @@ static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep *peep, rct_ri
 	sint16 x, y, tmp_xy_distance;
 
 	if (!firstRun) {
-		uint16 vehicleIndex = ride->vehicles[ride->broken_vehicle];
-
-		if (vehicleIndex == 0xFFFF) {
+		rct_vehicle *vehicle = ride_get_broken_vehicle(ride);
+		if (vehicle == NULL) {
 			return true;
-		}
-
-		rct_vehicle *vehicle = GET_VEHICLE(vehicleIndex);
-		for (uint8 i = 0; i < ride->broken_car; i++) {
-			vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
 		}
 
 		while (true) {
@@ -3601,44 +3589,30 @@ static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep *peep, rct
 	if (!firstRun) {
 		peep->sprite_direction = peep->var_78 << 3;
 
-		peep->action = PEEP_ACTION_STAFF_FIX;
-		if (scenario_rand() & 0x100000) {
-			peep->action = PEEP_ACTION_STAFF_FIX_2;
-		}
-
+		peep->action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
 		peep->action_sprite_image_offset = 0;
 		peep->action_frame = 0;
 		sub_693B58(peep);
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
-	if (peep->action == 0xFF) {
+	if (peep->action == PEEP_ACTION_NONE_2) {
 		return true;
 	}
 
 	peep_update_action(&tmp_x, &tmp_y, &tmp_distance, peep);
 
-	uint8 actionFrame = 0x25;
-	if (peep->action != 0x0F) {
-		actionFrame = 0x50;
-	}
-
+	uint8 actionFrame = (peep->action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
 	if (peep->action_frame != actionFrame) {
 		return false;
 	}
 
-	uint16 vehicleIndex = ride->vehicles[ride->broken_vehicle];
-
-	if (vehicleIndex == 0xFFFF) {
+	rct_vehicle *vehicle = ride_get_broken_vehicle(ride);
+	if (vehicle == NULL) {
 		return true;
 	}
 
-	rct_vehicle *vehicle = GET_VEHICLE(vehicleIndex);
-	for (uint8 i = 0; i < ride->broken_car; i++) {
-		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
-	}
-
-	vehicle->update_flags = 0xFEFF;
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
 
 	return false;
 }
@@ -3651,7 +3625,7 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ri
 
 	if (!firstRun) {
 		peep->sprite_direction = peep->var_78 << 3;
-		peep->action = 18;
+		peep->action = PEEP_ACTION_STAFF_FIX_3;
 		peep->action_sprite_image_offset = 0;
 		peep->action_frame = 0;
 
@@ -3659,7 +3633,7 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ri
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
-	if (peep->action == 0xFF) {
+	if (peep->action == PEEP_ACTION_NONE_2) {
 		return true;
 	}
 
@@ -3668,17 +3642,12 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ri
 		return false;
 	}
 
-	uint16 vehicleIndex = ride->vehicles[ride->broken_vehicle];
-	if (vehicleIndex == 0xFFFF) {
+	rct_vehicle *vehicle = ride_get_broken_vehicle(ride);
+	if (vehicle == NULL) {
 		return true;
 	}
 
-	rct_vehicle *vehicle = GET_VEHICLE(vehicleIndex);
-	for (uint8 i = 0; i < ride->broken_car; i++) {
-		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
-	}
-
-	vehicle->update_flags &= 0xFDFF;
+	vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
 
 	return false;
 }
@@ -3728,8 +3697,7 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ri
 	}
 
 	invalidate_sprite_2((rct_sprite *) peep);
-	int out = peep_update_action(&x, &y, &tmp_distance, peep);
-	if (out == 0) {
+	if (!peep_update_action(&x, &y, &tmp_distance, peep)) {
 		return true;
 	}
 
@@ -3755,7 +3723,7 @@ static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep *peep) {
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
-	if (peep->action == 0xFF) {
+	if (peep->action == PEEP_ACTION_NONE_2) {
 		return true;
 	}
 
@@ -3785,10 +3753,6 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 		rct_xy_element input;
 		input.x = (stationPosition & 0xFF) * 32;
 		input.y = (stationPosition >> 8) * 32;
-
-		char buffer[256];
-		format_string(buffer, ride->name, &ride->name_arguments);
-		log_info("%s", buffer);
 		input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);
 
 		track_begin_end trackBeginEnd;
@@ -3811,7 +3775,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 		uint16 destinationX = input.x + TileDirectionDelta[direction].x + 16;
 		uint16 destinationY = input.y + TileDirectionDelta[direction].y + 16;
 
-		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction * 2];
+		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction];
 
 		destinationX -= offset.x;
 		if (offset.x == 0) {
@@ -3847,7 +3811,7 @@ static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep *peep, rct_r
 	sint16 tmp_x, tmp_y, tmp_xy_distance;
 
 	if (!firstRun) {
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 & RIDE_TYPE_FLAG_15)) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_15)) {
 			return true;
 		}
 
@@ -3861,7 +3825,7 @@ static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep *peep, rct_r
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
-	if (peep->action == 0xFF) {
+	if (peep->action == PEEP_ACTION_NONE_2) {
 		return true;
 	}
 
@@ -3887,7 +3851,7 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_r
 		invalidate_sprite_2((rct_sprite *) peep);
 	}
 
-	if (peep->action == 0xFF) {
+	if (peep->action == PEEP_ACTION_NONE_2) {
 		return true;
 	}
 
@@ -4049,7 +4013,7 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_r
  */
 static void sub_6B7588(int rideIndex) {
 	rct_ride *ride = get_ride(rideIndex);
-	ride->lifecycle_flags &= 0xFFFFFEFF;
+	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
 
 	ride->reliability += ((100 - ride->reliability) >> 2) * (scenario_rand() & 0xFF);
 	ride->last_inspection = 0;
