@@ -42,6 +42,7 @@
 #include "peep.h"
 #include "staff.h"
 #include "../ride/vehicle.h"
+#include "../world/map.h"
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -3748,92 +3749,60 @@ static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep *peep) {
 }
 
 static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ride *ride) {
+	sint16 x, y, tmp_xy_distance;
+
 	if (!firstRun) {
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_15)) {
 			return true;
 		}
 
 		uint16 stationPosition = ride->station_starts[peep->current_ride_station];
-
 		if (stationPosition == 0xFFFF) {
 			return true;
 		}
 
 		uint8 stationZ = ride->station_heights[peep->current_ride_station];
-		uint8 currentRide = peep->current_ride;
 
-		uint16 stationX = (stationPosition & 0xFF) * 32;
-		uint16 stationY = (stationPosition >> 8) * 32;
+		rct_xy_element input;
+		input.x = (stationPosition & 0xFF) * 32;
+		input.y = (stationPosition >> 8) * 32;
+		input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);
 
-		return loc_6C1288(peep, ride, stationX, stationY, currentRide, stationZ);
+		track_begin_end *trackBeginEnd;
+		while (track_block_get_previous(input.x, input.y, input.element, trackBeginEnd)) {
+			uint8 trackType = trackBeginEnd->begin_element->properties.track.type;
+			if (trackType == 2 || trackType == 3 || trackType == 1) {
+				input.x = trackBeginEnd->begin_x;
+				input.y = trackBeginEnd->begin_y;
+
+				RCT2_GLOBAL(0xF43914, uint32) = trackBeginEnd->begin_element->type & 3;
+				continue;
+			}
+
+			break;
+		}
+
+		// loc_6C12ED:
+		uint8 direction = RCT2_GLOBAL(0xF43914, uint32);
+		uint16 destinationX = input.x + TileDirectionDelta[direction].x + 16;
+		uint16 destinationY = input.y + TileDirectionDelta[direction].y + 16;
+
+		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction * 2];
+
+		destinationX -= offset.x;
+		if (offset.x == 0) {
+			destinationX = peep->destination_x;
+		}
+
+		destinationY -= offset.y;
+		if (offset.y == 0) {
+			destinationY = peep->destination_y;
+		}
+
+		peep->destination_x = destinationX;
+		peep->destination_y = destinationY;
+		peep->destination_tolerence = 2;
 	}
-
-	return peep_update_fixing_sub_state_9_a(peep);
-}
-
-static bool loc_6C1288(rct_peep *peep, rct_ride *ride, uint16 stationX, uint16 stationY, uint8 currentRide, uint8 stationZ) {
-
-	uint32 ebp = ((stationY << 8) | stationX) >> 3;
-	rct_map_element *ebp_tile = TILE_MAP_ELEMENT_POINTER(ebp / 8);
-
-	do {
-		// loc_6C129D:
-
-		if (map_element_get_type(ebp_tile) != 8) {
-			continue;
-		}
-		if (ebp_tile->properties.track.ride_index != currentRide) {
-			continue;
-		}
-
-		if (ebp_tile->base_height != stationZ) {
-			continue;
-		}
-
-		uint8 trackType = ebp_tile->properties.track.type;
-		if (trackType == 2 || trackType == 3 || trackType == 1) {
-			// loc_6C12CF:
-
-			uint8 direction = ebp_tile->type & 3;
-			RCT2_GLOBAL(0xF43914, uint32) = direction;
-
-			stationX -= TileDirectionDelta[direction].x;
-			stationY -= TileDirectionDelta[direction].y;
-			return loc_6C1288(peep, ride, stationX, stationY, currentRide, stationZ);
-		}
-
-		// loc_6C12C4:
-	} while (!map_element_is_last_for_tile(ebp_tile++));
-
-	// loc_6C12ED:
-	uint8 direction = RCT2_GLOBAL(0xF43914, uint32);
-	stationX += TileDirectionDelta[direction].x;
-	stationY += TileDirectionDelta[direction].y;
-
-	stationX += 0x10;
-	stationY += 0x10;
-
-	rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction * 2];
-
-	stationX -= offset.x;
-	if (offset.x == 0) {
-		stationX = peep->destination_x;
-	}
-
-	stationY -= offset.y;
-	if (offset.y == 0) {
-		stationY = peep->destination_y;
-	}
-
-	peep->destination_x = stationX;
-	peep->destination_y = stationY;
-	peep->destination_tolerence = 2;
-
-	return peep_update_fixing_sub_state_9_a(peep);
-}
-
-static bool peep_update_fixing_sub_state_9_a(rct_peep *peep) {
-	sint16 x, y, tmp_xy_distance;
 
 	invalidate_sprite_2((rct_sprite *) peep);
 
