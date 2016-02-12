@@ -1003,7 +1003,7 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		if (chosenTile.x == peep->next_x &&
 			chosenTile.y == peep->next_y &&
 			z == peep->next_z) {
-			return direction;
+			return entranceDirection;
 		}
 
 		RCT2_GLOBAL(0x00F1AEE0, uint8) = 0;
