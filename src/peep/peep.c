@@ -3752,7 +3752,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 	sint16 x, y, tmp_xy_distance;
 
 	if (!firstRun) {
-		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_15)) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_15)) {
 			return true;
 		}
 
@@ -3766,16 +3766,21 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 		rct_xy_element input;
 		input.x = (stationPosition & 0xFF) * 32;
 		input.y = (stationPosition >> 8) * 32;
+
+		char buffer[256];
+		format_string(buffer, ride->name, &ride->name_arguments);
+		log_info("%s", buffer);
 		input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);
 
-		track_begin_end *trackBeginEnd;
-		while (track_block_get_previous(input.x, input.y, input.element, trackBeginEnd)) {
-			uint8 trackType = trackBeginEnd->begin_element->properties.track.type;
+		track_begin_end trackBeginEnd;
+		while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd)) {
+			uint8 trackType = trackBeginEnd.begin_element->properties.track.type;
 			if (trackType == 2 || trackType == 3 || trackType == 1) {
-				input.x = trackBeginEnd->begin_x;
-				input.y = trackBeginEnd->begin_y;
+				input.x = trackBeginEnd.begin_x;
+				input.y = trackBeginEnd.begin_y;
+				input.element = trackBeginEnd.begin_element;
 
-				RCT2_GLOBAL(0xF43914, uint32) = trackBeginEnd->begin_element->type & 3;
+				RCT2_GLOBAL(0xF43914, uint32) = trackBeginEnd.begin_element->type & 3;
 				continue;
 			}
 
