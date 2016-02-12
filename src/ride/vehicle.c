@@ -3638,6 +3638,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		if (shouldStop) {
 			ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
 			vehicle->ferris_wheel_var_0 = -abs(ferris_wheel_var_0);
+			vehicle->ferris_wheel_var_1 = abs(ferris_wheel_var_0);
 		}
 	}
 
