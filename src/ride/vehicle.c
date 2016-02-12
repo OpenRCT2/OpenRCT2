@@ -3631,7 +3631,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 	if (subState == vehicle->var_1F) {
 		bool shouldStop = true;
 		if (ride->status != RIDE_STATUS_CLOSED) {
-			if (vehicle->var_CE <= ride->rotations)
+			if (vehicle->var_CE < ride->rotations)
 				shouldStop = false;
 		}
 
