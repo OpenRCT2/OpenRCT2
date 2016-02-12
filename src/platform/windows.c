@@ -23,6 +23,7 @@
 #ifdef __WINDOWS__
 
 #include <windows.h>
+#include <lmcons.h>
 #include <psapi.h>
 #include <shlobj.h>
 #include <SDL_syswm.h>
@@ -973,6 +974,17 @@ datetime64 platform_get_datetime_now_utc()
 	// Convert to start from: 0001-01-01T00:00:00Z
 	datetime64 utcNow = fileTime64 - 504911232000000000ULL;
 	return utcNow;
+}
+
+utf8* platform_get_username() {
+	static char username[UNLEN + 1];
+
+	DWORD usernameLength = UNLEN + 1;
+	if (!GetUserName(username, &usernameLength)) {
+		return NULL;
+	}
+
+	return username;
 }
 
 #endif

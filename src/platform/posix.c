@@ -876,4 +876,14 @@ datetime64 platform_get_datetime_now_utc()
 	return utcNow;
 }
 
+utf8* platform_get_username() {
+	struct passwd* pw = getpwuid(getuid());
+
+	if (pw) {
+		return pw->pw_name;
+	} else {
+		return NULL;
+	}
+}
+
 #endif
