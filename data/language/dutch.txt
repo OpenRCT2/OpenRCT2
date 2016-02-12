@@ -4480,140 +4480,140 @@ STR_DTLS    :
 
 ## RCT2 Original
 <Alpine Adventures>
-STR_SCNR   :Alpine Adventures
-STR_PARK   :Alpine Adventures
-STR_DTLS   :Maak van een klein skistation in de bergen een amusementspark met een sneeuwthema.
+STR_SCNR    :Alpine Adventures
+STR_PARK    :Alpine Adventures
+STR_DTLS    :Maak van een klein skistation in de bergen een amusementspark met een sneeuwthema.
 
 <Amity Airfield>
-STR_SCNR   :Amity Airfield
-STR_PARK   :Amity Airfield
-STR_DTLS   :Bouw een amusementspark met een luchtvaartthema op dit verlaten vliegveld.
+STR_SCNR    :Amity Airfield
+STR_PARK    :Amity Airfield
+STR_DTLS    :Bouw een amusementspark met een luchtvaartthema op dit verlaten vliegveld.
 
 <Botany Breakers>
-STR_SCNR   :Botany Breakers
-STR_PARK   :Botany Breakers
-STR_DTLS   :Het is je uitdaging om een zeer winstgevend park te bouwen op dit paradijselijke eiland.
+STR_SCNR    :Botany Breakers
+STR_PARK    :Botany Breakers
+STR_DTLS    :Het is je uitdaging om een zeer winstgevend park te bouwen op dit paradijselijke eiland.
 
 <Bumbly Bazaar>
-STR_SCNR   :Bumbly Bazaar
-STR_PARK   :Bumbly Bazaar
-STR_DTLS   :Beginnend met een klein marktkraampje, is het je uitdaging om de winst van winkels en kraampjes te vergroten door attracties en achtbanen te bouwen en zo meer klanten te trekken.
+STR_SCNR    :Bumbly Bazaar
+STR_PARK    :Bumbly Bazaar
+STR_DTLS    :Beginnend met een klein marktkraampje, is het je uitdaging om de winst van winkels en kraampjes te vergroten door attracties en achtbanen te bouwen en zo meer klanten te trekken.
 
 <Crazy Castle>
-STR_SCNR   :Crazy Castle
-STR_PARK   :Crazy Castle
-STR_DTLS   :Je hebt een groot kasteel geërfd - het is je opdracht er een klein themapark van te maken.
+STR_SCNR    :Crazy Castle
+STR_PARK    :Crazy Castle
+STR_DTLS    :Je hebt een groot kasteel geërfd - het is je opdracht er een klein themapark van te maken.
 
 <Dusty Greens>
-STR_SCNR   :Dusty Greens
-STR_PARK   :Dusty Greens
-STR_DTLS   :Dusty Greens ligt aan een snelwegknooppunt in de woestijn, en is een gelegenheid om van een kleine golfbaan een succesvol themapark te maken.
+STR_SCNR    :Dusty Greens
+STR_PARK    :Dusty Greens
+STR_DTLS    :Dusty Greens ligt aan een snelwegknooppunt in de woestijn, en is een gelegenheid om van een kleine golfbaan een succesvol themapark te maken.
 
 <Electric Fields>
-STR_SCNR   :Electric Fields
-STR_PARK   :Electric Fields
-STR_DTLS   :Je hebt een kleine boerderij geërfd, en het is je uitdaging een klein themapark tussen de velden en de boerderijen te bouwen.
+STR_SCNR    :Electric Fields
+STR_PARK    :Electric Fields
+STR_DTLS    :Je hebt een kleine boerderij geërfd, en het is je uitdaging een klein themapark tussen de velden en de boerderijen te bouwen.
 
 <Extreme Heights>
-STR_SCNR   :Extreme Heights
-STR_PARK   :Extreme Heights
-STR_DTLS   :Vrij van financiële beperkingen, is het je uitdaging om dit woestijnpark uit te breiden om mensen te trekken die de extreemste sensaties zoeken.
+STR_SCNR    :Extreme Heights
+STR_PARK    :Extreme Heights
+STR_DTLS    :Vrij van financiële beperkingen, is het je uitdaging om dit woestijnpark uit te breiden om mensen te trekken die de extreemste sensaties zoeken.
 
 <Factory Capers>
-STR_SCNR   :Factory Capers
-STR_PARK   :Factory Capers
-STR_DTLS   :Een verlaten fabriekscomplex is een gelegenheid om een amusementspark met een mechanisch thema te bouwen.
+STR_SCNR    :Factory Capers
+STR_PARK    :Factory Capers
+STR_DTLS    :Een verlaten fabriekscomplex is een gelegenheid om een amusementspark met een mechanisch thema te bouwen.
 
 <Fungus Woods>
-STR_SCNR   :Fungus Woods
-STR_PARK   :Fungus Woods
-STR_DTLS   :Beperkt tot uitsluitend de ouderwetse houten attracties, is het je uitdaging om een succesvol themapark in Fungus Woods te bouwen.
+STR_SCNR    :Fungus Woods
+STR_PARK    :Fungus Woods
+STR_DTLS    :Beperkt tot uitsluitend de ouderwetse houten attracties, is het je uitdaging om een succesvol themapark in Fungus Woods te bouwen.
 
 <Ghost Town>
-STR_SCNR   :Ghost Town
-STR_PARK   :Ghost Town
-STR_DTLS   :Je wordt aangenomen door een grote keten van amusementsparken en het is je taak een gigantisch park met achtbanen te bouwen rond een verlaten mijnstadje.
+STR_SCNR    :Ghost Town
+STR_PARK    :Ghost Town
+STR_DTLS    :Je wordt aangenomen door een grote keten van amusementsparken en het is je taak een gigantisch park met achtbanen te bouwen rond een verlaten mijnstadje.
 
 <Gravity Gardens>
-STR_SCNR   :Gravity Gardens
-STR_PARK   :Gravity Gardens
-STR_DTLS   :Het is je uitdaging een park met achtbanen in de prachtige Gravity Gardens te bouwen... geen andere attracties, alleen maar achtbanen!
+STR_SCNR    :Gravity Gardens
+STR_PARK    :Gravity Gardens
+STR_DTLS    :Het is je uitdaging een park met achtbanen in de prachtige Gravity Gardens te bouwen... geen andere attracties, alleen maar achtbanen!
 
 <Infernal Views>
-STR_SCNR   :Infernal Views
-STR_PARK   :Infernal Views
-STR_DTLS   :Een park dat op een hachelijke plaats is gevestigd: op een vulkaan, naast stromende lava.
+STR_SCNR    :Infernal Views
+STR_PARK    :Infernal Views
+STR_DTLS    :Een park dat op een hachelijke plaats is gevestigd: op een vulkaan, naast stromende lava.
 
 <Lucky Lake>
-STR_SCNR   :Lucky Lake
-STR_PARK   :Lucky Lake
-STR_DTLS   :Met een onbeperkt budget, maar gesitueerd op een veeleisende locatie is het een uitdaging dit park uit te breiden en te beheren.
+STR_SCNR    :Lucky Lake
+STR_PARK    :Lucky Lake
+STR_DTLS    :Met een onbeperkt budget, maar gesitueerd op een veeleisende locatie is het een uitdaging dit park uit te breiden en te beheren.
 
 <Rainbow Summit>
-STR_SCNR   :Rainbow Summit
-STR_PARK   :Rainbow Summit
-STR_DTLS   :In dit park, gelegen op een heuvel, zijn hoge bouwwerken verboden. Kun je het park uitbreiden en het succesvol maken?
+STR_SCNR    :Rainbow Summit
+STR_PARK    :Rainbow Summit
+STR_DTLS    :In dit park, gelegen op een heuvel, zijn hoge bouwwerken verboden. Kun je het park uitbreiden en het succesvol maken?
 
 <Six Flags Belgium>
-STR_SCNR   :Six Flags Belgium
-STR_PARK   :Six Flags Belgium
-STR_DTLS   :Probeer dit Six Flags-park op je eigen manier te beheren en te verbeteren.
+STR_SCNR    :Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Probeer dit Six Flags-park op je eigen manier te beheren en te verbeteren.
 
 <Six Flags Great Adventure>
-STR_SCNR   :Six Flags Great Adventure
-STR_PARK   :Six Flags Great Adventure
-STR_DTLS   :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: meer bezoekers naar het park halen!
+STR_SCNR    :Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: meer bezoekers naar het park halen!
 
 <Six Flags Holland>
-STR_SCNR   :Six Flags Holland
-STR_PARK   :Six Flags Holland
-STR_DTLS   :Probeer dit Six Flags-park op je eigen manier te beheren en te verbeteren.
+STR_SCNR    :Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Probeer dit Six Flags-park op je eigen manier te beheren en te verbeteren.
 
 <Six Flags Magic Mountain>
-STR_SCNR   :Six Flags Magic Mountain
-STR_PARK   :Six Flags Magic Mountain
-STR_DTLS   :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: je lening terugbetalen terwijl je de waarde van je park laat stijgen!
+STR_SCNR    :Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: je lening terugbetalen terwijl je de waarde van je park laat stijgen!
 
 <Six Flags over Texas>
-STR_SCNR   :Six Flags over Texas
-STR_PARK   :Six Flags over Texas
-STR_DTLS   :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: meer bezoekers naar het park halen!
+STR_SCNR    :Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Bouw de ontbrekende Six Flags-attracties, of maak je eigen ontwerpen om het park te verbeteren! Maar vergeet je uiteindelijke doel niet: meer bezoekers naar het park halen!
 
 <Build your own Six Flags Belgium>
-STR_SCNR   :Bouw je eigen Six Flags Belgium
-STR_PARK   :Six Flags Belgium
-STR_DTLS   :Bouw je eigen versie van dit Europese Six Flags-park.
+STR_SCNR    :Bouw je eigen Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Bouw je eigen versie van dit Europese Six Flags-park.
 
 <Build your own Six Flags Great Adventure>
-STR_SCNR   :Bouw je eigen Six Flags Great Adventure
-STR_PARK   :Six Flags Great Adventure
-STR_DTLS   :Gebruik je ontwerpvaardigheden om dit Six Flags-park opnieuw te maken.
+STR_SCNR    :Bouw je eigen Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Gebruik je ontwerpvaardigheden om dit Six Flags-park opnieuw te maken.
 
 <Build your own Six Flags Holland>
-STR_SCNR   :Bouw je eigen Six Flags Holland
-STR_PARK   :Six Flags Holland
-STR_DTLS   :Bouw je eigen versie van dit Europese Six Flags-park.
+STR_SCNR    :Bouw je eigen Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Bouw je eigen versie van dit Europese Six Flags-park.
 
 <Build your own Six Flags Magic Mountain>
-STR_SCNR   :Bouw je eigen Six Flags Magic Mountain
-STR_PARK   :Six Flags Magic Mountain
-STR_DTLS   :Maak je eigen versie van dit enorme Six Flags-park.
+STR_SCNR    :Bouw je eigen Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Maak je eigen versie van dit enorme Six Flags-park.
 
 <Build your own Six Flags over Texas>
-STR_SCNR   :Bouw je eigen Six Flags over Texas
-STR_PARK   :Six Flags over Texas
-STR_DTLS   :Maak je eigen versie van dit Six Flags-park.
+STR_SCNR    :Bouw je eigen Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Maak je eigen versie van dit Six Flags-park.
 
 <Build your own Six Flags Park>
-STR_SCNR   :Bouw je eigen Six Flags-park
-STR_PARK   :Six Flags
-STR_DTLS   :Maak je eigen Six Flags-park, door gebruik te maken van attracties uit andere Six Flags-parken of door zelf nieuwe attracties te ontwerpen.
+STR_SCNR    :Bouw je eigen Six Flags-park
+STR_PARK    :Six Flags
+STR_DTLS    :Maak je eigen Six Flags-park, door gebruik te maken van attracties uit andere Six Flags-parken of door zelf nieuwe attracties te ontwerpen.
 
 #TT
 <Mythological - Animatronic Film Set>
-STR_SCNR   :  Mythologie - Animatronic-filmset
-STR_PARK   :Animatronic Antics
-STR_DTLS   :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren en verbeteren. Bouw een eerbetoon aan de pioniers van de stop-motionanimatie, die de wezens uit de mythologie tot leven brachten op het witte doek.
+STR_SCNR    :  Mythologie - Animatronic-filmset
+STR_PARK    :Animatronic Antics
+STR_DTLS    :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren en verbeteren. Bouw een eerbetoon aan de pioniers van de stop-motionanimatie, die de wezens uit de mythologie tot leven brachten op het witte doek.
 
 ##################################
 # Rides/attractions / Attracties #
@@ -4621,23 +4621,23 @@ STR_DTLS   :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren 
 
 # 3D Cinema / 3d-bioscoop
 [C3D]
-STR_NAME   :3D-bioscoop
-STR_DESC   :Bioscoop in een bolvormig gebouw waarin 3D-films worden getoond.
-STR_CPTY   :20 passagiers
+STR_NAME    :3D-bioscoop
+STR_DESC    :Bioscoop in een bolvormig gebouw waarin 3D-films worden getoond.
+STR_CPTY    :20 passagiers
 # End of 3D Cinema / 3d-bioscoop
 
 # Mine Ride / Aangedreven mijntrein
 [PMT1]
-STR_NAME   :Aangedreven mijntrein
-STR_DESC   :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
-STR_CPTY   :4 passagiers per karretje (voorste karretje 2)
+STR_NAME    :Aangedreven mijntrein
+STR_DESC    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
+STR_CPTY    :4 passagiers per karretje (voorste karretje 2)
 # End of Mine Ride / Aangedreven mijntrein
 
 # Reverse Freefall Coaster / Achterwaartsevrijevalachtbaan
 [REVF1]
-STR_NAME   :Wagen voor achterwaartse vrije val
-STR_DESC   :Grote wagen voor de achterwaartstevrijevalachtbaan.
-STR_CPTY   :8 passagiers
+STR_NAME    :Wagen voor achterwaartse vrije val
+STR_DESC    :Grote wagen voor de achterwaartstevrijevalachtbaan.
+STR_CPTY    :8 passagiers
 
 #WW
 [KOLARIDE]
@@ -4654,34 +4654,34 @@ STR_CPTY    :8 passagiers
 
 # Car Ride / Autorondrit
 [TRUCK1]
-STR_NAME   :Pickuptrucks
-STR_DESC   :Elektrische voertuigen in de vorm van een pickuptruck.
-STR_CPTY   :1 passagier per truck
+STR_NAME    :Pickuptrucks
+STR_DESC    :Elektrische voertuigen in de vorm van een pickuptruck.
+STR_CPTY    :1 passagier per truck
 
 [RCR]
-STR_NAME   :Raceauto's
-STR_DESC   :Elektrische voertuigen in de vorm van een raceauto.
-STR_CPTY   :1 passagier per karretje
+STR_NAME    :Raceauto's
+STR_DESC    :Elektrische voertuigen in de vorm van een raceauto.
+STR_CPTY    :1 passagier per karretje
 
 [SPCAR]
-STR_NAME   :Sportauto's
-STR_DESC   :Elektrische voertuigen in de vorm van een sportauto.
-STR_CPTY   :1 passagier per karretje
+STR_NAME    :Sportauto's
+STR_DESC    :Elektrische voertuigen in de vorm van een sportauto.
+STR_CPTY    :1 passagier per karretje
 
 [VCR]
-STR_NAME   :Oldtimers
-STR_DESC   :Elektrische voertuigen in de vorm van een oldtimer.
-STR_CPTY   :1 passagier per karretje
+STR_NAME    :Oldtimers
+STR_DESC    :Elektrische voertuigen in de vorm van een oldtimer.
+STR_CPTY    :1 passagier per karretje
 
 [CTCAR]
-STR_NAME   :Cheshire Cats
-STR_DESC   :Elektrische voertuigen in de vorm van een kat.
-STR_CPTY   :1 passagier per karretje
+STR_NAME    :Cheshire Cats
+STR_DESC    :Elektrische voertuigen in de vorm van een kat.
+STR_CPTY    :1 passagier per karretje
 
 [4X4]
-STR_NAME   :Monstertrucks
-STR_DESC   :Gigantische elektrische 4x4-trucks die steile hellingen kunnen nemen.
-STR_CPTY   :2 passagiers per truck
+STR_NAME    :Monstertrucks
+STR_DESC    :Gigantische elektrische 4x4-trucks die steile hellingen kunnen nemen.
+STR_CPTY    :2 passagiers per truck
 
 #WW
 [CRNVBFLY]
@@ -4728,27 +4728,27 @@ STR_CPTY    :2 passagiers per karretje
 
 # Motion Simulator / Bewegingssimulator
 [SIMPOD]
-STR_NAME   :Bewegingssimulator
-STR_DESC   :Passagiers bekijken een film in de cabine van een bewegingssimulator die wordt gedraaid en bewogen door een hydraulische arm.
-STR_CPTY   :8 passagiers
+STR_NAME    :Bewegingssimulator
+STR_DESC    :Passagiers bekijken een film in de cabine van een bewegingssimulator die wordt gedraaid en bewogen door een hydraulische arm.
+STR_CPTY    :8 passagiers
 
 #TT
 [MICROBUS]
-STR_NAME   :Hippiebus
-STR_DESC   :Passagiers bekijken een film in de cabine van een bewegingssimulator die wordt gedraaid en bewogen door een hydraulische arm.
-STR_CPTY   :8 passagiers
+STR_NAME    :Hippiebus
+STR_DESC    :Passagiers bekijken een film in de cabine van een bewegingssimulator die wordt gedraaid en bewogen door een hydraulische arm.
+STR_CPTY    :8 passagiers
 # End of Motion Simulator / Bewegingssimulator
 
 # Bobsleigh Coaster / Bobslee-achtbaan
 [BOB1]
-STR_NAME   :Bobslee-achtbaan
-STR_DESC   :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
-STR_CPTY   :2 passagiers per karretje
+STR_NAME    :Bobslee-achtbaan
+STR_DESC    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_CPTY    :2 passagiers per karretje
 
 [INTBOB]
-STR_NAME   :Zespersoonsbob
-STR_DESC   :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
-STR_CPTY   :6 passagiers per bob
+STR_NAME    :Zespersoonsbob
+STR_DESC    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
+STR_CPTY    :6 passagiers per bob
 
 #WW
 [PENGUINB]
@@ -4765,9 +4765,9 @@ STR_CPTY    :2 passagiers per karretje
 
 # Log Flume / Boomstamattractie
 [LFB1]
-STR_NAME   :Boomstamattractie
-STR_DESC   :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
-STR_CPTY   :4 passagiers per boot
+STR_NAME    :Boomstamattractie
+STR_DESC    :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
+STR_CPTY    :4 passagiers per boot
 
 #WW
 [CROCFLUM]
@@ -4778,34 +4778,34 @@ STR_CPTY    :4 passagiers per boot
 
 # Boat Ride / Bootverhuur
 [RBOAT]
-STR_NAME   :Roeiboten
-STR_DESC   :Boten waarin passagiers zelf roeien.
-STR_CPTY   :2 passagiers per boot
+STR_NAME    :Roeiboten
+STR_DESC    :Boten waarin passagiers zelf roeien.
+STR_CPTY    :2 passagiers per boot
 
 [BBOAT]
-STR_NAME   :Botsboten
-STR_DESC   :Kleine ronde bootjes, aangedreven door een centrale motor en bestuurd door de passagiers.
-STR_CPTY   :2 passagiers per boot
+STR_NAME    :Botsboten
+STR_DESC    :Kleine ronde bootjes, aangedreven door een centrale motor en bestuurd door de passagiers.
+STR_CPTY    :2 passagiers per boot
 
 [JSKI]
-STR_NAME   :Jetski's
-STR_DESC   :Eénpersoons jetski's die de bezoekers zelf kunnen besturen.
-STR_CPTY   :1 persoon per jetski
+STR_NAME    :Jetski's
+STR_DESC    :Eénpersoons jetski's die de bezoekers zelf kunnen besturen.
+STR_CPTY    :1 persoon per jetski
 
 [CBOAT]
-STR_NAME   :Kano's
-STR_DESC   :Lange kano's waarin de passagiers zelf roeien.
-STR_CPTY   :2 passagiers per kano
+STR_NAME    :Kano's
+STR_DESC    :Lange kano's waarin de passagiers zelf roeien.
+STR_CPTY    :2 passagiers per kano
 
 [TRIKE]
-STR_NAME   :Waterfietsen
-STR_DESC   :Driewielige waterfietsen met grote raderwielen.
-STR_CPTY   :2 passagiers per waterfiets
+STR_NAME    :Waterfietsen
+STR_DESC    :Driewielige waterfietsen met grote raderwielen.
+STR_CPTY    :2 passagiers per waterfiets
 
 [SWANS]
-STR_NAME   :Zwanenbootjes
-STR_DESC   :Boten in de vorm van een zwaan, voortgestuwd door het trappen van de passagiers op de eerste rij.
-STR_CPTY   :4 passagiers per boot
+STR_NAME    :Zwanenbootjes
+STR_DESC    :Boten in de vorm van een zwaan, voortgestuwd door het trappen van de passagiers op de eerste rij.
+STR_CPTY    :4 passagiers per boot
 
 #WW
 [DOLPHINR]
@@ -4846,9 +4846,9 @@ STR_CPTY    :1 bezoeker per "boot"
 
 # Dodgems / Botsauto's
 [DODG1]
-STR_NAME   :Botsauto's
-STR_DESC   :Elektrische wagentjes die de passagiers zelf besturen.
-STR_CPTY   :1 passagier per botsauto
+STR_NAME    :Botsauto's
+STR_DESC    :Elektrische wagentjes die de passagiers zelf besturen.
+STR_CPTY    :1 passagier per botsauto
 
 #TT
 [TRICATOP]
@@ -4865,26 +4865,26 @@ STR_CPTY    :1 passagier per botsauto
 
 # Circus
 [CIRCUS1]
-STR_NAME   :Circus
-STR_DESC   :Een dierennummer in een circustent.
-STR_CPTY   :30 bezoekers
+STR_NAME    :Circus
+STR_DESC    :Een dierennummer in een circustent.
+STR_CPTY    :30 bezoekers
 # End of Circus
 
 # Compact Inverted Coaster / Compacte omgekeerde achtbaan
 [SLCT]
-STR_NAME   :Compacte omgekeerde achtbaan
-STR_DESC   :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
-STR_CPTY   :2 passagiers per karretje
+STR_NAME    :Compacte omgekeerde achtbaan
+STR_DESC    :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
+STR_CPTY    :2 passagiers per karretje
 
 [VEKDV]
-STR_NAME   :Omgekeerde verticale shuttle
-STR_DESC   :Passagiers zitten in karretjes die onder de baan hangen, worden achteruit een verticale baan opgetrokken en vervolgens losgelaten, waarna ze door kronkelende en scherpe omkeringen gaan.
-STR_CPTY   :4 passagiers per karretje
+STR_NAME    :Omgekeerde verticale shuttle
+STR_DESC    :Passagiers zitten in karretjes die onder de baan hangen, worden achteruit een verticale baan opgetrokken en vervolgens losgelaten, waarna ze door kronkelende en scherpe omkeringen gaan.
+STR_CPTY    :4 passagiers per karretje
 
 [SLCFO]
-STR_NAME   :Omgekeerde shuttle
-STR_DESC   :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
-STR_CPTY   :4 passagiers per karretje
+STR_NAME    :Omgekeerde shuttle
+STR_DESC    :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
+STR_CPTY    :4 passagiers per karretje
 
 #WW
 [POLARBER]
@@ -5206,7 +5206,7 @@ STR_CPTY    :4 passagiers per karretje
 [JAGUARRD]
 STR_NAME    :Jaguarkarretjes
 STR_DESC    :Achtbaankarretjes in de vorm van een jaguar.
-STR_CPTY    4 passagiers per karretje
+STR_CPTY    :4 passagiers per karretje
 
 #WW
 [LIONRIDE]

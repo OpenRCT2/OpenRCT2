@@ -4232,7 +4232,7 @@ STR_DTLS    :댐 주변 지역을 놀이공원으로 개발할 수 있습니다.
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
-STR_PARK    코스터 협곡
+STR_PARK    :코스터 협곡
 STR_DTLS    :광대한 협곡을 테마파크로 개발할 수 있습니다.
 
 <Thunderstorm Park>
