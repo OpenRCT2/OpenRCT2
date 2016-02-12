@@ -3631,13 +3631,14 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 	if (subState == vehicle->var_1F) {
 		bool shouldStop = true;
 		if (ride->status != RIDE_STATUS_CLOSED) {
-			if (vehicle->var_CE <= ride->rotations)
+			if (vehicle->var_CE < ride->rotations)
 				shouldStop = false;
 		}
 
 		if (shouldStop) {
 			ferris_wheel_var_0 = vehicle->ferris_wheel_var_0;
 			vehicle->ferris_wheel_var_0 = -abs(ferris_wheel_var_0);
+			vehicle->ferris_wheel_var_1 = abs(ferris_wheel_var_0);
 		}
 	}
 
