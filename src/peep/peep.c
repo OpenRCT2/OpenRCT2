@@ -41,8 +41,6 @@
 #include "../cheats.h"
 #include "peep.h"
 #include "staff.h"
-#include "../ride/vehicle.h"
-#include "../world/map.h"
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -3529,6 +3527,9 @@ static void peep_update_fixing(int steps, rct_peep* peep){
 	}
 }
 
+/**
+ * rct2: 0x006C0EEC
+ */
 static bool peep_update_fixing_sub_state_0(rct_ride *ride) {
 	ride->mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -3536,6 +3537,9 @@ static bool peep_update_fixing_sub_state_0(rct_ride *ride) {
 	return true;
 }
 
+/**
+ * rct2: 0x006C0F09
+ */
 static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 x, y, tmp_xy_distance;
 
@@ -3588,6 +3592,9 @@ static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep *peep, rct_ri
 	return true;
 }
 
+/**
+ * rct2: 0x006C0FD3
+ */
 static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 tmp_x, tmp_y, tmp_distance;
 
@@ -3636,6 +3643,9 @@ static bool peep_update_fixing_sub_state_2345(bool firstRun, rct_peep *peep, rct
 	return false;
 }
 
+/**
+ * rct2: 0x006C107B
+ */
 static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 tmp_x, tmp_y, tmp_distance;
 
@@ -3673,6 +3683,9 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep *peep, rct_ri
 	return false;
 }
 
+/**
+ * rct2: 0x006C1114
+ */
 static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 x, y, tmp_distance;
 
@@ -3699,12 +3712,12 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ri
 		int direction = map_element_get_direction(mapElement);
 		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction * 2];
 
-		stationX += 10 + offset.x;
+		stationX += 16 + offset.x;
 		if (offset.x == 0) {
 			stationX = peep->destination_x;
 		}
 
-		stationY += 10 + offset.y;
+		stationY += 16 + offset.y;
 		if (offset.y == 0) {
 			stationY = peep->destination_y;
 		}
@@ -3726,6 +3739,9 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ri
 	return false;
 }
 
+/**
+ * rct2: 0x006C11F5
+ */
 static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep *peep) {
 	sint16 tmp_x, tmp_y, tmp_xy_distance;
 
@@ -3748,6 +3764,9 @@ static bool peep_update_fixing_sub_state_8(bool firstRun, rct_peep *peep) {
 	return false;
 }
 
+/**
+ * rct2: 0x006C1239
+ */
 static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 x, y, tmp_xy_distance;
 
@@ -3821,6 +3840,9 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 	return false;
 }
 
+/**
+ * rct2: 0x006C1368
+ */
 static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 tmp_x, tmp_y, tmp_xy_distance;
 
@@ -3848,6 +3870,9 @@ static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep *peep, rct_r
 	return false;
 }
 
+/**
+ * rct2: 0x006C13CE
+ */
 static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 tmp_x, tmp_y, tmp_xy_distance;
 
@@ -3883,6 +3908,9 @@ static bool peep_update_fixing_sub_state_11(bool firstRun, rct_peep *peep, rct_r
 	return false;
 }
 
+/**
+ * rct2: 0x006C1474
+ */
 static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 x, y, tmp_xy_distance;
 
@@ -3900,7 +3928,7 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_r
 		uint16 stationY = (stationPosition >> 8) * 32;
 
 		stationX += 16;
-		stationY += 10;
+		stationY += 16;
 
 		rct_xy16 direction = word_981D6C[peep->var_78];
 
@@ -3923,6 +3951,9 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_r
 	return false;
 }
 
+/**
+ * rct2: 0x006C1504
+ */
 static bool peep_update_fixing_sub_state_13(bool firstRun, int steps, rct_peep *peep, rct_ride *ride) {
 	sint16 tmp_x, tmp_y, tmp_xy_distance;
 
@@ -3958,6 +3989,9 @@ static bool peep_update_fixing_sub_state_13(bool firstRun, int steps, rct_peep *
 	return true;
 }
 
+/**
+ * rct2: 0x006C157E
+ */
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_ride *ride) {
 	sint16 x, y, xy_distance;
 
