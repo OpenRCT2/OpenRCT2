@@ -3395,6 +3395,49 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	*edi = rideIndex;
 }
 
+/**
+ *
+ *  rct2: 0x006CDE57
+ */
+int place_maze_clear_func(rct_map_element** map_element) {
+	if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
+		return 1;
+
+	// Change so that hack is not required
+	uint8* ebp = RCT2_GLOBAL(0x00F4412F, uint8*);
+
+	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+		if (scenery->small_scenery.height > 64)
+			return 1;
+	}
+
+	money32 price = scenery->small_scenery.removal_price * 10;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		price = 0;
+
+	RCT2_GLOBAL(0x00F4413E, money32) += price;
+
+	if (ebp[12] & GAME_COMMAND_FLAG_GHOST)
+		return 0;
+
+	if (!(ebp[12] & GAME_COMMAND_FLAG_APPLY))
+		return 0;
+
+	rct_xy16 location = {
+		.x = RCT2_GLOBAL(0x00F4412B, sint16),
+		.y = RCT2_GLOBAL(0x00F4412D, sint16)
+	};
+
+	map_invalidate_tile(location.x, location.y, (*map_element)->base_height * 8, (*map_element)->clearance_height * 8);
+
+	map_element_remove(*map_element);
+
+	(*map_element)--;
+	return 0;
+}
+
 money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16 x, sint16 y, sint16 z)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
@@ -3458,7 +3501,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		RCT2_GLOBAL(0x00F4412D, uint16) = fy;
 		RCT2_GLOBAL(0x00F4412F, uint8*) = stack_F4412F;
 		RCT2_GLOBAL(0x00F4413E, money32) = 0;
-		if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, (void*)0x006CDE57, 15)) {
+		if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, &place_maze_clear_func, 15)) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -4088,6 +4131,49 @@ static bool sub_6C4D89(int x, int y, int z, int direction, int rideIndex, int fl
 	return !(RCT2_CALLPROC_X(0x006C4D89, x, flags | (rideIndex << 8), y, z | (direction << 8), 0, 0, 0) & 0x100);
 }
 
+/**
+ *
+ *  rct2: 0x006C5A4F
+ */
+int place_track_clear_func(rct_map_element** map_element) {
+	if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
+		return 1;
+
+	// Change so that hack is not required
+	uint8* ebp = RCT2_GLOBAL(0x00F44060, uint8*);
+
+	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+		if (scenery->small_scenery.height > 64)
+			return 1;
+	}
+
+	money32 price = scenery->small_scenery.removal_price * 10;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		price = 0;
+
+	RCT2_GLOBAL(ebp, money32) += price;
+
+	if (ebp[20] & GAME_COMMAND_FLAG_GHOST)
+		return 0;
+
+	if (!(ebp[20] & GAME_COMMAND_FLAG_APPLY))
+		return 0;
+
+	rct_xy16 location = {
+		.x = RCT2_GLOBAL(0x00F440A2, sint16),
+		.y = RCT2_GLOBAL(0x00F440A4, sint16)
+	};
+
+	map_invalidate_tile(location.x, location.y, (*map_element)->base_height * 8, (*map_element)->clearance_height * 8);
+
+	map_element_remove(*map_element);
+
+	(*map_element)--;
+	return 0;
+}
+
 static money32 track_place(int rideIndex, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
 {
 	rct_ride *ride = get_ride(rideIndex);
@@ -4300,7 +4386,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		RCT2_GLOBAL(0x00F44060, void*) = &clearance_struct;
 
 		if (!gCheatsDisableClearanceChecks || flags & GAME_COMMAND_FLAG_GHOST){
-			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, (void*)0x006C5A5F, bl))
+			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, &place_track_clear_func, bl))
 				return MONEY32_UNDEFINED;
 		}
 		// Again when 0x006C5A5F implemented remove this.

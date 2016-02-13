@@ -137,6 +137,49 @@ static void loc_6A6620(int flags, int x, int y, rct_map_element *mapElement)
 	map_invalidate_tile_full(x, y);
 }
 
+/**
+ *
+ *  rct2: 0x006A6733
+ */
+int footpath_clear_func(rct_map_element** map_element) {
+	if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
+		return 1;
+
+	// Change so that hack is not required
+	uint8* ebp = RCT2_GLOBAL(0x00F3EF7C, uint8*);
+
+	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+		if (scenery->small_scenery.height > 64)
+			return 1;
+	}
+
+	money32 price = scenery->small_scenery.removal_price * 10;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		price = 0;
+
+	RCT2_GLOBAL(0x00F3EFD9, money32) += price;
+
+	if (ebp[8] & GAME_COMMAND_FLAG_GHOST)
+		return 0;
+
+	if (!(ebp[8] & GAME_COMMAND_FLAG_APPLY))
+		return 0;
+
+	rct_xy16 location = {
+		.x = RCT2_GLOBAL(0x00F3EF84, sint16),
+		.y = RCT2_GLOBAL(0x00F3EF86, sint16)
+	};
+
+	map_invalidate_tile(location.x, location.y, (*map_element)->base_height * 8, (*map_element)->clearance_height * 8);
+
+	map_element_remove(*map_element);
+
+	(*map_element)--;
+	return 0;
+}
+
 static money32 footpath_element_insert(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
@@ -165,7 +208,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	// 0x006A6733 expects the flags to be at (*0xF3EF7C) + 8
 	RCT2_GLOBAL(0x00F3EF7C, uint32) = (uint32)(&flags - 2);
 
-	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, (void*)0x006A6733, bl))
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &footpath_clear_func, bl))
 		return MONEY32_UNDEFINED;
 
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
@@ -500,7 +543,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	// 0x006A6733 expects the flags to be at (*0xF3EF7C) + 8
 	RCT2_GLOBAL(0x00F3EF7C, uint32) = (uint32)(&flags - 2);
 
-	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, (void*)0x006A6733, bl))
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &footpath_clear_func, bl))
 		return MONEY32_UNDEFINED;
 
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);

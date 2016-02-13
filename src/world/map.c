@@ -2797,7 +2797,7 @@ int map_place_scenery_clear_func(rct_map_element** map_element) {
 	// Change so that hack is not required
 	uint8* ebp = RCT2_GLOBAL(0x00F64F1E, uint8*);
 
-	if (!(ebp[4] & (1 << 7)))
+	if (!(ebp[4] & GAME_COMMAND_FLAG_7))
 		return 1;
 
 	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
@@ -2813,10 +2813,10 @@ int map_place_scenery_clear_func(rct_map_element** map_element) {
 
 	RCT2_GLOBAL(0x00F64F26, money32) += price;
 
-	if (ebp[4] & (1 << 6))
+	if (ebp[4] & GAME_COMMAND_FLAG_GHOST)
 		return 0;
 
-	if (!(ebp[4] & (1 << 0)))
+	if (!(ebp[4] & GAME_COMMAND_FLAG_APPLY))
 		return 0;
 
 	rct_xy16 location = {
@@ -3474,6 +3474,52 @@ money32 map_place_fence(
 
 /**
  *
+ *  rct2: 0x006B8D88
+ */
+int map_place_large_scenery_clear_func(rct_map_element** map_element) {
+	if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
+		return 1;
+
+	// Change so that hack is not required
+	uint8* ebp = RCT2_GLOBAL(0x00F43896, uint8*);
+
+	if (!(ebp[12] & GAME_COMMAND_FLAG_7))
+		return 1;
+
+	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+		if (scenery->small_scenery.height > 64)
+			return 1;
+	}
+
+	money32 price = scenery->small_scenery.removal_price * 10;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		price = 0;
+
+	RCT2_GLOBAL(0x00F64F26, money32) += price;
+
+	if (ebp[12] & GAME_COMMAND_FLAG_GHOST)
+		return 0;
+
+	if (!(ebp[12] & GAME_COMMAND_FLAG_APPLY))
+		return 0;
+
+	rct_xy16 location = {
+		.x = RCT2_GLOBAL(0x00F43892, sint16),
+		.y = RCT2_GLOBAL(0x00F43894, sint16)
+	};
+
+	map_invalidate_tile(location.x, location.y, (*map_element)->base_height * 8, (*map_element)->clearance_height * 8);
+
+	map_element_remove(*map_element);
+
+	(*map_element)--;
+	return 0;
+}
+
+/**
+ *
  *  rct2: 0x006B893C
  */
 void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
@@ -3616,7 +3662,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		RCT2_GLOBAL(0x00F43892, sint16) = curTile.x;
 		RCT2_GLOBAL(0x00F43894, sint16) = curTile.y;
 		RCT2_GLOBAL(0x00F43896, uint32) = (uint32)(ebx - 3); // this is how ebx flags var is passed to 0x006B8D88
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(curTile.x, curTile.y, zLow, zHigh, (void*)0x006B8D88, bl)) {
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(curTile.x, curTile.y, zLow, zHigh, &map_place_large_scenery_clear_func, bl)) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}

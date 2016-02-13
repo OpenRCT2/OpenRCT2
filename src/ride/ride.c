@@ -45,6 +45,7 @@
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
+#include "../world/scenery.h"
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -7621,6 +7622,49 @@ static void maze_entrance_hedge_replacement(int x, int y, rct_map_element *mapEl
 	} while (!map_element_is_last_for_tile(mapElement++));
 }
 
+/**
+ *
+ *  rct2: 0x0066637E
+ */
+int place_entrance_clear_func(rct_map_element** map_element) {
+	if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
+		return 1;
+
+	// Change so that hack is not required
+	uint8* ebp = RCT2_GLOBAL(0x009E32C8, uint8*);
+
+	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+		if (scenery->small_scenery.height > 64)
+			return 1;
+	}
+
+	money32 price = scenery->small_scenery.removal_price * 10;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		price = 0;
+
+	RCT2_GLOBAL(0x009E32B8, money32) += price;
+
+	if (ebp[4] & GAME_COMMAND_FLAG_GHOST)
+		return 0;
+
+	if (!(ebp[4] & GAME_COMMAND_FLAG_APPLY))
+		return 0;
+
+	rct_xy16 location = {
+		.x = RCT2_GLOBAL(0x009E32C4, sint16),
+		.y = RCT2_GLOBAL(0x009E32C6, sint16)
+	};
+
+	map_invalidate_tile(location.x, location.y, (*map_element)->base_height * 8, (*map_element)->clearance_height * 8);
+
+	map_element_remove(*map_element);
+
+	(*map_element)--;
+	return 0;
+}
+
 money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 direction, uint8 flags, uint8 rideIndex, uint8 station_num, uint8 is_exit)
 {
 	// Remember when in Unknown station num mode rideIndex is unknown and z is set
@@ -7655,7 +7699,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		// Horrible hack until map_can_construct_with_clear_at is implemented.
 		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
 
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)) {
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &place_entrance_clear_func, 0xF)) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -7758,7 +7802,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		// Horrible hack until map_can_construct_with_clear_at is implemented.
 		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
 
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)) {
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &place_entrance_clear_func, 0xF)) {
 			return MONEY32_UNDEFINED;
 		}
 
