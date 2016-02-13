@@ -131,7 +131,7 @@ utf8 *platform_open_directory_browser(utf8 *title)
 	}
 }
 
-int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
+int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
 {
 	@autoreleasepool
 	{
@@ -144,12 +144,12 @@ int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8
 		NSString *basename = filePath.lastPathComponent;
 		
 		NSSavePanel *panel;
-		if (type == 0)
+		if (type == FD_SAVE)
 		{
 			panel = [NSSavePanel savePanel];
 			panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
 		}
-		else if (type == 1)
+		else if (type == FD_OPEN)
 		{
 			NSOpenPanel *open = [NSOpenPanel openPanel];
 			open.canChooseDirectories = false;

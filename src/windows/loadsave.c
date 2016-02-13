@@ -304,22 +304,22 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 
 		switch (_type) {
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_GAME), path, filter, _extension);
+			result = platform_open_common_file_dialog(FD_OPEN, (char*)language_get_string(STR_LOAD_GAME), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_GAME), path, filter, _extension);
+			result = platform_open_common_file_dialog(FD_SAVE, (char*)language_get_string(STR_SAVE_GAME), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(STR_LOAD_LANDSCAPE), path, filter, _extension);
+			result = platform_open_common_file_dialog(FD_OPEN, (char*)language_get_string(STR_LOAD_LANDSCAPE), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_LANDSCAPE), path, filter, _extension);
+			result = platform_open_common_file_dialog(FD_SAVE, (char*)language_get_string(STR_SAVE_LANDSCAPE), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
-			result = platform_open_common_file_dialog(0, (char*)language_get_string(STR_SAVE_SCENARIO), path, filter, _extension);
+			result = platform_open_common_file_dialog(FD_SAVE, (char*)language_get_string(STR_SAVE_SCENARIO), path, filter, _extension);
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-			result = platform_open_common_file_dialog(1, (char*)language_get_string(1039), path, filter, _extension);
+			result = platform_open_common_file_dialog(FD_OPEN, (char*)language_get_string(1039), path, filter, _extension);
 			break;
 		}
 

@@ -338,7 +338,7 @@ static int show_save_scenario_dialog(char *resultPath)
 	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
 
 	audio_pause_sounds();
-	result = platform_open_common_file_dialog(0, title, filename, "*.SC6", filterName);
+	result = platform_open_common_file_dialog(FD_SAVE, title, filename, "*.SC6", filterName);
 	audio_unpause_sounds();
 
 	if (result)

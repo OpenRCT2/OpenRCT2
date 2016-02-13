@@ -23,6 +23,7 @@
 #ifdef __LINUX__
 
 #include <dlfcn.h>
+#include <errno.h>
 #include <fontconfig/fontconfig.h>
 
 #include "../util/util.h"
@@ -40,6 +41,8 @@ struct dummy {
 	void* pointers[3];
 	struct dummy* ptr;
 };
+
+typedef enum { DT_NONE, DT_KDIALOG, DT_ZENITY } dialog_type;
 
 void platform_get_exe_path(utf8 *outPath)
 {
@@ -146,26 +149,222 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 	}
 }
 
-utf8 *platform_open_directory_browser(utf8 *title)
-{
-	STUB();
-	return NULL;
+
+void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
+	FILE *f;
+	int status;
+	size_t n_chars;
+
+	printf("executing \"%s\"...\n", command);
+	f = popen(command, "r");
+
+	if (buf && buf_size) {
+		n_chars = fread(buf, 1, *buf_size, f);
+
+		// make sure string is null-terminated
+		if (n_chars == *buf_size) {
+			n_chars--;
+			buf[n_chars] = 0;
+		}
+
+		*buf_size = n_chars;
+	} else {
+		fflush(f);
+	}
+
+	if (exit_value)
+		*exit_value = pclose(f);
+	else
+		pclose(f);
 }
 
-void platform_show_messagebox(char *message)
-{
-	STUB();
-	log_verbose(message);
+dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
+	int exit_value;
+	size_t size;
+	dialog_type dtype;
+
+	/*
+	 * prefer zenity as it offers more required features, e.g., overwrite
+	 * confirmation and selecting only existing files
+	 */
+
+	dtype = DT_ZENITY;
+	size = *cmd_size;
+	execute_cmd("which zenity", &exit_value, cmd, &size);
+
+	if (exit_value != 0) {
+		dtype = DT_KDIALOG;
+		size = *cmd_size;
+		execute_cmd("which kdialog", &exit_value, cmd, &size);
+
+		if (exit_value != 0) {
+			log_error("no dialog (zenity or kdialog) found\n");
+			return DT_NONE;
+		}
+	}
+
+	if (cmd[size-1] == '\n')
+		cmd[size-1] = 0;
+
+	*cmd_size = size;
+
+	return dtype;
 }
 
-/**
- *
- *  rct2: 0x004080EA
- */
-int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
-{
-	STUB();
+int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName) {
+	int exit_value;
+	char executable[MAX_PATH];
+	char cmd[MAX_PATH];
+	char result[MAX_PATH];
+	char *app;
+	size_t size;
+	dialog_type dtype;
+	char *action;
+	char *flags;
+	char *filter;
+
+	size = MAX_PATH;
+	dtype = get_dialog_app(executable, &size);
+
+	filter = 0;
+	switch (dtype) {
+		case DT_KDIALOG:
+			switch (type) {
+				case FD_OPEN:
+					action = "--getopenfilename";
+					break;
+				case FD_SAVE:
+					action = "--getsavefilename";
+					break;
+			}
+
+			if (filterPattern && filterName) {
+				filter = (char*) malloc(strlen(filterPattern) + 3 + strlen(filterName) + 1);
+				sprintf(filter, "\"%s | %s\"", filterPattern, filterName);
+			}
+
+			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s / %s", executable, title, action, filter?filter:"");
+			break;
+		case DT_ZENITY:
+			action = "--file-selection";
+			switch (type) {
+				case FD_SAVE:
+					flags = "--confirm-overwrite --save";
+					break;
+				case FD_OPEN:
+					flags = "";
+					break;
+			}
+
+			if (filterPattern && filterName) {
+				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPattern) + 3 + strlen(filterName) + 2);
+				sprintf(filter, "--file-filter=\"%s | %s\"", filterName, filterPattern);
+			}
+
+			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, title, filter?filter:"");
+			break;
+		default: return 1;
+	}
+
+	size = MAX_PATH;
+	execute_cmd(cmd, &exit_value, result, &size);
+
+	if (exit_value != 0) {
+		return 1;
+	}
+
+	if (result[size-1] == '\n')
+		result[size-1] = 0;
+
+	if (type == FD_OPEN && access(result, F_OK) == -1) {
+		char msg[MAX_PATH];
+
+		snprintf(msg, MAX_PATH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
+		platform_show_messagebox(msg);
+
+		if (filter)
+			free(filter);
+		return platform_open_common_file_dialog(type, title, filename, filterPattern, filterName);
+	} else
+	if (type == FD_SAVE && access(result, F_OK) != -1 && dtype == DT_KDIALOG) {
+		snprintf(cmd, MAX_PATH, "%s --yesno \"Overwrite %s?\"", executable, result);
+
+		size = MAX_PATH;
+		execute_cmd(cmd, &exit_value, 0, 0);
+
+		if (exit_value != 0)
+			return 0;
+	}
+
+	strncpy(filename, result, MAX_PATH);
+
 	return 0;
+}
+
+utf8 *platform_open_directory_browser(utf8 *title) {
+	size_t size;
+	dialog_type dtype;
+	int exit_value;
+	char cmd[MAX_PATH];
+	char executable[MAX_PATH];
+	char result[MAX_PATH];
+	char *return_value;
+
+	size = MAX_PATH;
+	dtype = get_dialog_app(executable, &size);
+
+	switch (dtype) {
+		case DT_KDIALOG:
+			snprintf(cmd, MAX_PATH, "%s --title \"%s\" --getexistingdirectory /", executable, title);
+			break;
+		case DT_ZENITY:
+			snprintf(cmd, MAX_PATH, "%s --title=\"%s\" --file-selection --directory /", executable, title);
+			break;
+		default: return 0;
+	}
+
+	size = MAX_PATH;
+	execute_cmd(cmd, &exit_value, result, &size);
+
+	if (exit_value != 0) {
+		return 0;
+	}
+
+	if (result[size-1] == '\n')
+		result[size-1] = 0;
+
+	return_value = (char*) malloc(strlen(result)+1);
+	strcpy(return_value, result);
+
+	return return_value;
+}
+
+void platform_show_messagebox(char *message) {
+	size_t size;
+	dialog_type dtype;
+	int exit_value;
+	char cmd[MAX_PATH];
+	char executable[MAX_PATH];
+
+	log_verbose(message);
+
+	size = MAX_PATH;
+	dtype = get_dialog_app(executable, &size);
+
+	switch (dtype) {
+		case DT_KDIALOG:
+			snprintf(cmd, MAX_PATH, "%s --title \"OpenRCT2\" --msgbox \"%s\"", executable, message);
+			break;
+		case DT_ZENITY:
+			snprintf(cmd, MAX_PATH, "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executable, message);
+			break;
+		default:
+			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenRCT2", message, gWindow);
+			return;
+	}
+
+	size = MAX_PATH;
+	execute_cmd(cmd, 0, 0, 0);
 }
 
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
