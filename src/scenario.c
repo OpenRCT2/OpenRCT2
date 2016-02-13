@@ -688,6 +688,8 @@ static int scenario_create_ducks()
 /**
  *
  *  rct2: 0x006E37D2
+ *
+ * @return eax
  */
 unsigned int scenario_rand()
 {

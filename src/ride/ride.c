@@ -7115,6 +7115,9 @@ void invalidate_test_results(int rideIndex)
 /**
  *
  *  rct2: 0x006B7481
+ *
+ * @param rideIndex (dl)
+ * @param reliabilityIncreaseFactor (ax)
  */
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 {
@@ -7123,7 +7126,7 @@ void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BREAKDOWN_PENDING;
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BROKEN_DOWN;
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
 		rct_vehicle *vehicle;
@@ -8145,4 +8148,19 @@ const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride) {
 	             + ride->num_customers[8]
 	             + ride->num_customers[9];
 	return sum;
+}
+
+rct_vehicle *ride_get_broken_vehicle(rct_ride *ride) {
+	uint16 vehicleIndex = ride->vehicles[ride->broken_vehicle];
+
+	if (vehicleIndex == 0xFFFF) {
+		return NULL;
+	}
+
+	rct_vehicle *vehicle = GET_VEHICLE(vehicleIndex);
+	for (uint8 i = 0; i < ride->broken_car; i++) {
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+	}
+
+	return vehicle;
 }
