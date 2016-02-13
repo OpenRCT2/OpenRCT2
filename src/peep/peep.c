@@ -9615,6 +9615,10 @@ static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex)
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_QUEUE_FULL;
 	peep->previous_ride = rideIndex;
 	peep->previous_ride_time_out = 0;
+	//Change status "Heading to" to "Walking" if queue is full
+	if (rideIndex == peep->guest_heading_to_ride_id) {
+		peep_reset_ride_heading(peep);
+	}
 }
 
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop)
