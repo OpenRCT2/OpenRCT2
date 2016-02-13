@@ -3771,10 +3771,10 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 		}
 
 		// loc_6C12ED:
-		uint8 direction = RCT2_GLOBAL(0xF43914, uint32);
-		uint16 destinationX = input.x + TileDirectionDelta[direction].x + 16;
-		uint16 destinationY = input.y + TileDirectionDelta[direction].y + 16;
+		uint16 destinationX = input.x + 16;
+		uint16 destinationY = input.y + 16;
 
+		uint8 direction = RCT2_GLOBAL(0xF43914, uint32);
 		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction];
 
 		destinationX -= offset.x;
