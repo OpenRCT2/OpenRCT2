@@ -19,27 +19,28 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
-#include "../sprites.h"
-#include "../audio/audio.h"
+#include "../interface/console.h"
 #include "../interface/screenshot.h"
+#include "../interface/themes.h"
+#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../scenario.h"
+#include "../title.h"
+#include "../sprites.h"
 #include "../util/util.h"
-#include "../world/scenery.h"
 #include "../world/banner.h"
+#include "../world/scenery.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
-#include "../interface/console.h"
 
 enum {
 	WIDX_PAUSE,
@@ -498,6 +499,13 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 	}
 }
 
+static void window_top_toolbar_scenarioselect_callback(const utf8 *path)
+{
+	if (!scenario_load_and_play_from_path(path)) {
+		title_load();
+	}
+}
+
 /**
  *
  *  rct2: 0x0066C9EA
@@ -521,7 +529,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 
 		switch (dropdownIndex) {
 		case DDIDX_NEW_GAME:
-			window_scenarioselect_open();
+			window_scenarioselect_open(window_top_toolbar_scenarioselect_callback);
 			break;
 		case DDIDX_LOAD_GAME:
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);

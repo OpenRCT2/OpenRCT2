@@ -28,6 +28,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
+#include "../title.h"
 #include "dropdown.h"
 
 enum {
@@ -131,11 +132,18 @@ void window_title_menu_open()
 	window_init_scroll_widgets(window);
 }
 
+static void window_title_menu_scenarioselect_callback(const utf8 *path)
+{
+	if (!scenario_load_and_play_from_path(path)) {
+		title_load();
+	}
+}
+
 static void window_title_menu_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_START_NEW_GAME:
-		window_scenarioselect_open();
+		window_scenarioselect_open(window_title_menu_scenarioselect_callback);
 		break;
 	case WIDX_CONTINUE_SAVED_GAME:
 		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
