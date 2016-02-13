@@ -41,6 +41,7 @@
 #include "../cheats.h"
 #include "peep.h"
 #include "staff.h"
+#include "../world/map.h"
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -9272,6 +9273,59 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
  */
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView)
 {
+	rct_map_element *esi_element = map_get_first_element_at(peep->next_x, peep->next_y);
+
+	// TODO: map_get_surface_element_at()
+	while (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element++;
+	}
+
+	do {
+		// loc_690BC9:
+		if (map_element_get_type(esi_element) == MAP_ELEMENT_TYPE_FENCE) {
+			if (map_element_get_direction(esi_element) == edge & 0xFF) {
+				rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
+				if (!(entry->wall.flags2 & WALL_SCENERY_FLAG4)) {
+					if (esi_element->base_height > peep->next_z + 4) {
+						if (esi_element->clearance_height < peep->next_z + 1) {
+							// loc_690FB1
+							return false;
+						}
+					}
+				}
+			}
+		}
+	} while (!map_element_is_last_for_tile(esi_element++));
+
+	uint16 x = peep->next_x + TileDirectionDelta[edge].x;
+	uint16 y = peep->next_y + TileDirectionDelta[edge].y;
+	if (x > 0x1FFF || y > 0x1FFF) {
+		return false;
+	}
+
+	// TODO: map_get_surface_element_at()
+	esi_element = map_get_first_element_at(x, y);
+	while (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element++;
+	}
+
+	do {
+		if (map_element_get_type(esi_element) == MAP_ELEMENT_TYPE_FENCE) {
+			if (map_element_get_direction(esi_element) ^ 0x2 == edge & 0xFF) {
+				rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
+				if (!(entry->wall.flags2 & WALL_SCENERY_FLAG4)) {
+					if (peep->next_z + 4 >= esi_element->base_height) {
+						if (peep->next_z < esi_element->clearance_height) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+	} while (!map_element_is_last_for_tile(esi_element++));
+
+
+
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = edge;
 	esi = (int)peep;
