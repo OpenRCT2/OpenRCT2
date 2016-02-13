@@ -4002,7 +4002,6 @@ STR_5660    :Modify Groups
 STR_5661    :Set Player Group
 STR_5662    :N/A
 STR_5663    :Clear Landscape
-STR_5664    :Cheat
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
@@ -4039,8 +4038,20 @@ STR_5732    :Anisotropic
 STR_5733    :Use NN scaling at integer scales
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
-STR_5735    :Network Status
-STR_5736    :Player
+STR_5735    :{SMALLFONT}{BLACK}Paint land height
+STR_5736    :Income
+STR_5737    :Total customers
+STR_5738    :Total profit
+STR_5739    :Customers per hour
+STR_5740    :Running cost
+STR_5741    :Age
+STR_5742    :Total customers: {COMMA32}
+STR_5743    :Total profit: {CURRENCY2DP}
+STR_5744    :Customers: {COMMA32} per hour
+STR_5745    :Age: {COMMA16} year(s)
+STR_5746    :Income: {CURRENCY2DP} per hour
+STR_5747    :Running cost: {CURRENCY2DP} per hour
+STR_5748    :Running cost: Unknown
 
 #############
 # Scenarios #
