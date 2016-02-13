@@ -2336,6 +2336,8 @@ enum {
 	STR_CLOSED_WITH_PERSON = 5737,
 	STR_CLOSED_WITH_PEOPLE = 5738,
 
+	STR_CUSTOMERS_ON_RIDE = 5739,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
