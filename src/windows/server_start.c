@@ -25,6 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../sprites.h"
+#include "../title.h"
 #include "../util/util.h"
 #include "error.h"
 
@@ -43,7 +44,8 @@ enum {
 	WIDX_MAXPLAYERS_INCREASE,
 	WIDX_MAXPLAYERS_DECREASE,
 	WIDX_ADVERTISE_CHECKBOX,
-	WIDX_START_SERVER
+	WIDX_START_SERVER,
+	WIDX_LOAD_SERVER
 };
 
 #define WW 300
@@ -60,7 +62,8 @@ static rct_widget window_server_start_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,		STR_NONE },
 	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,			STR_NONE },					// advertise checkbox
-	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_START_SERVER,		STR_NONE },					// start server button
+	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,			STR_NONE },					// start server button
+	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,			STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -123,7 +126,8 @@ void window_server_start_open()
 		(1 << WIDX_MAXPLAYERS_INCREASE) |
 		(1 << WIDX_MAXPLAYERS_DECREASE) |
 		(1 << WIDX_ADVERTISE_CHECKBOX) |
-		(1 << WIDX_START_SERVER)
+		(1 << WIDX_START_SERVER) |
+		(1 << WIDX_LOAD_SERVER)
 	);
 	window_init_scroll_widgets(window);
 	window->no_list_items = 0;
@@ -144,6 +148,16 @@ void window_server_start_open()
 static void window_server_start_close(rct_window *w)
 {
 
+}
+
+static void window_server_start_scenarioselect_callback(const utf8 *path)
+{
+	network_set_password(_password);
+	if (scenario_load_and_play_from_path(path)) {
+		network_begin_server(gConfigNetwork.default_port);
+	} else {
+		title_load();
+	}
 }
 
 static void window_server_start_mouseup(rct_window *w, int widgetIndex)
@@ -181,6 +195,9 @@ static void window_server_start_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_START_SERVER:
+		window_scenarioselect_open(window_server_start_scenarioselect_callback);
+		break;
+	case WIDX_LOAD_SERVER:
 		network_set_password(_password);
 		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME | LOADSAVETYPE_NETWORK, NULL);
 		break;
