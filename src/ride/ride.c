@@ -7115,7 +7115,7 @@ void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor)
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BREAKDOWN_PENDING;
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_BROKEN_DOWN;
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
 		rct_vehicle *vehicle;
