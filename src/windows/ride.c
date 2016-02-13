@@ -5899,7 +5899,7 @@ static void window_ride_customer_mouseup(rct_window *w, int widgetIndex)
 static void window_ride_customer_resize(rct_window *w)
 {
 	w->flags |= WF_RESIZABLE;
-	window_set_resize(w, 316, 139, 316, 139);
+	window_set_resize(w, 316, 149, 316, 149);
 }
 
 /**
@@ -5978,6 +5978,13 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	ride = get_ride(w->number);
 	x = w->x + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_ride_customer_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+
+	// Customers currently on ride
+	if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
+		sint16 customersOnRide = ride->num_riders;
+		gfx_draw_string_left(dpi, STR_CUSTOMERS_ON_RIDE, &customersOnRide, 0, x, y);
+		y += 10;
+	}
 
 	// Customers per hour
 	customersPerHour = ride_customers_per_hour(ride);

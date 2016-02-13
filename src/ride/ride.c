@@ -710,6 +710,17 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 	}
 	if (ride->status == RIDE_STATUS_CLOSED) {
 		*formatSecondary = STR_CLOSED;
+
+		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
+			*argument = ride->num_riders;
+
+			if (*argument == 1) {
+				*formatSecondary = STR_CLOSED_WITH_PERSON;
+			} else if (*argument > 1) {
+				*formatSecondary = STR_CLOSED_WITH_PEOPLE;
+			}
+		}
+
 		return;
 	}
 	if (ride->status == RIDE_STATUS_TESTING) {
