@@ -2988,9 +2988,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 						if(z == 0){
 							bl |= 0xF0;
 						}
-						RCT2_GLOBAL(0x00F64F22, uint16) = x;
-						RCT2_GLOBAL(0x00F64F24, uint16) = y;
-						RCT2_GLOBAL(0x00F64F1E, uint32) = (uint32)(ebx - 1); //0x006E0D6E uses [F64F1E+4] to read ebx value
+
 						if(gCheatsDisableClearanceChecks || map_can_construct_with_clear_at(x, y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F64F26, money32))){
 							RCT2_GLOBAL(0x00F64F14, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x3;
 							if(flags & GAME_COMMAND_FLAG_APPLY){
@@ -3001,8 +2999,8 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 									coord.z = map_element_height(coord.x, coord.y);
 									network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 								}
-								int flags = (bl & 0xf);
-								rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, zLow, flags);
+								int collisionQuadrants = (bl & 0xf);
+								rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
 								RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*) = new_map_element;
 								uint8 type = quadrant << 6;
 								type |= MAP_ELEMENT_TYPE_SCENERY;
