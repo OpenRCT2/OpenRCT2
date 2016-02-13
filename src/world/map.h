@@ -311,7 +311,9 @@ void map_invalidate_selection_rect();
 void map_reorganise_elements();
 int sub_68B044();
 rct_map_element *map_element_insert(int x, int y, int z, int flags);
-int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl);
+
+typedef int (CLEAR_FUNC)(rct_map_element** map_element);
+int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUNC *clearFunc, uint8 bl);
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
 void rotate_map_coordinates(sint16 *x, sint16 *y, int rotation);
 rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation);
