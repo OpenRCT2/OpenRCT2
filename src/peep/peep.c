@@ -4015,7 +4015,7 @@ static void sub_6B7588(int rideIndex) {
 	rct_ride *ride = get_ride(rideIndex);
 	ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
 
-	ride->reliability += ((100 - ride->reliability) >> 2) * (scenario_rand() & 0xFF);
+	ride->reliability += ((100 - (ride->reliability >> 8)) >> 2) * (scenario_rand() & 0xFF);
 	ride->last_inspection = 0;
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
 }
