@@ -6,13 +6,32 @@
 #########################################################
 param (
     [Parameter(Position = 1)]
-    [string]$Task = "all",
+    [string]$Task         = "all",
 
-    [string]$Server  = "",
-    [string]$BuildNumber = "",
-    [string]$GitBranch = "",
-    [switch]$Installer = $false
+    [string]$Server       = "",
+    [string]$GitTag       = "",
+    [string]$GitBranch    = "",
+    [string]$GitSha1      = "",
+    [string]$GitSha1Short = "",
+    [bool]  $CodeSign     = $false,
+    [switch]$Installer    = $false
 )
+
+if ($GitTag -eq "")
+{
+    if ($GitBranch -eq $null)
+    {
+        $GitBranch = (git rev-parse --abbrev-ref HEAD)
+    }
+    if ($GitCommitSha1 -eq $null)
+    {
+        $GitCommitSha1 = (git rev-parse HEAD)
+    }
+    if ($GitCommitSha1Short -eq $null)
+    {
+        $GitCommitSha1Short = (git rev-parse --short HEAD)
+    }
+}
 
 # Setup
 $ErrorActionPreference = "Stop"
@@ -26,19 +45,18 @@ $rootPath = Get-RootPath
 function Do-PrepareSource()
 {
     Write-Host "Setting build #defines..." -ForegroundColor Cyan
-    if ($GitBranch -eq "")
-    {
-        $GitBranch = (git rev-parse --abbrev-ref HEAD)
-    }
-    $GitCommitSha1 = (git rev-parse HEAD)
-    $GitCommitSha1Short = (git rev-parse --short HEAD)
-
     $defines = @{ }
-    $defines["OPENRCT2_BUILD_NUMBER"]      = $BuildNumber;
-    $defines["OPENRCT2_BUILD_SERVER"]      = $Server;
-    $defines["OPENRCT2_BRANCH"]            = $GitBranch;
-    $defines["OPENRCT2_COMMIT_SHA1"]       = $GitCommitSha1;
-    $defines["OPENRCT2_COMMIT_SHA1_SHORT"] = $GitCommitSha1Short;
+    $defines["OPENRCT2_BUILD_SERVER"] = $Server;
+    if ($GitTag -ne "")
+    {
+        $defines["OPENRCT2_BRANCH"]            = $GitTag;
+    }
+    else
+    {
+        $defines["OPENRCT2_BRANCH"]            = $GitBranch;
+        $defines["OPENRCT2_COMMIT_SHA1"]       = $GitCommitSha1;
+        $defines["OPENRCT2_COMMIT_SHA1_SHORT"] = $GitCommitSha1Short;
+    }
 
     $defineString = ""
     foreach ($key in $defines.Keys) {
@@ -51,6 +69,7 @@ function Do-PrepareSource()
 
     # Set the environment variable which the msbuild project will use
     $env:OPENRCT2_DEFINES = $defineString;
+
     return 0
 }
 
@@ -59,7 +78,23 @@ function Do-Build()
 {
     Write-Host "Building OpenRCT2..." -ForegroundColor Cyan
     & "$scriptsPath\build.ps1" all -Rebuild
-    return $LASTEXITCODE
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-Host "Failed to build OpenRCT2" -ForegroundColor Red
+        return 1
+    }
+
+    if ($CodeSign)
+    {
+        $releaseDir = "$rootPath\bin"
+        $exePath    = "$releaseDir\openrct2.exe"
+        $dllPath    = "$releaseDir\openrct2.dll"
+
+        if (-not (Sign-Binary($exePath))) { return 1 }
+        if (-not (Sign-Binary($dllPath))) { return 1 }
+    }
+
+    return 0
 }
 
 # Package
@@ -98,7 +133,7 @@ function Do-Package()
             return 1
         }
     }
-    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*" | Write-Host
+    & $7zcmd a -tzip -mx9 $outZip "$tempDir\*" > $null
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create zip." -ForegroundColor Red
@@ -120,8 +155,19 @@ function Do-Installer()
     # Create artifacts directory
     New-Item -Force -ItemType Directory $artifactsDir > $null
 
+    # Resolve version extension
+    $VersionExtra = ""
+    if ($GitTag -ne "")
+    {
+        $VersionExtra = "$GitTag"
+    }
+    else
+    {
+        $VersionExtra = "$GitBranch-$GitCommitSha1Short"
+    }
+
     # Create installer
-    & "$installerDir\build.ps1" -BuildNumber $BuildNumber -GitBranch $GitBranch
+    & "$installerDir\build.ps1" -VersionExtra $VersionExtra
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create installer." -ForegroundColor Red
@@ -139,7 +185,14 @@ function Do-Installer()
         return 1
     }
 
-    Move-Item $binaries[0].FullName $artifactsDir
+    $installerPath = $binaries[0].FullName
+
+    if ($CodeSign)
+    {
+        if (-not (Sign-Binary($installerPath))) { return 1 }
+    }
+
+    Move-Item -Force $installerPath "$artifactsDir\openrct2-install.exe"
     return 0
 }
 
@@ -167,6 +220,47 @@ function Do-Task-All()
 {
     if (($result = (Do-Task-Build  )) -ne 0) { return $result }
     if (($result = (Do-Task-Package)) -ne 0) { return $result }
+    return 0
+}
+
+function Sign-Binary($binaryPath)
+{
+    $pfxPath      = "$rootPath\distribution\windows\code-sign-key-openrct2.org.pfx"
+    $pfxPassword  = ${env:CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD}
+    $timestampUrl = "http://timestamp.comodoca.com/authenticode"
+
+    if (-not (Test-Path -PathType Leaf $pfxPath))
+    {
+        Write-Host "Unable to sign, code signature key was not found." -ForegroundColor Red
+        return 1
+    }
+
+    if ($pfxPassword -eq $null)
+    {
+        Write-Host "Unable to sign, %CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD% was not set." -ForegroundColor Red
+        return 1
+    }
+
+    # Resolve signtool path
+    $signtoolcmd = "signtool"
+    if (-not (AppExists($signtoolcmd)))
+    {
+        $signtoolcmd = "C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\SignTool.exe"
+        if (-not (AppExists($signtoolcmd)))
+        {
+            Write-Host "Publish script requires signtool to be in PATH" -ForegroundColor Red
+            return 1
+        }
+    }
+
+    # Sign the binary
+    & $signtoolcmd sign /f $pfxPath /p $pfxPassword /t $timestampUrl $binaryPath
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-Host "Failed to sign binary." -ForegroundColor Red
+        return 1
+    }
+
     return 0
 }
 
