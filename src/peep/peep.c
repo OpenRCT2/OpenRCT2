@@ -106,6 +106,8 @@ static bool peep_update_fixing_sub_state_13(bool firstRun, int steps, rct_peep *
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_ride *ride);
 static void sub_6B7588(int rideIndex);
 
+bool loc_690FD0(const rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, const rct_map_element *esi_element_3, const rct_ride *ride);
+
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
 	"JACQUES VILLENEUVE",
@@ -9366,7 +9368,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 
 	// TODO: map_get_surface_element_at()
 	rct_map_element *esi_element_3 = map_get_first_element_at(x / 32, y / 32);
-	while (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_SURFACE) {
+	while (map_element_get_type(esi_element_3) != MAP_ELEMENT_TYPE_SURFACE) {
 		esi_element++;
 	}
 
@@ -9402,34 +9404,136 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 		rct_ride *ride = get_ride(esi_element_3->properties.track.ride_index);
 		if (!sub_69101A(esi_element_3)) {
 			// loc_690FD0:
-			*rideToView = esi_element_3->properties.track.ride_index;
-			if (ride->excitement == 0xFFFF) {
-				*rideSeatToView = 1;
-				if (ride->status == RIDE_STATUS_OPEN) {
-					// loc_691003:
-					if (esi_element_3->clearance_height > peep->next_z + 8) {
-						*rideSeatToView = 0x02;
-					}
-
-					return true;
-				}
-			} else {
-				*rideSeatToView = 0;
-				if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
-					// loc_691003:
-					if (esi_element_3->clearance_height > peep->next_z + 8) {
-						*rideSeatToView = 0x02;
-					}
-
-					return true;
-				}
-			}
-
-			return false;
+			return loc_690FD0(peep, rideToView, rideSeatToView, esi_element_3);
 		}
 
 		// loc_690CFB:
 	} while (!map_element_is_last_for_tile(esi_element++));
+
+	// restore x + y (and save again)
+
+	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element_4 = map_get_first_element_at(x / 32, y / 32);
+	while (map_element_get_type(esi_element_4) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element_4++;
+	}
+
+	// loc_690D27:
+	do {
+		if (peep->next_z < esi_element_4->clearance_height + 1) {
+			continue;
+		}
+
+		if (esi_element_4->base_height < peep->next_z + 6) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_4) == MAP_ELEMENT_TYPE_SURFACE)) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_4) == MAP_ELEMENT_TYPE_PATH) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_4) == MAP_ELEMENT_TYPE_FENCE) {
+			rct_scenery_entry *sceneryEntry = g_wallSceneryEntries[esi_element_4->properties.fence.type];
+			if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG4)) {
+				continue;
+			}
+		}
+
+		// -> 690fb1
+		return false;
+
+		// loc_690D60:
+	} while (!map_element_is_last_for_tile(esi_element_4++));
+
+	// 00690D69
+	// restore x + y
+	x += TileDirectionDelta[edge].x;
+	y += TileDirectionDelta[edge].y;
+	// save x+y
+
+	if (x > 0x1FFF || y > 0x1FFF) {
+		return false;
+	}
+
+	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element_5 = map_get_first_element_at(x / 32, y / 32);
+	while (map_element_get_type(esi_element_5) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element_5++;
+	}
+
+	do {
+		if (map_element_get_type(esi_element_5) != MAP_ELEMENT_TYPE_FENCE) {
+			continue;
+		}
+
+		if (map_element_get_direction(esi_element_5) ^ 0x2 != edge & 0xFF) {
+			continue;
+		}
+
+		if (g_wallSceneryEntries[esi_element_5->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
+			continue;
+		}
+
+		if (esi_element_5->base_height <= peep->next_z + 6) {
+			continue;
+		}
+
+		if (peep->next_z >= esi_element_5->clearance_height) {
+			continue;
+		}
+
+		return false;
+
+		// loc_690DE6:
+	} while (!map_element_is_last_for_tile(esi_element_5++));
+
+
+	// 00690DEF
+	// save + restore x/y
+
+	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element_6 = map_get_first_element_at(x / 32, y / 32);
+	while (map_element_get_type(esi_element_6) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element_6++;
+	}
+
+	do {
+		if (peep->next_z + 8 < esi_element_6->base_height) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_6) == MAP_ELEMENT_TYPE_TRACK) {
+			if (sub_69101A(esi_element_6)) {
+				continue;
+			}
+
+			// -> loc_690FD0
+			return loc_690FD0(peep, rideToView, rideSeatToView, esi_element_6);
+		}
+
+		if (map_element_get_type(esi_element_6) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			continue;
+		}
+
+		rct_scenery_entry *sceneryEntry = g_largeSceneryEntries[esi_element_6->properties.scenerymultiple.type & 0x3FF];
+		if (!(sceneryEntry->large_scenery.flags & 0x10)) {
+			continue;
+		}
+
+		// loc_690FB7:
+		if (esi_element_3->clearance_height - peep->next_z > 8) {
+			*rideSeatToView = 0x02;
+		}
+
+		*rideToView = 0xFF;
+
+		return true;
+
+	} while (!map_element_is_last_for_tile(esi_element_6++));
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = edge;
@@ -9440,6 +9544,35 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 	*rideToView = ecx & 0xFF; // CL
 	*rideSeatToView = (ecx >> 8) & 0xFF; // CH
 	return true;
+}
+
+bool loc_690FD0(const rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi) {
+	rct_ride *ride = get_ride(esi->properties.track.ride_index);
+
+	*rideToView = esi->properties.track.ride_index;
+	if (ride->excitement == 0xFFFF) {
+		*rideSeatToView = 1;
+		if (ride->status == RIDE_STATUS_OPEN) {
+			// loc_691003:
+			if (esi->clearance_height > peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			return true;
+		}
+	} else {
+		*rideSeatToView = 0;
+		if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+			// loc_691003:
+			if (esi->clearance_height > peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
