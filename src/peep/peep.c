@@ -9321,19 +9321,28 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	do {
 		// loc_690BC9:
-		if (map_element_get_type(esi_element) == MAP_ELEMENT_TYPE_FENCE) {
-			if (map_element_get_direction(esi_element) == edge) {
-				rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
-				if (!(entry->wall.flags2 & WALL_SCENERY_FLAG4)) {
-					if (peep->next_z + 4 > esi_element->base_height) {
-						if (peep->next_z + 1 < esi_element->clearance_height) {
-							// loc_690FB1
-							return false;
-						}
-					}
-				}
-			}
+		if (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_FENCE) {
+			continue;
 		}
+
+		if (map_element_get_direction(esi_element) != edge) {
+			continue;
+		}
+
+		rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
+		if (entry->wall.flags2 & WALL_SCENERY_FLAG4) {
+			continue;
+		}
+
+		if (peep->next_z + 4 <= esi_element->base_height) {
+			continue;
+		}
+
+		if (peep->next_z + 1 < esi_element->clearance_height) {
+			// loc_690FB1
+			return false;
+		}
+
 	} while (!map_element_is_last_for_tile(esi_element++));
 
 	uint16 x = peep->next_x + TileDirectionDelta[edge].x;
@@ -9349,17 +9358,24 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	}
 
 	do {
-		if (map_element_get_type(esi_element) == MAP_ELEMENT_TYPE_FENCE) {
-			if ((map_element_get_direction(esi_element) ^ 0x2) == edge) {
-				rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
-				if (!(entry->wall.flags2 & WALL_SCENERY_FLAG4)) {
-					if (peep->next_z + 4 >= esi_element->base_height) {
-						if (peep->next_z < esi_element->clearance_height) {
-							return false;
-						}
-					}
-				}
-			}
+		if (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_FENCE) {
+			continue;
+		}
+		if ((map_element_get_direction(esi_element) ^ 0x2) != edge) {
+			continue;
+		}
+
+		rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
+		if ((entry->wall.flags2 & WALL_SCENERY_FLAG4) != 0) {
+			continue;
+		}
+
+		if (peep->next_z + 4 >= esi_element->base_height) {
+			continue;
+		}
+
+		if (peep->next_z + 1 < esi_element->clearance_height) {
+			return false;
 		}
 	} while (!map_element_is_last_for_tile(esi_element++));
 
@@ -9391,7 +9407,8 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			}
 
 			// loc_690FB7:
-			if (esi_element_3->clearance_height - peep->next_z > 8) {
+			*rideSeatToView = 0;
+			if (esi_element_3->clearance_height >= peep->next_z + 8) {
 				*rideSeatToView = 0x02;
 			}
 
@@ -9400,7 +9417,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			return true;
 		}
 
-		rct_ride *ride = get_ride(esi_element_3->properties.track.ride_index);
 		if (!sub_69101A(esi_element_3)) {
 			// loc_690FD0:
 			return loc_690FD0(peep, rideToView, rideSeatToView, esi_element_3);
@@ -9528,7 +9544,8 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		}
 
 		// loc_690FB7:
-		if (esi_element_3->clearance_height - peep->next_z > 8) {
+		*rideSeatToView = 0;
+		if (esi_element_6->clearance_height >= peep->next_z + 8) {
 			*rideSeatToView = 0x02;
 		}
 
@@ -9564,13 +9581,13 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			continue;
 		}
 
-		if (map_element_get_type(esi_element_7) == MAP_ELEMENT_TYPE_FENCE) {
-			if (g_wallSceneryEntries[esi_element_7->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
-				continue;
-			}
+		if (map_element_get_type(esi_element_7) != MAP_ELEMENT_TYPE_FENCE) {
+			return false;
 		}
 
-		return false;
+		if (!(g_wallSceneryEntries[esi_element_7->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4)) {
+			return false;
+		}
 	} while (!map_element_is_last_for_tile(esi_element_7++));
 
 	// 00690EC5
@@ -9649,7 +9666,8 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		}
 
 		// loc_690FB7:
-		if (esi_element_3->clearance_height > peep->next_z + 8) {
+		*rideSeatToView = 0;
+		if (esi_element_9->clearance_height >= peep->next_z + 8) {
 			*rideSeatToView = 0x02;
 		}
 
@@ -9708,9 +9726,9 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 	rct_ride *ride = get_ride(esi->properties.track.ride_index);
 
 	*rideToView = esi->properties.track.ride_index;
-	if (ride->excitement == 0xFFFF) {
+	if ((uint16) ride->excitement == 0xFFFF) {
 		*rideSeatToView = 1;
-		if (ride->status == RIDE_STATUS_OPEN) {
+		if (ride->status != RIDE_STATUS_OPEN) {
 			// loc_691003:
 			if (esi->clearance_height > peep->next_z + 8) {
 				*rideSeatToView |= (1 << 1);
