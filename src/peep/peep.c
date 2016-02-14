@@ -9311,9 +9311,8 @@ static bool sub_69101A(rct_map_element *esi) {
  *
  *  rct2: 0x00690B99
  */
-static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView)
+static bool new_sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView)
 {
-
 	// TODO: map_get_surface_element_at()
 	rct_map_element *esi_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 	while (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_SURFACE) {
@@ -9323,7 +9322,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 	do {
 		// loc_690BC9:
 		if (map_element_get_type(esi_element) == MAP_ELEMENT_TYPE_FENCE) {
-			if (map_element_get_direction(esi_element) == edge & 0xFF) {
+			if (map_element_get_direction(esi_element) == (edge & 0xFF)) {
 				rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
 				if (!(entry->wall.flags2 & WALL_SCENERY_FLAG4)) {
 					if (esi_element->base_height > peep->next_z + 4) {
@@ -9351,7 +9350,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 
 	do {
 		if (map_element_get_type(esi_element) == MAP_ELEMENT_TYPE_FENCE) {
-			if (map_element_get_direction(esi_element) ^ 0x2 == edge & 0xFF) {
+			if ((map_element_get_direction(esi_element) ^ 0x2) == (edge & 0xFF)) {
 				rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
 				if (!(entry->wall.flags2 & WALL_SCENERY_FLAG4)) {
 					if (peep->next_z + 4 >= esi_element->base_height) {
@@ -9428,7 +9427,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 			continue;
 		}
 
-		if (map_element_get_type(esi_element_4) == MAP_ELEMENT_TYPE_SURFACE)) {
+		if (map_element_get_type(esi_element_4) == MAP_ELEMENT_TYPE_SURFACE) {
 			continue;
 		}
 
@@ -9470,7 +9469,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 			continue;
 		}
 
-		if (map_element_get_direction(esi_element_5) ^ 0x2 != edge & 0xFF) {
+		if ((map_element_get_direction(esi_element_5) ^ 0x2) != (edge & 0xFF)) {
 			continue;
 		}
 
@@ -9591,7 +9590,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 			continue;
 		}
 
-		if (map_element_get_direction(esi_element_8) ^ 0x2 == edge & 0xFF) {
+		if ((map_element_get_direction(esi_element_8) ^ 0x2) == (edge & 0xFF)) {
 			continue;
 		}
 
@@ -9653,7 +9652,13 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 	} while (!map_element_is_last_for_tile(esi_element_9++));
 
 	return false;
+}
 
+/**
+ *
+ *  rct2: 0x00690B99
+ */
+static bool original_sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView) {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = edge;
 	esi = (int)peep;
@@ -9663,6 +9668,26 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 	*rideToView = ecx & 0xFF; // CL
 	*rideSeatToView = (ecx >> 8) & 0xFF; // CH
 	return true;
+}
+
+/**
+ *
+ *  rct2: 0x00690B99
+ */
+static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView) {
+	uint8 originalRideToView, originalRideSeatToView;
+	bool originalOut = original_sub_690B99(peep, edge, &originalRideToView, &originalRideSeatToView);
+
+	uint8 newRideToView, newRideSeatToView;
+	bool newOut = new_sub_690B99(peep, edge, &newRideToView, &newRideSeatToView);
+
+	assert(newOut == originalOut);
+	assert(newRideToView == originalRideToView);
+	assert(newRideSeatToView == originalRideSeatToView);
+
+	*rideToView = newRideToView;
+	*rideSeatToView = newRideSeatToView;
+	return newOut;
 }
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi) {
