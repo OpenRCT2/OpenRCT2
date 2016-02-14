@@ -9268,14 +9268,52 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
 }
 
 /**
+ * rct2: 0x0069101A
+ *
+ * @return (CF)
+ */
+static bool sub_69101A(rct_map_element *esi) {
+	rct_ride *ride = get_ride(esi->properties.track.ride_index);
+	if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] == 0) {
+		return true;
+	}
+
+	if (ride->excitement == 0xFFFF) {
+		return false;
+	}
+
+	if (ride->excitement > 0x1D6) {
+		return false;
+	}
+
+	if (ride->intensity > 0x1C2) {
+		return false;
+	}
+
+	if (RideData4[ride->type].flags & 0x2000) {
+		if ((scenario_rand() & 0xFFFF) > 0x3333) {
+			return true;
+		}
+	} else if (RideData4[ride->type].flags & 0x4000) {
+		if ((scenario_rand() & 0xFFFF) > 0x1000) {
+			return true;
+		}
+	} else {
+		return true;
+	}
+
+	return false;
+}
+
+/**
  *
  *  rct2: 0x00690B99
  */
 static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView)
 {
-	rct_map_element *esi_element = map_get_first_element_at(peep->next_x, peep->next_y);
 
 	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
 	while (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_SURFACE) {
 		esi_element++;
 	}
@@ -9304,7 +9342,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 	}
 
 	// TODO: map_get_surface_element_at()
-	esi_element = map_get_first_element_at(x, y);
+	esi_element = map_get_first_element_at(x / 32, y / 32);
 	while (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_SURFACE) {
 		esi_element++;
 	}
@@ -9324,7 +9362,74 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 		}
 	} while (!map_element_is_last_for_tile(esi_element++));
 
+	// save x + y
 
+	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element_3 = map_get_first_element_at(x / 32, y / 32);
+	while (map_element_get_type(esi_element) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element++;
+	}
+
+	do {
+		if (esi_element_3->clearance_height + 1 < peep->next_z) {
+			continue;
+		}
+
+		if (peep->next_z + 6 < esi_element_3->base_height) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_3) != MAP_ELEMENT_TYPE_TRACK) {
+			if (map_element_get_type(esi_element_3) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+				continue;
+			}
+
+			rct_scenery_entry *sceneryEntry = g_largeSceneryEntries[esi_element_3->properties.scenerymultiple.type & 0x3FF];
+			if (!(sceneryEntry->large_scenery.flags & 0x10)) {
+				continue;
+			}
+
+			// loc_690FB7:
+			if (esi_element_3->clearance_height - peep->next_z > 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			*rideToView = 0xFF;
+
+			return true;
+		}
+
+		rct_ride *ride = get_ride(esi_element_3->properties.track.ride_index);
+		if (!sub_69101A(esi_element_3)) {
+			// loc_690FD0:
+			*rideToView = esi_element_3->properties.track.ride_index;
+			if (ride->excitement == 0xFFFF) {
+				*rideSeatToView = 1;
+				if (ride->status == RIDE_STATUS_OPEN) {
+					// loc_691003:
+					if (esi_element_3->clearance_height > peep->next_z + 8) {
+						*rideSeatToView = 0x02;
+					}
+
+					return true;
+				}
+			} else {
+				*rideSeatToView = 0;
+				if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+					// loc_691003:
+					if (esi_element_3->clearance_height > peep->next_z + 8) {
+						*rideSeatToView = 0x02;
+					}
+
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		// loc_690CFB:
+	} while (!map_element_is_last_for_tile(esi_element++));
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = edge;
@@ -9332,8 +9437,8 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 	if (RCT2_CALLFUNC_X(0x00690B99, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
 		return false;
 
-	*rideToView = ecx & 0xFF;
-	*rideSeatToView = (ecx >> 8) & 0xFF;
+	*rideToView = ecx & 0xFF; // CL
+	*rideSeatToView = (ecx >> 8) & 0xFF; // CH
 	return true;
 }
 
