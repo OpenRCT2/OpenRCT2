@@ -106,7 +106,7 @@ static bool peep_update_fixing_sub_state_13(bool firstRun, int steps, rct_peep *
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_ride *ride);
 static void sub_6B7588(int rideIndex);
 
-bool loc_690FD0(const rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, const rct_map_element *esi_element_3, const rct_ride *ride);
+bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -9535,6 +9535,125 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 
 	} while (!map_element_is_last_for_tile(esi_element_6++));
 
+	// 00690E60
+	// save+restore x, y
+
+	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element_7 = map_get_first_element_at(x / 32, y / 32);
+	while (map_element_get_type(esi_element_7) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element_7++;
+	}
+
+	do {
+		if (esi_element_7->clearance_height + 1 < peep->next_z) {
+			continue;
+		}
+
+		if (peep->next_z + 8 < esi_element_7->base_height) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_7) == MAP_ELEMENT_TYPE_SURFACE) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_7) == MAP_ELEMENT_TYPE_PATH) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_7) == MAP_ELEMENT_TYPE_FENCE) {
+			if (!(g_wallSceneryEntries[esi_element_7->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4)) {
+				continue;
+			}
+		}
+
+		return false;
+	} while (!map_element_is_last_for_tile(esi_element_7++));
+
+	// 00690EC5
+	// restore x/y
+	x += TileDirectionDelta[edge].x;
+	y += TileDirectionDelta[edge].y;
+	// save x/y
+
+	if (x > 0x1FFF || y > 0x1FFF) {
+		return false;
+	}
+
+	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element_8 = map_get_first_element_at(x / 32, y / 32);
+	while (map_element_get_type(esi_element_8) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element_8++;
+	}
+
+	do {
+		if (map_element_get_type(esi_element_8) != MAP_ELEMENT_TYPE_FENCE) {
+			continue;
+		}
+
+		if (map_element_get_direction(esi_element_8) ^ 0x2 == edge & 0xFF) {
+			continue;
+		}
+
+		if (g_wallSceneryEntries[esi_element_8->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
+			continue;
+		}
+
+		if (peep->next_z + 8 <= esi_element_8->base_height) {
+			continue;
+		}
+
+		if (peep->next_z >= esi_element_8->clearance_height) {
+			continue;
+		}
+
+		return false;
+
+	} while (!map_element_is_last_for_tile(esi_element_8++));
+
+	// 0x00690F47
+
+	// TODO: map_get_surface_element_at()
+	rct_map_element *esi_element_9 = map_get_first_element_at(x / 32, y / 32);
+	while (map_element_get_type(esi_element_9) != MAP_ELEMENT_TYPE_SURFACE) {
+		esi_element_9++;
+	}
+
+	do {
+		if (peep->next_z + 10 < esi_element_9->base_height) {
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_9) == MAP_ELEMENT_TYPE_TRACK) {
+			if (!sub_69101A(esi_element_9)) {
+				return loc_690FD0(peep, rideToView, rideSeatToView, esi_element_9);
+			}
+
+			continue;
+		}
+
+		if (map_element_get_type(esi_element_9) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			continue;
+		}
+
+		rct_scenery_entry *sceneryEntry = g_largeSceneryEntries[esi_element_9->properties.scenerymultiple.type & 0x3FF];
+		if (!(sceneryEntry->large_scenery.flags & 0x10)) {
+			continue;
+		}
+
+		// loc_690FB7:
+		if (esi_element_3->clearance_height - peep->next_z > 8) {
+			*rideSeatToView = 0x02;
+		}
+
+		*rideToView = 0xFF;
+
+		return true;
+
+	} while (!map_element_is_last_for_tile(esi_element_9++));
+
+	return false;
+
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = edge;
 	esi = (int)peep;
@@ -9546,7 +9665,7 @@ static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideS
 	return true;
 }
 
-bool loc_690FD0(const rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi) {
+bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi) {
 	rct_ride *ride = get_ride(esi->properties.track.ride_index);
 
 	*rideToView = esi->properties.track.ride_index;
