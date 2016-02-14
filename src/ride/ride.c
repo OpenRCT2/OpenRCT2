@@ -45,6 +45,7 @@
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
+#include "../world/scenery.h"
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -7663,13 +7664,8 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		}
 
 		sint16 clear_z = z / 8 + (is_exit ? 5 : 7);
-		RCT2_GLOBAL(0x009E32C4, sint16) = x;
-		RCT2_GLOBAL(0x009E32C6, sint16) = y;
-
-		// Horrible hack until map_can_construct_with_clear_at is implemented.
-		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
-
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)) {
+		
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, RCT2_ADDRESS(0x009E32B8, money32))) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -7766,13 +7762,8 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		}
 
 		sint8 clear_z = (z / 8) + (is_exit ? 5 : 7);
-		RCT2_GLOBAL(0x009E32C4, sint16) = x;
-		RCT2_GLOBAL(0x009E32C6, sint16) = y;
 
-		// Horrible hack until map_can_construct_with_clear_at is implemented.
-		RCT2_GLOBAL(0x009E32C8, uint8*) = (&flags) - 4;
-
-		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, (void*)0x0066637E, 0xF)) {
+		if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z / 8, clear_z, &map_place_non_scenery_clear_func, 0xF, flags, RCT2_ADDRESS(0x009E32B8, money32))) {
 			return MONEY32_UNDEFINED;
 		}
 

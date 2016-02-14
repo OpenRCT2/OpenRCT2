@@ -3401,7 +3401,6 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x + 8;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y + 8;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = z;
-	RCT2_GLOBAL(0x00F4413E, uint32) = 0;
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;
 	}
@@ -3444,6 +3443,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		}
 	}
 
+	money32 cost = 0;
 	// Clearance checks
 	if (!gCheatsDisableClearanceChecks) {
 		int fx = floor2(x, 32);
@@ -3451,14 +3451,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		int fz0 = z >> 3;
 		int fz1 = fz0 + 4;
 
-		uint8 stack_F4412F[13];
-		stack_F4412F[0x0C] = flags;
-
-		RCT2_GLOBAL(0x00F4412B, uint16) = fx;
-		RCT2_GLOBAL(0x00F4412D, uint16) = fy;
-		RCT2_GLOBAL(0x00F4412F, uint8*) = stack_F4412F;
-		RCT2_GLOBAL(0x00F4413E, money32) = 0;
-		if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, (void*)0x006CDE57, 15)) {
+		if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, 15, flags, &cost)) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -3481,6 +3474,8 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2] * RCT2_GLOBAL(0x0099DBC8, money32);
 		price = (price >> 17) * 10;
 	}
+
+	cost += price;
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
@@ -3515,7 +3510,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		}
 	}
 
-	return price;
+	return cost;
 }
 
 /**
@@ -4288,23 +4283,10 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		_currentTrackEndX = x;
 		_currentTrackEndY = y;
 
-		// Until 0x006C5A5F is implemented use this hacky struct.
-		struct{
-			money32 cost; //0
-			uint8 pad[0x10];//4
-			uint8 flags;//14
-		} clearance_struct;
-		clearance_struct.cost = cost;
-		clearance_struct.flags = flags;
-
-		RCT2_GLOBAL(0x00F44060, void*) = &clearance_struct;
-
 		if (!gCheatsDisableClearanceChecks || flags & GAME_COMMAND_FLAG_GHOST){
-			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, (void*)0x006C5A5F, bl))
+			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, flags, &cost))
 				return MONEY32_UNDEFINED;
 		}
-		// Again when 0x006C5A5F implemented remove this.
-		cost = clearance_struct.cost;
 
 		//6c53dc
 		// push baseZ and clearanceZ
