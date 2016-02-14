@@ -8004,6 +8004,8 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 
 	uint16 spriteId = vehicle->sprite_index;
 	for (rct_vehicle* car = vehicle; spriteId != 0xFFFF; car = GET_VEHICLE(spriteId)) {
+		vehicleEntry = vehicle_get_vehicle_entry(car);
+
 		// Swinging cars
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SWINGING) {
 			vehicle_update_swinging_car(car);
