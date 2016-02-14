@@ -1574,6 +1574,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 	}
 
+	rct_ride* ride = get_ride(rideIndex);
+
 	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
 	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 
@@ -1675,7 +1677,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, 0);
+			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, &ride->type);
 			RCT2_GLOBAL(0x00F440D5, money32) += cost;
 
 			if (cost == MONEY32_UNDEFINED){
@@ -4070,20 +4072,29 @@ static bool sub_6C4D89(int x, int y, int z, int direction, int rideIndex, int fl
 	return !(RCT2_CALLPROC_X(0x006C4D89, x, flags | (rideIndex << 8), y, z | (direction << 8), 0, 0, 0) & 0x100);
 }
 
-static money32 track_place(int rideIndex, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
+static money32 track_place(int rideIndex, int rideType, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
 {
 	rct_ride *ride = get_ride(rideIndex);
+
 	if (ride == NULL)
 	{
 		log_warning("Invalid ride for track placement, rideIndex = %d", rideIndex);
 		return MONEY32_UNDEFINED;
 	}
+
 	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
 	if (rideEntry == (rct_ride_type *)0xFFFFFFFF)
 	{
 		log_warning("Invalid ride type for track placement, rideIndex = %d", rideIndex);
 		return MONEY32_UNDEFINED;
 	}
+
+	if (rideType > 0 && rideType != ride->type) //rideType > 0 for backward compatibility?
+	{
+		log_warning("Track placement has wrong ride type (%d), should be ride type %d, rideIndex = %d", ride->type, rideType, rideIndex);
+		ride->type = rideType;
+	}
+
 	rct_map_element *mapElement;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
@@ -4579,6 +4590,7 @@ void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 {
 	*ebx = track_place(
 		*edx & 0xFF,
+		*ebp,
 		(*edx >> 8) & 0xFF,
 		*eax & 0xFFFF,
 		*ecx & 0xFFFF,
