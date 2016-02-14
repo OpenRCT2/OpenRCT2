@@ -83,7 +83,7 @@ static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
 static void peep_reset_pathfind_goal(rct_peep *peep);
 static void peep_easter_egg_peep_interactions(rct_peep *peep);
-static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
+static bool sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
 static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
@@ -9276,7 +9276,7 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
  */
 static bool sub_69101A(rct_map_element *esi) {
 	rct_ride *ride = get_ride(esi->properties.track.ride_index);
-	if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] == 0) {
+	if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] != 0) {
 		return true;
 	}
 
@@ -9284,11 +9284,11 @@ static bool sub_69101A(rct_map_element *esi) {
 		return false;
 	}
 
-	if (ride->excitement > 0x1D6) {
+	if (ride->excitement >= RIDE_RATING(4, 70)) {
 		return false;
 	}
 
-	if (ride->intensity > 0x1C2) {
+	if (ride->intensity >= RIDE_RATING(4, 50)) {
 		return false;
 	}
 
@@ -9325,8 +9325,8 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			if (map_element_get_direction(esi_element) == edge) {
 				rct_scenery_entry *entry = g_wallSceneryEntries[esi_element->properties.fence.type];
 				if (!(entry->wall.flags2 & WALL_SCENERY_FLAG4)) {
-					if (esi_element->base_height > peep->next_z + 4) {
-						if (esi_element->clearance_height < peep->next_z + 1) {
+					if (peep->next_z + 4 > esi_element->base_height) {
+						if (peep->next_z + 1 < esi_element->clearance_height) {
 							// loc_690FB1
 							return false;
 						}
@@ -9368,7 +9368,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	// TODO: map_get_surface_element_at()
 	rct_map_element *esi_element_3 = map_get_first_element_at(x / 32, y / 32);
 	while (map_element_get_type(esi_element_3) != MAP_ELEMENT_TYPE_SURFACE) {
-		esi_element++;
+		esi_element_3++;
 	}
 
 	do {
@@ -9407,7 +9407,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		}
 
 		// loc_690CFB:
-	} while (!map_element_is_last_for_tile(esi_element++));
+	} while (!map_element_is_last_for_tile(esi_element_3++));
 
 	// restore x + y (and save again)
 
@@ -9419,11 +9419,11 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	// loc_690D27:
 	do {
-		if (peep->next_z < esi_element_4->clearance_height + 1) {
+		if (esi_element_4->clearance_height + 1 < peep->next_z) {
 			continue;
 		}
 
-		if (esi_element_4->base_height < peep->next_z + 6) {
+		if (peep->next_z + 6 < esi_element_4->base_height) {
 			continue;
 		}
 
@@ -9437,7 +9437,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 		if (map_element_get_type(esi_element_4) == MAP_ELEMENT_TYPE_FENCE) {
 			rct_scenery_entry *sceneryEntry = g_wallSceneryEntries[esi_element_4->properties.fence.type];
-			if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG4)) {
+			if (sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG4) {
 				continue;
 			}
 		}
@@ -9477,7 +9477,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			continue;
 		}
 
-		if (esi_element_5->base_height <= peep->next_z + 6) {
+		if (peep->next_z + 6 <= esi_element_5->base_height) {
 			continue;
 		}
 
@@ -9501,6 +9501,10 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	}
 
 	do {
+		if (esi_element_6->clearance_height + 1 < peep->next_z) {
+			continue;
+		}
+
 		if (peep->next_z + 8 < esi_element_6->base_height) {
 			continue;
 		}
@@ -9561,7 +9565,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		}
 
 		if (map_element_get_type(esi_element_7) == MAP_ELEMENT_TYPE_FENCE) {
-			if (!(g_wallSceneryEntries[esi_element_7->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4)) {
+			if (g_wallSceneryEntries[esi_element_7->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
 				continue;
 			}
 		}
@@ -9590,7 +9594,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			continue;
 		}
 
-		if ((map_element_get_direction(esi_element_8) ^ 0x2) == edge) {
+		if ((map_element_get_direction(esi_element_8) ^ 0x2) != edge) {
 			continue;
 		}
 
@@ -9619,6 +9623,10 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	}
 
 	do {
+		if (esi_element_9->clearance_height + 1 < peep->next_z) {
+			continue;
+		}
+
 		if (peep->next_z + 10 < esi_element_9->base_height) {
 			continue;
 		}
@@ -9641,7 +9649,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		}
 
 		// loc_690FB7:
-		if (esi_element_3->clearance_height - peep->next_z > 8) {
+		if (esi_element_3->clearance_height > peep->next_z + 8) {
 			*rideSeatToView = 0x02;
 		}
 
@@ -9699,7 +9707,7 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 		if (ride->status == RIDE_STATUS_OPEN) {
 			// loc_691003:
 			if (esi->clearance_height > peep->next_z + 8) {
-				*rideSeatToView = 0x02;
+				*rideSeatToView |= (1 << 1);
 			}
 
 			return true;
