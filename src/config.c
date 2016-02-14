@@ -349,6 +349,25 @@ static void rwopswritenewline(SDL_RWops *file)
 	rwopswritestr(file, platform_get_new_line());
 }
 
+static void rwopswritestresc(SDL_RWops *file, const char *str) {
+	int length = 0;
+	for (const char *c = str; *c != '\0'; ++c) {
+		if (*c == '\\') length += 2;
+		else ++length;
+	}
+
+	char *escaped = malloc(length + 1);
+	int j=0;
+	for (const char *c = str; *c != '\0'; ++c) {
+		if (*c == '\\') escaped[j++] = '\\';
+		escaped[j++] = *c;
+	}
+	escaped[length] = '\0';
+
+	rwopswritestr(file, escaped);
+	SafeFree(escaped);
+}
+
 void config_set_defaults()
 {
 	int i, j;
@@ -569,7 +588,7 @@ static void config_save_property_value(SDL_RWops *file, uint8 type, value_union 
 	case CONFIG_VALUE_TYPE_STRING:
 		rwopswritec(file, '"');
 		if (value->value_string != NULL) {
-			rwopswritestr(file, value->value_string);
+			rwopswritestresc(file, value->value_string);
 		}
 		rwopswritec(file, '"');
 		break;
@@ -680,6 +699,30 @@ config_property_definition *config_get_property_def(config_section_definition *s
 	return NULL;
 }
 
+static utf8string escape_string(const utf8 *value, int valueSize) {
+	int length = 0;
+	bool backslash = false;
+	for (int i=0; i < valueSize; ++i) {
+		if (value[i] == '\\') {
+			if (backslash) backslash = false;
+			else ++length, backslash = true;
+		} else ++length, backslash = false;
+	}
+	utf8string escaped = malloc(length + 1);
+
+	int j=0;
+	backslash = false;
+	for (int i=0; i < valueSize; ++i) {
+		if (value[i] == '\\') {
+			if (backslash) backslash = false;
+			else escaped[j++] = value[i], backslash = true;
+		} else escaped[j++] = value[i], backslash = false;
+	}
+	escaped[length] = '\0';
+
+	return escaped;
+}
+
 void config_set_property(const config_section_definition *section, const config_property_definition *property, const utf8 *value, int valueSize)
 {
 	value_union *destValue = (value_union*)((size_t)section->base_address + (size_t)property->offset);
@@ -720,9 +763,7 @@ void config_set_property(const config_section_definition *section, const config_
 		break;
 	case CONFIG_VALUE_TYPE_STRING:
 		SafeFree(destValue->value_string);
-		destValue->value_string = malloc(valueSize + 1);
-		memcpy(destValue->value_string, value, valueSize);
-		destValue->value_string[valueSize] = 0;
+		destValue->value_string = escape_string(value, valueSize);
 		break;
 	}
 }
