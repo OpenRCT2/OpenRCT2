@@ -9683,8 +9683,14 @@ static bool original_sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uin
  *  rct2: 0x00690B99
  */
 static bool sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView) {
+	uint32 srand_0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
+	uint32 srand_1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32);
+
 	uint8 originalRideToView, originalRideSeatToView;
 	bool originalOut = original_sub_690B99(peep, edge, &originalRideToView, &originalRideSeatToView);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) = srand_0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = srand_1;
 
 	uint8 newRideToView, newRideSeatToView;
 	bool newOut = new_sub_690B99(peep, edge, &newRideToView, &newRideSeatToView);
