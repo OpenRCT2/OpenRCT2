@@ -4590,9 +4590,6 @@ void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element *outXY
  */
 bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element, int isApplying)
 {
-	// bool b = !(RCT2_CALLPROC_X(0x006DD84C, element->x, isApplying, element->y, rideIndex, (int)ride, (int)element->element, 0) & 0x100);
-	// return b;
-
 	ride_update_max_vehicles(rideIndex);
 	if (ride->subtype == 0xFF) {
 		return true;

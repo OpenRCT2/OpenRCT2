@@ -1989,19 +1989,6 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 	if (bl == 3)
 		return RCT2_GLOBAL(0x00F440D5, sint16);
 	return RCT2_GLOBAL(0x00F440D5, money32);
-
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = x;
-	ebx = bl;
-	ecx = y;
-	edx = z;
-	esi = 0;
-	edi = 0;
-	ebp = 0;
-	RCT2_CALLFUNC_X(0x006D01B3, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	if (bl == 3)
-		ebx &= 0xFFFF;
-	return ebx;
 }
 
 /**
