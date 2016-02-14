@@ -183,18 +183,6 @@ bool NetworkPacket::CommandRequiresAuth()
 	}
 }
 
-NetworkPlayer::NetworkPlayer()
-{
-	name[0] = 0;
-	ping = 0;
-	flags = 0;
-	money_spent = MONEY(0, 0);
-	commands_ran = 0;
-	group = 0;
-	last_action = -999;
-	last_action_coord = {0};
-}
-
 void NetworkPlayer::Read(NetworkPacket& packet)
 {
 	const char* name = packet.ReadString();

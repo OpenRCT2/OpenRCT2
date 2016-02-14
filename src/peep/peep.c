@@ -7873,7 +7873,7 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep) 
 			*RCT2_ADDRESS(0x00F1AEDC, int) = saved_f1aedc;
 
 			if (score < best_score || (score == best_score && RCT2_GLOBAL(0x00F1AED3, uint8) < best_sub)) {
-                chosen_edge = test_edge;
+				chosen_edge = test_edge;
 				best_score = score;
 				best_sub = RCT2_GLOBAL(0x00F1AED3, uint8);
 			}

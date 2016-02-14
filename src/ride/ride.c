@@ -4470,7 +4470,7 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int *remainin
 void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_element *mapElement)
 {
 	rct_ride *ride = get_ride(rideIndex);
-	train_ref firstTrain, lastTrain;
+	train_ref firstTrain = { 0 }, lastTrain = { 0 };
 	int remainingDistance = 0;
 
 	for (int vehicleIndex = 0; vehicleIndex < ride->num_vehicles; vehicleIndex++) {

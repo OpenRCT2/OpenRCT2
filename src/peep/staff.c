@@ -796,6 +796,9 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 
 	}
 
+	// countof(TileDirectionDelta)
+	assert(direction < 8);
+
 	rct_xy16 chosenTile = {
 		.x = peep->next_x + TileDirectionDelta[direction].x,
 		.y = peep->next_y + TileDirectionDelta[direction].y
@@ -819,7 +822,7 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 
 uint8 staff_direction_surface(rct_peep* peep, uint8 initialDirection) {
 	uint8 direction = initialDirection;
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < 3; ++i) {
 		// Looks left and right from initial direction
 		switch (i) {
 		case 1:
@@ -1037,6 +1040,9 @@ static int staff_path_finding_mechanic(rct_peep* peep) {
 
 		direction = staff_mechanic_direction_path(peep, validDirections, pathElement);
 	}
+
+	// countof(TileDirectionDelta)
+	assert(direction < 8);
 
 	rct_xy16 chosenTile = {
 		.x = peep->next_x + TileDirectionDelta[direction].x,
