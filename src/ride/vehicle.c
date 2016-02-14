@@ -3608,7 +3608,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 	}
 
 	uint8 rotation = vehicle->var_1F;
-	if (ride->mode & RIDE_MODE_FORWARD_ROTATION)
+	if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
 		rotation++;
 	else
 		rotation--;
@@ -3622,7 +3622,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 	vehicle_invalidate(vehicle);
 
 	uint8 subState = vehicle->sub_state;
-	if (ride->mode & RIDE_MODE_FORWARD_ROTATION)
+	if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
 		subState++;
 	else
 		subState--;
@@ -3646,7 +3646,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		return;
 
 	subState = vehicle->sub_state;
-	if (ride->mode & RIDE_MODE_FORWARD_ROTATION)
+	if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
 		subState += 8;
 	else
 		subState -= 8;
