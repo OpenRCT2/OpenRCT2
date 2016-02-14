@@ -365,7 +365,7 @@ static void openrct2_loop()
 
 	_finished = 0;
 	do {
-		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4) {
+		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4 && !gOpenRCT2Headless) {
 			currentTick = SDL_GetTicks();
 			if (uncapTick == 0) {
 				// Reset sprite locations
