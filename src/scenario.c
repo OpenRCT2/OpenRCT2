@@ -1294,7 +1294,8 @@ static void scenario_objective_check_10_rollercoasters()
 		uint8 subtype_id = ride->subtype;
 		rct_ride_type *rideType = get_ride_entry(subtype_id);
 
-		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+		if (rideType != NULL &&
+			(rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
 			ride->status == RIDE_STATUS_OPEN &&
 			ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
 			type_already_counted[subtype_id]++;

@@ -307,6 +307,9 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 	int currentShopItem;
 
 	entry = get_ride_entry(ride->subtype);
+	if (entry == NULL) {
+		return 0;
+	}
 	customersPerHour = ride_customers_per_hour(ride);
 	priceMinusCost = ride->price;
 
