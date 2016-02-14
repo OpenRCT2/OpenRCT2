@@ -4097,6 +4097,7 @@ static money32 track_place(int rideIndex, int rideType, int type, int originX, i
 
 	//test
 
+
 	rct_map_element *mapElement;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
