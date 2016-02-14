@@ -17,7 +17,7 @@ namespace Json
 class JsonException : public Exception
 {
 private:
-    json_error_t _jsonError;
+    json_error_t _jsonError = { 0 };
 
 public:
     JsonException(const char * message) : Exception(message) { }
