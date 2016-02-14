@@ -403,5 +403,6 @@ rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int track
 rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int trackType, int sequence);
 rct_map_element *map_get_track_element_at_of_type_from_ride(int x, int y, int z, int trackType, int rideIndex);
 rct_map_element *map_get_track_element_at_from_ride(int x, int y, int z, int rideIndex);
+rct_map_element *map_get_track_element_at_with_direction_from_ride(int x, int y, int z, int direction, int rideIndex);
 
 #endif

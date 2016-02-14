@@ -4230,6 +4230,151 @@ static bool track_add_station_element(int x, int y, int z, int direction, int ri
 	return true;
 }
 
+/**
+ *
+ *  rct2: 0x006C494B
+ */
+static bool track_remove_station_element(int x, int y, int z, int direction, int rideIndex, int flags)
+{
+	int removeX = x;
+	int removeY = y;
+	int stationX0 = x;
+	int stationY0 = y;
+	int stationX1 = x;
+	int stationY1 = y;
+	int stationLength = 1;
+	int byte_F441D1 = -1;
+
+	rct_ride *ride = get_ride(rideIndex);
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
+		rct_map_element *mapElement = map_get_track_element_at_with_direction_from_ride(x, y, z, direction, rideIndex);
+		if (mapElement != NULL) {
+			if (flags & GAME_COMMAND_FLAG_APPLY) {
+				ride_remove_station(ride, x, y, z);
+			}
+		}
+		return true;
+	}
+
+	rct_map_element *stationElement;
+
+	// Search backwards for more station
+	x = stationX0;
+	y = stationY0;
+	while ((stationElement = find_station_element(x, y, z, direction, rideIndex)) != NULL) {
+		if (stationElement->properties.track.type == TRACK_ELEM_END_STATION) {
+			if (flags & GAME_COMMAND_FLAG_APPLY) {
+				ride_remove_station(ride, x, y, z);
+			}
+		}
+
+		stationX0 = x;
+		stationY0 = y;
+		byte_F441D1++;
+
+		x -= TileDirectionDelta[direction].x;
+		y -= TileDirectionDelta[direction].y;
+	}
+
+	// Search forwards for more station
+	x = stationX1;
+	y = stationY1;
+	do {
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
+
+		stationElement = find_station_element(x, y, z, direction, rideIndex);
+		if (stationElement != NULL) {
+			if (stationElement->properties.track.type == TRACK_ELEM_END_STATION) {
+				if (flags & GAME_COMMAND_FLAG_APPLY) {
+					ride_remove_station(ride, x, y, z);
+				}
+			}
+
+			stationX1 = x;
+			stationY1 = y;
+			stationLength++;
+		}
+	} while (stationElement != NULL);
+
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+		if ((removeX != stationX0 || removeY != stationY0) &&
+			(removeX != stationX1 || removeY != stationY1) &&
+			ride->num_stations >= 4
+		) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	x = stationX1;
+	y = stationY1;
+	bool finaliseStationDone;
+	do {
+		finaliseStationDone = true;
+
+		if (x != removeX || y != removeY) {
+			stationElement = find_station_element(x, y, z, direction, rideIndex);
+			if (stationElement != NULL) {
+				int targetTrackType;
+				if (x == stationX1 && y == stationY1) {
+				loc_6C4BF5:;
+					int stationIndex = -1;
+					for (int i = 0; i < 4; i++) {
+						if (ride->station_starts[i] == 0xFFFF) {
+							stationIndex = i;
+							break;
+						}
+					}
+
+					assert(stationIndex != -1);
+
+					uint16 xy = (x >> 5) | ((y >> 5) << 8);
+					ride->station_starts[stationIndex] = xy;
+					ride->station_heights[stationIndex] = z;
+					ride->station_depart[stationIndex] = 1;
+					ride->station_length[stationIndex] = stationLength != 0 ? stationLength : byte_F441D1;
+					ride->num_stations++;
+
+					stationLength = 0;
+					targetTrackType = TRACK_ELEM_END_STATION;
+				} else {
+					if (x + TileDirectionDelta[direction].x == removeX &&
+						y + TileDirectionDelta[direction].y == removeY
+					) {
+						goto loc_6C4BF5;
+					} else {
+						if (x - TileDirectionDelta[direction].x == removeX &&
+							y - TileDirectionDelta[direction].y == removeY
+						) {
+							targetTrackType = TRACK_ELEM_BEGIN_STATION;
+						} else {
+							if (x == stationX0 && y == stationY0) {
+								targetTrackType = TRACK_ELEM_BEGIN_STATION;
+							} else {
+								targetTrackType = TRACK_ELEM_MIDDLE_STATION;
+							}
+						}
+					}
+				}
+				stationElement->properties.track.type = targetTrackType;
+
+				map_invalidate_element(x, y, stationElement);
+			}
+		}
+
+		if (x != stationX0 || y != stationY0) {
+			x -= TileDirectionDelta[direction].x;
+			y -= TileDirectionDelta[direction].y;
+			finaliseStationDone = false;
+		}
+	} while (!finaliseStationDone);
+	
+	return true;
+}
+
 static money32 track_place(int rideIndex, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
 {
 	rct_ride *ride = get_ride(rideIndex);
@@ -4752,15 +4897,6 @@ void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 		);
 }
 
-/**
- *
- *  rct2: 0x006C494B
- */
-static bool sub_6C494B(int x, int y, int z, int direction, int rideIndex, int flags)
-{
-	return !(RCT2_CALLPROC_X(0x006C494B, x, flags | (rideIndex << 8), y, z | (direction << 8), 0, 0, 0) & 0x100);
-}
-
 money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = originX + 16;
@@ -4928,7 +5064,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		}
 
 		if (entranceDirections & (1 << 4) && ((mapElement->properties.track.sequence & 0xF) == 0)){
-			if (!sub_6C494B(x, y, z / 8, rotation, rideIndex, 0)) {
+			if (!track_remove_station_element(x, y, z / 8, rotation, rideIndex, 0)) {
 				return MONEY32_UNDEFINED;
 			}
 		}
@@ -4949,7 +5085,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 			continue;
 
 		if (entranceDirections & (1 << 4) && ((mapElement->properties.track.sequence & 0xF) == 0)){
-			if (!sub_6C494B(x, y, z / 8, rotation, rideIndex, GAME_COMMAND_FLAG_APPLY)) {
+			if (!track_remove_station_element(x, y, z / 8, rotation, rideIndex, GAME_COMMAND_FLAG_APPLY)) {
 				return MONEY32_UNDEFINED;
 			}
 		}
