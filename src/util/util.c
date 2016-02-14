@@ -158,6 +158,9 @@ int bitscanforward(int source)
 	#if _MSC_VER >= 1400 // Visual Studio 2005
 		uint8 success = _BitScanForward(&i, source);
 		return success != 0 ? i : -1;
+	#elif __GNUC__
+		int success = __builtin_ffs(source);
+		return success - 1;
 	#else
 	for (i = 0; i < 32; i++)
 		if (source & (1u << i))
