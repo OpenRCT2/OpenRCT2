@@ -158,7 +158,14 @@ int bitscanforward(int source)
 	#if _MSC_VER >= 1400 // Visual Studio 2005
 		uint8 success = _BitScanForward(&i, source);
 		return success != 0 ? i : -1;
+	#elif __GNUC__
+		int success = __builtin_ffs(source);
+		return success - 1;
 	#else
+	#pragma message "Falling back to iterative bitscan forward, consider using intrinsics"
+	// This is a low-hanging optimisation boost, check if your compiler offers
+	// any intrinsic.
+	// cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
 	for (i = 0; i < 32; i++)
 		if (source & (1u << i))
 			return i;
