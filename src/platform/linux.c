@@ -152,10 +152,9 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
 
 void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 	FILE *f;
-	int status;
 	size_t n_chars;
 
-	printf("executing \"%s\"...\n", command);
+	log_verbose("executing \"%s\"...\n", command);
 	f = popen(command, "r");
 
 	if (buf && buf_size) {
@@ -164,8 +163,8 @@ void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 		// make sure string is null-terminated
 		if (n_chars == *buf_size) {
 			n_chars--;
-			buf[n_chars] = 0;
 		}
+		buf[n_chars] = '\0';
 
 		*buf_size = n_chars;
 	} else {
@@ -203,8 +202,7 @@ dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 		}
 	}
 
-	if (cmd[size-1] == '\n')
-		cmd[size-1] = 0;
+	cmd[size-1] = '\0';
 
 	*cmd_size = size;
 
@@ -216,17 +214,15 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	char executable[MAX_PATH];
 	char cmd[MAX_PATH];
 	char result[MAX_PATH];
-	char *app;
 	size_t size;
 	dialog_type dtype;
 	char *action;
 	char *flags;
-	char *filter;
+	char *filter = NULL;
 
 	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
 
-	filter = 0;
 	switch (dtype) {
 		case DT_KDIALOG:
 			switch (type) {
@@ -263,18 +259,18 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 
 			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, title, filter?filter:"");
 			break;
-		default: return 1;
+		default: return 0;
 	}
 
 	size = MAX_PATH;
 	execute_cmd(cmd, &exit_value, result, &size);
 
 	if (exit_value != 0) {
-		return 1;
+		return 0;
 	}
 
-	if (result[size-1] == '\n')
-		result[size-1] = 0;
+	result[size-1] = '\0';
+	log_verbose("filename = %s", result);
 
 	if (type == FD_OPEN && access(result, F_OK) == -1) {
 		char msg[MAX_PATH];
@@ -282,7 +278,7 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 		snprintf(msg, MAX_PATH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
 		platform_show_messagebox(msg);
 
-		if (filter)
+		if (filter != NULL)
 			free(filter);
 		return platform_open_common_file_dialog(type, title, filename, filterPattern, filterName);
 	} else
@@ -292,13 +288,19 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 		size = MAX_PATH;
 		execute_cmd(cmd, &exit_value, 0, 0);
 
-		if (exit_value != 0)
+		if (exit_value != 0) {
+			if (filter != NULL)
+				free(filter);
 			return 0;
+		}
 	}
 
 	strncpy(filename, result, MAX_PATH);
 
-	return 0;
+	if (filter != NULL)
+		free(filter);
+
+	return 1;
 }
 
 utf8 *platform_open_directory_browser(utf8 *title) {
@@ -327,11 +329,10 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 	execute_cmd(cmd, &exit_value, result, &size);
 
 	if (exit_value != 0) {
-		return 0;
+		return NULL;
 	}
 
-	if (result[size-1] == '\n')
-		result[size-1] = 0;
+	result[size-1] = '\0';
 
 	return_value = (char*) malloc(strlen(result)+1);
 	strcpy(return_value, result);

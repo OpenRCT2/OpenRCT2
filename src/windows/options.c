@@ -989,7 +989,6 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
 		switch (widgetIndex) {
 		case WIDX_THEMES_DROPDOWN:
-			theme_manager_get_num_available_themes();
 			num_items = (int)theme_manager_get_num_available_themes();
 
 			for (int i = 0; i < num_items; i++) {
