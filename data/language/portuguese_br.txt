@@ -4039,6 +4039,11 @@ STR_5732    :Anisotrópica
 STR_5733    :Usar escala NN em escalas inteiras
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Renderizando
+STR_5735    :Estado da Rede
+STR_5736    :Jogador
+STR_5737    :Fechado, {COMMA16} pessoa ainda está na atração
+STR_5738    :Fechado, {COMMA16} pessoas ainda estão na atração
+STR_5739    :{WINDOW_COLOUR_2}Clientes na atração: {BLACK}{COMMA16}
 
 #############
 # Scenarios #
