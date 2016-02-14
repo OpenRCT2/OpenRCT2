@@ -353,7 +353,7 @@ static void window_staff_list_tooldown(rct_window *w, int widgetIndex, int x, in
 				if (!(gStaffModes[peep->staff_id] & 2)) {
 					continue;
 				}
-				if (!mechanic_is_location_in_patrol(peep, x, y)) {
+				if (!staff_is_location_in_patrol(peep, x, y)) {
 					continue;
 				}
 			}
