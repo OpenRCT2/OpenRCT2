@@ -1437,9 +1437,15 @@ void title_handle_keyboard_input()
 		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 		if (w != NULL) {
 			keyboard_shortcut_set(key);
-		}
-		else if (key == gShortcutKeys[SHORTCUT_SCREENSHOT]) {
-			keyboard_shortcut_handle_command(SHORTCUT_SCREENSHOT);
+		} else {
+			w = window_find_by_class(WC_TEXTINPUT);
+			if (w != NULL) {
+				window_text_input_key(w, key);
+			}
+			
+			if (key == gShortcutKeys[SHORTCUT_SCREENSHOT]) {
+				keyboard_shortcut_handle_command(SHORTCUT_SCREENSHOT);
+			}
 		}
 	}
 }
