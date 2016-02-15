@@ -9393,7 +9393,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 				continue;
 			}
 
-			// loc_690FB7:
 			*rideSeatToView = 0;
 			if (mapElement->clearance_height >= peep->next_z + 8) {
 				*rideSeatToView = 0x02;
@@ -9405,11 +9404,9 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		}
 
 		if (!sub_69101A(mapElement)) {
-			// loc_690FD0:
 			return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
 		}
 
-		// loc_690CFB:
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9437,10 +9434,8 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			}
 		}
 
-		// -> 690fb1
 		return false;
 
-		// loc_690D60:
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9477,7 +9472,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 		return false;
 
-		// loc_690DE6:
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9496,7 +9490,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 				continue;
 			}
 
-			// -> loc_690FD0
 			return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
 		}
 
@@ -9508,7 +9501,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			continue;
 		}
 
-		// loc_690FB7:
 		*rideSeatToView = 0;
 		if (mapElement->clearance_height >= peep->next_z + 8) {
 			*rideSeatToView = 0x02;
@@ -9610,7 +9602,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			continue;
 		}
 
-		// loc_690FB7:
 		*rideSeatToView = 0;
 		if (mapElement->clearance_height >= peep->next_z + 8) {
 			*rideSeatToView = 0x02;
@@ -9676,7 +9667,6 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 	if ((uint16) ride->excitement == 0xFFFF) {
 		*rideSeatToView = 1;
 		if (ride->status != RIDE_STATUS_OPEN) {
-			// loc_691003:
 			if (esi->clearance_height > peep->next_z + 8) {
 				*rideSeatToView |= (1 << 1);
 			}
@@ -9686,7 +9676,6 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 	} else {
 		*rideSeatToView = 0;
 		if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
-			// loc_691003:
 			if (esi->clearance_height > peep->next_z + 8) {
 				*rideSeatToView = 0x02;
 			}
