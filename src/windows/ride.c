@@ -1531,7 +1531,7 @@ static void window_ride_init_viewport(rct_window *w)
 		focus.coordinate.y = (ride->overall_view & 0xFF00) >> 3;
 		focus.coordinate.x += 16;
 		focus.coordinate.y += 16;
-		focus.coordinate.z = map_element_height(focus.coordinate.x, focus.coordinate.y) & 0xFFFF;
+		focus.coordinate.z = ride->station_heights[0] * 8;
 		focus.sprite.type |= 0x40;
 		focus.coordinate.zoom = 1;
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
