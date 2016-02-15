@@ -184,9 +184,16 @@ rct_ride_measurement *get_ride_measurement(int index)
 	return &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[index]);
 }
 
-rct_ride_type *ride_get_entry(rct_ride *ride)
+rct_ride_type *get_ride_entry_by_ride(rct_ride *ride)
 {
-	return get_ride_entry(ride->subtype);
+	rct_ride_type *type = get_ride_entry(ride->subtype);
+	if (type == NULL)
+	{
+		char oldname[128];
+		format_string(oldname, ride->name, &ride->name_arguments);
+		log_error("Invalid ride subtype for ride %s", oldname);
+	}
+	return type;
 }
 
 /**
@@ -307,7 +314,8 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 	money32 customersPerHour, priceMinusCost;
 	int currentShopItem;
 
-	entry = get_ride_entry(ride->subtype);
+	// Get entry by ride to provide better reporting
+	entry = get_ride_entry_by_ride(ride);
 	if (entry == NULL) {
 		return 0;
 	}
@@ -2174,7 +2182,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 	_breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] =
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) == 0 ? 3 : 20;
 
-	entry = ride_get_entry(ride);
+	entry = get_ride_entry_by_ride(ride);
 	if (entry->flags & RIDE_ENTRY_FLAG_14)
 		return -1;
 

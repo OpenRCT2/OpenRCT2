@@ -937,7 +937,7 @@ int ride_get_total_time(rct_ride *ride);
 int ride_can_have_multiple_circuits(rct_ride *ride);
 track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
-rct_ride_type *ride_get_entry(rct_ride *ride);
+rct_ride_type *get_ride_entry_by_ride(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void reset_type_to_ride_entry_index_map();
 void ride_measurement_clear(rct_ride *ride);

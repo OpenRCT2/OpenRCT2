@@ -1041,7 +1041,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		uint8 trainLayout[16];
 		ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
 
-		rideEntry = ride_get_entry(ride);
+		rideEntry = get_ride_entry_by_ride(ride);
 		if (rideEntry->flags & RIDE_ENTRY_FLAG_0) {
 			clipDPI.zoom_level = 1;
 			clipDPI.width *= 2;
@@ -1497,7 +1497,7 @@ static void window_ride_init_viewport(rct_window *w)
 	if (eax >= 0 && eax < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
 		focus.sprite.sprite_id = ride->vehicles[eax];
 
-		rct_ride_type* ride_entry = ride_get_entry(ride);
+		rct_ride_type* ride_entry = get_ride_entry_by_ride(ride);
 		if (ride_entry->tab_vehicle != 0){
 			rct_vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
 			focus.sprite.sprite_id = vehicle->next_vehicle_on_train;
@@ -2329,7 +2329,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 	bool selectionShouldBeExpanded;
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	if(gCheatsShowVehiclesFromOtherTrackTypes && !(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type==RIDE_TYPE_MAZE || ride->type==RIDE_TYPE_MINI_GOLF)) {
 		selectionShouldBeExpanded=true;
@@ -2453,7 +2453,7 @@ static void window_ride_vehicle_dropdown(rct_window *w, int widgetIndex, int dro
 		return;
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	switch (widgetIndex) {
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
@@ -2503,7 +2503,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 	window_ride_set_pressed_tab(w);
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
@@ -2570,7 +2570,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_ride_draw_tab_images(dpi, w);
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	x = w->x + 8;
 	y = w->y + 64;
@@ -2631,7 +2631,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 	vehicle_colour vehicleColour;
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	// Background
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, 12);
@@ -2795,7 +2795,7 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 
 	dropdownWidget = widget - 1;
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	// Seek to available modes for this ride
 	availableModes = ride_seek_available_modes(ride);
@@ -3042,7 +3042,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 	window_ride_set_pressed_tab(w);
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
@@ -3819,7 +3819,7 @@ static void window_ride_colour_mousedown(int widgetIndex, rct_window *w, rct_wid
 	rct_string_id stringId;
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 	colourSchemeIndex = w->ride_colour;
 	dropdownWidget = widget - 1;
 
@@ -4054,7 +4054,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 	window_ride_set_pressed_tab(w);
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
@@ -4219,7 +4219,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	track_colour trackColour;
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	window_draw_widgets(w, dpi);
 	window_ride_draw_tab_images(dpi, w);
@@ -4317,7 +4317,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	vehicle_colour vehicleColour;
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 	vehiclePreviewWidget = &window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW];
 	vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
 
@@ -5679,7 +5679,7 @@ static void window_ride_income_invalidate(rct_window *w)
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	// Primary item
 	w->pressed_widgets &= ~(1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
@@ -5787,7 +5787,7 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_ride_draw_tab_images(dpi, w);
 
 	ride = get_ride(w->number);
-	rideEntry = ride_get_entry(ride);
+	rideEntry = get_ride_entry_by_ride(ride);
 
 	x = w->x + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 29;
@@ -6016,7 +6016,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 5;
 
 	// Primary shop items sold
-	shopItem = ride_get_entry(ride)->shop_item;
+	shopItem = get_ride_entry_by_ride(ride)->shop_item;
 	if (shopItem != 0xFF) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ShopItemStringIds[shopItem].plural;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->no_primary_items_sold;
@@ -6027,7 +6027,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Secondary shop items sold / on-ride photos sold
 	shopItem = ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO ?
 		RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
-		ride_get_entry(ride)->shop_item_secondary;
+		get_ride_entry_by_ride(ride)->shop_item_secondary;
 	if (shopItem != 0xFF) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ShopItemStringIds[shopItem].plural;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->no_secondary_items_sold;
