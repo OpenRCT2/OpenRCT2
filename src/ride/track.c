@@ -1677,7 +1677,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, &ride->type);
+			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, ride->type);
 			RCT2_GLOBAL(0x00F440D5, money32) += cost;
 
 			if (cost == MONEY32_UNDEFINED){
@@ -4075,6 +4075,8 @@ static bool sub_6C4D89(int x, int y, int z, int direction, int rideIndex, int fl
 static money32 track_place(int rideIndex, int rideType, int type, int originX, int originY, int originZ, int direction, int properties_1, int properties_2, int properties_3, int edx_flags, int flags)
 {
 	rct_ride *ride = get_ride(rideIndex);
+
+	log_verbose("Ride placed: index %d, type %d", rideIndex, ride->type);
 
 	if (ride == NULL)
 	{
