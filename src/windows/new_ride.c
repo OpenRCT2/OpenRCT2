@@ -883,7 +883,11 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 
 	// Number of designs available
 	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-		if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
+		// Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
+		if (network_get_mode() != NETWORK_MODE_NONE) {
+			_lastTrackDesignCount = 0;
+		}
+		else if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
 			_lastTrackDesignCountRideType = item;
 			_lastTrackDesignCount = get_num_track_designs(item);
 		}
@@ -891,13 +895,13 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		rct_string_id stringId;
 		switch (_lastTrackDesignCount) {
 		case 0:
-			stringId = 3338;
+			stringId = STR_CUSTOM_DESIGNED_LAYOUT;
 			break;
 		case 1:
-			stringId = 3339;
+			stringId = STR_1_DESIGN_AVAILABLE;
 			break;
 		default:
-			stringId = 3340;
+			stringId = STR_X_DESIGNS_AVAILABLE;
 			break;
 		}
 		gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, 0, x, y + 39);
