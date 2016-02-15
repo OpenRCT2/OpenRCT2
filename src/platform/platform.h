@@ -105,6 +105,8 @@ extern int gNumResolutions;
 extern resolution *gResolutions;
 extern SDL_Window *gWindow;
 
+extern SDL_Color gPalette[256];
+
 extern bool gHardwareDisplay;
 
 extern bool gSteamOverlayActive;
