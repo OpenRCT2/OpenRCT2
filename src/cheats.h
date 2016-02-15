@@ -35,6 +35,7 @@ extern bool gCheatsUnlockAllPrices;
 extern bool gCheatsBuildInPauseMode;
 extern bool gCheatsIgnoreRideIntensity;
 extern bool gCheatsDisableVandalism;
+extern bool gCheatsNeverendingMarketing;
 
 enum {
 	CHEAT_SANDBOXMODE,
@@ -71,7 +72,8 @@ enum {
 	CHEAT_FREEZECLIMATE,
 	CHEAT_OPENCLOSEPARK,
 	CHEAT_HAVEFUN,
-	CHEAT_SETFORCEDPARKRATING
+	CHEAT_SETFORCEDPARKRATING,
+	CHEAT_NEVERENDINGMARKETING,
 };
 
 enum {

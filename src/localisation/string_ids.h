@@ -2344,6 +2344,9 @@ enum {
 
 	STR_CUSTOMERS_ON_RIDE = 5739,
 
+	STR_CHEAT_NEVERENDING_MARKETING = 5740,
+	STR_CHEAT_TIP_NEVERENDING_MARKETING = 5741,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
