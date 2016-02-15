@@ -9659,8 +9659,10 @@ static bool sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rid
 	bool newOut = new_sub_690B99(peep, edge, &newRideToView, &newRideSeatToView);
 
 	assert(newOut == originalOut);
-	assert(newRideToView == originalRideToView);
-	assert(newRideSeatToView == originalRideSeatToView);
+	if (newOut) {
+		assert(newRideToView == originalRideToView);
+		assert(newRideSeatToView == originalRideSeatToView);
+	}
 
 	*rideToView = newRideToView;
 	*rideSeatToView = newRideSeatToView;
