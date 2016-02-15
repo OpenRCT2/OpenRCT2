@@ -4423,30 +4423,26 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 	}
 
-	if (type == TRACK_ELEM_ON_RIDE_PHOTO) {
-		if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE;
-			return MONEY32_UNDEFINED;
-		}
-	}
-	else if (type == TRACK_ELEM_CABLE_LIFT_HILL) {
-		if (ride->lifecycle_flags & RIDE_LIFECYCLE_16) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE;
-			return MONEY32_UNDEFINED;
-		}
-	}
-
-	if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP))) {
-		if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x400) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_STEEP_FOR_LIFT_HILL;
-			return MONEY32_UNDEFINED;
-		}
-	}
-
-	if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE){
+	if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
 		RCT2_GLOBAL(0x00F44054, uint8*) = &RCT2_ADDRESS(0x0099AA94, uint8)[type * 16];
-	}
-	else{
+	} else {
+		if (type == TRACK_ELEM_ON_RIDE_PHOTO) {
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE;
+				return MONEY32_UNDEFINED;
+			}
+		} else if (type == TRACK_ELEM_CABLE_LIFT_HILL) {
+			if (ride->lifecycle_flags & RIDE_LIFECYCLE_16) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE;
+				return MONEY32_UNDEFINED;
+			}
+		}
+		if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP))) {
+			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x400) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_STEEP_FOR_LIFT_HILL;
+				return MONEY32_UNDEFINED;
+			}
+		}
 		RCT2_GLOBAL(0x00F44054, uint8*) = &RCT2_ADDRESS(0x00999A94, uint8)[type * 16];
 	}
 

@@ -929,19 +929,23 @@ static void scenario_fix_ghosts(rct_s6_data *s6)
 			(destinationElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
 		}
 	}
+}
 
-	// Remove trackless rides
+static void scenario_remove_trackless_rides(rct_s6_data *s6)
+{
 	bool rideHasTrack[MAX_RIDES];
 	ride_all_has_any_track_elements(rideHasTrack);
 	for (int i = 0; i < MAX_RIDES; i++) {
 		rct_ride *ride = &s6->rides[i];
 
-		if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
+		if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL) {
 			continue;
+		}
 
 		ride->type = RIDE_TYPE_NULL;
-		if (is_user_string_id(ride->name))
+		if (is_user_string_id(ride->name)) {
 			s6->custom_strings[(ride->name % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
+		}
 	}
 }
 
@@ -1017,6 +1021,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
 
 	scenario_fix_ghosts(s6);
+	scenario_remove_trackless_rides(s6);
 	game_convert_strings_to_rct2(s6);
 	scenario_save_s6(rw, s6);
 

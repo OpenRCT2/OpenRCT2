@@ -434,9 +434,11 @@ void NetworkConnection::ResetLastPacketTime()
 
 bool NetworkConnection::ReceivedPacketRecently()
 {
+#ifndef DEBUG
 	if (SDL_TICKS_PASSED(SDL_GetTicks(), last_packet_time + 7000)) {
 		return false;
 	}
+#endif
 	return true;
 }
 
