@@ -4097,8 +4097,6 @@ static money32 track_place(int rideIndex, int rideType, int type, int originX, i
 		ride->type = rideType;
 	}
 
-	//test
-
 
 	rct_map_element *mapElement;
 
