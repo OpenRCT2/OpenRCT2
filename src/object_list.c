@@ -31,6 +31,7 @@
 #include "world/footpath.h"
 #include "world/scenery.h"
 #include "world/water.h"
+#include "util/util.h"
 
 #define FILTER_VERSION 1
 
@@ -222,13 +223,16 @@ static int object_list_query_directory(int *outTotalFiles, uint64 *outTotalFileS
 	int enumFileHandle, totalFiles, fileDateModifiedChecksum;
 	uint64 totalFileSize;
 	file_info enumFileInfo;
+	char path[MAX_PATH];
 
 	totalFiles = 0;
 	totalFileSize = 0;
 	fileDateModifiedChecksum = 0;
 
 	// Enumerate through each object in the directory
-	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
+	get_rct2_directory(path, "ObjData");
+	safe_strcat_path(path, "*.DAT", sizeof(path));
+	enumFileHandle = platform_enumerate_files_begin(path);
 	if (enumFileHandle == INVALID_HANDLE)
 		return 0;
 
@@ -292,8 +296,11 @@ void object_list_load()
 		free(_installedObjectFilters);
 		_installedObjectFilters = NULL;
 	}
+	char object_data_path[MAX_PATH];
 
-	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
+	get_rct2_directory(object_data_path, "ObjData");
+	safe_strcat_path(object_data_path, "*.DAT", sizeof(object_data_path));
+	enumFileHandle = platform_enumerate_files_begin(object_data_path);
 	if (enumFileHandle != INVALID_HANDLE) {
 		size_t installedObjectsCapacity = 4096;
 		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
@@ -310,7 +317,7 @@ void object_list_load()
 			}
 
 			char path[MAX_PATH];
-			substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
+			substitute_path(path, object_data_path, enumFileInfo.path);
 
 			rct_object_entry entry;
 			if (object_load_entry(path, &entry)) {

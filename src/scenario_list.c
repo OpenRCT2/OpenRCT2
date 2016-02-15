@@ -60,8 +60,7 @@ void scenario_load_list()
 	gScenarioListCount = 0;
 
 	// Get scenario directory from RCT2
-	safe_strcpy(directory, gConfigGeneral.game_path, sizeof(directory));
-	safe_strcat_path(directory, "Scenarios", sizeof(directory));
+	get_rct2_directory(directory, "Scenarios");
 	scenario_list_include(directory);
 
 	// Get scenario directory from user directory

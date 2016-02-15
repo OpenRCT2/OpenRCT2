@@ -32,6 +32,7 @@
 #include "world/scenery.h"
 #include "scenario.h"
 #include "rct1.h"
+#include "util/util.h"
 
 char gTempObjectLoadName[9] = { 0 };
 
@@ -56,10 +57,12 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 {
 	uint8 objectType;
 	rct_object_entry openedEntry;
-	char path[MAX_PATH];
+	char path[MAX_PATH], obj_path[MAX_PATH];
 	SDL_RWops* rw;
 
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), (char*)installedObject + 16);
+	get_rct2_directory(obj_path, "ObjData");
+	safe_strcat_path(obj_path, "*.DAT", sizeof(obj_path));
+	substitute_path(path, obj_path, (char*)installedObject + 16);
 
 	log_verbose("loading object, %s", path);
 
@@ -292,6 +295,7 @@ int object_load_packed(SDL_RWops* rw)
 
 	// Convert the entry name to a upper case path name
 	char path[MAX_PATH];
+	char object_data_path[MAX_PATH];
 	char objectPath[9] = { 0 };
 	for (int i = 0; i < 8; ++i){
 		if (entry.name[i] != ' ')
@@ -300,7 +304,9 @@ int object_load_packed(SDL_RWops* rw)
 			objectPath[i] = '\0';
 	}
 
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+	get_rct2_directory(object_data_path, "ObjData");
+	safe_strcat_path(object_data_path, "*.DAT", sizeof(object_data_path));
+	substitute_path(path, object_data_path, objectPath);
 	// Require pointer to start of filename
 	char* last_char = path + strlen(path);
 	strcat(path, ".DAT");
@@ -310,7 +316,7 @@ int object_load_packed(SDL_RWops* rw)
 	for (; platform_file_exists(path);){
 		for (char* curr_char = last_char - 1;; --curr_char){
 			if (*curr_char == '\\'){
-				substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "00000000.DAT");
+				substitute_path(path, object_data_path, "00000000.DAT");
 				char* last_char = path + strlen(path);
 				break;
 			}
@@ -1629,9 +1635,12 @@ int object_get_scenario_text(rct_object_entry *entry)
 		return 0;
 	}
 
-	char path[MAX_PATH];
+	char path[MAX_PATH], object_data_path[MAX_PATH];
 	char *objectPath = (char*)installedObject + 16;
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+
+	get_rct2_directory(object_data_path, "ObjData");
+	safe_strcat_path(object_data_path, "*.DAT", sizeof(object_data_path));
+	substitute_path(path, object_data_path, objectPath);
 
 	rct_object_entry openedEntry;
 	SDL_RWops* rw = SDL_RWFromFile(path, "rb");

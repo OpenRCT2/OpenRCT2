@@ -30,7 +30,7 @@
 #include "error.h"
 #include "../interface/themes.h"
 #include "../rct1.h"
-
+#include "../util/util.h"
 enum {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -183,7 +183,11 @@ static void window_track_list_select(rct_window *w, int index)
 		1);
 
 	char track_path[MAX_PATH] = { 0 };
-	substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
+	char rct2_tracks_path[MAX_PATH];
+
+	get_rct2_directory(rct2_tracks_path, "Tracks");
+	safe_strcat_path(rct2_tracks_path, "*.TD?", sizeof(rct2_tracks_path));
+	substitute_path(track_path, (char*)rct2_tracks_path, trackDesignItem);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();

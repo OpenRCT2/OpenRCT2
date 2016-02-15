@@ -239,7 +239,8 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		}
 		*/
 
-		safe_strcpy(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), MAX_PATH);
+		get_rct2_directory(path, "Tracks");
+		safe_strcat_path(path, "*.TD?", sizeof(path));
 		ch = strchr(path, '*');
 		if (ch != NULL)
 			*ch = 0;

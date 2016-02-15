@@ -216,43 +216,9 @@ int rct2_init_directories()
 	}
 	}
 
-	char separator[] = {platform_get_path_separator(), 0};
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfigGeneral.game_path);
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), separator);
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), "Saved Games");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "Scenarios");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "*.SC6");
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "Landscapes");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "*.SC6");
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "ObjData");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "*.DAT");
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "Tracks");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "*.TD?");
-
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
+	char path[MAX_PATH];
+	get_rct2_directory(path, "Saved Games");
+	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), path);
 	return 1;
 }
 
@@ -593,4 +559,20 @@ void get_local_time()
 	platform_get_time(&t);
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = t.hour;
 	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = t.minute;
+}
+
+void get_rct2_directory(utf8 *outPath, const utf8 *subDirectory)
+{
+	const char separator[2] = {platform_get_path_separator(), 0};
+	utf8 buffer[MAX_PATH];
+	safe_strcpy(buffer, gConfigGeneral.game_path, sizeof(buffer));
+	if (subDirectory != NULL && subDirectory[0] != 0) {
+		log_verbose("adding subDirectory '%s'", subDirectory);
+		safe_strcat_path(buffer, subDirectory, MAX_PATH);
+		safe_strcat(buffer, separator, MAX_PATH);
+	}
+	int len = strnlen(buffer, MAX_PATH);
+	buffer[len] = '\0';
+	safe_strcpy(outPath, buffer, MAX_PATH);
+	log_verbose("outPath + subDirectory = '%s'", buffer);
 }
