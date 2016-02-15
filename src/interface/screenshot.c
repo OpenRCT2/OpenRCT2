@@ -70,6 +70,18 @@ void screenshot_check()
 	}
 }
 
+static void screenshot_get_rendered_palette(rct_palette* palette) {
+	for (int i = 0; i < 256; i++) {
+		const SDL_Color *renderedEntry = &gPalette[i];
+		rct_palette_entry *entry = &palette->entries[i];
+
+		entry->red = renderedEntry->r;
+		entry->green = renderedEntry->g;
+		entry->blue = renderedEntry->b;
+		entry->alpha = renderedEntry->a;
+	}
+}
+
 static int screenshot_get_next_path(char *path, int format)
 {
 	char screenshotPath[MAX_PATH];
@@ -122,8 +134,11 @@ int screenshot_dump_bmp()
 	}
 
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	rct_palette *palette = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, rct_palette);
-	if (image_io_bmp_write(dpi, palette, path)) {
+
+	rct_palette renderedPalette;
+	screenshot_get_rendered_palette(&renderedPalette);
+
+	if (image_io_bmp_write(dpi, &renderedPalette, path)) {
 		return index;
 	} else {
 		return -1;
@@ -140,8 +155,11 @@ int screenshot_dump_png()
 	}
 
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	rct_palette *palette = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, rct_palette);
-	if (image_io_png_write(dpi, palette, path)) {
+
+	rct_palette renderedPalette;
+	screenshot_get_rendered_palette(&renderedPalette);
+
+	if (image_io_png_write(dpi, &renderedPalette, path)) {
 		return index;
 	} else {
 		return -1;
@@ -229,8 +247,10 @@ void screenshot_giant()
 		return;
 	}
 
-	rct_palette *palette = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, rct_palette);
-	image_io_png_write(&dpi, palette, path);
+	rct_palette renderedPalette;
+	screenshot_get_rendered_palette(&renderedPalette);
+
+	image_io_png_write(&dpi, &renderedPalette, path);
 
 	free(dpi.bits);
 
@@ -364,8 +384,10 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 		viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
-		rct_palette *palette = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, rct_palette);
-		image_io_png_write(&dpi, palette, outputPath);
+		rct_palette renderedPalette;
+		screenshot_get_rendered_palette(&renderedPalette);
+
+		image_io_png_write(&dpi, &renderedPalette, outputPath);
 
 		free(dpi.bits);
 	}
