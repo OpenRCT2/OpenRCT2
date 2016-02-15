@@ -2953,7 +2953,7 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
 		w->colours[0] | 0x80,
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		5
 	);
 
