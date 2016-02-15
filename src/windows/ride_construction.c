@@ -1600,7 +1600,7 @@ static void window_ride_construction_construct(rct_window *w)
 		rideIndex | (trackType << 8) | (edxRS16 << 16),
 		GAME_COMMAND_PLACE_TRACK,
 		z | (properties << 16),
-		0
+		get_ride(rideIndex)->type
 	);
 	if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
 		if (network_get_mode() == NETWORK_MODE_CLIENT)
@@ -2446,7 +2446,7 @@ money32 sub_6CA162(int rideIndex, int trackType, int trackDirection, int edxRS16
 
 		return result;
 	} else {
-		result = game_do_command(x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (edxRS16 << 16), GAME_COMMAND_PLACE_TRACK, z, 0);
+		result = game_do_command(x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (edxRS16 << 16), GAME_COMMAND_PLACE_TRACK, z, ride->type);
 		if (result == MONEY32_UNDEFINED)
 			return result;
 
