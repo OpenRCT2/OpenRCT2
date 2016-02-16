@@ -9280,7 +9280,7 @@ static bool sub_69101A(rct_map_element *esi) {
 		return true;
 	}
 
-	if (ride->excitement == 0xFFFF) {
+	if ((uint16) ride->excitement == 0xFFFF) {
 		return false;
 	}
 
