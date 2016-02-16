@@ -13,7 +13,7 @@ Windows Build:
 Come talk with us if you have any questions (Developer Chat):  
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)    
 Or, if you are not a developer, and just want to hang out, we have a chat for you too!:   
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/non-dev)
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev)
 
 # Contents
 - 1 - [Introduction](#1-introduction)
