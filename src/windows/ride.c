@@ -1476,6 +1476,48 @@ static void window_ride_anchor_border_widgets(rct_window *w)
 
 #pragma region Main
 
+static void window_ride_calculate_overall_view(uint8 ride_index, sint16 *cx, sint16 *cy, sint16 *cz, uint8 *zoom) {
+	map_element_iterator it;
+
+	map_element_iterator_begin(&it);
+
+	int minx = INT_MAX, miny = INT_MAX, minz = INT_MAX;
+	int maxx = INT_MIN, maxy = INT_MIN, maxz = INT_MIN;
+
+	while (map_element_iterator_next(&it)) {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (it.element->properties.track.ride_index != ride_index)
+			continue;
+
+		int x = it.x * 32;
+		int y = it.y * 32;
+		int z1 = it.element->base_height * 8;
+		int z2 = it.element->clearance_height * 8;
+
+		minx = min(minx, x);
+		miny = min(miny, y);
+		minz = min(minz, z1);
+
+		maxx = max(maxx, x);
+		maxy = max(maxy, y);
+		maxz = max(maxz, z2);
+	}
+
+	*cx = (minx + maxx) / 2;
+	*cy = (miny + maxy) / 2;
+	*cz = (minz + maxz) / 2 + 8;
+
+	int dx = maxx - minx;
+	int dy = maxy - miny;
+	int dz = maxz - minz;
+
+	int size = (int) sqrt(dx*dx + dy*dy + dz*dz);
+
+	*zoom = max(0, ceil(log(size / 64)) - 1);
+}
+
 /**
  *
  *  rct2: 0x006AF994
@@ -1527,15 +1569,10 @@ static void window_ride_init_viewport(rct_window *w)
 		if (eax > 0){
 			w->viewport_focus_coordinates.var_480 = 0;
 		}
-		focus.coordinate.x = (ride->overall_view & 0xFF) << 5;
-		focus.coordinate.y = (ride->overall_view & 0xFF00) >> 3;
-		focus.coordinate.x += 16;
-		focus.coordinate.y += 16;
-		focus.coordinate.z = ride->station_heights[0] * 8;
+
+		window_ride_calculate_overall_view((uint8) w->number, &focus.coordinate.x, &focus.coordinate.y, &focus.coordinate.z, &focus.coordinate.zoom);
+
 		focus.sprite.type |= 0x40;
-		focus.coordinate.zoom = 1;
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
-			focus.coordinate.zoom = 0;
 	}
 	focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
 
