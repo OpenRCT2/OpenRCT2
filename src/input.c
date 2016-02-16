@@ -1559,9 +1559,7 @@ void sub_6ED990(char cursor_id){
 		return;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor_id;
-	RCT2_GLOBAL(0x14241BC, uint32) = 2;
 	platform_set_cursor(cursor_id);
-	RCT2_GLOBAL(0x14241BC, uint32) = 0;
 }
 
 

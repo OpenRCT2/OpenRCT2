@@ -147,9 +147,7 @@ void update_palette_effects()
 			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
 			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
 		}
-		RCT2_GLOBAL(0x014241BC, uint32) = 2;
 		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
-		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
 	} else {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
@@ -235,13 +233,9 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		RCT2_GLOBAL(0x014241BC, uint32) = 2;
 		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 230, 16);
-		RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
-			RCT2_GLOBAL(0x014241BC, uint32) = 2;
 			platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
 		}
 	}
@@ -763,7 +757,6 @@ int game_load_sv6(SDL_RWops* rw)
 		set_load_objects_fail_reason();
 		if (gInputFlags & INPUT_FLAG_5){
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
-			RCT2_GLOBAL(0x14241BC, uint32) = 0;
 			gInputFlags &= ~INPUT_FLAG_5;
 		}
 
@@ -871,7 +864,6 @@ int game_load_network(SDL_RWops* rw)
 		set_load_objects_fail_reason();
 		if (gInputFlags & INPUT_FLAG_5){
 			//call 0x0040705E Sets cursor position and something else. Calls maybe wind func 8 probably pointless
-			RCT2_GLOBAL(0x14241BC, uint32) = 0;
 			gInputFlags &= ~INPUT_FLAG_5;
 		}
 

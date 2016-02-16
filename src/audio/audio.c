@@ -270,7 +270,6 @@ void audio_init_ride_sounds_and_info()
 			uint32 head;
 			SDL_RWread(file, &head, sizeof(head), 1);
 			SDL_RWclose(file);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
 		if (head == 0x78787878)
 			rideMusicInfo->length = 0;
 	}

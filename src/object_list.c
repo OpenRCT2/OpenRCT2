@@ -568,7 +568,6 @@ int object_read_and_load_entries(SDL_RWops* rw)
 	free(entries);
 	if (load_fail){
 		object_unload_all();
-		RCT2_GLOBAL(0x14241BC, uint32) = 0;
 		return 0;
 	}
 
