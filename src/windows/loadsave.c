@@ -324,9 +324,6 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		}
 
 		if (result) {
-			if (!has_extension(path, _extension)) {
-				strncat(path, _extension, sizeof(path) - strnlen(path, sizeof(path)) - 1);
-			}
 			window_loadsave_select(w, path);
 		}
 		break;

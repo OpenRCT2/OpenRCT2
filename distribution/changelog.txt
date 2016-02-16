@@ -16,6 +16,7 @@
 - Fix: [#2651] Ride was not removed when multiplayer client aborted ride construction.
 - Fix: [#2654] Free transport rides can prevent guests from properly leaving the park
 - Fix: [#2704] OSX Command Key not read for keyboard shortcuts.
+- Fix: [#2958] Unable to import RCT1 parks in the scenario editor using the load landscape dialog.
 
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
