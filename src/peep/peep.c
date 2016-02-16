@@ -9310,6 +9310,12 @@ static bool sub_69101A(rct_map_element *esi) {
 /**
  *
  *  rct2: 0x00690B99
+ *
+ * @param edge (eax)
+ * @param peep (esi)
+ * @param[out] rideToView (cl)
+ * @param[out] rideSeatToView (ch)
+ * @return !CF
  */
 static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView)
 {
@@ -9319,26 +9325,13 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	mapElement = surfaceElement;
 	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) {
-			continue;
-		}
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if (map_element_get_direction(mapElement) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (peep->next_z + 4 <= mapElement->base_height) continue;
+		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
 
-		if (map_element_get_direction(mapElement) != edge) {
-			continue;
-		}
-
-		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
-			continue;
-		}
-
-		if (peep->next_z + 4 <= mapElement->base_height) {
-			continue;
-		}
-
-		if (peep->next_z + 1 < mapElement->clearance_height) {
-			return false;
-		}
-
+		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9353,36 +9346,20 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	mapElement = surfaceElement;
 	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) {
-			continue;
-		}
-		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) {
-			continue;
-		}
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (peep->next_z + 4 >= mapElement->base_height) continue;
+		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
 
-		if ((g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) != 0) {
-			continue;
-		}
-
-		if (peep->next_z + 4 >= mapElement->base_height) {
-			continue;
-		}
-
-		if (peep->next_z + 1 < mapElement->clearance_height) {
-			return false;
-		}
+		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
 	mapElement = surfaceElement;
 	do {
-		if (mapElement->clearance_height + 1 < peep->next_z) {
-			continue;
-		}
-
-		if (peep->next_z + 6 < mapElement->base_height) {
-			continue;
-		}
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 6 < mapElement->base_height) continue;
 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) {
 			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
@@ -9412,21 +9389,10 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	mapElement = surfaceElement;
 	do {
-		if (mapElement->clearance_height + 1 < peep->next_z) {
-			continue;
-		}
-
-		if (peep->next_z + 6 < mapElement->base_height) {
-			continue;
-		}
-
-		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
-			continue;
-		}
-
-		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-			continue;
-		}
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 6 < mapElement->base_height) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
 			if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
@@ -9450,40 +9416,20 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	mapElement = surfaceElement;
 	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) {
-			continue;
-		}
-
-		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) {
-			continue;
-		}
-
-		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
-			continue;
-		}
-
-		if (peep->next_z + 6 <= mapElement->base_height) {
-			continue;
-		}
-
-		if (peep->next_z >= mapElement->clearance_height) {
-			continue;
-		}
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (peep->next_z + 6 <= mapElement->base_height) continue;
+		if (peep->next_z >= mapElement->clearance_height) continue;
 
 		return false;
-
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
 	mapElement = surfaceElement;
 	do {
-		if (mapElement->clearance_height + 1 < peep->next_z) {
-			continue;
-		}
-
-		if (peep->next_z + 8 < mapElement->base_height) {
-			continue;
-		}
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 8 < mapElement->base_height) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
 			if (sub_69101A(mapElement)) {
@@ -9515,21 +9461,10 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	mapElement = surfaceElement;
 	do {
-		if (mapElement->clearance_height + 1 < peep->next_z) {
-			continue;
-		}
-
-		if (peep->next_z + 8 < mapElement->base_height) {
-			continue;
-		}
-
-		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
-			continue;
-		}
-
-		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-			continue;
-		}
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 8 < mapElement->base_height) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) {
 			return false;
@@ -9551,25 +9486,11 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	mapElement = surfaceElement;
 	do {
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) {
-			continue;
-		}
-
-		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) {
-			continue;
-		}
-
-		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
-			continue;
-		}
-
-		if (peep->next_z + 8 <= mapElement->base_height) {
-			continue;
-		}
-
-		if (peep->next_z >= mapElement->clearance_height) {
-			continue;
-		}
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (peep->next_z + 8 <= mapElement->base_height) continue;
+		if (peep->next_z >= mapElement->clearance_height) continue;
 
 		return false;
 
@@ -9578,13 +9499,8 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 	mapElement = surfaceElement;
 	do {
-		if (mapElement->clearance_height + 1 < peep->next_z) {
-			continue;
-		}
-
-		if (peep->next_z + 10 < mapElement->base_height) {
-			continue;
-		}
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 10 < mapElement->base_height) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
 			if (!sub_69101A(mapElement)) {
