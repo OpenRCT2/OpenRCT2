@@ -110,39 +110,6 @@ static bool news_item_is_current_old()
  */
 void news_item_update_current()
 {
-	short ax, bx;
-
-	get_system_time();
-
-	ax = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16);
-	bx = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);
-
-	// Cheat detection
-	if (bx != RCT2_GLOBAL(0x009DEA6B, sint16)) {
-		bx--;
-		if (bx == 0)
-			bx = 12;
-		if (bx != RCT2_GLOBAL(0x009DEA6B, sint16) || ax != 1) {
-			// loc_66E2AE
-			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) -= 10000;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) >= 0)
-				RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) = -RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32);
-		}
-	} else {
-		if (ax != RCT2_GLOBAL(0x009DEA69, sint16)) {
-			ax--;
-			if (ax != RCT2_GLOBAL(0x009DEA69, sint16)) {
-				// loc_66E2AE
-				RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) -= 10000;
-				if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) >= 0)
-					RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) = -RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32);
-			}
-		}
-	}
-
-	RCT2_GLOBAL(0x009DEA69, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16);
-	RCT2_GLOBAL(0x009DEA6B, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);
-
 	// Check if there is a current news item
 	if (news_item_is_queue_empty())
 		return;

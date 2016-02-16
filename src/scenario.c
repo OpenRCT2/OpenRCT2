@@ -517,7 +517,6 @@ static void scenario_day_update()
 {
 	finance_update_daily_profit();
 	peep_update_days_in_queue();
-	get_local_time();
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
 	case OBJECTIVE_10_ROLLERCOASTERS:
 	case OBJECTIVE_GUESTS_AND_RATING:

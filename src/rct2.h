@@ -273,9 +273,6 @@ int check_file_paths();
 int check_file_path(int pathId);
 int check_files_integrity();
 const char *get_file_path(int pathId);
-void get_system_info();
-void get_system_time();
-void get_local_time();
 void rct2_quit();
 
 int rct2_open_file(const char *path);

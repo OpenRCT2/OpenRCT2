@@ -246,9 +246,7 @@ void update_palette_effects()
 		}
 	}
 	if (RCT2_GLOBAL(0x009E2C4C, uint32) == 2 || RCT2_GLOBAL(0x009E2C4C, uint32) == 1) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, uint32) != 8) {
-			RCT2_GLOBAL(0x009E2C78, int) = 1;
-		}
+		RCT2_GLOBAL(0x009E2C78, int) = 1;
 	}
 }
 

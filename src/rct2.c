@@ -139,10 +139,7 @@ int rct2_init()
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
-	get_system_time();
 	util_srand((unsigned int)time(0));
-	RCT2_GLOBAL(0x009DEA69, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, short);
-	RCT2_GLOBAL(0x009DEA6B, short) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, short);
 	if (!rct2_init_directories())
 		return 0;
 
@@ -169,7 +166,6 @@ int rct2_init()
 	}
 	viewport_init_all();
 	news_item_init_queue();
-	get_local_time();
 	reset_park_entrances();
 	user_string_clear_all();
 	reset_sprite_list();
@@ -497,100 +493,4 @@ const utf8 *get_file_path(int pathId)
 	}
 
 	return path;
-}
-
-/**
- * Obtains basic system versions and capabilities.
- *  rct2: 0x004076B1
- */
-void get_system_info()
-{
-#ifdef __WINDOWS__
-	OSVERSIONINFO versionInfo;
-	SYSTEM_INFO sysInfo;
-	MEMORYSTATUS memInfo;
-
-	versionInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	if (GetVersionEx(&versionInfo)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_PLATFORM_ID, uint32) = versionInfo.dwPlatformId;
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) = versionInfo.dwMajorVersion;
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = versionInfo.dwMinorVersion;
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = versionInfo.dwBuildNumber;
-	} else {
-#endif // __WINDOWS__
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_PLATFORM_ID, uint32) = -1;
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_MINOR_VERSION, uint32) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_OS_BUILD_NUMBER, uint32) = 0;
-#ifdef __WINDOWS__
-	}
-
-	GetSystemInfo(&sysInfo);
-	// RCT2 only has 2 bytes reserved for OEM_ID even though it should be a DWORD
-	RCT2_GLOBAL(RCT2_ADDRESS_SYS_OEM_ID, uint16) = (uint16)sysInfo.dwOemId;
-	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_LEVEL, uint16) = sysInfo.wProcessorLevel;
-	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_REVISION, uint16) = sysInfo.wProcessorRevision;
-	RCT2_GLOBAL(RCT2_ADDRESS_SYS_CPU_NUMBER, uint32) = sysInfo.dwNumberOfProcessors;
-
-	GlobalMemoryStatus(&memInfo);
-	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PHYSICAL, uint32) = memInfo.dwTotalPhys;
-	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_PAGEFILE, uint32) = memInfo.dwTotalPageFile;
-	RCT2_GLOBAL(RCT2_ADDRESS_MEM_TOTAL_VIRTUAL, uint32) = memInfo.dwTotalVirtual;
-
-	DWORD size = 80;
-	GetUserName((char*)RCT2_ADDRESS_OS_USER_NAME, &size);
-	size = 80;
-	GetComputerName((char*)RCT2_ADDRESS_OS_COMPUTER_NAME, &size);
-
-	// Screen Display Width/Height but RCT_ADDRESS_SCREEN_HEIGHT/WIDTH already taken?
-	RCT2_GLOBAL(0x01423C08, sint32) = GetSystemMetrics(SM_CXSCREEN);
-	RCT2_GLOBAL(0x01423C0C, sint32) = GetSystemMetrics(SM_CYSCREEN);
-
-	HDC screenHandle = GetDC(NULL);
-	if (screenHandle) {
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) = GetDeviceCaps(screenHandle, BITSPIXEL);
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH, sint32) = GetDeviceCaps(screenHandle, RASTERCAPS) >> 8;
-		ReleaseDC(NULL, screenHandle);
-	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_RASTER_STRETCH, sint32) = 0;
-	}
-
-	RCT2_GLOBAL(0x01423C1C, uint32) = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) >= 8);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OS_MAJOR_VERSION, uint32) < 4 || RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_CAP_BPP, sint32) < 4)
-		RCT2_GLOBAL(0x1423C18, sint32) = 0;
-	else
-		RCT2_GLOBAL(0x1423C18, sint32) = 1;
-
-	RCT2_GLOBAL(0x01423C20, uint32) = (SDL_HasMMX() == SDL_TRUE);
-#else
-	STUB();
-#endif // __WINDOWS__
-}
-
-
-/**
- * Obtains os system time (day, month, year and day of the week).
- *  rct2: 0x00407671
- */
-void get_system_time()
-{
-	rct2_date date;
-	platform_get_date(&date);
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16) = date.day;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16) = date.month;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_YEAR, sint16) = date.year;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAYOFWEEK, sint16) = date.day_of_week;
-}
-
-/**
- * Obtains os local time (hour and minute)
- *  rct2: 0x006C45E7;
- */
-void get_local_time()
-{
-	rct2_time t;
-	platform_get_time(&t);
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, sint16) = t.hour;
-	RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, sint16) = t.minute;
 }
