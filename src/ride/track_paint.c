@@ -1039,7 +1039,7 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	height16 += 48;
 	if (RCT2_GLOBAL(0x00141E9D8, sint16) < height16) {
 		RCT2_GLOBAL(0x00141E9D8, sint16) = height16;
-		RCT2_GLOBAL(0x00141E9DA, sint16) = 32;
+		RCT2_GLOBAL(0x00141E9DA, uint8) = 32;
 	}
 }
 
@@ -1127,7 +1127,7 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 	height16 += 32;
 	if (RCT2_GLOBAL(0x00141E9D8, sint16) < height16) {
 		RCT2_GLOBAL(0x00141E9D8, sint16) = height16;
-		RCT2_GLOBAL(0x00141E9DA, sint16) = 32;
+		RCT2_GLOBAL(0x00141E9DA, uint8) = 32;
 	}
 }
 
