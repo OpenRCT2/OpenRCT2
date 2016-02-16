@@ -7791,8 +7791,6 @@ void sub_6CB945(int rideIndex)
 			}
 		} while (!map_element_is_last_for_tile(mapElement++));
 	}
-	
-	//RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, rideIndex, 0, 0, 0);
 }
 
 /**

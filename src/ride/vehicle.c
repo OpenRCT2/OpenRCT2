@@ -7965,22 +7965,11 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 {
 	registers regs = { 0 };
 
-	//////////////////////////////////////////////////////////////////////////////////////////
-	regs.esi = (int)vehicle;
-	//RCT2_CALLFUNC_Y(0x006DAB4C, &regs);
-	//if (outStation != NULL) *outStation = regs.ebx;
-	//return regs.eax;
-	//////////////////////////////////////////////////////////////////////////////////////////
-
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_type *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 	rct_map_element *mapElement = NULL;
-
-	// esi = vehicle
-	// eax = rideEntry
-	// edi = vehicleEntry
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
 		return vehicle_update_track_motion_mini_golf(vehicle, outStation);

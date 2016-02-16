@@ -1639,20 +1639,6 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}
 
-	//Uncomment to use vanilla code
-	/*
-	registers regs = {0};
-	regs.eax = x;
-	regs.ebx = flags;
-	regs.ecx = y;
-	regs.dl = height;
-	regs.dh = style;
-	regs.esi = 0;
-	regs.edi = selectionType << 5;
-	regs.ebp = 0;
-	RCT2_CALLFUNC_Y(0x006639FE, &regs); return regs.ebx;
-	*/
-
 	RCT2_GLOBAL(0x9E2E18, money32) = MONEY(0, 0);
 	if(flags & GAME_COMMAND_FLAG_APPLY)
 	{

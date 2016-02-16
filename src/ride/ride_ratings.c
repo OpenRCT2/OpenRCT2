@@ -632,10 +632,6 @@ static void ride_ratings_calculate(rct_ride *ride)
 		ride->ratings.nausea = max(0, ride->ratings.nausea);
 	}
 	#endif
-
-	// Original ride calculation
-	// calcFunc = RCT2_ADDRESS(0x0097E050, ride_ratings_calculation)[ride->type];
-	// RCT2 CALLPROC X((int)calcFunc, 0, 0, 0, 0, 0, (int)ride, 0);
 }
 
 static void ride_ratings_calculate_value(rct_ride *ride)

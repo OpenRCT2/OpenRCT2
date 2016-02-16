@@ -1091,8 +1091,8 @@ void process_mouse_over(int x, int y)
 				ebx = 0;
 				edi = cursorId;
 				esi = (int)subWindow;
-				// Not sure what this is for, no windows actually implement a handler
-				// RCT2_CALLFUNC_X(subWindow->event_handlers[WE_UNKNOWN_0E], &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+				// Window event WE_UNKNOWN_0E was called here, but no windows actually implemented a handler and
+				// its not known what it was for
 				cursorId = edi;
 				if ((ebx & 0xFF) != 0)
 				{
