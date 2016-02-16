@@ -157,6 +157,7 @@ static void ride_update_vehicle_colours(int rideIndex);
 static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 preset_index);
 static void maze_entrance_hedge_removal(int x, int y, rct_map_element *mapElement);
 void loc_6DDF9C(rct_ride *ride, rct_map_element *mapElement);
+static void maze_entrance_hedge_replacement(int x, int y, rct_map_element *mapElement);
 
 rct_ride *get_ride(int index)
 {
@@ -7565,7 +7566,233 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
  */
 void sub_6CB945(int rideIndex)
 {
-	RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, rideIndex, 0, 0, 0);
+	RCT2_GLOBAL(0x00F441C2, uint8) = rideIndex;
+
+	rct_ride* ride = get_ride(rideIndex);
+	if (ride->type != RIDE_TYPE_MAZE) {
+		for (uint8 stationId = 0; stationId < 4; ++stationId) {
+			if (ride->station_starts[stationId] == 0xFFFF)
+				continue;
+
+			rct_xyz16 location = {
+				.x = (ride->station_starts[stationId] & 0xFF) * 32,
+				.y = ((ride->station_starts[stationId] >> 8) & 0xFF) * 32,
+				.z = ride->station_heights[stationId]
+			};
+			uint8 direction = 0xFF;
+
+			bool specialTrack = false;
+			rct_map_element* mapElement = NULL;
+
+			while (true) {
+				if (direction != 0xFF) {
+					location.x -= TileDirectionDelta[direction].x;
+					location.y -= TileDirectionDelta[direction].y;
+				}
+				mapElement = map_get_first_element_at(location.x / 32, location.y / 32);
+
+				bool trackFound = false;
+				do {
+					if (mapElement->base_height != location.z)
+						continue;
+
+					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+						continue;
+
+					if (mapElement->properties.track.ride_index != rideIndex)
+						continue;
+
+					// Only allow sequence 0
+					if (mapElement->properties.track.sequence & 0xF)
+						continue;
+
+					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & (1 << 4)))
+						continue;
+
+					trackFound = true;
+					break;
+				} while (!map_element_is_last_for_tile(mapElement++));
+
+				if (trackFound == false) {
+					break;
+				}
+
+				mapElement->properties.track.sequence &= 0x8F;
+				mapElement->properties.track.sequence |= (stationId << 4);
+
+				direction = map_element_get_direction(mapElement);
+
+				if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
+					specialTrack = true;
+					break;
+				}
+			}
+
+			if (specialTrack == false)
+				continue;
+
+
+			const rct_preview_track *trackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
+
+			while ((++trackBlock)->index != 0xFF) {
+				rct_xyz16 blockLocation = location;
+
+				switch (direction) {
+				case 0:
+					blockLocation.x += trackBlock->x;
+					blockLocation.y += trackBlock->y;
+					break;
+				case 1:
+					blockLocation.x += trackBlock->y;
+					blockLocation.y -= trackBlock->x;
+					break;
+				case 2:
+					blockLocation.x -= trackBlock->x;
+					blockLocation.y -= trackBlock->y;
+					break;
+				case 3:
+					blockLocation.x -= trackBlock->y;
+					blockLocation.y += trackBlock->x;
+					break;
+				}
+
+				blockLocation.z += trackBlock->z / 8;
+
+				bool trackFound = false;
+				mapElement = map_get_first_element_at(blockLocation.x / 32, blockLocation.y / 32);
+				do {
+					if (blockLocation.z != mapElement->base_height)
+						continue;
+					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+						continue;
+
+					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & 0x10))
+						continue;
+
+					trackFound = true;
+					break;
+				} while (!map_element_is_last_for_tile(mapElement++));
+
+				if (trackFound == false)
+					break;
+
+				mapElement->properties.track.sequence &= 0x8F;
+				mapElement->properties.track.sequence |= (stationId << 4);
+			}
+		}
+	}
+
+	uint16* locationList = RCT2_ADDRESS(0x00F441B0, uint16);
+
+	for (uint8 stationId = 0; stationId < 4; ++stationId) {
+		if (ride->entrances[stationId] != 0xFFFF) {
+			*locationList++ = ride->entrances[stationId];
+			ride->entrances[stationId] = 0xFFFF;
+		}
+
+		if (ride->exits[stationId] != 0xFFFF) {
+			*locationList++ = ride->exits[stationId];
+			ride->exits[stationId] = 0xFFFF;
+		}
+	}
+
+	*locationList++ = 0xFFFF;
+
+	locationList = RCT2_ADDRESS(0x00F441B0, uint16);
+
+	for (; *locationList != 0xFFFF; locationList++) {
+		uint16* locationList2 = locationList;
+		locationList2++;
+
+		bool duplicateLocation = false;
+		do {
+			if (*locationList == *locationList2) {
+				duplicateLocation = true;
+				break;
+			}
+		} while (*locationList2++ != 0xFFFF);
+
+		if (duplicateLocation == true)
+			continue;
+
+		rct_xy16 location = {
+			.x = (*locationList & 0xFF) * 32,
+			.y = ((*locationList >> 8) & 0xFF) * 32
+		};
+
+		rct_map_element* mapElement = map_get_first_element_at(location.x / 32, location.y / 32);
+
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+				continue;
+
+			if (mapElement->properties.entrance.ride_index != rideIndex)
+				continue;
+
+			// If its a park entrance
+			if (mapElement->properties.entrance.type > ENTRANCE_TYPE_RIDE_EXIT)
+				continue;
+
+			rct_xy16 nextLocation = location;
+			nextLocation.x += TileDirectionDelta[map_element_get_direction(mapElement)].x;
+			nextLocation.y += TileDirectionDelta[map_element_get_direction(mapElement)].y;
+
+			bool shouldRemove = true;
+			rct_map_element* trackElement = map_get_first_element_at(nextLocation.x / 32, nextLocation.y / 32);
+			do {
+				if (map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
+					continue;
+
+				if (trackElement->properties.track.ride_index != rideIndex)
+					continue;
+
+				if (trackElement->base_height != mapElement->base_height)
+					continue;
+
+				uint32 edi = trackElement->properties.track.type * 16;
+				edi |= trackElement->properties.track.sequence & 0xF;
+
+				uint8 direction = (map_element_get_direction(mapElement) - map_element_get_direction(trackElement) + 2) & 3;
+
+				if (!(RCT2_GLOBAL(0x0099BA64 + edi, uint32) & (1 << direction)))
+					continue;
+
+				uint8 stationId = 0;
+				if (trackElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
+					stationId = (trackElement->properties.track.sequence >> 4) & 0x7;
+				}
+
+				if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT) {
+					if (ride->exits[stationId] != 0xFFFF)
+						break;
+
+					ride->exits[stationId] = (location.x / 32) | ((location.y / 32) << 8);
+				}
+				else {
+					if (ride->entrances[stationId] != 0xFFFF)
+						break;
+
+					ride->entrances[stationId] = (location.x / 32) | ((location.y / 32) << 8);
+				}
+
+				mapElement->properties.entrance.index &= 0x8F;
+				mapElement->properties.entrance.index |= stationId;
+				shouldRemove = false;
+			} while (!map_element_is_last_for_tile(trackElement++));
+
+			if (shouldRemove == true) {
+				sub_6A7594();
+				maze_entrance_hedge_replacement(location.x, location.y, mapElement);
+				footpath_remove_edges_at(location.x, location.y, mapElement);
+				sub_6A759F();
+				map_invalidate_tile_full(location.x, location.y);
+				map_element_remove(mapElement);
+				mapElement--;
+			}
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
+	
+	//RCT2_CALLPROC_X(0x006CB945, 0, 0, 0, rideIndex, 0, 0, 0);
 }
 
 /**
