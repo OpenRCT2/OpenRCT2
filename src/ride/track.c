@@ -1685,6 +1685,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 		}
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 3){
+			int temp_z = z - TrackCoordinates[track_type].z_begin;
 			for (const rct_preview_track* trackBlock = TrackBlocks[track_type];
 				trackBlock->index != 0xFF;
 				trackBlock++){
@@ -1742,11 +1743,10 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 						height = water_height;
 					}
 				}
-				int temp_z = z + RCT2_GLOBAL(0x00F440D5, sint16);
-				temp_z -= height;
+				int height_diff = temp_z + RCT2_GLOBAL(0x00F440D5, sint16) + trackBlock->z - height;
 
-				if (temp_z < 0){
-					RCT2_GLOBAL(0x00F440D5, sint16) -= temp_z;
+				if (height_diff < 0){
+					RCT2_GLOBAL(0x00F440D5, sint16) -= height_diff;
 				}
 			}
 		}
