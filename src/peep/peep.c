@@ -9361,11 +9361,13 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		if (mapElement->clearance_height + 1 < peep->next_z) continue;
 		if (peep->next_z + 6 < mapElement->base_height) continue;
 
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) {
-			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-				continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
+			if (!sub_69101A(mapElement)) {
+				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
 			}
+		}
 
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
 			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
 				continue;
 			}
@@ -9379,11 +9381,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 
 			return true;
 		}
-
-		if (!sub_69101A(mapElement)) {
-			return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
-		}
-
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9401,7 +9398,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		}
 
 		return false;
-
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9432,30 +9428,25 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		if (peep->next_z + 8 < mapElement->base_height) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
-			if (sub_69101A(mapElement)) {
+			if (!sub_69101A(mapElement)) {
+				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+			}
+		}
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
 				continue;
 			}
 
-			return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+			*rideSeatToView = 0;
+			if (mapElement->clearance_height >= peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			*rideToView = 0xFF;
+
+			return true;
 		}
-
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			continue;
-		}
-
-		if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
-			continue;
-		}
-
-		*rideSeatToView = 0;
-		if (mapElement->clearance_height >= peep->next_z + 8) {
-			*rideSeatToView = 0x02;
-		}
-
-		*rideToView = 0xFF;
-
-		return true;
-
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9466,13 +9457,13 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) {
-			return false;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
+			if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
+				continue;
+			}
 		}
 
-		if (!(g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4)) {
-			return false;
-		}
+		return false;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 	x += TileDirectionDelta[edge].x;
@@ -9493,7 +9484,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		if (peep->next_z >= mapElement->clearance_height) continue;
 
 		return false;
-
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
@@ -9506,27 +9496,22 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 			if (!sub_69101A(mapElement)) {
 				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
 			}
-
-			continue;
 		}
 
-		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
+				continue;
+			}
+
+			*rideSeatToView = 0;
+			if (mapElement->clearance_height >= peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			*rideToView = 0xFF;
+
+			return true;
 		}
-
-		if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
-			continue;
-		}
-
-		*rideSeatToView = 0;
-		if (mapElement->clearance_height >= peep->next_z + 8) {
-			*rideSeatToView = 0x02;
-		}
-
-		*rideToView = 0xFF;
-
-		return true;
-
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 	return false;
