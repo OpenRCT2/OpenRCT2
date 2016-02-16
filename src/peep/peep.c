@@ -9349,6 +9349,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
 		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		// TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
 		if (peep->next_z + 4 >= mapElement->base_height) continue;
 		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
 
@@ -9356,6 +9357,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
+	// TODO: Extract loop B
 	mapElement = surfaceElement;
 	do {
 		if (mapElement->clearance_height + 1 < peep->next_z) continue;
@@ -9384,6 +9386,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
+	// TODO: Extract loop C
 	mapElement = surfaceElement;
 	do {
 		if (mapElement->clearance_height + 1 < peep->next_z) continue;
@@ -9410,6 +9413,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
 
+	// TODO: extract loop A
 	mapElement = surfaceElement;
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
@@ -9422,6 +9426,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
+	// TODO: Extract loop B
 	mapElement = surfaceElement;
 	do {
 		if (mapElement->clearance_height + 1 < peep->next_z) continue;
@@ -9450,6 +9455,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
+	// TODO: Extract loop C
 	mapElement = surfaceElement;
 	do {
 		if (mapElement->clearance_height + 1 < peep->next_z) continue;
@@ -9475,6 +9481,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
 
+	// TODO: extract loop A
 	mapElement = surfaceElement;
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
@@ -9487,6 +9494,7 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 
+	// TODO: Extract loop B
 	mapElement = surfaceElement;
 	do {
 		if (mapElement->clearance_height + 1 < peep->next_z) continue;
