@@ -1086,7 +1086,7 @@ void ride_remove_peeps(int rideIndex)
 	}
 
 	ride->num_riders = 0;
-	ride->var_15D = 0;
+	ride->slide_in_use = 0;
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
@@ -2001,14 +2001,14 @@ static void ride_spiral_slide_update(rct_ride *ride)
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
 		return;
-	if (ride->var_15D == 0)
+	if (ride->slide_in_use == 0)
 		return;
 
-	ride->var_176++;
-	if (ride->var_176 >= 48) {
-		ride->var_15D--;
+	ride->spiral_slide_progress++;
+	if (ride->spiral_slide_progress >= 48) {
+		ride->slide_in_use--;
 
-		peep = &(g_sprite_list[ride->maze_tiles].peep);
+		peep = GET_PEEP(ride->slide_peep);
 		peep->destination_x++;
 	}
 
@@ -2126,27 +2126,23 @@ static void ride_breakdown_update(int rideIndex)
 		return;
 
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
-		ride->var_19C++;
+		ride->downtime_history[0]++;
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8191)) {
-		int ax =
-			ride->var_19C +
-			ride->var_19D +
-			ride->var_19E +
-			ride->var_19F +
-			ride->var_1A0 +
-			ride->var_1A2 +
-			ride->var_1A3;
-		ride->downtime = min(ax / 2, 100);
+		int totalDowntime =
+			ride->downtime_history[0] +
+			ride->downtime_history[1] +
+			ride->downtime_history[2] +
+			ride->downtime_history[3] +
+			ride->downtime_history[4] +
+			ride->downtime_history[5] +
+			ride->downtime_history[6] +
+			ride->downtime_history[7];
+		ride->downtime = min(totalDowntime / 2, 100);
 
-		ride->var_1A3 = ride->var_1A2;
-		ride->var_1A2 = ride->var_1A1;
-		ride->var_1A1 = ride->var_1A0;
-		ride->var_1A0 = ride->var_19F;
-		ride->var_19F = ride->var_19E;
-		ride->var_19E = ride->var_19D;
-		ride->var_19D = ride->var_19C;
-		ride->var_19C = 0;
+		memmove(&ride->downtime_history[1], ride->downtime_history, sizeof(ride->downtime_history));
+
+		ride->downtime_history[0] = 0;
 		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 	}
 
@@ -5910,7 +5906,7 @@ foundRideEntry:
 	ride->total_customers = 0;
 	ride->total_profit = 0;
 	ride->num_riders = 0;
-	ride->var_15D = 0;
+	ride->slide_in_use = 0;
 	ride->maze_tiles = 0;
 	ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	ride->music_tune_id = 255;
@@ -5922,8 +5918,7 @@ foundRideEntry:
 	ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
 	ride->last_inspection = 0;
 	ride->downtime = 0;
-	ride->var_19C = 0;
-	ride->var_1A0 = 0;
+	memset(ride->downtime_history, 0, sizeof(ride->downtime_history));
 	ride->no_primary_items_sold = 0;
 	ride->no_secondary_items_sold = 0;
 	ride->last_crash_type = RIDE_CRASH_TYPE_NONE;

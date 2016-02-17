@@ -2905,13 +2905,13 @@ static void peep_update_ride_sub_state_15(rct_peep* peep){
 				peep->destination_x++;
 			return;
 		case 1:
-			if (ride->var_15D != 0)
+			if (ride->slide_in_use != 0)
 				return;
 
-			ride->var_15D++;
+			ride->slide_in_use++;
 			ride->slide_peep = peep->sprite_index;
 			ride->slide_peep_t_shirt_colour = peep->tshirt_colour;
-			ride->var_176 = 0;
+			ride->spiral_slide_progress = 0;
 			peep->destination_x++;
 			return;
 		case 2:

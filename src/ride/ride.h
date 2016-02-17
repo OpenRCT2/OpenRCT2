@@ -252,7 +252,7 @@ typedef struct {
 	uint8 popularity_next;			// 0x15A When timeout reached this will be the next popularity
 	uint8 num_riders;				// 0x15B
 	uint8 music_tune_id;			// 0x15C
-	uint8 var_15D;
+	uint8 slide_in_use;				// 0x15D
 	union {
 		uint16 slide_peep;			// 0x15E
 		uint16 maze_tiles;			// 0x15E
@@ -260,7 +260,7 @@ typedef struct {
 	uint8 pad_160[0xE];
 	uint8 slide_peep_t_shirt_colour;// 0x16E
 	uint8 pad_16F[0x7];
-	uint8 var_176;
+	uint8 spiral_slide_progress;	// 0x176
 	uint8 pad_177[0x9];
 	sint16 build_date;				// 0x180
 	money16 upkeep_cost;			// 0x182
@@ -285,14 +285,7 @@ typedef struct {
 	uint8 downtime;                 // 0x199
 	uint8 inspection_interval;		// 0x19A
 	uint8 last_inspection;			// 0x19B
-	uint8 var_19C;
-	uint8 var_19D;
-	uint8 var_19E;
-	uint8 var_19F;
-	uint8 var_1A0;
-	uint8 var_1A1;
-	uint8 var_1A2;
-	uint8 var_1A3;
+	uint8 downtime_history[8];		// 0x19C
 	uint32 no_primary_items_sold;	// 0x1A4
 	uint32 no_secondary_items_sold; // 0x1A8
 	uint8 breakdown_sound_modifier;	// 0x1AC 
