@@ -1859,8 +1859,8 @@ static void ride_update(int rideIndex)
 	int i;
 	rct_ride *ride = get_ride(rideIndex);
 
-	if (ride->var_1CA != 0)
-		ride->var_1CA--;
+	if (ride->vehicle_change_timeout != 0)
+		ride->vehicle_change_timeout--;
 
 	ride_music_update(rideIndex);
 
@@ -2255,8 +2255,8 @@ void ride_prepare_breakdown(int rideIndex, int breakdownReason)
 
 	ride->breakdown_reason_pending = breakdownReason;
 	ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
-	ride->var_1AC = 0;
-	ride->var_1AD = 0;
+	ride->breakdown_sound_modifier = 0;
+	ride->not_fixed_timeout = 0;
 
 	switch (breakdownReason) {
 	case BREAKDOWN_SAFETY_CUT_OUT:
@@ -2337,12 +2337,15 @@ static void ride_breakdown_status_update(int rideIndex)
 
 	// Warn player if ride hasnt been fixed for ages
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
-		ride->var_1AD++;
-		if (ride->var_1AD == 0)
-			ride->var_1AD -= 16;
+		ride->not_fixed_timeout++;
+		// When there has been a full 255 timeout ticks this
+		// will force timeout ticks to keep issueing news every
+		// 16 ticks. Note there is no reason to do this.
+		if (ride->not_fixed_timeout == 0)
+			ride->not_fixed_timeout -= 16;
 
 		if (
-			!(ride->var_1AD & 15) &&
+			!(ride->not_fixed_timeout & 15) &&
 			ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING &&
 			ride->mechanic_status != RIDE_MECHANIC_STATUS_4
 		) {
@@ -2639,19 +2642,19 @@ static void ride_music_update(int rideIndex)
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
 		if (ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE) {
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7))
-				if (ride->var_1AC != 255)
-					ride->var_1AC++;
+				if (ride->breakdown_sound_modifier != 255)
+					ride->breakdown_sound_modifier++;
 		} else {
 			if (
 				(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) ||
 				ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE ||
 				ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE
 			) {
-				if (ride->var_1AC != 255)
-					ride->var_1AC++;
+				if (ride->breakdown_sound_modifier != 255)
+					ride->breakdown_sound_modifier++;
 			}
 
-			if (ride->var_1AC == 255) {
+			if (ride->breakdown_sound_modifier == 255) {
 				ride->music_tune_id = 255;
 				return;
 			}
@@ -2675,7 +2678,7 @@ static void ride_music_update(int rideIndex)
 
 	// Alter sample rate for a power cut effect
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
-		sampleRate = ride->var_1AC * 70;
+		sampleRate = ride->breakdown_sound_modifier * 70;
 		if (ride->breakdown_reason_pending != BREAKDOWN_CONTROL_FAILURE)
 			sampleRate *= -1;
 		sampleRate += 22050;
@@ -5816,7 +5819,7 @@ foundRideEntry:
 
 	ride->status = RIDE_STATUS_CLOSED;
 	ride->lifecycle_flags = 0;
-	ride->var_1CA = 0;
+	ride->vehicle_change_timeout = 0;
 	ride->num_stations = 0;
 	ride->num_vehicles = 1;
 	ride->var_0CA = 32;
@@ -7520,7 +7523,7 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 
 	ride_clear_for_construction(rideIndex);
 	ride_remove_peeps(rideIndex);
-	ride->var_1CA = 100;
+	ride->vehicle_change_timeout = 100;
 	if (ride->type != RIDE_TYPE_ENTERPRISE) {
 		gfx_invalidate_screen();
 	}

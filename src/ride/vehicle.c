@@ -747,8 +747,8 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		return;
 	}
 
-	uint8 entrance = ride->var_1F6;
-	if (ride->entrances[entrance] != 0xFFFF){
+	uint8 stationId = ride->current_test_station;
+	if (ride->entrances[stationId] != 0xFFFF){
 		uint8 test_segment = ride->current_test_segment;
 
 		ride->var_0E1++;
@@ -803,7 +803,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		ride->var_11F = vehicle->track_z / 8;
 		ride->var_10C = map_location;
 
-		if (ride->entrances[ride->var_1F6] == 0xFFFF)
+		if (ride->entrances[ride->current_test_station] == 0xFFFF)
 			return;
 
 		uint16 track_elem_type = vehicle->track_type / 4;
@@ -988,7 +988,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 
 	}
 
-	if (ride->entrances[ride->var_1F6] == 0xFFFF)
+	if (ride->entrances[ride->current_test_station] == 0xFFFF)
 		return;
 
 	sint16 x, y;
@@ -2059,7 +2059,7 @@ void vehicle_test_reset(rct_vehicle* vehicle) {
 	memset(&ride->length, 0, 4 * 4);
 	memset(&ride->time, 0, 4 * 2);
 	ride->total_air_time = 0;
-	ride->var_1F6 = vehicle->current_station;
+	ride->current_test_station = vehicle->current_station;
 	window_invalidate_by_number(WC_RIDE, vehicle->ride);
 }
 
@@ -2190,7 +2190,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING) {
 				if (ride->current_test_segment + 1 < ride->num_stations) {
 					ride->current_test_segment++;
-					ride->var_1F6 = vehicle->current_station;
+					ride->current_test_station = vehicle->current_station;
 				}
 				else {
 					vehicle_update_test_finish(vehicle);
@@ -3104,7 +3104,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 			if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING) {
 				if (ride->current_test_segment + 1 < ride->num_stations) {
 					ride->current_test_segment++;
-					ride->var_1F6 = vehicle->current_station;
+					ride->current_test_station = vehicle->current_station;
 				}
 				else {
 					vehicle_update_test_finish(vehicle);
@@ -3710,7 +3710,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 
 	sint32 var_4C = (sint16)vehicle->current_time;
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == BREAKDOWN_CONTROL_FAILURE) {
-		var_4C += (ride->var_1AC >> 6) + 1;
+		var_4C += (ride->breakdown_sound_modifier >> 6) + 1;
 	}
 	var_4C++;
 

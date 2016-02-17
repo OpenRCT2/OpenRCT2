@@ -295,8 +295,10 @@ typedef struct {
 	uint8 var_1A3;
 	uint32 no_primary_items_sold;	// 0x1A4
 	uint32 no_secondary_items_sold; // 0x1A8
-	uint8 var_1AC;
-	uint8 var_1AD;
+	uint8 breakdown_sound_modifier;	// 0x1AC 
+	// Used to oscilate the sound when ride breaks down.
+	// 0 = no change, 255 = max change
+	uint8 not_fixed_timeout;		// 0x1AD
 	uint8 last_crash_type;			// 0x1AE
 	uint8 connected_message_throttle;	// 0x1AF
 	money32 income_per_hour;		// 0x1B0
@@ -307,14 +309,14 @@ typedef struct {
 	uint8 track_colour_supports[4];	// 0x1C4
 	uint8 music;					// 0x1C8
 	uint8 entrance_style;			// 0x1C9
-	uint16 var_1CA;
+	uint16 vehicle_change_timeout;	// 0x1CA
 	uint8 num_block_brakes;			// 0x1CC
 	uint8 lift_hill_speed;			// 0x1CD
 	uint16 guests_favourite;		// 0x1CE
 	uint32 lifecycle_flags;			// 0x1D0
 	uint8 vehicle_colours_extended[32];	// 0x1D4
 	uint16 total_air_time;			// 0x1F4
-	uint8 var_1F6;
+	uint8 current_test_station;		// 0x1F6
 	uint8 num_circuits;				// 0x1F7
 	sint16 cable_lift_x;			// 0x1F8
 	sint16 cable_lift_y;			// 0x1FA

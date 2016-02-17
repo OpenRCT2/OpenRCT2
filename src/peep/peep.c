@@ -1808,7 +1808,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	}
 
 	if (ride->status != RIDE_STATUS_OPEN ||
-		ride->var_1CA != 0){
+		ride->vehicle_change_timeout != 0){
 		if (peep->destination_tolerence == 0){
 			remove_peep_from_queue(peep);
 			peep_decrement_num_riders(peep);
@@ -2231,7 +2231,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13)){
 		if (ride->status != RIDE_STATUS_OPEN ||
-			ride->var_1CA != 0 ||
+			ride->vehicle_change_timeout != 0 ||
 			(++peep->var_AC) == 0){
 
 			peep_update_ride_sub_state_2_rejoin_queue(peep, ride);
