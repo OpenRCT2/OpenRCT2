@@ -770,7 +770,7 @@ static void window_cheats_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gCheatsUnlockAllPrices);
 		widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
 		w->widgets[WIDX_SANDBOX_MODE].image = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
-		w->widgets[WIDX_FREEZE_CLIMATE].image = g_climate_locked ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;
+		w->widgets[WIDX_FREEZE_CLIMATE].image = gCheatsFreezeClimate ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;
 		widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:

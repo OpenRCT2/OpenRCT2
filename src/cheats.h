@@ -36,6 +36,7 @@ extern bool gCheatsBuildInPauseMode;
 extern bool gCheatsIgnoreRideIntensity;
 extern bool gCheatsDisableVandalism;
 extern bool gCheatsNeverendingMarketing;
+extern bool gCheatsFreezeClimate;
 
 enum {
 	CHEAT_SANDBOXMODE,

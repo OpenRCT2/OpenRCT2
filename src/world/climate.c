@@ -29,6 +29,7 @@
 #include "../interface/window.h"
 #include "../util/util.h"
 #include "climate.h"
+#include "../cheats.h"
 
 enum {
 	THUNDER_STATUS_NULL = 0,
@@ -84,10 +85,6 @@ int climate_celsius_to_fahrenheit(int celsius)
 	return (celsius * 29) / 16 + 32;
 }
 
-// cheats
-int g_climate_locked;
-extern void toggle_climate_lock();
-
 /**
  * Set climate and determine start weather.
  *  rct2: 0x006C45ED
@@ -124,13 +121,6 @@ sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
 	}
 }
 
-
-//for cheats
-void toggle_climate_lock()
-{
-	g_climate_locked = !g_climate_locked;
-}
-
 /**
  * Weather & climate update iteration.
  * Gradually changes the weather parameters towards their determined next values.
@@ -147,7 +137,7 @@ void climate_update()
 		cur_rain = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8),
 		next_rain = _climateNextRainLevel;
 
-	if (g_climate_locked) //for cheats
+	if (gCheatsFreezeClimate) //for cheats
 		return;
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
