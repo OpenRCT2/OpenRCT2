@@ -20,6 +20,7 @@ bool gCheatsBuildInPauseMode = false;
 bool gCheatsIgnoreRideIntensity = false;
 bool gCheatsDisableVandalism = false;
 bool gCheatsNeverendingMarketing = false;
+bool gCheatsFreezeClimate = false;
 
 int park_rating_spinner_value;
 
@@ -383,7 +384,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_10MINUTEINSPECTIONS: cheat_10_minute_inspections(); break;
 			case CHEAT_WINSCENARIO: scenario_success(); break;
 			case CHEAT_FORCEWEATHER: climate_force_weather(*edx); break;
-			case CHEAT_FREEZECLIMATE: toggle_climate_lock(); break;
+			case CHEAT_FREEZECLIMATE: gCheatsFreezeClimate = !gCheatsFreezeClimate; break;
 			case CHEAT_NEVERENDINGMARKETING: gCheatsNeverendingMarketing = !gCheatsNeverendingMarketing; break;
 			case CHEAT_OPENCLOSEPARK: park_set_open(park_is_open() ? 0 : 1); break;
 			case CHEAT_HAVEFUN: RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = OBJECTIVE_HAVE_FUN; break;
@@ -411,4 +412,6 @@ void cheats_reset()
 	gCheatsBuildInPauseMode = false;
 	gCheatsIgnoreRideIntensity = false;
 	gCheatsDisableVandalism = false;
+	gCheatsNeverendingMarketing = false;
+	gCheatsFreezeClimate = false;
 }
