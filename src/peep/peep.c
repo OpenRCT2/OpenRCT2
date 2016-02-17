@@ -41,6 +41,7 @@
 #include "../cheats.h"
 #include "peep.h"
 #include "staff.h"
+#include "../world/map.h"
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -82,7 +83,7 @@ static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
 static void peep_reset_pathfind_goal(rct_peep *peep);
 static void peep_easter_egg_peep_interactions(rct_peep *peep);
-static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView);
+static bool sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
 static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
@@ -104,6 +105,8 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep *peep, rct_r
 static bool peep_update_fixing_sub_state_13(bool firstRun, int steps, rct_peep *peep, rct_ride *ride);
 static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_ride *ride);
 static void sub_6B7588(int rideIndex);
+
+bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi);
 
 const char *gPeepEasterEggNames[] = {
 	"MICHAEL SCHUMACHER",
@@ -9267,20 +9270,330 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
 }
 
 /**
+ * rct2: 0x0069101A
+ *
+ * @return (CF)
+ */
+static bool sub_69101A(rct_map_element *esi) {
+	rct_ride *ride = get_ride(esi->properties.track.ride_index);
+	if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] != 0) {
+		return true;
+	}
+
+	if ((uint16) ride->excitement == 0xFFFF) {
+		return false;
+	}
+
+	if (ride->excitement >= RIDE_RATING(4, 70)) {
+		return false;
+	}
+
+	if (ride->intensity >= RIDE_RATING(4, 50)) {
+		return false;
+	}
+
+	if (RideData4[ride->type].flags & 0x2000) {
+		if ((scenario_rand() & 0xFFFF) > 0x3333) {
+			return true;
+		}
+	} else if (RideData4[ride->type].flags & 0x4000) {
+		if ((scenario_rand() & 0xFFFF) > 0x1000) {
+			return true;
+		}
+	} else {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x00690B99
+ *
+ * @param edge (eax)
+ * @param peep (esi)
+ * @param[out] rideToView (cl)
+ * @param[out] rideSeatToView (ch)
+ * @return !CF
+ */
+static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView)
+{
+	rct_map_element *mapElement, *surfaceElement;
+
+	surfaceElement = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+
+	mapElement = surfaceElement;
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if (map_element_get_direction(mapElement) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (peep->next_z + 4 <= mapElement->base_height) continue;
+		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
+
+		return false;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+
+	uint16 x = peep->next_x + TileDirectionDelta[edge].x;
+	uint16 y = peep->next_y + TileDirectionDelta[edge].y;
+	if (x > 255 * 32 || y > 255 * 32) {
+		return false;
+	}
+
+	surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+
+
+	mapElement = surfaceElement;
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		// TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
+		if (peep->next_z + 4 >= mapElement->base_height) continue;
+		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
+
+		return false;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+
+	// TODO: Extract loop B
+	mapElement = surfaceElement;
+	do {
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 6 < mapElement->base_height) continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
+			if (!sub_69101A(mapElement)) {
+				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+			}
+		}
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
+				continue;
+			}
+
+			*rideSeatToView = 0;
+			if (mapElement->clearance_height >= peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			*rideToView = 0xFF;
+
+			return true;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+
+	// TODO: Extract loop C
+	mapElement = surfaceElement;
+	do {
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 6 < mapElement->base_height) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
+			if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
+				continue;
+			}
+		}
+
+		return false;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+
+	x += TileDirectionDelta[edge].x;
+	y += TileDirectionDelta[edge].y;
+	if (x > 255 * 32 || y > 255 * 32) {
+		return false;
+	}
+
+	surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+
+
+	// TODO: extract loop A
+	mapElement = surfaceElement;
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (peep->next_z + 6 <= mapElement->base_height) continue;
+		if (peep->next_z >= mapElement->clearance_height) continue;
+
+		return false;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+
+	// TODO: Extract loop B
+	mapElement = surfaceElement;
+	do {
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 8 < mapElement->base_height) continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
+			if (!sub_69101A(mapElement)) {
+				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+			}
+		}
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
+				continue;
+			}
+
+			*rideSeatToView = 0;
+			if (mapElement->clearance_height >= peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			*rideToView = 0xFF;
+
+			return true;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+
+	// TODO: Extract loop C
+	mapElement = surfaceElement;
+	do {
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 8 < mapElement->base_height) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) continue;
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
+			if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
+				continue;
+			}
+		}
+
+		return false;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	x += TileDirectionDelta[edge].x;
+	y += TileDirectionDelta[edge].y;
+	if (x > 255 * 32 || y > 255 * 32) {
+		return false;
+	}
+
+	surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+
+
+	// TODO: extract loop A
+	mapElement = surfaceElement;
+	do {
+		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
+		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
+		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (peep->next_z + 8 <= mapElement->base_height) continue;
+		if (peep->next_z >= mapElement->clearance_height) continue;
+
+		return false;
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+
+	// TODO: Extract loop B
+	mapElement = surfaceElement;
+	do {
+		if (mapElement->clearance_height + 1 < peep->next_z) continue;
+		if (peep->next_z + 10 < mapElement->base_height) continue;
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
+			if (!sub_69101A(mapElement)) {
+				return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+			}
+		}
+
+		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
+				continue;
+			}
+
+			*rideSeatToView = 0;
+			if (mapElement->clearance_height >= peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			*rideToView = 0xFF;
+
+			return true;
+		}
+	} while (!map_element_is_last_for_tile(mapElement++));
+
+	return false;
+}
+
+/**
  *
  *  rct2: 0x00690B99
  */
-static bool sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView)
-{
+static bool original_sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView) {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	eax = edge;
 	esi = (int)peep;
 	if (RCT2_CALLFUNC_X(0x00690B99, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
 		return false;
 
-	*rideToView = ecx & 0xFF;
-	*rideSeatToView = (ecx >> 8) & 0xFF;
+	*rideToView = ecx & 0xFF; // CL
+	*rideSeatToView = (ecx >> 8) & 0xFF; // CH
 	return true;
+}
+
+/**
+ *
+ *  rct2: 0x00690B99
+ */
+static bool sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView) {
+	uint32 srand_0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
+	uint32 srand_1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32);
+
+	uint8 originalRideToView, originalRideSeatToView;
+	bool originalOut = original_sub_690B99(peep, edge, &originalRideToView, &originalRideSeatToView);
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) = srand_0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = srand_1;
+
+	uint8 newRideToView, newRideSeatToView;
+	bool newOut = new_sub_690B99(peep, edge, &newRideToView, &newRideSeatToView);
+
+	assert(newOut == originalOut);
+	if (newOut) {
+		assert(newRideToView == originalRideToView);
+		assert(newRideSeatToView == originalRideSeatToView);
+	}
+
+	*rideToView = newRideToView;
+	*rideSeatToView = newRideSeatToView;
+	return newOut;
+}
+
+bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi) {
+	rct_ride *ride = get_ride(esi->properties.track.ride_index);
+
+	*rideToView = esi->properties.track.ride_index;
+	if ((uint16) ride->excitement == 0xFFFF) {
+		*rideSeatToView = 1;
+		if (ride->status != RIDE_STATUS_OPEN) {
+			if (esi->clearance_height > peep->next_z + 8) {
+				*rideSeatToView |= (1 << 1);
+			}
+
+			return true;
+		}
+	} else {
+		*rideSeatToView = 0;
+		if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
+			if (esi->clearance_height > peep->next_z + 8) {
+				*rideSeatToView = 0x02;
+			}
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**

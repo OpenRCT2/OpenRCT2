@@ -99,7 +99,7 @@ typedef enum {
 	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
 	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
 	WALL_SCENERY_FLAG3 = (1 << 2),		// 0x4
-	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
+	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8  // Probably indicates translucency
 	WALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
 	WALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
 	WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),		// 0x40
