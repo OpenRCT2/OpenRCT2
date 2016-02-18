@@ -71,6 +71,8 @@ extern "C" {
 #define NETWORK_STREAM_VERSION "2"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
+#define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
+
 #ifdef __WINDOWS__
 	#include <winsock2.h>
 	#include <ws2tcpip.h>
@@ -240,14 +242,18 @@ public:
 	void ResetLastPacketTime();
 	bool ReceivedPacketRecently();
 
+	const char *getLastDisconnectReason() const;
+	void setLastDisconnectReason(const char *src);
+	void setLastDisconnectReason(const rct_string_id string_id);
+
 	SOCKET socket;
 	NetworkPacket inboundpacket;
 	int authstatus;
 	NetworkPlayer* player;
 	uint32 ping_time;
-	const char* last_disconnect_reason;
 
 private:
+	char* last_disconnect_reason;
 	bool SendPacket(NetworkPacket& packet);
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
 	uint32 last_packet_time;
