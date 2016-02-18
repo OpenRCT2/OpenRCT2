@@ -2399,7 +2399,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 
 	uint16 ax = _currentTrackCurve;
 	if (ax == 0xFFFF) {
-		return true;
+		return false;
 	}
 
 	printf("[ax=%d, bl=%d, bh=%d, cl=%d, ch=%d, rotation=%d, state=%d]\n", ax, bl, bh, cl, ch, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), _rideConstructionState);
@@ -2472,7 +2472,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 						return true;
 					}
 
-					if (ch == 0) {
+					if (ch != 0) {
 						return false;
 					}
 
@@ -2498,7 +2498,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 						}
 
 						*dh = 0x74;
-						if (cl == 2) {
+						if (cl == 4) {
 							return true;
 						}
 
@@ -2516,7 +2516,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 						return true;
 					}
 
-					if (ch == 0) {
+					if (ch != 0) {
 						return false;
 					}
 
