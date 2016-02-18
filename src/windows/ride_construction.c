@@ -2550,7 +2550,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 						return true;
 					}
 
-					if (ch == 0) {
+					if (ch != 0) {
 						return false;
 					}
 
