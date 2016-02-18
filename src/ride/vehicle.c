@@ -8075,6 +8075,8 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	}
 	// loc_6DC144
 	vehicle = RCT2_GLOBAL(0x00F64E04, rct_vehicle*);
+
+	vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	//eax
 	sint32 totalAcceleration = 0;
 	//ebp
