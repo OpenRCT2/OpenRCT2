@@ -2753,7 +2753,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 					return true;
 				}
 
-				*dh = 0x18;
+				*dh = 0x1B;
 				return true;
 			}
 
@@ -2889,7 +2889,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 				return true;
 			}
 
-			if (bh == 0) {
+			if (bh != 0) {
 				return false;
 			}
 
@@ -2933,7 +2933,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 				return true;
 			}
 
-			if (bh == 2) {
+			if (bh != 2) {
 				return false;
 			}
 
@@ -2957,7 +2957,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 				return true;
 			}
 
-			*dh = 0x98;
+			*dh = 0x9B;
 			if (bh == 0) {
 				return true;
 			}
@@ -3413,12 +3413,12 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 				return false;
 			}
 
-			*dh = 0x86;
+			*dh = 0x88;
 			if (ch == 0) {
 				return true;
 			}
 
-			*dh = 0x8A;
+			*dh = 0x8C;
 			return true;
 		}
 
@@ -3444,12 +3444,12 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 			return false;
 		}
 
-		*dh = 0x88;
+		*dh = 0x86;
 		if (ch == 0) {
 			return true;
 		}
 
-		*dh = 0x8C;
+		*dh = 0x8A;
 		return true;
 	}
 
