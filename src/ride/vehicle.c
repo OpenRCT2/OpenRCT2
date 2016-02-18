@@ -751,15 +751,15 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 	if (ride->entrances[stationId] != 0xFFFF){
 		uint8 test_segment = ride->current_test_segment;
 
-		ride->var_0E1++;
-		if (ride->var_0E1 >= 32)ride->var_0E1 = 0;
+		ride->average_speed_test_timeout++;
+		if (ride->average_speed_test_timeout >= 32)ride->average_speed_test_timeout = 0;
 
 		sint32 velocity = abs(vehicle->velocity);
 		if (velocity > ride->max_speed){
 			ride->max_speed = velocity;
 		}
 
-		if (ride->var_0E1 == 0 && velocity > 0x8000){
+		if (ride->average_speed_test_timeout == 0 && velocity > 0x8000){
 			ride->average_speed += velocity;
 			ride->time[test_segment]++;
 		}
@@ -798,10 +798,11 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		}
 	}
 
+	// If we have already evaluated this track piece skip to next section
 	uint16 map_location = (vehicle->track_x / 32) | ((vehicle->track_y / 32) << 8);
-	if (vehicle->track_z / 8 != ride->var_11F || map_location != ride->var_10C){
-		ride->var_11F = vehicle->track_z / 8;
-		ride->var_10C = map_location;
+	if (vehicle->track_z / 8 != ride->cur_test_track_z || map_location != ride->cur_test_track_location.xy){
+		ride->cur_test_track_z = vehicle->track_z / 8;
+		ride->cur_test_track_location.xy = map_location;
 
 		if (ride->entrances[ride->current_test_station] == 0xFFFF)
 			return;
@@ -2037,15 +2038,15 @@ void vehicle_test_reset(rct_vehicle* vehicle) {
 	ride->max_speed = 0;
 	ride->average_speed = 0;
 	ride->current_test_segment = 0;
-	ride->var_0E1 = 0;
+	ride->average_speed_test_timeout = 0;
 	ride->max_positive_vertical_g = FIXED_2DP(1, 0);
 	ride->max_negative_vertical_g = FIXED_2DP(1, 0);
 	ride->max_lateral_g = 0;
 	ride->previous_vertical_g = 0;
 	ride->previous_lateral_g = 0;
 	ride->testing_flags = 0;
-	ride->var_10C = 0xFFFF;
-	ride->var_11F = 0xFF;
+	ride->cur_test_track_location.xy = 0xFFFF;
+	ride->cur_test_track_z = 0xFF;
 	ride->turn_count_default = 0;
 	ride->turn_count_banked = 0;
 	ride->turn_count_sloped = 0;

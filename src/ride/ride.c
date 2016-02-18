@@ -5817,10 +5817,10 @@ foundRideEntry:
 	ride->vehicle_change_timeout = 0;
 	ride->num_stations = 0;
 	ride->num_vehicles = 1;
-	ride->var_0CA = 32;
+	ride->proposed_num_vehicles = 32;
 	ride->max_trains = 32;
 	ride->num_cars_per_train = 1;
-	ride->var_0CB = 12;
+	ride->proposed_num_cars_per_train = 12;
 	ride->min_waiting_time = 10;
 	ride->max_waiting_time = 60;
 	ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
@@ -7326,7 +7326,7 @@ void ride_update_max_vehicles(int rideIndex)
 				break;
 			}
 		}
-		int newCarsPerTrain = max(ride->var_0CB, rideEntry->min_cars_in_train);
+		int newCarsPerTrain = max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
 		maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
 		newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
 		ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
@@ -7395,13 +7395,13 @@ void ride_update_max_vehicles(int rideIndex)
 		}
 		ride->max_trains = maxNumTrains;
 
-		numCarsPerTrain = min(ride->var_0CB, newCarsPerTrain);
-		numVehicles = min(ride->var_0CA, maxNumTrains);
+		numCarsPerTrain = min(ride->proposed_num_cars_per_train, newCarsPerTrain);
+		numVehicles = min(ride->proposed_num_vehicles, maxNumTrains);
 	} else {
 		ride->max_trains = rideEntry->cars_per_flat_ride;
 		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
 		numCarsPerTrain = rideEntry->max_cars_in_train;
-		numVehicles = min(ride->var_0CA, rideEntry->cars_per_flat_ride);
+		numVehicles = min(ride->proposed_num_vehicles, rideEntry->cars_per_flat_ride);
 	}
 
 	// Refresh new current num vehicles / num cars per vehicle
@@ -7524,7 +7524,7 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 
 	switch (commandType) {
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS:
-		ride->var_0CA = value;
+		ride->proposed_num_vehicles = value;
 		if (ride->type != RIDE_TYPE_SPACE_RINGS) {
 			gfx_invalidate_screen();
 		}
@@ -7533,7 +7533,7 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		invalidate_test_results(rideIndex);
 		rideEntry = get_ride_entry(ride->subtype);
 		value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
-		ride->var_0CB = value;
+		ride->proposed_num_cars_per_train = value;
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
 		invalidate_test_results(rideIndex);
