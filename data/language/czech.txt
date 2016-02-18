@@ -4042,6 +4042,11 @@ STR_5733    :U celočíselného škálování používat NS metodu
 STR_5734    :{SMALLFONT}{BLACK}Vykreslování
 STR_5735    :Stav připojení
 STR_5736    :Hráč
+STR_5737    :Zavřeno, {COMMA16} návštěvník zůstal na atrakci
+STR_5738    :Zavřeno, {COMMA16} návštěvníků zůstalo na atrakci
+STR_5739    :{WINDOW_COLOUR_2}Návštěvníci na atrakci: {BLACK}{COMMA16}
+STR_5740    :Nekonečné marketingové kampaně
+STR_5741    :{SMALLFONT}{BLACK}Reklamní marketingové kampaně nikdy neskončí
 
 ###############################################################################
 ## RCT2 Objects

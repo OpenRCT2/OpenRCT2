@@ -4038,6 +4038,9 @@ STR_5733    :정수배 확대시 NN 스케일링 사용
 STR_5734    :{SMALLFONT}{BLACK}렌더링
 STR_5735    :네트워크 상태
 STR_5736    :플레이어
+STR_5737    :닫힘, {COMMA16}명의 손님이 아직 놀이기구에 있음
+STR_5738    :닫힘, {COMMA16}명의 손님이 아직 놀이기구에 있음
+STR_5739    :{WINDOW_COLOUR_2}놀이기구를 타고 있는 손님: {BLACK}{COMMA16}명
 
 #############
 # Scenarios #

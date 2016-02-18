@@ -4034,6 +4034,11 @@ STR_5733    :Pixelwdh. bei ganzzahligem Skalierungsfaktor
 STR_5734    :{SMALLFONT}{BLACK}Darstellung
 STR_5735    :Netzwerkstatus
 STR_5736    :Spieler
+STR_5737    :Geschlossen, noch {COMMA16} Person auf Fahrt
+STR_5738    :Geschlossen, noch {COMMA16} Personen auf Fahrt
+STR_5739    :{WINDOW_COLOUR_2}Besucher auf Fahrt: {BLACK}{COMMA16}
+STR_5740    :Dauerhafte Marketingkampagnen
+STR_5741    :{SMALLFONT}{BLACK}Marketingkampagnen sind dauerhaft
 
 #############
 # Scenarios #
