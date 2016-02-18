@@ -3526,41 +3526,33 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 	rct_ride *ride = get_ride(rideIndex);
 
 	if (_enabledRidePiecesB & (1 << 8)) {
-		if (trackType == 0x3E) {
-			trackType = 0x76;
-		}
+		switch (trackType) {
+			case TRACK_ELEM_FLAT_TO_60_DEG_UP:
+				trackType = TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE;
+				break;
 
-		if (trackType == 0x3F) {
-			trackType = 0x77;
-		}
+			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+				trackType = TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE;
+				break;
 
-		if (trackType == 0x48) {
-			trackType = 0x7A;
-		}
+			case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
+				trackType = TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122;
+				break;
 
-		if (trackType == 14) {
-			trackType = 0x79;
-		}
+			case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+				trackType = TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE;
+				break;
 
-		if (trackType == 0x9A) {
-			return true;
-		}
-
-		if (trackType == 0x98) {
-			return true;
-		}
-
-		if (trackType == 0x9D) {
-			return true;
-		}
-
-		if (trackType == 0x9C) {
-			return true;
+			case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+			case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+			case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+				return true;
 		}
 	}
 
-	if (ride_type_has_flag(ride->type, 0x1000) && _currentTrackCovered != 1) {
-		if (ride->type == RIDE_TYPE_WATER_COASTER || trackType == 0 || trackType == 0x10 || trackType == 0x11) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES) && _currentTrackCovered & 1) {
+		if (ride->type == RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) {
 			trackType = RCT2_GLOBAL(0x00993D1C + trackType, uint8);
 			edxRS16 &= 0xFFFE; // unsets 0x1
 		}
@@ -3568,7 +3560,7 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 
 	z = _currentTrackBeginZ;
 	rct_track_coordinates trackCoordinates;
-	if (ride_type_has_flag(ride->type, 0x80000)) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 		trackCoordinates = FlatTrackCoordinates[trackType];
 	} else {
 		trackCoordinates = TrackCoordinates[trackType];
@@ -3587,35 +3579,27 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 			trackDirection |= 0x04;
 		}
 
-		sint16 deltaX = trackCoordinates.x;
-		sint16 deltaY = trackCoordinates.y;
-		sint16 temp;
 		switch (trackDirection & 0x03) {
 			case 0:
-				deltaX = -deltaX;
-				deltaY = -deltaY;
+				x -= trackCoordinates.x;
+				y -= trackCoordinates.y;
 				break;
 
 			case 1:
-				deltaY = -deltaY;
-				temp = deltaY;
-				deltaY = deltaX;
-				deltaX = temp;
+				x -= trackCoordinates.y;
+				y += trackCoordinates.x;
+				break;
+
+			case 2:
+				x += trackCoordinates.x;
+				y += trackCoordinates.y;
 				break;
 
 			case 3:
-				deltaX = -deltaX;
-				temp = deltaY;
-				deltaY = deltaX;
-				deltaX = temp;
-				break;
-
-			default:
+				x += trackCoordinates.y;
+				y -= trackCoordinates.x;
 				break;
 		}
-
-		x += deltaX;
-		y += deltaY;
 	} else {
 		z -= trackCoordinates.z_begin;
 		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
@@ -3638,13 +3622,13 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 		edxRS16 &= 0xFFFE; // unsets 0x1
 		_currentTrackLiftHill &= 0xFE;
 
-		if (trackType == 0xD1 || trackType == 0xD2) {
+		if (trackType == TRACK_ELEM_LEFT_CURVED_LIFT_HILL || trackType == TRACK_ELEM_RIGHT_CURVED_LIFT_HILL) {
 			edxRS16 |= 0x1;
 		}
 	}
 
 	// loc_6CAF49:
-	if (trackType == 0x63) {
+	if (trackType == TRACK_ELEM_BRAKES) {
 		uint32 ebp = RCT2_GLOBAL(0x00F440CD, uint8) << 16;
 		properties &= 0xFFFF;
 		properties |= ebp;
