@@ -3552,56 +3552,51 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 	}
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES) && _currentTrackCovered & 1) {
-		if (ride->type == RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) {
+		if (ride->type != RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) {
 			trackType = RCT2_GLOBAL(0x00993D1C + trackType, uint8);
 			edxRS16 &= 0xFFFE; // unsets 0x1
 		}
 	}
 
 	z = _currentTrackBeginZ;
-	rct_track_coordinates trackCoordinates;
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
-		trackCoordinates = FlatTrackCoordinates[trackType];
-	} else {
-		trackCoordinates = TrackCoordinates[trackType];
-	}
+	const rct_track_coordinates *trackCoordinates = get_track_coord_from_ride(ride, trackType);
 
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
 	if (_rideConstructionState == 2) {
-		z -= trackCoordinates.z_end;
+		z -= trackCoordinates->z_end;
 		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) ^ 0x02;
-		trackDirection -= trackCoordinates.rotation_end;
-		trackDirection += trackCoordinates.rotation_begin;
+		trackDirection -= trackCoordinates->rotation_end;
+		trackDirection += trackCoordinates->rotation_begin;
 		trackDirection &= 0x03;
 
-		if (trackCoordinates.rotation_begin == 4) {
+		if (trackCoordinates->rotation_begin & (1 << 2)) {
 			trackDirection |= 0x04;
 		}
 
 		switch (trackDirection & 0x03) {
 			case 0:
-				x -= trackCoordinates.x;
-				y -= trackCoordinates.y;
+				x -= trackCoordinates->x;
+				y -= trackCoordinates->y;
 				break;
 
 			case 1:
-				x -= trackCoordinates.y;
-				y += trackCoordinates.x;
+				x -= trackCoordinates->y;
+				y += trackCoordinates->x;
 				break;
 
 			case 2:
-				x += trackCoordinates.x;
-				y += trackCoordinates.y;
+				x += trackCoordinates->x;
+				y += trackCoordinates->y;
 				break;
 
 			case 3:
-				x += trackCoordinates.y;
-				y -= trackCoordinates.x;
+				x += trackCoordinates->y;
+				y -= trackCoordinates->x;
 				break;
 		}
 	} else {
-		z -= trackCoordinates.z_begin;
+		z -= trackCoordinates->z_begin;
 		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 	}
 
