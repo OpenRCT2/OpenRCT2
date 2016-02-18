@@ -4242,7 +4242,7 @@ static bool track_remove_station_element(int x, int y, int z, int direction, int
 	int stationY0 = y;
 	int stationX1 = x;
 	int stationY1 = y;
-	int stationLength = 1;
+	int stationLength = 0;
 	int byte_F441D1 = -1;
 
 	rct_ride *ride = get_ride(rideIndex);
