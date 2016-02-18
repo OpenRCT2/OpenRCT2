@@ -1925,30 +1925,27 @@ static void ride_update(int rideIndex)
  */
 static void ride_chairlift_update(rct_ride *ride)
 {
-	int x, y, z, ax, bx, cx;
+	int x, y, z;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
 		return;
-	if (!(ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
-		return;
-	if (ride->breakdown_reason_pending == 0)
-		return;
-
-	ax = ride->operation_option * 2048;
-	bx = ride->var_148;
-	cx = bx + ax;
-	ride->var_148 = cx;
-	if (bx >> 14 == cx >> 14)
+	if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) && 
+		ride->breakdown_reason_pending == 0)
 		return;
 
-	x = (ride->var_13A & 0xFF) * 32;
-	y = (ride->var_13A >> 8) * 32;
-	z = ride->var_13E * 8;
+	uint16 old_chairlift_bullwheel_rotation = ride->chairlift_bullwheel_rotation >> 14;
+	ride->chairlift_bullwheel_rotation += ride->speed * 2048;
+	if (old_chairlift_bullwheel_rotation == ride->speed / 8)
+		return;
+
+	x = ride->chairlift_bullwheel_location[0].x * 32;
+	y = ride->chairlift_bullwheel_location[0].y * 32;
+	z = ride->chairlift_bullwheel_z[0] * 8;
 	map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
 
-	x = (ride->var_13C & 0xFF) * 32;
-	y = (ride->var_13C >> 8) * 32;
-	z = ride->var_13F * 8;
+	x = ride->chairlift_bullwheel_location[1].x * 32;
+	y = ride->chairlift_bullwheel_location[1].y * 32;
+	z = ride->chairlift_bullwheel_z[1] * 8;
 	map_invalidate_tile_zoom1(x, y, z, z + (4 * 8));
 }
 
@@ -4099,8 +4096,9 @@ bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *
 	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
 		return false;
 	}
-	ride->var_13A = (trackBack.x >> 5) | ((trackBack.y >> 5) << 8);
-	ride->var_13E = trackBack.element->base_height;
+	ride->chairlift_bullwheel_location[0].x = trackBack.x >> 5;
+	ride->chairlift_bullwheel_location[0].y = trackBack.y >> 5;
+	ride->chairlift_bullwheel_z[0] = trackBack.element->base_height;
 
 	// Check front of the track
 	track_get_front(input, &trackFront);
@@ -4108,8 +4106,9 @@ bool ride_check_start_and_end_is_station(rct_xy_element *input, rct_xy_element *
 	if (!(RCT2_GLOBAL(0x0099BA64 + (trackType * 16), uint32) & 0x10)) {
 		return false;
 	}
-	ride->var_13C = (trackFront.x >> 5) | ((trackFront.y >> 5) << 8);
-	ride->var_13F = trackFront.element->base_height;
+	ride->chairlift_bullwheel_location[1].x = trackFront.x >> 5;
+	ride->chairlift_bullwheel_location[1].y = trackFront.y >> 5;
+	ride->chairlift_bullwheel_z[1] = trackFront.element->base_height;
 	return true;
 }
 
@@ -5843,7 +5842,7 @@ foundRideEntry:
 	ride->excitement = (ride_rating)-1;
 	ride->cur_num_customers = 0;
 	ride->num_customers_timeout = 0;
-	ride->var_148 = 0;
+	ride->chairlift_bullwheel_rotation = 0;
 
 	ride->price = 0;
 	ride->price_secondary = 0;

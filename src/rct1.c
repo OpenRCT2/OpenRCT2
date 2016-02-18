@@ -717,8 +717,8 @@ static void rct1_fix_z()
 		if (ride->var_11F != 255) {
 			ride->var_11F /= 2;
 		}
-		ride->var_13E /= 2;
-		ride->var_13F /= 2;
+		ride->chairlift_bullwheel_z[0] /= 2;
+		ride->chairlift_bullwheel_z[1] /= 2;
 	}
 
 	for (int i = 0; i < RCT2_GLOBAL(0x0138B580, uint16); i++) {

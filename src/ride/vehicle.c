@@ -6797,8 +6797,8 @@ loc_6DB41D:
 		regs.cx >>= 5;
 		regs.ah = regs.cl;
 		regs.dx >>= 3;
-		if (regs.ax != ride->var_13C || regs.dl != ride->var_13F) {
-			if (regs.ax == ride->var_13A && regs.dl == ride->var_13E) {
+		if (regs.ax != ride->chairlift_bullwheel_location[1].xy || regs.dl != ride->chairlift_bullwheel_z[1]) {
+			if (regs.ax == ride->chairlift_bullwheel_location[0].xy && regs.dl == ride->chairlift_bullwheel_z[0]) {
 				vehicle->var_CD = 4;
 			}
 		}
@@ -7144,14 +7144,14 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 		vehicle->var_CD < 5
 		) {
 		sint16 xy = (x >> 5) | ((y >> 5) << 8);
-		if (ride->var_13C == xy &&
-			ride->var_13F == (z >> 3)
+		if (ride->chairlift_bullwheel_location[1].xy == xy &&
+			ride->chairlift_bullwheel_z[1] == (z >> 3)
 			) {
 			vehicle->var_CD = 3;
 		}
 		else if (
-			ride->var_13A == xy &&
-			ride->var_13E == (z >> 3)
+			ride->chairlift_bullwheel_location[0].xy == xy &&
+			ride->chairlift_bullwheel_z[1] == (z >> 3)
 			) {
 			vehicle->var_CD = 4;
 		}

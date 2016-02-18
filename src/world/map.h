@@ -233,7 +233,12 @@ enum {
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
 typedef struct {
-	uint8 x, y;
+	union {
+		struct {
+			uint8 x, y;
+		};
+		uint16 xy;
+	};
 } rct_xy8;
 
 typedef struct{

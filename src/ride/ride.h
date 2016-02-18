@@ -225,10 +225,8 @@ typedef struct {
 	// Customer count in the last 10 * 960 game ticks (sliding window)
 	uint16 num_customers[10];       // 0x124
 	money16 price;					// 0x138
-	sint16 var_13A;
-	sint16 var_13C;
-	uint8 var_13E;
-	uint8 var_13F;
+	rct_xy8 chairlift_bullwheel_location[2]; // 0x13A
+	uint8 chairlift_bullwheel_z[2];	// 0x13E
 	union {
 		rating_tuple ratings;		// 0x140
 		struct {
@@ -238,7 +236,7 @@ typedef struct {
 		};
 	};
 	uint16 value;					// 0x146
-	uint16 var_148;
+	uint16 chairlift_bullwheel_rotation;	// 0x148
 	uint8 satisfaction;				// 0x14A
 	uint8 satisfaction_time_out;	// 0x14B
 	uint8 satisfaction_next;		// 0x14C
