@@ -2381,6 +2381,125 @@ void sub_6C84CE()
 	window_ride_construction_update_widgets(w);
 }
 
+char *track_curve_description(uint16 trackCurve) {
+	switch (trackCurve) {
+		case TRACK_CURVE_NONE:
+			return "TRACK_CURVE_NONE";
+
+		case TRACK_CURVE_LEFT:
+			return "TRACK_CURVE_LEFT";
+
+		case TRACK_CURVE_RIGHT:
+			return "TRACK_CURVE_RIGHT";
+
+		case TRACK_CURVE_LEFT_SMALL:
+			return "TRACK_CURVE_LEFT_SMALL";
+
+		case TRACK_CURVE_RIGHT_SMALL:
+			return "TRACK_CURVE_RIGHT_SMALL";
+
+		case TRACK_CURVE_LEFT_VERY_SMALL:
+			return "TRACK_CURVE_LEFT_VERY_SMALL";
+
+		case TRACK_CURVE_RIGHT_VERY_SMALL:
+			return "TRACK_CURVE_RIGHT_VERY_SMALL";
+
+		case TRACK_CURVE_LEFT_LARGE:
+			return "TRACK_CURVE_LEFT_LARGE";
+
+		case TRACK_CURVE_RIGHT_LARGE:
+			return "TRACK_CURVE_RIGHT_LARGE";
+
+		default:
+			return "";
+	}
+}
+
+char *track_slope_description(uint8 trackSlope) {
+	switch (trackSlope) {
+		case TRACK_SLOPE_NONE:
+			return "TRACK_SLOPE_NONE";
+
+		case TRACK_SLOPE_UP_25:
+			return "TRACK_SLOPE_UP_25";
+
+		case TRACK_SLOPE_UP_60:
+			return "TRACK_SLOPE_UP_60";
+
+		case TRACK_SLOPE_DOWN_25:
+			return "TRACK_SLOPE_DOWN_25";
+
+		case TRACK_SLOPE_DOWN_60:
+			return "TRACK_SLOPE_DOWN_60";
+
+		case TRACK_SLOPE_UP_90:
+			return "TRACK_SLOPE_UP_90";
+
+		case TRACK_SLOPE_DOWN_90:
+			return "TRACK_SLOPE_DOWN_90";
+
+		default:
+			return "";
+	}
+}
+
+char *track_bank_description(uint8 trackBank) {
+	switch (trackBank) {
+		case TRACK_BANK_NONE:
+			return "TRACK_BANK_NONE";
+
+		case TRACK_BANK_LEFT:
+			return "TRACK_BANK_LEFT";
+
+		case TRACK_BANK_RIGHT:
+			return "TRACK_BANK_RIGHT";
+
+		default:
+			return "";
+	}
+}
+
+int log_6CA2DF_ids[255];
+
+static void log_6CA2DF(uint8 trackType) {
+	if (log_6CA2DF_ids[trackType] == 1) {
+		return;;
+	}
+
+	log_6CA2DF_ids[trackType] = 1;
+
+	uint8 bl = _previousTrackSlopeEnd;
+	uint8 bh = _currentTrackSlopeEnd;
+	uint8 cl = _previousTrackBankEnd;
+	uint8 ch = _currentTrackBankEnd;
+
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
+		bl = _currentTrackSlopeEnd;
+		bh = _previousTrackSlopeEnd;
+		cl = _currentTrackBankEnd;
+		ch = _previousTrackBankEnd;
+	}
+
+	if (_currentTrackCurve > 8) {
+		return;
+	}
+
+	char *string_ax = track_curve_description(_currentTrackCurve);
+	char *string_bl = track_slope_description(bl);
+	char *string_bh = track_slope_description(bh);
+	char *string_cl = track_bank_description(cl);
+	char *string_ch = track_bank_description(ch);
+	char *string_lt_4 = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) < 4) ? "true" : "false";
+	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+	if (_rideConstructionState == 2) {
+		rotation = rotation ^ 0x04;
+	}
+	char *string_xor_4 = (rotation & 0x04) ? "true" : "false";
+
+	printf("%s, %s, %s, %s, %s, %s, %s, %d\n", string_ax, string_lt_4, string_xor_4, string_bl, string_bh, string_cl, string_ch, trackType);
+
+}
+
 static bool sub_6CA2DF_get_dh(uint8 *dh) {
 	window_ride_construction_update_enabled_track_pieces();
 
@@ -2401,8 +2520,6 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 	if (ax == 0xFFFF) {
 		return false;
 	}
-
-	printf("[ax=%d, bl=%d, bh=%d, cl=%d, ch=%d, rotation=%d, state=%d]\n", ax, bl, bh, cl, ch, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), _rideConstructionState);
 
 	if (ax == 0) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) < 4) {
@@ -3512,6 +3629,8 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 	if (!sub_6CA2DF_get_dh(&trackType)) {
 		return true;
 	}
+
+	log_6CA2DF(trackType);
 
 	edxRS16 = 0;
 	rideIndex = _currentRideIndex;
