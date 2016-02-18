@@ -4324,8 +4324,8 @@ rct_vehicle *vehicle_create_car(
 	vehicle->scream_sound_id = 255;
 	vehicle->var_1F = 0;
 	vehicle->var_20 = 0;
-	vehicle->var_D9 = 4;
-	vehicle->var_D8 = 4;
+	vehicle->target_seat_rotation = 4;
+	vehicle->seat_rotation = 4;
 	for (int i = 0; i < 32; i++) {
 		vehicle->peep[i] = SPRITE_INDEX_NULL;
 	}
@@ -4375,7 +4375,7 @@ rct_vehicle *vehicle_create_car(
 			regs.dl = 9;
 			vehicle->var_D3 = 0;
 			vehicle->var_D4 = 0;
-			vehicle->var_D5 = 0;
+			vehicle->mini_golf_flags = 0;
 		}
 		if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_4) {
 			if (!vehicle->is_child) {

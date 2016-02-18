@@ -179,16 +179,19 @@ typedef struct {
 		uint8 var_CE;
 		uint8 num_laps;				// 0xCE
 	};
-	uint8 var_CF;
+	union {
+		uint8 var_CF;
+		uint8 break_speed;			// 0xCF
+	};
 	uint16 lost_time_out;			// 0xD0
-	sint8 var_D2;
+	sint8 vertical_drop_countdown;	// 0xD1
 	uint8 var_D3;
 	uint8 var_D4;
-	uint8 var_D5;
+	uint8 mini_golf_flags;			// 0xD5
 	uint8 ride_subtype;				// 0xD6
 	uint8 colours_extended;			// 0xD7
-	uint8 var_D8;
-	uint8 var_D9;
+	uint8 seat_rotation;			// 0xD8
+	uint8 target_seat_rotation;		// 0xD9
 } rct_vehicle;
 
 typedef struct {
@@ -289,7 +292,7 @@ enum{
 	VEHICLE_UPDATE_FLAG_7 = (1 << 7),
 	VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),
 	VEHICLE_UPDATE_FLAG_BROKEN_TRAIN = (1 << 9),
-	VEHICLE_UPDATE_FLAG_10 = (1 << 10),
+	VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP = (1 << 10),
 	VEHICLE_UPDATE_FLAG_11 = (1 << 11),
 	VEHICLE_UPDATE_FLAG_12 = (1 << 12),
 	VEHICLE_UPDATE_FLAG_13 = (1 << 13),

@@ -5379,12 +5379,12 @@ static void sub_6DAB4C_chunk_3(rct_vehicle *vehicle)
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_7) {
 		nextVelocity = 0;
 	}
-	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_10) {
-		vehicle->var_D2--;
-		if (vehicle->var_D2 == -70) {
-			vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_10;
+	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP) {
+		vehicle->vertical_drop_countdown--;
+		if (vehicle->vertical_drop_countdown == -70) {
+			vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
 		}
-		if (vehicle->var_D2 >= 0) {
+		if (vehicle->vertical_drop_countdown >= 0) {
 			nextVelocity = 0;
 			vehicle->acceleration = 0;
 		}
@@ -6163,19 +6163,19 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 		}
 		break;
 	case 9: // loc_6D65E1
-		ah = vehicle->var_D9;
-		al = vehicle->var_D8;
-		if (al != ah) {
+		if (vehicle->seat_rotation != vehicle->target_seat_rotation) {
 			if (vehicle->var_C8 <= 0xCCCC) {
 				vehicle->var_C8 += 0x3333;
 			} else {
 				vehicle->var_C8 += 0x3333;
-				uint8 bl = al + 1;
-				if (al >= ah) {
-					bl -= 2;
-				}
-				vehicle->var_D8 = bl;
-				vehicle->var_C5 = (bl - 4) & 7;
+
+				if (vehicle->seat_rotation >= vehicle->target_seat_rotation) 
+					vehicle->seat_rotation--;
+				
+				else
+					vehicle->seat_rotation++;
+
+				vehicle->var_C5 = (vehicle->seat_rotation - 4) & 7;
 				vehicle_invalidate(vehicle);
 			}
 		}
@@ -6817,11 +6817,11 @@ loc_6DB41D:
 
 	trackType = mapElement->properties.track.type;
 	if (trackType != TRACK_ELEM_BRAKES) {
-		vehicle->var_D9 = mapElement->properties.track.colour >> 4;
+		vehicle->target_seat_rotation = mapElement->properties.track.colour >> 4;
 	}
 	vehicle->track_direction = regs.bl & 3;
 	vehicle->track_type |= trackType << 2;
-	vehicle->var_CF = (mapElement->properties.track.sequence >> 3) & 0x1E;
+	vehicle->break_speed = (mapElement->properties.track.sequence >> 4) << 1;
 	if (trackType == TRACK_ELEM_ON_RIDE_PHOTO) {
 		vehicle_trigger_on_ride_photo(vehicle, mapElement);
 	}
@@ -6863,7 +6863,7 @@ loc_6DAEB9:
 			ride->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE &&
 			ride->mechanic_status == RIDE_MECHANIC_STATUS_4
 			)) {
-			regs.eax = vehicle->var_CF << 16;
+			regs.eax = vehicle->break_speed << 16;
 			if (regs.eax < RCT2_GLOBAL(0x00F64E08, sint32)) {
 				vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
 			}
@@ -6883,12 +6883,12 @@ loc_6DAEB9:
 	}
 	if (trackType == TRACK_ELEM_BRAKE_FOR_DROP) {
 		if (!vehicle->is_child) {
-			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_10)) {
+			if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP)) {
 				if (vehicle->track_progress >= 8) {
 					vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
 					if (vehicle->track_progress >= 24) {
-						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_10;
-						vehicle->var_D2 = 90;
+						vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP;
+						vehicle->vertical_drop_countdown = 90;
 					}
 				}
 			}
@@ -7182,12 +7182,12 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 
 	trackType = mapElement->properties.track.type;
 	if (trackType != TRACK_ELEM_BRAKES) {
-		vehicle->var_D9 = mapElement->properties.track.colour >> 4;
+		vehicle->target_seat_rotation = mapElement->properties.track.colour >> 4;
 	}
 	direction &= 3;
 	vehicle->track_type = trackType << 2;
 	vehicle->track_direction |= direction;
-	vehicle->var_CF = (mapElement->properties.track.sequence >> 4) << 1;
+	vehicle->break_speed = (mapElement->properties.track.sequence >> 4) << 1;
 
 	const rct_vehicle_info* moveInfo = vehicle_get_move_info(
 		vehicle->var_CD,
@@ -7219,7 +7219,7 @@ loc_6DBA33:;
 	}
 
 	if (trackType == TRACK_ELEM_BRAKES) {
-		regs.eax = -(vehicle->var_CF << 16);
+		regs.eax = -(vehicle->break_speed << 16);
 		if (regs.eax > RCT2_GLOBAL(0x00F64E08, sint32)) {
 			regs.eax = RCT2_GLOBAL(0x00F64E08, sint32) * -16;
 			vehicle->acceleration = regs.eax;
@@ -7364,7 +7364,6 @@ loc_6DC40E:
 	vehicle_invalidate(vehicle);
 
 loc_6DC462:
-	vehicle->var_D3 = 0;
 	if (vehicle->var_D3 == 0) {
 		goto loc_6DC476;
 	}
@@ -7372,43 +7371,43 @@ loc_6DC462:
 	goto loc_6DC985;
 
 loc_6DC476:
-	if (vehicle->var_D5 & (1 << 2)) {
+	if (vehicle->mini_golf_flags & (1 << 2)) {
 		regs.edi = RCT2_ADDRESS(0x008B8F74, uint32)[vehicle->var_D4];
 		regs.al = vehicle->var_C5 + 1;
 		if ((uint8)regs.al < ((uint8*)regs.edi)[-1]) {
 			vehicle->var_C5 = regs.al;
 			goto loc_6DC985;
 		}
-		vehicle->var_D5 &= ~(1 << 2);
+		vehicle->mini_golf_flags &= ~(1 << 2);
 	}
 
-	if (vehicle->var_D5 & (1 << 0)) {
+	if (vehicle->mini_golf_flags & (1 << 0)) {
 		regs.di = vehicle->is_child ? vehicle->prev_vehicle_on_ride : vehicle->next_vehicle_on_ride;
 		rct_vehicle *vEDI = GET_VEHICLE(regs.di);
-		if (!(vEDI->var_D5 & (1 << 0)) || (vEDI->var_D5 & (1 << 2))) {
+		if (!(vEDI->mini_golf_flags & (1 << 0)) || (vEDI->mini_golf_flags & (1 << 2))) {
 			goto loc_6DC985;
 		}
 		if (vEDI->var_D3 != 0) {
 			goto loc_6DC985;
 		}
-		vEDI->var_D5 &= ~(1 << 0);
-		vehicle->var_D5 &= ~(1 << 0);
+		vEDI->mini_golf_flags &= ~(1 << 0);
+		vehicle->mini_golf_flags &= ~(1 << 0);
 	}
 
-	if (vehicle->var_D5 & (1 << 1)) {
+	if (vehicle->mini_golf_flags & (1 << 1)) {
 		regs.di = vehicle->is_child ? vehicle->prev_vehicle_on_ride : vehicle->next_vehicle_on_ride;
 		rct_vehicle *vEDI = GET_VEHICLE(regs.di);
-		if (!(vEDI->var_D5 & (1 << 1)) || (vEDI->var_D5 & (1 << 2))) {
+		if (!(vEDI->mini_golf_flags & (1 << 1)) || (vEDI->mini_golf_flags & (1 << 2))) {
 			goto loc_6DC985;
 		}
 		if (vEDI->var_D3 != 0) {
 			goto loc_6DC985;
 		}
-		vEDI->var_D5 &= ~(1 << 1);
-		vehicle->var_D5 &= ~(1 << 1);
+		vEDI->mini_golf_flags &= ~(1 << 1);
+		vehicle->mini_golf_flags &= ~(1 << 1);
 	}
 
-	if (vehicle->var_D5 & (1 << 3)) {
+	if (vehicle->mini_golf_flags & (1 << 3)) {
 		rct_vehicle *vEDI = vehicle;
 
 		for (;;) {
@@ -7417,15 +7416,15 @@ loc_6DC476:
 				break;
 			}
 			if (!vEDI->is_child) continue;
-			if (!(vEDI->var_D5 & (1 << 4))) continue;
+			if (!(vEDI->mini_golf_flags & (1 << 4))) continue;
 			if (vEDI->track_x != vehicle->track_x) continue;
 			if (vEDI->track_y != vehicle->track_y) continue;
 			if (vEDI->track_z != vehicle->track_z) continue;
 			goto loc_6DC985;
 		}
 
-		vehicle->var_D5 |= (1 << 4);
-		vehicle->var_D5 &= ~(1 << 3);
+		vehicle->mini_golf_flags |= (1 << 4);
+		vehicle->mini_golf_flags &= ~(1 << 3);
 	}
 
 	// loc_6DC5B8
@@ -7513,7 +7512,7 @@ loc_6DC743:
 		switch (moveInfo->y) {
 		case 0: // loc_6DC7B4
 			if (vehicle->is_child) {
-				vehicle->var_D5 |= (1 << 3);
+				vehicle->mini_golf_flags |= (1 << 3);
 			}
 			else {
 				uint16 rand16 = scenario_rand() & 0xFFFF;
@@ -7533,11 +7532,11 @@ loc_6DC743:
 			vehicle->track_progress++;
 			break;
 		case 2: // loc_6DC800
-			vehicle->var_D5 |= (1 << 0);
+			vehicle->mini_golf_flags |= (1 << 0);
 			vehicle->track_progress++;
 			break;
 		case 3: // loc_6DC810
-			vehicle->var_D5 |= (1 << 1);
+			vehicle->mini_golf_flags |= (1 << 1);
 			vehicle->track_progress++;
 			break;
 		case 4: // loc_6DC820
@@ -7559,12 +7558,12 @@ loc_6DC743:
 			vehicle->track_progress++;
 			break;
 		case 5: // loc_6DC87A
-			vehicle->var_D5 |= (1 << 2);
+			vehicle->mini_golf_flags |= (1 << 2);
 			vehicle->track_progress++;
 			break;
 		case 6: // loc_6DC88A
-			vehicle->var_D5 &= ~(1 << 4);
-			vehicle->var_D5 |= (1 << 5);
+			vehicle->mini_golf_flags &= ~(1 << 4);
+			vehicle->mini_golf_flags |= (1 << 5);
 			vehicle->track_progress++;
 			break;
 		default:

@@ -2250,7 +2250,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 	rct_ride_type* ride_entry = get_ride_entry(vehicle->ride_subtype);
 
 	if (ride_entry->vehicles[0].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF){
-		vehicle->var_D5 &= ~(1 << 5);
+		vehicle->mini_golf_flags &= ~(1 << 5);
 
 
 		for (int i = 0; i < ride->num_vehicles; ++i){
@@ -2263,7 +2263,7 @@ static void peep_update_ride_sub_state_2(rct_peep* peep){
 			if (second_vehicle->num_peeps == 0)
 				continue;
 
-			if (second_vehicle->var_D5 & (1 << 5))
+			if (second_vehicle->mini_golf_flags & (1 << 5))
 				continue;
 
 			return;
