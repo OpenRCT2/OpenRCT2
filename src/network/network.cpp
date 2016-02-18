@@ -471,7 +471,7 @@ void NetworkConnection::setLastDisconnectReason(const char *src)
 void NetworkConnection::setLastDisconnectReason(const rct_string_id string_id)
 {
 	char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-	format_string(buffer, string_id, 0);
+	format_string(buffer, string_id, NULL);
 	setLastDisconnectReason(buffer);
 }
 
@@ -644,7 +644,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	status = NETWORK_STATUS_RESOLVING;
 
 	char str_resolving[256];
-	format_string(str_resolving, STR_MULTIPLAYER_RESOLVING, 0);
+	format_string(str_resolving, STR_MULTIPLAYER_RESOLVING, NULL);
 	window_network_status_open(str_resolving);
 
 	mode = NETWORK_MODE_CLIENT;
@@ -833,7 +833,7 @@ void Network::UpdateClient()
 
 			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss), (*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
 				char str_connecting[256];
-				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, 0);
+				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, NULL);
 				window_network_status_open(str_connecting);
 				server_connect_time = SDL_GetTicks();
 				status = NETWORK_STATUS_CONNECTING;
@@ -886,23 +886,23 @@ void Network::UpdateClient()
 				server_connection.ResetLastPacketTime();
 				Client_Send_AUTH(gConfigNetwork.player_name, "");
 				char str_authenticating[256];
-				format_string(str_authenticating, STR_MULTIPLAYER_AUTHENTICATING, 0);
+				format_string(str_authenticating, STR_MULTIPLAYER_AUTHENTICATING, NULL);
 				window_network_status_open(str_authenticating);
 			}
 		}
 	}break;
 	case NETWORK_STATUS_CONNECTED:
 		if (!ProcessConnection(server_connection)) {
-			char str_disconnected[256];
-			format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED, 0);
-
-			if (server_connection.getLastDisconnectReason()) {
-				strcat(str_disconnected, ": ");
-				strcat(str_disconnected, server_connection.getLastDisconnectReason());
-			}
 			if (server_connection.authstatus == NETWORK_AUTH_REQUIREPASSWORD) { // Do not show disconnect message window when password window closed/canceled
 				window_network_status_close();
 			} else {
+				char str_disconnected[256], str_conditional_buffer[256];
+				str_conditional_buffer[0] = '\0';
+				if (server_connection.getLastDisconnectReason()) {
+					strcat(str_conditional_buffer, ": ");
+					strcat(str_conditional_buffer, server_connection.getLastDisconnectReason());
+				}
+				format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED, &str_conditional_buffer);
 				window_network_status_open(str_disconnected);
 			}
 			Close();
@@ -913,7 +913,7 @@ void Network::UpdateClient()
 		if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
 			_desynchronised = true;
 			char str_desync[256];
-			format_string(str_desync, STR_MULTIPLAYER_DESYNC, 0);
+			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
 			window_network_status_open(str_desync);
 			if (!gConfigNetwork.stay_connected) {
 				Close();
@@ -1017,7 +1017,7 @@ void Network::KickPlayer(int playerId)
 			// Disconnect the client gracefully
 			(*it)->setLastDisconnectReason(STR_MULTIPLAYER_KICKED);
 			char str_disconnect_msg[256];
-			format_string(str_disconnect_msg, STR_MULTIPLAYER_DISCONNECT_MSG, 0);
+			format_string(str_disconnect_msg, STR_MULTIPLAYER_DISCONNECT_MSG, NULL);
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
 			shutdown((*it)->socket, SHUT_RD);
 			(*it)->SendQueuedPackets();
@@ -1589,19 +1589,18 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	NetworkPlayer* connection_player = connection->player;
 	if (connection_player) {
 		char text[256];
-		char* lineCh = text;
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
 		char reasonstr[100];
 		reasonstr[0] = 0;
 		if (connection->getLastDisconnectReason() && strlen(connection->getLastDisconnectReason()) < sizeof(reasonstr)) {
 			sprintf(reasonstr, " (%s)", connection->getLastDisconnectReason());
 		}
 
-		char str_has_disconnected[256];
-		format_string(str_has_disconnected, STR_MULTIPLAYER_HAS_DISCONNECTED, 0);
-
-		sprintf(lineCh, "%s %s%s", connection_player->name, str_has_disconnected, reasonstr);
+		char **has_disconnected_args = new char *[2]{
+				(char *) connection_player->name,
+				reasonstr
+		};
+		format_string(text, STR_MULTIPLAYER_HAS_DISCONNECTED, has_disconnected_args);
+		delete [] has_disconnected_args;
 		chat_history_add(text);
 		gNetwork.Server_Send_CHAT(text);
 	}
@@ -1702,12 +1701,8 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			if (player) {
 				player->SetName(name);
 				char text[256];
-				char* lineCh = text;
-				lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-				lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
-				char str_has_joined_the_game[256];
-				format_string(str_has_joined_the_game, STR_MULTIPLAYER_HAS_JOINED_THE_GAME, 0);
-				sprintf(lineCh, "%s %s", player->name, str_has_joined_the_game);
+				const char * player_name = (const char *) player->name;
+				format_string(text, STR_MULTIPLAYER_HAS_JOINED_THE_GAME, &player_name);
 				chat_history_add(text);
 				Server_Send_MAP(&connection);
 				gNetwork.Server_Send_CHAT(text);
@@ -1730,10 +1725,10 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	if (offset + chunksize > chunk_buffer.size()) {
 		chunk_buffer.resize(offset + chunksize);
 	}
-	char status[256], str_downloading_map[256];
-	format_string(str_downloading_map, STR_MULTIPLAYER_DOWNLOADING_MAP, 0);
-	sprintf(status, "%s ... (%u / %u)", str_downloading_map, (offset + chunksize) / 1000, size / 1000);
-	window_network_status_open(status);
+	char str_downloading_map[256];
+	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1000, size / 1000};
+	format_string(str_downloading_map, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
+	window_network_status_open(str_downloading_map);
 	memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 	if (offset + chunksize == size) {
 		window_network_status_close();
