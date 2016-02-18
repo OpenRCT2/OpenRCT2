@@ -34,6 +34,7 @@
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "dropdown.h"
+#include "../ride/track_data.h"
 
 /* move to ride.c */
 void sub_6B2FA9(rct_windownumber number)
@@ -2380,6 +2381,1292 @@ void sub_6C84CE()
 	window_ride_construction_update_widgets(w);
 }
 
+static bool sub_6CA2DF_get_dh(uint8 *dh) {
+	window_ride_construction_update_enabled_track_pieces();
+
+	uint32 edi = 0;
+	uint8 bl = _previousTrackSlopeEnd;
+	uint8 bh = _currentTrackSlopeEnd;
+	uint8 cl = _previousTrackBankEnd;
+	uint8 ch = _currentTrackBankEnd;
+
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
+		bl = _currentTrackSlopeEnd;
+		bh = _previousTrackSlopeEnd;
+		cl = _currentTrackBankEnd;
+		ch = _previousTrackBankEnd;
+	}
+
+	uint16 ax = _currentTrackCurve;
+	if (ax == 0xFFFF) {
+		return true;
+	}
+
+	printf("[ax=%d, bl=%d, bh=%d, cl=%d, ch=%d, rotation=%d, state=%d]\n", ax, bl, bh, cl, ch, RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8), _rideConstructionState);
+
+	if (ax == 0) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) < 4) {
+			if (bl == bh) {
+				if (bl == 0) {
+					if (cl == ch) {
+						*dh = 0;
+						if (cl == 0) {
+							return true;
+						}
+
+						*dh = 0x20;
+						if (cl == 2) {
+							return true;
+						}
+
+						*dh = 0x21;
+						return true;
+					}
+
+					if (cl == 0) {
+						*dh = 0x12;
+						if (ch == 2) {
+							return true;
+						}
+
+						*dh = 0x13;
+						return true;
+					}
+
+					if (ch == 0) {
+						return false;
+					}
+
+					*dh = 0x14;
+					if (cl == 2) {
+						return true;
+					}
+
+					*dh = 0x15;
+					return true;
+				}
+
+				if (bl == 2) {
+					if (cl == ch) {
+						*dh = 0x6E;
+						if (cl == 2) {
+							return true;
+						}
+
+						*dh = 0x6F;
+						if (cl == 4) {
+							return true;
+						}
+
+						*dh = 4;
+						return true;
+					}
+
+					if (cl == 0) {
+						*dh = 0xE1;
+						if (ch == 2) {
+							return true;
+						}
+
+						*dh = 0xE2;
+						return true;
+					}
+
+					if (ch == 0) {
+						return false;
+					}
+
+					*dh = 0xE3;
+					if (cl == 2) {
+						return true;
+					}
+
+					*dh = 0xE4;
+					return true;
+				}
+
+				*dh = 5;
+				if (bl == 4) {
+					return true;
+				}
+
+				if (bl == 6) {
+					if (cl == ch) {
+						*dh = 0x73;
+						if (cl == 2) {
+							return true;
+						}
+
+						*dh = 0x74;
+						if (cl == 2) {
+							return true;
+						}
+
+						*dh = 0x0A;
+						return true;
+					}
+
+					if (cl == 0) {
+						*dh = 0xE5;
+						if (ch == 2) {
+							return true;
+						}
+
+						*dh = 0xE6;
+						return true;
+					}
+
+					if (ch == 0) {
+						return false;
+					}
+
+					*dh = 0xE7;
+					if (cl == 2) {
+						return true;
+					}
+
+					*dh = 0xE8;
+					return true;
+				}
+
+				*dh = 0xB;
+				if (bl == 8) {
+					return true;
+				}
+
+				*dh = 0x7E;
+				if (bl == 10) {
+					return true;
+				}
+
+				*dh = 0x7F;
+				if (bl == 18) {
+					return true;
+				}
+
+				return false;
+			}
+
+			// end bl = bh
+
+			if (bl == 18) {
+				*dh = 0x81;
+				if (bh == 8) {
+					return true;
+				}
+			}
+
+			if (bl == 10) {
+				*dh = 0x82;
+				if (bh == 4) {
+					return true;
+				}
+			}
+
+			*dh = 0xE;
+			if (bl == 8) {
+				if (bh == 6) {
+					return true;
+				}
+
+				*dh = 0x41;
+				if (bh == 0) {
+					return true;
+				}
+
+				*dh = 0x83;
+				if (bh == 18) {
+					return true;
+				}
+
+				return false;
+			}
+
+			if (bl == 6) {
+				*dh = 0x0D;
+				if (bh == 8) {
+					return true;
+				}
+
+				if (bh != 0) {
+					return false;
+				}
+
+				if (cl == 0) {
+					*dh = 0x0F;
+					if (ch == 0) {
+						return true;
+					}
+
+					*dh = 0x1E;
+					if (ch == 2) {
+						return true;
+					}
+
+					*dh = 0x1F;
+					return true;
+				}
+
+				if (cl == ch) {
+					*dh = 0xEF;
+					if (cl == 2) {
+						return true;
+					}
+
+					*dh = 0xF0;
+					return true;
+				}
+
+				*dh = 0xF7;
+				if (cl == 2) {
+					return true;
+				}
+
+				*dh = 0xF8;
+				return true;
+			}
+
+			if (bl == 0) {
+				if (bh == 6) {
+					if (ch == 0) {
+						*dh = 0xC;
+						if (cl == 0) {
+							return true;
+						}
+
+						*dh = 0x1C;
+						if (cl == 2) {
+							return true;
+						}
+
+						*dh = 0x1D;
+						return true;
+					}
+
+					if (cl == ch) {
+						*dh = 0xED;
+						if (ch == 2) {
+							return true;
+						}
+
+						*dh = 0xEE;
+						return true;
+					}
+
+					*dh = 0xF5;
+					if (ch == 2) {
+						return true;
+					}
+
+					*dh = 0xF6;
+					return true;
+				}
+
+				*dh = 0x3E;
+				if (bh == 4) {
+					return true;
+				}
+
+				*dh = 0x40;
+				if (bh == 8) {
+					return true;
+				}
+
+				if (bh != 2) {
+					return false;
+				}
+
+				if (ch == 0) {
+					*dh = 6;
+					if (cl == 0) {
+						return true;
+					}
+
+					*dh = 0x18;
+					if (cl == 2) {
+						return true;
+					}
+
+					*dh = 0x19;
+					return true;
+				}
+
+				if (cl == ch) {
+					*dh = 0xE9;
+					if (ch == 2) {
+						return true;
+					}
+
+					*dh = 0xEA;
+					return true;
+				}
+
+				*dh = 0xF1;
+				if (ch == 2) {
+					return true;
+				}
+
+				*dh = 0xF2;
+				return true;
+			}
+
+			*dh = 8;
+			if (bl == 4) {
+				if (bh == 2) {
+					return true;
+				}
+
+				*dh = 0x3F;
+				if (bh == 0) {
+					return true;
+				}
+
+				*dh = 0x80;
+				if (bh == 10) {
+					return true;
+				}
+
+				return false;
+			}
+
+			*dh = 7;
+			if (bh == 4) {
+				if (bl == 2) {
+					return true;
+				}
+
+				return false;
+			}
+
+			if (bh != 0) {
+				return false;
+			}
+
+			if (cl == 0) {
+				*dh = 9;
+				if (ch == 0) {
+					return true;
+				}
+
+				*dh = 0x1A;
+				if (ch == 2) {
+					return true;
+				}
+
+				*dh = 0x18;
+				return true;
+			}
+
+			if (cl == ch) {
+				*dh = 0xEB;
+				if (cl == 2) {
+					return true;
+				}
+
+				*dh = 0xEC;
+				return true;
+			}
+
+			*dh = 0xF3;
+			if (cl == 2) {
+				return true;
+			}
+
+			*dh = 0xF4;
+			return true;
+		}
+
+		// TRACK_PREVIEW_ROTATION >= 4
+		if (bl == bh) {
+			if (bl == 0) {
+				if (cl == ch) {
+					*dh = 0x8D;
+					if (cl == 0) {
+						return true;
+					}
+
+					*dh = 0xAA;
+					if (cl == 2) {
+						return true;
+					}
+
+					*dh = 0xAB;
+					return true;
+				}
+
+				if (cl == 0) {
+					*dh = 0x9E;
+					if (ch == 2) {
+						return true;
+					}
+
+					*dh = 0x9F;
+					return true;
+				}
+
+				if (ch != 0) {
+					return false;
+				}
+
+				*dh = 0xA0;
+				if (cl == 2) {
+					return true;
+				}
+
+				*dh = 0xA1;
+				return true;
+			}
+
+			*dh = 0x8E;
+			if (bl == 2) {
+				return true;
+			}
+
+			*dh = 0x8F;
+			if (bl == 4) {
+				return true;
+			}
+
+			*dh = 0x94;
+			if (bl == 6) {
+				return true;
+			}
+
+			*dh = 0x95;
+			if (bl == 8) {
+				return true;
+			}
+
+			*dh = 0x7E;
+			if (bl == 10) {
+				return false;
+			}
+
+			*dh = 0x7F;
+			if (bl == 18) {
+				return false;
+			}
+
+			return false;
+		}
+
+		if (bl == 18) {
+			*dh = 0x81;
+			if (bh == 8) {
+				return false;
+			}
+		}
+
+		if (bl == 10) {
+			*dh = 0x82;
+			if (bh == 4) {
+				return false;
+			}
+		}
+
+		*dh = 0x98;
+		if (bl == 8) {
+			if (bh == 6) {
+				return true;
+			}
+
+			*dh = 0x9D;
+			if (bh == 0) {
+				return true;
+			}
+
+			*dh = 0x83;
+			if (bh == 18) {
+				return false;
+			}
+
+			return false;
+		}
+
+		if (bl == 6) {
+			*dh = 0x97;
+			if (bh == 8) {
+				return true;
+			}
+
+			if (bh == 0) {
+				return false;
+			}
+
+			*dh = 0x99;
+			if (ch == 0) {
+				return true;
+			}
+
+			*dh = 0xA8;
+			if (ch == 2) {
+				return true;
+			}
+
+			*dh = 0xA9;
+			return true;
+		}
+
+		if (bl == 0) {
+			if (bh == 6) {
+				*dh = 0x96;
+				if (cl == 0) {
+					return true;
+				}
+
+				*dh = 0xA6;
+				if (cl == 2) {
+					return true;
+				}
+
+				*dh = 0xA7;
+				return true;
+			}
+
+			*dh = 0x9A;
+			if (bh == 4) {
+				return true;
+			}
+
+			*dh = 0x9C;
+			if (bh == 8) {
+				return true;
+			}
+
+			if (bh == 2) {
+				return false;
+			}
+
+			*dh = 0x90;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xA2;
+			if (cl == 2) {
+				return true;
+			}
+
+			*dh = 0xA3;
+			return true;
+		}
+
+		*dh = 0x92;
+		if (bl == 4) {
+			if (bh == 2) {
+				return true;
+			}
+
+			*dh = 0x98;
+			if (bh == 0) {
+				return true;
+			}
+
+			*dh = 0x80;
+			if (bh == 10) {
+				return false;
+			}
+
+			return false;
+		}
+
+		*dh = 0x91;
+		if (bh == 4) {
+			if (bl == 2) {
+				return true;
+			}
+
+			return false;
+		}
+
+		*dh = 0x93;
+		if (bh != 0) {
+			return false;
+		}
+
+		if (ch == 0) {
+			return true;
+		}
+
+		*dh = 0xA4;
+		if (ch == 2) {
+			return true;
+		}
+
+		*dh = 0xA5;
+		return true;
+	}
+
+	if (ax == 1) {
+		if (bl != bh) {
+			return false;
+		}
+
+		if (bl == 4) {
+			return false;
+		}
+
+		if (bl == 8) {
+			return false;
+		}
+
+		if (bh == 6) {
+			*dh = 0x24;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xDF;
+			return true;
+		}
+
+		if (bh == 2) {
+			*dh = 0x22;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xDD;
+			return true;
+		}
+
+		*dh = 0x10;
+		if (ch == 0) {
+			return true;
+		}
+
+		*dh = 0x16;
+		return true;
+	}
+
+	if (ax == 2) {
+		if (bl != bh) {
+			return false;
+		}
+
+		if (bl == 4) {
+			return false;
+		}
+
+		if (bl == 8) {
+			return false;
+		}
+
+		if (bh == 6) {
+			*dh = 0x25;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xE0;
+			return true;
+		}
+
+		if (bh == 2) {
+			*dh = 0x23;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xDE;
+			return true;
+		}
+
+		*dh = 0x11;
+		if (ch == 0) {
+			return true;
+		}
+
+		*dh = 0x17;
+		return true;
+	}
+
+	if (ax == 3) {
+		if (bl != bh) {
+			if (bl == 0 && bh == 2 && cl == 2) {
+				*dh = 0xB2;
+				if (ch == 0) {
+					return true;
+				}
+			}
+
+			if (bl != 6) {
+				return false;
+			}
+
+			if (bh != 0) {
+				return false;
+			}
+
+			if (cl != 0) {
+				return false;
+			}
+
+			*dh = 0xB4;
+			if (ch == 2) {
+				return true;
+			}
+
+			return false;
+		}
+
+		*dh = 0x61;
+		if (bh == 8) {
+			return true;
+		}
+
+		*dh = 0x5F;
+		if (bh == 4) {
+			return true;
+		}
+
+		*dh = 0xFB;
+		if (bh == 0x12) {
+			return true;
+		}
+
+		*dh = 0xF9;
+		if (bh == 0xA) {
+			return true;
+		}
+
+		if (bh == 6) {
+			*dh = 0x30;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xDB;
+			return true;
+		}
+
+		if (bh == 2) {
+			*dh = 0x2E;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xD9;
+			return true;
+		}
+
+		*dh = 0x2A;
+		if (ch == 0) {
+			return true;
+		}
+
+		*dh = 0x2C;
+		return true;
+	}
+
+	if (ax == 4) {
+		if (bl != bh) {
+			if (bl == 0 && bh == 2 && cl == 4) {
+				*dh = 0xB3;
+				if (ch == 0) {
+					return true;
+				}
+			}
+
+			if (bl != 6) {
+				return false;
+			}
+
+			if (bh != 0) {
+				return false;
+			}
+
+			if (cl != 0) {
+				return false;
+			}
+
+			*dh = 0xB5;
+			if (ch == 4) {
+				return true;
+			}
+
+			return false;
+		}
+
+		*dh = 0x62;
+		if (bh == 8) {
+			return true;
+		}
+
+		*dh = 0x68;
+		if (bh == 4) {
+			return true;
+		}
+
+		*dh = 0x0F;
+		if (bh == 0x12) {
+			return true;
+		}
+
+		if (bh == 6) {
+			*dh = 0x31;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xDC;
+			return true;
+		}
+
+		if (bh == 2) {
+			*dh = 0x2F;
+			if (cl == 0) {
+				return true;
+			}
+
+			*dh = 0xDA;
+			return true;
+		}
+
+		*dh = 0x2B;
+		if (ch == 0) {
+			return true;
+		}
+
+		*dh = 0x2D;
+		return true;
+
+	}
+
+	if (ax == 5) {
+		if (bl != bh) {
+			return false;
+		}
+
+		if (bl == 2) {
+			return false;
+		}
+
+		if (bl == 6) {
+			return false;
+		}
+
+		*dh = 0x61;
+		if (bh == 8) {
+			return true;
+		}
+
+		*dh = 0x5F;
+		if (bh == 4) {
+			return true;
+		}
+
+		*dh = 0xFB;
+		if (bh == 0x12) {
+			return true;
+		}
+
+		*dh = 0xF9;
+		if (bh == 0xA) {
+			return true;
+		}
+
+		*dh = 0x32;
+		if (ch == 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	if (ax == 6) {
+		if (bl != bh) {
+			return false;
+		}
+
+		if (bl == 2) {
+			return false;
+		}
+
+		if (bl == 6) {
+			return false;
+		}
+
+		*dh = 0x62;
+		if (bh == 8) {
+			return true;
+		}
+
+		*dh = 0x60;
+		if (bh == 4) {
+			return true;
+		}
+
+		*dh = 0xFC;
+		if (bh == 0x12) {
+			return true;
+		}
+
+		*dh = 0xFA;
+		if (bh == 0xA) {
+			return true;
+		}
+
+		*dh = 0x33;
+		if (ch == 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	if (ax == 7) {
+		*dh = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		if (_rideConstructionState == 2) {
+			*dh = *dh ^ 0x04;
+		}
+
+		if (*dh & 0x04) {
+			if (bl != bh) {
+				return false;
+			}
+
+			if (bl == 4) {
+				return false;
+			}
+
+			if (bl == 8) {
+				return false;
+			}
+
+			*dh = 0x24;
+			if (bh == 6) {
+				return false;
+			}
+
+			*dh = 0x22;
+			if (bh == 2) {
+				return false;
+			}
+
+			*dh = 0x87;
+			if (ch == 0) {
+				return true;
+			}
+
+			*dh = 0x8B;
+			return true;
+		}
+
+		if (bl != bh) {
+			return false;
+		}
+
+		if (bl == 4) {
+			return false;
+		}
+
+		if (bl == 8) {
+			return false;
+		}
+
+		*dh = 0x24;
+		if (bh == 6) {
+			return false;
+		}
+
+		*dh = 0x22;
+		if (bh == 2) {
+			return false;
+		}
+
+		*dh = 0x85;
+		if (ch == 0) {
+			return true;
+		}
+
+		*dh = 0x89;
+		return true;
+	}
+
+	if (ax == 8) {
+		*dh = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		if (_rideConstructionState == 2) {
+			*dh = *dh ^ 0x04;
+		}
+
+		if (*dh & 0x04) {
+			if (bl != bh) {
+				return false;
+			}
+
+			if (bl == 4) {
+				return false;
+			}
+
+			if (bl == 8) {
+				return false;
+			}
+
+			*dh = 0x25;
+			if (bh == 6) {
+				return false;
+			}
+
+			*dh = 0x23;
+			if (bh == 2) {
+				return false;
+			}
+
+			*dh = 0x86;
+			if (ch == 0) {
+				return true;
+			}
+
+			*dh = 0x8A;
+			return true;
+		}
+
+		if (bl != bh) {
+			return false;
+		}
+
+		if (bl == 4) {
+			return false;
+		}
+
+		if (bl == 8) {
+			return false;
+		}
+
+		*dh = 0x25;
+		if (bh == 6) {
+			return false;
+		}
+
+		*dh = 0x23;
+		if (bh == 2) {
+			return false;
+		}
+
+		*dh = 0x88;
+		if (ch == 0) {
+			return true;
+		}
+
+		*dh = 0x8C;
+		return true;
+	}
+
+	*dh = ax & 0xFF;
+	switch (*dh) {
+		case TRACK_ELEM_END_STATION:
+		case TRACK_ELEM_S_BEND_LEFT:
+		case TRACK_ELEM_S_BEND_RIGHT:
+			if (bl != 0 || bh != 0) {
+				return false;
+			}
+
+			if (cl != 0 || ch != 0) {
+				return false;
+			}
+
+			return true;
+
+		case TRACK_ELEM_LEFT_VERTICAL_LOOP:
+		case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
+			if (cl != 0 || ch != 0) {
+				return false;
+			}
+
+			if (_rideConstructionState == 2) {
+				if (bh != 6) {
+					return false;
+				}
+			} else {
+				if (bl != 2) {
+					return false;
+				}
+			}
+
+			return true;
+
+		default:
+			return true;
+	}
+}
+
+/**
+ * rct2: 0x006CA2DF
+ *
+ * @param[out] _trackType (dh)
+ * @param[out] _trackDirection (bh)
+ * @param[out] _rideIndex (dl)
+ * @param[out] _edxRS16 (edxrs16)
+ * @param[out] _x (ax)
+ * @param[out] _y (cx)
+ * @param[out] _z (di)
+ * @param[out] _properties (edirs16)
+ * @return (CF)
+ */
+static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_rideIndex, uint16 *_edxRS16, uint16 *_x, uint16 *_y, uint16 *_z, uint16 *_properties) {
+	uint8 trackType, trackDirection, rideIndex;
+	uint16 z, x, y, edxRS16;
+	uint32 properties;
+
+	if (!sub_6CA2DF_get_dh(&trackType)) {
+		return true;
+	}
+
+	edxRS16 = 0;
+	rideIndex = _currentRideIndex;
+	if (_currentTrackLiftHill & 1) {
+		edxRS16 |= 0x1;
+	}
+
+	if (_currentTrackCovered & (1 << 1)) {
+		edxRS16 |= 0x2;
+	}
+
+	rct_ride *ride = get_ride(rideIndex);
+
+	if (_enabledRidePiecesB & (1 << 8)) {
+		if (trackType == 0x3E) {
+			trackType = 0x76;
+		}
+
+		if (trackType == 0x3F) {
+			trackType = 0x77;
+		}
+
+		if (trackType == 0x48) {
+			trackType = 0x7A;
+		}
+
+		if (trackType == 14) {
+			trackType = 0x79;
+		}
+
+		if (trackType == 0x9A) {
+			return true;
+		}
+
+		if (trackType == 0x98) {
+			return true;
+		}
+
+		if (trackType == 0x9D) {
+			return true;
+		}
+
+		if (trackType == 0x9C) {
+			return true;
+		}
+	}
+
+	if (ride_type_has_flag(ride->type, 0x1000) && _currentTrackCovered != 1) {
+		if (ride->type == RIDE_TYPE_WATER_COASTER || trackType == 0 || trackType == 0x10 || trackType == 0x11) {
+			trackType = RCT2_GLOBAL(0x00993D1C + trackType, uint8);
+			edxRS16 &= 0xFFFE; // unsets 0x1
+		}
+	}
+
+	z = _currentTrackBeginZ;
+	rct_track_coordinates trackCoordinates;
+	if (ride_type_has_flag(ride->type, 0x80000)) {
+		trackCoordinates = FlatTrackCoordinates[trackType];
+	} else {
+		trackCoordinates = TrackCoordinates[trackType];
+	}
+
+	x = _currentTrackBeginX;
+	y = _currentTrackBeginY;
+	if (_rideConstructionState == 2) {
+		z -= trackCoordinates.z_end;
+		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) ^ 0x02;
+		trackDirection -= trackCoordinates.rotation_end;
+		trackDirection += trackCoordinates.rotation_begin;
+		trackDirection &= 0x03;
+
+		if (trackCoordinates.rotation_begin == 4) {
+			trackDirection |= 0x04;
+		}
+
+		sint16 deltaX = trackCoordinates.x;
+		sint16 deltaY = trackCoordinates.y;
+		sint16 temp;
+		switch (trackDirection & 0x03) {
+			case 0:
+				deltaX = -deltaX;
+				deltaY = -deltaY;
+				break;
+
+			case 1:
+				deltaY = -deltaY;
+				temp = deltaY;
+				deltaY = deltaX;
+				deltaX = temp;
+				break;
+
+			case 3:
+				deltaX = -deltaX;
+				temp = deltaY;
+				deltaY = deltaX;
+				deltaX = temp;
+				break;
+
+			default:
+				break;
+		}
+
+		x += deltaX;
+		y += deltaY;
+	} else {
+		z -= trackCoordinates.z_begin;
+		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+	}
+
+	// loc_6CAEEA:
+
+	bool do_loc_6CAF26 = false;
+	if (!(_enabledRidePiecesA & (1 << 5))) {
+		if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x2000) {
+			do_loc_6CAF26 = true;
+		}
+	}
+
+	if (!(RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x1000)) {
+		do_loc_6CAF26 = true;
+	}
+
+	if (do_loc_6CAF26) {
+		edxRS16 &= 0xFFFE; // unsets 0x1
+		_currentTrackLiftHill &= 0xFE;
+
+		if (trackType == 0xD1 || trackType == 0xD2) {
+			edxRS16 |= 0x1;
+		}
+	}
+
+	// loc_6CAF49:
+	if (trackType == 0x63) {
+		uint32 ebp = RCT2_GLOBAL(0x00F440CD, uint8) << 16;
+		properties &= 0xFFFF;
+		properties |= ebp;
+	} else {
+		uint32 ebp = _currentSeatRotationAngle << 26;
+		properties &= 0xFFFFFFF;
+		properties |= ebp;
+	}
+
+
+	if (_trackType != NULL) *_trackType = trackType;
+	if (_trackDirection != NULL) *_trackDirection = trackDirection;
+	if (_rideIndex != NULL) *_rideIndex = rideIndex;
+	if (_edxRS16 != NULL) *_edxRS16 = edxRS16;
+	if (_x != NULL) *_x = x;
+	if (_y != NULL) *_y = y;
+	if (_z != NULL) *_z = z;
+	if (_properties != NULL) *_properties = (properties >> 16) & 0xFFFF;
+
+	return false;
+}
+
 /**
  *
  *  rct2: 0x006CA2DF
@@ -2388,8 +3675,7 @@ void sub_6C84CE()
  * dh: trackType (out)
  * edx >> 16: ??? (out)
  */
-static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties)
-{
+static bool original_sub_6CA2DF(uint8 *trackType, uint8 *trackDirection, uint8 *rideIndex, uint16 *edxRS16, uint16 *x, uint16 *y, uint16 *z, uint16 *properties) {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	if (RCT2_CALLFUNC_X(0x006CA2DF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
 		return true;
@@ -2402,6 +3688,56 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
 	if (y != NULL) *y = ecx & 0xFFFF;
 	if (z != NULL) *z = edi & 0xFFFF;
 	if (properties != NULL) *properties = (edi >> 16) & 0xFFFF;
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x006CA2DF
+ * bh: trackRotation (out)
+ * dl: ??? (out)
+ * dh: trackType (out)
+ * edx >> 16: ??? (out)
+ */
+static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties) {
+	uint8 before_currentTrackLiftHill = _currentTrackLiftHill;
+
+	uint8 new_trackType, new_trackDirection, new_rideIndex;
+	uint16 new_edxRS16, new_x, new_y, new_z, new_properties;
+	bool new_return = new_sub_6CA2DF(&new_trackType, &new_trackDirection, &new_rideIndex, &new_edxRS16, &new_x, &new_y, &new_z, &new_properties);
+	uint8 new_currentTrackLiftHill = _currentTrackLiftHill;
+
+	_currentTrackLiftHill = before_currentTrackLiftHill;
+
+	uint8 original_trackType, original_trackDirection, original_rideIndex;
+	uint16 original_edxRS16, original_x, original_y, original_z, original_properties;
+	bool original_return = original_sub_6CA2DF(&original_trackType, &original_trackDirection, &original_rideIndex, &original_edxRS16, &original_x, &original_y, &original_z, &original_properties);
+	uint8 original_currentTrackLiftHill = _currentTrackLiftHill;
+
+	assert(new_return == original_return);
+	if (new_return) {
+		return true;
+	}
+
+	assert(new_trackType == original_trackType);
+	assert(new_trackDirection == original_trackDirection);
+	assert(new_rideIndex == original_rideIndex);
+	assert(new_edxRS16 == original_edxRS16);
+	assert(new_x == original_x);
+	assert(new_y == original_y);
+	assert(new_z == original_z);
+	//assert(new_properties == original_properties);
+	assert(new_currentTrackLiftHill == original_currentTrackLiftHill);
+
+	if (trackType != NULL) *trackType = original_trackType;
+	if (trackDirection != NULL) *trackDirection = original_trackDirection;
+	if (rideIndex != NULL) *rideIndex = original_rideIndex;
+	if (edxRS16 != NULL) *edxRS16 = original_edxRS16;
+	if (x != NULL) *x = original_x;
+	if (y != NULL) *y = original_y;
+	if (z != NULL) *z = original_z;
+	if (properties != NULL) *properties = original_properties;
+
 	return false;
 }
 
