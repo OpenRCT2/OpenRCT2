@@ -2705,7 +2705,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh, bool *must_refactor) {
 
 
 	if (ax == TRACK_CURVE_LEFT_SMALL) {
-		if (bl == TRACK_SLOPE_DOWN_25 && bh == TRACK_BANK_NONE && cl == TRACK_BANK_NONE && ch == TRACK_BANK_LEFT) {
+		if (bl == TRACK_SLOPE_DOWN_25 && bh == TRACK_SLOPE_NONE && cl == TRACK_BANK_NONE && ch == TRACK_BANK_LEFT) {
 			*dh = TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK;
 			return true;
 		}
@@ -2714,7 +2714,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh, bool *must_refactor) {
 	}
 
 	if (ax == TRACK_CURVE_RIGHT_SMALL) {
-		if (bl == TRACK_SLOPE_DOWN_25 && bh == TRACK_BANK_NONE && cl == TRACK_BANK_NONE && ch == TRACK_BANK_RIGHT) {
+		if (bl == TRACK_SLOPE_DOWN_25 && bh == TRACK_SLOPE_NONE && cl == TRACK_BANK_NONE && ch == TRACK_BANK_RIGHT) {
 			*dh = TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK;
 			return true;
 		}
