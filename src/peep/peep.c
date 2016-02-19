@@ -82,8 +82,8 @@ static void peep_chose_not_to_go_on_ride(rct_peep *peep, int rideIndex, bool pee
 static void peep_tried_to_enter_full_queue(rct_peep *peep, int rideIndex);
 static bool peep_should_go_to_shop(rct_peep *peep, int rideIndex, bool peepAtShop);
 static void peep_reset_pathfind_goal(rct_peep *peep);
+static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static void peep_easter_egg_peep_interactions(rct_peep *peep);
-static bool sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView);
 static int peep_get_height_on_slope(rct_peep *peep, int x, int y);
 static void peep_pick_ride_to_go_on(rct_peep *peep);
 static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType);
@@ -5580,7 +5580,7 @@ static void peep_update_walking(rct_peep* peep){
 	for (; !(edges & (1 << chosen_edge));)chosen_edge = (chosen_edge + 1) & 3;
 
 	uint8 ride_to_view, ride_seat_to_view;
-	if (!sub_690B99(peep, chosen_edge, &ride_to_view, &ride_seat_to_view))
+	if (!peep_find_ride_to_look_at(peep, chosen_edge, &ride_to_view, &ride_seat_to_view))
 		return;
 
 	uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
@@ -9317,7 +9317,7 @@ static bool sub_69101A(rct_map_element *esi) {
  * @param[out] rideSeatToView (ch)
  * @return !CF
  */
-static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView)
+static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView)
 {
 	rct_map_element *mapElement, *surfaceElement;
 
@@ -9523,50 +9523,6 @@ static bool new_sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 
 	} while (!map_element_is_last_for_tile(mapElement++));
 
 	return false;
-}
-
-/**
- *
- *  rct2: 0x00690B99
- */
-static bool original_sub_690B99(rct_peep *peep, int edge, uint8 *rideToView, uint8 *rideSeatToView) {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	eax = edge;
-	esi = (int)peep;
-	if (RCT2_CALLFUNC_X(0x00690B99, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
-		return false;
-
-	*rideToView = ecx & 0xFF; // CL
-	*rideSeatToView = (ecx >> 8) & 0xFF; // CH
-	return true;
-}
-
-/**
- *
- *  rct2: 0x00690B99
- */
-static bool sub_690B99(rct_peep *peep, uint8 edge, uint8 *rideToView, uint8 *rideSeatToView) {
-	uint32 srand_0 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
-	uint32 srand_1 = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32);
-
-	uint8 originalRideToView, originalRideSeatToView;
-	bool originalOut = original_sub_690B99(peep, edge, &originalRideToView, &originalRideSeatToView);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) = srand_0;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = srand_1;
-
-	uint8 newRideToView, newRideSeatToView;
-	bool newOut = new_sub_690B99(peep, edge, &newRideToView, &newRideSeatToView);
-
-	assert(newOut == originalOut);
-	if (newOut) {
-		assert(newRideToView == originalRideToView);
-		assert(newRideSeatToView == originalRideSeatToView);
-	}
-
-	*rideToView = newRideToView;
-	*rideSeatToView = newRideSeatToView;
-	return newOut;
 }
 
 bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_map_element *esi) {
