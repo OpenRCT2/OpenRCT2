@@ -581,6 +581,9 @@
     </ClCompile>
     <ClCompile Include="src\core\Json.cpp" />
     <ClCompile Include="src\windows\themes.c" />
+    <ClCompile Include="src\drawing\drawing_fast.cpp">
+      <Filter>Source\Drawing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
