@@ -165,7 +165,11 @@ typedef struct {
 	uint8 sound2_id;				// 0xBD
 	uint8 sound2_volume;			// 0xBE
 	sint8 var_BF;
-	uint16 var_C0;
+	union {
+		uint16 var_C0;
+		uint16 time_waiting;		// 0xC0
+		uint16 cable_lift_target;	// 0xC0
+	};
 	uint8 speed;					// 0xC2
 	uint8 powered_acceleration;		// 0xC3
 	uint8 var_C4;

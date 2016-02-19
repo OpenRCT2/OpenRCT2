@@ -1368,14 +1368,14 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 
 		ride->train_at_station[vehicle->current_station] = train_index;
 		vehicle->sub_state = 1;
-		vehicle->var_C0 = 0;
+		vehicle->time_waiting = 0;
 
 		vehicle_invalidate(vehicle);
 		return;
 	}
 	else if (vehicle->sub_state == 1){
-		if (vehicle->var_C0 != 0xFFFF)
-			vehicle->var_C0++;
+		if (vehicle->time_waiting != 0xFFFF)
+			vehicle->time_waiting++;
 
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
 
@@ -1395,7 +1395,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 		num_seats_on_train &= 0x7F;
 
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_TEST_MODE)){
-			if (vehicle->var_C0 < 20){
+			if (vehicle->time_waiting < 20){
 				train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
 				return;
 			}
@@ -1409,13 +1409,13 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
 
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)){
 			if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH){
-				if (ride->min_waiting_time * 32 > vehicle->var_C0){
+				if (ride->min_waiting_time * 32 > vehicle->time_waiting){
 					train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
 					return;
 				}
 			}
 			if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH){
-				if (ride->max_waiting_time * 32 < vehicle->var_C0){
+				if (ride->max_waiting_time * 32 < vehicle->time_waiting){
 					vehicle->update_flags |= VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART;
 					train_ready_to_depart(vehicle, num_peeps_on_train, num_used_seats_on_train);
 					return;
@@ -3070,7 +3070,7 @@ static void vehicle_update_waiting_for_cable_lift(rct_vehicle *vehicle)
 		return;
 
 	cableLift->status = VEHICLE_STATUS_WAITING_TO_DEPART;
-	cableLift->var_C0 = vehicle->sprite_index;
+	cableLift->cable_lift_target = vehicle->sprite_index;
 }
 
 /**
