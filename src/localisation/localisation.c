@@ -792,6 +792,8 @@ void format_string_part(utf8 **dest, rct_string_id format, char **args)
 		*args += 4;
 	} else {
 		// ?
+		log_error("Localisation CALLPROC reached. Please contact a dev");
+		assert(false);
 		RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x0095AFB8, uint32)[format]);
 	}
 }
