@@ -446,6 +446,160 @@ rct_string_id RideConfigurationStringIds[] = {
 
 #pragma endregion
 
+
+typedef struct {
+	bool is_diagonal;
+	uint8 slope_start;
+	uint8 bank_start;
+	uint8 track_curve;
+	uint8 slope_end;
+	uint8 bank_end;
+	uint8 track_element;
+} track_descriptor;
+
+const track_descriptor TrackDescriptors[140] = {
+		{true,  TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_DIAG_60_DEG_DOWN},
+		{true,  TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN},
+		{true,  TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT},
+		{true,  TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN},
+		{true,  TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_DIAG_25_DEG_DOWN},
+		{true,  TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK},
+		{true,  TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT},
+		{true,  TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_DIAG_LEFT_BANK},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP},
+		{true,  TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE, TRACK_CURVE_LEFT_LARGE,       TRACK_BANK_LEFT,     TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL},
+		{true,  TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE, TRACK_CURVE_LEFT_LARGE,       TRACK_BANK_NONE,     TRACK_BANK_NONE,  TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_DIAG_FLAT},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP},
+		{true,  TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE, TRACK_CURVE_RIGHT_LARGE,      TRACK_BANK_NONE,     TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL},
+		{true,  TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE, TRACK_CURVE_RIGHT_LARGE,      TRACK_BANK_RIGHT,    TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_DIAG_RIGHT_BANK},
+		{true,  TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP},
+		{true,  TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK},
+		{true,  TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT},
+		{true,  TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK},
+		{true,  TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_25_DEG_UP},
+		{true,  TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP},
+		{true,  TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT},
+		{true,  TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP},
+		{true,  TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_DIAG_60_DEG_UP},
+		{false, TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_ELEM_90_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_90, TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_DOWN_TO_FLAT},
+		{false, TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_CURVE_LEFT,             TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_LEFT,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_25_DEG_DOWN_TO_FLAT},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_RIGHT,            TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT,            TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN},
+		{false, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_LEFT,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_LEFT_LARGE,       TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANK},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANK_TO_FLAT},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_LEFT,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_LEFT_LARGE,       TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_LEFT_EIGHTH_TO_DIAG},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_60, TRACK_BANK_NONE,  TRACK_ELEM_FLAT_TO_60_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,  TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_FLAT_TO_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_FLAT_TO_LEFT_BANK},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_FLAT},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_LEFT_VERY_SMALL,  TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_VERY_SMALL, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_FLAT_TO_RIGHT_BANK},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_FLAT_TO_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_FLAT_TO_60_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_LARGE,      TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_RIGHT,            TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANK_TO_FLAT},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANK},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT_LARGE,      TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT,            TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK},
+		{false, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_CURVE_LEFT,             TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_ELEM_25_DEG_UP_LEFT_BANKED},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_LEFT,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,  TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_25_DEG_UP_TO_FLAT},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,  TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_RIGHT,            TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_ELEM_25_DEG_UP_RIGHT_BANKED},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT,            TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP},
+		{false, TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_NONE,    TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_UP_TO_FLAT},
+		{false, TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP},
+		{false, TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_UP},
+		{false, TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP},
+		{false, TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP},
+		{false, TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_CURVE_LEFT_SMALL,       TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP},
+		{false, TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_60,   TRACK_BANK_NONE,  TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP},
+		{false, TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_CURVE_NONE,             TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_ELEM_90_DEG_UP},
+		{false, TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_CURVE_RIGHT_SMALL,      TRACK_SLOPE_UP_90,   TRACK_BANK_NONE,  TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP},
+};
+
 #define		_trackPlaceCtrlState				RCT2_GLOBAL(0x00F44159, uint8)
 static int	_trackPlaceCtrlZ;
 #define		_trackPlaceShiftState				RCT2_GLOBAL(0x00F4415C, uint8)
@@ -2489,18 +2643,17 @@ static void log_6CA2DF(uint8 trackType) {
 	char *string_bh = track_slope_description(bh);
 	char *string_cl = track_bank_description(cl);
 	char *string_ch = track_bank_description(ch);
-	char *string_lt_4 = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) < 4) ? "true" : "false";
+	char *string_lt_4 = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) >= 4) ? "true" : "false";
 	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
-	if (_rideConstructionState == 2) {
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
 		rotation = rotation ^ 0x04;
 	}
-	char *string_xor_4 = (rotation & 0x04) ? "true" : "false";
+	char *string_xor_4 = (rotation & (1 << 2)) ? "true" : "false";
 
-	printf("%s, %s, %s, %s, %s, %s, %s, %d\n", string_ax, string_lt_4, string_xor_4, string_bl, string_bh, string_cl, string_ch, trackType);
-
+	printf("(%s || %s), %s, %s, %s, %s, %s, %d\n", string_lt_4, string_xor_4, string_bl, string_cl, string_ax, string_bh, string_ch, trackType);
 }
 
-static bool sub_6CA2DF_get_dh(uint8 *dh) {
+static bool sub_6CA2DF_get_dh(uint8 *dh, bool *must_refactor) {
 	window_ride_construction_update_enabled_track_pieces();
 
 	uint32 edi = 0;
@@ -2521,1058 +2674,123 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 		return false;
 	}
 
-	if (ax == 0) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) < 4) {
-			if (bl == bh) {
-				if (bl == 0) {
-					if (cl == ch) {
-						*dh = 0;
-						if (cl == 0) {
-							return true;
-						}
-
-						*dh = 0x20;
-						if (cl == 2) {
-							return true;
-						}
-
-						*dh = 0x21;
-						return true;
-					}
-
-					if (cl == 0) {
-						*dh = 0x12;
-						if (ch == 2) {
-							return true;
-						}
-
-						*dh = 0x13;
-						return true;
-					}
-
-					if (ch != 0) {
-						return false;
-					}
-
-					*dh = 0x14;
-					if (cl == 2) {
-						return true;
-					}
-
-					*dh = 0x15;
-					return true;
-				}
-
-				if (bl == 2) {
-					if (cl == ch) {
-						*dh = 0x6E;
-						if (cl == 2) {
-							return true;
-						}
-
-						*dh = 0x6F;
-						if (cl == 4) {
-							return true;
-						}
-
-						*dh = 4;
-						return true;
-					}
-
-					if (cl == 0) {
-						*dh = 0xE1;
-						if (ch == 2) {
-							return true;
-						}
-
-						*dh = 0xE2;
-						return true;
-					}
-
-					if (ch != 0) {
-						return false;
-					}
-
-					*dh = 0xE3;
-					if (cl == 2) {
-						return true;
-					}
-
-					*dh = 0xE4;
-					return true;
-				}
-
-				*dh = 5;
-				if (bl == 4) {
-					return true;
-				}
-
-				if (bl == 6) {
-					if (cl == ch) {
-						*dh = 0x73;
-						if (cl == 2) {
-							return true;
-						}
-
-						*dh = 0x74;
-						if (cl == 4) {
-							return true;
-						}
-
-						*dh = 0x0A;
-						return true;
-					}
-
-					if (cl == 0) {
-						*dh = 0xE5;
-						if (ch == 2) {
-							return true;
-						}
-
-						*dh = 0xE6;
-						return true;
-					}
-
-					if (ch != 0) {
-						return false;
-					}
-
-					*dh = 0xE7;
-					if (cl == 2) {
-						return true;
-					}
-
-					*dh = 0xE8;
-					return true;
-				}
-
-				*dh = 0xB;
-				if (bl == 8) {
-					return true;
-				}
-
-				*dh = 0x7E;
-				if (bl == 10) {
-					return true;
-				}
-
-				*dh = 0x7F;
-				if (bl == 18) {
-					return true;
-				}
-
-				return false;
-			}
-
-			// end bl = bh
-
-			if (bl == 18) {
-				*dh = 0x81;
-				if (bh == 8) {
-					return true;
-				}
-			}
-
-			if (bl == 10) {
-				*dh = 0x82;
-				if (bh == 4) {
-					return true;
-				}
-			}
-
-			*dh = 0xE;
-			if (bl == 8) {
-				if (bh == 6) {
-					return true;
-				}
-
-				*dh = 0x41;
-				if (bh == 0) {
-					return true;
-				}
-
-				*dh = 0x83;
-				if (bh == 18) {
-					return true;
-				}
-
-				return false;
-			}
-
-			if (bl == 6) {
-				*dh = 0x0D;
-				if (bh == 8) {
-					return true;
-				}
-
-				if (bh != 0) {
-					return false;
-				}
-
-				if (cl == 0) {
-					*dh = 0x0F;
-					if (ch == 0) {
-						return true;
-					}
-
-					*dh = 0x1E;
-					if (ch == 2) {
-						return true;
-					}
-
-					*dh = 0x1F;
-					return true;
-				}
-
-				if (cl == ch) {
-					*dh = 0xEF;
-					if (cl == 2) {
-						return true;
-					}
-
-					*dh = 0xF0;
-					return true;
-				}
-
-				*dh = 0xF7;
-				if (cl == 2) {
-					return true;
-				}
-
-				*dh = 0xF8;
-				return true;
-			}
-
-			if (bl == 0) {
-				if (bh == 6) {
-					if (ch == 0) {
-						*dh = 0xC;
-						if (cl == 0) {
-							return true;
-						}
-
-						*dh = 0x1C;
-						if (cl == 2) {
-							return true;
-						}
-
-						*dh = 0x1D;
-						return true;
-					}
-
-					if (cl == ch) {
-						*dh = 0xED;
-						if (ch == 2) {
-							return true;
-						}
-
-						*dh = 0xEE;
-						return true;
-					}
-
-					*dh = 0xF5;
-					if (ch == 2) {
-						return true;
-					}
-
-					*dh = 0xF6;
-					return true;
-				}
-
-				*dh = 0x3E;
-				if (bh == 4) {
-					return true;
-				}
-
-				*dh = 0x40;
-				if (bh == 8) {
-					return true;
-				}
-
-				if (bh != 2) {
-					return false;
-				}
-
-				if (ch == 0) {
-					*dh = 6;
-					if (cl == 0) {
-						return true;
-					}
-
-					*dh = 0x18;
-					if (cl == 2) {
-						return true;
-					}
-
-					*dh = 0x19;
-					return true;
-				}
-
-				if (cl == ch) {
-					*dh = 0xE9;
-					if (ch == 2) {
-						return true;
-					}
-
-					*dh = 0xEA;
-					return true;
-				}
-
-				*dh = 0xF1;
-				if (ch == 2) {
-					return true;
-				}
-
-				*dh = 0xF2;
-				return true;
-			}
-
-			*dh = 8;
-			if (bl == 4) {
-				if (bh == 2) {
-					return true;
-				}
-
-				*dh = 0x3F;
-				if (bh == 0) {
-					return true;
-				}
-
-				*dh = 0x80;
-				if (bh == 10) {
-					return true;
-				}
-
-				return false;
-			}
-
-			*dh = 7;
-			if (bh == 4) {
-				if (bl == 2) {
-					return true;
-				}
-
-				return false;
-			}
-
-			if (bh != 0) {
-				return false;
-			}
-
-			if (cl == 0) {
-				*dh = 9;
-				if (ch == 0) {
-					return true;
-				}
-
-				*dh = 0x1A;
-				if (ch == 2) {
-					return true;
-				}
-
-				*dh = 0x1B;
-				return true;
-			}
-
-			if (cl == ch) {
-				*dh = 0xEB;
-				if (cl == 2) {
-					return true;
-				}
-
-				*dh = 0xEC;
-				return true;
-			}
-
-			*dh = 0xF3;
-			if (cl == 2) {
-				return true;
-			}
-
-			*dh = 0xF4;
-			return true;
+	bool isDiagonal = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) >= 4;
+
+	if (ax == 7 || ax == 8) {
+		uint8 tmp_dh = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
+			tmp_dh = tmp_dh ^ 0x04;
 		}
 
-		// TRACK_PREVIEW_ROTATION >= 4
-		if (bl == bh) {
-			if (bl == 0) {
-				if (cl == ch) {
-					*dh = 0x8D;
-					if (cl == 0) {
-						return true;
-					}
-
-					*dh = 0xAA;
-					if (cl == 2) {
-						return true;
-					}
-
-					*dh = 0xAB;
-					return true;
-				}
-
-				if (cl == 0) {
-					*dh = 0x9E;
-					if (ch == 2) {
-						return true;
-					}
-
-					*dh = 0x9F;
-					return true;
-				}
-
-				if (ch != 0) {
-					return false;
-				}
-
-				*dh = 0xA0;
-				if (cl == 2) {
-					return true;
-				}
-
-				*dh = 0xA1;
-				return true;
-			}
-
-			*dh = 0x8E;
-			if (bl == 2) {
-				return true;
-			}
-
-			*dh = 0x8F;
-			if (bl == 4) {
-				return true;
-			}
-
-			*dh = 0x94;
-			if (bl == 6) {
-				return true;
-			}
-
-			*dh = 0x95;
-			if (bl == 8) {
-				return true;
-			}
-
-			*dh = 0x7E;
-			if (bl == 10) {
-				return false;
-			}
-
-			*dh = 0x7F;
-			if (bl == 18) {
-				return false;
-			}
-
-			return false;
-		}
-
-		if (bl == 18) {
-			*dh = 0x81;
-			if (bh == 8) {
-				return false;
-			}
-		}
-
-		if (bl == 10) {
-			*dh = 0x82;
-			if (bh == 4) {
-				return false;
-			}
-		}
-
-		*dh = 0x98;
-		if (bl == 8) {
-			if (bh == 6) {
-				return true;
-			}
-
-			*dh = 0x9D;
-			if (bh == 0) {
-				return true;
-			}
-
-			*dh = 0x83;
-			if (bh == 18) {
-				return false;
-			}
-
-			return false;
-		}
-
-		if (bl == 6) {
-			*dh = 0x97;
-			if (bh == 8) {
-				return true;
-			}
-
-			if (bh != 0) {
-				return false;
-			}
-
-			*dh = 0x99;
-			if (ch == 0) {
-				return true;
-			}
-
-			*dh = 0xA8;
-			if (ch == 2) {
-				return true;
-			}
-
-			*dh = 0xA9;
-			return true;
-		}
-
-		if (bl == 0) {
-			if (bh == 6) {
-				*dh = 0x96;
-				if (cl == 0) {
-					return true;
-				}
-
-				*dh = 0xA6;
-				if (cl == 2) {
-					return true;
-				}
-
-				*dh = 0xA7;
-				return true;
-			}
-
-			*dh = 0x9A;
-			if (bh == 4) {
-				return true;
-			}
-
-			*dh = 0x9C;
-			if (bh == 8) {
-				return true;
-			}
-
-			if (bh != 2) {
-				return false;
-			}
-
-			*dh = 0x90;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xA2;
-			if (cl == 2) {
-				return true;
-			}
-
-			*dh = 0xA3;
-			return true;
-		}
-
-		*dh = 0x92;
-		if (bl == 4) {
-			if (bh == 2) {
-				return true;
-			}
-
-			*dh = 0x9B;
-			if (bh == 0) {
-				return true;
-			}
-
-			*dh = 0x80;
-			if (bh == 10) {
-				return false;
-			}
-
-			return false;
-		}
-
-		*dh = 0x91;
-		if (bh == 4) {
-			if (bl == 2) {
-				return true;
-			}
-
-			return false;
-		}
-
-		*dh = 0x93;
-		if (bh != 0) {
-			return false;
-		}
-
-		if (ch == 0) {
-			return true;
-		}
-
-		*dh = 0xA4;
-		if (ch == 2) {
-			return true;
-		}
-
-		*dh = 0xA5;
-		return true;
+		isDiagonal = (tmp_dh & 0x04);
 	}
 
-	if (ax == 1) {
-		if (bl != bh) {
-			return false;
-		}
+	if (ax <= 8) {
+		for (int i = 0; i < 140; i++) {
+			track_descriptor trackDescriptor = TrackDescriptors[i];
+			if (trackDescriptor.track_curve != ax) continue;
+			if (trackDescriptor.is_diagonal != isDiagonal) continue;
+			if (trackDescriptor.slope_start != bl) continue;
+			if (trackDescriptor.slope_end != bh) continue;
+			if (trackDescriptor.bank_start != cl) continue;
+			if (trackDescriptor.bank_end != ch) continue;
 
-		if (bl == 4) {
-			return false;
-		}
-
-		if (bl == 8) {
-			return false;
-		}
-
-		if (bh == 6) {
-			*dh = 0x24;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xDF;
+			*dh = trackDescriptor.track_element;
 			return true;
 		}
 
-		if (bh == 2) {
-			*dh = 0x22;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xDD;
-			return true;
-		}
-
-		*dh = 0x10;
-		if (ch == 0) {
-			return true;
-		}
-
-		*dh = 0x16;
-		return true;
+		log_error("missing element");
+		*must_refactor = true;
 	}
 
-	if (ax == 2) {
-		if (bl != bh) {
-			return false;
-		}
 
-		if (bl == 4) {
-			return false;
-		}
-
-		if (bl == 8) {
-			return false;
-		}
-
-		if (bh == 6) {
-			*dh = 0x25;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xE0;
+	if (ax == TRACK_CURVE_LEFT_SMALL) {
+		if (bl == TRACK_SLOPE_DOWN_25 && bh == TRACK_BANK_NONE && cl == TRACK_BANK_NONE && ch == TRACK_BANK_LEFT) {
+			*dh = TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK;
 			return true;
 		}
 
-		if (bh == 2) {
-			*dh = 0x23;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xDE;
-			return true;
-		}
-
-		*dh = 0x11;
-		if (ch == 0) {
-			return true;
-		}
-
-		*dh = 0x17;
-		return true;
-	}
-
-	if (ax == 3) {
-		if (bl != bh) {
-			if (bl == 0 && bh == 2 && cl == 2) {
-				*dh = 0xB2;
-				if (ch == 0) {
-					return true;
-				}
-			}
-
-			if (bl != 6) {
-				return false;
-			}
-
-			if (bh != 0) {
-				return false;
-			}
-
-			if (cl != 0) {
-				return false;
-			}
-
-			*dh = 0xB4;
-			if (ch == 2) {
-				return true;
-			}
-
-			return false;
-		}
-
-		*dh = 0x61;
-		if (bh == 8) {
-			return true;
-		}
-
-		*dh = 0x5F;
-		if (bh == 4) {
-			return true;
-		}
-
-		*dh = 0xFB;
-		if (bh == 0x12) {
-			return true;
-		}
-
-		*dh = 0xF9;
-		if (bh == 0xA) {
-			return true;
-		}
-
-		if (bh == 6) {
-			*dh = 0x30;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xDB;
-			return true;
-		}
-
-		if (bh == 2) {
-			*dh = 0x2E;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xD9;
-			return true;
-		}
-
-		*dh = 0x2A;
-		if (ch == 0) {
-			return true;
-		}
-
-		*dh = 0x2C;
-		return true;
+		return false;
 	}
 
 	if (ax == TRACK_CURVE_RIGHT_SMALL) {
-		if (bl != bh) {
-			if (bl == 0 && bh == 2 && cl == 4) {
-				*dh = 0xB3;
-				if (ch == 0) {
-					return true;
-				}
-			}
-
-			if (bl != 6) {
-				return false;
-			}
-
-			if (bh != 0) {
-				return false;
-			}
-
-			if (cl != 0) {
-				return false;
-			}
-
-			*dh = 0xB5;
-			if (ch == 4) {
-				return true;
-			}
-
-			return false;
-		}
-
-		*dh = 0x62;
-		if (bh == 8) {
-			return true;
-		}
-
-		*dh = 0x60;
-		if (bh == 4) {
-			return true;
-		}
-
-		*dh = 0xFC;
-		if (bh == 18) {
-			return true;
-		}
-
-		*dh = 0xFA;
-		if (bh == 10) {
-			return true;
-		}
-
-		if (bh == 6) {
-			*dh = 0x31;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xDC;
-			return true;
-		}
-
-		if (bh == 2) {
-			*dh = 0x2F;
-			if (cl == 0) {
-				return true;
-			}
-
-			*dh = 0xDA;
-			return true;
-		}
-
-		*dh = 0x2B;
-		if (ch == 0) {
-			return true;
-		}
-
-		*dh = 0x2D;
-		return true;
-
-	}
-
-	if (ax == 5) {
-		if (bl != bh) {
-			return false;
-		}
-
-		if (bl == 2) {
-			return false;
-		}
-
-		if (bl == 6) {
-			return false;
-		}
-
-		*dh = 0x61;
-		if (bh == 8) {
-			return true;
-		}
-
-		*dh = 0x5F;
-		if (bh == 4) {
-			return true;
-		}
-
-		*dh = 0xFB;
-		if (bh == 0x12) {
-			return true;
-		}
-
-		*dh = 0xF9;
-		if (bh == 0xA) {
-			return true;
-		}
-
-		*dh = 0x32;
-		if (ch == 0) {
+		if (bl == TRACK_SLOPE_DOWN_25 && bh == TRACK_BANK_NONE && cl == TRACK_BANK_NONE && ch == TRACK_BANK_RIGHT) {
+			*dh = TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK;
 			return true;
 		}
 
 		return false;
 	}
 
-	if (ax == 6) {
+	if (ax == TRACK_CURVE_LEFT_VERY_SMALL) {
 		if (bl != bh) {
 			return false;
 		}
 
-		if (bl == 2) {
+		if (bl == TRACK_SLOPE_UP_25 || bl == TRACK_SLOPE_DOWN_25) {
 			return false;
 		}
 
-		if (bl == 6) {
-			return false;
-		}
-
-		*dh = 0x62;
-		if (bh == 8) {
+		*dh = TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN;
+		if (bh == TRACK_SLOPE_DOWN_60) {
 			return true;
 		}
 
-		*dh = 0x60;
-		if (bh == 4) {
+		*dh = TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP;
+		if (bh == TRACK_SLOPE_UP_60) {
 			return true;
 		}
 
-		*dh = 0xFC;
-		if (bh == 0x12) {
+		*dh = TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN;
+		if (bh == TRACK_SLOPE_DOWN_90) {
 			return true;
 		}
 
-		*dh = 0xFA;
-		if (bh == 0xA) {
-			return true;
-		}
-
-		*dh = 0x33;
-		if (ch == 0) {
+		*dh = TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP;
+		if (bh == TRACK_SLOPE_UP_90) {
 			return true;
 		}
 
 		return false;
 	}
 
-	if (ax == 7) {
-		*dh = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
-		if (_rideConstructionState == 2) {
-			*dh = *dh ^ 0x04;
-		}
-
-		if (*dh & 0x04) {
-			if (bl != bh) {
-				return false;
-			}
-
-			if (bl == 4) {
-				return false;
-			}
-
-			if (bl == 8) {
-				return false;
-			}
-
-			*dh = 0x24;
-			if (bh == 6) {
-				return false;
-			}
-
-			*dh = 0x22;
-			if (bh == 2) {
-				return false;
-			}
-
-			*dh = 0x87;
-			if (ch == 0) {
-				return true;
-			}
-
-			*dh = 0x8B;
-			return true;
-		}
-
+	if (ax == TRACK_CURVE_RIGHT_VERY_SMALL) {
 		if (bl != bh) {
 			return false;
 		}
 
-		if (bl == 4) {
+		if (bl == TRACK_SLOPE_UP_25 || bl == TRACK_SLOPE_DOWN_25) {
 			return false;
 		}
 
-		if (bl == 8) {
-			return false;
-		}
-
-		*dh = 0x24;
-		if (bh == 6) {
-			return false;
-		}
-
-		*dh = 0x22;
-		if (bh == 2) {
-			return false;
-		}
-
-		*dh = 0x85;
-		if (ch == 0) {
+		*dh = TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN;
+		if (bh == TRACK_SLOPE_DOWN_60) {
+			// DOWN_60, ?, RIGHT_VERY_SMALL, DOWN_60, ?
 			return true;
 		}
 
-		*dh = 0x89;
-		return true;
+		*dh = TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP;
+		if (bh == TRACK_SLOPE_UP_60) {
+			// UP_60, ?, RIGHT_VERY_SMALL, UP_60, ?
+			return true;
+		}
+
+		*dh = TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN;
+		if (bh == TRACK_SLOPE_DOWN_90) {
+			// DOWN_90, ?, RIGHT_VERY_SMALL, DOWN_90, ?
+			return true;
+		}
+
+		*dh = TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP;
+		if (bh == TRACK_SLOPE_UP_90) {
+			return true;
+		}
+
+		return false;
 	}
 
-	if (ax == 8) {
-		*dh = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
-		if (_rideConstructionState == 2) {
-			*dh = *dh ^ 0x04;
-		}
-
-		if (*dh & 0x04) {
-			if (bl != bh) {
-				return false;
-			}
-
-			if (bl == 4) {
-				return false;
-			}
-
-			if (bl == 8) {
-				return false;
-			}
-
-			*dh = 0x25;
-			if (bh == 6) {
-				return false;
-			}
-
-			*dh = 0x23;
-			if (bh == 2) {
-				return false;
-			}
-
-			*dh = 0x88;
-			if (ch == 0) {
-				return true;
-			}
-
-			*dh = 0x8C;
-			return true;
-		}
-
-		if (bl != bh) {
-			return false;
-		}
-
-		if (bl == 4) {
-			return false;
-		}
-
-		if (bl == 8) {
-			return false;
-		}
-
-		*dh = 0x25;
-		if (bh == 6) {
-			return false;
-		}
-
-		*dh = 0x23;
-		if (bh == 2) {
-			return false;
-		}
-
-		*dh = 0x86;
-		if (ch == 0) {
-			return true;
-		}
-
-		*dh = 0x8A;
-		return true;
+	if (ax <= 8) {
+		return false;
 	}
 
 	*dh = ax & 0xFF;
@@ -3630,12 +2848,15 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 	uint8 trackType, trackDirection, rideIndex;
 	uint16 z, x, y, edxRS16;
 	uint32 properties;
+	bool mustRefactor = false;
 
-	if (!sub_6CA2DF_get_dh(&trackType)) {
+	if (!sub_6CA2DF_get_dh(&trackType, &mustRefactor)) {
 		return true;
 	}
 
-	log_6CA2DF(trackType);
+	if (mustRefactor) {
+		log_6CA2DF(trackType);
+	}
 
 	edxRS16 = 0;
 	rideIndex = _currentRideIndex;
