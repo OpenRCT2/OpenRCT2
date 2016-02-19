@@ -1750,9 +1750,10 @@ static void sub_68B3FB(int x, int y)
 	RCT2_GLOBAL(0x9DE576, uint16_t) = y;
 
 	rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
+	uint8 rotation = get_current_rotation();
 
 	int dx = 0;
-	switch (get_current_rotation()) {
+	switch (rotation) {
 	case 0:
 		dx = x + y;
 		break;
@@ -1776,7 +1777,7 @@ static void sub_68B3FB(int x, int y)
 		RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
 		RCT2_GLOBAL(0x9DE56E, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16)){
 		uint8 arrowRotation =
-			(get_current_rotation()
+			(rotation
 			+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3)) & 3;
 
 		uint32 imageId =
@@ -1793,7 +1794,7 @@ static void sub_68B3FB(int x, int y)
 		RCT2_GLOBAL(0x9DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x9DEA56, uint16) = arrowZ + 18;
 
-		sub_98197C(0, 0xFF, imageId, 0, arrowZ, 32, 32, get_current_rotation());
+		sub_98197C(0, 0xFF, imageId, 0, arrowZ, 32, 32, rotation);
 	}
 	int bx = dx + 52;
 
@@ -1827,7 +1828,7 @@ static void sub_68B3FB(int x, int y)
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
 	RCT2_GLOBAL(0x9DE57C, uint16) = 0;
 	do {
-		int direction = (map_element->type + get_current_rotation()) & MAP_ELEMENT_DIRECTION_MASK;
+		int direction = (map_element->type + rotation) & MAP_ELEMENT_DIRECTION_MASK;
 		int height = map_element->base_height * 8;
 
 		uint32_t dword_9DE574 = RCT2_GLOBAL(0x9DE574, uint32_t);
@@ -2121,6 +2122,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 
 	ps = RCT2_GLOBAL(0x00F1AD14, paint_struct*);
 
+	uint8 rotation = get_current_rotation();
 	while (true) {
 		while (true) {
 			ps_next = ps->next_quadrant_ps;
@@ -2148,7 +2150,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 			if (!(ps_next->var_1B & (1 << 1))) continue;
 
 			int yes = 0;
-			switch (get_current_rotation()) {
+			switch (rotation) {
 			case 0:
 				if (my_some_y >= ps_next->some_x && my_other_y >= ps_next->attached_y && my_other_x >= ps_next->attached_x
 					&& !(my_some_x < ps_next->some_y && my_attached_y < ps_next->other_y && my_attached_x < ps_next->other_x))
@@ -2950,7 +2952,7 @@ uint8 get_current_rotation()
 	uint32 rotation_masked = rotation & 3;
 #if DEBUG_LEVEL_1
 	if (rotation != rotation_masked) {
-	    log_error("Found wrong rotation %d! Will return %d instead.", rotation, rotation_masked);
+		log_error("Found wrong rotation %d! Will return %d instead.", rotation, rotation_masked);
 	}
 #endif // DEBUG_LEVEL_1
 	return (uint8)rotation_masked;
