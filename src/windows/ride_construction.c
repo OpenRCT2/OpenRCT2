@@ -3276,7 +3276,7 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 		return true;
 	}
 
-	if (ax == 4) {
+	if (ax == TRACK_CURVE_RIGHT_SMALL) {
 		if (bl != bh) {
 			if (bl == 0 && bh == 2 && cl == 4) {
 				*dh = 0xB3;
@@ -3310,13 +3310,18 @@ static bool sub_6CA2DF_get_dh(uint8 *dh) {
 			return true;
 		}
 
-		*dh = 0x68;
+		*dh = 0x60;
 		if (bh == 4) {
 			return true;
 		}
 
-		*dh = 0x0F;
-		if (bh == 0x12) {
+		*dh = 0xFC;
+		if (bh == 18) {
+			return true;
+		}
+
+		*dh = 0xFA;
+		if (bh == 10) {
 			return true;
 		}
 
