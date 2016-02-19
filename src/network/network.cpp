@@ -896,13 +896,15 @@ void Network::UpdateClient()
 			if (server_connection.authstatus == NETWORK_AUTH_REQUIREPASSWORD) { // Do not show disconnect message window when password window closed/canceled
 				window_network_status_close();
 			} else {
-				char str_disconnected[256], str_conditional_buffer[256];
-				str_conditional_buffer[0] = '\0';
+				char str_disconnected[256];
+
 				if (server_connection.getLastDisconnectReason()) {
-					strcat(str_conditional_buffer, ": ");
-					strcat(str_conditional_buffer, server_connection.getLastDisconnectReason());
+					const char * disconnect_reason = server_connection.getLastDisconnectReason();
+					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
+				} else {
+					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
 				}
-				format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED, &str_conditional_buffer);
+
 				window_network_status_open(str_disconnected);
 			}
 			Close();
@@ -1017,7 +1019,7 @@ void Network::KickPlayer(int playerId)
 			// Disconnect the client gracefully
 			(*it)->setLastDisconnectReason(STR_MULTIPLAYER_KICKED);
 			char str_disconnect_msg[256];
-			format_string(str_disconnect_msg, STR_MULTIPLAYER_DISCONNECT_MSG, NULL);
+			format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
 			shutdown((*it)->socket, SHUT_RD);
 			(*it)->SendQueuedPackets();
@@ -1589,18 +1591,16 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	NetworkPlayer* connection_player = connection->player;
 	if (connection_player) {
 		char text[256];
-		char reasonstr[100];
-		reasonstr[0] = 0;
-		if (connection->getLastDisconnectReason() && strlen(connection->getLastDisconnectReason()) < sizeof(reasonstr)) {
-			sprintf(reasonstr, " (%s)", connection->getLastDisconnectReason());
+		const char * has_disconnected_args[2] = {
+				(char *) connection_player->name,
+				connection->getLastDisconnectReason()
+		};
+		if (has_disconnected_args[1]) {
+			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
+		} else {
+			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
 		}
 
-		char **has_disconnected_args = new char *[2]{
-				(char *) connection_player->name,
-				reasonstr
-		};
-		format_string(text, STR_MULTIPLAYER_HAS_DISCONNECTED, has_disconnected_args);
-		delete [] has_disconnected_args;
 		chat_history_add(text);
 		gNetwork.Server_Send_CHAT(text);
 	}
@@ -1702,7 +1702,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 				player->SetName(name);
 				char text[256];
 				const char * player_name = (const char *) player->name;
-				format_string(text, STR_MULTIPLAYER_HAS_JOINED_THE_GAME, &player_name);
+				format_string(text, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 				chat_history_add(text);
 				Server_Send_MAP(&connection);
 				gNetwork.Server_Send_CHAT(text);
