@@ -2366,6 +2366,10 @@ enum {
 	STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME = 5758,
 	STR_MULTIPLAYER_DOWNLOADING_MAP = 5759,
 
+	STR_HONG_KONG_DOLLAR = 5760,
+	STR_NEW_TAIWAN_DOLLAR = 5761,
+	STR_CHINESE_YUAN = 5762,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

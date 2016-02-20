@@ -35,4 +35,7 @@ const currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
 	{	"KRW",	10000,	CURRENCY_PREFIX,	"\xE2\x82\xA9",	CURRENCY_PREFIX,	"W",	STR_WON				},	// South Korean Won
 	{	"RUB",	1000,	CURRENCY_PREFIX,	"R ",			CURRENCY_PREFIX,	"R ",	STR_ROUBLE			},	// Russian Rouble
 	{	"CZK",	100,	CURRENCY_SUFFIX,	" K\xC4\x8D",	CURRENCY_SUFFIX,	" Kc",	STR_CZECH_KORUNA	},	// Czech koruna
+	{	"HKD",	100,	CURRENCY_SUFFIX,	"$",			CURRENCY_SUFFIX,	"HKD",	STR_HONG_KONG_DOLLAR},	// Hong Kong Dollar
+	{	"TWD",	1000,	CURRENCY_SUFFIX,	"NT$",			CURRENCY_SUFFIX,	"NT$",	STR_NEW_TAIWAN_DOLLAR},	// New Taiwan Dollar
+	{	"HKD",	100,	CURRENCY_SUFFIX,	"CN\xC2\xA5",	CURRENCY_SUFFIX,	"CNY",	STR_CHINESE_YUAN	},	// Chinese Yuan
 };
