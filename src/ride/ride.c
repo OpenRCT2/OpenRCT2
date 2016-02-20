@@ -3141,8 +3141,8 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 		// Flip direction north<->south, east<->west
 		uint8 face_direction = count ^ 2;
 
-		int y2 = y - TileDirectionDelta[face_direction].x;
-		int x2 = x - TileDirectionDelta[face_direction].y;
+		int y2 = y - TileDirectionDelta[face_direction].y;
+		int x2 = x - TileDirectionDelta[face_direction].x;
 
 		if (map_coord_is_connected(x2 / 32, y2 / 32, mapElement->base_height, face_direction))
 			return;
