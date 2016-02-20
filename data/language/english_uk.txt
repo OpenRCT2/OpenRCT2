@@ -4046,6 +4046,24 @@ STR_5738    :Closed, {COMMA16} people still on ride
 STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
 STR_5740    :Never-ending marketing campaigns
 STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
+STR_5742    :Authenticating ...
+STR_5743    :Connecting ...
+STR_5744    :Resolving ...
+STR_5745    :Network desync detected
+STR_5746    :Disconnected
+STR_5747    :Disconnected: {STRING}
+STR_5748    :Kicked
+STR_5749    :Get out of the server!
+STR_5750    :Connection Closed
+STR_5751    :No Data
+STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
+STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
+STR_5754    :Bad Player Name
+STR_5755    :Incorrect Software Version
+STR_5756    :Bad Password
+STR_5757    :Server Full
+STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
+STR_5759    :Downloading map ... ({INT32} / {INT32})
 
 
 #############
