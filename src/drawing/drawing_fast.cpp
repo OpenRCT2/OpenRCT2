@@ -3,6 +3,9 @@ extern "C"
     #include "drawing.h"
 }
 
+// This will have 1 for val > 0, 0 otherwise
+#define greater_than_zero(val) (((val - 1) >> (sizeof(val) * 8 - 1)) + 1)
+
 template<int image_type, int zoom_level>
 static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
                                       uint8* dest_bits_pointer,
@@ -24,9 +27,10 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
         next_dest_pointer += line_width;
         height -= zoom_amount;
     }
+    const int source_y_end = height + source_y_start;
 
     //For every line in the image
-    for (int y = source_y_start; y < (height + source_y_start); y += zoom_amount) {
+    for (int y = source_y_start; y < source_y_end; y += zoom_amount) {
 
         //The first part of the source pointer is a list of offsets to different lines
         //This will move the pointer to the correct source line.
@@ -52,39 +56,31 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
 
             //Calculates the start point of the image
             int x_start = gap_size - source_x_start;
+            const int x_diff = x_start & ~zoom_mask;
 
-            if (x_start & ~zoom_mask) {
-                no_pixels -= (x_start&~zoom_mask);
-                x_start += ~zoom_mask;
-                source_pointer += (x_start&~zoom_mask);
-                if (no_pixels <= 0) continue;
-            }
+            no_pixels -= x_diff;
+            x_start += ~zoom_mask * greater_than_zero(x_diff - 1);
+            source_pointer += (x_start&~zoom_mask);
 
-            if (x_start > 0) {
-                //Since the start is positive
-                //We need to move the drawing surface to the correct position
-                dest_pointer += x_start >> zoom_level;
-            } else {
-                //If the start is negative we require to remove part of the image.
-                //This is done by moving the image pointer to the correct position.
-                source_pointer -= x_start;
-                //The no_pixels will be reduced in this operation
-                no_pixels += x_start;
-                //If there are no pixels there is nothing to draw this data section
-                if (no_pixels <= 0) continue;
-                //Reset the start position to zero as we have taken into account all moves
-                x_start = 0;
-            }
+            // This will have 1 for x_start > 0, 0 otherwise
+            uint8 sign = greater_than_zero(x_start);
+
+            dest_pointer += (x_start >> zoom_level) * sign;
+
+            //If the start is negative we require to remove part of the image.
+            //This is done by moving the image pointer to the correct position.
+            source_pointer -= x_start * (1 - sign);
+            //The no_pixels will be reduced in this operation
+            no_pixels += x_start * (1 - sign);
+            //Reset the start position to zero as we have taken into account all moves
+            x_start *= sign;
 
             int x_end = x_start + no_pixels;
             //If the end position is further out than the whole image
             //end position then we need to shorten the line again
-            if (x_end > width) {
-                //Shorten the line
-                no_pixels -= x_end - width;
-                //If there are no pixels there is nothing to draw.
-                if (no_pixels <= 0) continue;
-            }
+            const int pixels_till_end = x_end - width;
+            //Shorten the line
+            no_pixels -= pixels_till_end * greater_than_zero(pixels_till_end);
 
             //Finally after all those checks, copy the image onto the drawing surface
             //If the image type is not a basic one we require to mix the pixels
@@ -110,6 +106,7 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
             } else
             {
                 if (zoom_amount == 1) {
+                    no_pixels *= greater_than_zero(no_pixels);
                     memcpy(dest_pointer, source_pointer, no_pixels);
                 } else {
                     for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
