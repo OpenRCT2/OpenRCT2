@@ -2478,8 +2478,7 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
  */
 static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_rideIndex, uint16 *_edxRS16, uint16 *_x, uint16 *_y, uint16 *_z, uint16 *_properties) {
 	uint8 trackType, trackDirection, rideIndex;
-	uint16 z, x, y, edxRS16;
-	uint32 properties;
+	uint16 z, x, y, edxRS16, properties;
 
 	if (!sub_6CA2DF_get_track_element(&trackType)) {
 		return true;
@@ -2530,11 +2529,11 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 		}
 	}
 
-	z = _currentTrackBeginZ;
 	const rct_track_coordinates *trackCoordinates = get_track_coord_from_ride(ride, trackType);
 
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
+	z = _currentTrackBeginZ;
 	if (_rideConstructionState == 2) {
 		z -= trackCoordinates->z_end;
 		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) ^ 0x02;
@@ -2572,7 +2571,6 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
 	}
 
-	// loc_6CAEEA:
 
 	bool do_loc_6CAF26 = false;
 	if (!(_enabledRidePiecesA & (1 << 5))) {
@@ -2594,15 +2592,11 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 		}
 	}
 
-	// loc_6CAF49:
+
 	if (trackType == TRACK_ELEM_BRAKES) {
-		uint32 ebp = RCT2_GLOBAL(0x00F440CD, uint8) << 16;
-		properties &= 0xFFFF;
-		properties |= ebp;
+		properties = RCT2_GLOBAL(0x00F440CD, uint8);
 	} else {
-		uint32 ebp = _currentSeatRotationAngle << 26;
-		properties &= 0xFFFFFFF;
-		properties |= ebp;
+		properties = _currentSeatRotationAngle << 12;
 	}
 
 
@@ -2613,7 +2607,7 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 	if (_x != NULL) *_x = x;
 	if (_y != NULL) *_y = y;
 	if (_z != NULL) *_z = z;
-	if (_properties != NULL) *_properties = (properties >> 16) & 0xFFFF;
+	if (_properties != NULL) *_properties = properties;
 
 	return false;
 }
@@ -2677,7 +2671,7 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
 	assert(new_x == original_x);
 	assert(new_y == original_y);
 	assert(new_z == original_z);
-	//assert(new_properties == original_properties);
+	assert(new_properties == original_properties);
 	assert(new_currentTrackLiftHill == original_currentTrackLiftHill);
 
 	if (trackType != NULL) *trackType = original_trackType;
