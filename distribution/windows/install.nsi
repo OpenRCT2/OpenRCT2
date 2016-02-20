@@ -458,47 +458,16 @@ Function .onInit
 
     SectionSetFlags 0 17
 
-    ; Starts Setup - let's look for an older version of OpenRCT2
-    ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
-
-	; Skip upgrade checking for now
-    ;IfErrors ShowWelcomeMessage ShowUpgradeMessage
-	Goto ShowWelcomeMessage
 ShowWelcomeMessage:
     ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
     IfErrors FinishCallback
 
-ShowUpgradeMessage:
-	${VersionCompare} "${APPVERSIONINTERNAL}" "$R8" $R0
-    IntCmp $R0 1 WelcomeToSetup VersionsAreEqual InstallerIsOlder
 WelcomeToSetup:
     ; An older version was found.  Let's let the user know there's an upgrade that will take place.
     ReadRegStr $OLDVERSION HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "DisplayVersion"
     ; Gets the older version then displays it in a message box
     MessageBox MB_OK|MB_ICONINFORMATION \
         "Welcome to ${APPNAMEANDVERSION} Setup.$\nThis will allow you to upgrade from version $OLDVERSION."
-    Goto FinishCallback
-
-VersionsAreEqual:
-    ReadRegStr $UninstallString HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "UninstallString"
-    IfFileExists "$UninstallString" "" FinishCallback
-    MessageBox MB_YESNO|MB_ICONQUESTION \
-        "Setup detected ${APPNAMEANDVERSION} on your system. This is the same version that this program will install.$\nAre you trying to uninstall it?" \
-        IDYES DoUninstall IDNO FinishCallback
-DoUninstall: ; You have the same version as this installer.  This allows you to uninstall.
-    Exec "$UninstallString"
-    Quit
-
-InstallerIsOlder:
-	; A newer version was found.  Let's let the user know there's an downgrade that will take place.
-    ReadRegStr $OLDVERSION HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "DisplayVersion"
-    ;MessageBox MB_OK|MB_ICONSTOP \
-    ;    "You have a newer version of ${APPNAME}.$\nSetup will now exit."
-	;Quit
-	MessageBox MB_OK|MB_ICONSTOP \
-        "You have a newer version of ${APPNAME}.$\nPlease note downgrading is currently untested."
-	MessageBox MB_OK|MB_ICONQUESTION \
-        "Welcome to ${APPNAMEANDVERSION} Setup.$\nThis will allow you to downgrade from version $OLDVERSION."
     Goto FinishCallback
 
 FinishCallback:
