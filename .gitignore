@@ -109,11 +109,13 @@ ipch/
 *.sdf
 *.cachefile
 *.VC.opendb
+*.VC.db
 
 # Visual Studio profiler
 *.psess
 *.vsp
 *.vspx
+*.diagsession
 
 # Guidance Automation Toolkit
 *.gpState
