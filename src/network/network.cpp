@@ -324,6 +324,10 @@ NetworkConnection::~NetworkConnection()
 	if (socket != INVALID_SOCKET) {
 		closesocket(socket);
 	}
+
+	if (last_disconnect_reason) {
+		delete[] last_disconnect_reason;
+	}
 }
 
 int NetworkConnection::ReadPacket()
@@ -440,6 +444,35 @@ bool NetworkConnection::ReceivedPacketRecently()
 	}
 #endif
 	return true;
+}
+
+const char* NetworkConnection::getLastDisconnectReason() const
+{
+	return this->last_disconnect_reason;
+}
+
+void NetworkConnection::setLastDisconnectReason(const char *src)
+{
+	if (src == nullptr) {
+		if (last_disconnect_reason) {
+			delete[] last_disconnect_reason;
+			last_disconnect_reason = NULL;
+		}
+		return;
+	}
+
+	if (!last_disconnect_reason) {
+		last_disconnect_reason = new char[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
+	}
+
+	strncpy(last_disconnect_reason, src, NETWORK_DISCONNECT_REASON_BUFFER_SIZE - 1);
+}
+
+void NetworkConnection::setLastDisconnectReason(const rct_string_id string_id)
+{
+	char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
+	format_string(buffer, string_id, NULL);
+	setLastDisconnectReason(buffer);
 }
 
 NetworkAddress::NetworkAddress()
@@ -579,7 +612,8 @@ void Network::Close()
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	server_connection.authstatus = NETWORK_AUTH_NONE;
-	server_connection.last_disconnect_reason = NULL;
+
+	server_connection.setLastDisconnectReason(nullptr);
 
 	client_connection_list.clear();
 	game_command_queue.clear();
@@ -609,7 +643,9 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	server_address.Resolve(host, port);
 	status = NETWORK_STATUS_RESOLVING;
 
-	window_network_status_open("Resolving...");
+	char str_resolving[256];
+	format_string(str_resolving, STR_MULTIPLAYER_RESOLVING, NULL);
+	window_network_status_open(str_resolving);
 
 	mode = NETWORK_MODE_CLIENT;
 
@@ -796,7 +832,9 @@ void Network::UpdateClient()
 			}
 
 			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss), (*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
-				window_network_status_open("Connecting...");
+				char str_connecting[256];
+				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, NULL);
+				window_network_status_open(str_connecting);
 				server_connect_time = SDL_GetTicks();
 				status = NETWORK_STATUS_CONNECTING;
 			} else {
@@ -847,21 +885,27 @@ void Network::UpdateClient()
 				status = NETWORK_STATUS_CONNECTED;
 				server_connection.ResetLastPacketTime();
 				Client_Send_AUTH(gConfigNetwork.player_name, "");
-				window_network_status_open("Authenticating...");
+				char str_authenticating[256];
+				format_string(str_authenticating, STR_MULTIPLAYER_AUTHENTICATING, NULL);
+				window_network_status_open(str_authenticating);
 			}
 		}
 	}break;
 	case NETWORK_STATUS_CONNECTED:
 		if (!ProcessConnection(server_connection)) {
-			std::string errormsg = "Disconnected";
-			if (server_connection.last_disconnect_reason) {
-				errormsg += ": ";
-				errormsg += server_connection.last_disconnect_reason;
-			}
 			if (server_connection.authstatus == NETWORK_AUTH_REQUIREPASSWORD) { // Do not show disconnect message window when password window closed/canceled
 				window_network_status_close();
 			} else {
-				window_network_status_open(errormsg.c_str());
+				char str_disconnected[256];
+
+				if (server_connection.getLastDisconnectReason()) {
+					const char * disconnect_reason = server_connection.getLastDisconnectReason();
+					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
+				} else {
+					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
+				}
+
+				window_network_status_open(str_disconnected);
 			}
 			Close();
 		}
@@ -870,7 +914,9 @@ void Network::UpdateClient()
 		// Check synchronisation
 		if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
 			_desynchronised = true;
-			window_network_status_open("Network desync detected");
+			char str_desync[256];
+			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
+			window_network_status_open(str_desync);
 			if (!gConfigNetwork.stay_connected) {
 				Close();
 			}
@@ -971,8 +1017,10 @@ void Network::KickPlayer(int playerId)
 	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		if ((*it)->player->id == playerId) {
 			// Disconnect the client gracefully
-			(*it)->last_disconnect_reason = "Kicked";
-			Server_Send_SETDISCONNECTMSG(*(*it), "Get out of the server!");
+			(*it)->setLastDisconnectReason(STR_MULTIPLAYER_KICKED);
+			char str_disconnect_msg[256];
+			format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
 			shutdown((*it)->socket, SHUT_RD);
 			(*it)->SendQueuedPackets();
 			break;
@@ -1457,8 +1505,8 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 		switch(packetStatus) {
 		case NETWORK_READPACKET_DISCONNECTED:
 			// closed connection or network error
-			if (!connection.last_disconnect_reason) {
-				connection.last_disconnect_reason = "Connection Closed";
+			if (!connection.getLastDisconnectReason()) {
+				connection.setLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
 			}
 			return false;
 			break;
@@ -1476,8 +1524,8 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 	} while (packetStatus == NETWORK_READPACKET_MORE_DATA || packetStatus == NETWORK_READPACKET_SUCCESS);
 	connection.SendQueuedPackets();
 	if (!connection.ReceivedPacketRecently()) {
-		if (!connection.last_disconnect_reason) {
-			connection.last_disconnect_reason = "No Data";
+		if (!connection.getLastDisconnectReason()) {
+			connection.setLastDisconnectReason(STR_MULTIPLAYER_NO_DATA);
 		}
 		return false;
 	}
@@ -1543,15 +1591,16 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	NetworkPlayer* connection_player = connection->player;
 	if (connection_player) {
 		char text[256];
-		char* lineCh = text;
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_RED);
-		char reasonstr[100];
-		reasonstr[0] = 0;
-		if (connection->last_disconnect_reason && strlen(connection->last_disconnect_reason) < sizeof(reasonstr)) {
-			sprintf(reasonstr, " (%s)", connection->last_disconnect_reason);
+		const char * has_disconnected_args[2] = {
+				(char *) connection_player->name,
+				connection->getLastDisconnectReason()
+		};
+		if (has_disconnected_args[1]) {
+			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
+		} else {
+			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, &(has_disconnected_args[0]));
 		}
-		sprintf(lineCh, "%s has disconnected%s", connection_player->name, reasonstr);
+
 		chat_history_add(text);
 		gNetwork.Server_Send_CHAT(text);
 	}
@@ -1604,19 +1653,19 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 	packet >> (uint32&)connection.authstatus >> (uint8&)player_id;
 	switch(connection.authstatus) {
 	case NETWORK_AUTH_BADNAME:
-		connection.last_disconnect_reason = "Bad Player Name";
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_BADVERSION:
-		connection.last_disconnect_reason = "Incorrect Software Version";
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_BADPASSWORD:
-		connection.last_disconnect_reason = "Bad Password";
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_FULL:
-		connection.last_disconnect_reason = "Server Full";
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_REQUIREPASSWORD:
@@ -1652,10 +1701,8 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			if (player) {
 				player->SetName(name);
 				char text[256];
-				char* lineCh = text;
-				lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-				lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
-				sprintf(lineCh, "%s has joined the game", player->name);
+				const char * player_name = (const char *) player->name;
+				format_string(text, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 				chat_history_add(text);
 				Server_Send_MAP(&connection);
 				gNetwork.Server_Send_CHAT(text);
@@ -1678,9 +1725,10 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	if (offset + chunksize > chunk_buffer.size()) {
 		chunk_buffer.resize(offset + chunksize);
 	}
-	char status[256];
-	sprintf(status, "Downloading map ... (%u / %u)", (offset + chunksize) / 1000, size / 1000);
-	window_network_status_open(status);
+	char str_downloading_map[256];
+	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1000, size / 1000};
+	format_string(str_downloading_map, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
+	window_network_status_open(str_downloading_map);
 	memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 	if (offset + chunksize == size) {
 		window_network_status_close();
@@ -1884,7 +1932,7 @@ void Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, Netw
 	const char* disconnectmsg = packet.ReadString();
 	if (disconnectmsg) {
 		msg = disconnectmsg;
-		connection.last_disconnect_reason = msg.c_str();
+		connection.setLastDisconnectReason(msg.c_str());
 	}
 }
 
