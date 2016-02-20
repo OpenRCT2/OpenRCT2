@@ -2503,7 +2503,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 				);
 		}
 
-		train->var_0C |= (1 << 7);
+		train->sprite_flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 		train->var_C8 = scenario_rand();
 		train->var_CA = scenario_rand();
 
@@ -4095,7 +4095,7 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 	while (numParticles-- != 0)
 		crashed_vehicle_particle_create(vehicle->colours, vehicle->x, vehicle->y, vehicle->z);
 
-	vehicle->var_0C |= (1 << 7);
+	vehicle->sprite_flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 	vehicle->var_C5 = 0;
 	vehicle->var_C8 = 0;
 	vehicle->sprite_width = 13;
@@ -4147,7 +4147,7 @@ static void vehicle_crash_on_water(rct_vehicle* vehicle) {
 	for (int i = 0; i < 10; ++i)
 		crashed_vehicle_particle_create(vehicle->colours, vehicle->x - 4, vehicle->y + 8, vehicle->z);
 
-	vehicle->var_0C |= (1 << 7);
+	vehicle->sprite_flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 	vehicle->var_C5 = 0;
 	vehicle->var_C8 = 0;
 	vehicle->sprite_width = 13;

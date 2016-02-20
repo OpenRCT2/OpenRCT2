@@ -70,7 +70,7 @@ void balloon_press(rct_balloon *balloon)
 		return;
 
 	uint32 random = util_rand();
-	if ((balloon->var_0A & 7) || (random & 0xFFFF) < 0x2000) {
+	if ((balloon->sprite_index & 7) || (random & 0xFFFF) < 0x2000) {
 		balloon_pop(balloon);
 		return;
 	}
