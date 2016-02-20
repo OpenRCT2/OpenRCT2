@@ -4,7 +4,7 @@ extern "C"
 }
 
 template<int image_type, int zoom_level>
-static void __fastcall DrawRLESprite2(const uint8* source_bits_pointer,
+static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
                                       uint8* dest_bits_pointer,
                                       const uint8* palette_pointer,
                                       const rct_drawpixelinfo *dpi,
@@ -128,7 +128,7 @@ static void __fastcall DrawRLESprite2(const uint8* source_bits_pointer,
     DrawRLESprite2<image_type, zoom_level>(source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
 
 template<int image_type>
-static void __fastcall DrawRLESprite1(const uint8* source_bits_pointer,
+static void FASTCALL DrawRLESprite1(const uint8* source_bits_pointer,
                                       uint8* dest_bits_pointer,
                                       const uint8* palette_pointer,
                                       const rct_drawpixelinfo *dpi,
@@ -157,7 +157,7 @@ extern "C"
      * This function copies the sprite data onto the screen
      *  rct2: 0x0067AA18
      */
-    void __fastcall gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer,
+    void FASTCALL gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer,
                                              uint8* dest_bits_pointer,
                                              const uint8* palette_pointer,
                                              const rct_drawpixelinfo *dpi,

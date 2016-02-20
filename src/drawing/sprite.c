@@ -142,7 +142,7 @@ void sub_68371D()
  * image.
  *  rct2: 0x0067A690
  */
-void __fastcall gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
+void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
 	uint16 zoom_level = dest_dpi->zoom_level;
 	uint8 zoom_amount = 1 << zoom_level;
 	uint32 dest_line_width = (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
@@ -286,7 +286,7 @@ void __fastcall gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_
  * dpi (esi)
  * tertiary_colour (ebp)
  */
-void __fastcall gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
 {
 	int image_type = (image_id & 0xE0000000) >> 28;
 	int image_sub_type = (image_id & 0x1C000000) >> 26;
@@ -366,7 +366,7 @@ void __fastcall gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int
 * x (cx)
 * y (dx)
 */
-void __fastcall gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer)
+void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer)
 {
 	int image_element = image_id & 0x7FFFF;
 	int image_type = (image_id & 0xE0000000) >> 28;
