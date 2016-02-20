@@ -1627,7 +1627,6 @@ static void window_ride_construction_construct(rct_window *w)
 	// NOTE: the rest of this function (minus the network condition) is copied to game_command_callback_ride_construct_placed_front/back
 	// Please update both ends if there are any changes here
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
-		RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 		trackDirection = _currentTrackPieceDirection ^ 2;
 		x = _currentTrackBeginX;
 		y = _currentTrackBeginY;
@@ -1651,7 +1650,6 @@ static void window_ride_construction_construct(rct_window *w)
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
 		}
 	} else {
-		RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 		trackDirection = _currentTrackPieceDirection;
 		x = _currentTrackBeginX;
 		y = _currentTrackBeginY;

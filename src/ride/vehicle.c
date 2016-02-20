@@ -1631,7 +1631,6 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	vehicle->sub_state = 0;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT) {
-		RCT2_GLOBAL(0x00F441D2, uint8) = vehicle->ride;
 		rct_xy_element track;
 		int z;
 		int direction;

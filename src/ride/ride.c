@@ -454,7 +454,6 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
 bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z, int *direction)
 {
 	uint8 rideIndex = input->element->properties.track.ride_index;
-	RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
 	rct_ride* ride = get_ride(rideIndex);
 
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, input->element->properties.track.type);
@@ -615,7 +614,6 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 bool track_block_get_previous(int x, int y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd)
 {
 	uint8 rideIndex = mapElement->properties.track.ride_index;
-	RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
 	rct_ride* ride = get_ride(rideIndex);
 
 	const rct_preview_track* trackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
@@ -1260,7 +1258,6 @@ void sub_6C96C0()
 		_currentTrackSelectionFlags &= ~2;
 
 		rideIndex = _currentRideIndex;
-		RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
 
 		x = RCT2_GLOBAL(0x00F440C5, uint16);
 		y = RCT2_GLOBAL(0x00F440C7, uint16);
@@ -1381,7 +1378,6 @@ void ride_construction_set_default_next_piece()
 		rideIndex = _currentRideIndex;
 		ride = get_ride(rideIndex);
 
-		RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
 		x = _currentTrackBeginX;
 		y = _currentTrackBeginY;
 		z = _currentTrackBeginZ;
@@ -1438,7 +1434,6 @@ void ride_construction_set_default_next_piece()
 		rideIndex = _currentRideIndex;
 		ride = get_ride(rideIndex);
 
-		RCT2_GLOBAL(0x00F441D2, uint8) = rideIndex;
 		x = _currentTrackBeginX;
 		y = _currentTrackBeginY;
 		z = _currentTrackBeginZ;
@@ -5967,7 +5962,6 @@ void game_command_callback_ride_construct_placed_back(int eax, int ebx, int ecx,
 	int trackDirection, x, y, z;
 	track_begin_end trackBeginEnd;
 
-	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 	trackDirection = _currentTrackPieceDirection ^ 2;
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
@@ -5999,7 +5993,6 @@ void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx
 {
 	int trackDirection, x, y, z;
 
-	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 	trackDirection = _currentTrackPieceDirection;
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
@@ -7009,7 +7002,6 @@ bool ride_select_backwards_from_front()
 	track_begin_end trackBeginEnd;
 
 	sub_6C9627();
-	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 	if (track_block_get_previous_from_zero(_currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, _currentRideIndex, _currentTrackPieceDirection, &trackBeginEnd)) {
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
 		_currentTrackBeginX = trackBeginEnd.begin_x;
@@ -7030,7 +7022,6 @@ bool ride_select_forwards_from_back()
 	int x, y, z, direction;
 
 	sub_6C9627();
-	RCT2_GLOBAL(0x00F441D2, uint8) = _currentRideIndex;
 
 	x = _currentTrackBeginX;
 	y = _currentTrackBeginY;
