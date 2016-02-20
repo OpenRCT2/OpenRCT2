@@ -393,11 +393,10 @@ bool ride_try_get_origin_element(int rideIndex, rct_xy_element *output)
 bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, rct_xy_element *output, int *z, int *direction)
 {
 	rct_ride* ride = get_ride(rideIndex);
-	RCT2_GLOBAL(0x00F441D3, uint8) = direction_start;
 
 	if (!(direction_start & (1 << 2))){
-		x += RCT2_ADDRESS(0x00993CCC, sint16)[RCT2_GLOBAL(0x00F441D3, uint8) * 2];
-		y += RCT2_ADDRESS(0x00993CCE, sint16)[RCT2_GLOBAL(0x00F441D3, uint8) * 2];
+		x += TileDirectionDelta[direction_start].x;
+		y += TileDirectionDelta[direction_start].y;
 	}
 
 	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
@@ -425,7 +424,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
 			(mapElement->type & MAP_ELEMENT_DIRECTION_MASK)) & MAP_ELEMENT_DIRECTION_MASK) |
 			(nextTrackCoordinate->rotation_begin & (1 << 2));
 
-		if (nextRotation != RCT2_GLOBAL(0x00F441D3, uint8))
+		if (nextRotation != direction_start)
 			continue;
 
 		sint16 nextZ = nextTrackCoordinate->z_begin - nextTrackBlock->z + mapElement->base_height * 8;
@@ -440,7 +439,7 @@ bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 ri
 		return 1;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
-	if (direction != NULL) *direction = RCT2_GLOBAL(0x00F441D3, uint8);
+	if (direction != NULL) *direction = direction_start;
 	if (z != NULL) *z = z_start;
 	output->x = x;
 	output->y = y;
@@ -516,12 +515,12 @@ bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, int *z,
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd){
 	rct_ride* ride = get_ride(rideIndex);
 
-	RCT2_GLOBAL(0x00F441D3, uint8) = direction;
+	uint8 directionStart = direction;
 	direction ^= (1 << 1);
 
 	if (!(direction & (1 << 2))){
-		x += RCT2_ADDRESS(0x00993CCC, sint16)[direction * 2];
-		y += RCT2_ADDRESS(0x00993CCE, sint16)[direction * 2];
+		x += TileDirectionDelta[direction].x;
+		y += TileDirectionDelta[direction].y;
 	}
 
 	rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
@@ -529,7 +528,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 		outTrackBeginEnd->end_x = x;
 		outTrackBeginEnd->end_y = y;
 		outTrackBeginEnd->begin_element = NULL;
-		outTrackBeginEnd->begin_direction = RCT2_GLOBAL(0x00F441D3, uint8) ^ (1 << 1);
+		outTrackBeginEnd->begin_direction = directionStart ^ (1 << 1);
 		return 0;
 	}
 
@@ -552,7 +551,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 			(mapElement->type & MAP_ELEMENT_DIRECTION_MASK)) & MAP_ELEMENT_DIRECTION_MASK) |
 			(nextTrackCoordinate->rotation_end & (1 << 2));
 
-		if (nextRotation != RCT2_GLOBAL(0x00F441D3, uint8))
+		if (nextRotation != directionStart)
 			continue;
 
 		sint16 nextZ = nextTrackCoordinate->z_end - nextTrackBlock->z + mapElement->base_height * 8;
@@ -593,7 +592,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 			nextTrackBlock->z;
 
 		outTrackBeginEnd->begin_direction = nextRotation;
-		outTrackBeginEnd->end_direction = RCT2_GLOBAL(0x00F441D3, uint8) ^ (1 << 1);
+		outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);
 		return 1;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
@@ -601,7 +600,7 @@ bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 ride
 	outTrackBeginEnd->end_y = y;
 	outTrackBeginEnd->begin_z = z;
 	outTrackBeginEnd->begin_element = NULL;
-	outTrackBeginEnd->end_direction = RCT2_GLOBAL(0x00F441D3, uint8) ^ (1 << 1);
+	outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);
 	return 0;
 }
 
@@ -2482,8 +2481,8 @@ rct_peep *ride_find_closest_mechanic(rct_ride *ride, int forInspection)
 	x *= 32;
 	y *= 32;
 	direction = mapElement->type & 3;
-	x -= RCT2_ADDRESS(0x00993CCC, sint16)[direction * 2];
-	y -= RCT2_ADDRESS(0x00993CCE, sint16)[direction * 2];
+	x -= TileDirectionDelta[direction].x;
+	y -= TileDirectionDelta[direction].y;
 	x += 16;
 	y += 16;
 
@@ -3058,8 +3057,8 @@ static int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, in
 
 	x *= 32;
 	y *= 32;
-	x -= RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
-	y -= RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
+	x -= TileDirectionDelta[face_direction].x;
+	y -= TileDirectionDelta[face_direction].y;
 	x /= 32;
 	y /= 32;
 
@@ -3147,8 +3146,8 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 		// Flip direction north<->south, east<->west
 		uint8 face_direction = count ^ 2;
 
-		int y2 = y - RCT2_ADDRESS(0x00993CCE, sint16)[face_direction * 2];
-		int x2 = x - RCT2_ADDRESS(0x00993CCC, sint16)[face_direction * 2];
+		int y2 = y - TileDirectionDelta[face_direction].x;
+		int x2 = x - TileDirectionDelta[face_direction].y;
 
 		if (map_coord_is_connected(x2 / 32, y2 / 32, mapElement->base_height, face_direction))
 			return;

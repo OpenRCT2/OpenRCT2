@@ -1781,8 +1781,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			rotation |= (1 << 2);
 
 		if (!(rotation & (1 << 2))){
-			x += RCT2_ADDRESS(0x00993CCC, sint16)[rotation * 2];
-			y += RCT2_ADDRESS(0x00993CCE, sint16)[rotation * 2];
+			x += TileDirectionDelta[rotation].x;
+			y += TileDirectionDelta[rotation].y;
 		}
 	}
 
@@ -1860,8 +1860,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 
 			if (RCT2_GLOBAL(0x00F440D4, uint8) != 1){
 				rct_xy16 tile;
-				tile.x = x + RCT2_ADDRESS(0x00993CCC, sint16)[rotation * 2];
-				tile.y = y + RCT2_ADDRESS(0x00993CCE, sint16)[rotation * 2];
+				tile.x = x + TileDirectionDelta[rotation].x;
+				tile.y = y + TileDirectionDelta[rotation].y;
 
 				rct_map_element* map_element = map_get_first_element_at(tile.x / 32, tile.y / 32);
 				z = RCT2_GLOBAL(0x00F44146, sint16) / 8;
@@ -4688,8 +4688,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 						_bl &= ~(1 << dl);
 						int temp_x = x, temp_y = y;
 						int temp_direction = (direction + dl) & 3;
-						temp_x += RCT2_ADDRESS(0x00993CCC, sint16)[temp_direction * 2];
-						temp_y += RCT2_ADDRESS(0x00993CCE, sint16)[temp_direction * 2];
+						temp_x += TileDirectionDelta[temp_direction].x;
+						temp_y += TileDirectionDelta[temp_direction].y;
 						temp_direction ^= (1 << 1);
 						map_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
 					}

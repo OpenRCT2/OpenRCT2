@@ -240,8 +240,8 @@ static void window_track_place_draw_mini_preview()
 				if (track_coordinate->rotation_end & 4)
 					rotation |= 4;
 				if (!(rotation & 4)) {
-					originX += RCT2_GLOBAL(0x00993CCC + (rotation * 4), sint16);
-					originY += RCT2_GLOBAL(0x00993CCE + (rotation * 4), sint16);
+					originX += TileDirectionDelta[rotation].x;
+					originY += TileDirectionDelta[rotation].y;
 				}
 				trackElement++;
 			}
