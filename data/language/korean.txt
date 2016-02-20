@@ -4041,6 +4041,8 @@ STR_5736    :플레이어
 STR_5737    :닫힘, {COMMA16}명의 손님이 아직 놀이기구에 있음
 STR_5738    :닫힘, {COMMA16}명의 손님이 아직 놀이기구에 있음
 STR_5739    :{WINDOW_COLOUR_2}놀이기구를 타고 있는 손님: {BLACK}{COMMA16}명
+STR_5740    :광고 기간 무제한으로
+STR_5741    :{SMALLFONT}{BLACK}광고의 기간을 무제한으로 바꿉니다
 
 #############
 # Scenarios #
