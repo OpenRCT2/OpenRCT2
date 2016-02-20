@@ -1343,7 +1343,7 @@ static void ride_construction_reset_current_piece()
 	rct_ride *ride;
 
 	ride = get_ride(_currentRideIndex);
-	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15) || ride->num_stations == 0) {
+	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0) {
 		_currentTrackCurve = RCT2_GLOBAL(0x0097CC68 + (ride->type * 2), uint8) | 0x100;
 		_currentTrackSlopeEnd = 0;
 		_currentTrackBankEnd = 0;
@@ -1389,7 +1389,7 @@ void ride_construction_set_default_next_piece()
 		mapElement = trackBeginEnd.begin_element;
 		trackType = mapElement->properties.track.type;
 
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15)) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
 			ride_construction_reset_current_piece();
 			return;
 		}
@@ -1728,7 +1728,7 @@ int ride_modify(rct_xy_element *input)
 	_currentTrackSelectionFlags = 0;
 	_rideConstructionArrowPulseTime = 0;
 
-	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15)) {
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
 		sub_6C84CE();
 		return 1;
 	}
@@ -3810,7 +3810,7 @@ int ride_mode_check_station_present(rct_ride* ride){
 
 	if (stationIndex == -1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_YET_CONSTRUCTED;
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15))
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			return -1;
 
 		if (ride->type == RIDE_TYPE_MAZE)

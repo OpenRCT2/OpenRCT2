@@ -921,7 +921,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 
 		//
 		rct_string_id stringId = 1691;
-		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_15))
+		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			stringId++;
 
 		gfx_draw_string_right(dpi, stringId, &price, 0, x + width, y + 39);

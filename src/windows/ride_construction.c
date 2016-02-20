@@ -3710,7 +3710,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 	rct_ride *ride = get_ride(RCT2_GLOBAL(0x00F44192, uint8));
 	if (ride_are_all_possible_entrances_and_exits_built(ride)) {
 		tool_cancel();
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15)) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
 			window_close_by_class(WC_RIDE_CONSTRUCTION);
 		}
 	} else {

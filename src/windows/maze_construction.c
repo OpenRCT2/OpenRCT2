@@ -380,7 +380,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 	rct_ride* ride = get_ride(rideIndex);
 	if (ride_are_all_possible_entrances_and_exits_built(ride)){
 		tool_cancel();
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15))
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			window_close(w);
 	}
 	else{

@@ -741,7 +741,7 @@ enum {
 	RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = 1 << 12,	// used by rides with two variaties, like the u and o shapes of the dinghy slide and the dry and submerged track of the water coaster
 	RIDE_TYPE_FLAG_13 = 1 << 13,								// used only by maze, spiral slide and shops
 	RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = 1 << 14,
-	RIDE_TYPE_FLAG_15 = 1 << 15,								// something to do with station, price and viewport zoom
+	RIDE_TYPE_FLAG_HAS_NO_TRACK = 1 << 15,
 	RIDE_TYPE_FLAG_16 = 1 << 16,								// something to do with vehicle colour scheme
 	RIDE_TYPE_FLAG_IS_SHOP = 1 << 17,
 	RIDE_TYPE_FLAG_18 = 1 << 18,

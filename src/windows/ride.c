@@ -1531,7 +1531,7 @@ static void window_ride_init_viewport(rct_window *w)
 		focus.coordinate.z = map_element_height(focus.coordinate.x, focus.coordinate.y) & 0xFFFF;
 		focus.sprite.type |= 0x40;
 		focus.coordinate.zoom = 1;
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15))
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			focus.coordinate.zoom = 0;
 	}
 	focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;

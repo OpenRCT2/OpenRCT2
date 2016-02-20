@@ -3662,7 +3662,7 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ri
 	sint16 x, y, tmp_distance;
 
 	if (!firstRun) {
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_15)) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
 			return true;
 		}
 
@@ -3742,7 +3742,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 	sint16 x, y, tmp_xy_distance;
 
 	if (!firstRun) {
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_15)) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
 			return true;
 		}
 
@@ -3814,7 +3814,7 @@ static bool peep_update_fixing_sub_state_10(bool firstRun, rct_peep *peep, rct_r
 	sint16 tmp_x, tmp_y, tmp_xy_distance;
 
 	if (!firstRun) {
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_15)) {
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_HAS_NO_TRACK)) {
 			return true;
 		}
 
