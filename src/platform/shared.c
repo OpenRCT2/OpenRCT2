@@ -1067,13 +1067,13 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	screenDPI->height = height;
 	screenDPI->pitch = _screenBufferPitch - width;
 
-	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
-	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
+	RCT2_GLOBAL(0x009ABDF0, uint8) = 7;
+	RCT2_GLOBAL(0x009ABDF1, uint8) = 6;
 	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16) = 64;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16) = 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> 6) + 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> 3) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16) = 1 << RCT2_GLOBAL(0x009ABDF0, uint8);
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16) = 1 << RCT2_GLOBAL(0x009ABDF1, uint8);
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> RCT2_GLOBAL(0x009ABDF0, uint8)) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> RCT2_GLOBAL(0x009ABDF1, uint8)) + 1;
 }
 
 void platform_hide_cursor()
