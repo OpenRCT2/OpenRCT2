@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C62A08D51C787C2A00F3AA76 /* drawing_fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62A08D41C787C2A00F3AA76 /* drawing_fast.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
@@ -220,6 +221,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C62A08D41C787C2A00F3AA76 /* drawing_fast.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = drawing_fast.cpp; sourceTree = "<group>"; };
 		D4163F671C2A044D00B83136 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = version.h; path = src/version.h; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
@@ -762,6 +764,7 @@
 			children = (
 				D4EC46F41C26342F0024B507 /* drawing.c */,
 				D4EC46F51C26342F0024B507 /* drawing.h */,
+				C62A08D41C787C2A00F3AA76 /* drawing_fast.cpp */,
 				D4EC46F61C26342F0024B507 /* font.c */,
 				D4EC46F71C26342F0024B507 /* font.h */,
 				D4EC46F81C26342F0024B507 /* line.c */,
@@ -1465,6 +1468,7 @@
 				D4B63B951C43028200367A37 /* Console.cpp in Sources */,
 				D4EC481E1C26342F0024B507 /* rct2.c in Sources */,
 				D4C0EDD11C52EA6400A03A06 /* player.c in Sources */,
+				C62A08D51C787C2A00F3AA76 /* drawing_fast.cpp in Sources */,
 				D4EC48801C26342F0024B507 /* sprite.c in Sources */,
 				D4EC486C1C26342F0024B507 /* top_toolbar.c in Sources */,
 				D4EC48621C26342F0024B507 /* themes.c in Sources */,
