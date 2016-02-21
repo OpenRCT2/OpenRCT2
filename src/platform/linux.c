@@ -219,6 +219,7 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	char *action;
 	char *flags;
 	char *filter = NULL;
+	char *filterPatternRegex;
 
 	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
@@ -235,11 +236,11 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 			}
 
 			if (filterPattern && filterName) {
-				filter = (char*) malloc(strlen(filterPattern) + 3 + strlen(filterName) + 1);
+				filter = (char*) malloc(1 + strlen(filterPattern) + 3 + strlen(filterName) + 1);
 				sprintf(filter, "\"%s | %s\"", filterPattern, filterName);
 			}
 
-			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s / %s", executable, title, action, filter?filter:"");
+			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ %s", executable, title, action, filter?filter:"");
 			break;
 		case DT_ZENITY:
 			action = "--file-selection";
@@ -252,9 +253,27 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 					break;
 			}
 
+			// Zenity seems to be case sensitive, while Kdialog isn't.
 			if (filterPattern && filterName) {
-				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPattern) + 3 + strlen(filterName) + 2);
-				sprintf(filter, "--file-filter=\"%s | %s\"", filterName, filterPattern);
+				if(strcmp(filterPattern, "*.sv6") == 0)
+					filterPatternRegex = "*.[Ss][Vv]6";
+				else if(strcmp(filterPattern, "*.sc6") == 0)
+					filterPatternRegex = "*.[Ss][Cc]6";
+				else if(strcmp(filterPattern, ".td6") == 0)
+					filterPatternRegex = "*.[Tt][Dd]6";
+				else if(strcmp(filterPattern, "*.sv4") == 0)
+					filterPatternRegex = "*.[Ss][Vv]4";
+				else if(strcmp(filterPattern, "*.sc4") == 0)
+					filterPatternRegex = "*.[Ss][Cc]4";
+				else if(strcmp(filterPattern, "*.td4") == 0)
+					filterPatternRegex = "*.[Tt][Dd]4";
+				else if(strcmp(filterPattern, "*.dat") == 0)
+					filterPatternRegex = "*.[Dd][Aa][Tt]";
+				else
+					filterPatternRegex = (char *)filterPattern;
+
+				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(filterName) + 2 + strlen(" --file-filter=\"All files | *\""));
+				sprintf(filter, "--file-filter=\"%s | %s\" --file-filter=\"All files | *\"", filterName, filterPatternRegex);
 			}
 
 			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, title, filter?filter:"");
