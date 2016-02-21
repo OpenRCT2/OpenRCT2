@@ -4047,6 +4047,24 @@ STR_5738    :Zavřeno, {COMMA16} návštěvníků zůstalo na atrakci
 STR_5739    :{WINDOW_COLOUR_2}Návštěvníci na atrakci: {BLACK}{COMMA16}
 STR_5740    :Nekonečné marketingové kampaně
 STR_5741    :{SMALLFONT}{BLACK}Reklamní marketingové kampaně nikdy neskončí
+STR_5742    :Autentizace ...
+STR_5743    :Připojování ...
+STR_5744    :Hledání adresy serveru ...
+STR_5745    :Detekována desynchronizace se serverem
+STR_5746    :Odpojeno
+STR_5747    :Odpojeno: {STRING}
+STR_5748    :Vyhozen
+STR_5749    :Vypadněte z tohoto serveru!
+STR_5750    :Spojení ukončeno
+STR_5751    :Žádná data
+STR_5752    :{OUTLINE}Hráč {RED}{STRING} se odpojil
+STR_5753    :{OUTLINE}Hráč {RED}{STRING} se odpojil ({STRING})
+STR_5754    :Neplatné jméno hráče
+STR_5755    :Nesprávná verze hry
+STR_5756    :Špatné heslo
+STR_5757    :Server je plný
+STR_5758    :{OUTLINE}{GREEN}Hráč {STRING} se připojil do hry
+STR_5759    :Stahování mapy ... ({INT32} / {INT32})
 
 ###############################################################################
 ## RCT2 Objects
