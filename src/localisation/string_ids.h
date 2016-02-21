@@ -2370,6 +2370,8 @@ enum {
 	STR_NEW_TAIWAN_DOLLAR = 5761,
 	STR_CHINESE_YUAN = 5762,
 
+	STR_ALL_FILES = 5763,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

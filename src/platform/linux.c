@@ -26,6 +26,8 @@
 #include <errno.h>
 #include <fontconfig/fontconfig.h>
 
+#include "../localisation/language.h"
+#include "../localisation/string_ids.h"
 #include "../util/util.h"
 #include "platform.h"
 
@@ -220,6 +222,7 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	char *flags;
 	char *filter = NULL;
 	char *filterPatternRegex;
+	char *allFilesPatternDescription;
 
 	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
@@ -272,8 +275,9 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 				else
 					filterPatternRegex = (char *)filterPattern;
 
-				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(filterName) + 2 + strlen(" --file-filter=\"All files | *\""));
-				sprintf(filter, "--file-filter=\"%s | %s\" --file-filter=\"All files | *\"", filterName, filterPatternRegex);
+				allFilesPatternDescription = (char *)language_get_string(STR_ALL_FILES);
+				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(filterName) + 2 + strlen(" --file-filter=\"") + strlen(allFilesPatternDescription) + strlen(" | *\""));
+				sprintf(filter, "--file-filter=\"%s | %s\" --file-filter=\"%s | *\"", filterName, filterPatternRegex, allFilesPatternDescription);
 			}
 
 			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, title, filter?filter:"");
