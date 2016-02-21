@@ -22,10 +22,13 @@
 
 #ifdef __LINUX__
 
+#include <ctype.h>
 #include <dlfcn.h>
 #include <errno.h>
 #include <fontconfig/fontconfig.h>
 
+#include "../localisation/language.h"
+#include "../localisation/string_ids.h"
 #include "../util/util.h"
 #include "platform.h"
 
@@ -219,6 +222,8 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	char *action;
 	char *flags;
 	char *filter = NULL;
+	char filterPatternRegex[64];
+	char *allFilesPatternDescription;
 
 	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
@@ -235,11 +240,11 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 			}
 
 			if (filterPattern && filterName) {
-				filter = (char*) malloc(strlen(filterPattern) + 3 + strlen(filterName) + 1);
+				filter = (char*) malloc(1 + strlen(filterPattern) + 3 + strlen(filterName) + 1);
 				sprintf(filter, "\"%s | %s\"", filterPattern, filterName);
 			}
 
-			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s / %s", executable, title, action, filter?filter:"");
+			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ %s", executable, title, action, filter?filter:"");
 			break;
 		case DT_ZENITY:
 			action = "--file-selection";
@@ -252,9 +257,27 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 					break;
 			}
 
+			// Zenity seems to be case sensitive, while Kdialog isn't.
 			if (filterPattern && filterName) {
-				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPattern) + 3 + strlen(filterName) + 2);
-				sprintf(filter, "--file-filter=\"%s | %s\"", filterName, filterPattern);
+				int regexIterator = 0;
+				for(int i = 0; i <= sizeof(filterPattern); i++) {
+					if (isalpha(filterPattern[i])) {
+						filterPatternRegex[regexIterator+0] = '[';
+						filterPatternRegex[regexIterator+1] = (char)toupper(filterPattern[i]);
+						filterPatternRegex[regexIterator+2] = (char)tolower(filterPattern[i]);
+						filterPatternRegex[regexIterator+3] = ']';
+						regexIterator += 3;
+					}
+					else {
+						filterPatternRegex[regexIterator] = (char)filterPattern[i];
+					}
+					regexIterator++;
+				}
+				filterPatternRegex[regexIterator+1] = 0;
+
+				allFilesPatternDescription = (char *)language_get_string(STR_ALL_FILES);
+				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(filterName) + 2 + strlen(" --file-filter=\"") + strlen(allFilesPatternDescription) + strlen(" | *\""));
+				sprintf(filter, "--file-filter=\"%s | %s\" --file-filter=\"%s | *\"", filterName, filterPatternRegex, allFilesPatternDescription);
 			}
 
 			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, title, filter?filter:"");
