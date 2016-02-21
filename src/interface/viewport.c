@@ -2636,8 +2636,126 @@ void store_interaction_info(paint_struct *ps)
  *
  *  rct2: 0x00679074
  */
-void sub_679074(rct_drawpixelinfo *dpi, int imageId, int x, int y)
+void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 {
+	rct_g1_element image = g1Elements[imageId & 0x7FFFF];
+
+	switch (dpi->zoom_level) {
+		case 0:
+			// TODO: loc_6790A0:
+			break;
+
+		case 1:
+			if (image.flags & 0x20) {
+				return;
+			}
+
+			if (!(image.flags & 0x10)) {
+				dpi->zoom_level--;
+				dpi->x /= 2;
+				dpi->y /= 2;
+
+				sub_679074(dpi, imageId - image.zoomed_offset, x / 2, y / 2);
+
+				dpi->zoom_level++;
+				dpi->x *= 2;
+				dpi->y *= 2;
+
+				return;
+			}
+
+			RCT2_GLOBAL(0x9E3D08, uint32) = image.offset;
+			RCT2_GLOBAL(0x9E3D0C, uint32) = image.width;
+			RCT2_GLOBAL(0x9E3D10, uint32) = image.x_offset;
+			RCT2_GLOBAL(0x9E3D14, uint32) = image.flags;
+
+			if (image.flags & 4) {
+				// push edi
+				y--;
+				// ebp = edi;
+				// esi = image.offset;
+				y += image.x_offset;
+
+				uint16 width = image.width;
+				RCT2_GLOBAL(RCT2_ADDRESS_Y_START_POINT_GLOBAL, uint32) = 0;
+				if (width % 2) {
+					width--;
+					if (width == 0) {
+						return;
+					}
+
+					RCT2_GLOBAL(RCT2_ADDRESS_Y_START_POINT_GLOBAL, uint32)++;
+				}
+
+
+				// TODO: (y = y/2?)
+				y &= 0xFFFE;
+				RCT2_GLOBAL(RCT2_ADDRESS_Y_END_POINT_GLOBAL, sint16) = width;
+				y -= dpi->y;
+
+				if (y < 0) {
+					RCT2_GLOBAL(RCT2_ADDRESS_Y_END_POINT_GLOBAL, sint16) += y;
+					if (RCT2_GLOBAL(RCT2_ADDRESS_Y_END_POINT_GLOBAL, sint16) <= 0) {
+						return;
+					}
+
+					RCT2_GLOBAL(RCT2_ADDRESS_Y_START_POINT_GLOBAL, sint16) -= y;
+					y = 0;
+				}
+
+				y += RCT2_GLOBAL(RCT2_ADDRESS_Y_END_POINT_GLOBAL, sint16);
+				y--;
+
+				if (y > 0) {
+					// inverse of JLE
+					RCT2_GLOBAL(RCT2_ADDRESS_Y_END_POINT_GLOBAL, sint16) -= y;
+
+					if (RCT2_GLOBAL(RCT2_ADDRESS_Y_END_POINT_GLOBAL, sint16) <= 0) {
+						return;
+					}
+				}
+
+				sint16 ax = image.width;
+				RCT2_GLOBAL(RCT2_ADDRESS_X_START_POINT_GLOBAL, sint16) = 0;
+				RCT2_GLOBAL(RCT2_ADDRESS_X_END_POINT_GLOBAL, sint16) = ax;
+				x += image.x_offset;
+				x &= 0xFFFE;
+				x -= dpi->x;
+				if (x < 0) {
+					RCT2_GLOBAL(RCT2_ADDRESS_X_END_POINT_GLOBAL, sint16) += x;
+					if (RCT2_GLOBAL(RCT2_ADDRESS_X_END_POINT_GLOBAL, sint16) <= 0) {
+						return;
+					}
+
+					RCT2_GLOBAL(RCT2_ADDRESS_X_START_POINT_GLOBAL, sint16) -= x;
+					x = 0;
+				}
+
+				x += RCT2_GLOBAL(RCT2_ADDRESS_X_END_POINT_GLOBAL, sint16);
+				x--;
+				if (x > 0) {
+					// inverse of JLE
+					RCT2_GLOBAL(RCT2_ADDRESS_X_END_POINT_GLOBAL, sint16) -= x;
+
+					if (RCT2_GLOBAL(RCT2_ADDRESS_X_END_POINT_GLOBAL, sint16) <= 0) {
+						return;
+					}
+				}
+
+				RCT2_CALLPROC_X(0x00679788, 0, 0, 0, 0, image.offset, (int) dpi, (int) dpi);
+				return;
+			}
+			break;
+
+		case 2:
+			// TODO: loc_6798F5
+			break;
+
+		default:
+			// TODO: loc_679DEE
+			break;
+	}
+
 	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int)dpi, 0);
 }
 
