@@ -22,6 +22,7 @@
 
 #ifdef __LINUX__
 
+#include <ctype.h>
 #include <dlfcn.h>
 #include <errno.h>
 #include <fontconfig/fontconfig.h>
@@ -221,7 +222,7 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	char *action;
 	char *flags;
 	char *filter = NULL;
-	char *filterPatternRegex;
+	char filterPatternRegex[64];
 	char *allFilesPatternDescription;
 
 	size = MAX_PATH;
@@ -258,22 +259,21 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 
 			// Zenity seems to be case sensitive, while Kdialog isn't.
 			if (filterPattern && filterName) {
-				if(strcmp(filterPattern, "*.sv6") == 0)
-					filterPatternRegex = "*.[Ss][Vv]6";
-				else if(strcmp(filterPattern, "*.sc6") == 0)
-					filterPatternRegex = "*.[Ss][Cc]6";
-				else if(strcmp(filterPattern, ".td6") == 0)
-					filterPatternRegex = "*.[Tt][Dd]6";
-				else if(strcmp(filterPattern, "*.sv4") == 0)
-					filterPatternRegex = "*.[Ss][Vv]4";
-				else if(strcmp(filterPattern, "*.sc4") == 0)
-					filterPatternRegex = "*.[Ss][Cc]4";
-				else if(strcmp(filterPattern, "*.td4") == 0)
-					filterPatternRegex = "*.[Tt][Dd]4";
-				else if(strcmp(filterPattern, "*.dat") == 0)
-					filterPatternRegex = "*.[Dd][Aa][Tt]";
-				else
-					filterPatternRegex = (char *)filterPattern;
+				int regexIterator = 0;
+				for(int i = 0; i <= sizeof(filterPattern); i++) {
+					if (isalpha(filterPattern[i])) {
+						filterPatternRegex[regexIterator+0] = '[';
+						filterPatternRegex[regexIterator+1] = (char)toupper(filterPattern[i]);
+						filterPatternRegex[regexIterator+2] = (char)tolower(filterPattern[i]);
+						filterPatternRegex[regexIterator+3] = ']';
+						regexIterator += 3;
+					}
+					else {
+						filterPatternRegex[regexIterator] = (char)filterPattern[i];
+					}
+					regexIterator++;
+				}
+				filterPatternRegex[regexIterator+1] = 0;
 
 				allFilesPatternDescription = (char *)language_get_string(STR_ALL_FILES);
 				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(filterName) + 2 + strlen(" --file-filter=\"") + strlen(allFilesPatternDescription) + strlen(" | *\""));
