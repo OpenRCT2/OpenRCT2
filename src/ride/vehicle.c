@@ -2553,12 +2553,12 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 		int x = RCT2_ADDRESS(0x009A3AC4, sint16)[trainVehicle->sprite_direction & 0xFE];
 		int	y = RCT2_ADDRESS(0x009A3AC6, sint16)[trainVehicle->sprite_direction & 0xFE];
 
-		int ecx = RCT2_ADDRESS(0x009A37E4, uint32)[trainVehicle->var_1F] >> 15;
+		int ecx = RCT2_ADDRESS(0x009A37E4, sint32)[trainVehicle->var_1F] >> 15;
 		x *= ecx;
 		y *= ecx;
 		x >>= 16;
 		y >>= 16;
-		ecx = RCT2_ADDRESS(0x009A38D4, uint32)[trainVehicle->var_1F] >> 23;
+		ecx = RCT2_ADDRESS(0x009A38D4, sint32)[trainVehicle->var_1F] >> 23;
 		x *= edx;
 		y *= edx;
 		ecx *= edx;
@@ -4228,9 +4228,9 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 		curPosition.x += (sint8)(curVehicle->var_B6 >> 8);
 		curPosition.y += (sint8)(curVehicle->var_C0 >> 8);
 		curPosition.z += (sint8)(curVehicle->var_4E >> 8);
-		curVehicle->track_x += (sint16)(curVehicle->var_B6 << 8);
-		curVehicle->track_y += (sint16)(curVehicle->var_C0 << 8);
-		curVehicle->track_z += (sint16)(curVehicle->var_4E << 8);
+		curVehicle->track_x = (sint16)(curVehicle->var_B6 << 8);
+		curVehicle->track_y = (sint16)(curVehicle->var_C0 << 8);
+		curVehicle->track_z = (sint16)(curVehicle->var_4E << 8);
 
 		if (curPosition.x > 0x1FFF ||
 			curPosition.y > 0x1FFF) {
