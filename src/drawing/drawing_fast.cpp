@@ -5,7 +5,7 @@ extern "C"
 
 // This will have -1 (0xffffffff) for (val <= 0), 0 otherwise, so it can act as a mask
 // This is expected to generate
-//     sar $0x1f, %eax
+//     sar eax, 0x1f (arithmetic shift right by 31)
 #define less_or_equal_zero_mask(val) (((val - 1) >> (sizeof(val) * 8 - 1)))
 
 template<int image_type, int zoom_level>
@@ -24,26 +24,27 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
 
     int line_width = (dpi->width >> zoom_level) + dpi->pitch;
 
-    if (source_y_start < 0) {
-        source_y_start += zoom_amount;
-        next_dest_pointer += line_width;
-        height -= zoom_amount;
-    }
-    const int source_y_end = height + source_y_start;
+    const int source_y_start_mask = less_or_equal_zero_mask(source_y_start + 1);
+    source_y_start += zoom_amount & source_y_start_mask;
+    next_dest_pointer += line_width & source_y_start_mask;
+    height -= zoom_amount & source_y_start_mask;
 
     //For every line in the image
-    for (int y = source_y_start; y < source_y_end; y += zoom_amount) {
+    for (int i = 0; i < height; i += zoom_amount) {
+        int y = source_y_start + i;
+        uint8 i2 = i >> zoom_level;
 
         //The first part of the source pointer is a list of offsets to different lines
         //This will move the pointer to the correct source line.
         const uint8 *next_source_pointer = source_bits_pointer + ((uint16*)source_bits_pointer)[y];
+        uint8* loop_dest_pointer = next_dest_pointer + line_width * i2;
 
         uint8 last_data_line = 0;
 
         //For every data section in the line
         while (!last_data_line) {
             const uint8* source_pointer = next_source_pointer;
-            uint8* dest_pointer = next_dest_pointer;
+            uint8* dest_pointer = loop_dest_pointer;
 
             int no_pixels = *source_pointer++;
             //gap_size is the number of non drawn pixels you require to
@@ -59,12 +60,13 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
             //Calculates the start point of the image
             int x_start = gap_size - source_x_start;
             const int x_diff = x_start & ~zoom_mask;
+            const int x_mask = ~less_or_equal_zero_mask(x_diff);
 
             no_pixels -= x_diff;
-            x_start += ~zoom_mask & ~less_or_equal_zero_mask(x_diff - 1);
-            source_pointer += (x_start&~zoom_mask);
+            x_start += ~zoom_mask & x_mask;
+            source_pointer += (x_start&~zoom_mask) & x_mask;
 
-            // This will have 1 for x_start > 0, 0 otherwise
+            // This will have -1 (0xffffffff) for (x_start <= 0), 0 otherwise
             int sign = less_or_equal_zero_mask(x_start);
 
             dest_pointer += (x_start >> zoom_level) & ~sign;
@@ -117,9 +119,6 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
                 }
             }
         }
-
-        //Add a line to the drawing surface pointer
-        next_dest_pointer += line_width;
     }
 }
 
