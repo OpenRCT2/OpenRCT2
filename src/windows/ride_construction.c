@@ -34,6 +34,7 @@
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "dropdown.h"
+#include "../ride/track_data.h"
 
 /* move to ride.c */
 void sub_6B2FA9(rct_windownumber number)
@@ -2378,6 +2379,237 @@ void sub_6C84CE()
 	window_ride_construction_update_widgets(w);
 }
 
+static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
+	window_ride_construction_update_enabled_track_pieces();
+
+	uint8 startSlope = _previousTrackSlopeEnd;
+	uint8 endSlope = _currentTrackSlopeEnd;
+	uint8 startBank = _previousTrackBankEnd;
+	uint8 endBank = _currentTrackBankEnd;
+
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
+		startSlope = _currentTrackSlopeEnd;
+		endSlope = _previousTrackSlopeEnd;
+		startBank = _currentTrackBankEnd;
+		endBank = _previousTrackBankEnd;
+	}
+
+	uint16 curve = _currentTrackCurve;
+	if (curve == 0xFFFF) {
+		return false;
+	}
+
+	bool startsDiagonal = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) & (1 << 2);
+	if (curve == TRACK_CURVE_LEFT_LARGE || curve == TRACK_CURVE_RIGHT_LARGE) {
+		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
+			startsDiagonal = !startsDiagonal;
+		}
+	}
+
+	if (curve <= 8) {
+		for (int i = 0; i < 140; i++) {
+			track_descriptor trackDescriptor = gTrackDescriptors[i];
+			if (trackDescriptor.track_curve != curve) continue;
+			if (trackDescriptor.starts_diagonal != startsDiagonal) continue;
+			if (trackDescriptor.slope_start != startSlope) continue;
+			if (trackDescriptor.slope_end != endSlope) continue;
+			if (trackDescriptor.bank_start != startBank) continue;
+			if (trackDescriptor.bank_end != endBank) continue;
+
+			*trackElement = trackDescriptor.track_element;
+			return true;
+		}
+
+		return false;
+	}
+
+	*trackElement = curve & 0xFF;
+	switch (*trackElement) {
+		case TRACK_ELEM_END_STATION:
+		case TRACK_ELEM_S_BEND_LEFT:
+		case TRACK_ELEM_S_BEND_RIGHT:
+			if (startSlope != TRACK_SLOPE_NONE || endSlope != TRACK_SLOPE_NONE) {
+				return false;
+			}
+
+			if (startBank != TRACK_BANK_NONE || endBank != TRACK_BANK_NONE) {
+				return false;
+			}
+
+			return true;
+
+		case TRACK_ELEM_LEFT_VERTICAL_LOOP:
+		case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
+			if (startBank != TRACK_BANK_NONE || endBank != TRACK_BANK_NONE) {
+				return false;
+			}
+
+			if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK) {
+				if (endSlope != TRACK_SLOPE_DOWN_25) {
+					return false;
+				}
+			} else {
+				if (startSlope != TRACK_SLOPE_UP_25) {
+					return false;
+				}
+			}
+
+			return true;
+
+		default:
+			return true;
+	}
+}
+
+/**
+ * rct2: 0x006CA2DF
+ *
+ * @param[out] _trackType (dh)
+ * @param[out] _trackDirection (bh)
+ * @param[out] _rideIndex (dl)
+ * @param[out] _edxRS16 (edxrs16)
+ * @param[out] _x (ax)
+ * @param[out] _y (cx)
+ * @param[out] _z (di)
+ * @param[out] _properties (edirs16)
+ * @return (CF)
+ */
+static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_rideIndex, uint16 *_edxRS16, uint16 *_x, uint16 *_y, uint16 *_z, uint16 *_properties) {
+	uint8 trackType, trackDirection, rideIndex;
+	uint16 z, x, y, edxRS16, properties;
+
+	if (!sub_6CA2DF_get_track_element(&trackType)) {
+		return true;
+	}
+
+	edxRS16 = 0;
+	rideIndex = _currentRideIndex;
+	if (_currentTrackLiftHill & 1) {
+		edxRS16 |= 0x1;
+	}
+
+	if (_currentTrackCovered & (1 << 1)) {
+		edxRS16 |= 0x2;
+	}
+
+	rct_ride *ride = get_ride(rideIndex);
+
+	if (_enabledRidePiecesB & (1 << 8)) {
+		switch (trackType) {
+			case TRACK_ELEM_FLAT_TO_60_DEG_UP:
+				trackType = TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE;
+				break;
+
+			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+				trackType = TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE;
+				break;
+
+			case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
+				trackType = TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122;
+				break;
+
+			case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+				trackType = TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE;
+				break;
+
+			case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+			case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+			case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+			case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+				return true;
+		}
+	}
+
+	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES) && _currentTrackCovered & 1) {
+		if (ride->type != RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES) {
+			trackType = RCT2_GLOBAL(0x00993D1C + trackType, uint8);
+			edxRS16 &= 0xFFFE; // unsets 0x1
+		}
+	}
+
+	const rct_track_coordinates *trackCoordinates = get_track_coord_from_ride(ride, trackType);
+
+	x = _currentTrackBeginX;
+	y = _currentTrackBeginY;
+	z = _currentTrackBeginZ;
+	if (_rideConstructionState == 2) {
+		z -= trackCoordinates->z_end;
+		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) ^ 0x02;
+		trackDirection -= trackCoordinates->rotation_end;
+		trackDirection += trackCoordinates->rotation_begin;
+		trackDirection &= 0x03;
+
+		if (trackCoordinates->rotation_begin & (1 << 2)) {
+			trackDirection |= 0x04;
+		}
+
+		switch (trackDirection & 0x03) {
+			case 0:
+				x -= trackCoordinates->x;
+				y -= trackCoordinates->y;
+				break;
+
+			case 1:
+				x -= trackCoordinates->y;
+				y += trackCoordinates->x;
+				break;
+
+			case 2:
+				x += trackCoordinates->x;
+				y += trackCoordinates->y;
+				break;
+
+			case 3:
+				x += trackCoordinates->y;
+				y -= trackCoordinates->x;
+				break;
+		}
+	} else {
+		z -= trackCoordinates->z_begin;
+		trackDirection = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+	}
+
+
+	bool do_loc_6CAF26 = false;
+	if (!(_enabledRidePiecesA & (1 << 5))) {
+		if (RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x2000) {
+			do_loc_6CAF26 = true;
+		}
+	}
+
+	if (!(RCT2_ADDRESS(0x0099423C, uint16)[trackType] & 0x1000)) {
+		do_loc_6CAF26 = true;
+	}
+
+	if (do_loc_6CAF26) {
+		edxRS16 &= 0xFFFE; // unsets 0x1
+		_currentTrackLiftHill &= 0xFE;
+
+		if (trackType == TRACK_ELEM_LEFT_CURVED_LIFT_HILL || trackType == TRACK_ELEM_RIGHT_CURVED_LIFT_HILL) {
+			edxRS16 |= 0x1;
+		}
+	}
+
+
+	if (trackType == TRACK_ELEM_BRAKES) {
+		properties = RCT2_GLOBAL(0x00F440CD, uint8);
+	} else {
+		properties = _currentSeatRotationAngle << 12;
+	}
+
+
+	if (_trackType != NULL) *_trackType = trackType;
+	if (_trackDirection != NULL) *_trackDirection = trackDirection;
+	if (_rideIndex != NULL) *_rideIndex = rideIndex;
+	if (_edxRS16 != NULL) *_edxRS16 = edxRS16;
+	if (_x != NULL) *_x = x;
+	if (_y != NULL) *_y = y;
+	if (_z != NULL) *_z = z;
+	if (_properties != NULL) *_properties = properties;
+
+	return false;
+}
+
 /**
  *
  *  rct2: 0x006CA2DF
@@ -2386,8 +2618,7 @@ void sub_6C84CE()
  * dh: trackType (out)
  * edx >> 16: ??? (out)
  */
-static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties)
-{
+static bool original_sub_6CA2DF(uint8 *trackType, uint8 *trackDirection, uint8 *rideIndex, uint16 *edxRS16, uint16 *x, uint16 *y, uint16 *z, uint16 *properties) {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	if (RCT2_CALLFUNC_X(0x006CA2DF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
 		return true;
@@ -2400,6 +2631,56 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
 	if (y != NULL) *y = ecx & 0xFFFF;
 	if (z != NULL) *z = edi & 0xFFFF;
 	if (properties != NULL) *properties = (edi >> 16) & 0xFFFF;
+	return false;
+}
+
+/**
+ *
+ *  rct2: 0x006CA2DF
+ * bh: trackRotation (out)
+ * dl: ??? (out)
+ * dh: trackType (out)
+ * edx >> 16: ??? (out)
+ */
+static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties) {
+	uint8 before_currentTrackLiftHill = _currentTrackLiftHill;
+
+	uint8 new_trackType, new_trackDirection, new_rideIndex;
+	uint16 new_edxRS16, new_x, new_y, new_z, new_properties;
+	bool new_return = new_sub_6CA2DF(&new_trackType, &new_trackDirection, &new_rideIndex, &new_edxRS16, &new_x, &new_y, &new_z, &new_properties);
+	uint8 new_currentTrackLiftHill = _currentTrackLiftHill;
+
+	_currentTrackLiftHill = before_currentTrackLiftHill;
+
+	uint8 original_trackType, original_trackDirection, original_rideIndex;
+	uint16 original_edxRS16, original_x, original_y, original_z, original_properties;
+	bool original_return = original_sub_6CA2DF(&original_trackType, &original_trackDirection, &original_rideIndex, &original_edxRS16, &original_x, &original_y, &original_z, &original_properties);
+	uint8 original_currentTrackLiftHill = _currentTrackLiftHill;
+
+	assert(new_return == original_return);
+	if (new_return) {
+		return true;
+	}
+
+	assert(new_trackType == original_trackType);
+	assert(new_trackDirection == original_trackDirection);
+	assert(new_rideIndex == original_rideIndex);
+	assert(new_edxRS16 == original_edxRS16);
+	assert(new_x == original_x);
+	assert(new_y == original_y);
+	assert(new_z == original_z);
+	assert(new_properties == original_properties);
+	assert(new_currentTrackLiftHill == original_currentTrackLiftHill);
+
+	if (trackType != NULL) *trackType = original_trackType;
+	if (trackDirection != NULL) *trackDirection = original_trackDirection;
+	if (rideIndex != NULL) *rideIndex = original_rideIndex;
+	if (edxRS16 != NULL) *edxRS16 = original_edxRS16;
+	if (x != NULL) *x = original_x;
+	if (y != NULL) *y = original_y;
+	if (z != NULL) *z = original_z;
+	if (properties != NULL) *properties = original_properties;
+
 	return false;
 }
 
