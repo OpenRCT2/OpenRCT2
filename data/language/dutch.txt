@@ -3962,7 +3962,7 @@ STR_5626    :Overige parken
 STR_5627    :Scenariolijst groeperen op:
 STR_5628    :Oorsprong
 STR_5629    :Moeilijkheidsgraad
-STR_5630    :Moeilijke scenario's worden ontgrendeld door gemakkelijke
+STR_5630    :Moeilijke scenario's ontgrendelden met gemakkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen...
 STR_5633    :CMD + 
@@ -4035,6 +4035,33 @@ STR_5733    :Bij opschalen met gehele getallen NN gebruiken
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Netwerkstatus
 STR_5736    :Speler
+STR_5737    :Gesloten, nog {COMMA16} passagier
+STR_5738    :Gesloten, nog {COMMA16} passagiers
+STR_5739    :{WINDOW_COLOUR_2}Huidige aantal passagiers: {BLACK}{COMMA16}
+STR_5740    :Oneindige marketingcampagnes
+STR_5741    :{SMALLFONT}{BLACK}Marketingcampagnes verlopen nooit
+STR_5742    :Authenticeren ...
+STR_5743    :Verbinding maken ...
+STR_5744    :Opzoeken ...
+STR_5745    :Netwerkdesynchronisatie gedetecteerd
+STR_5746    :Verbinding verbroken
+STR_5747    :Verbinding verbroken: {STRING}
+STR_5748    :Van de server verwijderd
+STR_5749    :Ophoepelen!
+STR_5750    :Verbinding gesloten
+STR_5751    :Geen gegevens
+STR_5752    :{OUTLINE}{RED}{STRING} heeft afgesloten.
+STR_5753    :{OUTLINE}{RED}{STRING} heeft afgesloten ({STRING}).
+STR_5754    :Ongeldige gebruikersnaam
+STR_5755    :Incorrecte softwareversie
+STR_5756    :Ongeldig wachtwoord
+STR_5757    :Server is vol
+STR_5758    :{OUTLINE}{GREEN}Nieuwe speler: {STRING}.
+STR_5759    :Bezig met downloaden van de kaart ... ({INT32} / {INT32})
+STR_5760    :Hong Kong-dollar (HK$)
+STR_5761    :Taiwanese dollar (NT$)
+STR_5762    :Chinese yuan (CN{YEN})
+STR_5763    :Alle bestanden
 
 #############
 # Scenarios #

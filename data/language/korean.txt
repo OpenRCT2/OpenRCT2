@@ -4043,6 +4043,24 @@ STR_5738    :닫힘, {COMMA16}명의 손님이 아직 놀이기구에 있음
 STR_5739    :{WINDOW_COLOUR_2}놀이기구를 타고 있는 손님: {BLACK}{COMMA16}명
 STR_5740    :광고 기간 무제한으로
 STR_5741    :{SMALLFONT}{BLACK}광고의 기간을 무제한으로 바꿉니다
+STR_5742    :인증하는 중 ...
+STR_5743    :접속 중 ...
+STR_5744    :분석 중 ...
+STR_5745    :네트워크 비동기화 감지
+STR_5746    :접속이 끊어짐
+STR_5747    :접속이 끊어짐: {STRING}
+STR_5748    :추방
+STR_5749    :서버에서 추방당하셨습니다!
+STR_5750    :접속 종료
+STR_5751    :데이터 없음
+STR_5752    :{OUTLINE}{RED}{STRING} 님 퇴장
+STR_5753    :{OUTLINE}{RED}{STRING} 님 퇴장 ({STRING})
+STR_5754    :올바르지 않은 플레이어 이름
+STR_5755    :소프트웨어 버전이 맞지 않습니다
+STR_5756    :비밀번호가 맞지 않습니다
+STR_5757    :서버 제한 인원이 꽉 찼습니다
+STR_5758    :{OUTLINE}{GREEN}{STRING} 님 입장
+STR_5759    :맵 다운로드 중 ... ({INT32} / {INT32})
 
 #############
 # Scenarios #
