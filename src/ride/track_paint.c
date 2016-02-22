@@ -118,8 +118,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
 
-		armRotation = vehicle->var_1F;
-		seatRotation = vehicle->var_20;
+		armRotation = vehicle->vehicle_sprite_type;
+		seatRotation = vehicle->bank_rotation;
 	}
 
 	RCT2_GLOBAL(0x009DEA52, sint16) = al + 16;
