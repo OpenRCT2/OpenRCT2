@@ -3,8 +3,10 @@ extern "C"
     #include "drawing.h"
 }
 
-// This will have 1 for val > 0, 0 otherwise
-#define greater_than_zero(val) (((val - 1) >> (sizeof(val) * 8 - 1)) + 1)
+// This will have -1 (0xffffffff) for (val <= 0), 0 otherwise, so it can act as a mask
+// This is expected to generate
+//     sar $0x1f, %eax
+#define less_or_equal_zero_mask(val) (((val - 1) >> (sizeof(val) * 8 - 1)))
 
 template<int image_type, int zoom_level>
 static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
@@ -59,28 +61,28 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
             const int x_diff = x_start & ~zoom_mask;
 
             no_pixels -= x_diff;
-            x_start += ~zoom_mask * greater_than_zero(x_diff - 1);
+            x_start += ~zoom_mask & ~less_or_equal_zero_mask(x_diff - 1);
             source_pointer += (x_start&~zoom_mask);
 
             // This will have 1 for x_start > 0, 0 otherwise
-            uint8 sign = greater_than_zero(x_start);
+            int sign = less_or_equal_zero_mask(x_start);
 
-            dest_pointer += (x_start >> zoom_level) * sign;
+            dest_pointer += (x_start >> zoom_level) & ~sign;
 
             //If the start is negative we require to remove part of the image.
             //This is done by moving the image pointer to the correct position.
-            source_pointer -= x_start * (1 - sign);
+            source_pointer -= x_start & sign;
             //The no_pixels will be reduced in this operation
-            no_pixels += x_start * (1 - sign);
+            no_pixels += x_start & sign;
             //Reset the start position to zero as we have taken into account all moves
-            x_start *= sign;
+            x_start &= ~sign;
 
             int x_end = x_start + no_pixels;
             //If the end position is further out than the whole image
             //end position then we need to shorten the line again
             const int pixels_till_end = x_end - width;
             //Shorten the line
-            no_pixels -= pixels_till_end * greater_than_zero(pixels_till_end);
+            no_pixels -= pixels_till_end & ~(less_or_equal_zero_mask(pixels_till_end));
 
             //Finally after all those checks, copy the image onto the drawing surface
             //If the image type is not a basic one we require to mix the pixels
@@ -106,7 +108,7 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
             } else
             {
                 if (zoom_amount == 1) {
-                    no_pixels *= greater_than_zero(no_pixels);
+                    no_pixels &= ~less_or_equal_zero_mask(no_pixels);
                     memcpy(dest_pointer, source_pointer, no_pixels);
                 } else {
                     for (; no_pixels > 0; no_pixels -= zoom_amount, source_pointer += zoom_amount, dest_pointer++) {
