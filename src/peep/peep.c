@@ -1645,7 +1645,7 @@ static void peep_choose_seat_from_car(rct_peep* peep, rct_ride* ride, rct_vehicl
 	if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION){
 
-		chosen_seat = (((~vehicle->var_1F + 1) >> 3) & 0xF) * 2;
+		chosen_seat = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
 		if (vehicle->next_free_seat & 1){
 			chosen_seat++;
 		}
@@ -1794,7 +1794,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 			if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 				ride->mode == RIDE_MODE_BACKWARD_ROTATION)
 			{
-				uint8 position = (((~vehicle->var_1F + 1) >> 3) & 0xF) * 2;
+				uint8 position = (((~vehicle->vehicle_sprite_type + 1) >> 3) & 0xF) * 2;
 				if (vehicle->peep[position] != 0xFFFF)
 					continue;
 			}

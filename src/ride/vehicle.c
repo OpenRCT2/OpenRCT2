@@ -1041,11 +1041,11 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 		ride->num_sheltered_sections &= ~0x1F;
 		ride->num_sheltered_sections |= num_sheltered_sections;
 
-		if (vehicle->var_1F != 0){
+		if (vehicle->vehicle_sprite_type != 0){
 			ride->num_sheltered_sections |= (1 << 5);
 		}
 
-		if (vehicle->var_20 != 0){
+		if (vehicle->bank_rotation != 0){
 			ride->num_sheltered_sections |= (1 << 6);
 		}
 	}
@@ -1105,7 +1105,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 		if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3) && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT) {
 			if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_13) ||
 				(
-					vehicle->var_1F == 2 &&
+					vehicle->vehicle_sprite_type == 2 &&
 					vehicle->velocity <= 0x20000
 				)
 			) {
@@ -1315,7 +1315,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8 num_peeps_on_train
 	if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION){
 
-		uint8 peep = ((-vehicle->var_1F) / 8) & 0xF;
+		uint8 peep = ((-vehicle->vehicle_sprite_type) / 8) & 0xF;
 		if (vehicle->peep[peep] != 0xFFFF){
 			ride->train_at_station[vehicle->current_station] = 0xFF;
 			vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
@@ -1579,7 +1579,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	if (shouldBreak == true || ride->status != RIDE_STATUS_OPEN) {
 		if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 			ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
-			uint8 bl = ((-vehicle->var_1F) >> 3) & 0xF;
+			uint8 bl = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
 			if (vehicle->peep[bl] == 0xFFFF) {
 				if (vehicle->num_peeps == 0) {
 					skipCheck = true;
@@ -1705,14 +1705,14 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 			break;
 		}
 		vehicle->current_time = -1;
-		vehicle->var_1F = 0;
-		vehicle->var_20 = 0;
+		vehicle->vehicle_sprite_type = 0;
+		vehicle->bank_rotation = 0;
 		vehicle_update_top_spin_operating(vehicle);
 		break;
 	case RIDE_MODE_FORWARD_ROTATION:
 	case RIDE_MODE_BACKWARD_ROTATION:
 		vehicle->status = VEHICLE_STATUS_FERRIS_WHEEL_ROTATING;
-		vehicle->sub_state = vehicle->var_1F;
+		vehicle->sub_state = vehicle->vehicle_sprite_type;
 		vehicle_invalidate_window(vehicle);
 		vehicle->var_CE = 0;
 		vehicle->ferris_wheel_var_0 = 8;
@@ -1749,7 +1749,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->status = VEHICLE_STATUS_SPACE_RINGS_OPERATING;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
-		vehicle->var_1F = 0;
+		vehicle->vehicle_sprite_type = 0;
 		vehicle->current_time = -1;
 		vehicle_update_space_rings_operating(vehicle);
 		break;
@@ -1757,7 +1757,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->status = VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
-		vehicle->var_1F = 0;
+		vehicle->vehicle_sprite_type = 0;
 		vehicle->current_time = -1;
 		vehicle_update_haunted_house_operating(vehicle);
 		break;
@@ -1765,7 +1765,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 		vehicle->status = VEHICLE_STATUS_CROOKED_HOUSE_OPERATING;
 		vehicle->sub_state = 0;
 		vehicle_invalidate_window(vehicle);
-		vehicle->var_1F = 0;
+		vehicle->vehicle_sprite_type = 0;
 		vehicle->current_time = -1;
 		vehicle_update_crooked_house_operating(vehicle);
 		break;
@@ -2553,12 +2553,12 @@ static void vehicle_update_crash_setup(rct_vehicle* vehicle) {
 		int x = RCT2_ADDRESS(0x009A3AC4, sint16)[trainVehicle->sprite_direction & 0xFE];
 		int	y = RCT2_ADDRESS(0x009A3AC6, sint16)[trainVehicle->sprite_direction & 0xFE];
 
-		int ecx = RCT2_ADDRESS(0x009A37E4, sint32)[trainVehicle->var_1F] >> 15;
+		int ecx = RCT2_ADDRESS(0x009A37E4, sint32)[trainVehicle->vehicle_sprite_type] >> 15;
 		x *= ecx;
 		y *= ecx;
 		x >>= 16;
 		y >>= 16;
-		ecx = RCT2_ADDRESS(0x009A38D4, sint32)[trainVehicle->var_1F] >> 23;
+		ecx = RCT2_ADDRESS(0x009A38D4, sint32)[trainVehicle->vehicle_sprite_type] >> 23;
 		x *= edx;
 		y *= edx;
 		ecx *= edx;
@@ -2977,7 +2977,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
 	if (ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION) {
-		uint8 seat = ((-vehicle->var_1F) >> 3) & 0xF;
+		uint8 seat = ((-vehicle->vehicle_sprite_type) >> 3) & 0xF;
 		if (vehicle->restraints_position == 255 &&
 			(vehicle->peep[seat * 2] != 0xFFFF)) {
 			vehicle->next_free_seat -= 2;
@@ -3538,10 +3538,10 @@ static void vehicle_update_swinging(rct_vehicle* vehicle) {
 	// completed and the next swing can start
 	if (al != 0x80) {
 		vehicle->current_time++;
-		if (al == vehicle->var_1F)
+		if (al == vehicle->vehicle_sprite_type)
 			return;
 		// Used to know which sprite to draw
-		vehicle->var_1F = al;
+		vehicle->vehicle_sprite_type = al;
 		vehicle_invalidate(vehicle);
 		return;
 	}
@@ -3606,14 +3606,14 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		vehicle->ferris_wheel_var_1 = ferris_wheel_var_0;
 	}
 
-	uint8 rotation = vehicle->var_1F;
+	uint8 rotation = vehicle->vehicle_sprite_type;
 	if (ride->mode == RIDE_MODE_FORWARD_ROTATION)
 		rotation++;
 	else
 		rotation--;
 
 	rotation &= 0x7F;
-	vehicle->var_1F = rotation;
+	vehicle->vehicle_sprite_type = rotation;
 
 	if (rotation == vehicle->sub_state)
 		vehicle->var_CE++;
@@ -3627,7 +3627,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		subState--;
 	subState &= 0x7F;
 
-	if (subState == vehicle->var_1F) {
+	if (subState == vehicle->vehicle_sprite_type) {
 		bool shouldStop = true;
 		if (ride->status != RIDE_STATUS_CLOSED) {
 			if (vehicle->var_CE < ride->rotations)
@@ -3651,7 +3651,7 @@ static void vehicle_update_ferris_wheel_rotating(rct_vehicle* vehicle) {
 		subState -= 8;
 	subState &= 0x7F;
 
-	if (subState != vehicle->var_1F)
+	if (subState != vehicle->vehicle_sprite_type)
 		return;
 
 	vehicle->status = VEHICLE_STATUS_ARRIVING;
@@ -3673,9 +3673,9 @@ static void vehicle_update_simulator_operating(rct_vehicle* vehicle) {
 	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
 	if (al != 0xFF) {
 		vehicle->current_time++;
-		if (al == vehicle->var_1F)
+		if (al == vehicle->vehicle_sprite_type)
 			return;
-		vehicle->var_1F = al;
+		vehicle->vehicle_sprite_type = al;
 		vehicle_invalidate(vehicle);
 		return;
 	}
@@ -3717,9 +3717,9 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 	uint8 al = edi[(uint32)var_4C];
 	if (al != 0xFF) {
 		vehicle->current_time = (uint16)var_4C;
-		if (al == vehicle->var_1F)
+		if (al == vehicle->vehicle_sprite_type)
 			return;
-		vehicle->var_1F = al;
+		vehicle->vehicle_sprite_type = al;
 		vehicle_invalidate(vehicle);
 		return;
 	}
@@ -3777,9 +3777,9 @@ static void vehicle_update_space_rings_operating(rct_vehicle* vehicle) {
 	uint8 al = edi[(uint16)(vehicle->current_time + 1)];
 	if (al != 0xFF) {
 		vehicle->current_time++;
-		if (al == vehicle->var_1F)
+		if (al == vehicle->vehicle_sprite_type)
 			return;
-		vehicle->var_1F = al;
+		vehicle->vehicle_sprite_type = al;
 		vehicle_invalidate(vehicle);
 		return;
 	}
@@ -3798,13 +3798,13 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 	if (RCT2_GLOBAL(0x00F64E34, uint8) == 0)
 		return;
 
-	if (vehicle->var_1F != 0) {
+	if (vehicle->vehicle_sprite_type != 0) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1) {
-			vehicle->var_1F++;
+			vehicle->vehicle_sprite_type++;
 			vehicle_invalidate(vehicle);
 
-			if (vehicle->var_1F == 19)
-				vehicle->var_1F = 0;
+			if (vehicle->vehicle_sprite_type == 19)
+				vehicle->vehicle_sprite_type = 0;
 		}
 	}
 
@@ -3829,7 +3829,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 			vehicle->z);
 		break;
 	case 75:
-		vehicle->var_1F = 1;
+		vehicle->vehicle_sprite_type = 1;
 		vehicle_invalidate(vehicle);
 		break;
 	case 400:
@@ -3847,7 +3847,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 			vehicle->z);
 		break;
 	case 775:
-		vehicle->var_1F = 1;
+		vehicle->vehicle_sprite_type = 1;
 		vehicle_invalidate(vehicle);
 		break;
 	case 1100:
@@ -3892,13 +3892,13 @@ static void vehicle_update_top_spin_operating(rct_vehicle* vehicle) {
 	uint8 al = edi[(vehicle->current_time + 1) * 2];
 	if (al != 0xFF) {
 		vehicle->current_time = vehicle->current_time + 1;
-		if (al != vehicle->var_1F) {
-			vehicle->var_1F = al;
+		if (al != vehicle->vehicle_sprite_type) {
+			vehicle->vehicle_sprite_type = al;
 			vehicle_invalidate(vehicle);
 		}
 		al = edi[vehicle->current_time * 2 + 1];
-		if (al != vehicle->var_20) {
-			vehicle->var_20 = al;
+		if (al != vehicle->bank_rotation) {
+			vehicle->bank_rotation = al;
 			vehicle_invalidate(vehicle);
 		}
 		return;
@@ -4370,13 +4370,13 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 		spriteIndex = vehicle->sprite_index;
 		do {
 			vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
-			if (vehicle2->var_1F < 1)
+			if (vehicle2->vehicle_sprite_type < 1)
 				continue;
-			if (vehicle2->var_1F <= 4)
+			if (vehicle2->vehicle_sprite_type <= 4)
 				goto produceScream;
-			if (vehicle2->var_1F < 9)
+			if (vehicle2->vehicle_sprite_type < 9)
 				continue;
-			if (vehicle2->var_1F <= 15)
+			if (vehicle2->vehicle_sprite_type <= 15)
 				goto produceScream;
 		} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 		return 255;
@@ -4388,13 +4388,13 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 	spriteIndex = vehicle->sprite_index;
 	do {
 		vehicle2 = &(g_sprite_list[spriteIndex].vehicle);
-		if (vehicle2->var_1F < 5)
+		if (vehicle2->vehicle_sprite_type < 5)
 			continue;
-		if (vehicle2->var_1F <= 8)
+		if (vehicle2->vehicle_sprite_type <= 8)
 			goto produceScream;
-		if (vehicle2->var_1F < 17)
+		if (vehicle2->vehicle_sprite_type < 17)
 			continue;
-		if (vehicle2->var_1F <= 23)
+		if (vehicle2->vehicle_sprite_type <= 23)
 			goto produceScream;
 	} while ((spriteIndex = vehicle2->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 	return 255;
@@ -4433,8 +4433,8 @@ produceScream:
  */
 void vehicle_get_g_forces(rct_vehicle *vehicle, int *verticalG, int *lateralG)
 {
-	int gForceVert = (((sint64)0x280000) * RCT2_ADDRESS(0x009A37E4, sint32)[vehicle->var_1F]) >> 32;
-	gForceVert = (((sint64)gForceVert) * RCT2_ADDRESS(0x009A39C4, sint32)[vehicle->var_20]) >> 32;
+	int gForceVert = (((sint64)0x280000) * RCT2_ADDRESS(0x009A37E4, sint32)[vehicle->vehicle_sprite_type]) >> 32;
+	gForceVert = (((sint64)gForceVert) * RCT2_ADDRESS(0x009A39C4, sint32)[vehicle->bank_rotation]) >> 32;
 	int lateralFactor = 0, vertFactor = 0;
 
 	// Note shr has meant some of the below functions cast a known negative number to
@@ -5260,7 +5260,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
 			lateralG = abs(lateralG);
 			if (lateralG <= 150) {
-				if (dword_9A2970[vehicle->var_1F] < 0) {
+				if (dword_9A2970[vehicle->vehicle_sprite_type] < 0) {
 					if (verticalG > -40) {
 						return;
 					}
@@ -5269,7 +5269,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 				}
 			}
 
-			if (vehicle->var_1F != 8) {
+			if (vehicle->vehicle_sprite_type != 8) {
 				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
@@ -5279,7 +5279,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 		if (!track_element_is_covered(trackType)) {
 			vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
 
-			if (dword_9A2970[vehicle->var_1F] < 0) {
+			if (dword_9A2970[vehicle->vehicle_sprite_type] < 0) {
 				if (verticalG > -45) {
 					return;
 				}
@@ -5289,7 +5289,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 				}
 			}
 
-			if (vehicle->var_1F != 8 && vehicle->var_1F != 55) {
+			if (vehicle->vehicle_sprite_type != 8 && vehicle->vehicle_sprite_type != 55) {
 				RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
 			}
 		}
@@ -6082,10 +6082,10 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 					 vehicle->status != VEHICLE_STATUS_ARRIVING)
 				) {
 					int index = vehicle->sprite_direction >> 1;
-					if (vehicle->var_1F == 2) {
+					if (vehicle->vehicle_sprite_type == 2) {
 						index += 16;
 					}
-					if (vehicle->var_1F == 6) {
+					if (vehicle->vehicle_sprite_type == 6) {
 						index += 32;
 					}
 					steam_particle_create(
@@ -6972,12 +6972,12 @@ loc_6DAEB9:
 	unk_F64E20->y = y;
 	unk_F64E20->z = z;
 	vehicle->sprite_direction = moveInfo->direction;
-	vehicle->var_20 = moveInfo->var_08;
-	vehicle->var_1F = moveInfo->var_07;
+	vehicle->bank_rotation = moveInfo->bank_rotation;
+	vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-	regs.ebx = moveInfo->var_07;
+	regs.ebx = moveInfo->vehicle_sprite_type;
 
-	if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) && moveInfo->var_07 != 0) {
+	if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) && moveInfo->vehicle_sprite_type != 0) {
 		vehicle->var_4A = 0;
 		vehicle->swinging_car_var_0 = 0;
 		vehicle->var_4E = 0;
@@ -7008,7 +7008,7 @@ loc_6DB94A:
 	regs.eax = vehicle->remaining_distance + 1;
 	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->remaining_distance = 0xFFFFFFFF;
-	regs.ebx = vehicle->var_1F;
+	regs.ebx = vehicle->vehicle_sprite_type;
 	return false;
 
 loc_6DB967:
@@ -7254,9 +7254,9 @@ loc_6DBA33:;
 	unk_F64E20->y = y;
 	unk_F64E20->z = z;
 	vehicle->sprite_direction = moveInfo->direction;
-	vehicle->var_20 = moveInfo->var_08;
-	regs.ebx = moveInfo->var_07;
-	vehicle->var_1F = regs.bl;
+	vehicle->bank_rotation = moveInfo->bank_rotation;
+	regs.ebx = moveInfo->vehicle_sprite_type;
+	vehicle->vehicle_sprite_type = regs.bl;
 
 	if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) && regs.bl != 0) {
 		vehicle->var_4A = 0;
@@ -7287,7 +7287,7 @@ loc_6DBE5E:
 	regs.eax = vehicle->remaining_distance - 0x368A;
 	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
-	regs.ebx = vehicle->var_1F;
+	regs.ebx = vehicle->vehicle_sprite_type;
 	return false;
 
 loc_6DBE7F:
@@ -7346,9 +7346,9 @@ int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation)
 	RCT2_GLOBAL(0x00F64E00, rct_vehicle*) = vehicle;
 
 loc_6DC40E:
-	regs.ebx = vehicle->var_1F;
+	regs.ebx = vehicle->vehicle_sprite_type;
 	RCT2_GLOBAL(0x00F64E10, uint32) = 1;
-	vehicle->acceleration = dword_9A2970[vehicle->var_1F];
+	vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
 	vehicle->remaining_distance = RCT2_GLOBAL(0x00F64E0C, sint32) + vehicle->remaining_distance;
 	if ((sint32)vehicle->remaining_distance < 0) {
 		goto loc_6DCA7A;
@@ -7598,11 +7598,11 @@ loc_6DC743:
 	unk_F64E20->y = y;
 	unk_F64E20->z = z;
 	vehicle->sprite_direction = moveInfo->direction;
-	vehicle->var_20 = moveInfo->var_08;
-	vehicle->var_1F = moveInfo->var_07;
+	vehicle->bank_rotation = moveInfo->bank_rotation;
+	vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
 	if (rideEntry->vehicles[0].flags_b & VEHICLE_ENTRY_FLAG_B_9) {
-		if (vehicle->var_1F != 0) {
+		if (vehicle->vehicle_sprite_type != 0) {
 			vehicle->var_4A = 0;
 			vehicle->swinging_car_var_0 = 0;
 			vehicle->var_4E = 0;
@@ -7628,7 +7628,7 @@ loc_6DC99A:
 	if ((sint32)vehicle->remaining_distance < 0x368A) {
 		goto loc_6DCDE4;
 	}
-	vehicle->acceleration = dword_9A2970[vehicle->var_1F];
+	vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
 	RCT2_GLOBAL(0x00F64E10, uint32)++;
 	goto loc_6DC462;
 
@@ -7637,7 +7637,7 @@ loc_6DC9BC:
 	regs.eax = vehicle->remaining_distance + 1;
 	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
-	regs.ebx = vehicle->var_1F;
+	regs.ebx = vehicle->vehicle_sprite_type;
 	goto loc_6DCD2B;
 
 	/////////////////////////////////////////
@@ -7738,11 +7738,11 @@ loc_6DCC2C:
 	unk_F64E20->y = y;
 	unk_F64E20->z = z;
 	vehicle->sprite_direction = moveInfo->direction;
-	vehicle->var_20 = moveInfo->var_08;
-	vehicle->var_1F = moveInfo->var_07;
+	vehicle->bank_rotation = moveInfo->bank_rotation;
+	vehicle->vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
 	if (rideEntry->vehicles[0].flags_b & VEHICLE_ENTRY_FLAG_B_9) {
-		if (vehicle->var_1F != 0) {
+		if (vehicle->vehicle_sprite_type != 0) {
 			vehicle->var_4A = 0;
 			vehicle->swinging_car_var_0 = 0;
 			vehicle->var_4E = 0;
@@ -7762,7 +7762,7 @@ loc_6DCD2B:
 	if (vehicle->remaining_distance >= 0) {
 		goto loc_6DCDE4;
 	}
-	vehicle->acceleration += dword_9A2970[vehicle->var_1F];
+	vehicle->acceleration += dword_9A2970[vehicle->vehicle_sprite_type];
 	RCT2_GLOBAL(0x00F64E10, uint32)++;
 	goto loc_6DCA9A;
 
@@ -7771,7 +7771,7 @@ loc_6DCD4A:
 	regs.eax = vehicle->remaining_distance - 0x368A;
 	RCT2_GLOBAL(0x00F64E0C, sint32) -= regs.eax;
 	vehicle->remaining_distance -= regs.eax;
-	regs.ebx = vehicle->var_1F;
+	regs.ebx = vehicle->vehicle_sprite_type;
 	goto loc_6DC99A;
 
 loc_6DCD6B:
@@ -7930,10 +7930,10 @@ loc_6DCEFF:
 		vehicle->var_B6 = clamp(-0x200, (sint16)vehicle->var_B6, 0x200);
 	}
 
-	if (vehicle->var_1F != 0) {
+	if (vehicle->vehicle_sprite_type != 0) {
 		regs.eax = max(0, regs.eax);
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SPINNING) {
-			if (vehicle->var_1F == 2) {
+			if (vehicle->vehicle_sprite_type == 2) {
 				vehicle->var_B6 = 0;
 			}
 		}
@@ -8006,7 +8006,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 		if ((vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_7) || (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_8)) {
 			sub_6D63D4(car);
 		}
-		car->acceleration = dword_9A2970[car->var_1F];
+		car->acceleration = dword_9A2970[car->vehicle_sprite_type];
 		RCT2_GLOBAL(0x00F64E10, uint32) = 1;
 
 		regs.eax = RCT2_GLOBAL(0x00F64E0C, sint32) + car->remaining_distance;
@@ -8028,7 +8028,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 					if (car->remaining_distance < 0x368A) {
 						break;
 					}
-					regs.ebx = dword_9A2970[car->var_1F];
+					regs.ebx = dword_9A2970[car->vehicle_sprite_type];
 					car->acceleration += regs.ebx;
 					RCT2_GLOBAL(0x00F64E10, uint32)++;
 					continue;
@@ -8045,7 +8045,7 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 				if (car->remaining_distance >= 0) {
 					break;
 				}
-				regs.ebx = dword_9A2970[car->var_1F];
+				regs.ebx = dword_9A2970[car->vehicle_sprite_type];
 				car->acceleration = regs.ebx;
 				RCT2_GLOBAL(0x00F64E10, uint32)++;
 				continue;
@@ -8199,13 +8199,13 @@ loc_6DC23A:
 		vehicle->var_B6 = regs.bx;
 	}
 
-	if (vehicle->var_1F != 0) {
+	if (vehicle->vehicle_sprite_type != 0) {
 		if (regs.eax < 0) {
 			regs.eax = 0;
 		}
 
 		if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SPINNING)) {
-			if (vehicle->var_1F == 2) {
+			if (vehicle->vehicle_sprite_type == 2) {
 				vehicle->var_B6 = 0;
 			}
 		}
