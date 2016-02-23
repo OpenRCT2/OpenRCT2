@@ -1087,7 +1087,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	int y = vehicle->y;
 	int z = vehicle->z;
 
-	if (vehicle->var_0C & 0x80) {
+	if (vehicle->flags & SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE) {
 		uint32 ebx = 22965 + vehicle->var_C5;
 		RCT2_GLOBAL(0x9DEA52, uint16) = 0;
 		RCT2_GLOBAL(0x9DEA54, uint16) = 0;

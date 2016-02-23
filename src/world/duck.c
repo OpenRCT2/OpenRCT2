@@ -167,7 +167,7 @@ static void duck_update_fly_to_water(rct_duck *duck)
  */
 static void duck_update_swim(rct_duck *duck)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + duck->var_0A) & 3)
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + duck->sprite_index) & 3)
 		return;
 
 	uint32 randomNumber = scenario_rand();

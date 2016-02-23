@@ -314,10 +314,10 @@ void window_staff_list_update(rct_window *w)
 		widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 2);
 		FOR_ALL_STAFF(spriteIndex, peep) {
-			peep->list_flags &= ~(PEEP_LIST_FLAGS_FLASHING);
+			peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
 
 			if (peep->staff_type == RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)) {
-				peep->list_flags |= PEEP_LIST_FLAGS_FLASHING;
+				peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
 			}
 		}
 	}

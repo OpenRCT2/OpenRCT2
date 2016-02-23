@@ -1028,7 +1028,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 
 		color = 0x14;
 
-		if ((peep->list_flags & PEEP_LIST_FLAGS_FLASHING) != 0) {
+		if ((peep->flags & SPRITE_FLAGS_PEEP_FLASHING) != 0) {
 			if (peep->type == PEEP_TYPE_STAFF) {
 				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 3)) != 0) {
 					color = 0x8A;

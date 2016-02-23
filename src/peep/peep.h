@@ -374,12 +374,6 @@ enum {
 	PEEP_RIDE_DECISION_THINKING = 1 << 2
 };
 
-// Flags used by peep->list_flags
-enum {
-	PEEP_LIST_FLAGS_VISIBLE = 1 << 8, // Peep is eligible to show in summarized guest list window (is inside park?)
-	PEEP_LIST_FLAGS_FLASHING = 1 << 9, // Peep belongs to highlighted group (flashes red on map)
-};
-
 typedef struct {
 	uint8 type;		//0
 	uint8 item;		//1
@@ -397,7 +391,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 list_flags;              // 0x0C Used for highlighting peeps on map with staff list or guest list open
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -508,7 +502,7 @@ typedef struct {
 		uint8 peep_is_lost_countdown;	// 0xC6
 	};
 	uint8 photo1_ride_ref;			// 0xC7
-	uint32 flags;					// 0xC8
+	uint32 peep_flags;				// 0xC8
 	rct_xyzd8 pathfind_goal;		// 0xCC
 	rct_xyzd8 pathfind_history[4];	// 0xD0
 	uint8 no_action_frame_no;		// 0xE0

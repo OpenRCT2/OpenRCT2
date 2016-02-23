@@ -433,7 +433,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
-			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+			if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
 				continue;
 			numGuests++;
 		}
@@ -495,7 +495,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
-			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+			if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
 				continue;
 
 			if (i == 0) {
@@ -656,16 +656,16 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 		// For each guest
 		FOR_ALL_GUESTS(spriteIndex, peep) {
-			peep->list_flags &= ~(PEEP_LIST_FLAGS_FLASHING);
+			peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
 			if (peep->outside_of_park != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1) {
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
 				RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 0);
-				peep->list_flags |= PEEP_LIST_FLAGS_FLASHING;
+				peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
 			}
-			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+			if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
 				continue;
 
 			//
@@ -692,7 +692,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					gfx_draw_sprite(dpi, get_peep_face_sprite_small(peep), 118, y, 0);
 
 					// Tracking icon
-					if (peep->flags & PEEP_FLAGS_TRACKING)
+					if (peep->peep_flags & PEEP_FLAGS_TRACKING)
 						gfx_draw_sprite(dpi, 5129, 112, y, 0);
 
 					// Action
@@ -842,11 +842,11 @@ static void window_guest_list_find_groups()
 	// Set all guests to unassigned
 	FOR_ALL_GUESTS(spriteIndex, peep)
 		if (peep->outside_of_park == 0)
-			peep->list_flags |= PEEP_LIST_FLAGS_VISIBLE;
+			peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
 
 	// For each guest / group
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->outside_of_park != 0 || !(peep->list_flags & PEEP_LIST_FLAGS_VISIBLE))
+		if (peep->outside_of_park != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
 			continue;
 
 		// New group, cap at 240 though
@@ -857,7 +857,7 @@ static void window_guest_list_find_groups()
 		int ax = peep->sprite_index;
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
-		peep->list_flags &= ~(PEEP_LIST_FLAGS_VISIBLE);
+		peep->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);
 
 		get_arguments_from_peep( peep, &_window_guest_list_groups_argument_1[groupIndex], &_window_guest_list_groups_argument_2[groupIndex]);
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[groupIndex];
@@ -869,7 +869,7 @@ static void window_guest_list_find_groups()
 
 		// Find more peeps that belong to same group
 		FOR_ALL_GUESTS(spriteIndex2, peep2) {
-			if (peep2->outside_of_park != 0 || !(peep2->list_flags & PEEP_LIST_FLAGS_VISIBLE))
+			if (peep2->outside_of_park != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
 				continue;
 
 			uint32 argument1, argument2;
@@ -880,7 +880,7 @@ static void window_guest_list_find_groups()
 
 			// Assign guest
 			_window_guest_list_groups_num_guests[groupIndex]++;
-			peep2->list_flags &= ~(PEEP_LIST_FLAGS_VISIBLE);
+			peep2->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);
 
 			// Add face sprite, cap at 56 though
 			if (_window_guest_list_groups_num_guests[groupIndex] >= 56)

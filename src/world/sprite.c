@@ -212,7 +212,7 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->sprite_width = 0x10;
 	sprite->sprite_height_negative = 0x14;
 	sprite->sprite_height_positive = 0x8;
-	sprite->var_0C = 0;
+	sprite->flags = 0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
 	sprite->next_in_quadrant = RCT2_ADDRESS(0xF1EF60, uint16)[0x10000];

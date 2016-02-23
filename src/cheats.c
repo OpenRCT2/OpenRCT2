@@ -330,7 +330,7 @@ static void cheat_explode_guests()
 
 	FOR_ALL_GUESTS(sprite_index, peep) {
 		if (scenario_rand_max(6) == 0) {
-			peep->flags |= PEEP_FLAGS_EXPLODE;
+			peep->peep_flags |= PEEP_FLAGS_EXPLODE;
 		}
 	}
 }

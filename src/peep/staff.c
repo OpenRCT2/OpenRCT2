@@ -139,7 +139,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->var_C4 = 0;
 		newPeep->type = PEEP_TYPE_STAFF;
 		newPeep->outside_of_park = 0;
-		newPeep->flags = 0;
+		newPeep->peep_flags = 0;
 		newPeep->paid_to_enter = 0;
 		newPeep->paid_on_rides = 0;
 		newPeep->paid_on_food = 0;
@@ -307,9 +307,9 @@ void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *e
 			uint8 sprite_type = order_id & ~0x80;
 			sprite_type += 4;
 			peep->sprite_type = sprite_type;
-			peep->flags &= ~PEEP_FLAGS_SLOW_WALK;
+			peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
 			if(RCT2_ADDRESS(0x00982134, uint8)[sprite_type] & 1){
-				peep->flags |= PEEP_FLAGS_SLOW_WALK;
+				peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 			}
 			peep->action_frame = 0;
 			sub_693B58(peep);

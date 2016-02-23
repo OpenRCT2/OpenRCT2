@@ -194,7 +194,7 @@ int calculate_park_rating()
 				continue;
 			if (peep->happiness > 128)
 				num_happy_peeps++;
-			if ((peep->flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
+			if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
 				num_lost_guests++;
 		}
 
