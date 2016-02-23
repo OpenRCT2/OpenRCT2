@@ -1179,26 +1179,23 @@ void viewport_litter_paint_setup(rct_litter *litter, int imageDirection)
 * Paint Quadrant
 *  rct2: 0x0069E8B0
 */
-void sprite_paint_setup(uint16 eax, uint16 ecx){
-	uint32 _eax = eax, _ecx = ecx;
+void sprite_paint_setup(const uint16 eax, const uint16 ecx){
 	rct_drawpixelinfo* dpi;
 
+	if ((eax & 0xe000) | (ecx & 0xe000)) return;
+
+	const int idx = ((eax << 3) & 0xff00) | (ecx >> 5);
+	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[idx];
+	if (sprite_idx == SPRITE_INDEX_NULL) return;
 
 	if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) return;
 
-	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
 
+	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	if (dpi->zoom_level > 2) return;
 
-	if (eax > 0x2000)return;
-	if (ecx > 0x2000)return;
-
-	//push eax, ecx
-	eax = (eax & 0x1FE0) << 3 | (ecx >> 5);
-	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[eax];
-	if (sprite_idx == SPRITE_INDEX_NULL) return;
 
 	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant){
 		spr = &g_sprite_list[sprite_idx];
@@ -1215,7 +1212,6 @@ void sprite_paint_setup(uint16 eax, uint16 ecx){
 		image_direction &= 0x1F;
 
 		RCT2_GLOBAL(0x9DE578, uint32) = (uint32)spr;
-		int ebp = spr->unknown.sprite_identifier;
 
 		RCT2_GLOBAL(0x9DE568, sint16) = spr->unknown.x;
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
