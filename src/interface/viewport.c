@@ -1801,7 +1801,7 @@ static void sub_68B3FB(int x, int y)
 	if (bx <= dpi->y)
 		return;
 
-	rct_map_element* element = map_element;//push map_element
+	const rct_map_element* element = map_element;//push map_element
 
 	sint16 max_height = 0;
 	do{

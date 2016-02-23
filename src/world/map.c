@@ -181,22 +181,22 @@ void map_set_tile_elements(int x, int y, rct_map_element *elements)
 	TILE_MAP_ELEMENT_POINTER(x + y * 256) = elements;
 }
 
-int map_element_is_last_for_tile(rct_map_element *element)
+int map_element_is_last_for_tile(const rct_map_element *element)
 {
 	return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
 }
 
-int map_element_get_type(rct_map_element *element)
+int map_element_get_type(const rct_map_element *element)
 {
 	return element->type & MAP_ELEMENT_TYPE_MASK;
 }
 
-int map_element_get_direction(rct_map_element *element)
+int map_element_get_direction(const rct_map_element *element)
 {
 	return element->type & MAP_ELEMENT_DIRECTION_MASK;
 }
 
-int map_element_get_terrain(rct_map_element *element)
+int map_element_get_terrain(const rct_map_element *element)
 {
 	int terrain = (element->properties.surface.terrain >> 5) & 7;
 	if (element->type & 1)
@@ -204,7 +204,7 @@ int map_element_get_terrain(rct_map_element *element)
 	return terrain;
 }
 
-int map_element_get_terrain_edge(rct_map_element *element)
+int map_element_get_terrain_edge(const rct_map_element *element)
 {
 	int terrain_edge = (element->properties.surface.slope >> 5) & 7;
 	if (element->type & 128)
