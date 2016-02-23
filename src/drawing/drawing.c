@@ -537,7 +537,7 @@ void gfx_draw_pickedup_peep()
  *
  *  rct2: 0x00681DE2
  */
-void gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage)
 {
 	int left, top, right, bottom, width, height;
 	rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
