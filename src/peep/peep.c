@@ -316,15 +316,15 @@ static void peep_update_hunger(rct_peep *peep){
  */
 static void peep_leave_park(rct_peep* peep){
 	peep->guest_heading_to_ride_id = 0xFF;
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK){
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK){
 		if (peep->peep_is_lost_countdown < 60){
 			return;
 		}
 	}
 	else{
 		peep->peep_is_lost_countdown = 254;
-		peep->flags |= PEEP_FLAGS_LEAVING_PARK;
-		peep->flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+		peep->peep_flags |= PEEP_FLAGS_LEAVING_PARK;
+		peep->peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
 
 	peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GO_HOME, 0xFF);
@@ -352,7 +352,7 @@ static void sub_68F8CD(rct_peep *peep)
 		return;
 	}
 
-	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
 			if (peep->energy >= 70 && peep->happiness >= 60) {
 				return;
@@ -398,9 +398,9 @@ static void sub_68F41A(rct_peep *peep, int index)
 		if (peep->action < PEEP_ACTION_NONE_1)
 			peep->action = PEEP_ACTION_NONE_2;
 
-		peep->flags &= ~PEEP_FLAGS_SLOW_WALK;
+		peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
 		if (RCT2_ADDRESS(0x00982134, uint8)[sprite_type] & 1){
-			peep->flags |= PEEP_FLAGS_SLOW_WALK;
+			peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 		}
 
 		peep->action_sprite_type = 0xFF;
@@ -411,14 +411,14 @@ static void sub_68F41A(rct_peep *peep, int index)
 	if ((index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF)){
 		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
 
-		if (peep->flags & PEEP_FLAGS_CROWDED){
+		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
 			uint8 thought_type = RCT2_ADDRESS(0x009823AC, uint8)[scenario_rand() & 0xF];
 			if (thought_type != PEEP_THOUGHT_TYPE_NONE){
 				peep_insert_new_thought(peep, thought_type, 0xFF);
 			}
 		}
 
-		if (peep->flags & PEEP_FLAGS_EXPLODE && peep->x != (sint16)0x8000){
+		if (peep->peep_flags & PEEP_FLAGS_EXPLODE && peep->x != (sint16)0x8000){
 			audio_play_sound_at_location(SOUND_CRASH, peep->x, peep->y, peep->z);
 
 			sprite_misc_3_create(peep->x, peep->y, peep->z + 16);
@@ -428,19 +428,19 @@ static void sub_68F41A(rct_peep *peep, int index)
 			return;
 		}
 
-		if (peep->flags & PEEP_FLAGS_HUNGER){
+		if (peep->peep_flags & PEEP_FLAGS_HUNGER){
 			if (peep->hunger >= 15)peep->hunger -= 15;
 		}
 
-		if (peep->flags & PEEP_FLAGS_BATHROOM){
+		if (peep->peep_flags & PEEP_FLAGS_BATHROOM){
 			if (peep->bathroom <= 180)peep->bathroom += 50;
 		}
 
-		if (peep->flags & PEEP_FLAGS_HAPPINESS){
+		if (peep->peep_flags & PEEP_FLAGS_HAPPINESS){
 			peep->happiness_growth_rate = 5;
 		}
 
-		if (peep->flags & PEEP_FLAGS_NAUSEA){
+		if (peep->peep_flags & PEEP_FLAGS_NAUSEA){
 			peep->nausea_growth_rate = 200;
 			if (peep->nausea <= 130)peep->nausea = 130;
 		}
@@ -483,7 +483,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
 			peep->time_on_ride = min(255, peep->time_on_ride + 1);
 
-			if (peep->flags & PEEP_FLAGS_WOW){
+			if (peep->peep_flags & PEEP_FLAGS_WOW){
 				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WOW2, 0xFF);
 			}
 
@@ -504,7 +504,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 		if (peep->state == PEEP_STATE_WALKING &&
 			peep->outside_of_park == 0 &&
-			!(peep->flags & PEEP_FLAGS_LEAVING_PARK) &&
+			!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) &&
 			peep->no_of_rides == 0 &&
 			peep->guest_heading_to_ride_id == 0xFF){
 
@@ -535,7 +535,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 				uint8 num_thoughts = 0;
 				uint8 possible_thoughts[5] = { 0 };
 
-				if (peep->flags & PEEP_FLAGS_LEAVING_PARK){
+				if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK){
 					possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_GO_HOME;
 				}
 				else{
@@ -921,11 +921,11 @@ static void peep_state_reset(rct_peep* peep){
  * Check if lost.
  */
 void peep_check_if_lost(rct_peep* peep){
-	if (!(peep->flags & PEEP_FLAGS_LOST)){
+	if (!(peep->peep_flags & PEEP_FLAGS_LOST)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) < 2)return;
-		peep->flags ^= PEEP_FLAGS_21;
+		peep->peep_flags ^= PEEP_FLAGS_21;
 
-		if (!(peep->flags & PEEP_FLAGS_21)) return;
+		if (!(peep->peep_flags & PEEP_FLAGS_21)) return;
 
 		peep->var_F4++;
 		if (peep->var_F4 != 254)return;
@@ -971,7 +971,7 @@ void peep_check_cant_find_ride(rct_peep* peep){
 * Check if cant find exit.
 */
 void peep_check_cant_find_exit(rct_peep* peep){
-	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK))
+	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
 		return;
 
 	// Peeps who can't find the park exit will continue to get less happy until they find it.
@@ -1114,9 +1114,9 @@ void set_sprite_type(rct_peep* peep, uint8 type){
 	if (peep->action >= PEEP_ACTION_NONE_1)
 		peep->action = PEEP_ACTION_NONE_2;
 
-	peep->flags &= ~PEEP_FLAGS_SLOW_WALK;
+	peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
 	if (RCT2_ADDRESS(0x00982134, uint8)[type] & 1){
-		peep->flags |= PEEP_FLAGS_SLOW_WALK;
+		peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
 	}
 
 	peep->action_sprite_type = 0xFF;
@@ -1528,7 +1528,7 @@ void peep_update_sitting(rct_peep* peep){
 			return;
 		}
 
-		if ((peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+		if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_WALKING;
 			peep_window_state_update(peep);
@@ -2148,7 +2148,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 		window_invalidate_by_number(WC_RIDE, peep->current_ride);
 	}
 
-	if (peep->flags & PEEP_FLAGS_TRACKING){
+	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
@@ -3201,7 +3201,7 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 
 	peep_on_enter_or_exit_ride(peep, peep->current_ride, 1);
 
-	if (peep->flags & PEEP_FLAGS_TRACKING){
+	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
@@ -4671,7 +4671,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	if(gCheatsDisableVandalism)
 		return;
 
-	if (!(peep->flags & PEEP_FLAGS_ANGRY)){
+	if (!(peep->peep_flags & PEEP_FLAGS_ANGRY)){
 		if (peep->happiness >= 48) return;
 		if (peep->energy < 85) return;
 		if (peep->state != PEEP_STATE_WALKING) return;
@@ -5414,7 +5414,7 @@ static void peep_update_patrolling(rct_peep* peep){
 static void peep_update_walking(rct_peep* peep){
 	if (!checkForPath(peep))return;
 
-	if (peep->flags & PEEP_FLAGS_WAVING){
+	if (peep->peep_flags & PEEP_FLAGS_WAVING){
 		if (peep->action >= PEEP_ACTION_NONE_1){
 			if ((0xFFFF & scenario_rand()) < 936){
 				invalidate_sprite_2((rct_sprite*)peep);
@@ -5429,7 +5429,7 @@ static void peep_update_walking(rct_peep* peep){
 		}
 	}
 
-	if (peep->flags & PEEP_FLAGS_PHOTO){
+	if (peep->peep_flags & PEEP_FLAGS_PHOTO){
 		if (peep->action >= PEEP_ACTION_NONE_1){
 			if ((0xFFFF & scenario_rand()) < 936){
 				invalidate_sprite_2((rct_sprite*)peep);
@@ -5444,7 +5444,7 @@ static void peep_update_walking(rct_peep* peep){
 		}
 	}
 
-	if (peep->flags & PEEP_FLAGS_PAINTING){
+	if (peep->peep_flags & PEEP_FLAGS_PAINTING){
 		if (peep->action >= PEEP_ACTION_NONE_1){
 			if ((0xFFFF & scenario_rand()) < 936){
 				invalidate_sprite_2((rct_sprite*)peep);
@@ -5459,7 +5459,7 @@ static void peep_update_walking(rct_peep* peep){
 		}
 	}
 
-	if (peep->flags & PEEP_FLAGS_LITTER){
+	if (peep->peep_flags & PEEP_FLAGS_LITTER){
 		if (!(peep->next_var_29 & 0x18)){
 			if ((0xFFFF & scenario_rand()) <= 4096){
 				int ebp = (scenario_rand() & 0x3) + 2;
@@ -5537,7 +5537,7 @@ static void peep_update_walking(rct_peep* peep){
 
 	if (peep->state != PEEP_STATE_WALKING)return;
 
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)return;
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)return;
 
 	if (peep->nausea > 140)return;
 
@@ -5699,7 +5699,7 @@ static void peep_update(rct_peep *peep)
 	unsigned int stepsToTake = peep->energy;
 	if (stepsToTake < 95 && peep->state == PEEP_STATE_QUEUING)
 		stepsToTake = 95;
-	if ((peep->flags & PEEP_FLAGS_SLOW_WALK) && peep->state != PEEP_STATE_QUEUING)
+	if ((peep->peep_flags & PEEP_FLAGS_SLOW_WALK) && peep->state != PEEP_STATE_QUEUING)
 		stepsToTake /= 2;
 	if (peep->action == 255 && (peep->next_var_29 & 4)) {
 		stepsToTake /= 2;
@@ -6089,7 +6089,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->action_sprite_image_offset = 0;
 	peep->no_action_frame_no = 0;
 	peep->action_sprite_type = 0;
-	peep->flags = 0;
+	peep->peep_flags = 0;
 	peep->favourite_ride = 0xFF;
 	peep->favourite_ride_rating = 0;
 
@@ -6264,7 +6264,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 			*argument_2 = ride->name_arguments;
 		}
 		else{
-			*argument_1 = peep->flags & PEEP_FLAGS_LEAVING_PARK ? STR_LEAVING_PARK : STR_WALKING;
+			*argument_1 = peep->peep_flags & PEEP_FLAGS_LEAVING_PARK ? STR_LEAVING_PARK : STR_WALKING;
 			*argument_2 = 0;
 		}
 		break;
@@ -6628,7 +6628,7 @@ static int peep_has_empty_container(rct_peep* peep){
 
 /* Simplifies 0x690582. Returns 1 if should find bench*/
 static int peep_should_find_bench(rct_peep* peep){
-	if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 		if (peep_has_food(peep)){
 			if (peep->hunger < 128 || peep->happiness < 128){
 				if (!(peep->next_var_29 & 0x1C)){
@@ -6738,7 +6738,7 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 void peep_set_map_tooltip(rct_peep *peep)
 {
 	if (peep->type == PEEP_TYPE_GUEST) {
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = peep->flags & PEEP_FLAGS_TRACKING ? 1450 : 1449;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = peep->peep_flags & PEEP_FLAGS_TRACKING ? 1450 : 1449;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint32) = get_peep_face_sprite_small(peep);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint16) = peep->name_string_idx;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 8, uint32) = peep->id;
@@ -6916,7 +6916,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		peep_window_state_update(peep);
 		peep->sub_state = 11;
 		peep->time_in_queue = 0;
-		if (peep->flags & PEEP_FLAGS_TRACKING){
+		if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, rct_string_id) = ride->name;
@@ -6944,7 +6944,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			if (peep->state != PEEP_STATE_WALKING)
 				return peep_return_to_center_of_tile(peep);
 
-			if (!(peep->flags & PEEP_FLAGS_LEAVING_PARK)){
+			if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 				// If the park is open and leaving flag isnt set return to center
 				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)
 					return peep_return_to_center_of_tile(peep);
@@ -6962,7 +6962,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			peep_window_state_update(peep);
 
 			peep->var_37 = 0;
-			if (peep->flags & PEEP_FLAGS_TRACKING){
+			if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 				if (gConfigNotifications.guest_left_park) {
@@ -7068,7 +7068,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) += entranceFee;
 			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
 			peep_spend_money(peep, &peep->paid_to_enter, entranceFee);
-			peep->flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
+			peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
 		}
 
 		RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32)++;
@@ -7297,7 +7297,7 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		peep->sub_state = 10;
 		peep->destination_tolerence = 2;
 		peep->time_in_queue = 0;
-		if (peep->flags & PEEP_FLAGS_TRACKING){
+		if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, rct_string_id) = ride->name;
@@ -7343,7 +7343,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 	if (peep->var_79 == rideIndex)
 		return peep_return_to_center_of_tile(peep);
 
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
 		return peep_return_to_center_of_tile(peep);
 
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY)){
@@ -7370,7 +7370,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 
 		peep->time_on_ride = 0;
 		ride->cur_num_customers++;
-		if (peep->flags & PEEP_FLAGS_TRACKING){
+		if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, rct_string_id) = ride->name;
@@ -7710,14 +7710,14 @@ uint8 sub_69A60A(rct_peep* peep){
 
 	RCT2_GLOBAL(0x00F1AED8, uint32) = 0x3A98;
 	RCT2_GLOBAL(0x00F1AEDD, uint8) = 0;
-	if ((peep->flags & PEEP_FLAGS_2)){
+	if ((peep->peep_flags & PEEP_FLAGS_2)){
 		if ((scenario_rand() & 0xFFFF) <= 7281)
-			peep->flags &= ~PEEP_FLAGS_2;
+			peep->peep_flags &= ~PEEP_FLAGS_2;
 
 		return 16;
 	}
 
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK &&
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK &&
 		peep->peep_is_lost_countdown < 90){
 		return 16;
 	}
@@ -7725,7 +7725,7 @@ uint8 sub_69A60A(rct_peep* peep){
 	if (peep->item_standard_flags & PEEP_ITEM_MAP)
 		return 14;
 
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
 		return 14;
 
 	return 10;
@@ -7998,12 +7998,12 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	uint8 entranceNum;
 	
 	// Resolves already-corrupt guests (e.g. loaded from save)
-	if (peep->flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
+	if (peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
 		(peep->current_ride >= 4 ||
 		 RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[peep->current_ride] == (sint16)0x8000)
-		) peep->flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+		) peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 
-	if (!(peep->flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)){
+	if (!(peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)){
 		uint8 chosenEntrance = 0xFF;
 		uint16 nearestDist = 0xFFFF;
 		for (entranceNum = 0; entranceNum < 4; ++entranceNum){
@@ -8024,7 +8024,7 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 			return guest_path_find_aimless(peep, edges);
 
 		peep->current_ride = chosenEntrance;
-		peep->flags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+		peep->peep_flags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
 
 	entranceNum = peep->current_ride;
@@ -8270,7 +8270,7 @@ static int guest_path_finding(rct_peep* peep)
 		}
 	}
 
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
 		return guest_path_find_park_entrance(peep, mapElement, edges);
 
 	if (peep->guest_heading_to_ride_id == 0xFF)
@@ -8559,12 +8559,12 @@ static void peep_on_enter_ride(rct_peep *peep, int rideIndex)
  */
 static void peep_update_favourite_ride(rct_peep *peep, rct_ride *ride)
 {
-	peep->flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
+	peep->peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
 	uint8 peepRideRating = clamp(0, (ride->excitement / 4) + peep->happiness, 255);
 	if (peepRideRating >= peep->favourite_ride_rating) {
 		if (peep->happiness >= 160 && peep->happiness_growth_rate >= 160) {
 			peep->favourite_ride_rating = peepRideRating;
-			peep->flags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
+			peep->peep_flags |= PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
 		}
 	}
 }
@@ -8779,8 +8779,8 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	if (peep->flags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE) {
-		peep->flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
+	if (peep->peep_flags & PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE) {
+		peep->peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
 		peep->favourite_ride = rideIndex;
 		// TODO fix this flag name or add another one
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -8789,8 +8789,8 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 	peep->nausea = peep->nausea_growth_rate;
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
 	
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK)
-		peep->flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
+		peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
 
 	if (peep_should_go_on_ride_again(peep, ride)) {
 		peep->guest_heading_to_ride_id = rideIndex;
@@ -8810,7 +8810,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 		}
 	}
 
-	if (peep->flags & PEEP_FLAGS_NICE_RIDE) {
+	if (peep->peep_flags & PEEP_FLAGS_NICE_RIDE) {
 		peep_insert_new_thought(peep, PEEP_THOUGHT_NICE_RIDE, 255);
 	}
 
@@ -9040,7 +9040,7 @@ loc_69B221:
 
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	peep_update_sprite_type(peep);
-	if (peep->flags & PEEP_FLAGS_TRACKING) {
+	if (peep->peep_flags & PEEP_FLAGS_TRACKING) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS,uint16) = peep->name_string_idx;
 		RCT2_GLOBAL((RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2), uint32) = peep->id;
 		RCT2_GLOBAL((RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6), uint16) = (shopItem >= 32 ? STR_SHOP_ITEM_INDEFINITE_PHOTO2 + (shopItem - 32) : STR_SHOP_ITEM_INDEFINITE_BALLOON + shopItem);
@@ -9099,7 +9099,7 @@ loc_69B221:
 static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) return false;
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return false;
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) return false;
 	if (peep->cash_in_pocket > MONEY(20,00)) return false;
 	if (115 + (scenario_rand() % 128) > peep->happiness) return false;
 	if (peep->energy < 80) return false;
@@ -9240,19 +9240,19 @@ static void peep_give_passing_peeps_ice_cream(rct_peep *peep)
  */
 static void peep_easter_egg_peep_interactions(rct_peep *peep)
 {
-	if (peep->flags & PEEP_FLAGS_PURPLE) {
+	if (peep->peep_flags & PEEP_FLAGS_PURPLE) {
 		peep_give_passing_peeps_purple_clothes(peep);
 	}
 
-	if (peep->flags & PEEP_FLAGS_PIZZA) {
+	if (peep->peep_flags & PEEP_FLAGS_PIZZA) {
 		peep_give_passing_peeps_pizza(peep);
 	}
 
-	if (peep->flags & PEEP_FLAGS_CONTAGIOUS) {
+	if (peep->peep_flags & PEEP_FLAGS_CONTAGIOUS) {
 		peep_make_passing_peeps_sick(peep);
 	}
 
-	if (peep->flags & PEEP_FLAGS_JOY) {
+	if (peep->peep_flags & PEEP_FLAGS_JOY) {
 		if (scenario_rand() <= 1456) {
 			if (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2) {
 				peep->action = PEEP_ACTION_JOY;
@@ -9264,7 +9264,7 @@ static void peep_easter_egg_peep_interactions(rct_peep *peep)
 		}
 	}
 
-	if (peep->flags & PEEP_FLAGS_ICE_CREAM) {
+	if (peep->peep_flags & PEEP_FLAGS_ICE_CREAM) {
 		peep_give_passing_peeps_ice_cream(peep);
 	}
 }
@@ -9612,7 +9612,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 			// Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
 			if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF || ride->price != 0) {
-				if (peep->flags & PEEP_FLAGS_LEAVING_PARK) {
+				if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) {
 					peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtRide, false);
 					return false;
 				}
@@ -9798,7 +9798,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 				if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex)) {
 
 					// The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
-					if (peep->flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
+					if (peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
 						value /= 4;
 
 					// Peeps won't pay more than twice the value of the ride.
@@ -9817,7 +9817,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 					// A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
 					if (ride->price <= (money16)(value / 2) && peepAtRide) {
 						if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-							if (!(peep->flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)) {
+							if (!(peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)) {
 								peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GOOD_VALUE, rideIndex);
 							}
 						}
@@ -9828,7 +9828,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 			// At this point, the peep has decided to go on the ride.
 			if (peepAtRide) {
 				ride_update_popularity(ride, 1);
-				if ((peep->flags & PEEP_FLAGS_INTAMIN) && ride_type_is_intamin(ride->type)) {
+				if ((peep->peep_flags & PEEP_FLAGS_INTAMIN) && ride_type_is_intamin(ride->type)) {
 					peep_insert_new_thought(peep, PEEP_THOUGHT_EXCITED, 255);
 				}
 			}
@@ -9961,7 +9961,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
 
 	if (peep->state != PEEP_STATE_WALKING) return;
 	if (peep->guest_heading_to_ride_id != 255) return;
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return;
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) return;
 	if (peep_has_food(peep)) return;
 	if (peep->x == (sint16)0x8000) return;
 
@@ -10074,7 +10074,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, int rideType)
 	if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING) {
 		return;
 	}
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return;
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) return;
 	if (peep->x == (sint16)0x8000) return;
 	if (peep->guest_heading_to_ride_id != 255) {
 		ride = get_ride(peep->guest_heading_to_ride_id);
@@ -10182,7 +10182,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, int rideTypeFl
 	if (peep->state != PEEP_STATE_SITTING && peep->state != PEEP_STATE_WATCHING && peep->state != PEEP_STATE_WALKING) {
 		return;
 	}
-	if (peep->flags & PEEP_FLAGS_LEAVING_PARK) return;
+	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) return;
 	if (peep->x == (sint16)0x8000) return;
 	if (peep->guest_heading_to_ride_id != 255) {
 		ride = get_ride(peep->guest_heading_to_ride_id);
@@ -10456,7 +10456,7 @@ static void peep_read_map(rct_peep *peep)
 
 static bool peep_heading_for_ride_or_park_exit(rct_peep *peep)
 {
-	return (peep->flags & PEEP_FLAGS_LEAVING_PARK) || peep->guest_heading_to_ride_id != 0xFF;
+	return (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) || peep->guest_heading_to_ride_id != 0xFF;
 }
 
 money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3) {
@@ -10505,24 +10505,24 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 
 	peep_update_name_sort(peep);
 
-	peep->flags &= ~PEEP_FLAGS_WAVING;
+	peep->peep_flags &= ~PEEP_FLAGS_WAVING;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW, peep)) {
-		peep->flags |= PEEP_FLAGS_WAVING;
+		peep->peep_flags |= PEEP_FLAGS_WAVING;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_PHOTO;
+	peep->peep_flags &= ~PEEP_FLAGS_PHOTO;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CHRIS_SAWYER, peep)) {
-		peep->flags |= PEEP_FLAGS_PHOTO;
+		peep->peep_flags |= PEEP_FLAGS_PHOTO;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_PAINTING;
+	peep->peep_flags &= ~PEEP_FLAGS_PAINTING;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_SIMON_FOSTER, peep)) {
-		peep->flags |= PEEP_FLAGS_PAINTING;
+		peep->peep_flags |= PEEP_FLAGS_PAINTING;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_WOW;
+	peep->peep_flags &= ~PEEP_FLAGS_WOW;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOHN_WARDLEY, peep)) {
-		peep->flags |= PEEP_FLAGS_WOW;
+		peep->peep_flags |= PEEP_FLAGS_WOW;
 	}
 
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MELANIE_WARN, peep)) {
@@ -10534,89 +10534,89 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		peep->nausea_growth_rate = 0;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_LITTER;
+	peep->peep_flags &= ~PEEP_FLAGS_LITTER;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_LISA_STIRLING, peep)) {
-		peep->flags |= PEEP_FLAGS_LITTER;
+		peep->peep_flags |= PEEP_FLAGS_LITTER;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_LOST;
+	peep->peep_flags &= ~PEEP_FLAGS_LOST;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DONALD_MACRAE, peep)) {
-		peep->flags |= PEEP_FLAGS_LOST;
+		peep->peep_flags |= PEEP_FLAGS_LOST;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_HUNGER;
+	peep->peep_flags &= ~PEEP_FLAGS_HUNGER;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN, peep)) {
-		peep->flags |= PEEP_FLAGS_HUNGER;
+		peep->peep_flags |= PEEP_FLAGS_HUNGER;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_BATHROOM;
+	peep->peep_flags &= ~PEEP_FLAGS_BATHROOM;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN, peep)) {
-		peep->flags |= PEEP_FLAGS_BATHROOM;
+		peep->peep_flags |= PEEP_FLAGS_BATHROOM;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_CROWDED;
+	peep->peep_flags &= ~PEEP_FLAGS_CROWDED;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CORINA_MASSOURA, peep)) {
-		peep->flags |= PEEP_FLAGS_CROWDED;
+		peep->peep_flags |= PEEP_FLAGS_CROWDED;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_HAPPINESS;
+	peep->peep_flags &= ~PEEP_FLAGS_HAPPINESS;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CAROL_YOUNG, peep)) {
-		peep->flags |= PEEP_FLAGS_HAPPINESS;
+		peep->peep_flags |= PEEP_FLAGS_HAPPINESS;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_NAUSEA;
+	peep->peep_flags &= ~PEEP_FLAGS_NAUSEA;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MIA_SHERIDAN, peep)) {
-		peep->flags |= PEEP_FLAGS_NAUSEA;
+		peep->peep_flags |= PEEP_FLAGS_NAUSEA;
 	}
 
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_RODGER, peep)) {
-		peep->flags |= PEEP_FLAGS_LEAVING_PARK;
-		peep->flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+		peep->peep_flags |= PEEP_FLAGS_LEAVING_PARK;
+		peep->peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_PURPLE;
+	peep->peep_flags &= ~PEEP_FLAGS_PURPLE;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep)) {
-		peep->flags |= PEEP_FLAGS_PURPLE;
+		peep->peep_flags |= PEEP_FLAGS_PURPLE;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_PIZZA;
+	peep->peep_flags &= ~PEEP_FLAGS_PIZZA;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOANNE_BARTON, peep)) {
-		peep->flags |= PEEP_FLAGS_PIZZA;
+		peep->peep_flags |= PEEP_FLAGS_PIZZA;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_CONTAGIOUS;
+	peep->peep_flags &= ~PEEP_FLAGS_CONTAGIOUS;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON, peep)) {
-		peep->flags |= PEEP_FLAGS_CONTAGIOUS;
+		peep->peep_flags |= PEEP_FLAGS_CONTAGIOUS;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_JOY;
+	peep->peep_flags &= ~PEEP_FLAGS_JOY;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_SMITH, peep)) {
-		peep->flags |= PEEP_FLAGS_JOY;
+		peep->peep_flags |= PEEP_FLAGS_JOY;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_ANGRY;
+	peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EILIDH_BELL, peep)) {
-		peep->flags |= PEEP_FLAGS_ANGRY;
+		peep->peep_flags |= PEEP_FLAGS_ANGRY;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_ICE_CREAM;
+	peep->peep_flags &= ~PEEP_FLAGS_ICE_CREAM;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON, peep)) {
-		peep->flags |= PEEP_FLAGS_ICE_CREAM;
+		peep->peep_flags |= PEEP_FLAGS_ICE_CREAM;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_NICE_RIDE;
+	peep->peep_flags &= ~PEEP_FLAGS_NICE_RIDE;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_ANDY_HINE, peep)) {
-		peep->flags |= PEEP_FLAGS_NICE_RIDE;
+		peep->peep_flags |= PEEP_FLAGS_NICE_RIDE;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_INTAMIN;
+	peep->peep_flags &= ~PEEP_FLAGS_INTAMIN;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_ELISSA_WHITE, peep)) {
-		peep->flags |= PEEP_FLAGS_INTAMIN;
+		peep->peep_flags |= PEEP_FLAGS_INTAMIN;
 	}
 
-	peep->flags &= ~PEEP_FLAGS_HERE_WE_ARE;
+	peep->peep_flags &= ~PEEP_FLAGS_HERE_WE_ARE;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DAVID_ELLIS, peep)) {
-		peep->flags |= PEEP_FLAGS_HERE_WE_ARE;
+		peep->peep_flags |= PEEP_FLAGS_HERE_WE_ARE;
 	}
 
 	gfx_invalidate_screen();

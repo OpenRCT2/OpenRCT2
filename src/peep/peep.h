@@ -391,7 +391,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 sprite_flags;			// 0x0C
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -502,7 +502,7 @@ typedef struct {
 		uint8 peep_is_lost_countdown;	// 0xC6
 	};
 	uint8 photo1_ride_ref;			// 0xC7
-	uint32 flags;					// 0xC8
+	uint32 peep_flags;				// 0xC8
 	rct_xyzd8 pathfind_goal;		// 0xCC
 	rct_xyzd8 pathfind_history[4];	// 0xD0
 	uint8 no_action_frame_no;		// 0xE0

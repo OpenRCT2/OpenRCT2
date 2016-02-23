@@ -652,7 +652,7 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		window_scroll_to_viewport(w);
 		break;
 	case WIDX_TRACK:
-		g_sprite_list[w->number].peep.flags ^= PEEP_FLAGS_TRACKING;
+		g_sprite_list[w->number].peep.peep_flags ^= PEEP_FLAGS_TRACKING;
 		break;
 	}
 }
@@ -1076,7 +1076,7 @@ void window_guest_overview_invalidate(rct_window *w)
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2,uint32) = peep->id;
 
 	w->pressed_widgets &= ~(1<<WIDX_TRACK);
-	if (peep->flags & 0x8){
+	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 		w->pressed_widgets |= (1<<WIDX_TRACK);
 	}
 
