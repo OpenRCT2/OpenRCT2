@@ -28,6 +28,7 @@ extern "C" {
 }
 #include "mixer.h"
 #include <cmath>
+#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 
 Mixer gMixer;
@@ -674,6 +675,11 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 				switch (channel.group) {
 				case MIXER_GROUP_SOUND:
 					volumeadjust *= (gConfigSound.sound_volume / 100.0f);
+
+					// Cap sound volume on title screen so music is more audible
+					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+						volumeadjust = Math::Min(volumeadjust, 0.75f);
+					}
 					break;
 				case MIXER_GROUP_RIDE_MUSIC:
 					volumeadjust *= (gConfigSound.ride_music_volume / 100.0f);
