@@ -3498,7 +3498,8 @@ void ride_music_update_final()
 	rct_ride_music_params* edi = NULL;
 	int ebx;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
-		if (!gGameSoundsOff && gConfigSound.sound && gConfigSound.ride_music && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
+		// TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
+		if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
 			// set to stop music if volume <= 1 ?
 			while (1) {
 				int v8 = 0;
@@ -3594,6 +3595,11 @@ void ride_music_update_final()
 									offset = 0;
 								}
 								Mixer_Channel_SetOffset(ride_music->sound_channel, offset);
+
+								// Move circus music to the sound mixer group
+								if (ride_music_info->path_id == PATH_ID_CSS24) {
+									Mixer_Channel_SetGroup(ride_music->sound_channel, MIXER_GROUP_SOUND);
+								}
 							}
 							return;
 						}

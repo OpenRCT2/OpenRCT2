@@ -200,12 +200,13 @@ typedef struct {
 } interface_configuration;
 
 typedef struct {
-	uint8 title_music;
-	uint8 sound;
-	uint8 ride_music;
-	uint8 audio_focus;
 	uint8 master_volume;
-	uint8 music_volume;
+	uint8 title_music;
+	uint8 sound_enabled;
+	uint8 sound_volume;
+	uint8 ride_music_enabled;
+	uint8 ride_music_volume;
+	uint8 audio_focus;
 	utf8string device;
 } sound_configuration;
 

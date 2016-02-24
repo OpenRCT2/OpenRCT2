@@ -123,7 +123,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUDIO_FOCUS_CHECKBOX,
 	WIDX_TITLE_MUSIC,
 	WIDX_TITLE_MUSIC_DROPDOWN,
-	WIDX_MASTER_VOLUME,
+	WIDX_SOUND_VOLUME,
 	WIDX_MUSIC_VOLUME,
 
 	// Controls and interface
@@ -253,7 +253,7 @@ static rct_widget window_options_audio_widgets[] = {
 	{ WWT_DROPDOWN,			1,	10,		299,	53,		64,		865,					STR_NONE },	// audio device
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		STR_DROPDOWN_GLYPH,					STR_NONE },
 	{ WWT_CHECKBOX,			1,	10,		229,	69,		80,		STR_SOUND,				STR_NONE },	// enable / disable sound
-	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_MUSIC,				STR_NONE },	// enable / disable music
+	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_RIDE_MUSIC,			STR_NONE },	// enable / disable ride music
 	{ WWT_CHECKBOX,			1,	10,		229,	98,		110,	STR_AUDIO_FOCUS,		STR_NONE },	// enable / disable audio disabled on focus lost
 	{ WWT_DROPDOWN,			1,	155,	299,	112,	124,	STR_NONE,				STR_NONE },	// title music
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	113,	123,	STR_DROPDOWN_GLYPH,					STR_NONE },
@@ -622,13 +622,14 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		switch (widgetIndex) {
 		case WIDX_SOUND_CHECKBOX:
-			audio_toggle_all_sounds();
+			// audio_toggle_all_sounds();
+			gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
 			config_save_default();
 			window_invalidate(w);
 			break;
 		case WIDX_MUSIC_CHECKBOX:
-			gConfigSound.ride_music = !gConfigSound.ride_music;
-			if (!gConfigSound.ride_music) {
+			gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
+			if (!gConfigSound.ride_music_enabled) {
 				audio_stop_ride_music();
 			}
 			config_save_default();
@@ -1413,20 +1414,20 @@ static void window_options_invalidate(rct_window *w)
 		}
 
 		// music: on/off
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = STR_OFF + gConfigSound.ride_music;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = STR_OFF + gConfigSound.ride_music_enabled;
 
-		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound);
-		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music);
+		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
+		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
 		widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
 
 		if(w->frame_no == 0){ // initialize only on first frame, otherwise the scrollbars wont be able to be modified
-			widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
-			w->scrolls[0].h_left = (sint16)ceil((gConfigSound.master_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+			widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
+			w->scrolls[0].h_left = (sint16)ceil((gConfigSound.sound_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
 			widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-			w->scrolls[1].h_left = (sint16)ceil((gConfigSound.music_volume / 100.0f) * (w->scrolls[1].h_right - ((widget->right - widget->left) - 1)));
+			w->scrolls[1].h_left = (sint16)ceil((gConfigSound.ride_music_volume / 100.0f) * (w->scrolls[1].h_right - ((widget->right - widget->left) - 1)));
 		}
 
-		widget_scroll_update_thumbs(w, WIDX_MASTER_VOLUME);
+		widget_scroll_update_thumbs(w, WIDX_SOUND_VOLUME);
 		widget_scroll_update_thumbs(w, WIDX_MUSIC_VOLUME);
 
 		window_options_audio_widgets[WIDX_SOUND].type = WWT_DROPDOWN;
@@ -1436,7 +1437,7 @@ static void window_options_invalidate(rct_window *w)
 		window_options_audio_widgets[WIDX_AUDIO_FOCUS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
 		window_options_audio_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_options_audio_widgets[WIDX_MASTER_VOLUME].type = WWT_SCROLL;
+		window_options_audio_widgets[WIDX_SOUND_VOLUME].type = WWT_SCROLL;
 		window_options_audio_widgets[WIDX_MUSIC_VOLUME].type = WWT_SCROLL;
 		break;
 
@@ -1543,19 +1544,19 @@ static void window_options_update(rct_window *w)
 
 	rct_widget *widget;
 	if (w->page == WINDOW_OPTIONS_PAGE_AUDIO) {
-		widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
-		uint8 master_volume = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
+		widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
+		uint8 sound_volume = (uint8)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
 		widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-		uint8 music_volume = (uint8)(((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);
-		if (master_volume != gConfigSound.master_volume) {
-			gConfigSound.master_volume = master_volume;
+		uint8 ride_music_volume = (uint8)(((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);
+		if (sound_volume != gConfigSound.sound_volume) {
+			gConfigSound.sound_volume = sound_volume;
 			config_save_default();
 		}
-		if (music_volume != gConfigSound.music_volume) {
-			gConfigSound.music_volume = music_volume;
+		if (ride_music_volume != gConfigSound.ride_music_volume) {
+			gConfigSound.ride_music_volume = ride_music_volume;
 			config_save_default();
 		}
-		widget_invalidate(w, WIDX_MASTER_VOLUME);
+		widget_invalidate(w, WIDX_SOUND_VOLUME);
 		widget_invalidate(w, WIDX_MUSIC_VOLUME);
 	}
 }

@@ -227,7 +227,7 @@ void climate_update_sound()
 		return;
 	if (gGameSoundsOff)
 		return;
-	if (!gConfigSound.sound)
+	if (!gConfigSound.sound_enabled)
 		return;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		return;

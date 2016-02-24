@@ -211,6 +211,7 @@ void audio_start_title_music()
 	}
 
 	gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
+	Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
 }
 
 void audio_stop_ride_music()
@@ -301,8 +302,8 @@ void audio_close()
 }
 
 void audio_toggle_all_sounds(){
-	gConfigSound.sound = !gConfigSound.sound;
-	if (gConfigSound.sound)
+	gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+	if (gConfigSound.sound_enabled)
 		audio_unpause_sounds();
 	else {
 		audio_stop_title_music();

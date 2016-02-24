@@ -28,6 +28,7 @@ extern "C" {
 }
 #include "mixer.h"
 #include <cmath>
+#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 
 Mixer gMixer;
@@ -576,7 +577,12 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
-	if (channel.source && channel.source->Length() > 0 && !channel.done && gConfigSound.sound) {
+	// Do not mix channel if channel is a sound and sound is disabled
+	if (channel.group == MIXER_GROUP_SOUND && !gConfigSound.sound_enabled) {
+		return;
+	}
+
+	if (channel.source && channel.source->Length() > 0 && !channel.done) {
 		AudioFormat streamformat = channel.source->Format();
 		int loaded = 0;
 		SDL_AudioCVT cvt;
@@ -666,8 +672,18 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 
 				float volumeadjust = volume;
 				volumeadjust *= (gConfigSound.master_volume / 100.0f);
-				if (channel.group == MIXER_GROUP_MUSIC) {
-					volumeadjust *= (gConfigSound.music_volume / 100.0f);
+				switch (channel.group) {
+				case MIXER_GROUP_SOUND:
+					volumeadjust *= (gConfigSound.sound_volume / 100.0f);
+
+					// Cap sound volume on title screen so music is more audible
+					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+						volumeadjust = Math::Min(volumeadjust, 0.75f);
+					}
+					break;
+				case MIXER_GROUP_RIDE_MUSIC:
+					volumeadjust *= (gConfigSound.ride_music_volume / 100.0f);
+					break;
 				}
 				int startvolume = (int)(channel.oldvolume * volumeadjust);
 				int endvolume = (int)(channel.volume * volumeadjust);
@@ -803,7 +819,7 @@ void* Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate,
 {
 	if (gOpenRCT2Headless) return 0;
 
-	if (!gConfigSound.sound) {
+	if (!gConfigSound.sound_enabled) {
 		return 0;
 	}
 	if (id >= Util::CountOf(gMixer.css1sources)) {
@@ -887,9 +903,6 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 {
 	if (gOpenRCT2Headless) return 0;
 
-	if (!gConfigSound.sound) {
-		return 0;
-	}
 	if (streaming) {
 		const utf8 *filename = get_file_path(pathId);
 
@@ -903,7 +916,7 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 			if (!channel) {
 				delete source_samplestream;
 			} else {
-				channel->SetGroup(MIXER_GROUP_MUSIC);
+				channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
 			}
 			return channel;
 		} else {
@@ -914,7 +927,7 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 		if (gMixer.LoadMusic(pathId)) {
 			Channel* channel = gMixer.Play(*gMixer.musicsources[pathId], MIXER_LOOP_INFINITE, false, false);
 			if (channel) {
-				channel->SetGroup(MIXER_GROUP_MUSIC);
+				channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
 			}
 			return channel;
 		}
