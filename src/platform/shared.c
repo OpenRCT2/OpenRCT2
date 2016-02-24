@@ -470,7 +470,7 @@ void platform_process_messages()
 
 			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				platform_resize(e.window.data1, e.window.data2);
-			if (gConfigSound.audio_focus && gConfigSound.sound) {
+			if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
 				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
 					Mixer_SetVolume(1);
 				}

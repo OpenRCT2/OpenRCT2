@@ -5950,7 +5950,7 @@ void peep_update_crowd_noise()
 	if (gGameSoundsOff)
 		return;
 
-	if (!gConfigSound.sound)
+	if (!gConfigSound.sound_enabled)
 		return;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
@@ -6003,7 +6003,7 @@ void peep_update_crowd_noise()
 		if (!gCrowdSoundChannel) {
 			gCrowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
 			if (gCrowdSoundChannel) {
-				Mixer_Channel_SetGroup(gCrowdSoundChannel, MIXER_GROUP_NONE);
+				Mixer_Channel_SetGroup(gCrowdSoundChannel, MIXER_GROUP_SOUND);
 			}
 		}
 		if (gCrowdSoundChannel) {

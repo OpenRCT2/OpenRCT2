@@ -35,8 +35,9 @@ extern "C" {
 #define MIXER_LOOP_INFINITE		-1
 
 enum {
-	MIXER_GROUP_NONE,
-	MIXER_GROUP_MUSIC,
+	MIXER_GROUP_SOUND,
+	MIXER_GROUP_RIDE_MUSIC,
+	MIXER_GROUP_TITLE_MUSIC,
 };
 
 #ifdef __cplusplus
@@ -151,7 +152,7 @@ private:
 	bool deletesourceondone = false;
 	bool stopping = false;
 	int oldvolume = 0;
-	int group = MIXER_GROUP_NONE;
+	int group = MIXER_GROUP_SOUND;
 	SpeexResamplerState* resampler = nullptr;
 	Source* source = nullptr;
 };
