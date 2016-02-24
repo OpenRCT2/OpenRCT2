@@ -272,6 +272,39 @@ static void window_viewport_wheel_input(rct_window *w, int wheel)
 		window_zoom_out(w);
 }
 
+static bool window_other_wheel_input(rct_window *w, int widgetIndex, int wheel)
+{
+	// HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
+	//       this selective approch will have to do.
+
+	// Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
+	int previewWidgetIndex;
+	switch (w->classification) {
+	case WC_WATER:
+	case WC_CLEAR_SCENERY:
+	case WC_LAND_RIGHTS:
+		previewWidgetIndex = 3;
+		break;
+	case WC_LAND:
+		previewWidgetIndex = 5;
+		break;
+	case WC_MAP:
+		previewWidgetIndex = 13;
+		break;
+	default:
+		return false;
+	}
+
+	// Preview / Increment / Decrement
+	if (widgetIndex >= previewWidgetIndex && widgetIndex < previewWidgetIndex + 3) {
+		int buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
+		window_event_mouse_up_call(w, buttonWidgetIndex);
+		return true;
+	}
+
+	return false;
+}
+
 /**
  *
  *  rct2: 0x006E7868
@@ -323,6 +356,10 @@ static void window_all_wheel_input()
 					scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8)];
 					if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 						window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
+						return;
+					}
+				} else {
+					if (window_other_wheel_input(w, widgetIndex, wheel)) {
 						return;
 					}
 				}
