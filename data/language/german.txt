@@ -4039,6 +4039,28 @@ STR_5738    :Geschlossen, noch {COMMA16} Personen auf Fahrt
 STR_5739    :{WINDOW_COLOUR_2}Besucher auf Fahrt: {BLACK}{COMMA16}
 STR_5740    :Dauerhafte Marketingkampagnen
 STR_5741    :{SMALLFONT}{BLACK}Marketingkampagnen sind dauerhaft
+STR_5742    :Authentifizieren ...
+STR_5743    :Verbinden ...
+STR_5744    :Auflösen ...
+STR_5745    :Netzwerkdesynchronisation entdeckt
+STR_5746    :Getrennt
+STR_5747    :Getrennt: {STRING}
+STR_5748    :Gekickt
+STR_5749    :Verschwinde vom Server!
+STR_5750    :Verbindung geschlossen
+STR_5751    :Keine Daten
+STR_5752    :{OUTLINE}{RED}{STRING} hat das Spiel verlassen
+STR_5753    :{OUTLINE}{RED}{STRING} hat das Spiel verlassen ({STRING})
+STR_5754    :Unzulässiger Spielername
+STR_5755    :Inkompatible Softwareversion
+STR_5756    :Falsches Passwort
+STR_5757    :Server voll
+STR_5758    :{OUTLINE}{GREEN}{STRING} hat das Spiel betreten
+STR_5759    :Karte herunterladen ... ({INT32} / {INT32})
+STR_5760    :Hongkong-Dollar (HK$)
+STR_5761    :Neuer Taiwan-Dollar (NT$)
+STR_5762    :Chinesischer Yuan (CNY)
+STR_5763    :Alle Dateien
 
 #############
 # Scenarios #

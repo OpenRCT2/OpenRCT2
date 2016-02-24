@@ -11,8 +11,8 @@ STR_0006    :Montagnes russes junior
 STR_0007    :Chemin de fer miniature
 STR_0008    :Monorail
 STR_0009    :Mini montagnes russes suspendues
-STR_0010    :Boat Hire
-STR_0011    :Wooden Wild Mouse
+STR_0010    :Balade en bateau
+STR_0011    :Souris sauvage en bois
 STR_0012    :Steeplechase
 STR_0013    :Balade en voiture
 STR_0014    :Launched Freefall
@@ -32,12 +32,12 @@ STR_0027    :Dodgems
 STR_0028    :Bateau pirate
 STR_0029    :Swinging Inverter Ship
 STR_0030    :Stand de nourriture
-STR_0031    :Unknown Stall (1D)
+STR_0031    :Stand inconnu (1D)
 STR_0032    :Stand de boissons
-STR_0033    :Unknown Stall (1F)
+STR_0033    :Stand inconnu (1F)
 STR_0034    :Boutique
 STR_0035    :Manège
-STR_0036    :Unknown Stall (22)
+STR_0036    :Stand inconnu (22)
 STR_0037    :Kiosque d'information
 STR_0038    :Toilettes
 STR_0039    :Grande roue
@@ -860,7 +860,7 @@ STR_0853    :{WINDOW_COLOUR_2}Son et musique : Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Enregistrement sons additionnels : David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Représentation :Jacqui Lyons, Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Remerciements:
-STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, et John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
 STR_0860    :{WINDOW_COLOUR_2}
@@ -2490,7 +2490,7 @@ STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
 STR_2482    :{SMALLFONT}{BLACK}Bénéfice: {CURRENCY} par semaine,  Valeur du parc: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
-STR_2485    :Controls
+STR_2485    :Contrôles
 STR_2486    :General
 STR_2487    :Afficher le 'vrai' nom des visiteurs
 STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
@@ -2567,10 +2567,10 @@ STR_2558    :PgUp
 STR_2559    :PgDn
 STR_2560    :End
 STR_2561    :Home
-STR_2562    :Left
-STR_2563    :Up
-STR_2564    :Right
-STR_2565    :Down
+STR_2562    :Gauche
+STR_2563    :Haut
+STR_2564    :Droite
+STR_2565    :Bas
 STR_2566    :Select
 STR_2567    :Print
 STR_2568    :Execute
@@ -2674,7 +2674,7 @@ STR_2665    :???
 STR_2666    :???
 STR_2667    :???
 STR_2668    :???
-STR_2669    :NumLock
+STR_2669    :Verr num
 STR_2670    :Scroll
 STR_2671    :???
 STR_2672    :???
@@ -2713,9 +2713,9 @@ STR_2704    :Toutes les 30 minutes
 STR_2705    :Toutes les heures
 STR_2706    :Jamais
 STR_2707    :Open new window
-STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
-STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
+STR_2708    :{WINDOW_COLOUR_1}Etes vous sûr de vouloir écraser {STRINGID}?
+STR_2709    :Ecraser
+STR_2710    :Entrez le nom du fichier.
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2838,18 +2838,18 @@ STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
 STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride colour schemes award
 STR_2829    :{WINDOW_COLOUR_2}Most confusing park layout award
 STR_2830    :{WINDOW_COLOUR_2}Best gentle ride award
-STR_2831    :{TOPAZ}Your park has received an award for being 'The most untidy park in the country'!
-STR_2832    :{TOPAZ}Your park has received an award for being 'The tidiest park in the country'!
-STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best roller coasters'!
+STR_2831    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc le plus sale du pays'!
+STR_2832    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc le plus propre du pays'!
+STR_2833    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc ayant les meilleures attractions du pays'!
 STR_2834    :{TOPAZ}Your park has received an award for being 'The best value park in the country'!
-STR_2835    :{TOPAZ}Your park has received an award for being 'The most beautiful park in the country'!
+STR_2835    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc le plus beau du pays'!
 STR_2836    :{TOPAZ}Your park has received an award for being 'The worst value park in the country'!
-STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park in the country'!
-STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
-STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
-STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best toilet facilities in the country'!
-STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
+STR_2837    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc le plus sûr du pays'!
+STR_2838    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc ayant les meilleures employées'!
+STR_2839    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc ayant la meilleure nourriture du pays'!
+STR_2840    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc ayant la pire nourriture du pays'!
+STR_2841    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc ayant les meilleures toilettes du pays'!
+STR_2842    :{TOPAZ}Votre parc a reçu un prix pour être 'Le parc le plus décevant du pays'!
 STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
 STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
 STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of colour schemes'!
@@ -2998,7 +2998,7 @@ STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
 STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
 STR_2989    :{SMALLFONT}{BLACK}Select main colour
 STR_2990    :{SMALLFONT}{BLACK}Select text colour
-STR_2991    :Sign
+STR_2991    :Panneau
 STR_2992    :Sign text
 STR_2993    :Enter new text for this sign:
 STR_2994    :{SMALLFONT}{BLACK}Change text on sign
@@ -3061,14 +3061,14 @@ STR_3050    :Golf hole B
 STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
-STR_3054    :Loading...
+STR_3054    :Chargement...
 STR_3055    :Blanc
 STR_3056    :Transparent
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
-STR_3058    :Brick walls
-STR_3059    :Hedges
-STR_3060    :Ice blocks
-STR_3061    :Wooden fences
+STR_3058    :Mur de briques
+STR_3059    :Haies
+STR_3060    :Bloques de glace
+STR_3061    :Clôtures en bois
 STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
 STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
 STR_3064    :Parcs débutants
@@ -3293,9 +3293,9 @@ STR_3282    :{SMALLFONT}{BLACK}Choisir objectif et nom du parc
 STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
 STR_3284    :Sélection des objectifs
 STR_3285    :Preserved Rides
-STR_3286    :{SMALLFONT}{BLACK}Selecter un objectif pour ce scénario
+STR_3286    :{SMALLFONT}{BLACK}Selectionner un objectif pour ce scénario
 STR_3287    :{WINDOW_COLOUR_2}Objectif:
-STR_3288    :{SMALLFONT}{BLACK}Selecter climat
+STR_3288    :{SMALLFONT}{BLACK}Selectionner climat
 STR_3289    :{WINDOW_COLOUR_2}Climat:
 STR_3290    :Frais et humide
 STR_3291    :Chaud
@@ -3321,7 +3321,7 @@ STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
 STR_3313    :Nom du scénario:
-STR_3314    :Enter name for scenario:
+STR_3314    :Entrez un nom pour le scénario:
 STR_3315    :Park/Scenario Details
 STR_3316    :Décrire ce scénario:
 STR_3317    :Pas de détails
@@ -3478,11 +3478,11 @@ STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
 STR_5141    :Disable all breakdowns
-STR_5142    :Normal Speed
-STR_5143    :Quick Speed
-STR_5144    :Fast Speed
-STR_5145    :Turbo Speed
-STR_5146    :Hyper Speed
+STR_5142    :Vitesse Normale
+STR_5143    :Vitesse Rapide
+STR_5144    :Vitesse Très Rapide
+STR_5145    :Vitesse Turbo
+STR_5146    :Vitesse Hyper
 STR_5147    :Cheats
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Open the cheats window
@@ -3499,9 +3499,9 @@ STR_5157    :Unlock all prices
 STR_5158    :Quit to menu
 STR_5159    :Quitter OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, an {POP16}{COMMA16}
-STR_5161    :Date Format:
-STR_5162    :Day/Month/Year
-STR_5163    :Month/Day/Year
+STR_5161    :Format de date:
+STR_5162    :Jour/Mois/Année
+STR_5163    :Mois/Jour/Année
 STR_5164    :Twitch Channel name
 STR_5165    :Name peeps after followers
 STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
@@ -3521,22 +3521,22 @@ STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
 STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
 STR_5182    :{INT32}
-STR_5183    :Base height
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
-STR_5185    :Water level
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5183    :Hauteur de base
+STR_5184    :Entrez une hauter de base entre {COMMA16} et {COMMA16}
+STR_5185    :Niveau de l'eau
+STR_5186    :Entrez un niveau d'eau entre {COMMA16} et {COMMA16} 
 STR_5187    :Finances
-STR_5188    :New Campaign
-STR_5189    :Research
-STR_5190    :Map
+STR_5188    :Nouvelle campagne
+STR_5189    :Recherche
+STR_5190    :Carte
 STR_5191    :Viewport
-STR_5192    :Recent News
-STR_5193    :Land
-STR_5194    :Water
+STR_5192    :Nouvelles récentes
+STR_5193    :Terre
+STR_5194    :Eau
 STR_5195    :Clear Scenery
 STR_5196    :Land Rights
 STR_5197    :Scenery
-STR_5198    :Footpath
+STR_5198    :Sentier
 STR_5199    :Ride Construction
 STR_5200    :Track Design Place
 STR_5201    :New Ride
@@ -3547,7 +3547,7 @@ STR_5205    :Visiteur
 STR_5206    :Liste des visiteurs
 STR_5207    :Personnel
 STR_5208    :Liste personnel
-STR_5209    :Banner
+STR_5209    :Bannière
 STR_5210    :Object Selection
 STR_5211    :Invention List
 STR_5212    :Scenario Options
@@ -3560,7 +3560,7 @@ STR_5218    :Thèmes
 STR_5219    :Options
 STR_5220    :Keyboard Shortcuts
 STR_5221    :Change Keyboard Shortcut
-STR_5222    :Load/Save
+STR_5222    :Charger/Sauvegarder
 STR_5223    :Save Prompt
 STR_5224    :Demolish Ride Prompt
 STR_5225    :Fire Staff Prompt
@@ -3574,14 +3574,14 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
+STR_5236    :Fenêtre:
 STR_5237    :Palette:
-STR_5238    :Current Theme:
-STR_5239    :Duplicate
-STR_5240    :Enter a name for the theme
+STR_5238    :Thème Actuel:
+STR_5239    :Dupliquer
+STR_5240    :Entrez un nom pour le thème
 STR_5241    :Can't change this theme
 STR_5242    :Theme name already exists
-STR_5243    :Invalid characters used
+STR_5243    :Caractère invalide utilisé
 STR_5244    :Thèmes
 STR_5245    :Top Toolbar
 STR_5246    :Bottom Toolbar
@@ -3592,7 +3592,7 @@ STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
-STR_5254    :Create
+STR_5254    :Créer
 STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
 STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
@@ -3616,8 +3616,8 @@ STR_5274    :{SMALLFONT}{BLACK}Footpaths
 STR_5275    :Search for Objects
 STR_5276    :Enter the name of an object to search for
 STR_5277    :Clear
-STR_5278    :Sandbox mode
-STR_5279    :Sandbox mode off
+STR_5278    :Mode bac à sable
+STR_5279    :Mode bac à sable désactivé
 STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
 STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1 Ride Open/Close Lights
@@ -3648,38 +3648,38 @@ STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
-STR_5310    :Random
+STR_5310    :Aléatoire
 STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Show console
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :Grass
-STR_5316    :Sand
-STR_5317    :Dirt
-STR_5318    :Rock
-STR_5319    :Martian
-STR_5320    :Checkerboard
-STR_5321    :Grass clumps
-STR_5322    :Ice
-STR_5323    :Grid (red)
-STR_5324    :Grid (yellow)
-STR_5325    :Grid (blue)
-STR_5326    :Grid (green)
-STR_5327    :Sand (dark)
-STR_5328    :Sand (light)
-STR_5329    :Checkerboard (inverted)
-STR_5330    :Underground view
-STR_5331    :Rock
-STR_5332    :Wood (red)
-STR_5333    :Wood (black)
-STR_5334    :Ice
-STR_5335    :Ride entrance
-STR_5336    :Ride exit
-STR_5337    :Park entrance
+STR_5315    :Herbe
+STR_5316    :Sable
+STR_5317    :Boue
+STR_5318    :Pierre
+STR_5319    :Martien
+STR_5320    :Damier
+STR_5321    :Touffes d'herbe
+STR_5322    :Glace
+STR_5323    :Grille (rouge)
+STR_5324    :Grille (jaune)
+STR_5325    :Grille (bleu)
+STR_5326    :Grille (vert)
+STR_5327    :Sable (sombre)
+STR_5328    :Sable (clair)
+STR_5329    :Damier (inversé)
+STR_5330    :Vue souterraine
+STR_5331    :Pierre
+STR_5332    :Bois (rouge)
+STR_5333    :Bois (noir)
+STR_5334    :Glace
+STR_5335    :Entrée du manège
+STR_5336    :Sortie du manège
+STR_5337    :Entrée du parc
 STR_5338    :Element type
 STR_5339    :Base height
 STR_5340    :Clearance height
-STR_5341    :Flags
+STR_5341    :Drapeaux
 STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
@@ -3701,13 +3701,13 @@ STR_5359    :Remove guests
 STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
 STR_5361    :Give all guests:
 STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
-STR_5363    :More than 1
-STR_5364    :Less than 15
+STR_5363    :Plus d'1
+STR_5364    :Moins de 15
 STR_5365    :{BLACK}Vit. de personnel:
 STR_5366    :Normal
 STR_5367    :Rapide
 STR_5368    :Reset crash status
-STR_5369    :Park parameters...
+STR_5369    :Paramètres du parc...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
@@ -3745,37 +3745,37 @@ STR_5403    :There may be no Load or Wait command or a save may be invalid
 STR_5404    :Name already exists
 STR_5405    :Enter a name for the save
 STR_5406    :Enter a name for the title sequence
-STR_5407    :Add
-STR_5408    :Remove
-STR_5409    :Insert
-STR_5410    :Edit
-STR_5411    :Reload
-STR_5412    :Skip to
-STR_5413    :Load
+STR_5407    :Ajouter
+STR_5408    :Retirer
+STR_5409    :Insérer
+STR_5410    :Editer
+STR_5411    :Recharger
+STR_5412    :Passer à
+STR_5413    :Charger
 STR_5414    :Load{MOVE_X}{87}Six Flags Magic Mountain.SC6
-STR_5415    :Load{MOVE_X}{87}{STRING}
-STR_5416    :Load{MOVE_X}{87}No save selected
+STR_5415    :Charger{MOVE_X}{87}{STRING}
+STR_5416    :Charger{MOVE_X}{87}Aucune sauvegarde séléctionné
 STR_5417    :Location
 STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Rotate
-STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Wait
-STR_5424    :Wait{MOVE_X}{87}{COMMA16}
-STR_5425    :Restart
+STR_5419    :Tourner
+STR_5420    :Tourner{MOVE_X}{87}{COMMA16}
+STR_5421    :Zoomer
+STR_5422    :Zoomer{MOVE_X}{87}{COMMA16}
+STR_5423    :Attendre
+STR_5424    :Attendre{MOVE_X}{87}{COMMA16}
+STR_5425    :Redémarrer
 STR_5426    :End
-STR_5427    :Coordinates:
+STR_5427    :Coordonnées:
 STR_5428    :Anticlockwise rotations:
-STR_5429    :Zoom level:
+STR_5429    :Niveau de zoom:
 STR_5430    :Seconds to wait:
 STR_5431    :Save to load:
-STR_5432    :Command:
+STR_5432    :Commande:
 STR_5433    :Title Sequences
 STR_5434    :Command Editor
-STR_5435    :Rename save
+STR_5435    :Renommer sauvegarde
 STR_5436    :Edit Title Sequences...
-STR_5437    :No save selected
+STR_5437    :Aucune sauvegarde sélectionné
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimise fullscreen on focus loss
@@ -3792,26 +3792,26 @@ STR_5450    :Increase game speed
 STR_5451    :Open cheats window
 STR_5452    :Toggle visibility of toolbars
 STR_5453    :Select another ride
-STR_5454    :Uncap FPS
-STR_5455    :Enable sandbox mode
+STR_5454    :Déplafonner les FPS
+STR_5455    :Activer mode bac à sable
 STR_5456    :Disable clearance checks
 STR_5457    :Disable support limits
-STR_5458    :Rotate clockwise
-STR_5459    :Rotate anti-clockwise
+STR_5458    :Pivoter dans le sens horaire
+STR_5459    :Pivoter dans le sens anti-horaire
 STR_5460    :Rotate view anti-clockwise
 STR_5461    :Set guests' parameters
 STR_5462    :{CURRENCY}
-STR_5463    :Goal: Have fun!
+STR_5463    :But: S'amuser!
 STR_5464    :General
-STR_5465    :Climate
+STR_5465    :Climat
 STR_5466    :Personnel
 STR_5467    :ALT + 
 STR_5468    :Messages récents
-STR_5469    :Scroll map up
-STR_5470    :Scroll map left
-STR_5471    :Scroll map down
-STR_5472    :Scroll map right
-STR_5473    :Cycle day / night
+STR_5469    :Défiller la carte en haut
+STR_5470    :Défiller la carte à gauche
+STR_5471    :Défiller la carte en bas
+STR_5472    :Défiller la carte  à droite
+STR_5473    :Cycle jour / nuit
 STR_5474    :Display text on banners in upper case
 STR_5475    :{COMMA16} semaines
 STR_5476    :Matériel
