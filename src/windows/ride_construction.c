@@ -2693,6 +2693,9 @@ static void window_ride_construction_update_enabled_track_pieces()
 	rct_ride *ride = get_ride(_currentRideIndex);
 	rct_ride_type *rideEntry = get_ride_entry_by_ride(ride);
 
+	if (rideEntry == NULL)
+		return;
+
 	int rideType = _currentTrackCovered & 2 ? RCT2_ADDRESS(0x0097D4F5, uint8)[ride->type * 8] : ride->type;
 	_enabledRidePiecesA = rideEntry->enabledTrackPiecesA & RCT2_ADDRESS(0x01357444, uint32)[rideType];
 	_enabledRidePiecesB = rideEntry->enabledTrackPiecesB & RCT2_ADDRESS(0x01357644, uint32)[rideType];

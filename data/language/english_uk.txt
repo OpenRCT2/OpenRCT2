@@ -4068,6 +4068,8 @@ STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
 STR_5762    :Chinese Yuan (CN{YEN})
 STR_5763    :All files
+STR_5764    :Invalid ride type
+STR_5765    :Cannot edit rides of invalid type
 
 #############
 # Scenarios #

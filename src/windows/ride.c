@@ -1159,7 +1159,10 @@ void window_ride_disable_tabs(rct_window *w)
 
 	rct_ride_type *type = get_ride_entry(ride->subtype);
 
-	if ((type->flags & RIDE_ENTRY_FLAG_19) != 0)
+	if (type == NULL) {
+		disabled_tabs |= 1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_5 | 1 << WIDX_TAB_6
+					   | 1 << WIDX_TAB_7 | 1 << WIDX_TAB_8 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10;
+	} else if ((type->flags & RIDE_ENTRY_FLAG_19) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
 
 	w->disabled_widgets = disabled_tabs;
@@ -3360,6 +3363,9 @@ static void window_ride_maintenance_mousedown(int widgetIndex, rct_window *w, rc
 
 	ride = get_ride(w->number);
 	ride_type = get_ride_entry(ride->subtype);
+	if (ride_type == NULL) {
+		return;
+	}
 
 	switch (widgetIndex) {
 	case WIDX_INSPECTION_INTERVAL_DROPDOWN:

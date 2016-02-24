@@ -841,6 +841,11 @@ void reset_all_ride_build_dates()
 
 static int ride_check_if_construction_allowed(rct_ride *ride)
 {
+	rct_ride_type *rideType = get_ride_entry_by_ride(ride);
+	if (rideType == NULL) {
+		window_error_open(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE);
+		return 0;
+	}
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
@@ -1684,13 +1689,15 @@ int ride_modify(rct_xy_element *input)
 	int rideIndex, x, y, z, direction, type;
 	rct_xy_element mapElement, endOfTrackElement;
 	rct_ride *ride;
+	rct_ride_type *rideType;
 	rct_window *constructionWindow;
 
 	mapElement = *input;
 	rideIndex = mapElement.element->properties.track.ride_index;
 	ride = get_ride(rideIndex);
+	rideType = get_ride_entry(rideIndex);
 
-	if (!ride_check_if_construction_allowed(ride))
+	if ((ride == NULL) || (rideType == NULL) || !ride_check_if_construction_allowed(ride))
 		return 0;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
@@ -4940,7 +4947,10 @@ void loc_6B51C0(int rideIndex)
 
 		ride_try_get_origin_element(rideIndex, &trackElement);
 		ride_find_track_gap(&trackElement, &trackElement);
-		ride_modify(&trackElement);
+		int ok = ride_modify(&trackElement);
+		if (ok == 0) {
+			return;
+		}
 
 		w = window_find_by_class(WC_RIDE_CONSTRUCTION);
 		if (w != NULL)
