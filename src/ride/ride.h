@@ -44,8 +44,13 @@ typedef struct {
  * Couples a ride type and subtype together.
  */
 typedef struct {
-	uint8 type;
-	uint8 entry_index;
+	union {
+		struct {
+			uint8 type;
+			uint8 entry_index;
+		};
+		uint16 ride_type_and_entry;
+	};
 } ride_list_item;
 
 typedef struct {

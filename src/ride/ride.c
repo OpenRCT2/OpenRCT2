@@ -883,7 +883,7 @@ static rct_window *ride_create_or_find_construction_window(int rideIndex)
 int ride_create_ride(ride_list_item listItem)
 {
 	int eax, ebx, ecx, edx, esi, edi, ebp;
-	edx = *((uint16*)&listItem);
+	edx = listItem.ride_type_and_entry;
 	eax = 0;
 	ecx = 0;
 	ebx = GAME_COMMAND_FLAG_APPLY;
@@ -4355,7 +4355,7 @@ rct_vehicle *vehicle_create_car(
 		vehicle->track_x = x;
 		vehicle->track_y = y;
 		vehicle->track_z = z;
-		vehicle->current_station = (mapElement->properties.track.sequence & 0x70) << 4;
+		vehicle->current_station = map_get_station(mapElement);
 		
 		z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
 

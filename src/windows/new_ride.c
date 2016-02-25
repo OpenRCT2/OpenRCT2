@@ -693,7 +693,7 @@ static void window_new_ride_scrollmousedown(rct_window *w, int scrollIndex, int 
 		return;
 
 	RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, ride_list_item)[_window_new_ride_current_tab] = item;
-	w->new_ride.selected_ride_id = *((sint16*)&item);
+	w->new_ride.selected_ride_id = item.ride_type_and_entry;
 
 	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
 	w->new_ride.selected_ride_countdown = 8;
@@ -713,10 +713,10 @@ static void window_new_ride_scrollmouseover(rct_window *w, int scrollIndex, int 
 
 	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
 
-	if (w->new_ride.highlighted_ride_id == *((sint16*)&item))
+	if (w->new_ride.highlighted_ride_id == item.ride_type_and_entry)
 		return;
 
-	w->new_ride.highlighted_ride_id = *((sint16*)&item);
+	w->new_ride.highlighted_ride_id = item.ride_type_and_entry;
 	RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, ride_list_item)[_window_new_ride_current_tab] = item;
 	window_invalidate(w);
 }
@@ -765,7 +765,7 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_new_ride_draw_tab_images(dpi, w);
 
 	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
-		ride_list_item item = *((ride_list_item*)&w->new_ride.highlighted_ride_id);
+		ride_list_item item = { .ride_type_and_entry = w->new_ride.highlighted_ride_id };
 		if (item.type != 255 || item.entry_index != 255)
 			window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
 	} else {
@@ -934,7 +934,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
  */
 static void window_new_ride_select(rct_window *w)
 {
-	ride_list_item item = *((ride_list_item*)&w->new_ride.selected_ride_id);
+	ride_list_item item = { .ride_type_and_entry = w->new_ride.selected_ride_id };
 	if (item.type == 255)
 		return;
 
