@@ -3943,7 +3943,7 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 	newMapElement->base_height = z;
 	newMapElement->flags = flags;
 	newMapElement->clearance_height = z;
-	*((uint32*)&newMapElement->properties) = 0;
+	memset(&newMapElement->properties, 0, sizeof(newMapElement->properties));
 	newMapElement++;
 
 	// Insert rest of map elements above insert height
