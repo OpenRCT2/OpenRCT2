@@ -951,6 +951,15 @@ static rct_window_event_list *window_ride_page_events[] = {
 
 #pragma endregion
 
+// Cached overall view for each ride
+// (Re)calculated when the ride window is opened
+typedef struct ride_overall_view_t {
+	sint16 x, y, z;
+	uint8 zoom;
+} ride_overall_view;
+
+ride_overall_view ride_overall_views[MAX_RIDES] = {0};
+
 const int window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
 const int window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
 
@@ -1168,6 +1177,53 @@ void window_ride_disable_tabs(rct_window *w)
 	w->disabled_widgets = disabled_tabs;
 }
 
+static void window_ride_update_overall_view(uint8 ride_index) {
+	// Calculate x, y, z bounds of the entire ride using its track elements
+	map_element_iterator it;
+
+	map_element_iterator_begin(&it);
+
+	int minx = INT_MAX, miny = INT_MAX, minz = INT_MAX;
+	int maxx = INT_MIN, maxy = INT_MIN, maxz = INT_MIN;
+
+	while (map_element_iterator_next(&it)) {
+		if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
+			continue;
+
+		if (it.element->properties.track.ride_index != ride_index)
+			continue;
+
+		int x = it.x * 32;
+		int y = it.y * 32;
+		int z1 = it.element->base_height * 8;
+		int z2 = it.element->clearance_height * 8;
+
+		minx = min(minx, x);
+		miny = min(miny, y);
+		minz = min(minz, z1);
+
+		maxx = max(maxx, x);
+		maxy = max(maxy, y);
+		maxz = max(maxz, z2);
+	}
+
+	ride_overall_view *view = &ride_overall_views[ride_index];
+	view->x = (minx + maxx) / 2;
+	view->y = (miny + maxy) / 2;
+	view->z = (minz + maxz) / 2 + 8;
+
+	// Calculate size to determine from how far away to view the ride
+	int dx = maxx - minx;
+	int dy = maxy - miny;
+	int dz = maxz - minz;
+
+	int size = (int) sqrt(dx*dx + dy*dy + dz*dz);
+
+	// Each farther zoom level shows twice as many tiles (log)
+	// Appropriate zoom is lowered by one to fill the entire view with the ride
+	view->zoom = (uint8) max(0, ceil(log(size / 80)) - 1);
+}
+
 /**
  *
  *  rct2: 0x006AEAB4
@@ -1195,6 +1251,8 @@ rct_window *window_ride_open(int rideIndex)
 	w->min_height = 180;
 	w->max_width = 500;
 	w->max_height = 450;
+
+	window_ride_update_overall_view((uint8) rideIndex);
 
 	ride = get_ride(rideIndex);
 	numSubTypes = 0;
@@ -1527,15 +1585,15 @@ static void window_ride_init_viewport(rct_window *w)
 		if (eax > 0){
 			w->viewport_focus_coordinates.var_480 = 0;
 		}
-		focus.coordinate.x = (ride->overall_view & 0xFF) << 5;
-		focus.coordinate.y = (ride->overall_view & 0xFF00) >> 3;
-		focus.coordinate.x += 16;
-		focus.coordinate.y += 16;
-		focus.coordinate.z = map_element_height(focus.coordinate.x, focus.coordinate.y) & 0xFFFF;
+
+		ride_overall_view *view = &ride_overall_views[w->number];
+
+		focus.coordinate.x = view->x;
+		focus.coordinate.y = view->y;
+		focus.coordinate.z = view->z;
+		focus.coordinate.zoom = view->zoom;
+
 		focus.sprite.type |= 0x40;
-		focus.coordinate.zoom = 1;
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
-			focus.coordinate.zoom = 0;
 	}
 	focus.coordinate.var_480 = w->viewport_focus_coordinates.var_480;
 
