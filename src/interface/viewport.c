@@ -1080,8 +1080,8 @@ int sub_98198C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
  */
 void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 {
-	rct_ride_type *rideEntry;
-	const rct_ride_type_vehicle *vehicleEntry;
+	rct_ride_entry *rideEntry;
+	const rct_ride_entry_vehicle *vehicleEntry;
 
 	int x = vehicle->x;
 	int y = vehicle->y;
@@ -1108,7 +1108,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 		}
 	}
 
-	uint32 rct2VehiclePtrFormat = ((uint32)vehicleEntry) - offsetof(rct_ride_type, vehicles);
+	uint32 rct2VehiclePtrFormat = ((uint32)vehicleEntry) - offsetof(rct_ride_entry, vehicles);
 	RCT2_GLOBAL(0x00F64DFC, uint32) = rct2VehiclePtrFormat;
 	switch (vehicleEntry->car_visual) {
 	case VEHICLE_VISUAL_DEFAULT:						RCT2_CALLPROC_X(0x006D45F8, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;

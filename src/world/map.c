@@ -1676,7 +1676,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 				continue;
 			int rideIndex = mapElement->properties.track.ride_index;
-			int maxHeight = ride_get_entry(get_ride(rideIndex))->max_height;
+			int maxHeight = get_ride_entry_by_ride(get_ride(rideIndex))->max_height;
 			if(maxHeight == 0)
 				maxHeight = RCT2_GLOBAL(0x97D218 + 8 * get_ride(rideIndex)->type, uint8);
 			int zDelta = mapElement->clearance_height - height;
@@ -3078,7 +3078,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		return false;
 	}
 
-	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
+	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_16) {
 		return false;
 	}

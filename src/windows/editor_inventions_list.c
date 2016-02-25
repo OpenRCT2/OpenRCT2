@@ -195,13 +195,13 @@ static void research_rides_setup(){
 		uint8 ride_base_type = (research->entryIndex >> 8) & 0xFF;
 
 		uint8 object_index = research->entryIndex & 0xFF;
-		rct_ride_type* ride_entry = get_ride_entry(object_index);
+		rct_ride_entry* ride_entry = get_ride_entry(object_index);
 
 		uint8 master_found = 0;
 		if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)){
 
 			for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++){
-				rct_ride_type* master_ride = get_ride_entry(rideType);
+				rct_ride_entry* master_ride = get_ride_entry(rideType);
 				if (master_ride == NULL || (uint32)master_ride == 0xFFFFFFFF)
 					continue;
 
@@ -305,7 +305,7 @@ static void sub_685A79()
  */
 static rct_string_id research_item_get_name(uint32 researchItem)
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_scenery_set_entry *sceneryEntry;
 
 	if (researchItem < 0x10000) {
@@ -317,7 +317,7 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 	}
 
 	rideEntry = get_ride_entry(researchItem & 0xFF);
-	if (rideEntry == NULL || rideEntry == (rct_ride_type*)0xFFFFFFFF)
+	if (rideEntry == NULL || rideEntry == (rct_ride_entry*)0xFFFFFFFF)
 		return 0;
 
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)

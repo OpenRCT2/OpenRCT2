@@ -168,7 +168,7 @@ static void research_next_design()
 void research_finish_item(sint32 entryIndex)
 {
 	int i, ebx, base_ride_type, rideEntryIndex, subSceneryEntryIndex;
-	rct_ride_type *rideEntry, *rideEntry2;
+	rct_ride_entry *rideEntry, *rideEntry2;
 	rct_scenery_set_entry *scenerySetEntry;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = entryIndex;
@@ -190,7 +190,7 @@ void research_finish_item(sint32 entryIndex)
 		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
 			for (i = 0; i < 128; i++) {
 				rideEntry2 = get_ride_entry(i);
-				if (rideEntry2 == (rct_ride_type*)-1)
+				if (rideEntry2 == (rct_ride_entry*)-1)
 					continue;
 				if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
 					continue;
@@ -363,7 +363,7 @@ void research_remove_non_separate_vehicle_types()
 			researchItem->entryIndex != RESEARCHED_ITEMS_END &&
 			researchItem->entryIndex >= 0x10000
 		) {
-			rct_ride_type *rideEntry = get_ride_entry(researchItem->entryIndex & 0xFF);
+			rct_ride_entry *rideEntry = get_ride_entry(researchItem->entryIndex & 0xFF);
 			if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
 				// Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
 				researchItem2 = researchItem - 1;
@@ -478,14 +478,14 @@ void research_insert(int researched, int entryIndex, int category)
  */
 void research_populate_list_random()
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_scenery_set_entry *scenerySetEntry;
 	int rideType, researched;
 
 	// Rides
 	for (int i = 0; i < 128; i++) {
 		rideEntry = get_ride_entry(i);
-		if (rideEntry == (rct_ride_type*)-1)
+		if (rideEntry == (rct_ride_entry*)-1)
 			continue;
 
 		researched = (scenario_rand() & 0xFF) > 128;
@@ -509,14 +509,14 @@ void research_populate_list_random()
 
 void research_populate_list_researched()
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_scenery_set_entry *scenerySetEntry;
 	int rideType;
 
 	// Rides
 	for (int i = 0; i < 128; i++) {
 		rideEntry = get_ride_entry(i);
-		if (rideEntry == (rct_ride_type*)-1)
+		if (rideEntry == (rct_ride_entry*)-1)
 			continue;
 
 		for (int j = 0; j < 3; j++) {

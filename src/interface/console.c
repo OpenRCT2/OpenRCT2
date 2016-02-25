@@ -780,7 +780,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 							reset_loaded_objects();
 							if (type == OBJECT_TYPE_RIDE) {
 								// Automatically research the ride so it's supported by the game.
-								rct_ride_type *rideEntry;
+								rct_ride_entry *rideEntry;
 								int rideType;
 
 								rideEntry = get_ride_entry(entryGroupIndex);

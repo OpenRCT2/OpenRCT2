@@ -187,7 +187,7 @@ bool marketing_is_campaign_type_applicable(int campaignType)
 {
 	int i;
 	rct_ride *ride;
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 
 	switch (campaignType) {
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:

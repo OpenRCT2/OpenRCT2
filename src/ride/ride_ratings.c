@@ -780,7 +780,7 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
  */
 static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings)
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 
 	rideEntry = get_ride_entry(ride->subtype);
 
@@ -916,7 +916,7 @@ static int sub_65E72D(rct_ride *ride)
 	}
 
 	int dh = numShelteredEighths;
-	rct_ride_type *rideType = get_ride_entry(ride->subtype);
+	rct_ride_entry *rideType = get_ride_entry(ride->subtype);
 	if (rideType->flags & RIDE_ENTRY_FLAG_COVERED_RIDE)
 		numShelteredEighths = 7;
 

@@ -732,7 +732,7 @@ void remove_selected_objects_from_research(rct_object_entry* installedObject){
 		return;
 
 	if (entry_type == OBJECT_TYPE_RIDE){
-		rct_ride_type* rideEntry = (rct_ride_type*)object_entry_groups[entry_type].chunks[entry_index];
+		rct_ride_entry* rideEntry = (rct_ride_entry*)object_entry_groups[entry_type].chunks[entry_index];
 		research_remove(entry_index | rideEntry->ride_type[0] << 8 | 0x10000);
 		research_remove(entry_index | rideEntry->ride_type[1] << 8 | 0x10000);
 		research_remove(entry_index | rideEntry->ride_type[2] << 8 | 0x10000);
@@ -1416,7 +1416,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		y = w->y + w->height - 3 - 12 - 14 - 14;
 
-		rct_ride_type *rideType = (rct_ride_type*)stex_entry;
+		rct_ride_entry *rideType = (rct_ride_entry*)stex_entry;
 		for (int i = 0; i < 3; i++) {
 			if (rideType->ride_type[i] == 255)
 				continue;
@@ -1956,7 +1956,7 @@ static void window_editor_object_selection_manage_tracks()
 
 	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
-	rct_ride_type* ride_entry = get_ride_entry(entry_index);
+	rct_ride_entry* ride_entry = get_ride_entry(entry_index);
 	uint8* ride_type_array = &ride_entry->ride_type[0];
 
 	int ride_type;

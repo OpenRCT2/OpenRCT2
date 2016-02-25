@@ -96,7 +96,7 @@ typedef struct {
 	uint8 rear_vehicle;						// 0x017
 	uint8 third_vehicle;					// 0x018
 	uint8 pad_019;
-	rct_ride_type_vehicle vehicles[4];		// 0x1A
+	rct_ride_entry_vehicle vehicles[4];		// 0x1A
 	vehicle_colour_preset_list *vehicle_preset_list;	// 0x1AE
 	sint8 excitement_multipler;				// 0x1B2
 	sint8 intensity_multipler;				// 0x1B3
@@ -112,7 +112,7 @@ typedef struct {
 	uint8 category[2];									// 0x1BE
 	uint8 shop_item;									// 0x1C0
 	uint8 shop_item_secondary;							// 0x1C1
-} rct_ride_type;
+} rct_ride_entry;
 
 /**
  * Ride structure.
@@ -855,7 +855,7 @@ enum {
 
 /** Helper macros until rides are stored in this module. */
 rct_ride *get_ride(int index);
-rct_ride_type *get_ride_entry(int index);
+rct_ride_entry *get_ride_entry(int index);
 rct_ride_measurement *get_ride_measurement(int index);
 
 /**
@@ -937,7 +937,7 @@ int ride_get_total_time(rct_ride *ride);
 int ride_can_have_multiple_circuits(rct_ride *ride);
 track_colour ride_get_track_colour(rct_ride *ride, int colourScheme);
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex);
-rct_ride_type *ride_get_entry(rct_ride *ride);
+rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride);
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType);
 void reset_type_to_ride_entry_index_map();
 void ride_measurement_clear(rct_ride *ride);
@@ -970,7 +970,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 void ride_clear_for_construction(int rideIndex);
-void set_vehicle_type_image_max_sizes(rct_ride_type_vehicle* vehicle_type, int num_images);
+void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int num_images);
 void invalidate_test_results(int rideIndex);
 
 void ride_select_next_section();

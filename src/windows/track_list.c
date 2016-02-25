@@ -337,7 +337,7 @@ static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string
  */
 static void window_track_list_invalidate(rct_window *w)
 {
-	rct_ride_type *entry;
+	rct_ride_entry *entry;
 	rct_string_id stringId;
 
 	colour_scheme_update(w);
