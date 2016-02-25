@@ -59,15 +59,15 @@ STR_0054    :Montaña Rusa de Madera
 STR_0055    :Montaña de fricción lateral
 STR_0056    :Ratón Loco
 STR_0057    :Montaña Rusa Multi-Dimensión
-STR_0058    :Unknown Ride (38)
+STR_0058    :Atracc. Desconocida (38)
 STR_0059    :Montaña Rusa Volante
-STR_0060    :Unknown Ride (3A)
+STR_0060    :Atracc. Desconocida (3A)
 STR_0061    :Danza de Virginia
 STR_0062    :Botes de Salpicadura
 STR_0063    :Mini Helicópteros
 STR_0064    :Montaña Rusa Fija
 STR_0065    :Monorraíl suspendido
-STR_0066    :Unknown Ride (40)
+STR_0066    :Atracc. Desconocida (40)
 STR_0067    :Montaña Rusa Inversora
 STR_0068    :Mt. Rusa Tornado Medio
 STR_0069    :Mini Golf
@@ -83,16 +83,16 @@ STR_0078    :Horquilla invertida
 STR_0079    :Alfombra Mágica
 STR_0080    :Viaje Submarino
 STR_0081    :Balsas de Río
-STR_0082    :Unknown Ride (50)
+STR_0082    :Atracc. Desconocida (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
+STR_0084    :Atracc. Desconocida (52)
+STR_0085    :Atracc. Desconocida (53)
+STR_0086    :Atracc. Desconocida (54)
+STR_0087    :Atracc. Desconocida (55)
 STR_0088    :Montaña Rusa Impulso Inverso
 STR_0089    :Mini Montaña Rusa
 STR_0090    :Trenes Mineros
-STR_0091    :Unknown Ride (59)
+STR_0091    :Atracc. Desconocida (59)
 STR_0092    :Montaña Rusa Impulso MLI
 STR_0093    :
 STR_0094    :
@@ -779,7 +779,7 @@ STR_0774    :Parque sin nombre{POP16}{POP16}
 STR_0775    :Parque sin nombre{POP16}{POP16}
 STR_0776    :Parque sin nombre{POP16}{POP16}
 STR_0777    :Parque sin nombre{POP16}{POP16}
-STR_0778    :Sign
+STR_0778    :Letrero
 STR_0779    :1
 STR_0780    :2
 STR_0781    :3
@@ -951,10 +951,10 @@ STR_0945    :No guardar
 STR_0946    :Cancelar
 STR_0947    :¿Guardar antes de cargar nuevo juego?
 STR_0948    :¿Guardar antes de salir?
-STR_0949    :Save this before quitting ?
+STR_0949    :¿Guardar antes de salir?
 STR_0950    :Cargar juego
 STR_0951    :Salir del juego
-STR_0952    :Quit Game
+STR_0952    :Salir del juego
 STR_0953    :Cargar paisaje
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Angulo de rotación de asciento en este tramo
@@ -1367,8 +1367,8 @@ STR_1361    :No puedes cambiar la velocidad...
 STR_1362    :No puedes cambiar la velocidad de lanzamiento...
 STR_1363    :¡Muy alto para los soportes!
 STR_1364    :¡Soportes de la vía anterior no se pueden extender más!
-STR_1365    :Girar en-línea (izquierda)
-STR_1366    :Girar en-línea (derecha)
+STR_1365    :Giro en-línea (izquierda)
+STR_1366    :Giro en-línea (derecha)
 STR_1367    :Media vuelta
 STR_1368    :Medio Sacacorcho (izquierda)
 STR_1369    :Medio Sacacorcho (derecha)
@@ -1407,11 +1407,11 @@ STR_1401    :Salida
 STR_1402    :{SMALLFONT}{BLACK}Construir o mover entrada de atracción/juego
 STR_1403    :{SMALLFONT}{BLACK}Construir o mover salida de atracción/juego
 STR_1404    :{SMALLFONT}{BLACK}Rotar 90{DEGREE}
-STR_1405    :{SMALLFONT}{BLACK}Mirror image
+STR_1405    :{SMALLFONT}{BLACK}Rotar en Espejo
 STR_1406    :{SMALLFONT}{BLACK}Muestra u oculta decorado (si se encuentra disponible)
 STR_1407    :{WINDOW_COLOUR_2}Construye esto...
 STR_1408    :{WINDOW_COLOUR_2}Precio: {BLACK}{CURRENCY}
-STR_1409    :Andén
+STR_1409    :Estación
 STR_1410    :Sección vertical
 STR_1411    :{STRINGID} en medio
 STR_1412    :{WINDOW_COLOUR_3}Estadísticas no disponibles para este tipo de atracción
@@ -1428,7 +1428,7 @@ STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
 STR_1423    :{SMALLFONT}{BLACK}Sendero de espera
 STR_1424    :{SMALLFONT}{BLACK}Sendero
 STR_1425    :Sendero
-STR_1426    :Queue Line
+STR_1426    :Línea de Espera
 STR_1427    :{WINDOW_COLOUR_2}Clientes: {BLACK}{COMMA32} por hora
 STR_1428    :{WINDOW_COLOUR_2}Precio de la entrada:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
@@ -1461,7 +1461,7 @@ STR_1455    :Nombre no válido para visitante
 STR_1456    :{WINDOW_COLOUR_2}Dinero gastado: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Dinero en el bolsillo: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Tiempo en el parque: {BLACK}{REALTIME}
-STR_1459    :Track style
+STR_1459    :Estilo Vía
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
 STR_1462    :Too steep for lift hill
@@ -1471,8 +1471,8 @@ STR_1465    :Hélice arriba (grande)
 STR_1466    :Hélice abajo (pequeña)
 STR_1467    :Hélice abajo (grande)
 STR_1468    :Empleados
-STR_1469    :Ride must start and end with stations
-STR_1470    :Station not long enough
+STR_1469    :La atracción debe comenzar y terminar con las estaciones.
+STR_1470    :La estación no es lo suficientemente largo.
 STR_1471    :{WINDOW_COLOUR_2}Velocidad:
 STR_1472    :{SMALLFONT}{BLACK}Velocidad de esta atraccion
 STR_1473    :{WINDOW_COLOUR_2}Nivel de emoción: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1709,7 +1709,7 @@ STR_1703    :Contratar nuevo animador
 STR_1704    :No se pueden contratar nuevos empleados...
 STR_1705    :{SMALLFONT}{BLACK}Despedir empleado
 STR_1706    :{SMALLFONT}{BLACK}Mover esta persona a otra posición
-STR_1707    :Too many staff in game
+STR_1707    :Muchos empleados en el parque.
 STR_1708    :{SMALLFONT}{BLACK}Establecer zona de patrulla para este empleado
 STR_1709    :Despedir empleado
 STR_1710    :Sí
@@ -1732,7 +1732,7 @@ STR_1726    :¡Terreno no a la venta!
 STR_1727    :¡Derechos de construcción no a la venta!
 STR_1728    :No puedes comprar derechos de construcción aquí...
 STR_1729    :¡El terreno no es propiedad del parque!
-STR_1730    :{RED}Closed - - 
+STR_1730    :{RED}Cerrado - - 
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Construir
 STR_1733    :Modo
@@ -1764,19 +1764,19 @@ STR_1758    :{SMALLFONT}{BLACK}Modo construir
 STR_1759    :{SMALLFONT}{BLACK}Modo mover
 STR_1760    :{SMALLFONT}{BLACK}Modo rellenar
 STR_1761    :{SMALLFONT}{BLACK}Construir laberinto en esta dirección
-STR_1762    :Waterfalls
-STR_1763    :Rapids
+STR_1762    :Cascadas
+STR_1763    :Rápidos
 STR_1764    :Log Bumps
 STR_1765    :Cámara fotográfica
 STR_1766    :Reverser turntable
-STR_1767    :Spinning tunnel
-STR_1768    :Can't change number of swings...
+STR_1767    :Tunel Giratorio
+STR_1768    :No puedes cambiar el número de balanceo...
 STR_1769    :{WINDOW_COLOUR_2}Número de balanceos:
 STR_1770    :{SMALLFONT}{BLACK}Número de balanceos completos
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
-STR_1773    :Only one on-ride photo section allowed per ride
-STR_1774    :Only one cable lift hill allowed per ride
+STR_1773    :Sólo se permite una sección de fotos por atracción.
+STR_1774    :Sólo un cable de elevación por atracción.
 STR_1775    :Off
 STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Música
@@ -1799,7 +1799,7 @@ STR_1793    :Yendo a inspeccionar {STRINGID}
 STR_1794    :Arreglando {STRINGID}
 STR_1795    :Contestando llamada
 STR_1796    :Se ha averiado y requiere reparación
-STR_1797    :This option cannot be changed for this ride
+STR_1797    :Esta opción no puede ser cambiada para esta atracción
 STR_1798    :Whirlpool
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Paro por seguridad
@@ -1813,7 +1813,7 @@ STR_1807    :Fallo de control
 STR_1808    :{WINDOW_COLOUR_2}Última avería: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Avería actual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Lleva:
-STR_1811    :Can't build this here...
+STR_1811    :No puedes construir esto aquí...
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Objetos misceláneos
 STR_1814    :Acciones
@@ -1837,27 +1837,27 @@ STR_1831    :Tiempo en cola
 STR_1832    :Fiabilidad
 STR_1833    :Tiempo averiado
 STR_1834    :Favorito de
-STR_1835    :Popularity: Unknown
-STR_1836    :Popularity: {COMMA16}%
-STR_1837    :Satisfaction: Unknown
-STR_1838    :Satisfaction: {COMMA16}%
-STR_1839    :Reliability: {COMMA16}%
-STR_1840    :Down-time: {COMMA16}%
-STR_1841    :Profit: {CURRENCY2DP} per hour
-STR_1842    :Favourite of: {COMMA16} guest
-STR_1843    :Favourite of: {COMMA16} guests
+STR_1835    :Popularidad: Desconocido
+STR_1836    :Popularidad: {COMMA16}%
+STR_1837    :Satisfacción: Desconocido
+STR_1838    :Satisfacción: {COMMA16}%
+STR_1839    :Fiabilidad: {COMMA16}%
+STR_1840    :Tiempo averiado: {COMMA16}%
+STR_1841    :Beneficio: {CURRENCY2DP} per hour
+STR_1842    :Favorito de: {COMMA16} visitante
+STR_1843    :Favorito de: {COMMA16} visitantes
 STR_1844    :{SMALLFONT}{BLACK}Selecciona el tipo de información a mostrar en la lista
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} visitantes
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitantes
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitantes
 STR_1849    :{WINDOW_COLOUR_2}Reproducir música
-STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
+STR_1850    :{SMALLFONT}{BLACK}Selecciona si la música debe ser reproducida para esta atracción.
 STR_1851    :{WINDOW_COLOUR_2}Coste funcionamiento: {BLACK}{CURRENCY2DP} por hora
 STR_1852    :{WINDOW_COLOUR_2}Coste funcionamiento: {BLACK}Desconocido
-STR_1853    :{WINDOW_COLOUR_2}Construído: {BLACK}Este año
-STR_1854    :{WINDOW_COLOUR_2}Construído: {BLACK}El año pasado
-STR_1855    :{WINDOW_COLOUR_2}Construído: {BLACK}Hace {COMMA16} años
+STR_1853    :{WINDOW_COLOUR_2}Construido: {BLACK}Este año
+STR_1854    :{WINDOW_COLOUR_2}Construido: {BLACK}El año pasado
+STR_1855    :{WINDOW_COLOUR_2}Construido: {BLACK}Hace {COMMA16} años
 STR_1856    :{WINDOW_COLOUR_2}Beneficio por ítem: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Pérdidas por ítem: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Coste: {BLACK}{CURRENCY} al mes
@@ -1870,7 +1870,7 @@ STR_1864    :mecánico
 STR_1865    :guarda de seguridad
 STR_1866    :animador
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
+STR_1868    :No puedes cambiar el número de vueltas...
 STR_1869    :{WINDOW_COLOUR_2}Número de vueltas:
 STR_1870    :{SMALLFONT}{BLACK}Número de vueltas completas
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1922,7 +1922,7 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Préstamo:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :¡No te prestan más dinero!
+STR_1918    :¡El banco se niega a prestar más dinero!
 STR_1919    :¡No tienes suficiente dinero!
 STR_1920    :¡No puedes devolver el préstamo!
 STR_1921    :{SMALLFONT}{BLACK}Iniciar nueva partida
@@ -2001,12 +2001,12 @@ STR_1993    :Bebida
 STR_1994    :Hamburguesa
 STR_1995    :Patatas Fritas
 STR_1996    :Helado
-STR_1997    :Candyfloss
-STR_1998    :Empty Can
+STR_1997    :Algodón de Azúcar
+STR_1998    :Lata vacía
 STR_1999    :Basura
 STR_2000    :Empty Burger Box
 STR_2001    :Pizza
-STR_2002    :Voucher
+STR_2002    :Cupón
 STR_2003    :Palomitas de Maíz
 STR_2004    :Perrito Caliente
 STR_2005    :Tentáculo
@@ -2202,7 +2202,7 @@ STR_2194    :Funnel Cake
 STR_2195    :Gafas de Sol
 STR_2196    :Fideos con carne
 STR_2197    :Arroz Frito
-STR_2198    :Wonton Soup
+STR_2198    :Sopa Wonton
 STR_2199    :Albóndigas
 STR_2200    :Jugo de Frutas
 STR_2201    :Leche de Soja
@@ -2222,7 +2222,7 @@ STR_2214    :¡No es posible construir mientras el juego está pausado!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
-STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
+STR_2218    :{RED}¡{STRINGID} en {STRINGID} no ha regresado a la {STRINGID} todavía!{NEWLINE}Comprueba si se ha quedado atascado o detenido.
 STR_2219    :{RED}{COMMA16} personas han muerto en un accidente en {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoración del parque: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valoración del parque: {COMMA16}
@@ -2309,11 +2309,11 @@ STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} 
 STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} refrescos
 STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} souvenir
 STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} souvenirs
-STR_2305    :Track design files
-STR_2306    :Save track designa
+STR_2305    :Archivos Diseño Vía
+STR_2306    :Guardar Diseño Vía
 STR_2307    :Selecciona diseño de {STRINGID}
-STR_2308    :{STRINGID} Track Designs
-STR_2309    :Install New Track Design
+STR_2308    :{STRINGID} Diseños de Vía
+STR_2309    :Instalar Diseño de Vía
 STR_2310    :Construir diseño personalizado
 STR_2311    :{WINDOW_COLOUR_2}Nivel de emoción: {BLACK}{COMMA2DP32} (aprox.)
 STR_2312    :{WINDOW_COLOUR_2}Nivel de intensidad: {BLACK}{COMMA2DP32} (aprox.)
@@ -2329,8 +2329,8 @@ STR_2321    :{WINDOW_COLOUR_2}Número de atracciones: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}sq.ft.
-STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
-STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
+STR_2325    :{SMALLFONT}{BLACK}Comprar terreno para extender el parque.
+STR_2326    :{SMALLFONT}{BLACK}Comprar derechos de construcción para construir arriba o debajo del terreno fuera del parque.
 STR_2327    :Opciones
 STR_2328    :{WINDOW_COLOUR_2}Moneda:
 STR_2329    :{WINDOW_COLOUR_2}Distancia y Velocidad:
@@ -2351,7 +2351,7 @@ STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
 STR_2345    :Métrico
 STR_2346    :Monitor
-STR_2347    :{RED}{STRINGID} se ahoga!
+STR_2347    :{RED}¡{STRINGID} se ahoga!
 STR_2348    :{SMALLFONT}{BLACK}Mostrar estadísticas de este empleado
 STR_2349    :{WINDOW_COLOUR_2}Sueldo: {BLACK}{CURRENCY} al mes
 STR_2350    :{WINDOW_COLOUR_2}Contratado: {BLACK}{MONTHYEAR}
@@ -2360,7 +2360,7 @@ STR_2352    :{WINDOW_COLOUR_2}Jardines regados: {BLACK}{COMMA16}
 STR_2353    :{WINDOW_COLOUR_2}Senderos limpiados: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Papeleras vaciadas: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Atracciones reparadas: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspecciones: {BLACK}{COMMA16}
+STR_2356    :{WINDOW_COLOUR_2}Atracc. inspeccionadas: {BLACK}{COMMA16}
 STR_2357    :Casa
 STR_2358    :Unidas
 STR_2359    :Valores reales
@@ -2426,8 +2426,8 @@ STR_2418    :Entrada gratis a {STRINGID}
 STR_2419    :Entrada gratis a {STRINGID}
 STR_2420    :Descuento 50% en {STRINGID}
 STR_2421    :Gratis {STRINGID}
-STR_2422    :Advertising campaign for {STRINGID}
-STR_2423    :Advertising campaign for {STRINGID}
+STR_2422    :Campaña de publicidad de {STRINGID}
+STR_2423    :Campaña de publicidad de {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Cupones para entrada gratis al parque
 STR_2425    :{WINDOW_COLOUR_2}Cupones para entrada gratis a una de las atracciones
 STR_2426    :{WINDOW_COLOUR_2}Cupones para 50% de descuento en entrada al parque
@@ -2473,7 +2473,7 @@ STR_2465    :{SMALLFONT}{BLACK}Mostrar precio e información de la entrada
 STR_2466    :{SMALLFONT}{BLACK}Mostrar estadísticas del parque
 STR_2467    :{SMALLFONT}{BLACK}Mostrar objetivos de este parque
 STR_2468    :{SMALLFONT}{BLACK}Mostrar premios recientemente ganados por el parque
-STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
+STR_2469    :{SMALLFONT}{BLACK}Selecciona el nivel de investigación y desarrollo
 STR_2470    :{SMALLFONT}{BLACK}Investigar nuevas atracciones de transporte
 STR_2471    :{SMALLFONT}{BLACK}Investigar nuevas atracciones suaves
 STR_2472    :{SMALLFONT}{BLACK}Investigar nuevas montañas rusas
@@ -2482,14 +2482,14 @@ STR_2474    :{SMALLFONT}{BLACK}Investigar nuevas atracciones de agua
 STR_2475    :{SMALLFONT}{BLACK}Investigar nuevas tiendas y puestos
 STR_2476    :{SMALLFONT}{BLACK}Investigar nuevo decorado
 STR_2477    :{SMALLFONT}{BLACK}Selecciona modo de funcionamiento para esta atracción
-STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
-STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
-STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
-STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
+STR_2478    :{SMALLFONT}{BLACK}Mostrar gráfico de velocidad con respecto al tiempo
+STR_2479    :{SMALLFONT}{BLACK}Mostrar gráfico de velocidad con respecto al tiempo
+STR_2480    :{SMALLFONT}{BLACK}Mostrar gráfico de aceleración con respecto al tiempo
+STR_2481    :{SMALLFONT}{BLACK}Mostrar gráfico de aceleración lateral con respecto al tiempo
 STR_2482    :{SMALLFONT}{BLACK}Beneficios: {CURRENCY} por semana. Valor del parque: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Beneficio semanal: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Beneficio semanal: {RED}{CURRENCY2DP}
-STR_2485    :Controls
+STR_2485    :Controles
 STR_2486    :General
 STR_2487    :Mostrar nombres 'reales' de los visitantes
 STR_2488    :{SMALLFONT}{BLACK}Muestra los nombres 'reales' de los visitantes, o sólo su número de visitante
@@ -2684,23 +2684,23 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :All research complete
+STR_2680    :Investigación Completa
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa tu dinero en {CURRENCY}
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Llega un gran grupo de visitantes
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Low:
-STR_2687    :{WINDOW_COLOUR_2}High:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
-STR_2690    :Map Generation
-STR_2691    :{WINDOW_COLOUR_2}Base height:
-STR_2692    :{WINDOW_COLOUR_2}Water level:
-STR_2693    :{WINDOW_COLOUR_2}Terrain:
-STR_2694    :Generate
-STR_2695    :Random terrain
-STR_2696    :Place trees
+STR_2686    :{WINDOW_COLOUR_2}Bajo:
+STR_2687    :{WINDOW_COLOUR_2}Alto:
+STR_2688    :{WINDOW_COLOUR_2}Frecuencia Base:
+STR_2689    :{WINDOW_COLOUR_2}Octavas:
+STR_2690    :Generación Mapa
+STR_2691    :{WINDOW_COLOUR_2}Altura de base:
+STR_2692    :{WINDOW_COLOUR_2}Altura de agua:
+STR_2693    :{WINDOW_COLOUR_2}Terreno:
+STR_2694    :Generar
+STR_2695    :Terreno aleatorio
+STR_2696    :Colocar arboles
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
@@ -2712,8 +2712,8 @@ STR_2704    :Cada 30 minutos
 STR_2705    :Cada hora
 STR_2706    :Nunca
 STR_2707    :Abrir explorador de archivos
-STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
-STR_2709    :Overwrite
+STR_2708    :{WINDOW_COLOUR_1}¿Estas seguro de sobreescribir {STRINGID}?
+STR_2709    :Sobreescribir
 STR_2710    :Ingresar nombre para este archivo:
 STR_2711    :;
 STR_2712    :=
@@ -2753,7 +2753,7 @@ STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :My new scenario
+STR_2749    :Mi nuevo escenario
 STR_2750    :Mover todo hacia arriba
 STR_2751    :Mover todo hacia abajo
 STR_2752    :Limpiar césped
@@ -2855,17 +2855,17 @@ STR_2845    :{TOPAZ}¡Tu parque ha recibido el premio a 'El parque con los esque
 STR_2846    :{TOPAZ}¡Tu parque ha recibido el premio a 'El parque con la disposición más confusa'!
 STR_2847    :{TOPAZ}¡Tu parque ha recibido el premio a 'El parque con las mejores atracciones suaves'!
 STR_2848    :{WINDOW_COLOUR_2}Sin premios recientes
-STR_2849    :New scenario installed successfully
-STR_2850    :New track design installed successfully
-STR_2851    :Scenario already installed
-STR_2852    :Track design already installed
+STR_2849    :Nuevo escenario instalado exitosamente
+STR_2850    :Nuava vía instalada exitosamente
+STR_2851    :Escenario ya instalado
+STR_2852    :Vía ya instalada
 STR_2853    :¡Prohibido por las autoridades locales!
 STR_2854    :{RED}¡Los visitantes no encuentran la entrada de {STRINGID}!{NEWLINE}Construye un sendero hacia la entrada
 STR_2855    :{RED}¡{STRINGID} no tiene un camino de salida!{NEWLINE}Construye un camino desde la salida de la atracción.
 STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
-STR_2858    :Can't start marketing campaign...
-STR_2859    :Another instance of OpenRCT is already running
+STR_2857    :{WINDOW_COLOUR_2}(Presiona una tecla o da clic para tomar el control)
+STR_2858    :No puedes iniciar una campaña publicitaria...
+STR_2859    :Otra instancia de OpenRCT ya está en ejecución
 STR_2860    :Infogrames Interactive credits...
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
@@ -2983,10 +2983,10 @@ STR_2973    :Esquema de color alternativo 2
 STR_2974    :Esquema de color alternativo 3
 STR_2975    :{SMALLFONT}{BLACK}Selecciona el esquema de color a cambiar, o pinta la atracción con él
 STR_2976    :{SMALLFONT}{BLACK}Pintar sólo un área de la atracción utilizando el esquema de color seleccionado
-STR_2977    :Staff member name
-STR_2978    :Enter new name for this member of staff:
-STR_2979    :Can't name staff member...
-STR_2980    :Too many banners in game
+STR_2977    :Nombrar personal
+STR_2978    :Escribe un nombre para este miembro
+STR_2979    :No se puede nombrar este miembro del personal...
+STR_2980    :Demasiadas banderas en juego
 STR_2981    :{RED}No pasar - - 
 STR_2982    :Texto del letrero
 STR_2983    :Introduce nuevo texto para este letrero:
@@ -2997,11 +2997,11 @@ STR_2987    :{SMALLFONT}{BLACK}Configura este letrero como 'No pasar'
 STR_2988    :{SMALLFONT}{BLACK}Demoler este letrero
 STR_2989    :{SMALLFONT}{BLACK}Seleccionar color principal
 STR_2990    :{SMALLFONT}{BLACK}Selecciona color del texto
-STR_2991    :Sign
-STR_2992    :Sign text
-STR_2993    :Enter new text for this sign:
-STR_2994    :{SMALLFONT}{BLACK}Change text on sign
-STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
+STR_2991    :Letrero
+STR_2992    :Texto Letrero
+STR_2993    :Escribe un nuevo texto:
+STR_2994    :{SMALLFONT}{BLACK}Cambiar texto de la señal
+STR_2995    :{SMALLFONT}{BLACK}Demoler señal
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -3051,8 +3051,8 @@ STR_3041    :Estilo moderno
 STR_3042    :Estilo pirata
 STR_3043    :Estilo rock 3
 STR_3044    :Estilo caramelo
-STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This ride cannot be modified
+STR_3045    :{SMALLFONT}{BLACK}Selecciona el estilo de música a reproducir
+STR_3046    :Esta atracción no se puede modificar
 STR_3047    :La autoridad local no permite demoler o modificar esta atracción
 STR_3048    :Campañas de marketing prohibidas por la autoridad local
 STR_3049    :Golf agujero A
@@ -3119,7 +3119,7 @@ STR_3109    :Abrir
 STR_3110    :{WINDOW_COLOUR_2}Secciones de bloque: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Clic en este diseño para construirlo
 STR_3112    :{SMALLFONT}{BLACK}Clic en el diseño para renombrar o quitar
-STR_3113    :Select a different design
+STR_3113    :Seleccionar otro diseño
 STR_3114    :{SMALLFONT}{BLACK}Volver a la ventana selección de diseños
 STR_3115    :{SMALLFONT}{BLACK}Guardar diseño de vía
 STR_3116    :{SMALLFONT}{BLACK}Guardar diseño de vía (No es posible hasta que la atracción se haya probado y se hayan generado las estadísticas)
@@ -3138,16 +3138,16 @@ STR_3128    :Guardar diseño de vía
 STR_3129    :Guardar diseño de vía con decorado
 STR_3130    :Guardar
 STR_3131    :Cancelar
-STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
-STR_3133    :Unable to build this on a slope
+STR_3132    :{BLACK}Clic en elementos de escenario para guardar junto con el diseño de la vía ...
+STR_3133    :No es posible construir esto en una pendiente
 STR_3134    :{RED}(Este diseño incluye un decorado que no está disponible)
-STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
-STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
-STR_3137    :Select Nearby Scenery
-STR_3138    :Reset Selection
-STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
-STR_3141    :Multi-circuit per ride not possible with cable lift hill
+STR_3135    :{RED}(Vehículo no disponible - El rendimiento puede verse afectado)
+STR_3136    :Advertencia: Este diseño se construirá con un tipo de vehículo alternativo y puede no funcionar como se espera.
+STR_3137    :Selecc. Escenario Cercano
+STR_3138    :Reiniciar Selecc.
+STR_3139    :Cable de elevación no puede funcionar en este modo
+STR_3140    :Cable de elevación debe comenzar después de la estación
+STR_3141    :Multi-circuito por attracc. no es posible con un cable de elevación
 STR_3142    :{WINDOW_COLOUR_2}Capacidad: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Mostrar visitantes en el mapa
 STR_3144    :{SMALLFONT}{BLACK}Mostrar atracciones y puestos en el mapa
@@ -3163,33 +3163,33 @@ STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
 STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
 STR_3155    :
 STR_3156    :
-STR_3157    :map
-STR_3158    :graph
-STR_3159    :list
+STR_3157    :mapa
+STR_3158    :gráfica
+STR_3159    :lista
 STR_3160    :<not used anymore>
 STR_3161    :<not used anymore>
-STR_3162    :Unable to allocate enough memory
-STR_3163    :Installing new data: 
+STR_3162    :No se puede asignar memoria suficiente
+STR_3163    :Instalar nuevo dato: 
 STR_3164    :{BLACK}{COMMA16} seleccionados (máximo {COMMA16})
 STR_3165    :
 STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}Incluye: {BLACK}{COMMA16} objetos
 STR_3168    :{WINDOW_COLOUR_2}Texto: {BLACK}{STRINGID}
-STR_3169    :Data for the following object not found: 
-STR_3170    :Not enough space for graphics
+STR_3169    :Datos para el sig. objeto no encontrados: 
+STR_3170    :No se puede asignar más espacio para gráficos
 STR_3171    :Se han seleccionado ya muchos objetos de este tipo
-STR_3172    :The following object must be selected first: {STRING}
+STR_3172    :El sig. objeto debe ser selecc. primero: {STRING}
 STR_3173    :Este objeto está siendo usado
 STR_3174    :Este objeto es requerido por otro objeto
 STR_3175    :Este objeto es requerido
 STR_3176    :No se puede seleccionar este objeto
 STR_3177    :No se puede des-seleccionar este objeto
-STR_3178    :At least one path object must be selected
-STR_3179    :At least one ride atracción/vehículo object must be selected
-STR_3180    :Invalid selection of objects
+STR_3178    :Al menos un sendero debe ser seleccionado
+STR_3179    :Al menos una atracción debe ser seleccionada
+STR_3180    :Selecc. inválida de objetos
 STR_3181    :Selección de Objetos - {STRINGID}
-STR_3182    :Park entrance type must be selected
-STR_3183    :Water type must be selected
+STR_3182    :Tipo de entrada del parque debe ser seleccionada
+STR_3183    :Tipo de agua debe ser seleccionada
 STR_3184    :Atracciones/juegos
 STR_3185    :Escenario pequeño
 STR_3186    :Escenario grande
@@ -3202,7 +3202,7 @@ STR_3192    :Entrada del parque
 STR_3193    :Agua
 STR_3194    :Descripción del escenario
 STR_3195    :Lista de inventos
-STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
+STR_3196    :{WINDOW_COLOUR_2}Grupo Investigación: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Elementos preinventados al comienzo de la partida:
 STR_3198    :{WINDOW_COLOUR_2}Elementos inventados durante la partida:
 STR_3199    :Mezcla aleatoria
@@ -3219,9 +3219,9 @@ STR_3209    :Regresar al paso anterior:
 STR_3210    :Avanzar al siguiente paso:
 STR_3211    :{WINDOW_COLOUR_2}Tamaño de Mapa:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
-STR_3213    :Can't decrease map size any further
-STR_3214    :Can't increase map size any further
-STR_3215    :Too close to edge of map
+STR_3213    :No puedes disminuir más el tamaño del mapa
+STR_3214    :No puedes aumentar más el tamaño del mapa
+STR_3215    :Demasiado cerca del borde del mapa
 STR_3216    :{SMALLFONT}{BLACK}Selecciona el terreno propiedad del parque, etc.
 STR_3217    :Terreno propio
 STR_3218    :Derechos constr. propios
@@ -3233,11 +3233,11 @@ STR_3223    :{SMALLFONT}{BLACK}Establece el terreno que esté disponibles para l
 STR_3224    :{SMALLFONT}{BLACK}Establecer los derechos de construcción que estén disponibles para la compra del parque
 STR_3225    :{SMALLFONT}{BLACK}Activa/Desactiva colocar grupos de objetos en torno a la posición seleccionada
 STR_3226    :{SMALLFONT}{BLACK}Construir entrada del parque
-STR_3227    :Too many park entrances!
+STR_3227    :¡Muchas entradas del parque!
 STR_3228    :{SMALLFONT}{BLACK}Establecer posición inicial de las personas
-STR_3229    :Block Brakes cannot be used directly after station
-STR_3230    :Block Brakes cannot be used directly after each other
-STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
+STR_3229    :Bloque de frenado no debe ser usado después de la estación.
+STR_3230    :Bloque de frenado no debe ser usado después de otro.
+STR_3231    :Bloque de frenado no debe ser usado después del final de la cadena de elevación.
 STR_3232    :Opciones - Finanzas
 STR_3233    :Opciones - Visitantes
 STR_3234    :Opciones - Parque
@@ -3254,14 +3254,14 @@ STR_3244    :Prohibir campañas de márketing
 STR_3245    :{SMALLFONT}{BLACK}Prohibir anuncios, promociones y otras campañas de márketing
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
-STR_3248    :Can't increase initial cash any further!
-STR_3249    :¡No puede reducirse más el efectivo inicial!
-STR_3250    :¡No puede aumentarse más el efectivo inicial!
-STR_3251    :¡No puede reducirse más el préstamo inicial!
-STR_3252    :¡No puede aumentarse más el préstamo inicial!
-STR_3253    :¡No puede reducirse más el crédito máximo!
-STR_3254    :¡No puede aumentarse más el crédito máximo!
-STR_3255    :¡No puede reducirse más el interés anual!
+STR_3248    :¡No se puede incrementar más el dinero inicial!
+STR_3249    :¡No se puede reducir más el dinero inicial!
+STR_3250    :¡No se puede incrementar más el préstamo inicial!
+STR_3251    :¡No se puede reducir más el préstamo inicial!
+STR_3252    :¡No se puede incrementar más el préstamo máximo!
+STR_3253    :¡No se puede reducir más el préstamo máximo!
+STR_3254    :¡No se puede incrementar más la tasa de interés!
+STR_3255    :¡No se puede reducir más la tasa de interés!
 STR_3256    :Visitantes prefieren atracciones tranquilas
 STR_3257    :{SMALLFONT}{BLACK}Los visitantes prefieren atracciones de baja intensidad normalmente
 STR_3258    :Visitantes prefieren atracciones intensas
@@ -3329,10 +3329,10 @@ STR_3319    :{WINDOW_COLOUR_2}Grupo Escenario:
 STR_3320    :No se pudo guardar el archivo de escenario...
 STR_3321    :New objects installed successfully
 STR_3322    :{WINDOW_COLOUR_2}Objetivo: {BLACK}{STRINGID}
-STR_3323    :Missing object data, ID: 
-STR_3324    :Requires Add-On Pack: 
-STR_3325    :Requires an Add-On Pack
-STR_3326    :{WINDOW_COLOUR_2}(no image)
+STR_3323    :Dat. de objeto no encontrado, ID: 
+STR_3324    :Requiere complemento: 
+STR_3325    :Requiere un complemento
+STR_3326    :{WINDOW_COLOUR_2}(sin imágen)
 STR_3327    :No se ha establecido la posición inicial de los visitantes
 STR_3328    :No se puede avanzar a la siguiente etapa del editor...
 STR_3329    :No se ha construido una entrada del parque
@@ -3352,26 +3352,26 @@ STR_3342    :Editor de escenarios
 STR_3343    :Convertir partida guardada en escenario
 STR_3344    :Diseñador de Montañas Rusas
 STR_3345    :Diseñador de Vías
-STR_3346    :Can't save track design...
-STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
+STR_3346    :No se puede guardar el diseño de vía...
+STR_3347    :Atracc. demasiada larga, contiene demasiados elementos, o el paisaje está demasiado lejos.
 STR_3348    :Renombrar
 STR_3349    :Borrar
-STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:
-STR_3352    :Can't rename track design...
-STR_3353    :New name contains invalid characters
-STR_3354    :Another file exists with this name, or file is write-protected
-STR_3355    :File is write-protected or locked
+STR_3350    :Nombrar Diseño Vía
+STR_3351    :Nuevo nombre de diseño de vía:
+STR_3352    :No se puede renombrar el diseño de vía...
+STR_3353    :El nuevo nombre contiene caracteres inválidos
+STR_3354    :Otro archivo ya tiene este nombre o se encuentra protegido contra escritura
+STR_3355    :El archivo esta bloqueado o protegido contra escritura
 STR_3356    :Borrar Archivo
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
-STR_3358    :Can't delete track design...
+STR_3357    :{WINDOW_COLOUR_2¿Estás seguro de borrar permanentemente {STRINGID} ?
+STR_3358    :No se puede eliminar el diseño da vía...
 STR_3359    :{BLACK}Sin diseños de vías para esta atracción
 STR_3360    :¡Advertencia!
-STR_3361    :Too many track designs of this type - Some will not be listed.
+STR_3361    :Demasiados diseños de vía - Algunos no se listarán.
 STR_3362    :<not used anymore>
 STR_3363    :<not used anymore>
 STR_3364    :Avanzado
-STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
+STR_3365    :{SMALLFONT}{BLACK}Permitir la selección de escenario además de grupos de escenarios.
 STR_3366    :{BLACK}= Atracción
 STR_3367    :{BLACK}= Puesto comida
 STR_3368    :{BLACK}= Puesto bebida
@@ -3387,16 +3387,16 @@ STR_3377    :{SMALLFONT}{BLACK}Instalar nuevo archivo de diseño de vía
 STR_3378    :Instalar
 STR_3379    :Cancelar
 STR_3380    :No se pudo instalar este diseño de vía...
-STR_3381    :File is not compatible or contains invalid data
-STR_3382    :File copy failed
-STR_3383    :Select new name for track design
-STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3385    :Beginners Tutorial
-STR_3386    :Custom Rides Tutorial
-STR_3387    :Roller Coaster Building Tutorial
-STR_3388    :Unable to switch to selected mode
-STR_3389    :Unable to select additional item of scenery...
-STR_3390    :Too many items selected
+STR_3381    :Archivo no compatible o contiene datos inválidos
+STR_3382    :Copia de archivo fallada
+STR_3383    :Selecc. nuevo nombre diseño de vía
+STR_3384    :Un diseño de vía ya tiene este nombre - escoge otro nombre:
+STR_3385    :Tutorial Principiantes
+STR_3386    :Tutorial Atracc. Personalizada
+STR_3387    :Tutorial Construcc. Roller Coaster
+STR_3388    :No se puede cambiar al modo seleccionado
+STR_3389    :No es posible seleccionar el elemento adicional de escenario...
+STR_3390    :Demasiados elementos seleccionados
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
 STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
 STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
@@ -3453,8 +3453,8 @@ STR_3441    :Página 2
 STR_3442    :Página 3
 STR_3443    :Página 4
 STR_3444    :Página 5
-STR_3445    :Set Patrol Area
-STR_3446    :Cancelar Patrol Area
+STR_3445    :Establecer Área de Patrulla
+STR_3446    :Cancelar Área de Patrulla
 
 # New strings, cleaner
 STR_5120    :Finanzas
@@ -3470,10 +3470,10 @@ STR_5129    :Escribe un tamaño de selección entre {COMMA16} y {COMMA16}
 STR_5130    :Tamaño de Mapa
 STR_5131    :Escribe un tamaño de mapa entre {COMMA16} y {COMMA16}
 STR_5132    :Arregla atracciones
-STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
-STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
+STR_5133    :{SMALLFONT}{BLACK}Ajustar un area menor para los derechos de construcción.
+STR_5134    :{SMALLFONT}{BLACK}Ajustar un area mayor para los derechos de construcción.
 STR_5135    :{SMALLFONT}{BLACK}Comprar terreno o derechos de construcción
-STR_5136    :Land rights
+STR_5136    :Der. Construcc.
 STR_5137    :Desbloquea límites de funcionamiento
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
@@ -3483,7 +3483,7 @@ STR_5142    :Velocidad normal
 STR_5143    :Velocidad ligera
 STR_5144    :Velocidad rápida
 STR_5145    :Velocidad turbo
-STR_5146    :Hyper Speed
+STR_5146    :Hiper velocidad
 STR_5147    :Trucos
 STR_5148    :{SMALLFONT}{BLACK}Cambiar velocidad de juego
 STR_5149    :{SMALLFONT}{BLACK}Opciones de trucos
@@ -3513,17 +3513,17 @@ STR_5172    :{SMALLFONT}{BLACK}Activará información de seguimiento de los visi
 STR_5173    :Mostrar noticias del chat Twitch
 STR_5174    :{SMALLFONT}{BLACK}Los mensajes del chat de Twitch que comiencen por "!news" se mostrarán como notificaciones en el juego
 STR_5175    :Escribe el nombre de tu canal Twitch
-STR_5176    :Enable Twitch integration
+STR_5176    :Hab. integración Twitch
 STR_5177    :Modo pantalla completa:
 STR_5178    :{SMALLFONT}{BLACK}Mostrar trucos de dinero
 STR_5179    :{SMALLFONT}{BLACK}Mostrar trucos de visitante
 STR_5180    :{SMALLFONT}{BLACK}Mostrar trucos del parque
 STR_5181    :{SMALLFONT}{BLACK}Mostrar trucos de atracciones
 STR_5182    :{INT32}
-STR_5183    :Base height
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
-STR_5185    :Water level
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5183    :Altura de base
+STR_5184    :Ingresa una altura entre {COMMA16} y {COMMA16}
+STR_5185    :Nivel de agua
+STR_5186    :Ingresa un nivel entre {COMMA16} y {COMMA16} 
 STR_5187    :Finanzas
 STR_5188    :Nueva Campaña
 STR_5189    :Investigación
@@ -3678,7 +3678,7 @@ STR_5337    :Entrada del Parque
 STR_5338    :Tipo de elemento:
 STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5341    :Flags
+STR_5341    :Banderas
 STR_5342    :Elige una baldosa del mapa
 STR_5343    :Posicionar trabajadores automáticamente
 STR_5344    :Cambios

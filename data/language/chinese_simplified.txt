@@ -4,9 +4,9 @@
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :螺旋过山车
-STR_0003    :站立过山车
+STR_0003    :站立式过山车
 STR_0004    :悬挂摇摆过山车
-STR_0005    :回转过山车
+STR_0005    :翻转式过山车
 STR_0006    :儿童过山车
 STR_0007    :迷你火车
 STR_0008    :单轨电车
@@ -19,12 +19,12 @@ STR_0014    :喷射-自由落体
 STR_0015    :雪橇过山车
 STR_0016    :观景塔
 # I could not find this thing in the game
-STR_0017    :Looping Roller Coaster
+STR_0017    :回环式过山车
 STR_0018    :充气小艇滑道
 STR_0019    :矿车过山车
 STR_0020    :缆车
 # STR_0021 has the same meaning as STR_0001 in chinese
-STR_0021    :Corkscrew Roller Coaster
+STR_0021    :螺旋过山车
 STR_0022    :迷宫
 STR_0023    :螺旋滑梯
 STR_0024    :卡丁车
@@ -57,8 +57,8 @@ STR_0048    :龙卷风
 STR_0049    :鬼屋
 STR_0050    :急救室
 STR_0051    :马戏表演
-STR_0052    :Tunnel Of Horror
-STR_0053    :Steel Twister Roller Coaster
+STR_0052    :恐怖隧道
+STR_0053    :铁架旋转式过山车
 STR_0054    :木制过山车
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :疯狂老鼠过山车
@@ -67,26 +67,26 @@ STR_0058    :Unknown Ride (38)
 STR_0059    :飞翔过山车
 STR_0060    :Unknown Ride (3A)
 STR_0061    :弗吉尼亚卷轴
-STR_0062    :Splash Boats
+STR_0062    :激流勇进
 STR_0063    :迷你直升机
-STR_0064    :躺卧过山车
+STR_0064    :躺卧式过山车
 STR_0065    :悬挂式单轨电车
 STR_0066    :Unknown Ride (40)
 STR_0067    :反转过山车
 STR_0068    :Heartline Twister Coaster
 STR_0069    :迷你高尔夫
 STR_0070    :巨型过山车
-STR_0071    :Roto-Drop
+STR_0071    :旋转落体
 STR_0072    :转转飞碟
 STR_0073    :鬼怪屋
 STR_0074    :单轨自行车
 STR_0075    :紧凑回转过山车
-STR_0076    :Water Coaster
+STR_0076    :水上过山车
 STR_0077    :喷气弹射过山车
 STR_0078    :回转发卡过山车
 STR_0079    :魔毯
 STR_0080    :迷你潜艇
-STR_0081    :小木筏
+STR_0081    :水上木筏
 STR_0082    :Unknown Ride (50)
 STR_0083    :Enterprise
 STR_0084    :Unknown Ride (52)
@@ -95,7 +95,7 @@ STR_0086    :Unknown Ride (54)
 STR_0087    :Unknown Ride (55)
 STR_0088    :回转冲力过山车
 STR_0089    :迷你过山车
-STR_0090    :Mine Ride
+STR_0090    :矿车式过山车
 STR_0091    :Unknown Ride (59)
 # LIM: Linear Induction Motors
 STR_0092    :LIM喷射过山车
@@ -886,8 +886,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}{DOWN}
 STR_0877    :太低!
 STR_0878    :太高!
-STR_0879    :不能降低土地...
-STR_0880    :不能抬升土地...
+STR_0879    :不能在这里降低土地...
+STR_0880    :不能在这里抬升土地...
 STR_0881    :有物体挡住去路
 STR_0882    :载入游戏
 STR_0883    :保存游戏
@@ -909,13 +909,13 @@ STR_0898    :{SMALLFONT}{BLACK}左转
 STR_0899    :{SMALLFONT}{BLACK}右转
 STR_0900    :{SMALLFONT}{BLACK}左转 (小弧度)
 STR_0901    :{SMALLFONT}{BLACK}右转 (小弧度)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
-STR_0906    :{SMALLFONT}{BLACK}Straight
-STR_0907    :Slope
-STR_0908    :Roll/Banking
+STR_0902    :{SMALLFONT}{BLACK}左转（很小的弧度）
+STR_0903    :{SMALLFONT}{BLACK}右转（很小的弧度）
+STR_0904    :{SMALLFONT}{BLACK}左转（大弧度）
+STR_0905    :{SMALLFONT}{BLACK}右转（大弧度）
+STR_0906    :{SMALLFONT}{BLACK}直行
+STR_0907    :坡度
+STR_0908    :滚动/倾斜
 STR_0909    :Seat Rot.
 STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
 STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
@@ -924,43 +924,43 @@ STR_0913    :{SMALLFONT}{BLACK}Move to previous section
 STR_0914    :{SMALLFONT}{BLACK}Move to next section
 STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
 STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
-STR_0917    :{SMALLFONT}{BLACK}Vertical drop
-STR_0918    :{SMALLFONT}{BLACK}Steep slope down
-STR_0919    :{SMALLFONT}{BLACK}Slope down
-STR_0920    :{SMALLFONT}{BLACK}Level
-STR_0921    :{SMALLFONT}{BLACK}Slope up
-STR_0922    :{SMALLFONT}{BLACK}Steep slope up
-STR_0923    :{SMALLFONT}{BLACK}Vertical rise
-STR_0924    :{SMALLFONT}{BLACK}Helix down
-STR_0925    :{SMALLFONT}{BLACK}Helix up
-STR_0926    :Can't remove this...
-STR_0927    :Can't construct this here...
+STR_0917    :{SMALLFONT}{BLACK}垂直下坡
+STR_0918    :{SMALLFONT}{BLACK}陡峭下坡
+STR_0919    :{SMALLFONT}{BLACK}下坡
+STR_0920    :{SMALLFONT}{BLACK}水平
+STR_0921    :{SMALLFONT}{BLACK}上坡
+STR_0922    :{SMALLFONT}{BLACK}陡峭上坡
+STR_0923    :{SMALLFONT}{BLACK}垂直上坡
+STR_0924    :{SMALLFONT}{BLACK}向下螺旋
+STR_0925    :{SMALLFONT}{BLACK}向上螺旋
+STR_0926    :不能移除此物...
+STR_0927    :不能在此建造...
 STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
-STR_0929    :'S' Bend (left)
-STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Ride entrance in the way
-STR_0935    :Ride exit in the way
-STR_0936    :Park entrance in the way
+STR_0929    :'S'型弯道 (向左)
+STR_0930    :'S'型弯道 (向右)
+STR_0931    :垂直回环 (向左)
+STR_0932    :垂直回环 (向右)
+STR_0933    :请先将地面抬升或降低
+STR_0934    :游乐设施入口挡在此处
+STR_0935    :游乐设施出口挡在此处
+STR_0936    :游乐场的入口挡在此处
 STR_0937    :{SMALLFONT}{BLACK}View options
-STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
-STR_0939    :Underground/Inside View
-STR_0940    :Remove Base Land
-STR_0941    :Remove Vertical Faces
-STR_0942    :See-Through Rides
-STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
-STR_0947    :Save this before loading ?
-STR_0948    :Save this before quitting ?
-STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
-STR_0953    :Load Landscape
+STR_0938    :{SMALLFONT}{BLACK}调整地势高低及陡峭程度
+STR_0939    :地下/内部 视图模式
+STR_0940    :移除地表
+STR_0941    :移除垂直地面
+STR_0942    :略过游乐设施
+STR_0943    :掠过景物
+STR_0944    :保存
+STR_0945    :不保存
+STR_0946    :取消
+STR_0947    :是否在载入其他存档之前保存游戏 ?
+STR_0948    :是否在退出之前保存游戏 ?
+STR_0949    :是否在退出之前保存游戏 ?
+STR_0950    :加载游戏
+STR_0951    :退出游戏
+STR_0952    :退出游戏
+STR_0953    :载入地形
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
 STR_0956    :-180{DEGREE}
@@ -979,18 +979,18 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
-STR_0973    :OK
-STR_0974    :Rides
-STR_0975    :Shops and Stalls
-STR_0976    :Restrooms and Information Kiosks
-STR_0977    :New Transport Rides
-STR_0978    :New Gentle Rides
-STR_0979    :New Roller Coasters
-STR_0980    :New Thrill Rides
-STR_0981    :New Water Rides
-STR_0982    :New Shops & Stalls
-STR_0983    :Research & Development
+STR_0972    :取消
+STR_0973    :确定
+STR_0974    :游乐设施
+STR_0975    :商店及摊贩
+STR_0976    :洗手间及服务台
+STR_0977    :建造新的运输类游乐设施
+STR_0978    :建造新的温和类游乐设施
+STR_0979    :建造新的过山车
+STR_0980    :建造新的刺激类游乐设施
+STR_0981    :建造新的水上游乐设施
+STR_0982    :建造新的商店及摊贩
+STR_0983    :研究及开发
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
@@ -998,30 +998,30 @@ STR_0987    :Too many rides/attractions
 STR_0988    :Can't create new ride/attraction...
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}Construction
-STR_0991    :Station platform
+STR_0991    :车站站台
 STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
 STR_0993    :Demolish ride/attraction
 STR_0994    :Demolish
 STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
-STR_0996    :Overall view
+STR_0996    :整体外观
 STR_0997    :{SMALLFONT}{BLACK}View selection
 STR_0998    :No more stations allowed on this ride
-STR_0999    :Requires a station platform
-STR_1000    :Track is not a complete circuit
-STR_1001    :Track unsuitable for type of train
+STR_0999    :需要一个车站站台
+STR_1000    :轨道没有连接完整
+STR_1001    :轨道不适合此类型的车
 STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
 STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
 STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
 STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
-STR_1006    :Must be closed first
+STR_1006    :必须先关闭
 STR_1007    :Unable to create enough vehicles
 STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
 STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
 STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
+STR_1011    :关闭所有游乐设施
+STR_1012    :开启所有游乐设施
+STR_1013    :关闭游乐场
+STR_1014    :开放游乐场
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1043,21 +1043,21 @@ STR_1032    :Can only build this on water!
 STR_1033    :Can only build this above ground!
 STR_1034    :Can only build this on land!
 STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
-STR_1037    :Load Landscape
-STR_1038    :Convert saved game to scenario
-STR_1039    :Install new track design
-STR_1040    :Save Game
-STR_1041    :Save Scenario
-STR_1042    :Save Landscape
-STR_1043    :OpenRCT2 Saved Game
-STR_1044    :OpenRCT2 Scenario File
-STR_1045    :OpenRCT2 Landscape File
-STR_1046    :OpenRCT2 Track Design File
-STR_1047    :Game save failed!
-STR_1048    :Scenario save failed!
-STR_1049    :Landscape save failed!
-STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
+STR_1036    :载入游戏
+STR_1037    :载入存档
+STR_1038    :将存档转换为关卡
+STR_1039    :添加新的轨道设计
+STR_1040    :保存游戏
+STR_1041    :保存关卡
+STR_1042    :保存地形
+STR_1043    :OpenRCT2 游戏存档
+STR_1044    :OpenRCT2 关卡文件
+STR_1045    :OpenRCT2 地形文件
+STR_1046    :OpenRCT2 轨道设计文件
+STR_1047    :存储游戏失败!
+STR_1048    :存储关卡失败!
+STR_1049    :存储地形失败!
+STR_1050    :载入失败...{NEWLINE}文件中含有不可读取的数据!
 STR_1051    :Invisible Supports
 STR_1052    :Invisible People
 STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park

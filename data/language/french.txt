@@ -5,7 +5,7 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Montagnes russes en spirales
 STR_0003    :Montagnes russes debout
-STR_0004    :Suspended Swinging Coaster
+STR_0004    :Montagnes russes balancantes suspendues 
 STR_0005    :Montagnes russes inversées
 STR_0006    :Montagnes russes junior
 STR_0007    :Chemin de fer miniature
@@ -15,8 +15,8 @@ STR_0010    :Balade en bateau
 STR_0011    :Souris sauvage en bois
 STR_0012    :Steeplechase
 STR_0013    :Balade en voiture
-STR_0014    :Launched Freefall
-STR_0015    :Bobsleigh Coaster
+STR_0014    :Chute libre propulsée
+STR_0015    :Bobsleigh
 STR_0016    :Tour d'observation
 STR_0017    :Looping Roller Coaster
 STR_0018    :Dinghy Slide
@@ -24,7 +24,7 @@ STR_0019    :Train de la mine
 STR_0020    :Chairlift
 STR_0021    :Corkscrew Roller Coaster
 STR_0022    :Labyrinthe
-STR_0023    :Toboggan spiral
+STR_0023    :Toboggan en spirale
 STR_0024    :Go Karts
 STR_0025    :Log Flume
 STR_0026    :River Rapids
@@ -36,7 +36,7 @@ STR_0031    :Stand inconnu (1D)
 STR_0032    :Stand de boissons
 STR_0033    :Stand inconnu (1F)
 STR_0034    :Boutique
-STR_0035    :Manège
+STR_0035    :Carrousel
 STR_0036    :Stand inconnu (22)
 STR_0037    :Kiosque d'information
 STR_0038    :Toilettes
@@ -59,15 +59,15 @@ STR_0054    :Montagnes russes en bois
 STR_0055    :Side-Friction Roller Coaster
 STR_0056    :Souris sauvage
 STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Unknown Ride (38)
+STR_0058    :Manège Inconnu (38)
 STR_0059    :Montagnes russes volantes
-STR_0060    :Unknown Ride (3A)
+STR_0060    :Manège Inconnu (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Splash Boats
 STR_0063    :Mini hélicoptères
 STR_0064    :Lay-down Roller Coaster
 STR_0065    :Monorail suspendu
-STR_0066    :Unknown Ride (40)
+STR_0066    :Manège Inconnu (40)
 STR_0067    :Reverser Roller Coaster
 STR_0068    :Heartline Twister Coaster
 STR_0069    :Mini-golf
@@ -83,16 +83,16 @@ STR_0078    :Inverted Hairpin Coaster
 STR_0079    :Tapis volant
 STR_0080    :Balade sous-marine
 STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
+STR_0082    :Manège Inconnu (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
+STR_0084    :Manège Inconnu (52)
+STR_0085    :Manège Inconnu (53)
+STR_0086    :Manège Inconnu (54)
+STR_0087    :Manège Inconnu (55)
 STR_0088    :Inverted Impulse Coaster
 STR_0089    :Mini montagnes russes
 STR_0090    :Mine Ride
-STR_0091    :Unknown Ride (59)
+STR_0091    :Manège Inconnu (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :
 STR_0094    :
@@ -3831,3 +3831,692 @@ STR_5489    :{SMALLFONT}{BLACK}Afficher seulement les visiteurs surveillés
 STR_5490    :Couper le son lorsque la fenêtre est minimisée
 STR_5491    :Liste d'inventions
 STR_5492    :Options scénario
+STR_5493    :Envoyer un message
+STR_5494    :<not used anymore>
+STR_5495    :Liste des joueurs
+STR_5496    :Joueur:
+STR_5497    :Ping:
+STR_5498    :Liste des serveurs
+STR_5499    :Player Name:
+STR_5500    :Ajouter un serveur
+STR_5501    :Démarrer un serveur
+STR_5502    :Multijoueur
+STR_5503    :Enter hostname or IP address:
+STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
+STR_5505    :Unable to connect to server.
+STR_5506    :Guests ignore intensities
+STR_5507    :Handymen mow grass by default
+STR_5508    :Allow loading files with incorrect checksums
+STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
+STR_5510    :Default sound device
+STR_5511    :(UNKNOWN)
+STR_5512    :Save Game As
+STR_5513    :(Quick) save game
+STR_5514    :Désactiver le vandalisme
+STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
+STR_5516    :{SMALLFONT}{BLACK}Noir
+STR_5517    :{SMALLFONT}{BLACK}Gris
+STR_5518    :{SMALLFONT}{BLACK}Blanc
+STR_5519    :{SMALLFONT}{BLACK}Violet foncé
+STR_5520    :{SMALLFONT}{BLACK}Violet clair
+STR_5521    :{SMALLFONT}{BLACK}Violet vif
+STR_5522    :{SMALLFONT}{BLACK}Bleu fincé
+STR_5523    :{SMALLFONT}{BLACK}Bleu clair
+STR_5524    :{SMALLFONT}{BLACK}Bleu vif
+STR_5525    :{SMALLFONT}{BLACK}Eau foncée
+STR_5526    :{SMALLFONT}{BLACK}Eau claire
+STR_5527    :{SMALLFONT}{BLACK}Vert saturé
+STR_5528    :{SMALLFONT}{BLACK}Vert foncé
+STR_5529    :{SMALLFONT}{BLACK}Vert mousse
+STR_5530    :{SMALLFONT}{BLACK}Vert clair
+STR_5531    :{SMALLFONT}{BLACK}Vert olive
+STR_5532    :{SMALLFONT}{BLACK}Vert olive foncé
+STR_5533    :{SMALLFONT}{BLACK}Jaune clair
+STR_5534    :{SMALLFONT}{BLACK}Jaune
+STR_5535    :{SMALLFONT}{BLACK}Jaune foncé
+STR_5536    :{SMALLFONT}{BLACK}Orange claire
+STR_5537    :{SMALLFONT}{BLACK}Orange foncée
+STR_5538    :{SMALLFONT}{BLACK}Brun clair
+STR_5539    :{SMALLFONT}{BLACK}Brun saturé
+STR_5540    :{SMALLFONT}{BLACK}Brun foncé
+STR_5541    :{SMALLFONT}{BLACK}Rose saumon
+STR_5542    :{SMALLFONT}{BLACK}Rouge bordeaux
+STR_5543    :{SMALLFONT}{BLACK}Rouge saturé
+STR_5544    :{SMALLFONT}{BLACK}Rouge clair
+STR_5545    :{SMALLFONT}{BLACK}Rose foncé
+STR_5546    :{SMALLFONT}{BLACK}Rose clair
+STR_5547    :{SMALLFONT}{BLACK}Rose vif
+STR_5548    :Show all operating modes
+STR_5549    :Année/Mois/Jour
+STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5551    :Année/Jour/Mois
+STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5553    :Pause game when Steam overlay is open
+STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
+STR_5555    :Show vehicles from other track types
+STR_5556    :{SMALLFONT}{BLACK}Kick player
+STR_5557    :Stay connected after desynchronisation (Multiplayer)
+STR_5558    :A restart is required for this setting to take effect
+STR_5559    :10 min. inspections
+STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5561    :Failed to load language
+STR_5562    :ATTENTION!
+STR_5563    :Cette fonctionnalité est actuellement instable, faites attention.
+STR_5564    :Insert Corrupt Element
+STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5566    :Mot de passe:
+STR_5567    :Advertise
+STR_5568    :Mot de passe requis
+STR_5569    :Ce serveur nécessite un mot de passe
+STR_5570    :Rafraichir
+STR_5571    :Rejoindre
+STR_5572    :Ajouter aux Favoris
+STR_5573    :Retirer des Favoris
+STR_5574    :Nom du Serveur:
+STR_5575    :Max Players:
+STR_5576    :Port:
+STR_5577    :Won Sud-Coréen (W)
+STR_5578    :Rouble Russe (R)
+STR_5579    :Window scale factor:
+STR_5580    :Couronne Tchèque (Kc)
+STR_5581    :Afficher les FPS
+STR_5582    :Trap mouse cursor in window
+STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5584    :SI
+STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
+STR_5586    :Automatically open shops and stalls
+STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after building them
+STR_5588    :{SMALLFONT}{BLACK}Play with other players
+STR_5589    :Notification Settings
+STR_5590    :Park awards
+STR_5591    :Marketing campaign has finished
+STR_5592    :Park warnings
+STR_5593    :Park rating warnings
+STR_5594    :Ride has broken down
+STR_5595    :Ride has crashed
+STR_5596    :Ride warnings
+STR_5597    :Ride / scenery researched
+STR_5598    :Guest warnings
+STR_5599    :Guest is lost
+STR_5600    :Guest has left the park
+STR_5601    :Guest is queuing for ride
+STR_5602    :Guest is on ride
+STR_5603    :Guest has left ride
+STR_5604    :Guest has bought item
+STR_5605    :Guest has used facility
+STR_5606    :Guest has died
+STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
+STR_5608    :BH
+STR_5609    :CH
+STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5611    :G
+STR_5612    :{SMALLFONT}{BLACK}Ghost flag
+STR_5613    :B
+STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5615    :L
+STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
+STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
+STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
+STR_5619    :RollerCoaster Tycoon
+STR_5620    :Added Attractions
+STR_5621    :Loopy Landscapes
+STR_5622    :RollerCoaster Tycoon 2
+STR_5623    :Wacky Worlds
+STR_5624    :Time Twister
+STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_5626    :Other Parks
+STR_5627    :Group scenario list by:
+STR_5628    :Source game
+STR_5629    :Difficulty level
+STR_5630    :Enable unlocking of scenarios
+STR_5631    :Original DLC Parks
+STR_5632    :Build your own...
+STR_5633    :CMD + 
+STR_5634    :OPTION + 
+STR_5635    :{WINDOW_COLOUR_2}Argent dépensé: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Commandes exécutées: {BLACK}{COMMA16}
+STR_5637    :Can't do this...
+STR_5638    :Permission refusée
+STR_5639    :{SMALLFONT}{BLACK}Affiche la liste des joueurs
+STR_5640    :{SMALLFONT}{BLACK}Gérer les groupes
+STR_5641    :Groupe par défaut:
+STR_5642    :Groupes:
+STR_5643    :Ajouter un Groupe
+STR_5644    :Supprimer in Groupe
+STR_5645    :Chat
+STR_5646    :Terraform
+STR_5647    :Toggle Pause
+STR_5648    :Set Water Level
+STR_5649    :Create Ride
+STR_5650    :Remove Ride
+STR_5651    :Build Ride
+STR_5652    :Ride Properties
+STR_5653    :Scenery
+STR_5654    :Path
+STR_5655    :Guest
+STR_5656    :Staff
+STR_5657    :Park Properties
+STR_5658    :Park Funding
+STR_5659    :Expluser Joueur
+STR_5660    :Modify Groups
+STR_5661    :Set Player Group
+STR_5662    :N/A
+STR_5663    :Clear Landscape
+STR_5664    :Cheat
+STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
+STR_5703    :Imposible d'expluser l'hébergeur
+STR_5704    :Dernière Action:
+STR_5705    :Can't set to this group
+STR_5706    :Can't remove group that players belong to
+STR_5707    :This group cannot be modified
+STR_5708    :Can't change the group that the host belongs to
+STR_5709    :Rename Group
+STR_5710    :Group name
+STR_5711    :Enter new name for this group:
+STR_5712    :Can't modify permission that you do not have yourself
+STR_5713    :Expluser Joueur
+STR_5714    :Show options window
+STR_5715    :Nouvelle Partie
+STR_5716    :Not allowed in multiplayer mode
+# For identifying client network version in server list window
+STR_5717    :Network version: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
+STR_5719    :Ensoleillé
+STR_5720    :Partiellement Nuageux
+STR_5721    :Nuageux
+STR_5722    :Pluie
+STR_5723    :Forte Pluie
+STR_5724    :Orage
+STR_5725    :{BLACK}Force weather:
+STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
+STR_5727    :Scaling quality
+STR_5728    :Requires hardware display option
+STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
+STR_5730    :Nearest neighbour
+STR_5731    :Linear
+STR_5732    :Anisotropic
+STR_5733    :Use NN scaling at integer scales
+# tooltip for tab in options window
+STR_5734    :{SMALLFONT}{BLACK}Rendering
+STR_5735    :Etat du Réseau
+STR_5736    :Joueur
+STR_5737    :Closed, {COMMA16} person still on ride
+STR_5738    :Closed, {COMMA16} people still on ride
+STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
+STR_5740    :Never-ending marketing campaigns
+STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
+STR_5742    :Authentification ...
+STR_5743    :Connection ...
+STR_5744    :Résolution ...
+STR_5745    :Désynchronisation détéctée
+STR_5746    :Déconnecté
+STR_5747    :Déconnecté: {STRING}
+STR_5748    :Explusé
+STR_5749    :Sort du serveur !
+STR_5750    :Connection Fermé
+STR_5751    :Aucune Données
+STR_5752    :{OUTLINE}{RED}{STRING} s'est déconnecté
+STR_5753    :{OUTLINE}{RED}{STRING} s'est déconnecté ({STRING})
+STR_5754    :Mauvais Pseudo
+STR_5755    :Mauvaise version du programme
+STR_5756    :Mauvais mot de passe
+STR_5757    :Serveur Plein
+STR_5758    :{OUTLINE}{GREEN}{STRING} a rejoint la partie
+STR_5759    :Téléchargement de la carte ... ({INT32} / {INT32})
+STR_5760    :Dollars de Hong Kong (HK$)
+STR_5761    :Nouveau Dollar Taïwanais (NT$)
+STR_5762    :Yuan Chinois (CN{YEN})
+STR_5763    :Tout les fichiers
+
+#############
+# Scenarios #
+################
+# RCT Original #
+################
+<Forest Frontiers>
+STR_SCNR    :Frontières Forestières
+STR_PARK    :Frontières Forestières
+STR_DTLS    :Au fond d'une forêt, construisez un parc d'attraction prospère dans une grande surface dégagée
+
+<Dynamite Dunes>
+STR_SCNR    :Dunes Dynamite
+STR_PARK    :Dunes Dynamite
+STR_DTLS    :Construit au milieu du desert, ce parc d'attraction n'a qu'une seule montagne russe mais a de la place d'expansion
+
+<Leafy Lake>
+STR_SCNR    :Lac Verdoyant
+STR_PARK    :Lac Verdoyant
+STR_DTLS    :A partir de zéro, construisez un parc d'attraction autour d'un grand lac
+
+<Diamond Heights>
+STR_SCNR    :Diamond Heights
+STR_PARK    :Diamond Heights
+STR_DTLS    :Diamond Heights is already a successful theme park with great rides - develop it to double its value
+
+<Evergreen Gardens>
+STR_SCNR    :Evergreen Gardens
+STR_PARK    :Evergreen Gardens
+STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
+
+<Bumbly Beach>
+STR_SCNR    :Bumbly Beach
+STR_PARK    :Bumbly Beach
+STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+
+<Trinity Islands>
+STR_SCNR    :Trinity Islands
+STR_PARK    :Trinity Islands
+STR_DTLS    :Several islands form the basis for this new park
+
+<Katie's Dreamland>
+STR_SCNR    :Katie's Dreamland
+STR_PARK    :Katie's Dreamland
+STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+
+<Pokey Park>
+STR_SCNR    :Pokey Park
+STR_PARK    :Pokey Park
+STR_DTLS    :A small, cramped amusement park which requires major expansion
+
+<White Water Park>
+STR_SCNR    :White Water Park
+STR_PARK    :White Water Park
+STR_DTLS    :A park with some excellent water-based rides requires expansion
+
+<Millennium Mines>
+STR_SCNR    :Millennium Mines
+STR_PARK    :Millennium Mines
+STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+
+<Karts & Coasters>
+STR_SCNR    :Karts & Coasters
+STR_PARK    :Karts & Coasters
+STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+
+<Mel's World>
+STR_SCNR    :Mel's World
+STR_PARK    :Mel's World
+STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+
+<Mystic Mountain>
+STR_SCNR    :Mystic Mountain
+STR_PARK    :Mystic Mountain
+STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+
+<Pacific Pyramids>
+STR_SCNR    :Pacific Pyramids
+STR_PARK    :Pacific Pyramids
+STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+
+<Crumbly Woods>
+STR_SCNR    :Crumbly Woods
+STR_PARK    :Crumbly Woods
+STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+
+<Paradise Pier>
+STR_SCNR    :Paradise Pier
+STR_PARK    :Paradise Pier
+STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+
+<Lightning Peaks>
+STR_SCNR    :Lightning Peaks
+STR_PARK    :Lightning Peaks
+STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+
+<Ivory Towers>
+STR_SCNR    :Ivory Towers
+STR_PARK    :Ivory Towers
+STR_DTLS    :A well-established park, which has a few problems
+
+<Rainbow Valley>
+STR_SCNR    :Rainbow Valley
+STR_PARK    :Rainbow Valley
+STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+
+<Thunder Rock>
+STR_SCNR    :Thunder Rock
+STR_PARK    :Thunder Rock
+STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+
+<Mega Park>
+STR_SCNR    :Mega Parc
+STR_PARK    :Mega Parc
+STR_DTLS    :Juste pour le fun!
+
+## Added Attractions
+<Whispering Cliffs>
+STR_SCNR    :Whispering Cliffs
+STR_PARK    :Whispering Cliffs
+STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+
+<Three Monkeys Park>
+STR_SCNR    :Parc des Trois Singes
+STR_PARK    :Parc des Trois Singes
+STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+
+<Canary Mines>
+STR_SCNR    :Mines Canari
+STR_PARK    :Mines Canari
+STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its minature railway and a pair of vertical drop roller coasters
+
+<Barony Bridge>
+STR_SCNR    :Barony Bridge
+STR_PARK    :Barony Bridge
+STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+
+<Funtopia>
+STR_SCNR    :Funtopia
+STR_PARK    :Funtopia
+STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+
+<Haunted Harbor>
+STR_SCNR    :Haunted Harbor
+STR_PARK    :Haunted Harbor
+STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+
+<Fun Fortress>
+STR_SCNR    :Fun Fortress
+STR_PARK    :Fun Fortress
+STR_DTLS    :This castle is all yours to turn into a theme park
+
+<Future World>
+STR_SCNR    :Future World
+STR_PARK    :Future World
+STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+
+<Gentle Glen>
+STR_SCNR    :Gentle Glen
+STR_PARK    :Gentle Glen
+STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+
+<Jolly Jungle>
+STR_SCNR    :Jungle Joviale
+STR_PARK    :Jungle Joviale
+STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+
+<Hydro Hills>
+STR_SCNR    :Hydro Hills
+STR_PARK    :Hydro Hills
+STR_DTLS    :A series of stepped lakes form the basis for this new park
+
+<Sprightly Park>
+STR_SCNR    :Sprightly Park
+STR_PARK    :Sprightly Park
+STR_DTLS    :This elderly park has many historical rides but is badly in debt
+
+<Magic Quarters>
+STR_SCNR    :Magic Quarters
+STR_PARK    :Magic Quarters
+STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+
+<Fruit Farm>
+STR_SCNR    :Fruit Farm
+STR_PARK    :Fruit Farm
+STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+
+<Butterfly Dam>
+STR_SCNR    :Butterfly Dam
+STR_PARK    :Butterfly Dam
+STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+
+<Coaster Canyon>
+STR_SCNR    :Coaster Canyon
+STR_PARK    :Coaster Canyon
+STR_DTLS    :A vast canyon is yours to turn into a theme park
+
+<Thunderstorm Park>
+STR_SCNR    :Thunderstorm Park
+STR_PARK    :Thunderstorm Park
+STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+
+<Harmonic Hills>
+STR_SCNR    :Harmonic Hills
+STR_PARK    :Harmonic Hills
+STR_DTLS    :The local authority won't allow you to build above tree height in this park
+
+<Roman Village>
+STR_SCNR    :Village Romain
+STR_PARK    :Village Romain
+STR_DTLS    :Développez ce parc à thème romain en y construisant des manèges et montagnes russes
+
+<Swamp Cove>
+STR_SCNR    :Crique Marécageuse
+STR_PARK    :Crique Marécageuse
+STR_DTLS    :Partiellement construit sur un groupe petites îles, ce parc possède déjà quelques grandes montagnes russes
+
+<Adrenaline Heights>
+STR_SCNR    :Adrenaline Heights
+STR_PARK    :Adrenaline Heights
+STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+
+<Utopia Park>
+STR_SCNR    :Parc Utopia
+STR_PARK    :Parc Utopia
+STR_DTLS    :Un oasis au milieu du désert vous procure une occasion insolite de construire un parc d'attraction
+
+<Rotting Heights>
+STR_SCNR    :Hauteurs Délabrées
+STR_PARK    :Hauteurs Délabrées
+STR_DTLS    :Envahi par la végétation et délabré, pourrez vous ressusciter cet ancien grand parc d'attraction ?
+
+<Fiasco Forest>
+STR_SCNR    :Fiasco Forest
+STR_PARK    :Fiasco Forest
+STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+
+<Pickle Park>
+STR_SCNR    :Pickle Park
+STR_PARK    :Pickle Park
+STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+
+<Giggle Downs>
+STR_SCNR    :Giggle Downs
+STR_PARK    :Giggle Downs
+STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+
+<Mineral Park>
+STR_SCNR    :Mineral Park
+STR_PARK    :Mineral Park
+STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+
+<Coaster Crazy>
+STR_SCNR    :Coaster Crazy
+STR_PARK    :Coaster Crazy
+STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+
+<Urban Park>
+STR_SCNR    :Parc Urbain
+STR_PARK    :Parc Urbain
+STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+
+<Geoffrey Gardens>
+STR_SCNR    :Geoffrey Gardens
+STR_PARK    :Geoffrey Gardens
+STR_DTLS    :A large garden park needs turning into a thriving theme park
+
+
+## Loopy Landscapes
+<Iceberg Islands>
+STR_SCNR    :Iceberg Islands
+STR_PARK    :Iceberg Islands
+STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+
+<Volcania>
+STR_SCNR    :Volcania
+STR_PARK    :Volcania
+STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+
+<Arid Heights>
+STR_SCNR    :Arid Heights
+STR_PARK    :Arid Heights
+STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+
+<Razor Rocks>
+STR_SCNR    :Razor Rocks
+STR_PARK    :Razor Rocks
+STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+
+<Crater Lake>
+STR_SCNR    :Crater Lake
+STR_PARK    :Crater Lake
+STR_DTLS    :A large lake in an ancient crater is the setting for this park
+
+<Vertigo Views>
+STR_SCNR    :Vertigo Views
+STR_PARK    :Vertigo Views
+STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+
+<Paradise Pier 2>
+STR_SCNR    :Paradise Pier 2
+STR_PARK    :Paradise Pier 2
+STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+
+<Dragon's Cove>
+STR_SCNR    :Dragon's Cove
+STR_PARK    :Dragon's Cove
+STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+
+<Good Knight Park>
+STR_SCNR    :Good Knight Park
+STR_PARK    :Good Knight Park
+STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+
+<Wacky Warren>
+STR_SCNR    :Wacky Warren
+STR_PARK    :Wacky Warren
+STR_DTLS    :A park which has much of its footpaths and coasters underground
+
+<Grand Glacier>
+STR_SCNR    :Grand Glacier
+STR_PARK    :Grand Glacier
+STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+
+<Crazy Craters>
+STR_SCNR    :Crazy Craters
+STR_PARK    :Crazy Craters
+STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+
+<Dusty Desert>
+STR_SCNR    :Dusty Desert
+STR_PARK    :Dusty Desert
+STR_DTLS    :Five coasters require completion in this desert park
+
+<Woodworm Park>
+STR_SCNR    :Woodworm Park
+STR_PARK    :Woodworm Park
+STR_DTLS    :This historical park is only allowed to build older-styled rides
+
+<Icarus Park>
+STR_SCNR    :Parc Icare
+STR_PARK    :Parc Icare
+STR_DTLS    :Developpez cet parc alien pour maximiser son profit
+
+<Sunny Swamps>
+STR_SCNR    :Sunny Swamps
+STR_PARK    :Sunny Swamps
+STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+
+<Frightmare Hills>
+STR_SCNR    :Frightmare Hills
+STR_PARK    :Frightmare Hills
+STR_DTLS    :A scary park with a giant centrepiece coaster
+
+<Thunder Rocks>
+STR_SCNR    :Thunder Rocks
+STR_PARK    :Thunder Rocks
+STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+
+<Octagon Park>
+STR_SCNR    :Octagon Park
+STR_PARK    :Octagon Park
+STR_DTLS    :In this large park you must design and build ten large coasters
+
+<Pleasure Island>
+STR_SCNR    :Pleasure Island
+STR_PARK    :Pleasure Island
+STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+
+<Icicle Worlds>
+STR_SCNR    :Icicle Worlds
+STR_PARK    :Icicle Worlds
+STR_DTLS    :An icy landscape needs turning into a thriving theme park
+
+<Southern Sands>
+STR_SCNR    :Southern Sands
+STR_PARK    :Southern Sands
+STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+
+<Tiny Towers>
+STR_SCNR    :Tiny Towers
+STR_PARK    :Tiny Towers
+STR_DTLS    :In this tiny park you must finish building the five existing coasters
+
+<Nevermore Park>
+STR_SCNR    :Nevermore Park
+STR_PARK    :Nevermore Park
+STR_DTLS    :A large park with a novel transporation system around its edge
+
+<Pacifica>
+STR_SCNR    :Pacifica
+STR_PARK    :Pacifica
+STR_DTLS    :Cette grande île est tout à vous pour que vous y construisez un parc d'attraction
+
+<Urban Jungle>
+STR_SCNR    :Jungle Urbaine
+STR_PARK    :Jungle Urbaine
+STR_DTLS    :Un gratte-ciel géant abandonnée est une occasion unique pour un créateur de parc d'attraction
+
+<Terror Town>
+STR_SCNR    :Terreur Ville
+STR_PARK    :Terreur Ville
+STR_DTLS    :Cette zone urbaine est à vous pour que vous y construisez un parc d'attraction
+
+<Megaworld Park>
+STR_SCNR    :Megaworld Park
+STR_PARK    :Megaworld Park
+STR_DTLS    :A giant park already packed full of rides needs improving
+
+<Venus Ponds>
+STR_SCNR    :Etangs de Vénus
+STR_PARK    :Etangs de Vénus
+STR_DTLS    :Sur une planête très lointaine, un terrain doit être transformé en parc d'attraction
+
+<Micro Park>
+STR_SCNR    :Micro Parc
+STR_PARK    :Micro Parc
+STR_DTLS    :Essayez de créer le plus petit parc profitable du monde
+
+## Real Parks from RCT1
+# None of them had details
+<Alton Towers>
+STR_SCNR    :Alton Towers
+STR_PARK    :Alton Towers
+STR_DTLS    :
+
+<Heide-Park>
+STR_SCNR    :Heide-Park
+STR_PARK    :Heide-Park
+STR_DTLS    :
+
+<Blackpool Pleasure Beach>
+STR_SCNR    :Blackpool Pleasure Beach
+STR_PARK    :Blackpool Pleasure Beach
+STR_DTLS    :
+
+## Misc parks from RCT1
+# Had no details
+<Fort Anachronism>
+STR_SCNR    :Fort Anachronisme
+STR_PARK    :Fort Anachronisme
+STR_DTLS    :
+
+#####################
+# Rides/attractions #
+#####################
+
+#WW
+[CONDORRD]
+STR_NAME    :Condor Ride
+STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
+STR_CPTY    :4 passagers par voiture
