@@ -454,6 +454,10 @@ static int	_trackPlaceShiftStartScreenY;
 static int	_trackPlaceShiftZ;
 #define		_trackPlaceZ						RCT2_GLOBAL(0x00F44163, sint16)
 
+// This variable is updated separately from ride->num_stations because the latter
+// is unreliable if currently in station construction mode
+static bool _stationConstructed;
+
 static void window_ride_construction_next_section(rct_window *w);
 static void window_ride_construction_previous_section(rct_window *w);
 static void window_ride_construction_construct(rct_window *w);
@@ -509,6 +513,8 @@ rct_window *window_ride_construction_open()
 
 	rct_window *w;
 	rct_ride* ride = get_ride(rideIndex);
+
+	_stationConstructed = ride->num_stations != 0;
 
 	if (ride->type == RIDE_TYPE_MAZE)
 		return window_maze_construction_open();
@@ -1676,6 +1682,8 @@ static void window_ride_construction_construct(rct_window *w)
 		}
 	}
 
+	_stationConstructed = get_ride(w->number)->num_stations != 0;
+
 	// returning early here makes it so that the construction window doesn't blink
 	if (network_get_mode() == NETWORK_MODE_CLIENT)
 		return;
@@ -1771,6 +1779,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		sub_6C84CE();
 		return;
 	}
+
+	_stationConstructed = get_ride(w->number)->num_stations != 0;
 
 	if (network_get_mode() == NETWORK_MODE_CLIENT) {
 		gRideRemoveTrackPieceCallbackX = x;
@@ -2990,7 +3000,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	int rideType = ride_get_alternative_type(ride);
 
 	w->hold_down_widgets = 0;
-	if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_IS_SHOP)) {
+	if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed) {
 		window_ride_construction_widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WWT_EMPTY;
 		window_ride_construction_widgets[WIDX_ENTRANCE].type = WWT_EMPTY;
 		window_ride_construction_widgets[WIDX_EXIT].type = WWT_EMPTY;
