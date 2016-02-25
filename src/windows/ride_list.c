@@ -29,6 +29,8 @@
 #include "../interface/window.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../interface/themes.h"
+#include "../localisation/date.h"
 
 enum {
 	PAGE_RIDES,
@@ -59,7 +61,7 @@ static rct_widget window_ride_list_widgets[] = {
 	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },						// close x button
 	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0x0FFFFFFFF,				65535 },									// tab page background
 	{ WWT_FLATBTN,			1,	315,	338,	60,		83,		SPR_TOGGLE_OPEN_CLOSE,		STR_OPEN_OR_CLOSE_ALL_RIDES },				// open / close all toggle
-	{ WWT_DROPDOWN,			1,	164,	273,	46,		57,		0x0FFFFFFFF,				65535 },									// current information type
+	{ WWT_DROPDOWN,			1,	150,	273,	46,		57,		0x0FFFFFFFF,				65535 },									// current information type
 	{ WWT_DROPDOWN_BUTTON,	1,	262,	272,	47,		56,		876,						STR_RIDE_LIST_INFORMATION_TYPE_TIP },		// information type dropdown button
 	{ WWT_DROPDOWN_BUTTON,	1,	280,	333,	46,		57,		STR_SORT,					STR_RIDE_LIST_SORT_TIP },					// sort button
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,					STR_LIST_RIDES_TIP },						// tab 1
@@ -120,11 +122,36 @@ enum {
 	INFORMATION_TYPE_POPULARITY,
 	INFORMATION_TYPE_SATISFACTION,
 	INFORMATION_TYPE_PROFIT,
+	INFORMATION_TYPE_TOTAL_CUSTOMERS,
+	INFORMATION_TYPE_TOTAL_PROFIT,
+	INFORMATION_TYPE_CUSTOMERS,
+	INFORMATION_TYPE_AGE,
+	INFORMATION_TYPE_INCOME,
+	INFORMATION_TYPE_RUNNING_COST,
 	INFORMATION_TYPE_QUEUE_LENGTH,
 	INFORMATION_TYPE_QUEUE_TIME,
 	INFORMATION_TYPE_RELIABILITY,
 	INFORMATION_TYPE_DOWN_TIME,
-	INFORMATION_TYPE_GUESTS_FAVOURITE
+	INFORMATION_TYPE_GUESTS_FAVOURITE,
+	DROPDOWN_LIST_COUNT
+};
+
+uint32 ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+	STR_STATUS,
+	STR_POPULARITY,
+	STR_SATISFACTION,
+	STR_PROFIT,
+	STR_RIDE_LIST_TOTAL_CUSTOMERS,
+	STR_RIDE_LIST_TOTAL_PROFIT,
+	STR_RIDE_LIST_CUSTOMERS_PER_HOUR,
+	STR_RIDE_LIST_AGE,
+	STR_RIDE_LIST_INCOME,
+	STR_RIDE_LIST_RUNNING_COST,
+	STR_QUEUE_LENGTH,
+	STR_QUEUE_TIME,
+	STR_RELIABILITY,
+	STR_DOWN_TIME,
+	STR_GUESTS_FAVOURITE
 };
 
 static int _window_ride_list_information_type;
@@ -166,7 +193,7 @@ void window_ride_list_open()
 		window->min_width = 340;
 		window->min_height = 240;
 		window->max_width = 400;
-		window->max_height = 450;
+		window->max_height = 700;
 	}
 	_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 	window->list_information_type = 0;
@@ -195,7 +222,7 @@ static void window_ride_list_mouseup(rct_window *w, int widgetIndex)
 			w->no_list_items = 0;
 			w->frame_no = 0;
 			w->selected_list_item = -1;
-			if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_PROFIT) {
+			if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_RUNNING_COST) {
 				_window_ride_list_information_type = INFORMATION_TYPE_STATUS;
 			}
 			window_invalidate(w);
@@ -246,15 +273,15 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 		widget--;
 
 		if (w->page == PAGE_RIDES)
-			lastItem = STR_GUESTS_FAVOURITE;
+			lastItem = INFORMATION_TYPE_GUESTS_FAVOURITE;
 		else
-			lastItem = STR_PROFIT;
+			lastItem = INFORMATION_TYPE_RUNNING_COST;
 
-		for (count = 0, currentItem = STR_STATUS; currentItem <= lastItem; currentItem++) {
-			if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) && (currentItem == STR_PROFIT))
+		for (count = 0, currentItem = INFORMATION_TYPE_STATUS; currentItem <= lastItem; currentItem++) {
+			if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) && (currentItem == INFORMATION_TYPE_RUNNING_COST))
 				continue;
-			gDropdownItemsFormat[count] = 1142;
-			gDropdownItemsArgs[count] = currentItem;
+			gDropdownItemsFormat[count] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsArgs[count] = ride_info_type_string_mapping[count];
 			count++;
 		}
 
@@ -286,7 +313,7 @@ static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdo
 		if (dropdownIndex == -1)
 			return;
 
-		_window_ride_list_information_type = (uint32)gDropdownItemsArgs[dropdownIndex] - STR_STATUS;
+		_window_ride_list_information_type = dropdownIndex;
 		window_invalidate(w);
 	}
 }
@@ -378,7 +405,7 @@ static void window_ride_list_invalidate(rct_window *w)
 
 	colour_scheme_update(w);
 
-	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].image = STR_STATUS + _window_ride_list_information_type;
+	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].image = ride_info_type_string_mapping[_window_ride_list_information_type];
 
 	// Set correct active tab
 	for (i = 0; i < 3; i++)
@@ -495,6 +522,44 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			if (ride->profit != MONEY32_UNDEFINED) {
 				formatSecondary = STR_PROFIT_LABEL;
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->profit;
+			}
+			break;
+		case INFORMATION_TYPE_TOTAL_CUSTOMERS:
+			formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->total_customers;
+			break;
+		case INFORMATION_TYPE_TOTAL_PROFIT:
+			formatSecondary = 0;
+			if (ride->total_profit != MONEY32_UNDEFINED) {
+				formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->total_profit;
+			}
+			break;
+		case INFORMATION_TYPE_CUSTOMERS:
+			formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride_customers_per_hour(ride);
+			break;
+		case INFORMATION_TYPE_AGE:;
+			sint16 age = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date);
+			switch (age) {
+			case 0:  formatSecondary = STR_RIDE_LIST_BUILT_THIS_YEAR_LABEL; break;
+			case 1:  formatSecondary = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL; break;
+			default: formatSecondary = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL; break;
+			}
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint16) = age;
+			break;
+		case INFORMATION_TYPE_INCOME:
+			formatSecondary = 0;
+			if (ride->income_per_hour != MONEY32_UNDEFINED) {
+				formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->income_per_hour;
+			}
+			break;
+		case INFORMATION_TYPE_RUNNING_COST:
+			formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
+			if (ride->upkeep_cost != (money16)0xFFFF) {
+				formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->upkeep_cost * 16;
 			}
 			break;
 		case INFORMATION_TYPE_QUEUE_LENGTH:
@@ -643,6 +708,60 @@ static void window_ride_list_refresh_list(rct_window *w)
 			while (--current_list_position >= 0) {
 				otherRide = get_ride(w->list_item_positions[current_list_position]);
 				if (ride->profit <= otherRide->profit)
+					break;
+
+				window_bubble_list_item(w, current_list_position);
+			}
+			break;
+		case INFORMATION_TYPE_TOTAL_CUSTOMERS:
+			while (--current_list_position >= 0) {
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
+				if (ride->total_customers <= otherRide->total_customers)
+					break;
+
+				window_bubble_list_item(w, current_list_position);
+			}
+			break;
+		case INFORMATION_TYPE_TOTAL_PROFIT:
+			while (--current_list_position >= 0) {
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
+				if (ride->total_profit <= otherRide->total_profit)
+					break;
+
+				window_bubble_list_item(w, current_list_position);
+			}
+			break;
+		case INFORMATION_TYPE_CUSTOMERS:
+			while (--current_list_position >= 0) {
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
+				if (ride_customers_per_hour(ride) <= ride_customers_per_hour(otherRide))
+					break;
+
+				window_bubble_list_item(w, current_list_position);
+			}
+			break;
+		case INFORMATION_TYPE_AGE:
+			while (--current_list_position >= 0) {
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
+				if (ride->build_date <= otherRide->build_date)
+					break;
+
+				window_bubble_list_item(w, current_list_position);
+			}
+			break;
+		case INFORMATION_TYPE_INCOME:
+			while (--current_list_position >= 0) {
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
+				if (ride->income_per_hour <= otherRide->income_per_hour)
+					break;
+
+				window_bubble_list_item(w, current_list_position);
+			}
+			break;
+		case INFORMATION_TYPE_RUNNING_COST:
+			while (--current_list_position >= 0) {
+				otherRide = get_ride(w->list_item_positions[current_list_position]);
+				if (ride->upkeep_cost <= otherRide->upkeep_cost)
 					break;
 
 				window_bubble_list_item(w, current_list_position);
