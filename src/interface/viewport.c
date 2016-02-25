@@ -2632,13 +2632,84 @@ void store_interaction_info(paint_struct *ps)
 	}
 }
 
+void sub_679236(uint32 ebx, rct_g1_element *image, uint8 *esi) {
+	if (ebx & 0x20000000) {
+		if (!(image->flags & 1)) {
+			return;
+		}
+
+		uint8 *ebx_palette = RCT2_GLOBAL(0x009ABDA4, uint8*);
+		uint8 al = *esi;
+		uint8 al2 = *(al + ebx_palette);
+
+		if (al2 != 0) {
+			RCT2_GLOBAL(0x00141F569, uint8) = 1;
+		}
+	} else if (!(ebx & 0x40000000)) {
+		if (!(image->flags & 1)) {
+			RCT2_GLOBAL(0x00141F569, uint8) = 1;
+			return;
+		}
+
+		if (*esi != 0) {
+			RCT2_GLOBAL(0x00141F569, uint8) = 1;
+		}
+	}
+}
+
+void sub_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, uint8 *esi) {
+	if (ebx & 0x20000000) {
+		if (!(image->flags & 1)) {
+			return;
+		}
+
+		uint8 *ebx_palette = RCT2_GLOBAL(0x009ABDA4, uint8*);
+
+		uint8 al = *esi;
+		uint8 al2 = *(al + ebx_palette);
+		if (al2 != 0) {
+			RCT2_GLOBAL(0x00141F569, uint8) = 1;
+		}
+	} else if (!(ebx & 0x40000000)) {
+		if (!(image->flags & 1)) {
+			return;
+		}
+
+		if (*esi != 0) {
+			RCT2_GLOBAL(0x00141F569, uint8) = 1;
+		}
+	}
+}
+
+void do_sub(int address, uint32 ebx, rct_g1_element *image, uint8 *esi) {
+	uint8 global_before = RCT2_GLOBAL(0x00141F569, uint8);
+	RCT2_CALLPROC_X(address, 0, ebx, 0, 0, (int) esi, 0, 0);
+	uint8 original_global = RCT2_GLOBAL(0x00141F569, uint8);
+
+	RCT2_GLOBAL(0x00141F569, uint8) = global_before;
+
+	if (address == 0x679236) {
+		sub_679236(ebx, image, esi);
+	} else {
+		sub_679662_679B0D_679FF1(ebx, image, esi);
+	}
+	uint8 new_global = RCT2_GLOBAL(0x00141F569, uint8);
+
+	assert(new_global == original_global);
+}
+
+void sub_679788(rct_g1_element *image, rct_drawpixelinfo *dpi) {
+	RCT2_CALLPROC_X(0x00679788, 0, 0, 0, 0, (int) image->offset, (int) dpi, (int) dpi);
+}
+
+
 /**
  *
  *  rct2: 0x00679074
  */
 void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 {
-	rct_g1_element image = g1Elements[imageId & 0x7FFFF];
+	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
 
 	switch (dpi->zoom_level) {
 		case 0:
@@ -2646,16 +2717,16 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 			break;
 
 		case 1:
-			if (image.flags & 0x20) {
+			if (image->flags & 0x20) {
 				return;
 			}
 
-			if (!(image.flags & 0x10)) {
+			if (!(image->flags & 0x10)) {
 				dpi->zoom_level--;
 				dpi->x >>= 1;
 				dpi->y >>= 1;
 
-				sub_679074(dpi, imageId - image.zoomed_offset, x / 2, y / 2);
+				sub_679074(dpi, imageId - image->zoomed_offset, x / 2, y / 2);
 
 				dpi->zoom_level++;
 				dpi->x *= 2;
@@ -2664,19 +2735,19 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 				return;
 			}
 
-			RCT2_GLOBAL(0x9E3D08, uint8*) = image.offset;
-			RCT2_GLOBAL(0x9E3D0C, sint16) = image.width;
-			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image.height;
-			RCT2_GLOBAL(0x9E3D10, sint16) = image.x_offset;
-			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image.y_offset;
-			RCT2_GLOBAL(0x9E3D14, uint16) = image.flags;
-			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image.zoomed_offset;
+			RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
+			RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
+			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
+			RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
+			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
+			RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
+			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
 
-			if (!(image.flags & 4)) {
+			if (!(image->flags & 4)) {
 				y--;
-				y += image.y_offset;
+				y += image->y_offset;
 
-				uint16 height = image.height;
+				uint16 height = image->height;
 				_yStartPoint = 0;
 				if (height % 2) {
 					height--;
@@ -2712,10 +2783,10 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					}
 				}
 
-				sint16 width = image.width;
+				sint16 width = image->width;
 				_xStartPoint = 0;
 				_xEndPoint = width;
-				x += image.x_offset;
+				x += image->x_offset;
 				x = floor2(x, 2);
 				x -= dpi->x;
 				if (x < 0) {
@@ -2739,38 +2810,35 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					}
 				}
 
-				// eax: image.width(ax)
+				// eax: image->width(ax)
 				// ebx: [image]
 				// ecx: x (cx)
 				// edx: y (dx)
-				// esi: image.offset
+				// esi: image->offset
 				// edi: dpi
 				// ebp: dpi
 
-				//TODO: refactor into sub_679788
-				RCT2_CALLPROC_X(0x00679788, 0, 0, 0, 0, image.offset, (int) dpi, (int) dpi);
+				sub_679788(image, dpi);
 				return;
 			} else {
 				// push edi
 				// ebp = edi;
-				//esi = image.offset;
-				uint32 esi = image.offset;
-				y += image.y_offset;
-				sint16 height = image.height;
+				//esi = image->offset;
+				uint8 *esi = image->offset;
+				y += image->y_offset;
+				sint16 height = image->height;
 				if (height % 2) {
-					sint16 ebx = image.width;
 					height--;
-
-					esi += ebx;
+					esi += image->width;
 				}
 
 				if (height == 0) {
 					return;
 				}
 
-				y &= 0xFFFE;
+				y = floor2(y, 2);
 				_yEndPoint = height;
-				y -= image.height;
+				y -= dpi->y;
 				if (y < 0) {
 					_yEndPoint += y;
 					if (_yEndPoint <= 0) {
@@ -2778,7 +2846,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					}
 
 					y = -y;
-					esi += (y * image.width) & 0xFFFF;
+					esi += (y * image->width) & 0xFFFF;
 					y = 0;
 				} else {
 					// Do nothing?
@@ -2794,10 +2862,10 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					}
 				}
 
-				sint16 ax = image.width;
-				_xEndPoint = ax;
+				sint16 width = image->width;
+				_xEndPoint = width;
 				RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
-				x += image.x_offset;
+				x += image->x_offset;
 				x = floor2(x, 2);
 				x -= dpi->x;
 
@@ -2826,17 +2894,60 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 				}
 
 				// Or is this the 'flags' part?
-				if (!(image.zoomed_offset & (1 << 1))) {
+				if (!(image->zoomed_offset & (1 << 1))) {
 					sint8 ah = (_yEndPoint >> 8) & 0xFF;
 					int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
 					int ebx = RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
 
 					// ah and edx don't seem to be used by this function...
-					RCT2_CALLPROC_X(0x00679662, 0, ebx, 0, 0, esi, 0, 0);
+					do_sub(0x00679662, ebx, image, esi);
 					return;
 				}
 
 				// loc_6795E4:
+				uint8 *ebp = esi;
+				rct_g1_element *g1_source = image;
+				uint8 *source_pointer;
+
+				int total_no_pixels = g1_source->width * g1_source->height;
+				source_pointer = g1_source->offset;
+				uint8 *new_source_pointer_start = malloc(total_no_pixels);
+				uint8 *new_source_pointer = new_source_pointer_start;// 0x9E3D28;
+				int ebx, ecx;
+				while (total_no_pixels > 0) {
+					sint8 no_pixels = *source_pointer;
+					if (no_pixels >= 0) {
+						source_pointer++;
+						total_no_pixels -= no_pixels;
+						memcpy((char *) new_source_pointer, (char *) source_pointer, no_pixels);
+						new_source_pointer += no_pixels;
+						source_pointer += no_pixels;
+						continue;
+					}
+					ecx = no_pixels;
+					no_pixels &= 0x7;
+					ecx >>= 3;//SAR
+					int eax = ((int) no_pixels) << 8;
+					ecx = -ecx;//Odd
+					eax = (eax & 0xFF00) + *(source_pointer + 1);
+					total_no_pixels -= ecx;
+					source_pointer += 2;
+					ebx = (uint32) new_source_pointer - eax;
+					eax = (uint32) source_pointer;
+					source_pointer = (uint8 *) ebx;
+					ebx = eax;
+					eax = 0;
+					memcpy((char *) new_source_pointer, (char *) source_pointer, ecx);
+					new_source_pointer += ecx;
+					source_pointer = (uint8 *) ebx;
+				}
+
+				uint8 *esi_end = new_source_pointer_start + (uint32) ebp;
+				sint8 ah = (_yEndPoint >> 8) & 0xFF;
+				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
+				do_sub(0x00679662, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
+				free(new_source_pointer_start);
+				return;
 			}
 			break;
 
