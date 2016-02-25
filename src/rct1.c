@@ -2046,14 +2046,14 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 {
 	int gameVersion = sawyercoding_detect_rct1_version(s4->game_version) & FILE_VERSION_MASK;
 
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 
 	memset(dst, 0, sizeof(rct_ride));
 
 	dst->type = RCT1RideTypeConversionTable[src->type];
 	dst->subtype = src->type;
 
-	rideEntry = GET_RIDE_ENTRY(dst->subtype);
+	rideEntry = get_ride_entry(dst->subtype);
 
 	// Ride name
 	dst->name = 0;
@@ -2084,11 +2084,11 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 		dst->station_heights[i] = src->station_height[i] / 2;
 		dst->station_length[i] = src->station_length[i];
 		dst->station_depart[i] = src->station_light[i];
-		dst->var_066[i] = src->station_depart[i];
+		dst->train_at_station[i] = src->station_depart[i];
 		dst->entrances[i] = src->entrance[i];
 		dst->exits[i] = src->exit[i];
 		dst->queue_time[i] = src->queue_time[i];
-		dst->first_peep_in_queue[i] = 0xFFFF;
+		dst->last_peep_in_queue[i] = 0xFFFF;
 	}
 	dst->num_stations = src->num_stations;
 
@@ -2097,9 +2097,9 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	}
 	dst->num_vehicles = src->num_trains;
 	dst->num_cars_per_train = src->num_cars_per_train;
-	dst->var_0CA = 32;
+	dst->proposed_num_vehicles = 32;
 	dst->max_trains = 32;
-	dst->var_0CB = 12;
+	dst->proposed_num_cars_per_train = 12;
 
 	// Operation
 	dst->mode = src->operating_mode;
@@ -2167,8 +2167,8 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 {
 	int mapSize = s4->map_size == 0 ? 128 : s4->map_size;
 
-	pause_sounds();
-	unpause_sounds();
+	audio_pause_sounds();
+	audio_unpause_sounds();
 	object_unload_all();
 	map_init(mapSize);
 	banner_init();
@@ -2200,7 +2200,7 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 	// Rides
 	for (int i = 0; i < MAX_RIDES; i++) {
 		if (s4->rides[i].type != RIDE_TYPE_NULL) {
-			rct1_import_ride(s4, GET_RIDE(i), &s4->rides[i]);
+			rct1_import_ride(s4, get_ride(i), &s4->rides[i]);
 		}
 	}
 
