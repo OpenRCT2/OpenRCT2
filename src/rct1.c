@@ -1808,7 +1808,7 @@ bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *
 	return false;
 }
 
-bool rideTypeShouldLoseSeparateFlag(rct_ride_type *ride)
+bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *ride)
 {
 	if(!gConfigInterface.select_by_track_type)
 		return false;

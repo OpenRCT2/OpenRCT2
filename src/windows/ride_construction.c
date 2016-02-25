@@ -2691,7 +2691,7 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
 static void window_ride_construction_update_enabled_track_pieces()
 {
 	rct_ride *ride = get_ride(_currentRideIndex);
-	rct_ride_type *rideEntry = get_ride_entry_by_ride(ride);
+	rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
 
 	if (rideEntry == NULL)
 		return;

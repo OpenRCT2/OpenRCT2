@@ -409,7 +409,7 @@ void track_load_list(ride_list_item item)
 	RCT2_GLOBAL(0xF635ED, uint8) = 0;
 
 	if (item.type < 0x80){
-		rct_ride_type* ride_type = get_ride_entry(item.entry_index);
+		rct_ride_entry* ride_type = get_ride_entry(item.entry_index);
 		if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(ride_type)){
 			item.entry_index = 0xFF;
 		}
@@ -4383,8 +4383,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		log_warning("Invalid ride for track placement, rideIndex = %d", rideIndex);
 		return MONEY32_UNDEFINED;
 	}
-	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
-	if (rideEntry == (rct_ride_type *)0xFFFFFFFF || rideEntry == NULL)
+	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
+	if (rideEntry == (rct_ride_entry *)0xFFFFFFFF || rideEntry == NULL)
 	{
 		log_warning("Invalid ride type for track placement, rideIndex = %d", rideIndex);
 		return MONEY32_UNDEFINED;

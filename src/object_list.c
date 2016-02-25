@@ -691,7 +691,7 @@ rct_string_id object_get_name_string_id(rct_object_entry *entry, const void *chu
 	int objectType = entry->flags & 0x0F;
 	switch (objectType) {
 	case OBJECT_TYPE_RIDE:
-		return ((rct_ride_type*)chunk)->name;
+		return ((rct_ride_entry*)chunk)->name;
 	case OBJECT_TYPE_SMALL_SCENERY:
 	case OBJECT_TYPE_LARGE_SCENERY:
 	case OBJECT_TYPE_WALLS:
@@ -822,12 +822,12 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object_filters* filter)
 {
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 	rct_ride_filters *rideFilter;
 
 	switch (entry->flags & 0xF) {
 	case OBJECT_TYPE_RIDE:
-		rideType = ((rct_ride_type*)chunk);
+		rideType = ((rct_ride_entry*)chunk);
 		rideFilter = &(filter->ride);
 
 		rideFilter->category[0] = rideType->category[0];

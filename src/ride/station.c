@@ -242,7 +242,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
  */
 static void ride_race_init_vehicle_speeds(rct_ride *ride)
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_vehicle *vehicle;
 	int i;
 

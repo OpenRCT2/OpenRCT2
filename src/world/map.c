@@ -3078,7 +3078,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		return false;
 	}
 
-	rct_ride_type *rideEntry = get_ride_entry(ride->subtype);
+	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_16) {
 		return false;
 	}

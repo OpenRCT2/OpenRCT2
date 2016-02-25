@@ -225,7 +225,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 
 							sint32 v19 = vehicle->velocity;
 
-							rct_ride_type* ride_type = get_ride_entry(vehicle->ride_subtype);
+							rct_ride_entry* ride_type = get_ride_entry(vehicle->ride_subtype);
 							uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
 							if (test & 1) {
@@ -646,8 +646,8 @@ static int vehicle_open_restraints(rct_vehicle* vehicle){
 		vehicle->var_4A = 0;
 
 		rct_ride* ride = get_ride(vehicle->ride);
-		rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
-		rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+		rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+		rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SPINNING) {
 			if (abs(vehicle->var_B6) <= 700 &&
@@ -1083,7 +1083,7 @@ static uint16 sub_6D7AC0(int currentSoundId, int currentVolume, int targetSoundI
 static void vehicle_update(rct_vehicle *vehicle)
 {
 	rct_ride *ride;
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 
 	// The cable lift uses the ride type of NULL
 	if (vehicle->ride_subtype == RIDE_TYPE_NULL) {
@@ -1093,7 +1093,7 @@ static void vehicle_update(rct_vehicle *vehicle)
 
 	rideEntry = get_ride_entry(vehicle->ride_subtype);
 
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	ride = get_ride(vehicle->ride);
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_TESTING)
@@ -1237,8 +1237,8 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 		break;
 	default:
 	{
-		rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
-		rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+		rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+		rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 		if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)){
 			if (vehicle->velocity <= 131940){
@@ -1528,8 +1528,8 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle){
  */
 static void vehicle_update_bumpcar_mode(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_7 && vehicle->var_C5 != 1) {
 		vehicle->var_C5 = 1;
@@ -2139,7 +2139,7 @@ static void vehicle_update_departing_boat_hire(rct_vehicle* vehicle) {
  */
 static void vehicle_update_departing(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
 	if (vehicle->sub_state == 0) {
 		if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN) {
@@ -2202,7 +2202,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 		}
 	}
 
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	switch (ride->mode) {
 	case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
@@ -2794,8 +2794,8 @@ static void vehicle_update_arriving(rct_vehicle* vehicle) {
 		ride->mechanic_status != RIDE_MECHANIC_STATUS_4)
 		RCT2_GLOBAL(0x00F64E35, uint8) = 0;
 
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	if (vehicle->sub_state == 0) {
 		if (ride->mode == RIDE_MODE_RACE &&
@@ -3116,8 +3116,8 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 		}
 	}
 
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	if (vehicle->velocity <= 439800) {
 		vehicle->acceleration = 4398;
@@ -3201,7 +3201,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 	RCT2_GLOBAL(0x00F64E08, sint32) = vehicle->velocity;
 	RCT2_GLOBAL(0x00F64E0C, sint32) = (vehicle->velocity >> 10) * 42;
 
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	if (vehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_7 | VEHICLE_ENTRY_FLAG_B_8)) {
 		sub_6D63D4(vehicle);
 	}
@@ -3450,7 +3450,7 @@ static void sub_6DA280(rct_vehicle *vehicle)
 	uint8 curDirection = ((vehicle->sprite_direction + 19) >> 3) & 3;
 	uint8 randDirection = scenario_rand() & 3;
 
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 	if (scenario_rand() & 1 && (!(rideEntry->flags & RIDE_ENTRY_FLAG_7) || vehicle->lost_time_out > 1920)) {
 		location = *((rct_xy8*)&ride->boat_hire_return_position);
 		rct_xy16 destLocation = {
@@ -3520,7 +3520,7 @@ static bool vehicle_is_boat_on_water(rct_vehicle *vehicle, int x, int y)
   */
 static void vehicle_update_swinging(rct_vehicle* vehicle) {
 	rct_ride* ride = get_ride(vehicle->ride);
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
 	// SubState for this ride means swinging state
 	// 0 == first swing
@@ -3695,7 +3695,7 @@ static void vehicle_update_rotating(rct_vehicle* vehicle) {
 		return;
 
 	rct_ride* ride = get_ride(vehicle->ride);
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
 
 	uint8* edi;
 	if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1) {
@@ -4253,7 +4253,7 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 static void vehicle_update_sound(rct_vehicle *vehicle)
 {
 	rct_ride *ride;
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	// frictionVolume (bl) should be set before hand
 	uint8 frictionVolume = 255, frictionId = 255;
 	// bh screamVolume should be set before hand
@@ -4263,7 +4263,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	ride = get_ride(vehicle->ride);
 	rideEntry = get_ride_entry(vehicle->ride_subtype);
 
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	int ecx = abs(vehicle->velocity) - 0x10000;
 	if (ecx >= 0) {
@@ -4352,12 +4352,12 @@ static int vehicle_update_scream_sound(rct_vehicle *vehicle)
 {
 	uint32 r;
 	uint16 spriteIndex;
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_vehicle *vehicle2;
 
 	rideEntry = get_ride_entry(vehicle->ride_subtype);
 
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	int totalNumPeeps = vehicle_get_total_num_peeps(vehicle);
 	if (totalNumPeeps == 0)
@@ -5154,8 +5154,8 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 	edx >>= 5;
 	eax += edx;
 	eax /= vehicle->friction;
-	rct_ride_type* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
 		vehicle->acceleration = -eax;
@@ -5250,7 +5250,7 @@ const sint32 *dword_9A2970 = (sint32*)0x009A2970;
  */
 static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 {
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	int verticalG, lateralG;
 
 	// No up stops (coaster types)
@@ -5303,7 +5303,7 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle *vehicle)
 static void sub_6DAB4C_chunk_2(rct_vehicle *vehicle)
 {
 	rct_ride *ride = get_ride(vehicle->ride);
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 	// Is chair lift type
 	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_12) {
@@ -5565,7 +5565,7 @@ static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 		vehicle->var_4E += dword_F64E08 >> swingAmount;
 	}
 
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	sint16 dx = 3185;
 	if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_5) {
 		dx = 5006;
@@ -5959,7 +5959,7 @@ static void vehicle_update_spinning_car(rct_vehicle *vehicle)
 		return;
 	}
 
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	int spinningInertia = vehicleEntry->spinning_inertia;
 	int trackType = vehicle->track_type >> 2;
 	sint32 dword_F64E08 = RCT2_GLOBAL(0x00F64E08, sint32);
@@ -6064,7 +6064,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
 	uint32 eax;
 
 	uint32 *var_C8 = (uint32*)&vehicle->var_C8;
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 	switch (vehicleEntry->var_11) {
 	case 1: // loc_6D652B
 		*var_C8 += RCT2_GLOBAL(0x00F64E08, uint32);
@@ -6351,7 +6351,7 @@ static void vehicle_update_play_water_splash_sound()
  */
 static void vehicle_update_handle_water_splash(rct_vehicle *vehicle)
 {
-	rct_ride_type *rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	int trackType = vehicle->track_type >> 2;
 
 	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_8)) {
@@ -6415,7 +6415,7 @@ static bool vehicle_update_motion_collision_detection(
 ) {
 	if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_1) return false;
 
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_6)){
 		vehicle->var_C4 = 0;
@@ -6467,7 +6467,7 @@ static bool vehicle_update_motion_collision_detection(
 
 			if (z_diff > 16) continue;
 
-			rct_ride_type_vehicle* collideType = vehicle_get_vehicle_entry(collideVehicle);
+			rct_ride_entry_vehicle* collideType = vehicle_get_vehicle_entry(collideVehicle);
 
 			if (!(collideType->flags_b & VEHICLE_ENTRY_FLAG_B_6)) continue;
 
@@ -6592,7 +6592,7 @@ static void sub_6DB7D6(rct_vehicle *vehicle)
  */
 void sub_6DBF3E(rct_vehicle *vehicle)
 {
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 	vehicle->acceleration = (uint32)((sint32)vehicle->acceleration / RCT2_GLOBAL(0x00F64E10, sint32));
 	if (vehicle->var_CD == 2) {
@@ -6667,7 +6667,7 @@ void sub_6DBF3E(rct_vehicle *vehicle)
  *
  *  rct2: 0x006DB08C
  */
-bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_type* rideEntry) {
+bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 
 	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
@@ -6697,7 +6697,7 @@ bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, ui
 	}
 
 	// TODO check if getting the vehicle entry again is necessary
-	rct_ride_type_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_8) {
 		vehicle_update_scenery_door(vehicle);
@@ -6837,7 +6837,7 @@ loc_6DB41D:
  *
  *  rct2: 0x006DAEB9
  */
-bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_type_vehicle* vehicleEntry, rct_ride* ride, rct_ride_type* rideEntry) {
+bool vehicle_update_track_motion_forwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 loc_6DAEB9:
 	regs.edi = vehicle->track_type;
@@ -7044,7 +7044,7 @@ loc_6DB967:
  *
  *  rct2: 0x006DBAA6
  */
-bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_type* rideEntry, uint16* progress) {
+bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, uint16 trackType, rct_ride* ride, rct_ride_entry* rideEntry, uint16* progress) {
 	RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_start;
 	RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_start;
 	rct_map_element* mapElement = map_get_track_element_at_of_type_seq(
@@ -7204,7 +7204,7 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
  *
  *  rct2: 0x006DBA33
  */
-bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_type_vehicle* vehicleEntry, rct_ride* ride, rct_ride_type* rideEntry) {
+bool vehicle_update_track_motion_backwards(rct_vehicle *vehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride* ride, rct_ride_entry* rideEntry) {
 	registers regs = { 0 };
 
 loc_6DBA33:;
@@ -7330,8 +7330,8 @@ int vehicle_update_track_motion_mini_golf(rct_vehicle *vehicle, int* outStation)
 	registers regs = { 0 };
 
 	rct_ride *ride = get_ride(vehicle->ride);
-	rct_ride_type *rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 	rct_map_element *mapElement = NULL;
 
@@ -7965,8 +7965,8 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	registers regs = { 0 };
 
 	rct_ride *ride = get_ride(vehicle->ride);
-	rct_ride_type *rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_type_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 	rct_map_element *mapElement = NULL;
 
@@ -8271,9 +8271,9 @@ loc_6DC316:
 	return regs.eax;
 }
 
-rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)
+rct_ride_entry_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)
 {
-	rct_ride_type *rideEntry = get_ride_entry(vehicle->ride_subtype);
+	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	return &rideEntry->vehicles[vehicle->vehicle_type];
 }
 

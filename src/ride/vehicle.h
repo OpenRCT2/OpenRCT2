@@ -78,7 +78,7 @@ typedef struct {
 	uint8 draw_order;
 	uint8 special_frames;			// 0x60 , 0x7A
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
-} rct_ride_type_vehicle;
+} rct_ride_entry_vehicle;
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
@@ -365,7 +365,7 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle);
 int vehicle_is_used_in_pairs(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation);
-rct_ride_type_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
+rct_ride_entry_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle);
 int vehicle_get_total_num_peeps(rct_vehicle *vehicle);
 void vehicle_invalidate_window(rct_vehicle *vehicle);
 void vehicle_update_test_finish(rct_vehicle* vehicle);

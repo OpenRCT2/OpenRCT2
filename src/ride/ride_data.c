@@ -1256,7 +1256,7 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] = {
 	5110,									// SHOP_ITEM_EMPTY_BOWL_BLUE
 };
 
-const rct_ride_type_vehicle CableLiftVehicle = {
+const rct_ride_entry_vehicle CableLiftVehicle = {
 	.rotation_frame_mask = 31,
 	.var_02 = 0,
 	.var_03 = 0,

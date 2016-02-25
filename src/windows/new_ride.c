@@ -283,7 +283,7 @@ void window_new_ride_init_vars() {
 /**
  *	rct2: 0x006B6F3E
  *
- * Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_type.
+ * Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_entry.
  */
 static void window_new_ride_populate_list()
 {
@@ -326,7 +326,7 @@ static void window_new_ride_populate_list()
 					continue;
 
 				// Ride entries
-				rct_ride_type *rideEntry = get_ride_entry(rideEntryIndex);
+				rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 
 				// Check if ride is in this category
 				if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
@@ -475,7 +475,7 @@ rct_window *window_new_ride_open_research()
 void window_new_ride_focus(ride_list_item rideItem)
 {
 	rct_window *w;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	w = window_find_by_class(WC_CONSTRUCT_RIDE);
 	if (w == NULL)
@@ -788,7 +788,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 	int y = 1;
 	ride_list_item *listItem = (ride_list_item*)0x00F43523;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
-		rct_ride_type *rideEntry;
+		rct_ride_entry *rideEntry;
 		// Draw flat button rectangle
 		int flags = 0;
 		if (w->new_ride.selected_ride_id == *((sint16*)listItem))
@@ -867,7 +867,7 @@ static int get_num_track_designs(ride_list_item item)
  */
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, int x, int y, int width)
 {
-	rct_ride_type *rideEntry = get_ride_entry(item.entry_index);
+	rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
 
 	// Ride name and description
 	rct_string_id rideName = rideEntry->name;

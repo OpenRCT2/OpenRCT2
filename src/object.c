@@ -455,10 +455,10 @@ typedef struct {
 
 static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 {
-	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
+	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
 
 	// After rideEntry is 3 string tables
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_ride_type));
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_ride_entry));
 	rideEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 0);
 	rideEntry->description = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 1);
 
@@ -497,7 +497,7 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 	int cur_vehicle_images_offset = images_offset + 3;
 
 	for (int i = 0; i < 4; i++) {
-		rct_ride_type_vehicle* vehicleEntry = &rideEntry->vehicles[i];
+		rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[i];
 
 		if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
 			int al = 1;
@@ -714,13 +714,13 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 
 static void object_type_ride_unload(void *objectEntry)
 {
-	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
+	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
 	rideEntry->name = 0;
 	rideEntry->description = 0;
 	rideEntry->images_offset = 0;
 
 	for (int i = 0; i < 4; i++) {
-		rct_ride_type_vehicle* rideVehicleEntry = &rideEntry->vehicles[i];
+		rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[i];
 
 		rideVehicleEntry->base_image_id = 0;
 		rideVehicleEntry->var_1C = 0;
@@ -754,7 +754,7 @@ static void object_type_ride_unload(void *objectEntry)
 
 static bool object_type_ride_test(void *objectEntry)
 {
-	rct_ride_type* rideEntry = (rct_ride_type*)objectEntry;
+	rct_ride_entry* rideEntry = (rct_ride_entry*)objectEntry;
 	if (rideEntry->excitement_multipler > 75) return false;
 	if (rideEntry->intensity_multipler > 75) return false;
 	if (rideEntry->nausea_multipler > 75) return false;
@@ -763,7 +763,7 @@ static bool object_type_ride_test(void *objectEntry)
 
 static void object_type_ride_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
-	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
+	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
 	int imageId = rideEntry->images_offset;
 	if (rideEntry->ride_type[0] == 0xFF) {
 		imageId++;
@@ -776,7 +776,7 @@ static void object_type_ride_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 
 static rct_string_id object_type_ride_desc(void *objectEntry)
 {
-	rct_ride_type *rideEntry = (rct_ride_type*)objectEntry;
+	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
 
 	// Get description
 	rct_string_id stringId = rideEntry->description;

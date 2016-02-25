@@ -135,7 +135,7 @@ static int award_is_deserved_best_rollercoasters(int awardType, int activeAwardT
 {
 	int i, rollerCoasters;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	rollerCoasters = 0;
 	FOR_ALL_RIDES(i, ride) {
@@ -278,7 +278,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	int i, hungryPeeps, shops, uniqueShops;
 	uint64 shopTypes;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 	uint16 spriteIndex;
 	rct_peep *peep;
 
@@ -324,7 +324,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	int i, hungryPeeps, shops, uniqueShops;
 	uint64 shopTypes;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 	uint16 spriteIndex;
 	rct_peep *peep;
 
@@ -434,7 +434,7 @@ static int award_is_deserved_best_water_rides(int awardType, int activeAwardType
 {
 	int i, waterRides;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	waterRides = 0;
 	FOR_ALL_RIDES(i, ride) {
@@ -534,7 +534,7 @@ static int award_is_deserved_best_gentle_rides(int awardType, int activeAwardTyp
 {
 	int i, gentleRides;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	gentleRides = 0;
 	FOR_ALL_RIDES(i, ride) {
