@@ -302,27 +302,53 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 		safe_strcpy(filter, "*", MAX_PATH);
 		strncat(filter, _extension, MAX_PATH - strnlen(filter, MAX_PATH) - 1);
 
+		file_dialog_desc desc;
+		memset(&desc, 0, sizeof(desc));
+		desc.initial_directory = _directory;
+		if (_type & LOADSAVETYPE_SAVE) {
+			desc.default_filename = path;
+		}
+
 		switch (_type) {
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(FD_OPEN, (char*)language_get_string(STR_LOAD_GAME), path, filter, _extension);
+			desc.type = FD_OPEN;
+			desc.title = language_get_string(STR_LOAD_GAME);
+			desc.filters[0].name = "Supported Saved Games";
+			desc.filters[0].pattern = "*.sv4;*.sv6";
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME) :
-			result = platform_open_common_file_dialog(FD_SAVE, (char*)language_get_string(STR_SAVE_GAME), path, filter, _extension);
+			desc.type = FD_SAVE;
+			desc.title = language_get_string(STR_SAVE_GAME);
+			desc.filters[0].name = "OpenRCT2 Saved Games";
+			desc.filters[0].pattern = "*.sv6";
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(FD_OPEN, (char*)language_get_string(STR_LOAD_LANDSCAPE), path, filter, _extension);
+			desc.type = FD_OPEN;
+			desc.title = language_get_string(STR_LOAD_LANDSCAPE);
+			desc.filters[0].name = "Supported Landscapes";
+			desc.filters[0].pattern = "*.sc4;*.sv4;*.sc6;*.sv6";
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE) :
-			result = platform_open_common_file_dialog(FD_SAVE, (char*)language_get_string(STR_SAVE_LANDSCAPE), path, filter, _extension);
+			desc.type = FD_SAVE;
+			desc.title = language_get_string(STR_SAVE_LANDSCAPE);
+			desc.filters[0].name = "OpenRCT2 Landscapes";
+			desc.filters[0].pattern = "*.sc6";
 			break;
 		case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
-			result = platform_open_common_file_dialog(FD_SAVE, (char*)language_get_string(STR_SAVE_SCENARIO), path, filter, _extension);
+			desc.type = FD_SAVE;
+			desc.title = language_get_string(STR_SAVE_SCENARIO);
+			desc.filters[0].name = "OpenRCT2 Scenarios";
+			desc.filters[0].pattern = "*.sc6";
 			break;
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
-			result = platform_open_common_file_dialog(FD_OPEN, (char*)language_get_string(1039), path, filter, _extension);
+			desc.type = FD_OPEN;
+			desc.title = language_get_string(1039);
+			desc.filters[0].name = "Supported Track Designs";
+			desc.filters[0].pattern = "*.td4;*.td6";
 			break;
 		}
 
+		result = platform_open_common_file_dialog(path, &desc);
 		if (result) {
 			window_loadsave_select(w, path);
 		}
