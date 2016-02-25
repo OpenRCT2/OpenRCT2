@@ -580,72 +580,79 @@ void platform_show_messagebox(char *message)
  *
  *  rct2: 0x004080EA
  */
-int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 {
-	wchar_t wctitle[256], wcfilename[MAX_PATH], wcfilterPattern[256], wcfilterName[256];
-	wchar_t initialDirectory[MAX_PATH], *dotAddress, *slashAddress;
 	OPENFILENAMEW openFileName;
-	BOOL result;
-	int tmp;
-	DWORD commonFlags;
+	wchar_t wcFilename[MAX_PATH];
 
-	MultiByteToWideChar(CP_UTF8, 0, title, -1, wctitle, countof(wctitle));
-	MultiByteToWideChar(CP_UTF8, 0, filename, -1, wcfilename, countof(wcfilename));
-	MultiByteToWideChar(CP_UTF8, 0, filterPattern, -1, wcfilterPattern, countof(wcfilterPattern));
-	MultiByteToWideChar(CP_UTF8, 0, filterName, -1, wcfilterName, countof(wcfilterName));
-
-	// Get directory path from given filename
-	lstrcpyW(initialDirectory, wcfilename);
-	dotAddress = wcsrchr(initialDirectory, '.');
-	if (dotAddress != NULL) {
-		slashAddress = wcsrchr(initialDirectory, '\\');
-		if (slashAddress < dotAddress)
-			*(slashAddress + 1) = 0;
+	// Copy default filename to result filename buffer
+	if (desc->default_filename == NULL) {
+		wcFilename[0] = 0;
+	} else {
+		wchar_t *wcDefaultFilename = utf8_to_widechar(desc->default_filename);
+		lstrcpyW(wcFilename, wcDefaultFilename);
+		free(wcDefaultFilename);
 	}
-
-	// Clear filename
-	if (type != FD_SAVE)
-		wcfilename[0] = 0;
 
 	// Set open file name options
 	memset(&openFileName, 0, sizeof(OPENFILENAMEW));
 	openFileName.lStructSize = sizeof(OPENFILENAMEW);
 	openFileName.hwndOwner = windows_get_window_handle();
-	openFileName.lpstrFile = wcfilename;
 	openFileName.nMaxFile = MAX_PATH;
-	openFileName.lpstrInitialDir = initialDirectory;
-	openFileName.lpstrTitle = wctitle;
+	openFileName.lpstrTitle = utf8_to_widechar(desc->title);
+	openFileName.lpstrInitialDir = utf8_to_widechar(desc->initial_directory);
+	openFileName.lpstrFile = wcFilename;
 
-	// Copy filter name
-	lstrcpyW((wchar_t*)0x01423800, wcfilterName);
+	utf8 filters[256];
+	utf8 *ch = filters;
+	for (int i = 0; i < countof(desc->filters); i++) {
+		if (desc->filters[i].name != NULL) {
+			strcpy(ch, desc->filters[i].name);
+			ch = strchr(ch, 0) + 1;
+			strcpy(ch, desc->filters[i].pattern);
+			ch = strchr(ch, 0) + 1;
+		}
+	}
+	*ch = 0;
 
-	// Copy filter pattern
-	int wcfilterNameLength = lstrlenW(wcfilterName);
-	int wcfilterPatternLength = lstrlenW(wcfilterPattern);
-
-	lstrcpyW((wchar_t*)0x01423800 + wcfilterNameLength + 1, wcfilterPattern);
-	*((wchar_t*)((wchar_t*)0x01423800 + wcfilterNameLength + 1 + wcfilterPatternLength + 1)) = 0;
-	openFileName.lpstrFilter = (wchar_t*)0x01423800;
-
-	//
-	tmp = RCT2_GLOBAL(0x009E2C74, uint32);
-	if (RCT2_GLOBAL(0x009E2BB8, uint32) == 2 && RCT2_GLOBAL(0x009E1AF8, uint32) == 1)
-		RCT2_GLOBAL(0x009E2C74, uint32) = 1;
-
-	// Open dialog
-	commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-	if (type == FD_SAVE) {
-		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
-		result = GetSaveFileNameW(&openFileName);
-	} else if (type == FD_OPEN) {
-		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
-		result = GetOpenFileNameW(&openFileName);
+	// HACK: Replace all null terminators with 0x01 so that we convert the entire string
+	size_t fullLength = (size_t)(ch - filters);
+	for (size_t i = 0; i < fullLength; i++) {
+		if (filters[i] == '\0') {
+			filters[i] = 1;
+		}
+	}
+	wchar_t *wcFilter = utf8_to_widechar(filters);
+	fullLength = lstrlenW(wcFilter);
+	for (size_t i = 0; i < fullLength; i++) {
+		if (wcFilter[i] == 1) {
+			wcFilter[i] = '\0';
+		}
 	}
 
-	//
-	RCT2_GLOBAL(0x009E2C74, uint32) = tmp;
+	openFileName.lpstrFilter = wcFilter;
 
-	WideCharToMultiByte(CP_UTF8, 0, wcfilename, countof(wcfilename), filename, MAX_PATH, NULL, NULL);
+	// Open dialog
+	BOOL result;
+	DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+	if (desc->type == FD_OPEN) {
+		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
+		result = GetOpenFileNameW(&openFileName);
+	} else if (desc->type == FD_SAVE) {
+		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
+		result = GetSaveFileNameW(&openFileName);
+	}
+
+	// Clean up
+	free((void*)openFileName.lpstrTitle);
+	free((void*)openFileName.lpstrInitialDir);
+	free((void*)openFileName.lpstrFilter);
+
+	if (result) {
+		utf8 *resultFilename = widechar_to_utf8(openFileName.lpstrFile);
+		strcpy(outFilename, resultFilename);
+		free(resultFilename);
+	}
 
 	return result;
 }

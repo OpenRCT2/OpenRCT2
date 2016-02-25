@@ -320,41 +320,11 @@ void window_editor_bottom_toolbar_jump_forward_to_objective_selection() {
 
 /**
  *
- *  rct2: 0x00675181
- */
-static int show_save_scenario_dialog(char *resultPath)
-{
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	int result;
-	char title[256];
-	char filename[MAX_PATH];
-	char filterName[256];
-
-
-	format_string(title, STR_SAVE_SCENARIO, NULL);
-	substitute_path(filename, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), s6Info->name);
-	strcat(filename, ".SC6");
-	format_string(filterName, STR_RCT2_SCENARIO_FILE, NULL);
-
-	audio_pause_sounds();
-	result = platform_open_common_file_dialog(FD_SAVE, title, filename, "*.SC6", filterName);
-	audio_unpause_sounds();
-
-	if (result)
-		safe_strcpy(resultPath, filename, MAX_PATH);
-	return result;
-}
-
-/**
- *
  *  rct2: 0x0066F7C0
  */
 void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 {
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-	int parkFlagsBackup, success;
-	char path[256];
 
 	if (!scenario_prepare_for_save()) {
 		window_error_open(STR_UNABLE_TO_SAVE_SCENARIO_FILE, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
@@ -363,37 +333,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	}
 
 	window_close_all();
-
 	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO, s6Info->name);
-	return;
-
-	if (!show_save_scenario_dialog(path)) {
-		gfx_invalidate_screen();
-		return;
-	}
-
-	//
-	s6Info->editor_step = 255;
-
-	// Ensure path has .SC6 extension
-	path_append_extension(path, ".SC6");
-
-	// Save the scenario
-	parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-	SDL_RWops* rw = SDL_RWFromFile(path, "wb+");
-	if (rw != NULL) {
-		success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
-		SDL_RWclose(rw);
-	}
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
-
-	if (success) {
-		title_load();
-	} else {
-		window_error_open(STR_SCENARIO_SAVE_FAILED, -1);
-		s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
-	}
 }
 
 /**

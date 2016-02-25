@@ -87,6 +87,16 @@ enum {
 
 typedef enum {FD_OPEN, FD_SAVE} filedialog_type;
 
+typedef struct {
+	uint8 type;
+	const utf8 *title;
+	const utf8 *initial_directory;
+	const utf8 *default_filename;
+	struct {
+		const utf8 *name;			// E.g. "Image Files"
+		const utf8 *pattern;		// E.g. "*.png;*.jpg;*.gif"
+	} filters[8];
+} file_dialog_desc;
 
 extern openrct2_cursor gCursorState;
 extern const unsigned char *gKeysState;
@@ -164,7 +174,7 @@ void platform_get_openrct_data_path(utf8 *outPath);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory);
 utf8* platform_get_username();
 void platform_show_messagebox(utf8 *message);
-int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName);
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc);
 utf8 *platform_open_directory_browser(utf8 *title);
 uint8 platform_get_locale_currency();
 uint8 platform_get_currency_value(const char *currencyCode);
