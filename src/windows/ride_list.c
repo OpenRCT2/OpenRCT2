@@ -539,9 +539,14 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride_customers_per_hour(ride);
 			break;
-		case INFORMATION_TYPE_AGE:
-			formatSecondary = STR_RIDE_LIST_AGE_LABEL;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint16) = (sint16)date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date);
+		case INFORMATION_TYPE_AGE:;
+			sint16 age = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date);
+			switch (age) {
+			case 0:  formatSecondary = STR_RIDE_LIST_BUILT_THIS_YEAR_LABEL; break;
+			case 1:  formatSecondary = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL; break;
+			default: formatSecondary = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL; break;
+			}
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint16) = age;
 			break;
 		case INFORMATION_TYPE_INCOME:
 			formatSecondary = 0;

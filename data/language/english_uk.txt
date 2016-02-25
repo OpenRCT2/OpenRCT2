@@ -4038,7 +4038,6 @@ STR_5732    :Anisotropic
 STR_5733    :Use NN scaling at integer scales
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
-<<<<<<< HEAD
 STR_5735    :Network Status
 STR_5736    :Player
 STR_5737    :Closed, {COMMA16} person still on ride
@@ -4080,10 +4079,12 @@ STR_5772    :Age
 STR_5773    :Total customers: {COMMA32}
 STR_5774    :Total profit: {CURRENCY2DP}
 STR_5775    :Customers: {COMMA32} per hour
-STR_5776    :Age: {COMMA16} year(s)
-STR_5777    :Income: {CURRENCY2DP} per hour
-STR_5778    :Running cost: {CURRENCY2DP} per hour
-STR_5779    :Running cost: Unknown
+STR_5776    :Built: This Year
+STR_5777    :Built: Last Year
+STR_5778    :Built: {COMMA16} Years Ago
+STR_5779    :Income: {CURRENCY2DP} per hour
+STR_5780    :Running cost: {CURRENCY2DP} per hour
+STR_5781    :Running cost: Unknown
 
 #############
 # Scenarios #
