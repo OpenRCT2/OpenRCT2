@@ -613,40 +613,6 @@ static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 
 /**
  *
- *  rct2: 0x00674F40
- */
-static int open_landscape_file_dialog()
-{
-	int result;
-	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_LANDSCAPE_DIALOG_TITLE, 0);
-	safe_strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_LANDSCAPES_PATH, MAX_PATH);
-	format_string((char*)0x0141EE68, STR_RCT2_LANDSCAPE_FILE, 0);
-	audio_pause_sounds();
-	result = platform_open_common_file_dialog(FD_OPEN, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6;*.SV4;*.SC6", (char*)0x0141EE68);
-	audio_unpause_sounds();
-	// window_proc
-	return result;
-}
-
-/**
- *
- *  rct2: 0x00674EB6
- */
-static int open_load_game_dialog()
-{
-	int result;
-	format_string((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, STR_LOAD_GAME_DIALOG_TITLE, 0);
-	safe_strcpy((char*)0x0141EF68, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH, MAX_PATH);
-	format_string((char*)0x0141EE68, STR_RCT2_SAVED_GAME, 0);
-	audio_pause_sounds();
-	result = platform_open_common_file_dialog(FD_OPEN, (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, (char*)0x0141EF68, "*.SV6", (char*)0x0141EE68);
-	audio_unpause_sounds();
-	// window_proc
-	return result;
-}
-
-/**
- *
  *  rct2: 0x0066DC0F
  */
 static void load_landscape()
@@ -1023,32 +989,6 @@ void reset_all_sprite_quadrant_placements()
 	for (rct_sprite* spr = g_sprite_list; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++)
 		if (spr->unknown.sprite_identifier != 0xFF)
 			sprite_move(spr->unknown.x, spr->unknown.y, spr->unknown.z, spr);
-}
-
-/**
- *
- *  rct2: 0x006750E9
- */
-static int show_save_game_dialog(char *resultPath)
-{
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	int result;
-	char title[256];
-	char filename[MAX_PATH];
-	char filterName[256];
-
-	format_string(title, STR_SAVE_GAME_1040, NULL);
-	safe_strcpy(filename, RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), MAX_PATH);
-	format_string(filterName, STR_RCT2_SAVED_GAME, NULL);
-
-	audio_pause_sounds();
-	result = platform_open_common_file_dialog(FD_SAVE, title, filename, "*.SV6", filterName);
-	audio_unpause_sounds();
-
-	if (result)
-		safe_strcpy(resultPath, filename, MAX_PATH);
-	return result;
 }
 
 void save_game()
