@@ -7551,8 +7551,10 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
 		invalidate_test_results(rideIndex);
+		rideEntry = get_ride_entry(ride->subtype);
 		ride->subtype = value;
 		ride_set_vehicle_colours_to_random_preset(ride, *eax & 0xFF);
+		ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
 		break;
 	default:
 		log_error("Unknown command!");
