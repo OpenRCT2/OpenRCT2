@@ -989,6 +989,10 @@ static const uint8 RCT1PathAdditionConversionTable[15] = {
 #pragma region RCT1 Default Objects
 
 static const rct_object_entry RCT1DefaultObjectsRides[] = {
+	/*
+     * Entries in this list up to and including LEMST have to stay as they are, as they line up with the RCT1 S4 structure.
+	 * For more information, see here: https://github.com/OpenRCT2/OpenRCT2/wiki/RCT1-ride-and-vehicle-types-and-their-RCT2-equivalents
+     */
 	{ 0x00008000, { "PTCT1   " }, 0 },
 	{ 0x00008000, { "TOGST   " }, 0 },
 	{ 0x00008000, { "ARRSW1  " }, 0 },
@@ -1041,7 +1045,7 @@ static const rct_object_entry RCT1DefaultObjectsRides[] = {
 	{ 0x00008000, { "CIRCUS1 " }, 0 },
 	{ 0x00008000, { "GTC     " }, 0 },
 	{ 0x00008000, { "BMSD    " }, 0 },
-	{ 0x00008000, { "PTCT1   " }, 0 },
+	{ 0x00008000, { "MFT     " }, 0 },
 	{ 0x00008000, { "SFRIC1  " }, 0 },
 	{ 0x00008000, { "SMC1    " }, 0 },
 	{ 0x00008000, { "HOTDS   " }, 0 },
@@ -1073,7 +1077,33 @@ static const rct_object_entry RCT1DefaultObjectsRides[] = {
 	{ 0x00008000, { "ENTERP  " }, 0 },
 	{ 0x00008000, { "COFFS   " }, 0 },
 	{ 0x00008000, { "CHCKS   " }, 0 },
-	{ 0x00008000, { "LEMST   " }, 0 }
+	{ 0x00008000, { "LEMST   " }, 0 },
+	// The entries that follow from here are alternative vehicles.
+	{ 0x00008000, { "WMSPIN  " }, 0 },
+	{ 0x00008000, { "SWANS   " }, 0 },
+	{ 0x00008000, { "MONO1   " }, 0 },
+	{ 0x00008000, { "CBOAT   " }, 0 },
+	{ 0x00008000, { "BBOAT   " }, 0 },
+	{ 0x00008000, { "RCKC    " }, 0 },
+	{ 0x00008000, { "SKYTR   " }, 0 },
+	{ 0x00008000, { "WMMINE  " }, 0 },
+	{ 0x00008000, { "ARRSW2  " }, 0 },
+	{ 0x00008000, { "TRIKE   " }, 0 },
+	{ 0x00008000, { "STEEP2  " }, 0 },
+	{ 0x00008000, { "RCR     " }, 0 },
+	{ 0x00008000, { "TRUCK1  " }, 0 },
+	{ 0x00008000, { "CTCAR   " }, 0 },
+	{ 0x00008000, { "ZLOG    " }, 0 },
+	{ 0x00008000, { "VCR     " }, 0 },
+	{ 0x00008000, { "NRL2    " }, 0 },
+	{ 0x00008000, { "BMSU    " }, 0 },
+	{ 0x00008000, { "BMFL    " }, 0 },
+	{ 0x00008000, { "CLIFT2  " }, 0 },
+	{ 0x00008000, { "BMRB    " }, 0 },
+	{ 0x00008000, { "UTCARR  " }, 0 },
+	{ 0x00008000, { "ARRT2   " }, 0 },
+	{ 0x00008000, { "SLCFO   " }, 0 },
+	{ 0x00008000, { "AML1    " }, 0 }
 };
 
 // rct2: 0x0098BD0E
@@ -2051,7 +2081,92 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	memset(dst, 0, sizeof(rct_ride));
 
 	dst->type = RCT1RideTypeConversionTable[src->type];
-	dst->subtype = src->type;
+
+	// Make sure the right vehicle is chosen.
+	// https://github.com/OpenRCT2/OpenRCT2/wiki/RCT1-ride-and-vehicle-types-and-their-RCT2-equivalents
+	switch(src->vehicle_type)
+	{
+		case 3:
+			dst->subtype = 73;
+			break;
+		case 7:
+			dst->subtype = 85;
+			break;
+		case 9:
+			dst->subtype = 86;
+			break;
+		case 10:
+			dst->subtype = 87;
+			break;
+		case 11:
+			dst->subtype = 88;
+			break;
+		case 15:
+			dst->subtype = 89;
+			break;
+		case 17:
+			dst->subtype = 90;
+			break;
+		case 20:
+			dst->subtype = 91;
+			break;
+		case 21:
+			dst->subtype = 92;
+			break;
+		case 22:
+			dst->subtype = 93;
+			break;
+		case 24:
+			dst->subtype = 94;
+			break;
+		case 32:
+			dst->subtype = 95;
+			break;
+		case 33:
+			dst->subtype = 96;
+			break;
+		case 34:
+			dst->subtype = 97;
+			break;
+		case 49:
+			dst->subtype = 98;
+			break;
+		case 52:
+			dst->subtype = 99;
+			break;
+		case 58:
+			dst->subtype = 100;
+			break;
+		case 59:
+			dst->subtype = 101;
+			break;
+		case 60:
+			dst->subtype = 102;
+			break;
+		case 61:
+			dst->subtype = 103;
+			break;
+		case 63:
+			dst->subtype = 104;
+			break;
+		case 71:
+			dst->subtype = 105;
+			break;
+		case 73:
+			dst->subtype = 106;
+			break;
+		case 79:
+			dst->subtype = 107;
+			break;
+		case 82:
+			dst->subtype = 108;
+			break;
+		case 85:
+			dst->subtype = 109;
+			break;
+		default:
+			dst->subtype = src->type;
+	}
 
 	rideEntry = get_ride_entry(dst->subtype);
 
