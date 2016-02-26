@@ -2705,6 +2705,73 @@ void sub_679788(rct_g1_element *image, rct_drawpixelinfo *dpi) {
 }
 
 
+void sub_679C4A(rct_g1_element *image, uint8 *esi) {
+	uint8 *ebx = esi + *(esi + (_yStartPoint * 2));
+
+	uint8 last_data_line = 0;
+	while (!last_data_line) {
+		uint8 gap_size = *ebx++;
+		int no_pixels = *ebx++;
+
+		last_data_line = no_pixels & 0x80;
+
+		no_pixels &= 0x7F;
+
+		ebx += no_pixels;
+
+		if (gap_size & 1) {
+			gap_size++;
+			no_pixels--;
+			if (no_pixels == 0) {
+				continue;
+			}
+		}
+
+		// This is only done for one of the functions
+		int sub = 0x679C4A;
+		if (sub == 0x679C4A) {
+			if (gap_size & 2) {
+				gap_size += 2;
+				no_pixels -= 2;
+				if (no_pixels <= 0) {
+					continue;
+				}
+			}
+		}
+
+		int x_start = gap_size - _xStartPoint;
+		if (x_start <= 0) {
+			no_pixels += x_start;
+			if (no_pixels <= 0) {
+				continue;
+			}
+
+			x_start = 0;
+		} else {
+			// Do nothing?
+		}
+
+		x_start += no_pixels;
+		x_start--;
+		if (x_start > 0) {
+			no_pixels -= x_start;
+			if (no_pixels <= 0) {
+				continue;
+			}
+		}
+
+		// These differ per variant ( `+7)>>3`, `+1)>>1` or `+3)>>2` )
+		// Could be 'ceil2(n, 8)`, 'ceil2(n, 2)`, 'ceil2(n, 4)`
+		int pixel_offset = 3;
+		int shift_amount = 2;
+		no_pixels = (no_pixels + pixel_offset) >> shift_amount;
+		if (no_pixels != 0) {
+			RCT2_GLOBAL(0x141F569, uint8) = 1;
+			break;
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x00679074
