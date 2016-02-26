@@ -1856,13 +1856,15 @@ static void sub_68B3FB(int x, int y)
 		case MAP_ELEMENT_TYPE_BANNER:
 			viewport_banner_paint_setup(direction, height, map_element);
 			break;
-		default:
-			// This is a little hack for taking care of undefined map_elements
-			// 8cars MOM used a dirty version of this to skip drawing certain elements
+		// A corrupt element inserted by OpenRCT2 itself, which skips the drawing of the next element only.
+		case MAP_ELEMENT_TYPE_CORRUPT:
 			if (map_element_is_last_for_tile(map_element))
 				return;
 			map_element++;
 			break;
+		default:
+			// An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of all elements after it.
+			return;
 		}
 		RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
 	} while (!map_element_is_last_for_tile(map_element++));
