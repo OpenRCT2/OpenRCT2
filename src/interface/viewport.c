@@ -2232,6 +2232,8 @@ struct paint_string_struct {
 	uint8 *y_offsets;				// 0x1A
 };
 
+void loc_6791B8_6795E4(rct_g1_element *image, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end);
+
 static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 {
 	int zoom = dpi->zoom_level;
@@ -2742,9 +2744,8 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					return;
 				}
 
-				sint16 ax = image->width;
 				_xStartPoint = 0;
-				_xEndPoint = ax;
+				_xEndPoint = image->width;
 				x += image->x_offset;
 				x -= dpi->x;
 				if (x < 0) {
@@ -2765,12 +2766,82 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 				}
 
 				// TODO: refactor in sub_67933B
-				// ebp might be dpi
-				RCT2_CALLPROC_X(0x0067933B, 0, 0, 0, 0, (int)image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
+				// EDI: dpi
+				// EBP: dpi
+				RCT2_CALLPROC_X(0x0067933B, 0, 0, 0, 0, (int) image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
 				return;
 			}
 
-			// TODO: loc_6790A0:
+			rct_drawpixelinfo *ebp = dpi;
+			uint8 *esi = image->offset;
+
+			y += image->y_offset;
+			_yEndPoint = image->height;
+			y -= dpi->y;
+			if (y < 0) {
+				_yEndPoint += y;
+				if (_yEndPoint <= 0) {
+					return;
+				}
+
+				y = 0;
+				esi += (image->width * -y) & 0xFFFF;
+			} else {
+				// bx = y;
+			}
+
+			y += _yEndPoint;
+			y--;
+			if (y > 0) {
+				_yEndPoint -= y;
+				if (_yEndPoint <= 0) {
+					return;
+				}
+			}
+
+			sint8 ax = image->width;
+			_xEndPoint = ax;
+			RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
+			x += image->x_offset;
+			x -= dpi->x;
+			if (x < 0) {
+				_xEndPoint += x;
+				if (_xEndPoint <= 0) {
+					return;
+				}
+
+				RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
+				esi -= x;
+				x = 0;
+			}
+
+			x += _xEndPoint;
+			x--;
+			if (x > 0) {
+				_xEndPoint -= x;
+				if (_xEndPoint <= 0) {
+					return;
+				}
+			}
+
+			RCT2_GLOBAL(0x009ABDAE, sint16) += x;
+
+			if (!(image->flags & 2)) {
+				sint8 ah = (_yEndPoint >> 8) & 0xFF;
+				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
+				uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
+
+				// ah and edx don't seem to be used by this function...
+				do_sub(0x00679236, ebx, image, esi);
+				return;
+			}
+
+
+			uint8 *new_source_pointer_start, *esi_end;
+			loc_6791B8_6795E4(image, esi, &new_source_pointer_start, &esi_end);
+			do_sub(0x00679236, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
+			free(new_source_pointer_start);
+
 			break;
 
 		case 1:
@@ -2961,50 +3032,10 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					return;
 				}
 
-				// loc_6795E4:
-				uint8 *ebp = esi;
-				rct_g1_element *g1_source = image;
-				uint8 *source_pointer;
-
-				int total_no_pixels = g1_source->width * g1_source->height;
-				source_pointer = g1_source->offset;
-				uint8 *new_source_pointer_start = malloc(total_no_pixels);
-				uint8 *new_source_pointer = new_source_pointer_start;// 0x9E3D28;
-				int ebx, ecx;
-				while (total_no_pixels > 0) {
-					sint8 no_pixels = *source_pointer;
-					if (no_pixels >= 0) {
-						source_pointer++;
-						total_no_pixels -= no_pixels;
-						memcpy((char *) new_source_pointer, (char *) source_pointer, no_pixels);
-						new_source_pointer += no_pixels;
-						source_pointer += no_pixels;
-						continue;
-					}
-					ecx = no_pixels;
-					no_pixels &= 0x7;
-					ecx >>= 3;//SAR
-					int eax = ((int) no_pixels) << 8;
-					ecx = -ecx;//Odd
-					eax = (eax & 0xFF00) + *(source_pointer + 1);
-					total_no_pixels -= ecx;
-					source_pointer += 2;
-					ebx = (uint32) new_source_pointer - eax;
-					eax = (uint32) source_pointer;
-					source_pointer = (uint8 *) ebx;
-					ebx = eax;
-					eax = 0;
-					memcpy((char *) new_source_pointer, (char *) source_pointer, ecx);
-					new_source_pointer += ecx;
-					source_pointer = (uint8 *) ebx;
-				}
-
-				uint8 *esi_end = new_source_pointer_start + (uint32) ebp;
-				sint8 ah = (_yEndPoint >> 8) & 0xFF;
-				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
+				uint8 *new_source_pointer_start, *esi_end;
+				loc_6791B8_6795E4(image, esi, &new_source_pointer_start, &esi_end);
 				do_sub(0x00679662, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
 				free(new_source_pointer_start);
-				return;
 			}
 			break;
 
@@ -3017,7 +3048,49 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 			break;
 	}
 
-	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int)dpi, 0);
+	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
+}
+
+void loc_6791B8_6795E4(rct_g1_element *g1_source, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end) {
+	uint8 *ebp = esi;
+	uint8 *source_pointer;
+
+	int total_no_pixels = g1_source->width * g1_source->height;
+	source_pointer = g1_source->offset;
+	(*new_source_pointer_start) = malloc(total_no_pixels);
+	uint8 *new_source_pointer = (*new_source_pointer_start);// 0x9E3D28;
+	int ebx, ecx;
+	while (total_no_pixels > 0) {
+		sint8 no_pixels = *source_pointer;
+		if (no_pixels >= 0) {
+			source_pointer++;
+			total_no_pixels -= no_pixels;
+			memcpy((char *) new_source_pointer, (char *) source_pointer, no_pixels);
+			new_source_pointer += no_pixels;
+			source_pointer += no_pixels;
+			continue;
+		}
+		ecx = no_pixels;
+		no_pixels &= 0x7;
+		ecx >>= 3;//SAR
+		int eax = ((int) no_pixels) << 8;
+		ecx = -ecx;//Odd
+		eax = (eax & 0xFF00) + *(source_pointer + 1);
+		total_no_pixels -= ecx;
+		source_pointer += 2;
+		ebx = (uint32) new_source_pointer - eax;
+		eax = (uint32) source_pointer;
+		source_pointer = (uint8 *) ebx;
+		ebx = eax;
+		eax = 0;
+		memcpy((char *) new_source_pointer, (char *) source_pointer, ecx);
+		new_source_pointer += ecx;
+		source_pointer = (uint8 *) ebx;
+	}
+
+	(*esi_end) = new_source_pointer_start + (uint32) ebp;
+	sint8 ah = (_yEndPoint >> 8) & 0xFF;
+	int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
 }
 
 /**
