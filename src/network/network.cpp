@@ -42,6 +42,7 @@ extern "C" {
 #include "../game.h"
 #include "../interface/chat.h"
 #include "../interface/window.h"
+#include "../interface/keyboard_shortcut.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../network/http.h"
@@ -95,6 +96,8 @@ enum {
 
 constexpr int MASTER_SERVER_REGISTER_TIME = 120 * 1000;	// 2 minutes
 constexpr int MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000;	// 1 minute
+
+void network_chat_show_connected_message();
 
 NetworkPacket::NetworkPacket()
 {
@@ -702,6 +705,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	player_id = player->id;
 
 	printf("Ready for clients...\n");
+	network_chat_show_connected_message();
 
 	mode = NETWORK_MODE_SERVER;
 	status = NETWORK_STATUS_CONNECTED;
@@ -1758,6 +1762,9 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			server_srand0_tick = 0;
 			// window_network_status_open("Loaded new map from network");
 			_desynchronised = false;
+
+			// Notify user he is now online and which shortcut key enables chat
+			network_chat_show_connected_message();
 		}
 		else
 		{
@@ -2128,6 +2135,18 @@ const char* network_get_group_name(unsigned int index)
 rct_string_id network_get_group_name_string_id(unsigned int index)
 {
 	return gNetwork.group_list[index]->GetNameStringId();
+}
+
+void network_chat_show_connected_message()
+{
+	char *templateString = (char*)language_get_string(STR_INDIVIDUAL_KEYS_BASE);
+	keyboard_shortcut_format_string(templateString, gShortcutKeys[SHORTCUT_OPEN_CHAT_WINDOW]);
+	utf8 buffer[256];
+	NetworkPlayer server;
+	safe_strcpy((char*)&server.name, "Server", sizeof(server.name));
+	format_string(buffer, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
+	const char *formatted = Network::FormatChat(&server, buffer);
+	chat_history_add(formatted);
 }
 
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)

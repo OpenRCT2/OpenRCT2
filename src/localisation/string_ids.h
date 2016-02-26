@@ -2395,6 +2395,9 @@ enum {
 	STR_RIDE_LIST_RUNNING_COST_LABEL = 5780,
 	STR_RIDE_LIST_RUNNING_COST_UNKNOWN = 5781,
 
+
+	STR_MULTIPLAYER_CONNECTED_CHAT_HINT = 5782,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

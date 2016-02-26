@@ -4085,6 +4085,7 @@ STR_5778    :Built: {COMMA16} Years Ago
 STR_5779    :Income: {CURRENCY2DP} per hour
 STR_5780    :Running cost: {CURRENCY2DP} per hour
 STR_5781    :Running cost: Unknown
+STR_5782    :You are now connected. Press '{STRING}' to chat.
 
 #############
 # Scenarios #
