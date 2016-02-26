@@ -212,7 +212,10 @@ dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 	return dtype;
 }
 
-int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName) {
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc) {
+
+
+//int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName) {
 	int exit_value;
 	char executable[MAX_PATH];
 	char cmd[MAX_PATH];
@@ -229,8 +232,8 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	dtype = get_dialog_app(executable, &size);
 
 	switch (dtype) {
-		case DT_KDIALOG:
-			switch (type) {
+		/*case DT_KDIALOG:
+			switch (desc->type) {
 				case FD_OPEN:
 					action = "--getopenfilename";
 					break;
@@ -244,11 +247,11 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 				sprintf(filter, "\"%s | %s\"", filterPattern, filterName);
 			}
 
-			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ %s", executable, title, action, filter?filter:"");
-			break;
+			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ %s", executable, desc->title, action, filter?filter:"");
+			break;*/
 		case DT_ZENITY:
 			action = "--file-selection";
-			switch (type) {
+			switch (desc->type) {
 				case FD_SAVE:
 					flags = "--confirm-overwrite --save";
 					break;
@@ -258,29 +261,34 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 			}
 
 			// Zenity seems to be case sensitive, while Kdialog isn't.
-			if (filterPattern && filterName) {
+			if (desc->filters[0].pattern && desc->filters[0].name) {
 				int regexIterator = 0;
-				for(int i = 0; i <= sizeof(filterPattern); i++) {
-					if (isalpha(filterPattern[i])) {
+				for(int i = 0; i <= strlen(desc->filters[0].pattern); i++) {
+					if (isalpha(desc->filters[0].pattern[i])) {
 						filterPatternRegex[regexIterator+0] = '[';
-						filterPatternRegex[regexIterator+1] = (char)toupper(filterPattern[i]);
-						filterPatternRegex[regexIterator+2] = (char)tolower(filterPattern[i]);
+						filterPatternRegex[regexIterator+1] = (char)toupper(desc->filters[0].pattern[i]);
+						filterPatternRegex[regexIterator+2] = (char)tolower(desc->filters[0].pattern[i]);
 						filterPatternRegex[regexIterator+3] = ']';
 						regexIterator += 3;
 					}
+					else if(desc->filters[0].pattern[i] == ';') {
+						filterPatternRegex[regexIterator] = ' ';
+					}
 					else {
-						filterPatternRegex[regexIterator] = (char)filterPattern[i];
+						filterPatternRegex[regexIterator] = (char)desc->filters[0].pattern[i];
 					}
 					regexIterator++;
 				}
 				filterPatternRegex[regexIterator+1] = 0;
 
 				allFilesPatternDescription = (char *)language_get_string(STR_ALL_FILES);
-				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(filterName) + 2 + strlen(" --file-filter=\"") + strlen(allFilesPatternDescription) + strlen(" | *\""));
-				sprintf(filter, "--file-filter=\"%s | %s\" --file-filter=\"%s | *\"", filterName, filterPatternRegex, allFilesPatternDescription);
+				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(desc->filters[0].name) + 2 + strlen(" --file-filter=\"") + strlen(allFilesPatternDescription) + strlen(" | *\""));
+				sprintf(filter, "--file-filter=\"%s | %s\" --file-filter=\"%s | *\"", desc->filters[0].name, filterPatternRegex, allFilesPatternDescription);
+				log_warning(desc->filters[0].pattern);
+				log_warning(filter);
 			}
 
-			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, title, filter?filter:"");
+			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, desc->title, filter?filter:"");
 			break;
 		default: return 0;
 	}
@@ -296,7 +304,7 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	result[size-1] = '\0';
 	log_verbose("filename = %s", result);
 
-	if (type == FD_OPEN && access(result, F_OK) == -1) {
+	if (desc->type == FD_OPEN && access(result, F_OK) == -1) {
 		char msg[MAX_PATH];
 
 		snprintf(msg, MAX_PATH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
@@ -304,9 +312,9 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 
 		if (filter != NULL)
 			free(filter);
-		return platform_open_common_file_dialog(type, title, filename, filterPattern, filterName);
+		return platform_open_common_file_dialog(outFilename, desc);
 	} else
-	if (type == FD_SAVE && access(result, F_OK) != -1 && dtype == DT_KDIALOG) {
+	if (desc->type == FD_SAVE && access(result, F_OK) != -1 && dtype == DT_KDIALOG) {
 		snprintf(cmd, MAX_PATH, "%s --yesno \"Overwrite %s?\"", executable, result);
 
 		size = MAX_PATH;
@@ -319,7 +327,7 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 		}
 	}
 
-	strncpy(filename, result, MAX_PATH);
+	strncpy(outFilename, result, MAX_PATH);
 
 	if (filter != NULL)
 		free(filter);
