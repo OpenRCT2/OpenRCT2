@@ -2713,6 +2713,63 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 
 	switch (dpi->zoom_level) {
 		case 0:
+			RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
+			RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
+			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
+			RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
+			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
+			RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
+			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
+			if (image->flags & 4) {
+				y += image->y_offset;
+				_yStartPoint = 0;
+				_yEndPoint = image->height;
+				y -= dpi->y;
+				if (y < 0) {
+					_yEndPoint += y;
+					if (_yEndPoint <= 0) {
+						return;
+					}
+
+					_yStartPoint -= y;
+					y = 0;
+				}
+
+				y += _yEndPoint;
+				y--;
+				if (y > 0) {
+					_yEndPoint -= y;
+					return;
+				}
+
+				sint16 ax = image->width;
+				_xStartPoint = 0;
+				_xEndPoint = ax;
+				x += image->x_offset;
+				x -= dpi->x;
+				if (x < 0) {
+					_xEndPoint += x;
+					if (_xEndPoint <= 0) {
+						return;
+					}
+
+					_xStartPoint -= x;
+					x = 0;
+				}
+
+				x += _xEndPoint;
+				x--;
+				if (x > 0) {
+					_xEndPoint -= x;
+					return;
+				}
+
+				// TODO: refactor in sub_67933B
+				// ebp might be dpi
+				RCT2_CALLPROC_X(0x0067933B, 0, 0, 0, 0, (int)image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
+				return;
+			}
+
 			// TODO: loc_6790A0:
 			break;
 
