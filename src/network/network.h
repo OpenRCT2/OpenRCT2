@@ -305,7 +305,7 @@ public:
 	NetworkPlayer* GetPlayerByID(uint8 id);
 	std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
 	NetworkGroup* GetGroupByID(uint8 id);
-	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
+	static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
 	void KickPlayer(int playerId);
