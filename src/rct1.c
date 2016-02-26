@@ -1377,6 +1377,7 @@ static const rct_object_entry RCT1DefaultObjectsWall[] = {
 	{ 0x00000083, { "WSW     " }, 0 },
 	{ 0x00000083, { "WSWG    " }, 0 },
 	{ 0x00000083, { "WMW     " }, 0 },
+	{ 0x00000083, { "WALLGL16" }, 0 },
 	{ 0x00000083, { "WFW1    " }, 0 },
 	{ 0x00000083, { "WFWG    " }, 0 },
 	{ 0x00000083, { "WPW1    " }, 0 },
@@ -1391,6 +1392,8 @@ static const rct_object_entry RCT1DefaultObjectsWall[] = {
 	{ 0x00000083, { "WBW     " }, 0 },
 	{ 0x00000083, { "WBR1    " }, 0 },
 	{ 0x00000083, { "WBRG    " }, 0 },
+	{ 0x00000083, { "WALLCFAR" }, 0 },	// Should be white wooden fence
+	{ 0x00000083, { "WALLPOST" }, 0 },	// Should be red wooden fence
 	{ 0x00000083, { "WBR2    " }, 0 },
 	{ 0x00000083, { "WBR3    " }, 0 },
 	{ 0x00000083, { "WPW3    " }, 0 },
@@ -1432,7 +1435,6 @@ static const rct_object_entry RCT1DefaultObjectsWall[] = {
 	{ 0x00000083, { "WALLCB16" }, 0 },
 	{ 0x00000083, { "WALLCB32" }, 0 },
 	{ 0x00000083, { "WALLGL8 " }, 0 },
-	{ 0x00000083, { "WALLGL16" }, 0 },
 	{ 0x00000083, { "WALLGL32" }, 0 },
 	{ 0x00000083, { "WALLWD8 " }, 0 },
 	{ 0x00000083, { "WALLWD16" }, 0 },
