@@ -986,7 +986,7 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo *dpi, rct_window *w)
 	int widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_MAIN;
 
 	if (!(w->disabled_widgets & (1LL << widgetIndex))) {
-		int spriteIndex;
+		int spriteIndex = 0;
 		int rideType = get_ride(w->number)->type;
 
 		switch (gRideClassifications[rideType]) {
@@ -1550,6 +1550,9 @@ static void window_ride_init_viewport(rct_window *w)
 		coordinate_focus coordinate;
 	} focus;
 
+	focus.coordinate.x = 0;
+	focus.coordinate.y = 0;
+	focus.coordinate.z = 0;
 	focus.sprite.sprite_id = -1;
 	focus.coordinate.zoom = 0;
 	focus.coordinate.rotation = get_current_rotation();
@@ -1846,7 +1849,7 @@ static void window_ride_show_view_dropdown(rct_window *w, rct_widget *widget)
 static void window_ride_show_open_dropdown(rct_window *w, rct_widget *widget)
 {
 	rct_ride *ride;
-	int numItems, highlightedIndex, checkedIndex;
+	int numItems, highlightedIndex = 0, checkedIndex;
 
 	ride = get_ride(w->number);
 
@@ -1938,7 +1941,7 @@ static void window_ride_main_mousedown(int widgetIndex, rct_window *w, rct_widge
 static void window_ride_main_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	rct_ride *ride;
-	int status;
+	int status = 0;
 
 	switch (widgetIndex) {
 	case WIDX_VIEW_DROPDOWN:
@@ -2687,7 +2690,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 	rct_ride *ride;
 	rct_ride_entry *rideEntry;
 	rct_widget *widget;
-	int x, y, startX, startY, i, j, vehicleColourIndex, spriteIndex;
+	int x, y, startX, startY, i, j, vehicleColourIndex = 0, spriteIndex;
 	rct_vehichle_paintinfo *nextSpriteToDraw, *current, tmp;
 	vehicle_colour vehicleColour;
 

@@ -4174,8 +4174,8 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 				curVehicle->var_4E++;
 				if ((scenario_rand() & 0xFFFF) <= 0x1555) {
 					sprite_misc_3_create(
-						curVehicle->x + (scenario_rand() & 2 - 1),
-						curVehicle->y + (scenario_rand() & 2 - 1),
+						curVehicle->x + ((scenario_rand() & 2) - 1),
+						curVehicle->y + ((scenario_rand() & 2) - 1),
 						curVehicle->z
 						);
 				}

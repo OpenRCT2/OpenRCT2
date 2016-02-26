@@ -392,7 +392,7 @@ int map_element_height(int x, int y)
 	// Remove the extra height bit
 	slope &= 0xF;
 
-	sint8 quad, quad_extra; // which quadrant the element is in?
+	sint8 quad = 0, quad_extra = 0; // which quadrant the element is in?
 	                        // quad_extra is for extra height tiles
 
 	uint8 xl, yl;	    // coordinates across this tile

@@ -115,7 +115,7 @@ static void object_list_sort()
 {
 	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry = NULL;
 	rct_object_filters *newFilters = NULL, *destFilter = NULL;
-	int numObjects, i, j, bufferSize, entrySize, lowestIndex;
+	int numObjects, i, j, bufferSize, entrySize, lowestIndex = 0;
 	char *objectName, *lowestString;
 	uint8 *copied;
 
@@ -258,7 +258,10 @@ void object_list_load()
 	uint64 totalFileSize;
 	file_info enumFileInfo;
 
-	object_list_query_directory(&totalFiles, &totalFileSize, &fileDateModifiedChecksum);
+	int ok = object_list_query_directory(&totalFiles, &totalFileSize, &fileDateModifiedChecksum);
+	if (ok != 1) {
+		return;
+	}
 
 	// Would move this into cache load, but its used further on
 	totalFiles = ror32(totalFiles, 24);

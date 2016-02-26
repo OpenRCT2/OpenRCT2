@@ -1092,7 +1092,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
 		break;
 	case FORMAT_ADJUST_PALETTE:
 	{
-		uint16 eax = palette_to_g1_offset[*nextCh++];
+		uint16 eax = palette_to_g1_offset[(uint8)*nextCh++];
 		rct_g1_element *g1Element = &g1Elements[eax];
 		uint32 ebx = g1Element->offset[249] + 256;
 		if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE)) {

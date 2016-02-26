@@ -102,7 +102,7 @@ void game_handle_edge_scroll();
 void game_handle_key_scroll();
 static void input_widget_left(int x, int y, rct_window *w, int widgetIndex);
 void input_state_widget_pressed(int x, int y, int state, int widgetIndex, rct_window* w, rct_widget* widget);
-void sub_6ED990(char cursor_id);
+void sub_6ED990(uint8 cursor_id);
 static void input_window_position_continue(rct_window *w, int lastX, int lastY, int newX, int newY);
 static void input_window_position_end(rct_window *w, int x, int y);
 static void input_window_resize_begin(rct_window *w, int widgetIndex, int x, int y);
@@ -1548,7 +1548,7 @@ int get_next_key()
 *
 *  rct2: 0x006ED990
 */
-void sub_6ED990(char cursor_id){
+void sub_6ED990(uint8 cursor_id){
 	if (gInputState == INPUT_STATE_RESIZING)
 	{
 		cursor_id = CURSOR_DIAGONAL_ARROWS;	//resize icon

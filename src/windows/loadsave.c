@@ -264,7 +264,7 @@ static void window_loadsave_close(rct_window *w)
 
 static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 {
-	int result;
+	int result = 0;
 	char path[MAX_PATH], filter[MAX_PATH];
 
 	switch (widgetIndex){
