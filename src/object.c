@@ -96,13 +96,14 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	int calculatedChecksum=object_calculate_checksum(&openedEntry, chunk, *chunkSize);
 
 	// Calculate and check checksum
-	if (calculatedChecksum != openedEntry.checksum) {
+	if (calculatedChecksum != openedEntry.checksum&&!gConfigGeneral.allow_loading_with_incorrect_checksum) {
 		char buffer[100];
 		sprintf(buffer, "Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
 		log_error(buffer);
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 		free(chunk);
 		return 0;
+			
 	}
 
 	objectType = openedEntry.flags & 0x0F;
@@ -208,10 +209,56 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 	chunkHeader.encoding = object_entry_group_encoding[type];
 	chunkHeader.length = installed_entry->chunk_size;
 
+
+	//Check if content of object file matches the stored checksum. If it does not, then fix it.
+	int calculated_checksum=object_calculate_checksum(entry,chunk,installed_entry->chunk_size);
+		if(entry->checksum!=calculated_checksum)
+		{
+		printf("Chunk size %d\n",chunkHeader.length);
+
+		printf("Fixing object with invalid checksum\n");
+		//Store the current length of the header - it's the offset at which we will write the extra bytes
+		int salt_offset=chunkHeader.length;
+		/*Allocate a new chunk 11 bytes longer.
+		I would just realloc the old one, but realloc can move the data, leaving dangling pointers 
+		into the old buffer. If the chunk is only referenced in one place it would be safe to realloc 
+		it and update that reference, but I don't know the codebase well enough to know if that's the
+		case, so to be on the safe side I copy it*/
+		uint8* new_chunk=malloc(chunkHeader.length+11);
+		memcpy(new_chunk,chunk,chunkHeader.length);
+		//It should be safe to update these in-place because they are local
+		chunk=new_chunk;
+		chunkHeader.length+=11;
+
+		printf("New chunk size %d\n",chunkHeader.length);
+
+		/*Next work out which bits need to be flipped to make the current checksum match the one in the file 
+		The bitwise rotation compensates for the rotation performed during the checksum calculation*/
+		int bits_to_flip=entry->checksum^((calculated_checksum<<25)|(calculated_checksum>>7));
+		/*Each set bit encountered during encoding flips one bit of the resulting checksum (so each bit of the checksum is an XOR
+		of bits from the file). Here, we take each bit that should be flipped in the checksum and set one of the bits in the data 
+		that maps to it. 11 bytes is the minimum needed to touch every bit of the checksum - with less than that, you wouldn't 
+		always be able to make the checksum come out to the desired target*/
+		chunk[salt_offset]=(bits_to_flip&0x00000001)<<7;;
+		chunk[salt_offset+1]=((bits_to_flip&0x00200000)>>14);
+		chunk[salt_offset+2]=((bits_to_flip&0x000007F8)>>3);
+		chunk[salt_offset+3]=((bits_to_flip&0xFF000000)>>24);
+		chunk[salt_offset+4]=((bits_to_flip&0x00100000)>>13);
+		chunk[salt_offset+5]=(bits_to_flip&0x00000004)>>2;
+		chunk[salt_offset+6]=0;
+		chunk[salt_offset+7]=((bits_to_flip&0x000FF000)>>12);
+		chunk[salt_offset+8]=(bits_to_flip&0x00000002)>>1;
+		chunk[salt_offset+9]=(bits_to_flip&0x00C00000)>>22;
+		chunk[salt_offset+10]=(bits_to_flip&0x00000800)>>11;
+		}
+
 	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
 	SDL_RWwrite(rw, dst_buffer, 1, size_dst);
-
 	free(dst_buffer);
+
+
+
+
 	return 1;
 }
 
@@ -237,9 +284,16 @@ int object_load_packed(SDL_RWops* rw)
 	}
 
 	if (object_calculate_checksum(&entry, chunk, chunkSize) != entry.checksum){
+		if(gConfigGeneral.allow_loading_with_incorrect_checksum)
+		{
+		log_warning("Checksum mismatch from packed object: %.8s", entry.name);
+		}
+		else
+		{
 		log_error("Checksum mismatch from packed object: %.8s", entry.name);
 		free(chunk);
 		return 0;
+		}
 	}
 
 	int type = entry.flags & 0x0F;
