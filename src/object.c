@@ -227,7 +227,6 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 		uint8* new_chunk=malloc(chunkHeader.length+11);
 		memcpy(new_chunk,chunk,chunkHeader.length);
 		//It should be safe to update these in-place because they are local
-		chunk=new_chunk;
 		chunkHeader.length+=11;
 
 		printf("New chunk size %d\n",chunkHeader.length);
@@ -239,26 +238,30 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 		of bits from the file). Here, we take each bit that should be flipped in the checksum and set one of the bits in the data 
 		that maps to it. 11 bytes is the minimum needed to touch every bit of the checksum - with less than that, you wouldn't 
 		always be able to make the checksum come out to the desired target*/
-		chunk[salt_offset]=(bits_to_flip&0x00000001)<<7;;
-		chunk[salt_offset+1]=((bits_to_flip&0x00200000)>>14);
-		chunk[salt_offset+2]=((bits_to_flip&0x000007F8)>>3);
-		chunk[salt_offset+3]=((bits_to_flip&0xFF000000)>>24);
-		chunk[salt_offset+4]=((bits_to_flip&0x00100000)>>13);
-		chunk[salt_offset+5]=(bits_to_flip&0x00000004)>>2;
-		chunk[salt_offset+6]=0;
-		chunk[salt_offset+7]=((bits_to_flip&0x000FF000)>>12);
-		chunk[salt_offset+8]=(bits_to_flip&0x00000002)>>1;
-		chunk[salt_offset+9]=(bits_to_flip&0x00C00000)>>22;
-		chunk[salt_offset+10]=(bits_to_flip&0x00000800)>>11;
+		new_chunk[salt_offset]=(bits_to_flip&0x00000001)<<7;;
+		new_chunk[salt_offset+1]=((bits_to_flip&0x00200000)>>14);
+		new_chunk[salt_offset+2]=((bits_to_flip&0x000007F8)>>3);
+		new_chunk[salt_offset+3]=((bits_to_flip&0xFF000000)>>24);
+		new_chunk[salt_offset+4]=((bits_to_flip&0x00100000)>>13);
+		new_chunk[salt_offset+5]=(bits_to_flip&0x00000004)>>2;
+		new_chunk[salt_offset+6]=0;
+		new_chunk[salt_offset+7]=((bits_to_flip&0x000FF000)>>12);
+		new_chunk[salt_offset+8]=(bits_to_flip&0x00000002)>>1;
+		new_chunk[salt_offset+9]=(bits_to_flip&0x00C00000)>>22;
+		new_chunk[salt_offset+10]=(bits_to_flip&0x00000800)>>11;
+
+		//Write modified chunk data
+		size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry),new_chunk,chunkHeader);
+		free(new_chunk);
+		}
+		else
+		{
+		//If the checksum matches, write chunk data
+		size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
 		}
 
-	size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
 	SDL_RWwrite(rw, dst_buffer, 1, size_dst);
 	free(dst_buffer);
-
-
-
-
 	return 1;
 }
 
