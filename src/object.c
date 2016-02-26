@@ -212,8 +212,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 
 	//Check if content of object file matches the stored checksum. If it does not, then fix it.
 	int calculated_checksum=object_calculate_checksum(entry,chunk,installed_entry->chunk_size);
-		if(entry->checksum!=calculated_checksum)
-		{
+	if(entry->checksum!=calculated_checksum){
 		//Store the current length of the header - it's the offset at which we will write the extra bytes
 		int salt_offset=chunkHeader.length;
 		/*Allocate a new chunk 11 bytes longer.
@@ -248,12 +247,10 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 		//Write modified chunk data
 		size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry),new_chunk,chunkHeader);
 		free(new_chunk);
-		}
-		else
-		{
+	} else {
 		//If the checksum matches, write chunk data
 		size_dst += sawyercoding_write_chunk_buffer(dst_buffer + sizeof(rct_object_entry), chunk, chunkHeader);
-		}
+	}
 
 	SDL_RWwrite(rw, dst_buffer, 1, size_dst);
 	free(dst_buffer);
@@ -282,15 +279,13 @@ int object_load_packed(SDL_RWops* rw)
 	}
 
 	if (object_calculate_checksum(&entry, chunk, chunkSize) != entry.checksum){
-		if(gConfigGeneral.allow_loading_with_incorrect_checksum)
-		{
-		log_warning("Checksum mismatch from packed object: %.8s", entry.name);
-		}
-		else
-		{
-		log_error("Checksum mismatch from packed object: %.8s", entry.name);
-		free(chunk);
-		return 0;
+	
+		if(gConfigGeneral.allow_loading_with_incorrect_checksum){
+			log_warning("Checksum mismatch from packed object: %.8s", entry.name);
+		} else {
+			log_error("Checksum mismatch from packed object: %.8s", entry.name);
+			free(chunk);
+			return 0;
 		}
 	}
 
