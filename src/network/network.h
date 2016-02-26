@@ -246,11 +246,11 @@ public:
 	void setLastDisconnectReason(const char *src);
 	void setLastDisconnectReason(const rct_string_id string_id);
 
-	SOCKET socket;
+	SOCKET socket = INVALID_SOCKET;
 	NetworkPacket inboundpacket;
-	int authstatus;
+	int authstatus = NETWORK_AUTH_NONE;
 	NetworkPlayer* player;
-	uint32 ping_time;
+	uint32 ping_time = 0;
 
 private:
 	char* last_disconnect_reason;
@@ -279,10 +279,10 @@ public:
 private:
 	static int ResolveFunc(void* pointer);
 
-	const char* host;
-	unsigned short port;
-	SDL_mutex* mutex;
-	SDL_cond* cond;
+	const char* host = nullptr;
+	unsigned short port = 0;
+	SDL_mutex* mutex = nullptr;
+	SDL_cond* cond = nullptr;
 	std::shared_ptr<int> status;
 };
 
@@ -364,31 +364,31 @@ private:
 		}
 	};
 
-	int mode;
-	int status;
+	int mode = NETWORK_MODE_NONE;
+	int status = NETWORK_STATUS_NONE;
 	NetworkAddress server_address;
-	bool wsa_initialized;
-	SOCKET listening_socket;
-	unsigned short listening_port;
+	bool wsa_initialized = false;
+	SOCKET listening_socket = INVALID_SOCKET;
+	unsigned short listening_port = 0;
 	NetworkConnection server_connection;
-	uint32 last_tick_sent_time;
-	uint32 last_ping_sent_time;
-	uint32 server_tick;
-	uint32 server_srand0;
-	uint32 server_srand0_tick;
-	uint8 player_id;
+	uint32 last_tick_sent_time = 0;
+	uint32 last_ping_sent_time = 0;
+	uint32 server_tick = 0;
+	uint32 server_srand0 = 0;
+	uint32 server_srand0_tick = 0;
+	uint8 player_id = 0;
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
 	std::string password;
-	bool _desynchronised;
-	uint32 server_connect_time;
-	uint32 last_advertise_time;
+	bool _desynchronised = false;
+	uint32 server_connect_time = 0;
+	uint32 last_advertise_time = 0;
 	std::string advertise_token;
 	std::string advertise_key;
-	int advertise_status;
-	uint32 last_heartbeat_time;
-	uint8 default_group;
+	int advertise_status = 0;
+	uint32 last_heartbeat_time = 0;
+	uint8 default_group = 0;
 
 	void UpdateServer();
 	void UpdateClient();

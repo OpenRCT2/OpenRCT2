@@ -796,9 +796,7 @@ static void input_scroll_part_update_hleft(rct_window *w, int widgetIndex, int s
 	assert(w != NULL);
 	if (window_find_by_number(w->classification, w->number)) {
 		w->scrolls[scroll_id].flags |= HSCROLLBAR_LEFT_PRESSED;
-		if (w->scrolls[scroll_id].h_left < 0)
-			w->scrolls[scroll_id].h_left = 0;
-		else if (w->scrolls[scroll_id].h_left >= 3)
+		if (w->scrolls[scroll_id].h_left >= 3)
 			w->scrolls[scroll_id].h_left -= 3;
 		widget_scroll_update_thumbs(w, widgetIndex);
 		widget_invalidate_by_number(w->classification, w->number, widgetIndex);
@@ -839,9 +837,7 @@ static void input_scroll_part_update_vtop(rct_window *w, int widgetIndex, int sc
 	assert(w != NULL);
 	if (window_find_by_number(w->classification, w->number)) {
 		w->scrolls[scroll_id].flags |= VSCROLLBAR_UP_PRESSED;
-		if (w->scrolls[scroll_id].v_top < 0)
-			w->scrolls[scroll_id].v_top = 0;
-		else if (w->scrolls[scroll_id].v_top >= 3)
+		if (w->scrolls[scroll_id].v_top >= 3)
 			w->scrolls[scroll_id].v_top -= 3;
 		widget_scroll_update_thumbs(w, widgetIndex);
 		widget_invalidate_by_number(w->classification, w->number, widgetIndex);

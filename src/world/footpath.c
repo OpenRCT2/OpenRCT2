@@ -174,6 +174,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
+		assert(mapElement != NULL);
 		mapElement->type = MAP_ELEMENT_TYPE_PATH;
 		mapElement->clearance_height = z + 4 + (slope & 4 ? 2 : 0);
 		mapElement->properties.path.type = (type << 4) | (slope & 7);
@@ -510,6 +511,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		}
 
 		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
+		assert(mapElement != NULL);
 		mapElement->type = MAP_ELEMENT_TYPE_PATH;
 		mapElement->clearance_height = z + 4 + (slope & 4 ? 2 : 0);
 		mapElement->properties.path.type = (type << 4) | (slope & 7);

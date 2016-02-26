@@ -196,6 +196,7 @@ void corrupt_element(int x, int y) {
 	mapElement--;
 
 	mapElement = map_element_insert(x, y, mapElement->base_height, 0);
+	assert(mapElement != NULL);
 	mapElement->type = (8 << 2);
 }
 

@@ -5661,7 +5661,7 @@ static void peep_update_thoughts(rct_peep* peep){
 					peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
 
 					// Clear top thought, push others up
-					if (i < PEEP_MAX_THOUGHTS - 1) {
+					if (i < PEEP_MAX_THOUGHTS - 2) {
 						memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
 					}
 					peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
@@ -6674,7 +6674,7 @@ void peep_insert_new_thought(rct_peep *peep, uint8 thought_type, uint8 thought_a
 			// If the thought type has not changed then we need to move
 			// it to the top of the thought list. This is done by first removing the
 			// existing thought and placing it at the top.
-			if (i < PEEP_MAX_THOUGHTS - 1) {
+			if (i < PEEP_MAX_THOUGHTS - 2) {
 				memmove(thought, thought + 1, sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
 			}
 			break;

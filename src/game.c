@@ -800,7 +800,8 @@ void game_fix_save_vars() {
 			if (mapElement == NULL)
 			{
 				log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-				map_element_insert(x, y, 14, 0);
+				mapElement = map_element_insert(x, y, 14, 0);
+				assert(mapElement != NULL);
 			}
 		}
 	}

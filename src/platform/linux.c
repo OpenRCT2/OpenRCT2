@@ -289,6 +289,7 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	execute_cmd(cmd, &exit_value, result, &size);
 
 	if (exit_value != 0) {
+		free(filter);
 		return 0;
 	}
 

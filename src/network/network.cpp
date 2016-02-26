@@ -1340,7 +1340,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		return;
 	}
 	size_t chunksize = 1000;
-	size_t out_size;
+	size_t out_size = size;
 	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
 	unsigned char *header;
 	if (compressed != NULL)

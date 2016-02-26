@@ -8023,6 +8023,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 			network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
 			rct_map_element* mapElement = map_element_insert(x / 32, y / 32, z / 8, 0xF);
+			assert(mapElement != NULL);
 			mapElement->clearance_height = clear_z;
 			mapElement->properties.entrance.type = is_exit;
 			mapElement->properties.entrance.index = station_num << 4;

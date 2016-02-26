@@ -4777,6 +4777,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 
 		mapElement = map_element_insert(x / 32, y / 32, baseZ, bl & 0xF);
+		assert(mapElement != NULL);
 		mapElement->clearance_height = clearanceZ;
 
 		uint8 map_type = direction;
@@ -5291,6 +5292,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		uint16 flooredY = floor2(y, 32);
 
 		mapElement = map_element_insert(x / 32, y / 32, baseHeight, 0xF);
+		assert(mapElement != NULL);
 		mapElement->clearance_height = clearanceHeight;
 		mapElement->type = MAP_ELEMENT_TYPE_TRACK;
 		mapElement->properties.track.type = 0x65;
