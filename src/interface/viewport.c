@@ -2776,363 +2776,85 @@ void sub_679C4A(rct_g1_element *image, uint8 *esi) {
  *
  *  rct2: 0x00679074
  */
-void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
-{
+void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
 
 	sint16 height;
 	uint8 *esi;
 	uint8 *new_source_pointer_start, *esi_end;
 
+	if (dpi->zoom_level != 0) {
+		if (image->flags & 0x20) {
+			return;
+		}
+
+		if (image->flags & 0x10) {
+			// TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
+			rct_drawpixelinfo zoomed_dpi = {
+					.bits = dpi->bits,
+					.x = dpi->x >> 1,
+					.y = dpi->y >> 1,
+					.height = dpi->height,
+					.width = dpi->width,
+					.pitch = dpi->pitch,
+					.zoom_level = dpi->zoom_level - 1
+			};
+
+			sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
+			return;
+		}
+	}
+
+	RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
+	RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
+	RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
+	RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
+	RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
+	RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
+	RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
+
+	int round, address_1, address_2;
 	switch (dpi->zoom_level) {
 		case 0:
-			RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
-			RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
-			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
-			RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
-			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
-			RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
-			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
-
-			if (image->flags & 4) {
-				y += image->y_offset;
-				_yStartPoint = 0;
-				height = image->height;
-				_yEndPoint = height;
-				y -= dpi->y;
-				if (y < 0) {
-					_yEndPoint += y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-
-					_yStartPoint -= y;
-					y = 0;
-				}
-
-				y += _yEndPoint;
-				y--;
-				if (y > 0) {
-					_yEndPoint -= y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-				}
-
-				_xStartPoint = 0;
-				_xEndPoint = image->width;
-				x += image->x_offset;
-				x -= dpi->x;
-				if (x < 0) {
-					_xEndPoint += x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-
-					_xStartPoint -= x;
-					x = 0;
-				}
-
-				x += _xEndPoint;
-				x--;
-				if (x > 0) {
-					_xEndPoint -= x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-				}
-
-				// TODO: refactor in sub_67933B
-				// EDI: dpi
-				// EBP: dpi
-				RCT2_CALLPROC_X(0x0067933B, 0, 0, 0, 0, (int) image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
-				return;
-			}
-
-			esi = image->offset;
-
-			y += image->y_offset;
-			height = image->height;
-			_yEndPoint = height;
-			y -= dpi->y;
-			if (y < 0) {
-				_yEndPoint += y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-
-				esi += (image->width * -y) & 0xFFFF;
-				y = 0;
-			} else {
-				// Do nothing?
-			}
-
-			y += _yEndPoint;
-			y--;
-			if (y > 0) {
-				_yEndPoint -= y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-			}
-
-			_xEndPoint = image->width;
-			RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
-			x += image->x_offset;
-			x -= dpi->x;
-			if (x < 0) {
-				_xEndPoint += x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
-				esi -= x;
-				x = 0;
-			}
-
-			x += _xEndPoint;
-			x--;
-			if (x > 0) {
-				_xEndPoint -= x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) += x;
-			}
-
-			if (!(image->flags & 2)) {
-				sint8 ah = (_yEndPoint >> 8) & 0xFF;
-				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
-				uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
-
-				// ah and edx don't seem to be used by this function...
-				do_sub(0x00679236, ebx, image, esi);
-				return;
-			}
-
-			loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
-			do_sub(0x00679236, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
-			free(new_source_pointer_start);
-			return;
+		default:
+			round = 1;
+			address_1 = 0x0067933B;
+			address_2 = 0x00679236;
+			break;
 
 		case 1:
-			if (image->flags & 0x20) {
-				return;
-			}
-
-			if (image->flags & 0x10) {
-				// TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
-				rct_drawpixelinfo zoomed_dpi = {
-						.bits = dpi->bits,
-						.x = dpi->x >> 1,
-						.y = dpi->y >> 1,
-						.height = dpi->height,
-						.width = dpi->width,
-						.pitch = dpi->pitch,
-						.zoom_level = dpi->zoom_level - 1
-				};
-
-				sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
-				return;
-			}
-
-			RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
-			RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
-			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
-			RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
-			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
-			RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
-			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
-
-			if (image->flags & 4) {
-				y -= 1;
-				y += image->y_offset;
-				_yStartPoint = 0;
-				height = image->height;
-				if (height % 2) {
-					height--;
-					if (height == 0) {
-						return;
-					}
-					_yStartPoint++;
-				}
-
-				y = floor2(y, 2);
-				_yEndPoint = height;
-				y -= dpi->y;
-				if (y < 0) {
-					_yEndPoint += y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-
-					_yStartPoint -= y;
-					y = 0;
-				}
-
-				y += _yEndPoint;
-				y--;
-				if (y > 0) {
-					_yEndPoint -= y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-				}
-
-				_xStartPoint = 0;
-				_xEndPoint = image->width;
-				x += image->x_offset;
-				x = floor2(x, 2);
-				x -= dpi->x;
-				if (x < 0) {
-					_xEndPoint += x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-
-					_xStartPoint -= x;
-					x = 0;
-				}
-
-				x += _xEndPoint;
-				x--;
-				if (x > 0) {
-					_xEndPoint -= x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-				}
-
-				// TODO: refactor in sub_679788
-				// EDI: dpi
-				// EBP: dpi
-				RCT2_CALLPROC_X(0x00679788, 0, 0, 0, 0, (int) image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
-				return;
-			}
-
-			esi = image->offset;
-
-			y += image->y_offset;
-			height = image->height;
-			if (height % 2) {
-				height--;
-				esi += image->width;
-			}
-
-			if (height == 0) {
-				return;
-			}
-
-			y = floor2(y, 2);
-			_yEndPoint = height;
-			y -= dpi->y;
-			if (y < 0) {
-				_yEndPoint += y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-
-				esi += (image->width * -y) & 0xFFFF;
-				y = 0;
-			} else {
-				// Do nothing?
-			}
-
-			y += _yEndPoint;
-			y--;
-			if (y > 0) {
-				_yEndPoint -= y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-			}
-
-			_xEndPoint = image->width;
-			RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
-			x += image->x_offset;
-			x = floor2(x, 2);
-			x -= dpi->x;
-			if (x < 0) {
-				_xEndPoint += x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
-				esi -= x;
-				x = 0;
-			}
-
-			x += _xEndPoint;
-			x--;
-			if (x > 0) {
-				_xEndPoint -= x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) += x;
-			}
-
-			if (!(image->flags & 2)) {
-				sint8 ah = (_yEndPoint >> 8) & 0xFF;
-				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
-				uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
-
-				// ah and edx don't seem to be used by this function...
-				do_sub(0x00679662, ebx, image, esi);
-				return;
-			}
-
-			loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
-			do_sub(0x00679662, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
-			free(new_source_pointer_start);
-			return;
+			round = 2;
+			address_1 = 0x00679788;
+			address_2 = 0x00679662;
+			break;
 
 		case 2:
-			if (image->flags & 0x20) {
-				return;
-			}
+			round = 4;
+			address_1 = 0x00679C4A;
+			address_2 = 0x00679B0D;
+			break;
 
-			if (image->flags & 0x10) {
-				// TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
-				rct_drawpixelinfo zoomed_dpi = {
-						.bits = dpi->bits,
-						.x = dpi->x >> 1,
-						.y = dpi->y >> 1,
-						.height = dpi->height,
-						.width = dpi->width,
-						.pitch = dpi->pitch,
-						.zoom_level = dpi->zoom_level - 1
-				};
+		case 3:
+			round = 8;
+			address_1 = 0x0067A117;
+			address_2 = 0x00679FF1;
+	}
 
-				sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
-				return;
-			}
-
-			RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
-			RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
-			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
-			RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
-			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
-			RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
-			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
-
-			if (image->flags & 4) {
-				y -= 3;
-				y += image->y_offset;
-				_yStartPoint = 0;
-				height = image->height;
-				if (height % 2) {
-					height--;
-					if (height == 0) {
-						return;
-					}
-					_yStartPoint++;
+	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
+		y -= (round - 1);
+		y += image->y_offset;
+		_yStartPoint = 0;
+		height = image->height;
+		if (dpi->zoom_level != 0) {
+			if (height % 2) {
+				height--;
+				if (height == 0) {
+					return;
 				}
+				_yStartPoint++;
+			}
 
+			if (dpi->zoom_level == 4) {
 				if (height % 4) {
 					height -= 2;
 					if (height <= 0) {
@@ -3140,322 +2862,149 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					}
 					_yStartPoint += 2;
 				}
+			}
+		}
 
-				y = floor2(y, 4);
-				_yEndPoint = height;
-				y -= dpi->y;
-				if (y < 0) {
-					_yEndPoint += y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-
-					_yStartPoint -= y;
-					y = 0;
-				}
-
-				y += _yEndPoint;
-				y--;
-				if (y > 0) {
-					_yEndPoint -= y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-				}
-
-				_xStartPoint = 0;
-				_xEndPoint = image->width;
-				x += image->x_offset;
-				x = floor2(x, 4);
-				x -= dpi->x;
-				if (x < 0) {
-					_xEndPoint += x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-
-					_xStartPoint -= x;
-					x = 0;
-				}
-
-				x += _xEndPoint;
-				x--;
-				if (x > 0) {
-					_xEndPoint -= x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-				}
-
-				// TODO: refactor in sub_679C4A
-				// EDI: dpi
-				// EBP: dpi
-				RCT2_CALLPROC_X(0x00679C4A, 0, 0, 0, 0, (int) image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
+		y = floor2(y, round);
+		_yEndPoint = height;
+		y -= dpi->y;
+		if (y < 0) {
+			_yEndPoint += y;
+			if (_yEndPoint <= 0) {
 				return;
 			}
 
-			esi = image->offset;
+			_yStartPoint -= y;
+			y = 0;
+		}
 
-			y += image->y_offset;
-			height = image->height;
-			if (height % 2) {
-				height--;
-				esi += image->width;
+		y += _yEndPoint;
+		y--;
+		if (y > 0) {
+			_yEndPoint -= y;
+			if (_yEndPoint <= 0) {
+				return;
+			}
+		}
+
+		_xStartPoint = 0;
+		_xEndPoint = image->width;
+		x += image->x_offset;
+		x = floor2(x, round);
+		x -= dpi->x;
+		if (x < 0) {
+			_xEndPoint += x;
+			if (_xEndPoint <= 0) {
+				return;
 			}
 
+			_xStartPoint -= x;
+			x = 0;
+		}
+
+		x += _xEndPoint;
+		x--;
+		if (x > 0) {
+			_xEndPoint -= x;
+			if (_xEndPoint <= 0) {
+				return;
+			}
+		}
+
+		// TODO: refactor in sub_679C4A
+		// EDI: dpi
+		// EBP: dpi
+		RCT2_CALLPROC_X(address_1, 0, 0, 0, 0, (int) image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
+		return;
+	}
+
+	esi = image->offset;
+
+	y += image->y_offset;
+	height = image->height;
+
+	if (dpi->zoom_level != 0) {
+		if (height % 2) {
+			height--;
+			esi += image->width;
+		}
+
+		if (dpi->zoom_level == 4) {
 			if (height % 4) {
 				height -= 2;
 				esi += image->width * 2;
 			}
+		}
 
-			if (height == 0) {
-				return;
-			}
-
-			y = floor2(y, 4);
-			_yEndPoint = height;
-			y -= dpi->y;
-			if (y < 0) {
-				_yEndPoint += y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-
-				esi += (image->width * -y) & 0xFFFF;
-				y = 0;
-			} else {
-				// Do nothing?
-			}
-
-			y += _yEndPoint;
-			y--;
-			if (y > 0) {
-				_yEndPoint -= y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-			}
-
-			_xEndPoint = image->width;
-			RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
-			x += image->x_offset;
-			x = floor2(x, 4);
-			x -= dpi->x;
-			if (x < 0) {
-				_xEndPoint += x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
-				esi -= x;
-				x = 0;
-			}
-
-			x += _xEndPoint;
-			x--;
-			if (x > 0) {
-				_xEndPoint -= x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) += x;
-			}
-
-			if (!(image->flags & 2)) {
-				sint8 ah = (_yEndPoint >> 8) & 0xFF;
-				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
-				uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
-
-				// ah and edx don't seem to be used by this function...
-				do_sub(0x00679B0D, ebx, image, esi);
-				return;
-			}
-
-			loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
-			do_sub(0x00679B0D, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
-			free(new_source_pointer_start);
+		if (height == 0) {
 			return;
-
-		case 3:
-			if (image->flags & 0x20) {
-				return;
-			}
-
-			if (image->flags & 0x10) {
-				// TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
-				rct_drawpixelinfo zoomed_dpi = {
-						.bits = dpi->bits,
-						.x = dpi->x >> 1,
-						.y = dpi->y >> 1,
-						.height = dpi->height,
-						.width = dpi->width,
-						.pitch = dpi->pitch,
-						.zoom_level = dpi->zoom_level - 1
-				};
-
-				sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
-				return;
-			}
-
-			RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
-			RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
-			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
-			RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
-			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
-			RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
-			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
-
-			if (image->flags & 4) {
-				y -= 7;
-				y += image->y_offset;
-				_yStartPoint = 0;
-				height = image->height;
-				if (height % 2) {
-					height--;
-					if (height == 0) {
-						return;
-					}
-					_yStartPoint++;
-				}
-
-				y = floor2(y, 8);
-				_yEndPoint = height;
-				y -= dpi->y;
-				if (y < 0) {
-					_yEndPoint += y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-
-					_yStartPoint -= y;
-					y = 0;
-				}
-
-				y += _yEndPoint;
-				y--;
-				if (y > 0) {
-					_yEndPoint -= y;
-					if (_yEndPoint <= 0) {
-						return;
-					}
-				}
-
-				_xStartPoint = 0;
-				_xEndPoint = image->width;
-				x += image->x_offset;
-				x = floor2(x, 8);
-				x -= dpi->x;
-				if (x < 0) {
-					_xEndPoint += x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-
-					_xStartPoint -= x;
-					x = 0;
-				}
-
-				x += _xEndPoint;
-				x--;
-				if (x > 0) {
-					_xEndPoint -= x;
-					if (_xEndPoint <= 0) {
-						return;
-					}
-				}
-
-				// TODO: refactor in sub_67A117
-				// EDI: dpi
-				// EBP: dpi
-				RCT2_CALLPROC_X(0x0067A117, 0, 0, 0, 0, (int) image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
-				return;
-			}
-
-			esi = image->offset;
-
-			y += image->y_offset;
-			height = image->height;
-			if (height % 2) {
-				height--;
-				esi += image->width;
-			}
-
-			if (height == 0) {
-				return;
-			}
-
-			y = floor2(y, 8);
-			_yEndPoint = height;
-			y -= dpi->y;
-			if (y < 0) {
-				_yEndPoint += y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-
-				esi += (image->width * -y) & 0xFFFF;
-				y = 0;
-			} else {
-				// Do nothing?
-			}
-
-			y += _yEndPoint;
-			y--;
-			if (y > 0) {
-				_yEndPoint -= y;
-				if (_yEndPoint <= 0) {
-					return;
-				}
-			}
-
-			_xEndPoint = image->width;
-			RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
-			x += image->x_offset;
-			x = floor2(x, 8);
-			x -= dpi->x;
-			if (x < 0) {
-				_xEndPoint += x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
-				esi -= x;
-				x = 0;
-			}
-
-			x += _xEndPoint;
-			x--;
-			if (x > 0) {
-				_xEndPoint -= x;
-				if (_xEndPoint <= 0) {
-					return;
-				}
-
-				RCT2_GLOBAL(0x009ABDAE, sint16) += x;
-			}
-
-			if (!(image->flags & 2)) {
-				sint8 ah = (_yEndPoint >> 8) & 0xFF;
-				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
-				uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
-
-				// ah and edx don't seem to be used by this function...
-				do_sub(0x00679FF1, ebx, image, esi);
-				return;
-			}
-
-			loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
-			do_sub(0x00679FF1, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
-			free(new_source_pointer_start);
-			return;
-
-		default:
-			log_error("Unkown zoom level");
-			return;
+		}
 	}
+
+	y = floor2(y, round);
+	_yEndPoint = height;
+	y -= dpi->y;
+	if (y < 0) {
+		_yEndPoint += y;
+		if (_yEndPoint <= 0) {
+			return;
+		}
+
+		esi += (image->width * -y) & 0xFFFF;
+		y = 0;
+	} else {
+		// Do nothing?
+	}
+
+	y += _yEndPoint;
+	y--;
+	if (y > 0) {
+		_yEndPoint -= y;
+		if (_yEndPoint <= 0) {
+			return;
+		}
+	}
+
+	_xEndPoint = image->width;
+	RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
+	x += image->x_offset;
+	x = floor2(x, round);
+	x -= dpi->x;
+	if (x < 0) {
+		_xEndPoint += x;
+		if (_xEndPoint <= 0) {
+			return;
+		}
+
+		RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
+		esi -= x;
+		x = 0;
+	}
+
+	x += _xEndPoint;
+	x--;
+	if (x > 0) {
+		_xEndPoint -= x;
+		if (_xEndPoint <= 0) {
+			return;
+		}
+
+		RCT2_GLOBAL(0x009ABDAE, sint16) += x;
+	}
+
+	if (!(image->flags & 2)) {
+		sint8 ah = (_yEndPoint >> 8) & 0xFF;
+		int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
+		uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
+
+		// ah and edx don't seem to be used by this function...
+		do_sub(address_2, ebx, image, esi);
+		return;
+	}
+
+	loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
+	do_sub(address_2, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
+	free(new_source_pointer_start);
 }
 
 void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *g1_source, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end) {
