@@ -22,7 +22,7 @@ STR_0017    :루핑 롤러코스터
 STR_0018    :미니 슬라이드
 STR_0019    :마인 트레인 코스터
 STR_0020    :체어 리프트
-STR_0021    :코르크스크류 롤러코스터
+STR_0021    :나선 롤러코스터
 STR_0022    :미로
 STR_0023    :나선 미끄럼틀
 STR_0024    :고 카트
@@ -1369,9 +1369,9 @@ STR_1363    :지지대가 버틸 수 있는 최대 높이입니다!
 STR_1364    :위 트랙의 지지대를 더 이상 늘릴 수 없습니다!
 STR_1365    :인라인 트위스트 (왼쪽)
 STR_1366    :인라인 트위스트 (오른쪽)
-STR_1367    :하프 루프
-STR_1368    :하프 코르크스크류 (왼쪽)
-STR_1369    :하프 코르크스크류 (오른쪽)
+STR_1367    :1/2 루프
+STR_1368    :1/2 나선 (왼쪽)
+STR_1369    :1/2 나선 (오른쪽)
 STR_1370    :바렐 롤 (왼쪽)
 STR_1371    :바렐 롤 (오른쪽)
 STR_1372    :런치드 리프트 힐
@@ -1424,7 +1424,7 @@ STR_1418    :{WINDOW_COLOUR_2}측면 중력
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}{POP16}{STRINGID}로부터 데이터 기록 중
+STR_1422    :{SMALLFONT}{BLACK}{POP16}{STRINGID}을 기준으로 데이터 기록 중
 STR_1423    :{SMALLFONT}{BLACK}대기줄
 STR_1424    :{SMALLFONT}{BLACK}보도
 STR_1425    :보도
@@ -1779,7 +1779,7 @@ STR_1773    :한 놀이기구에는 하나의 탑승 사진 섹션만 만들 수
 STR_1774    :한 놀이기구에는 하나의 케이블 리프트만 만들 수 있습니다
 STR_1775    :끄기
 STR_1776    :켜기
-STR_1777    :{WINDOW_COLOUR_2}음악
+STR_1777    :{WINDOW_COLOUR_2}놀이기구 음악
 STR_1778    :{STRINGID} - -
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 팬더 복장
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 호랑이 복장
@@ -1941,7 +1941,7 @@ STR_1933    :{STRINGID} - {STRINGID} 안에 있습니다
 STR_1934    :{STRINGID} - {STRINGID}(을)를 떠났습니다
 STR_1935    :{STRINGID} - 공원을 떠났습니다
 STR_1936    :{STRINGID} - {STRINGID}(을)를 샀습니다
-STR_1937    :{SMALLFONT}{BLACK}이 메시지의 주제에 대한 정보를 보여줍니다
+STR_1937    :{SMALLFONT}{BLACK}이 메시지의 주제{NEWLINE}에 대한 정보를 보여줍니다
 STR_1938    :{SMALLFONT}{BLACK}손님 주변으로 화면을 이동합니다
 STR_1939    :{SMALLFONT}{BLACK}직원 주변으로 화면을 이동합니다
 STR_1940    :{SMALLFONT}{BLACK}행복도/에너지/배고픔 등의 수치를 보여줍니다
@@ -3616,7 +3616,7 @@ STR_5276    :검색할 오브젝트 이름을 입력하세요
 STR_5277    :초기화
 STR_5278    :모래상자 모드
 STR_5279    :모래상자 모드 끄기
-STR_5280    :{SMALLFONT}{BLACK}지도 창에서 땅 소유권 설정이 가능하도록 바꾸고 시나리오 에디터에서만 쓸 수 있던 기능을 사용할 수 있게 만듭니다
+STR_5280    :{SMALLFONT}{BLACK}지도 창에서 땅 소유권 설정이 가능하도록 바꾸고 시나리오 에디터에서만 쓸 수 있던{NEWLINE}기능을 사용할 수 있게 만듭니다
 STR_5281    :{SMALLFONT}{BLACK}기능
 STR_5282    :RCT1 놀이기구 열기/닫기 아이콘
 STR_5283    :RCT1 공원 열기/닫기 아이콘
@@ -3851,7 +3851,7 @@ STR_5511    :(알 수 없음)
 STR_5512    :다른 이름으로 저장
 STR_5513    :게임 간편 저장
 STR_5514    :기물을 파손하지 않게 하기
-STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을 때{NEWLINE}기물을 파손하지 않도록 설정합니다
+STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을{NEWLINE}때 기물을 파손하지 않도{NEWLINE}록 설정합니다
 STR_5516    :{SMALLFONT}{BLACK}검은색
 STR_5517    :{SMALLFONT}{BLACK}회색
 STR_5518    :{SMALLFONT}{BLACK}흰색
@@ -4702,8 +4702,8 @@ STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어�
 STR_CPTY    :차량당 4명의 승객
 
 [ARRT1]
-STR_NAME    :코르크스크류 롤러코스터
-STR_DESC    :코르크스크류와 루프를 도는 구성을 지닌 강철 트랙의 롤러코스터
+STR_NAME    :나선 롤러코스터
+STR_DESC    :나선 모양 트랙과 루프를 도는 구성을 지닌 강철 트랙의 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [ARRT2]

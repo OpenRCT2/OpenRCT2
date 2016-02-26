@@ -1778,7 +1778,7 @@ STR_1773    :Nur ein Fahrtfoto-Bereich pro Bahn erlaubt
 STR_1774    :Nur ein Kabellifthügel pro Bahn erlaubt
 STR_1775    :Aus
 STR_1776    :Ein
-STR_1777    :{WINDOW_COLOUR_2}Musik
+STR_1777    :{WINDOW_COLOUR_2}Attraktionsmusik
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakostüm
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerkostüm
@@ -4059,8 +4059,26 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} hat das Spiel betreten
 STR_5759    :Karte herunterladen ... ({INT32} / {INT32})
 STR_5760    :Hongkong-Dollar (HK$)
 STR_5761    :Neuer Taiwan-Dollar (NT$)
-STR_5762    :Chinesischer Yuan (CNY)
+STR_5762    :Chinesischer Yuan (CN{YEN})
 STR_5763    :Alle Dateien
+STR_5764    :Ungültiger Bahntyp
+STR_5765    :Kann Bahnen eines ungültigen Typs nicht bearbeiten
+STR_5766    :<available string id>
+STR_5767    :Einkünfte
+STR_5768    :Besucher gesamt
+STR_5769    :Gesamtgewinn
+STR_5770    :Besucher pro Stunde
+STR_5771    :Betriebskosten
+STR_5772    :Alter
+STR_5773    :Besucher gesamt: {COMMA32}
+STR_5774    :Gesamtgewinn: {CURRENCY2DP}
+STR_5775    :Besucher: {COMMA32} pro Stunde
+STR_5776    :Erbaut: Dieses Jahr
+STR_5777    :Erbaut: Letztes Jahr
+STR_5778    :Erbaut: Vor {COMMA16} Jahren
+STR_5779    :Einkünfte: {CURRENCY2DP} pro Stunde
+STR_5780    :Betriebskosten: {CURRENCY2DP} pro Stunde
+STR_5781    :Betriebskosten: Unbekannt
 
 #############
 # Scenarios #
