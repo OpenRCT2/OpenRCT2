@@ -3359,8 +3359,8 @@ static void window_ride_locate_mechanic(rct_window *w)
 static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *dpi, int x, int y, int value, int unk)
 {
 	gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], 0x30);
-	if (unk & (1 << 31)) {
-		unk &= ~(1 << 31);
+	if (unk & (1u << 31)) {
+		unk &= ~(1u << 31);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8))
 			return;
 	}
