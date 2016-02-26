@@ -159,7 +159,7 @@ void platform_update_fullscreen_resolutions()
 
 void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight)
 {
-	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth, closestHeight;
+	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth = 640, closestHeight = 480;
 
 	closestAreaDiff = -1;
 	destinationArea = inWidth * inHeight;
@@ -909,7 +909,7 @@ void platform_set_fullscreen_mode(int mode)
  * derfererence the cursor before the function.
  *  rct2: 0x0407956
  */
-void platform_set_cursor(char cursor)
+void platform_set_cursor(uint8 cursor)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor;
 	SDL_SetCursor(_cursors[cursor]);

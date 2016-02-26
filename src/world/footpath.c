@@ -1304,7 +1304,7 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, rct_map_element *mapElement, int direction)
 {
 	rct_map_element *lastPathElement, *lastQueuePathElement;
-	int lastPathX, lastPathY, lastPathDirection;
+	int lastPathX = x, lastPathY = y, lastPathDirection = direction;
 
 	lastPathElement = NULL;
 	lastQueuePathElement = NULL;

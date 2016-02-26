@@ -1134,7 +1134,7 @@ rct_window *window_bring_to_front(rct_window *w)
 		if (!(v->flags & WF_STICK_TO_FRONT))
 			break;
 
-		if (v >= g_window_list && w != v) {
+	if (v >= g_window_list && w != v) {
 		do {
 			t = *w;
 			*w = *(w + 1);

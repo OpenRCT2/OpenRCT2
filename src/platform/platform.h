@@ -120,7 +120,7 @@ void platform_free();
 void platform_trigger_resize();
 void platform_update_palette(const uint8 *colours, int start_index, int num_colours);
 void platform_set_fullscreen_mode(int mode);
-void platform_set_cursor(char cursor);
+void platform_set_cursor(uint8 cursor);
 void platform_refresh_video();
 void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
