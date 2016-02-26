@@ -19,13 +19,13 @@
 - Feature: Add player windows with viewport and trace in multiplayer.
 - Feature: Add ability to start a new scenario when starting a new server.
 - Feature: Compress game data that is downloaded when connecting to a server.
-- Feature: Support for using system load/save dialogs on Linux.
+- Feature: Support for using system load/save dialogs on Linux and OS X.
 - Feature: OpenRCT2 now detects if the server is running a compatible version when attempting to connect to a multiplayer game.
 - Feature: Ride information list can show more properties, like age and running cost.
 - Feature: Added translations for Czech and Japanese.
 - Feature: Added Hong Kong dollar, New Taiwan dollar and Chinese yuan as currencies.
 - Feature: Weather cheat now allows for more types of weather.
-- Feature: Use fontconfig on Linux to detect fonts and provide a fallback if necessary.
+- Feature: Use fontconfig on Linux and Objective-C APIs on OS X to detect fonts and provide a fallback if necessary.
 - Feature: Ability to automatically open shops after placing them.
 - Change: Server IP addresses are no longer shown in the server list.
 - Change: Theme format changed from INI to JSON (INI format no longer supported).
