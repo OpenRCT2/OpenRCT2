@@ -19,6 +19,14 @@
 - Feature: Add player windows with viewport and trace in multiplayer.
 - Feature: Add ability to start a new scenario when starting a new server.
 - Feature: Compress game data that is downloaded when connecting to a server.
+- Feature: Support for using system load/save dialogs on Linux.
+- Feature: OpenRCT2 now detects if the server is running a compatible version when attempting to connect to a multiplayer game.
+- Feature: Ride information list can show more properties, like age and running cost.
+- Feature: Added translations for Czech and Japanese.
+- Feature: Added Hong Kong dollar, New Taiwan dollar and Chinese yuan as currencies.
+- Feature: Weather cheat now allows for more types of weather.
+- Feature: Use fontconfig on Linux to detect fonts and provide a fallback if necessary.
+- Feature: Ability to automatically open shops after placing them.
 - Change: Server IP addresses are no longer shown in the server list.
 - Change: Theme format changed from INI to JSON (INI format no longer supported).
 - Change: Sound controls re-worked to control sound effects and ride music separately.
@@ -29,6 +37,7 @@
 - Technical: argparse dropped in return for bespoke command line parsing implementation.
 - Improve: performance of rendering, particularly for highly populated parks.
 - Improve: performance of loading parks.
+- Removed: Anti-cheat code that detected money hack attempts.
 - Fix: Dated autosave files are not created on OSX and Linux.
 - Fix: Title sequence directories are not deleted when title sequence is deleted on OSX and Linux.
 - Fix: Tile not highlighted when placing staff members.
@@ -37,14 +46,19 @@
 - Fix: [#1333] Rides never become safe again after a crash.
 - Fix: [#2126] Ferris Wheels set to "backward rotation" stop working (original bug).
 - Fix: [#2449] Turning off Day/Night Circle while it is night doesn't reset back to day.
+- Fix: [#2477] When opening the built-in load/save dialog, the list is not properly sorted.
 - Fix: [#2650] Server did not validate actions send from clients (caused error box and desynchronisation).
 - Fix: [#2651] Ride was not removed when multiplayer client aborted ride construction.
 - Fix: [#2654] Free transport rides can prevent guests from properly leaving the park.
+- Fix: [#2657] Don't create copies of official objects due to bugged saves (original bug).
+- Fix: [#2681] When lowering/raising land/water with clearance checks off, walls still get removed.
 - Fix: [#2693] Multiplayer chat caret does not show true position.
 - Fix: [#2704] OSX Command Key not read for keyboard shortcuts.
 - Fix: [#2925] Screenshots don't show night filters.
 - Fix: [#2941] Enter does not work on input box when on the title screen.
+- Fix: [#2948] New Ride window incorrectly said there were track designs available when in multiplayer mode.
 - Fix: [#2958] Unable to import RCT1 parks in the scenario editor using the load landscape dialog.
+- Fix: [#3015] Walls in SC4/SV4 files are not imported correctly.
 
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
