@@ -214,9 +214,6 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 	int calculated_checksum=object_calculate_checksum(entry,chunk,installed_entry->chunk_size);
 		if(entry->checksum!=calculated_checksum)
 		{
-		printf("Chunk size %d\n",chunkHeader.length);
-
-		printf("Fixing object with invalid checksum\n");
 		//Store the current length of the header - it's the offset at which we will write the extra bytes
 		int salt_offset=chunkHeader.length;
 		/*Allocate a new chunk 11 bytes longer.
@@ -228,8 +225,6 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 		memcpy(new_chunk,chunk,chunkHeader.length);
 		//It should be safe to update these in-place because they are local
 		chunkHeader.length+=11;
-
-		printf("New chunk size %d\n",chunkHeader.length);
 
 		/*Next work out which bits need to be flipped to make the current checksum match the one in the file 
 		The bitwise rotation compensates for the rotation performed during the checksum calculation*/
@@ -312,6 +307,7 @@ int object_load_packed(SDL_RWops* rw)
 		free(chunk);
 		return 0;
 	}
+
 
 	int entryGroupIndex = 0;
 
