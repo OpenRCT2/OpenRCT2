@@ -814,13 +814,14 @@ static void rct1_convert_wall(int *type, int *colourA, int *colourB, int *colour
 	case 12:	// creepy gate
 		*colourA = 24;
 		break;
-	case 26:	// medium brown castle wall
+	case 26:	// white wooden fence
+		*type = 12;
+		*colourA = 2;
+		break;
+	case 27:	// red wooden fence
 		*type = 12;
 		*colourA = 25;
 		break;
-	case 27:	// tall castle wall with grey window
-		*type = 12;
-		*colourA = 2;
 	case 50:	// plate glass
 		*colourA = 24;
 		break;
@@ -1392,8 +1393,8 @@ static const rct_object_entry RCT1DefaultObjectsWall[] = {
 	{ 0x00000083, { "WBW     " }, 0 },
 	{ 0x00000083, { "WBR1    " }, 0 },
 	{ 0x00000083, { "WBRG    " }, 0 },
-	{ 0x00000083, { "WALLCFAR" }, 0 },	// Should be white wooden fence
-	{ 0x00000083, { "WALLPOST" }, 0 },	// Should be red wooden fence
+	{ 0x00000083, { "WALLCFAR" }, 0 },	// Slot taken by white wooden fence in RCT1
+	{ 0x00000083, { "WALLPOST" }, 0 },	// Slot taken by red wooden fence in RCT1
 	{ 0x00000083, { "WBR2    " }, 0 },
 	{ 0x00000083, { "WBR3    " }, 0 },
 	{ 0x00000083, { "WPW3    " }, 0 },
