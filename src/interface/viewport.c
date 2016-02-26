@@ -2232,7 +2232,7 @@ struct paint_string_struct {
 	uint8 *y_offsets;				// 0x1A
 };
 
-void loc_6791B8_6795E4_679A8F(rct_g1_element *image, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end);
+void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *image, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end);
 
 static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 {
@@ -2713,6 +2713,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 {
 	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
 
+	sint16 width, height;
 	uint8 *esi;
 	uint8 *new_source_pointer_start, *esi_end;
 
@@ -2839,7 +2840,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 			}
 
 
-			loc_6791B8_6795E4_679A8F(image, esi, &new_source_pointer_start, &esi_end);
+			loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
 			do_sub(0x00679236, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
 			free(new_source_pointer_start);
 			return;
@@ -2911,7 +2912,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					}
 				}
 
-				sint16 width = image->width;
+				width = image->width;
 				_xStartPoint = 0;
 				_xEndPoint = width;
 				x += image->x_offset;
@@ -2954,7 +2955,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 				//esi = image->offset;
 				esi = image->offset;
 				y += image->y_offset;
-				sint16 height = image->height;
+				height = image->height;
 				if (height % 2) {
 					height--;
 					esi += image->width;
@@ -2990,7 +2991,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					}
 				}
 
-				sint16 width = image->width;
+				width = image->width;
 				_xEndPoint = width;
 				RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
 				x += image->x_offset;
@@ -3032,7 +3033,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 					return;
 				}
 
-				loc_6791B8_6795E4_679A8F(image, esi, &new_source_pointer_start, &esi_end);
+				loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
 				do_sub(0x00679662, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
 				free(new_source_pointer_start);
 			}
@@ -3073,7 +3074,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 				esi = image->offset;
 
 				y += image->y_offset;
-				sint16 height = image->height;
+				height = image->height;
 				_yStartPoint = 0;
 				if (height % 2) {
 					height--;
@@ -3147,7 +3148,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 			esi = image->offset;
 
 			y += image->y_offset;
-			sint16 height = image->height;
+			height = image->height;
 			if (height % 2) {
 				// ebx = (image->width << 16)+ image->height
 				height--;
@@ -3227,20 +3228,195 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
 			}
 
 
-			loc_6791B8_6795E4_679A8F(image, esi, &new_source_pointer_start, &esi_end);
+			loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
 			do_sub(0x00679B0D, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
 			free(new_source_pointer_start);
 			return;
 
-		default:
-			// TODO: loc_679DEE
-			break;
-	}
+		case 3:
+			if (image->flags & 0x20) {
+				return;
+			}
 
-	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
+			if (image->flags & 0x10) {
+				// TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
+				rct_drawpixelinfo zoomed_dpi = {
+						.bits = dpi->bits,
+						.x = dpi->x >> 1,
+						.y = dpi->y >> 1,
+						.height = dpi->height,
+						.width = dpi->width,
+						.pitch = dpi->pitch,
+						.zoom_level = dpi->zoom_level - 1
+				};
+
+				sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
+				return;
+			}
+
+			RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
+			RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
+			RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
+			RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
+			RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
+			RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
+			RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
+
+			if (image->flags & 4) {
+				y -= 7;
+				esi = image->offset;
+				y += image->y_offset;
+				height = image->height;
+				_yStartPoint = 0;
+				if (height % 2) {
+					height--;
+					if (height == 0) {
+						return;
+					}
+					_yStartPoint++;
+				}
+
+				y = floor2(y, 8);
+				_yEndPoint = height;
+				y -= dpi->y;
+				if (y < 0) {
+					_yEndPoint += y;
+					if (_yEndPoint <= 0) {
+						return;
+					}
+
+					_yStartPoint -= y;
+					y = 0;
+				}
+
+				y += _yEndPoint;
+				y--;
+				if (y > 0) {
+					_yEndPoint -= y;
+					if (_yEndPoint <= 0) {
+						return;
+					}
+				}
+
+				width = image->width;
+				_xStartPoint = 0;
+				_xEndPoint = width;
+				x += image->x_offset;
+				x = floor2(x, 8);
+				x -= dpi->x;
+				if (x < 0) {
+					_xEndPoint += x;
+					if (_xEndPoint <= 0) {
+						return;;
+					}
+
+					_xStartPoint -= x;
+					x = 0;
+				}
+
+				x += _xEndPoint;
+				x--;
+				if (x > 0) {
+					_xEndPoint -= x;
+					if (_xEndPoint <= 0) {
+						return;
+					}
+				}
+
+				// TODO: refactor in sub_67A117
+				// EDI: dpi
+				// EBP: dpi
+				RCT2_CALLPROC_X(0x0067A117, 0, 0, 0, 0, (int) esi, 0xEEEEEEEE, 0xFFFFFFFF);
+				return;
+			}
+
+			esi = image->offset;
+			y += image->y_offset;
+			height = image->height;
+			if (height % 2) {
+				height--;
+				esi += (image->width << 16) & image->height;
+			}
+
+			if (height == 0) {
+				return;
+			}
+
+			y = floor2(y, 8);
+			_yEndPoint = height;
+			y -= dpi->y;
+			if (y < 0) {
+				_yEndPoint += y;
+				if (_yEndPoint <= 0) {
+					return;
+				}
+
+				esi += ((image->width * -y) & 0xFFFF);
+				y = 0;
+			} else {
+				// Do nothing?
+			}
+
+			y += _yEndPoint;
+			y--;
+			if (y > 0) {
+				_yEndPoint -= y;
+				if (_yEndPoint <= 0) {
+					return;
+				}
+			}
+
+			width = image->width;
+			_xEndPoint = width;
+			RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
+			x += image->x_offset;
+			x = floor2(x, 32);
+			x -= dpi->x;
+			if (x < 0) {
+				_xEndPoint += x;
+				if (_xEndPoint <= 0) {
+					return;
+				}
+
+				RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
+				esi -= x;
+				x = 0;
+			}
+
+			x += _xEndPoint;
+			x--;
+			if (x > 0) {
+				_xEndPoint -= x;
+				if (_xEndPoint <= 0) {
+					return;
+				}
+
+				RCT2_GLOBAL(0x009ABDAE, sint16) += x;
+			}
+
+			if (!(image->flags & 2)) {
+				sint8 ah = (_yEndPoint >> 8) & 0xFF;
+				int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
+				uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
+
+				// ah and edx don't seem to be used by this function...
+				do_sub(0x00679FF1, ebx, image, esi);
+				return;
+			}
+
+
+			loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
+			do_sub(0x00679FF1, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
+			free(new_source_pointer_start);
+			return;
+
+		default:
+			log_error("Unkown zoom level");
+			return;
+	}
 }
 
-void loc_6791B8_6795E4_679A8F(rct_g1_element *g1_source, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end) {
+void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *g1_source, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end) {
 	uint8 *ebp = esi;
 	uint8 *source_pointer;
 
