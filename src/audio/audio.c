@@ -60,9 +60,9 @@ void audio_init()
 	if (result >= 0)
 		return;
 
-		log_fatal("SDL_Init %s", SDL_GetError());
-		exit(-1);
-	}
+	log_fatal("SDL_Init %s", SDL_GetError());
+	exit(-1);
+}
 
 void audio_quit()
 {
@@ -268,9 +268,9 @@ void audio_init_ride_sounds_and_info()
 		if (file == NULL)
 			continue;
 
-			uint32 head;
-			SDL_RWread(file, &head, sizeof(head), 1);
-			SDL_RWclose(file);
+		uint32 head;
+		SDL_RWread(file, &head, sizeof(head), 1);
+		SDL_RWclose(file);
 		if (head == 0x78787878)
 			rideMusicInfo->length = 0;
 	}
@@ -330,7 +330,7 @@ void audio_stop_vehicle_sounds()
 	if (gOpenRCT2Headless || RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) == -1)
 		return;
 
-		for (int i = 0; i < countof(gVehicleSoundList); i++) {
+	for (int i = 0; i < countof(gVehicleSoundList); i++) {
 		rct_vehicle_sound *vehicleSound = &gVehicleSoundList[i];
 		if (vehicleSound->id == 0xFFFF)
 			continue;

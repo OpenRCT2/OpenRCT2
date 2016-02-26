@@ -148,7 +148,7 @@ public:
 
 	uint16 size;
 	std::shared_ptr<std::vector<uint8>> data;
-	int transferred;
+	unsigned int transferred;
 	int read;
 };
 
