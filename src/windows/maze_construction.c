@@ -291,6 +291,12 @@ static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, r
  */
 static void window_maze_construction_update(rct_window *w)
 {
+	rct_ride *ride = get_ride(_currentRideIndex);
+	if (ride == NULL || ride->status != RIDE_STATUS_CLOSED) {
+		window_close(w);
+		return;
+	}
+
 	switch (_rideConstructionState) {
 	case RIDE_CONSTRUCTION_STATE_PLACE:
 		if (!widget_is_active_tool(w, WIDX_MAZE_DIRECTION_GROUPBOX)) {
