@@ -2241,7 +2241,7 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->music = RCT2_ADDRESS(0x0097D4F4, uint8)[dst->type * 8];
 	dst->num_circuits = 1;
 	dst->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
-	dst->lift_hill_speed = RCT2_ADDRESS(0x0097D7C9, uint8)[dst->type * 4];
+	dst->lift_hill_speed = 5; // RCT1 used 5mph / 8 km/h for every lift hill
 
 	// Colours
 	dst->colour_scheme_type = src->colour_scheme;
@@ -2324,6 +2324,10 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 
 	rct1_load_default_objects();
 	reset_loaded_objects();
+
+	// Fix object availability
+	research_reset_items();
+	research_populate_list_researched();
 
 	// Map elements
 	rct1_import_map_elements(s4);
