@@ -2215,7 +2215,7 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 		dst->station_heights[i] = src->station_height[i] / 2;
 		dst->station_length[i] = src->station_length[i];
 		dst->station_depart[i] = src->station_light[i];
-		dst->train_at_station[i] = src->station_depart[i];
+		dst->train_at_station[i] = 0xFF; // Use src->station_depart[i] when we import with guests and vehicles intact
 		dst->entrances[i] = src->entrance[i];
 		dst->exits[i] = src->exit[i];
 		dst->queue_time[i] = src->queue_time[i];
