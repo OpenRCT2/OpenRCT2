@@ -23,6 +23,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "editor.h"
+#include "game.h"
 #include "interface/viewport.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
@@ -2107,7 +2108,10 @@ bool rct1_load_saved_game(const char *path)
 		return false;
 	}
 	rct1_import_s4_properly(s4);
+
 	free(s4);
+
+	game_load_init();
 	return true;
 }
 
@@ -2387,9 +2391,9 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32) = 0;
 	}
 
-	// Park status
-	if (s4->park_flags & PARK_FLAGS_PARK_OPEN)
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
+	// Park flags
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = s4->park_flags;
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_8; // Flag 8 is unknown and possibly used for cheat detection, according to the TID.
 
 	// Scenario name
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
