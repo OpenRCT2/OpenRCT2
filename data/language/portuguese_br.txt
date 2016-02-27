@@ -1697,8 +1697,8 @@ STR_1691    :{WINDOW_COLOUR_2}  Custo: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Custo: {BLACK}de {CURRENCY}
 STR_1693    :{SMALLFONT}{BLACK}Visitantes
 STR_1694    :{SMALLFONT}{BLACK}Funcionários
-STR_1695    :{SMALLFONT}{BLACK}Rendimentos e gastos
-STR_1696    :{SMALLFONT}{BLACK}Informação para os clientes
+STR_1695    :{SMALLFONT}{BLACK}Receita e gastos
+STR_1696    :{SMALLFONT}{BLACK}Informação do cliente
 STR_1697    :Impossível colocar estes na fila de espera
 STR_1698    :Somente possível colocar estes na fila de espera
 STR_1699    :Muitas pessoas no jogo
@@ -1779,7 +1779,7 @@ STR_1773    :Somente uma seção de fotos é permitida por atração
 STR_1774    :Somente uma subida com cabo de elevação é permitida por atração
 STR_1775    :Desligado
 STR_1776    :Ligado
-STR_1777    :{WINDOW_COLOUR_2}Música:
+STR_1777    :{WINDOW_COLOUR_2}Música da atração
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Fantasia de panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Fantasia de tigre
@@ -1875,7 +1875,7 @@ STR_1869    :{WINDOW_COLOUR_2}Número de rotações:
 STR_1870    :{SMALLFONT}{BLACK}Número de rotações completas
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Rendimento: {BLACK}{CURRENCY2DP} por hora
+STR_1873    :{WINDOW_COLOUR_2}Receita: {BLACK}{CURRENCY2DP} por hora
 STR_1874    :{WINDOW_COLOUR_2}Lucro: {BLACK}{CURRENCY2DP} por hora
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspecionar Atrações
@@ -2396,7 +2396,7 @@ STR_2388    :{BLACK}Divirta-se!
 STR_2389    :{BLACK}Construir o melhor {STRINGID} que puder!
 STR_2390    :{BLACK}Ter 10 tipos de montanha-russa diferentes operando em seu parque, cada uma com um valor de emoção de pelo menos 6.00
 STR_2391    :{BLACK}Ter pelo menos {COMMA16} visitantes em seu parque. Você não pode deixar a classificação de parque abaixo de 700 em momento algum!
-STR_2392    :{BLACK}Alcançar um rendimento mensal de ingressos de atrações de pelo menos {POP16}{POP16}{CURRENCY}
+STR_2392    :{BLACK}Alcançar uma receita mensal de ingressos de atrações de pelo menos {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Ter 10 tipos de montanha-russa diferentes operando em seu parque, cada uma com um comprimento mínimo de {LENGTH}, e um valor de emoção de no mínimo 7.00
 STR_2394    :{BLACK}Terminar de construir todas as 5 montanhas-russas parcialmente construídas neste parque, projetando-as para alcançar um valor de emoção de pelo menos {POP16}{POP16}{COMMA2DP32} cada
 STR_2395    :{BLACK}Pagar o empréstimo e alcançar um valor do parque de pelo menos {POP16}{POP16}{CURRENCY}
@@ -2408,7 +2408,7 @@ STR_2400    :Divirta-se
 STR_2401    :Construa a melhor atração que puder
 STR_2402    :Construa 10 montanhas-russas
 STR_2403    :Número de visitantes no parque
-STR_2404    :Rendimento mensal de ingressos de atrações
+STR_2404    :Receita mensal de ingressos de atrações
 STR_2405    :Construa 10 montanhas-russas com um comprimento estebelecido
 STR_2406    :Termine de construir 5 montanhas-russas
 STR_2407    :Pague o empréstimo e alcance um valor do parque estebelecido
@@ -2808,7 +2808,7 @@ STR_2797    :Move a tela quando o ponteiro estiver na borda da tela
 STR_2798    :{SMALLFONT}{BLACK}Selecione se deseja mover a tela quando o ponteiro do mouse estiver na borda da tela
 STR_2799    :{SMALLFONT}{BLACK}Visualiza ou muda atribuições de teclas de controle
 STR_2800    :{WINDOW_COLOUR_2}Total de ingressos: {BLACK}{COMMA32}
-STR_2801    :{WINDOW_COLOUR_2}Renda dos ingressos: {BLACK}{CURRENCY2DP}
+STR_2801    :{WINDOW_COLOUR_2}Receita dos ingressos: {BLACK}{CURRENCY2DP}
 STR_2802    :Mapa
 STR_2803    :{SMALLFONT}{BLACK}Mostrar estes visitantes destacadoss no mapa
 STR_2804    :{SMALLFONT}{BLACK}Mostrar estes funcionários destacados no mapa
@@ -3312,7 +3312,7 @@ STR_3301    :{WINDOW_COLOUR_2}Objetivo de Data:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
 STR_3303    :{WINDOW_COLOUR_2}Número de visitantes:
 STR_3304    :{WINDOW_COLOUR_2}Valor do parque:
-STR_3305    :{WINDOW_COLOUR_2}Rendimento Mensal:
+STR_3305    :{WINDOW_COLOUR_2}Receita Mensal:
 STR_3306    :{WINDOW_COLOUR_2}Lucro Mensal:
 STR_3307    :{WINDOW_COLOUR_2}Comprimento Mínimo:
 STR_3308    :{WINDOW_COLOUR_2}Classificação de emoção:
@@ -4002,7 +4002,6 @@ STR_5660    :Modificar Grupos
 STR_5661    :Definir Grupo do Jogador
 STR_5662    :N/A
 STR_5663    :Limpar Paisagem
-STR_5664    :Trapaças
 STR_5701    :{WINDOW_COLOUR_2}Última ação: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizar ação mais recente do jogador
 STR_5703    :Não é possível expulsar o anfitrião
@@ -4044,6 +4043,49 @@ STR_5736    :Jogador
 STR_5737    :Fechado, {COMMA16} pessoa ainda está na atração
 STR_5738    :Fechado, {COMMA16} pessoas ainda estão na atração
 STR_5739    :{WINDOW_COLOUR_2}Clientes na atração: {BLACK}{COMMA16}
+STR_5740    :Campanhas de marketing sem fim
+STR_5741    :{SMALLFONT}{BLACK}Campanhas de marketing nunca acabam
+STR_5742    :Autenticando ...
+STR_5743    :Conectando ...
+STR_5744    :Resolvendo ...
+STR_5745    :Dessincronização de rede detectada
+STR_5746    :Desconectado
+STR_5747    :Desconectado: {STRING}
+STR_5748    :Expulso
+STR_5749    :Saia do servidor!
+STR_5750    :Conexão Fechada
+STR_5751    :Sem dados
+STR_5752    :{OUTLINE}{RED}{STRING} se desconectou
+STR_5753    :{OUTLINE}{RED}{STRING} se desconectou ({STRING})
+STR_5754    :Nome de Jogador Ruim
+STR_5755    :Versão de Software Incorreta
+STR_5756    :Senha Ruim
+STR_5757    :Servidor Cheio
+STR_5758    :{OUTLINE}{GREEN}{STRING} entrou no jogo
+STR_5759    :Baixando mapa ... ({INT32} / {INT32})
+STR_5760    :Dólar de Hong Kong (HK$)
+STR_5761    :Dólar de New Taiwan (NT$)
+STR_5762    :Yuan Chinês(CN{YEN})
+STR_5763    :Todos os arquivos
+STR_5764    :Tipo de atração inválida
+STR_5765    :Não é possível editar atração de tipo inválido
+STR_5766    :<available string id>
+STR_5767    :Receita
+STR_5768    :Clientes totais
+STR_5769    :Lucro total
+STR_5770    :Clientes por hora
+STR_5771    :Custo de operação
+STR_5772    :Idade
+STR_5773    :Clientes totais: {COMMA32}
+STR_5774    :Lucro total: {CURRENCY2DP}
+STR_5775    :Clientes: {COMMA32} por hora
+STR_5776    :Construído: Este Ano
+STR_5777    :Construído: Ano Passado
+STR_5778    :Construído: {COMMA16} Anos Atrás
+STR_5779    :Receita: {CURRENCY2DP} por hora
+STR_5780    :Custo de operação: {CURRENCY2DP} por hora
+STR_5781    :Custo de operação: Desconhecido
+STR_5782    :Você está conectado. Pressione '{STRING}' para conversar.
 
 #############
 # Scenarios #
@@ -4229,7 +4271,7 @@ STR_DTLS    :Uma grande área foi limpa e parcialmente tematizada pronta para vo
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :Uma próspera fazenda de frutas contruiu uma ferrovia para acelerar sua renda, seu trabalho é transforma-la em um parque de diversões desenvolvido.
+STR_DTLS    :Uma próspera fazenda de frutas contruiu uma ferrovia para acelerar sua receita, seu trabalho é transforma-la em um parque de diversões desenvolvido.
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam

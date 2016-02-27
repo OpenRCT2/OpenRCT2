@@ -1780,7 +1780,7 @@ STR_1773    :Je povolena jen jedna fotobuňka na atrakci
 STR_1774    :Je povolen pouze jeden výtah na atrakci
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Hudba
+STR_1777    :{WINDOW_COLOUR_2}Hudba atrakcí
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigr
@@ -2338,7 +2338,7 @@ STR_2329    :{WINDOW_COLOUR_2}Délka a rychlost:
 STR_2330    :{WINDOW_COLOUR_2}Teplota:
 STR_2331    :{WINDOW_COLOUR_2}Výškové značky:
 STR_2332    :Jednotky
-STR_2333    :Zvuk
+STR_2333    :Efekty
 STR_2334    :Libra ({POUND})
 STR_2335    :Dolar ($)
 STR_2336    :Frank (F)
@@ -4069,6 +4069,25 @@ STR_5760    :Hongkongský dolar (HK$)
 STR_5761    :Tchajwanský dolar (NT$)
 STR_5762    :Čínský jüan (CN{YEN})
 STR_5763    :Všechny soubory
+STR_5764    :Neplatný typ atrakce
+STR_5765    :Nelze upravovat atrakce neplatného typu
+STR_5766    :<available string id>
+STR_5767    :Příjem
+STR_5768    :Celkem zákazníků
+STR_5769    :Celkový zisk
+STR_5770    :Zákazníků za hodinu
+STR_5771    :Cena údržby
+STR_5772    :Stáří
+STR_5773    :Celkem zákazníků: {COMMA32}
+STR_5774    :Celkový zisk: {CURRENCY2DP}
+STR_5775    :Zákazníci: {COMMA32} za hodinu
+STR_5776    :Postaveno: letos
+STR_5777    :Postaveno: minulý rok
+STR_5778    :Postaveno: před {COMMA16} lety
+STR_5779    :Příjem: {CURRENCY2DP} za hodinu
+STR_5780    :Cena údržby: {CURRENCY2DP} za hodinu
+STR_5781    :Cena údržby: neznámá
+STR_5782    :Úspěšně připojeno. Chatujte stisknutím klávesy '{STRING}'.
 
 ###############################################################################
 ## RCT2 Objects

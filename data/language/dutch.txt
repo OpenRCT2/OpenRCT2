@@ -1776,7 +1776,7 @@ STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
 STR_1775    :Uit
 STR_1776    :Aan
-STR_1777    :{WINDOW_COLOUR_2}Muziek
+STR_1777    :{WINDOW_COLOUR_2}Attractiemuziek
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapak
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tijgerpak
@@ -2334,7 +2334,7 @@ STR_2329    :{WINDOW_COLOUR_2}Afstanden en snelheden:
 STR_2330    :{WINDOW_COLOUR_2}Temperatuur:
 STR_2331    :{WINDOW_COLOUR_2}Hoogtemarkering:
 STR_2332    :Eenheden
-STR_2333    :Geluid
+STR_2333    :Geluidseffecten
 STR_2334    :Ponden ({POUND})
 STR_2335    :Dollars ($)
 STR_2336    :Frank (F)
@@ -4062,6 +4062,25 @@ STR_5760    :Hong Kong-dollar (HK$)
 STR_5761    :Taiwanese dollar (NT$)
 STR_5762    :Chinese yuan (CN{YEN})
 STR_5763    :Alle bestanden
+STR_5764    :Ongeldig attractietype
+STR_5765    :Kan attracties met een ongeldig type niet bewerken.
+STR_5766    :<available string id>
+STR_5767    :Inkomsten
+STR_5768    :Totaal aant. bez.
+STR_5769    :Totale winst
+STR_5770    :Bezoekers per uur
+STR_5771    :Bedrijfskosten
+STR_5772    :Bouwjaar
+STR_5773    :Totaal aant. bez.: {COMMA32}
+STR_5774    :Totale winst: {CURRENCY2DP}
+STR_5775    :{COMMA32} bezoekers per uur
+STR_5776    :Dit jaar
+STR_5777    :Vorig jaar
+STR_5778    :{COMMA16} jaar geleden
+STR_5779    :Inkomsten: {CURRENCY2DP} per uur
+STR_5780    :Bedrijfskosten: {CURRENCY2DP} per uur
+STR_5781    :Bedrijfskosten: onbekend
+STR_5782    :Je bent nu verbonden met de server. Druk op '{STRING}' om te chatten.
 
 #############
 # Scenarios #

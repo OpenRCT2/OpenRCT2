@@ -4079,6 +4079,7 @@ STR_5778    :Erbaut: Vor {COMMA16} Jahren
 STR_5779    :Einkünfte: {CURRENCY2DP} pro Stunde
 STR_5780    :Betriebskosten: {CURRENCY2DP} pro Stunde
 STR_5781    :Betriebskosten: Unbekannt
+STR_5782    :Sie sind jetzt verbunden. Drücken Sie '{STRING}' um zu chatten.
 
 #############
 # Scenarios #
