@@ -3091,7 +3091,7 @@ int save_track_design(uint8 rideIndex){
 	desc.title = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
 	desc.initial_directory = initialDirectory;
 	desc.default_filename = path;
-	desc.filters[0].name = "OpenRCT2 Track Designs";
+	desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
 	desc.filters[0].pattern = "*.td6";
 
 	audio_pause_sounds();
