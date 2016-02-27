@@ -2227,10 +2227,10 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 		dst->vehicles[i] = 0xFFFF;
 	}
 	dst->num_vehicles = src->num_trains;
-	dst->num_cars_per_train = src->num_cars_per_train;
-	dst->proposed_num_vehicles = 32;
+	dst->num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
+	dst->proposed_num_vehicles = src->num_trains;
 	dst->max_trains = 32;
-	dst->proposed_num_cars_per_train = 12;
+	dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
 
 	// Operation
 	dst->mode = src->operating_mode;
