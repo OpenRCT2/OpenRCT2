@@ -5152,8 +5152,6 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 	ride = get_ride(rideIndex);
 
-	window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
-
 	stationIndex = ride_mode_check_station_present(ride);
 	if (stationIndex == -1)return 0;
 

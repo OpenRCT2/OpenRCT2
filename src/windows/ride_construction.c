@@ -593,7 +593,7 @@ static void window_ride_construction_close(rct_window *w)
 	if (ride_try_get_origin_element(rideIndex, NULL)) {
 		rct_ride *ride = get_ride(rideIndex);
 		if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops) {
-			ride->status = RIDE_STATUS_OPEN;
+			ride_set_status(rideIndex, RIDE_STATUS_OPEN);
 		}
 
 		window_ride_main_open(rideIndex);
@@ -1926,6 +1926,12 @@ static void window_ride_construction_exit_click(rct_window *w)
  */
 static void window_ride_construction_update(rct_window *w)
 {
+	rct_ride *ride = get_ride(_currentRideIndex);
+	if (ride == NULL || ride->status != RIDE_STATUS_CLOSED) {
+		window_close(w);
+		return;
+	}
+
 	switch (_currentTrackCurve) {
 	case 429:
 	case 376:
