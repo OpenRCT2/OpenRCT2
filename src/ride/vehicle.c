@@ -1304,8 +1304,9 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8 num_peeps_on_train
 	}
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
+		// Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a Boat Ride with passengers on it.
 		if (ride->status != RIDE_STATUS_CLOSED ||
-			ride->num_riders != 0){
+			(ride->num_riders != 0 && ride->type != RIDE_TYPE_BOAT_RIDE)){
 			ride->train_at_station[vehicle->current_station] = 0xFF;
 			vehicle->sub_state = 2;
 			return;
