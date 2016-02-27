@@ -1221,7 +1221,8 @@ static void window_ride_update_overall_view(uint8 ride_index) {
 
 	// Each farther zoom level shows twice as many tiles (log)
 	// Appropriate zoom is lowered by one to fill the entire view with the ride
-	view->zoom = (uint8) max(0, ceil(log(size / 80)) - 1);
+	double zoom = ceil(log(size / 80)) - 1;
+	view->zoom = (uint8)clamp(0, zoom, 3);
 }
 
 /**
