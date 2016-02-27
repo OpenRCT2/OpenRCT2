@@ -878,6 +878,7 @@ int game_load_network(SDL_RWops* rw)
 	map_update_tile_pointers();
 	reset_0x69EBE4();
 	openrct2_reset_object_tween_locations();
+	game_convert_strings_to_utf8();
 	return 1;
 }
 
