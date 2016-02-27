@@ -2704,9 +2704,11 @@ void sub_679788(rct_g1_element *image, rct_drawpixelinfo *dpi) {
 	RCT2_CALLPROC_X(0x00679788, 0, 0, 0, 0, (int) image->offset, (int) dpi, (int) dpi);
 }
 
-
-void sub_679C4A(rct_g1_element *image, uint8 *esi) {
-	uint8 *ebx = esi + *(esi + (_yStartPoint * 2));
+/**
+ * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
+ */
+void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, int round) {
+	uint8 *ebx = esi + *(esi + (y_start_point * 2));
 
 	uint8 last_data_line = 0;
 	while (!last_data_line) {
@@ -2719,17 +2721,17 @@ void sub_679C4A(rct_g1_element *image, uint8 *esi) {
 
 		ebx += no_pixels;
 
-		if (gap_size & 1) {
-			gap_size++;
-			no_pixels--;
-			if (no_pixels == 0) {
-				continue;
+		if (round > 1) {
+			if (gap_size & 1) {
+				gap_size++;
+				no_pixels--;
+				if (no_pixels == 0) {
+					continue;
+				}
 			}
 		}
 
-		// This is only done for one of the functions
-		int sub = 0x679C4A;
-		if (sub == 0x679C4A) {
+		if (round == 4) {
 			if (gap_size & 2) {
 				gap_size += 2;
 				no_pixels -= 2;
@@ -2739,7 +2741,7 @@ void sub_679C4A(rct_g1_element *image, uint8 *esi) {
 			}
 		}
 
-		int x_start = gap_size - _xStartPoint;
+		int x_start = gap_size - x_start_point;
 		if (x_start <= 0) {
 			no_pixels += x_start;
 			if (no_pixels <= 0) {
@@ -2760,15 +2762,10 @@ void sub_679C4A(rct_g1_element *image, uint8 *esi) {
 			}
 		}
 
-		// These differ per variant ( `+7)>>3`, `+1)>>1` or `+3)>>2` )
-		// Could be 'ceil2(n, 8)`, 'ceil2(n, 2)`, 'ceil2(n, 4)`
-		int pixel_offset = 3;
-		int shift_amount = 2;
-		no_pixels = (no_pixels + pixel_offset) >> shift_amount;
-		if (no_pixels != 0) {
-			RCT2_GLOBAL(0x141F569, uint8) = 1;
-			break;
-		}
+		if (ceil2(no_pixels, round) == 0) continue;
+
+		RCT2_GLOBAL(0x141F569, uint8) = 1;
+		break;
 	}
 }
 
@@ -2813,30 +2810,26 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
 	RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
 
-	int round, address_1, address_2;
+	int round, address_2;
 	switch (dpi->zoom_level) {
 		case 0:
 		default:
 			round = 1;
-			address_1 = 0x0067933B;
 			address_2 = 0x00679236;
 			break;
 
 		case 1:
 			round = 2;
-			address_1 = 0x00679788;
 			address_2 = 0x00679662;
 			break;
 
 		case 2:
 			round = 4;
-			address_1 = 0x00679C4A;
 			address_2 = 0x00679B0D;
 			break;
 
 		case 3:
 			round = 8;
-			address_1 = 0x0067A117;
 			address_2 = 0x00679FF1;
 	}
 
@@ -2911,10 +2904,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 			}
 		}
 
-		// TODO: refactor in sub_679C4A
-		// EDI: dpi
-		// EBP: dpi
-		RCT2_CALLPROC_X(address_1, 0, 0, 0, 0, (int) image->offset, 0xEEEEEEEE, 0xFFFFFFFF);
+		sub_67933B_679788_679C4A_67A117(image->offset, _xStartPoint, _yStartPoint, round);
 		return;
 	}
 
