@@ -68,7 +68,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "3"
+#define NETWORK_STREAM_VERSION "4"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
@@ -337,6 +337,8 @@ public:
 	void Server_Send_GAMEINFO(NetworkConnection& connection);
 	void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
 	void Server_Send_GROUPLIST(NetworkConnection& connection);
+	void Server_Send_EVENT_PLAYER_JOINED(const char *playerName);
+	void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
@@ -412,6 +414,7 @@ private:
 	void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
