@@ -2667,7 +2667,7 @@ static void ride_music_update(int rideIndex)
 	if (ride->music_tune_id == 255) {
 		uint8 *musicStyleTunes = ride_music_style_tuneids[ride->music];
 		uint8 numTunes = *musicStyleTunes++;
-		ride->music_tune_id = musicStyleTunes[scenario_rand() % numTunes];
+		ride->music_tune_id = musicStyleTunes[util_rand() % numTunes];
 		ride->music_position = 0;
 		return;
 	}
