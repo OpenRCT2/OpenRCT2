@@ -93,7 +93,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	}
 	SDL_RWclose(rw);
 
-	int calculatedChecksum=object_calculate_checksum(&openedEntry, chunk, *chunkSize);
+	int calculatedChecksum = object_calculate_checksum(&openedEntry, chunk, *chunkSize);
 
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
@@ -211,7 +211,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 
 
 	//Check if content of object file matches the stored checksum. If it does not, then fix it.
-	int calculated_checksum=object_calculate_checksum(entry,chunk,installed_entry->chunk_size);
+	int calculated_checksum = object_calculate_checksum(entry, chunk, installed_entry->chunk_size);
 	if(entry->checksum != calculated_checksum){
 		//Store the current length of the header - it's the offset at which we will write the extra bytes
 		int salt_offset = chunkHeader.length;
@@ -221,7 +221,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 		it and update that reference, but I don't know the codebase well enough to know if that's the
 		case, so to be on the safe side I copy it*/
 		uint8* new_chunk = malloc(chunkHeader.length + 11);
-		memcpy(new_chunk,chunk,chunkHeader.length);
+		memcpy(new_chunk,chunk, chunkHeader.length);
 		//It should be safe to update these in-place because they are local
 		chunkHeader.length += 11;
 
@@ -232,7 +232,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 		of bits from the file). Here, we take each bit that should be flipped in the checksum and set one of the bits in the data 
 		that maps to it. 11 bytes is the minimum needed to touch every bit of the checksum - with less than that, you wouldn't 
 		always be able to make the checksum come out to the desired target*/
-		new_chunk[salt_offset] = (bits_to_flip & 0x00000001) << 7;;
+		new_chunk[salt_offset] = (bits_to_flip & 0x00000001) << 7;
 		new_chunk[salt_offset + 1] = ((bits_to_flip & 0x00200000) >> 14);
 		new_chunk[salt_offset + 2] = ((bits_to_flip & 0x000007F8) >> 3);
 		new_chunk[salt_offset + 3] = ((bits_to_flip & 0xFF000000) >> 24);
