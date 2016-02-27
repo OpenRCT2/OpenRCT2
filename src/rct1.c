@@ -2208,6 +2208,16 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	// 
 	dst->status = RIDE_STATUS_CLOSED;
 
+	// Flags
+	if (src->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+		dst->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
+	if (src->lifecycle_flags & RIDE_LIFECYCLE_MUSIC)
+		dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+	if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
+		dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE;
+	if (src->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+		dst->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
+
 	// Station
 	dst->overall_view = src->overall_view;
 	for (int i = 0; i < 4; i++) {
@@ -2238,10 +2248,14 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->min_waiting_time = src->min_waiting_time;
 	dst->max_waiting_time = src->max_waiting_time;
 	dst->operation_option = src->operation_option;
-	dst->music = RCT2_ADDRESS(0x0097D4F4, uint8)[dst->type * 8];
 	dst->num_circuits = 1;
 	dst->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
 	dst->lift_hill_speed = 5; // RCT1 used 5mph / 8 km/h for every lift hill
+
+	if (gameVersion == FILE_VERSION_RCT1)
+		dst->music = RCT2_ADDRESS(0x0097D4F4, uint8)[dst->type * 8];
+	else
+		dst->music = src->music;
 
 	// Colours
 	dst->colour_scheme_type = src->colour_scheme;
@@ -2255,7 +2269,10 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 			dst->track_colour_additional[i] = RCT1ColourConversionTable[src->track_colour_additional[i]];
 			dst->track_colour_supports[i] = RCT1ColourConversionTable[src->track_colour_supports[i]];
 		}
+		// Entrance styles were introduced with AA. They correspond directly with those in RCT2.
+		dst->entrance_style = src->entrance_style;
 	}
+	
 
 	if(gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND) {
 		// The merry-go-round in pre-LL versions was always yellow with red
@@ -2369,6 +2386,10 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = stringId;
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32) = 0;
 	}
+
+	// Park status
+	if (s4->park_flags & PARK_FLAGS_PARK_OPEN)
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
 
 	// Scenario name
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
