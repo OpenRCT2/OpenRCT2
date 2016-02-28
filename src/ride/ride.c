@@ -2996,6 +2996,9 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
 {
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
+
+	assert(preset_index < presetList->count);
+
 	if (presetList->count != 255) {
 		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
 		vehicle_colour *preset = &presetList->list[preset_index];
@@ -7509,11 +7512,6 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		return;
 	}
 
-	if (!(*ebx & GAME_COMMAND_FLAG_APPLY) && !(*ebx & GAME_COMMAND_FLAG_NETWORKED)) {
-		*eax =
-			ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
-	}
-
 	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
 		*ebx = 0;
 		return;
@@ -7551,7 +7549,14 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 		invalidate_test_results(rideIndex);
 		rideEntry = get_ride_entry(ride->subtype);
 		ride->subtype = value;
+
+		if (!(*ebx & GAME_COMMAND_FLAG_NETWORKED)) {
+			*eax =
+				ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
+		}
+		
 		ride_set_vehicle_colours_to_random_preset(ride, *eax & 0xFF);
+
 		ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
 		break;
 	default:
