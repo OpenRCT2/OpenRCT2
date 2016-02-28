@@ -2700,20 +2700,16 @@ void do_sub(int address, uint32 ebx, rct_g1_element *image, uint8 *esi) {
 	assert(new_global == original_global);
 }
 
-void sub_679788(rct_g1_element *image, rct_drawpixelinfo *dpi) {
-	RCT2_CALLPROC_X(0x00679788, 0, 0, 0, 0, (int) image->offset, (int) dpi, (int) dpi);
-}
-
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
 void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, int round) {
-	uint8 *ebx = esi + *(esi + (y_start_point * 2));
+	const uint8 *ebx = esi + ((uint16 *) esi)[y_start_point];
 
 	uint8 last_data_line = 0;
 	while (!last_data_line) {
-		uint8 gap_size = *ebx++;
 		int no_pixels = *ebx++;
+		uint8 gap_size = *ebx++;
 
 		last_data_line = no_pixels & 0x80;
 
@@ -2722,7 +2718,7 @@ void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_
 		ebx += no_pixels;
 
 		if (round > 1) {
-			if (gap_size & 1) {
+			if (gap_size % 2) {
 				gap_size++;
 				no_pixels--;
 				if (no_pixels == 0) {
@@ -2732,7 +2728,7 @@ void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_
 		}
 
 		if (round == 4) {
-			if (gap_size & 2) {
+			if (gap_size % 4) {
 				gap_size += 2;
 				no_pixels -= 2;
 				if (no_pixels <= 0) {
@@ -2765,7 +2761,7 @@ void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_
 		if (ceil2(no_pixels, round) == 0) continue;
 
 		RCT2_GLOBAL(0x141F569, uint8) = 1;
-		break;
+		return;
 	}
 }
 
@@ -2847,7 +2843,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 				_yStartPoint++;
 			}
 
-			if (dpi->zoom_level == 4) {
+			if (dpi->zoom_level == 2) {
 				if (height % 4) {
 					height -= 2;
 					if (height <= 0) {
