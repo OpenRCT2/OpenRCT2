@@ -2490,7 +2490,7 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
  * @param[out] _properties (edirs16)
  * @return (CF)
  */
-static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_rideIndex, uint16 *_edxRS16, uint16 *_x, uint16 *_y, uint16 *_z, uint16 *_properties) {
+static bool sub_6CA2DF(int *_trackType, int *_trackDirection, int *_rideIndex, int *_edxRS16, int *_x, int *_y, int *_z, int *_properties) {
 	uint8 trackType, trackDirection, rideIndex;
 	uint16 z, x, y, edxRS16, properties;
 
@@ -2622,80 +2622,6 @@ static bool new_sub_6CA2DF(uint8 *_trackType, uint8 *_trackDirection, uint8 *_ri
 	if (_y != NULL) *_y = y;
 	if (_z != NULL) *_z = z;
 	if (_properties != NULL) *_properties = properties;
-
-	return false;
-}
-
-/**
- *
- *  rct2: 0x006CA2DF
- * bh: trackRotation (out)
- * dl: ??? (out)
- * dh: trackType (out)
- * edx >> 16: ??? (out)
- */
-static bool original_sub_6CA2DF(uint8 *trackType, uint8 *trackDirection, uint8 *rideIndex, uint16 *edxRS16, uint16 *x, uint16 *y, uint16 *z, uint16 *properties) {
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	if (RCT2_CALLFUNC_X(0x006CA2DF, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp) & 0x100)
-		return true;
-
-	if (trackType != NULL) *trackType = (edx >> 8) & 0xFF;
-	if (trackDirection != NULL) *trackDirection = (ebx >> 8) & 0xFF;
-	if (rideIndex != NULL) *rideIndex = edx & 0xFF;
-	if (edxRS16 != NULL) *edxRS16 = (edx >> 16) & 0xFFFF;
-	if (x != NULL) *x = eax & 0xFFFF;
-	if (y != NULL) *y = ecx & 0xFFFF;
-	if (z != NULL) *z = edi & 0xFFFF;
-	if (properties != NULL) *properties = (edi >> 16) & 0xFFFF;
-	return false;
-}
-
-/**
- *
- *  rct2: 0x006CA2DF
- * bh: trackRotation (out)
- * dl: ??? (out)
- * dh: trackType (out)
- * edx >> 16: ??? (out)
- */
-static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int *edxRS16, int *x, int *y, int *z, int *properties) {
-	uint8 before_currentTrackLiftHill = _currentTrackLiftHill;
-
-	uint8 new_trackType, new_trackDirection, new_rideIndex;
-	uint16 new_edxRS16, new_x, new_y, new_z, new_properties;
-	bool new_return = new_sub_6CA2DF(&new_trackType, &new_trackDirection, &new_rideIndex, &new_edxRS16, &new_x, &new_y, &new_z, &new_properties);
-	uint8 new_currentTrackLiftHill = _currentTrackLiftHill;
-
-	_currentTrackLiftHill = before_currentTrackLiftHill;
-
-	uint8 original_trackType, original_trackDirection, original_rideIndex;
-	uint16 original_edxRS16, original_x, original_y, original_z, original_properties;
-	bool original_return = original_sub_6CA2DF(&original_trackType, &original_trackDirection, &original_rideIndex, &original_edxRS16, &original_x, &original_y, &original_z, &original_properties);
-	uint8 original_currentTrackLiftHill = _currentTrackLiftHill;
-
-	assert(new_return == original_return);
-	if (new_return) {
-		return true;
-	}
-
-	assert(new_trackType == original_trackType);
-	assert(new_trackDirection == original_trackDirection);
-	assert(new_rideIndex == original_rideIndex);
-	assert(new_edxRS16 == original_edxRS16);
-	assert(new_x == original_x);
-	assert(new_y == original_y);
-	assert(new_z == original_z);
-	assert(new_properties == original_properties);
-	assert(new_currentTrackLiftHill == original_currentTrackLiftHill);
-
-	if (trackType != NULL) *trackType = original_trackType;
-	if (trackDirection != NULL) *trackDirection = original_trackDirection;
-	if (rideIndex != NULL) *rideIndex = original_rideIndex;
-	if (edxRS16 != NULL) *edxRS16 = original_edxRS16;
-	if (x != NULL) *x = original_x;
-	if (y != NULL) *y = original_y;
-	if (z != NULL) *z = original_z;
-	if (properties != NULL) *properties = original_properties;
 
 	return false;
 }
