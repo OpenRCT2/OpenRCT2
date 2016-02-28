@@ -2732,7 +2732,6 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
 
 	sint16 height;
-	uint8 *esi;
 	uint8 *new_source_pointer_start, *esi_end;
 
 	if (dpi->zoom_level != 0) {
@@ -2764,7 +2763,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 	RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
 	RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
 
-	int round, address_2;
+	int round;
 	switch (dpi->zoom_level) {
 		case 0:
 		default:
@@ -2785,93 +2784,21 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 
 	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
 		y -= (round - 1);
-		y += image->y_offset;
-		_yStartPoint = 0;
-		height = image->height;
-		if (dpi->zoom_level != 0) {
-			if (height % 2) {
-				height--;
-				if (height == 0) {
-					return false;
-				}
-				_yStartPoint++;
-			}
-
-			if (dpi->zoom_level == 2) {
-				if (height % 4) {
-					height -= 2;
-					if (height <= 0) {
-						return false;
-					}
-					_yStartPoint += 2;
-				}
-			}
-		}
-
-		y = floor2(y, round);
-		_yEndPoint = height;
-		y -= dpi->y;
-		if (y < 0) {
-			_yEndPoint += y;
-			if (_yEndPoint <= 0) {
-				return false;
-			}
-
-			_yStartPoint -= y;
-			y = 0;
-		}
-
-		y += _yEndPoint;
-		y--;
-		if (y > 0) {
-			_yEndPoint -= y;
-			if (_yEndPoint <= 0) {
-				return false;
-			}
-		}
-
-		_xStartPoint = 0;
-		_xEndPoint = image->width;
-		x += image->x_offset;
-		x = floor2(x, round);
-		x -= dpi->x;
-		if (x < 0) {
-			_xEndPoint += x;
-			if (_xEndPoint <= 0) {
-				return false;
-			}
-
-			_xStartPoint -= x;
-			x = 0;
-		}
-
-		x += _xEndPoint;
-		x--;
-		if (x > 0) {
-			_xEndPoint -= x;
-			if (_xEndPoint <= 0) {
-				return false;
-			}
-		}
-
-		return sub_67933B_679788_679C4A_67A117(image->offset, _xStartPoint, _yStartPoint, round);
 	}
 
-	esi = image->offset;
-
 	y += image->y_offset;
+	sint16 yStartPoint = 0;
 	height = image->height;
-
 	if (dpi->zoom_level != 0) {
 		if (height % 2) {
 			height--;
-			esi += image->width;
+			yStartPoint++;
 		}
 
 		if (dpi->zoom_level == 2) {
 			if (height % 4) {
 				height -= 2;
-				esi += image->width * 2;
+				yStartPoint += 2;
 			}
 		}
 
@@ -2881,63 +2808,71 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 	}
 
 	y = floor2(y, round);
-	_yEndPoint = height;
+	sint16 yEndPoint = height;
 	y -= dpi->y;
 	if (y < 0) {
-		_yEndPoint += y;
-		if (_yEndPoint <= 0) {
+		yEndPoint += y;
+		if (yEndPoint <= 0) {
 			return false;
 		}
 
-		esi += (image->width * -y) & 0xFFFF;
+		yStartPoint -= y;
 		y = 0;
-	} else {
-		// Do nothing?
 	}
 
-	y += _yEndPoint;
+	y += yEndPoint;
 	y--;
 	if (y > 0) {
-		_yEndPoint -= y;
-		if (_yEndPoint <= 0) {
+		yEndPoint -= y;
+		if (yEndPoint <= 0) {
 			return false;
 		}
 	}
 
-	_xEndPoint = image->width;
-	RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
+	sint16 xStartPoint = 0;
+	sint16 xEndPoint = image->width;
+	if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
+		RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
+	}
+
 	x += image->x_offset;
 	x = floor2(x, round);
 	x -= dpi->x;
 	if (x < 0) {
-		_xEndPoint += x;
-		if (_xEndPoint <= 0) {
+		xEndPoint += x;
+		if (xEndPoint <= 0) {
 			return false;
 		}
 
-		RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
-		esi -= x;
+		if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
+			RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
+		}
+
+		xStartPoint -= x;
 		x = 0;
 	}
 
-	x += _xEndPoint;
+	x += xEndPoint;
 	x--;
 	if (x > 0) {
-		_xEndPoint -= x;
-		if (_xEndPoint <= 0) {
+		xEndPoint -= x;
+		if (xEndPoint <= 0) {
 			return false;
 		}
 
-		RCT2_GLOBAL(0x009ABDAE, sint16) += x;
+		if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
+			RCT2_GLOBAL(0x009ABDAE, sint16) += x;
+		}
 	}
 
+	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
+		return sub_67933B_679788_679C4A_67A117(image->offset, xStartPoint, yStartPoint, round);
+	}
+
+	uint8 *esi = image->offset + (yStartPoint * image->width) + xStartPoint;
 	uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
 
 	if (!(image->flags & 2)) {
-		sint8 ah = (_yEndPoint >> 8) & 0xFF;
-		int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
-
-		// ah and edx don't seem to be used by this function...
 		return sub_679236_679662_679B0D_679FF1(ebx, image, esi);
 	}
 
@@ -2952,45 +2887,25 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) 
 	rct_g1_element before_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 before_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 before_x = RCT2_GLOBAL(0x9ABDAE, sint16);
-	sint16 before_x_start_point = _xStartPoint;
-	sint16 before_y_start_point = _yStartPoint;
-	sint16 before_x_end_point = _xEndPoint;
-	sint16 before_y_end_point = _yEndPoint;
 
 	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
 	rct_g1_element original_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 original_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 original_x = RCT2_GLOBAL(0x9ABDAE, sint16);
-	sint16 original_x_start_point = _xStartPoint;
-	sint16 original_y_start_point = _yStartPoint;
-	sint16 original_x_end_point = _xEndPoint;
-	sint16 original_y_end_point = _yEndPoint;
 	uint8 original_output = RCT2_GLOBAL(0x00141F569, uint8);
 
 	RCT2_GLOBAL(0x9E3D08, rct_g1_element) = before_image;
 	RCT2_GLOBAL(0xEDF81C, uint32) = before_palette;
 	RCT2_GLOBAL(0x9ABDAE, sint16) = before_x;
-	_xStartPoint = before_x_start_point;
-	_yStartPoint = before_y_start_point;
-	_xEndPoint = before_x_end_point;
-	_yEndPoint = before_y_end_point;
 
 	bool new_output = new_sub_679074(dpi, imageId, x, y);
 	rct_g1_element new_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 new_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
-	sint16 new_x_start_point = _xStartPoint;
-	sint16 new_y_start_point = _yStartPoint;
-	sint16 new_x_end_point = _xEndPoint;
-	sint16 new_y_end_point = _yEndPoint;
 
 	assert(new_image.offset == original_image.offset);
 	assert(new_palette == original_palette);
 	assert(new_x == original_x);
-	assert(new_x_start_point == original_x_start_point);
-	assert(new_y_start_point == original_y_start_point);
-	assert(new_x_end_point == original_x_end_point);
-	assert(new_y_end_point == original_y_end_point);
 	assert(new_output == original_output);
 
 	return new_output;
@@ -3034,8 +2949,6 @@ void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *g1_source, uint8 *esi, uint
 	}
 
 	(*esi_end) = new_source_pointer_start + (uint32) ebp;
-	sint8 ah = (_yEndPoint >> 8) & 0xFF;
-	int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
 }
 
 /**
