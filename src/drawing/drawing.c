@@ -63,7 +63,7 @@ uint8 text_palette[0x8] = {
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-const uint16 palette_to_g1_offset[] = {
+const uint16 palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
 	0x1333, 0x1334, 0x1335, 0x1336,
 	0x1337, 0x1338, 0x1339, 0x133A,
 	0x133B, 0x133C, 0x133D, 0x133E,
