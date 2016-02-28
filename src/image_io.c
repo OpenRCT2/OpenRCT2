@@ -46,15 +46,15 @@ bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8
  
 	// Read header
 	png_uint_32 pngWidth, pngHeight;
-	int bit_depth, color_type, interlace_type;
-	png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bit_depth, &color_type, &interlace_type, NULL, NULL);
+	int bit_depth, colour_type, interlace_type;
+	png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bit_depth, &colour_type, &interlace_type, NULL, NULL);
 
 	// Read pixels as 32bpp RGBA data
 	png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
 	png_bytepp rowPointers = png_get_rows(png_ptr, info_ptr);
 	uint8 *pngPixels = (uint8*)malloc(pngWidth * pngHeight * 4);
 	uint8 *dst = pngPixels;
-	if (color_type == PNG_COLOR_TYPE_RGB) {
+	if (colour_type == PNG_COLOR_TYPE_RGB) {
 		// 24-bit PNG (no alpha)
 		assert(rowBytes == pngWidth * 3);
 		for (png_uint_32 i = 0; i < pngHeight; i++) {

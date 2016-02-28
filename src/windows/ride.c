@@ -333,9 +333,9 @@ static rct_widget window_ride_colour_widgets[] = {
 	{ WWT_SPINNER,			1,	3,		70,		47,		93,		0xFFFFFFFF,						STR_NONE													},
 	{ WWT_DROPDOWN,			1,	74,		312,	49,		60,		872,							STR_NONE													},
 	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	50,		59,		876,							STR_COLOUR_SCHEME_TO_CHANGE_TIP								},
-	{ WWT_COLORBTN,			1,	79,		90,		74,		85,		0xFFFFFFFF,						STR_SELECT_MAIN_COLOUR_TIP									},
-	{ WWT_COLORBTN,			1,	99,		110,	74,		85,		0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_1_TIP							},
-	{ WWT_COLORBTN,			1,	119,	130,	74,		85,		0xFFFFFFFF,						STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP						},
+	{ WWT_COLOURBTN,		1,	79,		90,		74,		85,		0xFFFFFFFF,						STR_SELECT_MAIN_COLOUR_TIP									},
+	{ WWT_COLOURBTN,		1,	99,		110,	74,		85,		0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_1_TIP							},
+	{ WWT_COLOURBTN,		1,	119,	130,	74,		85,		0xFFFFFFFF,						STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP						},
 	{ WWT_DROPDOWN,			1,	74,		312,	49,		60,		0xFFFFFFFF,						STR_NONE													},
 	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	50,		59,		876,							STR_NONE													},
 	{ WWT_FLATBTN,			1,	289,	312,	68,		91,		5173,							STR_PAINT_INDIVIDUAL_AREA_TIP								},
@@ -347,9 +347,9 @@ static rct_widget window_ride_colour_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	158,	167,	876,							STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP						},
 	{ WWT_DROPDOWN,			1,	74,		312,	173,	184,	0xFFFFFFFF,						STR_NONE													},
 	{ WWT_DROPDOWN_BUTTON,	1,	301,	311,	174,	183,	876,							STR_SELECT_VEHICLE_TO_MODIFY_TIP							},
-	{ WWT_COLORBTN,			1,	79,		90,		190,	201,	0xFFFFFFFF,						STR_SELECT_MAIN_COLOUR_TIP									},
-	{ WWT_COLORBTN,			1,	99,		110,	190,	201,	0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_1_TIP							},
-	{ WWT_COLORBTN,			1,	119,	130,	190,	201,	0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_2_TIP							},
+	{ WWT_COLOURBTN,		1,	79,		90,		190,	201,	0xFFFFFFFF,						STR_SELECT_MAIN_COLOUR_TIP									},
+	{ WWT_COLOURBTN,		1,	99,		110,	190,	201,	0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_1_TIP							},
+	{ WWT_COLOURBTN,		1,	119,	130,	190,	201,	0xFFFFFFFF,						STR_SELECT_ADDITIONAL_COLOUR_2_TIP							},
 	{ WIDGETS_END },
 };
 
@@ -4154,7 +4154,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 
 	// Track main colour
 	if (window_ride_has_track_colour(ride, 0)) {
-		window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].type = WWT_COLORBTN;
+		window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].type = WWT_COLOURBTN;
 		window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].image = window_ride_get_colour_button_image(trackColour.main);
 	} else {
 		window_ride_colour_widgets[WIDX_TRACK_MAIN_COLOUR].type = WWT_EMPTY;
@@ -4162,7 +4162,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 
 	// Track additional colour
 	if (window_ride_has_track_colour(ride, 1)) {
-		window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WWT_COLORBTN;
+		window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WWT_COLOURBTN;
 		window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = window_ride_get_colour_button_image(trackColour.additional);
 	} else {
 		window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WWT_EMPTY;
@@ -4170,7 +4170,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 
 	// Track supports colour
 	if (window_ride_has_track_colour(ride, 2) && ride->type != RIDE_TYPE_MAZE) {
-		window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WWT_COLORBTN;
+		window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WWT_COLOURBTN;
 		window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].image = window_ride_get_colour_button_image(trackColour.supports);
 	} else {
 		window_ride_colour_widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WWT_EMPTY;
@@ -4204,7 +4204,7 @@ static void window_ride_colour_invalidate(rct_window *w)
 		vehicleColour = ride_get_vehicle_colour(ride, w->var_48C);
 
 		window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WWT_SCROLL;
-		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLORBTN;
+		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLOURBTN;
 		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = window_ride_get_colour_button_image(vehicleColour.main);
 
 		uint8 trainLayout[16];
@@ -4222,10 +4222,10 @@ static void window_ride_colour_invalidate(rct_window *w)
 
 		// Additional colours
 		if (colourFlags & 1) {
-			window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WWT_COLORBTN;
+			window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WWT_COLOURBTN;
 			window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].image = window_ride_get_colour_button_image(vehicleColour.additional_1);
 			if (colourFlags & 0x2000000) {
-				window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_COLORBTN;
+				window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_COLOURBTN;
 				window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].image = window_ride_get_colour_button_image(vehicleColour.additional_2);
 			} else {
 				window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_EMPTY;
