@@ -139,9 +139,9 @@ void rct1_import_s4(rct1_s4 *s4)
 	memcpy((void*)0x010E63B8, &s4->unk_counter, 4 + sizeof(s4->sprites));
 
 	for (i = 0; i < MAX_BANNERS; i++)
-		gBanners[i].type = 255;
+		gBanners[i].type = BANNER_NULL;
 
-	memcpy((void*)0x013573BC, &s4->next_sprite_index, 12424);
+	memcpy((void*)RCT2_ADDRESS_SPRITES_NEXT_INDEX, &s4->next_sprite_index, 12424);
 
 	for (i = 0; i < MAX_BANNERS; i++) {
 		banner = &gBanners[i];
@@ -885,6 +885,36 @@ static void rct1_fix_walls()
 						}
 					}
 					break;
+				}
+			} while (!map_element_is_last_for_tile(mapElement++));
+		}
+	}
+}
+
+static void rct1_fix_banners(rct1_s4 *s4)
+{
+	rct_map_element *mapElement;
+	int index;
+
+	for (int x = 0; x < 128; x++) {
+		for (int y = 0; y < 128; y++) {
+			mapElement = map_get_first_element_at(x, y);
+			do {
+				if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_BANNER) {
+					index = mapElement->properties.banner.index;
+					gBanners[index] = s4->banners[index];
+					gBanners[index].colour = RCT1ColourConversionTable[gBanners[index].colour];
+					gBanners[index].string_idx = 778;
+
+					if (is_user_string_id(s4->banners[index].string_idx)) {
+						const char *bannerText = s4->string_table[(s4->banners[index].string_idx - 0x8000) % 1024];
+						if (bannerText[0] != 0) {
+							rct_string_id bannerTextStringId = user_string_allocate(128, bannerText);
+							if (bannerTextStringId != 0) {
+								gBanners[index].string_idx = bannerTextStringId;
+							}	
+						}
+					}
 				}
 			} while (!map_element_is_last_for_tile(mapElement++));
 		}
@@ -2148,6 +2178,7 @@ static void rct1_import_map_elements(rct1_s4 *s4)
 	rct1_fix_z();
 	rct1_fix_paths();
 	rct1_fix_walls();
+	rct1_fix_banners(s4);
 	rct1_fix_scenery();
 	rct1_fix_terrain();
 	rct1_fix_entrance_positions();
