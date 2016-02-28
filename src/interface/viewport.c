@@ -2868,7 +2868,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 			esi += image->width;
 		}
 
-		if (dpi->zoom_level == 4) {
+		if (dpi->zoom_level == 2) {
 			if (height % 4) {
 				height -= 2;
 				esi += image->width * 2;
