@@ -114,7 +114,7 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_THEMES_DUPLICATE_BUTTON,
 	WIDX_THEMES_DELETE_BUTTON,
 	WIDX_THEMES_RENAME_BUTTON,
-	WIDX_THEMES_COLORBTN_MASK,
+	WIDX_THEMES_COLOURBTN_MASK,
 	WIDX_THEMES_LIST,
 	WIDX_THEMES_RCT1_RIDE_LIGHTS,
 	WIDX_THEMES_RCT1_PARK_LIGHTS,
@@ -140,7 +140,7 @@ static rct_widget window_themes_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	10,		100,	82,		93,		5239,							5257 },						// Duplicate button
 	{ WWT_DROPDOWN_BUTTON,	1,	110,	200,	82,		93,		3349,							5258 },						// Delete button
 	{ WWT_DROPDOWN_BUTTON,	1,	210,	300,	82,		93,		3348,							5259 },						// Rename button
-	{ WWT_COLORBTN,			1,	0,		0,		0,		0,		STR_NONE,						STR_NONE },					// color button mask
+	{ WWT_COLOURBTN,		1,	0,		0,		0,		0,		STR_NONE,						STR_NONE },					// colour button mask
 	{ WWT_SCROLL,			1,	3,		316,	60,		103,	2,								STR_NONE },					// staff list
 	{ WWT_CHECKBOX,			1,	10,		299,	54,		65,		5282,							STR_NONE },					// rct1 ride lights
 	{ WWT_CHECKBOX,			1,	10,		299,	69,		80,		5283,							STR_NONE },					// rct1 park lights
@@ -272,8 +272,8 @@ static rct_windowclass *window_themes_tab_classes[] = {
 };
 
 static uint8 _selected_tab = 0;
-static sint16 _color_index_1 = -1;
-static sint8 _color_index_2 = -1;
+static sint16 _colour_index_1 = -1;
+static sint8 _colour_index_2 = -1;
 static const uint8 _row_height = 32;
 static const uint8 _button_offset_x = 220;
 static const uint8 _button_offset_y = 3;
@@ -338,7 +338,7 @@ void window_themes_open()
 		(1 << WIDX_THEMES_MISC_TAB) |
 		(1 << WIDX_THEMES_PROMPTS_TAB) |
 		(1 << WIDX_THEMES_FEATURES_TAB) |
-		(1 << WIDX_THEMES_COLORBTN_MASK) |
+		(1 << WIDX_THEMES_COLOURBTN_MASK) |
 		(1 << WIDX_THEMES_PRESETS) |
 		(1 << WIDX_THEMES_PRESETS_DROPDOWN) |
 		(1 << WIDX_THEMES_DUPLICATE_BUTTON) |
@@ -352,8 +352,8 @@ void window_themes_open()
 
 	window_init_scroll_widgets(window);
 	window->list_information_type = 0;
-	_color_index_1 = -1;
-	_color_index_2 = -1;
+	_colour_index_1 = -1;
+	_colour_index_2 = -1;
 	window->min_width = 320;
 	window->min_height = 107;
 	window->max_width = 320;
@@ -547,13 +547,13 @@ static void window_themes_dropdown(rct_window *w, int widgetIndex, int dropdownI
 	switch (widgetIndex) {
 	case WIDX_THEMES_LIST:
 		if (dropdownIndex != -1) {
-			rct_windowclass wc = get_window_class_tab_index(_color_index_1);
-			uint8 colour = theme_get_colour(wc, _color_index_2);
+			rct_windowclass wc = get_window_class_tab_index(_colour_index_1);
+			uint8 colour = theme_get_colour(wc, _colour_index_2);
 			colour = (colour & COLOUR_FLAG_TRANSLUCENT) | dropdownIndex;
-			theme_set_colour(wc, _color_index_2, colour);
+			theme_set_colour(wc, _colour_index_2, colour);
 			window_invalidate_all();
-			_color_index_1 = -1;
-			_color_index_2 = -1;
+			_colour_index_1 = -1;
+			_colour_index_2 = -1;
 
 			// if (gCurrentTheme >= 2)
 			// 	themes_save_preset(gCurrentTheme);
@@ -600,23 +600,23 @@ void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
 	if (y / _row_height < get_colour_scheme_tab_count()) {
 		int y2 = y % _row_height;
-		_color_index_1 = y / _row_height;
-		_color_index_2 = ((x - _button_offset_x) / 12);
+		_colour_index_1 = y / _row_height;
+		_colour_index_2 = ((x - _button_offset_x) / 12);
 
-		rct_windowclass wc = get_window_class_tab_index(_color_index_1);
+		rct_windowclass wc = get_window_class_tab_index(_colour_index_1);
 		int numColours = theme_desc_get_num_colours(wc);
-		if (_color_index_2 < numColours) {
+		if (_colour_index_2 < numColours) {
 			if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y && y2 < _button_offset_y + 11) {
 				if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 					window_error_open(5241, 5256);
 				} else {
-					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].left = _button_offset_x + _color_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
-					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].top = _color_index_1 * _row_height + _button_offset_y - w->scrolls[0].v_top + window_themes_widgets[WIDX_THEMES_LIST].top;
-					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].right = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].left + 12;
-					window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].bottom = window_themes_widgets[WIDX_THEMES_COLORBTN_MASK].top + 12;
+					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
+					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y - w->scrolls[0].v_top + window_themes_widgets[WIDX_THEMES_LIST].top;
+					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].right = window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
+					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
 
-					uint8 colour = theme_get_colour(wc, _color_index_2);
-					window_dropdown_show_colour(w, &(window_themes_widgets[WIDX_THEMES_COLORBTN_MASK]), w->colours[1], colour);
+					uint8 colour = theme_get_colour(wc, _colour_index_2);
+					window_dropdown_show_colour(w, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), w->colours[1], colour);
 					widget_invalidate(w, WIDX_THEMES_LIST);
 				}
 			}
@@ -624,13 +624,13 @@ void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 				if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 					window_error_open(5241, 5256);
 				} else {
-					uint8 colour = theme_get_colour(wc, _color_index_2);
+					uint8 colour = theme_get_colour(wc, _colour_index_2);
 					if (colour & COLOUR_FLAG_TRANSLUCENT) {
 						colour &= ~COLOUR_FLAG_TRANSLUCENT;
 					} else {
 						colour |= COLOUR_FLAG_TRANSLUCENT;
 					}
-					theme_set_colour(wc, _color_index_2, colour);
+					theme_set_colour(wc, _colour_index_2, colour);
 					window_invalidate_all();
 				}
 			}
@@ -695,8 +695,8 @@ void window_themes_invalidate(rct_window *w)
 	w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 
 	if (window_find_by_class(WC_DROPDOWN) == NULL) {
-		_color_index_1 = -1;
-		_color_index_2 = -1;
+		_colour_index_1 = -1;
+		_colour_index_2 = -1;
 	}
 
 	window_themes_widgets[WIDX_THEMES_BACKGROUND].right = w->width - 1;
@@ -833,7 +833,7 @@ void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scroll
 
 				uint8 colour = theme_get_colour(wc, j);
 				uint32 image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) + 0x600013C3;
-				if (i == _color_index_1 && j == _color_index_2) {
+				if (i == _colour_index_1 && j == _colour_index_2) {
 					image = ((colour & ~COLOUR_FLAG_TRANSLUCENT) << 19) + 0x600013C4;
 				}
 				gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, y + _button_offset_y, 0);

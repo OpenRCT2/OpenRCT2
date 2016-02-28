@@ -2428,7 +2428,7 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 
 	// Park flags
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = s4->park_flags;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_8; // Flag 8 is unknown and possibly used for cheat detection, according to the TID.
+	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED; // Flag 8 is unknown and possibly used for cheat detection, according to the TID.
 
 	// Scenario name
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;

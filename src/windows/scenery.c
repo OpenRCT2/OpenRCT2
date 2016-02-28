@@ -171,9 +171,9 @@ static rct_widget window_scenery_widgets[] = {
 	{ WWT_SCROLL, 1, 2, 608, 47, 126, 2, STR_NONE },									// 1000000			0x009DE418
 	{ WWT_FLATBTN, 1, 609, 632, 44, 67, 5169, STR_ROTATE_OBJECTS_90 },					// 2000000			0x009DE428
 	{ WWT_FLATBTN, 1, 609, 632, 68, 91, 5173, 3102 },									// 4000000			0x009DE438
-	{ WWT_COLORBTN, 1, 615, 626, 93, 104, 0xFFFFFFFF, STR_SELECT_COLOUR },				// 8000000			0x009DE448
-	{ WWT_COLORBTN, 1, 615, 626, 105, 116, 0xFFFFFFFF, STR_SELECT_SECONDARY_COLOUR },	// 10000000			0x009DE458
-	{ WWT_COLORBTN, 1, 615, 626, 117, 128, 0xFFFFFFFF, STR_SELECT_TERNARY_COLOUR },		// 20000000			0x009DE468
+	{ WWT_COLOURBTN, 1, 615, 626, 93, 104, 0xFFFFFFFF, STR_SELECT_COLOUR },				// 8000000			0x009DE448
+	{ WWT_COLOURBTN, 1, 615, 626, 105, 116, 0xFFFFFFFF, STR_SELECT_SECONDARY_COLOUR },	// 10000000			0x009DE458
+	{ WWT_COLOURBTN, 1, 615, 626, 117, 128, 0xFFFFFFFF, STR_SELECT_TERNARY_COLOUR },		// 20000000			0x009DE468
 	{ WWT_FLATBTN, 1, 609, 632, 117, 140, 5172, 3225 },									// 40000000			0x009DE478
 	{ WIDGETS_END },
 };
@@ -473,7 +473,7 @@ void window_scenery_open()
 	RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, uint32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16) = 0;
-	window_scenery_is_repaint_scenery_tool_on = 0; // repaint colored scenery tool state
+	window_scenery_is_repaint_scenery_tool_on = 0; // repaint coloured scenery tool state
 	window_scenery_is_build_cluster_tool_on = 0; // build cluster tool state
 
 	window->min_width = WINDOW_SCENERY_WIDTH;
@@ -904,10 +904,10 @@ void window_scenery_invalidate(rct_window *w)
 	window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_EMPTY;
 	window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_EMPTY;
 
-	if (window_scenery_is_repaint_scenery_tool_on & 1) { // repaint colored scenery tool is on
-		window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
-		window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLORBTN;
-		window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+	if (window_scenery_is_repaint_scenery_tool_on & 1) { // repaint coloured scenery tool is on
+		window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
+		window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
+		window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_EMPTY;
 	} else if (tabSelectedSceneryId != -1) {
 		rct_scenery_entry* sceneryEntry = NULL;
@@ -916,36 +916,36 @@ void window_scenery_invalidate(rct_window *w)
 			sceneryEntry = g_bannerSceneryEntries[tabSelectedSceneryId - 0x400];
 
 			if (sceneryEntry->banner.flags & 1)
-				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x300) {
 			sceneryEntry = g_largeSceneryEntries[tabSelectedSceneryId - 0x300];
 
 			if (sceneryEntry->large_scenery.flags & 1)
-				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 			if (sceneryEntry->large_scenery.flags & 2)
-				window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+				window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x200) {
 			sceneryEntry = g_wallSceneryEntries[tabSelectedSceneryId - 0x200];
 			if (sceneryEntry->wall.flags & (WALL_SCENERY_FLAG1 | WALL_SCENERY_FLAG2)) {
-				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-					window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+					window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 					if (sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG1)
 						window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
 					if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
-						window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+						window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 				}
 			}
 		} else if (tabSelectedSceneryId < 0x100) {
 			sceneryEntry = g_smallSceneryEntries[tabSelectedSceneryId];
 
 			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG10)) {
-				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
-					window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLORBTN;
+					window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 			}
 		}
 	}
@@ -994,7 +994,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	sint16 selectedSceneryEntryId = w->scenery.selected_scenery_id;
 	if (selectedSceneryEntryId == -1) {
-		if (window_scenery_is_repaint_scenery_tool_on & 1)  // repaint colored scenery tool is on
+		if (window_scenery_is_repaint_scenery_tool_on & 1)  // repaint coloured scenery tool is on
 			return;
 
 		selectedSceneryEntryId = window_scenery_selected_scenery_by_tab[tabIndex];

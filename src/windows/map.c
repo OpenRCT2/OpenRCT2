@@ -75,8 +75,8 @@ static rct_widget window_map_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		243,	1,		14,		STR_MAP,							STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	232,	242,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		244,	43,		257,	STR_NONE,							STR_NONE },
-	{ WWT_COLORBTN,			1,	3,		33,		17,		43,		0x02000144E,						STR_SHOW_PEOPLE_ON_MAP_TIP },
-	{ WWT_COLORBTN,			1,	34,		64,		17,		43,		0x02000144E,						STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
+	{ WWT_COLOURBTN,		1,	3,		33,		17,		43,		0x02000144E,						STR_SHOW_PEOPLE_ON_MAP_TIP },
+	{ WWT_COLOURBTN,		1,	34,		64,		17,		43,		0x02000144E,						STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
 	{ WWT_SCROLL,			1,	3,		241,	46,		225,	0x3,								STR_NONE },
 	{ WWT_SPINNER,			1,	104,	198,	229,	240,	0xC8C,								STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	187,	197,	230,	234,	STR_NUMERIC_UP,						STR_NONE },
@@ -1012,7 +1012,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 	uint16 spriteIndex;
 
 	sint16 left, right, bottom, top;
-	sint16 color;
+	sint16 colour;
 
 	FOR_ALL_PEEPS(spriteIndex, peep) {
 		left = peep->x;
@@ -1026,26 +1026,26 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 		right = left;
 		bottom = top;
 
-		color = 0x14;
+		colour = 0x14;
 
 		if ((peep->flags & SPRITE_FLAGS_PEEP_FLASHING) != 0) {
 			if (peep->type == PEEP_TYPE_STAFF) {
 				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 3)) != 0) {
-					color = 0x8A;
+					colour = 0x8A;
 					left--;
 					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
-						color = 0xA;
+						colour = 0xA;
 				}
 			} else {
 				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 1)) != 0) {
-					color = 0xAC;
+					colour = 0xAC;
 					left--;
 					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
-						color = 0x15;
+						colour = 0x15;
 				}
 			}
 		}
-		gfx_fill_rect(dpi, left, top, right, bottom, color);
+		gfx_fill_rect(dpi, left, top, right, bottom, colour);
 	}
 }
 

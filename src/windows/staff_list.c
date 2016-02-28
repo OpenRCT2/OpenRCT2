@@ -102,7 +102,7 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
 	WIDX_STAFF_LIST_SECURITY_TAB,
 	WIDX_STAFF_LIST_ENTERTAINERS_TAB,
 	WIDX_STAFF_LIST_LIST,
-	WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER,
+	WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER,
 	WIDX_STAFF_LIST_HIRE_BUTTON,
 	WIDX_STAFF_LIST_QUICK_FIRE,
 	WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON,
@@ -124,7 +124,7 @@ static rct_widget window_staff_list_widgets[] = {
 	{ WWT_TAB,				1,	65,			95,			17,		43,		0x02000144E,	STR_STAFF_SECURITY_TAB_TIP },		// security guards tab
 	{ WWT_TAB,				1,	96,			126,		17,		43,		0x02000144E,	STR_STAFF_ENTERTAINERS_TAB_TIP },	// entertainers tab
 	{ WWT_SCROLL,			1,	3,			316,		72,		266,	3,				STR_NONE },							// staff list
-	{ WWT_COLORBTN,			1,	130,		141,		58,		69,		STR_NONE,		STR_UNIFORM_COLOUR_TIP },			// uniform color picker
+	{ WWT_COLOURBTN,		1,	130,		141,		58,		69,		STR_NONE,		STR_UNIFORM_COLOUR_TIP },			// uniform colour picker
 	{ WWT_DROPDOWN_BUTTON,	0,	WW - 155,	WW - 11,	17,		29,		STR_NONE,		STR_HIRE_STAFF_TIP },				// hire button
 	{ WWT_FLATBTN,			1,	WW - 77,	WW - 54,	46,		69,		SPR_DEMOLISH,	5300 },								// quick fire staff
 	{ WWT_FLATBTN,			1,	WW - 53,	WW - 30,	46,		69,		5175,			STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
@@ -166,7 +166,7 @@ void window_staff_list_open()
 		(1 << WIDX_STAFF_LIST_SECURITY_TAB) |
 		(1 << WIDX_STAFF_LIST_ENTERTAINERS_TAB) |
 		(1 << WIDX_STAFF_LIST_HIRE_BUTTON) |
-		(1 << WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER) |
+		(1 << WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER) |
 		(1 << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) |
 		(1 << WIDX_STAFF_LIST_MAP) |
 		(1 << WIDX_STAFF_LIST_QUICK_FIRE);
@@ -175,7 +175,7 @@ void window_staff_list_open()
 	RCT2_GLOBAL(RCT2_ADDRESS_STAFF_HIGHLIGHTED_INDEX, short) = -1;
 	window->list_information_type = 0;
 
-	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].type = WWT_EMPTY;
+	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_EMPTY;
 	window->min_width = WW;
 	window->min_height = WH;
 	window->max_width = MAX_WW;
@@ -279,7 +279,7 @@ static void window_staff_list_mousedown(int widgetIndex, rct_window* w, rct_widg
 		w->scrolls[0].v_top = 0;
 		window_staff_list_cancel_tools(w);
 		break;
-	case WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER:
+	case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
 		window_dropdown_show_colour(w, widget, w->colours[1], RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)]);
 		break;
 	}
@@ -293,7 +293,7 @@ static void window_staff_list_mousedown(int widgetIndex, rct_window* w, rct_widg
 */
 static void window_staff_list_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER && dropdownIndex != -1) {
+	if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER && dropdownIndex != -1) {
 		update_staff_colour(RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8), dropdownIndex);
 	}
 }
@@ -492,11 +492,11 @@ void window_staff_list_invalidate(rct_window *w)
 
 	w->pressed_widgets = pressed_widgets | (1ULL << widgetIndex);
 	window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].image = STR_HIRE_HANDYMAN + tabIndex;
-	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].type = WWT_EMPTY;
+	window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_EMPTY;
 
 	if (tabIndex < 3) {
-		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].type = WWT_COLORBTN;
-		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].image =
+		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
+		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
 			((uint32)RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex] << 19) +
 			0x600013C3;
 	}
@@ -595,7 +595,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	if (selectedTab < 3) {
-		gfx_draw_string_left(dpi, STR_UNIFORM_COLOUR, w, 0, w->x + 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOR_PICKER].top + w->y + 1);
+		gfx_draw_string_left(dpi, STR_UNIFORM_COLOUR, w, 0, w->x + 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->y + 1);
 	}
 
 	int staffTypeStringId = 1859 + selectedTab;
