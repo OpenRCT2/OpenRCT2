@@ -2326,9 +2326,6 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 				ride->mode == RIDE_MODE_SHUTTLE)
 				return;
 
-			if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED)
-				return;
-
 			vehicle_update_crash_setup(vehicle);
 			return;
 		}
@@ -2655,24 +2652,12 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 				vehicle->velocity = 0;
 			}
 			else {
-				if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
-					if (vehicle->sub_state != 0) {
-						vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
-						vehicle->velocity = 0;
-					}
-					else {
-						vehicle->sub_state = 1;
-						vehicle->velocity = 0;
-					}
+				if (vehicle->sub_state != 0) {
+					vehicle_update_crash_setup(vehicle);
+					return;
 				}
-				else {
-					if (vehicle->sub_state != 0) {
-						vehicle_update_crash_setup(vehicle);
-						return;
-					}
-					vehicle->sub_state = 1;
-					vehicle->velocity = 0;
-				}
+				vehicle->sub_state = 1;
+				vehicle->velocity = 0;
 			}
 		}
 	}
@@ -8260,10 +8245,6 @@ loc_6DC316:
 
 	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
 	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
-		regs.eax &= ~VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
-		regs.eax &= ~VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
-	}
 
 	// hook_setreturnregisters(&regs);
 	if (outStation != NULL) *outStation = regs.ebx;
