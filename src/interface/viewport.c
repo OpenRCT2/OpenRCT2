@@ -2769,7 +2769,7 @@ void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_
  *
  *  rct2: 0x00679074
  */
-void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
+void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
 
 	sint16 height;
@@ -2793,7 +2793,7 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 					.zoom_level = dpi->zoom_level - 1
 			};
 
-			sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
+			new_sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
 			return;
 		}
 	}
@@ -2991,6 +2991,55 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
 	do_sub(address_2, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
 	free(new_source_pointer_start);
+}
+
+void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
+	rct_g1_element before_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
+	uint32 before_palette = RCT2_GLOBAL(0xEDF81C, uint32);
+	sint16 before_x = RCT2_GLOBAL(0x9ABDAE, sint16);
+	sint16 before_x_start_point = _xStartPoint;
+	sint16 before_y_start_point = _yStartPoint;
+	sint16 before_x_end_point = _xEndPoint;
+	sint16 before_y_end_point = _yEndPoint;
+	uint8 before_output = RCT2_GLOBAL(0x00141F569, uint8);
+
+	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
+	rct_g1_element original_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
+	uint32 original_palette = RCT2_GLOBAL(0xEDF81C, uint32);
+	sint16 original_x = RCT2_GLOBAL(0x9ABDAE, sint16);
+	sint16 original_x_start_point = _xStartPoint;
+	sint16 original_y_start_point = _yStartPoint;
+	sint16 original_x_end_point = _xEndPoint;
+	sint16 original_y_end_point = _yEndPoint;
+	uint8 original_output = RCT2_GLOBAL(0x00141F569, uint8);
+
+	RCT2_GLOBAL(0x9E3D08, rct_g1_element) = before_image;
+	RCT2_GLOBAL(0xEDF81C, uint32) = before_palette;
+	RCT2_GLOBAL(0x9ABDAE, sint16) = before_x;
+	_xStartPoint = before_x_start_point;
+	_yStartPoint = before_y_start_point;
+	_xEndPoint = before_x_end_point;
+	_yEndPoint = before_y_end_point;
+	RCT2_GLOBAL(0x00141F569, uint8) = before_output;
+
+	new_sub_679074(dpi, imageId, x, y);
+	rct_g1_element new_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
+	uint32 new_palette = RCT2_GLOBAL(0xEDF81C, uint32);
+	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
+	sint16 new_x_start_point = _xStartPoint;
+	sint16 new_y_start_point = _yStartPoint;
+	sint16 new_x_end_point = _xEndPoint;
+	sint16 new_y_end_point = _yEndPoint;
+	uint8 new_output = RCT2_GLOBAL(0x00141F569, uint8);
+
+	assert(new_image.offset == original_image.offset);
+	assert(new_palette == original_palette);
+	assert(new_x == original_x);
+	assert(new_x_start_point == original_x_start_point);
+	assert(new_y_start_point == original_y_start_point);
+	assert(new_x_end_point == original_x_end_point);
+	assert(new_y_end_point == original_y_end_point);
+	assert(new_output == original_output);
 }
 
 void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *g1_source, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end) {
