@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63F804901C82AF5A001854A8 /* chat.c in Sources */ = {isa = PBXBuildFile; fileRef = 63B80A0F1C82A8F40023F59C /* chat.c */; };
 		C62A08D51C787C2A00F3AA76 /* drawing_fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62A08D41C787C2A00F3AA76 /* drawing_fast.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
@@ -221,6 +222,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		63B80A0F1C82A8F40023F59C /* chat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chat.c; sourceTree = "<group>"; };
 		C62A08D41C787C2A00F3AA76 /* drawing_fast.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = drawing_fast.cpp; sourceTree = "<group>"; };
 		D4163F671C2A044D00B83136 /* version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = version.h; path = src/version.h; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
@@ -972,6 +974,7 @@
 				D4EC479C1C26342F0024B507 /* new_ride.c */,
 				D4ABAB051C2F812B0080CAD9 /* news_options.c */,
 				D4EC479D1C26342F0024B507 /* news.c */,
+				63B80A0F1C82A8F40023F59C /* chat.c */,
 				D4EC479E1C26342F0024B507 /* options.c */,
 				D4EC479F1C26342F0024B507 /* park.c */,
 				D4C0EDD01C52EA6400A03A06 /* player.c */,
@@ -1465,6 +1468,7 @@
 				D4EC48061C26342F0024B507 /* LanguagePack.cpp in Sources */,
 				D4EC48091C26342F0024B507 /* user.c in Sources */,
 				D4EC47E11C26342F0024B507 /* mixer.cpp in Sources */,
+				63F804901C82AF5A001854A8 /* chat.c in Sources */,
 				D4B63B951C43028200367A37 /* Console.cpp in Sources */,
 				D4EC481E1C26342F0024B507 /* rct2.c in Sources */,
 				D4C0EDD11C52EA6400A03A06 /* player.c in Sources */,
