@@ -955,7 +955,7 @@ static const uint8 RCT1TerrainConvertTable[16] = {
 	TERRAIN_ICE,
 	TERRAIN_DIRT,				// Originally TERRAIN_ROOF_LOG
 	TERRAIN_DIRT,				// Originally TERRAIN_ROOF_IRON
-	TERRAIN_DIRT,				// Originally TERRAIN_ROOF_GREY
+	TERRAIN_ROCK,				// Originally TERRAIN_ROOF_GREY
 	TERRAIN_GRID_RED,
 	TERRAIN_GRID_YELLOW,
 	TERRAIN_GRID_BLUE,
@@ -2278,7 +2278,6 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->proposed_num_cars_per_train = src->num_cars_per_train + rideEntry->zero_cars;
 
 	// Operation
-	dst->mode = src->operating_mode;
 	dst->depart_flags = src->depart_flags;
 	dst->min_waiting_time = src->min_waiting_time;
 	dst->max_waiting_time = src->max_waiting_time;
@@ -2287,10 +2286,15 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->min_max_cars_per_train = (rideEntry->min_cars_in_train << 4) | rideEntry->max_cars_in_train;
 	dst->lift_hill_speed = 5; // RCT1 used 5mph / 8 km/h for every lift hill
 
-	if (gameVersion == FILE_VERSION_RCT1)
+	if (gameVersion == FILE_VERSION_RCT1) // Original RCT had no music settings, take default style
 		dst->music = RCT2_ADDRESS(0x0097D4F4, uint8)[dst->type * 8];
 	else
 		dst->music = src->music;
+
+	if (src->operating_mode == RCT1_RIDE_MODE_POWERED_LAUNCH) // Launched rides never passed through the station in RCT1.
+		dst->mode = RIDE_MODE_POWERED_LAUNCH;
+	else
+		dst->mode = src->operating_mode;
 
 	// Colours
 	dst->colour_scheme_type = src->colour_scheme;
