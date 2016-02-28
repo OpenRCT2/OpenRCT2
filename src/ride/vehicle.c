@@ -25,6 +25,7 @@
 #include "../config.h"
 #include "../hook.h"
 #include "../interface/viewport.h"
+#include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../scenario.h"
 #include "../world/map_animation.h"
@@ -4020,12 +4021,9 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		ride->last_crash_type = crashType;
 
 	if (numFatalities != 0) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SIX_FLAGS_DEPRECATED)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = ride->name_arguments;
-
-			news_item_add_to_queue(NEWS_ITEM_RIDE, 2219, vehicle->ride);
-		}
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = ride->name_arguments;
+		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
 		if (RCT2_GLOBAL(0x135882E, uint16) < 500) {
 			RCT2_GLOBAL(0x135882E, uint16) += 200;
