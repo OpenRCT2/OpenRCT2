@@ -44,9 +44,9 @@ enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_BANNER_TEXT,
 	WIDX_BANNER_NO_ENTRY,
 	WIDX_BANNER_DEMOLISH,
-	WIDX_MAIN_COLOR,
-	WIDX_TEXT_COLOR_DROPDOWN,
-	WIDX_TEXT_COLOR_DROPDOWN_BUTTON
+	WIDX_MAIN_COLOUR,
+	WIDX_TEXT_COLOUR_DROPDOWN,
+	WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
 rct_widget window_banner_widgets[] = {
@@ -57,9 +57,9 @@ rct_widget window_banner_widgets[] = {
 	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	19,		42,			0x1430,			STR_CHANGE_BANNER_TEXT_TIP},		// change banner button
 	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	43,		66,			0x143A,			STR_SET_AS_NO_ENTRY_BANNER_TIP},	// no entry button
 	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	67,		90,			0x142D,			STR_DEMOLISH_BANNER_TIP},			// demolish button
-	{ WWT_COLORBTN,			1,	5,			16,		WH - 16,WH - 5,		0x0FFFFFFFF,	STR_SELECT_MAIN_COLOR_TIP},			// high money
+	{ WWT_COLOURBTN,		1,	5,			16,		WH - 16,WH - 5,		0x0FFFFFFFF,	STR_SELECT_MAIN_SIGN_COLOUR_TIP},	// high money
 	{ WWT_DROPDOWN,			1,	43,			81,		WH - 16,WH - 5,		0x0FFFFFFFF,	65535},								// high money
-	{ WWT_DROPDOWN_BUTTON,	1,	70,			80,		WH - 15,WH - 6,		0x36C,			STR_SELECT_TEXT_COLOR_TIP},			// high money
+	{ WWT_DROPDOWN_BUTTON,	1,	70,			80,		WH - 15,WH - 6,		0x36C,			STR_SELECT_TEXT_COLOUR_TIP},		// high money
 	{ WIDGETS_END },
 };
 
@@ -124,9 +124,9 @@ void window_banner_open(rct_windownumber number)
 		(1 << WIDX_BANNER_TEXT) |
 		(1 << WIDX_BANNER_NO_ENTRY) |
 		(1 << WIDX_BANNER_DEMOLISH) |
-		(1 << WIDX_MAIN_COLOR) |
-		(1 << WIDX_TEXT_COLOR_DROPDOWN) |
-		(1 << WIDX_TEXT_COLOR_DROPDOWN_BUTTON);
+		(1 << WIDX_MAIN_COLOUR) |
+		(1 << WIDX_TEXT_COLOUR_DROPDOWN) |
+		(1 << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
 
 	w->number = number;
 	window_init_scroll_widgets(w);
@@ -216,10 +216,10 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 	rct_banner* banner = &gBanners[w->number];
 
 	switch (widgetIndex) {
-	case WIDX_MAIN_COLOR:
+	case WIDX_MAIN_COLOUR:
 		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, banner->colour);
 		break;
-	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
+	case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
 		for( int i = 0; i < 13; ++i){
 			gDropdownItemsFormat[i] = 1142;
@@ -253,13 +253,13 @@ static void window_banner_dropdown(rct_window *w, int widgetIndex, int dropdownI
 	rct_banner* banner = &gBanners[w->number];
 
 	switch(widgetIndex){
-	case WIDX_MAIN_COLOR:
+	case WIDX_MAIN_COLOUR:
 		if (dropdownIndex == -1)
 			break;
 
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, banner->flags);
 		break;
-	case WIDX_TEXT_COLOR_DROPDOWN_BUTTON:
+	case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 		if (dropdownIndex == -1)
 			break;
 
@@ -290,31 +290,31 @@ static void window_banner_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	rct_banner* banner = &gBanners[w->number];
-	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOR];
+	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
 	colour_btn->type = WWT_EMPTY;
 
 	//sceneray item not sure why we use this instead of banner?
 	rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[banner->type];
 
-	if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLORBTN;
+	if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLOURBTN;
 
 	w->pressed_widgets &= ~(1ULL<<WIDX_BANNER_NO_ENTRY);
 	w->disabled_widgets &= ~(
 		(1ULL<<WIDX_BANNER_TEXT)|
-		(1ULL<<WIDX_TEXT_COLOR_DROPDOWN)|
-		(1ULL<<WIDX_TEXT_COLOR_DROPDOWN_BUTTON));
+		(1ULL<<WIDX_TEXT_COLOUR_DROPDOWN)|
+		(1ULL<<WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
 
 	if (banner->flags & BANNER_FLAG_NO_ENTRY){
 		w->pressed_widgets |= (1ULL<<WIDX_BANNER_NO_ENTRY);
 		w->disabled_widgets |=
 			(1ULL<<WIDX_BANNER_TEXT)|
-			(1ULL<<WIDX_TEXT_COLOR_DROPDOWN)|
-			(1ULL<<WIDX_TEXT_COLOR_DROPDOWN_BUTTON);
+			(1ULL<<WIDX_TEXT_COLOUR_DROPDOWN)|
+			(1ULL<<WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
 	}
 
 	colour_btn->image = (banner->colour << 19) + 0x600013C3;
 
-	rct_widget* drop_down_widget = &window_banner_widgets[WIDX_TEXT_COLOR_DROPDOWN];
+	rct_widget* drop_down_widget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
 	drop_down_widget->image = banner->text_colour + 2996;
 }
 

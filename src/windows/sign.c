@@ -44,20 +44,20 @@ enum WINDOW_SIGN_WIDGET_IDX {
 	WIDX_VIEWPORT,
 	WIDX_SIGN_TEXT,
 	WIDX_SIGN_DEMOLISH,
-	WIDX_MAIN_COLOR,
-	WIDX_TEXT_COLOR
+	WIDX_MAIN_COLOUR,
+	WIDX_TEXT_COLOUR
 };
 
 // 0x9AEE00
 rct_widget window_sign_widgets[] = {
-		{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,		0x0FFFFFFFF,	65535 },					// panel / background
-		{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,			STR_SIGN,		STR_WINDOW_TITLE_TIP },		// title bar
-		{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },		// close x button
-		{ WWT_VIEWPORT, 1, 3,		WW - 26,	17,			WH - 20,	0x0FFFFFFFE,	65535 },					// Viewport
-		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		19,			42,			5168,			STR_CHANGE_SIGN_TEXT_TIP },	// change sign button
-		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		67,			90,			5165,			STR_DEMOLISH_SIGN_TIP },	// demolish button
-		{ WWT_COLORBTN, 1, 5,		16,			WH - 16,	WH - 5,		0x0FFFFFFFF,	STR_SELECT_MAIN_COLOR_TIP },// Main colour
-		{ WWT_COLORBTN, 1, 17,		28,			WH - 16,	WH - 5,		0x0FFFFFFFF,	STR_SELECT_TEXT_COLOR_TIP },// Text colour
+		{ WWT_FRAME,	0, 0,		WW - 1,		0,			WH - 1,		0x0FFFFFFFF,	65535 },							// panel / background
+		{ WWT_CAPTION,	0, 1,		WW - 2,		1,			14,			STR_SIGN,		STR_WINDOW_TITLE_TIP },				// title bar
+		{ WWT_CLOSEBOX, 0, WW - 13, WW - 3,		2,			13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },				// close x button
+		{ WWT_VIEWPORT, 1, 3,		WW - 26,	17,			WH - 20,	0x0FFFFFFFE,	65535 },							// Viewport
+		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		19,			42,			5168,			STR_CHANGE_SIGN_TEXT_TIP },			// change sign button
+		{ WWT_FLATBTN,	1, WW - 25, WW - 2,		67,			90,			5165,			STR_DEMOLISH_SIGN_TIP },			// demolish button
+		{ WWT_COLOURBTN, 1, 5,		16,			WH - 16,	WH - 5,		0x0FFFFFFFF,	STR_SELECT_MAIN_SIGN_COLOUR_TIP },	// Main colour
+		{ WWT_COLOURBTN, 1, 17,		28,			WH - 16,	WH - 5,		0x0FFFFFFFF,	STR_SELECT_TEXT_COLOUR_TIP },		// Text colour
 		{ WIDGETS_END },
 };
 
@@ -159,8 +159,8 @@ void window_sign_open(rct_windownumber number)
 		(1 << WIDX_CLOSE) |
 		(1 << WIDX_SIGN_TEXT) |
 		(1 << WIDX_SIGN_DEMOLISH) |
-		(1 << WIDX_MAIN_COLOR) |
-		(1 << WIDX_TEXT_COLOR);
+		(1 << WIDX_MAIN_COLOUR) |
+		(1 << WIDX_TEXT_COLOUR);
 
 	w->number = number;
 	window_init_scroll_widgets(w);
@@ -277,10 +277,10 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
 static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	switch (widgetIndex) {
-	case WIDX_MAIN_COLOR:
+	case WIDX_MAIN_COLOUR:
 		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->list_information_type);
 		break;
-	case WIDX_TEXT_COLOR:
+	case WIDX_TEXT_COLOUR:
 		window_dropdown_show_colour(w, widget, w->colours[1] | 0x80, (uint8)w->var_492);
 		break;
 	}
@@ -293,12 +293,12 @@ static void window_sign_mousedown(int widgetIndex, rct_window*w, rct_widget* wid
 static void window_sign_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	switch (widgetIndex){
-	case WIDX_MAIN_COLOR:
+	case WIDX_MAIN_COLOUR:
 		if (dropdownIndex == -1) return;
 		w->list_information_type = dropdownIndex;
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 1);
 		break;
-	case WIDX_TEXT_COLOR:
+	case WIDX_TEXT_COLOUR:
 		if (dropdownIndex == -1) return;
 		w->var_492 = dropdownIndex;
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
@@ -331,8 +331,8 @@ static void window_sign_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];
-	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOR];
+	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
+	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
 	rct_scenery_entry* scenery_entry = g_largeSceneryEntries[w->var_48C];
 
@@ -340,10 +340,10 @@ static void window_sign_invalidate(rct_window *w)
 	text_colour_btn->type = WWT_EMPTY;
 
 	if (scenery_entry->large_scenery.flags&(1 << 0)){
-		main_colour_btn->type = WWT_COLORBTN;
+		main_colour_btn->type = WWT_COLOURBTN;
 	}
 	if (scenery_entry->large_scenery.flags&(1 << 1)) {
-		text_colour_btn->type = WWT_COLORBTN;
+		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
 	main_colour_btn->image = (w->list_information_type << 19) | 0x600013C3;
@@ -423,8 +423,8 @@ void window_sign_small_open(rct_windownumber number){
 		(1 << WIDX_CLOSE) |
 		(1 << WIDX_SIGN_TEXT) |
 		(1 << WIDX_SIGN_DEMOLISH) |
-		(1 << WIDX_MAIN_COLOR) |
-		(1 << WIDX_TEXT_COLOR);
+		(1 << WIDX_MAIN_COLOUR) |
+		(1 << WIDX_TEXT_COLOUR);
 
 	w->number = number;
 	window_init_scroll_widgets(w);
@@ -543,12 +543,12 @@ static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropd
 	rct_banner* banner = &gBanners[w->number];
 
 	switch (widgetIndex){
-	case WIDX_MAIN_COLOR:
+	case WIDX_MAIN_COLOUR:
 		if (dropdownIndex == -1) return;
 		w->list_information_type = dropdownIndex;
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 0);
 		break;
-	case WIDX_TEXT_COLOR:
+	case WIDX_TEXT_COLOUR:
 		if (dropdownIndex == -1) return;
 		w->var_492 = dropdownIndex;
 		game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 0);
@@ -568,8 +568,8 @@ static void window_sign_small_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOR];
-	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOR];
+	rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
+	rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
 
 	rct_scenery_entry* scenery_entry = g_wallSceneryEntries[w->var_48C];
 
@@ -577,10 +577,10 @@ static void window_sign_small_invalidate(rct_window *w)
 	text_colour_btn->type = WWT_EMPTY;
 
 	if (scenery_entry->wall.flags&(1 << 0)){
-		main_colour_btn->type = WWT_COLORBTN;
+		main_colour_btn->type = WWT_COLOURBTN;
 	}
 	if (scenery_entry->wall.flags&(1 << 6)) {
-		text_colour_btn->type = WWT_COLORBTN;
+		text_colour_btn->type = WWT_COLOURBTN;
 	}
 
 	main_colour_btn->image = (w->list_information_type << 19) | 0x600013C3;

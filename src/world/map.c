@@ -1007,8 +1007,8 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 	int y = *ecx;
 	uint8 base_height = *edx;
 	uint8 scenery_type = *edx >> 8;
-	uint8 color1 = *ebp;
-	uint8 color2 = *ebp >> 8;
+	uint8 colour1 = *ebp;
+	uint8 colour2 = *ebp >> 8;
 	uint8 flags = *ebx & 0xFF;
 	// Note this function is passed type.
 	uint8 quadrant = ((*ebx >> 8) & 0xFF) >> 6;
@@ -1039,9 +1039,9 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 
 	if(flags & GAME_COMMAND_FLAG_APPLY){
 		map_element->properties.scenery.colour_1 &= 0xE0;
-		map_element->properties.scenery.colour_1 |= color1;
+		map_element->properties.scenery.colour_1 |= colour1;
 		map_element->properties.scenery.colour_2 &= 0xE0;
-		map_element->properties.scenery.colour_2 |= color2;
+		map_element->properties.scenery.colour_2 |= colour2;
 		map_invalidate_tile_full(x, y);
 	}
 
@@ -1059,9 +1059,9 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 	int y = *ecx;
 	uint8 map_element_direction = *edx;
 	uint8 base_height = *edx >> 8;
-	uint8 color1 = *ebx >> 8;
-	uint8 color2 = *ebp;
-	uint8 color3 = *ebp >> 8;
+	uint8 colour1 = *ebx >> 8;
+	uint8 colour2 = *ebp;
+	uint8 colour3 = *ebp >> 8;
 	uint8 flags = *ebx & 0xFF;
 	int z = base_height * 8;
 
@@ -1093,14 +1093,14 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 	if(flags & GAME_COMMAND_FLAG_APPLY){
 		rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
 		map_element->properties.fence.item[1] &= 0xE0;
-		map_element->properties.fence.item[1] |= color1;
+		map_element->properties.fence.item[1] |= colour1;
 		map_element->properties.fence.item[1] &= 0x1F;
 		map_element->flags &= 0x9F;
-		map_element->properties.fence.item[1] |= (color2 & 0x7) * 32;
-		map_element->flags |= (color2 & 0x18) * 4;
+		map_element->properties.fence.item[1] |= (colour2 & 0x7) * 32;
+		map_element->flags |= (colour2 & 0x18) * 4;
 
 		if(scenery_entry->wall.flags & 0x80){
-			map_element->properties.fence.item[0] = color3;
+			map_element->properties.fence.item[0] = colour3;
 		}
 		map_invalidate_tile_zoom1(x, y, z, z + 72);
 	}
@@ -1121,8 +1121,8 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 	uint8 flags = *ebx & 0xFF;
 	uint8 base_height = *edx;
 	uint8 tileIndex = *edx >> 8;
-	uint8 color1 = *ebp;
-	uint8 color2 = *ebp >> 8;
+	uint8 colour1 = *ebp;
+	uint8 colour2 = *ebp >> 8;
 	int z = map_element_height(x, y);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
@@ -1182,9 +1182,9 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 				i);
 
 			mapElement->properties.scenerymultiple.colour[0] &= 0xE0;
-			mapElement->properties.scenerymultiple.colour[0] |= color1;
+			mapElement->properties.scenerymultiple.colour[0] |= colour1;
 			mapElement->properties.scenerymultiple.colour[1] &= 0xE0;
-			mapElement->properties.scenerymultiple.colour[1] |= color2;
+			mapElement->properties.scenerymultiple.colour[1] |= colour2;
 
 			map_invalidate_tile_full(currentTile.x, currentTile.y);
 		}
@@ -1203,7 +1203,7 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
 	int y = *ecx;
 	uint8 base_height = *edx;
 	uint8 banner_position = *edx >> 8;
-	uint8 color = *ebp;
+	uint8 colour = *ebp;
 	int z = (base_height * 8);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
@@ -1240,7 +1240,7 @@ void game_command_set_banner_colour(int* eax, int* ebx, int* ecx, int* edx, int*
 		if(window){
 			window_invalidate(window);
 		}
-		gBanners[map_element->properties.banner.index].colour = color;
+		gBanners[map_element->properties.banner.index].colour = colour;
 		map_invalidate_tile_zoom1(x, y, z, z + 32);
 	}
 
@@ -2849,13 +2849,13 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	int x = (uint16)*eax;
 	int y = (uint16)*ecx;
-	uint8 color2 = *edi >> 16;
+	uint8 colour2 = *edi >> 16;
 	uint8 rotation = *edi;
 	int z = *ebp;
 	uint8 scenery_type = *ebx >> 8;
 	uint8 flags = *ebx & 0xFF;
 	uint8 quadrant = *edx;
-	uint8 color1 = *edx >> 8;
+	uint8 colour1 = *edx >> 8;
 	RCT2_GLOBAL(0x00F64F26, money32) = 0;
 	int F64F1D = 0;
 	int F64EC8 = z;
@@ -2996,8 +2996,8 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 								new_map_element->type = type;
 								new_map_element->properties.scenery.type = scenery_type;
 								new_map_element->properties.scenery.age = 0;
-								new_map_element->properties.scenery.colour_1 = color1;
-								new_map_element->properties.scenery.colour_2 = color2;
+								new_map_element->properties.scenery.colour_1 = colour1;
+								new_map_element->properties.scenery.colour_2 = colour2;
 								new_map_element->clearance_height = new_map_element->base_height + ((scenery_entry->small_scenery.height + 7) / 8);
 								if(z != 0){
 									new_map_element->properties.scenery.colour_1 |= 0x20;
@@ -3491,8 +3491,8 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	int x = (sint16)*eax;
 	int y = (sint16)*ecx;
 	int z = (sint16)*ebp;
-	uint8 color1 = *edx;
-	uint8 color2 = *edx >> 8;
+	uint8 colour1 = *edx;
+	uint8 colour2 = *edx >> 8;
 	uint8 flags = *ebx;
 	uint8 rotation = *ebx >> 8;
 	uint8 entry_index = *edi;
@@ -3684,8 +3684,8 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 				(tile_num << 10) |
 				entry_index;
 
-			new_map_element->properties.scenerymultiple.colour[0] = color1;
-			new_map_element->properties.scenerymultiple.colour[1] = color2;
+			new_map_element->properties.scenerymultiple.colour[0] = colour1;
+			new_map_element->properties.scenerymultiple.colour[1] = colour2;
 
 			if (banner_id != 0xFF) {
 				new_map_element->type |= banner_id & 0xC0;
