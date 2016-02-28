@@ -2649,6 +2649,7 @@ void sub_679236(uint32 ebx, rct_g1_element *image, uint8 *esi) {
 		}
 	} else if (!(ebx & 0x40000000)) {
 		if (!(image->flags & 1)) {
+			assert(false);
 			RCT2_GLOBAL(0x00141F569, uint8) = 1;
 			return;
 		}
