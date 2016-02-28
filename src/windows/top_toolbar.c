@@ -112,7 +112,8 @@ typedef enum {
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 typedef enum {
-	DDIDX_MULTIPLAYER = 0
+	DDIDX_MULTIPLAYER = 0,
+	DDIDX_CHAT = 1
 } TOP_TOOLBAR_NETWORK_DDIDX;
 
 enum {
@@ -2963,6 +2964,7 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
 	gDropdownItemsFormat[0] = STR_MULTIPLAYER;
+	gDropdownItemsFormat[1] = STR_CHAT;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2970,7 +2972,7 @@ void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 		widget->bottom - widget->top + 1,
 		w->colours[0] | 0x80,
 		0,
-		1
+		2
 	);
 
 	gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
@@ -3008,6 +3010,9 @@ void top_toolbar_network_menu_dropdown(short dropdownIndex)
 		switch (dropdownIndex) {
 		case DDIDX_MULTIPLAYER:
 			window_multiplayer_open();
+			break;
+		case DDIDX_CHAT:
+			window_chat_open();
 			break;
 		}
 	}
