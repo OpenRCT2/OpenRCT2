@@ -25,6 +25,7 @@
 #include "../config.h"
 #include "../hook.h"
 #include "../interface/viewport.h"
+#include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../scenario.h"
 #include "../world/map_animation.h"
@@ -1246,7 +1247,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 			}
 		}
 		if (vehicle->velocity > 131940){
-			vehicle->velocity = vehicle->velocity / 16;
+			vehicle->velocity -= vehicle->velocity / 16;
 			vehicle->acceleration = 0;
 		}
 
@@ -1304,8 +1305,9 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8 num_peeps_on_train
 	}
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
+		// Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a Boat Ride with passengers on it.
 		if (ride->status != RIDE_STATUS_CLOSED ||
-			ride->num_riders != 0){
+			(ride->num_riders != 0 && ride->type != RIDE_TYPE_BOAT_RIDE)){
 			ride->train_at_station[vehicle->current_station] = 0xFF;
 			vehicle->sub_state = 2;
 			return;
@@ -2324,9 +2326,6 @@ static void vehicle_update_departing(rct_vehicle* vehicle) {
 				ride->mode == RIDE_MODE_SHUTTLE)
 				return;
 
-			if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED)
-				return;
-
 			vehicle_update_crash_setup(vehicle);
 			return;
 		}
@@ -2653,24 +2652,12 @@ static void vehicle_update_travelling(rct_vehicle* vehicle) {
 				vehicle->velocity = 0;
 			}
 			else {
-				if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
-					if (vehicle->sub_state != 0) {
-						vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
-						vehicle->velocity = 0;
-					}
-					else {
-						vehicle->sub_state = 1;
-						vehicle->velocity = 0;
-					}
+				if (vehicle->sub_state != 0) {
+					vehicle_update_crash_setup(vehicle);
+					return;
 				}
-				else {
-					if (vehicle->sub_state != 0) {
-						vehicle_update_crash_setup(vehicle);
-						return;
-					}
-					vehicle->sub_state = 1;
-					vehicle->velocity = 0;
-				}
+				vehicle->sub_state = 1;
+				vehicle->velocity = 0;
 			}
 		}
 	}
@@ -4019,12 +4006,9 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		ride->last_crash_type = crashType;
 
 	if (numFatalities != 0) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SIX_FLAGS_DEPRECATED)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = ride->name_arguments;
-
-			news_item_add_to_queue(NEWS_ITEM_RIDE, 2219, vehicle->ride);
-		}
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = ride->name_arguments;
+		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
 		if (RCT2_GLOBAL(0x135882E, uint16) < 500) {
 			RCT2_GLOBAL(0x135882E, uint16) += 200;
@@ -8261,10 +8245,6 @@ loc_6DC316:
 
 	regs.eax = RCT2_GLOBAL(0x00F64E18, uint32);
 	regs.ebx = RCT2_GLOBAL(0x00F64E1C, uint32);
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED) {
-		regs.eax &= ~VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
-		regs.eax &= ~VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
-	}
 
 	// hook_setreturnregisters(&regs);
 	if (outStation != NULL) *outStation = regs.ebx;

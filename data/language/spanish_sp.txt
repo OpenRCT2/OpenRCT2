@@ -4085,6 +4085,7 @@ STR_5778    :Construido: Hace {COMMA16} años
 STR_5779    :Ingresos: {CURRENCY2DP} por hora
 STR_5780    :Coste de funcionamiento: {CURRENCY2DP} por hora
 STR_5781    :Coste de funcionamiento: Desconocido
+STR_5782    :Ahora estas conectado. Presiona '{STRING}' para chatear.
 
 #############
 # Scenarios #

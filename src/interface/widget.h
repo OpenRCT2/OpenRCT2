@@ -30,7 +30,7 @@ typedef enum {
 	WWT_IMGBTN = 3,
 	WWT_4 = 4,
 	WWT_5 = 5,
-	WWT_COLORBTN = 6,
+	WWT_COLOURBTN = 6,
 	WWT_TRNBTN = 7,
 	WWT_TAB = 8,
 	WWT_FLATBTN = 9,
