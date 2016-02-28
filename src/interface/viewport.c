@@ -2634,77 +2634,32 @@ void store_interaction_info(paint_struct *ps)
 	}
 }
 
-void sub_679236(uint32 ebx, rct_g1_element *image, uint8 *esi) {
-	if (ebx & 0x20000000) {
-		if (!(image->flags & 1)) {
-			return;
-		}
-
-		uint8 *ebx_palette = RCT2_GLOBAL(0x009ABDA4, uint8*);
-		uint8 al = *esi;
-		uint8 al2 = *(al + ebx_palette);
-
-		if (al2 != 0) {
-			RCT2_GLOBAL(0x00141F569, uint8) = 1;
-		}
-	} else if (!(ebx & 0x40000000)) {
-		if (!(image->flags & 1)) {
-			assert(false);
-			RCT2_GLOBAL(0x00141F569, uint8) = 1;
-			return;
-		}
-
-		if (*esi != 0) {
-			RCT2_GLOBAL(0x00141F569, uint8) = 1;
-		}
+static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, uint8 *esi) {
+	if (!(image->flags & G1_FLAG_BMP)) {
+		assert(false);
+		return false;
 	}
-}
 
-void sub_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, uint8 *esi) {
 	if (ebx & 0x20000000) {
-		if (!(image->flags & 1)) {
-			return;
-		}
-
 		uint8 *ebx_palette = RCT2_GLOBAL(0x009ABDA4, uint8*);
 
 		uint8 al = *esi;
 		uint8 al2 = *(al + ebx_palette);
-		if (al2 != 0) {
-			RCT2_GLOBAL(0x00141F569, uint8) = 1;
-		}
-	} else if (!(ebx & 0x40000000)) {
-		if (!(image->flags & 1)) {
-			return;
-		}
 
-		if (*esi != 0) {
-			RCT2_GLOBAL(0x00141F569, uint8) = 1;
-		}
+		return (al2 != 0);
 	}
-}
 
-void do_sub(int address, uint32 ebx, rct_g1_element *image, uint8 *esi) {
-	uint8 global_before = RCT2_GLOBAL(0x00141F569, uint8);
-	RCT2_CALLPROC_X(address, 0, ebx, 0, 0, (int) esi, 0, 0);
-	uint8 original_global = RCT2_GLOBAL(0x00141F569, uint8);
-
-	RCT2_GLOBAL(0x00141F569, uint8) = global_before;
-
-	if (address == 0x679236) {
-		sub_679236(ebx, image, esi);
-	} else {
-		sub_679662_679B0D_679FF1(ebx, image, esi);
+	if (ebx & 0x40000000) {
+		return false;
 	}
-	uint8 new_global = RCT2_GLOBAL(0x00141F569, uint8);
 
-	assert(new_global == original_global);
+	return (*esi != 0);
 }
 
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, int round) {
+static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, int round) {
 	const uint8 *ebx = esi + ((uint16 *) esi)[y_start_point];
 
 	uint8 last_data_line = 0;
@@ -2761,16 +2716,19 @@ void sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_
 
 		if (ceil2(no_pixels, round) == 0) continue;
 
-		RCT2_GLOBAL(0x141F569, uint8) = 1;
-		return;
+		return true;
 	}
+
+	return false;
 }
 
 /**
  *
  *  rct2: 0x00679074
+ *
+ * @return 0x00141F569
  */
-void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
+static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
 
 	sint16 height;
@@ -2779,7 +2737,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 
 	if (dpi->zoom_level != 0) {
 		if (image->flags & 0x20) {
-			return;
+			return false;
 		}
 
 		if (image->flags & 0x10) {
@@ -2794,8 +2752,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 					.zoom_level = dpi->zoom_level - 1
 			};
 
-			new_sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
-			return;
+			return new_sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
 		}
 	}
 
@@ -2812,22 +2769,18 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 		case 0:
 		default:
 			round = 1;
-			address_2 = 0x00679236;
 			break;
 
 		case 1:
 			round = 2;
-			address_2 = 0x00679662;
 			break;
 
 		case 2:
 			round = 4;
-			address_2 = 0x00679B0D;
 			break;
 
 		case 3:
 			round = 8;
-			address_2 = 0x00679FF1;
 	}
 
 	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
@@ -2839,7 +2792,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 			if (height % 2) {
 				height--;
 				if (height == 0) {
-					return;
+					return false;
 				}
 				_yStartPoint++;
 			}
@@ -2848,7 +2801,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 				if (height % 4) {
 					height -= 2;
 					if (height <= 0) {
-						return;
+						return false;
 					}
 					_yStartPoint += 2;
 				}
@@ -2861,7 +2814,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 		if (y < 0) {
 			_yEndPoint += y;
 			if (_yEndPoint <= 0) {
-				return;
+				return false;
 			}
 
 			_yStartPoint -= y;
@@ -2873,7 +2826,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 		if (y > 0) {
 			_yEndPoint -= y;
 			if (_yEndPoint <= 0) {
-				return;
+				return false;
 			}
 		}
 
@@ -2885,7 +2838,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 		if (x < 0) {
 			_xEndPoint += x;
 			if (_xEndPoint <= 0) {
-				return;
+				return false;
 			}
 
 			_xStartPoint -= x;
@@ -2897,12 +2850,11 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 		if (x > 0) {
 			_xEndPoint -= x;
 			if (_xEndPoint <= 0) {
-				return;
+				return false;
 			}
 		}
 
-		sub_67933B_679788_679C4A_67A117(image->offset, _xStartPoint, _yStartPoint, round);
-		return;
+		return sub_67933B_679788_679C4A_67A117(image->offset, _xStartPoint, _yStartPoint, round);
 	}
 
 	esi = image->offset;
@@ -2924,7 +2876,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 		}
 
 		if (height == 0) {
-			return;
+			return false;
 		}
 	}
 
@@ -2934,7 +2886,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	if (y < 0) {
 		_yEndPoint += y;
 		if (_yEndPoint <= 0) {
-			return;
+			return false;
 		}
 
 		esi += (image->width * -y) & 0xFFFF;
@@ -2948,7 +2900,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	if (y > 0) {
 		_yEndPoint -= y;
 		if (_yEndPoint <= 0) {
-			return;
+			return false;
 		}
 	}
 
@@ -2960,7 +2912,7 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	if (x < 0) {
 		_xEndPoint += x;
 		if (_xEndPoint <= 0) {
-			return;
+			return false;
 		}
 
 		RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
@@ -2973,28 +2925,30 @@ void new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	if (x > 0) {
 		_xEndPoint -= x;
 		if (_xEndPoint <= 0) {
-			return;
+			return false;
 		}
 
 		RCT2_GLOBAL(0x009ABDAE, sint16) += x;
 	}
 
+	uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
+
 	if (!(image->flags & 2)) {
 		sint8 ah = (_yEndPoint >> 8) & 0xFF;
 		int edx = RCT2_GLOBAL(0x009ABDAE, sint16);
-		uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
 
 		// ah and edx don't seem to be used by this function...
-		do_sub(address_2, ebx, image, esi);
-		return;
+		return sub_679236_679662_679B0D_679FF1(ebx, image, esi);
 	}
 
 	loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
-	do_sub(address_2, RCT2_GLOBAL(0x00EDF81C, uint32), image, esi_end);
+	bool output = sub_679236_679662_679B0D_679FF1(ebx, image, esi_end);
 	free(new_source_pointer_start);
+
+	return output;
 }
 
-void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
+static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	rct_g1_element before_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 before_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 before_x = RCT2_GLOBAL(0x9ABDAE, sint16);
@@ -3002,7 +2956,6 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	sint16 before_y_start_point = _yStartPoint;
 	sint16 before_x_end_point = _xEndPoint;
 	sint16 before_y_end_point = _yEndPoint;
-	uint8 before_output = RCT2_GLOBAL(0x00141F569, uint8);
 
 	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
 	rct_g1_element original_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
@@ -3021,9 +2974,8 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	_yStartPoint = before_y_start_point;
 	_xEndPoint = before_x_end_point;
 	_yEndPoint = before_y_end_point;
-	RCT2_GLOBAL(0x00141F569, uint8) = before_output;
 
-	new_sub_679074(dpi, imageId, x, y);
+	bool new_output = new_sub_679074(dpi, imageId, x, y);
 	rct_g1_element new_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 new_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
@@ -3031,7 +2983,6 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	sint16 new_y_start_point = _yStartPoint;
 	sint16 new_x_end_point = _xEndPoint;
 	sint16 new_y_end_point = _yEndPoint;
-	uint8 new_output = RCT2_GLOBAL(0x00141F569, uint8);
 
 	assert(new_image.offset == original_image.offset);
 	assert(new_palette == original_palette);
@@ -3041,6 +2992,8 @@ void sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	assert(new_x_end_point == original_x_end_point);
 	assert(new_y_end_point == original_y_end_point);
 	assert(new_output == original_output);
+
+	return new_output;
 }
 
 void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *g1_source, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end) {
@@ -3104,7 +3057,7 @@ void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 	} else {
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
 	}
-	sub_679074(dpi, imageId, x, y);
+	RCT2_GLOBAL(0x00141F569, uint8) = sub_679074(dpi, imageId, x, y);
 }
 
 /**
