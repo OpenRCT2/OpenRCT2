@@ -318,6 +318,8 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y
 
 		uint32 primary_offset = palette_to_g1_offset[(image_id >> 19) & 0x1F];
 		uint32 secondary_offset = palette_to_g1_offset[(image_id >> 24) & 0x1F];
+
+		assert(tertiary_colour < 144);
 		uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
 
 		rct_g1_element* primary_colour = &g1Elements[primary_offset];
