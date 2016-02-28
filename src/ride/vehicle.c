@@ -1247,7 +1247,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle *vehicle){
 			}
 		}
 		if (vehicle->velocity > 131940){
-			vehicle->velocity = vehicle->velocity / 16;
+			vehicle->velocity -= vehicle->velocity / 16;
 			vehicle->acceleration = 0;
 		}
 
