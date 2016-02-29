@@ -1661,19 +1661,6 @@ static void window_ride_init_viewport(rct_window *w)
 
 /**
  *
- *  rct2: 0x006B4971
- */
-void window_ride_construct(rct_window *w)
-{
-	// Window may be closed by close by class so
-	// make backup before calling.
-	uint8 rideIndex = (uint8)w->number;
-	window_close_by_class(WC_RIDE_CONSTRUCTION);
-	ride_construct(rideIndex);
-}
-
-/**
- *
  *  rct2: 0x006AF315
  */
 static void window_ride_rename(rct_window *w)
@@ -1711,7 +1698,7 @@ static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_CONSTRUCTION:
-		window_ride_construct(w);
+		ride_construct((uint8)w->number);
 		break;
 	case WIDX_RENAME:
 		window_ride_rename(w);
