@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
@@ -51,15 +52,10 @@ void screenshot_check()
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				rct_string_id stringId = 3165;
-				sprintf((char*)language_get_string(stringId), "SCR%d%s", screenshotIndex, _screenshot_format_extension[gConfigGeneral.screenshot_format]);
-
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
-				// RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SCR_BMP;
-				// RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = screenshotIndex;
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-				window_error_open(STR_SCREENSHOT_SAVED_AS, -1);
+				
+				// TODO use a more obvious sound like a camera shutter
+				audio_play_sound(SOUND_CLICK_1, 0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, -1);
 			}
