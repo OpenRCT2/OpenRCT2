@@ -163,13 +163,18 @@ void execute_cmd(char *command, int *exit_value, char *buf, size_t *buf_size) {
 	if (buf && buf_size) {
 		n_chars = fread(buf, 1, *buf_size, f);
 
+		// some commands may return a new-line terminated result, trim that…
+		if (n_chars > 0 && buf[n_chars - 1] == '\n') {
+			buf[n_chars - 1] = '\0';
+		}
 		// make sure string is null-terminated
 		if (n_chars == *buf_size) {
 			n_chars--;
 		}
 		buf[n_chars] = '\0';
 
-		*buf_size = n_chars;
+		// account for null terminator
+		*buf_size = n_chars + 1;
 	} else {
 		fflush(f);
 	}
@@ -213,9 +218,6 @@ dialog_type get_dialog_app(char *cmd, size_t *cmd_size) {
 }
 
 bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc) {
-
-
-//int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName) {
 	int exit_value;
 	char executable[MAX_PATH];
 	char cmd[MAX_PATH];
@@ -224,15 +226,16 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 	dialog_type dtype;
 	char *action;
 	char *flags;
-	char *filter = NULL;
+	char filter[MAX_PATH] = { 0 };
 	char filterPatternRegex[64];
 	char *allFilesPatternDescription;
+	int allFilesPatternLength = 0;
 
 	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
 
 	switch (dtype) {
-		/*case DT_KDIALOG:
+		case DT_KDIALOG:
 			switch (desc->type) {
 				case FD_OPEN:
 					action = "--getopenfilename";
@@ -242,13 +245,41 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 					break;
 			}
 
-			if (filterPattern && filterName) {
-				filter = (char*) malloc(1 + strlen(filterPattern) + 3 + strlen(filterName) + 1);
-				sprintf(filter, "\"%s | %s\"", filterPattern, filterName);
+			{
+		        bool first = true;
+				for (int j = 0; j < countof(desc->filters); j++) {
+					if (desc->filters[j].pattern && desc->filters[j].name) {
+						char filterTemp[100] = { 0 };
+						if (first) {
+							snprintf(filterTemp, countof(filterTemp), "%s | %s", desc->filters[j].pattern, desc->filters[j].name);
+							first = false;
+						} else {
+							snprintf(filterTemp, countof(filterTemp), "\\n%s | %s", desc->filters[j].pattern, desc->filters[j].name);
+						}
+						safe_strcat(filter, filterTemp, countof(filter));
+					}
+				}
+				char filterTemp[100] = { 0 };
+				if (first) {
+					snprintf(filterTemp, countof(filterTemp), "*|%s", (char *)language_get_string(STR_ALL_FILES));
+				} else {
+					snprintf(filterTemp, countof(filterTemp), "\\n*|%s", (char *)language_get_string(STR_ALL_FILES));
+				}
+				safe_strcat(filter, filterTemp, countof(filter));
+
+				// kdialog wants filters space-delimited and we don't expect ';' anywhere else,
+				// this is much easier and quicker to do than being overly careful about replacing
+				// it only where truly needed.
+				int filterSize = strlen(filter);
+				for (int i = 0; i < filterSize + 3; i++) {
+					if (filter[i] == ';') {
+						filter[i] = ' ';
+					}
+				}
 			}
 
-			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ %s", executable, desc->title, action, filter?filter:"");
-			break;*/
+			snprintf(cmd, MAX_PATH, "%s --title \"%s\" %s ~ \"%s\"", executable, desc->title, action, filter);
+			break;
 		case DT_ZENITY:
 			action = "--file-selection";
 			switch (desc->type) {
@@ -261,34 +292,37 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 			}
 
 			// Zenity seems to be case sensitive, while Kdialog isn't.
-			if (desc->filters[0].pattern && desc->filters[0].name) {
-				int regexIterator = 0;
-				for(int i = 0; i <= strlen(desc->filters[0].pattern); i++) {
-					if (isalpha(desc->filters[0].pattern[i])) {
-						filterPatternRegex[regexIterator+0] = '[';
-						filterPatternRegex[regexIterator+1] = (char)toupper(desc->filters[0].pattern[i]);
-						filterPatternRegex[regexIterator+2] = (char)tolower(desc->filters[0].pattern[i]);
-						filterPatternRegex[regexIterator+3] = ']';
-						regexIterator += 3;
+			for (int j = 0; j < countof(desc->filters); j++) {
+				if (desc->filters[j].pattern && desc->filters[j].name) {
+					int regexIterator = 0;
+					for(int i = 0; i <= strlen(desc->filters[j].pattern); i++) {
+						if (isalpha(desc->filters[j].pattern[i])) {
+							filterPatternRegex[regexIterator+0] = '[';
+							filterPatternRegex[regexIterator+1] = (char)toupper(desc->filters[j].pattern[i]);
+							filterPatternRegex[regexIterator+2] = (char)tolower(desc->filters[j].pattern[i]);
+							filterPatternRegex[regexIterator+3] = ']';
+							regexIterator += 3;
+						}
+						else if(desc->filters[j].pattern[i] == ';') {
+							filterPatternRegex[regexIterator] = ' ';
+						}
+						else {
+							filterPatternRegex[regexIterator] = (char)desc->filters[j].pattern[i];
+						}
+						regexIterator++;
 					}
-					else if(desc->filters[0].pattern[i] == ';') {
-						filterPatternRegex[regexIterator] = ' ';
-					}
-					else {
-						filterPatternRegex[regexIterator] = (char)desc->filters[0].pattern[i];
-					}
-					regexIterator++;
+					filterPatternRegex[regexIterator+1] = 0;
+
+					char filterTemp[100] = { 0 };
+					snprintf(filterTemp, countof(filterTemp), " --file-filter=\"%s | %s\"", desc->filters[j].name, filterPatternRegex);
+					safe_strcat(filter, filterTemp, countof(filter));
 				}
-				filterPatternRegex[regexIterator+1] = 0;
-
-				allFilesPatternDescription = (char *)language_get_string(STR_ALL_FILES);
-				filter = (char*) malloc(strlen("--file-filter=\"") + strlen(filterPatternRegex) + 3 + strlen(desc->filters[0].name) + 2 + strlen(" --file-filter=\"") + strlen(allFilesPatternDescription) + strlen(" | *\""));
-				sprintf(filter, "--file-filter=\"%s | %s\" --file-filter=\"%s | *\"", desc->filters[0].name, filterPatternRegex, allFilesPatternDescription);
-				log_warning(desc->filters[0].pattern);
-				log_warning(filter);
 			}
+			char filterTemp[100] = { 0 };
+			snprintf(filterTemp, countof(filterTemp), " --file-filter=\"%s | *\"", (char *)language_get_string(STR_ALL_FILES));
+			safe_strcat(filter, filterTemp, countof(filter));
 
-			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, desc->title, filter?filter:"");
+			snprintf(cmd, MAX_PATH, "%s %s %s --title=\"%s\" / %s", executable, action, flags, desc->title, filter);
 			break;
 		default: return 0;
 	}
@@ -297,7 +331,6 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 	execute_cmd(cmd, &exit_value, result, &size);
 
 	if (exit_value != 0) {
-		free(filter);
 		return 0;
 	}
 
@@ -310,8 +343,6 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 		snprintf(msg, MAX_PATH, "\"%s\" not found: %s, please choose another file\n", result, strerror(errno));
 		platform_show_messagebox(msg);
 
-		if (filter != NULL)
-			free(filter);
 		return platform_open_common_file_dialog(outFilename, desc);
 	} else
 	if (desc->type == FD_SAVE && access(result, F_OK) != -1 && dtype == DT_KDIALOG) {
@@ -321,16 +352,11 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 		execute_cmd(cmd, &exit_value, 0, 0);
 
 		if (exit_value != 0) {
-			if (filter != NULL)
-				free(filter);
 			return 0;
 		}
 	}
 
 	strncpy(outFilename, result, MAX_PATH);
-
-	if (filter != NULL)
-		free(filter);
 
 	return 1;
 }
