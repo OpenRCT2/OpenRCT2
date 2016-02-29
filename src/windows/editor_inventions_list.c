@@ -285,8 +285,9 @@ static void research_always_researched_setup()
 /**
  *
  *  rct2: 0x00685A79
+ *  Do not use the research list outside of the inventions list window with the flags
  */
-static void sub_685A79()
+static void research_remove_flags()
 {
 	for (rct_research_item* research = gResearchItems;
 		research->entryIndex != RESEARCHED_ITEMS_END_2;
@@ -556,15 +557,15 @@ void window_editor_inventions_list_open()
  *  rct2: 0x006853D2
  */
 static void window_editor_inventions_list_close(rct_window *w)
-{
+{	
+	research_remove_flags();
+
 	// When used in-game (as a cheat)
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR)) {
 		gSilentResearch = true;
 		sub_684AC3();
 		gSilentResearch = false;
 	}
-
-	sub_685A79();
 }
 
 /**
