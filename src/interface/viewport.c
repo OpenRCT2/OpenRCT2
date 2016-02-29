@@ -1394,8 +1394,8 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += is_exit ? 40 : 56;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height){
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height){
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -1509,8 +1509,8 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 80;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height){
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height){
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -1940,7 +1940,8 @@ void sub_68B2B7(int x, int y)
 		RCT2_GLOBAL(0x0141E9CC, uint32) = 0xFFFF;
 		RCT2_GLOBAL(0x0141E9D0, uint32) = 0xFFFF;
 		RCT2_GLOBAL(0x0141E9D4, uint32) = 0xFFFF;
-		RCT2_GLOBAL(0x0141E9D8, uint32) = 0xFFFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = -1;
+		RCT2_GLOBAL(0x0141E9DA, uint16) = 0;
 		RCT2_GLOBAL(0x0141E9DC, uint32) = 0xFFFF;
 		RCT2_GLOBAL(0x0141E9DB, uint8) |= 2;
 
@@ -1972,7 +1973,8 @@ void map_element_paint_setup(int x, int y)
 		RCT2_GLOBAL(0x0141E9CC, uint32) = 0xFFFF;
 		RCT2_GLOBAL(0x0141E9D0, uint32) = 0xFFFF;
 		RCT2_GLOBAL(0x0141E9D4, uint32) = 0xFFFF;
-		RCT2_GLOBAL(0x0141E9D8, uint32) = 0xFFFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = -1;
+		RCT2_GLOBAL(0x0141E9DA, sint16) = 0;
 		RCT2_GLOBAL(0x0141E9DC, uint32) = 0xFFFF;
 
 		sub_68B3FB(x, y);

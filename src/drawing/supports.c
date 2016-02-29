@@ -160,7 +160,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		return false;
 	}
 
-	int z = floor2(RCT2_GLOBAL(0x00141E9D8, uint16) + 15, 16);
+	int z = floor2(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) + 15, 16);
 	height -= z;
 	if (height < 0) {
 		return true;

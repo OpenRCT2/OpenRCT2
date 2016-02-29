@@ -58,8 +58,8 @@ static void top_spin_paint_tile_0(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 112;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -399,8 +399,8 @@ static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 110;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -449,8 +449,8 @@ static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 110;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -499,8 +499,8 @@ static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 110;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -568,8 +568,8 @@ static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D6, uint16) = 32;
 
 	height += 110;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -619,8 +619,8 @@ static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 112;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -688,8 +688,8 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 110;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -757,8 +757,8 @@ static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D6, uint16) = 32;
 
 	height += 110;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -808,8 +808,8 @@ static void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
 
 	height += 112;
-	if (RCT2_GLOBAL(0x141E9D8, sint16) < height) {
-		RCT2_GLOBAL(0x141E9D8, sint16) = height;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
 		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
 	}
 }
@@ -1037,8 +1037,8 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	}
 
 	height16 += 48;
-	if (RCT2_GLOBAL(0x00141E9D8, sint16) < height16) {
-		RCT2_GLOBAL(0x00141E9D8, sint16) = height16;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height16) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height16;
 		RCT2_GLOBAL(0x00141E9DA, uint8) = 32;
 	}
 }
@@ -1125,8 +1125,8 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 	}
 
 	height16 += 32;
-	if (RCT2_GLOBAL(0x00141E9D8, sint16) < height16) {
-		RCT2_GLOBAL(0x00141E9D8, sint16) = height16;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height16) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height16;
 		RCT2_GLOBAL(0x00141E9DA, uint8) = 32;
 	}
 }
