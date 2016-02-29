@@ -613,6 +613,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 			ch = strchr(ch, 0) + 1;
 		}
 	}
+	assert(ch != filters);
 	*ch = 0;
 
 	// HACK: Replace all null terminators with 0x01 so that we convert the entire string
