@@ -632,9 +632,6 @@ rct_track_td6* load_track_design(const char *path)
 		if (td4_track_has_boosters(track_design, track_elements))
 			track_design->type = RIDE_TYPE_NULL;
 
-		if (track_design->type == RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER)
-			track_design->type = RIDE_TYPE_NULL;
-
 		if (track_design->type == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER)
 			track_design->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
 
@@ -654,8 +651,8 @@ rct_track_td6* load_track_design(const char *path)
 			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
 		} else {
 			int vehicle_type = track_design->vehicle_type;
-			if (vehicle_type == 3 && track_design->type == RIDE_TYPE_INVERTED_ROLLER_COASTER)
-				vehicle_type = 80;
+			if (vehicle_type == RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN && track_design->type == RIDE_TYPE_INVERTED_ROLLER_COASTER)
+				vehicle_type = RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN;
 			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[vehicle_type];
 		}
 
