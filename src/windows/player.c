@@ -371,13 +371,14 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(groupindex);
 
-		gfx_draw_string_centred(
+		gfx_draw_string_centred_clipped(
 			dpi,
 			1193,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			0,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
-			0,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
+			widget->right - widget->left - 8
 		);
 	}
 

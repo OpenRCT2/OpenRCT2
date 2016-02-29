@@ -616,13 +616,14 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 	int group = network_get_group_index(network_get_default_group());
 	if (group != -1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(group);
-		gfx_draw_string_centred(
+		gfx_draw_string_centred_clipped(
 			dpi,
 			1193,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			0,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
-			0,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
+			widget->right - widget->left - 8
 		);
 	}
 
@@ -639,13 +640,14 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 	group = network_get_group_index(_selectedGroup);
 	if (group != -1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(group);
-		gfx_draw_string_centred(
+		gfx_draw_string_centred_clipped(
 			dpi,
 			1193,
+			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			0,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
-			0,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
+			widget->right - widget->left - 8
 		);
 	}
 }
