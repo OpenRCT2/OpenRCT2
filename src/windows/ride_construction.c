@@ -1983,7 +1983,7 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 	rct_viewport *viewport;
 
 	if (!_trackPlaceCtrlState) {
-		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+		if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
 			get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &mapElement, &viewport);
 			if (interactionType != 0) {
 				_trackPlaceCtrlZ = mapElement->base_height * 8;
@@ -1991,7 +1991,7 @@ static bool ride_get_place_position_from_screen_position(int screenX, int screen
 			}
 		}
 	} else {
-		if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)) {
+		if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)) {
 			_trackPlaceCtrlState = false;
 		}
 	}
