@@ -2997,9 +2997,9 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
 
-	assert(preset_index < presetList->count);
-
 	if (presetList->count != 255) {
+		assert(preset_index < presetList->count);
+
 		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
 		vehicle_colour *preset = &presetList->list[preset_index];
 		ride->vehicle_colours[0].body_colour = preset->main;
@@ -3007,6 +3007,8 @@ static void ride_set_vehicle_colours_to_random_preset(rct_ride *ride, uint8 pres
 		ride->vehicle_colours_extended[0] = preset->additional_2;
 	} else {
 		ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
+		assert(presetList->count >= 32);
+
 		for (int i = 0; i < 32; i++) {
 			vehicle_colour *preset = &presetList->list[i];
 			ride->vehicle_colours[i].body_colour = preset->main;
