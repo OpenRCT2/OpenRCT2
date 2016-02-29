@@ -4089,6 +4089,8 @@ STR_5781    :Running cost: Unknown
 STR_5782    :You are now connected. Press '{STRING}' to chat.
 STR_5783    :{WINDOW_COLOUR_2}Scenario Locked
 STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
+STR_5785    :Can't rename group...
+STR_5786    :Invalid group name
 
 #############
 # Scenarios #

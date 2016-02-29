@@ -2330,7 +2330,8 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		}
 
 		if (newName[0] == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_RIDE_ATTRACTION_NAME;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_GROUP;
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_GROUP_NAME;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}

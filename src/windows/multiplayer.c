@@ -472,8 +472,10 @@ static void window_multiplayer_groups_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_REMOVE_GROUP:
 		game_do_command(1 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
 		break;
-	case WIDX_RENAME_GROUP:
-		window_text_input_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, 0, 0, 32);
+	case WIDX_RENAME_GROUP:;
+		int groupIndex = network_get_group_index(_selectedGroup);
+		utf8 *groupName = network_get_group_name(groupIndex);
+		window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, groupName, 32);
 		break;
 	}
 }
