@@ -2399,6 +2399,9 @@ enum {
 
 	STR_MULTIPLAYER_CONNECTED_CHAT_HINT = 5782,
 
+	STR_SCENARIO_LOCKED = 5783,
+	STR_SCENARIO_LOCKED_DESC = 5784,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

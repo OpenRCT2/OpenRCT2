@@ -136,6 +136,7 @@ static bool is_scenario_visible(rct_window *w, scenario_index_entry *scenario);
 static bool is_locking_enabled(rct_window *w);
 
 static scenarioselect_callback _callback;
+static bool _showLockedInformation = false;
 
 /**
  *
@@ -295,6 +296,8 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, int scrollIndex
  */
 static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
 {
+	bool originalShowLockedInformation = _showLockedInformation;
+	_showLockedInformation = false;
 	scenario_index_entry *selected = NULL;
 	for (sc_list_item *listItem = _listItems; listItem->type != LIST_ITEM_TYPE_END; listItem++) {
 		switch (listItem->type) {
@@ -303,8 +306,12 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 			break;
 		case LIST_ITEM_TYPE_SCENARIO:
 			y -= 24;
-			if (y < 0 && !listItem->scenario.is_locked) {
-				selected = listItem->scenario.scenario;
+			if (y < 0) {
+				if (listItem->scenario.is_locked) {
+					_showLockedInformation = true;
+				} else {
+					selected = listItem->scenario.scenario;
+				}
 			}
 			break;
 		}
@@ -315,6 +322,8 @@ static void window_scenarioselect_scrollmouseover(rct_window *w, int scrollIndex
 
 	if (w->highlighted_scenario != selected) {
 		w->highlighted_scenario = selected;
+		window_invalidate(w);
+	} else if (_showLockedInformation != originalShowLockedInformation) {
 		window_invalidate(w);
 	}
 }
@@ -375,6 +384,14 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Return if no scenario highlighted
 	scenario = w->highlighted_scenario;
 	if (scenario == NULL) {
+		if (_showLockedInformation) {
+			// Show locked information
+			x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
+			y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
+			gfx_draw_string_centred_clipped(dpi, STR_SCENARIO_LOCKED, NULL, 0, x + 85, y, 170);
+			y += 15;
+			y += gfx_draw_string_left_wrapped(dpi, NULL, x, y, 170, STR_SCENARIO_LOCKED_DESC, 0) + 5;
+		}
 		return;
 	}
 
