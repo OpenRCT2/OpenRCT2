@@ -148,10 +148,15 @@ const uint16 word_97B3C4[] = {
  * @param special (ax) Used for curved supports.
  * @param height (dx) The height of the supports.
  * @param imageColourFlags (ebp) The colour and palette flags for the support sprites.
- * @returns true if any supports have been drawn, otherwise false.
+ * @param underground (Carry flag) true if underground.
+ * @returns (al) true if any supports have been drawn, otherwise false.
  */
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
+bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground)
 {
+	if (underground != NULL){
+		*underground = false;
+	}
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
 		return false;
 	}
@@ -163,7 +168,10 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 	int z = floor2(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) + 15, 16);
 	height -= z;
 	if (height < 0) {
-		return true;
+		if (underground != NULL) {
+			*underground = true;
+		}
+		return false;
 	}
 	height /= 16;
 
@@ -180,7 +188,10 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		// Steep diagonal (place the correct shaped support for the slope)
 		height -= 2;
 		if (height < 0) {
-			return true;
+			if (underground != NULL) {
+				*underground = true;
+			}
+			return false;
 		}
 
 		int imageId = WoodenSupportImageIds[supportType].slope;
@@ -207,7 +218,10 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		// 1 to 3 quarters up
 		height--;
 		if (height < 0) {
-			return true;
+			if (underground != NULL) {
+				*underground = true;
+			}
+			return false;
 		}
 
 		int imageId = WoodenSupportImageIds[supportType].slope;

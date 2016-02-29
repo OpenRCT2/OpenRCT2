@@ -1381,7 +1381,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	if (image_id == 0) {
 		image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
 	}
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
@@ -1496,7 +1496,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	if (image_id == 0) {
 		image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
 	}
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
