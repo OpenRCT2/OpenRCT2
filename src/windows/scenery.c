@@ -33,12 +33,14 @@
 #include "../world/sprite.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../network/network.h"
+#include "../windows/error.h"
 
 #define WINDOW_SCENERY_WIDTH	634
 #define WINDOW_SCENERY_HEIGHT	142
 #define SCENERY_BUTTON_WIDTH	66
 #define SCENERY_BUTTON_HEIGHT	80
-
+#define SCENERY_DISABLE_CLUSTER_IN_MULTI_CLIENT true
 enum {
 	WINDOW_SCENERY_TAB_1,
 	WINDOW_SCENERY_TAB_2,
@@ -547,7 +549,13 @@ static void window_scenery_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
-		window_scenery_is_build_cluster_tool_on ^= 1;
+		if (SCENERY_DISABLE_CLUSTER_IN_MULTI_CLIENT && network_get_mode() == NETWORK_MODE_CLIENT) {
+			window_scenery_is_build_cluster_tool_on = 0;
+			window_error_open(STR_CANT_DO_THIS, STR_NOT_ALLOWED_IN_MULTIPLAYER);
+		}
+		else {
+			window_scenery_is_build_cluster_tool_on ^= 1;
+		}
 		window_invalidate(w);
 		break;
 	}

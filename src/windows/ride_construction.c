@@ -2672,8 +2672,9 @@ static bool sub_6CA2DF(int *trackType, int *trackDirection, int *rideIndex, int 
 	uint16 original_edxRS16, original_x, original_y, original_z, original_properties;
 	bool original_return = original_sub_6CA2DF(&original_trackType, &original_trackDirection, &original_rideIndex, &original_edxRS16, &original_x, &original_y, &original_z, &original_properties);
 	uint8 original_currentTrackLiftHill = _currentTrackLiftHill;
-
+#if DEBUG_LEVEL_2
 	assert(new_return == original_return);
+#endif
 	if (new_return) {
 		return true;
 	}
