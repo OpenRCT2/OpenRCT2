@@ -474,8 +474,8 @@ static void window_multiplayer_groups_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_RENAME_GROUP:;
 		int groupIndex = network_get_group_index(_selectedGroup);
-		utf8 *groupName = network_get_group_name(groupIndex);
-		window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, groupName, 32);
+		const utf8 *groupName = network_get_group_name(groupIndex);
+		window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, (utf8*)groupName, 32);
 		break;
 	}
 }
