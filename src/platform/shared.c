@@ -702,10 +702,11 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_TEXTEDITING:
-			safe_strcpy(gTextInputComposition, e.edit.text, min(e.edit.length, 32));
+			// When inputting Korean characters, `e.edit.length` is always Zero.
+			safe_strcpy(gTextInputComposition, e.edit.text, min((e.edit.length == 0) ? (strlen(e.edit.text)+1) : e.edit.length, 32));
 			gTextInputCompositionStart = e.edit.start;
 			gTextInputCompositionLength = e.edit.length;
-			gTextInputCompositionActive = gTextInputComposition[0] != 0;
+			gTextInputCompositionActive = ((e.edit.length != 0 || strlen(e.edit.text) != 0) && gTextInputComposition[0] != 0);
 			break;
 		case SDL_TEXTINPUT:
 			if (gTextInputLength < gTextInputMaxLength && gTextInput){
