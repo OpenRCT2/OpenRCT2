@@ -58,6 +58,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier)
 * Lucas Riutzel (jackinloadup)
 * Youngjae Yu (YJSoft)
+* Chanwoong Kim (kexplo)
 
 ## Toolchain
 * (Balletie) - OSX
