@@ -11,6 +11,8 @@ void http_dispose() { }
 #else
 
 #include "../core/Math.hpp"
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
 
 #ifdef __WINDOWS__
 	// cURL includes windows.h, but we don't need all of it.
@@ -19,6 +21,7 @@ void http_dispose() { }
 #include <curl/curl.h>
 
 #define MIME_TYPE_APPLICATION_JSON "application/json"
+#define DEFAULT_CA_BUNDLE_PATH "curl-ca-bundle.crt"
 
 typedef struct {
 	char *ptr;
@@ -32,9 +35,22 @@ typedef struct {
 	int capacity;
 } write_buffer;
 
+#ifdef __WINDOWS__
+static utf8 _caBundlePath[MAX_PATH];
+#endif
+
 void http_init()
 {
 	curl_global_init(CURL_GLOBAL_DEFAULT);
+
+#ifdef __WINDOWS__
+	// Find SSL certificate bundle
+	platform_get_exe_path(_caBundlePath);
+	Path::Append(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);
+	if (!platform_file_exists(_caBundlePath)) {
+		String::Set(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);
+	}
+#endif
 }
 
 void http_dispose()
@@ -120,7 +136,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
 #ifdef __WINDOWS__
 	// On GNU/Linux (and OS X), curl will use the system certs by default
-	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
+	curl_easy_setopt(curl, CURLOPT_CAINFO, _caBundlePath);
 #endif
 	curl_easy_setopt(curl, CURLOPT_URL, request->url);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
