@@ -118,13 +118,13 @@ const utf8 BlackLeftArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8
 const utf8 BlackRightArrowString[] =	{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
 const utf8 CheckBoxMarkString[] =		{ (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
 
-void utf8_remove_format_codes(utf8 *text)
+void utf8_remove_format_codes(utf8 *text, bool allowcolours)
 {
 	utf8 *dstCh = text;
 	utf8 *ch = text;
 	int codepoint;
 	while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
-		if (!utf8_is_format_code(codepoint)) {
+		if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint))) {
 			dstCh = utf8_write_codepoint(dstCh, codepoint);
 		}
 	}

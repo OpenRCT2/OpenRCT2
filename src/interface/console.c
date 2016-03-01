@@ -124,7 +124,7 @@ void console_update()
 		}
 
 		// Remove unwated characters in console input
-		utf8_remove_format_codes(_consoleCurrentLine);
+		utf8_remove_format_codes(_consoleCurrentLine, false);
 	}
 
 	// Flash the caret

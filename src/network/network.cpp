@@ -209,6 +209,7 @@ void NetworkPlayer::SetName(const char* name)
 {
 	safe_strcpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
 	NetworkPlayer::name[sizeof(NetworkPlayer::name) - 1] = 0;
+	utf8_remove_format_codes((utf8*)NetworkPlayer::name, false);
 }
 
 void NetworkPlayer::AddMoneySpent(money32 cost)
@@ -992,7 +993,9 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	}
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+	char* ptrtext = lineCh;
 	safe_strcpy(lineCh, text, 800);
+	utf8_remove_format_codes((utf8*)ptrtext, true);
 	return formatted;
 }
 
