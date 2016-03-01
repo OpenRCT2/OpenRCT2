@@ -118,7 +118,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	// from crashing the game.
 	text_input[maxLength - 1] = '\0';
 
-	utf8_remove_format_codes(text_input);
+	utf8_remove_format_codes(text_input, false);
 
 	// This is the text displayed above the input box
 	input_text_description = description;

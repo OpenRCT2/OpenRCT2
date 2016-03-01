@@ -440,7 +440,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 			if (action != -999) {
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(action);
 			}
-			gfx_draw_string_left(dpi, 1191, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 256, y - 1);
+			gfx_draw_string_left_clipped(dpi, 1191, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 256, y - 1, 100);
 
 			// Draw ping
 			lineCh = buffer;

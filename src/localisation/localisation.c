@@ -143,6 +143,12 @@ bool utf8_is_format_code(int codepoint)
 	return false;
 }
 
+bool utf8_is_colour_code(int codepoint)
+{
+	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
+	return false;
+}
+
 bool utf8_should_use_sprite_for_codepoint(int codepoint)
 {
 	switch (codepoint) {
