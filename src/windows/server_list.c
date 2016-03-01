@@ -129,7 +129,7 @@ static rct_window_event_list window_server_list_events = {
 
 enum {
 	DDIDX_JOIN,
-	DDIDX_favourite
+	DDIDX_FAVOURITE
 };
 
 static int _hoverButtonIndex = -1;
@@ -250,7 +250,7 @@ static void window_server_list_dropdown(rct_window *w, int widgetIndex, int drop
 	case DDIDX_JOIN:
 		join_server(serverAddress);
 		break;
-	case DDIDX_favourite:
+	case DDIDX_FAVOURITE:
 		_severEntries[serverIndex].favourite = !_severEntries[serverIndex].favourite;
 		server_list_save_server_entries();
 		break;
