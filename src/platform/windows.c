@@ -635,6 +635,10 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 	// Open dialog
 	commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 	if (type == FD_SAVE) {
+		wchar_t *defaultExtension = wcsrchr(wcfilterPattern, '.');
+		if (defaultExtension != NULL) {
+			openFileName.lpstrDefExt = defaultExtension + 1;
+		}
 		openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
 		result = GetSaveFileNameW(&openFileName);
 	} else if (type == FD_OPEN) {
