@@ -57,6 +57,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michael Pham (nightroan)
 * Hielke Morsink (Broxzier)
 * Lucas Riutzel (jackinloadup)
+* Youngjae Yu (YJSoft)
 
 ## Toolchain
 * (Balletie) - OSX
