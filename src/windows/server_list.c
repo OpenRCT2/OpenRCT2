@@ -49,10 +49,11 @@ typedef struct {
 	uint8 maxplayers;
 } saved_server;
 
-char _playerName[32 + 1];
-saved_server *_savedServers = NULL;
-int _numSavedServers = 0;
-SDL_mutex *_mutex = 0;
+static char _playerName[32 + 1];
+static saved_server *_savedServers = NULL;
+static int _numSavedServers = 0;
+static SDL_mutex *_mutex = 0;
+static uint32 _numPlayersOnline = 0;
 
 enum {
 	WIDX_BACKGROUND,
@@ -376,16 +377,22 @@ static void window_server_list_invalidate(rct_window *w)
 	window_server_list_widgets[WIDX_CLOSE].left = w->width - 2 - 11;
 	window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
 
+	int margin = 6;
+	int buttonHeight = 11;
+	int buttonTop = w->height - margin - buttonHeight - 13;
+	int buttonBottom = buttonTop + buttonHeight;
+	int listBottom = buttonTop - margin;
+
 	window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].right = w->width - 6;
 	window_server_list_widgets[WIDX_LIST].left = 6;
 	window_server_list_widgets[WIDX_LIST].right = w->width - 6;
-	window_server_list_widgets[WIDX_LIST].bottom = w->height - 6 - 11 - 6;
-	window_server_list_widgets[WIDX_FETCH_SERVERS].top = w->height - 6 - 11;
-	window_server_list_widgets[WIDX_FETCH_SERVERS].bottom = w->height - 6;
-	window_server_list_widgets[WIDX_ADD_SERVER].top = w->height - 6 - 11;
-	window_server_list_widgets[WIDX_ADD_SERVER].bottom = w->height - 6;
-	window_server_list_widgets[WIDX_START_SERVER].top = w->height - 6 - 11;
-	window_server_list_widgets[WIDX_START_SERVER].bottom = w->height - 6;
+	window_server_list_widgets[WIDX_LIST].bottom = listBottom;
+	window_server_list_widgets[WIDX_FETCH_SERVERS].top = buttonTop;
+	window_server_list_widgets[WIDX_FETCH_SERVERS].bottom = buttonBottom;
+	window_server_list_widgets[WIDX_ADD_SERVER].top = buttonTop;
+	window_server_list_widgets[WIDX_ADD_SERVER].bottom = buttonBottom;
+	window_server_list_widgets[WIDX_START_SERVER].top = buttonTop;
+	window_server_list_widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
 	w->no_list_items = _numSavedServers;
 }
@@ -397,6 +404,8 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_PLAYER_NAME, NULL, COLOUR_WHITE, w->x + 6, w->y + w->widgets[WIDX_PLAYER_NAME_INPUT].top);
 	char *version = NETWORK_STREAM_ID;
 	gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&version, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
+
+	gfx_draw_string_left(dpi, STR_X_PLAYERS_ONLINE, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
 }
 
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
@@ -686,6 +695,16 @@ static void join_server(char *address)
 	}
 }
 
+static uint32 get_total_player_count()
+{
+	uint32 numPlayers = 0;
+	for (int i = 0; i < _numSavedServers; i++) {
+		saved_server *serverDetails = &_savedServers[i];
+		numPlayers += serverDetails->players;
+	}
+	return numPlayers;
+}
+
 static void fetch_servers()
 {
 #ifndef DISABLE_HTTP
@@ -782,6 +801,8 @@ static void fetch_servers_callback(http_json_response* response)
 		SDL_UnlockMutex(_mutex);
 	}
 	http_request_json_dispose(response);
+
+	_numPlayersOnline = get_total_player_count();
 
 	rct_window *window = window_find_by_class(WC_SERVER_LIST);
 	if (window != NULL) {

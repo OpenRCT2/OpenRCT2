@@ -2405,6 +2405,8 @@ enum {
 	STR_CANT_RENAME_GROUP = 5785,
 	STR_INVALID_GROUP_NAME = 5786,
 
+	STR_X_PLAYERS_ONLINE = 5787,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
