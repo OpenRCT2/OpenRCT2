@@ -957,7 +957,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 	}
 #else
 	log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
-	strcat(buffer, "C:\\Windows\\Fonts\\");
+	strcpy(buffer, "C:\\Windows\\Fonts\\");
 	strcat(buffer, font->filename);
 	return true;
 #endif
