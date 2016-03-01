@@ -7078,7 +7078,7 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 			return false;
 		}
 
-		int trackColour = vehicle->update_flags >> 9;
+		int trackColour = ((vehicle->update_flags >> 9) ^ mapElement->properties.track.colour) & 4;
 		int bank = gTrackDefinitions[trackType].bank_end;
 		bank = track_get_actual_bank_2(ride->type, trackColour, bank);
 		int vAngle = gTrackDefinitions[trackType].vangle_end;
