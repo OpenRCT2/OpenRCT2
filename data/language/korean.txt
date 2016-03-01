@@ -4000,6 +4000,7 @@ STR_5660    :그룹 수정
 STR_5661    :플레이어 그룹 설정
 STR_5662    :없음
 STR_5663    :지형 초기화
+STR_5664    :치트
 STR_5701    :{WINDOW_COLOUR_2}마지막 행동: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}플레이어의 가장 최근 행동 장소로 이동
 STR_5703    :서버를 추방할 수 없습니다

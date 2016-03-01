@@ -4444,7 +4444,7 @@ STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme pa
 <Terror Town>
 STR_SCNR    :Terror Town
 STR_PARK    :Terror Town
-STR_DTLS    :This urban area is all yours to develop into as an amusement park
+STR_DTLS    :This urban area is all yours to develop into an amusement park
 
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
