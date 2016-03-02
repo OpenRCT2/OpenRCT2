@@ -161,6 +161,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_AUTO_STAFF_PLACEMENT,
 	WIDX_HANDYMEN_MOW_DEFAULT,
 	WIDX_AUTO_OPEN_SHOPS,
+	WIDX_DEFAULT_INSPECTION_INTERVAL,
+	WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
 
 	// Twitch
 	WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
@@ -304,6 +306,8 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	189,	200,	STR_AUTO_STAFF_PLACEMENT,					STR_NONE }, 										// auto staff placement
 	{ WWT_CHECKBOX,			2,	10,		299,	204,	215,	STR_HANDYMEN_MOW_BY_DEFAULT,				STR_NONE },											// handymen mow by default
 	{ WWT_CHECKBOX,			2,	10,		299,	219,	230,	STR_AUTO_OPEN_SHOPS,						STR_AUTO_OPEN_SHOPS_TIP },							// Automatically open shops & stalls
+	{ WWT_DROPDOWN,			1,	155,	299,	234,	245,	STR_NONE,									STR_NONE },											// default inspection time dropdown
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	235,	244,	STR_DROPDOWN_GLYPH,							STR_NONE },											// default inspection time dropdown button
 	{ WIDGETS_END },
 };
 
@@ -478,7 +482,9 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_TITLE_SEQUENCE_BUTTON) |
 	(1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
 	(1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
-	(1 << WIDX_AUTO_OPEN_SHOPS),
+	(1 << WIDX_AUTO_OPEN_SHOPS) |
+	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
+	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
 
 	MAIN_OPTIONS_ENABLED_WIDGETS |
 	(1 << WIDX_CHANNEL_BUTTON) |
@@ -1064,6 +1070,15 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			dropdown_set_checked(gCurrentPreviewTitleSequence, true);
 			break;
+		case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
+			for (i = 0; i < 7; i++) {
+				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsArgs[i] = STR_EVERY_10_MINUTES + i;
+			}
+
+			window_options_show_dropdown(w, widget, 7);
+			dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+			break;
 		}
 		break;
 
@@ -1264,6 +1279,13 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 			if (dropdownIndex != gCurrentPreviewTitleSequence) {
 				title_sequence_change_preset(dropdownIndex);
 				title_refresh_sequence();
+				config_save_default();
+				window_invalidate(w);
+			}
+			break;
+		case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
+			if (dropdownIndex != gConfigGeneral.default_inspection_interval) {
+				gConfigGeneral.default_inspection_interval = (uint8)dropdownIndex;
 				config_save_default();
 				window_invalidate(w);
 			}
@@ -1508,6 +1530,8 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].type = WWT_DROPDOWN;
+		window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		break;
 
 	case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1682,6 +1706,16 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->x + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left + 1,
 			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top,
 			window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].left - window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left - 4
+		);
+
+		gfx_draw_string_left(dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			STR_EVERY_10_MINUTES + gConfigGeneral.default_inspection_interval,
+			NULL,
+			w->colours[1],
+			w->x + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].left + 1,
+			w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top
 		);
 		break;
 	}

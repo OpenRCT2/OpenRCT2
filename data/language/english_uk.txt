@@ -4092,6 +4092,7 @@ STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
 STR_5785    :Can't rename group...
 STR_5786    :Invalid group name
 STR_5787    :{COMMA32} players online
+STR_5788    :Default inspection interval:
 
 #############
 # Scenarios #
