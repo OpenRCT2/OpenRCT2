@@ -2232,8 +2232,6 @@ struct paint_string_struct {
 	uint8 *y_offsets;				// 0x1A
 };
 
-void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *image, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end);
-
 static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 {
 	int zoom = dpi->zoom_level;
@@ -2859,7 +2857,43 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 		return sub_679236_679662_679B0D_679FF1(ebx, image, esi);
 	}
 
-	loc_6791B8_6795E4_679A8F_679F73(image, esi, &new_source_pointer_start, &esi_end);
+	uint8 *ebp = esi;
+	uint8 *source_pointer;
+
+	int total_no_pixels = image->width * image->height;
+	source_pointer = image->offset;
+	(*&new_source_pointer_start) = malloc(total_no_pixels);
+	uint8 *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
+	int ebx1, ecx;
+	while (total_no_pixels > 0) {
+		sint8 no_pixels = *source_pointer;
+		if (no_pixels >= 0) {
+			source_pointer++;
+			total_no_pixels -= no_pixels;
+			memcpy((char *) new_source_pointer, (char *) source_pointer, no_pixels);
+			new_source_pointer += no_pixels;
+			source_pointer += no_pixels;
+			continue;
+		}
+		ecx = no_pixels;
+		no_pixels &= 0x7;
+		ecx >>= 3;//SAR
+		int eax = ((int) no_pixels) << 8;
+		ecx = -ecx;//Odd
+		eax = (eax & 0xFF00) + *(source_pointer + 1);
+		total_no_pixels -= ecx;
+		source_pointer += 2;
+		ebx1 = (uint32) new_source_pointer - eax;
+		eax = (uint32) source_pointer;
+		source_pointer = (uint8 *) ebx1;
+		ebx1 = eax;
+		eax = 0;
+		memcpy((char *) new_source_pointer, (char *) source_pointer, ecx);
+		new_source_pointer += ecx;
+		source_pointer = (uint8 *) ebx1;
+	}
+
+	(*&esi_end) = &new_source_pointer_start + (uint32) ebp;
 	bool output = sub_679236_679662_679B0D_679FF1(ebx, image, esi_end);
 	free(new_source_pointer_start);
 
@@ -2892,46 +2926,6 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) 
 	assert(new_output == original_output);
 
 	return new_output;
-}
-
-void loc_6791B8_6795E4_679A8F_679F73(rct_g1_element *g1_source, uint8 *esi, uint8 **new_source_pointer_start, uint8 **esi_end) {
-	uint8 *ebp = esi;
-	uint8 *source_pointer;
-
-	int total_no_pixels = g1_source->width * g1_source->height;
-	source_pointer = g1_source->offset;
-	(*new_source_pointer_start) = malloc(total_no_pixels);
-	uint8 *new_source_pointer = (*new_source_pointer_start);// 0x9E3D28;
-	int ebx, ecx;
-	while (total_no_pixels > 0) {
-		sint8 no_pixels = *source_pointer;
-		if (no_pixels >= 0) {
-			source_pointer++;
-			total_no_pixels -= no_pixels;
-			memcpy((char *) new_source_pointer, (char *) source_pointer, no_pixels);
-			new_source_pointer += no_pixels;
-			source_pointer += no_pixels;
-			continue;
-		}
-		ecx = no_pixels;
-		no_pixels &= 0x7;
-		ecx >>= 3;//SAR
-		int eax = ((int) no_pixels) << 8;
-		ecx = -ecx;//Odd
-		eax = (eax & 0xFF00) + *(source_pointer + 1);
-		total_no_pixels -= ecx;
-		source_pointer += 2;
-		ebx = (uint32) new_source_pointer - eax;
-		eax = (uint32) source_pointer;
-		source_pointer = (uint8 *) ebx;
-		ebx = eax;
-		eax = 0;
-		memcpy((char *) new_source_pointer, (char *) source_pointer, ecx);
-		new_source_pointer += ecx;
-		source_pointer = (uint8 *) ebx;
-	}
-
-	(*esi_end) = new_source_pointer_start + (uint32) ebp;
 }
 
 /**
