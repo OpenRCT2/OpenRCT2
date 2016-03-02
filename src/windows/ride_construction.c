@@ -596,6 +596,14 @@ static void window_ride_construction_close(rct_window *w)
 			ride_set_status(rideIndex, RIDE_STATUS_OPEN);
 		}
 
+		uint8 defaultInspectionInterval = gConfigGeneral.default_inspection_interval;
+		if (ride->inspection_interval != defaultInspectionInterval) {
+			if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER) {
+				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+				game_do_command(0, (defaultInspectionInterval << 8) | 1, 0, (5 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+			}
+		}
+
 		window_ride_main_open(rideIndex);
 	} else {
 		int eax = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
