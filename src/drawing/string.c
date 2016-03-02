@@ -584,18 +584,14 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 		int width = gfx_get_string_width(text);
 		gfx_draw_string(dpi, text, 254, x - (width / 2), y);
 
-		char c;
-		while ((c = *text++) != 0) {
-			if (c >= 32) continue;
-			if (c <= 4) {
-				text++;
-				continue;
-			}
-			if (c <= 16) continue;
-			text += 2;
-			if (c <= 22) continue;
-			text += 2;
+		const utf8 *ch = text;
+		const utf8 *nextCh = 0;
+		int codepoint = 0;
+
+		while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
+			ch = nextCh;
 		}
+		text = ch+1;
 
 		y += font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
 	}
