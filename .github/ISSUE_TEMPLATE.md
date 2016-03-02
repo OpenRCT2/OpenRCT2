@@ -4,7 +4,7 @@
 
 Explanation of the issue...
 
-- [ ] Original bug?
+- [ ] Reproducable in RCT2 (vanilla)?
 - [ ] Multiplayer?
 
 **Steps to reproduce:**
