@@ -2763,24 +2763,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 	RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
 	RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
 
-	int round;
-	switch (dpi->zoom_level) {
-		case 0:
-		default:
-			round = 1;
-			break;
-
-		case 1:
-			round = 2;
-			break;
-
-		case 2:
-			round = 4;
-			break;
-
-		case 3:
-			round = 8;
-	}
+	int round = 1 << dpi->zoom_level;
 
 	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
 		y -= (round - 1);
