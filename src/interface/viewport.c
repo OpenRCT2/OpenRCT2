@@ -2632,6 +2632,9 @@ void store_interaction_info(paint_struct *ps)
 	}
 }
 
+/**
+ * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
+ */
 static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, uint8 *esi) {
 	if (!(image->flags & G1_FLAG_BMP)) {
 		assert(false);
@@ -2721,10 +2724,13 @@ static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, si
 }
 
 /**
+ * rct2: 0x00679074
  *
- *  rct2: 0x00679074
- *
- * @return 0x00141F569
+ * @param dpi (edi)
+ * @param imageId (ebx)
+ * @param x (cx)
+ * @param y (dx)
+ * @return value originally stored in 0x00141F569
  */
 static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
