@@ -4088,6 +4088,10 @@ STR_5779    :Příjem: {CURRENCY2DP} za hodinu
 STR_5780    :Cena údržby: {CURRENCY2DP} za hodinu
 STR_5781    :Cena údržby: neznámá
 STR_5782    :Úspěšně připojeno. Chatujte stisknutím klávesy '{STRING}'.
+STR_5783    :{WINDOW_COLOUR_2}Neodemčený scénář
+STR_5784    :{BLACK}Pro odemčení tohoto scénáře dokončete předcházející scénáře
+STR_5785    :Nelze přejmenovat skupinu...
+STR_5786    :Neplatný název skupiny.
 
 ###############################################################################
 ## RCT2 Objects

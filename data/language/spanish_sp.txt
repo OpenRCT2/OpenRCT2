@@ -4086,6 +4086,10 @@ STR_5779    :Ingresos: {CURRENCY2DP} por hora
 STR_5780    :Coste de funcionamiento: {CURRENCY2DP} por hora
 STR_5781    :Coste de funcionamiento: Desconocido
 STR_5782    :Ahora estas conectado. Presiona '{STRING}' para chatear.
+STR_5783    :{WINDOW_COLOUR_2}Escenario bloqueado
+STR_5784    :{BLACK}Completa escenarios anteriores para desbloquear este escenario.
+STR_5785    :No puedes renombrar el grupo...
+STR_5786    :Nombre de grupo no válido
 
 #############
 # Scenarios #
