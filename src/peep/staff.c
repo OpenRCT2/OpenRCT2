@@ -483,7 +483,7 @@ static int staff_is_location_in_patrol_area(rct_peep *peep, int x, int y)
 int staff_is_location_in_patrol(rct_peep *staff, int x, int y)
 {
 	// Check if location is in the park
-	if (!map_is_location_owned(x, y, staff->z))
+	if (!map_is_location_owned_or_has_rights(x, y))
 		return 0;
 
 	// Check if staff has patrol area
