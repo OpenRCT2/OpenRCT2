@@ -2729,9 +2729,6 @@ static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, si
 static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
 	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
 
-	sint16 height;
-	uint8 *new_source_pointer_start, *esi_end;
-
 	if (dpi->zoom_level != 0) {
 		if (image->flags & 0x20) {
 			return false;
@@ -2769,7 +2766,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 
 	y += image->y_offset;
 	sint16 yStartPoint = 0;
-	height = image->height;
+	sint16 height = image->height;
 	if (dpi->zoom_level != 0) {
 		if (height % 2) {
 			height--;
@@ -2850,19 +2847,16 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 		return sub_67933B_679788_679C4A_67A117(image->offset, xStartPoint, yStartPoint, round);
 	}
 
-	uint8 *esi = image->offset + (yStartPoint * image->width) + xStartPoint;
+	uint8 *offset = image->offset + (yStartPoint * image->width) + xStartPoint;
 	uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
 
 	if (!(image->flags & 2)) {
-		return sub_679236_679662_679B0D_679FF1(ebx, image, esi);
+		return sub_679236_679662_679B0D_679FF1(ebx, image, offset);
 	}
 
-	uint8 *ebp = esi;
-	uint8 *source_pointer;
-
 	int total_no_pixels = image->width * image->height;
-	source_pointer = image->offset;
-	(*&new_source_pointer_start) = malloc(total_no_pixels);
+	uint8 *source_pointer = image->offset;
+	uint8 *new_source_pointer_start = malloc(total_no_pixels);
 	uint8 *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
 	int ebx1, ecx;
 	while (total_no_pixels > 0) {
@@ -2893,8 +2887,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 		source_pointer = (uint8 *) ebx1;
 	}
 
-	(*&esi_end) = &new_source_pointer_start + (uint32) ebp;
-	bool output = sub_679236_679662_679B0D_679FF1(ebx, image, esi_end);
+	bool output = sub_679236_679662_679B0D_679FF1(ebx, image, new_source_pointer_start + (uint32) offset);
 	free(new_source_pointer_start);
 
 	return output;
