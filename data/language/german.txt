@@ -4085,6 +4085,7 @@ STR_5784    :{BLACK}Vorhergehende Szenarios abschließen, um dieses Szenario fre
 STR_5785    :Gruppe kann nicht umbenannt werden...
 STR_5786    :Ungültiger Gruppenname
 STR_5787    :{COMMA32} Spieler online
+STR_5788    :Standardinspektionszeit:
 
 #############
 # Scenarios #
