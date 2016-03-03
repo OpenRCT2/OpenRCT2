@@ -2629,8 +2629,8 @@ void store_interaction_info(paint_struct *ps)
  * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
 static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, uint8 *esi) {
+	// Probably used to check for corruption
 	if (!(image->flags & G1_FLAG_BMP)) {
-		assert(false);
 		return false;
 	}
 
@@ -2749,6 +2749,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 		}
 	}
 
+	// TODO: Check whether this assignment is used outside this function
 	RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
 	RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
 	RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
@@ -2853,6 +2854,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 		return sub_679236_679662_679B0D_679FF1(ebx, image, offset);
 	}
 
+	// The code below is untested.
 	int total_no_pixels = image->width * image->height;
 	uint8 *source_pointer = image->offset;
 	uint8 *new_source_pointer_start = malloc(total_no_pixels);
