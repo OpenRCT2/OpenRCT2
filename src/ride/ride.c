@@ -8180,6 +8180,18 @@ void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int
 		);
 }
 
+void ride_set_to_default_inspection_interval(int rideIndex)
+{
+	rct_ride *ride = get_ride(rideIndex);
+	uint8 defaultInspectionInterval = gConfigGeneral.default_inspection_interval;
+	if (ride->inspection_interval != defaultInspectionInterval) {
+		if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+			game_do_command(0, (defaultInspectionInterval << 8) | 1, 0, (5 << 8) | rideIndex, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x006B752C
