@@ -6013,6 +6013,7 @@ void game_command_callback_ride_construct_placed_back(int eax, int ebx, int ecx,
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
 	}
 
+	window_ride_construction_do_station_check();
 	sub_6C84CE();
 }
 
@@ -6045,6 +6046,8 @@ void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx
 		_rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
 	}
 
+	window_ride_construction_do_station_check();
+	window_ride_construction_do_entrance_exit_check();
 	sub_6C84CE();
 }
 

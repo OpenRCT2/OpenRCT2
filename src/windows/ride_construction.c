@@ -1684,7 +1684,7 @@ static void window_ride_construction_construct(rct_window *w)
 		}
 	}
 
-	_stationConstructed = get_ride(w->number)->num_stations != 0;
+	window_ride_construction_do_station_check();
 
 	// returning early here makes it so that the construction window doesn't blink
 	if (network_get_mode() == NETWORK_MODE_CLIENT)
@@ -3946,5 +3946,32 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 		window_invalidate_by_class(77);
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = (RCT2_GLOBAL(0x00F44191, uint8) == 0) ?
 			WIDX_ENTRANCE : WIDX_EXIT;
+	}
+}
+
+void window_ride_construction_do_station_check()
+{
+	rct_ride *ride = get_ride(_currentRideIndex);
+	if (ride != NULL) {
+		_stationConstructed = ride->num_stations != 0;
+	}
+}
+
+void window_ride_construction_do_entrance_exit_check()
+{
+	rct_window *w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+	rct_ride *ride = get_ride(_currentRideIndex);
+
+	if (w == NULL || ride == NULL) {
+		return;
+	}
+
+	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0) {
+		w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+		if (w != NULL) {
+			if (!ride_are_all_possible_entrances_and_exits_built(ride)) {
+				window_event_mouse_up_call(w, WIDX_ENTRANCE);
+			}
+		}
 	}
 }

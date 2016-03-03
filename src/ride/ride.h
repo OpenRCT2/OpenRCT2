@@ -1057,4 +1057,8 @@ const uint32 ride_customers_per_hour(const rct_ride *ride);
 const uint32 ride_customers_in_last_5_minutes(const rct_ride *ride);
 
 rct_vehicle * ride_get_broken_vehicle(rct_ride *ride);
+
+void window_ride_construction_do_station_check();
+void window_ride_construction_do_entrance_exit_check();
+
 #endif
