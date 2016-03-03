@@ -1371,6 +1371,8 @@ void footpath_chain_ride_queue(int rideIndex, int entranceIndex, int x, int y, r
 			mapElement->properties.path.additions &= 0x8F;
 			mapElement->properties.path.additions |= (entranceIndex & 7) << 4;
 			
+			map_invalidate_element(x, y, mapElement);
+
 			if (lastQueuePathElement == NULL) {
 				lastQueuePathElement = mapElement;
 			}
