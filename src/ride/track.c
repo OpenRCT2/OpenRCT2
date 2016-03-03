@@ -3343,7 +3343,8 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	uint8 num_circuits = track_design->lift_hill_speed_num_circuits >> 5;
 	if (num_circuits == 0) num_circuits = 1;
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
+	
+	ride_set_to_default_inspection_interval(rideIndex);
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
 
