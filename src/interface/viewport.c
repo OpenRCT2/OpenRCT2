@@ -2886,22 +2886,19 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 }
 
 static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
-	uint32 before_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 before_x = RCT2_GLOBAL(0x9ABDAE, sint16);
+	uint8 before_output = RCT2_GLOBAL(0x00141F569, uint8);
 
 	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
-	uint32 original_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 original_x = RCT2_GLOBAL(0x9ABDAE, sint16);
 	uint8 original_output = RCT2_GLOBAL(0x00141F569, uint8);
 
-	RCT2_GLOBAL(0xEDF81C, uint32) = before_palette;
 	RCT2_GLOBAL(0x9ABDAE, sint16) = before_x;
+	RCT2_GLOBAL(0x00141F569, uint8) = before_output;
 
 	bool new_output = new_sub_679074(dpi, imageId, x, y);
-	uint32 new_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
 
-	assert(new_palette == original_palette);
 	assert(new_x == original_x);
 	assert(new_output == original_output);
 
