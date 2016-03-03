@@ -709,6 +709,10 @@ void platform_process_messages()
 			gTextInputCompositionActive = ((e.edit.length != 0 || strlen(e.edit.text) != 0) && gTextInputComposition[0] != 0);
 			break;
 		case SDL_TEXTINPUT:
+			// will receive an `SDL_TEXTINPUT` event when a composition is committed.
+			// so, set gTextInputCompositionActive to false.
+			gTextInputCompositionActive = false;
+
 			if (gTextInputLength < gTextInputMaxLength && gTextInput){
 				// HACK ` will close console, so don't input any text
 				if (e.text.text[0] == '`' && gConsoleOpen)
