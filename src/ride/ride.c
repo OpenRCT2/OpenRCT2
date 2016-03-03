@@ -1695,7 +1695,7 @@ int ride_modify(rct_xy_element *input)
 	mapElement = *input;
 	rideIndex = mapElement.element->properties.track.ride_index;
 	ride = get_ride(rideIndex);
-	rideType = get_ride_entry(rideIndex);
+	rideType = get_ride_entry_by_ride(ride);
 
 	if ((ride == NULL) || (rideType == NULL) || !ride_check_if_construction_allowed(ride))
 		return 0;
