@@ -907,15 +907,8 @@ int sub_98197C(sint8 al, sint8 ah, int image_id, sint8 cl, int height, sint16 le
 
 	ps->image_id = image_id;
 
-	rct_g1_element *g1Element;
 	uint32 image_element = image_id & 0x7FFFF;
-
-	if (image_element < SPR_G2_BEGIN) {
-		g1Element = &g1Elements[image_element];
-	}
-	else {
-		g1Element = &g2.elements[image_element - SPR_G2_BEGIN];
-	}
+	rct_g1_element *g1Element = gfx_get_g1_element(image_element);
 
 	rct_xyz16 coord_3d = {
 		.x = al,
@@ -2733,7 +2726,7 @@ static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, si
  * @return value originally stored in 0x00141F569
  */
 static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
-	rct_g1_element *image = &g1Elements[imageId & 0x7FFFF];
+	rct_g1_element *image = gfx_get_g1_element(imageId & 0x7FFFF);
 
 	if (dpi->zoom_level != 0) {
 		if (image->flags & 0x20) {
