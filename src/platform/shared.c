@@ -873,6 +873,7 @@ void platform_stop_text_input()
 {
 	SDL_StopTextInput();
 	gTextInput = NULL;
+	gTextInputCompositionActive = false;
 }
 
 static void platform_unload_cursors()
