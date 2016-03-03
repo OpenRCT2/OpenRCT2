@@ -4575,9 +4575,6 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		if (!gCheatsDisableClearanceChecks || flags & GAME_COMMAND_FLAG_GHOST){
 			if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, flags, &cost))
 				return MONEY32_UNDEFINED;
-			else
-				//"map_place_non_scenery_clear_func" multiply the value of "cost" with 10. The value "cost" is needed  without the multiplication.
-				cost = cost / 10;
 		}
 
 		//6c53dc
@@ -4722,7 +4719,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			support_height = 10;
 		}
 
-		cost += ((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) / 2;
+		cost += (((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) / 2) * 10;
 
 		//6c56d3
 
@@ -4868,7 +4865,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		RCT2_ADDRESS(0x0099DA34, money32)[type];
 
 	price >>= 16;
-	price = (cost + (price / 2)) * 10;
+	price = cost + ((price / 2) * 10);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
 		return 0;
