@@ -2749,15 +2749,6 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 		}
 	}
 
-	// TODO: Check whether this assignment is used outside this function
-	RCT2_GLOBAL(0x9E3D08, uint8*) = image->offset;
-	RCT2_GLOBAL(0x9E3D0C, sint16) = image->width;
-	RCT2_GLOBAL(0x9E3D0C + 2, sint16) = image->height;
-	RCT2_GLOBAL(0x9E3D10, sint16) = image->x_offset;
-	RCT2_GLOBAL(0x9E3D10 + 2, sint16) = image->y_offset;
-	RCT2_GLOBAL(0x9E3D14, uint16) = image->flags;
-	RCT2_GLOBAL(0x9E3D14 + 2, uint16) = image->zoomed_offset;
-
 	int round = 1 << dpi->zoom_level;
 
 	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
@@ -2895,26 +2886,21 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 }
 
 static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
-	rct_g1_element before_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 before_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 before_x = RCT2_GLOBAL(0x9ABDAE, sint16);
 
 	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
-	rct_g1_element original_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 original_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 original_x = RCT2_GLOBAL(0x9ABDAE, sint16);
 	uint8 original_output = RCT2_GLOBAL(0x00141F569, uint8);
 
-	RCT2_GLOBAL(0x9E3D08, rct_g1_element) = before_image;
 	RCT2_GLOBAL(0xEDF81C, uint32) = before_palette;
 	RCT2_GLOBAL(0x9ABDAE, sint16) = before_x;
 
 	bool new_output = new_sub_679074(dpi, imageId, x, y);
-	rct_g1_element new_image = RCT2_GLOBAL(0x9E3D08, rct_g1_element);
 	uint32 new_palette = RCT2_GLOBAL(0xEDF81C, uint32);
 	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
 
-	assert(new_image.offset == original_image.offset);
 	assert(new_palette == original_palette);
 	assert(new_x == original_x);
 	assert(new_output == original_output);
