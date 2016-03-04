@@ -534,15 +534,15 @@ void platform_process_messages()
 // Apple sends touchscreen events for trackpads, so ignore these events on OS X
 #ifndef __MACOSX__
 		case SDL_FINGERMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * _screenBufferWidth);
-			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * _screenBufferHeight);
+			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
 
-			gCursorState.x = (int)(e.tfinger.x * _screenBufferWidth);
-			gCursorState.y = (int)(e.tfinger.y * _screenBufferHeight);
+			gCursorState.x = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			gCursorState.y = (int)(e.tfinger.y / gConfigGeneral.window_scale);
 			break;
 		case SDL_FINGERDOWN:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
 
 			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
 										  && e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
@@ -560,8 +560,8 @@ void platform_process_messages()
 			gCursorState.touchDownTimestamp = e.tfinger.timestamp;
 			break;
 		case SDL_FINGERUP:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x / gConfigGeneral.window_scale);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y / gConfigGeneral.window_scale);
 
 			if (gCursorState.touchIsDouble) {
 				store_mouse_input(4);
