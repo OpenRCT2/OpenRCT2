@@ -133,6 +133,7 @@ const rct_string_id ShortcutStringIds[] = {
 	STR_SEND_MESSAGE,
 	STR_SHORTCUT_QUICK_SAVE_GAME,
 	STR_SHORTCUT_SHOW_OPTIONS,
+	STR_SHORTCUT_MUTE_SOUND
 };
 
 /**
