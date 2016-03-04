@@ -4719,7 +4719,8 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			support_height = 10;
 		}
 
-		cost += (support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2];
+		cost += (((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) / 2) * 10;
+
 		//6c56d3
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
@@ -4864,7 +4865,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		RCT2_ADDRESS(0x0099DA34, money32)[type];
 
 	price >>= 16;
-	price = ((cost + price) / 2) * 10;
+	price = cost + ((price / 2) * 10);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
 		return 0;

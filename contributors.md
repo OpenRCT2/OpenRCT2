@@ -59,6 +59,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Lucas Riutzel (jackinloadup)
 * Youngjae Yu (YJSoft)
 * Chanwoong Kim (kexplo)
+* Josué Acevedo (Wirlie)
 
 ## Toolchain
 * (Balletie) - OSX
