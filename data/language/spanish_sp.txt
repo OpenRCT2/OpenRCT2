@@ -4091,6 +4091,7 @@ STR_5784    :{BLACK}Completa escenarios anteriores para desbloquear este escenar
 STR_5785    :No puedes renombrar el grupo...
 STR_5786    :Nombre de grupo no válido
 STR_5787    :{COMMA32} jugadores en línea.
+STR_5788    :Inter. Inspecc. por defecto:
 
 #############
 # Scenarios #

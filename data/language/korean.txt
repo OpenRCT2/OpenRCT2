@@ -830,10 +830,10 @@ STR_0825    :이미 사용 중인 이름입니다
 STR_0826    :이름이 너무 많이 지정되었습니다
 STR_0827    :돈이 부족합니다 - {CURRENCY2DP} 만큼의 돈이 더 필요합니다
 STR_0828    :{SMALLFONT}{BLACK}창 닫기
-STR_0829    :{SMALLFONT}{BLACK}창 제목 - 창을{NEWLINE}움직이려면 드래그하세요
+STR_0829    :{SMALLFONT}{BLACK}창 제목 - 창을 움직이려면 드래그하세요
 STR_0830    :{SMALLFONT}{BLACK}화면 확대하기
 STR_0831    :{SMALLFONT}{BLACK}화면 축소하기
-STR_0832    :{SMALLFONT}{BLACK}게임 화면을 시계방향으로{NEWLINE}90{DEGREE} 회전하기
+STR_0832    :{SMALLFONT}{BLACK}게임 화면을 시계방향으로 90{DEGREE} 회전하기
 STR_0833    :{SMALLFONT}{BLACK}게임 일시정지
 STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 옵션
 STR_0835    :게임 초기화 실패
@@ -1010,8 +1010,8 @@ STR_1004    :{POP16}{POP16}{POP16}{STRINGID} -  닫을 수 없습니다...
 STR_1005    :{POP16}{POP16}{POP16}{STRINGID}의 건설을 시작할 수 없습니다...
 STR_1006    :먼저 닫아야 합니다
 STR_1007    :차량을 충분히 만들 수 없습니다
-STR_1008    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 개장/폐장/테스트합니다
-STR_1009    :{SMALLFONT}{BLACK}모든 놀이기구/시설{NEWLINE}을 개장/폐장합니다
+STR_1008    :{SMALLFONT}{BLACK}놀이기구/시설을 개장/폐장/테스트합니다
+STR_1009    :{SMALLFONT}{BLACK}모든 놀이기구/시설을 개장/폐장합니다
 STR_1010    :{SMALLFONT}{BLACK}공원을 열거나 닫습니다
 STR_1011    :모두 닫기
 STR_1012    :모두 열기
@@ -1404,16 +1404,16 @@ STR_1398    :{SMALLFONT}{BLACK}측정 및 테스트 데이터
 STR_1399    :{SMALLFONT}{BLACK}그래프
 STR_1400    :입구
 STR_1401    :출구
-STR_1402    :{SMALLFONT}{BLACK}놀이기구/시설의 입구를 건설하거{NEWLINE}나 이동합니다
-STR_1403    :{SMALLFONT}{BLACK}놀이기구/시설의 출구를 건설하거{NEWLINE}나 이동합니다
+STR_1402    :{SMALLFONT}{BLACK}놀이기구/시설의 입구를 건설하거나 이동합니다
+STR_1403    :{SMALLFONT}{BLACK}놀이기구/시설의 출구를 건설하거나 이동합니다
 STR_1404    :{SMALLFONT}{BLACK}90{DEGREE} 회전
 STR_1405    :{SMALLFONT}{BLACK}반전
-STR_1406    :{SMALLFONT}{BLACK}풍경을 켜거나 끕니다 (단 사용할{NEWLINE}수 있는 경우에만 켜짐)
+STR_1406    :{SMALLFONT}{BLACK}풍경을 켜거나 끕니다 (단 사용할 수 있는 경우에만 켜짐)
 STR_1407    :{WINDOW_COLOUR_2}건설하기...
 STR_1408    :{WINDOW_COLOUR_2}예상 가격: {BLACK}{CURRENCY}
 STR_1409    :탑승장 출입구
 STR_1410    :버티컬 타워
-STR_1411    :{STRINGID}(이)가{NEWLINE}중간에 있습니다
+STR_1411    :{STRINGID}(이)가 중간에 있습니다
 STR_1412    :{WINDOW_COLOUR_3}이 종류의 놀이기구는 데이터를 기록할 수 없습니다
 STR_1413    :{WINDOW_COLOUR_3}다음 {STRINGID}(이)가 {STRINGID}(을)를 출발할 때 데이터를 기록합니다
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
@@ -1754,8 +1754,8 @@ STR_1748    :{SMALLFONT}{BLACK}놀이기구 탑승 시간 제한
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
 STR_1751    :놀이기구의 탑승 시간을 변경할 수 없습니다...
-STR_1752    :{SMALLFONT}{BLACK}공원에 있는 손님의 모든 명단{NEWLINE}을 보여줍니다
-STR_1753    :{SMALLFONT}{BLACK}공원에 있는 손님을 항목별로 묶어{NEWLINE}서 보여줍니다
+STR_1752    :{SMALLFONT}{BLACK}공원에 있는 손님의 모든 명단을 보여줍니다
+STR_1753    :{SMALLFONT}{BLACK}공원에 있는 손님을 항목별로 묶어서 보여줍니다
 STR_1754    :{BLACK}{COMMA16} 손님
 STR_1755    :{BLACK}{COMMA16} 손님
 STR_1756    :{WINDOW_COLOUR_2}입장료:
@@ -1818,7 +1818,7 @@ STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :기타 오브젝트
 STR_1814    :행동
 STR_1815    :생각
-STR_1816    :{SMALLFONT}{BLACK}손님 목록에서 보여줄 정보의 종류{NEWLINE}를 선택하세요
+STR_1816    :{SMALLFONT}{BLACK}손님 목록에서 보여줄 정보의 종류를 선택하세요
 STR_1817    :({COMMA16})
 STR_1818    :{WINDOW_COLOUR_2}모든 손님
 STR_1819    :{WINDOW_COLOUR_2}모든 손님 (항목별 분류)
@@ -1826,7 +1826,7 @@ STR_1820    :{WINDOW_COLOUR_2}{STRINGID} 손님
 STR_1821    :{WINDOW_COLOUR_2}{STRINGID} 손님 생각
 STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}에 대한 손님 생각
 STR_1823    :{SMALLFONT}{BLACK}이 놀이기구/시설에 대한 손님들의 생각을 보여줍니다
-STR_1824    :{SMALLFONT}{BLACK}이 놀이기구/시설에 있는 손님{NEWLINE}을 보여줍니다
+STR_1824    :{SMALLFONT}{BLACK}이 놀이기구/시설에 있는 손님을 보여줍니다
 STR_1825    :{SMALLFONT}{BLACK}이 놀이기구/시설에서 기다리고 있는 손님을 보여줍니다
 STR_1826    :상태
 STR_1827    :인기도
@@ -1852,7 +1852,7 @@ STR_1846    :{COMMA16} 손님
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} 손님
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} 손님
 STR_1849    :{WINDOW_COLOUR_2}음악 재생
-STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악{NEWLINE}을 재생할지를 선택합니다
+STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악을 재생할지를 선택합니다
 STR_1851    :{WINDOW_COLOUR_2}유지비: {BLACK}시간당 {CURRENCY2DP}
 STR_1852    :{WINDOW_COLOUR_2}유지비: {BLACK}알 수 없음
 STR_1853    :{WINDOW_COLOUR_2}건설 시점: {BLACK}올해
@@ -1892,7 +1892,7 @@ STR_1886    :{STRINGID} 점검 중
 STR_1887    :{WINDOW_COLOUR_2}지난 점검 이후 지난 시간: {BLACK}{COMMA16}분
 STR_1888    :{WINDOW_COLOUR_2}지난 점검 이후 지난 시간: {BLACK}4시간 이상
 STR_1889    :{WINDOW_COLOUR_2}고장률: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}정비기술자가 놀이기구를 얼마{NEWLINE}나 자주 점검할 지 선택하세요
+STR_1890    :{SMALLFONT}{BLACK}정비기술자가 놀이기구를 얼마나 자주 점검할 지 선택하세요
 STR_1891    :공원에 아직 {STRINGID}(이)가 없습니다!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
@@ -1941,7 +1941,7 @@ STR_1933    :{STRINGID} - {STRINGID} 안에 있습니다
 STR_1934    :{STRINGID} - {STRINGID}(을)를 떠났습니다
 STR_1935    :{STRINGID} - 공원을 떠났습니다
 STR_1936    :{STRINGID} - {STRINGID}(을)를 샀습니다
-STR_1937    :{SMALLFONT}{BLACK}이 메시지의 주제{NEWLINE}에 대한 정보를 보여줍니다
+STR_1937    :{SMALLFONT}{BLACK}이 메시지의 주제에 대한 정보를 보여줍니다
 STR_1938    :{SMALLFONT}{BLACK}손님 주변으로 화면을 이동합니다
 STR_1939    :{SMALLFONT}{BLACK}직원 주변으로 화면을 이동합니다
 STR_1940    :{SMALLFONT}{BLACK}행복도/에너지/배고픔 등의 수치를 보여줍니다
@@ -2232,7 +2232,7 @@ STR_2224    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}재정: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}회사 가치: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}음식/음료수 또는 물건으로 벌어들인{NEWLINE}지난달 수익: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}음식/음료수 또는 물건으로 벌어들인 지난달 수익: {BLACK}{CURRENCY}
 STR_2229    :수직으로 상승
 STR_2230    :수직 트랙
 STR_2231    :낙하 브레이크
@@ -2366,7 +2366,7 @@ STR_2358    :유닛
 STR_2359    :실제 값
 STR_2360    :해상도:
 STR_2361    :땅 테두리를 부드럽게
-STR_2362    :{SMALLFONT}{BLACK}땅의 테두리를 부드럽게{NEWLINE}보이게 만듭니다
+STR_2362    :{SMALLFONT}{BLACK}땅의 테두리를 부드럽게 표시합니다.
 STR_2363    :땅에 격자선 보이기
 STR_2364    :{SMALLFONT}{BLACK}땅에 격자선을 보여줍니다
 STR_2365    :은행이 대출을 증가시키는 것을 거절했습니다!
@@ -2492,7 +2492,7 @@ STR_2484    :{WINDOW_COLOUR_2}주간 수익: {RED}{CURRENCY2DP}
 STR_2485    :조작
 STR_2486    :일반
 STR_2487    :손님들의 '실제' 이름을 표시
-STR_2488    :{SMALLFONT}{BLACK}손님들의 이름을 '실제' 이름으로 보여줄지{NEWLINE}번호로 보여줄지를 선택합니다
+STR_2488    :{SMALLFONT}{BLACK}손님들의 이름을 '실제' 이름으로 보여줄지 번호로 보여줄지를 선택합니다
 STR_2489    :단축키 설정...
 STR_2490    :키보드 단축키
 STR_2491    :단축키 초기화
@@ -2805,7 +2805,7 @@ STR_2794    :{WINDOW_COLOUR_2}달성: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2
 STR_2795    :정렬
 STR_2796    :{SMALLFONT}{BLACK}놀이기구 목록을 정보 종류에 따라 정렬하여 표시합니다.
 STR_2797    :화면 가장자리에 커서를 가져가면 화면을 스크롤
-STR_2798    :{SMALLFONT}{BLACK}화면 가장자리에 마우스 커서{NEWLINE}를 가까이 대면 게임 화면{NEWLINE}을 스크롤할지를 선택합니다
+STR_2798    :{SMALLFONT}{BLACK}화면 가장자리에 마우스 커서를 가까이 대면 게임 화면을 스크롤할지를 선택합니다
 STR_2799    :{SMALLFONT}{BLACK}지정되어 있는 조작 키를 확인하거나 변경합니다
 STR_2800    :{WINDOW_COLOUR_2}총 입장료: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}입장료로 벌어들인 수익: {BLACK}{CURRENCY2DP}
@@ -2861,7 +2861,7 @@ STR_2850    :새 트랙 디자인 설치가 성공적으로 완료되었습니�
 STR_2851    :시나리오가 이미 설치되어 있습니다
 STR_2852    :트랙 디자인이 이미 설치되어 있습니다
 STR_2853    :지역 당국에 의해 금지된 행위입니다!
-STR_2854    :{RED}손님들이 {STRINGID}의 입구로 갈 수 없습니다 !{NEWLINE}입구로 가는 길을 만드세요
+STR_2854    :{RED}{STRINGID}의 입구로 가는 길이 없습니다 !{NEWLINE}입구로 가는 길을 만드세요
 STR_2855    :{RED}{STRINGID}의 출구에서 나오는 길이 없습니다 !{NEWLINE}출구로 가는 길을 만드세요
 STR_2856    :{WINDOW_COLOUR_2}튜토리얼
 STR_2857    :{WINDOW_COLOUR_2}(조작하려면 마우스나 키보드 키를 누르세요)
@@ -3127,7 +3127,7 @@ STR_3116    :{SMALLFONT}{BLACK}트랙 디자인을 저장합니다 (놀이기구
 STR_3117    :{BLACK}정비기술자에게 연락 중...
 STR_3118    :{BLACK}{STRINGID}(이)가 놀이기구로 향하고 있음
 STR_3119    :{BLACK}{STRINGID}(이)가 놀이기구를 수리하고 있음
-STR_3120    :{SMALLFONT}{BLACK}가까운 정비기술자를 찾아{NEWLINE}서 놀이기구를 수리하게 합니다
+STR_3120    :{SMALLFONT}{BLACK}가까운 정비기술자를 찾아서 놀이기구를 수리하게 합니다
 STR_3121    :정비기술자가 근처에 없거나 모두 바쁩니다
 STR_3122    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
 STR_3123    :{WINDOW_COLOUR_2}이 놀이기구를 좋아하는 손님: {BLACK}{COMMA16}명
@@ -3151,7 +3151,7 @@ STR_3140    :케이블 리프트 힐은 탑승장 바로 다음에 건설해야 
 STR_3141    :케이블 리프트 힐을 사용하면 2바퀴 이상 차량을 운용할 수 없습니다
 STR_3142    :{WINDOW_COLOUR_2}수용량: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}손님을 지도에 표시합니다
-STR_3144    :{SMALLFONT}{BLACK}놀이기구와 시설을 지도{NEWLINE}에 표시합니다
+STR_3144    :{SMALLFONT}{BLACK}놀이기구와 시설을 지도에 표시합니다
 STR_3145    :{SMALLFONT}{BLACK}왼쪽으로 {STRINGID} 스크롤
 STR_3146    :{SMALLFONT}{BLACK}오른쪽으로 {STRINGID} 스크롤
 STR_3147    :{SMALLFONT}{BLACK}왼쪽으로 {STRINGID} 빠르게 스크롤
@@ -3246,13 +3246,13 @@ STR_3235    :{SMALLFONT}{BLACK}재정 관련 설정을 보여줍니다
 STR_3236    :{SMALLFONT}{BLACK}손님 관련 설정을 보여줍니다
 STR_3237    :{SMALLFONT}{BLACK}공원 관련 설정을 보여줍니다
 STR_3238    :돈 무제한
-STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원{NEWLINE}의 돈을 '무제한'으로 만듭니다
+STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 돈을 '무제한'으로 만듭니다
 STR_3240    :{WINDOW_COLOUR_2}초기 재정:
 STR_3241    :{WINDOW_COLOUR_2}초기 대출:
 STR_3242    :{WINDOW_COLOUR_2}최대 대출금:
 STR_3243    :{WINDOW_COLOUR_2}연 이자율:
 STR_3244    :광고 이벤트를 금지
-STR_3245    :{SMALLFONT}{BLACK}광고나 이벤트를 진행할 수 없도{NEWLINE}록 금지합니다
+STR_3245    :{SMALLFONT}{BLACK}광고나 이벤트를 진행할 수 없도록 금지합니다
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
 STR_3248    :초기 보유 자금을 더 이상 늘릴 수 없습니다!
@@ -3264,9 +3264,9 @@ STR_3253    :최대 대출금을 더 이상 줄일 수 없습니다!
 STR_3254    :이자율을 더 이상 늘릴 수 없습니다!
 STR_3255    :이자율을 더 이상 줄일 수 없습니다!
 STR_3256    :손님들이 격렬하지 않은 놀이기구를 선호함
-STR_3257    :{SMALLFONT}{BLACK}손님들이 일반적으로 덜 격렬{NEWLINE}한 놀이기구를 선호하게 만들지를 선택합니다
+STR_3257    :{SMALLFONT}{BLACK}손님들이 일반적으로 덜 격렬한 놀이기구를 선호하게 만들지를 선택합니다
 STR_3258    :손님들이 격렬한 놀이기구를 선호함
-STR_3259    :{SMALLFONT}{BLACK}손님들이 일반적으로 더욱 격렬{NEWLINE}한 놀이기구를 선호하게 만들지를 선택합니다
+STR_3259    :{SMALLFONT}{BLACK}손님들이 일반적으로 더욱 격렬한 놀이기구를 선호하게 만들지를 선택합니다
 STR_3260    :{WINDOW_COLOUR_2}각 손님의 보유금 (평균):
 STR_3261    :{WINDOW_COLOUR_2}손님의 초기 행복도:
 STR_3262    :{WINDOW_COLOUR_2}손님의 초기 배고픔:
@@ -3283,7 +3283,7 @@ STR_3272    :{SMALLFONT}{BLACK}높은 건축물의 건설을 금지합니다
 STR_3273    :공원 등급 난이도 상승
 STR_3274    :{SMALLFONT}{BLACK}공원 등급값이 더 급변하게 만듭니다
 STR_3275    :손님 생성 난이도 상승
-STR_3276    :{SMALLFONT}{BLACK}공원에 손님을 유치하기 더 어렵{NEWLINE}게 만듭니다
+STR_3276    :{SMALLFONT}{BLACK}공원에 손님을 유치하기 더 어렵게 만듭니다
 STR_3277    :{WINDOW_COLOUR_2}땅 구입 비용:
 STR_3278    :{WINDOW_COLOUR_2}건설권 구입 비용:
 STR_3279    :놀이기구 탑승료만 받기
@@ -3341,7 +3341,7 @@ STR_3330    :공원이 소유한 땅이 하나도 없습니다
 STR_3331    :공원 입구에서 지도 가장자리로 이어지는 길이 이어지지 않았거나 너무 복잡합니다. 1칸 너비의 길을 코너나 교차로가 최대한 없도록 하여 만들어야 합니다.
 STR_3332    :공원 입구가 잘못된 방향을 향하고 있거나 지도 가장자리로 가는 길이 없습니다
 STR_3333    :게임 저장시 사용한 오브젝트를 같이 포함하여 저장
-STR_3334    :{SMALLFONT}{BLACK}필요한 경우 내장된 오브젝트(기본 오브젝트가 아닌 사용자가{NEWLINE}추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다.{NEWLINE}이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때{NEWLINE}자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일{NEWLINE}용량이 늘어납니다
+STR_3334    :{SMALLFONT}{BLACK}필요한 경우 내장된 오브젝트(기본 오브젝트가 아닌 사용자가 추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다. 이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일 용량이 늘어납니다
 STR_3335    :롤러코스터 디자이너 - 놀이기구 종류 & 차량을 선택하세요
 STR_3336    :트랙 디자인 매니저 - 놀이기구 종류를 선택하세요
 STR_3337    :<더 이상 사용하지 않음>
@@ -3372,7 +3372,7 @@ STR_3361    :트랙 디자인이 너무 많습니다. 일부가 표시되지 않
 STR_3362    :<더 이상 사용하지 않음>
 STR_3363    :<더 이상 사용하지 않음>
 STR_3364    :고급
-STR_3365    :{SMALLFONT}{BLACK}조형물 그룹과 함께 조형물{NEWLINE}각각을 따로 선택할 수 있게 허용합니다
+STR_3365    :{SMALLFONT}{BLACK}조형물 그룹과 함께 조형물 각각을 따로 선택할 수 있게 허용합니다
 STR_3366    :{BLACK}= 놀이기구
 STR_3367    :{BLACK}= 음식 상점
 STR_3368    :{BLACK}= 음료수 상점
@@ -3492,7 +3492,7 @@ STR_5152    :.
 STR_5153    :테마 수정...
 STR_5154    :하드웨어 디스플레이
 STR_5155    :완성되지 않은 트랙의 테스트 허용
-STR_5156    :{SMALLFONT}{BLACK}대부분의 놀이기구 종류에서 트랙{NEWLINE}을 완성하지 않아도 테스트를{NEWLINE}할 수 있도록 허용합니다. 블록 섹션 모드에는 적용되지 않습니다
+STR_5156    :{SMALLFONT}{BLACK}대부분의 놀이기구 종류에서 트랙을 완성하지 않아도 테스트를 할 수 있도록 허용합니다. 블록 섹션 모드에는 적용되지 않습니다
 STR_5157    :모든 가격 잠금 해제
 STR_5158    :종료하고 메뉴로
 STR_5159    :OpenRCT2 종료
@@ -3504,13 +3504,13 @@ STR_5164    :트위치 채널 이름
 STR_5165    :손님 이름을 팔로워 이름을 따서 붙이기
 STR_5166    :{SMALLFONT}{BLACK}트위치 채널의 팔로워 이름을 따서 손님 이름으로 사용합니다
 STR_5167    :팔로워 손님 추적
-STR_5168    :{SMALLFONT}{BLACK}채널의 트위치 팔로워 이름을{NEWLINE}딴 손님을 추적합니다
+STR_5168    :{SMALLFONT}{BLACK}채널의 트위치 팔로워 이름을 딴 손님을 추적합니다
 STR_5169    :손님 이름을 트위치 채팅의 접속자 이름을 따서 붙이기
 STR_5170    :{SMALLFONT}{BLACK}트위치 채팅의 접속자 이름을 따서 손님 이름으로 사용합니다
 STR_5171    :채팅 인원 추적
-STR_5172    :{SMALLFONT}{BLACK}트위치 채팅에 참가하고 있는 사람들의 이름을 딴 손님의{NEWLINE}행적을 추적합니다
+STR_5172    :{SMALLFONT}{BLACK}트위치 채팅에 참가하고 있는 사람들의 이름을 딴 손님의 행적을 추적합니다
 STR_5173    :트위치 채팅 내용을 뉴스로 전송
-STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를{NEWLINE}!news를 이용하여 게임 메시지로 알려줍니다
+STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를 !news를 이용하여 게임 메시지로 알려줍니다
 STR_5175    :트위치 채널 이름 입력
 STR_5176    :트위치 통합 허용
 STR_5177    :풀 스크린 모드:
@@ -3616,7 +3616,7 @@ STR_5276    :검색할 오브젝트 이름을 입력하세요
 STR_5277    :초기화
 STR_5278    :모래상자 모드
 STR_5279    :모래상자 모드 끄기
-STR_5280    :{SMALLFONT}{BLACK}지도 창에서 땅 소유권 설정이 가능하도록 바꾸고 시나리오 에디터에서만 쓸 수 있던{NEWLINE}기능을 사용할 수 있게 만듭니다
+STR_5280    :{SMALLFONT}{BLACK}지도 창에서 땅 소유권 설정이 가능하도록 바꾸고 시나리오 에디터에서만 쓸 수 있던 기능을 사용할 수 있게 만듭니다
 STR_5281    :{SMALLFONT}{BLACK}기능
 STR_5282    :RCT1 놀이기구 열기/닫기 아이콘
 STR_5283    :RCT1 공원 열기/닫기 아이콘
@@ -3629,9 +3629,9 @@ STR_5289    :이 놀이기구는 고장이 나지 않습니다
 STR_5290    :놀이기구 수리
 STR_5291    :강제로 고장낼 수 없습니다
 STR_5292    :{SMALLFONT}{BLACK}강제로 고장을 냅니다
-STR_5293    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 닫습니다
-STR_5294    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 테스트합니다
-STR_5295    :{SMALLFONT}{BLACK}놀이기구/시설{NEWLINE}을 엽니다
+STR_5293    :{SMALLFONT}{BLACK}놀이기구/시설을 닫습니다
+STR_5294    :{SMALLFONT}{BLACK}놀이기구/시설을 테스트합니다
+STR_5295    :{SMALLFONT}{BLACK}놀이기구/시설을 엽니다
 STR_5296    :{SMALLFONT}{BLACK}공원을 닫습니다
 STR_5297    :{SMALLFONT}{BLACK}공원을 엽니다
 STR_5298    :{RED}{STRINGID}
@@ -3706,7 +3706,7 @@ STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
 STR_5369    :공원 설정...
-STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 돈 등의{NEWLINE}공원과 관련된 설정을 수정{NEWLINE}하려면 이 버튼을 클릭하세요.
+STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 돈 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
 STR_5371    :오브젝트 선택
 STR_5372    :마우스 오른쪽 드래그시 좌우 반전
 STR_5373    :이름 {STRINGID}
@@ -3845,13 +3845,13 @@ STR_5505    :서버에 접속할 수 없습니다
 STR_5506    :손님이 격렬도를 무시하고 탐
 STR_5507    :미화원이 기본적으로 잔디를 깎음
 STR_5508    :올바르지 않은 검사합을 가진 파일 불러오기 허용
-STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오{NEWLINE}나 손상된 저장 파일과 같이 올바르지 않은 검사합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
+STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오나 손상된 저장 파일과 같이 올바르지 않은 검사합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
 STR_5510    :기본 사운드 장치
 STR_5511    :(알 수 없음)
 STR_5512    :다른 이름으로 저장
 STR_5513    :게임 간편 저장
 STR_5514    :기물을 파손하지 않게 하기
-STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을{NEWLINE}때 기물을 파손하지 않도{NEWLINE}록 설정합니다
+STR_5515    :{SMALLFONT}{BLACK}손님이 화가 났을 때 기물을 파손하지 않도록 설정합니다
 STR_5516    :{SMALLFONT}{BLACK}검은색
 STR_5517    :{SMALLFONT}{BLACK}회색
 STR_5518    :{SMALLFONT}{BLACK}흰색
@@ -3896,7 +3896,7 @@ STR_5556    :플레이어 추방
 STR_5557    :비동기화 이후에 계속 접속 (멀티플레이)
 STR_5558    :이 설정을 적용하기 위해서는 재시작해야합니다
 STR_5559    :점검 시간 10분으로
-STR_5560    :{SMALLFONT}{BLACK}모든 놀이기구의 점검{NEWLINE}시간을 '매 10분마다'로 설정합니다
+STR_5560    :{SMALLFONT}{BLACK}모든 놀이기구의 점검 시간을 '매 10분마다'로 설정합니다
 STR_5561    :언어 파일을 불러오는 데 실패하였습니다
 STR_5562    :경고!
 STR_5563    :이 기능은 현재 불안정하여 오류가 나올 수 있습니다
@@ -3923,7 +3923,7 @@ STR_5583    :{COMMA1DP16}m/s
 STR_5584    :국제단위(SI)법
 STR_5585    :{SMALLFONT}{BLACK}체인/발사 속력을 {VELOCITY}으로 만드는 것처럼, 일부 놀이기구 운행 제한을 없애줍니다
 STR_5586    :상점이나 가게를 자동으로 엶
-STR_5587    :{SMALLFONT}{BLACK}이 설정을 켜면 상점이나{NEWLINE}가게를 건설한 뒤에 자동으로{NEWLINE}열도록 만들어 줍니다.
+STR_5587    :{SMALLFONT}{BLACK}이 설정을 켜면 상점이나 가게를 건설한 뒤에 자동으로 열도록 만들어 줍니다.
 STR_5588    :{SMALLFONT}{BLACK}다른 참가자와 함께 플레이합니다.
 STR_5589    :알림 설정
 STR_5590    :공원 수상 내역
@@ -3943,7 +3943,7 @@ STR_5603    :손님의 놀이기구 하차
 STR_5604    :손님의 물건 구입
 STR_5605    :손님의 시설 사용
 STR_5606    :손님의 사망
-STR_5607    :{SMALLFONT}{BLACK}선택한 맵 요소를 강제{NEWLINE}로 제거합니다.
+STR_5607    :{SMALLFONT}{BLACK}선택한 맵 요소를 강제로 제거합니다.
 STR_5608    :BH
 STR_5609    :CH
 STR_5610    :{SMALLFONT}{BLACK}현재 선택한 맵 요소를 제거합니다. 강제로 삭제하기 때문에 돈이 들어오거나 빠지진 않을 것입니다. 주의해서 사용하세요.
@@ -4090,6 +4090,7 @@ STR_5784    :{BLACK}이 시나리오를 플레이하려면 이전 시나리오�
 STR_5785    :그룹 이름을 바꿀 수 없습니다...
 STR_5786    :유효하지 않은 그룹 이름
 STR_5787    :{COMMA32}명의 플레이어 접속 중
+STR_5788    :기본 점검 간격:
 
 #############
 # Scenarios #

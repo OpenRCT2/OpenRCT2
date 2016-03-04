@@ -4093,6 +4093,7 @@ STR_5784    :{BLACK}Pro odemčení tohoto scénáře dokončete předcházejíc�
 STR_5785    :Nelze přejmenovat skupinu...
 STR_5786    :Neplatný název skupiny.
 STR_5787    :{COMMA32} hráčů online
+STR_5788    :Výchozí interval inspekcí:
 
 ###############################################################################
 ## RCT2 Objects
