@@ -302,10 +302,12 @@ static void climate_update_lightning()
 	if (_lightningTimer == 0)
 		return;
 
-	_lightningTimer--;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) == 0)
-		if ((util_rand() & 0xFFFF) <= 0x2000)
-			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) = 1;
+	if (!gConfigGeneral.disable_lightning_effect) {
+		_lightningTimer--;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) == 0)
+			if ((util_rand() & 0xFFFF) <= 0x2000)
+				RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) = 1;
+	}
 }
 
 static void climate_update_thunder()
