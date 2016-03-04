@@ -591,7 +591,7 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 		while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
 			ch = nextCh;
 		}
-		text = ch+1;
+		text = (char*)(ch + 1);
 
 		y += font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
 	}
