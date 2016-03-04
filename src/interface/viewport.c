@@ -2096,7 +2096,7 @@ void viewport_paint_setup()
 
 void sub_688217_helper(uint16 ax, uint8 flag)
 {
-	paint_struct *ps;
+	paint_struct *ps, *ps_temp;
 	paint_struct *ps_next = RCT2_GLOBAL(0x00EE7884, paint_struct*);
 
 	do {
@@ -2105,7 +2105,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 		if (ps_next == NULL) return;
 	} while (ax > ps_next->var_18);
 
-	RCT2_GLOBAL(0x00F1AD14, paint_struct*) = ps;
+	ps_temp = ps;
 
 	do {
 		ps = ps->next_quadrant_ps;
@@ -2120,7 +2120,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 		}
 	} while (ps->var_18 <= ax + 1);
 
-	ps = RCT2_GLOBAL(0x00F1AD14, paint_struct*);
+	ps = ps_temp;
 
 	uint8 rotation = get_current_rotation();
 	while (true) {
@@ -2133,7 +2133,7 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 		}
 
 		ps_next->var_1B &= ~(1 << 0);
-		RCT2_GLOBAL(0x00F1AD18, paint_struct*) = ps;
+		ps_temp = ps;
 
 		uint16 my_attached_x = ps_next->attached_x;
 		uint16 my_attached_y = ps_next->attached_y;
@@ -2175,14 +2175,14 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 
 			if (yes) {
 				ps->next_quadrant_ps = ps_next->next_quadrant_ps;
-				paint_struct *ps_temp = RCT2_GLOBAL(0x00F1AD18, paint_struct*)->next_quadrant_ps;
-				RCT2_GLOBAL(0x00F1AD18, paint_struct*)->next_quadrant_ps = ps_next;
-				ps_next->next_quadrant_ps = ps_temp;
+				paint_struct *ps_temp2 = ps_temp->next_quadrant_ps;
+				ps_temp->next_quadrant_ps = ps_next;
+				ps_next->next_quadrant_ps = ps_temp2;
 				ps_next = ps;
 			}
 		}
 
-		ps = RCT2_GLOBAL(0x00F1AD18, paint_struct*);
+		ps = ps_temp;
 	}
 }
 
