@@ -198,6 +198,7 @@ void corrupt_element(int x, int y) {
 	mapElement = map_element_insert(x, y, mapElement->base_height, 0);
 	assert(mapElement != NULL);
 	mapElement->type = (8 << 2);
+	map_invalidate_tile_full(x, y);
 }
 
 void remove_element(int index)
@@ -207,6 +208,7 @@ void remove_element(int index)
 	mapElement += index;
 	map_element_remove(mapElement);
 	window_tile_inspector_item_count--;
+	map_invalidate_tile_full(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 }
 
 // Swap element with its parent
@@ -242,6 +244,7 @@ void swap_elements(sint16 first, sint16 second)
 		firstElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
 		secondElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
 	}
+	map_invalidate_tile_full(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 }
 
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
