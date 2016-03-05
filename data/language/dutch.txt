@@ -4081,6 +4081,12 @@ STR_5779    :Inkomsten: {CURRENCY2DP} per uur
 STR_5780    :Bedrijfskosten: {CURRENCY2DP} per uur
 STR_5781    :Bedrijfskosten: onbekend
 STR_5782    :Je bent nu verbonden met de server. Druk op '{STRING}' om te chatten.
+STR_5783    :{WINDOW_COLOUR_2}Scenario is vergrendeld
+STR_5784    :{BLACK}Dit scenario is pas beschikbaar als je eerdere scenario's hebt voltooid.
+STR_5785    :Kan de groep niet hernoemen...
+STR_5786    :Ongeldige groepsnaam
+STR_5787    :{COMMA32} spelers online
+STR_5788    :Standaard inspectie-interval:
 
 #############
 # Scenarios #
@@ -4224,59 +4230,59 @@ STR_PARK    :Funtopia
 STR_DTLS    :Dit park beslaat land aan beide zijden van een snelweg en beschikt reeds over enkele functionerende attracties.
 
 <Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
+STR_DTLS    :De gemeente is bereid het omliggende land voor een gunstige prijs te verkopen aan dit kleine kustpark, op voorwaarde dat bepaalde attracties behouden blijven.
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :This castle is all yours to turn into a theme park
+STR_DTLS    :Je mag dit kasteel naar eigen inzicht veranderen in een pretpark.
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+STR_DTLS    :Dit futuristische park met buitenaards landschap heeft genoeg ruimte beschikbaar voor nieuwe attracties.
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+STR_DTLS    :De lokale bevolking heeft een voorkeur voor rustige en ontspannende attracties, dus is het je taak om dit park uit te breiden naar hun smaak.
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+STR_DTLS    :Dit grote stuk land, diep in het oerwoud, ligt klaar om te worden veranderd in een attractiepark.
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :A series of stepped lakes form the basis for this new park
+STR_DTLS    :Een aantal meren op verschillende hoogtes vormt de basis voor dit nieuwe park.
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :This elderly park has many historical rides but is badly in debt
+STR_DTLS    :Dit oude park heeft veel historische attracties maar ook grote schulden.
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :Een groot stuk land is al voor je ontruimd en gedeeltelijk gethematiseerd, zodat je het kunt ontwikkelen tot een themapark.
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :Een bloeiende fruitplantage heeft een spoorweg gebouwd om haar inkomen te vergroten. Jouw taak is om het uit te breiden tot een bloeiend pretpark.
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+STR_DTLS    :Je mag het gebied rondom een dam ontwikkelen tot een attractiepark.
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :Je mag een enorme kloof ontwikkelen tot een attractiepark.
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
