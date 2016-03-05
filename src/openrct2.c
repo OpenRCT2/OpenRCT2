@@ -277,8 +277,9 @@ void openrct2_launch()
 			break;
 		case STARTUP_ACTION_OPEN:
 			assert(gOpenRCT2StartupActionPath != NULL);
-			if (rct2_open_file(gOpenRCT2StartupActionPath) == 0)
+			if (!rct2_open_file(gOpenRCT2StartupActionPath)) {
 				break;
+			}
 
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 

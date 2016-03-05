@@ -208,7 +208,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator)
     const char * parkUri;
     if (!enumerator->TryPopString(&parkUri))
     {
-        Console::Error::WriteLine("Expected path or URL to a saved park.");
+        Console::Error::WriteLine("Expected path or URL to a scenario or saved park.");
         return EXITCODE_FAIL;
     }
 

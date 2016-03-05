@@ -275,6 +275,6 @@ int check_files_integrity();
 const char *get_file_path(int pathId);
 void rct2_quit();
 
-int rct2_open_file(const char *path);
+bool rct2_open_file(const char *path);
 
 #endif

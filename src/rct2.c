@@ -345,30 +345,32 @@ static void rct2_draw_fps()
 	gfx_set_dirty_blocks(x - 16, y - 4, gLastDrawStringX + 16, 16);
 }
 
-int rct2_open_file(const char *path)
+bool rct2_open_file(const char *path)
 {
 	char *extension = strrchr(path, '.');
-	if (extension == NULL)
-		return 0;
+	if (extension == NULL) {
+		return false;
+	}
 	extension++;
 
 	if (_stricmp(extension, "sv6") == 0) {
 		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
 		game_load_save(path);
-		return 1;
+		return true;
 	} else if (_stricmp(extension, "sc6") == 0) {
 		// TODO scenario install
 		rct_scenario_basic scenarioBasic;
 		strcpy(scenarioBasic.path, path);
 		scenario_load_and_play_from_path(scenarioBasic.path);
+		return true;
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
-		return 1;
+		return true;
 	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
-		return 1;
+		return true;
 	}
 
-	return 0;
+	return false;
 }
 
 /**
