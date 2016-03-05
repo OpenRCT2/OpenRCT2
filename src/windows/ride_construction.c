@@ -457,9 +457,8 @@ static int	_trackPlaceShiftZ;
 // This variable is updated separately from ride->num_stations because the latter
 // is unreliable if currently in station construction mode
 static bool _stationConstructed;
+static bool _deferClose;
 
-static void window_ride_construction_next_section(rct_window *w);
-static void window_ride_construction_previous_section(rct_window *w);
 static void window_ride_construction_construct(rct_window *w);
 static void window_ride_construction_mouseup_demolish(rct_window* w);
 static void window_ride_construction_rotate(rct_window *w);
@@ -515,6 +514,7 @@ rct_window *window_ride_construction_open()
 	rct_ride* ride = get_ride(rideIndex);
 
 	_stationConstructed = ride->num_stations != 0;
+	_deferClose = false;
 
 	if (ride->type == RIDE_TYPE_MAZE)
 		return window_maze_construction_open();
@@ -1929,7 +1929,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 static void window_ride_construction_update(rct_window *w)
 {
 	rct_ride *ride = get_ride(_currentRideIndex);
-	if (ride == NULL || ride->status != RIDE_STATUS_CLOSED) {
+	if (ride == NULL || ride->status != RIDE_STATUS_CLOSED || _deferClose) {
 		window_close(w);
 		return;
 	}
@@ -3883,7 +3883,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 				if (w != NULL) {
 					if (ride_are_all_possible_entrances_and_exits_built(ride)) {
 						// Clients don't necessarily have any ride built at this point
-						if (network_get_mode() == NETWORK_MODE_NONE) {
+						if (network_get_mode() != NETWORK_MODE_CLIENT) {
 							window_close(w);
 						}
 					} else {
@@ -3915,6 +3915,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 		STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION :
 		STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
 
+	game_command_callback = game_command_callback_place_ride_entrance_or_exit;
 	money32 cost = game_do_command(
 		RCT2_GLOBAL(0x00F44188, uint16),
 		(GAME_COMMAND_FLAG_APPLY) | ((RCT2_GLOBAL(0x00F44194, uint8) ^ 2) << 8),
@@ -3924,10 +3925,10 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 		RCT2_GLOBAL(0x00F44193, uint8),
 		0
 	);
-	if (cost == MONEY32_UNDEFINED) {
-		return;
-	}
+}
 
+void game_command_callback_place_ride_entrance_or_exit(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
 	audio_play_sound_at_location(
 		SOUND_PLACE_ITEM,
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16),
@@ -3971,6 +3972,8 @@ void window_ride_construction_do_entrance_exit_check()
 		if (w != NULL) {
 			if (!ride_are_all_possible_entrances_and_exits_built(ride)) {
 				window_event_mouse_up_call(w, WIDX_ENTRANCE);
+			} else {
+				_deferClose = true;
 			}
 		}
 	}

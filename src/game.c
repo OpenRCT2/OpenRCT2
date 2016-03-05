@@ -75,6 +75,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 	game_command_callback_ride_construct_placed_back,
 	game_command_callback_ride_remove_track_piece,
 	game_command_callback_place_banner,
+	game_command_callback_place_ride_entrance_or_exit,
 };
 int game_command_playerid = -1;
 
@@ -508,9 +509,12 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			// Second call to actually perform the operation
 			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
-			if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-				game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
-				game_command_callback = 0;
+			// Do the callback (required for multiplayer to work correctly), but only for top level commands
+			if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+				if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+					game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
+					game_command_callback = 0;
+				}
 			}
 
 			game_command_playerid = -1;
