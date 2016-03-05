@@ -68,14 +68,14 @@ void chat_draw()
 	_chatLeft = 10;
 	_chatTop = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
 	_chatRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 10;
-	_chatBottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 40;
+	_chatBottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 45;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
 	int x = _chatLeft;
-	int y = _chatBottom - (10 * 2);
+	int y = _chatBottom - (15 * 2);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
-	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 10) {
+	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
 		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
 			break;
 		}
@@ -87,14 +87,14 @@ void chat_draw()
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
 		safe_strcpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
-		y = _chatBottom - 10;
+		y = _chatBottom - 15;
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 		if (_chatCaretTicks < 15) {
 			memcpy(lineBuffer, _chatCurrentLine, gTextInputCursorPosition);
 			lineBuffer[gTextInputCursorPosition] = 0;
 			int caretX = x + gfx_get_string_width(lineBuffer);
-			int caretY = y + 10;
+			int caretY = y + 15;
 
 			gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, 0x38);
 		}
