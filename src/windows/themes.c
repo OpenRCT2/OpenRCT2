@@ -610,6 +610,7 @@ void window_themes_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 				if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
 					window_error_open(5241, 5256);
 				} else {
+					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_COLOURBTN;
 					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
 					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y - w->scrolls[0].v_top + window_themes_widgets[WIDX_THEMES_LIST].top;
 					window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].right = window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
@@ -719,6 +720,7 @@ void window_themes_invalidate(rct_window *w)
 	window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WWT_EMPTY;
 	window_themes_widgets[WIDX_THEMES_PRESETS].type = WWT_EMPTY;
 	window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_EMPTY;
+	window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_EMPTY;
 
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
 		window_themes_widgets[WIDX_THEMES_LIST].type = WWT_EMPTY;
