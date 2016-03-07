@@ -7795,7 +7795,7 @@ void sub_6CB945(int rideIndex)
 				}
 
 				mapElement->properties.entrance.index &= 0x8F;
-				mapElement->properties.entrance.index |= stationId;
+				mapElement->properties.entrance.index |= stationId << 4;
 				shouldRemove = false;
 			} while (!map_element_is_last_for_tile(trackElement++));
 
