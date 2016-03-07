@@ -107,7 +107,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 # include lib
 include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp")
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "src/*.h" "src/*.hpp")
 if (APPLE)
 	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
