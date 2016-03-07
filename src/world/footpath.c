@@ -52,8 +52,7 @@ static const uint16 EntranceDirections[] = {
 static int entrance_get_directions(rct_map_element *mapElement)
 {
 	uint8 entranceType = mapElement->properties.entrance.type;
-	uint8 sequence = mapElement->properties.entrance.index & 0x0F;
-	return EntranceDirections[(entranceType * 8) + sequence];
+	return EntranceDirections[(entranceType * 8)];
 }
 
 static bool entrance_has_direction(rct_map_element *mapElement, int direction)
