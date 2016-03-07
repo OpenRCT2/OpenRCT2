@@ -6065,10 +6065,12 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 10;
 
 	// Queue time
-	queueTime = ride_get_max_queue_time(ride);
-	stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
-	y += gfx_draw_string_left_wrapped(dpi, &queueTime, x, y, 308, stringId, 0);
-	y += 5;
+	if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
+		queueTime = ride_get_max_queue_time(ride);
+		stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
+		y += gfx_draw_string_left_wrapped(dpi, &queueTime, x, y, 308, stringId, 0);
+		y += 5;
+	}
 
 	// Primary shop items sold
 	shopItem = get_ride_entry_by_ride(ride)->shop_item;

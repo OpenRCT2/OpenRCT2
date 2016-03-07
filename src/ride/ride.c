@@ -2146,7 +2146,7 @@ static void ride_breakdown_update(int rideIndex)
 			ride->downtime_history[7];
 		ride->downtime = min(totalDowntime / 2, 100);
 
-		memmove(&ride->downtime_history[1], ride->downtime_history, sizeof(ride->downtime_history));
+		memmove(&ride->downtime_history[1], ride->downtime_history, sizeof(ride->downtime_history) - 1);
 
 		ride->downtime_history[0] = 0;
 		ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
