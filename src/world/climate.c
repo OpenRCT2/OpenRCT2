@@ -175,6 +175,19 @@ void climate_update()
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 		}
 	}
+
+	if (_thunderTimer != 0) {
+		climate_update_lightning();
+		climate_update_thunder();
+	} else if (_climateCurrentWeatherEffect == 2) {
+		// Create new thunder and lightning
+		unsigned int randomNumber = util_rand();
+		if ((randomNumber & 0xFFFF) <= 0x1B4) {
+			randomNumber >>= 16;
+			_thunderTimer = 43 + (randomNumber % 64);
+			_lightningTimer = randomNumber % 32;
+		}
+	}
 }
 
 void climate_force_weather(uint8 weather){
@@ -272,17 +285,6 @@ static void climate_update_thunder_sound()
 		// Play thunder on right side
 		_thunderStereoEcho = 0;
 		climate_play_thunder(1, _thunderSoundId, _thunderVolume, 10000);
-	} else if (_thunderTimer != 0) {
-		climate_update_lightning();
-		climate_update_thunder();
-	} else if (_climateCurrentWeatherEffect == 2) {
-		// Create new thunder and lightning
-		unsigned int randomNumber = util_rand();
-		if ((randomNumber & 0xFFFF) <= 0x1B4) {
-			randomNumber >>= 16;
-			_thunderTimer = 43 + (randomNumber % 64);
-			_lightningTimer = randomNumber % 32;
-		}
 	}
 
 	// Stop thunder sounds if they have finished
