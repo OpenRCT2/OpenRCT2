@@ -4091,6 +4091,7 @@ STR_5785    :그룹 이름을 바꿀 수 없습니다...
 STR_5786    :유효하지 않은 그룹 이름
 STR_5787    :{COMMA32}명의 플레이어 접속 중
 STR_5788    :기본 점검 간격:
+STR_5789    :번개 번쩍임 없애기
 
 #############
 # Scenarios #
@@ -4233,8 +4234,8 @@ STR_SCNR    :Funtopia
 STR_PARK    :펀토피아
 STR_DTLS    :고속도로 양쪽을 잘 활용한 이 공원은 이미 몇 가지 놀이기구를 운영하고 있습니다.
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
 STR_PARK    :유령 항구
 STR_DTLS    :지역 당국은 특정 놀이기구는 파괴할 수 없다는 조건을 걸고 이 작은 해변 공원 근처의 땅을 저렴하게 팔기로 합의했습니다.
 
@@ -11435,7 +11436,7 @@ STR_SCNR    :신화 - 영화 세트장
 STR_PARK    :애니매트로닉 앤틱스
 STR_DTLS    :이번 임무는 옛 영화 세트장에 설립된 기존 테마파크를 운영하고 발전시키는 것입니다. 흑백 스크린에 신화 속 인물을 옮겨놓은 스톱 모션 애니메이션의 선구자들에게 이 공원을 헌정합시다.
 
-<Mythological - Cradle of Civilization>
+<Mythological - Cradle of Civilisation>
 STR_SCNR    :신화 - 문명의 요람
 STR_PARK    :신화의 광기
 STR_DTLS    :특별한 고고학적 가치를 가진 섬을 소유하게 되었습니다. 이 지역의 풍부한 신화적 유산을 기반으로 한 테마파크를 건설해서 유산 보존 기금을 마련하기로 결정했습니다.
