@@ -1299,6 +1299,9 @@ static void scenario_objective_check_10_rollercoasters()
 	FOR_ALL_RIDES(i, ride) {
 		uint8 subtype_id = ride->subtype;
 		rct_ride_entry *rideType = get_ride_entry(subtype_id);
+		if (rideType == NULL) {
+			continue;
+		}
 
 		if (rideType != NULL &&
 			(rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
@@ -1377,6 +1380,9 @@ static void scenario_objective_check_10_rollercoasters_length()
 	FOR_ALL_RIDES(i, ride) {
 		uint8 subtype_id = ride->subtype;
 		rct_ride_entry *rideType = get_ride_entry(subtype_id);
+		if (rideType == NULL) {
+			continue;
+		}
 		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
 			ride->status == RIDE_STATUS_OPEN &&
 			ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){

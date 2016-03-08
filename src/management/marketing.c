@@ -214,6 +214,9 @@ bool marketing_is_campaign_type_applicable(int campaignType)
 		// Check if any food or drink stalls exist
 		FOR_ALL_RIDES(i, ride) {
 			rideEntry = get_ride_entry(ride->subtype);
+			if (rideEntry == NULL) {
+				continue;
+			}
 			if (
 				shop_item_is_food_or_drink(rideEntry->shop_item) ||
 				shop_item_is_food_or_drink(rideEntry->shop_item_secondary)

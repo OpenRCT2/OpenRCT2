@@ -5687,6 +5687,9 @@ static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
 	FOR_ALL_RIDES(i, ride) {
 		if (ride != forRide) {
 			rideEntry = get_ride_entry(ride->subtype);
+			if (rideEntry == NULL) {
+				continue;
+			}
 			if (rideEntry->shop_item == shopItem) {
 				return ride->price;
 			}

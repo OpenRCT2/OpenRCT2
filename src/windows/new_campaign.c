@@ -200,6 +200,9 @@ static void window_new_campaign_get_shop_items()
 	uint64 items = 0;
 	FOR_ALL_RIDES(i, ride) {
 		rct_ride_entry *rideType = get_ride_entry(ride->subtype);
+		if (rideType == NULL) {
+			continue;
+		}
 		uint8 itemType = rideType->shop_item;
 		if (itemType != 255)
 			items |= 1LL << itemType;
