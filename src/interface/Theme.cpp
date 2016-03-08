@@ -490,6 +490,8 @@ namespace ThemeManager
     size_t               NumPredefinedThemes = 0;
 
     void GetThemeFileName(utf8 * buffer, size_t bufferSize, const utf8 * name);
+    bool EnsureThemeDirectoryExists();
+    void GetThemePath(utf8 * buffer, size_t bufferSize);
 
     void GetAvailableThemes(List<AvailableTheme> * outThemes)
     {
@@ -509,7 +511,7 @@ namespace ThemeManager
         }
 
         utf8 themesPattern[MAX_PATH];
-        platform_get_user_directory(themesPattern, "themes");
+        GetThemePath(themesPattern, sizeof(themesPattern));
         Path::Append(themesPattern, sizeof(themesPattern), "*.json");
 
         int handle = platform_enumerate_files_begin(themesPattern);
@@ -615,9 +617,21 @@ namespace ThemeManager
 
     void GetThemeFileName(utf8 * buffer, size_t bufferSize, const utf8 * name)
     {
-        platform_get_user_directory(buffer, "themes");
+        GetThemePath(buffer, bufferSize);
         Path::Append(buffer, bufferSize, name);
         String::Append(buffer, bufferSize, ".json");
+    }
+
+    bool EnsureThemeDirectoryExists()
+    {
+        utf8 path[MAX_PATH];
+        GetThemePath(path, sizeof(path));
+        return platform_ensure_directory_exists(path);
+    }
+
+    void GetThemePath(utf8 * buffer, size_t bufferSize)
+    {
+        platform_get_user_directory(buffer, "themes");
     }
 }
 
@@ -718,6 +732,7 @@ extern "C"
 
     void theme_save()
     {
+        ThemeManager::EnsureThemeDirectoryExists();
         ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
     }
 
@@ -726,6 +741,7 @@ extern "C"
         const utf8 * oldPath = ThemeManager::CurrentThemePath;
         utf8         newPath[MAX_PATH];
 
+        ThemeManager::EnsureThemeDirectoryExists();
         ThemeManager::GetThemeFileName(newPath, sizeof(newPath), name);
         platform_file_move(oldPath, newPath);
         String::DiscardDuplicate(&ThemeManager::CurrentThemePath, newPath);
@@ -749,6 +765,7 @@ extern "C"
     {
         utf8 newPath[MAX_PATH];
 
+        ThemeManager::EnsureThemeDirectoryExists();
         ThemeManager::GetThemeFileName(newPath, sizeof(newPath), name);
 
         // Copy the theme, save it and then load it back in
