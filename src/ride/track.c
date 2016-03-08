@@ -2631,9 +2631,12 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 
 	RCT2_GLOBAL(0x00F44058, uint8*) = track_elements;
 
-	// Previously you had to save start_x, y, z but
-	// no need since global vars not used
+	// Save global vars as they are still used by scenery
+	sint16 start_z = RCT2_GLOBAL(0x00F44146, sint16);
 	sub_6D01B3(0, 0, 4096, 4096, 0);
+	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
+	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
+	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
