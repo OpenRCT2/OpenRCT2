@@ -2708,7 +2708,7 @@ STR_2703    :Elke 15 minuten
 STR_2704    :Elke 30 minuten
 STR_2705    :Elk uur
 STR_2706    :Nooit
-STR_2707    :Open nieuw scherm
+STR_2707    :Systeemdialoogvenster openen
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
 STR_2709    :Vervangen
 STR_2710    :Kies een bestandsnaam.

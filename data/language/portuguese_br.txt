@@ -2062,7 +2062,7 @@ STR_2054    :uma lata vazia
 STR_2055    :algum lixo
 STR_2056    :uma caixa de hambúrguer vazia
 STR_2057    :uma pizza
-STR_2058    :um voucher
+STR_2058    :um cupom
 STR_2059    :alguma pipoca
 STR_2060    :um cachorro-quente
 STR_2061    :um tentáculo
@@ -2090,7 +2090,7 @@ STR_2082    :Lata Vazia
 STR_2083    :lixo
 STR_2084    :Caixa de Hambúrguer Vazia
 STR_2085    :Pizza
-STR_2086    :Voucher para {STRINGID}
+STR_2086    :Cupom para {STRINGID}
 STR_2087    :Pipoca
 STR_2088    :Cachorro-Quente
 STR_2089    :Tentáculo
@@ -2428,16 +2428,16 @@ STR_2420    :Meia-entrada para {STRINGID}
 STR_2421    :Gratuito {STRINGID}
 STR_2422    :Campanha publicitária para {STRINGID}
 STR_2423    :Campanha publicitária para {STRINGID}
-STR_2424    :{WINDOW_COLOUR_2}Cupons para entrada gratuita no parque
-STR_2425    :{WINDOW_COLOUR_2}Cupons para entrada gratuita em uma atração em especial
-STR_2426    :{WINDOW_COLOUR_2}Cupons para meia-entrada para o parque
-STR_2427    :{WINDOW_COLOUR_2}Cupons para comida ou bebida de graça
+STR_2424    :{WINDOW_COLOUR_2}Cupons de entrada gratuita no parque
+STR_2425    :{WINDOW_COLOUR_2}Cupons de entrada gratuita em uma atração em especial
+STR_2426    :{WINDOW_COLOUR_2}Cupons de meia-entrada para o parque
+STR_2427    :{WINDOW_COLOUR_2}Cupons de comida ou bebida gratuita
 STR_2428    :{WINDOW_COLOUR_2}Campanha publicitária para o parque
 STR_2429    :{WINDOW_COLOUR_2}Campanha publicitária para uma atração em especial
 STR_2430    :{BLACK}Cupons de entrada gratuita para {STRINGID}
-STR_2431    :{BLACK}Cupons para entrada gratuita na atração {STRINGID}
+STR_2431    :{BLACK}Cupons de entrada gratuita na atração {STRINGID}
 STR_2432    :{BLACK}Cupons de meia-entrada para {STRINGID}
-STR_2433    :{BLACK}Cupons de graça{STRINGID}
+STR_2433    :{BLACK}Cupons de {STRINGID} grátis
 STR_2434    :{BLACK}Campanha publicitária para {STRINGID}
 STR_2435    :{BLACK}Campanha publicitária para {STRINGID}
 STR_2436    :1 semana
@@ -2451,7 +2451,7 @@ STR_2443    :{WINDOW_COLOUR_2}Custo por semana: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Custo total: {BLACK}{CURRENCY2DP}
 STR_2445    :Comece esta campanha de marketing
 STR_2446    :{YELLOW}Sua campanha de marketing para entrada gratuita no parque terminou
-STR_2447    :{YELLOW}Sua campanha de marketing para entrada gratuíta em {STRINGID} terminou
+STR_2447    :{YELLOW}Sua campanha de marketing para entrada gratuita em {STRINGID} terminou
 STR_2448    :{YELLOW}Sua campanha de marketing para meia-entrada para o parque terminou
 STR_2449    :{YELLOW}Sua campanha de marketing para {STRINGID} grátis terminou
 STR_2450    :{YELLOW}Sua campanha publicitária para o parque terminou
@@ -4002,6 +4002,7 @@ STR_5660    :Modificar Grupos
 STR_5661    :Definir Grupo do Jogador
 STR_5662    :N/A
 STR_5663    :Limpar Paisagem
+STR_5664    :Trapaças
 STR_5701    :{WINDOW_COLOUR_2}Última ação: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizar ação mais recente do jogador
 STR_5703    :Não é possível expulsar o anfitrião
@@ -4086,6 +4087,13 @@ STR_5779    :Receita: {CURRENCY2DP} por hora
 STR_5780    :Custo de operação: {CURRENCY2DP} por hora
 STR_5781    :Custo de operação: Desconhecido
 STR_5782    :Você está conectado. Pressione '{STRING}' para conversar.
+STR_5783    :{WINDOW_COLOUR_2}Cenário Trancado
+STR_5784    :{BLACK}Complete os cenários anteriores para destravar este cenário.
+STR_5785    :Impossível renomear grupo...
+STR_5786    :Nome de grupo inválido
+STR_5787    :{COMMA32} jogadores online
+STR_5788    :Intervalo de inspeção padrão:
+STR_5789    :Desabilitar efeitos de relâmpago
 
 #############
 # Scenarios #
