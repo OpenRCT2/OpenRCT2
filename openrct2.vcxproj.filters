@@ -584,6 +584,9 @@
     <ClCompile Include="src\drawing\drawing_fast.cpp">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\textinputbuffer.c">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -890,5 +893,8 @@
     <ClInclude Include="src\core\Guard.hpp" />
     <ClInclude Include="src\core\Diagnostics.hpp" />
     <ClInclude Include="src\core\Json.hpp" />
+    <ClInclude Include="src\core\textinputbuffer.h">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

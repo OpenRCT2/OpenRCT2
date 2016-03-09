@@ -55,7 +55,7 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
 		if (userString[0] != 0)
 			continue;
 
-		safe_strcpy(userString, text, USER_STRING_MAX_LENGTH - 1);
+		safe_strcpy(userString, text, USER_STRING_MAX_LENGTH);
 		return 0x8000 + (i | highBits);
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_NAMES_DEFINED;

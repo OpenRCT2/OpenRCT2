@@ -34,6 +34,7 @@
     <ClCompile Include="src\core\Path.cpp" />
     <ClCompile Include="src\core\Stopwatch.cpp" />
     <ClCompile Include="src\core\String.cpp" />
+    <ClCompile Include="src\core\textinputbuffer.c" />
     <ClCompile Include="src\cursors.c" />
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />
@@ -217,6 +218,7 @@
     <ClInclude Include="src\core\String.hpp" />
     <ClInclude Include="src\core\StringBuilder.hpp" />
     <ClInclude Include="src\core\StringReader.hpp" />
+    <ClInclude Include="src\core\textinputbuffer.h" />
     <ClInclude Include="src\core\Util.hpp" />
     <ClInclude Include="src\cursors.h" />
     <ClInclude Include="src\diagnostic.h" />

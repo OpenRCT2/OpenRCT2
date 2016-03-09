@@ -29,6 +29,7 @@
 
 #include <SDL.h>
 
+#include "../core/textinputbuffer.h"
 #include "../drawing/font.h"
 
 #ifndef MAX_PATH
@@ -92,9 +93,8 @@ extern openrct2_cursor gCursorState;
 extern const unsigned char *gKeysState;
 extern unsigned char *gKeysPressed;
 extern unsigned int gLastKeyPressed;
-extern int gTextInputCursorPosition;
-extern int gTextInputLength;
 
+extern textinputbuffer gTextInput;
 extern bool gTextInputCompositionActive;
 extern utf8 gTextInputComposition[32];
 extern int gTextInputCompositionStart;
