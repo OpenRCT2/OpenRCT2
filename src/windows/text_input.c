@@ -293,19 +293,19 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		int string_length = get_string_size(wrap_pointer) - 1;
 
-		if (!cur_drawn && (gTextInputCursorPosition <= char_count + string_length)) {
+		if (!cur_drawn && (gTextInput.selection_offset <= (size_t)(char_count + string_length))) {
 			// Make a copy of the string for measuring the width.
 			char temp_string[512] = { 0 };
-			memcpy(temp_string, wrap_pointer, gTextInputCursorPosition - char_count);
+			memcpy(temp_string, wrap_pointer, gTextInput.selection_offset - char_count);
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
 			cursorY = y;
 
 			int width = 6;
-			if ((uint32)gTextInputCursorPosition < strlen(text_input)){
+			if ((uint32)gTextInput.selection_offset < strlen(text_input)){
 				// Make a new 1 character wide string for measuring the width
 				// of the character that the cursor is under.
 				temp_string[1] = '\0';
-				temp_string[0] = text_input[gTextInputCursorPosition];
+				temp_string[0] = text_input[gTextInput.selection_offset];
 				width = max(gfx_get_string_width(temp_string) - 2, 4);
 			}
 

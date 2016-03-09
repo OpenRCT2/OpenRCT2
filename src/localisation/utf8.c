@@ -65,7 +65,7 @@ int utf8_insert_codepoint(utf8 *dst, uint32 codepoint)
 	return shift;
 }
 
-bool utf8_is_codepoint_start(utf8 *text)
+bool utf8_is_codepoint_start(const utf8 *text)
 {
 	if ((text[0] & 0x80) == 0) return true;
 	if ((text[0] & 0xC0) == 0xC0) return true;
