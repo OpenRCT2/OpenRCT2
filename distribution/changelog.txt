@@ -62,6 +62,7 @@
 - Fix: [#2948] New Ride window incorrectly said there were track designs available when in multiplayer mode.
 - Fix: [#2958] Unable to import RCT1 parks in the scenario editor using the load landscape dialog.
 - Fix: [#3015] Walls in SC4/SV4 files are not imported correctly.
+- Fix: [#3120] Negative cash in finance window is not red.
 
 0.0.3.1-beta (2015-12-04)
 ------------------------------------------------------------------------
