@@ -42,10 +42,7 @@ openrct2_cursor gCursorState;
 const unsigned char *gKeysState;
 unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
-utf8 *gTextInput;
-int gTextInputLength;
-int gTextInputMaxLength;
-int gTextInputCursorPosition = 0;
+textinputbuffer gTextInput;
 
 bool gTextInputCompositionActive;
 utf8 gTextInputComposition[32];
@@ -594,90 +591,59 @@ void platform_process_messages()
 			}
 
 			// Text input
+			if (gTextInput.buffer == NULL) break;
 
 			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (OS X)
-			if (gTextInput != NULL && e.key.keysym.sym == SDLK_BACKSPACE && (e.key.keysym.mod & KEYBOARD_PRIMARY_MODIFIER)) {
-				memset(gTextInput, '\0', gTextInputMaxLength);
-				gTextInputCursorPosition = 0;
-				gTextInputLength = 0;
+			if (e.key.keysym.sym == SDLK_BACKSPACE && (e.key.keysym.mod & KEYBOARD_PRIMARY_MODIFIER)) {
+				textinputbuffer_clear(&gTextInput);
 				console_refresh_caret();
 				window_update_textbox();
 			}
 
 			// If backspace and we have input text with a cursor position none zero
-			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition) {
-				int dstIndex = gTextInputCursorPosition;
-				do {
-					if (dstIndex == 0) break;
-					dstIndex--;
-				} while (!utf8_is_codepoint_start(&gTextInput[dstIndex]));
-				int removedCodepointSize = gTextInputCursorPosition - dstIndex;
+			if (e.key.keysym.sym == SDLK_BACKSPACE) {
+				if (gTextInput.selection_offset > 0) {
+					size_t endOffset = gTextInput.selection_offset;
+					textinputbuffer_cursor_left(&gTextInput);
+					gTextInput.selection_size = endOffset - gTextInput.selection_offset;
+					textinputbuffer_remove_selected(&gTextInput);
 
-				// When at max length don't shift the data left
-				// as it would buffer overflow.
-				if (gTextInputCursorPosition != gTextInputMaxLength) {
-					memmove(gTextInput + dstIndex, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - dstIndex);
+					console_refresh_caret();
+					window_update_textbox();
 				}
-				gTextInput[gTextInputLength - removedCodepointSize] = '\0';
-				gTextInputCursorPosition -= removedCodepointSize;
-				gTextInputLength -= removedCodepointSize;
-				console_refresh_caret();
-				window_update_textbox();
-			}
-			if (e.key.keysym.sym == SDLK_END){
-				gTextInputCursorPosition = gTextInputLength;
-				console_refresh_caret();
 			}
 			if (e.key.keysym.sym == SDLK_HOME) {
-				gTextInputCursorPosition = 0;
+				textinputbuffer_cursor_home(&gTextInput);
 				console_refresh_caret();
 			}
-			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition != gTextInputLength) {
-				int dstIndex = gTextInputCursorPosition;
-				do {
-					if (dstIndex == gTextInputLength) break;
-					dstIndex++;
-				} while (!utf8_is_codepoint_start(&gTextInput[dstIndex]));
-				int removedCodepointSize = dstIndex - gTextInputCursorPosition;
-
-				memmove(gTextInput + gTextInputCursorPosition, gTextInput + dstIndex, gTextInputMaxLength - dstIndex);
-				gTextInput[gTextInputMaxLength - removedCodepointSize] = '\0';
-				gTextInputLength -= removedCodepointSize;
+			if (e.key.keysym.sym == SDLK_END) {
+				textinputbuffer_cursor_end(&gTextInput);
+				console_refresh_caret();
+			}
+			if (e.key.keysym.sym == SDLK_DELETE) {
+				size_t startOffset = gTextInput.selection_offset;
+				textinputbuffer_cursor_right(&gTextInput);
+				gTextInput.selection_size = gTextInput.selection_offset - startOffset;
+				gTextInput.selection_offset = startOffset;
+				textinputbuffer_remove_selected(&gTextInput);
 				console_refresh_caret();
 				window_update_textbox();
 			}
-			if (e.key.keysym.sym == SDLK_RETURN && gTextInput != NULL) {
+			if (e.key.keysym.sym == SDLK_RETURN) {
 				window_cancel_textbox();
 			}
-			if (e.key.keysym.sym == SDLK_LEFT && gTextInput != NULL) {
-				do {
-					if (gTextInputCursorPosition == 0) break;
-					gTextInputCursorPosition--;
-				} while (!utf8_is_codepoint_start(&gTextInput[gTextInputCursorPosition]));
+			if (e.key.keysym.sym == SDLK_LEFT) {
+				textinputbuffer_cursor_left(&gTextInput);
 				console_refresh_caret();
 			}
-			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput != NULL) {
-				do {
-					if (gTextInputCursorPosition == gTextInputLength) break;
-					gTextInputCursorPosition++;
-				} while (!utf8_is_codepoint_start(&gTextInput[gTextInputCursorPosition]));
+			else if (e.key.keysym.sym == SDLK_RIGHT) {
+				textinputbuffer_cursor_right(&gTextInput);
 				console_refresh_caret();
 			}
-			else if (e.key.keysym.sym == SDLK_v && (SDL_GetModState() & KEYBOARD_PRIMARY_MODIFIER) && gTextInput != NULL) {
+			else if (e.key.keysym.sym == SDLK_v && (SDL_GetModState() & KEYBOARD_PRIMARY_MODIFIER)) {
 				if (SDL_HasClipboardText()) {
 					utf8 *text = SDL_GetClipboardText();
-					for (int i = 0; text[i] != '\0' && gTextInputLength < gTextInputMaxLength; i++) {
-						// If inserting in center of string make space for new letter
-						if (gTextInputLength > gTextInputCursorPosition){
-							memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
-							gTextInput[gTextInputCursorPosition] = text[i];
-							gTextInputLength++;
-						} else {
-							gTextInput[gTextInputLength++] = text[i];
-						}
-						gTextInputCursorPosition++;
-					}
-					gTextInput[gTextInputLength] = '\0';
+					textinputbuffer_insert(&gTextInput, text);
 					window_update_textbox();
 				}
 			}
@@ -713,33 +679,22 @@ void platform_process_messages()
 			// so, set gTextInputCompositionActive to false.
 			gTextInputCompositionActive = false;
 
-			if (gTextInputLength < gTextInputMaxLength && gTextInput){
-				// HACK ` will close console, so don't input any text
-				if (e.text.text[0] == '`' && gConsoleOpen)
-					break;
+			if (gTextInput.buffer == NULL) break;
 
-				// Entering formatting characters is not allowed
-				if (utf8_is_format_code(utf8_get_next(e.text.text, NULL)))
-					break;
-
-				utf8 *newText = e.text.text;
-				int newTextLength = strlen(newText);
-
-				// If inserting in center of string make space for new letter
-				if (gTextInputLength > gTextInputCursorPosition) {
-					memmove(gTextInput + gTextInputCursorPosition + newTextLength, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - newTextLength);
-					memcpy(&gTextInput[gTextInputCursorPosition], newText, newTextLength);
-					gTextInputLength += newTextLength;
-				} else {
-					memcpy(&gTextInput[gTextInputLength], newText, newTextLength);
-					gTextInputLength += newTextLength;
-					gTextInput[gTextInputLength] = 0;
-				}
-
-				gTextInputCursorPosition += newTextLength;
-				console_refresh_caret();
-				window_update_textbox();
+			// HACK ` will close console, so don't input any text
+			if (e.text.text[0] == '`' && gConsoleOpen) {
+				break;
 			}
+
+			// Entering formatting characters is not allowed
+			if (utf8_is_format_code(utf8_get_next(e.text.text, NULL))) {
+				break;
+			}
+
+			utf8 *newText = e.text.text;
+			textinputbuffer_insert(&gTextInput, newText);
+			console_refresh_caret();
+			window_update_textbox();
 			break;
 		default:
 			break;
@@ -863,16 +818,14 @@ void platform_start_text_input(char* buffer, int max_length)
 	SDL_SetTextInputRect(&rect);
 
 	SDL_StartTextInput();
-	gTextInputMaxLength = max_length - 1;
-	gTextInput = buffer;
-	gTextInputCursorPosition = strnlen(gTextInput, max_length);
-	gTextInputLength = gTextInputCursorPosition;
+
+	textinputbuffer_init(&gTextInput, buffer, max_length);
 }
 
 void platform_stop_text_input()
 {
 	SDL_StopTextInput();
-	gTextInput = NULL;
+	gTextInput.buffer = NULL;
 	gTextInputCompositionActive = false;
 }
 

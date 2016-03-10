@@ -91,8 +91,8 @@ void chat_draw()
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 		if (_chatCaretTicks < 15) {
-			memcpy(lineBuffer, _chatCurrentLine, gTextInputCursorPosition);
-			lineBuffer[gTextInputCursorPosition] = 0;
+			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
+			lineBuffer[gTextInput.selection_offset] = 0;
 			int caretX = x + gfx_get_string_width(lineBuffer);
 			int caretY = y + 15;
 

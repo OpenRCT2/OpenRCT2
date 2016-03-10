@@ -18,9 +18,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "util.h"
+// Include common.h before SDL, otherwise M_PI gets redefined
+#include "../common.h"
+
 #include <SDL.h>
+#include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "util.h"
 #include "zlib.h"
 
 bool gUseRLE = true;
@@ -202,31 +206,51 @@ int strcicmp(char const *a, char const *b)
 	}
 }
 
+utf8 * safe_strtrunc(utf8 * text, size_t size)
+{
+	assert(text != NULL);
+
+	if (size == 0) return text;
+	
+	const char *sourceLimit = text + size - 1;
+	char *ch = text;
+	char *last = text;
+	uint32 codepoint;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (ch <= sourceLimit) {
+			last = ch;
+		} else {
+			break;
+		}
+	}
+	*last = 0;
+
+	return text;
+}
+
 char *safe_strcpy(char * destination, const char * source, size_t size)
 {
 	assert(destination != NULL);
 	assert(source != NULL);
 
-	if (size == 0)
-	{
-		return destination;
-	}
-	char *result = destination;
-	bool terminated = false;
-	for (size_t i = 0; i < size; i++)
-	{
-		if (*source != '\0')
-		{
-			*destination++ = *source++;
+	if (size == 0) return destination;
+
+	char * result = destination;
+
+	bool truncated = false;
+	const char *sourceLimit = source + size - 1;
+	const char *ch = source;
+	uint32 codepoint;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (ch <= sourceLimit) {
+			destination = utf8_write_codepoint(destination, codepoint);
 		} else {
-			*destination = *source;
-			terminated = true;
-			break;
+			truncated = true;
 		}
 	}
-	if (!terminated)
-	{
-		result[size - 1] = '\0';
+	*destination = 0;
+
+	if (truncated) {
 		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
 	}
 	return result;

@@ -43,6 +43,7 @@ int bitscanforward(int source);
 int bitcount(int source);
 bool strequals(const char *a, const char *b, int length, bool caseInsensitive);
 int strcicmp(char const *a, char const *b);
+utf8 * safe_strtrunc(utf8 * text, size_t size);
 char *safe_strcpy(char * destination, const char * source, size_t num);
 char *safe_strcat(char *destination, const char *source, size_t size);
 char *safe_strcat_path(char *destination, const char *source, size_t size);

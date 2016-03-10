@@ -214,8 +214,8 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	// Draw caret
 	if (_consoleCaretTicks < 15) {
-		memcpy(lineBuffer, _consoleCurrentLine, gTextInputCursorPosition);
-		lineBuffer[gTextInputCursorPosition] = 0;
+		memcpy(lineBuffer, _consoleCurrentLine, gTextInput.selection_offset);
+		lineBuffer[gTextInput.selection_offset] = 0;
 		int caretX = x + gfx_get_string_width(lineBuffer);
 		int caretY = y + lineHeight;
 
@@ -249,15 +249,15 @@ void console_input(int c)
 			_consoleHistoryIndex--;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
 		}
-		gTextInputCursorPosition = strlen(_consoleCurrentLine);
-		gTextInputLength = gTextInputCursorPosition;
+		textinputbuffer_recalculate_length(&gTextInput);
+		gTextInput.selection_offset = strlen(_consoleCurrentLine);
 		break;
 	case SDL_SCANCODE_DOWN:
 		if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
 			_consoleHistoryIndex++;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
-			gTextInputCursorPosition = strlen(_consoleCurrentLine);
-			gTextInputLength = gTextInputCursorPosition;
+			textinputbuffer_recalculate_length(&gTextInput);
+			gTextInput.selection_offset = strlen(_consoleCurrentLine);
 		} else {
 			_consoleHistoryIndex = _consoleHistoryCount;
 			console_clear_input();
@@ -389,8 +389,9 @@ void console_refresh_caret()
 static void console_clear_input()
 {
 	_consoleCurrentLine[0] = 0;
-	gTextInputCursorPosition = 0;
-	gTextInputLength = 0;
+	gTextInput.selection_offset = 0;
+	gTextInput.selection_size = 0;
+	textinputbuffer_recalculate_length(&gTextInput);
 }
 
 static void console_history_add(const utf8 *src)
