@@ -4069,6 +4069,32 @@ STR_5760    :港幣 (HK$)
 STR_5761    :新台幣 (NT$)
 STR_5762    :人民幣 (CN{YEN})
 STR_5763    :所有檔案
+STR_5764    :不正確的遊樂設施類別
+STR_5765    :無法修改不正確類別的遊樂設施
+STR_5766    :<available string id>
+STR_5767    :收入
+STR_5768    :總乘客數
+STR_5769    :總利潤
+STR_5770    :每小時服務的遊客
+STR_5771    :運行費用
+STR_5772    :年齡
+STR_5773    :總乘客數: {COMMA32}
+STR_5774    :總利潤: {CURRENCY2DP}
+STR_5775    :乘客: {BLACK}每小時{COMMA32}個
+STR_5776    :落成年份: {BLACK}今年
+STR_5777    :落成年份: {BLACK}去年
+STR_5778    :落成年份: {BLACK}{COMMA16}年前
+STR_5779    :利潤: 每小時{CURRENCY2DP}
+STR_5780    :運作成本: {BLACK}每小時{CURRENCY2DP}
+STR_5781    :運作成本: {BLACK}未知
+STR_5782    :你已經連接到伺服器. 按 '{STRING}' 來聊天.
+STR_5783    :{WINDOW_COLOUR_2}劇情未解開
+STR_5784    :{BLACK}完成已解開的劇情來解開此劇情.
+STR_5785    :不能重命名組別...
+STR_5786    :不正確的組別名稱
+STR_5787    :{COMMA32} 玩家在線
+STR_5788    :預設檢查遊樂設施的時隔:
+STR_5789    :禁用光影效果
 
 
 #############

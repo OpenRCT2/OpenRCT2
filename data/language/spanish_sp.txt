@@ -884,8 +884,8 @@ STR_0878    :¡Demasiado alto!
 STR_0879    :No se puede bajar el terreno...
 STR_0880    :No se puede elevar el terreno...
 STR_0881    :Un objeto interfiere
-STR_0882    :Cargar juego
-STR_0883    :Guardar juego
+STR_0882    :Cargar Partida
+STR_0883    :Guardar Partida
 STR_0884    :Cargar paisaje
 STR_0885    :Guardar paisaje
 STR_0886    :Salir del juego
@@ -949,10 +949,10 @@ STR_0943    :Decorado invisible
 STR_0944    :Guardar
 STR_0945    :No guardar
 STR_0946    :Cancelar
-STR_0947    :¿Guardar antes de cargar nuevo juego?
+STR_0947    :¿Guardar antes de cargar una nueva partida?
 STR_0948    :¿Guardar antes de salir?
 STR_0949    :¿Guardar antes de salir?
-STR_0950    :Cargar juego
+STR_0950    :Cargar Partida
 STR_0951    :Salir del juego
 STR_0952    :Salir del juego
 STR_0953    :Cargar paisaje
@@ -1038,11 +1038,11 @@ STR_1032    :¡Sólo puede construirse en el agua!
 STR_1033    :¡Sólo puede construirse encima del suelo!
 STR_1034    :¡Sólo puede construirse en el suelo!
 STR_1035    :¡Las autoridades locales prohíben las construcciones altas!
-STR_1036    :Cargar juego
+STR_1036    :Cargar Partida
 STR_1037    :Cargar paisaje
 STR_1038    :Convertir partida guardada en escenario
 STR_1039    :Instalar nuevo diseño de vía
-STR_1040    :Guardar juego
+STR_1040    :Guardar Partida
 STR_1041    :Guardar escenario
 STR_1042    :Guardar paisaje
 STR_1043    :OpenRCT2 Juegos guardados
@@ -1659,7 +1659,7 @@ STR_1653    :{SMALLFONT}{OPENQUOTES}... ¡y aquí estamos en {STRINGID}!{ENDQUOT
 STR_1654    :{WINDOW_COLOUR_2}Pensamientos recientes:
 STR_1655    :{SMALLFONT}{BLACK}Construye camino a nivel del suelo
 STR_1656    :{SMALLFONT}{BLACK}Construye puente o túnel
-STR_1657    :{WINDOW_COLOUR_2}Atracción favorita:
+STR_1657    :{WINDOW_COLOUR_2}Atracción preferida:
 STR_1658    :{WINDOW_COLOUR_2}Intensidad: {BLACK}menos de {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}Intensidad: {BLACK}entre {COMMA16} y {COMMA16}
 STR_1660    :{WINDOW_COLOUR_2}Intensidad: {BLACK}más de {COMMA16}
@@ -1826,8 +1826,8 @@ STR_1820    :{WINDOW_COLOUR_2}Visitantes {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Visitantes Pensando {STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitantes Pensando en {POP16}{STRINGID}
 STR_1823    :{SMALLFONT}{BLACK}Muestra los pensamientos de los visitantes sobre esta atracción
-STR_1824    :{SMALLFONT}{BLACK}Mostrar visitantes montados en esta atracción
-STR_1825    :{SMALLFONT}{BLACK}Mostrar visitantes esperando para montarse en esta atracción
+STR_1824    :{SMALLFONT}{BLACK}Mostrar visitantes en esta atracción
+STR_1825    :{SMALLFONT}{BLACK}Mostrar visitantes esperando para subir a esta atracción
 STR_1826    :Estado
 STR_1827    :Popularidad
 STR_1828    :Satisfacción
@@ -1938,9 +1938,9 @@ STR_1930    :{SMALLFONT}{BLACK}Activa/Desactiva el seguimiento de este visitante
 STR_1931    :{STRINGID} está haciendo fila en {STRINGID}
 STR_1932    :{STRINGID} está en {STRINGID}
 STR_1933    :{STRINGID} está en {STRINGID}
-STR_1934    :{STRINGID} se va de {STRINGID}
+STR_1934    :{STRINGID} ha salido de {STRINGID}
 STR_1935    :{STRINGID} se ha ido del parque
-STR_1936    :{STRINGID} compró {STRINGID}
+STR_1936    :{STRINGID} ha comprado {STRINGID}
 STR_1937    :{SMALLFONT}{BLACK}Muestra información sobre el tema de este mensaje
 STR_1938    :{SMALLFONT}{BLACK}Mostrar vista del visitante
 STR_1939    :{SMALLFONT}{BLACK}Mostrar vista de empleado
@@ -2004,7 +2004,7 @@ STR_1996    :Helado
 STR_1997    :Algodón de Azúcar
 STR_1998    :Lata vacía
 STR_1999    :Basura
-STR_2000    :Empty Burger Box
+STR_2000    :Caja de Hamburguesa Vacía
 STR_2001    :Pizza
 STR_2002    :Cupón
 STR_2003    :Palomitas de Maíz
@@ -2300,7 +2300,7 @@ STR_2292    :{WINDOW_COLOUR_2}Atracciones visitadas:
 STR_2293    :{BLACK} Nada
 STR_2294    :{SMALLFONT}{BLACK}Cambiar estilo de tierra
 STR_2295    :{SMALLFONT}{BLACK}Cambiar estilo de acantilado
-STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} pagó por entrar al parque
+STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gast. en la entrada al parque
 STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} atracción
 STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} atracciones
 STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastados en {BLACK}{COMMA16} comida
@@ -2351,7 +2351,7 @@ STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
 STR_2345    :Métrico
 STR_2346    :Monitor
-STR_2347    :{RED}¡{STRINGID} se ahoga!
+STR_2347    :{RED}¡{STRINGID} se ha ahogado!
 STR_2348    :{SMALLFONT}{BLACK}Mostrar estadísticas de este empleado
 STR_2349    :{WINDOW_COLOUR_2}Sueldo: {BLACK}{CURRENCY} al mes
 STR_2350    :{WINDOW_COLOUR_2}Contratado: {BLACK}{MONTHYEAR}
@@ -2776,8 +2776,8 @@ STR_2767    :Mantener clima
 STR_2768    :Clima cambiante
 STR_2769    :Abrir parque
 STR_2770    :Cerrar parque
-STR_2771    :Slower Gamespeed
-STR_2772    :Faster Gamespeed
+STR_2771    :Bajar velocidad
+STR_2772    :Subir velocidad
 STR_2773    :Ventana
 STR_2774    :Pantalla completa
 STR_2775    :Pantalla completa (escritorio)
@@ -3619,9 +3619,9 @@ STR_5278    :Modo sandbox
 STR_5279    :Quitar modo sandbox
 STR_5280    :{SMALLFONT}{BLACK}Permite editar el terreno en propiedad y otras opciones restringidas al Editor de Escenario
 STR_5281    :{SMALLFONT}{BLACK}Características
-STR_5282    :Luces abrir/cerrar de Atracc. RCT1
-STR_5283    :Luces abrir/cerrar de Parque RCT1
-STR_5284    :Selección de Fuente Escenario RCT1
+STR_5282    :Luces abrir/cerrar de Atracc. iguales a RCT1
+STR_5283    :Luces abrir/cerrar de Parque iguales a RCT1
+STR_5284    :Selección de Fuente Escenario igual a RCT1
 STR_5285    :¡¡EXPLOTAN!!!
 STR_5286    :{SMALLFONT}{BLACK}Algunos visitantes explotan
 STR_5287    :La atracción ya está averiada
@@ -3709,7 +3709,7 @@ STR_5368    :Reiniciar averías
 STR_5369    :Parámetros parque...
 STR_5370    :{SMALLFONT}{BLACK}Modificar parámetros como restricciones, afluencia de visitantes y dinero.
 STR_5371    :Selección de Objetos
-STR_5372    :Invertir desplazamiento con el click derecho
+STR_5372    :Invertir desplazamiento del clic derecho
 STR_5373    :Nombre {STRINGID}
 STR_5374    :Fecha {STRINGID}
 STR_5375    :{UP}
@@ -3849,7 +3849,7 @@ STR_5508    :Permitir cargar ficheros dañados
 STR_5509    :{SMALLFONT}{BLACK}Permite cargar ficheros cuya suma de verificación no es correcta, como partidas guardadas de versiones de demostración y ficheros dañados
 STR_5510    :Dispositivo de sonido predeterminado
 STR_5511    :(DESCONOCIDO)
-STR_5512    :Guardar nueva copia de juego
+STR_5512    :Guardar Partida como...
 STR_5513    :Guardar juego de forma rápida
 STR_5514    :Desactivar vandalismo
 STR_5515    :{SMALLFONT}{BLACK}Impide que los visitantes enfadados cometan actos de vandalismo
@@ -3904,7 +3904,7 @@ STR_5563    :Esta configuración es inestable, toma precauciones.
 STR_5564    :Insertar Elemento Corrupto
 STR_5565    :{SMALLFONT}{BLACK}Insertar un elemento corrupto en la parte superior de la baldosa del mapa. Esto ocultará cualquier elemento sobre este elemento corrupto.
 STR_5566    :Contraseña:
-STR_5567    :Advertir
+STR_5567    :Mostrar en la lista de servidores
 STR_5568    :Contraseña requerida
 STR_5569    :Este servidor requiere contraseña
 STR_5570    :Actualizar lista
@@ -3939,7 +3939,7 @@ STR_5598    :Advertencias sobre los visitantes
 STR_5599    :Visitante se ha perdido
 STR_5600    :Visitante ha abandonado el parque
 STR_5601    :Visitante se ha puesto en la cola de una atracción
-STR_5602    :Visitante se ha montado en una atracción
+STR_5602    :Visitante se ha subido a una atracción
 STR_5603    :Visitante se ha bajado de la atracción
 STR_5604    :Visitante ha comprado algo
 STR_5605    :Visitante ha usado una instalación
@@ -4016,11 +4016,11 @@ STR_5711    :Escribe el nuevo nombre para este grupo:
 STR_5712    :No puedes modificar el permiso que no tienes
 STR_5713    :Expulsar jugador
 STR_5714    :Opciones de ventana
-STR_5715    :Nuevo Juego
+STR_5715    :Nueva Partida
 STR_5716    :No permitido en el modo multijugador
 # For identifying client network version in server list window
-STR_5717    :Versión de red: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}Versión de red: {STRING}
+STR_5717    :Versión de software: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Versión de software: {STRING}
 STR_5719    :Soleado
 STR_5720    :Parc. Nublado
 STR_5721    :Nublado
@@ -4058,7 +4058,7 @@ STR_5751    :Sin Datos
 STR_5752    :{OUTLINE}{RED}{STRING} se ha desconectado
 STR_5753    :{OUTLINE}{RED}{STRING} se ha desconectado ({STRING})
 STR_5754    :Nombre Jugador Incorrecto
-STR_5755    :Versión de Software incorrecta
+STR_5755    :Ver. de Software incorrecto
 STR_5756    :Contraseña Incorrecta
 STR_5757    :Servidor Lleno
 STR_5758    :{OUTLINE}{GREEN}{STRING} se ha unido al juego
