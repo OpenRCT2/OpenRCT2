@@ -2781,7 +2781,7 @@ STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
+STR_2775    :Borderless windowed
 STR_2776    :Language:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
