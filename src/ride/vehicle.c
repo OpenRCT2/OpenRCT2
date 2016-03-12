@@ -7467,7 +7467,7 @@ loc_6DC476:
 	if (vehicle->is_child) {
 		rct_vehicle *prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 		regs.al = prevVehicle->var_CD;
-		if (regs.al != 0) {
+		if (regs.al != 9) {
 			regs.al--;
 		}
 		vehicle->var_CD = regs.al;
@@ -7595,7 +7595,7 @@ loc_6DC743:
 
 	if (vehicle == RCT2_GLOBAL(0x00F64E00, rct_vehicle*)) {
 		if (RCT2_GLOBAL(0x00F64E08, sint32) >= 0) {
-			regs.bp = vehicle->var_44;
+			regs.bp = vehicle->prev_vehicle_on_ride;
 			vehicle_update_motion_collision_detection(vehicle, x, y, z, (uint16*)&regs.bp);
 		}
 	}
