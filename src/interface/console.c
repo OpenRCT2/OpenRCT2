@@ -389,9 +389,9 @@ void console_refresh_caret()
 static void console_clear_input()
 {
 	_consoleCurrentLine[0] = 0;
-	gTextInput.selection_offset = 0;
-	gTextInput.selection_size = 0;
-	textinputbuffer_recalculate_length(&gTextInput);
+	if (gConsoleOpen) {
+		platform_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+	}
 }
 
 static void console_history_add(const utf8 *src)
