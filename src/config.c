@@ -907,13 +907,22 @@ bool config_find_or_browse_install_directory()
 		gConfigGeneral.game_path = malloc(strlen(path) + 1);
 		safe_strcpy(gConfigGeneral.game_path, path, MAX_PATH);
 	} else {
-		platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
-		installPath = platform_open_directory_browser("Please select your RCT2 directory");
-		if (installPath == NULL)
-			return false;
+		while (1) {
+			platform_show_messagebox("Unable to find RCT2 installation directory. Please select the directory where you installed RCT2!");
+			installPath = platform_open_directory_browser("Please select your RCT2 directory");
+			if (installPath == NULL)
+				return false;
 
-		SafeFree(gConfigGeneral.game_path);
-		gConfigGeneral.game_path = installPath;
+			SafeFree(gConfigGeneral.game_path);
+			gConfigGeneral.game_path = installPath;
+			
+			if (platform_original_game_data_exists(installPath))
+				return true;
+
+			utf8 message[MAX_PATH] = { 0 };
+			sprintf(message, "Could not find %sData%cg1.dat at this path", installPath, platform_get_path_separator());
+			platform_show_messagebox(message);
+		}
 	}
 
 	return true;
