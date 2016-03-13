@@ -46,6 +46,7 @@
 - Fix: Various de-synchronisation issues in multiplayer.
 - Fix: Cheats not supported in multiplayer.
 - Fix: [#1333] Rides never become safe again after a crash.
+- Fix: [#1742] Non-ascii characters in scenario details not showing correctly.
 - Fix: [#2126] Ferris Wheels set to "backward rotation" stop working (original bug).
 - Fix: [#2449] Turning off Day/Night Circle while it is night doesn't reset back to day.
 - Fix: [#2477] When opening the built-in load/save dialog, the list is not properly sorted.

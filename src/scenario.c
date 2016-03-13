@@ -446,7 +446,7 @@ void scenario_success_submit_name(const char *name)
 		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
 		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
 			scenario->highscore->name = _strdup(name);
-			safe_strcpy((char*)0x013587D8, name, 32);
+			safe_strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char), name, 32);
 			scenario_scores_save();
 		}
 	}
