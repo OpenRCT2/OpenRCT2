@@ -4289,6 +4289,7 @@ rct_vehicle *vehicle_create_car(
 	int rideIndex,
 	int vehicleEntryIndex,
 	int carIndex,
+	int vehicleIndex,
 	int x,
 	int y,
 	int z,	
@@ -4384,8 +4385,9 @@ rct_vehicle *vehicle_create_car(
 		}
 
 		if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_14) {
+			// Choose which lane Go Kart should start in
 			regs.dl = 5;
-			if (!(ride->num_vehicles & 1)) {
+			if (vehicleIndex & 1) {
 				regs.dl = 6;
 			}
 		}
@@ -4461,7 +4463,7 @@ rct_vehicle *vehicle_create_car(
  *
  *  rct2: 0x006DD84C
  */
-train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int *remainingDistance, rct_map_element *mapElement)
+train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int vehicleIndex, int *remainingDistance, rct_map_element *mapElement)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
@@ -4470,7 +4472,7 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int *remainin
 
 	train_ref train = { NULL, NULL };
 	for (int carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++) {
-		rct_vehicle *car = vehicle_create_car(rideIndex, trainLayout[carIndex], carIndex, x, y, z, remainingDistance, mapElement);
+		rct_vehicle *car = vehicle_create_car(rideIndex, trainLayout[carIndex], carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
 		if (carIndex == 0) {
 			train.head = car;
 		} else {
@@ -4494,7 +4496,7 @@ void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_element *
 		if (ride_is_block_sectioned(ride)) {
 			remainingDistance = 0;
 		}
-		train_ref train = vehicle_create_train(rideIndex, x, y, z, &remainingDistance, mapElement);
+		train_ref train = vehicle_create_train(rideIndex, x, y, z, vehicleIndex, &remainingDistance, mapElement);
 		if (vehicleIndex == 0) {
 			firstTrain = train;
 		} else {
