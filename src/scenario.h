@@ -471,6 +471,7 @@ extern scenario_index_entry *gScenarioList;
 
 extern char gScenarioSavePath[MAX_PATH];
 extern int gFirstTimeSave;
+extern uint32 gLastAutoSaveTick;
 
 bool scenario_scores_save();
 void scenario_load_list();

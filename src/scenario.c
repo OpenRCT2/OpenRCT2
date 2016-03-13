@@ -63,6 +63,7 @@ static const char *_scenarioFileName = "";
 
 char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
+uint32 gLastAutoSaveTick = 0;
 
 static int scenario_create_ducks();
 static void scenario_objective_check();
@@ -185,6 +186,7 @@ int scenario_load(const char *path)
 			game_convert_strings_to_utf8();
 			game_fix_save_vars(); // OpenRCT2 fix broken save games
 
+			gLastAutoSaveTick = SDL_GetTicks();
 			return 1;
 		}
 
@@ -481,34 +483,30 @@ void scenario_entrance_fee_too_high_check()
 
 void scenario_autosave_check()
 {
-	// Timestamp in milliseconds
-	static uint32 last_save = 0;
-
-	bool shouldSave = 0;
-
 	// Milliseconds since last save
-	uint32_t time_since_save = SDL_GetTicks() - last_save;
+	uint32 timeSinceSave = SDL_GetTicks() - gLastAutoSaveTick;
 
+	bool shouldSave = false;
 	switch (gConfigGeneral.autosave_frequency) {
 	case AUTOSAVE_EVERY_MINUTE:
-		shouldSave = time_since_save >= 1 * 60 * 1000;
+		shouldSave = timeSinceSave >= 1 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_5MINUTES:
-		shouldSave = time_since_save >= 5 * 60 * 1000;
+		shouldSave = timeSinceSave >= 5 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_15MINUTES:
-		shouldSave = time_since_save >= 15 * 60 * 1000;
+		shouldSave = timeSinceSave >= 15 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_30MINUTES:
-		shouldSave = time_since_save >= 30 * 60 * 1000;
+		shouldSave = timeSinceSave >= 30 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_HOUR:
-		shouldSave = time_since_save >= 60 * 60 * 1000;
+		shouldSave = timeSinceSave >= 60 * 60 * 1000;
 		break;
 	}
 
 	if (shouldSave) {
-		last_save = SDL_GetTicks();
+		gLastAutoSaveTick = SDL_GetTicks();
 		game_autosave();
 	}
 }

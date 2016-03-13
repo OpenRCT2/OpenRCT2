@@ -796,6 +796,7 @@ int game_load_sv6(SDL_RWops* rw)
 	// #2407: Resetting screen time to not open a save prompt shortly after loading a park.
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 
+	gLastAutoSaveTick = SDL_GetTicks();
 	return 1;
 }
 
@@ -901,6 +902,7 @@ int game_load_network(SDL_RWops* rw)
 	reset_0x69EBE4();
 	openrct2_reset_object_tween_locations();
 	game_convert_strings_to_utf8();
+	gLastAutoSaveTick = SDL_GetTicks();
 	return 1;
 }
 
