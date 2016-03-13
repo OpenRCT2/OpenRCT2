@@ -553,6 +553,9 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	// Decrement nest count
 	RCT2_GLOBAL(0x009A8C28, uint8)--;
+	
+	// Clear the game command callback to prevent the next command triggering it
+	game_command_callback = 0;
 
 	// Show error window
 	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
