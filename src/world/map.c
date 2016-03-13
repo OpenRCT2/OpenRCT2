@@ -730,6 +730,10 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 {
 	int x = *eax;
 	int y = *ecx;
+	if (!map_is_location_valid(x, y)) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	uint8 base_height = *edx;
 	uint8 scenery_type = *edx >> 8;
 	uint8 map_element_type = *ebx >> 8;
@@ -789,7 +793,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 		break;
 	} while (!map_element_is_last_for_tile(map_element++));
 
-	if (sceneryFound == false){
+	if (sceneryFound == false) {
 		*ebx = 0;
 		return;
 	}
@@ -2667,37 +2671,47 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 {
 	int x = *eax;
 	int y = *ecx;
+	if (!map_is_location_valid(x, y)) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 	uint8 base_height = (*edx >> 8);
 	uint8 direction = *edx;
+	uint8 flags = *ebx & 0xFF;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-	if(!(*ebx & 0x40) && game_is_paused() && !gCheatsBuildInPauseMode){
+	if(!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	if(!(*ebx & 0x40) && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, base_height * 8)){
+	if(!(flags & GAME_COMMAND_FLAG_GHOST) && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(x, y, base_height * 8)){
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
-	while(map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE ||
-	map_element->base_height != base_height ||
-	(map_element->type & MAP_ELEMENT_DIRECTION_MASK) != direction ||
-	((*ebx & 0x40) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))){
-		map_element++;
-		if((map_element - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE){
-			*ebx = 0;
-			return;
-		}
-	}
 
-	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)){
+	bool sceneryFound = false;
+	rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+	do {
+		if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE)
+			continue;
+		if (map_element->base_height != base_height)
+			continue;
+		if ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) != direction)
+			continue;
+		if ((flags & GAME_COMMAND_FLAG_GHOST) && !(map_element->flags & MAP_ELEMENT_FLAG_GHOST))
+			continue;
+
+		sceneryFound = true;
+		break;
+	} while (!map_element_is_last_for_tile(map_element++));
+
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY) || (sceneryFound == false)) {
 		*ebx = 0;
 		return;
 	}
 
-	if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+	if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 		rct_xyz16 coord;
 		coord.x = x + 16;
 		coord.y = y + 16;
