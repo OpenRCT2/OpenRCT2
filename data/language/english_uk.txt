@@ -2781,7 +2781,7 @@ STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
+STR_2775    :Fullscreen (borderless window)
 STR_2776    :Language:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3515,7 +3515,7 @@ STR_5173    :Pull Twitch chat as news
 STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
-STR_5177    :Fullscreen mode:
+STR_5177    :Screen mode:
 STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
 STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
