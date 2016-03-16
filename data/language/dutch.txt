@@ -2776,7 +2776,7 @@ STR_2771    :Lagere spelsnelheid
 STR_2772    :Hogere spelsnelheid
 STR_2773    :Venster
 STR_2774    :Volledig scherm
-STR_2775    :Volledig scherm (bureaublad)
+STR_2775    :Voll. sch. (randl. venster)
 STR_2776    :Taal:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -4087,6 +4087,7 @@ STR_5785    :Kan de groep niet hernoemen...
 STR_5786    :Ongeldige groepsnaam
 STR_5787    :{COMMA32} spelers online
 STR_5788    :Standaard inspectie-interval:
+STR_5789    :Bliksemeffect uitschakelen
 
 #############
 # Scenarios #
