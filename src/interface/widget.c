@@ -489,7 +489,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 
 	if (widget_is_disabled(w, widgetIndex))
 		colour |= 0x40;
-	gfx_draw_string_left(dpi, widget->image, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, colour, l + 1, t);
+	gfx_draw_string_left_clipped(dpi, widget->image, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, colour, l + 1, t, r - l);
 }
 
 /**
