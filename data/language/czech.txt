@@ -2782,7 +2782,7 @@ STR_2771    :Pomalejší hra
 STR_2772    :Rychlejší hra
 STR_2773    :V okně
 STR_2774    :Celá obrazovka
-STR_2775    :Celá obrazovka (plocha)
+STR_2775    :Celá obrazovka (okno bez okrajů)
 STR_2776    :Jazyk:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}

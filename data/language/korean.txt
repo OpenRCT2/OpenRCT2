@@ -2780,8 +2780,8 @@ STR_2770    :공원 닫기
 STR_2771    :게임 속도 느리게
 STR_2772    :게임 속도 빠르게
 STR_2773    :창 모드
-STR_2774    :풀 스크린
-STR_2775    :풀 스크린 (데스크탑)
+STR_2774    :전체 화면
+STR_2775    :전체 화면 (창 모드)
 STR_2776    :언어:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3513,7 +3513,7 @@ STR_5173    :트위치 채팅 내용을 뉴스로 전송
 STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를 !news를 이용하여 게임 메시지로 알려줍니다
 STR_5175    :트위치 채널 이름 입력
 STR_5176    :트위치 통합 허용
-STR_5177    :풀 스크린 모드:
+STR_5177    :전체 화면 모드:
 STR_5178    :{SMALLFONT}{BLACK}재정 치트를 보여줍니다
 STR_5179    :{SMALLFONT}{BLACK}손님 치트를 보여줍니다
 STR_5180    :{SMALLFONT}{BLACK}공원 치트를 보여줍니다
@@ -8097,7 +8097,7 @@ STR_NAME    :기념물 벽 조각
 STR_NAME    :기념물 부서진 벽 조각
 
 [WDRAB09]
-STR_NAME    :칙칙한 Step-up 조각 1
+STR_NAME    :칙칙한 계단 조각 1
 
 [WDRAB10]
 STR_NAME    :칙칙한 벽 조각 9
@@ -8241,7 +8241,7 @@ STR_NAME    :해상 지붕 조각
 STR_NAME    :튜더식 벽 조각 4
 
 [WTUDOR13]
-STR_NAME    :튜더식 Ground Bay 벽 조각
+STR_NAME    :튜더식 지면 바닥 벽 조각
 
 [WTUDOR14]
 STR_NAME    :튜더식 지면 바닥 벽 조각 1
@@ -8259,7 +8259,7 @@ STR_NAME    :튜더식 지면 바닥 벽 조각 4
 STR_NAME    :튜더식 지면 바닥 벽 조각 5
 
 [CAMPFANI]
-STR_NAME    :Animated Camp Fire
+STR_NAME    :캠프 파이어
 
 [CONVEYR1]
 STR_NAME    :컨베이어 벨트 구석
@@ -9219,17 +9219,17 @@ STR_CPTY    :차량당 10명의 승객
 
 [TELEPTER]
 STR_NAME    :텔레포터
-STR_DESC    :Guests are transported up or down from one level to another
+STR_DESC    :탑승객들은 수직 탑을 따라 이동하는 엘리베이터에 올라타 여러 높이를 손쉽게 이동할 수 있습니다.
 STR_CPTY    :승객 16명
 
 [ZEPLELIN]
 STR_NAME    :비행선 모노레일 차량
-STR_DESC    :Large capacity themed monorail trains with streamlined front and rear cars
-STR_CPTY    :5 or 10 passengers per car
+STR_DESC    :유선형의 전두부와 후두부 차량을 가진 대용량의 모노레일 차량
+STR_CPTY    :차량당 승객 5명 또는 10명
 
 [BMVOCTPS]
 STR_NAME    :외계 전망탑
-STR_DESC    :A themed rotating observation cabin which travels up a tall tower
+STR_DESC    :높은 탑을 따라 올라가면서 회전하는 전망대 객실
 STR_CPTY    :승객 20명
 
 [CYCLOPSX]
@@ -9244,8 +9244,8 @@ STR_CPTY    :차량당 1명의 손님
 
 [FLWRPOWR]
 STR_NAME    :가든 파워 라이드
-STR_DESC    :Small flower shaped dinghies powered by a centrally-mounted motor controlled by the passengers
-STR_CPTY    :승객 1명 per car
+STR_DESC    :중앙 모터에 의해 움직이며 탑승객이 조종할 수 있는 꽃 모양의 작은 보트
+STR_CPTY    :차량당 승객 1명
 
 [FUNHOUSE]
 STR_NAME    :펀 하우스
@@ -9284,7 +9284,7 @@ STR_CPTY    :손님 1명
 
 [TRICATOP]
 STR_NAME    :트리케라톱스 범퍼카
-STR_DESC    :Riders lock horns with each other in Triceratops dodgem cars
+STR_DESC    :트리케라톱스 모양의 범퍼카에 타고 서로 함께 부딛히는 차량
 STR_CPTY    :차량당 1명의 손님
 
 [BARNSTRM]
@@ -9330,12 +9330,12 @@ STR_CPTY    :차량당 2명의 승객
 [HOVERBKE]
 STR_NAME    :호버 바이크 라이드
 STR_DESC    :Riders sit on futuristic bike-shaped vehicles which travel along a single-rail track
-STR_CPTY    :2 riders per vehicle
+STR_CPTY    :차량당 2명의 승객
 
 [HOVRBORD]
 STR_NAME    :호버보드 코스터
 STR_DESC    :Guests ride on a futuristic hoverboard, swinging freely from side to side around corners
-STR_CPTY    :승객 2명 per car
+STR_CPTY    :차량당 승객 2명
 
 [JETPACKX]
 STR_NAME    :제트 팩 부스터
@@ -9350,7 +9350,7 @@ STR_CPTY    :차량당 4명의 승객
 [JOUSTING]
 STR_NAME    :저스팅 나이트 코스터
 STR_DESC    :Riders sit on the back of Horse-shaped vehicles along a single-rail track
-STR_CPTY    :2 riders per vehicle
+STR_CPTY    :차량당 2명의 승객
 
 [POLCHASE]
 STR_NAME    :폴리스 체이스 코스터
@@ -9370,7 +9370,7 @@ STR_CPTY    :차량당 4명의 승객
 [RAPTORXX]
 STR_NAME    :랩터 레이서 코스터
 STR_DESC    :Riders sit on the back of Raptor-shaped vehicles along a single-rail track
-STR_CPTY    :2 riders per vehicle
+STR_CPTY    :차량당 2명의 승객
 
 [SEAPLANE]
 STR_NAME    :수상비행기 라이드
@@ -9389,23 +9389,23 @@ STR_CPTY    :차량당 6명의 승객
 
 [1920RACR]
 STR_NAME    :1920년대 레이싱 카
-STR_DESC    :Riders race each other in a 1920's Race Car themed Go-Kart
-STR_CPTY    :Single-seater
+STR_DESC    :1920년대 레이싱 카 테마의 고 카트에 타고 레이스를 펼치는 놀이기구
+STR_CPTY    :1인승
 
 [CAVMNCAR]
 STR_NAME    :석기시대 차
-STR_DESC    :Riders race each other in Stone-Age Go-Karts
-STR_CPTY    :Single-seater
+STR_DESC    :석기시대의 고 카트에 타고 레이스를 펼치는 놀이기구
+STR_CPTY    :1인승
 
 [DINOEGGS]
 STR_NAME    :공룡 알 라이드
-STR_DESC    :Riders ride in pairs, in themed seats rotating around an animated mother Dinosaur.
+STR_DESC    :탑승객 두 명이 움직이는 어미 공룡 주위를 도는 좌석에 앉아 즐기는 놀이기구
 STR_CPTY    :승객 18명
 
 [FLALMACE]
 STR_NAME    :메이스 라이드
 STR_DESC    :Riders sit on a themed chair which is attached to a motor driven spinning arm.
-STR_CPTY    :1 guest per chair
+STR_CPTY    :의자당 1명의 승객
 
 [GINTSPDR]
 STR_NAME    :B급 영화 자이언트 스파이더 라이드
@@ -9444,8 +9444,8 @@ STR_CPTY    :보트당 8명의 승객
 
 [RIVRSTYX]
 STR_NAME    :스틱스 강
-STR_DESC    :Raft-shaped boats gently meander around a river track
-STR_CPTY    :raft당 4명의 승객
+STR_DESC    :강 모양의 트랙을 따라 조용히 흘러가는 보트
+STR_CPTY    :보트당 4명의 승객
 
 [TRILOBTE]
 STR_NAME    :삼엽충 보트
@@ -9485,7 +9485,7 @@ STR_NAME    :봉제인형 가게
 STR_DESC    :귀엽고 부드러운 공룡 인형을 파는 가게
 
 [1920SLMP]
-STR_NAME    :Period Street Lamps
+STR_NAME    :기간 가로등
 
 [ALENTRE1]
 STR_NAME    :외계 나무
@@ -9494,100 +9494,100 @@ STR_NAME    :외계 나무
 STR_NAME    :외계 나무
 
 [ARMRBODY]
-STR_NAME    :Magical Armour
+STR_NAME    :마법 아머
 
 [ARMRHELM]
-STR_NAME    :Magical Helmet
+STR_NAME    :마법 헬멧
 
 [ARMRSHLD]
-STR_NAME    :Magical Shield
+STR_NAME    :마법 방패
 
 [ARMRSWRD]
-STR_NAME    :Magical Sword
+STR_NAME    :마법 검
 
 [ARTDEC01]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC02]
-STR_NAME    :Art Deco Inverted 구석 Section
+STR_NAME    :아트 데코 반전된 구석 조각
 
 [ARTDEC03]
-STR_NAME    :Art Deco 벽 with Door
+STR_NAME    :문이 있는 아트 데코 벽
 
 [ARTDEC04]
-STR_NAME    :Art Deco 벽 with Windows
+STR_NAME    :창문이 있는 아트 데코 벽
 
 [ARTDEC05]
-STR_NAME    :Art Deco 벽 with Windows
+STR_NAME    :창문이 있는 아트 데코 벽
 
 [ARTDEC06]
-STR_NAME    :Art Deco Top Section
+STR_NAME    :아트 데코 상단 조각
 
 [ARTDEC07]
-STR_NAME    :Art Deco 구석 Section
+STR_NAME    :아트 데코 구석 조각
 
 [ARTDEC08]
-STR_NAME    :Art Deco Top 구석 Section
+STR_NAME    :아트 데코 상단 구석 조각
 
 [ARTDEC09]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC10]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC11]
-STR_NAME    :Art Deco 구석 with Windows
+STR_NAME    :창문이 있는 아트 데코 구석
 
 [ARTDEC12]
-STR_NAME    :Art Deco 구석 with Railings
+STR_NAME    :철책이 있는 아트 데코 구석
 
 [ARTDEC13]
-STR_NAME    :Art Deco Top 구석 Section
+STR_NAME    :아트 데코 상단 구석 조각
 
 [ARTDEC14]
-STR_NAME    :Art Deco 구석 with Windows
+STR_NAME    :창문이 있는 아트 데코 구석
 
 [ARTDEC15]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC16]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC17]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC18]
-STR_NAME    :Art Deco Top Section
+STR_NAME    :아트 데코 상단 조각
 
 [ARTDEC19]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC20]
-STR_NAME    :Art Deco 벽 Section
+STR_NAME    :아트 데코 벽 조각
 
 [ARTDEC21]
-STR_NAME    :Art Deco 벽 with Railings
+STR_NAME    :철책이 있는 아트 데코 벽
 
 [ARTDEC22]
-STR_NAME    :Art Deco 벽 with Railings
+STR_NAME    :철책이 있는 아트 데코 벽
 
 [ARTDEC23]
-STR_NAME    :Art Deco 벽 with Railings
+STR_NAME    :철책이 있는 아트 데코 벽
 
 [ARTDEC24]
-STR_NAME    :Art Deco 벽 with Railings
+STR_NAME    :철책이 있는 아트 데코 벽
 
 [ARTDEC28]
-STR_NAME    :Art Deco 지붕 Section
+STR_NAME    :아트 데코 지붕 조각
 
 [ARTDEC29]
-STR_NAME    :Art Deco Inverted 구석 Section
+STR_NAME    :아트 데코 반전된 구석 조각
 
 [BIGBASSX]
-STR_NAME    :대형 Bass Guitar
+STR_NAME    :대형 베이스 기타
 
 [BIGGUTAR]
-STR_NAME    :대형 Guitar
+STR_NAME    :대형 기타
 
 [CHPRBKE1]
 STR_NAME    :오토바이
@@ -9599,7 +9599,7 @@ STR_NAME    :오토바이
 STR_NAME    :Electric Fence Inverted 구석 조각
 
 [FIREMANX]
-STR_NAME    :Animatronic Fireman
+STR_NAME    :움직이는 소방관
 
 [FUTSKY16]
 STR_NAME    :Sandstone Skyscraper Mid Slope 구석
@@ -9641,13 +9641,13 @@ STR_NAME    :Sandstone Skyscraper Mid 구석
 STR_NAME    :Obsidian SkyScraper 지붕 조각
 
 [GLDCHEST]
-STR_NAME    :Treasure Chest
+STR_NAME    :보물 상자
 
 [GOLDFLEC]
-STR_NAME    :Golden Fleece
+STR_NAME    :황금 양모
 
 [HAYBAILS]
-STR_NAME    :Hay Bale
+STR_NAME    :건초
 
 [HEVBTH05]
 STR_NAME    :Heavenly Baths Arch
@@ -10103,10 +10103,10 @@ STR_NAME    :암흑 시대 마을 창가 화단 지붕
 STR_NAME    :암흑 시대 마을 구석 지붕 조각
 
 [RDMETO03]
-STR_NAME    :Red Meteor Crater 벽
+STR_NAME    :붉은 유성 크레이터 벽
 
 [RDMETO04]
-STR_NAME    :Red Meteor Crater Inverted 구석
+STR_NAME    :반전된 붉은 유성 크레이터 구석
 
 [RUNWAY01]
 STR_NAME    :활주로 조각
@@ -10138,7 +10138,7 @@ STR_NAME    :수상비행기
 STR_NAME    :수상비행기
 
 [SCHNTNNY]
-STR_NAME    :Racing Tannoy
+STR_NAME    :레이싱 스피커 장치
 
 [SHWDFRST]
 STR_NAME    :숲 속 나무
@@ -10162,19 +10162,19 @@ STR_NAME    :Space Ship Engine Section
 STR_NAME    :Space Ship Living Section
 
 [STNESTA1]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :돌이 된 사람
 
 [STNESTA2]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :돌이 된 사람
 
 [STNESTA3]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :돌이 된 사람
 
 [STNESTA4]
-STR_NAME    :Men Turned to Stone
+STR_NAME    :돌이 된 사람
 
 [STOOLSET]
-STR_NAME    :Stools
+STR_NAME    :의자
 
 [SWAMPLT1]
 STR_NAME    :Swamp Plant
@@ -10207,40 +10207,40 @@ STR_NAME    :Swamp Fern
 STR_NAME    :Sword in the Stone
 
 [TARPIT04]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT05]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT06]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT07]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT08]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT09]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT10]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT11]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT12]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT13]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT14]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [VALKRI01]
-STR_NAME    :Valkyrie
+STR_NAME    :발키리
 
 [VALKRI02]
 STR_NAME    :Valkyrie
@@ -10750,13 +10750,13 @@ STR_NAME    :Steaming Drains
 STR_NAME    :Animatronic Triceratops
 
 [TARPIT01]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT02]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TARPIT03]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [TITANSTA]
 STR_NAME    :Atlas Statue
@@ -10774,13 +10774,13 @@ STR_NAME    :Animatronic Waving King
 STR_NAME    :Witches around Cauldron
 
 [ARTDEC25]
-STR_NAME    :Art Deco 구석 with Windows
+STR_NAME    :아트 데코 구석 with Windows
 
 [ARTDEC26]
-STR_NAME    :Art Deco 구석 with Railings
+STR_NAME    :아트 데코 구석 with Railings
 
 [ARTDEC27]
-STR_NAME    :Art Deco Top 구석 Section
+STR_NAME    :아트 데코 Top 구석 Section
 
 [FUTSKY20]
 STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
@@ -10852,7 +10852,7 @@ STR_NAME    :대형 Mangrove Tree
 STR_NAME    :Stone Age Temple
 
 [4X4TRPIT]
-STR_NAME    :Bubbling Tarpit
+STR_NAME    :거품이 이는 타르갱
 
 [4X4VOLCA]
 STR_NAME    :Volcano with small trees

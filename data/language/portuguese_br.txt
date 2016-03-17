@@ -2781,7 +2781,7 @@ STR_2771    :Velocidade de Jogo mais lento
 STR_2772    :Velocidade de Jogo mais rápido
 STR_2773    :Janela
 STR_2774    :Tela Inteira
-STR_2775    :Tela Inteira (área de trabal.)
+STR_2775    :Tela Inteira (janela sem borda)
 STR_2776    :Idioma
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3515,7 +3515,7 @@ STR_5173    :Mostrar chat do Twitch como notícias
 STR_5174    :{SMALLFONT}{BLACK}Usará as mensagens do chat do Twitch precedido por !news nas notificações dentro do jogo
 STR_5175    :Insira o nome do seu canal no Twitch
 STR_5176    :Habilitar integração com Twitch
-STR_5177    :Modo tela inteira:
+STR_5177    :Modo de tela:
 STR_5178    :{SMALLFONT}{BLACK}Mostrar trapaças financeiras
 STR_5179    :{SMALLFONT}{BLACK}Mostrar trapaças de visitantes
 STR_5180    :{SMALLFONT}{BLACK}Mostrar trapaças do parque

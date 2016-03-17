@@ -2780,7 +2780,7 @@ STR_2771    :Bajar velocidad
 STR_2772    :Subir velocidad
 STR_2773    :Ventana
 STR_2774    :Pantalla completa
-STR_2775    :Pantalla completa (escritorio)
+STR_2775    :Pantalla completa (Sin bordes)
 STR_2776    :Idioma:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3514,7 +3514,7 @@ STR_5173    :Mostrar noticias del chat Twitch
 STR_5174    :{SMALLFONT}{BLACK}Los mensajes del chat de Twitch que comiencen por "!news" se mostrarán como notificaciones en el juego
 STR_5175    :Escribe el nombre de tu canal Twitch
 STR_5176    :Hab. integración Twitch
-STR_5177    :Modo pantalla completa:
+STR_5177    :Modo de pantalla:
 STR_5178    :{SMALLFONT}{BLACK}Mostrar trucos de dinero
 STR_5179    :{SMALLFONT}{BLACK}Mostrar trucos de visitante
 STR_5180    :{SMALLFONT}{BLACK}Mostrar trucos del parque
