@@ -6597,6 +6597,9 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 		trackType,
 		0
 	);
+	if (mapElement == NULL) {
+		return;
+	}
 	if (RCT2_GLOBAL(0x00F64E1C, uint32) == 0xFFFFFFFF) {
 		RCT2_GLOBAL(0x00F64E1C, uint32) = (mapElement->properties.track.sequence >> 4) & 7;
 	}
@@ -6663,6 +6666,9 @@ bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle *vehicle, ui
 		trackType,
 		0
 		);
+	if (mapElement == NULL) {
+		return false;
+	}
 	if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && vehicle == RCT2_GLOBAL(0x00F64E04, rct_vehicle*)) {
 		RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
 	}
