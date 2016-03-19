@@ -216,7 +216,7 @@ utf8 * safe_strtrunc(utf8 * text, size_t size)
 	char *ch = text;
 	char *last = text;
 	uint32 codepoint;
-	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+	while ((codepoint = utf8_get_next(ch, (const utf8 **)&ch)) != 0) {
 		if (ch <= sourceLimit) {
 			last = ch;
 		} else {
