@@ -668,6 +668,7 @@ static void utf8_to_rct2_self(char *buffer, size_t length)
 			} else {
 				break;
 			}
+			i += 3;
 		} else {
 			*dst++ = *src++;
 			i++;
