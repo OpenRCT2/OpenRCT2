@@ -651,26 +651,42 @@ static void load_landscape()
 	window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE, NULL);
 }
 
-static void strncpy_terminated(char *dst, const char *src, size_t length)
-{
-	if (length > 0) {
-		strncpy(dst, src, length - 1);
-		dst[length - 1] = '\0';
-	}
-}
-
 static void utf8_to_rct2_self(char *buffer, size_t length)
 {
 	char tempBuffer[512];
 	utf8_to_rct2(tempBuffer, buffer);
-	strncpy_terminated(buffer, tempBuffer, length);
+	
+	size_t i = 0;
+	const char *src = tempBuffer;
+	char *dst = buffer;
+	while (*src != 0 && i < length - 1) {
+		if (*src == (char)0xFF) {
+			if (i < length - 3) {
+				*dst++ = *src++;
+				*dst++ = *src++;
+				*dst++ = *src++;
+			} else {
+				break;
+			}
+		} else {
+			*dst++ = *src++;
+			i++;
+		}
+	}
+	do {
+		*dst++ = '\0';
+		i++;
+	} while (i < length);
 }
 
 static void rct2_to_utf8_self(char *buffer, size_t length)
 {
 	char tempBuffer[512];
-	rct2_to_utf8(tempBuffer, buffer);
-	strncpy_terminated(buffer, tempBuffer, length);
+	if (length > 0) {
+		rct2_to_utf8(tempBuffer, buffer);
+		strncpy(buffer, tempBuffer, length - 1);
+		buffer[length - 1] = '\0';
+	}
 }
 
 /**
