@@ -51,6 +51,7 @@ enum {
 };
 
 #define NETWORK_DEFAULT_PORT 11753
+#define NETWORK_RESYNC_TIMEOUT 30000
 
 #ifdef __cplusplus
 extern "C" {
@@ -240,7 +241,10 @@ public:
 	bool SetNonBlocking(bool on);
 	static bool SetNonBlocking(SOCKET socket, bool on);
 	void ResetLastPacketTime();
+	void ResetLastResyncTime();
 	bool ReceivedPacketRecently();
+
+	uint32 GetLastResyncTime();
 
 	const char *getLastDisconnectReason() const;
 	void setLastDisconnectReason(const char *src);
@@ -257,6 +261,7 @@ private:
 	bool SendPacket(NetworkPacket& packet);
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
 	uint32 last_packet_time;
+	uint32 last_resync_time;
 };
 
 class NetworkAddress
@@ -389,6 +394,7 @@ private:
 	std::vector<uint8> chunk_buffer;
 	std::string password;
 	bool _desynchronised = false;
+	uint32 _desyncTime;
 	uint32 server_connect_time = 0;
 	uint32 last_advertise_time = 0;
 	std::string advertise_token;

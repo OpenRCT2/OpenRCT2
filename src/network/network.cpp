@@ -328,6 +328,7 @@ NetworkConnection::NetworkConnection()
 	player = 0;
 	socket = INVALID_SOCKET;
 	ResetLastPacketTime();
+	ResetLastResyncTime();
 	last_disconnect_reason = NULL;
 }
 
@@ -448,6 +449,11 @@ void NetworkConnection::ResetLastPacketTime()
 	last_packet_time = SDL_GetTicks();
 }
 
+void NetworkConnection::ResetLastResyncTime()
+{
+	last_resync_time = SDL_GetTicks();
+}
+
 bool NetworkConnection::ReceivedPacketRecently()
 {
 #ifndef DEBUG
@@ -456,6 +462,11 @@ bool NetworkConnection::ReceivedPacketRecently()
 	}
 #endif
 	return true;
+}
+
+uint32 NetworkConnection::GetLastResyncTime()
+{
+	return last_resync_time;
 }
 
 const char* NetworkConnection::getLastDisconnectReason() const
@@ -939,15 +950,36 @@ void Network::UpdateClient()
 		// Check synchronisation
 		if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
 			_desynchronised = true;
-			char str_desync[256];
-			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
-			window_network_status_open(str_desync);
-			
-			if (!gConfigNetwork.stay_connected) {
-				Close();
+
+			_desyncTime = SDL_GetTicks();
+			log_warning("Desync detected, scheduling sync.");
+		}
+		else if (_desynchronised && gConfigNetwork.stay_connected != RESYNC_NEVER) {
+			// Milliseconds since last save
+			uint32 timeSinceDesync = SDL_GetTicks() - _desyncTime;
+
+			bool shouldSync = false;
+			switch (gConfigNetwork.stay_connected) {
+			case RESYNC_AFTER_1MINUTE:
+				shouldSync = timeSinceDesync >= 1 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_2MINUTES:
+				shouldSync = timeSinceDesync >= 2 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_5MINUTES:
+				shouldSync = timeSinceDesync >= 5 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_10MINUTES:
+				shouldSync = timeSinceDesync >= 10 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_15MINUTES:
+				shouldSync = timeSinceDesync >= 15 * 60 * 1000;
+				break;
 			}
-			else {
-				Client_Send_RESENDMAP(); // start resync process by sending our position to the server.
+
+			if (shouldSync) {
+				_desyncTime = SDL_GetTicks();
+				Client_Send_RESENDMAP();
 			}
 		}
 		break;
@@ -1322,7 +1354,9 @@ void Network::FreeStringIds()
 
 void Network::Client_Send_RESENDMAP()
 {
-	log_warning("Map sync failed, requesting update");
+	char str_desync[256];
+	format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
+	window_network_status_open(str_desync);
 
 	// send view information for the savefile
 	rct_window* w = window_get_main();
@@ -1344,6 +1378,12 @@ void Network::Client_Send_RESENDMAP()
 
 void Network::Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPacket& packet)
 {
+	if (connection.GetLastResyncTime() - SDL_GetTicks() < NETWORK_RESYNC_TIMEOUT) {
+		return; // clients cannot send requests faster than the resync timeout (30 seconds)
+	}
+
+	connection.ResetLastResyncTime();
+
 	log_warning("%u desynchronised. Resyncing.", connection.player->name);
 	
 	sint16 viewX, viewY, viewZoom, viewRotation;
@@ -1357,7 +1397,7 @@ void Network::Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPack
 
 	char str_resync[256];
 	const char * player_name = (const char *)fromplayer->name;
-	format_string(str_resync, STR_MULTIPLAYER_RESYNC, &player_name);
+	format_string(str_resync, STR_RESYNC_MESSAGE, &player_name);
 
 	chat_history_add(str_resync);
 	Server_Send_CHAT(str_resync);
