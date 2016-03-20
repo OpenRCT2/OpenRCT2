@@ -3897,7 +3897,7 @@ STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
 STR_5556    :Kick Player
-STR_5557    :Resynchronize after desynchronization (Multiplayer)
+STR_5557    :Stay connected after desynchronization (Multiplayer)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
@@ -4043,8 +4043,6 @@ STR_5733    :Use NN scaling at integer scales
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Network Status
 STR_5736    :Player
-STR_5745    :Network desync detected, resyncing
-STR_5790    :{OUTLINE}{BABYBLUE}{STRING} was resynchronised.
 
 #############
 # Scenarios #

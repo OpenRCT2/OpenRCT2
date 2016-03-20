@@ -532,16 +532,6 @@ int NetworkAddress::GetResolveStatus(void)
 	return *status;
 }
 
-const char * NetworkAddress::getRawHost()
-{
-	return host;
-}
-
-unsigned short NetworkAddress::getRawPort()
-{
-	return port;
-}
-
 int NetworkAddress::ResolveFunc(void* pointer)
 {
 	// Copy data for thread safety
@@ -1378,7 +1368,7 @@ void Network::Client_Send_RESENDMAP()
 
 void Network::Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPacket& packet)
 {
-	if (connection.GetLastResyncTime() - SDL_GetTicks() < NETWORK_RESYNC_TIMEOUT) {
+	if (connection.GetLastResyncTime() - SDL_GetTicks() < RESYNC_TIMEOUT) {
 		return; // clients cannot send requests faster than the resync timeout (30 seconds)
 	}
 
@@ -1389,8 +1379,8 @@ void Network::Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPack
 	sint16 viewX, viewY, viewZoom, viewRotation;
 
 	packet >> viewX >> viewY >> viewZoom >> viewRotation;
-	
-	Server_Send_MAP(&connection, viewX, viewY, viewZoom, viewRotation);
+
+	Server_Send_MAP(&connection, true, viewX, viewY, viewZoom, viewRotation);
 
 	// send a message
 	NetworkPlayer* fromplayer = connection.player;
@@ -1429,7 +1419,7 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 	}
 }
 
-void Network::Server_Send_MAP(NetworkConnection* connection)
+void Network::Server_Send_MAP(NetworkConnection * connection, bool resync, sint16 viewX, sint16 viewY, sint16 viewZoom, sint16 viewRotation)
 {
 	bool RLEState = gUseRLE;
 	gUseRLE = false;
@@ -1439,61 +1429,13 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		return;
 	}
 	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
-	scenario_save_network(rw);
-	gUseRLE = RLEState;
-	int size = (int)SDL_RWtell(rw);
-	std::vector<uint8> buffer(size);
-	SDL_RWseek(rw, 0, RW_SEEK_SET);
-	if (SDL_RWread(rw, &buffer[0], size, 1) == 0) {
-		log_warning("Failed to read temporary map file into memory.");
-		SDL_RWclose(rw);
-		return;
-	}
-	size_t chunksize = 1000;
-	size_t out_size = size;
-	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
-	unsigned char *header;
-	if (compressed != NULL)
-	{
-		header = (unsigned char *)_strdup("open2_sv6_zlib");
-		size_t header_len = strlen((char *)header) + 1; // account for null terminator
-		header = (unsigned char *)realloc(header, header_len + out_size);
-		memcpy(&header[header_len], compressed, out_size);
-		out_size += header_len;
-		free(compressed);
-		log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
-	} else {
-		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-		header = (unsigned char *)malloc(size);
-		out_size = size;
-		memcpy(header, &buffer[0], size);
-	}
-	for (size_t i = 0; i < out_size; i += chunksize) {
-		int datasize = (std::min)(chunksize, out_size - i);
-		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
-		packet->Write(&header[i], datasize);
-		if (connection) {
-			connection->QueuePacket(std::move(packet));
-		} else {
-			SendPacketToClients(*packet);
-		}
-	}
-	free(header);
-	SDL_RWclose(rw);
-}
 
-void Network::Server_Send_MAP(NetworkConnection * connection, sint16 viewX, sint16 viewY, sint16 viewZoom, sint16 viewRotation)
-{
-	bool RLEState = gUseRLE;
-	gUseRLE = false;
-	FILE* temp = tmpfile();
-	if (!temp) {
-		log_warning("Failed to create temporary file to save map.");
-		return;
-	}
-	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
-	scenario_save_network_view(rw, viewX, viewY, viewZoom, viewRotation);
+	if (resync)
+		scenario_save_network_ext(rw, true, viewX, viewY, viewZoom, viewRotation);
+	else
+		scenario_save_network(rw);
+
+
 	gUseRLE = RLEState;
 	int size = (int)SDL_RWtell(rw);
 	std::vector<uint8> buffer(size);

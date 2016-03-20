@@ -51,7 +51,7 @@ enum {
 };
 
 #define NETWORK_DEFAULT_PORT 11753
-#define NETWORK_RESYNC_TIMEOUT 30000
+#define RESYNC_TIMEOUT 30000
 
 #ifdef __cplusplus
 extern "C" {
@@ -271,9 +271,6 @@ public:
 	void Resolve(const char* host, unsigned short port, bool nonblocking = true);
 	int GetResolveStatus(void);
 
-	const char* getRawHost();
-	unsigned short getRawPort();
-
 	std::shared_ptr<sockaddr_storage> ss;
 	std::shared_ptr<int> ss_len;
 
@@ -332,8 +329,7 @@ public:
 	void Client_Send_RESENDMAP();
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
-	void Server_Send_MAP(NetworkConnection* connection = nullptr);
-	void Server_Send_MAP(NetworkConnection* connection, sint16 viewX, sint16 viewY, sint16 viewZoom, sint16 viewRotation);
+	void Server_Send_MAP(NetworkConnection* connection = nullptr, bool resync = false, sint16 viewX = 0, sint16 viewY = 0, sint16 viewZoom = 0, sint16 viewRotation = 0);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
 	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
