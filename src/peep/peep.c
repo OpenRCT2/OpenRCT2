@@ -262,37 +262,28 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 		}
 	}
 
-
-	short num_litter;
-
-	num_litter = 0;
 	rct_litter* litter;
 	for (uint16 sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
 		litter = &(g_sprite_list[sprite_idx].litter);
 
 		sint16 dist_x = abs(litter->x - center_x);
 		sint16 dist_y = abs(litter->y - center_y);
-		if (max(dist_x, dist_y) <= 160){
+		if (max(dist_x, dist_y) <= 160) {
 			num_rubbish++;
 		}
 	}
 
-	if (num_fountains >= 5){
-		if (num_rubbish < 20)
-			return 3;
-	}
+	if (num_fountains >= 5 && num_rubbish < 20)
+		return 3;
 
-	if (num_scenery >= 40){
-		if (num_rubbish < 8)
-			return 1;
-	}
+	if (num_scenery >= 40 && num_rubbish < 8)
+		return 1;
 
-	if (nearby_music == 1){
-		if (num_rubbish < 20)
-			return 4;
-	}
+	if (nearby_music == 1 && num_rubbish < 20)
+		return 4;
 
-	if (num_rubbish < 2)
+	if (num_rubbish < 2 && !gCheatsDisableLittering)
+		// if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
 		return 2;
 
 	return 0;

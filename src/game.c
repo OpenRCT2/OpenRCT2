@@ -872,6 +872,7 @@ int game_load_network(SDL_RWops* rw)
 	gCheatsBuildInPauseMode = SDL_ReadU8(rw);
 	gCheatsIgnoreRideIntensity = SDL_ReadU8(rw);
 	gCheatsDisableVandalism = SDL_ReadU8(rw);
+	gCheatsDisableLittering = SDL_ReadU8(rw);
 	gCheatsNeverendingMarketing = SDL_ReadU8(rw);
 	gCheatsFreezeClimate = SDL_ReadU8(rw);
 
