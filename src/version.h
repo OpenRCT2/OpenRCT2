@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#define OPENRCT2_NAME				"OpenRCT2"
+#define OPENRCT2_NAME				"OpenRCT2 (+ Chris's networking hacks)"
 #define OPENRCT2_VERSION			"0.0.4"
 #define OPENRCT2_ARCHITECTURE		"x86"
 
@@ -31,7 +31,7 @@
 	#define OPENRCT2_BUILD_SERVER			""
 #endif
 #ifndef OPENRCT2_BRANCH
-	#define OPENRCT2_BRANCH					"develop"
+	#define OPENRCT2_BRANCH					"cnf"
 #endif
 #ifndef OPENRCT2_COMMIT_SHA1
 	#define OPENRCT2_COMMIT_SHA1			""

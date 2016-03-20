@@ -1122,6 +1122,86 @@ int scenario_save_network(SDL_RWops* rw)
 	return 1;
 }
 
+// Save game state without modifying any of the state for multiplayer (with a specific view)
+int scenario_save_network_view(SDL_RWops* rw, sint16 viewXIn, sint16 viewYIn, sint16 viewZoomIn, sint16 viewRotationIn)
+{
+	rct_window *w;
+	rct_viewport *viewport;
+	int viewX, viewY, viewZoom, viewRotation;
+
+	/*map_reorganise_elements();
+	reset_0x69EBE4();
+	sprite_clear_all_unused();
+	sub_677552();
+	sub_674BCF();*/
+
+	// Set saved view
+	viewX = viewXIn;
+	viewY = viewYIn;
+	viewZoom = viewZoomIn;
+	viewRotation = viewRotationIn;
+
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = viewX;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = viewY;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = viewZoom | (viewRotation << 8);
+
+	// Prepare S6
+	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
+	s6->header.type = S6_TYPE_SAVEDGAME;
+	s6->header.num_packed_objects = scenario_get_num_packed_objects_to_write();
+	s6->header.version = S6_RCT2_VERSION;
+	s6->header.magic_number = S6_MAGIC_NUMBER;
+
+	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
+
+	for (int i = 0; i < 721; i++) {
+		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
+
+		if (gObjectList[i] == (void *)0xFFFFFFFF) {
+			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
+		}
+		else {
+			s6->objects[i] = *((rct_object_entry*)entry);
+		}
+	}
+
+	memcpy(&s6->elapsed_months, (void*)0x00F663A8, 16);
+	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
+	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
+
+	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
+
+	scenario_fix_ghosts(s6);
+	game_convert_strings_to_rct2(s6);
+	scenario_save_s6(rw, s6);
+
+	free(s6);
+
+	reset_loaded_objects();
+
+	// Write other data not in normal save files
+	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
+	SDL_WriteLE32(rw, _guestGenerationProbability);
+	SDL_WriteLE32(rw, _suggestedGuestMaximum);
+	SDL_WriteU8(rw, gCheatsSandboxMode);
+	SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
+	SDL_WriteU8(rw, gCheatsDisableSupportLimits);
+	SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
+	SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
+	SDL_WriteU8(rw, gCheatsFastLiftHill);
+	SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
+	SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
+	SDL_WriteU8(rw, gCheatsUnlockAllPrices);
+	SDL_WriteU8(rw, gCheatsBuildInPauseMode);
+	SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
+	SDL_WriteU8(rw, gCheatsDisableVandalism);
+	SDL_WriteU8(rw, gCheatsNeverendingMarketing);
+	SDL_WriteU8(rw, gCheatsFreezeClimate);
+
+	gfx_invalidate_screen();
+	return 1;
+}
+
 bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 {
 	uint8 *buffer;

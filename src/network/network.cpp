@@ -43,6 +43,7 @@ extern "C" {
 #include "../interface/chat.h"
 #include "../interface/window.h"
 #include "../interface/keyboard_shortcut.h"
+#include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../network/http.h"
@@ -78,6 +79,7 @@ enum {
 	NETWORK_COMMAND_SHOWERROR,
 	NETWORK_COMMAND_GROUPLIST,
 	NETWORK_COMMAND_EVENT,
+	NETWORK_COMMAND_RESENDMAP,
 	NETWORK_COMMAND_MAX,
 	NETWORK_COMMAND_INVALID = -1
 };
@@ -519,6 +521,16 @@ int NetworkAddress::GetResolveStatus(void)
 	return *status;
 }
 
+const char * NetworkAddress::getRawHost()
+{
+	return host;
+}
+
+unsigned short NetworkAddress::getRawPort()
+{
+	return port;
+}
+
 int NetworkAddress::ResolveFunc(void* pointer)
 {
 	// Copy data for thread safety
@@ -579,6 +591,7 @@ Network::Network()
 	server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
 	server_command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::Server_Handle_GAMECMD;
 	server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
+	server_command_handlers[NETWORK_COMMAND_RESENDMAP] = &Network::Server_Handle_RESENDMAP;
 	server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
 }
 
@@ -656,9 +669,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 
 	char str_resolving[256];
 	format_string(str_resolving, STR_MULTIPLAYER_RESOLVING, NULL);
-	window_network_status_open(str_resolving, []() -> void {
-		gNetwork.Close();
-	});
+	window_network_status_open(str_resolving);
 
 	mode = NETWORK_MODE_CLIENT;
 
@@ -848,9 +859,7 @@ void Network::UpdateClient()
 			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss), (*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
 				char str_connecting[256];
 				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, NULL);
-				window_network_status_open(str_connecting, []() -> void {
-					gNetwork.Close();
-				});
+				window_network_status_open(str_connecting);
 				server_connect_time = SDL_GetTicks();
 				status = NETWORK_STATUS_CONNECTING;
 			} else {
@@ -903,9 +912,7 @@ void Network::UpdateClient()
 				Client_Send_AUTH(gConfigNetwork.player_name, "");
 				char str_authenticating[256];
 				format_string(str_authenticating, STR_MULTIPLAYER_AUTHENTICATING, NULL);
-				window_network_status_open(str_authenticating, []() -> void {
-					gNetwork.Close();
-				});
+				window_network_status_open(str_authenticating);
 			}
 		}
 	}break;
@@ -923,7 +930,7 @@ void Network::UpdateClient()
 					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
 				}
 
-				window_network_status_open(str_disconnected, NULL);
+				window_network_status_open(str_disconnected);
 			}
 			Close();
 		}
@@ -934,10 +941,17 @@ void Network::UpdateClient()
 			_desynchronised = true;
 			char str_desync[256];
 			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
-			window_network_status_open(str_desync, NULL);
+			window_network_status_open("RESYNCHRONISING!");
+			
+			/*
 			if (!gConfigNetwork.stay_connected) {
 				Close();
+				BeginClient(server_address.getRawHost(), server_address.getRawPort());
 			}
+			*/
+
+			// chris's new solution
+			Client_Send_RESENDMAP();
 		}
 		break;
 	}
@@ -1309,6 +1323,57 @@ void Network::FreeStringIds()
 	}
 }
 
+void Network::Client_Send_RESENDMAP()
+{
+	log_warning("Map sync failed, requesting update");
+
+	// send view information for the savefile
+	rct_window* w = window_get_main();
+	rct_viewport* viewport = w->viewport;
+
+	sint16 viewX, viewY, viewZoom, viewRotation;
+
+	viewX = viewport->view_width / 2 + viewport->view_x;
+	viewY = viewport->view_height / 2 + viewport->view_y;
+
+	viewZoom = viewport->zoom;
+	viewRotation = get_current_rotation();
+
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_RESENDMAP << viewX << viewY << viewZoom << viewRotation;
+
+	server_connection.QueuePacket(std::move(packet));
+}
+
+void Network::Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPacket& packet)
+{
+	log_warning("%u desynchronised. Resyncing.", connection.player->name);
+	
+	sint16 viewX, viewY, viewZoom, viewRotation;
+
+	packet >> viewX >> viewY >> viewZoom >> viewRotation;
+	
+	Server_Send_MAP(&connection, viewX, viewY, viewZoom, viewRotation);
+
+	// send a message
+	NetworkPlayer* fromplayer = connection.player;
+
+	static char formatted[1024];
+	char* lineCh = formatted;
+	formatted[0] = 0;
+
+	lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
+	lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+	safe_strcpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
+	lineCh = strchr(lineCh, '\0');
+
+	char* ptrtext = lineCh;
+	safe_strcpy(lineCh, " was resynchronised.", 800);
+
+	chat_history_add(formatted);
+	Server_Send_CHAT(formatted);
+}
+
 void Network::Client_Send_AUTH(const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
@@ -1382,6 +1447,62 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		if (connection) {
 			connection->QueuePacket(std::move(packet));
 		} else {
+			SendPacketToClients(*packet);
+		}
+	}
+	free(header);
+	SDL_RWclose(rw);
+}
+
+void Network::Server_Send_MAP(NetworkConnection * connection, sint16 viewX, sint16 viewY, sint16 viewZoom, sint16 viewRotation)
+{
+	bool RLEState = gUseRLE;
+	gUseRLE = false;
+	FILE* temp = tmpfile();
+	if (!temp) {
+		log_warning("Failed to create temporary file to save map.");
+		return;
+	}
+	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
+	scenario_save_network_view(rw, viewX, viewY, viewZoom, viewRotation);
+	gUseRLE = RLEState;
+	int size = (int)SDL_RWtell(rw);
+	std::vector<uint8> buffer(size);
+	SDL_RWseek(rw, 0, RW_SEEK_SET);
+	if (SDL_RWread(rw, &buffer[0], size, 1) == 0) {
+		log_warning("Failed to read temporary map file into memory.");
+		SDL_RWclose(rw);
+		return;
+	}
+	size_t chunksize = 1000;
+	size_t out_size = size;
+	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
+	unsigned char *header;
+	if (compressed != NULL)
+	{
+		header = (unsigned char *)_strdup("open2_sv6_zlib");
+		size_t header_len = strlen((char *)header) + 1; // account for null terminator
+		header = (unsigned char *)realloc(header, header_len + out_size);
+		memcpy(&header[header_len], compressed, out_size);
+		out_size += header_len;
+		free(compressed);
+		log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
+	}
+	else {
+		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
+		header = (unsigned char *)malloc(size);
+		out_size = size;
+		memcpy(header, &buffer[0], size);
+	}
+	for (size_t i = 0; i < out_size; i += chunksize) {
+		int datasize = (std::min)(chunksize, out_size - i);
+		std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+		*packet << (uint32)NETWORK_COMMAND_MAP << (uint32)out_size << (uint32)i;
+		packet->Write(&header[i], datasize);
+		if (connection) {
+			connection->QueuePacket(std::move(packet));
+		}
+		else {
 			SendPacketToClients(*packet);
 		}
 	}
@@ -1767,9 +1888,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	char str_downloading_map[256];
 	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1000, size / 1000};
 	format_string(str_downloading_map, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
-	window_network_status_open(str_downloading_map, []() -> void {
-		gNetwork.Close();
-	});
+	window_network_status_open(str_downloading_map);
 	memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 	if (offset + chunksize == size) {
 		window_network_status_close();
@@ -1792,7 +1911,9 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			log_verbose("Assuming received map is in plain sv6 format");
 		}
 		SDL_RWops* rw = SDL_RWFromMem(data, data_size);
+
 		if (game_load_network(rw)) {
+			// init new map
 			game_load_init();
 			game_command_queue.clear();
 			server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);

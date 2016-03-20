@@ -68,7 +68,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "4"
+#define NETWORK_STREAM_VERSION "5"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
@@ -266,6 +266,9 @@ public:
 	void Resolve(const char* host, unsigned short port, bool nonblocking = true);
 	int GetResolveStatus(void);
 
+	const char* getRawHost();
+	unsigned short getRawPort();
+
 	std::shared_ptr<sockaddr_storage> ss;
 	std::shared_ptr<int> ss_len;
 
@@ -321,9 +324,11 @@ public:
 	void LoadGroups();
 	void FreeStringIds();
 
+	void Client_Send_RESENDMAP();
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
+	void Server_Send_MAP(NetworkConnection* connection, sint16 viewX, sint16 viewY, sint16 viewZoom, sint16 viewRotation);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
 	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
@@ -415,6 +420,7 @@ private:
 	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
