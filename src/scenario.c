@@ -1125,8 +1125,6 @@ int scenario_save_network(SDL_RWops* rw)
 // Save game state without modifying any of the state for multiplayer (with a specific view)
 int scenario_save_network_view(SDL_RWops* rw, sint16 viewXIn, sint16 viewYIn, sint16 viewZoomIn, sint16 viewRotationIn)
 {
-	rct_window *w;
-	rct_viewport *viewport;
 	int viewX, viewY, viewZoom, viewRotation;
 
 	/*map_reorganise_elements();

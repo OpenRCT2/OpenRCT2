@@ -941,17 +941,14 @@ void Network::UpdateClient()
 			_desynchronised = true;
 			char str_desync[256];
 			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
-			window_network_status_open("RESYNCHRONISING!");
+			window_network_status_open(str_desync);
 			
-			/*
 			if (!gConfigNetwork.stay_connected) {
 				Close();
-				BeginClient(server_address.getRawHost(), server_address.getRawPort());
 			}
-			*/
-
-			// chris's new solution
-			Client_Send_RESENDMAP();
+			else {
+				Client_Send_RESENDMAP(); // start resync process by sending our position to the server.
+			}
 		}
 		break;
 	}
@@ -1358,20 +1355,12 @@ void Network::Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPack
 	// send a message
 	NetworkPlayer* fromplayer = connection.player;
 
-	static char formatted[1024];
-	char* lineCh = formatted;
-	formatted[0] = 0;
+	char str_resync[256];
+	const char * player_name = (const char *)fromplayer->name;
+	format_string(str_resync, STR_MULTIPLAYER_RESYNC, &player_name);
 
-	lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-	lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-	safe_strcpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
-	lineCh = strchr(lineCh, '\0');
-
-	char* ptrtext = lineCh;
-	safe_strcpy(lineCh, " was resynchronised.", 800);
-
-	chat_history_add(formatted);
-	Server_Send_CHAT(formatted);
+	chat_history_add(str_resync);
+	Server_Send_CHAT(str_resync);
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password)
