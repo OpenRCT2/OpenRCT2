@@ -2781,7 +2781,7 @@ STR_2771    :減慢遊戲速度
 STR_2772    :加快遊戲速度
 STR_2773    :視窗化
 STR_2774    :全螢幕
-STR_2775    :全螢幕 (桌面尺寸)
+STR_2775    :全螢幕 (無邊框視窗)
 STR_2776    :語言:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3515,7 +3515,7 @@ STR_5173    :將Twitch聊天室的內容推送為新聞
 STR_5174    :{SMALLFONT}{BLACK}會將Twitch聊天室所有標'!news'的內容以最近消息顯示於遊戲內
 STR_5175    :請輸入你的Twitch頻道名稱
 STR_5176    :准許Twitch頻道融合於遊戲之中
-STR_5177    :全屏幕模式:
+STR_5177    :顯示模式:
 STR_5178    :{SMALLFONT}{BLACK}顯示用於財政的密技
 STR_5179    :{SMALLFONT}{BLACK}顯示用於遊客的密技
 STR_5180    :{SMALLFONT}{BLACK}顯示用於樂園的密技
