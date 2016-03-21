@@ -326,7 +326,7 @@ public:
 	void LoadGroups();
 	void FreeStringIds();
 
-	void Client_Send_RESENDMAP();
+	void Client_Send_RESYNC();
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr, bool resync = false, sint16 viewX = 0, sint16 viewY = 0, sint16 viewZoom = 0, sint16 viewRotation = 0);
@@ -423,7 +423,7 @@ private:
 	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
-	void Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_RESYNC(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
@@ -483,6 +483,8 @@ void network_send_password(const char* password);
 void network_set_password(const char* password);
 
 void network_print_error();
+
+void network_resync();
 
 #ifdef __cplusplus
 }

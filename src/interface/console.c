@@ -13,6 +13,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../network/twitch.h"
+#include "../network/network.h"
 #include "../object.h"
 #include "../world/banner.h"
 #include "../world/scenery.h"
@@ -887,6 +888,13 @@ static int cc_open(const utf8 **argv, int argc) {
 	return 0;
 }
 
+static int cc_netresync(const utf8 **argv, int argc)
+{
+	network_resync();
+
+	return 0;
+}
+
 
 typedef int (*console_command_func)(const utf8 **argv, int argc);
 typedef struct {
@@ -952,7 +960,8 @@ console_command console_command_table[] = {
 	{ "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
 	{ "twitch", cc_twitch, "Twitch API" },
 	{ "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
-	{ "fix_banner_count", cc_fix_banner_count, "Fixes incorrectly appearing 'Too many banners' error by marking every banner entry without a map element as null.", "fix_banner_count" }
+	{ "fix_banner_count", cc_fix_banner_count, "Fixes incorrectly appearing 'Too many banners' error by marking every banner entry without a map element as null.", "fix_banner_count" },
+	{ "netresync", cc_netresync, "Resynchronises in a network game. Note that there is a cooldown at the other end.", "netresync"},
 };
 
 static int cc_windows(const utf8 **argv, int argc) {
