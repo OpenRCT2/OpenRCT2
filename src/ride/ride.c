@@ -5157,6 +5157,15 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 	ride = get_ride(rideIndex);
 
+	// Check to see if construction tool in use. If it is close the construction window
+	// to set the track to its final state and clean up ghosts.
+	// We can't just call close as it would cause a stack overflow during shop creation
+	// with auto open on.
+	if (WC_RIDE_CONSTRUCTION == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
+		rideIndex == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
+		gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
+		window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
+
 	stationIndex = ride_mode_check_station_present(ride);
 	if (stationIndex == -1)return 0;
 
