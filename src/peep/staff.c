@@ -589,8 +589,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 	}
 	
 	rct_xy16 litterTile = { 
-		.x = litter->x & 0xFFE0,
-		.y = litter->y & 0xFFE0
+		.x = nearestLitter->x & 0xFFE0,
+		.y = nearestLitter->y & 0xFFE0
 	};
 	
 	if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y)){
@@ -737,7 +737,7 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 	RCT2_GLOBAL(0x00F43918, uint8) = 0xFF;
 	uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
-	if (peep->staff_orders & STAFF_ORDERS_SWEEPING &&
+	if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) &&
 		((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + peep->sprite_index) & 0xFFF) > 110) {
 		RCT2_GLOBAL(0x00F43918, uint8) = staff_handyman_direction_to_nearest_litter(peep);
 	}
