@@ -1,19 +1,16 @@
 # OpenRCT2
-An open source clone of RollerCoaster Tycoon 2 built by decompiling the original game one bit at a time.
-- [Screenshot 1, cheat windows](http://imgur.com/a/zJTYd)
-- [Screenshot 2, large land tool area](http://i.imgur.com/kTkK5Gw.png) (up to 64 squares at once)
-- [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
-- [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
+An open source re-implementation of Roller Coaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
 
-Linux Build:  
-[![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2)  
-Windows Build:  
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9)
+### Build Status
+|             | Windows | Linux / OSX |
+|-------------|---------|-------------|
+| **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) |
+| **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) |
 
-Come talk with us if you have any questions (Developer Chat):  
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)    
-Or, if you are not a developer, and just want to hang out, we have a chat for you too!:   
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev)
+### Chat
+| Developers | Players / Off-topic |
+|------------|---------------------|
+|[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2)|[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev)|
 
 # Contents
 - 1 - [Introduction](#1-introduction)
