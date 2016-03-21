@@ -390,6 +390,7 @@ private:
 	std::vector<uint8> chunk_buffer;
 	std::string password;
 	bool _desynchronised = false;
+	bool _welcome = true;
 	uint32 _desyncTime;
 	uint32 server_connect_time = 0;
 	uint32 last_advertise_time = 0;

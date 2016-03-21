@@ -1074,7 +1074,7 @@ int scenario_save_network_ext(SDL_RWops* rw, bool resync, sint16 viewXIn, sint16
 	// Prepare S6
 	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
 	s6->header.type = S6_TYPE_SAVEDGAME;
-	s6->header.num_packed_objects = scenario_get_num_packed_objects_to_write();
+	s6->header.num_packed_objects = resync ? 0 : scenario_get_num_packed_objects_to_write(); // setting this to 0 will make scenerio_save_s6 not save any objects
 	s6->header.version = S6_RCT2_VERSION;
 	s6->header.magic_number = S6_MAGIC_NUMBER;
 

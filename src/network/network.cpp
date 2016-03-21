@@ -645,6 +645,8 @@ void Network::Close()
 	player_list.clear();
 	group_list.clear();
 
+	_welcome = true;
+
 #ifdef __WINDOWS__
 	if (wsa_initialized) {
 		WSACleanup();
@@ -1890,10 +1892,14 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
 			server_srand0_tick = 0;
 			// window_network_status_open("Loaded new map from network");
-			_desynchronised = false;
 
 			// Notify user he is now online and which shortcut key enables chat
-			network_chat_show_connected_message();
+			if (_welcome) {
+				network_chat_show_connected_message();
+				_welcome = false;
+			}
+
+			_desynchronised = false;
 		}
 		else
 		{
