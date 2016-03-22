@@ -3662,6 +3662,36 @@ static bool ride_is_mode_valid(rct_ride *ride, uint8 mode)
 	return false;
 }
 
+static bool ride_is_valid_lift_hill_speed(rct_ride *ride, int speed)
+{
+	int minSpeed = gCheatsFastLiftHill ? 0   : RideLiftData[ride->type].minimum_speed;
+	int maxSpeed = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
+	return speed >= minSpeed && speed <= maxSpeed;
+}
+
+static bool ride_is_valid_num_circuits(rct_ride *ride, int numCircuits)
+{
+	int minNumCircuits = 1;
+	int maxNumCircuits = gCheatsFastLiftHill ? 255 : 20;
+	return numCircuits >= minNumCircuits && numCircuits <= maxNumCircuits;
+}
+
+static bool ride_is_valid_operation_option(rct_ride *ride, uint8 value)
+{
+	uint8 minValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
+	uint8 maxValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
+	if (ride->mode == RIDE_MODE_MAZE) {
+		// Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
+		maxValue = 64;
+	}
+	if (gCheatsFastLiftHill) {
+		minValue = 0;
+		maxValue = 255;
+	}
+	
+	return value >= minValue && value <= maxValue;
+}
+
 static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uint8 flags)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
@@ -3704,24 +3734,44 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 		}
 		break;
 	case RIDE_SETTING_MIN_WAITING_TIME:
+		if (value > 250) {
+			log_warning("Invalid minimum waiting time.");
+			return MONEY32_UNDEFINED;
+		}
+
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->min_waiting_time = value;
 			ride->max_waiting_time = max(value, ride->max_waiting_time);
 		}
 		break;
 	case RIDE_SETTING_MAX_WAITING_TIME:
+		if (value > 250) {
+			log_warning("Invalid maximum waiting time.");
+			return MONEY32_UNDEFINED;
+		}
+
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->max_waiting_time = value;
 			ride->min_waiting_time = min(value, ride->min_waiting_time);
 		}
 		break;
-	case RIDE_SETTING_TIME_LIMIT:
+	case RIDE_SETTING_OPERATION_OPTION:
+		if (!ride_is_valid_operation_option(ride, value)) {
+			log_warning("Invalid operation option value.");
+			return MONEY32_UNDEFINED;
+		}
+
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			invalidate_test_results(rideIndex);
-			ride->time_limit = value;
+			ride->operation_option = value;
 		}
 		break;
 	case RIDE_SETTING_INSPECTION_INTERVAL:
+		if (value > RIDE_INSPECTION_NEVER) {
+			log_warning("Invalid inspection interval.");
+			return MONEY32_UNDEFINED;
+		}
+
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->inspection_interval = value;
 		}
@@ -3735,6 +3785,11 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 		}
 		break;
 	case RIDE_SETTING_MUSIC_TYPE:
+		if (value >= MUSIC_STYLE_COUNT) {
+			log_warning("Invalid music style.");
+			return MONEY32_UNDEFINED;
+		}
+
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			if (value != ride->music) {
 				ride->music = value;
@@ -3743,6 +3798,11 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 		}
 		break;
 	case RIDE_SETTING_LIFT_HILL_SPEED:
+		if (!ride_is_valid_lift_hill_speed(ride, value)) {
+			log_warning("Invalid lift hill speed.");
+			return MONEY32_UNDEFINED;
+		}
+
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			if (value != ride->lift_hill_speed) {
 				ride->lift_hill_speed = value;
@@ -3753,6 +3813,11 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 	case RIDE_SETTING_NUM_CIRCUITS:
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT && value > 1) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
+			return MONEY32_UNDEFINED;
+		}
+
+		if (!ride_is_valid_num_circuits(ride, value)) {
+			log_warning("Invalid number of circuits.");
 			return MONEY32_UNDEFINED;
 		}
 

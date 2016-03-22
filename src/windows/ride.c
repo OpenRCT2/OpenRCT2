@@ -2792,7 +2792,7 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 	)
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1868;
 
-	game_do_command(0, (value << 8) | 1, 0, (4 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	set_operating_setting(w->number, RIDE_SETTING_OPERATION_OPTION, value);
 }
 
 /**
@@ -2802,18 +2802,21 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 static void window_ride_mode_tweak_increase(rct_window *w)
 {
 	rct_ride *ride = get_ride(w->number);
-	uint8 value = ride->operation_option;
-	//fast_lift_hill is the cheat that allows maxing out many limits on the Operating tab.
-	uint8 max_value = gCheatsFastLiftHill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
 
-	//Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
-	if(ride->mode == RIDE_MODE_MAZE && !gCheatsFastLiftHill)
-		max_value = 64;
+	uint8 maxValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
+	if (ride->mode == RIDE_MODE_MAZE) {
+		// Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
+		maxValue = 64;
+	}
+	if (gCheatsFastLiftHill) {
+		maxValue = 255;
+	}
 
-	if (value < max_value)
-		value += ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
-
-	window_ride_mode_tweak_set(w, value);
+	uint8 increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+	uint8 newValue = ride->operation_option + increment;
+	if (newValue < maxValue) {
+		window_ride_mode_tweak_set(w, newValue);
+	}
 }
 
 /**
@@ -2823,14 +2826,17 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 static void window_ride_mode_tweak_decrease(rct_window *w)
 {
 	rct_ride *ride = get_ride(w->number);
-	uint8 value = ride->operation_option;
-	//fast_lift_hill is the cheat that allows maxing many limits on the Operating tab.
-	uint8 min_value = gCheatsFastLiftHill ? 0 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
 
-	if (value > min_value)
-		value -= ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+	uint8 minValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
+	if (gCheatsFastLiftHill) {
+		minValue = 0;
+	}
 
-	window_ride_mode_tweak_set(w, value);
+	uint8 decrement = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+	uint8 newValue = ride->operation_option - decrement;
+	if (newValue > minValue) {
+		window_ride_mode_tweak_set(w, newValue);
+	}
 }
 
 /**
