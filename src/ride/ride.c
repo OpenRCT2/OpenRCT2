@@ -3673,7 +3673,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 	}
 
 	switch (setting) {
-	case 0:
+	case RIDE_SETTING_MODE:
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
 			return MONEY32_UNDEFINED;
@@ -3698,35 +3698,35 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 			ride_update_max_vehicles(rideIndex);
 		}
 		break;
-	case 1:
+	case RIDE_SETTING_DEPARTURE:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->depart_flags = value;
 		}
 		break;
-	case 2:
+	case RIDE_SETTING_MIN_WAITING_TIME:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->min_waiting_time = value;
 			ride->max_waiting_time = max(value, ride->max_waiting_time);
 		}
 		break;
-	case 3:
+	case RIDE_SETTING_MAX_WAITING_TIME:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->max_waiting_time = value;
 			ride->min_waiting_time = min(value, ride->min_waiting_time);
 		}
 		break;
-	case 4:
+	case RIDE_SETTING_TIME_LIMIT:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			invalidate_test_results(rideIndex);
 			ride->time_limit = value;
 		}
 		break;
-	case 5:
+	case RIDE_SETTING_INSPECTION_INTERVAL:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->inspection_interval = value;
 		}
 		break;
-	case 6:
+	case RIDE_SETTING_MUSIC:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			ride->lifecycle_flags &= ~RIDE_LIFECYCLE_MUSIC;
 			if (value) {
@@ -3734,7 +3734,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 			}
 		}
 		break;
-	case 7:
+	case RIDE_SETTING_MUSIC_TYPE:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			if (value != ride->music) {
 				ride->music = value;
@@ -3742,7 +3742,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 			}
 		}
 		break;
-	case 8:
+	case RIDE_SETTING_LIFT_HILL_SPEED:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			if (value != ride->lift_hill_speed) {
 				ride->lift_hill_speed = value;
@@ -3750,7 +3750,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 			}
 		}
 		break;
-	case 9:
+	case RIDE_SETTING_NUM_CIRCUITS:
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT && value > 1) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
 			return MONEY32_UNDEFINED;
