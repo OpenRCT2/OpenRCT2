@@ -806,6 +806,11 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 	y = *ecx & 0xFFFF;
 	z = *edx * 16;
 
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
@@ -987,6 +992,10 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 		return 0;
 	default:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+			return MONEY32_UNDEFINED;
+		}
+
 		if (x <= 32 || y <= 32) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
 			return MONEY32_UNDEFINED;
