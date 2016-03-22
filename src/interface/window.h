@@ -503,6 +503,8 @@ typedef void (*scenarioselect_callback)(const utf8 *path);
 extern bool gLoadSaveTitleSequenceSave;
 extern modal_callback gLoadSaveCallback;
 
+typedef void (*close_callback)();
+
 // rct2: 0x01420078
 extern rct_window* g_window_list;
 
@@ -635,7 +637,7 @@ void window_news_options_open();
 void window_cheats_open();
 void window_multiplayer_open();
 void window_player_open(uint8 id);
-void window_network_status_open(const char* text);
+void window_network_status_open(const char* text, close_callback onClose);
 void window_network_status_close();
 void window_network_status_open_password();
 void window_server_list_open();

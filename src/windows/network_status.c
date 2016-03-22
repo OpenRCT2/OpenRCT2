@@ -43,6 +43,7 @@ static rct_widget window_network_status_widgets[] = {
 
 static char window_network_status_text[1024];
 
+static void window_network_status_onclose(rct_window *w);
 static void window_network_status_mouseup(rct_window *w, int widgetIndex);
 static void window_network_status_update(rct_window *w);
 static void window_network_status_textinput(rct_window *w, int widgetIndex, char *text);
@@ -50,7 +51,7 @@ static void window_network_status_invalidate(rct_window *w);
 static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_network_status_events = {
-	NULL,
+	window_network_status_onclose,
 	window_network_status_mouseup,
 	NULL,
 	NULL,
@@ -80,14 +81,15 @@ static rct_window_event_list window_network_status_events = {
 	NULL
 };
 
-void window_network_status_open(const char* text)
-{
-	rct_window* window;
+static close_callback _onClose = NULL;
 
+void window_network_status_open(const char* text, close_callback onClose)
+{
+	_onClose = onClose;
 	safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
 
 	// Check if window is already open
-	window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
+	rct_window *window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
 	if (window != NULL)
 		return;
 
@@ -110,6 +112,7 @@ void window_network_status_open(const char* text)
 
 void window_network_status_close()
 {
+	_onClose = NULL;
 	window_close_by_class(WC_NETWORK_STATUS);
 }
 
@@ -121,6 +124,13 @@ void window_network_status_open_password()
 		return;
 
 	window_text_input_raw_open(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, _password, 32);
+}
+
+static void window_network_status_onclose(rct_window *w)
+{
+	if (_onClose != NULL) {
+		_onClose();
+	}
 }
 
 static void window_network_status_mouseup(rct_window *w, int widgetIndex)
