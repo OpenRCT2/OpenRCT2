@@ -4876,6 +4876,10 @@ void map_clear_all_elements()
 }
 
 money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direction) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+		return MONEY32_UNDEFINED;
+	}
+
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x;

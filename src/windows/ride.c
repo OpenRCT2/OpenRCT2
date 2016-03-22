@@ -2792,7 +2792,7 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 	)
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1868;
 
-	game_do_command(0, (value << 8) | 1, 0, (4 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	set_operating_setting(w->number, RIDE_SETTING_OPERATION_OPTION, value);
 }
 
 /**
@@ -2802,18 +2802,21 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 static void window_ride_mode_tweak_increase(rct_window *w)
 {
 	rct_ride *ride = get_ride(w->number);
-	uint8 value = ride->operation_option;
-	//fast_lift_hill is the cheat that allows maxing out many limits on the Operating tab.
-	uint8 max_value = gCheatsFastLiftHill ? 255 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
 
-	//Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
-	if(ride->mode == RIDE_MODE_MAZE && !gCheatsFastLiftHill)
-		max_value = 64;
+	uint8 maxValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 5, uint8);
+	if (ride->mode == RIDE_MODE_MAZE) {
+		// Allow 64 people in mazes under non-cheat settings. The old maximum of 16 was too little for even moderately big mazes.
+		maxValue = 64;
+	}
+	if (gCheatsFastLiftHill) {
+		maxValue = 255;
+	}
 
-	if (value < max_value)
-		value += ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
-
-	window_ride_mode_tweak_set(w, value);
+	uint8 increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+	uint8 newValue = ride->operation_option + increment;
+	if (newValue < maxValue) {
+		window_ride_mode_tweak_set(w, newValue);
+	}
 }
 
 /**
@@ -2823,14 +2826,17 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 static void window_ride_mode_tweak_decrease(rct_window *w)
 {
 	rct_ride *ride = get_ride(w->number);
-	uint8 value = ride->operation_option;
-	//fast_lift_hill is the cheat that allows maxing many limits on the Operating tab.
-	uint8 min_value = gCheatsFastLiftHill ? 0 : RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
 
-	if (value > min_value)
-		value -= ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+	uint8 minValue = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8) + 4, uint8);
+	if (gCheatsFastLiftHill) {
+		minValue = 0;
+	}
 
-	window_ride_mode_tweak_set(w, value);
+	uint8 decrement = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
+	uint8 newValue = ride->operation_option - decrement;
+	if (newValue > minValue) {
+		window_ride_mode_tweak_set(w, newValue);
+	}
 }
 
 /**
@@ -2948,19 +2954,19 @@ static void window_ride_operating_mouseup(rct_window *w, int widgetIndex)
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_LOAD_CHECKBOX:
-		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_LOAD);
+		set_operating_setting(w->number, RIDE_SETTING_DEPARTURE, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_LOAD);
 		break;
 	case WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX:
-		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES);
+		set_operating_setting(w->number, RIDE_SETTING_DEPARTURE, ride->depart_flags ^ RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES);
 		break;
 	case WIDX_MINIMUM_LENGTH_CHECKBOX:
-		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH);
+		set_operating_setting(w->number, RIDE_SETTING_DEPARTURE, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH);
 		break;
 	case WIDX_MAXIMUM_LENGTH_CHECKBOX:
-		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH);
+		set_operating_setting(w->number, RIDE_SETTING_DEPARTURE, ride->depart_flags ^ RIDE_DEPART_WAIT_FOR_MAXIMUM_LENGTH);
 		break;
 	case WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX:
-		set_operating_setting(w->number, 1, ride->depart_flags ^ RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS);
+		set_operating_setting(w->number, RIDE_SETTING_DEPARTURE, ride->depart_flags ^ RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS);
 		break;
 	}
 }
@@ -2992,23 +2998,23 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		break;
 	case WIDX_LIFT_HILL_SPEED_INCREASE:
 		parameter_check = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
-		set_operating_setting(w->number, 8, min(ride->lift_hill_speed + 1, parameter_check));
+		set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, min(ride->lift_hill_speed + 1, parameter_check));
 		break;
 	case WIDX_LIFT_HILL_SPEED_DECREASE:
 		parameter_check = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-		set_operating_setting(w->number, 8, max(ride->lift_hill_speed - 1, parameter_check));
+		set_operating_setting(w->number, RIDE_SETTING_LIFT_HILL_SPEED, max(ride->lift_hill_speed - 1, parameter_check));
 		break;
 	case WIDX_MINIMUM_LENGTH_INCREASE:
-		set_operating_setting(w->number, 2, min(ride->min_waiting_time + 1, 250));
+		set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, min(ride->min_waiting_time + 1, 250));
 		break;
 	case WIDX_MINIMUM_LENGTH_DECREASE:
-		set_operating_setting(w->number, 2, max(0, ride->min_waiting_time - 1));
+		set_operating_setting(w->number, RIDE_SETTING_MIN_WAITING_TIME, max(0, ride->min_waiting_time - 1));
 		break;
 	case WIDX_MAXIMUM_LENGTH_INCREASE:
-		set_operating_setting(w->number, 3, min(ride->max_waiting_time + 1, 250));
+		set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, min(ride->max_waiting_time + 1, 250));
 		break;
 	case WIDX_MAXIMUM_LENGTH_DECREASE:
-		set_operating_setting(w->number, 3, max(0, ride->max_waiting_time - 1));
+		set_operating_setting(w->number, RIDE_SETTING_MAX_WAITING_TIME, max(0, ride->max_waiting_time - 1));
 		break;
 	case WIDX_MODE_DROPDOWN:
 		window_ride_mode_dropdown(w, widget);
@@ -3018,10 +3024,10 @@ static void window_ride_operating_mousedown(int widgetIndex, rct_window *w, rct_
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
 		parameter_check = gCheatsFastLiftHill ? 255 : 20;
-		set_operating_setting(w->number, 9, min(ride->num_circuits + 1, parameter_check));
+		set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, min(ride->num_circuits + 1, parameter_check));
 		break;
 	case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-		set_operating_setting(w->number, 9, max(ride->num_circuits - 1, 1));
+		set_operating_setting(w->number, RIDE_SETTING_NUM_CIRCUITS, max(ride->num_circuits - 1, 1));
 		break;
 	}
 }
@@ -3045,10 +3051,10 @@ static void window_ride_operating_dropdown(rct_window *w, int widgetIndex, int d
 		// Seek to available modes for this ride
 		availableModes = ride_seek_available_modes(ride);
 
-		set_operating_setting(w->number, 0, availableModes[dropdownIndex]);
+		set_operating_setting(w->number, RIDE_SETTING_MODE, availableModes[dropdownIndex]);
 		break;
 	case WIDX_LOAD_DROPDOWN:
-		set_operating_setting(w->number, 1, (ride->depart_flags & ~RIDE_DEPART_WAIT_FOR_LOAD_MASK) | dropdownIndex);
+		set_operating_setting(w->number, RIDE_SETTING_DEPARTURE, (ride->depart_flags & ~RIDE_DEPART_WAIT_FOR_LOAD_MASK) | dropdownIndex);
 		break;
 	}
 }
