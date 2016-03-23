@@ -7610,7 +7610,7 @@ static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex
 	return false;
 }
 
-money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint8 flags, uint8 ex)
+money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 flags, uint8 ex)
 {
 	rct_ride_entry *rideEntry;
 
@@ -7720,7 +7720,7 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 	uint8 rideIndex = *edx & 0xFF;
 	uint8 setting = (*ebx >> 8) & 0xFF;
 	uint8 value = (*edx >> 8) & 0xFF;
-	uint8 flags = *ebx & 0xFF;
+	uint32 flags = *ebx;
 	uint8 ex = *eax & 0xFF;
 	*ebx = ride_set_vehicles(rideIndex, setting, value, flags, ex);
 }
