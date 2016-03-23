@@ -195,7 +195,7 @@ void peep_update_all()
  */
 static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 center_z){
 	if ((map_element_height(center_x, center_y) & 0xFFFF) > center_z)
-		return 0;
+		return PEEP_THOUGHT_TYPE_NONE;
 
 	uint16 num_scenery = 0;
 	uint16 num_fountains = 0;
@@ -274,19 +274,19 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 	}
 
 	if (num_fountains >= 5 && num_rubbish < 20)
-		return 3;
+		return PEEP_THOUGHT_TYPE_FOUNTAINS;
 
 	if (num_scenery >= 40 && num_rubbish < 8)
-		return 1;
+		return PEEP_THOUGHT_TYPE_SCENERY;
 
 	if (nearby_music == 1 && num_rubbish < 20)
-		return 4;
+		return PEEP_THOUGHT_TYPE_MUSIC;
 
 	if (num_rubbish < 2 && !gCheatsDisableLittering)
 		// if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
-		return 2;
+		return PEEP_THOUGHT_TYPE_VERY_CLEAN;
 
-	return 0;
+	return PEEP_THOUGHT_TYPE_NONE;
 }
 
 /**
@@ -445,25 +445,11 @@ static void sub_68F41A(rct_peep *peep, int index)
 				peep->var_F2 = 0;
 				if (peep->x != (sint16)0x8000){
 
-					uint8 bl = peep_assess_surroundings(peep->x & 0xFFE0, peep->y & 0xFFE0, peep->z);
+					uint8 thought_type = peep_assess_surroundings(peep->x & 0xFFE0, peep->y & 0xFFE0, peep->z);
 
-					if (bl != 0){
+					if (thought_type != PEEP_THOUGHT_TYPE_NONE) {
+						peep_insert_new_thought(peep, thought_type, 0xFF);
 						peep->happiness_growth_rate = min(255, peep->happiness_growth_rate + 45);
-
-						switch (bl){
-						case 1:
-							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SCENERY, 0xFF);
-							break;
-						case 2:
-							peep_insert_new_thought(peep, PEEP_THOUGHT_VERY_CLEAN, 0xFF);
-							break;
-						case 3:
-							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_FOUNTAINS, 0xFF);
-							break;
-						default:
-							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_MUSIC, 0xFF);
-							break;
-						}
 					}
 				}
 			}
@@ -554,7 +540,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 						peep->cash_in_pocket <= MONEY(9, 00) &&
 						peep->happiness >= 105 &&
 						peep->happiness >= 70){
-						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_RUNNING_OUT;
+						possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_RUNNING_OUT;
 					}
 				}
 
@@ -573,7 +559,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 					case PEEP_THOUGHT_TYPE_BATHROOM:
 						peep_head_for_nearest_ride_with_flags(peep, RIDE_TYPE_FLAG_IS_BATHROOM);
 						break;
-					case PEEP_THOUGHT_RUNNING_OUT:
+					case PEEP_THOUGHT_TYPE_RUNNING_OUT:
 						peep_head_for_nearest_ride_type(peep, RIDE_TYPE_CASH_MACHINE);
 						break;
 					}
@@ -582,12 +568,12 @@ static void sub_68F41A(rct_peep *peep, int index)
 		}
 		else{
 			if (peep->nausea >= 140){
-				uint8 thought = PEEP_THOUGHT_TYPE_SICK;
+				uint8 thought_type = PEEP_THOUGHT_TYPE_SICK;
 				if (peep->nausea >= 200){
-					thought = PEEP_THOUGHT_TYPE_VERY_SICK;
+					thought_type = PEEP_THOUGHT_TYPE_VERY_SICK;
 					peep_head_for_nearest_ride_type(peep, RIDE_TYPE_FIRST_AID);
 				}
-				peep_insert_new_thought(peep, thought, 0xFF);
+				peep_insert_new_thought(peep, thought_type, 0xFF);
 			}
 		}
 
@@ -4359,7 +4345,7 @@ static void peep_update_picked(rct_peep* peep){
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1F) return;
 	peep->sub_state++;
 	if (peep->sub_state == 13){
-		peep_insert_new_thought(peep, PEEP_THOUGHT_HELP, 0xFF);
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HELP, 0xFF);
 	}
 }
 
@@ -5618,7 +5604,7 @@ static void peep_update_walking(rct_peep* peep){
 	peep->destination_tolerence = 3;
 
 	if (peep->current_seat&1){
-		peep_insert_new_thought(peep, PEEP_THOUGHT_NEW_RIDE, 0xFF);
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NEW_RIDE, 0xFF);
 	}
 	if (peep->current_ride == 0xFF){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SCENERY, 0xFF);
@@ -6700,7 +6686,7 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 	if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_FOOD)){
 		thought_type = PEEP_THOUGHT_TYPE_THIRSTY;
 		if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_DRINKS)){
-			thought_type = PEEP_THOUGHT_RUNNING_OUT;
+			thought_type = PEEP_THOUGHT_TYPE_RUNNING_OUT;
 			if (ride_type != RIDE_TYPE_CASH_MACHINE){
 				thought_type = PEEP_THOUGHT_TYPE_BATHROOM;
 				if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_BATHROOM)){
@@ -8806,7 +8792,7 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_NICE_RIDE) {
-		peep_insert_new_thought(peep, PEEP_THOUGHT_NICE_RIDE, 255);
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NICE_RIDE, 255);
 	}
 
 	if (peep_really_liked_ride(peep, ride)) {
@@ -9823,7 +9809,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 		if (peepAtRide) {
 			ride_update_popularity(ride, 1);
 			if ((peep->peep_flags & PEEP_FLAGS_INTAMIN) && ride_type_is_intamin(ride->type)) {
-				peep_insert_new_thought(peep, PEEP_THOUGHT_EXCITED, 255);
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_EXCITED, 255);
 			}
 		}
 
