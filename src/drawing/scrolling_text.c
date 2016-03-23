@@ -118,7 +118,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 {
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
-	if (dpi->zoom_level != 0) return 0x626;
+	if (dpi->zoom_level > 1) return 0x626;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32)++;
 
