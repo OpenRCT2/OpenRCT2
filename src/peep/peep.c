@@ -3757,6 +3757,9 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep *peep, rct_ri
 		input.x = (stationPosition & 0xFF) * 32;
 		input.y = (stationPosition >> 8) * 32;
 		input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, peep->current_ride);
+		if (input.element == NULL) {
+			return true;
+		}
 
 		track_begin_end trackBeginEnd;
 		while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd)) {
