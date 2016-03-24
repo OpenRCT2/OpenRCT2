@@ -992,7 +992,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	formatted[0] = 0;
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_YELLOW);
 		safe_strcpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
 		strcat(lineCh, ": ");
 		lineCh = strchr(lineCh, '\0');
@@ -1002,6 +1002,29 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	char* ptrtext = lineCh;
 	safe_strcpy(lineCh, text, 800);
 	utf8_remove_format_codes((utf8*)ptrtext, true);
+
+	// NEW: hilight urls in blue
+	lineCh = strstr(formatted, "http://");
+	if (lineCh) {
+		char formatted2[1024];
+		safe_strcpy(formatted2, lineCh, 800);
+
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+
+		safe_strcpy(lineCh, formatted2, 800);
+
+		lineCh = url_end(lineCh);
+
+		// same again to turn the color back after the link
+		if (lineCh != 0) {
+			safe_strcpy(formatted2, lineCh, 800);
+
+			lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+
+			safe_strcpy(lineCh, formatted2, 800);
+		}
+	}
+
 	return formatted;
 }
 
@@ -2178,7 +2201,6 @@ void network_set_player_group(unsigned int index, unsigned int groupindex)
 	char str_sg[256];
 	const char * player_name = (const char *)gNetwork.player_list[index]->name;
 
-	char text[256];
 	const char * group_changed_args[2] = {
 		(char *)gNetwork.player_list[index]->name,
 		gNetwork.group_list[groupindex]->GetName().c_str()
