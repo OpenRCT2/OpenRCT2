@@ -2555,6 +2555,12 @@ void network_set_password(const char* password)
 	gNetwork.SetPassword(password);
 }
 
+void network_resync() {
+	if (gNetwork.GetMode() == NETWORK_MODE_CLIENT) {
+		gNetwork.Client_Send_RESYNC();
+	}
+}
+
 #else
 int network_get_mode() { return NETWORK_MODE_NONE; }
 int network_get_status() { return NETWORK_STATUS_NONE; }
@@ -2599,4 +2605,5 @@ void network_close() {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
+void network_resync() {}
 #endif /* DISABLE_NETWORK */
