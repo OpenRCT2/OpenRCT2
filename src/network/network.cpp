@@ -2407,7 +2407,9 @@ int network_can_perform_action(unsigned int groupindex, unsigned int index)
 {
 	return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
-
+int network_get_current_player_group_index() {
+	return network_get_group_index(gNetwork.GetPlayerByID(gNetwork.GetPlayerID())->group);
+}
 void network_free_string_ids()
 {
 	gNetwork.FreeStringIds();
@@ -2497,4 +2499,5 @@ void network_close() {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
+int network_get_current_player_group_index() { return 0; }
 #endif /* DISABLE_NETWORK */

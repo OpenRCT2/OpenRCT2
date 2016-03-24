@@ -33,7 +33,7 @@
 #include "../world/sprite.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
-
+#include "../network/network.h"
 #define WINDOW_SCENERY_WIDTH	634
 #define WINDOW_SCENERY_HEIGHT	142
 #define SCENERY_BUTTON_WIDTH	66
@@ -547,7 +547,9 @@ static void window_scenery_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
-		window_scenery_is_build_cluster_tool_on ^= 1;
+		if (network_can_perform_action(network_get_current_player_group_index(), GAME_COMMAND_TOGGLE_SCENERY_CLUSTER)) {
+			window_scenery_is_build_cluster_tool_on ^= 1;
+		}
 		window_invalidate(w);
 		break;
 	}

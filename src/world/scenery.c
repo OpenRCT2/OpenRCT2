@@ -193,3 +193,7 @@ void scenery_remove_ghost_tool_placement(){
 			0);
 	}
 }
+int game_command_toggle_scenery_cluster(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp) {
+	//Because I do not know too much about game_do_command yet, i did not want to modify it at the expense of introducing bugs. This currently serves no purpose other than to allow a game command function, as the functionality uses network_can_do_action instead. It's a little hackish, but it gets the job done for right now. -wolfreak_99
+	return 1;
+}
