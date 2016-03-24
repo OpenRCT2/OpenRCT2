@@ -2173,6 +2173,21 @@ uint8 network_get_player_group(unsigned int index)
 void network_set_player_group(unsigned int index, unsigned int groupindex)
 {
 	gNetwork.player_list[index]->group = gNetwork.group_list[groupindex]->id;
+
+	// send an update
+	char str_sg[256];
+	const char * player_name = (const char *)gNetwork.player_list[index]->name;
+
+	char text[256];
+	const char * group_changed_args[2] = {
+		(char *)gNetwork.player_list[index]->name,
+		gNetwork.group_list[groupindex]->GetName().c_str()
+	};
+
+	format_string(str_sg, STR_MULTIPLAYER_PLAYER_GROUP_SET, &group_changed_args);
+
+	chat_history_add(str_sg);
+	gNetwork.Server_Send_CHAT(str_sg);
 }
 
 int network_get_group_index(uint8 id)
@@ -2241,7 +2256,7 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 		return;
 	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		player->group = groupid;
+		network_set_player_group(playerid, groupid);
 		window_invalidate_by_number(WC_PLAYER, playerid);
 	}
 	*ebx = 0;
