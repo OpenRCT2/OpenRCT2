@@ -613,8 +613,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 	}
 	
 	rct_xy16 nextTile = {
-		.x = (litter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x,
-		.y = (litter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y
+		.x = (nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x,
+		.y = (nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y
 	};
 	
 	sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
@@ -731,31 +731,30 @@ static int staff_handyman_direction_rand_surface(rct_peep* peep, uint8 validDire
  *
  *  rct2: 0x006BFBA8
  */
-static int staff_path_finding_handyman(rct_peep* peep) {
+static int staff_path_finding_handyman(rct_peep* peep)
+{
 	peep->var_E2++;
 
-	RCT2_GLOBAL(0x00F43918, uint8) = 0xFF;
+	uint8 litterDirection = 0xFF;
 	uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
 	if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) &&
 		((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + peep->sprite_index) & 0xFFF) > 110) {
-		RCT2_GLOBAL(0x00F43918, uint8) = staff_handyman_direction_to_nearest_litter(peep);
+		litterDirection = staff_handyman_direction_to_nearest_litter(peep);
 	}
 	
 	uint8 direction = 0xFF;
-	if (RCT2_GLOBAL(0x00F43918, uint8) == 0xFF && 
+	if (litterDirection == 0xFF && 
 		(peep->staff_orders & STAFF_ORDERS_MOWING) &&
-		peep->var_E2 >= 12) {
+		peep->var_E2 >= 12
+	) {
 		direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
 	}
-
-
 
 	if (direction == 0xFF) {
 		if (peep->next_var_29 & 0x18) {
 			direction = staff_handyman_direction_rand_surface(peep, validDirections);
-		}
-		else {
+		} else {
 			rct_map_element* mapElement = map_get_path_element_at(
 				peep->next_x / 32,
 				peep->next_y / 32,
@@ -767,24 +766,19 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 			uint8 pathDirections = (mapElement->properties.path.edges & validDirections) & 0xF;
 			if (pathDirections == 0) {
 				direction = staff_handyman_direction_rand_surface(peep, validDirections);
-			}
-			else {
+			} else {
 				bool chooseRandom = true;
-				if (RCT2_GLOBAL(0x00F43918, uint8) != 0xFF &&
-					pathDirections & (1 << RCT2_GLOBAL(0x00F43918, uint8))) {
-
+				if (litterDirection != 0xFF && pathDirections & (1 << litterDirection)) {
 					if ((scenario_rand() & 0xFFFF) >= 0x1999) {
 						chooseRandom = false;
-						direction = RCT2_GLOBAL(0x00F43918, uint8);
+						direction = litterDirection;
 					}
-				}
-				else {
+				} else {
 					pathDirections &= ~(1 << (peep->var_78 ^ (1 << 1)));
 					if (pathDirections == 0) {
 						pathDirections |= 1 << (peep->var_78 ^ (1 << 1));
 					}
 				}
-
 
 				if (chooseRandom == true) {
 					do {
@@ -793,7 +787,6 @@ static int staff_path_finding_handyman(rct_peep* peep) {
 				}
 			}
 		}
-
 	}
 
 	// countof(TileDirectionDelta)
