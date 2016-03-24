@@ -68,7 +68,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "4"
+#define NETWORK_STREAM_VERSION "5"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
@@ -202,7 +202,8 @@ public:
 		{STR_ACTION_KICK_PLAYER, {GAME_COMMAND_KICK_PLAYER}},
 		{STR_ACTION_MODIFY_GROUPS, {GAME_COMMAND_MODIFY_GROUPS}},
 		{STR_ACTION_SET_PLAYER_GROUP, {GAME_COMMAND_SET_PLAYER_GROUP}},
-		{STR_ACTION_CHEAT, {GAME_COMMAND_CHEAT}}
+		{STR_ACTION_CHEAT, {GAME_COMMAND_CHEAT}},
+		{STR_ACTION_TOGGLE_SCENERY_CLUSTER, {-2}}
 	};
 };
 
@@ -453,6 +454,7 @@ int network_get_player_index(uint8 id);
 uint8 network_get_player_group(unsigned int index);
 void network_set_player_group(unsigned int index, unsigned int groupindex);
 int network_get_group_index(uint8 id);
+int network_get_current_player_group_index();
 uint8 network_get_group_id(unsigned int index);
 int network_get_num_groups();
 const char* network_get_group_name(unsigned int index);
@@ -464,6 +466,7 @@ uint8 network_get_default_group();
 int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);
 int network_can_perform_action(unsigned int groupindex, unsigned int index);
+int network_can_perform_command(unsigned int groupindex, unsigned int index);
 void network_free_string_ids();
 
 void network_send_map();

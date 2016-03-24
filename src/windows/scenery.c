@@ -33,6 +33,8 @@
 #include "../world/sprite.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../network/network.h"
+#include "error.h"
 
 #define WINDOW_SCENERY_WIDTH	634
 #define WINDOW_SCENERY_HEIGHT	142
@@ -547,7 +549,15 @@ static void window_scenery_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
-		window_scenery_is_build_cluster_tool_on ^= 1;
+		if (window_scenery_is_build_cluster_tool_on == 1) {
+			window_scenery_is_build_cluster_tool_on = 0;
+		}
+		else if (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_command(network_get_current_player_group_index(), -2)) {
+			window_scenery_is_build_cluster_tool_on ^= 1;
+		}
+		else {
+			window_error_open(STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+		}
 		window_invalidate(w);
 		break;
 	}
