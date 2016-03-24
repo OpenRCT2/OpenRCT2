@@ -1869,13 +1869,25 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
 	int commandCommand = args[4];
 
+	int ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
+	
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.player->group);
 	if (!group || (group && !group->CanPerformCommand(commandCommand))) {
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
 	}
-
+	// Incase someone modifies the code / memory to enable cluster build,
+	// require a small delay in between placing scenery to provide some security, as 
+	// cluster mode is a for loop that runs the place_scenery code multiple times.
+	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
+		if ((ticks - connection.player->last_action_time) < 20) {
+			if (!(group->CanPerformCommand(-2))) {
+				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
+				return;
+			}
+		}
+	}
 	// Don't let clients send pause or quit
 	if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
 		commandCommand == GAME_COMMAND_LOAD_OR_QUIT
@@ -2408,6 +2420,16 @@ int network_can_perform_action(unsigned int groupindex, unsigned int index)
 	return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
 
+int network_can_perform_command(unsigned int groupindex, unsigned int index) 
+{
+	return gNetwork.group_list[groupindex]->CanPerformCommand(index);
+}
+
+int network_get_current_player_group_index()
+{
+	return network_get_group_index(gNetwork.GetPlayerByID(gNetwork.GetPlayerID())->group);
+}
+
 void network_free_string_ids()
 {
 	gNetwork.FreeStringIds();
@@ -2490,6 +2512,7 @@ uint8 network_get_default_group() { return 0; }
 int network_get_num_actions() { return 0; }
 rct_string_id network_get_action_name_string_id(unsigned int index) { return -1; }
 int network_can_perform_action(unsigned int groupindex, unsigned int index) { return 0; }
+int network_can_perform_command(unsigned int groupindex, unsigned int index) { return 0; }
 void network_free_string_ids() {}
 void network_send_chat(const char* text) {}
 void network_send_password(const char* password) {}
@@ -2497,4 +2520,5 @@ void network_close() {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
+int network_get_current_player_group_index() { return 0; }
 #endif /* DISABLE_NETWORK */

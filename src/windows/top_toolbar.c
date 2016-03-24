@@ -1461,10 +1461,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	case SCENERY_TYPE_SMALL:
 	{
 		int quantity = 1;
-		if (window_scenery_is_build_cluster_tool_on) {
+		bool isCluster = window_scenery_is_build_cluster_tool_on && (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_command(network_get_current_player_group_index(), -2));
+		if (isCluster) {
 			quantity = 35;
 		}
-
 		int successfulPlacements = 0;
 		for (int q = 0; q < quantity; q++) {
 			int zCoordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
@@ -1473,7 +1473,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			sint16 cur_grid_x = gridX;
 			sint16 cur_grid_y = gridY;
 
-			if (window_scenery_is_build_cluster_tool_on){
+			if (isCluster){
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
 					parameter_2 &= 0xFF00;
 					parameter_2 |= util_rand() & 3;
