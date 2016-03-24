@@ -975,6 +975,19 @@ void Network::UpdateClient()
 				break;
 			}
 
+			// if the client has windows open, they're probably doing something.
+			int openWindows = 0;
+			for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+				openWindows++;
+			}
+
+			openWindows -= RESYNC_IDLE_WINDOWS;
+
+			if (openWindows > 0) {
+				shouldSync = false;
+			}
+
+			// do sync
 			if (shouldSync) {
 				_desyncTime = SDL_GetTicks();
 				Client_Send_RESYNC();

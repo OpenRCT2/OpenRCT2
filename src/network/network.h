@@ -52,6 +52,7 @@ enum {
 
 #define NETWORK_DEFAULT_PORT 11753
 #define RESYNC_TIMEOUT 30000
+#define RESYNC_IDLE_WINDOWS 3
 
 #ifdef __cplusplus
 extern "C" {
