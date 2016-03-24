@@ -3682,7 +3682,7 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep *peep, rct_ri
 		}
 
 		int direction = map_element_get_direction(mapElement);
-		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction * 2];
+		rct_xy16 offset = RCT2_ADDRESS(0x992A3C, rct_xy16)[direction];
 
 		stationX += 16 + offset.x;
 		if (offset.x == 0) {
