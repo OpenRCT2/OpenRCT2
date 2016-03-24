@@ -27,7 +27,7 @@ STR_0025    :Boomstamattractie
 STR_0026    :Wildwaterbaan
 STR_0027    :Botsauto's
 STR_0028    :Schommelschip
-STR_0029    :Schommelschip dat over de kop gaat
+STR_0029    :Loopingschip
 STR_0030    :Eetkraam
 STR_0031    :Onbekende kraam (1D)
 STR_0032    :Drankkraam
@@ -5602,9 +5602,9 @@ STR_DESC    :Groot schommelend piratenschip
 STR_CPTY    :16 passagiers
 # End of Swinging ship / Schommelschip
 
-# Swinging Inverter Ship / Schommelschip dat over de kop gaat
+# Swinging Inverter Ship / Loopingschip
 [SWSH2]
-STR_NAME    :Schommelschip dat over de kop gaat
+STR_NAME    :Loopingschip
 STR_DESC    :Schip dat is bevestigd aan een arm met een contragewicht, en 360 graden kan draaien.
 STR_CPTY    :12 passagiers
 
@@ -5613,7 +5613,7 @@ STR_CPTY    :12 passagiers
 STR_NAME    :Chinese jonk
 STR_DESC    :Chinese jonk die is bevestigd aan een arm met een contragewicht, en 360 graden kan draaien.
 STR_CPTY    :12 passagiers
-# End of Swinging Inverter Ship / Schommelschip dat over de kop gaat
+# End of Swinging Inverter Ship / Loopingschip
 
 # Spiral RC / Spiraalachtbaan
 [SPDRCR]
