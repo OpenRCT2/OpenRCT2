@@ -592,7 +592,7 @@ Network::Network()
 	server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
 	server_command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::Server_Handle_GAMECMD;
 	server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
-	server_command_handlers[NETWORK_COMMAND_RESENDMAP] = &Network::Server_Handle_RESENDMAP;
+	server_command_handlers[NETWORK_COMMAND_RESENDMAP] = &Network::Server_Handle_RESYNC;
 	server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
 }
 
@@ -672,7 +672,9 @@ bool Network::BeginClient(const char* host, unsigned short port)
 
 	char str_resolving[256];
 	format_string(str_resolving, STR_MULTIPLAYER_RESOLVING, NULL);
-	window_network_status_open(str_resolving);
+	window_network_status_open(str_resolving, []() -> void {
+		gNetwork.Close();
+	});
 
 	mode = NETWORK_MODE_CLIENT;
 
@@ -862,7 +864,9 @@ void Network::UpdateClient()
 			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss), (*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
 				char str_connecting[256];
 				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, NULL);
-				window_network_status_open(str_connecting);
+				window_network_status_open(str_connecting, []() -> void {
+					gNetwork.Close();
+				});
 				server_connect_time = SDL_GetTicks();
 				status = NETWORK_STATUS_CONNECTING;
 			} else {
@@ -915,7 +919,9 @@ void Network::UpdateClient()
 				Client_Send_AUTH(gConfigNetwork.player_name, "");
 				char str_authenticating[256];
 				format_string(str_authenticating, STR_MULTIPLAYER_AUTHENTICATING, NULL);
-				window_network_status_open(str_authenticating);
+				window_network_status_open(str_authenticating, []() -> void {
+					gNetwork.Close();
+				});
 			}
 		}
 	}break;
@@ -933,7 +939,7 @@ void Network::UpdateClient()
 					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
 				}
 
-				window_network_status_open(str_disconnected);
+				window_network_status_open(str_disconnected, NULL);
 			}
 			Close();
 		}
@@ -971,7 +977,7 @@ void Network::UpdateClient()
 
 			if (shouldSync) {
 				_desyncTime = SDL_GetTicks();
-				Client_Send_RESENDMAP();
+				Client_Send_RESYNC();
 			}
 		}
 		break;
@@ -1344,12 +1350,8 @@ void Network::FreeStringIds()
 	}
 }
 
-void Network::Client_Send_RESENDMAP()
+void Network::Client_Send_RESYNC()
 {
-	char str_desync[256];
-	format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
-	window_network_status_open(str_desync);
-
 	// send view information for the savefile
 	rct_window* w = window_get_main();
 	rct_viewport* viewport = w->viewport;
@@ -1368,7 +1370,7 @@ void Network::Client_Send_RESENDMAP()
 	server_connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Handle_RESENDMAP(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_RESYNC(NetworkConnection& connection, NetworkPacket& packet)
 {
 	if (connection.GetLastResyncTime() - SDL_GetTicks() < RESYNC_TIMEOUT) {
 		return; // clients cannot send requests faster than the resync timeout (30 seconds)
@@ -1860,8 +1862,10 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	}
 	char str_downloading_map[256];
 	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1000, size / 1000};
-	format_string(str_downloading_map, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
-	window_network_status_open(str_downloading_map);
+	format_string(str_downloading_map, _welcome ? STR_DOWNLOADING_EVERYTHING : STR_DOWNLOADING_MAP, downloading_map_args);
+	window_network_status_open(str_downloading_map, []() -> void {
+		gNetwork.Close();
+	});
 	memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
 	if (offset + chunksize == size) {
 		window_network_status_close();
