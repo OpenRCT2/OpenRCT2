@@ -1139,6 +1139,10 @@ int sub_98198C(
 	return 1;
 }
 
+void sub_68818E(int x, int y, int image_id) {
+	RCT2_CALLPROC_X(0x0068818E, x, image_id, y, 0, 0, 0, 0);
+}
+
 /**
  *
  *  rct2: 0x006D4244

@@ -149,4 +149,6 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
 
 uint8 get_current_rotation();
 
+void sub_68818E(int x, int y, int image_id);
+
 #endif
