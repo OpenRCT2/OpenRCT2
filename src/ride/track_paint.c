@@ -860,6 +860,271 @@ TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int directi
 	return NULL;
 }
 
+enum {
+	MAZE_WALL_HEDGE = 21938,
+	MAZE_WALL_BRICK = 21951,
+	MAZE_WALL_ICE = 21964,
+	MAZE_WALL_WOOD = 21977,
+};
+
+/**
+ * rct: 0x004ACF4A
+ */
+static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
+	// eax: ride->type
+	// ebx: trackDirectionList
+	// ecx: direction
+	// edx: height
+	// esi: mapElement
+	// edi: rideIndex * sizeof(rct_ride)
+	// ebp: trackSequence
+
+	uint16 bp = mapElement->properties.track.maze_entry;
+	switch (direction) {
+		case 1:
+			bp = rol16(bp, 4);
+			break;
+		case 2:
+			bp = ror16(bp, 8);
+			break;
+		case 3:
+			bp = ror16(bp, 4);
+			break;
+	}
+
+	// draw ground
+	int image_id = 2485 | RCT2_GLOBAL(0x00F441A0, uint32);
+	sub_98196C(image_id, 0, 0, 32, 32, 0, height, get_current_rotation());
+
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), false);
+
+	RCT2_GLOBAL(0x0141E9B4, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9B8, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9BC, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9C0, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9CC, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
+
+	rct_ride *ride = get_ride(rideIndex);
+	int esi = ride->track_colour_supports[0];
+
+	if (esi == 0) image_id = MAZE_WALL_BRICK;
+	if (esi == 1) image_id = MAZE_WALL_HEDGE;
+	if (esi == 2) image_id = MAZE_WALL_ICE;
+	if (esi == 3) image_id = MAZE_WALL_WOOD;
+
+	image_id |= RCT2_GLOBAL(0x00F441A0, uint32);
+
+	if (bp & (1 << 3)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id, 2, 2, 10, 10, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 7)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id, 2, 18, 10, 10, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 11)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id, 18, 18, 10, 10, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 15)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id, 18, 2, 10, 10, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & (1 << 0)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 3, 2, 0, 10, 1, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 13)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 3, 18, 0, 10, 1, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & (1 << 5)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 5, 2, 30, 10, 1, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 8)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 5, 18, 30, 10, 1, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & (1 << 1)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 4, 0, 2, 1, 10, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 4)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 4, 0, 18, 1, 10, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & (1 << 12)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 6, 30, 2, 1, 10, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 9)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 6, 30, 18, 1, 10, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & (1 << 2)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 14;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 1, 2, 14, 10, 4, 9, height, get_current_rotation());
+	}
+
+	if (bp & (1 << 10)) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 14;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 1, 18, 14, 10, 4, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & 0x4000) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 14;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 2, 14, 2, 4, 10, 9, height, get_current_rotation());
+	}
+
+	if (bp & 0x40) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 14;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 2, 14, 18, 4, 10, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & 0x3) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 12, 0, 0, 1, 1, 9, height, get_current_rotation());
+	}
+
+	if (bp & 0x30) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 12, 0, 30, 1, 1, 9, height, get_current_rotation());
+	}
+
+	if (bp & 0x300) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 12, 30, 30, 1, 1, 9, height, get_current_rotation());
+	}
+
+	if (bp & 0x3000) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 12, 30, 0, 1, 1, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & 0x6001) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 15;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 9, 14, 0, 2, 1, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & 0x160) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 15;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 11, 14, 30, 2, 1, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & 0x16) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 15;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 8, 0, 14, 1, 2, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & 0x1600) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 15;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 10, 30, 14, 1, 2, 9, height, get_current_rotation());
+	}
+
+
+	if (bp & 0x4444) {
+		RCT2_GLOBAL(0x009DEA52, uint16) = 15;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 15;
+		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
+		sub_98197C(image_id + 7, 14, 14, 2, 2, 8, height, get_current_rotation());
+
+		RCT2_GLOBAL(0x141E9C4, uint16) = height + 12;
+		RCT2_GLOBAL(0x141E9C6, uint16) = 32;
+	}
+
+	height += 32;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
+		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
+	}
+}
+
+/**
+ * rct2: 0x008A81E8
+ */
+TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction) {
+	if (trackType != 101) {
+		return NULL;
+	}
+
+	return maze_paint_setup;
+}
+
 /**
  *
  *  rct2: 0x00761378
