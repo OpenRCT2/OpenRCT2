@@ -1211,21 +1211,10 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
  */
 static void spiral_slide_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
 	switch (trackSequence) {
-		case 0:
-			spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-
-		case 1:
-			spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-
-		case 2:
-			spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-
-		case 3:
-			spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement);
-			break;
+		case 0: spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 1: spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 2: spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 3: spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement); break;
 	}
 }
 
@@ -1233,20 +1222,11 @@ static void spiral_slide_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence,
  * rct: 0x00748DE4
  */
 static void spiral_slide_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
-
 	switch (trackSequence) {
-		case 0:
-			spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 1:
-			spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 2:
-			spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 3:
-			spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement);
-			break;
+		case 0: spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 1: spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 2: spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 3: spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement); break;
 	}
 }
 
@@ -1255,18 +1235,10 @@ static void spiral_slide_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence,
  */
 static void spiral_slide_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
 	switch (trackSequence) {
-		case 0:
-			spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 1:
-			spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 2:
-			spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 3:
-			spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement);
-			break;
+		case 0: spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 1: spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 2: spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 3: spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement); break;
 	}
 }
 
@@ -1275,18 +1247,10 @@ static void spiral_slide_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence,
  */
 static void spiral_slide_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
 	switch (trackSequence) {
-		case 0:
-			spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 1:
-			spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 2:
-			spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement);
-			break;
-		case 3:
-			spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement);
-			break;
+		case 0: spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 1: spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 2:	spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement); break;
+		case 3:	spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement); break;
 	}
 }
 
@@ -1299,14 +1263,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int di
 	}
 
 	switch (direction) {
-		case 0:
-			return spiral_slide_paint_setup_rot_0;
-		case 1:
-			return spiral_slide_paint_setup_rot_1;
-		case 2:
-			return spiral_slide_paint_setup_rot_2;
-		case 3:
-			return spiral_slide_paint_setup_rot_3;
+		case 0: return spiral_slide_paint_setup_rot_0;
+		case 1: return spiral_slide_paint_setup_rot_1;
+		case 2: return spiral_slide_paint_setup_rot_2;
+		case 3: return spiral_slide_paint_setup_rot_3;
 	}
 
 	return NULL;
