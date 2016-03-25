@@ -394,6 +394,10 @@ char* url_from_string(char *data)
 {
 	char *ret = strstr(data, "http://");
 
+	if (!ret) {
+		ret = strstr(data, "https://");
+	}
+
 	if (ret) {
 		char *ret2 = url_end(ret);
 		char *url = malloc(256 * sizeof(char));

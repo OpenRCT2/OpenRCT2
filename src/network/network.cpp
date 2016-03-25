@@ -1005,6 +1005,11 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 
 	// NEW: hilight urls in blue
 	lineCh = strstr(formatted, "http://");
+
+	if (!lineCh) {
+		lineCh = strstr(formatted, "https://");
+	}
+
 	if (lineCh) {
 		char formatted2[1024];
 		safe_strcpy(formatted2, lineCh, 800);
