@@ -191,12 +191,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 }
 
 void platform_open_browser(const char* url) {
-	int exit_value;
-	char cmd[MAX_PATH];
-
-	snprintf(cmd, MAX_PATH, "%s %s", "open", url);
-
-	execute_cmd(cmd, &exit_value, 0, 0);
+	STUB();
 }
 
 #endif
