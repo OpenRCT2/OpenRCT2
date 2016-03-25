@@ -190,4 +190,9 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 	}
 }
 
+void platform_open_browser(const char* url) {
+	log_info(url);
+	// ...
+}
+
 #endif

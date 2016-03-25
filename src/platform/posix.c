@@ -886,4 +886,9 @@ utf8* platform_get_username() {
 	}
 }
 
+void platform_open_browser(const char* url) {
+	log_info(url);
+	// ...
+}
+
 #endif
