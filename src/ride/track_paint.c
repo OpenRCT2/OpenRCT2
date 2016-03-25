@@ -45,7 +45,7 @@ static void top_spin_paint_tile_0(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
@@ -144,7 +144,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	// Left back bottom support
 	image_id += 572;
 
-	sub_98197C(al, 90, image_id, cl, height, lengthY, lengthX, get_current_rotation());
+	sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height, get_current_rotation());
 
 	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	if (image_id == 0x20000000) {
@@ -167,13 +167,13 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	image_id += 380;
 
 	sub_98199C(
-		al,
-		90,
 		image_id,
+		al,
 		cl,
-		height,
-		lengthY,
 		lengthX,
+		lengthY,
+		90,
+		height,
 		0);
 
 	uint32 seatImageId;
@@ -231,13 +231,13 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	RCT2_GLOBAL(0x014280BA, sint16) = seatCoords.z;
 
 	sub_98199C(
-		(sint8)seatCoords.x,
-		90,
 		image_id,
+		(sint8)seatCoords.x,
 		(sint8)seatCoords.y,
-		seatCoords.z,
-		lengthY,
 		lengthX,
+		lengthY,
+		90,
+		seatCoords.z,
 		0);
 
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -249,7 +249,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		image_id += 0xA0000000;
 		image_id += 76;
 
-		sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
+		sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
 
 		if (vehicle->num_peeps > 2) {
 			image_id =
@@ -259,7 +259,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 			image_id += 0xA0000000;
 			image_id += 152;
 
-			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
+			sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
 		}
 
 		if (vehicle->num_peeps > 4) {
@@ -270,7 +270,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 			image_id += 0xA0000000;
 			image_id += 228;
 
-			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
+			sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
 		}
 
 		if (vehicle->num_peeps > 6) {
@@ -281,7 +281,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 			image_id += 0xA0000000;
 			image_id += 304;
 
-			sub_98199C((sint8)seatCoords.x, 90, image_id, (sint8)seatCoords.y, seatCoords.z, lengthY, lengthX, 0);
+			sub_98199C(image_id, (sint8)seatCoords.x, (sint8)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, 0);
 		}
 	}
 
@@ -300,13 +300,13 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	image_id += 476;
 
 	sub_98199C(
-		al,
-		90,
 		image_id,
+		al,
 		cl,
-		height,
-		lengthY,
 		lengthX,
+		lengthY,
+		90,
+		height,
 		0);
 
 	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
@@ -323,13 +323,13 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	image_id += 573;
 
 	sub_98199C(
-		al,
-		90,
 		image_id,
+		al,
 		cl,
-		height,
-		lengthY,
 		lengthX,
+		lengthY,
+		height,
+		90,
 		0);
 
 	RCT2_GLOBAL(0x009DE578, rct_map_element*) = curMapElement;
@@ -349,7 +349,7 @@ static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -366,7 +366,7 @@ static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98199C(0, 7, image_id, 0, height, 1, 32, 0);
+		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0);
 	}
 
 	entranceLoc =
@@ -380,7 +380,7 @@ static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98199C(0, 7, image_id, 0, height, 32, 1, 0);
+		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0);
 	}
 
 	top_spin_paint_vehicle(32, 32, rideIndex, direction, height, mapElement);
@@ -418,7 +418,7 @@ static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -435,7 +435,7 @@ static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98199C(0, 7, image_id, 0, height, 32, 1, 0);
+		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0);
 	}
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
@@ -468,7 +468,7 @@ static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -485,7 +485,7 @@ static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98199C(0, 7, image_id, 0, height, 1, 32, 0);
+		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0);
 	}
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
@@ -518,7 +518,7 @@ static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -535,7 +535,7 @@ static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98199C(0, 7, image_id, 0, height, 32, 1, 0);
+		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0);
 	}
 
 	entranceLoc =
@@ -549,7 +549,7 @@ static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-		sub_98197C(0, 7, image_id, 0, height, 1, 32, get_current_rotation());
+		sub_98197C(image_id, 0, 0, 32, 1, 7, height, get_current_rotation());
 	}
 
 	top_spin_paint_vehicle(32, -32, rideIndex, direction, height, mapElement);
@@ -587,7 +587,7 @@ static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
@@ -603,7 +603,7 @@ static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-		sub_98197C(0, 7, image_id, 0, height, 1, 32, get_current_rotation());
+		sub_98197C(image_id, 0, 0, 32, 1, 7, height, get_current_rotation());
 	}
 
 	top_spin_paint_vehicle(0, -32, rideIndex, direction, height, mapElement);
@@ -638,7 +638,7 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -655,7 +655,7 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98199C(0, 7, image_id, 0, height, 1, 32, 0);
+		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0);
 	}
 
 	entranceLoc =
@@ -669,7 +669,7 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98197C(0, 7, image_id, 0, height, 32, 1, get_current_rotation());
+		sub_98197C(image_id, 0, 0, 1, 32, 7, height, get_current_rotation());
 	}
 
 	top_spin_paint_vehicle(-32, 32, rideIndex, direction, height, mapElement);
@@ -707,7 +707,7 @@ static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
@@ -724,7 +724,7 @@ static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA52, uint16) = 29;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-		sub_98197C(0, 7, image_id, 0, height, 28, 1, get_current_rotation());
+		sub_98197C(image_id, 0, 0, 1, 28, 7, height, get_current_rotation());
 	}
 
 	entranceLoc =
@@ -738,7 +738,7 @@ static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 29;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-		sub_98197C(0, 7, image_id, 0, height, 1, 28, get_current_rotation());
+		sub_98197C(image_id, 0, 0, 28, 1, 7, height, get_current_rotation());
 	}
 
 	top_spin_paint_vehicle(-32, -32, rideIndex, direction, height, mapElement);
@@ -776,7 +776,7 @@ static void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 di
 	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(0, 1, image_id, 0, height, 32, 32, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
@@ -793,7 +793,7 @@ static void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 di
 		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
 		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98197C(0, 7, image_id, 0, height, 32, 1, get_current_rotation());
+		sub_98197C(image_id, 0, 0, 1, 32, 7, height, get_current_rotation());
 	}
 	top_spin_paint_vehicle(-32, 0, rideIndex, direction, height, mapElement);
 
@@ -1023,17 +1023,17 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98197C(0, 45, foundationImageId, 0, height, 28, 28, rotation);
+		sub_98197C(foundationImageId, 0, 0, 28, 28, 45, height, rotation);
 
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98199C(0, 45, imageId, 0, height, 28, 28, rotation);
+		sub_98199C(imageId, 0, 0, 28, 28, 45, height, rotation);
 	} else {
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98197C(0, 45, imageId, 0, height, 28, 28, rotation);
+		sub_98197C(imageId, 0, 0, 28, 28, 45, height, rotation);
 	}
 
 	height16 += 48;
@@ -1093,20 +1093,20 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98197C(0, 29, foundationImageId, 0, height, lengthY, lengthX, rotation);
+		sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, height, rotation);
 
 		// Door image or base
 		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98199C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);
+		sub_98199C(imageId, 0, 0, lengthX, lengthY, 29, height, rotation);
 	} else {
 		// Door image or base
 		RCT2_GLOBAL(0x009DEA52, uint16) = direction == 3 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = direction == 0 ? 28 : 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
 
-		sub_98197C(0, 29, imageId, 0, height, lengthY, lengthX, rotation);
+		sub_98197C(imageId, 0, 0, lengthX, lengthY, 29, height, rotation);
 	}
 
 	// Base image if door was drawn
@@ -1115,13 +1115,13 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 		RCT2_GLOBAL(0x009DEA52, uint16) = 28;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98197C(0, 29, imageId, 0, height, 28, 2, rotation);
+		sub_98197C(imageId, 0, 0, 2, 28, 29, height, rotation);
 	} else if (direction == 2) {
 		imageId += 4;
 		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 28;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height16;
-		sub_98197C(0, 29, imageId, 0, height, 2, 28, rotation);
+		sub_98197C(imageId, 0, 0, 28, 2, 29, height, rotation);
 	}
 
 	height16 += 32;
