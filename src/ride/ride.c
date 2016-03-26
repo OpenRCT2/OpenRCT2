@@ -7396,7 +7396,7 @@ void ride_update_max_vehicles(int rideIndex)
 	rct_ride *ride;
 	rct_ride_entry *rideEntry;
 	rct_ride_entry_vehicle *vehicleEntry;
-	uint8 trainLayout[16], numCarsPerTrain, numVehicles;
+	uint8 trainLayout[32], numCarsPerTrain, numVehicles;
 	int trainLength, maxNumTrains;
 
 	ride = get_ride(rideIndex);
