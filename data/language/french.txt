@@ -5,32 +5,32 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Montagnes russes en spirales
 STR_0003    :Montagnes russes debout
-STR_0004    :Montagnes russes balancantes suspendues 
+STR_0004    :Montagnes russes suspendues 
 STR_0005    :Montagnes russes inversées
 STR_0006    :Montagnes russes junior
 STR_0007    :Chemin de fer miniature
 STR_0008    :Monorail
-STR_0009    :Mini montagnes russes suspendues
+STR_0009    :Mini-montagnes russes suspendues
 STR_0010    :Balade en bateau
-STR_0011    :Souris sauvage en bois
-STR_0012    :Steeplechase
+STR_0011    :Souris folle en bois
+STR_0012    :Rodéo montagnes
 STR_0013    :Balade en voiture
 STR_0014    :Chute libre propulsée
 STR_0015    :Bobsleigh
 STR_0016    :Tour d'observation
-STR_0017    :Looping Roller Coaster
-STR_0018    :Dinghy Slide
+STR_0017    :Montagnes russe looping
+STR_0018    :Canotube
 STR_0019    :Train de la mine
 STR_0020    :Chairlift
-STR_0021    :Corkscrew Roller Coaster
+STR_0021    :Montagnes russes tire-bouchon
 STR_0022    :Labyrinthe
 STR_0023    :Toboggan en spirale
-STR_0024    :Go Karts
-STR_0025    :Log Flume
-STR_0026    :River Rapids
+STR_0024    :Karts
+STR_0025    :Bûches
+STR_0026    :Rapides de la rivière
 STR_0027    :Dodgems
 STR_0028    :Bateau pirate
-STR_0029    :Swinging Inverter Ship
+STR_0029    :Bateau renverseur
 STR_0030    :Stand de nourriture
 STR_0031    :Stand inconnu (1D)
 STR_0032    :Stand de boissons
@@ -45,41 +45,41 @@ STR_0040    :Simulateur de mouvements
 STR_0041    :Cinéma 3D
 STR_0042    :Top Spin
 STR_0043    :Anneaux de l'espace
-STR_0044    :Reverse Freefall Coaster
+STR_0044    :Chute libre renversée
 STR_0045    :Ascenseur
-STR_0046    :Vertical Drop Roller Coaster
+STR_0046    :Montagnes russes en chute vert.
 STR_0047    :Distributeur de monnaie
 STR_0048    :Twist
 STR_0049    :Maison hantée
 STR_0050    :Infirmerie
 STR_0051    :Spectacle de cirque
 STR_0052    :Train fantôme
-STR_0053    :Steel Twister Roller Coaster
+STR_0053    :Montagnes tornado
 STR_0054    :Montagnes russes en bois
-STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Souris sauvage
-STR_0057    :Multi-Dimension Roller Coaster
+STR_0055    :Montagnes frottement latéral
+STR_0056    :Souris folle
+STR_0057    :Montagnes multidimension
 STR_0058    :Manège Inconnu (38)
 STR_0059    :Montagnes russes volantes
 STR_0060    :Manège Inconnu (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Splash Boats
 STR_0063    :Mini hélicoptères
-STR_0064    :Lay-down Roller Coaster
+STR_0064    :Mont. russes - posit. couchée
 STR_0065    :Monorail suspendu
 STR_0066    :Manège Inconnu (40)
-STR_0067    :Reverser Roller Coaster
-STR_0068    :Heartline Twister Coaster
+STR_0067    :Inverseur
+STR_0068    :Tornado Heartline
 STR_0069    :Mini-golf
-STR_0070    :Giga Coaster
+STR_0070    :Giga montagnes russes
 STR_0071    :Roto-Drop
-STR_0072    :Flying Saucers
+STR_0072    :Soucoupes volantes
 STR_0073    :Maison bizarre
 STR_0074    :Monorail Cycles
-STR_0075    :Compact Inverted Coaster
-STR_0076    :Water Coaster
-STR_0077    :Air Powered Vertical Coaster
-STR_0078    :Inverted Hairpin Coaster
+STR_0075    :Montagnes compactes inversées
+STR_0076    :Montagnes aquatiques
+STR_0077    :Voiture propulsée dans les airs
+STR_0078    :Epingle à cheveux inversée
 STR_0079    :Tapis volant
 STR_0080    :Balade sous-marine
 STR_0081    :River Rafts
@@ -89,11 +89,11 @@ STR_0084    :Manège Inconnu (52)
 STR_0085    :Manège Inconnu (53)
 STR_0086    :Manège Inconnu (54)
 STR_0087    :Manège Inconnu (55)
-STR_0088    :Inverted Impulse Coaster
-STR_0089    :Mini montagnes russes
-STR_0090    :Mine Ride
+STR_0088    :Impulsion inversée
+STR_0089    :Mini-montagnes russes
+STR_0090    :Mineur
 STR_0091    :Manège Inconnu (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0092    :Moteur à induction linéaire
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -515,12 +515,12 @@ STR_0510    :
 STR_0511    :
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
+STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
 STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
+STR_0516    :Des montagnes russes tranquilles pour ceux qui n'osent pas encore aller plus loin
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
 STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
+STR_0519    :Les passagers voyagent dans de petites voitures suspendues à un rail et qui se balancent dans les virages
 STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
 STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
 STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
@@ -528,7 +528,7 @@ STR_0523    :Riders travel slowly in powered vehicles along a track-based route
 STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
 STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
 STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
+STR_0527    :Des montagnes russes métalliques régulières avec des boucles verticales
 STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
 STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
 STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
+STR_0554    :La voiture est propulsée hors de la station à l'aide de moteurs à induction linéaire puis, après avoir atteint une pointe verticale, revient à la station en chute libre
 STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :
@@ -564,11 +564,11 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0563    :Retenus uniquement par les jambes dans des voitures confortables, les visiteurs effectuent des descentes géantes le long d'un tracé sinueux et décollent de leur siège en haut des collines
+STR_0564    :Ces montagnes russes en bois sont rapides, ardues et bruyantes. C'est le grand frisson garanti.
+STR_0565    :Des montagnes russes en bois simples avec des pentes et des virages modérés et dont les voitures se maintiennent grâce à des roues à frottement latéral et à la gravité
+STR_0566    :Des voitures individuelles filent sur des montagnes russes en zigzag avec des virages serrés et des chutes à pic
+STR_0567    :Les visiteurs, suspendus à des sièges de chaque côté de la voie, descendent des inclinaisons abruptes la tête en bas et subissent quelques inversions
 STR_0568    :
 STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
 STR_0570    :
@@ -579,7 +579,7 @@ STR_0574    :Riders are held in special harnesses in a lying-down position, trav
 STR_0575    :Powered trains hanging from a single rail transport people around the park
 STR_0576    :
 STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0578    :Une voiture fonce dans des anneaux circulaires, des pentes abruptes et des inversions à 360°
 STR_0579    :
 STR_0580    :
 STR_0581    :
@@ -587,7 +587,7 @@ STR_0582    :
 STR_0583    :
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
 STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
+STR_0586    :Des voitures en forme de bateau franchissent des virages serrés et des descentes abruptes, et plongent dans des zones aquatiques
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
@@ -600,7 +600,7 @@ STR_0595    :
 STR_0596    :
 STR_0597    :
 STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
+STR_0599    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
@@ -781,48 +781,48 @@ STR_0776    :Parc sans nom{POP16}{POP16}
 STR_0777    :Parc sans nom{POP16}{POP16}
 STR_0778    :Sign
 STR_0779    :1er
-STR_0780    :2ème
-STR_0781    :3ème
-STR_0782    :4ème
-STR_0783    :5ème
-STR_0784    :6ème
-STR_0785    :7ème
-STR_0786    :8ème
-STR_0787    :9ème
-STR_0788    :10ème
-STR_0789    :11ème
-STR_0790    :12ème
-STR_0791    :13ème
-STR_0792    :14ème
-STR_0793    :15ème
-STR_0794    :16ème
-STR_0795    :17ème
-STR_0796    :18ème
-STR_0797    :19ème
-STR_0798    :20ème
-STR_0799    :21ème
-STR_0800    :22ème
-STR_0801    :23ème
-STR_0802    :24ème
-STR_0803    :25ème
-STR_0804    :26ème
-STR_0805    :27ème
-STR_0806    :28ème
-STR_0807    :29ème
-STR_0808    :30ème
-STR_0809    :31ème
-STR_0810    :Jan
-STR_0811    :Fév
-STR_0812    :Mar
-STR_0813    :Avr
-STR_0814    :Mai
-STR_0815    :Jun
-STR_0816    :Jul
-STR_0817    :Aoû
-STR_0818    :Sep
-STR_0819    :Oct
-STR_0820    :Nov
-STR_0821    :Déc
+STR_0780    :2
+STR_0781    :3
+STR_0782    :4
+STR_0783    :5
+STR_0784    :6
+STR_0785    :7
+STR_0786    :8
+STR_0787    :9
+STR_0788    :10
+STR_0789    :11
+STR_0790    :12
+STR_0791    :13
+STR_0792    :14
+STR_0793    :15
+STR_0794    :16
+STR_0795    :17
+STR_0796    :18
+STR_0797    :19
+STR_0798    :20
+STR_0799    :21
+STR_0800    :22
+STR_0801    :23
+STR_0802    :24
+STR_0803    :25
+STR_0804    :26
+STR_0805    :27
+STR_0806    :28
+STR_0807    :29
+STR_0808    :30
+STR_0809    :31
+STR_0810    :janvier
+STR_0811    :février
+STR_0812    :mars
+STR_0813    :avril
+STR_0814    :mai
+STR_0815    :juin
+STR_0816    :juillet
+STR_0817    :août
+STR_0818    :septembre
+STR_0819    :octobre
+STR_0820    :novembre
+STR_0821    :décembre
 STR_0822    :Impossible d'accéder au fichier de données graphiques
 STR_0823    :Fichier de données manquant ou inaccessible
 STR_0824    :{BLACK}{CROSS}
@@ -836,7 +836,7 @@ STR_0831    :{SMALLFONT}{BLACK}Dézoomer sur la vue
 STR_0832    :{SMALLFONT}{BLACK}Tourner la vue de 90{DEGREE} dans le sens des aiguilles d'une montre
 STR_0833    :{SMALLFONT}{BLACK}Mettre en pause le jeu
 STR_0834    :{SMALLFONT}{BLACK}Options du jeu et du disque
-STR_0835    :L'initialisation du jeu a échouée
+STR_0835    :L'initialisation du jeu a échoué
 STR_0836    :Impossible de démarrer le jeu minimisé
 STR_0837    :Impossible d'initialiser le système de graphiques
 STR_0838    :<not used anymore>
@@ -896,9 +896,9 @@ STR_0889    :Quitter le gestionnaire des voies
 STR_0890    :SCR{COMMA16}.BMP
 STR_0891    :Capture d'écran
 STR_0892    :Capture d'écran sauvegardée en tant que '{STRINGID}'
-STR_0893    :La capture d'écran a échouée!
+STR_0893    :La capture d'écran a échoué!
 STR_0894    :Landscape data area full !
-STR_0895    :Impossible de construire partiellement au dessus et partiellement en dessous du sol
+STR_0895    :Impossible de construire à la fois au-dessus et en-dessous du sol
 STR_0896    :{POP16}{POP16}{STRINGID} Construction
 STR_0897    :Direction
 STR_0898    :{SMALLFONT}{BLACK}Courbe à gauche
@@ -911,8 +911,8 @@ STR_0904    :{SMALLFONT}{BLACK}Courbe à gauche (grand rayon)
 STR_0905    :{SMALLFONT}{BLACK}Courbe à droite (grand rayon)
 STR_0906    :{SMALLFONT}{BLACK}Droit
 STR_0907    :Pente
-STR_0908    :Roll/Banking
-STR_0909    :Rot. des sièges.
+STR_0908    :Inclinaison
+STR_0909    :Rot. des sièges
 STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
 STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
 STR_0912    :{SMALLFONT}{BLACK}No roll
@@ -1032,7 +1032,7 @@ STR_1025    :{COMMA16} voitures par train
 STR_1026    :Le quai est trop long!
 STR_1027    :{SMALLFONT}{BLACK}Localiser sur la vue générale
 STR_1028    :En dehors de la carte!
-STR_1029    :Impossible de construire partiellement au dessus et partiellement en dessous de l'eau!
+STR_1029    :Impossible de construire à la fois au-dessus et en-dessous de l'eau!
 STR_1030    :Ne peut être construit que sous l'eau!
 STR_1031    :Impossible de construire ceci sous l'eau!
 STR_1032    :Ne peut être construit que sur l'eau!
@@ -2741,8 +2741,8 @@ STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{MONTH}, an {COMMA16}
-STR_2737    :{STRINGID} {MONTH}, an {COMMA16}
+STR_2736    :{MONTH}, année {COMMA16}
+STR_2737    :{STRINGID} {MONTH}, année {COMMA16}
 STR_2738    :Title screen music:
 STR_2739    :Aucun
 STR_2740    :RollerCoaster Tycoon 1
@@ -3498,7 +3498,7 @@ STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the t
 STR_5157    :Unlock all prices
 STR_5158    :Quit to menu
 STR_5159    :Quitter OpenRCT2
-STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, an {POP16}{COMMA16}
+STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, année {POP16}{COMMA16}
 STR_5161    :Format de date:
 STR_5162    :Jour/Mois/Année
 STR_5163    :Mois/Jour/Année
@@ -4517,6 +4517,6 @@ STR_DTLS    :
 
 #WW
 [CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
+STR_NAME    :Le condor
+STR_DESC    :Les passagers sont couchés à plat ventre dans une voiture en forme de condor se déplaçant sur un monorail et se balançant d'un côté à l'autre dans les virages
 STR_CPTY    :4 passagers par voiture

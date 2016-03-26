@@ -2691,7 +2691,7 @@ STR_2681    :{MEDIUMFONT}{BLACK}Ökar pengarna med {CURRENCY}
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}En stor grupp anländer
-STR_2685    :Simpla Brus Parametrar
+STR_2685    :Simpla Brus Inställningar
 STR_2686    :{WINDOW_COLOUR_2}Låg:
 STR_2687    :{WINDOW_COLOUR_2}Hög:
 STR_2688    :{WINDOW_COLOUR_2}Bas Frekvens:
@@ -3462,26 +3462,27 @@ STR_3446    :Avbryt Patrullområde
 # New strings, cleaner
 STR_5120    :Finans
 STR_5121    :Forskning
-STR_5122    :Select rides by track type (som i RCT1)
+STR_5122    :Välj vagnar efter spår typ (som i RCT1)
 STR_5123    :Förnya karuseller
 STR_5124    :<not used anymore>
 STR_5125    :All destructable
-STR_5126    :Slumpmässig titel musik
-STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
-STR_5128    :Vald storlek
+#This needs to be changed, really confusing string + add a description (See issue #489 in Localisation on github)
+STR_5126    :Slumpvald titel musik
+STR_5127    :{SMALLFONT}{BLACK}Måla landskap
+STR_5128    :Välj storlek
 STR_5129    :Skriv in vald storlek mellan {COMMA16} och {COMMA16}
 STR_5130    :Kart storlek
 STR_5131    :Skriv in en kart storlek mellan  {COMMA16} och {COMMA16}
 STR_5132    :Laga alla attraktioner
 STR_5133    :{SMALLFONT}{BLACK}Justera mindre storlek av landrättigheter
 STR_5134    :{SMALLFONT}{BLACK}Justera större storlek av landrättigheter
-STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
-STR_5136    :Land rättigheter
-STR_5137    :Unlock operating limits
+STR_5135    :{SMALLFONT}{BLACK}Köp land- och konstruktions-rättigheter
+STR_5136    :Landrättigheter
+STR_5137    :Lås upp körläges gränser
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
-STR_5140    :Disable brakes failure
-STR_5141    :Disable all breakdowns
+STR_5140    :Avaktivera broms haverin
+STR_5141    :Avaktivera alla haverin
 STR_5142    :Normal Hastighet
 STR_5143    :Kvick Hastighet
 STR_5144    :Snabb Hastighet
@@ -3490,14 +3491,14 @@ STR_5146    :Hyper Hastighet
 STR_5147    :Fusk
 STR_5148    :{SMALLFONT}{BLACK}Ändra spelets hastighet
 STR_5149    :{SMALLFONT}{BLACK}Visa fusk
-STR_5150    :Enable debugging tools
+STR_5150    :Aktivera felsöknings verktygen
 STR_5151    :,
 STR_5152    :.
-STR_5153    :Edit Themes...
-STR_5154    :Hardware display
-STR_5155    :Allow testing of unfinished tracks
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
-STR_5157    :Unlock all prices
+STR_5153    :Redigera Teman...
+STR_5154    :Hårdvare hanteraren
+STR_5155    :Tillåt testning av spår som inte är färdiga
+STR_5156    :{SMALLFONT}{BLACK}Tillåter testning av de mesta åkturerna även när spåret är oklart, gäller inte Blockavdelade kontinuerliga banlägen
+STR_5157    :Lås upp alla priser
 STR_5158    :Avsluta till menyn
 STR_5159    :Avsluta OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, År {POP16}{COMMA16}
@@ -3507,42 +3508,42 @@ STR_5163    :Månad/Dag/År
 STR_5164    :Twitch Kanal namn
 STR_5165    :Namnge gäster efter följare
 STR_5166    :{SMALLFONT}{BLACK}Kommer namnge gäster efter Twitch kanalens följare
-STR_5167    :Track follower guests
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
-STR_5169    :Name guests after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name guests after people in Twitch chat
-STR_5171    :Track chat guests
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
+STR_5167    :Spåra Twitch följande gäster
+STR_5168    :{SMALLFONT}{BLACK}Kommer aktivera spårnings information för gäster döpta efter kanalens Twitch följare
+STR_5169    :Döp gäster efter namn i Twitch chatten
+STR_5170    :{SMALLFONT}{BLACK}Kommer döpa gästerna till namnen i Twitch kanalens chatt
+STR_5171    :Spåra chatt gästerna
+STR_5172    :{SMALLFONT}{BLACK}Kommer aktivera spårnings information för gäster döpta efter Twitch kanalens chattare
 STR_5173    :Använd Twitch chatten som nyheter
-STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
-STR_5177    :Fullskärms läge:
+STR_5174    :{SMALLFONT}{BLACK}Kommer använda Twitch chattens meddelanden följt med !nyheter som nofitikationer i spelet
+STR_5175    :Skriv in namnet på Twitch kanalen
+STR_5176    :Aktivera Twitch fuktionen
+STR_5177    :Skärmlägen:
 STR_5178    :{SMALLFONT}{BLACK}Visa ekonomiska fusk
 STR_5179    :{SMALLFONT}{BLACK}Visa gäst fusk
 STR_5180    :{SMALLFONT}{BLACK}Visa park fusk
 STR_5181    :{SMALLFONT}{BLACK}Visa karusell fusk
 STR_5182    :{INT32}
-STR_5183    :Base height
-STR_5184    :Enter base height between {COMMA16} and {COMMA16}
+STR_5183    :Bas höjd
+STR_5184    :Skriv in bas höjden mellan {COMMA16} och {COMMA16}
 STR_5185    :Vatten nivå
-STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
+STR_5186    :Skriv in vatten nivån mellan {COMMA16} och {COMMA16} 
 STR_5187    :Finansiering
 STR_5188    :Ny Kampanj
 STR_5189    :Forskning
 STR_5190    :Karta
-STR_5191    :Viewport
+STR_5191    :Bildskärm
 STR_5192    :Nyliga Nyheter
 STR_5193    :Land
 STR_5194    :Vatten
-STR_5195    :Clear Scenery
-STR_5196    :Land Rights
-STR_5197    :Scenery
+STR_5195    :Rensa Dekorationer
+STR_5196    :Landsrättigheter
+STR_5197    :Dekorationer
 STR_5198    :Gångväg
-STR_5199    :Ride Construction
-STR_5200    :Track Design Place
-STR_5201    :New Ride
-STR_5202    :Track Design Selection
+STR_5199    :Karusell Konstruktion
+STR_5200    :Spår Design Placering
+STR_5201    :Ny åktur
+STR_5202    :Spår Design val
 STR_5203    :Åkturer
 STR_5204    :Åkturs Lista
 STR_5205    :Gäst
@@ -3550,111 +3551,111 @@ STR_5206    :Gäst Lista
 STR_5207    :Personal
 STR_5208    :Personal Lista
 STR_5209    :Banderoll
-STR_5210    :Object Selection
-STR_5211    :Invention List
-STR_5212    :Scenario Options
-STR_5213    :Objective Options
-STR_5214    :Kart Generator
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
+STR_5210    :Objekt Väljare
+STR_5211    :Forsknings Lista
+STR_5212    :Dekorations Inställningar
+STR_5213    :Mål Inställningar
+STR_5214    :Kart-Generator
+STR_5215    :Spår Design Hanterare
+STR_5216    :Spår Design Hanterarings Lista
 STR_5217    :Fusk
 STR_5218    :Teman
 STR_5219    :Inställningar
-STR_5220    :Tangentbords Genvägar
-STR_5221    :Ändra Tangentbords Genvägar
+STR_5220    :Snabbtangenter
+STR_5221    :Ändra Snabbtangenter
 STR_5222    :Ladda/Spara
-STR_5223    :Save Prompt
-STR_5224    :Demolish Ride Prompt
-STR_5225    :Fire Staff Prompt
-STR_5226    :Track Delete Prompt
-STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
+STR_5223    :Spara Inmatning
+STR_5224    :Riva Åkturs Hanteraren
+STR_5225    :Avskeda Personal Hanteraren
+STR_5226    :Radera Spår Hanteraren
+STR_5227    :Spar Överskrivar Hanteraren
+STR_5228    :{SMALLFONT}{BLACK}Huvudgränsnitt
 STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Guests
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
-STR_5238    :Current Theme:
-STR_5239    :Duplicate
+STR_5230    :{SMALLFONT}{BLACK}Verktyg
+STR_5231    :{SMALLFONT}{BLACK}Åkturer och Gäster
+STR_5232    :{SMALLFONT}{BLACK}Redigerare
+STR_5233    :{SMALLFONT}{BLACK}Övrigt
+STR_5234    :{SMALLFONT}{BLACK}Hanterare
+STR_5235    :{SMALLFONT}{BLACK}Inställningar
+STR_5236    :Fönster:
+STR_5237    :Palett:
+STR_5238    :Nuvarande Tema:
+STR_5239    :Kopiera
 STR_5240    :Döp ditt tema
 STR_5241    :Kan inte ändra detta teama
-STR_5242    :Tema namn finns redan
+STR_5242    :Temats namn finns redan
 STR_5243    :Ogiltig karaktär använd
 STR_5244    :Teman
-STR_5245    :Top Toolbar
-STR_5246    :Bottom Toolbar
-STR_5247    :Track Editor Bottom Toolbar
-STR_5248    :Scenario Editor Bottom Toolbar
-STR_5249    :Title Menu Buttons
-STR_5250    :Title Exit Button
-STR_5251    :Title Options Button
-STR_5252    :Title Scenario Selection
+STR_5245    :Topp Verktygsfält
+STR_5246    :Bott Verktygsfält
+STR_5247    :Spår Redigerarens Bott Verktygsfält
+STR_5248    :Dekorations Redigerarens Bott Verktygsfält
+STR_5249    :Titelns Meny Knappar
+STR_5250    :Titelns Avsluta Knapp
+STR_5251    :Titelns Inställnings Knapp
+STR_5252    :Titelns Scenario Väljare
 STR_5253    :Park Information
-STR_5254    :Create
-STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
-STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5254    :Skapa
+STR_5255    :{SMALLFONT}{BLACK}Skapa ny titel sekvens från början
+STR_5256    :Skapa ett nytt tema att göra ändringar på
+STR_5257    :{SMALLFONT}{BLACK}Skapa ett nytt tema baserat på denna
+STR_5258    :{SMALLFONT}{BLACK}Ta bort det använda temat
+STR_5259    :{SMALLFONT}{BLACK}Döp om det använda temat
 STR_5260    :Gigantisk skärmdump
 STR_5261    :Filter
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
-STR_5264    :Custom
-STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
+STR_5264    :Egna
+STR_5265    :{SMALLFONT}{BLACK}Välj vilket innehåll som ska vara synliga
 STR_5266    :{SMALLFONT}{BLACK}Skärm
 STR_5267    :{SMALLFONT}{BLACK}Kultur och Enhet
 STR_5268    :{SMALLFONT}{BLACK}Ljud
 STR_5269    :{SMALLFONT}{BLACK}Kontroller och Gränssnitt
 STR_5270    :{SMALLFONT}{BLACK}Diverse
 STR_5271    :{SMALLFONT}{BLACK}Twitch
-STR_5272    :{SMALLFONT}{BLACK}Small Scenery
-STR_5273    :{SMALLFONT}{BLACK}Large Scenery
+STR_5272    :{SMALLFONT}{BLACK}Liten Dekoration
+STR_5273    :{SMALLFONT}{BLACK}Stor Dekoration
 STR_5274    :{SMALLFONT}{BLACK}Gångväg
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
-STR_5277    :Clear
-STR_5278    :Sandlåde läge
-STR_5279    :Sandlåde läge av
-STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
-STR_5281    :{SMALLFONT}{BLACK}Features
-STR_5282    :RCT1 Ride Open/Close Lights
-STR_5283    :RCT1 Park Open/Close Lights
-STR_5284    :RCT1 Scenario Selection Font
+STR_5275    :Sök efter Objekt
+STR_5276    :Skriv in namnet på objektet du letar efter
+STR_5277    :Återbetala
+STR_5278    :Sandlådesläge
+STR_5279    :Sandlådesläge av
+STR_5280    :{SMALLFONT}{BLACK}Tillåter landsrättigheter inställningar genom "Karta" fönstret och andra inställningar som normalt är begränsat till Scenario Redigeraren
+STR_5281    :{SMALLFONT}{BLACK}Tillägg 
+STR_5282    :RCT1 Öppen/Stängd Åkturs Ljus
+STR_5283    :RCT1 Öppen/Stängd Parks Ljus
+STR_5284    :RCT1 Scenario Väljar Font
 STR_5285    :EXPLODERA!!!
 STR_5286    :{SMALLFONT}{BLACK}Får gäster att explodera
 STR_5287    :Åkturen är redan trasig
 STR_5288    :Åkturen är stängd
-STR_5289    :No breakdowns available for this ride
+STR_5289    :Inga haverier tillgängliga för denna åktur
 STR_5290    :Laga åktur
-STR_5291    :Can't force breakdown
-STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
-STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
-STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
-STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
+STR_5291    :Kan inte tvinga haveri
+STR_5292    :{SMALLFONT}{BLACK}Tvinga haveri
+STR_5293    :{SMALLFONT}{BLACK}Ständ åktur/attraktion
+STR_5294    :{SMALLFONT}{BLACK}Testa åktur/attraktion
+STR_5295    :{SMALLFONT}{BLACK}Öppna åktur/attraktion
 STR_5296    :{SMALLFONT}{BLACK}Stäng parken
 STR_5297    :{SMALLFONT}{BLACK}Öppna parken
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :{SMALLFONT}{BLACK}Snabb avskeda personal
-STR_5301    :{MEDIUMFONT}{BLACK}Nollställ ditt lån
-STR_5302    :Nollställ lån
+STR_5301    :{MEDIUMFONT}{BLACK}Återbetala ditt lån
+STR_5302    :Återbetala lån
 STR_5303    :Tillåt byggande i pausat läge
-STR_5304    :Title Sekvens:
+STR_5304    :Titelsekvens:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Slumpvald
-STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5311    :{SMALLFONT}{BLACK}Felsöknings verktyg
 STR_5312    :Visa konsol
-STR_5313    :Show tile inspector
-STR_5314    :Tile inspector
+STR_5313    :Visa rut inspekteraren
+STR_5314    :Rut inspekteraren
 STR_5315    :Gräs
 STR_5316    :Sand
 STR_5317    :Jord
@@ -3678,17 +3679,17 @@ STR_5334    :Is
 STR_5335    :Åkturs Ingång
 STR_5336    :Åkturs Utgång
 STR_5337    :Park Entré
-STR_5338    :Element type
-STR_5339    :{SMALLFONT}{BLACK}Base height
-STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5341    :Flags
-STR_5342    :Choose a map tile
+STR_5338    :Ämnes Typ
+STR_5339    :{SMALLFONT}{BLACK}Bas höjd
+STR_5340    :{SMALLFONT}{BLACK}Frihöjd
+STR_5341    :Flaggor
+STR_5342    :Välj en ruta
 STR_5343    :Automatiskt placera personal
-STR_5344    :Changelog
-STR_5345    :Financial cheats
+STR_5344    :Logg över Förändringar
+STR_5345    :Finans fusk
 STR_5346    :Gäst fusk
 STR_5347    :Park fusk
-STR_5348    :Ride cheats
+STR_5348    :Åkturs fusk
 STR_5349    :{SMALLFONT}{BLACK}Alla åkturer
 STR_5350    :Max
 STR_5351    :Min
@@ -3702,125 +3703,125 @@ STR_5358    :{BLACK}Blåsa:
 STR_5359    :Ta bort gäster
 STR_5360    :{SMALLFONT}{BLACK}Tar bort alla gäster från parken
 STR_5361    :Ge alla gäster:
-STR_5362    :{BLACK}Sätter gästernas föredragna åkturs intensitet till:
-STR_5363    :Mer än 1
-STR_5364    :Mindre än 15
+STR_5362    :{BLACK}Gästernas föredragna åkturs intensitet:
+STR_5363    :Mer än 1 (Lågt)
+STR_5364    :Mindre än 15 (Högt)
 STR_5365    :{BLACK}Personal hastighet:
 STR_5366    :Normal
 STR_5367    :Snabb
-STR_5368    :Reset crash status
-STR_5369    :Park parameters...
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :Object Selection
-STR_5372    :Invert right mouse dragging
+STR_5368    :Återställ krash status
+STR_5369    :Park inställningar...
+STR_5370    :{SMALLFONT}{BLACK}Klicka på denna knapp för att modifiera{NEWLINE}park inställningar som begränsningar,{NEWLINE}gäst generering och pengar.
+STR_5371    :Objekt väljare
+STR_5372    :Invertera höger mus dragning
 STR_5373    :Namn {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
-STR_5377    :{SMALLFONT}{BLACK}Saves
-STR_5378    :{SMALLFONT}{BLACK}Script
-STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
-STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
-STR_5381    :{SMALLFONT}{BLACK}Stop playing title sequence
-STR_5382    :{SMALLFONT}{BLACK}Restart title sequence
-STR_5383    :{SMALLFONT}{BLACK}Create a new title sequence based on the current one
-STR_5384    :{SMALLFONT}{BLACK}Delete the current title sequence
-STR_5385    :{SMALLFONT}{BLACK}Rename the current title sequence
-STR_5386    :{SMALLFONT}{BLACK}Insert a new command
-STR_5387    :{SMALLFONT}{BLACK}Edit the selected command
-STR_5388    :{SMALLFONT}{BLACK}Delete the selected command
-STR_5389    :{SMALLFONT}{BLACK}Skip to the selected command in the title sequence
-STR_5390    :{SMALLFONT}{BLACK}Move the selected command down
-STR_5391    :{SMALLFONT}{BLACK}Move the selected command up
-STR_5392    :{SMALLFONT}{BLACK}Add a save to the title sequence
-STR_5393    :{SMALLFONT}{BLACK}Remove the selected save from the title sequence
-STR_5394    :{SMALLFONT}{BLACK}Rename the selected save
-STR_5395    :{SMALLFONT}{BLACK}Load the selected save in game
-STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
-STR_5397    :Can only be used on the title screen
-STR_5398    :Cannot edit title sequence while it's playing
-STR_5399    :Press the stop button to continue editing
-STR_5400    :Can't change this title sequence
-STR_5401    :Create a new title sequence to make changes to
-STR_5402    :Failed to load title sequence
-STR_5403    :There may be no Load or Wait command or a save may be invalid
-STR_5404    :Name already exists
-STR_5405    :Enter a name for the save
-STR_5406    :Enter a name for the title sequence
-STR_5407    :Adda
+STR_5377    :{SMALLFONT}{BLACK}Sparfiler
+STR_5378    :{SMALLFONT}{BLACK}Skript
+STR_5379    :{SMALLFONT}{BLACK}Skippa til nästa wait kommando
+STR_5380    :{SMALLFONT}{BLACK}Börja spela titel sekvensen
+STR_5381    :{SMALLFONT}{BLACK}Sluta spela titel sekvensen
+STR_5382    :{SMALLFONT}{BLACK}Börja om titel sekvensen
+STR_5383    :{SMALLFONT}{BLACK}Skapa en ny titel sekvensen baserat på den valda
+STR_5384    :{SMALLFONT}{BLACK}Ta bort den valda titel sekvensen
+STR_5385    :{SMALLFONT}{BLACK}Döp om den valda titel sekvensen
+STR_5386    :{SMALLFONT}{BLACK}Skriv in nytt kommando
+STR_5387    :{SMALLFONT}{BLACK}Redigera det valda kommandot
+STR_5388    :{SMALLFONT}{BLACK}Ta bort det valda kommandot
+STR_5389    :{SMALLFONT}{BLACK}Hoppa till det valda kommandot i titel sekvensen
+STR_5390    :{SMALLFONT}{BLACK}Flytta valda kommandot neråt
+STR_5391    :{SMALLFONT}{BLACK}Flytta valda kommandot uppåt
+STR_5392    :{SMALLFONT}{BLACK}Lägg till en sparfil till titel sekvensen
+STR_5393    :{SMALLFONT}{BLACK}Ta bort den valda sparfilen från titel sekvensen
+STR_5394    :{SMALLFONT}{BLACK}Döp om den valda sparfilen
+STR_5395    :{SMALLFONT}{BLACK}Ladda den valda sparfilen i spelet
+STR_5396    :{SMALLFONT}{BLACK}Ladda om titel sekvensen om ändringar har gjorts utanför spelet
+STR_5397    :Kan endast användas i titel sekvensen
+STR_5398    :Kan inte redigera titel sekvensen medan den körs
+STR_5399    :Klicka på stopp knappen innan du försöker ändra något
+STR_5400    :Kan inte byta denna titel sekvens
+STR_5401    :Skapa en ny titel sekvens att göra ändringar på
+STR_5402    :Misslyckades att ladda titelsekvens
+STR_5403    :De kanske inte finns något Load eller Wait kommando eller sparfilen är kanske inte giltig
+STR_5404    :Namnet finns redan
+STR_5405    :Skriv in ett namn för sparfilen
+STR_5406    :Skriv in ett namn för titel sekvensen
+STR_5407    :Tillägg
 STR_5408    :Ta bort
 STR_5409    :Lägg till
 STR_5410    :Redigera
-STR_5411    :Reload
+STR_5411    :Börja om
 STR_5412    :Skippa till
 STR_5413    :Ladda
 STR_5414    :Load{MOVE_X}{87}Six Flags Magic Mountain.SC6
 STR_5415    :Load{MOVE_X}{87}{STRING}
-STR_5416    :Load{MOVE_X}{87}No save selected
-STR_5417    :Lokalation
+STR_5416    :Load{MOVE_X}{87}Ingen sparfil vald
+STR_5417    :Location
 STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Rotera
+STR_5419    :Rotate
 STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
-STR_5421    :Zooma
+STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Vänta
+STR_5423    :Wait
 STR_5424    :Wait{MOVE_X}{87}{COMMA16}
-STR_5425    :Börja om
-STR_5426    :Slut
+STR_5425    :Restart
+STR_5426    :End
 STR_5427    :Kordinater:
-STR_5428    :Anticlockwise rotations:
-STR_5429    :Zoom level:
-STR_5430    :Seconds to wait:
-STR_5431    :Save to load:
+STR_5428    :Moturs rotation:
+STR_5429    :Zoom nivå:
+STR_5430    :Sekunder att vänta:
+STR_5431    :Sparfil att ladda:
 STR_5432    :Kommando:
-STR_5433    :Title Sequences
-STR_5434    :Command Editor
+STR_5433    :Titelsekvens
+STR_5434    :Kommando Redigerare
 STR_5435    :Döp om sparat spel
-STR_5436    :Edit Title Sequences...
-STR_5437    :No save selected
-STR_5438    :Can't make changes while command editor is open
-STR_5439    :A wait command with at least 4 seconds is required with a restart command
-STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5436    :Redigera titelsekvens...
+STR_5437    :Ingen sparfil vald
+STR_5438    :Kan inte göra ändringar medan kommando redigeraren är öppen
+STR_5439    :Ett wait kommando med åtminstone 4 sekunder krävs för ett restart kommando
+STR_5440    :Minimera fullskärm vid tappad fokus
+STR_5441    :{SMALLFONT}{BLACK}Identifera åkturer via spår typ,{NEWLINE}så vagnar kan bli ändrade{NEWLINE}efteråt, som i RCT1.
 STR_5442    :Tvinga park betyg:
-STR_5443    :Speed{MOVE_X}{87}{STRINGID}
+STR_5443    :Hastighet{MOVE_X}{87}{STRINGID}
 STR_5444    :Hastighet:
 STR_5445    :Hastighet
 STR_5446    :Få
 STR_5447    :Typ {STRINGID}
-STR_5448    :Ride / Vehicle {STRINGID}
-STR_5449    :Reduce game speed
-STR_5450    :Increase game speed
-STR_5451    :Open cheats window
-STR_5452    :Toggle visibility of toolbars
-STR_5453    :Select another ride
+STR_5448    :Åktur / Fordon {STRINGID}
+STR_5449    :Minska spel hastigheten
+STR_5450    :Öka spel hastigheten
+STR_5451    :Öppna fusk fönstret
+STR_5452    :Växla visning av verktysrader  
+STR_5453    :Välj en annan åktur
 STR_5454    :Lås upp FPS
-STR_5455    :Enable sandbox mode
-STR_5456    :Disable clearance checks
-STR_5457    :Disable support limits
-STR_5458    :Rotatera klockvis
-STR_5459    :Rotate anti-clockwise
-STR_5460    :Rotate view anti-clockwise
-STR_5461    :Set guests' parameters
+STR_5455    :Aktivera sandlåds läge
+STR_5456    :Placera föremål på varandra
+STR_5457    :Avaktivera Stödplar Gränserna
+STR_5458    :Rotatera medurs
+STR_5459    :Rotatera moturs
+STR_5460    :Rotera vyn moturs
+STR_5461    :Gästernas inställningar
 STR_5462    :{CURRENCY}
 STR_5463    :Mål: Ha kul!
-STR_5464    :General
+STR_5464    :Allmänt
 STR_5465    :Klimat
 STR_5466    :Personal
 STR_5467    :ALT + 
 STR_5468    :Nyliga meddelanden
-STR_5469    :Scroll map up
-STR_5470    :Scroll map left
-STR_5471    :Scroll map down
-STR_5472    :Scroll map right
-STR_5473    :Cycle day / night
-STR_5474    :Display text on banners in upper case
-STR_5475    :{COMMA16} weeks
+STR_5469    :Skrolla kartan upp
+STR_5470    :Skrolla kartan vänster
+STR_5471    :Skrolla kartan ner
+STR_5472    :Skrolla kartan höger
+STR_5473    :Växla mellan dag / natt
+STR_5474    :Visa text i banderoller med stora bokstäver
+STR_5475    :{COMMA16} veckor
 STR_5476    :Hårdvara
-STR_5477    :Map rendering
+STR_5477    :Rendering
 STR_5478    :Kontroller
-STR_5479    :Toolbar
-STR_5480    :Show toolbar buttons for:
+STR_5479    :Verktygsrad
+STR_5480    :Visa knappar för:
 STR_5481    :Teman
 STR_5482    :{WINDOW_COLOUR_2}Tid sen senaste inspektionen: {BLACK}1 minut
 STR_5483    :{BLACK}({COMMA16} veckor återstår)
@@ -3829,10 +3830,10 @@ STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Visa nyliga meddelanden
 STR_5488    :Ingen ingång (OpenRCT2 endast!)
-STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
-STR_5490    :Disable audio on focus loss
-STR_5491    :Inventions list
-STR_5492    :Scenario options
+STR_5489    :{SMALLFONT}{BLACK}Visa endast gäster du följer
+STR_5490    :Stäng av ljudet vid minimerat spel
+STR_5491    :Uppfinning list
+STR_5492    :Scenario inställningar
 STR_5493    :Skicka Meddelande
 STR_5494    :<not used anymore>
 STR_5495    :Spelar Lista
@@ -3843,16 +3844,16 @@ STR_5499    :Spelarens Namn:
 STR_5500    :Lägg till server
 STR_5501    :Starta en server
 STR_5502    :Flerspelare
-STR_5503    :Enter hostname or IP address:
-STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
+STR_5503    :Skriv in ägarens namn eller IP adressen:
+STR_5504    :{SMALLFONT}{BLACK}Visa flerspelar statusen
 STR_5505    :Kunde inte ansluta till servern.
-STR_5506    :Guests ignore intensities
-STR_5507    :Handymen mow grass by default
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
-STR_5510    :Default sound device
+STR_5506    :Gästerna igronerar intensivitetnivån
+STR_5507    :Vaktmästare klipper gräs
+STR_5508    :Tillåt filer med inkorrekta 'checksums' att laddas 
+STR_5509    :{SMALLFONT}{BLACK}Tillåter spelet att ladda scenarion och sparfiler som har inkorrekta checksum, som scenariorna från demon och skadade sparfiler. 
+STR_5510    :Standard ljuduppspelningen
 STR_5511    :(UNKNOWN)
-STR_5512    :Spara Spelet som
+STR_5512    :Spara spelet som
 STR_5513    :(Snabb) spara spelet
 STR_5514    :Stäng av skadegörelse
 STR_5515    :{SMALLFONT}{BLACK}Stoppar gäster från att vandalisera parken när de är arga
@@ -3888,7 +3889,7 @@ STR_5544    :{SMALLFONT}{BLACK}Ljus röd
 STR_5545    :{SMALLFONT}{BLACK}Mörk rosa
 STR_5546    :{SMALLFONT}{BLACK}Ljus rosa
 STR_5547    :{SMALLFONT}{BLACK}Lätt rosa
-STR_5548    :Show all operating modes
+STR_5548    :Visa alla körlägen
 STR_5549    :År/Månad/Dag
 STR_5550    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :År/Dag/Månad
@@ -3897,17 +3898,17 @@ STR_5553    :Pausa spelet när Steam overlayen är uppe
 STR_5554    :{SMALLFONT}{BLACK}Tillåt berg verktyget
 STR_5555    :Visa fordon från andra karuseller
 STR_5556    :{SMALLFONT}{BLACK}Sparka ut spelare
-STR_5557    :Stay connected after desynchronisation (Multiplayer)
-STR_5558    :A restart is required for this setting to take effect
+STR_5557    :Fortsätt vara ansluten efter synkningsproblem (Flerspelarläget)
+STR_5558    :En omstart krävs för denna inställning ska gälla
 STR_5559    :10 min. inspektion
-STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5560    :{SMALLFONT}{BLACK}Sätter inspektions tiden till 'Var 10 minut' på alla åkturer
 STR_5561    :Misslyckades att ladda språk
 STR_5562    :VARNING!
 STR_5563    :Denna funktion är i nuläget ostabil, använd med försiktighet.
 STR_5564    :Insert Corrupt Element
-STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element. **
 STR_5566    :Lösenord:
-STR_5567    :Advertise
+STR_5567    :Visa för alla spelare
 STR_5568    :Lösenord krävs
 STR_5569    :Denna server kräver lösenord
 STR_5570    :Hämta Servrar
@@ -3922,16 +3923,16 @@ STR_5578    :Rysk Rouble (R)
 STR_5579    :Window scale factor:
 STR_5580    :Czech koruna (Kc)
 STR_5581    :Visa FPS
-STR_5582    :Trap mouse cursor in window
+STR_5582    :Behåll muspekaren i spelet
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
-STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
-STR_5586    :Automatiskt öppna butiker och kiosker
-STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after building them
+STR_5585    :{SMALLFONT}{BLACK}Avaktivera åkturernas hastighetsgränser, vilket tillåter till exepmepl {VELOCITY} upplyftskedjeshastighet
+STR_5586    :Öppna butiker och kiosker automatiskt
+STR_5587    :{SMALLFONT}{BLACK}Om aktiverad, butiker och stånd öppnas automatiskt efter du har byggt dem
 STR_5588    :{SMALLFONT}{BLACK}Spela med andra spelare
-STR_5589    :Notification Settings
+STR_5589    :Notifikations Inställningar
 STR_5590    :Park priser
-STR_5591    :Marketing campaign has finished
+STR_5591    :Marknadskampanj är avslutad
 STR_5592    :Park varningar
 STR_5593    :Park rating warnings
 STR_5594    :Åktur har gått sönder
@@ -3947,31 +3948,31 @@ STR_5603    :Gäst har lämnat åktur
 STR_5604    :Gäst har köpt föremål
 STR_5605    :Guest has used facility
 STR_5606    :Gäst har dött
-STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
+STR_5607    :{SMALLFONT}{BLACK}Tvinga borttagning av vald ruta/element.
 STR_5608    :BH
 STR_5609    :CH
-STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5610    :{SMALLFONT}{BLACK}Ta bort den valda rutan/elementet. Detta kommer tvinga en borttagning, så inga pengar kommer ges/användas. Använd med försiktighet.
 STR_5611    :G
 STR_5612    :{SMALLFONT}{BLACK}Ghost flag
 STR_5613    :B
 STR_5614    :{SMALLFONT}{BLACK}Broken flag
 STR_5615    :L
-STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
-STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
-STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
+STR_5616    :{SMALLFONT}{BLACK}Sista elementet för tile flag
+STR_5617    :{SMALLFONT}{BLACK}Flytta valda elementet upp.
+STR_5618    :{SMALLFONT}{BLACK}Flytta valda elementet ner.
 STR_5619    :RollerCoaster Tycoon
-STR_5620    :Added Attractions
+STR_5620    :Tillagda Attraktioner
 STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_5625    :{OPENQUOTES}Riktiga{ENDQUOTES} Parker
 STR_5626    :Andra parker
-STR_5627    :Group scenario list by:
-STR_5628    :Source game
+STR_5627    :Sortera scenarion via:
+STR_5628    :Spel paket
 STR_5629    :Svårighetsgrad
-STR_5630    :Enable unlocking of scenarios
-STR_5631    :Original DLC Parks
+STR_5630    :Tillåt upplåsning av scenarion
+STR_5631    :Orginal DLC parker
 STR_5632    :Bygg din egna...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
@@ -3986,44 +3987,44 @@ STR_5642    :Grupp:
 STR_5643    :Lägg till Grupp
 STR_5644    :Ta bort grupp
 STR_5645    :Chatta
-STR_5646    :Teräng
+STR_5646    :Terräng
 STR_5647    :Pausa
 STR_5648    :Ändra vattennivå
-STR_5649    :Skapa Åktur
+STR_5649    :Skapa åktur
 STR_5650    :Ta bort åktur
-STR_5651    :Build Ride
-STR_5652    :Ride Properties
-STR_5653    :Scenery
+STR_5651    :Bygga åktur
+STR_5652    :Åkturs Inställningar
+STR_5653    :Dekorationer
 STR_5654    :Gångväg
 STR_5655    :Gäst
 STR_5656    :Personal
-STR_5657    :Park Properties
-STR_5658    :Park Funding
+STR_5657    :Park inställningar
+STR_5658    :Park fonder
 STR_5659    :Sparka ut spelare
-STR_5660    :Modify Groups
-STR_5661    :Set Player Group
+STR_5660    :Modifiera Grupper
+STR_5661    :Sätt Spelar Grupp
 STR_5662    :N/A
-STR_5663    :Clear Landscape
+STR_5663    :Rensa Landskap
 STR_5664    :Fusk
-STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
-STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
-STR_5703    :Can't kick the host
-STR_5704    :Last Action:
-STR_5705    :Can't set to this group
-STR_5706    :Can't remove group that players belong to
-STR_5707    :This group cannot be modified
-STR_5708    :Can't change the group that the host belongs to
+STR_5701    :{WINDOW_COLOUR_2}Senaste handling: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Visa spelarens senaste handling
+STR_5703    :Kan inte sparka ut ägaren
+STR_5704    :Senaste Handling:
+STR_5705    :Kan inte välja denna grupp
+STR_5706    :Kan inte ta bort grupper spelare finns i
+STR_5707    :Denna grupp kan inte modifieras
+STR_5708    :Kan inte ändra gruppen ägaren är i
 STR_5709    :Döp Om Gruppen
 STR_5710    :Grupp namn
 STR_5711    :Skriv in ett nytt namn för gruppen:
 STR_5712    :Kan inte modifiera tillstånd du inte själv har
 STR_5713    :Sparka ut Spelaren
-STR_5714    :Show options window
+STR_5714    :Visa inställningsfönstret
 STR_5715    :Nytt Spel
 STR_5716    :Inte tillåtet i flerspelsläge
 # For identifying client network version in server list window
-STR_5717    :Nätverks version: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}Nätverks version: {STRING}
+STR_5717    :Nätverkets version: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Nätverkets version: {STRING}
 STR_5719    :Soligt
 STR_5720    :Delvis Molning
 STR_5721    :Molningt
@@ -4031,37 +4032,37 @@ STR_5722    :Regn
 STR_5723    :Spö Regn
 STR_5724    :Åska
 STR_5725    :{BLACK}Tvinga Väder:
-STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
-STR_5727    :Scaling quality
-STR_5728    :Requires hardware display option
-STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
-STR_5730    :Nearest neighbour
-STR_5731    :Linear
-STR_5732    :Anisotropic
-STR_5733    :Use NN scaling at integer scales
+STR_5726    :{SMALLFONT}{BLACK}Sätter vädret i parken
+STR_5727    :Skalnings kvalité
+STR_5728    :Kräver att Hårdvare hanteraren är ikryssad
+STR_5729    :{SMALLFONT}{BLACK}Kräver att Hårdvare hanteraren är ibockad
+STR_5730    :Närmsta granne
+STR_5731    :Linjär
+STR_5732    :Anisotropisk
+STR_5733    :Använd NN skalning som enhetskalor
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
-STR_5735    :Nätverks status
+STR_5735    :Nätverksstatus
 STR_5736    :Spelare
-STR_5737    :Closed, {COMMA16} person still on ride
-STR_5738    :Closed, {COMMA16} people still on ride
-STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
-STR_5740    :Never-ending marketing campaigns
-STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
-STR_5742    :Authenticating ...
+STR_5737    :Stängd, {COMMA16} person fortfarande på åkturen
+STR_5738    :Stängd, {COMMA16} personer fortfarande på åkturen
+STR_5739    :{WINDOW_COLOUR_2}Kunder på åktur: {BLACK}{COMMA16}
+STR_5740    :Oändliga kampanjer
+STR_5741    :{SMALLFONT}{BLACK}Marknadskampanjer slutar aldrig
+STR_5742    :Verifierar ...
 STR_5743    :Ansluter ...
-STR_5744    :Resolving ...
-STR_5745    :Nätverks O-sync Hittad
-STR_5746    :Disconnected
-STR_5747    :Disconnected: {STRING}
-STR_5748    :Sparkad
-STR_5749    :Ut ur servern!
-STR_5750    :Connection Closed
+STR_5744    :Laddar ...
+STR_5745    :Du är inte i synk med servern
+STR_5746    :Frånkopplad
+STR_5747    :Frånkopplad: {STRING}
+STR_5748    :Utslängd
+STR_5749    :Ut från servern!
+STR_5750    :Anslutningen är avslutad
 STR_5751    :Ingen Data
-STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
-STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
-STR_5754    :Bad Player Name
-STR_5755    :Incorrect Software Version
+STR_5752    :{OUTLINE}{RED}{STRING} har lämnat
+STR_5753    :{OUTLINE}{RED}{STRING} har lämnat ({STRING})
+STR_5754    :Ogiltigt Spelar Namn
+STR_5755    :Fel version av OpenRCT
 STR_5756    :Fel Lösenord
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har anslutit till spelet
@@ -4070,13 +4071,13 @@ STR_5760    :Hong Kong Dollar (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
 STR_5762    :Kinesiska Yuan (CN{YEN})
 STR_5763    :Alla filer
-STR_5764    :Invalid ride type
-STR_5765    :Cannot edit rides of invalid type
+STR_5764    :Ogilltig åkturs typ
+STR_5765    :Kan inte redigera åkturer av okända typer
 STR_5766    :<available string id>
 STR_5767    :Inkomst
-STR_5768    :Total customers
-STR_5769    :Total profit
-STR_5770    :Customers per hour
+STR_5768    :Totala kunder
+STR_5769    :Totala vinst
+STR_5770    :Kunder per timme
 STR_5771    :Driftskostnad
 STR_5772    :Ålder
 STR_5773    :Totala kunder: {COMMA32}
@@ -4086,15 +4087,16 @@ STR_5776    :Byggd: Detta år
 STR_5777    :Byggd: Förra året
 STR_5778    :Byggd: {COMMA16} År sen
 STR_5779    :Inkomst: {CURRENCY2DP} per timme
-STR_5780    :Running cost: {CURRENCY2DP} per hour
-STR_5781    :Running cost: Unknown
+STR_5780    :Kör kostnad: {CURRENCY2DP} per timme
+STR_5781    :Kör kostnad: Okänd
 STR_5782    :Du är nu ansluten. Tryck på '{STRING}' för att skriva.
 STR_5783    :{WINDOW_COLOUR_2}Scenario Låst
 STR_5784    :{BLACK}Klara tidigare senarion för att låsa upp denna
-STR_5785    :Can't rename group...
-STR_5786    :Ogiltigt grupp namn
+STR_5785    :Kan inte byta gruppnamn...
+STR_5786    :Ogiltigt gruppnamn
 STR_5787    :{COMMA32} spelare anslutna
-STR_5788    :Default inspection interval:
+STR_5788    :Inspektions mellanrum:
+STR_5789    :Avaktivera åsk effekter
 
 #############
 # Scenarios #
@@ -4546,8 +4548,7 @@ STR_DTLS    :
 [CONDORRD]
 STR_NAME    :Condor Ride
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 passengers per car
+STR_CPTY    :4 passagerare per vagn
 
 
-# Note: as this is an unmaintained language, don't add new strings unless you intend to become the maintainer.
-#Maintainer: Nubbie (Nubbiy on Github
+#Maintainer: Nubbie (Nubbiy on Github)
