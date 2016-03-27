@@ -5420,6 +5420,15 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 			return;
 		}
 
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			// Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
+			//            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
+			rct_window *constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
+			if (constructionWindow != NULL) {
+				window_close(constructionWindow);
+			}
+		}
+
 		if (targetStatus == RIDE_STATUS_TESTING) {
 			if (!ride_is_valid_for_test(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
 				*ebx = MONEY32_UNDEFINED;

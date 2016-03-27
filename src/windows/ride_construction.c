@@ -1929,6 +1929,15 @@ static void window_ride_construction_exit_click(rct_window *w)
  */
 static void window_ride_construction_update(rct_window *w)
 {
+	rct_ride *ride = get_ride(_currentRideIndex);
+
+	// Close construction window if ride is not closed,
+	// editing ride while open will cause many issues until properly handled
+	if (ride->status != RIDE_STATUS_CLOSED) {
+		window_close(w);
+		return;
+	}
+
 	switch (_currentTrackCurve) {
 	case 429:
 	case 376:
