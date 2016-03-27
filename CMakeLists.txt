@@ -23,6 +23,10 @@ set (ORCT2_RESOURCE_DIR ${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/)
 
 project(${PROJECT})
 
+if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
+	message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
+endif()
+
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
