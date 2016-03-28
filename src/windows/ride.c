@@ -2474,7 +2474,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 			minCars=(ride->min_max_cars_per_train >> 4);
 			maxCars=(ride->min_max_cars_per_train & 0x0F);
 		} else {
-			minCars=rideEntry->zero_cars+1;
+			minCars=rideEntry->zero_cars + 1;
 			maxCars=RIDE_MAX_CARS_PER_TRAIN;
 		}
 		window_dropdown_show_text_custom_width(

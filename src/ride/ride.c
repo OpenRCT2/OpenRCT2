@@ -4571,7 +4571,7 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int vehicleIn
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN];//TODO -work out what's going on here
+	uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN];
 	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
 
 	train_ref train = { NULL, NULL };
