@@ -2448,6 +2448,8 @@ enum {
 	STR_NUMBER_SHOPS_AND_STALLS = 5808,
 	STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS = 5809,
 
+	STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT = 5810,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
