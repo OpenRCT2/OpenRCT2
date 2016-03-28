@@ -24,6 +24,7 @@ bool gCheatsDisableVandalism = false;
 bool gCheatsDisableLittering = false;
 bool gCheatsNeverendingMarketing = false;
 bool gCheatsFreezeClimate = false;
+bool gCheatsDisableTrainLengthLimit=false;
 
 int park_rating_spinner_value;
 
@@ -364,6 +365,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_FASTLIFTHILL: gCheatsFastLiftHill = !gCheatsFastLiftHill; break;
 			case CHEAT_DISABLEBRAKESFAILURE: gCheatsDisableBrakesFailure = !gCheatsDisableBrakesFailure; break;
 			case CHEAT_DISABLEALLBREAKDOWNS: gCheatsDisableAllBreakdowns = !gCheatsDisableAllBreakdowns; break;
+			case CHEAT_DISABLETRAINLENGTHLIMIT: gCheatsDisableTrainLengthLimit = !gCheatsDisableTrainLengthLimit; break;
 			case CHEAT_UNLOCKALLPRICES: gCheatsUnlockAllPrices = !gCheatsUnlockAllPrices; window_invalidate_by_class(WC_RIDE); window_invalidate_by_class(WC_PARK_INFORMATION); break;
 			case CHEAT_BUILDINPAUSEMODE: gCheatsBuildInPauseMode = !gCheatsBuildInPauseMode; break;
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = !gCheatsIgnoreRideIntensity; break;
