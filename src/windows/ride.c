@@ -1047,10 +1047,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 		y = (widget->bottom - widget->top) - 12;
 
 		ride = get_ride(w->number);
-
-		uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN];
-		ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
-
+	
 		rideEntry = get_ride_entry_by_ride(ride);
 		if (rideEntry->flags & RIDE_ENTRY_FLAG_0) {
 			clipDPI.zoom_level = 1;
@@ -1062,7 +1059,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo *dpi, rct_window *w)
 			clipDPI.y *= 2;
 		}
 
-		rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[trainLayout[rideEntry->tab_vehicle]];
+		rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,ride->num_cars_per_train,rideEntry->tab_vehicle)];
 		height += rideVehicleEntry->tab_height;
 
 		vehicleColour = ride_get_vehicle_colour(ride, 0);
@@ -2702,14 +2699,11 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 	// Background
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, 12);
 
-	uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN];
-	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
-
 	widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
 	startX = max(2, ((widget->right - widget->left) - ((ride->num_vehicles - 1) * 36)) / 2 - 25);
 	startY = widget->bottom - widget->top - 4;
 
-	rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[trainLayout[0]];
+	rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,ride->num_cars_per_train,0)];
 	startY += rideVehicleEntry->tab_height;
 
 	// For each train
@@ -2720,7 +2714,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 
 		// For each car in train
 		for (j = 0; j < ride->num_cars_per_train; j++) {
-			rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[trainLayout[j]];
+			rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,ride->num_cars_per_train,j)];
 			x += rideVehicleEntry->spacing / 17432;
 			y -= (rideVehicleEntry->spacing / 2) / 17432;
 
@@ -4214,12 +4208,9 @@ static void window_ride_colour_invalidate(rct_window *w)
 		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WWT_COLOURBTN;
 		window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = window_ride_get_colour_button_image(vehicleColour.main);
 
-		uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN];
-		ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
-
 		uint32 colourFlags = 0;
 		for (int i = 0; i < ride->num_cars_per_train; i++) {
-			uint8 vehicleTypeIndex = trainLayout[i];
+			uint8 vehicleTypeIndex = ride_entry_get_vehicle_at_position(ride->subtype,ride->num_cars_per_train,i);
 
 			colourFlags |= rideEntry->vehicles[vehicleTypeIndex].flags_b;
 			colourFlags = ror32(colourFlags, 16);
@@ -4403,14 +4394,11 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 	x = (vehiclePreviewWidget->right - vehiclePreviewWidget->left) / 2;
 	y = vehiclePreviewWidget->bottom - vehiclePreviewWidget->top - 15;
 
-	uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN];
-	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
-
 	// ?
 	trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR ?
 		w->var_48C : rideEntry->tab_vehicle;
 
-	rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[trainLayout[trainCarIndex]];
+	rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,ride->num_cars_per_train,trainCarIndex)];
 
 	y += rideVehicleEntry->tab_height;
 
