@@ -560,6 +560,10 @@ int map_coord_is_connected(int x, int y, int z, uint8 faceDirection)
 {
 	rct_map_element *mapElement = map_get_first_element_at(x, y);
 
+	if (mapElement == NULL) {
+		return 0; // sanity
+	}
+
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
 			continue;

@@ -3047,7 +3047,7 @@ void ride_check_all_reachable()
  *  rct2: 0x006B7C59
  * @return 1 if the coordinate is reachable or has no entrance, 0 otherwise
  */
-static int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index)
+int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index)
 {
 	int x, y, z;
 	rct_map_element *mapElement;
