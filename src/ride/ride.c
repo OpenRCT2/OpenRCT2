@@ -2977,6 +2977,10 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme)
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 {
 	vehicle_colour result;
+	//Prevent indexing array out of bounds
+		if(vehicleIndex>31) {
+		vehicleIndex=31;
+		}
 	result.main = ride->vehicle_colours[vehicleIndex].body_colour;
 	result.additional_1 = ride->vehicle_colours[vehicleIndex].trim_colour;
 	result.additional_2 = ride->vehicle_colours_extended[vehicleIndex];
@@ -7322,8 +7326,8 @@ static void ride_update_vehicle_colours(int rideIndex)
 				coloursExtended = ride->vehicle_colours_extended[i];
 				break;
 			case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-				colours = ride->vehicle_colours[carIndex];
-				coloursExtended = ride->vehicle_colours_extended[carIndex];
+				colours = ride->vehicle_colours[carIndex>31?31:carIndex];
+				coloursExtended = ride->vehicle_colours_extended[carIndex>31?31:carIndex];
 				break;
 			}
 
