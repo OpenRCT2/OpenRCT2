@@ -4543,12 +4543,9 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int vehicleIn
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN];
-	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
-
 	train_ref train = { NULL, NULL };
 	for (int carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++) {
-		rct_vehicle *car = vehicle_create_car(rideIndex, trainLayout[carIndex], carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
+		rct_vehicle *car = vehicle_create_car(rideIndex, ride_entry_get_vehicle_at_position(ride->subtype,ride->num_cars_per_train,carIndex), carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
 		if (carIndex == 0) {
 			train.head = car;
 		} else {
@@ -7335,6 +7332,22 @@ void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 
 	}
 }
 
+uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex,int numCarsPerTrain,int position)
+{
+rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+	if (position == 0 && rideEntry->front_vehicle != 255) {
+		return rideEntry->front_vehicle;
+	} else if (position == 1 && rideEntry->second_vehicle != 255) {
+		return rideEntry->second_vehicle;
+	} else if (position == 2 && rideEntry->third_vehicle != 255) {
+		return rideEntry->third_vehicle;
+	} else if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255) {
+		return rideEntry->rear_vehicle;
+	} else {
+		return rideEntry->default_vehicle;
+	}
+}
+
 int ride_get_smallest_station_length(rct_ride *ride)
 {
 	uint32 result = -1;
@@ -7409,7 +7422,7 @@ void ride_update_max_vehicles(int rideIndex)
 	rct_ride *ride;
 	rct_ride_entry *rideEntry;
 	rct_ride_entry_vehicle *vehicleEntry;
-	uint8 trainLayout[RIDE_MAX_CARS_PER_TRAIN], numCarsPerTrain, numVehicles;
+	uint8 numCarsPerTrain, numVehicles;
 	int trainLength, maxNumTrains;
 
 	ride = get_ride(rideIndex);
@@ -7431,11 +7444,10 @@ void ride_update_max_vehicles(int rideIndex)
 		int maxFriction = RCT2_GLOBAL(0x0097D21B + (ride->type * 8), uint8) << 8;
 		int maxCarsPerTrain = 1;
 		for (int numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
-			ride_entry_get_train_layout(ride->subtype, numCars, trainLayout);
 			trainLength = 0;
 			int totalFriction = 0;
 			for (int i = 0; i < numCars; i++) {
-				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,numCars,i)];
 				trainLength += vehicleEntry->spacing;
 				totalFriction += vehicleEntry->car_friction;
 			}
@@ -7466,10 +7478,9 @@ void ride_update_max_vehicles(int rideIndex)
 			break;
 		default:
 			// Calculate maximum number of trains
-			ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
 			trainLength = 0;
 			for (int i = 0; i < newCarsPerTrain; i++) {
-				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,i)];
 				trainLength += vehicleEntry->spacing;
 			}
 
@@ -7489,13 +7500,12 @@ void ride_update_max_vehicles(int rideIndex)
 			) {
 				maxNumTrains = min(maxNumTrains, 31);
 			} else {
-				ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
-				vehicleEntry = &rideEntry->vehicles[trainLayout[0]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,0)];
 				int speed = vehicleEntry->powered_max_speed;
 
 				int totalSpacing = 0;
 				for (int i = 0; i < newCarsPerTrain; i++) {
-					vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+					vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,i)];
 					totalSpacing += vehicleEntry->spacing;
 				}
 
