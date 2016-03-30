@@ -1486,9 +1486,10 @@ static void window_ride_set_page(rct_window *w, int page)
 	w->frame_no = 0;
 	w->var_492 = 0;
 
-	if (page == WINDOW_RIDE_PAGE_VEHICLE) {
-		ride_update_max_vehicles(w->number);
-	}
+	//There doesn't seem to be any need for this call, and it can sometimes modify the reported number of cars per train, so I've removed it
+	//if (page == WINDOW_RIDE_PAGE_VEHICLE) {
+		//ride_update_max_vehicles(w->number);
+	//}
 
 	if (w->viewport != NULL) {
 		w->viewport->width = 0;
