@@ -37,6 +37,7 @@ extern bool gCheatsIgnoreRideIntensity;
 extern bool gCheatsDisableVandalism;
 extern bool gCheatsNeverendingMarketing;
 extern bool gCheatsFreezeClimate;
+extern bool gCheatsRotatingEntrances;
 
 enum {
 	CHEAT_SANDBOXMODE,
@@ -75,6 +76,7 @@ enum {
 	CHEAT_HAVEFUN,
 	CHEAT_SETFORCEDPARKRATING,
 	CHEAT_NEVERENDINGMARKETING,
+	CHEAT_ROTATINGENTRANCES
 };
 
 enum {

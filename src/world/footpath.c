@@ -1165,7 +1165,7 @@ static void loc_6A6D7E(
 					uint16 entrance = ride->entrances[station],
 						exit = ride->exits[station];
 
-					if(!ride_entrance_exit_is_reachable(is_exit ? exit : entrance, ride, station)) {
+					if(!ride_entrance_exit_is_reachable(is_exit ? exit : entrance, ride, station) && gCheatsRotatingEntrances) {
 						mapElement->type = MAP_ELEMENT_TYPE_ENTRANCE | direction;
 						map_invalidate_element(x, y, mapElement);
 					}
