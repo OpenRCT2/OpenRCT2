@@ -2382,8 +2382,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 	rct_widget *dropdownWidget = widget - 1;
 	rct_ride *ride;
 	rct_ride_entry *rideEntry, *currentRideEntry;
-	rct_string_id stringId;
-	int i, minCars, maxCars, cars, numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
+	int numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
 	uint8 *rideEntryIndexPtr;
 	bool selectionShouldBeExpanded;
 
