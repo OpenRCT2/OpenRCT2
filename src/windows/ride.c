@@ -91,9 +91,11 @@ enum {
 	WIDX_VEHICLE_TYPE_DROPDOWN,
 	WIDX_VEHICLE_TRAINS_PREVIEW,
 	WIDX_VEHICLE_TRAINS,
-	WIDX_VEHICLE_TRAINS_DROPDOWN,
+	WIDX_VEHICLE_TRAINS_INCREASE,
+	WIDX_VEHICLE_TRAINS_DECREASE,
 	WIDX_VEHICLE_CARS_PER_TRAIN,
-	WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN,
+	WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
+	WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE,
 
 	WIDX_MODE_TWEAK = 14,
 	WIDX_MODE_TWEAK_INCREASE,
@@ -235,10 +237,12 @@ static rct_widget window_ride_vehicle_widgets[] = {
 	{ WWT_DROPDOWN,			1,	7,		308,	50,		61,		0xFFFFFFFF,									STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	51,		60,		876,										STR_NONE										},
 	{ WWT_SCROLL,			1,	7,		308,	141,	183,	0,											STR_NONE										},
-	{ WWT_DROPDOWN,			1,	7,		151,	190,	201,	1021,										STR_NONE										},
-	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	191,	200,	876,										STR_NONE										},
-	{ WWT_DROPDOWN,			1,	164,	308,	190,	201,	1022,										STR_NONE										},
-	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	191,	200,	876,										STR_NONE										},
+	{ WWT_SPINNER,			1,	7,		151,	190,	201,	1021,										STR_NONE										},
+	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	191,	195,	STR_NUMERIC_UP,										STR_NONE										},
+	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	196,	200,	STR_NUMERIC_DOWN,										STR_NONE										},
+	{ WWT_SPINNER,			1,	164,	308,	190,	201,	1022,										STR_NONE										},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	191,	195,	STR_NUMERIC_UP,										STR_NONE										},
+	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	196,	200,	STR_NUMERIC_DOWN,										STR_NONE										},
 	{ WIDGETS_END },
 };
 
@@ -494,7 +498,7 @@ static rct_widget *window_ride_page_widgets[] = {
 
 const uint64 window_ride_page_enabled_widgets[] = {
 	0x0000000003FDBFF4,
-	0x00000000001EFFF4,
+	0x00000000006CFFF4,
 	0x0000019E777DBFF4,
 	0x000000000003FFF4,
 	0x00000003F37F3FF4,
@@ -507,7 +511,7 @@ const uint64 window_ride_page_enabled_widgets[] = {
 
 const uint64 window_ride_page_hold_down_widgets[] = {
 	0x0000000000000000,
-	0x0000000000000000,
+	0x00000000006C0000,
 	0x00000000330D8000,
 	0x0000000000000000,
 	0x0000000000000000,
@@ -2447,55 +2451,19 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 
 		dropdown_set_checked(selectedIndex, true);
 		break;
-	case WIDX_VEHICLE_TRAINS_DROPDOWN:
-		window_dropdown_show_text_custom_width(
-			w->x + dropdownWidget->left,
-			w->y + dropdownWidget->top,
-			dropdownWidget->bottom - dropdownWidget->top + 1,
-			w->colours[1],
-			DROPDOWN_FLAG_STAY_OPEN,
-			ride->max_trains,
-			widget->right - dropdownWidget->left
-		);
-
-		stringId = RideNameConvention[ride->type].vehicle_name + 4;
-		for (i = 0; i < 32; i++) {
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = ((i + 1) << 16) | (i == 0 ? stringId : stringId + 1);
-		}
-
-		dropdown_set_checked(ride->num_vehicles - 1, true);
+	case WIDX_VEHICLE_TRAINS_INCREASE:
+			if(ride->num_vehicles<32)ride_set_num_vehicles(w->number, ride->num_vehicles + 1);
 		break;
-	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
-		if(!gCheatsDisableTrainLengthLimit) {
-			minCars=(ride->min_max_cars_per_train >> 4);
-			maxCars=(ride->min_max_cars_per_train & 0x0F);
-		} else {
-			minCars=rideEntry->zero_cars + 1;
-			maxCars=RIDE_MAX_CARS_PER_TRAIN;
-		}
-		window_dropdown_show_text_custom_width(
-			w->x + dropdownWidget->left,
-			w->y + dropdownWidget->top,
-			dropdownWidget->bottom - dropdownWidget->top + 1,
-			w->colours[1],
-			DROPDOWN_FLAG_STAY_OPEN,
-			maxCars - minCars + 1,
-			widget->right - dropdownWidget->left
-		);
-
-		for (i = 0; i < maxCars; i++) {
-			cars = minCars + i;
-
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = 1024;
-			if (cars - rideEntry->zero_cars > 1)
-				gDropdownItemsArgs[i]++;
-			gDropdownItemsArgs[i] |= (cars - rideEntry->zero_cars) << 16;
-		}
-
-		dropdown_set_checked(ride->num_cars_per_train - minCars, true);
+	case WIDX_VEHICLE_TRAINS_DECREASE:
+			if(ride->num_vehicles>1)ride_set_num_vehicles(w->number, ride->num_vehicles - 1);
 		break;
+	case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
+			if(ride->num_cars_per_train<255)ride_set_num_cars_per_vehicle(w->number,ride->num_cars_per_train + 1);
+		break;
+	case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
+			if(ride->num_cars_per_train>rideEntry->zero_cars+1)ride_set_num_cars_per_vehicle(w->number,ride->num_cars_per_train - 1);
+		break;
+
 	}
 }
 
@@ -2518,16 +2486,6 @@ static void window_ride_vehicle_dropdown(rct_window *w, int widgetIndex, int dro
 	case WIDX_VEHICLE_TYPE_DROPDOWN:
 		dropdownIndex = (gDropdownItemsArgs[dropdownIndex] >> 16) & 0xFFFF;
 		ride_set_ride_entry(w->number, dropdownIndex);
-		break;
-	case WIDX_VEHICLE_TRAINS_DROPDOWN:
-		ride_set_num_vehicles(w->number, dropdownIndex + 1);
-		break;
-	case WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN:
-		if(gCheatsDisableTrainLengthLimit) {
-			ride_set_num_cars_per_vehicle(w->number, rideEntry->zero_cars + 1 + dropdownIndex);
-		} else {
-			ride_set_num_cars_per_vehicle(w->number, rideEntry->min_cars_in_train + dropdownIndex);
-		}
 		break;
 	}
 }
@@ -2589,21 +2547,26 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 
 	// Trains
 	if (rideEntry->cars_per_flat_ride > 1) {
-		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_DROPDOWN;
-		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_SPINNER;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DECREASE].type = WWT_DROPDOWN_BUTTON;
+
 	} else {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS].type = WWT_EMPTY;
-		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DROPDOWN].type = WWT_EMPTY;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_INCREASE].type = WWT_EMPTY;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_DECREASE].type = WWT_EMPTY;
 	}
 
 	// Cars per train
 	if (rideEntry->zero_cars + 1 < rideEntry->max_cars_in_train||gCheatsDisableTrainLengthLimit) {
-		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = carsPerTrain > 1 ? 1023 : 1022;
-		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_DROPDOWN;
-		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_SPINNER;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE].type = WWT_DROPDOWN_BUTTON;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE].type = WWT_DROPDOWN_BUTTON;
 	} else {
 		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].type = WWT_EMPTY;
-		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DROPDOWN].type = WWT_EMPTY;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE].type = WWT_EMPTY;
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE].type = WWT_EMPTY;
+
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = carsPerTrain;
