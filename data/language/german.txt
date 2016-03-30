@@ -2779,7 +2779,7 @@ STR_2771    :Zeit langsamer
 STR_2772    :Zeit schneller
 STR_2773    :Fenstermodus
 STR_2774    :Vollbild
-STR_2775    :Vollbild (Desktop)
+STR_2775    :Vollbild (Randlos)
 STR_2776    :Sprache:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3510,7 +3510,7 @@ STR_5173    :Erhalte Twitch-Chat als Spielnachrichten
 STR_5174    :{SMALLFONT}{BLACK}Benutzt Twitch-Chatnachrichten, welchen !news vorangestellt ist, für Spielbenachrichtigungen
 STR_5175    :Namen Ihres Twitch-Kanals eingeben:
 STR_5176    :Twitch-Integration aktivieren
-STR_5177    :Vollbildmodus:
+STR_5177    :Bildschirmmodus:
 STR_5178    :{SMALLFONT}{BLACK}Cheats für Finanzen anzeigen
 STR_5179    :{SMALLFONT}{BLACK}Cheats für Parkbesucher anzeigen
 STR_5180    :{SMALLFONT}{BLACK}Cheats für Park anzeigen
