@@ -860,6 +860,7 @@ int game_load_network(SDL_RWops* rw)
 	gCheatsSandboxMode = SDL_ReadU8(rw);
 	gCheatsDisableClearanceChecks = SDL_ReadU8(rw);
 	gCheatsDisableSupportLimits = SDL_ReadU8(rw);
+	gCheatsDisableTrainLengthLimit = SDL_ReadU8(rw);
 	gCheatsShowAllOperatingModes = SDL_ReadU8(rw);
 	gCheatsShowVehiclesFromOtherTrackTypes = SDL_ReadU8(rw);
 	gCheatsFastLiftHill = SDL_ReadU8(rw);

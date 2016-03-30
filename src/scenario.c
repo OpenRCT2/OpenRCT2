@@ -1106,6 +1106,7 @@ int scenario_save_network(SDL_RWops* rw)
 	SDL_WriteU8(rw, gCheatsSandboxMode);
 	SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
 	SDL_WriteU8(rw, gCheatsDisableSupportLimits);
+	SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
 	SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
 	SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
 	SDL_WriteU8(rw, gCheatsFastLiftHill);
