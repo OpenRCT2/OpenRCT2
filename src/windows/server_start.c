@@ -160,6 +160,13 @@ static void window_server_start_scenarioselect_callback(const utf8 *path)
 	}
 }
 
+static void window_server_start_loadsave_callback(int result)
+{
+	if (result == MODAL_RESULT_OK) {
+		network_begin_server(gConfigNetwork.default_port);
+	}
+}
+
 static void window_server_start_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
@@ -199,7 +206,8 @@ static void window_server_start_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_LOAD_SERVER:
 		network_set_password(_password);
-		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME | LOADSAVETYPE_NETWORK, NULL);
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+		gLoadSaveCallback = window_server_start_loadsave_callback;
 		break;
 	}
 }

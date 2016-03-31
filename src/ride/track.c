@@ -3073,24 +3073,36 @@ int save_track_design(uint8 rideIndex){
 	// Track design files
 	format_string(RCT2_ADDRESS(0x141EE68, char), 2305, NULL);
 
+	// Show save dialog
+	utf8 initialDirectory[MAX_PATH];
+	{
+		strcpy(initialDirectory, path);
+		utf8 *a = strrchr(initialDirectory, '/');
+		utf8 *b = strrchr(initialDirectory, '\\');
+		utf8 *c = max(a, b);
+		if (c != NULL) {
+			*c = '\0';
+		}
+	}
+
+	file_dialog_desc desc;
+	memset(&desc, 0, sizeof(desc));
+	desc.type = FD_SAVE;
+	desc.title = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
+	desc.initial_directory = initialDirectory;
+	desc.default_filename = path;
+	desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
+	desc.filters[0].pattern = "*.td6";
+
 	audio_pause_sounds();
-
-	int result = platform_open_common_file_dialog(
-		FD_SAVE,
-		RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char),
-		path,
-		"*.TD?",
-		RCT2_ADDRESS(0x141EE68, char));
-
+	bool result = platform_open_common_file_dialog(path, &desc);
 	audio_unpause_sounds();
 
-	if (result == 0){
+	if (!result) {
 		ride_list_item item = { .type = 0xFD, .entry_index = 0 };
 		track_load_list(item);
 		return 1;
 	}
-
-	path_append_extension(path, "TD6");
 
 	save_track_to_file(RCT2_ADDRESS(0x009D8178, rct_track_td6), path);
 

@@ -131,25 +131,29 @@ utf8 *platform_open_directory_browser(utf8 *title)
 	}
 }
 
-int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
-{
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc) {
 	@autoreleasepool
 	{
-		NSString *fillPatternNS = [NSString stringWithUTF8String:filterPattern];
-		fillPatternNS = [fillPatternNS stringByReplacingOccurrencesOfString:@"*." withString:@""];
-		NSArray *extensions = [fillPatternNS componentsSeparatedByString:@";"];
+		NSMutableArray *extensions = [NSMutableArray new];
+		for (int i=0; i < countof(desc->filters); ++i) {
+			if (desc->filters[i].pattern != NULL) {
+				NSString *fp = [NSString stringWithUTF8String:desc->filters[i].pattern];
+				fp = [fp stringByReplacingOccurrencesOfString:@"*." withString:@""];
+				[extensions addObjectsFromArray:[fp componentsSeparatedByString:@";"]];
+			}
+		}
 		
-		NSString *filePath = [NSString stringWithUTF8String:filename];
+		NSString *filePath = [NSString stringWithUTF8String:desc->default_filename];
 		NSString *directory = filePath.stringByDeletingLastPathComponent;
 		NSString *basename = filePath.lastPathComponent;
 		
 		NSSavePanel *panel;
-		if (type == FD_SAVE)
+		if (desc->type == FD_SAVE)
 		{
 			panel = [NSSavePanel savePanel];
 			panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
 		}
-		else if (type == FD_OPEN)
+		else if (desc->type == FD_OPEN)
 		{
 			NSOpenPanel *open = [NSOpenPanel openPanel];
 			open.canChooseDirectories = false;
@@ -157,19 +161,19 @@ int platform_open_common_file_dialog(filedialog_type type, utf8 *title, utf8 *fi
 			open.allowsMultipleSelection = false;
 			panel = open;
 		} else {
-			return 0;
+			return false;
 		}
 		
-		panel.title = [NSString stringWithUTF8String:title];
+		panel.title = [NSString stringWithUTF8String:desc->title];
 		panel.allowedFileTypes = extensions;
 		panel.directoryURL = [NSURL fileURLWithPath:directory];
 		if ([panel runModal] == NSFileHandlingPanelCancelButton){
 			SDL_RaiseWindow(gWindow);
-			return 0;
+			return false;
 		} else {
-			strcpy(filename, panel.URL.path.UTF8String);
+			strcpy(outFilename, panel.URL.path.UTF8String);
 			SDL_RaiseWindow(gWindow);
-			return 1;
+			return true;
 		}
 	}
 }
