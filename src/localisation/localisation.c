@@ -958,15 +958,14 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 		if (srcLength > bufferCount) {
 			bufferCount = srcLength + 4;
 			heapBuffer = malloc(bufferCount * sizeof(utf16));
+			assert(heapBuffer != NULL);
 			intermediateBuffer = heapBuffer;
 		}
 	}
 	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
 	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
 
-	if (heapBuffer != NULL) {
-		free(heapBuffer);
-	}
+	free(heapBuffer);
 #else
 	//log_warning("converting %s of size %d", src, srcLength);
 	char *buffer_conv = strndup(src, srcLength);
