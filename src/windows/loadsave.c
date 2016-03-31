@@ -189,6 +189,9 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 	case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
 		w->widgets[WIDX_TITLE].image = STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
 		break;
+	default:
+		log_error("Unsupported load / save type: %d", type & 0x0F);
+		return NULL;
 	}
 
 	w->no_list_items = 0;
@@ -727,10 +730,6 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			}
 			window_loadsave_invoke_callback(MODAL_RESULT_OK);
 		} else if (game_load_save(path)) {
-			if (_loadsaveType & LOADSAVETYPE_NETWORK) {
-				network_begin_server(gConfigNetwork.default_port);
-			}
-
 			safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 			gFirstTimeSave = 0;
 
