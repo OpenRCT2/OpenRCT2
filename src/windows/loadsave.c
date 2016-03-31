@@ -308,7 +308,9 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 			desc.default_filename = path;
 		}
 
-		switch (_type) {
+		// disregard LOADSAVETYPE_NETWORK
+		uint8 typeTemp = _type & 0xf;
+		switch (typeTemp) {
 		case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME) :
 			desc.type = FD_OPEN;
 			desc.title = language_get_string(STR_FILE_DIALOG_TITLE_LOAD_GAME);
