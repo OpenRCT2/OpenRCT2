@@ -1598,6 +1598,8 @@ int map_set_land_height_clear_func(rct_map_element** map_element, int x, int y, 
 
 static money32 map_set_land_height(int flags, int x, int y, int height, int style, int selectionType)
 {
+	rct_map_element *mapElement;
+
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
@@ -1648,25 +1650,27 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	}
 	RCT2_GLOBAL(0x9E2E18, money32) += MONEY(20, 0);
 
-	//Check for obstructing scenery
-	rct_map_element *mapElement = map_get_first_element_at(x / 32, y / 32);
-	do{
-		if(map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
-			continue;
-		if(height > mapElement->clearance_height)
-			continue;
-		if(height + 4 < mapElement->base_height)
-			continue;
-		rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type]; //sceneryEntry = eax
-		if(sceneryEntry->small_scenery.height > 64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL)
-		{
+	if (!gCheatsDisableClearanceChecks) {
+		//Check for obstructing scenery
+		mapElement = map_get_first_element_at(x / 32, y / 32);
+		do {
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+				continue;
+			if (height > mapElement->clearance_height)
+				continue;
+			if (height + 4 < mapElement->base_height)
+				continue;
+			rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type]; //sceneryEntry = eax
+			if (sceneryEntry->small_scenery.height > 64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL)
+			{
 				map_obstruction_set_error_text(mapElement);
 				return MONEY32_UNDEFINED;
-		}
-		RCT2_GLOBAL(0x9E2E18, money32) += MONEY(sceneryEntry->small_scenery.removal_price, 0);
-		if(flags & GAME_COMMAND_FLAG_APPLY)
-			map_element_remove(mapElement--);
-	}while(!map_element_is_last_for_tile(mapElement++));
+			}
+			RCT2_GLOBAL(0x9E2E18, money32) += MONEY(sceneryEntry->small_scenery.removal_price, 0);
+			if (flags & GAME_COMMAND_FLAG_APPLY)
+				map_element_remove(mapElement--);
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
 
 	//Check for ride support limits
 	if(gCheatsDisableSupportLimits==false)
@@ -1722,36 +1726,41 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}
 
-	if(map_can_construct_with_clear_at(x, y, height, zCorner, &map_set_land_height_clear_func, 0xF, 0, NULL) == false)
-		return MONEY32_UNDEFINED;
+	if (!gCheatsDisableClearanceChecks) {
+		if (!map_can_construct_with_clear_at(x, y, height, zCorner, &map_set_land_height_clear_func, 0xF, 0, NULL)) {
+			return MONEY32_UNDEFINED;
+		}
+	}
 
-	mapElement = map_get_first_element_at(x / 32, y / 32);
-	do{
-		int elementType = map_element_get_type(mapElement);
+	if (!gCheatsDisableClearanceChecks) {
+		mapElement = map_get_first_element_at(x / 32, y / 32);
+		do {
+			int elementType = map_element_get_type(mapElement);
 
-		if(elementType == MAP_ELEMENT_TYPE_FENCE)
-			continue;
-		if(elementType == MAP_ELEMENT_TYPE_SCENERY)
-			continue;
-		if(mapElement->flags & 0x10)
-			continue;
-		if(mapElement == surfaceElement)
-			continue;
-		if(mapElement > surfaceElement)
-		{
-			if(zCorner > mapElement->base_height)
+			if (elementType == MAP_ELEMENT_TYPE_FENCE)
+				continue;
+			if (elementType == MAP_ELEMENT_TYPE_SCENERY)
+				continue;
+			if (mapElement->flags & 0x10)
+				continue;
+			if (mapElement == surfaceElement)
+				continue;
+			if (mapElement > surfaceElement)
+			{
+				if (zCorner > mapElement->base_height)
+				{
+					map_obstruction_set_error_text(mapElement);
+					return MONEY32_UNDEFINED;
+				}
+				continue;
+			}
+			if (height < mapElement->clearance_height)
 			{
 				map_obstruction_set_error_text(mapElement);
 				return MONEY32_UNDEFINED;
 			}
-			continue;
-		}
-		if(height < mapElement->clearance_height)
-		{
-			map_obstruction_set_error_text(mapElement);
-			return MONEY32_UNDEFINED;
-		}
-	}while(!map_element_is_last_for_tile(mapElement++));
+		} while (!map_element_is_last_for_tile(mapElement++));
+	}
 
 	if(flags & GAME_COMMAND_FLAG_APPLY)
 	{
@@ -2605,7 +2614,7 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 		zLow = temp;
 	}
 
-	if(map_can_construct_at(x, y, zLow, zHigh, 0xFF)){
+	if (gCheatsDisableClearanceChecks || map_can_construct_at(x, y, zLow, zHigh, 0xFF)) {
 		if(map_element->type & 0x40){
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0;
 			*ebx = MONEY32_UNDEFINED;
@@ -4918,8 +4927,10 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 
 	sint8 zLow = (z & 0xFF) * 2;
 	sint8 zHigh = zLow + 12;
-	if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
-		return MONEY32_UNDEFINED;
+	if (!gCheatsDisableClearanceChecks) {
+		if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
+			return MONEY32_UNDEFINED;
+		}
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
@@ -4961,8 +4972,10 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	x += TileDirectionDelta[(direction - 1) & 0x3].x;
 	y += TileDirectionDelta[(direction - 1) & 0x3].y;
 
-	if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
-		return MONEY32_UNDEFINED;
+	if (!gCheatsDisableClearanceChecks) {
+		if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
+			return MONEY32_UNDEFINED;
+		}
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
@@ -4997,8 +5010,10 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
 	y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
 
-	if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
-		return MONEY32_UNDEFINED;
+	if (!gCheatsDisableClearanceChecks) {
+		if (!map_can_construct_at(x, y, zLow, zHigh, 0xF)) {
+			return MONEY32_UNDEFINED;
+		}
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
