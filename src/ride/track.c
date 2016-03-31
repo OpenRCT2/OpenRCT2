@@ -3104,8 +3104,6 @@ int save_track_design(uint8 rideIndex){
 		return 1;
 	}
 
-	path_append_extension(path, "TD6");
-
 	save_track_to_file(RCT2_ADDRESS(0x009D8178, rct_track_td6), path);
 
 	ride_list_item item = { .type = 0xFC, .entry_index = 0 };
