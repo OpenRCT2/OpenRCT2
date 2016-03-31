@@ -652,6 +652,21 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 		utf8 *resultFilename = widechar_to_utf8(openFileName.lpstrFile);
 		strcpy(outFilename, resultFilename);
 		free(resultFilename);
+
+		// If there is no extension, append the pattern
+		const utf8 *outFilenameExtension = path_get_extension(outFilename);
+		if (str_is_null_or_empty(outFilenameExtension)) {
+			int filterIndex = openFileName.nFilterIndex - 1;
+
+			assert(filterIndex >= 0);
+			assert(filterIndex < countof(desc->filters));
+
+			const utf8 *pattern = desc->filters[filterIndex].pattern;
+			const utf8 *patternExtension = path_get_extension(pattern);
+			if (!str_is_null_or_empty(patternExtension)) {
+				strcat(outFilename, patternExtension);
+			}
+		}
 	}
 
 	return result;
