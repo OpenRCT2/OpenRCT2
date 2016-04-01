@@ -500,7 +500,7 @@ static char *freadstralloc(SDL_RWops *file)
 		if (SDL_RWread(file, &c, 1, 1) != 1) break;
 		if (c == 0) break;
 
-		if (length > capacity) {
+		if (length >= capacity) {
 			capacity *= 2;
 			buffer = realloc(buffer, capacity);
 		}
