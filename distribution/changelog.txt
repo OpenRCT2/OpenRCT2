@@ -29,6 +29,7 @@
 - Feature: Ability to automatically open shops after placing them.
 - Feature: Ability to change the default inspection interval for rides.
 - Feature: Ability to disable lightning effect during a thunderstorm.
+- Feature: Display a chat hotkey when joining a server.
 - Change: Server IP addresses are no longer shown in the server list.
 - Change: Theme format changed from INI to JSON (INI format no longer supported).
 - Change: Sound controls re-worked to control sound effects and ride music separately.
@@ -39,6 +40,7 @@
 - Technical: argparse dropped in return for bespoke command line parsing implementation.
 - Improve: performance of rendering, particularly for highly populated parks.
 - Improve: performance of loading parks.
+- Improve: support for hacked parks.
 - Removed: Anti-cheat code that detected money hack attempts.
 - Fix: Dated autosave files are not created on OSX and Linux.
 - Fix: Title sequence directories are not deleted when title sequence is deleted on OSX and Linux.
@@ -63,6 +65,7 @@
 - Fix: [#2948] New Ride window incorrectly said there were track designs available when in multiplayer mode.
 - Fix: [#2958] Unable to import RCT1 parks in the scenario editor using the load landscape dialog.
 - Fix: [#3015] Walls in SC4/SV4 files are not imported correctly.
+- Fix: [#3063] Search exe directory for SSL bundle as well as CWD.
 - Fix: [#3120] Negative cash in finance window is not red.
 
 0.0.3.1-beta (2015-12-04)
