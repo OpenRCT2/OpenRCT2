@@ -2706,7 +2706,7 @@ STR_2696    :Placera trä
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autospar frekvens:
+STR_2700    :Spara automatiskt:
 STR_2701    :Varje minut
 STR_2702    :Var 5:e minut
 STR_2703    :Var 15:e minut
@@ -2763,7 +2763,7 @@ STR_2752    :Plocka ogräs
 STR_2753    :Klipp gräsmattan
 STR_2754    :Vattna blommorna
 STR_2755    :Fixa skadegörelsen
-STR_2756    :Städa upp nedskräpningen
+STR_2756    :Städa nedskräpningen
 STR_2757    :Tvinga sol
 STR_2758    :Tvinga åska
 STR_2759    :Zero Clearance
@@ -3473,7 +3473,7 @@ STR_5128    :Välj storlek
 STR_5129    :Skriv in vald storlek mellan {COMMA16} och {COMMA16}
 STR_5130    :Kart storlek
 STR_5131    :Skriv in en kart storlek mellan  {COMMA16} och {COMMA16}
-STR_5132    :Laga alla attraktioner
+STR_5132    :Laga alla åkturer
 STR_5133    :{SMALLFONT}{BLACK}Justera mindre storlek av landrättigheter
 STR_5134    :{SMALLFONT}{BLACK}Justera större storlek av landrättigheter
 STR_5135    :{SMALLFONT}{BLACK}Köp land- och konstruktions-rättigheter
@@ -3481,7 +3481,7 @@ STR_5136    :Landrättigheter
 STR_5137    :Lås upp körläges gränser
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
-STR_5140    :Avaktivera broms haverin
+STR_5140    :Avaktivera bromsfel
 STR_5141    :Avaktivera alla haverin
 STR_5142    :Normal Hastighet
 STR_5143    :Kvick Hastighet
@@ -3596,7 +3596,7 @@ STR_5251    :Titelns Inställnings Knapp
 STR_5252    :Titelns Scenario Väljare
 STR_5253    :Park Information
 STR_5254    :Skapa
-STR_5255    :{SMALLFONT}{BLACK}Skapa ny titel sekvens från början
+STR_5255    :{SMALLFONT}{BLACK}Skapa ny titelsekvens från början
 STR_5256    :Skapa ett nytt tema att göra ändringar på
 STR_5257    :{SMALLFONT}{BLACK}Skapa ett nytt tema baserat på denna
 STR_5258    :{SMALLFONT}{BLACK}Ta bort det använda temat
@@ -3721,34 +3721,34 @@ STR_5376    :{DOWN}
 STR_5377    :{SMALLFONT}{BLACK}Sparfiler
 STR_5378    :{SMALLFONT}{BLACK}Skript
 STR_5379    :{SMALLFONT}{BLACK}Skippa til nästa wait kommando
-STR_5380    :{SMALLFONT}{BLACK}Börja spela titel sekvensen
-STR_5381    :{SMALLFONT}{BLACK}Sluta spela titel sekvensen
-STR_5382    :{SMALLFONT}{BLACK}Börja om titel sekvensen
-STR_5383    :{SMALLFONT}{BLACK}Skapa en ny titel sekvensen baserat på den valda
-STR_5384    :{SMALLFONT}{BLACK}Ta bort den valda titel sekvensen
-STR_5385    :{SMALLFONT}{BLACK}Döp om den valda titel sekvensen
+STR_5380    :{SMALLFONT}{BLACK}Börja spela titelsekvensen
+STR_5381    :{SMALLFONT}{BLACK}Sluta spela titelsekvensen
+STR_5382    :{SMALLFONT}{BLACK}Börja om titelsekvensen
+STR_5383    :{SMALLFONT}{BLACK}Skapa en ny titelsekvensen baserat på den valda
+STR_5384    :{SMALLFONT}{BLACK}Ta bort den valda titelsekvensen
+STR_5385    :{SMALLFONT}{BLACK}Döp om den valda titelsekvensen
 STR_5386    :{SMALLFONT}{BLACK}Skriv in nytt kommando
 STR_5387    :{SMALLFONT}{BLACK}Redigera det valda kommandot
 STR_5388    :{SMALLFONT}{BLACK}Ta bort det valda kommandot
-STR_5389    :{SMALLFONT}{BLACK}Hoppa till det valda kommandot i titel sekvensen
+STR_5389    :{SMALLFONT}{BLACK}Hoppa till det valda kommandot i titelsekvensen
 STR_5390    :{SMALLFONT}{BLACK}Flytta valda kommandot neråt
 STR_5391    :{SMALLFONT}{BLACK}Flytta valda kommandot uppåt
-STR_5392    :{SMALLFONT}{BLACK}Lägg till en sparfil till titel sekvensen
-STR_5393    :{SMALLFONT}{BLACK}Ta bort den valda sparfilen från titel sekvensen
+STR_5392    :{SMALLFONT}{BLACK}Lägg till en sparfil till titelsekvensen
+STR_5393    :{SMALLFONT}{BLACK}Ta bort den valda sparfilen från titelsekvensen
 STR_5394    :{SMALLFONT}{BLACK}Döp om den valda sparfilen
 STR_5395    :{SMALLFONT}{BLACK}Ladda den valda sparfilen i spelet
-STR_5396    :{SMALLFONT}{BLACK}Ladda om titel sekvensen om ändringar har gjorts utanför spelet
-STR_5397    :Kan endast användas i titel sekvensen
-STR_5398    :Kan inte redigera titel sekvensen medan den körs
+STR_5396    :{SMALLFONT}{BLACK}Ladda om titelsekvensen om ändringar har gjorts utanför spelet
+STR_5397    :Kan endast användas i titelsekvensen
+STR_5398    :Kan inte redigera titelsekvensen medan den körs
 STR_5399    :Klicka på stopp knappen innan du försöker ändra något
-STR_5400    :Kan inte byta denna titel sekvens
-STR_5401    :Skapa en ny titel sekvens att göra ändringar på
+STR_5400    :Kan inte byta denna titelsekvens
+STR_5401    :Skapa en ny titelsekvens att göra ändringar på
 STR_5402    :Misslyckades att ladda titelsekvens
 STR_5403    :De kanske inte finns något Load eller Wait kommando eller sparfilen är kanske inte giltig
 STR_5404    :Namnet finns redan
 STR_5405    :Skriv in ett namn för sparfilen
-STR_5406    :Skriv in ett namn för titel sekvensen
-STR_5407    :Tillägg
+STR_5406    :Skriv in ett namn för titelsekvensen
+STR_5407    :Lägg till
 STR_5408    :Ta bort
 STR_5409    :Lägg till
 STR_5410    :Redigera
@@ -3845,10 +3845,10 @@ STR_5500    :Lägg till server
 STR_5501    :Starta en server
 STR_5502    :Flerspelare
 STR_5503    :Skriv in ägarens namn eller IP adressen:
-STR_5504    :{SMALLFONT}{BLACK}Visa flerspelar statusen
+STR_5504    :{SMALLFONT}{BLACK}Visa alla spelare
 STR_5505    :Kunde inte ansluta till servern.
 STR_5506    :Gästerna igronerar intensivitetnivån
-STR_5507    :Vaktmästare klipper gräs
+STR_5507    :Vaktmästare klipper alltid gräs
 STR_5508    :Tillåt filer med inkorrekta 'checksums' att laddas 
 STR_5509    :{SMALLFONT}{BLACK}Tillåter spelet att ladda scenarion och sparfiler som har inkorrekta checksum, som scenariorna från demon och skadade sparfiler. 
 STR_5510    :Standard ljuduppspelningen
@@ -3898,7 +3898,7 @@ STR_5553    :Pausa spelet när Steam overlayen är uppe
 STR_5554    :{SMALLFONT}{BLACK}Tillåt berg verktyget
 STR_5555    :Visa fordon från andra karuseller
 STR_5556    :{SMALLFONT}{BLACK}Sparka ut spelare
-STR_5557    :Fortsätt vara ansluten efter synkningsproblem (Flerspelarläget)
+STR_5557    :Fortsätt vara ansluten efter synk-problem (Online)
 STR_5558    :En omstart krävs för denna inställning ska gälla
 STR_5559    :10 min. inspektion
 STR_5560    :{SMALLFONT}{BLACK}Sätter inspektions tiden till 'Var 10 minut' på alla åkturer
@@ -3920,14 +3920,14 @@ STR_5575    :Max Spelare:
 STR_5576    :Port:
 STR_5577    :Syd Koreansk Won (W)
 STR_5578    :Rysk Rouble (R)
-STR_5579    :Window scale factor:
+STR_5579    :Fönster skalning:
 STR_5580    :Czech koruna (Kc)
 STR_5581    :Visa FPS
 STR_5582    :Behåll muspekaren i spelet
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Avaktivera åkturernas hastighetsgränser, vilket tillåter till exepmepl {VELOCITY} upplyftskedjeshastighet
-STR_5586    :Öppna butiker och kiosker automatiskt
+STR_5586    :Öppna butiker och stånd automatiskt
 STR_5587    :{SMALLFONT}{BLACK}Om aktiverad, butiker och stånd öppnas automatiskt efter du har byggt dem
 STR_5588    :{SMALLFONT}{BLACK}Spela med andra spelare
 STR_5589    :Notifikations Inställningar
@@ -3980,31 +3980,31 @@ STR_5635    :{WINDOW_COLOUR_2}Pengar spenderat: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Utförda kommandon: {BLACK}{COMMA16}
 STR_5637    :Kan inte göra detta...
 STR_5638    :Åtkomst nekad
-STR_5639    :{SMALLFONT}{BLACK}Visa lista av spelare
+STR_5639    :{SMALLFONT}{BLACK}Visa lista med spelarna på servern
 STR_5640    :{SMALLFONT}{BLACK}Ändra grupper
 STR_5641    :Standard grupp:
 STR_5642    :Grupp:
 STR_5643    :Lägg till Grupp
-STR_5644    :Ta bort grupp
+STR_5644    :Ta bort Grupp
 STR_5645    :Chatta
 STR_5646    :Terräng
 STR_5647    :Pausa
 STR_5648    :Ändra vattennivå
-STR_5649    :Skapa åktur
+STR_5649    :Skapar åktur
 STR_5650    :Ta bort åktur
-STR_5651    :Bygga åktur
-STR_5652    :Åkturs Inställningar
+STR_5651    :Bygger åktur
+STR_5652    :Åkturs inställningar
 STR_5653    :Dekorationer
 STR_5654    :Gångväg
-STR_5655    :Gäst
+STR_5655    :Gäster
 STR_5656    :Personal
 STR_5657    :Park inställningar
 STR_5658    :Park fonder
 STR_5659    :Sparka ut spelare
-STR_5660    :Modifiera Grupper
-STR_5661    :Sätt Spelar Grupp
+STR_5660    :Modifiera grupper
+STR_5661    :Sätt spelares grupp
 STR_5662    :N/A
-STR_5663    :Rensa Landskap
+STR_5663    :Rensa landskap
 STR_5664    :Fusk
 STR_5701    :{WINDOW_COLOUR_2}Senaste handling: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Visa spelarens senaste handling
@@ -4014,7 +4014,7 @@ STR_5705    :Kan inte välja denna grupp
 STR_5706    :Kan inte ta bort grupper spelare finns i
 STR_5707    :Denna grupp kan inte modifieras
 STR_5708    :Kan inte ändra gruppen ägaren är i
-STR_5709    :Döp Om Gruppen
+STR_5709    :Döp om Grupp
 STR_5710    :Grupp namn
 STR_5711    :Skriv in ett nytt namn för gruppen:
 STR_5712    :Kan inte modifiera tillstånd du inte själv har
@@ -4062,9 +4062,9 @@ STR_5751    :Ingen Data
 STR_5752    :{OUTLINE}{RED}{STRING} har lämnat
 STR_5753    :{OUTLINE}{RED}{STRING} har lämnat ({STRING})
 STR_5754    :Ogiltigt Spelar Namn
-STR_5755    :Fel version av OpenRCT
+STR_5755    :Fel Version av OpenRCT
 STR_5756    :Fel Lösenord
-STR_5757    :Server Full
+STR_5757    :Servern är Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har anslutit till spelet
 STR_5759    :Laddar ner barnan ... ({INT32} / {INT32})
 STR_5760    :Hong Kong Dollar (HK$)
@@ -4099,422 +4099,422 @@ STR_5788    :Inspektions mellanrum:
 STR_5789    :Avaktivera åsk effekter
 
 #############
-# Scenarios #
+# Scenarion #
 ################
 # RCT Original #
 ################
 <Forest Frontiers>
 STR_SCNR    :Forest Frontiers
 STR_PARK    :Forest Frontiers
-STR_DTLS    :Deep in the forest, build a thriving theme park in a large cleared area
+STR_DTLS    :Djupt in i skogen, ska du bygga en utgrenande nöjespark på en stor öppen glänta
 
 <Dynamite Dunes>
 STR_SCNR    :Dynamite Dunes
 STR_PARK    :Dynamite Dunes
-STR_DTLS    :Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion
+STR_DTLS    :Bygg i den varma ökenhettan, detta nöjesfält har bara en berg-o-dalbana men har plats för utveckling
 
 <Leafy Lake>
 STR_SCNR    :Leafy Lake
 STR_PARK    :Leafy Lake
-STR_DTLS    :Starting from scratch, build a theme park around a large lake
+STR_DTLS    :Börja från början till att bygga ett nöjesfält runt en stor sjö
 
 <Diamond Heights>
 STR_SCNR    :Diamond Heights
 STR_PARK    :Diamond Heights
-STR_DTLS    :Diamond Heights is already a successful theme park with great rides - develop it to double its value
+STR_DTLS    :Diamond Heights är redan en framgångsrik nöjespark - utveckla den för att dubbla värdet
 
 <Evergreen Gardens>
 STR_SCNR    :Evergreen Gardens
 STR_PARK    :Evergreen Gardens
-STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
+STR_DTLS    :Gör om den vackra trädgården till en spännande nöjespark
 
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+STR_DTLS    :Utveckla Bumbly Beach's lilla nöjespark nära stranden i ett samhälle till en spännande turistattraktion till stranden
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :Several islands form the basis for this new park
+STR_DTLS    :Flera små öar som är till för att bygga en mega park
 
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
 STR_PARK    :Katie's Dreamland
-STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+STR_DTLS    :Ett litet nöjesfält som behöver uppfräschas och utökas - Ditt mål är att dubbla parkvärdet
 
 <Pokey Park>
 STR_SCNR    :Pokey Park
 STR_PARK    :Pokey Park
-STR_DTLS    :A small, cramped amusement park which requires major expansion
+STR_DTLS    :En liten, trång nöjespark som behöver en stor uppfräschning och utvigning
 
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :White Water Park
-STR_DTLS    :A park with some excellent water-based rides requires expansion
+STR_DTLS    :En park med fantastiska vattenattraktioner som behöver utökas
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+STR_DTLS    :Bygg om en stor övergiven gruva till ett stort nöjesfält
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :Karts & Coasters
-STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+STR_DTLS    :En stor park gömd i skogen, med endast go-karts och trä berg-o-dalbanor
 
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+STR_DTLS    :Detta nöjesfält har några moderna karuseller, men med massor av plats för utökning
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
 STR_PARK    :Mystic Mountain
-STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+STR_DTLS    :I den beriga skogen Mystic Mountain, bygg ett nöjesfält från början
 
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
 STR_PARK    :Pacific Pyramids
-STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+STR_DTLS    :Fövandla de Egyptiska Ruinerna till en spännande nöjespark
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
 STR_PARK    :Crumbly Woods
-STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+STR_DTLS    :En stor park med väldesignade, men äldre attraktioner - Byt ut dem gamla eller skaffa nya för att få parken mer populär
 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
 STR_PARK    :Paradise Pier
-STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+STR_DTLS    :Fövandla denna trötta Pir till en välkänd attraktion
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
 STR_PARK    :Lightning Peaks
-STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+STR_DTLS    :Dem vackra bergen vid Lightning Peaks är populär för fotgängare och ävertyrare - Använd marken för att attrahera nya spänningssökande gäster
 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :Ivory Towers
-STR_DTLS    :A well-established park, which has a few problems
+STR_DTLS    :En välgrundad park, som har några problem
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+STR_DTLS    :Rainbow Valley's lokala myndigheten tillåter inga land ändringar eller stora trädfällningar, men du måste göra en stor park av marken ändå
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+STR_DTLS    :Thunder Rock är i mitten av öknen och attraherar många turister - Använd den tillgängliga marken för att locka mer turister
 
 <Mega Park>
 STR_SCNR    :Mega Park
 STR_PARK    :Mega Park
-STR_DTLS    :Just for fun!
+STR_DTLS    :För skoj skull!
 
 ## Added Attractions
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :Utveckla havskustens klippor till en spännande nöjespark
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :I centrum av denna stora utvecklande parken finns ett trippel-spår racing/duellering stål berg-o-dalbana
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its minature railway and a pair of vertical drop roller coasters
+STR_DTLS    :Denna övergivna gruva har redan några få turistattraktioner som en miniatyr tågbarna och ett par berg-o-dalbanor
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :En gammal övergiven bro som du får förvandla till ett nöjesfält
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+STR_DTLS    :Utsträckande mark på båda sidor av en motorväg, denna park har ett flertal åkturer igång
 
 <Haunted Harbor>
 STR_SCNR    :Haunted Harbor
 STR_PARK    :Haunted Harbor
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+STR_DTLS    :Den lokala myndigheten har godkänt tillåtelse att sälja land i närheten billigt till denna lilla sjösatta parken, på vilkoret att vissa åkturer är bevarade
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :This castle is all yours to turn into a theme park
+STR_DTLS    :Detta slott är ditt att förvandla till ett nöjesfält
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+STR_DTLS    :Denna framtidsdrivna parken har massor med plats för nya åkturer på dess rymd landskap
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+STR_DTLS    :Den lokala befolkningen föredrar lugna attraktioner, så det är ditt jobb att bygga på denna park med deras behov
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+STR_DTLS    :Djupt in i djungeln ligger en öppen mark väntandes på att bli förvandlat till ett nöjesfält
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :A series of stepped lakes form the basis for this new park
+STR_DTLS    :En serie av sjöar och berg formar basen till detta nöjesfält
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :This elderly park has many historical rides but is badly in debt
+STR_DTLS    :Denna historiska park har mycket historia, men är också mycket skuldsatt
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :Ett stort område av land har blivit rensat och teman nedsatta för att göra en park med teman
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :En populär fruktfarm har byggt en järnväg för att öka sin inkomst, ditt jobb är att förvandla det till en spektakulär nöjespark
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+STR_DTLS    :Området runt dammen är ditt för att skapa ett nöjesfält
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :En stor ravin som är din för att byggas till ett nöjesfält
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :Vädret är så vått så den stora pyramiden är byggd för att låta attraktioner ha skydd från regnet
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :Den lokala myndigheten tillåter dig inte att bygga över trädhöjderna i dennna park
 
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+STR_DTLS    :Utveckla denna romerska park genom att utöka den
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Byggd på små öar, denna park har redan några berg-o-dalbanor på sig
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :Bygg en park för den hög intensitets-spänningssökande lokala befolkningen
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
 STR_PARK    :Utopia Park
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_DTLS    :En oas i mitten av öknen skapar en ovanlig chans till att bygga en nöjespark
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
 STR_PARK    :Rotting Heights
-STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+STR_DTLS    :Igenvuxet och förfallet, kan du återuppliva detta övergivna nöjesfält?
 
 <Fiasco Forest>
 STR_SCNR    :Fiasco Forest
 STR_PARK    :Fiasco Forest
-STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+STR_DTLS    :Full av dåliga- och farliga berg-o-dalbanor, du har en väldigt tajt budget att fixa problemen och vändra perken tillbaka till det positiva
 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :Pickle Park
-STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+STR_DTLS    :Den lokala myndigheten tillåter ingen reklam eller marknadsföring, så denna park måste klara sig med sitt rykte
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :En hästbana för hinderlöpning är i centrum för denna växande park
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :Förvandla detta övergivna stenbrott till en plats för att locka spänningsökande turister
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+STR_DTLS    :Du har begränsade fonder men oändligt med tid att förvandla denna klippsida till en stor berg-o-dalbane park
 
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+STR_DTLS    :En liten park som har gjort en uppgörelse med staden som tillåter byggnationer genom staden
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
-STR_DTLS    :A large garden park needs turning into a thriving theme park
+STR_DTLS    :En stor trädgård måste förvandlas till ett spännande nöjesfält
 
 
 ## Loopy Landscapes
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :En samling av isberg i det kalla klimatet som ska förvandlas till ett nöjesfält
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :En passiv vulkan är grunden till denna berg-o-dalbane byggar utmaningen
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Fri från någon finansiell gräns, din utmaning är att utöka denna ökenpark medan du håller gästerna glada
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Ditt mål är att bygga en stor berg-o-dalbane park mellan sylvassa stenar
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :En stor sjö i en uråldrig krater är grunden för parken
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :Denna stora park har redan en imponerande berg-o-dalbana, men ditt mål är att öka vinsten
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
 STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Paradise Pier har utökat sitt nätverk med gångvägar över haven, ditt mål är att utöka parken för att använda den tillgängliga marken
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :Denna sjösatta vik är grunden för denna berg-o-dalbane utmaningen
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+STR_DTLS    :Ett slott med ett par karuseller måste utrustas med nya karuseller
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :En park som har sina gångar och karuseller underjorden
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :En glaciärdal är din för att skapa ett nöjesfält
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :I en värld långt bort där pengar inte är nödvändigt, måste du bygga ett nöjesfält för att få befolkningen glada
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :Fem berg-o-dalbanor måste slutföras i detta ökenområde
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled rides
+STR_DTLS    :Denna historiska park är endast tillåten att bygga äldre, historiska attraktioner
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Utvekcla denna alien park för att maximera deras vinst
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+STR_DTLS    :Denna temapark har redan ett antal med åkturer, med gott om utrymme för utökning
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :En läskig park med en stor mittplaserad karusell
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :Två stora stenar sticker upp från sanden, vilket är början till konstruktionen av en nöjespark
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :I denna stora park måste du designa och bygga tio berg-o-dalbanor
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :En lång tunn ö gör det utmanande att bygga berg-o-dalbanor med ett fåtal att välja på
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :An icy landscape needs turning into a thriving theme park
+STR_DTLS    :Ett isigt landskap måste byggas om till en varm nöjespark
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :En öken park med några läckra attraktioner är din till att bygga på
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :In this tiny park you must finish building the five existing coasters
+STR_DTLS    :I denna lilla park måste du slutföra de fem ofärdiga berg-o-dalbanorna
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :A large park with a novel transporation system around its edge
+STR_DTLS    :En stor park med ett ovanligt transportsystem runt kanterna
 
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :This large island is all yours to develop as an amusement park
+STR_DTLS    :Denna stora ö är din för att bygga ett nöjesfält
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
 STR_PARK    :Urban Jungle
-STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme park developer
+STR_DTLS    :En gigantisk övergiven skyskrapa är ett unik chans till att bygga en park
 
 <Terror Town>
 STR_SCNR    :Terror Town
 STR_PARK    :Terror Town
-STR_DTLS    :This urban area is all yours to develop into an amusement park
+STR_DTLS    :Detta stadsområde är ditt för att göras till en nöjespark
 
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
 STR_PARK    :Megaworld Park
-STR_DTLS    :A giant park already packed full of rides needs improving
+STR_DTLS    :En gigantiskt park packad av attraktioner behöver upprustas
 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
 STR_PARK    :Venus Ponds
-STR_DTLS    :On a far-away planet this area of land needs turning into a theme park
+STR_DTLS    :På en planet långt bort behövs denna mark förvandlas till en nöjespark
 
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Försök att skapa världens minsta vinstgivande park
 
 ## Real Parks from RCT1
 # None of them had details
@@ -4546,8 +4546,8 @@ STR_DTLS    :
 
 #WW
 [CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
+STR_NAME    :Kondorhjulet
+STR_DESC    :Åkandes i speciella byglar under spåret, passagerarna känner av känslan av flygning när dem sveper genom luften i  through kondor-formade vagnar
 STR_CPTY    :4 passagerare per vagn
 
 

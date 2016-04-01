@@ -1486,66 +1486,66 @@ STR_1480    :{SMALLFONT}{OPENQUOTES}No puedo pagar para {STRINGID}{ENDQUOTES}
 STR_1481    :{SMALLFONT}{OPENQUOTES}He gastado todo mi dinero{ENDQUOTES}
 STR_1482    :{SMALLFONT}{OPENQUOTES}Me siento mareado{ENDQUOTES}
 STR_1483    :{SMALLFONT}{OPENQUOTES}Me siento muy mareado{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}Quiero algo más emocionante que {STRINGID}{ENDQUOTES}
+STR_1484    :{SMALLFONT}{OPENQUOTES}Quiero probar algo más arriesgado que {STRINGID}{ENDQUOTES}
 STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} parece demasiado intenso para mí{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}No he terminado mi {STRINGID} todavía{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Con sólo mirar {STRINGID} me siento enfermo{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}Aún no he acabado mi {STRINGID}{ENDQUOTES}
+STR_1487    :{SMALLFONT}{OPENQUOTES}Con sólo mirar {STRINGID} me marea{ENDQUOTES}
 STR_1488    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto para subir a {STRINGID}{ENDQUOTES}
 STR_1489    :{SMALLFONT}{OPENQUOTES}Quiero volver a casa{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} es realmente barato{ENDQUOTES}
+STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} es barato{ENDQUOTES}
 STR_1491    :{SMALLFONT}{OPENQUOTES}Ya tengo {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}No me puedo permitir {STRINGID}{ENDQUOTES}
+STR_1492    :{SMALLFONT}{OPENQUOTES}No puedo pagar para {STRINGID}{ENDQUOTES}
 STR_1493    :{SMALLFONT}{OPENQUOTES}No tengo hambre{ENDQUOTES}
 STR_1494    :{SMALLFONT}{OPENQUOTES}No tengo sed{ENDQUOTES}
 STR_1495    :{SMALLFONT}{OPENQUOTES}¡Ayuda!¡Me ahogo!{ENDQUOTES}
 STR_1496    :{SMALLFONT}{OPENQUOTES}¡Me he perdido!{ENDQUOTES}
 STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} ha sido estupendo{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}He estado haciendo cola en  {STRINGID} por años{ENDQUOTES}
+STR_1498    :{SMALLFONT}{OPENQUOTES}He esperado una eternidad en  {STRINGID}{ENDQUOTES}
 STR_1499    :{SMALLFONT}{OPENQUOTES}Estoy cansado{ENDQUOTES}
 STR_1500    :{SMALLFONT}{OPENQUOTES}Tengo hambre{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}Tengo sed{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}Tengo que ir al baño{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}Estoy sediento{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}Tengo que ir al lavabo{ENDQUOTES}
 STR_1503    :{SMALLFONT}{OPENQUOTES}No encuentro {STRINGID}{ENDQUOTES}
 STR_1504    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por {STRINGID}{ENDQUOTES}
 STR_1505    :{SMALLFONT}{OPENQUOTES}No voy a subir a {STRINGID} mientras llueve{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}La basura aquí es muy malo{ENDQUOTES}
+STR_1506    :{SMALLFONT}{OPENQUOTES}Las papeleras aquí brillan por su ausencia{ENDQUOTES}
 STR_1507    :{SMALLFONT}{OPENQUOTES}No puedo encontrar la salida{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}Quiero bajar de {STRINGID}{ENDQUOTES}
+STR_1508    :{SMALLFONT}{OPENQUOTES}Quiero bajarme de {STRINGID}{ENDQUOTES}
 STR_1509    :{SMALLFONT}{OPENQUOTES}Quiero salir de {STRINGID}{ENDQUOTES}
 STR_1510    :{SMALLFONT}{OPENQUOTES}No voy a subir a {STRINGID}, no es seguro{ENDQUOTES}
 STR_1511    :{SMALLFONT}{OPENQUOTES}Este camino es repugnante{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}Esta atestado{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}El vandalismo es muy alto{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}Está atestado{ENDQUOTES}
+STR_1513    :{SMALLFONT}{OPENQUOTES}El vandalismo es terrible{ENDQUOTES}
 STR_1514    :{SMALLFONT}{OPENQUOTES}¡El paisaje es estupendo!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Este parque está realmente limpio y ordenado{ENDQUOTES}
 STR_1516    :{SMALLFONT}{OPENQUOTES}Las fuentes saltarinas son estupendas{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}La música es agradable{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}Este globo de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}Este juguete de peluche de {STRINGID} es realmente barato{{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Este mapa de {STRINGID} es realmente barato{{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Esta foto de {STRINGID} es realmente barato{{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}Este paraguas de {STRINGID} es realmente barato{{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}Esta bebida de {STRINGID} es realmente barata{{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Esta hamburguesa de {STRINGID} es realmente barata{{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Estas patatas fritas de {STRINGID} son realmente baratas{{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}Este helado de {STRINGID} es realmente barato{{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}Este algodón de azúcar de {STRINGID} es realmente barato{{ENDQUOTES}
+STR_1518    :{SMALLFONT}{OPENQUOTES}Este Globo de {STRINGID} es barato{ENDQUOTES}
+STR_1519    :{SMALLFONT}{OPENQUOTES}Este Juguetito de {STRINGID} es barato{{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Este Mapa de {STRINGID} es barato{{ENDQUOTES}
+STR_1521    :{SMALLFONT}{OPENQUOTES}Esta Foto de {STRINGID} es barato{{ENDQUOTES}
+STR_1522    :{SMALLFONT}{OPENQUOTES}Este Paraguas de {STRINGID} es barato{{ENDQUOTES}
+STR_1523    :{SMALLFONT}{OPENQUOTES}Esta Bebida de {STRINGID} es barata{{ENDQUOTES}
+STR_1524    :{SMALLFONT}{OPENQUOTES}Esta Hamburguesa de {STRINGID} es barata{{ENDQUOTES}
+STR_1525    :{SMALLFONT}{OPENQUOTES}Estas Papas Fritas de {STRINGID} son baratas{{ENDQUOTES}
+STR_1526    :{SMALLFONT}{OPENQUOTES}Este Helado de {STRINGID} es barato{{ENDQUOTES}
+STR_1527    :{SMALLFONT}{OPENQUOTES}Este Algodón de {STRINGID} es barato{{ENDQUOTES}
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Esta pizza de {STRINGID} es realmente barato{ENDQUOTES}
+STR_1531    :{SMALLFONT}{OPENQUOTES}Esta Pizza de {STRINGID} es barato{ENDQUOTES}
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Estas palomitas de {STRINGID} son realmente baratas{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}Este Perrito Caliente de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}Este tentáculo de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}Este sombrero de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Esta manzana acaramelada de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}Esta camiseta de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Esta rosquilla de {STRINGID} es realmente barata{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}Este café de {STRINGID} es realmente barato{ENDQUOTES}
+STR_1533    :{SMALLFONT}{OPENQUOTES}Estas Palomitas de {STRINGID} son baratas{ENDQUOTES}
+STR_1534    :{SMALLFONT}{OPENQUOTES}Este Perrito de {STRINGID} es barato{ENDQUOTES}
+STR_1535    :{SMALLFONT}{OPENQUOTES}Este Tentáculo de {STRINGID} es barato{ENDQUOTES}
+STR_1536    :{SMALLFONT}{OPENQUOTES}Este Sombrero de {STRINGID} es barato{ENDQUOTES}
+STR_1537    :{SMALLFONT}{OPENQUOTES}Esta Manzana de {STRINGID} es barata{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}Esta Camiseta de {STRINGID} es barata{ENDQUOTES}
+STR_1539    :{SMALLFONT}{OPENQUOTES}Esta Rosquilla de {STRINGID} es barata{ENDQUOTES}
+STR_1540    :{SMALLFONT}{OPENQUOTES}Este Café de {STRINGID} es barato{ENDQUOTES}
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Este pollo frito de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}Esta limonada de {STRINGID} es realmente barato{ENDQUOTES}
+STR_1542    :{SMALLFONT}{OPENQUOTES}Este Pollo Frito de {STRINGID} es barato{ENDQUOTES}
+STR_1543    :{SMALLFONT}{OPENQUOTES}Esta Limonada de {STRINGID} es barata{ENDQUOTES}
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -1554,59 +1554,59 @@ STR_1548    :
 STR_1549    :
 STR_1550    :{SMALLFONT}{OPENQUOTES}¡Wow!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}Tengo la extraña sensación de que alguien me está observando{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un globo de {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un juguete de peluche de {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un mapa de {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una foto de {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un paraguas de {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una bebida de {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una hamburguesa de {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por unas patatas fritas de {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un helado de {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un algodón de azúcar de {STRINGID}{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Globo de {STRINGID}{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Juguetito de {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Mapa de {STRINGID}{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Foto de {STRINGID}{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Paraguas de {STRINGID}{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Bebida de {STRINGID}{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Hamburguesa de {STRINGID}{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por las Papas Fritas de {STRINGID}{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el helado de {STRINGID}{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Algodón de {STRINGID}{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una pizza de {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Pizza de {STRINGID}{ENDQUOTES}
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por unas palomitas de {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un Perrito Caliente de {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un tentáculo de {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un sombrero de {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una manzana acaramelada de {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una camiseta de {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una rosquilla de {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un café de {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por las Palomitas de {STRINGID}{ENDQUOTES}
+STR_1568    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Perrito de {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Tentáculo de {STRINGID}{ENDQUOTES}
+STR_1570    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Sombrero de {STRINGID}{ENDQUOTES}
+STR_1571    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Manzana de {STRINGID}{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Camiseta de {STRINGID}{ENDQUOTES}
+STR_1573    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Rosquilla de {STRINGID}{ENDQUOTES}
+STR_1574    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Café de {STRINGID}{ENDQUOTES}
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un pollo frito de {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una limonada de {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Pollo Frito de {STRINGID}{ENDQUOTES}
+STR_1577    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Limonada de {STRINGID}{ENDQUOTES}
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Esta foto de {STRINGID} es realmente barata{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}Esta foto de {STRINGID} es realmente barata{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}Esta foto de {STRINGID} es realmente barata{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}Este pretzel de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}Este chocolate caliente de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}Este té helado de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Este pastel de embudo de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}Estas gafas de sol de {STRINGID} son realmente baratas{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Estos fideos con carne de {STRINGID} son realmente baratos{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}Estos fideos de arroz frito de {STRINGID} son realmente baratos{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Esta sopa wonton de {STRINGID} es realmente barata{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}Esta sopa de albóndigas de {STRINGID} es realmente barata{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}Este zumo de frutas de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}Esta leche de soja de {STRINGID} es realmente barata{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}Este sujeonggwa de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Este mini-sándwich de {STRINGID} es realmente barato{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}Esta galleta de {STRINGID} es realmente barata{ENDQUOTES}
+STR_1584    :{SMALLFONT}{OPENQUOTES}Esta Foto de {STRINGID} es barata{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}Esta Foto de {STRINGID} es barata{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}Esta Foto de {STRINGID} es barata{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}Este Pretzel de {STRINGID} es barato{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}Este Chocolate de {STRINGID} es barato{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}Este Té de {STRINGID} es barato{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}Este Pastel de {STRINGID} es barato{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}Estas Gafas de {STRINGID} son baratas{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}Estos Fideos con carne de {STRINGID} son baratos{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}Este Arroz Frito de {STRINGID} son baratos{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}Esta Sopawonton de {STRINGID} es barata{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}Esta Sopa de Albóndigas de {STRINGID} es barata{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}Este Zumo de {STRINGID} es barato{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}Esta Leche Soja de {STRINGID} es barata{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}Este Sujeonggwa de {STRINGID} es barato{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}Este Sándwich de {STRINGID} es barato{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}Esta Galleta de {STRINGID} es barata{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Esta salchicha asada de {STRINGID} es realmente barata{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}Esta Salchicha de {STRINGID} es barata{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1618,27 +1618,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una foto de {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una foto de {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una foto de {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un pretzel de {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un chocolate caliente de {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un té helado de {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un pastel de embudo de {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por unas gafas de sol de {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por unos fideos con carne de {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por unos fideos de arroz frito de{STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una sopa wonton de {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una sopa de albóndigas de {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un zumo de frutas de {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una leche de soja de {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un sujeonggwa de {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por un mini-sándwich de {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una galleta de {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Foto de {STRINGID}{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Foto de {STRINGID}{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Foto de {STRINGID}{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Pretzel de {STRINGID}{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Chocolate de {STRINGID}{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Té de {STRINGID}{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Pastel de {STRINGID}{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por las Gafas de {STRINGID}{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por los Fideos de {STRINGID}{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Arroz Frito de {STRINGID}{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Sopawonton de {STRINGID}{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Sopa de Albóndigas de {STRINGID}{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Zumo de {STRINGID}{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Leche Soja de {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Sujeonggwa de {STRINGID}{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por el Sándwich de {STRINGID}{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Galleta de {STRINGID}{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por una salchicha asada de {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}{OPENQUOTES}No voy a pagar tanto por la Salchicha de {STRINGID}{ENDQUOTES}
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1657,8 +1657,8 @@ STR_1651    :{SMALLFONT}{OPENQUOTES}¡Lindo paseo! Pero no tan bueno como el Fé
 STR_1652    :{SMALLFONT}{OPENQUOTES}¡Estoy tan emocionado - Es un paseo Intamin!{ENDQUOTES}
 STR_1653    :{SMALLFONT}{OPENQUOTES}... ¡y aquí estamos en {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensamientos recientes:
-STR_1655    :{SMALLFONT}{BLACK}Construye camino a nivel del suelo
-STR_1656    :{SMALLFONT}{BLACK}Construye puente o túnel
+STR_1655    :{SMALLFONT}{BLACK}Construir camino a nivel del suelo.
+STR_1656    :{SMALLFONT}{BLACK}Construit puente o túnel.
 STR_1657    :{WINDOW_COLOUR_2}Atracción preferida:
 STR_1658    :{WINDOW_COLOUR_2}Intensidad: {BLACK}menos de {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}Intensidad: {BLACK}entre {COMMA16} y {COMMA16}
@@ -1964,14 +1964,14 @@ STR_1956    :{SMALLFONT}{BLACK}Número de circuitos por juego
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :No se puede cambiar el número de circuitos...
-STR_1960    :{WINDOW_COLOUR_2}Precio de globo:
-STR_1961    :{WINDOW_COLOUR_2}Precio de juguete:
+STR_1960    :{WINDOW_COLOUR_2}Precio de Globo:
+STR_1961    :{WINDOW_COLOUR_2}Precio de Juguetito:
 STR_1962    :{WINDOW_COLOUR_2}Precio de Mapa:
 STR_1963    :{WINDOW_COLOUR_2}Precio de Foto:
 STR_1964    :{WINDOW_COLOUR_2}Precio de Paraguas:
 STR_1965    :{WINDOW_COLOUR_2}Precio de Bebida:
 STR_1966    :{WINDOW_COLOUR_2}Precio de Hamburguesa:
-STR_1967    :{WINDOW_COLOUR_2}Precio Patatas Fritas:
+STR_1967    :{WINDOW_COLOUR_2}Precio Papas Fritas:
 STR_1968    :{WINDOW_COLOUR_2}Precio de Helado:
 STR_1969    :{WINDOW_COLOUR_2}Precio Algodón Azúcar:
 STR_1970    :{WINDOW_COLOUR_2}
@@ -1993,7 +1993,7 @@ STR_1985    :{WINDOW_COLOUR_2}Precio de Limonada:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
 STR_1988    :Globo
-STR_1989    :Juguete Mimoso
+STR_1989    :Juguetito
 STR_1990    :Mapa del Parque
 STR_1991    :Foto en Atracción
 STR_1992    :Sombrilla
@@ -2011,7 +2011,7 @@ STR_2003    :Palomitas de Maíz
 STR_2004    :Perrito Caliente
 STR_2005    :Tentáculo
 STR_2006    :Gorra
-STR_2007    :Manzana acaramelada
+STR_2007    :Manzana de Caramelo
 STR_2008    :Camiseta
 STR_2009    :Rosquilla
 STR_2010    :Café
@@ -2039,7 +2039,7 @@ STR_2031    :Palomitas de Maíz
 STR_2032    :Perritos Calientes
 STR_2033    :Tentáculos
 STR_2034    :Sombreros
-STR_2035    :Manzanas acarameladas
+STR_2035    :Manzanas de Caramelo
 STR_2036    :Camisetas
 STR_2037    :Rosquillas
 STR_2038    :Cafés
@@ -2049,7 +2049,7 @@ STR_2041    :Limonadas
 STR_2042    :Cajas vacías
 STR_2043    :Botellas vacías
 STR_2044    :un Globo
-STR_2045    :un Juguete Mimoso
+STR_2045    :un Juguetito
 STR_2046    :un Mapa del Parque
 STR_2047    :una Foto
 STR_2048    :una Sombrilla
@@ -2062,12 +2062,12 @@ STR_2054    :una Lata vacía
 STR_2055    :una Basura
 STR_2056    :una Caja vacía
 STR_2057    :una Pizza
-STR_2058    :un cupón
+STR_2058    :un Cupón
 STR_2059    :unas Palomitas de Maíz
 STR_2060    :un Perrito Caliente
 STR_2061    :un Tentáculo
 STR_2062    :una Gorra
-STR_2063    :una Manzana acaramelada
+STR_2063    :una Manzana de Caramelo
 STR_2064    :una Camiseta
 STR_2065    :una Rosquilla
 STR_2066    :un Café
@@ -2077,7 +2077,7 @@ STR_2069    :una Limonada
 STR_2070    :una Caja vacía
 STR_2071    :una Botella vacía
 STR_2072    :Globo de {OPENQUOTES}{STRINGID}{ENDQUOTES}
-STR_2073    :Juguete de {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2073    :Juguetito de {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2074    :Mapa de {STRINGID}
 STR_2075    :Foto en atracción de {STRINGID}
 STR_2076    :Paraguas de {OPENQUOTES}{STRINGID}{ENDQUOTES}
@@ -2095,7 +2095,7 @@ STR_2087    :Palomitas de Maíz
 STR_2088    :Perrito caliente
 STR_2089    :Tentáculo
 STR_2090    :Sombrero de {OPENQUOTES}{STRINGID}{ENDQUOTES}
-STR_2091    :Manzana Acaramelada
+STR_2091    :Manzana de Caramelo
 STR_2092    :Camiseta de {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2093    :Rosquilla
 STR_2094    :Café
@@ -2104,9 +2104,9 @@ STR_2096    :Pollo Frito
 STR_2097    :Limonada
 STR_2098    :Caja vacía
 STR_2099    :Botella vacía
-STR_2100    :{WINDOW_COLOUR_2}Precio de foto:
-STR_2101    :{WINDOW_COLOUR_2}Precio de foto:
-STR_2102    :{WINDOW_COLOUR_2}Precio de foto:
+STR_2100    :{WINDOW_COLOUR_2}Precio de Foto:
+STR_2101    :{WINDOW_COLOUR_2}Precio de Foto:
+STR_2102    :{WINDOW_COLOUR_2}Precio de Foto:
 STR_2103    :{WINDOW_COLOUR_2}Precio de Pretzel:
 STR_2104    :{WINDOW_COLOUR_2}Precio Chocolate:
 STR_2105    :{WINDOW_COLOUR_2}Precio de Té Helado:
@@ -2116,7 +2116,7 @@ STR_2108    :{WINDOW_COLOUR_2}Precio de Fideos:
 STR_2109    :{WINDOW_COLOUR_2}Precio Arroz Frito:
 STR_2110    :{WINDOW_COLOUR_2}Precio Sopa Wonton:
 STR_2111    :{WINDOW_COLOUR_2}Precio Albóndigas:
-STR_2112    :{WINDOW_COLOUR_2}Precio Jugo Frutas:
+STR_2112    :{WINDOW_COLOUR_2}Precio Bebida de Fruta:
 STR_2113    :{WINDOW_COLOUR_2}Precio Leche Soja:
 STR_2114    :{WINDOW_COLOUR_2}Precio Sujongkwa:
 STR_2115    :{WINDOW_COLOUR_2}Precio Sándwich:
@@ -2132,14 +2132,14 @@ STR_2124    :Foto en Atracción
 STR_2125    :Pretzel
 STR_2126    :Chocolate Caliente
 STR_2127    :Té helado
-STR_2128    :Funnel Cake
+STR_2128    :Pastel
 STR_2129    :Gafas de Sol
 STR_2130    :Fideo con carne
 STR_2131    :Arroz Frito
 STR_2132    :Sopa Wonton
-STR_2133    :Albóndigas
+STR_2133    :Sopa de Albóndigas
 STR_2134    :Jugo de Frutas
-STR_2135    :Leche de Soja
+STR_2135    :Leche Soja
 STR_2136    :Sujongkwa
 STR_2137    :Mini-Sándwich
 STR_2138    :Galleta
@@ -2154,16 +2154,16 @@ STR_2146    :Foto en Atracción
 STR_2147    :Pretzels
 STR_2148    :Chocolates Caliente
 STR_2149    :Tés Helados
-STR_2150    :Funnel Cakes
+STR_2150    :Pasteles
 STR_2151    :Gafas de Sol
 STR_2152    :Fideos con carne
-STR_2153    :Arroz fritos
+STR_2153    :Arroz frito
 STR_2154    :Sopas Wonton
-STR_2155    :Albóndigas
-STR_2156    :Jugos de Frutas
-STR_2157    :Leches de Soja
+STR_2155    :Sopas de Albóndigas
+STR_2156    :Bebidas de Frutas
+STR_2157    :Leches Soja
 STR_2158    :Sujongkwa
-STR_2159    :Mini-Sándwiches
+STR_2159    :Sándwiches
 STR_2160    :Galletas
 STR_2161    :Tazones vacíos
 STR_2162    :Cartónes de bebida vacío
@@ -2176,20 +2176,20 @@ STR_2168    :una Foto en Atracción
 STR_2169    :un Pretzel
 STR_2170    :un Chocolate Caliente
 STR_2171    :un Té Helado
-STR_2172    :un Funnel Cake
+STR_2172    :un Pastel
 STR_2173    :un par de Gafas
 STR_2174    :unos Fideos de carne
 STR_2175    :un Arroz Frito
 STR_2176    :una Sopa Wonton
-STR_2177    :unas Albóndigas
-STR_2178    :un Jugo de Frutas
-STR_2179    :una Leche de soja
+STR_2177    :una Sopa de Albóndiga
+STR_2178    :una Bebida de Fruta
+STR_2179    :una Leche Soja
 STR_2180    :un Sujongkwa
 STR_2181    :un Mini-Sándwich
 STR_2182    :una Galleta
 STR_2183    :un Tazón Vacío
 STR_2184    :un Cartón de bebida vacío
-STR_2185    :una Taza de jugo vacía
+STR_2185    :una Taza de Bebida vacía
 STR_2186    :una Salchicha asada
 STR_2187    :un Tazón Vacío
 STR_2188    :Foto en Atracción de {STRINGID}
@@ -2198,20 +2198,20 @@ STR_2190    :Foto en Atracción de {STRINGID}
 STR_2191    :Pretzel
 STR_2192    :Chocolate Caliente
 STR_2193    :Té Helado
-STR_2194    :Funnel Cake
+STR_2194    :Pastel
 STR_2195    :Gafas de Sol
 STR_2196    :Fideos con carne
 STR_2197    :Arroz Frito
 STR_2198    :Sopa Wonton
-STR_2199    :Albóndigas
-STR_2200    :Jugo de Frutas
+STR_2199    :Sopa de Albóndigas
+STR_2200    :Bebida de Frutas
 STR_2201    :Leche de Soja
 STR_2202    :Sujongkwa
 STR_2203    :Mini-Sándwich
 STR_2204    :Galleta
 STR_2205    :Tazón Vacío
 STR_2206    :Cartón de bebida vacío
-STR_2207    :Taza de jugo vacía
+STR_2207    :Taza de Bebida vacía
 STR_2208    :Salchicha asada
 STR_2209    :Tazón Vacío
 STR_2210    :{SMALLFONT}{BLACK}Mostrar lista de jardineros del parque
@@ -2222,7 +2222,7 @@ STR_2214    :¡No es posible construir mientras el juego está pausado!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
-STR_2218    :{RED}¡{STRINGID} en {STRINGID} no ha regresado a la {STRINGID} todavía!{NEWLINE}Comprueba si se ha quedado atascado o detenido.
+STR_2218    :{RED}¡{STRINGID} en {STRINGID} no ha regresado a la {STRINGID}!{NEWLINE}Comprueba si se ha atorado o se ha detenido.
 STR_2219    :{RED}{COMMA16} personas han muerto en un accidente en {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoración del parque: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valoración del parque: {COMMA16}
@@ -2269,7 +2269,7 @@ STR_2261    :Financiación mínima
 STR_2262    :Financiación normal
 STR_2263    :Financiación máxima
 STR_2264    :Inversión en investigación
-STR_2265    :{WINDOW_COLOUR_2}Dinero: {BLACK}{CURRENCY} por mes
+STR_2265    :{WINDOW_COLOUR_2}Presupuesto: {BLACK}{CURRENCY} por mes
 STR_2266    :Prioridades en investigación
 STR_2267    :Actualmente en desarrollo
 STR_2268    :Último desarrollo
