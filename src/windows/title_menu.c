@@ -36,6 +36,7 @@ enum {
 	WIDX_CONTINUE_SAVED_GAME,
 	WIDX_MULTIPLAYER,
 	WIDX_SHOW_TUTORIAL,
+	WIDX_GAME_OPTIONS,
 	WIDX_GAME_TOOLS
 };
 
@@ -44,6 +45,7 @@ static rct_widget window_title_menu_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_LOAD_GAME,		STR_CONTINUE_SAVED_GAME_TIP		},
 	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_G2_MENU_MULTIPLAYER,	STR_SHOW_MULTIPLAYER_TIP		},
 	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_TUTORIAL,		STR_SHOW_TUTORIAL_TIP			},
+	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_G2_MENU_OPTIONS,		STR_OPTIONS_TITLE				},
 	{ WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_TOOLBOX,			STR_GAME_TOOLS					},
 	{ WIDGETS_END },
 };
@@ -109,7 +111,8 @@ void window_title_menu_open()
 		(1 << WIDX_MULTIPLAYER) |
 #endif
 		// Disable tutorial
-		// (1 << WIDX_SHOW_TUTORIAL) |
+		//(1 << WIDX_SHOW_TUTORIAL) |
+		(1 << WIDX_GAME_OPTIONS) |
 		(1 << WIDX_GAME_TOOLS)
 	);
 
@@ -127,7 +130,6 @@ void window_title_menu_open()
 		i++;
 	}
 	window->width = x;
-	window->x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - window->width) / 2;
 
 	window_init_scroll_widgets(window);
 }
@@ -150,6 +152,9 @@ static void window_title_menu_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_MULTIPLAYER:
 		window_server_list_open();
+		break;
+	case WIDX_GAME_OPTIONS:
+		window_options_open();
 		break;
 	}
 }
@@ -199,6 +204,8 @@ static void window_title_menu_cursor(rct_window *w, int widgetIndex, int x, int 
 
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
+	w->x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - w->width) / 2;
+
 	gfx_fill_rect(dpi, w->x, w->y, w->x + w->width - 1, w->y + 82 - 1, 0x2000000 | 51);
 	window_draw_widgets(w, dpi);
 }
