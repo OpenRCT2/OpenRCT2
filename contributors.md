@@ -61,6 +61,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Chanwoong Kim (kexplo)
 * Josué Acevedo (Wirlie)
 * Martin Černáč (octaroot)
+* (marcovmun)
 
 ## Toolchain
 * (Balletie) - OSX

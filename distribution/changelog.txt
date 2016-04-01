@@ -14,6 +14,7 @@
 - Fix: [#3361] Missing Twister coaster piece.
 - Fix: [#3418] Launched freefall restraints are drawn incorrectly when up (original bug).
 - Fix: [#3451] Renaming staff is a guest command.
+- Fix: [#3210] Scenery window scrolls too far
 
 0.0.4-beta (2016-04-15)
 ------------------------------------------------------------------------
