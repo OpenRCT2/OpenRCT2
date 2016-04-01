@@ -195,10 +195,10 @@ bool platform_directory_delete(const utf8 *path)
 
 	wchar_t *wPath = utf8_to_widechar(path);
 	wcsncpy(pszFrom, wPath, MAX_PATH);
-	free(wPath);
 
 	// Needs to be double-null terminated for some weird reason
 	pszFrom[wcslen(wPath) + 1] = 0;
+	free(wPath);
 
 	SHFILEOPSTRUCTW fileop;
 	fileop.hwnd   = NULL;    // no status display
@@ -370,8 +370,10 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 
 	wchar_t *wDirectory = utf8_to_widechar(directory);
 
-	if (wcslen(wDirectory) + 3 >= MAX_PATH)
+	if (wcslen(wDirectory) + 3 >= MAX_PATH) {
+		free(wDirectory);
 		return INVALID_HANDLE;
+	}
 
 	for (i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
@@ -634,7 +636,7 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 	openFileName.lpstrFilter = wcFilter;
 
 	// Open dialog
-	BOOL result;
+	BOOL result = false;
 	DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
 	if (desc->type == FD_OPEN) {
 		openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;

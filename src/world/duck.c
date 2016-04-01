@@ -277,7 +277,7 @@ static void duck_update_fly_away(rct_duck *duck)
 		return;
 	}
 
-	int z = z = min(duck->z + 2, 496);
+	int z = min(duck->z + 2, 496);
 	sprite_move(x, y, z, (rct_sprite*)duck);
 	duck_invalidate(duck);
 }
