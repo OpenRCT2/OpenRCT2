@@ -49,7 +49,10 @@ endif (DISABLE_NETWORK)
 
 option(STATIC "Create a static build.")
 
-PKG_CHECK_MODULES(PNG libpng>=1.6)
+PKG_CHECK_MODULES(PNG libpng>=1.2)
+if (NOT PNG_FOUND)
+	PKG_CHECK_MODULES(PNG libpng12)
+endif (NOT PNG_FOUND)
 if (NOT PNG_FOUND)
 	PKG_CHECK_MODULES(PNG REQUIRED libpng16)
 endif (NOT PNG_FOUND)
