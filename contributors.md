@@ -34,6 +34,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (Vijfhoek) - Misc.
 * (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
+* Lewis Fox (LRFLEW) - Misc.
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
@@ -70,6 +71,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
+* Lewis Fox (LRFLEW) - OSX
 
 ## Documentation
 * (honzi)
