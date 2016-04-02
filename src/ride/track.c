@@ -4596,19 +4596,18 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		// push baseZ and clearanceZ
 		int cur_z = baseZ * 8;
 
-		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
+		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
-			// push bl bh??
 			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {
 				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
-			}
-			else {
-				uint8 _bl = *RCT2_GLOBAL(0x00F44054, uint8*);
-				_bl ^= 0x0F;
-
-				for (int dl = bitscanforward(_bl); dl != -1; dl = bitscanforward(_bl)){
-					_bl &= ~(1 << dl);
-					map_remove_intersecting_walls(x, y, baseZ, clearanceZ, direction & 3);
+			} else {
+				// Remove walls in the directions this track intersects
+				uint8 intersectingDirections = *RCT2_GLOBAL(0x00F44054, uint8*);
+				intersectingDirections ^= 0x0F;
+				for (int i = 0; i < 4; i++) {
+					if (intersectingDirections & (1 << i)) {
+						map_remove_intersecting_walls(x, y, baseZ, clearanceZ, i);
+					}
 				}
 			}
 		}
