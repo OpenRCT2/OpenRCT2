@@ -4891,17 +4891,17 @@ static void peep_update_using_bin(rct_peep* peep){
 		uint8 selected_bin = peep->var_37 * 2;
 
 		// This counts down 2 = No rubbish, 0 = full
-		uint8 rubbish_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
+		uint8 space_left_in_bin = 0x3 & (map_element->properties.path.addition_status >> selected_bin);
 		uint32 empty_containers = peep_empty_container_standard_flag(peep);
 
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
 			if (!(empty_containers & (1u << cur_container))) continue;
 
-			if (rubbish_in_bin != 0){
+			if (space_left_in_bin != 0){
 				// OpenRCT2 modification: This previously used
 				// the tick count as a simple random function
 				// switched to scenario_rand as it is more reliable
-				if (scenario_rand() & 7) rubbish_in_bin--;
+				if ((scenario_rand() & 7) == 0) space_left_in_bin--;
 				peep->item_standard_flags &= ~(1 << cur_container);
 				peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 				peep_update_sprite_type(peep);
@@ -4927,11 +4927,11 @@ static void peep_update_using_bin(rct_peep* peep){
 		for (uint8 cur_container = 0; cur_container < 32; cur_container++){
 			if (!(empty_containers & (1u << cur_container))) continue;
 
-			if (rubbish_in_bin != 0){
+			if (space_left_in_bin != 0){
 				// OpenRCT2 modification: This previously used
 				// the tick count as a simple random function
 				// switched to scenario_rand as it is more reliable
-				if (scenario_rand() & 7) rubbish_in_bin--;
+				if ((scenario_rand() & 7) == 0) space_left_in_bin--;
 				peep->item_extra_flags &= ~(1 << cur_container);
 				peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -4954,7 +4954,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		// Place new amount in bin by first clearing the value
 		map_element->properties.path.addition_status &= ~(3 << selected_bin);
 		// Then placeing the new value.
-		map_element->properties.path.addition_status |= rubbish_in_bin << selected_bin;
+		map_element->properties.path.addition_status |= space_left_in_bin << selected_bin;
 
 		map_invalidate_tile_zoom0(peep->next_x, peep->next_y, map_element->base_height << 3, map_element->clearance_height << 3);
 		peep_state_reset(peep);
