@@ -4734,7 +4734,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			support_height = 10;
 		}
 
-		cost += (((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) / 2) * 10;
+		cost += ((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) * 5;
 
 		//6c56d3
 
