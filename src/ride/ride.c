@@ -5592,9 +5592,10 @@ int ride_get_refund_price(int ride_id)
 			continue;
 		}
 
+		// Using GAME_COMMAND_FLAG_2 for below commands as a HACK to stop fences from being removed
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x,
-			GAME_COMMAND_FLAG_APPLY | (0 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (0 << 8),
 			y,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,
@@ -5603,7 +5604,7 @@ int ride_get_refund_price(int ride_id)
 
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x,
-			GAME_COMMAND_FLAG_APPLY | (1 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (1 << 8),
 			y + 16,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,
@@ -5612,7 +5613,7 @@ int ride_get_refund_price(int ride_id)
 
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x + 16,
-			GAME_COMMAND_FLAG_APPLY | (2 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (2 << 8),
 			y + 16,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,
@@ -5621,7 +5622,7 @@ int ride_get_refund_price(int ride_id)
 
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x + 16,
-			GAME_COMMAND_FLAG_APPLY | (3 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (3 << 8),
 			y,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,

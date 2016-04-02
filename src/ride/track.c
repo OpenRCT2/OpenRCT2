@@ -3420,7 +3420,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
+		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
 			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}
@@ -5242,7 +5242,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	}
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) != 0) {
-		if ((flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) == 0) {
+		if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2)) {
 			footpath_remove_litter(x, y, z);
 			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}
