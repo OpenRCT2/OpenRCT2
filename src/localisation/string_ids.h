@@ -2422,9 +2422,7 @@ enum {
 	STR_CHEAT_TIP_MAKE_DESTRUCTABLE = 5854,
 	STR_CHEAT_TIP_IGNORE_INTENSITY = 5855,
 	STR_CHEAT_TIP_OPEN_PARK = 5856,
-	STR_CHEAT_TIP_CLOSE_PARK = 5856,
 	STR_CHEAT_TIP_FREEZE_CLIMATE = 5857,
-	STR_CHEAT_TIP_UNFREEZE_CLIMATE = 5857,
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
