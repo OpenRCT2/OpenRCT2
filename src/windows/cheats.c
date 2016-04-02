@@ -189,7 +189,7 @@ static rct_widget window_cheats_guests_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(7),			HPL(7),			STR_MIN,							STR_NONE },								// bathroom min
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(9),			HPL(9),			STR_CHEAT_MORE_THAN_1,				STR_NONE },								// ride intensity > 1
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(9),			HPL(9),			STR_CHEAT_LESS_THAN_15,				STR_NONE },								// ride intensity < 15
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL, 					YPL(10),		OHPL(10),		STR_CHEAT_IGNORE_INTENSITY,			STR_NONE },								// guests ignore intensity
+	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL, 					YPL(10),		OHPL(10),		STR_CHEAT_IGNORE_INTENSITY,			STR_CHEAT_TIP_IGNORE_INTENSITY },					// guests ignore intensity
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL, 					YPL(11),		OHPL(11),		STR_CHEAT_DISABLE_VANDALISM,		STR_CHEAT_DISABLE_VANDALISM_TIP },		// disable vandalism
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(13),		HPL(15.5),		STR_CHEAT_GIVE_ALL_GUESTS,			STR_NONE },								// Guests parameters group frame
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(14),		HPL(14),		STR_CHEAT_CURRENCY_FORMAT,			STR_NONE },								// give guests money
@@ -206,10 +206,10 @@ static rct_widget window_cheats_guests_widgets[] = {
 static rct_widget window_cheats_misc_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(0),			HPL(6.25),		STR_CHEAT_GENERAL_GROUP,			STR_NONE },								// General group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1), 		HPL(1),			STR_CHEAT_OPEN_PARK,				STR_NONE},								// open / close park
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1), 		HPL(1),			STR_CHEAT_OPEN_PARK,				STR_CHEAT_TIP_OPEN_PARK },								// open / close park
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1), 				YPL(1), 		HPL(1),			STR_CHEAT_PARK_PARAMETERS,			STR_CHEAT_TIP_PARK_PARAMETERS},			// Park parameters
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0), 				YPL(2), 		HPL(2),			STR_CHEAT_SANDBOX_MODE,				STR_CHEAT_SANDBOX_MODE_TIP},			// Sandbox mode (edit land ownership in-game)
-	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL, 					YPL(3),			OHPL(3),		STR_CHEAT_UNLOCK_PRICES,			STR_NONE}, 								// Unlock all prices
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL, 					YPL(3),			OHPL(3),		STR_CHEAT_UNLOCK_PRICES,			STR_CHEAT_TIP_UNLOCK_PRICES }, 								// Unlock all prices
 	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0), 				YPL(4), 		HPL(4),			STR_FORCE_PARK_RATING,				STR_NONE},								// Force park rating
 	{ WWT_SPINNER,			1,		XPL(1),					WPL(1) - 10,			YPL(4) + 2,		HPL(4) - 3,		STR_NONE,							STR_NONE },								// park rating
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(4) + 3,		YPL(4) + 7,		STR_NUMERIC_UP,						STR_NONE },								// increase rating
@@ -218,7 +218,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(5), 		HPL(5),			STR_CHEAT_HAVE_FUN,					STR_NONE},								// Have fun!
 	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(6),		HPL(6),		STR_CHEAT_NEVERENDING_MARKETING,			STR_CHEAT_TIP_NEVERENDING_MARKETING },				// neverending marketing campaigns
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(7.25),			HPL(9.5),		STR_CHEAT_CLIMATE_GROUP,			STR_NONE },								// Climate group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_NONE},								// Freeze climate
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_TIP_FREEZE_CLIMATE },						// Freeze climate
 	{ WWT_DROPDOWN,			1,		XPL(1),					WPL(1),					YPL(9) + 2,		YPL(9) + 13,	STR_NONE,							STR_FORCE_WEATHER_TOOLTIP },			// Force weather
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 11,			WPL(1) - 1,				YPL(9) + 3,		YPL(9) + 12,	STR_DROPDOWN_GLYPH,					STR_FORCE_WEATHER_TOOLTIP },			// Force weather
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(11),		HPL(15.5),		STR_CHEAT_STAFF_GROUP,				STR_NONE },								// Staff group
@@ -235,14 +235,14 @@ static rct_widget window_cheats_misc_widgets[] = {
 };
 static rct_widget window_cheats_rides_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(0),			HPL(0),			STR_CHEAT_RENEW_RIDES,				STR_NONE},								// Renew rides
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,		STR_NONE},								// Make destructable
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_FIX_ALL_RIDES,			STR_NONE },								// Fix all rides
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(0),			HPL(0),			STR_CHEAT_RENEW_RIDES,				STR_CHEAT_TIP_RENEW_RIDES },								// Renew rides
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,		STR_CHEAT_TIP_MAKE_DESTRUCTABLE },								// All destructable
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_FIX_ALL_RIDES,			STR_CHEAT_TIP_FIX_ALL_RIDES },								// Fix all rides
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(11),		OHPL(11) + 8,	STR_CHEAT_UNLOCK_OPERATING_LIMITS,	STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,	STR_NONE }, 							// Disable brakes failure
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(10),		OHPL(10),		STR_CHEAT_DISABLE_BREAKDOWNS,		STR_NONE }, 							// Disable all breakdowns
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(8),			OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,		STR_NONE }, 							// Build in pause mode
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_CHEAT_RESET_CRASH_STATUS,		STR_NONE },								// Reset crash status
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_CHEAT_RESET_CRASH_STATUS,		STR_CHEAT_TIP_RESET_CRASH_STATUS },				// Reset crash status
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2),			HPL(2),			STR_CHEAT_10_MINUTE_INSPECTIONS,	STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },	// 10 minute inspections
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,	STR_NONE }, 							// Show all operating modes
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(6),			OHPL(6),		STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,	STR_NONE }, 				// Show vehicles from other track types
