@@ -7571,6 +7571,14 @@ void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle)
 	);
 }
 
+static bool ride_entry_is_invented(int rideEntryIndex)
+{
+	int quadIndex = rideEntryIndex >> 5;
+	int bitIndex = rideEntryIndex & 0x1F;
+	bool invented = (RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex));
+	return invented;
+}
+
 static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex)
 {
 	bool selectionShouldBeExpanded;
@@ -7598,20 +7606,8 @@ static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex
 		for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
 			uint8 rideEntryIndex = *currentRideEntryIndex;
 			if (rideEntryIndex == inputRideEntryIndex) {
-				rct_ride_entry *currentRideEntry = get_ride_entry(rideEntryIndex);
-
-				// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
-				if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) &&
-					!(gConfigInterface.select_by_track_type || selectionShouldBeExpanded)
-				) {
-					continue;
-				}
-
-				// Skip if vehicle type is not invented yet
-				int quadIndex = rideEntryIndex >> 5;
-				int bitIndex = rideEntryIndex & 0x1F;
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex))) {
-					continue;
+				if (!ride_entry_is_invented(rideEntryIndex)) {
+					return false;
 				}
 
 				return true;
