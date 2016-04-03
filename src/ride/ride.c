@@ -5966,8 +5966,8 @@ foundRideEntry:
 	ride->price = 0;
 	ride->price_secondary = 0;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		ride->price = RCT2_GLOBAL(0x0097D4F0 + 0 + (ride->type * 8), uint8);
-		ride->price_secondary = RCT2_GLOBAL(0x0097D4F0 + 1 + (ride->type * 8), uint8);
+		ride->price = RideData4[ride->type].price;
+		ride->price_secondary = RideData4[ride->type].price_secondary;
 
 		if (rideEntry->shop_item == 255) {
 			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {

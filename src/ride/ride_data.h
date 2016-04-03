@@ -48,10 +48,12 @@ typedef struct {
 } rct_shop_item_string_types;
 
 typedef struct {
+	uint8 price;
+	uint8 price_secondary;
 	uint16 flags;
 	uint8 default_music;
 	uint8 var_3;
-	uint8 pad[4];
+	uint8 pad[2];
 } rct_ride_data_4;
 
 typedef struct {
