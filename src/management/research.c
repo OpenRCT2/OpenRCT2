@@ -328,7 +328,7 @@ void sub_684AC3(){
 
 		for (int j = 0; j < scenery_set->entry_count; ++j){
 			uint8 value = scenery_set->scenery_entries[j] & 0x1F;
-			RCT2_ADDRESS(0x01357BD0, uint32)[scenery_set->scenery_entries[j] >> 5] &= ~(1 << value);
+			RCT2_ADDRESS(0x01357BD0, uint32)[scenery_set->scenery_entries[j] >> 5] &= ~(1u << value);
 		}
 	}
 
