@@ -2276,7 +2276,7 @@ STR_2268    :최근에 개발한 항목
 STR_2269    :{WINDOW_COLOUR_2}유형: {BLACK}{STRINGID}
 STR_2270    :{WINDOW_COLOUR_2}진행: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}예상: {BLACK}{STRINGID}
-STR_2272    :{WINDOW_COLOUR_2}놀이기구/시술:{NEWLINE}{BLACK}{STRINGID}
+STR_2272    :{WINDOW_COLOUR_2}놀이기구/시설:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}풍경/테마:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}이 개발에 대한 상세 내역을 보여줍니다
 STR_2275    :{SMALLFONT}{BLACK}연구 & 개발을 위한 투자 설정 창을 보여줍니다
@@ -3473,7 +3473,7 @@ STR_5133    :{SMALLFONT}{BLACK}땅 구입 도구 크기 줄이기
 STR_5134    :{SMALLFONT}{BLACK}땅 구입 도구 크기 늘이기
 STR_5135    :{SMALLFONT}{BLACK}땅 소유권과 건설권 구입하기
 STR_5136    :땅 소유권
-STR_5137    :체인/발사 속력을 {VELOCITY}까지 허용
+STR_5137    :놀이기구 운영 제한 없애기
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :브레이크 고장 안 나게
@@ -3921,7 +3921,7 @@ STR_5581    :FPS 보기
 STR_5582    :마우스 커서를 창 밖으로 나가지 못하게
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :국제단위(SI)법
-STR_5585    :{SMALLFONT}{BLACK}체인/발사 속력을 {VELOCITY}으로 만드는 것처럼, 일부 놀이기구 운행 제한을 없애줍니다
+STR_5585    :{SMALLFONT}{BLACK}체인/발사 속력을 {VELOCITY}으로 만드는 등, 일부 놀이기구 운행 제한을 없애줍니다
 STR_5586    :상점이나 가게를 자동으로 엶
 STR_5587    :{SMALLFONT}{BLACK}이 설정을 켜면 상점이나 가게를 건설한 뒤에 자동으로 열도록 만들어 줍니다.
 STR_5588    :{SMALLFONT}{BLACK}다른 참가자와 함께 플레이합니다.

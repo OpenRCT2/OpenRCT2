@@ -3363,7 +3363,7 @@ STR_3353    :El nuevo nombre contiene caracteres inválidos
 STR_3354    :Otro archivo ya tiene este nombre o se encuentra protegido contra escritura
 STR_3355    :El archivo esta bloqueado o protegido contra escritura
 STR_3356    :Borrar Archivo
-STR_3357    :{WINDOW_COLOUR_2¿Estás seguro de borrar permanentemente {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}¿Estás seguro de borrar permanentemente {STRINGID} ?
 STR_3358    :No se puede eliminar el diseño da vía...
 STR_3359    :{BLACK}Sin diseños de vías para esta atracción
 STR_3360    :¡Advertencia!
