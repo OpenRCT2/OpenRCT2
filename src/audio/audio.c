@@ -135,6 +135,8 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 	int volumeDown = 0;
 	rct_audio_params params;
 	params.in_range = true;
+	params.volume = 0;
+	params.pan = 0;
 
 	rct_map_element *element = map_get_surface_element_at(location->x / 32, location->y / 32);
 	if (element && (element->base_height * 8) - 5 > location->z)
@@ -144,9 +146,9 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 	rct_xy16 pos2 = coordinate_3d_to_2d(location, rotation);
 	rct_window *window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
 	while (true) {
-				window--;
+		window--;
 		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
-					break;
+			break;
 
 		rct_viewport *viewport = window->viewport;
 		if (!viewport || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
@@ -160,11 +162,11 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 		if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000) {
 			params.in_range = false;
 			return params;
-				}
-					}
+		}
+	}
 
 	return params;
-				}
+}
 
 int audio_play_sound(int soundId, int volume, int pan)
 {
