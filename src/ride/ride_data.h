@@ -127,4 +127,6 @@ extern const rct_ride_entry_vehicle CableLiftVehicle;
 extern const uint16 RideFilmLength[3];
 extern const uint16 RideCrookedHouseLength[1];
 
+extern const rating_tuple RideRatings[91];
+
 #endif
