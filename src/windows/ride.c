@@ -2414,7 +2414,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 
 			rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
 
-			for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
+			for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF && numItems <= 63; currentRideEntryIndex++) {
 				rideEntryIndex = *currentRideEntryIndex;
 				currentRideEntry = get_ride_entry(rideEntryIndex);
 				// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
@@ -2424,7 +2424,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 				quadIndex = rideEntryIndex >> 5;
 				bitIndex = rideEntryIndex & 0x1F;
 				// Skip if vehicle type is not invented yet
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
+				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1u << bitIndex)))
 					continue;
 
 				if (ride->subtype == rideEntryIndex)
