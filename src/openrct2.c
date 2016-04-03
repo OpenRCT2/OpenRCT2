@@ -39,6 +39,7 @@
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/mapgen.h"
+#include "platform/breakpad.h"
 
 #if defined(__unix__)
 #include <sys/mman.h>
@@ -263,6 +264,12 @@ bool openrct2_initialise()
  */
 void openrct2_launch()
 {
+#ifdef USE_BREAKPAD
+	CExceptionHandler eh;
+	// never free
+	eh = newCExceptionHandlerSimple();
+#endif // USE_BREAKPAD
+
 	if (openrct2_initialise()) {
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
 		if((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
