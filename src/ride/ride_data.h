@@ -57,6 +57,11 @@ typedef struct {
 } rct_ride_data_4;
 
 typedef struct {
+	uint16 track_price;
+	uint16 support_price;
+} ride_cost;
+
+typedef struct {
 	uint8 sound_id;
 	uint8 minimum_speed;
 	uint8 maximum_speed;
@@ -99,6 +104,7 @@ extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_
 extern const rct_ride_lift_data RideLiftData[91];
 
 extern const rct_ride_data_4 RideData4[91];
+extern const ride_cost RideTrackCosts[91];
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
