@@ -62,6 +62,17 @@ typedef struct {
 } ride_cost;
 
 typedef struct {
+	uint8 max_height;
+	uint8 clearance_height;
+	sint8 z_offset;
+	uint8 max_friction;
+	uint8 z;
+	uint8 price;
+	uint8 bonus_value;		// Deprecated. Use rideBonusValue instead
+	uint8 pad;
+} rct_ride_data_5;
+
+typedef struct {
 	uint8 sound_id;
 	uint8 minimum_speed;
 	uint8 maximum_speed;
@@ -105,6 +116,7 @@ extern const rct_ride_lift_data RideLiftData[91];
 
 extern const rct_ride_data_4 RideData4[91];
 extern const ride_cost RideTrackCosts[91];
+extern const rct_ride_data_5 RideData5[91];
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];

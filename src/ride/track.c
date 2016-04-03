@@ -3438,7 +3438,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		uint8 supportZ = (z + 32) >> 3;
 		if (supportZ > mapElement->base_height) {
 			uint8 supportHeight = (supportZ - mapElement->base_height) / 2;
-			uint8 maxSupportHeight = RCT2_GLOBAL(0x0097D218 + (RIDE_TYPE_MAZE * 8), uint8);
+			uint8 maxSupportHeight = RideData5[RIDE_TYPE_MAZE].max_height;
 			if (supportHeight > maxSupportHeight) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
 				return MONEY32_UNDEFINED;
@@ -4570,11 +4570,11 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		int baseZ = (originZ + trackBlock->z) / 8;
 
 		int clearanceZ = trackBlock->var_07;
-		if (trackBlock->var_09 & (1 << 2) && RCT2_GLOBAL(0x0097D219 + (ride->type * 8), uint8) > 24){
+		if (trackBlock->var_09 & (1 << 2) && RideData5[ride->type].clearance_height > 24) {
 			clearanceZ += 24;
 		}
 		else{
-			clearanceZ += RCT2_GLOBAL(0x0097D219 + (ride->type * 8), uint8);
+			clearanceZ += RideData5[ride->type].clearance_height;
 		}
 
 		clearanceZ = (clearanceZ / 8) + baseZ;
@@ -4718,7 +4718,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			if (ride_height >= 0) {
 				int maxHeight = rideEntry->max_height;
 				if (maxHeight == 0) {
-					maxHeight = RCT2_GLOBAL(0x0097D218 + (ride->type * 8), uint8);
+					maxHeight = RideData5[ride->type].max_height;
 				}
 				ride_height /= 2;
 				if (ride_height > maxHeight && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
@@ -5264,7 +5264,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	if (heightDifference >= 0 && !gCheatsDisableSupportLimits) {
 		heightDifference = heightDifference >> 1;
 
-		if (heightDifference > RCT2_GLOBAL(0x0097D218 + (RIDE_TYPE_MAZE * 8), uint8)) {
+		if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
 			return MONEY32_UNDEFINED;
 		}

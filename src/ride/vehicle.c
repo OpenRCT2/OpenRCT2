@@ -6917,7 +6917,7 @@ loc_6DAEB9:
 		);
 	sint16 x = vehicle->track_x + moveInfo->x;
 	sint16 y = vehicle->track_y + moveInfo->y;
-	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	sint16 z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	trackType = vehicle->track_type >> 2;
 	regs.ebx = 0;
@@ -7226,7 +7226,7 @@ loc_6DBA33:;
 
 	sint16 x = vehicle->track_x + moveInfo->x;
 	sint16 y = vehicle->track_y + moveInfo->y;
-	sint16 z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	sint16 z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	regs.ebx = 0;
 	if (x != unk_F64E20->x) { regs.ebx |= 1; }
@@ -7559,7 +7559,7 @@ loc_6DC743:
 	// loc_6DC8A1
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	// Investigate redundant code
 	regs.ebx = 0;
@@ -7699,7 +7699,7 @@ loc_6DCC2C:
 	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
 	x = vehicle->track_x + moveInfo->x;
 	y = vehicle->track_y + moveInfo->y;
-	z = vehicle->track_z + moveInfo->z + RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	z = vehicle->track_z + moveInfo->z + RideData5[ride->type].z_offset;
 
 	// Investigate redundant code
 	regs.ebx = 0;

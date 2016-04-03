@@ -4437,7 +4437,7 @@ rct_vehicle *vehicle_create_car(
 		vehicle->track_z = z;
 		vehicle->current_station = map_get_station(mapElement);
 		
-		z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+		z += RideData5[ride->type].z_offset;
 
 		vehicle->track_type = mapElement->properties.track.type << 2;
 		vehicle->track_progress = 0;
@@ -4511,7 +4511,7 @@ rct_vehicle *vehicle_create_car(
 
 		vehicle->current_station = map_get_station(mapElement);
 		z = mapElement->base_height * 8;
-		z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+		z += RideData5[ride->type].z_offset;
 
 		sprite_move(x, y, z, (rct_sprite*)vehicle);
 		vehicle->track_type = (mapElement->properties.track.type << 2) | (vehicle->sprite_direction >> 3);
@@ -7427,7 +7427,7 @@ void ride_update_max_vehicles(int rideIndex)
 			return;
 
 		stationLength = (stationLength * 0x44180) - 0x16B2A;
-		int maxFriction = RCT2_GLOBAL(0x0097D21B + (ride->type * 8), uint8) << 8;
+		int maxFriction = RideData5[ride->type].max_friction << 8;
 		int maxCarsPerTrain = 1;
 		for (int numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
 			ride_entry_get_train_layout(ride->subtype, numCars, trainLayout);

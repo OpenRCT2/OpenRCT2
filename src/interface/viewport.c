@@ -1585,7 +1585,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
-				uint16 ax = RCT2_GLOBAL(0x0097D21A + (ride->type * 8), uint8);
+				uint16 ax = RideData5[ride->type].z_offset;
 				uint32 ebx = 0x20381689 + (height + 8) / 16;
 				ebx += RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16);
 				ebx -= RCT2_GLOBAL(0x01359208, uint16);

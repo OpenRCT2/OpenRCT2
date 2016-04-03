@@ -2,6 +2,7 @@
 #include "cable_lift.h"
 #include "ride.h"
 #include "track.h"
+#include "ride_data.h"
 
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle *vehicle);
 static void cable_lift_update_waiting_to_depart(rct_vehicle *vehicle);
@@ -58,7 +59,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 
 	z = z * 8;
 	current->track_z = z;
-	z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+	z += RideData5[ride->type].z_offset;
 
 	sprite_move(16, 16, z, (rct_sprite*)current);
 	current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
@@ -262,7 +263,7 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		unk.z += vehicle->track_z;
 
 		uint8 bx = 0;
-		unk.z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+		unk.z += RideData5[ride->type].z_offset;
 		if (unk.x != unk_F64E20->x)
 			bx |= (1 << 0);
 		if (unk.y != unk_F64E20->y)
@@ -348,7 +349,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 		unk.z += vehicle->track_z;
 
 		uint8 bx = 0;
-		unk.z += RCT2_GLOBAL(0x0097D21A + (ride->type * 8), sint8);
+		unk.z += RideData5[ride->type].z_offset;
 		if (unk.x != unk_F64E20->x)
 			bx |= (1 << 0);
 		if (unk.y != unk_F64E20->y)

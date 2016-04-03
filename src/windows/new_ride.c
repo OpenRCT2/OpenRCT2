@@ -918,7 +918,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		} else {
 			price *= RCT2_ADDRESS(0x0099DA34, uint32)[unk2];
 		}
-		price = (price >> 17) * 10 * RCT2_GLOBAL(0x0097D21D + (item.type * 8), uint8);
+		price = (price >> 17) * 10 * RideData5[item.type].price;
 
 		//
 		rct_string_id stringId = 1691;
