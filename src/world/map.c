@@ -4432,6 +4432,8 @@ void map_extend_boundary_surface()
 		newMapElement->properties.surface.slope |= slope;
 		newMapElement->base_height = z;
 		newMapElement->clearance_height = z;
+
+		update_park_fences(x << 5, y << 5);
 	}
 
 	x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
@@ -4466,8 +4468,9 @@ void map_extend_boundary_surface()
 		newMapElement->properties.surface.slope |= slope;
 		newMapElement->base_height = z;
 		newMapElement->clearance_height = z;
-	}
 
+		update_park_fences(x << 5, y << 5);
+	}
 }
 
 /**
