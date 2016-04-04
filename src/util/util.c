@@ -390,6 +390,55 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 	return buffer;
 }
 
+char* url_from_string(char *data)
+{
+	char *ret = strstr(data, "http://");
+
+	if (!ret) {
+		ret = strstr(data, "https://");
+	}
+
+	if (ret) {
+		char *ret2 = url_end(ret);
+		char *url = malloc(256 * sizeof(char));
+
+		strncpy(url, ret, ret2 - ret);
+
+		ret2 = url_end(url);
+		*ret2 = '\0';
+
+		return url;
+	}
+
+	return 0;
+}
+
+char* url_end(char *data)
+{
+	// find the end of an url.
+	while (*data) {
+		if (!isalnum(*data) 
+			&& *data != '-'
+			&& *data != '_'
+			&& *data != '.'
+			&& *data != '?'
+			&& *data != '#'
+			&& *data != '['
+			&& *data != ']'
+			&& *data != '~'
+			&& *data != '@'
+			&& *data != '%'
+			&& *data != ':'
+			&& *data != '/') {
+			break;
+		}
+
+		data++;
+	}
+
+	return data;
+}
+
 /**
  * @brief Deflates input using zlib
  * @param data Data to be compressed

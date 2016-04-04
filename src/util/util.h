@@ -58,4 +58,7 @@ uint32 util_rand();
 unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
 unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size);
 
+char* url_from_string(char *data);
+char* url_end(char* data);
+
 #endif

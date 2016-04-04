@@ -992,7 +992,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	formatted[0] = 0;
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_YELLOW);
 		safe_strcpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
 		strcat(lineCh, ": ");
 		lineCh = strchr(lineCh, '\0');
@@ -1002,6 +1002,34 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	char* ptrtext = lineCh;
 	safe_strcpy(lineCh, text, 800);
 	utf8_remove_format_codes((utf8*)ptrtext, true);
+
+	// NEW: hilight urls in blue
+	lineCh = strstr(formatted, "http://");
+
+	if (!lineCh) {
+		lineCh = strstr(formatted, "https://");
+	}
+
+	if (lineCh) {
+		char formatted2[1024];
+		safe_strcpy(formatted2, lineCh, 800);
+
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
+
+		safe_strcpy(lineCh, formatted2, 800);
+
+		lineCh = url_end(lineCh);
+
+		// same again to turn the color back after the link
+		if (lineCh != 0) {
+			safe_strcpy(formatted2, lineCh, 800);
+
+			lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
+
+			safe_strcpy(lineCh, formatted2, 800);
+		}
+	}
+
 	return formatted;
 }
 
@@ -2170,9 +2198,26 @@ uint8 network_get_player_group(unsigned int index)
 	return gNetwork.player_list[index]->group;
 }
 
-void network_set_player_group(unsigned int index, unsigned int groupindex)
+void network_set_player_group_adv(NetworkPlayer* player, NetworkGroup* group)
 {
-	gNetwork.player_list[index]->group = gNetwork.group_list[groupindex]->id;
+	player->group = group->id;
+
+	// send an update
+	char str_sg[256];
+
+	const char * group_changed_args[2] = {
+		(char *)player->name,
+		group->GetName().c_str()
+	};
+
+	format_string(str_sg, STR_MULTIPLAYER_PLAYER_GROUP_SET, &group_changed_args);
+
+	chat_history_add(str_sg);
+	gNetwork.Server_Send_CHAT(str_sg);
+}
+
+void network_set_player_group(unsigned int playerIndex, unsigned int groupIndex) {
+	network_set_player_group_adv(gNetwork.player_list[playerIndex].get(), gNetwork.group_list[groupIndex].get());
 }
 
 int network_get_group_index(uint8 id)
@@ -2241,7 +2286,7 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 		return;
 	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		player->group = groupid;
+		network_set_player_group_adv(player, gNetwork.GetGroupByID(groupid));
 		window_invalidate_by_number(WC_PLAYER, playerid);
 	}
 	*ebx = 0;

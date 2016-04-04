@@ -1012,4 +1012,10 @@ utf8* platform_get_username() {
 	return username;
 }
 
+void platform_open_browser(const char* url) {
+	log_info(url);
+	ShellExecute(NULL, "open", url,
+		NULL, NULL, SW_SHOWNORMAL);
+}
+
 #endif

@@ -4,8 +4,9 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "chat.h"
 #include "../util/util.h"
+#include "../input.h"
+#include "chat.h"
 
 #define CHAT_HISTORY_SIZE 10
 #define CHAT_INPUT_SIZE 256
@@ -20,6 +21,7 @@ int _chatLeft;
 int _chatTop;
 int _chatRight;
 int _chatBottom;
+int _chatMouseOver = -1;
 
 static const char* chat_history_get(unsigned int index);
 static uint32 chat_history_get_time(unsigned int index);
@@ -56,6 +58,37 @@ void chat_update()
 {
 	// Flash the caret
 	_chatCaretTicks = (_chatCaretTicks + 1) % 30;
+
+	// clicking the chat
+	if (!(gInputFlags & INPUT_FLAG_5)) {
+		int x = _chatLeft;
+		int y = _chatBottom - (15 * 2);
+
+		int mX = gCursorState.x;
+		int mY = gCursorState.y;
+
+		_chatMouseOver = -1;
+
+		for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
+			if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
+				break;
+			}
+			
+			char lineBuffer[CHAT_INPUT_SIZE + 10];
+			char* lineCh = lineBuffer;
+			safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+
+			char* url = url_from_string(lineBuffer);
+
+			if (mY > y && mY - 15 < y && mX < _chatRight && url != 0) {
+				_chatMouseOver = i;
+
+				if (gCursorState.left == CURSOR_RELEASED) {
+					chat_handle_press(lineBuffer);
+				}
+			}
+		}
+	}
 }
 
 void chat_draw()
@@ -67,7 +100,7 @@ void chat_draw()
 	rct_drawpixelinfo *dpi = (rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI;
 	_chatLeft = 10;
 	_chatTop = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
-	_chatRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 10;
+	_chatRight = _chatLeft + 500; //RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 10;
 	_chatBottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 45;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
@@ -81,7 +114,12 @@ void chat_draw()
 		}
 		safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer), y + 12);
-		gfx_draw_string(dpi, lineBuffer, 255, x, y);
+
+		if (_chatMouseOver == i) {
+			gfx_draw_string(dpi, lineBuffer, 255, x + 5, y);
+		} else {
+			gfx_draw_string(dpi, lineBuffer, 255, x, y);
+		}
 	}
 	if (gChatOpen) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
@@ -101,6 +139,15 @@ void chat_draw()
 	}
 }
 
+void chat_handle_press(char* handle)
+{
+	char* ufs = url_from_string(handle);
+
+	if (ufs != 0) {
+		platform_open_browser(ufs);
+	}
+}
+
 void chat_history_add(const char *src)
 {
 	int index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
@@ -108,7 +155,7 @@ void chat_history_add(const char *src)
 	memcpy(_chatHistory[index], src, min(strlen(src), CHAT_INPUT_SIZE - 1));
 	_chatHistoryTime[index] = SDL_GetTicks();
 	_chatHistoryIndex++;
-	Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0, 1.5f, true);
+	Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0.f, 1.5f, true);
 }
 
 void chat_input(int c)

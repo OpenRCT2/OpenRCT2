@@ -195,4 +195,11 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 	}
 }
 
+void platform_open_browser(const char* url) {
+	@autoreleasepool
+	{
+		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+	}
+}
+
 #endif

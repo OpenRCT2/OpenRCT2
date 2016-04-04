@@ -451,7 +451,7 @@ void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord);
 unsigned int network_get_player_commands_ran(unsigned int index);
 int network_get_player_index(uint8 id);
 uint8 network_get_player_group(unsigned int index);
-void network_set_player_group(unsigned int index, unsigned int groupindex);
+void network_set_player_group(unsigned int playerIndex, unsigned int groupIndex);
 int network_get_group_index(uint8 id);
 uint8 network_get_group_id(unsigned int index);
 int network_get_num_groups();
