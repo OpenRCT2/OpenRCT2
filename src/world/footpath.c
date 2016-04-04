@@ -1155,10 +1155,27 @@ static void loc_6A6D7E(
 				break;
 			case MAP_ELEMENT_TYPE_ENTRANCE:
 				if (z == mapElement->base_height) {
+					// rotate ride entrance if it has no connected paths
+					rct_ride *ride = get_ride(mapElement->properties.entrance.ride_index);
+
+					bool is_exit = mapElement->properties.entrance.type;
+
+					int station = (mapElement->properties.entrance.index & 0x70) >> 4;
+
+					uint16 entrance = ride->entrances[station],
+						exit = ride->exits[station];
+
+					if(!ride_entrance_exit_is_reachable(is_exit ? exit : entrance, ride, station) && gCheatsRotatingEntrances) {
+						mapElement->type = MAP_ELEMENT_TYPE_ENTRANCE | direction;
+						map_invalidate_element(x, y, mapElement);
+					}
+
+					// check the entrance is facing the path you're placing
 					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
 						if (query) {
 							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index);
-						} else {
+						}
+						else {
 							if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
 								sub_6A76E9(mapElement->properties.entrance.ride_index);
 							}

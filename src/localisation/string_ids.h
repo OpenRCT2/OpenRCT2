@@ -2415,6 +2415,8 @@ enum {
 
 	STR_DISABLE_LIGHTNING_EFFECT = 5789,
 
+	STR_CHEAT_ALLOW_RIDE_ENTRANCE_ROTATION = 6000,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

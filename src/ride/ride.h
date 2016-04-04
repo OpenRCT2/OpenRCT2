@@ -1050,6 +1050,8 @@ void game_command_set_ride_vehicles(int *eax, int *ebx, int *ecx, int *edx, int 
 void game_command_place_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_remove_ride_entrance_or_exit(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
+int ride_entrance_exit_is_reachable(uint16 coordinate, rct_ride* ride, int index);
+
 void ride_set_to_default_inspection_interval(int rideIndex);
 
 void sub_6CB945(int rideIndex);
