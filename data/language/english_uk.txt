@@ -4094,6 +4094,14 @@ STR_5786    :Invalid group name
 STR_5787    :{COMMA32} players online
 STR_5788    :Default inspection interval:
 STR_5789    :Disable lightning effect
+STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
+STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
+STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
+STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
+STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
+STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
+STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
 
 #############
 # Scenarios #
