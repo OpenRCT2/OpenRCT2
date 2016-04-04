@@ -1349,6 +1349,12 @@ static void map_window_increase_map_size()
 	map_extend_boundary_surface();
 	window_map_init_map();
 	window_map_center_on_view_point();
+    // Recalculate fences
+	for (int y = 0; y < RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16); y += 32) {
+		for (int x = 0; x < RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16); x += 32) {
+			update_park_fences(x, y);
+		}
+	}
 	gfx_invalidate_screen();
 }
 

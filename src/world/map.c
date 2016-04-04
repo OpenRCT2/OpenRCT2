@@ -4384,11 +4384,8 @@ void map_remove_out_of_range_elements()
 	for (int y = 0; y < (256 * 32); y += 32) {
 		for (int x = 0; x < (256 * 32); x += 32) {
 			if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY) {
+				map_buy_land_rights(x, y, x, y, 1, GAME_COMMAND_FLAG_APPLY);
 				clear_elements_at(x, y);
-			} else if (x >= mapMaxXY - 32 || y >= mapMaxXY - 32) {
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) += 32;
-				map_buy_land_rights(x, y, x, y, 6, GAME_COMMAND_FLAG_APPLY);
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) -= 32;
 			}
 		}
 	}
