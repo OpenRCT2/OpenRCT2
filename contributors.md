@@ -91,7 +91,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Czech - Martin Černáč (octaroot)
 * Dutch - Michael Steenbeek (Gymnasiast), (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
 * Finnish - (DJHasis)
-* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast)
+* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken)
 * Korean - "TELK" (telk5093)
 * Polish - Adrian Wielgosik (adrian17)
