@@ -576,7 +576,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 		uint16 distance = 
 			abs(litter->x - peep->x) + 
 			abs(litter->y - peep->y) + 
-			abs(litter->z - peep->z) / 4;
+			abs(litter->z - peep->z) * 4;
 	
 		if (distance < nearestLitterDist){
 			nearestLitterDist = distance;
