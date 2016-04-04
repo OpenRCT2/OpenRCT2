@@ -31,7 +31,7 @@
 	#define OPENRCT2_BUILD_SERVER			""
 #endif
 #ifndef OPENRCT2_BRANCH
-	#define OPENRCT2_BRANCH					"develop"
+	#define OPENRCT2_BRANCH					"resync"
 #endif
 #ifndef OPENRCT2_COMMIT_SHA1
 	#define OPENRCT2_COMMIT_SHA1			""

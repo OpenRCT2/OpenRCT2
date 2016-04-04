@@ -43,6 +43,7 @@ extern "C" {
 #include "../interface/chat.h"
 #include "../interface/window.h"
 #include "../interface/keyboard_shortcut.h"
+#include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../network/http.h"
@@ -78,6 +79,7 @@ enum {
 	NETWORK_COMMAND_SHOWERROR,
 	NETWORK_COMMAND_GROUPLIST,
 	NETWORK_COMMAND_EVENT,
+	NETWORK_COMMAND_RESENDMAP,
 	NETWORK_COMMAND_MAX,
 	NETWORK_COMMAND_INVALID = -1
 };
@@ -326,6 +328,7 @@ NetworkConnection::NetworkConnection()
 	player = 0;
 	socket = INVALID_SOCKET;
 	ResetLastPacketTime();
+	ResetLastResyncTime();
 	last_disconnect_reason = NULL;
 }
 
@@ -446,6 +449,11 @@ void NetworkConnection::ResetLastPacketTime()
 	last_packet_time = SDL_GetTicks();
 }
 
+void NetworkConnection::ResetLastResyncTime()
+{
+	last_resync_time = SDL_GetTicks();
+}
+
 bool NetworkConnection::ReceivedPacketRecently()
 {
 #ifndef DEBUG
@@ -454,6 +462,11 @@ bool NetworkConnection::ReceivedPacketRecently()
 	}
 #endif
 	return true;
+}
+
+uint32 NetworkConnection::GetLastResyncTime()
+{
+	return last_resync_time;
 }
 
 const char* NetworkConnection::getLastDisconnectReason() const
@@ -579,6 +592,7 @@ Network::Network()
 	server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
 	server_command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::Server_Handle_GAMECMD;
 	server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
+	server_command_handlers[NETWORK_COMMAND_RESENDMAP] = &Network::Server_Handle_RESYNC;
 	server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
 }
 
@@ -630,6 +644,8 @@ void Network::Close()
 	game_command_queue.clear();
 	player_list.clear();
 	group_list.clear();
+
+	_welcome = true;
 
 #ifdef __WINDOWS__
 	if (wsa_initialized) {
@@ -932,11 +948,49 @@ void Network::UpdateClient()
 		// Check synchronisation
 		if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
 			_desynchronised = true;
-			char str_desync[256];
-			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
-			window_network_status_open(str_desync, NULL);
-			if (!gConfigNetwork.stay_connected) {
-				Close();
+
+			_desyncTime = SDL_GetTicks();
+			log_warning("Desync detected, scheduling sync.");
+		}
+		else if (_desynchronised && gConfigNetwork.stay_connected != RESYNC_NEVER) {
+			// Milliseconds since last save
+			uint32 timeSinceDesync = SDL_GetTicks() - _desyncTime;
+
+			bool shouldSync = false;
+			switch (gConfigNetwork.stay_connected) {
+			case RESYNC_AFTER_1MINUTE:
+				shouldSync = timeSinceDesync >= 1 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_2MINUTES:
+				shouldSync = timeSinceDesync >= 2 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_5MINUTES:
+				shouldSync = timeSinceDesync >= 5 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_10MINUTES:
+				shouldSync = timeSinceDesync >= 10 * 60 * 1000;
+				break;
+			case RESYNC_AFTER_15MINUTES:
+				shouldSync = timeSinceDesync >= 15 * 60 * 1000;
+				break;
+			}
+
+			// if the client has windows open, they're probably doing something.
+			int openWindows = 0;
+			for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+				openWindows++;
+			}
+
+			openWindows -= RESYNC_IDLE_WINDOWS;
+
+			if (openWindows > 0) {
+				shouldSync = false;
+			}
+
+			// do sync
+			if (shouldSync) {
+				_desyncTime = SDL_GetTicks();
+				Client_Send_RESYNC();
 			}
 		}
 		break;
@@ -1309,6 +1363,53 @@ void Network::FreeStringIds()
 	}
 }
 
+void Network::Client_Send_RESYNC()
+{
+	// send view information for the savefile
+	rct_window* w = window_get_main();
+	rct_viewport* viewport = w->viewport;
+
+	sint16 viewX, viewY, viewZoom, viewRotation;
+
+	viewX = viewport->view_width / 2 + viewport->view_x;
+	viewY = viewport->view_height / 2 + viewport->view_y;
+
+	viewZoom = viewport->zoom;
+	viewRotation = get_current_rotation();
+
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_RESENDMAP << viewX << viewY << viewZoom << viewRotation;
+
+	server_connection.QueuePacket(std::move(packet));
+}
+
+void Network::Server_Handle_RESYNC(NetworkConnection& connection, NetworkPacket& packet)
+{
+	if (connection.GetLastResyncTime() - SDL_GetTicks() < RESYNC_TIMEOUT) {
+		return; // clients cannot send requests faster than the resync timeout (30 seconds)
+	}
+
+	connection.ResetLastResyncTime();
+
+	log_warning("%u desynchronised. Resyncing.", connection.player->name);
+	
+	sint16 viewX, viewY, viewZoom, viewRotation;
+
+	packet >> viewX >> viewY >> viewZoom >> viewRotation;
+
+	Server_Send_MAP(&connection, true, viewX, viewY, viewZoom, viewRotation);
+
+	// send a message
+	NetworkPlayer* fromplayer = connection.player;
+
+	char str_resync[256];
+	const char * player_name = (const char *)fromplayer->name;
+	format_string(str_resync, STR_RESYNC_MESSAGE, &player_name);
+
+	chat_history_add(str_resync);
+	Server_Send_CHAT(str_resync);
+}
+
 void Network::Client_Send_AUTH(const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
@@ -1335,7 +1436,7 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 	}
 }
 
-void Network::Server_Send_MAP(NetworkConnection* connection)
+void Network::Server_Send_MAP(NetworkConnection * connection, bool resync, sint16 viewX, sint16 viewY, sint16 viewZoom, sint16 viewRotation)
 {
 	bool RLEState = gUseRLE;
 	gUseRLE = false;
@@ -1345,7 +1446,13 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		return;
 	}
 	SDL_RWops* rw = SDL_RWFromFP(temp, SDL_TRUE);
-	scenario_save_network(rw);
+
+	if (resync)
+		scenario_save_network_ext(rw, true, viewX, viewY, viewZoom, viewRotation);
+	else
+		scenario_save_network(rw);
+
+
 	gUseRLE = RLEState;
 	int size = (int)SDL_RWtell(rw);
 	std::vector<uint8> buffer(size);
@@ -1368,7 +1475,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		out_size += header_len;
 		free(compressed);
 		log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
-	} else {
+	}
+	else {
 		log_warning("Failed to compress the data, falling back to non-compressed sv6.");
 		header = (unsigned char *)malloc(size);
 		out_size = size;
@@ -1381,7 +1489,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		packet->Write(&header[i], datasize);
 		if (connection) {
 			connection->QueuePacket(std::move(packet));
-		} else {
+		}
+		else {
 			SendPacketToClients(*packet);
 		}
 	}
@@ -1766,7 +1875,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	}
 	char str_downloading_map[256];
 	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1000, size / 1000};
-	format_string(str_downloading_map, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
+	format_string(str_downloading_map, _welcome ? STR_DOWNLOADING_EVERYTHING : STR_DOWNLOADING_MAP, downloading_map_args);
 	window_network_status_open(str_downloading_map, []() -> void {
 		gNetwork.Close();
 	});
@@ -1792,16 +1901,22 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			log_verbose("Assuming received map is in plain sv6 format");
 		}
 		SDL_RWops* rw = SDL_RWFromMem(data, data_size);
+
 		if (game_load_network(rw)) {
+			// init new map
 			game_load_init();
 			game_command_queue.clear();
 			server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
 			server_srand0_tick = 0;
 			// window_network_status_open("Loaded new map from network");
-			_desynchronised = false;
 
 			// Notify user he is now online and which shortcut key enables chat
-			network_chat_show_connected_message();
+			if (_welcome) {
+				network_chat_show_connected_message();
+				_welcome = false;
+			}
+
+			_desynchronised = false;
 		}
 		else
 		{
@@ -2453,6 +2568,12 @@ void network_set_password(const char* password)
 	gNetwork.SetPassword(password);
 }
 
+void network_resync() {
+	if (gNetwork.GetMode() == NETWORK_MODE_CLIENT) {
+		gNetwork.Client_Send_RESYNC();
+	}
+}
+
 #else
 int network_get_mode() { return NETWORK_MODE_NONE; }
 int network_get_status() { return NETWORK_STATUS_NONE; }
@@ -2497,4 +2618,5 @@ void network_close() {}
 void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
+void network_resync() {}
 #endif /* DISABLE_NETWORK */

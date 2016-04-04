@@ -154,6 +154,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_TEST_UNFINISHED_TRACKS,
 	WIDX_DEBUGGING_TOOLS,
 	WIDX_STAY_CONNECTED_AFTER_DESYNC,
+	WIDX_STAY_CONNECTED_AFTER_DESYNC_DROPDOWN,
 	WIDX_AUTOSAVE,
 	WIDX_AUTOSAVE_DROPDOWN,
 	WIDX_TITLE_SEQUENCE,
@@ -299,7 +300,8 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	84,		95,		STR_SAVE_PLUGIN_DATA,						STR_SAVE_PLUGIN_DATA_TIP },							// Export plug-in objects with saved games
 	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	STR_TEST_UNFINISHED_TRACKS,					STR_TEST_UNFINISHED_TRACKS_TIP },					// test unfinished tracks
 	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	STR_ENABLE_DEBUGGING_TOOLS,					STR_NONE },											// enable debugging tools
-	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	STR_STAY_CONNECTED_AFTER_DESYNC,			STR_NONE },											// Do not disconnect after the client desynchronises with the server
+	{ WWT_DROPDOWN,			1,	155,	299,	129,	140,	STR_NONE,									STR_NONE },											// how long until the game resyncs after a desync
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	130,	139,	STR_DROPDOWN_GLYPH,							STR_NONE },											// how long until the game resyncs after a desync button
 	{ WWT_DROPDOWN,			1,	155,	299,	144,	155,	STR_NONE,									STR_NONE },											// autosave dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	145,	154,	STR_DROPDOWN_GLYPH,							STR_NONE },											// autosave dropdown button
 	{ WWT_DROPDOWN,			1,	155,	299,	159,	170,	STR_NONE,									STR_NONE },											// title sequence dropdown
@@ -485,6 +487,7 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_TITLE_SEQUENCE_BUTTON) |
 	(1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
 	(1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
+	(1 << WIDX_STAY_CONNECTED_AFTER_DESYNC_DROPDOWN) |
 	(1 << WIDX_AUTO_OPEN_SHOPS) |
 	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
 	(1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
@@ -758,11 +761,6 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
 			gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
-			config_save_default();
-			window_invalidate(w);
-			break;
-		case WIDX_STAY_CONNECTED_AFTER_DESYNC:
-			gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
 			config_save_default();
 			window_invalidate(w);
 			break;
@@ -1050,6 +1048,15 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 	case WINDOW_OPTIONS_PAGE_MISC:
 		switch (widgetIndex) {
+		case WIDX_STAY_CONNECTED_AFTER_DESYNC_DROPDOWN:
+			for (i = RESYNC_AFTER_1MINUTE; i <= RESYNC_NEVER; i++) {
+				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsArgs[i] = STR_RESYNC_AFTER_1MINUTE + i;
+			}
+
+			window_options_show_dropdown(w, widget, RESYNC_NEVER + 1);
+			dropdown_set_checked(gConfigNetwork.stay_connected, true);
+			break;
 		case WIDX_AUTOSAVE_DROPDOWN:
 			for (i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
 				gDropdownItemsFormat[i] = 1142;
@@ -1276,6 +1283,13 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 
 	case WINDOW_OPTIONS_PAGE_MISC:
 		switch (widgetIndex) {
+		case WIDX_STAY_CONNECTED_AFTER_DESYNC_DROPDOWN:
+			if (dropdownIndex != gConfigNetwork.stay_connected) {
+				gConfigNetwork.stay_connected = (uint8)dropdownIndex;
+				config_save_default();
+				window_invalidate(w);
+			}
+			break;
 		case WIDX_AUTOSAVE_DROPDOWN:
 			if (dropdownIndex != gConfigGeneral.autosave_frequency) {
 				gConfigGeneral.autosave_frequency = (uint8)dropdownIndex;
@@ -1523,7 +1537,6 @@ static void window_options_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_HANDYMEN_MOW_DEFAULT, gConfigGeneral.handymen_mow_default);
 		widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
 		widget_set_checkbox_value(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
-		widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
 		widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
 
 		window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
@@ -1538,7 +1551,8 @@ static void window_options_invalidate(rct_window *w)
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM].type = WWT_CHECKBOX;
-		window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_CHECKBOX;
+		window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_DROPDOWN;
+		window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
 		window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].type = WWT_DROPDOWN;
 		window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -1696,6 +1710,16 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		);
 		break;
 	case WINDOW_OPTIONS_PAGE_MISC:
+		gfx_draw_string_left(dpi, STR_RESYNC_TIME, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].top + 1);
+		gfx_draw_string_left(
+			dpi,
+			STR_RESYNC_AFTER_1MINUTE + gConfigNetwork.stay_connected,
+			NULL,
+			w->colours[1],
+			w->x + window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].left + 1,
+			w->y + window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].top
+			);
+
 		gfx_draw_string_left(dpi, 2700, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top + 1);
 		gfx_draw_string_left(
 			dpi,

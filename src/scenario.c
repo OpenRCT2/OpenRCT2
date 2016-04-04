@@ -1034,7 +1034,11 @@ int scenario_save(SDL_RWops* rw, int flags)
 }
 
 // Save game state without modifying any of the state for multiplayer
-int scenario_save_network(SDL_RWops* rw)
+int scenario_save_network(SDL_RWops* rw) {
+	return scenario_save_network_ext(rw, false, 0, 0, 0, 0);
+}
+
+int scenario_save_network_ext(SDL_RWops* rw, bool resync, sint16 viewXIn, sint16 viewYIn, sint16 viewZoomIn, sint16 viewRotationIn)
 {
 	rct_window *w;
 	rct_viewport *viewport;
@@ -1048,18 +1052,19 @@ int scenario_save_network(SDL_RWops* rw)
 
 	// Set saved view
 	w = window_get_main();
-	if (w != NULL) {
+	if (w != NULL && !resync) {
 		viewport = w->viewport;
 
 		viewX = viewport->view_width / 2 + viewport->view_x;
 		viewY = viewport->view_height / 2 + viewport->view_y;
 		viewZoom = viewport->zoom;
 		viewRotation = get_current_rotation();
-	} else {
-		viewX = 0;
-		viewY = 0;
-		viewZoom = 0;
-		viewRotation = 0;
+	}
+	else {
+		viewX = viewXIn;
+		viewY = viewYIn;
+		viewZoom = viewZoomIn;
+		viewRotation = viewRotationIn;
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = viewX;
@@ -1069,7 +1074,7 @@ int scenario_save_network(SDL_RWops* rw)
 	// Prepare S6
 	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
 	s6->header.type = S6_TYPE_SAVEDGAME;
-	s6->header.num_packed_objects = scenario_get_num_packed_objects_to_write();
+	s6->header.num_packed_objects = resync ? 0 : scenario_get_num_packed_objects_to_write(); // setting this to 0 will make scenerio_save_s6 not save any objects
 	s6->header.version = S6_RCT2_VERSION;
 	s6->header.magic_number = S6_MAGIC_NUMBER;
 

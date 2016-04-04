@@ -50,6 +50,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * James Robertson (rd3k) - Misc.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
+* Chris Sixsmith (Sixmorphugus) - network desync handling
 
 ## Bug fixes
 * (halfbro)
