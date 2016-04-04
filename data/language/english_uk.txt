@@ -4016,7 +4016,7 @@ STR_5709    :Rename Group
 STR_5710    :Group name
 STR_5711    :Enter new name for this group:
 STR_5712    :Can't modify permission that you do not have yourself
-STR_5713    :Kick Player
+STR_5713    :Can't remove default group
 STR_5714    :Show options window
 STR_5715    :New Game
 STR_5716    :Not allowed in multiplayer mode

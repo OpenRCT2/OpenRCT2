@@ -551,7 +551,6 @@ static void window_scenery_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
 		{
 			int player = network_get_player_index(network_get_current_player_id());
-			assert(network_get_group_index(network_get_player_group(player)) >= 0); // can get -1 for groupindex if default group is deleted and a player joins 
 			if (player == -1 || network_can_perform_action(network_get_group_index(network_get_player_group(player)), 9/*Toggle scenery cluster action*/)) {
 				window_scenery_is_build_cluster_tool_on ^= 1;
 			} else {
