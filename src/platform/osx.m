@@ -143,18 +143,19 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 			}
 		}
 		
-		NSString *filePath = [NSString stringWithUTF8String:desc->default_filename];
-		NSString *directory = filePath.stringByDeletingLastPathComponent;
-		NSString *basename = filePath.lastPathComponent;
-		
+		NSString *directory;
 		NSSavePanel *panel;
 		if (desc->type == FD_SAVE)
 		{
+			NSString *filePath = [NSString stringWithUTF8String:desc->default_filename];
+			directory = filePath.stringByDeletingLastPathComponent;
+			NSString *basename = filePath.lastPathComponent;
 			panel = [NSSavePanel savePanel];
 			panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
 		}
 		else if (desc->type == FD_OPEN)
 		{
+			directory = [NSString stringWithUTF8String:desc->initial_directory];
 			NSOpenPanel *open = [NSOpenPanel openPanel];
 			open.canChooseDirectories = false;
 			open.canChooseFiles = true;
