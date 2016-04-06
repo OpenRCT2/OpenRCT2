@@ -4088,6 +4088,14 @@ STR_5786    :Ongeldige groepsnaam
 STR_5787    :{COMMA32} spelers online
 STR_5788    :Standaard inspectie-interval:
 STR_5789    :Bliksemeffect uitschakelen
+STR_5790    :{SMALLFONT}{BLACK}Maakt geld vragen voor zowel het park als de attracties mogelijk,{NEWLINE}zoals in RCT1.
+STR_5791    :{SMALLFONT}{BLACK}Stelt het bouwjaar van alle attracties in op dit jaar{NEWLINE}en zet de betrouwbaarheid weer terug op 100%.
+STR_5792    :{SMALLFONT}{BLACK}Repareert alle defecte attracties.
+STR_5793    :{SMALLFONT}{BLACK}Wist de crashstatus van alle attracties,{NEWLINE}zodat de bezoekers ze niet als onveilig zien.
+STR_5794    :{SMALLFONT}{BLACK}In sommige scenario's kun je bepaalde bestaande attracties niet aanpassen.{NEWLINE}Deze cheat heft deze beperkingen op.
+STR_5795    :{SMALLFONT}{BLACK}Zorgt ervoor dat bezoekers in elke attractie gaan,{NEWLINE}zelfs als de intensiteit erg hoog is.
+STR_5796    :{SMALLFONT}{BLACK}Forceert het openen of sluiten van het park.
+STR_5797    :{SMALLFONT}{BLACK}Voorkomt dat het weer verandert.
 
 #############
 # Scenarios #

@@ -4094,6 +4094,14 @@ STR_5786    :Nom de groupe invalide
 STR_5787    :{COMMA32} joueurs en ligne
 STR_5788    :Délai d'insp. par défaut :
 STR_5789    :Désactiver les éclairs
+STR_5790    :{SMALLFONT}{BLACK}Active les prix façon RCT1 (Possibilité de définir à la fois un prix d'entrée un prix d'attraction)
+STR_5791    :{SMALLFONT}{BLACK}Règle la fiabilité de toutes les attractions à 100% et réinitialise leur date de construction
+STR_5792    :{SMALLFONT}{BLACK}Répare toutes les attractions en panne
+STR_5793    :{SMALLFONT}{BLACK}Réinitialise l'historique des accidents des attractions, les visiteurs ne se plaindront plus de leur sécurité
+STR_5794    :{SMALLFONT}{BLACK}Certains scénarios empêchent d'éditer des attractions déjà dans le parc, ceci annule cette interdiction
+STR_5795    :{SMALLFONT}{BLACK}Les visiteurs iront sur toutes les attractions, même si l'intensité est très élevée
+STR_5796    :{SMALLFONT}{BLACK}Force le parc à ouvrir ou fermer
+STR_5797    :{SMALLFONT}{BLACK}Désactive les changements de météo et reste à la météo actuelle
 
 #############
 # Scenarios #

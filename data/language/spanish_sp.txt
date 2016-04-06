@@ -3494,7 +3494,7 @@ STR_5153    :Editar temas...
 STR_5154    :Renderizado por hardware
 STR_5155    :Permitir tests de atracciones sin finalizar
 STR_5156    :{SMALLFONT}{BLACK}Permite probar la mayoría de atracciones incluso cuando aún no se han terminado de construir. No aplica a los modos de funcionamiento de secciones de bloques
-STR_5157    :Desbloquear todos los premios
+STR_5157    :Desbloquear precios
 STR_5158    :Salir al menú principal
 STR_5159    :Salir de OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Año {POP16}{COMMA16}
@@ -3705,7 +3705,7 @@ STR_5364    :Menos de 15
 STR_5365    :{BLACK}Velocidad empleados:
 STR_5366    :Normal
 STR_5367    :Rápida
-STR_5368    :Reiniciar averías
+STR_5368    :Reiniciar Accidentes
 STR_5369    :Parámetros parque...
 STR_5370    :{SMALLFONT}{BLACK}Modificar parámetros como restricciones, afluencia de visitantes y dinero.
 STR_5371    :Selección de Objetos
@@ -4093,6 +4093,14 @@ STR_5786    :Nombre de grupo no válido
 STR_5787    :{COMMA32} jugadores en línea.
 STR_5788    :Inter. Inspecc. por defecto:
 STR_5789    :Desactivar relámpagos
+STR_5790    :{SMALLFONT}{BLACK}Cambiar al estilo de precio como en RCT1{NEWLINE}(Con este truco tanto el precio de entrada como los precios de las atracciones son desbloqueados)
+STR_5791    :{SMALLFONT}{BLACK}Establece la fiabilidad de las atracciones en 100% y reestablece la fecha de construcción a "este año"
+STR_5792    :{SMALLFONT}{BLACK}Arregla todas las atracciones averiadas
+STR_5793    :{SMALLFONT}{BLACK}Reestablece el historial de accidentes de una atracción, por lo que los visitantes no se quejarán si no es seguro.
+STR_5794    :{SMALLFONT}{BLACK}Algunos escenarios deshabilitan la edición de las atracciones que ya están en el parque. Este truco quita esta restricción.
+STR_5795    :{SMALLFONT}{BLACK}Los visitantes se suben a cualquier atraccion sin importar si la intensidad es extremadamente alta.
+STR_5796    :{SMALLFONT}{BLACK}Forza al parque a abrir o cerrar.
+STR_5797    :{SMALLFONT}{BLACK}Deshabilita/Habilita el cambio climático y mantiene el clima seleccionado.
 
 #############
 # Scenarios #

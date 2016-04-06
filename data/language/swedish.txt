@@ -4097,6 +4097,14 @@ STR_5786    :Ogiltigt gruppnamn
 STR_5787    :{COMMA32} spelare anslutna
 STR_5788    :Inspektions mellanrum:
 STR_5789    :Avaktivera åsk effekter
+STR_5790    :{SMALLFONT}{BLACK}Växlar mellan RCT1-stilens prissättning{NEWLINE}(både karusell- och entré biljettpris)
+STR_5791    :{SMALLFONT}{BLACK}Sätter tillförlitligheten på alla karuseller till 100%{NEWLINE}och sätter deras byggda datum till 'Detta år'
+STR_5792    :{SMALLFONT}{BLACK}Fixar alla trasiga karuseller
+STR_5793    :{SMALLFONT}{BLACK}Tar bort krash historiken för alla åkturer,{NEWLINE}så gäster inte klagar på farliga attraktioner
+STR_5794    :{SMALLFONT}{BLACK}Vissa scenarion tillåter inte redigering{NEWLINE}av vissa åkturer som redan exsisterar i parken.{NEWLINE}Detta fusk lyfter den begränsningen
+STR_5795    :{SMALLFONT}{BLACK}Gäster åker alla attraktioner i parken{NEWLINE}även om intensiteten är extremt hög på karusellen
+STR_5796    :{SMALLFONT}{BLACK}Tvingar parken att stänga eller öppnas
+STR_5797    :{SMALLFONT}{BLACK}Avaktiverar väderändringar och{NEWLINE}behåller det valda vädret
 
 #############
 # Scenarion #
