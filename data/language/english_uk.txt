@@ -3465,7 +3465,7 @@ STR_5123    :Renew rides
 STR_5124    :<not used anymore>
 STR_5125    :All destructable
 STR_5126    :Random title music
-STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
+STR_5127    :{SMALLFONT}{BLACK}Paint tool
 STR_5128    :Selection size
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Map size
