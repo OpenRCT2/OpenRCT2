@@ -39,7 +39,7 @@
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/mapgen.h"
-#include "platform/breakpad.h"
+#include "platform/crash.h"
 
 #if defined(__unix__)
 #include <sys/mman.h>
@@ -185,6 +185,12 @@ bool openrct2_initialise()
 		return false;
 	}
 
+	// Exception handling - breakpad
+	// Uses user data directory for storing dumps
+	CExceptionHandler eh;
+	// never free
+	eh = newCExceptionHandlerSimple();
+
 	if (!openrct2_setup_rct2_segment()) {
 		log_fatal("Unable to load RCT2 data sector");
 		return false;
@@ -264,12 +270,6 @@ bool openrct2_initialise()
  */
 void openrct2_launch()
 {
-#ifdef USE_BREAKPAD
-	CExceptionHandler eh;
-	// never free
-	eh = newCExceptionHandlerSimple();
-#endif // USE_BREAKPAD
-
 	if (openrct2_initialise()) {
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
 		if((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)

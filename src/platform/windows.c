@@ -573,7 +573,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	}
 }
 
-void platform_show_messagebox(char *message)
+void platform_show_messagebox(utf8 *message)
 {
 	MessageBoxA(windows_get_window_handle(), message, "OpenRCT2", MB_OK);
 }
