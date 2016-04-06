@@ -239,9 +239,9 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,		STR_CHEAT_TIP_MAKE_DESTRUCTABLE },								// All destructable
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_FIX_ALL_RIDES,			STR_CHEAT_TIP_FIX_ALL_RIDES },								// Fix all rides
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(11),		OHPL(11) + 8,	STR_CHEAT_UNLOCK_OPERATING_LIMITS,	STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,	STR_NONE }, 							// Disable brakes failure
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(10),		OHPL(10),		STR_CHEAT_DISABLE_BREAKDOWNS,		STR_NONE }, 							// Disable all breakdowns
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(8),			OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,		STR_NONE }, 							// Build in pause mode
+	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,	STR_CHEAT_TIP_DISABLE_BRAKES_FAILURE }, 							// Disable brakes failure
+	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(10),		OHPL(10),		STR_CHEAT_DISABLE_BREAKDOWNS,		STR_CHEAT_TIP_DISABLE_BREAKDOWNS }, 							// Disable all breakdowns
+	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(8),			OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,		STR_CHEAT_TIP_BUILD_IN_PAUSE_MODE }, 							// Build in pause mode
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_CHEAT_RESET_CRASH_STATUS,		STR_CHEAT_TIP_RESET_CRASH_STATUS },				// Reset crash status
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2),			HPL(2),			STR_CHEAT_10_MINUTE_INSPECTIONS,	STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },	// 10 minute inspections
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,	STR_NONE }, 							// Show all operating modes
