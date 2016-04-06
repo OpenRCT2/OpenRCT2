@@ -2423,6 +2423,10 @@ enum {
 	STR_CHEAT_TIP_IGNORE_INTENSITY = 5795,
 	STR_CHEAT_TIP_OPEN_PARK = 5796,
 	STR_CHEAT_TIP_FREEZE_CLIMATE = 5797,
+	STR_CHEAT_TIP_BUILD_IN_PAUSE_MODE = 5798,
+	STR_CHEAT_TIP_DISABLE_BREAKES_BREAKDOWNS = 5799,
+	STR_CHEAT_TIP_DISABLE_FAILURE = 5780,
+	
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

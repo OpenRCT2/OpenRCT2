@@ -4102,6 +4102,9 @@ STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of
 STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
 STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
 STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
+STR_5798    :{SMALLFONT}{BLACK}Allows most building actions in pause mode.{NEWLINE}NOTE:Due to some original functions not being decompiled yet,{NEWLINE}not all actions are allowed in pause mode. This is a known limitation{NEWLINE}that will be fixed when the game is 100% decompiled
+STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure.
+STR_5780    :{SMALLFONT}{BLACK}Prevents rides from breaking down.
 
 #############
 # Scenarios #
