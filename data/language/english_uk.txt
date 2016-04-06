@@ -4103,8 +4103,8 @@ STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}
 STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
 STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
 STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
-STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure.
-STR_5780    :{SMALLFONT}{BLACK}Prevents rides from breaking down.
+STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
+STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
 
 #############
 # Scenarios #
