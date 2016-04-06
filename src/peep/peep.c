@@ -1029,8 +1029,8 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 			}
 		}
 		peep->sprite_direction = direction;
-		*x = peep->x + RCT2_ADDRESS(0x981D7C, uint16)[direction / 4];
-		*y = peep->y + RCT2_ADDRESS(0x981D7E, uint16)[direction / 4];
+		*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
+		*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
 		peep->no_action_frame_no++;
 		rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
 		uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
@@ -6812,7 +6812,7 @@ static int peep_update_queue_position(rct_peep* peep){
 		if (peep->sprite_direction != peep_next->sprite_direction)
 			return 0;
 
-		switch (peep->sprite_direction / 8){
+		switch (peep_next->sprite_direction / 8){
 		case 0:
 			if (peep->x >= peep_next->x)
 				return 0;
