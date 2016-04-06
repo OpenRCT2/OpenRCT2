@@ -99,7 +99,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Russian - (Soosisya)
 * Simplified Chinese - Naiji Ma (naijim)
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie)
-* Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbiy)
+* Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
 
 ## Graphics
