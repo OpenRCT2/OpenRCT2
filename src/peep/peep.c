@@ -10637,4 +10637,7 @@ void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		(uint8*)ebp,
 		(uint8*)edi
 		);
+	}
+void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
+	game_command_set_peep_name(eax, ebx, ecx, edx, esi, edi, ebp);	
 }
