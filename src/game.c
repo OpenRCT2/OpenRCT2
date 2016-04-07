@@ -1240,7 +1240,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-GAME_COMMAND_POINTER* new_game_command_table[67] = {
+GAME_COMMAND_POINTER* new_game_command_table[66] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1306,6 +1306,5 @@ GAME_COMMAND_POINTER* new_game_command_table[67] = {
 	game_command_set_player_group,
 	game_command_modify_groups,
 	game_command_kick_player,
-	game_command_cheat,
-	game_command_toggle_scenery_cluster
+	game_command_cheat
 };

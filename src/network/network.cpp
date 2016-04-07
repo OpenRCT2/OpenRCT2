@@ -1868,14 +1868,25 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> callback;
 
 	int commandCommand = args[4];
-
+	int ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
+	
 	// Check if player's group permission allows command to run
 	NetworkGroup* group = GetGroupByID(connection.player->group);
 	if (!group || (group && !group->CanPerformCommand(commandCommand))) {
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
 	}
-
+	// Incase someone modifies the code / memory to enable cluster build,
+	// require a small delay in between placing scenery to provide some security, as 
+	// cluster mode is a for loop that runs the place_scenery code multiple times.
+	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
+		if ((ticks - connection.player->last_action_time) < 20) {
+			if (!(group->CanPerformAction(-2) || group->CanPerformCommand(-2))) {
+				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
+				return;
+			}
+		}
+	}
 	// Don't let clients send pause or quit
 	if (commandCommand == GAME_COMMAND_TOGGLE_PAUSE ||
 		commandCommand == GAME_COMMAND_LOAD_OR_QUIT

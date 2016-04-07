@@ -1462,9 +1462,9 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	case SCENERY_TYPE_SMALL:
 	{
 		int quantity = 1;
-		bool isCluster = window_scenery_is_build_cluster_tool_on && network_can_perform_action(network_get_current_player_group_index(), GAME_COMMAND_TOGGLE_SCENERY_CLUSTER);
+		bool isCluster = window_scenery_is_build_cluster_tool_on && (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_action(network_get_current_player_group_index(), -2));
 		if (isCluster) {
-			quantity = 36;
+			quantity = 35;
 		}
 		
 		int successfulPlacements = 0;
