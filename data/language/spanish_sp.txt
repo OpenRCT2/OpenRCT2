@@ -3464,7 +3464,7 @@ STR_5123    :Renueva atracciones
 STR_5124    :<not used anymore>
 STR_5125    :Todo editable
 STR_5126    :Música aleatoria
-STR_5127    :{SMALLFONT}{BLACK}Desactivar elevación del terreno
+STR_5127    :{SMALLFONT}{BLACK}Pintar el terreno en lugar de cambiar la elevación mientras se arrastra.
 STR_5128    :Tamaño de Selección
 STR_5129    :Escribe un tamaño de selección entre {COMMA16} y {COMMA16}
 STR_5130    :Tamaño de Mapa
@@ -4093,14 +4093,17 @@ STR_5786    :Nombre de grupo no válido
 STR_5787    :{COMMA32} jugadores en línea.
 STR_5788    :Inter. Inspecc. por defecto:
 STR_5789    :Desactivar relámpagos
-STR_5790    :{SMALLFONT}{BLACK}Cambiar al estilo de precio como en RCT1{NEWLINE}(Con este truco tanto el precio de entrada como los precios de las atracciones son desbloqueados)
-STR_5791    :{SMALLFONT}{BLACK}Establece la fiabilidad de las atracciones en 100% y reestablece la fecha de construcción a "este año"
-STR_5792    :{SMALLFONT}{BLACK}Arregla todas las atracciones averiadas
+STR_5790    :{SMALLFONT}{BLACK}Cambiar al estilo de precio como en RCT1{NEWLINE}(Con este truco tanto el precio de entrada al parque como el precio de una atracción pueden ser editados).
+STR_5791    :{SMALLFONT}{BLACK}Establece la fiabilidad de las atracciones en 100% y reestablece la fecha de construcción a "este año".
+STR_5792    :{SMALLFONT}{BLACK}Arregla todas las atracciones averiadas.
 STR_5793    :{SMALLFONT}{BLACK}Reestablece el historial de accidentes de una atracción, por lo que los visitantes no se quejarán si no es seguro.
 STR_5794    :{SMALLFONT}{BLACK}Algunos escenarios deshabilitan la edición de las atracciones que ya están en el parque. Este truco quita esta restricción.
 STR_5795    :{SMALLFONT}{BLACK}Los visitantes se suben a cualquier atraccion sin importar si la intensidad es extremadamente alta.
-STR_5796    :{SMALLFONT}{BLACK}Forza al parque a abrir o cerrar.
-STR_5797    :{SMALLFONT}{BLACK}Deshabilita/Habilita el cambio climático y mantiene el clima seleccionado.
+STR_5796    :{SMALLFONT}{BLACK}Fuerza a abrir o cerrar las entradas al parque.
+STR_5797    :{SMALLFONT}{BLACK}Deshabilita el cambio climático y mantiene el clima seleccionado.
+STR_5798    :{SMALLFONT}{BLACK}Permite hacer acciones de construcción en el modo de pausa.
+STR_5799    :{SMALLFONT}{BLACK}Deshabilita las averías y accidentes a causa de la falla de frenos.
+STR_5800    :{SMALLFONT}{BLACK}Evita que las atracciones se averíen.
 
 #############
 # Scenarios #

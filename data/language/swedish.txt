@@ -4105,6 +4105,9 @@ STR_5794    :{SMALLFONT}{BLACK}Vissa scenarion tillåter inte redigering{NEWLINE
 STR_5795    :{SMALLFONT}{BLACK}Gäster åker alla attraktioner i parken{NEWLINE}även om intensiteten är extremt hög på karusellen
 STR_5796    :{SMALLFONT}{BLACK}Tvingar parken att stänga eller öppnas
 STR_5797    :{SMALLFONT}{BLACK}Avaktiverar väderändringar och{NEWLINE}behåller det valda vädret
+STR_5798    :{SMALLFONT}{BLACK}Tillåter byggnationer när spelet är pausat
+STR_5799    :{SMALLFONT}{BLACK}Avaktiverar haveriet bromsfel så åkturernas vagnar inte krockar med varandra
+STR_5800    :{SMALLFONT}{BLACK}Hindrar karuseller från att gå sönder
 
 #############
 # Scenarion #

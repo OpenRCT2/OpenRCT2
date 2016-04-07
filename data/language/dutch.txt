@@ -4096,6 +4096,10 @@ STR_5794    :{SMALLFONT}{BLACK}In sommige scenario's kun je bepaalde bestaande a
 STR_5795    :{SMALLFONT}{BLACK}Zorgt ervoor dat bezoekers in elke attractie gaan,{NEWLINE}zelfs als de intensiteit erg hoog is.
 STR_5796    :{SMALLFONT}{BLACK}Forceert het openen of sluiten van het park.
 STR_5797    :{SMALLFONT}{BLACK}Voorkomt dat het weer verandert.
+STR_5798    :{SMALLFONT}{BLACK}Staat bouwen in pauzemodus toe.
+STR_5799    :{SMALLFONT}{BLACK}Voorkomt dat de remmen van attracties kapot gaan, wat voor fatale botsingen kan zorgen.
+STR_5800    :{SMALLFONT}{BLACK}Voorkomt dat attracties kapot gaan.
+
 
 #############
 # Scenarios #
