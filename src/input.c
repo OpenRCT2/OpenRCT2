@@ -1653,6 +1653,7 @@ void game_handle_key_scroll()
 
 	textWindow = window_find_by_class(WC_TEXTINPUT);
 	if (textWindow || gUsingWidgetTextBox) return;
+	if (gChatOpen) return;
 
 	scrollX = 0;
 	scrollY = 0;

@@ -453,6 +453,7 @@ static int	_trackPlaceShiftStartScreenX;
 static int	_trackPlaceShiftStartScreenY;
 static int	_trackPlaceShiftZ;
 #define		_trackPlaceZ						RCT2_GLOBAL(0x00F44163, sint16)
+static bool _autoOpeningShop;
 
 // This variable is updated separately from ride->num_stations because the latter
 // is unreliable if currently in station construction mode
@@ -562,6 +563,7 @@ rct_window *window_ride_construction_open()
 	_rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
 	_currentTrackSelectionFlags = 0;
 	_rideConstructionArrowPulseTime = 0;
+	_autoOpeningShop = false;
 	RCT2_GLOBAL(0x00F44159, uint8) = 0;
 	RCT2_GLOBAL(0x00F4415C, uint8) = 0;
 	colour_scheme_update(w);
@@ -594,7 +596,13 @@ static void window_ride_construction_close(rct_window *w)
 		rct_ride *ride = get_ride(rideIndex);
 		// Auto open shops if required. 
 		if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops) {
-			ride_set_status(rideIndex, RIDE_STATUS_OPEN);
+			// HACK: Until we find a good a way to defer the game command for opening the shop, stop this
+			//       from getting stuck in an infinite loop as opening the ride will try to close this window
+			if (!_autoOpeningShop) {
+				_autoOpeningShop = true;
+				ride_set_status(rideIndex, RIDE_STATUS_OPEN);
+				_autoOpeningShop = false;
+			}
 		}
 
 		ride_set_to_default_inspection_interval(rideIndex);
@@ -1929,6 +1937,15 @@ static void window_ride_construction_exit_click(rct_window *w)
  */
 static void window_ride_construction_update(rct_window *w)
 {
+	rct_ride *ride = get_ride(_currentRideIndex);
+
+	// Close construction window if ride is not closed,
+	// editing ride while open will cause many issues until properly handled
+	if (ride->status != RIDE_STATUS_CLOSED) {
+		window_close(w);
+		return;
+	}
+
 	switch (_currentTrackCurve) {
 	case 429:
 	case 376:

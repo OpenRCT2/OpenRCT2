@@ -154,6 +154,9 @@ void trackdesigner_load()
 {
 	rct_window *mainWindow;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+
 	object_unload_all();
 	map_init(150);
 	set_all_land_owned();
@@ -169,7 +172,6 @@ void trackdesigner_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	window_new_ride_init_vars();
 	viewport_init_all();
@@ -180,7 +182,6 @@ void trackdesigner_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 }
 
 /**
@@ -191,6 +192,9 @@ void trackmanager_load()
 {
 	rct_window *mainWindow;
 
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+
 	object_unload_all();
 	map_init(150);
 	set_all_land_owned();
@@ -206,7 +210,6 @@ void trackmanager_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	window_new_ride_init_vars();
 	viewport_init_all();
@@ -217,7 +220,6 @@ void trackmanager_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
 }
 
 /**

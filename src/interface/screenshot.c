@@ -297,6 +297,8 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 			customZoom = atoi(argv[6]);
 			customRotation = atoi(argv[7]) & 3;
+		} else {
+			customZoom = 0;
 		}
 	}
 

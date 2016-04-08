@@ -1695,9 +1695,12 @@ int ride_modify(rct_xy_element *input)
 	mapElement = *input;
 	rideIndex = mapElement.element->properties.track.ride_index;
 	ride = get_ride(rideIndex);
+	if (ride == NULL) {
+		return 0;
+	}
 	rideType = get_ride_entry_by_ride(ride);
 
-	if ((ride == NULL) || (rideType == NULL) || !ride_check_if_construction_allowed(ride))
+	if ((rideType == NULL) || !ride_check_if_construction_allowed(ride))
 		return 0;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
@@ -5420,6 +5423,15 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 			return;
 		}
 
+		if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+			// Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
+			//            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
+			rct_window *constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
+			if (constructionWindow != NULL) {
+				window_close(constructionWindow);
+			}
+		}
+
 		if (targetStatus == RIDE_STATUS_TESTING) {
 			if (!ride_is_valid_for_test(rideIndex, targetStatus == RIDE_STATUS_OPEN, *ebx & GAME_COMMAND_FLAG_APPLY)) {
 				*ebx = MONEY32_UNDEFINED;
@@ -5580,9 +5592,10 @@ int ride_get_refund_price(int ride_id)
 			continue;
 		}
 
+		// Using GAME_COMMAND_FLAG_2 for below commands as a HACK to stop fences from being removed
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x,
-			GAME_COMMAND_FLAG_APPLY | (0 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (0 << 8),
 			y,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,
@@ -5591,7 +5604,7 @@ int ride_get_refund_price(int ride_id)
 
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x,
-			GAME_COMMAND_FLAG_APPLY | (1 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (1 << 8),
 			y + 16,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,
@@ -5600,7 +5613,7 @@ int ride_get_refund_price(int ride_id)
 
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x + 16,
-			GAME_COMMAND_FLAG_APPLY | (2 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (2 << 8),
 			y + 16,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,
@@ -5609,7 +5622,7 @@ int ride_get_refund_price(int ride_id)
 
 		RCT2_GLOBAL(0x00F4413A, money32) += game_do_command(
 			x + 16,
-			GAME_COMMAND_FLAG_APPLY | (3 << 8),
+			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (3 << 8),
 			y,
 			ride_id | (2 << 8),
 			GAME_COMMAND_SET_MAZE_TRACK,
@@ -7559,6 +7572,14 @@ void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle)
 	);
 }
 
+static bool ride_entry_is_invented(int rideEntryIndex)
+{
+	int quadIndex = rideEntryIndex >> 5;
+	int bitIndex = rideEntryIndex & 0x1F;
+	bool invented = (RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex));
+	return invented;
+}
+
 static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex)
 {
 	bool selectionShouldBeExpanded;
@@ -7586,20 +7607,8 @@ static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex
 		for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
 			uint8 rideEntryIndex = *currentRideEntryIndex;
 			if (rideEntryIndex == inputRideEntryIndex) {
-				rct_ride_entry *currentRideEntry = get_ride_entry(rideEntryIndex);
-
-				// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
-				if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) &&
-					!(gConfigInterface.select_by_track_type || selectionShouldBeExpanded)
-				) {
-					continue;
-				}
-
-				// Skip if vehicle type is not invented yet
-				int quadIndex = rideEntryIndex >> 5;
-				int bitIndex = rideEntryIndex & 0x1F;
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex))) {
-					continue;
+				if (!ride_entry_is_invented(rideEntryIndex)) {
+					return false;
 				}
 
 				return true;

@@ -3466,7 +3466,7 @@ STR_5123    :Obnovit atrakce
 STR_5124    :<not used anymore>
 STR_5125    :Vše lze zbourat
 STR_5126    :Náhodná hudba
-STR_5127    :{SMALLFONT}{BLACK}Zakázat změny výšky terénu
+STR_5127    :{SMALLFONT}{BLACK}Měnit vzhled země namísto změny výšky terénu
 STR_5128    :Velikost výběru
 STR_5129    :Zadejte velikost výběru mezi {COMMA16} a {COMMA16}
 STR_5130    :Velikost mapy
@@ -4095,6 +4095,18 @@ STR_5786    :Neplatný název skupiny.
 STR_5787    :{COMMA32} hráčů online
 STR_5788    :Výchozí interval inspekcí:
 STR_5789    :Vypnout blesky během bouřky
+STR_5790    :{SMALLFONT}{BLACK}Přepíná ceny ve stylu RCT1{NEWLINE}(např. cenu vstupu i atrakce)
+STR_5791    :{SMALLFONT}{BLACK}Nastaví spolehlivost všech atrakcí na 100% a rok jejich postavení na "letos"
+STR_5792    :{SMALLFONT}{BLACK}Opraví všechny rozbité atrakce
+STR_5793    :{SMALLFONT}{BLACK}Vymaže historii havárií atrakce{NEWLINE}(návštěvníci si přestanou stěžovat na bezpečnost)
+STR_5794    :{SMALLFONT}{BLACK}V některých scénářích není možné{NEWLINE}provádět úpravy předem postavených atrakcí.{NEWLINE}Tento cheat zruší toto omezení
+STR_5795    :{SMALLFONT}{BLACK}Návštěvníci navštěvují všechny atrakce,{NEWLINE}i když mají velmi vysokou intenzitu
+STR_5796    :{SMALLFONT}{BLACK}Vynutí otevření nebo zavření parku
+STR_5797    :{SMALLFONT}{BLACK}Zakáže změny počasí{NEWLINE}(v parku bude odteď pořád stejně)
+STR_5798    :{SMALLFONT}{BLACK}Povolí stavění, když je hra zapauzována
+STR_5799    :{SMALLFONT}{BLACK}Zakáže havárie atrakcí způsobené poruchou brzd
+STR_5800    :{SMALLFONT}{BLACK}Atrakce nebudou mít poruchy
+
 
 ###############################################################################
 ## RCT2 Objects

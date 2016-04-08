@@ -777,7 +777,6 @@ static void window_editor_object_selection_close(rct_window *w)
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) {
 		research_populate_list_random();
-		research_remove_non_separate_vehicle_types();
 	}
 	else {
 		// Used for in-game object selection cheat
@@ -787,6 +786,7 @@ static void window_editor_object_selection_close(rct_window *w)
 		sub_684AC3();
 		gSilentResearch = false;
 	}
+	research_remove_non_separate_vehicle_types();
 	window_new_ride_init_vars();
 
 	visible_list_dispose();

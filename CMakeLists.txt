@@ -23,6 +23,10 @@ set (ORCT2_RESOURCE_DIR ${CMAKE_INSTALL_PREFIX}/share/${PROJECT}/)
 
 project(${PROJECT})
 
+if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
+	message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
+endif()
+
 add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
 add_definitions(-DHAVE_CONFIG_H)
 add_definitions(-DCURL_STATICLIB)
@@ -47,7 +51,13 @@ option(STATIC "Create a static build.")
 
 PKG_CHECK_MODULES(PNG libpng>=1.6)
 if (NOT PNG_FOUND)
-	PKG_CHECK_MODULES(PNG REQUIRED libpng16)
+	PKG_CHECK_MODULES(PNG libpng16)
+endif (NOT PNG_FOUND)
+if (NOT PNG_FOUND)
+	PKG_CHECK_MODULES(PNG libpng>=1.2)
+endif (NOT PNG_FOUND)
+if (NOT PNG_FOUND)
+	PKG_CHECK_MODULES(PNG REQUIRED libpng12)
 endif (NOT PNG_FOUND)
 
 PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
@@ -107,7 +117,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 # include lib
 include_directories("lib/")
 # add source files
-file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp")
+file(GLOB_RECURSE ORCT2_SOURCES "src/*.c" "src/*.cpp" "src/*.h" "src/*.hpp")
 if (APPLE)
 	file(GLOB_RECURSE ORCT2_MM_SOURCES "src/*.m")
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")

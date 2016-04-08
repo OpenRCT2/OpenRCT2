@@ -1678,6 +1678,7 @@ static void window_ride_rename(rct_window *w)
  */
 static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
 {
+	uint8 rideIndex;
 	rct_ride *ride;
 	int status;
 
@@ -1698,7 +1699,11 @@ static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
 		window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_CONSTRUCTION:
-		ride_construct((uint8)w->number);
+		rideIndex = (uint8)w->number;
+		ride_construct(rideIndex);
+		if (window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex) != NULL) {
+			window_close(w);
+		}
 		break;
 	case WIDX_RENAME:
 		window_ride_rename(w);
@@ -2409,7 +2414,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 
 			rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideTypeIterator);
 
-			for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF; currentRideEntryIndex++) {
+			for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != 0xFF && numItems <= 63; currentRideEntryIndex++) {
 				rideEntryIndex = *currentRideEntryIndex;
 				currentRideEntry = get_ride_entry(rideEntryIndex);
 				// Skip if vehicle has the same track type, but not same subtype, unless subtype switching is enabled
@@ -2419,7 +2424,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 				quadIndex = rideEntryIndex >> 5;
 				bitIndex = rideEntryIndex & 0x1F;
 				// Skip if vehicle type is not invented yet
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
+				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1u << bitIndex)))
 					continue;
 
 				if (ride->subtype == rideEntryIndex)

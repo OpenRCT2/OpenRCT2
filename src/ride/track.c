@@ -3073,24 +3073,36 @@ int save_track_design(uint8 rideIndex){
 	// Track design files
 	format_string(RCT2_ADDRESS(0x141EE68, char), 2305, NULL);
 
+	// Show save dialog
+	utf8 initialDirectory[MAX_PATH];
+	{
+		strcpy(initialDirectory, path);
+		utf8 *a = strrchr(initialDirectory, '/');
+		utf8 *b = strrchr(initialDirectory, '\\');
+		utf8 *c = max(a, b);
+		if (c != NULL) {
+			*c = '\0';
+		}
+	}
+
+	file_dialog_desc desc;
+	memset(&desc, 0, sizeof(desc));
+	desc.type = FD_SAVE;
+	desc.title = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
+	desc.initial_directory = initialDirectory;
+	desc.default_filename = path;
+	desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
+	desc.filters[0].pattern = "*.td6";
+
 	audio_pause_sounds();
-
-	int result = platform_open_common_file_dialog(
-		FD_SAVE,
-		RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char),
-		path,
-		"*.TD?",
-		RCT2_ADDRESS(0x141EE68, char));
-
+	bool result = platform_open_common_file_dialog(path, &desc);
 	audio_unpause_sounds();
 
-	if (result == 0){
+	if (!result) {
 		ride_list_item item = { .type = 0xFD, .entry_index = 0 };
 		track_load_list(item);
 		return 1;
 	}
-
-	path_append_extension(path, "TD6");
 
 	save_track_to_file(RCT2_ADDRESS(0x009D8178, rct_track_td6), path);
 
@@ -3408,7 +3420,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
+		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
 			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}
@@ -4584,19 +4596,18 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		// push baseZ and clearanceZ
 		int cur_z = baseZ * 8;
 
-		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
+		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);
-			// push bl bh??
 			if (rideTypeFlags & RIDE_TYPE_FLAG_18) {
 				map_remove_walls_at(x, y, baseZ * 8, clearanceZ * 8);
-			}
-			else {
-				uint8 _bl = *RCT2_GLOBAL(0x00F44054, uint8*);
-				_bl ^= 0x0F;
-
-				for (int dl = bitscanforward(_bl); dl != -1; dl = bitscanforward(_bl)){
-					_bl &= ~(1 << dl);
-					map_remove_intersecting_walls(x, y, baseZ, clearanceZ, direction & 3);
+			} else {
+				// Remove walls in the directions this track intersects
+				uint8 intersectingDirections = *RCT2_GLOBAL(0x00F44054, uint8*);
+				intersectingDirections ^= 0x0F;
+				for (int i = 0; i < 4; i++) {
+					if (intersectingDirections & (1 << i)) {
+						map_remove_intersecting_walls(x, y, baseZ, clearanceZ, i);
+					}
 				}
 			}
 		}
@@ -4722,7 +4733,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			support_height = 10;
 		}
 
-		cost += (((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) / 2) * 10;
+		cost += ((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) * 5;
 
 		//6c56d3
 
@@ -5231,7 +5242,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	}
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) != 0) {
-		if ((flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) == 0) {
+		if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2)) {
 			footpath_remove_litter(x, y, z);
 			map_remove_walls_at(floor2(x, 32), floor2(y, 32), z, z + 32);
 		}

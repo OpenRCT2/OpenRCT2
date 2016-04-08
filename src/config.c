@@ -920,7 +920,8 @@ bool config_find_or_browse_install_directory()
 				return true;
 
 			utf8 message[MAX_PATH] = { 0 };
-			sprintf(message, "Could not find %sData%cg1.dat at this path", installPath, platform_get_path_separator());
+			char separator = platform_get_path_separator();
+			sprintf(message, "Could not find %s%cData%cg1.dat at this path", installPath, separator, separator);
 			platform_show_messagebox(message);
 		}
 	}

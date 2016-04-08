@@ -4,7 +4,7 @@
 
 Explanation of the issue...
 
-- [ ] Reproducable in RCT2 (vanilla)?
+- [ ] Reproducible in RCT2 (vanilla)?
 - [ ] Multiplayer?
 
 **Steps to reproduce:**

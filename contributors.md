@@ -34,6 +34,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (Vijfhoek) - Misc.
 * (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
+* Lewis Fox (LRFLEW) - Misc.
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
@@ -70,6 +71,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Jarno Veuger (JarnoVgr) - Windows build server
 * Ted John (IntelOrca) - Windows
 * Michał Janiszewski (janisozaur) - Linux, Travis CI
+* Lewis Fox (LRFLEW) - OSX
 
 ## Documentation
 * (honzi)
@@ -89,7 +91,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Czech - Martin Černáč (octaroot)
 * Dutch - Michael Steenbeek (Gymnasiast), (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
 * Finnish - (DJHasis)
-* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast)
+* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken)
 * Korean - "TELK" (telk5093)
 * Polish - Adrian Wielgosik (adrian17)
@@ -97,7 +99,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Russian - (Soosisya)
 * Simplified Chinese - Naiji Ma (naijim)
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie)
-* Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbiy)
+* Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
 
 ## Graphics
