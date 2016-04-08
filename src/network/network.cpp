@@ -232,9 +232,6 @@ int NetworkActions::FindCommand(int command)
 	if (it != actions.end()) {
 		return it - actions.begin();
 	}
-	if (command == -2) {
-		return -2;
-	}
 	return -1;
 }
 
