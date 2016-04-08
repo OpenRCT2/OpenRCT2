@@ -3460,7 +3460,7 @@ STR_5123    :Bahnen erneuern
 STR_5124    :Keine Six Flags
 STR_5125    :Alles zerstörbar
 STR_5126    :Zufällige Titelmusik
-STR_5127    :{SMALLFONT}{BLACK}Höhenanpassung deaktivieren
+STR_5127    :{SMALLFONT}{BLACK}Während dem Ziehen wird die Landschaft angemalt, ohne die Höhe zu verändern
 STR_5128    :Auswahlgröße
 STR_5129    :Auswahlgröße zwischen {COMMA16} und {COMMA16} eingeben:
 STR_5130    :Kartengröße
@@ -4087,6 +4087,17 @@ STR_5786    :Ungültiger Gruppenname
 STR_5787    :{COMMA32} Spieler online
 STR_5788    :Standardinspektionszeit:
 STR_5789    :Blitzeffekt deaktivieren
+STR_5790    :{SMALLFONT}{BLACK}(De-)Aktiviert die RCT1-Preisgestaltung{NEWLINE}(z.B. Fahrtpreis und Parkeintrittspreis festlegen)
+STR_5791    :{SMALLFONT}{BLACK}Setzt die Zuverlässigkeit aller Attraktionen auf 100% und setzt ihr Baujahr auf "Dieses Jahr" zurück
+STR_5792    :{SMALLFONT}{BLACK}Repariert alle defekten Attraktionen
+STR_5793    :{SMALLFONT}{BLACK}Setzt die Unfallhistorie zurück, sodass sich Besucher nicht länger über unsichere Attraktionen beschweren
+STR_5794    :{SMALLFONT}{BLACK}Einige Szenarien verbieten das Bearbeiten einiger bereits gebauten Attraktionen. Dieser Cheat hebt diese{NEWLINE}Beschränkung auf
+STR_5795    :{SMALLFONT}{BLACK}Besucher fahren mit jeder Attraktion, auch wenn die Intensität extrem hoch ist
+STR_5796    :{SMALLFONT}{BLACK}Zwingt den Park zu schließen/öffnen
+STR_5797    :{SMALLFONT}{BLACK}Deaktiviert Wetterveränderungen und{NEWLINE}friert das ausgewählte Wetter ein
+STR_5798    :{SMALLFONT}{BLACK}Erlaubt das Bauen im Pausenmodus
+STR_5799    :{SMALLFONT}{BLACK}Verhindert einen Defekt oder Unfall, einer Attraktion, durch fehlerhafte Bremsen
+STR_5800    :{SMALLFONT}{BLACK}Verhindert, dass Attraktionen ausfallen
 
 #############
 # Scenarios #

@@ -3465,7 +3465,7 @@ STR_5123    :翻新遊樂設施
 STR_5124    :<not used anymore>
 STR_5125    :全可拆卸
 STR_5126    :隨機播放主題曲
-STR_5127    :{SMALLFONT}{BLACK}禁止調整地勢
+STR_5127    :{SMALLFONT}{BLACK}拖曳調整地形, 而不調整地勢
 STR_5128    :選擇大小
 STR_5129    :請輸入介於{COMMA16}及{COMMA16}的選擇大小
 STR_5130    :地圖大小
@@ -4095,6 +4095,17 @@ STR_5786    :不正確的組別名稱
 STR_5787    :{COMMA32} 玩家在線
 STR_5788    :預設檢查遊樂設施的時隔:
 STR_5789    :禁用光影效果
+STR_5790    :{SMALLFONT}{BLACK}開啟/關閉夢幻遊樂園式的收費系統-{NEWLINE}(例如同時收取遊樂設施及進場費用)
+STR_5791    :{SMALLFONT}{BLACK}設定所有遊樂設施的可靠度為100%{NEWLINE}並重設他們的落成年份為"今年"
+STR_5792    :{SMALLFONT}{BLACK}修理所有已故障的遊樂設施
+STR_5793    :{SMALLFONT}{BLACK}重設指定遊樂設施的毀壞記錄,{NEWLINE}令遊客不覺得該設施不安全
+STR_5794    :{SMALLFONT}{BLACK}此密技移除某些劇情禁止修改{NEWLINE}某些已預先建設好的遊樂設施的限制
+STR_5795    :{SMALLFONT}{BLACK}遊客會乘坐所有樂園內的遊樂設施{NEWLINE}即使它們的刺激度極端地高
+STR_5796    :{SMALLFONT}{BLACK}強制開放或關閉樂園
+STR_5797    :{SMALLFONT}{BLACK}禁止天氣轉變並{NEWLINE}固定於選定的天氣
+STR_5798    :{SMALLFONT}{BLACK}允許暫停時建造物件
+STR_5799    :{SMALLFONT}{BLACK}禁止所有因煞車故障發生的故障及毀壞
+STR_5800    :{SMALLFONT}{BLACK}防止遊樂設施發生故障
 
 
 #############

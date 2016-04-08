@@ -3466,7 +3466,7 @@ STR_5123    :Obnovit atrakce
 STR_5124    :<not used anymore>
 STR_5125    :Vše lze zbourat
 STR_5126    :Náhodná hudba
-STR_5127    :{SMALLFONT}{BLACK}Zakázat změny výšky terénu
+STR_5127    :{SMALLFONT}{BLACK}Měnit vzhled země namísto změny výšky terénu
 STR_5128    :Velikost výběru
 STR_5129    :Zadejte velikost výběru mezi {COMMA16} a {COMMA16}
 STR_5130    :Velikost mapy
@@ -4103,6 +4103,9 @@ STR_5794    :{SMALLFONT}{BLACK}V některých scénářích není možné{NEWLINE
 STR_5795    :{SMALLFONT}{BLACK}Návštěvníci navštěvují všechny atrakce,{NEWLINE}i když mají velmi vysokou intenzitu
 STR_5796    :{SMALLFONT}{BLACK}Vynutí otevření nebo zavření parku
 STR_5797    :{SMALLFONT}{BLACK}Zakáže změny počasí{NEWLINE}(v parku bude odteď pořád stejně)
+STR_5798    :{SMALLFONT}{BLACK}Povolí stavění, když je hra zapauzována
+STR_5799    :{SMALLFONT}{BLACK}Zakáže havárie atrakcí způsobené poruchou brzd
+STR_5800    :{SMALLFONT}{BLACK}Atrakce nebudou mít poruchy
 
 
 ###############################################################################

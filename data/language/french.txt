@@ -1795,7 +1795,7 @@ STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Costume de shérif
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Costume de pirate
 STR_1790    :{SMALLFONT}{BLACK}Sélectionnez la couleur de l'uniforme pour ce type d'employé
 STR_1791    :{WINDOW_COLOUR_2}Couleur d'uniforme :
-STR_1792    :Va dépanner {STRINGID}
+STR_1792    :Va réparer {STRINGID}
 STR_1793    :Se rend à {STRINGID} pour une inspection
 STR_1794    :Répare {STRINGID}
 STR_1795    :Répond à l'appel radio
@@ -1810,7 +1810,7 @@ STR_1803    :Portes bloquées, fermées
 STR_1804    :Portes bloquées, ouvertes
 STR_1805    :Défaillance d'un véhicule
 STR_1806    :Défaillance des freins
-STR_1807    :Défaillance des contrôles
+STR_1807    :Défaillance des commandes
 STR_1808    :{WINDOW_COLOUR_2}Dernière panne : {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Panne actuelle : {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Transporte :
@@ -3463,7 +3463,7 @@ STR_5123    :Renouveler attr.
 STR_5124    :<not used anymore>
 STR_5125    :Tout destructible
 STR_5126    :Musique aléatoire
-STR_5127    :{SMALLFONT}{BLACK}Outil pinceau de surface
+STR_5127    :{SMALLFONT}{BLACK}Outil pinceau de surface{NEWLINE}Peint le terrain au lieu de changer l'élévation
 STR_5128    :Taille de sélection
 STR_5129    :Saisir une taille de sélection entre {COMMA16} et {COMMA16}
 STR_5130    :Taille de la carte
@@ -4094,14 +4094,17 @@ STR_5786    :Nom de groupe invalide
 STR_5787    :{COMMA32} joueurs en ligne
 STR_5788    :Délai d'insp. par défaut :
 STR_5789    :Désactiver les éclairs
-STR_5790    :{SMALLFONT}{BLACK}Active les prix façon RCT1 (Possibilité de définir à la fois un prix d'entrée un prix d'attraction)
+STR_5790    :{SMALLFONT}{BLACK}Active les prix façon RCT1 (Possibilité de définir à la fois un prix d'entrée et des prix d'attractions)
 STR_5791    :{SMALLFONT}{BLACK}Règle la fiabilité de toutes les attractions à 100% et réinitialise leur date de construction
 STR_5792    :{SMALLFONT}{BLACK}Répare toutes les attractions en panne
-STR_5793    :{SMALLFONT}{BLACK}Réinitialise l'historique des accidents des attractions, les visiteurs ne se plaindront plus de leur sécurité
+STR_5793    :{SMALLFONT}{BLACK}Réinitialise l'historique des accidents des attractions, les visiteurs ne se plaindront plus de leur fiabilité
 STR_5794    :{SMALLFONT}{BLACK}Certains scénarios empêchent d'éditer des attractions déjà dans le parc, ceci annule cette interdiction
 STR_5795    :{SMALLFONT}{BLACK}Les visiteurs iront sur toutes les attractions, même si l'intensité est très élevée
 STR_5796    :{SMALLFONT}{BLACK}Force le parc à ouvrir ou fermer
 STR_5797    :{SMALLFONT}{BLACK}Désactive les changements de météo et reste à la météo actuelle
+STR_5798    :{SMALLFONT}{BLACK}Autorise la construction lorsque le jeu est en pause
+STR_5799    :{SMALLFONT}{BLACK}Empêche les accidents sur les attractions en désactivant les pannes de freins
+STR_5800    :{SMALLFONT}{BLACK}Empêche les attractions de tomber en panne
 
 #############
 # Scenarios #
