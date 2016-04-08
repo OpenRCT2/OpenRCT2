@@ -203,7 +203,7 @@ public:
 		{STR_ACTION_KICK_PLAYER, {GAME_COMMAND_KICK_PLAYER}},
 		{STR_ACTION_MODIFY_GROUPS, {GAME_COMMAND_MODIFY_GROUPS}},
 		{STR_ACTION_SET_PLAYER_GROUP, {GAME_COMMAND_SET_PLAYER_GROUP}},
-		{STR_ACTION_CHEAT, {GAME_COMMAND_CHEAT}},
+		{STR_ACTION_CHEAT, {GAME_COMMAND_CHEAT}}
 	};
 };
 
@@ -466,6 +466,7 @@ uint8 network_get_default_group();
 int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);
 int network_can_perform_action(unsigned int groupindex, unsigned int index);
+int network_can_perform_command(unsigned int groupindex, unsigned int index);
 void network_free_string_ids();
 
 void network_send_map();

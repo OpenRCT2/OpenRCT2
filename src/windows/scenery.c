@@ -547,7 +547,7 @@ static void window_scenery_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
-		if (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_action(network_get_current_player_group_index(), -2)) {
+		if (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_command(network_get_current_player_group_index(), -2)) {
 			window_scenery_is_build_cluster_tool_on ^= 1;
 		}
 		window_invalidate(w);

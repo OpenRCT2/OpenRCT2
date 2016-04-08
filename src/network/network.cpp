@@ -232,6 +232,9 @@ int NetworkActions::FindCommand(int command)
 	if (it != actions.end()) {
 		return it - actions.begin();
 	}
+	if (command < 0) {
+		return command;
+	}
 	return -1;
 }
 
@@ -1881,7 +1884,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
 		if ((ticks - connection.player->last_action_time) < 20) {
-			if (!(group->CanPerformAction(-2) || group->CanPerformCommand(-2))) {
+			if (!(group->CanPerformCommand(-2))) {
 				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
 				return;
 			}
@@ -2418,9 +2421,17 @@ int network_can_perform_action(unsigned int groupindex, unsigned int index)
 {
 	return gNetwork.group_list[groupindex]->CanPerformAction(index);
 }
-int network_get_current_player_group_index() {
+
+int network_can_perform_command(unsigned int groupindex, unsigned int index) 
+{
+	return gNetwork.group_list[groupindex]->CanPerformCommand(index);
+}
+
+int network_get_current_player_group_index()
+{
 	return network_get_group_index(gNetwork.GetPlayerByID(gNetwork.GetPlayerID())->group);
 }
+
 void network_free_string_ids()
 {
 	gNetwork.FreeStringIds();
