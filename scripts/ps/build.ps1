@@ -10,7 +10,10 @@ param (
     [string]$Configuration = "Release",
 
     [Parameter(Mandatory = $false)]
-    [switch]$Rebuild = $false
+    [switch]$Rebuild = $false,
+
+    [Parameter(Mandatory = $false)]
+    [switch]$Breakpad = $false
 )
 
 # Setup
@@ -40,7 +43,7 @@ function Build-OpenRCT2()
     {
         $target = "/t:rebuild"
     }
-    msbuild $rootPath\openrct2.sln /p:Configuration=$Configuration /p:Platform=Win32 $target /v:minimal | Write-Host
+    msbuild $rootPath\openrct2.sln /p:Breakpad=$Breakpad /p:Configuration=$Configuration /p:Platform=Win32 $target /v:minimal | Write-Host
     return $LASTEXITCODE
 }
 

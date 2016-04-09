@@ -77,7 +77,7 @@ function Do-PrepareSource()
 function Do-Build()
 {
     Write-Host "Building OpenRCT2..." -ForegroundColor Cyan
-    & "$scriptsPath\build.ps1" all -Rebuild
+    & "$scriptsPath\build.ps1" all -Rebuild -Breakpad
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to build OpenRCT2" -ForegroundColor Red
