@@ -33,13 +33,13 @@
 #include "network/http.h"
 #include "network/network.h"
 #include "openrct2.h"
+#include "platform/crash.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "title.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "world/mapgen.h"
-#include "platform/crash.h"
 
 #if defined(__unix__)
 #include <sys/mman.h>
@@ -185,11 +185,7 @@ bool openrct2_initialise()
 		return false;
 	}
 
-	// Exception handling - breakpad
-	// Uses user data directory for storing dumps
-	CExceptionHandler eh;
-	// never free
-	eh = newCExceptionHandlerSimple();
+	crash_init();
 
 	if (!openrct2_setup_rct2_segment()) {
 		log_fatal("Unable to load RCT2 data sector");
