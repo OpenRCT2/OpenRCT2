@@ -1,9 +1,3 @@
-extern "C" {
-#include "platform.h"
-#include "../localisation/language.h"
-#include "../scenario.h"
-}
-
 #include "crash.h"
 #include <SDL_platform.h>
 
@@ -23,6 +17,12 @@ extern "C" {
 #include <breakpad/client/linux/handler/exception_handler.h>
 #define BREAKPAD_PATH "/tmp"
 #endif __LINUX__
+
+extern "C" {
+#include "platform.h"
+#include "../localisation/language.h"
+#include "../scenario.h"
+}
 
 
 static bool dumpCallback(const wchar_t *dump_path, const wchar_t *minidump_id, void* context, EXCEPTION_POINTERS* exinfo, MDRawAssertionInfo* assertion, bool succeeded) {
