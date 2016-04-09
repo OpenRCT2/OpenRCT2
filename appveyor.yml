@@ -28,3 +28,5 @@ artifacts:
   name: OpenRCT2-portable
 - path: .\artifacts\*.exe
   name: OpenRCT2-installer
+- path: .\artifacts\openrct2-symbols.zip
+  name: OpenRCT2 debug symbols
