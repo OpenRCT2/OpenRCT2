@@ -96,7 +96,7 @@ extern "C" CExceptionHandler newCExceptionHandlerSimple(void)
 	                                   dumpCallback,
 	                                   0,
 	                                   google_breakpad::ExceptionHandler::HANDLER_ALL,
-	                                   MiniDumpNormal,
+	                                   MiniDumpWithDataSegs,
 	                                   L"openrct2-bpad", // using non-null pipe name here lets breakpad try setting OOP crash handling
 	                                   0 ));
 #else // USE_BREAKPAD
