@@ -38,6 +38,7 @@
 - Technical: lodepng dropped in return for libpng.
 - Technical: SDL2 upgraded from 2.0.3 to 2.0.4.
 - Technical: argparse dropped in return for bespoke command line parsing implementation.
+- Technical: Integrated breakpad for (manual) crash reporting
 - Improve: performance of rendering, particularly for highly populated parks.
 - Improve: performance of loading parks.
 - Improve: support for hacked parks.
