@@ -11,13 +11,13 @@ install:
 - cmd: >-
     IF DEFINED ENCKEY ( nuget install secure-file -ExcludeVersion && secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret %ENCKEY% )
 
-    cinst nsis.portable -pre > nul
+    IF DEFINED ENCKEY ( cinst nsis.portable -pre > nul )
 - ps: >-
-    curl "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" -OutFile nsisxtra.zip
+    IF DEFINED ENCKEY ( curl "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" -OutFile nsisxtra.zip )
 
-    7z x nsisxtra.zip > $null
+    IF DEFINED ENCKEY ( 7z x nsisxtra.zip > $null )
 
-    cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
+    IF DEFINED ENCKEY ( cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi" )
 build_script:
 - ps: >-
     .\setenv.ps1
