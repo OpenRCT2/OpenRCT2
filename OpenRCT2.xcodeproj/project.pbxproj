@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		426da7e58564472ba1b7991f /* crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = a9793fe06a4244938f5d4b61 /* crash.cpp */; };
 		001085F01C90FD030075A2AD /* textinputbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 001085EE1C90FD030075A2AD /* textinputbuffer.c */; };
 		C62A08D51C787C2A00F3AA76 /* drawing_fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62A08D41C787C2A00F3AA76 /* drawing_fast.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
@@ -222,6 +223,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		a9793fe06a4244938f5d4b61 /* crash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = crash.cpp; path = src/platform/crash.cpp; sourceTree = "<group>"; };
 		001085EE1C90FD030075A2AD /* textinputbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = textinputbuffer.c; sourceTree = "<group>"; };
 		001085EF1C90FD030075A2AD /* textinputbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = textinputbuffer.h; sourceTree = "<group>"; };
 		C62A08D41C787C2A00F3AA76 /* drawing_fast.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = drawing_fast.cpp; sourceTree = "<group>"; };
@@ -655,7 +657,8 @@
 				D4EC47711C26342F0024B507 /* title.c */,
 				D4EC47721C26342F0024B507 /* title.h */,
 				D4163F671C2A044D00B83136 /* version.h */,
-			);
+			    a9793fe06a4244938f5d4b61 /* crash.cpp */,
+);
 			name = Sources;
 			sourceTree = "<group>";
 		};
@@ -1505,7 +1508,8 @@
 				D4EC48721C26342F0024B507 /* balloon.c in Sources */,
 				D4EC48571C26342F0024B507 /* save_prompt.c in Sources */,
 				D4EC48701C26342F0024B507 /* viewport.c in Sources */,
-			);
+			    426da7e58564472ba1b7991f /* crash.cpp in Sources */,
+);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */

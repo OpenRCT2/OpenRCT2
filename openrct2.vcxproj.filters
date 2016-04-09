@@ -587,6 +587,7 @@
     <ClCompile Include="src\core\textinputbuffer.c">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\platform\crash.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -896,5 +897,6 @@
     <ClInclude Include="src\core\textinputbuffer.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\platform\crash.h" />
   </ItemGroup>
 </Project>

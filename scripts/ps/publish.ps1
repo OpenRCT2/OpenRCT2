@@ -14,7 +14,8 @@ param (
     [string]$GitSha1      = "",
     [string]$GitSha1Short = "",
     [bool]  $CodeSign     = $false,
-    [switch]$Installer    = $false
+    [switch]$Installer    = $false,
+    [switch]$Symbols      = $false
 )
 
 if ($GitTag -eq "")
@@ -77,7 +78,7 @@ function Do-PrepareSource()
 function Do-Build()
 {
     Write-Host "Building OpenRCT2..." -ForegroundColor Cyan
-    & "$scriptsPath\build.ps1" all -Rebuild
+    & "$scriptsPath\build.ps1" all -Rebuild -Breakpad
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to build OpenRCT2" -ForegroundColor Red
@@ -94,6 +95,38 @@ function Do-Build()
         if (-not (Sign-Binary($dllPath))) { return 1 }
     }
 
+    return 0
+}
+
+# Symbols
+function Do-Symbols()
+{
+    Write-Host "Publishing OpenRCT2 debug symbols as zip..." -ForegroundColor Cyan
+    $artifactsDir = "$rootPath\artifacts"
+    $releaseDir = "$rootPath\bin"
+    $outZip     = "$rootPath\artifacts\openrct2-symbols.zip"
+
+    Copy-Item -Force          "$releaseDir\openrct2.pdb"       $artifactsDir -ErrorAction Stop
+
+    # Create archive using 7z (renowned for speed and compression)
+    $7zcmd = "7za"
+    if (-not (AppExists($7zcmd)))
+    {
+        # AppVeyor in particular uses '7z' instead
+        $7zcmd = "7z"
+        if (-not (AppExists($7zcmd)))
+        {
+            Write-Host "Publish script requires 7z to be in PATH" -ForegroundColor Red
+            return 1
+        }
+    }
+    & $7zcmd a -tzip -mx9 $outZip "$artifactsDir\openrct2.pdb" > $null
+    if ($LASTEXITCODE -ne 0)
+    {
+        Write-Host "Failed to create zip." -ForegroundColor Red
+        return 1
+    }
+    Remove-Item -Force -Recurse "$artifactsDir\openrct2.pdb" -ErrorAction SilentlyContinue
     return 0
 }
 
@@ -208,6 +241,10 @@ function Do-Task-Package()
     if ($Installer)
     {
         if (($result = (Do-Installer)) -ne 0) { return $result }
+    }
+    elseif ($Symbols)
+    {
+        if (($result = (Do-Symbols)) -ne 0) { return $result }
     }
     else
     {

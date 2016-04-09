@@ -14,7 +14,7 @@ Import-Module "$scriptsPath\common.psm1" -DisableNameChecking
 
 # Constants
 $libsUrl = "https://openrct2.website/files/openrct2-libs-vs2015.zip"
-$libsVersion = 6
+$libsVersion = 7
 
 # Get paths
 $rootPath        = Get-RootPath

@@ -811,7 +811,7 @@ void platform_free()
 	SDL_Quit();
 }
 
-void platform_start_text_input(char* buffer, int max_length)
+void platform_start_text_input(utf8* buffer, int max_length)
 {
 	// TODO This doesn't work, and position could be improved to where text entry is
 	SDL_Rect rect = { 10, 10, 100, 100 };

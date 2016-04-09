@@ -40,10 +40,12 @@ if (${env:CODE-SIGN-KEY-OPENRCT2.ORG.PFX.PASSWORD} -ne $null)
 # Enable pushing builds to OpenRCT2.org if token environment variable is set
 $pushBuilds = $false
 $installer  = $false
+$symbols    = $false
 if (${env:OPENRCT2.ORG_TOKEN} -ne $null)
 {
     $pushBuilds = $true
     $installer  = $true
+    $symbols    = $true
 }
 
 # Write out summary of the build
@@ -98,6 +100,18 @@ if ($installer)
             -CodeSign     $codeSign
 }
 
+if ($symbols)
+{
+    publish package                                       `
+            -Symbols                                      `
+            -Server       $server                         `
+            -GitTag       $tag                            `
+            -GitBranch    $env:APPVEYOR_REPO_BRANCH       `
+            -GitSha1      $env:APPVEYOR_REPO_COMMIT       `
+            -GitSha1Short $env:APPVEYOR_REPO_COMMIT_SHORT `
+            -CodeSign     $codeSign
+}
+
 if ($pushBuilds)
 {
     $versionExtension = ""
@@ -126,5 +140,15 @@ if ($pushBuilds)
                    -name      "$pushFileName.exe"                `
                    -version   $version                           `
                    -flavourId 2
+    }
+
+    # Push symbols
+    if ($symbols)
+    {
+        Write-Host "Sending symbols to OpenRCT2.org"    -ForegroundColor Cyan
+        Push-Build -file      ".\artifacts\openrct2-symbols.zip" `
+                   -name      "$pushFileName-symbols.zip"                `
+                   -version   $version                           `
+                   -flavourId 5
     }
 }

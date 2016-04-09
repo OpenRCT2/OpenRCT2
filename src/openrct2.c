@@ -33,6 +33,7 @@
 #include "network/http.h"
 #include "network/network.h"
 #include "openrct2.h"
+#include "platform/crash.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "title.h"
@@ -183,6 +184,8 @@ bool openrct2_initialise()
 		log_fatal("Could not create user directory (do you have write access to your documents folder?)");
 		return false;
 	}
+
+	crash_init();
 
 	if (!openrct2_setup_rct2_segment()) {
 		log_fatal("Unable to load RCT2 data sector");
