@@ -154,6 +154,24 @@ uint32 ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
 	STR_GUESTS_FAVOURITE
 };
 
+bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+	false,
+	false,
+	false,
+	true,
+	false,
+	true,
+	false,
+	false,
+	true,
+	true,
+	false,
+	false,
+	false,
+	false,
+	false
+};
+
 static int _window_ride_list_information_type;
 
 static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -263,8 +281,6 @@ static void window_ride_list_resize(rct_window *w)
  */
 static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
-	int currentItem, lastItem, count;
-
 	if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
 		gDropdownItemsFormat[0] = STR_CLOSE_ALL;
 		gDropdownItemsFormat[1] = STR_OPEN_ALL;
@@ -272,17 +288,28 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 	} else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN) {
 		widget--;
 
+		int lastType;
 		if (w->page == PAGE_RIDES)
-			lastItem = INFORMATION_TYPE_GUESTS_FAVOURITE;
+			lastType = INFORMATION_TYPE_GUESTS_FAVOURITE;
 		else
-			lastItem = INFORMATION_TYPE_RUNNING_COST;
+			lastType = INFORMATION_TYPE_RUNNING_COST;
 
-		for (count = 0, currentItem = INFORMATION_TYPE_STATUS; currentItem <= lastItem; currentItem++) {
-			if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) && (currentItem == INFORMATION_TYPE_RUNNING_COST))
-				continue;
-			gDropdownItemsFormat[count] = STR_DROPDOWN_MENU_LABEL;
-			gDropdownItemsArgs[count] = ride_info_type_string_mapping[count];
-			count++;
+		int numItems = 0;
+		int selectedIndex = -1;
+		for (int type = INFORMATION_TYPE_STATUS; type <= lastType; type++) {
+			if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+				if (ride_info_type_money_mapping[type]) {
+					continue;
+				}
+			}
+
+			if (type == _window_ride_list_information_type) {
+				selectedIndex = numItems;
+			}
+
+			gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsArgs[numItems] = ride_info_type_string_mapping[type];
+			numItems++;
 		}
 
 		window_dropdown_show_text_custom_width(
@@ -291,10 +318,12 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 			widget->bottom - widget->top,
 			w->colours[1],
 			DROPDOWN_FLAG_STAY_OPEN,
-			count,
+			numItems,
 			widget->right - widget->left - 3
 		);
-		dropdown_set_checked(_window_ride_list_information_type, true);
+		if (selectedIndex != -1) {
+			dropdown_set_checked(selectedIndex, true);
+		}
 	}
 }
 
@@ -313,7 +342,15 @@ static void window_ride_list_dropdown(rct_window *w, int widgetIndex, int dropdo
 		if (dropdownIndex == -1)
 			return;
 
-		_window_ride_list_information_type = dropdownIndex;
+		int informationType = INFORMATION_TYPE_STATUS;
+		uint32 arg = (uint32)gDropdownItemsArgs[dropdownIndex];
+		for (int i = 0; i < countof(ride_info_type_string_mapping); i++) {
+			if (arg == ride_info_type_string_mapping[i]) {
+				informationType = i;
+			}
+		}
+
+		_window_ride_list_information_type = informationType;
 		window_invalidate(w);
 	}
 }
