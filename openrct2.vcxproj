@@ -30,6 +30,8 @@
     <ClCompile Include="src\cmdline_sprite.c" />
     <ClCompile Include="src\config.c" />
     <ClCompile Include="src\core\Console.cpp" />
+    <ClCompile Include="src\core\Diagnostics.cpp" />
+    <ClCompile Include="src\core\Guard.cpp" />
     <ClCompile Include="src\core\Json.cpp" />
     <ClCompile Include="src\core\Path.cpp" />
     <ClCompile Include="src\core\Stopwatch.cpp" />

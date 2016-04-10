@@ -1,30 +1,11 @@
 #pragma once
 
-#include <cassert>
-#include <stdio.h>
-
-#include "Console.hpp"
-#include "Diagnostics.hpp"
-
 /**
  * Utility methods for asserting function parameters.
  */
 namespace Guard
 {
-    void Assert(bool expression, const char * message = nullptr)
-    {
-        if (expression) return;
-
-        if (message != nullptr)
-        {
-            Console::Error::WriteLine(message);
-        }
-
-#if DEBUG
-        Debug::Break();
-#endif
-        assert(false);
-    }
+    void Assert(bool expression, const char * message = nullptr);
 
     template<typename T>
     void ArgumentNotNull(T * argument, const char * message = nullptr)
