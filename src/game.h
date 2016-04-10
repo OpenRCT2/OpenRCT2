@@ -49,6 +49,7 @@ enum GAME_COMMAND {
 	GAME_COMMAND_CHANGE_SURFACE_STYLE,
 	GAME_COMMAND_SET_RIDE_PRICE,
 	GAME_COMMAND_SET_PEEP_NAME,
+	GAME_COMMAND_SET_STAFF_NAME,
 	GAME_COMMAND_RAISE_LAND,
 	GAME_COMMAND_LOWER_LAND,
 	GAME_COMMAND_EDIT_LAND_SMOOTH,
@@ -117,7 +118,7 @@ int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
 extern int game_command_playerid;
 
-extern GAME_COMMAND_POINTER* new_game_command_table[66];
+extern GAME_COMMAND_POINTER* new_game_command_table[67];
 
 extern int gGameSpeed;
 extern float gDayNightCycle;
