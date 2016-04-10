@@ -1139,3 +1139,174 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direct
 	}
 	return NULL;
 }
+
+static rct_xy8 EntranceCheckOffsets[] = {
+	{ -1, -1 },
+	{  0, -1 },
+	{  1,  0 },
+	{  0,  1 },
+
+	{  0,  1 },
+	{ -1, -1 },
+	{  0, -1 },
+	{  1,  0 },
+
+	{  1,  0 },
+	{  0,  1 },
+	{ -1,  0 },
+	{  0, -1 },
+
+	{  0, -1 },
+	{  1,  0 },
+	{  0,  1 },
+	{ -1, -1 },
+};
+
+static rct_xy8 GetEntranceCheckOffset(int direction, int rotation)
+{
+	return EntranceCheckOffsets[(direction * 4) + rotation];
+}
+
+static void floor_paint_setup(int height)
+{
+	uint32 imageId = 22134 | RCT2_GLOBAL(0x00F4419C, uint32);
+	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
+	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
+	RCT2_GLOBAL(0x009DEA56, uint16) = height;
+	sub_98197C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+}
+
+static void fence_paint_setup(int direction, int height)
+{
+	uint32 imageId;
+	switch (direction) {
+	case 0:
+		imageId = 20564 | RCT2_GLOBAL(0x00F44198, uint32);
+		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
+		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
+		sub_98199C(imageId, 0, 0, 1, 32, 7, height + 2, get_current_rotation());
+		break;
+	case 1:
+		imageId = 20565 | RCT2_GLOBAL(0x00F44198, uint32);
+		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
+		sub_98199C(imageId, 0, 0, 32, 1, 7, height + 2, get_current_rotation());
+		break;
+	case 2:
+		imageId = 20566 | RCT2_GLOBAL(0x00F44198, uint32);
+		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
+		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
+		sub_98199C(imageId, 0, 0, 1, 32, 7, height + 2, get_current_rotation());
+		break;
+	case 3:
+		imageId = 20567 | RCT2_GLOBAL(0x00F44198, uint32);
+		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
+		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
+		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
+		sub_98199C(imageId, 0, 0, 32, 1, 7, height + 2, get_current_rotation());
+		break;
+	}
+}
+
+static void fence_with_check_paint_setup(int direction, int height, rct_map_element *mapElement)
+{
+	uint8 currentRotation = get_current_rotation();
+	rct_xy8 checkOffset = GetEntranceCheckOffset(direction, currentRotation);
+
+	rct_xy8 fenceCheckPosition = {
+		.x = RCT2_GLOBAL(0x009DE56A, uint16) >> 5,
+		.y = RCT2_GLOBAL(0x009DE56E, uint16) >> 5
+	};
+	fenceCheckPosition.x += checkOffset.x;
+	fenceCheckPosition.y += checkOffset.y;
+
+	uint8 stationId = map_get_station(mapElement);
+	rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
+	if (fenceCheckPosition.xy != ride->entrances[stationId] && fenceCheckPosition.xy != ride->exits[stationId]) {
+		fence_paint_setup(direction, height);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x0076370C
+ */
+static void motionsimulator_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	floor_paint_setup(height);
+
+	switch (trackSequence) {
+	case 0:
+		fence_with_check_paint_setup(3, height, mapElement);
+		fence_with_check_paint_setup(0, height, mapElement);
+		break;
+	case 1:
+		fence_with_check_paint_setup(0, height, mapElement);
+		fence_with_check_paint_setup(1, height, mapElement);
+		break;
+	case 2:
+		fence_with_check_paint_setup(3, height, mapElement);
+		fence_with_check_paint_setup(2, height, mapElement);
+		break;
+	case 3:
+		fence_with_check_paint_setup(2, height, mapElement);
+		fence_with_check_paint_setup(1, height, mapElement);
+		break;
+	}
+
+	RCT2_GLOBAL(0x0141E9D4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9B8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9BC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9B4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C0, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9CC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9D0, uint16) = 0xFFFF;
+
+	height += 128;
+	if (RCT2_GLOBAL(0x0141E9D8, sint16) < height) {
+		RCT2_GLOBAL(0x0141E9D8, sint16) = height;
+		RCT2_GLOBAL(0x0141E9DA, uint8) = 32;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x00763DD2
+ */
+static void motionsimulator_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+
+}
+
+/**
+ *
+ *  rct2: 0x0076449A
+ */
+static void motionsimulator_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+
+}
+
+/**
+ *
+ *  rct2: 0x00764B62
+ */
+static void motionsimulator_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
+{
+
+}
+
+/* 0x00763520 */
+TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int trackType, int direction)
+{
+	switch (trackType) {
+	case 110: return motionsimulator_paint_setup;
+	}
+	return NULL;
+}
