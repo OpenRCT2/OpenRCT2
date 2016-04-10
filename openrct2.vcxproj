@@ -103,7 +103,7 @@
     <ClCompile Include="src\ride\station.c" />
     <ClCompile Include="src\ride\track.c" />
     <ClCompile Include="src\ride\track_data.c" />
-    <ClCompile Include="src\ride\track_paint.c" />
+    <ClCompile Include="src\ride\track_paint.cpp" />
     <ClCompile Include="src\ride\vehicle.c" />
     <ClCompile Include="src\scenario.c" />
     <ClCompile Include="src\scenario_list.c" />
