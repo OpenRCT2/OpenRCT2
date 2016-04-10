@@ -1141,13 +1141,13 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direct
 }
 
 static rct_xy8 EntranceCheckOffsets[] = {
-	{ -1, -1 },
+	{ -1,  0 },
 	{  0, -1 },
 	{  1,  0 },
 	{  0,  1 },
 
 	{  0,  1 },
-	{ -1, -1 },
+	{ -1,  0 },
 	{  0, -1 },
 	{  1,  0 },
 
@@ -1159,7 +1159,7 @@ static rct_xy8 EntranceCheckOffsets[] = {
 	{  0, -1 },
 	{  1,  0 },
 	{  0,  1 },
-	{ -1, -1 },
+	{ -1,  0 },
 };
 
 static rct_xy8 GetEntranceCheckOffset(int direction, int rotation)
@@ -1230,33 +1230,46 @@ static void fence_with_check_paint_setup(int direction, int height, rct_map_elem
 	}
 }
 
+static void fences_with_check_paint_setup(int directions, int direction, int height, rct_map_element *mapElement)
+{
+	uint8 rotation = get_current_rotation();
+	for (int i = 0; i < 4; i++) {
+		if (directions & (1 << i)) {
+			fence_with_check_paint_setup((direction + i) & 3, height, mapElement);
+		}
+	}
+}
+
+enum {
+	DF_NE = 1 << 0,
+	DF_SE = 1 << 1,
+	DF_SW = 1 << 2,
+	DF_NW = 1 << 3,
+};
+
+static uint8 MotionSimulatorTrackSeqFenceMap[] = {
+	DF_NW | DF_NE,
+	DF_NE | DF_SE,
+	DF_NW | DF_SW,
+	DF_SW | DF_SE
+};
+
 /**
  *
  *  rct2: 0x0076370C
+ *  rct2: 0x00763DD2
+ *  rct2: 0x0076449A
+ *  rct2: 0x00764B62
  */
 static void motionsimulator_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
 {
+	if (trackSequence > 3) return;
+
 	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
 	floor_paint_setup(height);
 
-	switch (trackSequence) {
-	case 0:
-		fence_with_check_paint_setup(3, height, mapElement);
-		fence_with_check_paint_setup(0, height, mapElement);
-		break;
-	case 1:
-		fence_with_check_paint_setup(0, height, mapElement);
-		fence_with_check_paint_setup(1, height, mapElement);
-		break;
-	case 2:
-		fence_with_check_paint_setup(3, height, mapElement);
-		fence_with_check_paint_setup(2, height, mapElement);
-		break;
-	case 3:
-		fence_with_check_paint_setup(2, height, mapElement);
-		fence_with_check_paint_setup(1, height, mapElement);
-		break;
-	}
+	uint8 fences = MotionSimulatorTrackSeqFenceMap[trackSequence & 3];
+	fences_with_check_paint_setup(fences, direction, height, mapElement);
 
 	RCT2_GLOBAL(0x0141E9D4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x0141E9C4, uint16) = 0xFFFF;
@@ -1273,33 +1286,6 @@ static void motionsimulator_paint_setup(uint8 rideIndex, uint8 trackSequence, ui
 		RCT2_GLOBAL(0x0141E9D8, sint16) = height;
 		RCT2_GLOBAL(0x0141E9DA, uint8) = 32;
 	}
-}
-
-/**
- *
- *  rct2: 0x00763DD2
- */
-static void motionsimulator_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
-{
-
-}
-
-/**
- *
- *  rct2: 0x0076449A
- */
-static void motionsimulator_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
-{
-
-}
-
-/**
- *
- *  rct2: 0x00764B62
- */
-static void motionsimulator_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement)
-{
-
 }
 
 /* 0x00763520 */
