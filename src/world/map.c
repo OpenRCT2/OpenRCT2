@@ -4262,9 +4262,8 @@ static void map_update_grass_length(int x, int y, rct_map_element *mapElement)
 		return;
 	}
 
-	// Grass can't grow any further
-	if (grassLength == GRASS_LENGTH_CLUMPS_2)
-		return;
+	// Grass can't grow any further than CLUMPS_2 but this code also cuts grass
+	// if there is an object placed ontop of it.
 
 	int z0 = mapElement->base_height;
 	int z1 = mapElement->base_height + 2;
@@ -4276,17 +4275,22 @@ static void map_update_grass_length(int x, int y, rct_map_element *mapElement)
 	for (;;) {
 		if (mapElementAbove->flags & MAP_ELEMENT_FLAG_LAST_TILE) {
 			// Grow grass
-			if (mapElement->properties.surface.grass_length < 0xF0) {
+
+			// Check interim grass lengths
+			uint8 lengthNibble = (mapElement->properties.surface.grass_length & 0xF0) >> 8;
+			if (lengthNibble < 0xF) {
 				mapElement->properties.surface.grass_length += 0x10;
 			} else {
+				// Zeros the length nibble
 				mapElement->properties.surface.grass_length += 0x10;
 				mapElement->properties.surface.grass_length ^= 8;
 				if (mapElement->properties.surface.grass_length & 8) {
-					// Random growth rate
+					// Random growth rate (length nibble)
 					mapElement->properties.surface.grass_length |= scenario_rand() & 0x70;
 				} else {
-					// Increase length
-					map_set_grass_length(x, y, mapElement, grassLength + 1);
+					// Increase length if not at max length
+					if (grassLength != GRASS_LENGTH_CLUMPS_2)
+						map_set_grass_length(x, y, mapElement, grassLength + 1);
 				}
 			}
 		} else {
@@ -4297,6 +4301,9 @@ static void map_update_grass_length(int x, int y, rct_map_element *mapElement)
 				continue;
 			if (z1 < mapElementAbove->base_height)
 				continue;
+
+			if (grassLength != GRASS_LENGTH_CLEAR_0)
+				map_set_grass_length(x, y, mapElement, GRASS_LENGTH_CLEAR_0);
 		}
 		break;
 	}
