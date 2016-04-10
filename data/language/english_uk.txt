@@ -4003,6 +4003,7 @@ STR_5661    :Set Player Group
 STR_5662    :N/A
 STR_5663    :Clear Landscape
 STR_5664    :Cheat
+STR_5665    :Toggle Scenery Cluster
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
@@ -4015,7 +4016,7 @@ STR_5709    :Rename Group
 STR_5710    :Group name
 STR_5711    :Enter new name for this group:
 STR_5712    :Can't modify permission that you do not have yourself
-STR_5713    :Kick Player
+STR_5713    :Can't remove default group
 STR_5714    :Show options window
 STR_5715    :New Game
 STR_5716    :Not allowed in multiplayer mode

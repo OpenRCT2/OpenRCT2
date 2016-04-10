@@ -38,18 +38,18 @@ extern "C" {
 #include <string>
 #include "../core/Util.hpp"
 extern "C" {
+#include "../cheats.h"
 #include "../config.h"
 #include "../game.h"
 #include "../interface/chat.h"
-#include "../interface/window.h"
 #include "../interface/keyboard_shortcut.h"
+#include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../network/http.h"
 #include "../scenario.h"
 #include "../windows/error.h"
 #include "../util/util.h"
-#include "../cheats.h"
 }
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -2270,6 +2270,11 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	case 1:{ // remove group
 		if (groupid == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_THIS_GROUP_CANNOT_BE_MODIFIED;
+			*ebx = MONEY32_UNDEFINED;
+			return;
+		}
+		if (groupid == network_get_default_group()) {
+			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_DEFAULT_GROUP;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
