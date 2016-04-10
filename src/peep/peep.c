@@ -4134,7 +4134,6 @@ static void peep_update_queuing(rct_peep* peep){
  *  rct2: 0x006BF567
  */
 static void peep_update_mowing(rct_peep* peep){
-	peep->var_E2 = 0;
 	if (!checkForPath(peep))return;
 
 	invalidate_sprite_2((rct_sprite*)peep);
@@ -5321,7 +5320,7 @@ static int peep_update_patrolling_find_grass(rct_peep* peep){
 	if ((map_element->properties.surface.terrain & MAP_ELEMENT_SURFACE_TERRAIN_MASK) != TERRAIN_GRASS)
 		return 0;
 
-	if (map_element->properties.surface.grass_length < GRASS_LENGTH_CLEAR_1)
+	if ((map_element->properties.surface.grass_length & 0x7) < GRASS_LENGTH_CLEAR_1)
 		return 0;
 
 	peep_decrement_num_riders(peep);

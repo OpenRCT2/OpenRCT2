@@ -691,7 +691,7 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8 valid
 		if (abs(mapElement->base_height - peep->next_z) > 2)
 			continue;
 
-		if (!(mapElement->properties.surface.grass_length & GRASS_LENGTH_CLUMPS_2))
+		if ((mapElement->properties.surface.grass_length & 0x7) < GRASS_LENGTH_CLEAR_1)
 			continue;
 
 		return chosenDirection;
