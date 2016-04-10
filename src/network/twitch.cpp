@@ -422,15 +422,13 @@ static void twitch_parse_chat_message(const char *message)
 
 	message++;
 	ch = strchrm(message, " \t");
-	safe_strcpy(buffer, message, ch - message);
-	buffer[ch - message] = 0;
+	safe_strcpy(buffer, message, ch - message + 1);
 	if (_strcmpi(buffer, "news") == 0) {
 		if (gConfigTwitch.enable_news) {
 			ch = strskipwhitespace(ch);
 
 			buffer[0] = (char)FORMAT_TOPAZ;
 			safe_strcpy(buffer + 1, ch, sizeof(buffer) - 2);
-			buffer[sizeof(buffer) - 2] = 0;
 
 			// Remove unsupport characters
 			// TODO allow when OpenRCT2 gains unicode support
