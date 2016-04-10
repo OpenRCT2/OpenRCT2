@@ -1993,6 +1993,7 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 {
 	money32 cost = 0;
+	bool waterHeightChanged = false;
 
 	uint8 max_height = 0xFF;
 
@@ -2034,6 +2035,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 						return MONEY32_UNDEFINED;
 
 					cost += tileCost;
+					waterHeightChanged = true;
 				}
 			}
 		}
@@ -2058,7 +2060,9 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
-		audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
+		if (waterHeightChanged) {
+			audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
+		}
 	}
 
 	// Force ride construction to recheck area
@@ -2070,6 +2074,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 {
 	money32 cost = 0;
+	bool waterHeightChanged = false;
 
 	uint8 min_height = 0;
 
@@ -2106,6 +2111,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 					if (tileCost == MONEY32_UNDEFINED)
 						return MONEY32_UNDEFINED;
 					cost += tileCost;
+					waterHeightChanged = true;
 				}
 			}
 		}
@@ -2130,7 +2136,9 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
-		audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
+		if (waterHeightChanged) {
+			audio_play_sound_at_location(SOUND_LAYING_OUT_WATER, x, y, z);
+		}
 	}
 
 	// Force ride construction to recheck area
