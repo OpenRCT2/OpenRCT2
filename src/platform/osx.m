@@ -142,11 +142,15 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 				[extensions addObjectsFromArray:[fp componentsSeparatedByString:@";"]];
 			}
 		}
-		
-		NSString *filePath = [NSString stringWithUTF8String:desc->default_filename];
-		NSString *directory = filePath.stringByDeletingLastPathComponent;
-		NSString *basename = filePath.lastPathComponent;
-		
+
+		NSString *directory = [NSString stringWithUTF8String:desc->initial_directory];
+		NSString *basename;
+		if (desc->default_filename != nil) {
+			NSString *filePath = [NSString stringWithUTF8String:desc->default_filename];
+			directory = filePath.stringByDeletingLastPathComponent;
+			basename = filePath.lastPathComponent;
+		}
+
 		NSSavePanel *panel;
 		if (desc->type == FD_SAVE)
 		{
