@@ -4003,6 +4003,7 @@ STR_5661    :Set Player Group
 STR_5662    :N/A
 STR_5663    :Clear Landscape
 STR_5664    :Cheat
+STR_5665    :Toggle Scenery Cluster
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
