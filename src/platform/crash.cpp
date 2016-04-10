@@ -34,7 +34,7 @@ static bool OnCrash(const wchar_t * dumpPath,
 {
     if (!succeeded)
     {
-        constexpr char * DumpFailedMessage = "Failed to create the dump. Nothing left to do. Please file an issue with OpenRCT2 on Github and provide latest save.";
+        constexpr const char * DumpFailedMessage = "Failed to create the dump. Nothing left to do. Please file an issue with OpenRCT2 on Github and provide latest save.";
         printf("%s\n", DumpFailedMessage);
         MessageBoxA(NULL, DumpFailedMessage, OPENRCT2_NAME, MB_OK | MB_ICONERROR);
         return succeeded;
@@ -61,7 +61,7 @@ static bool OnCrash(const wchar_t * dumpPath,
         SDL_RWclose(rw);
     }
 
-    constexpr wchar_t * MessageFormat = L"A crash has occurred and dump was created at\n%s.\n\nPlease create an issue with OpenRCT2 on Github and provide the dump and save.\n\nVersion: %s\nCommit: %s";
+    constexpr const wchar_t * MessageFormat = L"A crash has occurred and dump was created at\n%s.\n\nPlease create an issue with OpenRCT2 on Github and provide the dump and save.\n\nVersion: %s\nCommit: %s";
     wchar_t message[MAX_PATH * 2];
     swprintf_s(message,
                MessageFormat,
@@ -113,7 +113,7 @@ static std::wstring GetDumpDirectory()
 #endif // USE_BREAKPAD
 
 // Using non-null pipe name here lets breakpad try setting OOP crash handling
-constexpr wchar_t * PipeName = L"openrct2-bpad";
+constexpr const wchar_t * PipeName = L"openrct2-bpad";
 
 extern "C" CExceptionHandler crash_init()
 {
