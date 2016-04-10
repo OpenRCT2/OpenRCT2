@@ -1058,7 +1058,7 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	}
 
 	if (bp & 0x3000) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
+		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
 		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
 		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
 		sub_98197C(image_id + 12, 30, 0, 1, 1, 9, height, get_current_rotation());
