@@ -4285,7 +4285,7 @@ static void map_update_grass_length(int x, int y, rct_map_element *mapElement)
 			// Grow grass
 
 			// Check interim grass lengths
-			uint8 lengthNibble = (mapElement->properties.surface.grass_length & 0xF0) >> 8;
+			uint8 lengthNibble = (mapElement->properties.surface.grass_length & 0xF0) >> 4;
 			if (lengthNibble < 0xF) {
 				mapElement->properties.surface.grass_length += 0x10;
 			} else {
