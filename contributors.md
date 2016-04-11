@@ -89,7 +89,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast)
 * Czech - Martin Černáč (octaroot)
-* Dutch - Michael Steenbeek (Gymnasiast), (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
+* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
 * Finnish - (DJHasis)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken)
@@ -103,7 +103,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Traditional Chinese - Harry Lam (daihakken)
 
 ## Graphics
-* OpenRCT2 Logo - xzbobzx
+* OpenRCT2 Logo - Yannic Geurts (xzbobzx)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer
