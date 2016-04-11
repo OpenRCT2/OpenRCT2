@@ -4002,6 +4002,7 @@ STR_5661    :Cambiar grupos
 STR_5662    :Ninguna
 STR_5663    :Limpiar paisaje
 STR_5664    :Usar trucos
+STR_5665    :Colocación de Multiples Escenarios
 STR_5701    :{WINDOW_COLOUR_2}Ultima acción: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Ir a la última acción del jugador.
 STR_5703    :No puedes expulsar al anfitrión.

@@ -3232,7 +3232,7 @@ STR_3221    :{SMALLFONT}{BLACK}공원이 이미 소유하고 있는 땅을 선�
 STR_3222    :{SMALLFONT}{BLACK}공원이 이미 소유하고 있는 건설권을 선택합니다
 STR_3223    :{SMALLFONT}{BLACK}공원이 향후 구입할 수 있는 땅을 선택합니다
 STR_3224    :{SMALLFONT}{BLACK}공원이 향후 구입할 수 있는 건설권을 선택합니다
-STR_3225    :{SMALLFONT}{BLACK}선택한 위치에 오브젝트 숲 건설(무작위 건설) 모드를 켜거나 끕니다
+STR_3225    :{SMALLFONT}{BLACK}선택한 위치 주변에 오브젝트를 임의로 무리지어 설치하는 모드를 켜거나 끕니다
 STR_3226    :{SMALLFONT}{BLACK}공원 입구 건설
 STR_3227    :공원 입구가 너무 많습니다!
 STR_3228    :{SMALLFONT}{BLACK}손님이 나타나는 장소를 선택합니다
@@ -4001,6 +4001,7 @@ STR_5661    :플레이어 그룹 설정
 STR_5662    :없음
 STR_5663    :지형 초기화
 STR_5664    :치트
+STR_5665    :오브젝트 무더기 설치 모드 사용
 STR_5701    :{WINDOW_COLOUR_2}마지막 행동: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}플레이어의 가장 최근 행동 장소로 이동
 STR_5703    :서버를 추방할 수 없습니다

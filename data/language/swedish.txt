@@ -1060,7 +1060,7 @@ STR_1054    :{SMALLFONT}{BLACK}Namnge åktur/attraktion
 STR_1055    :{SMALLFONT}{BLACK}Namnge person
 STR_1056    :{SMALLFONT}{BLACK}Namnge anställd
 STR_1057    :Åkturens/attraktionens namn
-STR_1058    :Skriv in ett nytt namn för den här åkturen/attraktionen:
+STR_1058    :Skriv in ett nytt namn för den här åkturen:
 STR_1059    :Kan inte namnge åktur/attraktion...
 STR_1060    :Ogiltigt åktur/attraktionsnamn
 STR_1061    :Normalt läge
@@ -4006,6 +4006,7 @@ STR_5661    :Sätt spelares grupp
 STR_5662    :N/A
 STR_5663    :Rensa landskap
 STR_5664    :Fusk
+STR_5665    :Dekoration Utspridning
 STR_5701    :{WINDOW_COLOUR_2}Senaste handling: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Visa spelarens senaste handling
 STR_5703    :Kan inte sparka ut ägaren

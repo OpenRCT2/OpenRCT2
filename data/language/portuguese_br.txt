@@ -3465,7 +3465,7 @@ STR_5123    :Renovar atrações
 STR_5124    :<not used anymore>
 STR_5125    :Tudo destruível
 STR_5126    :Música de título aleatória
-STR_5127    :{SMALLFONT}{BLACK}Desativar elevação de terreno
+STR_5127    :{SMALLFONT}{BLACK}Enquanto arrastando, pinta a paisagem ao invés de mudar a elevação
 STR_5128    :Tamanho da seleção
 STR_5129    :Insira o tamanho da seleção entre {COMMA16} e {COMMA16}
 STR_5130    :Tamanho do mapa
@@ -3475,7 +3475,7 @@ STR_5133    :{SMALLFONT}{BLACK}Ajustar área menor de direitos de terreno
 STR_5134    :{SMALLFONT}{BLACK}Ajustar área maior de direitos de terreno
 STR_5135    :{SMALLFONT}{BLACK}Comprar direitos de terreno e direitos de construção
 STR_5136    :Direitos de terreno
-STR_5137    :Permite velocidade de corrente de {NEWLINE}elevação e lançamento de até {VELOCITY}
+STR_5137    :Destrava os limites de operação
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Desativar falhas nos freios
@@ -3891,7 +3891,7 @@ STR_5549    :Ano/Mês/Dia
 STR_5550    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Ano/Mês/Dia
 STR_5552    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pausar jogo quando Steam estiver aberta sobrepondo
+STR_5553    :Pausar jogo quando a Steam estiver sobrepondo
 STR_5554    :{SMALLFONT}{BLACK}Habilitar ferramenta de montanha
 STR_5555    :Exibir veículos de outras atrações
 STR_5556    :Remover Jogador
@@ -4094,6 +4094,17 @@ STR_5786    :Nome de grupo inválido
 STR_5787    :{COMMA32} jogadores online
 STR_5788    :Intervalo de inspeção padrão:
 STR_5789    :Desabilitar efeitos de relâmpago
+STR_5790    :{SMALLFONT}{BLACK}Ativa preço estilo RCT1{NEWLINE}(atrações e entradas ambos pagos)
+STR_5791    :{SMALLFONT}{BLACK}Define a confiança de todas as atrações em 100%{NEWLINE}e reinicia a data de construção para "este ano"
+STR_5792    :{SMALLFONT}{BLACK}Conserta todos as atrações quebradas
+STR_5793    :{SMALLFONT}{BLACK}Reinicia o histórico de acidentes de uma atração,{NEWLINE}então visitantes não irão reclamar que não é seguro
+STR_5794    :{SMALLFONT}{BLACK}Alguns cenários desabilitam a edição de algumas{NEWLINE}das atrações que já estão no parque.{NEWLINE}Esta trapaça desliga a restrição
+STR_5795    :{SMALLFONT}{BLACK}Visitantes andam em todas as atrações do parque{NEWLINE}mesmo se a intensidade for extremamente alta
+STR_5796    :{SMALLFONT}{BLACK}Força o parque a abrir ou fechar
+STR_5797    :{SMALLFONT}{BLACK}Desliga a mudança de clima e{NEWLINE}congela no clima selecionado
+STR_5798    :{SMALLFONT}{BLACK}Permite construir no modo pausado
+STR_5799    :{SMALLFONT}{BLACK}Desabilita quebras nas atrações e acidentes causados por falha nos freios
+STR_5800    :{SMALLFONT}{BLACK}Previne atrações de quebrar
 
 #############
 # Scenarios #
