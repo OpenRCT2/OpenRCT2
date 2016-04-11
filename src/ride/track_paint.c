@@ -31,6 +31,7 @@
 #include "ride_data.h"
 #include "track_data.h"
 #include "track_paint.h"
+#include "ride.h"
 
 /**
  *
@@ -1075,16 +1076,62 @@ static void crooked_house_fence_bottom_left(rct_ride *ride, int height, rct_map_
 	sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0);
 }
 
+typedef struct {
+	sint16 dword_52;
+	sint16 dword_54;
+	sint16 length_x;
+	sint16 length_y;
+} rct_crooked_house_data;
+
+rct_crooked_house_data crooked_house_data[] = {
+	{6,   0,   42, 24},
+	{0,   0,   0,  0},
+	{-16, -16, 32, 32},
+	{0,   0,   0,  0},
+	{0,   6,   24, 42}
+};
+
 /**
  * rct2: 0x0088ABA4
- * @param (edi) rideIndex
+ * @param (edi) direction
  * @param (al) al
  * @param (cl) cl
  * @param (ebx) image_id
  * @param (edx) height
  */
-static void sub_88ABA4(uint8 rideIndex, uint8 al, uint8 cl, uint32 image_id, int height) {
-	RCT2_CALLPROC_X(0x88ABA4, al, image_id, cl, height, 0, rideIndex * sizeof(rct_ride), 0);
+static void sub_88ABA4(uint8 direction, uint8 al, uint8 cl, uint32 segment, int height) {
+	//RCT2_CALLPROC_X(0x88ABA4, al, segment, cl, height, 0, direction, 0);
+	//return;
+
+	//  push    dword_9DE578
+	rct_map_element *original_map_element = RCT2_GLOBAL(0x9DE578, rct_map_element*);
+	//    push    edx
+	RCT2_GLOBAL(0x14281B0, uint32) = segment;
+	RCT2_GLOBAL(0x14281B4, uint32) = direction;
+
+	rct_ride *ride = get_ride(original_map_element->properties.track.ride_index);
+
+	rct_ride_entry *ride_type = get_ride_entry(ride->subtype);
+
+	RCT2_GLOBAL(0x0014281B8, uint32) = ride_type->vehicles[0].base_image_id;
+
+	uint32 ebx = 0xFFFFFFFF;
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
+		if (ride->vehicles[0] != 0xFFFF && ride->vehicles[1] != 0xFFFF) {
+			rct_g1_element *sprite = &g1Elements[ride->vehicles[1]];
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
+			RCT2_GLOBAL(0x9DE578, rct_g1_element *) = sprite;
+		}
+	}
+
+
+	uint32 image_id = (direction + ride_type->vehicles[0].base_image_id) | RCT2_GLOBAL(0x00F441A0, uint32);
+
+	rct_crooked_house_data esi = crooked_house_data[segment];
+	RCT2_GLOBAL(0x009DEA52, sint16) = esi.dword_52;
+	RCT2_GLOBAL(0x009DEA54, sint16) = esi.dword_54;
+	RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
+	sub_98197C(image_id, al, cl, esi.length_x, esi.length_y, 127, height + 3, get_current_rotation());
 }
 
 static void crooked_house_paint_setup_889F08(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
@@ -1119,8 +1166,7 @@ static void crooked_house_paint_setup_88A1D0(uint8 rideIndex, uint8 trackSequenc
 	crooked_house_fence_top_right(ride, height, mapElement);
 	crooked_house_fence_bottom_right(ride, height, mapElement);
 
-	// unpop edi
-	sub_88ABA4(rideIndex, 32, 224, 0, height);
+	sub_88ABA4(direction, 32, 224, 0, height);
 
 	height += 2;
 	crooked_house_paint_support_heights();
@@ -1139,7 +1185,7 @@ static void crooked_house_paint_setup_88A392(uint8 rideIndex, uint8 trackSequenc
 	crooked_house_fence_top_left(ride, height, mapElement);
 	crooked_house_fence_bottom_left(ride, height, mapElement);
 
-	sub_88ABA4(rideIndex, 224, 32, 4, height);
+	sub_88ABA4(direction, 224, 32, 4, height);
 
 	height += 2;
 	crooked_house_paint_support_heights();
@@ -1158,7 +1204,7 @@ static void crooked_house_paint_setup_88A554(uint8 rideIndex, uint8 trackSequenc
 	crooked_house_fence_bottom_left(ride, height, mapElement);
 	crooked_house_fence_bottom_right(ride, height, mapElement);
 
-	sub_88ABA4(rideIndex, 224, 224, 2, height);
+	sub_88ABA4(direction, 224, 224, 2, height);
 
 	height += 2;
 	crooked_house_paint_support_heights();
@@ -1177,7 +1223,7 @@ static void crooked_house_paint_setup_88A97C(uint8 rideIndex, uint8 trackSequenc
 	rct_ride *ride = get_ride(rideIndex);
 	crooked_house_fence_bottom_right(ride, height, mapElement);
 
-	sub_88ABA4(rideIndex, 0, 224, 1, height);
+	sub_88ABA4(direction, 0, 224, 1, height);
 
 	crooked_house_paint_support_heights();
 	crooked_house_paint_max_height(height + 128);
