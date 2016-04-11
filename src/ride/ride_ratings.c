@@ -1892,14 +1892,22 @@ static void ride_ratings_calculate_launched_freefall(rct_ride *ride)
 
 	ratings.excitement += ((ride_get_total_length(ride) >> 16) * 32768) >> 16;
 
-	#ifdef ORIGINAL_RATINGS
+#ifdef ORIGINAL_RATINGS
 	ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
-	#else
+#else
 	// Only apply "launch speed" effects when the setting can be modified
 	if (ride->mode == RIDE_MODE_UPWARD_LAUNCH) {
 		ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
+	} else {
+		// Fix #3282: When the ride mode is in downward launch mode, the intensity and
+		//            nausea were fixed regardless of how high the ride is. The following
+		//            calculation is based on roto-drop which is a similar mechanic.
+		int lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
+		ratings.excitement += lengthFactor;
+		ratings.intensity += lengthFactor * 2;
+		ratings.nausea += lengthFactor * 2;
 	}
-	#endif
+#endif
 
 	ride_ratings_apply_proximity(&ratings, ride, 20130);
 	ride_ratings_apply_scenery(&ratings, ride, 25098);
