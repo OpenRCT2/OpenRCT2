@@ -328,8 +328,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		cl,
 		lengthX,
 		lengthY,
+		90,		
 		height,
-		90,
 		0);
 
 	RCT2_GLOBAL(0x009DE578, rct_map_element*) = curMapElement;
