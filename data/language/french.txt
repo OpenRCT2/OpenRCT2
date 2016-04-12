@@ -1026,7 +1026,7 @@ STR_1019    :Modification impossible...
 STR_1020    :Modification impossible...
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} voiture par train
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} voitures par trains
+STR_1023    :{POP16}{POP16}{POP16}{COMMA16} voitures par train
 STR_1024    :{COMMA16} voiture par train
 STR_1025    :{COMMA16} voitures par train
 STR_1026    :Le quai est trop long !
@@ -1066,7 +1066,7 @@ STR_1059    :Impossible de renommer l'attraction...
 STR_1060    :Nom d'attraction invalide
 STR_1061    :Mode normal
 STR_1062    :Mode circuit continu
-STR_1063    :Mode navette renversée-inclinée
+STR_1063    :Mode navette départ marche arrière
 STR_1064    :Lancement à autopropulsion
 STR_1065    :Mode navette
 STR_1066    :Mode location bateaux
@@ -1343,7 +1343,7 @@ STR_1336    :{STRINGID} - Entrée de station {POP16}{COMMA16}
 STR_1337    :{STRINGID} - Sortie{POP16}{POP16}
 STR_1338    :{STRINGID} - Sortie de station {POP16}{COMMA16}
 STR_1339    :{BLACK}Pas encore de résultats de test...
-STR_1340    :{WINDOW_COLOUR_2}Vitesse max. : {BLACK}{VELOCITY}
+STR_1340    :{WINDOW_COLOUR_2}Vitesse maximale : {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Durée de l'attraction : {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
@@ -1351,13 +1351,13 @@ STR_1344    :{WINDOW_COLOUR_2}Longueur de l'attraction : {BLACK}{STRINGID}{STRIN
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
 STR_1347    :{WINDOW_COLOUR_2}Vitesse moyenne : {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Gravité verticale positive max. : {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Gravité verticale positive max. : {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Gravité verticale négative max. : {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Gravité verticale négative max. : {OUTLINE}{RED}{COMMA2DP32}g
-STR_1352    :{WINDOW_COLOUR_2}Gravité latérale max. : {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Gravité latérale max. : {OUTLINE}{RED}{COMMA2DP32}g
-STR_1354    :{WINDOW_COLOUR_2}Hauteur de chute max. : {BLACK}{LENGTH}
+STR_1348    :{WINDOW_COLOUR_2}Gravité verticale positive maximale : {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}Gravité verticale positive maximale : {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}Gravité verticale négative maximale : {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}Gravité verticale négative maximale : {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Gravité latérale maximale : {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Gravité latérale maximale : {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}Hauteur de chute maximale : {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Chutes : {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversions : {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Trous : {BLACK}{COMMA16}
@@ -1523,7 +1523,7 @@ STR_1516    :{SMALLFONT}{OPENQUOTES}Les jets d'eau sont super{ENDQUOTES}
 STR_1517    :{SMALLFONT}{OPENQUOTES}La musique est sympa ici{ENDQUOTES}
 STR_1518    :{SMALLFONT}{OPENQUOTES}Ce ballon de {STRINGID} est un très bon choix{ENDQUOTES}
 STR_1519    :{SMALLFONT}{OPENQUOTES}Cette peluche de {STRINGID} est un très bon choix{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Cette carte du parc de {STRINGID} est un très bon choix{ENDQUOTES}
+STR_1520    :{SMALLFONT}{OPENQUOTES}Ce plan du parc de {STRINGID} est un très bon choix{ENDQUOTES}
 STR_1521    :{SMALLFONT}{OPENQUOTES}Cette photo sur le vif de {STRINGID} est un très bon choix{ENDQUOTES}
 STR_1522    :{SMALLFONT}{OPENQUOTES}Ce parapluie de {STRINGID} est un très bon choix{ENDQUOTES}
 STR_1523    :{SMALLFONT}{OPENQUOTES}Cette boisson de {STRINGID} est un très bon choix{ENDQUOTES}
@@ -1557,7 +1557,7 @@ STR_1550    :{SMALLFONT}{OPENQUOTES}Ouah!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}J'ai l'étrange impression que quelqu'un m'observe{ENDQUOTES}
 STR_1552    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour un ballon de {STRINGID}{ENDQUOTES}
 STR_1553    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour une peluche de {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour une carte du parc de {STRINGID}{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour un plan du parc de {STRINGID}{ENDQUOTES}
 STR_1555    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour une photo sur le vif de {STRINGID}{ENDQUOTES}
 STR_1556    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour un parapluie de {STRINGID}{ENDQUOTES}
 STR_1557    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour une boisson de {STRINGID}{ENDQUOTES}
@@ -1703,10 +1703,10 @@ STR_1696    :{SMALLFONT}{BLACK}Informations sur les clients
 STR_1697    :Impossible de placer sur une file d'attente
 STR_1698    :Ne peut être placé que sur une file d'attente
 STR_1699    :Trop de personnes dans la partie
-STR_1700    :Embaucher un nouvel agent d'entretien
-STR_1701    :Embaucher un nouveau mécanicien
-STR_1702    :Embaucher un nouvel agent de sécurité
-STR_1703    :Embaucher un nouvel animateur
+STR_1700    :Embaucher ag. d'entretien
+STR_1701    :Embaucher mécanicien
+STR_1702    :Embaucher ag. de sécurité
+STR_1703    :Embaucher animateur
 STR_1704    :Impossible d'embaucher de nouveaux employés...
 STR_1705    :{SMALLFONT}{BLACK}Licencier cet employé
 STR_1706    :{SMALLFONT}{BLACK}Déplacer cette personne
@@ -1715,7 +1715,7 @@ STR_1708    :{SMALLFONT}{BLACK}Définir une zone de patrouille pour cet employé
 STR_1709    :Licencier des employés
 STR_1710    :Oui
 STR_1711    :{WINDOW_COLOUR_1}Êtes-vous sûr de vouloir licencier {STRINGID} ?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Balayer les chemins
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Balayer les allées
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Arroser les jardins
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Vider les poubelles
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Tondre la pelouse
@@ -1837,7 +1837,7 @@ STR_1830    :Longueur file
 STR_1831    :Temps d'attente
 STR_1832    :Fiabilité
 STR_1833    :Immobilisation
-STR_1834    :Plébiscitée
+STR_1834    :Plébiscite
 STR_1835    :Popularité : Inconnue
 STR_1836    :Popularité : {COMMA16}%
 STR_1837    :Satisfaction : Inconnue
@@ -1845,8 +1845,8 @@ STR_1838    :Satisfaction : {COMMA16}%
 STR_1839    :Fiabilité : {COMMA16}%
 STR_1840    :Immobilisation : {COMMA16}%
 STR_1841    :Bénéfice : {CURRENCY} par heure
-STR_1842    :Attraction préférée de : {COMMA16} visiteur
-STR_1843    :Attraction préférée de : {COMMA16} visiteurs
+STR_1842    :Préférée de : {COMMA16} visiteur
+STR_1843    :Préférée de : {COMMA16} visiteurs
 STR_1844    :{SMALLFONT}{BLACK}Sélectionnez le type d'information à afficher dans la liste des attractions
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} visiteurs
@@ -1910,8 +1910,8 @@ STR_1901    :{WINDOW_COLOUR_2}Tickets parc
 STR_1902    :{WINDOW_COLOUR_2}Tickets attraction
 STR_1903    :{WINDOW_COLOUR_2}Ventes magasins
 STR_1904    :{WINDOW_COLOUR_2}Stocks magasins
-STR_1905    :{WINDOW_COLOUR_2}Ventes Nourr./Boiss.
-STR_1906    :{WINDOW_COLOUR_2}Stocks Nourr./Noiss.
+STR_1905    :{WINDOW_COLOUR_2}Ventes nourr./boiss.
+STR_1906    :{WINDOW_COLOUR_2}Stocks nourr./boiss.
 STR_1907    :{WINDOW_COLOUR_2}Salaires employés
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Recherche
@@ -1967,8 +1967,8 @@ STR_1958    :{COMMA16}
 STR_1959    :Impossible de changer le nombre de circuits...
 STR_1960    :{WINDOW_COLOUR_2}Prix d'un ballon :
 STR_1961    :{WINDOW_COLOUR_2}Prix d'une peluche :
-STR_1962    :{WINDOW_COLOUR_2}Prix d'une carte du parc :
-STR_1963    :{WINDOW_COLOUR_2}Prix d'une photo sur le vif :
+STR_1962    :{WINDOW_COLOUR_2}Prix d'un plan du parc :
+STR_1963    :{WINDOW_COLOUR_2}Prix photo sur le vif :
 STR_1964    :{WINDOW_COLOUR_2}Prix d'un parapluie :
 STR_1965    :{WINDOW_COLOUR_2}Prix d'une boisson :
 STR_1966    :{WINDOW_COLOUR_2}Prix d'un hamburger :
@@ -1995,7 +1995,7 @@ STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
 STR_1988    :Ballon
 STR_1989    :Peluche
-STR_1990    :Carte du parc
+STR_1990    :Plan du parc
 STR_1991    :Photo sur le vif
 STR_1992    :Parapluie
 STR_1993    :Boisson gazeuse
@@ -2023,7 +2023,7 @@ STR_2014    :Boite vide
 STR_2015    :Bouteille vide
 STR_2016    :Ballons
 STR_2017    :Peluches
-STR_2018    :Cartes du parc
+STR_2018    :Plans du parc
 STR_2019    :Photos sur le vif
 STR_2020    :Parapluies
 STR_2021    :Boissons gazeuses
@@ -2051,7 +2051,7 @@ STR_2042    :Boites vides
 STR_2043    :Bouteilles vides
 STR_2044    :un ballon
 STR_2045    :une peluche
-STR_2046    :une carte du parc
+STR_2046    :un plan du parc
 STR_2047    :une photo sur le vif
 STR_2048    :un parapluie
 STR_2049    :une boisson gazeuse
@@ -2077,11 +2077,11 @@ STR_2068    :du poulet frit
 STR_2069    :de la limonade
 STR_2070    :une boite vide
 STR_2071    :une bouteille vide
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Ballon
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Peluche
-STR_2074    :Carte de {STRINGID}
+STR_2072    :Ballon {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2073    :Peluche {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2074    :Plan de {STRINGID}
 STR_2075    :Photo sur le vif de {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Parapluie
+STR_2076    :Parapluie {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2077    :Boisson gazeuse
 STR_2078    :Hamurger
 STR_2079    :Frites
@@ -2095,9 +2095,9 @@ STR_2086    :Coupon pour {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Hot-Dog
 STR_2089    :Poulpe
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Chapeau
+STR_2090    :Chapeau {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2091    :Pomme d'amour
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-shirt
+STR_2092    :T-shirt {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2093    :Donut
 STR_2094    :Café
 STR_2095    :Tasse vide
@@ -2855,7 +2855,7 @@ STR_2844    :{TOPAZ}Votre parc a reçu le prix du {OPENQUOTES}parc ayant les mei
 STR_2845    :{TOPAZ}Votre parc a reçu le prix du {OPENQUOTES}parc ayant les couleurs les plus éclatantes du pays{ENDQUOTES} !
 STR_2846    :{TOPAZ}Votre parc a reçu le prix du {OPENQUOTES}parc le plus confus du pays{ENDQUOTES} !
 STR_2847    :{TOPAZ}Votre parc a reçu le prix du {OPENQUOTES}parc ayant les meilleures attractions tranquilles du pays{ENDQUOTES} !
-STR_2848    :{WINDOW_COLOUR_2}Pas de récompense récente
+STR_2848    :{WINDOW_COLOUR_2}Pas de récompenses récentes
 STR_2849    :Nouveau scénario installé avec succès
 STR_2850    :Nouvelle voie installée avec succès
 STR_2851    :Scénario déjà installé
@@ -3340,7 +3340,7 @@ STR_3329    :Entrée du parc pas encore construite
 STR_3330    :Le parc doit posséder du terrain
 STR_3331    :Allée depuis l'entrée du parc jusqu'au bord de la carte incomplète ou trop complexe. Une allée doit être simple avec aussi peu d'intersections et de virages que possible
 STR_3332    :L'entrée du parc est dans le mauvais sens ou ne possède pas d'allée conduisant au bord de la carte
-STR_3333    :Exporter objets plug-ins avec parties sauveg.
+STR_3333    :Exporter objets plug-ins avec parties sauvegardées
 STR_3334    :{SMALLFONT}{BLACK}Choisir si vous souhaitez sauvegarder d'autres données requises pour objets plug-in (données supplémentaires non fournies avec ce produit) dans des fichiers de sauvegarde ou de scénario, afin qu'une personne ne disposant pas des données additionnelles puisse les charger
 STR_3335    :Concepteur de montagnes russes - Choisir type d'attraction et de véhicule
 STR_3336    :Gestionnaire de voies - Choisir type d'attraction
@@ -3494,7 +3494,7 @@ STR_5152    :,
 STR_5153    :Thèmes...
 STR_5154    :Affichage matériel
 STR_5155    :Autoriser le test de circuits incomplets
-STR_5156    :{SMALLFONT}{BLACK}Autorise le test de la plupart des attractions même si le circuit est incomplet. Ne s'applique pas aux modes à sections de blocs.
+STR_5156    :{SMALLFONT}{BLACK}Autorise le test de la plupart des attractions même si le circuit est incomplet. Ne s'applique pas aux modes à blocs de voie.
 STR_5157    :Débloquer tous les prix
 STR_5158    :Retour au menu
 STR_5159    :Quitter OpenRCT2
@@ -3839,7 +3839,7 @@ STR_5497    :Ping :
 STR_5498    :Liste des serveurs
 STR_5499    :Nom du joueur :
 STR_5500    :Ajouter un serveur
-STR_5501    :Créer un serveur
+STR_5501    :Démarrer un serveur
 STR_5502    :Multijoueur
 STR_5503    :Saisir nom d'hôte ou adresse IP :
 STR_5504    :{SMALLFONT}{BLACK}Afficher le statut multijoueur
@@ -3981,29 +3981,28 @@ STR_5639    :{SMALLFONT}{BLACK}Affiche la liste des joueurs
 STR_5640    :{SMALLFONT}{BLACK}Gérer les groupes
 STR_5641    :Groupe par défaut :
 STR_5642    :Groupes :
-STR_5643    :Ajouter des groupes
-STR_5644    :Supprimer des groupes
-STR_5645    :Chatter
-STR_5646    :Modifier le terrain
-STR_5647    :Mettre le jeu en pause
+STR_5643    :Ajouter groupe
+STR_5644    :Suppr. groupe
+STR_5645    :Chat
+STR_5646    :Modifier terrain
+STR_5647    :Pause
 STR_5648    :Définir niveau de l'eau
-STR_5649    :Créer des attractions
-STR_5650    :Supprimer des attractions
-STR_5651    :Construire des attractions
-STR_5652    :Options d'attraction
+STR_5649    :Créer attraction
+STR_5650    :Supprimer attraction
+STR_5651    :Construire attraction
+STR_5652    :Options attraction
 STR_5653    :Décor
-STR_5654    :Allées
-STR_5655    :Visiteurs
-STR_5656    :Employés
-STR_5657    :Terrains du parc
+STR_5654    :Allée
+STR_5655    :Guest
+STR_5656    :Employé
+STR_5657    :Propriétés du parc
 STR_5658    :Argent du parc
-STR_5659    :Expulser des joueurs
-STR_5660    :Modifier des groupes
-STR_5661    :Changer de groupe
+STR_5659    :Expulser joueur
+STR_5660    :Modifier groupes
+STR_5661    :Définir groupe
 STR_5662    :N/A
-STR_5663    :Nettoyer le paysage
+STR_5663    :Nettoyer paysage
 STR_5664    :Triche
-STR_5665    :Placer des groupes d'éléments de décor
 STR_5701    :{WINDOW_COLOUR_2}Dernière action : {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localise l'action la plus récente du joueur
 STR_5703    :Imposible d'expulser l'hébergeur
@@ -4030,7 +4029,7 @@ STR_5722    :Pluie
 STR_5723    :Forte Pluie
 STR_5724    :Orage
 STR_5725    :{BLACK}Forcer la météo :
-STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
+STR_5726    :{SMALLFONT}{BLACK}Défini la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
 STR_5728    :Requiert l'option d'affichage matériel
 STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'affichage matériel
@@ -4079,7 +4078,7 @@ STR_5770    :Clients par heure
 STR_5771    :Coûts d'exploitation
 STR_5772    :Age
 STR_5773    :Clients total : {COMMA32}
-STR_5774    :Revenu total : {CURRENCY2DP}
+STR_5774    :Bénéf. total : {CURRENCY2DP}
 STR_5775    :Clients : {COMMA32} par heure
 STR_5776    :Construit : cette année
 STR_5777    :Construit : l'année dernière

@@ -4004,6 +4004,7 @@ STR_5661    :將玩家分配到個別組別
 STR_5662    :N/A
 STR_5663    :清除景物
 STR_5664    :密技
+STR_5665    :啟用/禁用景物批量放置
 STR_5701    :{WINDOW_COLOUR_2}最近的動作: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}將這個玩家的最近的動作定位
 STR_5703    :無法踢除架設者

@@ -3998,6 +3998,7 @@ STR_5661    :Spielergruppe festlegen
 STR_5662    :N/A
 STR_5663    :Landschaft leeren
 STR_5664    :Cheats
+STR_5665    :Bau Szenerie-Objektgruppe ein-/ausschalten
 STR_5701    :{WINDOW_COLOUR_2}Letzte Aktion: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Lokalisiert die letzte Aktion des Spielers
 STR_5703    :Host kann nicht entfernt werden
