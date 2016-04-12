@@ -76,12 +76,12 @@ STR_0071    :ロトドロップ
 STR_0072    :空飛ぶ円盤
 STR_0073    :ねじれた家
 STR_0074    :Monorail Cycles
-STR_0075    :Compact Inverted Coaster
-STR_0076    :Water Coaster
-STR_0077    :Air Powered Vertical Coaster
-STR_0078    :Inverted Hairpin Coaster
+STR_0075    :コンパクト倒立コースター
+STR_0076    :ウォーターコースター
+STR_0077    :エアパワード垂直コースター
+STR_0078    :倒立ヘアピンコースター
 STR_0079    :魔法のじゅうたん
-STR_0080    :Submarine Ride
+STR_0080    :潜水艦ライド
 STR_0081    :River Rafts
 STR_0082    :Unknown Ride (50)
 STR_0083    :エンタープライズ
@@ -89,7 +89,7 @@ STR_0084    :Unknown Ride (52)
 STR_0085    :Unknown Ride (53)
 STR_0086    :Unknown Ride (54)
 STR_0087    :Unknown Ride (55)
-STR_0088    :Inverted Impulse Coaster
+STR_0088    :倒立インパルスコースター
 STR_0089    :ミニジェットコースター
 STR_0090    :Mine Ride
 STR_0091    :Unknown Ride (59)
@@ -2257,9 +2257,9 @@ STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
 STR_2252    :Can only be built across paths!
-STR_2253    :Transport Rides
-STR_2254    :Gentle Rides
-STR_2255    :Roller Coasters
+STR_2253    :トランスポートライド
+STR_2254    :ジェントルライド
+STR_2255    :ジェットコースター
 STR_2256    :Thrill Rides
 STR_2257    :Water Rides
 STR_2258    :Shops & Stalls
@@ -2373,14 +2373,14 @@ STR_2365    :The bank refuses to increase your loan!
 STR_2366    :Celsius ({DEGREE}C)
 STR_2367    :Fahrenheit ({DEGREE}F)
 STR_2368    :None
-STR_2369    :Low
-STR_2370    :Average
-STR_2371    :High
-STR_2372    :Low
-STR_2373    :Medium
-STR_2374    :High
-STR_2375    :Very high
-STR_2376    :Extreme
+STR_2369    :低い
+STR_2370    :平均的
+STR_2371    :高い
+STR_2372    :低い
+STR_2373    :普通
+STR_2374    :高い
+STR_2375    :非常に高い
+STR_2376    :最高
 STR_2377    :Ultra-Extreme
 STR_2378    :{SMALLFONT}{BLACK}Adjust smaller area of land
 STR_2379    :{SMALLFONT}{BLACK}Adjust larger area of land
@@ -2577,7 +2577,7 @@ STR_2568    :Execute
 STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
-STR_2572    :Help
+STR_2572    :ヘルプ
 STR_2573    :0
 STR_2574    :1
 STR_2575    :2

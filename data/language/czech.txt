@@ -4004,6 +4004,7 @@ STR_5661    :Nastavit skupinu hráče
 STR_5662    :N/A
 STR_5663    :Vyčistit krajinu
 STR_5664    :Cheaty
+STR_5665    :Přepínat skupinové stavění kulis
 STR_5701    :{WINDOW_COLOUR_2}Poslední akce: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Najít hráčovu poslední akci
 STR_5703    :Nelze vyhodit zakladatele hry

@@ -3839,7 +3839,7 @@ STR_5497    :Ping :
 STR_5498    :Liste des serveurs
 STR_5499    :Nom du joueur :
 STR_5500    :Ajouter un serveur
-STR_5501    :Démarrer un serveur
+STR_5501    :Créer un serveur
 STR_5502    :Multijoueur
 STR_5503    :Saisir nom d'hôte ou adresse IP :
 STR_5504    :{SMALLFONT}{BLACK}Afficher le statut multijoueur
@@ -3981,28 +3981,29 @@ STR_5639    :{SMALLFONT}{BLACK}Affiche la liste des joueurs
 STR_5640    :{SMALLFONT}{BLACK}Gérer les groupes
 STR_5641    :Groupe par défaut :
 STR_5642    :Groupes :
-STR_5643    :Ajouter groupe
-STR_5644    :Suppr. groupe
-STR_5645    :Chat
-STR_5646    :Modifier terrain
-STR_5647    :Pause
+STR_5643    :Ajouter des groupes
+STR_5644    :Supprimer des groupes
+STR_5645    :Chatter
+STR_5646    :Modifier le terrain
+STR_5647    :Mettre le jeu en pause
 STR_5648    :Définir niveau de l'eau
-STR_5649    :Créer attraction
-STR_5650    :Supprimer attraction
-STR_5651    :Construire attraction
-STR_5652    :Options attraction
+STR_5649    :Créer des attractions
+STR_5650    :Supprimer des attractions
+STR_5651    :Construire des attractions
+STR_5652    :Options d'attraction
 STR_5653    :Décor
-STR_5654    :Allée
-STR_5655    :Guest
-STR_5656    :Employé
-STR_5657    :Propriétés du parc
+STR_5654    :Allées
+STR_5655    :Visiteurs
+STR_5656    :Employés
+STR_5657    :Terrains du parc
 STR_5658    :Argent du parc
-STR_5659    :Expulser joueur
-STR_5660    :Modifier groupes
-STR_5661    :Définir groupe
+STR_5659    :Expulser des joueurs
+STR_5660    :Modifier des groupes
+STR_5661    :Changer de groupe
 STR_5662    :N/A
-STR_5663    :Nettoyer paysage
+STR_5663    :Nettoyer le paysage
 STR_5664    :Triche
+STR_5665    :Placer des groupes d'éléments de décor
 STR_5701    :{WINDOW_COLOUR_2}Dernière action : {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localise l'action la plus récente du joueur
 STR_5703    :Imposible d'expulser l'hébergeur
@@ -4029,7 +4030,7 @@ STR_5722    :Pluie
 STR_5723    :Forte Pluie
 STR_5724    :Orage
 STR_5725    :{BLACK}Forcer la météo :
-STR_5726    :{SMALLFONT}{BLACK}Défini la météo actuelle dans le parc
+STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
 STR_5728    :Requiert l'option d'affichage matériel
 STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'affichage matériel
