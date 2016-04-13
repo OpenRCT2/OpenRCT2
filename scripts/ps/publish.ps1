@@ -112,9 +112,10 @@ function Do-Symbols()
     Write-Host "Publishing OpenRCT2 debug symbols as zip..." -ForegroundColor Cyan
     $artifactsDir = "$rootPath\artifacts"
     $releaseDir = "$rootPath\bin"
-    $outZip     = "$rootPath\artifacts\openrct2-symbols.zip"
+    $outZip     = "$rootPath\artifacts\openrct2-symbols-$GitSha1Short.zip"
 
     Copy-Item -Force          "$releaseDir\openrct2.pdb"       $artifactsDir -ErrorAction Stop
+    Copy-Item -Force          "$releaseDir\openrct2.dll"       $artifactsDir -ErrorAction Stop
 
     # Create archive using 7z (renowned for speed and compression)
     $7zcmd = "7za"
@@ -128,7 +129,7 @@ function Do-Symbols()
             return 1
         }
     }
-    & $7zcmd a -tzip -mx9 $outZip "$artifactsDir\openrct2.pdb" > $null
+    & $7zcmd a -tzip -mx9 $outZip "$artifactsDir\openrct2.pdb" "$artifactsDir\openrct2.dll" > $null
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create zip." -ForegroundColor Red
