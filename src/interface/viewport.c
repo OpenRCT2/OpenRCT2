@@ -935,15 +935,8 @@ int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, si
 
 	ps->image_id = image_id;
 
-	rct_g1_element *g1Element;
 	uint32 image_element = image_id & 0x7FFFF;
-
-	if (image_element < SPR_G2_BEGIN) {
-		g1Element = &g1Elements[image_element];
-	}
-	else {
-		g1Element = &g2.elements[image_element - SPR_G2_BEGIN];
-	}
+	rct_g1_element *g1Element = gfx_get_g1_element(image_element);
 
 	rct_xyz16 coord_3d = {
 		.x = x_offset,
@@ -2671,12 +2664,283 @@ void store_interaction_info(paint_struct *ps)
 }
 
 /**
- *
- *  rct2: 0x00679074
+ * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
-void sub_679074(rct_drawpixelinfo *dpi, int imageId, int x, int y)
-{
-	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int)dpi, 0);
+static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, uint8 *esi) {
+	// Probably used to check for corruption
+	if (!(image->flags & G1_FLAG_BMP)) {
+		return false;
+	}
+
+	if (ebx & 0x20000000) {
+		uint8 *ebx_palette = RCT2_GLOBAL(0x009ABDA4, uint8*);
+
+		uint8 al = *esi;
+		uint8 al2 = *(al + ebx_palette);
+
+		return (al2 != 0);
+	}
+
+	if (ebx & 0x40000000) {
+		return false;
+	}
+
+	return (*esi != 0);
+}
+
+/**
+ * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
+ */
+static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, sint16 y_start_point, int round) {
+	const uint8 *ebx = esi + ((uint16 *) esi)[y_start_point];
+
+	uint8 last_data_line = 0;
+	while (!last_data_line) {
+		int no_pixels = *ebx++;
+		uint8 gap_size = *ebx++;
+
+		last_data_line = no_pixels & 0x80;
+
+		no_pixels &= 0x7F;
+
+		ebx += no_pixels;
+
+		if (round > 1) {
+			if (gap_size % 2) {
+				gap_size++;
+				no_pixels--;
+				if (no_pixels == 0) {
+					continue;
+				}
+			}
+		}
+
+		if (round == 4) {
+			if (gap_size % 4) {
+				gap_size += 2;
+				no_pixels -= 2;
+				if (no_pixels <= 0) {
+					continue;
+				}
+			}
+		}
+
+		int x_start = gap_size - x_start_point;
+		if (x_start <= 0) {
+			no_pixels += x_start;
+			if (no_pixels <= 0) {
+				continue;
+			}
+
+			x_start = 0;
+		} else {
+			// Do nothing?
+		}
+
+		x_start += no_pixels;
+		x_start--;
+		if (x_start > 0) {
+			no_pixels -= x_start;
+			if (no_pixels <= 0) {
+				continue;
+			}
+		}
+
+		if (ceil2(no_pixels, round) == 0) continue;
+
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * rct2: 0x00679074
+ *
+ * @param dpi (edi)
+ * @param imageId (ebx)
+ * @param x (cx)
+ * @param y (dx)
+ * @return value originally stored in 0x00141F569
+ */
+static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
+	rct_g1_element *image = gfx_get_g1_element(imageId & 0x7FFFF);
+
+	if (dpi->zoom_level != 0) {
+		if (image->flags & 0x20) {
+			return false;
+		}
+
+		if (image->flags & 0x10) {
+			// TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
+			rct_drawpixelinfo zoomed_dpi = {
+					.bits = dpi->bits,
+					.x = dpi->x >> 1,
+					.y = dpi->y >> 1,
+					.height = dpi->height,
+					.width = dpi->width,
+					.pitch = dpi->pitch,
+					.zoom_level = dpi->zoom_level - 1
+			};
+
+			return new_sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
+		}
+	}
+
+	int round = 1 << dpi->zoom_level;
+
+	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
+		y -= (round - 1);
+	}
+
+	y += image->y_offset;
+	sint16 yStartPoint = 0;
+	sint16 height = image->height;
+	if (dpi->zoom_level != 0) {
+		if (height % 2) {
+			height--;
+			yStartPoint++;
+		}
+
+		if (dpi->zoom_level == 2) {
+			if (height % 4) {
+				height -= 2;
+				yStartPoint += 2;
+			}
+		}
+
+		if (height == 0) {
+			return false;
+		}
+	}
+
+	y = floor2(y, round);
+	sint16 yEndPoint = height;
+	y -= dpi->y;
+	if (y < 0) {
+		yEndPoint += y;
+		if (yEndPoint <= 0) {
+			return false;
+		}
+
+		yStartPoint -= y;
+		y = 0;
+	}
+
+	y += yEndPoint;
+	y--;
+	if (y > 0) {
+		yEndPoint -= y;
+		if (yEndPoint <= 0) {
+			return false;
+		}
+	}
+
+	sint16 xStartPoint = 0;
+	sint16 xEndPoint = image->width;
+	if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
+		RCT2_GLOBAL(0x009ABDAE, sint16) = 0;
+	}
+
+	x += image->x_offset;
+	x = floor2(x, round);
+	x -= dpi->x;
+	if (x < 0) {
+		xEndPoint += x;
+		if (xEndPoint <= 0) {
+			return false;
+		}
+
+		if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
+			RCT2_GLOBAL(0x009ABDAE, sint16) -= x;
+		}
+
+		xStartPoint -= x;
+		x = 0;
+	}
+
+	x += xEndPoint;
+	x--;
+	if (x > 0) {
+		xEndPoint -= x;
+		if (xEndPoint <= 0) {
+			return false;
+		}
+
+		if (!(image->flags & G1_FLAG_RLE_COMPRESSION)) {
+			RCT2_GLOBAL(0x009ABDAE, sint16) += x;
+		}
+	}
+
+	if (image->flags & G1_FLAG_RLE_COMPRESSION) {
+		return sub_67933B_679788_679C4A_67A117(image->offset, xStartPoint, yStartPoint, round);
+	}
+
+	uint8 *offset = image->offset + (yStartPoint * image->width) + xStartPoint;
+	uint32 ebx = RCT2_GLOBAL(0x00EDF81C, uint32);
+
+	if (!(image->flags & 2)) {
+		return sub_679236_679662_679B0D_679FF1(ebx, image, offset);
+	}
+
+	// The code below is untested.
+	int total_no_pixels = image->width * image->height;
+	uint8 *source_pointer = image->offset;
+	uint8 *new_source_pointer_start = malloc(total_no_pixels);
+	uint8 *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
+	int ebx1, ecx;
+	while (total_no_pixels > 0) {
+		sint8 no_pixels = *source_pointer;
+		if (no_pixels >= 0) {
+			source_pointer++;
+			total_no_pixels -= no_pixels;
+			memcpy((char *) new_source_pointer, (char *) source_pointer, no_pixels);
+			new_source_pointer += no_pixels;
+			source_pointer += no_pixels;
+			continue;
+		}
+		ecx = no_pixels;
+		no_pixels &= 0x7;
+		ecx >>= 3;//SAR
+		int eax = ((int) no_pixels) << 8;
+		ecx = -ecx;//Odd
+		eax = (eax & 0xFF00) + *(source_pointer + 1);
+		total_no_pixels -= ecx;
+		source_pointer += 2;
+		ebx1 = (uint32) new_source_pointer - eax;
+		eax = (uint32) source_pointer;
+		source_pointer = (uint8 *) ebx1;
+		ebx1 = eax;
+		eax = 0;
+		memcpy((char *) new_source_pointer, (char *) source_pointer, ecx);
+		new_source_pointer += ecx;
+		source_pointer = (uint8 *) ebx1;
+	}
+
+	bool output = sub_679236_679662_679B0D_679FF1(ebx, image, new_source_pointer_start + (uint32) offset);
+	free(new_source_pointer_start);
+
+	return output;
+}
+
+static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
+	sint16 before_x = RCT2_GLOBAL(0x9ABDAE, sint16);
+	uint8 before_output = RCT2_GLOBAL(0x00141F569, uint8);
+
+	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
+	sint16 original_x = RCT2_GLOBAL(0x9ABDAE, sint16);
+	uint8 original_output = RCT2_GLOBAL(0x00141F569, uint8);
+
+	RCT2_GLOBAL(0x9ABDAE, sint16) = before_x;
+	RCT2_GLOBAL(0x00141F569, uint8) = before_output;
+
+	bool new_output = new_sub_679074(dpi, imageId, x, y);
+	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
+
+	assert(new_x == original_x);
+	assert(new_output == original_output);
+
+	return new_output;
 }
 
 /**
@@ -2698,7 +2962,7 @@ void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 	} else {
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
 	}
-	sub_679074(dpi, imageId, x, y);
+	RCT2_GLOBAL(0x00141F569, uint8) = sub_679074(dpi, imageId, x, y);
 }
 
 /**

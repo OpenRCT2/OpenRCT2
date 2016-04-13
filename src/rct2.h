@@ -86,6 +86,9 @@ typedef uint8 colour_t;
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y)		((x) & (~((y) - 1)))
 
+// Rounds an integer up to the given power of 2. y must be a power of 2.
+#define ceil2(x, y)			(((x) + (y) - 1) & (~((y) - 1)))
+
 
 #ifndef __cplusplus
 // in C++ you should be using Util::CountOf

@@ -375,12 +375,7 @@ void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, 
 	int image_element = image_id & 0x7FFFF;
 	int image_type = (image_id & 0xE0000000) >> 28;
 
-	rct_g1_element* g1_source;
-	if (image_element < SPR_G2_BEGIN) {
-		g1_source = &g1Elements[image_element];
-	} else {
-		g1_source = &g2.elements[image_element - SPR_G2_BEGIN];
-	}
+	rct_g1_element *g1_source = gfx_get_g1_element(image_element);
 
 	if ( dpi->zoom_level && (g1_source->flags & (1<<4)) ){
 		rct_drawpixelinfo zoomed_dpi = {
@@ -552,4 +547,12 @@ void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, 
 	gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
 	free(new_source_pointer_start);
 	return;
+}
+
+rct_g1_element *gfx_get_g1_element(int image_id) {
+	if (image_id < SPR_G2_BEGIN) {
+		return &g1Elements[image_id];
+	}
+
+	return &g2.elements[image_id - SPR_G2_BEGIN];
 }
