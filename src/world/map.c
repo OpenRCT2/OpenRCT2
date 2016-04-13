@@ -1682,7 +1682,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			int rideIndex = mapElement->properties.track.ride_index;
 			int maxHeight = get_ride_entry_by_ride(get_ride(rideIndex))->max_height;
 			if(maxHeight == 0)
-				maxHeight = RCT2_GLOBAL(0x97D218 + 8 * get_ride(rideIndex)->type, uint8);
+				maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
 			int zDelta = mapElement->clearance_height - height;
 			if(zDelta >= 0 && zDelta/2 > maxHeight)
 			{

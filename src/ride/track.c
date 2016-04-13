@@ -3438,7 +3438,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 		uint8 supportZ = (z + 32) >> 3;
 		if (supportZ > mapElement->base_height) {
 			uint8 supportHeight = (supportZ - mapElement->base_height) / 2;
-			uint8 maxSupportHeight = RCT2_GLOBAL(0x0097D218 + (RIDE_TYPE_MAZE * 8), uint8);
+			uint8 maxSupportHeight = RideData5[RIDE_TYPE_MAZE].max_height;
 			if (supportHeight > maxSupportHeight) {
 				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
 				return MONEY32_UNDEFINED;
@@ -3474,7 +3474,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	// Calculate price
 	money32 price = 0;
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2] * RCT2_GLOBAL(0x0099DBC8, money32);
+		price = RideTrackCosts[ride->type].track_price * RCT2_GLOBAL(0x0099DBC8, money32);
 		price = (price >> 17) * 10;
 	}
 
@@ -4570,11 +4570,11 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		int baseZ = (originZ + trackBlock->z) / 8;
 
 		int clearanceZ = trackBlock->var_07;
-		if (trackBlock->var_09 & (1 << 2) && RCT2_GLOBAL(0x0097D219 + (ride->type * 8), uint8) > 24){
+		if (trackBlock->var_09 & (1 << 2) && RideData5[ride->type].clearance_height > 24) {
 			clearanceZ += 24;
 		}
 		else{
-			clearanceZ += RCT2_GLOBAL(0x0097D219 + (ride->type * 8), uint8);
+			clearanceZ += RideData5[ride->type].clearance_height;
 		}
 
 		clearanceZ = (clearanceZ / 8) + baseZ;
@@ -4718,7 +4718,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			if (ride_height >= 0) {
 				int maxHeight = rideEntry->max_height;
 				if (maxHeight == 0) {
-					maxHeight = RCT2_GLOBAL(0x0097D218 + (ride->type * 8), uint8);
+					maxHeight = RideData5[ride->type].max_height;
 				}
 				ride_height /= 2;
 				if (ride_height > maxHeight && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
@@ -4733,7 +4733,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			support_height = 10;
 		}
 
-		cost += ((support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2]) * 5;
+		cost += ((support_height / 2) * RideTrackCosts[ride->type].support_price) * 5;
 
 		//6c56d3
 
@@ -4873,7 +4873,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 	}
 
-	money32 price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2];
+	money32 price = RideTrackCosts[ride->type].track_price;
 	price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ?
 		RCT2_ADDRESS(0x0099DE34, money32)[type] :
 		RCT2_ADDRESS(0x0099DA34, money32)[type];
@@ -5092,7 +5092,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 			support_height = 10;
 		}
 
-		cost += (support_height / 2) * RCT2_ADDRESS(0x0097DD7A, uint16)[ride->type * 2];
+		cost += (support_height / 2) * RideTrackCosts[ride->type].support_price;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
 			continue;
@@ -5153,7 +5153,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		}
 	}
 
-	money32 price = RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2];;
+	money32 price = RideTrackCosts[ride->type].track_price;
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
 		price *= RCT2_ADDRESS(0x0099DE34, money32)[type];
 	}
@@ -5264,7 +5264,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	if (heightDifference >= 0 && !gCheatsDisableSupportLimits) {
 		heightDifference = heightDifference >> 1;
 
-		if (heightDifference > RCT2_GLOBAL(0x0097D218 + (RIDE_TYPE_MAZE * 8), uint8)) {
+		if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
 			return MONEY32_UNDEFINED;
 		}
@@ -5293,7 +5293,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 
 		rct_ride *ride = get_ride(rideIndex);
 
-		money32 price = (((RCT2_ADDRESS(0x0097DD78, money16)[ride->type * 2] * RCT2_GLOBAL(0x0099DBC8, money32)) >> 16));
+		money32 price = (((RideTrackCosts[ride->type].track_price * RCT2_GLOBAL(0x0099DBC8, money32)) >> 16));
 		RCT2_GLOBAL(0x00F4413E, money32) = price / 2 * 10;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {

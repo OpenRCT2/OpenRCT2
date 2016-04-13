@@ -643,9 +643,9 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 		return;
 
 	int value =
-		(((ride->excitement * RCT2_GLOBAL(0x0097CD1E + (ride->type * 6), sint16)) * 32) >> 15) +
-		(((ride->intensity  * RCT2_GLOBAL(0x0097CD20 + (ride->type * 6), sint16)) * 32) >> 15) +
-		(((ride->nausea     * RCT2_GLOBAL(0x0097CD22 + (ride->type * 6), sint16)) * 32) >> 15);
+		(((ride->excitement * RideRatings[ride->type].excitement) * 32) >> 15) +
+		(((ride->intensity  * RideRatings[ride->type].intensity) * 32) >> 15) +
+		(((ride->nausea     * RideRatings[ride->type].nausea) * 32) >> 15);
 
 	int monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date;
 

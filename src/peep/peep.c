@@ -1902,7 +1902,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 		RCT2_GLOBAL(0xF1AECA, uint16) += 4;
 
 		if (xy_distance < RCT2_GLOBAL(0xF1AECA, uint16)){
-			z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+			z += RideData5[ride->type].z;
 		}
 
 		sprite_move(x, y, z, (rct_sprite*)peep);
@@ -2078,7 +2078,7 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
  *  rct2: 0x0069321D
  */
 static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint16 y, sint16 z, uint8 exit_direction){
-	z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+	z += RideData5[ride->type].z;
 
 	sprite_move(x, y, z, (rct_sprite*)peep);
 	invalidate_sprite_2((rct_sprite*)peep);
@@ -2537,7 +2537,7 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 	sint16 exit_y = y + vehicle_type->peep_loading_positions[(peep->var_37 + 1) * 2 + 2];
 
 	z *= 8;
-	z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+	z += RideData5[ride->type].z;
 
 	if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
 		z += 15;
@@ -2627,7 +2627,7 @@ static void peep_update_ride_sub_state_9(rct_peep* peep){
 		if (xy_distance >= 16){
 			sint16 z = ride->station_heights[peep->current_ride_station] * 8;
 
-			z += RCT2_ADDRESS(0x97D21C, uint8)[ride->type * 8];
+			z += RideData5[ride->type].z;
 			sprite_move(x, y, z, (rct_sprite*)peep);
 			invalidate_sprite_2((rct_sprite*)peep);
 			return;
@@ -4005,7 +4005,7 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep *peep, rct_r
 	uint16 z = ride->station_heights[peep->current_ride_station] * 8;
 
 	if (xy_distance >= 16) {
-		z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+		z += RideData5[ride->type].z;
 	}
 
 	sprite_move(x, y, z, (rct_sprite *) peep);
@@ -5062,7 +5062,7 @@ static void peep_update_heading_to_inspect(rct_peep* peep){
 	int z = ride->station_heights[peep->current_ride_station] * 8;
 
 	if (delta_y < 20){
-		z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+		z += RideData5[ride->type].z;
 	}
 
 	sprite_move(x, y, z, (rct_sprite*)peep);
@@ -5175,7 +5175,7 @@ static void peep_update_answering(rct_peep* peep){
 	int z = ride->station_heights[peep->current_ride_station] * 8;
 
 	if (delta_y < 20){
-		z += RCT2_ADDRESS(0x0097D21C, uint8)[ride->type * 8];
+		z += RideData5[ride->type].z;
 	}
 
 	sprite_move(x, y, z, (rct_sprite*)peep);

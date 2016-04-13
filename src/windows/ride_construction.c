@@ -2328,7 +2328,7 @@ static void sub_6CBCE2(
 		x = originX + offsetX;
 		y = originY + offsetY;
 		baseZ = (originZ + trackBlock->z) >> 3;
-		clearanceZ = ((trackBlock->var_07 + RCT2_GLOBAL(0x0097D219 + (ride->type * 8), uint8)) >> 3) + baseZ + 4;
+		clearanceZ = ((trackBlock->var_07 + RideData5[ride->type].clearance_height) >> 3) + baseZ + 4;
 
 		int tileX = x >> 5;
 		int tileY = y >> 5;

@@ -48,11 +48,29 @@ typedef struct {
 } rct_shop_item_string_types;
 
 typedef struct {
+	uint8 price;
+	uint8 price_secondary;
 	uint16 flags;
 	uint8 default_music;
 	uint8 var_3;
-	uint8 pad[4];
+	uint8 pad[2];
 } rct_ride_data_4;
+
+typedef struct {
+	uint16 track_price;
+	uint16 support_price;
+} ride_cost;
+
+typedef struct {
+	uint8 max_height;
+	uint8 clearance_height;
+	sint8 z_offset;
+	uint8 max_friction;
+	uint8 z;
+	uint8 price;
+	uint8 bonus_value;		// Deprecated. Use rideBonusValue instead
+	uint8 pad;
+} rct_ride_data_5;
 
 typedef struct {
 	uint8 sound_id;
@@ -97,6 +115,8 @@ extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_
 extern const rct_ride_lift_data RideLiftData[91];
 
 extern const rct_ride_data_4 RideData4[91];
+extern const ride_cost RideTrackCosts[91];
+extern const rct_ride_data_5 RideData5[91];
 
 extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
@@ -106,5 +126,7 @@ extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16 RideFilmLength[3];
 extern const uint16 RideCrookedHouseLength[1];
+
+extern const rating_tuple RideRatings[91];
 
 #endif
