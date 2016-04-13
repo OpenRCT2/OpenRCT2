@@ -2979,7 +2979,7 @@ vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 	vehicle_colour result;
 
 	//Prevent indexing array out of bounds
-	if(vehicleIndex > 31) {
+	if (vehicleIndex > 31) {
 		vehicleIndex=31;
 	}
 
