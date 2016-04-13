@@ -4,7 +4,7 @@
 #include "common.h"
 
 #define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"0.0.4"
+#define OPENRCT2_VERSION			"0.0.5"
 #define OPENRCT2_ARCHITECTURE		"x86"
 
 // Platform

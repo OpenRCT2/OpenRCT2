@@ -21,7 +21,7 @@ $server = "AppVeyor"
 ${env:APPVEYOR_REPO_COMMIT_SHORT} = (${env:APPVEYOR_REPO_COMMIT}).Substring(0, 7)
 
 # Current version
-$version = "0.0.4.0"
+$version = "0.0.5.0"
 
 # Tagged builds will hide branch and commit SHA1
 $tag = $null
