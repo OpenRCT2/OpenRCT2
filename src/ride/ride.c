@@ -2949,7 +2949,7 @@ vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 
 	//Prevent indexing array out of bounds
 	if (vehicleIndex > 31) {
-		vehicleIndex=31;
+		vehicleIndex = 31;
 	}
 
 	result.main = ride->vehicle_colours[vehicleIndex].body_colour;
@@ -4551,7 +4551,7 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int vehicleIn
 
 	train_ref train = { NULL, NULL };
 	for (int carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++) {
-		rct_vehicle *car = vehicle_create_car(rideIndex, ride_entry_get_vehicle_at_position(ride->subtype,ride->num_cars_per_train,carIndex), carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
+		rct_vehicle *car = vehicle_create_car(rideIndex, ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex), carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
 		if (carIndex == 0) {
 			train.head = car;
 		} else {
@@ -7300,8 +7300,8 @@ static void ride_update_vehicle_colours(int rideIndex)
 				coloursExtended = ride->vehicle_colours_extended[i];
 				break;
 			case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-				colours = ride->vehicle_colours[carIndex>31?31:carIndex];
-				coloursExtended = ride->vehicle_colours_extended[carIndex>31?31:carIndex];
+				colours = ride->vehicle_colours[carIndex > 31 ? 31 : carIndex];
+				coloursExtended = ride->vehicle_colours_extended[carIndex > 31 ? 31 : carIndex];
 				break;
 			}
 
