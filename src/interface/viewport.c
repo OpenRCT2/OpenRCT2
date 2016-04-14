@@ -1329,16 +1329,12 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 	// Each entrance is split into 2 images for drawing
 	// Certain entrance styles have another 2 images to draw for coloured windows
 
-	uint16 word_9DEA52 = 2;
-	uint16 word_9DEA54 = 2;
-	uint16 word_9DEA56 = height;
-
 	sint8 ah = is_exit ? 0x23 : 0x33;
 
 	sint16 lengthY = (direction & 1) ? 28 : 2;
 	sint16 lengthX = (direction & 1) ? 2 : 28;
 
-	sub_98197C(image_id, 0, 0, lengthX, lengthY, ah, height, get_current_rotation(), word_9DEA52, word_9DEA54, word_9DEA56);
+	sub_98197C(image_id, 0, 0, lengthX, lengthY, ah, height, get_current_rotation(), 2, 2, height);
 
 	if (transparant_image_id){
 		if (is_exit){
@@ -1353,11 +1349,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 
 	image_id += 4;
 
-	word_9DEA52 = (direction & 1) ? 28 : 2;
-	word_9DEA54 = (direction & 1) ? 2 : 28;
-	word_9DEA56 = height;
-
-	sub_98197C(image_id, 0, 0, lengthX, lengthY, ah, height, get_current_rotation(), word_9DEA52, word_9DEA54, word_9DEA56);
+	sub_98197C(image_id, 0, 0, lengthX, lengthY, ah, height, get_current_rotation(), (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height);
 
 	if (transparant_image_id){
 		transparant_image_id += 4;

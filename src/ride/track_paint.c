@@ -608,10 +608,7 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 
 	image_id = 22135 | RCT2_GLOBAL(0x00F44198, uint32);
 
-	uint16 word_9DEA52 = 0;
-	uint16 word_9DEA54 = 0;
-	uint16 word_9DEA56 = height;
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation(), word_9DEA52, word_9DEA54, word_9DEA56);
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation(), 0, 0, height);
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -635,11 +632,8 @@ static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 di
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 
 		image_id = 22140 | RCT2_GLOBAL(0x00F441A0, uint32);
-		word_9DEA52 = 30;
-		word_9DEA54 = 2;
-		word_9DEA56 = height + 2;
 
-		sub_98197C(image_id, 0, 0, 1, 32, 7, height, get_current_rotation(), word_9DEA52, word_9DEA54, word_9DEA56);
+		sub_98197C(image_id, 0, 0, 1, 32, 7, height, get_current_rotation(), 30, 2, height + 2);
 	}
 
 	top_spin_paint_vehicle(-32, 32, rideIndex, direction, height, mapElement);
