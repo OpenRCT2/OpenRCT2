@@ -132,7 +132,7 @@ void sub_688485();
 void sub_688217();
 
 int sub_98196C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
-int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
+int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation, sint16 s_unk_x, sint16 s_unk_y, sint16 word_56);
 int sub_98198C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation, uint16 word_52, uint16 word_54, uint16 word_56);
 int sub_98199C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation, uint16 word_52, uint16 word_54, uint16 word_56);
 

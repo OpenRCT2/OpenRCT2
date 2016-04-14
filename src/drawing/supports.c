@@ -200,16 +200,9 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		} else {
 			imageId += word_97B3C4[slope & 0x1F];
 			imageId |= imageColourFlags;
+			sub_98197C(imageId, 0, 0, 32, 32, 11, z, rotation, 0, 0, z + 2);
 
-			RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
-			sub_98197C(imageId, 0, 0, 32, 32, 11, z, rotation);
-
-			RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA56, uint16) = z + 16 + 2;
-			sub_98197C(imageId + 4, 0, 0, 32, 32, 11, z + 16, rotation);
+			sub_98197C(imageId + 4, 0, 0, 32, 32, 11, z + 16, rotation, 0, 0, z + 16 + 2);
 
 			hasSupports = true;
 		}
@@ -231,9 +224,10 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 			imageId += word_97B3C4[slope & 0x1F];
 			imageId |= imageColourFlags;
 
-			RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
+			uint16 word_9DEA52 = 0;
+			uint16 word_9DEA54 = 0;
+			uint16 word_9DEA56 = z + 2;
+			// Todo: check whether this function call is correct
 			sub_98196C(imageId, 0, 0, 32, 32, 11, z, rotation);
 			hasSupports = true;
 		}
@@ -277,18 +271,18 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 			imageId += special;
 			imageId |= imageColourFlags;
 
-			RCT2_GLOBAL(0x009DEA52, uint16) = byte_97B23C[special].var_0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = byte_97B23C[special].var_1;
-			RCT2_GLOBAL(0x009DEA56, uint16) = byte_97B23C[special].var_2 + z;
+			uint16 word_9DEA52 = byte_97B23C[special].var_0;
+			uint16 word_9DEA54 = byte_97B23C[special].var_1;
+			uint16 word_9DEA56 = byte_97B23C[special].var_2 + z;
 			uint16 lengthY = byte_97B23C[special].var_3;
 			uint16 lengthX = byte_97B23C[special].var_4;
 			uint8 ah = byte_97B23C[special].var_5;
 			if (byte_97B23C[special].var_6 == 0 || RCT2_GLOBAL(0x009DEA58, uint32) == 0) {
-				sub_98197C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation);
+				sub_98197C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation, word_9DEA52, word_9DEA54, word_9DEA56);
 				hasSupports = true;
 			} else {
 				hasSupports = true;
-				if (!sub_98198C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation, byte_97B23C[special].var_0, byte_97B23C[special].var_1, byte_97B23C[special].var_2 + z)) {
+				if (!sub_98198C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation, word_9DEA52, word_9DEA54, word_9DEA56)) {
 					int edi = RCT2_GLOBAL(0x009DEA58, uint32);
 					RCT2_GLOBAL(edi + 0x20, uint32) = imageColourFlags;
 				}
