@@ -2007,7 +2007,7 @@ STR_1998    :Canette vide
 STR_1999    :Déchet
 STR_2000    :Boite à Burger vide
 STR_2001    :Pizza
-STR_2002    :Coupon
+STR_2002    :Bon
 STR_2003    :Popcorn
 STR_2004    :Hot-Dog
 STR_2005    :Poulpe
@@ -2035,7 +2035,7 @@ STR_2026    :Canettes vides
 STR_2027    :Déchets
 STR_2028    :Boites à Burger vides
 STR_2029    :Pizzas
-STR_2030    :Coupons
+STR_2030    :Bons
 STR_2031    :Popcorn
 STR_2032    :Hot-Dogs
 STR_2033    :Poulpe
@@ -2063,7 +2063,7 @@ STR_2054    :une canette vide
 STR_2055    :un déchet
 STR_2056    :une boîte à hamurger vide
 STR_2057    :une pizza
-STR_2058    :un coupon
+STR_2058    :un bon
 STR_2059    :du popcorn
 STR_2060    :un hot-Dog
 STR_2061    :du poulpe
@@ -2091,7 +2091,7 @@ STR_2082    :Canette vide
 STR_2083    :Déchet
 STR_2084    :Boite à Burger vide
 STR_2085    :Pizza
-STR_2086    :Coupon pour {STRINGID}
+STR_2086    :Bon pour {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Hot-Dog
 STR_2089    :Poulpe
@@ -2423,22 +2423,22 @@ STR_2414    :(Non sélectionné)
 STR_2415    :{WINDOW_COLOUR_2}Attraction :
 STR_2416    :{WINDOW_COLOUR_2}Article :
 STR_2417    :{WINDOW_COLOUR_2}Duréee :
-STR_2418    :Entrée gratuite pour {STRINGID}
-STR_2419    :Tour gratuit sur {STRINGID}
-STR_2420    :Entrée demi-tarif pour {STRINGID}
-STR_2421    :Gratuit {STRINGID}
+STR_2418    :entrée gratuite pour {STRINGID}
+STR_2419    :tour gratuit sur {STRINGID}
+STR_2420    :entrée demi-tarif pour {STRINGID}
+STR_2421    :{STRINGID}
 STR_2422    :Campagne publicitaire pour {STRINGID}
 STR_2423    :Campagne publicitaire pour {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Bons pour une entrée gratuite
 STR_2425    :{WINDOW_COLOUR_2}Bons pour une attraction gratuite
 STR_2426    :{WINDOW_COLOUR_2}Bons pour une entrée demi-tarif
-STR_2427    :{WINDOW_COLOUR_2}Bons pour nourriture/boisson gratuites
+STR_2427    :{WINDOW_COLOUR_2}Bons pour nourriture/boisson gratuite
 STR_2428    :{WINDOW_COLOUR_2}Campagne publicitaire pour le parc
 STR_2429    :{WINDOW_COLOUR_2}Campagne publicitaire pour une attraction
 STR_2430    :{BLACK}Bons pour entrée gratuite à {STRINGID}
 STR_2431    :{BLACK}Bons pour tour gratuit sur {STRINGID}
 STR_2432    :{BLACK}Bons pour entrée demi-tarif à {STRINGID}
-STR_2433    :{BLACK}Bons gratuits pour {STRINGID}
+STR_2433    :{BLACK}Bons pour {STRINGID}
 STR_2434    :{BLACK}Campagne publicitaire pour {STRINGID}
 STR_2435    :{BLACK}Campagne publicitaire {STRINGID}
 STR_2436    :1 semaine
@@ -4137,9 +4137,9 @@ STR_PARK    :Jardins Verdoyants
 STR_DTLS    :Transformez les magnifiques Jardins Verdoyants en un parc à thème florissant.
 
 <Bumbly Beach>
-STR_SCNR    :Plage Bourdon
-STR_PARK    :Plage Bourdon
-STR_DTLS    :Transformez le petit parc d'attractions de Plage Bourdon en un parc à thème florissant.
+STR_SCNR    :Plage Bourdonnante
+STR_PARK    :Plage Bourdonnante
+STR_DTLS    :Transformez le petit parc d'attractions de Plage Bourdonnante en un parc à thème florissant.
 
 <Trinity Islands>
 STR_SCNR    :Îles Trinité
