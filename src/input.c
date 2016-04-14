@@ -535,7 +535,13 @@ static void input_viewport_drag_continue()
 	dx = newDragX - gInputDragLastX;
 	dy = newDragY - gInputDragLastY;
 	w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
-	assert(w != NULL);
+
+	// #3294: Window can be closed during a drag session, so just finish
+	//        the session if the window no longer exists
+	if (w == NULL) {
+		input_viewport_drag_end();
+		return;
+	}
 
 	viewport = w->viewport;
 	_ticksSinceDragStart += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16);
