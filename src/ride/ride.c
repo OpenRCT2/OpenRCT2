@@ -6544,32 +6544,32 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 			}
 		}
 		ride = get_ride(0);
-		rideEntry = get_ride_entry(ride->subtype);
-		uint8 count = 0;
-		while (count < 0xFF) {
-			if (ride->type != 0xFF) {
-				if (ride->type != RIDE_TYPE_TOILETS || shop_item != 0x1F) {
-					if (rideEntry->shop_item == shop_item) {
-						ride->price = price;
-						window_invalidate_by_number(WC_RIDE, count);
-					}
-				}
-				else {
-					ride->price = price;
-					window_invalidate_by_number(WC_RIDE, count);
-				}
-				// If the shop item is the same or an on-ride photo
-				if (rideEntry->shop_item_secondary == shop_item ||
-					(rideEntry->shop_item_secondary == 0xFF &&
-					(shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22))) {
 
-					ride->price_secondary = price;
-					window_invalidate_by_number(WC_RIDE, count);
+		for (uint8 rideId = 0; rideId < 0xFF; rideId++, ride++) {
+			// Unplaced rides have a type of NULL
+			if (ride->type == RIDE_TYPE_NULL)
+				continue; 			
+
+			rideEntry = get_ride_entry(ride->subtype);
+
+			if (ride->type != RIDE_TYPE_TOILETS || shop_item != 0x1F) {
+				if (rideEntry->shop_item == shop_item) {
+					ride->price = price;
+					window_invalidate_by_number(WC_RIDE, rideId);
 				}
 			}
-			count++;
-			ride++;
-			rideEntry = get_ride_entry(ride->subtype);
+			else {
+				ride->price = price;
+				window_invalidate_by_number(WC_RIDE, rideId);
+			}
+			// If the shop item is the same or an on-ride photo
+			if (rideEntry->shop_item_secondary == shop_item ||
+				(rideEntry->shop_item_secondary == 0xFF &&
+				(shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22))) {
+
+				ride->price_secondary = price;
+				window_invalidate_by_number(WC_RIDE, rideId);
+			}
 		}
 	}
 }
