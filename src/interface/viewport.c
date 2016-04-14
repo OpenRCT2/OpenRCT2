@@ -868,9 +868,16 @@ void sub_688485(){
  * @param z_offset (ah)
  * @param height (edx)
  * @param rotation
+ * @param word_52 (0x009DEA52)
+ * @param word_54 (0x009DEA54)
+ * @param word_56 (0x009DEA56)
  * @return ??
  */
-int sub_98199C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation) {
+int sub_98199C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation, uint16 word_52, uint16 word_54, uint16 word_56) {
+	RCT2_GLOBAL(0x009DEA52, uint16) = word_52;
+	RCT2_GLOBAL(0x009DEA54, uint16) = word_54;
+	RCT2_GLOBAL(0x009DEA56, uint16) = word_56;
+
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[get_current_rotation()],
 		x_offset | (z_offset << 8),
 		image_id,
@@ -1511,11 +1518,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 		if (entrance->scrolling_mode == 0xFF)
 			break;
 
-		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + entrance->text_height;
-
-		sub_98199C(scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 0);
+		sub_98199C(scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 0, 2, 2, height + entrance->text_height);
 		break;
 	case 1:
 	case 2:
