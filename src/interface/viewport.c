@@ -1353,7 +1353,6 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 
 	if (transparant_image_id){
 		transparant_image_id += 4;
-
 		sub_98199C(transparant_image_id, 0, 0, lengthX, lengthY, ah, height, 0, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height);
 	}
 
