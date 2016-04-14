@@ -288,7 +288,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 				hasSupports = true;
 			} else {
 				hasSupports = true;
-				if (!sub_98198C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation)) {
+				if (!sub_98198C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation, byte_97B23C[special].var_0, byte_97B23C[special].var_1, byte_97B23C[special].var_2 + z)) {
 					int edi = RCT2_GLOBAL(0x009DEA58, uint32);
 					RCT2_GLOBAL(edi + 0x20, uint32) = imageColourFlags;
 				}

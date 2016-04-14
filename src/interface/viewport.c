@@ -1089,10 +1089,17 @@ int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, si
  * @param z_offset (ah)
  * @param height (edx)
  * @param rotation
+ * @param word_52 (0x009DEA52)
+ * @param word_54 (0x009DEA54)
+ * @param word_56 (0x009DEA56)
  * @return ??
  */
-int sub_98198C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation)
+int sub_98198C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation, uint16 word_52, uint16 word_54, uint16 word_56)
 {
+	RCT2_GLOBAL(0x009DEA52, uint16) = word_52;
+	RCT2_GLOBAL(0x009DEA54, uint16) = word_54;
+	RCT2_GLOBAL(0x009DEA56, uint16) = word_56;
+
 	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[get_current_rotation()],
 		x_offset | (z_offset << 8),
 		image_id, 
