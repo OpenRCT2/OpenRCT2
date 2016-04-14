@@ -88,8 +88,10 @@ typedef struct {
 	};
 } viewport_interaction_info;
 
+#define MAX_VIEWPORT_COUNT MAX_WINDOW_COUNT
+
 // rct2: 0x014234BC
-extern rct_viewport* g_viewport_list;
+extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 
 void viewport_init_all();
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);

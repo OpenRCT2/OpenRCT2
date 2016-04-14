@@ -139,7 +139,7 @@ void game_handle_input()
 	}
 
 	if (RCT2_GLOBAL(0x009ABDF2, uint8) != 0) {
-		for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
+		for (w = g_window_list; w < gWindowNextSlot; w++)
 			window_event_unknown_07_call(w);
 
 		sub_6EA73F();
@@ -166,7 +166,7 @@ void game_handle_input()
 		}
 	}
 
-	for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++)
+	for (w = g_window_list; w < gWindowNextSlot; w++)
 		window_event_unknown_08_call(w);
 }
 

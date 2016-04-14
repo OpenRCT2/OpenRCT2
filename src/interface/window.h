@@ -503,8 +503,13 @@ extern modal_callback gLoadSaveCallback;
 
 typedef void (*close_callback)();
 
+#define MAX_WINDOW_COUNT 64
+
 // rct2: 0x01420078
-extern rct_window* g_window_list;
+extern rct_window g_window_list[MAX_WINDOW_COUNT];
+
+extern rct_window * gWindowFirst;
+extern rct_window * gWindowNextSlot;
 
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;

@@ -144,10 +144,10 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 
 	uint8 rotation = get_current_rotation();
 	rct_xy16 pos2 = coordinate_3d_to_2d(location, rotation);
-	rct_window *window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+	rct_window *window = gWindowNextSlot;
 	while (true) {
 		window--;
-		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
+		if (window < g_window_list)
 			break;
 
 		rct_viewport *viewport = window->viewport;

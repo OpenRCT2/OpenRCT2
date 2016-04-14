@@ -380,7 +380,7 @@ void scenario_end()
 	rct_window* w;
 	window_close_by_class(WC_DROPDOWN);
 
-	for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
+	for (w = g_window_list; w < gWindowNextSlot; w++){
 		if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
 			window_close(w);
 	}

@@ -71,7 +71,7 @@ static void call_draw_rain_func(rct_window* w, short left, short right, short to
  */
 static void draw_rain_window(rct_window* original_w, short left, short right, short top, short bottom, uint32 draw_rain_func)
 {
-	rct_window* newWindow = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
+	rct_window* newWindow = gWindowNextSlot;
 
 	rct_window* w = original_w + 1; // Start from second window
 	for (; ; w++) {
@@ -139,7 +139,7 @@ static void draw_rain_animation(uint32 draw_rain_func)
 	short top = screenDPI->y;
 	short bottom = top + screenDPI->height;
 
-	rct_window* newWindow = (RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*));
+	rct_window* newWindow = gWindowNextSlot;
 
 	for (rct_window* w = g_window_list; w < newWindow; w++) {
 		draw_rain_window(w, left, right, top, bottom, draw_rain_func);
