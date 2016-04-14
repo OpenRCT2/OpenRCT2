@@ -50,7 +50,15 @@ function Do-PrepareSource()
     $defines["OPENRCT2_BUILD_SERVER"] = $Server;
     if ($GitTag -ne "")
     {
-        $defines["OPENRCT2_BRANCH"]            = $GitTag;
+        # Hide tag if it is a version
+        if ($GitTag -match "^v[0-9]")
+        {
+            $defines["OPENRCT2_BRANCH"]        = "";
+        }
+        else
+        {
+            $defines["OPENRCT2_BRANCH"]        = $GitTag;
+        }
     }
     else
     {
@@ -192,11 +200,15 @@ function Do-Installer()
     $VersionExtra = ""
     if ($GitTag -ne "")
     {
-        $VersionExtra = "$GitTag"
+        # Hide tag if it is a version
+        if ($GitTag -notmatch "^v[0-9]")
+        {
+            $VersionExtra = "-$GitTag";
+        }
     }
     else
     {
-        $VersionExtra = "$GitBranch-$GitCommitSha1Short"
+        $VersionExtra = "-$GitBranch-$GitCommitSha1Short"
     }
 
     # Create installer

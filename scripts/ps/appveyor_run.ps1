@@ -43,16 +43,20 @@ $installer  = $false
 $symbols    = $false
 if (${env:OPENRCT2.ORG_TOKEN} -ne $null)
 {
-    $pushBuilds = $true
     $installer  = $true
     $symbols    = $true
+
+    if ($tag -ne $null -or $env:APPVEYOR_REPO_BRANCH -match "^develop$|^push/")
+    {
+        $pushBuilds = $true
+    }
 }
 
 # Write out summary of the build
 Write-Host "AppVeyor CI Build" -ForegroundColor Green
 if ($tag -ne $null)
 {
-    Write-Host "  $version-$tag" -ForegroundColor Green
+    Write-Host "  $version ($tag)" -ForegroundColor Green
 }
 else
 {
@@ -117,7 +121,11 @@ if ($pushBuilds)
     $versionExtension = ""
     if ($tag -ne $null)
     {
-        $versionExtension = "-$tag"
+        # Hide tag if it is a version
+        if ($GitTag -notmatch "^v[0-9]")
+        {
+            $versionExtension = "-$tag"
+        }
     }
     else
     {
