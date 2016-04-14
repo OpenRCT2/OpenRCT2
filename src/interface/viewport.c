@@ -1093,7 +1093,7 @@ int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, si
  */
 int sub_98198C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation)
 {
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[get_current_rotation()],
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[get_current_rotation()],
 		x_offset | (z_offset << 8),
 		image_id, 
 		y_offset,
