@@ -2819,7 +2819,7 @@ static void window_ride_mode_tweak_increase(rct_window *w)
 
 	uint8 increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 	uint8 newValue = ride->operation_option + increment;
-	if (newValue < maxValue) {
+	if (newValue <= maxValue) {
 		window_ride_mode_tweak_set(w, newValue);
 	}
 }
