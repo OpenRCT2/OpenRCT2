@@ -353,7 +353,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	}
 
 	// Force ride construction to recheck area
-	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+	_currentTrackSelectionFlags |= 8;
 
 	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 		rct_xyz16 coord;

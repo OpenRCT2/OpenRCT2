@@ -1664,7 +1664,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				(((track->flags >> 4) & 0x3) << 24) |
 				(temp_z & 0xFFFF);
 
-			int edx = RCT2_GLOBAL(0x00F440A7, uint8) | (track_type << 8);
+			int edx = _currentRideIndex | (track_type << 8);
 
 			if (track->flags & 0x80)edx |= 0x10000;
 			if (track->flags & 0x40)edx |= 0x20000;
@@ -1913,8 +1913,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	}
 
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
-		sub_6CB945(RCT2_GLOBAL(0x00F440A7, uint8));
-		rct_ride* ride = get_ride(RCT2_GLOBAL(0x00F440A7, uint8));
+		sub_6CB945(_currentRideIndex);
+		rct_ride* ride = get_ride(_currentRideIndex);
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
 	}
@@ -1944,7 +1944,7 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) != 0){
 		RCT2_GLOBAL(0x00F4414E, uint8) |= 0x80;
 	}
-	RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+	_currentRideIndex = rideIndex;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;

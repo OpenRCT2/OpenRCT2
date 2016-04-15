@@ -1908,7 +1908,7 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 	}
 
 	// Force ride construction to recheck area
-	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+	_currentTrackSelectionFlags |= 8;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
@@ -1981,7 +1981,7 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 	}
 
 	// Force ride construction to recheck area
-	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+	_currentTrackSelectionFlags |= 8;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
@@ -2066,7 +2066,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 	}
 
 	// Force ride construction to recheck area
-	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+	_currentTrackSelectionFlags |= 8;
 
 	return cost;
 }
@@ -2142,7 +2142,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 	}
 
 	// Force ride construction to recheck area
-	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+	_currentTrackSelectionFlags |= 8;
 
 	return cost;
 }
@@ -3749,7 +3749,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	}
 
 	// Force ride construction to recheck area
-	RCT2_GLOBAL(0x00F440B0, uint8) |= 8;
+	_currentTrackSelectionFlags |= 8;
 
 	*ebx = (scenery_entry->large_scenery.price * 10) + RCT2_GLOBAL(0x00F4389A, money32);
 	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){

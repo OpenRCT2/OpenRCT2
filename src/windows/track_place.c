@@ -544,7 +544,7 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 			window_close_by_class(WC_ERROR);
 			audio_play_sound_at_location(SOUND_PLACE_ITEM, mapX, mapY, mapZ);
 
-			RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+			_currentRideIndex = rideIndex;
 			if (RCT2_GLOBAL(0x00F4414E, uint8) & 1) {
 				window_ride_main_open(rideIndex);
 				window_close(w);
