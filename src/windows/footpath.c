@@ -767,7 +767,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 	selectedType = (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) << 7) + RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint8);
 
 	// Try and place path
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_BUILD_FOOTPATH_HERE;
+	gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
 	cost = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY);
 
 	if (cost == MONEY32_UNDEFINED) {
@@ -841,7 +841,7 @@ static void window_footpath_construct()
 	footpath_get_next_path_info(&type, &x, &y, &z, &slope);
 
 	// Try to place the path at the desired location
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x498;
+	gGameCommandErrorTitle = 0x498;
 	money32 cost = footpath_place(type, x, y, z, slope, 0);
 
 	if (cost != MONEY32_UNDEFINED) {
@@ -856,7 +856,7 @@ static void window_footpath_construct()
 	}
 
 	// Actually place the path now
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x498;
+	gGameCommandErrorTitle = 0x498;
 	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY);
 
 	if (cost != MONEY32_UNDEFINED) {
@@ -922,7 +922,7 @@ static void footpath_remove_map_element(rct_map_element *mapElement)
 	}
 
 	// Remove path
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
+	gGameCommandErrorTitle = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
 	footpath_remove(
 		RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),
 		RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16),

@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../config.h"
+#include "../game.h"
 #include "../editor.h"
 #include "../input.h"
 #include "../scenario.h"
@@ -226,7 +227,7 @@ bool window_editor_bottom_toolbar_check_object_selection()
 		return true;
 	}
 
-	window_error_open(STR_INVALID_SELECTION_OF_OBJECTS, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+	window_error_open(STR_INVALID_SELECTION_OF_OBJECTS, gGameCommandErrorText);
 	w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
 	if (w != NULL) {
 		// Click tab with missing object
@@ -290,7 +291,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 		window_editor_inventions_list_open();
 		g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
 	} else {
-		window_error_open(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
+		window_error_open(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText);
 	}
 
 	gfx_invalidate_screen();
@@ -327,7 +328,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	if (!scenario_prepare_for_save()) {
-		window_error_open(STR_UNABLE_TO_SAVE_SCENARIO_FILE, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+		window_error_open(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText);
 		gfx_invalidate_screen();
 		return;
 	}

@@ -19,13 +19,14 @@
  *****************************************************************************/
 
 #include "../addresses.h"
-#include "localisation.h"
+#include "../game.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
+#include "localisation.h"
 
 utf8 *gUserStrings = (char*)0x0135A8F4;
 
-static bool user_string_exists(const char *text);
+static bool user_string_exists(const utf8 *text);
 
 /**
  *
@@ -46,7 +47,7 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
 	bool allowDuplicates = base & 0x80;
 
 	if (!allowDuplicates && user_string_exists(text)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CHOSEN_NAME_IN_USE_ALREADY;
+		gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
 		return 0;
 	}
 
@@ -58,7 +59,7 @@ rct_string_id user_string_allocate(int base, const utf8 *text)
 		safe_strcpy(userString, text, USER_STRING_MAX_LENGTH);
 		return 0x8000 + (i | highBits);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_NAMES_DEFINED;
+	gGameCommandErrorText = STR_TOO_MANY_NAMES_DEFINED;
 	return 0;
 }
 

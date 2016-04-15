@@ -56,7 +56,7 @@ int create_new_banner(uint8 flags)
 	}
 
 	if (banner_index == MAX_BANNERS){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_BANNERS_IN_GAME;
+		gGameCommandErrorText = STR_TOO_MANY_BANNERS_IN_GAME;
 		return BANNER_NULL;
 	}
 

@@ -93,7 +93,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 	if (RCT2_GLOBAL(0x13573C8, uint16) < 0x190) {
 		*ebx = MONEY32_UNDEFINED;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_PEOPLE_IN_GAME;
+		gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
 		return;
 	}
 
@@ -105,7 +105,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 	if (i == STAFF_MAX_COUNT) {
 		*ebx = MONEY32_UNDEFINED;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_STAFF_IN_GAME;
+		gGameCommandErrorText = STR_TOO_MANY_STAFF_IN_GAME;
 		return;
 	}
 
@@ -120,7 +120,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 	if (newPeep == NULL)
 	{
 		*ebx = MONEY32_UNDEFINED;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TOO_MANY_PEOPLE_IN_GAME;
+		gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
 		return;
 	}
 
@@ -420,7 +420,7 @@ void update_staff_colour(uint8 staffType, uint16 colour)
  */
 uint16 hire_new_staff_member(uint8 staffType)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_HIRE_NEW_STAFF;
+	gGameCommandErrorTitle = STR_CANT_HIRE_NEW_STAFF;
 
 	int eax, ebx, ecx, edx, esi, edi, ebp;
 	ecx = edx = esi = edi = ebp = 0;

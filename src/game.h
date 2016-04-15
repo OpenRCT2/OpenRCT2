@@ -117,6 +117,9 @@ int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(int index);
 extern int game_command_playerid;
 
+extern rct_string_id gGameCommandErrorTitle;
+extern rct_string_id gGameCommandErrorText;
+
 extern GAME_COMMAND_POINTER* new_game_command_table[66];
 
 extern int gGameSpeed;

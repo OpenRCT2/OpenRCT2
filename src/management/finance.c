@@ -301,13 +301,13 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_INTEREST * 4;
 	if (newLoan > currentLoan) {
 		if (newLoan > RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BANK_REFUSES_TO_INCREASE_LOAN;
+			gGameCommandErrorText = STR_BANK_REFUSES_TO_INCREASE_LOAN;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 	} else {
 		if (loanDifference > money) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_ENOUGH_CASH_AVAILABLE;
+			gGameCommandErrorText = STR_NOT_ENOUGH_CASH_AVAILABLE;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}

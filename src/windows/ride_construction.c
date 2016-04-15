@@ -1610,7 +1610,7 @@ static void window_ride_construction_construct(rct_window *w)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+	gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 	RCT2_GLOBAL(0x00F44074, money32) = game_do_command(
 		x,
 		(GAME_COMMAND_FLAG_APPLY) | (trackDirection << 8),
@@ -3786,7 +3786,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+			gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 			RCT2_GLOBAL(0x00F44074, money32) = game_do_command(
 				_currentTrackBeginX,
 				GAME_COMMAND_FLAG_APPLY | (4 << 8),
@@ -3799,7 +3799,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 			if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
-				rct_string_id errorText = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+				rct_string_id errorText = gGameCommandErrorText;
 				z -= 8;
 				if (
 					errorText == STR_NOT_ENOUGH_CASH_REQUIRES ||
@@ -3852,7 +3852,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 		RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 		if (RCT2_GLOBAL(0x00F44074, money32) == MONEY32_UNDEFINED) {
-			rct_string_id errorText = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+			rct_string_id errorText = gGameCommandErrorText;
 			z -= 8;
 			if (
 				errorText == STR_NOT_ENOUGH_CASH_REQUIRES ||
@@ -3923,7 +3923,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 	if (RCT2_GLOBAL(0x00F44194, uint8) == 255)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = (RCT2_GLOBAL(0x00F44191, uint8) == 0) ?
+	gGameCommandErrorTitle = (RCT2_GLOBAL(0x00F44191, uint8) == 0) ?
 		STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION :
 		STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
 

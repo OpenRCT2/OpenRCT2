@@ -392,7 +392,7 @@ int viewport_interaction_right_click(int x, int y)
  */
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, int x, int y)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
+	gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 	game_do_command(
 		x,
 		(mapElement->type << 8) | 1,
@@ -423,7 +423,7 @@ static void viewport_interaction_remove_footpath(rct_map_element *mapElement, in
 	mapElement2 = map_get_first_element_at(x / 32, y / 32);
 	do {
 		if (map_element_get_type(mapElement2) == MAP_ELEMENT_TYPE_PATH && mapElement2->base_height == z) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
+			gGameCommandErrorTitle = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
 			footpath_remove(x, y, z, 1);
 			break;
 		}
@@ -442,7 +442,7 @@ static void viewport_interaction_remove_footpath_item(rct_map_element *mapElemen
 	if (mapElement->type & 1)
 		type |= 0x80;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
+	gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 	game_do_command(
 		x,
 		((mapElement->properties.path.type & 7) << 8) | 1,
@@ -471,7 +471,7 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int 
 		y -= TileDirectionDelta[rotation].y;
 		break;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_REMOVE_THIS;
+	gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 	game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, mapElement->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
 }
 
@@ -487,7 +487,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
 	if (sceneryEntry->wall.var_0D != 0xFF){
 		window_sign_small_open(mapElement->properties.fence.item[0]);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
+		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 		game_do_command(
 			x,
 			GAME_COMMAND_FLAG_APPLY,
@@ -516,7 +516,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 		window_sign_open(id);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
+		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 		game_do_command(
 			x,
 			1 | ((mapElement->type & 0x3) << 8),

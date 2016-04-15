@@ -891,7 +891,7 @@ int ride_create_ride(ride_list_item listItem)
 	esi = 0;
 	ebp = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 0x3DC;
+	gGameCommandErrorTitle = 0x3DC;
 
 	esi = GAME_COMMAND_CREATE_RIDE;
 	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
@@ -3708,12 +3708,12 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 	switch (setting) {
 	case RIDE_SETTING_MODE:
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+			gGameCommandErrorText = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (ride->status != RIDE_STATUS_CLOSED) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_MUST_BE_CLOSED_FIRST;
+			gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -3815,7 +3815,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 		break;
 	case RIDE_SETTING_NUM_CIRCUITS:
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT && value > 1) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
+			gGameCommandErrorText = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -3878,17 +3878,17 @@ int ride_mode_check_valid_station_numbers(rct_ride *ride)
 	case RIDE_MODE_POWERED_LAUNCH:
 	case RIDE_MODE_LIM_POWERED_LAUNCH:
 		if (no_stations <= 1) return 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
+		gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
 		return 0;
 	case RIDE_MODE_SHUTTLE:
 		if (no_stations >= 2) return 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
+		gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
 		return 0;
 	}
 
 	if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF){
 		if (no_stations <= 1) return 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
+		gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
 		return 0;
 	}
 
@@ -3909,14 +3909,14 @@ int ride_mode_check_station_present(rct_ride* ride){
 	}
 
 	if (stationIndex == -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NOT_YET_CONSTRUCTED;
+		gGameCommandErrorText = STR_NOT_YET_CONSTRUCTED;
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			return -1;
 
 		if (ride->type == RIDE_TYPE_MAZE)
 			return -1;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_REQUIRES_A_STATION_PLATFORM;
+		gGameCommandErrorText = STR_REQUIRES_A_STATION_PLATFORM;
 		return -1;
 	}
 
@@ -3958,12 +3958,12 @@ int ride_check_for_entrance_exit(int rideIndex)
 	}
 
 	if (entrance == 0){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_ENTRANCE_NOT_YET_BUILT;
+		gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
 		return 0;
 	}
 
 	if (exit == 0){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_EXIT_NOT_YET_BUILT;
+		gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
 		return 0;
 	}
 
@@ -4020,17 +4020,17 @@ int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 		if (it.current.element->properties.track.type == 216) {
 			type = it.last.element->properties.track.type;
 			if (type == 1) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
+				gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
 				*output = it.current;
 				return 0;
 			}
 			if (type == 216) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
+				gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
 				*output = it.current;
 				return 0;
 			}
 			if ((it.last.element->type & 0x80) && type != 209 && type != 210) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
+				gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
 				*output = it.current;
 				return 0;
 			}
@@ -4038,7 +4038,7 @@ int ride_check_block_brakes(rct_xy_element *input, rct_xy_element *output)
 	}
 	if (!it.looped) {
 		// Not sure why this is the case...
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
+		gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
 		*output = it.last;
 		return 0;
 	}
@@ -4696,7 +4696,7 @@ bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element
 	// Check if there are enough free sprite slots for all the vehicles
 	int totalCars = ride->num_vehicles * ride->num_cars_per_train;
 	if (totalCars > sub_69ED9E()) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
+		gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
 		return false;
 	}
 
@@ -4827,7 +4827,7 @@ static bool ride_initialise_cable_lift_track(rct_ride *ride, bool isApplying)
 		xy = ride->station_starts[stationIndex];
 		if (xy != 0xFFFF) break;
 		if (stationIndex == 3) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
+			gGameCommandErrorText = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
 			return false;
 		}
 	}
@@ -4896,7 +4896,7 @@ static bool ride_initialise_cable_lift_track(rct_ride *ride, bool isApplying)
 				state = STATE_REST_OF_TRACK;
 				break;
 			default:
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
+				gGameCommandErrorText = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
 				return false;
 			}
 			break;
@@ -4924,17 +4924,17 @@ bool ride_create_cable_lift(int rideIndex, bool isApplying)
 	if (ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED &&
 		ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT
 	) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
+		gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
 		return false;
 	}
 
 	if (ride->num_circuits > 1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
+		gGameCommandErrorText = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
 		return false;
 	}
 
 	if (sub_69ED9E() <= 5) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
+		gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
 		return false;
 	}
 
@@ -5145,7 +5145,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		) {
 		if (ride_find_track_gap(&trackElement, &problematicTrackElement) && (!gConfigGeneral.test_unfinished_tracks ||
 			ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
+			gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
 			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
@@ -5164,14 +5164,14 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 	if (ride->subtype != 255) {
 		rct_ride_entry *rideType = get_ride_entry(ride->subtype);
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
@@ -5181,17 +5181,17 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 
 	if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
 		if (!ride_find_track_gap(&trackElement, &problematicTrackElement)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+			gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
 			return 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_STATION_NOT_LONG_ENOUGH;
+		gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
 		if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
 			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+		gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
 		if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
 			loc_6B528A(&problematicTrackElement);
 			return 0;
@@ -5276,7 +5276,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 	) {
 		if (ride_find_track_gap(&trackElement, &problematicTrackElement)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
+			gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
 			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
@@ -5295,14 +5295,14 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	if (ride->subtype != 255) {
 		rct_ride_entry *rideType = get_ride_entry(ride->subtype);
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
 			}
 		}
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
+			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
 				loc_6B528A(&problematicTrackElement);
 				return 0;
@@ -5312,17 +5312,17 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 	if (ride->mode == RIDE_MODE_STATION_TO_STATION) {
 		if (!ride_find_track_gap(&trackElement, &problematicTrackElement)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+			gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
 			return 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_STATION_NOT_LONG_ENOUGH;
+		gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
 		if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
 			loc_6B528A(&problematicTrackElement);
 			return 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
+		gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
 		if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
 			loc_6B528A(&problematicTrackElement);
 			return 0;
@@ -5457,7 +5457,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 
 void ride_set_name(int rideIndex, const char *name)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_RIDE_ATTRACTION;
+	gGameCommandErrorTitle = STR_CANT_RENAME_RIDE_ATTRACTION;
 	game_do_command(1, (rideIndex << 8) | 1, 0, *((int*)(name +  0)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name +  8)), *((int*)(name +  4)));
 	game_do_command(2, (rideIndex << 8) | 1, 0, *((int*)(name + 12)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name + 20)), *((int*)(name + 16)));
 	game_do_command(0, (rideIndex << 8) | 1, 0, *((int*)(name + 24)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name + 32)), *((int*)(name + 28)));
@@ -5515,7 +5515,7 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 
 	if (newName[0] == 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_RIDE_ATTRACTION_NAME;
+		gGameCommandErrorText = STR_INVALID_RIDE_ATTRACTION_NAME;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -5846,7 +5846,7 @@ foundRideEntry:
 		return MONEY32_UNDEFINED;
 	}
 	if (rideIndex == -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_MANY_RIDES;
+		gGameCommandErrorText = STR_TOO_MANY_RIDES;
 		return MONEY32_UNDEFINED;
 	}
 	*outRideIndex = rideIndex;
@@ -6204,7 +6204,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 	}
 	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) && !gCheatsBuildInPauseMode){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}else{
@@ -7174,7 +7174,7 @@ bool ride_select_forwards_from_back()
 
 money32 ride_remove_track_piece(int x, int y, int z, int direction, int type)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
+	gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
 	if (network_get_mode() == NETWORK_MODE_CLIENT)
 	{
 		game_command_callback = game_command_callback_ride_remove_track_piece;
@@ -7194,11 +7194,11 @@ bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride)
 	for (int i = 0; i < 4; i++) {
 		if (ride->station_starts[i] == 0xFFFF) continue;
 		if (ride->entrances[i] == 0xFFFF) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ENTRANCE_NOT_YET_BUILT;
+			gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
 			return false;
 		}
 		if (ride->exits[i] == 0xFFFF) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_EXIT_NOT_YET_BUILT;
+			gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
 			return false;
 		}
 	}
@@ -7532,7 +7532,7 @@ void ride_update_max_vehicles(int rideIndex)
 
 void ride_set_ride_entry(int rideIndex, int rideEntry)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_TYPE_FAIL;
+	gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_TYPE_FAIL;
 	game_do_command(
 		0,
 		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY << 8),
@@ -7546,7 +7546,7 @@ void ride_set_ride_entry(int rideIndex, int rideEntry)
 
 void ride_set_num_vehicles(int rideIndex, int numVehicles)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL;
+	gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL;
 	game_do_command(
 		0,
 		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS << 8),
@@ -7560,7 +7560,7 @@ void ride_set_num_vehicles(int rideIndex, int numVehicles)
 
 void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL;
+	gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL;
 	game_do_command(
 		0,
 		GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN << 8),
@@ -7632,12 +7632,12 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+		gGameCommandErrorText = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (ride->status != RIDE_STATUS_CLOSED) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
+		gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -8049,7 +8049,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 	}
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -8069,12 +8069,12 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		}
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (z > 1952) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+			gGameCommandErrorText = STR_TOO_HIGH;
 			return MONEY32_UNDEFINED;
 		}
 	} else {
@@ -8090,12 +8090,12 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 			return MONEY32_UNDEFINED;
 		}
 		if (ride->status != RIDE_STATUS_CLOSED) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
+			gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NOT_ALLOWED_TO_MODIFY_STATION;
+			gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -8109,7 +8109,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		if (is_exit) {
 			if (ride->exits[station_num] != 0xFFFF) {
 				if (flags & GAME_COMMAND_FLAG_GHOST) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 0;
+					gGameCommandErrorText = 0;
 					return MONEY32_UNDEFINED;
 				}
 
@@ -8119,7 +8119,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 			}
 		} else if (ride->entrances[station_num] != 0xFFFF) {
 			if (flags & GAME_COMMAND_FLAG_GHOST) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 0;
+				gGameCommandErrorText = 0;
 				return MONEY32_UNDEFINED;
 			}
 
@@ -8167,12 +8167,12 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		}
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (z / 8 > 244){
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+			gGameCommandErrorText = STR_TOO_HIGH;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -8252,13 +8252,13 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 
 	if (!(flags & GAME_COMMAND_FLAG_GHOST)){
 		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
 	}
 
 	if (ride->status != RIDE_STATUS_CLOSED){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_MUST_BE_CLOSED_FIRST;
+		gGameCommandErrorText = STR_MUST_BE_CLOSED_FIRST;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -8342,7 +8342,7 @@ void ride_set_to_default_inspection_interval(int rideIndex)
 	uint8 defaultInspectionInterval = gConfigGeneral.default_inspection_interval;
 	if (ride->inspection_interval != defaultInspectionInterval) {
 		if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+			gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 			game_do_command(0, (defaultInspectionInterval << 8) | 1, 0, (5 << 8) | rideIndex, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 		}
 	}

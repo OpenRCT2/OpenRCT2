@@ -746,7 +746,7 @@ void update_park_fences(int x, int y)
 		if (fence_required) {
 			// As map_is_location_in_park sets the error text
 			// will require to back it up.
-			rct_string_id previous_error = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+			rct_string_id previous_error = gGameCommandErrorText;
 			if (map_is_location_in_park(x - 32, y)){
 				newOwnership |= 0x8;
 			}
@@ -763,7 +763,7 @@ void update_park_fences(int x, int y)
 				newOwnership |= 0x1;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = previous_error;
+			gGameCommandErrorText = previous_error;
 		}
 	}
 
@@ -853,7 +853,7 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 
 void park_set_name(const char *name)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_RENAME_PARK;
+	gGameCommandErrorTitle = STR_CANT_RENAME_PARK;
 	game_do_command(1, GAME_COMMAND_FLAG_APPLY, 0, *((int*)(name + 0)), GAME_COMMAND_SET_PARK_NAME, *((int*)(name + 8)), *((int*)(name + 4)));
 	game_do_command(2, GAME_COMMAND_FLAG_APPLY, 0, *((int*)(name + 12)), GAME_COMMAND_SET_PARK_NAME, *((int*)(name + 20)), *((int*)(name + 16)));
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, *((int*)(name + 24)), GAME_COMMAND_SET_PARK_NAME, *((int*)(name + 32)), *((int*)(name + 28)));
@@ -895,14 +895,14 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 
 	if (newName[0] == 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_RIDE_ATTRACTION_NAME;
+		gGameCommandErrorText = STR_INVALID_RIDE_ATTRACTION_NAME;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
 
 	newUserStringId = user_string_allocate(4, newName);
 	if (newUserStringId == 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_INVALID_NAME_FOR_PARK;
+		gGameCommandErrorText = STR_INVALID_NAME_FOR_PARK;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -932,7 +932,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1726; // Land not for sale!
+			gGameCommandErrorText = 1726; // Land not for sale!
 			return MONEY32_UNDEFINED;
 		}
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
@@ -960,7 +960,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 1727; // Construction rights not for sale!
+			gGameCommandErrorText = 1727; // Construction rights not for sale!
 			return MONEY32_UNDEFINED;
 		}
 
@@ -997,12 +997,12 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 
 		if (x <= 32 || y <= 32) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
+			gGameCommandErrorText = 3215;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32 || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
+			gGameCommandErrorText = 3215;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -1065,7 +1065,7 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 
 	// Game command modified to accept selection size
 	totalCost = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+	gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
 		for (y = y0; y <= y1; y += 32) {
 			for (x = x0; x <= x1; x += 32) {

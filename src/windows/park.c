@@ -710,10 +710,10 @@ static void window_park_entrance_dropdown(rct_window *w, int widgetIndex, int dr
 			dropdownIndex = gDropdownHighlightedIndex;
 
 		if (dropdownIndex != 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1724;
+			gGameCommandErrorTitle = 1724;
 			park_set_open(1);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1723;
+			gGameCommandErrorTitle = 1723;
 			park_set_open(0);
 		}
 	}
@@ -830,7 +830,7 @@ static void window_park_entrance_tooldown(rct_window* w, int widgetIndex, int x,
 	case WIDX_BUY_LAND_RIGHTS:
 		if (LandRightsMode) {
 			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
+				gGameCommandErrorTitle = 0x6BD; // Can't buy land...
 				game_do_command(
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 					1,
@@ -844,7 +844,7 @@ static void window_park_entrance_tooldown(rct_window* w, int widgetIndex, int x,
 		}
 		else {
 			if (x != (sint16)0x8000) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
+				gGameCommandErrorTitle = 0x6C0; // Can't buy construction rights here...
 				game_do_command(
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 					1,
@@ -873,7 +873,7 @@ static void window_park_entrance_tooldrag(rct_window* w, int widgetIndex, int x,
 		case WIDX_BUY_LAND_RIGHTS:
 			if (LandRightsMode) {
 				if (x != (sint16)0x8000) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6BD; // Can't buy land...
+					gGameCommandErrorTitle = 0x6BD; // Can't buy land...
 					game_do_command(
 						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 						1,
@@ -887,7 +887,7 @@ static void window_park_entrance_tooldrag(rct_window* w, int widgetIndex, int x,
 			}
 			else {
 				if (x != (sint16)0x8000) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0x6C0; // Can't buy construction rights here...
+					gGameCommandErrorTitle = 0x6C0; // Can't buy construction rights here...
 					game_do_command(
 						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 						1,

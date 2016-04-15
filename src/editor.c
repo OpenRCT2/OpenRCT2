@@ -591,24 +591,24 @@ int editor_check_object_selection()
 
 	if (!isTrackDesignerManager) {
 		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
+			gGameCommandErrorText = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
 			return OBJECT_TYPE_PATHS;
 		}
 	}
 
 	if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_RIDE)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
+		gGameCommandErrorText = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
 		return OBJECT_TYPE_RIDE;
 	}
 
 	if (!isTrackDesignerManager) {
 		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PARK_ENTRANCE)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
+			gGameCommandErrorText = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
 			return OBJECT_TYPE_PARK_ENTRANCE;
 		}
 
 		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_WATER)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_WATER_TYPE_MUST_BE_SELECTED;
+			gGameCommandErrorText = STR_WATER_TYPE_MUST_BE_SELECTED;
 			return OBJECT_TYPE_WATER;
 		}
 	}
@@ -624,7 +624,7 @@ bool editor_check_park()
 {
 	int parkSize = park_calculate_size();
 	if (parkSize == 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_MUST_OWN_SOME_LAND;
+		gGameCommandErrorText = STR_PARK_MUST_OWN_SOME_LAND;
 		return false;
 	}
 
@@ -633,7 +633,7 @@ bool editor_check_park()
 			break;
 
 		if (i == 3) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_PARK_ENTRANCES;
+			gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
 			return false;
 		}
 	}
@@ -649,11 +649,11 @@ bool editor_check_park()
 
 		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
 		case FOOTPATH_SEARCH_NOT_FOUND:
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
+			gGameCommandErrorText = STR_PARK_ENTRANCE_WRONG_DIRECTION_OR_NO_PATH;
 			return false;
 		case FOOTPATH_SEARCH_INCOMPLETE:
 		case FOOTPATH_SEARCH_TOO_COMPLEX:
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
+			gGameCommandErrorText = STR_PARK_ENTRANCE_PATH_INCOMPLETE_OR_COMPLEX;
 			return false;
 		case FOOTPATH_SEARCH_SUCCESS:
 			// Run the search again and unown the path
@@ -663,7 +663,7 @@ bool editor_check_park()
 	}
 
 	if (gPeepSpawns[0].x == 0xFFFF && gPeepSpawns[1].x == 0xFFFF) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_PEEP_SPAWNS_NOT_SET;
+		gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
 		return false;
 	}
 

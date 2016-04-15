@@ -145,7 +145,7 @@ void marketing_set_guest_campaign(rct_peep *peep, int campaign)
 
 void marketing_start_campaign(int type, int rideOrItem, int numWeeks)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_START_MARKETING_CAMPAIGN;
+	gGameCommandErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
 	game_do_command(0, (numWeeks << 8) | GAME_COMMAND_FLAG_APPLY, 0, (rideOrItem << 8) | type, GAME_COMMAND_START_MARKETING_CAMPAIGN, 0, 0);
 }
 
@@ -168,7 +168,7 @@ void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_MARKETING * 4;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3048;
+		gGameCommandErrorText = 3048;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}

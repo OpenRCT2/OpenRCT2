@@ -917,7 +917,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			SMALL_SCENERY_FLAG10)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
+		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1 | (map_element->type << 8),
@@ -938,7 +938,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			WALL_SCENERY_FLAG2)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
+		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1 | (window_scenery_primary_colour << 8),
@@ -958,7 +958,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			(1 << 0)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
+		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
@@ -979,7 +979,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			(1 << 0)))
 			return;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REPAINT_THIS;
+		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
 			1,
@@ -1501,7 +1501,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 				int flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
 
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+				gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 				int cost = game_do_command(
 					cur_grid_x,
 					flags,
@@ -1521,8 +1521,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 				}
 
 				if (
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER
+					gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES ||
+					gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER
 				) {
 					break;
 				}
@@ -1533,7 +1533,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			if (success) {
 				successfulPlacements++;
 			} else {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES) {
+				if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES) {
 					break;
 				}
 			}
@@ -1551,7 +1551,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	{
 		int flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_7 | (parameter_1 & 0xFF00);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 		int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
 		if (cost != MONEY32_UNDEFINED) {
 			audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
@@ -1572,7 +1572,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
@@ -1583,8 +1583,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			}
 
 			if (
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER
+				gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES ||
+				gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER
 			) {
 				break;
 			}
@@ -1609,7 +1609,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+			gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
@@ -1620,8 +1620,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			}
 
 			if (
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_NOT_ENOUGH_CASH_REQUIRES ||
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == STR_CAN_ONLY_BUILD_THIS_ON_WATER
+				gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES ||
+				gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER
 			) {
 				break;
 			}
@@ -1636,7 +1636,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	{
 		int flags = (parameter_1 & 0xFF00) | GAME_COMMAND_FLAG_APPLY;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 		registers regs = {
 			.eax = gridX,
 			.ebx = flags,
@@ -2562,7 +2562,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))
 			break;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
+		gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
@@ -2577,7 +2577,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 		break;
 	case WIDX_LAND:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CHANGE_LAND_TYPE;
+			gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
 			game_do_command(
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 				1,
@@ -2615,7 +2615,7 @@ money32 selection_raise_land(uint8 flags)
 	uint32 xBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
 	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_RAISE_LAND_HERE;
+	gGameCommandErrorTitle = STR_CANT_RAISE_LAND_HERE;
 	if (gLandMountainMode) {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 1, yBounds);
 	} else {
@@ -2637,7 +2637,7 @@ money32 selection_lower_land(uint8 flags)
 	uint32 xBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) << 16);
 	uint32 yBounds = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) & 0xFFFF) | (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) << 16);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_LOWER_LAND_HERE;
+	gGameCommandErrorTitle = STR_CANT_LOWER_LAND_HERE;
 	if (gLandMountainMode) {
 		return game_do_command(centreX, flags, centreY, xBounds, GAME_COMMAND_EDIT_LAND_SMOOTH, 0xFFFF, yBounds);
 	} else {
@@ -2711,7 +2711,7 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	if (y <= dx) {
 		gInputDragLastY += dx;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_RAISE_WATER_LEVEL_HERE;
+		gGameCommandErrorTitle = STR_CANT_RAISE_WATER_LEVEL_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
@@ -2733,7 +2733,7 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	if (y >= dx) {
 		gInputDragLastY += dx;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_LOWER_WATER_LEVEL_HERE;
+		gGameCommandErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
@@ -2765,7 +2765,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 		if (!RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))
 			break;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
+		gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
 
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
@@ -2782,7 +2782,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 		// Custom setting to only change land style instead of raising or lowering land
 		if (gLandPaintMode) {
 			if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CHANGE_LAND_TYPE;
+				gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
 				game_do_command(
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 					1,

@@ -79,6 +79,9 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 };
 int game_command_playerid = -1;
 
+rct_string_id gGameCommandErrorTitle;
+rct_string_id gGameCommandErrorText;
+
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
 	for (int i = 0; i < countof(game_command_callback_table); i++ ) {
@@ -410,7 +413,7 @@ static int game_check_affordability(int cost)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = cost;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 827;
+	gGameCommandErrorText = 827;
 	return MONEY32_UNDEFINED;
 }
 
@@ -450,7 +453,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 
 	flags = *ebx;
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
+	gGameCommandErrorText = 0xFFFF;
 
 	// Increment nest count
 	RCT2_GLOBAL(0x009A8C28, uint8)++;
@@ -559,7 +562,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	// Show error window
 	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
-		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
+		window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
 
 	return MONEY32_UNDEFINED;
 }
@@ -729,7 +732,7 @@ int game_load_sv6(SDL_RWops* rw)
 		log_error("invalid checksum");
 
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 
@@ -909,7 +912,7 @@ bool game_load_save(const utf8 *path)
 	if (rw == NULL) {
 		log_error("unable to open %s", path);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return false;
 	}
 

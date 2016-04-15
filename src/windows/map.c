@@ -465,7 +465,7 @@ static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y)
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0;
+			gGameCommandErrorTitle = 0;
 			game_do_command(
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
 				GAME_COMMAND_FLAG_APPLY,
@@ -557,7 +557,7 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
 		map_invalidate_selection_rect();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CHANGE_LAND_TYPE;
+		gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 			GAME_COMMAND_FLAG_APPLY,
@@ -584,7 +584,7 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
 		map_invalidate_selection_rect();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = 0;
+		gGameCommandErrorTitle = 0;
 		game_do_command(
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
 			GAME_COMMAND_FLAG_APPLY,
@@ -1276,7 +1276,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
 	if (mapX == (sint16)0x8000)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+	gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 	price = game_do_command(
 		mapX,
 		GAME_COMMAND_FLAG_APPLY | (direction << 8),

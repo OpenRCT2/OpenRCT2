@@ -10486,7 +10486,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		return 0;
 
 	if (*fullText == '\0') {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 1455;
+		gGameCommandErrorText = 1455;
 		return MONEY32_UNDEFINED;
 	}
 

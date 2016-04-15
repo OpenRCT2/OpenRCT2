@@ -1723,15 +1723,15 @@ static void window_ride_main_mouseup(rct_window *w, int widgetIndex)
 		switch (widgetIndex - WIDX_CLOSE_LIGHT) {
 		case 0:
 			status = RIDE_STATUS_CLOSED;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CLOSE;
+			gGameCommandErrorTitle = STR_CANT_CLOSE;
 			break;
 		case 1:
 			status = RIDE_STATUS_TESTING;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_TEST;
+			gGameCommandErrorTitle = STR_CANT_TEST;
 			break;
 		case 2:
 			status = RIDE_STATUS_OPEN;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_OPEN;
+			gGameCommandErrorTitle = STR_CANT_OPEN;
 			break;
 		}
 
@@ -1964,15 +1964,15 @@ static void window_ride_main_dropdown(rct_window *w, int widgetIndex, int dropdo
 		switch (dropdownIndex) {
 		case 0:
 			status = RIDE_STATUS_CLOSED;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CLOSE;
+			gGameCommandErrorTitle = STR_CANT_CLOSE;
 			break;
 		case 1:
 			status = RIDE_STATUS_TESTING;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_TEST;
+			gGameCommandErrorTitle = STR_CANT_TEST;
 			break;
 		case 2:
 			status = RIDE_STATUS_OPEN;
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_OPEN;
+			gGameCommandErrorTitle = STR_CANT_OPEN;
 			break;
 		}
 
@@ -2769,7 +2769,7 @@ static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dp
 
 static void set_operating_setting(int rideNumber, uint8 setting, uint8 value)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+	gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 	game_do_command(0, (value << 8) | 1, 0, (setting << 8) | rideNumber, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 
@@ -2777,25 +2777,25 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 {
 	rct_ride *ride = get_ride(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1362;
+	gGameCommandErrorTitle = 1362;
 	if (ride->mode == RIDE_MODE_STATION_TO_STATION)
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1361;
+		gGameCommandErrorTitle = 1361;
 	if (ride->mode == RIDE_MODE_RACE)
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1738;
+		gGameCommandErrorTitle = 1738;
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_13))
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1746;
+		gGameCommandErrorTitle = 1746;
 	if (ride->mode == RIDE_MODE_BUMPERCAR)
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1751;
+		gGameCommandErrorTitle = 1751;
 	if (ride->mode == RIDE_MODE_SWING)
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1768;
+		gGameCommandErrorTitle = 1768;
 	if (ride->mode == RIDE_MODE_ROTATION)
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1868;
+		gGameCommandErrorTitle = 1868;
 	if (
 		ride->mode == RIDE_MODE_ROTATION ||
 		ride->mode == RIDE_MODE_FORWARD_ROTATION ||
 		ride->mode == RIDE_MODE_BACKWARD_ROTATION
 	)
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = 1868;
+		gGameCommandErrorTitle = 1868;
 
 	set_operating_setting(w->number, RIDE_SETTING_OPERATION_OPTION, value);
 }
@@ -3527,7 +3527,7 @@ static void window_ride_maintenance_dropdown(rct_window *w, int widgetIndex, int
 
 	switch (widgetIndex) {
 	case WIDX_INSPECTION_INTERVAL_DROPDOWN:
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+		gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 		game_do_command(0, (dropdownIndex << 8) | 1, 0, (5 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 		break;
 
@@ -4463,7 +4463,7 @@ static void window_ride_toggle_music(rct_window *w)
 
 	int activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+	gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 	game_do_command(0, (activateMusic << 8) | 1, 0, (6 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 
@@ -4569,7 +4569,7 @@ static void window_ride_music_dropdown(rct_window *w, int widgetIndex, int dropd
 
 	ride = get_ride(w->number);
 	musicStyle = window_ride_current_music_style_order[dropdownIndex];
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_CANT_CHANGE_OPERATING_MODE;
+	gGameCommandErrorTitle = STR_CANT_CHANGE_OPERATING_MODE;
 	game_do_command(0, (musicStyle << 8) | 1, 0, (7 << 8) | w->number, GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 }
 

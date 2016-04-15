@@ -19,12 +19,13 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
 #include "error.h"
-#include "../interface/themes.h"
 
 #pragma region Widgets
 
@@ -223,7 +224,7 @@ static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *
 		window_close_by_class(WC_TRACK_DELETE_PROMPT);
 		window_close(w);
 	} else {
-		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
+		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, gGameCommandErrorText);
 	}
 }
 
@@ -285,7 +286,7 @@ static void window_track_delete_prompt_mouseup(rct_window *w, int widgetIndex)
 		if (track_delete())
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 		else
-			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
+			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, gGameCommandErrorText);
 		break;
 	}
 }

@@ -509,7 +509,7 @@ static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
 			}
 			map_element++;
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_REMOVE_THIS;
+		gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
 		game_do_command(
 			x,
 			1 | ((map_element->type & 0x3) << 8),

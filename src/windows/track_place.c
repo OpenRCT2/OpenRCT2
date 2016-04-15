@@ -557,7 +557,7 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 		}
 
 		// Check if player did not have enough funds
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) == 827)
+		if (gGameCommandErrorText == 827)
 			break;
 
 		mapZ += 8;

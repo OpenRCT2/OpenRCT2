@@ -163,7 +163,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
 	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_UNDERWATER;
+		gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -219,22 +219,22 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 			uint16 unk6 = scenery_entry->path_bit.var_06;
 
 			if ((unk6 & 0x80) && (mapElement->properties.path.type & 4)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH;
+				gGameCommandErrorText = STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH;
 				return MONEY32_UNDEFINED;
 			}
 
 			if ((unk6 & 0x40) && footpath_element_is_queue(mapElement)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA;
+				gGameCommandErrorText = STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA;
 				return MONEY32_UNDEFINED;
 			}
 
 			if (!(unk6 & 0x30) && (mapElement->properties.path.edges & 0x0F) == 0x0F) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
+				gGameCommandErrorText = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
 			if ((unk6 & 0x100) && !footpath_element_is_queue(mapElement)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
+				gGameCommandErrorText = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
 				return MONEY32_UNDEFINED;
 			}
 
@@ -248,7 +248,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		if (flags & GAME_COMMAND_FLAG_GHOST) {
 			// Check if there is something on the path already
 			if (footpath_element_has_path_scenery(mapElement)) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NONE;
+				gGameCommandErrorText = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
@@ -309,7 +309,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -320,7 +320,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
 
 	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_OFF_EDGE_OF_MAP;
+		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -328,17 +328,17 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 		return MONEY32_UNDEFINED;
 
 	if (slope & 8) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_LAND_SLOPE_UNSUITABLE;
+		gGameCommandErrorText = STR_LAND_SLOPE_UNSUITABLE;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (z < 2) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+		gGameCommandErrorText = STR_TOO_LOW;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (z > 248) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		gGameCommandErrorText = STR_TOO_HIGH;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -386,7 +386,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -446,7 +446,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -464,12 +464,12 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		return MONEY32_UNDEFINED;
 
 	if (z < 2) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+		gGameCommandErrorText = STR_TOO_LOW;
 		return MONEY32_UNDEFINED;
 	}
 
 	if (z > 248) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+		gGameCommandErrorText = STR_TOO_HIGH;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -492,7 +492,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
 	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_THIS_UNDERWATER;
+		gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
 		return MONEY32_UNDEFINED;
 	}
 

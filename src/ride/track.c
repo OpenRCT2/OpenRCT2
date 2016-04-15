@@ -1230,7 +1230,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 0xE9;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0x80;
 
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_POSITION_THIS_HERE;
+					gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
 					cost = game_do_command(
 						mapCoord.x,
@@ -1289,7 +1289,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
+					gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 
 					cost = game_do_command(
 						mapCoord.x,
@@ -1329,7 +1329,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 						if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
-						RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+						gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 						cost = game_do_command(mapCoord.x, bl | (bh << 8), mapCoord.y, z | (entry_index << 8), GAME_COMMAND_PLACE_PATH_FROM_TRACK, 0, 0);
 					}
 					else{
@@ -1458,7 +1458,7 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				rotation += maze->unk_2;
 				rotation &= 3;
 
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
 				bl = 1;
 				if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 0x69;
@@ -1477,7 +1477,7 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				rotation += maze->unk_2;
 				rotation &= 3;
 
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
 				bl = 1;
 				if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 0x69;
@@ -1499,7 +1499,7 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 0x69;
 				if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
 				cost = game_do_command(mapCoord.x, bl | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00), GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
 				break;
@@ -1674,7 +1674,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+			gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, 0);
 			RCT2_GLOBAL(0x00F440D5, money32) += cost;
 
@@ -1880,7 +1880,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
 
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+					gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 					money32 cost = game_do_command(x, bl | (rotation << 8), y, rideIndex | (is_exit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, di, 0);
 					RCT2_GLOBAL(0x00F440D5, money32) += cost;
 
@@ -1899,7 +1899,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				z += RCT2_GLOBAL(0x00F44146, sint16);
 				z /= 16;
 
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 				money32 cost = game_do_command(x, 0 | (rotation << 8), y, z | (is_exit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
 				RCT2_GLOBAL(0x00F440D5, money32) += cost;
 
@@ -2305,7 +2305,7 @@ int track_rename(const char *text)
 		case '*':
 		case '?':
 			// Invalid characters
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS;
+			gGameCommandErrorText = STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS;
 			return 0;
 		}
 		txt_chr++;
@@ -2321,7 +2321,7 @@ int track_rename(const char *text)
 	substitute_path(old_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
 
 	if (!platform_file_move(old_path, new_path)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED;
+		gGameCommandErrorText = STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED;
 		return 0;
 	}
 
@@ -2350,7 +2350,7 @@ int track_delete()
 	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
 
 	if (!platform_file_delete(path)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED;
+		gGameCommandErrorText = STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED;
 		return 0;
 	}
 
@@ -2522,7 +2522,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 	}
 
 	if (map_found == 0){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 		return 0;
 	}
 
@@ -2551,7 +2551,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 				maze++;
 
 				if (maze >= RCT2_ADDRESS(0x009DA151, rct_maze_element)){
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+					gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 					return 0;
 				}
 			} while (!map_element_is_last_for_tile(map_element++));
@@ -2564,7 +2564,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 	uint16 location = ride->entrances[0];
 
 	if (location == 0xFFFF){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 		return 0;
 	}
 
@@ -2595,7 +2595,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 	location = ride->exits[0];
 
 	if (location == 0xFFFF){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 		return 0;
 	}
 
@@ -2669,7 +2669,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 	track_begin_end trackBeginEnd;
 
 	if (!ride_try_get_origin_element(rideIndex, &trackElement)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 		return 0;
 	}
 
@@ -2698,7 +2698,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 	RCT2_GLOBAL(0x00F4414D, uint8) = direction;
 
 	if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 		return 0;
 	}
 
@@ -2869,7 +2869,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 			z /= 8;
 
 			if (z > 127 || z < -126){
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+				gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 				return 0;
 			}
 
@@ -3033,22 +3033,22 @@ int save_track_design(uint8 rideIndex){
 	rct_ride* ride = get_ride(rideIndex);
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
-		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
 		return 0;
 	}
 
 	if (ride->ratings.excitement == (ride_rating)0xFFFF){
-		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
 		return 0;
 	}
 
 	if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
 		return 0;
 	}
 
 	if (!ride_to_td6(rideIndex)){
-		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id));
+		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
 		return 0;
 	}
 
@@ -3261,7 +3261,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)){
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
@@ -3275,7 +3275,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		entry_index = 0xFF;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
+	gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
 	int rideIndex = 0;
 	{
 		int _eax = 0,
@@ -3326,10 +3326,10 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 
 	if (cost == MONEY32_UNDEFINED ||
 		!(flags & GAME_COMMAND_FLAG_APPLY)){
-		rct_string_id error_reason = RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id);
+		rct_string_id error_reason = gGameCommandErrorText;
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 		*ebx = cost;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = error_reason;
+		gGameCommandErrorText = error_reason;
 		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
 		RCT2_GLOBAL(0x00F44121, money32) = cost;
 		return;
@@ -3414,7 +3414,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) != 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
 	}
@@ -3440,7 +3440,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 			uint8 supportHeight = (supportZ - mapElement->base_height) / 2;
 			uint8 maxSupportHeight = RideData5[RIDE_TYPE_MAZE].max_height;
 			if (supportHeight > maxSupportHeight) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
+				gGameCommandErrorText = STR_TOO_HIGH_FOR_SUPPORTS;
 				return MONEY32_UNDEFINED;
 			}
 		}
@@ -3460,11 +3460,11 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 
 		uint8 elctgaw = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
 		if (elctgaw & ELEMENT_IS_UNDERWATER) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 		if (elctgaw & ELEMENT_IS_UNDERGROUND) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+			gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 			return MONEY32_UNDEFINED;
 		}
 	}
@@ -4119,7 +4119,7 @@ static bool track_add_station_element(int x, int y, int z, int direction, int ri
 	rct_ride *ride = get_ride(rideIndex);
 	if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
 		if (ride->num_stations >= 4) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
+			gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
 			return false;
 		}
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
@@ -4187,12 +4187,12 @@ static bool track_add_station_element(int x, int y, int z, int direction, int ri
 	} while (stationElement != NULL);
 
 	if (stationX0 == stationX1 && stationY0 == stationY1 && ride->num_stations >= 4) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
+		gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
 		return false;
 	}
 
 	if (stationLength > 12) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_STATION_PLATFORM_TOO_LONG;
+		gGameCommandErrorText = STR_STATION_PLATFORM_TOO_LONG;
 		return false;
 	}
 
@@ -4318,7 +4318,7 @@ static bool track_remove_station_element(int x, int y, int z, int direction, int
 			(removeX != stationX1 || removeY != stationY1) &&
 			ride->num_stations >= 4
 		) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
+			gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
 			return false;
 		} else {
 			return true;
@@ -4426,7 +4426,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	RCT2_GLOBAL(0x00F44068, uint32) = rideTypeFlags;
 
 	if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && type == 1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_NOT_ALLOWED_TO_MODIFY_STATION;
+		gGameCommandErrorText = STR_NOT_ALLOWED_TO_MODIFY_STATION;
 		return MONEY32_UNDEFINED;
 	}
 	if (!sub_68B044()) {
@@ -4434,7 +4434,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	}
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
 	}
@@ -4444,18 +4444,18 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	} else {
 		if (type == TRACK_ELEM_ON_RIDE_PHOTO) {
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE;
+				gGameCommandErrorText = STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE;
 				return MONEY32_UNDEFINED;
 			}
 		} else if (type == TRACK_ELEM_CABLE_LIFT_HILL) {
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_16) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE;
+				gGameCommandErrorText = STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE;
 				return MONEY32_UNDEFINED;
 			}
 		}
 		if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP))) {
 			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x400) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_STEEP_FOR_LIFT_HILL;
+				gGameCommandErrorText = STR_TOO_STEEP_FOR_LIFT_HILL;
 				return MONEY32_UNDEFINED;
 			}
 		}
@@ -4493,7 +4493,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		z = originZ + trackBlock->z;
 
 		if (!map_is_location_owned(x, y, z) && !gCheatsSandboxMode) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_LAND_NOT_OWNED_BY_PARK;
+			gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
 			return MONEY32_UNDEFINED;
 		}
 	}
@@ -4503,12 +4503,12 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		RCT2_ADDRESS(0x0099423C, uint16);
 	if (trackFlags[type] & 0x100) {
 		if ((originZ & 0x0F) != 8) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 954;
+			gGameCommandErrorText = 954;
 			return MONEY32_UNDEFINED;
 		}
 	} else {
 		if ((originZ & 0x0F) != 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = 954;
+			gGameCommandErrorText = 954;
 			return MONEY32_UNDEFINED;
 		}
 	}
@@ -4563,7 +4563,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		trackpieceZ = z;
 
 		if (z < 16) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_LOW;
+			gGameCommandErrorText = STR_TOO_LOW;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -4580,7 +4580,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		clearanceZ = (clearanceZ / 8) + baseZ;
 
 		if (clearanceZ >= 255) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH;
+			gGameCommandErrorText = STR_TOO_HIGH;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -4614,7 +4614,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		bh = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 3;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) != 0 && (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) & bh) == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
+			gGameCommandErrorText = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -4622,7 +4622,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
 			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 0x200) {
 				if (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
 				}
 			}
@@ -4630,7 +4630,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		else {
 			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x200) {
 				if (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
 				}
 			}
@@ -4639,7 +4639,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
 			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 1) {
 				if (!(RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
+					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
 				}
 			}
@@ -4647,14 +4647,14 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		else {
 			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 1) {
 				if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
+					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
 				}
 			}
 		}
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -4663,19 +4663,19 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 			uint8 water_height = 2 * (mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK);
 			if (water_height == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
+				gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
 				return MONEY32_UNDEFINED;
 			}
 
 			if (water_height != baseZ) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
+				gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
 				return MONEY32_UNDEFINED;
 			}
 			water_height -= 2;
 			if (water_height == mapElement->base_height) {
 				bh = mapElement->properties.surface.slope & 0x0F;
 				if (bh == 7 || bh == 11 || bh == 13 || bh == 14) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
+					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
 					return MONEY32_UNDEFINED;
 				}
 			}
@@ -4722,7 +4722,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 				}
 				ride_height /= 2;
 				if (ride_height > maxHeight && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
+					gGameCommandErrorText = STR_TOO_HIGH_FOR_SUPPORTS;
 					return MONEY32_UNDEFINED;
 				}
 			}
@@ -4926,7 +4926,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 	}
 
 	if (!(flags & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -4972,7 +4972,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 	}
 
 	if (mapElement->flags & (1 << 6)){
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION;
+		gGameCommandErrorText = STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -5265,7 +5265,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		heightDifference = heightDifference >> 1;
 
 		if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, rct_string_id) = STR_TOO_HIGH_FOR_SUPPORTS;
+			gGameCommandErrorText = STR_TOO_HIGH_FOR_SUPPORTS;
 			return MONEY32_UNDEFINED;
 		}
 	}
