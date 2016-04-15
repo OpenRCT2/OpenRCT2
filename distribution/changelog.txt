@@ -1,4 +1,4 @@
-0.0.4 (not yet released)
+0.0.4
 ------------------------------------------------------------------------
 - Feature: Full native OSX .app support.
 - Feature: Add displaying of frames per second (FPS).

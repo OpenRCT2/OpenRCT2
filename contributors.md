@@ -50,6 +50,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * James Robertson (rd3k) - Misc.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
+* Kelson Blakewood - title sequence for 0.0.4
 
 ## Bug fixes
 * (halfbro)
@@ -86,19 +87,21 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Extracting from original files: Ted John (IntelOrca)
 * Reviewing and merging: Rune Laenen (runelaenen), Michael Steenbeek (Gymnasiast)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
+* Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
-* English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast)
-* Czech - Martin Černáč (octaroot)
-* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
-* Finnish - (DJHasis)
-* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr)
-* German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken)
-* Korean - "TELK" (telk5093)
-* Polish - Adrian Wielgosik (adrian17)
-* Portuguese (BR) - (kaudy)
+* English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: LRFLEW, mike-koch
+* Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
+* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van de Werf (marijnvdwerf); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
+* Finnish - (DJHasis), (Zode), (TheWing)
+* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum)
+* German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
+* Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako)
+* Korean - "TELK" (telk5093), (NeverDruid); small fixes: (kexplo)
+* Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
+* Portuguese (BR) - (kaudy), (renansimoes)
 * Russian - (Soosisya)
-* Simplified Chinese - Naiji Ma (naijim)
-* Spanish - (mdtrooper), Josué Acevedo (Wirlie)
+* Simplified Chinese - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30)
+* Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gdabi); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
 

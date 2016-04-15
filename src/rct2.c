@@ -356,6 +356,7 @@ bool rct2_open_file(const char *path)
 	if (_stricmp(extension, "sv6") == 0) {
 		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
 		game_load_save(path);
+		gFirstTimeSave = 0;
 		return true;
 	} else if (_stricmp(extension, "sc6") == 0) {
 		// TODO scenario install

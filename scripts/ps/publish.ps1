@@ -50,7 +50,15 @@ function Do-PrepareSource()
     $defines["OPENRCT2_BUILD_SERVER"] = $Server;
     if ($GitTag -ne "")
     {
-        $defines["OPENRCT2_BRANCH"]            = $GitTag;
+        # Hide tag if it is a version
+        if ($GitTag -match "^v[0-9]")
+        {
+            $defines["OPENRCT2_BRANCH"]        = "";
+        }
+        else
+        {
+            $defines["OPENRCT2_BRANCH"]        = $GitTag;
+        }
     }
     else
     {
@@ -104,9 +112,10 @@ function Do-Symbols()
     Write-Host "Publishing OpenRCT2 debug symbols as zip..." -ForegroundColor Cyan
     $artifactsDir = "$rootPath\artifacts"
     $releaseDir = "$rootPath\bin"
-    $outZip     = "$rootPath\artifacts\openrct2-symbols.zip"
+    $outZip     = "$rootPath\artifacts\openrct2-symbols-$GitSha1Short.zip"
 
     Copy-Item -Force          "$releaseDir\openrct2.pdb"       $artifactsDir -ErrorAction Stop
+    Copy-Item -Force          "$releaseDir\openrct2.dll"       $artifactsDir -ErrorAction Stop
 
     # Create archive using 7z (renowned for speed and compression)
     $7zcmd = "7za"
@@ -120,7 +129,7 @@ function Do-Symbols()
             return 1
         }
     }
-    & $7zcmd a -tzip -mx9 $outZip "$artifactsDir\openrct2.pdb" > $null
+    & $7zcmd a -tzip -mx9 $outZip "$artifactsDir\openrct2.pdb" "$artifactsDir\openrct2.dll" > $null
     if ($LASTEXITCODE -ne 0)
     {
         Write-Host "Failed to create zip." -ForegroundColor Red
@@ -192,11 +201,15 @@ function Do-Installer()
     $VersionExtra = ""
     if ($GitTag -ne "")
     {
-        $VersionExtra = "$GitTag"
+        # Hide tag if it is a version
+        if ($GitTag -notmatch "^v[0-9]")
+        {
+            $VersionExtra = "-$GitTag";
+        }
     }
     else
     {
-        $VersionExtra = "$GitBranch-$GitCommitSha1Short"
+        $VersionExtra = "-$GitBranch-$GitCommitSha1Short"
     }
 
     # Create installer

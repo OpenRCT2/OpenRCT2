@@ -48,10 +48,10 @@ enum {
 };
 
 static TTFFontSetDescriptor TTFFontMSGothic = {{
-	{ "msgothic_02.ttf",	"MS PGothic",	9,		1,		0,		15,		nullptr },
-	{ "msgothic_02.ttf",	"MS PGothic",	12,		1,		0,		17,		nullptr },
-	{ "msgothic_02.ttf",	"MS PGothic",	12,		1,		0,		17,		nullptr },
-	{ "msgothic_02.ttf",	"MS PGothic",	13,		1,		0,		20,		nullptr },
+	{ "msgothic.ttc",	"MS PGothic",	9,		1,		0,		15,		nullptr },
+	{ "msgothic.ttc",	"MS PGothic",	12,		1,		0,		17,		nullptr },
+	{ "msgothic.ttc",	"MS PGothic",	12,		1,		0,		17,		nullptr },
+	{ "msgothic.ttc",	"MS PGothic",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontMingLiu = {{
