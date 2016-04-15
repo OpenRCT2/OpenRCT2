@@ -29,6 +29,7 @@
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
 #include "../input.h"
+#include "../localisation/currency.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../title.h"
@@ -41,10 +42,7 @@ openrct2_cursor gCursorState;
 const unsigned char *gKeysState;
 unsigned char *gKeysPressed;
 unsigned int gLastKeyPressed;
-utf8 *gTextInput;
-int gTextInputLength;
-int gTextInputMaxLength;
-int gTextInputCursorPosition = 0;
+textinputbuffer gTextInput;
 
 bool gTextInputCompositionActive;
 utf8 gTextInputComposition[32];
@@ -158,7 +156,7 @@ void platform_update_fullscreen_resolutions()
 
 void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight)
 {
-	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth, closestHeight;
+	int i, destinationArea, areaDiff, closestAreaDiff, closestWidth = 640, closestHeight = 480;
 
 	closestAreaDiff = -1;
 	destinationArea = inWidth * inHeight;
@@ -242,7 +240,11 @@ void platform_draw()
 					if (pitch == (width * 2) + padding) {
 						uint16 *dst = pixels;
 						for (int y = height; y > 0; y--) {
-							for (int x = width; x > 0; x--) { *dst++ = *(uint16 *)(&gPaletteHWMapped[*src++]); }
+							for (int x = width; x > 0; x--) {
+								const uint8 lower = *(uint8 *)(&gPaletteHWMapped[*src++]);
+								const uint8 upper = *(uint8 *)(&gPaletteHWMapped[*src++]);
+								*dst++ = (lower << 8) | upper;
+							}
 							dst = (uint16*)(((uint8 *)dst) + padding);
 						}
 					}
@@ -335,7 +337,7 @@ static void platform_resize(int width, int height)
 	gfx_invalidate_screen();
 
 	// Check if the window has been resized in windowed mode and update the config file accordingly
-	// This is called in rct2_update_2 and is only called after resizing a window has finished
+	// This is called in rct2_update and is only called after resizing a window has finished
 	const int nonWindowFlags =
 		SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 	if (!(flags & nonWindowFlags)) {
@@ -347,8 +349,22 @@ static void platform_resize(int width, int height)
 	}
 }
 
+/**
+ * @brief platform_trigger_resize
+ * Helper function to set various render target features.
+ *
+ * Does not get triggered on resize, but rather manually on config changes.
+ */
 void platform_trigger_resize()
 {
+	char scale_quality_buffer[4]; // just to make sure we can hold whole uint8
+	uint8 scale_quality = gConfigGeneral.scale_quality;
+	if (gConfigGeneral.use_nn_at_integer_scales && gConfigGeneral.window_scale == floor(gConfigGeneral.window_scale)) {
+		scale_quality = 0;
+	}
+	snprintf(scale_quality_buffer, sizeof(scale_quality_buffer), "%u", scale_quality);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scale_quality_buffer);
+
 	int w, h;
 	SDL_GetWindowSize(gWindow, &w, &h);
 	platform_resize(w, h);
@@ -426,6 +442,7 @@ void platform_process_messages()
 	gCursorState.middle &= ~CURSOR_CHANGED;
 	gCursorState.right &= ~CURSOR_CHANGED;
 	gCursorState.old = 0;
+	gCursorState.touch = false;
 
 	while (SDL_PollEvent(&e)) {
 		switch (e.type) {
@@ -442,7 +459,7 @@ void platform_process_messages()
 					SDL_RestoreWindow(gWindow);
 					SDL_MaximizeWindow(gWindow);
 				}
-				if (SDL_GetWindowFlags(gWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) {
+				if ((SDL_GetWindowFlags(gWindow) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP) {
 					SDL_RestoreWindow(gWindow);
 					SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 				}
@@ -450,7 +467,7 @@ void platform_process_messages()
 
 			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				platform_resize(e.window.data1, e.window.data2);
-			if (gConfigSound.audio_focus && gConfigSound.sound) {
+			if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
 				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
 					Mixer_SetVolume(1);
 				}
@@ -511,6 +528,50 @@ void platform_process_messages()
 				break;
 			}
 			break;
+// Apple sends touchscreen events for trackpads, so ignore these events on OS X
+#ifndef __MACOSX__
+		case SDL_FINGERMOTION:
+			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * _screenBufferHeight);
+
+			gCursorState.x = (int)(e.tfinger.x * _screenBufferWidth);
+			gCursorState.y = (int)(e.tfinger.y * _screenBufferHeight);
+			break;
+		case SDL_FINGERDOWN:
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+
+			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
+										  && e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+
+			if (gCursorState.touchIsDouble) {
+				store_mouse_input(3);
+				gCursorState.right = CURSOR_PRESSED;
+				gCursorState.old = 2;
+			} else {
+				store_mouse_input(1);
+				gCursorState.left = CURSOR_PRESSED;
+				gCursorState.old = 1;
+			}
+			gCursorState.touch = true;
+			gCursorState.touchDownTimestamp = e.tfinger.timestamp;
+			break;
+		case SDL_FINGERUP:
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+
+			if (gCursorState.touchIsDouble) {
+				store_mouse_input(4);
+				gCursorState.left = CURSOR_RELEASED;
+				gCursorState.old = 4;
+			} else {
+				store_mouse_input(2);
+				gCursorState.left = CURSOR_RELEASED;
+				gCursorState.old = 3;
+			}
+			gCursorState.touch = true;
+			break;
+#endif
 		case SDL_KEYDOWN:
 			if (gTextInputCompositionActive) break;
 
@@ -530,85 +591,59 @@ void platform_process_messages()
 			}
 
 			// Text input
+			if (gTextInput.buffer == NULL) break;
+
+			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (OS X)
+			if (e.key.keysym.sym == SDLK_BACKSPACE && (e.key.keysym.mod & KEYBOARD_PRIMARY_MODIFIER)) {
+				textinputbuffer_clear(&gTextInput);
+				console_refresh_caret();
+				window_update_textbox();
+			}
 
 			// If backspace and we have input text with a cursor position none zero
-			if (e.key.keysym.sym == SDLK_BACKSPACE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition) {
-				int dstIndex = gTextInputCursorPosition;
-				do {
-					if (dstIndex == 0) break;
-					dstIndex--;
-				} while (!utf8_is_codepoint_start(&gTextInput[dstIndex]));
-				int removedCodepointSize = gTextInputCursorPosition - dstIndex;
+			if (e.key.keysym.sym == SDLK_BACKSPACE) {
+				if (gTextInput.selection_offset > 0) {
+					size_t endOffset = gTextInput.selection_offset;
+					textinputbuffer_cursor_left(&gTextInput);
+					gTextInput.selection_size = endOffset - gTextInput.selection_offset;
+					textinputbuffer_remove_selected(&gTextInput);
 
-				// When at max length don't shift the data left
-				// as it would buffer overflow.
-				if (gTextInputCursorPosition != gTextInputMaxLength) {
-					memmove(gTextInput + dstIndex, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - dstIndex);
+					console_refresh_caret();
+					window_update_textbox();
 				}
-				gTextInput[gTextInputLength - removedCodepointSize] = '\0';
-				gTextInputCursorPosition -= removedCodepointSize;
-				gTextInputLength -= removedCodepointSize;
-				console_refresh_caret();
-				window_update_textbox();
-			}
-			if (e.key.keysym.sym == SDLK_END){
-				gTextInputCursorPosition = gTextInputLength;
-				console_refresh_caret();
 			}
 			if (e.key.keysym.sym == SDLK_HOME) {
-				gTextInputCursorPosition = 0;
+				textinputbuffer_cursor_home(&gTextInput);
 				console_refresh_caret();
 			}
-			if (e.key.keysym.sym == SDLK_DELETE && gTextInputLength > 0 && gTextInput != NULL && gTextInputCursorPosition != gTextInputLength) {
-				int dstIndex = gTextInputCursorPosition;
-				do {
-					if (dstIndex == gTextInputLength) break;
-					dstIndex++;
-				} while (!utf8_is_codepoint_start(&gTextInput[dstIndex]));
-				int removedCodepointSize = dstIndex - gTextInputCursorPosition;
-
-				memmove(gTextInput + gTextInputCursorPosition, gTextInput + dstIndex, gTextInputMaxLength - dstIndex);
-				gTextInput[gTextInputMaxLength - removedCodepointSize] = '\0';
-				gTextInputLength -= removedCodepointSize;
+			if (e.key.keysym.sym == SDLK_END) {
+				textinputbuffer_cursor_end(&gTextInput);
+				console_refresh_caret();
+			}
+			if (e.key.keysym.sym == SDLK_DELETE) {
+				size_t startOffset = gTextInput.selection_offset;
+				textinputbuffer_cursor_right(&gTextInput);
+				gTextInput.selection_size = gTextInput.selection_offset - startOffset;
+				gTextInput.selection_offset = startOffset;
+				textinputbuffer_remove_selected(&gTextInput);
 				console_refresh_caret();
 				window_update_textbox();
 			}
-			if (e.key.keysym.sym == SDLK_RETURN && gTextInput != NULL) {
+			if (e.key.keysym.sym == SDLK_RETURN) {
 				window_cancel_textbox();
 			}
-			if (e.key.keysym.sym == SDLK_LEFT && gTextInput != NULL) {
-				do {
-					if (gTextInputCursorPosition == 0) break;
-					gTextInputCursorPosition--;
-				} while (!utf8_is_codepoint_start(&gTextInput[gTextInputCursorPosition]));
+			if (e.key.keysym.sym == SDLK_LEFT) {
+				textinputbuffer_cursor_left(&gTextInput);
 				console_refresh_caret();
 			}
-			else if (e.key.keysym.sym == SDLK_RIGHT && gTextInput != NULL) {
-				do {
-					if (gTextInputCursorPosition == gTextInputLength) break;
-					gTextInputCursorPosition++;
-				} while (!utf8_is_codepoint_start(&gTextInput[gTextInputCursorPosition]));
+			else if (e.key.keysym.sym == SDLK_RIGHT) {
+				textinputbuffer_cursor_right(&gTextInput);
 				console_refresh_caret();
 			}
-			// Checks GUI modifier key for MACs otherwise CTRL key
-#ifdef MAC
-			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_GUI && gTextInput != NULL) {
-#else
-			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL && gTextInput != NULL) {
-#endif
+			else if (e.key.keysym.sym == SDLK_v && (SDL_GetModState() & KEYBOARD_PRIMARY_MODIFIER)) {
 				if (SDL_HasClipboardText()) {
 					utf8 *text = SDL_GetClipboardText();
-					for (int i = 0; text[i] != '\0' && gTextInputLength < gTextInputMaxLength; i++) {
-						// If inserting in center of string make space for new letter
-						if (gTextInputLength > gTextInputCursorPosition){
-							memmove(gTextInput + gTextInputCursorPosition + 1, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - 1);
-							gTextInput[gTextInputCursorPosition] = text[i];
-							gTextInputLength++;
-						} else {
-							gTextInput[gTextInputLength++] = text[i];
-						}
-						gTextInputCursorPosition++;
-					}
+					textinputbuffer_insert(&gTextInput, text);
 					window_update_textbox();
 				}
 			}
@@ -633,35 +668,33 @@ void platform_process_messages()
 			}
 			break;
 		case SDL_TEXTEDITING:
-			safe_strncpy(gTextInputComposition, e.edit.text, min(e.edit.length, 32));
+			// When inputting Korean characters, `e.edit.length` is always Zero.
+			safe_strcpy(gTextInputComposition, e.edit.text, min((e.edit.length == 0) ? (strlen(e.edit.text)+1) : e.edit.length, 32));
 			gTextInputCompositionStart = e.edit.start;
 			gTextInputCompositionLength = e.edit.length;
-			gTextInputCompositionActive = gTextInputComposition[0] != 0;
+			gTextInputCompositionActive = ((e.edit.length != 0 || strlen(e.edit.text) != 0) && gTextInputComposition[0] != 0);
 			break;
 		case SDL_TEXTINPUT:
-			if (gTextInputLength < gTextInputMaxLength && gTextInput){
-				// HACK ` will close console, so don't input any text
-				if (e.text.text[0] == '`' && gConsoleOpen)
-					break;
+			// will receive an `SDL_TEXTINPUT` event when a composition is committed.
+			// so, set gTextInputCompositionActive to false.
+			gTextInputCompositionActive = false;
 
-				utf8 *newText = e.text.text;
-				int newTextLength = strlen(newText);
+			if (gTextInput.buffer == NULL) break;
 
-				// If inserting in center of string make space for new letter
-				if (gTextInputLength > gTextInputCursorPosition) {
-					memmove(gTextInput + gTextInputCursorPosition + newTextLength, gTextInput + gTextInputCursorPosition, gTextInputMaxLength - gTextInputCursorPosition - newTextLength);
-					memcpy(&gTextInput[gTextInputCursorPosition], newText, newTextLength);
-					gTextInputLength += newTextLength;
-				} else {
-					memcpy(&gTextInput[gTextInputLength], newText, newTextLength);
-					gTextInputLength += newTextLength;
-					gTextInput[gTextInputLength] = 0;
-				}
-
-				gTextInputCursorPosition += newTextLength;
-				console_refresh_caret();
-				window_update_textbox();
+			// HACK ` will close console, so don't input any text
+			if (e.text.text[0] == '`' && gConsoleOpen) {
+				break;
 			}
+
+			// Entering formatting characters is not allowed
+			if (utf8_is_format_code(utf8_get_next(e.text.text, NULL))) {
+				break;
+			}
+
+			utf8 *newText = e.text.text;
+			textinputbuffer_insert(&gTextInput, newText);
+			console_refresh_caret();
+			window_update_textbox();
 			break;
 		default:
 			break;
@@ -712,7 +745,6 @@ static void platform_create_window()
 		exit(-1);
 	}
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
 	platform_load_cursors();
@@ -735,10 +767,14 @@ static void platform_create_window()
 	gWindow = SDL_CreateWindow(
 		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE
 	);
+
 	if (!gWindow) {
 		log_fatal("SDL_CreateWindow failed %s", SDL_GetError());
 		exit(-1);
 	}
+
+	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
+	SDL_SetWindowMinimumSize(gWindow, 720, 480);
 
 	// Set the update palette function pointer
 	RCT2_GLOBAL(0x009E2BE4, update_palette_func) = platform_update_palette;
@@ -751,6 +787,7 @@ static void platform_create_window()
 
 	// Check if steam overlay renderer is loaded into the process
 	gSteamOverlayActive = platform_check_steam_overlay_attached();
+	platform_trigger_resize();
 }
 
 int platform_scancode_to_rct_keycode(int sdl_key)
@@ -774,23 +811,22 @@ void platform_free()
 	SDL_Quit();
 }
 
-void platform_start_text_input(char* buffer, int max_length)
+void platform_start_text_input(utf8* buffer, int max_length)
 {
 	// TODO This doesn't work, and position could be improved to where text entry is
 	SDL_Rect rect = { 10, 10, 100, 100 };
 	SDL_SetTextInputRect(&rect);
 
 	SDL_StartTextInput();
-	gTextInputMaxLength = max_length - 1;
-	gTextInput = buffer;
-	gTextInputCursorPosition = strnlen(gTextInput, max_length);
-	gTextInputLength = gTextInputCursorPosition;
+
+	textinputbuffer_init(&gTextInput, buffer, max_length);
 }
 
 void platform_stop_text_input()
 {
 	SDL_StopTextInput();
-	gTextInput = NULL;
+	gTextInput.buffer = NULL;
+	gTextInputCompositionActive = false;
 }
 
 static void platform_unload_cursors()
@@ -828,55 +864,21 @@ void platform_set_fullscreen_mode(int mode)
 }
 
 /**
- *  This is not quite the same as the below function as we don't want to
- *  derfererence the cursor before the function.
+ * This is not quite the same as the below function as we don't want to
+ * derfererence the cursor before the function.
  *  rct2: 0x0407956
  */
-void platform_set_cursor(char cursor)
+void platform_set_cursor(uint8 cursor)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CURENT_CURSOR, uint8) = cursor;
 	SDL_SetCursor(_cursors[cursor]);
 }
 /**
  *
- * rct2: 0x0068352C
+ *  rct2: 0x0068352C
  */
 static void platform_load_cursors()
 {
-	RCT2_GLOBAL(0x14241BC, uint32) = 2;
-#ifdef _WIN32
-	HINSTANCE hInst = RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE);
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ARROW,				HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x74));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_BLANK,				HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA1));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_UP_ARROW,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x6D));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_UP_DOWN_ARROW,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x6E));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_POINT,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x70));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ZZZ,				HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x78));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_DIAGONAL_ARROWS,	HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x77));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_PICKER,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x7C));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_TREE_DOWN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x83));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_FOUNTAIN_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x7F));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_STATUE_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x80));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_BENCH_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x81));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_CROSS_HAIR,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x82));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_BIN_DOWN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x84));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_LAMPPOST_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x85));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_FENCE_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x8A));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_FLOWER_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x89));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_PATH_DOWN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x8B));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_DIG_DOWN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x8D));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_WATER_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x8E));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HOUSE_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x8F));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_VOLCANO_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x90));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_WALK_DOWN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x91));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_PAINT_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x9E));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_ENTRANCE_DOWN,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0x9F));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_OPEN,			HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA6));
-	RCT2_GLOBAL(RCT2_ADDRESS_HCURSOR_HAND_CLOSED,		HCURSOR) = LoadCursor(hInst, MAKEINTRESOURCE(0xA5));
-#else
-	STUB();
-#endif // _WIN32
-
 	_cursors[0] = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
 	_cursors[1] = SDL_CreateCursor(blank_cursor_data, blank_cursor_mask, 32, 32, BLANK_CURSOR_HOTX, BLANK_CURSOR_HOTY);
 	_cursors[2] = SDL_CreateCursor(up_arrow_cursor_data, up_arrow_cursor_mask, 32, 32, UP_ARROW_CURSOR_HOTX, UP_ARROW_CURSOR_HOTY);
@@ -905,7 +907,6 @@ static void platform_load_cursors()
 	_cursors[25] = SDL_CreateCursor(hand_open_cursor_data, hand_open_cursor_mask, 32, 32, HAND_OPEN_CURSOR_HOTX, HAND_OPEN_CURSOR_HOTY);
 	_cursors[26] = SDL_CreateCursor(hand_closed_cursor_data, hand_closed_cursor_mask, 32, 32, HAND_CLOSED_CURSOR_HOTX, HAND_CLOSED_CURSOR_HOTY);
 	platform_set_cursor(CURSOR_ARROW);
-	RCT2_GLOBAL(0x14241BC, uint32) = 0;
 }
 
 void platform_refresh_video()
@@ -1025,13 +1026,13 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	screenDPI->height = height;
 	screenDPI->pitch = _screenBufferPitch - width;
 
-	RCT2_GLOBAL(0x009ABDF0, uint8) = 6;
-	RCT2_GLOBAL(0x009ABDF1, uint8) = 3;
+	RCT2_GLOBAL(0x009ABDF0, uint8) = 7;
+	RCT2_GLOBAL(0x009ABDF1, uint8) = 6;
 	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16) = 64;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16) = 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> 6) + 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> 3) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16) = 1 << RCT2_GLOBAL(0x009ABDF0, uint8);
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16) = 1 << RCT2_GLOBAL(0x009ABDF1, uint8);
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> RCT2_GLOBAL(0x009ABDF0, uint8)) + 1;
+	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> RCT2_GLOBAL(0x009ABDF1, uint8)) + 1;
 }
 
 void platform_hide_cursor()
@@ -1057,4 +1058,18 @@ void platform_set_cursor_position(int x, int y)
 unsigned int platform_get_ticks()
 {
 	return SDL_GetTicks();
+}
+
+uint8 platform_get_currency_value(const char *currCode) {
+	if (currCode == NULL || strlen(currCode) < 3) {
+			return CURRENCY_POUNDS;
+	}
+	
+	for (int currency = 0; currency < CURRENCY_END; ++currency) {
+		if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0) {
+			return currency;
+		}
+	}
+	
+	return CURRENCY_POUNDS;
 }

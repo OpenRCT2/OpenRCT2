@@ -54,6 +54,12 @@ typedef struct {
 	uint8 pad[4];
 } rct_ride_data_4;
 
+typedef struct {
+	uint8 sound_id;
+	uint8 minimum_speed;
+	uint8 maximum_speed;
+} rct_ride_lift_data;
+
 enum {
 	RIDE_TYPE_FLAG4_0 = (1 << 0),
 	RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
@@ -80,6 +86,7 @@ extern const uint8 costPerTrackPiece[0x60];
 extern const uint8 rideUnknownData1[0x60];
 extern const bool rideUnknownData2[0x60];
 extern const uint8 rideUnknownData3[0x60];
+extern const uint8 rideBonusValue[0x60];
 
 extern const rct_ride_name_convention RideNameConvention[96];
 extern const uint8 RideAvailableModes[];
@@ -87,7 +94,7 @@ extern const uint8 AllRideModesAvailable[];
 extern const uint8 RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
-extern const uint8 RideLiftHillAdjustments[0x60];
+extern const rct_ride_lift_data RideLiftData[91];
 
 extern const rct_ride_data_4 RideData4[91];
 
@@ -95,6 +102,9 @@ extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
 extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
 extern const uint32 ShopItemImage[SHOP_ITEM_COUNT];
 
-extern const rct_ride_type_vehicle CableLiftVehicle;
+extern const rct_ride_entry_vehicle CableLiftVehicle;
+
+extern const uint16 RideFilmLength[3];
+extern const uint16 RideCrookedHouseLength[1];
 
 #endif

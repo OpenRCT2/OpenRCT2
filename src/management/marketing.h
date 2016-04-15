@@ -22,6 +22,7 @@
 #define _MARKETING_H_
 
 #include "../common.h"
+#include "../cheats.h"
 #include "../peep/peep.h"
 
 enum {

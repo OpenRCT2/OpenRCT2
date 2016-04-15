@@ -110,39 +110,6 @@ static bool news_item_is_current_old()
  */
 void news_item_update_current()
 {
-	short ax, bx;
-
-	get_system_time();
-
-	ax = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16);
-	bx = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);
-
-	// Cheat detection
-	if (bx != RCT2_GLOBAL(0x009DEA6B, sint16)) {
-		bx--;
-		if (bx == 0)
-			bx = 12;
-		if (bx != RCT2_GLOBAL(0x009DEA6B, sint16) || ax != 1) {
-			// loc_66E2AE
-			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) -= 10000;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) >= 0)
-				RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) = -RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32);
-		}
-	} else {
-		if (ax != RCT2_GLOBAL(0x009DEA69, sint16)) {
-			ax--;
-			if (ax != RCT2_GLOBAL(0x009DEA69, sint16)) {
-				// loc_66E2AE
-				RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) -= 10000;
-				if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) >= 0)
-					RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32) = -RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32);
-			}
-		}
-	}
-
-	RCT2_GLOBAL(0x009DEA69, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_DAY, sint16);
-	RCT2_GLOBAL(0x009DEA6B, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MONTH, sint16);
-
 	// Check if there is a current news item
 	if (news_item_is_queue_empty())
 		return;
@@ -234,7 +201,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 
 	switch (type) {
 	case NEWS_ITEM_RIDE:
-		ride = &g_ride_list[subject];
+		ride = get_ride(subject);
 		if (ride->overall_view == 0xFFFF) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
@@ -257,7 +224,7 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 		}
 
 		// Find which ride peep is on
-		ride = &g_ride_list[peep->current_ride];
+		ride = get_ride(peep->current_ride);
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 			*x = SPRITE_LOCATION_NULL;
 			break;
@@ -291,16 +258,17 @@ void news_item_get_subject_location(int type, int subject, int *x, int *y, int *
 
 
 /**
- * rct2: 0x0066DF55
+ *
+ *  rct2: 0x0066DF55
  *
  * @param  a (al)
  * @param string_id (ebx)
  * @param c (ecx)
- **/
+ */
 void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 {
 	utf8 *buffer = (char*)0x0141EF68;
-	void *args = (void*)0x013CE952;
+	void *args = (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
 
 	format_string(buffer, string_id, args); // overflows possible?
 	news_item_add_to_queue_raw(type, buffer, assoc);
@@ -326,7 +294,7 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 	newsItem->ticks = 0;
 	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
 	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
-	safe_strncpy(newsItem->text, text, 255);
+	safe_strcpy(newsItem->text, text, 255);
 	newsItem->text[254] = 0;
 
 	// blatant disregard for what happens on the last element.
@@ -338,9 +306,9 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 /**
  * Opens the window/tab for the subject of the news item
  *
- * rct2: 0x0066EBE6
+ *  rct2: 0x0066EBE6
  *
- **/
+ */
 void news_item_open_subject(int type, int subject)
 {
 	rct_peep* peep;
@@ -378,7 +346,7 @@ void news_item_open_subject(int type, int subject)
 			if (window != NULL) {
 				window_invalidate(window);
 				if (!tool_set(window, 9, 0)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+					gInputFlags |= INPUT_FLAG_6;
 					window_scenery_open();
 				}
 			}

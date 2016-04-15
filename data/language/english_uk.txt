@@ -1779,7 +1779,7 @@ STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Music
+STR_1777    :{WINDOW_COLOUR_2}Ride music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
@@ -2364,7 +2364,7 @@ STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
 STR_2357    :House
 STR_2358    :Units
 STR_2359    :Real Values
-STR_2360    :{WINDOW_COLOUR_2}Display Resolution:
+STR_2360    :Display Resolution:
 STR_2361    :Landscape Smoothing
 STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
 STR_2363    :Gridlines on Landscape
@@ -2689,7 +2689,7 @@ STR_2680    :All research complete
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
-STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
+STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -2763,8 +2763,8 @@ STR_2753    :Mowed grass
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
-STR_2757    :Force Sun
-STR_2758    :Force Thunder
+STR_2757    :<not used anymore>
+STR_2758    :<not used anymore>
 STR_2759    :Zero Clearance
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
@@ -2781,7 +2781,7 @@ STR_2771    :Slower Gamespeed
 STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
+STR_2775    :Fullscreen (borderless window)
 STR_2776    :Language:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3331,7 +3331,7 @@ STR_3320    :Unable to save scenario file...
 STR_3321    :New objects installed successfully
 STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
 STR_3323    :Missing object data, ID: 
-STR_3324    :Requires Add-On Pack: 
+STR_3324    :Requires Add-On Pack: {STRINGID}
 STR_3325    :Requires an Add-On Pack
 STR_3326    :{WINDOW_COLOUR_2}(no image)
 STR_3327    :Starting positions for people not set
@@ -3465,7 +3465,7 @@ STR_5123    :Renew rides
 STR_5124    :<not used anymore>
 STR_5125    :All destructable
 STR_5126    :Random title music
-STR_5127    :{SMALLFONT}{BLACK}Disable land elevation
+STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
 STR_5128    :Selection size
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Map size
@@ -3475,7 +3475,7 @@ STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
 STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
 STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
 STR_5136    :Land rights
-STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
+STR_5137    :Unlock operating limits
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
@@ -3503,19 +3503,19 @@ STR_5161    :Date Format:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
 STR_5164    :Twitch Channel name
-STR_5165    :Name peeps after followers
-STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
-STR_5167    :Track follower peeps
+STR_5165    :Name guests after followers
+STR_5166    :{SMALLFONT}{BLACK}Will name guests after channel's Twitch followers
+STR_5167    :Track follower guests
 STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
-STR_5169    :Name peeps after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
-STR_5171    :Track chat peeps
+STR_5169    :Name guests after people in Twitch chat
+STR_5170    :{SMALLFONT}{BLACK}Will name guests after people in Twitch chat
+STR_5171    :Track chat guests
 STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
 STR_5173    :Pull Twitch chat as news
 STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
-STR_5177    :Fullscreen mode:
+STR_5177    :Screen mode:
 STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
 STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
@@ -3569,7 +3569,7 @@ STR_5227    :Save Overwrite Prompt
 STR_5228    :{SMALLFONT}{BLACK}Main UI
 STR_5229    :{SMALLFONT}{BLACK}Park
 STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
+STR_5231    :{SMALLFONT}{BLACK}Rides and Guests
 STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
@@ -3677,8 +3677,8 @@ STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
 STR_5338    :Element type
-STR_5339    :Base height
-STR_5340    :Clearance height
+STR_5339    :{SMALLFONT}{BLACK}Base height
+STR_5340    :{SMALLFONT}{BLACK}Clearance height
 STR_5341    :Flags
 STR_5342    :Choose a map tile
 STR_5343    :Automatically place staff
@@ -3894,7 +3894,7 @@ STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {M
 STR_5553    :Pause game when Steam overlay is open
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
-STR_5556    :Kick Player
+STR_5556    :{SMALLFONT}{BLACK}Kick player
 STR_5557    :Stay connected after desynchronisation (Multiplayer)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
@@ -3919,6 +3919,635 @@ STR_5577    :South Korean Won (W)
 STR_5578    :Russian Rouble (R)
 STR_5579    :Window scale factor:
 STR_5580    :Czech koruna (Kc)
+STR_5581    :Show FPS
+STR_5582    :Trap mouse cursor in window
+STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5584    :SI
+STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
+STR_5586    :Automatically open shops and stalls
+STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after building them
+STR_5588    :{SMALLFONT}{BLACK}Play with other players
+STR_5589    :Notification Settings
+STR_5590    :Park awards
+STR_5591    :Marketing campaign has finished
+STR_5592    :Park warnings
+STR_5593    :Park rating warnings
+STR_5594    :Ride has broken down
+STR_5595    :Ride has crashed
+STR_5596    :Ride warnings
+STR_5597    :Ride / scenery researched
+STR_5598    :Guest warnings
+STR_5599    :Guest is lost
+STR_5600    :Guest has left the park
+STR_5601    :Guest is queuing for ride
+STR_5602    :Guest is on ride
+STR_5603    :Guest has left ride
+STR_5604    :Guest has bought item
+STR_5605    :Guest has used facility
+STR_5606    :Guest has died
+STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
+STR_5608    :BH
+STR_5609    :CH
+STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5611    :G
+STR_5612    :{SMALLFONT}{BLACK}Ghost flag
+STR_5613    :B
+STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5615    :L
+STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
+STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
+STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
+STR_5619    :RollerCoaster Tycoon
+STR_5620    :Added Attractions
+STR_5621    :Loopy Landscapes
+STR_5622    :RollerCoaster Tycoon 2
+STR_5623    :Wacky Worlds
+STR_5624    :Time Twister
+STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_5626    :Other Parks
+STR_5627    :Group scenario list by:
+STR_5628    :Source game
+STR_5629    :Difficulty level
+STR_5630    :Enable unlocking of scenarios
+STR_5631    :Original DLC Parks
+STR_5632    :Build your own...
+STR_5633    :CMD + 
+STR_5634    :OPTION + 
+STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
+STR_5637    :Can't do this...
+STR_5638    :Permission denied
+STR_5639    :{SMALLFONT}{BLACK}Show list of players
+STR_5640    :{SMALLFONT}{BLACK}Manage groups
+STR_5641    :Default Group:
+STR_5642    :Group:
+STR_5643    :Add Group
+STR_5644    :Remove Group
+STR_5645    :Chat
+STR_5646    :Terraform
+STR_5647    :Toggle Pause
+STR_5648    :Set Water Level
+STR_5649    :Create Ride
+STR_5650    :Remove Ride
+STR_5651    :Build Ride
+STR_5652    :Ride Properties
+STR_5653    :Scenery
+STR_5654    :Path
+STR_5655    :Guest
+STR_5656    :Staff
+STR_5657    :Park Properties
+STR_5658    :Park Funding
+STR_5659    :Kick Player
+STR_5660    :Modify Groups
+STR_5661    :Set Player Group
+STR_5662    :N/A
+STR_5663    :Clear Landscape
+STR_5664    :Cheat
+STR_5665    :Toggle Scenery Cluster
+STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
+STR_5703    :Can't kick the host
+STR_5704    :Last Action:
+STR_5705    :Can't set to this group
+STR_5706    :Can't remove group that players belong to
+STR_5707    :This group cannot be modified
+STR_5708    :Can't change the group that the host belongs to
+STR_5709    :Rename Group
+STR_5710    :Group name
+STR_5711    :Enter new name for this group:
+STR_5712    :Can't modify permission that you do not have yourself
+STR_5713    :Kick Player
+STR_5714    :Show options window
+STR_5715    :New Game
+STR_5716    :Not allowed in multiplayer mode
+# For identifying client network version in server list window
+STR_5717    :Network version: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
+STR_5719    :Sunny
+STR_5720    :Partially Cloudy
+STR_5721    :Cloudy
+STR_5722    :Rain
+STR_5723    :Heavy Rain
+STR_5724    :Thunderstorm
+STR_5725    :{BLACK}Force weather:
+STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
+STR_5727    :Scaling quality
+STR_5728    :Requires hardware display option
+STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
+STR_5730    :Nearest neighbour
+STR_5731    :Linear
+STR_5732    :Anisotropic
+STR_5733    :Use NN scaling at integer scales
+# tooltip for tab in options window
+STR_5734    :{SMALLFONT}{BLACK}Rendering
+STR_5735    :Network Status
+STR_5736    :Player
+STR_5737    :Closed, {COMMA16} person still on ride
+STR_5738    :Closed, {COMMA16} people still on ride
+STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
+STR_5740    :Never-ending marketing campaigns
+STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
+STR_5742    :Authenticating ...
+STR_5743    :Connecting ...
+STR_5744    :Resolving ...
+STR_5745    :Network desync detected
+STR_5746    :Disconnected
+STR_5747    :Disconnected: {STRING}
+STR_5748    :Kicked
+STR_5749    :Get out of the server!
+STR_5750    :Connection Closed
+STR_5751    :No Data
+STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
+STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
+STR_5754    :Bad Player Name
+STR_5755    :Incorrect Software Version
+STR_5756    :Bad Password
+STR_5757    :Server Full
+STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
+STR_5759    :Downloading map ... ({INT32} / {INT32})
+STR_5760    :Hong Kong Dollars (HK$)
+STR_5761    :New Taiwan Dollar (NT$)
+STR_5762    :Chinese Yuan (CN{YEN})
+STR_5763    :All files
+STR_5764    :Invalid ride type
+STR_5765    :Cannot edit rides of invalid type
+STR_5766    :<available string id>
+STR_5767    :Income
+STR_5768    :Total customers
+STR_5769    :Total profit
+STR_5770    :Customers per hour
+STR_5771    :Running cost
+STR_5772    :Age
+STR_5773    :Total customers: {COMMA32}
+STR_5774    :Total profit: {CURRENCY2DP}
+STR_5775    :Customers: {COMMA32} per hour
+STR_5776    :Built: This Year
+STR_5777    :Built: Last Year
+STR_5778    :Built: {COMMA16} Years Ago
+STR_5779    :Income: {CURRENCY2DP} per hour
+STR_5780    :Running cost: {CURRENCY2DP} per hour
+STR_5781    :Running cost: Unknown
+STR_5782    :You are now connected. Press '{STRING}' to chat.
+STR_5783    :{WINDOW_COLOUR_2}Scenario Locked
+STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
+STR_5785    :Can't rename group...
+STR_5786    :Invalid group name
+STR_5787    :{COMMA32} players online
+STR_5788    :Default inspection interval:
+STR_5789    :Disable lightning effect
+STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
+STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
+STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
+STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
+STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
+STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
+STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
+STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
+STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
+STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
+
+#############
+# Scenarios #
+################
+# RCT Original #
+################
+<Forest Frontiers>
+STR_SCNR    :Forest Frontiers
+STR_PARK    :Forest Frontiers
+STR_DTLS    :Deep in the forest, build a thriving theme park in a large cleared area
+
+<Dynamite Dunes>
+STR_SCNR    :Dynamite Dunes
+STR_PARK    :Dynamite Dunes
+STR_DTLS    :Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion
+
+<Leafy Lake>
+STR_SCNR    :Leafy Lake
+STR_PARK    :Leafy Lake
+STR_DTLS    :Starting from scratch, build a theme park around a large lake
+
+<Diamond Heights>
+STR_SCNR    :Diamond Heights
+STR_PARK    :Diamond Heights
+STR_DTLS    :Diamond Heights is already a successful theme park with great rides - develop it to double its value
+
+<Evergreen Gardens>
+STR_SCNR    :Evergreen Gardens
+STR_PARK    :Evergreen Gardens
+STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
+
+<Bumbly Beach>
+STR_SCNR    :Bumbly Beach
+STR_PARK    :Bumbly Beach
+STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+
+<Trinity Islands>
+STR_SCNR    :Trinity Islands
+STR_PARK    :Trinity Islands
+STR_DTLS    :Several islands form the basis for this new park
+
+<Katie's Dreamland>
+STR_SCNR    :Katie's Dreamland
+STR_PARK    :Katie's Dreamland
+STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
+
+<Pokey Park>
+STR_SCNR    :Pokey Park
+STR_PARK    :Pokey Park
+STR_DTLS    :A small, cramped amusement park which requires major expansion
+
+<White Water Park>
+STR_SCNR    :White Water Park
+STR_PARK    :White Water Park
+STR_DTLS    :A park with some excellent water-based rides requires expansion
+
+<Millennium Mines>
+STR_SCNR    :Millennium Mines
+STR_PARK    :Millennium Mines
+STR_DTLS    :Convert a large abandoned mine from a tourist attraction into a theme park
+
+<Karts & Coasters>
+STR_SCNR    :Karts & Coasters
+STR_PARK    :Karts & Coasters
+STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
+
+<Mel's World>
+STR_SCNR    :Mel's World
+STR_PARK    :Mel's World
+STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
+
+<Mystic Mountain>
+STR_SCNR    :Mystic Mountain
+STR_PARK    :Mystic Mountain
+STR_DTLS    :In the hilly forests of Mystic Mountain, build a theme park from scratch
+
+<Pacific Pyramids>
+STR_SCNR    :Pacific Pyramids
+STR_PARK    :Pacific Pyramids
+STR_DTLS    :Convert the Egyptian Ruins tourist attraction into a thriving theme park
+
+<Crumbly Woods>
+STR_SCNR    :Crumbly Woods
+STR_PARK    :Crumbly Woods
+STR_DTLS    :A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular
+
+<Paradise Pier>
+STR_SCNR    :Paradise Pier
+STR_PARK    :Paradise Pier
+STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+
+<Lightning Peaks>
+STR_SCNR    :Lightning Peaks
+STR_PARK    :Lightning Peaks
+STR_DTLS    :The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele
+
+<Ivory Towers>
+STR_SCNR    :Ivory Towers
+STR_PARK    :Ivory Towers
+STR_DTLS    :A well-established park, which has a few problems
+
+<Rainbow Valley>
+STR_SCNR    :Rainbow Valley
+STR_PARK    :Rainbow Valley
+STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+
+<Thunder Rock>
+STR_SCNR    :Thunder Rock
+STR_PARK    :Thunder Rock
+STR_DTLS    :Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people
+
+<Mega Park>
+STR_SCNR    :Mega Park
+STR_PARK    :Mega Park
+STR_DTLS    :Just for fun!
+
+## Added Attractions
+<Whispering Cliffs>
+STR_SCNR    :Whispering Cliffs
+STR_PARK    :Whispering Cliffs
+STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+
+<Three Monkeys Park>
+STR_SCNR    :Three Monkeys Park
+STR_PARK    :Three Monkeys Park
+STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+
+<Canary Mines>
+STR_SCNR    :Canary Mines
+STR_PARK    :Canary Mines
+STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its minature railway and a pair of vertical drop roller coasters
+
+<Barony Bridge>
+STR_SCNR    :Barony Bridge
+STR_PARK    :Barony Bridge
+STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+
+<Funtopia>
+STR_SCNR    :Funtopia
+STR_PARK    :Funtopia
+STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+
+<Haunted Harbor>
+STR_SCNR    :Haunted Harbor
+STR_PARK    :Haunted Harbor
+STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+
+<Fun Fortress>
+STR_SCNR    :Fun Fortress
+STR_PARK    :Fun Fortress
+STR_DTLS    :This castle is all yours to turn into a theme park
+
+<Future World>
+STR_SCNR    :Future World
+STR_PARK    :Future World
+STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+
+<Gentle Glen>
+STR_SCNR    :Gentle Glen
+STR_PARK    :Gentle Glen
+STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+
+<Jolly Jungle>
+STR_SCNR    :Jolly Jungle
+STR_PARK    :Jolly Jungle
+STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+
+<Hydro Hills>
+STR_SCNR    :Hydro Hills
+STR_PARK    :Hydro Hills
+STR_DTLS    :A series of stepped lakes form the basis for this new park
+
+<Sprightly Park>
+STR_SCNR    :Sprightly Park
+STR_PARK    :Sprightly Park
+STR_DTLS    :This elderly park has many historical rides but is badly in debt
+
+<Magic Quarters>
+STR_SCNR    :Magic Quarters
+STR_PARK    :Magic Quarters
+STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+
+<Fruit Farm>
+STR_SCNR    :Fruit Farm
+STR_PARK    :Fruit Farm
+STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+
+<Butterfly Dam>
+STR_SCNR    :Butterfly Dam
+STR_PARK    :Butterfly Dam
+STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+
+<Coaster Canyon>
+STR_SCNR    :Coaster Canyon
+STR_PARK    :Coaster Canyon
+STR_DTLS    :A vast canyon is yours to turn into a theme park
+
+<Thunderstorm Park>
+STR_SCNR    :Thunderstorm Park
+STR_PARK    :Thunderstorm Park
+STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+
+<Harmonic Hills>
+STR_SCNR    :Harmonic Hills
+STR_PARK    :Harmonic Hills
+STR_DTLS    :The local authority won't allow you to build above tree height in this park
+
+<Roman Village>
+STR_SCNR    :Roman Village
+STR_PARK    :Roman Village
+STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+
+<Swamp Cove>
+STR_SCNR    :Swamp Cove
+STR_PARK    :Swamp Cove
+STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+
+<Adrenaline Heights>
+STR_SCNR    :Adrenaline Heights
+STR_PARK    :Adrenaline Heights
+STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+
+<Utopia Park>
+STR_SCNR    :Utopia Park
+STR_PARK    :Utopia Park
+STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+
+<Rotting Heights>
+STR_SCNR    :Rotting Heights
+STR_PARK    :Rotting Heights
+STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+
+<Fiasco Forest>
+STR_SCNR    :Fiasco Forest
+STR_PARK    :Fiasco Forest
+STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+
+<Pickle Park>
+STR_SCNR    :Pickle Park
+STR_PARK    :Pickle Park
+STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+
+<Giggle Downs>
+STR_SCNR    :Giggle Downs
+STR_PARK    :Giggle Downs
+STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+
+<Mineral Park>
+STR_SCNR    :Mineral Park
+STR_PARK    :Mineral Park
+STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+
+<Coaster Crazy>
+STR_SCNR    :Coaster Crazy
+STR_PARK    :Coaster Crazy
+STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+
+<Urban Park>
+STR_SCNR    :Urban Park
+STR_PARK    :Urban Park
+STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+
+<Geoffrey Gardens>
+STR_SCNR    :Geoffrey Gardens
+STR_PARK    :Geoffrey Gardens
+STR_DTLS    :A large garden park needs turning into a thriving theme park
+
+
+## Loopy Landscapes
+<Iceberg Islands>
+STR_SCNR    :Iceberg Islands
+STR_PARK    :Iceberg Islands
+STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+
+<Volcania>
+STR_SCNR    :Volcania
+STR_PARK    :Volcania
+STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+
+<Arid Heights>
+STR_SCNR    :Arid Heights
+STR_PARK    :Arid Heights
+STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+
+<Razor Rocks>
+STR_SCNR    :Razor Rocks
+STR_PARK    :Razor Rocks
+STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+
+<Crater Lake>
+STR_SCNR    :Crater Lake
+STR_PARK    :Crater Lake
+STR_DTLS    :A large lake in an ancient crater is the setting for this park
+
+<Vertigo Views>
+STR_SCNR    :Vertigo Views
+STR_PARK    :Vertigo Views
+STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+
+<Paradise Pier 2>
+STR_SCNR    :Paradise Pier 2
+STR_PARK    :Paradise Pier 2
+STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+
+<Dragon's Cove>
+STR_SCNR    :Dragon's Cove
+STR_PARK    :Dragon's Cove
+STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+
+<Good Knight Park>
+STR_SCNR    :Good Knight Park
+STR_PARK    :Good Knight Park
+STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+
+<Wacky Warren>
+STR_SCNR    :Wacky Warren
+STR_PARK    :Wacky Warren
+STR_DTLS    :A park which has much of its footpaths and coasters underground
+
+<Grand Glacier>
+STR_SCNR    :Grand Glacier
+STR_PARK    :Grand Glacier
+STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+
+<Crazy Craters>
+STR_SCNR    :Crazy Craters
+STR_PARK    :Crazy Craters
+STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+
+<Dusty Desert>
+STR_SCNR    :Dusty Desert
+STR_PARK    :Dusty Desert
+STR_DTLS    :Five coasters require completion in this desert park
+
+<Woodworm Park>
+STR_SCNR    :Woodworm Park
+STR_PARK    :Woodworm Park
+STR_DTLS    :This historical park is only allowed to build older-styled rides
+
+<Icarus Park>
+STR_SCNR    :Icarus Park
+STR_PARK    :Icarus Park
+STR_DTLS    :Develop this alien park to maximize its profit
+
+<Sunny Swamps>
+STR_SCNR    :Sunny Swamps
+STR_PARK    :Sunny Swamps
+STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+
+<Frightmare Hills>
+STR_SCNR    :Frightmare Hills
+STR_PARK    :Frightmare Hills
+STR_DTLS    :A scary park with a giant centrepiece coaster
+
+<Thunder Rocks>
+STR_SCNR    :Thunder Rocks
+STR_PARK    :Thunder Rocks
+STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+
+<Octagon Park>
+STR_SCNR    :Octagon Park
+STR_PARK    :Octagon Park
+STR_DTLS    :In this large park you must design and build ten large coasters
+
+<Pleasure Island>
+STR_SCNR    :Pleasure Island
+STR_PARK    :Pleasure Island
+STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+
+<Icicle Worlds>
+STR_SCNR    :Icicle Worlds
+STR_PARK    :Icicle Worlds
+STR_DTLS    :An icy landscape needs turning into a thriving theme park
+
+<Southern Sands>
+STR_SCNR    :Southern Sands
+STR_PARK    :Southern Sands
+STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+
+<Tiny Towers>
+STR_SCNR    :Tiny Towers
+STR_PARK    :Tiny Towers
+STR_DTLS    :In this tiny park you must finish building the five existing coasters
+
+<Nevermore Park>
+STR_SCNR    :Nevermore Park
+STR_PARK    :Nevermore Park
+STR_DTLS    :A large park with a novel transporation system around its edge
+
+<Pacifica>
+STR_SCNR    :Pacifica
+STR_PARK    :Pacifica
+STR_DTLS    :This large island is all yours to develop as an amusement park
+
+<Urban Jungle>
+STR_SCNR    :Urban Jungle
+STR_PARK    :Urban Jungle
+STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme park developer
+
+<Terror Town>
+STR_SCNR    :Terror Town
+STR_PARK    :Terror Town
+STR_DTLS    :This urban area is all yours to develop into an amusement park
+
+<Megaworld Park>
+STR_SCNR    :Megaworld Park
+STR_PARK    :Megaworld Park
+STR_DTLS    :A giant park already packed full of rides needs improving
+
+<Venus Ponds>
+STR_SCNR    :Venus Ponds
+STR_PARK    :Venus Ponds
+STR_DTLS    :On a far-away planet this area of land needs turning into a theme park
+
+<Micro Park>
+STR_SCNR    :Micro Park
+STR_PARK    :Micro Park
+STR_DTLS    :Try to create the world's smallest profitable park
+
+## Real Parks from RCT1
+# None of them had details
+<Alton Towers>
+STR_SCNR    :Alton Towers
+STR_PARK    :Alton Towers
+STR_DTLS    :
+
+<Heide-Park>
+STR_SCNR    :Heide-Park
+STR_PARK    :Heide-Park
+STR_DTLS    :
+
+<Blackpool Pleasure Beach>
+STR_SCNR    :Blackpool Pleasure Beach
+STR_PARK    :Blackpool Pleasure Beach
+STR_DTLS    :
+
+## Misc parks from RCT1
+# Had no details
+<Fort Anachronism>
+STR_SCNR    :Fort Anachronism
+STR_PARK    :Fort Anachronism
+STR_DTLS    :
 
 #####################
 # Rides/attractions #

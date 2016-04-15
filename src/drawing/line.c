@@ -20,7 +20,7 @@
 
 #include "drawing.h"
 
-/*
+/**
  * Draws a horizontal line of specified colour to a buffer.
  *  rct2: 0x0068474C
  */

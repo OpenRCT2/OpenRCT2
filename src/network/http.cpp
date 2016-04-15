@@ -10,13 +10,18 @@ void http_dispose() { }
 
 #else
 
-#include <SDL.h>
+#include "../core/Math.hpp"
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
 
-// cURL includes windows.h, but we don't need all of it.
-#define WIN32_LEAN_AND_MEAN
+#ifdef __WINDOWS__
+	// cURL includes windows.h, but we don't need all of it.
+	#define WIN32_LEAN_AND_MEAN
+#endif
 #include <curl/curl.h>
 
 #define MIME_TYPE_APPLICATION_JSON "application/json"
+#define DEFAULT_CA_BUNDLE_PATH "curl-ca-bundle.crt"
 
 typedef struct {
 	char *ptr;
@@ -30,9 +35,22 @@ typedef struct {
 	int capacity;
 } write_buffer;
 
+#ifdef __WINDOWS__
+static utf8 _caBundlePath[MAX_PATH];
+#endif
+
 void http_init()
 {
 	curl_global_init(CURL_GLOBAL_DEFAULT);
+
+#ifdef __WINDOWS__
+	// Find SSL certificate bundle
+	platform_get_exe_path(_caBundlePath);
+	Path::Append(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);
+	if (!platform_file_exists(_caBundlePath)) {
+		String::Set(_caBundlePath, sizeof(_caBundlePath), DEFAULT_CA_BUNDLE_PATH);
+	}
+#endif
 }
 
 void http_dispose()
@@ -65,7 +83,7 @@ static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void
 		int newCapacity = writeBuffer->capacity;
 		int newLength = writeBuffer->length + newBytesLength;
 		while (newLength > newCapacity) {
-			newCapacity = max(4096, newCapacity * 2);
+			newCapacity = Math::Max(4096, newCapacity * 2);
 		}
 		if (newCapacity != writeBuffer->capacity) {
 			writeBuffer->ptr = (char*)realloc(writeBuffer->ptr, newCapacity);
@@ -116,9 +134,9 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
-#ifndef __linux__
-        // On GNU/Linux, curl will use the system certs by default
-	curl_easy_setopt(curl, CURLOPT_CAINFO, "curl-ca-bundle.crt");
+#ifdef __WINDOWS__
+	// On GNU/Linux (and OS X), curl will use the system certs by default
+	curl_easy_setopt(curl, CURLOPT_CAINFO, _caBundlePath);
 #endif
 	curl_easy_setopt(curl, CURLOPT_URL, request->url);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);

@@ -43,9 +43,9 @@ void keyboard_shortcut_set(int key)
 	int i;
 
 	// Unmap shortcut that already uses this key
-	for (i = 0; i < 32; i++) {
+	for (i = 0; i < SHORTCUT_COUNT; i++) {
 		if (key == gShortcutKeys[i]) {
-			gShortcutKeys[i] = 0xFFFF;
+			gShortcutKeys[i] = SHORTCUT_UNDEFINED;
 			break;
 		}
 	}
@@ -87,7 +87,7 @@ void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
 	char formatBuffer[256];
 
 	*buffer = 0;
-	if (shortcutKey == 0xFFFF) return;
+	if (shortcutKey == SHORTCUT_UNDEFINED) return;
 	if (shortcutKey & 0x100) {
 		format_string(formatBuffer, STR_SHIFT_PLUS, NULL);
 		strcat(buffer, formatBuffer);
@@ -97,7 +97,15 @@ void keyboard_shortcut_format_string(char *buffer, uint16 shortcutKey)
 		strcat(buffer, formatBuffer);
 	}
 	if (shortcutKey & 0x400) {
+#ifdef __MACOSX__
+		format_string(formatBuffer, STR_OPTION_PLUS, NULL);
+#else
 		format_string(formatBuffer, STR_ALT_PLUS, NULL);
+#endif
+		strcat(buffer, formatBuffer);
+	}
+	if (shortcutKey & 0x800) {
+		format_string(formatBuffer, STR_CMD_PLUS, NULL);
 		strcat(buffer, formatBuffer);
 	}
 	strcat(buffer, SDL_GetScancodeName(shortcutKey & 0xFF));
@@ -136,7 +144,7 @@ static void shortcut_cancel_construction_mode()
 	window = window_find_by_class(WC_ERROR);
 	if (window != NULL)
 		window_close(window);
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	else if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		tool_cancel();
 }
 
@@ -472,12 +480,14 @@ static void shortcut_screenshot()
 
 static void shortcut_reduce_game_speed()
 {
-	game_reduce_game_speed();
+	if (network_get_mode() == NETWORK_MODE_NONE)
+		game_reduce_game_speed();
 }
 
 static void shortcut_increase_game_speed()
 {
-	game_increase_game_speed();
+	if (network_get_mode() == NETWORK_MODE_NONE)
+		game_increase_game_speed();
 }
 
 static void shortcut_open_cheat_window()
@@ -512,6 +522,11 @@ static void shortcut_quick_save_game()
 		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 		window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
 	}
+}
+
+static void shortcut_show_options()
+{
+	window_options_open();
 }
 
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -560,6 +575,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	NULL,
 	shortcut_open_chat_window,
 	shortcut_quick_save_game,
+	shortcut_show_options,
 };
 
 #pragma endregion

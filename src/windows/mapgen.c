@@ -391,7 +391,7 @@ static uint32 window_mapgen_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-const int window_mapgen_tab_animation_loops[] = { 16, 16 };
+const int window_mapgen_tab_animation_loops[] = { 16, 16, 16 };
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 15
 #define MAXIMUM_MAP_SIZE_TECHNICAL 256
@@ -429,7 +429,7 @@ static int _placeTrees = 1;
 
 static int	 _simplex_low = 6;
 static int	 _simplex_high = 10;
-static sint16 _simplex_base_freq = 60;
+static sint32 _simplex_base_freq = 60;
 static int	 _simplex_octaves = 4;
 
 rct_window *window_mapgen_open()
@@ -488,19 +488,19 @@ static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
 		gfx_invalidate_screen();
 		break;
 	case WIDX_MAP_SIZE:
-		((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-		((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 		// Practical map size is 2 lower than the technical map size
 		window_text_input_open(w, WIDX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
 		break;
 	case WIDX_BASE_HEIGHT:
-		((uint16*)TextInputDescriptionArgs)[0] = (BASESIZE_MIN - 12) / 2;
-		((uint16*)TextInputDescriptionArgs)[1] = (BASESIZE_MAX - 12) / 2;
+		TextInputDescriptionArgs[0] = (BASESIZE_MIN - 12) / 2;
+		TextInputDescriptionArgs[1] = (BASESIZE_MAX - 12) / 2;
 		window_text_input_open(w, WIDX_BASE_HEIGHT, 5183, 5184, 5182, (_baseHeight - 12) / 2, 3);
 		break;
 	case WIDX_WATER_LEVEL:
-		((uint16*)TextInputDescriptionArgs)[0] = (WATERLEVEL_MIN - 12) / 2;
-		((uint16*)TextInputDescriptionArgs)[1] = (WATERLEVEL_MAX - 12) / 2;
+		TextInputDescriptionArgs[0] = (WATERLEVEL_MIN - 12) / 2;
+		TextInputDescriptionArgs[1] = (WATERLEVEL_MAX - 12) / 2;
 		window_text_input_open(w, WIDX_WATER_LEVEL, 5185, 5186, 5182, (_waterLevel - 12) / 2, 3);
 		break;
 	}
@@ -509,7 +509,7 @@ static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
 static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
 	int i;
-
+	int defaultIndex = -1;
 	switch (widgetIndex) {
 	case WIDX_MAP_SIZE_UP:
 		_mapSize = min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
@@ -540,7 +540,7 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + window_land_floor_texture_order[i];
 			if (window_land_floor_texture_order[i] == _floorTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -551,13 +551,14 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[14]
 		);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	case WIDX_WALL_TEXTURE:
 		for (i = 0; i < 4; i++) {
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + window_land_wall_texture_order[i];
 			if (window_land_wall_texture_order[i] == _wallTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -568,6 +569,7 @@ static void window_mapgen_base_mousedown(int widgetIndex, rct_window *w, rct_wid
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[4]
 		);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	}
 }
@@ -583,7 +585,7 @@ static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int drop
 
 		type = (dropdownIndex == -1) ?
 			_floorTexture :
-			*((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_FLOOR_TEXTURE_GRASS;
+			(uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
@@ -599,7 +601,7 @@ static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int drop
 
 		type = (dropdownIndex == -1) ?
 			_wallTexture :
-			*((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_WALL_TEXTURE_ROCK;
+			(uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
@@ -790,8 +792,8 @@ static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
 		window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_SIMPLEX_MAP_SIZE:
-		((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_MAP_SIZE_PRACTICAL;
-		((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
+		TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 		// Practical map size is 2 lower than the technical map size
 		window_text_input_open(w, WIDX_SIMPLEX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
 		break;
@@ -818,7 +820,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
 static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_widget* widget)
 {
 	int i;
-
+	int defaultIndex = -1;
 	switch (widgetIndex) {
 	case WIDX_SIMPLEX_LOW_UP:
 		_simplex_low = min(_simplex_low + 1, 24);
@@ -873,7 +875,7 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_FLOOR_TEXTURE_GRASS + window_land_floor_texture_order[i];
 			if (window_land_floor_texture_order[i] == _floorTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -884,13 +886,14 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[14]
 			);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	case WIDX_SIMPLEX_WALL_TEXTURE:
 		for (i = 0; i < 4; i++) {
 			gDropdownItemsFormat[i] = -1;
 			gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + window_land_wall_texture_order[i];
 			if (window_land_wall_texture_order[i] == _wallTexture)
-				gDropdownHighlightedIndex = i;
+				defaultIndex = i;
 		}
 		window_dropdown_show_image(
 			w->x + widget->left, w->y + widget->top,
@@ -901,6 +904,7 @@ static void window_mapgen_simplex_mousedown(int widgetIndex, rct_window *w, rct_
 			47, 36,
 			gAppropriateImageDropdownItemsPerRow[4]
 			);
+		gDropdownDefaultIndex = defaultIndex;
 		break;
 	}
 }
@@ -916,7 +920,7 @@ static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int d
 
 		type = (dropdownIndex == -1) ?
 		_floorTexture :
-					  *((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_FLOOR_TEXTURE_GRASS;
+					  (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
@@ -933,7 +937,7 @@ static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int d
 
 		type = (dropdownIndex == -1) ?
 		_wallTexture :
-					 *((uint32*)&gDropdownItemsArgs[dropdownIndex]) - SPR_WALL_TEXTURE_ROCK;
+					 (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
 			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;

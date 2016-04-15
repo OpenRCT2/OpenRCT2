@@ -20,27 +20,37 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-#include <libgen.h>
-#include <SDL_syswm.h>
-#include <sys/stat.h>
+#include <dirent.h>
 #include <errno.h>
+#include <fnmatch.h>
+#include <libgen.h>
+#include <locale.h>
+#include <sys/stat.h>
+#include <sys/time.h>
 #include <pwd.h>
+#include <time.h>
+#include <SDL_syswm.h>
 #include "../addresses.h"
-#include "../cmdline.h"
-#include "../openrct2.h"
-#include "../localisation/language.h"
-#include "../localisation/currency.h"
 #include "../config.h"
-#include "platform.h"
+#include "../localisation/language.h"
+#include "../openrct2.h"
 #include "../util/util.h"
+#include "platform.h"
 #include <dirent.h>
 #include <fnmatch.h>
+#include <locale.h>
+#include <sys/time.h>
 #include <time.h>
+#include <fts.h>
+#include <sys/file.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-#define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
+#define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
+
+#define FILE_BUFFER_SIZE 4096
 
 utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 /**
  * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
@@ -48,10 +58,6 @@ utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
  */
 int main(int argc, const char **argv)
 {
-	//RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
-	//RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
-
-	STUB();
 	int run_game = cmdline_run(argv, argc);
 	if (run_game == 1)
 	{
@@ -92,6 +98,11 @@ char platform_get_path_separator()
 	return '/';
 }
 
+const char *platform_get_new_line()
+{
+	return "\n";
+}
+
 bool platform_file_exists(const utf8 *path)
 {
 	wchar_t *wPath = utf8_to_widechar(path);
@@ -101,7 +112,7 @@ bool platform_file_exists(const utf8 *path)
 	buffer[len] = '\0';
 	free(wPath);
 	bool exists = access(buffer, F_OK) != -1;
-	log_warning("file '%s' exists = %i", buffer, exists);
+	log_verbose("file '%s' exists = %i", buffer, exists);
 	return exists;
 }
 
@@ -148,10 +159,10 @@ bool platform_ensure_directory_exists(const utf8 *path)
 	mode_t mask = getumask();
 
 	wchar_t *wPath = utf8_to_widechar(path);
-	int len = min(MAX_PATH, utf8_length(path));
+	int len = min(MAX_PATH - 1, utf8_length(path));
 	char buffer[MAX_PATH];
 	wcstombs(buffer, wPath, len);
-	buffer[len - 1] = '\0';
+	buffer[len] = '\0';
 	free(wPath);
 	log_verbose("%s", buffer);
 	const int result = mkdir(buffer, mask);
@@ -162,13 +173,85 @@ bool platform_ensure_directory_exists(const utf8 *path)
 
 bool platform_directory_delete(const utf8 *path)
 {
-	STUB();
+	log_verbose("Recursively deleting directory %s", path);
+
+	FTS *ftsp;
+	FTSENT *p, *chp;
+
+	// fts_open only accepts non const paths, so we have to take a copy
+	char* ourPath = (char*)malloc(strlen(path) + 1);
+	strcpy(ourPath, path);
+
+	utf8* const patharray[2] = {ourPath, NULL};
+	if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == NULL) {
+		log_error("fts_open returned NULL");
+		free(ourPath);
+		return false;
+	}
+
+	chp = fts_children(ftsp, 0);
+	if (chp == NULL) {
+		log_verbose("No files to traverse, deleting directory %s", path);
+		if (remove(path) != 0)
+		{
+			log_error("Failed to remove %s, errno = %d", path, errno);
+		}
+		free(ourPath);
+		return true; // No files to traverse
+	}
+
+	while ((p = fts_read(ftsp)) != NULL) {
+		switch (p->fts_info) {
+			case FTS_DP: // Directory postorder, which means
+						 // the directory is empty
+						 
+			case FTS_F:  // File
+				if(remove(p->fts_path)) {
+					log_error("Could not remove %s", p->fts_path);
+					fts_close(ftsp);
+					free(ourPath);
+					return false;
+				}
+				break;
+			case FTS_ERR:
+				log_error("Error traversing %s", path);
+				fts_close(ftsp);
+				free(ourPath);
+				return false;
+		}
+	}
+
+	free(ourPath);
+	fts_close(ftsp);
+
 	return true;
 }
 
 bool platform_lock_single_instance()
 {
-	STUB();
+	char pidFilePath[MAX_PATH];
+
+	safe_strcpy(pidFilePath, _userDataDirectoryPath, sizeof(pidFilePath));
+	safe_strcat_path(pidFilePath, SINGLE_INSTANCE_MUTEX_NAME, sizeof(pidFilePath));
+
+	// We will never close this file manually. The operating system will
+	// take care of that, because flock keeps the lock as long as the 
+	// file is open and closes it automatically on file close.
+	// This is intentional.
+	int pidFile = open(pidFilePath, O_CREAT | O_RDWR, 0666);
+
+	if (pidFile == -1) {
+		log_warning("Cannot open lock file for writing.");
+		return false;
+	}
+	if (flock(pidFile, LOCK_EX | LOCK_NB) == -1) {
+		if (errno == EWOULDBLOCK) {
+			log_warning("Another OpenRCT2 session has been found running.");
+			return false;
+		}
+		log_error("flock returned an uncatched errno: %d", errno);
+		return false;
+	}
 	return true;
 }
 
@@ -200,7 +283,7 @@ static int winfilter(const struct dirent *d)
 	}
 	name_upper[entry_length] = '\0';
 	bool match = fnmatch(g_file_pattern, name_upper, FNM_PATHNAME) == 0;
-	//log_warning("trying matching filename %s, result = %d", name_upper, match);
+	//log_verbose("trying matching filename %s, result = %d", name_upper, match);
 	free(name_upper);
 	return match;
 }
@@ -217,7 +300,7 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	if (converted == MAX_PATH) {
 		log_warning("truncated string %s", npattern);
 	}
-	log_warning("begin file search, pattern: %s", npattern);
+	log_verbose("begin file search, pattern: %s", npattern);
 
 	char *file_name = strrchr(npattern, platform_get_path_separator());
 	char *dir_name;
@@ -237,18 +320,18 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 	{
 		g_file_pattern[j] = (char)toupper(g_file_pattern[j]);
 	}
-	log_warning("looking for file matching %s", g_file_pattern);
+	log_verbose("looking for file matching %s", g_file_pattern);
 	int cnt;
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			safe_strncpy(enumFileInfo->pattern, npattern, sizeof(enumFileInfo->pattern));
+			safe_strcpy(enumFileInfo->pattern, npattern, sizeof(enumFileInfo->pattern));
 			cnt = scandir(dir_name, &enumFileInfo->fileListTemp, winfilter, alphasort);
 			if (cnt < 0)
 			{
 				break;
 			}
-			log_warning("found %d files matching in dir '%s'", cnt, dir_name);
+			log_verbose("found %d files matching in dir '%s'", cnt, dir_name);
 			enumFileInfo->cnt = cnt;
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
@@ -351,7 +434,7 @@ static int dirfilter(const struct dirent *d)
 		return 0;
 	}
 #if defined(_DIRENT_HAVE_D_TYPE) || defined(DT_UNKNOWN)
-	if (d->d_type == DT_DIR)
+	if (d->d_type == DT_DIR || d->d_type == DT_LNK)
 	{
 		return 1;
 	} else {
@@ -370,11 +453,11 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	char *npattern = malloc(length+1);
 	int converted;
 	converted = wcstombs(npattern, wpattern, length);
-	npattern[length] = '\0';
+	npattern[length - 1] = '\0';
 	if (converted == MAX_PATH) {
 		log_warning("truncated string %s", npattern);
 	}
-	log_warning("begin directory listing, path: %s", npattern);
+	log_verbose("begin directory listing, path: %s", npattern);
 
 	// TODO: add some checking for stringness and directoryness
 
@@ -382,13 +465,13 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 	for (int i = 0; i < countof(_enumerateFileInfoList); i++) {
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
-			safe_strncpy(enumFileInfo->pattern, npattern, length);
+			safe_strcpy(enumFileInfo->pattern, npattern, length);
 			cnt = scandir(npattern, &enumFileInfo->fileListTemp, dirfilter, alphasort);
 			if (cnt < 0)
 			{
 				break;
 			}
-			log_warning("found %d files in dir '%s'", cnt, npattern);
+			log_verbose("found %d files in dir '%s'", cnt, npattern);
 			enumFileInfo->cnt = cnt;
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
@@ -451,7 +534,7 @@ bool platform_enumerate_directories_next(int handle, utf8 *path)
 			return false;
 		}
 		// so very, very wrong
-		safe_strncpy(path, basename(fileName), MAX_PATH);
+		safe_strcpy(path, basename(fileName), MAX_PATH);
 		strncat(path, "/", MAX_PATH - strlen(path) - 1);
 		return true;
 	} else {
@@ -480,29 +563,64 @@ void platform_enumerate_directories_end(int handle)
 }
 
 int platform_get_drives(){
-	/*
-	return GetLogicalDrives();
-	*/
-	STUB();
+	// POSIX systems do not know drives. Return 0.
 	return 0;
 }
 
 bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
 {
-	STUB();
+	log_verbose("Copying %s to %s", srcPath, dstPath);
+
+	FILE *dstFile;
+
+ 	if (overwrite) {
+		dstFile = fopen(dstPath, "wb");
+	} else {
+		// Portability note: check your libc's support for "wbx"
+		dstFile = fopen(dstPath, "wbx");
+	}
+
+	if (dstFile == NULL) {
+		if (errno == EEXIST) {
+			log_warning("platform_file_copy: Not overwriting %s, because overwrite flag == false", dstPath);
+			return 0;
+		}
+
+		log_error("Could not open destination file %s for copying", dstPath);
+		return 0;
+	}
+
+	// Open both files and check whether they are opened correctly
+	FILE *srcFile = fopen(srcPath, "rb");
+	if (srcFile == NULL) {
+		fclose(dstFile);
+		log_error("Could not open source file %s for copying", srcPath);
+		return 0;
+	}
+
+	size_t amount_read = 0;
+
+	char* buffer = (char*) malloc(FILE_BUFFER_SIZE);
+	while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile))) {
+		fwrite(buffer, amount_read, 1, dstFile);
+	}
+
+	fclose(srcFile);
+	fclose(dstFile);
+	free(buffer);
+
 	return 0;
 }
 
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
 {
-	STUB();
-	return 0;
+	return rename(srcPath, dstPath) == 0;
 }
 
 bool platform_file_delete(const utf8 *path)
 {
-	STUB();
-	return 0;
+	int ret = unlink(path);
+	return ret == 0;
 }
 
 wchar_t *regular_to_wchar(const char* src)
@@ -528,18 +646,22 @@ wchar_t *regular_to_wchar(const char* src)
 	return w_buffer;
 }
 
+void platform_posix_sub_user_data_path(char *buffer, const char *homedir, const char *separator);
+
 /**
  * Default directory fallback is:
  *   - (command line argument)
- *   - $XDG_CONFIG_HOME/OpenRCT2
- *   - /home/[uid]/.config/OpenRCT2
+ *   - <platform dependent>
  */
 void platform_resolve_user_data_path()
 {
 	const char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (gCustomUserDataPath[0] != 0) {
-		realpath(gCustomUserDataPath, _userDataDirectoryPath);
+		if (realpath(gCustomUserDataPath, _userDataDirectoryPath) == NULL) {
+			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
+			return;
+		}
 
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
@@ -552,45 +674,74 @@ void platform_resolve_user_data_path()
 	char buffer[MAX_PATH];
 	buffer[0] = '\0';
 	log_verbose("buffer = '%s'", buffer);
-	const char *homedir = getenv("XDG_CONFIG_HOME");
-	log_verbose("homedir = '%s'", homedir);
-	if (homedir == NULL)
-	{
-		homedir = getpwuid(getuid())->pw_dir;
-		log_verbose("homedir was null, used getuid, now is = '%s'", homedir);
-		if (homedir == NULL)
-		{
-			log_fatal("Couldn't find user data directory");
-			exit(-1);
-			return;
-		}
 
-		strncat(buffer, homedir, MAX_PATH - 1);
-		strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-		strncat(buffer, ".config", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	}
-	else
-	{
-		strncat(buffer, homedir, MAX_PATH - 1);
-	}
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, "OpenRCT2", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
-	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	const char *homedir = getpwuid(getuid())->pw_dir;
+	platform_posix_sub_user_data_path(buffer, homedir, separator);
+
 	log_verbose("OpenRCT2 user data directory = '%s'", buffer);
 	int len = strnlen(buffer, MAX_PATH);
 	wchar_t *w_buffer = regular_to_wchar(buffer);
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);
 	free(w_buffer);
-	safe_strncpy(_userDataDirectoryPath, path, MAX_PATH);
+	safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
 	free(path);
+}
+
+void platform_get_openrct_data_path(utf8 *outPath)
+{
+	safe_strcpy(outPath, _openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
+}
+
+void platform_posix_sub_resolve_openrct_data_path(utf8 *out);
+
+/**
+ * Default directory fallback is:
+ *   - (command line argument)
+ *   - <exePath>/data
+ *   - <platform dependent>
+ */
+void platform_resolve_openrct_data_path()
+{
+	const char separator[2] = { platform_get_path_separator(), 0 };
+
+	if (gCustomOpenrctDataPath[0] != 0) {
+		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath)) {
+			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
+			return;
+		}
+
+		// Ensure path ends with separator
+		int len = strlen(_openrctDataDirectoryPath);
+		if (_openrctDataDirectoryPath[len - 1] != separator[0]) {
+			strncat(_openrctDataDirectoryPath, separator, MAX_PATH - 1);
+		}
+		return;
+	}
+
+	char buffer[MAX_PATH] = { 0 };
+	platform_get_exe_path(buffer);
+
+	strncat(buffer, separator, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	strncat(buffer, "data", MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
+	log_verbose("Looking for OpenRCT2 data in %s", buffer);
+	if (platform_directory_exists(buffer))
+	{
+		_openrctDataDirectoryPath[0] = '\0';
+		safe_strcpy(_openrctDataDirectoryPath, buffer, MAX_PATH);
+		log_verbose("Found OpenRCT2 data in %s", _openrctDataDirectoryPath);
+		return;
+	}
+
+	platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath);
+	log_verbose("Trying to use OpenRCT2 data in %s", _openrctDataDirectoryPath);
 }
 
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 {
 	const char separator[2] = { platform_get_path_separator(), 0 };
 	char buffer[MAX_PATH];
-	safe_strncpy(buffer, _userDataDirectoryPath, sizeof(buffer));
+	safe_strcpy(buffer, _userDataDirectoryPath, sizeof(buffer));
 	if (subDirectory != NULL && subDirectory[0] != 0) {
 		log_verbose("adding subDirectory '%s'", subDirectory);
 		strncat(buffer, subDirectory, MAX_PATH - strnlen(buffer, MAX_PATH) - 1);
@@ -601,79 +752,64 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory)
 	w_buffer[len] = '\0';
 	utf8 *path = widechar_to_utf8(w_buffer);
 	free(w_buffer);
-	safe_strncpy(outPath, path, MAX_PATH);
+	safe_strcpy(outPath, path, MAX_PATH);
 	free(path);
 	log_verbose("outPath + subDirectory = '%s'", buffer);
 }
 
-void platform_show_messagebox(char *message)
-{
-	STUB();
-	log_warning(message);
-}
-
-/**
- *
- *  rct2: 0x004080EA
- */
-int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName)
-{
-	STUB();
-	return 0;
-}
-
-utf8 *platform_open_directory_browser(utf8 *title)
-{
-	STUB();
-	return NULL;
-}
-
 uint16 platform_get_locale_language(){
-	/*
-	CHAR langCode[4];
+	const char *langString = setlocale(LC_MESSAGES, "");
+	if(langString != NULL){
+		// The locale has the following form:
+		// language[_territory[.codeset]][@modifier] (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
+		char pattern[32]; // longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+		//strip the codeset and modifier part
+		int length = strlen(langString);
+		{
+			for(int i = 0; i < length; ++i){
+				if(langString[i] == '.' || langString[i] == '@'){
+					length = i;
+					break;
+				}
+			}
+		} //end strip
+		strncpy(pattern,langString, length); //copy all until first '.' or '@'
+		pattern[length] = '\0';
+		//find _ if present
+		const char *strip = strchr(pattern, '_');
+		if(strip != NULL){
+			pattern[strip - pattern] = '?'; // could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change. pattern is now "language?territory"
+		}
 
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_SABBREVLANGNAME,
-		(LPSTR)&langCode,
-		sizeof(langCode)) == 0){
-		return LANGUAGE_UNDEFINED;
-	}
+		// Iterate through all available languages
+		for(int i = 1; i < LANGUAGE_COUNT; ++i){
+			if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+				return i;
+			}
+		}
 
-	if (strcmp(langCode, "ENG") == 0){
-		return LANGUAGE_ENGLISH_UK;
+		//special cases :(
+		if(!fnmatch(pattern, "en_CA", 0)){
+			return LANGUAGE_ENGLISH_US;
+		}
+		else if (!fnmatch(pattern, "zh_CN", 0)){
+			return LANGUAGE_CHINESE_SIMPLIFIED;
+		}
+		else if (!fnmatch(pattern, "zh_TW", 0)){
+			return LANGUAGE_CHINESE_TRADITIONAL;
+		}
+
+		//no exact match found trying only language part
+		if(strip != NULL){
+			pattern[strip - pattern] = '*';
+			pattern[strip - pattern +1] = '\0'; // pattern is now "language*"
+			for(int i = 1; i < LANGUAGE_COUNT; ++i){
+				if(!fnmatch(pattern, LanguagesDescriptors[i].locale, 0)){
+					return i;
+				}
+			}
+		}
 	}
-	else if (strcmp(langCode, "ENU") == 0){
-		return LANGUAGE_ENGLISH_US;
-	}
-	else if (strcmp(langCode, "DEU") == 0){
-		return LANGUAGE_GERMAN;
-	}
-	else if (strcmp(langCode, "NLD") == 0){
-		return LANGUAGE_DUTCH;
-	}
-	else if (strcmp(langCode, "FRA") == 0){
-		return LANGUAGE_FRENCH;
-	}
-	else if (strcmp(langCode, "HUN") == 0){
-		return LANGUAGE_HUNGARIAN;
-	}
-	else if (strcmp(langCode, "PLK") == 0){
-		return LANGUAGE_POLISH;
-	}
-	else if (strcmp(langCode, "ESP") == 0){
-		return LANGUAGE_SPANISH;
-	}
-	else if (strcmp(langCode, "SVE") == 0){
-		return LANGUAGE_SWEDISH;
-	}
-	else if (strcmp(langCode, "ITA") == 0){
-		return LANGUAGE_ITALIAN;
-	}
-	else if (strcmp(langCode, "POR") == 0){
-		return LANGUAGE_PORTUGUESE_BR;
-	}
-	*/
-	STUB();
 	return LANGUAGE_ENGLISH_UK;
 }
 
@@ -686,90 +822,74 @@ time_t platform_file_get_modified_time(const utf8* path){
 }
 
 uint8 platform_get_locale_currency(){
-	/*
-	CHAR currCode[4];
+	char *langstring = setlocale(LC_MONETARY, "");
 
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_SINTLSYMBOL,
-		(LPSTR)&currCode,
-		sizeof(currCode)) == 0){
-		return CURRENCY_POUNDS;
+	if (langstring == NULL) {
+		return platform_get_currency_value(NULL);
 	}
-	if (strcmp(currCode, "GBP") == 0){
-		return CURRENCY_POUNDS;
-	}
-	else if (strcmp(currCode, "USD") == 0){
-		return CURRENCY_DOLLARS;
-	}
-	else if (strcmp(currCode, "EUR") == 0){
-		return CURRENCY_EUROS;
-	}
-	else if (strcmp(currCode, "SEK") == 0){
-		return CURRENCY_KRONA;
-	}
-	else if (strcmp(currCode, "DEM") == 0){
-		return CURRENCY_DEUTSCHMARK;
-	}
-	else if (strcmp(currCode, "ITL") == 0){
-		return CURRENCY_LIRA;
-	}
-	else if (strcmp(currCode, "JPY") == 0){
-		return CURRENCY_YEN;
-	}
-	else if (strcmp(currCode, "ESP") == 0){
-		return CURRENCY_PESETA;
-	}
-	else if (strcmp(currCode, "FRF") == 0){
-		return CURRENCY_FRANC;
-	}
-	else if (strcmp(currCode, "NLG") == 0){
-		return CURRENCY_GUILDERS;
-	}
-	*/
-	STUB();
-	return CURRENCY_POUNDS;
+	
+	struct lconv *lc = localeconv();
+	
+	return platform_get_currency_value(lc->int_curr_symbol);
 }
 
 uint8 platform_get_locale_measurement_format(){
-	/*
-	UINT measurement_system;
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPSTR)&measurement_system,
-		sizeof(measurement_system)) == 0){
-		return MEASUREMENT_FORMAT_IMPERIAL;
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
+
+	if(langstring != NULL){
+		//using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0)){
+			return MEASUREMENT_FORMAT_IMPERIAL;
+		}
 	}
-	switch (measurement_system){
-	case 0:
-		return MEASUREMENT_FORMAT_METRIC;
-	case 1:
-	default:
-		return MEASUREMENT_FORMAT_IMPERIAL;
-	}*/
-	STUB();
 	return MEASUREMENT_FORMAT_METRIC;
 }
 
 uint8 platform_get_locale_temperature_format(){
-	/*
-	// There does not seem to be a function to obtain this, just check the countries
-	UINT country;
-	if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-		LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-		(LPSTR)&country,
-		sizeof(country)) == 0){
-		return TEMPERATURE_FORMAT_C;
+	// LC_MEASUREMENT is GNU specific.
+	#ifdef LC_MEASUREMENT
+	const char *langstring = setlocale(LC_MEASUREMENT, "");
+	#else
+	const char *langstring = setlocale(LC_ALL, "");
+	#endif
+
+	if(langstring != NULL){
+		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){
+			return TEMPERATURE_FORMAT_F;
+		}
 	}
-	switch (country){
-	case CTRY_UNITED_STATES:
-	case CTRY_BELIZE:
-		return TEMPERATURE_FORMAT_F;
-	default:
-		return TEMPERATURE_FORMAT_C;
-	}
-	*/
-	STUB();
 	return TEMPERATURE_FORMAT_C;
+}
+
+datetime64 platform_get_datetime_now_utc()
+{
+	const datetime64 epochAsTicks = 621355968000000000;
+
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+
+	uint64 utcEpoch = tv.tv_sec;
+
+	// Epoch starts from: 1970-01-01T00:00:00Z
+	// Convert to ticks from 0001-01-01T00:00:00Z
+	uint64 utcEpochTicks = (uint64)tv.tv_sec * 10000000ULL + tv.tv_usec * 10;
+	datetime64 utcNow = epochAsTicks + utcEpochTicks;
+	return utcNow;
+}
+
+utf8* platform_get_username() {
+	struct passwd* pw = getpwuid(getuid());
+
+	if (pw) {
+		return pw->pw_name;
+	} else {
+		return NULL;
+	}
 }
 
 #endif

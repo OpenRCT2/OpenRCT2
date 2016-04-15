@@ -18,17 +18,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef _WIN32
+#include "common.h"
+
+#ifdef __WINDOWS__
 	#include <windows.h>
 #else
 	#include <sys/mman.h>
-#endif // _WIN32
+#endif // __WINDOWS__
+
 #include "hook.h"
 #include "platform/platform.h"
 
 void* g_hooktableaddress = 0;
 int g_hooktableoffset = 0;
 int g_maxhooks = 1000;
+
+// This macro writes a little-endian 4-byte long value into *data
+// It is used to avoid type punning.
+#define write_address_strictalias(data, addr) \
+	*(data + 0) = ((addr) & 0x000000ff) >> 0; \
+	*(data + 1) = ((addr) & 0x0000ff00) >> 8; \
+	*(data + 2) = ((addr) & 0x00ff0000) >> 16; \
+	*(data + 3) = ((addr) & 0xff000000) >> 24;
 
 void hookfunc(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
@@ -53,73 +64,6 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 
 	int rargssize = numrargs * 4;
 
-	data[i++] = 0x50; // push eax
-
-	// move stack down for possible existing arguments
-	for (int j = 0; j < stacksize; j++) {
-		data[i++] = 0x8B; // mov eax, [esp+x]
-		data[i++] = 0x44;
-		data[i++] = 0xE4;
-		data[i++] = (signed char)((4 * (stacksize - j)) + 4);
-
-		data[i++] = 0x89; // mov [esp+x], eax
-		data[i++] = 0x44;
-		data[i++] = 0xE4;
-		data[i++] = (signed char)((4 * (stacksize - j)) - ((registerssaved + stacksize) * 4));
-	}
-
-	if (numrargs > 0) {
-		// push the registers to be on the stack to access as arguments
-		data[i++] = 0x83; // add esp, x
-		data[i++] = 0xC4;
-		data[i++] = -((registerssaved + stacksize) * 4) + 4;
-
-		for (signed int j = numrargs - 1; j >= 0; j--) {
-			switch (registerargs[j]) {
-				case EAX: data[i++] = 0x50; break;
-				case EBX: data[i++] = 0x53; break;
-				case ECX: data[i++] = 0x51; break;
-				case EDX: data[i++] = 0x52; break;
-				case ESI: data[i++] = 0x56; break;
-				case EDI: data[i++] = 0x57; break;
-				case EBP: data[i++] = 0x55; break;
-			}
-		}
-
-		data[i++] = 0x83; // add esp, x
-		data[i++] = 0xC4;
-		data[i++] = rargssize + ((registerssaved + stacksize) * 4) - 4;
-	}
-
-
-	data[i++] = 0xE8; // call
-	data[i++] = 0x00;
-	data[i++] = 0x00;
-	data[i++] = 0x00;
-	data[i++] = 0x00;
-
-	int sizec = i;
-
-	data[i++] = 0x8B; // push eax, [esp]  - puts eip in eax
-	data[i++] = 0x04;
-	data[i++] = 0xE4;
-
-	data[i++] = 0x83; // add eax, x
-	data[i++] = 0xC0;
-	int sizeoffset = i;
-	data[i++] = 0; // set to returnlocation offset later
-
-	data[i++] = 0x89; // mov [esp-20h], eax  - put return address on stack
-	data[i++] = 0x44;
-	data[i++] = 0xE4;
-	data[i++] = (signed char)(-(registerssaved * 4) - rargssize - (stacksize * 4)) + 4;
-
-	data[i++] = 0x83; // add esp, x
-	data[i++] = 0xC4;
-	data[i++] = 4;
-
-	data[i++] = 0x58; // pop eax
-
 	if (!(registersreturned & EAX)) {
 		data[i++] = 0x50; // push eax
 	}
@@ -142,14 +86,52 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 		data[i++] = 0x57; // push edi
 	}
 
-	data[i++] = 0x83; // sub esp, x
-	data[i++] = 0xEC;
-	data[i++] = 4 + (stacksize * 4) + rargssize;
+	data[i++] = 0x50; //push eax
+	data[i++] = 0x89; //mov eax, esp
+	data[i++] = 0xE0;
+	data[i++] = 0x83; //sub eax, (0xC + numargs*4) & 0xF
+	data[i++] = 0xE8;
+	data[i++] = (0xC + numrargs * 4) & 0xF;
+	data[i++] = 0x83; //and eax, 0xC
+	data[i++] = 0xE0;
+	data[i++] = 0x0C;
+	data[i++] = 0xA3; //mov [0x9ABDA8], eax
+	data[i++] = 0xA8;
+	data[i++] = 0xBD;
+	data[i++] = 0x9A;
+	data[i++] = 0x00;
+	data[i++] = 0x58; //pop eax
+	data[i++] = 0x2B; //sub esp, [0x9ABDA8]
+	data[i++] = 0x25;
+	data[i++] = 0xA8;
+	data[i++] = 0xBD;
+	data[i++] = 0x9A;
+	data[i++] = 0x00;
 
-	data[i++] = 0xE9; // jmp
-	*((int *)&data[i]) = (newaddress - address - i - 4); i += 4;
+	// work out distance to nearest 0xC
+	// (esp - numargs * 4) & 0xC
+	// move to align - 4
+	// save that amount
 
-	data[sizeoffset] = i - sizec;
+	if (numrargs > 0) {
+		// push the registers to be on the stack to access as arguments
+		for (signed int j = numrargs - 1; j >= 0; j--) {
+			switch (registerargs[j]) {
+				case EAX: data[i++] = 0x50; break;
+				case EBX: data[i++] = 0x53; break;
+				case ECX: data[i++] = 0x51; break;
+				case EDX: data[i++] = 0x52; break;
+				case ESI: data[i++] = 0x56; break;
+				case EDI: data[i++] = 0x57; break;
+				case EBP: data[i++] = 0x55; break;
+			}
+		}
+	}
+
+	data[i++] = 0xE8; // call
+
+	write_address_strictalias(&data[i], newaddress - address - i - 4);
+	i += 4;
 
 	// returnlocation:
 
@@ -190,6 +172,13 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	data[i++] = 0xEC;
 	data[i++] = (signed char)(stacksize * -4) - rargssize;
 
+	data[i++] = 0x03; //add esp, [0x9ABDA8]
+	data[i++] = 0x25;
+	data[i++] = 0xA8;
+	data[i++] = 0xBD;
+	data[i++] = 0x9A;
+	data[i++] = 0x00;
+
 	if (!(registersreturned & EDI)) {
 		data[i++] = 0x5F; // pop edi
 	}
@@ -214,19 +203,19 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 
 	data[i++] = 0xC3; // retn
 
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
 	memcpy((void *)address, data, i);
-#endif // _WIN32
+#endif // __WINDOWS__
 }
 
 void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
 	if (!g_hooktableaddress) {
 		size_t size = g_maxhooks * 100;
-#ifdef _WIN32
+#ifdef __WINDOWS__
 		g_hooktableaddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 #else
 		g_hooktableaddress = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
@@ -235,7 +224,7 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 			perror("mmap");
 			exit(1);
 		}
-#endif // _WIN32
+#endif // __WINDOWS__
 	}
 	if (g_hooktableoffset > g_maxhooks) {
 		return;
@@ -244,14 +233,29 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 	char data[9];
 	int i = 0;
 	data[i++] = 0xE9; // jmp
-	*((int *)&data[i]) = hookaddress - address - i - 4; i += 4;
+
+	write_address_strictalias(&data[i], hookaddress - address - i - 4);
+	i += 4;
+
 	data[i++] = 0xC3; // retn
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
 #else
 	// We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
+	int err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_WRITE);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
+	
 	memcpy((void *)address, data, i);
-#endif // _WIN32
+	
+	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
+#endif // __WINDOWS__
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
 }

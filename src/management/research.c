@@ -19,9 +19,11 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
+#include "../localisation/string_ids.h"
 #include "../management/finance.h"
 #include "../scenario.h"
 #include "../rct1.h"
@@ -166,7 +168,7 @@ static void research_next_design()
 void research_finish_item(sint32 entryIndex)
 {
 	int i, ebx, base_ride_type, rideEntryIndex, subSceneryEntryIndex;
-	rct_ride_type *rideEntry, *rideEntry2;
+	rct_ride_entry *rideEntry, *rideEntry2;
 	rct_scenery_set_entry *scenerySetEntry;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = entryIndex;
@@ -175,8 +177,8 @@ void research_finish_item(sint32 entryIndex)
 		// Ride
 		base_ride_type = (entryIndex >> 8) & 0xFF;
 		rideEntryIndex = entryIndex & 0xFF;
-		rideEntry = GET_RIDE_ENTRY(rideEntryIndex);
-		RCT2_ADDRESS(0x01357404, uint32)[base_ride_type >> 5] |= (1 << (base_ride_type & 0x1F));
+		rideEntry = get_ride_entry(rideEntryIndex);
+		RCT2_ADDRESS(0x01357404, uint32)[base_ride_type >> 5] |= (1u << (base_ride_type & 0x1F));
 		RCT2_ADDRESS(0x01357444, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C468, uint32)[base_ride_type];
 		RCT2_ADDRESS(0x01357644, uint32)[base_ride_type] = RCT2_ADDRESS(0x0097C5D4, uint32)[base_ride_type];
 		if (RideData4[base_ride_type].flags & RIDE_TYPE_FLAG4_3) {
@@ -184,17 +186,17 @@ void research_finish_item(sint32 entryIndex)
 			RCT2_ADDRESS(0x01357444, uint32)[ebx] = RCT2_ADDRESS(0x0097C468, uint32)[ebx];
 			RCT2_ADDRESS(0x01357644, uint32)[ebx] = RCT2_ADDRESS(0x0097C5D4, uint32)[ebx];
 		}
-		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1 << (rideEntryIndex & 0x1F);
+		RCT2_ADDRESS(0x001357424, uint32)[rideEntryIndex >> 5] |= 1u << (rideEntryIndex & 0x1F);
 		if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
 			for (i = 0; i < 128; i++) {
-				rideEntry2 = GET_RIDE_ENTRY(i);
-				if (rideEntry2 == (rct_ride_type*)-1)
+				rideEntry2 = get_ride_entry(i);
+				if (rideEntry2 == (rct_ride_entry*)-1)
 					continue;
 				if ((rideEntry2->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
 					continue;
 
 				if (rideEntry2->ride_type[0] == base_ride_type || rideEntry2->ride_type[1] == base_ride_type || rideEntry2->ride_type[2] == base_ride_type)
-					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1 << (i & 0x1F);
+					RCT2_ADDRESS(0x001357424, uint32)[i >> 5] |= 1u << (i & 0x1F);
 			}
 		}
 
@@ -202,8 +204,11 @@ void research_finish_item(sint32 entryIndex)
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) ?
 				rideEntry->name : base_ride_type + 2;
-			if (!gSilentResearch)
-				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2249, entryIndex);
+			if (!gSilentResearch) {
+				if (gConfigNotifications.ride_researched) {
+					news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE, entryIndex);
+				}
+			}
 		}
 
 		research_invalidate_related_windows();
@@ -212,14 +217,17 @@ void research_finish_item(sint32 entryIndex)
 		scenerySetEntry = g_scenerySetEntries[entryIndex & 0xFFFF];
 		for (i = 0; i < scenerySetEntry->entry_count; i++) {
 			subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
-			RCT2_ADDRESS(0x01357BD0, sint32)[subSceneryEntryIndex >> 5] |= 1 << (subSceneryEntryIndex & 0x1F);
+			RCT2_ADDRESS(0x01357BD0, sint32)[subSceneryEntryIndex >> 5] |= 1u << (subSceneryEntryIndex & 0x1F);
 		}
 
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
 		if (RCT2_GLOBAL(0x009AC06C, uint8) == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = scenerySetEntry->name;
-			if (!gSilentResearch)
-				news_item_add_to_queue(NEWS_ITEM_RESEARCH, 2250, entryIndex);
+			if (!gSilentResearch) {
+				if (gConfigNotifications.ride_researched) {
+					news_item_add_to_queue(NEWS_ITEM_RESEARCH, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, entryIndex);
+				}
+			}
 		}
 
 		research_invalidate_related_windows();
@@ -320,7 +328,7 @@ void sub_684AC3(){
 
 		for (int j = 0; j < scenery_set->entry_count; ++j){
 			uint8 value = scenery_set->scenery_entries[j] & 0x1F;
-			RCT2_ADDRESS(0x01357BD0, uint32)[scenery_set->scenery_entries[j] >> 5] &= ~(1 << value);
+			RCT2_ADDRESS(0x01357BD0, uint32)[scenery_set->scenery_entries[j] >> 5] &= ~(1u << value);
 		}
 	}
 
@@ -355,7 +363,7 @@ void research_remove_non_separate_vehicle_types()
 			researchItem->entryIndex != RESEARCHED_ITEMS_END &&
 			researchItem->entryIndex >= 0x10000
 		) {
-			rct_ride_type *rideEntry = GET_RIDE_ENTRY(researchItem->entryIndex & 0xFF);
+			rct_ride_entry *rideEntry = get_ride_entry(researchItem->entryIndex & 0xFF);
 			if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
 				// Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
 				researchItem2 = researchItem - 1;
@@ -364,7 +372,7 @@ void research_remove_non_separate_vehicle_types()
 						researchItem2->entryIndex != RESEARCHED_ITEMS_SEPARATOR &&
 						researchItem2->entryIndex >= 0x10000
 					) {
-						rideEntry = GET_RIDE_ENTRY(researchItem2->entryIndex & 0xFF);
+						rideEntry = get_ride_entry(researchItem2->entryIndex & 0xFF);
 						if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
 
 							if (((researchItem->entryIndex >> 8) & 0xFF) == ((researchItem2->entryIndex >> 8) & 0xFF)) {
@@ -441,7 +449,10 @@ static void research_insert_researched(int entryIndex, int category)
 	} while (entryIndex != (researchItem++)->entryIndex);
 }
 
-/* rct2: 0x006857CF */
+/**
+ *
+ *  rct2: 0x006857CF
+ */
 void research_remove(sint32 entryIndex){
 	for (rct_research_item *researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++){
 		if (researchItem->entryIndex == entryIndex){
@@ -467,14 +478,14 @@ void research_insert(int researched, int entryIndex, int category)
  */
 void research_populate_list_random()
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_scenery_set_entry *scenerySetEntry;
 	int rideType, researched;
 
 	// Rides
 	for (int i = 0; i < 128; i++) {
-		rideEntry = GET_RIDE_ENTRY(i);
-		if (rideEntry == (rct_ride_type*)-1)
+		rideEntry = get_ride_entry(i);
+		if (rideEntry == (rct_ride_entry*)-1)
 			continue;
 
 		researched = (scenario_rand() & 0xFF) > 128;
@@ -498,14 +509,14 @@ void research_populate_list_random()
 
 void research_populate_list_researched()
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_scenery_set_entry *scenerySetEntry;
 	int rideType;
 
 	// Rides
 	for (int i = 0; i < 128; i++) {
-		rideEntry = GET_RIDE_ENTRY(i);
-		if (rideEntry == (rct_ride_type*)-1)
+		rideEntry = get_ride_entry(i);
+		if (rideEntry == (rct_ride_entry*)-1)
 			continue;
 
 		for (int j = 0; j < 3; j++) {
@@ -548,8 +559,14 @@ void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, i
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RESEARCH * 4;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		if (!setPriorities)
+		if (!setPriorities) {
+			if (fundingAmount < 0 || fundingAmount >= countof(_researchRate)) {
+				*ebx = MONEY32_UNDEFINED;
+				log_warning("Invalid research rate %d", fundingAmount);
+				return;
+			}
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = fundingAmount;
+		}
 		else
 			RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8) = activeCategories;
 

@@ -137,9 +137,7 @@ void window_install_track_open(const char* path)
 	strncpy(track_path, path, MAX_PATH);
 	track_path[MAX_PATH - 1] = '\0';
 
-	char* track_name_pointer = track_path;
-	while (*track_name_pointer++ != '\0');
-	while (*--track_name_pointer != '\\');
+	char* track_name_pointer = strrchr(track_path, platform_get_path_separator());
 	track_name_pointer++;
 
 	strncpy(track_dest_name, track_name_pointer, MAX_PATH);
@@ -184,7 +182,7 @@ static void window_install_track_select(rct_window *w, int index)
 		1);
 
 	char track_path[MAX_PATH] = { 0 };
-	subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
+	substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
@@ -291,7 +289,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	uint16 holes, speed, drops, dropHeight, inversions;
 	fixed32_2dp rating;
 	int x, y, colour, gForces, airTime;
-	rct_g1_element tmpElement, *subsituteElement;
+	rct_g1_element tmpElement, *substituteElement;
 
 	window_draw_widgets(w, dpi);
 
@@ -312,16 +310,16 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	rct_track_td6* track_td6 = &trackDesign->track_td6;
 
-	subsituteElement = &g1Elements[0];
-	tmpElement = *subsituteElement;
-	subsituteElement->offset = image;
-	subsituteElement->width = 370;
-	subsituteElement->height = 217;
-	subsituteElement->x_offset = 0;
-	subsituteElement->y_offset = 0;
-	subsituteElement->flags = G1_FLAG_BMP;
+	substituteElement = &g1Elements[0];
+	tmpElement = *substituteElement;
+	substituteElement->offset = image;
+	substituteElement->width = 370;
+	substituteElement->height = 217;
+	substituteElement->x_offset = 0;
+	substituteElement->y_offset = 0;
+	substituteElement->flags = G1_FLAG_BMP;
 	gfx_draw_sprite(dpi, 0, x, y, 0);
-	*subsituteElement = tmpElement;
+	*substituteElement = tmpElement;
 
 	x = w->x + (widget->left + widget->right) / 2;
 	y = w->y + widget->bottom - 12;
@@ -380,9 +378,9 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		// Ride length
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = 1345;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = track_td6->ride_length;
-		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, (void*)0x013CE952, 0, x, y, 214);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 1345;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = track_td6->ride_length;
+		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, 214);
 		y += 10;
 	}
 
@@ -437,9 +435,9 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (track_td6->space_required_x != 0xFF) {
 		// Space required
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = track_td6->space_required_x;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = track_td6->space_required_y;
-		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, (void*)0x013CE952, 0, x, y);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = track_td6->space_required_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = track_td6->space_required_y;
+		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 		y += 10;
 	}
 

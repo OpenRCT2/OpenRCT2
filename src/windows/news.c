@@ -33,6 +33,7 @@ enum WINDOW_NEWS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_CLOSE,
+	WIDX_SETTINGS,
 	WIDX_SCROLL
 };
 
@@ -40,7 +41,8 @@ static rct_widget window_news_widgets[] = {
 	{ WWT_FRAME,			0,	0,			399,	0,		299,	0x0FFFFFFFF,			STR_NONE },				// panel / background
 	{ WWT_CAPTION,			0,	1,			398,	1,		14,		STR_RECENT_MESSAGES,	STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,			0,	387,		397,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_SCROLL,			0,	4,			395,	18,		295,	2,						STR_NONE },				// scroll
+	{ WWT_FLATBTN,			0,	372,		395,	18,		41,		5201,					STR_NONE },				// settings
+	{ WWT_SCROLL,			0,	4,			395,	44,		295,	2,						STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 
@@ -103,7 +105,7 @@ void window_news_open()
 			0
 		);
 		window->widgets = window_news_widgets;
-		window->enabled_widgets = (1 << WIDX_CLOSE);
+		window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
 		window_init_scroll_widgets(window);
 		window->news.var_480 = -1;
 	}
@@ -129,6 +131,9 @@ static void window_news_mouseup(rct_window *w, int widgetIndex)
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
+		break;
+	case WIDX_SETTINGS:
+		window_news_options_open();
 		break;
 	}
 }
@@ -291,8 +296,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 
 		// Date text
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_DATE_DAY_1 + newsItem->day - 1;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
-		gfx_draw_string_left(dpi, 2235, (void*)0x013CE952, 2, 4, y);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
+		gfx_draw_string_left(dpi, 2235, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 2, 4, y);
 
 		// Item text
 		utf8 buffer[400];
@@ -323,8 +328,10 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 			case NEWS_ITEM_PEEP:
 			case NEWS_ITEM_PEEP_ON_RIDE:
 			{
-				rct_drawpixelinfo* cliped_dpi = clip_drawpixelinfo(dpi, x + 1, 22, yy + 1, 22);
-				if (!cliped_dpi) break;
+				rct_drawpixelinfo cliped_dpi;
+				if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, yy + 1, 22, 22)) {
+					break;
+				}
 
 				rct_peep* peep = GET_PEEP(newsItem->assoc);
 				int clip_x = 10, clip_y = 19;
@@ -339,13 +346,11 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 					}
 				}
 
-				uint32 image_id = *RCT2_ADDRESS(0x00982708, uint32*)[sprite_type * 2];
+				uint32 image_id = g_sprite_entries[sprite_type].sprite_image->base_image;
 				image_id += 0xA0000001;
 				image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
 
-				gfx_draw_sprite(cliped_dpi, image_id, clip_x, clip_y, 0);
-
-				rct2_free(cliped_dpi);
+				gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
 				break;
 			}
 			case NEWS_ITEM_MONEY:

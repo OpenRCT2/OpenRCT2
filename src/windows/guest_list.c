@@ -205,7 +205,7 @@ void window_guest_list_open_with_filter(int type, int index)
 
 	rct_ride *ride = NULL;
 	if (type != 3) {	// common for cases 0, 1, 2
-		ride = GET_RIDE(index & 0x000000FF);
+		ride = get_ride(index & 0x000000FF);
 		eax = ride->name;
 		edx = ride->name_arguments;
 	}
@@ -217,7 +217,7 @@ void window_guest_list_open_with_filter(int type, int index)
 
 		eax = (eax << 16) + 1435;
 
-		if ((RCT2_GLOBAL(0x97CF40 + ride->type * 8, uint32) & 0x400000) != 0)
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
 			eax++;
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
@@ -433,7 +433,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
-			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+			if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
 				continue;
 			numGuests++;
 		}
@@ -495,7 +495,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, int scrollIndex, in
 			if (_window_guest_list_selected_filter != -1)
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
-			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+			if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
 				continue;
 
 			if (i == 0) {
@@ -572,10 +572,11 @@ static void window_guest_list_invalidate(rct_window *w)
 	window_guest_list_widgets[WIDX_TITLE].right = w->width - 2;
 	window_guest_list_widgets[WIDX_CLOSE].left = w->width - 13;
 	window_guest_list_widgets[WIDX_CLOSE].right = w->width - 3;
-
 	window_guest_list_widgets[WIDX_GUEST_LIST].right = w->width - 4;
 	window_guest_list_widgets[WIDX_GUEST_LIST].bottom = w->height - 15;
 	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].image = _window_guest_list_selected_page + 3440;
+	window_guest_list_widgets[WIDX_TRACKING].left = 321 - 350 + w->width;
+	window_guest_list_widgets[WIDX_TRACKING].right = 344 - 350 + w->width;
 }
 
 /**
@@ -590,7 +591,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 	// Tab 1 image
 	i = (_window_guest_list_selected_tab == 0 ? w->list_information_type & 0x0FFFFFFFC : 0);
-	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982708, int), int)[0] + 1;
+	i += g_sprite_entries[0].sprite_image->base_image + 1;
 	i |= 0xA1600000;
 	gfx_draw_sprite(
 		dpi,
@@ -603,7 +604,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	i = (_window_guest_list_selected_tab == 1 ? w->list_information_type / 4 : 0);
 	gfx_draw_sprite(
 		dpi,
-		5568 + i,
+		SPR_TAB_GUESTS_0 + i,
 		window_guest_list_widgets[WIDX_TAB_2].left + w->x,
 		window_guest_list_widgets[WIDX_TAB_2].top + w->y, 0
 	);
@@ -630,7 +631,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		x = w->x + 4;
 		y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, sint16) = w->var_492;
-		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 }
 
@@ -655,16 +656,16 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 		// For each guest
 		FOR_ALL_GUESTS(spriteIndex, peep) {
-			peep->var_0C &= ~0x200;
+			peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
 			if (peep->outside_of_park != 0)
 				continue;
 			if (_window_guest_list_selected_filter != -1) {
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
 				RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 0);
-				peep->var_0C |= 0x200;
+				peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
 			}
-			if (_window_guest_list_tracking_only && !(peep->flags & PEEP_FLAGS_TRACKING))
+			if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
 				continue;
 
 			//
@@ -682,8 +683,8 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 				// Guest name
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-				RCT2_GLOBAL(0x013CE954, uint32) = peep->id;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 113);
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+				gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1, 113);
 
 				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
@@ -691,7 +692,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					gfx_draw_sprite(dpi, get_peep_face_sprite_small(peep), 118, y, 0);
 
 					// Tracking icon
-					if (peep->flags & PEEP_FLAGS_TRACKING)
+					if (peep->peep_flags & PEEP_FLAGS_TRACKING)
 						gfx_draw_sprite(dpi, 5129, 112, y, 0);
 
 					// Action
@@ -699,8 +700,8 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					get_arguments_from_action(peep, &argument_1, &argument_2);
 
 					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument_1;
-					RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
-					gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 133, y - 1, 314);
+					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument_2;
+					gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 133, y - 1, 314);
 					break;
 				case VIEW_THOUGHTS:
 					// For each thought
@@ -716,8 +717,8 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
 
 						RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument_1;
-						RCT2_GLOBAL(0x013CE952 + 4, uint32) = argument_2;
-						gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 118, y - 1, 329);
+						RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument_2;
+						gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 118, y - 1, 329);
 						break;
 					}
 					break;
@@ -754,13 +755,13 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 				// Draw action
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = _window_guest_list_groups_argument_1[i];
-				RCT2_GLOBAL(0x013CE952 + 4, uint32) = _window_guest_list_groups_argument_2[i];
-				RCT2_GLOBAL(0x013CE952 + 10, uint32) = numGuests;
-				gfx_draw_string_left_clipped(dpi, format, (void*)0x013CE952, 0, 0, y - 1, 414);
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = _window_guest_list_groups_argument_2[i];
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 10, uint32) = numGuests;
+				gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1, 414);
 
 				// Draw guest count
-				RCT2_GLOBAL(0x013CE95A, uint16) = STR_GUESTS_COUNT_COMMA_SEP;
-				gfx_draw_string_right(dpi, format, (void*)0x0013CE95A, 0, 326, y - 1);
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = STR_GUESTS_COUNT_COMMA_SEP;
+				gfx_draw_string_right(dpi, format, (void*)(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8), 0, 326, y - 1);
 			}
 			y += 21;
 		}
@@ -770,7 +771,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 
 /**
- *  returns 0 for in filter and 1 for not in filter
+ * returns 0 for in filter and 1 for not in filter
  *  rct2: 0x0069B865
  */
 static int window_guest_list_is_peep_in_filter(rct_peep* peep)
@@ -793,11 +794,11 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
 }
 
 /**
- * rct2:0x0069B7EA
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
+ *  rct2: 0x0069B7EA
  * peep (esi)
- * argument_1 (0x013CE952)
- * argument_2 (0x013CE954)
+ * argument_1 (0x013CE952) (RCT2_ADDRESS_COMMON_FORMAT_ARGS)
+ * argument_2 (0x013CE954) (RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2)
  */
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2)
 {
@@ -841,11 +842,11 @@ static void window_guest_list_find_groups()
 	// Set all guests to unassigned
 	FOR_ALL_GUESTS(spriteIndex, peep)
 		if (peep->outside_of_park == 0)
-			peep->var_0C |= (1 << 8);
+			peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
 
 	// For each guest / group
 	FOR_ALL_GUESTS(spriteIndex, peep) {
-		if (peep->outside_of_park != 0 || !(peep->var_0C & (1 << 8)))
+		if (peep->outside_of_park != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
 			continue;
 
 		// New group, cap at 240 though
@@ -856,7 +857,7 @@ static void window_guest_list_find_groups()
 		int ax = peep->sprite_index;
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
-		peep->var_0C &= ~(1 << 8);
+		peep->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);
 
 		get_arguments_from_peep( peep, &_window_guest_list_groups_argument_1[groupIndex], &_window_guest_list_groups_argument_2[groupIndex]);
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = _window_guest_list_groups_argument_1[groupIndex];
@@ -868,7 +869,7 @@ static void window_guest_list_find_groups()
 
 		// Find more peeps that belong to same group
 		FOR_ALL_GUESTS(spriteIndex2, peep2) {
-			if (peep2->outside_of_park != 0 || !(peep2->var_0C & (1 << 8)))
+			if (peep2->outside_of_park != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
 				continue;
 
 			uint32 argument1, argument2;
@@ -879,7 +880,7 @@ static void window_guest_list_find_groups()
 
 			// Assign guest
 			_window_guest_list_groups_num_guests[groupIndex]++;
-			peep2->var_0C &= ~(1 << 8);
+			peep2->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);
 
 			// Add face sprite, cap at 56 though
 			if (_window_guest_list_groups_num_guests[groupIndex] >= 56)

@@ -125,7 +125,7 @@ static bool map_animation_invalidate_ride_entrance(int x, int y, int baseZ)
 		if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
 			continue;
 
-		ride = GET_RIDE(mapElement->properties.entrance.ride_index);
+		ride = get_ride(mapElement->properties.entrance.ride_index);
 		entranceDefinition = &RideEntranceDefinitions[ride->entrance_style];
 
 		int height = (mapElement->base_height * 8) + entranceDefinition->height + 8;
@@ -536,7 +536,10 @@ static bool map_animation_invalidate_wall(int x, int y, int baseZ)
 	return !wasInvalidated;
 }
 
-/** rct2: 0x009819DC */
+/**
+ *
+ *  rct2: 0x009819DC
+ */
 static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
 	map_animation_invalidate_ride_entrance,
 	map_animation_invalidate_queue_banner,

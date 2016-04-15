@@ -18,9 +18,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "util.h"
+// Include common.h before SDL, otherwise M_PI gets redefined
+#include "../common.h"
+
 #include <SDL.h>
+#include "../localisation/localisation.h"
 #include "../platform/platform.h"
+#include "util.h"
+#include "zlib.h"
+
+bool gUseRLE = true;
 
 int squaredmetres_to_squaredfeet(int squaredMetres)
 {
@@ -40,7 +47,13 @@ int mph_to_kmph(int mph)
 {
 	// 1 mph = 1.60934 kmph
 	// RCT2 approximates as 1.609375
-	return (mph * 1648) / 1024;
+	return (mph * 1648) >> 10;
+}
+
+int mph_to_dmps(int mph)
+{
+	// 1 mph = 4.4704 decimeters/s
+	return (mph * 73243) >> 14;
 }
 
 bool filename_valid_characters(const utf8 *filename)
@@ -55,62 +68,67 @@ bool filename_valid_characters(const utf8 *filename)
 
 const char *path_get_filename(const utf8 *path)
 {
-	const char *result, *ch;
+	// Find last slash or backslash in the path
+	char *filename = strrchr(path, platform_get_path_separator());
 
-	result = path;
-	for (ch = path; *ch != 0; ch++) {
-		if (*ch == '/' || *ch == '\\') {
-			if (*(ch + 1) != 0)
-				result = ch + 1;
-		}
+	// Checks if the path is valid (e.g. not just a file name)
+	if (filename == NULL)
+	{
+		// Return the input string to keep things working
+		return path;
 	}
 
-	return result;
+	// Increase pointer by one, to get rid of the slashes
+	filename++;
+
+	return filename;
 }
 
+// Returns the extension (dot inclusive) from the given path, or the end of the
+// string when no extension was found.
 const char *path_get_extension(const utf8 *path)
 {
-	const char *extension = NULL;
-	const char *ch = path;
-	while (*ch != 0) {
-		if (*ch == '.')
-			extension = ch;
+	// Get the filename from the path
+	const char *filename = path_get_filename(path);
 
-		ch++;
-	}
+	// Try to find the most-right dot in the filename
+	char *extension = strrchr(filename, '.');
+
+	// When no dot was found, return a pointer to the null-terminator
 	if (extension == NULL)
-		extension = ch;
+		extension = strrchr(filename, '\0');
+
 	return extension;
 }
 
 void path_set_extension(utf8 *path, const utf8 *newExtension)
 {
-	char *extension = NULL;
-	char *ch = path;
-	while (*ch != 0) {
-		if (*ch == '.')
-			extension = ch;
+	// Remove existing extension (check first if there is one)
+	if (path_get_extension(path) < strrchr(path, '\0'))
+		path_remove_extension(path);
+	// Append new extension
+	path_append_extension(path, newExtension);
+}
 
-		ch++;
-	}
-	if (extension == NULL)
-		extension = ch;
-
+void path_append_extension(utf8 *path, const utf8 *newExtension)
+{
+	// Append a dot to the filename if the new extension doesn't start with it
+	char *endOfString = strrchr(path, '\0');
 	if (newExtension[0] != '.')
-		*extension++ = '.';
+		*endOfString++ = '.';
 
-	strcpy(extension, newExtension);
+	// Append the extension to the path
+	safe_strcpy(endOfString, newExtension, MAX_PATH - (endOfString - path) - 1);
 }
 
 void path_remove_extension(utf8 *path)
 {
-	char *ch = path + strlen(path);
-	for (--ch; ch >= path; --ch) {
-		if (*ch == '.') {
-			*ch = '\0';
-			break;
-		}
-	}
+	// Find last dot in filename, and replace it with a null-terminator
+	char *lastDot = strrchr(path_get_filename(path), '.');
+	if (lastDot != NULL)
+		*lastDot = '\0';
+	else
+		log_warning("No extension found. (path = %s)", path);
 }
 
 bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
@@ -144,7 +162,14 @@ int bitscanforward(int source)
 	#if _MSC_VER >= 1400 // Visual Studio 2005
 		uint8 success = _BitScanForward(&i, source);
 		return success != 0 ? i : -1;
+	#elif __GNUC__
+		int success = __builtin_ffs(source);
+		return success - 1;
 	#else
+	#pragma message "Falling back to iterative bitscan forward, consider using intrinsics"
+	// This is a low-hanging optimisation boost, check if your compiler offers
+	// any intrinsic.
+	// cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
 	for (i = 0; i < 32; i++)
 		if (source & (1u << i))
 			return i;
@@ -181,21 +206,79 @@ int strcicmp(char const *a, char const *b)
 	}
 }
 
-char *safe_strncpy(char * destination, const char * source, size_t size)
+utf8 * safe_strtrunc(utf8 * text, size_t size)
+{
+	assert(text != NULL);
+
+	if (size == 0) return text;
+	
+	const char *sourceLimit = text + size - 1;
+	char *ch = text;
+	char *last = text;
+	uint32 codepoint;
+	while ((codepoint = utf8_get_next(ch, (const utf8 **)&ch)) != 0) {
+		if (ch <= sourceLimit) {
+			last = ch;
+		} else {
+			break;
+		}
+	}
+	*last = 0;
+
+	return text;
+}
+
+char *safe_strcpy(char * destination, const char * source, size_t size)
 {
 	assert(destination != NULL);
 	assert(source != NULL);
 
-	if (size == 0)
-	{
+	if (size == 0) return destination;
+
+	char * result = destination;
+
+	bool truncated = false;
+	const char *sourceLimit = source + size - 1;
+	const char *ch = source;
+	uint32 codepoint;
+	while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+		if (ch <= sourceLimit) {
+			destination = utf8_write_codepoint(destination, codepoint);
+		} else {
+			truncated = true;
+		}
+	}
+	*destination = 0;
+
+	if (truncated) {
+		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
+	}
+	return result;
+}
+
+char *safe_strcat(char *destination, const char *source, size_t size)
+{
+	assert(destination != NULL);
+	assert(source != NULL);
+
+	if (size == 0) {
 		return destination;
 	}
+
 	char *result = destination;
+
+	size_t i;
+	for (i = 0; i < size; i++) {
+		if (*destination == '\0') {
+			break;
+		} else {
+			destination++;
+		}
+	}
+
 	bool terminated = false;
-	for (size_t i = 0; i < size; i++)
-	{
-		if (*source != '\0')
-		{
+	for (; i < size; i++) {
+		if (*source != '\0') {
 			*destination++ = *source++;
 		} else {
 			*destination = *source;
@@ -203,12 +286,38 @@ char *safe_strncpy(char * destination, const char * source, size_t size)
 			break;
 		}
 	}
-	if (!terminated)
-	{
+
+	if (!terminated) {
 		result[size - 1] = '\0';
-		log_warning("Truncating string %s to %d bytes.", destination, size);
+		log_warning("Truncating string \"%s\" to %d bytes.", result, size);
 	}
+
 	return result;
+}
+
+char *safe_strcat_path(char *destination, const char *source, size_t size)
+{
+	const char pathSeparator = platform_get_path_separator();
+
+	size_t length = strnlen(destination, size);
+	if (length >= size - 1) {
+		return destination;
+	}
+
+	if (destination[length - 1] != pathSeparator) {
+		destination[length] = pathSeparator;
+		destination[length + 1] = '\0';
+	}
+
+	return safe_strcat(destination, source, size);
+}
+
+char *safe_strtrimleft(char *destination, const char *source, size_t size)
+{
+	while (*source == ' ' && *source != '\0') {
+		source++;
+	}
+	return safe_strcpy(destination, source, size);
 }
 
 bool utf8_is_bom(const char *str)
@@ -237,4 +346,78 @@ uint32 util_rand() {
 	srand2 = srand3;
 	srand3 = srand3 ^ (srand3 >> 19) ^ temp ^ (temp >> 8);
 	return srand3;
+}
+
+#define CHUNK 128*1024
+#define MAX_ZLIB_REALLOC 4*1024*1024
+
+/**
+ * @brief Inflates zlib-compressed data
+ * @param data Data to be decompressed
+ * @param data_in_size Size of data to be decompressed
+ * @param data_out_size Pointer to a variable where output size will be written. If not 0, it will be used to set initial output buffer size.
+ * @return Returns a pointer to memory holding decompressed data or NULL on failure.
+ * @note It is caller's responsibility to free() the returned pointer once done with it.
+ */
+unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
+{
+	int ret = Z_OK;
+	uLongf out_size = *data_out_size;
+	if (out_size == 0)
+	{
+		// Try to guesstimate the size needed for output data by applying the
+		// same ratio it would take to compress data_in_size.
+		out_size = data_in_size * data_in_size / compressBound(data_in_size);
+		out_size = min(MAX_ZLIB_REALLOC, out_size);
+	}
+	size_t buffer_size = out_size;
+	unsigned char *buffer = malloc(buffer_size);
+	do {
+		if (ret == Z_BUF_ERROR)
+		{
+			buffer_size *= 2;
+			out_size = buffer_size;
+			buffer = realloc(buffer, buffer_size);
+		} else if (ret == Z_STREAM_ERROR) {
+			log_error("Your build is shipped with broken zlib. Please use the official build.");
+			free(buffer);
+			return NULL;
+		}
+		ret = uncompress(buffer, &out_size, data, data_in_size);
+	} while (ret != Z_OK);
+	buffer = realloc(buffer, out_size);
+	*data_out_size = out_size;
+	return buffer;
+}
+
+/**
+ * @brief Deflates input using zlib
+ * @param data Data to be compressed
+ * @param data_in_size Size of data to be compressed
+ * @param data_out_size Pointer to a variable where output size will be written
+ * @return Returns a pointer to memory holding compressed data or NULL on failure.
+ * @note It is caller's responsibility to free() the returned pointer once done with it.
+ */
+unsigned char *util_zlib_deflate(unsigned char *data, size_t data_in_size, size_t *data_out_size)
+{
+	int ret = Z_OK;
+	uLongf out_size = *data_out_size;
+	size_t buffer_size = compressBound(data_in_size);
+	unsigned char *buffer = malloc(buffer_size);
+	do {
+		if (ret == Z_BUF_ERROR)
+		{
+			buffer_size *= 2;
+			out_size = buffer_size;
+			buffer = realloc(buffer, buffer_size);
+		} else if (ret == Z_STREAM_ERROR) {
+			log_error("Your build is shipped with broken zlib. Please use the official build.");
+			free(buffer);
+			return NULL;
+		}
+		ret = compress(buffer, &out_size, data, data_in_size);
+	} while (ret != Z_OK);
+	*data_out_size = out_size;
+	buffer = realloc(buffer, *data_out_size);
+	return buffer;
 }

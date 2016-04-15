@@ -480,7 +480,8 @@ uint32 window_guest_page_enabled_widgets[] = {
 };
 
 /**
- * rct2: 0x006989E9
+ *
+ *  rct2: 0x006989E9
  *
  */
 void window_guest_open(rct_peep* peep){
@@ -502,8 +503,8 @@ void window_guest_open(rct_peep* peep){
 		window->viewport_focus_coordinates.y = 0;
 		window->frame_no = 0;
 		window->list_information_type = 0;
-		window->var_492 = 0;
-		window->var_494 = 0;
+		window->picked_peep_frame = 0;
+		window->highlighted_item = 0;
 		window_guest_disable_widgets(window);
 		window->min_width = 192;
 		window->min_height = 157;
@@ -529,9 +530,10 @@ void window_guest_open(rct_peep* peep){
 	window_guest_viewport_init(window);
 }
 
-/* rct2: 0x006987A6
+/**
  * Disables the finance tab when no money.
  * Disables peep pickup when in certain no pickup states.
+ *  rct2: 0x006987A6
  */
 void window_guest_disable_widgets(rct_window* w){
 	rct_peep* peep = &g_sprite_list[w->number].peep;
@@ -552,17 +554,23 @@ void window_guest_disable_widgets(rct_window* w){
 	w->disabled_widgets = disabled_widgets;
 }
 
-/* rct2: 0x00696A75 */
+/**
+ *
+ *  rct2: 0x00696A75
+ */
 void window_guest_overview_close(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE){
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE){
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS,rct_windowclass) &&
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER,rct_windownumber))
 			tool_cancel();
 	}
 }
 
-/* rct2: 0x00696FBE */
+/**
+ *
+ *  rct2: 0x00696FBE
+ */
 void window_guest_overview_resize(rct_window *w){
 	window_guest_disable_widgets(w);
 	window_event_invalidate_call(w);
@@ -589,7 +597,10 @@ void window_guest_overview_resize(rct_window *w){
 	window_guest_viewport_init(w);
 }
 
-/* rct2: 0x00696A06 */
+/**
+ *
+ *  rct2: 0x00696A06
+ */
 void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 {
 	rct_peep* peep = GET_PEEP(w->number);
@@ -607,6 +618,15 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		window_guest_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PICKUP:
+		{ // remove this block when peep pick up is finally converted to a game command
+			int player = network_get_player_index(network_get_current_player_id());
+			if (player != -1) {
+				if (!network_can_perform_action(network_get_group_index(network_get_player_group(player)), 11/*Guest action*/)) {
+					window_error_open(STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+					return;
+				}
+			}
+		} //
 		if (!peep_can_be_picked_up(peep)) {
 			return;
 		}
@@ -614,7 +634,7 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 			return;
 		}
 
-		w->var_48C = peep->x;
+		w->picked_peep_old_x = peep->x;
 
 		remove_peep_from_ride(peep);
 		invalidate_sprite_2((rct_sprite*)peep);
@@ -632,14 +652,17 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 		window_scroll_to_viewport(w);
 		break;
 	case WIDX_TRACK:
-		g_sprite_list[w->number].peep.flags ^= PEEP_FLAGS_TRACKING;
+		g_sprite_list[w->number].peep.peep_flags ^= PEEP_FLAGS_TRACKING;
 		break;
 	}
 }
 
-/* rct2: 0x696AA0 */
+/**
+ *
+ *  rct2: 0x696AA0
+ */
 void window_guest_set_page(rct_window* w, int page){
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 	{
 		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
 		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
@@ -684,7 +707,10 @@ void window_guest_overview_unknown_14(rct_window *w)
 	window_guest_viewport_init(w);
 }
 
-/* rct2: 0x0069883C */
+/**
+ *
+ *  rct2: 0x0069883C
+ */
 void window_guest_viewport_init(rct_window* w){
 	if (w->page != WINDOW_GUEST_OVERVIEW) return;
 
@@ -787,7 +813,8 @@ void window_guest_viewport_init(rct_window* w){
 }
 
 /**
- * rct2: 0x6983dd
+ *
+ *  rct2: 0x6983dd
  * used by window_staff as well
  */
 void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
@@ -801,8 +828,10 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	int y = widget->top + 1 + w->y;
 	if (w->page == WINDOW_GUEST_OVERVIEW) height++;
 
-	rct_drawpixelinfo* clip_dpi = clip_drawpixelinfo(dpi, x, width, y, height );
-	if (!clip_dpi) return;
+	rct_drawpixelinfo clip_dpi;
+	if (!clip_drawpixelinfo(&clip_dpi, dpi, x, y, width, height)) {
+		return;
+	}
 
 	x = 14;
 	y = 20;
@@ -812,44 +841,45 @@ void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
 		y++;
 
-	int ebx = *(RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2]) + 1;
+	int ebx = g_sprite_entries[peep->sprite_type].sprite_image->base_image + 1;
 
 	int eax = 0;
 
 	if (w->page == WINDOW_GUEST_OVERVIEW){
-		eax = w->var_494>>16;
+		eax = w->highlighted_item>>16;
 		eax &= 0xFFFC;
 	}
 	ebx += eax;
 
 	int sprite_id = ebx | (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
-	gfx_draw_sprite( clip_dpi, sprite_id, x, y, 0);
+	gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
 
 	// If holding a balloon
 	if (ebx >= 0x2A1D && ebx < 0x2A3D){
 		ebx += 32;
 		ebx |= (peep->balloon_colour << 19) | 0x20000000;
-		gfx_draw_sprite( clip_dpi, ebx, x, y, 0);
+		gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
 	}
 
 	// If holding umbrella
 	if (ebx >= 0x2BBD && ebx < 0x2BDD){
 		ebx += 32;
 		ebx |= (peep->umbrella_colour << 19) | 0x20000000;
-		gfx_draw_sprite(clip_dpi, ebx, x, y, 0);
+		gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
 	}
 
 	// If wearing hat
 	if (ebx >= 0x29DD && ebx < 0x29FD){
 		ebx += 32;
 		ebx |= (peep->hat_colour << 19) | 0x20000000;
-		gfx_draw_sprite( clip_dpi, ebx, x, y, 0);
+		gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
 	}
-
-	rct2_free(clip_dpi);
 }
 
-/* rct2: 0x69869b */
+/**
+ *
+ *  rct2: 0x69869b
+ */
 void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_2))
 		return;
@@ -878,7 +908,10 @@ void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
 
-/* rct2: 0x69861F */
+/**
+ *
+ *  rct2: 0x69861F
+ */
 void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_3)) return;
 
@@ -895,7 +928,10 @@ void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
 
-/* rct2: 0x698597 */
+/**
+ *
+ *  rct2: 0x698597
+ */
 void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_4)) return;
 
@@ -912,7 +948,10 @@ void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
 
-/* rct2: 0x6985D8 */
+/**
+ *
+ *  rct2: 0x6985D8
+ */
 void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_5)) return;
 
@@ -929,7 +968,10 @@ void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
 
-/* rct2: 0x698661 */
+/**
+ *
+ *  rct2: 0x698661
+ */
 void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	if (w->disabled_widgets & (1 << WIDX_TAB_6)) return;
 
@@ -942,7 +984,10 @@ void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* dpi){
 	gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
 
-/* rct2: 0x696887 */
+/**
+ *
+ *  rct2: 0x696887
+ */
 void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
@@ -966,13 +1011,13 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	uint32 argument1, argument2;
 	rct_peep* peep = GET_PEEP(w->number);
 	get_arguments_from_action(peep, &argument1, &argument2);
-	RCT2_GLOBAL(0x13CE952, uint32) = argument1;
-	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument1;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument2;
 	rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
 	int x = (widget->left + widget->right) / 2 + w->x;
 	int y = w->y + widget->top - 1;
 	int width = widget->right - widget->left;
-	gfx_draw_string_centred_clipped(dpi, 1191, (void*)0x13CE952, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, 1191, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
 
 	// Draw the marquee thought
 	widget = &w->widgets[WIDX_MARQUEE];
@@ -980,14 +1025,15 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int left = widget->left + 2 + w->x;
 	int top = widget->top + w->y;
 	int height = widget->bottom - widget->top;
-	rct_drawpixelinfo* dpi_marquee = clip_drawpixelinfo(dpi, left, width, top, height);
+	rct_drawpixelinfo dpi_marquee;
+	if (!clip_drawpixelinfo(&dpi_marquee, dpi, left, top, width, height)) {
+		return;
+	}
 
-	if (!dpi_marquee)return;
 	int i = 0;
 	for (; i < PEEP_MAX_THOUGHTS; ++i){
 		if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE){
 			w->list_information_type = 0;
-			rct2_free(dpi_marquee);
 			return;
 		}
 		if (peep->thoughts[i].var_2 == 1){ // If a fresh thought
@@ -996,23 +1042,23 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 	if (i == PEEP_MAX_THOUGHTS){
 		w->list_information_type = 0;
-		rct2_free(dpi_marquee);
 		return;
 	}
 
 	get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
 
-	RCT2_GLOBAL(0x13CE952, uint32) = argument1;
-	RCT2_GLOBAL(0x13CE952 + 4, uint32) = argument2;
-	RCT2_GLOBAL(0x13CE952 + 8, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument1;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument2;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = 0;
 
 	x = widget->right - widget->left - w->list_information_type;
-	gfx_draw_string_left(dpi_marquee, 1193, (void*)0x13CE952, 0, x, 0);
-
-	rct2_free(dpi_marquee);
+	gfx_draw_string_left(&dpi_marquee, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, 0);
 }
 
-/* rct2: 0x696749*/
+/**
+ *
+ *  rct2: 0x696749
+ */
 void window_guest_overview_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
@@ -1026,11 +1072,11 @@ void window_guest_overview_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_GLOBAL(0x13CE952,uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(0x13CE954,uint32) = peep->id;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS,uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2,uint32) = peep->id;
 
 	w->pressed_widgets &= ~(1<<WIDX_TRACK);
-	if (peep->flags & 0x8){
+	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
 		w->pressed_widgets |= (1<<WIDX_TRACK);
 	}
 
@@ -1067,29 +1113,32 @@ void window_guest_overview_invalidate(rct_window *w)
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
 
-/* rct2: 0x696F45 */
+/**
+ *
+ *  rct2: 0x696F45
+ */
 void window_guest_overview_update(rct_window* w){
-	int var_496 = w->var_494 >> 16;
+	int var_496 = w->highlighted_item >> 16;
 	var_496++;
 	var_496 %= 24;
-	w->var_494 &= 0x0000FFFF;
-	w->var_494 |= var_496 << 16;
+	w->highlighted_item &= 0x0000FFFF;
+	w->highlighted_item |= var_496 << 16;
 
 	widget_invalidate(w, WIDX_TAB_1);
 	widget_invalidate(w, WIDX_TAB_2);
 
 	w->list_information_type += 2;
 
-	if ((w->var_494 & 0xFFFF) == 0xFFFF)
-		w->var_494 &= 0xFFFF0000;
+	if ((w->highlighted_item & 0xFFFF) == 0xFFFF)
+		w->highlighted_item &= 0xFFFF0000;
 	else
-		w->var_494++;
+		w->highlighted_item++;
 
 	// Disable peep watching thought for multiplayer as its client specific
 	if (network_get_mode() == NETWORK_MODE_NONE) {
 		// Create the "I have the strangest feeling I am being watched thought"
-		if ((w->var_494 & 0xFFFF) >= 3840) {
-			if (!(w->var_494 & 0x3FF)) {
+		if ((w->highlighted_item & 0xFFFF) >= 3840) {
+			if (!(w->highlighted_item & 0x3FF)) {
 				int random = util_rand() & 0xFFFF;
 				if (random <= 0x2AAA) {
 					rct_peep* peep = GET_PEEP(w->number);
@@ -1100,7 +1149,7 @@ void window_guest_overview_update(rct_window* w){
 	}
 }
 
-/* rct2:0x696A6A */
+/* rct2: 0x696A6A */
 void window_guest_overview_text_input(rct_window *w, int widgetIndex, char *text)
 {
 	if (widgetIndex != WIDX_RENAME)
@@ -1115,7 +1164,10 @@ void window_guest_overview_text_input(rct_window *w, int widgetIndex, char *text
 	game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_SET_PEEP_NAME, *((int*)(text + 32)), *((int*)(text + 28)));
 }
 
-/* rct2: 0x696A5F */
+/**
+ *
+ *  rct2: 0x696A5F
+ */
 void window_guest_overview_tool_update(rct_window* w, int widgetIndex, int x, int y)
 {
 	if (widgetIndex != WIDX_PICKUP)
@@ -1137,7 +1189,7 @@ void window_guest_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 		map_invalidate_selection_rect();
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 
 	int interactionType;
 	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
@@ -1148,22 +1200,25 @@ void window_guest_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 	y += 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, uint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, uint16) = y;
-	w->var_492++;
-	if (w->var_492 >= 48)w->var_492 = 0;
+	w->picked_peep_frame++;
+	if (w->picked_peep_frame >= 48) {
+		w->picked_peep_frame = 0;
+	}
 
 	rct_peep* peep;
 	peep = GET_PEEP(w->number);
-	int ebx = (RCT2_ADDRESS(0x982708, uint32*)[peep->sprite_type * 2])[22];
-	ebx += w->var_492 >> 2;
 
-	int ebp = peep->tshirt_colour << 19;
-	int ecx = peep->trousers_colour << 24;
+	uint32 imageId = g_sprite_entries[peep->sprite_type].sprite_image[11].base_image;
+	imageId += w->picked_peep_frame >> 2;
 
-	ebx |= ebp | ecx | 0xA0000000;
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, uint32) = ebx;
+	imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32) = imageId;
 }
 
-/* rct2: 0x696A54 */
+/**
+ *
+ *  rct2: 0x696A54
+ */
 void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int y)
 {
 	if (widgetIndex != WIDX_PICKUP)
@@ -1206,7 +1261,7 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 	peep->state = 0;
 	peep_window_state_update(peep);
 	peep->action = 0xFF;
-	peep->var_6D = 0;
+	peep->special_sprite = 0;
 	peep->action_sprite_image_offset = 0;
 	peep->action_sprite_type = 0xFF;
 	peep->var_C4 = 0;
@@ -1215,10 +1270,13 @@ void window_guest_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 
 	sub_693B58(peep);
 	tool_cancel();
-	RCT2_GLOBAL(0x9DE550, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 }
 
-/* rct2: 0x696A49 */
+/**
+ *
+ *  rct2: 0x696A49
+ */
 void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex != WIDX_PICKUP)
@@ -1228,7 +1286,7 @@ void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 	if (peep->state != PEEP_STATE_PICKED)
 		return;
 
-	sprite_move( w->var_48C, peep->y, peep->z + 8, (rct_sprite*)peep);
+	sprite_move(w->picked_peep_old_x, peep->y, peep->z + 8, (rct_sprite*)peep);
 	invalidate_sprite_2((rct_sprite*)peep);
 
 	if (peep->x != (sint16)0x8000){
@@ -1236,17 +1294,18 @@ void window_guest_overview_tool_abort(rct_window *w, int widgetIndex)
 		peep->state = 0;
 		peep_window_state_update(peep);
 		peep->action = 0xFF;
-		peep->var_6D = 0;
+		peep->special_sprite = 0;
 		peep->action_sprite_image_offset = 0;
 		peep->action_sprite_type = 0;
 		peep->var_C4 = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE, sint32) = -1;
+	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
 }
 
-/* rct2:0x69744F, 0x697795, 0x697BDD, 0x697E18, 0x698279
+/**
  * This is a combination of 5 functions that were identical
+ *  rct2: 0x69744F, 0x697795, 0x697BDD, 0x697E18, 0x698279
  */
 void window_guest_mouse_up(rct_window *w, int widgetIndex)
 {
@@ -1265,21 +1324,28 @@ void window_guest_mouse_up(rct_window *w, int widgetIndex)
 	}
 }
 
-/* rct2: 0x697488 */
+/**
+ *
+ *  rct2: 0x697488
+ */
 void window_guest_stats_resize(rct_window *w)
 {
 	window_set_resize(w, 192, 162, 192, 162);
 }
 
-/* rct2: 0x6974ED, 0x00697959, 0x00697C7B, 0x00697ED2, 0x00698333
+/**
  * This is a combination of 5 functions that were identical
+ *  rct2: 0x6974ED, 0x00697959, 0x00697C7B, 0x00697ED2, 0x00698333
  */
 void window_guest_unknown_05(rct_window *w)
 {
 	widget_invalidate(w, WIDX_TAB_1);
 }
 
-/* rct2: 0x69746A */
+/**
+ *
+ *  rct2: 0x69746A
+ */
 void window_guest_stats_update(rct_window *w)
 {
 	w->frame_no++;
@@ -1289,7 +1355,10 @@ void window_guest_stats_update(rct_window *w)
 	window_invalidate(w);
 }
 
-/* rct2: 0x69707D */
+/**
+ *
+ *  rct2: 0x69707D
+ */
 void window_guest_stats_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
@@ -1302,8 +1371,8 @@ void window_guest_stats_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 
 	window_guest_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1344,7 +1413,10 @@ void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w, rct_d
 
 }
 
-/* rct2: 0x0069711D */
+/**
+ *
+ *  rct2: 0x0069711D
+ */
 void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
@@ -1365,7 +1437,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	//Happiness
-	gfx_draw_string_left(dpi, 1662, (void*)0x13CE952, 0, x, y);
+	gfx_draw_string_left(dpi, 1662, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	int happiness = peep->happiness;
 	if (happiness < 10)happiness = 10;
@@ -1377,7 +1449,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Energy
 	y += 10;
-	gfx_draw_string_left(dpi, 1664, (void*)0x13CE952, 0, x, y);
+	gfx_draw_string_left(dpi, 1664, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	int energy = ((peep->energy - 32) * 85) / 32;
 	ebp = 14;
@@ -1389,7 +1461,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Hunger
 	y += 10;
-	gfx_draw_string_left(dpi, 1665, (void*)0x13CE952, 0, x, y);
+	gfx_draw_string_left(dpi, 1665, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	int hunger = peep->hunger;
 	if (hunger > 190) hunger = 190;
@@ -1408,7 +1480,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Thirst
 	y += 10;
-	gfx_draw_string_left(dpi, 1666, (void*)0x13CE952, 0, x, y);
+	gfx_draw_string_left(dpi, 1666, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	int thirst = peep->thirst;
 	if (thirst > 190) thirst = 190;
@@ -1427,7 +1499,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Nausea
 	y += 10;
-	gfx_draw_string_left(dpi, 1663, (void*)0x13CE952, 0, x, y);
+	gfx_draw_string_left(dpi, 1663, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	int nausea = peep->nausea - 32;
 
@@ -1443,7 +1515,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Bathroom
 	y += 10;
-	gfx_draw_string_left(dpi, 1667, (void*)0x13CE952, 0, x, y);
+	gfx_draw_string_left(dpi, 1667, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	int bathroom = peep->bathroom - 32;
 	if (bathroom > 210) bathroom = 210;
@@ -1465,8 +1537,8 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
 		eax -= peep->time_in_park;
 		eax >>= 11;
-		RCT2_GLOBAL(0x13CE952, uint16) = eax & 0xFFFF;
-		gfx_draw_string_left(dpi, 1458, (void*)0x13CE952, 0, x, y);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = eax & 0xFFFF;
+		gfx_draw_string_left(dpi, 1458, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 
 	y += 19;
@@ -1478,31 +1550,37 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Intensity
 	int intensity = peep->intensity / 16;
-	RCT2_GLOBAL(0x13CE952, uint16) = intensity;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = intensity;
 	int string_id = 1658;
 	if (peep->intensity & 0xF){
-		RCT2_GLOBAL(0x13CE952, uint16) = peep->intensity & 0xF;
-		RCT2_GLOBAL(0x13CE954, uint16) = intensity;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->intensity & 0xF;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = intensity;
 		string_id = 1659;
 		if (intensity == 15) string_id = 1660;
 	}
 
-	gfx_draw_string_left(dpi, string_id, (void*)0x13CE952, 0, x + 4, y);
+	gfx_draw_string_left(dpi, string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 4, y);
 
 	// Nausea tolerance
 	y += 10;
 	int nausea_tolerance = peep->nausea_tolerance & 0x3;
-	RCT2_GLOBAL(0x13CE952, uint16) = nausea_tolerance + 2368;
-	gfx_draw_string_left(dpi, 1661, (void*)0x13CE952, 0, x, y);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = nausea_tolerance + 2368;
+	gfx_draw_string_left(dpi, 1661, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 }
 
-/* rct2: 0x006978F4 */
+/**
+ *
+ *  rct2: 0x006978F4
+ */
 void window_guest_rides_resize(rct_window *w)
 {
 	window_set_resize(w, 192, 128, 500, 400);
 }
 
-/* rct2: 0x6977B0 */
+/**
+ *
+ *  rct2: 0x6977B0
+ */
 void window_guest_rides_update(rct_window *w)
 {
 	w->frame_no++;
@@ -1522,7 +1600,7 @@ void window_guest_rides_update(rct_window *w)
 		uint8 ride_id_bit = ride_id % 8;
 		uint8 ride_id_offset = ride_id / 8;
 		if (peep->rides_been_on[ride_id_offset] & (1 << ride_id_bit)){
-			rct_ride* ride = GET_RIDE(ride_id);
+			rct_ride* ride = get_ride(ride_id);
 			if (RCT2_ADDRESS(0x97C3AF, uint8)[ride->type] == 0){
 				w->list_item_positions[curr_list_position] = ride_id;
 				curr_list_position++;
@@ -1536,13 +1614,19 @@ void window_guest_rides_update(rct_window *w)
 	}
 }
 
-/* rct2: 0x697844 */
+/**
+ *
+ *  rct2: 0x697844
+ */
 void window_guest_rides_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
 }
 
-/* rct2: 0x69784E */
+/**
+ *
+ *  rct2: 0x69784E
+ */
 void window_guest_rides_scroll_get_size(rct_window *w, int scrollIndex, int *width, int *height)
 {
 	*height = w->no_list_items * 10;
@@ -1565,7 +1649,10 @@ void window_guest_rides_scroll_get_size(rct_window *w, int scrollIndex, int *wid
 	}
 }
 
-/* rct2: 0x006978CC */
+/**
+ *
+ *  rct2: 0x006978CC
+ */
 void window_guest_rides_scroll_mouse_down(rct_window *w, int scrollIndex, int x, int y)
 {
 	int index;
@@ -1576,7 +1663,10 @@ void window_guest_rides_scroll_mouse_down(rct_window *w, int scrollIndex, int x,
 	window_ride_main_open(w->list_item_positions[index]);
 }
 
-/* rct2: 0x0069789C */
+/**
+ *
+ *  rct2: 0x0069789C
+ */
 void window_guest_rides_scroll_mouse_over(rct_window *w, int scrollIndex, int x, int y)
 {
 	int index;
@@ -1590,7 +1680,10 @@ void window_guest_rides_scroll_mouse_over(rct_window *w, int scrollIndex, int x,
 	window_invalidate(w);
 }
 
-/* rct2: 0x0069757A */
+/**
+ *
+ *  rct2: 0x0069757A
+ */
 void window_guest_rides_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
@@ -1603,8 +1696,8 @@ void window_guest_rides_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 
 	window_guest_rides_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_rides_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1623,7 +1716,10 @@ void window_guest_rides_invalidate(rct_window *w)
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
 
-/* rct2: 0x00697637 */
+/**
+ *
+ *  rct2: 0x00697637
+ */
 void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
@@ -1648,17 +1744,20 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int ride_string_id = 3094;
 	int ride_string_arguments = 0;
 	if (peep->favourite_ride != 0xFF){
-		rct_ride* ride = GET_RIDE(peep->favourite_ride);
+		rct_ride* ride = get_ride(peep->favourite_ride);
 		ride_string_arguments = ride->name_arguments;
 		ride_string_id = ride->name;
 	}
-	RCT2_GLOBAL(0x13CE952, uint16) = ride_string_id;
-	RCT2_GLOBAL(0x13CE954, uint32) = ride_string_arguments;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride_string_id;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride_string_arguments;
 
-	gfx_draw_string_left_clipped(dpi, 3093, (void*)0x13CE952, 0, x, y, w->width - 14);
+	gfx_draw_string_left_clipped(dpi, 3093, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, w->width - 14);
 }
 
-/* rct2: 0x006976FC */
+/**
+ *
+ *  rct2: 0x006976FC
+ */
 void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	// ax
@@ -1680,19 +1779,25 @@ void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, int 
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
 			string_format = 1193;
 		}
-		rct_ride* ride = GET_RIDE(w->list_item_positions[list_index]);
+		rct_ride* ride = get_ride(w->list_item_positions[list_index]);
 
 		gfx_draw_string_left(dpi, string_format, (void*)&ride->name, 0, 0, y - 1);
 	}
 }
 
-/* rct2: 0x00697C16 */
+/**
+ *
+ *  rct2: 0x00697C16
+ */
 void window_guest_finance_resize(rct_window *w)
 {
 	window_set_resize(w, 210, 134, 210, 134);
 }
 
-/* rct2: 0x00697BF8 */
+/**
+ *
+ *  rct2: 0x00697BF8
+ */
 void window_guest_finance_update(rct_window *w)
 {
 	w->frame_no++;
@@ -1701,7 +1806,10 @@ void window_guest_finance_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_4);
 }
 
-/* rct2: 0x00697968 */
+/**
+ *
+ *  rct2: 0x00697968
+ */
 void window_guest_finance_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
@@ -1715,8 +1823,8 @@ void window_guest_finance_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 
 	window_guest_finance_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_finance_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1732,7 +1840,10 @@ void window_guest_finance_invalidate(rct_window *w)
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
 
-/* rct2: 0x00697A08 */
+/**
+ *
+ *  rct2: 0x00697A08
+ */
 void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
@@ -1751,67 +1862,70 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	// Cash in pocket
-	RCT2_GLOBAL(0x13CE952, money32) = peep->cash_in_pocket;
-	gfx_draw_string_left(dpi, 1457, (void*)0x13CE952, 0, x, y);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->cash_in_pocket;
+	gfx_draw_string_left(dpi, 1457, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	// Cash spent
 	y += 10;
-	RCT2_GLOBAL(0x13CE952, money32) = peep->cash_spent;
-	gfx_draw_string_left(dpi, 1456, (void*)0x13CE952, 0, x, y);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->cash_spent;
+	gfx_draw_string_left(dpi, 1456, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	y += 20;
 	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], 32);
 
 	// Paid to enter
-	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_to_enter;
-	gfx_draw_string_left(dpi, 2296, (void*)0x13CE952, 0, x, y);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_to_enter;
+	gfx_draw_string_left(dpi, 2296, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 
 	// Paid on rides
 	y += 10;
-	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_on_rides;
-	RCT2_GLOBAL(0x13CE956, uint16) = peep->no_of_rides;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_rides;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_rides;
 	if (peep->no_of_rides != 1){
-		gfx_draw_string_left(dpi, 2298, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2298, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2297, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2297, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 
 	// Paid on food
 	y += 10;
-	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_on_food;
-	RCT2_GLOBAL(0x13CE956, uint16) = peep->no_of_food;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_food;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_food;
 	if (peep->no_of_food != 1){
-		gfx_draw_string_left(dpi, 2300, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2300, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2299, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2299, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 
 	// Paid on drinks
 	y += 10;
-	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_on_drink;
-	RCT2_GLOBAL(0x13CE956, uint16) = peep->no_of_drinks;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_drink;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_drinks;
 	if (peep->no_of_drinks != 1){
-		gfx_draw_string_left(dpi, 2302, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2302, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2301, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2301, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 
 	// Paid on souvenirs
 	y += 10;
-	RCT2_GLOBAL(0x13CE952, money32) = peep->paid_on_souvenirs;
-	RCT2_GLOBAL(0x13CE956, uint16) = peep->no_of_souvenirs;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_souvenirs;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_souvenirs;
 	if (peep->no_of_souvenirs != 1){
-		gfx_draw_string_left(dpi, 2304, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2304, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2303, (void*)0x13CE952, 0, x, y);
+		gfx_draw_string_left(dpi, 2303, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 }
 
-/* rct2: 0x00697E33 */
+/**
+ *
+ *  rct2: 0x00697E33
+ */
 void window_guest_thoughts_resize(rct_window *w)
 {
 	rct_peep* peep = GET_PEEP(w->number);
@@ -1823,7 +1937,10 @@ void window_guest_thoughts_resize(rct_window *w)
 	window_set_resize(w, 192, 159, 500, 450);
 }
 
-/* rct2: 0x00697EB4 */
+/**
+ *
+ *  rct2: 0x00697EB4
+ */
 void window_guest_thoughts_update(rct_window *w)
 {
 	w->frame_no++;
@@ -1832,7 +1949,10 @@ void window_guest_thoughts_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_5);
 }
 
-/* rct2: 0x00697C8A */
+/**
+ *
+ *  rct2: 0x00697C8A
+ */
 void window_guest_thoughts_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
@@ -1846,8 +1966,8 @@ void window_guest_thoughts_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 
 	window_guest_thoughts_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_thoughts_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1863,7 +1983,10 @@ void window_guest_thoughts_invalidate(rct_window *w)
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
 
-/* rct2: 0x00697D2A */
+/**
+ *
+ *  rct2: 0x00697D2A
+ */
 void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
@@ -1890,14 +2013,14 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		uint32 argument1, argument2;
 		get_arguments_from_thought(*thought, &argument1, &argument2);
-		RCT2_GLOBAL(0x13CE952, uint32) = argument1;
-		RCT2_GLOBAL(0x13CE956, uint32) = argument2;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument1;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument2;
 
 		int width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
 			- window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left
 			- 8;
 
-		y += gfx_draw_string_left_wrapped(dpi, (void*)0x13CE952, x, y, width, 1191, 0);
+		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1191, 0);
 
 		// If this is the last visable line end drawing.
 		if (y > w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32) return;
@@ -1905,7 +2028,10 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 
-/* rct2: 0x00698294 */
+/**
+ *
+ *  rct2: 0x00698294
+ */
 void window_guest_inventory_resize(rct_window *w)
 {
 	rct_peep* peep = GET_PEEP(w->number);
@@ -1917,7 +2043,10 @@ void window_guest_inventory_resize(rct_window *w)
 	window_set_resize(w, 192, 159, 500, 450);
 }
 
-/* rct2: 0x00698315 */
+/**
+ *
+ *  rct2: 0x00698315
+ */
 void window_guest_inventory_update(rct_window *w)
 {
 	w->frame_no++;
@@ -1926,7 +2055,10 @@ void window_guest_inventory_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_6);
 }
 
-/* rct2: 0x00697EE1 */
+/**
+ *
+ *  rct2: 0x00697EE1
+ */
 void window_guest_inventory_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
@@ -1940,8 +2072,8 @@ void window_guest_inventory_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(0x13CE952, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(0x13CE954, uint32) = peep->id;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
 
 	window_guest_inventory_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_inventory_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1973,7 +2105,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->balloon_colour << 19;
 		break;
 	case SHOP_ITEM_PHOTO:
-		ride = GET_RIDE(peep->photo1_ride_ref);
+		ride = get_ride(peep->photo1_ride_ref);
 		RCT2_GLOBAL(args + 6, uint16) = ride->name;
 		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
 		break;
@@ -1988,7 +2120,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 			RCT2_GLOBAL(args + 10, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 			break;
 		case VOUCHER_TYPE_RIDE_FREE:
-			ride = GET_RIDE(peep->voucher_arguments);
+			ride = get_ride(peep->voucher_arguments);
 			RCT2_GLOBAL(args + 6, uint16) = 2419;
 			RCT2_GLOBAL(args + 8, uint16) = ride->name;
 			RCT2_GLOBAL(args + 10, uint32) = ride->name_arguments;
@@ -2011,17 +2143,17 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->tshirt_colour << 19;
 		break;
 	case SHOP_ITEM_PHOTO2:
-		ride = GET_RIDE(peep->photo2_ride_ref);
+		ride = get_ride(peep->photo2_ride_ref);
 		RCT2_GLOBAL(args + 6, uint16) = ride->name;
 		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
 		break;
 	case SHOP_ITEM_PHOTO3:
-		ride = GET_RIDE(peep->photo3_ride_ref);
+		ride = get_ride(peep->photo3_ride_ref);
 		RCT2_GLOBAL(args + 6, uint16) = ride->name;
 		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
 		break;
 	case SHOP_ITEM_PHOTO4:
-		ride = GET_RIDE(peep->photo4_ride_ref);
+		ride = get_ride(peep->photo4_ride_ref);
 		RCT2_GLOBAL(args + 6, uint16) = ride->name;
 		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
 		break;
@@ -2030,7 +2162,10 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 	return STR_GUEST_ITEM_FORMAT;
 }
 
-/* rct2: 0x00697F81 */
+/**
+ *
+ *  rct2: 0x00697F81
+ */
 void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
@@ -2058,7 +2193,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (y >= maxY) break;
 		if (!peep_has_item(peep, item)) continue;
 
-		void *args = (void*)0x013CE952;
+		void *args = (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
 		rct_string_id stringId = window_guest_inventory_format_item(peep, item, (uint8*)args);
 		y += gfx_draw_string_left_wrapped(dpi, args, x, y, itemNameWidth, stringId, 0);
 		numItems++;

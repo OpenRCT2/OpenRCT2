@@ -231,7 +231,9 @@ enum PEEP_ACTION_EVENTS {
 	PEEP_ACTION_STAFF_FIX = 15,
 	PEEP_ACTION_STAFF_FIX_2 = 16,
 	PEEP_ACTION_STAFF_FIX_GROUND = 17,
+	PEEP_ACTION_STAFF_FIX_3 = 18,
 	PEEP_ACTION_STAFF_WATERING = 19,
+	PEEP_ACTION_JOY = 20,
 	PEEP_ACTION_READ_MAP = 21,
 	PEEP_ACTION_WAVE = 22,
 	PEEP_ACTION_STAFF_EMPTY_BIN = 23,
@@ -265,7 +267,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
 	PEEP_FLAGS_NAUSEA = (1 << 15), // Makes the peep feel sick (e.g. after an extreme ride)
 	PEEP_FLAGS_PURPLE = (1 << 16), // Makes surrounding peeps purple
-	PEEP_FLAGS_EATING = (1 << 17), // Reduces hunger
+	PEEP_FLAGS_PIZZA = (1 << 17), // Gives passing peeps pizza
 	PEEP_FLAGS_EXPLODE = (1 << 18),
 	PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE = (1 << 19),
 	PEEP_FLAGS_PARK_ENTRANCE_CHOSEN = (1 << 20), //Set when the nearest park entrance has been chosen
@@ -273,7 +275,7 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_CONTAGIOUS = (1 << 22), // Makes any peeps in surrounding tiles sick
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
-	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives the peeps infront of them in queue ice cream
+	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives passing peeps ice cream and they wave back
 	PEEP_FLAGS_NICE_RIDE = (1 << 26), // Makes the peep think "Nice ride! But not as good as the Phoenix..." on exiting a ride
 	PEEP_FLAGS_INTAMIN = (1 << 27), // Makes the peep think "I'm so excited - It's an Intamin ride!" while riding on a Intamin
 	PEEP_FLAGS_HERE_WE_ARE = (1 << 28), // Makes the peep think  "...and here we are on X!" while riding a ride
@@ -389,7 +391,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 var_0C;
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -408,7 +410,7 @@ typedef struct {
 	uint16 next_y;					// 0x26
 	uint8 next_z;					// 0x28
 	uint8 next_var_29;				// 0x29
-	uint8 outside_of_park;
+	uint8 outside_of_park;			// 0x2A
 	uint8 state;					// 0x2B
 	uint8 sub_state;				// 0x2C
 	uint8 sprite_type;				// 0x2D
@@ -458,9 +460,11 @@ typedef struct {
 			uint8 standing_flags;	//0x6C
 		};
 	};
-	uint8 var_6D;					// 0x6D
+	// Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
+	uint8 special_sprite;   	    // 0x6D
 	uint8 action_sprite_type;		// 0x6E
-	uint8 var_6F;
+	// Seems to be used like a local variable, as it's always set before calling sub_693BAB, which reads this again
+	uint8 next_action_sprite_type;    // 0x6F
 	uint8 action_sprite_image_offset; // 0x70
 	uint8 action;					// 0x71
 	uint8 action_frame;				// 0x72
@@ -488,7 +492,7 @@ typedef struct {
 	uint8 previous_ride;			// 0xAD
 	uint16 previous_ride_time_out;	// 0xAE
 	rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];	// 0xB0
-	uint8 var_C4;					// 0xC4
+	uint8 var_C4;					// 0xC4 has something to do with peep falling, see peep.checkForPath
 	union {
 		uint8 staff_id;						// 0xC5
 		uint8 guest_heading_to_ride_id;		// 0xC5
@@ -498,9 +502,9 @@ typedef struct {
 		uint8 peep_is_lost_countdown;	// 0xC6
 	};
 	uint8 photo1_ride_ref;			// 0xC7
-	uint32 flags;					// 0xC8
-	rct_xyzd8 var_CC;
-	rct_xyzd8 var_D0[4];
+	uint32 peep_flags;				// 0xC8
+	rct_xyzd8 pathfind_goal;		// 0xCC
+	rct_xyzd8 pathfind_history[4];	// 0xD0
 	uint8 no_action_frame_no;		// 0xE0
 	// 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
 	uint8 litter_count;				// 0xE1
@@ -636,5 +640,7 @@ void peep_update_name_sort(rct_peep *peep);
 void peep_update_names(bool realNames);
 
 void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+
+int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep);
 
 #endif

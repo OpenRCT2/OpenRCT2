@@ -234,6 +234,7 @@ static void mapgen_place_tree(int type, int x, int y)
 
 	surfaceZ = map_element_height(x * 32 + 16, y * 32 + 16) / 8;
 	mapElement = map_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
+	assert(mapElement != NULL);
 	mapElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
 	mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (util_rand() % 3);

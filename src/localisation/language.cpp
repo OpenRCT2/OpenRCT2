@@ -47,32 +47,39 @@ enum {
 	RCT2_LANGUAGE_ID_END = 255
 };
 
+static TTFFontSetDescriptor TTFFontMSGothic = {{
+	{ "msgothic.ttc",	"MS PGothic",	9,		1,		0,		15,		nullptr },
+	{ "msgothic.ttc",	"MS PGothic",	12,		1,		0,		17,		nullptr },
+	{ "msgothic.ttc",	"MS PGothic",	12,		1,		0,		17,		nullptr },
+	{ "msgothic.ttc",	"MS PGothic",	13,		1,		0,		20,		nullptr },
+}};
+
 static TTFFontSetDescriptor TTFFontMingLiu = {{
-	{ "msjh.ttc",		9,		-1,		-3,		6,		nullptr },
-	{ "mingliu.ttc",	11,		1,		1,		12,		nullptr },
-	{ "mingliu.ttc",	12,		1,		0,		12,		nullptr },
-	{ "mingliu.ttc",	13,		1,		0,		20,		nullptr },
+	{ "msjh.ttc",		"JhengHei",	9,		-1,		-3,		6,		nullptr },
+	{ "mingliu.ttc",	"MingLiU",	11,		1,		1,		12,		nullptr },
+	{ "mingliu.ttc",	"MingLiU",	12,		1,		0,		12,		nullptr },
+	{ "mingliu.ttc",	"MingLiU",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontSimSun = {{
-	{ "msyh.ttc",		9,		-1,		-3,		6,		nullptr },
-	{ "simsun.ttc",		11,		1,		-1,		14,		nullptr },
-	{ "simsun.ttc",		12,		1,		-2,		14,		nullptr },
-	{ "simsun.ttc",		13,		1,		0,		20,		nullptr },
+	{ "msyh.ttc",		"YaHei",	9,		-1,		-3,		6,		nullptr },
+	{ "simsun.ttc",		"SimSun",	11,		1,		-1,		14,		nullptr },
+	{ "simsun.ttc",		"SimSun",	12,		1,		-2,		14,		nullptr },
+	{ "simsun.ttc",		"SimSun",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontGulim = {{
-	{ "gulim.ttc",		11,		1,		0,		15,		nullptr },
-	{ "gulim.ttc",		12,		1,		0,		17,		nullptr },
-	{ "gulim.ttc",		12,		1,		0,		17,		nullptr },
-	{ "gulim.ttc",		13,		1,		0,		20,		nullptr },
+	{ "gulim.ttc",		"Gulim",	11,		1,		0,		15,		nullptr },
+	{ "gulim.ttc",		"Gulim",	12,		1,		0,		17,		nullptr },
+	{ "gulim.ttc",		"Gulim",	12,		1,		0,		17,		nullptr },
+	{ "gulim.ttc",		"Gulim",	13,		1,		0,		20,		nullptr },
 }};
 
 static TTFFontSetDescriptor TTFFontArial = {{
-	{ "arial.ttf",		8,		0,		-1,		6,		nullptr },
-	{ "arial.ttf",		10,		0,		-1,		12,		nullptr },
-	{ "arial.ttf",		11,		0,		-1,		12,		nullptr },
-	{ "arial.ttf",		12,		0,		-1,		20,		nullptr },
+	{ "arial.ttf",		"Arial",	8,		0,		-1,		6,		nullptr },
+	{ "arial.ttf",		"Arial",	10,		0,		-1,		12,		nullptr },
+	{ "arial.ttf",		"Arial",	11,		0,		-1,		12,		nullptr },
+	{ "arial.ttf",		"Arial",	12,		0,		-1,		20,		nullptr },
 }};
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
@@ -83,7 +90,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "nl-NL",		"Dutch",					"Nederlands",				"dutch",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_DUTCH					},	// LANGUAGE_DUTCH
 	{ "fr-FR",		"French",					"Fran\xC3\xA7" "ais",		"french",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_FRENCH					},	// LANGUAGE_FRENCH
 	{ "hu-HU",		"Hungarian",				"Magyar",					"hungarian",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_HUNGARIAN
-	{ "pl-PL",		"Polish",					"Polski",					"polish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_POLISH
+	{ "pl-PL",		"Polish",					"Polski",					"polish",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_POLISH
 	{ "es-ES",		"Spanish",					"Espa\xC3\xB1ol",			"spanish_sp",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SPANISH				},	// LANGUAGE_SPANISH
 	{ "sv-SE",		"Swedish",					"Svenska",					"swedish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SWEDISH				},	// LANGUAGE_SWEDISH
 	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ITALIAN				},	// LANGUAGE_ITALIAN
@@ -94,6 +101,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "ko",			"Korean",					"Korean",					"korean",					&TTFFontGulim,			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
 	{ "ru-RU",		"Russian",					"Russian",					"russian",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_RUSSIAN
 	{ "cz-CZ",		"Czech",					"Czech",					"czech",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_CZECH
+	{ "jp-JP",		"Japanese",					"Japanese",					"japanese",					&TTFFontMSGothic,		RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_JAPANESE
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
@@ -110,13 +118,13 @@ const utf8 BlackLeftArrowString[] =		{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8
 const utf8 BlackRightArrowString[] =	{ (utf8)0xC2, (utf8)0x8E, (utf8)0xE2, (utf8)0x96, (utf8)0xB6, (utf8)0x00 };
 const utf8 CheckBoxMarkString[] =		{ (utf8)0xE2, (utf8)0x9C, (utf8)0x93, (utf8)0x00 };
 
-void utf8_remove_format_codes(utf8 *text)
+void utf8_remove_format_codes(utf8 *text, bool allowcolours)
 {
 	utf8 *dstCh = text;
 	utf8 *ch = text;
 	int codepoint;
 	while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0) {
-		if (!utf8_is_format_code(codepoint)) {
+		if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint))) {
 			dstCh = utf8_write_codepoint(dstCh, codepoint);
 		}
 	}
@@ -127,7 +135,7 @@ const char *language_get_string(rct_string_id id)
 {
 	const char *openrctString = nullptr;
 
-	if (id == (rct_string_id)STR_NONE)
+	if (id == STR_NONE)
 		return nullptr;
 
 	if (_languageCurrent != nullptr)
@@ -146,19 +154,21 @@ const char *language_get_string(rct_string_id id)
 
 int language_open(int id)
 {
-	static const char *languagePath = "%s/data/language/%s.txt";
+	static const char *languagePath = "%s/language/%s.txt";
 	char filename[MAX_PATH];
+	char dataPath[MAX_PATH];
 
 	language_close_all();
 	if (id == LANGUAGE_UNDEFINED)
 		return 1;
 
+	platform_get_openrct_data_path(dataPath);
 	if (id != LANGUAGE_ENGLISH_UK) {
-		sprintf(filename, languagePath, gExePath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].path);
+		sprintf(filename, languagePath, dataPath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].path);
 		_languageFallback = LanguagePack::FromFile(LANGUAGE_ENGLISH_UK, filename);
 	}
 
-	sprintf(filename, languagePath, gExePath, LanguagesDescriptors[id].path);
+	sprintf(filename, languagePath, dataPath, LanguagesDescriptors[id].path);
 	_languageCurrent = LanguagePack::FromFile(id, filename);
 	if (_languageCurrent != nullptr) {
 		gCurrentLanguage = id;
@@ -171,15 +181,26 @@ int language_open(int id)
 			ttf_dispose();
 			gUseTrueTypeFont = true;
 			gCurrentTTFFontSet = LanguagesDescriptors[id].font;
-			if (!ttf_initialise()) {
-				log_warning("Unable to initialise TrueType fonts.");
+			bool font_initialised = ttf_initialise();
 
-				// Fall back to sprite font
+			// Have we tried Arial yet?
+			if (!font_initialised && gCurrentTTFFontSet != &TTFFontArial) {
+				log_warning("Unable to initialise prefered TrueType font -- falling back to Arial.");
+				gCurrentTTFFontSet = &TTFFontArial;
+				font_initialised = ttf_initialise();
+			}
+
+			// Fall back to sprite font.
+			if (!font_initialised) {
+				log_warning("Falling back to sprite font.");
 				gUseTrueTypeFont = false;
 				gCurrentTTFFontSet = nullptr;
 				return 0;
 			}
 		}
+
+		// Objects and their localized strings need to be refreshed
+		reset_loaded_objects();
 
 		return 1;
 	}
@@ -328,6 +349,11 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 		// Skip over the actual string entry to get to the next entry
 		while (*(*pStringTable)++ != 0);
 	}
+	// Fall back in case language does not get set.
+	if (pString == NULL)
+	{
+		pString = (char*)(*pStringTable);
+	}
 
 	char name[9];
 	if (RCT2_GLOBAL(0x009ADAFC, uint8) == 0) {
@@ -338,7 +364,7 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 	name[8] = 0;
 
 	rct_string_id stringId = _languageCurrent->GetObjectOverrideStringId(name, tableindex);
-	if (stringId != (rct_string_id)STR_NONE) {
+	if (stringId != STR_NONE) {
 		return stringId;
 	}
 
@@ -405,9 +431,9 @@ bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_s
 	outStringIds[1] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 1);
 	outStringIds[2] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 2);
 	return
-		outStringIds[0] != (rct_string_id)STR_NONE ||
-		outStringIds[1] != (rct_string_id)STR_NONE ||
-		outStringIds[2] != (rct_string_id)STR_NONE;
+		outStringIds[0] != STR_NONE ||
+		outStringIds[1] != STR_NONE ||
+		outStringIds[2] != STR_NONE;
 }
 
 }

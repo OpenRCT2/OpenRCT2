@@ -56,14 +56,24 @@ enum {
 extern "C" {
 #endif // __cplusplus
 #include "../common.h"
+#include "../game.h"
 #include "../platform/platform.h"
+#include "../localisation/string_ids.h"
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
 #ifndef DISABLE_NETWORK
 
-#ifdef _WIN32
+// This define specifies which version of network stream current build uses.
+// It is used for making sure only compatible builds get connected, even within
+// single OpenRCT2 version.
+#define NETWORK_STREAM_VERSION "5"
+#define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
+
+#define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
+
+#ifdef __WINDOWS__
 	#include <winsock2.h>
 	#include <ws2tcpip.h>
 	#define LAST_SOCKET_ERROR() WSAGetLastError()
@@ -88,10 +98,17 @@ extern "C" {
 	#define LAST_SOCKET_ERROR() errno
 	#define closesocket close
 	#define ioctlsocket ioctl
-#endif // _WIN32
+#endif // __WINDOWS__
+
+// Fixes issues on OS X
+#if defined(_RCT2_H_) && !defined(_MSC_VER)
+// use similar struct packing as MSVC for our structs
+#pragma pack(1)
+#endif
 
 #ifdef __cplusplus
 
+#include <array>
 #include <list>
 #include <set>
 #include <memory>
@@ -131,18 +148,85 @@ public:
 
 	uint16 size;
 	std::shared_ptr<std::vector<uint8>> data;
-	int transferred;
+	unsigned int transferred;
 	int read;
 };
 
 class NetworkPlayer
 {
 public:
-	NetworkPlayer(const char* name);
-	uint8 id;
-	uint8 name[32 + 1];
-	uint16 ping;
-	uint32 flags;
+	NetworkPlayer() = default;
+	void Read(NetworkPacket& packet);
+	void Write(NetworkPacket& packet);
+	void SetName(const char* name);
+	void AddMoneySpent(money32 cost);
+	uint8 id = 0;
+	uint8 name[32 + 1] = { 0 };
+	uint16 ping = 0;
+	uint8 flags = 0;
+	uint8 group = 0;
+	money32 money_spent = MONEY(0, 0);
+	unsigned int commands_ran = 0;
+	int last_action = -999;
+	uint32 last_action_time = 0;
+	rct_xyz16 last_action_coord = { 0 };
+};
+
+class NetworkAction
+{
+public:
+	rct_string_id name;
+	std::vector<int> commands;
+};
+
+class NetworkActions
+{
+public:
+	int FindCommand(int command);
+	const std::vector<NetworkAction> actions = {
+		{STR_ACTION_CHAT, {-1}},
+		{STR_ACTION_TERRAFORM, {GAME_COMMAND_SET_LAND_HEIGHT, GAME_COMMAND_RAISE_LAND, GAME_COMMAND_LOWER_LAND, GAME_COMMAND_EDIT_LAND_SMOOTH, GAME_COMMAND_CHANGE_SURFACE_STYLE}},
+		{STR_ACTION_SET_WATER_LEVEL, {GAME_COMMAND_SET_WATER_HEIGHT, GAME_COMMAND_RAISE_WATER, GAME_COMMAND_LOWER_WATER}},
+		{STR_ACTION_TOGGLE_PAUSE, {GAME_COMMAND_TOGGLE_PAUSE}},
+		{STR_ACTION_CREATE_RIDE, {GAME_COMMAND_CREATE_RIDE}},
+		{STR_ACTION_REMOVE_RIDE, {GAME_COMMAND_DEMOLISH_RIDE}},
+		{STR_ACTION_BUILD_RIDE, {GAME_COMMAND_PLACE_TRACK, GAME_COMMAND_REMOVE_TRACK, GAME_COMMAND_SET_MAZE_TRACK, GAME_COMMAND_PLACE_TRACK_DESIGN, GAME_COMMAND_PLACE_MAZE_DESIGN, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT}},
+		{STR_ACTION_RIDE_PROPERTIES, {GAME_COMMAND_SET_RIDE_NAME, GAME_COMMAND_SET_RIDE_APPEARANCE, GAME_COMMAND_SET_RIDE_STATUS, GAME_COMMAND_SET_RIDE_VEHICLES, GAME_COMMAND_SET_RIDE_SETTING, GAME_COMMAND_SET_RIDE_PRICE, GAME_COMMAND_SET_BRAKES_SPEED}},
+		{STR_ACTION_SCENERY, {GAME_COMMAND_REMOVE_SCENERY, GAME_COMMAND_PLACE_SCENERY, GAME_COMMAND_SET_BRAKES_SPEED, GAME_COMMAND_REMOVE_FENCE, GAME_COMMAND_PLACE_FENCE, GAME_COMMAND_REMOVE_LARGE_SCENERY, GAME_COMMAND_PLACE_LARGE_SCENERY, GAME_COMMAND_PLACE_BANNER, GAME_COMMAND_REMOVE_BANNER, GAME_COMMAND_SET_SCENERY_COLOUR, GAME_COMMAND_SET_FENCE_COLOUR, GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, GAME_COMMAND_SET_BANNER_COLOUR, GAME_COMMAND_SET_BANNER_NAME, GAME_COMMAND_SET_SIGN_NAME, GAME_COMMAND_SET_BANNER_STYLE, GAME_COMMAND_SET_SIGN_STYLE}},
+		{STR_ACTION_PATH, {GAME_COMMAND_PLACE_PATH, GAME_COMMAND_PLACE_PATH_FROM_TRACK, GAME_COMMAND_REMOVE_PATH}},
+		{STR_ACTION_CLEAR_LANDSCAPE, {GAME_COMMAND_CLEAR_SCENERY}},
+		{STR_ACTION_GUEST, {GAME_COMMAND_SET_PEEP_NAME}},
+		{STR_ACTION_STAFF, {GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, GAME_COMMAND_SET_STAFF_PATROL, GAME_COMMAND_FIRE_STAFF_MEMBER, GAME_COMMAND_SET_STAFF_ORDER, GAME_COMMAND_SET_STAFF_COLOUR}},
+		{STR_ACTION_PARK_PROPERTIES, {GAME_COMMAND_SET_PARK_NAME, GAME_COMMAND_SET_PARK_OPEN, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GAME_COMMAND_SET_LAND_OWNERSHIP, GAME_COMMAND_BUY_LAND_RIGHTS, GAME_COMMAND_PLACE_PARK_ENTRANCE, GAME_COMMAND_REMOVE_PARK_ENTRANCE}},
+		{STR_ACTION_PARK_FUNDING, {GAME_COMMAND_SET_CURRENT_LOAN, GAME_COMMAND_SET_RESEARCH_FUNDING, GAME_COMMAND_START_MARKETING_CAMPAIGN}},
+		{STR_ACTION_KICK_PLAYER, {GAME_COMMAND_KICK_PLAYER}},
+		{STR_ACTION_MODIFY_GROUPS, {GAME_COMMAND_MODIFY_GROUPS}},
+		{STR_ACTION_SET_PLAYER_GROUP, {GAME_COMMAND_SET_PLAYER_GROUP}},
+		{STR_ACTION_CHEAT, {GAME_COMMAND_CHEAT}},
+		{STR_ACTION_TOGGLE_SCENERY_CLUSTER, {-2}}
+	};
+};
+
+class NetworkGroup
+{
+public:
+	NetworkGroup();
+	~NetworkGroup();
+	void Read(NetworkPacket& packet);
+	void Write(NetworkPacket& packet);
+	void FreeNameStringId();
+	void ToggleActionPermission(size_t index);
+	bool CanPerformAction(size_t index);
+	bool CanPerformCommand(int command);
+	std::string& GetName();
+	void SetName(std::string name);
+	rct_string_id GetNameStringId();
+	std::array<uint8, 8> actions_allowed;
+	uint8 id = 0;
+
+private:
+	std::string name;
+	rct_string_id name_string_id;
 };
 
 class NetworkConnection
@@ -159,14 +243,18 @@ public:
 	void ResetLastPacketTime();
 	bool ReceivedPacketRecently();
 
-	SOCKET socket;
+	const char *getLastDisconnectReason() const;
+	void setLastDisconnectReason(const char *src);
+	void setLastDisconnectReason(const rct_string_id string_id);
+
+	SOCKET socket = INVALID_SOCKET;
 	NetworkPacket inboundpacket;
-	int authstatus;
+	int authstatus = NETWORK_AUTH_NONE;
 	NetworkPlayer* player;
-	uint32 ping_time;
-	const char* last_disconnect_reason;
+	uint32 ping_time = 0;
 
 private:
+	char* last_disconnect_reason;
 	bool SendPacket(NetworkPacket& packet);
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
 	uint32 last_packet_time;
@@ -192,10 +280,10 @@ public:
 private:
 	static int ResolveFunc(void* pointer);
 
-	const char* host;
-	unsigned short port;
-	SDL_mutex* mutex;
-	SDL_cond* cond;
+	const char* host = nullptr;
+	unsigned short port = 0;
+	SDL_mutex* mutex = nullptr;
+	SDL_cond* cond = nullptr;
 	std::shared_ptr<int> status;
 };
 
@@ -214,8 +302,11 @@ public:
 	uint32 GetServerTick();
 	uint8 GetPlayerID();
 	void Update();
-	NetworkPlayer* GetPlayerByID(int id);
-	const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
+	std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8 id);
+	NetworkPlayer* GetPlayerByID(uint8 id);
+	std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8 id);
+	NetworkGroup* GetGroupByID(uint8 id);
+	static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
 	void KickPlayer(int playerId);
@@ -223,6 +314,13 @@ public:
 	void ShutdownClient();
 	void AdvertiseRegister();
 	void AdvertiseHeartbeat();
+	NetworkGroup* AddGroup();
+	void RemoveGroup(uint8 id);
+	uint8 GetDefaultGroup();
+	void SetDefaultGroup(uint8 id);
+	void SaveGroups();
+	void LoadGroups();
+	void FreeStringIds();
 
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
@@ -238,8 +336,13 @@ public:
 	void Server_Send_PINGLIST();
 	void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
 	void Server_Send_GAMEINFO(NetworkConnection& connection);
+	void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
+	void Server_Send_GROUPLIST(NetworkConnection& connection);
+	void Server_Send_EVENT_PLAYER_JOINED(const char *playerName);
+	void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
+	std::vector<std::unique_ptr<NetworkGroup>> group_list;
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
@@ -247,9 +350,9 @@ private:
 	void ProcessGameCommandQueue();
 	void AddClient(SOCKET socket);
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
-	NetworkPlayer* AddPlayer(const char* name);
+	NetworkPlayer* AddPlayer();
 	void PrintError();
-	const char *GetMasterServerUrl();
+	const char* GetMasterServerUrl();
 	std::string GenerateAdvertiseKey();
 
 	struct GameCommand
@@ -264,54 +367,60 @@ private:
 		}
 	};
 
-	int mode;
-	int status;
+	int mode = NETWORK_MODE_NONE;
+	int status = NETWORK_STATUS_NONE;
 	NetworkAddress server_address;
-	bool wsa_initialized;
-	SOCKET listening_socket;
-	unsigned short listening_port;
+	bool wsa_initialized = false;
+	SOCKET listening_socket = INVALID_SOCKET;
+	unsigned short listening_port = 0;
 	NetworkConnection server_connection;
-	uint32 last_tick_sent_time;
-	uint32 last_ping_sent_time;
-	uint32 server_tick;
-	uint32 server_srand0;
-	uint32 server_srand0_tick;
-	uint8 player_id;
+	uint32 last_tick_sent_time = 0;
+	uint32 last_ping_sent_time = 0;
+	uint32 server_tick = 0;
+	uint32 server_srand0 = 0;
+	uint32 server_srand0_tick = 0;
+	uint8 player_id = 0;
 	std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
 	std::multiset<GameCommand> game_command_queue;
 	std::vector<uint8> chunk_buffer;
 	std::string password;
-	bool _desynchronised;
-	uint32 server_connect_time;
-	uint32 last_advertise_time;
+	bool _desynchronised = false;
+	uint32 server_connect_time = 0;
+	uint32 last_advertise_time = 0;
 	std::string advertise_token;
 	std::string advertise_key;
-	int advertise_status;
-	uint32 last_heartbeat_time;
+	int advertise_status = 0;
+	uint32 last_heartbeat_time = 0;
+	uint8 default_group = 0;
 
 	void UpdateServer();
 	void UpdateClient();
 
 private:
-	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
-	std::vector<int (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
-	int Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
-	int Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
-	int Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
+	std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
+	std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
+	void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus
+#else /* DISABLE_NETWORK */
+#define NETWORK_STREAM_ID "Multiplayer disabled"
 #endif /* DISABLE_NETWORK */
 
 #ifdef __cplusplus
@@ -334,13 +443,37 @@ const char* network_get_player_name(unsigned int index);
 uint32 network_get_player_flags(unsigned int index);
 int network_get_player_ping(unsigned int index);
 int network_get_player_id(unsigned int index);
+money32 network_get_player_money_spent(unsigned int index);
+void network_add_player_money_spent(unsigned int index, money32 cost);
+int network_get_player_last_action(unsigned int index, int time);
+void network_set_player_last_action(unsigned int index, int command);
+rct_xyz16 network_get_player_last_action_coord(unsigned int index);
+void network_set_player_last_action_coord(unsigned int index, rct_xyz16 coord);
+unsigned int network_get_player_commands_ran(unsigned int index);
+int network_get_player_index(uint8 id);
+uint8 network_get_player_group(unsigned int index);
+void network_set_player_group(unsigned int index, unsigned int groupindex);
+int network_get_group_index(uint8 id);
+int network_get_current_player_group_index();
+uint8 network_get_group_id(unsigned int index);
+int network_get_num_groups();
+const char* network_get_group_name(unsigned int index);
+rct_string_id network_get_group_name_string_id(unsigned int index);
+void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+uint8 network_get_default_group();
+int network_get_num_actions();
+rct_string_id network_get_action_name_string_id(unsigned int index);
+int network_can_perform_action(unsigned int groupindex, unsigned int index);
+int network_can_perform_command(unsigned int groupindex, unsigned int index);
+void network_free_string_ids();
 
 void network_send_map();
 void network_send_chat(const char* text);
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 void network_send_password(const char* password);
 
-void network_kick_player(int playerId);
 void network_set_password(const char* password);
 
 void network_print_error();

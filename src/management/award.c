@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
@@ -134,11 +135,14 @@ static int award_is_deserved_best_rollercoasters(int awardType, int activeAwardT
 {
 	int i, rollerCoasters;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	rollerCoasters = 0;
 	FOR_ALL_RIDES(i, ride) {
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
+		if (rideType == NULL) {
+			continue;
+		}
 		if (rideType->category[0] != RIDE_GROUP_ROLLERCOASTER && rideType->category[1] != RIDE_GROUP_ROLLERCOASTER)
 			continue;
 
@@ -277,7 +281,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 	int i, hungryPeeps, shops, uniqueShops;
 	uint64 shopTypes;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 	uint16 spriteIndex;
 	rct_peep *peep;
 
@@ -294,7 +298,10 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 			continue;
 
 		shops++;
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
+		if (rideType == NULL) {
+			continue;
+		}
 		if (!(shopTypes & (1ULL << rideType->shop_item))) {
 			shopTypes |= (1ULL << rideType->shop_item);
 			uniqueShops++;
@@ -323,7 +330,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 	int i, hungryPeeps, shops, uniqueShops;
 	uint64 shopTypes;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 	uint16 spriteIndex;
 	rct_peep *peep;
 
@@ -340,7 +347,10 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 			continue;
 
 		shops++;
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
+		if (rideType == NULL) {
+			continue;
+		}
 		if (!(shopTypes & (1ULL << rideType->shop_item))) {
 			shopTypes |= (1ULL << rideType->shop_item);
 			uniqueShops++;
@@ -433,11 +443,14 @@ static int award_is_deserved_best_water_rides(int awardType, int activeAwardType
 {
 	int i, waterRides;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	waterRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
+		if (rideType == NULL) {
+			continue;
+		}
 		if (rideType->category[0] != RIDE_GROUP_WATER && rideType->category[1] != RIDE_GROUP_WATER)
 			continue;
 
@@ -533,11 +546,14 @@ static int award_is_deserved_best_gentle_rides(int awardType, int activeAwardTyp
 {
 	int i, gentleRides;
 	rct_ride *ride;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	gentleRides = 0;
 	FOR_ALL_RIDES(i, ride) {
-		rideType = gRideTypeList[ride->subtype];
+		rideType = get_ride_entry(ride->subtype);
+		if (rideType == NULL) {
+			continue;
+		}
 		if (rideType->category[0] != RIDE_GROUP_GENTLE && rideType->category[1] != RIDE_GROUP_GENTLE)
 			continue;
 
@@ -619,7 +635,9 @@ void award_update_all()
 				// Add award
 				gCurrentAwards[freeAwardEntryIndex].type = awardType;
 				gCurrentAwards[freeAwardEntryIndex].time = 5;
-				news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
+				if (gConfigNotifications.park_award) {
+					news_item_add_to_queue(NEWS_ITEM_AWARD, STR_NEWS_ITEM_AWARD_MOST_UNTIDY + awardType, 0);
+				}
 				window_invalidate_by_class(WC_PARK_INFORMATION);
 			}
 		}

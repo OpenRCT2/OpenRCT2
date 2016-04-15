@@ -124,7 +124,7 @@ void console_update()
 		}
 
 		// Remove unwated characters in console input
-		utf8_remove_format_codes(_consoleCurrentLine);
+		utf8_remove_format_codes(_consoleCurrentLine, false);
 	}
 
 	// Flash the caret
@@ -214,8 +214,8 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	// Draw caret
 	if (_consoleCaretTicks < 15) {
-		memcpy(lineBuffer, _consoleCurrentLine, gTextInputCursorPosition);
-		lineBuffer[gTextInputCursorPosition] = 0;
+		memcpy(lineBuffer, _consoleCurrentLine, gTextInput.selection_offset);
+		lineBuffer[gTextInput.selection_offset] = 0;
 		int caretX = x + gfx_get_string_width(lineBuffer);
 		int caretY = y + lineHeight;
 
@@ -249,15 +249,15 @@ void console_input(int c)
 			_consoleHistoryIndex--;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
 		}
-		gTextInputCursorPosition = strlen(_consoleCurrentLine);
-		gTextInputLength = gTextInputCursorPosition;
+		textinputbuffer_recalculate_length(&gTextInput);
+		gTextInput.selection_offset = strlen(_consoleCurrentLine);
 		break;
 	case SDL_SCANCODE_DOWN:
 		if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
 			_consoleHistoryIndex++;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
-			gTextInputCursorPosition = strlen(_consoleCurrentLine);
-			gTextInputLength = gTextInputCursorPosition;
+			textinputbuffer_recalculate_length(&gTextInput);
+			gTextInput.selection_offset = strlen(_consoleCurrentLine);
 		} else {
 			_consoleHistoryIndex = _consoleHistoryCount;
 			console_clear_input();
@@ -389,8 +389,9 @@ void console_refresh_caret()
 static void console_clear_input()
 {
 	_consoleCurrentLine[0] = 0;
-	gTextInputCursorPosition = 0;
-	gTextInputLength = 0;
+	if (gConsoleOpen) {
+		platform_start_text_input(_consoleCurrentLine, sizeof(_consoleCurrentLine));
+	}
 }
 
 static void console_history_add(const utf8 *src)
@@ -530,6 +531,9 @@ static int cc_get(const utf8 **argv, int argc)
 				console_printf("location %d %d", mapCoord.x, mapCoord.y);
 			}
 		}
+		else if (strcmp(argv[0], "window_scale") == 0) {
+			console_printf("window_scale %.3f", gConfigGeneral.window_scale);
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -570,7 +574,7 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get max_loan");
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
+			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
 			console_execute_silent("get guest_initial_cash");
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
@@ -630,11 +634,11 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get park_open");
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
+			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get land_rights_cost");
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(15000, 0));
+			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get construction_rights_cost");
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
@@ -686,6 +690,14 @@ static int cc_set(const utf8 **argv, int argc)
 				console_execute_silent("get location");
 			}
 		}
+		else if (strcmp(argv[0], "window_scale") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
+			float newScale = (float)(0.001*trunc(1000*double_val[0]));
+			gConfigGeneral.window_scale = clamp(newScale, 0.5f, 5.0f);
+			config_save_default();
+			gfx_invalidate_screen();
+			platform_trigger_resize();
+			console_execute_silent("get window_scale");
+		}
 		else if (invalidArgs) {
 			console_writeline_error("Invalid arguments.");
 		}
@@ -713,17 +725,17 @@ static int cc_twitch(const utf8 **argv, int argc)
 static void editor_load_selected_objects_console()
 {
 	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = RCT2_GLOBAL(RCT2_ADDRESS_INSTALLED_OBJECT_LIST, rct_object_entry*);
+	rct_object_entry *installed_entry = gInstalledObjects;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32) == 0)
+	if (gInstalledObjectsCount == 0)
 		return;
 
-	for (int i = RCT2_GLOBAL(RCT2_ADDRESS_OBJECT_LIST_NO_ITEMS, uint32); i != 0; i--, selection_flags++) {
+	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
 		if (*selection_flags & 1) {
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
 				int chunk_size;
-				if (!object_load(-1, installed_entry, &chunk_size)) {
+				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
 					log_error("Failed to load entry %.8s", installed_entry->name);
 				}
 			}
@@ -735,9 +747,9 @@ static void editor_load_selected_objects_console()
 
 static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
-		utf8 path[260];
+		utf8 path[MAX_PATH];
 
-		subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
+		substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
 		// Require pointer to start of filename
 		utf8* last_char = path + strlen(path);
 		strcat(path, ".DAT\0");
@@ -762,17 +774,17 @@ static int cc_load_object(const utf8 **argv, int argc) {
 					}
 					else {
 						// Load the obect
-						if (!object_load(entryGroupIndex, &entry, NULL)) {
+						if (!object_load_chunk(entryGroupIndex, &entry, NULL)) {
 							console_writeline_error("Could not load object file.");
 						}
 						else {
 							reset_loaded_objects();
 							if (type == OBJECT_TYPE_RIDE) {
 								// Automatically research the ride so it's supported by the game.
-								rct_ride_type *rideEntry;
+								rct_ride_entry *rideEntry;
 								int rideType;
 
-								rideEntry = GET_RIDE_ENTRY(entryGroupIndex);
+								rideEntry = get_ride_entry(entryGroupIndex);
 
 								for (int j = 0; j < 3; j++) {
 									rideType = rideEntry->ride_type[j];
@@ -911,7 +923,8 @@ utf8* console_variable_table[] = {
 	"console_small_font",
 	"test_unfinished_tracks",
 	"no_test_crashes",
-	"location"
+	"location",
+	"window_scale"
 };
 utf8* console_window_table[] = {
 	"object_selection",
@@ -1033,8 +1046,10 @@ void console_execute_silent(const utf8 *src)
 		return;
 
 	// Aliases for hiding the console
-	if(strcmp(argv[0],"quit") == 0 || strcmp(argv[0],"exit") == 0)
-		argv[0]="hide";
+	if(strcmp(argv[0],"quit") == 0 || strcmp(argv[0],"exit") == 0) {
+		free(argv[0]);
+		argv[0] = _strdup("hide");
+	}
 
 	bool validCommand = false;
 	for (int i = 0; i < countof(console_command_table); i++) {

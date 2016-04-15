@@ -56,7 +56,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 var_0C;
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -88,7 +88,7 @@ typedef struct {
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 pad_0C;
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -108,8 +108,8 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint16 var_0A;
-	uint8 pad_0C[0x2];
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -137,8 +137,8 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;					// 0x09
-	uint16 var_0A;
-	uint8 pad_0C[0x2];
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -163,7 +163,8 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;
-	uint8 pad_0A[0x4];
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -181,7 +182,7 @@ typedef struct {
 	};
 	uint8 pad_28[0x6];
 	uint8 var_2E;
-	uint8 flags;
+	uint8 fountain_flags;			// 0x2F
 	sint16 target_x;				// 0x30
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x12];
@@ -196,7 +197,8 @@ typedef struct {
 	uint16 previous;				// 0x06
 	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
 	uint8 var_09;
-	uint8 pad_0A[0x4];
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -221,7 +223,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 var_0C;
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -263,7 +265,7 @@ typedef struct {
 	// Height from center of sprite to bottom
 	uint8 sprite_height_negative;	// 0x09
 	uint16 sprite_index;			// 0x0A
-	uint16 var_0C;
+	uint16 flags;			// 0x0C
 	sint16 x;						// 0x0E
 	sint16 y;						// 0x10
 	sint16 z;						// 0x12
@@ -282,6 +284,35 @@ typedef struct {
 	uint16 var_26;
 } rct_crash_splash;
 
+typedef struct {
+	uint8 sprite_identifier;		// 0x00
+	uint8 misc_identifier;			// 0x01
+	uint16 next_in_quadrant;		// 0x02
+	uint16 next;					// 0x04
+	uint16 previous;				// 0x06
+	uint8 linked_list_type_offset;	// 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+	// Height from center of sprite to bottom
+	uint8 sprite_height_negative;	// 0x09
+	uint16 sprite_index;			// 0x0A
+	uint16 flags;			// 0x0C
+	sint16 x;						// 0x0E
+	sint16 y;						// 0x10
+	sint16 z;						// 0x12
+	// Width from center of sprite to edge
+	uint8 sprite_width;				// 0x14
+	// Height from center of sprite to top
+	uint8 sprite_height_positive;	// 0x15
+	sint16 sprite_left;				// 0x16
+	sint16 sprite_top;				// 0x18
+	sint16 sprite_right;			// 0x1A
+	sint16 sprite_bottom;			// 0x1C
+	uint8  sprite_direction;		// 0x1E
+	uint8 pad_1F[3];				// 0x1F
+	uint16 name_string_idx;			// 0x22
+	uint16 var_24;
+	uint16 var_26;
+} rct_steam_particle;
+
 /**
  * Sprite structure.
  * size: 0x0100
@@ -298,10 +329,28 @@ typedef union {
 	rct_money_effect money_effect;
 	rct_crashed_vehicle_particle crashed_vehicle_particle;
 	rct_crash_splash crash_splash;
+	rct_steam_particle steam_particle;
 } rct_sprite;
 
+typedef struct {
+	uint8 sprite_width;             // 0x00
+	uint8 sprite_height_negative;   // 0x01
+	uint8 sprite_height_positive;   // 0x02
+	uint8 unused;                   // 0x03
+} rct_sprite_bounds;
+
+typedef struct {
+	uint32 base_image;   // 0x00
+	uint8* unkn_04;      // 0x04
+} rct_sprite_image;
+
+typedef struct {
+	rct_sprite_image *sprite_image;      // 0x00
+	rct_sprite_bounds *sprite_bounds;    // 0x04
+} rct_sprite_entry;
+
 enum {
-	SPRITE_MISC_0,
+	SPRITE_MISC_STEAM_PARTICLE,
 	SPRITE_MISC_MONEY_EFFECT,
 	SPRITE_MISC_CRASHED_VEHICLE_PARTICLE,
 	SPRITE_MISC_3,							// (related to vehicle crash, probably crash particles)
@@ -313,8 +362,18 @@ enum {
 	SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
 };
 
+enum {
+	SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE = 1 << 7,
+	SPRITE_FLAGS_PEEP_VISIBLE = 1 << 8, // Peep is eligible to show in summarized guest list window (is inside park?)
+	SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Peep belongs to highlighted group (flashes red on map)
+};
+
 // rct2: 0x010E63BC
 extern rct_sprite* g_sprite_list;
+
+// rct2: 0x00982708
+extern rct_sprite_entry* g_sprite_entries;
+
 
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
@@ -331,6 +390,7 @@ void litter_create(int x, int y, int z, int direction, int type);
 void litter_remove_at(int x, int y, int z);
 void sprite_misc_3_create(int x, int y, int z);
 void sprite_misc_5_create(int x, int y, int z);
+uint16 sprite_get_first_in_quadrant(int x, int y);
 
 ///////////////////////////////////////////////////////////////
 // Balloon

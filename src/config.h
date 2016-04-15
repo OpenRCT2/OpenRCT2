@@ -78,6 +78,7 @@ enum {
 	SHORTCUT_SCROLL_MAP_RIGHT,
 	SHORTCUT_OPEN_CHAT_WINDOW,
 	SHORTCUT_QUICK_SAVE_GAME,
+	SHORTCUT_SHOW_OPTIONS,
 
 	SHORTCUT_COUNT
 };
@@ -94,7 +95,8 @@ enum {
 
 enum {
 	MEASUREMENT_FORMAT_IMPERIAL,
-	MEASUREMENT_FORMAT_METRIC
+	MEASUREMENT_FORMAT_METRIC,
+	MEASUREMENT_FORMAT_SI
 };
 
 enum {
@@ -108,7 +110,9 @@ enum {
 
 enum {
 	DATE_FORMAT_DMY,
-	DATE_FORMAT_MDY
+	DATE_FORMAT_MDY,
+	DATE_FORMAT_YMD,
+	DATE_FORMAT_YDM
 };
 
 enum {
@@ -125,6 +129,11 @@ enum {
 	SORT_NAME_DESCENDING,
 	SORT_DATE_ASCENDING,
 	SORT_DATE_DESCENDING,
+};
+
+enum {
+	SCENARIO_SELECT_MODE_DIFFICULTY,
+	SCENARIO_SELECT_MODE_ORIGIN,
 };
 
 typedef struct {
@@ -159,15 +168,25 @@ typedef struct {
 	uint8 date_format;
 	uint8 auto_staff_placement;
 	uint8 handymen_mow_default;
+	uint8 default_inspection_interval;
 	utf8string last_run_version;
 	uint8 invert_viewport_drag;
 	uint8 load_save_sort;
 	uint8 minimize_fullscreen_focus_loss;
 	uint8 day_night_cycle;
 	uint8 upper_case_banners;
+	uint8 disable_lightning_effect;
 	uint8 allow_loading_with_incorrect_checksum;
 	uint8 steam_overlay_pause;
 	float window_scale;
+	uint8 scale_quality;
+	uint8 use_nn_at_integer_scales;
+	uint8 show_fps;
+	uint8 trap_cursor;
+	uint8 auto_open_shops;
+	uint8 scenario_select_mode;
+	uint8 scenario_unlocking_enabled;
+	uint8 scenario_hide_mega_park;
 } general_configuration;
 
 typedef struct {
@@ -183,24 +202,15 @@ typedef struct {
 } interface_configuration;
 
 typedef struct {
-	uint8 title_music;
-	uint8 sound;
-	uint8 ride_music;
-	uint8 audio_focus;
 	uint8 master_volume;
-	uint8 music_volume;
+	uint8 title_music;
+	uint8 sound_enabled;
+	uint8 sound_volume;
+	uint8 ride_music_enabled;
+	uint8 ride_music_volume;
+	uint8 audio_focus;
 	utf8string device;
 } sound_configuration;
-
-typedef struct {
-	uint8 fast_lift_hill;
-	uint8 disable_brakes_failure;
-	uint8 disable_all_breakdowns;
-	uint8 unlock_all_prices;
-	uint8 build_in_pause_mode;
-	uint8 ignore_ride_intensity;
-	uint8 disable_vandalism;
-} cheat_configuration;
 
 typedef struct {
 	utf8string channel;
@@ -214,6 +224,7 @@ typedef struct {
 typedef struct {
 	utf8string player_name;
 	uint32 default_port;
+	utf8string default_password;
 	uint8 stay_connected;
 	uint8 advertise;
 	uint8 maxplayers;
@@ -225,12 +236,25 @@ typedef struct {
 	utf8string provider_website;
 } network_configuration;
 
-typedef struct theme_window {
-	uint8 colours[6];
-
-	// Define any other settings for all windows here
-
-} theme_window;
+typedef struct {
+	bool park_award;
+	bool park_marketing_campaign_finished;
+	bool park_warnings;
+	bool park_rating_warnings;
+	bool ride_broken_down;
+	bool ride_crashed;
+	bool ride_warnings;
+	bool ride_researched;
+	bool guest_warnings;
+	bool guest_lost;
+	bool guest_left_park;
+	bool guest_queuing_for_ride;
+	bool guest_on_ride;
+	bool guest_left_ride;
+	bool guest_bought_item;
+	bool guest_used_facility;
+	bool guest_died;
+} notification_configuration;
 
 // Define structures for any other settings here
 typedef struct {
@@ -238,22 +262,6 @@ typedef struct {
 	uint8 rct1_park_lights;
 	uint8 rct1_scenario_font;
 } theme_features;
-
-#define THEME_PRESET_NAME_SIZE 256
-
-typedef struct theme_preset {
-	char name[THEME_PRESET_NAME_SIZE];
-	theme_window *windows;
-
-	// Add structures for any other settings here
-	theme_features features;
-
-} theme_preset;
-
-typedef struct {
-	theme_preset *presets;
-	uint16 num_presets;
-} themes_configuration;
 
 #define TITLE_SEQUENCE_MAX_SAVE_LENGTH 51
 
@@ -296,15 +304,16 @@ typedef struct {
 extern general_configuration gConfigGeneral;
 extern interface_configuration gConfigInterface;
 extern sound_configuration gConfigSound;
-extern cheat_configuration gConfigCheat;
 extern twitch_configuration gConfigTwitch;
 extern network_configuration gConfigNetwork;
-extern themes_configuration gConfigThemes;
+extern notification_configuration gConfigNotifications;
 extern title_sequences_configuration gConfigTitleSequences;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];
 
+void config_get_default_path(utf8 *outPath);
 void config_set_defaults();
+void config_release();
 bool config_open_default();
 bool config_save_default();
 
@@ -315,10 +324,6 @@ bool config_shortcut_keys_load();
 bool config_shortcut_keys_save();
 
 bool config_find_or_browse_install_directory();
-
-void themes_set_default();
-void themes_load_presets();
-bool themes_save_preset(int preset);
 
 void title_sequences_set_default();
 void title_sequences_load_presets();

@@ -41,7 +41,7 @@
 
 rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
 
-uint8 TextInputDescriptionArgs[8];
+uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
 char gTextBoxInput[512] = { 0 };
 int gMaxTextBoxInputLength = 0;
@@ -150,11 +150,9 @@ void window_dispatch_update_all()
 	rct_window *w;
 
 	RCT2_GLOBAL(0x01423604, sint32)++;
-	//RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_NOT_SHOWN_TICKS, sint16)++;
+	// gTooltipNotShownTicks++;
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		window_event_update_call(w);
-
-	RCT2_CALLPROC_EBPSAFE(0x006EE411);	// handle_text_input
 }
 
 void window_update_all_viewports()
@@ -274,6 +272,39 @@ static void window_viewport_wheel_input(rct_window *w, int wheel)
 		window_zoom_out(w);
 }
 
+static bool window_other_wheel_input(rct_window *w, int widgetIndex, int wheel)
+{
+	// HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
+	//       this selective approch will have to do.
+
+	// Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
+	int previewWidgetIndex;
+	switch (w->classification) {
+	case WC_WATER:
+	case WC_CLEAR_SCENERY:
+	case WC_LAND_RIGHTS:
+		previewWidgetIndex = 3;
+		break;
+	case WC_LAND:
+		previewWidgetIndex = 5;
+		break;
+	case WC_MAP:
+		previewWidgetIndex = 13;
+		break;
+	default:
+		return false;
+	}
+
+	// Preview / Increment / Decrement
+	if (widgetIndex >= previewWidgetIndex && widgetIndex < previewWidgetIndex + 3) {
+		int buttonWidgetIndex = wheel < 0 ? previewWidgetIndex + 2 : previewWidgetIndex + 1;
+		window_event_mouse_up_call(w, buttonWidgetIndex);
+		return true;
+	}
+
+	return false;
+}
+
 /**
  *
  *  rct2: 0x006E7868
@@ -308,7 +339,7 @@ static void window_all_wheel_input()
 		return;
 
 	// Check window cursor is over
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_5)) {
+	if (!(gInputFlags & INPUT_FLAG_5)) {
 		w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
@@ -325,6 +356,10 @@ static void window_all_wheel_input()
 					scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8)];
 					if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 						window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
+						return;
+					}
+				} else {
+					if (window_other_wheel_input(w, widgetIndex, wheel)) {
 						return;
 					}
 				}
@@ -753,7 +788,7 @@ rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number)
 }
 
 /**
- *  Closes the top-most window
+ * Closes the top-most window
  *
  *  rct2: 0x006E403C
  */
@@ -776,7 +811,7 @@ void window_close_top()
 }
 
 /**
- *  Closes all open windows
+ * Closes all open windows
  *
  *  rct2: 0x006EE927
  */
@@ -922,8 +957,8 @@ void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 }
 
 /**
-  * Invalidates all windows.
-  */
+ * Invalidates all windows.
+ */
 void window_invalidate_all()
 {
 	rct_window* w;
@@ -1099,7 +1134,7 @@ rct_window *window_bring_to_front(rct_window *w)
 		if (!(v->flags & WF_STICK_TO_FRONT))
 			break;
 
-		if (v >= g_window_list && w != v) {
+	if (v >= g_window_list && w != v) {
 		do {
 			t = *w;
 			*w = *(w + 1);
@@ -1157,7 +1192,7 @@ rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
 
 /**
  *
- * rct2: 0x006EE65A
+ *  rct2: 0x006EE65A
  */
 void window_push_others_right(rct_window* window)
 {
@@ -1247,8 +1282,7 @@ rct_window *window_get_main()
 
 /**
  * Based on
- * rct2: 0x696ee9 & 0x66842F & 0x006AF3B3
- *
+ *  rct2: 0x696ee9, 0x66842F, 0x006AF3B3
  */
 void window_scroll_to_viewport(rct_window *w)
 {
@@ -1364,7 +1398,7 @@ void sub_688956()
 /**
  *
  *  rct2: 0x0068881A
- *  direction can be used to alter the camera rotation:
+ * direction can be used to alter the camera rotation:
  *		1: clockwise
  *		-1: anti-clockwise
  */
@@ -1458,16 +1492,6 @@ void window_zoom_in(rct_window *w)
 void window_zoom_out(rct_window *w)
 {
 	window_zoom_set(w, w->viewport->zoom + 1);
-}
-
-/**
- *
- *  rct2: 0x006EE308
- * DEPRECIATED please use the new text_input window.
- */
-void window_show_textinput(rct_window *w, int widgetIndex, uint16 title, uint16 text, int value)
-{
-	RCT2_CALLPROC_X(0x006EE308, title, text, value, widgetIndex, (int)w, 0, 0);
 }
 
 /**
@@ -1740,7 +1764,7 @@ void window_set_resize(rct_window *w, int minWidth, int minHeight, int maxWidth,
  */
 int tool_set(rct_window *w, int widgetIndex, int tool)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 		if (
 			w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
 			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
@@ -1753,8 +1777,8 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_TOOL_ACTIVE;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_6;
+	gInputFlags |= INPUT_FLAG_TOOL_ACTIVE;
+	gInputFlags &= ~INPUT_FLAG_6;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = tool;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) = w->classification;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) = w->number;
@@ -1770,8 +1794,8 @@ void tool_cancel()
 {
 	rct_window *w;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) {
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~INPUT_FLAG_TOOL_ACTIVE;
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
+		gInputFlags &= ~INPUT_FLAG_TOOL_ACTIVE;
 
 		map_invalidate_selection_rect();
 		map_invalidate_map_selection_tiles();
@@ -1779,7 +1803,7 @@ void tool_cancel()
 		// Reset map selection
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) >= 0) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != 0xFFFF) {
 			// Invalidate tool widget
 			widget_invalidate_by_number(
 				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
@@ -2001,9 +2025,9 @@ void window_event_scroll_paint_call(rct_window *w, rct_drawpixelinfo *dpi, int s
 }
 
 /**
+ * Bubbles an item one position up in the window list.  This is done by swapping
+ * the two locations.
  *  rct2: New function not from rct2
- *  Bubbles an item one position up in the window list.
- *  This is done by swapping the two locations.
  */
 void window_bubble_list_item(rct_window* w, int item_position){
 	char swap = w->list_item_positions[item_position];
@@ -2011,7 +2035,9 @@ void window_bubble_list_item(rct_window* w, int item_position){
 	w->list_item_positions[item_position + 1] = swap;
 }
 
-/* rct2: 0x006ED710
+/**
+ *
+ *  rct2: 0x006ED710
  * Called after a window resize to move windows if they
  * are going to be out of sight.
  */
@@ -2423,15 +2449,7 @@ void textinput_cancel()
 	// Close the new text input window
 	window_close_by_class(WC_TEXTINPUT);
 
-	// The following code is only necessary for the old Windows text input dialog. In theory this isn't used anymore, but can
-	// still be triggered via original code paths.
-#ifdef _WIN32
-	RCT2_CALLPROC_EBPSAFE(0x0040701D);
-#else
-	log_warning("there should be something called here (0x0040701D)");
-#endif // _WIN32
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, uint8) != 255) {
-		RCT2_CALLPROC_EBPSAFE(0x006EE4E2);
 		w = window_find_by_number(
 			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWCLASS, rct_windowclass),
 			RCT2_GLOBAL(RCT2_ADDRESS_TEXTINPUT_WINDOWNUMBER, rct_windownumber)
@@ -2462,7 +2480,7 @@ void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id exi
 
 	// Enter in the the text input buffer any existing
 	// text.
-	if (existing_text != (rct_string_id)STR_NONE)
+	if (existing_text != STR_NONE)
 		format_string(gTextBoxInput, existing_text, &existing_args);
 
 	// In order to prevent strings that exceed the maxLength

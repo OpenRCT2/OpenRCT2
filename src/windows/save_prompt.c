@@ -23,12 +23,11 @@
 #include "../config.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../openrct2.h"
 #include "../sprites.h"
-#include "../tutorial.h"
-#include "../interface/themes.h"
 
 enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -134,19 +133,6 @@ void window_save_prompt_open()
 		* and game_load_or_quit() are not called by the original binary anymore.
 		*/
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
-				RCT2_CALLPROC_EBPSAFE(0x0066EE54);
-				game_load_or_quit_no_save_prompt();
-				return;
-			}
-			else {
-				tutorial_stop();
-				game_load_or_quit_no_save_prompt();
-				return;
-			}
-		}
-
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) < 3840) {
 			game_load_or_quit_no_save_prompt();
 			return;
@@ -246,18 +232,6 @@ static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_CLOSE:
 		case WIDX_CANCEL:
 			window_close(w);
-			return;
-		}
-	}
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 0) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ON_TUTORIAL, uint8) != 1) {
-			RCT2_CALLPROC_EBPSAFE(0x0066EE54);
-			game_load_or_quit_no_save_prompt();
-			return;
-		} else {
-			tutorial_stop();
-			game_load_or_quit_no_save_prompt();
 			return;
 		}
 	}

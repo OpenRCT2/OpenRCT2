@@ -69,6 +69,20 @@ typedef struct {
 	void *data;
 } rct_gx;
 
+typedef struct {
+	uint8 blue;
+	uint8 green;
+	uint8 red;
+	uint8 alpha;
+} rct_palette_entry;
+
+typedef struct {
+	rct_palette_entry entries[256];
+} rct_palette;
+
+#define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
+
+#define PALETTE_TO_G1_OFFSET_COUNT 144
 extern const uint16 palette_to_g1_offset[];
 extern const uint8 peep_palette[];
 extern uint8 text_palette[];
@@ -80,7 +94,7 @@ extern rct_g1_element *g1Elements;
 extern rct_gx g2;
 
 //
-rct_drawpixelinfo* clip_drawpixelinfo(rct_drawpixelinfo* dpi, int left, int width, int top, int height);
+bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);
 void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);
 void gfx_draw_all_dirty_blocks();
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
@@ -107,12 +121,14 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 // sprite
 int gfx_load_g1();
 int gfx_load_g2();
+void gfx_unload_g1();
+void gfx_unload_g2();
 void sub_68371D();
-void gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type);
-void gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer, uint8* dest_bits_pointer, const uint8* palette_pointer, const rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
-void gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
-void gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
-void gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);
+void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type);
+void FASTCALL gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer, uint8* dest_bits_pointer, const uint8* palette_pointer, const rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
+void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
+void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);
 
 // string
 int clip_text(char *buffer, int width);
@@ -136,6 +152,7 @@ int string_get_height_raw(char *buffer);
 void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int y, int width, int colour, rct_string_id format, void *args, int ticks);
 void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, int colour, int x, int y, const sint8 *yOffsets, bool forceSpriteFont);
 int gfx_clip_string(char* buffer, int width);
+void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availableWidth);
 
 bool ttf_initialise();
 void ttf_dispose();

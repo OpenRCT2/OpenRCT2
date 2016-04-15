@@ -402,15 +402,15 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PARK_NAME:
-		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
-		safe_strncpy((char*)0x009BC677, s6Info->name, 64);
+		safe_strcpy((char*)0x009BC677, s6Info->name, 64);
 		window_text_input_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, 3165, 0, 64);
 		break;
 	case WIDX_DETAILS:
-		safe_strncpy((char*)0x009BC677, s6Info->details, 256);
+		safe_strcpy((char*)0x009BC677, s6Info->details, 256);
 		window_text_input_open(w, WIDX_DETAILS, 3315, 3316, 3165, 0, 256);
 		break;
 	}
@@ -534,9 +534,9 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 
 	dropdownWidget = &w->widgets[WIDX_CATEGORY];
 
-	for (i = 0; i < 5; i++) {
+	for (i = SCENARIO_CATEGORY_BEGINNER; i <= SCENARIO_CATEGORY_OTHER; i++) {
 		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = STR_BEGINNER_PARKS + i;
+		gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -988,12 +988,12 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_PARK_NAME].left - 16;
 
 	if (stex != NULL) {
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stex->park_name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->park_name;
 	} else {
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
 	}
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x0013573D8, uint32);
-	gfx_draw_string_left_clipped(dpi, 3298, (void*)0x013CE952, 0, x, y, width);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	gfx_draw_string_left_clipped(dpi, 3298, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
 
 	// Scenario name
 	x = w->x + 8;
@@ -1001,13 +1001,13 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
 	if (stex != NULL) {
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stex->scenario_name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->scenario_name;
 	} else {
-		safe_strncpy((char*)0x009BC677, s6Info->name, 64);
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = 3165;
+		safe_strcpy((char*)0x009BC677, s6Info->name, 64);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 3165;
 	}
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x0013573D8, uint32);
-	gfx_draw_string_left_clipped(dpi, 3300, (void*)0x013CE952, 0, x, y, width);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	gfx_draw_string_left_clipped(dpi, 3300, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
 
 	// Scenario details label
 	x = w->x + 8;
@@ -1020,13 +1020,13 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_DETAILS].left - 4;
 
 	if (stex != NULL) {
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = stex->details;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->details;
 	} else {
-		safe_strncpy((char*)0x009BC677, s6Info->details, 256);
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = 3165;
+		safe_strcpy((char*)0x009BC677, s6Info->details, 256);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 3165;
 	}
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(0x0013573D8, uint32);
-	gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, width, 1191, 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1191, 0);
 
 	// Scenario category label
 	x = w->x + 8;
@@ -1036,7 +1036,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Scenario category value
 	x = w->x + w->widgets[WIDX_CATEGORY].left + 1;
 	y = w->y + w->widgets[WIDX_CATEGORY].top;
-	stringId = STR_BEGINNER_PARKS + s6Info->category;
+	stringId = ScenarioCategoryStringIds[s6Info->category];
 	gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 }
 
@@ -1118,7 +1118,7 @@ static void window_editor_objective_options_rides_scrollmousedown(rct_window *w,
 	if (i < 0 || i >= w->no_list_items)
 		return;
 
-	ride = GET_RIDE(i);
+	ride = get_ride(i);
 	ride->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
 	window_invalidate(w);
 }
@@ -1208,7 +1208,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		}
 
 		// Checkbox mark
-		ride = GET_RIDE(i);
+		ride = get_ride(i);
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
 			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = stringId == 1193 ? 0xFFFE : 0xFFFF;
 			gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);

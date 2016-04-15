@@ -35,8 +35,9 @@ extern "C" {
 #define MIXER_LOOP_INFINITE		-1
 
 enum {
-	MIXER_GROUP_NONE,
-	MIXER_GROUP_MUSIC,
+	MIXER_GROUP_SOUND,
+	MIXER_GROUP_RIDE_MUSIC,
+	MIXER_GROUP_TITLE_MUSIC,
 };
 
 #ifdef __cplusplus
@@ -151,7 +152,7 @@ private:
 	bool deletesourceondone = false;
 	bool stopping = false;
 	int oldvolume = 0;
-	int group = MIXER_GROUP_NONE;
+	int group = MIXER_GROUP_SOUND;
 	SpeexResamplerState* resampler = nullptr;
 	Source* source = nullptr;
 };
@@ -166,7 +167,7 @@ public:
 	void Unlock();
 	Channel* Play(Source& source, int loop, bool deleteondone, bool deletesourceondone);
 	void Stop(Channel& channel);
-	bool LoadMusic(int pathid);
+	bool LoadMusic(size_t pathid);
 	void SetVolume(float volume);
 
 	Source* css1sources[SOUND_MAXID];
@@ -201,7 +202,7 @@ extern "C"
 #endif
 
 void Mixer_Init(const char* device);
-void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone);
+void* Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone);
 void Mixer_Stop_Channel(void* channel);
 void Mixer_Channel_Volume(void* channel, int volume);
 void Mixer_Channel_Pan(void* channel, float pan);

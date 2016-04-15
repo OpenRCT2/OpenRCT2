@@ -18,47 +18,40 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *****************************************************************************/
 
-#ifndef _COLOUR_SCHEMES_H_
-#define _COLOUR_SCHEMES_H_
+#ifndef _THEMES_H_
+#define _THEMES_H_
 
 #include "../common.h"
 #include "window.h"
-#include "../config.h"
 
-typedef struct {
-	rct_windowclass classification;
-	char *section_name;
-	rct_string_id name;
-	uint8 num_colours;
-	theme_window window;
-} theme_window_definition;
-
-typedef struct {
-	rct_windowclass classification;
-	theme_window window;
-} theme_window_preset;
-
-// The definitions for window themes as well as the RCT2 preset
-extern theme_window_definition gThemeWindowDefinitions[];
-// The preset for RCT1 window themes
-extern theme_window_preset gThemeWindowsRCT1[];
-
-// The index of the current theme
-extern uint16 gCurrentTheme;
-// The number of theme-able windows
-extern uint32 gNumThemeWindows;
-
-theme_preset* theme_get_preset();
-theme_window_definition* theme_window_definition_get_by_class(rct_windowclass classification);
-theme_window* theme_window_get_by_class(rct_windowclass classification);
+enum {
+    UITHEME_FLAG_PREDEFINED                            = 1 << 0,
+    UITHEME_FLAG_USE_LIGHTS_RIDE                       = 1 << 1,
+    UITHEME_FLAG_USE_LIGHTS_PARK                       = 1 << 2,
+    UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT  = 1 << 3,
+};
 
 void colour_scheme_update(rct_window *window);
 void colour_scheme_update_by_class(rct_window *window, rct_windowclass classification);
 
-void theme_change_preset(int preset);
-void theme_create_preset(int duplicate, const char *name);
-void theme_delete_preset(int preset);
-void theme_rename_preset(int preset, const char *newName);
+void         theme_manager_initialise();
+void         theme_manager_load_available_themes();
+size_t       theme_manager_get_num_available_themes();
+const utf8 * theme_manager_get_available_theme_path(size_t index);
+const utf8 * theme_manager_get_available_theme_name(size_t index);
+size_t       theme_manager_get_active_available_theme_index();
+void         theme_manager_set_active_available_theme(size_t index);
 
+colour_t theme_get_colour(rct_windowclass wc, uint8 index);
+void     theme_set_colour(rct_windowclass wc, uint8 index, colour_t colour);
+uint8    theme_get_flags();
+void     theme_set_flags(uint8 flags);
+void     theme_save();
+void     theme_rename(const utf8 * name);
+void     theme_duplicate(const utf8 * name);
+void     theme_delete();
+
+uint8         theme_desc_get_num_colours(rct_windowclass wc);
+rct_string_id theme_desc_get_name(rct_windowclass wc);
 
 #endif

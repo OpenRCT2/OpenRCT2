@@ -19,12 +19,14 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../cheats.h"
 #include "marketing.h"
 #include "news_item.h"
 
@@ -58,7 +60,7 @@ int marketing_get_campaign_guest_generation_probability(int campaign)
 			probability /= 8;
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
-		ride = &g_ride_list[gMarketingCampaignRideIndex[campaign]];
+		ride = get_ride(gMarketingCampaignRideIndex[campaign]);
 		if (ride->price < 3)
 			probability /= 8;
 		break;
@@ -67,13 +69,16 @@ int marketing_get_campaign_guest_generation_probability(int campaign)
 	return probability;
 }
 
-/*
+/**
  * Update status of marketing campaigns and send produce a news item when they have finished.
- * rct2: 0x0069E0C1
- **/
+ *  rct2: 0x0069E0C1
+ */
 void marketing_update()
 {
 	for (int campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++) {
+		if (gCheatsNeverendingMarketing)
+			continue;
+
 		int active = (gMarketingCampaignDaysLeft[campaign] & CAMPAIGN_ACTIVE_FLAG) != 0;
 		if (gMarketingCampaignDaysLeft[campaign] == 0)
 			continue;
@@ -93,14 +98,16 @@ void marketing_update()
 
 		// This sets the string parameters for the marketing types that have an argument.
 		if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE) {
-			rct_ride* ride = GET_RIDE(campaignItem);
+			rct_ride* ride = get_ride(campaignItem);
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-			RCT2_GLOBAL(0x013CE954, uint32) = ride->name_arguments;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 		} else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ShopItemStringIds[campaignItem].plural;
 		}
 
-		news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + campaign, 0);
+		if (gConfigNotifications.park_marketing_campaign_finished) {
+			news_item_add_to_queue(NEWS_ITEM_MONEY, STR_MARKETING_FINISHED_BASE + campaign, 0);
+		}
 	}
 }
 
@@ -144,13 +151,20 @@ void marketing_start_campaign(int type, int rideOrItem, int numWeeks)
 
 /**
  *
- * rct2: 0x0069E73C
+ *  rct2: 0x0069E73C
  */
 void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
 	int type = *edx & 0xFF;
 	int rideOrItem = (*edx >> 8) & 0xFF;
 	int numWeeks = (*ebx >> 8) & 0xFF;
+
+	if (type < 0 || type >= countof(AdvertisingCampaignPricePerWeek))
+	{
+		log_warning("Invalid game command, type = %d", type);
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_MARKETING * 4;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
@@ -173,7 +187,7 @@ bool marketing_is_campaign_type_applicable(int campaignType)
 {
 	int i;
 	rct_ride *ride;
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 
 	switch (campaignType) {
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
@@ -199,7 +213,10 @@ bool marketing_is_campaign_type_applicable(int campaignType)
 	case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
 		// Check if any food or drink stalls exist
 		FOR_ALL_RIDES(i, ride) {
-			rideEntry = GET_RIDE_ENTRY(ride->subtype);
+			rideEntry = get_ride_entry(ride->subtype);
+			if (rideEntry == NULL) {
+				continue;
+			}
 			if (
 				shop_item_is_food_or_drink(rideEntry->shop_item) ||
 				shop_item_is_food_or_drink(rideEntry->shop_item_secondary)

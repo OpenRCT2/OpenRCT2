@@ -21,6 +21,8 @@
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
+#include <SDL_platform.h>
+
 #ifndef _USE_MATH_DEFINES
 	#define _USE_MATH_DEFINES
 #endif
@@ -41,20 +43,23 @@
 	#include <time.h>
 #endif
 
-typedef signed char sint8;
-typedef signed short sint16;
-typedef signed long sint32;
-typedef signed long long sint64;
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned long uint32;
-typedef unsigned long long uint64;
+typedef int8_t sint8;
+typedef int16_t sint16;
+typedef int32_t sint32;
+typedef int64_t sint64;
+typedef uint8_t uint8;
+typedef uint16_t uint16;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
 
 typedef char utf8;
 typedef utf8* utf8string;
 typedef const utf8* const_utf8string;
 typedef wchar_t utf16;
 typedef utf16* utf16string;
+
+typedef uint32 codepoint_t;
+typedef uint8 colour_t;
 
 #define rol8(x, shift)		(((uint8)(x) << (shift)) | ((uint8)(x) >> (8 - (shift))))
 #define ror8(x, shift)		(((uint8)(x) >> (shift)) | ((uint8)(x) << (8 - (shift))))
@@ -64,49 +69,90 @@ typedef utf16* utf16string;
 #define ror32(x, shift)		(((uint32)(x) >> (shift)) | ((uint32)(x) << (32 - (shift))))
 #define rol64(x, shift)		(((uint64)(x) << (shift)) | ((uint32)(x) >> (64 - (shift))))
 #define ror64(x, shift)		(((uint64)(x) >> (shift)) | ((uint32)(x) << (64 - (shift))))
+
+#ifndef __cplusplus
+// in C++ you should be using Math::Min and Math::Max
 #ifndef min
 	#define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
 #ifndef max
 	#define max(a,b)            (((a) > (b)) ? (a) : (b))
 #endif
+#endif // __cplusplus
+
 #define sgn(x)				((x > 0) ? 1 : ((x < 0) ? -1 : 0))
 #define clamp(l, x, h)		(min(h, max(l, x)))
 
 // Rounds an integer down to the given power of 2. y must be a power of 2.
 #define floor2(x, y)		((x) & (~((y) - 1)))
 
-#define countof(x)			((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+
+#ifndef __cplusplus
+// in C++ you should be using Util::CountOf
+#ifdef __GNUC__
+/**
+ * Force a compilation error if condition is true, but also produce a
+ * result (of value 0 and type size_t), so the expression can be used
+ * e.g. in a structure initializer (or where-ever else comma expressions
+ * aren't permitted).
+ */
+#define BUILD_BUG_ON_ZERO(e) (sizeof(struct { int:-!!(e); }))
+
+/* &a[0] degrades to a pointer: a different type from an array */
+#define __must_be_array(a) \
+        BUILD_BUG_ON_ZERO(__builtin_types_compatible_p(typeof(a), typeof(&a[0])))
+
+// based on http://lxr.free-electrons.com/source/include/linux/kernel.h#L54
+#define countof(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+#elif defined (_MSC_VER)
+	#define countof(arr)			_countof(arr)
+#else
+	#define countof(arr)			(sizeof(arr) / sizeof((arr)[0]))
+#endif // __GNUC__
+#endif // __cplusplus
 
 #ifndef _MSC_VER
 // use similar struct packing as MSVC for our structs
 #pragma pack(1)
 #endif
 
-#define OPENRCT2_NAME				"OpenRCT2"
-#define OPENRCT2_VERSION			"0.0.3.1"
-#define OPENRCT2_ARCHITECTURE		"x86"
-#ifdef _WIN32
-	#define OPENRCT2_PLATFORM		"Windows"
-#endif // _WIN32
-#ifdef __linux__
-	#define OPENRCT2_PLATFORM		"Linux"
-#endif
-#if defined(__APPLE__) && defined(__MACH__)
-	#define OPENRCT2_PLATFORM		"OS X"
-#endif
-#ifndef OPENRCT2_PLATFORM
-	#error Unknown platform!
-#endif
-#define OPENRCT2_TIMESTAMP			__DATE__ " " __TIME__
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#include <unistd.h>
+#define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#define _strcmpi _stricmp
+#define _stricmp(x, y) strcasecmp((x), (y))
+#define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
+#define _strdup(x) strdup((x))
 
-// The following constants are for automated build servers
-#define OPENRCT2_BUILD_NUMBER		""
-#define OPENRCT2_BUILD_SERVER		""
-#define OPENRCT2_BRANCH				""
-#define OPENRCT2_COMMIT_SHA1		""
-#define OPENRCT2_COMMIT_SHA1_SHORT	""
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
+#define LOBYTE(w) ((uint8_t)(w))
+#define HIBYTE(w) ((uint8_t)(((uint16_t)(w)>>8)&0xFF))
+#endif // __BYTE_ORDER__
+
+#ifndef RCT2_ENDIANESS
+#error Unknown endianess!
+#endif // RCT2_ENDIANESS
+
+#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+
+#if !(_POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+	char *strndup(const char *src, size_t size);
+#endif // !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+
+// BSD and OS X has MAP_ANON instead of MAP_ANONYMOUS
+#ifndef MAP_ANONYMOUS
+	#define MAP_ANONYMOUS MAP_ANON
+#endif
+
+#include "version.h"
+
 #define OPENRCT2_MASTER_SERVER_URL	"https://servers.openrct2.website"
+
+// Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
+typedef uint64 datetime64;
+
+#define DATETIME64_MIN ((datetime64)0)
 
 // Represent fixed point numbers. dp = decimal point
 typedef uint8 fixed8_1dp;
@@ -132,9 +178,6 @@ typedef fixed32_1dp money32;
 
 #define MONEY_FREE						MONEY(0,00)
 #define MONEY32_UNDEFINED				((money32)0x80000000)
-#ifndef MAX_PATH
-#define MAX_PATH 260
-#endif
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;
@@ -216,91 +259,22 @@ enum {
 	PATH_ID_END
 };
 
-// rct2 @ 0x0097F67C
-static const char * const file_paths[] =
-{
-	"Data\\g1.dat",
-	"Data\\plugin.dat",
-	"Data\\css1.dat",
-	"Data\\css2.dat",
-	"Data\\css4.dat",
-	"Data\\css5.dat",
-	"Data\\css6.dat",
-	"Data\\css7.dat",
-	"Data\\css8.dat",
-	"Data\\css9.dat",
-	"Data\\css11.dat",
-	"Data\\css12.dat",
-	"Data\\css13.dat",
-	"Data\\css14.dat",
-	"Data\\css15.dat",
-	"Data\\css3.dat",
-	"Data\\css17.dat",
-	"Data\\css18.dat",
-	"Data\\css19.dat",
-	"Data\\css20.dat",
-	"Data\\css21.dat",
-	"Data\\css22.dat",
-	"Saved Games\\scores.dat",
-	"Data\\css23.dat",
-	"Data\\css24.dat",
-	"Data\\css25.dat",
-	"Data\\css26.dat",
-	"Data\\css27.dat",
-	"Data\\css28.dat",
-	"Data\\css29.dat",
-	"Data\\css30.dat",
-	"Data\\css31.dat",
-	"Data\\css32.dat",
-	"Data\\css33.dat",
-	"Data\\css34.dat",
-	"Data\\css35.dat",
-	"Data\\css36.dat",
-	"Data\\css37.dat",
-	"Data\\css38.dat",
-	"Data\\CUSTOM1.WAV",
-	"Data\\CUSTOM2.WAV",
-	"Data\\css39.dat",
-	"Data\\css40.dat",
-	"Data\\css41.dat",
-	"Scenarios\\Six Flags Magic Mountain.SC6",
-	"Data\\css42.dat",
-	"Data\\css43.dat",
-	"Data\\css44.dat",
-	"Data\\css45.dat",
-	"Data\\css46.dat",
-	"Data\\css50.dat"
-};
-
-// Files to check (rct2 @ 0x0097FB5A)
-static const struct file_to_check
-{
-	int pathId; // ID of file
-	unsigned int fileSize; // Expected size in bytes
-} files_to_check[] = {
-	{ PATH_ID_END,          0 }
-};
+extern const char * const RCT2FilePaths[PATH_ID_END];
 
 extern uint32 gCurrentDrawCount;
 
 int rct2_init();
+void rct2_dispose();
 void rct2_update();
 void rct2_draw();
-void rct2_endupdate();
-void subsitute_path(char *dest, const char *path, const char *filename);
+void substitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
 int check_file_paths();
 int check_file_path(int pathId);
 int check_files_integrity();
 const char *get_file_path(int pathId);
-void get_system_info();
-void get_system_time();
-void get_local_time();
-void *rct2_malloc(size_t numBytes);
-void *rct2_realloc(void *block, size_t numBytes);
-void rct2_free(void *block);
 void rct2_quit();
 
-int rct2_open_file(const char *path);
+bool rct2_open_file(const char *path);
 
 #endif

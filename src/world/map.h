@@ -31,7 +31,7 @@ typedef struct {
 } rct_map_element_surface_properties;
 
 typedef struct {
-	uint8 type; //4
+	uint8 type; //4 0xF0 Path type, 0x08 Unknown/Unused, 0x04 Set when path is diagonal, 0x03 Rotation
 	uint8 additions; //5
 	uint8 edges; //6
 	union {
@@ -121,7 +121,10 @@ enum {
 	MAP_ELEMENT_TYPE_ENTRANCE = (4 << 2),
 	MAP_ELEMENT_TYPE_FENCE = (5 << 2),
 	MAP_ELEMENT_TYPE_SCENERY_MULTIPLE = (6 << 2),
-	MAP_ELEMENT_TYPE_BANNER = (7 << 2)
+	MAP_ELEMENT_TYPE_BANNER = (7 << 2),
+	// The corrupt element type is used for skipping drawing other following
+	// elements on a given tile.
+	MAP_ELEMENT_TYPE_CORRUPT = (8 << 2),
 };
 
 enum {
@@ -138,6 +141,7 @@ enum {
 enum {
 	MAP_ELEMENT_FLAG_GHOST = (1 << 4),
 	MAP_ELEMENT_FLAG_BROKEN = (1 << 5),
+	MAP_ELEMENT_FLAG_BLOCK_BREAK_CLOSED = (1 << 5),
 	MAP_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 
@@ -204,7 +208,8 @@ enum {
 };
 
 enum {
-	ELEMENT_IS_UNDERWATER = 4,
+	ELEMENT_IS_UNDERGROUND = 1 << 1,
+	ELEMENT_IS_UNDERWATER = 1 << 2,
 };
 
 #define MAP_ELEMENT_QUADRANT_MASK 0xC0
@@ -228,7 +233,12 @@ enum {
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
 typedef struct {
-	uint8 x, y;
+	union {
+		struct {
+			uint8 x, y;
+		};
+		uint16 xy;
+	};
 } rct_xy8;
 
 typedef struct{
@@ -277,11 +287,11 @@ void map_init(int size);
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(int x, int y);
 void map_set_tile_elements(int x, int y, rct_map_element *elements);
-int map_element_is_last_for_tile(rct_map_element *element);
-int map_element_get_type(rct_map_element *element);
-int map_element_get_direction(rct_map_element *element);
-int map_element_get_terrain(rct_map_element *element);
-int map_element_get_terrain_edge(rct_map_element *element);
+int map_element_is_last_for_tile(const rct_map_element *element);
+int map_element_get_type(const rct_map_element *element);
+int map_element_get_direction(const rct_map_element *element);
+int map_element_get_terrain(const rct_map_element *element);
+int map_element_get_terrain_edge(const rct_map_element *element);
 void map_element_set_terrain(rct_map_element *element, int terrain);
 void map_element_set_terrain_edge(rct_map_element *element, int terrain);
 int map_height_from_slope(int x, int y, int slope);
@@ -289,7 +299,7 @@ rct_map_element* map_get_banner_element_at(int x, int y, int z, uint8 direction)
 rct_map_element *map_get_surface_element_at(int x, int y);
 rct_map_element* map_get_path_element_at(int x, int y, int z);
 rct_map_element *map_get_fence_element_at(int x, int y, int z, int direction);
-rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type);
+rct_map_element *map_get_small_scenery_element_at(int x, int y, int z, int type, uint8 quadrant);
 int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
@@ -306,7 +316,10 @@ void map_invalidate_selection_rect();
 void map_reorganise_elements();
 int sub_68B044();
 rct_map_element *map_element_insert(int x, int y, int z, int flags);
-int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, void *clearFunc, uint8 bl);
+
+typedef int (CLEAR_FUNC)(rct_map_element** map_element, int x, int y, uint8 flags, money32* price);
+int map_place_non_scenery_clear_func(rct_map_element** map_element, int x, int y, uint8 flags, money32* price);
+int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price);
 int map_can_construct_at(int x, int y, int zLow, int zHigh, uint8 bl);
 void rotate_map_coordinates(sint16 *x, sint16 *y, int rotation);
 rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation);
@@ -369,7 +382,7 @@ bool map_element_is_underground(rct_map_element *mapElement);
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
 
-void sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour);
+bool sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mainColour, uint8 textColour);
 void map_remove_walls_at(int x, int y, int z0, int z1);
 void map_remove_walls_at_z(int x, int y, int z);
 
@@ -392,5 +405,9 @@ bool map_large_scenery_get_origin(
 
 rct_map_element *map_get_track_element_at(int x, int y, int z);
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType);
+rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int trackType, int sequence);
+rct_map_element *map_get_track_element_at_of_type_from_ride(int x, int y, int z, int trackType, int rideIndex);
+rct_map_element *map_get_track_element_at_from_ride(int x, int y, int z, int rideIndex);
+rct_map_element *map_get_track_element_at_with_direction_from_ride(int x, int y, int z, int direction, int rideIndex);
 
 #endif

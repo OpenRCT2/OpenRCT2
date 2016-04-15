@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 extern "C" {
+	#include "../addresses.h"
 	#include "../config.h"
 	#include "../platform/platform.h"
 	#include "../localisation/localisation.h"
@@ -27,6 +28,8 @@ extern "C" {
 }
 #include "mixer.h"
 #include <cmath>
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 
 Mixer gMixer;
 
@@ -434,10 +437,10 @@ Mixer::Mixer()
 {
 	effectbuffer = 0;
 	volume = 1;
-	for (int i = 0; i < countof(css1sources); i++) {
+	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		css1sources[i] = 0;
 	}
-	for (int i = 0; i < countof(musicsources); i++) {
+	for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
 		musicsources[i] = 0;
 	}
 }
@@ -458,7 +461,7 @@ void Mixer::Init(const char* device)
 	format.channels = have.channels;
 	format.freq = have.freq;
 	const char* filename = get_file_path(PATH_ID_CSS1);
-	for (int i = 0; i < countof(css1sources); i++) {
+	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		Source_Sample* source_sample = new Source_Sample;
 		if (source_sample->LoadCSS1(filename, i)) {
 			source_sample->Convert(format); // convert to audio output format, saves some cpu usage but requires a bit more memory, optional
@@ -481,13 +484,13 @@ void Mixer::Close()
 	}
 	Unlock();
 	SDL_CloseAudioDevice(deviceid);
-	for (int i = 0; i < countof(css1sources); i++) {
+	for (size_t i = 0; i < Util::CountOf(css1sources); i++) {
 		if (css1sources[i] && css1sources[i] != &source_null) {
 			delete css1sources[i];
 			css1sources[i] = 0;
 		}
 	}
-	for (int i = 0; i < countof(musicsources); i++) {
+	for (size_t i = 0; i < Util::CountOf(musicsources); i++) {
 		if (musicsources[i] && musicsources[i] != &source_null) {
 			delete musicsources[i];
 			musicsources[i] = 0;
@@ -530,9 +533,9 @@ void Mixer::Stop(Channel& channel)
 	Unlock();
 }
 
-bool Mixer::LoadMusic(int pathId)
+bool Mixer::LoadMusic(size_t pathId)
 {
-	if (pathId >= countof(musicsources)) {
+	if (pathId >= Util::CountOf(musicsources)) {
 		return false;
 	}
 	if (!musicsources[pathId]) {
@@ -574,7 +577,12 @@ void SDLCALL Mixer::Callback(void* arg, uint8* stream, int length)
 
 void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 {
-	if (channel.source && channel.source->Length() > 0 && !channel.done && gConfigSound.sound) {
+	// Do not mix channel if channel is a sound and sound is disabled
+	if (channel.group == MIXER_GROUP_SOUND && !gConfigSound.sound_enabled) {
+		return;
+	}
+
+	if (channel.source && channel.source->Length() > 0 && !channel.done) {
 		AudioFormat streamformat = channel.source->Format();
 		int loaded = 0;
 		SDL_AudioCVT cvt;
@@ -664,8 +672,18 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 
 				float volumeadjust = volume;
 				volumeadjust *= (gConfigSound.master_volume / 100.0f);
-				if (channel.group == MIXER_GROUP_MUSIC) {
-					volumeadjust *= (gConfigSound.music_volume / 100.0f);
+				switch (channel.group) {
+				case MIXER_GROUP_SOUND:
+					volumeadjust *= (gConfigSound.sound_volume / 100.0f);
+
+					// Cap sound volume on title screen so music is more audible
+					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+						volumeadjust = Math::Min(volumeadjust, 0.75f);
+					}
+					break;
+				case MIXER_GROUP_RIDE_MUSIC:
+					volumeadjust *= (gConfigSound.ride_music_volume / 100.0f);
+					break;
 				}
 				int startvolume = (int)(channel.oldvolume * volumeadjust);
 				int endvolume = (int)(channel.volume * volumeadjust);
@@ -797,14 +815,15 @@ void Mixer_Init(const char* device)
 	gMixer.Init(device);
 }
 
-void* Mixer_Play_Effect(int id, int loop, int volume, float pan, double rate, int deleteondone)
+void* Mixer_Play_Effect(size_t id, int loop, int volume, float pan, double rate, int deleteondone)
 {
 	if (gOpenRCT2Headless) return 0;
 
-	if (!gConfigSound.sound) {
+	if (!gConfigSound.sound_enabled) {
 		return 0;
 	}
-	if (id >= countof(gMixer.css1sources)) {
+	if (id >= Util::CountOf(gMixer.css1sources)) {
+		log_error("Tried to play an invalid sound id. %i", id);
 		return 0;
 	}
 	gMixer.Lock();
@@ -884,9 +903,6 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 {
 	if (gOpenRCT2Headless) return 0;
 
-	if (!gConfigSound.sound) {
-		return 0;
-	}
 	if (streaming) {
 		const utf8 *filename = get_file_path(pathId);
 
@@ -900,7 +916,7 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 			if (!channel) {
 				delete source_samplestream;
 			} else {
-				channel->SetGroup(MIXER_GROUP_MUSIC);
+				channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
 			}
 			return channel;
 		} else {
@@ -911,7 +927,7 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 		if (gMixer.LoadMusic(pathId)) {
 			Channel* channel = gMixer.Play(*gMixer.musicsources[pathId], MIXER_LOOP_INFINITE, false, false);
 			if (channel) {
-				channel->SetGroup(MIXER_GROUP_MUSIC);
+				channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
 			}
 			return channel;
 		}

@@ -21,9 +21,10 @@
 #include "../addresses.h"
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../world/map.h"
 #include "../platform/platform.h"
+#include "../sprites.h"
+#include "../util/util.h"
+#include "../world/map.h"
 #include "drawing.h"
 
 static int ttf_get_string_width(const utf8 *text);
@@ -88,7 +89,7 @@ int gfx_get_string_width_new_lined(utf8 *text)
 }
 
 /**
- *  Return the width of the string in buffer
+ * Return the width of the string in buffer
  *
  *  rct2: 0x006C2321
  * buffer (esi)
@@ -99,7 +100,7 @@ int gfx_get_string_width(char* buffer)
 }
 
 /**
- *  Clip the text in buffer to width, add ellipsis and return the new width of the clipped string
+ * Clip the text in buffer to width, add ellipsis and return the new width of the clipped string
  *
  *  rct2: 0x006C2460
  * buffer (esi)
@@ -152,11 +153,11 @@ int gfx_clip_string(utf8 *text, int width)
 }
 
 /**
- *  Wrap the text in buffer to width, returns width of longest line.
+ * Wrap the text in buffer to width, returns width of longest line.
  *
- *  Inserts NULL where line should break (as \n is used for something else),
- *  so the number of lines is returned in num_lines. font_height seems to be
- *  a control character for line height.
+ * Inserts NULL where line should break (as \n is used for something else),
+ * so the number of lines is returned in num_lines. font_height seems to be
+ * a control character for line height.
  *
  *  rct2: 0x006C21E2
  * buffer (esi)
@@ -334,24 +335,7 @@ void gfx_draw_string_right(rct_drawpixelinfo* dpi, int format, void* args, int c
  */
 void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, int colour, void *args)
 {
-	char* buffer;
-	int text_width;
-
-	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-	format_string(buffer, format, args);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
-
-	// Measure text width
-	text_width = gfx_get_string_width(buffer);
-
-	// Draw the text centred
-	if (text_width <= 0xFFFF && text_width >= 0) {
-		x -= text_width / 2;
-		gfx_draw_string(dpi, buffer, colour, x, y);
-	} else {
-		log_warning("improper text width %d for string %s", text_width, buffer);
-	}
+	gfx_draw_string_centred_wrapped(dpi, args, x, y, INT32_MAX, format, colour);
 }
 
 /**
@@ -369,12 +353,12 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 {
 	int font_height, line_height, line_width, line_y, num_lines;
 	// Location of font sprites
-	uint16* current_font_sprite_base;
+	sint16* current_font_sprite_base;
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 
-	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	*current_font_sprite_base = 0xE0;
+	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
+	if (*current_font_sprite_base >= 0) *current_font_sprite_base = 0xE0;
 
 	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
 
@@ -463,7 +447,7 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
 
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
@@ -504,7 +488,7 @@ void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointe
 
 /**
  * Changes the palette so that the next character changes colour
- *  This is specific to changing to a predefined window related colour
+ * This is specific to changing to a predefined window related colour
  */
 void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_pointer) {
 
@@ -582,7 +566,7 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *arg
 
 /**
  *
- * rct2: 0x006C1DB7
+ *  rct2: 0x006C1DB7
  *
  * left     : cx
  * top      : dx
@@ -600,18 +584,14 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 		int width = gfx_get_string_width(text);
 		gfx_draw_string(dpi, text, 254, x - (width / 2), y);
 
-		char c;
-		while ((c = *text++) != 0) {
-			if (c >= 32) continue;
-			if (c <= 4) {
-				text++;
-				continue;
-			}
-			if (c <= 16) continue;
-			text += 2;
-			if (c <= 22) continue;
-			text += 2;
+		const utf8 *ch = text;
+		const utf8 *nextCh = 0;
+		int codepoint = 0;
+
+		while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
+			ch = nextCh;
 		}
+		text = (char*)(ch + 1);
 
 		y += font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
 	}
@@ -682,7 +662,7 @@ int string_get_height_raw(char *buffer)
 
 /**
  *
- * rct2: 0x006C1F57
+ *  rct2: 0x006C1F57
  *
  * colour   : al
  * format   : bx
@@ -888,8 +868,11 @@ bool ttf_initialise()
 		for (int i = 0; i < 4; i++) {
 			TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
 
-			utf8 fontPath[MAX_PATH] = "C:\\Windows\\Fonts\\";
-			strcat(fontPath, fontDesc->filename);
+			utf8 fontPath[MAX_PATH];
+			if (!platform_get_font_path(fontDesc, fontPath)) {
+				log_error("Unable to load font '%s'", fontDesc->font_name);
+				return false;
+			}
 
 			fontDesc->font = TTF_OpenFont(fontPath, fontDesc->ptSize);
 			if (fontDesc->font == NULL) {
@@ -1038,21 +1021,44 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 
 		int srcScanSkip = surface->pitch - width;
 		int dstScanSkip = dpi->width + dpi->pitch - width;
-		for (int yy = 0; yy < height; yy++) {
-			for (int xx = 0; xx < width; xx++) {
-				if (*src != 0) {
-					*dst = colour;
-					if (info->flags & TEXT_DRAW_FLAG_INSET) {
-						*(dst + width + dstScanSkip + 1) = info->palette[3];
-					} else if (info->flags & TEXT_DRAW_FLAG_OUTLINE) {
-						*(dst + width + dstScanSkip + 1) = info->palette[3];
+		uint8 *dst_orig = dst;
+		uint8 *src_orig = src;
+
+		// Draw shadow/outline
+		if (info->flags & TEXT_DRAW_FLAG_OUTLINE) {
+			for (int yy = 0; yy < height - 0; yy++) {
+				for (int xx = 0; xx < width - 0; xx++) {
+					if (*src != 0) {
+						*(dst + 1) = info->palette[3]; // right
+						*(dst - 1) = info->palette[3]; // left
+						*(dst - width - dstScanSkip) = info->palette[3]; // top
+						*(dst + width + dstScanSkip) = info->palette[3]; // bottom
 					}
+					src++;
+					dst++;
 				}
-				src++;
-				dst++;
+				// Skip any remaining bits
+				src += srcScanSkip;
+				dst += dstScanSkip;
 			}
-			src += srcScanSkip;
-			dst += dstScanSkip;
+		}
+		{
+			dst = dst_orig;
+			src = src_orig;
+			for (int yy = 0; yy < height; yy++) {
+				for (int xx = 0; xx < width; xx++) {
+					if (*src != 0) {
+						if (info->flags & TEXT_DRAW_FLAG_INSET) {
+							*(dst + width + dstScanSkip + 1) = info->palette[3];
+						}
+						*dst = colour;
+					}
+					src++;
+					dst++;
+				}
+				src += srcScanSkip;
+				dst += dstScanSkip;
+			}
 		}
 
 		if (SDL_MUSTLOCK(surface)) {
@@ -1082,7 +1088,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
 		break;
 	case FORMAT_ADJUST_PALETTE:
 	{
-		uint16 eax = palette_to_g1_offset[*nextCh++];
+		uint16 eax = palette_to_g1_offset[(uint8)*nextCh++];
 		rct_g1_element *g1Element = &g1Elements[eax];
 		uint32 ebx = g1Element->offset[249] + 256;
 		if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE)) {
@@ -1351,4 +1357,41 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, in
 
 	gLastDrawStringX = info.x;
 	gLastDrawStringY = info.y;
+}
+
+void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availableWidth)
+{
+	int length = strlen(path);
+
+	// Return full string if it fits
+	if (gfx_get_string_width((char*)path) <= availableWidth) {
+		safe_strcpy(buffer, path, bufferSize);
+		return;
+	}
+
+	// Count path separators
+	int path_separators = 0;
+	for (int x = 0; x < length; x++) {
+		if (path[x] == platform_get_path_separator()) {
+			path_separators++;
+		}
+	}
+
+	// TODO: Replace with unicode ellipsis when supported
+	safe_strcpy(buffer, "...", bufferSize);
+
+	// Abreviate beginning with xth separator
+	int begin = -1;
+	for (int x = 0; x < path_separators; x++){
+		do {
+			begin++;
+		} while (path[begin] != platform_get_path_separator());
+
+		safe_strcpy(buffer + 3, path + begin, bufferSize - 3);
+		if (gfx_get_string_width(buffer) <= availableWidth) {
+			return;
+		}
+	}
+
+	safe_strcpy(buffer, path, bufferSize);
 }

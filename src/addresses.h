@@ -21,38 +21,14 @@
 #ifndef _ADDRESSES_H_
 #define _ADDRESSES_H_
 
+#include "common.h"
+
 #ifdef _MSC_VER
 #pragma warning(disable : 4731)
 #endif
 
 #define RCT2_ADDRESS(address, type)				((type*)(address))
 #define RCT2_GLOBAL(address, type)				(*((type*)(address)))
-#ifdef _WIN32
-#define RCT2_CALLPROC(address)					(((void(*)())(address))())
-#define RCT2_CALLFUNC(address, returnType)		(((returnType(*)())(address))())
-
-#define RCT2_CALLFUNC_1(address, returnType, a1, v1)							(((returnType(*)(a1))(address))(v1))
-#define RCT2_CALLFUNC_2(address, returnType, a1, a2, v1, v2)					(((returnType(*)(a1, a2))(address))(v1, v2))
-#define RCT2_CALLFUNC_3(address, returnType, a1, a2, a3, v1, v2, v3)			(((returnType(*)(a1, a2, a3))(address))(v1, v2, v3))
-#define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)	(((returnType(*)(a1, a2, a3, a4))(address))(v1, v2, v3, v4))
-#define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	(((returnType(*)(a1, a2, a3, a4, a5))(address))(v1, v2, v3, v4, v5))
-#define RCT2_CALLFUNC_6(address, returnType, a1, a2, a3, a4, a5, a6, v1, v2, v3, v4, v5, v6)	(((returnType(*)(a1, a2, a3, a4, a5, a6))(address))(v1, v2, v3, v4, v5, v6))
-#else
-#define RCT2_CALLPROC(address)
-#define RCT2_CALLFUNC(address, returnType)
-#define RCT2_CALLFUNC_1(address, returnType, a1, v1)
-#define RCT2_CALLFUNC_2(address, returnType, a1, a2, v1, v2)
-#define RCT2_CALLFUNC_3(address, returnType, a1, a2, a3, v1, v2, v3)
-#define RCT2_CALLFUNC_4(address, returnType, a1, a2, a3, a4, v1, v2, v3, v4)
-#define RCT2_CALLFUNC_5(address, returnType, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
-#define RCT2_CALLFUNC_6(address, returnType, a1, a2, a3, a4, a5, a6, v1, v2, v3, v4, v5, v6)
-#endif // _WIN32
-
-#define RCT2_CALLPROC_1(address, a1, v1)									RCT2_CALLFUNC_1(address, void, a1, v1)
-#define RCT2_CALLPROC_2(address, a1, a2, v1, v2)							RCT2_CALLFUNC_2(address, void, a1, a2, v1, v2)
-#define RCT2_CALLPROC_3(address, a1, a2, a3, v1, v2, v3)					RCT2_CALLFUNC_3(address, void, a1, a2, a3, v1, v2, v3)
-#define RCT2_CALLPROC_4(address, a1, a2, a3, a4, v1, v2, v3, v4)			RCT2_CALLFUNC_4(address, void, a1, a2, a3, a4, v1, v2, v3, v4)
-#define RCT2_CALLPROC_5(address, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)	RCT2_CALLFUNC_5(address, void, a1, a2, a3, a4, a5, v1, v2, v3, v4, v5)
 
 #pragma region Memory locations
 
@@ -63,6 +39,7 @@
 // are implemented in C. Sometimes memory locations are still used even if
 // they aren't directly referenced, for example when a game is saved and
 // loaded, large chunks of data is read and written to.
+#define RCT2_ADDRESS_SPRITE_ENTRIES					0x00982708
 
 #define RCT2_ADDRESS_EASTEREGG_NAMES				0x00988C20
 
@@ -146,6 +123,9 @@
 #define RCT2_ADDRESS_PATH_TYPES						0x009ADA14
 #define RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES		0x009ADA54
 #define RCT2_ADDRESS_SCENERY_SET_ENTRIES			0x009ADA90
+#define RCT2_ADDRESS_PARK_ENTRANCE_ENTRIES			0x009ADADC
+#define RCT2_ADDRESS_WATER_ENTRIES					0x009ADAE0
+#define RCT2_ADDRESS_SCENARIO_TEXT_ENTRIES			0x009ADAE4
 
 #define RCT2_ADDRESS_INSTALLED_OBJECT_LIST			0x009ADAE8
 #define RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST		0x009ADAEC
@@ -191,7 +171,7 @@
 
 #define RCT2_ADDRESS_TICKS_SINCE_DRAG_START         0x009DE540
 
-#define RCT2_ADDRESS_PICKEDUP_PEEP_SPRITE			0x009DE550
+#define RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE            0x009DE550
 #define RCT2_ADDRESS_PICKEDUP_PEEP_X				0x009DE554
 #define RCT2_ADDRESS_PICKEDUP_PEEP_Y				0x009DE556
 
@@ -290,6 +270,10 @@
 // No longer used
 #define RCT2_ADDRESS_PEEP_UPDATE_FALLING_MAP		0x00F1AEC4
 #define RCT2_ADDRESS_PEEP_UPDATE_FALLING_HEIGHT		0x00F1AEC8
+
+#define RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X		0x00F1AECE
+#define RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y		0x00F1AED0
+#define RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z		0x00F1AED2
 
 #define RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS			0x00F3EF92
 #define RCT2_ADDRESS_PROVISIONAL_PATH_X				0x00F3EF94
@@ -479,6 +463,7 @@
 #define RCT2_ADDRESS_SAVED_VIEW_X					0x0138869A
 #define RCT2_ADDRESS_SAVED_VIEW_Y					0x0138869C
 #define RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION	0x0138869E
+#define RCT2_ADDRESS_SCENARIO_COMPLETED_BY			0x013587D8
 #define RCT2_ADDRESS_RIDE_MEASUREMENTS				0x0138B60C
 
 #define RCT2_ADDRESS_GRASS_SCENERY_TILEPOS			0x013B0E70
@@ -512,6 +497,8 @@
 #define RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS			0x0141E9E4
 
 #define RCT2_ADDRESS_FONT_CHAR_WIDTH				0x0141E9E8
+
+#define RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT  0x0141E9D8
 
 #define RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER	0x0141ED68
 
@@ -639,16 +626,17 @@
 
 #pragma endregion
 
-/* Returns the flags register
+/**
+ * Returns the flags register
  *
- *Flags register is as follows:
- *0bSZ0A_0P0C_0000_0000
- *S = Signed flag
- *Z = Zero flag
- *C = Carry flag
- *A = Adjust flag
- *P = Parity flag
- *All other bits are undefined.
+ * Flags register is as follows:
+ * 0bSZ0A_0P0C_0000_0000
+ * S = Signed flag
+ * Z = Zero flag
+ * C = Carry flag
+ * A = Adjust flag
+ * P = Parity flag
+ * All other bits are undefined.
  */
 int RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp);
 
@@ -657,16 +645,17 @@ static int RCT2_CALLPROC_EBPSAFE(int address)
 	return RCT2_CALLPROC_X(address, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB, 0xBBBBBBBB);
 }
 
-/* Returns the flags register
+/**
+ * Returns the flags register
  *
- *Flags register is as follows:
- *0bSZ0A_0P0C_0000_00000
- *S = Signed flag
- *Z = Zero flag
- *C = Carry flag
- *A = Adjust flag
- *P = Parity flag
- *All other bits are undefined.
+ * Flags register is as follows:
+ * 0bSZ0A_0P0C_0000_00000
+ * S = Signed flag
+ * Z = Zero flag
+ * C = Carry flag
+ * A = Adjust flag
+ * P = Parity flag
+ * All other bits are undefined.
  */
 int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp);
 

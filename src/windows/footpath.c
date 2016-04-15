@@ -146,8 +146,9 @@ static rct_window_event_list window_footpath_events = {
 	NULL
 };
 
-money32 _window_footpath_cost;
-sint8 _window_footpath_provisional_path_arrow_timer;
+static money32 _window_footpath_cost;
+static sint8 _window_footpath_provisional_path_arrow_timer;
+static uint8 _lastUpdatedCameraRotation = UINT8_MAX;
 
 static void window_footpath_mousedown_direction(int direction);
 static void window_footpath_mousedown_slope(int slope);
@@ -216,7 +217,7 @@ void window_footpath_open()
 	tool_cancel();
 	RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
 	tool_set(window, WIDX_CONSTRUCT_ON_LAND, 17);
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+	gInputFlags |= INPUT_FLAG_6;
 	RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 	window_footpath_set_enabled_and_pressed_widgets();
 }
@@ -262,7 +263,7 @@ static void window_footpath_mouseup(rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_LAND;
 		tool_set(w, WIDX_CONSTRUCT_ON_LAND, 17);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 		window_footpath_set_enabled_and_pressed_widgets();
 		break;
@@ -277,7 +278,7 @@ static void window_footpath_mouseup(rct_window *w, int widgetIndex)
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
 		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, 12);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_PATH_ERROR_OCCURED, uint8) = 0;
 		window_footpath_set_enabled_and_pressed_widgets();
 		break;
@@ -469,16 +470,23 @@ static void window_footpath_update(rct_window *w)
 	widget_invalidate(w, WIDX_CONSTRUCT);
 	window_footpath_update_provisional_path_for_bridge_mode(w);
 
+	// #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
+	uint8 currentRotation = get_current_rotation();
+	if (_lastUpdatedCameraRotation != currentRotation) {
+		_lastUpdatedCameraRotation = currentRotation;
+		window_footpath_set_enabled_and_pressed_widgets();
+	}
+
 	// Check tool
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 			window_close(w);
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
 			window_close(w);
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND)
 			window_close(w);
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL) {
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 			window_close(w);
 		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
 			window_close(w);
@@ -821,7 +829,7 @@ static void window_footpath_start_bridge_at_point(int screenX, int screenY)
 }
 
 /**
- *  Construct a piece of footpath while in bridge building mode.
+ * Construct a piece of footpath while in bridge building mode.
  *  rct2: 0x006A79B7
  */
 static void window_footpath_construct()

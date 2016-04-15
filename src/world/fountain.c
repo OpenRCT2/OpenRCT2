@@ -24,6 +24,7 @@
 #include "map.h"
 #include "scenery.h"
 #include "sprite.h"
+#include "footpath.h"
 
 enum {
 	PATTERN_CYCLIC_SQUARES,
@@ -191,7 +192,7 @@ void jumping_fountain_create(int type, int x, int y, int z, int direction, int f
 
 	jumpingFountain->iteration = iteration;
 	jumpingFountain->var_2E = direction;
-	jumpingFountain->flags = flags;
+	jumpingFountain->fountain_flags = flags;
 	jumpingFountain->sprite_direction = direction << 3;
 	jumpingFountain->var_14 = 33;
 	jumpingFountain->var_09 = 36;
@@ -206,8 +207,8 @@ void jumping_fountain_create(int type, int x, int y, int z, int direction, int f
 
 /**
  *
- *  rct: 0x006733CB (water)
- *  rct: 0x00673407 (snow)
+ *  rct2: 0x006733CB (water)
+ *  rct2: 0x00673407 (snow)
  */
 void jumping_fountain_update(rct_jumping_fountain *jumpingFountain)
 {
@@ -221,10 +222,10 @@ void jumping_fountain_update(rct_jumping_fountain *jumpingFountain)
 
 	switch (jumpingFountain->misc_identifier) {
 	case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-		if (jumpingFountain->var_26b == 11 && (jumpingFountain->flags & FOUNTAIN_FLAG_FAST))
+		if (jumpingFountain->var_26b == 11 && (jumpingFountain->fountain_flags & FOUNTAIN_FLAG_FAST))
 			jumping_fountain_continue(jumpingFountain);
 
-		if (jumpingFountain->var_26b == 16 && !(jumpingFountain->flags & FOUNTAIN_FLAG_FAST))
+		if (jumpingFountain->var_26b == 16 && !(jumpingFountain->fountain_flags & FOUNTAIN_FLAG_FAST))
 			jumping_fountain_continue(jumpingFountain);
 		break;
 	case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
@@ -262,20 +263,20 @@ static void jumping_fountain_continue(rct_jumping_fountain *jumpingFountain)
 	if (availableDirections == 0)
 		return;
 
-	if (jumpingFountain->flags & FOUNTAIN_FLAG_TERMINATE)
+	if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG_TERMINATE)
 		return;
 
-	if (jumpingFountain->flags & FOUNTAIN_FLAG_GOTO_EDGE) {
+	if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG_GOTO_EDGE) {
 		jumping_fountain_goto_edge(jumpingFountain, x, y, z, availableDirections);
 		return;
 	}
 
-	if (jumpingFountain->flags & FOUNTAIN_FLAG_BOUNCE) {
+	if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG_BOUNCE) {
 		jumping_fountain_bounce(jumpingFountain, x, y, z, availableDirections);
 		return;
 	}
 
-	if (jumpingFountain->flags & FOUNTAIN_FLAG_SPLIT) {
+	if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG_SPLIT) {
 		jumping_fountain_split(jumpingFountain, x, y, z, availableDirections);
 		return;
 	}
@@ -297,14 +298,14 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 			continue;
 		if (mapElement->base_height != z)
 			continue;
-		if (mapElement->properties.path.additions & 0x80)
+		if (footpath_element_path_scenery_is_ghost(mapElement))
 			continue;
 
-		int additions = mapElement->properties.path.additions & 0x0F;
-		if (additions == 0)
+		if (!footpath_element_has_path_scenery(mapElement))
 			continue;
 
-		rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[additions - 1];
+		uint8 additionIndex = footpath_element_get_path_scenery_index(mapElement);
+		rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[additionIndex];
 		if (!(sceneryEntry->path_bit.var_06 & pathBitFlagMask))
 			continue;
 
@@ -316,7 +317,7 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 
 /**
  *
- *  rct: 0x00673B6E
+ *  rct2: 0x00673B6E
  */
 static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -336,7 +337,7 @@ static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, in
 	if ((randomIndex & 0xFFFF) < 0x3333)
 		return;
 
-	if (jumpingFountain->flags & FOUNTAIN_FLAG_SPLIT) {
+	if (jumpingFountain->fountain_flags & FOUNTAIN_FLAG_SPLIT) {
 		jumping_fountain_split(jumpingFountain, x, y, z, availableDirections);
 		return;
 	}
@@ -350,7 +351,7 @@ static void jumping_fountain_goto_edge(rct_jumping_fountain *jumpingFountain, in
 
 /**
  *
- *  rct: 0x00673B45
+ *  rct2: 0x00673B45
  */
 static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -371,7 +372,7 @@ static void jumping_fountain_bounce(rct_jumping_fountain *jumpingFountain, int x
 
 /**
  *
- *  rct: 0x00673ACE
+ *  rct2: 0x00673ACE
  */
 static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -393,7 +394,7 @@ static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x,
 				type,
 				x, y, z,
 				direction >> 1,
-				jumpingFountain->flags & ~FOUNTAIN_FLAG_7,
+				jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG_7,
 				jumpingFountain->iteration + 1
 			);
 		}
@@ -403,7 +404,7 @@ static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x,
 				type,
 				x, y, z,
 				direction >> 1,
-				jumpingFountain->flags | FOUNTAIN_FLAG_7,
+				jumpingFountain->fountain_flags | FOUNTAIN_FLAG_7,
 				jumpingFountain->iteration + 1
 			);
 		}
@@ -412,7 +413,7 @@ static void jumping_fountain_split(rct_jumping_fountain *jumpingFountain, int x,
 
 /**
  *
- *  rct: 0x00673AAC
+ *  rct2: 0x00673AAC
  */
 static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int availableDirections)
 {
@@ -429,11 +430,11 @@ static void jumping_fountain_random(rct_jumping_fountain *jumpingFountain, int x
 
 /**
  *
- *  rct: 0x00673B45
+ *  rct2: 0x00673B45
  */
 static void jumping_fountain_create_next(rct_jumping_fountain *jumpingFountain, int x, int y, int z, int direction)
 {
-	int flags = jumpingFountain->flags & ~FOUNTAIN_FLAG_7;
+	int flags = jumpingFountain->fountain_flags & ~FOUNTAIN_FLAG_7;
 	if (direction & 1)
 		flags |= FOUNTAIN_FLAG_7;
 

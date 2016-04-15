@@ -3,56 +3,62 @@
 #include "../common.h"
 #include "../localisation/localisation.h"
 #include "../util/util.h"
+#include "String.hpp"
 
-interface IStringReader {
-	virtual bool TryPeek(int *outCodepoint) abstract;
-	virtual bool TryRead(int *outCodepoint) abstract;
-	virtual void Skip() abstract;
-	virtual bool CanRead() const abstract;
+interface IStringReader
+{
+    virtual bool TryPeek(codepoint_t * outCodepoint)       abstract;
+    virtual bool TryRead(codepoint_t * outCodepoint)       abstract;
+    virtual void Skip()                                    abstract;
+    virtual bool CanRead()                           const abstract;
 };
 
-class UTF8StringReader final : public IStringReader {
+class UTF8StringReader final : public IStringReader
+{
 public:
-	UTF8StringReader(const utf8 *text) {
-		// Skip UTF-8 byte order mark
-		if (strlen(text) >= 3 && utf8_is_bom(text)) {
-			text += 3;
-		}
+    UTF8StringReader(const utf8 * text)
+    {
+        text = String::SkipBOM(text);
 
-		_text = text;
-		_current = text;
-	}
+        _text = text;
+        _current = text;
+    }
 
-	bool TryPeek(int *outCodepoint) override {
-		if (_current == NULL) return false;
+    bool TryPeek(codepoint_t * outCodepoint) override
+    {
+        if (_current == nullptr) return false;
 
-		int codepoint = utf8_get_next(_current, NULL);
-		*outCodepoint = codepoint;
-		return true;
-	}
+        codepoint_t codepoint = String::GetNextCodepoint(_current);
+        *outCodepoint = codepoint;
+        return true;
+    }
 
-	bool TryRead(int *outCodepoint) override {
-		if (_current == NULL) return false;
+    bool TryRead(codepoint_t * outCodepoint) override
+    {
+        if (_current == nullptr) return false;
 
-		int codepoint = utf8_get_next(_current, &_current);
-		*outCodepoint = codepoint;
-		if (codepoint == 0) {
-			_current = NULL;
-			return false;
-		}
-		return true;
-	}
+        codepoint_t codepoint = String::GetNextCodepoint(_current, &_current);
+        *outCodepoint = codepoint;
+        if (codepoint == 0)
+        {
+            _current = nullptr;
+            return false;
+        }
+        return true;
+    }
 
-	void Skip() override {
-		int codepoint;
-		TryRead(&codepoint);
-	}
+    void Skip() override
+    {
+        codepoint_t codepoint;
+        TryRead(&codepoint);
+    }
 
-	bool CanRead() const override {
-		return _current != NULL;
-	}
+    bool CanRead() const override
+    {
+        return _current != nullptr;
+    }
 
 private:
-	const utf8 *_text;
-	const utf8 *_current;
+    const utf8 *_text;
+    const utf8 *_current;
 };

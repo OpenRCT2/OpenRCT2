@@ -30,6 +30,7 @@
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../interface/themes.h"
+#include "../cheats.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78
@@ -239,8 +240,8 @@ static void window_track_place_draw_mini_preview()
 				if (track_coordinate->rotation_end & 4)
 					rotation |= 4;
 				if (!(rotation & 4)) {
-					originX += RCT2_GLOBAL(0x00993CCC + (rotation * 4), sint16);
-					originY += RCT2_GLOBAL(0x00993CCE + (rotation * 4), sint16);
+					originX += TileDirectionDelta[rotation].x;
+					originY += TileDirectionDelta[rotation].y;
 				}
 				trackElement++;
 			}
@@ -389,7 +390,7 @@ void window_track_place_open()
 	w->enabled_widgets = 4 | 8 | 0x10 | 0x20;
 	window_init_scroll_widgets(w);
 	tool_set(w, 6, 12);
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+	gInputFlags |= INPUT_FLAG_6;
 	window_push_others_right(w);
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
@@ -449,7 +450,7 @@ static void window_track_place_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_track_place_update(rct_window *w)
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TRACK_DESIGN_PLACE)
 			window_close(w);
 }
@@ -485,7 +486,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 
 	// Get base Z position
 	mapZ = window_track_place_get_base_z(mapX, mapY);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
 		window_track_place_clear_provisional();
 
 		// Try increasing Z until a feasible placement is found
@@ -595,26 +596,23 @@ static void window_track_place_invalidate(rct_window *w)
  */
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_drawpixelinfo *clippedDpi;
-	rct_g1_element tmpElement, *subsituteElement;
+	rct_drawpixelinfo clippedDpi;
+	rct_g1_element tmpElement, *substituteElement;
 
 	window_draw_widgets(w, dpi);
 
 	// Draw mini tile preview
-	clippedDpi = clip_drawpixelinfo(dpi, w->x + 4, 168, w->y + 18, 78);
-	if (clippedDpi != NULL) {
-		subsituteElement = &g1Elements[0];
-		tmpElement = *subsituteElement;
-		subsituteElement->offset = _window_track_place_mini_preview;
-		subsituteElement->width = TRACK_MINI_PREVIEW_WIDTH;
-		subsituteElement->height = TRACK_MINI_PREVIEW_HEIGHT;
-		subsituteElement->x_offset = 0;
-		subsituteElement->y_offset = 0;
-		subsituteElement->flags = 0;
-		gfx_draw_sprite(clippedDpi, 0, 0, 0, 0);
-		*subsituteElement = tmpElement;
-
-		rct2_free(clippedDpi);
+	if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
+		substituteElement = &g1Elements[0];
+		tmpElement = *substituteElement;
+		substituteElement->offset = _window_track_place_mini_preview;
+		substituteElement->width = TRACK_MINI_PREVIEW_WIDTH;
+		substituteElement->height = TRACK_MINI_PREVIEW_HEIGHT;
+		substituteElement->x_offset = 0;
+		substituteElement->y_offset = 0;
+		substituteElement->flags = 0;
+		gfx_draw_sprite(&clippedDpi, 0, 0, 0, 0);
+		*substituteElement = tmpElement;
 	}
 
 	// Price

@@ -43,6 +43,7 @@ enum {
 	LANGUAGE_KOREAN,
 	LANGUAGE_RUSSIAN,
 	LANGUAGE_CZECH,
+	LANGUAGE_JAPANESE,
 	LANGUAGE_COUNT
 };
 
@@ -77,8 +78,8 @@ rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
 int utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
-bool utf8_is_codepoint_start(utf8 *text);
-void utf8_remove_format_codes(utf8 *text);
+bool utf8_is_codepoint_start(const utf8 *text);
+void utf8_remove_format_codes(utf8 *text, bool allowcolours);
 int utf8_get_codepoint_length(int codepoint);
 int utf8_length(const utf8 *text);
 wchar_t *utf8_to_widechar(const utf8 *src);

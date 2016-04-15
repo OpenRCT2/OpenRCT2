@@ -349,7 +349,7 @@ static void rct1_load_default_objects()
 				continue;
 			}
 
-			if (!object_load(j, &entries[j], NULL)) {
+			if (!object_load_chunk(j, &entries[j], NULL)) {
 				error_string_quit(0x99990000 + (i * 0x100) + j, -1);
 				return;
 			}
@@ -359,7 +359,7 @@ static void rct1_load_default_objects()
 	// Water is a special case
 	rct_object_entry *waterEntries = (rct_object_entry*)RCT1DefaultObjects[9].entries;
 	rct_object_entry *waterEntry = &waterEntries[RCT2_GLOBAL(0x01358841, uint8) == 0 ? 0 : 1];
-	if (!object_load(0, waterEntry, NULL)) {
+	if (!object_load_chunk(0, waterEntry, NULL)) {
 		error_string_quit(0x99990900, -1);
 		return;
 	}
@@ -612,7 +612,7 @@ static void rct1_clear_extra_tile_entries()
 		*tilePointer++ = nextFreeMapElement++;
 	}
 
-	RCT2_GLOBAL(0x0140E9A4, rct_map_element*) = nextFreeMapElement;
+	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = nextFreeMapElement;
 }
 
 /**
@@ -661,7 +661,7 @@ static void rct1_fix_colours()
 	}
 
 	mapElement = gMapElements;
-	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+	while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)) {
 		if (mapElement->base_height != 255) {
 			switch (map_element_get_type(mapElement)) {
 			case MAP_ELEMENT_TYPE_SCENERY:
@@ -712,13 +712,13 @@ static void rct1_fix_z()
 		for (int i = 0; i < 4; i++) {
 			ride->station_heights[i] /= 2;
 		}
-		ride->var_116 /= 2;
+		ride->start_drop_height /= 2;
 		ride->highest_drop_height = 1;
-		if (ride->var_11F != 255) {
-			ride->var_11F /= 2;
+		if (ride->cur_test_track_z != 255) {
+			ride->cur_test_track_z /= 2;
 		}
-		ride->var_13E /= 2;
-		ride->var_13F /= 2;
+		ride->chairlift_bullwheel_z[0] /= 2;
+		ride->chairlift_bullwheel_z[1] /= 2;
 	}
 
 	for (int i = 0; i < RCT2_GLOBAL(0x0138B580, uint16); i++) {
@@ -735,7 +735,7 @@ static void rct1_fix_z()
 	}
 
 	for (int i = 0; i < MAX_RIDE_MEASUREMENTS; i++) {
-		rideMeasurement = GET_RIDE_MEASUREMENT(i);
+		rideMeasurement = get_ride_measurement(i);
 		if (rideMeasurement->ride_index == 255)
 			continue;
 
@@ -745,7 +745,7 @@ static void rct1_fix_z()
 	}
 
 	mapElement = gMapElements;
-	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+	while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)) {
 		if (mapElement->base_height != 255) {
 			mapElement->base_height /= 2;
 			mapElement->clearance_height /= 2;
@@ -765,7 +765,7 @@ static void rct1_fix_paths()
 	int pathType, secondaryType, additions;
 
 	mapElement = gMapElements;
-	while (mapElement < RCT2_GLOBAL(0x0140E9A4, rct_map_element*)) {
+	while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)) {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_PATH:
 			// Type
@@ -776,23 +776,22 @@ static void rct1_fix_paths()
 			mapElement->type &= 0xFC;
 			mapElement->flags &= ~0x60;
 			mapElement->properties.path.type &= 0x0F;
-			mapElement->properties.path.additions &= 0x7F;
+			footpath_scenery_set_is_ghost(mapElement, false);
 			if (pathType & 0x80) {
 				mapElement->type |= 1;
 			}
 			mapElement->properties.path.type |= pathType << 4;
 
 			// Additions
-			additions = mapElement->properties.path.additions & 0x0F;
-			additions = RCT1PathAdditionConversionTable[additions];
-			if (additions & 0x80) {
-				additions &= ~0x80;
+			additions = RCT1PathAdditionConversionTable[footpath_element_get_path_scenery(mapElement)];
+			if (footpath_element_path_scenery_is_ghost(mapElement)) {
+				footpath_scenery_set_is_ghost(mapElement, false);
 				mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
 			} else {
 				mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 			}
-			mapElement->properties.path.additions &= 0xF0;
-			mapElement->properties.path.additions |= additions;
+
+			footpath_element_set_path_scenery(mapElement, additions);
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE) {
@@ -815,13 +814,14 @@ static void rct1_convert_wall(int *type, int *colourA, int *colourB, int *colour
 	case 12:	// creepy gate
 		*colourA = 24;
 		break;
-	case 26:	// medium brown castle wall
+	case 26:	// white wooden fence
+		*type = 12;
+		*colourA = 2;
+		break;
+	case 27:	// red wooden fence
 		*type = 12;
 		*colourA = 25;
 		break;
-	case 27:	// tall castle wall with grey window
-		*type = 12;
-		*colourA = 2;
 	case 50:	// plate glass
 		*colourA = 24;
 		break;
@@ -899,7 +899,10 @@ static void sub_69E891()
 
 #pragma region Tables
 
-// rct2: 0x0097F0BC & 0x0098BC60
+/**
+ *
+ *  rct2: 0x0097F0BC, 0x0098BC60
+ */
 const uint8 RCT1ColourConversionTable[32] = {
 	 0,  1,  2,  4,  5,  6,  7,  9,
 	11, 12, 13, 14, 15, 16, 18, 19,
@@ -1375,6 +1378,7 @@ static const rct_object_entry RCT1DefaultObjectsWall[] = {
 	{ 0x00000083, { "WSW     " }, 0 },
 	{ 0x00000083, { "WSWG    " }, 0 },
 	{ 0x00000083, { "WMW     " }, 0 },
+	{ 0x00000083, { "WALLGL16" }, 0 },
 	{ 0x00000083, { "WFW1    " }, 0 },
 	{ 0x00000083, { "WFWG    " }, 0 },
 	{ 0x00000083, { "WPW1    " }, 0 },
@@ -1389,6 +1393,8 @@ static const rct_object_entry RCT1DefaultObjectsWall[] = {
 	{ 0x00000083, { "WBW     " }, 0 },
 	{ 0x00000083, { "WBR1    " }, 0 },
 	{ 0x00000083, { "WBRG    " }, 0 },
+	{ 0x00000083, { "WALLCFAR" }, 0 },	// Slot taken by white wooden fence in RCT1
+	{ 0x00000083, { "WALLPOST" }, 0 },	// Slot taken by red wooden fence in RCT1
 	{ 0x00000083, { "WBR2    " }, 0 },
 	{ 0x00000083, { "WBR3    " }, 0 },
 	{ 0x00000083, { "WPW3    " }, 0 },
@@ -1430,7 +1436,6 @@ static const rct_object_entry RCT1DefaultObjectsWall[] = {
 	{ 0x00000083, { "WALLCB16" }, 0 },
 	{ 0x00000083, { "WALLCB32" }, 0 },
 	{ 0x00000083, { "WALLGL8 " }, 0 },
-	{ 0x00000083, { "WALLGL16" }, 0 },
 	{ 0x00000083, { "WALLGL32" }, 0 },
 	{ 0x00000083, { "WALLWD8 " }, 0 },
 	{ 0x00000083, { "WALLWD16" }, 0 },
@@ -1806,7 +1811,7 @@ bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *
 	return false;
 }
 
-bool rideTypeShouldLoseSeparateFlag(rct_ride_type *ride)
+bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *ride)
 {
 	if(!gConfigInterface.select_by_track_type)
 		return false;

@@ -185,7 +185,7 @@ static void window_track_manage_close(rct_window *w)
  */
 static void window_track_manage_mouseup(rct_window *w, int widgetIndex)
 {
-	uint8 *trackDesignList = (uint8*)0x00F441EC;
+	char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
 	rct_window *trackDesignListWindow;
 	char *dst, *src;
 
@@ -253,7 +253,7 @@ static void window_track_delete_prompt_open()
 
 	w = window_create(
 		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 250) / 2),
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 44) / 2,
+		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 44) / 2,
 		250,
 		74,
 		&window_track_delete_prompt_events,

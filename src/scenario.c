@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "addresses.h"
+#include "cheats.h"
 #include "config.h"
 #include "game.h"
 #include "world/climate.h"
@@ -30,6 +31,7 @@
 #include "management/marketing.h"
 #include "management/research.h"
 #include "management/news_item.h"
+#include "network/network.h"
 #include "object.h"
 #include "openrct2.h"
 #include "peep/staff.h"
@@ -45,11 +47,23 @@
 #include "world/sprite.h"
 #include "world/water.h"
 
+const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
+	STR_BEGINNER_PARKS,
+	STR_CHALLENGING_PARKS,
+	STR_EXPERT_PARKS,
+	STR_REAL_PARKS,
+	STR_OTHER_PARKS,
+
+	STR_DLC_PARKS,
+	STR_BUILD_YOUR_OWN_PARKS,
+};
+
 static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName = "";
 
 char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
+uint32 gLastAutoSaveTick = 0;
 
 static int scenario_create_ducks();
 static void scenario_objective_check();
@@ -58,13 +72,11 @@ static void scenario_objective_check();
  * Loads only the basic information from a scenario.
  *  rct2: 0x006761D6
  */
-int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
+bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *info)
 {
-	SDL_RWops* rw;
-
 	log_verbose("loading scenario details, %s", path);
 
-	rw = SDL_RWFromFile(path, "rb");
+	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw != NULL) {
 		// Read first chunk
 		sawyercoding_read_chunk(rw, (uint8*)header);
@@ -72,49 +84,16 @@ int scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *in
 			// Read second chunk
 			sawyercoding_read_chunk(rw, (uint8*)info);
 			SDL_RWclose(rw);
-			RCT2_GLOBAL(0x009AA00C, uint8) = 0;
-
-			// Get filename
-			utf8 filename[MAX_PATH];
-			const char *temp_filename = path_get_filename(path);
-			int len = strnlen(temp_filename, MAX_PATH);
-			safe_strncpy(filename, temp_filename, MAX_PATH);
-			if (len == MAX_PATH)
-			{
-				filename[MAX_PATH - 1] = '\0';
-				log_warning("truncated string %s", filename);
-			}
-			path_remove_extension(filename);
-
-			rct_string_id localisedStringIds[3];
-			if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
-				if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
-					safe_strncpy(info->name, language_get_string(localisedStringIds[0]), 64);
-				}
-				if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
-					safe_strncpy(info->details, language_get_string(localisedStringIds[2]), 256);
-				}
-			} else {
-				// Checks for a scenario string object (possibly for localisation)
-				if ((info->entry.flags & 0xFF) != 255) {
-					if (object_get_scenario_text(&info->entry)) {
-						rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
-						format_string(info->name, stex_entry->scenario_name, NULL);
-						format_string(info->details, stex_entry->details, NULL);
-						RCT2_GLOBAL(0x009AA00C, uint8) = stex_entry->var_06;
-						object_free_scenario_text();
-					}
-				}
-			}
-			return 1;
+			return true;
+		} else {
+			log_error("invalid scenario, %s", path);
+			SDL_RWclose(rw);
+			return false;
 		}
-		SDL_RWclose(rw);
 	}
 
-	log_error("invalid scenario, %s", path);
-	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, sint8) = -1;
-	// RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, sint16) = 3011;
-	return 0;
+	log_error("unable to open scenario, %s", path);
+	return false;
 }
 
 /**
@@ -207,6 +186,7 @@ int scenario_load(const char *path)
 			game_convert_strings_to_utf8();
 			game_fix_save_vars(); // OpenRCT2 fix broken save games
 
+			gLastAutoSaveTick = SDL_GetTicks();
 			return 1;
 		}
 
@@ -219,19 +199,6 @@ int scenario_load(const char *path)
 	return 0;
 }
 
-/**
- *
- *  rct2: 0x00678282
- * scenario (ebx)
- */
-int scenario_load_and_play(const rct_scenario_basic *scenario)
-{
-	char path[MAX_PATH];
-
-	subsitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), scenario->path);
-	return scenario_load_and_play_from_path(path);
-}
-
 int scenario_load_and_play_from_path(const char *path)
 {
 	window_close_construction_windows();
@@ -240,7 +207,7 @@ int scenario_load_and_play_from_path(const char *path)
 		return 0;
 
 	int len = strnlen(path, MAX_PATH) + 1;
-	safe_strncpy(_scenarioPath, path, len);
+	safe_strcpy(_scenarioPath, path, len);
 	if (len - 1 == MAX_PATH)
 	{
 		_scenarioPath[MAX_PATH - 1] = '\0';
@@ -252,6 +219,12 @@ int scenario_load_and_play_from_path(const char *path)
 
 	log_verbose("starting scenario, %s", path);
 	scenario_begin();
+	if (network_get_mode() == NETWORK_MODE_SERVER) {
+		network_send_map();
+	}
+	if (network_get_mode() == NETWORK_MODE_CLIENT) {
+		network_close();
+	}
 
 	return 1;
 }
@@ -312,25 +285,24 @@ void scenario_begin()
 
 	finance_update_loan_hash();
 
-	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details, 256);
-	safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name, 64);
+	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details, 256);
+	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name, 64);
 
 	{
-		// Get filename
-		utf8 filename[MAX_PATH];
-		safe_strncpy(filename, _scenarioFileName, sizeof(filename));
-		path_remove_extension(filename);
+		utf8 normalisedName[64];
+		safe_strcpy(normalisedName, s6Info->name, sizeof(normalisedName));
+		scenario_normalise_name(normalisedName);
 
 		rct_string_id localisedStringIds[3];
-		if (language_get_localised_scenario_strings(filename, localisedStringIds)) {
-			if (localisedStringIds[0] != (rct_string_id)STR_NONE) {
-				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
+		if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {
+			if (localisedStringIds[0] != STR_NONE) {
+				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
 			}
-			if (localisedStringIds[1] != (rct_string_id)STR_NONE) {
+			if (localisedStringIds[1] != STR_NONE) {
 				park_set_name(language_get_string(localisedStringIds[1]));
 			}
-			if (localisedStringIds[2] != (rct_string_id)STR_NONE) {
-				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 256);
+			if (localisedStringIds[2] != STR_NONE) {
+				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 256);
 			}
 		} else {
 			rct_stex_entry* stex = g_stexEntries[0];
@@ -343,12 +315,12 @@ void scenario_begin()
 
 				// Set localised scenario name
 				format_string(buffer, stex->scenario_name, 0);
-				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
+				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
 				((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
 
 				// Set localised scenario details
 				format_string(buffer, stex->details, 0);
-				safe_strncpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
+				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
 				((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
 			}
 		}
@@ -417,14 +389,14 @@ void scenario_end()
 
 void scenario_set_filename(const char *value)
 {
-	subsitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
+	substitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
 	_scenarioFileName = path_get_filename(_scenarioPath);
 }
 
 /**
  *
  *  rct2: 0x0066A752
- **/
+ */
 void scenario_failure()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = 0x80000001;
@@ -437,29 +409,29 @@ void scenario_failure()
  */
 void scenario_success()
 {
-	int i;
-	rct_scenario_basic* scenario;
-	uint32 current_val = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, uint32);
+	const money32 companyValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = current_val;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
 	peep_applause();
 
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-
-		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
-			// Check if record company value has been broken
-			if ((scenario->flags & SCENARIO_FLAGS_COMPLETED) && scenario->company_value >= current_val)
-				break;
+	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
+	if (scenario != NULL) {
+		// Check if record company value has been broken
+		if (scenario->highscore == NULL || scenario->highscore->company_value < companyValue) {
+			if (scenario->highscore == NULL) {
+				scenario->highscore = scenario_highscore_insert();
+			} else {
+				scenario_highscore_free(scenario->highscore);
+			}
+			scenario->highscore->fileName = _strdup(path_get_filename(scenario->path));
+			scenario->highscore->name = NULL;
+			scenario->highscore->company_value = companyValue;
+			scenario->highscore->timestamp = platform_get_datetime_now_utc();
 
 			// Allow name entry
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-			scenario->company_value = current_val;
-			scenario->flags |= SCENARIO_FLAGS_COMPLETED;
-			scenario->completed_by[0] = 0;
-			RCT2_GLOBAL(0x013587C0, uint32) = current_val;
+			RCT2_GLOBAL(0x013587C0, money32) = companyValue;
 			scenario_scores_save();
-			break;
 		}
 	}
 	scenario_end();
@@ -471,31 +443,23 @@ void scenario_success()
  */
 void scenario_success_submit_name(const char *name)
 {
-	int i;
-	rct_scenario_basic* scenario;
-	uint32 scenarioWinCompanyValue;
-
-	for (i = 0; i < gScenarioListCount; i++) {
-		scenario = &gScenarioList[i];
-
-		if (strequals(scenario->path, _scenarioFileName, 256, true)) {
-			scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, uint32);
-			if (scenario->company_value == scenarioWinCompanyValue) {
-				safe_strncpy(scenario->completed_by, name, 64);
-				safe_strncpy((char*)0x013587D8, name, 32);
-				scenario_scores_save();
-			}
-			break;
+	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
+	if (scenario != NULL) {
+		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
+		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
+			scenario->highscore->name = _strdup(name);
+			safe_strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char), name, 32);
+			scenario_scores_save();
 		}
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
-/*
+/**
  * Send a warning when entrance price is too high.
- * rct2: 0x0066A80E
- **/
+ *  rct2: 0x0066A80E
+ */
 void scenario_entrance_fee_too_high_check()
 {
 	uint16 x = 0, y = 0;
@@ -511,40 +475,38 @@ void scenario_entrance_fee_too_high_check()
 		}
 
 		packed_xy = (y << 16) | x;
-		news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+		if (gConfigNotifications.park_warnings) {
+			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+		}
 	}
 }
 
 void scenario_autosave_check()
 {
-	// Timestamp in milliseconds
-	static uint32 last_save = 0;
-
-	bool shouldSave = 0;
-
 	// Milliseconds since last save
-	uint32_t time_since_save = SDL_GetTicks() - last_save;
+	uint32 timeSinceSave = SDL_GetTicks() - gLastAutoSaveTick;
 
+	bool shouldSave = false;
 	switch (gConfigGeneral.autosave_frequency) {
 	case AUTOSAVE_EVERY_MINUTE:
-		shouldSave = time_since_save >= 1 * 60 * 1000;
+		shouldSave = timeSinceSave >= 1 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_5MINUTES:
-		shouldSave = time_since_save >= 5 * 60 * 1000;
+		shouldSave = timeSinceSave >= 5 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_15MINUTES:
-		shouldSave = time_since_save >= 15 * 60 * 1000;
+		shouldSave = timeSinceSave >= 15 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_30MINUTES:
-		shouldSave = time_since_save >= 30 * 60 * 1000;
+		shouldSave = timeSinceSave >= 30 * 60 * 1000;
 		break;
 	case AUTOSAVE_EVERY_HOUR:
-		shouldSave = time_since_save >= 60 * 60 * 1000;
+		shouldSave = timeSinceSave >= 60 * 60 * 1000;
 		break;
 	}
 
 	if (shouldSave) {
-		last_save = SDL_GetTicks();
+		gLastAutoSaveTick = SDL_GetTicks();
 		game_autosave();
 	}
 }
@@ -553,7 +515,6 @@ static void scenario_day_update()
 {
 	finance_update_daily_profit();
 	peep_update_days_in_queue();
-	get_local_time();
 	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
 	case OBJECTIVE_10_ROLLERCOASTERS:
 	case OBJECTIVE_GUESTS_AND_RATING:
@@ -610,31 +571,34 @@ static void scenario_month_update()
 
 static void scenario_update_daynight_cycle()
 {
+	float currentDayNightCycle = gDayNightCycle;
 	gDayNightCycle = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) != SCREEN_FLAGS_PLAYING) return;
-	if (!gConfigGeneral.day_night_cycle) return;
-
-	float monthFraction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) / (float)0x10000;
-	if (monthFraction < (1 / 8.0f)) {
-		gDayNightCycle = 0.0f;
-	} else if (monthFraction < (3 / 8.0f)) {
-		gDayNightCycle = (monthFraction - (1 / 8.0f)) / (2 / 8.0f);
-	} else if (monthFraction < (5 / 8.0f)) {
-		gDayNightCycle = 1.0f;
-	} else if (monthFraction < (7 / 8.0f)) {
-		gDayNightCycle = 1.0f - ((monthFraction - (5 / 8.0f)) / (2 / 8.0f));
-	} else {
-		gDayNightCycle = 0.0f;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
+		float monthFraction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) / (float)0x10000;
+		if (monthFraction < (1 / 8.0f)) {
+			gDayNightCycle = 0.0f;
+		} else if (monthFraction < (3 / 8.0f)) {
+			gDayNightCycle = (monthFraction - (1 / 8.0f)) / (2 / 8.0f);
+		} else if (monthFraction < (5 / 8.0f)) {
+			gDayNightCycle = 1.0f;
+		} else if (monthFraction < (7 / 8.0f)) {
+			gDayNightCycle = 1.0f - ((monthFraction - (5 / 8.0f)) / (2 / 8.0f));
+		} else {
+			gDayNightCycle = 0.0f;
+		}
 	}
 
-	platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
+	// Only update palette if day / night cycle has changed
+	if (gDayNightCycle != currentDayNightCycle) {
+		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
+	}
 }
 
-/*
+/**
  * Scenario and finance related update iteration.
- * rct2: 0x006C44B1
- **/
+ *  rct2: 0x006C44B1
+ */
 void scenario_update()
 {
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)) {
@@ -721,6 +685,8 @@ static int scenario_create_ducks()
 /**
  *
  *  rct2: 0x006E37D2
+ *
+ * @return eax
  */
 unsigned int scenario_rand()
 {
@@ -794,7 +760,7 @@ int scenario_prepare_for_save()
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
 		format_string(buffer, stex->scenario_name, NULL);
-		safe_strncpy(s6Info->name, buffer, sizeof(s6Info->name));
+		safe_strcpy(s6Info->name, buffer, sizeof(s6Info->name));
 
 		memcpy(&s6Info->entry, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0], sizeof(rct_object_entry));
 	}
@@ -827,8 +793,8 @@ int scenario_get_num_packed_objects_to_write()
 	int i, count = 0;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 
-	for (i = 0; i < 721; i++, entry++) {
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
+	for (i = 0; i < OBJECT_ENTRY_COUNT; i++, entry++) {
+		if (gObjectList[i] == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
 		count++;
@@ -845,8 +811,8 @@ int scenario_write_packed_objects(SDL_RWops* rw)
 {
 	int i;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
-	for (i = 0; i < 721; i++, entry++) {
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
+	for (i = 0; i < OBJECT_ENTRY_COUNT; i++, entry++) {
+		if (gObjectList[i] == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
 			continue;
 
 		if (!write_object_file(rw, (rct_object_entry*)entry))
@@ -885,8 +851,8 @@ int scenario_write_available_objects(FILE *file)
 	// Write entries
 	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
-	for (i = 0; i < 721; i++) {
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF)
+	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
+		if (gObjectList[i] == (void *)0xFFFFFFFF)
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
 		else
 			*dstEntry = *((rct_object_entry*)srcEntry);
@@ -921,7 +887,7 @@ static void sub_674BCF()
 		char *dst = &savedExpansionPackNames[i * 128];
 		if (RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << i)) {
 			char *src = &(RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[i * 128]);
-			safe_strncpy(dst, src, 128);
+			safe_strcpy(dst, src, 128);
 		} else {
 			*dst = 0;
 		}
@@ -960,19 +926,23 @@ static void scenario_fix_ghosts(rct_s6_data *s6)
 			(destinationElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
 		}
 	}
+}
 
-	// Remove trackless rides
+static void scenario_remove_trackless_rides(rct_s6_data *s6)
+{
 	bool rideHasTrack[MAX_RIDES];
 	ride_all_has_any_track_elements(rideHasTrack);
 	for (int i = 0; i < MAX_RIDES; i++) {
 		rct_ride *ride = &s6->rides[i];
 
-		if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
+		if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL) {
 			continue;
+		}
 
 		ride->type = RIDE_TYPE_NULL;
-		if (is_user_string_id(ride->name))
+		if (is_user_string_id(ride->name)) {
 			s6->custom_strings[(ride->name % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
+		}
 	}
 }
 
@@ -1031,10 +1001,10 @@ int scenario_save(SDL_RWops* rw, int flags)
 
 	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
 
-	for (int i = 0; i < 721; i++) {
+	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
 		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
 
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF) {
+		if (gObjectList[i] == (void *)0xFFFFFFFF) {
 			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
 		} else {
 			s6->objects[i] = *((rct_object_entry*)entry);
@@ -1045,9 +1015,10 @@ int scenario_save(SDL_RWops* rw, int flags)
 	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
-	safe_strncpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
+	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
 
 	scenario_fix_ghosts(s6);
+	scenario_remove_trackless_rides(s6);
 	game_convert_strings_to_rct2(s6);
 	scenario_save_s6(rw, s6);
 
@@ -1107,7 +1078,7 @@ int scenario_save_network(SDL_RWops* rw)
 	for (int i = 0; i < 721; i++) {
 		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
 
-		if (GET_RIDE_ENTRY(i) == (void *)0xFFFFFFFF) {
+		if (gObjectList[i] == (void *)0xFFFFFFFF) {
 			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
 		} else {
 			s6->objects[i] = *((rct_object_entry*)entry);
@@ -1118,13 +1089,34 @@ int scenario_save_network(SDL_RWops* rw)
 	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
 	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
 
+	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
+
 	scenario_fix_ghosts(s6);
+	game_convert_strings_to_rct2(s6);
 	scenario_save_s6(rw, s6);
 
 	free(s6);
 
+	reset_loaded_objects();
+
 	// Write other data not in normal save files
 	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
+	SDL_WriteLE32(rw, _guestGenerationProbability);
+	SDL_WriteLE32(rw, _suggestedGuestMaximum);
+	SDL_WriteU8(rw, gCheatsSandboxMode);
+	SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
+	SDL_WriteU8(rw, gCheatsDisableSupportLimits);
+	SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
+	SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
+	SDL_WriteU8(rw, gCheatsFastLiftHill);
+	SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
+	SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
+	SDL_WriteU8(rw, gCheatsUnlockAllPrices);
+	SDL_WriteU8(rw, gCheatsBuildInPauseMode);
+	SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
+	SDL_WriteU8(rw, gCheatsDisableVandalism);
+	SDL_WriteU8(rw, gCheatsNeverendingMarketing);
+	SDL_WriteU8(rw, gCheatsFreezeClimate);
 
 	gfx_invalidate_screen();
 	return 1;
@@ -1304,9 +1296,13 @@ static void scenario_objective_check_10_rollercoasters()
 
 	FOR_ALL_RIDES(i, ride) {
 		uint8 subtype_id = ride->subtype;
-		rct_ride_type *rideType = gRideTypeList[subtype_id];
+		rct_ride_entry *rideType = get_ride_entry(subtype_id);
+		if (rideType == NULL) {
+			continue;
+		}
 
-		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
+		if (rideType != NULL &&
+			(rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
 			ride->status == RIDE_STATUS_OPEN &&
 			ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
 			type_already_counted[subtype_id]++;
@@ -1320,20 +1316,28 @@ static void scenario_objective_check_10_rollercoasters()
 
 /**
  *
- * rct2: 0x0066A13C
+ *  rct2: 0x0066A13C
  */
 static void scenario_objective_check_guests_and_rating()
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)++;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 1) {
-			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
+			if (gConfigNotifications.park_rating_warnings) {
+				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
+			}
 		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 8) {
-			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
+			if (gConfigNotifications.park_rating_warnings) {
+				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
+			}
 		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 15) {
-			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
+			if (gConfigNotifications.park_rating_warnings) {
+				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
+			}
 		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 22) {
-			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
+			if (gConfigNotifications.park_rating_warnings) {
+				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
+			}
 		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 29) {
 			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
 			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_OPEN;
@@ -1360,8 +1364,8 @@ static void scenario_objective_check_monthly_ride_income()
 /**
  * Checks if there are 10 rollercoasters of different subtype with
  * excitement > 700 and a minimum length;
- * rct2: 0x0066A6B5
- **/
+ *  rct2: 0x0066A6B5
+ */
 static void scenario_objective_check_10_rollercoasters_length()
 {
 	int i, rcs = 0;
@@ -1373,7 +1377,10 @@ static void scenario_objective_check_10_rollercoasters_length()
 
 	FOR_ALL_RIDES(i, ride) {
 		uint8 subtype_id = ride->subtype;
-		rct_ride_type *rideType = gRideTypeList[subtype_id];
+		rct_ride_entry *rideType = get_ride_entry(subtype_id);
+		if (rideType == NULL) {
+			continue;
+		}
 		if ((rideType->category[0] == RIDE_GROUP_ROLLERCOASTER || rideType->category[1] == RIDE_GROUP_ROLLERCOASTER) &&
 			ride->status == RIDE_STATUS_OPEN &&
 			ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
@@ -1431,10 +1438,10 @@ static void scenario_objective_check_monthly_food_income()
 		scenario_success();
 }
 
-/*
+/**
  * Checks the win/lose conditions of the current objective.
- * rct2: 0x0066A4B2
- **/
+ *  rct2: 0x0066A4B2
+ */
 static void scenario_objective_check()
 {
 	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),

@@ -21,18 +21,19 @@
 #include "addresses.h"
 #include "audio/audio.h"
 #include "audio/mixer.h"
-#include "cmdline.h"
 #include "config.h"
 #include "editor.h"
 #include "game.h"
 #include "hook.h"
 #include "interface/chat.h"
+#include "interface/themes.h"
 #include "interface/window.h"
 #include "interface/viewport.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "network/network.h"
 #include "openrct2.h"
+#include "platform/crash.h"
 #include "platform/platform.h"
 #include "ride/ride.h"
 #include "title.h"
@@ -40,30 +41,28 @@
 #include "util/util.h"
 #include "world/mapgen.h"
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__)
 #include <sys/mman.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#endif // defined(__unix__)
+
+int gExitCode;
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
 utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
+utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
+utf8 gCustomPassword[MAX_PATH] = { 0 };
 
 // This should probably be changed later and allow a custom selection of things to initialise like SDL_INIT
 bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
-
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-void *gDataSegment;
-void *gTextSegment;
-int gExeFd;
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
@@ -72,8 +71,6 @@ int _finished;
 static struct { sint16 x, y, z; } _spritelocations1[MAX_SPRITES], _spritelocations2[MAX_SPRITES];
 
 static void openrct2_loop();
-static bool openrct2_setup_rct2_segment();
-static bool openrct2_release_rct2_segment();
 static void openrct2_setup_rct2_hooks();
 
 void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
@@ -89,15 +86,16 @@ void openrct2_write_full_version_info(utf8 *buffer, size_t bufferSize)
 	if (!str_is_null_or_empty(OPENRCT2_BRANCH)) {
 		sprintf(strchr(buffer, 0), "-%s", OPENRCT2_BRANCH);
 	}
-	if (!str_is_null_or_empty(OPENRCT2_BUILD_NUMBER)) {
-		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_BUILD_NUMBER);
-	}
 	if (!str_is_null_or_empty(OPENRCT2_COMMIT_SHA1_SHORT)) {
-		sprintf(strchr(buffer, 0), " (%s)", OPENRCT2_COMMIT_SHA1_SHORT);
+		sprintf(strchr(buffer, 0), " build %s", OPENRCT2_COMMIT_SHA1_SHORT);
 	}
 	if (!str_is_null_or_empty(OPENRCT2_BUILD_SERVER)) {
 		sprintf(strchr(buffer, 0), " provided by %s", OPENRCT2_BUILD_SERVER);
 	}
+
+#if DEBUG
+	sprintf(strchr(buffer, 0), " (DEBUG)");
+#endif
 }
 
 static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *newDirectory, const utf8 *extension)
@@ -112,7 +110,7 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	}
 
 	// Create filter path
-	safe_strncpy(filter, originalDirectory, MAX_PATH);
+	safe_strcpy(filter, originalDirectory, MAX_PATH);
 	ch = strchr(filter, '*');
 	if (ch != NULL)
 		*ch = 0;
@@ -121,10 +119,10 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 	fileEnumHandle = platform_enumerate_files_begin(filter);
 	while (platform_enumerate_files_next(fileEnumHandle, &fileInfo)) {
-		safe_strncpy(newPath, newDirectory, MAX_PATH);
+		safe_strcpy(newPath, newDirectory, MAX_PATH);
 		strcat(newPath, fileInfo.path);
 
-		safe_strncpy(oldPath, originalDirectory, MAX_PATH);
+		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;
@@ -137,10 +135,10 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 
 	fileEnumHandle = platform_enumerate_directories_begin(originalDirectory);
 	while (platform_enumerate_directories_next(fileEnumHandle, filter)) {
-		safe_strncpy(newPath, newDirectory, MAX_PATH);
+		safe_strcpy(newPath, newDirectory, MAX_PATH);
 		strcat(newPath, filter);
 
-		safe_strncpy(oldPath, originalDirectory, MAX_PATH);
+		safe_strcpy(oldPath, originalDirectory, MAX_PATH);
 		ch = strchr(oldPath, '*');
 		if (ch != NULL)
 			*ch = 0;
@@ -155,43 +153,10 @@ static void openrct2_copy_files_over(const utf8 *originalDirectory, const utf8 *
 	platform_enumerate_directories_end(fileEnumHandle);
 }
 
-// TODO move to platform
 static void openrct2_set_exe_path()
 {
-#ifdef _WIN32
-	wchar_t exePath[MAX_PATH];
-	wchar_t tempPath[MAX_PATH];
-	wchar_t *exeDelimiter;
-	int exeDelimiterIndex;
-
-	GetModuleFileNameW(NULL, exePath, MAX_PATH);
-	exeDelimiter = wcsrchr(exePath, platform_get_path_separator());
-	exeDelimiterIndex = (int)(exeDelimiter - exePath);
-	lstrcpynW(tempPath, exePath, exeDelimiterIndex + 1);
-	tempPath[exeDelimiterIndex] = L'\0';
-	_wfullpath(exePath, tempPath, MAX_PATH);
-	WideCharToMultiByte(CP_UTF8, 0, exePath, countof(exePath), gExePath, countof(gExePath), NULL, NULL);
-#else
-	char exePath[MAX_PATH];
-	ssize_t bytesRead;
-	bytesRead = readlink("/proc/self/exe", exePath, MAX_PATH);
-	if (bytesRead == -1) {
-		log_fatal("failed to read /proc/self/exe");
-	}
-	exePath[bytesRead - 1] = '\0';
-	log_verbose("######################################## Setting exe path to %s", exePath);
-	char *exeDelimiter = strrchr(exePath, platform_get_path_separator());
-	if (exeDelimiter == NULL)
-	{
-		log_error("should never happen here");
-		gExePath[0] = '\0';
-		return;
-	}
-	int exeDelimiterIndex = (int)(exeDelimiter - exePath);
-
-	safe_strncpy(gExePath, exePath, exeDelimiterIndex + 1);
-	gExePath[exeDelimiterIndex] = '\0';
-#endif // _WIN32
+	platform_get_exe_path(gExePath);
+	log_verbose("Setting exe path to %s", gExePath);
 }
 
 /**
@@ -212,12 +177,15 @@ bool openrct2_initialise()
 {
 	utf8 userPath[MAX_PATH];
 
+	platform_resolve_openrct_data_path();
 	platform_resolve_user_data_path();
 	platform_get_user_directory(userPath, NULL);
 	if (!platform_ensure_directory_exists(userPath)) {
 		log_fatal("Could not create user directory (do you have write access to your documents folder?)");
 		return false;
 	}
+
+	crash_init();
 
 	if (!openrct2_setup_rct2_segment()) {
 		log_fatal("Unable to load RCT2 data sector");
@@ -229,7 +197,11 @@ bool openrct2_initialise()
 	config_set_defaults();
 	if (!config_open_default()) {
 		if (!config_find_or_browse_install_directory()) {
-			log_fatal("An RCT2 install directory must be specified!");
+			gConfigGeneral.last_run_version = strndup(OPENRCT2_VERSION, strlen(OPENRCT2_VERSION));
+			config_save_default();
+			utf8 path[MAX_PATH];
+			config_get_default_path(path);
+			log_fatal("An RCT2 install directory must be specified! Please edit \"game_path\" in %s.", path);
 			return false;
 		}
 	}
@@ -237,7 +209,7 @@ bool openrct2_initialise()
 	gOpenRCT2ShowChangelog = true;
 	if (gConfigGeneral.last_run_version != NULL && (strcmp(gConfigGeneral.last_run_version, OPENRCT2_VERSION) == 0))
 		gOpenRCT2ShowChangelog = false;
-	gConfigGeneral.last_run_version = OPENRCT2_VERSION;
+	gConfigGeneral.last_run_version = strndup(OPENRCT2_VERSION, strlen(OPENRCT2_VERSION));
 	config_save_default();
 
 	// TODO add configuration option to allow multiple instances
@@ -246,7 +218,6 @@ bool openrct2_initialise()
 	// 	return false;
 	// }
 
-	get_system_info();
 	if (!gOpenRCT2Headless) {
 		audio_init();
 		audio_populate_devices();
@@ -261,8 +232,7 @@ bool openrct2_initialise()
 	}
 	http_init();
 
-	themes_set_default();
-	themes_load_presets();
+	theme_manager_initialise();
 	title_sequences_set_default();
 	title_sequences_load_presets();
 
@@ -310,13 +280,24 @@ void openrct2_launch()
 			break;
 		case STARTUP_ACTION_OPEN:
 			assert(gOpenRCT2StartupActionPath != NULL);
-			if (rct2_open_file(gOpenRCT2StartupActionPath) == 0)
+			if (!rct2_open_file(gOpenRCT2StartupActionPath)) {
 				break;
+			}
 
 			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
 
 #ifndef DISABLE_NETWORK
 			if (gNetworkStart == NETWORK_MODE_SERVER) {
+				if (gNetworkStartPort == 0) {
+					gNetworkStartPort = gConfigNetwork.default_port;
+				}
+
+				if (str_is_null_or_empty(gCustomPassword)) {
+					network_set_password(gConfigNetwork.default_password);
+				}
+				else {
+					network_set_password(gCustomPassword);
+				}
 				network_begin_server(gNetworkStartPort);
 			}
 #endif // DISABLE_NETWORK
@@ -332,6 +313,10 @@ void openrct2_launch()
 
 #ifndef DISABLE_NETWORK
 		if (gNetworkStart == NETWORK_MODE_CLIENT) {
+			if (gNetworkStartPort == 0) {
+				gNetworkStartPort = gConfigNetwork.default_port;
+			}
+
 			network_begin_client(gNetworkStartHost, gNetworkStartPort);
 		}
 #endif // DISABLE_NETWORK
@@ -349,7 +334,8 @@ void openrct2_dispose()
 	network_close();
 	http_dispose();
 	language_close_all();
-	openrct2_release_rct2_segment();
+	rct2_dispose();
+	config_release();
 	platform_free();
 }
 
@@ -382,7 +368,7 @@ static void openrct2_loop()
 
 	_finished = 0;
 	do {
-		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4) {
+		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4 && !gOpenRCT2Headless) {
 			currentTick = SDL_GetTicks();
 			if (uncapTick == 0) {
 				// Reset sprite locations
@@ -499,20 +485,13 @@ void openrct2_reset_object_tween_locations()
  * Loads RCT2's data model and remaps the addresses.
  * @returns true if the data integrity check succeeded, otherwise false.
  */
-static bool openrct2_setup_rct2_segment()
+bool openrct2_setup_rct2_segment()
 {
-	// POSIX OSes will run OpenRCT2 as a native application and then load in the Windows PE, mapping the appropriate addresses as
+	// OpenRCT2 on Linux and OS X is wired to have the original Windows PE sections loaded
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__)
 	#define RDATA_OFFSET 0x004A4000
 	#define DATASEG_OFFSET 0x005E2000
-
-	const char *exepath = "openrct2.exe";
-	gExeFd = open(exepath, O_RDONLY);
-	if (gExeFd < 0) {
-		log_fatal("failed to open %s, errno = %d", exepath, errno);
-		exit(1);
-	}
 
 	// Using PE-bear I was able to figure out all the needed addresses to be filled.
 	// There are three sections to be loaded: .rdata, .data and .text, plus another
@@ -536,51 +515,63 @@ static bool openrct2_setup_rct2_segment()
 	// 0x9a6000 + 0xA81C3C = 0x1427C3C, which after alignment to page size becomes
 	// 0x1428000, which can be seen as next section, DATASEG
 	//
-	// Since mmap does not provide a way to create a mapping with virtual size,
-	// I resorted to creating a one large map for data and memcpy'ing data where
-	// required.
-	// Another section is needed for .text, as it requires PROT_EXEC flag.
+	// The data is now loaded into memory with a linker script, which proves to
+	// be more reliable, as mallocs that happen before we reach segment setup
+	// could have already taken the space we need.
 
 	// TODO: UGLY, UGLY HACK!
 	off_t file_size = 6750208;
 
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
-	// section: rw data
-	gDataSegment = mmap((void *)0x8a4000, len, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_ANONYMOUS | MAP_SHARED, 0, 0);
-	if (gDataSegment != (void *)0x8a4000) {
-		log_fatal("mmap failed to get required offset for data segment! got %p, expected %p, errno = %d", gDataSegment, (void *)(0x8a4000), errno);
-		exit(1);
-	}
-
-	len = 0x004A3000;
-	// section: text
-	gTextSegment = mmap((void *)(0x401000), len, PROT_EXEC | PROT_WRITE | PROT_READ, MAP_FIXED | MAP_PRIVATE, gExeFd, 0x1000);
-	if (gTextSegment != (void *)(0x401000))
-	{
-		log_fatal("mmap failed to get required offset for text segment! got %p, expected %p, errno = %d", gTextSegment, (void *)(0x401000), errno);
-		exit(1);
-	}
-
-	void *fbase = mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, gExeFd, 0);
-	int err = errno;
-	log_warning("mmapped file to %p", fbase);
-	if (fbase == MAP_FAILED)
-	{
-		log_fatal("mmap failed to get required offset! got %p, errno = %d", fbase, err);
-		exit(1);
-	}
-	// .rdata and real part of .data
-	// 0x9e2000 - 0x8a4000 = 0x13e000
-	memcpy(gDataSegment, fbase + RDATA_OFFSET, 0x13e000);
-	// 0x8a4000 + 0xb84000 = 0x1428000 aka DATASEG
-	memcpy(gDataSegment + 0xB84000, fbase + DATASEG_OFFSET, 0x1000);
-	err = munmap(fbase, file_size);
+	int pageSize = getpagesize();
+	int numPages = (len + pageSize - 1) / pageSize;
+	unsigned char *dummy = malloc(numPages);
+	int err = mincore((void *)0x8a4000, len, dummy);
+	bool pagesMissing = false;
 	if (err != 0)
 	{
 		err = errno;
-		log_error("Failed to unmap file! errno = %d", err);
+#ifdef __LINUX__
+		// On Linux ENOMEM means all requested range is unmapped
+		if (err != ENOMEM)
+		{
+			pagesMissing = true;
+			perror("mincore");
+		}
+#else
+		pagesMissing = true;
+		perror("mincore");
+#endif // __LINUX__
+	} else {
+		for (int i = 0; i < numPages; i++)
+		{
+			if (dummy[i] != 1)
+			{
+				pagesMissing = true;
+				void *start = (void *)0x8a4000 + i * pageSize;
+				void *end = (void *)0x8a4000 + (i + 1) * pageSize - 1;
+				log_warning("required page %p - %p is not in memory!", start, end);
+			}
+		}
 	}
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+	free(dummy);
+	if (pagesMissing)
+	{
+		log_error("At least one of required pages was not found in memory. This can cause segfaults later on.");
+	}
+	// section: text
+	err = mprotect((void *)0x401000, 0x8a4000 - 0x401000, PROT_READ | PROT_EXEC);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
+	// section: rw data
+	err = mprotect((void *)0x8a4000, 0x01429000 - 0x8a4000, PROT_READ | PROT_WRITE);
+	if (err != 0)
+	{
+		perror("mprotect");
+	}
+#endif // defined(__unix__)
 
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
@@ -599,41 +590,6 @@ static bool openrct2_setup_rct2_segment()
 }
 
 /**
- * Releases segments created with @ref openrct2_setup_rct2_segment, if any.
- */
-static bool openrct2_release_rct2_segment()
-{
-	bool result = true;
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
-	int err;
-	err = munmap(gDataSegment, len);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to unmap data segment! errno = %d", err);
-		result = false;
-	}
-	len = 0x004A3000;
-	err = munmap(gTextSegment, len);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to unmap text segment! errno = %d", err);
-		result = false;
-	}
-	err = close(gExeFd);
-	if (err != 0)
-	{
-		err = errno;
-		log_error("Failed to close file! errno = %d", err);
-		result = false;
-	}
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-	return result;
-}
-
-/**
  * Setup hooks to allow RCT2 to call OpenRCT2 functions instead.
  */
 static void openrct2_setup_rct2_hooks()
@@ -642,7 +598,7 @@ static void openrct2_setup_rct2_hooks()
 	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);			// remove when 0x6E7FF3 is decompiled
 	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0, 0);								// remove when all callers are decompiled
 	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0);						// remove when all callers are decompiled
-	addhook(0x006BB76E, (int)audio_play_sound_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, EAX, 0);	// remove when all callers are decompiled
+	addhook(0x006BB76E, (int)audio_play_sound_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, 0, EAX);	// remove when all callers are decompiled
 	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX);					// remove when all callers are decompiled
 	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX);							// remove when all callers are decompiled
 	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0);							// remove when all callers are decompiled

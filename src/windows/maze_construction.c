@@ -139,7 +139,7 @@ static void window_maze_construction_construct(int direction);
 
 /**
  *
- * rct2: 0x006CB481
+ *  rct2: 0x006CB481
  */
 rct_window *window_maze_construction_open()
 {
@@ -159,7 +159,7 @@ rct_window *window_maze_construction_open()
 
 /**
  *
- * rct2: 0x006CD811
+ *  rct2: 0x006CD811
  */
 static void window_maze_construction_close(rct_window *w)
 {
@@ -176,7 +176,7 @@ static void window_maze_construction_close(rct_window *w)
 	hide_gridlines();
 
 	uint8 rideIndex = _currentRideIndex;
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	if (ride->overall_view == 0xFFFF) {
 		int savedPausedState = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
@@ -194,7 +194,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, int widgetI
 	RCT2_GLOBAL(0x00F44191, uint8) = widgetIndex == WIDX_MAZE_ENTRANCE ? 0 : 1;
 	RCT2_GLOBAL(0x00F44192, uint8) = (uint8)w->number;
 	RCT2_GLOBAL(0x00F44193, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+	gInputFlags |= INPUT_FLAG_6;
 
 	sub_6C9627();
 
@@ -208,7 +208,7 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, int widgetI
 
 /**
  *
- * rct2: 0x006CD461
+ *  rct2: 0x006CD461
  */
 static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
 {
@@ -233,7 +233,7 @@ static void window_maze_construction_mouseup(rct_window *w, int widgetIndex)
 
 /**
  *
- * rct2: 0x006CD623
+ *  rct2: 0x006CD623
  */
 static void window_maze_construction_resize(rct_window *w)
 {
@@ -265,7 +265,7 @@ static void window_maze_construction_resize(rct_window *w)
 
 /**
  *
- * rct2: 0x006CD48C
+ *  rct2: 0x006CD48C
  */
 static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
@@ -287,10 +287,16 @@ static void window_maze_construction_mousedown(int widgetIndex, rct_window *w, r
 
 /**
  *
- * rct2: 0x006CD767
+ *  rct2: 0x006CD767
  */
 static void window_maze_construction_update(rct_window *w)
 {
+	rct_ride *ride = get_ride(_currentRideIndex);
+	if (ride == NULL || ride->status != RIDE_STATUS_CLOSED) {
+		window_close(w);
+		return;
+	}
+
 	switch (_rideConstructionState) {
 	case RIDE_CONSTRUCTION_STATE_PLACE:
 		if (!widget_is_active_tool(w, WIDX_MAZE_DIRECTION_GROUPBOX)) {
@@ -311,7 +317,7 @@ static void window_maze_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_BACK:
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
-			(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8) & INPUT_FLAG_TOOL_ACTIVE) &&
+			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();
@@ -323,7 +329,7 @@ static void window_maze_construction_update(rct_window *w)
 
 /**
  *
- * rct2: 0x006CD63E
+ *  rct2: 0x006CD63E
  */
 static void window_maze_construction_toolupdate(rct_window* w, int widgetIndex, int x, int y)
 {
@@ -357,7 +363,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 
 	uint8 rideIndex = RCT2_GLOBAL(0x00F44192, uint8);
 	uint8 is_exit = RCT2_GLOBAL(0x00F44191, uint8);
-	RCT2_GLOBAL(0x00141E9AE, rct_string_id) = is_exit ? 1144 : 1145;
+	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = is_exit ? 1144 : 1145;
 
 	money32 cost = game_do_command(
 		x,
@@ -377,16 +383,16 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16),
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
 
-	rct_ride* ride = GET_RIDE(rideIndex);
+	rct_ride* ride = get_ride(rideIndex);
 	if (ride_are_all_possible_entrances_and_exits_built(ride)){
 		tool_cancel();
-		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_15))
+		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			window_close(w);
 	}
 	else{
 		RCT2_GLOBAL(0x00F44191, uint8) = is_exit ^ 1;
 		window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint8) = is_exit ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
+		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = is_exit ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
 	}
 }
 
@@ -409,20 +415,20 @@ static void window_maze_construction_tooldown(rct_window* w, int widgetIndex, in
 
 /**
  *
- * rct2: 0x006CD435
+ *  rct2: 0x006CD435
  */
 static void window_maze_construction_invalidate(rct_window *w)
 {
-	rct_ride *ride = GET_RIDE(_currentRideIndex);
+	rct_ride *ride = get_ride(_currentRideIndex);
 
 	// Set window title arguments
-	RCT2_GLOBAL(0x013CE956, rct_string_id) = ride->name;
-	RCT2_GLOBAL(0x013CE958, uint32) = ride->name_arguments;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, rct_string_id) = ride->name;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = ride->name_arguments;
 }
 
 /**
  *
- * rct2: 0x006CD45B
+ *  rct2: 0x006CD45B
  */
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
@@ -431,7 +437,7 @@ static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 
 /**
  *
- * rct2: 0x006CD887
+ *  rct2: 0x006CD887
  */
 void window_maze_construction_update_pressed_widgets()
 {
@@ -464,7 +470,7 @@ void window_maze_construction_update_pressed_widgets()
 
 /**
  *
- * rct2: 0x006CD4AB
+ *  rct2: 0x006CD4AB
  */
 static void window_maze_construction_construct(int direction)
 {

@@ -25,12 +25,13 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../sprites.h"
+#include "../title.h"
 #include "../util/util.h"
 #include "error.h"
 
-char _port[7];
-char _name[65];
-char _password[33];
+static char _port[7];
+static char _name[65];
+static char _password[33];
 
 enum {
 	WIDX_BACKGROUND,
@@ -43,7 +44,8 @@ enum {
 	WIDX_MAXPLAYERS_INCREASE,
 	WIDX_MAXPLAYERS_DECREASE,
 	WIDX_ADVERTISE_CHECKBOX,
-	WIDX_START_SERVER
+	WIDX_START_SERVER,
+	WIDX_LOAD_SERVER
 };
 
 #define WW 300
@@ -60,7 +62,8 @@ static rct_widget window_server_start_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,		STR_NONE },
 	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,			STR_NONE },					// advertise checkbox
-	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_START_SERVER,		STR_NONE },					// start server button
+	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,			STR_NONE },					// start server button
+	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,			STR_NONE },
 	{ WIDGETS_END },
 };
 
@@ -123,7 +126,8 @@ void window_server_start_open()
 		(1 << WIDX_MAXPLAYERS_INCREASE) |
 		(1 << WIDX_MAXPLAYERS_DECREASE) |
 		(1 << WIDX_ADVERTISE_CHECKBOX) |
-		(1 << WIDX_START_SERVER)
+		(1 << WIDX_START_SERVER) |
+		(1 << WIDX_LOAD_SERVER)
 	);
 	window_init_scroll_widgets(window);
 	window->no_list_items = 0;
@@ -136,17 +140,31 @@ void window_server_start_open()
 
 	window->page = 0;
 	window->list_information_type = 0;
-	window->colours[0] = 1;
-	window->colours[1] = 26;
-	window->colours[2] = 26;
 
-	sprintf(_port, "%lu", gConfigNetwork.default_port);
-	safe_strncpy(_name, gConfigNetwork.server_name, sizeof(_name));
+	sprintf(_port, "%u", gConfigNetwork.default_port);
+	safe_strcpy(_name, gConfigNetwork.server_name, sizeof(_name));
 }
 
 static void window_server_start_close(rct_window *w)
 {
 
+}
+
+static void window_server_start_scenarioselect_callback(const utf8 *path)
+{
+	network_set_password(_password);
+	if (scenario_load_and_play_from_path(path)) {
+		network_begin_server(gConfigNetwork.default_port);
+	} else {
+		title_load();
+	}
+}
+
+static void window_server_start_loadsave_callback(int result)
+{
+	if (result == MODAL_RESULT_OK) {
+		network_begin_server(gConfigNetwork.default_port);
+	}
 }
 
 static void window_server_start_mouseup(rct_window *w, int widgetIndex)
@@ -184,8 +202,12 @@ static void window_server_start_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_START_SERVER:
+		window_scenarioselect_open(window_server_start_scenarioselect_callback);
+		break;
+	case WIDX_LOAD_SERVER:
 		network_set_password(_password);
-		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME | LOADSAVETYPE_NETWORK, NULL);
+		window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
+		gLoadSaveCallback = window_server_start_loadsave_callback;
 		break;
 	}
 }
@@ -210,7 +232,7 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 		memset(_port, 0, sizeof(_port));
 		if (strlen(text) > 0) {
-			safe_strncpy(_port, text, sizeof(_port));
+			safe_strcpy(_port, text, sizeof(_port));
 		}
 
 		gConfigNetwork.default_port = atoi(_port);
@@ -224,7 +246,7 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 		memset(_name, 0, sizeof(_name));
 		if (strlen(text) > 0) {
-			safe_strncpy(_name, text, sizeof(_name));
+			safe_strcpy(_name, text, sizeof(_name));
 		}
 
 		if (strlen(_name) > 0) {
@@ -241,7 +263,7 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 		memset(_password, 0, sizeof(_password));
 		if (strlen(text) > 0) {
-			safe_strncpy(_password, text, sizeof(_password));
+			safe_strcpy(_password, text, sizeof(_password));
 		}
 
 		widget_invalidate(w, WIDX_PASSWORD_INPUT);
@@ -251,8 +273,10 @@ static void window_server_start_textinput(rct_window *w, int widgetIndex, char *
 
 static void window_server_start_invalidate(rct_window *w)
 {
+	colour_scheme_update_by_class(w, WC_SERVER_LIST);
+
 	widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
-	RCT2_GLOBAL(0x013CE964, uint16) = gConfigNetwork.maxplayers;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = gConfigNetwork.maxplayers;
 }
 
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)

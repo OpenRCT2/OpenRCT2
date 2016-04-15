@@ -1,8 +1,8 @@
 # Version numbers to update
 !define /ifndef APPV_MAJOR 0
 !define /ifndef APPV_MINOR 0
-!define /ifndef APPV_MAINT 3
-!define /ifndef APPV_BUILD 1
+!define /ifndef APPV_MAINT 4
+!define /ifndef APPV_BUILD 0
 !define /ifndef APPV_EXTRA "-beta"
 
 !define APPNAME "OpenRCT2"   ; Define application name
@@ -111,13 +111,9 @@ Section "!OpenRCT2" Section1
 
     SetShellVarContext all
 
-    ; Copy language files
-    SetOutPath "$INSTDIR\data\language\"
-    File ${PATH_ROOT}data\language\*.txt
-
     ; Copy data files
     SetOutPath "$INSTDIR\data\"
-    File /r ${PATH_ROOT}data\*
+    File /r ${PATH_ROOT}bin\data\*
 
     ; Copy the rest of the stuff
     SetOutPath "$INSTDIR\"
@@ -125,12 +121,12 @@ Section "!OpenRCT2" Section1
 	; Copy curl ca file
 	File ..\..\curl-ca-bundle.crt
 
-    ; Copy curl ca file
-    File ..\..\curl-ca-bundle.crt
-
     ; Copy text files
     File ..\changelog.txt
     Push "$INSTDIR\changelog.txt"
+    Call unix2dos
+    File ..\known_issues.txt
+    Push "$INSTDIR\known_issues.txt"
     Call unix2dos
     File ..\..\licence.txt
     Push "$INSTDIR\licence.txt"
@@ -145,7 +141,6 @@ Section "!OpenRCT2" Section1
     ; Copy executable
     File /oname=openrct2.exe ${BINARY_DIR}\openrct2.exe
     File /oname=openrct2.dll ${BINARY_DIR}\openrct2.dll
-    File /oname=SDL2.dll ${BINARY_DIR}\SDL2.dll
 
     ; Create the Registry Entries
     WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Comments" "Visit ${APPURLLINK}"
@@ -211,7 +206,6 @@ Section "Uninstall"
     Delete "$INSTDIR\contributors.md"
     Delete "$INSTDIR\openrct2.exe"
     Delete "$INSTDIR\openrct2.dll"
-    Delete "$INSTDIR\SDL2.dll"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\INSTALL.LOG"
     Delete "$INSTDIR\crash.log"
@@ -464,43 +458,16 @@ Function .onInit
 
     SectionSetFlags 0 17
 
-    ; Starts Setup - let's look for an older version of OpenRCT2
-    ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
-
-    IfErrors ShowWelcomeMessage ShowUpgradeMessage
 ShowWelcomeMessage:
     ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
     IfErrors FinishCallback
 
-ShowUpgradeMessage:
-	${VersionCompare} "${APPVERSIONINTERNAL}" "$R8" $R0
-    IntCmp $R0 1 WelcomeToSetup VersionsAreEqual InstallerIsOlder
 WelcomeToSetup:
     ; An older version was found.  Let's let the user know there's an upgrade that will take place.
     ReadRegStr $OLDVERSION HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "DisplayVersion"
     ; Gets the older version then displays it in a message box
     MessageBox MB_OK|MB_ICONINFORMATION \
         "Welcome to ${APPNAMEANDVERSION} Setup.$\nThis will allow you to upgrade from version $OLDVERSION."
-    Goto FinishCallback
-
-VersionsAreEqual:
-    ReadRegStr $UninstallString HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "UninstallString"
-    IfFileExists "$UninstallString" "" FinishCallback
-    MessageBox MB_YESNO|MB_ICONQUESTION \
-        "Setup detected ${APPNAMEANDVERSION} on your system. This is the same version that this program will install.$\nAre you trying to uninstall it?" \
-        IDYES DoUninstall IDNO FinishCallback
-DoUninstall: ; You have the same version as this installer.  This allows you to uninstall.
-    Exec "$UninstallString"
-    Quit
-
-InstallerIsOlder:
-    ;MessageBox MB_OK|MB_ICONSTOP \
-    ;    "You have a newer version of ${APPNAME}.$\nSetup will now exit."
-	;Quit
-	MessageBox MB_OK|MB_ICONSTOP \
-        "You have a newer version of ${APPNAME}.$\nPlease note downgrading is currently untested."
-	MessageBox MB_OK|MB_ICONQUESTION \
-        "Welcome to ${APPNAMEANDVERSION} Setup.$\nThis will allow you to downgrade from version $OLDVERSION."
     Goto FinishCallback
 
 FinishCallback:

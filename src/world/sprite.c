@@ -29,7 +29,9 @@
 
 rct_sprite* g_sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 
-static uint16 sprite_get_first_in_quadrant(int x, int y)
+rct_sprite_entry* g_sprite_entries = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_ENTRIES, rct_sprite_entry);
+
+uint16 sprite_get_first_in_quadrant(int x, int y)
 {
 	int offset = ((x & 0x1FE0) << 3) | (y >> 5);
 	return RCT2_ADDRESS(0x00F1EF60, uint16)[offset];
@@ -72,20 +74,22 @@ void invalidate_sprite_1(rct_sprite *sprite)
 }
 
 /**
-* Invalidate sprite if not at furthest zoom.
-*  rct2: 0x006EC473
-*/
+ * Invalidate sprite if not at furthest zoom.
+ *  rct2: 0x006EC473
+ *
+ * @param sprite (esi)
+ */
 void invalidate_sprite_2(rct_sprite *sprite)
 {
 	invalidate_sprite_max_zoom(sprite, 2);
 }
 
-/*
+/**
  *
- * rct2: 0x0069EB13
+ *  rct2: 0x0069EB13
  */
 void reset_sprite_list(){
-	RCT2_GLOBAL(0x1388698, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = 0;
 	memset(g_sprite_list, 0, sizeof(rct_sprite) * MAX_SPRITES);
 
 	for (int i = 0; i < 6; ++i){
@@ -120,7 +124,8 @@ void reset_sprite_list(){
 }
 
 /**
- * rct2: 0x0069EBE4
+ *
+ *  rct2: 0x0069EBE4
  * This function looks as though it sets some sort of order for sprites.
  * Sprites can share thier position if this is the case.
  */
@@ -150,7 +155,7 @@ void reset_0x69EBE4(){
 
 /**
  * Clears all the unused sprite memory to zero. Probably so that it can be compressed better when saving.
- * rct2: 0x0069EBA4
+ *  rct2: 0x0069EBA4
  */
 void sprite_clear_all_unused()
 {
@@ -183,7 +188,7 @@ rct_sprite *create_sprite(uint8 bl)
 	if ((bl & 2) != 0)
 	{
 		// 69EC96;
-		uint16 cx = 0x12C - RCT2_GLOBAL(0x13573CE, uint16);
+		sint16 cx = 0x12C - RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
 		if (cx >= RCT2_GLOBAL(0x13573C8, uint16))
 		{
 			return NULL;
@@ -207,7 +212,7 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->sprite_width = 0x10;
 	sprite->sprite_height_negative = 0x14;
 	sprite->sprite_height_positive = 0x8;
-	sprite->var_0C = 0;
+	sprite->flags = 0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
 	sprite->next_in_quadrant = RCT2_ADDRESS(0xF1EF60, uint16)[0x10000];
@@ -270,20 +275,25 @@ void move_sprite_to_list(rct_sprite *sprite, uint8 cl)
 
 /**
  *
- *  rct: 0x00673200
+ *  rct2: 0x00673200
  */
-static void sprite_misc_0_update(rct_sprite *sprite)
+static void sprite_steam_particle_update(rct_steam_particle *steam)
 {
-	invalidate_sprite_2(sprite);
+	invalidate_sprite_2((rct_sprite*)steam);
 
-	int original_var24 = sprite->unknown.var_24;
-	sprite->unknown.var_24 += 0x5555;
-	if (sprite->unknown.var_24 < 0x5555) {
-		sprite_move(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z + 1, sprite);
+	int original_var24 = steam->var_24;
+	steam->var_24 += 0x5555;
+	if (steam->var_24 < 0x5555) {
+		sprite_move(
+			steam->x,
+			steam->y,
+			steam->z + 1,
+			(rct_sprite*)steam
+		);
 	}
-	sprite->unknown.var_26 += 64;
-	if (sprite->unknown.var_26 >= (56 * 64)) {
-		sprite_remove(sprite);
+	steam->var_26 += 64;
+	if (steam->var_26 >= (56 * 64)) {
+		sprite_remove((rct_sprite*)steam);
 	}
 }
 
@@ -307,7 +317,7 @@ void sprite_misc_3_create(int x, int y, int z)
 
 /**
  *
- *  rct: 0x00673385
+ *  rct2: 0x00673385
  */
 static void sprite_misc_3_update(rct_sprite *sprite)
 {
@@ -338,7 +348,7 @@ void sprite_misc_5_create(int x, int y, int z)
 
 /**
  *
- *  rct: 0x006733B4
+ *  rct2: 0x006733B4
  */
 static void sprite_misc_5_update(rct_sprite *sprite)
 {
@@ -351,13 +361,13 @@ static void sprite_misc_5_update(rct_sprite *sprite)
 
 /**
  *
- *  rct: 0x006731CD
+ *  rct2: 0x006731CD
  */
 void sprite_misc_update(rct_sprite *sprite)
 {
 	switch (sprite->unknown.misc_identifier) {
-	case SPRITE_MISC_0:
-		sprite_misc_0_update(sprite);
+	case SPRITE_MISC_STEAM_PARTICLE:
+		sprite_steam_particle_update((rct_steam_particle*)sprite);
 		break;
 	case SPRITE_MISC_MONEY_EFFECT:
 		money_effect_update(&sprite->money_effect);
@@ -389,7 +399,7 @@ void sprite_misc_update(rct_sprite *sprite)
 
 /**
  *
- *  rct: 0x00672AA4
+ *  rct2: 0x00672AA4
  */
 void sprite_misc_update_all()
 {
@@ -405,11 +415,13 @@ void sprite_misc_update_all()
 }
 
 /**
+ * Moves a sprite to a new location.
  *  rct2: 0x0069E9D3
- *  Moves a sprite to a new location.
- * ax: x
- * cx: y
- * dx: z
+ *
+ * @param x (ax)
+ * @param y (cx)
+ * @param z (dx)
+ * @param sprite (esi)
  */
 void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF)

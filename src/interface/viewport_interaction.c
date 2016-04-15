@@ -196,7 +196,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 		mapElement += 6;
-		ride = GET_RIDE(mapElement->type);
+		ride = get_ride(mapElement->type);
 		if (ride->status == RIDE_STATUS_CLOSED) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
@@ -210,7 +210,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-		ride = GET_RIDE(mapElement->properties.track.ride_index);
+		ride = get_ride(mapElement->properties.track.ride_index);
 		if (ride->status != RIDE_STATUS_CLOSED)
 			return info->type;
 
@@ -222,7 +222,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		} else if (mapElement->properties.track.type == 1 || mapElement->properties.track.type == 2 || mapElement->properties.track.type == 3) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1333;
 		} else {
-			if (!map_is_location_owned(info->x, info->y, mapElement->base_height << 4))
+			if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, mapElement->base_height << 4))
 				return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
@@ -272,9 +272,11 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 	}
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & (INPUT_FLAG_6 | INPUT_FLAG_TOOL_ACTIVE)) != (INPUT_FLAG_6 | INPUT_FLAG_TOOL_ACTIVE))
-		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL)
+	if (!(gInputFlags & INPUT_FLAG_6) || !(gInputFlags & INPUT_FLAG_TOOL_ACTIVE)) {
+		if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL) {
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+		}
+	}
 
 	switch (info->type) {
 	case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -291,7 +293,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-		sceneryEntry = g_pathBitSceneryEntries[(mapElement->properties.path.additions & 0x0F) - 1];
+		sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(mapElement)];
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
 		if (mapElement->flags & 0x20) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3124;

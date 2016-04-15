@@ -99,7 +99,7 @@ typedef enum {
 	WALL_SCENERY_FLAG1 = (1 << 0),		// 0x1
 	WALL_SCENERY_FLAG2 = (1 << 1),		// 0x2
 	WALL_SCENERY_FLAG3 = (1 << 2),		// 0x4
-	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8
+	WALL_SCENERY_FLAG4 = (1 << 3),		// 0x8  // Probably indicates translucency
 	WALL_SCENERY_FLAG5 = (1 << 4),		// 0x10
 	WALL_SCENERY_FLAG6 = (1 << 5),		// 0x20
 	WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),		// 0x40
@@ -163,6 +163,7 @@ enum {
 #define g_largeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
 #define g_wallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
 #define g_bannerSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_BANNERS].chunks)
+#define g_pathSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
 
 // Often 0x009ADA50 is used for pathBits this is 1 entry before g_pathBitSceneryEntries and is used
 // because 0 represents no path bits on a path. So remember to remove 1 when using it for 0x009ADA50

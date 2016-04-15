@@ -41,7 +41,7 @@ void editor_load();
 void editor_convert_save_to_scenario();
 void trackdesigner_load();
 void trackmanager_load();
-void editor_load_landscape(const char *path);
+bool editor_load_landscape(const utf8 *path);
 
 void editor_open_windows_for_current_step();
 

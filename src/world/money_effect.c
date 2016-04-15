@@ -12,7 +12,7 @@ static const rct_xy16 _moneyEffectMoveOffset[] = {
 
 /**
  *
- *  rct: 0x0067351F
+ *  rct2: 0x0067351F
  */
 void money_effect_create_at(money32 value, int x, int y, int z)
 {
@@ -47,7 +47,7 @@ void money_effect_create_at(money32 value, int x, int y, int z)
 
 /**
  *
- *  rct: 0x0069C5D0
+ *  rct2: 0x0069C5D0
  */
 void money_effect_create(money32 value)
 {
@@ -82,7 +82,7 @@ void money_effect_create(money32 value)
 
 /**
  *
- *  rct: 0x00673232
+ *  rct2: 0x00673232
  */
 void money_effect_update(rct_money_effect *moneyEffect)
 {

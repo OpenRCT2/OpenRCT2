@@ -30,11 +30,13 @@
 #include "../management/research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../scenario.h"
 #include "../world/map.h"
 #include "park.h"
 #include "sprite.h"
 #include "../config.h"
+#include "../cheats.h"
 
 uint8 *gParkRatingHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
 uint8 *gGuestsInParkHistory = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
@@ -192,7 +194,7 @@ int calculate_park_rating()
 				continue;
 			if (peep->happiness > 128)
 				num_happy_peeps++;
-			if ((peep->flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
+			if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
 				num_lost_guests++;
 		}
 
@@ -285,12 +287,7 @@ money32 calculate_ride_value(rct_ride *ride)
 		return 0;
 
 	// Fair value * (...)
-	return (ride->value * 10) * (
-		ride->var_124 + ride->var_126 + ride->var_128 + ride->var_12A +
-		ride->var_12C + ride->var_12E + ride->age + ride->running_cost +
-		ride->var_134 + ride->var_136 +
-		*((uint8*)(0x0097D21E + (ride->type * 8))) * 4
-	);
+	return (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
 }
 
 /**
@@ -306,7 +303,7 @@ money32 calculate_park_value()
 	// Sum ride values
 	result = 0;
 	for (i = 0; i < 255; i++) {
-		ride = &g_ride_list[i];
+		ride = get_ride(i);
 		result += calculate_ride_value(ride);
 	}
 
@@ -371,7 +368,7 @@ static int park_calculate_guest_generation_probability()
 			continue;
 
 		// Add guest score for ride type
-		suggestedMaxGuests += RCT2_GLOBAL(0x0097D21E + (ride->type * 8), uint8);
+		suggestedMaxGuests += rideBonusValue[ride->type];
 
 		// Add ride value
 		if (ride->value != RIDE_VALUE_UNDEFINED) {
@@ -402,7 +399,7 @@ static int park_calculate_guest_generation_probability()
 				continue;
 
 			// Bonus guests for good ride
-			suggestedMaxGuests += RCT2_GLOBAL(0x0097D21E + (ride->type * 8), uint8) * 2;
+			suggestedMaxGuests += rideBonusValue[ride->type] * 2;
 		}
 	}
 
@@ -662,7 +659,7 @@ void park_set_open(int open)
  */
 void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
 		*ebx = 0;
 		return;
 	}
@@ -809,6 +806,11 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 	y = *ecx & 0xFFFF;
 	z = *edx * 16;
 
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
@@ -875,6 +877,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		if (nameChunkOffset < 0)
 			nameChunkOffset = 2;
 		nameChunkOffset *= 12;
+		nameChunkOffset = min(nameChunkOffset, countof(newName) - 12);
 		RCT2_GLOBAL(newName + nameChunkOffset + 0, uint32) = *edx;
 		RCT2_GLOBAL(newName + nameChunkOffset + 4, uint32) = *ebp;
 		RCT2_GLOBAL(newName + nameChunkOffset + 8, uint32) = *edi;
@@ -989,6 +992,10 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 		return 0;
 	default:
+		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+			return MONEY32_UNDEFINED;
+		}
+
 		if (x <= 32 || y <= 32) {
 			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 3215;
 			return MONEY32_UNDEFINED;
@@ -1059,7 +1066,7 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 	// Game command modified to accept selection size
 	totalCost = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gConfigCheat.build_in_pause_mode) {
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
 		for (y = y0; y <= y1; y += 32) {
 			for (x = x0; x <= x1; x += 32) {
 				cost = map_buy_land_rights_for_tile(x, y, setting, flags);

@@ -132,6 +132,7 @@ const rct_string_id ShortcutStringIds[] = {
 	STR_SHORTCUT_SCROLL_MAP_RIGHT,
 	STR_SEND_MESSAGE,
 	STR_SHORTCUT_QUICK_SAVE_GAME,
+	STR_SHORTCUT_SHOW_OPTIONS,
 };
 
 /**
@@ -258,9 +259,9 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 		char *templateString = (char*)language_get_string(templateStringId);
 		keyboard_shortcut_format_string(templateString, gShortcutKeys[i]);
 
-		RCT2_GLOBAL(0x13CE952, uint16) = STR_SHORTCUT_ENTRY_FORMAT;
-		RCT2_GLOBAL(0x13CE954, uint16) = ShortcutStringIds[i];
-		RCT2_GLOBAL(0x13CE956, uint16) = templateStringId;
-		gfx_draw_string_left(dpi, format, (void*)0x13CE952, 0, 0, y - 1);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SHORTCUT_ENTRY_FORMAT;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ShortcutStringIds[i];
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = templateStringId;
+		gfx_draw_string_left(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1);
 	}
 }

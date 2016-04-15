@@ -21,19 +21,30 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
-#ifdef _WIN32
+#include "../common.h"
+
+#ifdef __WINDOWS__
 #define HAVE_MATH_H
-#endif // _WIN32
+#endif // __WINDOWS__
 
 #include <SDL.h>
 
-#include "../common.h"
+#include "../core/textinputbuffer.h"
+#include "../drawing/font.h"
 
 #ifndef MAX_PATH
 #define MAX_PATH 260
 #endif
 
+#ifdef __MACOSX__
+#define KEYBOARD_PRIMARY_MODIFIER KMOD_GUI
+#else
+#define KEYBOARD_PRIMARY_MODIFIER KMOD_CTRL
+#endif
+
 #define INVALID_HANDLE -1
+
+#define TOUCH_DOUBLE_TIMEOUT 300
 
 typedef struct {
 	int width, height;
@@ -63,6 +74,8 @@ typedef struct {
 	unsigned char left, middle, right, any;
 	int wheel;
 	int old;
+	bool touch, touchIsDouble;
+	unsigned int touchDownTimestamp;
 } openrct2_cursor;
 
 enum {
@@ -73,13 +86,25 @@ enum {
 	CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
 };
 
+typedef enum {FD_OPEN, FD_SAVE} filedialog_type;
+
+typedef struct {
+	uint8 type;
+	const utf8 *title;
+	const utf8 *initial_directory;
+	const utf8 *default_filename;
+	struct {
+		const utf8 *name;			// E.g. "Image Files"
+		const utf8 *pattern;		// E.g. "*.png;*.jpg;*.gif"
+	} filters[8];
+} file_dialog_desc;
+
 extern openrct2_cursor gCursorState;
 extern const unsigned char *gKeysState;
 extern unsigned char *gKeysPressed;
 extern unsigned int gLastKeyPressed;
-extern int gTextInputCursorPosition;
-extern int gTextInputLength;
 
+extern textinputbuffer gTextInput;
 extern bool gTextInputCompositionActive;
 extern utf8 gTextInputComposition[32];
 extern int gTextInputCompositionStart;
@@ -89,6 +114,8 @@ extern int gResolutionsAllowAnyAspectRatio;
 extern int gNumResolutions;
 extern resolution *gResolutions;
 extern SDL_Window *gWindow;
+
+extern SDL_Color gPalette[256];
 
 extern bool gHardwareDisplay;
 
@@ -103,7 +130,7 @@ void platform_free();
 void platform_trigger_resize();
 void platform_update_palette(const uint8 *colours, int start_index, int num_colours);
 void platform_set_fullscreen_mode(int mode);
-void platform_set_cursor(char cursor);
+void platform_set_cursor(uint8 cursor);
 void platform_refresh_video();
 void platform_process_messages();
 int platform_scancode_to_rct_keycode(int sdl_key);
@@ -113,6 +140,8 @@ void platform_get_date(rct2_date *out_date);
 void platform_get_time(rct2_time *out_time);
 
 // Platform specific definitions
+void platform_get_exe_path(utf8 *outPath);
+const char *platform_get_new_line();
 char platform_get_path_separator();
 bool platform_file_exists(const utf8 *path);
 bool platform_directory_exists(const utf8 *path);
@@ -140,19 +169,26 @@ void platform_get_cursor_position(int *x, int *y);
 void platform_set_cursor_position(int x, int y);
 unsigned int platform_get_ticks();
 void platform_resolve_user_data_path();
+void platform_resolve_openrct_data_path();
+void platform_get_openrct_data_path(utf8 *outPath);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory);
+utf8* platform_get_username();
 void platform_show_messagebox(utf8 *message);
-int platform_open_common_file_dialog(int type, utf8 *title, utf8 *filename, utf8 *filterPattern, utf8 *filterName);
+bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc);
 utf8 *platform_open_directory_browser(utf8 *title);
 uint8 platform_get_locale_currency();
+uint8 platform_get_currency_value(const char *currencyCode);
 uint16 platform_get_locale_language();
 uint8 platform_get_locale_measurement_format();
 uint8 platform_get_locale_temperature_format();
+bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer);
 
 bool platform_check_steam_overlay_attached();
 
+datetime64 platform_get_datetime_now_utc();
+
 // Windows specific definitions
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	#ifndef WIN32_LEAN_AND_MEAN
 		#define WIN32_LEAN_AND_MEAN
 	#endif
@@ -160,30 +196,6 @@ bool platform_check_steam_overlay_attached();
 
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
-#endif // _WIN32
-
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#include <unistd.h>
-#define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
-#define _strcmpi _stricmp
-#define _stricmp(x, y) strcasecmp((x), (y))
-#define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
-#define _strdup(x) strdup((x))
-
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
-#define LOBYTE(w) ((uint8_t)(w))
-#define HIBYTE(w) ((uint8_t)(((uint16_t)(w)>>8)&0xFF))
-#endif // __BYTE_ORDER__
-
-#ifndef RCT2_ENDIANESS
-#error Unknown endianess!
-#endif // RCT2_ENDIANESS
-
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-
-#if !(_POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
-	char *strndup(const char *src, size_t size);
-#endif // !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
+#endif // __WINDOWS__
 
 #endif

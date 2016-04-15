@@ -64,6 +64,7 @@ rct_xy16 _titleScriptCurrentCentralPosition = { -1, -1 };
 #define ZOOM(d)				TITLE_SCRIPT_ZOOM, d
 #define RESTART()			TITLE_SCRIPT_RESTART
 #define LOAD(i)				TITLE_SCRIPT_LOAD, i
+#define LOADRCT1(i)			TITLE_SCRIPT_LOADRCT1, i
 
 static const uint8 _magicMountainScript[] = {
 	LOADMM(),
@@ -298,10 +299,7 @@ static void title_do_next_script_opcode()
 	uint8 script_opcode, script_operand;
 	rct_window* w;
 	gTitleScriptCommand++;
-	if (gTitleScriptCommand <= 1 || *(_currentScript - 1) != TITLE_SCRIPT_END)
-		script_opcode = *_currentScript++;
-	else
-		script_opcode = *_currentScript;
+	script_opcode = *_currentScript++;
 	if (gTitleScriptSkipTo != -1) {
 		if (gTitleScriptSkipTo == gTitleScriptCommand) {
 			gTitleScriptSkipTo = -1;
@@ -383,7 +381,7 @@ static void title_do_next_script_opcode()
 
 			// Construct full relative path
 			if (gConfigTitleSequences.presets[_scriptCurrentPreset].path[0]) {
-				safe_strncpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path, MAX_PATH);
+				safe_strcpy(path, gConfigTitleSequences.presets[_scriptCurrentPreset].path, MAX_PATH);
 			}
 			else {
 				platform_get_user_directory(path, "title sequences");
@@ -421,6 +419,38 @@ static void title_do_next_script_opcode()
 				}
 			}
 		}
+		break;
+	case TITLE_SCRIPT_LOADRCT1:
+		script_operand = (*_currentScript++);
+
+		source_desc sourceDesc;
+		if (!scenario_get_source_desc_by_id(script_operand, &sourceDesc) || sourceDesc.index == -1) {
+			log_fatal("Invalid scenario id.");
+			exit(-1);
+		}
+
+		const utf8 *path = NULL;
+		for (int i = 0; i < gScenarioListCount; i++) {
+			if (gScenarioList[i].source_index == sourceDesc.index) {
+				path = gScenarioList[i].path;
+				break;
+			}
+		}
+
+		if (path == NULL || !title_load_park(path)) {
+			script_opcode = *_currentScript;
+			while (script_opcode != TITLE_SCRIPT_LOADRCT1 && script_opcode != TITLE_SCRIPT_RESTART && script_opcode != TITLE_SCRIPT_END) {
+				title_skip_opcode();
+				script_opcode = *_currentScript;
+			}
+			if (script_opcode == TITLE_SCRIPT_RESTART) {
+				title_sequence_change_preset(4);
+				title_refresh_sequence();
+				config_save_default();
+				return;
+			}
+		}
+		gTitleScriptSave = 0xFF;
 		break;
 	}
 	window_invalidate_by_class(WC_TITLE_EDITOR);
@@ -470,7 +500,7 @@ void DrawOpenRCT2(int x, int y)
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
 	// Draw background
-	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, 0x80 | 12, 0x8);
+	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, TRANSLUCENT(COLOUR_DARK_GREEN), 0x8);
 
 	// Write format codes
 	utf8 *ch = buffer;
@@ -508,7 +538,7 @@ void title_update()
 		audio_start_title_music();
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) &= ~0x80;
+	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 
 	window_map_tooltip_update_visibility();
 	window_dispatch_update_all();
@@ -602,9 +632,11 @@ static uint8 *title_script_load()
 	char parts[3 * 128], *token, *part1, *part2, *src;
 
 	utf8 path[MAX_PATH];
-	utf8 filePath[] = "data/title/script.txt";
+	utf8 dataPath[MAX_PATH];
+	utf8 filePath[] = "title/script.txt";
 
-	sprintf(path, "%s%c%s", gExePath, platform_get_path_separator(), filePath);
+	platform_get_openrct_data_path(dataPath);
+	sprintf(path, "%s%c%s", dataPath, platform_get_path_separator(), filePath);
 	log_verbose("loading title script, %s", path);
 	file = SDL_RWFromFile(path, "r");
 	if (file == NULL) {
@@ -686,6 +718,9 @@ bool title_refresh_sequence()
 				hasInvalidSave = true;
 			hasLoad = true;
 		}
+		else if (title->commands[i].command == TITLE_SCRIPT_LOADRCT1) {
+			hasLoad = true;
+		}
 		else if (title->commands[i].command == TITLE_SCRIPT_LOADMM) {
 			hasLoad = true;
 		}
@@ -709,6 +744,9 @@ bool title_refresh_sequence()
 		for (int i = 0; i < title->num_commands; i++) {
 			*scriptPtr++ = title->commands[i].command;
 			switch (title->commands[i].command) {
+			case TITLE_SCRIPT_LOADRCT1:
+				*scriptPtr++ = title->commands[i].saveIndex;
+				break;
 			case TITLE_SCRIPT_LOAD:
 				src = title->saves[title->commands[i].saveIndex];
 				do {

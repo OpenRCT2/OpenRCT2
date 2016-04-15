@@ -44,7 +44,6 @@ void *gCrowdSoundChannel = 0;
 bool gGameSoundsOff = false;
 void *gRainSoundChannel = 0;
 rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-rct_ride_music_info *gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
 rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
 rct_ride_music_params *gRideMusicParamsListEnd;
 void *gTitleMusicChannel = 0;
@@ -61,9 +60,9 @@ void audio_init()
 	if (result >= 0)
 		return;
 
-		log_fatal("SDL_Init %s", SDL_GetError());
-		exit(-1);
-	}
+	log_fatal("SDL_Init %s", SDL_GetError());
+	exit(-1);
+}
 
 void audio_quit()
 {
@@ -79,18 +78,26 @@ void audio_populate_devices()
 	if (gAudioDeviceCount <= 0)
 		return;
 
-		gAudioDeviceCount++;
-		gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
-		safe_strncpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
-
-	for (int i = 1; i < gAudioDeviceCount; i++) {
-		const char *utf8Name = SDL_GetAudioDeviceName(i - 1, SDL_FALSE);
+	audio_device *systemAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	for (int i = 0; i < gAudioDeviceCount; i++) {
+		const char *utf8Name = SDL_GetAudioDeviceName(i, SDL_FALSE);
 		if (utf8Name == NULL)
 			utf8Name = language_get_string(5511);
 
-		safe_strncpy(gAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
-		}
+		safe_strcpy(systemAudioDevices[i].name, utf8Name, AUDIO_DEVICE_NAME_SIZE);
 	}
+#ifndef __LINUX__
+	gAudioDeviceCount++;
+	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	safe_strcpy(gAudioDevices[0].name, language_get_string(5510), AUDIO_DEVICE_NAME_SIZE);
+	memcpy(&gAudioDevices[1], systemAudioDevices, (gAudioDeviceCount - 1) * sizeof(audio_device));
+#else
+	gAudioDevices = malloc(gAudioDeviceCount * sizeof(audio_device));
+	memcpy(gAudioDevices, systemAudioDevices, gAudioDeviceCount * sizeof(audio_device));
+#endif // __LINUX__
+
+	free(systemAudioDevices);
+}
 
 int audio_play_sound_panned(int soundId, int pan, sint16 x, sint16 y, sint16 z)
 {
@@ -128,6 +135,8 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 	int volumeDown = 0;
 	rct_audio_params params;
 	params.in_range = true;
+	params.volume = 0;
+	params.pan = 0;
 
 	rct_map_element *element = map_get_surface_element_at(location->x / 32, location->y / 32);
 	if (element && (element->base_height * 8) - 5 > location->z)
@@ -137,9 +146,9 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 	rct_xy16 pos2 = coordinate_3d_to_2d(location, rotation);
 	rct_window *window = RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*);
 	while (true) {
-				window--;
+		window--;
 		if (window < RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
-					break;
+			break;
 
 		rct_viewport *viewport = window->viewport;
 		if (!viewport || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
@@ -153,11 +162,11 @@ rct_audio_params audio_get_params_from_location(int soundId, const rct_xyz16 *lo
 		if (vy < 0 || vy >= viewport->view_height || vx < 0 || vx >= viewport->view_width || params.volume < -10000) {
 			params.in_range = false;
 			return params;
-				}
-					}
+		}
+	}
 
 	return params;
-				}
+}
 
 int audio_play_sound(int soundId, int volume, int pan)
 {
@@ -204,6 +213,7 @@ void audio_start_title_music()
 	}
 
 	gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
+	Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
 }
 
 void audio_stop_ride_music()
@@ -260,10 +270,9 @@ void audio_init_ride_sounds_and_info()
 		if (file == NULL)
 			continue;
 
-			uint32 head;
-			SDL_RWread(file, &head, sizeof(head), 1);
-			SDL_RWclose(file);
-			RCT2_GLOBAL(0x014241BC, uint32) = 0;
+		uint32 head;
+		SDL_RWread(file, &head, sizeof(head), 1);
+		SDL_RWclose(file);
 		if (head == 0x78787878)
 			rideMusicInfo->length = 0;
 	}
@@ -295,8 +304,8 @@ void audio_close()
 }
 
 void audio_toggle_all_sounds(){
-	gConfigSound.sound = !gConfigSound.sound;
-	if (gConfigSound.sound)
+	gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+	if (gConfigSound.sound_enabled)
 		audio_unpause_sounds();
 	else {
 		audio_stop_title_music();
@@ -323,7 +332,7 @@ void audio_stop_vehicle_sounds()
 	if (gOpenRCT2Headless || RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) == -1)
 		return;
 
-		for (int i = 0; i < countof(gVehicleSoundList); i++) {
+	for (int i = 0; i < countof(gVehicleSoundList); i++) {
 		rct_vehicle_sound *vehicleSound = &gVehicleSoundList[i];
 		if (vehicleSound->id == 0xFFFF)
 			continue;

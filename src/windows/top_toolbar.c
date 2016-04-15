@@ -19,27 +19,28 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config.h"
 #include "../editor.h"
 #include "../game.h"
 #include "../input.h"
-#include "../sprites.h"
-#include "../audio/audio.h"
+#include "../interface/console.h"
 #include "../interface/screenshot.h"
+#include "../interface/themes.h"
+#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../scenario.h"
+#include "../title.h"
+#include "../sprites.h"
 #include "../util/util.h"
-#include "../world/scenery.h"
 #include "../world/banner.h"
+#include "../world/scenery.h"
 #include "dropdown.h"
-#include "../interface/themes.h"
-#include "../interface/console.h"
 
 enum {
 	WIDX_PAUSE,
@@ -73,19 +74,20 @@ enum {
 };
 
 typedef enum {
-	DDIDX_LOAD_GAME = 0,
-	DDIDX_SAVE_GAME = 1,
-	DDIDX_SAVE_GAME_AS = 2,
+	DDIDX_NEW_GAME = 0,
+	DDIDX_LOAD_GAME = 1,
+	DDIDX_SAVE_GAME = 2,
+	DDIDX_SAVE_GAME_AS = 3,
 	// separator
-	DDIDX_ABOUT = 4,
-	DDIDX_OPTIONS = 5,
-	DDIDX_SCREENSHOT = 6,
-	DDIDX_GIANT_SCREENSHOT = 7,
+	DDIDX_ABOUT = 5,
+	DDIDX_OPTIONS = 6,
+	DDIDX_SCREENSHOT = 7,
+	DDIDX_GIANT_SCREENSHOT = 8,
 	// separator
-	DDIDX_QUIT_TO_MENU = 9,
-	DDIDX_EXIT_OPENRCT2 = 10,
+	DDIDX_QUIT_TO_MENU = 10,
+	DDIDX_EXIT_OPENRCT2 = 11,
 	// separator
-	DDIDX_ENABLE_TWITCH = 12
+	DDIDX_ENABLE_TWITCH = 13
 } FILE_MENU_DDIDX;
 
 typedef enum {
@@ -110,7 +112,7 @@ typedef enum {
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 typedef enum {
-	DDIDX_PLAYER_LIST = 0
+	DDIDX_MULTIPLAYER = 0
 } TOP_TOOLBAR_NETWORK_DDIDX;
 
 enum {
@@ -118,6 +120,16 @@ enum {
 	DDIDX_ENABLE_SANDBOX_MODE = 2,
 	DDIDX_DISABLE_CLEARANCE_CHECKS,
 	DDIDX_DISABLE_SUPPORT_LIMITS
+};
+
+enum {
+	DDIDX_SHOW_MAP,
+	DDIDX_OPEN_VIEWPORT,
+};
+
+enum {
+	DDIDX_ROTATE_CLOCKWISE,
+	DDIDX_ROTATE_ANTI_CLOCKWISE,
 };
 
 #pragma region Toolbar_widget_ordering
@@ -310,7 +322,7 @@ static void window_top_toolbar_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_SCENERY:
 		if (!tool_set(w, WIDX_SCENERY, 0)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+			gInputFlags |= INPUT_FLAG_6;
 			window_scenery_open();
 		}
 		break;
@@ -381,26 +393,27 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[9] = STR_EXIT_OPENRCT2;
 			numItems = 10;
 		} else {
-			gDropdownItemsFormat[0] = STR_LOAD_GAME;
-			gDropdownItemsFormat[1] = STR_SAVE_GAME;
-			gDropdownItemsFormat[2] = STR_SAVE_GAME_AS;
-			gDropdownItemsFormat[3] = 0;
-			gDropdownItemsFormat[4] = STR_ABOUT;
-			gDropdownItemsFormat[5] = STR_OPTIONS;
-			gDropdownItemsFormat[6] = STR_SCREENSHOT;
-			gDropdownItemsFormat[7] = STR_GIANT_SCREENSHOT;
-			gDropdownItemsFormat[8] = 0;
-			gDropdownItemsFormat[9] = STR_QUIT_TO_MENU;
-			gDropdownItemsFormat[10] = STR_EXIT_OPENRCT2;
-			numItems = 11;
+			gDropdownItemsFormat[0] = STR_NEW_GAME;
+			gDropdownItemsFormat[1] = STR_LOAD_GAME;
+			gDropdownItemsFormat[2] = STR_SAVE_GAME;
+			gDropdownItemsFormat[3] = STR_SAVE_GAME_AS;
+			gDropdownItemsFormat[4] = 0;
+			gDropdownItemsFormat[5] = STR_ABOUT;
+			gDropdownItemsFormat[6] = STR_OPTIONS;
+			gDropdownItemsFormat[7] = STR_SCREENSHOT;
+			gDropdownItemsFormat[8] = STR_GIANT_SCREENSHOT;
+			gDropdownItemsFormat[9] = 0;
+			gDropdownItemsFormat[10] = STR_QUIT_TO_MENU;
+			gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
+			numItems = 12;
 
 		#ifndef DISABLE_TWITCH
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
-				gDropdownItemsFormat[11] = 0;
-				gDropdownItemsFormat[12] = 1156;
-				gDropdownItemsArgs[12] = STR_TWITCH_ENABLE;
-				numItems = 13;
+				gDropdownItemsFormat[12] = 0;
+				gDropdownItemsFormat[13] = 1156;
+				gDropdownItemsArgs[13] = STR_TWITCH_ENABLE;
+				numItems = 14;
 			}
 		#endif
 		}
@@ -415,7 +428,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 
 #ifndef DISABLE_TWITCH
 		if (_menuDropdownIncludesTwitch && gTwitchEnable) {
-			dropdown_set_checked(11, true);
+			dropdown_set_checked(13, true);
 		}
 #endif
 		break;
@@ -446,7 +459,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		if (gCheatsDisableSupportLimits) {
 			dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
 		}
-		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
+		gDropdownDefaultIndex = DDIDX_CHEATS;
 		break;
 	case WIDX_VIEW_MENU:
 		top_toolbar_init_view_menu(w, widget);
@@ -469,7 +482,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			0,
 			numItems
 			);
-		RCT2_GLOBAL(0x009DEBA2, uint16) = 0;
+		gDropdownDefaultIndex = DDIDX_SHOW_MAP;
 		break;
 	case WIDX_FASTFORWARD:
 		top_toolbar_init_fastforward_menu(w, widget);
@@ -486,6 +499,13 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 	}
 }
 
+static void window_top_toolbar_scenarioselect_callback(const utf8 *path)
+{
+	if (!scenario_load_and_play_from_path(path)) {
+		title_load();
+	}
+}
+
 /**
  *
  *  rct2: 0x0066C9EA
@@ -495,6 +515,10 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
 
+		// New game is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR))
+			dropdownIndex += 1;
+		
 		// Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR) && dropdownIndex > DDIDX_LOAD_GAME)
 			dropdownIndex += 1;
@@ -504,6 +528,9 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			dropdownIndex += DDIDX_ABOUT;
 
 		switch (dropdownIndex) {
+		case DDIDX_NEW_GAME:
+			window_scenarioselect_open(window_top_toolbar_scenarioselect_callback);
+			break;
 		case DDIDX_LOAD_GAME:
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 			break;
@@ -549,19 +576,18 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		}
 		break;
 	case WIDX_CHEATS:
-		if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
 		switch (dropdownIndex) {
 		case DDIDX_CHEATS:
 			window_cheats_open();
 			break;
 		case DDIDX_ENABLE_SANDBOX_MODE:
-			gCheatsSandboxMode = !gCheatsSandboxMode;
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, 0, GAME_COMMAND_CHEAT, 0, 0);
 			break;
 		case DDIDX_DISABLE_CLEARANCE_CHECKS:
-			gCheatsDisableClearanceChecks = !gCheatsDisableClearanceChecks;
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, 0, GAME_COMMAND_CHEAT, 0, 0);
 			break;
 		case DDIDX_DISABLE_SUPPORT_LIMITS:
-			gCheatsDisableSupportLimits = !gCheatsDisableSupportLimits;
+			game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, 0, GAME_COMMAND_CHEAT, 0, 0);
 			break;
 		}
 		break;
@@ -569,9 +595,6 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 		top_toolbar_view_menu_dropdown(dropdownIndex);
 		break;
 	case WIDX_MAP:
-		if (dropdownIndex == -1)
-			dropdownIndex = RCT2_GLOBAL(0x009DEBA2, uint16);
-
 		switch (dropdownIndex) {
 		case 0:
 			window_map_open();
@@ -682,15 +705,16 @@ static void window_top_toolbar_invalidate(rct_window *w)
 			window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 
 		switch (network_get_mode()) {
-		case NETWORK_MODE_SERVER:
-			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+		case NETWORK_MODE_NONE:
+			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 			break;
 		case NETWORK_MODE_CLIENT:
 			window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+		// Fall-through
+		case NETWORK_MODE_SERVER:
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+			window_top_toolbar_widgets[WIDX_DEBUG].type = WWT_EMPTY;
 			break;
-		default:
-			window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 		}
 	}
 
@@ -861,7 +885,10 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-/* rct2: 0x006E3158 */
+/**
+ *
+ *  rct2: 0x006E3158
+ */
 static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	// ax, cx, bl
 	sint16 grid_x, grid_y;
@@ -968,7 +995,9 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 }
 
-/* rct2: 0x006E1F34
+/**
+ *
+ *  rct2: 0x006E1F34
  * Outputs
  * eax : grid_x
  * ebx : parameter_1
@@ -1003,11 +1032,10 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	if (type == 0 && !gCheatsDisableSupportLimits) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
-	}
-	else{
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
-			// CTRL pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1)){
+	} else {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0) {
+			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
+				// CTRL pressed
 				rct_map_element* map_element;
 				uint16 flags =
 					VIEWPORT_INTERACTION_MASK_TERRAIN &
@@ -1024,17 +1052,16 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 					RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, uint16) = map_element->base_height * 8;
 				}
 			}
-		}
-		else{
-			// CTRL not pressed
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 1))){
+		} else {
+			if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)) {
+				// CTRL not pressed
 				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
 			}
 		}
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) == 0){
-			// SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
+			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+				// SHIFT pressed
 				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 1;
 				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, uint16) = x;
 				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, uint16) = y;
@@ -1042,15 +1069,14 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			}
 		}
 		else{
-			// SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & (1 << 0)){
+			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
+				// SHIFT pressed
 				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16) =
 					(RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16) - y + 4) & 0xFFF8;
 
 				x = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, sint16);
 				y = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16);
-			}
-			else{
+			} else {
 				// SHIFT not pressed
 				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
 			}
@@ -1125,7 +1151,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 			// Also places it in lower but think thats for clobering
 			*parameter_1 = (selected_scenery & 0xFF) << 8;
-			*parameter_2 = cl ^ (1 << 1) | (window_scenery_primary_colour << 8);
+			*parameter_2 = (cl ^ (1 << 1)) | (window_scenery_primary_colour << 8);
 			*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
 			return;
 		}
@@ -1396,6 +1422,15 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	}
 }
 
+void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	if (ebx != MONEY32_UNDEFINED) {
+		int bannerId = edi;
+
+		audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		window_banner_open(bannerId);
+	}
+}
 /**
  *
  *  rct2: 0x006E2CC6
@@ -1426,10 +1461,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	case SCENERY_TYPE_SMALL:
 	{
 		int quantity = 1;
-		if (window_scenery_is_build_cluster_tool_on) {
+		bool isCluster = window_scenery_is_build_cluster_tool_on && (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_command(network_get_current_player_group_index(), -2));
+		if (isCluster) {
 			quantity = 35;
 		}
-
 		int successfulPlacements = 0;
 		for (int q = 0; q < quantity; q++) {
 			int zCoordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
@@ -1438,7 +1473,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			sint16 cur_grid_x = gridX;
 			sint16 cur_grid_y = gridY;
 
-			if (window_scenery_is_build_cluster_tool_on){
+			if (isCluster){
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
 					parameter_2 &= 0xFF00;
 					parameter_2 |= util_rand() & 3;
@@ -1610,13 +1645,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			.esi = GAME_COMMAND_PLACE_BANNER,
 			.edi = parameter_3
 		};
-		money32 cost = game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
-		if (cost != MONEY32_UNDEFINED) {
-			int bannerId = regs.edi;
-
-			audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
-			window_banner_open(bannerId);
-		}
+		game_command_callback = game_command_callback_place_banner;
+		game_do_command_p(GAME_COMMAND_PLACE_BANNER, &regs.eax, &regs.ebx, &regs.ecx, &regs.edx, &regs.esi, &regs.edi, &regs.ebp);
 		break;
 	}
 	}
@@ -2076,7 +2106,9 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	}
 }
 
-/* rct2: 0x006E24F6
+/**
+ *
+ *  rct2: 0x006E24F6
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
@@ -2360,7 +2392,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 10 + parameter2 & 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 10 + (parameter2 & 0xFF);
 
 		map_invalidate_selection_rect();
 
@@ -2520,7 +2552,8 @@ static void window_top_toolbar_tool_update(rct_window* w, int widgetIndex, int x
 }
 
 /**
- * rct2: 0x0066CB73
+ *
+ *  rct2: 0x0066CB73
  */
 static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, int y)
 {
@@ -2633,27 +2666,21 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 
 	sint16 tile_height = -16 / (1 << viewport->zoom);
 
-	int y_diff = y - RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
-
+	int y_diff = y - gInputDragLastY;
 	if (y_diff <= tile_height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += tile_height;
+		gInputDragLastY += tile_height;
 
 		selection_raise_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
-		return;
-	}
-
-	if (y_diff >= -tile_height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) -= tile_height;
+	} else if (y_diff >= -tile_height) {
+		gInputDragLastY -= tile_height;
 
 		selection_lower_land(GAME_COMMAND_FLAG_APPLY);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
-
-		return;
 	}
 }
 
@@ -2679,10 +2706,10 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	sint16 dx = 0xFFF0;
 	dx >>= viewport->zoom;
 
-	y -= RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16);
+	y -= gInputDragLastY;
 
 	if (y <= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+		gInputDragLastY += dx;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_RAISE_WATER_LEVEL_HERE;
 
@@ -2704,7 +2731,7 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 	dx = -dx;
 
 	if (y >= dx) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURSOR_DRAG_LAST_Y, uint16) += dx;
+		gInputDragLastY += dx;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, rct_string_id) = STR_CANT_LOWER_WATER_LEVEL_HERE;
 
@@ -2858,14 +2885,18 @@ void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
 		dropdown_set_checked(5, true);
 	}
 
-	if (gConfigGeneral.debugging_tools)
-		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed == 8 ? 0 : gGameSpeed);
-	else
-		RCT2_GLOBAL(0x9DEBA2, uint16) = (gGameSpeed >= 4 ? 0 : gGameSpeed);
+	if (gConfigGeneral.debugging_tools) {
+		gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
+	} else {
+		gDropdownDefaultIndex = (gGameSpeed >= 4 ? 0 : gGameSpeed);
+	}
+	if (gDropdownDefaultIndex == 4) {
+		gDropdownDefaultIndex = 5;
+	}
 }
 
-void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_fastforward_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		if (dropdownIndex >= 0 && dropdownIndex <= 5) {
@@ -2877,7 +2908,8 @@ void top_toolbar_fastforward_menu_dropdown(short dropdownIndex) {
 	}
 }
 
-void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget) {
+void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget)
+{
 	gDropdownItemsFormat[0] = STR_ROTATE_CLOCKWISE;
 	gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
 
@@ -2888,13 +2920,13 @@ void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget) {
 		w->colours[1] | 0x80,
 		0,
 		2
-		);
+	);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
 }
 
-void top_toolbar_rotate_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_rotate_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		if (dropdownIndex == 0) {
@@ -2908,7 +2940,8 @@ void top_toolbar_rotate_menu_dropdown(short dropdownIndex) {
 	}
 }
 
-void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
+void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
+{
 	gDropdownItemsFormat[0] = STR_DEBUG_DROPDOWN_CONSOLE;
 	gDropdownItemsFormat[1] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
 	gDropdownItemsFormat[2] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
@@ -2920,15 +2953,16 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget) {
 		w->y + widget->top,
 		widget->bottom - widget->top + 1,
 		w->colours[0] | 0x80,
-		0,
+		DROPDOWN_FLAG_STAY_OPEN,
 		5
 	);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_CONSOLE;
 }
 
-void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget) {
-	gDropdownItemsFormat[0] = STR_PLAYER_LIST;
+void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
+{
+	gDropdownItemsFormat[0] = STR_MULTIPLAYER;
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2939,11 +2973,11 @@ void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget) {
 		1
 	);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
 
-void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_debug_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		switch (dropdownIndex) {
@@ -2967,13 +3001,13 @@ void top_toolbar_debug_menu_dropdown(short dropdownIndex) {
 	}
 }
 
-void top_toolbar_network_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_network_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		switch (dropdownIndex) {
-		case DDIDX_PLAYER_LIST:
-			window_player_list_open();
+		case DDIDX_MULTIPLAYER:
+			window_multiplayer_open();
 			break;
 		}
 	}
@@ -3040,15 +3074,15 @@ void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget) {
 	if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
 		dropdown_set_checked(11, true);
 
-	RCT2_GLOBAL(0x9DEBA2, uint16) = 0;
+	gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 }
 
 /**
  *
  *  rct2: 0x0066CF8A
  */
-void top_toolbar_view_menu_dropdown(short dropdownIndex) {
-	if (dropdownIndex == -1) dropdownIndex = RCT2_GLOBAL(0x9DEBA2, uint16);
+void top_toolbar_view_menu_dropdown(short dropdownIndex)
+{
 	rct_window* w = window_get_main();
 	if (w) {
 		switch (dropdownIndex) {
@@ -3105,16 +3139,16 @@ void toggle_footpath_window()
 
 /**
  *
- * rct2: 0x0066CD54
+ *  rct2: 0x0066CD54
  */
 void toggle_land_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 18);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_land_open();
 	}
@@ -3122,16 +3156,16 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex)
 
 /**
  *
- * rct2: 0x0066CD0C
+ *  rct2: 0x0066CD0C
  */
 void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 12);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
 		window_clear_scenery_open();
 	}
@@ -3139,16 +3173,16 @@ void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
 
 /**
  *
- * rct2: 0x0066CD9C
+ *  rct2: 0x0066CD9C
  */
 void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == 1 && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
 		tool_cancel();
 	} else {
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 19);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_water_open();
 	}
@@ -3160,11 +3194,11 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
  */
 bool land_tool_is_active()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return false;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
 		return false;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, sint16) != WIDX_LAND)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_LAND)
 		return false;
 	return true;
 }

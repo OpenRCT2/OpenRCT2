@@ -66,7 +66,7 @@ static void ride_update_station_blocksection(rct_ride *ride, int stationIndex)
 
 	mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
-	if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || mapElement->flags & 0x20) {
+	if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != NULL && mapElement->flags & 0x20)) {
 		ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
 		if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement->properties.track.sequence & 0x80))
@@ -75,7 +75,7 @@ static void ride_update_station_blocksection(rct_ride *ride, int stationIndex)
 		if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
 			ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
 			ride_invalidate_station_start(ride, stationIndex, 1);
-		} else if (mapElement->properties.track.sequence & 0x80) {
+		} else if (mapElement != NULL && mapElement->properties.track.sequence & 0x80) {
 			ride_invalidate_station_start(ride, stationIndex, 1);
 		}
 	}
@@ -105,7 +105,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, int stationIndex)
 		dh = (dx >> 8) & 0xFF;
 		for (i = 0; i < ride->num_vehicles; i++) {
 			vehicle = &(g_sprite_list[ride->vehicles[i]].vehicle);
-			if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->var_51 > dl))
+			if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
 				continue;
 
 			// End match
@@ -242,7 +242,7 @@ static void ride_update_station_race(rct_ride *ride, int stationIndex)
  */
 static void ride_race_init_vehicle_speeds(rct_ride *ride)
 {
-	rct_ride_type *rideEntry;
+	rct_ride_entry *rideEntry;
 	rct_vehicle *vehicle;
 	int i;
 
@@ -250,7 +250,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
 		vehicle = &g_sprite_list[ride->vehicles[i]].vehicle;
 		vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
-		rideEntry = GET_RIDE_ENTRY(vehicle->ride_subtype);
+		rideEntry = get_ride_entry(vehicle->ride_subtype);
 
 		vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 

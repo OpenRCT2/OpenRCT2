@@ -1,17 +1,16 @@
 # OpenRCT2
-An open source clone of RollerCoaster Tycoon 2 built by decompiling the original game one bit at a time.
-- [Screenshot 1, cheat windows](http://imgur.com/a/zJTYd)
-- [Screenshot 2, large land tool area](http://i.imgur.com/kTkK5Gw.png) (up to 64 squares at once)
-- [Screenshot 3, high resolution](http://i.imgur.com/yFzNyVu.jpg)
-- [Screenshot 4, resizable window](http://imgur.com/a/3GDuT)
+An open source re-implementation of Roller Coaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
 
-Linux Build:  
-[![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg)](https://travis-ci.org/OpenRCT2/OpenRCT2)  
-Windows Build:  
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/fib6re830brysuo2?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2)
+### Build Status
+|             | Windows | Linux / OSX | Download |
+|-------------|---------|-------------|----------|
+| **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [OpenRCT2.org](https://openrct2.org/downloads/master/latest) |
+| **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [OpenRCT2.org](https://openrct2.org/downloads/develop/latest) |
 
-Come talk with us if you have any questions:  
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+### Chat
+| Developers | Players / Off-topic |
+|------------|---------------------|
+|[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2)|[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev)|
 
 # Contents
 - 1 - [Introduction](#1-introduction)
@@ -62,51 +61,58 @@ The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-p
 
 # 2 Downloading the game / Building the source code
 
-Several third party build servers offer precompiled builds and installers of the latest stable and the develop branch.
-[OpenRCT2.com](https://openrct2.com/download)
-[OpenRCT.net](https://openrct.net/builds.php)
-[UrsaLabs](https://openrct.ursalabs.co)
-
-There is also a Launcher available from [OpenRCT.net](https://openrct.net/download) that will automatically update your build so that you always have the current version as they are released.
+[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest stable and the develop branch. There is also a Launcher available that will automatically update your build so that you always have the current version as they are released.
 
 ## 2.1 Building prerequisites
 
 OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
-- Windows XP / Vista / 7 / 8 / 10
+- Vista / 7 / 8 / 10
 - Visual Studio 2015 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
 - [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
 
 ### Mac OS X:
-- [Homebrew](http://brew.sh) or [MacPorts](https://www.macports.org/)
+- [Homebrew](http://brew.sh)
 
 ### Mac OS X / Linux:
-- [MinGW-w64](http://mingw-w64.sourceforge.net/)
-- [Wine](http://www.winehq.org)
-- libsdl2 compiled with MinGW-w64
+- sdl2
+- sdl2-ttf
+- speexdsp
+- curl (only if building with network support)
+- jansson (only if building with network support)
+- iconv (part of glibc on Linux)
+- cmake
+All libs listed here (bar cmake) required in 32 bit variants.
 
 ## 2.2 Compiling and running
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open the solution in the projects directory (**openrct2.sln**) with Visual Studio.
-3. [Select the 'Release' configuration](http://msdn.microsoft.com/en-us/library/wx0123s5.aspx) and click Build -> Rebuild Solution. The dropdown menu to enable the 'release' configuration is towards the top of the VS Express window, near the "TEST" menu.
-4. Start debugging. Press the "Local Windows Debugger" button with a green "play" icon next to it. If Visual Studio shows a warning about *openrct2.exe* not having debug information, press Continue.
-5. When OpenRCT2 is run for the first time, it creates a settings file in `My Documents/OpenRCT2`. If it can't find the original installation of RCT2, you will need to edit `config.ini` in that folder and change the value of `game_path` to where RCT2 is installed.
-6. If the game crashes, you may need to press the red, square Stop button along the top of VS Express to stop the program.
+2. Open a new PowerShell window and navigate to the repository.
+3. Run the setenv.ps1 script in the repository to setup your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
+4. Run ```install``` to download the required dependencies to build OpenRCT2.
+5. Run ```build all``` to build all the required components for OpenRCT2.
+6. Run ```run``` to run OpenRCT2.
 
-Alternatively, to simply build the project you can just execute ``build.bat`` within VS2015 Native Tools Command prompt or Github Windows prompt.
+These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have use the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such g2.dat or language files.
 
 ### Mac OS X:
-Providing Homebrew or MacPorts are installed (but not both!), OpenRCT2's dependencies and Wine can be installed automatically through `install.sh`.
+We support native builds OS X (limited to i386 only for now).
+Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build openrct2.
 ```
-bash install.sh
-bash build.sh
-wine openrct2.exe
+# Install libraries
+./install.sh
+
+# Build OpenRCT2
+./build.sh
+
+# Run the game
+./openrct2
 ```
 
 ### Linux:
-As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki).
+We support native builds for Linux (limited to i386 only for now).
+As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
 
 # 3 Contributing
@@ -143,9 +149,8 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 
 # 5 More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
+- [OpenRCT2.org](https://openrct2.org)
 - [Forums](https://openrct2.org/forums/)
 - [Facebook](https://www.facebook.com/OpenRCT2)
-- [OpenRCT2.com](https://openrct2.com)
-- [OpenRCT.net](https://openrct.net)
 - [rct subreddit](http://www.reddit.com/r/rct/)
 - [openrct2 subreddit](http://www.reddit.com/r/openrct2/)

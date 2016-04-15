@@ -70,9 +70,16 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
 
 int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags);
 bool footpath_element_is_sloped(rct_map_element *mapElement);
-int footpath_element_get_slope_direction(rct_map_element *mapElement);
+uint8 footpath_element_get_slope_direction(rct_map_element *mapElement);
 bool footpath_element_is_queue(rct_map_element *mapElement);
 bool footpath_element_is_wide(rct_map_element *mapElement);
+uint8 footpath_element_get_type(rct_map_element *mapElement);
+bool footpath_element_has_path_scenery(rct_map_element *mapElement);
+uint8 footpath_element_get_path_scenery(rct_map_element *mapElement);
+void footpath_element_set_path_scenery(rct_map_element *mapElement, uint8 pathSceneryType);
+uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement);
+bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
+void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
 
 #endif

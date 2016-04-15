@@ -181,8 +181,8 @@ static void window_water_textinput(rct_window *w, int widgetIndex, char *text)
 
 static void window_water_inputsize(rct_window *w)
 {
-	((uint16*)TextInputDescriptionArgs)[0] = MINIMUM_TOOL_SIZE;
-	((uint16*)TextInputDescriptionArgs)[1] = MAXIMUM_TOOL_SIZE;
+	TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
+	TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
 	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
 }
 
@@ -256,7 +256,7 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static int window_water_should_close()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE))
+	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return 1;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
 		return 1;

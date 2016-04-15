@@ -18,16 +18,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include <lodepng/lodepng.h>
-#include "cmdline.h"
 #include "drawing/drawing.h"
+#include "image_io.h"
+#include "openrct2.h"
 #include "platform/platform.h"
 #include "util/util.h"
-#include "openrct2.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1
 #define MODE_DITHERING 2
+
+extern int gSpriteMode;
 
 typedef struct {
 	uint32 num_entries;
@@ -168,33 +169,11 @@ bool sprite_file_export(int spriteIndex, const char *outPath)
 	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
 	gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_NO_BACKGROUND, 0, spriteHeader->height, 0, spriteHeader->width);
 
-	LodePNGState pngState;
-	unsigned int pngError;
-	unsigned char* pngData;
-	size_t pngSize;
-
-	lodepng_state_init(&pngState);
-	pngState.info_raw.colortype = LCT_PALETTE;
-	lodepng_palette_add(&pngState.info_raw, 0, 0, 0, 0);
-	for (int i = 1; i < 256; i++) {
-		lodepng_palette_add(
-			&pngState.info_raw,
-			spriteFilePalette[i].r,
-			spriteFilePalette[i].g,
-			spriteFilePalette[i].b,
-			255
-		);
-	}
-
-	pngError = lodepng_encode(&pngData, &pngSize, pixels, spriteHeader->width, spriteHeader->height, &pngState);
-	if (pngError != 0) {
-		free(pngData);
-		fprintf(stderr, "Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
-		return false;
-	} else {
-		lodepng_save_file(pngData, pngSize, outPath);
-		free(pngData);
+	if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
 		return true;
+	} else {
+		fprintf(stderr, "Error writing PNG");
+		return false;
 	}
 }
 
@@ -261,16 +240,10 @@ typedef struct {
 
 bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, int mode)
 {
-	unsigned char *pixels;
-	unsigned int width, height;
-	unsigned int pngError;
-
-	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
-
-	pngError = lodepng_decode_file(&pixels, &width, &height, path, LCT_RGBA, 8);
-	if (pngError != 0) {
-		free(pixels);
-		fprintf(stderr, "Error creating PNG data, %u: %s", pngError, lodepng_error_text(pngError));
+	uint8 *pixels;
+	uint32 width, height;
+	if (!image_io_png_read(&pixels, &width, &height, path)) {
+		fprintf(stderr, "Error reading PNG");
 		return false;
 	}
 
@@ -279,6 +252,8 @@ bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **ou
 		free(pixels);
 		return false;
 	}
+
+	memcpy(spriteFilePalette, _standardPalette, 256 * 4);
 
 	uint8 *buffer = malloc((height * 2) + (width * height * 16));
 	memset(buffer, 0, (height * 2) + (width * height * 16));
@@ -424,7 +399,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 
 	if (_strcmpi(argv[0], "details") == 0) {
 		if (argc < 2) {
-			fprintf(stderr, "usage: sprite details <spritefile> [idx]\n");
+			fprintf(stdout, "usage: sprite details <spritefile> [idx]\n");
 			return -1;
 		} else if (argc == 2) {
 			const char *spriteFilePath = argv[1];
@@ -434,8 +409,8 @@ int cmdline_for_sprite(const char **argv, int argc)
 				return -1;
 			}
 
-			printf("sprites: %lu\n", spriteFileHeader.num_entries);
-			printf("data size: %lu\n", spriteFileHeader.total_size);
+			printf("sprites: %u\n", spriteFileHeader.num_entries);
+			printf("data size: %u\n", spriteFileHeader.total_size);
 
 			sprite_file_close();
 			return 1;
@@ -459,14 +434,14 @@ int cmdline_for_sprite(const char **argv, int argc)
 			printf("height: %d\n", g1->height);
 			printf("x offset: %d\n", g1->x_offset);
 			printf("y offset: %d\n", g1->y_offset);
-			printf("data offset: 0x%lX\n", (uint32)g1->offset);
+			printf("data offset: 0x%X\n", (uint32)g1->offset);
 
 			sprite_file_close();
 			return 1;
 		}
 	} else if (_strcmpi(argv[0], "export") == 0) {
 		if (argc < 4) {
-			fprintf(stderr, "usage: sprite export <spritefile> <idx> <output>\n");
+			fprintf(stdout, "usage: sprite export <spritefile> <idx> <output>\n");
 			return -1;
 		}
 
@@ -494,7 +469,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		return 1;
 	} else if (_strcmpi(argv[0], "exportall") == 0) {
 		if (argc < 3) {
-			fprintf(stderr, "usage: sprite exportall <spritefile> <output directory>\n");
+			fprintf(stdout, "usage: sprite exportall <spritefile> <output directory>\n");
 			return -1;
 		}
 
@@ -515,7 +490,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int maxIndex = (int)spriteFileHeader.num_entries;
 		int numbers = (int)floor(log(maxIndex));
 
-		safe_strncpy(outputPath, argv[2], MAX_PATH);
+		safe_strcpy(outputPath, argv[2], MAX_PATH);
 		int pathLen = strlen(outputPath);
 
 		if (pathLen >= MAX_PATH - numbers - 5){
@@ -526,7 +501,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		for (int x = 0; x < numbers; x++){
 			outputPath[pathLen + x] = '0';
 		}
-		safe_strncpy(outputPath + pathLen + numbers, ".png", MAX_PATH);
+		safe_strcpy(outputPath + pathLen + numbers, ".png", MAX_PATH);
 
 		for (int spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++){
 
@@ -580,7 +555,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		rct_g1_element spriteElement;
 		uint8 *buffer;
 		int bufferLength;
-		if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, sprite_mode))
+		if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, gSpriteMode))
 			return -1;
 
 		if (!sprite_file_open(spriteFilePath)) {
@@ -607,7 +582,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 		return 1;
 	} else if (_strcmpi(argv[0], "build") == 0) {
 		if (argc < 3) {
-			fprintf(stderr, "usage: sprite build <spritefile> <resourcedir> [silent]\n");
+			fprintf(stdout, "usage: sprite build <spritefile> <resourcedir> [silent]\n");
 			return -1;
 		}
 
@@ -624,11 +599,11 @@ int cmdline_for_sprite(const char **argv, int argc)
 		spriteFileHeader.total_size = 0;
 		sprite_file_save(spriteFilePath);
 
-		fprintf(stderr, "Building: %s\n", spriteFilePath);
+		fprintf(stdout, "Building: %s\n", spriteFilePath);
 		int i = 0;
 		do {
 			// Create image path
-			safe_strncpy(imagePath, resourcePath, MAX_PATH);
+			safe_strcpy(imagePath, resourcePath, MAX_PATH);
 			if (resourcePath[resourceLength - 1] == '/' || resourcePath[resourceLength - 1] == '\\')
 				imagePath[resourceLength - 1] = 0;
 			sprintf(imagePath, "%s%c%d.png", imagePath, platform_get_path_separator(), i);
@@ -639,7 +614,7 @@ int cmdline_for_sprite(const char **argv, int argc)
 				rct_g1_element spriteElement;
 				uint8 *buffer;
 				int bufferLength;
-				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, sprite_mode)) {
+				if (!sprite_file_import(imagePath, &spriteElement, &buffer, &bufferLength, gSpriteMode)) {
 					fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
 					return -1;
 				}
@@ -668,13 +643,13 @@ int cmdline_for_sprite(const char **argv, int argc)
 					return -1;
 				}
 				if (!silent)
-					fprintf(stderr, "Added: %s\n", imagePath);
+					fprintf(stdout, "Added: %s\n", imagePath);
 			}
 			i++;
 		} while (file != NULL);
 
 
-		fprintf(stderr, "Finished\n");
+		fprintf(stdout, "Finished\n");
 		return 1;
 	} else {
 		fprintf(stderr, "Unknown sprite command.");

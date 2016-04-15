@@ -19,20 +19,21 @@
 *****************************************************************************/
 
 #include "../addresses.h"
-#include "../config.h"
 #include "../audio/audio.h"
+#include "../config.h"
 #include "../game.h"
-#include "../management/news_item.h"
-#include "../management/research.h"
-#include "../object.h"
-#include "../rct1.h"
-#include "../ride/ride.h"
-#include "../localisation/localisation.h"
-#include "../world/scenery.h"
-#include "../ride/track.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
+#include "../localisation/localisation.h"
+#include "../management/news_item.h"
+#include "../management/research.h"
+#include "../network/network.h"
+#include "../object.h"
+#include "../rct1.h"
+#include "../ride/ride.h"
+#include "../ride/track.h"
+#include "../world/scenery.h"
 
 #define _window_new_ride_current_tab RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8)
 
@@ -253,6 +254,7 @@ static void window_new_ride_select(rct_window *w);
 
 static ride_list_item _lastTrackDesignCountRideType;
 static int _lastTrackDesignCount;
+static bool _trackSelectionByType;
 
 /**
 *
@@ -281,7 +283,7 @@ void window_new_ride_init_vars() {
 /**
  *	rct2: 0x006B6F3E
  *
- *  Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_type.
+ * Note: When the user has selection by track type enabled, the categories are determined by the track type, not those in the rct_ride_entry.
  */
 static void window_new_ride_populate_list()
 {
@@ -289,7 +291,6 @@ static void window_new_ride_populate_list()
 
 	uint8 currentCategory = _window_new_ride_current_tab;
 	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
 
 	// For each ride type in the view order list
 	for (i = 0; i < countof(RideTypeViewOrder); i++) {
@@ -325,7 +326,7 @@ static void window_new_ride_populate_list()
 					continue;
 
 				// Ride entries
-				rct_ride_type *rideEntry = rideEntries[rideEntryIndex];
+				rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 
 				// Check if ride is in this category
 				if (!gConfigInterface.select_by_track_type && (currentCategory != rideEntry->category[0] && currentCategory != rideEntry->category[1]))
@@ -372,6 +373,7 @@ static void window_new_ride_populate_list()
 
 	nextListItem->type = 255;
 	nextListItem->entry_index = 255;
+	_trackSelectionByType = gConfigInterface.select_by_track_type;
 }
 
 /**
@@ -473,13 +475,13 @@ rct_window *window_new_ride_open_research()
 void window_new_ride_focus(ride_list_item rideItem)
 {
 	rct_window *w;
-	rct_ride_type *rideType;
+	rct_ride_entry *rideType;
 
 	w = window_find_by_class(WC_CONSTRUCT_RIDE);
 	if (w == NULL)
 		return;
 
-	rideType = GET_RIDE_ENTRY(rideItem.entry_index);
+	rideType = get_ride_entry(rideItem.entry_index);
 
 	if(!gConfigInterface.select_by_track_type)
 		window_new_ride_set_page(w, rideType->category[0]);
@@ -651,6 +653,11 @@ static void window_new_ride_update(rct_window *w)
 
 	if (w->new_ride.selected_ride_id != -1 && w->new_ride.selected_ride_countdown-- == 0)
 		window_new_ride_select(w);
+
+	if (_trackSelectionByType != gConfigInterface.select_by_track_type) {
+		window_new_ride_populate_list();
+		widget_invalidate(w, WIDX_RIDE_LIST);
+	}
 }
 
 /**
@@ -686,7 +693,7 @@ static void window_new_ride_scrollmousedown(rct_window *w, int scrollIndex, int 
 		return;
 
 	RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, ride_list_item)[_window_new_ride_current_tab] = item;
-	w->new_ride.selected_ride_id = *((sint16*)&item);
+	w->new_ride.selected_ride_id = item.ride_type_and_entry;
 
 	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
 	w->new_ride.selected_ride_countdown = 8;
@@ -706,10 +713,10 @@ static void window_new_ride_scrollmouseover(rct_window *w, int scrollIndex, int 
 
 	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
 
-	if (w->new_ride.highlighted_ride_id == *((sint16*)&item))
+	if (w->new_ride.highlighted_ride_id == item.ride_type_and_entry)
 		return;
 
-	w->new_ride.highlighted_ride_id = *((sint16*)&item);
+	w->new_ride.highlighted_ride_id = item.ride_type_and_entry;
 	RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_RIDE_LIST_HIGHLIGHTED_ITEM, ride_list_item)[_window_new_ride_current_tab] = item;
 	window_invalidate(w);
 }
@@ -758,7 +765,7 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_new_ride_draw_tab_images(dpi, w);
 
 	if (_window_new_ride_current_tab != WINDOW_NEW_RIDE_PAGE_RESEARCH) {
-		ride_list_item item = *((ride_list_item*)&w->new_ride.highlighted_ride_id);
+		ride_list_item item = { .ride_type_and_entry = w->new_ride.highlighted_ride_id };
 		if (item.type != 255 || item.entry_index != 255)
 			window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
 	} else {
@@ -772,8 +779,6 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
-
 	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
 		return;
 
@@ -783,7 +788,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 	int y = 1;
 	ride_list_item *listItem = (ride_list_item*)0x00F43523;
 	while (listItem->type != 255 || listItem->entry_index != 255) {
-		rct_ride_type *rideEntry;
+		rct_ride_entry *rideEntry;
 		// Draw flat button rectangle
 		int flags = 0;
 		if (w->new_ride.selected_ride_id == *((sint16*)listItem))
@@ -792,7 +797,7 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 			gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], 0x80 | flags);
 
 		// Draw ride image with feathered border
-		rideEntry = rideEntries[listItem->entry_index];
+		rideEntry = get_ride_entry(listItem->entry_index);
 		int image_id = rideEntry->images_offset;
 		if (listItem->type != rideEntry->ride_type[0]) {
 			image_id++;
@@ -847,9 +852,9 @@ static int get_num_track_designs(ride_list_item item)
 {
 	track_load_list(item);
 
-	uint8 *trackDesignList = (uint8*)0x00F441EC;
+	char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
 	int count = 0;
-	while (*trackDesignList != 0 && trackDesignList < (uint8*)0x00F635EC) {
+	while (*trackDesignList != 0 && trackDesignList < (char*)0x00F635EC) {
 		trackDesignList += 128;
 		count++;
 	}
@@ -862,8 +867,7 @@ static int get_num_track_designs(ride_list_item item)
  */
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, int x, int y, int width)
 {
-	rct_ride_type **rideEntries = (rct_ride_type**)0x009ACFA4;
-	rct_ride_type *rideEntry = rideEntries[item.entry_index];
+	rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
 
 	// Ride name and description
 	rct_string_id rideName = rideEntry->name;
@@ -873,13 +877,17 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		rideDescription = item.type + 512;
 	}
 
-	RCT2_GLOBAL(0x013CE952 + 0, rct_string_id) = rideName;
-	RCT2_GLOBAL(0x013CE952 + 2, rct_string_id) = rideDescription;
-	gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, width, 1690, 0);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = rideName;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = rideDescription;
+	gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1690, 0);
 
 	// Number of designs available
 	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-		if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
+		// Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
+		if (network_get_mode() != NETWORK_MODE_NONE) {
+			_lastTrackDesignCount = 0;
+		}
+		else if (item.type != _lastTrackDesignCountRideType.type || item.entry_index != _lastTrackDesignCountRideType.entry_index) {
 			_lastTrackDesignCountRideType = item;
 			_lastTrackDesignCount = get_num_track_designs(item);
 		}
@@ -887,13 +895,13 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		rct_string_id stringId;
 		switch (_lastTrackDesignCount) {
 		case 0:
-			stringId = 3338;
+			stringId = STR_CUSTOM_DESIGNED_LAYOUT;
 			break;
 		case 1:
-			stringId = 3339;
+			stringId = STR_1_DESIGN_AVAILABLE;
 			break;
 		default:
-			stringId = 3340;
+			stringId = STR_X_DESIGNS_AVAILABLE;
 			break;
 		}
 		gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, 0, x, y + 39);
@@ -913,7 +921,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 
 		//
 		rct_string_id stringId = 1691;
-		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_15))
+		if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
 			stringId++;
 
 		gfx_draw_string_right(dpi, stringId, &price, 0, x + width, y + 39);
@@ -926,17 +934,26 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
  */
 static void window_new_ride_select(rct_window *w)
 {
-	ride_list_item item = *((ride_list_item*)&w->new_ride.selected_ride_id);
+	ride_list_item item = { .ride_type_and_entry = w->new_ride.selected_ride_id };
 	if (item.type == 255)
 		return;
 
 	window_close(w);
 	window_close_construction_windows();
 
-	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
+	bool allowTrackDesigns = true;
+#ifndef NETWORK_DISABLE
+	// TODO: FIX NETWORK TRACKS
+	// Until tracks work with the network this will disable them
+	if (network_get_mode() != NETWORK_MODE_NONE) {
+		allowTrackDesigns = false;
+	}
+#endif
+
+	if (allowTrackDesigns && ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
 		track_load_list(item);
 
-		uint8 *trackDesignList = (uint8*)0x00F441EC;
+		char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
 		if (*trackDesignList != 0) {
 			window_track_list_open(item);
 			return;

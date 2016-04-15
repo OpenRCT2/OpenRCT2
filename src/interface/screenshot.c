@@ -17,13 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
-#pragma pack(1)
 
-#include <lodepng/lodepng.h>
 #include "../addresses.h"
+#include "../audio/audio.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
+#include "../image_io.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../platform/platform.h"
@@ -52,15 +52,10 @@ void screenshot_check()
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
-				rct_string_id stringId = 3165;
-				sprintf((char*)language_get_string(stringId), "SCR%d%s", screenshotIndex, _screenshot_format_extension[gConfigGeneral.screenshot_format]);
-
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
-				// RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SCR_BMP;
-				// RCT2_GLOBAL(0x013CE952 + 2, uint16) = screenshotIndex;
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
-
-				window_error_open(STR_SCREENSHOT_SAVED_AS, -1);
+				
+				// TODO use a more obvious sound like a camera shutter
+				audio_play_sound(SOUND_CLICK_1, 0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, -1);
 			}
@@ -68,6 +63,18 @@ void screenshot_check()
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 			redraw_rain();
 		}
+	}
+}
+
+static void screenshot_get_rendered_palette(rct_palette* palette) {
+	for (int i = 0; i < 256; i++) {
+		const SDL_Color *renderedEntry = &gPalette[i];
+		rct_palette_entry *entry = &palette->entries[i];
+
+		entry->red = renderedEntry->r;
+		entry->green = renderedEntry->g;
+		entry->blue = renderedEntry->b;
+		entry->alpha = renderedEntry->a;
 	}
 }
 
@@ -109,250 +116,50 @@ int screenshot_dump()
 	}
 }
 
-// Bitmap header structs, for cross platform purposes
-typedef struct {
-	uint16 bfType;
-	uint32 bfSize;
-	uint16 bfReserved1;
-	uint16 bfReserved2;
-	uint32 bfOffBits;
-} BitmapFileHeader;
-
-typedef struct {
-	uint32 biSize;
-	sint32 biWidth;
-	sint32 biHeight;
-	uint16 biPlanes;
-	uint16 biBitCount;
-	uint32 biCompression;
-	uint32 biSizeImage;
-	sint32 biXPelsPerMeter;
-	sint32 biYPelsPerMeter;
-	uint32 biClrUsed;
-	uint32 biClrImportant;
-} BitmapInfoHeader;
-
 /**
  *
  *  rct2: 0x00683D20
  */
 int screenshot_dump_bmp()
 {
-	BitmapFileHeader header;
-	BitmapInfoHeader info;
-
-	int i, y, index, width, height, stride;
-	char path[MAX_PATH];
-	uint8 *buffer, *row;
-	SDL_RWops *fp;
-	unsigned int bytesWritten;
-
 	// Get a free screenshot path
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_BMP)) == -1)
-		return -1;
-
-	// Open binary file for writing
-	if ((fp = SDL_RWFromFile(path, "wb")) == NULL){
+	int index;
+	char path[MAX_PATH] = "";
+	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_BMP)) == -1) {
 		return -1;
 	}
 
-	// Allocate buffer
-	buffer = malloc(0xFFFF);
-	if (buffer == NULL) {
-		SDL_RWclose(fp);
-		return -1;
-	}
-
-	// Get image size
-	width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-	stride = (width + 3) & 0xFFFFFFFC;
-
-	// File header
-	memset(&header, 0, sizeof(header));
-	header.bfType = 0x4D42;
-	header.bfSize = height * stride + 1038;
-	header.bfOffBits = 1038;
-
-	bytesWritten = SDL_RWwrite(fp, &header, sizeof(BitmapFileHeader), 1);
-	if (bytesWritten != 1) {
-		SDL_RWclose(fp);
-		SafeFree(buffer);
-		log_error("failed to save screenshot");
-		return -1;
-	}
-
-	// Info header
-	memset(&info, 0, sizeof(info));
-	info.biSize = sizeof(info);
-	info.biWidth = width;
-	info.biHeight = height;
-	info.biPlanes = 1;
-	info.biBitCount = 8;
-	info.biXPelsPerMeter = 2520;
-	info.biYPelsPerMeter = 2520;
-	info.biClrUsed = 246;
-
-	bytesWritten = SDL_RWwrite(fp, &info, sizeof(BitmapInfoHeader), 1);
-	if (bytesWritten != 1) {
-		SDL_RWclose(fp);
-		SafeFree(buffer);
-		log_error("failed to save screenshot");
-		return -1;
-	}
-
-	// Palette
-	memset(buffer, 0, 246 * 4);
-	for (i = 0; i < 246; i++) {
-		buffer[i * 4 + 0] = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
-		buffer[i * 4 + 1] = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
-		buffer[i * 4 + 2] = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
-	}
-
-	bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), 246 * 4);
-	if (bytesWritten != 246*4){
-		SDL_RWclose(fp);
-		SafeFree(buffer);
-		log_error("failed to save screenshot");
-		return -1;
-	}
-
-	// Image, save upside down
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	for (y = dpi->height - 1; y >= 0; y--) {
-		row = dpi->bits + y * (dpi->width + dpi->pitch);
 
-		memset(buffer, 0, stride);
-		memcpy(buffer, row, dpi->width);
+	rct_palette renderedPalette;
+	screenshot_get_rendered_palette(&renderedPalette);
 
-		bytesWritten = SDL_RWwrite(fp, buffer, sizeof(char), stride);
-		if (bytesWritten != stride){
-			SDL_RWclose(fp);
-			SafeFree(buffer);
-			log_error("failed to save screenshot");
-			return -1;
-		}
+	if (image_io_bmp_write(dpi, &renderedPalette, path)) {
+		return index;
+	} else {
+		return -1;
 	}
-
-	SDL_RWclose(fp);
-	free(buffer);
-
-	return index;
 }
 
 int screenshot_dump_png()
 {
+	// Get a free screenshot path
+	int index;
+	char path[MAX_PATH] = "";
+	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1) {
+		return -1;
+	}
+
 	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
 
-	int i, index, width, height, padding;
-	char path[MAX_PATH] = "";
-	unsigned int error;
-	unsigned char r, g, b, a = 255;
+	rct_palette renderedPalette;
+	screenshot_get_rendered_palette(&renderedPalette);
 
-	unsigned char* png;
-	size_t pngSize;
-	LodePNGState state;
-
-	// Get a free screenshot path
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1)
+	if (image_io_png_write(dpi, &renderedPalette, path)) {
+		return index;
+	} else {
 		return -1;
-
-
-	lodepng_state_init(&state);
-	state.info_raw.colortype = LCT_PALETTE;
-
-	// Get image size
-	width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-
-	padding = dpi->pitch;
-
-	for (i = 0; i < 256; i++) {
-		b = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
-		g = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
-		r = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
-
-		lodepng_palette_add(&state.info_raw, r, g, b, a);
 	}
-
-	uint8* pixels = dpi->bits;
-
-	if (padding > 0) {
-		pixels = malloc(width * height);
-		if (!pixels) {
-			return -1;
-		}
-		uint8* src = dpi->bits;
-		uint8* dst = pixels;
-		for (int y = height; y > 0; y--) {
-			for (int x = width; x > 0; x--) {
-				*dst++ = *src++;
-			}
-			src += padding;
-		}
-	}
-
-	error = lodepng_encode(&png, &pngSize, pixels, width, height, &state);
-	if (error) {
-		log_error("Unable to save screenshot, %u: %s", lodepng_error_text(error));
-		index = -1;
-	} else {
-		SDL_RWops *file = SDL_RWFromFile(path, "wb");
-		if (file == NULL) {
-			log_error("Unable to save screenshot, %s", SDL_GetError());
-			index = -1;
-		} else {
-			SDL_RWwrite(file, png, pngSize, 1);
-			SDL_RWclose(file);
-		}
-	}
-
-	free(png);
-	if ((utf8*)pixels != (utf8*)dpi->bits) {
-		free(pixels);
-	}
-	return index;
-}
-
-bool screenshot_write_png(rct_drawpixelinfo *dpi, const char *path)
-{
-	unsigned int error;
-	unsigned char* png;
-	size_t pngSize;
-	LodePNGState state;
-
-	lodepng_state_init(&state);
-	state.info_raw.colortype = LCT_PALETTE;
-
-	// Get image size
-	int stride = (dpi->width + 3) & ~3;
-
-	for (int i = 0; i < 256; i++) {
-		unsigned char r, g, b, a = 255;
-
-		b = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 0];
-		g = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 1];
-		r = RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[i * 4 + 2];
-
-		lodepng_palette_add(&state.info_raw, r, g, b, a);
-	}
-
-	error = lodepng_encode(&png, &pngSize, dpi->bits, stride, dpi->height, &state);
-	if (error != 0) {
-		free(png);
-		return false;
-	} else {
-		SDL_RWops *file = SDL_RWFromFile(path, "wb");
-		if (file == NULL) {
-			free(png);
-			return false;
-		}
-		SDL_RWwrite(file, png, pngSize, 1);
-		SDL_RWclose(file);
-	}
-
-	free(png);
-	return true;
 }
 
 void screenshot_giant()
@@ -436,7 +243,10 @@ void screenshot_giant()
 		return;
 	}
 
-	screenshot_write_png(&dpi, path);
+	rct_palette renderedPalette;
+	screenshot_get_rendered_palette(&renderedPalette);
+
+	image_io_png_write(&dpi, &renderedPalette, path);
 
 	free(dpi.bits);
 
@@ -487,6 +297,8 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 			customZoom = atoi(argv[6]);
 			customRotation = atoi(argv[7]) & 3;
+		} else {
+			customZoom = 0;
 		}
 	}
 
@@ -570,7 +382,10 @@ int cmdline_for_screenshot(const char **argv, int argc)
 
 		viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
-		screenshot_write_png(&dpi, outputPath);
+		rct_palette renderedPalette;
+		screenshot_get_rendered_palette(&renderedPalette);
+
+		image_io_png_write(&dpi, &renderedPalette, outputPath);
 
 		free(dpi.bits);
 	}

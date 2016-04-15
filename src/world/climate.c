@@ -29,6 +29,7 @@
 #include "../interface/window.h"
 #include "../util/util.h"
 #include "climate.h"
+#include "../cheats.h"
 
 enum {
 	THUNDER_STATUS_NULL = 0,
@@ -84,12 +85,8 @@ int climate_celsius_to_fahrenheit(int celsius)
 	return (celsius * 29) / 16 + 32;
 }
 
-// cheats
-extern int g_climate_locked;
-extern void toggle_climate_lock();
-
 /**
- *  Set climate and determine start weather.
+ * Set climate and determine start weather.
  *  rct2: 0x006C45ED
  */
 void climate_reset(int climate)
@@ -124,18 +121,11 @@ sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
 	}
 }
 
-
-//for cheats
-void toggle_climate_lock()
-{
-	g_climate_locked = !g_climate_locked;
-}
-
 /**
  * Weather & climate update iteration.
  * Gradually changes the weather parameters towards their determined next values.
  *
- * rct2: 0x006C46B1
+ *  rct2: 0x006C46B1
  */
 void climate_update()
 {
@@ -147,7 +137,7 @@ void climate_update()
 		cur_rain = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8),
 		next_rain = _climateNextRainLevel;
 
-	if (g_climate_locked) //for cheats
+	if (gCheatsFreezeClimate) //for cheats
 		return;
 
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
@@ -185,6 +175,19 @@ void climate_update()
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 		}
 	}
+
+	if (_thunderTimer != 0) {
+		climate_update_lightning();
+		climate_update_thunder();
+	} else if (_climateCurrentWeatherEffect == 2) {
+		// Create new thunder and lightning
+		unsigned int randomNumber = util_rand();
+		if ((randomNumber & 0xFFFF) <= 0x1B4) {
+			randomNumber >>= 16;
+			_thunderTimer = 43 + (randomNumber % 64);
+			_lightningTimer = randomNumber % 32;
+		}
+	}
 }
 
 void climate_force_weather(uint8 weather){
@@ -206,7 +209,7 @@ void climate_force_weather(uint8 weather){
  * for next_weather. The other weather parameters are then looked up depending only on the
  * next weather.
  *
- * rct2: 0x006C461C
+ *  rct2: 0x006C461C
  */
 static void climate_determine_future_weather(int randomDistribution)
 {
@@ -229,7 +232,7 @@ static void climate_determine_future_weather(int randomDistribution)
 
 /**
  *
- * rct2: 0x006BCB91
+ *  rct2: 0x006BCB91
  */
 void climate_update_sound()
 {
@@ -237,7 +240,7 @@ void climate_update_sound()
 		return;
 	if (gGameSoundsOff)
 		return;
-	if (!gConfigSound.sound)
+	if (!gConfigSound.sound_enabled)
 		return;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
 		return;
@@ -282,17 +285,6 @@ static void climate_update_thunder_sound()
 		// Play thunder on right side
 		_thunderStereoEcho = 0;
 		climate_play_thunder(1, _thunderSoundId, _thunderVolume, 10000);
-	} else if (_thunderTimer != 0) {
-		climate_update_lightning();
-		climate_update_thunder();
-	} else if (_climateCurrentWeatherEffect == 2) {
-		// Create new thunder and lightning
-		unsigned int randomNumber = scenario_rand();
-		if ((randomNumber & 0xFFFF) <= 0x1B4) {
-			randomNumber >>= 16;
-			_thunderTimer = 43 + (randomNumber % 64);
-			_lightningTimer = randomNumber % 32;
-		}
 	}
 
 	// Stop thunder sounds if they have finished
@@ -312,10 +304,12 @@ static void climate_update_lightning()
 	if (_lightningTimer == 0)
 		return;
 
-	_lightningTimer--;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) == 0)
-		if ((scenario_rand() & 0xFFFF) <= 0x2000)
-			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) = 1;
+	if (!gConfigGeneral.disable_lightning_effect) {
+		_lightningTimer--;
+		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) == 0)
+			if ((util_rand() & 0xFFFF) <= 0x2000)
+				RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) = 1;
+	}
 }
 
 static void climate_update_thunder()
@@ -324,7 +318,7 @@ static void climate_update_thunder()
 	if (_thunderTimer != 0)
 		return;
 
-	unsigned int randomNumber = scenario_rand();
+	unsigned int randomNumber = util_rand();
 	if (randomNumber & 0x10000) {
 		if (_thunderStatus[0] == THUNDER_STATUS_NULL && _thunderStatus[1] == THUNDER_STATUS_NULL) {
 			// Play thunder on left side

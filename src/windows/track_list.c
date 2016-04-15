@@ -30,7 +30,6 @@
 #include "error.h"
 #include "../interface/themes.h"
 #include "../rct1.h"
-#include "../network/network.h"
 
 enum {
 	WIDX_BACKGROUND,
@@ -146,13 +145,6 @@ void window_track_list_open(ride_list_item item)
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
 	window_push_others_right(w);
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 2;
-
-#ifndef NETWORK_DISABLE
-	// TODO: FIX NETWORK TRACKS
-	// Until tracks work with the network this will disable them
-	if (network_get_mode() != NETWORK_MODE_NONE)
-		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8)[0] = 0;
-#endif
 }
 
 /**
@@ -191,7 +183,7 @@ static void window_track_list_select(rct_window *w, int index)
 		1);
 
 	char track_path[MAX_PATH] = { 0 };
-	subsitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
+	substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
@@ -345,12 +337,12 @@ static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string
  */
 static void window_track_list_invalidate(rct_window *w)
 {
-	rct_ride_type *entry;
+	rct_ride_entry *entry;
 	rct_string_id stringId;
 
 	colour_scheme_update(w);
 
-	entry = GET_RIDE_ENTRY(_window_track_list_item.entry_index);
+	entry = get_ride_entry(_window_track_list_item.entry_index);
 
 	stringId = entry->name;
 	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
@@ -395,7 +387,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	uint16 holes, speed, drops, dropHeight, inversions;
 	fixed32_2dp rating;
 	int trackIndex, x, y, colour, gForces, airTime;
-	rct_g1_element tmpElement, *subsituteElement;
+	rct_g1_element tmpElement, *substituteElement;
 
 	window_draw_widgets(w, dpi);
 
@@ -420,16 +412,16 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	rct_track_td6* track_td6 = &trackDesign->track_td6;
 
-	subsituteElement = &g1Elements[0];
-	tmpElement = *subsituteElement;
-	subsituteElement->offset = image;
-	subsituteElement->width = 370;
-	subsituteElement->height = 217;
-	subsituteElement->x_offset = 0;
-	subsituteElement->y_offset = 0;
-	subsituteElement->flags = G1_FLAG_BMP;
+	substituteElement = &g1Elements[0];
+	tmpElement = *substituteElement;
+	substituteElement->offset = image;
+	substituteElement->width = 370;
+	substituteElement->height = 217;
+	substituteElement->x_offset = 0;
+	substituteElement->y_offset = 0;
+	substituteElement->flags = G1_FLAG_BMP;
 	gfx_draw_sprite(dpi, 0, x, y, 0);
-	*subsituteElement = tmpElement;
+	*substituteElement = tmpElement;
 
 	x = w->x + (widget->left + widget->right) / 2;
 	y = w->y + widget->bottom - 12;
@@ -491,9 +483,9 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		// Ride length
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = 1345;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = track_td6->ride_length;
-		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, (void*)0x013CE952, 0, x, y, 214);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 1345;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = track_td6->ride_length;
+		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, 214);
 		y += 10;
 	}
 
@@ -548,9 +540,9 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (track_td6->space_required_x != 0xFF) {
 		// Space required
-		RCT2_GLOBAL(0x013CE952 + 0, uint16) = track_td6->space_required_x;
-		RCT2_GLOBAL(0x013CE952 + 2, uint16) = track_td6->space_required_y;
-		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, (void*)0x013CE952, 0, x, y);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = track_td6->space_required_x;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = track_td6->space_required_y;
+		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 		y += 10;
 	}
 

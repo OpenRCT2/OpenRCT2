@@ -81,7 +81,7 @@ void window_map_tooltip_update_visibility()
 
 	cursorX = RCT2_GLOBAL(0x0142406C, sint32);
 	cursorY = RCT2_GLOBAL(0x01424070, sint32);
-	inputFlags = RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint8);
+	inputFlags = gInputFlags;
 
 	// Check for cursor movement
 	_cursorHoldDuration++;
@@ -95,7 +95,7 @@ void window_map_tooltip_update_visibility()
 	if (
 		_cursorHoldDuration < 25 ||
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, sint16) == -1 ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_PLACE_OBJECT_MODIFIER, uint8) & 3) ||
+		(gInputPlaceObjectModifier & 3) ||
 		window_find_by_class(WC_ERROR) != NULL
 	) {
 		window_close_by_class(WC_MAP_TOOLTIP);
@@ -148,7 +148,7 @@ static void window_map_tooltip_update(rct_window *w)
  */
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, rct_string_id) == (rct_string_id)STR_NONE)
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, rct_string_id) == STR_NONE)
 		return;
 
 	gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_MAP_TOOLTIP_ARGS, w->x + (w->width / 2), w->y + (w->height / 2), w->width, 1162, 0);

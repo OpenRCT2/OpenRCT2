@@ -304,23 +304,23 @@ static void twitch_parse_followers()
 					}
 				}
 
-				if (peep->flags & PEEP_FLAGS_TWITCH) {
+				if (peep->peep_flags & PEEP_FLAGS_TWITCH) {
 					if (member == NULL) {
 						// Member no longer peep name worthy
-						peep->flags &= ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
+						peep->peep_flags &= ~(PEEP_FLAGS_TRACKING | PEEP_FLAGS_TWITCH);
 
 						// TODO set peep name back to number / real name
 					} else {
 						if (member->shouldTrack)
-							peep->flags |= (PEEP_FLAGS_TRACKING);
+							peep->peep_flags |= (PEEP_FLAGS_TRACKING);
 						else if (!member->shouldTrack)
-							peep->flags &= ~(PEEP_FLAGS_TRACKING);
+							peep->peep_flags &= ~(PEEP_FLAGS_TRACKING);
 					}
-				} else if (member != NULL && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
+				} else if (member != NULL && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)) {
 					// Peep with same name already exists but not twitch
-					peep->flags |= PEEP_FLAGS_TWITCH;
+					peep->peep_flags |= PEEP_FLAGS_TWITCH;
 					if (member->shouldTrack)
-						peep->flags |= PEEP_FLAGS_TRACKING;
+						peep->peep_flags |= PEEP_FLAGS_TRACKING;
 				}
 			}
 		}
@@ -340,14 +340,14 @@ static void twitch_parse_followers()
 					break;
 
 				AudienceMember *member = &members[memberIndex];
-				if (!is_user_string_id(peep->name_string_idx) && !(peep->flags & PEEP_FLAGS_LEAVING_PARK)) {
+				if (!is_user_string_id(peep->name_string_idx) && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)) {
 					// Rename peep and add flags
 					rct_string_id newStringId = user_string_allocate(4, member->name);
 					if (newStringId != 0) {
 						peep->name_string_idx = newStringId;
-						peep->flags |= PEEP_FLAGS_TWITCH;
+						peep->peep_flags |= PEEP_FLAGS_TWITCH;
 						if (member->shouldTrack)
-							peep->flags |= PEEP_FLAGS_TRACKING;
+							peep->peep_flags |= PEEP_FLAGS_TRACKING;
 					}
 				} else {
 					// Peep still yet to be found for member
@@ -422,15 +422,13 @@ static void twitch_parse_chat_message(const char *message)
 
 	message++;
 	ch = strchrm(message, " \t");
-	safe_strncpy(buffer, message, ch - message);
-	buffer[ch - message] = 0;
+	safe_strcpy(buffer, message, ch - message + 1);
 	if (_strcmpi(buffer, "news") == 0) {
 		if (gConfigTwitch.enable_news) {
 			ch = strskipwhitespace(ch);
 
 			buffer[0] = (char)FORMAT_TOPAZ;
-			safe_strncpy(buffer + 1, ch, sizeof(buffer) - 2);
-			buffer[sizeof(buffer) - 2] = 0;
+			safe_strcpy(buffer + 1, ch, sizeof(buffer) - 2);
 
 			// Remove unsupport characters
 			// TODO allow when OpenRCT2 gains unicode support

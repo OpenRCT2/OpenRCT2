@@ -39,6 +39,7 @@
 #include "../management/finance.h"
 #include "dropdown.h"
 #include "../interface/themes.h"
+#include "../cheats.h"
 
 enum WINDOW_PARK_PAGE {
 	WINDOW_PARK_PAGE_ENTRANCE,
@@ -576,7 +577,7 @@ static void window_park_set_disabled_tabs(rct_window *w)
 static void window_park_prepare_window_title_text()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 }
 
 #pragma region Entrance page
@@ -612,7 +613,7 @@ void window_park_entrance_open()
  */
 static void window_park_entrance_close(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 }
@@ -645,7 +646,7 @@ static void window_park_entrance_mouseup(rct_window *w, int widgetIndex)
 		window_scroll_to_viewport(w);
 		break;
 	case WIDX_RENAME:
-		RCT2_GLOBAL(0x013CE962, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
 		break;
 	case WIDX_CLOSE_LIGHT:
@@ -689,10 +690,10 @@ static void window_park_entrance_mousedown(int widgetIndex, rct_window*w, rct_wi
 		);
 
 		if (park_is_open()) {
-			gDropdownHighlightedIndex = 0;
+			gDropdownDefaultIndex = 0;
 			dropdown_set_checked(1, true);
 		} else {
-			gDropdownHighlightedIndex = 1;
+			gDropdownDefaultIndex = 1;
 			dropdown_set_checked(0, true);
 		}
 	}
@@ -949,7 +950,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 
 	// Set open / close park button state
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-	RCT2_GLOBAL(0x013CE952 + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 	window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
 	window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
 	window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
@@ -978,7 +979,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 	window_park_entrance_widgets[WIDX_STATUS].top = w->height - 13;
 	window_park_entrance_widgets[WIDX_STATUS].bottom = w->height - 3;
 
-	if (theme_get_preset()->features.rct1_park_lights) {
+	if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK) {
 		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING) {
 			window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_FLATBTN;
@@ -1038,7 +1039,7 @@ static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_centred_clipped(
 		dpi,
 		1191,
-		(void*)0x013CE952,
+		(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 		0,
 		w->x + (labelWidget->left + labelWidget->right) / 2,
 		w->y + labelWidget->top,
@@ -1124,14 +1125,14 @@ static void window_park_init_viewport(rct_window *w)
 
 void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_PARK_INFORMATION &&
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_PARK_INFORMATION &&
 		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == WIDX_BUY_LAND_RIGHTS) {
 		tool_cancel();
 	}
 	else {
 		show_gridlines();
 		tool_set(parkWindow, widgetIndex, 2);
-		RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) |= INPUT_FLAG_6;
+		gInputFlags |= INPUT_FLAG_6;
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
 		window_land_rights_open();
 	}
@@ -1156,7 +1157,7 @@ void window_park_rating_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 	if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 		tool_cancel();
 
@@ -1272,7 +1273,7 @@ void window_park_guests_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 
@@ -1458,7 +1459,7 @@ static void window_park_price_invalidate(rct_window *w)
 
 	// If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
-		&& (!gConfigCheat.unlock_all_prices)) {
+		&& (!gCheatsUnlockAllPrices)) {
 		window_park_price_widgets[WIDX_PRICE].type = WWT_12;
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
@@ -1468,7 +1469,7 @@ static void window_park_price_invalidate(rct_window *w)
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
 	}
 
-	RCT2_GLOBAL(0x013CE952 + 6, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
 	window_park_price_widgets[WIDX_PRICE].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) == 0 ? STR_FREE : 1429;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
@@ -1489,8 +1490,6 @@ static void window_park_price_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_park_price_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_park_price_widgets[WIDX_PAGE_BACKGROUND].top + 30;
 
-	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, (void*)RCT2_ADDRESS_TOTAL_ADMISSIONS, 0, x, y);
-	y += 10;
 	gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, (void*)RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, 0, x, y);
 }
 
@@ -1585,30 +1584,32 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw park size
 	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16) * 10;
 	stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-	if (!RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, uint8)) {
+	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
 		stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
 		parkSize = squaredmetres_to_squaredfeet(parkSize);
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = parkSize;
-	gfx_draw_string_left(dpi, stringIndex, (void*)0x013CE952, 0, x, y);
+	gfx_draw_string_left(dpi, stringIndex, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	y += 10;
 
 	// Draw number of rides / attractions
 	if (w->list_information_type != (uint16)-1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = w->list_information_type;
-		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	y += 10;
 
 	// Draw number of staff
 	if (w->var_48C != -1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = w->var_48C;
-		gfx_draw_string_left(dpi, STR_STAFF_LABEL, (void*)0x013CE952, 0, x, y);
+		gfx_draw_string_left(dpi, STR_STAFF_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 	y += 10;
 
 	// Draw number of guests in park
 	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, (void*)RCT2_ADDRESS_GUESTS_IN_PARK, 0, x, y);
+	y += 10;
+	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, (void*)RCT2_ADDRESS_TOTAL_ADMISSIONS, 0, x, y);
 }
 
 #pragma endregion
@@ -1630,7 +1631,7 @@ void window_park_objective_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 
@@ -1746,9 +1747,9 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Scenario description
 	x = w->x + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
-	safe_strncpy((char*)0x009BC677, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char), 256);
+	safe_strcpy((char*)0x009BC677, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char), 256);
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = 3165;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 222, 1191, 0);
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 222, 1191, 0);
 	y += 5;
 
 	// Your objective:
@@ -1757,10 +1758,10 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Objective
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
-	RCT2_GLOBAL(0x013CE954, short) = date_get_total_months(MONTH_OCTOBER, RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8));
-	RCT2_GLOBAL(0x013CE956, int) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = date_get_total_months(MONTH_OCTOBER, RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8));
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
 
-	y += gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 221, 2385 + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8), 0);
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 221, 2385 + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8), 0);
 	y += 5;
 
 	// Objective outcome
@@ -1771,7 +1772,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		} else {
 			// Objective completed
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32);
-			gfx_draw_string_left_wrapped(dpi, (void*)0x013CE952, x, y, 222, 2788, 0);
+			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 222, 2788, 0);
 		}
 	}
 }
@@ -1795,7 +1796,7 @@ void window_park_awards_open()
 		window->viewport_focus_coordinates.y = -1;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 
@@ -1907,7 +1908,7 @@ static void window_park_set_page(rct_window *w, int page)
 {
 	int listen;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_INPUT_FLAGS, uint32) & INPUT_FLAG_TOOL_ACTIVE)
+	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
 			tool_cancel();
 
@@ -1982,7 +1983,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 			sprite_idx += (w->frame_no / 8) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 
-		sprite_idx = *RCT2_GLOBAL(0x00982708, sint32*) + 1;
+		sprite_idx = g_sprite_entries[0].sprite_image->base_image + 1;
 		if (w->page == WINDOW_PARK_PAGE_GUESTS)
 			sprite_idx += w->var_492 & 0xFFFFFFFC;
 

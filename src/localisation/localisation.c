@@ -18,12 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#ifdef _WIN32
+#include "../common.h"
+
+#ifdef __WINDOWS__
 #include <windows.h>
 #else
 #include <iconv.h>
 #include <errno.h>
-#endif // _WIN32
+#endif // __WINDOWS__
+
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
@@ -109,7 +112,8 @@ format_code_token format_code_tokens[] = {
 	{ FORMAT_SMALLUP,					"SMALLUP"				},
 	{ FORMAT_SMALLDOWN,					"SMALLDOWN"				},
 	{ FORMAT_LEFT,						"LEFT"					},
-	{ FORMAT_INVERTEDQUESTION,			"INVERTEDQUESTION"		}
+	{ FORMAT_INVERTEDQUESTION,			"INVERTEDQUESTION"		},
+	{ FORMAT_COMMA1DP16,				"COMMA1DP16"			}
 };
 
 uint32 format_get_code(const char *token)
@@ -134,6 +138,13 @@ bool utf8_is_format_code(int codepoint)
 {
 	if (codepoint < 32) return true;
 	if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END) return true;
+	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
+	if (codepoint == FORMAT_COMMA1DP16) return true;
+	return false;
+}
+
+bool utf8_is_colour_code(int codepoint)
+{
 	if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END) return true;
 	return false;
 }
@@ -275,6 +286,71 @@ void format_comma_separated_integer(char **dest, long long value)
 	*dest = finish;
 }
 
+void format_comma_separated_fixed_1dp(char **dest, long long value)
+{
+	int digit, groupIndex;
+	char *dst = *dest;
+	char *finish;
+	char tmp;
+	const char *commaMark = language_get_string(5151);
+	const char *decimalMark = language_get_string(5152);
+	const char *ch;
+
+	// Negative sign
+	if (value < 0) {
+		*dst++ = '-';
+		value = -value;
+	}
+
+	*dest = dst;
+
+	// One decimal place
+	digit = value % 10;
+	value /= 10;
+	*dst++ = '0' + digit;
+
+	ch = decimalMark;
+	while (*ch != 0) {
+		*dst++ = *ch++;
+	}
+
+	if (value == 0) {
+		*dst++ = '0';
+	} else {
+		// Groups of three digits, right to left
+		groupIndex = 0;
+		while (value > 0) {
+			// Append group separator
+			if (groupIndex == 3) {
+				groupIndex = 0;
+
+				ch = commaMark;
+				while (*ch != 0) {
+					*dst++ = *ch++;
+				}
+			}
+
+			digit = value % 10;
+			value /= 10;
+
+			*dst++ = '0' + digit;
+			groupIndex++;
+		}
+	}
+	finish = dst;
+
+	// Reverse string
+	dst--;
+	while (*dest < dst) {
+		tmp = **dest;
+		**dest = *dst;
+		*dst = tmp;
+		(*dest)++;
+		dst--;
+	}
+	*dest = finish;
+}
+
 void format_comma_separated_fixed_2dp(char **dest, long long value)
 {
 	int digit, groupIndex;
@@ -372,7 +448,7 @@ void format_currency(char **dest, long long value)
 
 	// Prefix
 	if (affix == CURRENCY_PREFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
@@ -380,7 +456,7 @@ void format_currency(char **dest, long long value)
 
 	// Currency symbol suffix
 	if (affix == CURRENCY_SUFFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }
@@ -408,7 +484,7 @@ void format_currency_2dp(char **dest, long long value)
 
 	// Prefix
 	if (affix == CURRENCY_PREFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 
@@ -421,7 +497,7 @@ void format_currency_2dp(char **dest, long long value)
 
 	// Currency symbol suffix
 	if (affix == CURRENCY_SUFFIX) {
-		safe_strncpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
+		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
 }
@@ -450,11 +526,20 @@ void format_length(char **dest, sint16 value)
 
 void format_velocity(char **dest, uint16 value)
 {
-	rct_string_id stringId = 2734;
+	rct_string_id stringId;
 
-	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_METRIC) {
+	switch (gConfigGeneral.measurement_format) {
+	default:
+		stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
+		break;
+	case MEASUREMENT_FORMAT_METRIC:
 		value = mph_to_kmph(value);
-		stringId++;
+		stringId = STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR;
+		break;
+	case MEASUREMENT_FORMAT_SI:
+		value = mph_to_dmps(value);
+		stringId = STR_UNIT_SUFFIX_METRES_PER_SECOND;
+		break;
 	}
 
 	uint16 *argRef = &value;
@@ -508,7 +593,7 @@ void format_realtime(char **dest, uint16 value)
 	(*dest)--;
 }
 
-void format_string_code(unsigned char format_code, char **dest, char **args)
+void format_string_code(unsigned int format_code, char **dest, char **args)
 {
 	int value;
 
@@ -533,6 +618,13 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		*args += 4;
 
 		format_comma_separated_fixed_2dp(dest, value);
+		break;
+		case FORMAT_COMMA1DP16:
+		// Pop argument
+		value = *((sint16*)*args);
+		*args += 2;
+
+		format_comma_separated_fixed_1dp(dest, value);
 		break;
 	case FORMAT_COMMA16:
 		// Pop argument
@@ -576,8 +668,10 @@ void format_string_code(unsigned char format_code, char **dest, char **args)
 		value = *((uint32*)*args);
 		*args += 4;
 
-		strcpy(*dest, (char*)value);
-		*dest += strlen(*dest);
+		if (value != 0) {
+			strcpy(*dest, (char*)value);
+			*dest += strlen(*dest);
+		}
 		break;
 	case FORMAT_MONTHYEAR:
 		// Pop argument
@@ -667,7 +761,7 @@ void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 			}
 		} else if (code <= 'z') {
 			*(*dest)++ = code;
-		} else if (code < 142) {
+		} else if (code < FORMAT_COLOUR_CODE_START || code == FORMAT_COMMA1DP16) {
 			format_string_code(code, dest, args);
 		} else {
 			*dest = utf8_write_codepoint(*dest, code);
@@ -677,7 +771,7 @@ void format_string_part_from_raw(utf8 **dest, const utf8 *src, char **args)
 
 void format_string_part(utf8 **dest, rct_string_id format, char **args)
 {
-	if (format == (rct_string_id)STR_NONE) {
+	if (format == STR_NONE) {
 		**dest = 0;
 	} else if (format < 0x8000) {
 		// Language string
@@ -704,6 +798,8 @@ void format_string_part(utf8 **dest, rct_string_id format, char **args)
 		*args += 4;
 	} else {
 		// ?
+		log_error("Localisation CALLPROC reached. Please contact a dev");
+		assert(false);
 		RCT2_CALLPROC_EBPSAFE(RCT2_ADDRESS(0x0095AFB8, uint32)[format]);
 	}
 }
@@ -744,16 +840,18 @@ void format_string_to_upper(utf8 *dest, rct_string_id format, void *args)
 }
 
 /**
+ *
  *  rct2: 0x006E37F7
  *  error  (eax)
  *  format (bx)
  */
-void error_string_quit(int error, rct_string_id format){
+void error_string_quit(int error, rct_string_id format)
+{
 	RCT2_GLOBAL(0x14241A0, uint32) = error;
 	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
 
 	char* error_string = RCT2_ADDRESS(0x1424080, char);
-	void* args = RCT2_ADDRESS(0x13CE952, void);
+	void* args = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void);
 	*error_string = 0;
 
 	if (format != 0xFFFF){
@@ -761,7 +859,6 @@ void error_string_quit(int error, rct_string_id format){
 	}
 	RCT2_GLOBAL(0x9E2D9C, uint32) = 1;
 	rct2_exit();
-	rct2_endupdate();
 }
 
 void generate_string_file()
@@ -799,7 +896,7 @@ void generate_string_file()
 }
 
 /**
- *  Returns a pointer to the null terminator of the given UTF-8 string.
+ * Returns a pointer to the null terminator of the given UTF-8 string.
  */
 utf8 *get_string_end(const utf8 *text)
 {
@@ -814,7 +911,7 @@ utf8 *get_string_end(const utf8 *text)
 }
 
 /**
- *  Return the number of bytes (including the null terminator) in the given UTF-8 string.
+ * Return the number of bytes (including the null terminator) in the given UTF-8 string.
  */
 size_t get_string_size(const utf8 *text)
 {
@@ -822,7 +919,7 @@ size_t get_string_size(const utf8 *text)
 }
 
 /**
- *  Return the number of visible characters (excludes format codes) in the given UTF-8 string.
+ * Return the number of visible characters (excludes format codes) in the given UTF-8 string.
  */
 int get_string_length(const utf8 *text)
 {
@@ -852,7 +949,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 {
 	size_t srcLength = strlen(src);
 
-#ifdef _WIN32
+#ifdef __WINDOWS__
 	utf16 stackBuffer[256];
 	utf16 *heapBuffer = NULL;
 	utf16 *intermediateBuffer = stackBuffer;
@@ -861,15 +958,14 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 		if (srcLength > bufferCount) {
 			bufferCount = srcLength + 4;
 			heapBuffer = malloc(bufferCount * sizeof(utf16));
+			assert(heapBuffer != NULL);
 			intermediateBuffer = heapBuffer;
 		}
 	}
 	MultiByteToWideChar(CP_ACP, 0, src, -1, intermediateBuffer, bufferCount);
 	int result = WideCharToMultiByte(CP_UTF8, 0, intermediateBuffer, -1, dst, maxBufferLength, NULL, NULL);
 
-	if (heapBuffer != NULL) {
-		free(heapBuffer);
-	}
+	free(heapBuffer);
 #else
 	//log_warning("converting %s of size %d", src, srcLength);
 	char *buffer_conv = strndup(src, srcLength);
@@ -921,7 +1017,7 @@ int win1252_to_utf8(utf8string dst, const char *src, size_t maxBufferLength)
 	//log_warning("converted %s of size %d, %d", dst, byte_diff, strlen(dst));
 	int result = byte_diff;
 	free(buffer_orig);
-#endif // _WIN32
+#endif // __WINDOWS__
 
 	return result;
 }

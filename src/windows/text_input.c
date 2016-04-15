@@ -111,21 +111,21 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 
 	// Enter in the the text input buffer any existing
 	// text.
-	if (existing_text != (rct_string_id)STR_NONE)
+	if (existing_text != STR_NONE)
 		format_string(text_input, existing_text, &existing_args);
 
 	// In order to prevent strings that exceed the maxLength
 	// from crashing the game.
 	text_input[maxLength - 1] = '\0';
 
-	utf8_remove_format_codes(text_input);
+	utf8_remove_format_codes(text_input, false);
 
 	// This is the text displayed above the input box
 	input_text_description = description;
 
 	// Work out the existing size of the window
 	char wrapped_string[512];
-	safe_strncpy(wrapped_string, text_input, 512);
+	safe_strcpy(wrapped_string, text_input, 512);
 
 	int no_lines = 0, font_height = 0;
 
@@ -175,7 +175,7 @@ void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_
 	// Enter in the the text input buffer any existing
 	// text.
 	if (existing_text != NULL)
-		safe_strncpy(text_input, existing_text, maxLength);
+		safe_strcpy(text_input, existing_text, maxLength);
 
 	// In order to prevent strings that exceed the maxLength
 	// from crashing the game.
@@ -186,7 +186,7 @@ void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_
 
 	// Work out the existing size of the window
 	char wrapped_string[512];
-	safe_strncpy(wrapped_string, text_input, 512);
+	safe_strcpy(wrapped_string, text_input, 512);
 
 	int no_lines = 0, font_height = 0;
 
@@ -273,7 +273,7 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
 
 	char wrapped_string[512];
-	safe_strncpy(wrapped_string, text_input, 512);
+	safe_strcpy(wrapped_string, text_input, 512);
 
 	// String length needs to add 12 either side of box
 	// +13 for cursor when max length.
@@ -293,19 +293,19 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		int string_length = get_string_size(wrap_pointer) - 1;
 
-		if (!cur_drawn && (gTextInputCursorPosition <= char_count + string_length)) {
+		if (!cur_drawn && (gTextInput.selection_offset <= (size_t)(char_count + string_length))) {
 			// Make a copy of the string for measuring the width.
 			char temp_string[512] = { 0 };
-			memcpy(temp_string, wrap_pointer, gTextInputCursorPosition - char_count);
+			memcpy(temp_string, wrap_pointer, gTextInput.selection_offset - char_count);
 			cursorX = w->x + 13 + gfx_get_string_width(temp_string);
 			cursorY = y;
 
 			int width = 6;
-			if ((uint32)gTextInputCursorPosition < strlen(text_input)){
+			if ((uint32)gTextInput.selection_offset < strlen(text_input)){
 				// Make a new 1 character wide string for measuring the width
 				// of the character that the cursor is under.
 				temp_string[1] = '\0';
-				temp_string[0] = text_input[gTextInputCursorPosition];
+				temp_string[0] = text_input[gTextInput.selection_offset];
 				width = max(gfx_get_string_width(temp_string) - 2, 4);
 			}
 
@@ -389,7 +389,7 @@ static void window_text_input_invalidate(rct_window *w)
 {
 	// Work out the existing size of the window
 	char wrapped_string[512];
-	safe_strncpy(wrapped_string, text_input, 512);
+	safe_strcpy(wrapped_string, text_input, 512);
 
 	int no_lines = 0, font_height = 0;
 
