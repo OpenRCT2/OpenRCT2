@@ -3826,4 +3826,4 @@ STR_5477    :Map rendering
 STR_5478    :Controls
 STR_5479    :Toolbar
 STR_5480    :Show toolbar buttons for:
-STR_5481    :Themes
+STR_5481    :主题
