@@ -998,7 +998,7 @@ void save_game()
 
 		SDL_RWops* rw = SDL_RWFromFile(gScenarioSavePath, "wb+");
 		if (rw != NULL) {
-			scenario_save(rw, 0x80000000);
+			scenario_save(rw, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0));
 			log_verbose("Saved to %s", gScenarioSavePath);
 			SDL_RWclose(rw);
 
