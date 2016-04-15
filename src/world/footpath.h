@@ -26,7 +26,9 @@
 #include "../object.h"
 
 enum {
-	PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0)
+	PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
+	PROVISIONAL_PATH_FLAG_1 = (1 << 1),
+	PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
 typedef struct {
@@ -45,6 +47,16 @@ enum {
 };
 
 #define g_pathTypeEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
+
+extern uint8 gFootpathProvisionalFlags;
+extern rct_xyz16 gFootpathProvisionalPosition;
+extern uint8 gFootpathConstructionMode;
+extern uint16 gFootpathSelectedId;
+extern uint8 gFootpathSelectedType;
+extern rct_xyz16 gFootpathConstructFromPosition;
+extern uint8 gFootpathConstructDirection;
+extern uint8 gFootpathConstructSlope;
+extern uint8 gFootpathConstructValidDirections;
 
 extern const rct_xy16 word_981D6C[4];
 

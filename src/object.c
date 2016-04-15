@@ -1226,7 +1226,7 @@ static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = 0;
+	gFootpathSelectedId = 0;
 	// Set the default path for when opening footpath window
 	for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++) {
 		rct_path_type *pathEntry2 = (rct_path_type*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
@@ -1234,10 +1234,10 @@ static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 			continue;
 		}
 		if (!(pathEntry2->flags & 4)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
+			gFootpathSelectedId = i;
 			break;
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, sint16) = i;
+		gFootpathSelectedId = i;
 	}
 
 	return true;

@@ -561,8 +561,8 @@ void window_guest_disable_widgets(rct_window* w){
 void window_guest_overview_close(rct_window *w)
 {
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE){
-		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS,rct_windowclass) &&
-			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER,rct_windownumber))
+		if (w->classification == gCurrentToolWidget.window_classification &&
+			w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 	}
 }

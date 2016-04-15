@@ -4967,7 +4967,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 		newElement->type |= direction;
 		newElement->properties.entrance.index = 0;
 		newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
-		newElement->properties.entrance.path_type = RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_ID, uint16) & 0xFF;
+		newElement->properties.entrance.path_type = gFootpathSelectedId & 0xFF;
 
 		if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_connect_edges(x, y, newElement, 1);

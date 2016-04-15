@@ -22,6 +22,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../world/footpath.h"
 
 rct_widget window_main_widgets[] = {
 	{ WWT_VIEWPORT, 0, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0xFFFFFFFE, 0xFFFF },
@@ -86,7 +87,7 @@ void window_main_open()
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B3, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_PATH_TYPE, uint8) = 0;
+	gFootpathSelectedType = 0;
 }
 
 

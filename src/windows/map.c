@@ -242,8 +242,8 @@ static void window_map_close(rct_window *w)
 {
 	free(RCT2_GLOBAL(RCT2_ADDRESS_MAP_IMAGE_DATA, uint32*));
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == w->classification &&
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, uint16) == w->number) {
+		gCurrentToolWidget.window_classification == w->classification &&
+		gCurrentToolWidget.window_number == w->number) {
 		tool_cancel();
 	}
 }
@@ -753,7 +753,7 @@ static void window_map_invalidate(rct_window *w)
 		// If any tool is active
 		if (
 			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP
+			gCurrentToolWidget.window_classification == WC_MAP
 		) {
 			// if not in set land rights mode: show the default scenario editor buttons
 			if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS) {

@@ -35,6 +35,16 @@ void footpath_interrupt_peeps(int x, int y, int z);
 void sub_6A7642(int x, int y, rct_map_element *mapElement);
 void sub_6A76E9(int rideIndex);
 
+uint8 gFootpathProvisionalFlags;
+rct_xyz16 gFootpathProvisionalPosition;
+uint8 gFootpathConstructionMode;
+uint16 gFootpathSelectedId;
+uint8 gFootpathSelectedType;
+rct_xyz16 gFootpathConstructFromPosition;
+uint8 gFootpathConstructDirection;
+uint8 gFootpathConstructSlope;
+uint8 gFootpathConstructValidDirections;
+
 const rct_xy16 word_981D6C[4] = {
 	{ -1,  0 },
 	{  0,  1 },
@@ -576,10 +586,10 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
 
 	cost = footpath_place(type, x, y, z, slope, GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_4 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY);
 	if (cost != MONEY32_UNDEFINED) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint8) = z & 0xFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) |= (1 << 1);
+		gFootpathProvisionalPosition.x = x;
+		gFootpathProvisionalPosition.y = y;
+		gFootpathProvisionalPosition.z = z & 0xFF;
+		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 
 		viewport_set_visibility(RCT2_GLOBAL(0x00F3EFA4, uint8) & 2 ? 1 : 3);
 	}
@@ -593,13 +603,13 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
  */
 void footpath_provisional_remove()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & (1 << 1)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~(1 << 1);
+	if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) {
+		gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
 
 		footpath_remove(
-			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_X, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Y, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_Z, uint16),
+			gFootpathProvisionalPosition.x,
+			gFootpathProvisionalPosition.y,
+			gFootpathProvisionalPosition.z,
 			GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
 		);
 	}
@@ -611,13 +621,13 @@ void footpath_provisional_remove()
  */
 void footpath_provisional_update()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) & PROVISIONAL_PATH_FLAG_SHOW_ARROW) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+	if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW) {
+		gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) &= ~(1 << 2);
 		map_invalidate_tile_full(
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_X, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCT_PATH_FROM_Y, uint16)
+			gFootpathConstructFromPosition.x,
+			gFootpathConstructFromPosition.y
 		);
 	}
 	footpath_provisional_remove();

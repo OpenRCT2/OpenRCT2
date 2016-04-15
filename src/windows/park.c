@@ -1125,7 +1125,7 @@ static void window_park_init_viewport(rct_window *w)
 
 void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_PARK_INFORMATION &&
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_PARK_INFORMATION &&
 		gCurrentToolWidget.widget_index == WIDX_BUY_LAND_RIGHTS) {
 		tool_cancel();
 	}

@@ -33,8 +33,9 @@
 #include "../network/network.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
-#include "dropdown.h"
 #include "../ride/track_data.h"
+#include "../world/footpath.h"
+#include "dropdown.h"
 
 /* move to ride.c */
 void sub_6B2FA9(rct_windownumber number)
@@ -638,7 +639,7 @@ static void window_ride_construction_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_CONSTRUCT:
 		window_ride_construction_construct(w);
 		// Force any footpath construction to recheck the area.
-		RCT2_GLOBAL(RCT2_ADDRESS_PROVISIONAL_PATH_FLAGS, uint8) |= (1 << 2);
+		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_2;
 		break;
 	case WIDX_DEMOLISH:
 		window_ride_construction_mouseup_demolish(w);

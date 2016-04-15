@@ -5231,13 +5231,13 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	}
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !gCheatsBuildInPauseMode && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
 
 	if ((z & 0xF) != 0) {
 		// ‘Can't construct this here…’
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = 954;
+		gGameCommandErrorText = 954;
 		return MONEY32_UNDEFINED;
 	}
 
@@ -5273,7 +5273,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	mapElement = map_get_track_element_at_of_type_from_ride(x, y, baseHeight, 0x65, rideIndex);
 	if (mapElement == NULL) {
 		if (mode != 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = 0;
+			gGameCommandErrorText = 0;
 			return MONEY32_UNDEFINED;
 		}
 
@@ -5282,12 +5282,12 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		}
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
+			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 
 		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x02) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, unsigned short) = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
+			gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 			return MONEY32_UNDEFINED;
 		}
 
