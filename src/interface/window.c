@@ -33,13 +33,13 @@
 #include "../localisation/localisation.h"
 #include "../cursors.h"
 
-#define RCT2_FIRST_WINDOW		(RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window))
-#define RCT2_LAST_WINDOW		(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) - 1)
-#define RCT2_NEW_WINDOW			(RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
+#define RCT2_FIRST_WINDOW		(g_window_list)
+#define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
+#define RCT2_NEW_WINDOW			(gWindowNextSlot)
 
-#define MAX_NUMBER_WINDOWS 11
-
-rct_window* g_window_list = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_LIST, rct_window);
+rct_window g_window_list[MAX_WINDOW_COUNT];
+rct_window * gWindowFirst;
+rct_window * gWindowNextSlot;
 
 uint16 TextInputDescriptionArgs[4];
 widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
@@ -393,7 +393,7 @@ rct_window *window_create(int x, int y, int width, int height, rct_window_event_
 {
 	rct_window *w;
 	// Check if there are any window slots left
-	if (RCT2_NEW_WINDOW >= &(g_window_list[MAX_NUMBER_WINDOWS])) {
+	if (RCT2_NEW_WINDOW >= &(g_window_list[MAX_WINDOW_COUNT])) {
 		// Close least recently used window
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
@@ -1196,7 +1196,7 @@ rct_window *window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
  */
 void window_push_others_right(rct_window* window)
 {
-	for (rct_window* w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+	for (rct_window* w = g_window_list; w < gWindowNextSlot; w++) {
 		if (w == window)
 			continue;
 		if (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))
@@ -1351,7 +1351,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 				rct_window* w2 = w;
 				while (1) {
 					w2++;
-					if (w2 >= RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*)) {
+					if (w2 >= gWindowNextSlot) {
 						found = 1;
 						break;
 					}

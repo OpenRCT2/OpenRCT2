@@ -337,7 +337,7 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 	windowDPI->height = bottom - top;
 	windowDPI->pitch = screenDPI->width + screenDPI->pitch + left - right;
 
-	for (w = g_window_list; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++) {
+	for (w = g_window_list; w < gWindowNextSlot; w++) {
 		if (w->flags & WF_TRANSPARENT)
 			continue;
 		if (right <= w->x || bottom <= w->y)

@@ -38,12 +38,9 @@
 #include "viewport.h"
 #include "window.h"
 
-#define RCT2_FIRST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport))
-#define RCT2_LAST_VIEWPORT		(RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport) - 1)
-
 //#define DEBUG_SHOW_DIRTY_BOX
 
-rct_viewport* g_viewport_list = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_LIST, rct_viewport);
+rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 
 typedef struct paint_struct paint_struct;
 
@@ -92,14 +89,13 @@ void viewport_init_all()
 	colours_init_maps();
 
 	// Setting up windows
-	RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*) = g_window_list;
+	gWindowNextSlot = g_window_list;
 	RCT2_GLOBAL(0x01423604, sint32) = 0;
 
 	// Setting up viewports
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < MAX_VIEWPORT_COUNT; i++) {
 		g_viewport_list[i].width = 0;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*) = NULL;
 
 	// ?
 	gInputFlags = 0;
@@ -167,11 +163,16 @@ void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_view
 */
 void viewport_create(rct_window *w, int x, int y, int width, int height, int zoom, int center_x, int center_y, int center_z, char flags, sint16 sprite)
 {
-	rct_viewport* viewport;
-	for (viewport = g_viewport_list; viewport->width != 0; viewport++){
-		if (viewport > RCT2_LAST_VIEWPORT){
-			error_string_quit(0xFF000001, -1);
+	rct_viewport* viewport = NULL;
+	for (int i = 0; i < MAX_VIEWPORT_COUNT; i++) {
+		if (g_viewport_list[i].width == 0) {
+			viewport = &g_viewport_list[i];
+			break;
 		}
+	}
+	if (viewport == NULL) {
+		log_error("No more viewport slots left to allocate.");
+		return;
 	}
 
 	viewport->x = x;
@@ -220,15 +221,7 @@ void viewport_create(rct_window *w, int x, int y, int width, int height, int zoo
  */
 void viewport_update_pointers()
 {
-	rct_viewport *viewport;
-	rct_viewport **vp = RCT2_ADDRESS(RCT2_ADDRESS_ACTIVE_VIEWPORT_PTR_ARRAY, rct_viewport*);
 
-	// The last possible viewport entry is 1 before what is the active viewport_ptr_array
-	for (viewport = g_viewport_list; viewport <= RCT2_LAST_VIEWPORT; viewport++)
-		if (viewport->width != 0)
-			*vp++ = viewport;
-
-	*vp = NULL;
 }
 
 /**
@@ -324,7 +317,7 @@ void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 {
 	// sub-divide by intersecting windows
-	if (window < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*))
+	if (window < gWindowNextSlot)
 	{
 		// skip current window and non-intersecting windows
 		if (viewport == window->viewport                                ||
@@ -445,7 +438,7 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_d
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
 
-	for (; w < RCT2_GLOBAL(RCT2_ADDRESS_NEW_WINDOW_PTR, rct_window*); w++){
+	for (; w < gWindowNextSlot; w++){
 		if (!(w->flags & WF_TRANSPARENT)) continue;
 		if (w->viewport == viewport) continue;
 
