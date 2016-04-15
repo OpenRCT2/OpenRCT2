@@ -1003,11 +1003,11 @@ int widget_is_active_tool(rct_window *w, int widgetIndex)
 {
 	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != w->classification)
+	if (gCurrentToolWidget.window_classification != w->classification)
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) != w->number)
+	if (gCurrentToolWidget.window_number != w->number)
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != widgetIndex)
+	if (gCurrentToolWidget.widget_index != widgetIndex)
 		return 0;
 
 	return 1;

@@ -489,8 +489,8 @@ void window_scenery_open()
  *  rct2: 0x0066DB3D
  */
 bool window_scenery_is_scenery_tool_active() {
-	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
-	int toolWidgetIndex = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16);
+	int toolWindowClassification = gCurrentToolWidget.window_classification;
+	int toolWidgetIndex = gCurrentToolWidget.widget_index;
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == 9) // 9 is WIDX_SCENERY
@@ -739,25 +739,25 @@ static void window_scenery_update(rct_window *w)
 	}
 
 	if (window_scenery_is_repaint_scenery_tool_on == 1) { // the repaint scenery tool is active
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x17;
+		gCurrentToolId = 0x17;
 	} else {
 		uint16 tabIndex = window_scenery_active_tab_index;
 		sint16 tabSelectedSceneryId = window_scenery_selected_scenery_by_tab[tabIndex];
 
 		if (tabSelectedSceneryId != -1) {
 			if (tabSelectedSceneryId >= 0x400) { // banner
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x18;
+				gCurrentToolId = 0x18;
 			} else if (tabSelectedSceneryId >= 0x300) { // large scenery
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+				gCurrentToolId =
 					g_largeSceneryEntries[tabSelectedSceneryId - 0x300]->large_scenery.tool_id;
 			} else if (tabSelectedSceneryId >= 0x200) { // wall
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+				gCurrentToolId =
 					g_wallSceneryEntries[tabSelectedSceneryId - 0x200]->wall.tool_id;
 			} else if (tabSelectedSceneryId >= 0x100) { // path bit
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+				gCurrentToolId =
 					g_pathBitSceneryEntries[tabSelectedSceneryId - 0x100]->path_bit.tool_id;
 			} else { // small scenery
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) =
+				gCurrentToolId =
 					g_smallSceneryEntries[tabSelectedSceneryId]->small_scenery.tool_id;
 			}
 		}

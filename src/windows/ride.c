@@ -1285,8 +1285,8 @@ rct_window *window_ride_main_open(int rideIndex)
 	}
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
-		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
-			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+		if (w->classification == gCurrentToolWidget.window_classification &&
+			w->number == gCurrentToolWidget.window_number
 		) {
 			tool_cancel();
 		}
@@ -1332,8 +1332,8 @@ rct_window *window_ride_open_station(int rideIndex, int stationIndex)
 
 	if (
 		gInputFlags & INPUT_FLAG_TOOL_ACTIVE &&
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == w->classification &&
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) == w->number
+		gCurrentToolWidget.window_classification == w->classification &&
+		gCurrentToolWidget.window_number == w->number
 	) {
 		tool_cancel();
 	}
@@ -1411,8 +1411,8 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
 
 		if (
 			gInputFlags & INPUT_FLAG_TOOL_ACTIVE &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == w->classification &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) == w->number
+			gCurrentToolWidget.window_classification == w->classification &&
+			gCurrentToolWidget.window_number == w->number
 		) {
 			tool_cancel();
 		}
@@ -1476,7 +1476,7 @@ static void window_ride_set_page(rct_window *w, int page)
 	int listen;
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
 	// Set listen only to viewport
@@ -3824,10 +3824,10 @@ static void window_ride_colour_close(rct_window *w)
 	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != w->classification)
+	if (gCurrentToolWidget.window_classification != w->classification)
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) != w->number)
+	if (gCurrentToolWidget.window_number != w->number)
 		return;
 
 	tool_cancel();

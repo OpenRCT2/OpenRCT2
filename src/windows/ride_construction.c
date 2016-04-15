@@ -585,8 +585,8 @@ static void window_ride_construction_close(rct_window *w)
 	// In order to cancel the yellow arrow correctly the
 	// selection tool should be cancelled. Don't do a tool cancel if
 	// another window has already taken control of tool.
-	if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
-		w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+	if (w->classification == gCurrentToolWidget.window_classification &&
+		w->number == gCurrentToolWidget.window_number)
 		tool_cancel();
 
 	hide_gridlines();
@@ -1975,7 +1975,7 @@ static void window_ride_construction_update(rct_window *w)
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
 		if (
 			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_RIDE_CONSTRUCTION
+			gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION
 		) {
 			tool_cancel();
 		}
@@ -3957,7 +3957,7 @@ void game_command_callback_place_ride_entrance_or_exit(int eax, int ebx, int ecx
 	} else {
 		RCT2_GLOBAL(0x00F44191, uint8) ^= 1;
 		window_invalidate_by_class(77);
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = (RCT2_GLOBAL(0x00F44191, uint8) == 0) ?
+		gCurrentToolWidget.widget_index = (RCT2_GLOBAL(0x00F44191, uint8) == 0) ?
 			WIDX_ENTRANCE : WIDX_EXIT;
 	}
 }

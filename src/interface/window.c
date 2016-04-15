@@ -1766,9 +1766,9 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 {
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 		if (
-			w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
-			w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
-			widgetIndex == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16)
+			w->classification == gCurrentToolWidget.window_classification &&
+			w->number == gCurrentToolWidget.window_number &&
+			widgetIndex == gCurrentToolWidget.widget_index
 		) {
 			tool_cancel();
 			return 1;
@@ -1779,10 +1779,10 @@ int tool_set(rct_window *w, int widgetIndex, int tool)
 
 	gInputFlags |= INPUT_FLAG_TOOL_ACTIVE;
 	gInputFlags &= ~INPUT_FLAG_6;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = tool;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) = w->classification;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) = w->number;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = widgetIndex;
+	gCurrentToolId = tool;
+	gCurrentToolWidget.window_classification = w->classification;
+	gCurrentToolWidget.window_number = w->number;
+	gCurrentToolWidget.widget_index = widgetIndex;
 	return 0;
 }
 
@@ -1803,21 +1803,21 @@ void tool_cancel()
 		// Reset map selection
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != 0xFFFF) {
+		if (gCurrentToolWidget.widget_index != 0xFFFF) {
 			// Invalidate tool widget
 			widget_invalidate_by_number(
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16)
+				gCurrentToolWidget.window_classification,
+				gCurrentToolWidget.window_number,
+				gCurrentToolWidget.widget_index
 			);
 
 			// Abort tool event
 			w = window_find_by_number(
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+				gCurrentToolWidget.window_classification,
+				gCurrentToolWidget.window_number
 			);
 			if (w != NULL)
-				window_event_tool_abort_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16));
+				window_event_tool_abort_call(w, gCurrentToolWidget.widget_index);
 		}
 	}
 }

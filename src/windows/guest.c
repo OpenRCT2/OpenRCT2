@@ -664,8 +664,8 @@ void window_guest_overview_mouse_up(rct_window *w, int widgetIndex)
 void window_guest_set_page(rct_window* w, int page){
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 	{
-		if(w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
-		   w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass))
+		if(w->number == gCurrentToolWidget.window_number &&
+		   w->classification == gCurrentToolWidget.window_classification)
 			tool_cancel();
 
 	}

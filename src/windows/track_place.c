@@ -451,7 +451,7 @@ static void window_track_place_mouseup(rct_window *w, int widgetIndex)
 static void window_track_place_update(rct_window *w)
 {
 	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TRACK_DESIGN_PLACE)
+		if (gCurrentToolWidget.window_classification != WC_TRACK_DESIGN_PLACE)
 			window_close(w);
 }
 

@@ -741,8 +741,8 @@ static void window_map_invalidate(rct_window *w)
 		// scenario editor: build park entrance selected, show rotate button
 		if (
 			(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_MAP &&
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == WIDX_BUILD_PARK_ENTRANCE
+			gCurrentToolWidget.window_classification == WC_MAP &&
+			gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE
 		) {
 			w->widgets[WIDX_ROTATE_90].type = WWT_FLATBTN;
 		}
@@ -756,7 +756,7 @@ static void window_map_invalidate(rct_window *w)
 			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_MAP
 		) {
 			// if not in set land rights mode: show the default scenario editor buttons
-			if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_SET_LAND_RIGHTS) {
+			if (gCurrentToolWidget.widget_index != WIDX_SET_LAND_RIGHTS) {
 				window_map_show_default_scenario_editor_buttons(w);
 			} else { // if in set land rights mode: show land tool buttons + modes
 				w->widgets[WIDX_LAND_TOOL].type = WWT_IMGBTN;

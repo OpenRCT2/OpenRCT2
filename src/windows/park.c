@@ -614,7 +614,7 @@ void window_park_entrance_open()
 static void window_park_entrance_close(rct_window *w)
 {
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 }
 
@@ -1126,7 +1126,7 @@ static void window_park_init_viewport(rct_window *w)
 void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex)
 {
 	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, uint8) == WC_PARK_INFORMATION &&
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == WIDX_BUY_LAND_RIGHTS) {
+		gCurrentToolWidget.widget_index == WIDX_BUY_LAND_RIGHTS) {
 		tool_cancel();
 	}
 	else {
@@ -1158,7 +1158,7 @@ void window_park_rating_open()
 	}
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-	if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+	if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 		tool_cancel();
 
 	window->viewport = NULL;
@@ -1274,7 +1274,7 @@ void window_park_guests_open()
 	}
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
 	window->viewport = NULL;
@@ -1632,7 +1632,7 @@ void window_park_objective_open()
 	}
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
 	window->viewport = NULL;
@@ -1797,7 +1797,7 @@ void window_park_awards_open()
 	}
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (window->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && window->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		if (window->classification == gCurrentToolWidget.window_classification && window->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
 	window->viewport = NULL;
@@ -1909,7 +1909,7 @@ static void window_park_set_page(rct_window *w, int page)
 	int listen;
 
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 
 	// Set listen only to viewport

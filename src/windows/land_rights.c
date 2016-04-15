@@ -239,9 +239,9 @@ static int window_land_rights_should_close()
 {
 	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return 1;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_PARK_INFORMATION)
+	if (gCurrentToolWidget.window_classification != WC_PARK_INFORMATION)
 		return 1;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != 14)
+	if (gCurrentToolWidget.widget_index != 14)
 		return 1;
 	return 0;
 }

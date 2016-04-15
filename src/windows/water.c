@@ -258,9 +258,9 @@ static int window_water_should_close()
 {
 	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return 1;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
+	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
 		return 1;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != 8)
+	if (gCurrentToolWidget.widget_index != 8)
 		return 1;
 	return 0;
 }

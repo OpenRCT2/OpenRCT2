@@ -184,10 +184,10 @@ void window_staff_list_open()
 }
 
 void window_staff_list_cancel_tools(rct_window *w) {
-	int toolWindowClassification = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass);
-	int toolWindowNumber = RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber);
+	int toolWindowClassification = gCurrentToolWidget.window_classification;
+	int toolWindowNumber = gCurrentToolWidget.window_number;
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
-		if (w->classification == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) && w->number == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber))
+		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
 }
 

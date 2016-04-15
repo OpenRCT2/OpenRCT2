@@ -481,16 +481,16 @@ static void window_footpath_update(rct_window *w)
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_LAND) {
 		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 			window_close(w);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
+		else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
 			window_close(w);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_ON_LAND)
+		else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_ON_LAND)
 			window_close(w);
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_PATH_CONSTRUCTION_MODE, uint8) == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL) {
 		if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 			window_close(w);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_FOOTPATH)
+		else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
 			window_close(w);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
+		else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
 			window_close(w);
 	}
 }

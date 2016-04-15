@@ -1637,7 +1637,7 @@ static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int 
 	if (
 		_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT ||
 		!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE) ||
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_RIDE_CONSTRUCTION
+		gCurrentToolWidget.window_classification != WC_RIDE_CONSTRUCTION
 	) {
 		// Replace entrance / exit
 		tool_set(constructionWindow, entranceType == 0 ? 29 : 30, 12);
@@ -1655,7 +1655,7 @@ static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int 
 	} else {
 		// Remove entrance / exit
 		game_do_command(x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, bl, 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? 29 : 30;
+		gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? 29 : 30;
 		RCT2_GLOBAL(0x00F44191, uint8) = entranceType;
 	}
 
@@ -5237,8 +5237,8 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	// to set the track to its final state and clean up ghosts.
 	// We can't just call close as it would cause a stack overflow during shop creation
 	// with auto open on.
-	if (WC_RIDE_CONSTRUCTION == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) &&
-		rideIndex == RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber) &&
+	if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification &&
+		rideIndex == gCurrentToolWidget.window_number &&
 		(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		window_close_by_number(WC_RIDE_CONSTRUCTION, rideIndex);
 

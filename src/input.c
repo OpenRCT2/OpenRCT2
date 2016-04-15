@@ -86,6 +86,9 @@ widget_ref gTooltipWidget;
 sint32 gTooltipCursorX;
 sint32 gTooltipCursorY;
 
+uint8 gCurrentToolId;
+widget_ref gCurrentToolWidget;
+
 static void game_get_next_input(int *x, int *y, int *state);
 static void input_widget_over(int x, int y, rct_window *w, int widgetIndex);
 static void input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, int widgetIndex);
@@ -386,25 +389,25 @@ static void game_handle_input_mouse(int x, int y, int state)
 			}
 
 			w = window_find_by_number(
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+				gCurrentToolWidget.window_classification,
+				gCurrentToolWidget.window_number
 			);
 			if (w == NULL) {
 				break;
 			}
 
-			window_event_tool_drag_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
+			window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, x, y);
 			break;
 		case MOUSE_STATE_LEFT_RELEASE:
 			gInputState = INPUT_STATE_RESET;
 			if (_dragWidget.window_number == w->number) {
 				if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE)) {
 					w = window_find_by_number(
-						RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-						RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+						gCurrentToolWidget.window_classification,
+						gCurrentToolWidget.window_number
 						);
 					if (w != NULL) {
-						window_event_tool_up_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
+						window_event_tool_up_call(w, gCurrentToolWidget.widget_index, x, y);
 					}
 				} else if (!(gInputFlags & INPUT_FLAG_4)) {
 					viewport_interaction_left_click(x, y);
@@ -1008,11 +1011,11 @@ static void input_widget_left(int x, int y, rct_window *w, int widgetIndex)
 		_dragWidget.window_number = windowNumber;
 		if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE) {
 			w = window_find_by_number(
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-				RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+				gCurrentToolWidget.window_classification,
+				gCurrentToolWidget.window_number
 				);
 			if (w != NULL) {
-				window_event_tool_down_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
+				window_event_tool_down_call(w, gCurrentToolWidget.widget_index, x, y);
 				gInputFlags |= INPUT_FLAG_4;
 			}
 		}
@@ -1075,10 +1078,10 @@ void process_mouse_over(int x, int y)
 					}
 					break;
 				}
-				cursorId = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8);
+				cursorId = gCurrentToolId;
 				subWindow = window_find_by_number(
-					RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-					RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+					gCurrentToolWidget.window_classification,
+					gCurrentToolWidget.window_number
 					);
 				ebp = (int)subWindow;
 				if (subWindow == NULL)
@@ -1153,14 +1156,14 @@ void process_mouse_tool(int x, int y)
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 	{
 		rct_window* w = window_find_by_number(
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass),
-			RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWNUMBER, rct_windownumber)
+			gCurrentToolWidget.window_classification,
+			gCurrentToolWidget.window_number
 			);
 
 		if (!w)
 			tool_cancel();
 		else
-			window_event_tool_update_call(w, RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16), x, y);
+			window_event_tool_update_call(w, gCurrentToolWidget.widget_index, x, y);
 
 	}
 }

@@ -1809,7 +1809,7 @@ void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 void top_toolbar_tool_update_land(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) == 3){
+	if (gCurrentToolId == 3){
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
 			return;
 
@@ -1979,7 +1979,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 void top_toolbar_tool_update_water(sint16 x, sint16 y){
 	map_invalidate_selection_rect();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) == 3){
+	if (gCurrentToolId == 3){
 		if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
 			return;
 
@@ -2573,7 +2573,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 			);
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
+		gCurrentToolId = 12;
 		break;
 	case WIDX_LAND:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
@@ -2587,12 +2587,12 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 				);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 3;
+			gCurrentToolId = 3;
 		}
 		break;
 	case WIDX_WATER:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16)&(1 << 0)){
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 3;
+			gCurrentToolId = 3;
 		}
 		break;
 	case WIDX_SCENERY:
@@ -2776,7 +2776,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 		);
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
+		gCurrentToolId = 12;
 		break;
 	case WIDX_LAND:
 		// Custom setting to only change land style instead of raising or lowering land
@@ -2793,7 +2793,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 					);
 				// The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change cursor
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 12;
+				gCurrentToolId = 12;
 			}
 		} else {
 			window_top_toolbar_land_tool_drag(x, y);
@@ -2819,17 +2819,17 @@ static void window_top_toolbar_tool_up(rct_window* w, int widgetIndex, int x, in
 	case WIDX_LAND:
 		map_invalidate_selection_rect();
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x12;
+		gCurrentToolId = 0x12;
 		break;
 	case WIDX_WATER:
 		map_invalidate_selection_rect();
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x13;
+		gCurrentToolId = 0x13;
 		break;
 	case WIDX_CLEAR_SCENERY:
 		map_invalidate_selection_rect();
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= 0xFFFE;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TOOL, uint8) = 0x0C;
+		gCurrentToolId = 0x0C;
 		break;
 	}
 }
@@ -3143,7 +3143,7 @@ void toggle_footpath_window()
  */
 void toggle_land_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 7) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 7) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3160,7 +3160,7 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex)
  */
 void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 16) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 16) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3177,7 +3177,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
  */
 void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 {
-	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) == WC_TOP_TOOLBAR && RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) == 8) {
+	if ((gInputFlags & INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == WC_TOP_TOOLBAR && gCurrentToolWidget.widget_index == 8) {
 		tool_cancel();
 	} else {
 		show_gridlines();
@@ -3196,9 +3196,9 @@ bool land_tool_is_active()
 {
 	if (!(gInputFlags & INPUT_FLAG_TOOL_ACTIVE))
 		return false;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WINDOWCLASS, rct_windowclass) != WC_TOP_TOOLBAR)
+	if (gCurrentToolWidget.window_classification != WC_TOP_TOOLBAR)
 		return false;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOOL_WIDGETINDEX, uint16) != WIDX_LAND)
+	if (gCurrentToolWidget.widget_index != WIDX_LAND)
 		return false;
 	return true;
 }

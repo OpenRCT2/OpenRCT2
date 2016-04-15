@@ -88,6 +88,9 @@ extern widget_ref gTooltipWidget;
 extern sint32 gTooltipCursorX;
 extern sint32 gTooltipCursorY;
 
+extern uint8 gCurrentToolId;
+extern widget_ref gCurrentToolWidget;
+
 void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
