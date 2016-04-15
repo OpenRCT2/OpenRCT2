@@ -658,7 +658,10 @@ void platform_resolve_user_data_path()
 	const char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (gCustomUserDataPath[0] != 0) {
-		realpath(gCustomUserDataPath, _userDataDirectoryPath);
+		if (realpath(gCustomUserDataPath, _userDataDirectoryPath) == NULL) {
+			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
+			return;
+		}
 
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
@@ -703,7 +706,10 @@ void platform_resolve_openrct_data_path()
 	const char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (gCustomOpenrctDataPath[0] != 0) {
-		realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath);
+		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath)) {
+			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
+			return;
+		}
 
 		// Ensure path ends with separator
 		int len = strlen(_openrctDataDirectoryPath);
