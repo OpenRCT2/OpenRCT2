@@ -151,7 +151,7 @@ static void window_track_place_draw_mini_preview()
 		if (track->type != RIDE_TYPE_MAZE) {
 			#pragma region Track
 
-			rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) + get_current_rotation();
+			rotation = _currentTrackPieceDirection + get_current_rotation();
 			trackElement = RCT2_ADDRESS(0x009D821B, rct_track_element);
 
 			while (trackElement->type != 255) {
@@ -250,7 +250,7 @@ static void window_track_place_draw_mini_preview()
 		} else {
 			#pragma region Maze
 
-			rotation = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) + get_current_rotation()) & 3;
+			rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 			mazeElement = RCT2_ADDRESS(0x009D821B, rct_maze_element);
 			while (mazeElement->all != 0) {
 				x = mazeElement->x * 32;
@@ -395,7 +395,7 @@ void window_track_place_open()
 	show_gridlines();
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
 	_window_track_place_last_x = 0xFFFF;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = (2 - get_current_rotation()) & 3;
+	_currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 	window_track_place_draw_mini_preview();
 }
 

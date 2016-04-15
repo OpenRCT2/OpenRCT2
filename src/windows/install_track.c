@@ -120,7 +120,7 @@ void window_install_track_open(const char* path)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*) = mem;
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 2;
+	_currentTrackPieceDirection = 2;
 	reset_track_list_cache();
 
 	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 201;
@@ -227,8 +227,8 @@ static void window_install_track_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_ROTATE:
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)++;
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) %= 4;
+		_currentTrackPieceDirection++;
+		_currentTrackPieceDirection %= 4;
 		window_invalidate(w);
 		break;
 	case WIDX_TOGGLE_SCENERY:
