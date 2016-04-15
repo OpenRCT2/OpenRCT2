@@ -86,7 +86,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Extracting from original files: Ted John (IntelOrca)
 * Reviewing and merging: Rune Laenen (runelaenen), Michael Steenbeek (Gymnasiast)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
-* Miscellaneous fixes: Overv
+* Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: LRFLEW, mike-koch
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
