@@ -154,7 +154,7 @@ if ($pushBuilds)
     if ($symbols)
     {
         Write-Host "Sending symbols to OpenRCT2.org"    -ForegroundColor Cyan
-        Push-Build -file      ".\artifacts\openrct2-symbols.zip" `
+        Push-Build -file      ".\artifacts\openrct2-symbols-${env:APPVEYOR_REPO_COMMIT_SHORT}.zip" `
                    -name      "$pushFileName-symbols.zip"                `
                    -version   $version                           `
                    -flavourId 5
