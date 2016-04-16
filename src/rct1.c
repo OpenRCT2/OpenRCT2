@@ -2081,31 +2081,6 @@ static const uint8 RCT1RideTypeConversionTable[] = {
 	RIDE_TYPE_DRINK_STALL
 };
 
-static char *RCT1ScenarioDetails[] = {
-	"Deep in the forest, build a thriving theme park in a large cleared area",
-	"Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion",
-	"Starting from scratch, build a theme park around a large lake",
-	"Diamond Heights is already a successful theme park with great rides - develop it to double its value",
-	"Convert the beautiful Evergreen Gardens into a thriving theme park",
-	"Develop Bumbly Beach's small amusement park into a thriving theme park",
-	"Several islands form the basis for this new park",
-	"A small theme park with a few rides and room for expansion - Your aim is to double the park value",
-	"A small, cramped amusement park which requires major expansion",
-	"A park with some excellent water-based rides requires expansion",
-	"Convert a large abandoned mine from a tourist attraction into a theme park",
-	"A large park hidden in the forest, with only go-kart tracks and wooden roller coasters",
-	"This theme park has some well-designed modern rides, but plenty of space for expansion",
-	"In the hilly forests of Mystic Mountain, build a theme park from scratch",
-	"Convert the Egyptian Ruins tourist attraction into a thriving theme park",
-	"A large park with well-designed but rather old rides - Replace the old rides or add new rides to make the park more popular",
-	"Convert this sleepy town's pier into a thriving attraction",
-	"The beautiful mountains of Lightning Peaks are popular with walkers and sightseers - Use the available land to attract a new thrill-seeking clientele",
-	"A well-established park, which has a few problems",
-	"Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park",
-	"Thunder Rock stands in the middle of a desert and attracts many tourists - Use the available space to build rides to attract more people",
-	"Just for fun!",
-};
-
 static int rct1_get_sc_number(const char *path)
 {
 	const char *filename = path_get_filename(path);
@@ -2158,9 +2133,19 @@ bool rct1_load_scenario(const char *path)
 
 	int scNumber = rct1_get_sc_number(path);
 	if (scNumber != -1) {
-		if (scNumber >= 0 && scNumber < countof(RCT1ScenarioDetails)) {
-			rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-			strcpy(s6Info->details, RCT1ScenarioDetails[scNumber]);
+		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+		source_desc sourceDesc;
+		if (scenario_get_source_desc_by_id(scNumber, &sourceDesc)) {
+			rct_string_id localisedStringIds[3];
+			if (language_get_localised_scenario_strings(sourceDesc.title, localisedStringIds)) {
+				if (localisedStringIds[0] != STR_NONE) {
+					safe_strcpy(s6Info->name, language_get_string(localisedStringIds[0]), 64);
+				}
+				if (localisedStringIds[2] != STR_NONE) {
+					safe_strcpy(s6Info->details, language_get_string(localisedStringIds[2]), 256);
+				}
+			}
 		}
 	}
 
