@@ -2260,13 +2260,13 @@ void window_update_viewport_ride_music()
 
 		switch (viewport->zoom) {
 		case 0:
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 0;
+			gVolumeAdjustZoom = 0;
 			break;
 		case 1:
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 30;
+			gVolumeAdjustZoom = 30;
 			break;
 		default:
-			RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) = 60;
+			gVolumeAdjustZoom = 60;
 			break;
 		}
 		break;

@@ -981,7 +981,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, gAudioDeviceCount);
 
-			dropdown_set_checked(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32), true);
+			dropdown_set_checked(gAudioCurrentDevice, true);
 			break;
 		case WIDX_TITLE_MUSIC_DROPDOWN:
 			num_items = 4;
@@ -1313,7 +1313,6 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 static void window_options_invalidate(rct_window *w)
 {
 	rct_widget* widget;
-	sint32 currentSoundDevice;
 
 	colour_scheme_update(w);
 
@@ -1428,21 +1427,19 @@ static void window_options_invalidate(rct_window *w)
 		break;
 
 	case WINDOW_OPTIONS_PAGE_AUDIO:
-		currentSoundDevice = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32);
-
 		// sound devices
-		if (currentSoundDevice == -1 || gAudioDeviceCount == 0) {
+		if (gAudioCurrentDevice == -1 || gAudioDeviceCount == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SOUND_NONE;
 		}
 		else {
 #ifndef __LINUX__
-			if (currentSoundDevice == 0)
+			if (gAudioCurrentDevice == 0)
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 5510;
 			else
 #endif // __LINUX__
 				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 1170;
 
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = (uint32)gAudioDevices[currentSoundDevice].name;
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = (uint32)gAudioDevices[gAudioCurrentDevice].name;
 		}
 
 		// music: on/off

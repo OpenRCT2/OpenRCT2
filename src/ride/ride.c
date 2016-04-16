@@ -3337,43 +3337,40 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
 	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
-		RCT2_GLOBAL(0x009AF47C, uint16) = sampleRate;
-		sint16 v11;
-		sint16 v12;
+		rct_xy16 rotatedCoords;
+
 		switch (get_current_rotation()) {
 			case 0:
-				v11 = y - x;
-				v12 = ((y + x) / 2) - z;
+				rotatedCoords.x = y - x;
+				rotatedCoords.y = ((y + x) / 2) - z;
 				break;
 			case 1:
-				v11 = -x - y;
-				v12 = ((y - x) / 2) - z;
+				rotatedCoords.x = -x - y;
+				rotatedCoords.y = ((y - x) / 2) - z;
 				break;
 			case 2:
-				v11 = x - y;
-				v12 = ((-y - x) / 2) - z;
+				rotatedCoords.x = x - y;
+				rotatedCoords.y = ((-y - x) / 2) - z;
 				break;
 			case 3:
-				v11 = y + x;
-				v12 = ((x - y) / 2) - z;
+				rotatedCoords.x = y + x;
+				rotatedCoords.y = ((x - y) / 2) - z;
 				break;
 		}
-		RCT2_GLOBAL(0x009AF5A0, sint16) = v11;
-		RCT2_GLOBAL(0x009AF5A2, sint16) = v12;
 		rct_viewport* viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
 		sint16 view_width = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width;
 		sint16 view_width2 = view_width * 2;
 		sint16 view_x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x - view_width2;
 		sint16 view_y = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y - view_width;
-		sint16 v16 = view_width2 + view_width2 + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + view_x;
-		sint16 v17 = view_width + view_width + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + view_y;
-		if (view_x >= RCT2_GLOBAL(0x009AF5A0, sint16) ||
-			view_y >= RCT2_GLOBAL(0x009AF5A2, sint16) ||
-			v16 < RCT2_GLOBAL(0x009AF5A0, sint16) ||
-			v17 < RCT2_GLOBAL(0x009AF5A2, sint16)) {
+		sint16 view_x2 = view_width2 + view_width2 + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + view_x;
+		sint16 view_y2 = view_width + view_width + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + view_y;
+		if (view_x >= rotatedCoords.x ||
+			view_y >= rotatedCoords.y ||
+			view_x2 < rotatedCoords.x ||
+			view_y2 < rotatedCoords.y) {
 				goto label58;
 		}
-		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((RCT2_GLOBAL(0x009AF5A0, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((rotatedCoords.x - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
 		x2 <<= 16;
 		uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
 		if (screenwidth < 64) {
@@ -3381,7 +3378,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		}
 		int pan_x = ((x2 / screenwidth) - 0x8000) >> 4;
 
-		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((RCT2_GLOBAL(0x009AF5A2, sint16) - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((rotatedCoords.y - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
 		y2 <<= 16;
 		uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
 		if (screenheight < 64) {
@@ -3425,10 +3422,10 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		if (vol1 >= vol2) {
 			vol1 = vol2;
 		}
-		if (vol1 < RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) * 3) {
+		if (vol1 < gVolumeAdjustZoom * 3) {
 			vol1 = 0;
 		} else {
-			vol1 = vol1 - (RCT2_GLOBAL(RCT2_ADDRESS_VOLUME_ADJUST_ZOOM, uint8) * 3);
+			vol1 = vol1 - (gVolumeAdjustZoom * 3);
 		}
 		int v32 = -(((uint8)(-vol1 - 1) * (uint8)(-vol1 - 1)) / 16) - 700;
 		if (vol1 && v32 >= -4000) {
@@ -3466,7 +3463,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 					ride_music_params->offset = a1;
 					ride_music_params->volume = v32;
 					ride_music_params->pan = pan_x;
-					ride_music_params->frequency = RCT2_GLOBAL(0x009AF47C, uint16);
+					ride_music_params->frequency = sampleRate;
 					gRideMusicParamsListEnd++;
 				}
 			} else {
