@@ -3423,7 +3423,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 			if (a1 < gRideMusicInfoList[*tuneId]->length) {
 				position = a1;
 				rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;
-				if (ride_music_params < &gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC]) {
+				if (ride_music_params < &gRideMusicParamsList[countof(gRideMusicParamsList)]) {
 					ride_music_params->ride_id = rideIndex;
 					ride_music_params->tune_id = *tuneId;
 					ride_music_params->offset = a1;
