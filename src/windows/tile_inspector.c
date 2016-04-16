@@ -200,7 +200,7 @@ void corrupt_element() {
 	mapElement = map_element_insert(window_tile_inspector_tile_x, window_tile_inspector_tile_y, mapElement->base_height, 0);
 	assert(mapElement != NULL);
 	mapElement->type = (8 << 2);
-	map_invalidate_tile_full(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
 void remove_element(int index)
@@ -210,7 +210,7 @@ void remove_element(int index)
 	mapElement += index;
 	map_element_remove(mapElement);
 	window_tile_inspector_item_count--;
-	map_invalidate_tile_full(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
 void rotate_element(int index)
@@ -282,7 +282,7 @@ void swap_elements(sint16 first, sint16 second)
 		firstElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
 		secondElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
 	}
-	map_invalidate_tile_full(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
