@@ -480,6 +480,7 @@ static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex
 
 	// Enable/disable buttons
 	window_tile_inspector_auto_set_buttons(w);
+	widget_invalidate(w, WIDX_LIST);
 }
 
 static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y)
