@@ -137,6 +137,37 @@ int gRideRemoveTrackPieceCallbackZ;
 int gRideRemoveTrackPieceCallbackDirection;
 int gRideRemoveTrackPieceCallbackType;
 
+money32 _currentTrackPrice;
+
+uint16 _numCurrentPossibleRideConfigurations;
+uint16 _numCurrentPossibleSpecialTrackPieces;
+
+uint16 _currentTrackCurve;
+uint16 _currentTrackEndX;
+uint16 _currentTrackEndY;
+uint8 _rideConstructionState;
+uint8 _currentRideIndex;
+uint16 _currentTrackBeginX;
+uint16 _currentTrackBeginY;
+uint16 _currentTrackBeginZ;
+uint8 _currentTrackPieceDirection;
+uint8 _currentTrackPieceType;
+uint8 _currentTrackSelectionFlags;
+sint8 _rideConstructionArrowPulseTime;
+uint8 _currentTrackSlopeEnd;
+uint8 _currentTrackBankEnd;
+uint8 _currentTrackLiftHill;
+uint8 _currentTrackCovered;
+
+uint8 _previousTrackBankEnd;
+uint8 _previousTrackSlopeEnd;
+
+uint16 _previousTrackPieceX;
+uint16 _previousTrackPieceY;
+uint16 _previousTrackPieceZ;
+
+uint8 _currentSeatRotationAngle;
+
 // Static function declarations
 rct_peep *find_closest_mechanic(int x, int y, int forInspection);
 static void ride_breakdown_status_update(int rideIndex);
@@ -1810,7 +1841,7 @@ int sub_6CC3FB(int rideIndex)
 
 	_currentTrackCurve = RCT2_ADDRESS(0x0097CC68, uint8)[ride->type * 2] | 0x100;
 	_currentTrackSlopeEnd = 0;
-	RCT2_GLOBAL(0x00F440B3, uint8) = 0;
+	_currentTrackBankEnd = 0;
 	_currentTrackLiftHill = 0;
 	_currentTrackCovered = 0;
 

@@ -1033,7 +1033,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 
 		for (rct_track_scenery* scenery = scenery_start; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++){
 
-			uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+			uint8 rotation = _currentTrackPieceDirection;
 
 			rct_xy8 tile = { .x = originX / 32, .y = originY / 32 };
 			switch (rotation & 3){
@@ -1113,7 +1113,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					rotation &= 3;
 
 					//bh
-					uint8 quadrant = (scenery->flags >> 2) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+					uint8 quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
 					quadrant &= 3;
 
 					uint8 bh = rotation | (quadrant << 6) | MAP_ELEMENT_TYPE_SCENERY;
@@ -1223,7 +1223,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					rotation += scenery->flags;
 					rotation &= 3;
 					z = scenery->z * 8 + originZ;
-					uint8 quadrant = ((scenery->flags >> 2) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)) & 3;
+					uint8 quadrant = ((scenery->flags >> 2) + _currentTrackPieceDirection) & 3;
 
 					bl = 0x81;
 					if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 0xA9;
@@ -1386,14 +1386,14 @@ int track_place_maze(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
 	}
 
 	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
 
 	rct_maze_element* maze = (rct_maze_element*)(*track_elements);
 	for (; maze->all != 0; maze++){
-		uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		uint8 rotation = _currentTrackPieceDirection;
 		rct_xy16 mapCoord = { .x = maze->x * 32, .y = maze->y * 32 };
 
 		switch (rotation & 3){
@@ -1571,11 +1571,11 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
 	}
 
 	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
-	uint8 rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+	uint8 rotation = _currentTrackPieceDirection;
 
 	rct_track_element* track = (rct_track_element*)(*track_elements);
 	for (; track->type != 0xFF; track++){
@@ -1664,7 +1664,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				(((track->flags >> 4) & 0x3) << 24) |
 				(temp_z & 0xFFFF);
 
-			int edx = RCT2_GLOBAL(0x00F440A7, uint8) | (track_type << 8);
+			int edx = _currentRideIndex | (track_type << 8);
 
 			if (track->flags & 0x80)edx |= 0x10000;
 			if (track->flags & 0x40)edx |= 0x20000;
@@ -1791,7 +1791,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	*track_elements = (uint8*)track + 1;
 	rct_track_entrance* entrance = (rct_track_entrance*)(*track_elements);
 	for (; entrance->z != -1; entrance++){
-		rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+		rotation = _currentTrackPieceDirection;
 		x = entrance->x;
 		y = entrance->y;
 
@@ -1913,8 +1913,8 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	}
 
 	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
-		sub_6CB945(RCT2_GLOBAL(0x00F440A7, uint8));
-		rct_ride* ride = get_ride(RCT2_GLOBAL(0x00F440A7, uint8));
+		sub_6CB945(_currentRideIndex);
+		rct_ride* ride = get_ride(_currentRideIndex);
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
 	}
@@ -1944,7 +1944,7 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) != 0){
 		RCT2_GLOBAL(0x00F4414E, uint8) |= 0x80;
 	}
-	RCT2_GLOBAL(0x00F440A7, uint8) = rideIndex;
+	_currentRideIndex = rideIndex;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
@@ -2044,12 +2044,12 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	}
 
 	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
-	uint8 backup_rotation = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8);
+	uint8 backup_rotation = _currentTrackPieceDirection;
 	uint32 backup_park_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
 	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
 	int map_size = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) << 4;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 0;
+	_currentTrackPieceDirection = 0;
 	int z = sub_6D01B3(3, 0, map_size, map_size, 16);
 
 	if (RCT2_GLOBAL(0xF4414E, uint8) & 4){
@@ -2072,14 +2072,14 @@ int sub_6D2189(int* cost, uint8* ride_id){
 			RCT2_GLOBAL(0xF44151, uint8) |= 4;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = backup_rotation;
+		_currentTrackPieceDirection = backup_rotation;
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
 		*cost = edi;
 		return 1;
 	}
 	else{
 
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = backup_rotation;
+		_currentTrackPieceDirection = backup_rotation;
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
@@ -2284,7 +2284,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 
 	// Set preview to correct preview image based on rotation
 	if (preview != NULL)
-		*preview = trackDesign->preview[RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)];
+		*preview = trackDesign->preview[_currentTrackPieceDirection];
 
 	return trackDesign;
 }
@@ -3176,7 +3176,7 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 
 	// Set preview to correct preview image based on rotation
 	if (preview != NULL)
-		*preview = trackDesign->preview[RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)];
+		*preview = trackDesign->preview[_currentTrackPieceDirection];
 
 	return trackDesign;
 }

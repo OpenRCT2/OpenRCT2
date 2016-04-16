@@ -144,7 +144,7 @@ void window_track_list_open(ride_list_item item)
 	w->track_list.var_484 = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
 	window_push_others_right(w);
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) = 2;
+	_currentTrackPieceDirection = 2;
 }
 
 /**
@@ -253,8 +253,8 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 		}
 		break;
 	case WIDX_ROTATE:
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8)++;
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint8) %= 4;
+		_currentTrackPieceDirection++;
+		_currentTrackPieceDirection %= 4;
 		window_invalidate(w);
 		break;
 	case WIDX_TOGGLE_SCENERY:
