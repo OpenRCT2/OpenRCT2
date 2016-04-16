@@ -48,12 +48,12 @@ typedef struct {
 	uint8 operating_mode;
 	uint8 colour_scheme;
 	struct {
-		uint8 body;
-		uint8 trim;
+		colour_t body;
+		colour_t trim;
 	} vehicle_colours[12];
-	uint8 track_primary_colour;
-	uint8 track_secondary_colour;
-	uint8 track_support_colour;
+	colour_t track_primary_colour;
+	colour_t track_secondary_colour;
+	colour_t track_support_colour;
 	uint8 status;
 	uint16 name;
 	uint16 name_argument_ride;
@@ -157,9 +157,9 @@ typedef struct {
 	money32 income_per_hour;
 	money32 profit;
 	uint8 queue_time[4];
-	uint8 track_colour_main[4];
-	uint8 track_colour_additional[4];
-	uint8 track_colour_supports[4];
+	colour_t track_colour_main[4];
+	colour_t track_colour_additional[4];
+	colour_t track_colour_supports[4];
 	uint8 music;
 	uint8 entrance_style;
 	uint8 unk_17A[230];
@@ -211,9 +211,9 @@ typedef struct {
 	money32 expenditure[14 * 16];
 	uint32 guests_in_park_2;
 	uint8 unk_199024;
-	uint8 handman_colour;
-	uint8 mechanic_colour;
-	uint8 security_guard_colour;
+	colour_t handman_colour;
+	colour_t mechanic_colour;
+	colour_t security_guard_colour;
 	uint8 available_scenery[128];
 	uint16 available_banners;
 	uint8 unk_1990AA[94];
@@ -533,10 +533,10 @@ typedef struct{
 	uint32 special_track_flags;						// 0x02
 	uint8 operating_mode;							// 0x06
 	uint8 vehicle_colour_version;					// 0x07 Vehicle colour type in first two bits, Version in bits 3,4
-	uint8 body_trim_colour[24];						// 0x08
-	uint8 track_spine_colour_rct1;					// 0x20
-	uint8 track_rail_colour_rct1;					// 0x21
-	uint8 track_support_colour_rct1;				// 0x22
+	colour_t body_trim_colour[24];					// 0x08
+	colour_t track_spine_colour_rct1;				// 0x20
+	colour_t track_rail_colour_rct1;				// 0x21
+	colour_t track_support_colour_rct1;				// 0x22
 	uint8 departure_control_flags;					// 0x23
 	uint8 number_of_trains;							// 0x24
 	uint8 cars_per_train;							// 0x25
@@ -561,11 +561,11 @@ typedef struct{
 	uint8 pad_36[2];
 	union{
 		uint16 start_track_data_original;			// 0x38
-		uint8 track_spine_colour[4];				// 0x38
+		colour_t track_spine_colour[4];				// 0x38
 	};
-	uint8 track_rail_colour[4];						// 0x3C
+	colour_t track_rail_colour[4];					// 0x3C
 	union{
-		uint8 track_support_colour[4];				// 0x40
+		colour_t track_support_colour[4];			// 0x40
 		uint8 wall_type[4];							// 0x40
 	};
 	uint8 pad_41[0x83];

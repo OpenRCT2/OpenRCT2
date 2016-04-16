@@ -412,7 +412,7 @@ static void rct1_fix_scenery()
 		case 168:	// TGE3	(Geometric Sculpture)
 		case 170:	// TGE4	(Geometric Sculpture)
 		case 171:	// TGE5	(Geometric Sculpture)
-			element->properties.scenery.colour_2 = 2;
+			element->properties.scenery.colour_2 = COLOUR_WHITE;
 			break;
 		}
 	}
@@ -936,11 +936,39 @@ static void sub_69E891()
  *
  *  rct2: 0x0097F0BC, 0x0098BC60
  */
-const uint8 RCT1ColourConversionTable[32] = {
-	 0,  1,  2,  4,  5,  6,  7,  9,
-	11, 12, 13, 14, 15, 16, 18, 19,
-	20, 21, 22, 23, 24, 25, 26, 27,
-	28, 30, 31, 29,  3, 10, 17,  8
+const colour_t RCT1ColourConversionTable[32] = {
+	COLOUR_BLACK,
+	COLOUR_GREY,
+	COLOUR_WHITE,
+	COLOUR_LIGHT_PURPLE,
+	COLOUR_BRIGHT_PURPLE,
+	COLOUR_DARK_BLUE,
+	COLOUR_LIGHT_BLUE,
+	COLOUR_TEAL,
+	COLOUR_SATURATED_GREEN,
+	COLOUR_DARK_GREEN,
+	COLOUR_MOSS_GREEN,
+	COLOUR_BRIGHT_GREEN,
+	COLOUR_OLIVE_GREEN,
+	COLOUR_DARK_OLIVE_GREEN,
+	COLOUR_YELLOW,
+	COLOUR_DARK_YELLOW,
+	COLOUR_LIGHT_ORANGE,
+	COLOUR_DARK_ORANGE,
+	COLOUR_LIGHT_BROWN,
+	COLOUR_SATURATED_BROWN,
+	COLOUR_DARK_BROWN,
+	COLOUR_SALMON_PINK,
+	COLOUR_BORDEAUX_RED,
+	COLOUR_SATURATED_RED,
+	COLOUR_BRIGHT_RED,
+	COLOUR_BRIGHT_PINK,
+	COLOUR_LIGHT_PINK,
+	COLOUR_DARK_PINK,
+	COLOUR_DARK_PURPLE,
+	COLOUR_AQUAMARINE,
+	COLOUR_BRIGHT_YELLOW,
+	COLOUR_ICY_BLUE
 };
 
 static const uint8 RCT1TerrainConvertTable[16] = {
@@ -2300,8 +2328,8 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 
 	if(gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND) {
 		// The merry-go-round in pre-LL versions was always yellow with red
-		dst->vehicle_colours[0].body_colour = 18;
-		dst->vehicle_colours[0].trim_colour = 28;
+		dst->vehicle_colours[0].body_colour = COLOUR_YELLOW;
+		dst->vehicle_colours[0].trim_colour = COLOUR_BRIGHT_RED;
 	} else {
 		for (int i = 0; i < 12; i++) {
 			dst->vehicle_colours[i].body_colour = RCT1ColourConversionTable[src->vehicle_colours[i].body];
