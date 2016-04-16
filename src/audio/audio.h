@@ -158,7 +158,7 @@ extern bool gGameSoundsOff;
 extern void *gRainSoundChannel;
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_info *gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
-extern rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+extern rct_ride_music_params gRideMusicParamsList[6];
 extern rct_ride_music_params *gRideMusicParamsListEnd;
 extern void *gTitleMusicChannel;
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];

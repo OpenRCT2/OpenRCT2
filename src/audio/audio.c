@@ -44,7 +44,7 @@ void *gCrowdSoundChannel = 0;
 bool gGameSoundsOff = false;
 void *gRainSoundChannel = 0;
 rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+rct_ride_music_params gRideMusicParamsList[6];
 rct_ride_music_params *gRideMusicParamsListEnd;
 void *gTitleMusicChannel = 0;
 rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
