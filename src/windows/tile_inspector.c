@@ -420,7 +420,7 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, 
 
 static void window_tile_inspector_auto_set_buttons(rct_window *w)
 {
-	// Map element buttons
+	// Remove button
 	if (w->selected_list_item == -1) { // Check if anything is selected
 		w->disabled_widgets |= (1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE);
 		w->enabled_widgets &= ~((1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE));
@@ -429,6 +429,24 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w)
 		w->enabled_widgets |= (1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE);
 	}
 	widget_invalidate(w, WIDX_REMOVE);
+
+	// Rotate button
+	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+	mapElement += w->selected_list_item;
+	switch (map_element_get_type(mapElement)) {
+		case MAP_ELEMENT_TYPE_PATH:
+		case MAP_ELEMENT_TYPE_TRACK:
+		case MAP_ELEMENT_TYPE_SCENERY:
+		case MAP_ELEMENT_TYPE_ENTRANCE:
+		case MAP_ELEMENT_TYPE_FENCE:
+			w->enabled_widgets |= (1 << WIDX_ROTATE);
+			w->disabled_widgets &= ~(1 << WIDX_ROTATE);
+		break;
+		default:
+			w->disabled_widgets |= (1 << WIDX_ROTATE);
+			w->enabled_widgets &= ~(1 << WIDX_ROTATE);
+		break;
+	}
 	widget_invalidate(w, WIDX_ROTATE);
 
 	// Move Up button
