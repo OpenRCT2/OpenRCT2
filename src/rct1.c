@@ -222,7 +222,6 @@ void rct1_fix_landscape()
 	rct1_load_default_objects();
 	reset_loaded_objects();
 	rct1_fix_walls();
-	rct1_fix_scenery();
 	rct1_fix_terrain();
 	rct1_fix_entrance_positions();
 	rct1_reset_research();
@@ -387,34 +386,6 @@ static void rct1_fix_terrain()
 		// Convert terrain
 		map_element_set_terrain(element, RCT1TerrainConvertTable[map_element_get_terrain(element)]);
 		map_element_set_terrain_edge(element, RCT1TerrainEdgeConvertTable[map_element_get_terrain_edge(element)]);
-	}
-}
-
-/**
- *
- *  rct2: 0x006A2956
- */
-static void rct1_fix_scenery()
-{
-	rct_map_element *element;
-	map_element_iterator it;
-
-	map_element_iterator_begin(&it);
-	while (map_element_iterator_next(&it)) {
-		element = it.element;
-
-		if (map_element_get_type(element) != MAP_ELEMENT_TYPE_SCENERY)
-			continue;
-
-		switch (element->properties.scenery.type) {
-		case 157:	// TGE1	(Geometric Sculpture)
-		case 162:	// TGE2	(Geometric Sculpture)
-		case 168:	// TGE3	(Geometric Sculpture)
-		case 170:	// TGE4	(Geometric Sculpture)
-		case 171:	// TGE5	(Geometric Sculpture)
-			element->properties.scenery.colour_2 = COLOUR_WHITE;
-			break;
-		}
 	}
 }
 
@@ -671,6 +642,17 @@ static void rct1_fix_colours()
 				colour = RCT1ColourConversionTable[mapElement->properties.scenery.colour_1 & 0x1F];
 				mapElement->properties.scenery.colour_1 &= 0xE0;
 				mapElement->properties.scenery.colour_1 |= colour;
+
+				// Copied from [rct2: 0x006A2956]
+				switch (mapElement->properties.scenery.type) {
+				case 157:	// TGE1	(Geometric Sculpture)
+				case 162:	// TGE2	(Geometric Sculpture)
+				case 168:	// TGE3	(Geometric Sculpture)
+				case 170:	// TGE4	(Geometric Sculpture)
+				case 171:	// TGE5	(Geometric Sculpture)
+					mapElement->properties.scenery.colour_2 = COLOUR_WHITE;
+					break;
+				}
 				break;
 			case MAP_ELEMENT_TYPE_FENCE:
 				colour = RCT1ColourConversionTable[
@@ -1684,14 +1666,29 @@ static const rct_object_entry RCT1DefaultObjectsPathBits[] = {
 
 static const rct_object_entry RCT1DefaultObjectsSceneryGroup[] = {
 	{ 0x00000087, { "SCGTREES" }, 0 },
+	{ 0x00000087, { "SCGPATHX" }, 0 },
 	{ 0x00000087, { "SCGSHRUB" }, 0 },
 	{ 0x00000087, { "SCGGARDN" }, 0 },
-	{ 0x00000087, { "SCGPATHX" }, 0 },
 	{ 0x00000087, { "SCGFENCE" }, 0 },
-	{ 0x00000087, { "SCGMART " }, 0 },
-	{ 0x00000087, { "SCGWOND " }, 0 },
-	{ 0x00000087, { "SCGSNOW " }, 0 },
-	{ 0x00000087, { "SCGWALLS" }, 0 }
+	{ 0x00000087, { "SCGWALLS" }, 0 },
+
+	{ 0x00000087, { "SCGMINE " }, 0 }, // RCT1_SCENERY_THEME_MINE_THEME
+	{ 0x00000087, { "SCGCLASS" }, 0 }, // RCT1_SCENERY_THEME_CLASSICAL_ROMAN
+	{ 0x00000087, { "SCGEGYPT" }, 0 }, // RCT1_SCENERY_THEME_EGYPTIAN
+	{ 0x00000087, { "SCGMART " }, 0 }, // RCT1_SCENERY_THEME_MARTIAN
+	{ 0x00000087, { "SCGWOND " }, 0 }, // RCT1_SCENERY_THEME_TOYLAND
+	{ 0x00000087, { "SCGJURAS" }, 0 }, // RCT1_SCENERY_THEME_JURASSIC
+	{ 0x00000087, { "SCGSPOOK" }, 0 }, // RCT1_SCENERY_THEME_GRAVEYARD
+	{ 0x00000087, { "SCGJUNGL" }, 0 }, // RCT1_SCENERY_THEME_JUNGLE
+	{ 0x00000087, { "SCGABSTR" }, 0 }, // RCT1_SCENERY_THEME_ABSTRACT
+	{ 0x00000087, { "SCGSNOW " }, 0 }, // RCT1_SCENERY_THEME_SNOW_ICE
+	{ 0x00000087, { "SCGMEDIE" }, 0 }, // RCT1_SCENERY_THEME_MEDIEVAL
+	{ 0x00000087, { "SCGSPACE" }, 0 }, // RCT1_SCENERY_THEME_SPACE
+	{ 0x00000087, { "SCGHALLO" }, 0 }, // RCT1_SCENERY_THEME_CREEPY
+
+	// Not enough space to fit these last two themes (think about doing dynamic list)
+	// { 0x00000087, { "SCGURBAN" }, 0 }, // RCT1_SCENERY_THEME_URBAN
+	// { 0x00000087, { "SCGORIEN" }, 0 }, // RCT1_SCENERY_THEME_PAGODA
 };
 
 static const rct_object_entry RCT1DefaultObjectsParkEntrance[] = {
@@ -2011,6 +2008,27 @@ bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *ride)
 	return remove_flag;
 }
 
+const uint8 RCT1SceneryGroupConvertTable[] = {
+	255,		// RCT1_SCENERY_THEME_GENERAL
+	6,			// RCT1_SCENERY_THEME_MINE_THEME
+	7,			// RCT1_SCENERY_THEME_CLASSICAL_ROMAN
+	8,			// RCT1_SCENERY_THEME_EGYPTIAN
+	9,			// RCT1_SCENERY_THEME_MARTIAN
+	255,		// RCT1_SCENERY_THEME_JUMPING_FOUNTAINS
+	10,			// RCT1_SCENERY_THEME_WONDERLAND
+	11,			// RCT1_SCENERY_THEME_JURASSIC
+	12,			// RCT1_SCENERY_THEME_SPOOKY
+	13,			// RCT1_SCENERY_THEME_JUNGLE
+	14,			// RCT1_SCENERY_THEME_ABSTRACT
+	255,		// RCT1_SCENERY_THEME_GARDEN_CLOCK
+	15,			// RCT1_SCENERY_THEME_SNOW_ICE
+	16,			// RCT1_SCENERY_THEME_MEDIEVAL
+	17,			// RCT1_SCENERY_THEME_SPACE
+	18,			// RCT1_SCENERY_THEME_CREEPY
+	255,		// RCT1_SCENERY_THEME_URBAN
+	255			// RCT1_SCENERY_THEME_PAGODA
+};
+
 #pragma endregion
 
 #pragma region RCT1 Scenario / Saved Game Import
@@ -2192,7 +2210,6 @@ static void rct1_import_map_elements(rct1_s4 *s4)
 	rct1_fix_paths();
 	rct1_fix_walls();
 	rct1_fix_banners(s4);
-	rct1_fix_scenery();
 	rct1_fix_terrain();
 	rct1_fix_entrance_positions();
 
@@ -2363,6 +2380,134 @@ static void rct1_import_ride(rct1_s4 *s4, rct_ride *dst, rct1_ride *src)
 	dst->excitement = (ride_rating)-1;
 }
 
+static uint8 rct1_convert_vehicle_to_ride_entry_index(uint8 rct1RideType, uint8 vehicle)
+{
+	uint8 rideEntryIndex = rct1RideType;
+	if (vehicle < countof(RCT1AlternativeVehicleMappings)) {
+		vehicle = RCT1AlternativeVehicleMappings[vehicle];
+		if (vehicle != USE_DEFAULT_VEHICLE) {
+			rideEntryIndex = vehicle;
+		}
+	}
+	return rideEntryIndex;
+}
+
+static bool _rct1ResearchRideEntryUsed[128];
+static bool _rct1ResearchRideTypeUsed[128];
+
+static void rct1_research_insert_vehicle(const rct1_research_item *researchItem, bool researched)
+{
+	uint8 rct1RideType = researchItem->related_ride;
+	uint8 vehicle = researchItem->item;
+
+	uint8 rideEntryIndex = rct1_convert_vehicle_to_ride_entry_index(rct1RideType, vehicle);
+	if (!_rct1ResearchRideEntryUsed[rideEntryIndex]) {
+		_rct1ResearchRideEntryUsed[rideEntryIndex] = true;
+		research_insert_ride_entry(rideEntryIndex, researched);
+	}
+}
+
+/**
+ * In RollerCoaster Tycoon 1 the research was divided up into scenery themes,
+ * rides, vehicles for rides and special track pieces for rides. Currently
+ * OpenRCT2 does not support researching of special track pieces and whether
+ * vehicles are research-able depends on the vehicle object.
+ *
+ * TODO We might probably want to sort the researched items by the prefered
+ *      RCT1 order so the right image shows in the new ride window. This is
+ *      only relevant if RCT1 ride sorting is turned off.
+ */
+static void rct1_import_research_list(const rct1_s4 *s4)
+{
+	int maxResearchItems = countof(s4->research_items);
+	const rct1_research_item *researchItems = s4->research_items;
+
+	// Loopy Landscapes stores research items in a different place
+	int gameVersion = sawyercoding_detect_rct1_version(s4->game_version) & FILE_VERSION_MASK;
+	if (gameVersion == FILE_VERSION_RCT1_LL) {
+		maxResearchItems = countof(s4->research_items_LL);
+		researchItems = s4->research_items_LL;
+	}
+
+	// Initialise the "seen" tables
+	memset(_rct1ResearchRideEntryUsed, 0, sizeof(_rct1ResearchRideEntryUsed));
+	memset(_rct1ResearchRideTypeUsed, 0, sizeof(_rct1ResearchRideTypeUsed));
+
+	// The first six scenery groups are always available
+	for (int i = 0; i < 6; i++) {
+		research_insert_scenery_group_entry(i, true);
+	}
+
+	bool researched = true;
+	for (int i = 0; i < maxResearchItems; i++) {
+		const rct1_research_item *researchItem = &researchItems[i];
+		if (researchItem->item == RCT1_RESEARCH_END_AVAILABLE) {
+			researched = false;
+		} else if (researchItem->item == RCT1_RESEARCH_END_RESEARCHABLE || researchItem->item == RCT1_RESEARCH_END) {
+			break;
+		}
+
+		switch (researchItem->category) {
+		case RCT1_RESEARCH_CATEGORY_THEME:
+		{
+			uint8 rct1SceneryTheme = researchItem->item;
+			uint8 sceneryGroupEntryIndex = RCT1SceneryGroupConvertTable[rct1SceneryTheme];
+			if (sceneryGroupEntryIndex != 255) {
+				research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
+			}
+			break;
+		}
+		case RCT1_RESEARCH_CATEGORY_RIDE:
+		{
+			uint8 rct1RideType = researchItem->item;
+			uint8 rideEntryIndex = rct1RideType;
+			rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+
+			// Add all vehicles for this ride type that are researched or before this research item
+			uint32 numVehicles = 0;
+			for (int j = 0; j < maxResearchItems; j++) {
+				const rct1_research_item *researchItem2 = &researchItems[j];
+				if (researchItem2->item == RCT1_RESEARCH_END_AVAILABLE) {
+					break;
+				}
+
+				if (researchItem->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
+					researchItem->related_ride == rct1RideType
+				) {
+					// Only add the vehicles that were listed before this ride, otherwise we might
+					// change the research order
+					if (j < i) {
+						rct1_research_insert_vehicle(researchItem, researched);
+					}
+					numVehicles++;
+				}
+			}
+
+			if (numVehicles == 0) {
+				// No vehicles found so just add the default for this ride
+				if (!_rct1ResearchRideEntryUsed[rideEntryIndex]) {
+					_rct1ResearchRideEntryUsed[rideEntryIndex] = true;
+					research_insert_ride_entry(rideEntryIndex, researched);
+				}
+			}
+			break;
+		}
+		case RCT1_RESEARCH_CATEGORY_VEHICLE:
+			// Only add vehicle if the related ride has been seen, this to make sure that vehicles
+			// are researched only after the ride has been researched
+			if (_rct1ResearchRideTypeUsed[researchItem->related_ride]) {
+				rct1_research_insert_vehicle(researchItem, researched);
+			}
+			break;
+		case RCT1_RESEARCH_CATEGORY_SPECIAL:
+			// Not supported
+			break;
+		}
+	}
+
+	research_remove_non_separate_vehicle_types();
+}
+
 static void rct1_import_s4_properly(rct1_s4 *s4)
 {
 	int mapSize = s4->map_size == 0 ? 128 : s4->map_size;
@@ -2396,7 +2541,7 @@ static void rct1_import_s4_properly(rct1_s4 *s4)
 
 	// Fix object availability
 	research_reset_items();
-	research_populate_list_researched();
+	rct1_import_research_list(s4);
 
 	// Map elements
 	rct1_import_map_elements(s4);
