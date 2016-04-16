@@ -576,3 +576,21 @@ void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, i
 
 	*ebx = 0;
 }
+
+void research_insert_ride_entry(uint8 entryIndex, bool researched)
+{
+	rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
+	uint8 category = rideEntry->category[0];
+	for (int i = 0; i < 3; i++) {
+		uint8 rideType = rideEntry->ride_type[i];
+		if (rideType != 255) {
+			research_insert(researched, 0x10000 | (rideType << 8) | entryIndex, category);
+		}
+	}
+}
+
+void research_insert_scenery_group_entry(uint8 entryIndex, bool researched)
+{
+	rct_scenery_set_entry *scenerySetEntry = g_scenerySetEntries[entryIndex];
+	research_insert(researched, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
+}
