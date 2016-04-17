@@ -190,7 +190,7 @@ static void window_tile_inspector_close(rct_window *w)
 	tool_cancel();
 }
 
-void corrupt_element() {
+static void corrupt_element() {
 	rct_map_element* mapElement;
 	mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 
@@ -203,7 +203,7 @@ void corrupt_element() {
 	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
-void remove_element(int index)
+static void remove_element(int index)
 {
 	assert(index < window_tile_inspector_item_count);
 	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
@@ -213,7 +213,7 @@ void remove_element(int index)
 	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
-void rotate_element(int index)
+static void rotate_element(int index)
 {
 	uint8 new_rotation;
 
@@ -250,7 +250,7 @@ void rotate_element(int index)
 }
 
 // Swap element with its parent
-void swap_elements(sint16 first, sint16 second)
+static void swap_elements(sint16 first, sint16 second)
 {
 	rct_map_element *mapElement;
 	rct_map_element *firstElement = NULL;
