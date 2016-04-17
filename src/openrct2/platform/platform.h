@@ -213,6 +213,8 @@ bool platform_check_steam_overlay_attached();
 
 datetime64 platform_get_datetime_now_utc();
 
+float platform_get_default_scale();
+
 // Called very early in the program before parsing commandline arguments.
 void core_init();
 
