@@ -231,8 +231,23 @@ void S4Importer::AddAvailableEntriesFromMap()
             AddEntryForLargeScenery(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
             break;
         case MAP_ELEMENT_TYPE_FENCE:
-            AddEntryForWall(mapElement->properties.fence.type);
+        {
+            uint8  var_05 = mapElement->properties.fence.item[0];
+            uint16 var_06 = mapElement->properties.fence.item[1] |
+                           (mapElement->properties.fence.item[2] << 8);
+
+            for (int edge = 0; edge < 4; edge++)
+            {
+                int typeA = (var_05 >> (edge * 2)) & 3;
+                int typeB = (var_06 >> (edge * 4)) & 0x0F;
+                if (typeB != 0x0F)
+                {
+                    uint8 type = typeA | (typeB << 2);
+                    AddEntryForWall(type);
+                }
+            }
             break;
+        }
         }
 
         if (map_element_is_last_for_tile(mapElement++))
@@ -1117,6 +1132,8 @@ void S4Importer::FixWalls()
                             int colourB = 0;
                             int colourC = 0;
                             ConvertWall(&type, &colourA, &colourB, &colourC);
+
+                            type = _wallTypeToEntryMap[type];
                             map_place_fence(type, x * 32, y * 32, 0, edge, colourA, colourB, colourC, 169);
                         }
                     }
@@ -1266,14 +1283,6 @@ void S4Importer::FixMapElementEntryTypes()
             mapElement->properties.scenerymultiple.type |= _largeSceneryTypeToEntryMap[type];
             break;
         }
-        case MAP_ELEMENT_TYPE_FENCE:
-            mapElement->properties.fence.type = _wallTypeToEntryMap[mapElement->properties.fence.type];
-            if (mapElement->properties.fence.type == 255)
-            {
-                // map_element_remove(mapElement);
-                // map_element_iterator_restart_for_tile(&it);
-            }
-            break;
         }
     }
 }

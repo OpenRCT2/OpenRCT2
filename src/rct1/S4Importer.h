@@ -33,9 +33,9 @@ private:
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
     uint8 _rideTypeToRideEntryMap[96];
     uint8 _vehicleTypeToRideEntryMap[96];
-    uint8 _smallSceneryTypeToEntryMap[96];
-    uint8 _largeSceneryTypeToEntryMap[96];
-    uint8 _wallTypeToEntryMap[96];
+    uint8 _smallSceneryTypeToEntryMap[256];
+    uint8 _largeSceneryTypeToEntryMap[256];
+    uint8 _wallTypeToEntryMap[256];
     uint8 _sceneryThemeTypeToEntryMap[24];
 
     // Research
