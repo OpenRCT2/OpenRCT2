@@ -1077,9 +1077,9 @@ void S4Importer::FixPaths()
 
             // Additions
             int additions = RCT1PathAdditionConversionTable[footpath_element_get_path_scenery(mapElement)];
-            if (footpath_element_path_scenery_is_ghost(mapElement))
+            if (additions & 0x80)
             {
-                footpath_scenery_set_is_ghost(mapElement, false);
+                additions &= ~0x80;
                 mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
             }
             else
