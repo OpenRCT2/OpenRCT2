@@ -227,6 +227,19 @@ namespace RCT1
         }
     }
 
+    uint8 NormalisePathAddition(uint8 pathAdditionType)
+    {
+        switch (pathAdditionType) {
+        case RCT1_PATH_ADDITION_BROKEN_LAMP_1: return RCT1_PATH_ADDITION_LAMP_1;
+        case RCT1_PATH_ADDITION_BROKEN_LAMP_2: return RCT1_PATH_ADDITION_LAMP_2;
+        case RCT1_PATH_ADDITION_BROKEN_BIN:    return RCT1_PATH_ADDITION_BIN;
+        case RCT1_PATH_ADDITION_BROKEN_BENCH:  return RCT1_PATH_ADDITION_BENCH;
+        case RCT1_PATH_ADDITION_BROKEN_LAMP_3: return RCT1_PATH_ADDITION_LAMP_3;
+        case RCT1_PATH_ADDITION_BROKEN_LAMP_4: return RCT1_PATH_ADDITION_LAMP_4;
+        }
+        return pathAdditionType;
+    }
+
     const char * GetRideTypeObject(uint8 rideType)
     {
         static const char * map[] =
@@ -818,6 +831,29 @@ namespace RCT1
             "WALLCBWN",
         };
         return map[wallType];
+    }
+
+    const char * GetPathAddtionObject(uint8 pathAdditionType)
+    {
+        static const char * map[] =
+        {
+            "        ",  // RCT1_PATH_ADDITION_NONE
+            "LAMP1   ",  // RCT1_PATH_ADDITION_LAMP_1
+            "LAMP2   ",  // RCT1_PATH_ADDITION_LAMP_2
+            "LITTER1 ",  // RCT1_PATH_ADDITION_BIN
+            "BENCH1  ",  // RCT1_PATH_ADDITION_BENCH
+            "JUMPFNT1",  // RCT1_PATH_ADDITION_JUMPING_FOUNTAIN
+            "LAMP3   ",  // RCT1_PATH_ADDITION_LAMP_3
+            "LAMP4   ",  // RCT1_PATH_ADDITION_LAMP_4
+            "LAMP1   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_1
+            "LAMP2   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_2
+            "LITTER1 ",  // RCT1_PATH_ADDITION_BROKEN_BIN
+            "BENCH1  ",  // RCT1_PATH_ADDITION_BROKEN_BENCH
+            "LAMP3   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_3
+            "LAMP4   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_4
+            "JUMPSNW1",  // RCT1_PATH_ADDITION_JUMPING_SNOW
+        };
+        return map[pathAdditionType];
     }
 
     const char * GetSceneryGroupObject(uint8 sceneryGroupType)

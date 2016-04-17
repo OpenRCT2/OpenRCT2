@@ -11,12 +11,14 @@ namespace RCT1
 
     uint8 GetRideType(uint8 rideType);
     bool RideTypeHasVehicle(uint8 rideType);
+    uint8 NormalisePathAddition(uint8 pathAdditionType);
 
     const char * GetRideTypeObject(uint8 rideType);
     const char * GetVehicleObject(uint8 vehicleType);
     const char * GetSmallSceneryObject(uint8 smallSceneryType);
     const char * GetLargeSceneryObject(uint8 largeSceneryType);
     const char * GetWallObject(uint8 wallType);
+    const char * GetPathAddtionObject(uint8 pathAdditionType);
     const char * GetSceneryGroupObject(uint8 sceneryGroupType);
 
     const List<const char *> GetSceneryObjects(uint8 sceneryType);

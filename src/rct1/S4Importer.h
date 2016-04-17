@@ -28,6 +28,7 @@ private:
     List<const char *> _smallSceneryEntries;
     List<const char *> _largeSceneryEntries;
     List<const char *> _wallEntries;
+    List<const char *> _pathAdditionEntries;
     List<const char *> _sceneryGroupEntries;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
@@ -36,6 +37,7 @@ private:
     uint8 _smallSceneryTypeToEntryMap[256];
     uint8 _largeSceneryTypeToEntryMap[256];
     uint8 _wallTypeToEntryMap[256];
+    uint8 _pathAdditionTypeToEntryMap[16];
     uint8 _sceneryThemeTypeToEntryMap[24];
 
     // Research
@@ -58,6 +60,7 @@ private:
     void AddEntryForSmallScenery(uint8 smallSceneryType);
     void AddEntryForLargeScenery(uint8 largeSceneryType);
     void AddEntryForWall(uint8 wallType);
+    void AddEntryForPathAddition(uint8 pathAdditionType);
     void AddEntriesForSceneryTheme(uint8 sceneryThemeType);
 
     void LoadObjects();

@@ -74,6 +74,7 @@ void S4Importer::Initialise()
     Memory::Set(_smallSceneryTypeToEntryMap, 255, sizeof(_smallSceneryTypeToEntryMap));
     Memory::Set(_largeSceneryTypeToEntryMap, 255, sizeof(_largeSceneryTypeToEntryMap));
     Memory::Set(_wallTypeToEntryMap,         255, sizeof(_wallTypeToEntryMap));
+    Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
     Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
 
     uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
@@ -135,6 +136,7 @@ void S4Importer::CreateAvailableObjectMappings()
                 case OBJECT_TYPE_SMALL_SCENERY:
                 case OBJECT_TYPE_LARGE_SCENERY:
                 case OBJECT_TYPE_WALLS:
+                case OBJECT_TYPE_PATH_BITS:
                 {
                     List<const char *> * entries = GetEntryList(objectType);
 
@@ -224,6 +226,9 @@ void S4Importer::AddAvailableEntriesFromMap()
     while (tileIndex < maxTiles)
     {
         switch (map_element_get_type(mapElement)) {
+        case MAP_ELEMENT_TYPE_PATH:
+            AddEntryForPathAddition(mapElement->properties.path.additions & 0x0F);
+            break;
         case MAP_ELEMENT_TYPE_SCENERY:
             AddEntryForSmallScenery(mapElement->properties.scenery.type);
             break;
@@ -322,6 +327,24 @@ void S4Importer::AddEntryForWall(uint8 wallType)
         const char * entryName = RCT1::GetWallObject(wallType);
         _wallTypeToEntryMap[wallType] = (uint8)_wallEntries.GetCount();
         _wallEntries.Add(entryName);
+    }
+}
+
+void S4Importer::AddEntryForPathAddition(uint8 pathAdditionType)
+{
+    if (pathAdditionType == RCT1_PATH_ADDITION_NONE) return;
+
+    if (_pathAdditionTypeToEntryMap[pathAdditionType] == 255)
+    {
+        uint8 normalisedPathAdditionType = RCT1::NormalisePathAddition(pathAdditionType);
+        if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == 255)
+        {
+            const char * entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
+            _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = (uint8)_pathAdditionEntries.GetCount();
+            _pathAdditionEntries.Add(entryName);
+        }
+
+        _pathAdditionTypeToEntryMap[pathAdditionType] = _pathAdditionTypeToEntryMap[normalisedPathAdditionType];
     }
 }
 
@@ -589,6 +612,7 @@ void S4Importer::LoadObjects()
     LoadObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries);
     LoadObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries);
     LoadObjects(OBJECT_TYPE_WALLS, _wallEntries);
+    LoadObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
     LoadObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries);
     LoadObjects(OBJECT_TYPE_PATHS, List<const char *>({
         "TARMAC  ",
@@ -598,16 +622,6 @@ void S4Importer::LoadObjects()
         "ROAD    ",
         "PATHCRZY",
         "PATHASH "
-    }));
-    LoadObjects(OBJECT_TYPE_PATH_BITS, List<const char *>({
-        "LAMP1   ",
-        "LAMP2   ",
-        "LITTER1 ",
-        "BENCH1  ",
-        "JUMPFNT1",
-        "LAMP3   ",
-        "LAMP4   ",
-        "JUMPSNW1"
     }));
     LoadObjects(OBJECT_TYPE_BANNERS, List<const char *>({
         "BN1     ",
@@ -1043,15 +1057,6 @@ static const uint8 RCT1PathTypeConversionTable[96] =
     0, 0, 0, 0,
 };
 
-// rct2: 0x0098BCFF
-static const uint8 RCT1PathAdditionConversionTable[15] =
-{
-    0,
-    1, 2, 3, 4, 5, 6, 7,
-    0x80 | 1, 0x80 | 2, 0x80 | 3, 0x80 | 4, 0x80 | 6, 0x80 | 7,
-    8,
-};
-
 void S4Importer::FixPaths()
 {
     rct_map_element * mapElement = gMapElements;
@@ -1067,6 +1072,7 @@ void S4Importer::FixPaths()
 
             mapElement->type &= 0xFC;
             mapElement->flags &= ~0x60;
+            mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
             mapElement->properties.path.type &= 0x0F;
             footpath_scenery_set_is_ghost(mapElement, false);
             if (pathType & 0x80)
@@ -1076,18 +1082,17 @@ void S4Importer::FixPaths()
             mapElement->properties.path.type |= pathType << 4;
 
             // Additions
-            int additions = RCT1PathAdditionConversionTable[footpath_element_get_path_scenery(mapElement)];
-            if (additions & 0x80)
+            uint8 additionType = footpath_element_get_path_scenery(mapElement);
+            if (additionType != RCT1_PATH_ADDITION_NONE)
             {
-                additions &= ~0x80;
-                mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
+                uint8 normalisedType = RCT1::NormalisePathAddition(additionType);
+                uint8 entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
+                if (additionType != normalisedType)
+                {
+                    mapElement->flags |= MAP_ELEMENT_FLAG_BROKEN;
+                }
+                footpath_element_set_path_scenery(mapElement, entryIndex + 1);
             }
-            else
-            {
-                mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-            }
-
-            footpath_element_set_path_scenery(mapElement, additions);
             break;
         }
         case MAP_ELEMENT_TYPE_ENTRANCE:
@@ -1294,6 +1299,7 @@ List<const char *> * S4Importer::GetEntryList(uint8 objectType)
     case OBJECT_TYPE_SMALL_SCENERY: return &_smallSceneryEntries;
     case OBJECT_TYPE_LARGE_SCENERY: return &_largeSceneryEntries;
     case OBJECT_TYPE_WALLS:         return &_wallEntries;
+    case OBJECT_TYPE_PATH_BITS:     return &_pathAdditionEntries;
     case OBJECT_TYPE_SCENERY_SETS:  return &_sceneryGroupEntries;
     }
     return nullptr;
