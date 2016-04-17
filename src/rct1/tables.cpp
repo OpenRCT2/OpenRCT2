@@ -5,6 +5,7 @@
 extern "C"
 {
     #include "../interface/colour.h"
+    #include "../rct1.h"
     #include "../ride/ride.h"
 }
 
@@ -191,6 +192,39 @@ namespace RCT1
             RIDE_TYPE_DRINK_STALL
         };
         return map[rideType];
+    }
+
+    bool RideTypeHasVehicle(uint8 rideType)
+    {
+        switch (rideType) {
+        case RCT1_RIDE_TYPE_HEDGE_MAZE:
+        case RCT1_RIDE_TYPE_SPIRAL_SLIDE:
+        case RCT1_RIDE_TYPE_ICE_CREAM_STALL:
+        case RCT1_RIDE_TYPE_FRIES_STALL:
+        case RCT1_RIDE_TYPE_DRINK_STALL:
+        case RCT1_RIDE_TYPE_COTTON_CANDY_STALL:
+        case RCT1_RIDE_TYPE_BURGER_BAR:
+        case RCT1_RIDE_TYPE_BALLOON_STALL:
+        case RCT1_RIDE_TYPE_INFORMATION_KIOSK:
+        case RCT1_RIDE_TYPE_TOILETS:
+        case RCT1_RIDE_TYPE_SOUVENIR_STALL:
+        case RCT1_RIDE_TYPE_PIZZA_STALL:
+        case RCT1_RIDE_TYPE_POPCORN_STALL:
+        case RCT1_RIDE_TYPE_HOT_DOG_STALL:
+        case RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL:
+        case RCT1_RIDE_TYPE_HAT_STALL:
+        case RCT1_RIDE_TYPE_CANDY_APPLE_STAND:
+        case RCT1_RIDE_TYPE_40:
+        case RCT1_RIDE_TYPE_44:
+        case RCT1_RIDE_TYPE_T_SHIRT_STALL:
+        case RCT1_RIDE_TYPE_DOUGHNUT_SHOP:
+        case RCT1_RIDE_TYPE_COFFEE_SHOP:
+        case RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL:
+        case RCT1_RIDE_TYPE_LEMONADE_STALL:
+            return true;
+        default:
+            return false;
+        }
     }
 
     const char * GetRideTypeObject(uint8 rideType)

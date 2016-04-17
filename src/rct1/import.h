@@ -10,6 +10,8 @@ namespace RCT1
     uint8 GetTerrainEdge(uint8 terrainEdge);
 
     uint8 GetRideType(uint8 rideType);
+    bool RideTypeHasVehicle(uint8 rideType);
+
     const char * GetRideTypeObject(uint8 rideType);
     const char * GetVehicleObject(uint8 vehicleType);
     const char * GetSmallSceneryObject(uint8 smallSceneryType);

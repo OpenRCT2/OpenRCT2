@@ -343,7 +343,14 @@ void S4Importer::ImportRide(rct_ride * dst, rct1_ride * src)
     memset(dst, 0, sizeof(rct_ride));
 
     dst->type = RCT1::GetRideType(src->type);
-    dst->subtype = _vehicleTypeToRideEntryMap[src->vehicle_type];
+    if (RCT1::RideTypeHasVehicle(src->type))
+    {
+        dst->subtype = _rideTypeToRideEntryMap[src->type];
+    }
+    else
+    {
+        dst->subtype = _vehicleTypeToRideEntryMap[src->vehicle_type];
+    }
 
     rct_ride_entry * rideEntry = get_ride_entry(dst->subtype);
 
@@ -1263,8 +1270,8 @@ void S4Importer::FixMapElementEntryTypes()
             mapElement->properties.fence.type = _wallTypeToEntryMap[mapElement->properties.fence.type];
             if (mapElement->properties.fence.type == 255)
             {
-                map_element_remove(mapElement);
-                map_element_iterator_restart_for_tile(&it);
+                // map_element_remove(mapElement);
+                // map_element_iterator_restart_for_tile(&it);
             }
             break;
         }
