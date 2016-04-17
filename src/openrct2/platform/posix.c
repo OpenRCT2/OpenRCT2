@@ -49,7 +49,7 @@ utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 /**
  * The main entry point for non-Windows platforms.
  */
-sint32 main(sint32 argc, const char **argv)
+int main(int argc, char *argv[])
 {
 	core_init();
 
