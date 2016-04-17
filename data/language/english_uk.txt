@@ -4064,7 +4064,7 @@ STR_5755    :Incorrect Software Version
 STR_5756    :Bad Password
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
-STR_5759    :Downloading map ... ({INT32} / {INT32})
+STR_5759    :Downloading map ... ({INT32} / {INT32}) KiB
 STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
 STR_5762    :Chinese Yuan (CN{YEN})
