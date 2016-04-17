@@ -422,11 +422,11 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w)
 {
 	// Remove button
 	if (w->selected_list_item == -1) { // Check if anything is selected
-		w->disabled_widgets |= (1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE);
-		w->enabled_widgets &= ~((1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE));
+		w->disabled_widgets |= (1ULL << WIDX_REMOVE);
+		w->enabled_widgets &= ~((1ULL << WIDX_REMOVE));
 	} else { // Nothing is selected
-		w->disabled_widgets &= ~((1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE));
-		w->enabled_widgets |= (1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE);
+		w->disabled_widgets &= ~((1ULL << WIDX_REMOVE));
+		w->enabled_widgets |= (1ULL << WIDX_REMOVE);
 	}
 	widget_invalidate(w, WIDX_REMOVE);
 
@@ -512,10 +512,6 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	char buffer[256];
-	int x = w->x /*+ w->widgets[WIDX_LIST].left*/ + 3;
-	int y = w->y + w->height - 13;
-
 	// Set medium font size
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
 
@@ -546,9 +542,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Draw coordinates
+	int x = w->x + w->widgets[WIDX_LIST].left;
+	int y = w->y + w->height - 13;
+
 	if (window_tile_inspector_tile_x == -1) { // No tile selected
 		gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_CHOOSE_MSG, NULL, 12, x, y);
 	} else {
+		char buffer[256];
 		sprintf(
 			buffer,
 			"X: %d, Y: %d",

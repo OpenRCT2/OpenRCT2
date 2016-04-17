@@ -1,3 +1,7 @@
+0.0.5
+------------------------------------------------------------------------
+- Feature: Ability to rotate map elements with the tile inspector.
+
 0.0.4
 ------------------------------------------------------------------------
 - Feature: Full native OSX .app support.
