@@ -11,6 +11,7 @@
 extern "C"
 {
     #include "../audio/audio.h"
+    #include "../cheats.h"
     #include "../game.h"
     #include "../interface/window.h"
     #include "../localisation/date.h"
@@ -57,10 +58,7 @@ void S4Importer::Import()
     ImportFinance();
     ImportResearch();
     ImportParkName();
-
-    RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = _s4.park_flags;
-    RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-
+    ImportParkFlags();
     ImportScenarioNameDetails();
     ImportScenarioObjective();
     ImportSavedView();
@@ -507,8 +505,13 @@ void S4Importer::ImportMapAnimations()
 
 void S4Importer::ImportFinance()
 {
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(_s4.cash);
     RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = _s4.park_entrance_fee;
+    RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = _s4.land_price;
+    RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = _s4.construction_rights_price;
+
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(_s4.cash);
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = _s4.loan;
+    RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = _s4.max_loan;
 }
 
 void S4Importer::LoadObjects()
@@ -720,6 +723,16 @@ void S4Importer::ImportParkName()
     {
         RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = stringId;
         RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32) = 0;
+    }
+}
+
+void S4Importer::ImportParkFlags()
+{
+    RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = _s4.park_flags;
+    RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+    if (!(_s4.park_flags & PARK_FLAGS_PARK_FREE_ENTRY))
+    {
+        gCheatsUnlockAllPrices = true;
     }
 }
 
