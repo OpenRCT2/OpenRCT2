@@ -248,12 +248,12 @@ bool openrct2_initialise()
 	// TODO move to audio initialise function
 	if (str_is_null_or_empty(gConfigSound.device)) {
 		Mixer_Init(NULL);
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = 0;
+		gAudioCurrentDevice = 0;
 	} else {
 		Mixer_Init(gConfigSound.device);
 		for (int i = 0; i < gAudioDeviceCount; i++) {
 			if (strcmp(gAudioDevices[i].name, gConfigSound.device) == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) = i;
+				gAudioCurrentDevice = i;
 			}
 		}
 	}

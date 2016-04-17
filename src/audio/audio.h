@@ -153,6 +153,7 @@ typedef enum RCT2_SOUND {
 
 extern audio_device *gAudioDevices;
 extern int gAudioDeviceCount;
+extern int gAudioCurrentDevice;
 extern void *gCrowdSoundChannel;
 extern bool gGameSoundsOff;
 extern void *gRainSoundChannel;
@@ -164,6 +165,7 @@ extern void *gTitleMusicChannel;
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 extern rct_vehicle_sound_params *gVehicleSoundParamsListEnd;
+extern int gVolumeAdjustZoom;
 
 /**
 * Deregisters the audio device.

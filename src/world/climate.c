@@ -236,7 +236,7 @@ static void climate_determine_future_weather(int randomDistribution)
  */
 void climate_update_sound()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, uint32) == 0xFFFFFFFF)
+	if (gAudioCurrentDevice == -1)
 		return;
 	if (gGameSoundsOff)
 		return;
