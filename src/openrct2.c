@@ -575,7 +575,7 @@ bool openrct2_setup_rct2_segment()
 				pagesMissing = true;
 				void *start = (void *)0x8a4000 + i * pageSize;
 				void *end = (void *)0x8a4000 + (i + 1) * pageSize - 1;
-				log_warning("required page %p - %p is not in memory!", start, end);
+				//log_warning("required page %p - %p is not in memory!", start, end);
 			}
 		}
 	}
