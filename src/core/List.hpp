@@ -22,6 +22,8 @@ public:
 
     List() : std::vector<T>() { }
 
+    List(std::initializer_list<T> initializerList) : std::vector<T>(initializerList) { }
+
     List(size_t capacity) : std::vector<T>(capacity) { }
 
     List(const T * items, size_t count) : std::vector<T>(items, items + count) { }
