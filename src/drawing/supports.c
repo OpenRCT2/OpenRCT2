@@ -200,9 +200,9 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		} else {
 			imageId += word_97B3C4[slope & 0x1F];
 			imageId |= imageColourFlags;
-			sub_98197C(imageId, 0, 0, 32, 32, 11, z, rotation, 0, 0, z + 2);
+			sub_98197C(imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
 
-			sub_98197C(imageId + 4, 0, 0, 32, 32, 11, z + 16, rotation, 0, 0, z + 16 + 2);
+			sub_98197C(imageId + 4, 0, 0, 32, 32, 11, z + 16, 0, 0, z + 16 + 2, rotation);
 
 			hasSupports = true;
 		}
@@ -278,11 +278,11 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 			uint16 lengthX = byte_97B23C[special].var_4;
 			uint8 ah = byte_97B23C[special].var_5;
 			if (byte_97B23C[special].var_6 == 0 || RCT2_GLOBAL(0x009DEA58, uint32) == 0) {
-				sub_98197C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation, word_9DEA52, word_9DEA54, word_9DEA56);
+				sub_98197C(imageId, 0, 0, lengthX, lengthY, ah, z, word_9DEA52, word_9DEA54, word_9DEA56, rotation);
 				hasSupports = true;
 			} else {
 				hasSupports = true;
-				if (!sub_98198C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation, word_9DEA52, word_9DEA54, word_9DEA56)) {
+				if (!sub_98198C(imageId, 0, 0, lengthX, lengthY, ah, z, word_9DEA52, word_9DEA54, word_9DEA56, rotation)) {
 					int edi = RCT2_GLOBAL(0x009DEA58, uint32);
 					RCT2_GLOBAL(edi + 0x20, uint32) = imageColourFlags;
 				}
