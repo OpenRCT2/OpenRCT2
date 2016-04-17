@@ -185,6 +185,8 @@ bool platform_check_steam_overlay_attached();
 
 datetime64 platform_get_datetime_now_utc();
 
+float platform_get_default_scale();
+
 // Windows specific definitions
 #ifdef __WINDOWS__
 	#ifndef WIN32_LEAN_AND_MEAN

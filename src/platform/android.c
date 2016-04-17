@@ -18,6 +18,7 @@
 
 #include "platform.h"
 #include <wchar.h>
+#include <jni.h>
 
 int mbtowc(wchar_t *__restrict pwc, const char *__restrict s, size_t n) {
     static mbstate_t mbs;
@@ -72,6 +73,21 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer)
 
 void platform_posix_sub_resolve_openrct_data_path(utf8 *out) {
     strcpy(out, "/sdcard/openrct2");
+}
+
+float platform_get_default_scale() {
+    JNIEnv *env = SDL_AndroidGetJNIEnv();
+
+    jobject *activity = (jobject *) SDL_AndroidGetActivity();
+    jclass *activityClass = (*env)->GetObjectClass(env, activity);
+    jmethodID getDefaultScale = (*env)->GetMethodID(env, activityClass, "getDefaultScale", "()F");
+
+    jfloat displayScale = (*env)->CallFloatMethod(env, activity, getDefaultScale);
+
+    (*env)->DeleteLocalRef(env, activity);
+    (*env)->DeleteLocalRef(env, activityClass);
+
+    return displayScale;
 }
 
 #endif

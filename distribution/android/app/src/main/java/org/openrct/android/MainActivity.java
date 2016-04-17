@@ -36,6 +36,10 @@ public class MainActivity extends SDLActivity {
         super.onCreate(savedInstanceState);
     }
 
+    public float getDefaultScale() {
+        return getResources().getDisplayMetrics().density;
+    }
+
 
     @Override
     protected String[] getLibraries() {

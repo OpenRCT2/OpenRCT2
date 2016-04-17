@@ -413,6 +413,9 @@ void config_set_defaults()
 			else if (strcmp(property->property_name, "temperature_format") == 0){
 				destValue->value_uint8 = platform_get_locale_temperature_format();
 			}
+			else if (strcmp(property->property_name, "window_scale") == 0){
+				destValue->value_float = platform_get_default_scale();
+			}
 			else if (strcmp(property->property_name, "player_name") == 0) {
 				utf8* username = platform_get_username();
 
