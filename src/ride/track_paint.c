@@ -887,14 +887,6 @@ enum {
  * rct: 0x004ACF4A
  */
 static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
-	// eax: ride->type
-	// ebx: trackDirectionList
-	// ecx: direction
-	// edx: height
-	// esi: mapElement
-	// edi: rideIndex * sizeof(rct_ride)
-	// ebp: trackSequence
-
 	uint16 maze_entry = mapElement->properties.track.maze_entry;
 	maze_entry = rol16(maze_entry, direction * 4);
 
@@ -904,220 +896,130 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 
 	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), false);
 
-	RCT2_GLOBAL(0x0141E9B4, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9B8, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9BC, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C0, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9CC, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9B4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9B8, sint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9BC, sint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C0, sint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C8, sint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9CC, sint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9D0, sint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9D4, sint16) = 0xFFFF;
 
 	rct_ride *ride = get_ride(rideIndex);
 	int esi = ride->track_colour_supports[0];
+	int base_image_id;
 
-	if (esi == 0) image_id = SPR_MAZE_BASE_BRICK;
-	if (esi == 1) image_id = SPR_MAZE_BASE_HEDGE;
-	if (esi == 2) image_id = SPR_MAZE_BASE_ICE;
-	if (esi == 3) image_id = SPR_MAZE_BASE_WOOD;
+	if (esi == 0) base_image_id = SPR_MAZE_BASE_BRICK;
+	if (esi == 1) base_image_id = SPR_MAZE_BASE_HEDGE;
+	if (esi == 2) base_image_id = SPR_MAZE_BASE_ICE;
+	if (esi == 3) base_image_id = SPR_MAZE_BASE_WOOD;
 
-	image_id |= RCT2_GLOBAL(0x00F441A0, uint32);
-
-
-	if (maze_entry & (1 << 3)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_CENTER, 2, 2, 10, 10, 9, height, get_current_rotation());
-	}
-
-	if (maze_entry & (1 << 7)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_CENTER, 2, 18, 10, 10, 9, height, get_current_rotation());
-	}
-
-	if (maze_entry & (1 << 11)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_CENTER, 18, 18, 10, 10, 9, height, get_current_rotation());
-	}
-
-	if (maze_entry & (1 << 15)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_CENTER, 18, 2, 10, 10, 9, height, get_current_rotation());
-	}
+	base_image_id |= RCT2_GLOBAL(0x00F441A0, uint32);
 
 
-	if (maze_entry & (1 << 0)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_TOP_LEFT, 2, 0, 10, 1, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_CENTER;
+	if (maze_entry & (1 << 3))
+		sub_98197C(image_id, 2, 2, 10, 10, 9, height, 3, 3, height + 2, get_current_rotation());
 
-	if (maze_entry & (1 << 13)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_TOP_LEFT, 18, 0, 10, 1, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 7))
+		sub_98197C(image_id, 2, 18, 10, 10, 9, height, 3, 19, height + 2, get_current_rotation());
 
+	if (maze_entry & (1 << 11))
+		sub_98197C(image_id, 18, 18, 10, 10, 9, height, 19, 19, height + 2, get_current_rotation());
 
-	if (maze_entry & (1 << 5)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_RIGHT, 2, 30, 10, 1, 9, height, get_current_rotation());
-	}
-
-	if (maze_entry & (1 << 8)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_RIGHT, 18, 30, 10, 1, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 15))
+		sub_98197C(image_id, 18, 2, 10, 10, 9, height, 19, 3, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 1)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_TOP_RIGHT, 0, 2, 1, 10, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_TOP_LEFT;
+	if (maze_entry & (1 << 0))
+		sub_98197C(image_id, 2, 0, 10, 1, 9, height, 3, 1, height + 2, get_current_rotation());
 
-	if (maze_entry & (1 << 4)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_TOP_RIGHT, 0, 18, 1, 10, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 13))
+		sub_98197C(image_id, 18, 0, 10, 1, 9, height, 19, 1, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 12)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_LEFT, 30, 2, 1, 10, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_RIGHT;
+	if (maze_entry & (1 << 5))
+		sub_98197C(image_id, 2, 30, 10, 1, 9, height, 3, 30, height + 2, get_current_rotation());
 
-	if (maze_entry & (1 << 9)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_LEFT, 30, 18, 1, 10, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 8))
+		sub_98197C(image_id, 18, 30, 10, 1, 9, height, 19, 30, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 2)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 14;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_INNER_NE_SW, 2, 14, 10, 4, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_TOP_RIGHT;
+	if (maze_entry & (1 << 1))
+		sub_98197C(image_id, 0, 2, 1, 10, 9, height, 1, 3, height + 2, get_current_rotation());
 
-	if (maze_entry & (1 << 10)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 14;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_INNER_NE_SW, 18, 14, 10, 4, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 4))
+		sub_98197C(image_id, 0, 18, 1, 10, 9, height, 1, 19, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 14)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 14;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 3;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_INNER_NW_SE, 14, 2, 4, 10, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_LEFT;
+	if (maze_entry & (1 << 12))
+		sub_98197C(image_id, 30, 2, 1, 10, 9, height, 30, 3, height + 2, get_current_rotation());
 
-	if (maze_entry & (1 << 6)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 14;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 19;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_WALL_INNER_NW_SE, 14, 18, 4, 10, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 9))
+		sub_98197C(image_id, 30, 18, 1, 10, 9, height, 30, 19, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 0 | 1 << 1)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_CORNER, 0, 0, 1, 1, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_INNER_NE_SW;
+	if (maze_entry & (1 << 2))
+		sub_98197C(image_id, 2, 14, 10, 4, 9, height, 3, 14, height + 2, get_current_rotation());
 
-	if (maze_entry & (1 << 4 | 1 << 5)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_CORNER, 0, 30, 1, 1, 9, height, get_current_rotation());
-	}
-
-	if (maze_entry & (1 << 8 | 1 << 9)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_CORNER, 30, 30, 1, 1, 9, height, get_current_rotation());
-	}
-
-	if (maze_entry & (1 << 12 | 1 << 13)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_CORNER, 30, 0, 1, 1, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 10))
+		sub_98197C(image_id, 18, 14, 10, 4, 9, height, 19, 14, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 0 | 1 << 13 | 1 << 14)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 15;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_TOP_LEFT, 14, 0, 2, 1, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_INNER_NW_SE;
+	if (maze_entry & (1 << 14))
+		sub_98197C(image_id, 14, 2, 4, 10, 9, height, 14, 3, height + 2, get_current_rotation());
+
+	if (maze_entry & (1 << 6))
+		sub_98197C(image_id, 14, 18, 4, 10, 9, height, 14, 19, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 5 | 1 << 6 | 1 << 8)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 15;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_RIGHT, 14, 30, 2, 1, 9, height, get_current_rotation());
-	}
+	image_id = base_image_id + SPR_MAZE_OFFSET_COLUMN_CORNER;
+	if (maze_entry & (1 << 0 | 1 << 1))
+		sub_98197C(image_id, 0, 0, 1, 1, 9, height, 1, 1, height + 2, get_current_rotation());
+
+	if (maze_entry & (1 << 4 | 1 << 5))
+		sub_98197C(image_id, 0, 30, 1, 1, 9, height, 1, 30, height + 2, get_current_rotation());
+
+	if (maze_entry & (1 << 8 | 1 << 9))
+		sub_98197C(image_id, 30, 30, 1, 1, 9, height, 30, 30, height + 2, get_current_rotation());
+
+	if (maze_entry & (1 << 12 | 1 << 13))
+		sub_98197C(image_id, 30, 0, 1, 1, 9, height, 30, 1, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 1 | 1 << 2 | 1 << 4)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 1;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 15;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_TOP_RIGHT, 0, 14, 1, 2, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 0 | 1 << 13 | 1 << 14))
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_LEFT, 14, 0, 2, 1, 9, height, 15, 1, height + 2, get_current_rotation());
 
 
-	if (maze_entry & (1 << 9 | 1 << 10 | 1 << 12)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 15;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT, 30, 14, 1, 2, 9, height, get_current_rotation());
-	}
+	if (maze_entry & (1 << 5 | 1 << 6 | 1 << 8))
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_RIGHT, 14, 30, 2, 1, 9, height, 15, 30, height + 2, get_current_rotation());
 
+
+	if (maze_entry & (1 << 1 | 1 << 2 | 1 << 4))
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_RIGHT, 0, 14, 1, 2, 9, height, 1, 15, height + 2, get_current_rotation());
+
+
+	if (maze_entry & (1 << 9 | 1 << 10 | 1 << 12))
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT, 30, 14, 1, 2, 9, height, 30, 15, height + 2, get_current_rotation());
+	
 
 	if (maze_entry & (1 << 2 | 1 << 6 | 1 << 10 | 1 << 14)) {
-		RCT2_GLOBAL(0x009DEA52, uint16) = 15;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 15;
-		RCT2_GLOBAL(0x009DEA56, sint16) = height + 2;
-		sub_98197C(image_id + SPR_MAZE_OFFSET_COLUMN_CENTER, 14, 14, 2, 2, 8, height, get_current_rotation());
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTER, 14, 14, 2, 2, 8, height, 15, 15, height + 2, get_current_rotation());
 
 		RCT2_GLOBAL(0x141E9C4, uint16) = height + 12;
-		RCT2_GLOBAL(0x141E9C6, uint16) = 32;
+		RCT2_GLOBAL(0x141E9C6, uint8) = 0x20;
 	}
 
 	height += 32;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
+		RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
 	}
 }
 
