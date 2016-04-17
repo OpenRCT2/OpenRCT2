@@ -49,6 +49,14 @@ public:
         this->push_back(item);
     }
 
+    void AddRange(std::initializer_list<T> initializerList)
+    {
+        for (T item : initializerList)
+        {
+            this->push_back(item);
+        }
+    }
+
     void Insert(T item, size_t index)
     {
         Guard::ArgumentInRange(index, (size_t)0, this->size());

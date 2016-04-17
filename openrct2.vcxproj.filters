@@ -593,6 +593,8 @@
     </ClCompile>
     <ClCompile Include="src\rct1\S4Importer.cpp" />
     <ClCompile Include="src\rct1\tables.cpp" />
+    <ClCompile Include="src\core\Guard.cpp" />
+    <ClCompile Include="src\core\Diagnostics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">

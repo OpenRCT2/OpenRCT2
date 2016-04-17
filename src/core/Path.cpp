@@ -42,7 +42,7 @@ namespace Path
             {
                 lastPathSeperator = ch;
             }
-#ifdef _WINDOWS_
+#ifdef __WINDOWS__
             // Windows also allows forward slashes in paths
             else if (*ch == '/')
             {

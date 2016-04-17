@@ -1,10 +1,12 @@
-#include <Windows.h>
-
 #include "../common.h"
 #include "../core/List.hpp"
-#include "../interface/colour.h"
-#include "../ride/ride.h"
 #include "import.h"
+
+extern "C"
+{
+    #include "../interface/colour.h"
+    #include "../ride/ride.h"
+}
 
 namespace RCT1
 {

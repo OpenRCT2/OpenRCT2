@@ -1,14 +1,12 @@
-#include <Windows.h>
-
 #include "S4Importer.h"
 
 #include "../core/Exception.hpp"
+#include "../core/Guard.hpp"
 #include "../core/List.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "import.h"
-
 
 extern "C"
 {
@@ -107,6 +105,16 @@ void S4Importer::Initialise()
 
 void S4Importer::CreateAvailableObjectMappings()
 {
+    // Add defaults
+    _sceneryGroupEntries.AddRange({
+        "SCGTREES",
+        "SCGPATHX",
+        "SCGSHRUB",
+        "SCGGARDN",
+        "SCGFENCE",
+        "SCGWALLS"
+    });
+
     AddAvailableEntriesFromResearchList();
     AddAvailableEntriesFromMap();
     AddAvailableEntriesFromRides();
@@ -199,9 +207,11 @@ void S4Importer::AddAvailableEntriesFromRides()
     for (size_t i = 0; i < Util::CountOf(_s4.rides); i++)
     {
         rct1_ride * ride = &_s4.rides[i];
-
-        // TODO might need to check if ride type has a vehicle type
-        AddEntryForVehicleType(ride->type, ride->vehicle_type);
+        if (ride->type != RCT1_RIDE_TYPE_NULL)
+        {
+            // TODO might need to check if ride type has a vehicle type
+            AddEntryForVehicleType(ride->type, ride->vehicle_type);
+        }
     }
 }
 
@@ -210,14 +220,14 @@ void S4Importer::AddEntryForRideType(uint8 rideType)
     if (_rideTypeToRideEntryMap[rideType] == 255)
     {
         const char * entryName = RCT1::GetRideTypeObject(rideType);
-        _rideEntries.Add(entryName);
         _rideTypeToRideEntryMap[rideType] = (uint8)_rideEntries.GetCount();
+        _rideEntries.Add(entryName);
     }
 }
 
 void S4Importer::AddEntryForVehicleType(uint8 rideType, uint8 vehicleType)
 {
-    if (_vehicleTypeToRideEntryMap[rideType] == 255)
+    if (_vehicleTypeToRideEntryMap[vehicleType] == 255)
     {
         const char * entryName = RCT1::GetVehicleObject(vehicleType);
 
@@ -235,8 +245,8 @@ void S4Importer::AddEntryForSmallScenery(uint8 smallSceneryType)
     if (_smallSceneryTypeToEntryMap[smallSceneryType] == 255)
     {
         const char * entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
-        _smallSceneryEntries.Add(entryName);
         _smallSceneryTypeToEntryMap[smallSceneryType] = (uint8)_smallSceneryEntries.GetCount();
+        _smallSceneryEntries.Add(entryName);
     }
 }
 
@@ -245,8 +255,8 @@ void S4Importer::AddEntryForLargeScenery(uint8 largeSceneryType)
     if (_largeSceneryTypeToEntryMap[largeSceneryType] == 255)
     {
         const char * entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
-        _largeSceneryEntries.Add(entryName);
         _largeSceneryTypeToEntryMap[largeSceneryType] = (uint8)_largeSceneryEntries.GetCount();
+        _largeSceneryEntries.Add(entryName);
     }
 }
 
@@ -255,13 +265,15 @@ void S4Importer::AddEntryForWall(uint8 wallType)
     if (_wallTypeToEntryMap[wallType] == 255)
     {
         const char * entryName = RCT1::GetWallObject(wallType);
-        _wallEntries.Add(entryName);
         _wallTypeToEntryMap[wallType] = (uint8)_wallEntries.GetCount();
+        _wallEntries.Add(entryName);
     }
 }
 
 void S4Importer::AddEntriesForSceneryTheme(uint8 sceneryThemeType)
 {
+    if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL) return;
+
     const char * entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
 
     _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)_sceneryGroupEntries.GetCount();
@@ -538,10 +550,13 @@ void S4Importer::LoadObjects()
     }));
     LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, List<const char *>({ "PKENT1  " }));
     LoadObjects(OBJECT_TYPE_WATER, List<const char *>({ "WTRCYAN " }));
+
+    reset_loaded_objects();
 }
 
 void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)
 {
+    uint32 entryIndex = 0;
     for (const char * objectName : entries)
     {
         rct_object_entry entry;
@@ -549,11 +564,13 @@ void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)
         Memory::Copy(entry.name, objectName, 8);
         entry.checksum = 0;
         
-        if (!object_load_chunk(objectType, &entry, NULL))
+        if (!object_load_chunk(entryIndex, &entry, NULL))
         {
             log_error("Failed to load %s.", objectName);
             throw Exception("Failed to load object.");
         }
+
+        entryIndex++;
     }
 }
 
@@ -609,34 +626,36 @@ void S4Importer::ImportResearch()
         case RCT1_RESEARCH_CATEGORY_THEME:
         {
             uint8 rct1SceneryTheme = researchItem->item;
-            uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
-            research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
+            if (rct1SceneryTheme != RCT1_SCENERY_THEME_GENERAL)
+            {
+                uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
+                research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
+            }
             break;
         }
         case RCT1_RESEARCH_CATEGORY_RIDE:
         {
             uint8 rct1RideType = researchItem->item;
-            uint8 rideEntryIndex = rct1RideType;
-            rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 
             // Add all vehicles for this ride type that are researched or before this research item
             uint32 numVehicles = 0;
             for (size_t j = 0; j < researchListCount; j++)
             {
                 const rct1_research_item *researchItem2 = &researchList[j];
-                if (researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
+                if (researchItem2->item == RCT1_RESEARCH_END_RESEARCHABLE ||
+                    researchItem2->item == RCT1_RESEARCH_END_AVAILABLE)
                 {
                     break;
                 }
 
-                if (researchItem->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
-                    researchItem->related_ride == rct1RideType)
+                if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
+                    researchItem2->related_ride == rct1RideType)
                 {
                     // Only add the vehicles that were listed before this ride, otherwise we might
                     // change the research order
                     if (j < i)
                     {
-                        InsertResearchVehicle(researchItem, researched);
+                        InsertResearchVehicle(researchItem2, researched);
                     }
                     numVehicles++;
                 }
@@ -645,6 +664,9 @@ void S4Importer::ImportResearch()
             if (numVehicles == 0)
             {
                 // No vehicles found so just add the default for this ride
+                uint8 rideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
+                Guard::Assert(rideEntryIndex != 255, "rideEntryIndex was 255");
+
                 if (!_researchRideEntryUsed[rideEntryIndex])
                 {
                     _researchRideEntryUsed[rideEntryIndex] = true;
@@ -672,9 +694,7 @@ void S4Importer::ImportResearch()
 
 void S4Importer::InsertResearchVehicle(const rct1_research_item * researchItem, bool researched)
 {
-    uint8 rct1RideType = researchItem->related_ride;
     uint8 vehicle = researchItem->item;
-
     uint8 rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
     if (!_researchRideEntryUsed[rideEntryIndex])
     {
