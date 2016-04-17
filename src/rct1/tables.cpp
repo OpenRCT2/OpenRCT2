@@ -197,91 +197,91 @@ namespace RCT1
     {
         static const char * map[] =
         {
-            "PTCT1   ",
-            "TOGST   ",
-            "ARRSW1  ",
-            "NEMT    ",
-            "ZLDB    ",
-            "NRL     ",
-            "MONO2   ",
-            "BATFL   ",
-            "RBOAT   ",
-            "WMOUSE  ",
-            "STEEP1  ",
-            "SPCAR   ",
-            "SSC1    ",
-            "BOB1    ",
-            "OBS1    ",
-            "SCHT1   ",
-            "DING1   ",
-            "AMT1    ",
-            "CLIFT1  ",
-            "ARRT1   ",
-            "HMAZE   ",
-            "HSKELT  ",
-            "KART1   ",
-            "LFB1    ",
-            "RAPBOAT ",
-            "DODG1   ",
-            "SWSH1   ",
-            "SWSH2   ",
-            "ICECR1  ",
-            "CHPSH   ",
-            "DRNKS   ",
-            "CNDYF   ",
-            "BURGB   ",
-            "MGR1    ",
-            "BALLN   ",
-            "INFOK   ",
-            "TLT1    ",
-            "FWH1    ",
-            "SIMPOD  ",
-            "C3D     ",
-            "TOPSP1  ",
-            "SRINGS  ",
-            "REVF1   ",
-            "SOUVS   ",
-            "BMVD    ",
-            "PIZZS   ",
-            "TWIST1  ",
-            "HHBUILD ",
-            "POPCS   ",
-            "CIRCUS1 ",
-            "GTC     ",
-            "BMSD    ",
-            "MFT     ",
-            "SFRIC1  ",
-            "SMC1    ",
-            "HOTDS   ",
-            "SQDST   ",
-            "HATST   ",
-            "TOFFS   ",
-            "VREEL   ",
-            "SPBOAT  ",
-            "MONBK   ",
-            "BMAIR   ",
-            "SMONO   ",
-            "        ",
-            "REVCAR  ",
-            "UTCAR   ",
-            "GOLF1   ",
-            "        ",
-            "GDROP1  ",
-            "FSAUC   ",
-            "CHBUILD ",
-            "HELICAR ",
-            "SLCT    ",
-            "CSTBOAT ",
-            "THCAR   ",
-            "IVMC1   ",
-            "JSKI    ",
-            "TSHRT   ",
-            "RFTBOAT ",
-            "DOUGH   ",
-            "ENTERP  ",
-            "COFFS   ",
-            "CHCKS   ",
-            "LEMST   ",
+            "PTCT1   ",  // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
+            "TOGST   ",  // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
+            "ARRSW1  ",  // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
+            "NEMT    ",  // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
+            "ZLDB    ",  // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
+            "NRL     ",  // RCT1_RIDE_TYPE_MINIATURE_RAILROAD
+            "MONO2   ",  // RCT1_RIDE_TYPE_MONORAIL
+            "BATFL   ",  // RCT1_RIDE_TYPE_SUSPENDED_SINGLE_RAIL_ROLLER_COASTER
+            "RBOAT   ",  // RCT1_RIDE_TYPE_BOAT_HIRE
+            "WMOUSE  ",  // RCT1_RIDE_TYPE_WOODEN_CRAZY_RODENT_ROLLER_COASTER
+            "STEEP1  ",  // RCT1_RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
+            "SPCAR   ",  // RCT1_RIDE_TYPE_CAR_RIDE
+            "SSC1    ",  // RCT1_RIDE_TYPE_LAUNCHED_FREEFALL
+            "BOB1    ",  // RCT1_RIDE_TYPE_BOBSLED_ROLLER_COASTER
+            "OBS1    ",  // RCT1_RIDE_TYPE_OBSERVATION_TOWER
+            "SCHT1   ",  // RCT1_RIDE_TYPE_STEEL_ROLLER_COASTER
+            "DING1   ",  // RCT1_RIDE_TYPE_WATER_SLIDE
+            "AMT1    ",  // RCT1_RIDE_TYPE_MINE_TRAIN_ROLLER_COASTER
+            "CLIFT1  ",  // RCT1_RIDE_TYPE_CHAIRLIFT
+            "ARRT1   ",  // RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER
+            "HMAZE   ",  // RCT1_RIDE_TYPE_HEDGE_MAZE
+            "HSKELT  ",  // RCT1_RIDE_TYPE_SPIRAL_SLIDE
+            "KART1   ",  // RCT1_RIDE_TYPE_GO_KARTS
+            "LFB1    ",  // RCT1_RIDE_TYPE_LOG_FLUME
+            "RAPBOAT ",  // RCT1_RIDE_TYPE_RIVER_RAPIDS
+            "DODG1   ",  // RCT1_RIDE_TYPE_DODGEMS
+            "SWSH1   ",  // RCT1_RIDE_TYPE_SWINGING_SHIP
+            "SWSH2   ",  // RCT1_RIDE_TYPE_SWINGING_INVERTER_SHIP
+            "ICECR1  ",  // RCT1_RIDE_TYPE_ICE_CREAM_STALL
+            "CHPSH   ",  // RCT1_RIDE_TYPE_FRIES_STALL
+            "DRNKS   ",  // RCT1_RIDE_TYPE_DRINK_STALL
+            "CNDYF   ",  // RCT1_RIDE_TYPE_COTTON_CANDY_STALL
+            "BURGB   ",  // RCT1_RIDE_TYPE_BURGER_BAR
+            "MGR1    ",  // RCT1_RIDE_TYPE_MERRY_GO_ROUND
+            "BALLN   ",  // RCT1_RIDE_TYPE_BALLOON_STALL
+            "INFOK   ",  // RCT1_RIDE_TYPE_INFORMATION_KIOSK
+            "TLT1    ",  // RCT1_RIDE_TYPE_TOILETS
+            "FWH1    ",  // RCT1_RIDE_TYPE_FERRIS_WHEEL
+            "SIMPOD  ",  // RCT1_RIDE_TYPE_MOTION_SIMULATOR
+            "C3D     ",  // RCT1_RIDE_TYPE_3D_CINEMA
+            "TOPSP1  ",  // RCT1_RIDE_TYPE_GRAVITRON
+            "SRINGS  ",  // RCT1_RIDE_TYPE_SPACE_RINGS
+            "REVF1   ",  // RCT1_RIDE_TYPE_REVERSE_WHOA_BELLY_ROLLER_COASTER
+            "SOUVS   ",  // RCT1_RIDE_TYPE_SOUVENIR_STALL
+            "BMVD    ",  // RCT1_RIDE_TYPE_VERTICAL_ROLLER_COASTER
+            "PIZZS   ",  // RCT1_RIDE_TYPE_PIZZA_STALL
+            "TWIST1  ",  // RCT1_RIDE_TYPE_SCRAMBLED_EGGS
+            "HHBUILD ",  // RCT1_RIDE_TYPE_HAUNTED_HOUSE
+            "POPCS   ",  // RCT1_RIDE_TYPE_POPCORN_STALL
+            "CIRCUS1 ",  // RCT1_RIDE_TYPE_CIRCUS_SHOW
+            "GTC     ",  // RCT1_RIDE_TYPE_GHOST_TRAIN
+            "BMSD    ",  // RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER
+            "MFT     ",  // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
+            "SFRIC1  ",  // RCT1_RIDE_TYPE_WOODEN_SIDE_FRICTION_ROLLER_COASTER
+            "SMC1    ",  // RCT1_RIDE_TYPE_STEEL_WILD_MOUSE_ROLLER_COASTER
+            "HOTDS   ",  // RCT1_RIDE_TYPE_HOT_DOG_STALL
+            "SQDST   ",  // RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL
+            "HATST   ",  // RCT1_RIDE_TYPE_HAT_STALL
+            "TOFFS   ",  // RCT1_RIDE_TYPE_CANDY_APPLE_STAND
+            "VREEL   ",  // RCT1_RIDE_TYPE_VIRGINIA_REEL
+            "SPBOAT  ",  // RCT1_RIDE_TYPE_RIVER_RIDE
+            "MONBK   ",  // RCT1_RIDE_TYPE_CYCLE_MONORAIL
+            "BMAIR   ",  // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
+            "SMONO   ",  // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
+            "        ",  // RCT1_RIDE_TYPE_40
+            "REVCAR  ",  // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
+            "UTCAR   ",  // RCT1_RIDE_TYPE_HEARTLINE_TWISTER_ROLLER_COASTER
+            "GOLF1   ",  // RCT1_RIDE_TYPE_MINIATURE_GOLF
+            "        ",  // RCT1_RIDE_TYPE_44
+            "GDROP1  ",  // RCT1_RIDE_TYPE_ROTO_DROP
+            "FSAUC   ",  // RCT1_RIDE_TYPE_FLYING_SAUCERS
+            "CHBUILD ",  // RCT1_RIDE_TYPE_CROOKED_HOUSE
+            "HELICAR ",  // RCT1_RIDE_TYPE_CYCLE_RAILWAY
+            "SLCT    ",  // RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER
+            "CSTBOAT ",  // RCT1_RIDE_TYPE_WATER_COASTER
+            "THCAR   ",  // RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+            "IVMC1   ",  // RCT1_RIDE_TYPE_INVERTED_WILD_MOUSE_COASTER
+            "JSKI    ",  // RCT1_RIDE_TYPE_JET_SKIS
+            "TSHRT   ",  // RCT1_RIDE_TYPE_T_SHIRT_STALL
+            "RFTBOAT ",  // RCT1_RIDE_TYPE_RAFT_RIDE
+            "DOUGH   ",  // RCT1_RIDE_TYPE_DOUGHNUT_SHOP
+            "ENTERP  ",  // RCT1_RIDE_TYPE_ENTERPRISE
+            "COFFS   ",  // RCT1_RIDE_TYPE_COFFEE_SHOP
+            "CHCKS   ",  // RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL
+            "LEMST   ",  // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
         return map[rideType];
     }
@@ -290,95 +290,95 @@ namespace RCT1
     {
         static const char * map[] =
         {
-            "PTCT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN
-            "TOGST   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS
-            "ARRSW1  ",  // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN
-            "NEMT    ",  // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN (Not in RCT2)
-            "ZLDB    ",  // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS
-            "NRL     ",  // RCT1_VEHICLE_TYPE_LADYBIRD_CARS
-            "MONO2   ",  // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS
-            "BATFL   ",  // RCT1_VEHICLE_TYPE_SPINNING_CARS
-            "RBOAT   ",  // RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS
-            "WMOUSE  ",  // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS
-            "STEEP1  ",  // RCT1_VEHICLE_TYPE_LARGE_MONORAIL_TRAIN
-            "SPCAR   ",  // RCT1_VEHICLE_TYPE_CANOES
-            "SSC1    ",  // RCT1_VEHICLE_TYPE_ROWING_BOATS
-            "BOB1    ",  // RCT1_VEHICLE_TYPE_STEAM_TRAIN
-            "OBS1    ",  // RCT1_VEHICLE_TYPE_WOODEN_MOUSE_CARS
-            "SCHT1   ",  // RCT1_VEHICLE_TYPE_BUMPER_BOATS
-            "DING1   ",  // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN_BACKWARDS
-            "AMT1    ",  // RCT1_VEHICLE_TYPE_ROCKET_CARS
-            "CLIFT1  ",  // RCT1_VEHICLE_TYPE_HORSES // Steeplechase
-            "ARRT1   ",  // RCT1_VEHICLE_TYPE_SPORTSCARS
-            "HMAZE   ",  // RCT1_VEHICLE_TYPE_LYING_DOWN_SWINGING_CARS (Inverted single-rail)
-            "HSKELT  ",  // RCT1_VEHICLE_TYPE_WOODEN_MINE_CARS
-            "KART1   ",  // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_AIRPLANE_CARS
-            "LFB1    ",  // RCT1_VEHICLE_TYPE_SMALL_MONORAIL_CARS
-            "RAPBOAT ",  // RCT1_VEHICLE_TYPE_WATER_TRICYCLES
-            "DODG1   ",  // RCT1_VEHICLE_TYPE_LAUNCHED_FREEFALL_CAR
-            "SWSH1   ",  // RCT1_VEHICLE_TYPE_BOBSLEIGH_CARS
-            "SWSH2   ",  // RCT1_VEHICLE_TYPE_DINGHIES
-            "ICECR1  ",  // RCT1_VEHICLE_TYPE_ROTATING_CABIN
-            "CHPSH   ",  // RCT1_VEHICLE_TYPE_MINE_TRAIN
-            "DRNKS   ",  // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS
-            "CNDYF   ",  // RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN
-            "BURGB   ",  // RCT1_VEHICLE_TYPE_MOTORBIKES
-            "MGR1    ",  // RCT1_VEHICLE_TYPE_RACING_CARS
-            "BALLN   ",  // RCT1_VEHICLE_TYPE_TRUCKS
-            "INFOK   ",  // RCT1_VEHICLE_TYPE_GO_KARTS
-            "TLT1    ",  // RCT1_VEHICLE_TYPE_RAPIDS_BOATS
-            "FWH1    ",  // RCT1_VEHICLE_TYPE_LOG_FLUME_BOATS
-            "SIMPOD  ",  // RCT1_VEHICLE_TYPE_DODGEMS
-            "C3D     ",  // RCT1_VEHICLE_TYPE_SWINGING_SHIP
-            "TOPSP1  ",  // RCT1_VEHICLE_TYPE_SWINGING_INVERTER_SHIP
-            "SRINGS  ",  // RCT1_VEHICLE_TYPE_MERRY_GO_ROUND
-            "REVF1   ",  // RCT1_VEHICLE_TYPE_FERRIS_WHEEL
-            "SOUVS   ",  // RCT1_VEHICLE_TYPE_SIMULATOR_POD
-            "BMVD    ",  // RCT1_VEHICLE_TYPE_CINEMA_BUILDING
-            "PIZZS   ",  // RCT1_VEHICLE_TYPE_TOPSPIN_CAR
-            "TWIST1  ",  // RCT1_VEHICLE_TYPE_SPACE_RINGS
-            "HHBUILD ",  // RCT1_VEHICLE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER_CAR
-            "POPCS   ",  // RCT1_VEHICLE_TYPE_VERTICAL_ROLLER_COASTER_CARS
-            "CIRCUS1 ",  // RCT1_VEHICLE_TYPE_CAT_CARS
-            "GTC     ",  // RCT1_VEHICLE_TYPE_TWIST_ARMS_AND_CARS
-            "BMSD    ",  // RCT1_VEHICLE_TYPE_HAUNTED_HOUSE_BUILDING
-            "MFT     ",  // RCT1_VEHICLE_TYPE_LOG_CARS
-            "SFRIC1  ",  // RCT1_VEHICLE_TYPE_CIRCUS_TENT
-            "SMC1    ",  // RCT1_VEHICLE_TYPE_GHOST_TRAIN_CARS
-            "HOTDS   ",  // RCT1_VEHICLE_TYPE_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "SQDST   ",  // RCT1_VEHICLE_TYPE_WOODEN_TWISTER_ROLLER_COASTER_TRAIN
-            "HATST   ",  // RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS
-            "TOFFS   ",  // RCT1_VEHICLE_TYPE_VINTAGE_CARS
-            "VREEL   ",  // RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS
-            "SPBOAT  ",  // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "MONBK   ",  // RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "BMAIR   ",  // RCT1_VEHICLE_TYPE_STEEL_MOUSE_CARS
-            "SMONO   ",  // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS_ALTERNATIVE
-            "        ",  // RCT1_VEHICLE_TYPE_SUSPENDED_MONORAIL_TRAIN
-            "REVCAR  ",  // RCT1_VEHICLE_TYPE_HELICOPTER_CARS
-            "UTCAR   ",  // RCT1_VEHICLE_TYPE_VIRGINIA_REEL_TUBS
-            "GOLF1   ",  // RCT1_VEHICLE_TYPE_REVERSER_CARS
-            "        ",  // RCT1_VEHICLE_TYPE_GOLFERS
-            "GDROP1  ",  // RCT1_VEHICLE_TYPE_RIVER_RIDE_BOATS
-            "FSAUC   ",  // RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN
-            "CHBUILD ",  // RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "HELICAR ",  // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS
-            "SLCT    ",  // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED
-            "CSTBOAT ",  // RCT1_VEHICLE_TYPE_RESERVED
-            "THCAR   ",  // RCT1_VEHICLE_TYPE_ROTODROP_CAR
-            "IVMC1   ",  // RCT1_VEHICLE_TYPE_FLYING_SAUCERS
-            "JSKI    ",  // RCT1_VEHICLE_TYPE_CROOKED_HOUSE_BUILDING
-            "TSHRT   ",  // RCT1_VEHICLE_TYPE_BICYCLES
-            "RFTBOAT ",  // RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN
-            "DOUGH   ",  // RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN
-            "ENTERP  ",  // RCT1_VEHICLE_TYPE_WATER_COASTER_BOATS
-            "COFFS   ",  // RCT1_VEHICLE_TYPE_FACEOFF_CARS
-            "CHCKS   ",  // RCT1_VEHICLE_TYPE_JET_SKIS
-            "LEMST   ",  // RCT1_VEHICLE_TYPE_RAFT_BOATS
-            "WMSPIN  ",  // RCT1_VEHICLE_TYPE_AMERICAN_STYLE_STEAM_TRAIN
-            "SWANS   ",  // RCT1_VEHICLE_TYPE_AIR_POWERED_COASTER_TRAIN
-            "MONO1   ",  // RCT1_VEHICLE_TYPE_SUSPENDED_WILD_MOUSE_CARS (Inverted Hairpin in RCT2)
-            "CBOAT   ",  // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
+            "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN
+            "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS
+            "PTCT1   ",  // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN
+            "SLCT    ",  // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN (Not in RCT2)
+            "ARRSW1  ",  // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS
+            "ZLDB    ",  // RCT1_VEHICLE_TYPE_LADYBIRD_CARS
+            "TOGST   ",  // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS
+            "WMSPIN  ",  // RCT1_VEHICLE_TYPE_SPINNING_CARS
+            "BATFL   ",  // RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS
+            "SWANS   ",  // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS
+            "MONO1   ",  // RCT1_VEHICLE_TYPE_LARGE_MONORAIL_TRAIN
+            "CBOAT   ",  // RCT1_VEHICLE_TYPE_CANOES
+            "RBOAT   ",  // RCT1_VEHICLE_TYPE_ROWING_BOATS
+            "NRL     ",  // RCT1_VEHICLE_TYPE_STEAM_TRAIN
+            "WMOUSE  ",  // RCT1_VEHICLE_TYPE_WOODEN_MOUSE_CARS
+            "BBOAT   ",  // RCT1_VEHICLE_TYPE_BUMPER_BOATS
+            "PTCT1   ",  // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN_BACKWARDS
+            "RCKC    ",  // RCT1_VEHICLE_TYPE_ROCKET_CARS
+            "STEEP1  ",  // RCT1_VEHICLE_TYPE_HORSES // Steeplechase
+            "SPCAR   ",  // RCT1_VEHICLE_TYPE_SPORTSCARS
+            "SKYTR   ",  // RCT1_VEHICLE_TYPE_LYING_DOWN_SWINGING_CARS (Inverted single-rail)
+            "WMMINE  ",  // RCT1_VEHICLE_TYPE_WOODEN_MINE_CARS
+            "ARRSW2  ",  // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_AIRPLANE_CARS
+            "MONO2   ",  // RCT1_VEHICLE_TYPE_SMALL_MONORAIL_CARS
+            "TRIKE   ",  // RCT1_VEHICLE_TYPE_WATER_TRICYCLES
+            "SSC1    ",  // RCT1_VEHICLE_TYPE_LAUNCHED_FREEFALL_CAR
+            "BOB1    ",  // RCT1_VEHICLE_TYPE_BOBSLEIGH_CARS
+            "DING1   ",  // RCT1_VEHICLE_TYPE_DINGHIES
+            "OBS1    ",  // RCT1_VEHICLE_TYPE_ROTATING_CABIN
+            "AMT1    ",  // RCT1_VEHICLE_TYPE_MINE_TRAIN
+            "CLIFT1  ",  // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS
+            "ARRT1   ",  // RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN
+            "STEEP2  ",  // RCT1_VEHICLE_TYPE_MOTORBIKES
+            "RCR     ",  // RCT1_VEHICLE_TYPE_RACING_CARS
+            "TRUCK1  ",  // RCT1_VEHICLE_TYPE_TRUCKS
+            "KART1   ",  // RCT1_VEHICLE_TYPE_GO_KARTS
+            "RAPBOAT ",  // RCT1_VEHICLE_TYPE_RAPIDS_BOATS
+            "LFB1    ",  // RCT1_VEHICLE_TYPE_LOG_FLUME_BOATS
+            "DODG1   ",  // RCT1_VEHICLE_TYPE_DODGEMS
+            "SWSH1   ",  // RCT1_VEHICLE_TYPE_SWINGING_SHIP
+            "SWSH2   ",  // RCT1_VEHICLE_TYPE_SWINGING_INVERTER_SHIP
+            "MGR1    ",  // RCT1_VEHICLE_TYPE_MERRY_GO_ROUND
+            "FWH1    ",  // RCT1_VEHICLE_TYPE_FERRIS_WHEEL
+            "SIMPOD  ",  // RCT1_VEHICLE_TYPE_SIMULATOR_POD
+            "C3D     ",  // RCT1_VEHICLE_TYPE_CINEMA_BUILDING
+            "TOPSP1  ",  // RCT1_VEHICLE_TYPE_TOPSPIN_CAR
+            "SRINGS  ",  // RCT1_VEHICLE_TYPE_SPACE_RINGS
+            "REVF1   ",  // RCT1_VEHICLE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER_CAR
+            "BMVD    ",  // RCT1_VEHICLE_TYPE_VERTICAL_ROLLER_COASTER_CARS
+            "CTCAR   ",  // RCT1_VEHICLE_TYPE_CAT_CARS
+            "TWIST1  ",  // RCT1_VEHICLE_TYPE_TWIST_ARMS_AND_CARS
+            "HHBUILD ",  // RCT1_VEHICLE_TYPE_HAUNTED_HOUSE_BUILDING
+            "ZLOG    ",  // RCT1_VEHICLE_TYPE_LOG_CARS
+            "CIRCUS1 ",  // RCT1_VEHICLE_TYPE_CIRCUS_TENT
+            "GTC     ",  // RCT1_VEHICLE_TYPE_GHOST_TRAIN_CARS
+            "BMSD    ",  // RCT1_VEHICLE_TYPE_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "MFT     ",  // RCT1_VEHICLE_TYPE_WOODEN_TWISTER_ROLLER_COASTER_TRAIN
+            "SFRIC1  ",  // RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS
+            "VCR     ",  // RCT1_VEHICLE_TYPE_VINTAGE_CARS
+            "NRL2    ",  // RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS
+            "BMSU    ",  // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "BMFL    ",  // RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "SMC1    ",  // RCT1_VEHICLE_TYPE_STEEL_MOUSE_CARS
+            "CLIFT2  ",  // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS_ALTERNATIVE
+            "SMONO   ",  // RCT1_VEHICLE_TYPE_SUSPENDED_MONORAIL_TRAIN
+            "HELICAR ",  // RCT1_VEHICLE_TYPE_HELICOPTER_CARS
+            "VREEL   ",  // RCT1_VEHICLE_TYPE_VIRGINIA_REEL_TUBS
+            "REVCAR  ",  // RCT1_VEHICLE_TYPE_REVERSER_CARS
+            "GOLF1   ",  // RCT1_VEHICLE_TYPE_GOLFERS
+            "SPBOAT  ",  // RCT1_VEHICLE_TYPE_RIVER_RIDE_BOATS
+            "BMAIR   ",  // RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN
+            "BMRB    ",  // RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "UTCAR   ",  // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS
+            "UTCARR  ",  // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED
+            "        ",  // RCT1_VEHICLE_TYPE_RESERVED
+            "GDROP1  ",  // RCT1_VEHICLE_TYPE_ROTODROP_CAR
+            "FSAUC   ",  // RCT1_VEHICLE_TYPE_FLYING_SAUCERS
+            "CHBUILD ",  // RCT1_VEHICLE_TYPE_CROOKED_HOUSE_BUILDING
+            "MONBK   ",  // RCT1_VEHICLE_TYPE_BICYCLES
+            "ARRT2   ",  // RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN
+            "NEMT    ",  // RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN
+            "CSTBOAT ",  // RCT1_VEHICLE_TYPE_WATER_COASTER_BOATS
+            "SLCFO   ",  // RCT1_VEHICLE_TYPE_FACEOFF_CARS
+            "JSKI    ",  // RCT1_VEHICLE_TYPE_JET_SKIS
+            "RFTBOAT ",  // RCT1_VEHICLE_TYPE_RAFT_BOATS
+            "AML1    ",  // RCT1_VEHICLE_TYPE_AMERICAN_STYLE_STEAM_TRAIN
+            "THCAR   ",  // RCT1_VEHICLE_TYPE_AIR_POWERED_COASTER_TRAIN
+            "IVMC1   ",  // RCT1_VEHICLE_TYPE_SUSPENDED_WILD_MOUSE_CARS (Inverted Hairpin in RCT2)
+            "ENTERP  ",  // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
         };
         return map[vehicleType];
     }
