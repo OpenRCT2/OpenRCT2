@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <vector>
 
 #include "../common.h"
@@ -88,5 +89,18 @@ public:
     {
         Guard::ArgumentInRange(index, (size_t)0, this->size() - 1);
         return std::vector<T>::operator[](index);
+    }
+
+    size_t IndexOf(std::function<bool(T)> predicate)
+    {
+        for (size_t i = 0; i < this->size(); i++)
+        {
+            T item = std::vector<T>::operator[](i);
+            if (predicate(item))
+            {
+                return i;
+            }
+        }
+        return SIZE_MAX;
     }
 };

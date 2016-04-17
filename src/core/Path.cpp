@@ -33,6 +33,29 @@ namespace Path
         return buffer;
     }
 
+    const utf8 * GetFileName(const utf8 * path)
+    {
+        const utf8 * lastPathSeperator = nullptr;
+        for (const utf8 * ch = path; *ch != '\0'; ch++)
+        {
+            if (*ch == platform_get_path_separator())
+            {
+                lastPathSeperator = ch;
+            }
+#ifdef _WINDOWS_
+            // Windows also allows forward slashes in paths
+            else if (*ch == '/')
+            {
+                lastPathSeperator = ch;
+            }
+#endif
+        }
+
+        return lastPathSeperator == nullptr ?
+            path :
+            lastPathSeperator + 1;
+    }
+
     utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
         const utf8 * lastDot = nullptr;

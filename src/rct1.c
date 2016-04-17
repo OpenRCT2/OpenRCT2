@@ -2149,58 +2149,6 @@ static int rct1_get_sc_number(const char *path)
 	}
 }
 
-bool rct1_load_saved_game(const char *path)
-{
-	rct1_s4 *s4;
-
-	s4 = malloc(sizeof(rct1_s4));
-	if (!rct1_read_sv4(path, s4)) {
-		free(s4);
-		return false;
-	}
-	rct1_import_s4_properly(s4);
-
-	free(s4);
-
-	game_load_init();
-	return true;
-}
-
-bool rct1_load_scenario(const char *path)
-{
-	rct1_s4 *s4;
-
-	s4 = malloc(sizeof(rct1_s4));
-	if (!rct1_read_sc4(path, s4)) {
-		free(s4);
-		return false;
-	}
-	rct1_import_s4_properly(s4);
-
-	int scNumber = rct1_get_sc_number(path);
-	if (scNumber != -1) {
-		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-		source_desc sourceDesc;
-		if (scenario_get_source_desc_by_id(scNumber, &sourceDesc)) {
-			rct_string_id localisedStringIds[3];
-			if (language_get_localised_scenario_strings(sourceDesc.title, localisedStringIds)) {
-				if (localisedStringIds[0] != STR_NONE) {
-					safe_strcpy(s6Info->name, language_get_string(localisedStringIds[0]), 64);
-				}
-				if (localisedStringIds[2] != STR_NONE) {
-					safe_strcpy(s6Info->details, language_get_string(localisedStringIds[2]), 256);
-				}
-			}
-		}
-	}
-
-	free(s4);
-
-	scenario_begin();
-	return true;
-}
-
 static void rct1_import_map_elements(rct1_s4 *s4)
 {
 	memcpy(gMapElements, s4->map_elements, 0xC000 * sizeof(rct_map_element));
