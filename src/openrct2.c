@@ -542,6 +542,7 @@ bool openrct2_setup_rct2_segment()
 
 	// TODO: Figure out why PROT_EXEC doesn't seem to be needed
 	errno = 0;
+	// TODO: Figure out why PROT_EXEC doesn't seem to be needed
 	segments = mmap((void *) 0x401000, 16941056, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE, fdData, 0);
 	if (segments != (void *) 0x401000)
 	{
