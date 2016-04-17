@@ -91,6 +91,7 @@ private:
     void FixEntrancePositions();
     void FixMapElementEntryTypes();
 
+    List<const char *> * GetEntryList(uint8 objectType);
     const rct1_research_item * GetResearchList(size_t * count);
     int GetSCNumber();
     const char * GetUserString(rct_string_id stringId);

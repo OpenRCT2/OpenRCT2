@@ -795,10 +795,12 @@ namespace RCT1
             "SCGCLASS", // RCT1_SCENERY_THEME_CLASSICAL_ROMAN
             "SCGEGYPT", // RCT1_SCENERY_THEME_EGYPTIAN
             "SCGMART ", // RCT1_SCENERY_THEME_MARTIAN
-            "SCGWOND ", // RCT1_SCENERY_THEME_TOYLAND
+            "        ", // RCT1_SCENERY_THEME_JUMPING_FOUNTAINS
+            "SCGWOND ", // RCT1_SCENERY_THEME_WONDERLAND
             "SCGJURAS", // RCT1_SCENERY_THEME_JURASSIC
-            "SCGSPOOK", // RCT1_SCENERY_THEME_GRAVEYARD
+            "SCGSPOOK", // RCT1_SCENERY_THEME_SPOOKY
             "SCGJUNGL", // RCT1_SCENERY_THEME_JUNGLE
+            "        ", // RCT1_SCENERY_THEME_GARDEN_CLOCK
             "SCGABSTR", // RCT1_SCENERY_THEME_ABSTRACT
             "SCGSNOW ", // RCT1_SCENERY_THEME_SNOW_ICE
             "SCGMEDIE", // RCT1_SCENERY_THEME_MEDIEVAL
@@ -916,5 +918,54 @@ namespace RCT1
             { "PREMT1  " },                                                             // RIDE_TYPE_59
         };                                                                              // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
         return preferedRideEntryOrder[rideType];
+    }
+
+    const List<const char *> GetSceneryObjects(uint8 sceneryType)
+    {
+        static const List<const char *> map[] =
+        {
+            // RCT1_SCENERY_THEME_GENERAL (trees, shrubs, garden, walls, fence, path accessories)
+            { "TIC     ", "TLC     ", "TMC     ", "TMP     ", "TITC    ", "TGHC    ", "TAC     ", "TGHC2   ", "TCJ     ", "TMBJ    ", "TCF     ", "TCL     ", "TRF     ", "TRF2    ", "TEL     ", "TAP     ", "TSP     ", "TMZP    ", "TCRP    ", "TBP     ", "TLP     ", "TWP     ", "TAS     ", "TMG     ", "TWW     ", "TSB     ", "TVL     ", "TCY     ", "TNS     ", "TWN     ", "TCE     ", "TCO     ", "THL     ", "TCC     ", "TF1     ", "TF2     ", "TCT     ", "TH1     ", "TH2     ", "TPM     ", "TROPT1  ",
+              "TS0     ", "TS1     ", "TS2     ", "TS3     ", "TS4     ", "TS5     ", "TS6     ", "TEF     ", "TAL     ", "TSQ     ", "THT     ", "TCB     ", "TDM     ", "TSD     ", "TORN1   ", "TORN2   ", "TGS     ", "TUS     ", "TBC     ", "TSC     ", "TWF     ", "TSH0    ", "TSH1    ", "TSH2    ", "TSH3    ", "TSH4    ", "TSH5    ", "TDF     ", "TSH     ", "THRS    ", "TSTD    ", "TBR     ", "TTF     ", "WHG     ", "WHGG    ", "WCH     ", "WCHG    ",
+              "TG1     ", "TG2     ", "TG3     ", "TG4     ", "TG5     ", "TG6     ", "TG7     ", "TG8     ", "TG9     ", "TG10    ", "TG11    ", "TG12    ", "TG13    ", "TG14    ", "TG15    ", "TG16    ", "TG17    ", "TG18    ", "TG19    ", "TG20    ", "TG21    ",
+              "WBR1A   ", "WBR2A   ", "WALLBB34", "WALLTN32", "TNTROOF1", "WALLBB33", "WALLBB32", "WALLBB16", "WALLBB8 ", "ROOF5   ", "ROOF7   ", "WALLRS32", "WALLRS16", "WALLRS8 ", "WALLBR32", "WALLBR16", "WALLBR8 ", "WALLBRDR", "WALLBRWN", "BRBASE  ", "ROOF1   ", "ROOF2   ", "ROOF3   ", "ROOF4   ", "WALLCB32", "WALLCB16", "WALLCB8 ", "WALLCBDR", "WALLCBWN", "BRBASE2 ", "CWBCRV33", "CWBCRV32", "BRCRRF1 ", "ROOF6   ", "ROOF8   ", "WALLCF32", "WALLCF16", "WALLCF8 ", "WALLCFDR", "WALLCFWN", "WALLCFAR", "BRBASE3 ", "CWFCRV33", "CWFCRV32", "BRCRRF2 ", "ROOF9   ", "ROOF11  ", "ROOF10  ", "ROOF12  ", "CORROOF2", "WALLCO16", "CORROOF ", "WALLLT32", "WALLSK16", "WALLSK32", "SKTDW2  ", "SKTDW   ", "SKTBASE ", "SKTBASET", "SUPPW2  ", "SUPPW1  ", "SUPPW3  ", "SUPPLEG1", "SUPPLEG2", "SUMRF   ", "WALLRH32"
+              "WMF     ", "WMFG    ", "WSW     ", "WSWG    ", "WFW1    ", "WFWG    ", "WPF     ", "WPFG    ", "WSW1    ", "WSW2    ", "WBR1    ", "WBRG    ", "WBR2    ", "WBR3    ", "WALLMM16", "WALLMM17",
+              "LAMP1   ", "LAMP2   ", "LITTER1 ", "BENCH1  ", "QTV1    ", "BN1     ", "WALLPOST", "WALLSIGN", "SSIG1   ", "SSIG2   ", "SSIG3   ", "SSIG4   " },
+            // RCT1_SCENERY_THEME_MINE
+            { "SMH1    ", "SMH2    ", "SMN1    ", "TBW     ", "TBR1    ", "TBR2    ", "TML     ", "TMW     ", "TBR3    ", "TBR4    ", "TMJ     ", "BN5     ", "WALLWD8 ", "WALLWD16", "WALLWD32", "WALLWD33", "WALLMN32", "WDBASE  ", "MINROOF1", "ROOF13  ", "LITTERMN" },
+            // RCT1_SCENERY_THEME_CLASSICAL_ROMAN
+            { "SCOL    ", "TT1     ", "TRMS    ", "TRWS    ", "TRC     ", "TQF     ", "WRW     ", "WRWA    ", "ROMROOF2", "WC3     ", "ROMROOF1", "BN3     " },
+            // RCT1_SCENERY_THEME_EGYPTIAN
+            { "SSPX    ", "SCLN    ", "SPYR    ", "TES1    ", "TEN     ", "TERS    ", "TERB    ", "TEP     ", "WEW     ", "LAMP3   ", "BN4     ", "BENCHSTN" },
+            // RCT1_SCENERY_THEME_MARTIAN
+            { "SMB     ", "TMO1    ", "TMO2    ", "TMO3    ", "TMO4    ", "TMO5    ", "SVLC    ", "WMW     ", "LAMP4   " },
+            // RCT1_SCENERY_THEME_JUMPING_FOUNTAINS (Single researchable scenery item)
+            { "JUMPFNT1" },
+            // RCT1_SCENERY_THEME_WONDERLAND
+            { "TWH1    ", "TWH2    ", "TST1    ", "TST2    ", "TMS1    ", "TST3    ", "TST4    ", "TST5    ", "TAS1    ", "TAS2    ", "TAS3    ", "TAS4    ", "CHBBASE ", "TP1     ", "TP2     ", "TK1     ", "TK2     ", "TR1     ", "TR2     ", "TQ1     ", "TQ2     ", "TB1     ", "TB2     ", "TK3     ", "TK4     ", "WCW1    ", "WCW2    " },
+            // RCT1_SCENERY_THEME_JURASSIC
+            { "TBN     ", "TBN1    ", "TDN4    ", "TDN5    ", "SDN1    ", "SDN2    ", "SDN3    ", "WWTW    ", "WMWW    ", "WWTWA   ", "WBW     ", "BN6     " },
+            // RCT1_SCENERY_THEME_SPOOKY,
+            { "SSK1    ", "TDT1    ", "TDT2    ", "TDT3    ", "TMM1    ", "TMM2    ", "TMM3    ", "TGS1    ", "TGS2    ", "TGS3    ", "TGS4    ", "SMSKULL ", "WALLRK32" },
+            // RCT1_SCENERY_THEME_JUNGLE
+            { "TJT1    ", "TJT2    ", "TJB1    ", "TJT3    ", "TJT4    ", "TJP1    ", "TJB2    ", "TJT5    ", "TJB3    ", "TJB4    ", "TJT6    ", "TJP2    ", "TJF     ", "WPW1    ", "WPW2    ", "WJF     ", "BN2     ", "WALLJN32", "JNGROOF1", "ROOF14  ", "BENCHLOG" },
+            // RCT1_SCENERY_THEME_ABSTRACT
+            { "TGE1    ", "TGE2    ", "TGE3    ", "TGE4    ", "TGE5    ", "TGC1    ", "TGC2    ", "WALLGL8 ", "WALLGL16", "WALLGL32", "GEOROOF1", "WGW2    ", "GEOROOF2" },
+            // RCT1_SCENERY_THEME_GARDEN_CLOCK (Single researchable scenery item)
+            { "TCK     " },
+            // RCT1_SCENERY_THEME_SNOW_ICE
+            { "SIP     ", "TSM     ", "TIG     ", "TSF1    ", "TSF2    ", "TSF3    ", "TSNC    ", "TSNB    ", "WC16    ", "WC17    ", "WC18    ", "JUMPSNW1", "TCFS    ", "TRFS    ", "TRF3    ", "TNSS    ", "BN8     ", "WALLIG16", "WALLIG24", "IGROOF  " },
+            // RCT1_SCENERY_THEME_MEDIEVAL
+            { "TCT1    ", "STB1    ", "STB2    ", "WC1     ", "WC4     ", "WC5     ", "WC6     ", "WC7     ", "WC8     ", "WALLCZ32", "WALLCY32", "TCT2    ", "STG1    ", "STG2    ", "WC2     ", "WC9     ", "WC10    ", "WC11    ", "WC12    ", "WC13    ", "WALLCW32", "WALLCX32", "TCN     ", "TTG     ", "SCT     ", "SOH1    ", "SOH2    ", "SOH3    ", "WPW3    ", "WALLCFPC", "WALLCBPC" },
+            // RCT1_SCENERY_THEME_SPACE
+            { "SSR     ", "SST     ", "SSH     ", "TSCP    ", "TSPH    ", "TSC2    ", "TSP1    ", "TSP2    ", "WALLSP32", "SPCROOF1", "BN9     ", "BENCHSPC", "LITTERSP" },
+            // RCT1_SCENERY_THEME_CREEPY
+            { "TCD     ", "TSG     ", "TSK     ", "TGH1    ", "TGH2    ", "TSMP    ", "SGP     ", "WC14    ", "WC15    ", "TL0     ", "TL1     ", "TL2     ", "TL3     ", "TM0     ", "TM1     ", "TM2     ", "TM3     " },
+            // RCT1_SCENERY_THEME_URBAN
+            { "SHS1    ", "SHS2    ", "STH     ", "SAH     ", "SPS     ", "SAH2    ", "SAH3    ", "SOB     ", "WALLU132", "WALLU232" },
+            // RCT1_SCENERY_THEME_PAGODA
+            { "SPG     ", "TLY     ", "TGG     ", "TOH1    ", "TOH2    ", "TOT1    ", "TOT2    ", "TOS     ", "TOT3    ", "TOT4    ", "TOH3    ", "WALLPG32", "PAGROOF1", "BN7     " }
+        };
+        return map[sceneryType];
     }
 }

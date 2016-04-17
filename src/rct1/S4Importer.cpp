@@ -25,6 +25,7 @@ extern "C"
     #include "../world/footpath.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
+    #include "../world/scenery.h"
 }
 
 void S4Importer::LoadSavedGame(const utf8 * path)
@@ -116,6 +117,47 @@ void S4Importer::CreateAvailableObjectMappings()
     AddAvailableEntriesFromResearchList();
     AddAvailableEntriesFromMap();
     AddAvailableEntriesFromRides();
+
+    // Add themes
+    for (int sceneryTheme = 0; sceneryTheme <= RCT1_SCENERY_THEME_PAGODA; sceneryTheme++)
+    {
+        if (sceneryTheme != 0 &&
+            _sceneryThemeTypeToEntryMap[sceneryTheme] == 255) continue;
+
+        List<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
+        for (const char * objectName : objects)
+        {
+            rct_object_entry * foundEntry = object_list_find_by_name(objectName);
+            if (foundEntry != nullptr)
+            {
+                uint8 objectType = foundEntry->flags & 0x0F;
+                switch (objectType) {
+                case OBJECT_TYPE_SMALL_SCENERY:
+                case OBJECT_TYPE_LARGE_SCENERY:
+                case OBJECT_TYPE_WALLS:
+                {
+                    List<const char *> * entries = GetEntryList(objectType);
+
+                    // Ran out of available entries
+                    if (entries->GetCount() >= (size_t)object_entry_group_counts[objectType])
+                    {
+                        break;
+                    }
+
+                    size_t index = entries->IndexOf([objectName](const char * x) -> bool
+                    {
+                        return String::Equals(x, objectName, true);
+                    });
+                    if (index == SIZE_MAX)
+                    {
+                        entries->Add(objectName);
+                    }
+                    break;
+                }
+                }
+            }
+        }
+    }
 }
 
 void S4Importer::AddAvailableEntriesFromResearchList()
@@ -270,14 +312,19 @@ void S4Importer::AddEntryForWall(uint8 wallType)
 
 void S4Importer::AddEntriesForSceneryTheme(uint8 sceneryThemeType)
 {
-    if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL) return;
+    if (sceneryThemeType == RCT1_SCENERY_THEME_GENERAL ||
+        sceneryThemeType == RCT1_SCENERY_THEME_JUMPING_FOUNTAINS ||
+        sceneryThemeType == RCT1_SCENERY_THEME_GARDEN_CLOCK)
+    {
+        _sceneryThemeTypeToEntryMap[sceneryThemeType] = 254;
+    }
+    else
+    {
+        const char * entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
 
-    const char * entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
-
-    _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)_sceneryGroupEntries.GetCount();
-    _sceneryGroupEntries.Add(entryName);
-
-    // TODO add entries for all scenery items belonging to scenery group
+        _sceneryThemeTypeToEntryMap[sceneryThemeType] = (uint8)_sceneryGroupEntries.GetCount();
+        _sceneryGroupEntries.Add(entryName);
+    }
 }
 
 void S4Importer::ImportRides()
@@ -629,7 +676,9 @@ void S4Importer::ImportResearch()
         case RCT1_RESEARCH_CATEGORY_THEME:
         {
             uint8 rct1SceneryTheme = researchItem->item;
-            if (rct1SceneryTheme != RCT1_SCENERY_THEME_GENERAL)
+            if (rct1SceneryTheme != RCT1_SCENERY_THEME_GENERAL &&
+                rct1SceneryTheme != RCT1_SCENERY_THEME_JUMPING_FOUNTAINS &&
+                rct1SceneryTheme != RCT1_SCENERY_THEME_GARDEN_CLOCK)
             {
                 uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
                 research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
@@ -1212,9 +1261,26 @@ void S4Importer::FixMapElementEntryTypes()
         }
         case MAP_ELEMENT_TYPE_FENCE:
             mapElement->properties.fence.type = _wallTypeToEntryMap[mapElement->properties.fence.type];
+            if (mapElement->properties.fence.type == 255)
+            {
+                map_element_remove(mapElement);
+                map_element_iterator_restart_for_tile(&it);
+            }
             break;
         }
     }
+}
+
+List<const char *> * S4Importer::GetEntryList(uint8 objectType)
+{
+    switch (objectType) {
+    case OBJECT_TYPE_RIDE:          return &_rideEntries;
+    case OBJECT_TYPE_SMALL_SCENERY: return &_smallSceneryEntries;
+    case OBJECT_TYPE_LARGE_SCENERY: return &_largeSceneryEntries;
+    case OBJECT_TYPE_WALLS:         return &_wallEntries;
+    case OBJECT_TYPE_SCENERY_SETS:  return &_sceneryGroupEntries;
+    }
+    return nullptr;
 }
 
 const rct1_research_item * S4Importer::GetResearchList(size_t * count)

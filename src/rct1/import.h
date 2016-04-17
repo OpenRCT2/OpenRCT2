@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../common.h"
+#include "../core/List.hpp"
+
 namespace RCT1
 {
     colour_t GetColour(colour_t colour);
@@ -13,4 +16,6 @@ namespace RCT1
     const char * GetLargeSceneryObject(uint8 largeSceneryType);
     const char * GetWallObject(uint8 wallType);
     const char * GetSceneryGroupObject(uint8 sceneryGroupType);
+
+    const List<const char *> GetSceneryObjects(uint8 sceneryType);
 }
