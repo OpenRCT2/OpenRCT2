@@ -52,7 +52,7 @@ utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
  * The function that is called directly from the host application (rct2.exe)'s WinMain.
  * This will be removed when OpenRCT2 can be built as a stand alone application.
  */
-int main(int argc, const char **argv)
+int main(int argc, char *argv[])
 {
 	int run_game = cmdline_run(argv, argc);
 	if (run_game == 1)
