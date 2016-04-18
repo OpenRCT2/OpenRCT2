@@ -1031,30 +1031,30 @@ void S4Importer::FixZ()
 // rct2: 0x0098BC9F
 static const uint8 RCT1PathTypeConversionTable[96] =
 {
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,
-    0, 0, 0, 0,
-    2, 2, 2, 2,
-    1, 1, 1, 1,
-    0, 0, 0, 0,
-    3, 3, 3, 3,
-    6, 6, 6, 6,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    5, 5, 5, 5,
-    5, 5, 5, 5,
-    5, 5, 5, 5,
-    5, 5, 5, 5,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
-    0, 0, 0, 0,
+    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
+    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
+    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
+    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
+    0, 0, 0, 0,                                            // TARMAC
+    2, 2, 2, 2,                                            // PATHSPCE
+    1, 1, 1, 1,                                            // TARMACB
+    0, 0, 0, 0,                                            // TARMAC
+    3, 3, 3, 3,                                            // PATHDIRT
+    6, 6, 6, 6,                                            // PATHASH
+    0, 0, 0, 0,                                            // TARMAC
+    0, 0, 0, 0,                                            // TARMAC
+    5, 5, 5, 5,                                            // PATHCRZY
+    5, 5, 5, 5,                                            // PATHCRZY
+    5, 5, 5, 5,                                            // PATHCRZY
+    5, 5, 5, 5,                                            // PATHCRZY
+    4, 4, 4, 4,                                            // ROAD
+    4, 4, 4, 4,                                            // ROAD
+    4, 4, 4, 4,                                            // ROAD
+    4, 4, 4, 4,                                            // ROAD
+    0, 0, 0, 0,                                            // TARMAC
+    0, 0, 0, 0,                                            // TARMAC
+    0, 0, 0, 0,                                            // TARMAC
+    0, 0, 0, 0,                                            // TARMAC
 };
 
 void S4Importer::FixPaths()
@@ -1066,9 +1066,9 @@ void S4Importer::FixPaths()
         case MAP_ELEMENT_TYPE_PATH:
         {
             // Type
-            int pathType = ((mapElement->properties.path.type & 0xF0) >> 2) | (mapElement->type & 3);
-            int secondaryType = (mapElement->flags & 0x60) >> 5;
-            pathType = RCT1PathTypeConversionTable[pathType * 4 + secondaryType];
+            uint8 pathType = ((mapElement->properties.path.type & 0xF0) >> 2) | (mapElement->type & 3);
+            uint8 supportsType = (mapElement->flags & 0x60) >> 5;
+            pathType = RCT1PathTypeConversionTable[pathType * 4 + supportsType];
 
             mapElement->type &= 0xFC;
             mapElement->flags &= ~0x60;
