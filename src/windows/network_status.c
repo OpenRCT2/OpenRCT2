@@ -35,9 +35,9 @@ enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
 };
 
 static rct_widget window_network_status_widgets[] = {
-	{ WWT_FRAME,			0,	0,		340,	0,		90,		0x0FFFFFFFF,				STR_NONE },									// panel / background
-	{ WWT_CAPTION,			0,	1,		338,	1,		14,		STR_NONE,					STR_WINDOW_TITLE_TIP },						// title bar
-	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },						// close x button
+    { WWT_FRAME,			0,	0,		440,	0,		90,		0x0FFFFFFFF,				STR_NONE },									// panel / background
+    { WWT_CAPTION,			0,	1,		438,	1,		14,		STR_NONE,					STR_WINDOW_TITLE_TIP },						// title bar
+    { WWT_CLOSEBOX,			0,	427,	437,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },						// close x button
 	{ WIDGETS_END },
 };
 
@@ -93,7 +93,7 @@ void window_network_status_open(const char* text, close_callback onClose)
 	if (window != NULL)
 		return;
 
-	window = window_create_centred(320, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
+	window = window_create_centred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
 
 	window->widgets = window_network_status_widgets;
 	window->enabled_widgets = 1 << WIDX_CLOSE;
@@ -182,7 +182,7 @@ static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	char* lineCh = buffer;
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
 	strcpy(lineCh, window_network_status_text);
-	gfx_clip_string(buffer, 230);
+	gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
 	int x = w->x + (w->width / 2);
 	int y = w->y + (w->height / 2);
 	x -= gfx_get_string_width(buffer) / 2;

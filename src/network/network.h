@@ -245,7 +245,7 @@ public:
 
 	const char *getLastDisconnectReason() const;
 	void setLastDisconnectReason(const char *src);
-	void setLastDisconnectReason(const rct_string_id string_id);
+	void setLastDisconnectReason(const rct_string_id string_id, void *args = nullptr);
 
 	SOCKET socket = INVALID_SOCKET;
 	NetworkPacket inboundpacket;

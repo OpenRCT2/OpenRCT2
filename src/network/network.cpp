@@ -478,10 +478,10 @@ void NetworkConnection::setLastDisconnectReason(const char *src)
 	strncpy(last_disconnect_reason, src, NETWORK_DISCONNECT_REASON_BUFFER_SIZE - 1);
 }
 
-void NetworkConnection::setLastDisconnectReason(const rct_string_id string_id)
+void NetworkConnection::setLastDisconnectReason(const rct_string_id string_id, void *args)
 {
 	char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-	format_string(buffer, string_id, NULL);
+	format_string(buffer, string_id, args);
 	setLastDisconnectReason(buffer);
 }
 
@@ -1328,6 +1328,9 @@ void Network::Server_Send_AUTH(NetworkConnection& connection)
 	}
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)new_playerid;
+	if (connection.authstatus == NETWORK_AUTH_BADVERSION) {
+		packet->WriteString(NETWORK_STREAM_ID);
+	}
 	connection.QueuePacket(std::move(packet));
 	if (connection.authstatus != NETWORK_AUTH_OK && connection.authstatus != NETWORK_AUTH_REQUIREPASSWORD) {
 		shutdown(connection.socket, SHUT_RD);
@@ -1696,9 +1699,12 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_BADVERSION:
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+	{
+		const char *version = packet.ReadString();
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
+	}
 	case NETWORK_AUTH_BADPASSWORD:
 		connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
 		shutdown(connection.socket, SHUT_RDWR);

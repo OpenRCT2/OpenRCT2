@@ -217,6 +217,11 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_LIST:{
 		int serverIndex = w->selected_list_item;
 		if (serverIndex >= 0 && serverIndex < _numServerEntries) {
+			if (strcmp(_severEntries[serverIndex].version, NETWORK_STREAM_ID) != 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void *) = _severEntries[serverIndex].version;
+				window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+				break;
+			}
 			char *serverAddress = _severEntries[serverIndex].address;
 			join_server(serverAddress);
 		}
@@ -248,6 +253,11 @@ static void window_server_list_dropdown(rct_window *w, int widgetIndex, int drop
 
 	switch (dropdownIndex) {
 	case DDIDX_JOIN:
+		if (strcmp(_severEntries[serverIndex].version, NETWORK_STREAM_ID) != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void *) = _severEntries[serverIndex].version;
+			window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+			break;
+		}
 		join_server(serverAddress);
 		break;
 	case DDIDX_FAVOURITE:
