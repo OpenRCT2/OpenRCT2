@@ -42,67 +42,71 @@ const uint16 WoodenCurveSupportImageIds[] = {
 };
 
 typedef struct {
-	uint8 var_0;
-	uint8 var_1;
-	uint8 var_2;
-	uint8 var_3;
-	uint8 var_4;
-	uint8 var_5;
+	struct {
+		uint8 x, y, z;
+	} offset;
+	struct {
+		uint8 y, x, z;
+	} length;
+} unk_supports_desc_bound_box;
+
+typedef struct {
+	unk_supports_desc_bound_box bounding_box;
 	uint8 var_6;
 	uint8 var_7;
 } unk_supports_desc;
 
 /* 0x0097B23C */
 const unk_supports_desc byte_97B23C[] = {
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 10, 0, 0, 10, 32, 44, 1, 1 },
-	{ 0, 10, 0, 32, 10, 44, 1, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 10, 0, 0, 10, 32, 44, 1, 1 },
-	{ 0, 10, 0, 32, 10, 44, 1, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 10, 0, 2, 10, 32, 76, 1, 1 },
-	{ 0, 10, 2, 32, 10, 76, 1, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 4, 0, 1 },
-	{ 0, 0, 0, 1, 1, 4, 0, 1 },
-	{ 0, 0, 0, 1, 1, 4, 0, 1 },
-	{ 0, 0, 0, 1, 1, 4, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 0, 0, 0, 1, 1, 8, 0, 1 },
-	{ 2, 2, 1, 28, 28, 2, 0, 1 },
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{10, 0,  0}, {10, 32, 44}}, 1, 1},
+	{{{0,  10, 0}, {32, 10, 44}}, 1, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{10, 0,  0}, {10, 32, 44}}, 1, 1},
+	{{{0,  10, 0}, {32, 10, 44}}, 1, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{10, 0,  2}, {10, 32, 76}}, 1, 1},
+	{{{0,  10, 2}, {32, 10, 76}}, 1, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  4}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  4}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  4}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  4}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{0,  0,  0}, {1,  1,  8}},  0, 1},
+	{{{2,  2,  1}, {28, 28, 2}},  0, 1},
 };
 
 /* 0x0097B3C4 */
@@ -200,16 +204,9 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		} else {
 			imageId += word_97B3C4[slope & 0x1F];
 			imageId |= imageColourFlags;
+			sub_98197C(imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
 
-			RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
-			sub_98197C(imageId, 0, 0, 32, 32, 11, z, rotation);
-
-			RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA56, uint16) = z + 16 + 2;
-			sub_98197C(imageId + 4, 0, 0, 32, 32, 11, z + 16, rotation);
+			sub_98197C(imageId + 4, 0, 0, 32, 32, 11, z + 16, 0, 0, z + 16 + 2, rotation);
 
 			hasSupports = true;
 		}
@@ -231,10 +228,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 			imageId += word_97B3C4[slope & 0x1F];
 			imageId |= imageColourFlags;
 
-			RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-			RCT2_GLOBAL(0x009DEA56, uint16) = z + 2;
-			sub_98196C(imageId, 0, 0, 32, 32, 11, z, rotation);
+			sub_98197C(imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
 			hasSupports = true;
 		}
 		z += 16;
@@ -277,18 +271,14 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 			imageId += special;
 			imageId |= imageColourFlags;
 
-			RCT2_GLOBAL(0x009DEA52, uint16) = byte_97B23C[special].var_0;
-			RCT2_GLOBAL(0x009DEA54, uint16) = byte_97B23C[special].var_1;
-			RCT2_GLOBAL(0x009DEA56, uint16) = byte_97B23C[special].var_2 + z;
-			uint16 lengthY = byte_97B23C[special].var_3;
-			uint16 lengthX = byte_97B23C[special].var_4;
-			uint8 ah = byte_97B23C[special].var_5;
+			unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
+
 			if (byte_97B23C[special].var_6 == 0 || RCT2_GLOBAL(0x009DEA58, uint32) == 0) {
-				sub_98197C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation);
+				sub_98197C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
 				hasSupports = true;
 			} else {
 				hasSupports = true;
-				if (!sub_98198C(imageId, 0, 0, lengthX, lengthY, ah, z, rotation)) {
+				if (!sub_98198C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation)) {
 					int edi = RCT2_GLOBAL(0x009DEA58, uint32);
 					RCT2_GLOBAL(edi + 0x20, uint32) = imageColourFlags;
 				}

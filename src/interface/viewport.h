@@ -133,10 +133,10 @@ void painter_setup();
 void sub_688485();
 void sub_688217();
 
-int sub_98196C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
-int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
-int sub_98198C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
-int sub_98199C(int image_id, sint8 x_offset, sint8 y_offset, sint16 length_x, sint16 length_y, sint8 z_offset, int height, uint32 rotation);
+int sub_98196C(int image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, int z_offset, uint32 rotation);
+int sub_98197C(int image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, int z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
+int sub_98198C(int image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, int z_offset, uint16 bound_box_offset_x, uint16 bound_box_offset_y, uint16 bound_box_offset_z, uint32 rotation);
+int sub_98199C(int image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, int z_offset, uint16 bound_box_offset_x, uint16 bound_box_offset_y, uint16 bound_box_offset_z, uint32 rotation);
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
