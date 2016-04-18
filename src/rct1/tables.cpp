@@ -1,5 +1,6 @@
 #include "../common.h"
 #include "../core/List.hpp"
+#include "../core/Util.hpp"
 #include "import.h"
 
 extern "C"
@@ -330,6 +331,8 @@ namespace RCT1
             "CHCKS   ",  // RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL
             "LEMST   ",  // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
+
+        Guard::ArgumentInRange<size_t>(rideType, 0, Util::CountOf(map), "");
         return map[rideType];
     }
 
@@ -427,6 +430,8 @@ namespace RCT1
             "IVMC1   ",  // RCT1_VEHICLE_TYPE_SUSPENDED_WILD_MOUSE_CARS (Inverted Hairpin in RCT2)
             "ENTERP  ",  // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
         };
+
+        Guard::ArgumentInRange<size_t>(vehicleType, 0, Util::CountOf(map), "");
         return map[vehicleType];
     }
 
@@ -870,8 +875,8 @@ namespace RCT1
             "SCGJURAS", // RCT1_SCENERY_THEME_JURASSIC
             "SCGSPOOK", // RCT1_SCENERY_THEME_SPOOKY
             "SCGJUNGL", // RCT1_SCENERY_THEME_JUNGLE
-            "        ", // RCT1_SCENERY_THEME_GARDEN_CLOCK
             "SCGABSTR", // RCT1_SCENERY_THEME_ABSTRACT
+            "        ", // RCT1_SCENERY_THEME_GARDEN_CLOCK
             "SCGSNOW ", // RCT1_SCENERY_THEME_SNOW_ICE
             "SCGMEDIE", // RCT1_SCENERY_THEME_MEDIEVAL
             "SCGSPACE", // RCT1_SCENERY_THEME_SPACE

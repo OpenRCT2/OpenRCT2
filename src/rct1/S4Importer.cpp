@@ -1391,7 +1391,7 @@ bool rct1_load_scenario(const utf8 * path)
     auto s4Importer = new S4Importer();
     try
     {
-        s4Importer->LoadSavedGame(path);
+        s4Importer->LoadScenario(path);
         s4Importer->Import();
         result = true;
     }
