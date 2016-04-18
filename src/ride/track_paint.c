@@ -998,29 +998,46 @@ static void crooked_house_paint_supports(uint8 direction, int height) {
 
 static void crooked_house_paint_floor(int height, int floor_sprite_id) {
 	uint32 image_id = floor_sprite_id | RCT2_GLOBAL(0x00F44198, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, sint16) = height;
-	sub_98197C(image_id, 0, 0, 31, 31, 1, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 31, 31, 1, height, 0, 0, height, get_current_rotation());
 }
 
 static void crooked_house_paint_support_heights() {
-	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9CC, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9B8, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9BC, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9B4, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C0, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
+	RCT2_GLOBAL(0x0141E9D0, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9CC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9B8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9BC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9B4, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C0, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9D4, uint16) = 0xFFFF;
+}
 
+enum {
+	SEGMENT_B4 = (1 << 0),
+	SEGMENT_B8 = (1 << 1),
+	SEGMENT_BC = (1 << 2),
+	SEGMENT_C0 = (1 << 3),
+	SEGMENT_C4 = (1 << 4),
+	SEGMENT_C8 = (1 << 5),
+	SEGMENT_CC = (1 << 6),
+	SEGMENT_D0 = (1 << 7),
+	SEGMENT_D4 = (1 << 8),
+};
+
+static void crooked_house_paint_support_height(int flags, uint16 height, uint8 segment_flags) {
+	for (int s = 0; s < 9; s++) {
+		if (flags & (1 << s)) {
+			RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16) = height;
+			RCT2_GLOBAL(0x0141E9B6 + s * 4, uint8) = segment_flags;
+		}
+	}
 }
 
 static void crooked_house_paint_max_height(int height) {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x00141E9DA, uint8) = 32;
+		RCT2_GLOBAL(0x00141E9DA, uint8) = 0x20;
 	}
 }
 
@@ -1034,11 +1051,7 @@ static void crooked_house_fence_top_left(rct_ride *ride, int height, rct_map_ele
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 		uint32 image_id = 22141 | RCT2_GLOBAL(0x00F441A0, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0);
+		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
 	}
 }
 
@@ -1052,42 +1065,32 @@ static void crooked_house_fence_top_right(rct_ride *ride, int height, rct_map_el
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 		uint32 image_id = 22138 | RCT2_GLOBAL(0x00F441A0, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0);
+		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0, 2, height + 2, get_current_rotation());
 	}
 }
 
 static void crooked_house_fence_bottom_right(rct_ride *ride, int height, rct_map_element *mapElement) {
 	uint32 image_id = 22139 | RCT2_GLOBAL(0x00F441A0, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-	sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0);
+	sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
 }
 
 static void crooked_house_fence_bottom_left(rct_ride *ride, int height, rct_map_element *mapElement) {
 	uint32 image_id = 22140 | RCT2_GLOBAL(0x00F441A0, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-	sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0);
+	sub_98199C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
 }
 
 typedef struct {
-	sint16 dword_52;
-	sint16 dword_54;
+	sint16 offset_x;
+	sint16 offset_y;
 	sint16 length_x;
 	sint16 length_y;
-} rct_crooked_house_data;
+} rct_crooked_house_bound_box;
 
-rct_crooked_house_data crooked_house_data[] = {
+rct_crooked_house_bound_box crooked_house_data[] = {
 	{6,   0,   42, 24},
 	{0,   0,   0,  0},
 	{-16, -16, 32, 32},
-	{0,   0,   0,  0},
+	{0,   0,   0,  0}, // unused
 	{0,   6,   24, 42}
 };
 
@@ -1099,7 +1102,7 @@ rct_crooked_house_data crooked_house_data[] = {
  * @param (ebx) image_id
  * @param (edx) height
  */
-static void sub_88ABA4(uint8 direction, uint8 al, uint8 cl, uint32 segment, int height) {
+static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 segment, int height) {
 	//RCT2_CALLPROC_X(0x88ABA4, al, segment, cl, height, 0, direction, 0);
 	//return;
 
@@ -1127,11 +1130,8 @@ static void sub_88ABA4(uint8 direction, uint8 al, uint8 cl, uint32 segment, int 
 
 	uint32 image_id = (direction + ride_type->vehicles[0].base_image_id) | RCT2_GLOBAL(0x00F441A0, uint32);
 
-	rct_crooked_house_data esi = crooked_house_data[segment];
-	RCT2_GLOBAL(0x009DEA52, sint16) = esi.dword_52;
-	RCT2_GLOBAL(0x009DEA54, sint16) = esi.dword_54;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-	sub_98197C(image_id, al, cl, esi.length_x, esi.length_y, 127, height + 3, get_current_rotation());
+	rct_crooked_house_bound_box esi = crooked_house_data[segment];
+	sub_98197C(image_id, x_offset, y_offset, esi.length_x, esi.length_y, 127, height + 3, esi.offset_x, esi.offset_y, height + 3, get_current_rotation());
 }
 
 static void crooked_house_paint_setup_889F08(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
@@ -1151,9 +1151,7 @@ static void crooked_house_paint_setup_889FCC(uint8 rideIndex, uint8 trackSequenc
 
 	height += 2;
 	crooked_house_paint_support_heights();
-	RCT2_GLOBAL(0x141E9B4, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9C8, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9CC, sint16) = (height & 0xFF00) | 0x20;
+	crooked_house_paint_support_height(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, height, 0x20);
 
 	crooked_house_paint_max_height(height + 126);
 }
@@ -1170,9 +1168,7 @@ static void crooked_house_paint_setup_88A1D0(uint8 rideIndex, uint8 trackSequenc
 
 	height += 2;
 	crooked_house_paint_support_heights();
-	RCT2_GLOBAL(0x141E9CC, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9BC, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9D4, sint16) = (height & 0xFF00) | 0x20;
+	crooked_house_paint_support_height(SEGMENT_CC | SEGMENT_BC | SEGMENT_D4, height, 0x20);
 
 	crooked_house_paint_max_height(height + 126);
 }
@@ -1189,9 +1185,7 @@ static void crooked_house_paint_setup_88A392(uint8 rideIndex, uint8 trackSequenc
 
 	height += 2;
 	crooked_house_paint_support_heights();
-	RCT2_GLOBAL(0x141E9C8, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9B8, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9D0, sint16) = (height & 0xFF00) | 0x20;
+	crooked_house_paint_support_height(SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0, height, 0x20);
 
 	crooked_house_paint_max_height(height + 126);
 }
@@ -1208,9 +1202,7 @@ static void crooked_house_paint_setup_88A554(uint8 rideIndex, uint8 trackSequenc
 
 	height += 2;
 	crooked_house_paint_support_heights();
-	RCT2_GLOBAL(0x141E9D0, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9C0, sint16) = (height & 0xFF00) | 0x20;
-	RCT2_GLOBAL(0x141E9D4, sint16) = (height & 0xFF00) | 0x20;
+	crooked_house_paint_support_height(SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4, height, 0x20);
 
 	crooked_house_paint_max_height(height + 126);
 }
