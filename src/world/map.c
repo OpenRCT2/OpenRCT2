@@ -71,7 +71,7 @@ bool gClearFootpath;
 static void tiles_init();
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
-static void sub_68AE2A(int x, int y);
+static void clear_elements_at(int x, int y);
 static void translate_3d_to_2d(int rotation, int *x, int *y);
 static void map_obstruction_set_error_text(rct_map_element *mapElement);
 
@@ -4384,11 +4384,8 @@ void map_remove_out_of_range_elements()
 	for (int y = 0; y < (256 * 32); y += 32) {
 		for (int x = 0; x < (256 * 32); x += 32) {
 			if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY) {
-				sub_68AE2A(x, y);
-			} else if (x >= mapMaxXY - 32 || y >= mapMaxXY - 32) {
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) += 32;
-				map_buy_land_rights(x, y, x, y, 6, GAME_COMMAND_FLAG_APPLY);
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) -= 32;
+				map_buy_land_rights(x, y, x, y, 1, GAME_COMMAND_FLAG_APPLY);
+				clear_elements_at(x, y);
 			}
 		}
 	}
@@ -4435,6 +4432,8 @@ void map_extend_boundary_surface()
 		newMapElement->properties.surface.slope |= slope;
 		newMapElement->base_height = z;
 		newMapElement->clearance_height = z;
+
+		update_park_fences(x << 5, y << 5);
 	}
 
 	x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
@@ -4469,11 +4468,16 @@ void map_extend_boundary_surface()
 		newMapElement->properties.surface.slope |= slope;
 		newMapElement->base_height = z;
 		newMapElement->clearance_height = z;
-	}
 
+		update_park_fences(x << 5, y << 5);
+	}
 }
 
-static void sub_68AE2A(int x, int y)
+/**
+ * Clears all elements properly from a certain tile.
+ *  rct2: 0x0068AE2A
+ */
+static void clear_elements_at(int x, int y)
 {
 	for (;;) {
 		rct2_peep_spawn *peepSpawns = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
@@ -4894,7 +4898,7 @@ void map_clear_all_elements()
 {
 	for (int y = 0; y < (256 * 32); y += 32) {
 		for (int x = 0; x < (256 * 32); x += 32) {
-			sub_68AE2A(x, y);
+			clear_elements_at(x, y);
 		}
 	}
 }
