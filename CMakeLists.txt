@@ -194,6 +194,11 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLU
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR})
 
+if (CMAKE_C_COMPILER_ID MATCHES "Clang")
+	# Disable optimizations for clang, to allow optimized builds
+	set_source_files_properties(src/addresses.c PROPERTIES COMPILE_FLAGS -O0)
+endif()
+
 if (WIN32)
 	# build as library for now, replace with add_executable
 	add_library(${PROJECT} SHARED ${ORCT2_SOURCES} ${SPEEX_SOURCES})
