@@ -5479,12 +5479,14 @@ static void peep_update_walking(rct_peep* peep){
 			((0xFFFF & scenario_rand()) <= 4096)){
 
 			uint8 pos_stnd = 0;
-			for (int container = peep_empty_container_standard_flag(peep); pos_stnd < 32; pos_stnd++)if (container&(1<<pos_stnd))break;
+			for (int container = peep_empty_container_standard_flag(peep); pos_stnd < 32; pos_stnd++)
+				if (container & (1u << pos_stnd))
+					break;
 
 			int bp = 0;
 
 			if (pos_stnd != 32){
-				peep->item_standard_flags &= ~(1 << pos_stnd);
+				peep->item_standard_flags &= ~(1u << pos_stnd);
 				bp = RCT2_ADDRESS(0x97EFCC, uint8)[pos_stnd];
 			}
 			else{
@@ -6250,19 +6252,19 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		ride = get_ride(peep->current_ride);
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
 			*argument_1 = STR_IN_RIDE;
-		*argument_1 |= (ride->name << 16);
+		*argument_1 |= ((uint32)ride->name << 16);
 		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_BUYING:
 		ride = get_ride(peep->current_ride);
-		*argument_1 = STR_AT_RIDE | (ride->name << 16);
+		*argument_1 = STR_AT_RIDE | ((uint32)ride->name << 16);
 		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_WALKING:
 	case PEEP_STATE_USING_BIN:
 		if (peep->guest_heading_to_ride_id != 0xFF){
 			ride = get_ride(peep->guest_heading_to_ride_id);
-			*argument_1 = STR_HEADING_FOR | (ride->name << 16);
+			*argument_1 = STR_HEADING_FOR | ((uint32)ride->name << 16);
 			*argument_2 = ride->name_arguments;
 		}
 		else{
@@ -6273,7 +6275,7 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 	case PEEP_STATE_QUEUING_FRONT:
 	case PEEP_STATE_QUEUING:
 		ride = get_ride(peep->current_ride);
-		*argument_1 = STR_QUEUING_FOR | (ride->name << 16);
+		*argument_1 = STR_QUEUING_FOR | ((uint32)ride->name << 16);
 		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_SITTING:
@@ -6283,12 +6285,12 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 	case PEEP_STATE_WATCHING:
 		if (peep->current_ride != 0xFF){
 			ride = get_ride(peep->current_ride);
-			*argument_1 = STR_WATCHING_RIDE | (ride->name << 16);
+			*argument_1 = STR_WATCHING_RIDE | ((uint32)ride->name << 16);
 			*argument_2 = ride->name_arguments;
 			if (peep->current_seat & 0x1)
-				*argument_1 = STR_WATCHING_CONSTRUCTION_OF | (ride->name << 16);
+				*argument_1 = STR_WATCHING_CONSTRUCTION_OF | ((uint32)ride->name << 16);
 			else
-				*argument_1 = STR_WATCHING_RIDE | (ride->name << 16);
+				*argument_1 = STR_WATCHING_RIDE | ((uint32)ride->name << 16);
 		}
 		else{
 			*argument_1 = peep->current_seat & 0x1 ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY;
@@ -6332,23 +6334,23 @@ void get_arguments_from_action(rct_peep* peep, uint32 *argument_1, uint32* argum
 		}
 		else{
 			ride = get_ride(peep->current_ride);
-			*argument_1 = STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL | (ride->name << 16);
+			*argument_1 = STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL | ((uint32)ride->name << 16);
 			*argument_2 = ride->name_arguments;
 		}
 		break;
 	case PEEP_STATE_FIXING:
 		ride = get_ride(peep->current_ride);
-		*argument_1 = STR_FIXING_RIDE | (ride->name << 16);
+		*argument_1 = STR_FIXING_RIDE | ((uint32)ride->name << 16);
 		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_HEADING_TO_INSPECTION:
 		ride = get_ride(peep->current_ride);
-		*argument_1 = STR_HEADING_TO_RIDE_FOR_INSPECTION | (ride->name << 16);
+		*argument_1 = STR_HEADING_TO_RIDE_FOR_INSPECTION | ((uint32)ride->name << 16);
 		*argument_2 = ride->name_arguments;
 		break;
 	case PEEP_STATE_INSPECTING:
 		ride = get_ride(peep->current_ride);
-		*argument_1 = STR_INSPECTING_RIDE | (ride->name << 16);
+		*argument_1 = STR_INSPECTING_RIDE | ((uint32)ride->name << 16);
 		*argument_2 = ride->name_arguments;
 		break;
 	}
@@ -6376,7 +6378,7 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 	} else {
 		esi = 0x009AC864; //No thought?
 	}
-	*argument_1 = ((thought.type + STR_THOUGHT_START) & 0xFFFF) | (*((uint16*)esi) << 16);
+	*argument_1 = (((thought.type + STR_THOUGHT_START) & 0xFFFF) | (((uint32)*((uint16*)esi)) << 16));
 	*argument_2 = *((uint32*)(esi + 2)); //Always 0 apart from on rides?
 }
 
