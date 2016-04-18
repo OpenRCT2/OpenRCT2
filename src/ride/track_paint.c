@@ -94,7 +94,7 @@ static sint8 TopSpinSeatPositionOffset[] = {
  *  rct2: 0x0076750D
  */
 static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, int height, rct_map_element* mapElement) {
-	uint16 word_9DEA52, word_9DEA54, word_9DEA56;
+	uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
 	// As we will be drawing a vehicle we need to backup the mapElement that
 	// is assigned to the drawings.
 	rct_map_element* curMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
@@ -119,9 +119,9 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		seatRotation = vehicle->bank_rotation;
 	}
 
-	word_9DEA52 = al + 16;
-	word_9DEA54 = cl + 16;
-	word_9DEA56 = height;
+	boundBoxOffsetX = al + 16;
+	boundBoxOffsetY = cl + 16;
+	boundBoxOffsetZ = height;
 
 	//di
 	uint8 lengthX = 24;
@@ -140,7 +140,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	image_id += rideEntry->vehicles[0].base_image_id;
 	// Left back bottom support
 	image_id += 572;
-	sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height, word_9DEA52, word_9DEA54, word_9DEA56, get_current_rotation());
+	sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
 
 	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	if (image_id == 0x20000000) {
@@ -162,7 +162,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	// Left hand arm
 	image_id += 380;
 
-	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 
 	uint32 seatImageId;
 
@@ -218,7 +218,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	RCT2_GLOBAL(0x014280B9, sint8) = (sint8)seatCoords.y;
 	RCT2_GLOBAL(0x014280BA, sint16) = seatCoords.z;
 
-	sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+	sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	if (dpi->zoom_level < 2 && vehicle != NULL && vehicle->num_peeps != 0) {
@@ -229,7 +229,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		image_id += 0xA0000000;
 		image_id += 76;
 
-		sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+		sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 
 		if (vehicle->num_peeps > 2) {
 			image_id =
@@ -239,7 +239,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 			image_id += 0xA0000000;
 			image_id += 152;
 
-			sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+			sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 		}
 
 		if (vehicle->num_peeps > 4) {
@@ -250,7 +250,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 			image_id += 0xA0000000;
 			image_id += 228;
 
-			sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+			sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 		}
 
 		if (vehicle->num_peeps > 6) {
@@ -261,7 +261,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 			image_id += 0xA0000000;
 			image_id += 304;
 
-			sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+			sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 		}
 	}
 
@@ -279,7 +279,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	// Right hand arm
 	image_id += 476;
 
-	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 
 	image_id = RCT2_GLOBAL(0x00F441A0, uint32);
 	if (image_id == 0x20000000) {
@@ -294,7 +294,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	// Right back bottom support
 	image_id += 573;
 
-	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 
 	RCT2_GLOBAL(0x009DE578, rct_map_element*) = curMapElement;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;

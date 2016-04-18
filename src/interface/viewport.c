@@ -1680,7 +1680,7 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
  */
 void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* map_element)
 {
-	uint16 word_9DEA52, word_9DEA54, word_9DEA56;
+	uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_BANNER;
@@ -1694,9 +1694,9 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	direction += map_element->properties.banner.position;
 	direction &= 3;
 
-	word_9DEA52 = RCT2_ADDRESS(0x98D884, uint16)[direction * 2];
-	word_9DEA54 = RCT2_ADDRESS(0x98D884 + 2, uint16)[direction * 2];
-	word_9DEA56 = height + 2;
+	boundBoxOffsetX = RCT2_ADDRESS(0x98D884, uint16)[direction * 2];
+	boundBoxOffsetY = RCT2_ADDRESS(0x98D884 + 2, uint16)[direction * 2];
+	boundBoxOffsetZ = height + 2;
 
 	uint32 base_id = (direction << 1) + banner_scenery->image;
 	uint32 image_id = base_id;
@@ -1712,12 +1712,12 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 			0x20000000;
 	}
 
-	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, word_9DEA52, word_9DEA54, word_9DEA56, get_current_rotation());
-	word_9DEA52 = RCT2_ADDRESS(0x98D888, uint16)[direction * 2];
-	word_9DEA54 = RCT2_ADDRESS(0x98D888 + 2, uint16)[direction * 2];
+	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+	boundBoxOffsetX = RCT2_ADDRESS(0x98D888, uint16)[direction * 2];
+	boundBoxOffsetY = RCT2_ADDRESS(0x98D888 + 2, uint16)[direction * 2];
 
 	image_id++;
-	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, word_9DEA52, word_9DEA54, word_9DEA56, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
 
 	// Opposite direction
 	direction ^= 2;
@@ -1748,7 +1748,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
 	uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
 
-	sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, word_9DEA52, word_9DEA54, word_9DEA56, 0);
+	sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, 0);
 }
 
 /**
