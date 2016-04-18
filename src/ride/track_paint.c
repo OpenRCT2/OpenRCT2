@@ -914,10 +914,7 @@ static void spiral_slide_paint_tile_back(uint8 rideIndex, uint8 trackSequence, u
 
 	// Base
 	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -929,10 +926,7 @@ static void spiral_slide_paint_tile_back(uint8 rideIndex, uint8 trackSequence, u
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 		image_id = SPIRAL_SLIDE_FENCE_TOP_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, get_current_rotation());
+		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
 	}
 
 	entranceLoc =
@@ -941,10 +935,7 @@ static void spiral_slide_paint_tile_back(uint8 rideIndex, uint8 trackSequence, u
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 		image_id = SPIRAL_SLIDE_FENCE_TOP_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, get_current_rotation());
+		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
 	}
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
@@ -970,10 +961,7 @@ static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, 
 
 	// Base
 	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -985,28 +973,18 @@ static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, 
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 		image_id = SPIRAL_SLIDE_FENCE_TOP_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0);
+		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 2, 0, height + 2, 0);
 	}
 
 	image_id = SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-	sub_98197C(image_id, 0, 0, 32, 1, 7, height, get_current_rotation()); //TODO 1, 32
+	sub_98197C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation()); //TODO 1, 32
 
 	if (direction == 0) image_id = SPIRAL_SLIDE_RIGHT_R0 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 1) image_id = SPIRAL_SLIDE_RIGHT_R1 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 2) image_id = SPIRAL_SLIDE_RIGHT_R2 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 3) image_id = SPIRAL_SLIDE_RIGHT_R3 | RCT2_GLOBAL(0x00F44198, uint32);
 
-	RCT2_GLOBAL(0x009DEA52, uint16) = 16;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-	sub_98197C(image_id, 16, 16, 16, 16, 108, height, get_current_rotation());
+	sub_98197C(image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3, get_current_rotation());
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
@@ -1031,10 +1009,7 @@ static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, u
 
 	// Base
 	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 	uint16 entranceLoc =
@@ -1046,29 +1021,20 @@ static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, u
 
 	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
 		image_id = SPIRAL_SLIDE_FENCE_TOP_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 2;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
 
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0);
+		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, 0);
 	}
 
 	// Fence
 	image_id = SPIRAL_SLIDE_FENCE_BOTTOM_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-	sub_98197C(image_id, 0, 0, 1, 32, 7, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
 
 	if (direction == 0) image_id = SPIRAL_SLIDE_LEFT_R0 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 1) image_id = SPIRAL_SLIDE_LEFT_R1 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 2) image_id = SPIRAL_SLIDE_LEFT_R2 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 3) image_id = SPIRAL_SLIDE_LEFT_R3 | RCT2_GLOBAL(0x00F44198, uint32);
 
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 16;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-	sub_98197C(image_id, 16, 16, 16, 16, 108, height, get_current_rotation());
+	sub_98197C(image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3, get_current_rotation());
 
 	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
 	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
@@ -1093,61 +1059,37 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
 
 	// Base
 	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height;
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
 	// Fence 1
 	image_id = SPIRAL_SLIDE_FENCE_BOTTOM_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 30;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-	sub_98197C(image_id, 0, 0, 1, 32, 7, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
 
 	// Fence 2
 	image_id = SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-	RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-	RCT2_GLOBAL(0x009DEA54, uint16) = 30;
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 2;
-	sub_98197C(image_id, 0, 0, 32, 1, 7, height, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
 
 	if (direction == 1) {
 		image_id = SPIRAL_SLIDE_INSIDE_R1 | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0xFFF4;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-		sub_98197C(image_id, 16, 16, 2, 16, 108, height, get_current_rotation());
+		sub_98197C(image_id, 16, 16, 2, 16, 108, height, -12, 0, height + 3, get_current_rotation());
 	} else if (direction == 2) {
 		image_id = SPIRAL_SLIDE_INSIDE_R2 | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 0xFFF4;
-		RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-		sub_98197C(image_id, 16, 16, 16, 2, 108, height, get_current_rotation());
+		sub_98197C(image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3, get_current_rotation());
 	}
 
 
-	RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
 	if (direction == 0) {
 		image_id = SPIRAL_SLIDE_CENTER_R0 | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 8;
-		sub_98197C(image_id, 16, 16, 16, 8, 108, height, get_current_rotation());
+		sub_98197C(image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3, get_current_rotation());
 	} else if (direction == 1) {
 		image_id = SPIRAL_SLIDE_CENTER_R1 | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 14;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-		sub_98197C(image_id, 16, 16, 2, 16, 108, height, get_current_rotation());
+		sub_98197C(image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3, get_current_rotation());
 	} else if (direction == 2) {
 		image_id = SPIRAL_SLIDE_CENTER_R2 | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 0;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 14;
-		sub_98197C(image_id, 16, 16, 16, 2, 108, height, get_current_rotation());
+		sub_98197C(image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3, get_current_rotation());
 	} else if (direction == 3) {
 		image_id = SPIRAL_SLIDE_CENTER_R3 | RCT2_GLOBAL(0x00F44198, uint32);
-		RCT2_GLOBAL(0x009DEA52, uint16) = 8;
-		RCT2_GLOBAL(0x009DEA54, uint16) = 0;
-		sub_98197C(image_id, 16, 16, 8, 16, 108, height, get_current_rotation());
+		sub_98197C(image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3, get_current_rotation());
 	}
 
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
@@ -1165,36 +1107,38 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
 		if (slide_progress < 46) {
 
 			int offset = SPIRAL_SLIDE_PEEP + 46 * direction;
-			int dea52, dea54, si, di;
+			rct_xyz16 boundingBox = {
+				.z = 108
+			};
+			rct_xyz16 boundingBoxOffset = {
+				.z = height + 3
+			};
+
 			if (direction == 0) {
-				dea52 = 0;
-				dea54 = 8;
-				si = 8;
-				di = 16;
+				boundingBoxOffset.x = 0;
+				boundingBoxOffset.y = 8;
+				boundingBox.y = 8;
+				boundingBox.x = 16;
 			} else if (direction == 1) {
-				dea52 = 14;
-				dea54 = 0;
-				si = 2;
-				di = 16;
+				boundingBoxOffset.x = 14;
+				boundingBoxOffset.y = 0;
+				boundingBox.y = 2;
+				boundingBox.x = 16;
 			} else if (direction == 2) {
-				dea52 = 0;
-				dea54 = 14;
-				si = 16;
-				di = 2;
+				boundingBoxOffset.x = 0;
+				boundingBoxOffset.y = 14;
+				boundingBox.y = 16;
+				boundingBox.x = 2;
 			} else if (direction == 3) {
-				dea52 = 8;
-				dea54 = 0;
-				si = 16;
-				di = 8;
+				boundingBoxOffset.x = 8;
+				boundingBoxOffset.y = 0;
+				boundingBox.y = 16;
+				boundingBox.x = 8;
 			}
 
 			image_id = (offset + slide_progress) | (ride->slide_peep_t_shirt_colour << 19) | (1 << 29);
 
-			RCT2_GLOBAL(0x009DEA52, uint16) = dea52;
-			RCT2_GLOBAL(0x009DEA54, uint16) = dea54;
-			RCT2_GLOBAL(0x009DEA56, uint16) = height + 3;
-
-			sub_98199C(image_id, 16, 16, di, si, 108, height, get_current_rotation());
+			sub_98199C(image_id, 16, 16, boundingBox.x, boundingBox.y, boundingBox.z, height, boundingBoxOffset.x, boundingBoxOffset.y, boundingBoxOffset.z, get_current_rotation());
 		}
 	}
 
