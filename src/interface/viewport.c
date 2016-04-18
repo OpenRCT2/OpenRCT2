@@ -2739,7 +2739,10 @@ static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, si
 			}
 		}
 
-		if (ceil2(no_pixels, round) == 0) continue;
+		if (round > 1) {
+			// This matches the original implementation, but allows empty lines to cause false postives on zoom 0
+			if (ceil2(no_pixels, round) == 0) continue;
+		}
 
 		return true;
 	}
