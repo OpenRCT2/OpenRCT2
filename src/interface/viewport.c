@@ -878,7 +878,7 @@ int sub_98199C(
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[get_current_rotation()],
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[rotation],
 		x_offset | (bound_box_length_z << 8),
 		image_id,
 		y_offset,
@@ -909,7 +909,7 @@ int sub_98196C(
 	int z_offset,
 	uint32 rotation
 ) {
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[get_current_rotation()],
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[rotation],
 		x_offset | (bound_box_length_z << 8),
 		image_id,
 		y_offset,
@@ -1127,7 +1127,7 @@ int sub_98198C(
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[get_current_rotation()],
+	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[rotation],
 		x_offset | (bound_box_length_z << 8),
 		image_id, 
 		y_offset,
