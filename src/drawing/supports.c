@@ -228,11 +228,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 			imageId += word_97B3C4[slope & 0x1F];
 			imageId |= imageColourFlags;
 
-			uint16 word_9DEA52 = 0;
-			uint16 word_9DEA54 = 0;
-			uint16 word_9DEA56 = z + 2;
-			// Todo: check whether this function call is correct
-			sub_98196C(imageId, 0, 0, 32, 32, 11, z, rotation);
+			sub_98197C(imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
 			hasSupports = true;
 		}
 		z += 16;
