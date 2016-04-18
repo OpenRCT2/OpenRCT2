@@ -894,25 +894,24 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	int image_id = 2485 | RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_98196C(image_id, 0, 0, 32, 32, 0, height, get_current_rotation());
 
-	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), false);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
 
 	RCT2_GLOBAL(0x0141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9B8, sint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9BC, sint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9C0, sint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9C8, sint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9CC, sint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9D0, sint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9D4, sint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9B8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9BC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C0, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9C8, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9CC, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9D0, uint16) = 0xFFFF;
+	RCT2_GLOBAL(0x0141E9D4, uint16) = 0xFFFF;
 
-	rct_ride *ride = get_ride(rideIndex);
-	int esi = ride->track_colour_supports[0];
 	int base_image_id;
-
-	if (esi == 0) base_image_id = SPR_MAZE_BASE_BRICK;
-	if (esi == 1) base_image_id = SPR_MAZE_BASE_HEDGE;
-	if (esi == 2) base_image_id = SPR_MAZE_BASE_ICE;
-	if (esi == 3) base_image_id = SPR_MAZE_BASE_WOOD;
+	switch (get_ride(rideIndex)->track_colour_supports[0]) {
+		case 0: base_image_id = SPR_MAZE_BASE_BRICK; break;
+		case 1: base_image_id = SPR_MAZE_BASE_HEDGE; break;
+		case 2: base_image_id = SPR_MAZE_BASE_ICE; break;
+		case 3: base_image_id = SPR_MAZE_BASE_WOOD; break;
+	}
 
 	base_image_id |= RCT2_GLOBAL(0x00F441A0, uint32);
 

@@ -152,7 +152,7 @@ const uint16 word_97B3C4[] = {
  * @param special (ax) Used for curved supports.
  * @param height (dx) The height of the supports.
  * @param imageColourFlags (ebp) The colour and palette flags for the support sprites.
- * @param underground (Carry flag) true if underground.
+ * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
 bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground)
