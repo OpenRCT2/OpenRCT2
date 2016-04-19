@@ -111,4 +111,27 @@ public:
         }
         return SIZE_MAX;
     }
+
+    size_t IndexOf(T item, std::function<bool(T, T)> comparer)
+    {
+        for (size_t i = 0; i < this->size(); i++)
+        {
+            T element = std::vector<T>::operator[](i);
+            if (comparer(item, element))
+            {
+                return i;
+            }
+        }
+        return SIZE_MAX;
+    }
+
+    bool Contains(std::function<bool(T)> predicate)
+    {
+        return IndexOf(predicate) != SIZE_MAX;
+    }
+
+    bool Contains(T item, std::function<bool(T, T)> comparer)
+    {
+        return IndexOf(item, comparer) != SIZE_MAX;
+    }
 };

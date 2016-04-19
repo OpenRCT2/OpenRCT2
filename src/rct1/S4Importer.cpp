@@ -28,6 +28,11 @@ extern "C"
     #include "../world/scenery.h"
 }
 
+static bool ObjectNameComparer(const char * a, const char * b)
+{
+    return String::Equals(a, b, true);
+}
+
 void S4Importer::LoadSavedGame(const utf8 * path)
 {
     if (!rct1_read_sv4(path, &_s4)) {
@@ -106,7 +111,7 @@ void S4Importer::Initialise()
 
 void S4Importer::CreateAvailableObjectMappings()
 {
-    // Add defaults
+    // Add default scenery groups
     _sceneryGroupEntries.AddRange({
         "SCGTREES",
         "SCGPATHX",
@@ -116,6 +121,7 @@ void S4Importer::CreateAvailableObjectMappings()
         "SCGWALLS"
     });
 
+    // Add default footpaths
     _pathEntries.AddRange({
         "PATHASH ",
         "PATHCRZY",
@@ -159,11 +165,7 @@ void S4Importer::CreateAvailableObjectMappings()
                         break;
                     }
 
-                    size_t index = entries->IndexOf([objectName](const char * x) -> bool
-                    {
-                        return String::Equals(x, objectName, true);
-                    });
-                    if (index == SIZE_MAX)
+                    if (!entries->Contains(objectName, ObjectNameComparer))
                     {
                         entries->Add(objectName);
                     }
@@ -358,8 +360,17 @@ void S4Importer::AddEntryForPath(uint8 pathType)
     if (_pathTypeToEntryMap[pathType] == 255)
     {
         const char * entryName = RCT1::GetPathObject(pathType);
-        _pathTypeToEntryMap[pathType] = (uint8)_pathEntries.GetCount();
-        _pathEntries.Add(entryName);
+
+        size_t index = _pathEntries.IndexOf(entryName, ObjectNameComparer);
+        if (index != SIZE_MAX)
+        {
+            _pathTypeToEntryMap[pathType] = (uint8)index;
+        }
+        else
+        {
+            _pathTypeToEntryMap[pathType] = (uint8)_pathEntries.GetCount();
+            _pathEntries.Add(entryName);
+        }
     }
 }
 
