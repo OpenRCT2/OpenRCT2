@@ -91,4 +91,6 @@ namespace CommandLine
 
     void PrintHelp(bool allCommands = false);
     exitcode_t HandleCommandDefault();
+
+    exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
 }

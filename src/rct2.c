@@ -499,3 +499,16 @@ const utf8 *get_file_path(int pathId)
 
 	return path;
 }
+
+uint32 get_file_extension_type(const utf8 *path)
+{
+	const utf8 *extension = path_get_extension(path);
+	if (strcicmp(extension, ".dat") == 0) return FILE_EXTENSION_DAT;
+	if (strcicmp(extension, ".sc4") == 0) return FILE_EXTENSION_SC4;
+	if (strcicmp(extension, ".sv4") == 0) return FILE_EXTENSION_SV4;
+	if (strcicmp(extension, ".td4") == 0) return FILE_EXTENSION_TD4;
+	if (strcicmp(extension, ".sc6") == 0) return FILE_EXTENSION_SC6;
+	if (strcicmp(extension, ".sv6") == 0) return FILE_EXTENSION_SV6;
+	if (strcicmp(extension, ".td6") == 0) return FILE_EXTENSION_TD6;
+    return FILE_TYPE_UNKNOWN;
+}

@@ -78,14 +78,15 @@ static void PrintLaunchInformation();
 const CommandLineCommand CommandLine::RootCommands[]
 {
     // Main commands
-    DefineCommand("",         "<uri>",      StandardOptions, HandleNoCommand     ),
-    DefineCommand("edit",     "<uri>",      StandardOptions, HandleCommandEdit   ),
-    DefineCommand("intro",    "",           StandardOptions, HandleCommandIntro  ),
-#ifndef DISABLE_NETWORK 
-    DefineCommand("host",     "<uri>",      StandardOptions, HandleCommandHost   ),
-    DefineCommand("join",     "<hostname>", StandardOptions, HandleCommandJoin   ),
+    DefineCommand("",         "<uri>",                  StandardOptions, HandleNoCommand     ),
+    DefineCommand("edit",     "<uri>",                  StandardOptions, HandleCommandEdit   ),
+    DefineCommand("intro",    "",                       StandardOptions, HandleCommandIntro  ),
+#ifndef DISABLE_NETWORK
+    DefineCommand("host",     "<uri>",                  StandardOptions, HandleCommandHost   ),
+    DefineCommand("join",     "<hostname>",             StandardOptions, HandleCommandJoin   ),
 #endif
-    DefineCommand("set-rct2", "<path>",     StandardOptions, HandleCommandSetRCT2),
+    DefineCommand("set-rct2", "<path>",                 StandardOptions, HandleCommandSetRCT2),
+    DefineCommand("convert",  "<source> <destination>", StandardOptions, CommandLine::HandleCommandConvert),
 
 #if defined(__WINDOWS__) && !defined(__MINGW32__)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),

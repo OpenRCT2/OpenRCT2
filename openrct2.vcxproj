@@ -24,6 +24,7 @@
     <ClCompile Include="src\audio\mixer.cpp" />
     <ClCompile Include="src\cheats.c" />
     <ClCompile Include="src\cmdline\CommandLine.cpp" />
+    <ClCompile Include="src\cmdline\ConvertCommand.cpp" />
     <ClCompile Include="src\cmdline\RootCommands.cpp" />
     <ClCompile Include="src\cmdline\ScreenshotCommands.cpp" />
     <ClCompile Include="src\cmdline\SpriteCommands.cpp" />

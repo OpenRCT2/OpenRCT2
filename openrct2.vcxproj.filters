@@ -600,6 +600,9 @@
     <ClCompile Include="src\rct1\Tables.cpp">
       <Filter>Source\RCT1</Filter>
     </ClCompile>
+    <ClCompile Include="src\cmdline\ConvertCommand.cpp">
+      <Filter>Source\CommandLine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
