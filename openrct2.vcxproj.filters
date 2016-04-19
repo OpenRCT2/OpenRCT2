@@ -44,15 +44,6 @@
     <Filter Include="Source\Network">
       <UniqueIdentifier>{ae88ed08-902b-4167-a78c-9b521ce67749}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Test">
-      <UniqueIdentifier>{9b842d7a-225e-4ba9-807d-1cb6ebacbdd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test\Management">
-      <UniqueIdentifier>{73238872-312d-437f-8497-7cb66466d835}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test\Ride">
-      <UniqueIdentifier>{c6b9c169-ff2a-41df-9b1c-47d15763c3e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Core">
       <UniqueIdentifier>{28a808eb-9017-44cc-939b-f828fd1e2e7d}</UniqueIdentifier>
     </Filter>
@@ -579,15 +570,21 @@
     <ClCompile Include="src\interface\Theme.cpp">
       <Filter>Source\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\Json.cpp" />
-    <ClCompile Include="src\windows\themes.c" />
     <ClCompile Include="src\drawing\drawing_fast.cpp">
       <Filter>Source\Drawing</Filter>
     </ClCompile>
     <ClCompile Include="src\core\textinputbuffer.c">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\platform\crash.cpp" />
+    <ClCompile Include="src\platform\crash.cpp">
+      <Filter>Source\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Json.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\windows\themes.c">
+      <Filter>Source\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -797,15 +794,6 @@
     <ClInclude Include="src\interface\themes.h">
       <Filter>Source\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="test\tests.h">
-      <Filter>Test</Filter>
-    </ClInclude>
-    <ClInclude Include="test\management\finance_test.h">
-      <Filter>Test\Management</Filter>
-    </ClInclude>
-    <ClInclude Include="test\ride\ride_ratings_test.h">
-      <Filter>Test\Ride</Filter>
-    </ClInclude>
     <ClInclude Include="src\interface\title_sequences.h">
       <Filter>Source\Interface</Filter>
     </ClInclude>
@@ -890,13 +878,23 @@
     <ClInclude Include="src\core\Path.hpp">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\List.hpp" />
-    <ClInclude Include="src\core\Guard.hpp" />
-    <ClInclude Include="src\core\Diagnostics.hpp" />
-    <ClInclude Include="src\core\Json.hpp" />
     <ClInclude Include="src\core\textinputbuffer.h">
       <Filter>Source\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\platform\crash.h" />
+    <ClInclude Include="src\platform\crash.h">
+      <Filter>Source\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Diagnostics.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Guard.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Json.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\List.hpp">
+      <Filter>Source\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

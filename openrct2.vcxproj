@@ -279,9 +279,6 @@
     <ClCompile Include="src\scenario_sources.c" />
     <ClInclude Include="src\sprites.h" />
     <ClInclude Include="src\version.h" />
-    <ClInclude Include="test\management\finance_test.h" />
-    <ClInclude Include="test\ride\ride_ratings_test.h" />
-    <ClInclude Include="test\tests.h" />
     <ClInclude Include="src\title.h" />
     <ClInclude Include="src\util\sawyercoding.h" />
     <ClInclude Include="src\util\util.h" />
