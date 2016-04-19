@@ -813,7 +813,10 @@ void game_fix_save_vars() {
 			{
 				log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
 				mapElement = map_element_insert(x, y, 14, 0);
-				assert(mapElement != NULL);
+				if (mapElement == NULL) {
+					log_error("Unable to fix: Map element limit reached.");
+					return;
+				}
 			}
 		}
 	}
