@@ -53,6 +53,7 @@ private:
      * lookup tables for converting from hard coded RCT1 object types to dynamic object entries.
      */
     void CreateAvailableObjectMappings();
+    void AddDefaultEntries();
     void AddAvailableEntriesFromResearchList();
     void AddAvailableEntriesFromMap();
     void AddAvailableEntriesFromRides();

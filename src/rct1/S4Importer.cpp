@@ -111,32 +111,36 @@ void S4Importer::Initialise()
 
 void S4Importer::CreateAvailableObjectMappings()
 {
-    // Add default scenery groups
-    _sceneryGroupEntries.AddRange({
-        "SCGTREES",
-        "SCGPATHX",
-        "SCGSHRUB",
-        "SCGGARDN",
-        "SCGFENCE",
-        "SCGWALLS"
-    });
-
-    // Add default footpaths
-    _pathEntries.AddRange({
-        "PATHASH ",
-        "PATHCRZY",
-        "PATHDIRT",
-        "PATHSPCE",
-        "TARMAC  ",
-        "TARMACB ",
-        "TARMACG ",
-        "ROAD    ",
-    });
-
+    AddDefaultEntries();
     AddAvailableEntriesFromResearchList();
     AddAvailableEntriesFromMap();
     AddAvailableEntriesFromRides();
     AddAvailableEntriesFromSceneryGroups();
+}
+
+void S4Importer::AddDefaultEntries()
+{
+    // Add default scenery groups
+    _sceneryGroupEntries.AddRange({
+        "SCGTREES",
+        "SCGSHRUB",
+        "SCGGARDN",
+        "SCGFENCE",
+        "SCGWALLS",
+        "SCGPATHX",
+    });
+
+    // Add default footpaths
+    _pathEntries.AddRange({
+        "TARMAC  ",
+        "TARMACG ",
+        "TARMACB ",
+        "PATHCRZY",
+        "PATHSPCE",
+        "PATHDIRT",
+        "PATHASH ",
+        "ROAD    ",
+    });
 }
 
 void S4Importer::AddAvailableEntriesFromResearchList()
