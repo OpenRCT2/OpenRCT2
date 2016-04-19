@@ -51,10 +51,7 @@ public:
 
     void AddRange(std::initializer_list<T> initializerList)
     {
-        for (T item : initializerList)
-        {
-            this->push_back(item);
-        }
+        this->insert(this->end(), initializerList.begin(), initializerList.end());
     }
 
     void Insert(T item, size_t index)
