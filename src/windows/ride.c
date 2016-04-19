@@ -1236,7 +1236,7 @@ rct_window *window_ride_open(int rideIndex)
 	uint8 *rideEntryIndexPtr;
 	int numSubTypes, quadIndex, bitIndex;
 
-	w = window_create_auto_pos(316, 180, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
+	w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
 	w->widgets = window_ride_page_widgets[0];
 	w->enabled_widgets = window_ride_page_enabled_widgets[0];
 	w->number = rideIndex;
