@@ -56,6 +56,7 @@ private:
     void AddAvailableEntriesFromResearchList();
     void AddAvailableEntriesFromMap();
     void AddAvailableEntriesFromRides();
+    void AddAvailableEntriesFromSceneryGroups();
 
     void AddEntryForRideType(uint8 rideType);
     void AddEntryForVehicleType(uint8 rideType, uint8 vehicleType);

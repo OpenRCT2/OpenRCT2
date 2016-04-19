@@ -136,45 +136,7 @@ void S4Importer::CreateAvailableObjectMappings()
     AddAvailableEntriesFromResearchList();
     AddAvailableEntriesFromMap();
     AddAvailableEntriesFromRides();
-
-    // Add themes
-    for (int sceneryTheme = 0; sceneryTheme <= RCT1_SCENERY_THEME_PAGODA; sceneryTheme++)
-    {
-        if (sceneryTheme != 0 &&
-            _sceneryThemeTypeToEntryMap[sceneryTheme] == 255) continue;
-
-        List<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
-        for (const char * objectName : objects)
-        {
-            rct_object_entry * foundEntry = object_list_find_by_name(objectName);
-            if (foundEntry != nullptr)
-            {
-                uint8 objectType = foundEntry->flags & 0x0F;
-                switch (objectType) {
-                case OBJECT_TYPE_SMALL_SCENERY:
-                case OBJECT_TYPE_LARGE_SCENERY:
-                case OBJECT_TYPE_WALLS:
-                case OBJECT_TYPE_PATHS:
-                case OBJECT_TYPE_PATH_BITS:
-                {
-                    List<const char *> * entries = GetEntryList(objectType);
-
-                    // Ran out of available entries
-                    if (entries->GetCount() >= (size_t)object_entry_group_counts[objectType])
-                    {
-                        break;
-                    }
-
-                    if (!entries->Contains(objectName, ObjectNameComparer))
-                    {
-                        entries->Add(objectName);
-                    }
-                    break;
-                }
-                }
-            }
-        }
-    }
+    AddAvailableEntriesFromSceneryGroups();
 }
 
 void S4Importer::AddAvailableEntriesFromResearchList()
@@ -296,6 +258,47 @@ void S4Importer::AddAvailableEntriesFromRides()
         {
             // TODO might need to check if ride type has a vehicle type
             AddEntryForVehicleType(ride->type, ride->vehicle_type);
+        }
+    }
+}
+
+void S4Importer::AddAvailableEntriesFromSceneryGroups()
+{
+    for (int sceneryTheme = 0; sceneryTheme <= RCT1_SCENERY_THEME_PAGODA; sceneryTheme++)
+    {
+        if (sceneryTheme != 0 &&
+            _sceneryThemeTypeToEntryMap[sceneryTheme] == 255) continue;
+
+        List<const char *> objects = RCT1::GetSceneryObjects(sceneryTheme);
+        for (const char * objectName : objects)
+        {
+            rct_object_entry * foundEntry = object_list_find_by_name(objectName);
+            if (foundEntry != nullptr)
+            {
+                uint8 objectType = foundEntry->flags & 0x0F;
+                switch (objectType) {
+                case OBJECT_TYPE_SMALL_SCENERY:
+                case OBJECT_TYPE_LARGE_SCENERY:
+                case OBJECT_TYPE_WALLS:
+                case OBJECT_TYPE_PATHS:
+                case OBJECT_TYPE_PATH_BITS:
+                {
+                    List<const char *> * entries = GetEntryList(objectType);
+
+                    // Ran out of available entries
+                    if (entries->GetCount() >= (size_t)object_entry_group_counts[objectType])
+                    {
+                        break;
+                    }
+
+                    if (!entries->Contains(objectName, ObjectNameComparer))
+                    {
+                        entries->Add(objectName);
+                    }
+                    break;
+                }
+                }
+            }
         }
     }
 }
