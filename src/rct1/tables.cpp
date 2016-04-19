@@ -233,8 +233,8 @@ namespace RCT1
         switch (pathType) {
         case RCT1_FOOTPATH_TYPE_QUEUE_BLUE:
         case RCT1_FOOTPATH_TYPE_QUEUE_RED:
-        case RCT1_FOOTPATH_TYPE_QUEUE_GREEN:
         case RCT1_FOOTPATH_TYPE_QUEUE_YELLOW:
+        case RCT1_FOOTPATH_TYPE_QUEUE_GREEN:
             return true;
         }
         return false;
@@ -856,8 +856,8 @@ namespace RCT1
         {
             "TARMAC  ",  // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
             "PATHSPCE",  // RCT1_FOOTPATH_TYPE_QUEUE_RED
-            "TARMACG ",  // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
             "PATHDIRT",  // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
+            "TARMACG ",  // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
             "TARMAC  ",  // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
             "PATHSPCE",  // RCT1_FOOTPATH_TYPE_TARMAC_RED
