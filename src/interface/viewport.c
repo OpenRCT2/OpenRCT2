@@ -1659,6 +1659,57 @@ const uint8 byte_97B504[] =
 		0, 1
 	};
 
+const uint8 byte_97B444[] = {
+	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
+	5, 7, 12, 14, 13, 15, 0, 0, 0, 0,
+	0, 0, 0, 17, 0, 0, 0, 16, 0, 18,
+	15, 0
+};
+
+const uint32 dword_97B898[][2] = {
+	{2701, 2720},
+	{2663, 2682},
+	{2701, 2720},
+	{2663, 2682}
+};
+const uint8 byte_97B84A[] = {
+	0, 1, 2, 3, 4, 14, 6, 7, 8, 9,
+	10, 11, 12, 13
+};
+
+const uint32 dword_97B858[][2] = {
+	{2739, 2758},
+	{2777, 2796},
+	{2815, 2834},
+	{2853, 2872},
+};
+
+const uint32 dword_97B878[][2] = {
+	{2891, 2910},
+	{2929, 2948},
+	{2967, 2986},
+	{3005, 3024},
+};
+
+const uint32 dword_97B750[][2] = {
+	{1915,                                           1934},
+	{2086,                                           2105},
+	{2485,                                           2504},
+	{2542,                                           2561},
+	{2314,                                           2333},
+	{2371,                                           2390},
+	{2200,                                           2219},
+	{2143,                                           2162},
+	{2257 | COLOUR_BRIGHT_RED << 19 | 0x20000000,    2276 | COLOUR_BRIGHT_RED << 19 | 0x20000000},
+	{2257 | COLOUR_YELLOW << 19 | 0x20000000,        2276 | COLOUR_YELLOW << 19 | 0x20000000},
+	{2257 | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000, 2276 | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000},
+	{2257 | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,  2276 | COLOUR_BRIGHT_GREEN << 19 | 0x20000000},
+	{2029,                                           2048},
+	{1972,                                           1991},
+	{2428,                                           2447},
+};
+
+
 #define _dword_9E3240 RCT2_GLOBAL(0x9E3240, rct_map_element *)
 #define _dword_9E3244 RCT2_GLOBAL(0x9E3244, rct_map_element *)
 #define _dword_9E3248 RCT2_GLOBAL(0x9E3248, rct_map_element *)
@@ -1815,7 +1866,86 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	}
 
 
-	RCT2_CALLPROC_X(0x660AAB, 0, 0, direction, height, (int) mapElement, 0, 0);
+	//RCT2_CALLPROC_X(0x660AAB, 0, 0, direction, height, (int) mapElement, 0, 0);
+
+	uint32 ebp = _dword_9E3264;
+	uint32 ebx = _dword_9E3278;
+
+	//push ebx + ecx + esi
+
+	uint16 di = RCT2_GLOBAL(0x9E323C, uint16);
+	if (di * 16 == height) {
+		// loc_660B25:
+		assert(false);
+	} else {
+		registers regs;
+
+		bool showGridlines = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_GRIDLINES);
+
+		int branch = -1;
+		if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
+			if ((mapElement->type & 0x3) == 0) {
+				if ((RCT2_GLOBAL(0x9E3296, uint16) == 0)) {
+					if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001) == 0) {
+						branch = mapElement->properties.surface.grass_length & 0x7;
+					}
+				}
+			}
+		}
+
+		uint32 image_offset = byte_97B444[ebx];
+		uint32 base_image;
+		switch (branch) {
+			case 0:
+				// loc_660C90
+				base_image = dword_97B898[get_current_rotation()][showGridlines ? 1 : 0];
+				break;
+
+			case 1:
+			case 2:
+			case 3:
+			default:
+				// loc_660C9F
+				if (get_current_rotation() & 1) {
+					image_offset = byte_97B84A[image_offset];
+				}
+				base_image = dword_97B750[ebp][showGridlines ? 1 : 0];
+
+				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+					base_image = 2623;
+				}
+
+				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
+					base_image &= 0xDC07FFFF; // remove colour
+					base_image |= 0x41880000;
+				}
+				break;
+
+			case 4:
+			case 5:
+				// loc_660C44
+			case 6:
+				// loc_660C6A
+			{
+				sint16 x = RCT2_GLOBAL(0x009DE56A, sint16) & 0x20;
+				sint16 y = RCT2_GLOBAL(0x009DE56E, sint16) & 0x20;
+				int index = (y | (x << 1)) >> 5;
+
+				if (branch == 6) {
+					base_image = dword_97B878[index][showGridlines ? 1 : 0];
+				} else {
+					base_image = dword_97B858[index][showGridlines ? 1 : 0];
+				}
+				break;
+			}
+
+		}
+
+		int image_id = base_image + image_offset;
+		sub_98196C(image_id, 0, 0, 32, 32, 255, height, get_current_rotation());
+	}
+
+	// loc_660D02
 }
 
 /**
