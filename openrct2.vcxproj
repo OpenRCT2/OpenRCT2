@@ -96,7 +96,7 @@
     <ClCompile Include="src\platform\windows.c" />
     <ClCompile Include="src\rct1.c" />
     <ClCompile Include="src\rct1\S4Importer.cpp" />
-    <ClCompile Include="src\rct1\tables.cpp" />
+    <ClCompile Include="src\rct1\Tables.cpp" />
     <ClCompile Include="src\rct2.c" />
     <ClCompile Include="src\ride\cable_lift.c" />
     <ClCompile Include="src\ride\ride.c" />
