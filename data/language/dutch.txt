@@ -4058,7 +4058,7 @@ STR_5755    :Incorrecte softwareversie
 STR_5756    :Ongeldig wachtwoord
 STR_5757    :Server is vol
 STR_5758    :{OUTLINE}{GREEN}Nieuwe speler: {STRING}.
-STR_5759    :Bezig met downloaden van de kaart ... ({INT32} / {INT32})
+STR_5759    :Bezig met downloaden van de kaart ... ({INT32} / {INT32} KiB)
 STR_5760    :Hong Kong-dollar (HK$)
 STR_5761    :Taiwanese dollar (NT$)
 STR_5762    :Chinese yuan (CN{YEN})

@@ -994,34 +994,34 @@ STR_0983    :研究及开发
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-STR_0987    :Too many rides/attractions
-STR_0988    :Can't create new ride/attraction...
+STR_0987    :太多游乐设施/店铺
+STR_0988    :不能新建游乐设施/店铺...
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}Construction
+STR_0990    :{SMALLFONT}{BLACK}建造
 STR_0991    :车站站台
 STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
-STR_0993    :Demolish ride/attraction
-STR_0994    :Demolish
-STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
+STR_0993    :拆除游乐设施/店铺
+STR_0994    :拆除
+STR_0995    :{WINDOW_COLOUR_1}确定要完全拆除{STRINGID}?
 STR_0996    :整体外观
 STR_0997    :{SMALLFONT}{BLACK}View selection
 STR_0998    :No more stations allowed on this ride
 STR_0999    :需要一个车站站台
 STR_1000    :轨道没有连接完整
 STR_1001    :轨道不适合此类型的车
-STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
+STR_1002    :不能开启 {POP16}{POP16}{POP16}{STRINGID}...
+STR_1003    :不能测试 {POP16}{POP16}{POP16}{STRINGID}...
+STR_1004    :不能关闭 {POP16}{POP16}{POP16}{STRINGID}...
 STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
 STR_1006    :必须先关闭
 STR_1007    :Unable to create enough vehicles
-STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
-STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
-STR_1010    :{SMALLFONT}{BLACK}Open or close park
+STR_1008    :{SMALLFONT}{BLACK}开放, 关闭或测试游乐设施/店铺
+STR_1009    :{SMALLFONT}{BLACK}开放或关闭所有游乐设施/店铺
+STR_1010    :{SMALLFONT}{BLACK}开放或关闭游乐园
 STR_1011    :关闭所有游乐设施
 STR_1012    :开启所有游乐设施
-STR_1013    :关闭游乐场
-STR_1014    :开放游乐场
+STR_1013    :关闭游乐园
+STR_1014    :开放游乐园
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1033,7 +1033,7 @@ STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
 STR_1024    :{COMMA16} car per train
 STR_1025    :{COMMA16} cars per train
-STR_1026    :Station platform too long!
+STR_1026    :车站站台太长!
 STR_1027    :{SMALLFONT}{BLACK}Locate this on Main View
 STR_1028    :Off edge of map!
 STR_1029    :Cannot build partly above and partly below water!
@@ -1060,11 +1060,11 @@ STR_1049    :存储地形失败!
 STR_1050    :载入失败...{NEWLINE}文件中含有不可读取的数据!
 STR_1051    :Invisible Supports
 STR_1052    :Invisible People
-STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
-STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
-STR_1055    :{SMALLFONT}{BLACK}Name person
-STR_1056    :{SMALLFONT}{BLACK}Name staff member
-STR_1057    :Ride/attraction name
+STR_1053    :{SMALLFONT}{BLACK}游乐园内的游乐设施
+STR_1054    :{SMALLFONT}{BLACK}命名游乐设施/店铺
+STR_1055    :{SMALLFONT}{BLACK}命名游客
+STR_1056    :{SMALLFONT}{BLACK}命名职员
+STR_1057    :游乐设施/店铺名称
 STR_1058    :Enter new name for this ride/attraction:
 STR_1059    :Can't rename ride/attraction...
 STR_1060    :Invalid ride/attraction name
@@ -1079,25 +1079,25 @@ STR_1068    :Rotating lift mode
 STR_1069    :Station to station mode
 STR_1070    :Single ride per admission
 STR_1071    :Unlimited rides per admission
-STR_1072    :Maze mode
-STR_1073    :Race mode
+STR_1072    :迷宫模式
+STR_1073    :赛车模式
 STR_1074    :Bumper-car mode
-STR_1075    :Swing mode
+STR_1075    :摇摆模式
 STR_1076    :Shop stall mode
-STR_1077    :Rotation mode
-STR_1078    :Forward rotation
-STR_1079    :Backward rotation
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
+STR_1077    :旋转模式
+STR_1078    :向前旋转
+STR_1079    :向后旋转
+STR_1080    :电影: {ENDQUOTES}飞行员复仇记{ENDQUOTES}
+STR_1081    :3D电影: {ENDQUOTES}鼠尾{ENDQUOTES}
 STR_1082    :Space rings mode
 STR_1083    :Beginners mode
 STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
+STR_1085    :电影: {ENDQUOTES}尖叫乘客{ENDQUOTES}
+STR_1086    :3D电影: {ENDQUOTES}暴风猎人{ENDQUOTES}
+STR_1087    :3D电影: {ENDQUOTES}太空海盗{ENDQUOTES}
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
-STR_1090    :Haunted house mode
+STR_1090    :鬼屋模式
 STR_1091    :Circus show mode
 STR_1092    :Downward launch
 STR_1093    :Crooked house mode
@@ -1930,10 +1930,10 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can't borrow any more money!
 STR_1919    :Not enough cash available!
 STR_1920    :Can't pay back loan!
-STR_1921    :{SMALLFONT}{BLACK}Start a new game
-STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1923    :{SMALLFONT}{BLACK}Show tutorial
-STR_1924    :{SMALLFONT}{BLACK}Exit
+STR_1921    :{SMALLFONT}{BLACK}开始新游戏
+STR_1922    :{SMALLFONT}{BLACK}从存档继续玩
+STR_1923    :{SMALLFONT}{BLACK}打开教学任务
+STR_1924    :{SMALLFONT}{BLACK}退出游戏
 STR_1925    :Can't place person here...
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} has broken down
@@ -2749,10 +2749,10 @@ STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
 STR_2738    :Title screen music:
-STR_2739    :None
+STR_2739    :无
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat not found
+STR_2742    :找不到css50.dat
 STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
 STR_2745    :\
@@ -2781,8 +2781,8 @@ STR_2765    :Large Tram
 STR_2766    :Win scenario
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
-STR_2769    :开放游乐场
-STR_2770    :关闭游乐场
+STR_2769    :开放游乐园
+STR_2770    :关闭游乐园
 STR_2771    :减慢游戏速度
 STR_2772    :加快游戏速度
 STR_2773    :窗口
@@ -4071,7 +4071,7 @@ STR_5755    :Incorrect Software Version
 STR_5756    :Bad Password
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
-STR_5759    :Downloading map ... ({INT32} / {INT32})
+STR_5759    :下载地图中 ... ({INT32} / {INT32}) KB
 STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
 STR_5762    :Chinese Yuan (CN{YEN})

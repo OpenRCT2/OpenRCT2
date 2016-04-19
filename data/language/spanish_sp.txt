@@ -4063,7 +4063,7 @@ STR_5755    :Ver. de Software incorrecto
 STR_5756    :Contraseña Incorrecta
 STR_5757    :Servidor Lleno
 STR_5758    :{OUTLINE}{GREEN}{STRING} se ha unido al juego
-STR_5759    :Descargando mapa ... ({INT32} / {INT32})
+STR_5759    :Descargando mapa ... ({INT32} / {INT32}) KiB
 STR_5760    :Dólar de Hong Kong (HK$)
 STR_5761    :Nuevo dólar de Taiwán (NT$)
 STR_5762    :Yuan Chino (CN{YEN})
