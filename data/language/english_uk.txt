@@ -4060,7 +4060,7 @@ STR_5751    :No Data
 STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
 STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
 STR_5754    :Bad Player Name
-STR_5755    :Incorrect Software Version
+STR_5755    :Incorrect Software Version (Server is using {STRING})
 STR_5756    :Bad Password
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game

@@ -50,7 +50,7 @@ typedef struct {
 } server_entry;
 
 static char _playerName[32 + 1];
-static server_entry *_severEntries = NULL;
+static server_entry *_serverEntries = NULL;
 static int _numServerEntries = 0;
 static SDL_mutex *_mutex = 0;
 static uint32 _numPlayersOnline = 0;
@@ -217,7 +217,12 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_LIST:{
 		int serverIndex = w->selected_list_item;
 		if (serverIndex >= 0 && serverIndex < _numServerEntries) {
-			char *serverAddress = _severEntries[serverIndex].address;
+			if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0) {
+				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void *) = _serverEntries[serverIndex].version;
+				window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+				break;
+			}
+			char *serverAddress = _serverEntries[serverIndex].address;
 			join_server(serverAddress);
 		}
 		}break;
@@ -244,14 +249,19 @@ static void window_server_list_dropdown(rct_window *w, int widgetIndex, int drop
 	if (serverIndex < 0) return;
 	if (serverIndex >= _numServerEntries) return;
 
-	char *serverAddress = _severEntries[serverIndex].address;
+	char *serverAddress = _serverEntries[serverIndex].address;
 
 	switch (dropdownIndex) {
 	case DDIDX_JOIN:
+		if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void *) = _serverEntries[serverIndex].version;
+			window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+			break;
+		}
 		join_server(serverAddress);
 		break;
 	case DDIDX_FAVOURITE:
-		_severEntries[serverIndex].favourite = !_severEntries[serverIndex].favourite;
+		_serverEntries[serverIndex].favourite = !_serverEntries[serverIndex].favourite;
 		server_list_save_server_entries();
 		break;
 	}
@@ -277,14 +287,14 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 	if (serverIndex < 0) return;
 	if (serverIndex >= _numServerEntries) return;
 
-	char *serverAddress = _severEntries[serverIndex].address;
+	char *serverAddress = _serverEntries[serverIndex].address;
 
 	rct_widget *listWidget = &w->widgets[WIDX_LIST];
 	int ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
 	int ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
 
 	gDropdownItemsFormat[0] = STR_JOIN_GAME;
-	if (_severEntries[serverIndex].favourite) {
+	if (_serverEntries[serverIndex].favourite) {
 		gDropdownItemsFormat[1] = STR_REMOVE_FROM_FAVOURITES;
 	} else {
 		gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
@@ -424,7 +434,7 @@ static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 		if (y >= dpi->y + dpi->height) continue;
 		// if (y + ITEM_HEIGHT < dpi->y) continue;
 
-		server_entry *serverDetails = &_severEntries[i];
+		server_entry *serverDetails = &_serverEntries[i];
 		bool highlighted = i == w->selected_list_item;
 
 		// Draw hover highlight
@@ -531,11 +541,11 @@ static void server_list_load_server_entries()
 
 	// Read number of server entries
 	SDL_RWread(file, &_numServerEntries, sizeof(uint32), 1);
-	_severEntries = malloc(_numServerEntries * sizeof(server_entry));
+	_serverEntries = malloc(_numServerEntries * sizeof(server_entry));
 
 	// Load each server entry
 	for (int i = 0; i < _numServerEntries; i++) {
-		server_entry *serverInfo = &_severEntries[i];
+		server_entry *serverInfo = &_serverEntries[i];
 
 		serverInfo->address = freadstralloc(file);
 		serverInfo->name = freadstralloc(file);
@@ -568,7 +578,7 @@ static void server_list_save_server_entries()
 	SDL_LockMutex(_mutex);
 	int count = 0;
 	for (int i = 0; i < _numServerEntries; i++) {
-		server_entry *serverInfo = &_severEntries[i];
+		server_entry *serverInfo = &_serverEntries[i];
 		if (serverInfo->favourite) {
 			count++;
 		}
@@ -578,7 +588,7 @@ static void server_list_save_server_entries()
 
 	// Write each server entry
 	for (int i = 0; i < _numServerEntries; i++) {
-		server_entry *serverInfo = &_severEntries[i];
+		server_entry *serverInfo = &_serverEntries[i];
 		if (serverInfo->favourite) {
 			SDL_RWwrite(file, serverInfo->address, strlen(serverInfo->address) + 1, 1);
 			SDL_RWwrite(file, serverInfo->name, strlen(serverInfo->name) + 1, 1);
@@ -593,12 +603,12 @@ static void server_list_save_server_entries()
 static void dispose_server_entry_list()
 {
 	SDL_LockMutex(_mutex);
-	if (_severEntries != NULL) {
+	if (_serverEntries != NULL) {
 		for (int i = 0; i < _numServerEntries; i++) {
-			dispose_server_entry(&_severEntries[i]);
+			dispose_server_entry(&_serverEntries[i]);
 		}
-		free(_severEntries);
-		_severEntries = NULL;
+		free(_serverEntries);
+		_serverEntries = NULL;
 	}
 	_numServerEntries = 0;
 	SDL_UnlockMutex(_mutex);
@@ -616,21 +626,21 @@ static server_entry* add_server_entry(char *address)
 {
 	SDL_LockMutex(_mutex);
 	for (int i = 0; i < _numServerEntries; i++) {
-		if (strcmp(_severEntries[i].address, address) == 0) {
+		if (strcmp(_serverEntries[i].address, address) == 0) {
 			SDL_UnlockMutex(_mutex);
-			return &_severEntries[i];
+			return &_serverEntries[i];
 		}
 	}
 
 	_numServerEntries++;
-	if (_severEntries == NULL) {
-		_severEntries = malloc(_numServerEntries * sizeof(server_entry));
+	if (_serverEntries == NULL) {
+		_serverEntries = malloc(_numServerEntries * sizeof(server_entry));
 	} else {
-		_severEntries = realloc(_severEntries, _numServerEntries * sizeof(server_entry));
+		_serverEntries = realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
 
 	int index = _numServerEntries - 1;
-	server_entry* newserver = &_severEntries[index];
+	server_entry* newserver = &_serverEntries[index];
 	newserver->address = _strdup(address);
 	newserver->name = _strdup(address);
 	newserver->requiresPassword = false;
@@ -648,10 +658,10 @@ static void remove_server_entry(int index)
 	SDL_LockMutex(_mutex);
 	if (_numServerEntries > index) {
 		int serversToMove = _numServerEntries - index - 1;
-		memmove(&_severEntries[index], &_severEntries[index + 1], serversToMove * sizeof(server_entry));
+		memmove(&_serverEntries[index], &_serverEntries[index + 1], serversToMove * sizeof(server_entry));
 
 		_numServerEntries--;
-		_severEntries = realloc(_severEntries, _numServerEntries * sizeof(server_entry));
+		_serverEntries = realloc(_serverEntries, _numServerEntries * sizeof(server_entry));
 	}
 	SDL_UnlockMutex(_mutex);
 }
@@ -699,7 +709,7 @@ static uint32 get_total_player_count()
 {
 	uint32 numPlayers = 0;
 	for (int i = 0; i < _numServerEntries; i++) {
-		server_entry *serverDetails = &_severEntries[i];
+		server_entry *serverDetails = &_serverEntries[i];
 		numPlayers += serverDetails->players;
 	}
 	return numPlayers;
@@ -715,7 +725,7 @@ static void fetch_servers()
 
 	SDL_LockMutex(_mutex);
 	for (int i = 0; i < _numServerEntries; i++) {
-		if (!_severEntries[i].favourite) {
+		if (!_serverEntries[i].favourite) {
 			remove_server_entry(i);
 			i = 0;
 		}
