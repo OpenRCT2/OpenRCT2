@@ -35,6 +35,7 @@ extern bool gCheatsUnlockAllPrices;
 extern bool gCheatsBuildInPauseMode;
 extern bool gCheatsIgnoreRideIntensity;
 extern bool gCheatsDisableVandalism;
+extern bool gCheatsDisableLittering;
 extern bool gCheatsNeverendingMarketing;
 extern bool gCheatsFreezeClimate;
 
@@ -51,6 +52,7 @@ enum {
 	CHEAT_BUILDINPAUSEMODE,
 	CHEAT_IGNORERIDEINTENSITY,
 	CHEAT_DISABLEVANDALISM,
+	CHEAT_DISABLELITTERING,
 	CHEAT_INCREASEMONEY,
 	CHEAT_CLEARLOAN,
 	CHEAT_SETGUESTPARAMETER,

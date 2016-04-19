@@ -19,6 +19,7 @@ bool gCheatsUnlockAllPrices = false;
 bool gCheatsBuildInPauseMode = false;
 bool gCheatsIgnoreRideIntensity = false;
 bool gCheatsDisableVandalism = false;
+bool gCheatsDisableLittering = false;
 bool gCheatsNeverendingMarketing = false;
 bool gCheatsFreezeClimate = false;
 
@@ -365,6 +366,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_BUILDINPAUSEMODE: gCheatsBuildInPauseMode = !gCheatsBuildInPauseMode; break;
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = !gCheatsIgnoreRideIntensity; break;
 			case CHEAT_DISABLEVANDALISM: gCheatsDisableVandalism = !gCheatsDisableVandalism; break;
+			case CHEAT_DISABLELITTERING: gCheatsDisableLittering = !gCheatsDisableLittering; break;
 			case CHEAT_INCREASEMONEY: cheat_increase_money(*edx); break;
 			case CHEAT_CLEARLOAN: cheat_clear_loan(); break;
 			case CHEAT_SETGUESTPARAMETER: cheat_set_guest_parameter(*edx, *edi); break;
@@ -412,6 +414,7 @@ void cheats_reset()
 	gCheatsBuildInPauseMode = false;
 	gCheatsIgnoreRideIntensity = false;
 	gCheatsDisableVandalism = false;
+	gCheatsDisableLittering = false;
 	gCheatsNeverendingMarketing = false;
 	gCheatsFreezeClimate = false;
 }

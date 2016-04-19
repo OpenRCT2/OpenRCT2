@@ -116,7 +116,7 @@ static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 		if (peep->thoughts[0].var_2 > 5)
 			continue;
 
-		if (peep->thoughts[0].type == PEEP_THOUGHT_VERY_CLEAN)
+		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VERY_CLEAN)
 			positiveCount++;
 
 		if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||

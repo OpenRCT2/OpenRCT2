@@ -76,7 +76,7 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_CROWDED = 32, // "It's too crowded here"
 	PEEP_THOUGHT_TYPE_VANDALISM = 33, // "The vandalism here is really bad"
 	PEEP_THOUGHT_TYPE_SCENERY = 34, // "Great scenery!"
-	PEEP_THOUGHT_VERY_CLEAN = 35, // "This park is very clean and tidy"
+	PEEP_THOUGHT_TYPE_VERY_CLEAN = 35, // "This park is very clean and tidy"
 	PEEP_THOUGHT_TYPE_FOUNTAINS = 36, // "The jumping fountains are great"
 	PEEP_THOUGHT_TYPE_MUSIC = 37, // "The music is nice here"
 	PEEP_THOUGHT_TYPE_BALLOON = 38, // "This baloon from X is really good value"
@@ -151,7 +151,7 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_SUB_SANDWICH = 119,
 	PEEP_THOUGHT_TYPE_COOKIE = 120,
 
-	PEEP_THOUGH_ROAST_SAUSAGE = 124,
+	PEEP_THOUGHT_TYPE_ROAST_SAUSAGE = 124,
 
 	PEEP_THOUGHT_TYPE_PHOTO2_MUCH = 136,
 	PEEP_THOUGHT_TYPE_PHOTO3_MUCH = 137,
@@ -171,20 +171,20 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_SUB_SANDWICH_MUCH = 151,
 	PEEP_THOUGHT_TYPE_COOKIE_MUCH = 152,
 
-	PEEP_THOUGHT_ROAST_SAUSAGE_MUCH = 156,
+	PEEP_THOUGHT_TYPE_ROAST_SAUSAGE_MUCH = 156,
 
-	PEEP_THOUGHT_HELP = 168, // "Help! Put me down!"
-	PEEP_THOUGHT_RUNNING_OUT = 169, // I'm running out of cash!"
-	PEEP_THOUGHT_NEW_RIDE = 170, // "Wow! A new ride being built!"
-	PEEP_THOUGHT_NICE_RIDE = 171, // "Nice ride! But not as good as the Phoenix..."
-	PEEP_THOUGHT_EXCITED = 172, // "I'm so excited - It's an Intamin ride!"
-	PEEP_THOUGHT_HERE_WE_ARE = 173, // "...and here we are on X!"
+	PEEP_THOUGHT_TYPE_HELP = 168, // "Help! Put me down!"
+	PEEP_THOUGHT_TYPE_RUNNING_OUT = 169, // "I'm running out of cash!"
+	PEEP_THOUGHT_TYPE_NEW_RIDE = 170, // "Wow! A new ride being built!"
+	PEEP_THOUGHT_TYPE_NICE_RIDE = 171, // "Nice ride! But not as good as the Phoenix..."
+	PEEP_THOUGHT_TYPE_EXCITED = 172, // "I'm so excited - It's an Intamin ride!"
+	PEEP_THOUGHT_TYPE_HERE_WE_ARE = 173, // "...and here we are on X!"
 
 	PEEP_THOUGHT_TYPE_NONE = 255
 };
 
 enum PEEP_STATE {
-	PEEP_STATE_FALLING = 0, //Drowning is part of falling
+	PEEP_STATE_FALLING = 0, // Drowning is part of falling
 	PEEP_STATE_1 = 1,
 	PEEP_STATE_QUEUING_FRONT = 2,
 	PEEP_STATE_ON_RIDE = 3,
@@ -345,7 +345,7 @@ enum PEEP_ITEM {
 	PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21)
 };
 
-enum {
+enum PEEP_SPRITE_TYPE {
 	PEEP_SPRITE_TYPE_NORMAL = 0,
 	PEEP_SPRITE_TYPE_3 = 3,
 	PEEP_SPRITE_TYPE_19 = 19,
@@ -360,7 +360,7 @@ enum {
 };
 
 // Flags used by peep->window_invalidate_flags
-enum {
+enum PEEP_INVALIDATE {
 	PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
 	PEEP_INVALIDATE_PEEP_STATS = 1 << 1,
 	PEEP_INVALIDATE_PEEP_2 = 1 << 2,
@@ -369,7 +369,7 @@ enum {
 };
 
 // Flags used by peep_should_go_on_ride()
-enum {
+enum PEEP_RIDE_DECISION {
 	PEEP_RIDE_DECISION_AT_QUEUE = 1,
 	PEEP_RIDE_DECISION_THINKING = 1 << 2
 };

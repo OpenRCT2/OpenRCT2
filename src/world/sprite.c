@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -546,15 +547,18 @@ static bool litter_can_be_at(int x, int y, int z)
  */
 void litter_create(int x, int y, int z, int direction, int type)
 {
-	rct_litter *litter, *newestLitter;
-	uint16 spriteIndex, nextSpriteIndex;
-	uint32 newestLitterCreationTick;
+	if (gCheatsDisableLittering)
+		return;
 
 	x += TileDirectionDelta[direction >> 3].x / 8;
 	y += TileDirectionDelta[direction >> 3].y / 8;
 
 	if (!litter_can_be_at(x, y, z))
 		return;
+
+	rct_litter *litter, *newestLitter;
+	uint16 spriteIndex, nextSpriteIndex;
+	uint32 newestLitterCreationTick;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_LITTER, uint16) >= 500) {
 		newestLitter = NULL;

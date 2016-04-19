@@ -1115,6 +1115,7 @@ int scenario_save_network(SDL_RWops* rw)
 	SDL_WriteU8(rw, gCheatsBuildInPauseMode);
 	SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
 	SDL_WriteU8(rw, gCheatsDisableVandalism);
+	SDL_WriteU8(rw, gCheatsDisableLittering);
 	SDL_WriteU8(rw, gCheatsNeverendingMarketing);
 	SDL_WriteU8(rw, gCheatsFreezeClimate);
 

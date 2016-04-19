@@ -2431,6 +2431,9 @@ enum {
 	STR_CHEAT_TIP_DISABLE_BRAKES_FAILURE = 5799,
 	STR_CHEAT_TIP_DISABLE_BREAKDOWNS = 5800,
 	
+	STR_CHEAT_DISABLE_LITTERING = 5801,
+	STR_CHEAT_DISABLE_LITTERING_TIP = 5802,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
