@@ -74,6 +74,7 @@ void S4Importer::Initialise()
     Memory::Set(_smallSceneryTypeToEntryMap, 255, sizeof(_smallSceneryTypeToEntryMap));
     Memory::Set(_largeSceneryTypeToEntryMap, 255, sizeof(_largeSceneryTypeToEntryMap));
     Memory::Set(_wallTypeToEntryMap,         255, sizeof(_wallTypeToEntryMap));
+    Memory::Set(_pathTypeToEntryMap,         255, sizeof(_pathTypeToEntryMap));
     Memory::Set(_pathAdditionTypeToEntryMap, 255, sizeof(_pathAdditionTypeToEntryMap));
     Memory::Set(_sceneryThemeTypeToEntryMap, 255, sizeof(_sceneryThemeTypeToEntryMap));
 
@@ -115,6 +116,17 @@ void S4Importer::CreateAvailableObjectMappings()
         "SCGWALLS"
     });
 
+    _pathEntries.AddRange({
+        "PATHASH ",
+        "PATHCRZY",
+        "PATHDIRT",
+        "PATHSPCE",
+        "TARMAC  ",
+        "TARMACB ",
+        "TARMACG ",
+        "ROAD    ",
+    });
+
     AddAvailableEntriesFromResearchList();
     AddAvailableEntriesFromMap();
     AddAvailableEntriesFromRides();
@@ -136,6 +148,7 @@ void S4Importer::CreateAvailableObjectMappings()
                 case OBJECT_TYPE_SMALL_SCENERY:
                 case OBJECT_TYPE_LARGE_SCENERY:
                 case OBJECT_TYPE_WALLS:
+                case OBJECT_TYPE_PATHS:
                 case OBJECT_TYPE_PATH_BITS:
                 {
                     List<const char *> * entries = GetEntryList(objectType);
@@ -227,8 +240,18 @@ void S4Importer::AddAvailableEntriesFromMap()
     {
         switch (map_element_get_type(mapElement)) {
         case MAP_ELEMENT_TYPE_PATH:
-            AddEntryForPathAddition(mapElement->properties.path.additions & 0x0F);
+        {
+            uint8 pathColour = mapElement->type & 3;
+            uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
+            uint8 supportsType = (mapElement->flags & 0x60) >> 5;
+
+            pathType = (pathType << 2) | pathColour;
+            uint8 pathAdditionsType = mapElement->properties.path.additions & 0x0F;
+
+            AddEntryForPath(pathType);
+            AddEntryForPathAddition(pathAdditionsType);
             break;
+        }
         case MAP_ELEMENT_TYPE_SCENERY:
             AddEntryForSmallScenery(mapElement->properties.scenery.type);
             break;
@@ -327,6 +350,16 @@ void S4Importer::AddEntryForWall(uint8 wallType)
         const char * entryName = RCT1::GetWallObject(wallType);
         _wallTypeToEntryMap[wallType] = (uint8)_wallEntries.GetCount();
         _wallEntries.Add(entryName);
+    }
+}
+
+void S4Importer::AddEntryForPath(uint8 pathType)
+{
+    if (_pathTypeToEntryMap[pathType] == 255)
+    {
+        const char * entryName = RCT1::GetPathObject(pathType);
+        _pathTypeToEntryMap[pathType] = (uint8)_pathEntries.GetCount();
+        _pathEntries.Add(entryName);
     }
 }
 
@@ -612,17 +645,9 @@ void S4Importer::LoadObjects()
     LoadObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries);
     LoadObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries);
     LoadObjects(OBJECT_TYPE_WALLS, _wallEntries);
+    LoadObjects(OBJECT_TYPE_PATHS, _pathEntries);
     LoadObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
     LoadObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries);
-    LoadObjects(OBJECT_TYPE_PATHS, List<const char *>({
-        "TARMAC  ",
-        "TARMACB ",
-        "PATHSPCE",
-        "PATHDIRT",
-        "ROAD    ",
-        "PATHCRZY",
-        "PATHASH "
-    }));
     LoadObjects(OBJECT_TYPE_BANNERS, List<const char *>({
         "BN1     ",
         "BN2     ",
@@ -1028,35 +1053,6 @@ void S4Importer::FixZ()
     RCT2_GLOBAL(0x01359208, uint16) = 7;
 }
 
-// rct2: 0x0098BC9F
-static const uint8 RCT1PathTypeConversionTable[96] =
-{
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
-    0x80 | 0, 0x80 | 1, 0x80 | 2, 0x80 | 3,                // TARMAC, TARMACB, PATHSPCE, PATHDIRT
-    0, 0, 0, 0,                                            // TARMAC
-    2, 2, 2, 2,                                            // PATHSPCE
-    1, 1, 1, 1,                                            // TARMACB
-    0, 0, 0, 0,                                            // TARMAC
-    3, 3, 3, 3,                                            // PATHDIRT
-    6, 6, 6, 6,                                            // PATHASH
-    0, 0, 0, 0,                                            // TARMAC
-    0, 0, 0, 0,                                            // TARMAC
-    5, 5, 5, 5,                                            // PATHCRZY
-    5, 5, 5, 5,                                            // PATHCRZY
-    5, 5, 5, 5,                                            // PATHCRZY
-    5, 5, 5, 5,                                            // PATHCRZY
-    4, 4, 4, 4,                                            // ROAD
-    4, 4, 4, 4,                                            // ROAD
-    4, 4, 4, 4,                                            // ROAD
-    4, 4, 4, 4,                                            // ROAD
-    0, 0, 0, 0,                                            // TARMAC
-    0, 0, 0, 0,                                            // TARMAC
-    0, 0, 0, 0,                                            // TARMAC
-    0, 0, 0, 0,                                            // TARMAC
-};
-
 void S4Importer::FixPaths()
 {
     rct_map_element * mapElement = gMapElements;
@@ -1066,20 +1062,23 @@ void S4Importer::FixPaths()
         case MAP_ELEMENT_TYPE_PATH:
         {
             // Type
-            uint8 pathType = ((mapElement->properties.path.type & 0xF0) >> 2) | (mapElement->type & 3);
+            uint8 pathColour = mapElement->type & 3;
+            uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
             uint8 supportsType = (mapElement->flags & 0x60) >> 5;
-            pathType = RCT1PathTypeConversionTable[pathType * 4 + supportsType];
+
+            pathType = (pathType << 2) | pathColour;
+            uint8 entryIndex = _pathTypeToEntryMap[pathType];
 
             mapElement->type &= 0xFC;
             mapElement->flags &= ~0x60;
             mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
             mapElement->properties.path.type &= 0x0F;
             footpath_scenery_set_is_ghost(mapElement, false);
-            if (pathType & 0x80)
+            if (RCT1::PathIsQueue(pathType))
             {
                 mapElement->type |= 1;
             }
-            mapElement->properties.path.type |= pathType << 4;
+            mapElement->properties.path.type |= entryIndex << 4;
 
             // Additions
             uint8 additionType = footpath_element_get_path_scenery(mapElement);
@@ -1098,8 +1097,13 @@ void S4Importer::FixPaths()
         case MAP_ELEMENT_TYPE_ENTRANCE:
             if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
             {
-                int pathType = mapElement->properties.entrance.path_type;
-                mapElement->properties.entrance.path_type = RCT1PathTypeConversionTable[pathType * 4] & 0x7F;
+                uint8 pathType = mapElement->properties.entrance.path_type;
+                if (pathType == 0)
+                {
+                    pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
+                }
+                uint8 entryIndex = _pathTypeToEntryMap[pathType];
+                mapElement->properties.entrance.path_type = entryIndex & 0x7F;
             }
             break;
         }
@@ -1299,6 +1303,7 @@ List<const char *> * S4Importer::GetEntryList(uint8 objectType)
     case OBJECT_TYPE_SMALL_SCENERY: return &_smallSceneryEntries;
     case OBJECT_TYPE_LARGE_SCENERY: return &_largeSceneryEntries;
     case OBJECT_TYPE_WALLS:         return &_wallEntries;
+    case OBJECT_TYPE_PATHS:         return &_pathEntries;
     case OBJECT_TYPE_PATH_BITS:     return &_pathAdditionEntries;
     case OBJECT_TYPE_SCENERY_SETS:  return &_sceneryGroupEntries;
     }

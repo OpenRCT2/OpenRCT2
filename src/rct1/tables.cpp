@@ -228,6 +228,18 @@ namespace RCT1
         }
     }
 
+    bool PathIsQueue(uint8 pathType)
+    {
+        switch (pathType) {
+        case RCT1_FOOTPATH_TYPE_QUEUE_BLUE:
+        case RCT1_FOOTPATH_TYPE_QUEUE_RED:
+        case RCT1_FOOTPATH_TYPE_QUEUE_GREEN:
+        case RCT1_FOOTPATH_TYPE_QUEUE_YELLOW:
+            return true;
+        }
+        return false;
+    }
+
     uint8 NormalisePathAddition(uint8 pathAdditionType)
     {
         switch (pathAdditionType) {
@@ -836,6 +848,43 @@ namespace RCT1
             "WALLCBWN",
         };
         return map[wallType];
+    }
+
+    const char * GetPathObject(uint8 pathType)
+    {
+        static const char * map[] =
+        {
+            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
+            "PATHSPCE",  // RCT1_FOOTPATH_TYPE_QUEUE_RED
+            "TARMACG ",  // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
+            "PATHDIRT",  // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
+
+            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
+            "PATHSPCE",  // RCT1_FOOTPATH_TYPE_TARMAC_RED
+            "TARMACB ",  // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
+            "TARMACG ",  // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
+
+            "PATHDIRT",  // RCT1_FOOTPATH_TYPE_DIRT_RED
+            "PATHASH ",  // RCT1_FOOTPATH_TYPE_DIRT_BLACK
+            "        ",
+            "        ",
+
+            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_CRAZY_PAVING
+            "        ",
+            "        ",
+            "        ",
+
+            "ROAD    ",  // RCT1_FOOTPATH_TYPE_ROADS
+            "        ",
+            "        ",
+            "        ",
+
+            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_PINK
+            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_GRAY
+            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_RED
+            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_GREEN
+        };
+        return map[pathType];
     }
 
     const char * GetPathAddtionObject(uint8 pathAdditionType)
