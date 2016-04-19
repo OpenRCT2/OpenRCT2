@@ -4108,6 +4108,7 @@ STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake
 STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
 STR_5801    :Disable littering
 STR_5802    :{SMALLFONT}{BLACK}Stops guests from littering and vomiting
+STR_5803    :{SMALLFONT}{BLACK}Rotate selected map element
 
 #############
 # Scenarios #
