@@ -33,6 +33,7 @@ typedef fixed16_2dp ride_rating;
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
 #define RIDE_RATING(whole, fraction)	FIXED_2DP(whole, fraction)
 
+
 // Used for return values, for functions that modify all three.
 typedef struct {
 	ride_rating excitement;
@@ -1034,6 +1035,7 @@ bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
 
 void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 *trainLayout);
+uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex, int numCarsPerTrain, int position);
 void ride_update_max_vehicles(int rideIndex);
 
 void ride_set_ride_entry(int rideIndex, int rideEntry);

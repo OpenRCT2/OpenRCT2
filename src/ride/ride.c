@@ -2977,6 +2977,12 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme)
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 {
 	vehicle_colour result;
+
+	//Prevent indexing array out of bounds
+	if (vehicleIndex > 31) {
+		vehicleIndex = 31;
+	}
+
 	result.main = ride->vehicle_colours[vehicleIndex].body_colour;
 	result.additional_1 = ride->vehicle_colours[vehicleIndex].trim_colour;
 	result.additional_2 = ride->vehicle_colours_extended[vehicleIndex];
@@ -4571,12 +4577,9 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int vehicleIn
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	uint8 trainLayout[42];
-	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
-
 	train_ref train = { NULL, NULL };
 	for (int carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++) {
-		rct_vehicle *car = vehicle_create_car(rideIndex, trainLayout[carIndex], carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
+		rct_vehicle *car = vehicle_create_car(rideIndex, ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex), carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
 		if (carIndex == 0) {
 			train.head = car;
 		} else {
@@ -7325,8 +7328,8 @@ static void ride_update_vehicle_colours(int rideIndex)
 				coloursExtended = ride->vehicle_colours_extended[i];
 				break;
 			case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-				colours = ride->vehicle_colours[carIndex];
-				coloursExtended = ride->vehicle_colours_extended[carIndex];
+				colours = ride->vehicle_colours[carIndex > 31 ? 31 : carIndex];
+				coloursExtended = ride->vehicle_colours_extended[carIndex > 31 ? 31 : carIndex];
 				break;
 			}
 
@@ -7360,6 +7363,22 @@ void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 
 			vehicleType = rideEntry->rear_vehicle;
 		}
 		trainLayout[i] = vehicleType;
+	}
+}
+
+uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex,int numCarsPerTrain,int position)
+{
+rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+	if (position == 0 && rideEntry->front_vehicle != 255) {
+		return rideEntry->front_vehicle;
+	} else if (position == 1 && rideEntry->second_vehicle != 255) {
+		return rideEntry->second_vehicle;
+	} else if (position == 2 && rideEntry->third_vehicle != 255) {
+		return rideEntry->third_vehicle;
+	} else if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255) {
+		return rideEntry->rear_vehicle;
+	} else {
+		return rideEntry->default_vehicle;
 	}
 }
 
@@ -7437,7 +7456,7 @@ void ride_update_max_vehicles(int rideIndex)
 	rct_ride *ride;
 	rct_ride_entry *rideEntry;
 	rct_ride_entry_vehicle *vehicleEntry;
-	uint8 trainLayout[16], numCarsPerTrain, numVehicles;
+	uint8 numCarsPerTrain, numVehicles;
 	int trainLength, maxNumTrains;
 
 	ride = get_ride(rideIndex);
@@ -7445,6 +7464,7 @@ void ride_update_max_vehicles(int rideIndex)
 		return;
 
 	rideEntry = get_ride_entry(ride->subtype);
+
 	if (rideEntry->cars_per_flat_ride == 0xFF) {
 		ride->num_cars_per_train = max(rideEntry->min_cars_in_train, ride->num_cars_per_train);
 		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
@@ -7458,11 +7478,10 @@ void ride_update_max_vehicles(int rideIndex)
 		int maxFriction = RideData5[ride->type].max_friction << 8;
 		int maxCarsPerTrain = 1;
 		for (int numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
-			ride_entry_get_train_layout(ride->subtype, numCars, trainLayout);
 			trainLength = 0;
 			int totalFriction = 0;
 			for (int i = 0; i < numCars; i++) {
-				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,numCars,i)];
 				trainLength += vehicleEntry->spacing;
 				totalFriction += vehicleEntry->car_friction;
 			}
@@ -7474,7 +7493,9 @@ void ride_update_max_vehicles(int rideIndex)
 		}
 		int newCarsPerTrain = max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
 		maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
-		newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
+		if(!gCheatsDisableTrainLengthLimit) {
+			newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
+		}
 		ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
 
 		switch (ride->mode) {
@@ -7491,10 +7512,9 @@ void ride_update_max_vehicles(int rideIndex)
 			break;
 		default:
 			// Calculate maximum number of trains
-			ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
 			trainLength = 0;
 			for (int i = 0; i < newCarsPerTrain; i++) {
-				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,i)];
 				trainLength += vehicleEntry->spacing;
 			}
 
@@ -7514,13 +7534,12 @@ void ride_update_max_vehicles(int rideIndex)
 			) {
 				maxNumTrains = min(maxNumTrains, 31);
 			} else {
-				ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
-				vehicleEntry = &rideEntry->vehicles[trainLayout[0]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,0)];
 				int speed = vehicleEntry->powered_max_speed;
 
 				int totalSpacing = 0;
 				for (int i = 0; i < newCarsPerTrain; i++) {
-					vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+					vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,i)];
 					totalSpacing += vehicleEntry->spacing;
 				}
 
@@ -7692,7 +7711,9 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 
 		invalidate_test_results(rideIndex);
 		rideEntry = get_ride_entry(ride->subtype);
-		value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+		if(!gCheatsDisableTrainLengthLimit) {
+			value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+		}
 		ride->proposed_num_cars_per_train = value;
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
@@ -7718,7 +7739,9 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 			preset = ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
 		}
 		ride_set_vehicle_colours_to_random_preset(ride, preset);
-		ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
+		if(!gCheatsDisableTrainLengthLimit) {
+			ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
+		}
 		break;
 	default:
 		log_error("Unknown vehicle command.");
