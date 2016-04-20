@@ -636,7 +636,6 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		switch (widgetIndex) {
 		case WIDX_SOUND_CHECKBOX:
-			// audio_toggle_all_sounds();
 			gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
 			config_save_default();
 			window_invalidate(w);

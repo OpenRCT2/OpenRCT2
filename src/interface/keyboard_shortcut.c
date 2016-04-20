@@ -29,6 +29,7 @@
 #include "viewport.h"
 #include "window.h"
 #include "widget.h"
+#include "../audio/audio.h"
 
 typedef void (*shortcut_action)();
 
@@ -529,6 +530,11 @@ static void shortcut_show_options()
 	window_options_open();
 }
 
+static void shortcut_mute_sound()
+{
+	audio_toggle_all_sounds();
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -576,6 +582,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_open_chat_window,
 	shortcut_quick_save_game,
 	shortcut_show_options,
+	shortcut_mute_sound
 };
 
 #pragma endregion
