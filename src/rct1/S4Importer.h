@@ -83,6 +83,7 @@ private:
     void InsertResearchVehicle(const rct1_research_item * researchItem, bool researched);
     void ImportParkName();
     void ImportParkFlags();
+    void ImportClimate();
     void ImportScenarioNameDetails();
     void ImportScenarioObjective();
     void ImportSavedView();

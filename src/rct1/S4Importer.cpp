@@ -17,6 +17,7 @@ extern "C"
     #include "../localisation/date.h"
     #include "../localisation/localisation.h"
     #include "../management/finance.h"
+    #include "../management/marketing.h"
     #include "../object.h"
     #include "../peep/staff.h"
     #include "../rct1.h"
@@ -65,6 +66,7 @@ void S4Importer::Import()
     ImportResearch();
     ImportParkName();
     ImportParkFlags();
+    ImportClimate();
     ImportScenarioNameDetails();
     ImportScenarioObjective();
     ImportSavedView();
@@ -655,6 +657,34 @@ void S4Importer::ImportFinance()
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(_s4.cash);
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = _s4.loan;
     RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = _s4.max_loan;
+    RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = _s4.cash;
+
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = _s4.company_value;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = _s4.park_value;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = _s4.profit;
+
+    for (int i = 0; i < 128; i++)
+    {
+        gCashHistory[i] = _s4.cash_history[i];
+        gParkValueHistory[i] = _s4.park_value_history[i];
+        gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
+    }
+
+    for (int i = 0; i < 14 * 16; i++)
+    {
+        RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = _s4.expenditure[i];
+    }
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = _s4.total_expenditure;
+
+    RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = _s4.num_admissions;
+    RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) = _s4.admission_total_income;
+
+    // TODO marketing campaigns not working
+    for (int i = 0; i < 6; i++)
+    {
+        gMarketingCampaignDaysLeft[i] = _s4.marketing_status[i];
+        gMarketingCampaignRideIndex[i] = _s4.marketing_assoc[i];
+    }
 }
 
 void S4Importer::LoadObjects()
@@ -821,6 +851,42 @@ void S4Importer::ImportResearch()
     }
 
     research_remove_non_separate_vehicle_types();
+
+    // Research funding / priority
+    uint16 activeResearchTypes = 0;
+    if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_ROLLERCOASTERS)
+    {
+        activeResearchTypes |= (1 << RESEARCH_CATEGORY_ROLLERCOASTER);
+    }
+    if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_THRILL_RIDES)
+    {
+        activeResearchTypes |= (1 << RESEARCH_CATEGORY_THRILL);
+        activeResearchTypes |= (1 << RESEARCH_CATEGORY_WATER);
+    }
+    if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_GENTLE_TRANSPORT_RIDES)
+    {
+        activeResearchTypes |= (1 << RESEARCH_CATEGORY_GENTLE);
+        activeResearchTypes |= (1 << RESEARCH_CATEGORY_TRANSPORT);
+    }
+    if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_SHOPS)
+    {
+        activeResearchTypes |= (1 << RESEARCH_CATEGORY_SHOP);
+    }
+    if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_SCENERY_THEMEING)
+    {
+        activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERYSET);
+    }
+    RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16) = activeResearchTypes;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = _s4.research_level;
+
+    // Research history
+    RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint8) = _s4.research_progress;
+    // RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) =
+    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint8) = _s4.next_research_item;
+    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8) = _s4.next_research_category;
+    // RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8) =
+    // RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8) =
+
 }
 
 void S4Importer::InsertResearchVehicle(const rct1_research_item * researchItem, bool researched)
@@ -856,12 +922,72 @@ void S4Importer::ImportParkName()
 
 void S4Importer::ImportParkFlags()
 {
+    // Date and srand
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) = _s4.ticks;
+    RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) = _s4.random_a;
+    RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = _s4.random_b;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) = _s4.month;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = _s4.day;
+
+    // Park rating
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = _s4.park_rating;
+    for (int i = 0; i < 32; i++)
+    {
+        gParkRatingHistory[i] = _s4.park_rating_history[i];
+    }
+
+    // Awards
+    for (int i = 0; i < 4; i++)
+    {
+        gCurrentAwards[i] = _s4.awards[i];
+    }
+
+    // Number of guests history
+    for (int i = 0; i < 32; i++)
+    {
+        gGuestsInParkHistory[i] = _s4.guests_in_park_history[i];
+    }
+
+    // News items
+    rct_news_item *newsItems = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
+    for (int i = 0; i < 61; i++)
+    {
+        newsItems[i] = _s4.messages[i];
+    }
+
+    // Initial guest status
+    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = _s4.guest_initial_cash;
+    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = _s4.guest_initial_hunger;
+    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = _s4.guest_initial_thirst;
+
+    // Staff colours
+    RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = RCT1::GetColour(_s4.handman_colour);
+    RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = RCT1::GetColour(_s4.mechanic_colour);
+    RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = RCT1::GetColour(_s4.security_guard_colour);
+
+    // Flags
     RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = _s4.park_flags;
     RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
     if (!(_s4.park_flags & PARK_FLAGS_PARK_FREE_ENTRY))
     {
         gCheatsUnlockAllPrices = true;
     }
+}
+
+void S4Importer::ImportClimate()
+{
+    RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8) = _s4.climate;
+    RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, uint16) = _s4.climate_timer;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = _s4.temperature;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8) = _s4.weather;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, uint8) = 0;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = _s4.weather_gloom;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = _s4.rain;
+    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, uint8) = _s4.target_temperature;
+    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, uint8) = _s4.target_weather;
+    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, uint8) = 0;
+    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, uint8) = _s4.target_weather_gloom;
+    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, uint8) = _s4.target_rain;
 }
 
 void S4Importer::ImportScenarioNameDetails()
