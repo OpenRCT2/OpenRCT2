@@ -309,7 +309,7 @@ static void window_new_ride_populate_list()
 
 		quadIndex = rideType >> 5;
 		bitIndex = rideType & 0x1F;
-		if (RCT2_ADDRESS(0x01357404, uint32)[quadIndex] & (1 << bitIndex)) {
+		if (RCT2_ADDRESS(0x01357404, uint32)[quadIndex] & (1u << bitIndex)) {
 			int dh = 0;
 			uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
 
@@ -323,7 +323,7 @@ static void window_new_ride_populate_list()
 				quadIndex = rideEntryIndex >> 5;
 				bitIndex = rideEntryIndex & 0x1F;
 				// Skip if vehicle type is not invented yet
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
+				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1u << bitIndex)))
 					continue;
 
 				// Ride entries

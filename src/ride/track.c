@@ -1660,7 +1660,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			int temp_z = z;
 			temp_z -= track_coordinates->z_begin;
 			uint32 edi = ((track->flags & 0xF) << 17) |
-				((track->flags & 0xF) << 28) |
+				((uint32)(track->flags & 0xF) << 28) |
 				(((track->flags >> 4) & 0x3) << 24) |
 				(temp_z & 0xFFFF);
 
