@@ -1803,7 +1803,7 @@ void tool_cancel()
 		// Reset map selection
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
 
-		if (gCurrentToolWidget.widget_index != 0xFFFF) {
+		if (gCurrentToolWidget.widget_index != -1) {
 			// Invalidate tool widget
 			widget_invalidate_by_number(
 				gCurrentToolWidget.window_classification,
