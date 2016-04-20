@@ -1175,10 +1175,10 @@ STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Can't lower water level here...
 STR_1167    :Can't raise water level here...
-STR_1168    :Options
-STR_1169    :(None)
+STR_1168    :选项
+STR_1169    :(无)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - - 
+STR_1171    :{RED}已关闭 - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
 STR_1174    :Banner sign in the way
@@ -1447,7 +1447,7 @@ STR_1436    :In {STRINGID}
 STR_1437    :At {STRINGID}
 STR_1438    :Sitting
 STR_1439    :(select location)
-STR_1440    :Mowing grass
+STR_1440    :修剪草皮中
 STR_1441    :Sweeping footpath
 STR_1442    :Emptying litter bin
 STR_1443    :Watering gardens
@@ -1784,7 +1784,7 @@ STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
 STR_1775    :Off
 STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Ride music
+STR_1777    :{WINDOW_COLOUR_2}设施音乐
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
@@ -1886,13 +1886,13 @@ STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
-STR_1879    :Every 10 minutes
-STR_1880    :Every 20 minutes
-STR_1881    :Every 30 minutes
-STR_1882    :Every 45 minutes
-STR_1883    :Every hour
-STR_1884    :Every 2 hours
-STR_1885    :Never
+STR_1879    :每10分钟
+STR_1880    :每20分钟
+STR_1881    :每30分钟
+STR_1882    :每45分钟
+STR_1883    :每小时
+STR_1884    :每2小时
+STR_1885    :从不
 STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
@@ -1918,7 +1918,7 @@ STR_1905    :{WINDOW_COLOUR_2}Food/drink sales
 STR_1906    :{WINDOW_COLOUR_2}Food/drink stock
 STR_1907    :{WINDOW_COLOUR_2}Staff wages
 STR_1908    :{WINDOW_COLOUR_2}Marketing
-STR_1909    :{WINDOW_COLOUR_2}Research
+STR_1909    :{WINDOW_COLOUR_2}研发费用
 STR_1910    :{WINDOW_COLOUR_2}Loan interest
 STR_1911    :{BLACK} at {COMMA16}% per year
 STR_1912    :{MONTH}
@@ -2336,26 +2336,26 @@ STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
 STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
-STR_2327    :Options
-STR_2328    :{WINDOW_COLOUR_2}Currency:
-STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
-STR_2330    :{WINDOW_COLOUR_2}Temperature:
-STR_2331    :{WINDOW_COLOUR_2}Height Labels:
-STR_2332    :Units
-STR_2333    :Sound
-STR_2334    :Pounds ({POUND})
-STR_2335    :Dollars ($)
-STR_2336    :Franc (F)
-STR_2337    :Deutschmark (DM)
-STR_2338    :Yen ({YEN})
-STR_2339    :Peseta (Pts)
-STR_2340    :Lira (L)
-STR_2341    :Guilders (fl.)
-STR_2342    :Krona (kr)
-STR_2343    :Euros ({EURO})
-STR_2344    :Imperial
-STR_2345    :Metric
-STR_2346    :Display
+STR_2327    :选项
+STR_2328    :{WINDOW_COLOUR_2}货币单位:
+STR_2329    :{WINDOW_COLOUR_2}距离和速度单位:
+STR_2330    :{WINDOW_COLOUR_2}温度单位:
+STR_2331    :{WINDOW_COLOUR_2}高度标签单位:
+STR_2332    :单位
+STR_2333    :音效
+STR_2334    :英镑 ({POUND})
+STR_2335    :美元 ($)
+STR_2336    :法郎 (F)
+STR_2337    :德国马克 (DM)
+STR_2338    :日元 ({YEN})
+STR_2339    :比塞塔 (Pts)
+STR_2340    :里拉 (L)
+STR_2341    :荷兰盾 (fl.)
+STR_2342    :克朗 (kr)
+STR_2343    :欧元 ({EURO})
+STR_2344    :英制
+STR_2345    :公制
+STR_2346    :显示
 STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
@@ -2367,16 +2367,16 @@ STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
 STR_2357    :House
-STR_2358    :Units
-STR_2359    :Real Values
-STR_2360    :Display Resolution:
-STR_2361    :Landscape Smoothing
-STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
-STR_2363    :Gridlines on Landscape
-STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
+STR_2358    :单位
+STR_2359    :真实数值
+STR_2360    :屏幕分辨率:
+STR_2361    :地表边缘平滑
+STR_2362    :{SMALLFONT}{BLACK}开启/关闭地表边缘平滑
+STR_2363    :地表网格
+STR_2364    :{SMALLFONT}{BLACK}开启/关闭地表网格显示
 STR_2365    :The bank refuses to increase your loan!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :摄氏 ({DEGREE}C)
+STR_2367    :华氏 ({DEGREE}F)
 STR_2368    :None
 STR_2369    :Low
 STR_2370    :Average
@@ -2496,16 +2496,16 @@ STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
 STR_2485    :Controls
 STR_2486    :General
-STR_2487    :Show 'real' names of guests
-STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
-STR_2489    :Shortcut keys...
-STR_2490    :Keyboard shortcuts
-STR_2491    :Reset keys
+STR_2487    :显示游客的'真实'姓名
+STR_2488    :{SMALLFONT}{BLACK}在游客'真实'姓名和游客编号之间切换
+STR_2489    :快捷键...
+STR_2490    :键盘快捷键
+STR_2491    :重置快捷键
 STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
 STR_2493    :Close top-most window
 STR_2494    :Close all floating windows
 STR_2495    :Cancel construction mode
-STR_2496    :Pause game
+STR_2496    :暂停游戏
 STR_2497    :Zoom view out
 STR_2498    :Zoom view in
 STR_2499    :Rotate view clockwise
@@ -2710,13 +2710,13 @@ STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autosave frequency:
-STR_2701    :Every minute
-STR_2702    :Every 5 minutes
-STR_2703    :Every 15 minutes
-STR_2704    :Every 30 minutes
-STR_2705    :Every hour
-STR_2706    :Never
+STR_2700    :自动保存频率:
+STR_2701    :每分钟
+STR_2702    :每5分钟
+STR_2703    :每15分钟
+STR_2704    :每30分钟
+STR_2705    :每小时
+STR_2706    :从不
 STR_2707    :Use system dialog window
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
@@ -2748,10 +2748,10 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Year {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, Year {COMMA16}
-STR_2738    :Title screen music:
+STR_2738    :主菜单音乐:
 STR_2739    :无
-STR_2740    :RollerCoaster Tycoon 1
-STR_2741    :RollerCoaster Tycoon 2
+STR_2740    :过山车大亨1(RCT1)
+STR_2741    :过山车大亨2(RCT2)
 STR_2742    :找不到css50.dat
 STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
 STR_2744    :[
@@ -2765,7 +2765,7 @@ STR_2749    :My new scenario
 STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom
 STR_2752    :Clear grass
-STR_2753    :Mowed grass
+STR_2753    :修剪好的草地
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
@@ -2812,9 +2812,9 @@ STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :Sort
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
-STR_2797    :Scroll view when pointer at screen edge
-STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
-STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
+STR_2797    :当鼠标位于屏幕边缘时滚动视图
+STR_2798    :{SMALLFONT}{BLACK}选择当鼠标位于屏幕边缘时是否滚动视图
+STR_2799    :{SMALLFONT}{BLACK}查看或改变控制按键分配
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
 STR_2802    :Map
@@ -3070,9 +3070,9 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :White
-STR_3056    :Translucent
-STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
+STR_3055    :白色
+STR_3056    :半透明    
+STR_3057    :{WINDOW_COLOUR_2}建造标记:
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
@@ -3298,7 +3298,7 @@ STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
 STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
-STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
+STR_3283    :{SMALLFONT}{BLACK}选择要保留的游乐设施/店铺
 STR_3284    :Objective Selection
 STR_3285    :Preserved Rides
 STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
@@ -3348,7 +3348,7 @@ STR_3329    :Park entrance not yet built
 STR_3330    :Park must own some land
 STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
-STR_3333    :Export plug-in objects with saved games
+STR_3333    :在存档中导出附加物
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
@@ -3356,7 +3356,7 @@ STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
-STR_3341    :{SMALLFONT}{BLACK}Game tools
+STR_3341    :{SMALLFONT}{BLACK}游戏工具
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
 STR_3344    :Roller Coaster Designer
@@ -3466,13 +3466,13 @@ STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
 # New strings, cleaner
-STR_5120    :Finances
-STR_5121    :Research
-STR_5122    :Select rides by track type (like in RCT1)
+STR_5120    :财务
+STR_5121    :研发
+STR_5122    :根据轨道类型选择游乐设施 (像RCT1一样)
 STR_5123    :Renew rides
 STR_5124    :<not used anymore>
 STR_5125    :All destructable
-STR_5126    :Random title music
+STR_5126    :随机主题音乐
 STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
 STR_5128    :Selection size
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
@@ -3493,37 +3493,37 @@ STR_5143    :Quick Speed
 STR_5144    :Fast Speed
 STR_5145    :Turbo Speed
 STR_5146    :Hyper Speed
-STR_5147    :Cheats
+STR_5147    :作弊
 STR_5148    :{SMALLFONT}{BLACK}Change the game speed
 STR_5149    :{SMALLFONT}{BLACK}Show cheat options
-STR_5150    :Enable debugging tools
+STR_5150    :开启调试工具
 STR_5151    :,
 STR_5152    :.
-STR_5153    :Edit Themes...
-STR_5154    :Hardware display
-STR_5155    :Allow testing of unfinished tracks
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5153    :编辑配色主题...
+STR_5154    :使用硬件渲染
+STR_5155    :允许测试未完成的轨道设计
+STR_5156    :{SMALLFONT}{BLACK}允许测试大多数轨道设计, 即使那些轨道未完成的设计. 但这不适用于区域刹车模式
 STR_5157    :Unlock all prices
-STR_5158    :Quit to menu
-STR_5159    :Exit OpenRCT2
+STR_5158    :回到主菜单
+STR_5159    :退出OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
-STR_5161    :Date Format:
-STR_5162    :Day/Month/Year
-STR_5163    :Month/Day/Year
-STR_5164    :Twitch Channel name
-STR_5165    :Name guests after followers
-STR_5166    :{SMALLFONT}{BLACK}Will name guests after channel's Twitch followers
-STR_5167    :Track follower guests
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
-STR_5169    :Name guests after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name guests after people in Twitch chat
-STR_5171    :Track chat guests
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
-STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
-STR_5177    :Screen mode:
+STR_5161    :日期格式:
+STR_5162    :日/月/年
+STR_5163    :月/日/年
+STR_5164    :Twitch频道名称
+STR_5165    :以关注者的用户名命名游客
+STR_5166    :{SMALLFONT}{BLACK}将会以Twitch频道的关注者命名游客
+STR_5167    :跟踪'关注者'游客
+STR_5168    :{SMALLFONT}{BLACK}将会开启跟踪关注者用户名的游客信息
+STR_5169    :以Twitch聊天中的名字命名游客
+STR_5170    :{SMALLFONT}{BLACK}将会以Twitch聊天中的名字命名游客
+STR_5171    :跟踪'聊天'游客
+STR_5172    :{SMALLFONT}{BLACK}将会开启跟踪参与聊天用户名的游客信息
+STR_5173    :将Twitch聊天的内容以新闻的方式推送
+STR_5174    :{SMALLFONT}{BLACK}将Twitch聊天中所有标'!news'的内容以通知的方式推送
+STR_5175    :请输入你的Twitch频道名称
+STR_5176    :允许Twitch与游戏集成
+STR_5177    :显示模式:
 STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
 STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
 STR_5180    :{SMALLFONT}{BLACK}Show park cheats
@@ -3533,10 +3533,10 @@ STR_5183    :Base height
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
 STR_5185    :Water level
 STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
-STR_5187    :Finances
+STR_5187    :财务
 STR_5188    :New Campaign
-STR_5189    :Research
-STR_5190    :Map
+STR_5189    :研发
+STR_5190    :地图
 STR_5191    :Viewport
 STR_5192    :Recent News
 STR_5193    :Land
@@ -3563,9 +3563,9 @@ STR_5213    :Objective Options
 STR_5214    :Map Generation
 STR_5215    :Track Design Manager
 STR_5216    :Track Design Manager List
-STR_5217    :Cheats
-STR_5218    :Themes
-STR_5219    :Options
+STR_5217    :作弊
+STR_5218    :主题
+STR_5219    :选项
 STR_5220    :Keyboard Shortcuts
 STR_5221    :Change Keyboard Shortcut
 STR_5222    :Load/Save
@@ -3574,23 +3574,23 @@ STR_5224    :Demolish Ride Prompt
 STR_5225    :Fire Staff Prompt
 STR_5226    :Track Delete Prompt
 STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
-STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Guests
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5228    :{SMALLFONT}{BLACK}主界面
+STR_5229    :{SMALLFONT}{BLACK}公园
+STR_5230    :{SMALLFONT}{BLACK}工具
+STR_5231    :{SMALLFONT}{BLACK}游乐设施和游客
+STR_5232    :{SMALLFONT}{BLACK}编辑器
+STR_5233    :{SMALLFONT}{BLACK}杂项
 STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}Settings
+STR_5235    :{SMALLFONT}{BLACK}设置
 STR_5236    :Window:
-STR_5237    :Palette:
-STR_5238    :Current Theme:
+STR_5237    :调色板:
+STR_5238    :当前主题:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
 STR_5241    :Can't change this theme
 STR_5242    :Theme name already exists
 STR_5243    :Invalid characters used
-STR_5244    :Themes
+STR_5244    :主题
 STR_5245    :Top Toolbar
 STR_5246    :Bottom Toolbar
 STR_5247    :Track Editor Bottom Toolbar
@@ -3612,15 +3612,15 @@ STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Custom
 STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
-STR_5266    :{SMALLFONT}{BLACK}Display
-STR_5267    :{SMALLFONT}{BLACK}Culture and Units
-STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Controls and interface
-STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5266    :{SMALLFONT}{BLACK}显示
+STR_5267    :{SMALLFONT}{BLACK}语言及单位
+STR_5268    :{SMALLFONT}{BLACK}音效
+STR_5269    :{SMALLFONT}{BLACK}控制及界面
+STR_5270    :{SMALLFONT}{BLACK}杂项
 STR_5271    :{SMALLFONT}{BLACK}Twitch
-STR_5272    :{SMALLFONT}{BLACK}Small Scenery
-STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Footpath
+STR_5272    :{SMALLFONT}{BLACK}小型景观
+STR_5273    :{SMALLFONT}{BLACK}大型景观
+STR_5274    :{SMALLFONT}{BLACK}道路
 STR_5275    :Search for Objects
 STR_5276    :Enter the name of an object to search for
 STR_5277    :Clear
@@ -3650,11 +3650,11 @@ STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
 STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
 STR_5302    :Clear loan
 STR_5303    :Allow building in pause mode
-STR_5304    :Title Sequence:
-STR_5305    :RollerCoaster Tycoon 1
-STR_5306    :RollerCoaster Tycoon 1 (AA)
-STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
-STR_5308    :RollerCoaster Tycoon 2
+STR_5304    :主菜单动画:
+STR_5305    :过山车大亨1(RCT1)
+STR_5306    :过山车大亨1 (+资料片1 - AA)
+STR_5307    :过山车大亨1 (+资料片1&2 - AA+LL)
+STR_5308    :过山车大亨2(RCT2)
 STR_5309    :OpenRCT2
 STR_5310    :Random
 STR_5311    :{SMALLFONT}{BLACK}Debug tools
@@ -3689,8 +3689,8 @@ STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
 STR_5341    :Flags
 STR_5342    :Choose a map tile
-STR_5343    :Automatically place staff
-STR_5344    :Changelog
+STR_5343    :自动放置员工
+STR_5344    :更新日志
 STR_5345    :Financial cheats
 STR_5346    :Guest cheats
 STR_5347    :Park cheats
@@ -3718,9 +3718,9 @@ STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object Selection
-STR_5372    :Invert right mouse dragging
+STR_5372    :拖拽时反转鼠标左键
 STR_5373    :Name {STRINGID}
-STR_5374    :Date {STRINGID}
+STR_5374    :日期 {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
 STR_5377    :{SMALLFONT}{BLACK}Saves
@@ -3782,12 +3782,12 @@ STR_5432    :命令:
 STR_5433    :Title Sequences
 STR_5434    :Command Editor
 STR_5435    :Rename save
-STR_5436    :Edit Title Sequences...
+STR_5436    :编辑主菜单动画...
 STR_5437    :暂无存档被选中
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
-STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5440    :当焦点失去时最小化全屏幕的游戏
+STR_5441    :{SMALLFONT}{BLACK}根据轨道类型区分游乐设施,{NEWLINE}使得车辆类型可以在建造后更改{NEWLINE}就像过山车大亨1(RCT1)一样.
 STR_5442    :Force park rating:
 STR_5443    :速度{MOVE_X}{87}{STRINGID}
 STR_5444    :速度:
@@ -3800,7 +3800,7 @@ STR_5450    :加快游戏速度
 STR_5451    :打开作弊窗口
 STR_5452    :Toggle visibility of toolbars
 STR_5453    :Select another ride
-STR_5454    :去除FPS上限
+STR_5454    :去除帧数上限
 STR_5455    :Enable sandbox mode
 STR_5456    :Disable clearance checks
 STR_5457    :Disable support limits
@@ -3814,7 +3814,7 @@ STR_5464    :General
 STR_5465    :Climate
 STR_5466    :Staff
 STR_5467    :ALT +
-STR_5468    :Recent messages
+STR_5468    :最近消息
 STR_5469    :向上滚动地图
 STR_5470    :向左滚动地图
 STR_5471    :向下滚动地图
@@ -3823,7 +3823,7 @@ STR_5473    :日夜循环
 STR_5474    :横幅上显示全大写英文
 STR_5476    :硬件
 STR_5477    :地图显示
-STR_5478    :Controls
+STR_5478    :控制
 STR_5479    :工具条
 STR_5480    :显示工具条按钮:
 STR_5481    :主题
@@ -3835,7 +3835,7 @@ STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Show recent messages
 STR_5488    :No entrance (OpenRCT2 only!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
-STR_5490    :Disable audio on focus loss
+STR_5490    :游戏失去焦点时静音
 STR_5491    :Inventions list
 STR_5492    :Scenario options
 STR_5493    :Send Message
@@ -3852,13 +3852,13 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
-STR_5507    :Handymen mow grass by default
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
-STR_5510    :Default sound device
+STR_5507    :清洁工默认会修剪草皮
+STR_5508    :允许读取校验失败的文件
+STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件, 例如试玩版的剧情或损坏的存档.
+STR_5510    :默认音频设备
 STR_5511    :(UNKNOWN)
-STR_5512    :Save Game As
-STR_5513    :(Quick) save game
+STR_5512    :另存游戏
+STR_5513    :(快速)保存游戏
 STR_5514    :Disable vandalism
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
 STR_5516    :{SMALLFONT}{BLACK}Black
@@ -3894,15 +3894,15 @@ STR_5545    :{SMALLFONT}{BLACK}Dark pink
 STR_5546    :{SMALLFONT}{BLACK}Bright pink
 STR_5547    :{SMALLFONT}{BLACK}Light pink
 STR_5548    :Show all operating modes
-STR_5549    :Year/Month/Day
+STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
-STR_5551    :Year/Day/Month
+STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause game when Steam overlay is open
+STR_5553    :当Steam overlay打开时暂停游戏
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
 STR_5556    :{SMALLFONT}{BLACK}Kick player
-STR_5557    :Stay connected after desynchronisation (Multiplayer)
+STR_5557    :不同步时依然保持连接 (多人游戏)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
@@ -3922,17 +3922,17 @@ STR_5573    :Remove From Favourites
 STR_5574    :Server Name:
 STR_5575    :Max Players:
 STR_5576    :Port:
-STR_5577    :South Korean Won (W)
-STR_5578    :Russian Rouble (R)
-STR_5579    :Window scale factor:
-STR_5580    :Czech koruna (Kc)
-STR_5581    :Show FPS
-STR_5582    :Trap mouse cursor in window
+STR_5577    :韩元 (W)
+STR_5578    :卢布 (R)
+STR_5579    :窗口缩放比例:
+STR_5580    :捷克克朗 (Kc)
+STR_5581    :显示帧数
+STR_5582    :限制鼠标指针仅在窗口内移动
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
-STR_5586    :Automatically open shops and stalls
-STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after building them
+STR_5586    :自动开放商店和摊位
+STR_5587    :{SMALLFONT}{BLACK}当选中此设定时, 商店和摊位将在建造好后自动开放
 STR_5588    :{SMALLFONT}{BLACK}Play with other players
 STR_5589    :Notification Settings
 STR_5590    :Park awards
@@ -3972,10 +3972,10 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
+STR_5627    :剧情列表排序方法:
 STR_5628    :Source game
-STR_5629    :Difficulty level
-STR_5630    :Enable unlocking of scenarios
+STR_5629    :困难度
+STR_5630    :允许剧情解锁
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own...
 STR_5633    :CMD + 
@@ -4038,17 +4038,17 @@ STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
 STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
-STR_5727    :Scaling quality
-STR_5728    :Requires hardware display option
+STR_5727    :缩放质量
+STR_5728    :需要开启硬件渲染
 STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
-STR_5730    :Nearest neighbour
-STR_5731    :Linear
-STR_5732    :Anisotropic
-STR_5733    :Use NN scaling at integer scales
+STR_5730    :最近相邻
+STR_5731    :线性
+STR_5732    :各向异性
+STR_5733    :以整数比例调整最近相邻缩放
 # tooltip for tab in options window
-STR_5734    :{SMALLFONT}{BLACK}Rendering
-STR_5735    :Network Status
-STR_5736    :Player
+STR_5734    :{SMALLFONT}{BLACK}渲染
+STR_5735    :网络状态
+STR_5736    :玩家
 STR_5737    :Closed, {COMMA16} person still on ride
 STR_5738    :Closed, {COMMA16} people still on ride
 STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
@@ -4072,9 +4072,9 @@ STR_5756    :Bad Password
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
 STR_5759    :下载地图中 ... ({INT32} / {INT32}) KB
-STR_5760    :Hong Kong Dollars (HK$)
-STR_5761    :New Taiwan Dollar (NT$)
-STR_5762    :Chinese Yuan (CN{YEN})
+STR_5760    :港币 (HK$)
+STR_5761    :新台币 (NT$)
+STR_5762    :人民币 (CN{YEN})
 STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
@@ -4100,8 +4100,8 @@ STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
 STR_5785    :Can't rename group...
 STR_5786    :Invalid group name
 STR_5787    :{COMMA32} players online
-STR_5788    :Default inspection interval:
-STR_5789    :Disable lightning effect
+STR_5788    :默认检查的时间间隔:
+STR_5789    :禁用闪电效果
 STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
 STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
 STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides

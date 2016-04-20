@@ -4100,6 +4100,8 @@ STR_5797    :{SMALLFONT}{BLACK}Voorkomt dat het weer verandert.
 STR_5798    :{SMALLFONT}{BLACK}Staat bouwen in pauzemodus toe.
 STR_5799    :{SMALLFONT}{BLACK}Voorkomt dat de remmen van attracties kapot gaan, wat voor fatale botsingen kan zorgen.
 STR_5800    :{SMALLFONT}{BLACK}Voorkomt dat attracties kapot gaan.
+STR_5801    :Bevuiling voorkomen
+STR_5802    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers braken of afval op de grond gooien.
 
 
 #############

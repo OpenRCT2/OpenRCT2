@@ -4057,7 +4057,7 @@ STR_5755    :Inkompatible Softwareversion
 STR_5756    :Falsches Passwort
 STR_5757    :Server voll
 STR_5758    :{OUTLINE}{GREEN}{STRING} hat das Spiel betreten
-STR_5759    :Karte herunterladen ... ({INT32} / {INT32})
+STR_5759    :Karte herunterladen ... ({INT32} / {INT32}) KiB
 STR_5760    :Hongkong-Dollar (HK$)
 STR_5761    :Neuer Taiwan-Dollar (NT$)
 STR_5762    :Chinesischer Yuan (CN{YEN})
