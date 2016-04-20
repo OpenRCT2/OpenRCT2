@@ -2067,6 +2067,16 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
 		// loc_660E9A:
+		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
+			sub_68818E(2625 + byte_97B444[ebx], 0, 0);
+		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
+			// TODO: Fix this. Currently not working.
+			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+			paint_struct *backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+			int height = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
+			sub_98196C(22955, 16, 16, 1, 1, 0, height, get_current_rotation());
+			RCT2_GLOBAL(0xF1AD28, paint_struct*) = backup;
+		}
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {
