@@ -1939,10 +1939,13 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	//push ebx + ecx + esi
 
-	uint16 di = RCT2_GLOBAL(0x9E323C, uint16);
+	uint16 di = RCT2_GLOBAL(0x9E323C, uint8);
 	if (di * 16 == height) {
-		// loc_660B25:
-		assert(false);
+		sub_98197C(1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, get_current_rotation());
+		sub_98197C(1576, 0, 0, 30, 1, 0, height, 1, 31, height, get_current_rotation());
+		sub_98197C(1577, 0, 0, 1, 30, 0, height, 31, 1, height, get_current_rotation());
+		sub_98197C(1578, 0, 0, 30, 1, 39, height, 1, -2, height - 40, get_current_rotation());
+		RCT2_GLOBAL(0x9E329A, uint8) = 0;
 	} else {
 		registers regs;
 
