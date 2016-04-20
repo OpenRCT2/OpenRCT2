@@ -1118,20 +1118,19 @@ static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 s
 
 	RCT2_GLOBAL(0x0014281B8, uint32) = ride_type->vehicles[0].base_image_id;
 
-	uint32 ebx = 0xFFFFFFFF;
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
-		if (ride->vehicles[0] != 0xFFFF && ride->vehicles[1] != 0xFFFF) {
-			rct_g1_element *sprite = &g1Elements[ride->vehicles[1]];
+		if (ride->vehicles[0] != -1) {
+			rct_sprite *sprite = &g_sprite_list[ride->vehicles[0]];
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
-			RCT2_GLOBAL(0x9DE578, rct_g1_element *) = sprite;
+			RCT2_GLOBAL(0x9DE578, rct_sprite *) = sprite;
 		}
 	}
 
 
 	uint32 image_id = (direction + ride_type->vehicles[0].base_image_id) | RCT2_GLOBAL(0x00F441A0, uint32);
 
-	rct_crooked_house_bound_box esi = crooked_house_data[segment];
-	sub_98197C(image_id, x_offset, y_offset, esi.length_x, esi.length_y, 127, height + 3, esi.offset_x, esi.offset_y, height + 3, get_current_rotation());
+	rct_crooked_house_bound_box boundBox = crooked_house_data[segment];
+	sub_98197C(image_id, x_offset, y_offset, boundBox.length_x, boundBox.length_y, 127, height + 3, boundBox.offset_x, boundBox.offset_y, height + 3, get_current_rotation());
 }
 
 static void crooked_house_paint_setup_889F08(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
