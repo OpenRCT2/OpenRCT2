@@ -1,8 +1,9 @@
-0.0.5
+0.0.5 (in development)
 ------------------------------------------------------------------------
 - Feature: Ability to rotate map elements with the tile inspector.
+- Fix: [#3282] Launched Freefall ride ratings are fixed for Downward Launch.
 
-0.0.4
+0.0.4-beta (2016-04-15)
 ------------------------------------------------------------------------
 - Feature: Full native OSX .app support.
 - Feature: Add displaying of frames per second (FPS).
