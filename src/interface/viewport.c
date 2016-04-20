@@ -1783,7 +1783,7 @@ bool sub_68818E(uint32 image_id, uint8 x, uint8 y) {
 	ps->next_attached_ps = edi;
 
 	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
-	
+
 	return true;
 }
 
@@ -2018,6 +2018,50 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			sub_68818E(ebx | ebp, 0, 0);
 		}
 	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+		// loc_660DB2:
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
+		// loc_660E9A:
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {
+		// loc_660F24:
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 1) {
+		// loc_660FB8:
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 2) {
+		// loc_661132:
+	}
+
+	if (RCT2_GLOBAL(0x9E3296, uint16) == 0) {
+		// loc_661194:
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+		// loc_6611D8:
+	}
+
+	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_VERTICAL) == 0) {
+		// loc_66122C:
+	}
+
+	if (mapElement->properties.surface.terrain & 0x1F) {
+		// loc_6615A9: (water height)
+	}
+
+	if (mapElement->properties.surface.ownership & 0x0F) {
+		// loc_66195F:
+	}
+
+	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
+
+	
 }
 
 /**
