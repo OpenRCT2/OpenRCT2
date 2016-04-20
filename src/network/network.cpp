@@ -237,13 +237,12 @@ int NetworkActions::FindCommand(int command)
 
 NetworkGroup::NetworkGroup()
 {
-	name_string_id = STR_NONE;
 	actions_allowed = {0};
 }
 
 NetworkGroup::~NetworkGroup()
 {
-	FreeNameStringId();
+
 }
 
 void NetworkGroup::Read(NetworkPacket& packet)
@@ -261,14 +260,6 @@ void NetworkGroup::Write(NetworkPacket& packet)
 	packet.WriteString(GetName().c_str());
 	for (size_t i = 0; i < actions_allowed.size(); i++) {
 		packet << actions_allowed[i];
-	}
-}
-
-void NetworkGroup::FreeNameStringId()
-{
-	if (name_string_id != STR_NONE) {
-		user_string_free(name_string_id);
-		name_string_id = STR_NONE;
 	}
 }
 
@@ -308,16 +299,7 @@ std::string& NetworkGroup::GetName()
 
 void NetworkGroup::SetName(std::string name)
 {
-	FreeNameStringId();
 	NetworkGroup::name = name;
-}
-
-rct_string_id NetworkGroup::GetNameStringId()
-{
-	if (name_string_id == STR_NONE) {
-		name_string_id = user_string_allocate(128, name.c_str());
-	}
-	return name_string_id;
 }
 
 NetworkConnection::NetworkConnection()
@@ -623,7 +605,7 @@ void Network::Close()
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	server_connection.authstatus = NETWORK_AUTH_NONE;
-
+	server_connection.inboundpacket.Clear();
 	server_connection.setLastDisconnectReason(nullptr);
 
 	client_connection_list.clear();
@@ -1302,13 +1284,6 @@ void Network::LoadGroups()
 	SDL_RWclose(file);
 }
 
-void Network::FreeStringIds()
-{
-	for (auto it = group_list.begin(); it != group_list.end(); it++) {
-		(*it)->FreeNameStringId();
-	}
-}
-
 void Network::Client_Send_AUTH(const char* name, const char* password)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
@@ -1358,7 +1333,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		SDL_RWclose(rw);
 		return;
 	}
-	size_t chunksize = 1024;
+	size_t chunksize = 65000;
 	size_t out_size = size;
 	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
 	unsigned char *header;
@@ -1767,8 +1742,8 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	if (chunksize <= 0) {
 		return;
 	}
-	if (offset + chunksize > chunk_buffer.size()) {
-		chunk_buffer.resize(offset + chunksize);
+	if (size > chunk_buffer.size()) {
+		chunk_buffer.resize(size);
 	}
 	char str_downloading_map[256];
 	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1024, size / 1024};
@@ -2217,11 +2192,6 @@ const char* network_get_group_name(unsigned int index)
 	return gNetwork.group_list[index]->GetName().c_str();
 }
 
-rct_string_id network_get_group_name_string_id(unsigned int index)
-{
-	return gNetwork.group_list[index]->GetNameStringId();
-}
-
 void network_chat_show_connected_message()
 {
 	char *templateString = (char*)language_get_string(STR_INDIVIDUAL_KEYS_BASE);
@@ -2434,11 +2404,6 @@ int network_can_perform_command(unsigned int groupindex, unsigned int index)
 int network_get_current_player_group_index()
 {
 	return network_get_group_index(gNetwork.GetPlayerByID(gNetwork.GetPlayerID())->group);
-}
-
-void network_free_string_ids()
-{
-	gNetwork.FreeStringIds();
 }
 
 void network_send_map()

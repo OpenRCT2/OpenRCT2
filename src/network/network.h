@@ -214,19 +214,16 @@ public:
 	~NetworkGroup();
 	void Read(NetworkPacket& packet);
 	void Write(NetworkPacket& packet);
-	void FreeNameStringId();
 	void ToggleActionPermission(size_t index);
 	bool CanPerformAction(size_t index);
 	bool CanPerformCommand(int command);
 	std::string& GetName();
 	void SetName(std::string name);
-	rct_string_id GetNameStringId();
 	std::array<uint8, 8> actions_allowed;
 	uint8 id = 0;
 
 private:
 	std::string name;
-	rct_string_id name_string_id;
 };
 
 class NetworkConnection
@@ -320,7 +317,6 @@ public:
 	void SetDefaultGroup(uint8 id);
 	void SaveGroups();
 	void LoadGroups();
-	void FreeStringIds();
 
 	void Client_Send_AUTH(const char* name, const char* password);
 	void Server_Send_AUTH(NetworkConnection& connection);
@@ -458,7 +454,6 @@ int network_get_current_player_group_index();
 uint8 network_get_group_id(unsigned int index);
 int network_get_num_groups();
 const char* network_get_group_name(unsigned int index);
-rct_string_id network_get_group_name_string_id(unsigned int index);
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
@@ -467,7 +462,6 @@ int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);
 int network_can_perform_action(unsigned int groupindex, unsigned int index);
 int network_can_perform_command(unsigned int groupindex, unsigned int index);
-void network_free_string_ids();
 
 void network_send_map();
 void network_send_chat(const char* text);

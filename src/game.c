@@ -925,7 +925,6 @@ bool game_load_save(const utf8 *path)
 
 	if (result) {
 		game_load_init();
-		network_free_string_ids();
 		if (network_get_mode() == NETWORK_MODE_SERVER) {
 			network_send_map();
 		}

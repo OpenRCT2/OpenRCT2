@@ -66,7 +66,7 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 
 #define WINDOW_PLAYER_COMMON_WIDGETS																									\
 	{ WWT_FRAME,			0,	0,		191,	0,		156,	0x0FFFFFFFF,	STR_NONE },				/* Panel / Background	*/		\
-	{ WWT_CAPTION,			0,	1,		190,	1,		14,		865,			STR_WINDOW_TITLE_TIP },	/* Title				*/		\
+	{ WWT_CAPTION,			0,	1,		190,	1,		14,		STR_STRING,		STR_WINDOW_TITLE_TIP },	/* Title				*/		\
 	{ WWT_CLOSEBOX,			0,	179,	189,	2,		13,		824,			STR_CLOSE_WINDOW_TIP },	/* Close x button		*/		\
 	{ WWT_RESIZE,			1,	0,		191,	43,		156,	0x0FFFFFFFF,	STR_NONE },				/* Resize				*/		\
 	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,		STR_NONE },				/* Tab 1				*/		\
@@ -184,6 +184,7 @@ static rct_window_event_list *window_player_page_events[] = {
 static void window_player_set_page(rct_window* w, int page);
 static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_player_update_viewport(rct_window *w, bool scroll);
+static void window_player_update_title(rct_window* w);
 
 uint32 window_player_page_enabled_widgets[] = {
 	(1 << WIDX_CLOSE) |
@@ -222,7 +223,6 @@ void window_player_open(uint8 id)
 		window->selected_list_item = -1;
 
 		window->viewport_focus_coordinates.y = -1;
-		window->error.var_480 = user_string_allocate(128, network_get_player_name(player)); // repurposing var_480 to store this
 	}
 
 	window->page = 0;
@@ -262,8 +262,8 @@ void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widge
 	);
 
 	for (i = 0; i < network_get_num_groups(); i++) {
-		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = network_get_group_name_string_id(i);
+		gDropdownItemsFormat[i] = 2777;
+		gDropdownItemsArgs[i] = (sint64)network_get_group_name(i);
 	}
 
 	dropdown_set_checked(network_get_group_index(network_get_player_group(player)), true);
@@ -271,10 +271,7 @@ void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widge
 
 void window_player_overview_close(rct_window *w)
 {
-	if (w->error.var_480){
-		user_string_free(w->error.var_480);
-		w->error.var_480 = 0;
-	}
+
 }
 
 void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
@@ -369,11 +366,16 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int groupindex = network_get_group_index(network_get_player_group(player));
 	if (groupindex != -1) {
 		rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(groupindex);
+		char buffer[300] = {0};
+		char* lineCh;
+		lineCh = buffer;
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
+		strcpy(lineCh, network_get_group_name(groupindex));
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = buffer;
 
 		gfx_draw_string_centred_clipped(
 			dpi,
-			1193,
+			STR_STRING,
 			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			0,
 			w->x + (widget->left + widget->right - 11) / 2,
@@ -421,7 +423,7 @@ void window_player_overview_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(WIDX_TAB_2);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = w->error.var_480; // set title caption to player name
+	window_player_update_title(w);
 
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -507,7 +509,7 @@ void window_player_statistics_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(WIDX_TAB_2);
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = w->error.var_480; // set title caption to player name
+	window_player_update_title(w);
 
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -645,5 +647,15 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 			// Don't draw the viewport
 			w->var_492 = -1;
 		}
+	}
+}
+
+static void window_player_update_title(rct_window* w)
+{
+	int player = network_get_player_index((uint8)w->number);
+	if (player != -1) {
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = network_get_player_name(player); // set title caption to player name
+	} else {
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = "";
 	}
 }
