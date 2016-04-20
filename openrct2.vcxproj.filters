@@ -576,6 +576,12 @@
     <ClCompile Include="src\core\textinputbuffer.c">
       <Filter>Source\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\Diagnostics.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Guard.cpp">
+      <Filter>Source\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\platform\crash.cpp">
       <Filter>Source\Platform</Filter>
     </ClCompile>
@@ -583,7 +589,7 @@
       <Filter>Source\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\windows\themes.c">
-      <Filter>Source\Interface</Filter>
+      <Filter>Source\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
