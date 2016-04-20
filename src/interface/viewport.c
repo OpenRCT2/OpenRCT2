@@ -2100,7 +2100,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		// loc_661132:
 	}
 
-	if (RCT2_GLOBAL(0x9E3296, uint16) == 0) {
+	if (zoomLevel == 0) {
 		// loc_661194:
 	}
 
