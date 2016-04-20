@@ -1742,8 +1742,8 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 	if (chunksize <= 0) {
 		return;
 	}
-	if (offset + chunksize > chunk_buffer.size()) {
-		chunk_buffer.resize(offset + chunksize);
+	if (size > chunk_buffer.size()) {
+		chunk_buffer.resize(size);
 	}
 	char str_downloading_map[256];
 	unsigned int downloading_map_args[2] = {(offset + chunksize) / 1024, size / 1024};
