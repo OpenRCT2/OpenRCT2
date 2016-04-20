@@ -1838,6 +1838,17 @@ bool sub_68818E(uint32 image_id, uint8 x, uint8 y) {
 	return true;
 }
 
+typedef struct {
+	uint32 var_00;
+	uint32 var_04;
+	uint32 var_08;
+	uint32 var_0C;
+	uint32 var_10;
+	uint32 var_14;
+	uint32 var_18;
+	uint32 var_1C;
+} viewport_surface_paint_struct_0;
+
 /**
  * rct2: 0x0066062C
  *
@@ -2143,8 +2154,32 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		viewport_surface_smooth_east_edge();
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
 		// loc_6611D8:
+		uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;
+		uint8 di_type = mapElement->type & 0x80;
+
+		uint32 eax = al_edgeStyle + di_type * 2;
+		if (eax != 32 && eax != 0 && eax != 96 && eax != 64) {
+			log_info("eax: %d", eax);
+		}
+
+		viewport_surface_paint_struct_0 from = RCT2_GLOBAL(0x0097B5C0 + eax, viewport_surface_paint_struct_0);
+		RCT2_GLOBAL(0x009E329C, uint32) = from.var_00;
+		RCT2_GLOBAL(0x009E32A0, uint32) = from.var_04;
+		RCT2_GLOBAL(0x009E32A4, uint32) = from.var_08;
+		RCT2_GLOBAL(0x009E32A8, uint32) = from.var_0C;
+		RCT2_GLOBAL(0x009E32AC, uint32) = from.var_10;
+
+		for (int i = 0; i <= 0x7C; i += 4) {
+			RCT2_GLOBAL(0x009E2F30 + i, uint32) = RCT2_GLOBAL(0x009E3138 + i, uint32);
+			RCT2_GLOBAL(0x009E2EAE + i, uint32) = RCT2_GLOBAL(0x009E30B6 + i, uint32);
+		}
+
+		RCT2_CALLPROC_X(0x65F63B, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+		RCT2_CALLPROC_X(0x65F77D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+		RCT2_CALLPROC_X(0x65EB7D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+		RCT2_CALLPROC_X(0x65F0D8, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 	}
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_VERTICAL) == 0) {
