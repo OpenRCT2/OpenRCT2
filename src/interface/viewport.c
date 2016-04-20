@@ -1950,6 +1950,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		uint8 al = height / 16;
 		uint8 ah = surfaceElement->base_height / 2;
 
+		assert(edi < countof(byte_97B4C4));
+		assert(ebx < countof(byte_97B4C4));
 		uint8 cl = al + offset_cl[edi];
 		uint8 ch = ah + offset_ch[ebx];
 		al += offset_al[edi];
@@ -2005,6 +2007,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			}
 		}
 
+		assert(ebx < countof(byte_97B444));
 		uint32 image_offset = byte_97B444[ebx];
 		uint32 base_image;
 		switch (branch) {
@@ -2019,8 +2022,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			default:
 				// loc_660C9F
 				if (get_current_rotation() & 1) {
+					assert(image_offset < countof(byte_97B84A));
 					image_offset = byte_97B84A[image_offset];
 				}
+				assert(ebp < countof(dword_97B750));
 				base_image = dword_97B750[ebp][showGridlines ? 1 : 0];
 
 				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
@@ -2087,6 +2092,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 
 		if (do_it) {
+			assert(_dword_9E3278 < countof(byte_97B444));
 			ebx = 2599 + byte_97B444[_dword_9E3278];
 			sub_68818E(ebx | ebp, 0, 0);
 		}
@@ -2112,6 +2118,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
 		// loc_660E9A:
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
+			assert(ebx < countof(byte_97B444));
 			sub_68818E(2625 + byte_97B444[ebx], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			// TODO: Fix this. Currently not working.
@@ -2126,6 +2133,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
 		&& !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
+			assert(ebx < countof(byte_97B444));
 			sub_68818E(2644 + byte_97B444[ebx], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct *backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
