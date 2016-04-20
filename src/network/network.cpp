@@ -1333,7 +1333,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
 		SDL_RWclose(rw);
 		return;
 	}
-	size_t chunksize = 1024;
+	size_t chunksize = 65000;
 	size_t out_size = size;
 	unsigned char *compressed = util_zlib_deflate(&buffer[0], size, &out_size);
 	unsigned char *header;
