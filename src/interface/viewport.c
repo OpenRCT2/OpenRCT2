@@ -2079,8 +2079,17 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {
-		// loc_660F24:
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
+		&& !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
+		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
+			sub_68818E(2644 + byte_97B444[ebx], 0, 0);
+		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
+			paint_struct *backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+			int height = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
+			sub_98196C(22956, 16, 16, 1, 1, 0, height + 3, get_current_rotation());
+			RCT2_GLOBAL(0xF1AD28, paint_struct*) = backup;
+		}
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 1) {
