@@ -605,7 +605,7 @@ void Network::Close()
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
 	server_connection.authstatus = NETWORK_AUTH_NONE;
-
+	server_connection.inboundpacket.Clear();
 	server_connection.setLastDisconnectReason(nullptr);
 
 	client_connection_list.clear();
