@@ -39,6 +39,7 @@
 #include "colour.h"
 #include "viewport.h"
 #include "window.h"
+#include "../peep/peep.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
@@ -1748,6 +1749,45 @@ uint32 viewport_surface_paint_setup_get_ebx(rct_map_element *mapElement, int cl)
 }
 
 /**
+ * rct2: 68818E
+ *
+ * @param image_id (ebx)
+ * @param x (ax)
+ * @param y (cx)
+ * @return (!CF) success
+ */
+bool sub_68818E(uint32 image_id, uint8 x, uint8 y) {
+
+	//Not a paint struct but something similar
+	paint_struct *ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
+
+	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+		return false;
+	}
+
+	ps->image_id = image_id;
+	ps->attached_x = x;
+	ps->attached_y = y;
+	ps->var_0C = 0;
+
+	paint_struct *ebx2 = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+	if (ebx2 == NULL) {
+		return false;
+	}
+
+	RCT2_GLOBAL(0x00EE7888, uint32) += 0x12;
+
+	paint_struct *edi = ebx2->attached_ps;
+	ebx2->attached_ps = ps;
+
+	ps->next_attached_ps = edi;
+
+	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
+	
+	return true;
+}
+
+/**
  * rct2: 0x0066062C
  *
  * @param direction (cl)
@@ -1946,6 +1986,38 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	}
 
 	// loc_660D02
+	if (RCT2_GLOBAL(0x009DEA50, sint16) != -1) {
+		sint32 di = RCT2_GLOBAL(0x009DEA50, sint16);
+		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
+
+		uint32 pos = (x & 0x1F80) >> 7 | (y & 0x1F80) >> 1;
+		sint32 ebx = di & 0x7FFF;
+
+		uint32 ecx = pos & 0x1f;
+		uint32 eax = pos >> 5;
+		ebp = 0x20380000;
+
+		bool do_it = false;
+		if (di >= 0) {
+			rct_sprite *edi = &g_sprite_list[di];
+			if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + (edi->peep.staff_id * 512), uint32)[eax] & (1 << ecx)) {
+				do_it = true;
+			} else {
+				ebx = edi->peep.staff_type;
+				ebp = 0x20080000;
+			}
+		} else {
+			ebx = (_dword_9E3278 + 200) * 512;
+			if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ebx, uint32)[eax] & (1 << ecx)) {
+				do_it = true;
+			}
+		}
+
+		if (do_it) {
+			ebx = 2599 + byte_97B444[_dword_9E3278];
+			sub_68818E(ebx | ebp, 0, 0);
+		}
+	}
 }
 
 /**
