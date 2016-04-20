@@ -2048,8 +2048,21 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
-		// loc_660DB2:
+	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR
+		&& RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
+
+		rct2_peep_spawn *spawn = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
+		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		for (int i = 0; i < 2; ++i) {
+			if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
+				sub_98196C(2624, 0, 0, 32, 32, 16, spawn->z * 16, get_current_rotation());
+
+				int offset = ((spawn->direction ^ 2) + get_current_rotation()) & 3;
+				uint32 image_id = 3111 + offset | 0x20380000;
+				sub_98196C(image_id, 0, 0, 32, 32, 19, spawn->z * 16, get_current_rotation());
+			}
+			spawn++;
+		}
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
