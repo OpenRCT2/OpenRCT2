@@ -263,8 +263,8 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window *w, rct_wid
 	);
 
 	for (i = 0; i < network_get_num_groups(); i++) {
-		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = network_get_group_name_string_id(i);
+		gDropdownItemsFormat[i] = 2777;
+		gDropdownItemsArgs[i] = (sint64)network_get_group_name(i);
 	}
 	if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN]) {
 		dropdown_set_checked(network_get_group_index(network_get_default_group()), true);
@@ -617,10 +617,15 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 	rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
 	int group = network_get_group_index(network_get_default_group());
 	if (group != -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(group);
+		char buffer[300] = {0};
+		char* lineCh;
+		lineCh = buffer;
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
+		strcpy(lineCh, network_get_group_name(group));
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = buffer;
 		gfx_draw_string_centred_clipped(
 			dpi,
-			1193,
+			STR_STRING,
 			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			0,
 			w->x + (widget->left + widget->right - 11) / 2,
@@ -641,10 +646,15 @@ static void window_multiplayer_groups_paint(rct_window *w, rct_drawpixelinfo *dp
 	widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
 	group = network_get_group_index(_selectedGroup);
 	if (group != -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_group_name_string_id(group);
+		char buffer[300] = {0};
+		char* lineCh;
+		lineCh = buffer;
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
+		strcpy(lineCh, network_get_group_name(group));
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = buffer;
 		gfx_draw_string_centred_clipped(
 			dpi,
-			1193,
+			STR_STRING,
 			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
 			0,
 			w->x + (widget->left + widget->right - 11) / 2,
