@@ -2,17 +2,12 @@
 Includes all git commit authors. Aliases are GitHub user names.
 
 ## Project team
-* Ted John (IntelOrca) - Owner, merger, issue management
-* Duncan Frost (duncanspumpkin) - Merger, issue management
-* Michael Steenbeek (Gymnasiast) - Translation management
-* Rune Laenen (runelaenen) - Translation management
-* Miso Zmiric (mzmiric5) - Dependency / library management
-
-## Long term developers
-* Ted John (IntelOrca)
-* Duncan Frost (duncanspumpkin)
-* Michael Steenbeek (Gymnasiast)
-* (zsilencer)
+* Ted John (IntelOrca) - Owner, developer, merger, issue management
+* Duncan Frost (duncanspumpkin) - Developer, merger, issue management
+* Michael Steenbeek (Gymnasiast) - Developer, issue management, translation management
+* Michał Janiszewski (janisozaur) - Developer, CI, Linux management, issue management
+* Lewis Fox (LRFLEW) - Developer, OSX management
+* (zsilencer) - Developer
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)
@@ -35,6 +30,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
 * Lewis Fox (LRFLEW) - Misc.
+* Marijn van der Werf (marijnvdwerf) - Drawing, misc.
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
@@ -50,6 +46,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * James Robertson (rd3k) - Misc.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
+* Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
 * Kelson Blakewood - title sequence for 0.0.4
 
 ## Bug fixes
