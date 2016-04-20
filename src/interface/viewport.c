@@ -1739,6 +1739,32 @@ const uint32 dword_97B750[][2] = {
 #define _dword_9E3288 RCT2_GLOBAL(0x9E3288, uint16)
 #define _dword_9E328A RCT2_GLOBAL(0x9E328A, uint16)
 
+enum {
+	SEGMENT_B4 = (1 << 0),
+	SEGMENT_B8 = (1 << 1),
+	SEGMENT_BC = (1 << 2),
+	SEGMENT_C0 = (1 << 3),
+	SEGMENT_C4 = (1 << 4),
+	SEGMENT_C8 = (1 << 5),
+	SEGMENT_CC = (1 << 6),
+	SEGMENT_D0 = (1 << 7),
+	SEGMENT_D4 = (1 << 8),
+};
+
+static void paint_setup_set_segment_support_height(int flags, uint16 height, uint8 segment_flags) {
+	for (int s = 0; s < 9; s++) {
+		if (flags & (1 << s)) {
+			RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16) = height;
+			RCT2_GLOBAL(0x0141E9B6 + s * 4, uint8) = segment_flags;
+		}
+	}
+}
+
+static void paint_setup_set_support_height(uint16 height, uint8 segment_flags) {
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, uint16) = height;
+	RCT2_GLOBAL(0x0141E9DA, uint8) = segment_flags;
+}
+
 uint32 viewport_surface_paint_setup_get_ebx(rct_map_element *mapElement, int cl) {
 	uint8 bl = mapElement->properties.surface.slope;
 
@@ -2061,8 +2087,224 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
 
-	
+	switch (ebx) {
+		default:
+			// loc_661C2C
+			//     00
+			//   00  00
+			// 00  00  00
+			//   00  00
+			//     00
+			paint_setup_set_segment_support_height(
+				SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+				height,
+				0
+			);
+			paint_setup_set_support_height(height, 0);
+			break;
+
+		case 1:
+			// loc_661CB9
+			//     00
+			//   00  00
+			// 01  01  01
+			//   1B  1B
+			//     1B
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, height, 0);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 1);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_C0, height + 6 + 6, 0x1B);
+			paint_setup_set_support_height(height, 1);
+			break;
+
+		case 2:
+			// loc_661D4E
+			//     02
+			//   17  00
+			// 17  02  00
+			//   17  00
+			//     02
+			paint_setup_set_segment_support_height(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, height, 0);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 2);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_B8, height + 6 + 6, 0x17);
+			paint_setup_set_support_height(height, 2);
+			break;
+
+		case 3:
+			// loc_661DE3
+			//     03
+			//   03  03
+			// 03  03  03
+			//   03  03
+			//     03
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2, 3);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 3);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2 + 6 + 6, 3);
+			paint_setup_set_support_height(height, 3);
+			break;
+
+		case 4:
+			// loc_661E7C
+			//     1E
+			//   1E  1E
+			// 04  04  04
+			//   00  00
+			//     00
+			paint_setup_set_segment_support_height(SEGMENT_C0 | SEGMENT_D0 | SEGMENT_D4, height, 0);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 4);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_B4, height + 6 + 6, 0x1E);
+			paint_setup_set_support_height(height, 4);
+			break;
+
+		case 5:
+			// loc_661F11
+			//     1E          ▓▓
+			//   1E  1E      ▒▒  ▒▒
+			// 05  05  05  ░░  ░░  ░░
+			//   1B  1B      ▒▒  ▒▒
+			//     1B          ▓▓
+			paint_setup_set_segment_support_height(SEGMENT_B4, height + 6 + 6, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 5);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_C0, height + 6 + 6, 0x1B);
+			paint_setup_set_support_height(height, 5);
+			break;
+
+		case 6:
+			// loc_661FA6
+			//     06          ▓▓
+			//   06  06      ▓▓  ▒▒
+			// 06  06  06  ▓▓  ▒▒  ░░
+			//   06  06      ▒▒  ░░
+			//     06          ░░
+			paint_setup_set_segment_support_height(SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0, height + 2, 6);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 6);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, height + 2 + 6 + 6, 6);
+			paint_setup_set_support_height(height, 6);
+			break;
+
+		case 7:
+			// loc_66203F
+			//     07          ▓▓
+			//   00  17      ▓▓  ▒▒
+			// 00  07  17  ▓▓  ▓▓  ░░
+			//   00  17      ▓▓  ▒▒
+			//     07          ▓▓
+			paint_setup_set_segment_support_height(SEGMENT_BC, height + 4, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 7);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0 | SEGMENT_B8, height + 4 + 6 + 6, 0);
+			paint_setup_set_support_height(height, 7);
+			break;
+
+		case 8:
+			// loc_6620D8
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D0, height, 0);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 8);
+			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_BC, height + 6 + 6, 0x1D);
+			paint_setup_set_support_height(height, 8);
+			break;
+
+		case 9:
+			// loc_66216D
+			paint_setup_set_support_height(height, 9);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8, height + 2, 9);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 9);
+			paint_setup_set_segment_support_height(SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, height + 2 + 6 + 6, 9);
+			break;
+
+		case 10:
+			// loc_662206
+			paint_setup_set_support_height(height, 0xA);
+			paint_setup_set_segment_support_height(SEGMENT_B8, height + 6 + 6, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 0xA);
+			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_BC, height + 6 + 6, 0x1D);
+			break;
+
+		case 11:
+			// loc_66229B
+			paint_setup_set_support_height(height, 0xB);
+			paint_setup_set_segment_support_height(SEGMENT_B4, height + 4, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xB);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4 | SEGMENT_C0, height + 4 + 6 + 6, 0);
+			break;
+
+		case 12:
+			// loc_662334
+			paint_setup_set_support_height(height, 0xC);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2, 0xC);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 0xC);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2 + 6 + 6, 0xC);
+			break;
+
+		case 13:
+			// loc_6623CD
+			paint_setup_set_support_height(height, 0xD);
+			paint_setup_set_segment_support_height(SEGMENT_B8, height + 4, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0xD);
+			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC, height + 4 + 6 + 6, 0);
+			break;
+
+		case 14:
+			// loc_662466
+			paint_setup_set_support_height(height, 0xE);
+			paint_setup_set_segment_support_height(SEGMENT_C0, height + 4, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xE);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_B4, height + 4 + 6 + 6, 0);
+			break;
+
+		case 23:
+			// loc_6624FF
+			paint_setup_set_support_height(height, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_BC, height + 4, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6 + 6 + 6, 0x17);
+			paint_setup_set_segment_support_height(SEGMENT_B8, height + 4 + 6 + 6 + 6 + 6, 0x17);
+			break;
+
+		case 27:
+			// loc_6625A0
+			paint_setup_set_support_height(height, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_B4, height + 4, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1B);
+			paint_setup_set_segment_support_height(SEGMENT_C0, height + 4 + 6 + 6 + 6 + 6, 0x1B);
+			break;
+
+		case 29:
+			// loc_662641
+			paint_setup_set_support_height(height, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_B8, height + 4, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1D);
+			paint_setup_set_segment_support_height(SEGMENT_BC, height + 4 + 6 + 6 + 6 + 6, 0x1D);
+			break;
+
+		case 30:
+			// loc_6626E2
+			paint_setup_set_support_height(height, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_C0, height + 4, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6 + 6 + 6, 0x1E);
+			paint_setup_set_segment_support_height(SEGMENT_B4, height + 4 + 6 + 6 + 6 + 6, 0x1E);
+			break;
+	}
+
 }
+
 
 /**
  *
