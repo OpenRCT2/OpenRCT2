@@ -533,7 +533,6 @@ static void shortcut_show_options()
 static void shortcut_mute_sound()
 {
 	audio_toggle_all_sounds();
-
 }
 
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
