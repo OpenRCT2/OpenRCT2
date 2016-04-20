@@ -1692,6 +1692,12 @@ const uint32 dword_97B878[][2] = {
 	{3005, 3024},
 };
 
+const uint8 byte_97B740[] =
+	{
+		0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
+		0, 3, 0, 1, 4, 0
+	};
+
 const uint32 dword_97B750[][2] = {
 	{1915,                                           1934},
 	{2086,                                           2105},
@@ -2155,7 +2161,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
-		// loc_6611D8:
+		// loc_66122C:
 		uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;
 		uint8 di_type = mapElement->type & 0x80;
 
@@ -2186,8 +2192,38 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		// loc_66122C:
 	}
 
+	RCT2_GLOBAL(0x009E3298, uint16) = 0;
 	if (mapElement->properties.surface.terrain & 0x1F) {
 		// loc_6615A9: (water height)
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WATER;
+
+		uint16 ax = height + 16;
+		uint16 dx = (mapElement->properties.surface.terrain & 0x1F) << 4;
+
+		RCT2_GLOBAL(0x009E3298, uint16) = dx;
+		if ((RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) == 0) {
+			RCT2_GLOBAL(0x0141E9DC, uint16) = dx;
+
+			int image_offset = 0;
+			if (dx > ax) {
+				image_offset = byte_97B740[ebx & 0xF];
+			}
+
+			int image_id = image_offset + 0x610013B8;
+			sub_98196C(image_id, 0, 0, 32, 32, -1, dx, get_current_rotation());
+
+			sub_68818E(5053 + image_offset, 0, 0);
+
+			for (int i = 0; i <= 0x7C; i += 4) {
+				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);
+				RCT2_GLOBAL(0x009E30B6 + i, uint32) = RCT2_GLOBAL(0x009E2EAE + i, uint32);
+			}
+
+			RCT2_CALLPROC_X(0x66039B, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
+			RCT2_CALLPROC_X(0x6604F1, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
+			RCT2_CALLPROC_X(0x65F8B9, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
+			RCT2_CALLPROC_X(0x65FE26, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
+		}
 	}
 
 	if (mapElement->properties.surface.ownership & 0x0F) {
