@@ -1035,4 +1035,115 @@ utf8* platform_get_username() {
 	return username;
 }
 
+bool windows_setup_file_association(const utf8 * extension,
+									const utf8 * fileTypeText,
+									const utf8 * commandText,
+									const utf8 * commandArgs,
+									const uint32 iconIndex)
+{
+	utf8 progIdName[128];
+	utf8 exePath[MAX_PATH];
+	utf8 dllPath[MAX_PATH];
+	bool result = false;
+
+	GetModuleFileNameA(NULL, exePath, sizeof(exePath));
+	GetModuleFileNameA(_dllModule, dllPath, sizeof(dllPath));
+	snprintf(progIdName, sizeof(progIdName), "%s%s", OPENRCT2_NAME, extension);
+
+	// [HKEY_CURRENT_USER\Software\Classes]
+	HKEY hRootKey = NULL;
+	if (RegOpenKeyA(HKEY_CURRENT_USER, "Software\\Classes", &hRootKey) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\.ext]
+	if (RegSetValueA(hRootKey, extension, REG_SZ, progIdName, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	HKEY hKey = NULL;
+	if (RegCreateKeyA(hRootKey, progIdName, &hKey) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.ext]
+	if (RegSetValueA(hKey, NULL, REG_SZ, fileTypeText, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+	// [hRootKey\OpenRCT2.ext\DefaultIcon]
+	utf8 szIcon[MAX_PATH];
+	snprintf(szIcon, sizeof(szIcon), "\"%s\",%d", dllPath, iconIndex);
+	if (RegSetValueA(hKey, "DefaultIcon", REG_SZ, szIcon, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.sv6\shell]
+	if (RegSetValueA(hKey, "shell", REG_SZ, "open", 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.sv6\shell\open]
+	if (RegSetValueA(hKey, "shell\\open", REG_SZ, commandText, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.sv6\shell\open\command]
+	utf8 szCommand[MAX_PATH];
+	snprintf(szCommand, sizeof(szCommand), "\"%s\" %s", exePath, commandArgs);
+	if (RegSetValueA(hKey, "shell\\open\\command", REG_SZ, szCommand, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	result = true;
+fail:
+	RegCloseKey(hKey);
+	RegCloseKey(hRootKey);
+	return result;
+}
+
+void windows_remove_file_association(const utf8 * extension)
+{
+	// [HKEY_CURRENT_USER\Software\Classes]
+	HKEY hRootKey;
+	if (RegOpenKeyA(HKEY_CURRENT_USER, "Software\\Classes", &hRootKey) == ERROR_SUCCESS) {
+		// [hRootKey\.ext]
+		LSTATUS s = RegDeleteTreeA(hRootKey, extension);
+
+		// [hRootKey\OpenRCT2.ext]
+		utf8 progIdName[128];
+		snprintf(progIdName, sizeof(progIdName), "%s%s", OPENRCT2_NAME, extension);
+		RegDeleteTreeA(hRootKey, progIdName);
+
+		RegCloseKey(hRootKey);
+	}
+}
+
+void platform_setup_file_associations()
+{
+	// Setup file extensions
+	windows_setup_file_association(".sc4", "RCT1 Scenario (.sc4)",     "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".sc6", "RCT2 Scenario (.sc6)",     "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".sv4", "RCT1 Saved Game (.sc4)",   "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".sv6", "RCT2 Saved Game (.sv6)",   "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
+	windows_setup_file_association(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
+
+	// Refresh explorer
+	SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
+}
+
+void platform_remove_file_associations()
+{
+	// Remove file extensions
+	windows_remove_file_association(".sc4");
+	windows_remove_file_association(".sc6");
+	windows_remove_file_association(".sv4");
+	windows_remove_file_association(".sv6");
+	windows_remove_file_association(".td4");
+	windows_remove_file_association(".td6");
+
+	// Refresh explorer
+	SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
+}
+
 #endif
