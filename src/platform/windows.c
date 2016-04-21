@@ -1035,67 +1035,91 @@ utf8* platform_get_username() {
 	return username;
 }
 
+#define SOFTWARE_CLASSES L"Software\\Classes"
+
+void get_progIdName(wchar_t *dst, const utf8 *extension)
+{
+	utf8 progIdName[128];
+	safe_strcpy(progIdName, OPENRCT2_NAME, sizeof(progIdName));
+	safe_strcat(progIdName, extension, sizeof(progIdName));
+
+	wchar_t *progIdNameW = utf8_to_widechar(progIdName);
+	lstrcpyW(dst, progIdNameW);
+	free(progIdNameW);
+}
+
 bool windows_setup_file_association(const utf8 * extension,
 									const utf8 * fileTypeText,
 									const utf8 * commandText,
 									const utf8 * commandArgs,
 									const uint32 iconIndex)
 {
-	utf8 progIdName[128];
-	utf8 exePath[MAX_PATH];
-	utf8 dllPath[MAX_PATH];
-	bool result = false;
+	wchar_t exePathW[MAX_PATH];
+	wchar_t dllPathW[MAX_PATH];
 
-	GetModuleFileNameA(NULL, exePath, sizeof(exePath));
-	GetModuleFileNameA(_dllModule, dllPath, sizeof(dllPath));
-	snprintf(progIdName, sizeof(progIdName), "%s%s", OPENRCT2_NAME, extension);
+	GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
+	GetModuleFileNameW(_dllModule, dllPathW, sizeof(dllPathW));
+
+	wchar_t *extensionW = utf8_to_widechar(extension);
+	wchar_t *fileTypeTextW = utf8_to_widechar(fileTypeText);
+	wchar_t *commandTextW = utf8_to_widechar(commandText);
+	wchar_t *commandArgsW = utf8_to_widechar(commandArgs);
+
+	wchar_t progIdNameW[128];
+	get_progIdName(progIdNameW, extension);
+
+	bool result = false;
 
 	// [HKEY_CURRENT_USER\Software\Classes]
 	HKEY hRootKey = NULL;
-	if (RegOpenKeyA(HKEY_CURRENT_USER, "Software\\Classes", &hRootKey) != ERROR_SUCCESS) {
+	if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS) {
 		goto fail;
 	}
 
 	// [hRootKey\.ext]
-	if (RegSetValueA(hRootKey, extension, REG_SZ, progIdName, 0) != ERROR_SUCCESS) {
+	if (RegSetValueW(hRootKey, extensionW, REG_SZ, progIdNameW, 0) != ERROR_SUCCESS) {
 		goto fail;
 	}
 
 	HKEY hKey = NULL;
-	if (RegCreateKeyA(hRootKey, progIdName, &hKey) != ERROR_SUCCESS) {
+	if (RegCreateKeyW(hRootKey, progIdNameW, &hKey) != ERROR_SUCCESS) {
 		goto fail;
 	}
 
 	// [hRootKey\OpenRCT2.ext]
-	if (RegSetValueA(hKey, NULL, REG_SZ, fileTypeText, 0) != ERROR_SUCCESS) {
+	if (RegSetValueW(hKey, NULL, REG_SZ, fileTypeTextW, 0) != ERROR_SUCCESS) {
 		goto fail;
 	}
 	// [hRootKey\OpenRCT2.ext\DefaultIcon]
-	utf8 szIcon[MAX_PATH];
-	snprintf(szIcon, sizeof(szIcon), "\"%s\",%d", dllPath, iconIndex);
-	if (RegSetValueA(hKey, "DefaultIcon", REG_SZ, szIcon, 0) != ERROR_SUCCESS) {
+	wchar_t szIconW[MAX_PATH];
+	wsprintfW(szIconW, L"\"%s\",%d", dllPathW, iconIndex);
+	if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS) {
 		goto fail;
 	}
 
 	// [hRootKey\OpenRCT2.sv6\shell]
-	if (RegSetValueA(hKey, "shell", REG_SZ, "open", 0) != ERROR_SUCCESS) {
+	if (RegSetValueW(hKey, L"shell", REG_SZ, L"open", 0) != ERROR_SUCCESS) {
 		goto fail;
 	}
 
 	// [hRootKey\OpenRCT2.sv6\shell\open]
-	if (RegSetValueA(hKey, "shell\\open", REG_SZ, commandText, 0) != ERROR_SUCCESS) {
+	if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW, 0) != ERROR_SUCCESS) {
 		goto fail;
 	}
 
 	// [hRootKey\OpenRCT2.sv6\shell\open\command]
-	utf8 szCommand[MAX_PATH];
-	snprintf(szCommand, sizeof(szCommand), "\"%s\" %s", exePath, commandArgs);
-	if (RegSetValueA(hKey, "shell\\open\\command", REG_SZ, szCommand, 0) != ERROR_SUCCESS) {
+	wchar_t szCommandW[MAX_PATH];
+	wsprintfW(szCommandW, L"\"%s\" %s", exePathW, commandArgsW);
+	if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS) {
 		goto fail;
 	}
 
 	result = true;
 fail:
+	free(extensionW);
+	free(fileTypeTextW);
+	free(commandTextW);
+	free(commandArgsW);
 	RegCloseKey(hKey);
 	RegCloseKey(hRootKey);
 	return result;
@@ -1105,14 +1129,14 @@ void windows_remove_file_association(const utf8 * extension)
 {
 	// [HKEY_CURRENT_USER\Software\Classes]
 	HKEY hRootKey;
-	if (RegOpenKeyA(HKEY_CURRENT_USER, "Software\\Classes", &hRootKey) == ERROR_SUCCESS) {
+	if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS) {
 		// [hRootKey\.ext]
-		LSTATUS s = RegDeleteTreeA(hRootKey, extension);
+		RegDeleteTreeA(hRootKey, extension);
 
 		// [hRootKey\OpenRCT2.ext]
-		utf8 progIdName[128];
-		snprintf(progIdName, sizeof(progIdName), "%s%s", OPENRCT2_NAME, extension);
-		RegDeleteTreeA(hRootKey, progIdName);
+		wchar_t progIdName[128];
+		get_progIdName(progIdName, extension);
+		RegDeleteTreeW(hRootKey, progIdName);
 
 		RegCloseKey(hRootKey);
 	}
