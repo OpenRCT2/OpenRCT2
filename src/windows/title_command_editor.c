@@ -87,10 +87,10 @@ static rct_widget window_title_command_editor_widgets[] = {
 	{ WWT_CLOSEBOX,				1,	WW-13,		WW-3,		2,		13,		824,						STR_CLOSE_WINDOW_TIP },				// close x button
 	{ WWT_DROPDOWN,				1,	WS,			WW-WS-1,	BY,		BY+11,	STR_NONE,					STR_NONE }, // Command dropdown
 	{ WWT_DROPDOWN_BUTTON,		1,	WW-WS-12,	WW-WS-2,	BY+1,	BY+10,	876,						STR_NONE },
-	{ WWT_TEXT_BOX,				1,	WS,			WW-WS-1,	BY2,	BY2+11,	(uint32)textbox1Buffer,		STR_NONE }, // full textbox
+	{ WWT_TEXT_BOX,				1,	WS,			WW-WS-1,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // full textbox
 
-	{ WWT_TEXT_BOX,				1,	WS,			WS+WHA-4,	BY2,	BY2+11,	(uint32)textbox1Buffer,		STR_NONE }, // x textbox
-	{ WWT_TEXT_BOX,				1,	WS+WHA+3,	WW-WS-1,	BY2,	BY2+11,	(uint32)textbox2Buffer,		STR_NONE }, // y textbox
+	{ WWT_TEXT_BOX,				1,	WS,			WS+WHA-4,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // x textbox
+	{ WWT_TEXT_BOX,				1,	WS+WHA+3,	WW-WS-1,	BY2,	BY2+11,	STR_NONE,					STR_NONE }, // y textbox
 
 	{ WWT_DROPDOWN,				1,	16,			WW-17,		BY2,	BY2+11,	STR_NONE,					STR_NONE }, // Save dropdown
 	{ WWT_DROPDOWN_BUTTON,		1,	WW-28,		WW-18,		BY2+1,	BY2+10,	876,						STR_NONE },
@@ -209,6 +209,9 @@ void window_title_command_editor_open(int index, bool insert)
 		WC_TITLE_COMMAND_EDITOR,
 		WF_STICK_TO_FRONT
 	);
+	window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].image = (uint32)textbox1Buffer;
+	window_title_command_editor_widgets[WIDX_TEXTBOX_X].image = (uint32)textbox1Buffer;
+	window_title_command_editor_widgets[WIDX_TEXTBOX_Y].image = (uint32)textbox2Buffer;
 	window->widgets = window_title_command_editor_widgets;
 	window->enabled_widgets =
 		(1 << WIDX_CLOSE) |
