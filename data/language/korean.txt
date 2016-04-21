@@ -4058,7 +4058,7 @@ STR_5751    :데이터 없음
 STR_5752    :{OUTLINE}{RED}{STRING} 님 퇴장
 STR_5753    :{OUTLINE}{RED}{STRING} 님 퇴장 ({STRING})
 STR_5754    :올바르지 않은 플레이어 이름
-STR_5755    :소프트웨어 버전이 맞지 않습니다
+STR_5755    :소프트웨어 버전이 맞지 않습니다 (서버는 {STRING} 버전을 사용합니다)
 STR_5756    :비밀번호가 맞지 않습니다
 STR_5757    :서버 제한 인원이 꽉 찼습니다
 STR_5758    :{OUTLINE}{GREEN}{STRING} 님 입장
@@ -4104,6 +4104,9 @@ STR_5797    :{SMALLFONT}{BLACK}날씨를 선택한 날씨로 고정하고 바뀌
 STR_5798    :{SMALLFONT}{BLACK}일시정지 상태에서 건설을 허용합니다.
 STR_5799    :{SMALLFONT}{BLACK}브레이크 실패로 인한 고장과 충돌이 일어나지 않게 만듭니다.
 STR_5800    :{SMALLFONT}{BLACK}놀이기구가 고장나지 않게 만듭니다.
+STR_5801    :구토와 쓰레기 버림 끄기
+STR_5802    :{SMALLFONT}{BLACK}손님들이 구토를 하거나 쓰레기를 버리지 않습니다.
+STR_5803    :{SMALLFONT}{BLACK}선택한 맵 요소를 회전시킵니다.
 
 #############
 # Scenarios #

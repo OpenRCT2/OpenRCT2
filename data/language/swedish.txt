@@ -4062,7 +4062,7 @@ STR_5751    :Ingen Data
 STR_5752    :{OUTLINE}{RED}{STRING} har lämnat
 STR_5753    :{OUTLINE}{RED}{STRING} har lämnat ({STRING})
 STR_5754    :Ogiltigt Spelar Namn
-STR_5755    :Fel Version av OpenRCT
+STR_5755    :Fel Version av OpenRCT (Servern använder {STRING})
 STR_5756    :Fel Lösenord
 STR_5757    :Servern är Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} har anslutit till spelet
@@ -4108,6 +4108,9 @@ STR_5797    :{SMALLFONT}{BLACK}Avaktiverar väderändringar och{NEWLINE}behålle
 STR_5798    :{SMALLFONT}{BLACK}Tillåter byggnationer när spelet är pausat
 STR_5799    :{SMALLFONT}{BLACK}Avaktiverar haveriet bromsfel så åkturernas vagnar inte krockar med varandra
 STR_5800    :{SMALLFONT}{BLACK}Hindrar karuseller från att gå sönder
+STR_5801    :Avaktivera nedskräpning
+STR_5802    :{SMALLFONT}{BLACK}Stoppar gästerna från att skräpa ner och kräkas i parken
+STR_5803    :{SMALLFONT}{BLACK}Rotera valda element
 
 #############
 # Scenarion #

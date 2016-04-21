@@ -4061,7 +4061,7 @@ STR_5751    :Žádná data
 STR_5752    :{OUTLINE}Hráč {RED}{STRING} se odpojil
 STR_5753    :{OUTLINE}Hráč {RED}{STRING} se odpojil ({STRING})
 STR_5754    :Neplatné jméno hráče
-STR_5755    :Nesprávná verze hry
+STR_5755    :Nesprávná verze hry (Server používá {STRING})
 STR_5756    :Špatné heslo
 STR_5757    :Server je plný
 STR_5758    :{OUTLINE}{GREEN}Hráč {STRING} se připojil do hry
@@ -4107,6 +4107,9 @@ STR_5797    :{SMALLFONT}{BLACK}Zakáže změny počasí{NEWLINE}(v parku bude od
 STR_5798    :{SMALLFONT}{BLACK}Povolí stavění, když je hra zapauzována
 STR_5799    :{SMALLFONT}{BLACK}Zakáže havárie atrakcí způsobené poruchou brzd
 STR_5800    :{SMALLFONT}{BLACK}Atrakce nebudou mít poruchy
+STR_5801    :Zakázat odhazování odpadků
+STR_5802    :{SMALLFONT}{BLACK}Návštěvníci nebudou odhazovat odpadky a zvracet
+STR_5803    :{SMALLFONT}{BLACK}Otočit vybraný prvek mapy
 
 
 ###############################################################################

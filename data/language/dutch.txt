@@ -4054,7 +4054,7 @@ STR_5751    :Geen gegevens
 STR_5752    :{OUTLINE}{RED}{STRING} heeft afgesloten.
 STR_5753    :{OUTLINE}{RED}{STRING} heeft afgesloten ({STRING}).
 STR_5754    :Ongeldige gebruikersnaam
-STR_5755    :Incorrecte softwareversie
+STR_5755    :Incompatibele softwareversie (server gebruikt {STRING})
 STR_5756    :Ongeldig wachtwoord
 STR_5757    :Server is vol
 STR_5758    :{OUTLINE}{GREEN}Nieuwe speler: {STRING}.
@@ -4102,6 +4102,7 @@ STR_5799    :{SMALLFONT}{BLACK}Voorkomt dat de remmen van attracties kapot gaan,
 STR_5800    :{SMALLFONT}{BLACK}Voorkomt dat attracties kapot gaan.
 STR_5801    :Bevuiling voorkomen
 STR_5802    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers braken of afval op de grond gooien.
+STR_5803    :{SMALLFONT}{BLACK}Geselecteerd kaartelement draaien
 
 
 #############

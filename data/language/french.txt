@@ -4063,7 +4063,7 @@ STR_5755    :Mauvaise version du programme
 STR_5756    :Mauvais mot de passe
 STR_5757    :Serveur plein
 STR_5758    :{OUTLINE}{GREEN}{STRING} a rejoint la partie
-STR_5759    :Téléchargement de la carte... ({INT32} / {INT32})
+STR_5759    :Téléchargement de la carte... ({INT32} / {INT32} Kio)
 STR_5760    :Dollars de Hong Kong (HK$)
 STR_5761    :Nouveau Dollar Taïwanais (NT$)
 STR_5762    :Yuan Chinois (CN{YEN})
@@ -4105,6 +4105,8 @@ STR_5797    :{SMALLFONT}{BLACK}Désactive les changements de météo et reste à
 STR_5798    :{SMALLFONT}{BLACK}Autorise la construction lorsque le jeu est en pause
 STR_5799    :{SMALLFONT}{BLACK}Empêche les accidents sur les attractions en désactivant les pannes de freins
 STR_5800    :{SMALLFONT}{BLACK}Empêche les attractions de tomber en panne
+STR_5801    :Désactiver déchets
+STR_5802    :{SMALLFONT}{BLACK}Empêche les visiteurs de jeter leurs détritus et de vomir par terre
 
 #############
 # Scenarios #
