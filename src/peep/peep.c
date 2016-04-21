@@ -1798,7 +1798,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
 		return;
 
-	if (ride->price != 0){
+	if (ride->price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) ||
 			!(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) ||
 			!(peep->voucher_arguments == peep->current_ride)){
@@ -9775,7 +9775,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 			uint32 value = ride->value;
 
 			// If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex)) {
+			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex) && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 
 				// The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
 				if (peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
