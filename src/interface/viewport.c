@@ -1687,8 +1687,8 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	direction += map_element->properties.banner.position;
 	direction &= 3;
 
-	boundBoxOffsetX = RCT2_ADDRESS(0x98D884, uint16)[direction * 2];
-	boundBoxOffsetY = RCT2_ADDRESS(0x98D884 + 2, uint16)[direction * 2];
+	boundBoxOffsetX = RCT2_ADDRESS(0x98D884, uint16)[direction * 4];
+	boundBoxOffsetY = RCT2_ADDRESS(0x98D884 + 2, uint16)[direction * 4];
 	boundBoxOffsetZ = height + 2;
 
 	uint32 base_id = (direction << 1) + banner_scenery->image;
@@ -1706,8 +1706,8 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	}
 
 	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
-	boundBoxOffsetX = RCT2_ADDRESS(0x98D888, uint16)[direction * 2];
-	boundBoxOffsetY = RCT2_ADDRESS(0x98D888 + 2, uint16)[direction * 2];
+	boundBoxOffsetX = RCT2_ADDRESS(0x98D888, uint16)[direction * 4];
+	boundBoxOffsetY = RCT2_ADDRESS(0x98D888 + 2, uint16)[direction * 4];
 
 	image_id++;
 	sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
