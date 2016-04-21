@@ -1006,7 +1006,7 @@ static void window_ride_construction_resize(rct_window *w)
 			}
 			if (_currentTrackSlopeEnd == TRACK_SLOPE_DOWN_25) {
 				disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP);
-				if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL || _rideConstructionState != RIDE_CONSTRUCTION_STATE_FRONT || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED)) {
+				if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT || _rideConstructionState != RIDE_CONSTRUCTION_STATE_FRONT || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED)) {
 					disabledWidgets |= (1ULL << WIDX_LEVEL);
 				}
 			}
