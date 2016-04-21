@@ -156,6 +156,7 @@ void platform_enumerate_files_end(int handle);
 int platform_enumerate_directories_begin(const utf8 *directory);
 bool platform_enumerate_directories_next(int handle, utf8 *path);
 void platform_enumerate_directories_end(int handle);
+void platform_init_window_icon();
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
 int platform_get_drives();

@@ -35,6 +35,9 @@
 #include "../config.h"
 #include "platform.h"
 
+// Native resource IDs
+#include "../../resources/resource.h"
+
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
@@ -42,6 +45,10 @@ utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 utf8 **windows_get_command_line_args(int *outNumArgs);
+
+#define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
+
+static HMODULE _dllModule = NULL;
 
 /**
  * Windows entry point to OpenRCT2 without a console window.
@@ -69,6 +76,7 @@ utf8 **windows_get_command_line_args(int *outNumArgs);
  */
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 {
+	_dllModule = hModule;
 	return TRUE;
 }
 #endif // __MINGW32__
@@ -81,6 +89,10 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 {
 	int argc, runGame;
 	char **argv;
+
+	if (_dllModule == NULL) {
+		_dllModule = GetModuleHandleA(OPENRCT2_DLL_MODULE_NAME);
+	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
 	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
@@ -796,6 +808,17 @@ HWND windows_get_window_handle()
 	HWND result = handle;
 	#endif // __MINGW32__
 	return result;
+}
+
+void platform_init_window_icon()
+{
+	if (_dllModule != NULL) {
+		HICON icon = LoadIcon(_dllModule, MAKEINTRESOURCE(IDI_ICON));
+		if (icon != NULL) {
+			HWND hwnd = windows_get_window_handle();
+			SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
+		}
+	}
 }
 
 uint16 platform_get_locale_language()
