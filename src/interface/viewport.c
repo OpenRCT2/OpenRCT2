@@ -34,6 +34,7 @@
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
+#include "../peep/staff.h"
 #include "colour.h"
 #include "viewport.h"
 #include "window.h"
@@ -1098,6 +1099,28 @@ int sub_98197C(
 	return 0;
 }
 
+/*
+ * rct2: 0x6861AC, 0x686337, 0x6864D0, 0x68666B, 0x98196C
+ * returns contents of carry flag
+ * imageId = ebx
+ * height = dx
+ * rotation = ebp
+ */
+static int sub_98196C(uint8 al, uint8 ah, uint32 imageId, uint8 cl, uint16 height, uint16 si, uint16 di, uint16 rotation)
+{
+	int flags = RCT2_CALLPROC_X(
+		(int)RCT2_ADDRESS(0x98196C, uint32*)[rotation],
+		al | (ah << 8),
+		imageId,
+		cl,
+		height,
+		si,
+		di,
+		rotation
+	);
+	return (flags >> 8) & 1;
+}
+
 /**
  *
  *  rct2: 0x00686EF0, 0x00687056, 0x006871C8, 0x0068733C, 0x0098198C
@@ -1537,6 +1560,870 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 	}
 }
 
+static int callcode_push1(int address, int stackvar, registers *regs)
+{
+	int result;
+	
+	int *_eax = &regs->eax;
+	int *_ebx = &regs->ebx;
+	int *_ecx = &regs->ecx;
+	int *_edx = &regs->edx;
+	int *_esi = &regs->esi;
+	int *_edi = &regs->edi;
+	int *_ebp = &regs->ebp;
+#ifdef __GNUC__
+	__asm__ ( "\
+		\n\
+		/* Store C's base pointer*/     \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
+		\n\
+		/* Store %[address] to call*/   \n\
+		push %[address]         \n\
+		\n\
+		/* Set all registers to the input values*/      \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		/* Hack: called code should return back to this function */ \n\
+		push $__foo \n\
+		/* Push variable */\n\
+		push %[stackvar] \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
+		\n\
+		/* Call function*/      \n\
+		/* call *(%%esp) */     \n\
+		/* int $3 */\n\
+		jmp *8(%%esp)	\n\
+		__foo: \n\
+		\n\
+		/* Store output eax */ \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
+		/* Get resulting ecx, edx, esi, edi registers*/       \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
+		/* Pop ebx reg into ecx*/ \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		/* Pop ebp reg into ecx */\n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		pop %%eax \n\
+		/* Get resulting eax register*/ \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
+		\n\
+		/* Save flags as return in eax*/  \n\
+		lahf \n\
+		/* Pop address*/ \n\
+		pop %%ebp \n\
+		\n\
+		pop %%ebx \n\
+		pop %%ebp \n\
+		/* Load result with flags */ \n\
+		mov %%eax, %[result] \n\
+		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+		: [stackvar] "m" (stackvar)
+		: "eax","ecx","edx","esi","edi"
+	);
+#else
+	//This is untested since I don't use Visual Studio for development.
+	__asm {
+		// Store C's base pointer
+		push ebp
+		push ebx
+		// Store address to call
+		push address
+
+		// Set all registers to the input values
+		mov eax, [_eax]
+		mov eax, [eax]
+		mov ebx, [_ebx]
+		mov ebx, [ebx]
+		mov ecx, [_ecx]
+		mov ecx, [ecx]
+		mov edx, [_edx]
+		mov edx, [edx]
+		mov esi, [_esi]
+		mov esi, [esi]
+		mov edi, [_edi]
+		mov edi, [edi]
+		
+		push OFFSET foo
+		push stackvar
+		
+		mov ebp, [_ebp]
+		mov ebp, [ebp]
+
+		// Call function
+		//call [esp]
+		jmp [esp + 8]
+	foo:
+		// Store output eax
+		push eax
+		push ebp
+		push ebx
+		mov ebp, [esp + 20]
+		mov ebx, [esp + 16]
+
+		// Get resulting ecx, edx, esi, edi registers
+
+		mov eax, [_edi]
+		mov [eax], edi
+		mov eax, [_esi]
+		mov [eax], esi
+		mov eax, [_edx]
+		mov [eax], edx
+		mov eax, [_ecx]
+		mov [eax], ecx
+
+		// Pop ebx reg into ecx
+		pop ecx
+		mov eax, [_ebx]
+		mov[eax], ecx
+
+		// Pop ebp reg into ecx
+		pop ecx
+		mov eax, [_ebp]
+		mov[eax], ecx
+
+		pop eax
+		// Get resulting eax register
+		mov ecx, [_eax]
+		mov [ecx], eax
+
+		// Save flags as return in eax
+		lahf
+		// Pop address
+		pop ebp
+
+		pop ebx
+		pop ebp
+		/* Load result with flags */
+		mov result, eax
+	}
+#endif
+	return result&0xFF00;
+}
+
+static int callcode_push3(int address, int stackvar1, int stackvar2, int stackvar3, registers *regs)
+{
+	int result;
+	
+	int *_eax = &regs->eax;
+	int *_ebx = &regs->ebx;
+	int *_ecx = &regs->ecx;
+	int *_edx = &regs->edx;
+	int *_esi = &regs->esi;
+	int *_edi = &regs->edi;
+	int *_ebp = &regs->ebp;
+#ifdef __GNUC__
+	__asm__ ( "\
+		\n\
+		/* Store C's base pointer*/     \n\
+		push %%ebp        \n\
+		push %%ebx        \n\
+		\n\
+		/* Store %[address] to call*/   \n\
+		push %[address]         \n\
+		\n\
+		/* Set all registers to the input values*/      \n\
+		mov %[_eax], %%eax      \n\
+		mov (%%eax), %%eax  \n\
+		mov %[_ebx], %%ebx      \n\
+		mov (%%ebx), %%ebx  \n\
+		mov %[_ecx], %%ecx      \n\
+		mov (%%ecx), %%ecx  \n\
+		mov %[_edx], %%edx      \n\
+		mov (%%edx), %%edx  \n\
+		mov %[_esi], %%esi      \n\
+		mov (%%esi), %%esi  \n\
+		mov %[_edi], %%edi      \n\
+		mov (%%edi), %%edi  \n\
+		/* Hack: called code should return back to this function */ \n\
+		push $_foo \n\
+		/* Push variable */\n\
+		push %[stackvar1] \n\
+		push %[stackvar2] \n\
+		push %[stackvar3] \n\
+		mov %[_ebp], %%ebp      \n\
+		mov (%%ebp), %%ebp  \n\
+		\n\
+		/* Call function*/      \n\
+		/* call *(%%esp) */     \n\
+		/* int $3 */\n\
+		jmp *16(%%esp)	\n\
+		_foo: \n\
+		\n\
+		/* Store output eax */ \n\
+		push %%eax \n\
+		push %%ebp \n\
+		push %%ebx \n\
+		mov 20(%%esp), %%ebp \n\
+		mov 16(%%esp), %%ebx \n\
+		/* Get resulting ecx, edx, esi, edi registers*/       \n\
+		mov %[_edi], %%eax      \n\
+		mov %%edi, (%%eax)  \n\
+		mov %[_esi], %%eax      \n\
+		mov %%esi, (%%eax)  \n\
+		mov %[_edx], %%eax      \n\
+		mov %%edx, (%%eax)  \n\
+		mov %[_ecx], %%eax      \n\
+		mov %%ecx, (%%eax)  \n\
+		/* Pop ebx reg into ecx*/ \n\
+		pop %%ecx		\n\
+		mov %[_ebx], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		/* Pop ebp reg into ecx */\n\
+		pop %%ecx \n\
+		mov %[_ebp], %%eax \n\
+		mov %%ecx, (%%eax) \n\
+		\n\
+		pop %%eax \n\
+		/* Get resulting eax register*/ \n\
+		mov %[_eax], %%ecx \n\
+		mov %%eax, (%%ecx) \n\
+		\n\
+		/* Save flags as return in eax*/  \n\
+		lahf \n\
+		/* Pop address*/ \n\
+		pop %%ebp \n\
+		\n\
+		pop %%ebx \n\
+		pop %%ebp \n\
+		/* Load result with flags */ \n\
+		mov %%eax, %[result] \n\
+		" : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+		: [stackvar1] "m" (stackvar1), [stackvar2] "m" (stackvar2), [stackvar3] "m" (stackvar3)
+		: "eax","ecx","edx","esi","edi"
+	);
+#else
+	//This is untested since I don't use Visual Studio for development.
+	__asm {
+		// Store C's base pointer
+		push ebp
+		push ebx
+		// Store address to call
+		push address
+
+		// Set all registers to the input values
+		mov eax, [_eax]
+		mov eax, [eax]
+		mov ebx, [_ebx]
+		mov ebx, [ebx]
+		mov ecx, [_ecx]
+		mov ecx, [ecx]
+		mov edx, [_edx]
+		mov edx, [edx]
+		mov esi, [_esi]
+		mov esi, [esi]
+		mov edi, [_edi]
+		mov edi, [edi]
+		
+		push OFFSET foo
+		push stackvar1
+		push stackvar2
+		push stackvar3
+		
+		mov ebp, [_ebp]
+		mov ebp, [ebp]
+
+		// Call function
+		//call [esp]
+		jmp [esp + 16]
+	foo:
+		// Store output eax
+		push eax
+		push ebp
+		push ebx
+		mov ebp, [esp + 20]
+		mov ebx, [esp + 16]
+
+		// Get resulting ecx, edx, esi, edi registers
+
+		mov eax, [_edi]
+		mov [eax], edi
+		mov eax, [_esi]
+		mov [eax], esi
+		mov eax, [_edx]
+		mov [eax], edx
+		mov eax, [_ecx]
+		mov [eax], ecx
+
+		// Pop ebx reg into ecx
+		pop ecx
+		mov eax, [_ebx]
+		mov[eax], ecx
+
+		// Pop ebp reg into ecx
+		pop ecx
+		mov eax, [_ebp]
+		mov[eax], ecx
+
+		pop eax
+		// Get resulting eax register
+		mov ecx, [_eax]
+		mov [ecx], eax
+
+		// Save flags as return in eax
+		lahf
+		// Pop address
+		pop ebp
+
+		pop ebx
+		pop ebp
+		/* Load result with flags */
+		mov result, eax
+	}
+#endif
+	return result&0xFF00;
+}
+
+//This isn't thoroughly tested, but should work.
+/**
+ * return value is carry flag
+ * x = ax
+ * imageId = ebx
+ * y = cx
+ */
+bool sub_68818E(int x, int imageId, int y)
+{
+	//This is not really a paint_struct.
+	paint_struct *ps = RCT2_GLOBAL(0xEE7888, paint_struct *); //ps = ebp
+	
+	if((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))
+		return true;
+	ps->image_id = imageId;
+	ps->attached_x = x;
+	ps->attached_y = y;
+	ps->var_0C = 0;
+	paint_struct *ebx = RCT2_GLOBAL(0xF1AD28, paint_struct *); //ebx
+	if(ebx == NULL)
+		return true;
+	RCT2_GLOBAL(0xEE7888, uint32) += 0x12; //odd...
+	ps->next_attached_ps = ebx->attached_ps;
+	ebx->attached_ps = ps;
+	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
+	return false;
+}
+
+/**
+ * Helper function for viewport_surface_paint_setup
+ * mapElement = esi;
+ * shift = cl
+ */
+static inline int helper(rct_map_element *mapElement, uint8 shift)
+{	
+	uint16 di;
+	uint32 ebx;
+	
+	ebx = mapElement->properties.surface.slope;
+	di = (ebx & 0xF) << shift;
+	di |= di >> 4;
+	di &= 0xF;
+	ebx &= 0x10;
+	ebx |= di;
+	return ebx;
+}
+
+/**
+ *	rct2: 0x65E9FC
+ */
+static void viewport_surface_smooth_west_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65E9FC, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *	rct2: 0x65EAB2
+ */
+static void viewport_surface_smooth_north_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65EAB2, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *	rct2: 0x65E890
+ */
+static void viewport_surface_smooth_south_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65E890, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ *	rct2: 0x65E946
+ */
+static void viewport_surface_smooth_east_edge(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp)
+{
+	RCT2_CALLPROC_X(0x65E946, eax, ebx, ecx, edx, esi, edi, ebp);
+}
+
+/**
+ * rct2: 0x66062C
+ * edx = height
+ * esi = mapElement
+ */
+void viewport_surface_paint_setup(int height, rct_map_element *mapElement)
+{
+	registers regs;
+	
+	regs.eax = 0; //unused
+	regs.ebx = 0; //unused
+	regs.ecx = 0; //unused
+	regs.edx = height;
+	regs.esi = (int)mapElement;
+	regs.edi = 0; //unused
+	regs.ebp = 0; //unused
+	
+	int saved_ebx, saved_ecx, saved_edx, saved_esi;
+	
+	//Uncomment this to use vanilla code.
+	//RCT2_CALLFUNC_Y(0x66062C, &regs); return;
+	
+	unsigned int rotation = get_current_rotation();
+	
+	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *); //dpi = edi	
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 1;
+	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
+	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
+	//This global does not appear to be used outside of this function. I'm just keeping this here just in case.
+	RCT2_GLOBAL(0x9E3296, uint16) = dpi->zoom_level;
+	
+	regs.ecx = rotation;
+	
+	//regs.edi = (int)dpi;
+	//RCT2_CALLFUNC_Y(0x660657, &regs); return;
+	
+	//SAVE
+	saved_esi = regs.esi;
+	
+	RCT2_GLOBAL(0x9E3264, uint32) = ((mapElement->type & 3) << 3) | (mapElement->properties.surface.terrain >> 5);
+	
+	//callcode_push1(0x660671, saved_esi, &regs); return;
+	
+	regs.ebx = helper(mapElement, regs.cl);
+	RCT2_GLOBAL(0x9E3278, uint32) = regs.ebx;
+	
+	//callcode_push1(0x660698, saved_esi, &regs); return;
+	uint16 x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B464, uint16)[rotation * 2]; //x = ax
+	uint16 y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B466, uint16)[rotation * 2]; //y = bp
+	RCT2_GLOBAL(0x9E3248, rct_map_element *) = NULL;
+	if(x < 0x2000 && y < 0x2000)
+	{	
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
+		
+		RCT2_GLOBAL(0x9E3248, rct_map_element *) = surfaceElement;
+		RCT2_GLOBAL(0x9E325C, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+
+		regs.ebx = helper(surfaceElement, regs.cl);	
+		RCT2_GLOBAL(0x9E3270, uint32) = regs.ebx;
+		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+		
+		RCT2_GLOBAL(0x9E3280, uint8) = height / 16 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3281, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E3288, uint8) = height / 16 + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3289, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
+	}
+//loc_660781:
+	//callcode_push1(0x660781, saved_esi, &regs); return;
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B474, uint16)[rotation * 2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B476, uint16)[rotation * 2];
+	RCT2_GLOBAL(0x9E3244, rct_map_element *) = NULL;
+	if(x < 0x2000 && y < 0x2000)
+	{
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
+		
+		RCT2_GLOBAL(0x9E3244, rct_map_element *) = surfaceElement;
+		RCT2_GLOBAL(0x9E3258, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+		
+		regs.ebx = helper(surfaceElement, regs.cl);
+		RCT2_GLOBAL(0x9E326C, uint32) = regs.ebx;
+		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+		
+		RCT2_GLOBAL(0x9E327E, uint8) = height / 16 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E327F, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E3286, uint8) = height / 16 + RCT2_ADDRESS(0x97B504, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3287, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
+	}
+//loc_66086A:
+	//callcode_push1(0x66086A, saved_esi, &regs); return;
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B484, uint16)[rotation * 2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B486, uint16)[rotation * 2];
+	RCT2_GLOBAL(0x9E324C, rct_map_element *) = NULL;
+	if(x < 0x2000 && y < 0x2000)
+	{
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
+		
+		RCT2_GLOBAL(0x9E324C, rct_map_element *) = surfaceElement;
+		RCT2_GLOBAL(0x9E3260, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+		
+		regs.ebx = helper(surfaceElement, regs.cl);
+		RCT2_GLOBAL(0x9E3274, uint32) = regs.ebx;
+		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+		
+		RCT2_GLOBAL(0x9E3282, uint8) = height / 16 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3283, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E328A, uint8) = height / 16 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E328B, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
+	}
+//loc_660953:
+	//callcode_push1(0x660953, saved_esi, &regs); return;
+	x = RCT2_GLOBAL(0x9DE568, uint16) + RCT2_ADDRESS(0x97B494, uint16)[rotation * 2];
+	y = RCT2_GLOBAL(0x9DE56C, uint16) + RCT2_ADDRESS(0x97B496, uint16)[rotation * 2];
+	RCT2_GLOBAL(0x9E3240, rct_map_element *) = NULL;
+	if(x < 0x2000 && y < 0x2000)
+	{
+		rct_map_element *surfaceElement = map_get_surface_element_at(x / 32, y / 32); //surfaceElement = esi
+		
+		RCT2_GLOBAL(0x9E3240, rct_map_element *) = surfaceElement;
+		RCT2_GLOBAL(0x9E3254, uint32) = ((surfaceElement->type & 3) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+		
+		regs.ebx = helper(surfaceElement, regs.cl);
+		RCT2_GLOBAL(0x9E3268, uint32) = regs.ebx;
+		regs.edi = RCT2_GLOBAL(0x9E3278, uint32);
+		
+		RCT2_GLOBAL(0x9E327C, uint8) = height / 16 + RCT2_ADDRESS(0x97B4C4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E327D, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B4E4, uint8)[regs.ebx];
+		RCT2_GLOBAL(0x9E3284, uint8) = height / 16 + RCT2_ADDRESS(0x97B4A4, uint8)[regs.edi];
+		RCT2_GLOBAL(0x9E3285, uint8) = surfaceElement->base_height / 2 + RCT2_ADDRESS(0x97B504, uint8)[regs.ebx];
+	}
+//loc_660A3C:
+	//RESTORE
+	regs.esi = saved_esi;
+	
+	//Handle height marks on land
+	//RCT2_CALLFUNC_Y(0x660A3D, &regs); return;
+	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS) &&
+	dpi->zoom_level == 0)
+	{
+		//RCT2_CALLFUNC_Y(0x660A52, &regs); return;
+		uint16 elementHeight = 3 + map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10); //elementHeight = dx
+		unsigned int imageId = (elementHeight >> 4) + 0x20781689 + RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) - RCT2_GLOBAL(0x1359208, uint16); //imageId = ebx
+		
+		sub_98196C(0x10, 0, imageId, 0x10, elementHeight, 1, 1, rotation);
+	}
+loc_660AAB:
+	//RCT2_CALLFUNC_Y(0x660AAB, &regs); return;
+	
+	//SAVE
+	saved_esi = regs.esi;
+	
+	regs.ebp = RCT2_GLOBAL(0x9E3264, uint32);
+	regs.ebx = RCT2_GLOBAL(0x9E3278, uint32);
+	
+	//SAVE
+	saved_ebx = regs.ebx;
+	saved_ecx = regs.ecx;
+	
+	//callcode_push3(0x660AC6, saved_esi, saved_ebx, saved_ecx, &regs); return;
+	
+	assert(height == regs.dx);
+	if(height == (RCT2_GLOBAL(0x9E323C, uint8) * 16))
+	{
+		//Not sure what this is for, yet.
+		log_warning("loc_660B25");
+		callcode_push3(0x660B25, saved_esi, saved_ebx, saved_ecx, &regs); return;		
+	}
+	else
+	{		
+		//callcode_push3(0x660ACB, saved_esi, saved_ebx, saved_ecx, &regs); return;
+		unsigned int imageId = RCT2_ADDRESS(0x97B444, uint8)[RCT2_GLOBAL(0x9E3278, uint32)]; //imageId = ebx;
+		
+		if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_GRIDLINES)
+			regs.edi = 1;
+		else
+			regs.edi = 0;
+		
+		assert(saved_esi == (int)mapElement);
+		
+		if((mapElement->properties.surface.terrain & 0xE0) ||
+		(mapElement->type & 3) ||
+		(dpi->zoom_level != 0) ||
+		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE|VIEWPORT_FLAG_HIDE_BASE)))
+			goto loc_660C9F;
+		switch(mapElement->properties.surface.grass_length & 7) //si
+		{
+			case 0:
+				//Mowed grass
+				regs.ebp = rotation;
+				imageId += RCT2_ADDRESS(0x97B898, uint32)[regs.edi + rotation * 2];
+				break;
+			case 1: case 2: case 3:
+	loc_660C9F:
+				//Clear grass
+				if(rotation & 1)
+					regs.ebp = RCT2_ADDRESS(0x97B84A, uint8)[regs.ebp];
+				imageId += RCT2_ADDRESS(0x97B750, uint32)[regs.edi + regs.ebp*2];
+				if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0xC)
+					imageId = 0xA3F;
+				if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001)
+				{
+					imageId &= 0xDC07FFFF;
+					imageId |= 0x41880000;
+				}
+				break;
+			case 4: case 5:
+				//Clumpy grass
+				regs.ebp = (RCT2_GLOBAL(0x9DE56A, uint16) & 0x20) | ((RCT2_GLOBAL(0x9DE56E, uint16) & 0x20) << 1);
+				regs.ebp /= 16;
+				imageId += RCT2_ADDRESS(0x97B858, uint32)[regs.edi + regs.ebp];
+				break;
+			case 6:
+				//Very clumpy grass
+				regs.ebp = (RCT2_GLOBAL(0x9DE56A, uint16) & 0x20) | ((RCT2_GLOBAL(0x9DE56E, uint16) & 0x20) << 1);
+				regs.ebp /= 16;
+				imageId += RCT2_ADDRESS(0x97B878, uint32)[regs.edi + regs.ebp];
+				break;
+			default:
+				assert(false); //should not happen.
+				return;
+			
+		}
+	//loc_660CDE:
+		sub_98196C(0, 0xFF, imageId, 0, height, 0x20, 0x20, rotation);
+		RCT2_GLOBAL(0x9E329A, uint8) = 1;
+		
+		//RESTORE
+		regs.ecx = saved_ecx;
+		regs.ebx = saved_ebx;
+	}
+//loc_660D02:
+	//callcode_push1(0x660D02, saved_esi, &regs); return;
+	if(RCT2_GLOBAL(0x9DEA50, uint16) != 0xFFFF)
+	{
+		x = RCT2_GLOBAL(0x9DE56A, uint16); //x = ax
+		y = RCT2_GLOBAL(0x9DE56E, uint16); //y = cx
+		int staffIndex = RCT2_GLOBAL(0x9DEA50, uint16) & 0x7FFF; //staffIndex = ebx
+		uint32 unk = 0x20380000; //unk = ebp
+		
+		if(RCT2_GLOBAL(0x9DEA50, uint16) >= 0)
+		{
+			rct_peep *peep = &g_sprite_list[RCT2_GLOBAL(0x9DEA50, uint16)].peep; //peep = edi;
+			
+			if(staff_is_patrol_area_set(peep->staff_id, x, y))
+				goto loc_660D93;
+			staffIndex = peep->staff_type;
+			unk = 0x20080000;
+		}
+		if(staff_is_patrol_area_set(staffIndex + 0xC8, x, y))
+		{
+loc_660D93:
+			sub_68818E(0, (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA27) | unk, 0);
+		}
+	}
+//loc_660DB2:
+	//callcode_push1(0x660DB2, saved_esi, &regs); return;
+	
+	if((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) &&
+	(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP))
+	{
+		//0x660DCE
+		//Check if this square is one of the two peep spawn locations
+		rct2_peep_spawn *peepSpawn1 = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
+		rct2_peep_spawn *peepSpawn2 = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn) + 1;
+		
+		if((peepSpawn1->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+		(peepSpawn1->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+		{
+			unsigned int imageId = (((peepSpawn1->direction ^ 2) + rotation) & 3) + 0x20380C27;
+			
+			//Add blue highlight and blue arrow
+			sub_98196C(0, 0x10, 0xA40, 0, peepSpawn1->z * 16, 0x20, 0x20, rotation);
+			sub_98196C(0, 0x13, imageId, 0, peepSpawn1->z * 16, 0x20, 0x20, rotation);
+		}
+		else if((peepSpawn2->x & 0xFFE0) == RCT2_GLOBAL(0x9DE56A, uint16) &&
+		(peepSpawn2->y & 0xFFE0) == RCT2_GLOBAL(0x9DE56E, uint16))
+		{
+			unsigned int imageId = (((peepSpawn2->direction ^ 2) + rotation) & 3) + 0x20380C27;
+			
+			//Add blue highlight and blue arrow
+			sub_98196C(0, 0x10, 0xA40, 0,  peepSpawn2->z * 16, 0x20, 0x20, rotation);
+			sub_98196C(0, 0x13, imageId, 0,  peepSpawn2->z * 16, 0x20, 0x20, rotation);
+		}
+	}
+	
+//loc_660E9A:
+	//callcode_push1(0x660E9A, saved_esi, &regs); return;
+	if(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP)
+	{
+		assert(saved_esi == (int)mapElement);
+		if(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
+		{
+			//0x660EAE
+			//Add blue higlight
+			sub_68818E(0, RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA41, 0);
+		}
+		else if(mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE)
+		{
+			//0x660ED4
+			//Add for-sale sign
+			paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+			unsigned int elementHeight = map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3;
+			
+			sub_98196C(0x10, 0, 0x59AB, 0x10, elementHeight, 1, 1, rotation);
+			RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
+		}
+	}
+//loc_660F24:
+	//callcode_push1(0x660F24, saved_esi, &regs); return;
+	assert(saved_esi==(int)mapElement);
+	if((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) && !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
+	{
+		if(mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+		{
+			//0x660F42
+			//Add hatched blue highlight
+			sub_68818E(0, RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0xA54, 0);
+		}
+		else if(mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+		{
+			//0x660F68
+			//Add hatched for-sale sign
+			paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+			unsigned int elementHeight = map_element_height(RCT2_GLOBAL(0x9DE56A, uint16) + 0x10, RCT2_GLOBAL(0x9DE56E, uint16) + 0x10) + 3; //edx
+			
+			sub_98196C(0x10, 0, 0x59AC, 0x10, elementHeight, 1, 1, rotation);
+			RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
+		}
+	}
+loc_660FB8:
+	//callcode_push1(0x660FB8, saved_esi, &regs); return;
+	if((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 1) && 
+	(RCT2_GLOBAL(0x9DE56A, sint16) >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56A, sint16) <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56E, sint16) >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16)) &&
+	(RCT2_GLOBAL(0x9DE56E, sint16) <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)))
+	{
+		//callcode_push1(0x661009, saved_esi, &regs); return;
+		//0x661009
+		//Highlight tiles on map (selected by land tools, path placement, scenery placement, etc.)
+		
+		uint16 mapSelectionType = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16); //mapSelectionType = ax		
+		unsigned int imageId;
+		
+		switch(mapSelectionType)
+		{
+			case 0: case 1: case 2: case 3: //0-3 Corners
+				mapSelectionType = (mapSelectionType + regs.cx) & 3;
+			case 4: //4 Whole tile
+				regs.eax = (mapSelectionType + 0x21) << 0x13;
+				imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BE3) | regs.eax;
+				sub_68818E(0, imageId, 0);
+				break;
+			case 5: //5 Water tool
+				saved_ebx = regs.ebx;
+				uint16 myHeight = regs.dx; //myHeight = dx
+				uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16; //waterHeight = ax
+				if(waterHeight != 0)
+				{
+					if(waterHeight > myHeight)
+					{
+						myHeight += 16;
+						if(waterHeight == myHeight && (regs.bl & 0x10))
+						{
+							regs.bl ^= 0xF;
+							regs.bl = (uint8)regs.bl << 2;
+							regs.bh = regs.bl >> 4;
+							regs.bx &= 0x30C;
+							regs.bl |= regs.bh;
+							regs.bh = 0;
+						}
+						else
+						{
+							myHeight = waterHeight;
+							regs.ebx = 0;
+						}
+					}
+				}
+				imageId = RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x21300BE3;
+				paint_struct *saved_F1AD28 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+				sub_98196C(0, 1, imageId, 0, myHeight, 0x20, 0x20, rotation);
+				RCT2_GLOBAL(0xF1AD28, paint_struct *) = saved_F1AD28;
+				regs.ebx = saved_ebx;
+				break;
+			default:
+				if(mapSelectionType < 10) //6-9 Quarter tile
+				{
+					regs.eax = (unsigned int)(((mapSelectionType - 6 + regs.cx) & 3) + 0x27) << 0x13;
+					imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000C09) | regs.eax;
+				}
+				else //10-13 Edges
+				{
+					regs.eax = (unsigned int)(((mapSelectionType - 9 + regs.cx) & 3) + 0x21) << 0x13; 
+					imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BF6) | regs.eax;
+				}
+				sub_68818E(0, imageId, 0);
+		}
+	}
+//loc_661132:
+	//callcode_push1(0x661132, saved_esi, &regs); return;
+	if(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 2)
+	{
+		//Check if this tile is selected by ride placement.
+		for(int i = 0; ; i++) //i = edi
+		{
+			rct_xy16 selectedTilePos = gMapSelectionTiles[i]; //selectedTilePos = eax;
+			if(selectedTilePos.x == -1)
+				goto loc_661194;
+			if(selectedTilePos.x == RCT2_GLOBAL(0x9DE56A, sint16) && selectedTilePos.y == RCT2_GLOBAL(0x9DE56E, sint16))
+				break;
+		}
+		//This map selection flag changes quite a bit and causes the highlight to flicker between white and yellow when moving the object.
+		uint32 imageId = (RCT2_ADDRESS(0x97B444, uint8)[regs.ebx] + 0x20000BE3) | ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 8)?0x1580000:0x1280000);
+		sub_68818E(0, imageId, 0);
+	}
+loc_661194:
+	//callcode_push1(0x661194, saved_esi, &regs); return;
+	if(dpi->zoom_level == 0 &&
+	RCT2_GLOBAL(0x9E329A, uint8) != 0 &&
+	!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE|VIEWPORT_FLAG_HIDE_BASE)) &&
+	!(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE))
+	{
+		//callcode_push1(0x6611BB, saved_esi, &regs); return;
+		
+		saved_edx = regs.edx;
+		
+		//The smoothing functions don't appear to take any parameters. I have no idea what this is for.
+		regs.edi = (int)mapElement;
+		regs.edx >>= 4;
+		
+		//Smooth each edge of land tile
+		viewport_surface_smooth_west_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth west edge of tile
+		viewport_surface_smooth_north_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth north edge of tile
+		viewport_surface_smooth_south_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth south edge of tile
+		viewport_surface_smooth_east_edge(regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp); //smooth east edge of tile
+		
+		regs.edx = saved_edx;
+	}
+//loc_6611D8
+	callcode_push1(0x6611D8, saved_esi, &regs); return;
+}
+
 /**
  *
  *  rct2: 0x006C4794
@@ -1845,7 +2732,7 @@ static void sub_68B3FB(int x, int y)
 		switch (map_element_get_type(map_element))
 		{
 		case MAP_ELEMENT_TYPE_SURFACE:
-			RCT2_CALLPROC_X(0x66062C, 0, 0, direction, height, (int)map_element, 0, 0);
+			viewport_surface_paint_setup(height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)map_element, 0, 0);
