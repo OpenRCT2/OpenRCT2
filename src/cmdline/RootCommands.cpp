@@ -58,7 +58,7 @@ static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 
-#ifdef __WINDOWS__
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
 
 static bool _removeShell = false;
 
@@ -87,7 +87,7 @@ const CommandLineCommand CommandLine::RootCommands[]
 #endif
     DefineCommand("set-rct2", "<path>",     StandardOptions, HandleCommandSetRCT2),
 
-#ifdef __WINDOWS__
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
     DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
 #endif
 
@@ -338,7 +338,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
     }
 }
 
-#ifdef __WINDOWS__
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
 static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
@@ -357,7 +357,7 @@ static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerat
     }
     return EXITCODE_OK;
 }
-#endif // __WINDOWS__
+#endif // defined(__WINDOWS__) && !defined(__MINGW32__)
 
 static void PrintAbout()
 {

@@ -1035,9 +1035,14 @@ utf8* platform_get_username() {
 	return username;
 }
 
+#ifndef __MINGW32__
+///////////////////////////////////////////////////////////////////////////////
+// File association setup
+///////////////////////////////////////////////////////////////////////////////
+
 #define SOFTWARE_CLASSES L"Software\\Classes"
 
-void get_progIdName(wchar_t *dst, const utf8 *extension)
+static void get_progIdName(wchar_t *dst, const utf8 *extension)
 {
 	utf8 progIdName[128];
 	safe_strcpy(progIdName, OPENRCT2_NAME, sizeof(progIdName));
@@ -1048,12 +1053,13 @@ void get_progIdName(wchar_t *dst, const utf8 *extension)
 	free(progIdNameW);
 }
 
-bool windows_setup_file_association(const utf8 * extension,
-									const utf8 * fileTypeText,
-									const utf8 * commandText,
-									const utf8 * commandArgs,
-									const uint32 iconIndex)
-{
+static bool windows_setup_file_association(
+	const utf8 * extension,
+	const utf8 * fileTypeText,
+	const utf8 * commandText,
+	const utf8 * commandArgs,
+	const uint32 iconIndex
+) {
 	wchar_t exePathW[MAX_PATH];
 	wchar_t dllPathW[MAX_PATH];
 
@@ -1125,7 +1131,7 @@ fail:
 	return result;
 }
 
-void windows_remove_file_association(const utf8 * extension)
+static void windows_remove_file_association(const utf8 * extension)
 {
 	// [HKEY_CURRENT_USER\Software\Classes]
 	HKEY hRootKey;
@@ -1170,4 +1176,6 @@ void platform_remove_file_associations()
 	SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+#endif
 #endif
