@@ -1777,7 +1777,8 @@ uint32 viewport_surface_paint_setup_get_ebx(rct_map_element *mapElement, int cl)
 	uint16 di = (bl & 0x0F) << cl;
 	uint32 ebx = bl & 0x10;
 
-	return ebx | (di | di >> 4);
+	di = ((di >> 4) | di) & 0x0F;
+	return ebx | di;
 }
 
 /**
