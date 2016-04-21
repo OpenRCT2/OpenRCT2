@@ -58,6 +58,19 @@ static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
 static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
 
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
+
+static bool _removeShell = false;
+
+static const CommandLineOptionDefinition RegisterShellOptions[]
+{
+    { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
+};
+
+static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator);
+
+#endif
+
 static void PrintAbout();
 static void PrintVersion();
 static void PrintLaunchInformation();
@@ -73,6 +86,10 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineCommand("join",     "<hostname>", StandardOptions, HandleCommandJoin   ),
 #endif
     DefineCommand("set-rct2", "<path>",     StandardOptions, HandleCommandSetRCT2),
+
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
+    DefineCommand("register-shell", "", RegisterShellOptions, HandleCommandRegisterShell),
+#endif
 
     // Sub-commands
     DefineSubCommand("screenshot", CommandLine::ScreenshotCommands),
@@ -320,6 +337,27 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
         return EXITCODE_FAIL;
     }
 }
+
+#if defined(__WINDOWS__) && !defined(__MINGW32__)
+static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator)
+{
+    exitcode_t result = CommandLine::HandleCommandDefault();
+    if (result != EXITCODE_CONTINUE)
+    {
+        return result;
+    }
+
+    if (!_removeShell)
+    {
+        platform_setup_file_associations();
+    }
+    else
+    {
+        platform_remove_file_associations();
+    }
+    return EXITCODE_OK;
+}
+#endif // defined(__WINDOWS__) && !defined(__MINGW32__)
 
 static void PrintAbout()
 {

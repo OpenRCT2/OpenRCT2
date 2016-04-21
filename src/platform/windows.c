@@ -1035,4 +1035,147 @@ utf8* platform_get_username() {
 	return username;
 }
 
+#ifndef __MINGW32__
+///////////////////////////////////////////////////////////////////////////////
+// File association setup
+///////////////////////////////////////////////////////////////////////////////
+
+#define SOFTWARE_CLASSES L"Software\\Classes"
+
+static void get_progIdName(wchar_t *dst, const utf8 *extension)
+{
+	utf8 progIdName[128];
+	safe_strcpy(progIdName, OPENRCT2_NAME, sizeof(progIdName));
+	safe_strcat(progIdName, extension, sizeof(progIdName));
+
+	wchar_t *progIdNameW = utf8_to_widechar(progIdName);
+	lstrcpyW(dst, progIdNameW);
+	free(progIdNameW);
+}
+
+static bool windows_setup_file_association(
+	const utf8 * extension,
+	const utf8 * fileTypeText,
+	const utf8 * commandText,
+	const utf8 * commandArgs,
+	const uint32 iconIndex
+) {
+	wchar_t exePathW[MAX_PATH];
+	wchar_t dllPathW[MAX_PATH];
+
+	GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
+	GetModuleFileNameW(_dllModule, dllPathW, sizeof(dllPathW));
+
+	wchar_t *extensionW = utf8_to_widechar(extension);
+	wchar_t *fileTypeTextW = utf8_to_widechar(fileTypeText);
+	wchar_t *commandTextW = utf8_to_widechar(commandText);
+	wchar_t *commandArgsW = utf8_to_widechar(commandArgs);
+
+	wchar_t progIdNameW[128];
+	get_progIdName(progIdNameW, extension);
+
+	bool result = false;
+
+	// [HKEY_CURRENT_USER\Software\Classes]
+	HKEY hRootKey = NULL;
+	if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\.ext]
+	if (RegSetValueW(hRootKey, extensionW, REG_SZ, progIdNameW, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	HKEY hKey = NULL;
+	if (RegCreateKeyW(hRootKey, progIdNameW, &hKey) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.ext]
+	if (RegSetValueW(hKey, NULL, REG_SZ, fileTypeTextW, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+	// [hRootKey\OpenRCT2.ext\DefaultIcon]
+	wchar_t szIconW[MAX_PATH];
+	wsprintfW(szIconW, L"\"%s\",%d", dllPathW, iconIndex);
+	if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.sv6\shell]
+	if (RegSetValueW(hKey, L"shell", REG_SZ, L"open", 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.sv6\shell\open]
+	if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	// [hRootKey\OpenRCT2.sv6\shell\open\command]
+	wchar_t szCommandW[MAX_PATH];
+	wsprintfW(szCommandW, L"\"%s\" %s", exePathW, commandArgsW);
+	if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS) {
+		goto fail;
+	}
+
+	result = true;
+fail:
+	free(extensionW);
+	free(fileTypeTextW);
+	free(commandTextW);
+	free(commandArgsW);
+	RegCloseKey(hKey);
+	RegCloseKey(hRootKey);
+	return result;
+}
+
+static void windows_remove_file_association(const utf8 * extension)
+{
+	// [HKEY_CURRENT_USER\Software\Classes]
+	HKEY hRootKey;
+	if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS) {
+		// [hRootKey\.ext]
+		RegDeleteTreeA(hRootKey, extension);
+
+		// [hRootKey\OpenRCT2.ext]
+		wchar_t progIdName[128];
+		get_progIdName(progIdName, extension);
+		RegDeleteTreeW(hRootKey, progIdName);
+
+		RegCloseKey(hRootKey);
+	}
+}
+
+void platform_setup_file_associations()
+{
+	// Setup file extensions
+	windows_setup_file_association(".sc4", "RCT1 Scenario (.sc4)",     "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".sc6", "RCT2 Scenario (.sc6)",     "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".sv4", "RCT1 Saved Game (.sc4)",   "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".sv6", "RCT2 Saved Game (.sv6)",   "Play",    "\"%1\"", 0);
+	windows_setup_file_association(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
+	windows_setup_file_association(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
+
+	// Refresh explorer
+	SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
+}
+
+void platform_remove_file_associations()
+{
+	// Remove file extensions
+	windows_remove_file_association(".sc4");
+	windows_remove_file_association(".sc6");
+	windows_remove_file_association(".sv4");
+	windows_remove_file_association(".sv6");
+	windows_remove_file_association(".td4");
+	windows_remove_file_association(".td6");
+
+	// Refresh explorer
+	SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+#endif
 #endif
