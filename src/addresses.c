@@ -12,7 +12,8 @@
 
 int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
-	int result;
+	int result = 0;
+#ifdef PLATFORM_X86
 	#ifdef _MSC_VER
 	__asm {
 		push ebp
@@ -56,13 +57,15 @@ int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _
 		: "eax","ecx","edx","esi","edi","memory"
 	);
 	#endif
+#endif // PLATFORM_X86
 	// lahf only modifies ah, zero out the rest
 	return result & 0xFF00;
 }
 
 int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
-	int result;
+	int result = 0;
+#ifdef PLATFORM_X86
 	#ifdef _MSC_VER
 	__asm {
 		// Store C's base pointer
@@ -207,6 +210,7 @@ int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, in
 		: "eax","ecx","edx","esi","edi","memory"
 	);
 	#endif
+#endif // PLATFORM_X86
 	// lahf only modifies ah, zero out the rest
 	return result & 0xFF00;
 }
