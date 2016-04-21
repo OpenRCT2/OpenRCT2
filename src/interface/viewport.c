@@ -40,6 +40,7 @@
 #include "viewport.h"
 #include "window.h"
 #include "../peep/peep.h"
+#include "../ride/vehicle.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
@@ -2197,7 +2198,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 							regs.bl = (ebx ^ 0xF) << 2;
 							regs.bh = regs.bl >> 4;
-							local_ebx = (regs.bl & 0xC) | (regs.bh & 0x3);
+							local_ebx = (regs.bl & 0xC) | (regs.bh & 0x3); // other way around?
 						}
 					}
 				}
@@ -2212,7 +2213,31 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 2) {
-		// loc_661132:
+		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		uint32 ebp = pos.y << 16 | pos.x;
+		uint32 edi = 0;
+
+		while (true) {
+			rct_xy16 tile = gMapSelectionTiles[edi];
+
+			if (tile.x == -1) {
+				break;
+			}
+
+			edi++;
+			if (tile.x != pos.x || tile.y != pos.y) {
+				continue;
+			}
+
+			uint32 eax = 0x1580000;
+			if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 8) {
+				// Something with path tunnels?
+				eax = g_sprite_list[6556].vehicle.var_44;
+			}
+
+			uint32 image_id = (0x20000BE3 + byte_97B444[ebx]) | eax;
+			sub_68818E(image_id, 0, 0);
+		}
 	}
 
 	if (zoomLevel == 0
@@ -2220,7 +2245,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		&& !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
 		&& !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_BASE)
 		&& !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE)) {
-
+		// loc_661194:
 		viewport_surface_smooth_west_edge();
 		viewport_surface_smooth_north_edge();
 		viewport_surface_smooth_south_edge();
@@ -2293,8 +2318,112 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
-	if (mapElement->properties.surface.ownership & 0x0F) {
+	if (mapElement->properties.surface.ownership & 0x0F
+		&& !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1)) {
 		// loc_66195F:
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_PARK;
+
+		registers regs = {};
+		regs.al = mapElement->properties.surface.ownership & 0x0F;
+		regs.ax = regs.ax << get_current_rotation();
+		regs.ah = regs.al >> 4;
+
+		uint8 al = regs.al | regs.ah;
+
+		for (int i = 0; i < 4; i++) {
+			int bit = al & 1;
+			al >>= 1;
+
+			if (bit == 0) {
+				continue;
+			}
+
+
+			int bit_1, bit_8, bit_4, bit_2;
+			rct_xy16 offset, box_offset, box_size;
+			uint32 image_1, image_2, image_3;
+			switch (i) {
+				case 0:
+					bit_1 = 1;
+					bit_8 = 8;
+					bit_4 = 4;
+					bit_2 = 2;
+					image_1 = 22872;
+					image_2 = 22876;
+					image_3 = 22874;
+					offset = (struct rct_xy16) {1, 0x1F};
+					box_size = (struct rct_xy16) {.x=0x1E, .y=1};
+					box_offset = (struct rct_xy16) {.x=1, .y=0x1F};
+					break;
+
+				case 1:
+					bit_1 = 1;
+					bit_8 = 2;
+					bit_4 = 4;
+					bit_2 = 8;
+					image_1 = 22873;
+					image_2 = 22877;
+					image_3 = 22875;
+					offset = (struct rct_xy16) {0x1F, 0};
+					box_size = (struct rct_xy16) {.x=1, .y=0x1E};
+					box_offset = (struct rct_xy16) {.x=0x1F, .y=1};
+					break;
+
+				case 2:
+					bit_1 = 4;
+					bit_8 = 2;
+					bit_4 = 8;
+					bit_2 = 1;
+					image_1 = 22872;
+					image_2 = 22874;
+					image_3 = 22876;
+					offset = (struct rct_xy16) {1, 0};
+					box_size = (struct rct_xy16) {0x1E, 1};
+					box_offset = (struct rct_xy16) {1, 1};
+					break;
+
+				case 3:
+					bit_1 = 4;
+					bit_8 = 8;
+					bit_4 = 2;
+					bit_2 = 1;
+					image_1 = 22873;
+					image_2 = 22875;
+					image_3 = 22877;
+					offset = (struct rct_xy16) {1, 1};
+					box_size = (struct rct_xy16) {1, 0x1E};
+					box_offset = (struct rct_xy16) {1, 1};
+					break;
+			}
+
+			int local_ebx = ebx;
+			int local_height = height;
+			int image_id = 0;
+			if (!(local_ebx & bit_1)) { // first
+				if (local_ebx & bit_8) { // second
+					image_id = image_3;
+				} else {
+					image_id = image_1;
+				}
+			} else if (!(local_ebx & bit_8)) { // loc_6619A2:
+				image_id = image_2;
+			} else {
+				local_height += 16;
+
+				if (!(local_ebx & 0x10)) { // loc_6619B5 (first)
+					image_id = image_1;
+				} else if (local_ebx & bit_4) { // loc_6619B5 (second)
+					image_id = image_3;
+				} else if (local_ebx & bit_2) { // loc_6619B5 (third)
+					image_id = image_2;
+				} else {
+					image_id = image_1;
+				}
+			}
+
+			sub_98197C(image_id, offset.x, offset.y, box_size.x, box_size.y, 9, local_height, box_offset.x, box_offset.y, local_height + 1, get_current_rotation());
+		}
+
 	}
 
 	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;

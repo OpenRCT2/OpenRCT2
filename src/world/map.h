@@ -245,7 +245,7 @@ typedef struct{
 	uint8 x, y, z, direction;
 } rct_xyzd8;
 
-typedef struct {
+typedef struct rct_xy16{
 	sint16 x, y;
 } rct_xy16;
 
