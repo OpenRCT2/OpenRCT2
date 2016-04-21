@@ -2337,7 +2337,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
 STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
-STR_2333    :Sound
+STR_2333    :Sound effects
 STR_2334    :Pounds ({POUND})
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
@@ -2805,7 +2805,7 @@ STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_CO
 STR_2795    :Sort
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
-STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
+STR_2798    :{SMALLFONT}{BLACK}Scroll the view when the mouse pointer is at the screen edge
 STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
@@ -3504,15 +3504,15 @@ STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
 STR_5164    :Twitch Channel name
 STR_5165    :Name guests after followers
-STR_5166    :{SMALLFONT}{BLACK}Will name guests after channel's Twitch followers
+STR_5166    :{SMALLFONT}{BLACK}Name guests after channel's{NEWLINE}Twitch followers
 STR_5167    :Track follower guests
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
+STR_5168    :{SMALLFONT}{BLACK}Enable tracking information for guests named after channel's Twitch followers
 STR_5169    :Name guests after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name guests after people in Twitch chat
+STR_5170    :{SMALLFONT}{BLACK}Name guests after people in Twitch chat
 STR_5171    :Track chat guests
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
+STR_5172    :{SMALLFONT}{BLACK}Enable tracking information for guests named after Twitch chat participants
 STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
+STR_5174    :{SMALLFONT}{BLACK}Use Twitch chat messages preceded by !news for in game notifications
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
 STR_5177    :Screen mode:
@@ -3779,7 +3779,7 @@ STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5443    :Speed{MOVE_X}{87}{STRINGID}
 STR_5444    :Speed:
@@ -3812,7 +3812,7 @@ STR_5470    :Scroll map left
 STR_5471    :Scroll map down
 STR_5472    :Scroll map right
 STR_5473    :Cycle day / night
-STR_5474    :Display text on banners in upper case
+STR_5474    :Display text on banners in uppercase
 STR_5475    :{COMMA16} weeks
 STR_5476    :Hardware
 STR_5477    :Map rendering
@@ -3847,7 +3847,7 @@ STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
 STR_5507    :Handymen mow grass by default
 STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
+STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
@@ -3925,7 +3925,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open shops and stalls
-STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after building them
+STR_5587    :{SMALLFONT}{BLACK}Shops and stalls will be automatically opened after building them
 STR_5588    :{SMALLFONT}{BLACK}Play with other players
 STR_5589    :Notification Settings
 STR_5590    :Park awards
@@ -4118,6 +4118,53 @@ STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities:
 STR_5810    :Disable train length limit
 STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train
 STR_5812    :Show multiplayer window
+
+#tooltips
+STR_5813    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
+STR_5814    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
+STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
+STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
+STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type
+STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbour scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
+STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
+STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
+STR_5821    :{SMALLFONT}{BLACK}Changes the colour of the construction marker when building rides,{NEWLINE}paths, shops, scenery, etc.
+STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
+STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
+STR_5824    :{SMALLFONT}{BLACK}Disables lightning effect{NEWLINE}during a thunderstorm
+STR_5825    :{SMALLFONT}{BLACK}Keep the mouse cursor in the window
+STR_5826    :{SMALLFONT}{BLACK}Invert right mouse dragging of the viewport
+STR_5827    :{SMALLFONT}{BLACK}Sets the color scheme used for the GUI
+STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for distances, speed, etc.
+STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exchange rate implementation
+STR_5830    :{SMALLFONT}{BLACK}Changes what language is used
+STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
+STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measurement format set under "Distance and Speed"
+STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
+STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
+STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
+STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder.
+STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
+STR_5838    :{SMALLFONT}{BLACK}Show a separate button for the finance window in the toolbar
+STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and development window in the toolbar
+STR_5840    :{SMALLFONT}{BLACK}Show a separate button for the cheats window in the toolbar
+STR_5841    :{SMALLFONT}{BLACK}Show a separate button for the recent news window in the toolbar
+STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
+STR_5843    :{SMALLFONT}{BLACK}Enable scenario unlocking (RCT1 behaviour)
+STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
+STR_5845    :{SMALLFONT}{BLACK}Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
+STR_5846    :{SMALLFONT}{BLACK}Set often OpenRCT2 automatically saves
+STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen. Title sequences from RCT1/2 require imported scenarios to function
+STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
+STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
+STR_5850    :{SMALLFONT}{BLACK}Newly hired handymen mow{NEWLINE}grass by default (RCT1 behaviour)
+STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
+STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
+STR_5853    :{SMALLFONT}{BLACK}Enable/disable sound effects
+STR_5854    :{SMALLFONT}{BLACK}Enable/disable ride music
+STR_5855    :{SMALLFONT}{BLACK}Set fullscreen, windowed,{NEWLINE}or borderless display
+STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
+STR_5857    :{SMALLFONT}{BLACK}Game options
 
 #############
 # Scenarios #
