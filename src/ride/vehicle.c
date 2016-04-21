@@ -5690,7 +5690,7 @@ static void vehicle_update_swinging_car(rct_vehicle *vehicle)
 									if (ax >= -2730) {
 										bl = 4;
 										if (ax <= 2730) {
-											ax = 1;
+											bl = 1;
 											if (ax >= -910) {
 												bl = 2;
 												if (ax <= 910) {
