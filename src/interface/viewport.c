@@ -2008,12 +2008,12 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 
 		assert(ebx < countof(byte_97B444));
-		uint32 image_offset = byte_97B444[ebx];
-		uint32 base_image;
+		uint8 image_offset = byte_97B444[ebx];
+		int image_id;
 		switch (branch) {
 			case 0:
 				// loc_660C90
-				base_image = dword_97B898[get_current_rotation()][showGridlines ? 1 : 0];
+				image_id = dword_97B898[get_current_rotation()][showGridlines ? 1 : 0] + image_offset;
 				break;
 
 			case 1:
@@ -2022,19 +2022,19 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			default:
 				// loc_660C9F
 				if (get_current_rotation() & 1) {
-					assert(image_offset < countof(byte_97B84A));
-					image_offset = byte_97B84A[image_offset];
+					assert(ebp < countof(byte_97B84A));
+					ebp = byte_97B84A[ebp];
 				}
 				assert(ebp < countof(dword_97B750));
-				base_image = dword_97B750[ebp][showGridlines ? 1 : 0];
+				image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
 				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
-					base_image = 2623;
+					image_id = 2623;
 				}
 
 				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
-					base_image &= 0xDC07FFFF; // remove colour
-					base_image |= 0x41880000;
+					image_id &= 0xDC07FFFF; // remove colour
+					image_id |= 0x41880000;
 				}
 				break;
 
@@ -2049,16 +2049,15 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				int index = (y | (x << 1)) >> 5;
 
 				if (branch == 6) {
-					base_image = dword_97B878[index][showGridlines ? 1 : 0];
+					image_id = dword_97B878[index][showGridlines ? 1 : 0] + image_offset;
 				} else {
-					base_image = dword_97B858[index][showGridlines ? 1 : 0];
+					image_id = dword_97B858[index][showGridlines ? 1 : 0] + image_offset;
 				}
 				break;
 			}
 
 		}
 
-		int image_id = base_image + image_offset;
 		sub_98196C(image_id, 0, 0, 32, 32, 255, height, get_current_rotation());
 		has_surface = true;
 	}
