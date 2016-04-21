@@ -2150,6 +2150,65 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 1) {
 		// loc_660FB8:
+		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+		if (pos.x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16)
+			&& pos.x <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)
+			&& pos.y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16)
+			&& pos.y <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)) {
+
+			uint16 mapSelectionType = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
+			if (mapSelectionType >= 0xA) {
+				// Walls
+				// loc_661089:
+				uint32 eax = ((((mapSelectionType - 9) + get_current_rotation()) & 3) + 0x21) << 19;
+				uint32 image_id = (byte_97B444[ebx] + 0x20000BF6) | eax;
+				sub_68818E(image_id, 0, 0);
+			} else if (mapSelectionType >= 6) {
+				// loc_661051:(no jump)
+				// Selection split into four quarter segments
+				uint32 eax = ((((mapSelectionType - 6) + get_current_rotation()) & 3) + 0x27) << 19;
+				uint32 image_id = (byte_97B444[ebx] + 0x20000C09) | eax;
+				sub_68818E(image_id, 0, 0);
+			} else if (mapSelectionType <= 4) {
+				// Corners
+				uint32 eax = mapSelectionType;
+				if (mapSelectionType == 4) {
+					eax = (mapSelectionType + get_current_rotation()) & 3;
+				}
+
+				eax = (eax + 0x21) << 19;
+				uint32 image_id = (byte_97B444[ebx] + 0x20000BE3) | eax;
+				sub_68818E(image_id, 0, 0);
+			} else {
+				int local_ebx = ebx;
+				int local_height = height;
+				// Water tool
+				if (mapElement->properties.surface.terrain & 0x1F) {
+					int waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
+					if (waterHeight > height) {
+						local_height += 16;
+
+						if (waterHeight != local_height
+							|| local_ebx == 0x10) {
+							local_height = waterHeight;
+							local_ebx = 0;
+						} else {
+							registers regs = {};
+
+							regs.bl = (ebx ^ 0xF) << 2;
+							regs.bh = regs.bl >> 4;
+							local_ebx = (regs.bl & 0xC) | (regs.bh & 0x3);
+						}
+					}
+				}
+
+				int image_id = byte_97B444[local_ebx] + 0x21300BE3;
+
+				paint_struct *backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+				sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, get_current_rotation());
+				RCT2_GLOBAL(0xF1AD28, paint_struct*) = backup;
+			}
+		}
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 2) {
