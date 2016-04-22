@@ -92,6 +92,10 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 	}
 	SDL_RWclose(rw);
+	if (chunk == NULL) {
+		log_error("Failed to load object from %s of size %d", path, *chunkSize);
+		return 0;
+	}
 
 	int calculatedChecksum = object_calculate_checksum(&openedEntry, chunk, *chunkSize);
 
