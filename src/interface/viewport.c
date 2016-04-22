@@ -1601,29 +1601,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			RCT2_GLOBAL(0x00F441A4, uint32) = ghost_id;
 		}
 
-		TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctionsOld[ride->type];
-		if (trackTypeList == NULL) {
-			TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[ride->type];
-			TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
-			if (paintFunction != NULL) {
-				paintFunction(rideIndex, trackSequence, direction, height, mapElement);
-			}
-		}
-		else {
-			uint32 *trackDirectionList = (uint32*)trackTypeList[trackType];
-
-			// Have to call from this point as it pushes esi and expects callee to pop it
-			RCT2_CALLPROC_X(
-				0x006C4934,
-				ride->type,
-				(int)trackDirectionList,
-				direction,
-				height,
-				(int)mapElement,
-				rideIndex * sizeof(rct_ride),
-				trackSequence
-				);
-		}
+		viewport_track_paint_setup_2(rideIndex, direction, height, mapElement);
 	}
 
 	if (isEntranceStyleNone) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C650B2091CCA424700B4D91C /* track_paint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2081CCA424700B4D91C /* track_paint.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
@@ -98,7 +99,6 @@
 		D44272481CC81B3200D84D28 /* station.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271771CC81B3200D84D28 /* station.c */; };
 		D44272491CC81B3200D84D28 /* track.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271791CC81B3200D84D28 /* track.c */; };
 		D442724A1CC81B3200D84D28 /* track_data.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717B1CC81B3200D84D28 /* track_data.c */; };
-		D442724B1CC81B3200D84D28 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717D1CC81B3200D84D28 /* track_paint.c */; };
 		D442724C1CC81B3200D84D28 /* vehicle.c in Sources */ = {isa = PBXBuildFile; fileRef = D442717F1CC81B3200D84D28 /* vehicle.c */; };
 		D442724D1CC81B3200D84D28 /* scenario_list.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271811CC81B3200D84D28 /* scenario_list.c */; };
 		D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271821CC81B3200D84D28 /* scenario_sources.c */; };
@@ -226,6 +226,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C650B2081CCA424700B4D91C /* track_paint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = track_paint.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -395,7 +396,6 @@
 		D442717A1CC81B3200D84D28 /* track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track.h; sourceTree = "<group>"; };
 		D442717B1CC81B3200D84D28 /* track_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_data.c; sourceTree = "<group>"; };
 		D442717C1CC81B3200D84D28 /* track_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track_data.h; sourceTree = "<group>"; };
-		D442717D1CC81B3200D84D28 /* track_paint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_paint.c; sourceTree = "<group>"; };
 		D442717E1CC81B3200D84D28 /* track_paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track_paint.h; sourceTree = "<group>"; };
 		D442717F1CC81B3200D84D28 /* vehicle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle.c; sourceTree = "<group>"; };
 		D44271801CC81B3200D84D28 /* vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vehicle.h; sourceTree = "<group>"; };
@@ -894,7 +894,7 @@
 				D442717A1CC81B3200D84D28 /* track.h */,
 				D442717B1CC81B3200D84D28 /* track_data.c */,
 				D442717C1CC81B3200D84D28 /* track_data.h */,
-				D442717D1CC81B3200D84D28 /* track_paint.c */,
+				C650B2081CCA424700B4D91C /* track_paint.cpp */,
 				D442717E1CC81B3200D84D28 /* track_paint.h */,
 				D442717F1CC81B3200D84D28 /* vehicle.c */,
 				D44271801CC81B3200D84D28 /* vehicle.h */,
@@ -1453,6 +1453,7 @@
 				D442726F1CC81B3200D84D28 /* multiplayer.c in Sources */,
 				D442725B1CC81B3200D84D28 /* editor_inventions_list.c in Sources */,
 				D44272311CC81B3200D84D28 /* news_item.c in Sources */,
+				C650B2091CCA424700B4D91C /* track_paint.cpp in Sources */,
 				D442720D1CC81B3200D84D28 /* rain.c in Sources */,
 				D44272011CC81B3200D84D28 /* Guard.cpp in Sources */,
 				D44272951CC81B3200D84D28 /* track_manage.c in Sources */,
@@ -1497,7 +1498,6 @@
 				D44272771CC81B3200D84D28 /* park.c in Sources */,
 				D44272461CC81B3200D84D28 /* ride_data.c in Sources */,
 				D44272181CC81B3200D84D28 /* chat.c in Sources */,
-				D442724B1CC81B3200D84D28 /* track_paint.c in Sources */,
 				D44272641CC81B3200D84D28 /* guest.c in Sources */,
 				D44272961CC81B3200D84D28 /* track_place.c in Sources */,
 				D442727A1CC81B3200D84D28 /* research.c in Sources */,

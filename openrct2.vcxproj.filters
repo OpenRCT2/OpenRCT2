@@ -507,9 +507,6 @@
     <ClCompile Include="src\localisation\language.cpp">
       <Filter>Source\Localisation</Filter>
     </ClCompile>
-    <ClCompile Include="src\ride\track_paint.c">
-      <Filter>Source\Ride</Filter>
-    </ClCompile>
     <ClCompile Include="src\platform\linux.c">
       <Filter>Source\Platform</Filter>
     </ClCompile>
@@ -590,6 +587,9 @@
     </ClCompile>
     <ClCompile Include="src\windows\themes.c">
       <Filter>Source\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ride\track_paint.cpp">
+      <Filter>Source\Ride</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
