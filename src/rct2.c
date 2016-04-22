@@ -510,5 +510,5 @@ uint32 get_file_extension_type(const utf8 *path)
 	if (strcicmp(extension, ".sc6") == 0) return FILE_EXTENSION_SC6;
 	if (strcicmp(extension, ".sv6") == 0) return FILE_EXTENSION_SV6;
 	if (strcicmp(extension, ".td6") == 0) return FILE_EXTENSION_TD6;
-    return FILE_TYPE_UNKNOWN;
+	return FILE_EXTENSION_UNKNOWN;
 }
