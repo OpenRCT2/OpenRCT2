@@ -1798,7 +1798,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
 		return;
 
-	if (ride->price != 0){
+	if (ride->price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 		if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) ||
 			!(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) ||
 			!(peep->voucher_arguments == peep->current_ride)){
@@ -2099,7 +2099,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
  *  rct2: 0x006920B4
  */
 static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ride){
-	if (ride->price != 0){
+	if (ride->price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
 		if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
 			(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) &&
 			(peep->voucher_arguments == peep->current_ride)){
@@ -8457,8 +8457,7 @@ static int sub_693C9E(rct_peep *peep)
  */
 static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-		return;
+	assert(!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY));
 
 	peep->cash_in_pocket = max(0, peep->cash_in_pocket - amount);
 	peep->cash_spent += amount;
@@ -9057,13 +9056,13 @@ loc_69B221:
 
 	// Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) -= 4;
-	if (!has_voucher)
-		peep_spend_money(peep, expend_type, price);
-	else {
+	if (has_voucher) {
 		peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	}
-
+	else if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		peep_spend_money(peep, expend_type, price);
+	}
 	ride->total_profit += (price - get_shop_item_cost(shopItem));
 	ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 	ride->cur_num_customers++;
@@ -9775,7 +9774,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 			uint32 value = ride->value;
 
 			// If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex)) {
+			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex) && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
 
 				// The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
 				if (peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)

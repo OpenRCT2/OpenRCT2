@@ -55,9 +55,9 @@ static rct_widget window_server_start_widgets[] = {
 	{ WWT_FRAME,			0,	0,		WW-1,	0,			WH-1,	0xFFFFFFFF,				STR_NONE },					// panel / background
 	{ WWT_CAPTION,			0,	1,		WW-2,	1,			14,		STR_START_SERVER,		STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0,	WW-13,	WW-3,	2,			13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		(uint32)_port,			STR_NONE },					// port text box
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		(uint32)_name,			STR_NONE },					// name text box
-	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		(uint32)_password,		STR_NONE },					// password text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		STR_NONE,				STR_NONE },					// port text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		STR_NONE,				STR_NONE },					// name text box
+	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		STR_NONE,				STR_NONE },					// password text box
 	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		1871,					STR_NONE },					// max players
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,		STR_NONE },
@@ -116,6 +116,9 @@ void window_server_start_open()
 
 	window = window_create_centred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
 
+	window_server_start_widgets[WIDX_PORT_INPUT].image = (uint32)_port;
+	window_server_start_widgets[WIDX_NAME_INPUT].image = (uint32)_name;
+	window_server_start_widgets[WIDX_PASSWORD_INPUT].image = (uint32)_password;
 	window->widgets = window_server_start_widgets;
 	window->enabled_widgets = (
 		(1 << WIDX_CLOSE) |

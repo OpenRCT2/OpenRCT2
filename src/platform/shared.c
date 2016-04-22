@@ -775,6 +775,7 @@ static void platform_create_window()
 
 	SDL_SetWindowGrab(gWindow, gConfigGeneral.trap_cursor ? SDL_TRUE : SDL_FALSE);
 	SDL_SetWindowMinimumSize(gWindow, 720, 480);
+	platform_init_window_icon();
 
 	// Set the update palette function pointer
 	RCT2_GLOBAL(0x009E2BE4, update_palette_func) = platform_update_palette;

@@ -156,6 +156,7 @@ void platform_enumerate_files_end(int handle);
 int platform_enumerate_directories_begin(const utf8 *directory);
 bool platform_enumerate_directories_next(int handle, utf8 *path);
 void platform_enumerate_directories_end(int handle);
+void platform_init_window_icon();
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
 int platform_get_drives();
@@ -196,6 +197,8 @@ datetime64 platform_get_datetime_now_utc();
 
 	int windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset);
 	HWND windows_get_window_handle();
+	void platform_setup_file_associations();
+	void platform_remove_file_associations();
 #endif // __WINDOWS__
 
 #endif

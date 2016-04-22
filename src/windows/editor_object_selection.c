@@ -141,7 +141,7 @@ static rct_widget window_editor_object_selection_widgets[] = {
 	{ WWT_FLATBTN,			1,	391,	504,	46,		159,	0xFFFFFFFF,						STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	0,	470,	591,	23,		34,		STR_INSTALL_NEW_TRACK_DESIGN,	STR_INSTALL_NEW_TRACK_DESIGN_TIP },
 	{ WWT_DROPDOWN_BUTTON,	0,	350,	463,	23,		34,		STR_OBJECT_FILTER,				STR_OBJECT_FILTER_TIP },
-	{ WWT_TEXT_BOX,			1,	4,		214,	46,		57,		(uint32)_filter_string,			STR_NONE },
+	{ WWT_TEXT_BOX,			1,	4,		214,	46,		57,		STR_NONE,						STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	218,	287,	46,		57,		STR_OBJECT_SEARCH_CLEAR,		STR_NONE },
 	{ WWT_IMGBTN,			1,	3,		287,	73,		76,		0xFFFFFFFF,						STR_NONE },
 	{ WWT_TAB,				1,	3,		33,		47,		73,		0x2000144E,						STR_OBJECT_FILTER_ALL_RIDES_TIP },
@@ -398,6 +398,7 @@ void window_editor_object_selection_open()
 		WC_EDITOR_OBJECT_SELECTION,
 		WF_10 | WF_RESIZABLE
 	);
+	window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].image = (uint32)_filter_string;
 	window->widgets = window_editor_object_selection_widgets;
 
 	window->enabled_widgets =

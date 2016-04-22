@@ -3831,7 +3831,7 @@ STR_5487    :{SMALLFONT}{BLACK}Visa nyliga meddelanden
 STR_5488    :Ingen ingång (OpenRCT2 endast!)
 STR_5489    :{SMALLFONT}{BLACK}Visa endast gäster du följer
 STR_5490    :Stäng av ljudet vid minimerat spel
-STR_5491    :Uppfinning list
+STR_5491    :Uppfinningslist
 STR_5492    :Scenario inställningar
 STR_5493    :Skicka Meddelande
 STR_5494    :<not used anymore>
@@ -4111,6 +4111,7 @@ STR_5800    :{SMALLFONT}{BLACK}Hindrar karuseller från att gå sönder
 STR_5801    :Avaktivera nedskräpning
 STR_5802    :{SMALLFONT}{BLACK}Stoppar gästerna från att skräpa ner och kräkas i parken
 STR_5803    :{SMALLFONT}{BLACK}Rotera valda element
+STR_5804    :Stäng av ljudet
 
 #############
 # Scenarion #

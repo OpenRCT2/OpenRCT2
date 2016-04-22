@@ -34,6 +34,11 @@
 #endif
 #define abstract = 0
 
+#if defined(__i386__) || defined(_M_IX86)
+#define PLATFORM_X86
+#endif
+
+#ifdef PLATFORM_X86
 #ifdef __GNUC__
 #define FASTCALL __attribute__((fastcall))
 #elif _MSC_VER
@@ -42,5 +47,8 @@
 #pragma message "Not using fastcall calling convention, please check your compiler support"
 #define FASTCALL
 #endif
+#else // PLATFORM_X86
+#define FASTCALL
+#endif // PLATFORM_X86
 
 #endif

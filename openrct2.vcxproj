@@ -197,6 +197,7 @@
     <ClCompile Include="src\world\sprite.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resources\resource.h" />
     <ClInclude Include="src\addresses.h" />
     <ClInclude Include="src\audio\audio.h" />
     <ClInclude Include="src\audio\mixer.h" />
@@ -300,6 +301,12 @@
     <ClInclude Include="src\world\scenery.h" />
     <ClInclude Include="src\world\sprite.h" />
     <ClInclude Include="src\world\water.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\OpenRCT2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\logo\icon.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>

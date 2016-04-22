@@ -4103,6 +4103,7 @@ STR_5800    :{SMALLFONT}{BLACK}Voorkomt dat attracties kapot gaan.
 STR_5801    :Bevuiling voorkomen
 STR_5802    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers braken of afval op de grond gooien.
 STR_5803    :{SMALLFONT}{BLACK}Geselecteerd kaartelement draaien
+STR_5804    :Geluid dempen
 
 
 #############
