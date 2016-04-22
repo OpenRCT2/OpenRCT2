@@ -24,4 +24,6 @@ namespace RCT1
     const char * GetSceneryGroupObject(uint8 sceneryGroupType);
 
     const List<const char *> GetSceneryObjects(uint8 sceneryType);
+
+	const List<const char *> GetPreferedRideEntryOrder(uint8 rideType);
 }

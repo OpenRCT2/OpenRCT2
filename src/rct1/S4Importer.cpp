@@ -70,6 +70,8 @@ void S4Importer::Import()
     ImportScenarioNameDetails();
     ImportScenarioObjective();
     ImportSavedView();
+
+    game_convert_strings_to_utf8();
 }
 
 void S4Importer::Initialise()
@@ -1508,51 +1510,68 @@ const char * S4Importer::GetUserString(rct_string_id stringId)
 // C -> C++ transfer
 /////////////////////////////////////////
 extern "C"
-bool rct1_load_saved_game(const utf8 * path)
 {
-    bool result;
+    bool rct1_load_saved_game(const utf8 * path)
+    {
+        bool result;
 
-    auto s4Importer = new S4Importer();
-    try
-    {
-        s4Importer->LoadSavedGame(path);
-        s4Importer->Import();
-        result = true;
+        auto s4Importer = new S4Importer();
+        try
+        {
+            s4Importer->LoadSavedGame(path);
+            s4Importer->Import();
+            result = true;
+        } catch (Exception ex)
+        {
+            result = false;
+        }
+        delete s4Importer;
+        return result;
     }
-    catch (Exception ex)
-    {
-        result = false;
-    }
-    delete s4Importer;
-    
-    if (result)
-    {
-        game_load_init();
-    }
-    return result;
-}
 
-extern "C"
-bool rct1_load_scenario(const utf8 * path)
-{
-    bool result;
+    bool rct1_load_scenario(const utf8 * path)
+    {
+        bool result;
 
-    auto s4Importer = new S4Importer();
-    try
-    {
-        s4Importer->LoadScenario(path);
-        s4Importer->Import();
-        result = true;
+        auto s4Importer = new S4Importer();
+        try
+        {
+            s4Importer->LoadScenario(path);
+            s4Importer->Import();
+            result = true;
+        } catch (Exception ex)
+        {
+            result = false;
+        }
+        delete s4Importer;
+        return result;
     }
-    catch (Exception ex)
-    {
-        result = false;
-    }
-    delete s4Importer;
 
-    if (result)
+    colour_t rct1_get_colour(colour_t colour)
     {
-        scenario_begin();
+        return RCT1::GetColour(colour);
     }
-	return result;
+
+    /**
+     * This function keeps a list of the preferred vehicle for every generic track
+     * type, out of the available vehicle types in the current game. It determines
+     * which picture is shown on the new ride tab and which train type is selected
+     * by default.
+     */
+    int vehicle_preference_compare(uint8 rideType, const char * a, const char * b)
+    {
+        List<const char *> rideEntryOrder = RCT1::GetPreferedRideEntryOrder(rideType);
+        for (const char * object : rideEntryOrder)
+        {
+            if (String::Equals(object, a, true))
+            {
+                return -1;
+            }
+            if (String::Equals(object, b, true))
+            {
+                return  1;
+            }
+        }
+        return 0;
+    }
 }

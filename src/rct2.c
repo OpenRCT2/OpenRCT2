@@ -368,9 +368,13 @@ bool rct2_open_file(const char *path)
 		// TODO track design install
 		return true;
 	} else if (_stricmp(extension, "sv4") == 0) {
-		rct1_load_saved_game(path);
+		if (rct1_load_saved_game(path)) {
+			game_load_init();
+		}
 	} else if (_stricmp(extension, "sc4") == 0) {
-		rct1_load_scenario(path);
+		if (rct1_load_scenario(path)) {
+			scenario_begin();
+		}
 	}
 
 	return false;

@@ -717,18 +717,18 @@ enum {
 	RCT1_SCENARIO_FLAG_19 = 1 << 19,
 };
 
-extern const uint8 RCT1ColourConversionTable[32];
-
 extern const uint8 gRideCategories[0x60];
 
 bool rct1_read_sc4(const char *path, rct1_s4 *s4);
 bool rct1_read_sv4(const char *path, rct1_s4 *s4);
 void rct1_import_s4(rct1_s4 *s4);
 void rct1_fix_landscape();
-bool vehicleIsHigherInHierarchy(int track_type, char *currentVehicleName, char *comparedVehicleName);
-bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *ride);
+int vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
+bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *rideEntry);
 
 bool rct1_load_saved_game(const char *path);
 bool rct1_load_scenario(const char *path);
+
+colour_t rct1_get_colour(colour_t colour);
 
 #endif
