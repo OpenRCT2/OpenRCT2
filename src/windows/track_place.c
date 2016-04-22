@@ -425,14 +425,14 @@ static void window_track_place_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_ROTATE:
 		window_track_place_clear_provisional();
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) + 1) & 3;
+		_currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_MIRROR:
 		track_mirror();
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (-RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16)) & 3;
+		_currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();
