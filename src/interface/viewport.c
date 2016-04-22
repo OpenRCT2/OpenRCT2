@@ -57,10 +57,10 @@ struct paint_struct{
 			uint16 pad_12;
 		};
 		struct {
-			uint16 some_x; // 0x0C
-			uint16 some_y; // 0x0E
-			uint16 other_x; // 0x10
-			uint16 other_y; // 0x12
+			uint16 attached_z; // 0x0C
+			uint16 attached_z_end; // 0x0E
+			uint16 attached_x_end; // 0x10
+			uint16 attached_y_end; // 0x12
 		};
 	};
 	uint16 x;				// 0x14
@@ -859,26 +859,26 @@ void sub_688485(){
  * @param bound_box_length_x (di)
  * @param bound_box_length_y (si)
  * @param bound_box_length_z (ah)
- * @param z_offset (edx)
+ * @param z_offset (dx)
  * @param bound_box_offset_x (0x009DEA52)
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
  * @param rotation (ebp)
- * @return ??
+ * @return (!CF) success
  */
-int sub_98199C(
-	int image_id,
+bool sub_98199C(
+	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	int z_offset,
-	uint16 bound_box_offset_x, uint16 bound_box_offset_y, uint16 bound_box_offset_z,
+	uint16 z_offset,
+	sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, uint16) = bound_box_offset_x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[rotation],
+	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[rotation],
 		x_offset | (bound_box_length_z << 8),
 		image_id,
 		y_offset,
@@ -886,7 +886,8 @@ int sub_98199C(
 		bound_box_length_y,
 		bound_box_length_x,
 		rotation);
-	return 1;
+
+	return !(flags & (1 << 8));
 }
 
 /**
@@ -898,18 +899,18 @@ int sub_98199C(
  * @param bound_box_length_x (di)
  * @param bound_box_length_y (si)
  * @param bound_box_length_z (ah)
- * @param z_offset (edx)
+ * @param z_offset (dx)
  * @param rotation (ebp)
- * @return ??
+ * @return (!CF) success
  */
-int sub_98196C(
-	int image_id,
+bool sub_98196C(
+	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	int z_offset,
+	uint16 z_offset,
 	uint32 rotation
 ) {
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[rotation],
+	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[rotation],
 		x_offset | (bound_box_length_z << 8),
 		image_id,
 		y_offset,
@@ -918,7 +919,8 @@ int sub_98196C(
 		bound_box_length_x,
 		rotation
 	);
-	return 1;
+
+	return !(flags & (1 << 8));
 }
 
 /**
@@ -930,17 +932,18 @@ int sub_98196C(
  * @param bound_box_length_x (di)
  * @param bound_box_length_y (si)
  * @param bound_box_length_z (ah)
- * @param z_offset (edx)
+ * @param z_offset (dx)
  * @param bound_box_offset_x (0x009DEA52)
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
  * @param rotation (ebp)
+ * @return (!CF) success
  */
-int sub_98197C(
-	int image_id,
+bool sub_98197C(
+	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	int z_offset,
+	uint16 z_offset,
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
@@ -952,7 +955,7 @@ int sub_98197C(
 	//Not a paint struct but something similar
 	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
 
-	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))return 1;
+	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))return false;
 
 	ps->image_id = image_id;
 
@@ -998,10 +1001,10 @@ int sub_98197C(
 
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
-	if (right <= dpi->x)return 1;
-	if (top <= dpi->y)return 1;
-	if (left > dpi->x + dpi->width)return 1;
-	if (bottom > dpi->y + dpi->height)return 1;
+	if (right <= dpi->x)return false;
+	if (top <= dpi->y)return false;
+	if (left > dpi->x + dpi->width)return false;
+	if (bottom > dpi->y + dpi->height)return false;
 
 	rct_xy16 boundBox = {
 		.x = bound_box_length_x,
@@ -1037,10 +1040,10 @@ int sub_98197C(
 		break;
 	}
 
-	ps->other_x = boundBox.x + boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
-	ps->some_x = bound_box_offset_z;
-	ps->some_y = ebp;
-	ps->other_y = boundBox.y + boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->attached_x_end = boundBox.x + boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->attached_z = bound_box_offset_z;
+	ps->attached_z_end = ebp;
+	ps->attached_y_end = boundBox.y + boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->var_1A = 0;
 	ps->attached_x = boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->attached_y = boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
@@ -1095,7 +1098,7 @@ int sub_98197C(
 	}
 
 	RCT2_GLOBAL(0xEE7888, paint_struct*) += 1;
-	return 0;
+	return true;
 }
 
 /**
@@ -1108,26 +1111,26 @@ int sub_98197C(
  * @param bound_box_length_x (di)
  * @param bound_box_length_y (si)
  * @param bound_box_length_z (ah)
- * @param z_offset (edx)
+ * @param z_offset (dx)
  * @param bound_box_offset_x (0x009DEA52)
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
  * @param rotation
- * @return ??
+ * @return (!CF) success
  */
-int sub_98198C(
-	int image_id,
+bool sub_98198C(
+	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	int z_offset,
-	uint16 bound_box_offset_x, uint16 bound_box_offset_y, uint16 bound_box_offset_z,
+	uint16 z_offset,
+	sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, uint16) = bound_box_offset_x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
 
-	RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[rotation],
+	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[rotation],
 		x_offset | (bound_box_length_z << 8),
 		image_id, 
 		y_offset,
@@ -1136,7 +1139,8 @@ int sub_98198C(
 		bound_box_length_x,
 		rotation
 	);
-	return 1;
+
+	return !(flags & (1 << 8));
 }
 
 /**
@@ -1229,7 +1233,7 @@ void viewport_litter_paint_setup(rct_litter *litter, int imageDirection)
 
 	uint32 image_id = imageDirection + RCT2_ADDRESS(0x97EF6C, uint32)[litter->type * 2];
 
-	sub_98197C(image_id, 0, 0, 4, 4, 0xFF, litter->z, 0xFFFC, 0xFFFC, litter->z + 2, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 4, 4, -1, litter->z, -4, -4, litter->z + 2, get_current_rotation());
 }
 
 
@@ -2149,10 +2153,10 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 
 		uint16 my_attached_x = ps_next->attached_x;
 		uint16 my_attached_y = ps_next->attached_y;
-		uint16 my_some_x = ps_next->some_x;
-		uint16 my_some_y = ps_next->some_y;
-		uint16 my_other_x = ps_next->other_x;
-		uint16 my_other_y = ps_next->other_y;
+		uint16 my_some_x = ps_next->attached_z;
+		uint16 my_some_y = ps_next->attached_z_end;
+		uint16 my_other_x = ps_next->attached_x_end;
+		uint16 my_other_y = ps_next->attached_y_end;
 
 		while (true) {
 			ps = ps_next;
@@ -2164,23 +2168,23 @@ void sub_688217_helper(uint16 ax, uint8 flag)
 			int yes = 0;
 			switch (rotation) {
 			case 0:
-				if (my_some_y >= ps_next->some_x && my_other_y >= ps_next->attached_y && my_other_x >= ps_next->attached_x
-					&& !(my_some_x < ps_next->some_y && my_attached_y < ps_next->other_y && my_attached_x < ps_next->other_x))
+				if (my_some_y >= ps_next->attached_z && my_other_y >= ps_next->attached_y && my_other_x >= ps_next->attached_x
+					&& !(my_some_x < ps_next->attached_z_end && my_attached_y < ps_next->attached_y_end && my_attached_x < ps_next->attached_x_end))
 					yes = 1;
 				break;
 			case 1:
-				if (my_some_y >= ps_next->some_x && my_other_y >= ps_next->attached_y && my_other_x < ps_next->attached_x
-					&& !(my_some_x < ps_next->some_y && my_attached_y < ps_next->other_y && my_attached_x >= ps_next->other_x))
+				if (my_some_y >= ps_next->attached_z && my_other_y >= ps_next->attached_y && my_other_x < ps_next->attached_x
+					&& !(my_some_x < ps_next->attached_z_end && my_attached_y < ps_next->attached_y_end && my_attached_x >= ps_next->attached_x_end))
 					yes = 1;
 				break;
 			case 2:
-				if (my_some_y >= ps_next->some_x && my_other_y < ps_next->attached_y && my_other_x < ps_next->attached_x
-					&& !(my_some_x < ps_next->some_y && my_attached_y >= ps_next->other_y && my_attached_x >= ps_next->other_x))
+				if (my_some_y >= ps_next->attached_z && my_other_y < ps_next->attached_y && my_other_x < ps_next->attached_x
+					&& !(my_some_x < ps_next->attached_z_end && my_attached_y >= ps_next->attached_y_end && my_attached_x >= ps_next->attached_x_end))
 					yes = 1;
 				break;
 			case 3:
-				if (my_some_y >= ps_next->some_x && my_other_y < ps_next->attached_y && my_other_x >= ps_next->attached_x
-					&& !(my_some_x < ps_next->some_y && my_attached_y >= ps_next->other_y && my_attached_x < ps_next->other_x))
+				if (my_some_y >= ps_next->attached_z && my_other_y < ps_next->attached_y && my_other_x >= ps_next->attached_x
+					&& !(my_some_x < ps_next->attached_z_end && my_attached_y >= ps_next->attached_y_end && my_attached_x < ps_next->attached_x_end))
 					yes = 1;
 				break;
 			}
