@@ -4067,7 +4067,7 @@ STR_5751    :No Data
 STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
 STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
 STR_5754    :Bad Player Name
-STR_5755    :Incorrect Software Version
+STR_5755    :不正确的游戏版本 (服务器版本为 {STRING})
 STR_5756    :Bad Password
 STR_5757    :Server Full
 STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
@@ -4113,6 +4113,10 @@ STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the 
 STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
 STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
 STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
+STR_5801    :禁止丢弃
+STR_5802    :{SMALLFONT}{BLACK}阻止游客丢弃或呕吐
+STR_5803    :{SMALLFONT}{BLACK}旋转选中的地图元素
+STR_5804    :静音
 
 #############
 # Scenarios #

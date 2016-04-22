@@ -2898,7 +2898,7 @@ STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {CO
 STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}블록buster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
@@ -4107,6 +4107,7 @@ STR_5800    :{SMALLFONT}{BLACK}놀이기구가 고장나지 않게 만듭니다.
 STR_5801    :구토와 쓰레기 버림 끄기
 STR_5802    :{SMALLFONT}{BLACK}손님들이 구토를 하거나 쓰레기를 버리지 않습니다.
 STR_5803    :{SMALLFONT}{BLACK}선택한 맵 요소를 회전시킵니다.
+STR_5804    :음소거
 
 #############
 # Scenarios #

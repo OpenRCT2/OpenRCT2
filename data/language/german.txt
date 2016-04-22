@@ -4099,6 +4099,10 @@ STR_5797    :{SMALLFONT}{BLACK}Deaktiviert Wetterveränderungen und{NEWLINE}frie
 STR_5798    :{SMALLFONT}{BLACK}Erlaubt das Bauen im Pausenmodus
 STR_5799    :{SMALLFONT}{BLACK}Verhindert einen Defekt oder Unfall, einer Attraktion, durch fehlerhafte Bremsen
 STR_5800    :{SMALLFONT}{BLACK}Verhindert, dass Attraktionen ausfallen
+STR_5801    :Verschmutzung deaktivieren
+STR_5802    :{SMALLFONT}{BLACK}Hält Besucher davon ab Müll wegzuwerfen oder sich zu erbrechen
+STR_5803    :{SMALLFONT}{BLACK}Ausgewähltes Kartenelement drehen
+STR_5804    :Ton ein-/ausschalten
 
 #############
 # Scenarios #
