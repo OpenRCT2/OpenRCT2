@@ -434,13 +434,13 @@ void S4Importer::ImportRide(rct_ride * dst, rct1_ride * src)
     memset(dst, 0, sizeof(rct_ride));
 
     dst->type = RCT1::GetRideType(src->type);
-    if (RCT1::RideTypeHasVehicle(src->type))
+    if (RCT1::RideTypeUsesVehicles(src->type))
     {
-        dst->subtype = _rideTypeToRideEntryMap[src->type];
+        dst->subtype = _vehicleTypeToRideEntryMap[src->vehicle_type];
     }
     else
     {
-        dst->subtype = _vehicleTypeToRideEntryMap[src->vehicle_type];
+        dst->subtype = _rideTypeToRideEntryMap[src->type];
     }
 
     rct_ride_entry * rideEntry = get_ride_entry(dst->subtype);

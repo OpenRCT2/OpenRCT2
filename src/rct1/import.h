@@ -10,7 +10,7 @@ namespace RCT1
     uint8 GetTerrainEdge(uint8 terrainEdge);
 
     uint8 GetRideType(uint8 rideType);
-    bool RideTypeHasVehicle(uint8 rideType);
+    bool RideTypeUsesVehicles(uint8 rideType);
     bool PathIsQueue(uint8 pathType);
     uint8 NormalisePathAddition(uint8 pathAdditionType);
 

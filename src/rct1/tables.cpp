@@ -195,7 +195,7 @@ namespace RCT1
         return map[rideType];
     }
 
-    bool RideTypeHasVehicle(uint8 rideType)
+    bool RideTypeUsesVehicles(uint8 rideType)
     {
         switch (rideType) {
         case RCT1_RIDE_TYPE_HEDGE_MAZE:
@@ -222,9 +222,9 @@ namespace RCT1
         case RCT1_RIDE_TYPE_COFFEE_SHOP:
         case RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL:
         case RCT1_RIDE_TYPE_LEMONADE_STALL:
-            return true;
-        default:
             return false;
+        default:
+            return true;
         }
     }
 
