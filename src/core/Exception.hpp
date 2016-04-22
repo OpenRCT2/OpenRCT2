@@ -18,6 +18,7 @@ public:
 
     const char * what()       const throw() override { return _message; }
     const char * GetMessage() const                  { return _message; }
+    const char * GetMsg() const                      { return _message; }
 
 private:
     const char * _message;

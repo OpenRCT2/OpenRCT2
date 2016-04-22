@@ -33,6 +33,29 @@ namespace Path
         return buffer;
     }
 
+    const utf8 * GetFileName(const utf8 * path)
+    {
+        const utf8 * lastPathSeperator = nullptr;
+        for (const utf8 * ch = path; *ch != '\0'; ch++)
+        {
+            if (*ch == platform_get_path_separator())
+            {
+                lastPathSeperator = ch;
+            }
+#ifdef __WINDOWS__
+            // Windows also allows forward slashes in paths
+            else if (*ch == '/')
+            {
+                lastPathSeperator = ch;
+            }
+#endif
+        }
+
+        return lastPathSeperator == nullptr ?
+            path :
+            lastPathSeperator + 1;
+    }
+
     utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
         const utf8 * lastDot = nullptr;
@@ -54,6 +77,28 @@ namespace Path
         Memory::Copy(buffer, path, truncatedLength);
         buffer[truncatedLength] = '\0';
         return buffer;
+    }
+
+    const utf8 * GetExtension(const utf8 * path)
+    {
+        const utf8 * lastDot = nullptr;
+        const utf8 * ch = path;
+        for (; *ch != '\0'; ch++)
+        {
+            if (*ch == '.')
+            {
+                lastDot = ch;
+            }
+        }
+
+        if (lastDot == nullptr)
+        {
+            // Return the null terminator, i.e. a blank extension
+            return ch;
+        }
+
+        // Return the extension including the dot
+        return lastDot;
     }
 
     utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)

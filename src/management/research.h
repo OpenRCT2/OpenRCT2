@@ -85,4 +85,7 @@ void research_finish_item(sint32 entryIndex);
 void research_insert(int researched, int entryIndex, int category);
 void research_remove(sint32 entryIndex);
 
+void research_insert_ride_entry(uint8 entryIndex, bool researched);
+void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
+
 #endif

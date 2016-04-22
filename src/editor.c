@@ -51,6 +51,7 @@ static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
 static void editor_finalise_main_view();
 static int editor_read_s6(const char *path);
+static void editor_clear_map_for_editing();
 
 /**
  *
@@ -260,37 +261,29 @@ bool editor_load_landscape(const utf8 *path)
  */
 static int editor_load_landscape_from_sv4(const char *path)
 {
-	rct1_s4 *s4;
+	rct1_load_saved_game(path);
+	editor_clear_map_for_editing();
 
-	s4 = malloc(sizeof(rct1_s4));
-	if (!rct1_read_sv4(path, s4)) {
-		free(s4);
-		return 0;
-	}
-	rct1_import_s4(s4);
-	free(s4);
-
-	rct1_fix_landscape();
-	editor_finalise_main_view();
+	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	viewport_init_all();
+	window_editor_main_open();
+	editor_finalise_main_view();
 	return 1;
 }
 
 static int editor_load_landscape_from_sc4(const char *path)
 {
-	rct1_s4 *s4;
+	rct1_load_scenario(path);
+	editor_clear_map_for_editing();
 
-	s4 = malloc(sizeof(rct1_s4));
-	if (!rct1_read_sc4(path, s4)) {
-		free(s4);
-		return 0;
-	}
-	rct1_import_s4(s4);
-	free(s4);
-
-	rct1_fix_landscape();
-	editor_finalise_main_view();
+	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	viewport_init_all();
+	window_editor_main_open();
+	editor_finalise_main_view();
 	return 1;
 }
 
@@ -388,95 +381,12 @@ static int editor_read_s6(const char *path)
 
 		reset_loaded_objects();
 		map_update_tile_pointers();
-		map_remove_all_rides();
-
-		//
-		for (i = 0; i < MAX_BANNERS; i++)
-			if (gBanners[i].type == 255)
-				gBanners[i].flags &= ~BANNER_FLAG_2;
-
-		//
-		rct_ride *ride;
-		FOR_ALL_RIDES(i, ride)
-			user_string_free(ride->name);
-
-		ride_init_all();
-
-		//
-		for (i = 0; i < MAX_SPRITES; i++) {
-			rct_sprite *sprite = &g_sprite_list[i];
-			user_string_free(sprite->unknown.name_string_idx);
-		}
-
-		reset_sprite_list();
-		staff_reset_modes();
-		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
-		if (s6Header->type != S6_TYPE_SCENARIO) {
-			research_populate_list_random();
-			research_remove_non_separate_vehicle_types();
-
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
-			else
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
-
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == 0)
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
-			else
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
-				MONEY(10,00),
-				RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16),
-				MONEY(100,00)
-			);
-
-			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
-			finance_reset_cash_to_initial();
-			finance_update_loan_hash();
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
-				MONEY(0,00),
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32),
-				MONEY(5000000,00)
-			);
-
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(
-				MONEY(0,00),
-				RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32),
-				MONEY(5000000,00)
-			);
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = clamp(
-				5,
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8),
-				80
-			);
-		}
-
-		climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
-
-		rct_stex_entry* stex = g_stexEntries[0];
-		if ((int)stex != 0xFFFFFFFF) {
-			object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-			reset_loaded_objects();
-
-			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
-			s6Info->name[0] = 0;
-		}
+		game_convert_strings_to_utf8();
 
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 		viewport_init_all();
-		news_item_init_queue();
 		window_editor_main_open();
 		editor_finalise_main_view();
-		game_convert_strings_to_utf8();
 		return 1;
 	}
 
@@ -484,6 +394,103 @@ static int editor_read_s6(const char *path)
 	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
 	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
+}
+
+static void editor_clear_map_for_editing()
+{
+	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+	map_remove_all_rides();
+
+	//
+	for (int i = 0; i < MAX_BANNERS; i++) {
+		if (gBanners[i].type == 255) {
+			gBanners[i].flags &= ~BANNER_FLAG_2;
+		}
+	}
+
+	//
+	{
+		int i;
+		rct_ride *ride;
+		FOR_ALL_RIDES(i, ride) {
+			user_string_free(ride->name);
+		}
+	}
+
+	ride_init_all();
+
+	//
+	for (int i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite *sprite = &g_sprite_list[i];
+		user_string_free(sprite->unknown.name_string_idx);
+	}
+
+	reset_sprite_list();
+	staff_reset_modes();
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
+	if (s6Header->type != S6_TYPE_SCENARIO) {
+		research_populate_list_random();
+		research_remove_non_separate_vehicle_types();
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
+		else
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
+
+		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == 0)
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
+		else
+			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
+
+		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
+			MONEY(10,00),
+			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16),
+			MONEY(100,00)
+		);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
+		finance_reset_cash_to_initial();
+		finance_update_loan_hash();
+
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
+			MONEY(0,00),
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32),
+			MONEY(5000000,00)
+		);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(
+			MONEY(0,00),
+			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32),
+			MONEY(5000000,00)
+		);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = clamp(
+			5,
+			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8),
+			80
+		);
+	}
+
+	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+
+	rct_stex_entry* stex = g_stexEntries[0];
+	if ((int)stex != 0xFFFFFFFF) {
+		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+		reset_loaded_objects();
+
+		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
+		s6Info->name[0] = 0;
+	}
+
+	news_item_init_queue();
 }
 
 /**

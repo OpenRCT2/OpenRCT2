@@ -616,12 +616,12 @@ rct_track_td6* load_track_design(const char *path)
 		// Unsure why it is 67
 		edi = (uint8*)&track_design->vehicle_colours;
 		for (i = 0; i < 67; i++, edi++)
-			*edi = RCT1ColourConversionTable[*edi];
+			*edi = rct1_get_colour(*edi);
 
 		// Edit the colours to use the new versions
 		edi = (uint8*)&track_design->track_spine_colour;
 		for (i = 0; i < 12; i++, edi++)
-			*edi = RCT1ColourConversionTable[*edi];
+			*edi = rct1_get_colour(*edi);
 
 		// Highest drop height is 1bit = 3/4 a meter in td6
 		// Highest drop height is 1bit = 1/3 a meter in td4
@@ -630,9 +630,6 @@ rct_track_td6* load_track_design(const char *path)
 
 		// If it has boosters then sadly track has to be discarded.
 		if (td4_track_has_boosters(track_design, track_elements))
-			track_design->type = RIDE_TYPE_NULL;
-
-		if (track_design->type == RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER)
 			track_design->type = RIDE_TYPE_NULL;
 
 		if (track_design->type == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER)
@@ -654,8 +651,8 @@ rct_track_td6* load_track_design(const char *path)
 			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
 		} else {
 			int vehicle_type = track_design->vehicle_type;
-			if (vehicle_type == 3 && track_design->type == RIDE_TYPE_INVERTED_ROLLER_COASTER)
-				vehicle_type = 80;
+			if (vehicle_type == RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN && track_design->type == RIDE_TYPE_INVERTED_ROLLER_COASTER)
+				vehicle_type = RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN;
 			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[vehicle_type];
 		}
 

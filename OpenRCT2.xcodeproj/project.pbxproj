@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2151CCABBDD00B4D91C /* S4Importer.cpp */; };
+		C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2171CCABBDD00B4D91C /* tables.cpp */; };
+		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
@@ -226,6 +229,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; };
+		C650B2161CCABBDD00B4D91C /* S4Importer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = S4Importer.h; sourceTree = "<group>"; };
+		C650B2171CCABBDD00B4D91C /* tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tables.cpp; sourceTree = "<group>"; };
+		C650B2181CCABBDD00B4D91C /* Tables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tables.h; sourceTree = "<group>"; };
+		C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvertCommand.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -608,6 +616,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C650B2141CCABBDD00B4D91C /* rct1 */ = {
+			isa = PBXGroup;
+			children = (
+				C650B2151CCABBDD00B4D91C /* S4Importer.cpp */,
+				C650B2161CCABBDD00B4D91C /* S4Importer.h */,
+				C650B2171CCABBDD00B4D91C /* tables.cpp */,
+				C650B2181CCABBDD00B4D91C /* Tables.h */,
+			);
+			name = rct1;
+			path = src/rct1;
+			sourceTree = SOURCE_ROOT;
+		};
 		D41B72431C21015A0080A7B9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -621,6 +641,7 @@
 				D442714F1CC81B3200D84D28 /* network */,
 				D442715B1CC81B3200D84D28 /* peep */,
 				D44271601CC81B3200D84D28 /* platform */,
+				C650B2141CCABBDD00B4D91C /* rct1 */,
 				D442716E1CC81B3200D84D28 /* ride */,
 				D44271881CC81B3200D84D28 /* util */,
 				D442718E1CC81B3200D84D28 /* windows */,
@@ -697,6 +718,7 @@
 			children = (
 				D44270D71CC81B3200D84D28 /* CommandLine.cpp */,
 				D44270D81CC81B3200D84D28 /* CommandLine.hpp */,
+				C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */,
 				D44270D91CC81B3200D84D28 /* RootCommands.cpp */,
 				D44270DA1CC81B3200D84D28 /* ScreenshotCommands.cpp */,
 				D44270DB1CC81B3200D84D28 /* SpriteCommands.cpp */,
@@ -1359,6 +1381,7 @@
 				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
 				D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */,
 				D442729A1CC81B3200D84D28 /* banner.c in Sources */,
+				C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */,
 				D44272211CC81B3200D84D28 /* viewport_interaction.c in Sources */,
 				D442721B1CC81B3200D84D28 /* graph.c in Sources */,
 				D44272101CC81B3200D84D28 /* sprite.c in Sources */,
@@ -1419,6 +1442,7 @@
 				D44272891CC81B3200D84D28 /* themes.c in Sources */,
 				D44272791CC81B3200D84D28 /* publisher_credits.c in Sources */,
 				D442723B1CC81B3200D84D28 /* crash.cpp in Sources */,
+				C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */,
 				D44272291CC81B3200D84D28 /* LanguagePack.cpp in Sources */,
 				D44272901CC81B3200D84D28 /* title_options.c in Sources */,
 				D44272A01CC81B3200D84D28 /* map_animation.c in Sources */,
@@ -1434,6 +1458,7 @@
 				D44272351CC81B3200D84D28 /* twitch.cpp in Sources */,
 				D44272691CC81B3200D84D28 /* loadsave.c in Sources */,
 				D44272061CC81B3200D84D28 /* textinputbuffer.c in Sources */,
+				C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */,
 				D44272801CC81B3200D84D28 /* server_list.c in Sources */,
 				D44272911CC81B3200D84D28 /* title_scenarioselect.c in Sources */,
 				D44272411CC81B3200D84D28 /* rct1.c in Sources */,

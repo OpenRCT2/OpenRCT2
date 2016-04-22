@@ -127,6 +127,7 @@ void reset_loaded_objects();
 int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, const rct_object_entry* object);
 
+rct_object_entry *object_list_find_by_name(const char *name);
 rct_object_entry *object_list_find(rct_object_entry *entry);
 
 char *object_get_name(rct_object_entry *entry);

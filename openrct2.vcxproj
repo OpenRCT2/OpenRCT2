@@ -24,6 +24,7 @@
     <ClCompile Include="src\audio\mixer.cpp" />
     <ClCompile Include="src\cheats.c" />
     <ClCompile Include="src\cmdline\CommandLine.cpp" />
+    <ClCompile Include="src\cmdline\ConvertCommand.cpp" />
     <ClCompile Include="src\cmdline\RootCommands.cpp" />
     <ClCompile Include="src\cmdline\ScreenshotCommands.cpp" />
     <ClCompile Include="src\cmdline\SpriteCommands.cpp" />
@@ -95,6 +96,8 @@
     <ClCompile Include="src\platform\shared.c" />
     <ClCompile Include="src\platform\windows.c" />
     <ClCompile Include="src\rct1.c" />
+    <ClCompile Include="src\rct1\S4Importer.cpp" />
+    <ClCompile Include="src\rct1\Tables.cpp" />
     <ClCompile Include="src\rct2.c" />
     <ClCompile Include="src\ride\cable_lift.c" />
     <ClCompile Include="src\ride\ride.c" />
@@ -268,6 +271,8 @@
     <ClInclude Include="src\platform\crash.h" />
     <ClInclude Include="src\platform\platform.h" />
     <ClInclude Include="src\rct1.h" />
+    <ClInclude Include="src\rct1\Tables.h" />
+    <ClInclude Include="src\rct1\S4Importer.h" />
     <ClInclude Include="src\rct2.h" />
     <ClInclude Include="src\ride\cable_lift.h" />
     <ClInclude Include="src\ride\ride.h" />

@@ -13,7 +13,8 @@ namespace Debug
     {
 #if DEBUG
 #if __WINDOWS__
-        if (IsDebuggerPresent()) {
+        if (IsDebuggerPresent())
+        {
             DebugBreak();
         }
 #endif

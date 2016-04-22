@@ -334,17 +334,15 @@ static void window_new_ride_populate_list()
 					continue;
 
 				// Skip if the vehicle isn't the preferred vehicle for this generic track type
-				if(gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
-					if(strcmp(preferredVehicleName,"        \0")==0) {
-						strcpy(preferredVehicleName,rideEntryName);
-						preferredVehicleName[8]=0;
-					}
-					else {
-						if(vehicleIsHigherInHierarchy(rideType,preferredVehicleName,rideEntryName)) {
-							strcpy(preferredVehicleName,rideEntryName);
-							preferredVehicleName[8]=0;
-						}
-						else {
+				if (gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
+					if (strcmp(preferredVehicleName, "        \0") == 0) {
+						strcpy(preferredVehicleName, rideEntryName);
+						preferredVehicleName[8] = 0;
+					} else {
+						if (vehicle_preference_compare(rideType, preferredVehicleName, rideEntryName) == 1) {
+							strcpy(preferredVehicleName, rideEntryName);
+							preferredVehicleName[8] = 0;
+						} else {
 							continue;
 						}
 					}
