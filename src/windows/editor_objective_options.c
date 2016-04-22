@@ -432,7 +432,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 	uint32 parkFlags;
 
 	dropdownWidget = &w->widgets[WIDX_OBJECTIVE];
-	parkFlags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
+	parkFlags = gParkFlags;
 	numItems = 0;
 
 	if (!(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) {
@@ -743,7 +743,7 @@ static void window_editor_objective_options_main_update(rct_window *w)
 	window_event_invalidate_call(w);
 	widget_invalidate(w, WIDX_TAB_1);
 
-	parkFlags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
+	parkFlags = gParkFlags;
 	objectiveType = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 
 	// Reset objective if invalid

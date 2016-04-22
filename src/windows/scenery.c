@@ -1039,7 +1039,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = price;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		// -14
 		gfx_draw_string_right(dpi, STR_COST_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,
 			w->x + w->width - 0x1A, w->y + w->height - 13);

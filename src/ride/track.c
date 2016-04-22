@@ -2042,8 +2042,8 @@ int sub_6D2189(int* cost, uint8* ride_id){
 
 	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
 	uint8 backup_rotation = _currentTrackPieceDirection;
-	uint32 backup_park_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+	uint32 backup_park_flags = gParkFlags;
+	gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
 	int map_size = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) << 4;
 
 	_currentTrackPieceDirection = 0;
@@ -2061,7 +2061,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		RCT2_GLOBAL(0xF44151, uint8) |= 1;
 	}
 	edi = sub_6D01B3(bl, *ride_id, map_size, map_size, z);
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = backup_park_flags;
+	gParkFlags = backup_park_flags;
 
 	if (edi != MONEY32_UNDEFINED){
 
@@ -3470,7 +3470,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	
 	// Calculate price
 	money32 price = 0;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		price = RideTrackCosts[ride->type].track_price * RCT2_GLOBAL(0x0099DBC8, money32);
 		price = (price >> 17) * 10;
 	}
@@ -4878,7 +4878,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	price >>= 16;
 	price = cost + ((price / 2) * 10);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 		return 0;
 	}
 	else {
@@ -5172,7 +5172,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return 0;
 	else
 		return price;
@@ -5294,7 +5294,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		RCT2_GLOBAL(0x00F4413E, money32) = price / 2 * 10;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+			if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 				return 0;
 			}
 
@@ -5330,7 +5330,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	}
 
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 			return 0;
 		}
 
@@ -5411,7 +5411,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		get_ride(rideIndex)->maze_tiles--;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 		return 0;
 	}
 

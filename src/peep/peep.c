@@ -344,7 +344,7 @@ static void sub_68F8CD(rct_peep *peep)
 	}
 
 	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 			if (peep->energy >= 70 && peep->happiness >= 60) {
 				return;
 			}
@@ -536,7 +536,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 					}
 
 					// Not sure why the happiness check is like that seems wrong to me
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) &&
+					if (!(gParkFlags & PARK_FLAGS_NO_MONEY) &&
 						peep->cash_in_pocket <= MONEY(9, 00) &&
 						peep->happiness >= 105 &&
 						peep->happiness >= 70){
@@ -1798,7 +1798,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
 		return;
 
-	if (ride->price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (ride->price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) ||
 			!(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) ||
 			!(peep->voucher_arguments == peep->current_ride)){
@@ -2099,7 +2099,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
  *  rct2: 0x006920B4
  */
 static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ride){
-	if (ride->price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+	if (ride->price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)){
 		if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
 			(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) &&
 			(peep->voucher_arguments == peep->current_ride)){
@@ -6097,12 +6097,12 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	if (al >= 7) al = 15;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES){
+	if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES){
 		ah = 0;
 		al = 4;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
+	if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
 		ah = 9;
 		al = 15;
 	}
@@ -6110,7 +6110,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->intensity = (al << 4) | ah;
 
 	uint8 nausea_tolerance = scenario_rand() & 0x7;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
+	if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
 		nausea_tolerance += 4;
 	}
 
@@ -6150,7 +6150,7 @@ rct_peep *peep_generate(int x, int y, int z)
 		cash = 500;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+	if (gParkFlags & PARK_FLAGS_NO_MONEY){
 		cash = 0;
 	}
 
@@ -6193,7 +6193,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->energy = energy;
 	peep->energy_growth_rate = energy;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES){
+	if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES){
 		peep_give_real_name(peep);
 	}
 	peep_update_name_sort(peep);
@@ -6927,7 +6927,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 
 			if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 				// If the park is open and leaving flag isnt set return to center
-				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)
+				if (gParkFlags & PARK_FLAGS_PARK_OPEN)
 					return peep_return_to_center_of_tile(peep);
 			}
 
@@ -6958,7 +6958,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		if (peep->state != PEEP_STATE_ENTERING_PARK)
 			return peep_return_to_center_of_tile(peep);
 
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)){
+		if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
 			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
@@ -7025,7 +7025,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		}
 
 		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
-		if (entranceFee != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+		if (entranceFee != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)){
 			if (peep->item_standard_flags & PEEP_ITEM_VOUCHER){
 				if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE){
 					entranceFee /= 2;
@@ -8457,7 +8457,7 @@ static int sub_693C9E(rct_peep *peep)
  */
 static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount)
 {
-	assert(!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY));
+	assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
 	peep->cash_in_pocket = max(0, peep->cash_in_pocket - amount);
 	peep->cash_spent += amount;
@@ -8564,7 +8564,7 @@ static sint8 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride)
 	// Calculate satisfaction based on the price and value of the ride.
 	uint8 valueSatisfaction = 1;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		if (ride->value != 0xFFFF) {
 			if (ride->price <= (money16)ride->value) {
 				valueSatisfaction = 2;
@@ -8736,7 +8736,7 @@ static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
 
 static bool peep_should_preferred_intensity_increase(rct_peep *peep)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) return false;
+	if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) return false;
 	if (peep->happiness < 200) return false;
 
 	return (scenario_rand() & 0xFF) >= peep->intensity;
@@ -8939,7 +8939,7 @@ loc_69B119:
 			value -= price;
 			value = max(8, value);
 
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+			if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 				if (value >= (money32)(scenario_rand() & 0x07)) {
 					// "This x is a really good value"
 					uint8 thought_item = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
@@ -9051,7 +9051,7 @@ loc_69B221:
 		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK * 4;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 		finance_payment(get_shop_item_cost(shopItem), (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4));
 
 	// Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
@@ -9060,7 +9060,7 @@ loc_69B221:
 		peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	}
-	else if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	else if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		peep_spend_money(peep, expend_type, price);
 	}
 	ride->total_profit += (price - get_shop_item_cost(shopItem));
@@ -9078,7 +9078,7 @@ loc_69B221:
  */
 static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) return false;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) return false;
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) return false;
 	if (peep->cash_in_pocket > MONEY(20,00)) return false;
 	if (115 + (scenario_rand() % 128) > peep->happiness) return false;
@@ -9774,7 +9774,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 			uint32 value = ride->value;
 
 			// If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex) && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex) && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 
 				// The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
 				if (peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
@@ -9795,7 +9795,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 				// A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
 				if (ride->price <= (money16)(value / 2) && peepAtRide) {
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+					if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 						if (!(peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GOOD_VALUE, rideIndex);
 						}
@@ -10390,7 +10390,7 @@ void peep_update_names(bool realNames)
 	bool restart;
 
 	if (realNames) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+		gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 		do {
 			restart = false;
 			FOR_ALL_GUESTS(spriteIndex, peep) {
@@ -10403,7 +10403,7 @@ void peep_update_names(bool realNames)
 		} while (restart);
 		gfx_invalidate_screen();
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+		gParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 		do {
 			restart = false;
 			FOR_ALL_GUESTS(spriteIndex, peep) {

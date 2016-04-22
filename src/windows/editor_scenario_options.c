@@ -445,9 +445,9 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, int 
 		break;
 	case WIDX_NO_MONEY:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_NO_MONEY_SCENARIO;
+			gParkFlags ^= PARK_FLAGS_NO_MONEY_SCENARIO;
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_NO_MONEY;
+			gParkFlags ^= PARK_FLAGS_NO_MONEY;
 			// Invalidate all windows that have anything to do with finance
 			window_invalidate_by_class(WC_RIDE);
 			window_invalidate_by_class(WC_PEEP);
@@ -459,7 +459,7 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, int 
 		window_invalidate(w);
 		break;
 	case WIDX_FORBID_MARKETING:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+		gParkFlags ^= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
 		window_invalidate(w);
 		break;
 	}
@@ -603,8 +603,8 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
 
 	window_editor_scenario_options_set_pressed_tab(w);
 
-	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
-		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))) {
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
+		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
 		w->pressed_widgets |= (1 << WIDX_NO_MONEY);
 		for (i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
 			w->widgets[i].type = WWT_EMPTY;
@@ -625,7 +625,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
 		w->widgets[WIDX_FORBID_MARKETING].type = WWT_CHECKBOX;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+	if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
 		w->pressed_widgets |= (1 << WIDX_FORBID_MARKETING);
 	else
 		w->pressed_widgets &= ~(1 << WIDX_FORBID_MARKETING);
@@ -710,11 +710,11 @@ static void window_editor_scenario_options_guests_mouseup(rct_window *w, int wid
 		window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+		gParkFlags ^= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+		gParkFlags ^= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
 		window_invalidate(w);
 		break;
 	}
@@ -832,8 +832,8 @@ static void window_editor_scenario_options_guests_invalidate(rct_window *w)
 
 	window_editor_scenario_options_set_pressed_tab(w);
 
-	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
-		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))) {
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
+		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
 		w->widgets[WIDX_CASH_PER_GUEST].type = WWT_EMPTY;
 		w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_EMPTY;
 		w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_EMPTY;
@@ -844,13 +844,13 @@ static void window_editor_scenario_options_guests_invalidate(rct_window *w)
 	}
 
 	// Guests prefer less intense rides checkbox
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+	if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
 		w->pressed_widgets |= (1 << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
 	else
 		w->pressed_widgets &= ~(1 << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES);
 
 	// Guests prefer more intense rides checkbox
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+	if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
 		w->pressed_widgets |= (1 << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
 	else
 		w->pressed_widgets &= ~(1 << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
@@ -939,23 +939,23 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, int widge
 		window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_FORBID_TREE_REMOVAL:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_FORBID_TREE_REMOVAL;
+		gParkFlags ^= PARK_FLAGS_FORBID_TREE_REMOVAL;
 		window_invalidate(w);
 		break;
 	case WIDX_FORBID_LANDSCAPE_CHANGES:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+		gParkFlags ^= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
 		window_invalidate(w);
 		break;
 	case WIDX_FORBID_HIGH_CONSTRUCTION:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+		gParkFlags ^= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
 		window_invalidate(w);
 		break;
 	case WIDX_HARD_PARK_RATING:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_DIFFICULT_PARK_RATING;
+		gParkFlags ^= PARK_FLAGS_DIFFICULT_PARK_RATING;
 		window_invalidate(w);
 		break;
 	case WIDX_HARD_GUEST_GENERATION:
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) ^= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+		gParkFlags ^= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
 		window_invalidate(w);
 		break;
 	}
@@ -1045,7 +1045,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 			dropdownWidget->right - dropdownWidget->left - 3
 		);
 
-		dropdown_set_checked((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY ? 0 : 1), true);
+		dropdown_set_checked((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? 0 : 1), true);
 		break;
 	}
 }
@@ -1059,25 +1059,25 @@ static void window_editor_scenario_options_park_dropdown(rct_window *w, int widg
 	if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1) {
 		if(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			if (dropdownIndex == 0) {
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
+				if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+					gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
 					RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(0, 00);
 				}
 			} else {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
-					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+				if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
+					gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
 					RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(10, 00);
 				}
 			}
 		}
 		else {
 			if (dropdownIndex == 0) {
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)) {
-					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
+				if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
+					gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
 				}
 			} else {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
-					RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+				if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
+					gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
 				}
 			}
 			window_invalidate_by_class(WC_PARK_INFORMATION);
@@ -1118,8 +1118,8 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
 
 	window_editor_scenario_options_set_pressed_tab(w);
 
-	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
-		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))) {
+	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
+		(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
 		for (i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
 			w->widgets[i].type = WWT_EMPTY;
 	} else {
@@ -1132,7 +1132,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
 		w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WWT_DROPDOWN;
 		w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) {
+		if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
 			w->widgets[WIDX_ENTRY_PRICE].type = WWT_EMPTY;
 			w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WWT_EMPTY;
 			w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WWT_EMPTY;
@@ -1151,15 +1151,15 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
 	pressedWidgets &= ~(1 << WIDX_HARD_PARK_RATING);
 	pressedWidgets &= ~(1 << WIDX_HARD_GUEST_GENERATION);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL)
+	if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
 		pressedWidgets |= (1 << WIDX_FORBID_TREE_REMOVAL);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+	if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
 		pressedWidgets |= (1 << WIDX_FORBID_LANDSCAPE_CHANGES);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
+	if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION)
 		pressedWidgets |= (1 << WIDX_FORBID_HIGH_CONSTRUCTION);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_PARK_RATING)
+	if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
 		pressedWidgets |= (1 << WIDX_HARD_PARK_RATING);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+	if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
 		pressedWidgets |= (1 << WIDX_HARD_GUEST_GENERATION);
 
 	w->pressed_widgets = pressedWidgets;
@@ -1215,7 +1215,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		gfx_draw_string_left(dpi, 3279, NULL, 0, x, y);
 
 		// Pay for park or rides value
-		stringId = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY ? 3279 : 3280;
+		stringId = gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? 3279 : 3280;
 		gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 	}
 

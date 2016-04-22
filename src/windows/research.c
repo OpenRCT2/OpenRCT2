@@ -508,7 +508,7 @@ static void window_research_funding_invalidate(rct_window *w)
 
 	window_research_set_pressed_tab(w);
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ||
+	if ((gParkFlags & PARK_FLAGS_NO_MONEY) ||
 		(RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL)) {
 		//window_research_funding_widgets[WIDX_FUNDING_GROUP].type = WWT_EMPTY;
 		window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
@@ -560,7 +560,7 @@ static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, int baseWidgetIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
 	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);

@@ -167,7 +167,7 @@ void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* es
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_MARKETING * 4;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
+	if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
 		gGameCommandErrorText = 3048;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -192,12 +192,12 @@ bool marketing_is_campaign_type_applicable(int campaignType)
 	switch (campaignType) {
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
+		if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
 			return false;
 		return true;
 
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY))
+		if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
 			return false;
 
 		// fall-through

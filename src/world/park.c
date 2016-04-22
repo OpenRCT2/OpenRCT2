@@ -59,7 +59,7 @@ int _guestGenerationProbability;
 
 int park_is_open()
 {
-	return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) != 0;
+	return (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
 }
 
 /**
@@ -112,7 +112,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16) = MONEY(90, 00);
 	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16) = MONEY(40,00);
 	RCT2_GLOBAL(0x01358774, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+	gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_history();
 	finance_reset_history();
 	award_reset();
@@ -173,7 +173,7 @@ int calculate_park_rating()
 	int result;
 
 	result = 1150;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_PARK_RATING)
+	if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
 		result = 1050;
 
 	// Guests
@@ -379,7 +379,7 @@ static int park_calculate_guest_generation_probability()
 	}
 
 	// If difficult guest generation, extra guests are available for good rides
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
+	if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
 		suggestedMaxGuests = min(suggestedMaxGuests, 1000);
 		FOR_ALL_RIDES(i, ride) {
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -416,7 +416,7 @@ static int park_calculate_guest_generation_probability()
 		probability /= 4;
 
 		// Even lower for difficult guest generation
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+		if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
 			probability /= 4;
 	}
 
@@ -425,7 +425,7 @@ static int park_calculate_guest_generation_probability()
 		probability /= 4;
 
 	// Check if money is enabled
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		// Penalty for overpriced entrance fee relative to total ride value
 		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
 		if (entranceFee > totalRideValue) {
@@ -508,7 +508,7 @@ static void park_generate_new_guests()
 {
 	// Generate a new guest for some probability
 	if ((int)(scenario_rand() & 0xFFFF) < _guestGenerationProbability) {
-		int difficultGeneration = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+		int difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
 		if (!difficultGeneration || _suggestedGuestMaximum + 150 >= RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16))
 			park_generate_new_guest();
 	}
@@ -669,14 +669,14 @@ void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
 	switch (dh) {
 	case 0:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) {
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_OPEN;
+		if (gParkFlags & PARK_FLAGS_PARK_OPEN) {
+			gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
 			window_invalidate_by_class(WC_PARK_INFORMATION);
 		}
 		break;
 	case 1:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
+		if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)) {
+			gParkFlags |= PARK_FLAGS_PARK_OPEN;
 			window_invalidate_by_class(WC_PARK_INFORMATION);
 		}
 		break;

@@ -617,6 +617,6 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Price
 	if (_window_track_place_last_cost != MONEY32_UNDEFINED)
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 			gfx_draw_string_centred(dpi, STR_COST_LABEL, w->x + 88, w->y + 94, 0, &_window_track_place_last_cost);
 }

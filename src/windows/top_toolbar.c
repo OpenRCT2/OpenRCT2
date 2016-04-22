@@ -692,7 +692,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 			window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_EMPTY;
 		}
 	} else {
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
+		if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
 			window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
 
 		if (!gConfigInterface.toolbar_show_research)

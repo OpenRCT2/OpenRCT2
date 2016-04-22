@@ -733,7 +733,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode) {
 		// Check if allowed to remove item
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+		if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) {
 			if (entry->small_scenery.height > 64) {
 				gGameCommandErrorText = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
 				*ebx = MONEY32_UNDEFINED;
@@ -782,7 +782,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 		map_invalidate_tile_full(x, y);
 		map_element_remove(map_element);
 	}
-	*ebx = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : cost);
+	*ebx = (gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : cost);
 }
 
 /**
@@ -929,7 +929,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	}
 
 	*ebx = scenery_entry->large_scenery.removal_price * 10;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ||
+	if (gParkFlags & PARK_FLAGS_NO_MONEY ||
 		calculate_cost == false){
 		*ebx = 0;
 	}
@@ -991,7 +991,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 
 	*ebx = (scenery_entry->banner.price * -3) / 4;
 
-	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+	if(gParkFlags & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
 	}
 }
@@ -1457,12 +1457,12 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
 		cost += RCT2_GLOBAL(0x009E32B4, uint32);
-		return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : cost;
+		return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) {
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) {
 		cost += RCT2_GLOBAL(0x009E32B4, uint32);
-		return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : cost;
+		return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 	}
 
 	for (int x = x0; x <= x1; x += 32) {
@@ -1544,7 +1544,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 
 	cost *= 100;
 	cost += RCT2_GLOBAL(0x009E32B4, uint32);
-	return (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : cost;
+	return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
 
 /**
@@ -1606,7 +1606,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) {
+		if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) {
 			gGameCommandErrorText = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
 			return MONEY32_UNDEFINED;
 		}
@@ -1661,7 +1661,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			if (height + 4 < mapElement->base_height)
 				continue;
 			rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type]; //sceneryEntry = eax
-			if (sceneryEntry->small_scenery.height > 64 && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL)
+			if (sceneryEntry->small_scenery.height > 64 && gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
 			{
 				map_obstruction_set_error_text(mapElement);
 				return MONEY32_UNDEFINED;
@@ -1782,7 +1782,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 			surfaceElement->properties.surface.terrain &= MAP_ELEMENT_SURFACE_TERRAIN_MASK;
 		map_invalidate_tile_full(x, y);
 	}
-	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if(gParkFlags & PARK_FLAGS_NO_MONEY)
 		return 0;
 	return RCT2_GLOBAL(0x9E2E18, money32);
 }
@@ -2574,7 +2574,7 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES){
+	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES){
 		gGameCommandErrorText = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -2637,7 +2637,7 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 			map_invalidate_tile_full(x, y);
 		}
 		*ebx = 250;
-		if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+		if(gParkFlags & PARK_FLAGS_NO_MONEY){
 			*ebx = 0;
 		}
 	}else{
@@ -2812,7 +2812,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	}
 	rct_scenery_entry *scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_BANNERS].chunks[type];
 	*ebx = scenery_entry->banner.price;
-	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+	if(gParkFlags & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
 	}
 }
@@ -2830,12 +2830,12 @@ int map_place_scenery_clear_func(rct_map_element** map_element, int x, int y, ui
 
 	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+	if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) {
 		if (scenery->small_scenery.height > 64)
 			return 1;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 		*price += scenery->small_scenery.removal_price * 10;
 
 	if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -2862,12 +2862,12 @@ int map_place_non_scenery_clear_func(rct_map_element** map_element, int x, int y
 
 	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) {
+	if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) {
 		if (scenery->small_scenery.height > 64)
 			return 1;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 		*price += scenery->small_scenery.removal_price * 10;
 
 	if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -3055,7 +3055,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 								}
 							}
 							*ebx = (scenery_entry->small_scenery.price * 10) + RCT2_GLOBAL(0x00F64F26, money32);
-							if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+							if(gParkFlags & PARK_FLAGS_NO_MONEY){
 								*ebx = 0;
 							}
 							return;
@@ -3502,7 +3502,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		map_invalidate_tile_zoom1(position.x, position.y, map_element->base_height * 8, map_element->base_height * 8 + 72);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+	if (gParkFlags & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
 	}
 	else{
@@ -3752,7 +3752,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	_currentTrackSelectionFlags |= 8;
 
 	*ebx = (scenery_entry->large_scenery.price * 10) + RCT2_GLOBAL(0x00F4389A, money32);
-	if(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+	if(gParkFlags & PARK_FLAGS_NO_MONEY){
 		*ebx = 0;
 	}
 }
@@ -4104,7 +4104,7 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUN
 			}
 		}
 		loc_68B9B7:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) {
+		if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) {
 			int al = zHigh - map_element->base_height;
 			if (al >= 0) {
 				if (al > 18) {
