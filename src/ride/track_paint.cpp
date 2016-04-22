@@ -37,14 +37,19 @@ extern "C"
     #include "track_paint.h"
 }
 
-bool TileDrawingContext::draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
+bool TileDrawingContext::draw_98196C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 lengthZ, sint16 offsetZ)
 {
-    return sub_98197C(imageId, offsetX, offsetY, lengthX, lengthY, Z + offsetZ, height, boundOffsetX, boundOffsetY, Z + boundOffsetZ, ViewRotation);
+    return sub_98196C(imageId, offsetX, offsetY, lengthX, lengthY, lengthZ, Z + offsetZ, ViewRotation);
 }
 
-bool TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
+bool TileDrawingContext::draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 lengthZ, sint16 offsetZ, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
 {
-    return sub_98199C(imageId, offsetX, offsetY, lengthX, lengthY, Z + offsetZ, height, boundOffsetX, boundOffsetY, Z + boundOffsetZ, ViewRotation);
+    return sub_98197C(imageId, offsetX, offsetY, lengthX, lengthY, lengthZ, Z + offsetZ, boundOffsetX, boundOffsetY, Z + boundOffsetZ, ViewRotation);
+}
+
+bool TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 lengthZ, sint16 offsetZ, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
+{
+    return sub_98199C(imageId, offsetX, offsetY, lengthX, lengthY, lengthZ, Z + offsetZ, boundOffsetX, boundOffsetY, Z + boundOffsetZ, ViewRotation);
 }
 
 bool TileDrawingContext::DrawSupports(supportStyle style, uint8 direction, uint16 special, uint32 imageFlags, sint16 zOffset, bool * underground)
@@ -156,6 +161,7 @@ namespace RideDrawingUtils
 static RideDrawFunction GetRideDrawFunction(uint8 rideType)
 {
     switch (rideType) {
+    case RIDE_TYPE_MAZE:                return Maze::Draw;
     case RIDE_TYPE_FOOD_STALL:        return Shop::Draw;
     case RIDE_TYPE_1D:                return Shop::Draw;
     case RIDE_TYPE_DRINK_STALL:       return Shop::Draw;

@@ -55,8 +55,9 @@ public:
     sint32            Y;
     sint32            Z;
 
-    bool draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
-    bool draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
+    bool draw_98196C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 lengthZ, sint16 offsetZ);
+    bool draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 lengthZ, sint16 offsetZ, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
+    bool draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 lengthZ, sint16 offsetZ, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
     bool DrawSupports(supportStyle style, uint8 direction, uint16 special, uint32 imageFlags, sint16 offsetZ = 0, bool * underground = nullptr);
     void UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA);
 

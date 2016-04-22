@@ -11,6 +11,7 @@
 		C6E2B0D61CCAD16600905D90 /* Facility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B0D21CCAD16600905D90 /* Facility.cpp */; };
 		C6E2B0D71CCAD16600905D90 /* Shop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B0D41CCAD16600905D90 /* Shop.cpp */; };
 		C6E2B0D81CCAD16600905D90 /* TopSpin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B0D51CCAD16600905D90 /* TopSpin.cpp */; };
+		C6E2B0DA1CCAE92500905D90 /* Maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B0D91CCAE92500905D90 /* Maze.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
@@ -234,6 +235,7 @@
 		C6E2B0D31CCAD16600905D90 /* paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paint.h; sourceTree = "<group>"; };
 		C6E2B0D41CCAD16600905D90 /* Shop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shop.cpp; sourceTree = "<group>"; };
 		C6E2B0D51CCAD16600905D90 /* TopSpin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopSpin.cpp; sourceTree = "<group>"; };
+		C6E2B0D91CCAE92500905D90 /* Maze.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Maze.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -619,6 +621,7 @@
 			isa = PBXGroup;
 			children = (
 				C6E2B0D21CCAD16600905D90 /* Facility.cpp */,
+				C6E2B0D91CCAE92500905D90 /* Maze.cpp */,
 				C6E2B0D31CCAD16600905D90 /* paint.h */,
 				C6E2B0D41CCAD16600905D90 /* Shop.cpp */,
 				C6E2B0D51CCAD16600905D90 /* TopSpin.cpp */,
@@ -1540,6 +1543,7 @@
 				D44272601CC81B3200D84D28 /* error.c in Sources */,
 				D442728D1CC81B3200D84D28 /* title_exit.c in Sources */,
 				D442722C1CC81B3200D84D28 /* user.c in Sources */,
+				C6E2B0DA1CCAE92500905D90 /* Maze.cpp in Sources */,
 				D44272301CC81B3200D84D28 /* marketing.c in Sources */,
 				D44272321CC81B3200D84D28 /* research.c in Sources */,
 				D442725D1CC81B3200D84D28 /* editor_object_selection.c in Sources */,
