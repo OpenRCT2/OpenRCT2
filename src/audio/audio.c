@@ -281,7 +281,9 @@ void audio_start_title_music()
 	}
 
 	gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
-	Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+	if (gTitleMusicChannel != NULL) {
+		Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+	}
 }
 
 void audio_stop_ride_music()

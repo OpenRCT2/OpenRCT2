@@ -907,21 +907,19 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 		const utf8 *filename = get_file_path(pathId);
 
 		SDL_RWops* rw = SDL_RWFromFile(filename, "rb");
-		if (rw == NULL) {
-			return 0;
-		}
-		Source_SampleStream* source_samplestream = new Source_SampleStream;
-		if (source_samplestream->LoadWAV(rw)) {
-			Channel* channel = gMixer.Play(*source_samplestream, loop, false, true);
-			if (!channel) {
-				delete source_samplestream;
+		if (rw != NULL) {
+			Source_SampleStream* source_samplestream = new Source_SampleStream;
+			if (source_samplestream->LoadWAV(rw)) {
+				Channel* channel = gMixer.Play(*source_samplestream, loop, false, true);
+				if (!channel) {
+					delete source_samplestream;
+				} else {
+					channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
+				}
+				return channel;
 			} else {
-				channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
+				delete source_samplestream;
 			}
-			return channel;
-		} else {
-			delete source_samplestream;
-			return 0;
 		}
 	} else {
 		if (gMixer.LoadMusic(pathId)) {
@@ -932,7 +930,7 @@ void* Mixer_Play_Music(int pathId, int loop, int streaming)
 			return channel;
 		}
 	}
-	return 0;
+	return NULL;
 }
 
 void Mixer_SetVolume(float volume)
