@@ -18,27 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#define USE_DEFAULT_VEHICLE 255
-
 #include "addresses.h"
 #include "config.h"
-#include "editor.h"
-#include "game.h"
-#include "interface/viewport.h"
-#include "interface/window.h"
-#include "localisation/localisation.h"
-#include "management/finance.h"
-#include "object.h"
 #include "rct1.h"
-#include "ride/ride.h"
-#include "scenario.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
-#include "world/climate.h"
-#include "world/footpath.h"
-#include "world/map.h"
-#include "world/map_animation.h"
-#include "world/scenery.h"
 
 bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 {

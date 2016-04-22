@@ -6,7 +6,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "import.h"
+#include "Tables.h"
 
 extern "C"
 {

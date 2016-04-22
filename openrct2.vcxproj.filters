@@ -917,11 +917,11 @@
     <ClInclude Include="src\rct1\S4Importer.h">
       <Filter>Source\RCT1</Filter>
     </ClInclude>
-    <ClInclude Include="src\rct1\import.h">
-      <Filter>Source\RCT1</Filter>
-    </ClInclude>
     <ClInclude Include="resources\resource.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rct1\Tables.h">
+      <Filter>Source\RCT1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
