@@ -37,26 +37,21 @@ extern "C"
     #include "track_paint.h"
 }
 
-int TileDrawingContext::draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
+bool TileDrawingContext::draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
 {
-    return sub_98197C(imageId, offsetX, offsetY, lengthX, lengthY, offsetZ, height, boundOffsetX, boundOffsetY, boundOffsetZ, ViewRotation);
+    return sub_98197C(imageId, offsetX, offsetY, lengthX, lengthY, Z + offsetZ, height, boundOffsetX, boundOffsetY, Z + boundOffsetZ, ViewRotation);
 }
 
-int TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
+bool TileDrawingContext::draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ)
 {
-    return sub_98199C(imageId, offsetX, offsetY, lengthX, lengthY, offsetZ, height, boundOffsetX, boundOffsetY, boundOffsetZ, ViewRotation);
+    return sub_98199C(imageId, offsetX, offsetY, lengthX, lengthY, Z + offsetZ, height, boundOffsetX, boundOffsetY, Z + boundOffsetZ, ViewRotation);
 }
 
-bool TileDrawingContext::DrawSupports(uint8 style, uint16 special, sint32 z, uint32 imageFlags, bool * underground)
-{
-    return DrawSupports(style, Direction & 1, special, z, imageFlags, underground);
-}
-
-bool TileDrawingContext::DrawSupports(uint8 style, uint8 typeDirection, uint16 special, sint32 z, uint32 imageFlags, bool * underground)
+bool TileDrawingContext::DrawSupports(supportStyle style, uint8 direction, uint16 special, uint32 imageFlags, sint16 zOffset, bool * underground)
 {
     if (style == SUPPORT_STYLE_WOOD)
     {
-        return wooden_a_supports_paint_setup(typeDirection, special, z, imageFlags, underground);
+        return wooden_a_supports_paint_setup(direction, special, Z + zOffset, imageFlags, underground);
     }
     return false;
 }
@@ -139,79 +134,22 @@ static rct_sxy8 GetEntranceCheckOffset(uint8 direction, uint8 rotation)
     return entranceCheckOffsets[(direction * 4) + rotation];
 }
 
-void RideDrawingContext::DrawFloor(uint8 style, uint32 imageFlags, sint32 z)
+namespace RideDrawingUtils
 {
-    uint32 imageId;
-
-    switch (style) {
-    default: return;
-    case FLOOR_STYLE_TILE_SMALL:
-        imageId = 14567;
-        break;
-    case FLOOR_STYLE_TILE_LARGE:
-        imageId = 14567 + (Direction & 1);
-        break;
-    case FLOOR_STYLE_BROWN_RUBBER:
-        imageId = 22134 + Direction;
-        break;
-    case FLOOR_STYLE_STEEL:
-        imageId = 22142 + Direction;
-        break;
-    }
-
-    imageId |= imageFlags;
-    draw_98197C(imageId, 0, 0, 32, 32, 1, z, 0, 0, z);
-}
-
-void RideDrawingContext::DrawFence(uint8 fenceType, uint8 direction, sint32 z)
-{
-    uint32 imageId;
-    switch (direction) {
-    case 0:
-        imageId = 20564 | RCT2_GLOBAL(0x00F44198, uint32);
-         draw_98199C(imageId, 0, 0, 1, 32, 7, z + 2, 2, 0, z + 2);
-        break;
-    case 1:
-        imageId = 20565 | RCT2_GLOBAL(0x00F44198, uint32);
-        draw_98199C(imageId, 0, 0, 32, 1, 7, z + 2, 0, 20, z + 2);
-        break;
-    case 2:
-        imageId = 20566 | RCT2_GLOBAL(0x00F44198, uint32);
-        draw_98199C(imageId, 0, 0, 1, 32, 7, z + 2, 30, 0, z + 2);
-        break;
-    case 3:
-        imageId = 20567 | RCT2_GLOBAL(0x00F44198, uint32);
-        draw_98199C(imageId, 0, 0, 32, 1, 7, z + 2, 0, 2, z + 2);
-        break;
-    }
-}
-
-void RideDrawingContext::DrawFenceChecked(uint8 fenceType, uint8 direction, sint32 z)
-{
-    rct_sxy8 checkOffset = GetEntranceCheckOffset(direction, ViewRotation);
-
-    rct_xy8 fenceCheckPosition;
-    fenceCheckPosition.x = RCT2_GLOBAL(0x009DE56A, uint16) >> 5;
-    fenceCheckPosition.y = RCT2_GLOBAL(0x009DE56E, uint16) >> 5;
-    fenceCheckPosition.x += checkOffset.x;
-    fenceCheckPosition.y += checkOffset.y;
-
-    uint8 stationId = map_get_station(MapElement);
-    if (fenceCheckPosition.xy != Ride->entrances[stationId] &&
-        fenceCheckPosition.xy != Ride->exits[stationId])
+    void DrawFloor(uint8 style, uint32 imageFlags, sint32 z, rct_ride * ride, TileDrawingContext * context)
     {
-        DrawFence(fenceType, direction, z);
     }
-}
 
-void RideDrawingContext::DrawFencesChecked(uint8 fenceDirections, uint8 fenceType, sint32 z)
-{
-    for (int i = 0; i < 4; i++)
+    void DrawFence(uint8 fenceType, uint8 direction, sint32 z, rct_ride * ride, TileDrawingContext * context)
     {
-        if (fenceDirections & (1 << i))
-        {
-            DrawFenceChecked(fenceType, (Direction + i) & 3, z);
-        }
+    }
+
+    void DrawFenceChecked(uint8 fenceType, uint8 direction, sint32 z, rct_ride * ride, rct_map_element * mapElement, TileDrawingContext * context)
+    {
+    }
+
+    void DrawFencesChecked(uint8 fenceDirections, uint8 fenceType, sint32 z, rct_ride * ride, TileDrawingContext * context)
+    {
     }
 }
 
@@ -257,19 +195,12 @@ extern "C" void viewport_track_paint_setup_2(uint8 rideIndex, uint8 direction, s
     }
     else
     {
-        RideDrawingContext dc;
+        TileDrawingContext dc;
         dc.ViewRotation = get_current_rotation();
-        dc.Direction = direction;
         dc.X = RCT2_GLOBAL(0x009DE56A, uint16);
         dc.X = RCT2_GLOBAL(0x009DE56E, uint16);
         dc.Z = height;
-        dc.MapElement = mapElement;
-        dc.RideIndex = rideIndex;
-        dc.Ride = ride;
-        dc.RideEntry = get_ride_entry_by_ride(ride);
-        dc.TrackType = trackType;
-        dc.TrackSequence = trackSequence;
 
-        drawFunction(&dc);
+        drawFunction(ride, trackType, trackSequence, direction, mapElement, &dc);
     }
 }

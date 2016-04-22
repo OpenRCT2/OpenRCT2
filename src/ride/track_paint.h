@@ -32,7 +32,7 @@ enum
     FLOOR_STYLE_STEEL,
 };
 
-enum
+enum supportStyle
 {
     SUPPORT_STYLE_WOOD
 };
@@ -50,39 +50,29 @@ class TileDrawingContext
 {
 public:
     uint8             ViewRotation;
-    uint8             Direction;
 
     sint32            X;
     sint32            Y;
     sint32            Z;
-    rct_map_element * MapElement;
 
-    int draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
-    int draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint8 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
-    bool DrawSupports(uint8 style, uint16 special, sint32 z, uint32 imageFlags, bool * underground = nullptr);
-    bool DrawSupports(uint8 style, uint8 typeDirection, uint16 special, sint32 z, uint32 imageFlags, bool * underground = nullptr);
+    bool draw_98197C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
+    bool draw_98199C(uint32 imageId, sint8 offsetX, sint8 offsetY, sint16 lengthX, sint16 lengthY, sint16 offsetZ, sint32 height, sint16 boundOffsetX, sint16 boundOffsetY, sint16 boundOffsetZ);
+    bool DrawSupports(supportStyle style, uint8 direction, uint16 special, uint32 imageFlags, sint16 offsetZ = 0, bool * underground = nullptr);
     void UpdateTileMaxHeight(sint16 height, uint8 byte_0141E9DA);
 
     void SetSupportSegmentZ(sint8 subX, sint8 subY, uint16 height);
     void SetSupportZ(uint16 height);
 };
 
-class RideDrawingContext : public TileDrawingContext
+namespace RideDrawingUtils
 {
-public:
-    uint8            RideIndex;
-    rct_ride *       Ride;
-    rct_ride_entry * RideEntry;
-    uint8            TrackType;
-    uint8            TrackSequence;
-
-    void DrawFloor(uint8 floorType, uint32 imageFlags, sint32 z);
-    void DrawFence(uint8 fenceType, uint8 direction, sint32 z);
-    void DrawFenceChecked(uint8 fenceType, uint8 direction, sint32 z);
-    void DrawFencesChecked(uint8 fenceDirections, uint8 fenceType, sint32 z);
+    void DrawFloor(uint8 floorType, uint32 imageFlags, sint32 z, rct_ride *ride, TileDrawingContext *context);
+    void DrawFence(uint8 fenceType, uint8 direction, sint32 z, rct_ride *ride, TileDrawingContext *context);
+    void DrawFenceChecked(uint8 fenceType, uint8 direction, sint32 z, rct_ride *ride, TileDrawingContext *context);
+    void DrawFencesChecked(uint8 fenceDirections, uint8 fenceType, sint32 z, rct_ride * ride, TileDrawingContext * context);
 };
 
-typedef void (*RideDrawFunction)(RideDrawingContext * dc);
+typedef void (*RideDrawFunction)(rct_ride * ride, uint8 trackType, uint8 trackSequence, uint8 direction, rct_map_element * mapElement, TileDrawingContext * context);
 
 #endif /* __cplusplus */
 

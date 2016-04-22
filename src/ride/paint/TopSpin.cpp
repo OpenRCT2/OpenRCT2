@@ -12,9 +12,10 @@ namespace TopSpin
      *
      *  rct2: 0x0076750D
      */
-    void DrawVehicle(RideDrawingContext * dc, sint8 al, sint8 cl, sint32 height)
+    void DrawVehicle(rct_ride * ride, uint8 direction, sint8 al, sint8 cl, TileDrawingContext * dc)
     {
         uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
+        rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
         /**
          *
          *  rct2: 0x0142811C
@@ -32,17 +33,17 @@ namespace TopSpin
         // is assigned to the drawings.
         rct_map_element * curMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
 
-        height += 3;
+        int height = 3;
 
         rct_vehicle * vehicle = NULL;
 
         uint8 seatRotation = 0;
         sint8 armRotation = 0;
 
-        if (dc->Ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK &&
-            dc->Ride->vehicles[0] != SPRITE_INDEX_NULL)
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK &&
+            ride->vehicles[0] != SPRITE_INDEX_NULL)
         {
-            vehicle = GET_VEHICLE(dc->Ride->vehicles[0]);
+            vehicle = GET_VEHICLE(ride->vehicles[0]);
 
             RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
             RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
@@ -62,12 +63,12 @@ namespace TopSpin
         if (image_id == 0x20000000)
         {
             image_id = 0xA0000000 |
-                       (dc->Ride->track_colour_main[0] << 19) |
-                       (dc->Ride->track_colour_supports[0] << 24);
+                       (ride->track_colour_main[0] << 19) |
+                       (ride->track_colour_supports[0] << 24);
         }
 
-        image_id += (dc->Direction & 1) << 1;
-        image_id += dc->RideEntry->vehicles[0].base_image_id;
+        image_id += (direction & 1) << 1;
+        image_id += rideEntry->vehicles[0].base_image_id;
         // Left back bottom support
         image_id += 572;
 
@@ -76,12 +77,12 @@ namespace TopSpin
         image_id = RCT2_GLOBAL(0x00F441A0, uint32);
         if (image_id == 0x20000000) {
             image_id = 0xA0000000 |
-                       (dc->Ride->track_colour_main[0] << 19) |
-                       (dc->Ride->track_colour_additional[0] << 24);
+                       (ride->track_colour_main[0] << 19) |
+                       (ride->track_colour_additional[0] << 24);
         }
 
         sint32 var_1F = armRotation;
-        if (dc->Direction & 2)
+        if (direction & 2)
         {
             var_1F = -var_1F;
             if (var_1F != 0)
@@ -90,8 +91,8 @@ namespace TopSpin
             }
         }
         image_id += var_1F;
-        image_id += (dc->Direction & 1) * 48;
-        image_id += dc->RideEntry->vehicles[0].base_image_id;
+        image_id += (direction & 1) * 48;
+        image_id += rideEntry->vehicles[0].base_image_id;
         // Left hand arm
         image_id += 380;
 
@@ -112,17 +113,17 @@ namespace TopSpin
         {
             // Open Restraints
             image_id = (vehicle->restraints_position - 64) >> 6;
-            image_id += dc->Direction * 3;
-            image_id += dc->RideEntry->vehicles[0].base_image_id;
+            image_id += direction * 3;
+            image_id += rideEntry->vehicles[0].base_image_id;
             image_id += 64;
             seatImageId = image_id;
         }
         else
         {
-            image_id = dc->Direction * 16;
+            image_id = direction * 16;
             // Var_20 Rotation of seats
             image_id += seatRotation;
-            image_id += dc->RideEntry->vehicles[0].base_image_id;
+            image_id += rideEntry->vehicles[0].base_image_id;
             seatImageId = image_id;
         }
 
@@ -130,8 +131,8 @@ namespace TopSpin
         if (image_id == 0x20000000)
         {
             image_id = 0xA0000000 |
-                       (dc->Ride->vehicle_colours[0].body_colour << 19) |
-                       (dc->Ride->vehicle_colours[0].trim_colour << 24);
+                       (ride->vehicle_colours[0].body_colour << 19) |
+                       (ride->vehicle_colours[0].trim_colour << 24);
         }
         image_id += seatImageId;
 
@@ -142,7 +143,7 @@ namespace TopSpin
         seatCoords.z += RCT2_ADDRESS(0x14280BC, sint16)[armRotation];
 
         assert(armRotation < sizeof(TopSpinSeatPositionOffset));
-        switch (dc->Direction) {
+        switch (direction) {
             case 0:
                 seatCoords.x -= TopSpinSeatPositionOffset[armRotation];
                 break;
@@ -221,13 +222,13 @@ namespace TopSpin
         if (image_id == 0x20000000)
         {
             image_id = 0xA0000000 |
-                       (dc->Ride->track_colour_main[0] << 19) |
-                       (dc->Ride->track_colour_additional[0] << 24);
+                       (ride->track_colour_main[0] << 19) |
+                       (ride->track_colour_additional[0] << 24);
         }
 
         image_id += var_1F;
-        image_id += (dc->Direction & 1) * 48;
-        image_id += dc->RideEntry->vehicles[0].base_image_id;
+        image_id += (direction & 1) * 48;
+        image_id += rideEntry->vehicles[0].base_image_id;
         // Right hand arm
         image_id += 476;
 
@@ -246,12 +247,12 @@ namespace TopSpin
         if (image_id == 0x20000000)
         {
             image_id = 0xA0000000 |
-                       (dc->Ride->track_colour_main[0] << 19) |
-                       (dc->Ride->track_colour_supports[0] << 24);
+                       (ride->track_colour_main[0] << 19) |
+                       (ride->track_colour_supports[0] << 24);
         }
 
-        image_id += (dc->Direction & 1) << 1;
-        image_id += dc->RideEntry->vehicles[0].base_image_id;
+        image_id += (direction & 1) << 1;
+        image_id += rideEntry->vehicles[0].base_image_id;
         // Right back bottom support
         image_id += 573;
 
@@ -280,10 +281,10 @@ namespace TopSpin
      *
      *  rct2: 0x0076659C
      */
-    void Draw(RideDrawingContext * dc)
+    void Draw(rct_ride * ride, uint8 trackType, uint8 trackSequence, uint8 direction, rct_map_element * mapElement, TileDrawingContext * context)
     {
-        if (dc->TrackType != FLAT_RIDE_ELEM_TOP_SPIN) return;
-        if (dc->TrackSequence > 8) return;
+        if (trackType != FLAT_RIDE_ELEM_TOP_SPIN) return;
+        if (trackSequence > 8) return;
 
         struct TopSpinTileInfo
         {
@@ -307,32 +308,33 @@ namespace TopSpin
             { DF_SW,            -32,   0, 112, 8, 4, 2, 5, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF },
         };
 
-        dc->DrawSupports(SUPPORT_STYLE_WOOD, 0, dc->Z, RCT2_GLOBAL(0x00F441A0, uint32));
-        dc->DrawFloor(FLOOR_STYLE_BROWN_RUBBER, RCT2_GLOBAL(0x00F44198, uint32), dc->Z);
-        uint8 fences = TopSpinTrackSeqFenceMap[dc->TrackSequence].fences;
-        dc->DrawFencesChecked(fences, 0, dc->Z);
 
-        int correctedSequence = TopSpinTrackSeqFenceMap[dc->TrackSequence].mapDirection[dc->Direction];
+        context->DrawSupports(SUPPORT_STYLE_WOOD, 0, context->Z, RCT2_GLOBAL(0x00F441A0, uint32));
+        RideDrawingUtils::DrawFloor(FLOOR_STYLE_BROWN_RUBBER, RCT2_GLOBAL(0x00F44198, uint32), context->Z, ride, context);
+        uint8 fences = TopSpinTrackSeqFenceMap[trackSequence].fences;
+        RideDrawingUtils::DrawFencesChecked(fences, 0, context->Z, ride, context);
+
+        int correctedSequence = TopSpinTrackSeqFenceMap[direction].mapDirection[direction];
         const TopSpinTileInfo * ti = &TopSpinTrackSeqFenceMap[correctedSequence];
 
         if (ti->vehicle_offset_x != 0 || ti->vehicle_offset_y != 0)
         {
-            DrawVehicle(dc, ti->vehicle_offset_x, ti->vehicle_offset_y, dc->Z);
+            DrawVehicle(ride, direction, ti->vehicle_offset_x, ti->vehicle_offset_y, context);
         }
 
-        dc->SetSupportSegmentZ(-1, -1, TransformArg(ti->unk_args[ 0], dc->Z));
-        RCT2_GLOBAL(0x141E9B6, uint16) = TransformArg(ti->unk_args[ 1], dc->Z);
-        dc->SetSupportSegmentZ(-1, +1, TransformArg(ti->unk_args[ 2], dc->Z));
-        dc->SetSupportSegmentZ(+1, -1, TransformArg(ti->unk_args[ 3], dc->Z));
-        dc->SetSupportSegmentZ(+1, +1, TransformArg(ti->unk_args[ 4], dc->Z));
-        dc->SetSupportSegmentZ( 0,  0, TransformArg(ti->unk_args[ 5], dc->Z));
-        dc->SetSupportSegmentZ(-1,  0, TransformArg(ti->unk_args[ 6], dc->Z));
-        RCT2_GLOBAL(0x141E9CA, uint16) = TransformArg(ti->unk_args[ 7], dc->Z);
-        dc->SetSupportSegmentZ( 0, -1, TransformArg(ti->unk_args[ 8], dc->Z));
-        RCT2_GLOBAL(0x141E9CE, uint16) = TransformArg(ti->unk_args[ 9], dc->Z);
-        dc->SetSupportSegmentZ( 0, +1, TransformArg(ti->unk_args[10], dc->Z));
-        dc->SetSupportSegmentZ(+1,  0, TransformArg(ti->unk_args[11], dc->Z));
+        context->SetSupportSegmentZ(-1, -1, TransformArg(ti->unk_args[0], context->Z));
+        RCT2_GLOBAL(0x141E9B6, uint16) = TransformArg(ti->unk_args[1], context->Z);
+        context->SetSupportSegmentZ(-1, +1, TransformArg(ti->unk_args[2], context->Z));
+        context->SetSupportSegmentZ(+1, -1, TransformArg(ti->unk_args[3], context->Z));
+        context->SetSupportSegmentZ(+1, +1, TransformArg(ti->unk_args[4], context->Z));
+        context->SetSupportSegmentZ(0, 0, TransformArg(ti->unk_args[5], context->Z));
+        context->SetSupportSegmentZ(-1, 0, TransformArg(ti->unk_args[6], context->Z));
+        RCT2_GLOBAL(0x141E9CA, uint16) = TransformArg(ti->unk_args[7], context->Z);
+        context->SetSupportSegmentZ(0, -1, TransformArg(ti->unk_args[8], context->Z));
+        RCT2_GLOBAL(0x141E9CE, uint16) = TransformArg(ti->unk_args[9], context->Z);
+        context->SetSupportSegmentZ(0, +1, TransformArg(ti->unk_args[10], context->Z));
+        context->SetSupportSegmentZ(+1, 0, TransformArg(ti->unk_args[11], context->Z));
 
-        dc->UpdateTileMaxHeight(dc->Z + ti->max_height, 32);
+        context->UpdateTileMaxHeight(ti->max_height, 0x20);
     }
 }
