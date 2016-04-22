@@ -1,11 +1,50 @@
 #ifndef _TRACK_PAINT_H
 #define _TRACK_PAINT_H
 
-#include "../common.h"
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    #include "../common.h"
+    #include "../world/map.h"
+    #include "ride.h"
+#ifdef __cplusplus
+}
+#endif
 
 #ifdef __cplusplus
 
 constexpr uint16 NO_SUPPORT = 0xFFFF;
+
+enum
+{
+    DF_NE = 1 << 0,
+    DF_SE = 1 << 1,
+    DF_SW = 1 << 2,
+    DF_NW = 1 << 3,
+};
+
+enum
+{
+    FLOOR_STYLE_TILE_SMALL,
+    FLOOR_STYLE_TILE_LARGE,
+    FLOOR_STYLE_BROWN_RUBBER,
+    FLOOR_STYLE_STEEL,
+};
+
+enum
+{
+    SUPPORT_STYLE_WOOD
+};
+
+enum
+{
+    FLAT_RIDE_ELEM_MOTION_SIMULATOR  = 110,
+    FLAT_RIDE_ELEM_FACILITY          = 118,
+    FLAT_RIDE_ELEM_SHOP              = 118,
+    FLAT_RIDE_ELEM_INFORMATION_KIOSK = 121,
+    FLAT_RIDE_ELEM_TOP_SPIN          = 123,
+};
 
 class TileDrawingContext
 {

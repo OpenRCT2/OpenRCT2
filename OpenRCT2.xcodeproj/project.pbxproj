@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		C650B2091CCA424700B4D91C /* track_paint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2081CCA424700B4D91C /* track_paint.cpp */; };
+		C6E2B0D61CCAD16600905D90 /* Facility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B0D21CCAD16600905D90 /* Facility.cpp */; };
+		C6E2B0D71CCAD16600905D90 /* Shop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B0D41CCAD16600905D90 /* Shop.cpp */; };
+		C6E2B0D81CCAD16600905D90 /* TopSpin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E2B0D51CCAD16600905D90 /* TopSpin.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B73F11C21018C0080A7B9 /* libssl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73F01C21018C0080A7B9 /* libssl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
@@ -227,6 +230,10 @@
 
 /* Begin PBXFileReference section */
 		C650B2081CCA424700B4D91C /* track_paint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = track_paint.cpp; sourceTree = "<group>"; };
+		C6E2B0D21CCAD16600905D90 /* Facility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Facility.cpp; sourceTree = "<group>"; };
+		C6E2B0D31CCAD16600905D90 /* paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paint.h; sourceTree = "<group>"; };
+		C6E2B0D41CCAD16600905D90 /* Shop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shop.cpp; sourceTree = "<group>"; };
+		C6E2B0D51CCAD16600905D90 /* TopSpin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopSpin.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B73F01C21018C0080A7B9 /* libssl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libssl.tbd; path = usr/lib/libssl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -608,6 +615,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C6E2B0D11CCAD16600905D90 /* paint */ = {
+			isa = PBXGroup;
+			children = (
+				C6E2B0D21CCAD16600905D90 /* Facility.cpp */,
+				C6E2B0D31CCAD16600905D90 /* paint.h */,
+				C6E2B0D41CCAD16600905D90 /* Shop.cpp */,
+				C6E2B0D51CCAD16600905D90 /* TopSpin.cpp */,
+			);
+			path = paint;
+			sourceTree = "<group>";
+		};
 		D41B72431C21015A0080A7B9 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -880,6 +898,7 @@
 		D442716E1CC81B3200D84D28 /* ride */ = {
 			isa = PBXGroup;
 			children = (
+				C6E2B0D11CCAD16600905D90 /* paint */,
 				D442716F1CC81B3200D84D28 /* cable_lift.c */,
 				D44271701CC81B3200D84D28 /* cable_lift.h */,
 				D44271711CC81B3200D84D28 /* ride.c */,
@@ -1444,9 +1463,11 @@
 				D44272A21CC81B3200D84D28 /* mapgen.c in Sources */,
 				D44272201CC81B3200D84D28 /* viewport.c in Sources */,
 				D442722F1CC81B3200D84D28 /* finance.c in Sources */,
+				C6E2B0D61CCAD16600905D90 /* Facility.cpp in Sources */,
 				D44272831CC81B3200D84D28 /* shortcut_keys.c in Sources */,
 				D44272141CC81B3200D84D28 /* game.c in Sources */,
 				D44272A11CC81B3200D84D28 /* map_helpers.c in Sources */,
+				C6E2B0D71CCAD16600905D90 /* Shop.cpp in Sources */,
 				D44272281CC81B3200D84D28 /* language.cpp in Sources */,
 				D442729B1CC81B3200D84D28 /* climate.c in Sources */,
 				D44272121CC81B3200D84D28 /* supports.c in Sources */,
@@ -1472,6 +1493,7 @@
 				D44272251CC81B3200D84D28 /* convert.c in Sources */,
 				D442727B1CC81B3200D84D28 /* ride.c in Sources */,
 				D44272031CC81B3200D84D28 /* Path.cpp in Sources */,
+				C6E2B0D81CCAD16600905D90 /* TopSpin.cpp in Sources */,
 				D44272401CC81B3200D84D28 /* windows.c in Sources */,
 				D44272881CC81B3200D84D28 /* text_input.c in Sources */,
 				D442720F1CC81B3200D84D28 /* scrolling_text.c in Sources */,
