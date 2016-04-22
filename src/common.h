@@ -34,7 +34,7 @@
 #endif
 #define abstract = 0
 
-#if defined(__i386__) || defined(_M_I86)
+#if defined(__i386__) || defined(_M_IX86)
 #define PLATFORM_X86
 #endif
 
