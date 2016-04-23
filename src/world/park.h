@@ -22,6 +22,7 @@
 #define _PARK_H_
 
 #include "../common.h"
+#include "map.h"
 
 #define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
 #define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)
@@ -56,6 +57,11 @@ extern uint8 *gParkRatingHistory;
 extern uint8 *gGuestsInParkHistory;
 extern int _guestGenerationProbability;
 extern int _suggestedGuestMaximum;
+
+extern bool gParkEntranceGhostExists;
+extern rct_xyz16 gParkEntranceGhostPosition;
+extern uint8 gParkEntranceGhostDirection;
+extern money32 gParkEntranceGhostPrice;
 
 void set_forced_park_rating(int rating);
 int get_forced_park_rating();

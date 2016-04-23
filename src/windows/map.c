@@ -318,7 +318,7 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		if (tool_set(w, widgetIndex, 2))
 			break;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, sint8) = 0;
+		gParkEntranceGhostExists = false;
 		gInputFlags |= INPUT_FLAG_6;
 
 		show_gridlines();
@@ -1166,7 +1166,7 @@ void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *dir
 		return;
 
 	mapElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-	*mapZ = mapElement->properties.surface.slope & 0x1F;
+	*mapZ = mapElement->properties.surface.terrain & 0x1F;
 	if (*mapZ == 0) {
 		*mapZ = mapElement->base_height / 2;
 		if ((mapElement->properties.surface.slope & 0x0F) != 0) {
@@ -1211,16 +1211,16 @@ static void window_map_place_park_entrance_tool_update(int x, int y)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 1);
 	map_invalidate_map_selection_tiles();
 	if (
-		(RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_EXISTS, uint8) & (1 << 0)) &&
-		mapX == RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X, uint16) &&
-		mapY == RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y, uint16) &&
-		direction == RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_DIRECTION, uint8)
+		gParkEntranceGhostExists &&
+		mapX == gParkEntranceGhostPosition.x &&
+		mapY == gParkEntranceGhostPosition.y &&
+		direction == gParkEntranceGhostDirection
 	) {
 		return;
 	}
 
 	park_remove_ghost_entrance();
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_GHOST_PRICE, uint32) = park_place_ghost_entrance(mapX, mapY, mapZ, direction);
+	gParkEntranceGhostPrice = park_place_ghost_entrance(mapX, mapY, mapZ, direction);
 }
 
 /**
