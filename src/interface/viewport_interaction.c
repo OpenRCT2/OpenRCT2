@@ -137,7 +137,7 @@ int viewport_interaction_left_click(int x, int y)
 			window_guest_open(info.peep);
 			break;
 		case SPRITE_IDENTIFIER_MISC:
-			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+			if (game_is_not_paused()) {
 				switch (info.sprite->unknown.misc_identifier) {
 				case SPRITE_MISC_BALLOON:
 					balloon_press(&info.sprite->balloon);

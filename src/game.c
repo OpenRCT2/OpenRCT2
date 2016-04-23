@@ -61,6 +61,7 @@
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
+uint8 gGamePaused = 0;
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
@@ -270,7 +271,7 @@ void game_update()
 			numUpdates += 10;
 		}
 	} else {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		if (game_is_paused()) {
 			numUpdates = 0;
 			// Update the animation list. Note this does not 
 			// increment the map animation.
@@ -569,14 +570,24 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 void pause_toggle()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
+	gGamePaused ^= GAME_PAUSED_NORMAL;
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1) {
+	if (gGamePaused & GAME_PAUSED_NORMAL) {
 		audio_pause_sounds();
 		audio_unpause_sounds();
 	} else {
 		audio_unpause_sounds();
 	}
+}
+
+bool game_is_paused()
+{
+	return gGamePaused != 0;
+}
+
+bool game_is_not_paused()
+{
+	return gGamePaused == 0;
 }
 
 /**
@@ -860,7 +871,7 @@ int game_load_network(SDL_RWops* rw)
 	SDL_RWread(rw, &checksum, sizeof(uint32), 1);
 
 	// Read other data not in normal save files
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) = SDL_ReadLE32(rw);
+	gGamePaused = SDL_ReadLE32(rw);
 	_guestGenerationProbability = SDL_ReadLE32(rw);
 	_suggestedGuestMaximum = SDL_ReadLE32(rw);
 	gCheatsSandboxMode = SDL_ReadU8(rw);

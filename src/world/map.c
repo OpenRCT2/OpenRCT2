@@ -725,7 +725,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = base_height * 8;
 
-	if (!(flags & GAME_COMMAND_FLAG_GHOST) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -803,7 +803,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
 
-	if (!(flags & GAME_COMMAND_FLAG_GHOST) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -953,7 +953,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 
-	if(!(flags & GAME_COMMAND_FLAG_GHOST) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+	if(!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -1455,7 +1455,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 
 	money32 cost = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (game_is_paused() && !gCheatsBuildInPauseMode) {
 		cost += RCT2_GLOBAL(0x009E32B4, uint32);
 		return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 	}
@@ -1600,7 +1600,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 {
 	rct_map_element *mapElement;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -2569,7 +2569,7 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint32) = base_height * 8;
-	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+	if(game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -2657,7 +2657,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	uint8 direction = *edx;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+	if(!(*ebx & 0x40) && game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -2713,7 +2713,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = base_height * 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -2916,7 +2916,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) += 16;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) += 16;
-	if(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode){
+	if(game_is_not_paused() || gCheatsBuildInPauseMode){
 		if(sub_68B044()){
 			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) && y <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16))){
 				rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
@@ -3289,7 +3289,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = map_element_height(position.x, position.y) & 0xFFFF;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+	if (game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -3550,7 +3550,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	// Supports cost
 	RCT2_GLOBAL(0x00F4389A, money32) = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;

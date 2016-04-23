@@ -1100,7 +1100,7 @@ int scenario_save_network(SDL_RWops* rw)
 	reset_loaded_objects();
 
 	// Write other data not in normal save files
-	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
+	SDL_WriteLE32(rw, gGamePaused);
 	SDL_WriteLE32(rw, _guestGenerationProbability);
 	SDL_WriteLE32(rw, _suggestedGuestMaximum);
 	SDL_WriteU8(rw, gCheatsSandboxMode);

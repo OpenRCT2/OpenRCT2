@@ -5587,8 +5587,8 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
  */
 int ride_get_refund_price(int ride_id)
 {
-	uint8 oldpaused = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
+	uint8 oldpaused = gGamePaused;
+	gGamePaused = 0;
 	RCT2_GLOBAL(0x00F4413A, money32) = 0;
 
 	map_element_iterator it;
@@ -5658,7 +5658,7 @@ int ride_get_refund_price(int ride_id)
 			0);
 		map_element_iterator_restart_for_tile(&it);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = oldpaused;
+	gGamePaused = oldpaused;
 	return RCT2_GLOBAL(0x00F4413A, int);
 }
 
@@ -6231,7 +6231,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
 	}
-	if(!(*ebx & 0x40) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) && !gCheatsBuildInPauseMode){
+	if(!(*ebx & 0x40) && game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -8076,7 +8076,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -8279,7 +8279,7 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 	}
 
 	if (!(flags & GAME_COMMAND_FLAG_GHOST)){
-		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+		if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode){
 			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}

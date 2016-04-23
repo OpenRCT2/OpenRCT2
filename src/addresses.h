@@ -215,11 +215,6 @@
 #define RCT2_ADDRESS_COMMAND_MAP_Z					0x009DEA62
 
 #define RCT2_ADDRESS_SCREENSHOT_COUNTDOWN			0x009DEA6D
-// Note: not only the zeroth bit can be set to control pause
-// When paused by saving track 2nd bit is set
-// When paused by save menu 1st bit is set
-// When paused by pause button 0th bit is set
-#define RCT2_ADDRESS_GAME_PAUSED					0x009DEA6E
 #define RCT2_ADDRESS_PLACE_OBJECT_MODIFIER			0x009DEA70
 #define RCT2_ADDRESS_ON_TUTORIAL					0x009DEA71
 
@@ -595,6 +590,7 @@
 
 #define RCT2_ADDRESS_SCREEN_AGE						0x009DEA66
 #define RCT2_ADDRESS_SCREEN_FLAGS					0x009DEA68
+#define RCT2_ADDRESS_GAME_PAUSED					0x009DEA6E
 
 #define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_X			0x009E32CC
 #define RCT2_ADDRESS_PARK_ENTRANCE_GHOST_Y			0x009E32CE

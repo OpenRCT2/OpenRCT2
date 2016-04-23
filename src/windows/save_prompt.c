@@ -177,7 +177,7 @@ void window_save_prompt_open()
 	window_init_scroll_widgets(window);
 
 	// Pause the game
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= 2;
+	gGamePaused |= GAME_PAUSED_MODAL;
 	audio_pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
@@ -197,7 +197,7 @@ void window_save_prompt_open()
 static void window_save_prompt_close(rct_window *w)
 {
 	// Unpause the game
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~2;
+	gGamePaused &= ~GAME_PAUSED_MODAL;
 	audio_unpause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }

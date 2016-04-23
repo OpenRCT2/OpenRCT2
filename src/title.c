@@ -105,7 +105,7 @@ void title_load()
 {
 	log_verbose("loading title");
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
+	if (gGamePaused & GAME_PAUSED_NORMAL)
 		pause_toggle();
 
 	gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
@@ -523,7 +523,7 @@ void title_update()
 	screenshot_check();
 	title_handle_keyboard_input();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+	if (game_is_not_paused()) {
 		title_update_showcase();
 
 		if (gGameSpeed > 1) {

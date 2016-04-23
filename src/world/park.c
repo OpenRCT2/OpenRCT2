@@ -1077,7 +1077,7 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 	// Game command modified to accept selection size
 	totalCost = 0;
 	gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-	if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
+	if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || game_is_not_paused() || gCheatsBuildInPauseMode) {
 		for (y = y0; y <= y1; y += 32) {
 			for (x = x0; x <= x1; x += 32) {
 				cost = map_buy_land_rights_for_tile(x, y, setting, flags);

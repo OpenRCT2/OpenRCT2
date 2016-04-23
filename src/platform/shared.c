@@ -210,7 +210,7 @@ static void overlay_post_render_check(int width, int height) {
 
 	// Toggle game pause state consistently with base pause state
 	if (!overlayActive && newOverlayActive) {
-		pausedBeforeOverlay = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1;
+		pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
 
 		if (!pausedBeforeOverlay) pause_toggle();
 	} else if (overlayActive && !newOverlayActive && !pausedBeforeOverlay) {

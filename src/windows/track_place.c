@@ -486,7 +486,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 
 	// Get base Z position
 	mapZ = window_track_place_get_base_z(mapX, mapY);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
+	if (game_is_not_paused() || gCheatsBuildInPauseMode) {
 		window_track_place_clear_provisional();
 
 		// Try increasing Z until a feasible placement is found

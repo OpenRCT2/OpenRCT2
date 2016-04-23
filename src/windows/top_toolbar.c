@@ -770,10 +770,10 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	else
 		w->pressed_widgets |= (1 << WIDX_PATH);
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1))
-		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
-	else
+	if (gGamePaused & GAME_PAUSED_NORMAL)
 		w->pressed_widgets |= (1 << WIDX_PAUSE);
+	else
+		w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 
 	// Zoomed out/in disable. Not sure where this code is in the original.
 	if (window_get_main()->viewport->zoom == 0){

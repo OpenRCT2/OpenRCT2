@@ -22,6 +22,7 @@ extern "C"
     #include "../addresses.h"
     #include "../config.h"
     #include "../drawing/drawing.h"
+    #include "../game.h"
     #include "../interface/console.h"
     #include "../localisation/localisation.h"
     #include "../management/news_item.h"
@@ -119,7 +120,7 @@ namespace Twitch
     {
         if (!_twitchIdle) return;
         if (IsTwitchEnabled()) {
-            if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) return;
+            if (game_is_paused()) return;
 
             switch (_twitchState) {
             case TWITCH_STATE_LEFT:

@@ -3361,7 +3361,7 @@ static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *d
 	gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], 0x30);
 	if (unk & (1u << 31)) {
 		unk &= ~(1u << 31);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 && (gCurrentTicks & 8))
+		if (game_is_not_paused() && (gCurrentTicks & 8))
 			return;
 	}
 
@@ -4646,7 +4646,7 @@ static void window_ride_music_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *  rct2: 0x006D2804
   when al == 0*/
 static void cancel_scenery_selection(){
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~(1 << 2);
+	gGamePaused &= ~GAME_PAUSED_SAVING_TRACK;
 	RCT2_GLOBAL(0x9DEA6F, uint8) &= ~(1 << 0);
 	audio_unpause_sounds();
 
@@ -4677,7 +4677,7 @@ static void setup_scenery_selection(rct_window* w){
 	RCT2_GLOBAL(0x009DA193, uint8) = 0xFF;
 
 	gTrackSavedMapElements[0] = (rct_map_element*)-1;
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= (1 << 2);
+	gGamePaused |= GAME_PAUSED_SAVING_TRACK;
 	RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
 
 	audio_pause_sounds();

@@ -178,10 +178,10 @@ static void window_maze_construction_close(rct_window *w)
 	uint8 rideIndex = _currentRideIndex;
 	rct_ride* ride = get_ride(rideIndex);
 	if (ride->overall_view == 0xFFFF) {
-		int savedPausedState = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8);
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = 0;
+		int savedPausedState = gGamePaused;
+		gGamePaused = 0;
 		game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) = savedPausedState;
+		gGamePaused = savedPausedState;
 	} else {
 		window_ride_main_open(rideIndex);
 	}
