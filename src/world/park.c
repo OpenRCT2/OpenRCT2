@@ -542,7 +542,7 @@ void park_update()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) % 512 == 0) {
 		gParkRating = calculate_park_rating();
 		gParkValue = calculate_park_value();
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
+		gCompanyValue = calculate_company_value();
 		window_invalidate_by_class(WC_FINANCES);
 		_guestGenerationProbability = park_calculate_guest_generation_probability();
 		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PARK_RATING;

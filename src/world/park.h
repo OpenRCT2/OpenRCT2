@@ -55,6 +55,7 @@ enum {
 #define gParkEntranceFee	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16)
 
 #define	gParkValue			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)
+#define gCompanyValue		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32)
 
 #define gNumGuestsInPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
 

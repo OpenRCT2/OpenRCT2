@@ -661,7 +661,7 @@ void S4Importer::ImportFinance()
     RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = _s4.max_loan;
     RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = _s4.cash;
 
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = _s4.company_value;
+    gCompanyValue = _s4.company_value;
     gParkValue = _s4.park_value;
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = _s4.profit;
 

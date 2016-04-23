@@ -279,7 +279,7 @@ void scenario_begin()
 
 	gParkRating = calculate_park_rating();
 	gParkValue = calculate_park_value();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
+	gCompanyValue = calculate_company_value();
 	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
 
@@ -409,7 +409,7 @@ void scenario_failure()
  */
 void scenario_success()
 {
-	const money32 companyValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32);
+	const money32 companyValue = gCompanyValue;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
 	peep_applause();

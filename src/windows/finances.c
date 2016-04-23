@@ -757,7 +757,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	} else {
 		// Park value and company value
 		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, 0, w->x + 280, w->y + 229);
-		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_COMPANY_VALUE, 0, w->x + 280, w->y + 244);
+		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, 0, w->x + 280, w->y + 244);
 	}
 }
 
