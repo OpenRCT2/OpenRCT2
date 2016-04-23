@@ -471,6 +471,8 @@ extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern scenario_index_entry *gScenarioList;
 
+extern char *gScenarioName;
+extern char *gScenarioDetails;
 extern char gScenarioSavePath[MAX_PATH];
 extern int gFirstTimeSave;
 extern uint32 gLastAutoSaveTick;

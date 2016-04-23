@@ -680,8 +680,8 @@ void game_convert_strings_to_utf8()
 {
 	// Scenario details
 	rct2_to_utf8_self(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char), 32);
-	rct2_to_utf8_self(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char), 64);
-	rct2_to_utf8_self(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char), 256);
+	rct2_to_utf8_self(gScenarioName, 64);
+	rct2_to_utf8_self(gScenarioDetails, 256);
 
 	// User strings
 	for (int i = 0; i < MAX_USER_STRINGS; i++) {

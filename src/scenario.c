@@ -61,6 +61,8 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName = "";
 
+char *gScenarioName = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char);
+char *gScenarioDetails = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char);
 char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
 uint32 gLastAutoSaveTick = 0;
@@ -285,8 +287,8 @@ void scenario_begin()
 
 	finance_update_loan_hash();
 
-	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details, 256);
-	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name, 64);
+	safe_strcpy(gScenarioDetails, s6Info->details, 256);
+	safe_strcpy(gScenarioName, s6Info->name, 64);
 
 	{
 		utf8 normalisedName[64];
@@ -296,13 +298,13 @@ void scenario_begin()
 		rct_string_id localisedStringIds[3];
 		if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {
 			if (localisedStringIds[0] != STR_NONE) {
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
+				safe_strcpy(gScenarioName, language_get_string(localisedStringIds[0]), 32);
 			}
 			if (localisedStringIds[1] != STR_NONE) {
 				park_set_name(language_get_string(localisedStringIds[1]));
 			}
 			if (localisedStringIds[2] != STR_NONE) {
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 256);
+				safe_strcpy(gScenarioDetails, language_get_string(localisedStringIds[2]), 256);
 			}
 		} else {
 			rct_stex_entry* stex = g_stexEntries[0];
@@ -315,13 +317,11 @@ void scenario_begin()
 
 				// Set localised scenario name
 				format_string(buffer, stex->scenario_name, 0);
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
-				((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+				safe_strcpy(gScenarioName, buffer, 64);
 
 				// Set localised scenario details
 				format_string(buffer, stex->details, 0);
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
-				((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+				safe_strcpy(gScenarioDetails, buffer, 256);
 			}
 		}
 	}

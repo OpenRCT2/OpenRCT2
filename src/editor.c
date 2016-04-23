@@ -92,7 +92,7 @@ void editor_load()
 	gfx_invalidate_screen();
 	gScreenAge = 0;
 
-	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749), 0x40);
+	safe_strcpy(gScenarioName, language_get_string(2749), 64);
 }
 
 /**
@@ -120,8 +120,8 @@ void editor_convert_save_to_scenario_callback(int result)
 		gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
 	gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-	safe_strcpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME, 64);
-	safe_strcpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS, 256);
+	safe_strcpy(s6Info->name, gScenarioName, 64);
+	safe_strcpy(s6Info->details, gScenarioDetails, 256);
 	s6Info->objective_type = gScenarioObjectiveType;
 	s6Info->objective_arg_1 = gScenarioObjectiveYear;
 	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
