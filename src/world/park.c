@@ -76,7 +76,7 @@ void park_init()
 	int i;
 
 	RCT2_GLOBAL(0x013CA740, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, uint16) = 777;
+	gParkName = 777;
 	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = COLOUR_BRIGHT_RED;
 	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = COLOUR_LIGHT_BLUE;
 	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = COLOUR_YELLOW;
@@ -338,7 +338,7 @@ money32 calculate_company_value()
  */
 void reset_park_entrances()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = 0;
+	gParkName = 0;
 
 	for (short i = 0; i < 4; i++) {
 		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
@@ -899,7 +899,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		return;
 	}
 
-	format_string(oldName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), &RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32));
+	format_string(oldName, gParkName, &RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32));
 	if (strcmp(oldName, newName) == 0) {
 		*ebx = 0;
 		return;
@@ -920,8 +920,8 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		// Free the old ride name
-		user_string_free(RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id));
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = newUserStringId;
+		user_string_free(gParkName);
+		gParkName = newUserStringId;
 
 		gfx_invalidate_screen();
 	} else {

@@ -917,7 +917,7 @@ void S4Importer::ImportParkName()
     rct_string_id stringId = user_string_allocate(4, parkName);
     if (stringId != 0)
     {
-        RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = stringId;
+        gParkName = stringId;
         RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32) = 0;
     }
 }

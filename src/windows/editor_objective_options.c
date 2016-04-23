@@ -403,7 +403,7 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		break;
 	case WIDX_PARK_NAME:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
-		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
+		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
 		safe_strcpy((char*)0x009BC677, s6Info->name, 64);
@@ -782,7 +782,7 @@ static void window_editor_objective_options_main_textinput(rct_window *w, int wi
 		park_set_name(text);
 
 		if (s6Info->name[0] == 0)
-			format_string(s6Info->name, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+			format_string(s6Info->name, gParkName, (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
 		break;
 	case WIDX_SCENARIO_NAME:
 		strncpy(s6Info->name, text, 64);
@@ -990,7 +990,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	if (stex != NULL) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->park_name;
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = gParkName;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
 	gfx_draw_string_left_clipped(dpi, 3298, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
