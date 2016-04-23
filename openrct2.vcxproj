@@ -265,6 +265,7 @@
     <ClInclude Include="src\network\twitch.h" />
     <ClInclude Include="src\network\network.h" />
     <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\object_list.h" />
     <ClInclude Include="src\openrct2.h" />
     <ClInclude Include="src\peep\peep.h" />
     <ClInclude Include="src\peep\staff.h" />
@@ -366,7 +367,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;NO_RCT2;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>

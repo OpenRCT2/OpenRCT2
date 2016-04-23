@@ -29,6 +29,7 @@
 #include "../localisation/localisation.h"
 #include "../management/research.h"
 #include "../object.h"
+#include "../object_list.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
@@ -1301,7 +1302,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		gfx_draw_string_left(dpi, 3164, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
 	}
 
-	rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
+	rct_stex_entry* stex_entry = gStexTempChunk;
 
 	/*gfx_fill_rect_inset(dpi,
 		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left,
