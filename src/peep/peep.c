@@ -177,7 +177,7 @@ void peep_update_all()
 		peep = &(g_sprite_list[spriteIndex].peep);
 		spriteIndex = peep->next;
 
-		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+		if ((i & 0x7F) != (gCurrentTicks & 0x7F)) {
 			peep_update(peep);
 		} else {
 			sub_68F41A(peep, i);
@@ -399,7 +399,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		return;
 	}
 
-	if ((index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF)){
+	if ((index & 0x1FF) == (gCurrentTicks & 0x1FF)){
 		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
 
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
@@ -504,7 +504,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep_pick_ride_to_go_on(peep);
 		}
 
-		if ((index & 0x3FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)){
+		if ((index & 0x3FF) == (gCurrentTicks & 0x3FF)){
 
 			if (peep->outside_of_park == 0 &&
 				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
@@ -4342,7 +4342,7 @@ static void peep_update_1(rct_peep* peep){
  *  rct2: 0x690009
  */
 static void peep_update_picked(rct_peep* peep){
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1F) return;
+	if (gCurrentTicks & 0x1F) return;
 	peep->sub_state++;
 	if (peep->sub_state == 13){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HELP, 0xFF);
@@ -5452,7 +5452,7 @@ static void peep_update_walking(rct_peep* peep){
 	}
 	else if (peep_has_empty_container(peep)){
 		if ((!(peep->next_var_29 & 0x18)) &&
-			((peep->sprite_index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF))&&
+			((peep->sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))&&
 			((0xFFFF & scenario_rand()) <= 4096)){
 
 			uint8 pos_stnd = 0;

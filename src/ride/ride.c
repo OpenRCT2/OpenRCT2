@@ -1943,7 +1943,7 @@ static void ride_update(int rideIndex)
 
 	// Various things include news messages
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION))
-		if (((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >> 1) & 255) == rideIndex)
+		if (((gCurrentTicks >> 1) & 255) == rideIndex)
 			ride_breakdown_status_update(rideIndex);
 
 	ride_inspection_update(ride);
@@ -2039,7 +2039,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 	rct_map_element *mapElement;
 	rct_peep *peep;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
+	if (gCurrentTicks & 3)
 		return;
 	if (ride->slide_in_use == 0)
 		return;
@@ -2095,7 +2095,7 @@ static void ride_inspection_update(rct_ride *ride)
 {
 	int i;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 2047)
+	if (gCurrentTicks & 2047)
 		return;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 		return;
@@ -2160,7 +2160,7 @@ static void ride_breakdown_update(int rideIndex)
 	int breakdownReason, unreliabilityAccumulator;
 	rct_ride *ride = get_ride(rideIndex);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 255)
+	if (gCurrentTicks & 255)
 		return;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
 		return;
@@ -2168,7 +2168,7 @@ static void ride_breakdown_update(int rideIndex)
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
 		ride->downtime_history[0]++;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8191)) {
+	if (!(gCurrentTicks & 8191)) {
 		int totalDowntime =
 			ride->downtime_history[0] +
 			ride->downtime_history[1] +
@@ -2677,7 +2677,7 @@ static void ride_music_update(int rideIndex)
 	// Oscillate parameters for a power cut effect when breaking down
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) {
 		if (ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE) {
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7))
+			if (!(gCurrentTicks & 7))
 				if (ride->breakdown_sound_modifier != 255)
 					ride->breakdown_sound_modifier++;
 		} else {

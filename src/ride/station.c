@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../scenario.h"
 #include "../world/sprite.h"
 #include "station.h"
@@ -146,7 +147,7 @@ static void ride_update_station_normal(rct_ride *ride, int stationIndex)
 		(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))  ||
 		(ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
 	) {
-		if (time != 0 && time != 127 && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 7))
+		if (time != 0 && time != 127 && !(gCurrentTicks & 7))
 			time--;
 
 		ride->station_depart[stationIndex] = time;
@@ -156,7 +157,7 @@ static void ride_update_station_normal(rct_ride *ride, int stationIndex)
 			ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
 			ride_invalidate_station_start(ride, stationIndex, 1);
 		} else {
-			if (time != 127 && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 31))
+			if (time != 127 && !(gCurrentTicks & 31))
 				time--;
 
 			ride->station_depart[stationIndex] = time;

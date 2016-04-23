@@ -22,6 +22,7 @@
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../drawing/supports.h"
+#include "../game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
@@ -1416,7 +1417,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
 
 		uint16 string_width = gfx_get_string_width(entrance_string);
-		uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
+		uint16 scroll = (gCurrentTicks / 2) % string_width;
 
 		sub_98199C(scrolling_text_setup(string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33, height + style->height, 2, 2, height + style->height, get_current_rotation());
 	}
@@ -1503,7 +1504,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
 		uint16 string_width = gfx_get_string_width(park_name);
-		uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
+		uint16 scroll = (gCurrentTicks / 2) % string_width;
 
 		if (entrance->scrolling_mode == 0xFF)
 			break;
@@ -1763,7 +1764,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
 
 	uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
-	uint16 scroll = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) / 2) % string_width;
+	uint16 scroll = (gCurrentTicks / 2) % string_width;
 
 	sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
 }

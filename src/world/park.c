@@ -539,7 +539,7 @@ void park_update()
 		return;
 
 	// Every 5 seconds approximately
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) % 512 == 0) {
+	if (gCurrentTicks % 512 == 0) {
 		gParkRating = calculate_park_rating();
 		gParkValue = calculate_park_value();
 		gCompanyValue = calculate_company_value();

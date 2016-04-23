@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "date.h"
 #include "string_ids.h"
 
@@ -62,5 +63,5 @@ void date_reset()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) = MONTH_MARCH;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, sint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) = 0;
+	gCurrentTicks = 0;
 }

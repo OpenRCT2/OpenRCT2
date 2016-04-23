@@ -739,7 +739,7 @@ static int staff_path_finding_handyman(rct_peep* peep)
 	uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
 	if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) &&
-		((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + peep->sprite_index) & 0xFFF) > 110) {
+		((gCurrentTicks + peep->sprite_index) & 0xFFF) > 110) {
 		litterDirection = staff_handyman_direction_to_nearest_litter(peep);
 	}
 	

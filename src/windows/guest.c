@@ -1404,7 +1404,7 @@ void window_guest_stats_bars_paint(int value, int x, int y, rct_window *w, rct_d
 	colour &= ~(1 << 0x1F);
 	if (!blink_flag ||
 		RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8) == 0)
+		(gCurrentTicks & 8) == 0)
 	{
 		if (value <= 2)
 			return;
