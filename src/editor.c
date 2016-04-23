@@ -77,7 +77,7 @@ void editor_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
 	gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	window_new_ride_init_vars();
@@ -90,7 +90,7 @@ void editor_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenAge = 0;
 
 	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749), 0x40);
 }
@@ -137,14 +137,14 @@ void editor_convert_save_to_scenario_callback(int result)
 		s6Info->name[0] = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	s6Info->category = SCENARIO_CATEGORY_OTHER;
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 }
 
 /**
@@ -155,8 +155,8 @@ void trackdesigner_load()
 {
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
+	gScreenAge = 0;
 
 	object_unload_all();
 	map_init(150);
@@ -193,8 +193,8 @@ void trackmanager_load()
 {
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
+	gScreenAge = 0;
 
 	object_unload_all();
 	map_init(150);
@@ -265,8 +265,8 @@ static int editor_load_landscape_from_sv4(const char *path)
 	editor_clear_map_for_editing();
 
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	gScreenAge = 0;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	viewport_init_all();
 	window_editor_main_open();
 	editor_finalise_main_view();
@@ -279,8 +279,8 @@ static int editor_load_landscape_from_sc4(const char *path)
 	editor_clear_map_for_editing();
 
 	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	gScreenAge = 0;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	viewport_init_all();
 	window_editor_main_open();
 	editor_finalise_main_view();
@@ -383,7 +383,7 @@ static int editor_read_s6(const char *path)
 		map_update_tile_pointers();
 		game_convert_strings_to_utf8();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+		gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 		viewport_init_all();
 		window_editor_main_open();
 		editor_finalise_main_view();
@@ -491,7 +491,7 @@ static void editor_clear_map_for_editing()
  */
 void editor_open_windows_for_current_step()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR))
+	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
 		return;
 
 	switch (g_editor_step) {
@@ -502,7 +502,7 @@ void editor_open_windows_for_current_step()
 		if (window_find_by_class(49))
 			return;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 			object_unload_all();
 		}
 
@@ -586,7 +586,7 @@ static bool editor_check_object_group_at_least_one_selected(int objectType)
 int editor_check_object_selection()
 {
 	bool isTrackDesignerManager =
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+		gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
 	if (!isTrackDesignerManager) {
 		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS)) {

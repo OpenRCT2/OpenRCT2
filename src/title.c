@@ -108,7 +108,7 @@ void title_load()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
 		pause_toggle();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
+	gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
 
 	reset_park_entrances();
 	user_string_clear_all();
@@ -134,7 +134,7 @@ void title_load()
 	title_create_windows();
 	title_init_showcase();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 #ifndef DISABLE_NETWORK
 	network_close();
 #endif
@@ -220,7 +220,7 @@ static int title_load_park(const char *path)
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenAge = 0;
 	gGameSpeed = 1;
 	return 1;
 }
@@ -252,7 +252,7 @@ static void title_set_location(int x, int y)
  */
 void title_fix_location()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+	if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
 		rct_xy16 position = _titleScriptCurrentCentralPosition;
 		if (position.x != -1) {
 			title_set_location(position.x, position.y);
@@ -786,7 +786,7 @@ bool title_refresh_sequence()
 		gTitleScriptCommand = -1;
 		gTitleScriptSave = 0xFF;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+		if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
 			title_update_showcase();
 			gfx_invalidate_screen();
 		}
@@ -808,7 +808,7 @@ bool title_refresh_sequence()
 	window_invalidate_by_class(WC_OPTIONS);
 	window_invalidate_by_class(WC_TITLE_EDITOR);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+	if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
 		title_update_showcase();
 		gfx_invalidate_screen();
 	}

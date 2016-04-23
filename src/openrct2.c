@@ -276,7 +276,7 @@ void openrct2_launch()
 			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 1;
 			break;
 		case STARTUP_ACTION_TITLE:
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
+			gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
 			break;
 		case STARTUP_ACTION_OPEN:
 			assert(gOpenRCT2StartupActionPath != NULL);
@@ -284,7 +284,7 @@ void openrct2_launch()
 				break;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+			gScreenFlags = SCREEN_FLAGS_PLAYING;
 
 #ifndef DISABLE_NETWORK
 			if (gNetworkStart == NETWORK_MODE_SERVER) {

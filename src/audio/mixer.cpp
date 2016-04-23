@@ -677,7 +677,7 @@ void Mixer::MixChannel(Channel& channel, uint8* data, int length)
 					volumeadjust *= (gConfigSound.sound_volume / 100.0f);
 
 					// Cap sound volume on title screen so music is more audible
-					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+					if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 						volumeadjust = Math::Min(volumeadjust, 0.75f);
 					}
 					break;

@@ -690,22 +690,22 @@ static int sub_6AB211(){
 		installedObject = object_get_next(installedObject);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER){
 		setup_track_designer_objects();
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER){
 		setup_track_manager_objects();
 	}
 
 	setup_in_use_selection_flags();
 	reset_selected_object_count_and_size();
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))){
+	if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))){
 		window_editor_object_selection_select_required_objects();
 
 		// To prevent it breaking in scenario mode.
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 			window_editor_object_selection_select_default_objects();
 	}
 
@@ -767,7 +767,7 @@ void unload_unselected_objects(){
  */
 static void window_editor_object_selection_close(rct_window *w)
 {
-	//if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR))
+	//if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
 	//	return;
 
 	unload_unselected_objects();
@@ -776,7 +776,7 @@ static void window_editor_object_selection_close(rct_window *w)
 	object_free_scenario_text();
 	editor_object_flags_free();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) {
+	if (gScreenFlags & SCREEN_FLAGS_EDITOR) {
 		research_populate_list_random();
 	}
 	else {
@@ -801,7 +801,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) {
+		if (gScreenFlags & SCREEN_FLAGS_EDITOR) {
 			game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 1, 0);
 		}
 		else {
@@ -993,7 +993,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 	audio_play_sound_panned(SOUND_CLICK_1, RCT2_GLOBAL(0x142406C,uint32), 0, 0, 0);
 
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (!window_editor_object_selection_select_object(0, 1, installed_entry))
 			return;
 
@@ -1122,10 +1122,10 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 
 	// Set window title and buttons
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + w->selected_tab;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		w->widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
 		w->widgets[WIDX_INSTALL_TRACK].type = WWT_DROPDOWN_BUTTON;
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+	} else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		w->widgets[WIDX_TITLE].image = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
 		w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
 	} else {
@@ -1148,7 +1148,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER)) {
+	if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER)) {
 		w->widgets[WIDX_ADVANCED].type = WWT_EMPTY;
 		for (i = 1; i < WINDOW_OBJECT_SELECTION_PAGE_COUNT; i++)
 			w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
@@ -1287,13 +1287,13 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	);
 
 	// Draw number of selected items
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		x = w->x + 3;
 		y = w->y + w->height - 13;
 
 		numSelected = RCT2_ADDRESS(0x00F433F7, uint16)[w->selected_tab];
 		totalSelectable = object_entry_group_counts[w->selected_tab];
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 			totalSelectable = 4;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = numSelected;
@@ -1365,7 +1365,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 	stringId = 3165;
 	stringBuffer = (char*)language_get_string(3165) + 1;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Skip name
 		do {
 			text++;
@@ -1457,7 +1457,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 		if (y + 12 >= dpi->y && y <= dpi->y + dpi->height) {
 			// Draw checkbox
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem->flags & 0x20))
+			if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem->flags & 0x20))
 				gfx_fill_rect_inset(dpi, 2, y, 11, y + 10, w->colours[1], 0xE0);
 
 			// Highlight background
@@ -1468,7 +1468,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 			}
 
 			// Draw checkmark
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem->flags & OBJECT_SELECTION_FLAG_SELECTED)) {
+			if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem->flags & OBJECT_SELECTION_FLAG_SELECTED)) {
 				x = 2;
 				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
 				colour2 = w->colours[1] & 0x7F;
@@ -1478,7 +1478,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 				gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour2, x, y);
 			}
 
-			x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+			x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
 			char *bufferWithColour = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 			char *buffer = utf8_write_codepoint(bufferWithColour, colour);
@@ -1500,7 +1500,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 			// Draw text
 			strcpy(buffer, object_get_name(listItem->entry));
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+			if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 				while (*buffer != 0 && *buffer != 9)
 					buffer++;
 
@@ -1831,7 +1831,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 
 		uint8 object_type = installedObject->flags & 0xF;
 		uint16 no_objects = object_entry_group_counts[object_type];
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER){
+		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER){
 			no_objects = 4;
 		}
 

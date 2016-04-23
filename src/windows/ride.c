@@ -1164,7 +1164,7 @@ void window_ride_disable_tabs(rct_window *w)
 		(gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_9); // 0x1000
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint32) & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_4 | 1 << WIDX_TAB_6 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10); // 0x3280
 
 	rct_ride_entry *type = get_ride_entry(ride->subtype);
@@ -4808,7 +4808,7 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 		2
 	);
 	gDropdownDefaultIndex = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 		gDropdownItemsDisabled |= 2;
 }
 

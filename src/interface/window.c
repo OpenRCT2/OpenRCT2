@@ -263,7 +263,7 @@ static int window_wheel_input(rct_window *w, int wheel)
  */
 static void window_viewport_wheel_input(rct_window *w, int wheel)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9)
+	if (gScreenFlags & 9)
 		return;
 
 	if (wheel < 0)
@@ -798,7 +798,7 @@ void window_close_top()
 
 	window_close_by_class(WC_DROPDOWN);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (gScreenFlags & 2)
 		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
 			return;
 
@@ -1343,7 +1343,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 		rct_xy16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
 
 		int i = 0;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+		if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 			int found = 0;
 			while (!found) {
 				sint16 x2 = w->viewport->x + (sint16)(w->viewport->width * window_scroll_locations[i][0]);
@@ -2075,7 +2075,7 @@ void window_relocate_windows(int width, int height){
 */
 void window_resize_gui(int width, int height)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0xE){
+	if (gScreenFlags & 0xE){
 		window_resize_gui_scenario_editor(width, height);
 		return;
 	}

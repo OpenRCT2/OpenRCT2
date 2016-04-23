@@ -367,7 +367,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 	switch (widgetIndex) {
 	case WIDX_FILE_MENU:
 		_menuDropdownIncludesTwitch = false;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+		if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 			gDropdownItemsFormat[0] = STR_ABOUT;
 			gDropdownItemsFormat[1] = STR_OPTIONS;
 			gDropdownItemsFormat[2] = STR_SCREENSHOT;
@@ -376,11 +376,11 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			gDropdownItemsFormat[5] = STR_QUIT_TRACK_DESIGNS_MANAGER;
 			gDropdownItemsFormat[6] = STR_EXIT_OPENRCT2;
 
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+			if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 				gDropdownItemsFormat[5] = STR_QUIT_ROLLERCOASTER_DESIGNER;
 
 			numItems = 7;
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+		} else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			gDropdownItemsFormat[0] = STR_LOAD_LANDSCAPE;
 			gDropdownItemsFormat[1] = STR_SAVE_LANDSCAPE;
 			gDropdownItemsFormat[2] = 0;
@@ -469,7 +469,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		gDropdownItemsFormat[1] = 2780;
 		numItems = 2;
 
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && g_editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && g_editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 			gDropdownItemsFormat[2] = 2690;
 			numItems++;
 		}
@@ -516,15 +516,15 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 	case WIDX_FILE_MENU:
 
 		// New game is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR))
+		if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR))
 			dropdownIndex += 1;
 		
 		// Quicksave is only available in the normal game. Skip one position to avoid incorrect mappings in the menus of the other modes.
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR) && dropdownIndex > DDIDX_LOAD_GAME)
+		if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR) && dropdownIndex > DDIDX_LOAD_GAME)
 			dropdownIndex += 1;
 
 		// Track designer and track designs manager start with About, not Load/save
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+		if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
 			dropdownIndex += DDIDX_ABOUT;
 
 		switch (dropdownIndex) {
@@ -539,7 +539,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			save_game();
 			break;
 		case DDIDX_SAVE_GAME_AS:
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 				rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
 			}
@@ -659,7 +659,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 	window_top_toolbar_widgets[WIDX_NEWS].type = WWT_TRNBTN;
 	window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_TRNBTN;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_PARK].type = WWT_EMPTY;

@@ -327,7 +327,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 			if (widgetIndex != -1) {
 				switch (widget->type) {
 				case WWT_VIEWPORT:
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))) {
+					if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))) {
 						input_viewport_drag_begin(w, x, y);
 					}
 					break;
@@ -1610,7 +1610,7 @@ void game_handle_edge_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_NO_SCROLLING) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & 9))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;
@@ -1653,7 +1653,7 @@ void game_handle_key_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_NO_SCROLLING) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & 9))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;

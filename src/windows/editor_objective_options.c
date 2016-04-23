@@ -868,7 +868,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	}
 
 	window_editor_objective_options_main_widgets[WIDX_CLOSE].type =
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_objective_options_anchor_border_widgets(w);
 }
@@ -1161,7 +1161,7 @@ static void window_editor_objective_options_rides_invalidate(rct_window *w)
 	window_editor_objective_options_set_pressed_tab(w);
 
 	window_editor_objective_options_main_widgets[WIDX_CLOSE].type =
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_objective_options_anchor_border_widgets(w);
 }

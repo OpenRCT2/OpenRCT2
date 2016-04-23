@@ -234,7 +234,7 @@ void scenario_begin()
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+	gScreenFlags = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();
 	mainWindow = window_get_main();
@@ -371,7 +371,7 @@ void scenario_begin()
 	load_palette();
 
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 	gGameSpeed = 1;
 }
 
@@ -574,7 +574,7 @@ static void scenario_update_daynight_cycle()
 	float currentDayNightCycle = gDayNightCycle;
 	gDayNightCycle = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
+	if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
 		float monthFraction = gDateMonthTicks / (float)0x10000;
 		if (monthFraction < (1 / 8.0f)) {
 			gDayNightCycle = 0.0f;
@@ -601,7 +601,7 @@ static void scenario_update_daynight_cycle()
  */
 void scenario_update()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)) {
+	if (!(gScreenFlags & ~SCREEN_FLAGS_PLAYING)) {
 		uint32 currentMonthTick = gDateMonthTicks;
 		uint32 nextMonthTick = currentMonthTick + 4;
 		uint8 currentMonth = gDateMonthsElapsed & 7;
@@ -1029,7 +1029,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 
 	gfx_invalidate_screen();
 	if (!(flags & 0x80000000))
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+		gScreenAge = 0;
 	return 1;
 }
 

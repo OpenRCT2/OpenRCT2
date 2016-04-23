@@ -903,7 +903,7 @@ static int cc_fix_banner_count(const utf8 **argv, int argc)
 
 static int cc_open(const utf8 **argv, int argc) {
 	if (argc > 0) {
-		bool title = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) != 0;
+		bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
 		bool invalidTitle = false;
 		if (strcmp(argv[0], "object_selection") == 0 && invalidArguments(&invalidTitle, !title)) {
 			// Only this window should be open for safety reasons

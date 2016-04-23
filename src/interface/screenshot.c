@@ -307,7 +307,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 		rct2_open_file(inputPath);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+		gScreenFlags = SCREEN_FLAGS_PLAYING;
 
 		int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
 		if (resolutionWidth == 0 || resolutionHeight == 0) {

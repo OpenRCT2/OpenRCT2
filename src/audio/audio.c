@@ -254,7 +254,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 
 void audio_start_title_music()
 {
-	if (gGameSoundsOff || !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+	if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 		audio_stop_title_music();
 		return;
 	}

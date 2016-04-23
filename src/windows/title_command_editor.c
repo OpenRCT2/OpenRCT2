@@ -521,7 +521,7 @@ static void window_title_command_editor_invalidate(rct_window *w)
 		break;
 	}
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
+	if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
 		w->disabled_widgets |= (1 << WIDX_GET);
 	else
 		w->disabled_widgets &= ~(1 << WIDX_GET);

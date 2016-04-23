@@ -263,7 +263,7 @@ static bool _trackSelectionByType;
 */
 void window_new_ride_init_vars() {
 	// If we are in the track designer, default to the Roller Coaster tab
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8) = WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER;
 	}
 	else {
@@ -741,7 +741,7 @@ static void window_new_ride_invalidate(rct_window *w)
 
 	window_new_ride_widgets[WIDX_TITLE].image = STR_NEW_TRANSPORT_RIDES + _window_new_ride_current_tab;
 	window_new_ride_widgets[WIDX_TAB_7].type = WWT_TAB;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 4)
+	if (gScreenFlags & 4)
 		window_new_ride_widgets[WIDX_TAB_7].type = WWT_EMPTY;
 
 	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {

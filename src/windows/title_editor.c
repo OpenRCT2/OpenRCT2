@@ -304,8 +304,8 @@ static void window_title_editor_mouseup(rct_window *w, int widgetIndex)
 	int defaultPreset, playing, inTitle, i, commandEditorOpen;
 
 	defaultPreset = (gCurrentTitleSequence < TITLE_SEQUENCE_DEFAULT_PRESETS);
-	playing = (gCurrentTitleSequence == gCurrentPreviewTitleSequence) && ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
-	inTitle = ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
+	playing = (gCurrentTitleSequence == gCurrentPreviewTitleSequence) && ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
+	inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
 	commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != NULL);
 	switch (widgetIndex) {
 	case WIDX_TITLE_EDITOR_CLOSE:
@@ -836,8 +836,8 @@ void window_title_editor_invalidate(rct_window *w)
 	int defaultPreset, playing, inTitle;
 
 	defaultPreset = (gCurrentTitleSequence < TITLE_SEQUENCE_DEFAULT_PRESETS);
-	playing = (gCurrentTitleSequence == gCurrentPreviewTitleSequence) && ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
-	inTitle = ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
+	playing = (gCurrentTitleSequence == gCurrentPreviewTitleSequence) && ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
+	inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
 
 	if (!inTitle)
 		w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_PLAY);
@@ -891,7 +891,7 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 
 	title_sequence *title = &gConfigTitleSequences.presets[gCurrentTitleSequence];
 
-	inTitle = ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
+	inTitle = ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO);
 	y = 0; x = 0; x2 = 0; width = 0;
 	width = w->widgets[WIDX_TITLE_EDITOR_LIST].right - w->widgets[WIDX_TITLE_EDITOR_LIST].left;
 	if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SAVES) {

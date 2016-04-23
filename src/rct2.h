@@ -281,6 +281,10 @@ extern const char * const RCT2FilePaths[PATH_ID_END];
 
 extern uint32 gCurrentDrawCount;
 
+extern uint8 gScreenFlags;
+extern uint32 gScreenAge;
+extern uint8 gSavePromptMode;
+
 int rct2_init();
 void rct2_dispose();
 void rct2_update();

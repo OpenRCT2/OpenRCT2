@@ -101,7 +101,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *mapElement);
  */
 void ride_ratings_update_all()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
 	switch (_rideRatingsState) {

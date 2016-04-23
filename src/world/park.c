@@ -535,7 +535,7 @@ static void park_generate_new_guests()
  */
 void park_update()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)
+	if (gScreenFlags & 0x0E)
 		return;
 
 	// Every 5 seconds approximately
@@ -817,7 +817,7 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 	y = *ecx & 0xFFFF;
 	z = *edx * 16;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
@@ -942,7 +942,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			return 0;
 		}
 
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0) {
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0) {
 			gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
 			return MONEY32_UNDEFINED;
 		}
@@ -970,7 +970,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			return 0;
 		}
 
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
 			gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
 			return MONEY32_UNDEFINED;
 		}
@@ -1003,7 +1003,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 		return 0;
 	default:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+		if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
 			return MONEY32_UNDEFINED;
 		}
 
@@ -1077,7 +1077,7 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 	// Game command modified to accept selection size
 	totalCost = 0;
 	gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
+	if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
 		for (y = y0; y <= y1; y += 32) {
 			for (x = x0; x <= x1; x += 32) {
 				cost = map_buy_land_rights_for_tile(x, y, setting, flags);

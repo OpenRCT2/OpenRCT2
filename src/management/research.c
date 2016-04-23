@@ -244,7 +244,7 @@ void research_update()
 	int editorScreenFlags, researchLevel, currentResearchProgress;
 
 	editorScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & editorScreenFlags)
+	if (gScreenFlags & editorScreenFlags)
 		return;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) % 32 != 0)

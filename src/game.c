@@ -354,9 +354,9 @@ void game_logic_update()
 	}
 	gCurrentTicks++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)++;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) == 0)
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)--;
+	gScreenAge++;
+	if (gScreenAge == 0)
+		gScreenAge--;
 
 	sub_68B089();
 	scenario_update();
@@ -600,7 +600,7 @@ static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		switch (*edx & 0xFF) {
 		case 0:
-			RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = *edi & 0xFF;
+			gSavePromptMode = *edi & 0xFF;
 			window_save_prompt_open();
 			break;
 		case 1:
@@ -783,7 +783,7 @@ int game_load_sv6(SDL_RWops* rw)
 	game_fix_save_vars(); // OpenRCT2 fix broken save games
 
 	// #2407: Resetting screen time to not open a save prompt shortly after loading a park.
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 
 	gLastAutoSaveTick = SDL_GetTicks();
 	return 1;
@@ -944,7 +944,7 @@ void game_load_init()
 {
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+	gScreenFlags = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();
 	mainWindow = window_get_main();
@@ -1010,7 +1010,7 @@ void save_game()
 
 			// Setting screen age to zero, so no prompt will pop up when closing the
 			// game shortly after saving.
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+			gScreenAge = 0;
 		}
 	} else {
 		save_game_as();
@@ -1165,15 +1165,17 @@ void rct2_exit()
  */
 void game_load_or_quit_no_save_prompt()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) < 1) {
+	switch (gSavePromptMode) {
+	case PM_SAVE_BEFORE_LOAD:
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			load_landscape();
 		} else {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
 		}
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
+		break;
+	case PM_SAVE_BEFORE_QUIT:
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
 		if (gInputFlags & INPUT_FLAG_5) {
@@ -1181,8 +1183,10 @@ void game_load_or_quit_no_save_prompt()
 		}
 		gGameSpeed = 1;
 		title_load();
-	} else {
+		break;
+	default:
 		rct2_exit();
+		break;
 	}
 }
 

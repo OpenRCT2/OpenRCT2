@@ -233,7 +233,7 @@ void vehicle_invalidate(rct_vehicle *vehicle)
  */
 void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
 			if (vehicle->sprite_left != (sint16)0x8000) {
 				sint16 x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
@@ -623,10 +623,10 @@ void vehicle_update_all()
 	uint16 sprite_index;
 	rct_vehicle *vehicle;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
 		return;
 
 

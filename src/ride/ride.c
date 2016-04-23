@@ -1878,7 +1878,7 @@ void ride_update_all()
 	int i;
 
 	// Remove all rides if scenario editor
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 		if (s6Info->editor_step <= EDITOR_STEP_INVENTIONS_LIST_SET_UP)
 			FOR_ALL_RIDES(i, ride)
 				ride->type = RIDE_TYPE_NULL;
@@ -2098,7 +2098,7 @@ static void ride_inspection_update(rct_ride *ride)
 
 	if (gCurrentTicks & 2047)
 		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 		return;
 
 	ride->last_inspection++;
@@ -2163,7 +2163,7 @@ static void ride_breakdown_update(int rideIndex)
 
 	if (gCurrentTicks & 255)
 		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 		return;
 
 	if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
@@ -2831,7 +2831,7 @@ void ride_measurements_update()
 	int i, j;
 	uint16 spriteIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
 	// For each ride measurement
@@ -3336,7 +3336,7 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  */
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-	if(!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
+	if(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
 		rct_xy16 rotatedCoords;
 
 		switch (get_current_rotation()) {
@@ -3546,9 +3546,9 @@ void ride_music_update_final()
 {
 	rct_ride_music_params* edi = NULL;
 	int ebx;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)) {
+	if (!(gScreenFlags & 2)) {
 		// TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-		if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 1)) {
+		if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & 1)) {
 			// set to stop music if volume <= 1 ?
 			while (1) {
 				int v8 = 0;
@@ -8389,7 +8389,7 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 	ride = get_ride(rideIndex);
 	vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 		// Open ride window for crashed vehicle
 		w = window_ride_open_vehicle(vehicle);
 		if (w->viewport != NULL) {

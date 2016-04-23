@@ -111,6 +111,10 @@ const char * const RCT2FilePaths[PATH_ID_END] = {
 
 uint32 gCurrentDrawCount = 0;
 
+uint8 gScreenFlags;
+uint32 gScreenAge;
+uint8 gSavePromptMode;
+
 typedef struct tm tm_t;
 
 void print_launch_information();
@@ -122,7 +126,7 @@ static void rct2_draw_fps();
 
 void rct2_quit()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+	gSavePromptMode = PM_QUIT;
 	window_save_prompt_open();
 }
 
@@ -286,7 +290,7 @@ void rct2_draw()
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
 		//intro
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+	} else if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		//title
 		DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
 	} else {
@@ -454,7 +458,7 @@ void rct2_update()
 	// Screens
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		intro_update();
-	else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
+	else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
 		title_update();
 	else
 		game_update();

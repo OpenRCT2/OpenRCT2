@@ -345,7 +345,7 @@ static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdow
 		pathId = gFootpathSelectedId;
 	} else {
 		int flags = 4;
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
 			flags = 0;
 
 		j = 0;
@@ -534,7 +534,7 @@ static void window_footpath_invalidate(rct_window *w)
 	}
 
 	// Disable queue line button if in Scenario Editor
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
 }
 
@@ -595,7 +595,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 	numPathTypes = 0;
 	flags = 4;
 	// If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor, but not their queues (since these usually shouldn't have one)
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || (gCheatsSandboxMode && !showQueues))
+	if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || (gCheatsSandboxMode && !showQueues))
 		flags = 0;
 
 	for (i = 0; i < 16; i++) {

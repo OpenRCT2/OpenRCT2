@@ -112,7 +112,7 @@ sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
  */
 void climate_update()
 {
-	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
+	uint8 screen_flags = gScreenFlags;
 	sint8 temperature = gClimateCurrentTemperature,
 		target_temperature = gClimateNextTemperature,
 		cur_gloom = gClimateCurrentWeatherGloom,
@@ -225,7 +225,7 @@ void climate_update_sound()
 		return;
 	if (!gConfigSound.sound_enabled)
 		return;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
 		return;
 
 	climate_update_rain_sound();

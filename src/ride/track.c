@@ -1085,7 +1085,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					entry_type = scenery->scenery_object.flags & 0xF;
 					if (entry_type != OBJECT_TYPE_PATHS)
 						entry_type = 0xFF;
-					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8)&SCREEN_FLAGS_TRACK_DESIGNER)
+					if (gScreenFlags&SCREEN_FLAGS_TRACK_DESIGNER)
 						entry_type = 0xFF;
 
 					entry_index = 0;
@@ -1184,7 +1184,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						continue;
 					}
 
-					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8)&SCREEN_FLAGS_TRACK_DESIGNER){
+					if (gScreenFlags&SCREEN_FLAGS_TRACK_DESIGNER){
 						RCT2_GLOBAL(0x00F4414E, uint8) |= 1 << 1;
 						continue;
 					}
@@ -2104,7 +2104,7 @@ void draw_track_preview(uint8** preview){
 
 	blank_map();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER){
 		load_track_scenery_objects();
 	}
 

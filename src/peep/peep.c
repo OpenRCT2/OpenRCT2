@@ -169,7 +169,7 @@ void peep_update_all()
 	uint16 spriteIndex;
 	rct_peep* peep;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)
+	if (gScreenFlags & 0x0E)
 		return;
 
 	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
@@ -3267,7 +3267,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
 	}
 
 	// Do not play toilet flush sound on title screen as its considered loud and annoying
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 		audio_play_sound_at_location(SOUND_TOILET_FLUSH, peep->x, peep->y, peep->z);
 	}
 
@@ -5935,7 +5935,7 @@ void peep_update_crowd_noise()
 	if (!gConfigSound.sound_enabled)
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (gScreenFlags & 2)
 		return;
 
 	viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);

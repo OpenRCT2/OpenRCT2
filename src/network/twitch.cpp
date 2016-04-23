@@ -110,7 +110,7 @@ namespace Twitch
     static bool IsTwitchEnabled()
     {
         if (!gTwitchEnable) return false;
-        if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (~SCREEN_FLAGS_PLAYING)) return false;
+        if (gScreenFlags & (~SCREEN_FLAGS_PLAYING)) return false;
         if (String::IsNullOrEmpty(gConfigTwitch.channel)) return false;
         return true;
     }
