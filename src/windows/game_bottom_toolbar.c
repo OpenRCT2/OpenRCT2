@@ -396,7 +396,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	// Draw guests
 	gfx_draw_string_centred(
 		dpi,
-		STR_NUM_GUESTS + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8),
+		STR_NUM_GUESTS + gGuestChangeModifier,
 		x, y,
 		(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS ? COLOUR_WHITE : w->colours[0] & 0x7F),
 		&gNumGuestsInPark

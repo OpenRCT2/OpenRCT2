@@ -83,7 +83,7 @@ void park_init()
 	gNumGuestsInPark = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
+	gGuestChangeModifier = 0;
 	gParkRating = 0;
 	_guestGenerationProbability = 0;
 	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = 0;
@@ -595,7 +595,7 @@ void park_update_histories()
 		if (changeInGuestsInPark < 20)
 			guestChangeModifier = 0;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8) = guestChangeModifier;
+	gGuestChangeModifier = guestChangeModifier;
 
 	// Update park rating history
 	for (int i = 31; i > 0; i--)

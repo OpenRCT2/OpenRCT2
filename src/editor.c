@@ -432,7 +432,7 @@ static void editor_clear_map_for_editing()
 	gNumGuestsInPark = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
+	gGuestChangeModifier = 0;
 	if (s6Header->type != S6_TYPE_SCENARIO) {
 		research_populate_list_random();
 		research_remove_non_separate_vehicle_types();
