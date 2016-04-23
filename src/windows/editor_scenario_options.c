@@ -685,7 +685,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 		x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
 
-		money16 interestRate = (money16)clamp(INT16_MIN, gBankLoanInterestRate, INT16_MAX);
+		sint16 interestRate = clamp(INT16_MIN, (sint16)gBankLoanInterestRate, INT16_MAX);
 		gfx_draw_string_left(dpi, 3247, &interestRate, 0, x, y);
 	}
 }
