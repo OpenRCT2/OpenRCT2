@@ -177,7 +177,7 @@ void peep_update_all()
 		peep = &(g_sprite_list[spriteIndex].peep);
 		spriteIndex = peep->next;
 
-		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+		if ((i & 0x7F) != (gCurrentTicks & 0x7F)) {
 			peep_update(peep);
 		} else {
 			sub_68F41A(peep, i);
@@ -399,7 +399,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		return;
 	}
 
-	if ((index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF)){
+	if ((index & 0x1FF) == (gCurrentTicks & 0x1FF)){
 		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
 
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
@@ -504,7 +504,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep_pick_ride_to_go_on(peep);
 		}
 
-		if ((index & 0x3FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)){
+		if ((index & 0x3FF) == (gCurrentTicks & 0x3FF)){
 
 			if (peep->outside_of_park == 0 &&
 				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
@@ -1321,7 +1321,7 @@ void peep_remove(rct_peep* peep){
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		}
 		if (peep->state == PEEP_STATE_ENTERING_PARK){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 		}
 	}
 	peep_sprite_remove(peep);
@@ -4342,7 +4342,7 @@ static void peep_update_1(rct_peep* peep){
  *  rct2: 0x690009
  */
 static void peep_update_picked(rct_peep* peep){
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1F) return;
+	if (gCurrentTicks & 0x1F) return;
 	peep->sub_state++;
 	if (peep->sub_state == 13){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HELP, 0xFF);
@@ -4476,7 +4476,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	if (peep->var_37 != 1){
 		sub_693C9E(peep);
 		if ((RCT2_GLOBAL(0xF1EE18, uint16) & 2)){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_sprite_remove(peep);
 		}
 		return;
@@ -4495,7 +4495,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	peep->outside_of_park = 0;
 	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
 	gNumGuestsInPark++;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+	gNumGuestsHeadingForPark--;
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	window_invalidate_by_class(WC_GUEST_LIST);
 }
@@ -5452,7 +5452,7 @@ static void peep_update_walking(rct_peep* peep){
 	}
 	else if (peep_has_empty_container(peep)){
 		if ((!(peep->next_var_29 & 0x18)) &&
-			((peep->sprite_index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF))&&
+			((peep->sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))&&
 			((0xFFFF & scenario_rand()) <= 4096)){
 
 			uint8 pos_stnd = 0;
@@ -6116,9 +6116,9 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->nausea_tolerance = RCT2_ADDRESS(0x009823A0, uint8)[nausea_tolerance];
 
-	sint8 happiness = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
+	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) == 0)
+	if (gGuestInitialHappiness == 0)
 		happiness += 0x80;
 
 	peep->happiness = happiness;
@@ -6126,11 +6126,11 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->nausea = 0;
 	peep->nausea_growth_rate = 0;
 
-	sint8 hunger = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8);
+	sint8 hunger = (scenario_rand() & 0x1F) - 15 + gGuestInitialHunger;
 
 	peep->hunger = hunger;
 
-	sint8 thirst = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8);
+	sint8 thirst = (scenario_rand() & 0x1F) - 15 + gGuestInitialThirst;
 
 	peep->thirst = thirst;
 
@@ -6143,10 +6143,10 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
 	peep->name_string_idx = 767;
 
-	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16);
+	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
 	if (cash < 0) cash = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == 0){
+	if (gGuestInitialCash == 0){
 		cash = 500;
 	}
 
@@ -6154,7 +6154,7 @@ rct_peep *peep_generate(int x, int y, int z)
 		cash = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == (money16)0xFFFF){
+	if (gGuestInitialCash == (money16)0xFFFF){
 		cash = 0;
 	}
 
@@ -6198,7 +6198,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	}
 	peep_update_name_sort(peep);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)++;
+	gNumGuestsHeadingForPark++;
 
 	return peep;
 }
@@ -6961,7 +6961,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
@@ -7019,7 +7019,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		if (!found){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
@@ -7041,7 +7041,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			if (entranceFee > peep->cash_in_pocket){
 				peep->state = PEEP_STATE_LEAVING_PARK;
 				peep->var_37 = 1;
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+				gNumGuestsHeadingForPark--;
 				peep_window_state_update(peep);
 				return peep_return_to_center_of_tile(peep);
 			}

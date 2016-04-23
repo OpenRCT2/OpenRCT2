@@ -58,11 +58,11 @@ money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money
  */
 void finance_payment(money32 amount, rct_expenditure_type type)
 {
-	money32 cur_money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+	money32 cur_money = DECRYPT_MONEY(gCashEncrypted);
 	money32 new_money = cur_money - amount;
 
 	//overflow check
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(new_money);
+	gCashEncrypted = ENCRYPT_MONEY(new_money);
 	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
 	if (dword_988E60[type] & 1)
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
@@ -109,8 +109,8 @@ void finance_pay_research()
  */
 void finance_pay_interest()
 {
-	money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
-	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
+	money32 current_loan = gBankLoan;
+	sint16 current_interest = gBankLoanInterestRate;
 	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
 	if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -177,15 +177,15 @@ void finance_init() {
 
 	RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = MONEY(10000,00); // Cheat detection
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(MONEY(10000,00));
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = MONEY(10000,00);
+	gCashEncrypted = ENCRYPT_MONEY(MONEY(10000,00));
+	gBankLoan = MONEY(10000,00);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = MONEY(20000,00);
 
 	RCT2_GLOBAL(0x013587D0, uint32) = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = 0;
+	gBankLoanInterestRate = 10;
+	gParkValue = 0;
+	gCompanyValue = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
@@ -222,7 +222,7 @@ void finance_update_daily_profit()
 		current_profit -= research_cost_table[level];
 
 		// Loan costs
-		money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+		money32 current_loan = gBankLoan;
 		current_profit -= current_loan / 600;
 
 		// Ride costs
@@ -253,7 +253,7 @@ void finance_update_loan_hash()
 	sint32 value = 0x70093A;
 	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
 	value = ror32(value, 5);
-	value -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	value -= gBankLoan;
 	value = ror32(value, 7);
 	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
 	value = ror32(value, 3);
@@ -272,7 +272,7 @@ money32 finance_get_initial_cash()
 
 money32 finance_get_current_loan()
 {
-	return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	return gBankLoan;
 }
 
 money32 finance_get_maximum_loan()
@@ -282,7 +282,7 @@ money32 finance_get_maximum_loan()
 
 money32 finance_get_current_cash()
 {
-	return DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	return DECRYPT_MONEY(gCashEncrypted);
 }
 
 /**
@@ -294,8 +294,8 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 	money32 money, loanDifference, currentLoan;
 	money32 newLoan = *edx;
 
-	currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
-	money = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	currentLoan = gBankLoan;
+	money = DECRYPT_MONEY(gCashEncrypted);
 	loanDifference = currentLoan - newLoan;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_INTEREST * 4;
@@ -315,9 +315,9 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		money -= loanDifference;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = newLoan;
+		gBankLoan = newLoan;
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(money);
+		gCashEncrypted = ENCRYPT_MONEY(money);
 		finance_update_loan_hash();
 
 		window_invalidate_by_class(WC_FINANCES);
@@ -362,5 +362,5 @@ void finance_shift_expenditure_table() {
  */
 void finance_reset_cash_to_initial()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+	gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
 }

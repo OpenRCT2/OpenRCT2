@@ -274,14 +274,14 @@ void scenario_begin()
 	sub_684AC3();
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
+	if (gScenarioObjectiveType != OBJECTIVE_NONE)
 		window_park_objective_open();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
-	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
+	gParkRating = calculate_park_rating();
+	gParkValue = calculate_park_value();
+	gCompanyValue = calculate_company_value();
+	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - gBankLoan;
+	gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
 
 	finance_update_loan_hash();
 
@@ -328,7 +328,7 @@ void scenario_begin()
 
 	// Set the last saved game path
 	char parkName[128];
-	format_string(parkName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+	format_string(parkName, gParkName, &gParkNameArgs);
 
 	platform_get_user_directory(gScenarioSavePath, "save");
 	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
@@ -409,7 +409,7 @@ void scenario_failure()
  */
 void scenario_success()
 {
-	const money32 companyValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32);
+	const money32 companyValue = gCompanyValue;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
 	peep_applause();
@@ -515,7 +515,7 @@ static void scenario_day_update()
 {
 	finance_update_daily_profit();
 	peep_update_days_in_queue();
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_10_ROLLERCOASTERS:
 	case OBJECTIVE_GUESTS_AND_RATING:
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
@@ -724,7 +724,7 @@ void scenario_prepare_rides_for_save()
 	rct_ride *ride;
 	map_element_iterator it;
 
-	int isFiveCoasterObjective = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+	int isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
 
 	// Set all existing track to be indestructible
 	map_element_iterator_begin(&it);
@@ -766,16 +766,16 @@ int scenario_prepare_for_save()
 	}
 
 	if (s6Info->name[0] == 0)
-		format_string(s6Info->name, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+		format_string(s6Info->name, gParkName, &gParkNameArgs);
 
-	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
-	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
-	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	s6Info->objective_type = gScenarioObjectiveType;
+	s6Info->objective_arg_1 = gScenarioObjectiveYear;
+	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
+	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 
 	scenario_prepare_rides_for_save();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
+	if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
 		gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
 	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
@@ -1253,10 +1253,10 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 
 static void scenario_objective_check_guests_by()
 {
-	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 parkRating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+	uint8 objectiveYear = gScenarioObjectiveYear;
+	sint16 parkRating = gParkRating;
 	sint16 guestsInPark = gNumGuestsInPark;
-	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	sint16 objectiveGuests = gScenarioObjectiveNumGuests;
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 
 	if (currentMonthYear == 8 * objectiveYear){
@@ -1269,10 +1269,10 @@ static void scenario_objective_check_guests_by()
 
 static void scenario_objective_check_park_value_by()
 {
-	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	uint8 objectiveYear = gScenarioObjectiveYear;
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
-	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	money32 objectiveParkValue = gScenarioObjectiveCurrency;
+	money32 parkValue = gParkValue;
 
 	if (currentMonthYear == 8 * objectiveYear) {
 		if (parkValue >= objectiveParkValue)
@@ -1321,7 +1321,7 @@ static void scenario_objective_check_10_rollercoasters()
  */
 static void scenario_objective_check_guests_and_rating()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
+	if (gParkRating < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)++;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 1) {
 			if (gConfigNotifications.park_rating_warnings) {
@@ -1343,20 +1343,20 @@ static void scenario_objective_check_guests_and_rating()
 			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
 			gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
 			scenario_failure();
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = 50;
+			gGuestInitialHappiness = 50;
 		}
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != 0x80000001) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
-		if (gNumGuestsInPark >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+	if (gParkRating >= 700)
+		if (gNumGuestsInPark >= gScenarioObjectiveNumGuests)
 			scenario_success();
 }
 
 static void scenario_objective_check_monthly_ride_income()
 {
-	money32 objectiveMonthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveMonthlyRideIncome = gScenarioObjectiveCurrency;
 	money32 monthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32);
 	if (monthlyRideIncome >= objectiveMonthlyRideIncome)
 		scenario_success();
@@ -1371,7 +1371,7 @@ static void scenario_objective_check_10_rollercoasters_length()
 {
 	int i, rcs = 0;
 	uint8 type_already_counted[256];
-	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	sint16 objective_length = gScenarioObjectiveNumGuests;
 	rct_ride* ride;
 
 	memset(type_already_counted, 0, 256);
@@ -1402,7 +1402,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
 	int i;
 	rct_ride* ride;
 
-	money32 objectiveRideExcitement = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
 
 	// ORIGINAL BUG?:
 	// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
@@ -1418,9 +1418,9 @@ static void scenario_objective_check_finish_5_rollercoasters()
 
 static void scenario_objective_check_replay_loan_and_park_value()
 {
-	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
-	money32 currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	money32 objectiveParkValue = gScenarioObjectiveCurrency;
+	money32 parkValue = gParkValue;
+	money32 currentLoan = gBankLoan;
 
 	if (currentLoan <= 0 && parkValue >= objectiveParkValue)
 		scenario_success();
@@ -1428,7 +1428,7 @@ static void scenario_objective_check_replay_loan_and_park_value()
 
 static void scenario_objective_check_monthly_food_income()
 {
-	money32 objectiveMonthlyIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveMonthlyIncome = gScenarioObjectiveCurrency;
 	sint32 monthlyIncome =
 		RCT2_GLOBAL(0x013578A4, money32) +
 		RCT2_GLOBAL(0x013578A0, money32) +
@@ -1445,16 +1445,8 @@ static void scenario_objective_check_monthly_food_income()
  */
 static void scenario_objective_check()
 {
-	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
-		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
-		guests_in_park = gNumGuestsInPark,
-		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
-		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	uint8 objective_type = gScenarioObjectiveType;
 	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
-	sint32 objective_currency = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32),
-		park_value = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-
 
 	if (scenario_completed_company_value != MONEY32_UNDEFINED)
 		return;

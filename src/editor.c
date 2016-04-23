@@ -122,10 +122,10 @@ void editor_convert_save_to_scenario_callback(int result)
 
 	safe_strcpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME, 64);
 	safe_strcpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS, 256);
-	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
-	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
-	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, sint16);
+	s6Info->objective_type = gScenarioObjectiveType;
+	s6Info->objective_arg_1 = gScenarioObjectiveYear;
+	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
+	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
 	rct_stex_entry* stex = g_stexEntries[0];
@@ -430,9 +430,9 @@ static void editor_clear_map_for_editing()
 	reset_sprite_list();
 	staff_reset_modes();
 	gNumGuestsInPark = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
+	gNumGuestsHeadingForPark = 0;
+	gNumGuestsInParkLastWeek = 0;
+	gGuestChangeModifier = 0;
 	if (s6Header->type != S6_TYPE_SCENARIO) {
 		research_populate_list_random();
 		research_remove_non_separate_vehicle_types();
@@ -450,19 +450,15 @@ static void editor_clear_map_for_editing()
 
 		gParkFlags &= ~PARK_FLAGS_18;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
-			MONEY(10,00),
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16),
-			MONEY(100,00)
-		);
+		gGuestInitialCash = clamp(MONEY(10,00), gGuestInitialCash, MONEY(100,00));
 
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
 		finance_reset_cash_to_initial();
 		finance_update_loan_hash();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
+		gBankLoan = clamp(
 			MONEY(0,00),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32),
+			gBankLoan,
 			MONEY(5000000,00)
 		);
 
@@ -472,11 +468,7 @@ static void editor_clear_map_for_editing()
 			MONEY(5000000,00)
 		);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = clamp(
-			5,
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8),
-			80
-		);
+		gBankLoanInterestRate = clamp(5, gBankLoanInterestRate, 80);
 	}
 
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));

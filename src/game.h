@@ -122,6 +122,8 @@ extern rct_string_id gGameCommandErrorText;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[66];
 
+#define gCurrentTicks		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
+
 extern int gGameSpeed;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;

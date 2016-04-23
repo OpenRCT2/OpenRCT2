@@ -3,6 +3,7 @@
 #include "game.h"
 #include "interface/window.h"
 #include "network/network.h"
+#include "management/finance.h"
 #include "world/climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
@@ -196,12 +197,12 @@ static void cheat_increase_money(money32 amount)
 {
 	money32 currentMoney;
 
-	currentMoney = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+	currentMoney = DECRYPT_MONEY(gCashEncrypted);
 	if (currentMoney < INT_MAX - amount)
 		currentMoney += amount;
 	else
 		currentMoney = INT_MAX;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(currentMoney);
+	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
@@ -210,7 +211,7 @@ static void cheat_increase_money(money32 amount)
 static void cheat_clear_loan()
 {
 	// First give money
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), GAME_COMMAND_CHEAT, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, gBankLoan, GAME_COMMAND_CHEAT, 0, 0);
 
 	// Then pay the loan
 	money32 newLoan;
@@ -389,7 +390,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_FREEZECLIMATE: gCheatsFreezeClimate = !gCheatsFreezeClimate; break;
 			case CHEAT_NEVERENDINGMARKETING: gCheatsNeverendingMarketing = !gCheatsNeverendingMarketing; break;
 			case CHEAT_OPENCLOSEPARK: park_set_open(park_is_open() ? 0 : 1); break;
-			case CHEAT_HAVEFUN: RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = OBJECTIVE_HAVE_FUN; break;
+			case CHEAT_HAVEFUN: gScenarioObjectiveType = OBJECTIVE_HAVE_FUN; break;
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {

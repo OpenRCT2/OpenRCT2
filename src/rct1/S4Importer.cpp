@@ -653,16 +653,16 @@ void S4Importer::ImportMapAnimations()
 void S4Importer::ImportFinance()
 {
     gParkEntranceFee = _s4.park_entrance_fee;
-    RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = _s4.land_price;
-    RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = _s4.construction_rights_price;
+    gLandPrice = _s4.land_price;
+    gConstructionRightsPrice = _s4.construction_rights_price;
 
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(_s4.cash);
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = _s4.loan;
+    gCashEncrypted = ENCRYPT_MONEY(_s4.cash);
+    gBankLoan = _s4.loan;
     RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = _s4.max_loan;
     RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = _s4.cash;
 
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = _s4.company_value;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = _s4.park_value;
+    gCompanyValue = _s4.company_value;
+    gParkValue = _s4.park_value;
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = _s4.profit;
 
     for (int i = 0; i < 128; i++)
@@ -917,22 +917,22 @@ void S4Importer::ImportParkName()
     rct_string_id stringId = user_string_allocate(4, parkName);
     if (stringId != 0)
     {
-        RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id) = stringId;
-        RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32) = 0;
+        gParkName = stringId;
+        gParkNameArgs = 0;
     }
 }
 
 void S4Importer::ImportParkFlags()
 {
     // Date and srand
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) = _s4.ticks;
+    gCurrentTicks = _s4.ticks;
     RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) = _s4.random_a;
     RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = _s4.random_b;
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) = _s4.month;
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = _s4.day;
 
     // Park rating
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = _s4.park_rating;
+    gParkRating = _s4.park_rating;
     for (int i = 0; i < 32; i++)
     {
         gParkRatingHistory[i] = _s4.park_rating_history[i];
@@ -958,9 +958,9 @@ void S4Importer::ImportParkFlags()
     }
 
     // Initial guest status
-    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = _s4.guest_initial_cash;
-    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = _s4.guest_initial_hunger;
-    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = _s4.guest_initial_thirst;
+    gGuestInitialCash = _s4.guest_initial_cash;
+    gGuestInitialHunger = _s4.guest_initial_hunger;
+    gGuestInitialThirst = _s4.guest_initial_thirst;
 
     // Staff colours
     RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = RCT1::GetColour(_s4.handman_colour);
@@ -1023,10 +1023,10 @@ void S4Importer::ImportScenarioNameDetails()
 
 void S4Importer::ImportScenarioObjective()
 {
-    RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = _s4.scenario_objective_type;
-    RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = _s4.scenario_objective_years;
-    RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, uint32) = _s4.scenario_objective_currency;
-    RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = _s4.scenario_objective_num_guests;
+    gScenarioObjectiveType = _s4.scenario_objective_type;
+    gScenarioObjectiveYear = _s4.scenario_objective_years;
+    gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
+    gScenarioObjectiveNumGuests = _s4.scenario_objective_num_guests;
 }
 
 void S4Importer::ImportSavedView()

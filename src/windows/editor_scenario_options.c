@@ -484,7 +484,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_INITIAL_CASH_INCREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) < MONEY(1000000,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) += MONEY(500,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+			gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3248, STR_NONE);
@@ -494,7 +494,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_INITIAL_CASH_DECREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) > MONEY(0,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) -= MONEY(500,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+			gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3249, STR_NONE);
@@ -502,9 +502,9 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_INITIAL_LOAN_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) < MONEY(5000000,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) += MONEY(1000,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+		if (gBankLoan < MONEY(5000000,00)) {
+			gBankLoan += MONEY(1000,00);
+			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3250, STR_NONE);
@@ -512,9 +512,9 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_INITIAL_LOAN_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) > MONEY(0,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) -= MONEY(1000,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+		if (gBankLoan > MONEY(0,00)) {
+			gBankLoan -= MONEY(1000,00);
+			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3251, STR_NONE);
@@ -524,7 +524,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_MAXIMUM_LOAN_INCREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) < MONEY(5000000,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) += MONEY(1000,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = min(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+			gBankLoan = min(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3252, STR_NONE);
@@ -534,7 +534,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_MAXIMUM_LOAN_DECREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) > MONEY(0,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) -= MONEY(1000,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = min(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+			gBankLoan = min(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3253, STR_NONE);
@@ -542,11 +542,11 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_INTEREST_RATE_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) < 80) {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) < 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) = 0;
+		if (gBankLoanInterestRate < 80) {
+			if (gBankLoanInterestRate < 0) {
+				gBankLoanInterestRate = 0;
 			} else {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32)++;
+				gBankLoanInterestRate++;
 			}
 		} else {
 			window_error_open(3254, STR_NONE);
@@ -554,11 +554,11 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_INTEREST_RATE_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) > 0) {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) > 80) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32) = 80;
+		if (gBankLoanInterestRate > 0) {
+			if (gBankLoanInterestRate > 80) {
+				gBankLoanInterestRate = 80;
 			} else {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32)--;
+				gBankLoanInterestRate--;
 			}
 		} else {
 			window_error_open(3255, STR_NONE);
@@ -664,7 +664,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 
 		x = w->x + w->widgets[WIDX_INITIAL_LOAN].left + 1;
 		y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
-		gfx_draw_string_left(dpi, 3246, &RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), 0, x, y);
+		gfx_draw_string_left(dpi, 3246, &gBankLoan, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY) {
@@ -685,7 +685,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 		x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
 
-		money16 interestRate = (money16)clamp(INT16_MIN, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, money32), INT16_MAX);
+		money16 interestRate = (money16)clamp(INT16_MIN, gBankLoanInterestRate, INT16_MAX);
 		gfx_draw_string_left(dpi, 3247, &interestRate, 0, x, y);
 	}
 }
@@ -737,64 +737,64 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 {
 	switch (widgetIndex) {
 	case WIDX_CASH_PER_GUEST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) < MONEY(1000, 00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) += MONEY(1, 00);
+		if (gGuestInitialCash < MONEY(1000, 00)) {
+			gGuestInitialCash += MONEY(1, 00);
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_CASH_PER_GUEST_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) > MONEY(0, 00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) -= MONEY(1, 00);
+		if (gGuestInitialCash > MONEY(0, 00)) {
+			gGuestInitialCash -= MONEY(1, 00);
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) < 250) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) += 4;
+		if (gGuestInitialHappiness < 250) {
+			gGuestInitialHappiness += 4;
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) > 40) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) -= 4;
+		if (gGuestInitialHappiness > 40) {
+			gGuestInitialHappiness -= 4;
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) > 40) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) -= 4;
+		if (gGuestInitialHunger > 40) {
+			gGuestInitialHunger -= 4;
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) < 250) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) += 4;
+		if (gGuestInitialHunger < 250) {
+			gGuestInitialHunger += 4;
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_THIRST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) > 40) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) -= 4;
+		if (gGuestInitialThirst > 40) {
+			gGuestInitialThirst -= 4;
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_THIRST_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) < 250) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) += 4;
+		if (gGuestInitialThirst < 250) {
+			gGuestInitialThirst += 4;
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
@@ -881,7 +881,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 		// Cash per guest value
 		x = w->x + w->widgets[WIDX_CASH_PER_GUEST].left + 1;
 		y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
-		arg = RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16);
+		arg = gGuestInitialCash;
 		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
 	}
 
@@ -893,7 +893,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 	// Guest initial happiness value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
-	arg = (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) * 100) / 255;
+	arg = (gGuestInitialHappiness * 100) / 255;
 	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
 
 	// Guest initial hunger label
@@ -904,7 +904,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 	// Guest initial hunger value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
-	arg = ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8)) * 100) / 255;
+	arg = ((255 - gGuestInitialHunger) * 100) / 255;
 	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
 
 	// Guest initial thirst label
@@ -915,7 +915,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 	// Guest initial thirst value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
-	arg = ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8)) * 100) / 255;
+	arg = ((255 - gGuestInitialThirst) * 100) / 255;
 	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
 }
 
@@ -980,32 +980,32 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 
 	switch (widgetIndex) {
 	case WIDX_LAND_COST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) < MONEY(200,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) += MONEY(1,00);
+		if (gLandPrice < MONEY(200,00)) {
+			gLandPrice += MONEY(1,00);
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_LAND_COST_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) > MONEY(5,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) -= MONEY(1,00);
+		if (gLandPrice > MONEY(5,00)) {
+			gLandPrice -= MONEY(1,00);
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) < MONEY(200,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) += MONEY(1,00);
+		if (gConstructionRightsPrice < MONEY(200,00)) {
+			gConstructionRightsPrice += MONEY(1,00);
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) > MONEY(5,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) -= MONEY(1,00);
+		if (gConstructionRightsPrice > MONEY(5,00)) {
+			gConstructionRightsPrice -= MONEY(1,00);
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
@@ -1191,7 +1191,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		// Cost to buy land value
 		x = w->x + w->widgets[WIDX_LAND_COST].left + 1;
 		y = w->y + w->widgets[WIDX_LAND_COST].top;
-		arg = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16);
+		arg = gLandPrice;
 		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
 	}
 
@@ -1204,7 +1204,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		// Cost to buy construction rights value
 		x = w->x + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1;
 		y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
-		arg = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16);
+		arg = gConstructionRightsPrice;
 		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
 	}
 
