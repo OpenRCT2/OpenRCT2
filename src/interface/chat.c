@@ -64,11 +64,11 @@ void chat_draw()
 		gChatOpen = false;
 		return;
 	}
-	rct_drawpixelinfo *dpi = (rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI;
+	rct_drawpixelinfo *dpi = &gScreenDPI;
 	_chatLeft = 10;
-	_chatTop = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
-	_chatRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 10;
-	_chatBottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 45;
+	_chatTop = gScreenHeight - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
+	_chatRight = gScreenWidth - 10;
+	_chatBottom = gScreenHeight - 45;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
 	int x = _chatLeft;

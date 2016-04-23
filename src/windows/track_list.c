@@ -121,8 +121,8 @@ void window_track_list_open(ride_list_item item)
 	reset_track_list_cache();
 
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-		x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300;
-		y = max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 200);
+		x = gScreenWidth / 2 - 300;
+		y = max(28, gScreenHeight / 2 - 200);
 	} else {
 		x = 0;
 		y = 29;

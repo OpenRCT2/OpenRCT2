@@ -71,8 +71,8 @@ void window_editor_main_open()
 {
 	rct_window* window;
 
-	window_editor_main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	window_editor_main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	window_editor_main_widgets[0].right = gScreenWidth;
+	window_editor_main_widgets[0].bottom = gScreenHeight;
 	window = window_create(0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
 		&window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
 	window->widgets = window_editor_main_widgets;

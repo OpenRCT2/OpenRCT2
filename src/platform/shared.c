@@ -222,8 +222,8 @@ static void overlay_post_render_check(int width, int height) {
 
 void platform_draw()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int width = gScreenWidth;
+	int height = gScreenHeight;
 
 	if (!gOpenRCT2Headless) {
 		if (gHardwareDisplay) {
@@ -321,8 +321,8 @@ static void platform_resize(int width, int height)
 	int dst_w = (int)(width / gConfigGeneral.window_scale);
 	int dst_h = (int)(height / gConfigGeneral.window_scale);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) = dst_w;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) = dst_h;
+	gScreenWidth = dst_w;
+	gScreenHeight = dst_h;
 
 	platform_refresh_video();
 
@@ -657,7 +657,7 @@ void platform_process_messages()
 
 				// Zoom gesture
 				const int tolerance = 128;
-				int gesturePixels = (int)(_gestureRadius * RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+				int gesturePixels = (int)(_gestureRadius * gScreenWidth);
 				if (gesturePixels > tolerance) {
 					_gestureRadius = 0;
 					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_IN);
@@ -912,8 +912,8 @@ static void platform_load_cursors()
 
 void platform_refresh_video()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int width = gScreenWidth;
+	int height = gScreenHeight;
 
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
@@ -1018,8 +1018,7 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	_screenBufferHeight = height;
 	_screenBufferPitch = pitch;
 
-	rct_drawpixelinfo *screenDPI;
-	screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 	screenDPI->bits = _screenBuffer;
 	screenDPI->x = 0;
 	screenDPI->y = 0;
@@ -1027,13 +1026,7 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	screenDPI->height = height;
 	screenDPI->pitch = _screenBufferPitch - width;
 
-	RCT2_GLOBAL(0x009ABDF0, uint8) = 7;
-	RCT2_GLOBAL(0x009ABDF1, uint8) = 6;
-	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16) = 1 << RCT2_GLOBAL(0x009ABDF0, uint8);
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16) = 1 << RCT2_GLOBAL(0x009ABDF1, uint8);
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> RCT2_GLOBAL(0x009ABDF0, uint8)) + 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> RCT2_GLOBAL(0x009ABDF1, uint8)) + 1;
+	gfx_configure_dirty_grid();
 }
 
 void platform_hide_cursor()

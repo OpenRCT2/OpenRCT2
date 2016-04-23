@@ -92,8 +92,8 @@ rct_window *window_changelog_open()
 	if (!window_changelog_read_file())
 		return NULL;
 
-	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int screenWidth = gScreenWidth;
+	int screenHeight = gScreenHeight;
 
 	window = window_create_centred(
 		screenWidth * 4 / 5,
@@ -129,8 +129,8 @@ static void window_changelog_mouseup(rct_window *w, int widgetIndex)
 
 static void window_changelog_resize(rct_window *w)
 {
-	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int screenWidth = gScreenWidth;
+	int screenHeight = gScreenHeight;
 
 	w->max_width = (screenWidth * 4) / 5;
 	w->max_height = (screenHeight * 4) / 5;

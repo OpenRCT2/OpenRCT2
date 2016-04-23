@@ -93,6 +93,8 @@ extern int gLastDrawStringY;
 extern rct_g1_element *g1Elements;
 extern rct_gx g2;
 
+extern rct_drawpixelinfo gScreenDPI;
+
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);
 void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);
@@ -165,5 +167,7 @@ void redraw_rain();
 // scrolling text
 void scrolling_text_initialise_bitmaps();
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
+
+void gfx_configure_dirty_grid();
 
 #endif

@@ -33,6 +33,14 @@ int gLastDrawStringY;
 
 uint8* _screenDirtyBlocks = NULL;
 int _screenDirtyBlocksSize = 0;
+uint16 _screenDirtyBlockWidth;
+uint16 _screenDirtyBlockHeight;
+uint16 _screenDirtyBlockColumns;
+uint16 _screenDirtyBlockRows;
+uint8 _screenDirtyBlockShiftX;
+uint8 _screenDirtyBlockShiftY;
+
+rct_drawpixelinfo gScreenDPI;
 
 #define MAX_RAIN_PIXELS 0xFFFE
 uint32 rainPixels[MAX_RAIN_PIXELS];
@@ -187,14 +195,12 @@ void load_palette(){
  */
 void gfx_invalidate_screen()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
-	gfx_set_dirty_blocks(0, 0, width, height);
+	gfx_set_dirty_blocks(0, 0, gScreenWidth, gScreenHeight);
 }
 
 uint8* gfx_get_dirty_blocks()
 {
-	int size = RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32);
+	int size = _screenDirtyBlockColumns * _screenDirtyBlockRows;
 	if (_screenDirtyBlocksSize != size) {
 		if (_screenDirtyBlocks) {
 			_screenDirtyBlocks = realloc(_screenDirtyBlocks, size);
@@ -221,8 +227,8 @@ void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
 
 	left = max(left, 0);
 	top = max(top, 0);
-	right = min(right, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
-	bottom = min(bottom, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
+	right = min(right, gScreenWidth);
+	bottom = min(bottom, gScreenHeight);
 
 	if (left >= right)
 		return;
@@ -232,12 +238,12 @@ void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
 	right--;
 	bottom--;
 
-	left >>= RCT2_GLOBAL(0x009ABDF0, sint8);
-	right >>= RCT2_GLOBAL(0x009ABDF0, sint8);
-	top >>= RCT2_GLOBAL(0x009ABDF1, sint8);
-	bottom >>= RCT2_GLOBAL(0x009ABDF1, sint8);
+	left >>= _screenDirtyBlockShiftX;
+	right >>= _screenDirtyBlockShiftX;
+	top >>= _screenDirtyBlockShiftY;
+	bottom >>= _screenDirtyBlockShiftY;
 
-	uint32 dirtyBlockColumns = RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32);
+	uint32 dirtyBlockColumns = _screenDirtyBlockColumns;
 	for (y = top; y <= bottom; y++) {
 		uint32 yOffset = y * dirtyBlockColumns;
 		for (x = left; x <= right; x++) {
@@ -253,8 +259,8 @@ void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
 void gfx_draw_all_dirty_blocks()
 {
 	uint32 x, y, xx, yy, columns, rows;
-	uint32 dirtyBlockColumns = RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32);
-	uint32 dirtyBlockRows = RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32);
+	uint32 dirtyBlockColumns = _screenDirtyBlockColumns;
+	uint32 dirtyBlockRows = _screenDirtyBlockRows;
 	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
 	for (x = 0; x < dirtyBlockColumns; x++) {
@@ -292,7 +298,7 @@ void gfx_draw_all_dirty_blocks()
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
 {
 	uint32 left, top, right, bottom;
-	uint32 dirtyBlockColumns = RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32);
+	uint32 dirtyBlockColumns = _screenDirtyBlockColumns;
 	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
 
 	// Unset dirty blocks
@@ -304,10 +310,10 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
 	}
 
 	// Determine region in pixels
-	left = max(0, x * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16));
-	top = max(0, y * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16));
-	right = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), left + (columns * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16)));
-	bottom = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16), top + (rows * RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16)));
+	left = max(0, x * _screenDirtyBlockWidth);
+	top = max(0, y * _screenDirtyBlockHeight);
+	right = min((uint32)gScreenWidth, left + (columns * _screenDirtyBlockWidth));
+	bottom = min((uint32)gScreenHeight, top + (rows * _screenDirtyBlockHeight));
 	if (right <= left || bottom <= top) {
 		return;
 	}
@@ -327,7 +333,7 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 {
 	rct_window* w;
-	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 	rct_drawpixelinfo *windowDPI = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
 
 	windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
@@ -426,7 +432,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 	uint8 pattern_start_x_offset = x_start % pattern_x_space;
 	uint8 pattern_start_y_offset = y_start % pattern_y_space;
 
-	rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo* dpi = &gScreenDPI;
 	uint32 pixel_offset = (dpi->pitch + dpi->width)*top + left;
 	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
 
@@ -471,59 +477,52 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 */
 void redraw_rain()
 {
-	if (RCT2_GLOBAL(0x009ABDF2, uint32) != 0) {
-		int rain_no_pixels = RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
-		if (rain_no_pixels == 0) {
-			return;
-		}
-		rct_window *window = window_get_main();
-		uint32 numPixels = window->width * window->height;
+	int rain_no_pixels = RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
+	if (rain_no_pixels == 0) {
+		return;
+	}
+	rct_window *window = window_get_main();
+	uint32 numPixels = window->width * window->height;
 
-		uint32 *rain_pixels = rainPixels;
-		if (rain_pixels) {
-			uint8 *screen_pixels = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo)->bits;
-			for (int i = 0; i < rain_no_pixels; i++) {
-				uint32 pixel = rain_pixels[i];
-				//HACK
-				if (pixel >> 8 > numPixels) {
-					log_verbose("Pixel error, skipping rain draw in this frame");
-					break;
-				}
-				screen_pixels[pixel >> 8] = pixel & 0xFF;
+	uint32 *rain_pixels = rainPixels;
+	if (rain_pixels) {
+		uint8 *screen_pixels = gScreenDPI.bits;
+		for (int i = 0; i < rain_no_pixels; i++) {
+			uint32 pixel = rain_pixels[i];
+			//HACK
+			if (pixel >> 8 > numPixels) {
+				log_verbose("Pixel error, skipping rain draw in this frame");
+				break;
 			}
-			RCT2_GLOBAL(0x009E2C78, uint32) = 1;
+			screen_pixels[pixel >> 8] = pixel & 0xFF;
 		}
+		RCT2_GLOBAL(0x009E2C78, uint32) = 1;
 	}
 	RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) = 0;
 }
 
 void gfx_invalidate_pickedup_peep()
 {
-	if (RCT2_GLOBAL(0x009ABDF2, uint32) != 0) {
-		int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32);
-		if (sprite != -1) {
-			sprite = sprite & 0x7FFFF;
+	int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32);
+	if (sprite != -1) {
+		sprite = sprite & 0x7FFFF;
 
-			rct_g1_element *g1_elements = &g1Elements[sprite];
-			int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
-			int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
-			int right = left + g1_elements->width;
-			int bottom = top + g1_elements->height;
+		rct_g1_element *g1_elements = &g1Elements[sprite];
+		int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
+		int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
+		int right = left + g1_elements->width;
+		int bottom = top + g1_elements->height;
 
-			gfx_set_dirty_blocks(left, top, right, bottom);
-		}
+		gfx_set_dirty_blocks(left, top, right, bottom);
 	}
 }
 
 void gfx_draw_pickedup_peep()
 {
-	if (RCT2_GLOBAL(0x009ABDF2, uint8) == 0)
-		return;
-
 	// Draw picked-up peep
 	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32) != 0xFFFFFFFF) {
 		gfx_draw_sprite(
-			(rct_drawpixelinfo*)RCT2_ADDRESS_SCREEN_DPI,
+			&gScreenDPI,
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32),
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16), 0
@@ -593,4 +592,14 @@ void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, i
 		colourSrc += colourWrap;
 		dst += dstWrap;
 	}
+}
+
+void gfx_configure_dirty_grid()
+{
+	_screenDirtyBlockShiftX = 7;
+	_screenDirtyBlockShiftY = 6;
+	_screenDirtyBlockWidth = 1 << _screenDirtyBlockShiftX;
+	_screenDirtyBlockHeight = 1 << _screenDirtyBlockShiftY;
+	_screenDirtyBlockColumns = (gScreenWidth >> _screenDirtyBlockShiftX) + 1;
+	_screenDirtyBlockRows = (gScreenHeight >> _screenDirtyBlockShiftY) + 1;
 }

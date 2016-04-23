@@ -131,8 +131,8 @@ void window_editor_bottom_toolbar_open()
 {
 	rct_window* window;
 
-	window = window_create(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 32,
+	window = window_create(0, gScreenHeight - 32,
+		gScreenWidth, 32,
 		&window_editor_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 	window->widgets = window_editor_bottom_toolbar_widgets;
@@ -371,7 +371,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 {
 	colour_scheme_update_by_class(w, (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
-	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	uint16 screenWidth = gScreenWidth;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;

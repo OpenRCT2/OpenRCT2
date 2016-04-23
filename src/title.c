@@ -159,7 +159,7 @@ static void title_create_windows()
 	window_title_exit_open();
 	window_title_options_open();
 	window_title_logo_open();
-	window_resize_gui(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
+	window_resize_gui(gScreenWidth, gScreenHeight);
 }
 
 /**
@@ -497,7 +497,7 @@ static void title_update_showcase()
 void DrawOpenRCT2(int x, int y)
 {
 	utf8 buffer[256];
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *dpi = &gScreenDPI;
 
 	// Draw background
 	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, TRANSLUCENT(COLOUR_DARK_GREEN), 0x8);

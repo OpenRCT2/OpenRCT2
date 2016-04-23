@@ -85,7 +85,7 @@ static void news_item_tick_current()
 	// Only play news item sound when in normal playing mode
 	if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING)) {
 		// Play sound
-		audio_play_sound_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+		audio_play_sound_panned(SOUND_NEWS_ITEM, gScreenWidth / 2, 0, 0, 0);
 	}
 }
 

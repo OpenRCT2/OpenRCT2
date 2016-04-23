@@ -3372,7 +3372,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		}
 		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((rotatedCoords.x - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
 		x2 *= 0x10000;
-		uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+		uint16 screenwidth = gScreenWidth;
 		if (screenwidth < 64) {
 			screenwidth = 64;
 		}
@@ -3380,7 +3380,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 
 		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((rotatedCoords.y - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
 		y2 *= 0x10000;
-		uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+		uint16 screenheight = gScreenHeight;
 		if (screenheight < 64) {
 			screenheight = 64;
 		}

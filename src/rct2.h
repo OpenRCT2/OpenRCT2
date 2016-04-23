@@ -284,6 +284,8 @@ extern uint32 gCurrentDrawCount;
 extern uint8 gScreenFlags;
 extern uint32 gScreenAge;
 extern uint8 gSavePromptMode;
+extern sint32 gScreenWidth;
+extern sint32 gScreenHeight;
 
 int rct2_init();
 void rct2_dispose();

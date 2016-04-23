@@ -55,7 +55,7 @@ void screenshot_check()
 				RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 				
 				// TODO use a more obvious sound like a camera shutter
-				audio_play_sound(SOUND_CLICK_1, 0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2);
+				audio_play_sound(SOUND_CLICK_1, 0, gScreenWidth / 2);
 			} else {
 				window_error_open(STR_SCREENSHOT_FAILED, -1);
 			}
@@ -129,7 +129,7 @@ int screenshot_dump_bmp()
 		return -1;
 	}
 
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *dpi = &gScreenDPI;
 
 	rct_palette renderedPalette;
 	screenshot_get_rendered_palette(&renderedPalette);
@@ -150,7 +150,7 @@ int screenshot_dump_png()
 		return -1;
 	}
 
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *dpi = &gScreenDPI;
 
 	rct_palette renderedPalette;
 	screenshot_get_rendered_palette(&renderedPalette);

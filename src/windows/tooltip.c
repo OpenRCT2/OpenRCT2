@@ -114,9 +114,9 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 
 	memcpy(gTooltip_text_buffer, buffer, 512);
 
-	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
+	x = clamp(0, x - (width / 2), gScreenWidth - width);
 
-	int max_y = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
+	int max_y = gScreenHeight - height;
 	y += 26; // Normally, we'd display the tooltip 26 lower
 	if (y > max_y)
 		// If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,

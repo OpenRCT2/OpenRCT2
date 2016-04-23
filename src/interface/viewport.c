@@ -284,16 +284,16 @@ void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
 		return;
 
 	// get screen info
-	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 
 	// adjust for move off screen
 	// NOTE: when zooming, there can be x, y, dx, dy combinations that go off the 
 	// screen; hence the checks. This code should ultimately not be called when
 	// zooming because this function is specific to updating the screen on move
 	int lmargin = min(x - dx, 0);
-	int rmargin = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - (x - dx + width), 0);
+	int rmargin = min(gScreenWidth - (x - dx + width), 0);
 	int tmargin = min(y - dy, 0);
-	int bmargin = min(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - (y - dy + height), 0);
+	int bmargin = min(gScreenHeight - (y - dy + height), 0);
 	x -= lmargin;
 	y -= tmargin;
 	width  += lmargin + rmargin;
@@ -489,8 +489,8 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 	if (w->flags & WF_7){
 		int left = max(viewport->x, 0);
 		int top = max(viewport->y, 0);
-		int right = min(viewport->x + viewport->width, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
-		int bottom = min(viewport->y + viewport->height, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
+		int right = min(viewport->x + viewport->width, gScreenWidth);
+		int bottom = min(viewport->y + viewport->height, gScreenHeight);
 
 		if (left >= right) return;
 		if (top >= bottom) return;
@@ -509,7 +509,7 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		viewport->x = 0;
 	}
 
-	int eax = viewport->x + viewport->width - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	int eax = viewport->x + viewport->width - gScreenWidth;
 	if (eax > 0){
 		viewport->width -= eax;
 		viewport->view_width -= eax * zoom;
@@ -527,7 +527,7 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		viewport->y = 0;
 	}
 
-	eax = viewport->y + viewport->height - RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	eax = viewport->y + viewport->height - gScreenHeight;
 	if (eax > 0){
 		viewport->height -= eax;
 		viewport->view_height -= eax * zoom;

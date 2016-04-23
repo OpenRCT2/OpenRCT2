@@ -269,7 +269,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 							pan_x >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
 							pan_x += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x;
 
-							uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+							uint16 screenwidth = gScreenWidth;
 							if (screenwidth < 64) {
 								screenwidth = 64;
 							}
@@ -279,7 +279,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 							pan_y >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
 							pan_y += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y;
 
-							uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+							uint16 screenheight = gScreenHeight;
 							if (screenheight < 64) {
 								screenheight = 64;
 							}
