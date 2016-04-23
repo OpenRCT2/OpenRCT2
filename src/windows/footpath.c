@@ -579,7 +579,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
 	y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
 	if (_window_footpath_cost != MONEY32_UNDEFINED)
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 			gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, 0, &_window_footpath_cost);
 }
 

@@ -107,7 +107,7 @@ void S4Importer::Initialise()
     window_guest_list_init_vars_b();
     window_staff_list_init_vars();
     RCT2_GLOBAL(0x0141F570, uint8) = 0;
-    RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+    gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     window_new_ride_init_vars();
     RCT2_GLOBAL(0x0141F571, uint8) = 4;
     news_item_init_queue();
@@ -652,7 +652,7 @@ void S4Importer::ImportMapAnimations()
 
 void S4Importer::ImportFinance()
 {
-    RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = _s4.park_entrance_fee;
+    gParkEntranceFee = _s4.park_entrance_fee;
     RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = _s4.land_price;
     RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = _s4.construction_rights_price;
 
@@ -968,8 +968,8 @@ void S4Importer::ImportParkFlags()
     RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = RCT1::GetColour(_s4.security_guard_colour);
 
     // Flags
-    RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = _s4.park_flags;
-    RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+    gParkFlags = _s4.park_flags;
+    gParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
     if (!(_s4.park_flags & PARK_FLAGS_PARK_FREE_ENTRY))
     {
         gCheatsUnlockAllPrices = true;

@@ -589,7 +589,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_sprite(&sprite_dpi, i, 0x0F, 0x17, 0);
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = RCT2_ADDRESS(0x00992A00, uint16)[selectedTab];
 		gfx_draw_string_left(dpi, 1858, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + w->width - 155, w->y + 0x20);
 	}

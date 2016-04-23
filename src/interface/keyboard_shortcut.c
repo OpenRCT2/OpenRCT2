@@ -395,7 +395,7 @@ static void shortcut_build_new_ride()
 static void shortcut_show_financial_information()
 {
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 			window_finances_open();
 }
 

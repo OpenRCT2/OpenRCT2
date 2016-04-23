@@ -268,9 +268,9 @@ void scenario_begin()
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) ^= platform_get_ticks();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & PARK_FLAGS_NO_MONEY_SCENARIO)
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) |= PARK_FLAGS_NO_MONEY;
+	gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
 	sub_684AC3();
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
@@ -361,12 +361,12 @@ void scenario_begin()
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;
 
 	// Open park with free entry when there is no money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = 0;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
+		gParkFlags |= PARK_FLAGS_PARK_OPEN;
+		gParkEntranceFee = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_18;
+	gParkFlags |= PARK_FLAGS_18;
 
 	load_palette();
 
@@ -429,7 +429,7 @@ void scenario_success()
 			scenario->highscore->timestamp = platform_get_datetime_now_utc();
 
 			// Allow name entry
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+			gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 			RCT2_GLOBAL(0x013587C0, money32) = companyValue;
 			scenario_scores_save();
 		}
@@ -453,7 +453,7 @@ void scenario_success_submit_name(const char *name)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+	gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -464,9 +464,9 @@ void scenario_entrance_fee_too_high_check()
 {
 	uint16 x = 0, y = 0;
 	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
-	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	uint16 park_entrance_fee = gParkEntranceFee;
 	int max_fee = totalRideValue + (totalRideValue / 2);
-	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
+	uint32 game_flags = gParkFlags, packed_xy;
 
 	if ((game_flags & PARK_FLAGS_PARK_OPEN) && !(game_flags & PARK_FLAGS_NO_MONEY) && park_entrance_fee > max_fee) {
 		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL; i++) {
@@ -525,7 +525,7 @@ static void scenario_day_update()
 		break;
 	}
 
-	uint16 unk = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+	uint16 unk = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
 	RCT2_GLOBAL(0x00135882E, uint16) = RCT2_GLOBAL(0x00135882E, uint16) > unk ? RCT2_GLOBAL(0x00135882E, uint16) - unk : 0;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_DATE;
@@ -776,7 +776,7 @@ int scenario_prepare_for_save()
 	scenario_prepare_rides_for_save();
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
+		gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
 	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
@@ -1255,7 +1255,7 @@ static void scenario_objective_check_guests_by()
 {
 	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	sint16 parkRating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
-	sint16 guestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
+	sint16 guestsInPark = gNumGuestsInPark;
 	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 
@@ -1341,7 +1341,7 @@ static void scenario_objective_check_guests_and_rating()
 			}
 		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 29) {
 			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_OPEN;
+			gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
 			scenario_failure();
 			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = 50;
 		}
@@ -1350,7 +1350,7 @@ static void scenario_objective_check_guests_and_rating()
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+		if (gNumGuestsInPark >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
 			scenario_success();
 }
 
@@ -1448,7 +1448,7 @@ static void scenario_objective_check()
 	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
 		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
-		guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16),
+		guests_in_park = gNumGuestsInPark,
 		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
 		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);

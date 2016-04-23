@@ -571,7 +571,7 @@ rct_window *window_park_open()
 static void window_park_set_disabled_tabs(rct_window *w)
 {
 	// Disable price tab if money is disabled
-	w->disabled_widgets = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? (1 << WIDX_TAB_4) : 0;
+	w->disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1 << WIDX_TAB_4) : 0;
 }
 
 static void window_park_prepare_window_title_text()
@@ -958,13 +958,13 @@ static void window_park_entrance_invalidate(rct_window *w)
 	// Only allow closing of park for guest / rating objective
 	// Only allow closing of park when there is money
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		(gParkFlags & PARK_FLAGS_NO_MONEY))
 		w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
 	else
 		w->disabled_widgets &= ~((1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT));
 
 	// Only allow purchase of land when there is money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
 	else
 		window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
@@ -1359,7 +1359,7 @@ static void window_park_guests_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
 
 	// Current value
-	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, (void*)RCT2_ADDRESS_GUESTS_IN_PARK, 0, x + widget->left + 3, y + widget->top + 2);
+	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, 0, x + widget->left + 3, y + widget->top + 2);
 
 	// Graph border
 	gfx_fill_rect_inset(dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1], 0x30);
@@ -1418,11 +1418,11 @@ static void window_park_price_mousedown(int widgetIndex, rct_window*w, rct_widge
 		window_park_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_INCREASE_PRICE:
-		newFee = min(MONEY(100,00), RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) + MONEY(1,00));
+		newFee = min(MONEY(100,00), gParkEntranceFee + MONEY(1,00));
 		park_set_entrance_fee(newFee);
 		break;
 	case WIDX_DECREASE_PRICE:
-		newFee = max(MONEY(0,00), RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) - MONEY(1,00));
+		newFee = max(MONEY(0,00), gParkEntranceFee - MONEY(1,00));
 		park_set_entrance_fee(newFee);
 		break;
 	}
@@ -1458,7 +1458,7 @@ static void window_park_price_invalidate(rct_window *w)
 	window_park_prepare_window_title_text();
 
 	// If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY)
+	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
 		&& (!gCheatsUnlockAllPrices)) {
 		window_park_price_widgets[WIDX_PRICE].type = WWT_12;
 		window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
@@ -1469,8 +1469,8 @@ static void window_park_price_invalidate(rct_window *w)
 		window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
-	window_park_price_widgets[WIDX_PRICE].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) == 0 ? STR_FREE : 1429;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = gParkEntranceFee;
+	window_park_price_widgets[WIDX_PRICE].image = gParkEntranceFee == 0 ? STR_FREE : 1429;
 
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
 	window_park_anchor_border_widgets(w);
@@ -1582,7 +1582,7 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	// Draw park size
-	parkSize = RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16) * 10;
+	parkSize = gParkSize * 10;
 	stringIndex = STR_PARK_SIZE_METRIC_LABEL;
 	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
 		stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
@@ -1607,7 +1607,7 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 10;
 
 	// Draw number of guests in park
-	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, (void*)RCT2_ADDRESS_GUESTS_IN_PARK, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, 0, x, y);
 	y += 10;
 	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, (void*)RCT2_ADDRESS_TOTAL_ADMISSIONS, 0, x, y);
 }
@@ -1724,7 +1724,7 @@ static void window_park_objective_invalidate(rct_window *w)
 	window_park_prepare_window_title_text();
 
 	//
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+	if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_DROPDOWN_BUTTON;
 	else
 		window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;

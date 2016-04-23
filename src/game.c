@@ -802,7 +802,7 @@ void game_fix_save_vars() {
 			peepCount++;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = peepCount;
+	gNumGuestsInPark = peepCount;
 
 	// Fixes broken saves where a surface element could be null
 	for (int y = 0; y < 256; y++) {

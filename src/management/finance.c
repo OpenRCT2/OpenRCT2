@@ -81,7 +81,7 @@ void finance_pay_wages()
 	rct_peep* peep;
 	uint16 spriteIndex;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
 	FOR_ALL_STAFF(spriteIndex, peep)
@@ -96,7 +96,7 @@ void finance_pay_research()
 {
 	uint8 level;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
 	level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
@@ -113,7 +113,7 @@ void finance_pay_interest()
 	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
 	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
 	finance_payment(tempcost, RCT_EXPENDITURE_TYPE_INTEREST);
@@ -134,7 +134,7 @@ void finance_pay_ride_upkeep()
 			ride->reliability = RIDE_INITIAL_RELIABILITY;
 		}
 
-		if (ride->status != RIDE_STATUS_CLOSED && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+		if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 			sint16 upkeep = ride->upkeep_cost;
 			if (upkeep != -1) {
 				ride->total_profit -= upkeep;
@@ -206,7 +206,7 @@ void finance_update_daily_profit()
 
 	money32 current_profit = 0;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 	{
 		// Staff costs
 		uint16 sprite_index;

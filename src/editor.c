@@ -79,7 +79,7 @@ void editor_load()
 	window_staff_list_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+	gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x0141F571, uint8) = 4;
 	viewport_init_all();
@@ -114,11 +114,11 @@ void editor_convert_save_to_scenario_callback(int result)
 
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
+		gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
 	else
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
+		gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+	gParkFlags |= PARK_FLAGS_NO_MONEY;
 
 	safe_strcpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME, 64);
 	safe_strcpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS, 256);
@@ -429,7 +429,7 @@ static void editor_clear_map_for_editing()
 
 	reset_sprite_list();
 	staff_reset_modes();
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
+	gNumGuestsInPark = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
@@ -437,18 +437,18 @@ static void editor_clear_map_for_editing()
 		research_populate_list_random();
 		research_remove_non_separate_vehicle_types();
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
+		if (gParkFlags & PARK_FLAGS_NO_MONEY)
+			gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
 		else
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
+			gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == 0)
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
+		if (gParkEntranceFee == 0)
+			gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
 		else
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+			gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
+		gParkFlags &= ~PARK_FLAGS_18;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
 			MONEY(10,00),

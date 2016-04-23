@@ -1160,7 +1160,7 @@ void window_ride_disable_tabs(rct_window *w)
 
 	if (ride_type == RIDE_TYPE_CASH_MACHINE ||
 		ride_type == RIDE_TYPE_FIRST_AID ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) != 0)
+		(gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_9); // 0x1000
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint32) & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
@@ -5563,7 +5563,7 @@ static void window_ride_income_increase_primary_price(rct_window *w)
 	ride = get_ride(w->number);
 	ride_type = get_ride_entry(ride->subtype);
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
 		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
 			if (!gCheatsUnlockAllPrices)
 				return;
@@ -5588,7 +5588,7 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
 	ride = get_ride(w->number);
 	ride_type = get_ride_entry(ride->subtype);
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
 		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
 			if (!gCheatsUnlockAllPrices)
 				return;
@@ -5752,7 +5752,7 @@ static void window_ride_income_invalidate(rct_window *w)
 	w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
 
 	//If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
-	if ((!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == 255 && ride->type != RIDE_TYPE_TOILETS)
+	if ((!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == 255 && ride->type != RIDE_TYPE_TOILETS)
 		&& (!gCheatsUnlockAllPrices))
 	{
 		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);

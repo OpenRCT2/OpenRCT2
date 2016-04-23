@@ -771,7 +771,7 @@ static void window_cheats_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
 		break;
 	case WINDOW_CHEATS_PAGE_MISC:
-		w->widgets[WIDX_OPEN_CLOSE_PARK].image = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN ?
+		w->widgets[WIDX_OPEN_CLOSE_PARK].image = gParkFlags & PARK_FLAGS_PARK_OPEN ?
 			STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
 		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gCheatsUnlockAllPrices);
 		widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);

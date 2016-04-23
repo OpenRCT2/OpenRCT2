@@ -2171,7 +2171,7 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 	y += 11;
 	if (
 		_currentTrackPrice != MONEY32_UNDEFINED &&
-		!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+		!(gParkFlags & PARK_FLAGS_NO_MONEY)
 	) {
 		gfx_draw_string_centred(dpi, 1408, x, y, 0, (void*)&_currentTrackPrice);
 	}

@@ -297,7 +297,7 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 		int numItems = 0;
 		int selectedIndex = -1;
 		for (int type = INFORMATION_TYPE_STATUS; type <= lastType; type++) {
-			if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+			if ((gParkFlags & PARK_FLAGS_NO_MONEY)) {
 				if (ride_info_type_money_mapping[type]) {
 					continue;
 				}

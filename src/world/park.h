@@ -22,6 +22,7 @@
 #define _PARK_H_
 
 #include "../common.h"
+#include "map.h"
 
 #define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
 #define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)
@@ -47,10 +48,20 @@ enum {
 	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
 };
 
+#define gParkFlags			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)
+#define gParkSize			RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16)
+#define gParkEntranceFee	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16)
+#define gNumGuestsInPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
+
 extern uint8 *gParkRatingHistory;
 extern uint8 *gGuestsInParkHistory;
 extern int _guestGenerationProbability;
 extern int _suggestedGuestMaximum;
+
+extern bool gParkEntranceGhostExists;
+extern rct_xyz16 gParkEntranceGhostPosition;
+extern uint8 gParkEntranceGhostDirection;
+extern money32 gParkEntranceGhostPrice;
 
 void set_forced_park_rating(int rating);
 int get_forced_park_rating();

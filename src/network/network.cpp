@@ -1127,9 +1127,9 @@ void Network::AdvertiseHeartbeat()
 	json_object_set_new(gameInfo, "mapSize", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)));
 	json_object_set_new(gameInfo, "day", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)));
 	json_object_set_new(gameInfo, "month", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16)));
-	json_object_set_new(gameInfo, "guests", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)));
+	json_object_set_new(gameInfo, "guests", json_integer(gNumGuestsInPark));
 	json_object_set_new(gameInfo, "parkValue", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)));
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		money32 cash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
 		json_object_set_new(gameInfo, "cash", json_integer(cash));
 	}

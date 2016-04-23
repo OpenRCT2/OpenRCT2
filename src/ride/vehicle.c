@@ -4089,7 +4089,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		for (uint8 i = 0; i < curVehicle->num_peeps; i++) {
 			rct_peep* peep = GET_PEEP(curVehicle->peep[i]);
 			if (peep->outside_of_park == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+				gNumGuestsInPark--;
 				RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |=
 					BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 			}

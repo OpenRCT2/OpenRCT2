@@ -345,7 +345,7 @@ static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18))) {
+			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(gParkFlags & PARK_FLAGS_18))) {
 			previous_button_mouseup_events[g_editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {
@@ -391,7 +391,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 		} else if (g_editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			hide_next_step_button();
 		} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)) {
-			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
+			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || gParkFlags & PARK_FLAGS_18) {
 				hide_previous_step_button();
 			}
 		}
@@ -416,7 +416,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
 		drawNextButton = true;
 	}
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
+	else if (gParkFlags & PARK_FLAGS_18) {
 		drawNextButton = true;
 	}
 	else {

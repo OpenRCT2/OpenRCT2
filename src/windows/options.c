@@ -734,7 +734,7 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 			break;
 		case WIDX_REAL_NAME_CHECKBOX:
 			peep_update_names(
-				!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+				!(gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
 			);
 			break;
 		case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
@@ -1503,7 +1503,7 @@ static void window_options_invalidate(rct_window *w)
 
 	case WINDOW_OPTIONS_PAGE_MISC:
 		// unknown park flag can disable real name checkbox
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_LOCK_REAL_NAMES_OPTION)
+		if (gParkFlags & PARK_FLAGS_LOCK_REAL_NAMES_OPTION)
 			w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
 
 		// save plugin data checkbox: visible or not
@@ -1512,7 +1512,7 @@ static void window_options_invalidate(rct_window *w)
 		else
 			window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
 
-		widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES);
+		widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES);
 		widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
 		widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
 		widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
