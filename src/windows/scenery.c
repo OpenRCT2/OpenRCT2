@@ -424,7 +424,7 @@ void window_scenery_open()
 	init_scenery();
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - WINDOW_SCENERY_WIDTH,
+		gScreenWidth - WINDOW_SCENERY_WIDTH,
 		0x1D,
 		WINDOW_SCENERY_WIDTH,
 		WINDOW_SCENERY_HEIGHT,
@@ -711,7 +711,7 @@ static void window_scenery_update(rct_window *w)
 					}
 				} else {
 					int windowHeight = min(454, w->scrolls[0].v_bottom - 1 + 62);
-					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) < 600)
+					if (gScreenHeight < 600)
 						windowHeight = min(374, windowHeight);
 
 					w->min_width = WINDOW_SCENERY_WIDTH;

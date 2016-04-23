@@ -6028,7 +6028,7 @@ void peep_applause()
 	}
 
 	// Play applause noise
-	audio_play_sound_panned(SOUND_APPLAUSE, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+	audio_play_sound_panned(SOUND_APPLAUSE, gScreenWidth / 2, 0, 0, 0);
 }
 
 /**

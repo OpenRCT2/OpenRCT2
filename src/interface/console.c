@@ -105,7 +105,7 @@ void console_update()
 
 	_consoleLeft = 0;
 	_consoleTop = 0;
-	_consoleRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	_consoleRight = gScreenWidth;
 	_consoleBottom = 322;
 
 	if (gConsoleOpen) {

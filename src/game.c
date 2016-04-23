@@ -126,7 +126,7 @@ void game_create_windows()
 	window_main_open();
 	window_top_toolbar_open();
 	window_game_bottom_toolbar_open();
-	window_resize_gui(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
+	window_resize_gui(gScreenWidth, gScreenHeight);
 }
 
 /**

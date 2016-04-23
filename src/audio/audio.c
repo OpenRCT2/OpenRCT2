@@ -244,7 +244,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 	int mixerPan = 0;
 	if (pan != AUDIO_PLAY_AT_CENTRE) {
 		int x2 = pan << 16;
-		uint16 screenWidth = max(64, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+		uint16 screenWidth = max(64, gScreenWidth);
 		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
 			}
 

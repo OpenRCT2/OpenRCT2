@@ -114,6 +114,8 @@ uint32 gCurrentDrawCount = 0;
 uint8 gScreenFlags;
 uint32 gScreenAge;
 uint8 gSavePromptMode;
+sint32 gScreenWidth;
+sint32 gScreenHeight;
 
 typedef struct tm tm_t;
 
@@ -190,7 +192,7 @@ int rct2_init()
 	if (!gOpenRCT2Headless) {
 		title_load();
 
-		gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
+		gfx_clear(&gScreenDPI, 10);
 	}
 
 	log_verbose("initialising game finished");
@@ -286,13 +288,13 @@ void rct2_draw()
 	update_palette_effects();
 
 	chat_draw();
-	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
+	console_draw(&gScreenDPI);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
 		//intro
 	} else if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		//title
-		DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
+		DrawOpenRCT2(0, gScreenHeight - 20);
 	} else {
 		//game
 	}
@@ -323,8 +325,8 @@ static float rct2_measure_fps()
 
 static void rct2_draw_fps()
 {
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	int x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2;
+	rct_drawpixelinfo *dpi = &gScreenDPI;
+	int x = gScreenWidth / 2;
 	int y = 2;
 
 	// Measure FPS

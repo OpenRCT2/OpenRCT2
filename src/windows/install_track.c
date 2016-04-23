@@ -123,8 +123,8 @@ void window_install_track_open(const char* path)
 	_currentTrackPieceDirection = 2;
 	reset_track_list_cache();
 
-	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 201;
-	y = max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 200);
+	x = gScreenWidth / 2 - 201;
+	y = max(28, gScreenHeight / 2 - 200);
 
 	w = window_create(x, y, 402, 400, &window_install_track_events, WC_INSTALL_TRACK, 0);
 	w->widgets = window_install_track_widgets;
