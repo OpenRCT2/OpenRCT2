@@ -16,6 +16,7 @@
 #include "../object.h"
 #include "../world/banner.h"
 #include "../world/scenery.h"
+#include "../management/finance.h"
 #include "../management/research.h"
 #include "../util/util.h"
 #include "console.h"
@@ -470,7 +471,7 @@ static int cc_get(const utf8 **argv, int argc)
 			console_printf("park_rating %d", gParkRating);
 		}
 		else if (strcmp(argv[0], "money") == 0) {
-			console_printf("money %d.%d0", DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) / 10, DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) % 10);
+			console_printf("money %d.%d0", DECRYPT_MONEY(gCashEncrypted) / 10, DECRYPT_MONEY(gCashEncrypted) % 10);
 		}
 		else if (strcmp(argv[0], "current_loan") == 0) {
 			console_printf("current_loan %d", RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) / 10);
@@ -601,7 +602,7 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 
 		if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
+			gCashEncrypted = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
 			console_execute_silent("get money");
 		}
 		else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {

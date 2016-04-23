@@ -3,6 +3,7 @@
 #include "game.h"
 #include "interface/window.h"
 #include "network/network.h"
+#include "management/finance.h"
 #include "world/climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
@@ -196,12 +197,12 @@ static void cheat_increase_money(money32 amount)
 {
 	money32 currentMoney;
 
-	currentMoney = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+	currentMoney = DECRYPT_MONEY(gCashEncrypted);
 	if (currentMoney < INT_MAX - amount)
 		currentMoney += amount;
 	else
 		currentMoney = INT_MAX;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(currentMoney);
+	gCashEncrypted = ENCRYPT_MONEY(currentMoney);
 
 	window_invalidate_by_class(WC_FINANCES);
 	window_invalidate_by_class(WC_BOTTOM_TOOLBAR);

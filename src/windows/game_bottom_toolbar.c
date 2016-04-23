@@ -26,6 +26,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
@@ -380,7 +381,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 
 	// Draw money
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = DECRYPT_MONEY(gCashEncrypted);
 		gfx_draw_string_centred(
 			dpi,
 			(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) < 0 ? 1391 : 1390),

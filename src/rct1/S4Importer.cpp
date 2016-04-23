@@ -656,7 +656,7 @@ void S4Importer::ImportFinance()
     gLandPrice = _s4.land_price;
     gConstructionRightsPrice = _s4.construction_rights_price;
 
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(_s4.cash);
+    gCashEncrypted = ENCRYPT_MONEY(_s4.cash);
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = _s4.loan;
     RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = _s4.max_loan;
     RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = _s4.cash;

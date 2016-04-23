@@ -738,7 +738,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 156, w->y + 229);
 
 	// Current cash
-	money32 currentCash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	money32 currentCash = DECRYPT_MONEY(gCashEncrypted);
 	rct_string_id stringId = currentCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
 	gfx_draw_string_left(dpi, stringId, &currentCash, 0, w->x + 4, w->y + 244);
 
@@ -824,7 +824,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 
 	// Cash (less loan)
 	money32 cashLessLoan =
-		DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) -
+		DECRYPT_MONEY(gCashEncrypted) -
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 
 	gfx_draw_string_left(

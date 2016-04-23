@@ -484,7 +484,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_INITIAL_CASH_INCREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) < MONEY(1000000,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) += MONEY(500,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+			gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3248, STR_NONE);
@@ -494,7 +494,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_INITIAL_CASH_DECREASE:
 		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) > MONEY(0,00)) {
 			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) -= MONEY(500,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+			gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3249, STR_NONE);

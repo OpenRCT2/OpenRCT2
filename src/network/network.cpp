@@ -45,6 +45,7 @@ extern "C" {
 #include "../interface/keyboard_shortcut.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../network/http.h"
 #include "../scenario.h"
 #include "../windows/error.h"
@@ -1130,7 +1131,7 @@ void Network::AdvertiseHeartbeat()
 	json_object_set_new(gameInfo, "guests", json_integer(gNumGuestsInPark));
 	json_object_set_new(gameInfo, "parkValue", json_integer(gParkValue));
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		money32 cash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+		money32 cash = DECRYPT_MONEY(gCashEncrypted);
 		json_object_set_new(gameInfo, "cash", json_integer(cash));
 	}
 

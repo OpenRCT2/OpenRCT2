@@ -327,7 +327,7 @@ money32 calculate_park_value()
 money32 calculate_company_value()
 {
 	return
-		DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32)) +
+		DECRYPT_MONEY(gCashEncrypted) +
 		gParkValue -
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 }
@@ -612,7 +612,7 @@ void park_update_histories()
 	// Update current cash history
 	for (int i = 127; i > 0; i--)
 		gCashHistory[i] = gCashHistory[i - 1];
-	gCashHistory[0] = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	gCashHistory[0] = DECRYPT_MONEY(gCashEncrypted) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	window_invalidate_by_class(WC_FINANCES);
 
 	// Update weekly profit history

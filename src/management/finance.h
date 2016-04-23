@@ -46,6 +46,8 @@ enum {
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define EXPENDITURE_TABLE_TOTAL_COUNT (EXPENDITURE_TABLE_MONTH_COUNT * RCT_EXPENDITURE_TYPE_COUNT)
 
+#define gCashEncrypted				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)
+
 extern const money32 research_cost_table[4];
 
 extern money32 *gCashHistory;
