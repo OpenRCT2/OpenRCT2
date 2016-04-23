@@ -34,6 +34,7 @@
 #include "../management/marketing.h"
 #include "../management/news_item.h"
 #include "../network/network.h"
+#include "../object_list.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../rct1.h"
@@ -45,14 +46,14 @@
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"
-#include "../world/sprite.h"
 #include "../world/scenery.h"
+#include "../world/sprite.h"
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
+#include "station.h"
 #include "track.h"
 #include "track_data.h"
-#include "station.h"
 
 #pragma region Ride classification table
 
@@ -129,7 +130,6 @@ static const int RideInspectionInterval[] = {
 	10, 20, 30, 45, 60, 120, 0, 0
 };
 
-rct_ride_entry **gRideTypeList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_entry*);
 rct_ride* gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
 bool gGotoStartPlacementMode = false;
 int gRideRemoveTrackPieceCallbackX;
@@ -208,7 +208,7 @@ rct_ride_entry *get_ride_entry(int index)
 		log_error("invalid index %d for ride type", index);
 		return NULL;
 	}
-	return gRideTypeList[index];
+	return gRideEntries[index];
 }
 
 rct_ride_measurement *get_ride_measurement(int index)

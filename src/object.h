@@ -79,7 +79,7 @@ extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
 
 typedef struct {
-	uint8 **chunks;
+	void **chunks;
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
 
@@ -94,8 +94,7 @@ typedef struct {
 	};
 } rct_object_filters;
 
-extern rct_object_entry_group object_entry_groups[];
-extern void** gObjectList;
+extern const rct_object_entry_group object_entry_groups[];
 extern char gTempObjectLoadName[9];
 
 extern uint32 gInstalledObjectsCount;
