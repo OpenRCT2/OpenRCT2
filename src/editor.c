@@ -450,11 +450,7 @@ static void editor_clear_map_for_editing()
 
 		gParkFlags &= ~PARK_FLAGS_18;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
-			MONEY(10,00),
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16),
-			MONEY(100,00)
-		);
+		gGuestInitialCash = clamp(MONEY(10,00), gGuestInitialCash, MONEY(100,00));
 
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
 		finance_reset_cash_to_initial();

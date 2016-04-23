@@ -599,6 +599,8 @@ enum {
 	FOR_ALL_PEEPS(sprite_index, peep) \
 		if (peep->type == PEEP_TYPE_STAFF)
 
+#define gGuestInitialCash			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16)
+
 int peep_get_staff_count();
 int peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();

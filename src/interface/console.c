@@ -480,7 +480,7 @@ static int cc_get(const utf8 **argv, int argc)
 			console_printf("max_loan %d", RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) / 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0) {
-			console_printf("guest_initial_cash %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) / 10, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) % 10);
+			console_printf("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0) {
 			uint32 current_happiness = RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
@@ -614,7 +614,7 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get max_loan");
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
+			gGuestInitialCash = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
 			console_execute_silent("get guest_initial_cash");
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {

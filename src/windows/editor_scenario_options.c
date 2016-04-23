@@ -737,16 +737,16 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 {
 	switch (widgetIndex) {
 	case WIDX_CASH_PER_GUEST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) < MONEY(1000, 00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) += MONEY(1, 00);
+		if (gGuestInitialCash < MONEY(1000, 00)) {
+			gGuestInitialCash += MONEY(1, 00);
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_CASH_PER_GUEST_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) > MONEY(0, 00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) -= MONEY(1, 00);
+		if (gGuestInitialCash > MONEY(0, 00)) {
+			gGuestInitialCash -= MONEY(1, 00);
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
@@ -881,7 +881,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 		// Cash per guest value
 		x = w->x + w->widgets[WIDX_CASH_PER_GUEST].left + 1;
 		y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
-		arg = RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16);
+		arg = gGuestInitialCash;
 		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
 	}
 

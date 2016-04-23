@@ -6143,10 +6143,10 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
 	peep->name_string_idx = 767;
 
-	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16);
+	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
 	if (cash < 0) cash = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == 0){
+	if (gGuestInitialCash == 0){
 		cash = 500;
 	}
 
@@ -6154,7 +6154,7 @@ rct_peep *peep_generate(int x, int y, int z)
 		cash = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == (money16)0xFFFF){
+	if (gGuestInitialCash == (money16)0xFFFF){
 		cash = 0;
 	}
 

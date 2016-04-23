@@ -958,7 +958,7 @@ void S4Importer::ImportParkFlags()
     }
 
     // Initial guest status
-    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = _s4.guest_initial_cash;
+    gGuestInitialCash = _s4.guest_initial_cash;
     RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = _s4.guest_initial_hunger;
     RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = _s4.guest_initial_thirst;
 
