@@ -53,6 +53,9 @@ enum {
 #define gParkEntranceFee	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16)
 #define gNumGuestsInPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
 
+#define gLandPrice					RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16)
+#define gConstructionRightsPrice	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16)
+
 extern uint8 *gParkRatingHistory;
 extern uint8 *gGuestsInParkHistory;
 extern int _guestGenerationProbability;

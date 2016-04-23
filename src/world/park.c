@@ -114,8 +114,8 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = 1;
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 4;
 	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1000;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16) = MONEY(90, 00);
-	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16) = MONEY(40,00);
+	gLandPrice = MONEY(90, 00);
+	gConstructionRightsPrice = MONEY(40,00);
 	RCT2_GLOBAL(0x01358774, uint16) = 0;
 	gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	park_reset_history();
@@ -954,7 +954,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			update_park_fences(x, y + 32);
 			update_park_fences(x, y - 32);
 		}
-		return RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
+		return gLandPrice;
 	case 1:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
@@ -980,7 +980,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			uint16 baseHeight = surfaceElement->base_height * 8;
 			map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
 		}
-		return RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, uint16);
+		return gConstructionRightsPrice;
 	case 3:
 		if (flags & GAME_COMMAND_FLAG_APPLY) {
 			surfaceElement->properties.surface.ownership &= ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
@@ -1030,7 +1030,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 		}
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-			return RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, uint16);
+			return gLandPrice;
 		}
 
 		if ((newOwnership & 0xF0) != 0) {

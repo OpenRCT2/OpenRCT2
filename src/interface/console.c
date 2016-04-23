@@ -533,10 +533,10 @@ static int cc_get(const utf8 **argv, int argc)
 			console_printf("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0) {
-			console_printf("land_rights_cost %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) / 10, RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) % 10);
+			console_printf("land_rights_cost %d.%d0", gLandPrice / 10, gLandPrice % 10);
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0) {
-			console_printf("construction_rights_cost %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money32) / 10, RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money32) % 10);
+			console_printf("construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
 			const utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
@@ -673,11 +673,11 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get park_open");
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gLandPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get land_rights_cost");
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gConstructionRightsPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get construction_rights_cost");
 		}
 		else if (strcmp(argv[0], "climate") == 0) {

@@ -653,8 +653,8 @@ void S4Importer::ImportMapAnimations()
 void S4Importer::ImportFinance()
 {
     gParkEntranceFee = _s4.park_entrance_fee;
-    RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = _s4.land_price;
-    RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = _s4.construction_rights_price;
+    gLandPrice = _s4.land_price;
+    gConstructionRightsPrice = _s4.construction_rights_price;
 
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, uint32) = ENCRYPT_MONEY(_s4.cash);
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = _s4.loan;

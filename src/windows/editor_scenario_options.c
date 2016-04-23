@@ -980,32 +980,32 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 
 	switch (widgetIndex) {
 	case WIDX_LAND_COST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) < MONEY(200,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) += MONEY(1,00);
+		if (gLandPrice < MONEY(200,00)) {
+			gLandPrice += MONEY(1,00);
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_LAND_COST_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) > MONEY(5,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) -= MONEY(1,00);
+		if (gLandPrice > MONEY(5,00)) {
+			gLandPrice -= MONEY(1,00);
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) < MONEY(200,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) += MONEY(1,00);
+		if (gConstructionRightsPrice < MONEY(200,00)) {
+			gConstructionRightsPrice += MONEY(1,00);
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) > MONEY(5,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) -= MONEY(1,00);
+		if (gConstructionRightsPrice > MONEY(5,00)) {
+			gConstructionRightsPrice -= MONEY(1,00);
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
@@ -1191,7 +1191,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		// Cost to buy land value
 		x = w->x + w->widgets[WIDX_LAND_COST].left + 1;
 		y = w->y + w->widgets[WIDX_LAND_COST].top;
-		arg = RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16);
+		arg = gLandPrice;
 		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
 	}
 
@@ -1204,7 +1204,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		// Cost to buy construction rights value
 		x = w->x + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1;
 		y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
-		arg = RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16);
+		arg = gConstructionRightsPrice;
 		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
 	}
 
