@@ -954,6 +954,7 @@ typedef struct {
 	uint8 order;
 	uint8 direction;
 	uint8 ride_index;
+	uint8 entrence_index;
 } rct_neighbour;
 
 typedef struct {
@@ -970,8 +971,8 @@ static int rct_neighbour_compare(const void *a, const void *b)
 	else {
 		uint8 da = ((rct_neighbour*)a)->direction;
 		uint8 db = ((rct_neighbour*)b)->direction;
-		if (va < vb) return -1;
-		else if (va > vb) return 1;
+		if (da < db) return -1;
+		else if (da > db) return 1;
 		else return 0;
 	}
 }
@@ -981,11 +982,12 @@ static void neighbour_list_init(rct_neighbour_list *neighbourList)
 	neighbourList->count = 0;
 }
 
-static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex)
+static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex, uint8 entrence_index)
 {
 	neighbourList->items[neighbourList->count].order = order;
 	neighbourList->items[neighbourList->count].direction = direction;
 	neighbourList->items[neighbourList->count].ride_index = rideIndex;
+	neighbourList->items[neighbourList->count].entrence_index = entrence_index;
 	neighbourList->count++;
 }
 
@@ -1122,7 +1124,7 @@ static void loc_6A6D7E(
 	int y = initialY + TileDirectionDelta[direction].y;
 	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
 		if (query) {
-			neighbour_list_push(neighbourList, 7, direction, 255);
+			neighbour_list_push(neighbourList, 7, direction, 255, 255);
 		}
 	} else {
 		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -1158,7 +1160,7 @@ static void loc_6A6D7E(
 						return;
 					}
 					if (query) {
-						neighbour_list_push(neighbourList, 1, direction, mapElement->properties.track.ride_index);
+						neighbour_list_push(neighbourList, 1, direction, mapElement->properties.track.ride_index, 255);
 					}
 					goto loc_6A6FD2;
 				}
@@ -1167,7 +1169,7 @@ static void loc_6A6D7E(
 				if (z == mapElement->base_height) {
 					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
 						if (query) {
-							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index);
+							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index,  mapElement->properties.entrance.index);
 						} else {
 							if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
 								sub_6A76E9(mapElement->properties.entrance.ride_index);
@@ -1188,17 +1190,17 @@ static void loc_6A6D7E(
 			}
 			if (footpath_element_is_queue(mapElement)) {
 				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
-					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index);
+					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index, mapElement->properties.entrance.index);
 				} else {
 					if (map_element_get_type(initialMapElement) == MAP_ELEMENT_TYPE_PATH &&
 						footpath_element_is_queue(initialMapElement)) {
 						if (footpath_disconnect_queue_from_path(x, y, mapElement, 0)) {
-							neighbour_list_push(neighbourList, 3, direction, mapElement->properties.path.ride_index);
+							neighbour_list_push(neighbourList, 3, direction, mapElement->properties.path.ride_index, mapElement->properties.entrance.index);
 						}
 					}
 				}
 			} else {
-				neighbour_list_push(neighbourList, 2, direction, 255);
+				neighbour_list_push(neighbourList, 2, direction, 255, 255);
 			}
 		} else {
 			footpath_disconnect_queue_from_path(x, y, mapElement, 1 + ((flags >> 6) & 1));
@@ -1287,11 +1289,17 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH && footpath_element_is_queue(mapElement)) {
 		int rideIndex = -1;
+		uint8 entrenceIndex = 255;
 		for (int i = 0; i < neighbourList.count; i++) {
 			if (neighbourList.items[i].ride_index != 255) {
 				if (rideIndex == -1) {
 					rideIndex = neighbourList.items[i].ride_index;
+					entrenceIndex = neighbourList.items[i].entrence_index;
 				} else if (rideIndex != neighbourList.items[i].ride_index) {
+					neighbour_list_remove(&neighbourList, i);
+				} else if (rideIndex == neighbourList.items[i].ride_index
+					&& entrenceIndex != neighbourList.items[i].entrence_index
+					&&  neighbourList.items[i].entrence_index != 255) {
 					neighbour_list_remove(&neighbourList, i);
 				}
 			}
