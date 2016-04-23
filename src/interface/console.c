@@ -483,13 +483,13 @@ static int cc_get(const utf8 **argv, int argc)
 			console_printf("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0) {
-			uint32 current_happiness = RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
+			uint32 current_happiness = gGuestInitialHappiness;
 			for (int i = 15; i <= 99; i++) {
 				if (i == 99) {
-					console_printf("guest_initial_happiness %d%%  (%d)", 15, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8));
+					console_printf("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
 				}
 				else if (current_happiness == calculate_guest_initial_happiness(i)) {
-					console_printf("guest_initial_happiness %d%%  (%d)", i, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8));
+					console_printf("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
 					break;
 				}
 			}
@@ -618,7 +618,7 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get guest_initial_cash");
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = calculate_guest_initial_happiness((uint8)int_val[0]);
+			gGuestInitialHappiness = calculate_guest_initial_happiness((uint8)int_val[0]);
 			console_execute_silent("get guest_initial_happiness");
 		}
 		else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {

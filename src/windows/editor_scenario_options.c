@@ -753,16 +753,16 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) < 250) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) += 4;
+		if (gGuestInitialHappiness < 250) {
+			gGuestInitialHappiness += 4;
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) > 40) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) -= 4;
+		if (gGuestInitialHappiness > 40) {
+			gGuestInitialHappiness -= 4;
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
@@ -893,7 +893,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 	// Guest initial happiness value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
-	arg = (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) * 100) / 255;
+	arg = (gGuestInitialHappiness * 100) / 255;
 	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
 
 	// Guest initial hunger label

@@ -6116,9 +6116,9 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->nausea_tolerance = RCT2_ADDRESS(0x009823A0, uint8)[nausea_tolerance];
 
-	sint8 happiness = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
+	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) == 0)
+	if (gGuestInitialHappiness == 0)
 		happiness += 0x80;
 
 	peep->happiness = happiness;

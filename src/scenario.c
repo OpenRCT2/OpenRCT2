@@ -1343,7 +1343,7 @@ static void scenario_objective_check_guests_and_rating()
 			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
 			gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
 			scenario_failure();
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = 50;
+			gGuestInitialHappiness = 50;
 		}
 	} else if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != 0x80000001) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
