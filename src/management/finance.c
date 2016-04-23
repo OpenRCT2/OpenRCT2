@@ -109,7 +109,7 @@ void finance_pay_research()
  */
 void finance_pay_interest()
 {
-	money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, sint32);
+	money32 current_loan = gBankLoan;
 	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
 	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
@@ -178,7 +178,7 @@ void finance_init() {
 	RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = MONEY(10000,00); // Cheat detection
 
 	gCashEncrypted = ENCRYPT_MONEY(MONEY(10000,00));
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = MONEY(10000,00);
+	gBankLoan = MONEY(10000,00);
 	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = MONEY(20000,00);
 
 	RCT2_GLOBAL(0x013587D0, uint32) = 0;
@@ -222,7 +222,7 @@ void finance_update_daily_profit()
 		current_profit -= research_cost_table[level];
 
 		// Loan costs
-		money32 current_loan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+		money32 current_loan = gBankLoan;
 		current_profit -= current_loan / 600;
 
 		// Ride costs
@@ -253,7 +253,7 @@ void finance_update_loan_hash()
 	sint32 value = 0x70093A;
 	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
 	value = ror32(value, 5);
-	value -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	value -= gBankLoan;
 	value = ror32(value, 7);
 	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
 	value = ror32(value, 3);
@@ -272,7 +272,7 @@ money32 finance_get_initial_cash()
 
 money32 finance_get_current_loan()
 {
-	return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	return gBankLoan;
 }
 
 money32 finance_get_maximum_loan()
@@ -294,7 +294,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 	money32 money, loanDifference, currentLoan;
 	money32 newLoan = *edx;
 
-	currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	currentLoan = gBankLoan;
 	money = DECRYPT_MONEY(gCashEncrypted);
 	loanDifference = currentLoan - newLoan;
 
@@ -315,7 +315,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		money -= loanDifference;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = newLoan;
+		gBankLoan = newLoan;
 		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
 		gCashEncrypted = ENCRYPT_MONEY(money);
 		finance_update_loan_hash();

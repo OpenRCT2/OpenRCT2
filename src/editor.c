@@ -460,9 +460,9 @@ static void editor_clear_map_for_editing()
 		finance_reset_cash_to_initial();
 		finance_update_loan_hash();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
+		gBankLoan = clamp(
 			MONEY(0,00),
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32),
+			gBankLoan,
 			MONEY(5000000,00)
 		);
 

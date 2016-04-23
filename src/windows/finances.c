@@ -600,13 +600,13 @@ static void window_finances_summary_mousedown(int widgetIndex, rct_window*w, rct
 
 	switch (widgetIndex) {
 	case WIDX_LOAN_INCREASE:
-		newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) + MONEY(1000, 00);
+		newLoan = gBankLoan + MONEY(1000, 00);
 		gGameCommandErrorTitle = STR_CANT_BORROW_ANY_MORE_MONEY;
 		finance_set_loan(newLoan);
 		break;
 	case WIDX_LOAN_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) > 0) {
-			newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) - MONEY(1000, 00);
+		if (gBankLoan > 0) {
+			newLoan = gBankLoan - MONEY(1000, 00);
 			gGameCommandErrorTitle = STR_CANT_PAY_BACK_LOAN;
 			finance_set_loan(newLoan);
 		}
@@ -640,7 +640,7 @@ static void window_finances_summary_invalidate(rct_window *w)
 	}
 
 	window_finances_set_pressed_tab(w);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, money32) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, money32) = gBankLoan;
 }
 
 /**
@@ -825,7 +825,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 	// Cash (less loan)
 	money32 cashLessLoan =
 		DECRYPT_MONEY(gCashEncrypted) -
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+		gBankLoan;
 
 	gfx_draw_string_left(
 		dpi,

@@ -280,7 +280,7 @@ void scenario_begin()
 	gParkRating = calculate_park_rating();
 	gParkValue = calculate_park_value();
 	gCompanyValue = calculate_company_value();
-	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - gBankLoan;
 	gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
 
 	finance_update_loan_hash();
@@ -1420,7 +1420,7 @@ static void scenario_objective_check_replay_loan_and_park_value()
 {
 	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
 	money32 parkValue = gParkValue;
-	money32 currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	money32 currentLoan = gBankLoan;
 
 	if (currentLoan <= 0 && parkValue >= objectiveParkValue)
 		scenario_success();

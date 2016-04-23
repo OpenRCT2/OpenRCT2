@@ -211,7 +211,7 @@ static void cheat_increase_money(money32 amount)
 static void cheat_clear_loan()
 {
 	// First give money
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32), GAME_COMMAND_CHEAT, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_INCREASEMONEY, gBankLoan, GAME_COMMAND_CHEAT, 0, 0);
 
 	// Then pay the loan
 	money32 newLoan;
