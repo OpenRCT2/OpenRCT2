@@ -110,7 +110,7 @@ void park_init()
 	gGuestInitialCash = MONEY(50,00); // Cash per guest (average)
 	gGuestInitialHappiness = calculate_guest_initial_happiness(50); // 50%
 	gGuestInitialHunger = 200;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = 200;
+	gGuestInitialThirst = 200;
 	gScenarioObjectiveType = OBJECTIVE_GUESTS_BY;
 	gScenarioObjectiveYear = 4;
 	gScenarioObjectiveNumGuests = 1000;

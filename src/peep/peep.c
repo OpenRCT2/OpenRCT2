@@ -6130,7 +6130,7 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->hunger = hunger;
 
-	sint8 thirst = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8);
+	sint8 thirst = (scenario_rand() & 0x1F) - 15 + gGuestInitialThirst;
 
 	peep->thirst = thirst;
 

@@ -498,7 +498,7 @@ static int cc_get(const utf8 **argv, int argc)
 			console_printf("guest_initial_hunger %d%%  (%d)", ((255 - gGuestInitialHunger) * 100) / 255, gGuestInitialHunger);
 		}
 		else if (strcmp(argv[0], "guest_initial_thirst") == 0) {
-			console_printf("guest_initial_thirst %d%%  (%d)", ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8)) * 100) / 255, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8));
+			console_printf("guest_initial_thirst %d%%  (%d)", ((255 - gGuestInitialThirst) * 100) / 255, gGuestInitialThirst);
 		}
 		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0) {
 			console_printf("guest_prefer_less_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
@@ -626,7 +626,7 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get guest_initial_hunger");
 		}
 		else if (strcmp(argv[0], "guest_initial_thirst") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
+			gGuestInitialThirst = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
 			console_execute_silent("get guest_initial_thirst");
 		}
 		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {

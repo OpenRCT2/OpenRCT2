@@ -960,7 +960,7 @@ void S4Importer::ImportParkFlags()
     // Initial guest status
     gGuestInitialCash = _s4.guest_initial_cash;
     gGuestInitialHunger = _s4.guest_initial_hunger;
-    RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = _s4.guest_initial_thirst;
+    gGuestInitialThirst = _s4.guest_initial_thirst;
 
     // Staff colours
     RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = RCT1::GetColour(_s4.handman_colour);
