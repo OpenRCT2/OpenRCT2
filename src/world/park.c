@@ -81,7 +81,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = COLOUR_LIGHT_BLUE;
 	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = COLOUR_YELLOW;
 	gNumGuestsInPark = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
+	gNumGuestsInParkLastWeek = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	gGuestChangeModifier = 0;
 	gParkRating = 0;
@@ -584,8 +584,8 @@ uint8 calculate_guest_initial_happiness(uint8 percentage) {
 void park_update_histories()
 {
 	int guestsInPark = gNumGuestsInPark;
-	int lastGuestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16);
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = guestsInPark;
+	int lastGuestsInPark = gNumGuestsInParkLastWeek;
+	gNumGuestsInParkLastWeek = guestsInPark;
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= 4;
 
 	int changeInGuestsInPark = guestsInPark - lastGuestsInPark;

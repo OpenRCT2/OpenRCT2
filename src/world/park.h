@@ -58,8 +58,6 @@ enum {
 #define	gParkValue			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)
 #define gCompanyValue		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32)
 
-#define gNumGuestsInPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
-
 #define gLandPrice					RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16)
 #define gConstructionRightsPrice	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16)
 
