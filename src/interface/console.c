@@ -15,6 +15,7 @@
 #include "../network/twitch.h"
 #include "../object.h"
 #include "../world/banner.h"
+#include "../world/climate.h"
 #include "../world/scenery.h"
 #include "../management/finance.h"
 #include "../management/research.h"
@@ -541,7 +542,7 @@ static int cc_get(const utf8 **argv, int argc)
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
 			const utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
-			console_printf("climate %s  (%d)", climate_names[RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8)], RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8));
+			console_printf("climate %s  (%d)", climate_names[gClimate], gClimate);
 		}
 		else if (strcmp(argv[0], "game_speed") == 0) {
 			console_printf("game_speed %d", gGameSpeed);
@@ -683,13 +684,13 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
 			if (int_valid[0]) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = clamp(int_val[0], 0, 3);
+				gClimate = clamp(int_val[0], 0, 3);
 			}
 			else {
 				utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
 				for (i = 0; i < 4; i++) {
 					if (strcmp(argv[1], climate_names[i]) == 0) {
-						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = i;
+						gClimate = i;
 						break;
 					}
 				}

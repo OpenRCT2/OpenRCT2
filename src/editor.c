@@ -126,7 +126,7 @@ void editor_convert_save_to_scenario_callback(int result)
 	s6Info->objective_arg_1 = gScenarioObjectiveYear;
 	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
 	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
-	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+	climate_reset(gClimate);
 
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
@@ -471,7 +471,7 @@ static void editor_clear_map_for_editing()
 		gBankLoanInterestRate = clamp(5, gBankLoanInterestRate, 80);
 	}
 
-	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+	climate_reset(gClimate);
 
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {

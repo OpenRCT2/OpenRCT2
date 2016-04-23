@@ -19,29 +19,30 @@
 *****************************************************************************/
 
 #include "../addresses.h"
-#include "../util/util.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../cheats.h"
+#include "../config.h"
+#include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../management/marketing.h"
 #include "../management/news_item.h"
-#include "../config.h"
 #include "../openrct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/track.h"
 #include "../scenario.h"
 #include "../sprites.h"
-#include "../world/sprite.h"
-#include "../world/scenery.h"
+#include "../util/util.h"
+#include "../world/climate.h"
 #include "../world/footpath.h"
-#include "../management/marketing.h"
-#include "../game.h"
-#include "../ride/track.h"
-#include "../cheats.h"
+#include "../world/map.h"
+#include "../world/scenery.h"
+#include "../world/sprite.h"
 #include "peep.h"
 #include "staff.h"
-#include "../world/map.h"
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -335,7 +336,7 @@ static void sub_68F8CD(rct_peep *peep)
 		peep->energy_growth_rate -= 2;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint8) >= 21 && peep->thirst >= 5) {
+	if (gClimateCurrentTemperature >= 21 && peep->thirst >= 5) {
 		peep->thirst--;
 	}
 
@@ -1183,7 +1184,7 @@ void peep_update_sprite_type(rct_peep* peep)
 	}
 
 	if (
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 &&
+		gClimateCurrentRainLevel != 0 &&
 		(peep->item_standard_flags & PEEP_ITEM_UMBRELLA) &&
 		peep->x != SPRITE_LOCATION_NULL
 	) {
@@ -8865,12 +8866,12 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
 
 	if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM)
 		|| (shopItem == SHOP_ITEM_COTTON_CANDY) || (shopItem == SHOP_ITEM_SUNGLASSES)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0)
+		if (gClimateCurrentRainLevel != 0)
 			return 0;
 	}
 
 	if ((shopItem == SHOP_ITEM_SUNGLASSES) || (shopItem == SHOP_ITEM_ICE_CREAM)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) < 12)
+		if (gClimateCurrentTemperature < 12)
 			return 0;
 	}
 
@@ -8884,7 +8885,7 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
 		return 0;
 	}
 
-	if ((shopItem == SHOP_ITEM_UMBRELLA) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0))
+	if ((shopItem == SHOP_ITEM_UMBRELLA) && (gClimateCurrentRainLevel != 0))
 			goto loc_69B119;
 
 	if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher) {
@@ -8907,9 +8908,9 @@ loc_69B119:
 			}
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) >= 21)
+		if (gClimateCurrentTemperature >= 21)
 			value = get_shop_hot_value(shopItem);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) <= 11)
+		else if (gClimateCurrentTemperature <= 11)
 			value = get_shop_cold_value(shopItem);
 		else
 			value = get_shop_base_value(shopItem);
@@ -8917,7 +8918,7 @@ loc_69B119:
 		if (value < price) {
 			value -= price;
 			if (shopItem == SHOP_ITEM_UMBRELLA) {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0)
+				if (gClimateCurrentRainLevel != 0)
 					goto loc_69B221;
 			}
 
@@ -8955,9 +8956,9 @@ loc_69B119:
 
 loc_69B221:
 	if (!has_voucher) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) >= 21)
+		if (gClimateCurrentTemperature >= 21)
 			value = get_shop_hot_value(shopItem);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) <= 11)
+		else if (gClimateCurrentTemperature <= 11)
 			value = get_shop_cold_value(shopItem);
 		else
 			value = get_shop_base_value(shopItem);
@@ -9695,7 +9696,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 				// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
 				// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && (ride->undercover_portion >> 5) < 3) {
+				if (gClimateCurrentRainLevel != 0 && (ride->undercover_portion >> 5) < 3) {
 					if (peepAtRide) {
 						peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
 						if (peep->happiness_growth_rate >= 64) {

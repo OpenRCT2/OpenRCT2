@@ -460,7 +460,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 		dropdownWidget->right - dropdownWidget->left - 3
 		);
 
-	int currentWeather = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8);
+	int currentWeather = gClimateCurrentWeather;
 	dropdown_set_checked(currentWeather, true);
 }
 
@@ -800,7 +800,7 @@ static void window_cheats_invalidate(rct_window *w)
 
 
 	// Current weather
-	int currentWeather = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8);
+	int currentWeather = gClimateCurrentWeather;
 	window_cheats_misc_widgets[WIDX_WEATHER].image = STR_SUNNY + currentWeather;
 }
 

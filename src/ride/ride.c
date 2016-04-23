@@ -41,6 +41,7 @@
 #include "../util/util.h"
 #include "../windows/error.h"
 #include "../world/banner.h"
+#include "../world/climate.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"
@@ -2220,8 +2221,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 	rct_ride_entry *entry;
 
 	// Brake failure is more likely when its raining
-	_breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] =
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) == 0 ? 3 : 20;
+	_breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = gClimateCurrentRainLevel == 0 ? 3 : 20;
 
 	entry = get_ride_entry_by_ride(ride);
 	if (entry->flags & RIDE_ENTRY_FLAG_14)

@@ -779,7 +779,7 @@ int scenario_prepare_for_save()
 		gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
 	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
-	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+	climate_reset(gClimate);
 
 	return 1;
 }

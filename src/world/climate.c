@@ -44,23 +44,6 @@ typedef struct {
 	sint8 distribution[24];
 } rct_weather_transition;
 
-// These still need to be read / written when loading and saving
-// int gClimateNextWeather;
-//
-// static int _climateCurrentWeatherEffect;
-//
-// static int _climateNextTemperature;
-// static int _climateNextWeatherEffect;
-// static int _climateNextWeatherGloom;
-// static int _climateNextRainLevel;
-
-#define _climateCurrentWeatherEffect	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, uint8)
-
-#define _climateNextTemperature			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, uint8)
-#define _climateNextWeatherEffect		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, uint8)
-#define _climateNextWeatherGloom		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, uint8)
-#define _climateNextRainLevel			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, uint8)
-
 static const rct_weather_transition* climate_transitions[4];
 
 // Sound data
@@ -91,17 +74,17 @@ int climate_celsius_to_fahrenheit(int celsius)
  */
 void climate_reset(int climate)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = climate;
+	gClimate = climate;
 
 	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 	const rct_weather_transition* climate_table = climate_transitions[climate];
 	rct_weather_transition transition = climate_table[month];
 	sint8 weather = WEATHER_PARTIALLY_CLOUDY;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = weather;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = transition.base_temperature + climate_weather_data[weather].temp_delta;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, sint8) = climate_weather_data[weather].effect_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
+	gClimateCurrentWeather = weather;
+	gClimateCurrentTemperature = transition.base_temperature + climate_weather_data[weather].temp_delta;
+	gClimateCurrentWeatherEffect = climate_weather_data[weather].effect_level;
+	gClimateCurrentWeatherGloom = climate_weather_data[weather].gloom_level;
+	gClimateCurrentRainLevel = climate_weather_data[weather].rain_level;
 
 	_lightningTimer = 0;
 	_thunderTimer = 0;
@@ -130,12 +113,12 @@ sint8 step_weather_level(sint8 cur_weather_level, sint8 next_weather_level) {
 void climate_update()
 {
 	uint8 screen_flags = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8);
-	sint8 temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8),
-		target_temperature = _climateNextTemperature,
-		cur_gloom = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8),
-		next_gloom = _climateNextWeatherGloom,
-		cur_rain = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8),
-		next_rain = _climateNextRainLevel;
+	sint8 temperature = gClimateCurrentTemperature,
+		target_temperature = gClimateNextTemperature,
+		cur_gloom = gClimateCurrentWeatherGloom,
+		next_gloom = gClimateNextWeatherGloom,
+		cur_rain = gClimateCurrentRainLevel,
+		next_rain = gClimateNextRainLevel;
 
 	if (gCheatsFreezeClimate) //for cheats
 		return;
@@ -143,35 +126,35 @@ void climate_update()
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16))	{
+	if (gClimateUpdateTimer)	{
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) == 960)
+		if (gClimateUpdateTimer == 960)
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16)--;
+		gClimateUpdateTimer--;
 
 	} else if (!(gCurrentTicks & 0x7F)) {
 
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
-				_climateCurrentWeatherEffect = _climateNextWeatherEffect;
+				gClimateCurrentWeatherEffect = gClimateNextWeatherEffect;
 				_thunderTimer = 0;
 				_lightningTimer = 0;
 
 				if (cur_rain == next_rain) {
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = gClimateNextWeather;
+					gClimateCurrentWeather = gClimateNextWeather;
 					climate_determine_future_weather(scenario_rand());
 					RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 				} else if (next_rain <= 2) { // Safe-guard
-					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = step_weather_level(cur_rain, next_rain);
+					gClimateCurrentRainLevel = step_weather_level(cur_rain, next_rain);
 				}
 			} else {
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = step_weather_level(cur_gloom, next_gloom);
+				gClimateCurrentWeatherGloom = step_weather_level(cur_gloom, next_gloom);
 				gfx_invalidate_screen();
 			}
 
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = step_weather_level(temperature, target_temperature);
+			gClimateCurrentTemperature = step_weather_level(temperature, target_temperature);
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
 		}
 	}
@@ -179,7 +162,7 @@ void climate_update()
 	if (_thunderTimer != 0) {
 		climate_update_lightning();
 		climate_update_thunder();
-	} else if (_climateCurrentWeatherEffect == 2) {
+	} else if (gClimateCurrentWeatherEffect == 2) {
 		// Create new thunder and lightning
 		unsigned int randomNumber = util_rand();
 		if ((randomNumber & 0xFFFF) <= 0x1B4) {
@@ -191,11 +174,11 @@ void climate_update()
 }
 
 void climate_force_weather(uint8 weather){
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8) = weather;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = climate_weather_data[weather].gloom_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = climate_weather_data[weather].rain_level;
-	_climateCurrentWeatherEffect = climate_weather_data[weather].effect_level;
-	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
+	gClimateCurrentWeather = weather;
+	gClimateCurrentWeatherGloom = climate_weather_data[weather].gloom_level;
+	gClimateCurrentRainLevel = climate_weather_data[weather].rain_level;
+	gClimateCurrentWeatherEffect = climate_weather_data[weather].effect_level;
+	gClimateUpdateTimer = 1920;
 
 	climate_update();
 
@@ -213,7 +196,7 @@ void climate_force_weather(uint8 weather){
  */
 static void climate_determine_future_weather(int randomDistribution)
 {
-	sint8 climate = RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8);
+	sint8 climate = gClimate;
 	const rct_weather_transition* climate_table = climate_transitions[climate];
 	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
 	rct_weather_transition transition = climate_table[month];
@@ -222,12 +205,12 @@ static void climate_determine_future_weather(int randomDistribution)
 	sint8 next_weather = transition.distribution[ ((randomDistribution & 0xFF) * transition.distribution_size) >> 8 ];
 	gClimateNextWeather = next_weather;
 
-	_climateNextTemperature = transition.base_temperature + climate_weather_data[next_weather].temp_delta;
-	_climateNextWeatherEffect = climate_weather_data[next_weather].effect_level;
-	_climateNextWeatherGloom = climate_weather_data[next_weather].gloom_level;
-	_climateNextRainLevel = climate_weather_data[next_weather].rain_level;
+	gClimateNextTemperature = transition.base_temperature + climate_weather_data[next_weather].temp_delta;
+	gClimateNextWeatherEffect = climate_weather_data[next_weather].effect_level;
+	gClimateNextWeatherGloom = climate_weather_data[next_weather].gloom_level;
+	gClimateNextRainLevel = climate_weather_data[next_weather].rain_level;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) = 1920;
+	gClimateUpdateTimer = 1920;
 }
 
 /**
@@ -251,7 +234,7 @@ void climate_update_sound()
 
 static void climate_update_rain_sound()
 {
-	if (_climateCurrentWeatherEffect == 1 || _climateCurrentWeatherEffect == 2) {
+	if (gClimateCurrentWeatherEffect == 1 || gClimateCurrentWeatherEffect == 2) {
 		// Start playing the rain sound
 		if (!gRainSoundChannel) {
 			gRainSoundChannel = Mixer_Play_Effect(SOUND_RAIN_1, MIXER_LOOP_INFINITE, DStoMixerVolume(-4000), 0.5f, 1, 0);

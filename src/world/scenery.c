@@ -66,7 +66,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 	sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
 	if (
 		!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8) < WEATHER_RAIN) ||
+		(gClimateCurrentWeather < WEATHER_RAIN) ||
 		(mapElement->properties.scenery.age < 5)
 	) {
 		scenery_increase_age(x, y, mapElement);

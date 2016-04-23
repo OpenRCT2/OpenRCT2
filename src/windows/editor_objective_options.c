@@ -20,16 +20,17 @@
 
 #include "../addresses.h"
 #include "../game.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
 #include "../scenario.h"
+#include "../util/util.h"
+#include "../world/climate.h"
 #include "../world/park.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/themes.h"
-#include "../util/util.h"
 
 #pragma region Widgets
 
@@ -523,7 +524,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
-	dropdown_set_checked(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8), true);
+	dropdown_set_checked(gClimate, true);
 }
 
 static void window_editor_objective_options_show_category_dropdown(rct_window *w)
@@ -716,8 +717,8 @@ static void window_editor_objective_options_main_dropdown(rct_window *w, int wid
 			window_editor_objective_options_set_objective(w, newObjectiveType);
 		break;
 	case WIDX_CLIMATE_DROPDOWN:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8) != (uint8)dropdownIndex) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8) = (uint8)dropdownIndex;
+		if (gClimate != (uint8)dropdownIndex) {
+			gClimate = (uint8)dropdownIndex;
 			window_invalidate(w);
 		}
 		break;
@@ -979,7 +980,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Climate value
 	x = w->x + w->widgets[WIDX_CLIMATE].left + 1;
 	y = w->y + w->widgets[WIDX_CLIMATE].top;
-	stringId = STR_CLIMATE_COOL_AND_WET + RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8);
+	stringId = STR_CLIMATE_COOL_AND_WET + gClimate;
 	gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 
 	// Park name

@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../interface/window.h"
+#include "../world/climate.h"
 #include "drawing.h"
 
 typedef void(*draw_rain_func)(int left, int top, int width, int height);
@@ -156,7 +157,7 @@ void update_rain_animation()
 		return;
 
 	// Get rain draw function and draw rain
-	uint32 draw_rain_func = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8);
+	uint32 draw_rain_func = gClimateCurrentRainLevel;
 	if (draw_rain_func > 0 && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
 		draw_rain_animation(draw_rain_func);
 }

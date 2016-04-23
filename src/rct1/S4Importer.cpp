@@ -23,6 +23,7 @@ extern "C"
     #include "../rct1.h"
     #include "../util/sawyercoding.h"
     #include "../util/util.h"
+    #include "../world/climate.h"
     #include "../world/footpath.h"
     #include "../world/map_animation.h"
     #include "../world/park.h"
@@ -978,18 +979,18 @@ void S4Importer::ImportParkFlags()
 
 void S4Importer::ImportClimate()
 {
-    RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8) = _s4.climate;
-    RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, uint16) = _s4.climate_timer;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) = _s4.temperature;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8) = _s4.weather;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_EFFECT, uint8) = 0;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, sint8) = _s4.weather_gloom;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) = _s4.rain;
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_TEMPERATURE, uint8) = _s4.target_temperature;
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER, uint8) = _s4.target_weather;
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_EFFECT, uint8) = 0;
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_WEATHER_GLOOM, uint8) = _s4.target_weather_gloom;
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, uint8) = _s4.target_rain;
+    gClimate = _s4.climate;
+    gClimateUpdateTimer = _s4.climate_timer;
+    gClimateCurrentTemperature = _s4.temperature;
+    gClimateCurrentWeather = _s4.weather;
+    gClimateCurrentWeatherEffect = 0;
+    gClimateCurrentWeatherGloom = _s4.weather_gloom;
+    gClimateCurrentRainLevel = _s4.rain;
+    gClimateNextTemperature = _s4.target_temperature;
+    gClimateNextWeather = _s4.target_weather;
+    gClimateNextWeatherEffect = 0;
+    gClimateNextWeatherGloom = _s4.target_weather_gloom;
+    gClimateNextRainLevel = _s4.target_rain;
 }
 
 void S4Importer::ImportScenarioNameDetails()

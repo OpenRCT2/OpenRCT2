@@ -473,7 +473,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x = w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
 	y += 11;
 
-	temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
+	temperature = gClimateCurrentTemperature;
 	format = STR_CELSIUS_VALUE;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
 		temperature = climate_celsius_to_fahrenheit(temperature);
@@ -484,11 +484,11 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x += 30;
 
 	// Current weather
-	gfx_draw_sprite(dpi, climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id, x, y, 0);
+	gfx_draw_sprite(dpi, climate_weather_data[gClimateCurrentWeather].sprite_id, x, y, 0);
 
 	// Next weather
-	if (climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id != climate_weather_data[gClimateNextWeather].sprite_id) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) < 960) {
+	if (climate_weather_data[gClimateCurrentWeather].sprite_id != climate_weather_data[gClimateNextWeather].sprite_id) {
+		if (gClimateUpdateTimer < 960) {
 			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
 			gfx_draw_sprite(dpi, climate_weather_data[gClimateNextWeather].sprite_id, x + 40, y, 0);
 		}
