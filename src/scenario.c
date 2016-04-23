@@ -770,7 +770,7 @@ int scenario_prepare_for_save()
 
 	s6Info->objective_type = gScenarioObjectiveType;
 	s6Info->objective_arg_1 = gScenarioObjectiveYear;
-	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
+	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
 	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 
 	scenario_prepare_rides_for_save();
@@ -1271,7 +1271,7 @@ static void scenario_objective_check_park_value_by()
 {
 	uint8 objectiveYear = gScenarioObjectiveYear;
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
-	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveParkValue = gScenarioObjectiveCurrency;
 	money32 parkValue = gParkValue;
 
 	if (currentMonthYear == 8 * objectiveYear) {
@@ -1356,7 +1356,7 @@ static void scenario_objective_check_guests_and_rating()
 
 static void scenario_objective_check_monthly_ride_income()
 {
-	money32 objectiveMonthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveMonthlyRideIncome = gScenarioObjectiveCurrency;
 	money32 monthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32);
 	if (monthlyRideIncome >= objectiveMonthlyRideIncome)
 		scenario_success();
@@ -1402,7 +1402,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
 	int i;
 	rct_ride* ride;
 
-	money32 objectiveRideExcitement = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
 
 	// ORIGINAL BUG?:
 	// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
@@ -1418,7 +1418,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
 
 static void scenario_objective_check_replay_loan_and_park_value()
 {
-	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveParkValue = gScenarioObjectiveCurrency;
 	money32 parkValue = gParkValue;
 	money32 currentLoan = gBankLoan;
 
@@ -1428,7 +1428,7 @@ static void scenario_objective_check_replay_loan_and_park_value()
 
 static void scenario_objective_check_monthly_food_income()
 {
-	money32 objectiveMonthlyIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveMonthlyIncome = gScenarioObjectiveCurrency;
 	sint32 monthlyIncome =
 		RCT2_GLOBAL(0x013578A4, money32) +
 		RCT2_GLOBAL(0x013578A0, money32) +

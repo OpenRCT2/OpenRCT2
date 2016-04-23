@@ -362,25 +362,25 @@ static void window_editor_objective_options_set_objective(rct_window *w, int obj
 		break;
 	case OBJECTIVE_PARK_VALUE_BY:
 		gScenarioObjectiveYear = 3;
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(50000,00);
+		gScenarioObjectiveCurrency = MONEY(50000,00);
 		break;
 	case OBJECTIVE_GUESTS_AND_RATING:
 		gScenarioObjectiveNumGuests = 2000;
 		break;
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(10000,00);
+		gScenarioObjectiveCurrency = MONEY(10000,00);
 		break;
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
 		gScenarioObjectiveNumGuests = 1200;
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = FIXED_2DP(6,70);
+		gScenarioObjectiveCurrency = FIXED_2DP(6,70);
 		break;
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(50000,00);
+		gScenarioObjectiveCurrency = MONEY(50000,00);
 		break;
 	case OBJECTIVE_MONTHLY_FOOD_INCOME:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(1000,00);
+		gScenarioObjectiveCurrency = MONEY(1000,00);
 		break;
 	}
 }
@@ -556,18 +556,18 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
 	case OBJECTIVE_PARK_VALUE_BY:
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) >= MONEY(2000000,00)) {
+		if (gScenarioObjectiveCurrency >= MONEY(2000000,00)) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) += MONEY(1000,0);
+			gScenarioObjectiveCurrency += MONEY(1000,0);
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_MONTHLY_FOOD_INCOME:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) >= MONEY(2000000,00)) {
+		if (gScenarioObjectiveCurrency >= MONEY(2000000,00)) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) += MONEY(100,0);
+			gScenarioObjectiveCurrency += MONEY(100,0);
 			window_invalidate(w);
 		}
 		break;
@@ -580,10 +580,10 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
 		}
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) >= FIXED_2DP(9,90)) {
+		if (gScenarioObjectiveCurrency >= FIXED_2DP(9,90)) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) += FIXED_2DP(0,10);
+			gScenarioObjectiveCurrency += FIXED_2DP(0,10);
 			window_invalidate(w);
 		}
 		break;
@@ -604,18 +604,18 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 	case OBJECTIVE_PARK_VALUE_BY:
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) <= MONEY(1000,00)) {
+		if (gScenarioObjectiveCurrency <= MONEY(1000,00)) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) -= MONEY(1000,0);
+			gScenarioObjectiveCurrency -= MONEY(1000,0);
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_MONTHLY_FOOD_INCOME:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) <= MONEY(1000,00)) {
+		if (gScenarioObjectiveCurrency <= MONEY(1000,00)) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) -= MONEY(100,0);
+			gScenarioObjectiveCurrency -= MONEY(100,0);
 			window_invalidate(w);
 		}
 		break;
@@ -628,10 +628,10 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 		}
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) <= FIXED_2DP(4,00)) {
+		if (gScenarioObjectiveCurrency <= FIXED_2DP(4,00)) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) -= FIXED_2DP(0,10);
+			gScenarioObjectiveCurrency -= FIXED_2DP(0,10);
 			window_invalidate(w);
 		}
 		break;
@@ -944,7 +944,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		case OBJECTIVE_MONTHLY_RIDE_INCOME:
 		case OBJECTIVE_MONTHLY_FOOD_INCOME:
 			stringId = 3246;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+			arg = gScenarioObjectiveCurrency;
 			break;
 		case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
 			stringId = 3310;
@@ -952,7 +952,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 			break;
 		default:
 			stringId = 3311;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+			arg = gScenarioObjectiveCurrency;
 			break;
 		}
 		gfx_draw_string_left(dpi, stringId, &arg, 0, x, y);

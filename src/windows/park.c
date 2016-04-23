@@ -1759,7 +1759,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Objective
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = gScenarioObjectiveNumGuests;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = gScenarioObjectiveCurrency;
 
 	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 221, 2385 + gScenarioObjectiveType, 0);
 	y += 5;
