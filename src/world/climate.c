@@ -306,7 +306,7 @@ static void climate_update_thunder()
 		if (_thunderStatus[0] == THUNDER_STATUS_NULL && _thunderStatus[1] == THUNDER_STATUS_NULL) {
 			// Play thunder on left side
 			_thunderSoundId = (randomNumber & 0x20000) ? SOUND_THUNDER_1 : SOUND_THUNDER_2;
-			_thunderVolume = (-((int)((randomNumber >> 18) & 0xFF))) << 3;
+			_thunderVolume = (-((int)((randomNumber >> 18) & 0xFF))) * 8;
 			climate_play_thunder(0, _thunderSoundId, _thunderVolume, -10000);
 
 			// Let thunder play on right side
