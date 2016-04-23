@@ -302,13 +302,188 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
 
 /**
  * Metal pole supports
+ * eax = special,
+ * ebx = segment, 
+ * edx = height, 
+ * edi = supportType, 
+ * ebp = imageColourFlags;
  *  rct2: 0x00663105
  */
-bool metal_a_wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
+bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags)
 {
-	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-	RCT2_CALLFUNC_X(0x00663105, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-	return eax & 0xFF;
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+		return false;
+	}
+
+	if (!(RCT2_GLOBAL(0x0141E9DB, uint8) & 1)) {
+		return false;
+	}
+
+	sint16 originalHeight = height;
+
+	RCT2_GLOBAL(0x009E3294, sint16) = -1;
+	if (height < RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2]){
+		RCT2_GLOBAL(0x009E3294, sint16) = height;
+
+		height -= RCT2_ADDRESS(0x0097B142, sint16)[supportType];
+		if (height < 0)
+			return false;
+
+		uint8* esi = &(RCT2_ADDRESS(0x0097AF32, uint8)[get_current_rotation() * 2]);
+
+		uint8 newSegment = esi[segment * 8];
+		if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+			esi += 72;
+			newSegment = esi[segment * 8];
+			if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+				esi += 72;
+				newSegment = esi[segment * 8];
+				if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+					esi += 72;
+					newSegment = esi[segment * 8];
+					if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
+						esi += 72;
+						newSegment = esi[segment * 8];
+						return true;
+					}
+				}
+			}
+		}
+
+		uint8 ebp = esi[segment * 8 + 1];
+
+		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
+		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+		xOffset += RCT2_ADDRESS(0x0097B052, sint8)[ebp * 2];
+		yOffset += RCT2_ADDRESS(0x0097B052 + 1, sint8)[ebp * 2];
+
+		sint16 boundBoxLengthX = RCT2_ADDRESS(0x0097B062, uint8)[ebp * 2];
+		sint16 boundBoxLengthY = RCT2_ADDRESS(0x0097B062 + 1, uint8)[ebp * 2];
+
+		uint32 image_id = RCT2_ADDRESS(0x0097B072, uint16)[supportType * 8 + ebp];
+		image_id |= imageColourFlags;
+		sub_98196C(image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height, get_current_rotation());
+
+		segment = newSegment;
+	}
+	sint16 si = height;
+	if (RCT2_ADDRESS(0x00141E9B4 + 2, uint8)[segment * 4] & (1 << 5) ||
+		height - RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2] < 6 ||
+		RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2] == 0
+		) {
+
+		height = RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2];
+	}else{
+		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
+		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+
+		uint32 image_id = RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2];
+		image_id += RCT2_ADDRESS(0x0097B404, sint16)[RCT2_ADDRESS(0x00141E9B4 + 2, sint16)[segment * 2] & 0x1F];
+		image_id |= imageColourFlags;
+
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2], get_current_rotation());
+
+		height = RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2] + 6;
+	}
+
+
+	// Work out if a small support segment required to bring support to normal
+	// size (aka floor2(x, 16))
+	sint16 heightDiff = floor2(height + 16, 16);
+	if (heightDiff > si) {
+		heightDiff = si;
+	}
+
+	heightDiff -= height;
+
+	if (heightDiff > 0) {
+		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
+		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+
+		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
+		image_id += heightDiff - 1;
+		image_id |= imageColourFlags;
+
+
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, heightDiff - 1, height, get_current_rotation());
+	}
+
+	height += heightDiff;
+	//6632e6
+
+	for (uint8 count = 0; ;count++) {
+		if (count > 4)
+			count = 0;
+
+		sint16 z = height + 16;
+		if (z > si) {
+			z = si;
+		}
+
+		z -= height;
+		if (z <= 0)
+			break;
+
+		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
+		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+
+		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
+		image_id += z - 1;
+		image_id |= imageColourFlags;
+
+		if (count == 3 && z == 0x10)
+			image_id++;
+
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, z - 1, height, get_current_rotation());
+
+		height += z;
+	}
+
+	RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2] = RCT2_GLOBAL(0x009E3294, sint16);
+	RCT2_ADDRESS(0x00141E9B4 + 2, uint8)[segment * 4] = 0x20;
+
+	height = originalHeight;
+	if (special == 0)
+		return true;
+
+	if (special < 0) {
+		special = -special;
+		height--;
+	}
+
+	sint16 boundBoxOffsetX = RCT2_ADDRESS(0x0097AF20, uint8)[segment * 2];
+	sint16 boundBoxOffsetY = RCT2_ADDRESS(0x0097AF21, uint8)[segment * 2];
+	sint16 boundBoxOffsetZ = height;
+	si = height + special;
+
+	while (1) {
+		sint16 z = height + 16;
+		if (z > si) {
+			z = si;
+		}
+
+		z -= height;
+		if (z <= 0)
+			break;
+
+		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
+		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
+
+		uint32 image_id = RCT2_ADDRESS(0x0097B15C + 2, uint16)[supportType * 2];
+		image_id += z - 1;
+		image_id |= imageColourFlags;
+
+
+		sub_98197C(image_id, xOffset, yOffset, 0, 0, z - 1, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+
+		height += z;
+	}
+	
+	return true;
+
+	//int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
+	//RCT2_CALLFUNC_X(0x00663105, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
+	//return eax & 0xFF;
 }
 
 /**
