@@ -309,7 +309,7 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
  * ebp = imageColourFlags;
  *  rct2: 0x00663105
  */
-bool metal_a_wooden_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags)
+bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags)
 {
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
 		return false;
@@ -322,7 +322,7 @@ bool metal_a_wooden_a_supports_paint_setup(int supportType, int segment, int spe
 	sint16 originalHeight = height;
 
 	RCT2_GLOBAL(0x009E3294, sint16) = -1;
-	if (height < RCT2_ADDRESS(0x0141E9B4, sint16)[segment * 2]){
+	if (height < RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2]){
 		RCT2_GLOBAL(0x009E3294, sint16) = height;
 
 		height -= RCT2_ADDRESS(0x0097B142, sint16)[supportType];
@@ -332,16 +332,16 @@ bool metal_a_wooden_a_supports_paint_setup(int supportType, int segment, int spe
 		uint8* esi = &(RCT2_ADDRESS(0x0097AF32, uint8)[get_current_rotation() * 2]);
 
 		uint8 newSegment = esi[segment * 8];
-		if (height <= RCT2_ADDRESS(0x0141E9B4, sint16)[newSegment * 2]) {
+		if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
 			esi += 72;
 			newSegment = esi[segment * 8];
-			if (height <= RCT2_ADDRESS(0x0141E9B4, sint16)[newSegment * 2]) {
+			if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
 				esi += 72;
 				newSegment = esi[segment * 8];
-				if (height <= RCT2_ADDRESS(0x0141E9B4, sint16)[newSegment * 2]) {
+				if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
 					esi += 72;
 					newSegment = esi[segment * 8];
-					if (height <= RCT2_ADDRESS(0x0141E9B4, sint16)[newSegment * 2]) {
+					if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
 						esi += 72;
 						newSegment = esi[segment * 8];
 						return true;
@@ -357,20 +357,22 @@ bool metal_a_wooden_a_supports_paint_setup(int supportType, int segment, int spe
 		xOffset += RCT2_ADDRESS(0x0097B052, sint8)[ebp * 2];
 		yOffset += RCT2_ADDRESS(0x0097B052 + 1, sint8)[ebp * 2];
 
-		sint16 boundBoxLengthX = RCT2_ADDRESS(0x0097B062, uint8)[ebp];
-		sint16 boundBoxLengthY = RCT2_ADDRESS(0x0097B062 + 1, uint8)[ebp];
+		sint16 boundBoxLengthX = RCT2_ADDRESS(0x0097B062, uint8)[ebp * 2];
+		sint16 boundBoxLengthY = RCT2_ADDRESS(0x0097B062 + 1, uint8)[ebp * 2];
 
-		uint32 image_id = RCT2_ADDRESS(0x0097B072, uint16)[newSegment * 8 + ebp];
+		uint32 image_id = RCT2_ADDRESS(0x0097B072, uint16)[supportType * 8 + ebp];
 		image_id |= imageColourFlags;
 		sub_98196C(image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height, get_current_rotation());
+
+		segment = newSegment;
 	}
 	sint16 si = height;
-	if (RCT2_ADDRESS(0x00141E9B6, uint8)[segment] & (1 << 5) ||
-		height - RCT2_ADDRESS(0x00141E9B4, sint16)[segment * 2] < 6 ||
-		RCT2_ADDRESS(0x0097B15C, uint16)[supportType] == 0
+	if (RCT2_ADDRESS(0x00141E9B4 + 2, uint8)[segment * 4] & (1 << 5) ||
+		height - RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2] < 6 ||
+		RCT2_ADDRESS(0x0097B15C, uint16)[supportType * 2] == 0
 		) {
 
-		height = RCT2_ADDRESS(0x00141E9B4, sint16)[segment * 2];
+		height = RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2];
 	}else{
 		sint8 xOffset = RCT2_ADDRESS(0x0097AF20, sint8)[segment * 2];
 		sint8 yOffset = RCT2_ADDRESS(0x0097AF20 + 1, sint8)[segment * 2];
@@ -379,9 +381,9 @@ bool metal_a_wooden_a_supports_paint_setup(int supportType, int segment, int spe
 		image_id += RCT2_ADDRESS(0x0097B404, sint16)[RCT2_ADDRESS(0x00141E9B4 + 2, sint16)[segment * 2] & 0x1F];
 		image_id |= imageColourFlags;
 
-		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, RCT2_ADDRESS(0x0141E9B4, sint16)[segment * 2], get_current_rotation());
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2], get_current_rotation());
 
-		height = RCT2_ADDRESS(0x0141E9B4, sint16)[segment * 2] + 6;
+		height = RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2] + 6;
 	}
 
 
@@ -409,7 +411,10 @@ bool metal_a_wooden_a_supports_paint_setup(int supportType, int segment, int spe
 	height += heightDiff;
 	//6632e6
 
-	while (1) {
+	for (uint8 count = 0; ;count++) {
+		if (count > 4)
+			count = 0;
+
 		sint16 z = height + 16;
 		if (z > si) {
 			z = si;
@@ -426,13 +431,15 @@ bool metal_a_wooden_a_supports_paint_setup(int supportType, int segment, int spe
 		image_id += z - 1;
 		image_id |= imageColourFlags;
 
+		if (count == 3 && z == 0x10)
+			image_id++;
 
 		sub_98196C(image_id, xOffset, yOffset, 0, 0, z - 1, height, get_current_rotation());
 
 		height += z;
 	}
 
-	RCT2_ADDRESS(0x00141E9B4, sint16)[segment * 2] = RCT2_GLOBAL(0x009E3294, sint16);
+	RCT2_ADDRESS(0x00141E9B4, uint16)[segment * 2] = RCT2_GLOBAL(0x009E3294, sint16);
 	RCT2_ADDRESS(0x00141E9B4 + 2, uint8)[segment * 4] = 0x20;
 
 	height = originalHeight;
