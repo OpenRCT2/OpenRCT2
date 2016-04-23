@@ -402,11 +402,12 @@ namespace Twitch
                 format_string(buffer, peep->name_string_idx, NULL);
 
                 AudienceMember * member = nullptr;
-                for (AudienceMember &member : members)
+                for (AudienceMember &m : members)
                 {
-                    if (String::Equals(buffer, member.Name, true))
+                    if (String::Equals(buffer, m.Name, true))
                     {
-                        member.Exists = true;
+                        member = &m;
+                        m.Exists = true;
                         break;
                     }
                 }
