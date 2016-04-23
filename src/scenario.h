@@ -462,6 +462,7 @@ typedef struct {
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 #define gScenarioObjectiveType				RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)
+#define gScenarioObjectiveYear				RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8)
 
 // Scenario list
 extern int gScenarioListCount;

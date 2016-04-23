@@ -769,7 +769,7 @@ int scenario_prepare_for_save()
 		format_string(s6Info->name, gParkName, (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
 
 	s6Info->objective_type = gScenarioObjectiveType;
-	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	s6Info->objective_arg_1 = gScenarioObjectiveYear;
 	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
 	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 
@@ -1253,7 +1253,7 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 
 static void scenario_objective_check_guests_by()
 {
-	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	uint8 objectiveYear = gScenarioObjectiveYear;
 	sint16 parkRating = gParkRating;
 	sint16 guestsInPark = gNumGuestsInPark;
 	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
@@ -1269,7 +1269,7 @@ static void scenario_objective_check_guests_by()
 
 static void scenario_objective_check_park_value_by()
 {
-	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
+	uint8 objectiveYear = gScenarioObjectiveYear;
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
 	money32 parkValue = gParkValue;

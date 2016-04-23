@@ -357,11 +357,11 @@ static void window_editor_objective_options_set_objective(rct_window *w, int obj
 	case OBJECTIVE_10_ROLLERCOASTERS:
 		break;
 	case OBJECTIVE_GUESTS_BY:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 3;
+		gScenarioObjectiveYear = 3;
 		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1500;
 		break;
 	case OBJECTIVE_PARK_VALUE_BY:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 3;
+		gScenarioObjectiveYear = 3;
 		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(50000,00);
 		break;
 	case OBJECTIVE_GUESTS_AND_RATING:
@@ -648,20 +648,20 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 
 static void window_editor_objective_options_arg_2_increase(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) >= 25) {
+	if (gScenarioObjectiveYear >= 25) {
 		window_error_open(3264, STR_NONE);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8)++;
+		gScenarioObjectiveYear++;
 		window_invalidate(w);
 	}
 }
 
 static void window_editor_objective_options_arg_2_decrease(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) <= 1) {
+	if (gScenarioObjectiveYear <= 1) {
 		window_error_open(3265, STR_NONE);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8)--;
+		gScenarioObjectiveYear--;
 		window_invalidate(w);
 	}
 }
@@ -967,7 +967,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		// Objective argument 2 value
 		x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
-		arg = (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) * MONTH_COUNT) - 1;
+		arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
 		gfx_draw_string_left(dpi, 3302, &arg, 0, x, y);
 	}
 
