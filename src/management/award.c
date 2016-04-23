@@ -416,7 +416,7 @@ static int award_is_deserved_most_disappointing(int awardType, int activeAwardTy
 
 	if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) > 650)
+	if (gParkRating > 650)
 		return 0;
 
 	// Count the number of disappointing rides

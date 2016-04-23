@@ -277,7 +277,7 @@ void scenario_begin()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
 		window_park_objective_open();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
+	gParkRating = calculate_park_rating();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
 	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
@@ -1254,7 +1254,7 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 static void scenario_objective_check_guests_by()
 {
 	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 parkRating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+	sint16 parkRating = gParkRating;
 	sint16 guestsInPark = gNumGuestsInPark;
 	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
@@ -1321,7 +1321,7 @@ static void scenario_objective_check_10_rollercoasters()
  */
 static void scenario_objective_check_guests_and_rating()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
+	if (gParkRating < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)++;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 1) {
 			if (gConfigNotifications.park_rating_warnings) {
@@ -1349,7 +1349,7 @@ static void scenario_objective_check_guests_and_rating()
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
+	if (gParkRating >= 700)
 		if (gNumGuestsInPark >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
 			scenario_success();
 }
@@ -1447,7 +1447,7 @@ static void scenario_objective_check()
 {
 	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
 		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
+	sint16 park_rating = gParkRating,
 		guests_in_park = gNumGuestsInPark,
 		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
 		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);

@@ -84,7 +84,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = 0;
+	gParkRating = 0;
 	_guestGenerationProbability = 0;
 	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
@@ -413,7 +413,7 @@ static int park_calculate_guest_generation_probability()
 	_suggestedGuestMaximum = suggestedMaxGuests;
 
 	// Begin with 50 + park rating
-	probability = 50 + clamp(0, RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) - 200, 650);
+	probability = 50 + clamp(0, gParkRating - 200, 650);
 
 	// The more guests, the lower the chance of a new one
 	int numGuests = gNumGuestsInPark + RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16);
@@ -540,7 +540,7 @@ void park_update()
 
 	// Every 5 seconds approximately
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) % 512 == 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = calculate_park_rating();
+		gParkRating = calculate_park_rating();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
 		window_invalidate_by_class(WC_FINANCES);
@@ -1111,7 +1111,7 @@ void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *e
 
 void set_forced_park_rating(int rating){
 	gForcedParkRating = rating;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = calculate_park_rating();
+	gParkRating = calculate_park_rating();
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PARK_RATING;
 	window_invalidate_by_class(WC_PARK_INFORMATION);
 }

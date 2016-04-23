@@ -467,7 +467,7 @@ static int cc_get(const utf8 **argv, int argc)
 {
 	if (argc > 0) {
 		if (strcmp(argv[0], "park_rating") == 0) {
-			console_printf("park_rating %d", RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16));
+			console_printf("park_rating %d", gParkRating);
 		}
 		else if (strcmp(argv[0], "money") == 0) {
 			console_printf("money %d.%d0", DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) / 10, DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) % 10);

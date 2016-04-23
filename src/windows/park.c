@@ -1242,7 +1242,7 @@ static void window_park_rating_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
 	// Current value
-	gfx_draw_string_left(dpi, STR_PARK_RATING_LABEL, (void*)RCT2_ADDRESS_CURRENT_PARK_RATING, 0, x + widget->left + 3, y + widget->top + 2);
+	gfx_draw_string_left(dpi, STR_PARK_RATING_LABEL, &gParkRating, 0, x + widget->left + 3, y + widget->top + 2);
 
 	// Graph border
 	gfx_fill_rect_inset(dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1], 0x30);

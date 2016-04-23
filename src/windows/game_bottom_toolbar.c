@@ -223,7 +223,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
 		break;
 	case WIDX_PARK_RATING:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = gParkRating;
 		break;
 	case WIDX_DATE:
 		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
@@ -407,7 +407,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		w->colours[3],
 		w->x + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].left + 11,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top,
-		max(10, ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) / 4) * 263) / 256)
+		max(10, ((gParkRating / 4) * 263) / 256)
 	);
 }
 

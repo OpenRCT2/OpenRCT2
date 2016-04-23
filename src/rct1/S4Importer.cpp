@@ -932,7 +932,7 @@ void S4Importer::ImportParkFlags()
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = _s4.day;
 
     // Park rating
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) = _s4.park_rating;
+    gParkRating = _s4.park_rating;
     for (int i = 0; i < 32; i++)
     {
         gParkRatingHistory[i] = _s4.park_rating_history[i];
