@@ -1186,7 +1186,7 @@ void game_load_or_quit_no_save_prompt()
 	}
 }
 
-GAME_COMMAND_POINTER* new_game_command_table[66] = {
+GAME_COMMAND_POINTER* new_game_command_table[67] = {
 	game_command_set_ride_appearance,
 	game_command_set_land_height,
 	game_pause_toggle,
@@ -1210,6 +1210,7 @@ GAME_COMMAND_POINTER* new_game_command_table[66] = {
 	game_command_change_surface_style,
 	game_command_set_ride_price,
 	game_command_set_peep_name,
+	game_command_set_staff_name,
 	game_command_raise_land,
 	game_command_lower_land,
 	game_command_smooth_land,
