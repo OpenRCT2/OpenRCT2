@@ -328,7 +328,7 @@ void scenario_begin()
 
 	// Set the last saved game path
 	char parkName[128];
-	format_string(parkName, gParkName, (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+	format_string(parkName, gParkName, &gParkNameArgs);
 
 	platform_get_user_directory(gScenarioSavePath, "save");
 	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
@@ -766,7 +766,7 @@ int scenario_prepare_for_save()
 	}
 
 	if (s6Info->name[0] == 0)
-		format_string(s6Info->name, gParkName, (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+		format_string(s6Info->name, gParkName, &gParkNameArgs);
 
 	s6Info->objective_type = gScenarioObjectiveType;
 	s6Info->objective_arg_1 = gScenarioObjectiveYear;

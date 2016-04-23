@@ -918,7 +918,7 @@ void S4Importer::ImportParkName()
     if (stringId != 0)
     {
         gParkName = stringId;
-        RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32) = 0;
+        gParkNameArgs = 0;
     }
 }
 

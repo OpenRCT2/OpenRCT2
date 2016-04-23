@@ -899,7 +899,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		return;
 	}
 
-	format_string(oldName, gParkName, &RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32));
+	format_string(oldName, gParkName, &gParkNameArgs);
 	if (strcmp(oldName, newName) == 0) {
 		*ebx = 0;
 		return;

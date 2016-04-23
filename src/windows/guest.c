@@ -2097,7 +2097,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 	RCT2_GLOBAL(args + 0, uint32) = ShopItemImage[item];
 	RCT2_GLOBAL(args + 4, uint16) = ShopItemStringIds[item].display;
 	RCT2_GLOBAL(args + 6, uint16) = gParkName;
-	RCT2_GLOBAL(args + 8, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(args + 8, uint32) = gParkNameArgs;
 
 	// Special overrides
 	switch (item) {
@@ -2117,7 +2117,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 		case VOUCHER_TYPE_PARK_ENTRY_FREE:
 			RCT2_GLOBAL(args + 6, uint16) = 2418;
 			RCT2_GLOBAL(args + 8, uint16) = gParkName;
-			RCT2_GLOBAL(args + 10, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+			RCT2_GLOBAL(args + 10, uint32) = gParkNameArgs;
 			break;
 		case VOUCHER_TYPE_RIDE_FREE:
 			ride = get_ride(peep->voucher_arguments);
@@ -2128,7 +2128,7 @@ static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item
 		case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
 			RCT2_GLOBAL(args + 6, uint16) = 2420;
 			RCT2_GLOBAL(args + 8, uint16) = gParkName;
-			RCT2_GLOBAL(args + 10, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+			RCT2_GLOBAL(args + 10, uint32) = gParkNameArgs;
 			break;
 		case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
 			RCT2_GLOBAL(args + 6, uint16) = 2421;

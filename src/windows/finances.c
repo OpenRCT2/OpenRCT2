@@ -1184,7 +1184,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 
 		noCampaignsActive = 0;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = gParkName;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 
 		// Set special parameters
 		switch (i) {

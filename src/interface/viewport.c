@@ -1489,7 +1489,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 
 		if (gParkFlags & PARK_FLAGS_PARK_OPEN){
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = gParkName;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, rct_string_id);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 
 			park_text_id = 1731;
 		}

@@ -49,6 +49,7 @@ enum {
 };
 
 #define gParkName			RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id)
+#define gParkNameArgs		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32)
 #define gParkFlags			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)
 #define gParkSize			RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16)
 #define gParkRating			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16)

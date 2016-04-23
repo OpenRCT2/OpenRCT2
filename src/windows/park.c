@@ -577,7 +577,7 @@ static void window_park_set_disabled_tabs(rct_window *w)
 static void window_park_prepare_window_title_text()
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = gParkName;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 }
 
 #pragma region Entrance page
@@ -646,7 +646,7 @@ static void window_park_entrance_mouseup(rct_window *w, int widgetIndex)
 		window_scroll_to_viewport(w);
 		break;
 	case WIDX_RENAME:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = gParkNameArgs;
 		window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
 		break;
 	case WIDX_CLOSE_LIGHT:
@@ -950,7 +950,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 
 	// Set open / close park button state
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = gParkName;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 	window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
 	window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
 	window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
