@@ -925,6 +925,9 @@
       <Filter>Source\RCT1</Filter>
     </ClInclude>
     <ClInclude Include="src\interface\paint_surface.h" />
+    <ClInclude Include="src\object_list.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\logo\icon.ico">
