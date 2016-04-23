@@ -6126,7 +6126,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->nausea = 0;
 	peep->nausea_growth_rate = 0;
 
-	sint8 hunger = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8);
+	sint8 hunger = (scenario_rand() & 0x1F) - 15 + gGuestInitialHunger;
 
 	peep->hunger = hunger;
 

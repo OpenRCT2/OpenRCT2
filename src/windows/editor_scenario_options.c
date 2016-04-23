@@ -769,16 +769,16 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) > 40) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) -= 4;
+		if (gGuestInitialHunger > 40) {
+			gGuestInitialHunger -= 4;
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) < 250) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) += 4;
+		if (gGuestInitialHunger < 250) {
+			gGuestInitialHunger += 4;
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
@@ -904,7 +904,7 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 	// Guest initial hunger value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
-	arg = ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8)) * 100) / 255;
+	arg = ((255 - gGuestInitialHunger) * 100) / 255;
 	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
 
 	// Guest initial thirst label
