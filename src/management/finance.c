@@ -187,7 +187,7 @@ void finance_init() {
 	gBankLoanInterestRate = 10;
 	gParkValue = 0;
 	gCompanyValue = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) = MONEY32_UNDEFINED;
+	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 

@@ -63,6 +63,7 @@ static const char *_scenarioFileName = "";
 
 char *gScenarioName = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char);
 char *gScenarioDetails = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char);
+char *gScenarioCompletedBy = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char);
 char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
 uint32 gLastAutoSaveTick = 0;
@@ -266,8 +267,8 @@ void scenario_begin()
 	window_new_ride_init_vars();
 
 	// Set the scenario pseduo-random seeds
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) ^= platform_get_ticks();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) ^= platform_get_ticks();
+	gScenarioSrand0 ^= platform_get_ticks();
+	gScenarioSrand1 ^= platform_get_ticks();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
 	gParkFlags &= ~PARK_FLAGS_NO_MONEY;
@@ -343,7 +344,7 @@ void scenario_begin()
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
 	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = MONEY32_UNDEFINED;
+	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
@@ -399,7 +400,7 @@ void scenario_set_filename(const char *value)
  */
 void scenario_failure()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = 0x80000001;
+	gScenarioCompletedCompanyValue = 0x80000001;
 	scenario_end();
 }
 
@@ -411,7 +412,7 @@ void scenario_success()
 {
 	const money32 companyValue = gCompanyValue;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
+	gScenarioCompletedCompanyValue = companyValue;
 	peep_applause();
 
 	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
@@ -448,7 +449,7 @@ void scenario_success_submit_name(const char *name)
 		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
 		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
 			scenario->highscore->name = _strdup(name);
-			safe_strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char), name, 32);
+			safe_strcpy(gScenarioCompletedBy, name, 32);
 			scenario_scores_save();
 		}
 	}
@@ -697,9 +698,9 @@ unsigned int scenario_rand()
 	}
 #endif
 
-	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) += ror32(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ 0x1234567F, 7);
-	return RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = ror32(eax, 3);
+	uint32 originalSrand0 = gScenarioSrand0;
+	gScenarioSrand0 += ror32(gScenarioSrand1 ^ 0x1234567F, 7);
+	return gScenarioSrand1 = ror32(originalSrand0, 3);
 }
 
 unsigned int scenario_rand_max(unsigned int max)
@@ -1322,31 +1323,31 @@ static void scenario_objective_check_10_rollercoasters()
 static void scenario_objective_check_guests_and_rating()
 {
 	if (gParkRating < 700 && gDateMonthsElapsed >= 1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 1) {
+		gScenarioParkRatingWarningDays++;
+		if (gScenarioParkRatingWarningDays == 1) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 8) {
+		} else if (gScenarioParkRatingWarningDays == 8) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 15) {
+		} else if (gScenarioParkRatingWarningDays == 15) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 22) {
+		} else if (gScenarioParkRatingWarningDays == 22) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 29) {
+		} else if (gScenarioParkRatingWarningDays == 29) {
 			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
 			gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
 			scenario_failure();
 			gGuestInitialHappiness = 50;
 		}
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != 0x80000001) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
+	} else if (gScenarioCompletedCompanyValue != 0x80000001) {
+		gScenarioParkRatingWarningDays = 0;
 	}
 
 	if (gParkRating >= 700)
@@ -1445,13 +1446,11 @@ static void scenario_objective_check_monthly_food_income()
  */
 static void scenario_objective_check()
 {
-	uint8 objective_type = gScenarioObjectiveType;
-	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
-
-	if (scenario_completed_company_value != MONEY32_UNDEFINED)
+	if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
 		return;
+	}
 
-	switch (objective_type) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_GUESTS_BY:
 		scenario_objective_check_guests_by();
 		break;

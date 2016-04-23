@@ -927,8 +927,8 @@ void S4Importer::ImportParkFlags()
 {
     // Date and srand
     gCurrentTicks = _s4.ticks;
-    RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) = _s4.random_a;
-    RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = _s4.random_b;
+    gScenarioSrand0 = _s4.random_a;
+    gScenarioSrand1 = _s4.random_b;
     gDateMonthsElapsed = _s4.month;
     gDateMonthTicks = _s4.day;
 

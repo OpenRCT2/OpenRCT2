@@ -913,7 +913,7 @@ void Network::UpdateClient()
 		ProcessGameCommandQueue();
 
 		// Check synchronisation
-		if (!_desynchronised && !CheckSRAND(gCurrentTicks, RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+		if (!_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
 			_desynchronised = true;
 			char str_desync[256];
 			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
@@ -1402,7 +1402,7 @@ void Network::Server_Send_TICK()
 {
 	last_tick_sent_time = SDL_GetTicks();
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
+	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
 	SendPacketToClients(*packet);
 }
 

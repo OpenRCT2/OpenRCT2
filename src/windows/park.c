@@ -1765,13 +1765,13 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 5;
 
 	// Objective outcome
-	if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != MONEY32_UNDEFINED) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) == 0x80000001) {
+	if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
+		if (gScenarioCompletedCompanyValue == 0x80000001) {
 			// Objective failed
 			gfx_draw_string_left_wrapped(dpi, NULL, x, y, 222, 2789, 0);
 		} else {
 			// Objective completed
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32);
+			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = gScenarioCompletedCompanyValue;
 			gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 222, 2788, 0);
 		}
 	}
