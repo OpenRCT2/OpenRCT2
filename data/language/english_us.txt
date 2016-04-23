@@ -3467,6 +3467,7 @@ STR_5557    :Stay connected after desynchronization (Multiplayer)
 STR_5572    :Add To Favorites
 STR_5573    :Remove From Favorites
 STR_5620    :Corkscrew Follies
+STR_5730    :Nearest neighbor
 
 #############
 # Scenarios #
