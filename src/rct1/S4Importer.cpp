@@ -652,7 +652,7 @@ void S4Importer::ImportMapAnimations()
 
 void S4Importer::ImportFinance()
 {
-    RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = _s4.park_entrance_fee;
+    gParkEntranceFee = _s4.park_entrance_fee;
     RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = _s4.land_price;
     RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = _s4.construction_rights_price;
 

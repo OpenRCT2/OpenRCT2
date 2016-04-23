@@ -1317,7 +1317,7 @@ void peep_sprite_remove(rct_peep* peep){
 void peep_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
 		if (peep->outside_of_park == 0){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+			gNumGuestsInPark--;
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		}
 		if (peep->state == PEEP_STATE_ENTERING_PARK){
@@ -4371,7 +4371,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 
 	peep->outside_of_park = 1;
 	peep->destination_tolerence = 5;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
+	gNumGuestsInPark--;
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	peep->var_37 = 1;
 
@@ -4494,7 +4494,7 @@ static void peep_update_entering_park(rct_peep* peep){
 
 	peep->outside_of_park = 0;
 	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)++;
+	gNumGuestsInPark++;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	window_invalidate_by_class(WC_GUEST_LIST);
@@ -5785,7 +5785,7 @@ void peep_problem_warnings_update()
 	rct_peep* peep;
 	rct_ride* ride;
 	uint16 spriteIndex;
-	uint16 guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
+	uint16 guests_in_park = gNumGuestsInPark;
 	int hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0,
 		litter_counter = 0, disgust_counter = 0, bathroom_counter = 0 ,vandalism_counter = 0;
 	uint8* warning_throttle = RCT2_ADDRESS(0x01358750, uint8);
@@ -7024,7 +7024,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			return peep_return_to_center_of_tile(peep);
 		}
 
-		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
+		money16 entranceFee = gParkEntranceFee;
 		if (entranceFee != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)){
 			if (peep->item_standard_flags & PEEP_ITEM_VOUCHER){
 				if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE){

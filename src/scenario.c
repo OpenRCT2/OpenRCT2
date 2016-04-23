@@ -363,7 +363,7 @@ void scenario_begin()
 	// Open park with free entry when there is no money
 	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 		gParkFlags |= PARK_FLAGS_PARK_OPEN;
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = 0;
+		gParkEntranceFee = 0;
 	}
 
 	gParkFlags |= PARK_FLAGS_18;
@@ -464,7 +464,7 @@ void scenario_entrance_fee_too_high_check()
 {
 	uint16 x = 0, y = 0;
 	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
-	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
+	uint16 park_entrance_fee = gParkEntranceFee;
 	int max_fee = totalRideValue + (totalRideValue / 2);
 	uint32 game_flags = gParkFlags, packed_xy;
 
@@ -1255,7 +1255,7 @@ static void scenario_objective_check_guests_by()
 {
 	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	sint16 parkRating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
-	sint16 guestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
+	sint16 guestsInPark = gNumGuestsInPark;
 	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 
@@ -1350,7 +1350,7 @@ static void scenario_objective_check_guests_and_rating()
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+		if (gNumGuestsInPark >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
 			scenario_success();
 }
 
@@ -1448,7 +1448,7 @@ static void scenario_objective_check()
 	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
 		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
-		guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16),
+		guests_in_park = gNumGuestsInPark,
 		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
 		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);

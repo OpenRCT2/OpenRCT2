@@ -47,7 +47,10 @@ enum {
 	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
 };
 
-#define gParkFlags		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)
+#define gParkFlags			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)
+#define gParkSize			RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16)
+#define gParkEntranceFee	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16)
+#define gNumGuestsInPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
 
 extern uint8 *gParkRatingHistory;
 extern uint8 *gGuestsInParkHistory;

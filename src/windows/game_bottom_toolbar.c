@@ -397,7 +397,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		STR_NUM_GUESTS + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8),
 		x, y,
 		(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS ? COLOUR_WHITE : w->colours[0] & 0x7F),
-		(void*)RCT2_ADDRESS_GUESTS_IN_PARK
+		&gNumGuestsInPark
 	);
 
 	// Draw park rating

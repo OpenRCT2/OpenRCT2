@@ -52,11 +52,11 @@ int marketing_get_campaign_guest_generation_probability(int campaign)
 	// Lower probability of guest generation if price was already low
 	switch (campaign) {
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) < 4)
+		if (gParkEntranceFee < 4)
 			probability /= 8;
 		break;
 	case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) < 6)
+		if (gParkEntranceFee < 6)
 			probability /= 8;
 		break;
 	case ADVERTISING_CAMPAIGN_RIDE_FREE:

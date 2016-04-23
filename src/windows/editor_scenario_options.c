@@ -1012,16 +1012,16 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 		window_invalidate(w);
 		break;
 	case WIDX_ENTRY_PRICE_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) < MONEY(100,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) += MONEY(1,00);
+		if (gParkEntranceFee < MONEY(100,00)) {
+			gParkEntranceFee += MONEY(1,00);
 		} else {
 			window_error_open(3264, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_ENTRY_PRICE_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) > MONEY(0,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) -= MONEY(1,00);
+		if (gParkEntranceFee > MONEY(0,00)) {
+			gParkEntranceFee -= MONEY(1,00);
 		} else {
 			window_error_open(3265, STR_NONE);
 		}
@@ -1061,12 +1061,12 @@ static void window_editor_scenario_options_park_dropdown(rct_window *w, int widg
 			if (dropdownIndex == 0) {
 				if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
 					gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-					RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(0, 00);
+					gParkEntranceFee = MONEY(0, 00);
 				}
 			} else {
 				if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
 					gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-					RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) = MONEY(10, 00);
+					gParkEntranceFee = MONEY(10, 00);
 				}
 			}
 		}
@@ -1228,7 +1228,7 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		// Entry price value
 		x = w->x + w->widgets[WIDX_ENTRY_PRICE].left + 1;
 		y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;
-		arg = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
+		arg = gParkEntranceFee;
 		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
 	}
 }

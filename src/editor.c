@@ -429,7 +429,7 @@ static void editor_clear_map_for_editing()
 
 	reset_sprite_list();
 	staff_reset_modes();
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
+	gNumGuestsInPark = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
@@ -443,7 +443,7 @@ static void editor_clear_map_for_editing()
 			gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
 		gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == 0)
+		if (gParkEntranceFee == 0)
 			gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
 		else
 			gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
