@@ -390,7 +390,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_FREEZECLIMATE: gCheatsFreezeClimate = !gCheatsFreezeClimate; break;
 			case CHEAT_NEVERENDINGMARKETING: gCheatsNeverendingMarketing = !gCheatsNeverendingMarketing; break;
 			case CHEAT_OPENCLOSEPARK: park_set_open(park_is_open() ? 0 : 1); break;
-			case CHEAT_HAVEFUN: RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = OBJECTIVE_HAVE_FUN; break;
+			case CHEAT_HAVEFUN: gScenarioObjectiveType = OBJECTIVE_HAVE_FUN; break;
 			case CHEAT_SETFORCEDPARKRATING: if(*edx > -1) { park_rating_spinner_value = *edx; } set_forced_park_rating(*edx); break;
 		}
 		if (network_get_mode() == NETWORK_MODE_NONE) {

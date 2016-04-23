@@ -743,7 +743,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_draw_string_left(dpi, stringId, &currentCash, 0, w->x + 4, w->y + 244);
 
 	// Objective related financial information
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_MONTHLY_FOOD_INCOME) {
+	if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
 		// Last month's profit from food, drink and merchandise
 		money32 lastMonthProfit = 0;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) != 0) {

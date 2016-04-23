@@ -957,7 +957,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 
 	// Only allow closing of park for guest / rating objective
 	// Only allow closing of park when there is money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING ||
+	if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING ||
 		(gParkFlags & PARK_FLAGS_NO_MONEY))
 		w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
 	else
@@ -981,7 +981,7 @@ static void window_park_entrance_invalidate(rct_window *w)
 
 	if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK) {
 		window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING) {
+		if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING) {
 			window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_FLATBTN;
 			window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_FLATBTN;
 		}
@@ -1761,7 +1761,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = date_get_total_months(MONTH_OCTOBER, RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8));
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
 
-	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 221, 2385 + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8), 0);
+	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 221, 2385 + gScenarioObjectiveType, 0);
 	y += 5;
 
 	// Objective outcome

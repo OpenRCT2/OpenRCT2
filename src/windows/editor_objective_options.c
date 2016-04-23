@@ -346,7 +346,7 @@ static void window_editor_objective_options_set_page(rct_window *w, int page)
  */
 static void window_editor_objective_options_set_objective(rct_window *w, int objective)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = objective;
+	gScenarioObjectiveType = objective;
 	window_invalidate(w);
 
 	// Set default objective arguments
@@ -494,7 +494,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
 
-	objectiveType = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	objectiveType = gScenarioObjectiveType;
 	for (i = 0; i < numItems; i++) {
 		if (gDropdownItemsArgs[i] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType) {
 			dropdown_set_checked(i, true);
@@ -552,7 +552,7 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 
 static void window_editor_objective_options_arg_1_increase(rct_window *w)
 {
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_PARK_VALUE_BY:
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
@@ -600,7 +600,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
 
 static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 {
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_PARK_VALUE_BY:
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
@@ -712,7 +712,7 @@ static void window_editor_objective_options_main_dropdown(rct_window *w, int wid
 	switch (widgetIndex) {
 	case WIDX_OBJECTIVE_DROPDOWN:
 		newObjectiveType = (uint8)(gDropdownItemsArgs[dropdownIndex] - 2397);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != newObjectiveType)
+		if (gScenarioObjectiveType != newObjectiveType)
 			window_editor_objective_options_set_objective(w, newObjectiveType);
 		break;
 	case WIDX_CLIMATE_DROPDOWN:
@@ -744,7 +744,7 @@ static void window_editor_objective_options_main_update(rct_window *w)
 	widget_invalidate(w, WIDX_TAB_1);
 
 	parkFlags = gParkFlags;
-	objectiveType = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	objectiveType = gScenarioObjectiveType;
 
 	// Reset objective if invalid
 	if ((
@@ -833,7 +833,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	else
 		w->disabled_widgets |= (WIDX_PARK_NAME | WIDX_SCENARIO_NAME);
 
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_GUESTS_BY:
 	case OBJECTIVE_PARK_VALUE_BY:
 		window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_SPINNER;
@@ -899,14 +899,14 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Objective value
 	x = w->x + w->widgets[WIDX_OBJECTIVE].left + 1;
 	y = w->y + w->widgets[WIDX_OBJECTIVE].top;
-	stringId = STR_OBJECTIVE_DROPDOWN_NONE + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	stringId = STR_OBJECTIVE_DROPDOWN_NONE + gScenarioObjectiveType;
 	gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 
 	if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY) {
 		// Objective argument 1 label
 		x = w->x + 28;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+		switch (gScenarioObjectiveType) {
 		case OBJECTIVE_GUESTS_BY:
 		case OBJECTIVE_GUESTS_AND_RATING:
 			stringId = 3303;
@@ -933,7 +933,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		// Objective argument 1 value
 		x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+		switch (gScenarioObjectiveType) {
 		case OBJECTIVE_GUESTS_BY:
 		case OBJECTIVE_GUESTS_AND_RATING:
 			stringId = 3309;

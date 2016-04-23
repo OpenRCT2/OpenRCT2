@@ -274,7 +274,7 @@ void scenario_begin()
 	sub_684AC3();
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
+	if (gScenarioObjectiveType != OBJECTIVE_NONE)
 		window_park_objective_open();
 
 	gParkRating = calculate_park_rating();
@@ -515,7 +515,7 @@ static void scenario_day_update()
 {
 	finance_update_daily_profit();
 	peep_update_days_in_queue();
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_10_ROLLERCOASTERS:
 	case OBJECTIVE_GUESTS_AND_RATING:
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
@@ -724,7 +724,7 @@ void scenario_prepare_rides_for_save()
 	rct_ride *ride;
 	map_element_iterator it;
 
-	int isFiveCoasterObjective = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+	int isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
 
 	// Set all existing track to be indestructible
 	map_element_iterator_begin(&it);
@@ -768,14 +768,14 @@ int scenario_prepare_for_save()
 	if (s6Info->name[0] == 0)
 		format_string(s6Info->name, gParkName, (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
 
-	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	s6Info->objective_type = gScenarioObjectiveType;
 	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
 	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
 
 	scenario_prepare_rides_for_save();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
+	if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
 		gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
 	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
@@ -1445,7 +1445,7 @@ static void scenario_objective_check_monthly_food_income()
  */
 static void scenario_objective_check()
 {
-	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	uint8 objective_type = gScenarioObjectiveType;
 	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
 
 	if (scenario_completed_company_value != MONEY32_UNDEFINED)

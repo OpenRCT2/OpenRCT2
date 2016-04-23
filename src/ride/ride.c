@@ -6008,7 +6008,7 @@ foundRideEntry:
 			ride->price_secondary = DefaultShopItemPrice[rideEntry->shop_item_secondary];
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_BUILD_THE_BEST) {
+		if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST) {
 			ride->price = 0;
 		}
 
