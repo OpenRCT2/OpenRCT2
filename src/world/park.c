@@ -82,7 +82,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = COLOUR_YELLOW;
 	gNumGuestsInPark = 0;
 	gNumGuestsInParkLastWeek = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
+	gNumGuestsHeadingForPark = 0;
 	gGuestChangeModifier = 0;
 	gParkRating = 0;
 	_guestGenerationProbability = 0;
@@ -416,7 +416,7 @@ static int park_calculate_guest_generation_probability()
 	probability = 50 + clamp(0, gParkRating - 200, 650);
 
 	// The more guests, the lower the chance of a new one
-	int numGuests = gNumGuestsInPark + RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16);
+	int numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
 	if (numGuests > suggestedMaxGuests) {
 		probability /= 4;
 

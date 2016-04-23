@@ -430,7 +430,7 @@ static void editor_clear_map_for_editing()
 	reset_sprite_list();
 	staff_reset_modes();
 	gNumGuestsInPark = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
+	gNumGuestsHeadingForPark = 0;
 	gNumGuestsInParkLastWeek = 0;
 	gGuestChangeModifier = 0;
 	if (s6Header->type != S6_TYPE_SCENARIO) {

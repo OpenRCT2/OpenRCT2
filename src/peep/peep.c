@@ -1321,7 +1321,7 @@ void peep_remove(rct_peep* peep){
 			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		}
 		if (peep->state == PEEP_STATE_ENTERING_PARK){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 		}
 	}
 	peep_sprite_remove(peep);
@@ -4476,7 +4476,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	if (peep->var_37 != 1){
 		sub_693C9E(peep);
 		if ((RCT2_GLOBAL(0xF1EE18, uint16) & 2)){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_sprite_remove(peep);
 		}
 		return;
@@ -4495,7 +4495,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	peep->outside_of_park = 0;
 	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
 	gNumGuestsInPark++;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+	gNumGuestsHeadingForPark--;
 	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	window_invalidate_by_class(WC_GUEST_LIST);
 }
@@ -6198,7 +6198,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	}
 	peep_update_name_sort(peep);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)++;
+	gNumGuestsHeadingForPark++;
 
 	return peep;
 }
@@ -6961,7 +6961,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
@@ -7019,7 +7019,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		if (!found){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
@@ -7041,7 +7041,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			if (entranceFee > peep->cash_in_pocket){
 				peep->state = PEEP_STATE_LEAVING_PARK;
 				peep->var_37 = 1;
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+				gNumGuestsHeadingForPark--;
 				peep_window_state_update(peep);
 				return peep_return_to_center_of_tile(peep);
 			}
