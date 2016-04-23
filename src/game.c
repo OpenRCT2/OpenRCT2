@@ -79,6 +79,9 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
 };
 int game_command_playerid = -1;
 
+rct_string_id gGameCommandErrorTitle;
+rct_string_id gGameCommandErrorText;
+
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
 	for (int i = 0; i < countof(game_command_callback_table); i++ ) {
@@ -262,7 +265,7 @@ void game_update()
 	}
 
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
-		if (network_get_server_tick() - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= 10) {
+		if (network_get_server_tick() - gCurrentTicks >= 10) {
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
 		}
@@ -315,7 +318,7 @@ void game_update()
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
 	// and decision that the original one looks too fast
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) % 4 == 0)
+	if (gCurrentTicks % 4 == 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) ^= (1 << 15);
 
 	// Handle guest map flashing
@@ -344,12 +347,12 @@ void game_logic_update()
 	///////////////////////////
 	network_update();
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
+		if (gCurrentTicks >= network_get_server_tick()) {
 			// dont run past the server
 			return;
 		}
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)++;
+	gCurrentTicks++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)++;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) == 0)
@@ -406,11 +409,11 @@ static int game_check_affordability(int cost)
 {
 	if (cost <= 0)return cost;
 	if (RCT2_GLOBAL(0x141F568, uint8) & 0xF0)return cost;
-	if (cost <= (sint32)(DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32))))return cost;
+	if (cost <= (sint32)(DECRYPT_MONEY(gCashEncrypted)))return cost;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = cost;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 827;
+	gGameCommandErrorText = 827;
 	return MONEY32_UNDEFINED;
 }
 
@@ -450,7 +453,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 
 	flags = *ebx;
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16) = 0xFFFF;
+	gGameCommandErrorText = 0xFFFF;
 
 	// Increment nest count
 	RCT2_GLOBAL(0x009A8C28, uint8)++;
@@ -559,7 +562,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 	// Show error window
 	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
-		window_error_open(RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16), RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TEXT, uint16));
+		window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
 
 	return MONEY32_UNDEFINED;
 }
@@ -729,7 +732,7 @@ int game_load_sv6(SDL_RWops* rw)
 		log_error("invalid checksum");
 
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 
@@ -799,7 +802,7 @@ void game_fix_save_vars() {
 			peepCount++;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = peepCount;
+	gNumGuestsInPark = peepCount;
 
 	// Fixes broken saves where a surface element could be null
 	for (int y = 0; y < 256; y++) {
@@ -810,7 +813,10 @@ void game_fix_save_vars() {
 			{
 				log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
 				mapElement = map_element_insert(x, y, 14, 0);
-				assert(mapElement != NULL);
+				if (mapElement == NULL) {
+					log_error("Unable to fix: Map element limit reached.");
+					return;
+				}
 			}
 		}
 	}
@@ -869,6 +875,7 @@ int game_load_network(SDL_RWops* rw)
 	gCheatsBuildInPauseMode = SDL_ReadU8(rw);
 	gCheatsIgnoreRideIntensity = SDL_ReadU8(rw);
 	gCheatsDisableVandalism = SDL_ReadU8(rw);
+	gCheatsDisableLittering = SDL_ReadU8(rw);
 	gCheatsNeverendingMarketing = SDL_ReadU8(rw);
 	gCheatsFreezeClimate = SDL_ReadU8(rw);
 
@@ -909,7 +916,7 @@ bool game_load_save(const utf8 *path)
 	if (rw == NULL) {
 		log_error("unable to open %s", path);
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_GAME_COMMAND_ERROR_TITLE, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return false;
 	}
 
@@ -918,7 +925,6 @@ bool game_load_save(const utf8 *path)
 
 	if (result) {
 		game_load_init();
-		network_free_string_ids();
 		if (network_get_mode() == NETWORK_MODE_SERVER) {
 			network_send_map();
 		}
@@ -998,7 +1004,7 @@ void save_game()
 
 		SDL_RWops* rw = SDL_RWFromFile(gScenarioSavePath, "wb+");
 		if (rw != NULL) {
-			scenario_save(rw, 0x80000000);
+			scenario_save(rw, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0));
 			log_verbose("Saved to %s", gScenarioSavePath);
 			SDL_RWclose(rw);
 
