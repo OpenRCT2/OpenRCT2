@@ -954,7 +954,7 @@ typedef struct {
 	uint8 order;
 	uint8 direction;
 	uint8 ride_index;
-	uint8 entrence_index;
+	uint8 entrance_index;
 } rct_neighbour;
 
 typedef struct {
@@ -982,12 +982,12 @@ static void neighbour_list_init(rct_neighbour_list *neighbourList)
 	neighbourList->count = 0;
 }
 
-static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex, uint8 entrence_index)
+static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex, uint8 entrance_index)
 {
 	neighbourList->items[neighbourList->count].order = order;
 	neighbourList->items[neighbourList->count].direction = direction;
 	neighbourList->items[neighbourList->count].ride_index = rideIndex;
-	neighbourList->items[neighbourList->count].entrence_index = entrence_index;
+	neighbourList->items[neighbourList->count].entrance_index = entrance_index;
 	neighbourList->count++;
 }
 
@@ -1289,17 +1289,17 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH && footpath_element_is_queue(mapElement)) {
 		int rideIndex = -1;
-		uint8 entrenceIndex = 255;
+		uint8 entranceIndex = 255;
 		for (int i = 0; i < neighbourList.count; i++) {
 			if (neighbourList.items[i].ride_index != 255) {
 				if (rideIndex == -1) {
 					rideIndex = neighbourList.items[i].ride_index;
-					entrenceIndex = neighbourList.items[i].entrence_index;
+					entranceIndex = neighbourList.items[i].entrance_index;
 				} else if (rideIndex != neighbourList.items[i].ride_index) {
 					neighbour_list_remove(&neighbourList, i);
 				} else if (rideIndex == neighbourList.items[i].ride_index
-					&& entrenceIndex != neighbourList.items[i].entrence_index
-					&&  neighbourList.items[i].entrence_index != 255) {
+					&& entranceIndex != neighbourList.items[i].entrance_index
+					&&  neighbourList.items[i].entrance_index != 255) {
 					neighbour_list_remove(&neighbourList, i);
 				}
 			}
