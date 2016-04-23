@@ -472,11 +472,7 @@ static void editor_clear_map_for_editing()
 			MONEY(5000000,00)
 		);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = clamp(
-			5,
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8),
-			80
-		);
+		gBankLoanInterestRate = clamp(5, gBankLoanInterestRate, 80);
 	}
 
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));

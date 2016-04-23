@@ -48,6 +48,7 @@ enum {
 
 #define gCashEncrypted				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)
 #define gBankLoan					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32)
+#define gBankLoanInterestRate		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint8)
 
 extern const money32 research_cost_table[4];
 

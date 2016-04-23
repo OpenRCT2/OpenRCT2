@@ -110,7 +110,7 @@ void finance_pay_research()
 void finance_pay_interest()
 {
 	money32 current_loan = gBankLoan;
-	sint16 current_interest = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint16);
+	sint16 current_interest = gBankLoanInterestRate;
 	money32 tempcost = (current_loan * 5 * current_interest) >> 14; // (5 * interest) / 2^14 is pretty close to
 
 	if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -183,7 +183,7 @@ void finance_init() {
 
 	RCT2_GLOBAL(0x013587D0, uint32) = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = 10;
+	gBankLoanInterestRate = 10;
 	gParkValue = 0;
 	gCompanyValue = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) = MONEY32_UNDEFINED;
