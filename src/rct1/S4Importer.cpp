@@ -1026,7 +1026,7 @@ void S4Importer::ImportScenarioObjective()
     gScenarioObjectiveType = _s4.scenario_objective_type;
     gScenarioObjectiveYear = _s4.scenario_objective_years;
     RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, uint32) = _s4.scenario_objective_currency;
-    RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = _s4.scenario_objective_num_guests;
+    gScenarioObjectiveNumGuests = _s4.scenario_objective_num_guests;
 }
 
 void S4Importer::ImportSavedView()

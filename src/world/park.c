@@ -113,7 +113,7 @@ void park_init()
 	RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = 200;
 	gScenarioObjectiveType = OBJECTIVE_GUESTS_BY;
 	gScenarioObjectiveYear = 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1000;
+	gScenarioObjectiveNumGuests = 1000;
 	gLandPrice = MONEY(90, 00);
 	gConstructionRightsPrice = MONEY(40,00);
 	RCT2_GLOBAL(0x01358774, uint16) = 0;

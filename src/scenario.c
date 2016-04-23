@@ -771,7 +771,7 @@ int scenario_prepare_for_save()
 	s6Info->objective_type = gScenarioObjectiveType;
 	s6Info->objective_arg_1 = gScenarioObjectiveYear;
 	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
-	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 
 	scenario_prepare_rides_for_save();
 
@@ -1256,7 +1256,7 @@ static void scenario_objective_check_guests_by()
 	uint8 objectiveYear = gScenarioObjectiveYear;
 	sint16 parkRating = gParkRating;
 	sint16 guestsInPark = gNumGuestsInPark;
-	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	sint16 objectiveGuests = gScenarioObjectiveNumGuests;
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 
 	if (currentMonthYear == 8 * objectiveYear){
@@ -1350,7 +1350,7 @@ static void scenario_objective_check_guests_and_rating()
 	}
 
 	if (gParkRating >= 700)
-		if (gNumGuestsInPark >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+		if (gNumGuestsInPark >= gScenarioObjectiveNumGuests)
 			scenario_success();
 }
 
@@ -1371,7 +1371,7 @@ static void scenario_objective_check_10_rollercoasters_length()
 {
 	int i, rcs = 0;
 	uint8 type_already_counted[256];
-	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	sint16 objective_length = gScenarioObjectiveNumGuests;
 	rct_ride* ride;
 
 	memset(type_already_counted, 0, 256);

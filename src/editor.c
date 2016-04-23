@@ -125,7 +125,7 @@ void editor_convert_save_to_scenario_callback(int result)
 	s6Info->objective_type = gScenarioObjectiveType;
 	s6Info->objective_arg_1 = gScenarioObjectiveYear;
 	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
-	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, sint16);
+	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
 
 	rct_stex_entry* stex = g_stexEntries[0];

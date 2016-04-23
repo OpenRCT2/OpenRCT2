@@ -358,20 +358,20 @@ static void window_editor_objective_options_set_objective(rct_window *w, int obj
 		break;
 	case OBJECTIVE_GUESTS_BY:
 		gScenarioObjectiveYear = 3;
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1500;
+		gScenarioObjectiveNumGuests = 1500;
 		break;
 	case OBJECTIVE_PARK_VALUE_BY:
 		gScenarioObjectiveYear = 3;
 		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(50000,00);
 		break;
 	case OBJECTIVE_GUESTS_AND_RATING:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 2000;
+		gScenarioObjectiveNumGuests = 2000;
 		break;
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
 		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(10000,00);
 		break;
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1200;
+		gScenarioObjectiveNumGuests = 1200;
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
 		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = FIXED_2DP(6,70);
@@ -572,10 +572,10 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
 		}
 		break;
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) >= 5000) {
+		if (gScenarioObjectiveNumGuests >= 5000) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) += 100;
+			gScenarioObjectiveNumGuests += 100;
 			window_invalidate(w);
 		}
 		break;
@@ -588,10 +588,10 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
 		}
 		break;
 	default:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) >= 5000) {
+		if (gScenarioObjectiveNumGuests >= 5000) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) += 50;
+			gScenarioObjectiveNumGuests += 50;
 			window_invalidate(w);
 		}
 		break;
@@ -620,10 +620,10 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 		}
 		break;
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) <= 1000) {
+		if (gScenarioObjectiveNumGuests <= 1000) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) -= 100;
+			gScenarioObjectiveNumGuests -= 100;
 			window_invalidate(w);
 		}
 		break;
@@ -636,10 +636,10 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 		}
 		break;
 	default:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) <= 250) {
+		if (gScenarioObjectiveNumGuests <= 250) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) -= 50;
+			gScenarioObjectiveNumGuests -= 50;
 			window_invalidate(w);
 		}
 		break;
@@ -937,7 +937,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		case OBJECTIVE_GUESTS_BY:
 		case OBJECTIVE_GUESTS_AND_RATING:
 			stringId = 3309;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+			arg = gScenarioObjectiveNumGuests;
 			break;
 		case OBJECTIVE_PARK_VALUE_BY:
 		case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
@@ -948,7 +948,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 			break;
 		case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
 			stringId = 3310;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+			arg = gScenarioObjectiveNumGuests;
 			break;
 		default:
 			stringId = 3311;
