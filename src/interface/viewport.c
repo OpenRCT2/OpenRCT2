@@ -1105,6 +1105,58 @@ bool sub_98197C(
 
 /**
  *
+ *  rct2: 0x006D5DA9
+ */
+static void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat)
+{
+	const rct_ride_entry_vehicle *vehicleEntry = (const rct_ride_entry_vehicle *)(rct2VehiclePtrFormat + 0x1A);
+	int image_id;
+	int baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->var_C5 / 4) & 0x3);
+	if (vehicle->restraints_position >= 64) {
+		baseImage_id += 7;
+		baseImage_id += (vehicle->restraints_position / 64);
+	}
+
+	// Draw back:
+	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
+	sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation());
+
+	// Draw front:
+	image_id = (baseImage_id + 4) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
+	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+
+	uint8 riding_peep_sprites[64];
+	memset(riding_peep_sprites, 0xFF, sizeof(riding_peep_sprites));
+	for (int i = 0; i < vehicle->num_peeps; i++) {
+		uint8 cl = (i & 3) * 16;
+		cl += (i & 0xFC);
+		cl += vehicle->var_C5 / 4;
+		cl += (imageDirection / 8) * 16;
+		cl &= 0x3F;
+		riding_peep_sprites[cl] = vehicle->peep_tshirt_colours[i];
+	}
+
+	// Draw riding peep sprites in back to front order:
+	for (int j = 0; j <= 48; j++) {
+		int i = (j % 2) ? (48 - (j / 2)) : (j / 2);
+		if (riding_peep_sprites[i] != 0xFF) {
+			baseImage_id = vehicleEntry->base_image_id + 20 + i;
+			if (vehicle->restraints_position >= 64) {
+				baseImage_id += 64;
+				baseImage_id += vehicle->restraints_position / 64;
+			}
+			image_id = baseImage_id | (riding_peep_sprites[i] << 19) | 0x20000000;
+			sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+		}
+	};
+
+	assert(vehicleEntry->pad_5E == 1);
+	// 0x5E is treated as another car_visual paint setup jump table like in viewport_vehicle_paint_setup
+	// in the original code right here but appears to only ever be 1 which goes to a nullsub so it was taken out.
+}
+
+/**
+ *
  *  rct2: 0x00686EF0, 0x00687056, 0x006871C8, 0x0068733C, 0x0098198C
  *
  * @param image_id (ebx)
@@ -1187,7 +1239,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	case VEHICLE_VISUAL_MINI_GOLF_BALL:					RCT2_CALLPROC_X(0x006D43C6, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_REVERSER:						RCT2_CALLPROC_X(0x006D4453, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:	RCT2_CALLPROC_X(0x006D4295, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case VEHICLE_VISUAL_ROTO_DROP:						RCT2_CALLPROC_X(0x006D5DA9, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_ROTO_DROP:						vehicle_visual_roto_drop(x, imageDirection, y, z, vehicle, rct2VehiclePtrFormat); break;
 	case 10:											RCT2_CALLPROC_X(0x006D5600, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 11:											RCT2_CALLPROC_X(0x006D5696, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 12:											RCT2_CALLPROC_X(0x006D57EE, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
