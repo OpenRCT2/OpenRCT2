@@ -328,7 +328,7 @@ money32 calculate_company_value()
 {
 	return
 		DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32)) +
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) -
+		gParkValue -
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 }
 
@@ -541,7 +541,7 @@ void park_update()
 	// Every 5 seconds approximately
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) % 512 == 0) {
 		gParkRating = calculate_park_rating();
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+		gParkValue = calculate_park_value();
 		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
 		window_invalidate_by_class(WC_FINANCES);
 		_guestGenerationProbability = park_calculate_guest_generation_probability();
@@ -631,7 +631,7 @@ void park_update_histories()
 	// Update park value history
 	for (int i = 127; i > 0; i--)
 		gParkValueHistory[i] = gParkValueHistory[i - 1];
-	gParkValueHistory[0] = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	gParkValueHistory[0] = gParkValue;
 }
 
 void park_set_entrance_fee(money32 value)

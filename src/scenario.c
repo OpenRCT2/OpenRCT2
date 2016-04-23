@@ -278,7 +278,7 @@ void scenario_begin()
 		window_park_objective_open();
 
 	gParkRating = calculate_park_rating();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+	gParkValue = calculate_park_value();
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
 	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
@@ -1272,7 +1272,7 @@ static void scenario_objective_check_park_value_by()
 	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
 	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
 	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	money32 parkValue = gParkValue;
 
 	if (currentMonthYear == 8 * objectiveYear) {
 		if (parkValue >= objectiveParkValue)
@@ -1419,7 +1419,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
 static void scenario_objective_check_replay_loan_and_park_value()
 {
 	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	money32 parkValue = gParkValue;
 	money32 currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
 
 	if (currentLoan <= 0 && parkValue >= objectiveParkValue)
@@ -1445,16 +1445,8 @@ static void scenario_objective_check_monthly_food_income()
  */
 static void scenario_objective_check()
 {
-	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
-		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 park_rating = gParkRating,
-		guests_in_park = gNumGuestsInPark,
-		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
-		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
 	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
-	sint32 objective_currency = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32),
-		park_value = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-
 
 	if (scenario_completed_company_value != MONEY32_UNDEFINED)
 		return;

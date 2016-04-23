@@ -53,6 +53,9 @@ enum {
 #define gParkSize			RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16)
 #define gParkRating			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16)
 #define gParkEntranceFee	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16)
+
+#define	gParkValue			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)
+
 #define gNumGuestsInPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
 
 #define gLandPrice					RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16)

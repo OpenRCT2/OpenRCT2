@@ -220,7 +220,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 	switch (widgetIndex) {
 	case WIDX_MONEY:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = gParkValue;
 		break;
 	case WIDX_PARK_RATING:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = gParkRating;

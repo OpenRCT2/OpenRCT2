@@ -6332,7 +6332,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			user_string_free(ride->name);
 			ride->type = RIDE_TYPE_NULL;
 			window_invalidate_by_class(WC_RIDE_LIST);
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
+			gParkValue = calculate_park_value();
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;

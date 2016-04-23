@@ -756,7 +756,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 280, w->y + 229);
 	} else {
 		// Park value and company value
-		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_PARK_VALUE, 0, w->x + 280, w->y + 229);
+		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, 0, w->x + 280, w->y + 229);
 		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_COMPANY_VALUE, 0, w->x + 280, w->y + 244);
 	}
 }
@@ -933,7 +933,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 	graphBottom = w->y + pageWidget->bottom - 4;
 
 	// Park value
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	money32 parkValue = gParkValue;
 	gfx_draw_string_left(
 		dpi,
 		STR_FINACNES_PARK_VALUE,
