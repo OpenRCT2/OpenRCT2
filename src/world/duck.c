@@ -185,7 +185,7 @@ static void duck_update_swim(rct_duck *duck)
 		return;
 	}
 
-	int currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
+	int currentMonth = date_get_month(gDateMonthsElapsed);
 	if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218) {
 		duck->state = DUCK_STATE_FLY_AWAY;
 		duck_update_fly_away(duck);

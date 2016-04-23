@@ -228,8 +228,8 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = gParkRating;
 		break;
 	case WIDX_DATE:
-		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
+		month = gDateMonthsElapsed & 7;
+		day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = STR_MONTH_MARCH + month;
@@ -452,9 +452,9 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
 	// Date
-	int year = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)) + 1;
-	int month = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7);
-	int day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
+	int year = date_get_year(gDateMonthsElapsed) + 1;
+	int month = date_get_month(gDateMonthsElapsed & 7);
+	int day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;

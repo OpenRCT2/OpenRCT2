@@ -864,7 +864,7 @@ void reset_all_ride_build_dates()
 	rct_ride *ride;
 
 	FOR_ALL_RIDES(i, ride)
-		ride->build_date -= RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		ride->build_date -= gDateMonthsElapsed;
 }
 
 #pragma endregion
@@ -2132,7 +2132,7 @@ static void ride_inspection_update(rct_ride *ride)
 
 static int get_age_penalty(rct_ride *ride) {
 	int years;
-	years = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date);
+	years = date_get_year(gDateMonthsElapsed - ride->build_date);
 	switch (years) {
 	case 0:
 		return 0;
@@ -2265,7 +2265,7 @@ static int ride_get_new_breakdown_problem(rct_ride *ride)
 	if (gCheatsDisableBrakesFailure)
 		return -1;
 
-	monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint8) - ride->build_date;
+	monthsOld = gDateMonthsElapsed - ride->build_date;
 	if (monthsOld < 16 || ride->reliability > (50 << 8))
 		return -1;
 
@@ -6054,7 +6054,7 @@ foundRideEntry:
 	ride->num_riders = 0;
 	ride->slide_in_use = 0;
 	ride->maze_tiles = 0;
-	ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+	ride->build_date = gDateMonthsElapsed;
 	ride->music_tune_id = 255;
 
 	ride->breakdown_reason = 255;

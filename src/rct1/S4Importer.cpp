@@ -929,8 +929,8 @@ void S4Importer::ImportParkFlags()
     gCurrentTicks = _s4.ticks;
     RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) = _s4.random_a;
     RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = _s4.random_b;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) = _s4.month;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = _s4.day;
+    gDateMonthsElapsed = _s4.month;
+    gDateMonthTicks = _s4.day;
 
     // Park rating
     gParkRating = _s4.park_rating;

@@ -673,7 +673,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Expenditure / Income values for each month
 	x = w->x + 118;
-	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	sint16 currentMonthYear = gDateMonthsElapsed;
 	for (i = 4; i >= 0; i--) {
 		y = w->y + 47;
 
@@ -746,7 +746,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
 		// Last month's profit from food, drink and merchandise
 		money32 lastMonthProfit = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) != 0) {
+		if (gDateMonthsElapsed != 0) {
 			lastMonthProfit += RCT2_GLOBAL(0x01357898, money32);
 			lastMonthProfit += RCT2_GLOBAL(0x0135789C, money32);
 			lastMonthProfit += RCT2_GLOBAL(0x013578A0, money32);

@@ -76,7 +76,7 @@ void climate_reset(int climate)
 {
 	gClimate = climate;
 
-	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	sint8 month = gDateMonthsElapsed & 7;
 	const rct_weather_transition* climate_table = climate_transitions[climate];
 	rct_weather_transition transition = climate_table[month];
 	sint8 weather = WEATHER_PARTIALLY_CLOUDY;
@@ -198,7 +198,7 @@ static void climate_determine_future_weather(int randomDistribution)
 {
 	sint8 climate = gClimate;
 	const rct_weather_transition* climate_table = climate_transitions[climate];
-	sint8 month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	sint8 month = gDateMonthsElapsed & 7;
 	rct_weather_transition transition = climate_table[month];
 
 	// Generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly

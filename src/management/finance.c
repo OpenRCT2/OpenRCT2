@@ -21,6 +21,7 @@
 #include "../addresses.h"
 #include "../game.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
@@ -130,7 +131,7 @@ void finance_pay_ride_upkeep()
 
 	FOR_ALL_RIDES(i, ride) {
 		if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
-			ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+			ride->build_date = gDateMonthsElapsed;
 			ride->reliability = RIDE_INITIAL_RELIABILITY;
 		}
 
@@ -336,7 +337,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 void finance_shift_expenditure_table() {
 
 	// If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= EXPENDITURE_TABLE_MONTH_COUNT) {
+	if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT) {
 		money32 sum = 0;
 		for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++) {
 			sum += RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i];

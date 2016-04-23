@@ -23,6 +23,7 @@
 #include "../game.h"
 #include "../scenario.h"
 #include "../interface/viewport.h"
+#include "../localisation/date.h"
 #include "../localisation/string_ids.h"
 #include "../management/finance.h"
 #include "../util/util.h"
@@ -250,7 +251,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 			invalidate_sprite_2((rct_sprite*)newPeep);
 		}
 
-		newPeep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		newPeep->time_in_park = gDateMonthsElapsed;
 		newPeep->pathfind_goal.x = 0xFF;
 		newPeep->pathfind_goal.y = 0xFF;
 		newPeep->pathfind_goal.z = 0xFF;
@@ -538,7 +539,7 @@ void staff_reset_stats()
 	rct_peep *peep;
 
 	FOR_ALL_STAFF(spriteIndex, peep) {
-		peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		peep->time_in_park = gDateMonthsElapsed;
 		peep->staff_lawns_mown = 0;
 		peep->staff_rides_fixed = 0;
 		peep->staff_gardens_watered = 0;

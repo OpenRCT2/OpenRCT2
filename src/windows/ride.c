@@ -28,6 +28,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
@@ -6119,7 +6120,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Age
 	//If the ride has a build date that is in the future, show it as built this year.
-	age = max((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date) / 8, 0);
+	age = max((gDateMonthsElapsed - ride->build_date) / 8, 0);
 	stringId = age == 0 ?
 		STR_BUILT_THIS_YEAR :
 		age == 1 ?

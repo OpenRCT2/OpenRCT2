@@ -2,8 +2,9 @@
 #include "config.h"
 #include "game.h"
 #include "interface/window.h"
-#include "network/network.h"
+#include "localisation/date.h"
 #include "management/finance.h"
+#include "network/network.h"
 #include "world/climate.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
@@ -145,7 +146,7 @@ static void cheat_renew_rides()
 	FOR_ALL_RIDES(i, ride)
 	{
 		// Set build date to current date (so the ride is brand new)
-		ride->build_date = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		ride->build_date = gDateMonthsElapsed;
 		// Set reliability to 100
 		ride->reliability = (100 << 8);
 	}

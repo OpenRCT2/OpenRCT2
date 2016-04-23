@@ -533,7 +533,7 @@ static void scenario_day_update()
 
 static void scenario_week_update()
 {
-	int month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	int month = gDateMonthsElapsed & 7;
 
 	finance_pay_wages();
 	finance_pay_research();
@@ -575,7 +575,7 @@ static void scenario_update_daynight_cycle()
 	gDayNightCycle = 0;
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
-		float monthFraction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) / (float)0x10000;
+		float monthFraction = gDateMonthTicks / (float)0x10000;
 		if (monthFraction < (1 / 8.0f)) {
 			gDayNightCycle = 0.0f;
 		} else if (monthFraction < (3 / 8.0f)) {
@@ -602,9 +602,9 @@ static void scenario_update_daynight_cycle()
 void scenario_update()
 {
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)) {
-		uint32 currentMonthTick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+		uint32 currentMonthTick = gDateMonthTicks;
 		uint32 nextMonthTick = currentMonthTick + 4;
-		uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+		uint8 currentMonth = gDateMonthsElapsed & 7;
 		uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
 
 		if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
@@ -617,9 +617,9 @@ void scenario_update()
 			scenario_fortnight_update();
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)nextMonthTick;
+		gDateMonthTicks = (uint16)nextMonthTick;
 		if (nextMonthTick >= 0x10000) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
+			gDateMonthsElapsed++;
 			scenario_month_update();
 		}
 	}
@@ -1257,7 +1257,7 @@ static void scenario_objective_check_guests_by()
 	sint16 parkRating = gParkRating;
 	sint16 guestsInPark = gNumGuestsInPark;
 	sint16 objectiveGuests = gScenarioObjectiveNumGuests;
-	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	sint16 currentMonthYear = gDateMonthsElapsed;
 
 	if (currentMonthYear == 8 * objectiveYear){
 		if (parkRating >= 600 && guestsInPark >= objectiveGuests)
@@ -1270,7 +1270,7 @@ static void scenario_objective_check_guests_by()
 static void scenario_objective_check_park_value_by()
 {
 	uint8 objectiveYear = gScenarioObjectiveYear;
-	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	sint16 currentMonthYear = gDateMonthsElapsed;
 	money32 objectiveParkValue = gScenarioObjectiveCurrency;
 	money32 parkValue = gParkValue;
 
@@ -1321,7 +1321,7 @@ static void scenario_objective_check_10_rollercoasters()
  */
 static void scenario_objective_check_guests_and_rating()
 {
-	if (gParkRating < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
+	if (gParkRating < 700 && gDateMonthsElapsed >= 1) {
 		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)++;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 1) {
 			if (gConfigNotifications.park_rating_warnings) {
