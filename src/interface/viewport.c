@@ -46,43 +46,6 @@
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 
-typedef struct paint_struct paint_struct;
-
-struct paint_struct{
-	uint32 image_id;		// 0x00
-	uint32 var_04;
-	uint16 attached_x;		// 0x08
-	uint16 attached_y;		// 0x0A
-	union {
-		struct {
-			uint8 var_0C;
-			uint8 pad_0D;
-			paint_struct* next_attached_ps;	//0x0E
-			uint16 pad_12;
-		};
-		struct {
-			uint16 attached_z; // 0x0C
-			uint16 attached_z_end; // 0x0E
-			uint16 attached_x_end; // 0x10
-			uint16 attached_y_end; // 0x12
-		};
-	};
-	uint16 x;				// 0x14
-	uint16 y;				// 0x16
-	uint16 var_18;
-	uint8 var_1A;
-	uint8 var_1B;
-	paint_struct* attached_ps;	//0x1C
-	paint_struct* var_20;
-	paint_struct* next_quadrant_ps; // 0x24
-	uint8 sprite_type;		//0x28
-	uint8 var_29;
-	uint16 pad_2A;
-	uint16 map_x;			// 0x2C
-	uint16 map_y;			// 0x2E
-	rct_map_element *mapElement; // 0x30 (or sprite pointer)
-};
-
 /**
  * This is not a viewport function. It is used to setup many variables for
  * multiple things.
@@ -1200,6 +1163,51 @@ bool sub_98198C(
 }
 
 /**
+ * rct2: 68818E
+ *
+ * @param image_id (ebx)
+ * @param x (ax)
+ * @param y (cx)
+ * @param[out] paint (ebp)
+ * @return (!CF) success
+ */
+bool sub_68818E(uint32 image_id, uint8 x, uint8 y, paint_struct ** paint)
+{
+
+	//Not a paint struct but something similar
+	paint_struct * ps = RCT2_GLOBAL(0xEE7888, paint_struct *);
+
+	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+		return false;
+	}
+
+	ps->image_id = image_id;
+	ps->attached_x = x;
+	ps->attached_y = y;
+	ps->var_0C = 0;
+
+	paint_struct * ebx2 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+	if (ebx2 == NULL) {
+		return false;
+	}
+
+	RCT2_GLOBAL(0x00EE7888, uint32) += 0x12;
+
+	paint_struct * edi = ebx2->attached_ps;
+	ebx2->attached_ps = ps;
+
+	ps->next_attached_ps = edi;
+
+	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
+	
+	if (paint != NULL) {
+		*paint = ps;
+	}
+
+	return true;
+}
+
+/**
  *
  *  rct2: 0x006D4244
  */
@@ -1674,9 +1682,20 @@ const uint32 dword_97B898[][2] = {
 	{2701, 2720},
 	{2663, 2682}
 };
+
+const uint32 byte_97B537[] = {
+	2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
+	3, 2, 1, 2, 0, 3, 1, 5, 0
+};
+
 const uint8 byte_97B84A[] = {
 	0, 1, 2, 3, 4, 14, 6, 7, 8, 9,
 	10, 11, 12, 13
+};
+
+const uint8 byte_97B55D[] = {
+	2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
+	1, 5, 1, 3, 2, 3, 1, 5, 0
 };
 
 const uint32 dword_97B858[][2] = {
@@ -1733,6 +1752,38 @@ const uint32 dword_97B7C8[] = {
 	2067,
 	2010,
 	2466,
+};
+
+const uint32 dword_97B804[] = {
+	28959,
+	28983,
+	28977,
+	28989,
+	28995,
+	28959,
+	29001,
+	29007,
+	28959,
+	28959,
+	28959,
+	28959,
+	28971,
+	28965
+};
+
+const uint8 byte_97B524[] = {
+	2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
+	1, 2, 1, 3, 0, 3, 1, 5, 0
+};
+
+const uint8 byte_97B83C[] = {
+	0, 0, 0, 2, 2, 3, 0, 0, 3, 3,
+	3, 3, 0, 0
+};
+
+const uint8 byte_97B54A[] = {
+	2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
+	3, 5, 1, 2, 2, 3, 1, 5, 0
 };
 
 
@@ -1809,28 +1860,252 @@ enum edge
 };
 
 /**
- * rct: 0x0065E9FC
- */
-void viewport_surface_smooth_west_edge() {
-	RCT2_CALLPROC_EBPSAFE(0x0065E9FC);
-}
-/**
- * rct2: 0x0065EAB2
- */
-void viewport_surface_smooth_north_edge() {
-	RCT2_CALLPROC_EBPSAFE(0x0065EAB2);
-}
-/**
  * rct2: 0x0065E890
  */
-void viewport_surface_smooth_south_edge() {
-	RCT2_CALLPROC_EBPSAFE(0x0065E890);
+void viewport_surface_smooth_bottom_left()
+{
+	registers regs;
+	regs.ax = _dword_9E3280;
+	regs.cx = _dword_9E3288;
+
+	uint8 temp = regs.cl;
+	regs.cl = regs.al;
+	regs.al = temp;
+
+	regs.esi = _dword_9E3248;
+
+	if (regs.ax != regs.cx) {
+		return;
+	}
+
+	if (regs.esi == 0) {
+		return;
+	}
+
+	regs.ebp = _dword_9E3278;
+	regs.ebp = byte_97B444[regs.ebp];
+	uint32 local_9E3290 = regs.ebp;
+
+	regs.dh = byte_97B524[regs.ebp];
+
+	regs.ebp = _dword_9E3270;
+
+	regs.ecx = byte_97B444[regs.ebp];
+	regs.cl = byte_97B54A[regs.ecx];
+	regs.ebp = _dword_9E325C;
+	regs.eax = _dword_9E3264;
+
+	if (regs.ebp == regs.eax) {
+		if (regs.cl == regs.dh) {
+			return;
+		}
+
+		if (byte_97B83C[regs.eax] & 2) {
+			return;
+		}
+	} else {
+		if (byte_97B83C[regs.eax] & 1) {
+			return;
+		}
+
+		if (byte_97B83C[regs.ebp] & 1) {
+			return;
+		}
+	}
+
+	uint32 image_id = local_9E3290 + 28921;
+
+	paint_struct *out;
+	if (sub_68818E(image_id, 0, 0, &out)) {
+		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
+		out->var_0C |= 1;
+	}
 }
+
 /**
  * rct2: 0x0065E946
  */
-void viewport_surface_smooth_east_edge() {
-	RCT2_CALLPROC_EBPSAFE(0x0065E946);
+void viewport_surface_smooth_bottom_right() {
+	registers regs;
+	regs.ax = _dword_9E327E;
+	regs.cx = _dword_9E3286;
+
+	uint8 temp = regs.cl;
+	regs.cl = regs.al;
+	regs.al = temp;
+
+	regs.esi = _dword_9E3244;
+
+	if (regs.ax != regs.cx) {
+		return;
+	}
+
+	if (regs.esi == 0) {
+		return;
+	}
+
+	regs.ebp = _dword_9E3278;
+	regs.ebp = byte_97B444[regs.ebp];
+	uint32 local_9E3290 = regs.ebp;
+
+	regs.dh = byte_97B55D[regs.ebp];
+
+	regs.ebp = _dword_9E326C;
+
+	regs.ecx = byte_97B444[regs.ebp];
+	regs.cl = byte_97B537[regs.ecx];
+	regs.ebp = _dword_9E3258;
+	regs.eax = _dword_9E3264;
+
+	if (regs.ebp == regs.eax) {
+		if (regs.cl == regs.dh) {
+			return;
+		}
+
+		if (byte_97B83C[regs.eax] & 2) {
+			return;
+		}
+	} else {
+		if (byte_97B83C[regs.eax] & 1) {
+			return;
+		}
+
+		if (byte_97B83C[regs.ebp] & 1) {
+			return;
+		}
+	}
+
+	uint32 image_id = local_9E3290 + 28902;
+
+	paint_struct *out;
+	if (sub_68818E(image_id, 0, 0, &out)) {
+		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
+		out->var_0C |= 1;
+	}
+}
+
+/**
+ * rct: 0x0065E9FC
+ */
+void viewport_surface_smooth_top_left() {
+	registers regs;
+	regs.ax = _dword_9E3282;
+	regs.cx = _dword_9E328A;
+
+	uint8 temp = regs.cl;
+	regs.cl = regs.al;
+	regs.al = temp;
+
+	regs.esi = _dword_9E324C;
+
+	if (regs.ax != regs.cx) {
+		return;
+	}
+
+	if (regs.esi == 0) {
+		return;
+	}
+
+	regs.ebp = _dword_9E3278;
+	regs.ebp = byte_97B444[regs.ebp];
+	uint32 local_9E3290 = regs.ebp;
+
+	regs.dh = byte_97B537[regs.ebp];
+
+	regs.ebp = _dword_9E3274;
+
+	regs.ecx = byte_97B444[regs.ebp];
+	regs.cl = byte_97B55D[regs.ecx];
+	regs.ebp = _dword_9E3260;
+	regs.eax = _dword_9E3264;
+
+	if (regs.ebp == regs.eax) {
+		if (regs.cl == regs.dh) {
+			return;
+		}
+
+		if (byte_97B83C[regs.eax] & 2) {
+			return;
+		}
+	} else {
+		if (byte_97B83C[regs.eax] & 1) {
+			return;
+		}
+
+		if (byte_97B83C[regs.ebp] & 1) {
+			return;
+		}
+	}
+
+	uint32 image_id = local_9E3290 + 28940;
+
+	paint_struct *out;
+	if (sub_68818E(image_id, 0, 0, &out)) {
+		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
+		out->var_0C |= 1;
+	}
+}
+
+/**
+ * rct2: 0x0065EAB2
+ */
+void viewport_surface_smooth_top_right() {
+	registers regs;
+	regs.ax = _dword_9E327C;
+	regs.cx = _dword_9E3284;
+
+	uint8 temp = regs.cl;
+	regs.cl = regs.al;
+	regs.al = temp;
+
+	regs.esi = _dword_9E3240;
+
+	if (regs.ax != regs.cx) {
+		return;
+	}
+
+	if (regs.esi == 0) {
+		return;
+	}
+
+	regs.ebp = _dword_9E3278;
+	regs.ebp = byte_97B444[regs.ebp];
+	uint32 local_9E3290 = regs.ebp;
+
+	regs.dh = byte_97B54A[regs.ebp];
+
+	regs.ebp = _dword_9E3268;
+
+	regs.ecx = byte_97B444[regs.ebp];
+	regs.cl = byte_97B524[regs.ecx];
+	regs.ebp = _dword_9E3254;
+	regs.eax = _dword_9E3264;
+
+	if (regs.ebp == regs.eax) {
+		if (regs.cl == regs.dh) {
+			return;
+		}
+
+		if (byte_97B83C[regs.eax] & 2) {
+			return;
+		}
+	} else {
+		if (byte_97B83C[regs.eax] & 1) {
+			return;
+		}
+
+		if (byte_97B83C[regs.ebp] & 1) {
+			return;
+		}
+	}
+
+	uint32 image_id = local_9E3290 + 28883;
+
+	paint_struct *out;
+	if (sub_68818E(image_id, 0, 0, &out)) {
+		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
+		out->var_0C |= 1;
+	}
 }
 
 void viewport_surface_draw_land_side(enum edge edge, uint16 height)
@@ -1867,45 +2142,6 @@ void viewport_surface_draw_water_side(enum edge edge, uint16 height)
 			RCT2_CALLPROC_X(0x6604F1, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 			break;
 	}
-}
-
-/**
- * rct2: 68818E
- *
- * @param image_id (ebx)
- * @param x (ax)
- * @param y (cx)
- * @return (!CF) success
- */
-bool sub_68818E(uint32 image_id, uint8 x, uint8 y) {
-
-	//Not a paint struct but something similar
-	paint_struct *ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
-
-	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
-		return false;
-	}
-
-	ps->image_id = image_id;
-	ps->attached_x = x;
-	ps->attached_y = y;
-	ps->var_0C = 0;
-
-	paint_struct *ebx2 = RCT2_GLOBAL(0xF1AD28, paint_struct*);
-	if (ebx2 == NULL) {
-		return false;
-	}
-
-	RCT2_GLOBAL(0x00EE7888, uint32) += 0x12;
-
-	paint_struct *edi = ebx2->attached_ps;
-	ebx2->attached_ps = ps;
-
-	ps->next_attached_ps = edi;
-
-	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
-
-	return true;
 }
 
 typedef struct {
@@ -2158,7 +2394,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		if (do_it) {
 			assert(_dword_9E3278 < countof(byte_97B444));
 			ebx = 2599 + byte_97B444[_dword_9E3278];
-			sub_68818E(ebx | ebp, 0, 0);
+			sub_68818E(ebx | ebp, 0, 0, NULL);
 		}
 	}
 
@@ -2183,7 +2419,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		// loc_660E9A:
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
 			assert(ebx < countof(byte_97B444));
-			sub_68818E(2625 + byte_97B444[ebx], 0, 0);
+			sub_68818E(2625 + byte_97B444[ebx], 0, 0, NULL);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			// TODO: Fix this. Currently not working.
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -2198,7 +2434,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		&& !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 			assert(ebx < countof(byte_97B444));
-			sub_68818E(2644 + byte_97B444[ebx], 0, 0);
+			sub_68818E(2644 + byte_97B444[ebx], 0, 0, NULL);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct *backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -2226,13 +2462,13 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				// loc_661089:
 				uint32 eax = ((((mapSelectionType - 9) + get_current_rotation()) & 3) + 0x21) << 19;
 				uint32 image_id = (byte_97B444[ebx] + 0x20000BF6) | eax;
-				sub_68818E(image_id, 0, 0);
+				sub_68818E(image_id, 0, 0, NULL);
 			} else if (mapSelectionType >= 6) {
 				// loc_661051:(no jump)
 				// Selection split into four quarter segments
 				uint32 eax = ((((mapSelectionType - 6) + get_current_rotation()) & 3) + 0x27) << 19;
 				uint32 image_id = (byte_97B444[ebx] + 0x20000C09) | eax;
-				sub_68818E(image_id, 0, 0);
+				sub_68818E(image_id, 0, 0, NULL);
 			} else if (mapSelectionType <= 4) {
 				// Corners
 				uint32 eax = mapSelectionType;
@@ -2242,7 +2478,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 				eax = (eax + 0x21) << 19;
 				uint32 image_id = (byte_97B444[ebx] + 0x20000BE3) | eax;
-				sub_68818E(image_id, 0, 0);
+				sub_68818E(image_id, 0, 0, NULL);
 			} else {
 				int local_ebx = ebx;
 				int local_height = height;
@@ -2299,7 +2535,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			}
 
 			uint32 image_id = (0x20000BE3 + byte_97B444[ebx]) | eax;
-			sub_68818E(image_id, 0, 0);
+			sub_68818E(image_id, 0, 0, NULL);
 		}
 	}
 
@@ -2309,10 +2545,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		&& !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_BASE)
 		&& !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE)) {
 		// loc_661194:
-		viewport_surface_smooth_west_edge();
-		viewport_surface_smooth_north_edge();
-		viewport_surface_smooth_south_edge();
-		viewport_surface_smooth_east_edge();
+		viewport_surface_smooth_top_left();
+		viewport_surface_smooth_top_right();
+		viewport_surface_smooth_bottom_left();
+		viewport_surface_smooth_bottom_right();
 	}
 
 
@@ -2326,7 +2562,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			base_image = byte_97B84A[base_image];
 		}
 		uint32 image_id = dword_97B7C8[base_image] + image_offset;
-		sub_68818E(image_id, 0, 0);
+		sub_68818E(image_id, 0, 0, NULL);
 	}
 
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_VERTICAL)) {
@@ -2377,7 +2613,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			int image_id = image_offset + 0x610013B8;
 			sub_98196C(image_id, 0, 0, 32, 32, -1, dx, get_current_rotation());
 
-			sub_68818E(5053 + image_offset, 0, 0);
+			sub_68818E(5053 + image_offset, 0, 0, NULL);
 
 			for (int i = 0; i <= 0x7C; i += 4) {
 				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);
@@ -3070,13 +3306,13 @@ static void sub_68B3FB(int x, int y)
 			viewport_track_paint_setup(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
-			RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)map_element, 0, 0);
+			//RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)map_element, 0, 0);
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			viewport_entrance_paint_setup(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_FENCE:
-			RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, height, (int)map_element, 0, 0);
+			//RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, height, (int)map_element, 0, 0);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
 			RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (int)map_element, 0, 0);
