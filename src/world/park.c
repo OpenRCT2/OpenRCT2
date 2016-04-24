@@ -107,7 +107,7 @@ void park_init()
 		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
 
 	gParkEntranceFee = MONEY(10, 00);
-	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, sint16) = -1;
+	gPeepSpawns[0].x = UINT16_MAX;
 	RCT2_GLOBAL(0x013573F8, sint16) = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16) = 127;
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = 2;
@@ -349,7 +349,7 @@ void reset_park_entrances()
 		gParkEntranceX[i] = 0x8000;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) = 0xFFFF;
+	gPeepSpawns[0].x = UINT16_MAX;
 	RCT2_GLOBAL(0x013573F8, uint16) = 0xFFFF;
 }
 
@@ -467,12 +467,12 @@ static int park_calculate_guest_generation_probability()
 
 static void get_random_peep_spawn(rct2_peep_spawn *spawn)
 {
-	rct2_peep_spawn *peepSpawns = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
-
-	*spawn = peepSpawns[0];
-	if (peepSpawns[1].x != 0xFFFF)
-		if (scenario_rand() & 0x80000)
-			*spawn = peepSpawns[1];
+	*spawn = gPeepSpawns[0];
+	if (gPeepSpawns[1].x != UINT16_MAX) {
+		if (scenario_rand() & 0x80000) {
+			*spawn = gPeepSpawns[1];
+		}
+	}
 }
 
 static rct_peep *park_generate_new_guest()

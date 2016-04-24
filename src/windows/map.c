@@ -333,8 +333,9 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 			break;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, sint16) != -1 && RCT2_GLOBAL(0x13573F8, sint16) != -1)
+		if (gPeepSpawns[0].x != UINT16_MAX && RCT2_GLOBAL(0x13573F8, sint16) != -1) {
 			RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		}
 
 		show_gridlines();
 		show_land_rights();

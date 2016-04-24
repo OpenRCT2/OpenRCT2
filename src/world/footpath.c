@@ -77,7 +77,6 @@ static bool entrance_has_direction(rct_map_element *mapElement, int direction)
  */
 static void automatically_set_peep_spawn(int x, int y, int z)
 {
-	rct2_peep_spawn *peepSpawn = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 	int direction = 0;
 	if (x != 32) {
 		direction++;
@@ -91,6 +90,7 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 		}
 	}
 
+	rct2_peep_spawn *peepSpawn = &gPeepSpawns[0];
 	peepSpawn->x = x + (word_981D6C[direction].x * 15) + 16;
 	peepSpawn->y = y + (word_981D6C[direction].y * 15) + 16;
 	peepSpawn->direction = direction;

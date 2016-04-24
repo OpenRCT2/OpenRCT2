@@ -4480,10 +4480,10 @@ void map_extend_boundary_surface()
 static void clear_elements_at(int x, int y)
 {
 	for (;;) {
-		rct2_peep_spawn *peepSpawns = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
 		for (int i = 0; i < 2; i++) {
-			if ((peepSpawns[i].x & 0xFFE0) == x && (peepSpawns[i].y & 0xFFE0) == y) {
-				peepSpawns[i].x = 0xFFFF;
+			rct2_peep_spawn *peepSpawn = &gPeepSpawns[i];
+			if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y) {
+				peepSpawn->x = UINT16_MAX;
 			}
 		}
 
