@@ -449,8 +449,9 @@ void rct2_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = tick2 = min(tick2, 500);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32) = tick;
-	if (game_is_not_paused())
-		RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, sint32) += tick2;
+	if (game_is_not_paused()) {
+		gPaletteEffectFrame += tick2;
+	}
 
 	// TODO: screenshot countdown process
 

@@ -47,6 +47,10 @@ rct_drawpixelinfo gWindowDPI;
 static uint32 _rainPixels[MAX_RAIN_PIXELS];
 static uint32 _numRainPixels;
 
+uint8 gGamePalette[256 * 4];
+uint32 gPaletteEffectFrame;
+
+
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 const uint8 peep_palette[0x100] = {
 	0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
@@ -149,7 +153,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 	rct_g1_element g1 = g1Elements[pal];
 	int width = g1.width;
 	int x = g1.x_offset;
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[x * 4]);
+	uint8* dest_pointer = &gGamePalette[x * 4];
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
@@ -159,7 +163,7 @@ void gfx_transpose_palette(int pal, unsigned char product)
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((uint8*)RCT2_ADDRESS_PALETTE, 10, 236);
+	platform_update_palette(gGamePalette, 10, 236);
 }
 
 /**
@@ -178,7 +182,7 @@ void load_palette(){
 	rct_g1_element g1 = g1Elements[palette];
 	int width = g1.width;
 	int x = g1.x_offset;
-	uint8* dest_pointer = (uint8*)&(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8)[x * 4]);
+	uint8* dest_pointer = &gGamePalette[x * 4];
 	uint8* source_pointer = g1.offset;
 
 	for (; width > 0; width--) {
@@ -188,7 +192,7 @@ void load_palette(){
 		source_pointer += 3;
 		dest_pointer += 4;
 	}
-	platform_update_palette((uint8*)RCT2_ADDRESS_PALETTE, 10, 236);
+	platform_update_palette(gGamePalette, 10, 236);
 }
 
 /**

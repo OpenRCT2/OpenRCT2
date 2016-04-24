@@ -147,12 +147,13 @@ void update_palette_effects()
 		rct_g1_element g1_element = g1Elements[palette];
 		int xoffset = g1_element.x_offset;
 		xoffset = xoffset * 4;
+		uint8 *paletteOffset = gGamePalette + xoffset;
 		for (int i = 0; i < g1_element.width; i++) {
-			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
-			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
-			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
+			paletteOffset[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
+			paletteOffset[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
+			paletteOffset[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
 		}
-		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
+		platform_update_palette(gGamePalette, 10, 236);
 		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
 	} else {
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
@@ -166,10 +167,11 @@ void update_palette_effects()
 			rct_g1_element g1_element = g1Elements[palette];
 			int xoffset = g1_element.x_offset;
 			xoffset = xoffset * 4;
+			uint8 *paletteOffset = gGamePalette + xoffset;
 			for (int i = 0; i < g1_element.width; i++) {
-				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
-				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
-				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
+				paletteOffset[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
+				paletteOffset[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
+				paletteOffset[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
 			}
 		}
 
@@ -182,7 +184,7 @@ void update_palette_effects()
 				q = 2;
 			}
 		}
-		uint32 j = RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32);
+		uint32 j = gPaletteEffectFrame;
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
 		int p = 1533;
 		if ((sint32)water_type != -1) {
@@ -190,7 +192,7 @@ void update_palette_effects()
 		}
 		rct_g1_element g1_element = g1Elements[q + p];
 		uint8* vs = &g1_element.offset[j * 3];
-		uint8* vd = RCT2_ADDRESS(0x01424A18, uint8);
+		uint8* vd = &gGamePalette[230 * 4];
 		int n = 5;
 		for (int i = 0; i < n; i++) {
 			vd[0] = vs[0];
@@ -221,7 +223,7 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		j = ((uint16)(RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32) * -960) * 3) >> 16;
+		j = ((uint16)(gPaletteEffectFrame * -960) * 3) >> 16;
 		p = 1539;
 		g1_element = g1Elements[q + p];
 		vs = &g1_element.offset[j * 3];
@@ -238,9 +240,9 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 230, 16);
+		platform_update_palette(gGamePalette, 230, 16);
 		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
-			platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
+			platform_update_palette(gGamePalette, 10, 236);
 			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
 		}
 	}
