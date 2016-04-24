@@ -1717,6 +1717,24 @@ const uint32 dword_97B750[][2] = {
 	{2428,                                           2447},
 };
 
+const uint32 dword_97B7C8[] = {
+	1953,
+	2124,
+	2523,
+	2580,
+	2352,
+	2409,
+	2238,
+	2181,
+	2295 | COLOUR_BRIGHT_RED << 19 | 0x20000000,
+	2295 | COLOUR_YELLOW << 19 | 0x20000000,
+	2295 | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000,
+	2295 | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,
+	2067,
+	2010,
+	2466,
+};
+
 
 #define _dword_9E3240 RCT2_GLOBAL(0x9E3240, rct_map_element *)
 #define _dword_9E3244 RCT2_GLOBAL(0x9E3244, rct_map_element *)
@@ -2025,7 +2043,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	//RCT2_CALLPROC_X(0x660AAB, 0, 0, direction, height, (int) mapElement, 0, 0);
 
-	uint32 ebp = _dword_9E3264;
+	uint32 _ebp = _dword_9E3264;
 	uint32 ebx = _dword_9E3278;
 
 	//push ebx + ecx + esi
@@ -2056,6 +2074,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		assert(ebx < countof(byte_97B444));
 		uint8 image_offset = byte_97B444[ebx];
 		int image_id;
+		uint32 ebp = _ebp;
 		switch (branch) {
 			case 0:
 				// loc_660C90
@@ -2118,7 +2137,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 		uint32 ecx = pos & 0x1f;
 		uint32 eax = pos >> 5;
-		ebp = 0x20380000;
+		uint32 ebp = 0x20380000;
 
 		bool do_it = false;
 		if (di >= 0) {
@@ -2296,7 +2315,21 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		viewport_surface_smooth_east_edge();
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE
+	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_BASE)
+	    && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
+
+		uint8 image_offset = byte_97B444[ebx];
+		uint32 base_image = _ebp;
+		if (get_current_rotation() & 1) {
+			base_image = byte_97B84A[base_image];
+		}
+		uint32 image_id = dword_97B7C8[base_image] + image_offset;
+		sub_68818E(image_id, 0, 0);
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_VERTICAL)) {
 		// loc_66122C:
 		uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;
 		uint8 di_type = mapElement->type & 0x80;
