@@ -8380,7 +8380,7 @@ static int sub_693C9E(rct_peep *peep)
 		return 1;
 	}
 
-	if (x < 32 || y < 32 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)){
+	if (x < 32 || y < 32 || x >= gMapSizeUnits || y >= gMapSizeUnits){
 		if (peep->outside_of_park == 1){
 			RCT2_GLOBAL(0x00F1EE18, uint16) |= (1 << 1);
 		}

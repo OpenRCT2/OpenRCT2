@@ -374,8 +374,8 @@ typedef struct {
 	rct_news_item news_items[61];
 	uint8 byte_13CE730[64];
 	uint32 dword_13CE770;
-	uint16 word_13CE774;
-	uint16 word_13CE776;
+	uint16 wide_path_tile_loop_x;
+	uint16 wide_path_tile_loop_y;
 	uint8 pad_13CE778[434];
 } rct_s6_data;
 

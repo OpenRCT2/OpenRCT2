@@ -80,9 +80,9 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 	int direction = 0;
 	if (x != 32) {
 		direction++;
-		if (y != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
+		if (y != gMapSizeUnits - 32) {
 			direction++;
-			if (x != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
+			if (x != gMapSizeUnits - 32) {
 				direction++;
 				if (y != 32)
 					return;
@@ -329,7 +329,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
 
-	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
+	if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}
@@ -860,8 +860,8 @@ bool map_is_edge(int x, int y)
 	return (
 		x < 32 ||
 		y < 32 ||
-		x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) ||
-		y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)
+		x >= gMapSizeUnits ||
+		y >= gMapSizeUnits
 	);
 }
 
@@ -1506,7 +1506,7 @@ int footpath_is_connected_to_map_edge_recurse(
 	// Check if we are at edge of map
 	if (x < 32 || y < 32)
 		return FOOTPATH_SEARCH_SUCCESS;
-	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+	if (x >= gMapSizeUnits || y >= gMapSizeUnits)
 		return FOOTPATH_SEARCH_SUCCESS;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);

@@ -735,9 +735,9 @@ void update_park_fences(int x, int y)
 		return;
 
 	// When setting the ownership of map edges
-	if (x <= 0 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+	if (x <= 0 || x >= gMapSizeUnits)
 		return;
-	if (y <= 0 || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+	if (y <= 0 || y >= gMapSizeUnits)
 		return;
 
 	rct_map_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
@@ -1020,7 +1020,7 @@ money32 map_buy_land_rights_for_tile(int x, int y, int setting, int flags) {
 			return MONEY32_UNDEFINED;
 		}
 
-		if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
+		if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
 			gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
 			return MONEY32_UNDEFINED;
 		}

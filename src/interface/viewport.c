@@ -245,7 +245,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 
 		// HACK: This is to prevent the x and y values being set to values outside
 		// of the map. This can happen when the height is larger than the map size.
-		sint16 max = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16);
+		sint16 max = gMapSizeMinus2;
 		if (pos.x > max && pos.y > max) {
 			int x_corr[] = { -1, 1, 1, -1 };
 			int y_corr[] = { -1, -1, 1, 1 };
@@ -600,12 +600,12 @@ void viewport_update_position(rct_window *window)
 	}
 
 	//Clamp to the map maximum value (scenario specific)
-	if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)){
-		x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16);
+	if (x > gMapSizeMinus2){
+		x = gMapSizeMinus2;
 		at_map_edge = 1;
 	}
-	if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)){
-		y = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16);
+	if (y > gMapSizeMinus2){
+		y = gMapSizeMinus2;
 		at_map_edge = 1;
 	}
 
@@ -2016,8 +2016,8 @@ static void viewport_blank_tiles_paint_setup(int x, int y)
 void sub_68B2B7(int x, int y)
 {
 	if (
-		x < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) &&
-		y < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) &&
+		x < gMapSizeUnits &&
+		y < gMapSizeUnits &&
 		x >= 32 &&
 		y >= 32
 	) {
@@ -2049,8 +2049,8 @@ void map_element_paint_setup(int x, int y)
 {
 	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	if (
-		x < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) &&
-		y < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) &&
+		x < gMapSizeUnits &&
+		y < gMapSizeUnits &&
 		x >= 32 &&
 		y >= 32
 	) {

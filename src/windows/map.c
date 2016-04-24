@@ -622,7 +622,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
 			size += 2;
 			size=clamp(MINIMUM_MAP_SIZE_TECHNICAL, size, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-			int currentSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+			int currentSize = gMapSize;
 			while (size < currentSize) {
 				map_window_decrease_map_size();
 				currentSize--;
@@ -931,7 +931,7 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
 	w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
 	w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = gMapSize - 2;
 }
 
 static void window_map_inputsize_land(rct_window *w)
@@ -1338,15 +1338,15 @@ static void window_map_set_peep_spawn_tool_down(int x, int y)
  */
 static void map_window_increase_map_size()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) >= 256) {
+	if (gMapSize >= 256) {
 		window_error_open(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
 		return;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16)++;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) * 32) + 254;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) = ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32) - 1;
+	gMapSize++;
+	gMapSizeUnits = (gMapSize - 1) * 32;
+	gMapSizeMinus2 = (gMapSize * 32) + 254;
+	gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
 	map_extend_boundary_surface();
 	window_map_init_map();
 	window_map_center_on_view_point();
@@ -1359,15 +1359,15 @@ static void map_window_increase_map_size()
  */
 static void map_window_decrease_map_size()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) < 16) {
+	if (gMapSize < 16) {
 		window_error_open(STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
 		return;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16)--;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) * 32) + 254;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) = ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 1) * 32) - 1;
+	gMapSize--;
+	gMapSizeUnits = (gMapSize - 1) * 32;
+	gMapSizeMinus2 = (gMapSize * 32) + 254;
+	gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
 	map_remove_out_of_range_elements();
 	window_map_init_map();
 	window_map_center_on_view_point();
@@ -1638,8 +1638,8 @@ static void map_window_set_pixels(rct_window *w)
 		if (
 			x > 0 &&
 			y > 0 &&
-			x < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) &&
-			y < RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)
+			x < gMapSizeUnits &&
+			y < gMapSizeUnits
 		) {
 			switch (w->selected_tab) {
 			case PAGE_PEEPS:

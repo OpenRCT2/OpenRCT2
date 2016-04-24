@@ -289,7 +289,7 @@ static void mapgen_place_trees()
 		}
 	}
 
-	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	mapSize = gMapSize;
 
 	int availablePositionsCount = 0;
 	struct { int x; int y; } tmp, *pos, *availablePositions;
@@ -325,7 +325,7 @@ static void mapgen_place_trees()
 	float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
 	int numTrees = max(4, (int)(availablePositionsCount * treeToLandRatio));
 
-	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	mapSize = gMapSize;
 	for (i = 0; i < numTrees; i++) {
 		pos = &availablePositions[i];
 
@@ -377,7 +377,7 @@ static void mapgen_set_water_level(int waterLevel)
 	int x, y, mapSize;
 	rct_map_element *mapElement;
 
-	mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	mapSize = gMapSize;
 
 	for (y = 1; y < mapSize - 1; y++) {
 		for (x = 1; x < mapSize - 1; x++) {

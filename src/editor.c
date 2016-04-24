@@ -229,7 +229,7 @@ void trackmanager_load()
  */
 static void set_all_land_owned()
 {
-	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	int mapSize = gMapSize;
 
 	game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 2) * 32, (mapSize - 2) * 32);
 }

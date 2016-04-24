@@ -719,9 +719,9 @@ int backup_map(){
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
 	*(uint32*)backup_info = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32);
-	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
-	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16);
-	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	*(uint16*)(backup_info + 4) = gMapSizeUnits;
+	*(uint16*)(backup_info + 6) = gMapSizeMinus2;
+	*(uint16*)(backup_info + 8) = gMapSize;
 	*(uint32*)(backup_info + 10) = get_current_rotation();
 	return 1;
 }
@@ -739,9 +739,9 @@ void reload_map_backup(){
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
 	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32) = *(uint32*)backup_info;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = *(uint16*)(backup_info + 4);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = *(uint16*)(backup_info + 6);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = *(uint16*)(backup_info + 8);
+	gMapSizeUnits = *(uint16*)(backup_info + 4);
+	gMapSizeMinus2 = *(uint16*)(backup_info + 6);
+	gMapSize = *(uint16*)(backup_info + 8);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = *(uint32*)(backup_info + 10);
 
 	free(RCT2_GLOBAL(0xF440ED, uint8*));
@@ -757,9 +757,9 @@ void blank_map(){
 
 	// These values were previously allocated in backup map but
 	// it seems more fitting to place in this function
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 0x1FE0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = 0x20FE;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 0x100;
+	gMapSizeUnits = 0x1FE0;
+	gMapSizeMinus2 = 0x20FE;
+	gMapSize = 0x100;
 
 	rct_map_element* map_element;
 	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
@@ -2044,7 +2044,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	uint8 backup_rotation = _currentTrackPieceDirection;
 	uint32 backup_park_flags = gParkFlags;
 	gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-	int map_size = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) << 4;
+	int map_size = gMapSize << 4;
 
 	_currentTrackPieceDirection = 0;
 	int z = sub_6D01B3(3, 0, map_size, map_size, 16);

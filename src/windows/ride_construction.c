@@ -2276,7 +2276,6 @@ static void sub_6CBCE2(
 	const rct_preview_track *trackBlock;
 	int preserve_current_viewport_flags;
 	int x, y, baseZ, clearanceZ, offsetX, offsetY;
-	uint64 preserve_map_size_vars;
 
 	preserve_current_viewport_flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16);
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = 0;
@@ -2287,12 +2286,15 @@ static void sub_6CBCE2(
 
 	ride = get_ride(rideIndex);
 
-	preserve_map_size_vars = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint64);
+	sint16 preserveMapSizeUnits = gMapSizeUnits;
+	sint16 preserveMapSizeMinus2 = gMapSizeMinus2;
+	sint16 preserveMapSize = gMapSize;
+	sint16 preserveMapSizeMaxXY = gMapSizeMaxXY;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 255 * 32;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = (255 * 32) + 286;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 256;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) = (256 * 32) - 1;
+	gMapSizeUnits = 255 * 32;
+	gMapSizeMinus2 = (255 * 32) + 286;
+	gMapSize = 256;
+	gMapSizeMaxXY = (256 * 32) - 1;
 
 	trackBlock = get_track_def_from_ride(ride, trackType);
 	while (trackBlock->index != 255) {
@@ -2377,7 +2379,10 @@ static void sub_6CBCE2(
 		trackBlock++;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint64) = preserve_map_size_vars;
+	gMapSizeUnits = preserveMapSizeUnits;
+	gMapSizeMinus2 = preserveMapSizeMinus2;
+	gMapSize = preserveMapSize;
+	gMapSizeMaxXY = preserveMapSizeMaxXY;
 
 	sub_688217();
 	sub_688485();

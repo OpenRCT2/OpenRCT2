@@ -1125,7 +1125,7 @@ void Network::AdvertiseHeartbeat()
 	json_object_set_new(body, "players", json_integer(network_get_num_players()));
 
 	json_t *gameInfo = json_object();
-	json_object_set_new(gameInfo, "mapSize", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)));
+	json_object_set_new(gameInfo, "mapSize", json_integer(gMapSizeMinus2));
 	json_object_set_new(gameInfo, "day", json_integer(gDateMonthTicks));
 	json_object_set_new(gameInfo, "month", json_integer(gDateMonthsElapsed));
 	json_object_set_new(gameInfo, "guests", json_integer(gNumGuestsInPark));

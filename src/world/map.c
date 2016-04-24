@@ -325,12 +325,12 @@ void map_init(int size)
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16) = 0;
-	RCT2_GLOBAL(0x013CE774, sint16) = 0;
-	RCT2_GLOBAL(0x013CE776, sint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) = size * 32 - 32;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16) = size * 32 - 2;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16) = size;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16) = size * 32 - 33;
+	gWidePathTileLoopX = 0;
+	gWidePathTileLoopY = 0;
+	gMapSizeUnits = size * 32 - 32;
+	gMapSizeMinus2 = size * 32 - 2;
+	gMapSize = size;
+	gMapSizeMaxXY = size * 32 - 33;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
 	map_update_tile_pointers();
 	map_remove_out_of_range_elements();
@@ -590,17 +590,16 @@ int map_coord_is_connected(int x, int y, int z, uint8 faceDirection)
  */
 void map_update_path_wide_flags()
 {
-	int i, x, y;
-
-	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		return;
+	}
 
 	// Presumebly update_path_wide_flags is too computationally expensive to call for every
-	// tile every update, so word_13CE774 and word_13CE776 store the x and y
+	// tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
 	// progress. A maximum of 128 calls is done per update.
-	x = RCT2_GLOBAL(0x013CE774, sint16);
-	y = RCT2_GLOBAL(0x013CE776, sint16);
-	for (i = 0; i < 128; i++) {
+	uint16 x = gWidePathTileLoopX;
+	uint16 y = gWidePathTileLoopY;
+	for (int i = 0; i < 128; i++) {
 		footpath_update_path_wide_flags(x, y);
 
 		// Next x, y tile
@@ -608,12 +607,13 @@ void map_update_path_wide_flags()
 		if (x >= 8192) {
 			x = 0;
 			y += 32;
-			if (y >= 8192)
+			if (y >= 8192) {
 				y = 0;
+			}
 		}
 	}
-	RCT2_GLOBAL(0x013CE774, sint16) = x;
-	RCT2_GLOBAL(0x013CE776, sint16) = y;
+	gWidePathTileLoopX = x;
+	gWidePathTileLoopY = y;
 }
 
 /**
@@ -1378,8 +1378,8 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
-	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	x1 = min(x1, gMapSizeMaxXY);
+	y1 = min(y1, gMapSizeMaxXY);
 
 	noValidTiles = true;
 	totalCost = 0;
@@ -1438,8 +1438,8 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
-	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	x1 = min(x1, gMapSizeMaxXY);
+	y1 = min(y1, gMapSizeMaxXY);
 
 	int xMid, yMid;
 
@@ -1612,7 +1612,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 		}
 	}
 
-	if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) || y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16)) {
+	if (x > gMapSizeMaxXY || y > gMapSizeMaxXY) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}
@@ -1808,15 +1808,15 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 	RCT2_GLOBAL(0x009E2E28, uint8) = 0;
 
 	// Clamp to maximum addressable element to prevent long loop spamming the log
-	x1 = clamp(0, x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
-	y1 = clamp(0, y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
-	x2 = min(x2, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
-	y2 = min(y2, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
+	x1 = clamp(0, x1, gMapSizeUnits);
+	y1 = clamp(0, y1, gMapSizeUnits);
+	x2 = min(x2, gMapSizeUnits);
+	y2 = min(y2, gMapSizeUnits);
 	for (sint16 y = y1; y <= y2; y += 32) {
 		for (sint16 x = x1; x <= x2; x += 32) {
-			if (x > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16))
+			if (x > gMapSizeUnits)
 				continue;
-			if (y > RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16))
+			if (y > gMapSizeUnits)
 				continue;
 
 			map_buy_land_rights(x, y, x2, y2, 6, flags | (newOwnership << 8));
@@ -1827,8 +1827,8 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 		return 0;
 	}
 
-	sint16 x = clamp(0, x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
-	sint16 y = clamp(0, y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16));
+	sint16 x = clamp(0, x1, gMapSizeUnits);
+	sint16 y = clamp(0, y1, gMapSizeUnits);
 
 	x += 16;
 	y += 16;
@@ -1873,8 +1873,8 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 
 	ax = max(ax, 32);
 	ay = max(ay, 32);
-	bx = min(bx, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
-	by = min(by, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	bx = min(bx, gMapSizeMaxXY);
+	by = min(by, gMapSizeMaxXY);
 
 	// find lowest map element in selection
 	for (int yi = ay; yi <= by; yi += 32) {
@@ -1935,8 +1935,8 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 
 	ax = max(ax, 32);
 	ay = max(ay, 32);
-	bx = min(bx, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
-	by = min(by, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	bx = min(bx, gMapSizeMaxXY);
+	by = min(by, gMapSizeMaxXY);
 
 	// find highest map element in selection
 	for (int yi = ay; yi <= by; yi += 32) {
@@ -1999,8 +1999,8 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
-	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	x1 = min(x1, gMapSizeMaxXY);
+	y1 = min(y1, gMapSizeMaxXY);
 
 	for (int yi = y0; yi <= y1; yi += 32) {
 		for (int xi = x0; xi <= x1; xi += 32) {
@@ -2080,8 +2080,8 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
 	x0 = max(x0, 32);
 	y0 = max(y0, 32);
-	x1 = min(x1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
-	y1 = min(y1, RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16));
+	x1 = min(x1, gMapSizeMaxXY);
+	y1 = min(y1, gMapSizeMaxXY);
 
 	for (int yi = y0; yi <= y1; yi += 32){
 		for (int xi = x0; xi <= x1; xi += 32){
@@ -2592,7 +2592,7 @@ void game_command_set_water_height(int* eax, int* ebx, int* ecx, int* edx, int* 
 		return;
 	}
 
-	if(x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16)){
+	if(x >= gMapSizeUnits || y >= gMapSizeUnits){
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -2918,7 +2918,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) += 16;
 	if(game_is_not_paused() || gCheatsBuildInPauseMode){
 		if(sub_68B044()){
-			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16) && y <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16))){
+			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= gMapSizeMaxXY && y <= gMapSizeMaxXY)){
 				rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
 				if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9)){
 					if(scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){
@@ -3689,7 +3689,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		}
 		RCT2_GLOBAL(0x00F64F14, uint8) = b;
 
-		if (curTile.x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || curTile.y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
+		if (curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits) {
 			gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 			*ebx = MONEY32_UNDEFINED;
 			return;
@@ -4082,7 +4082,7 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) = 1;
-	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) || x < 32 || y < 32) {
+	if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return false;
 	}
@@ -4379,7 +4379,7 @@ void map_element_remove_banner_entry(rct_map_element *mapElement)
  */
 void map_remove_out_of_range_elements()
 {
-	int mapMaxXY = RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, uint16);
+	int mapMaxXY = gMapSizeMaxXY;
 
 	for (int y = 0; y < (256 * 32); y += 32) {
 		for (int x = 0; x < (256 * 32); x += 32) {
@@ -4400,7 +4400,7 @@ void map_extend_boundary_surface()
 	rct_map_element *existingMapElement, *newMapElement;
 	int x, y, z, slope;
 
-	y = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
+	y = gMapSize - 2;
 	for (x = 0; x < 256; x++) {
 		existingMapElement = map_get_surface_element_at(x, y - 1);
 		newMapElement = map_get_surface_element_at(x, y);
@@ -4436,7 +4436,7 @@ void map_extend_boundary_surface()
 		update_park_fences(x << 5, y << 5);
 	}
 
-	x = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) - 2;
+	x = gMapSize - 2;
 	for (y = 0; y < 256; y++) {
 		existingMapElement = map_get_surface_element_at(x - 1, y);
 		newMapElement = map_get_surface_element_at(x, y);
@@ -4919,7 +4919,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 		return MONEY32_UNDEFINED;
 	}
 
-	if (x <= 32 || y <= 32 || x >= (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) - 32) || y >= (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16) - 32)) {
+	if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32)) {
 		gGameCommandErrorText = 3215;
 		return MONEY32_UNDEFINED;
 	}

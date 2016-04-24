@@ -173,7 +173,7 @@ void screenshot_giant()
 
 	int rotation = originalRotation;
 	int zoom = originalZoom;
-	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	int mapSize = gMapSize;
 	int resolutionWidth = (mapSize * 32 * 2) >> zoom;
 	int resolutionHeight = (mapSize * 32 * 1) >> zoom;
 
@@ -309,7 +309,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
 		gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-		int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+		int mapSize = gMapSize;
 		if (resolutionWidth == 0 || resolutionHeight == 0) {
 			resolutionWidth = (mapSize * 32 * 2) >> customZoom;
 			resolutionHeight = (mapSize * 32 * 1) >> customZoom;

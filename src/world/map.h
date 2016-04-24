@@ -267,6 +267,14 @@ typedef struct {
 
 extern const rct_xy16 TileDirectionDelta[];
 
+#define gWidePathTileLoopX	RCT2_GLOBAL(0x013CE774, uint16)
+#define gWidePathTileLoopY	RCT2_GLOBAL(0x013CE776, uint16)
+
+#define gMapSizeUnits		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16)
+#define gMapSizeMinus2		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)
+#define gMapSize			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16)
+#define gMapSizeMaxXY		RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16)
+
 extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;
 
