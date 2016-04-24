@@ -2209,7 +2209,6 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 		    && regs.dh != regs.cl) {
 
 			uint32 image_id = base_image_id + image_offset;
-			log_info("%d", image_id);
 			sub_98196C(image_id, 30, 0, 0, 30, 15, regs.dh * 16, get_current_rotation());
 		}
 	}
