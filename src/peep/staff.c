@@ -64,7 +64,7 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	colour = (*edx >> 8) & 0xFF;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staffType] = colour;
+		gStaffColours[staffType] = colour;
 
 		FOR_ALL_PEEPS(spriteIndex, peep) {
 			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staffType) {
@@ -257,7 +257,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->pathfind_goal.z = 0xFF;
 		newPeep->pathfind_goal.direction = 0xFF;
 
-		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type > 2 ? 2 : staff_type];
+		uint8 colour = gStaffColours[staff_type > 2 ? 2 : staff_type];
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 

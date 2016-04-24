@@ -19,6 +19,8 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../cheats.h"
+#include "../config.h"
 #include "../game.h"
 #include "../interface/colour.h"
 #include "../interface/window.h"
@@ -29,14 +31,13 @@
 #include "../management/news_item.h"
 #include "../management/research.h"
 #include "../peep/peep.h"
+#include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../scenario.h"
 #include "../world/map.h"
 #include "park.h"
 #include "sprite.h"
-#include "../config.h"
-#include "../cheats.h"
 
 uint8 *gParkRatingHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_RATING_HISTORY, uint8);
 uint8 *gGuestsInParkHistory = RCT2_ADDRESS(RCT2_ADDRESS_GUESTS_IN_PARK_HISTORY, uint8);
@@ -82,9 +83,9 @@ void park_init()
 
 	RCT2_GLOBAL(0x013CA740, uint8) = 0;
 	gParkName = 777;
-	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = COLOUR_BRIGHT_RED;
-	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = COLOUR_LIGHT_BLUE;
-	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = COLOUR_YELLOW;
+	gStaffHandymanColour = COLOUR_BRIGHT_RED;
+	gStaffMechanicColour = COLOUR_LIGHT_BLUE;
+	gStaffSecurityColour = COLOUR_YELLOW;
 	gNumGuestsInPark = 0;
 	gNumGuestsInParkLastWeek = 0;
 	gNumGuestsHeadingForPark = 0;

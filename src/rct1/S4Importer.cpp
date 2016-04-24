@@ -964,9 +964,9 @@ void S4Importer::ImportParkFlags()
     gGuestInitialThirst = _s4.guest_initial_thirst;
 
     // Staff colours
-    RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) = RCT1::GetColour(_s4.handman_colour);
-    RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) = RCT1::GetColour(_s4.mechanic_colour);
-    RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) = RCT1::GetColour(_s4.security_guard_colour);
+    gStaffHandymanColour = RCT1::GetColour(_s4.handman_colour);
+    gStaffMechanicColour = RCT1::GetColour(_s4.mechanic_colour);
+    gStaffSecurityColour = RCT1::GetColour(_s4.security_guard_colour);
 
     // Flags
     gParkFlags = _s4.park_flags;

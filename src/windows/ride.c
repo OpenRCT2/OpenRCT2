@@ -3673,7 +3673,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
 	x = w->x + widget->left;
 	y = w->y + widget->top;
-	gfx_draw_sprite(dpi, (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24) | 0xA0000000 | 5196, x, y, 0);
+	gfx_draw_sprite(dpi, (gStaffMechanicColour << 24) | 0xA0000000 | 5196, x, y, 0);
 
 	// Inspection label
 	widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];

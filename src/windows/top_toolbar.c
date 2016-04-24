@@ -34,6 +34,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
+#include "../peep/staff.h"
 #include "../scenario.h"
 #include "../title.h"
 #include "../sprites.h"
@@ -802,7 +803,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		imgId = 5627;
 		if (widget_is_pressed(w, WIDX_STAFF))
 			imgId++;
-		imgId |= (RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19) | 0xA0000000 | (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24);
+		imgId |= (gStaffHandymanColour << 19) | 0xA0000000 | (gStaffMechanicColour << 24);
 		gfx_draw_sprite(dpi, imgId, x, y, 0);
 	}
 
