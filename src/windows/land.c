@@ -180,14 +180,14 @@ static void window_land_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
+		gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Increment land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
+		gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -315,7 +315,7 @@ static void window_land_textinput(rct_window *w, int widgetIndex, char *text)
 	if (*end == '\0') {
 		size = max(MINIMUM_TOOL_SIZE,size);
 		size = min(MAXIMUM_TOOL_SIZE,size);
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+		gLandToolSize = size;
 
 		window_invalidate(w);
 	}
@@ -359,8 +359,8 @@ static void window_land_invalidate(rct_window *w)
 	window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
 	window_land_widgets[WIDX_WALL].image = SPR_WALL_TEXTURE_ROCK + _selectedWallTexture;
 	// Update the preview image (for tool sizes up to 7)
-	window_land_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ?
-		SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) :
+	window_land_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
+		SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
 		0xFFFFFFFF;
 }
 
@@ -377,10 +377,10 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	// Draw number for tool sizes bigger than 7
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
+	if (gLandToolSize > 7) {
 		x = w->x + (previewWidget->left + previewWidget->right) / 2;
 		y = w->y + (previewWidget->top + previewWidget->bottom) / 2;
-		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &gLandToolSize);
 	} else if (gLandMountainMode) {
 		x = w->x + previewWidget->left;
 		y = w->y + previewWidget->top;
@@ -401,7 +401,7 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y += 50;
 
 	// Draw paint price
-	numTiles = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) * RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	numTiles = gLandToolSize * gLandToolSize;
 	price = 0;
 	if (gLandToolTerrainSurface != 255)
 		price += numTiles * land_pricing[gLandToolTerrainSurface];

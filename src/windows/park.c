@@ -757,7 +757,7 @@ void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	sint16 tool_size = gLandToolSize;
 	if (tool_size == 0)
 		tool_size = 1;
 
@@ -1133,7 +1133,7 @@ void toggle_land_rights_window(rct_window *parkWindow, int widgetIndex)
 		show_gridlines();
 		tool_set(parkWindow, widgetIndex, 2);
 		gInputFlags |= INPUT_FLAG_6;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		gLandToolSize = 1;
 		window_land_rights_open();
 	}
 }

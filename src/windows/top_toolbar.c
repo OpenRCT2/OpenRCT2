@@ -1684,7 +1684,7 @@ void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	sint16 tool_size = gLandToolSize;
 	if (tool_size == 0)
 		tool_size = 1;
 
@@ -1763,7 +1763,7 @@ void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	sint16 tool_size = gLandToolSize;
 	if (tool_size == 0)
 		tool_size = 1;
 
@@ -1826,7 +1826,7 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		return;
 	}
 
-	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	sint16 tool_size = gLandToolSize;
 	rct_xy16 mapTile = { .x = x, .y = y };
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
@@ -2044,7 +2044,7 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 		state_changed++;
 	}
 
-	sint16 tool_size = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	sint16 tool_size = gLandToolSize;
 	if (tool_size == 0)
 		tool_size = 1;
 
@@ -3147,7 +3147,7 @@ void toggle_land_window(rct_window *topToolbar, int widgetIndex)
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 18);
 		gInputFlags |= INPUT_FLAG_6;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		gLandToolSize = 1;
 		window_land_open();
 	}
 }
@@ -3164,7 +3164,7 @@ void toggle_clear_scenery_window(rct_window *topToolbar, int widgetIndex)
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 12);
 		gInputFlags |= INPUT_FLAG_6;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 2;
+		gLandToolSize = 2;
 		window_clear_scenery_open();
 	}
 }
@@ -3181,7 +3181,7 @@ void toggle_water_window(rct_window *topToolbar, int widgetIndex)
 		show_gridlines();
 		tool_set(topToolbar, widgetIndex, 19);
 		gInputFlags |= INPUT_FLAG_6;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = 1;
+		gLandToolSize = 1;
 		window_water_open();
 	}
 }

@@ -70,6 +70,7 @@ bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
+uint16 gLandToolSize;
 money32 gLandToolRaiseCost;
 money32 gLandToolLowerCost;
 uint8 gLandToolTerrainSurface;

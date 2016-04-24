@@ -295,6 +295,7 @@ extern bool gClearSmallScenery;
 extern bool gClearLargeScenery;
 extern bool gClearFootpath;
 
+extern uint16 gLandToolSize;
 extern money32 gLandToolRaiseCost;
 extern money32 gLandToolLowerCost;
 extern uint8 gLandToolTerrainSurface;
