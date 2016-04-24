@@ -326,7 +326,7 @@ void map_init(int size)
 		map_element_set_terrain_edge(map_element, TERRAIN_EDGE_ROCK);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16) = 0;
+	gGrassSceneryTileLoopPosition = 0;
 	gWidePathTileLoopX = 0;
 	gWidePathTileLoopY = 0;
 	gMapSizeUnits = size * 32 - 32;
@@ -4232,7 +4232,7 @@ void map_update_tiles()
 		int x = 0;
 		int y = 0;
 
-		uint16 interleaved_xy = RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16);
+		uint16 interleaved_xy = gGrassSceneryTileLoopPosition;
 		for (int i = 0; i < 8; i++) {
 			x = (x << 1) | (interleaved_xy & 1);
 			interleaved_xy >>= 1;
@@ -4246,8 +4246,8 @@ void map_update_tiles()
 			scenery_update_tile(x * 32, y * 32);
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16)++;
-		RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, sint16) &= 0xFFFF;
+		gGrassSceneryTileLoopPosition++;
+		gGrassSceneryTileLoopPosition &= 0xFFFF;
 	}
 }
 
