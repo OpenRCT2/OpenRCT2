@@ -3183,8 +3183,10 @@ static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) 
 	bool new_output = new_sub_679074(dpi, imageId, x, y);
 	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
 
+#ifndef NO_RCT2
 	assert(new_x == original_x);
 	assert(new_output == original_output);
+#endif
 
 	return new_output;
 }
