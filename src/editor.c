@@ -384,6 +384,7 @@ static int editor_read_s6(const char *path)
 		game_convert_strings_to_utf8();
 
 		gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+		editor_clear_map_for_editing();
 		viewport_init_all();
 		window_editor_main_open();
 		editor_finalise_main_view();
