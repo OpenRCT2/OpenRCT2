@@ -894,7 +894,7 @@ rct_object_filters *get_object_filter(int index)
 void object_list_init()
 {
 	for (uint8 objectType = 0; objectType < OBJECT_ENTRY_GROUP_COUNT; objectType++) {
-		for (size_t i = 0; i < object_entry_group_counts[objectType]; i++) {
+		for (size_t i = 0; i < (size_t)object_entry_group_counts[objectType]; i++) {
 			object_entry_groups[objectType].chunks[i] = (void*)-1;
 		}
 	}
