@@ -2344,6 +2344,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			uint32 image_1, image_2, image_3;
 			switch (i) {
 				case 0:
+					// Bottom right
 					bit_1 = 1;
 					bit_8 = 8;
 					bit_4 = 4;
@@ -2357,6 +2358,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					break;
 
 				case 1:
+					// Bottom left
 					bit_1 = 1;
 					bit_8 = 2;
 					bit_4 = 4;
@@ -2370,6 +2372,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					break;
 
 				case 2:
+					// Top left
 					bit_1 = 4;
 					bit_8 = 2;
 					bit_4 = 8;
@@ -2383,6 +2386,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					break;
 
 				case 3:
+					// Top right
 					bit_1 = 4;
 					bit_8 = 8;
 					bit_4 = 2;
@@ -2394,6 +2398,15 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					box_size = (struct rct_xy16) {1, 0x1E};
 					box_offset = (struct rct_xy16) {1, 1};
 					break;
+			}
+
+			uint32 image_4, image_5;
+			if (i == 0 || i == 1) {
+				image_4 = image_3;
+				image_5 = image_2;
+			} else {
+				image_4 = image_2;
+				image_5 = image_3;
 			}
 
 			int local_ebx = ebx;
@@ -2413,9 +2426,9 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				if (!(local_ebx & 0x10)) { // loc_6619B5 (first)
 					image_id = image_1;
 				} else if (local_ebx & bit_4) { // loc_6619B5 (second)
-					image_id = image_3;
+					image_id = image_4;
 				} else if (local_ebx & bit_2) { // loc_6619B5 (third)
-					image_id = image_2;
+					image_id = image_5;
 				} else {
 					image_id = image_1;
 				}
