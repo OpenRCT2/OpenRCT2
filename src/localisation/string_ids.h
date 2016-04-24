@@ -2441,6 +2441,8 @@ enum {
 	STR_CHEAT_DISABLE_LITTERING_TIP = 5802,
 
 	STR_SHORTCUT_MUTE_SOUND = 5804,
+	
+	STR_ADVERTISE_SERVER_TIP = 5805,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

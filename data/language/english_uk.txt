@@ -4110,6 +4110,7 @@ STR_5801    :Disable littering
 STR_5802    :{SMALLFONT}{BLACK}Stops guests from littering and vomiting
 STR_5803    :{SMALLFONT}{BLACK}Rotate selected map element
 STR_5804    :Mute sound
+STR_5805    :{SMALLFONT}{BLACK}If checked, your server will be added to the{NEWLINE}public server list so everyone can find it
 
 
 #############
