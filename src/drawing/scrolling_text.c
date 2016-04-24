@@ -116,7 +116,7 @@ static void scrolling_text_format(utf8 *dst, rct_draw_scroll_text *scrollText)
  */
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo* dpi = unk_140E9A8;
 
 	if (dpi->zoom_level != 0) return 0x626;
 
