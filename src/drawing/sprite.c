@@ -20,16 +20,20 @@
 
 #include "../addresses.h"
 #include "../common.h"
+#include "../openrct2.h"
+#include "../platform/platform.h"
 #include "../sprites.h"
 #include "drawing.h"
-#include "../platform/platform.h"
-#include "../openrct2.h"
 
 void *_g1Buffer = NULL;
 
 rct_gx g2;
 
-rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
+#if NO_RCT2
+	rct_g1_element *g1Elements = NULL;
+#else
+	rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
+#endif
 
 /**
  *
@@ -51,6 +55,7 @@ int gfx_load_g1()
 			header.num_entries = 29294;
 
 			// Read element headers
+			g1Elements = calloc(324206, sizeof(rct_g1_element));
 			SDL_RWread(file, g1Elements, header.num_entries * sizeof(rct_g1_element), 1);
 
 			// Read element data
@@ -77,6 +82,7 @@ int gfx_load_g1()
 void gfx_unload_g1()
 {
 	SafeFree(_g1Buffer);
+	SafeFree(g1Elements);
 }
 
 void gfx_unload_g2()

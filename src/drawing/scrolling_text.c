@@ -167,7 +167,7 @@ void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap,
 		// Set any change in colour
 		if (codepoint <= FORMAT_COLOUR_CODE_END && codepoint >= FORMAT_COLOUR_CODE_START){
 			codepoint -= FORMAT_COLOUR_CODE_START;
-			characterColour = RCT2_GLOBAL(0x009FF048, uint8*)[codepoint * 4];
+			characterColour = g1Elements[4914].offset[codepoint * 4];
 			continue;
 		}
 
