@@ -2229,12 +2229,13 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 
 			uint32 image_id = base_image_id + image_offset;
 
-			sub_98196C(image_id, 30, 0, 0, 30, regs.dh * 16, 15, get_current_rotation());
+			sub_98196C(image_id, 30, 0, 0, 30, 15, regs.dh * 16, get_current_rotation());
 
 			return;
 		}
 
 		if (regs.dh != RCT2_GLOBAL(0x9E3138, uint8)) {
+			// Normal walls
 			while (regs.dh > RCT2_GLOBAL(0x9E3138, uint8)) {
 				for (int offset = 0; offset <= 0x7E; offset += 4) {
 					RCT2_GLOBAL(0x9E3138 + offset, uint32) = RCT2_GLOBAL(0x9E3138 + 2 + offset, uint32);
@@ -2248,7 +2249,10 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 			continue;
 		}
 
+		// Tunnels
 		uint32 ebx = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		uint32 saved_edx = regs.edx;
+		uint32 saved_eax = regs.eax;
 		regs.dl = regs.dh + stru_97B570[ebx][0];
 
 		if (regs.dl > regs.ah) {
@@ -2260,6 +2264,7 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 
 		regs.dl -= stru_97B570[ebx][0];
 		regs.dx <<= 4;
+		sint16 imageHeight = regs.dx;
 		regs.ah = stru_97B570[ebx][1];
 		//save edx
 
@@ -2273,7 +2278,7 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 
 		uint32 esi = RCT2_GLOBAL(0x009E32AC, uint32); // var_10
 		uint32 image_id = RCT2_GLOBAL(esi + ebx * 4, uint32);
-		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, regs.dx * 16, 0, 0, boundOffsetZ, get_current_rotation());
+		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, imageHeight, 0, 0, boundOffsetZ, get_current_rotation());
 
 		// push edx
 		boundOffsetZ = regs.dh * 16;
@@ -2289,6 +2294,8 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, regs.dh * 16, 0, 31, boundOffsetZ, get_current_rotation());
 
 		uint8 edi = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		regs.edx = saved_edx;
+		regs.eax = saved_eax;
 		regs.dh += stru_97B570[edi][0];
 
 		for (int offset = 0; offset <= 0x7E; offset += 4) {
