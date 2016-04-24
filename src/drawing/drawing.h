@@ -94,6 +94,7 @@ extern rct_g1_element *g1Elements;
 extern rct_gx g2;
 
 extern rct_drawpixelinfo gScreenDPI;
+extern rct_drawpixelinfo gWindowDPI;
 
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);

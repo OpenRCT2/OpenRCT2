@@ -41,6 +41,7 @@ uint8 _screenDirtyBlockShiftX;
 uint8 _screenDirtyBlockShiftY;
 
 rct_drawpixelinfo gScreenDPI;
+rct_drawpixelinfo gWindowDPI;
 
 #define MAX_RAIN_PIXELS 0xFFFE
 static uint32 _rainPixels[MAX_RAIN_PIXELS];
@@ -335,7 +336,7 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 {
 	rct_window* w;
 	rct_drawpixelinfo *screenDPI = &gScreenDPI;
-	rct_drawpixelinfo *windowDPI = RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *windowDPI = &gWindowDPI;
 
 	windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
 	windowDPI->x = left;

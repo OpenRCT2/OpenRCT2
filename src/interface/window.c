@@ -1526,7 +1526,7 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 		if (w != v && !(v->flags & WF_TRANSPARENT))
 			continue;
 
-		copy = *RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
+		copy = gWindowDPI;
 		dpi = &copy;
 
 		// Clamp left to 0
