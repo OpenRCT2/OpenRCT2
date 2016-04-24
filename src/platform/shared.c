@@ -25,15 +25,16 @@
 #include "../cursors.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
+#include "../input.h"
 #include "../interface/console.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
-#include "../input.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../world/climate.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(const uint8*, int, int);
@@ -406,7 +407,7 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 		gPalette[i].a = 0;
 
 		float night = gDayNightCycle;
-		if (night >= 0 && RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 0) {
+		if (night >= 0 && gClimateLightningFlash == 0) {
 			gPalette[i].r = lerp(gPalette[i].r, soft_light(gPalette[i].r, 8), night);
 			gPalette[i].g = lerp(gPalette[i].g, soft_light(gPalette[i].g, 8), night);
 			gPalette[i].b = lerp(gPalette[i].b, soft_light(gPalette[i].b, 128), night);

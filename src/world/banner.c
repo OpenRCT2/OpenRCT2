@@ -18,7 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "../addresses.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"

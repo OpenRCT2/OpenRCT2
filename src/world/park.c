@@ -553,7 +553,7 @@ void park_update()
 		gCompanyValue = calculate_company_value();
 		window_invalidate_by_class(WC_FINANCES);
 		_guestGenerationProbability = park_calculate_guest_generation_probability();
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+		gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
 		window_invalidate_by_class(WC_PARK_INFORMATION);
 	}
 
@@ -594,7 +594,7 @@ void park_update_histories()
 	int guestsInPark = gNumGuestsInPark;
 	int lastGuestsInPark = gNumGuestsInParkLastWeek;
 	gNumGuestsInParkLastWeek = guestsInPark;
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= 4;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 
 	int changeInGuestsInPark = guestsInPark - lastGuestsInPark;
 	int guestChangeModifier = 1;
@@ -1120,7 +1120,7 @@ void game_command_buy_land_rights(int *eax, int *ebx, int *ecx, int *edx, int *e
 void set_forced_park_rating(int rating){
 	gForcedParkRating = rating;
 	gParkRating = calculate_park_rating();
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
 	window_invalidate_by_class(WC_PARK_INFORMATION);
 }
 

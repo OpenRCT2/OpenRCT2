@@ -62,6 +62,8 @@ typedef struct {
 
 extern const rct_weather climate_weather_data[6];
 
+extern uint16 gClimateLightningFlash;
+
 int climate_celsius_to_fahrenheit(int celsius);
 void climate_reset(int climate);
 void climate_update();

@@ -18,18 +18,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "../addresses.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../cheats.h"
 #include "../config.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
+#include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../scenario.h"
-#include "../interface/window.h"
 #include "../util/util.h"
 #include "climate.h"
-#include "../cheats.h"
 
 enum {
 	THUNDER_STATUS_NULL = 0,
@@ -45,6 +44,8 @@ typedef struct {
 } rct_weather_transition;
 
 static const rct_weather_transition* climate_transitions[4];
+
+uint16 gClimateLightningFlash;
 
 // Sound data
 static int _rainVolume = 1;
@@ -126,15 +127,12 @@ void climate_update()
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
 		return;
 
-	if (gClimateUpdateTimer)	{
-
-		if (gClimateUpdateTimer == 960)
-			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
-
+	if (gClimateUpdateTimer) {
+		if (gClimateUpdateTimer == 960) {
+			gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+		}
 		gClimateUpdateTimer--;
-
 	} else if (!(gCurrentTicks & 0x7F)) {
-
 		if (temperature == target_temperature) {
 			if (cur_gloom == next_gloom) {
 				gClimateCurrentWeatherEffect = gClimateNextWeatherEffect;
@@ -144,7 +142,7 @@ void climate_update()
 				if (cur_rain == next_rain) {
 					gClimateCurrentWeather = gClimateNextWeather;
 					climate_determine_future_weather(scenario_rand());
-					RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
+					gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
 				} else if (next_rain <= 2) { // Safe-guard
 					gClimateCurrentRainLevel = step_weather_level(cur_rain, next_rain);
 				}
@@ -155,7 +153,7 @@ void climate_update()
 
 		} else {
 			gClimateCurrentTemperature = step_weather_level(temperature, target_temperature);
-			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_CLIMATE;
+			gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
 		}
 	}
 
@@ -289,9 +287,9 @@ static void climate_update_lightning()
 
 	if (!gConfigGeneral.disable_lightning_effect) {
 		_lightningTimer--;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) == 0)
+		if (gClimateLightningFlash == 0)
 			if ((util_rand() & 0xFFFF) <= 0x2000)
-				RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint16) = 1;
+				gClimateLightningFlash = 1;
 	}
 }
 

@@ -1319,7 +1319,7 @@ void peep_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
 		if (peep->outside_of_park == 0){
 			gNumGuestsInPark--;
-			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+			gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		}
 		if (peep->state == PEEP_STATE_ENTERING_PARK){
 			gNumGuestsHeadingForPark--;
@@ -4373,7 +4373,7 @@ static void peep_update_leaving_park(rct_peep* peep){
 	peep->outside_of_park = 1;
 	peep->destination_tolerence = 5;
 	gNumGuestsInPark--;
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	peep->var_37 = 1;
 
 	window_invalidate_by_class(WC_GUEST_LIST);
@@ -4497,7 +4497,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
 	gNumGuestsInPark++;
 	gNumGuestsHeadingForPark--;
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	window_invalidate_by_class(WC_GUEST_LIST);
 }
 

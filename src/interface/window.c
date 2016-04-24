@@ -49,6 +49,8 @@ int gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
 bool gLoadSaveTitleSequenceSave = 0;
 
+uint8 gToolbarDirtyFlags;
+
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
 float window_scroll_locations[][2] = {

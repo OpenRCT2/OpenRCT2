@@ -514,6 +514,8 @@ extern rct_window * gWindowNextSlot;
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;
 
+extern uint8 gToolbarDirtyFlags;
+
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();

@@ -137,7 +137,7 @@ void update_palette_effects()
 {
 	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 1) {
+	if (gClimateLightningFlash == 1) {
 		// change palette to lighter colour during lightning
 		int palette = 1532;
 
@@ -154,9 +154,9 @@ void update_palette_effects()
 			paletteOffset[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
 		}
 		platform_update_palette(gGamePalette, 10, 236);
-		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
+		gClimateLightningFlash++;
 	} else {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
+		if (gClimateLightningFlash == 2) {
 			// change palette back to normal after lightning
 			int palette = 1532;
 
@@ -241,9 +241,9 @@ void update_palette_effects()
 		}
 
 		platform_update_palette(gGamePalette, 230, 16);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
+		if (gClimateLightningFlash == 2) {
 			platform_update_palette(gGamePalette, 10, 236);
-			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
+			gClimateLightningFlash = 0;
 		}
 	}
 	if (RCT2_GLOBAL(0x009E2C4C, uint32) == 2 || RCT2_GLOBAL(0x009E2C4C, uint32) == 1) {

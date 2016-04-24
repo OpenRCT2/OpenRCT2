@@ -529,7 +529,7 @@ static void scenario_day_update()
 	uint16 unk = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
 	RCT2_GLOBAL(0x00135882E, uint16) = RCT2_GLOBAL(0x00135882E, uint16) > unk ? RCT2_GLOBAL(0x00135882E, uint16) - unk : 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_DATE;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
 }
 
 static void scenario_week_update()

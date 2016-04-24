@@ -4090,7 +4090,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 			rct_peep* peep = GET_PEEP(curVehicle->peep[i]);
 			if (peep->outside_of_park == 0) {
 				gNumGuestsInPark--;
-				RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |=
+				gToolbarDirtyFlags |=
 					BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 			}
 			ride->num_riders--;
