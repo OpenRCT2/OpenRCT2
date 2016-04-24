@@ -106,6 +106,11 @@ extern rct_gx g2;
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
 
+extern void *unk_9ABDA4;
+extern void *unk_9E3CDC;
+extern void *unk_9E3CE4[8];
+extern rct_drawpixelinfo *unk_140E9A8;
+
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);
 void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);
