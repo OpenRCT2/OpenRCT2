@@ -164,9 +164,9 @@ static int award_is_deserved_best_value(int awardType, int activeAwardTypes)
 		return 0;
 	if (gParkFlags & (PARK_FLAGS_NO_MONEY | PARK_FLAGS_PARK_FREE_ENTRY))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) < MONEY(10, 00))
+	if (gTotalRideValue < MONEY(10, 00))
 		return 0;
-	if (gParkEntranceFee + MONEY(0, 10) >= RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) / 2)
+	if (gParkEntranceFee + MONEY(0, 10) >= gTotalRideValue / 2)
 		return 0;
 	return 1;
 }
@@ -216,7 +216,7 @@ static int award_is_deserved_worse_value(int awardType, int activeAwardTypes)
 		return 0;
 	if (gParkEntranceFee == MONEY(0, 00))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) >= gParkEntranceFee)
+	if (gTotalRideValue >= gParkEntranceFee)
 		return 0;
 	return 1;
 }

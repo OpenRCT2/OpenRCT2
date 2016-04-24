@@ -86,7 +86,7 @@ void park_init()
 	gGuestChangeModifier = 0;
 	gParkRating = 0;
 	_guestGenerationProbability = 0;
-	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = 0;
+	gTotalRideValue = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
 
 	for (i = 0; i < 20; i++)
@@ -358,7 +358,8 @@ void reset_park_entrances()
 static int park_calculate_guest_generation_probability()
 {
 	unsigned int probability;
-	int i, suggestedMaxGuests, totalRideValue;
+	int i, suggestedMaxGuests;
+	money16 totalRideValue;
 	rct_ride *ride;
 
 	// Calculate suggested guest maximum (based on ride type) and total ride value
@@ -377,9 +378,10 @@ static int park_calculate_guest_generation_probability()
 
 		// Add ride value
 		if (ride->value != RIDE_VALUE_UNDEFINED) {
-			int rideValue = ride->value - ride->price;
-			if (rideValue > 0)
+			money16 rideValue = (money16)(ride->value - ride->price);
+			if (rideValue > 0) {
 				totalRideValue += rideValue * 2;
+			}
 		}
 	}
 
@@ -409,7 +411,7 @@ static int park_calculate_guest_generation_probability()
 	}
 
 	suggestedMaxGuests = min(suggestedMaxGuests, 65535);
-	RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16) = totalRideValue;
+	gTotalRideValue = totalRideValue;
 	_suggestedGuestMaximum = suggestedMaxGuests;
 
 	// Begin with 50 + park rating
