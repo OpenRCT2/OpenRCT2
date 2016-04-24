@@ -39,13 +39,13 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
 
-	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	dpi = unk_140E9A8;
 	if (dpi->zoom_level > 2) return;
 
 
 	for (rct_sprite* spr = &g_sprite_list[sprite_idx]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant) {
 		spr = &g_sprite_list[sprite_idx];
-		dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+		dpi = unk_140E9A8;
 
 		if (dpi->y + dpi->height <= spr->unknown.sprite_top) continue;
 		if (spr->unknown.sprite_bottom <= dpi->y)continue;

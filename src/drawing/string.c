@@ -461,7 +461,7 @@ void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointe
 	palette_pointer[2] = (eax >> 8) & 0xFF;
 	palette_pointer[3] = (eax >> 16) & 0xFF;
 	palette_pointer[4] = (eax >> 24) & 0xFF;
-	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)palette_pointer;
+	unk_9ABDA4 = palette_pointer;
 }
 
 /**
@@ -481,7 +481,7 @@ void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_
 	palette_pointer[2] = (eax >> 8) & 0xFF;
 	palette_pointer[3] = (eax >> 16) & 0xFF;
 	palette_pointer[4] = (eax >> 24) & 0xFF;
-	RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)palette_pointer;
+	unk_9ABDA4 = palette_pointer;
 }
 
 /**
@@ -916,7 +916,7 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, tex
 	int sprite = font_sprite_get_codepoint_sprite(info->font_sprite_base, codepoint);
 
 	if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
-		RCT2_GLOBAL(0x009ABDA4, uint8*) = (uint8*)&info->palette;
+		unk_9ABDA4 = &info->palette;
 		RCT2_GLOBAL(0x00EDF81C, uint32) = (IMAGE_TYPE_USE_PALETTE << 28);
 
 		int x = info->x;
@@ -1079,7 +1079,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
 		memcpy(info->palette + 5, &(g1Element->offset[250]), 2);
 
 		// Set the palette pointer
-		RCT2_GLOBAL(0x009ABDA4, uint32) = (uint32)&info->palette;
+		unk_9ABDA4 = &info->palette;
 		break;
 	}
 	case 3:
@@ -1251,7 +1251,7 @@ static void ttf_process_initial_colour(int colour, text_draw_info *info)
 			info->palette[2] = (eax >> 8) & 0xFF;
 			info->palette[3] = (eax >> 16) & 0xFF;
 			info->palette[4] = (eax >> 24) & 0xFF;
-			RCT2_GLOBAL(0x009ABDA4, uint8*) = (uint8*)&info->palette;
+			unk_9ABDA4 = &info->palette;
 			eax = 0;
 		}
 	}

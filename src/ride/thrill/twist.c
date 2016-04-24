@@ -56,7 +56,7 @@ static void paint_twist_structure(rct_ride * ride, uint8 direction, sint8 xOffse
 	uint32 imageId = (baseImageId + structureFrameNum) | imageColourFlags;
 	sub_98197C(imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
 
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 
 	if (dpi->zoom_level < 1
 	    && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK

@@ -965,7 +965,7 @@ void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height, uint8
  */
 void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1; // Probably a boolean indicating 'above surface'
 	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;

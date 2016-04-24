@@ -246,7 +246,7 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 void entrance_paint(uint8 direction, int height, rct_map_element* map_element){
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo* dpi = unk_140E9A8;
 
 	if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS &&
 		dpi->zoom_level == 0){

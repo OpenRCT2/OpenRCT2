@@ -115,7 +115,7 @@ static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 
 	imageId = baseImageId | imageColourFlags;
 	sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
 
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 
 	if (dpi->zoom_level <= 1
 	    && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK

@@ -139,7 +139,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	}
 
 	if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_ANIMATED) {
-		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+		rct_drawpixelinfo* dpi = unk_140E9A8;
 		if ( !(entry->small_scenery.flags & SMALL_SCENERY_FLAG21) || (dpi->zoom_level <= 1) ) {
 			// 6E01A9:
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG12) {

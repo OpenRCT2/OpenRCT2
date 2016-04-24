@@ -972,7 +972,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
 		return;
 	}
 
-	rct_drawpixelinfo *edi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo *edi = unk_140E9A8;
 	if (edi->zoom_level >= 2) {
 		return;
 	}
@@ -1001,7 +1001,7 @@ void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_
 		return;
 	}
 
-	rct_drawpixelinfo *edi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo *edi = unk_140E9A8;
 	if (edi->zoom_level >= 1) {
 		return;
 	}

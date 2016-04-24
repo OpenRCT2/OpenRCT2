@@ -64,7 +64,7 @@ static void paint_haunted_house_structure(uint8 rideIndex, uint8 direction, sint
 	haunted_house_bound_box boundBox = haunted_house_data[part];
 	sub_98197C(imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 	if (dpi->zoom_level == 0 && frameNum != 0) {
 		switch (direction) {
 			case 0: imageId = baseImageId + 3 + frameNum; break;

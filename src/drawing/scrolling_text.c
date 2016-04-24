@@ -144,7 +144,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 		memcpy(gCommonFormatArgs, (const void*)0x013CE952, 16);
 	}
 
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo* dpi = unk_140E9A8;
 
 	if (dpi->zoom_level != 0) return 0x626;
 

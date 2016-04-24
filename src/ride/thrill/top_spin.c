@@ -171,7 +171,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 
 	sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo* dpi = unk_140E9A8;
 	if (dpi->zoom_level < 2 && vehicle != NULL && vehicle->num_peeps != 0) {
 		image_id =
 			(vehicle->peep_tshirt_colours[0] << 19) |

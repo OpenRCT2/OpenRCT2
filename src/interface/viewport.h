@@ -19,6 +19,7 @@
 
 #include "../world/map.h"
 #include "../world/sprite.h"
+#include "../paint/paint.h"
 #include "window.h"
 
 enum {
@@ -95,6 +96,13 @@ typedef struct viewport_interaction_info {
 
 // rct2: 0x014234BC
 extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
+#if NO_RCT2
+extern paint_struct *unk_EE7884;
+extern paint_struct *unk_EE7888;
+#else
+	#define unk_EE7884 RCT2_GLOBAL(0x00EE7884, paint_struct*)
+	#define unk_EE7888 RCT2_GLOBAL(0x00EE7888, paint_struct*)
+#endif
 
 void viewport_init_all();
 void center_2d_coordinates(int x, int y, int z, int* out_x, int* out_y, rct_viewport* viewport);

@@ -57,7 +57,7 @@ void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, r
 	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 
 	// Draw peeps:
-	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2) {
+	if (unk_140E9A8->zoom_level < 2) {
 		if (vehicle->num_peeps > 0) {
 			baseImage_id = vehicleEntry->base_image_id + 9;
 			if ((vehicle->restraints_position / 64) == 3) {

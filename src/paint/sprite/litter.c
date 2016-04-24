@@ -27,7 +27,7 @@ void litter_paint(rct_litter *litter, int imageDirection)
 {
 	rct_drawpixelinfo *dpi;
 
-	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	dpi = unk_140E9A8;
 	if (dpi->zoom_level != 0) return; // If zoomed at all no litter drawn
 
 	// litter has no sprite direction so remove that
