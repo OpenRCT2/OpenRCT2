@@ -391,6 +391,14 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 		enumFileInfo = &_enumerateFileInfoList[i];
 		if (!enumFileInfo->active) {
 			wcsncpy(enumFileInfo->pattern, wDirectory, MAX_PATH);
+
+			// Ensure pattern ends with a slash
+			int patternLength = lstrlenW(enumFileInfo->pattern);
+			wchar_t lastChar = enumFileInfo->pattern[patternLength - 1];
+			if (lastChar != '\\' && lastChar != '/') {
+				wcsncat(enumFileInfo->pattern, L"\\", MAX_PATH);
+			}
+
 			wcsncat(enumFileInfo->pattern, L"*", MAX_PATH);
 			enumFileInfo->handle = NULL;
 			enumFileInfo->active = true;
