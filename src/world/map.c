@@ -4926,7 +4926,7 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 
 	sint8 entranceNum = -1;
 	for (uint8 i = 0; i < 4; ++i) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] == (sint16)0x8000) {
+		if (gParkEntranceX[i] == (sint16)0x8000) {
 			entranceNum = i;
 			break;
 		}
@@ -4938,10 +4938,10 @@ money32 place_park_entrance(int flags, sint16 x, sint16 y, sint16 z, uint8 direc
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] = x;
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum] = y;
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceNum] = (z & 0xFF) << 4;
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceNum] = direction;
+		gParkEntranceX[entranceNum] = x;
+		gParkEntranceY[entranceNum] = y;
+		gParkEntranceZ[entranceNum] = (z & 0xFF) << 4;
+		gParkEntranceDirection[entranceNum] = direction;
 	}
 
 	sint8 zLow = (z & 0xFF) * 2;

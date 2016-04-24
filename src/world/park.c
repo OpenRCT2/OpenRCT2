@@ -57,6 +57,11 @@ int _suggestedGuestMaximum;
  */
 int _guestGenerationProbability;
 
+sint16 *gParkEntranceX = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16);
+sint16 *gParkEntranceY = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16);
+sint16 *gParkEntranceZ = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16);
+uint8 *gParkEntranceDirection = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8);
+
 bool gParkEntranceGhostExists;
 rct_xyz16 gParkEntranceGhostPosition;
 uint8 gParkEntranceGhostDirection;
@@ -341,7 +346,7 @@ void reset_park_entrances()
 	gParkName = 0;
 
 	for (short i = 0; i < 4; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
+		gParkEntranceX[i] = 0x8000;
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_SPAWNS, uint16) = 0xFFFF;
@@ -706,9 +711,9 @@ int park_get_entrance_index(int x, int y, int z)
 
 	for (i = 0; i < 4; i++) {
 		if (
-			x == RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] &&
-			y == RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i] &&
-			z == RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i]
+			x == gParkEntranceX[i] &&
+			y == gParkEntranceY[i] &&
+			z == gParkEntranceZ[i]
 		) {
 			return i;
 		}
@@ -840,8 +845,8 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 		return;
 	}
 
-	RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[entranceIndex] = 0x8000;
-	direction = (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex] - 1) & 3;
+	gParkEntranceX[entranceIndex] = 0x8000;
+	direction = (gParkEntranceDirection[entranceIndex] - 1) & 3;
 	z = (*edx & 0xFF) * 2;
 
 	// Centre (sign)

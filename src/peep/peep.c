@@ -6969,14 +6969,14 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 
 		uint8 entranceIndex = 0;
 		while (1){
-			if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceIndex] == (x & 0xFFE0) &&
-				RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceIndex] == (y & 0xFFE0))
+			if (gParkEntranceX[entranceIndex] == (x & 0xFFE0) &&
+				gParkEntranceY[entranceIndex] == (y & 0xFFE0))
 				break;
 			entranceIndex++;
 		}
 
-		sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceIndex] / 8;
-		entranceDirection = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex];
+		sint16 z = gParkEntranceZ[entranceIndex] / 8;
+		entranceDirection = gParkEntranceDirection[entranceIndex];
 
 		sint16 next_x = (x & 0xFFE0) + TileDirectionDelta[entranceDirection].x;
 		sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
@@ -7904,11 +7904,11 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	uint8 chosenEntrance = 0xFF;
 	uint16 nearestDist = 0xFFFF;
 	for (uint8 entranceNum = 0; entranceNum < 4; ++entranceNum){
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] == (sint16)0x8000)
+		if (gParkEntranceX[entranceNum] == (sint16)0x8000)
 			continue;
 
-		uint16 dist = abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] - peep->next_x) +
-			abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum] - peep->next_y);
+		uint16 dist = abs(gParkEntranceX[entranceNum] - peep->next_x) +
+					abs(gParkEntranceY[entranceNum] - peep->next_y);
 
 		if (dist >= nearestDist)
 			continue;
@@ -7920,9 +7920,9 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	if (chosenEntrance == 0xFF)
 		return guest_path_find_aimless(peep, edges);
 
-	sint16 x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[chosenEntrance];
-	sint16 y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[chosenEntrance];
-	sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[chosenEntrance];
+	sint16 x = gParkEntranceX[chosenEntrance];
+	sint16 y = gParkEntranceY[chosenEntrance];
+	sint16 z = gParkEntranceZ[chosenEntrance];
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;
@@ -7981,19 +7981,20 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	
 	// Resolves already-corrupt guests (e.g. loaded from save)
 	if (peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
-		(peep->current_ride >= 4 ||
-		 RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[peep->current_ride] == (sint16)0x8000)
-		) peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+		(peep->current_ride >= 4 || gParkEntranceX[peep->current_ride] == (sint16)0x8000)
+	) {
+		peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+	}
 
 	if (!(peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)){
 		uint8 chosenEntrance = 0xFF;
 		uint16 nearestDist = 0xFFFF;
 		for (entranceNum = 0; entranceNum < 4; ++entranceNum){
-			if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] == (sint16)0x8000)
+			if (gParkEntranceX[entranceNum] == (sint16)0x8000)
 				continue;
 
-			uint16 dist = abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] - peep->next_x) +
-				abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum] - peep->next_y);
+			uint16 dist = abs(gParkEntranceX[entranceNum] - peep->next_x) +
+				abs(gParkEntranceY[entranceNum] - peep->next_y);
 
 			if (dist >= nearestDist)
 				continue;
@@ -8010,9 +8011,9 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	}
 
 	entranceNum = peep->current_ride;
-	sint16 x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum];
-	sint16 y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum];
-	sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceNum];
+	sint16 x = gParkEntranceX[entranceNum];
+	sint16 y = gParkEntranceY[entranceNum];
+	sint16 z = gParkEntranceZ[entranceNum];
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;

@@ -628,7 +628,7 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != 0x8000)
+		if (gParkEntranceX[i] != 0x8000)
 			break;
 
 		if (i == 3) {
@@ -638,13 +638,13 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] == 0x8000)
+		if (gParkEntranceX[i] == 0x8000)
 			continue;
 
-		int x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i];
-		int y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i];
-		int z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i] / 8;
-		int direction = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i] ^ 2;
+		int x = gParkEntranceX[i];
+		int y = gParkEntranceY[i];
+		int z = gParkEntranceZ[i] / 8;
+		int direction = gParkEntranceDirection[i] ^ 2;
 
 		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
 		case FOOTPATH_SEARCH_NOT_FOUND:

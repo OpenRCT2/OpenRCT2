@@ -470,9 +470,9 @@ void scenario_entrance_fee_too_high_check()
 	uint32 game_flags = gParkFlags, packed_xy;
 
 	if ((game_flags & PARK_FLAGS_PARK_OPEN) && !(game_flags & PARK_FLAGS_NO_MONEY) && park_entrance_fee > max_fee) {
-		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL; i++) {
-			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] + 16;
-			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[i] + 16;
+		for (int i = 0; gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
+			x = gParkEntranceX[i] + 16;
+			y = gParkEntranceY[i] + 16;
 		}
 
 		packed_xy = (y << 16) | x;

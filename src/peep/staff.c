@@ -205,22 +205,22 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 				count = 0;
 				uint8 i;
 				for (i = 0; i < 4; ++i) {
-					if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL) ++count;
+					if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) ++count;
 				}
 
 				if (count > 0) {
 					uint32 rand = scenario_rand_max(count);
 					for (i = 0; i < 4; ++i) {
-						if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL) {
+						if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
 							if (rand == 0) break;
 							--rand;
 						}
 					}
 
-					uint8 dir = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i];
-					x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i];
-					y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[i];
-					z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[i];
+					uint8 dir = gParkEntranceDirection[i];
+					x = gParkEntranceX[i];
+					y = gParkEntranceY[i];
+					z = gParkEntranceZ[i];
 					x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
 					y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
 				} else {

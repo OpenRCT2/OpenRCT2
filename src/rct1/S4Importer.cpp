@@ -1398,7 +1398,7 @@ void S4Importer::FixEntrancePositions()
 {
     for (int i = 0; i < 4; i++)
     {
-        RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] = 0x8000;
+        gParkEntranceX[i] = (sint16)0x8000;
     }
 
     uint8 entranceIndex = 0;
@@ -1413,10 +1413,10 @@ void S4Importer::FixEntrancePositions()
         if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) continue;
         if ((element->properties.entrance.index & 0x0F) != 0) continue;
 
-        RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[entranceIndex] = it.x * 32;
-        RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[entranceIndex] = it.y * 32;
-        RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[entranceIndex] = element->base_height * 8;
-        RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex] = element->type & 3;
+        gParkEntranceX[entranceIndex] = it.x * 32;
+        gParkEntranceY[entranceIndex] = it.y * 32;
+        gParkEntranceZ[entranceIndex] = element->base_height * 8;
+        gParkEntranceDirection[entranceIndex] = element->type & 3;
         entranceIndex++;
     }
 }
