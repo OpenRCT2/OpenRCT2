@@ -1698,6 +1698,49 @@ const uint8 byte_97B55D[] = {
 	1, 5, 1, 3, 2, 3, 1, 5, 0
 };
 
+const uint8 stru_97B570[][2] = {
+	{2, 2},
+	{3, 3},
+	{3, 5},
+	{3, 3},
+	{4, 4},
+	{4, 6},
+	{2, 2},
+	{3, 3},
+	{3, 5},
+	{3, 3},
+	{2, 3},
+	{2, 3},
+	{2, 3},
+	{3, 4},
+	{2, 3},
+	{3, 4}
+};
+
+const uint8 byte_97B5B0[] = {
+	0, 0, 0, 3, 3, 3, 6, 6, 6, 6,
+	10, 11, 12, 13, 14, 14
+};
+
+const sint16 word_97B590[] = {
+	0,
+	0,
+	-32,
+	0,
+	0,
+	-48,
+	0,
+	0,
+	-32,
+	0,
+	-16,
+	-16,
+	-16,
+	-16,
+	-16,
+	-16,
+};
+
 const uint32 dword_97B858[][2] = {
 	{2739, 2758},
 	{2777, 2796},
@@ -2112,7 +2155,7 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 {
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
-			RCT2_CALLPROC_X(0x65EB7D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			//RCT2_CALLPROC_X(0x65EB7D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 			break;
 		case EDGE_BOTTOMRIGHT:
 			RCT2_CALLPROC_X(0x65F0D8, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
@@ -2123,6 +2166,135 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 		case EDGE_TOPRIGHT:
 			RCT2_CALLPROC_X(0x65F77D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 			break;
+	}
+
+	if (edge != EDGE_BOTTOMLEFT) {
+		return;
+	}
+
+	rct_map_element * esi = _dword_9E3248;
+
+	registers regs;
+	regs.ax = _dword_9E3280;
+	regs.cx = _dword_9E3288;
+
+	if (esi == NULL) {
+		// ch / ah: neighbour tile corner heights;
+		regs.ch = 0;
+		regs.ah = 1;
+	}
+
+	if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+		return;
+	}
+
+	regs.ebp = RCT2_GLOBAL(0x009E329C, uint32); // var_00
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+		regs.ebp = RCT2_GLOBAL(0x009E32A0, uint32); // var_04
+	}
+
+	uint32 base_image_id = regs.ebp;
+
+	regs.dh = regs.ch;
+	if (regs.dh != regs.ah) {
+		// If bottom part of edge isn't straight, add a filler
+		uint32 image_offset = 3;
+
+		if (regs.dh >= regs.ah) {
+			regs.dh = regs.ah;
+			image_offset = 4;
+		}
+
+		if (regs.dh != regs.al
+		    && regs.dh != regs.cl) {
+
+			uint32 image_id = base_image_id + image_offset;
+			log_info("%d", image_id);
+			sub_98196C(image_id, 30, 0, 0, 30, 15, regs.dh * 16, get_current_rotation());
+		}
+	}
+
+	regs.ah = regs.cl;
+
+	while (true) {
+		if (regs.dh >= regs.al || regs.dh >= regs.ah) {
+			// If top of edge isn't straight, add a filler
+			uint32 image_offset = 1;
+			if (regs.dh >= regs.al) {
+				image_offset = 2;
+
+				if (regs.dh >= regs.ah) {
+					return;
+				}
+			}
+
+			uint32 image_id = base_image_id + image_offset;
+
+			sub_98196C(image_id, 30, 0, 0, 30, regs.dh * 16, 15, get_current_rotation());
+
+			return;
+		}
+
+		if (regs.dh != RCT2_GLOBAL(0x9E3138, uint8)) {
+			while (regs.dh > RCT2_GLOBAL(0x9E3138, uint8)) {
+				for (int offset = 0; offset <= 0x7E; offset += 4) {
+					RCT2_GLOBAL(0x9E3138 + offset, uint32) = RCT2_GLOBAL(0x9E3138 + 2 + offset, uint32);
+				}
+			}
+
+			sub_98196C(base_image_id, 30, 0, 0, 30, 15, regs.dh * 16, get_current_rotation());
+
+			regs.dh++;
+
+			continue;
+		}
+
+		uint32 ebx = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		regs.dl = regs.dh + stru_97B570[ebx][0];
+
+		if (regs.dl > regs.ah) {
+			regs.dl -= stru_97B570[ebx][0];
+			ebx = byte_97B5B0[ebx];
+			RCT2_GLOBAL(0x9E3138, uint8) = ebx;
+			regs.dl += stru_97B570[ebx][0];
+		}
+
+		regs.dl -= stru_97B570[ebx][0];
+		regs.dx <<= 4;
+		regs.ah = stru_97B570[ebx][1];
+		//save edx
+
+		uint16 boundOffsetZ = regs.dx;
+		boundOffsetZ += word_97B590[ebx];
+		regs.ah /= 16;
+		if (boundOffsetZ < 16) {
+			boundOffsetZ += 16;
+			regs.ah -= 16;
+		}
+
+		uint32 esi = RCT2_GLOBAL(0x009E32AC, uint32); // var_10
+		uint32 image_id = RCT2_GLOBAL(esi + ebx * 4, uint32);
+		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, regs.dx * 16, 0, 0, boundOffsetZ, get_current_rotation());
+
+		// push edx
+		boundOffsetZ = regs.dh * 16;
+		ebx = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		regs.ah = stru_97B570[ebx][1] * 16;
+		boundOffsetZ += word_97B590[ebx];
+		if (boundOffsetZ != word_97B590[ebx]) {
+			boundOffsetZ += 16;
+			regs.ah -= 16;
+		}
+
+		image_id = RCT2_GLOBAL(esi + ebx * 4, uint32) + 1;
+		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, regs.dh * 16, 0, 31, boundOffsetZ, get_current_rotation());
+
+		uint8 edi = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		regs.dh += stru_97B570[edi][0];
+
+		for (int offset = 0; offset <= 0x7E; offset += 4) {
+			RCT2_GLOBAL(0x9E3138 + offset, uint32) = RCT2_GLOBAL(0x9E3138 + 2 + offset, uint32);
+		}
 	}
 }
 
