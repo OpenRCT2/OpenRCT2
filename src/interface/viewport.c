@@ -2290,14 +2290,14 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WATER;
 
 		uint16 ax = height + 16;
-		uint16 dx = (mapElement->properties.surface.terrain & 0x1F) << 4;
+		uint16 dx = (mapElement->properties.surface.terrain & 0x1F) * 16;
 
 		RCT2_GLOBAL(0x009E3298, uint16) = dx;
 		if ((RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) == 0) {
 			RCT2_GLOBAL(0x0141E9DC, uint16) = dx;
 
 			int image_offset = 0;
-			if (dx > ax) {
+			if (dx <= ax) {
 				image_offset = byte_97B740[ebx & 0xF];
 			}
 
