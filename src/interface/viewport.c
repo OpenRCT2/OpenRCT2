@@ -1782,6 +1782,14 @@ uint32 viewport_surface_paint_setup_get_ebx(rct_map_element *mapElement, int cl)
 	return ebx | di;
 }
 
+enum edge
+{
+	EDGE_BOTTOMLEFT,
+	EDGE_BOTTOMRIGHT,
+	EDGE_TOPLEFT,
+	EDGE_TOPRIGHT
+};
+
 /**
  * rct: 0x0065E9FC
  */
@@ -1805,6 +1813,42 @@ void viewport_surface_smooth_south_edge() {
  */
 void viewport_surface_smooth_east_edge() {
 	RCT2_CALLPROC_EBPSAFE(0x0065E946);
+}
+
+void viewport_surface_draw_land_side(enum edge edge, uint16 height)
+{
+	switch (edge) {
+		case EDGE_BOTTOMLEFT:
+			RCT2_CALLPROC_X(0x65EB7D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+		case EDGE_BOTTOMRIGHT:
+			RCT2_CALLPROC_X(0x65F0D8, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+		case EDGE_TOPLEFT:
+			RCT2_CALLPROC_X(0x65F63B, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+		case EDGE_TOPRIGHT:
+			RCT2_CALLPROC_X(0x65F77D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+	}
+}
+
+void viewport_surface_draw_water_side(enum edge edge, uint16 height)
+{
+	switch (edge) {
+		case EDGE_BOTTOMLEFT:
+			RCT2_CALLPROC_X(0x65F8B9, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+		case EDGE_BOTTOMRIGHT:
+			RCT2_CALLPROC_X(0x65FE26, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+		case EDGE_TOPLEFT:
+			RCT2_CALLPROC_X(0x66039B, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+		case EDGE_TOPRIGHT:
+			RCT2_CALLPROC_X(0x6604F1, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			break;
+	}
 }
 
 /**
@@ -2274,14 +2318,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			RCT2_GLOBAL(0x009E2EAE + i, uint32) = RCT2_GLOBAL(0x009E30B6 + i, uint32);
 		}
 
-		RCT2_CALLPROC_X(0x65F63B, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-		RCT2_CALLPROC_X(0x65F77D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-		RCT2_CALLPROC_X(0x65EB7D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-		RCT2_CALLPROC_X(0x65F0D8, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-	}
-
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_VERTICAL) == 0) {
-		// loc_66122C:
+		viewport_surface_draw_land_side(EDGE_TOPLEFT, height);
+		viewport_surface_draw_land_side(EDGE_TOPRIGHT, height);
+		viewport_surface_draw_land_side(EDGE_BOTTOMLEFT, height);
+		viewport_surface_draw_land_side(EDGE_BOTTOMRIGHT, height);
 	}
 
 	RCT2_GLOBAL(0x009E3298, uint16) = 0;
@@ -2311,10 +2351,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				RCT2_GLOBAL(0x009E30B6 + i, uint32) = RCT2_GLOBAL(0x009E2EAE + i, uint32);
 			}
 
-			RCT2_CALLPROC_X(0x66039B, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
-			RCT2_CALLPROC_X(0x6604F1, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
-			RCT2_CALLPROC_X(0x65F8B9, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
-			RCT2_CALLPROC_X(0x65FE26, 0x99999999, 0, 0xBBBBBBBB, dx / 16, 0xDDDDDDDD, 0, 0);
+			viewport_surface_draw_water_side(EDGE_TOPLEFT, height);
+			viewport_surface_draw_water_side(EDGE_TOPRIGHT, height);
+			viewport_surface_draw_water_side(EDGE_BOTTOMLEFT, height);
+			viewport_surface_draw_water_side(EDGE_BOTTOMRIGHT, height);
 		}
 	}
 
