@@ -3725,7 +3725,7 @@ static bool ride_is_valid_operation_option(rct_ride *ride, uint8 value)
 
 static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uint8 flags)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
 	rct_ride *ride = get_ride(rideIndex);
 	if (ride == NULL || ride->type == RIDE_TYPE_NULL) {
@@ -5404,7 +5404,7 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 	}
 	targetStatus = (*edx >> 8) & 0xFF;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
 	ride = get_ride(rideIndex);
 	if (ride->type == RIDE_TYPE_NULL)
@@ -5512,7 +5512,7 @@ void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 	}
 	int nameChunkIndex = *eax & 0xFFFF;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 	//if (*ebx & GAME_COMMAND_FLAG_APPLY) { // this check seems to be useless and causes problems in multiplayer
 		int nameChunkOffset = nameChunkIndex - 1;
 		if (nameChunkOffset < 0)
@@ -5888,8 +5888,8 @@ foundRideEntry:
 	}
 
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0x8000;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+		gCommandPosition.x = 0x8000;
 		return 0;
 	}
 
@@ -6081,8 +6081,8 @@ foundRideEntry:
 	ride_set_vehicle_colours_to_random_preset(ride, 0xFF & (*outRideColour >> 8));
 	window_invalidate_by_class(WC_RIDE_LIST);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0x8000;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	gCommandPosition.x = 0x8000;
 	return 0;
 }
 
@@ -6212,9 +6212,9 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		return;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = 0;
+	gCommandPosition.x = 0;
+	gCommandPosition.y = 0;
+	gCommandPosition.z = 0;
 	rct_ride *ride = get_ride(ride_id);
 	if (ride->type == RIDE_TYPE_NULL)
 	{
@@ -6227,9 +6227,9 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 		x = ((ride->overall_view & 0xFF) * 32) + 16;
 		y = ((ride->overall_view >> 8) * 32) + 16;
 		z = map_element_height(x, y);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
+		gCommandPosition.x = x;
+		gCommandPosition.y = y;
+		gCommandPosition.z = z;
 	}
 	if(!(*ebx & 0x40) && game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
@@ -6333,14 +6333,14 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 			ride->type = RIDE_TYPE_NULL;
 			window_invalidate_by_class(WC_RIDE_LIST);
 			gParkValue = calculate_park_value();
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+			gCommandPosition.x = x;
+			gCommandPosition.y = y;
+			gCommandPosition.z = z;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 			return;
 		}else{
 			*ebx = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 			return;
 		}
 	}
@@ -6526,7 +6526,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 
 	*ebx = 0; // for cost check - changing ride price does not cost anything
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 	if (flags & 0x1) {
 
 		if (ride->overall_view != (uint16)-1) {
@@ -7657,7 +7657,7 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 		return MONEY32_UNDEFINED;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
 		gGameCommandErrorText = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
@@ -8069,8 +8069,8 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 	// When in known station num mode rideIndex is known and z is unknown
 
 	RCT2_GLOBAL(0x009E32B8, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y;
+	gCommandPosition.x = x;
+	gCommandPosition.y = y;
 
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;
@@ -8173,7 +8173,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		}
 
 		z = ride->station_heights[station_num] * 8;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = z;
+		gCommandPosition.z = z;
 
 		if (
 			(flags & GAME_COMMAND_FLAG_APPLY) &&
@@ -8244,7 +8244,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	return RCT2_GLOBAL(0x009E32B8, money32);
 }
 
@@ -8346,7 +8346,7 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 		map_invalidate_tile_full(x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	return 0;
 }
 

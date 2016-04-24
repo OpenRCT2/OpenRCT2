@@ -3957,9 +3957,9 @@ void game_command_callback_place_ride_entrance_or_exit(int eax, int ebx, int ecx
 {
 	audio_play_sound_at_location(
 		SOUND_PLACE_ITEM,
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16)
+		gCommandPosition.x,
+		gCommandPosition.y,
+		gCommandPosition.z
 	);
 
 	rct_ride *ride = get_ride(RCT2_GLOBAL(0x00F44192, uint8));

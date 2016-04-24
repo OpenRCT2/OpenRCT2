@@ -1292,7 +1292,7 @@ static void window_map_place_park_entrance_tool_down(int x, int y)
 
 	audio_play_sound_at_location(
 		SOUND_PLACE_ITEM,
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16),
+		gCommandPosition.z,
 		RCT2_GLOBAL(0x009DEA64, uint16),
 		gScreenAge
 	);

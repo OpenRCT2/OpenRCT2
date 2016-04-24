@@ -557,7 +557,7 @@ void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, i
 	int fundingAmount = *edx;
 	int activeCategories = *edx;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RESEARCH * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RESEARCH;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		if (!setPriorities) {
 			if (fundingAmount < 0 || fundingAmount >= countof(_researchRate)) {

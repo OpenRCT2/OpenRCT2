@@ -87,10 +87,10 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 	uint8 _bl = *ebx & 0xFF, staff_type = (*ebx & 0xFF00) >> 8;
 	uint16 _ax = *eax & 0xFFFF, _cx = *ecx & 0xFFFF, _dx = *edx & 0xFFFF;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = _ax;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = _cx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = _dx;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
+	gCommandPosition.x = _ax;
+	gCommandPosition.y = _cx;
+	gCommandPosition.z = _dx;
 
 	if (RCT2_GLOBAL(0x13573C8, uint16) < 0x190) {
 		*ebx = MONEY32_UNDEFINED;
@@ -293,7 +293,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
  */
 void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
 	uint8 order_id = *ebx >> 8;
 	uint16 sprite_id = *edx;
 	if (sprite_id >= MAX_SPRITES)
@@ -384,7 +384,7 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
  */
 void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
 	if(*ebx & GAME_COMMAND_FLAG_APPLY){
 		window_close_by_class(WC_FIRE_PROMPT);
 		uint16 sprite_id = *edx;

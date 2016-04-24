@@ -2111,7 +2111,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 		else{
 			ride->total_profit += ride->price;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 			peep_spend_money(peep, &peep->paid_on_rides, ride->price);
 		}
 	}
@@ -7048,7 +7048,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			}
 
 			RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) += entranceFee;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
 			peep_spend_money(peep, &peep->paid_to_enter, entranceFee);
 			peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
 		}
@@ -7337,7 +7337,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		if (cost != 0){
 			ride->total_profit += cost;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 			peep_spend_money(peep, NULL, cost);
 		}
 		peep->destination_x = (x & 0xFFE0) + 16;
@@ -8469,7 +8469,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 
 	RCT2_GLOBAL(0x00141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
-	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
+	finance_payment(-amount, gCommandExpenditureType);
 
 	audio_play_sound_at_location(SOUND_PURCHASE, peep->x, peep->y, peep->z);
 }
@@ -9041,23 +9041,23 @@ loc_69B221:
 		peep->no_of_souvenirs++;
 
 	money16* expend_type = &peep->paid_on_souvenirs;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_SHOP_STOCK * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_SHOP_STOCK;
 
 	if (shop_item_is_food(shopItem)) {
 		expend_type = &peep->paid_on_food;
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK * 4;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
 	}
 
 	if (shop_item_is_drink(shopItem)) {
 		expend_type = &peep->paid_on_drink;
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK * 4;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
 	}
 
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-		finance_payment(get_shop_item_cost(shopItem), (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4));
+		finance_payment(get_shop_item_cost(shopItem), gCommandExpenditureType);
 
 	// Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) -= 4;
+	gCommandExpenditureType--;
 	if (has_voucher) {
 		peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -10440,7 +10440,7 @@ static bool peep_heading_for_ride_or_park_exit(rct_peep *peep)
 }
 
 money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3) {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	if (state == 1) {
 		RCT2_GLOBAL(0x00F1AEF4, uint16) = sprite_index;
 	}

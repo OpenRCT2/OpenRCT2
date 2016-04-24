@@ -653,7 +653,7 @@ void park_set_entrance_fee(money32 value)
  */
 void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		gParkEntranceFee = (*edi & 0xFFFF);
 		window_invalidate_by_class(WC_PARK_INFORMATION);
@@ -679,7 +679,7 @@ void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi
 
 	int dh = (*edx >> 8) & 0xFF;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
 	switch (dh) {
 	case 0:
 		if (gParkFlags & PARK_FLAGS_PARK_OPEN) {
@@ -830,10 +830,10 @@ void game_command_remove_park_entrance(int *eax, int *ebx, int *ecx, int *edx, i
 		return;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
+	gCommandPosition.x = x;
+	gCommandPosition.y = y;
+	gCommandPosition.z = z;
 
 	if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
 		*ebx = 0;
@@ -890,7 +890,7 @@ void game_command_set_park_name(int *eax, int *ebx, int *ecx, int *edx, int *esi
 
 	int nameChunkIndex = *eax & 0xFFFF;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	//if (*ebx & GAME_COMMAND_FLAG_APPLY) { // this check seems to be useless and causes problems in multiplayer
 		int nameChunkOffset = nameChunkIndex - 1;
 		if (nameChunkOffset < 0)
@@ -1068,7 +1068,7 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 {
 	int x, y, z;
 	money32 totalCost, cost;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LAND_PURCHASE * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
 	if (x1 == 0 && y1 == 0) {
 		x1 = x0;
@@ -1078,9 +1078,9 @@ int map_buy_land_rights(int x0, int y0, int x1, int y1, int setting, int flags)
 	x = (x0 + x1) / 2 + 16;
 	y = (y0 + y1) / 2 + 16;
 	z = map_element_height(x, y);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
+	gCommandPosition.x = x;
+	gCommandPosition.y = y;
+	gCommandPosition.z = z;
 
 	// Game command modified to accept selection size
 	totalCost = 0;

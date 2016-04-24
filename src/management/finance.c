@@ -51,6 +51,8 @@ money32 *gCashHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
 money32 *gWeeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
 money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
 
+uint8 gCommandExpenditureType;
+
 /**
  * Pay an amount of money.
  *  rct2: 0x069C674
@@ -299,7 +301,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 	money = DECRYPT_MONEY(gCashEncrypted);
 	loanDifference = currentLoan - newLoan;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_INTEREST * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_INTEREST;
 	if (newLoan > currentLoan) {
 		if (newLoan > RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)) {
 			gGameCommandErrorText = STR_BANK_REFUSES_TO_INCREASE_LOAN;

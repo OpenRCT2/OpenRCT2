@@ -300,6 +300,8 @@ extern money32 gLandToolLowerCost;
 extern uint8 gLandToolTerrainSurface;
 extern uint8 gLandToolTerrainEdge;
 
+extern rct_xyz16 gCommandPosition;
+
 void map_init(int size);
 void map_update_tile_pointers();
 rct_map_element *map_get_first_element_at(int x, int y);

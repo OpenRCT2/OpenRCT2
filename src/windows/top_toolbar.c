@@ -1428,7 +1428,7 @@ void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int 
 	if (ebx != MONEY32_UNDEFINED) {
 		int bannerId = edi;
 
-		audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 		window_banner_open(bannerId);
 	}
 }
@@ -1516,7 +1516,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 				if (cost != MONEY32_UNDEFINED){
 					window_close_by_class(WC_ERROR);
-					audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+					audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 					success = true;
 					break;
 				}
@@ -1544,7 +1544,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		if (successfulPlacements > 0) {
 			window_close_by_class(WC_ERROR);
 		} else {
-			audio_play_sound_at_location(SOUND_ERROR, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+			audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 		}
 		break;
 	}
@@ -1555,7 +1555,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 		int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
 		if (cost != MONEY32_UNDEFINED) {
-			audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+			audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 		}
 		break;
 	}
@@ -1579,7 +1579,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
-				audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+				audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 				return;
 			}
 
@@ -1593,7 +1593,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		audio_play_sound_at_location(SOUND_ERROR, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 		break;
 	}
 	case SCENERY_TYPE_LARGE:
@@ -1616,7 +1616,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 			if (cost != MONEY32_UNDEFINED){
 				window_close_by_class(WC_ERROR);
-				audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+				audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 				return;
 			}
 
@@ -1630,7 +1630,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
 		}
 
-		audio_play_sound_at_location(SOUND_ERROR, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 		break;
 	}
 	case SCENERY_TYPE_BANNER:

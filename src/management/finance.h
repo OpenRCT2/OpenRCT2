@@ -56,6 +56,8 @@ extern money32 *gCashHistory;
 extern money32 *gWeeklyProfitHistory;
 extern money32 *gParkValueHistory;
 
+extern uint8 gCommandExpenditureType;
+
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();
 void finance_pay_research();

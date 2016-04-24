@@ -55,9 +55,9 @@ void money_effect_create(money32 value)
 	rct_viewport *mainViewport;
 	rct_xyz16 mapPosition;
 
-	mapPosition.x = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16);
-	mapPosition.y = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16);
-	mapPosition.z = RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16);
+	mapPosition.x = gCommandPosition.x;
+	mapPosition.y = gCommandPosition.y;
+	mapPosition.z = gCommandPosition.z;
 	if (mapPosition.x == (sint16)0x8000) {
 		mainWindow = window_get_main();
 		if (mainWindow == NULL)
