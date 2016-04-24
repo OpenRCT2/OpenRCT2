@@ -628,7 +628,7 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (gParkEntranceX[i] != 0x8000)
+		if (gParkEntranceX[i] != (sint16)0x8000)
 			break;
 
 		if (i == 3) {
@@ -638,7 +638,7 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (gParkEntranceX[i] == 0x8000)
+		if (gParkEntranceX[i] == (sint16)0x8000)
 			continue;
 
 		int x = gParkEntranceX[i];
