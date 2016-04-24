@@ -1817,10 +1817,10 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		money32 lower_cost = selection_lower_land(0);
 		money32 raise_cost = selection_raise_land(0);
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+		if (gLandToolRaiseCost != raise_cost ||
+			gLandToolLowerCost != lower_cost){
+			gLandToolRaiseCost = raise_cost;
+			gLandToolLowerCost = lower_cost;
 			window_invalidate_by_class(WC_LAND);
 		}
 		return;
@@ -1838,10 +1838,10 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 			money32 lower_cost = MONEY32_UNDEFINED;
 			money32 raise_cost = MONEY32_UNDEFINED;
 
-			if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
-				RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
-				RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
-				RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+			if (gLandToolRaiseCost != raise_cost ||
+				gLandToolLowerCost != lower_cost){
+				gLandToolRaiseCost = raise_cost;
+				gLandToolLowerCost = lower_cost;
 				window_invalidate_by_class(WC_LAND);
 			}
 			return;
@@ -1887,10 +1887,10 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		money32 lower_cost = selection_lower_land(0);
 		money32 raise_cost = selection_raise_land(0);
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+		if (gLandToolRaiseCost != raise_cost ||
+			gLandToolLowerCost != lower_cost){
+			gLandToolRaiseCost = raise_cost;
+			gLandToolLowerCost = lower_cost;
 			window_invalidate_by_class(WC_LAND);
 		}
 		return;
@@ -1902,10 +1902,10 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 		money32 lower_cost = MONEY32_UNDEFINED;
 		money32 raise_cost = MONEY32_UNDEFINED;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+		if (gLandToolRaiseCost != raise_cost ||
+			gLandToolLowerCost != lower_cost){
+			gLandToolRaiseCost = raise_cost;
+			gLandToolLowerCost = lower_cost;
 			window_invalidate_by_class(WC_LAND);
 		}
 		return;
@@ -1965,10 +1965,10 @@ void top_toolbar_tool_update_land(sint16 x, sint16 y){
 	money32 lower_cost = selection_lower_land(0);
 	money32 raise_cost = selection_raise_land(0);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) != raise_cost ||
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) != lower_cost){
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, money32) = raise_cost;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, money32) = lower_cost;
+	if (gLandToolRaiseCost != raise_cost ||
+		gLandToolLowerCost != lower_cost){
+		gLandToolRaiseCost = raise_cost;
+		gLandToolLowerCost = lower_cost;
 		window_invalidate_by_class(WC_LAND);
 	}
 }
@@ -2583,7 +2583,7 @@ static void window_top_toolbar_tool_down(rct_window* w, int widgetIndex, int x, 
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 				1,
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-				RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) | (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) << 8),
+				gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
 				GAME_COMMAND_CHANGE_SURFACE_STYLE,
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
@@ -2673,15 +2673,15 @@ void window_top_toolbar_land_tool_drag(short x, short y)
 
 		selection_raise_land(GAME_COMMAND_FLAG_APPLY);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
+		gLandToolRaiseCost = MONEY32_UNDEFINED;
+		gLandToolLowerCost = MONEY32_UNDEFINED;
 	} else if (y_diff >= -tile_height) {
 		gInputDragLastY -= tile_height;
 
 		selection_lower_land(GAME_COMMAND_FLAG_APPLY);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_RAISE_COST, uint32) = MONEY32_UNDEFINED;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_LOWER_COST, uint32) = MONEY32_UNDEFINED;
+		gLandToolRaiseCost = MONEY32_UNDEFINED;
+		gLandToolLowerCost = MONEY32_UNDEFINED;
 	}
 }
 
@@ -2788,7 +2788,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
 					1,
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) | (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) << 8),
+					gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
 					GAME_COMMAND_CHANGE_SURFACE_STYLE,
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)

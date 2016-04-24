@@ -70,6 +70,11 @@ bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
+money32 gLandToolRaiseCost;
+money32 gLandToolLowerCost;
+uint8 gLandToolTerrainSurface;
+uint8 gLandToolTerrainEdge;
+
 static void tiles_init();
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
