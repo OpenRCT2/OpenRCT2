@@ -92,6 +92,10 @@ extern uint8 text_palette[];
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
+extern uint32 gPickupPeepImage;
+extern sint32 gPickupPeepX;
+extern sint32 gPickupPeepY;
+
 extern rct_g1_element *g1Elements;
 extern rct_gx g2;
 

@@ -50,6 +50,10 @@ static uint32 _numRainPixels;
 uint8 gGamePalette[256 * 4];
 uint32 gPaletteEffectFrame;
 
+uint32 gPickupPeepImage;
+sint32 gPickupPeepX;
+sint32 gPickupPeepY;
+
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 const uint8 peep_palette[0x100] = {
@@ -509,15 +513,15 @@ void redraw_rain()
 
 void gfx_invalidate_pickedup_peep()
 {
-	int sprite = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32);
-	if (sprite != -1) {
+	uint32 sprite = gPickupPeepImage;
+	if (sprite != UINT32_MAX) {
 		sprite = sprite & 0x7FFFF;
 
 		rct_g1_element *g1_elements = &g1Elements[sprite];
-		int left = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16) + g1_elements->x_offset;
-		int top = RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16) + g1_elements->y_offset;
-		int right = left + g1_elements->width;
-		int bottom = top + g1_elements->height;
+		sint32 left = gPickupPeepX + g1_elements->x_offset;
+		sint32 top = gPickupPeepY + g1_elements->y_offset;
+		sint32 right = left + g1_elements->width;
+		sint32 bottom = top + g1_elements->height;
 
 		gfx_set_dirty_blocks(left, top, right, bottom);
 	}
@@ -525,14 +529,8 @@ void gfx_invalidate_pickedup_peep()
 
 void gfx_draw_pickedup_peep()
 {
-	// Draw picked-up peep
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32) != 0xFFFFFFFF) {
-		gfx_draw_sprite(
-			&gScreenDPI,
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32),
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, sint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, sint16), 0
-		);
+	if (gPickupPeepImage != UINT32_MAX) {
+		gfx_draw_sprite(&gScreenDPI, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
 	}
 }
 

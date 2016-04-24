@@ -103,7 +103,7 @@ void viewport_init_all()
 	gInputFlags = 0;
 	gInputState = INPUT_STATE_RESET;
 	gPressedWidget.window_classification = 255;
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
+	gPickupPeepImage = UINT32_MAX;
 	gTooltipNotShownTicks = -1;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) = 0;
 	RCT2_GLOBAL(0x009DEA50, sint16) = -1;
