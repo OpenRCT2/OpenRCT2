@@ -61,6 +61,8 @@ rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 rct2_peep_spawn *gPeepSpawns = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 
+rct_map_element *gNextFreeMapElement;
+
 bool gLandMountainMode;
 bool gLandPaintMode;
 bool LandRightsMode;
@@ -357,7 +359,7 @@ void map_update_tile_pointers()
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = mapElement;
+	gNextFreeMapElement = mapElement;
 }
 
 /**
@@ -543,12 +545,12 @@ void sub_68B089()
 		mapElementFirst++;
 	} while (!map_element_is_last_for_tile(mapElement++));
 
-	mapElement = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*);
+	mapElement = gNextFreeMapElement;
 	do {
 		mapElement--;
 	} while (mapElement->base_height == 255);
 	mapElement++;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = mapElement;
+	gNextFreeMapElement = mapElement;
 }
 
 
@@ -3776,8 +3778,8 @@ void map_element_remove(rct_map_element *mapElement)
 	(mapElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
 	mapElement->base_height = 0xFF;
 
-	if ((mapElement + 1) == RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)){
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*)--;
+	if ((mapElement + 1) == gNextFreeMapElement){
+		gNextFreeMapElement--;
 	}
 }
 
@@ -3935,18 +3937,18 @@ void map_reorganise_elements()
  */
 int sub_68B044()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (gNextFreeMapElement <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
 		return 1;
 
 	for (int i = 1000; i != 0; --i)
 		sub_68B089();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (gNextFreeMapElement <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
 		return 1;
 
 	map_reorganise_elements();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (gNextFreeMapElement <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
 		return 1;
 	else{
 		gGameCommandErrorText = 894;
@@ -3967,7 +3969,7 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 		return NULL;
 	}
 
-	newMapElement = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*);
+	newMapElement = gNextFreeMapElement;
 	originalMapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
 
 	// Set tile index pointer to point to new element block
@@ -4008,7 +4010,7 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 		} while (!((newMapElement - 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE));
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = newMapElement;
+	gNextFreeMapElement = newMapElement;
 	return insertedElement;
 }
 

@@ -694,7 +694,8 @@ void reset_track_list_cache(){
  *
  *  rct2: 0x006D1C68
  */
-int backup_map(){
+int backup_map()
+{
 	RCT2_GLOBAL(0xF440ED, uint8*) = malloc(0xED600);
 	if (RCT2_GLOBAL(0xF440ED, uint32) == 0) return 0;
 
@@ -718,7 +719,7 @@ int backup_map(){
 	memcpy(RCT2_GLOBAL(0xF440F1, uint32*), tile_map_pointers, 0x40000);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
-	*(uint32*)backup_info = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32);
+	*(uint32*)backup_info = (uint32)gNextFreeMapElement;
 	*(uint16*)(backup_info + 4) = gMapSizeUnits;
 	*(uint16*)(backup_info + 6) = gMapSizeMinus2;
 	*(uint16*)(backup_info + 8) = gMapSize;
@@ -730,7 +731,8 @@ int backup_map(){
  *
  *  rct2: 0x006D2378
  */
-void reload_map_backup(){
+void reload_map_backup()
+{
 	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
 	memcpy(map_elements, RCT2_GLOBAL(0xF440ED, uint32*), 0xED600);
 
@@ -738,7 +740,7 @@ void reload_map_backup(){
 	memcpy(tile_map_pointers, RCT2_GLOBAL(0xF440F1, uint32*), 0x40000);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32) = *(uint32*)backup_info;
+	gNextFreeMapElement = (rct_map_element*)backup_info;
 	gMapSizeUnits = *(uint16*)(backup_info + 4);
 	gMapSizeMinus2 = *(uint16*)(backup_info + 6);
 	gMapSize = *(uint16*)(backup_info + 8);

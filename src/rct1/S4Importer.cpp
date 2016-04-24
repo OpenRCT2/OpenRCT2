@@ -1095,7 +1095,7 @@ void S4Importer::ClearExtraTileEntries()
         *tilePointer++ = nextFreeMapElement++;
     }
 
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*) = nextFreeMapElement;
+    gNextFreeMapElement = nextFreeMapElement;
 }
 
 void S4Importer::FixColours()
@@ -1128,7 +1128,7 @@ void S4Importer::FixColours()
     // }
 
     rct_map_element * mapElement = gMapElements;
-    while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*))
+    while (mapElement < gNextFreeMapElement)
     {
         if (mapElement->base_height != 255)
         {
@@ -1188,7 +1188,7 @@ void S4Importer::FixZ()
     // }
 
     rct_map_element * mapElement = gMapElements;
-    while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*))
+    while (mapElement < gNextFreeMapElement)
     {
         if (mapElement->base_height != 255)
         {
@@ -1203,7 +1203,7 @@ void S4Importer::FixZ()
 void S4Importer::FixPaths()
 {
     rct_map_element * mapElement = gMapElements;
-    while (mapElement < RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, rct_map_element*))
+    while (mapElement < gNextFreeMapElement)
     {
         switch (map_element_get_type(mapElement)) {
         case MAP_ELEMENT_TYPE_PATH:

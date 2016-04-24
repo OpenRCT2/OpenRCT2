@@ -280,6 +280,9 @@ extern rct_map_element **gMapElementTilePointers;
 
 extern rct_xy16 *gMapSelectionTiles;
 extern rct2_peep_spawn *gPeepSpawns;
+
+extern rct_map_element *gNextFreeMapElement;
+
 // Used in the land tool window to enable mountain tool / land smoothing
 extern bool gLandMountainMode;
 // Used in the land tool window to allow dragging and changing land styles
