@@ -43,7 +43,8 @@ uint8 _screenDirtyBlockShiftY;
 rct_drawpixelinfo gScreenDPI;
 
 #define MAX_RAIN_PIXELS 0xFFFE
-uint32 rainPixels[MAX_RAIN_PIXELS];
+static uint32 _rainPixels[MAX_RAIN_PIXELS];
+static uint32 _numRainPixels;
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 const uint8 peep_palette[0x100] = {
@@ -412,40 +413,45 @@ bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, i
 	return false;
 }
 
-/***
-*
-* rct2: 0x00684027
-*
-* ebp used to be a parameter but it is always zero
-* left   : eax
-* top    : ebx
-* width  : ecx
-* height : edx
-* x_start: edi
-* y_start: esi
-*/
-void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start){
-	uint8* pattern = RCT2_GLOBAL(RCT2_ADDRESS_RAIN_PATTERN, uint8*);
+/**
+ *
+ *  rct2: 0x00684027
+ * ebp used to be a parameter but it is always zero
+ * left   : eax
+ * top    : ebx
+ * width  : ecx
+ * height : edx
+ * x_start: edi
+ * y_start: esi
+ */
+void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start)
+{
+	static const uint8 RainPattern[] = {
+		32, 32, 0, 12, 0, 14, 0, 16, -1, 0, -1, 0, -1, 0, -1, 0, -1,
+		0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0,
+		-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1,
+		0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, 0, 0
+	};
+
+	const uint8 *pattern = RainPattern;
 	uint8 pattern_x_space = *pattern++;
 	uint8 pattern_y_space = *pattern++;
 
 	uint8 pattern_start_x_offset = x_start % pattern_x_space;
 	uint8 pattern_start_y_offset = y_start % pattern_y_space;
 
-	rct_drawpixelinfo* dpi = &gScreenDPI;
-	uint32 pixel_offset = (dpi->pitch + dpi->width)*top + left;
+	rct_drawpixelinfo *dpi = &gScreenDPI;
+	uint32 pixel_offset = (dpi->pitch + dpi->width) * top + left;
 	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
 
 	//Stores the colours of changed pixels
-	uint32* pixel_store = rainPixels;
-	pixel_store += RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
+	uint32 *pixel_store = _rainPixels;
+	pixel_store += _numRainPixels;
 
-	for (; height != 0; height--){
-
+	for (; height != 0; height--) {
 		uint8 pattern_x = pattern[pattern_y_pos * 2];
-		if (pattern_x != 0xFF){
-			if (RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) < (MAX_RAIN_PIXELS - (uint32)width)){
-
+		if (pattern_x != 0xFF) {
+			if (_numRainPixels < (MAX_RAIN_PIXELS - (uint32)width)) {
 				int final_pixel_offset = width + pixel_offset;
 
 				int x_pixel_offset = pixel_offset;
@@ -455,50 +461,45 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 				for (; x_pixel_offset < final_pixel_offset; x_pixel_offset += pattern_x_space){
 					uint8 current_pixel = dpi->bits[x_pixel_offset];
 					dpi->bits[x_pixel_offset] = pattern_pixel;
-					RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32)++;
+					_numRainPixels++;
 
-					//Store colour and position
+					// Store colour and position
 					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
-
 				}
 			}
 		}
 
 		pixel_offset += dpi->pitch + dpi->width;
-
 		pattern_y_pos++;
 		pattern_y_pos %= pattern_y_space;
 	}
 }
 
 /**
-*
-*  rct2: 0x006843DC
-*/
+ *
+ *  rct2: 0x006843DC
+ */
 void redraw_rain()
 {
-	int rain_no_pixels = RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32);
-	if (rain_no_pixels == 0) {
-		return;
-	}
-	rct_window *window = window_get_main();
-	uint32 numPixels = window->width * window->height;
+	if (_numRainPixels > 0) {
+		rct_window *window = window_get_main();
+		uint32 numPixels = window->width * window->height;
 
-	uint32 *rain_pixels = rainPixels;
-	if (rain_pixels) {
-		uint8 *screen_pixels = gScreenDPI.bits;
-		for (int i = 0; i < rain_no_pixels; i++) {
-			uint32 pixel = rain_pixels[i];
-			//HACK
-			if (pixel >> 8 > numPixels) {
+		uint8 *screenPixels = gScreenDPI.bits;
+		for (uint32 i = 0; i < _numRainPixels; i++) {
+			uint32 pixel = _rainPixels[i];
+			uint32 pixelIndex = pixel >> 8;
+
+			// HACK
+			if (pixelIndex > numPixels) {
 				log_verbose("Pixel error, skipping rain draw in this frame");
 				break;
 			}
-			screen_pixels[pixel >> 8] = pixel & 0xFF;
+			screenPixels[pixelIndex] = pixel & 0xFF;
 		}
 		RCT2_GLOBAL(0x009E2C78, uint32) = 1;
+		_numRainPixels = 0;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_NO_RAIN_PIXELS, uint32) = 0;
 }
 
 void gfx_invalidate_pickedup_peep()
