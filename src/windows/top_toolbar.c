@@ -1998,10 +1998,9 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
 			0);
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) != raise_cost ||
-			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) != lower_cost){
-			RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) = raise_cost;
-			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) = lower_cost;
+		if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost) {
+			gWaterToolRaiseCost = raise_cost;
+			gWaterToolLowerCost = lower_cost;
 			window_invalidate_by_class(WC_WATER);
 		}
 		return;
@@ -2022,10 +2021,9 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 		NULL);
 
 	if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE){
-		if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) != MONEY32_UNDEFINED ||
-			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) != MONEY32_UNDEFINED){
-			RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) = MONEY32_UNDEFINED;
-			RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) = MONEY32_UNDEFINED;
+		if (gWaterToolRaiseCost != MONEY32_UNDEFINED || gWaterToolLowerCost != MONEY32_UNDEFINED) {
+			gWaterToolRaiseCost = MONEY32_UNDEFINED;
+			gWaterToolLowerCost = MONEY32_UNDEFINED;
 			window_invalidate_by_class(WC_WATER);
 		}
 		return;
@@ -2099,10 +2097,9 @@ void top_toolbar_tool_update_water(sint16 x, sint16 y){
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16),
 		0);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) != raise_cost ||
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) != lower_cost){
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, money32) = raise_cost;
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, money32) = lower_cost;
+	if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost) {
+		gWaterToolRaiseCost = raise_cost;
+		gWaterToolLowerCost = lower_cost;
 		window_invalidate_by_class(WC_WATER);
 	}
 }
@@ -2723,8 +2720,8 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 			);
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
+		gWaterToolRaiseCost = MONEY32_UNDEFINED;
+		gWaterToolLowerCost = MONEY32_UNDEFINED;
 
 		return;
 	}
@@ -2745,8 +2742,8 @@ void window_top_toolbar_water_tool_drag(short x, short y)
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
 			);
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
-		RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
+		gWaterToolRaiseCost = MONEY32_UNDEFINED;
+		gWaterToolLowerCost = MONEY32_UNDEFINED;
 
 		return;
 	}

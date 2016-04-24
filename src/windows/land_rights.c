@@ -114,8 +114,8 @@ void window_land_rights_open()
 	LandRightsMode = true;
 	window->pressed_widgets = (1 << WIDX_BUY_LAND_RIGHTS);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
+	gWaterToolRaiseCost = MONEY32_UNDEFINED;
+	gWaterToolLowerCost = MONEY32_UNDEFINED;
 
 	show_land_rights();
 }
