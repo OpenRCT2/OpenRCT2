@@ -597,7 +597,7 @@ int string_get_height_raw(char *buffer)
 	uint16 fontBase = gCurrentFontSpriteBase;
 
 	int height = 0;
-	if (fontBase <= FONT_SIZE_MEDIUM)
+	if (fontBase <= FONT_SPRITE_BASE_MEDIUM)
 		height += 10;
 	else if (fontBase == FONT_SPRITE_BASE_TINY)
 		height += 6;
