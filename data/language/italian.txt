@@ -3,56 +3,56 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Spiral Roller Coaster
-STR_0003    :Stand-up Roller Coaster
+STR_0002    :Ottovolante a spirale
+STR_0003    :Ottovolante in piedi
 STR_0004    :Attrazione oscillante
-STR_0005    :Inverted Roller Coaster
+STR_0005    :Ottovolante invertito
 STR_0006    :Ottovolante per giovanissimi
 STR_0007    :Ferrovia in miniatura
 STR_0008    :Monorotaia
 STR_0009    :Mini-attrazione sospesa
-STR_0010    :Boat Ride
-STR_0011    :Wooden Wild Mouse
-STR_0012    :Steeplechase
+STR_0010    :Noleggio barche
+STR_0011    :Topo tutto matto
+STR_0012    :Corsa ad ostacoli
 STR_0013    :Attrazione su carrozza
-STR_0014    :Launched Freefall
-STR_0015    :Bobsleigh Coaster
-STR_0016    :Observation Tower
+STR_0014    :Caduta libera con lancio
+STR_0015    :Ottovolante su bob
+STR_0016    :Torre d'osservazione
 STR_0017    :Ottovolante con giro d. morte
-STR_0018    :Dinghy Slide
-STR_0019    :Mine Train Coaster
+STR_0018    :Scivolo ad acqua
+STR_0019    :Ottovolante della miniera
 STR_0020    :Seggiovia
-STR_0021    :Corkscrew Roller Coaster
-STR_0022    :Maze
-STR_0023    :Spiral Slide
-STR_0024    :Go Karts
-STR_0025    :Log Flume
-STR_0026    :River Rapids
-STR_0027    :Dodgems
-STR_0028    :Pirate Ship
-STR_0029    :Swinging Inverter Ship
-STR_0030    :Food Stall
-STR_0031    :Unknown Stall (1D)
-STR_0032    :Drink Stall
-STR_0033    :Unknown Stall (1F)
+STR_0021    :Ottovolante ad avvitamento
+STR_0022    :Labirinto
+STR_0023    :Scivolo a spirale
+STR_0024    :Go Kart
+STR_0025    :Tronchi
+STR_0026    :Rapide
+STR_0027    :Autoscontri
+STR_0028    :Nave dei pirati
+STR_0029    :Nave oscillante invertita
+STR_0030    :Chiosco del cibo
+STR_0031    :Chiosco sconosciuto (1D)
+STR_0032    :Chiosco delle bibite
+STR_0033    :Chiosco sconosciuto (1F)
 STR_0034    :Chiosco
-STR_0035    :Merry-Go-Round
-STR_0036    :Unknown Stall (22)
+STR_0035    :Giostra
+STR_0036    :Chiosco sconosciuto (22)
 STR_0037    :Chiosco
 STR_0038    :Servizi igienici
-STR_0039    :Ferris Wheel
-STR_0040    :Motion Simulator
-STR_0041    :3D Cinema
+STR_0039    :Ruota panoramica
+STR_0040    :Simulatore di movimento
+STR_0041    :Cinema 3D
 STR_0042    :Top Spin
 STR_0043    :Space Rings
 STR_0044    :Attraz. a caduta libera rov.
 STR_0045    :Traino
-STR_0046    :Vertical Drop Roller Coaster
+STR_0046    :Ottovolante a caduta verticale
 STR_0047    :Cash Machine
 STR_0048    :Twist
-STR_0049    :Haunted House
-STR_0050    :First Aid Room
-STR_0051    :Circus Show
+STR_0049    :Casa dei fantasmi
+STR_0050    :Pronto soccorso
+STR_0051    :Circo
 STR_0052    :Ghost Train
 STR_0053    :Ottov. super-serpentina
 STR_0054    :Ottovolante di legno
@@ -64,13 +64,13 @@ STR_0059    :Ottovolante aereo invertito
 STR_0060    :Unknown Ride (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Splash Boats
-STR_0063    :Mini Helicopters
+STR_0063    :Mini-elicotteri
 STR_0064    :Lay-down Roller Coaster
 STR_0065    :Monorotaia sospesa
 STR_0066    :Unknown Ride (40)
-STR_0067    :Reverser Roller Coaster
+STR_0067    :Ottovolante al contrario
 STR_0068    :Serpentone volante
-STR_0069    :Mini Golf
+STR_0069    :Mini golf
 STR_0070    :Giga Coaster
 STR_0071    :Roto-Drop
 STR_0072    :Flying Saucers
@@ -80,8 +80,8 @@ STR_0075    :Compact Inverted Coaster
 STR_0076    :Attrazione acquatica
 STR_0077    :Air Powered Vertical Coaster
 STR_0078    :Inverted Hairpin Coaster
-STR_0079    :Magic Carpet
-STR_0080    :Submarine Ride
+STR_0079    :Tappeto magico
+STR_0080    :Corsa sottomarina
 STR_0081    :River Rafts
 STR_0082    :Unknown Ride (50)
 STR_0083    :Enterprise
@@ -89,11 +89,11 @@ STR_0084    :Unknown Ride (52)
 STR_0085    :Unknown Ride (53)
 STR_0086    :Unknown Ride (54)
 STR_0087    :Unknown Ride (55)
-STR_0088    :Inverted Impulse Coaster
+STR_0088    :Ottovolante invertito a impulso
 STR_0089    :Mini-ottovolante
-STR_0090    :Mine Ride
+STR_0090    :Corsa nella miniera
 STR_0091    :Unknown Ride (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0092    :Ottovolante a lancio LIM
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -513,15 +513,15 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
+STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
+STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l'ottovolante, durante le curve oscillano lateralmente
-STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
+STR_0515    :Un ottovolante di acciaio con treni sospesi sotto al circuito, con molti elementi complessi e tortuosi
 STR_0516    :Un ottovolante tranquillo, per chi non ha ancora il coraggio di affrontare le attrazioni più impegnative
 STR_0517    :I passeggeri viaggiano su treni in miniatura su una strada ferrata di dimensioni ridotte
 STR_0518    :I passeggeri viaggiano su treni elettrici lungo un tracciato monorotaia
 STR_0519    :I passeggeri viaggiano a bordo di piccole carrozze appese al circuito, oscillando liberamente da lato a lato a ogni curva
-STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
+STR_0520    :Una piattaforma dalla quale i passeggeri possono guidare una piccola imbarcazione sull'acqua
 STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
 STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
 STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
@@ -535,8 +535,8 @@ STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro p
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
 STR_0533    :
-STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
+STR_0534    :Go kart guidati con motore a benzina
+STR_0535    :Barche a forma di tronchi viaggiano lungo un canale d'acqua, schizzando i passeggeri mentre volano giù per ripide discese
 STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
 STR_0537    :
 STR_0538    :
@@ -1650,7 +1650,7 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Aiuto!! Fatemi scendere!!{ENDQUOTES}
+STR_1648    :{SMALLFONT}{OPENQUOTES}Aiuto!! Voglio scendere!!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Sto finendo i soldi!!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow!! Presto ci sarà una nuova attrazione!!{ENDQUOTES}
 STR_1651    :{SMALLFONT}{OPENQUOTES}Bell'attrazione!! Ma mai come la Phoenix...{ENDQUOTES}
@@ -1781,17 +1781,17 @@ STR_1775    :Off
 STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}Musica
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume da tigre
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Costume da elefante
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Costume da antico romano
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Costume da gorilla
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Costume da pupazzo di neve
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Costume da cavaliere
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Costume da astronauta
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Costume da bandito
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Costume da sceriffo
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Costume da pirata
 STR_1790    :{SMALLFONT}{BLACK}Scegli il colore dell'uniforme per questo tipo di dipendente
 STR_1791    :{WINDOW_COLOUR_2}Colore dell'uniforme:
 STR_1792    :Sta accorrendo alla chiamata d'emergenza venuta da: {STRINGID}
@@ -1922,7 +1922,7 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Prestito:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Impossibile chiedere altri prestiti!!
+STR_1918    :La banca non concede ulteriori prestiti!!
 STR_1919    :Fondi insufficienti!!
 STR_1920    :Il prestito non può essere restituito!!
 STR_1921    :{SMALLFONT}{BLACK}Inizia una nuova partita
@@ -2537,7 +2537,7 @@ STR_2529    :???
 STR_2530    :???
 STR_2531    :???
 STR_2532    :???
-STR_2533    :Tasto di ritorno
+STR_2533    :Backspace
 STR_2534    :Tab
 STR_2535    :???
 STR_2536    :???
@@ -2684,11 +2684,11 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :All research complete
+STR_2680    :Tutte le ricerche sono completate
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
-STR_2684    :{SMALLFONT}{BLACK}Large group of peeps arrive
+STR_2684    :{SMALLFONT}{BLACK}Arriva un largo numero di visitatori
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
 STR_2687    :{WINDOW_COLOUR_2}High:
@@ -2698,23 +2698,23 @@ STR_2690    :Map Generation
 STR_2691    :{WINDOW_COLOUR_2}Base height:
 STR_2692    :{WINDOW_COLOUR_2}Water level:
 STR_2693    :{WINDOW_COLOUR_2}Terrain:
-STR_2694    :Generate
-STR_2695    :Random terrain
-STR_2696    :Place trees
+STR_2694    :Genera
+STR_2695    :Terreno casuale
+STR_2696    :Colloca alberi
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autosave frequency:
+STR_2700    :Frequenza di autosalvataggio:
 STR_2701    :Ogni minuto
 STR_2702    :Ogni 5 minuti
 STR_2703    :Ogni 15 minuti
 STR_2704    :Ogni 30 minuti
 STR_2705    :Ogni ora
 STR_2706    :Mai
-STR_2707    :Open new window
-STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
-STR_2709    :Overwrite
-STR_2710    :Type the name of the file.
+STR_2707    :Apri nuova finestra
+STR_2708    :{WINDOW_COLOUR_1}Sei sicuro di voler sovrascrivere {STRINGID}?
+STR_2709    :Sovrascrivi
+STR_2710    :Digitare il nome del file.
 STR_2711    :;
 STR_2712    :=
 STR_2713    :,
@@ -2725,24 +2725,24 @@ STR_2717    :'
 STR_2718    :(up)
 STR_2719    :(new file)
 STR_2720    :{UINT16}sec
-STR_2721    :{UINT16}secs
+STR_2721    :{UINT16}sec
 STR_2722    :{UINT16}min:{UINT16}sec
-STR_2723    :{UINT16}min:{UINT16}secs
-STR_2724    :{UINT16}mins:{UINT16}sec
-STR_2725    :{UINT16}mins:{UINT16}secs
+STR_2723    :{UINT16}min:{UINT16}sec
+STR_2724    :{UINT16}min:{UINT16}sec
+STR_2725    :{UINT16}min:{UINT16}sec
 STR_2726    :{UINT16}min
-STR_2727    :{UINT16}mins
-STR_2728    :{UINT16}hour:{UINT16}min
-STR_2729    :{UINT16}hour:{UINT16}mins
-STR_2730    :{UINT16}hours:{UINT16}min
-STR_2731    :{UINT16}hours:{UINT16}mins
-STR_2732    :{COMMA16}ft
+STR_2727    :{UINT16}min
+STR_2728    :{UINT16}ora:{UINT16}min
+STR_2729    :{UINT16}ora:{UINT16}min
+STR_2730    :{UINT16}ore:{UINT16}min
+STR_2731    :{UINT16}ore:{UINT16}min
+STR_2732    :{COMMA16}piedi
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, anno {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, anno {COMMA16}
-STR_2738    :Title screen music:
+STR_2738    :Musica schermata del titolo:
 STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
