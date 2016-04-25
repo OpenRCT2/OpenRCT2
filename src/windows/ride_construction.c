@@ -2277,8 +2277,8 @@ static void sub_6CBCE2(
 	int preserve_current_viewport_flags;
 	int x, y, baseZ, clearanceZ, offsetX, offsetY;
 
-	preserve_current_viewport_flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = 0;
+	preserve_current_viewport_flags = gCurrentViewportFlags;
+	gCurrentViewportFlags = 0;
 	trackDirection &= 3;
 
 	RCT2_GLOBAL(0x00EE7880, uint32) = 0x00F1A4CC;
@@ -2387,7 +2387,7 @@ static void sub_6CBCE2(
 	sub_688217();
 	sub_688485();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = preserve_current_viewport_flags;
+	gCurrentViewportFlags = preserve_current_viewport_flags;
 }
 
 /**

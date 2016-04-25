@@ -536,13 +536,12 @@ static void editor_finalise_main_view()
 	rct_viewport *viewport = w->viewport;
 
 	w->viewport_target_sprite = -1;
-	w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	w->saved_view_x = gSavedViewX;
+	w->saved_view_y = gSavedViewY;
+	gCurrentRotation = gSavedViewRotation;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
-
-	int zoom_difference = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) - viewport->zoom;
-	viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
+	int zoom_difference = gSavedViewZoom - viewport->zoom;
+	viewport->zoom = gSavedViewZoom;
 	if (zoom_difference != 0) {
 		if (zoom_difference >= 0) {
 			viewport->view_width <<= zoom_difference;

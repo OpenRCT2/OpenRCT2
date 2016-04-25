@@ -744,7 +744,7 @@ void reload_map_backup()
 	gMapSizeUnits = *(uint16*)(backup_info + 4);
 	gMapSizeMinus2 = *(uint16*)(backup_info + 6);
 	gMapSize = *(uint16*)(backup_info + 8);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = *(uint32*)(backup_info + 10);
+	gCurrentRotation = *(uint8*)(backup_info + 10);
 
 	free(RCT2_GLOBAL(0xF440ED, uint8*));
 	free(RCT2_GLOBAL(0xF440F1, uint8*));
@@ -2149,7 +2149,7 @@ void draw_track_preview(uint8** preview){
 	int x = center_y - center_x - width / 2;
 	int y = (center_y + center_x) / 2 - center_z - height / 2;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 0;
+	gCurrentRotation = 0;
 
 	view->width = 370;
 	view->height = 217;
@@ -2179,7 +2179,7 @@ void draw_track_preview(uint8** preview){
 
 	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 1;
+	gCurrentRotation = 1;
 	x = -center_y - center_x - width / 2;
 	y = (center_y - center_x) / 2 - center_z - height / 2;
 
@@ -2194,7 +2194,7 @@ void draw_track_preview(uint8** preview){
 
 	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 2;
+	gCurrentRotation = 2;
 	x =  center_x - center_y - width / 2;
 	y = (-center_y - center_x) / 2 - center_z - height / 2;
 
@@ -2209,7 +2209,7 @@ void draw_track_preview(uint8** preview){
 
 	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 3;
+	gCurrentRotation = 3;
 	x = center_x + center_y - width / 2;
 	y = (center_x - center_y) / 2 - center_z - height / 2;
 

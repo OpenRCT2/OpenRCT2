@@ -191,21 +191,21 @@ static int title_load_park(const char *path)
 
 	w = window_get_main();
 	w->viewport_target_sprite = -1;
-	w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	w->saved_view_x = gSavedViewX;
+	w->saved_view_y = gSavedViewY;
 
 	{
-		char _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - w->viewport->zoom;
-		w->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
-		*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
-		if (_cl != 0) {
-			if (_cl < 0) {
-				_cl = -_cl;
-				w->viewport->view_width >>= _cl;
-				w->viewport->view_height >>= _cl;
+		char zoomDifference = gSavedViewZoom - w->viewport->zoom;
+		w->viewport->zoom = gSavedViewZoom;
+		gCurrentRotation = gSavedViewRotation;
+		if (zoomDifference != 0) {
+			if (zoomDifference < 0) {
+				zoomDifference = -zoomDifference;
+				w->viewport->view_width >>= zoomDifference;
+				w->viewport->view_height >>= zoomDifference;
 			} else {
-				w->viewport->view_width <<= _cl;
-				w->viewport->view_height <<= _cl;
+				w->viewport->view_width <<= zoomDifference;
+				w->viewport->view_height <<= zoomDifference;
 			}
 		}
 		w->saved_view_x -= w->viewport->view_width >> 1;

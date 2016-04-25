@@ -1032,10 +1032,10 @@ void S4Importer::ImportScenarioObjective()
 
 void S4Importer::ImportSavedView()
 {
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = _s4.view_x;
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = _s4.view_y;
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint8) = _s4.view_zoom;
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION + 1, uint8) = _s4.view_rotation;
+    gSavedViewX = _s4.view_x;
+    gSavedViewY = _s4.view_y;
+    gSavedViewZoom = _s4.view_zoom;
+    gSavedViewRotation = _s4.view_rotation;
 }
 
 void S4Importer::ClearExtraTileEntries()

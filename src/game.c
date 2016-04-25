@@ -974,19 +974,19 @@ void game_load_init()
 	mainWindow = window_get_main();
 
 	mainWindow->viewport_target_sprite = -1;
-	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
-	uint8 _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - mainWindow->viewport->zoom;
-	mainWindow->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
-	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
-	if (_cl != 0) {
-		if (_cl < 0) {
-			_cl = -_cl;
-			mainWindow->viewport->view_width >>= _cl;
-			mainWindow->viewport->view_height >>= _cl;
+	mainWindow->saved_view_x = gSavedViewX;
+	mainWindow->saved_view_y = gSavedViewY;
+	uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = gSavedViewZoom;
+	gCurrentRotation = gSavedViewRotation;
+	if (zoomDifference != 0) {
+		if (zoomDifference < 0) {
+			zoomDifference = -zoomDifference;
+			mainWindow->viewport->view_width >>= zoomDifference;
+			mainWindow->viewport->view_height >>= zoomDifference;
 		} else {
-			mainWindow->viewport->view_width <<= _cl;
-			mainWindow->viewport->view_height <<= _cl;
+			mainWindow->viewport->view_width <<= zoomDifference;
+			mainWindow->viewport->view_height <<= zoomDifference;
 		}
 	}
 	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;

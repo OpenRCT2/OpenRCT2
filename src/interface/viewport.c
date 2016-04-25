@@ -764,7 +764,7 @@ void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixe
 		sint16 y = attached_ps->attached_y + ps->y;
 
 		int image_id = attached_ps->image_id;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
 			if (ps->sprite_type == 3){
 				if (image_id & 0x40000000){
 					image_id &= 0x7FFFF;
@@ -773,7 +773,7 @@ void paint_attached_ps(paint_struct* ps, paint_struct* attached_ps, rct_drawpixe
 			}
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
 			if (ps->sprite_type == 5){
 				if (image_id & 0x40000000){
 					image_id &= 0x7FFFF;
@@ -809,7 +809,7 @@ void sub_688485(){
 			}
 		}
 		int image_id = ps->image_id;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_RIDES){
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
 			if (ps->sprite_type == 3){
 				if (!(image_id & 0x40000000)){
 					image_id &= 0x7FFFF;
@@ -817,7 +817,7 @@ void sub_688485(){
 				}
 			}
 		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE){
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
 			if (ps->sprite_type == 9){
 				if (!(image_id & 0x40000000)){
 					image_id &= 0x7FFFF;
@@ -825,7 +825,7 @@ void sub_688485(){
 				}
 			}
 		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_SEETHROUGH_SCENERY){
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
 			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5){
 				if (!(image_id & 0x40000000)){
 					image_id &= 0x7FFFF;
@@ -1307,7 +1307,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx){
 	if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) return;
 
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
 
 	dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	if (dpi->zoom_level > 2) return;
@@ -1624,7 +1624,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 		trackSequence = mapElement->properties.track.sequence & 0x0F;
 		trackColourScheme = mapElement->properties.track.colour & 3;
 
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
+		if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
 				uint16 ax = RideData5[ride->type].z_offset;
@@ -1714,7 +1714,7 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_PATH_HEIGHTS &&
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS &&
 		dpi->zoom_level == 0){
 		uint32 ebx =
 			(map_element->properties.entrance.type << 4) |
@@ -2372,7 +2372,7 @@ static void viewport_draw_money_effects()
  *  ebp: bottom
  */
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, int top, int right, int bottom){
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) = viewport->flags;
+	gCurrentViewportFlags = viewport->flags;
 	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16) = viewport->zoom;
 
 	uint16 width = right - left;
@@ -2439,9 +2439,9 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		dpi2->bits = bits_pointer;
 		dpi2->pitch = pitch;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)){
+		if (gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)){
 			uint8 colour = 0x0A;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SPRITES){
+			if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES){
 				colour = 0;
 			}
 			gfx_clear(dpi2, colour);
@@ -2455,7 +2455,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		sub_688485();
 
 		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[gClimateCurrentWeatherGloom];
-		if ((weather_colour != -1) && (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SPRITES)) && (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1))){
+		if ((weather_colour != -1) && (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)) && (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1))){
 			gfx_fill_rect(dpi2, dpi2->x, dpi2->y, dpi2->width + dpi2->x - 1, dpi2->height + dpi2->y - 1, weather_colour);
 		}
 		viewport_draw_money_effects();
@@ -3312,12 +3312,12 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
  */
 uint8 get_current_rotation()
 {
-	uint32 rotation = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32);
-	uint32 rotation_masked = rotation & 3;
+	uint8 rotation = gCurrentRotation;
+	uint8 rotation_masked = rotation & 3;
 #if DEBUG_LEVEL_1
 	if (rotation != rotation_masked) {
-		log_error("Found wrong rotation %d! Will return %d instead.", rotation, rotation_masked);
+		log_error("Found wrong rotation %d! Will return %d instead.", (uint32)rotation, (uint32)rotation_masked);
 	}
 #endif // DEBUG_LEVEL_1
-	return (uint8)rotation_masked;
+	return rotation_masked;
 }

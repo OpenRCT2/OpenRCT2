@@ -161,7 +161,7 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 		*underground = false;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
 		return false;
 	}
 
@@ -311,7 +311,7 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
  */
 bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
 		return false;
 	}
 

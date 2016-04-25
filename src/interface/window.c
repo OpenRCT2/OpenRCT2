@@ -1428,7 +1428,7 @@ void window_rotate_camera(rct_window *w, int direction)
 		z = map_element_height(x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (get_current_rotation() + direction) & 3;
+	gCurrentRotation = (get_current_rotation() + direction) & 3;
 
 	int new_x, new_y;
 	center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);

@@ -80,7 +80,7 @@ void window_editor_main_open()
 	viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, -1);
 	window->viewport->flags |= 0x0400;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32) = 0;
+	gCurrentRotation = 0;
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B3, uint8) = 0;
