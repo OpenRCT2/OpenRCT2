@@ -941,6 +941,8 @@ bool game_load_save(const utf8 *path)
 		result = game_load_sv6(rw);
 	} else if (extension_type == FILE_EXTENSION_SV4) {
 		result = rct1_load_saved_game(path);
+		if (result)
+			gFirstTimeSave = 1;
 	}
 
 	SDL_RWclose(rw);
