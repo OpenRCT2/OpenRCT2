@@ -478,7 +478,7 @@ static int cc_get(const utf8 **argv, int argc)
 			console_printf("current_loan %d", gBankLoan / 10);
 		}
 		else if (strcmp(argv[0], "max_loan") == 0) {
-			console_printf("max_loan %d", RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) / 10);
+			console_printf("max_loan %d", gMaxBankLoan / 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0) {
 			console_printf("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
@@ -607,11 +607,11 @@ static int cc_set(const utf8 **argv, int argc)
 			console_execute_silent("get money");
 		}
 		else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			gBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+			gBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
 			console_execute_silent("get current_loan");
 		}
 		else if (strcmp(argv[0], "max_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
+			gMaxBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
 			console_execute_silent("get max_loan");
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {

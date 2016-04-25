@@ -659,8 +659,8 @@ void S4Importer::ImportFinance()
 
     gCashEncrypted = ENCRYPT_MONEY(_s4.cash);
     gBankLoan = _s4.loan;
-    RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = _s4.max_loan;
-    RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = _s4.cash;
+    gMaxBankLoan = _s4.max_loan;
+    gInitialCash = _s4.cash;
 
     gCompanyValue = _s4.company_value;
     gParkValue = _s4.park_value;

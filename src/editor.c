@@ -453,7 +453,7 @@ static void editor_clear_map_for_editing()
 
 		gGuestInitialCash = clamp(MONEY(10,00), gGuestInitialCash, MONEY(100,00));
 
-		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
+		gInitialCash = min(gInitialCash, 100000);
 		finance_reset_cash_to_initial();
 		finance_update_loan_hash();
 
@@ -463,9 +463,9 @@ static void editor_clear_map_for_editing()
 			MONEY(5000000,00)
 		);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(
+		gMaxBankLoan = clamp(
 			MONEY(0,00),
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32),
+			gMaxBankLoan,
 			MONEY(5000000,00)
 		);
 

@@ -283,8 +283,8 @@ void scenario_begin()
 	gParkRating = calculate_park_rating();
 	gParkValue = calculate_park_value();
 	gCompanyValue = calculate_company_value();
-	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - gBankLoan;
-	gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
+	RCT2_GLOBAL(0x013587D0, money32) = gInitialCash - gBankLoan;
+	gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 
 	finance_update_loan_hash();
 

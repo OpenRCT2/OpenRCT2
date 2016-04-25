@@ -178,11 +178,11 @@ void finance_init() {
 	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = MONEY(10000,00); // Cheat detection
+	gInitialCash = MONEY(10000,00); // Cheat detection
 
 	gCashEncrypted = ENCRYPT_MONEY(MONEY(10000,00));
 	gBankLoan = MONEY(10000,00);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = MONEY(20000,00);
+	gMaxBankLoan = MONEY(20000,00);
 
 	RCT2_GLOBAL(0x013587D0, uint32) = 0;
 
@@ -254,11 +254,11 @@ void finance_update_daily_profit()
 void finance_update_loan_hash()
 {
 	sint32 value = 0x70093A;
-	value -= RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
+	value -= gInitialCash;
 	value = ror32(value, 5);
 	value -= gBankLoan;
 	value = ror32(value, 7);
-	value += RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
+	value += gMaxBankLoan;
 	value = ror32(value, 3);
 	RCT2_GLOBAL(0x013587C4, sint32) = value;
 }
@@ -270,7 +270,7 @@ void finance_set_loan(money32 loan)
 
 money32 finance_get_initial_cash()
 {
-	return RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32);
+	return gInitialCash;
 }
 
 money32 finance_get_current_loan()
@@ -280,7 +280,7 @@ money32 finance_get_current_loan()
 
 money32 finance_get_maximum_loan()
 {
-	return RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32);
+	return gMaxBankLoan;
 }
 
 money32 finance_get_current_cash()
@@ -303,7 +303,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_INTEREST;
 	if (newLoan > currentLoan) {
-		if (newLoan > RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)) {
+		if (newLoan > gMaxBankLoan) {
 			gGameCommandErrorText = STR_BANK_REFUSES_TO_INCREASE_LOAN;
 			*ebx = MONEY32_UNDEFINED;
 			return;
@@ -319,7 +319,7 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		money -= loanDifference;
 		gBankLoan = newLoan;
-		RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) = money;
+		gInitialCash = money;
 		gCashEncrypted = ENCRYPT_MONEY(money);
 		finance_update_loan_hash();
 
@@ -365,5 +365,5 @@ void finance_shift_expenditure_table() {
  */
 void finance_reset_cash_to_initial()
 {
-	gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+	gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 }

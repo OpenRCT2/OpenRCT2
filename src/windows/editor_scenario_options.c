@@ -482,9 +482,9 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 {
 	switch (widgetIndex) {
 	case WIDX_INITIAL_CASH_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) < MONEY(1000000,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) += MONEY(500,00);
-			gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+		if (gInitialCash < MONEY(1000000,00)) {
+			gInitialCash += MONEY(500,00);
+			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3248, STR_NONE);
@@ -492,9 +492,9 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_INITIAL_CASH_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) > MONEY(0,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) -= MONEY(500,00);
-			gCashEncrypted = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32));
+		if (gInitialCash > MONEY(0,00)) {
+			gInitialCash -= MONEY(500,00);
+			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3249, STR_NONE);
@@ -504,7 +504,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_INITIAL_LOAN_INCREASE:
 		if (gBankLoan < MONEY(5000000,00)) {
 			gBankLoan += MONEY(1000,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3250, STR_NONE);
@@ -514,7 +514,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 	case WIDX_INITIAL_LOAN_DECREASE:
 		if (gBankLoan > MONEY(0,00)) {
 			gBankLoan -= MONEY(1000,00);
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = max(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3251, STR_NONE);
@@ -522,9 +522,9 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_MAXIMUM_LOAN_INCREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) < MONEY(5000000,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) += MONEY(1000,00);
-			gBankLoan = min(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+		if (gMaxBankLoan < MONEY(5000000,00)) {
+			gMaxBankLoan += MONEY(1000,00);
+			gBankLoan = min(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3252, STR_NONE);
@@ -532,9 +532,9 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 		window_invalidate(w);
 		break;
 	case WIDX_MAXIMUM_LOAN_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) > MONEY(0,00)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) -= MONEY(1000,00);
-			gBankLoan = min(gBankLoan, RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+		if (gMaxBankLoan > MONEY(0,00)) {
+			gMaxBankLoan -= MONEY(1000,00);
+			gBankLoan = min(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
 			window_error_open(3253, STR_NONE);
@@ -654,7 +654,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 
 		x = w->x + w->widgets[WIDX_INITIAL_CASH].left + 1;
 		y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
-		gfx_draw_string_left(dpi, 3246, &RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32), 0, x, y);
+		gfx_draw_string_left(dpi, 3246, &gInitialCash, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY) {
@@ -674,7 +674,7 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 
 		x = w->x + w->widgets[WIDX_MAXIMUM_LOAN].left + 1;
 		y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-		gfx_draw_string_left(dpi, 3246, &RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32), 0, x, y);
+		gfx_draw_string_left(dpi, 3246, &gMaxBankLoan, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY) {
