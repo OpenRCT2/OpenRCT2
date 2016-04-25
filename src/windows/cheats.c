@@ -59,7 +59,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_TAB_4,
 	WIDX_HIGH_MONEY,
 	WIDX_CLEAR_LOAN,
-	WIDX_GUEST_PARAMETERS_GROUP = 8, //Same as HIGH_MONEY as it is also the 8th widget but on a different page
+	WIDX_GUEST_PARAMETERS_GROUP = 8,		//Same as HIGH_MONEY as it is also the 8th widget but on a different page
 	WIDX_GUEST_HAPPINESS_MAX,
 	WIDX_GUEST_HAPPINESS_MIN,
 	WIDX_GUEST_ENERGY_MAX,
@@ -126,17 +126,17 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 
 #pragma region MEASUREMENTS
 
-#define WW				249
-#define WH				300
+#define WW			249
+#define WH			300
 #define TAB_HEIGHT		43
-#define XSPA			5												// X spacing
-#define YSPA			5												// Y spacing
-#define XOS				6 + XSPA										// X offset from left
-#define YOS				TAB_HEIGHT + YSPA								// Y offset from top (includes tabs height)
-#define BTNW			110												// button width
-#define BTNH			16												// button height
-#define OPTW			220												// Option (checkbox) width (two colums)
-#define OPTH			10												// Option (checkbox) height (two colums)
+#define XSPA			5								// X spacing
+#define YSPA			5								// Y spacing
+#define XOS			6 + XSPA							// X offset from left
+#define YOS			TAB_HEIGHT + YSPA						// Y offset from top (includes tabs height)
+#define BTNW			110								// button width
+#define BTNH			16								// button height
+#define OPTW			220								// Option (checkbox) width (two colums)
+#define OPTH			10								// Option (checkbox) height (two colums)
 #define GROUP_SPACE		6
 
 #define YPL(ROW)		((sint16)(YOS + ((BTNH + YSPA) * ROW)))
@@ -146,108 +146,108 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #define WPL(COL)		((sint16)(XPL(COL) + BTNW))
 #define OWPL			((sint16)(XPL(0) + OPTW))
 
-#define MIN_BTN_LEFT	((sint16)(XPL(1)))
-#define MIN_BTN_RIGHT	((sint16)(WPL(1) - (BTNW / 2)))
-#define MAX_BTN_LEFT	((sint16)(XPL(1.5)))
-#define MAX_BTN_RIGHT	((sint16)(WPL(1)))
+#define MIN_BTN_LEFT		((sint16)(XPL(1)))
+#define MIN_BTN_RIGHT		((sint16)(WPL(1) - (BTNW / 2)))
+#define MAX_BTN_LEFT		((sint16)(XPL(1.5)))
+#define MAX_BTN_RIGHT		((sint16)(WPL(1)))
 
 #define TXTO 3	//text horizontal offset from button left (for button text)
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,		STR_NONE },					/* panel / background	*/ \
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_CHEAT_TITLE,	STR_WINDOW_TITLE_TIP },		/* title bar			*/ \
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP },		/* close x button		*/ \
-	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,		STR_NONE },					/* tab content panel	*/ \
-	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,			STR_FINANCIAL_CHEATS_TIP },	/* tab 1				*/ \
-	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,			STR_GUEST_CHEATS_TIP },		/* tab 2				*/ \
-	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,			STR_PARK_CHEATS_TIP },		/* tab 3				*/ \
-	{ WWT_TAB,				1,	96,			126,	17,		43,			0x2000144E,			STR_RIDE_CHEATS_TIP }		/* tab 4				*/
+	{ WWT_FRAME,			0,		0,				WW - 1,	0,			WH - 1,			0x0FFFFFFFF,		STR_NONE },								/* panel / background		*/ \
+	{ WWT_CAPTION,			0,		1,				WW - 2,	1,			14,						STR_CHEAT_TITLE,		STR_WINDOW_TITLE_TIP },			/* title bar			*/ \
+	{ WWT_CLOSEBOX,			0,		WW - 13,			WW - 3,	2,			13,						STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },			/* close x button		*/ \
+	{ WWT_IMGBTN,			1,		0,				WW - 1,	43,			WH - 1,			0x0FFFFFFFF,		STR_NONE },								/* tab content panel		*/ \
+	{ WWT_TAB,			1,		3,				33,	17,			43,			0x2000144E,						STR_FINANCIAL_CHEATS_TIP },		/* tab 1			*/ \
+	{ WWT_TAB,			1,		34,				64,	17,			43,			0x2000144E,						STR_GUEST_CHEATS_TIP },			/* tab 2			*/ \
+	{ WWT_TAB,			1,		65,				95,	17,			43,			0x2000144E,						STR_PARK_CHEATS_TIP },			/* tab 3			*/ \
+	{ WWT_TAB,			1,		96,				126,	17,			43,			0x2000144E,						STR_RIDE_CHEATS_TIP }			/* tab 4			*/
 
 static rct_widget window_cheats_money_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_5K_MONEY,					STR_NONE },								// high money
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(3),			HPL(3),			STR_CHEAT_CLEAR_LOAN,				STR_NONE },								// Clear loan
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(1),			HPL(1),			STR_CHEAT_5K_MONEY,		STR_NONE },				// high money
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(3),			HPL(3),			STR_CHEAT_CLEAR_LOAN,		STR_NONE },				// Clear loan
 	{ WIDGETS_END },
 };
 
 static rct_widget window_cheats_guests_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(0),			HPL(12.5),		STR_CHEAT_SET_GUESTS_PARAMETERS,	STR_NONE },								// Guests parameters group frame
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(1),			HPL(1),			STR_MAX,							STR_NONE },								// happiness max
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(1),			HPL(1),			STR_MIN,							STR_NONE },								// happiness min
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(2),			HPL(2),			STR_MAX,							STR_NONE },								// energy max
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(2),			HPL(2),			STR_MIN,							STR_NONE },								// energy min
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(3),			HPL(3),			STR_MAX,							STR_NONE },								// hunger max
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(3),			HPL(3),			STR_MIN,							STR_NONE },								// hunger min
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(4),			HPL(4),			STR_MAX,							STR_NONE },								// thirst max
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(4),			HPL(4),			STR_MIN,							STR_NONE },								// thirst min
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(5),			HPL(5),			STR_MAX,							STR_NONE },								// nausea max
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(5),			HPL(5),			STR_MIN,							STR_NONE },								// nausea min
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(6),			HPL(6),			STR_MAX,							STR_NONE },								// nausea tolerance max
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(6),			HPL(6),			STR_MIN,							STR_NONE },								// nausea tolerance min
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(7),			HPL(7),			STR_MAX,							STR_NONE },								// bathroom max
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(7),			HPL(7),			STR_MIN,							STR_NONE },								// bathroom min
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(9),			HPL(9),			STR_CHEAT_MORE_THAN_1,				STR_NONE },								// ride intensity > 1
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(9),			HPL(9),			STR_CHEAT_LESS_THAN_15,				STR_NONE },								// ride intensity < 15
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL, 					YPL(10),		OHPL(10),		STR_CHEAT_IGNORE_INTENSITY,			STR_CHEAT_TIP_IGNORE_INTENSITY },					// guests ignore intensity
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL, 					YPL(11),		OHPL(11),		STR_CHEAT_DISABLE_VANDALISM,		STR_CHEAT_DISABLE_VANDALISM_TIP },		// disable vandalism
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_LITTERING,		STR_CHEAT_DISABLE_LITTERING_TIP },		// disable littering
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(14),		HPL(16.5),		STR_CHEAT_GIVE_ALL_GUESTS,			STR_NONE },								// Guests parameters group frame
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(15),		HPL(15),		STR_CHEAT_CURRENCY_FORMAT,			STR_NONE },								// give guests money
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(15),		HPL(15),		STR_SHOP_ITEM_PLURAL_PARK_MAP,		STR_NONE },								// give guests park maps
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(16),		HPL(16),		STR_SHOP_ITEM_PLURAL_BALLOON,		STR_NONE },								// give guests balloons
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(16),		HPL(16),		STR_SHOP_ITEM_PLURAL_UMBRELLA,		STR_NONE },								// give guests umbrellas
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(18),		HPL(18),		STR_CHEAT_LARGE_TRAM_GUESTS,		STR_CHEAT_TIP_LARGE_TRAM_GUESTS },		// large tram
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(18),		HPL(18),		STR_CHEAT_REMOVE_ALL_GUESTS,		STR_CHEAT_TIP_REMOVE_ALL_GUESTS },		// remove all guests
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(19),		HPL(19),		STR_CHEAT_EXPLODE,					STR_CHEAT_TIP_EXPLODE },				// explode guests
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,		WPL(1) + GROUP_SPACE,		YPL(0),			HPL(12.5),		STR_CHEAT_SET_GUESTS_PARAMETERS,		STR_NONE },				// Guests parameters group frame
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(1),			HPL(1),			STR_MAX,					STR_NONE },				// happiness max
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(1),			HPL(1),			STR_MIN,					STR_NONE },				// happiness min
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(2),			HPL(2),			STR_MAX,					STR_NONE },				// energy max
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(2),			HPL(2),			STR_MIN,					STR_NONE },				// energy min
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(3),			HPL(3),			STR_MAX,					STR_NONE },				// hunger max
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(3),			HPL(3),			STR_MIN,					STR_NONE },				// hunger min
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(4),			HPL(4),			STR_MAX,					STR_NONE },				// thirst max
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(4),			HPL(4),			STR_MIN,					STR_NONE },				// thirst min
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(5),			HPL(5),			STR_MAX,					STR_NONE },				// nausea max
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(5),			HPL(5),			STR_MIN,					STR_NONE },				// nausea min
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(6),			HPL(6),			STR_MAX,					STR_NONE },				// nausea tolerance max
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(6),			HPL(6),			STR_MIN,					STR_NONE },				// nausea tolerance min
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(7),			HPL(7),			STR_MAX,					STR_NONE },				// bathroom max
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(7),			HPL(7),			STR_MIN,					STR_NONE },				// bathroom min
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(9),			HPL(9),			STR_CHEAT_MORE_THAN_1,				STR_NONE },				// ride intensity > 1
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(9),			HPL(9),			STR_CHEAT_LESS_THAN_15,				STR_NONE },				// ride intensity < 15
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL, 				YPL(10),		OHPL(10),		STR_CHEAT_IGNORE_INTENSITY,			STR_CHEAT_IGNORE_INTENSITY_TIP },	// guests ignore intensity
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL, 				YPL(11),		OHPL(11),		STR_CHEAT_DISABLE_VANDALISM,			STR_CHEAT_DISABLE_VANDALISM_TIP },	// disable vandalism
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL,				YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_LITTERING,			STR_CHEAT_DISABLE_LITTERING_TIP },	// disable littering
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,		WPL(1) + GROUP_SPACE,		YPL(14),		HPL(16.5),		STR_CHEAT_GIVE_ALL_GUESTS,			STR_NONE },				// Guests parameters group frame
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(15),		HPL(15),		STR_CHEAT_CURRENCY_FORMAT,			STR_NONE },				// give guests money
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(15),		HPL(15),		STR_SHOP_ITEM_PLURAL_PARK_MAP,			STR_NONE },				// give guests park maps
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(16),		HPL(16),		STR_SHOP_ITEM_PLURAL_BALLOON,			STR_NONE },				// give guests balloons
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(16),		HPL(16),		STR_SHOP_ITEM_PLURAL_UMBRELLA,			STR_NONE },				// give guests umbrellas
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(18),		HPL(18),		STR_CHEAT_LARGE_TRAM_GUESTS,			STR_CHEAT_LARGE_TRAM_GUESTS_TIP },	// large tram
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(18),		HPL(18),		STR_CHEAT_REMOVE_ALL_GUESTS,			STR_CHEAT_REMOVE_ALL_GUESTS_TIP },	// remove all guests
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(19),		HPL(19),		STR_CHEAT_EXPLODE,				STR_CHEAT_EXPLODE_TIP },		// explode guests
 	{ WIDGETS_END },
 };
 
 //Strings for following moved to window_cheats_paint()
 static rct_widget window_cheats_misc_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(0),			HPL(6.25),		STR_CHEAT_GENERAL_GROUP,			STR_NONE },								// General group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1), 		HPL(1),			STR_CHEAT_OPEN_PARK,				STR_CHEAT_TIP_OPEN_PARK },								// open / close park
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1), 				YPL(1), 		HPL(1),			STR_CHEAT_PARK_PARAMETERS,			STR_CHEAT_TIP_PARK_PARAMETERS},			// Park parameters
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0), 				YPL(2), 		HPL(2),			STR_CHEAT_SANDBOX_MODE,				STR_CHEAT_SANDBOX_MODE_TIP},			// Sandbox mode (edit land ownership in-game)
-	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL, 					YPL(3),			OHPL(3),		STR_CHEAT_UNLOCK_PRICES,			STR_CHEAT_TIP_UNLOCK_PRICES }, 								// Unlock all prices
-	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0), 				YPL(4), 		HPL(4),			STR_FORCE_PARK_RATING,				STR_NONE},								// Force park rating
-	{ WWT_SPINNER,			1,		XPL(1),					WPL(1) - 10,			YPL(4) + 2,		HPL(4) - 3,		STR_NONE,							STR_NONE },								// park rating
-	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(4) + 3,		YPL(4) + 7,		STR_NUMERIC_UP,						STR_NONE },								// increase rating
-	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(4) + 8,		YPL(4) + 12,	STR_NUMERIC_DOWN,					STR_NONE },								// decrease rating
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(5), 		HPL(5),			STR_CHEAT_WIN_SCENARIO,				STR_NONE},								// Win scenario
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(5), 		HPL(5),			STR_CHEAT_HAVE_FUN,					STR_NONE},								// Have fun!
-	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(6),		HPL(6),		STR_CHEAT_NEVERENDING_MARKETING,			STR_CHEAT_TIP_NEVERENDING_MARKETING },				// neverending marketing campaigns
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(7.25),			HPL(9.5),		STR_CHEAT_CLIMATE_GROUP,			STR_NONE },								// Climate group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_TIP_FREEZE_CLIMATE },						// Freeze climate
-	{ WWT_DROPDOWN,			1,		XPL(1),					WPL(1),					YPL(9) + 2,		YPL(9) + 13,	STR_NONE,							STR_FORCE_WEATHER_TOOLTIP },			// Force weather
-	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 11,			WPL(1) - 1,				YPL(9) + 3,		YPL(9) + 12,	STR_DROPDOWN_GLYPH,					STR_FORCE_WEATHER_TOOLTIP },			// Force weather
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(11),		HPL(15.5),		STR_CHEAT_STAFF_GROUP,				STR_NONE },								// Staff group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(12), 		HPL(12),		STR_CHEAT_CLEAR_GRASS,				STR_NONE},								// Clear grass
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(12), 		HPL(12),		STR_CHEAT_MOWED_GRASS,				STR_NONE},								// Mowed grass
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(13), 		HPL(13),		STR_CHEAT_WATER_PLANTS,				STR_NONE},								// Water plants
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(13), 		HPL(13),		STR_CHEAT_FIX_VANDALISM,			STR_NONE},								// Fix vandalism
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(14), 		HPL(14),		STR_CHEAT_REMOVE_LITTER,			STR_NONE},								// Remove litter
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(15),		HPL(15),		STR_FAST,							STR_NONE },								// Fast staff
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(15),		HPL(15),		STR_NORMAL,							STR_NONE },								// Normal staff
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,		WPL(1) + GROUP_SPACE,		YPL(0),			HPL(6.25),		STR_CHEAT_GENERAL_GROUP,			STR_NONE },				// General group
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(1), 		HPL(1),			STR_CHEAT_OPEN_PARK,				STR_CHEAT_OPEN_PARK_TIP },		// open / close park
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1), 			YPL(1), 		HPL(1),			STR_CHEAT_PARK_PARAMETERS,			STR_CHEAT_PARK_PARAMETERS_TIP },	// Park parameters
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0), 			YPL(2), 		HPL(2),			STR_CHEAT_SANDBOX_MODE,				STR_CHEAT_SANDBOX_MODE_TIP },		// Sandbox mode (edit land ownership in-game)
+	{ WWT_CHECKBOX,			1,		XPL(0),				OWPL, 				YPL(3),			OHPL(3),		STR_CHEAT_UNLOCK_PRICES,			STR_CHEAT_UNLOCK_PRICES_TIP }, 		// Unlock all prices
+	{ WWT_CHECKBOX,			1,		XPL(0),				WPL(0), 			YPL(4), 		HPL(4),			STR_FORCE_PARK_RATING,				STR_NONE},				// Force park rating
+	{ WWT_SPINNER,			1,		XPL(1),				WPL(1) - 10,			YPL(4) + 2,		HPL(4) - 3,		STR_NONE,					STR_NONE },				// park rating
+	{ WWT_DROPDOWN_BUTTON,		1,		WPL(1) - 10,			WPL(1),				YPL(4) + 3,		YPL(4) + 7,		STR_NUMERIC_UP,					STR_NONE },				// increase rating
+	{ WWT_DROPDOWN_BUTTON,		1,		WPL(1) - 10,			WPL(1),				YPL(4) + 8,		YPL(4) + 12,		STR_NUMERIC_DOWN,				STR_NONE },				// decrease rating
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(5), 		HPL(5),			STR_CHEAT_WIN_SCENARIO,				STR_NONE},				// Win scenario
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(5), 		HPL(5),			STR_CHEAT_HAVE_FUN,				STR_NONE},				// Have fun!
+	{ WWT_CHECKBOX,			1,		XPL(0),				WPL(0),				YPL(6),			HPL(6),			STR_CHEAT_NEVERENDING_MARKETING,		STR_CHEAT_NEVERENDING_MARKETING_TIP },	// neverending marketing campaigns
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,		WPL(1) + GROUP_SPACE,		YPL(7.25),		HPL(9.5),		STR_CHEAT_CLIMATE_GROUP,			STR_NONE },				// Climate group
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_FREEZE_CLIMATE_TIP },		// Freeze climate
+	{ WWT_DROPDOWN,			1,		XPL(1),				WPL(1),				YPL(9) + 2,		YPL(9) + 13,		STR_NONE,					STR_FORCE_WEATHER_TOOLTIP },		// Force weather
+	{ WWT_DROPDOWN_BUTTON,		1,		WPL(1) - 11,			WPL(1) - 1,			YPL(9) + 3,		YPL(9) + 12,		STR_DROPDOWN_GLYPH,				STR_FORCE_WEATHER_TOOLTIP },		// Force weather
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,		WPL(1) + GROUP_SPACE,		YPL(11),		HPL(15.5),		STR_CHEAT_STAFF_GROUP,				STR_NONE },				// Staff group
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(12), 		HPL(12),		STR_CHEAT_CLEAR_GRASS,				STR_NONE},				// Clear grass
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(12), 		HPL(12),		STR_CHEAT_MOWED_GRASS,				STR_NONE},				// Mowed grass
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(13), 		HPL(13),		STR_CHEAT_WATER_PLANTS,				STR_NONE},				// Water plants
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(13), 		HPL(13),		STR_CHEAT_FIX_VANDALISM,			STR_NONE},				// Fix vandalism
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(14), 		HPL(14),		STR_CHEAT_REMOVE_LITTER,			STR_NONE},				// Remove litter
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(15),		HPL(15),		STR_FAST,					STR_NONE },				// Fast staff
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(15),		HPL(15),		STR_NORMAL,					STR_NONE },				// Normal staff
 
 
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(0),			HPL(0),			STR_CHEAT_RENEW_RIDES,				STR_CHEAT_TIP_RENEW_RIDES },								// Renew rides
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,		STR_CHEAT_TIP_MAKE_DESTRUCTABLE },								// All destructable
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_FIX_ALL_RIDES,			STR_CHEAT_TIP_FIX_ALL_RIDES },								// Fix all rides
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(11),		OHPL(11) + 8,	STR_CHEAT_UNLOCK_OPERATING_LIMITS,	STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,	STR_CHEAT_TIP_DISABLE_BRAKES_FAILURE }, 							// Disable brakes failure
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(10),		OHPL(10),		STR_CHEAT_DISABLE_BREAKDOWNS,		STR_CHEAT_TIP_DISABLE_BREAKDOWNS }, 							// Disable all breakdowns
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(8),			OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,		STR_CHEAT_TIP_BUILD_IN_PAUSE_MODE }, 							// Build in pause mode
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_CHEAT_RESET_CRASH_STATUS,		STR_CHEAT_TIP_RESET_CRASH_STATUS },				// Reset crash status
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2),			HPL(2),			STR_CHEAT_10_MINUTE_INSPECTIONS,	STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },	// 10 minute inspections
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,	STR_NONE }, 							// Show all operating modes
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(6),			OHPL(6),		STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,	STR_NONE }, 				// Show vehicles from other track types
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(0),			HPL(0),			STR_CHEAT_RENEW_RIDES,					STR_CHEAT_RENEW_RIDES_TIP },			// Renew rides
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,				STR_CHEAT_MAKE_DESTRUCTABLE_TIP },		// All destructable
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(1),			HPL(1),			STR_CHEAT_FIX_ALL_RIDES,				STR_CHEAT_FIX_ALL_RIDES_TIP },			// Fix all rides
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL,				YPL(11),		OHPL(11) + 8,		STR_CHEAT_UNLOCK_OPERATING_LIMITS,			STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP }		// 410 km/h lift hill etc.
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL,				YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,			STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP }, 	// Disable brakes failure
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL,				YPL(10),		OHPL(10),		STR_CHEAT_DISABLE_BREAKDOWNS,				STR_CHEAT_DISABLE_BREAKDOWNS_TIP }, 		// Disable all breakdowns
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL,				YPL(8),			OHPL(8),		STR_CHEAT_BUILD_IN_PAUSE_MODE,				STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP }, 		// Build in pause mode
+	{ WWT_CLOSEBOX,			1,		XPL(0),				WPL(0),				YPL(2),			HPL(2),			STR_CHEAT_RESET_CRASH_STATUS,				STR_CHEAT_RESET_CRASH_STATUS_TIP },		// Reset crash status
+	{ WWT_CLOSEBOX,			1,		XPL(1),				WPL(1),				YPL(2),			HPL(2),			STR_CHEAT_10_MINUTE_INSPECTIONS,			STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },		// 10 minute inspections
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL,				YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,			STR_NONE }, 					// Show all operating modes
+	{ WWT_CHECKBOX,			2,		XPL(0),				OWPL,				YPL(6),			OHPL(6),		STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,		STR_NONE }, 					// Show vehicles from other track types
 	{ WIDGETS_END },
 };
 
@@ -811,8 +811,8 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = CHEATS_MONEY_INCREMENT;
-		gfx_draw_string_left(dpi, STR_CHEAT_TIP_5K_MONEY,	(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
-		gfx_draw_string_left(dpi, STR_CHEAT_TIP_CLEAR_LOAN,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_5K_MONEY_TIP,	(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_CLEAR_LOAN_TIP,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
 		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(15) + TXTO);
