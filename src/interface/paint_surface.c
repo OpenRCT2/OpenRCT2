@@ -800,10 +800,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	for (int i = 0; i < 4; i++) {
 		int index;
 		rct_xy16 offset;
-		uint8 * offset_al;
-		uint8 * offset_cl;
-		uint8 * offset_ch;
-		uint8 * offset_ah;
+		const uint8 * offset_al;
+		const uint8 * offset_cl;
+		const uint8 * offset_ch;
+		const uint8 * offset_ah;
 
 		switch (i) {
 			case 0:
@@ -1305,6 +1305,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					offset = (struct rct_xy16) {1, 0};
 					box_size = (struct rct_xy16) {0x1E, 1};
 					box_offset = (struct rct_xy16) {1, 1};
+					// TODO: Fences on top tile get clipped after a while
 					break;
 
 				case 3:
