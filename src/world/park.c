@@ -109,9 +109,16 @@ void park_init()
 
 	gParkEntranceFee = MONEY(10, 00);
 	gPeepSpawns[0].x = UINT16_MAX;
-	RCT2_GLOBAL(0x013573F8, sint16) = -1;
-	RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16) = 127;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = 2;
+	gPeepSpawns[1].x = UINT16_MAX;
+	gResearchPriorities =
+		(1 << RESEARCH_CATEGORY_TRANSPORT) |
+		(1 << RESEARCH_CATEGORY_GENTLE) |
+		(1 << RESEARCH_CATEGORY_ROLLERCOASTER) |
+		(1 << RESEARCH_CATEGORY_THRILL) |
+		(1 << RESEARCH_CATEGORY_WATER) |
+		(1 << RESEARCH_CATEGORY_SHOP) |
+		(1 << RESEARCH_CATEGORY_SCENERYSET);
+	gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
 	gGuestInitialCash = MONEY(50,00); // Cash per guest (average)
 	gGuestInitialHappiness = calculate_guest_initial_happiness(50); // 50%

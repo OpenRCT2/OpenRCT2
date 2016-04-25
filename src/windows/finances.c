@@ -1263,7 +1263,7 @@ static void window_finances_research_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_WATER_RIDES:
 	case WIDX_SHOPS_AND_STALLS:
 	case WIDX_SCENERY_AND_THEMING:
-		activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
+		activeResearchTypes = gResearchPriorities;
 		activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
 		research_set_priority(activeResearchTypes);
 		break;
@@ -1298,7 +1298,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
 
-	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	int currentResearchLevel = gResearchFundingLevel;
 	dropdown_set_checked(currentResearchLevel, true);
 }
 
@@ -1340,17 +1340,17 @@ static void window_finances_research_invalidate(rct_window *w)
 	}
 
 	window_finances_set_pressed_tab(w);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL) {
+	if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL) {
 		window_finances_research_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
 		window_finances_research_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	}
-	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	int currentResearchLevel = gResearchFundingLevel;
 
 	// Current funding
 	window_finances_research_widgets[WIDX_RESEARCH_FUNDING].image = STR_NO_FUNDING + currentResearchLevel;
 
 	// Checkboxes
-	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
+	uint8 activeResearchTypes = gResearchPriorities;
 	int uncompletedResearchTypes = gResearchUncompletedCategories;
 	for (int i = 0; i < 7; i++) {
 		int mask = 1 << i;

@@ -856,7 +856,7 @@ void S4Importer::ImportResearch()
     research_remove_non_separate_vehicle_types();
 
     // Research funding / priority
-    uint16 activeResearchTypes = 0;
+    uint8 activeResearchTypes = 0;
     if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_ROLLERCOASTERS)
     {
         activeResearchTypes |= (1 << RESEARCH_CATEGORY_ROLLERCOASTER);
@@ -879,16 +879,16 @@ void S4Importer::ImportResearch()
     {
         activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERYSET);
     }
-    RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16) = activeResearchTypes;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = _s4.research_level;
+    gResearchPriorities = activeResearchTypes;
+    gResearchFundingLevel = _s4.research_level;
 
     // Research history
-    RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint8) = _s4.research_progress;
-    // RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) =
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint8) = _s4.next_research_item;
-    RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8) = _s4.next_research_category;
-    // RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8) =
-    // RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8) =
+    gResearchProgress = _s4.research_progress;
+    // gResearchProgressStage =
+    gResearchNextItem = _s4.next_research_item;
+    gResearchNextCategory = _s4.next_research_category;
+    // gResearchExpectedDay =
+    // gResearchExpectedMonth =
 
 }
 

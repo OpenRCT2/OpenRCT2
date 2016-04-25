@@ -102,7 +102,7 @@ void finance_pay_research()
 	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return;
 
-	level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	level = gResearchFundingLevel;
 	finance_payment(research_cost_table[level] / 4, RCT_EXPENDITURE_TYPE_RESEARCH);
 }
 
@@ -221,7 +221,7 @@ void finance_update_daily_profit()
 		}
 
 		// Research costs
-		uint8 level = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+		uint8 level = gResearchFundingLevel;
 		current_profit -= research_cost_table[level];
 
 		// Loan costs

@@ -76,29 +76,27 @@ void research_update_uncompleted_types()
  */
 static void research_calculate_expected_date()
 {
-	int progress = RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16);
-	int progressStage = RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8);
-	int researchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
-	int currentDay = gDateMonthTicks;
-	int currentMonth = gDateMonthsElapsed;
+	int progress = gResearchProgress;
+	int progressStage = gResearchProgressStage;
+	int researchLevel = gResearchFundingLevel;
 	int expectedDay, expectedMonth, dayQuotient, dayRemainder, progressRemaining, daysRemaining;
 
 	if (progressStage == RESEARCH_STAGE_INITIAL_RESEARCH || researchLevel == RESEARCH_FUNDING_NONE) {
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8) = 255;
+		gResearchExpectedDay = 255;
 	} else {
 		progressRemaining = progressStage == RESEARCH_STAGE_COMPLETING_DESIGN ? 0x10000 : 0x20000;
 		progressRemaining -= progress;
 		daysRemaining = (progressRemaining / _researchRate[researchLevel]) * 128;
 
-		expectedDay = currentDay + (daysRemaining & 0xFFFF);
+		expectedDay = gDateMonthTicks + (daysRemaining & 0xFFFF);
 		dayQuotient = expectedDay / 0x10000;
 		dayRemainder = expectedDay % 0x10000;
 
-		expectedMonth = date_get_month(currentMonth + dayQuotient + (daysRemaining >> 16));
+		expectedMonth = date_get_month(gDateMonthsElapsed + dayQuotient + (daysRemaining >> 16));
 		expectedDay = (dayRemainder * days_in_month[expectedMonth]) >> 16;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8) = expectedDay;
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8) = expectedMonth;
+		gResearchExpectedDay = expectedDay;
+		gResearchExpectedMonth = expectedMonth;
 	}
 }
 
@@ -116,7 +114,6 @@ static void research_next_design()
 {
 	rct_research_item *firstUnresearchedItem, *researchItem, tmp;
 	int ignoreActiveResearchTypes;
-	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
 
 	// Skip already researched items
 	firstUnresearchedItem = gResearchItems;
@@ -133,22 +130,22 @@ static void research_next_design()
 				researchItem = firstUnresearchedItem;
 				continue;
 			} else {
-				RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
-				RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_FINISHED_ALL;
+				gResearchProgress = 0;
+				gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
 				research_invalidate_related_windows();
 				// Reset funding to 0 if no more rides.
 				research_set_funding(0);
 				return;
 			}
-		} else if (ignoreActiveResearchTypes || (activeResearchTypes & (1 << researchItem->category))) {
+		} else if (ignoreActiveResearchTypes || (gResearchPriorities & (1 << researchItem->category))) {
 			break;
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32) = researchItem->entryIndex;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8) = researchItem->category;
-	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_DESIGNING;
+	gResearchNextItem = researchItem->entryIndex;
+	gResearchNextCategory = researchItem->category;
+	gResearchProgress = 0;
+	gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
 
 	// Bubble research item up until it is above the researched items separator
 	do {
@@ -250,28 +247,28 @@ void research_update()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) % 32 != 0)
 		return;
 
-	researchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	researchLevel = gResearchFundingLevel;
 
-	currentResearchProgress = RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16);
+	currentResearchProgress = gResearchProgress;
 	currentResearchProgress += _researchRate[researchLevel];
 	if (currentResearchProgress <= 0xFFFF) {
-		RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = currentResearchProgress;
+		gResearchProgress = currentResearchProgress;
 	} else {
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8)) {
+		switch (gResearchProgressStage) {
 		case RESEARCH_STAGE_INITIAL_RESEARCH:
 			research_next_design();
 			research_calculate_expected_date();
 			break;
 		case RESEARCH_STAGE_DESIGNING:
-			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = RESEARCH_STAGE_COMPLETING_DESIGN;
+			gResearchProgress = 0;
+			gResearchProgressStage = RESEARCH_STAGE_COMPLETING_DESIGN;
 			research_calculate_expected_date();
 			research_invalidate_related_windows();
 			break;
 		case RESEARCH_STAGE_COMPLETING_DESIGN:
-			research_finish_item(RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, sint32));
-			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
+			research_finish_item((sint32)gResearchNextItem);
+			gResearchProgress = 0;
+			gResearchProgressStage = 0;
 			research_calculate_expected_date();
 			research_update_uncompleted_types();
 			research_invalidate_related_windows();
@@ -338,8 +335,8 @@ void sub_684AC3(){
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
-	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16) = 0;
+	gResearchProgressStage = 0;
+	gResearchProgress = 0;
 }
 
 /**
@@ -565,10 +562,10 @@ void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, i
 				log_warning("Invalid research rate %d", fundingAmount);
 				return;
 			}
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8) = fundingAmount;
+			gResearchFundingLevel = fundingAmount;
 		}
 		else
-			RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8) = activeCategories;
+			gResearchPriorities = activeCategories;
 
 		window_invalidate_by_class(WC_FINANCES);
 		window_invalidate_by_class(WC_RESEARCH);
