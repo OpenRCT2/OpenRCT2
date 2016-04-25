@@ -21,6 +21,7 @@
 #include "paint_surface.h"
 #include "viewport.h"
 #include "../config.h"
+#include "../addresses.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -595,6 +596,80 @@ void viewport_surface_smooth_top_right()
 	}
 }
 
+void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
+{
+	if (edge != EDGE_TOPLEFT) {
+		return;
+	}
+
+	rct_map_element * esi = _dword_9E324C;
+
+	registers regs;
+	regs.dl = height / 16;
+	regs.ax = _dword_9E3282;
+	regs.cx = _dword_9E328A;
+
+	// save ecx
+	if (esi == NULL) {
+		regs.ah = 1;
+		regs.ch = 1;
+	}
+
+	// al + cl probably are self tile corners, while ah/ch are neighbour tile corners
+	if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+		return;
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
+		uint incline = (regs.cl - regs.al) + 1;
+
+		uint32 image_id = RCT2_GLOBAL(0x009E32A8, uint32) + 3 + incline; // var_c;
+
+		uint8 y = -((regs.al - regs.dl) * 16);
+		log_info("y: %d", y);
+
+		sub_68818E(image_id, 0, y, NULL);
+		return;
+	}
+
+	uint32 base_image_id = RCT2_GLOBAL(0x009E32A0, uint32) + 5; // var_04
+
+	uint8 cur_height = regs.ch;
+	if (regs.ch != regs.ah) {
+		// neightbour tile corners aren't level
+		uint32 image_offset = 3;
+		if (regs.ch > regs.ah) {
+			cur_height = regs.ah;
+			image_offset = 4;
+		}
+
+		if (cur_height != regs.al && cur_height != regs.cl) {
+			uint32 image_id = base_image_id + image_offset;
+			sub_98196C(image_id, 0, -2, 30, 0, 15, cur_height * 16, get_current_rotation());
+			cur_height++;
+		}
+	}
+
+	regs.ah = regs.cl;
+
+	while (cur_height < regs.al && cur_height < regs.ah) {
+		sub_98196C(base_image_id, 0, -2, 30, 0, 15, cur_height * 16, get_current_rotation());
+		cur_height++;
+	}
+
+	uint32 image_offset = 1;
+	if (cur_height >= regs.al) {
+		image_offset = 2;
+
+		if (cur_height >= regs.ah) {
+			return;
+		}
+	}
+
+	uint32 image_id = base_image_id + image_offset;
+	sub_98196C(image_id, 0, -2, 30, 0, 15, cur_height * 16, get_current_rotation());
+}
+
 void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 {
 	switch (edge) {
@@ -605,7 +680,8 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 			RCT2_CALLPROC_X(0x65F0D8, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 			break;
 		case EDGE_TOPLEFT:
-			RCT2_CALLPROC_X(0x65F63B, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
+			viewport_surface_draw_land_side_top(edge, height);
+			//RCT2_CALLPROC_X(0x65F63B, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 			break;
 		case EDGE_TOPRIGHT:
 			RCT2_CALLPROC_X(0x65F77D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
