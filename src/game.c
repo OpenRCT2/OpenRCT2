@@ -41,6 +41,7 @@
 #include "peep/peep.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
+#include "rct1.h"
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
@@ -933,7 +934,19 @@ bool game_load_save(const utf8 *path)
 		return false;
 	}
 
-	bool result = game_load_sv6(rw);
+	char *extension = strrchr(path, '.');
+	if (extension == NULL) {
+		return false;
+	}
+	extension++;
+
+	bool result = false;
+	if (_stricmp(extension, "sv6") == 0) {
+		result = game_load_sv6(rw);
+	} else if (_stricmp(extension, "sv4") == 0) {
+		result = rct1_load_saved_game(path);
+	}
+
 	SDL_RWclose(rw);
 
 	if (result) {
