@@ -399,7 +399,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (gConfigGeneral.debugging_tools) {
 		utf8 path[MAX_PATH];
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 		shorten_path(path, sizeof(path), scenario->path, w->width - 6);
 
 		const utf8 *pathPtr = path;
@@ -481,7 +481,9 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			safe_strcpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
 			int format = isDisabled ? 865 : (isHighlighted ? highlighted_format : unhighlighted_format);
 			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
-			if (isDisabled) RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+			if (isDisabled) {
+				gCurrentFontSpriteBase = -1;
+			}
 			gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 1, colour, &placeholderStringId);
 
 			// Check if scenario is completed

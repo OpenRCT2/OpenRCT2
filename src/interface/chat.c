@@ -73,8 +73,8 @@ void chat_draw()
 	char* lineCh = lineBuffer;
 	int x = _chatLeft;
 	int y = _chatBottom - (15 * 2);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontFlags = 0;
 	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
 		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
 			break;

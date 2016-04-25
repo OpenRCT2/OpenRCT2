@@ -175,10 +175,8 @@ static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	uint16 *currentFontFlags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
-	sint16 *currentFontSpriteBase = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
-	*currentFontFlags = 0;
-	*currentFontSpriteBase = 224;
+	gCurrentFontFlags = 0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_draw_string(dpi, (char*)0x009C383D, 1, dpi->x, dpi->y);
 
 	int x = 3;
@@ -231,7 +229,7 @@ static bool window_changelog_read_file()
 
 	_changelogLines = realloc(_changelogLines, _changelogNumLines * sizeof(char*));
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	_changelogLongestLineWidth = 0;
 	for (int i = 0; i < _changelogNumLines; i++) {
 		int width = gfx_get_string_width(_changelogLines[i]);

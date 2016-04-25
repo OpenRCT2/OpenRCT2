@@ -40,7 +40,7 @@ void money_effect_create_at(money32 value, int x, int y, int z)
 		stringId = 1399;
 	}
 	format_string(buffer, stringId, &value);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	moneyEffect->offset_x = -(gfx_get_string_width(buffer) / 2);
 	moneyEffect->wiggle = 0;
 }

@@ -874,12 +874,13 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 		format_string(ptr, stringId, NULL);
 
 		if (disableItemMovement) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
-			if ((colour & 0xFF) == 14 && _editorInventionsListDraggedItem == NULL)
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -2;
+			gCurrentFontSpriteBase = -1;
+			if ((colour & 0xFF) == 14 && _editorInventionsListDraggedItem == NULL) {
+				gCurrentFontSpriteBase = -2;
+			}
 			colour = 64 | w->colours[1];
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+			gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 			colour = 0;
 		}
 

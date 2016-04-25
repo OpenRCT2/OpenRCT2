@@ -1470,7 +1470,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 			// Draw checkmark
 			if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem->flags & OBJECT_SELECTION_FLAG_SELECTED)) {
 				x = 2;
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = colour == 14 ? -2 : -1;
+				gCurrentFontSpriteBase = colour == 14 ? -2 : -1;
 				colour2 = w->colours[1] & 0x7F;
 				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
 					colour2 |= 0x40;
@@ -1484,11 +1484,11 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 			char *buffer = utf8_write_codepoint(bufferWithColour, colour);
 			if (*listItem->flags & OBJECT_SELECTION_FLAG_6) {
 				colour = w->colours[1] & 0x7F;
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = -1;
+				gCurrentFontSpriteBase = -1;
 			}
 			else {
 				colour = 0;
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+				gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 			}
 
 			if (ridePage) {

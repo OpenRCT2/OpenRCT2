@@ -1627,7 +1627,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		gfx_draw_string_left(dpi, 2776, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 		gfx_draw_string(
 			dpi,
 			(char*)LanguagesDescriptors[gCurrentLanguage].native_name,

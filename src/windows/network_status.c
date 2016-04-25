@@ -177,7 +177,7 @@ static void window_network_status_invalidate(rct_window *w)
 static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	char buffer[sizeof(window_network_status_text) + 10];
 	char* lineCh = buffer;
 	lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);

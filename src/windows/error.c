@@ -109,11 +109,11 @@ void window_error_open(rct_string_id title, rct_string_id message)
 	if (dst == _window_error_text + 1)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width_new_lined(_window_error_text);
 	width = min(196, width);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(_window_error_text, width + 1, &numLines, &fontHeight);
 
 	_window_error_num_lines = numLines;

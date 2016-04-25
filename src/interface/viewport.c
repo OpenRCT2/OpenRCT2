@@ -1467,7 +1467,7 @@ void viewport_ride_entrance_exit_paint_setup(uint8 direction, int height, rct_ma
 			format_string(entrance_string, string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
 		uint16 string_width = gfx_get_string_width(entrance_string);
 		uint16 scroll = (gCurrentTicks / 2) % string_width;
@@ -1555,7 +1555,7 @@ void viewport_park_entrance_paint_setup(uint8 direction, int height, rct_map_ele
 			format_string(park_name, park_text_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 		uint16 string_width = gfx_get_string_width(park_name);
 		uint16 scroll = (gCurrentTicks / 2) % string_width;
 
@@ -1814,7 +1814,7 @@ void viewport_banner_paint_setup(uint8 direction, int height, rct_map_element* m
 		format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0x1C0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
 
 	uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
 	uint16 scroll = (gCurrentTicks / 2) % string_width;
@@ -2349,7 +2349,7 @@ static void viewport_draw_money_effects()
 
 	do {
 		format_string(buffer, ps->string_id, &ps->args);
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 		bool forceSpriteFont = false;
 		const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];

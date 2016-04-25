@@ -139,9 +139,9 @@ void console_draw(rct_drawpixelinfo *dpi)
 		return;
 
 	// Set font
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
-	int lineHeight = font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
+	gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
+	gCurrentFontFlags = 0;
+	int lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
 	int lines = 0;
 	int maxLines = ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;

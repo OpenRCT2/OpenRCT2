@@ -83,6 +83,10 @@ typedef struct {
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
+
+#define gCurrentFontSpriteBase		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16)
+#define gCurrentFontFlags			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16)
+
 extern uint8 gGamePalette[256 * 4];
 extern uint32 gPaletteEffectFrame;
 extern const uint16 palette_to_g1_offset[];

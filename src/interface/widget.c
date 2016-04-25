@@ -754,7 +754,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 
 		// fill it when checkbox is pressed
 		if (widget_is_pressed(w, widgetIndex)) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+			gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 			gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour & 0x7F, l, yMid - 5);
 		}
 	}
@@ -807,7 +807,7 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	r--;
 	b--;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 0xE0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	// Horizontal scrollbar
 	if (scroll->flags & HSCROLLBAR_VISIBLE)
@@ -1163,8 +1163,8 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	//gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontFlags = 0;
 
 	if (!active) {
 
