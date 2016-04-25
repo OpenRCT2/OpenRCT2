@@ -934,16 +934,12 @@ bool game_load_save(const utf8 *path)
 		return false;
 	}
 
-	char *extension = strrchr(path, '.');
-	if (extension == NULL) {
-		return false;
-	}
-	extension++;
-
+	uint32 extension_type = get_file_extension_type(path);
 	bool result = false;
-	if (_stricmp(extension, "sv6") == 0) {
+
+	if (extension_type == FILE_EXTENSION_SV6) {
 		result = game_load_sv6(rw);
-	} else if (_stricmp(extension, "sv4") == 0) {
+	} else if (extension_type == FILE_EXTENSION_SV4) {
 		result = rct1_load_saved_game(path);
 	}
 
@@ -959,7 +955,7 @@ bool game_load_save(const utf8 *path)
 		}
 		return true;
 	} else {
-		// If loading the SV6 failed, the current park state will be corrupted
+		// If loading the SV6 or SV4 failed, the current park state will be corrupted
 		// so just go back to the title screen.
 		title_load();
 		return false;
