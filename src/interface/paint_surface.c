@@ -22,7 +22,6 @@
 #include "viewport.h"
 #include "../config.h"
 
-
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
 	5, 7, 12, 14, 13, 15, 0, 0, 0, 0,
@@ -173,56 +172,56 @@ const uint8 byte_97B740[] = {
 };
 
 const uint32 dword_97B750[][2] = {
-	{1915,                                           1934},
-	{2086,                                           2105},
-	{2485,                                           2504},
-	{2542,                                           2561},
-	{2314,                                           2333},
-	{2371,                                           2390},
-	{2200,                                           2219},
-	{2143,                                           2162},
-	{2257 | COLOUR_BRIGHT_RED << 19 | 0x20000000,    2276 | COLOUR_BRIGHT_RED << 19 | 0x20000000},
-	{2257 | COLOUR_YELLOW << 19 | 0x20000000,        2276 | COLOUR_YELLOW << 19 | 0x20000000},
-	{2257 | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000, 2276 | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000},
-	{2257 | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,  2276 | COLOUR_BRIGHT_GREEN << 19 | 0x20000000},
-	{2029,                                           2048},
-	{1972,                                           1991},
-	{2428,                                           2447},
+	{SPR_TERRAIN_GRASS,                                          SPR_TERRAIN_GRASS_GRID},
+	{SPR_TERRAIN_SAND_YELLOW,                                    SPR_TERRAIN_SAND_YELLOW_GRID},
+	{SPR_TERRAIN_DIRT,                                           SPR_TERRAIN_DIRT_GRID},
+	{SPR_TERRAIN_ROCK,                                           SPR_TERRAIN_ROCK_GRID},
+	{SPR_TERRAIN_MARTIAN,                                        SPR_TERRAIN_MARTIAN_GRID},
+	{SPR_TERRAIN_CHECKERBOARD,                                   SPR_TERRAIN_CHECKERBOARD_GRID},
+	{SPR_TERRAIN_GRASS_CLUMPS,                                   SPR_TERRAIN_GRASS_CLUMPS_GRID},
+	{SPR_TERRAIN_ICE,                                            SPR_TERRAIN_ICE_GRID},
+	{SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | 0x20000000,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | 0x20000000},
+	{SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | 0x20000000,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | 0x20000000},
+	{SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000},
+	{SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | 0x20000000},
+	{SPR_TERRAIN_SAND_RED,                                       SPR_TERRAIN_SAND_RED_GRID},
+	{SPR_TERRAIN_SAND,                                           SPR_TERRAIN_SAND_GRID},
+	{SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID},
 };
 
 const uint32 dword_97B7C8[] = {
-	1953,
-	2124,
-	2523,
-	2580,
-	2352,
-	2409,
-	2238,
-	2181,
-	2295 | COLOUR_BRIGHT_RED << 19 | 0x20000000,
-	2295 | COLOUR_YELLOW << 19 | 0x20000000,
-	2295 | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000,
-	2295 | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,
-	2067,
-	2010,
-	2466,
+	SPR_TERRAIN_GRASS_UNDERGROUND,
+	SPR_TERRAIN_SAND_YELLOW_UNDERGROUND,
+	SPR_TERRAIN_DIRT_UNDERGROUND,
+	SPR_TERRAIN_ROCK_UNDERGROUND,
+	SPR_TERRAIN_MARTIAN_UNDERGROUND,
+	SPR_TERRAIN_CHECKERBOARD_UNDERGROUND,
+	SPR_TERRAIN_GRASS_CLUMPS_UNDERGROUND,
+	SPR_TERRAIN_ICE_UNDERGROUND,
+	SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_RED << 19 | 0x20000000,
+	SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_YELLOW << 19 | 0x20000000,
+	SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_PURPLE << 19 | 0x20000000,
+	SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_GREEN << 19 | 0x20000000,
+	SPR_TERRAIN_SAND_RED_UNDERGROUND,
+	SPR_TERRAIN_SAND_UNDERGROUND,
+	SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND,
 };
 
 const uint32 dword_97B804[] = {
-	28959,
-	28983,
-	28977,
-	28989,
-	28995,
-	28959,
-	29001,
-	29007,
-	28959,
-	28959,
-	28959,
-	28959,
-	28971,
-	28965
+	SPR_TERRAIN_PATTERN_GRASS,
+	SPR_TERRAIN_PATTERN_SAND_YELLOW,
+	SPR_TERRAIN_PATTERN_DIRT,
+	SPR_TERRAIN_PATTERN_ROCK,
+	SPR_TERRAIN_PATTERN_MARTIAN,
+	SPR_TERRAIN_PATTERN_GRASS,
+	SPR_TERRAIN_PATTERN_GRASS_CLUMPS,
+	SPR_TERRAIN_PATTERN_ICE,
+	SPR_TERRAIN_PATTERN_GRASS,
+	SPR_TERRAIN_PATTERN_GRASS,
+	SPR_TERRAIN_PATTERN_GRASS,
+	SPR_TERRAIN_PATTERN_GRASS,
+	SPR_TERRAIN_PATTERN_SAND_RED,
+	SPR_TERRAIN_PATTERN_SAND
 };
 
 const uint8 byte_97B83C[] = {
@@ -236,24 +235,24 @@ const uint8 byte_97B84A[] = {
 };
 
 const uint32 dword_97B858[][2] = {
-	{2739, 2758},
-	{2777, 2796},
-	{2815, 2834},
-	{2853, 2872},
+	{SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1_GRID},
+	{SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2_GRID},
+	{SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3_GRID},
+	{SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4_GRID},
 };
 
 const uint32 dword_97B878[][2] = {
-	{2891, 2910},
-	{2929, 2948},
-	{2967, 2986},
-	{3005, 3024},
+	{SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1_GRID},
+	{SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2_GRID},
+	{SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3_GRID},
+	{SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4_GRID},
 };
 
 const uint32 dword_97B898[][2] = {
-	{2701, 2720},
-	{2663, 2682},
-	{2701, 2720},
-	{2663, 2682}
+	{SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},
+	{SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID},
+	{SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},
+	{SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID}
 };
 
 
@@ -398,7 +397,7 @@ void viewport_surface_smooth_bottom_left()
 		}
 	}
 
-	uint32 image_id = local_9E3290 + 28921;
+	uint32 image_id = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT + local_9E3290;
 
 	paint_struct * out;
 	if (sub_68818E(image_id, 0, 0, &out)) {
@@ -461,7 +460,7 @@ void viewport_surface_smooth_bottom_right()
 		}
 	}
 
-	uint32 image_id = local_9E3290 + 28902;
+	uint32 image_id = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT + local_9E3290;
 
 	paint_struct * out;
 	if (sub_68818E(image_id, 0, 0, &out)) {
@@ -524,7 +523,7 @@ void viewport_surface_smooth_top_left()
 		}
 	}
 
-	uint32 image_id = local_9E3290 + 28940;
+	uint32 image_id = SPR_TERRAIN_EDGE_MASK_TOP_LEFT + local_9E3290;
 
 	paint_struct * out;
 	if (sub_68818E(image_id, 0, 0, &out)) {
@@ -587,7 +586,7 @@ void viewport_surface_smooth_top_right()
 		}
 	}
 
-	uint32 image_id = local_9E3290 + 28883;
+	uint32 image_id = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT + local_9E3290;
 
 	paint_struct * out;
 	if (sub_68818E(image_id, 0, 0, &out)) {
@@ -943,6 +942,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
 				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+					// TODO: SPR_TERRAIN_TRACK_DESIGNER ???
 					image_id = 2623;
 				}
 
@@ -1006,7 +1006,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 		if (do_it) {
 			assert(_dword_9E3278 < countof(byte_97B444));
-			ebx = 2599 + byte_97B444[_dword_9E3278];
+			ebx = SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[_dword_9E3278];
 			sub_68818E(ebx | ebp, 0, 0, NULL);
 		}
 	}
@@ -1018,6 +1018,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 		for (int i = 0; i < 2; ++i) {
 			if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
+				// TODO: SPR_TERRAIN_SELECTION_SQUARE_SIMPLE ??? (no variations)
 				sub_98196C(2624, 0, 0, 32, 32, 16, spawn->z * 16, get_current_rotation());
 
 				int offset = ((spawn->direction ^ 2) + get_current_rotation()) & 3;
@@ -1032,6 +1033,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		// loc_660E9A:
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
 			assert(ebx < countof(byte_97B444));
+			// TODO: SPR_TERRAIN_SELECTION_SQUARE?
 			sub_68818E(2625 + byte_97B444[ebx], 0, 0, NULL);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			// TODO: Fix this. Currently not working.
@@ -1047,6 +1049,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	    && !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 			assert(ebx < countof(byte_97B444));
+			// TODO: SPR_TERRAIN_SELECTION_DOTTED ???
 			sub_68818E(2644 + byte_97B444[ebx], 0, 0, NULL);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
@@ -1074,13 +1077,13 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				// Walls
 				// loc_661089:
 				uint32 eax = ((((mapSelectionType - 9) + get_current_rotation()) & 3) + 0x21) << 19;
-				uint32 image_id = (byte_97B444[ebx] + 0x20000BF6) | eax;
+				uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[ebx]) | eax | 0x20000000;
 				sub_68818E(image_id, 0, 0, NULL);
 			} else if (mapSelectionType >= 6) {
 				// loc_661051:(no jump)
 				// Selection split into four quarter segments
 				uint32 eax = ((((mapSelectionType - 6) + get_current_rotation()) & 3) + 0x27) << 19;
-				uint32 image_id = (byte_97B444[ebx] + 0x20000C09) | eax;
+				uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[ebx]) | eax | 0x20000000;
 				sub_68818E(image_id, 0, 0, NULL);
 			} else if (mapSelectionType <= 4) {
 				// Corners
@@ -1090,7 +1093,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				}
 
 				eax = (eax + 0x21) << 19;
-				uint32 image_id = (byte_97B444[ebx] + 0x20000BE3) | eax;
+				uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[ebx]) | eax | 0x20000000;
 				sub_68818E(image_id, 0, 0, NULL);
 			} else {
 				int local_ebx = ebx;
@@ -1115,7 +1118,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					}
 				}
 
-				int image_id = byte_97B444[local_ebx] + 0x21300BE3;
+				int image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_ebx]) | 0x21300000;
 
 				paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
 				sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, get_current_rotation());
@@ -1223,10 +1226,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				image_offset = byte_97B740[ebx & 0xF];
 			}
 
-			int image_id = image_offset + 0x610013B8;
+			int image_id = (SPR_WATER_MASK + image_offset) | 0x61000000;
 			sub_98196C(image_id, 0, 0, 32, 32, -1, dx, get_current_rotation());
 
-			sub_68818E(5053 + image_offset, 0, 0, NULL);
+			sub_68818E(SPR_WATER_OVERLAY + image_offset, 0, 0, NULL);
 
 			for (int i = 0; i <= 0x7C; i += 4) {
 				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);
