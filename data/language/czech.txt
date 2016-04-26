@@ -4111,6 +4111,7 @@ STR_5801    :Zakázat odhazování odpadků
 STR_5802    :{SMALLFONT}{BLACK}Návštěvníci nebudou odhazovat odpadky a zvracet
 STR_5803    :{SMALLFONT}{BLACK}Otočit vybraný prvek mapy
 STR_5804    :Vypnout zvuky
+STR_5805    :{SMALLFONT}{BLACK}Pokud zaškrtnete, bude váš server zařazen do{NEWLINE}veřejného seznamu, aby ho mohl kdokoliv najít
 
 
 ###############################################################################

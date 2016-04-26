@@ -4109,6 +4109,7 @@ STR_5801    :Desactivar basura
 STR_5802    :{SMALLFONT}{BLACK}Evita que los visitantes tiren basura o vomiten en los senderos.
 STR_5803    :{SMALLFONT}{BLACK}Rotar el elemento del mapa seleccionado.
 STR_5804    :Silenciar sonido
+STR_5805    :{SMALLFONT}{BLACK}Si se selecciona tu servidor será añadido a la lista de servidores publicos en donde cualquiera puede encontrar tu servidor.
 
 ##############
 # Escenarios #
