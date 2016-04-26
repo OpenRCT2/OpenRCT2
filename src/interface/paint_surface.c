@@ -699,53 +699,55 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 		}
 
 		// Tunnels
-		uint32 ebx = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		uint8 tunnelType = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+
+		regs.dh = curHeight;
 		uint32 saved_edx = regs.edx;
 		uint32 saved_eax = regs.eax;
-		regs.dl = regs.dh + stru_97B570[ebx][0];
+		regs.dh = 0;
+		regs.dl = curHeight + stru_97B570[tunnelType][0];
 
-		if (regs.dl > regs.ah) {
-			regs.dl -= stru_97B570[ebx][0];
-			ebx = byte_97B5B0[ebx];
-			RCT2_GLOBAL(0x9E3138, uint8) = ebx;
-			regs.dl += stru_97B570[ebx][0];
+		if (regs.dl > regs.ah || regs.dl > regs.al) {
+			regs.dl -= stru_97B570[tunnelType][0];
+			tunnelType = byte_97B5B0[tunnelType];
+		} else {
+			regs.dl -= stru_97B570[tunnelType][0];
 		}
 
-		regs.dl -= stru_97B570[ebx][0];
 		regs.dx <<= 4;
 		sint16 imageHeight = regs.dx;
-		regs.ah = stru_97B570[ebx][1];
+		regs.ah = stru_97B570[tunnelType][1];
 		//save edx
 
 		uint16 boundOffsetZ = regs.dx;
-		boundOffsetZ += word_97B590[ebx];
+		boundOffsetZ += word_97B590[tunnelType];
 		regs.ah /= 16;
 		if (boundOffsetZ < 16) {
 			boundOffsetZ += 16;
 			regs.ah -= 16;
 		}
 
-		uint32 esi = RCT2_GLOBAL(0x009E32AC, uint32); // var_10
-		uint32 image_id = stru_97B640[terrain][ebx];
+		uint32 image_id = stru_97B640[3][tunnelType];
 		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, imageHeight, 0, 0, boundOffsetZ, get_current_rotation());
+
+		regs.edx = saved_edx;
+		regs.eax = saved_eax;
 
 		// push edx
 		boundOffsetZ = regs.dh * 16;
-		ebx = RCT2_GLOBAL(0x9E3138 + 1, uint8);
-		regs.ah = stru_97B570[ebx][1] * 16;
-		boundOffsetZ += word_97B590[ebx];
-		if (boundOffsetZ != word_97B590[ebx]) {
+		sint8 boundHeight = stru_97B570[tunnelType][1] * 16;
+		boundOffsetZ += word_97B590[tunnelType];
+		if (boundOffsetZ == 0) {
 			boundOffsetZ += 16;
-			regs.ah -= 16;
+			boundHeight -= 16;
 		}
 
-		image_id = stru_97B640[terrain][ebx] + 1;
-		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, regs.dh * 16, 0, 31, boundOffsetZ, get_current_rotation());
+		image_id = stru_97B640[3][tunnelType] + 1;
+		sub_98197C(image_id, 30, 0, 32, 1, boundHeight - 1, regs.dh * 16, 0, 31, boundOffsetZ, get_current_rotation());
 
-		uint8 edi = RCT2_GLOBAL(0x9E3138 + 1, uint8);
 		regs.edx = saved_edx;
 		regs.eax = saved_eax;
-		curHeight += stru_97B570[edi][0];
+		curHeight += stru_97B570[tunnelType][0];
 
 		for (int offset = 0; offset <= 0x7E; offset += 4) {
 			RCT2_GLOBAL(0x9E3138 + offset, uint32) = RCT2_GLOBAL(0x9E3138 + 2 + offset, uint32);
