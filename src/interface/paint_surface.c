@@ -113,22 +113,25 @@ const struct corner_height corner_heights[] = {
 	{1, 1, 1, 1},
 };
 
+// bottom left tint
 const uint8 byte_97B524[] = {
 	2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
 	1, 2, 1, 3, 0, 3, 1, 5, 0
 };
 
+// top left tint
 const uint32 byte_97B537[] = {
 	2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
 	3, 2, 1, 2, 0, 3, 1, 5, 0
 };
 
-// slope -> darkness
+// top right tint
 const uint8 byte_97B54A[] = {
 	2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
 	3, 5, 1, 2, 2, 3, 1, 5, 0
 };
 
+// bottom right tint
 const uint8 byte_97B55D[] = {
 	2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
 	1, 5, 1, 3, 2, 3, 1, 5, 0
