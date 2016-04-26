@@ -1,3 +1,4 @@
+/* This script is based on elf_x86_64.xc with modifications for OpenRCT2 */
 /* Script for -z combreloc: combine and sort reloc sections */
 /* Copyright (C) 2014-2015 Free Software Foundation, Inc.
    Copying and distribution of this script, with or without modification,
@@ -11,7 +12,7 @@ SEARCH_DIR("/usr/x86_64-pc-linux-gnu/lib64"); SEARCH_DIR("/usr/lib"); SEARCH_DIR
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
-  PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x400000)); . = SEGMENT_START("text-segment", 0x400000) + SIZEOF_HEADERS;
+  PROVIDE (__executable_start = SEGMENT_START("text-segment", 0x7000000)); . = SEGMENT_START("text-segment", 0x7000000) + SIZEOF_HEADERS;
   .interp         : { *(.interp) }
   .note.gnu.build-id : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
