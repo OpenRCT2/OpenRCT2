@@ -22,6 +22,7 @@
 #include "viewport.h"
 #include "../config.h"
 #include "../addresses.h"
+#include "../world/map.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -504,18 +505,18 @@ void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self,
 	}
 }
 
-void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
+void viewport_surface_draw_land_side_top_right(enum edge edge, uint16 height)
 {
 	if (edge != EDGE_TOPLEFT) {
 		return;
 	}
 
-	rct_map_element * esi = _dword_9E324C;
+	rct_map_element * esi = _dword_9E3240;
 
 	registers regs;
 	regs.dl = height / 16;
-	regs.ax = _dword_9E3282;
-	regs.cx = _dword_9E328A;
+	regs.ax = _dword_9E327C;
+	regs.cx = _dword_9E3284;
 
 	// save ecx
 	if (esi == NULL) {
@@ -531,7 +532,7 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
 	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
 		uint incline = (regs.cl - regs.al) + 1;
 
-		uint32 image_id = RCT2_GLOBAL(0x009E32A8, uint32) + 3 + incline; // var_c;
+		uint32 image_id = RCT2_GLOBAL(0x009E32A8, uint32) + incline; // var_c;
 
 		uint8 y = -((regs.al - regs.dl) * 16);
 		log_info("y: %d", y);
@@ -540,7 +541,7 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
 		return;
 	}
 
-	uint32 base_image_id = RCT2_GLOBAL(0x009E32A0, uint32) + 5; // var_04
+	uint32 base_image_id = RCT2_GLOBAL(0x009E32A0, uint32); // var_04
 
 	uint8 cur_height = regs.ch;
 	if (regs.ch != regs.ah) {
@@ -553,7 +554,7 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
 
 		if (cur_height != regs.al && cur_height != regs.cl) {
 			uint32 image_id = base_image_id + image_offset;
-			sub_98196C(image_id, 0, -2, 30, 0, 15, cur_height * 16, get_current_rotation());
+			sub_98196C(image_id, -2, 0, 0, 30, 15, cur_height * 16, get_current_rotation());
 			cur_height++;
 		}
 	}
@@ -561,7 +562,7 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
 	regs.ah = regs.cl;
 
 	while (cur_height < regs.al && cur_height < regs.ah) {
-		sub_98196C(base_image_id, 0, -2, 30, 0, 15, cur_height * 16, get_current_rotation());
+		sub_98196C(base_image_id, -2, 0, 0, 30, 15, cur_height * 16, get_current_rotation());
 		cur_height++;
 	}
 
@@ -575,11 +576,110 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
 	}
 
 	uint32 image_id = base_image_id + image_offset;
-	sub_98196C(image_id, 0, -2, 30, 0, 15, cur_height * 16, get_current_rotation());
+	sub_98196C(image_id, -2, 0, 0, 30, 15, cur_height * 16, get_current_rotation());
 }
 
-void viewport_surface_draw_land_side(enum edge edge, uint16 height)
+void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
+	registers regs;
+
+	rct_xy8 offset;
+	rct_xy8 bounds;
+	switch (edge) {
+		case EDGE_TOPLEFT:
+			regs.al = self.corner_heights.top;
+			regs.cl = self.corner_heights.left;
+
+			regs.ah = neighbour.corner_heights.right;
+			regs.ch = neighbour.corner_heights.bottom;
+
+			offset.y = -2;
+			bounds.x = 30;
+			break;
+
+		case EDGE_TOPRIGHT:
+			regs.al = self.corner_heights.top;
+			regs.cl = self.corner_heights.right;
+
+			regs.ah = neighbour.corner_heights.left;
+			regs.ch = neighbour.corner_heights.bottom;
+
+			offset.x = -2;
+			bounds.y = 30;
+			break;
+	}
+
+	regs.al;
+	regs.dl = height;
+
+	// save ecx
+	if (neighbour.map_element == NULL) {
+		regs.ah = 1;
+		regs.ch = 1;
+	}
+
+	// al + cl probably are self tile corners, while ah/ch are neighbour tile corners
+	if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+		return;
+	}
+
+	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
+		uint8 incline = (regs.cl - regs.al) + 1;
+
+		uint32 image_id = stru_97B5C0[3][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
+		sint16 y = (regs.dl - regs.al) * 16;
+		sub_68818E(image_id, 0, y, NULL);
+		return;
+	}
+
+	uint32 base_image_id = stru_97B5C0[3][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
+
+	uint8 cur_height = min(regs.ch, regs.ah);
+	if (regs.ch != regs.ah) {
+		// neightbour tile corners aren't level
+		uint32 image_offset = 3;
+		if (regs.ch > regs.ah) {
+			image_offset = 4;
+		}
+
+		if (cur_height != regs.al && cur_height != regs.cl) {
+			uint32 image_id = base_image_id + image_offset;
+			sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
+			cur_height++;
+		}
+	}
+
+	regs.ah = regs.cl;
+
+	while (cur_height < regs.al && cur_height < regs.ah) {
+		sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
+		cur_height++;
+	}
+
+	uint32 image_offset = 1;
+	if (cur_height >= regs.al) {
+		image_offset = 2;
+
+		if (cur_height >= regs.ah) {
+			return;
+		}
+	}
+
+	uint32 image_id = base_image_id + image_offset;
+	sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
+}
+
+void viewport_surface_draw_land_side(enum edge edge, uint16 height, uint8 eax)
+{
+	viewport_surface_paint_struct_0 from = RCT2_GLOBAL(0x0097B5C0 + eax, viewport_surface_paint_struct_0);
+
+	if (edge)
+
+		RCT2_GLOBAL(0x009E329C, uint32) = from.var_00;
+	RCT2_GLOBAL(0x009E32A0, uint32) = from.var_04;
+	RCT2_GLOBAL(0x009E32A4, uint32) = from.var_08;
+	RCT2_GLOBAL(0x009E32A8, uint32) = from.var_0C;
+	RCT2_GLOBAL(0x009E32AC, uint32) = from.var_10;
 	return;
 
 	switch (edge) {
@@ -590,7 +690,7 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 			RCT2_CALLPROC_X(0x65F0D8, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 			break;
 		case EDGE_TOPLEFT:
-			viewport_surface_draw_land_side_top(edge, height);
+			//viewport_surface_draw_land_side_top(edge, height);
 			//RCT2_CALLPROC_X(0x65F63B, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
 			break;
 		case EDGE_TOPRIGHT:
@@ -1132,22 +1232,15 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			log_info("eax: %d", eax);
 		}
 
-		viewport_surface_paint_struct_0 from = RCT2_GLOBAL(0x0097B5C0 + eax, viewport_surface_paint_struct_0);
-		RCT2_GLOBAL(0x009E329C, uint32) = from.var_00;
-		RCT2_GLOBAL(0x009E32A0, uint32) = from.var_04;
-		RCT2_GLOBAL(0x009E32A4, uint32) = from.var_08;
-		RCT2_GLOBAL(0x009E32A8, uint32) = from.var_0C;
-		RCT2_GLOBAL(0x009E32AC, uint32) = from.var_10;
-
 		for (int i = 0; i <= 0x7C; i += 4) {
 			RCT2_GLOBAL(0x009E2F30 + i, uint32) = RCT2_GLOBAL(0x009E3138 + i, uint32);
 			RCT2_GLOBAL(0x009E2EAE + i, uint32) = RCT2_GLOBAL(0x009E30B6 + i, uint32);
 		}
 
-		viewport_surface_draw_land_side(EDGE_TOPLEFT, height);
-		viewport_surface_draw_land_side(EDGE_TOPRIGHT, height);
-		viewport_surface_draw_land_side(EDGE_BOTTOMLEFT, height);
-		viewport_surface_draw_land_side(EDGE_BOTTOMRIGHT, height);
+		viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
+		viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
+		//viewport_surface_draw_land_side(EDGE_BOTTOMLEFT, height, eax / 32);
+		//viewport_surface_draw_land_side(EDGE_BOTTOMRIGHT, height, eax / 32);
 	}
 
 	RCT2_GLOBAL(0x009E3298, uint16) = 0;
@@ -1170,7 +1263,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			int image_id = (SPR_WATER_MASK + image_offset) | 0x61000000;
 			sub_98196C(image_id, 0, 0, 32, 32, -1, dx, get_current_rotation());
 
-			sub_68818E(SPR_WATER_OVERLAY + image_offset, 0, 0, NULL);
+			//sub_68818E(SPR_WATER_OVERLAY + image_offset, 0, 0, NULL);
 
 			for (int i = 0; i <= 0x7C; i += 4) {
 				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);

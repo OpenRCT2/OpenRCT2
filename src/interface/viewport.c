@@ -1166,7 +1166,7 @@ bool sub_98198C(
  * @param[out] paint (ebp)
  * @return (!CF) success
  */
-bool sub_68818E(uint32 image_id, uint8 x, uint8 y, paint_struct ** paint)
+bool sub_68818E(uint32 image_id, uint16 x, uint16 y, paint_struct ** paint)
 {
 
 	//Not a paint struct but something similar

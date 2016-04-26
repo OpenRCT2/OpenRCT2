@@ -181,7 +181,7 @@ bool sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_bo
 bool sub_98197C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 bool sub_98198C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 bool sub_98199C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
-bool sub_68818E(uint32 image_id, uint8 x_offset, uint8 y_offset, paint_struct ** paint);
+bool sub_68818E(uint32 image_id, uint16 x_offset, uint16 y_offset, paint_struct ** paint);
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
