@@ -173,6 +173,15 @@ elif [[ $(uname) == "Linux" ]]; then
 				sudo dpkg -i libjansson-dev_2.7-1ubuntu1_i386.deb
 				sudo apt-get install -f
 				;;
+			"linux64")
+				sudo apt-get update
+				sudo apt-get install --no-install-recommends -y --force-yes cmake libsdl2-dev libsdl2-ttf-dev gcc-4.8 pkg-config g++ gcc libjansson-dev libspeex-dev libspeexdsp-dev libcurl4-openssl-dev libcrypto++-dev libfontconfig1-dev libfreetype6-dev libpng-dev
+				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson4_2.7-1ubuntu1_amd64.deb libjansson4_2.7-1ubuntu1_amd64.deb
+				download https://launchpad.net/ubuntu/+archive/primary/+files/libjansson-dev_2.7-1ubuntu1_amd64.deb libjansson-dev_2.7-1ubuntu1_amd64.deb
+				sudo dpkg -i libjansson4_2.7-1ubuntu1_amd64.deb
+				sudo dpkg -i libjansson-dev_2.7-1ubuntu1_amd64.deb
+				sudo apt-get install -f
+				;;
 			"windows")
 				sudo apt-get update
 				sudo apt-get install -y --force-yes binutils-mingw-w64-i686 gcc-mingw-w64-i686 g++-mingw-w64-i686 cmake
