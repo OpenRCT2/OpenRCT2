@@ -183,6 +183,8 @@ typedef struct {
 	uint8 space_required_y;							// 0x81
 	uint8 vehicle_additional_colour[32];			// 0x82
 	uint8 lift_hill_speed_num_circuits;				// 0xA2 0bCCCL_LLLL
+	void *elements;									// 0xA3 (data starts here in file)
+	size_t elementsSize;
 } rct_track_td6;
 
 typedef struct{
@@ -636,5 +638,8 @@ int track_get_actual_bank_3(rct_vehicle *vehicle, rct_map_element *mapElement);
 
 bool track_element_is_station(rct_map_element *trackElement);
 bool track_element_is_covered(int trackElementType);
+
+bool track_design_open(rct_track_td6 *td6, const utf8 *path);
+void track_design_index_create();
 
 #endif

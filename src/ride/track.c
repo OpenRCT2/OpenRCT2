@@ -5695,3 +5695,187 @@ bool track_element_is_covered(int trackElementType)
 		return false;
 	}
 }
+
+static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t srcLength);
+
+bool track_design_open(rct_track_td6 *td6, const utf8 *path)
+{
+	SDL_RWops *file = SDL_RWFromFile(path, "rb");
+	if (file != NULL) {
+		// Read whole file into a buffer
+		size_t bufferLength = (size_t)SDL_RWsize(file);
+		uint8 *buffer = (uint8*)malloc(bufferLength);
+		if (buffer == NULL) {
+			log_error("Unable to allocate memory for track design file.");
+			SDL_RWclose(file);
+			return false;
+		}
+		SDL_RWread(file, buffer, bufferLength, 1);
+		SDL_RWclose(file);
+
+		if (!sawyercoding_validate_track_checksum(buffer, bufferLength)) {
+			log_error("Track checksum failed.");
+			free(buffer);
+			return false;
+		}
+
+		// Decode the track data
+		uint8 *decoded = malloc(0x10000);
+		size_t decodedLength = sawyercoding_decode_td6(buffer, decoded, bufferLength);
+		free(buffer);
+		decoded = realloc(decoded, decodedLength);
+		if (decoded == NULL) {
+			log_error("failed to realloc");
+		} else {
+			track_design_open_from_buffer(td6, decoded, decodedLength);
+			free(decoded);
+			return true;
+		}
+	}
+	return false;
+}
+
+static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t srcLength)
+{
+	uint8 *readPtr = src;
+
+	// Clear top of track_design as this is not loaded from the td4 files
+	memset(&td6->track_spine_colour, 0, 67);
+
+	// Read start of track_design
+	copy(td6, &readPtr, 32);
+
+	uint8 version = td6->version_and_colour_scheme >> 2;
+	if (version > 2) {
+		log_error("Unsupported track design.");
+		return false;
+	}
+
+	// In TD6 there are 32 sets of two byte vehicle colour specifiers
+	// In TD4 there are 12 sets so the remaining 20 need to be read
+	if (version == 2) {
+		copy(&td6->vehicle_colours[12], &readPtr, 40);
+	}
+
+	copy(&td6->pad_48, &readPtr, 24);
+
+	// In TD4 (version AA/CF) and TD6 both start actual track data at 0xA3
+	if (version > 0) {
+		copy(&td6->track_spine_colour, &readPtr, version == 1 ? 140 : 67);
+	}
+
+	// Read the actual track data to memory directly after the passed in TD6 struct
+	size_t elementDataLength = srcLength - (readPtr - src);
+	uint8 *elementData = malloc(elementDataLength);
+	if (elementData == NULL) {
+		log_error("Unable to allocate memory for TD6 element data.");
+		return false;
+	}
+	copy(elementData, &readPtr, elementDataLength);
+	td6->elements = elementData;
+	td6->elementsSize = elementDataLength;
+
+	uint8 *final_track_element_location = elementData + elementDataLength;
+
+	// TD4 files require some extra work to be recognised as TD6.
+	if (version < 2) {
+		// Set any element passed the tracks to 0xFF
+		if (td6->type == RIDE_TYPE_MAZE) {
+			rct_maze_element* maze_element = (rct_maze_element*)elementData;
+			while (maze_element->all != 0) {
+				maze_element++;
+			}
+			maze_element++;
+			memset(maze_element, 255, final_track_element_location - (uint8*)maze_element);
+		} else {
+			rct_track_element* track_element = (rct_track_element*)elementData;
+			while (track_element->type != 255) {
+				track_element++;
+			}
+			memset(((uint8*)track_element) + 1, 255, final_track_element_location - (uint8*)track_element);
+		}
+
+		// Convert the colours from RCT1 to RCT2
+		for (int i = 0; i < 32; i++) {
+			rct_vehicle_colour *vehicleColour = &td6->vehicle_colours[i];
+			vehicleColour->body_colour = rct1_get_colour(vehicleColour->body_colour);
+			vehicleColour->trim_colour = rct1_get_colour(vehicleColour->trim_colour);
+		}
+
+		td6->track_spine_colour_rct1 = rct1_get_colour(td6->track_spine_colour_rct1);
+		td6->track_rail_colour_rct1 = rct1_get_colour(td6->track_rail_colour_rct1);
+		td6->track_support_colour_rct1 = rct1_get_colour(td6->track_support_colour_rct1);
+		
+		for (int i = 0; i < 4; i++) {
+			td6->track_spine_colour[i] = rct1_get_colour(td6->track_spine_colour[i]);
+			td6->track_rail_colour[i] = rct1_get_colour(td6->track_rail_colour[i]);
+			td6->track_support_colour[i] = rct1_get_colour(td6->track_support_colour[i]);
+		}
+
+		// Highest drop height is 1bit = 3/4 a meter in TD6
+		// Highest drop height is 1bit = 1/3 a meter in TD4
+		// Not sure if this is correct??
+		td6->highest_drop_height >>= 1;
+
+		// If it has boosters then sadly track has to be discarded.
+		if (td4_track_has_boosters(td6, elementData)) {
+			log_error("Track design contains RCT1 boosters which are not yet supported.");
+			free(td6->elements);
+			td6->elements = NULL;
+			return false;
+		}
+
+		// Convert RCT1 ride type to RCT2 ride type
+		uint8 rct1RideType = td6->type;
+		if (rct1RideType == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER) {
+			td6->type = RIDE_TYPE_WOODEN_ROLLER_COASTER;
+		} else if (rct1RideType == RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER) {
+			if (td6->vehicle_type == RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN) {
+				if (td6->ride_mode == RCT1_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) {
+					td6->ride_mode = RIDE_MODE_CONTINUOUS_CIRCUIT;
+				}
+			}
+		}
+
+		// All TD4s that use powered launch use the type that doesn't pass the station.
+		if (td6->ride_mode == RCT1_RIDE_MODE_POWERED_LAUNCH) {
+			td6->ride_mode = RIDE_MODE_POWERED_LAUNCH;
+		}
+
+		// Convert RCT1 vehicle type to RCT2 vehicle type
+		rct_object_entry *vehicle_object;
+		if (td6->type == RIDE_TYPE_MAZE) {
+			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
+		} else {
+			int vehicle_type = td6->vehicle_type;
+			if (vehicle_type == RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN &&
+				td6->type == RIDE_TYPE_INVERTED_ROLLER_COASTER
+				) {
+				vehicle_type = RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN;
+			}
+			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[vehicle_type];
+		}
+		memcpy(&td6->vehicle_object, vehicle_object, sizeof(rct_object_entry));
+
+		// Further vehicle colour fixes
+		for (int i = 0; i < 32; i++) {
+			td6->vehicle_additional_colour[i] = td6->vehicle_colours[i].trim_colour;
+
+			// RCT1 river rapids always had black seats.
+			if (rct1RideType == RCT1_RIDE_TYPE_RIVER_RAPIDS) {
+				td6->vehicle_colours[i].trim_colour = COLOUR_BLACK;
+			}
+		}
+
+		td6->space_required_x = 255;
+		td6->space_required_y = 255;
+		td6->lift_hill_speed_num_circuits = 5;
+	}
+
+	td6->var_50 = min(
+		td6->var_50,
+		RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + 5 + (td6->type * 8), uint8)
+	);
+
+	return true;
+}
