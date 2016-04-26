@@ -49,6 +49,17 @@ endif (DISABLE_NETWORK)
 
 option(STATIC "Create a static build.")
 
+option(FORCE64 "Force native (x86-64) build. Do not use, for experimental purposes only.")
+if (FORCE64)
+	set(TARGET_M "-m64")
+	set(OBJ_FORMAT "elf64-x86-64")
+	set(LINKER_SCRIPT "ld_script_x86_64.xc")
+else ()
+	set(TARGET_M "-m32")
+	set(OBJ_FORMAT "elf32-i386")
+	set(LINKER_SCRIPT "ld_script_i386.xc")
+endif ()
+
 PKG_CHECK_MODULES(PNG libpng>=1.6)
 if (NOT PNG_FOUND)
 	PKG_CHECK_MODULES(PNG libpng16)
@@ -88,13 +99,13 @@ if (UNIX)
 		# bespoke linker script so they can be placed at predefined VMAs.
 		add_custom_command(
 			OUTPUT openrct2_text_section.o
-			COMMAND objcopy --input binary --output elf32-i386 --binary-architecture i386 openrct2_text openrct2_text_section.o --rename-section .data=.rct2_text,contents,alloc,load,readonly,code
+			COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_text openrct2_text_section.o --rename-section .data=.rct2_text,contents,alloc,load,readonly,code
 			DEPENDS segfiles
 			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 		)
 		add_custom_command(
 			OUTPUT openrct2_data_section.o
-			COMMAND objcopy --input binary --output elf32-i386 --binary-architecture i386 openrct2_data openrct2_data_section.o --rename-section .data=.rct2_data,contents,alloc,load,readonly,data
+			COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_data openrct2_data_section.o --rename-section .data=.rct2_data,contents,alloc,load,readonly,data
 			DEPENDS segfiles
 			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 		)
@@ -107,7 +118,7 @@ if (UNIX)
 		)
 		# can't use GLOB here, as the files don't exist yet at cmake-time
 		set(RCT2_SECTIONS "${CMAKE_BINARY_DIR}/openrct2_data_section.o" "${CMAKE_BINARY_DIR}/openrct2_text_section.o")
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-T,\"${CMAKE_CURRENT_SOURCE_DIR}/distribution/linux/ld_script.xc\"")
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-T,\"${CMAKE_CURRENT_SOURCE_DIR}/distribution/linux/${LINKER_SCRIPT}\"")
 	endif (APPLE)
 endif (UNIX)
 set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
@@ -124,9 +135,9 @@ if (APPLE)
 endif (APPLE)
 
 # force 32bit build for now and set necessary flags to compile code as is
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=gnu99 -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -std=gnu++11 -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -m32")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
 
 if (MINGW)
