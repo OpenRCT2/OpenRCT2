@@ -53,7 +53,6 @@ typedef struct {
 	const char *locale;
 	const utf8 *english_name;
 	const utf8 *native_name;
-	const utf8 *path;
 	TTFFontSetDescriptor *font;
 	uint8 rct2_original_id;
 } language_descriptor;
