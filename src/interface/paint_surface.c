@@ -30,64 +30,87 @@ const uint8 byte_97B444[] = {
 	15, 0
 };
 
-// rct2: 0x97B464
-const rct_xy16 viewport_surface_paint_data_0[] = {
-	{32,  0},
-	{-32, 32},
-	{-64, 32},
-	{0,   -64}
+// rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
+const rct_xy16 viewport_surface_paint_data[][4] = {
+	{
+		{32,  0},
+		{-32, 32},
+		{-64, 32},
+		{0,   -64}
+	},
+	{
+		{0,   32},
+		{-64, 0},
+		{-32, -64},
+		{32,  -32}
+	},
+	{
+		{0,   -32},
+		{0,   0},
+		{-32, 0},
+		{-32, -32}
+	},
+	{
+		{-32, 0},
+		{-32, -32},
+		{0,   -32},
+		{0,   0}
+	}
 };
 
-// rct2: 0x97B474
-const rct_xy16 viewport_surface_paint_data_1[] = {
-	{0,   32},
-	{-64, 0},
-	{-32, -64},
-	{32,  -32}
+enum
+{
+	CORNER_TOP,
+	CORNER_RIGHT,
+	CORNER_BOTTOM,
+	CORNER_LEFT
 };
 
-// rct2: 0x97B484
-const rct_xy16 viewport_surface_paint_data_2[] = {
-	{0,   -32},
-	{0,   0},
-	{-32, 0},
-	{-32, -32}
+typedef struct corner_height
+{
+	uint8 top;
+	uint8 right;
+	uint8 bottom;
+	uint8 left;
 };
 
-// rct2: 0x97B494
-const rct_xy16 viewport_surface_paint_data_3[] = {
-	{-32, 0},
-	{-32, -32},
-	{0,   -32},
-	{0,   0}
-};
-
-const uint8 byte_97B4A4[] = {
-	0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-	1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-	0, 0, 0, 0, 1, 1, 1, 1, 1, 2,
-	1, 1
-};
-
-const uint8 byte_97B4C4[] = {
-	0, 0, 0, 0, 1, 1, 1, 1, 0, 0,
-	0, 0, 1, 1, 1, 1, 0, 0, 0, 0,
-	1, 1, 1, 1, 0, 0, 0, 0, 1, 1,
-	2, 1
-};
-
-const uint8 byte_97B4E4[] = {
-	0, 0, 1, 1, 0, 0, 1, 1, 0, 0,
-	1, 1, 0, 0, 1, 1, 0, 0, 1, 1,
-	0, 0, 1, 2, 0, 0, 1, 1, 0, 0,
-	1, 1
-};
-
-const uint8 byte_97B504[] = {
-	0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
-	0, 1, 0, 1, 0, 1, 0, 1, 0, 1,
-	0, 1, 0, 1, 0, 1, 0, 2, 0, 1,
-	0, 1
+/**
+ * rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
+ */
+const struct corner_height corner_heights[] = {
+//   T  R  B  L
+	{0, 0, 0, 0},
+	{0, 0, 1, 0},
+	{0, 0, 0, 1},
+	{0, 0, 1, 1},
+	{1, 0, 0, 0},
+	{1, 0, 1, 0},
+	{1, 0, 0, 1},
+	{1, 0, 1, 1},
+	{0, 1, 0, 0},
+	{0, 1, 1, 0},
+	{0, 1, 0, 1},
+	{0, 1, 1, 1},
+	{1, 1, 0, 0},
+	{1, 1, 1, 0},
+	{1, 1, 0, 1},
+	{1, 1, 1, 1},
+	{0, 0, 0, 0},
+	{0, 0, 1, 0},
+	{0, 0, 0, 1},
+	{0, 0, 1, 1},
+	{1, 0, 0, 0},
+	{1, 0, 1, 0},
+	{1, 0, 0, 1},
+	{1, 0, 1, 2},
+	{0, 1, 0, 0},
+	{0, 1, 1, 0},
+	{0, 1, 0, 1},
+	{0, 1, 2, 1},
+	{1, 1, 0, 0},
+	{1, 2, 1, 0},
+	{2, 1, 0, 1},
+	{1, 1, 1, 1},
 };
 
 const uint8 byte_97B524[] = {
@@ -100,6 +123,7 @@ const uint32 byte_97B537[] = {
 	3, 2, 1, 2, 0, 3, 1, 5, 0
 };
 
+// slope -> darkness
 const uint8 byte_97B54A[] = {
 	2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
 	3, 5, 1, 2, 2, 3, 1, 5, 0
@@ -225,9 +249,27 @@ const uint32 dword_97B804[] = {
 	SPR_TERRAIN_PATTERN_SAND
 };
 
+enum
+{
+	FLAG_DONT_SMOOTHEN = (1 << 0),
+	FLAG_DONT_SMOOTHEN_SELF = (1 << 1),
+};
+
 const uint8 byte_97B83C[] = {
-	0, 0, 0, 2, 2, 3, 0, 0, 3, 3,
-	3, 3, 0, 0
+	0, // GRASS
+	0, // SAND (YELLOW)
+	0, // DIRT
+	FLAG_DONT_SMOOTHEN_SELF, // ROCK
+	FLAG_DONT_SMOOTHEN_SELF, // MARTIAN
+	FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
+	0, // GRASS_CLUMPS
+	0, // ICE
+	FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
+	FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
+	FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
+	FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
+	0, // SAND_RED
+	0  // SAND
 };
 
 const uint8 byte_97B84A[] = {
@@ -298,6 +340,16 @@ enum
 	SEGMENT_D4 = (1 << 8),
 };
 
+typedef struct tile_descriptor tile_descriptor;
+
+struct tile_descriptor
+{
+	rct_map_element * map_element;
+	uint8 terrain;
+	uint8 slope;
+	struct corner_height corner_heights;
+};
+
 static void paint_setup_set_segment_support_height(int flags, uint16 height, uint8 segment_flags)
 {
 	for (int s = 0; s < 9; s++) {
@@ -314,12 +366,12 @@ static void paint_setup_set_support_height(uint16 height, uint8 segment_flags)
 	RCT2_GLOBAL(0x0141E9DA, uint8) = segment_flags;
 }
 
-uint32 viewport_surface_paint_setup_get_ebx(rct_map_element * mapElement, int cl)
+uint8 viewport_surface_paint_setup_get_ebx(rct_map_element * mapElement, int rotation)
 {
-	uint8 bl = mapElement->properties.surface.slope;
+	uint8 slope = mapElement->properties.surface.slope;
 
-	uint16 di = (bl & 0x0F) << cl;
-	uint32 ebx = bl & 0x10;
+	uint16 di = (slope & 0x0F) << rotation;
+	uint8 ebx = slope & 0x10;
 
 	di = ((di >> 4) | di) & 0x0F;
 	return ebx | di;
@@ -347,251 +399,104 @@ typedef struct
 /**
  * rct2: 0x0065E890
  */
-void viewport_surface_smooth_bottom_left()
+void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
+
+	if (neighbour.map_element == NULL) {
+		return;
+	}
+
+	uint32 maskImageBase;
+	uint8 neighbourCorners[2];
+	uint8 ownCorners[2];
+
+	switch (edge) {
+		case EDGE_BOTTOMLEFT:
+			maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
+			neighbourCorners[0] = neighbour.corner_heights.top;
+			neighbourCorners[1] = neighbour.corner_heights.right;
+			ownCorners[0] = self.corner_heights.left;
+			ownCorners[1] = self.corner_heights.bottom;
+			break;
+		case EDGE_BOTTOMRIGHT:
+			maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT;
+			neighbourCorners[0] = neighbour.corner_heights.top;
+			neighbourCorners[1] = neighbour.corner_heights.left;
+			ownCorners[0] = self.corner_heights.right;
+			ownCorners[1] = self.corner_heights.bottom;
+			break;
+		case EDGE_TOPLEFT:
+			maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_LEFT;
+			neighbourCorners[0] = neighbour.corner_heights.right;
+			neighbourCorners[1] = neighbour.corner_heights.bottom;
+			ownCorners[0] = self.corner_heights.top;
+			ownCorners[1] = self.corner_heights.left;
+			break;
+		case EDGE_TOPRIGHT:
+			maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT;
+			neighbourCorners[0] = neighbour.corner_heights.left;
+			neighbourCorners[1] = neighbour.corner_heights.bottom;
+			ownCorners[0] = self.corner_heights.top;
+			ownCorners[1] = self.corner_heights.right;
+			break;
+	}
+
+	if (ownCorners[0] != neighbourCorners[0] || ownCorners[1] != neighbourCorners[1]) {
+		// Only smoothen tiles that align
+		return;
+	}
+
 	registers regs;
-	regs.ax = _dword_9E3280;
-	regs.cx = _dword_9E3288;
 
-	uint8 temp = regs.cl;
-	regs.cl = regs.al;
-	regs.al = temp;
+	uint8 dh, cl;
+	switch(edge) {
+		case EDGE_BOTTOMLEFT:
+			dh = byte_97B524[byte_97B444[self.slope]];
+			cl = byte_97B54A[byte_97B444[neighbour.slope]];
+			break;
 
-	regs.esi = _dword_9E3248;
+		case EDGE_TOPLEFT:
+			dh = byte_97B537[byte_97B444[self.slope]];
+			cl = byte_97B55D[byte_97B444[neighbour.slope]];
+			break;
 
-	if (regs.ax != regs.cx) {
-		return;
+		case EDGE_BOTTOMRIGHT:
+			dh = byte_97B55D[byte_97B444[self.slope]];
+			cl = byte_97B537[byte_97B444[neighbour.slope]];
+			break;
+
+		case EDGE_TOPRIGHT:
+			dh = byte_97B54A[byte_97B444[self.slope]];
+			cl = byte_97B524[byte_97B444[neighbour.slope]];
+			break;
+
 	}
 
-	if (regs.esi == 0) {
-		return;
-	}
-
-	regs.ebp = _dword_9E3278;
-	regs.ebp = byte_97B444[regs.ebp];
-	uint32 local_9E3290 = regs.ebp;
-
-	regs.dh = byte_97B524[regs.ebp];
-
-	regs.ebp = _dword_9E3270;
-
-	regs.ecx = byte_97B444[regs.ebp];
-	regs.cl = byte_97B54A[regs.ecx];
-	regs.ebp = _dword_9E325C;
-	regs.eax = _dword_9E3264;
-
-	if (regs.ebp == regs.eax) {
-		if (regs.cl == regs.dh) {
+	if (self.terrain == neighbour.terrain) {
+		// same tint
+		if (cl == dh) {
 			return;
 		}
 
-		if (byte_97B83C[regs.eax] & 2) {
+		if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN_SELF) {
 			return;
 		}
 	} else {
-		if (byte_97B83C[regs.eax] & 1) {
+		if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN) {
 			return;
 		}
 
-		if (byte_97B83C[regs.ebp] & 1) {
+		if (byte_97B83C[neighbour.terrain] & FLAG_DONT_SMOOTHEN) {
 			return;
 		}
 	}
 
-	uint32 image_id = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT + local_9E3290;
+	uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
 	paint_struct * out;
 	if (sub_68818E(image_id, 0, 0, &out)) {
-		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
-		out->var_0C |= 1;
-	}
-}
-
-/**
- * rct2: 0x0065E946
- */
-void viewport_surface_smooth_bottom_right()
-{
-	registers regs;
-	regs.ax = _dword_9E327E;
-	regs.cx = _dword_9E3286;
-
-	uint8 temp = regs.cl;
-	regs.cl = regs.al;
-	regs.al = temp;
-
-	regs.esi = _dword_9E3244;
-
-	if (regs.ax != regs.cx) {
-		return;
-	}
-
-	if (regs.esi == 0) {
-		return;
-	}
-
-	regs.ebp = _dword_9E3278;
-	regs.ebp = byte_97B444[regs.ebp];
-	uint32 local_9E3290 = regs.ebp;
-
-	regs.dh = byte_97B55D[regs.ebp];
-
-	regs.ebp = _dword_9E326C;
-
-	regs.ecx = byte_97B444[regs.ebp];
-	regs.cl = byte_97B537[regs.ecx];
-	regs.ebp = _dword_9E3258;
-	regs.eax = _dword_9E3264;
-
-	if (regs.ebp == regs.eax) {
-		if (regs.cl == regs.dh) {
-			return;
-		}
-
-		if (byte_97B83C[regs.eax] & 2) {
-			return;
-		}
-	} else {
-		if (byte_97B83C[regs.eax] & 1) {
-			return;
-		}
-
-		if (byte_97B83C[regs.ebp] & 1) {
-			return;
-		}
-	}
-
-	uint32 image_id = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT + local_9E3290;
-
-	paint_struct * out;
-	if (sub_68818E(image_id, 0, 0, &out)) {
-		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
-		out->var_0C |= 1;
-	}
-}
-
-/**
- * rct: 0x0065E9FC
- */
-void viewport_surface_smooth_top_left()
-{
-	registers regs;
-	regs.ax = _dword_9E3282;
-	regs.cx = _dword_9E328A;
-
-	uint8 temp = regs.cl;
-	regs.cl = regs.al;
-	regs.al = temp;
-
-	regs.esi = _dword_9E324C;
-
-	if (regs.ax != regs.cx) {
-		return;
-	}
-
-	if (regs.esi == 0) {
-		return;
-	}
-
-	regs.ebp = _dword_9E3278;
-	regs.ebp = byte_97B444[regs.ebp];
-	uint32 local_9E3290 = regs.ebp;
-
-	regs.dh = byte_97B537[regs.ebp];
-
-	regs.ebp = _dword_9E3274;
-
-	regs.ecx = byte_97B444[regs.ebp];
-	regs.cl = byte_97B55D[regs.ecx];
-	regs.ebp = _dword_9E3260;
-	regs.eax = _dword_9E3264;
-
-	if (regs.ebp == regs.eax) {
-		if (regs.cl == regs.dh) {
-			return;
-		}
-
-		if (byte_97B83C[regs.eax] & 2) {
-			return;
-		}
-	} else {
-		if (byte_97B83C[regs.eax] & 1) {
-			return;
-		}
-
-		if (byte_97B83C[regs.ebp] & 1) {
-			return;
-		}
-	}
-
-	uint32 image_id = SPR_TERRAIN_EDGE_MASK_TOP_LEFT + local_9E3290;
-
-	paint_struct * out;
-	if (sub_68818E(image_id, 0, 0, &out)) {
-		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
-		out->var_0C |= 1;
-	}
-}
-
-/**
- * rct2: 0x0065EAB2
- */
-void viewport_surface_smooth_top_right()
-{
-	registers regs;
-	regs.ax = _dword_9E327C;
-	regs.cx = _dword_9E3284;
-
-	uint8 temp = regs.cl;
-	regs.cl = regs.al;
-	regs.al = temp;
-
-	regs.esi = _dword_9E3240;
-
-	if (regs.ax != regs.cx) {
-		return;
-	}
-
-	if (regs.esi == 0) {
-		return;
-	}
-
-	regs.ebp = _dword_9E3278;
-	regs.ebp = byte_97B444[regs.ebp];
-	uint32 local_9E3290 = regs.ebp;
-
-	regs.dh = byte_97B54A[regs.ebp];
-
-	regs.ebp = _dword_9E3268;
-
-	regs.ecx = byte_97B444[regs.ebp];
-	regs.cl = byte_97B524[regs.ecx];
-	regs.ebp = _dword_9E3254;
-	regs.eax = _dword_9E3264;
-
-	if (regs.ebp == regs.eax) {
-		if (regs.cl == regs.dh) {
-			return;
-		}
-
-		if (byte_97B83C[regs.eax] & 2) {
-			return;
-		}
-	} else {
-		if (byte_97B83C[regs.eax] & 1) {
-			return;
-		}
-
-		if (byte_97B83C[regs.ebp] & 1) {
-			return;
-		}
-	}
-
-	uint32 image_id = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT + local_9E3290;
-
-	paint_struct * out;
-	if (sub_68818E(image_id, 0, 0, &out)) {
-		out->var_04 = dword_97B804[regs.ebp] + regs.ecx;
+		// set content and enable masking
+		out->var_04 = dword_97B804[neighbour.terrain] + cl;
 		out->var_0C |= 1;
 	}
 }
@@ -672,6 +577,8 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint16 height)
 
 void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 {
+	return;
+
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
 			//RCT2_CALLPROC_X(0x65EB7D, 0x99999999, 0xAAAAAAAA, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
@@ -826,6 +733,8 @@ void viewport_surface_draw_land_side(enum edge edge, uint16 height)
 
 void viewport_surface_draw_water_side(enum edge edge, uint16 height)
 {
+	return;
+
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
 			RCT2_CALLPROC_X(0x65F8B9, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
@@ -861,95 +770,56 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	uint8 cl = get_current_rotation();
 
-	_dword_9E3250 = mapElement;
-	_dword_9E3264 = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
-	uint32 edi = viewport_surface_paint_setup_get_ebx(mapElement, cl);
-	_dword_9E3278 = edi;
+	uint32 _ebp = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
+	uint32 surfaceShape = viewport_surface_paint_setup_get_ebx(mapElement, cl);
 
 	rct_xy16 base = {
 		.x = RCT2_GLOBAL(0x9DE568, sint16),
 		.y = RCT2_GLOBAL(0x9DE56C, sint16)
 	};
 
-	// Start loop
+	struct corner_height ch = corner_heights[surfaceShape];
+	tile_descriptor selfDescriptor = {
+		.map_element = mapElement,
+		.slope = surfaceShape,
+		.terrain = _ebp,
+		.corner_heights = {
+			.top = height / 16 + ch.top,
+			.right = height / 16 + ch.right,
+			.bottom = height / 16 + ch.bottom,
+			.left = height / 16 + ch.left,
+		}
+	};
+
+	tile_descriptor tileDescriptors[5];
+	tileDescriptors[0] = selfDescriptor;
+
 	for (int i = 0; i < 4; i++) {
-		int index;
-		rct_xy16 offset;
-		const uint8 * offset_al;
-		const uint8 * offset_cl;
-		const uint8 * offset_ch;
-		const uint8 * offset_ah;
+		rct_xy16 offset = viewport_surface_paint_data[i][get_current_rotation()];
+		rct_xy16 position = {.x = base.x + offset.x, .y = base.y + offset.y};
 
-		switch (i) {
-			case 0:
-				index = 2;
-				offset = viewport_surface_paint_data_0[get_current_rotation()];
-				offset_al = byte_97B4E4;
-				offset_cl = byte_97B504;
-				offset_ah = byte_97B4C4;
-				offset_ch = byte_97B4A4;
-				break;
-
-			case 1:
-				index = 1;
-				offset = viewport_surface_paint_data_1[get_current_rotation()];
-				offset_al = byte_97B4A4;
-				offset_cl = byte_97B504;
-				offset_ah = byte_97B4C4;
-				offset_ch = byte_97B4E4;
-				break;
-
-			case 2:
-				index = 3;
-				offset = viewport_surface_paint_data_2[get_current_rotation()];
-				offset_al = byte_97B4C4;
-				offset_cl = byte_97B4E4;
-				offset_ah = byte_97B4A4;
-				offset_ch = byte_97B504;
-				break;
-
-			case 3:
-				index = 0;
-				offset = viewport_surface_paint_data_3[get_current_rotation()];
-				offset_al = byte_97B4C4;
-				offset_cl = byte_97B4A4;
-				offset_ah = byte_97B4E4;
-				offset_ch = byte_97B504;
-				break;
+		if (position.x > 0x2000 || position.y > 0x2000) {
+			continue;
 		}
 
-		rct_xy16 axbp = {.x = base.x + offset.x, .y = base.y + offset.y};
-		RCT2_GLOBAL(0x9E3240 + index * 4, rct_map_element *) = NULL;
-
-		if (axbp.x > 0x2000 || axbp.y > 0x2000) {
-			continue; // TODO: use continue instead
-		}
-
-		rct_map_element * surfaceElement = map_get_surface_element_at(axbp.x / 32, axbp.y / 32);
+		rct_map_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
 		if (surfaceElement == NULL) {
-			continue; // TODO: use continue instead
+			continue;
 		}
 
-		RCT2_GLOBAL(0x9E3240 + index * 4, rct_map_element *) = surfaceElement;
-		RCT2_GLOBAL(0x9E3254 + index * 4, uint32) = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
+		tileDescriptors[i + 1].map_element = surfaceElement;
+		tileDescriptors[i + 1].terrain = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
 		uint32 ebx = viewport_surface_paint_setup_get_ebx(surfaceElement, cl);
-		RCT2_GLOBAL(0x9E3268 + index * 4, uint32) = ebx;
+		tileDescriptors[i + 1].slope = ebx;
 
-		uint8 al = height / 16;
-		uint8 ah = surfaceElement->base_height / 2;
-
-		assert(edi < countof(byte_97B4C4));
-		assert(ebx < countof(byte_97B4C4));
-		uint8 cl = al + offset_cl[edi];
-		uint8 ch = ah + offset_ch[ebx];
-		al += offset_al[edi];
-		ah += offset_ah[ebx];
-
-		RCT2_GLOBAL(0x9E327C + index * 2, uint16) = ah << 8 | al;
-		RCT2_GLOBAL(0x9E3284 + index * 2, uint16) = ch << 8 | cl;
+		uint8 baseHeight = surfaceElement->base_height / 2;
+		struct corner_height ch = corner_heights[ebx];
+		tileDescriptors[i + 1].corner_heights.top = baseHeight + ch.top;
+		tileDescriptors[i + 1].corner_heights.right = baseHeight + ch.right;
+		tileDescriptors[i + 1].corner_heights.bottom = baseHeight + ch.bottom;
+		tileDescriptors[i + 1].corner_heights.left = baseHeight + ch.left;
 	}
 
-	// end loop
 
 	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
 		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
@@ -964,13 +834,6 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		sub_98196C(image_id, 16, 16, 1, 1, 0, height, get_current_rotation());
 	}
 
-
-	//RCT2_CALLPROC_X(0x660AAB, 0, 0, direction, height, (int) mapElement, 0, 0);
-
-	uint32 _ebp = _dword_9E3264;
-	uint32 ebx = _dword_9E3278;
-
-	//push ebx + ecx + esi
 
 	bool has_surface = false;
 	uint16 di = RCT2_GLOBAL(0x9E323C, uint8);
@@ -995,8 +858,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			}
 		}
 
-		assert(ebx < countof(byte_97B444));
-		uint8 image_offset = byte_97B444[ebx];
+		assert(surfaceShape < countof(byte_97B444));
+		uint8 image_offset = byte_97B444[surfaceShape];
 		int image_id;
 		uint32 ebp = _ebp;
 		switch (branch) {
@@ -1108,9 +971,9 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
 		// loc_660E9A:
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
-			assert(ebx < countof(byte_97B444));
+			assert(surfaceShape < countof(byte_97B444));
 			// TODO: SPR_TERRAIN_SELECTION_SQUARE?
-			sub_68818E(2625 + byte_97B444[ebx], 0, 0, NULL);
+			sub_68818E(2625 + byte_97B444[surfaceShape], 0, 0, NULL);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			// TODO: Fix this. Currently not working.
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -1124,9 +987,9 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
 	    && !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
-			assert(ebx < countof(byte_97B444));
+			assert(surfaceShape < countof(byte_97B444));
 			// TODO: SPR_TERRAIN_SELECTION_DOTTED ???
-			sub_68818E(2644 + byte_97B444[ebx], 0, 0, NULL);
+			sub_68818E(2644 + byte_97B444[surfaceShape], 0, 0, NULL);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -1153,13 +1016,13 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				// Walls
 				// loc_661089:
 				uint32 eax = ((((mapSelectionType - 9) + get_current_rotation()) & 3) + 0x21) << 19;
-				uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[ebx]) | eax | 0x20000000;
+				uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | 0x20000000;
 				sub_68818E(image_id, 0, 0, NULL);
 			} else if (mapSelectionType >= 6) {
 				// loc_661051:(no jump)
 				// Selection split into four quarter segments
 				uint32 eax = ((((mapSelectionType - 6) + get_current_rotation()) & 3) + 0x27) << 19;
-				uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[ebx]) | eax | 0x20000000;
+				uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | 0x20000000;
 				sub_68818E(image_id, 0, 0, NULL);
 			} else if (mapSelectionType <= 4) {
 				// Corners
@@ -1169,10 +1032,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				}
 
 				eax = (eax + 0x21) << 19;
-				uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[ebx]) | eax | 0x20000000;
+				uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | 0x20000000;
 				sub_68818E(image_id, 0, 0, NULL);
 			} else {
-				int local_ebx = ebx;
+				int local_ebx = surfaceShape;
 				int local_height = height;
 				// Water tool
 				if (mapElement->properties.surface.terrain & 0x1F) {
@@ -1187,7 +1050,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 						} else {
 							registers regs = {};
 
-							regs.bl = (ebx ^ 0xF) << 2;
+							regs.bl = (surfaceShape ^ 0xF) << 2;
 							regs.bh = regs.bl >> 4;
 							local_ebx = (regs.bl & 0xC) | (regs.bh & 0x3); // other way around?
 						}
@@ -1226,7 +1089,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				eax = g_sprite_list[6556].vehicle.var_44;
 			}
 
-			uint32 image_id = (0x20000BE3 + byte_97B444[ebx]) | eax;
+			uint32 image_id = (0x20000BE3 + byte_97B444[surfaceShape]) | eax;
 			sub_68818E(image_id, 0, 0, NULL);
 		}
 	}
@@ -1236,11 +1099,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
 	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_BASE)
 	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE)) {
-		// loc_661194:
-		viewport_surface_smooth_top_left();
-		viewport_surface_smooth_top_right();
-		viewport_surface_smooth_bottom_left();
-		viewport_surface_smooth_bottom_right();
+		viewport_surface_smoothen_edge(EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
+		viewport_surface_smoothen_edge(EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
+		viewport_surface_smoothen_edge(EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
+		viewport_surface_smoothen_edge(EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
 	}
 
 
@@ -1248,7 +1110,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_BASE)
 	    && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 
-		uint8 image_offset = byte_97B444[ebx];
+		uint8 image_offset = byte_97B444[surfaceShape];
 		uint32 base_image = _ebp;
 		if (get_current_rotation() & 1) {
 			base_image = byte_97B84A[base_image];
@@ -1299,7 +1161,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 			int image_offset = 0;
 			if (dx <= ax) {
-				image_offset = byte_97B740[ebx & 0xF];
+				image_offset = byte_97B740[surfaceShape & 0xF];
 			}
 
 			int image_id = (SPR_WATER_MASK + image_offset) | 0x61000000;
@@ -1411,7 +1273,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				image_5 = image_3;
 			}
 
-			int local_ebx = ebx;
+			int local_ebx = surfaceShape;
 			int local_height = height;
 			int image_id = 0;
 			if (!(local_ebx & bit_1)) { // first
@@ -1443,7 +1305,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
 
-	switch (ebx) {
+	switch (surfaceShape) {
 		default:
 			// loc_661C2C
 			//     00
