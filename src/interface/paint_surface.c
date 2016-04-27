@@ -823,7 +823,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	uint8 cl = get_current_rotation();
 
-	uint32 _ebp = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
+	uint32 terrain_type = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
 	uint32 surfaceShape = viewport_surface_paint_setup_get_ebx(mapElement, cl);
 
 	rct_xy16 base = {
@@ -835,7 +835,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	tile_descriptor selfDescriptor = {
 		.map_element = mapElement,
 		.slope = surfaceShape,
-		.terrain = _ebp,
+		.terrain = terrain_type,
 		.corner_heights = {
 			.top = height / 16 + ch.top,
 			.right = height / 16 + ch.right,
@@ -915,7 +915,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		assert(surfaceShape < countof(byte_97B444));
 		uint8 image_offset = byte_97B444[surfaceShape];
 		int image_id;
-		uint32 ebp = _ebp;
+		uint32 ebp = terrain_type;
 		switch (branch) {
 			case 0:
 				// loc_660C90
@@ -1165,7 +1165,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	    && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 
 		uint8 image_offset = byte_97B444[surfaceShape];
-		uint32 base_image = _ebp;
+		uint32 base_image = terrain_type;
 		if (get_current_rotation() & 1) {
 			base_image = byte_97B84A[base_image];
 		}
