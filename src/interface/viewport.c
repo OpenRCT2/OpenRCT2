@@ -1937,13 +1937,13 @@ static void sub_68B3FB(int x, int y)
 			viewport_track_paint_setup(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
-			//RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)map_element, 0, 0);
+			RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)map_element, 0, 0);
 			break;
 		case MAP_ELEMENT_TYPE_ENTRANCE:
 			viewport_entrance_paint_setup(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_FENCE:
-			//RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, height, (int)map_element, 0, 0);
+			RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, height, (int)map_element, 0, 0);
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
 			RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (int)map_element, 0, 0);
