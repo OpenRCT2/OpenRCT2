@@ -1077,7 +1077,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 							local_height = waterHeight;
 							local_ebx = 0;
 						} else {
-							registers regs = {};
+							registers regs = { 0 };
 
 							regs.bl = (surfaceShape ^ 0xF) << 2;
 							regs.bh = regs.bl >> 4;
@@ -1209,7 +1209,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		// loc_66195F:
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_PARK;
 
-		registers regs = {};
+		registers regs = { 0 };
 		regs.al = mapElement->properties.surface.ownership & 0x0F;
 		regs.ax = regs.ax << get_current_rotation();
 		regs.ah = regs.al >> 4;
