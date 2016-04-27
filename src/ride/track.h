@@ -583,6 +583,11 @@ typedef struct {
 	bool looped;
 } track_circuit_iterator;
 
+typedef struct {
+	utf8 *name;
+	utf8 *path;
+} track_design_file_ref;
+
 extern const rct_trackdefinition *gFlatRideTrackDefinitions;
 extern const rct_trackdefinition *gTrackDefinitions;
 
@@ -640,6 +645,9 @@ bool track_element_is_station(rct_map_element *trackElement);
 bool track_element_is_covered(int trackElementType);
 
 bool track_design_open(rct_track_td6 *td6, const utf8 *path);
+
 void track_design_index_create();
+size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rideType, const char *entry);
+utf8 *track_design_get_name_from_path(const utf8 *path);
 
 #endif

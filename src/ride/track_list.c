@@ -28,7 +28,7 @@ void track_design_index_create()
 {
 	track_design_index_dispose();
 
-	log_verbose("saving track list index (tracks.idx)");
+	log_verbose("saving track design index (tracks.idx)");
 
 	utf8 path[MAX_PATH];
 	track_design_index_get_path(path, sizeof(path));
@@ -44,6 +44,74 @@ void track_design_index_create()
 		SDL_RWclose(file);
 		track_design_index_dispose();
 	}
+}
+
+size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rideType, const char *entry)
+{
+	log_verbose("reading track design index (tracks.idx)");
+
+	utf8 path[MAX_PATH];
+	track_design_index_get_path(path, sizeof(path));
+
+	// Return list
+	size_t refsCount = 0;
+	size_t refsCapacity = 0;
+	track_design_file_ref *refs = NULL;
+
+	SDL_RWops *file = SDL_RWFromFile(path, "rb");
+	if (file != NULL) {
+		uint32 tdidxMagicNumber, tdidxVersion, tdidxCount;
+		SDL_RWread(file, &tdidxMagicNumber, 4, 1);
+		SDL_RWread(file, &tdidxVersion, 4, 1);
+		SDL_RWread(file, &tdidxCount, 4, 1);
+		if (tdidxMagicNumber != TrackIndexMagicNumber) {
+			log_error("invalid track index file");
+			SDL_RWclose(file);
+			return 0;
+		}
+		if (tdidxVersion != TrackIndexVersion) {
+			log_error("unsupported track index file version");
+			SDL_RWclose(file);
+			return 0;
+		}
+
+		for (uint32 i = 0; i < tdidxCount; i++) {
+			td_index_item tdItem;
+			SDL_RWread(file, &tdItem, sizeof(td_index_item), 1);
+
+			if (tdItem.ride_type != rideType) continue;
+			if (entry != NULL && _strcmpi(entry, tdItem.ride_entry) != 0) continue;
+
+			size_t nextIndex = refsCount;
+			if (nextIndex >= refsCapacity) {
+				refsCapacity = max(8, refsCapacity * 2);
+				refs = realloc(refs, refsCapacity * sizeof(track_design_file_ref));
+				if (refs == NULL) {
+					log_fatal("Unable to allocate more memory.");
+					exit(-1);
+				}
+			}
+			refs[nextIndex].name = track_design_get_name_from_path(tdItem.path);
+			refs[nextIndex].path = _strdup(tdItem.path);
+			refsCount++;
+		}
+	}
+
+	*tdRefs = realloc(refs, refsCount * sizeof(track_design_file_ref));
+	return refsCount;
+}
+
+utf8 *track_design_get_name_from_path(const utf8 *path)
+{
+	const char *filename = path_get_filename(path);
+	const char *lastDot = strrchr(filename, '.');
+	size_t nameLength;
+	if (lastDot == NULL) {
+		nameLength = strlen(filename);
+	} else {
+		nameLength = (size_t)(lastDot - filename);
+	}
+	return strndup(filename, nameLength);
 }
 
 static void track_design_index_scan()
@@ -147,6 +215,5 @@ static void track_design_index_dispose()
 static void track_design_index_get_path(utf8 * buffer, size_t bufferLength)
 {
 	platform_get_user_directory(buffer, NULL);
-	safe_strcat(buffer, "tracks.idx", bufferLength);
+	safe_strcat(buffer, "tracks2.idx", bufferLength);
 }
-

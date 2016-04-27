@@ -4118,6 +4118,8 @@ STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities:
 STR_5810    :Disable train length limit
 STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train
 STR_5812    :Show multiplayer window
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #
