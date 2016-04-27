@@ -1243,7 +1243,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			int image_id = (SPR_WATER_MASK + image_offset) | 0x61000000;
 			sub_98196C(image_id, 0, 0, 32, 32, -1, dx, get_current_rotation());
 
-			//sub_68818E(SPR_WATER_OVERLAY + image_offset, 0, 0, NULL);
+			sub_68818E(SPR_WATER_OVERLAY + image_offset, 0, 0, NULL);
 
 			for (int i = 0; i <= 0x7C; i += 4) {
 				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);
