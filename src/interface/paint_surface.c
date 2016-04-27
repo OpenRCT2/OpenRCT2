@@ -602,12 +602,15 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 ter
 	sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
 }
 
-void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
 
 	rct_xy8 offset = {0, 0};
 	rct_xy8 bounds = {0, 0};
+	rct_xy16 tunnelBounds = {1, 1};
+
+	uint32 tunnelArray;
 	switch (edge) {
 		case EDGE_BOTTOMLEFT:
 			regs.al = self.corner_heights.left;
@@ -618,17 +621,23 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 
 			offset.x = 30;
 			bounds.y = 30;
+			tunnelBounds.x = 32;
+
+			tunnelArray = 0x9E3138;
 			break;
 
 		case EDGE_BOTTOMRIGHT:
-			regs.al = self.corner_heights.top;
-			regs.cl = self.corner_heights.right;
+			regs.al = self.corner_heights.right;
+			regs.cl = self.corner_heights.bottom;
 
-			regs.ah = neighbour.corner_heights.left;
-			regs.ch = neighbour.corner_heights.bottom;
+			regs.ah = neighbour.corner_heights.top;
+			regs.ch = neighbour.corner_heights.left;
 
-			offset.x = -2;
-			bounds.y = 30;
+			offset.y = 30;
+			bounds.x = 30;
+			tunnelBounds.y = 32;
+
+			tunnelArray = 0x009E30B6;
 			break;
 
 		default:
@@ -644,9 +653,13 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 		return;
 	}
 
-	uint32 base_image_id = stru_97B5C0[terrain][0];
+	uint32 base_image_id = stru_97B5C0[edgeStyle][0];
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
-		base_image_id = stru_97B5C0[terrain][1];
+		base_image_id = stru_97B5C0[edgeStyle][1];
+	}
+
+	if (edge == EDGE_BOTTOMRIGHT) {
+		base_image_id += 5;
 	}
 
 	uint8 curHeight = min(regs.ah, regs.ch);
@@ -659,7 +672,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 		}
 
 		if (curHeight != regs.al && curHeight != regs.cl) {
-			uint32 image_id = stru_97B5C0[3][0] + image_offset;
+			uint32 image_id = base_image_id + image_offset;
 			sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, get_current_rotation());
 			curHeight++;
 		}
@@ -684,11 +697,11 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 			return;
 		}
 
-		if (curHeight != RCT2_GLOBAL(0x9E3138, uint8)) {
+		if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
 			// Normal walls
-			while (curHeight > RCT2_GLOBAL(0x9E3138, uint8)) {
+			while (curHeight > RCT2_GLOBAL(tunnelArray, uint8)) {
 				for (int offset = 0; offset <= 0x7E; offset += 4) {
-					RCT2_GLOBAL(0x9E3138 + offset, uint32) = RCT2_GLOBAL(0x9E3138 + 2 + offset, uint32);
+					RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
 				}
 			}
 
@@ -699,7 +712,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 		}
 
 		// Tunnels
-		uint8 tunnelType = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		uint8 tunnelType = RCT2_GLOBAL(tunnelArray + 1, uint8);
 		uint8 tunnelHeight = stru_97B570[tunnelType][0];
 		sint16 zOffset = curHeight;
 
@@ -716,8 +729,9 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 			boundBoxLength -= 16;
 		}
 
-		uint32 image_id = stru_97B640[3][tunnelType];
-		sub_98197C(image_id, 30, 0, 32, 1, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, get_current_rotation());
+
+		uint32 image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, get_current_rotation());
 
 
 		boundBoxOffsetZ = curHeight * 16;
@@ -728,13 +742,13 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 			boundBoxLength -= 16;
 		}
 
-		image_id = stru_97B640[3][tunnelType] + 1;
-		sub_98197C(image_id, 30, 0, 32, 1, boundBoxLength - 1, curHeight * 16, 0, 31, boundBoxOffsetZ, get_current_rotation());
+		image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
+		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, 0, 31, boundBoxOffsetZ, get_current_rotation());
 
 		curHeight += stru_97B570[tunnelType][0];
 
 		for (int offset = 0; offset <= 0x7E; offset += 4) {
-			RCT2_GLOBAL(0x9E3138 + offset, uint32) = RCT2_GLOBAL(0x9E3138 + 2 + offset, uint32);
+			RCT2_GLOBAL(tunnelArray + offset, uint32) = RCT2_GLOBAL(tunnelArray + 2 + offset, uint32);
 		}
 	}
 }
@@ -1146,7 +1160,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		viewport_surface_draw_land_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_draw_land_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
 		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
-		//viewport_surface_draw_land_side_bottom(EDGE_BOTTOMRIGHT, height, eax / 32);
+		viewport_surface_draw_land_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
+
 	}
 
 	RCT2_GLOBAL(0x009E3298, uint16) = 0;
