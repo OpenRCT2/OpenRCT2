@@ -50,13 +50,44 @@ int gfx_load_g1()
 	file = SDL_RWFromFile(get_file_path(PATH_ID_G1), "rb");
 	if (file != NULL) {
 		if (SDL_RWread(file, &header, 8, 1) == 1) {
-			// number of elements is stored in g1.dat, but because the entry headers are static, this can't be variable until
-			// made into a dynamic array
+			/* We need to load in the data file, which has an `offset` field,
+			 * which is supposed to hold a pointer, but is only 32 bit long.
+			 * We will load a 32 bit version of rct_g1_element and then convert
+			 * pointers to however long our machine wants them.
+			 */
+
+			// Size: 0x10
+			typedef struct {
+				uint32 offset;			// 0x00 note: uint32 always!
+				sint16 width;			// 0x04
+				sint16 height;			// 0x06
+				sint16 x_offset;		// 0x08
+				sint16 y_offset;		// 0x0A
+				uint16 flags;			// 0x0C
+				uint16 zoomed_offset;	// 0x0E
+			} rct_g1_element_32bit;
+
+			/* number of elements is stored in g1.dat, but because the entry
+			 * headers are static, this can't be variable until made into a
+			 * dynamic array.
+			 */
 			header.num_entries = 29294;
 
 			// Read element headers
 			g1Elements = calloc(324206, sizeof(rct_g1_element));
-			SDL_RWread(file, g1Elements, header.num_entries * sizeof(rct_g1_element), 1);
+
+			rct_g1_element_32bit *g1Elements32 = calloc(324206, sizeof(rct_g1_element_32bit));
+			SDL_RWread(file, g1Elements32, header.num_entries * sizeof(rct_g1_element_32bit), 1);
+			for (int i = 0; i < header.num_entries; i++) {
+				g1Elements[i].offset        = (uint8*)g1Elements32[i].offset;
+				g1Elements[i].width         = g1Elements32[i].width;
+				g1Elements[i].height        = g1Elements32[i].height;
+				g1Elements[i].x_offset      = g1Elements32[i].x_offset;
+				g1Elements[i].y_offset      = g1Elements32[i].y_offset;
+				g1Elements[i].flags         = g1Elements32[i].flags;
+				g1Elements[i].zoomed_offset = g1Elements32[i].zoomed_offset;
+			}
+			free(g1Elements32);
 
 			// Read element data
 			_g1Buffer = malloc(header.total_size);
@@ -66,7 +97,7 @@ int gfx_load_g1()
 
 			// Fix entry data offsets
 			for (i = 0; i < header.num_entries; i++)
-				g1Elements[i].offset += (int)_g1Buffer;
+				g1Elements[i].offset += (uintptr_t)_g1Buffer;
 
 			// Successful
 			return 1;
