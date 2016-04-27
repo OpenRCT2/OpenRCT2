@@ -73,32 +73,33 @@ enum {
 };
 
 typedef struct paint_struct paint_struct;
+typedef struct attached_paint_struct attached_paint_struct;
 
-struct paint_struct{
+struct attached_paint_struct {
 	uint32 image_id;		// 0x00
 	uint32 var_04;
-	uint16 attached_x;		// 0x08
-	uint16 attached_y;		// 0x0A
-	union {
-		struct {
-			uint8 var_0C;
-			uint8 pad_0D;
-			paint_struct* next_attached_ps;	//0x0E
-			uint16 pad_12;
-		};
-		struct {
-			uint16 attached_z; // 0x0C
-			uint16 attached_z_end; // 0x0E
-			uint16 attached_x_end; // 0x10
-			uint16 attached_y_end; // 0x12
-		};
-	};
+	uint16 x;		// 0x08
+	uint16 y;		// 0x0A
+	uint8 var_0C;
+	uint8 pad_0D;
+	attached_paint_struct* next;	//0x0E
+};
+
+struct paint_struct {
+	uint32 image_id;		// 0x00
+	uint32 var_04;
+	uint16 bound_box_x;		// 0x08
+	uint16 bound_box_y;		// 0x0A
+	uint16 bound_box_z; // 0x0C
+	uint16 bound_box_z_end; // 0x0E
+	uint16 bound_box_x_end; // 0x10
+	uint16 bound_box_y_end; // 0x12
 	uint16 x;				// 0x14
 	uint16 y;				// 0x16
 	uint16 var_18;
 	uint8 var_1A;
 	uint8 var_1B;
-	paint_struct* attached_ps;	//0x1C
+	attached_paint_struct* attached_ps;	//0x1C
 	paint_struct* var_20;
 	paint_struct* next_quadrant_ps; // 0x24
 	uint8 sprite_type;		//0x28
@@ -177,7 +178,6 @@ bool sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_bo
 bool sub_98197C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 bool sub_98198C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 bool sub_98199C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
-bool sub_68818E(uint32 image_id, uint16 x_offset, uint16 y_offset, paint_struct ** paint);
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
