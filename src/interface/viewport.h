@@ -77,17 +77,25 @@ typedef struct attached_paint_struct attached_paint_struct;
 
 struct attached_paint_struct {
 	uint32 image_id;		// 0x00
-	uint32 var_04;
+	union {
+		uint32 tertiary_colour;
+		// If masked image_id is masked_id
+		uint32 colour_image_id;
+	};
 	uint16 x;		// 0x08
 	uint16 y;		// 0x0A
-	uint8 var_0C;
+	uint8 flags;
 	uint8 pad_0D;
 	attached_paint_struct* next;	//0x0E
 };
 
 struct paint_struct {
 	uint32 image_id;		// 0x00
-	uint32 var_04;
+	union {
+		uint32 tertiary_colour;
+		// If masked image_id is masked_id
+		uint32 colour_image_id;
+	};
 	uint16 bound_box_x;		// 0x08
 	uint16 bound_box_y;		// 0x0A
 	uint16 bound_box_z; // 0x0C
@@ -97,7 +105,7 @@ struct paint_struct {
 	uint16 x;				// 0x14
 	uint16 y;				// 0x16
 	uint16 var_18;
-	uint8 var_1A;
+	uint8 flags;
 	uint8 var_1B;
 	attached_paint_struct* attached_ps;	//0x1C
 	paint_struct* var_20;
@@ -108,6 +116,10 @@ struct paint_struct {
 	uint16 map_x;			// 0x2C
 	uint16 map_y;			// 0x2E
 	rct_map_element *mapElement; // 0x30 (or sprite pointer)
+};
+
+enum PAINT_STRUCT_FLAGS {
+	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };
 
 typedef struct {

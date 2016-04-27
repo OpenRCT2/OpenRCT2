@@ -738,10 +738,10 @@ void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_ps, rct
 			}
 		}
 
-		if (attached_ps->var_0C & 1) {
-			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, attached_ps->var_04);
+		if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED) {
+			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, attached_ps->colour_image_id);
 		} else {
-			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
 		}
 	}
 }
@@ -790,10 +790,10 @@ void sub_688485(){
 			}
 		}
 
-		if (ps->var_1A & 1)
-			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->var_04);
+		if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
+			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->colour_image_id);
 		else
-			gfx_draw_sprite(dpi, image_id, x, y, ps->var_04);
+			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
 
 		if (ps->var_20 != 0){
 			ps = ps->var_20;
@@ -1002,7 +1002,7 @@ bool sub_98197C(
 	int boundBoxZEnd = bound_box_length_z + bound_box_offset_z;
 	ps->bound_box_z_end = boundBoxZEnd;
 	ps->bound_box_y_end = boundBox.y + boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
-	ps->var_1A = 0;
+	ps->flags = 0;
 	ps->bound_box_x = boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
 	ps->bound_box_y = boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->attached_ps = NULL;
