@@ -343,7 +343,7 @@ static void paint_setup_set_support_height(uint16 height, uint8 segment_flags)
 	RCT2_GLOBAL(0x0141E9DA, uint8) = segment_flags;
 }
 
-uint8 viewport_surface_paint_setup_get_ebx(rct_map_element * mapElement, int rotation)
+uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, int rotation)
 {
 	uint8 slope = mapElement->properties.surface.slope;
 
@@ -821,10 +821,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	uint16 zoomLevel = dpi->zoom_level;
 
-	uint8 cl = get_current_rotation();
-
 	uint32 terrain_type = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
-	uint32 surfaceShape = viewport_surface_paint_setup_get_ebx(mapElement, cl);
+	uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, get_current_rotation());
 
 	rct_xy16 base = {
 		.x = RCT2_GLOBAL(0x9DE568, sint16),
@@ -863,7 +861,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 		tileDescriptors[i + 1].map_element = surfaceElement;
 		tileDescriptors[i + 1].terrain = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
-		uint32 ebx = viewport_surface_paint_setup_get_ebx(surfaceElement, cl);
+		uint32 ebx = viewport_surface_paint_setup_get_relative_slope(surfaceElement, get_current_rotation());
 		tileDescriptors[i + 1].slope = ebx;
 
 		uint8 baseHeight = surfaceElement->base_height / 2;
