@@ -263,9 +263,8 @@ void S4Importer::AddAvailableEntriesFromRides()
     for (size_t i = 0; i < Util::CountOf(_s4.rides); i++)
     {
         rct1_ride * ride = &_s4.rides[i];
-        if (ride->type != RCT1_RIDE_TYPE_NULL)
+        if (ride->type != RCT1_RIDE_TYPE_NULL && RCT1::RideTypeUsesVehicles(ride->type))
         {
-            // TODO might need to check if ride type has a vehicle type
             AddEntryForVehicleType(ride->type, ride->vehicle_type);
         }
     }
@@ -854,6 +853,8 @@ void S4Importer::ImportResearch()
     }
 
     research_remove_non_separate_vehicle_types();
+    // Fixes avaibility of rides
+    sub_684AC3();
 
     // Research funding / priority
     uint8 activeResearchTypes = 0;
@@ -889,7 +890,6 @@ void S4Importer::ImportResearch()
     gResearchNextCategory = _s4.next_research_category;
     // gResearchExpectedDay =
     // gResearchExpectedMonth =
-
 }
 
 void S4Importer::InsertResearchVehicle(const rct1_research_item * researchItem, bool researched)
