@@ -1000,13 +1000,13 @@ static void window_ride_construction_resize(rct_window *w)
 		if (_currentTrackSlopeEnd == _previousTrackSlopeEnd) {
 			if (_currentTrackSlopeEnd == TRACK_SLOPE_UP_25) {
 				disabledWidgets |= (1ULL << WIDX_SLOPE_UP_STEEP);
-				if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL || _rideConstructionState != RIDE_CONSTRUCTION_STATE_BACK || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED)) {
+				if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT || _rideConstructionState != RIDE_CONSTRUCTION_STATE_BACK || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED)) {
 					disabledWidgets |= (1ULL << WIDX_LEVEL);
 				}
 			}
 			if (_currentTrackSlopeEnd == TRACK_SLOPE_DOWN_25) {
 				disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP);
-				if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL || _rideConstructionState != RIDE_CONSTRUCTION_STATE_FRONT || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED)) {
+				if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT || _rideConstructionState != RIDE_CONSTRUCTION_STATE_FRONT || !is_track_enabled(TRACK_SLOPE_CURVE_BANKED)) {
 					disabledWidgets |= (1ULL << WIDX_LEVEL);
 				}
 			}
@@ -2451,7 +2451,7 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
 	}
 
 	if (curve <= 8) {
-		for (int i = 0; i < 140; i++) {
+		for (int i = 0; i < countof(gTrackDescriptors); i++) {
 			track_descriptor trackDescriptor = gTrackDescriptors[i];
 			if (trackDescriptor.track_curve != curve) continue;
 			if (trackDescriptor.starts_diagonal != startsDiagonal) continue;

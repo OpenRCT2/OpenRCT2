@@ -54,4 +54,4 @@ typedef struct {
 	uint8 track_element;
 } track_descriptor;
 
-extern const track_descriptor gTrackDescriptors[140];
+extern const track_descriptor gTrackDescriptors[142];
