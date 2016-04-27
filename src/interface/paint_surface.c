@@ -507,7 +507,7 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 ter
 		return;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
+	if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
 		uint8 incline = (regs.cl - regs.al) + 1;
 
 		uint32 image_id = stru_97B5C0[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
@@ -608,7 +608,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 	}
 
 	uint32 base_image_id = stru_97B5C0[edgeStyle][0];
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
 		base_image_id = stru_97B5C0[edgeStyle][1];
 	}
 
@@ -792,8 +792,6 @@ void viewport_surface_draw_water_side(enum edge edge, uint16 height)
  */
 void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
-	//RCT2_CALLPROC_X(0x66062C, 0, 0, direction, height, (int) mapElement, 0, 0);
-
 	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_TERRAIN;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
@@ -852,13 +850,13 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	}
 
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
+	if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
 		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 
 		int dx = map_element_height(x + 16, y + 16) & 0xFFFF;
 		dx += 3;
 
-		int image_id = (5769 + dx / 16) | 0x20780000;
+		int image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
 		image_id += RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16);
 		image_id -= RCT2_GLOBAL(0x01359208, uint16);
 
@@ -876,13 +874,13 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	} else {
 		registers regs;
 
-		bool showGridlines = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_GRIDLINES);
+		bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
 
 		int branch = -1;
 		if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
 			if ((mapElement->type & 0x3) == 0) {
 				if ((zoomLevel == 0)) {
-					if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & 0x1001) == 0) {
+					if ((gCurrentViewportFlags & 0x1001) == 0) {
 						branch = mapElement->properties.surface.grass_length & 0x7;
 					}
 				}
@@ -911,12 +909,12 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				assert(ebp < countof(dword_97B750));
 				image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
-				if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+				if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 					// TODO: SPR_TERRAIN_TRACK_DESIGNER ???
 					image_id = 2623;
 				}
 
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
+				if (gCurrentViewportFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
 					image_id &= 0xDC07FFFF; // remove colour
 					image_id |= 0x41880000;
 				}
@@ -981,8 +979,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR
-	    && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR
+	    && gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
 
 		rct2_peep_spawn * spawn = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
 		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -999,7 +997,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_LAND_OWNERSHIP) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
 		// loc_660E9A:
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
 			assert(surfaceShape < countof(byte_97B444));
@@ -1015,7 +1013,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
 	    && !(mapElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 			assert(surfaceShape < countof(byte_97B444));
@@ -1127,8 +1125,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	if (zoomLevel == 0
 	    && has_surface
-	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_BASE)
+	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
 	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE)) {
 		viewport_surface_smoothen_edge(EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_smoothen_edge(EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
@@ -1137,9 +1135,9 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	}
 
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_UNDERGROUND_INSIDE
-	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_BASE)
-	    && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE
+	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
+	    && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 
 		uint8 image_offset = byte_97B444[surfaceShape];
 		uint32 base_image = terrain_type;
@@ -1150,7 +1148,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		sub_68818E(image_id, 0, 0, NULL);
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_HIDE_VERTICAL)) {
+	if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL)) {
 		// loc_66122C:
 		uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;
 		uint8 di_type = mapElement->type & 0x80;
