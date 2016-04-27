@@ -2451,7 +2451,7 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
 	}
 
 	if (curve <= 8) {
-		for (int i = 0; i < 140; i++) {
+		for (int i = 0; i < countof(gTrackDescriptors); i++) {
 			track_descriptor trackDescriptor = gTrackDescriptors[i];
 			if (trackDescriptor.track_curve != curve) continue;
 			if (trackDescriptor.starts_diagonal != startsDiagonal) continue;
