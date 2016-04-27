@@ -4103,6 +4103,7 @@ STR_5801    :Verschmutzung deaktivieren
 STR_5802    :{SMALLFONT}{BLACK}Hält Besucher davon ab Müll wegzuwerfen oder sich zu erbrechen
 STR_5803    :{SMALLFONT}{BLACK}Ausgewähltes Kartenelement drehen
 STR_5804    :Ton ein-/ausschalten
+STR_5805    :{SMALLFONT}{BLACK}Wenn aktiviert, wird der Server zur öffentlichen Serverliste hinzugefügt und für jeden sichtbar
 
 #############
 # Scenarios #
