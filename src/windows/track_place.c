@@ -306,6 +306,7 @@ static void window_track_place_clear_provisional()
 {
 	if (_window_track_place_last_was_valid) {
 		sub_6D01B3(
+			gActiveTrackDesign,
 			6,
 			RCT2_GLOBAL(0x00F440EB, uint8),
 			_window_track_place_last_valid_x,
@@ -341,7 +342,7 @@ static int window_track_place_get_base_z(int x, int y)
 	if (mapElement->properties.surface.terrain & 0x1F)
 		z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
 
-	return z + sub_6D01B3(3, 0, x, y, z);
+	return z + sub_6D01B3(gActiveTrackDesign, 3, 0, x, y, z);
 }
 
 static void window_track_place_attempt_placement(int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex)
@@ -474,7 +475,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 
 	// Check if tool map position has changed since last update
 	if (mapX == _window_track_place_last_x && mapY == _window_track_place_last_y) {
-		sub_6D01B3(0, 0, mapX, mapY, 0);
+		sub_6D01B3(gActiveTrackDesign, 0, 0, mapX, mapY, 0);
 		return;
 	}
 
@@ -507,7 +508,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 		widget_invalidate(w, WIDX_PRICE);
 	}
 
-	sub_6D01B3(0, 0, mapX, mapY, mapZ);
+	sub_6D01B3(gActiveTrackDesign, 0, 0, mapX, mapY, mapZ);
 }
 
 /**

@@ -593,6 +593,8 @@ extern const rct_trackdefinition *gTrackDefinitions;
 
 extern rct_map_element **gTrackSavedMapElements;
 
+extern rct_track_td6 *gActiveTrackDesign;
+
 void track_load_list(ride_list_item item);
 int sub_67726A(const char *path);
 rct_track_design *track_get_info(int index, uint8** preview);
@@ -603,7 +605,7 @@ int track_delete();
 void track_mirror();
 void reset_track_list_cache();
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
-int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z);
+int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z);
 int save_track_design(uint8 rideIndex);
 int install_track(char* source_path, char* dest_name);
 void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool quotes);
@@ -645,6 +647,7 @@ bool track_element_is_station(rct_map_element *trackElement);
 bool track_element_is_covered(int trackElementType);
 
 bool track_design_open(rct_track_td6 *td6, const utf8 *path);
+void draw_track_preview(rct_track_td6 *td6, uint8** preview);
 
 void track_design_index_create();
 size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rideType, const char *entry);

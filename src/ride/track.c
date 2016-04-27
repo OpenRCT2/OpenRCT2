@@ -240,6 +240,7 @@ const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
 
 rct_map_element **gTrackSavedMapElements = (rct_map_element**)0x00F63674;
+rct_track_td6 *gActiveTrackDesign;
 
 static bool track_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
 static void track_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
@@ -1932,7 +1933,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 * bl == 6, Clear white outlined track.
 *  rct2: 0x006D01B3
 */
-int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
+int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z)
 {
 	RCT2_GLOBAL(0x00F4414E, uint8) = bl & 0x80;
 	RCT2_GLOBAL(0x00F440D4, uint8) = bl & 0x7F;
@@ -1951,10 +1952,9 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
 	RCT2_GLOBAL(0x00F44129, uint16) = 0;
 	uint8* track_elements = RCT2_ADDRESS(0x009D821B, uint8);
 
-	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
 	uint8 track_place_success = 0;
 
-	if (track_design->type == RIDE_TYPE_MAZE){
+	if (td6->type == RIDE_TYPE_MAZE){
 		track_place_success = track_place_maze(x, y, z, rideIndex, &track_elements);
 	}
 	else{
@@ -1992,17 +1992,17 @@ int sub_6D01B3(uint8 bl, uint8 rideIndex, int x, int y, int z)
  * ebx = ride_id
  * cost = edi
  */
-int sub_6D2189(int* cost, uint8* ride_id){
+int sub_6D2189(rct_track_td6 *td6, int* cost, uint8* ride_id)
+{
 	RCT2_GLOBAL(0xF44151, uint8) = 0;
-	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
 	uint8 entry_type, entry_index;
 
-	if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index))
+	if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
 		entry_index = 0xFF;
 
 	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
 	ebx = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-	edx = track_design->type | (entry_index << 8);
+	edx = td6->type | (entry_index << 8);
 	esi = GAME_COMMAND_CREATE_RIDE;
 
 	if (MONEY32_UNDEFINED == game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
@@ -2021,21 +2021,21 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		user_string_free(old_name);
 	}
 
-	uint8 version = track_design->version_and_colour_scheme >> 2;
+	uint8 version = td6->version_and_colour_scheme >> 2;
 
 	if (version == 2){
-		ride->entrance_style = track_design->entrance_style;
+		ride->entrance_style = td6->entrance_style;
 	}
 
 	if (version != 0){
-		memcpy(&ride->track_colour_main, &track_design->track_spine_colour, 4);
-		memcpy(&ride->track_colour_additional, &track_design->track_rail_colour, 4);
-		memcpy(&ride->track_colour_supports, &track_design->track_support_colour, 4);
+		memcpy(&ride->track_colour_main, &td6->track_spine_colour, 4);
+		memcpy(&ride->track_colour_additional, &td6->track_rail_colour, 4);
+		memcpy(&ride->track_colour_supports, &td6->track_support_colour, 4);
 	}
 	else{
-		memset(&ride->track_colour_main, track_design->track_spine_colour_rct1, 4);
-		memset(&ride->track_colour_additional, track_design->track_rail_colour_rct1, 4);
-		memset(&ride->track_colour_supports, track_design->track_support_colour_rct1, 4);
+		memset(&ride->track_colour_main, td6->track_spine_colour_rct1, 4);
+		memset(&ride->track_colour_additional, td6->track_rail_colour_rct1, 4);
+		memset(&ride->track_colour_supports, td6->track_support_colour_rct1, 4);
 	}
 
 	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
@@ -2045,7 +2045,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 	int map_size = gMapSize << 4;
 
 	_currentTrackPieceDirection = 0;
-	int z = sub_6D01B3(3, 0, map_size, map_size, 16);
+	int z = sub_6D01B3(td6, 3, 0, map_size, map_size, 16);
 
 	if (RCT2_GLOBAL(0xF4414E, uint8) & 4){
 		RCT2_GLOBAL(0xF44151, uint8) |= 2;
@@ -2058,12 +2058,12 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		bl |= 0x80;
 		RCT2_GLOBAL(0xF44151, uint8) |= 1;
 	}
-	edi = sub_6D01B3(bl, *ride_id, map_size, map_size, z);
+	edi = sub_6D01B3(td6, bl, *ride_id, map_size, map_size, z);
 	gParkFlags = backup_park_flags;
 
 	if (edi != MONEY32_UNDEFINED){
 
-		if (!find_object_in_entry_group(&track_design->vehicle_object, &entry_type, &entry_index)){
+		if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)){
 			RCT2_GLOBAL(0xF44151, uint8) |= 4;
 		}
 
@@ -2096,7 +2096,8 @@ void sub_6D235B(uint8 ride_id){
  *
  *  rct2: 0x006D1EF0
  */
-void draw_track_preview(uint8** preview){
+void draw_track_preview(rct_track_td6 *td6, uint8** preview)
+{
 	// Make a copy of the map
 	if (!backup_map())return;
 
@@ -2109,7 +2110,7 @@ void draw_track_preview(uint8** preview){
 	int cost;
 	uint8 ride_id;
 
-	if (!sub_6D2189(&cost, &ride_id)){
+	if (!sub_6D2189(td6, &cost, &ride_id)) {
 		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
 		reload_map_backup();
 		return;
@@ -2271,7 +2272,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		// Copy the track design apart from the preview image
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview((uint8**)trackDesign->preview);
+		draw_track_preview(&trackDesign->track_td6, (uint8**)trackDesign->preview);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
 		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
@@ -2628,7 +2629,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 
 	// Save global vars as they are still used by scenery
 	sint16 start_z = RCT2_GLOBAL(0x00F44146, sint16);
-	sub_6D01B3(0, 0, 4096, 4096, 0);
+	sub_6D01B3(track_design, 0, 0, 4096, 4096, 0);
 	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
 	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
 	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
@@ -2887,7 +2888,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 
 	RCT2_GLOBAL(0x00F44058, uint8*) = track_elements;
 
-	sub_6D01B3(0, 0, 4096, 4096, 0);
+	sub_6D01B3(track_design, 0, 0, 4096, 4096, 0);
 
 	// Resave global vars for scenery reasons.
 	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
@@ -3163,7 +3164,7 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 		// Copy the track design apart from the preview image
 		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
 		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview((uint8**)trackDesign->preview);
+		draw_track_preview(&trackDesign->track_td6, (uint8**)trackDesign->preview);
 
 		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
 		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
@@ -3262,7 +3263,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		}
 	}
 
-	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
+	rct_track_td6* track_design = gActiveTrackDesign;
 	rct_object_entry* ride_object = &track_design->vehicle_object;
 
 	uint8 entry_type, entry_index;
@@ -3301,10 +3302,10 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	money32 cost = 0;
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)){
 		RCT2_GLOBAL(0x00F44150, uint8) = 0;
-		cost = sub_6D01B3(1, rideIndex, x, y, z);
+		cost = sub_6D01B3(track_design, 1, rideIndex, x, y, z);
 		if (RCT2_GLOBAL(0x00F4414E, uint8) & (1 << 1)){
 			RCT2_GLOBAL(0x00F44150, uint8) |= 1 << 7;
-			cost = sub_6D01B3(0x81, rideIndex, x, y, z);
+			cost = sub_6D01B3(track_design, 0x81, rideIndex, x, y, z);
 		}
 	}
 	else{
@@ -3316,7 +3317,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 			bl = 2;
 		}
 		bl |= RCT2_GLOBAL(0x00F44150, uint8);
-		cost = sub_6D01B3(bl, rideIndex, x, y, z);
+		cost = sub_6D01B3(track_design, bl, rideIndex, x, y, z);
 	}
 
 	if (cost == MONEY32_UNDEFINED ||
