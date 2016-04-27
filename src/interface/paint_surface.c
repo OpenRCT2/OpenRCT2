@@ -865,8 +865,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 
 	bool has_surface = false;
-	uint16 di = RCT2_GLOBAL(0x9E323C, uint8);
-	if (di * 16 == height) {
+	if (RCT2_GLOBAL(0x9E323C, uint8) * 16 == height) {
+		// Vertical tunnels
 		sub_98197C(1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, get_current_rotation());
 		sub_98197C(1576, 0, 0, 30, 1, 0, height, 1, 31, height, get_current_rotation());
 		sub_98197C(1577, 0, 0, 1, 30, 0, height, 31, 1, height, get_current_rotation());
