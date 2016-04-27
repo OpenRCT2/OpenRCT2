@@ -756,6 +756,62 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 	}
 }
 
+void viewport_surface_draw_water_side_top(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+{
+}
+
+void viewport_surface_draw_water_side_bottom(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+{
+	uint32 baseImageId;
+	registers regs;
+	rct_xy8 offset = {0, 0};
+	rct_xy8 bounds = {0, 0};
+	switch (edge) {
+		case EDGE_BOTTOMLEFT:
+			baseImageId = 1841;
+			regs.ah = self.corner_heights.left;
+			regs.ch = self.corner_heights.bottom;
+			offset.x = 30;
+			bounds.y = 30;
+			break;
+		case EDGE_BOTTOMRIGHT:
+			baseImageId = 1846;
+			regs.ah = self.corner_heights.right;
+			regs.ch = self.corner_heights.bottom;
+			offset.y = 30;
+			bounds.x = 30;
+			break;
+
+		default:
+			return;
+	}
+
+	if (neighbour.map_element != NULL) {
+		regs.ah = max(neighbour.map_element->properties.surface.terrain & 0x1F, regs.ah);
+		regs.ch = max(neighbour.map_element->properties.surface.terrain & 0x1F, regs.ch);
+	}
+
+	uint8 curHeight = min(regs.ah, regs.ch);
+	uint16 waterHeight = self.map_element->properties.surface.terrain & 0x1F;
+
+	if (regs.ah != regs.ch) {
+		uint32 imageId;
+		if (regs.ah < regs.ch) {
+			imageId = baseImageId + 4;
+		} else {
+			imageId = baseImageId + 3;
+		}
+
+		sub_98196C(imageId, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, get_current_rotation());
+		curHeight++;
+	}
+
+	while (curHeight < waterHeight) {
+		sub_98196C(baseImageId, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, get_current_rotation());
+		curHeight++;
+	}
+}
+
 void viewport_surface_draw_water_side(enum edge edge, uint16 height)
 {
 	return;
@@ -1194,10 +1250,10 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				RCT2_GLOBAL(0x009E30B6 + i, uint32) = RCT2_GLOBAL(0x009E2EAE + i, uint32);
 			}
 
-			viewport_surface_draw_water_side(EDGE_TOPLEFT, height);
-			viewport_surface_draw_water_side(EDGE_TOPRIGHT, height);
-			viewport_surface_draw_water_side(EDGE_BOTTOMLEFT, height);
-			viewport_surface_draw_water_side(EDGE_BOTTOMRIGHT, height);
+			viewport_surface_draw_water_side_top(EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
+			viewport_surface_draw_water_side_top(EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
+			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
+			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
 		}
 	}
 
