@@ -280,7 +280,7 @@ static void window_staff_list_mousedown(int widgetIndex, rct_window* w, rct_widg
 		window_staff_list_cancel_tools(w);
 		break;
 	case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
-		window_dropdown_show_colour(w, widget, w->colours[1], RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)]);
+		window_dropdown_show_colour(w, widget, w->colours[1], gStaffColours[RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8)]);
 		break;
 	}
 
@@ -497,7 +497,7 @@ void window_staff_list_invalidate(rct_window *w)
 	if (tabIndex < 3) {
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
 		window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image =
-			((uint32)RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[tabIndex] << 19) +
+			((uint32)gStaffColours[tabIndex] << 19) +
 			0x600013C3;
 	}
 	if (_quick_fire_mode)
@@ -542,7 +542,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	i = (selectedTab == 0 ? w->list_information_type & 0x0FFFFFFFC : 0);
 	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982710, int), int)[0] + 1;
 	i |= 0x20000000;
-	i |= RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8) << 19;
+	i |= gStaffHandymanColour << 19;
 	gfx_draw_sprite(
 		dpi,
 		i,
@@ -550,11 +550,11 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].bottom - 6 + w->y, 0
 		);
 
-	// Handymen tab image
+	// Mechanic tab image
 	i = (selectedTab == 1 ? w->list_information_type & 0x0FFFFFFFC : 0);
 	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982718, int), int)[0] + 1;
 	i |= 0x20000000;
-	i |= RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 19;
+	i |= gStaffMechanicColour << 19;
 	gfx_draw_sprite(
 		dpi,
 		i,
@@ -566,7 +566,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	i = (selectedTab == 2 ? w->list_information_type & 0x0FFFFFFFC : 0);
 	i += RCT2_ADDRESS(RCT2_GLOBAL(0x00982720, int), int)[0] + 1;
 	i |= 0x20000000;
-	i |= RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, uint8) << 19;
+	i |= gStaffSecurityColour << 19;
 	gfx_draw_sprite(
 		dpi,
 		i,
@@ -589,7 +589,7 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_sprite(&sprite_dpi, i, 0x0F, 0x17, 0);
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = RCT2_ADDRESS(0x00992A00, uint16)[selectedTab];
 		gfx_draw_string_left(dpi, 1858, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + w->width - 155, w->y + 0x20);
 	}

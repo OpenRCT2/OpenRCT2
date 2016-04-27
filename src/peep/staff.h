@@ -52,6 +52,11 @@ enum STAFF_ORDERS{
 extern uint32 *gStaffPatrolAreas;
 extern uint8 *gStaffModes;
 
+#define gStaffColours			RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, colour_t)
+#define gStaffHandymanColour	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, colour_t)
+#define gStaffMechanicColour	RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, colour_t)
+#define gStaffSecurityColour	RCT2_GLOBAL(RCT2_ADDRESS_SECURITY_COLOUR, colour_t)
+
 void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_hire_new_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);

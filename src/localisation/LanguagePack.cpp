@@ -15,6 +15,8 @@ extern "C"
 
 // Don't try to load more than language files that exceed 64 MiB
 constexpr uint64 MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
+constexpr uint64 MAX_OBJECT_OVERRIDES = 4096;
+constexpr uint64 MAX_SCENARIO_OVERRIDES = 4096;
 
 constexpr rct_string_id ObjectOverrideBase             = 0x6000;
 constexpr int           ObjectOverrideMaxStringCount   = 4;
@@ -381,6 +383,11 @@ void LanguagePack::ParseGroupObject(IStringReader * reader)
             _currentScenarioOverride = nullptr;
             if (_currentObjectOverride == nullptr)
             {
+                if (_objectOverrides.size() == MAX_OBJECT_OVERRIDES)
+                {
+                    log_warning("Maximum number of localised object strings exceeded.");
+                }
+
                 _objectOverrides.push_back(ObjectOverride());
                 _currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
                 memset(_currentObjectOverride, 0, sizeof(ObjectOverride));
@@ -422,6 +429,11 @@ void LanguagePack::ParseGroupScenario(IStringReader * reader)
         _currentScenarioOverride = GetScenarioOverride(_currentGroup);
         if (_currentScenarioOverride == nullptr)
         {
+            if (_scenarioOverrides.size() == MAX_SCENARIO_OVERRIDES)
+            {
+                log_warning("Maximum number of scenario strings exceeded.");
+            }
+
             _scenarioOverrides.push_back(ScenarioOverride());
             _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
             Memory::Set(_currentScenarioOverride, 0, sizeof(ScenarioOverride));

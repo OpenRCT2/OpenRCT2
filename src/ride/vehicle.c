@@ -233,7 +233,7 @@ void vehicle_invalidate(rct_vehicle *vehicle)
  */
 void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
 			if (vehicle->sprite_left != (sint16)0x8000) {
 				sint16 x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
@@ -269,7 +269,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 							pan_x >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
 							pan_x += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x;
 
-							uint16 screenwidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+							uint16 screenwidth = gScreenWidth;
 							if (screenwidth < 64) {
 								screenwidth = 64;
 							}
@@ -279,7 +279,7 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 							pan_y >>= RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom;
 							pan_y += RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y;
 
-							uint16 screenheight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+							uint16 screenheight = gScreenHeight;
 							if (screenheight < 64) {
 								screenheight = 64;
 							}
@@ -541,7 +541,7 @@ void vehicle_sounds_update()
 						vehicle_sound->sound1_pan = vehicle_sound_params->pan_x;
 						Mixer_Channel_Pan(vehicle_sound->sound1_channel, DStoMixerPan(vehicle_sound_params->pan_x));
 					}
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && vehicle_sound_params->frequency != vehicle_sound->sound1_freq) {
+					if (!(gCurrentTicks & 3) && vehicle_sound_params->frequency != vehicle_sound->sound1_freq) {
 						vehicle_sound->sound1_freq = vehicle_sound_params->frequency;
 						uint16 frequency = vehicle_sound_params->frequency;
 						if (_soundParams[sprite->vehicle.sound1_id][1] & 2) {
@@ -596,7 +596,7 @@ void vehicle_sounds_update()
 						vehicle_sound->sound2_pan = vehicle_sound_params->pan_x;
 						Mixer_Channel_Pan(vehicle_sound->sound2_channel, DStoMixerPan(vehicle_sound_params->pan_x));
 					}
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3) && vehicle_sound_params->frequency != vehicle_sound->sound2_freq) {
+					if (!(gCurrentTicks & 3) && vehicle_sound_params->frequency != vehicle_sound->sound2_freq) {
 						vehicle_sound->sound2_freq = vehicle_sound_params->frequency;
 						if (!(_soundParams[sprite->vehicle.sound2_id][1] & 1)) {
 							uint16 frequency = (vehicle_sound_params->frequency * 2) - 3248;
@@ -623,10 +623,10 @@ void vehicle_update_all()
 	uint16 sprite_index;
 	rct_vehicle *vehicle;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
 		return;
 
 
@@ -3847,7 +3847,7 @@ static void vehicle_update_haunted_house_operating(rct_vehicle* vehicle) {
 		return;
 
 	if (vehicle->vehicle_sprite_type != 0) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1) {
+		if (gCurrentTicks & 1) {
 			vehicle->vehicle_sprite_type++;
 			vehicle_invalidate(vehicle);
 
@@ -4089,8 +4089,8 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		for (uint8 i = 0; i < curVehicle->num_peeps; i++) {
 			rct_peep* peep = GET_PEEP(curVehicle->peep[i]);
 			if (peep->outside_of_park == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
-				RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |=
+				gNumGuestsInPark--;
+				gToolbarDirtyFlags |=
 					BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 			}
 			ride->num_riders--;
@@ -4320,7 +4320,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 	switch (vehicleEntry->sound_range) {
 	case 3:
 		screamId = vehicle->scream_sound_id;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+		if (!(gCurrentTicks & 0x7F)) {
 			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
@@ -4336,7 +4336,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
 
 	case 4:
 		screamId = vehicle->scream_sound_id;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+		if (!(gCurrentTicks & 0x7F)) {
 			if (vehicle->velocity < 0x40000 || vehicle->scream_sound_id != 255)
 				goto loc_6D7A97;
 
@@ -5073,7 +5073,7 @@ static int vehicle_update_motion_bumper_car(rct_vehicle* vehicle) {
 	vehicle->acceleration = 0;
 	if (!(ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)) ||
 		ride->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1 &&
+		if (gCurrentTicks & 1 &&
 			vehicle->var_34 != 0) {
 
 			if (vehicle->var_34 > 0) {
@@ -6911,7 +6911,7 @@ loc_6DAEB9:
 			if (regs.eax < RCT2_GLOBAL(0x00F64E08, sint32)) {
 				vehicle->acceleration = -RCT2_GLOBAL(0x00F64E08, sint32) * 16;
 			}
-			else if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x0F)) {
+			else if (!(gCurrentTicks & 0x0F)) {
 				if (RCT2_GLOBAL(0x00F64E2C, uint8) == 0) {
 					RCT2_GLOBAL(0x00F64E2C, uint8)++;
 					audio_play_sound_at_location(SOUND_51, vehicle->x, vehicle->y, vehicle->z);

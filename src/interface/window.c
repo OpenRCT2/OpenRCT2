@@ -49,6 +49,8 @@ int gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = 0;
 bool gLoadSaveTitleSequenceSave = 0;
 
+uint8 gToolbarDirtyFlags;
+
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
 float window_scroll_locations[][2] = {
@@ -171,8 +173,6 @@ void window_update_all()
 	rct_window* w;
 
 	RCT2_GLOBAL(0x009E3CD8, sint32)++;
-	if (RCT2_GLOBAL(0x009ABDF2, sint8) == 0)
-		return;
 
 	gfx_draw_all_dirty_blocks();
 	window_update_all_viewports();
@@ -263,7 +263,7 @@ static int window_wheel_input(rct_window *w, int wheel)
  */
 static void window_viewport_wheel_input(rct_window *w, int wheel)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9)
+	if (gScreenFlags & 9)
 		return;
 
 	if (wheel < 0)
@@ -475,8 +475,8 @@ rct_window *window_create(int x, int y, int width, int height, rct_window_event_
  */
 static bool sub_6EA8EC(int x, int y, int width, int height)
 {
-	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	uint16 screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	uint16 screenWidth = gScreenWidth;
+	uint16 screenHeight = gScreenHeight;
 	int unk;
 
 	unk = -(width / 4);
@@ -502,8 +502,8 @@ static bool sub_6EA934(int x, int y, int width, int height)
 {
 	if (x < 0) return false;
 	if (y < 28) return false;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16)) return false;
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16)) return false;
+	if (x + width > gScreenWidth) return false;
+	if (y + height > gScreenHeight) return false;
 	return sub_6EA95D(x, y, width, height);
 }
 
@@ -549,18 +549,18 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	rct_window *w;
 	int x, y;
 
-	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	uint16 screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	uint16 screenWidth = gScreenWidth;
+	uint16 screenHeight = gScreenHeight;
 
 	if (cls & 0x80) {
 		cls &= ~0x80;
 		w = window_find_by_number(RCT2_GLOBAL(0x0013CE928, rct_windowclass), RCT2_GLOBAL(0x0013CE92A, rct_windownumber));
 		if (w != NULL) {
-			if (w->x > -60 && w->x < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 20) {
-				if (w->y < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20) {
+			if (w->x > -60 && w->x < gScreenWidth - 20) {
+				if (w->y < gScreenHeight - 20) {
 					x = w->x;
-					if (w->x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-						x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 20 - width;
+					if (w->x + width > gScreenWidth)
+						x = gScreenWidth - 20 - width;
 					y = w->y;
 					return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
 				}
@@ -670,8 +670,8 @@ rct_window *window_create_centred(int width, int height, rct_window_event_list *
 {
 	int x, y;
 
-	x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width) / 2;
-	y = max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height) / 2);
+	x = (gScreenWidth - width) / 2;
+	y = max(28, (gScreenHeight - height) / 2);
 	return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
@@ -798,7 +798,7 @@ void window_close_top()
 
 	window_close_by_class(WC_DROPDOWN);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (gScreenFlags & 2)
 		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
 			return;
 
@@ -1211,7 +1211,7 @@ void window_push_others_right(rct_window* window)
 			continue;
 
 		window_invalidate(w);
-		if (window->x + window->width + 13 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
+		if (window->x + window->width + 13 >= gScreenWidth)
 			continue;
 		uint16 push_amount = window->x + window->width - w->x + 3;
 		w->x += push_amount;
@@ -1246,7 +1246,7 @@ void window_push_others_below(rct_window *w1)
 			continue;
 
 		// Check if there is room to push it down
-		if (w1->y + w1->height + 80 >= RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
+		if (w1->y + w1->height + 80 >= gScreenHeight)
 			continue;
 
 		// Invalidate the window's current area
@@ -1343,7 +1343,7 @@ void window_scroll_to_location(rct_window *w, int x, int y, int z)
 		rct_xy16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
 
 		int i = 0;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+		if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 			int found = 0;
 			while (!found) {
 				sint16 x2 = w->viewport->x + (sint16)(w->viewport->width * window_scroll_locations[i][0]);
@@ -1428,7 +1428,7 @@ void window_rotate_camera(rct_window *w, int direction)
 		z = map_element_height(x, y);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = (get_current_rotation() + direction) & 3;
+	gCurrentRotation = (get_current_rotation() + direction) & 3;
 
 	int new_x, new_y;
 	center_2d_coordinates(x, y, z, &new_x, &new_y, viewport);
@@ -1528,7 +1528,7 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 		if (w != v && !(v->flags & WF_TRANSPARENT))
 			continue;
 
-		copy = *RCT2_ADDRESS(RCT2_ADDRESS_WINDOW_DPI, rct_drawpixelinfo);
+		copy = gWindowDPI;
 		dpi = &copy;
 
 		// Clamp left to 0
@@ -2075,7 +2075,7 @@ void window_relocate_windows(int width, int height){
 */
 void window_resize_gui(int width, int height)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0xE){
+	if (gScreenFlags & 0xE){
 		window_resize_gui_scenario_editor(width, height);
 		return;
 	}
@@ -2228,7 +2228,7 @@ void sub_6EA73F()
 {
 	rct_window *w;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
+	if (game_is_paused())
 		RCT2_GLOBAL(0x01423604, uint32)++;
 
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
@@ -2364,7 +2364,7 @@ void window_snap_right(rct_window *w, int proximity)
 		leftMost = min(leftMost, w2->x);
 	}
 
-	screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	screenWidth = gScreenWidth;
 	if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
 		leftMost = min(leftMost, screenWidth);
 
@@ -2397,7 +2397,7 @@ void window_snap_bottom(rct_window *w, int proximity)
 		topMost = min(topMost, w2->y);
 	}
 
-	screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	screenHeight = gScreenHeight;
 	if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
 		topMost = min(topMost, screenHeight);
 
@@ -2410,7 +2410,7 @@ void window_move_and_snap(rct_window *w, int newWindowX, int newWindowY, int sna
 	int originalX = w->x;
 	int originalY = w->y;
 
-	newWindowY = clamp(29, newWindowY, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 34);
+	newWindowY = clamp(29, newWindowY, gScreenHeight - 34);
 
 	if (snapProximity > 0) {
 		w->x = newWindowX;

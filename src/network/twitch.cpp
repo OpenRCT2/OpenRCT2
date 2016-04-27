@@ -22,6 +22,7 @@ extern "C"
     #include "../addresses.h"
     #include "../config.h"
     #include "../drawing/drawing.h"
+    #include "../game.h"
     #include "../interface/console.h"
     #include "../localisation/localisation.h"
     #include "../management/news_item.h"
@@ -110,7 +111,7 @@ namespace Twitch
     static bool IsTwitchEnabled()
     {
         if (!gTwitchEnable) return false;
-        if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (~SCREEN_FLAGS_PLAYING)) return false;
+        if (gScreenFlags & (~SCREEN_FLAGS_PLAYING)) return false;
         if (String::IsNullOrEmpty(gConfigTwitch.channel)) return false;
         return true;
     }
@@ -119,7 +120,7 @@ namespace Twitch
     {
         if (!_twitchIdle) return;
         if (IsTwitchEnabled()) {
-            if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) return;
+            if (game_is_paused()) return;
 
             switch (_twitchState) {
             case TWITCH_STATE_LEFT:
@@ -402,11 +403,12 @@ namespace Twitch
                 format_string(buffer, peep->name_string_idx, NULL);
 
                 AudienceMember * member = nullptr;
-                for (AudienceMember &member : members)
+                for (AudienceMember &m : members)
                 {
-                    if (String::Equals(buffer, member.Name, true))
+                    if (String::Equals(buffer, m.Name, true))
                     {
-                        member.Exists = true;
+                        member = &m;
+                        m.Exists = true;
                         break;
                     }
                 }

@@ -244,7 +244,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 	int mixerPan = 0;
 	if (pan != AUDIO_PLAY_AT_CENTRE) {
 		int x2 = pan << 16;
-		uint16 screenWidth = max(64, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+		uint16 screenWidth = max(64, gScreenWidth);
 		mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
 			}
 
@@ -254,7 +254,7 @@ int audio_play_sound(int soundId, int volume, int pan)
 
 void audio_start_title_music()
 {
-	if (gGameSoundsOff || !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+	if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 		audio_stop_title_music();
 		return;
 	}
@@ -281,7 +281,9 @@ void audio_start_title_music()
 	}
 
 	gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
-	Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+	if (gTitleMusicChannel != NULL) {
+		Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+	}
 }
 
 void audio_stop_ride_music()

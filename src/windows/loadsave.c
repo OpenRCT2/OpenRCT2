@@ -796,8 +796,8 @@ static void window_loadsave_select(rct_window *w, const char *path)
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 	{
 		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-		int parkFlagsBackup = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
+		int parkFlagsBackup = gParkFlags;
+		gParkFlags &= ~PARK_FLAGS_18;
 		s6Info->editor_step = 255;
 		rw = SDL_RWFromFile(path, "wb+");
 		int success = 0;
@@ -806,7 +806,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			success = scenario_save(rw, gConfigGeneral.save_plugin_data ? 3 : 2);
 			SDL_RWclose(rw);
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = parkFlagsBackup;
+		gParkFlags = parkFlagsBackup;
 
 		if (success) {
 			window_close_by_class(WC_LOADSAVE);

@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 #include "../addresses.h"
+#include "../game.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
@@ -194,7 +195,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 
 		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
 			// Peep, looking at scenery
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+			if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
 				int direction = mapElement->type & 3;
 				int x2 = x - TileDirectionDelta[direction].x;
 				int y2 = y - TileDirectionDelta[direction].y;
@@ -324,7 +325,7 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 		if (mapElement->properties.track.type == TRACK_ELEM_ON_RIDE_PHOTO) {
 			int z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+			if (game_is_paused()) {
 				return false;
 			}
 			if (mapElement->properties.track.sequence & 0xF0) {
@@ -458,7 +459,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 	rct_map_element *mapElement;
 	rct_scenery_entry *sceneryEntry;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 1)
+	if (gCurrentTicks & 1)
 		return false;
 
 	bool wasInvalidated = false;
@@ -492,7 +493,7 @@ static bool map_animation_invalidate_wall_door(int x, int y, int baseZ)
 				}
 			}
 		}
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		if (game_is_paused()) {
 			return false;
 		}
 		mapElement->properties.fence.item[2] = bl;

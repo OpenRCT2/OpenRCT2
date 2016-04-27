@@ -168,11 +168,8 @@ typedef struct {
 	uint8 guest_count_change_modifier;
 	uint8 current_research_level;
 	uint8 pad_01357400[4];
-	uint32 dword_01357404;
-	uint32 dword_01357408;
-	uint32 dword_0135740C;
-	uint32 dword_01357410[5];
-	uint32 dword_01357424[8];
+	uint32 ride_types_researched[8];
+	uint32 ride_entries_researched[8];
 	uint32 dword_01357444[128];
 	uint32 dword_01357644[128];
 
@@ -377,8 +374,8 @@ typedef struct {
 	rct_news_item news_items[61];
 	uint8 byte_13CE730[64];
 	uint32 dword_13CE770;
-	uint16 word_13CE774;
-	uint16 word_13CE776;
+	uint16 wide_path_tile_loop_x;
+	uint16 wide_path_tile_loop_y;
 	uint8 pad_13CE778[434];
 } rct_s6_data;
 
@@ -464,11 +461,25 @@ typedef struct {
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
+#define gScenarioSrand0						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32)
+#define gScenarioSrand1						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32)
+
+#define gScenarioObjectiveType				RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)
+#define gScenarioObjectiveYear				RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8)
+#define gScenarioObjectiveNumGuests			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16)
+#define gScenarioObjectiveCurrency			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32)
+
+#define gScenarioParkRatingWarningDays		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)
+#define gScenarioCompletedCompanyValue		RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32)
+
 // Scenario list
 extern int gScenarioListCount;
 extern int gScenarioListCapacity;
 extern scenario_index_entry *gScenarioList;
 
+extern char *gScenarioName;
+extern char *gScenarioDetails;
+extern char *gScenarioCompletedBy;
 extern char gScenarioSavePath[MAX_PATH];
 extern int gFirstTimeSave;
 extern uint32 gLastAutoSaveTick;

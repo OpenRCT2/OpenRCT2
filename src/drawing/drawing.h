@@ -83,6 +83,12 @@ typedef struct {
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
+
+#define gCurrentFontSpriteBase		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16)
+#define gCurrentFontFlags			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16)
+
+extern uint8 gGamePalette[256 * 4];
+extern uint32 gPaletteEffectFrame;
 extern const uint16 palette_to_g1_offset[];
 extern const uint8 peep_palette[];
 extern uint8 text_palette[];
@@ -90,8 +96,15 @@ extern uint8 text_palette[];
 extern int gLastDrawStringX;
 extern int gLastDrawStringY;
 
+extern uint32 gPickupPeepImage;
+extern sint32 gPickupPeepX;
+extern sint32 gPickupPeepY;
+
 extern rct_g1_element *g1Elements;
 extern rct_gx g2;
+
+extern rct_drawpixelinfo gScreenDPI;
+extern rct_drawpixelinfo gWindowDPI;
 
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);
@@ -165,5 +178,7 @@ void redraw_rain();
 // scrolling text
 void scrolling_text_initialise_bitmaps();
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
+
+void gfx_configure_dirty_grid();
 
 #endif

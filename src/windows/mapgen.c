@@ -587,10 +587,10 @@ static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int drop
 			_floorTexture :
 			(uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
+		if (gLandToolTerrainSurface == type) {
+			gLandToolTerrainSurface = 255;
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = type;
+			gLandToolTerrainSurface = type;
 			_floorTexture = type;
 		}
 		window_invalidate(w);
@@ -603,10 +603,10 @@ static void window_mapgen_base_dropdown(rct_window *w, int widgetIndex, int drop
 			_wallTexture :
 			(uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
+		if (gLandToolTerrainEdge == type) {
+			gLandToolTerrainEdge = 255;
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = type;
+			gLandToolTerrainEdge = type;
 			_wallTexture = type;
 		}
 		window_invalidate(w);
@@ -922,11 +922,11 @@ static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int d
 		_floorTexture :
 					  (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) == type) {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = 255;
+		if (gLandToolTerrainSurface == type) {
+			gLandToolTerrainSurface = 255;
 		}
 		else {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_SURFACE, uint8) = type;
+			gLandToolTerrainSurface = type;
 			_floorTexture = type;
 		}
 		window_invalidate(w);
@@ -939,11 +939,11 @@ static void window_mapgen_simplex_dropdown(rct_window *w, int widgetIndex, int d
 		_wallTexture :
 					 (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_WALL_TEXTURE_ROCK;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) == type) {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = 255;
+		if (gLandToolTerrainEdge == type) {
+			gLandToolTerrainEdge = 255;
 		}
 		else {
-			RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_TERRAIN_EDGE, uint8) = type;
+			gLandToolTerrainEdge = type;
 			_wallTexture = type;
 		}
 		window_invalidate(w);

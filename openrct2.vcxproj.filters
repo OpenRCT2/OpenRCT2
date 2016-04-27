@@ -50,6 +50,9 @@
     <Filter Include="Source\CommandLine">
       <UniqueIdentifier>{4bf369d2-3df8-40c9-a878-f484b0a0afd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\RCT1">
+      <UniqueIdentifier>{f59cd7d6-b58d-4a6f-9118-34f94de84766}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="openrct2.exe">
@@ -591,6 +594,15 @@
     <ClCompile Include="src\windows\themes.c">
       <Filter>Source\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\rct1\S4Importer.cpp">
+      <Filter>Source\RCT1</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rct1\Tables.cpp">
+      <Filter>Source\RCT1</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cmdline\ConvertCommand.cpp">
+      <Filter>Source\CommandLine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -902,8 +914,14 @@
     <ClInclude Include="src\core\List.hpp">
       <Filter>Source\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\rct1\S4Importer.h">
+      <Filter>Source\RCT1</Filter>
+    </ClInclude>
     <ClInclude Include="resources\resource.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rct1\Tables.h">
+      <Filter>Source\RCT1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

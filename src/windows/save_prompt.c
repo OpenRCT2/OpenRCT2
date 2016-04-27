@@ -112,16 +112,16 @@ void window_save_prompt_open()
 {
 	int stringId, width, height;
 	rct_window* window;
-	unsigned short prompt_mode;
+	uint8 prompt_mode;
 	rct_widget *widgets;
 	uint64 enabled_widgets;
 
-	prompt_mode = RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16);
+	prompt_mode = gSavePromptMode;
 	if (prompt_mode == PM_QUIT)
 		prompt_mode = PM_SAVE_BEFORE_QUIT;
 
 	// do not show save prompt if we're in the title demo and click on load game
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		game_load_or_quit_no_save_prompt();
 		return;
 	}
@@ -133,7 +133,7 @@ void window_save_prompt_open()
 		* and game_load_or_quit() are not called by the original binary anymore.
 		*/
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) < 3840) {
+		if (gScreenAge < 3840) {
 			game_load_or_quit_no_save_prompt();
 			return;
 		}
@@ -145,7 +145,7 @@ void window_save_prompt_open()
 		window_close(window);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		widgets = window_quit_prompt_widgets;
 		enabled_widgets =
 			(1 << WQIDX_CLOSE) |
@@ -177,14 +177,14 @@ void window_save_prompt_open()
 	window_init_scroll_widgets(window);
 
 	// Pause the game
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= 2;
+	gGamePaused |= GAME_PAUSED_MODAL;
 	audio_pause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 
 	stringId = prompt_mode + STR_LOAD_GAME_PROMPT_TITLE;
-	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & 2)
 		stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
-	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & 2)
 		stringId = STR_QUIT_SCENARIO_EDITOR;
 	window_save_prompt_widgets[WIDX_TITLE].image = stringId;
 	window_save_prompt_widgets[WIDX_LABEL].image = prompt_mode + STR_SAVE_BEFORE_LOADING;
@@ -197,7 +197,7 @@ void window_save_prompt_open()
 static void window_save_prompt_close(rct_window *w)
 {
 	// Unpause the game
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~2;
+	gGamePaused &= ~GAME_PAUSED_MODAL;
 	audio_unpause_sounds();
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
@@ -208,7 +208,7 @@ static void window_save_prompt_close(rct_window *w)
  */
 static void window_save_prompt_mouseup(rct_window *w, int widgetIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		switch (widgetIndex) {
 		case WQIDX_OK:
 			game_load_or_quit_no_save_prompt();

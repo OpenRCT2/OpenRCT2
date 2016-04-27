@@ -345,7 +345,7 @@ static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdow
 		pathId = gFootpathSelectedId;
 	} else {
 		int flags = 4;
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
 			flags = 0;
 
 		j = 0;
@@ -534,7 +534,7 @@ static void window_footpath_invalidate(rct_window *w)
 	}
 
 	// Disable queue line button if in Scenario Editor
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
 }
 
@@ -579,7 +579,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
 	y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
 	if (_window_footpath_cost != MONEY32_UNDEFINED)
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 			gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, 0, &_window_footpath_cost);
 }
 
@@ -595,7 +595,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 	numPathTypes = 0;
 	flags = 4;
 	// If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor, but not their queues (since these usually shouldn't have one)
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || (gCheatsSandboxMode && !showQueues))
+	if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || (gCheatsSandboxMode && !showQueues))
 		flags = 0;
 
 	for (i = 0; i < 16; i++) {
@@ -782,7 +782,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 		// bp = RCT2_ADDRESS_COMMAND_MAP_Z
 		// dx = RCT2_ADDRESS_COMMAND_MAP_Y
 		// cx = RCT2_ADDRESS_COMMAND_MAP_X
-		audio_play_sound_at_location(SOUND_PLACE_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16), RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 	}
 }
 

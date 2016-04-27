@@ -25,15 +25,16 @@
 #include "../cursors.h"
 #include "../drawing/drawing.h"
 #include "../game.h"
+#include "../input.h"
 #include "../interface/console.h"
 #include "../interface/keyboard_shortcut.h"
 #include "../interface/window.h"
-#include "../input.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../title.h"
 #include "../util/util.h"
+#include "../world/climate.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(const uint8*, int, int);
@@ -210,7 +211,7 @@ static void overlay_post_render_check(int width, int height) {
 
 	// Toggle game pause state consistently with base pause state
 	if (!overlayActive && newOverlayActive) {
-		pausedBeforeOverlay = RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1;
+		pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
 
 		if (!pausedBeforeOverlay) pause_toggle();
 	} else if (overlayActive && !newOverlayActive && !pausedBeforeOverlay) {
@@ -222,8 +223,8 @@ static void overlay_post_render_check(int width, int height) {
 
 void platform_draw()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int width = gScreenWidth;
+	int height = gScreenHeight;
 
 	if (!gOpenRCT2Headless) {
 		if (gHardwareDisplay) {
@@ -321,8 +322,8 @@ static void platform_resize(int width, int height)
 	int dst_w = (int)(width / gConfigGeneral.window_scale);
 	int dst_h = (int)(height / gConfigGeneral.window_scale);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) = dst_w;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) = dst_h;
+	gScreenWidth = dst_w;
+	gScreenHeight = dst_h;
 
 	platform_refresh_video();
 
@@ -406,7 +407,7 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 		gPalette[i].a = 0;
 
 		float night = gDayNightCycle;
-		if (night >= 0 && RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 0) {
+		if (night >= 0 && gClimateLightningFlash == 0) {
 			gPalette[i].r = lerp(gPalette[i].r, soft_light(gPalette[i].r, 8), night);
 			gPalette[i].g = lerp(gPalette[i].g, soft_light(gPalette[i].g, 8), night);
 			gPalette[i].b = lerp(gPalette[i].b, soft_light(gPalette[i].b, 128), night);
@@ -657,7 +658,7 @@ void platform_process_messages()
 
 				// Zoom gesture
 				const int tolerance = 128;
-				int gesturePixels = (int)(_gestureRadius * RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16));
+				int gesturePixels = (int)(_gestureRadius * gScreenWidth);
 				if (gesturePixels > tolerance) {
 					_gestureRadius = 0;
 					keyboard_shortcut_handle_command(SHORTCUT_ZOOM_VIEW_IN);
@@ -912,8 +913,8 @@ static void platform_load_cursors()
 
 void platform_refresh_video()
 {
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int width = gScreenWidth;
+	int height = gScreenHeight;
 
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
@@ -1018,8 +1019,7 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	_screenBufferHeight = height;
 	_screenBufferPitch = pitch;
 
-	rct_drawpixelinfo *screenDPI;
-	screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 	screenDPI->bits = _screenBuffer;
 	screenDPI->x = 0;
 	screenDPI->y = 0;
@@ -1027,13 +1027,7 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	screenDPI->height = height;
 	screenDPI->pitch = _screenBufferPitch - width;
 
-	RCT2_GLOBAL(0x009ABDF0, uint8) = 7;
-	RCT2_GLOBAL(0x009ABDF1, uint8) = 6;
-	RCT2_GLOBAL(0x009ABDF2, uint8) = 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_WIDTH, uint16) = 1 << RCT2_GLOBAL(0x009ABDF0, uint8);
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_HEIGHT, uint16) = 1 << RCT2_GLOBAL(0x009ABDF1, uint8);
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_COLUMNS, uint32) = (width >> RCT2_GLOBAL(0x009ABDF0, uint8)) + 1;
-	RCT2_GLOBAL(RCT2_ADDRESS_DIRTY_BLOCK_ROWS, uint32) = (height >> RCT2_GLOBAL(0x009ABDF1, uint8)) + 1;
+	gfx_configure_dirty_grid();
 }
 
 void platform_hide_cursor()

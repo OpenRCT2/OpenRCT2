@@ -111,6 +111,12 @@ const char * const RCT2FilePaths[PATH_ID_END] = {
 
 uint32 gCurrentDrawCount = 0;
 
+uint8 gScreenFlags;
+uint32 gScreenAge;
+uint8 gSavePromptMode;
+sint32 gScreenWidth;
+sint32 gScreenHeight;
+
 typedef struct tm tm_t;
 
 void print_launch_information();
@@ -122,7 +128,7 @@ static void rct2_draw_fps();
 
 void rct2_quit()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = PM_QUIT;
+	gSavePromptMode = PM_QUIT;
 	window_save_prompt_open();
 }
 
@@ -186,7 +192,7 @@ int rct2_init()
 	if (!gOpenRCT2Headless) {
 		title_load();
 
-		gfx_clear(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo), 10);
+		gfx_clear(&gScreenDPI, 10);
 	}
 
 	log_verbose("initialising game finished");
@@ -282,13 +288,13 @@ void rct2_draw()
 	update_palette_effects();
 
 	chat_draw();
-	console_draw(RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo));
+	console_draw(&gScreenDPI);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
 		//intro
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) {
+	} else if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		//title
-		DrawOpenRCT2(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 20);
+		DrawOpenRCT2(0, gScreenHeight - 20);
 	} else {
 		//game
 	}
@@ -319,8 +325,8 @@ static float rct2_measure_fps()
 
 static void rct2_draw_fps()
 {
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	int x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2;
+	rct_drawpixelinfo *dpi = &gScreenDPI;
+	int x = gScreenWidth / 2;
 	int y = 2;
 
 	// Measure FPS
@@ -365,10 +371,16 @@ bool rct2_open_file(const char *path)
 		scenario_load_and_play_from_path(scenarioBasic.path);
 		return true;
 	} else if (_stricmp(extension, "td6") == 0 || _stricmp(extension, "td4") == 0) {
-		return true;
-	} else if (!_stricmp(extension, "td6") || !_stricmp(extension, "td4")) {
 		// TODO track design install
 		return true;
+	} else if (_stricmp(extension, "sv4") == 0) {
+		if (rct1_load_saved_game(path)) {
+			game_load_init();
+		}
+	} else if (_stricmp(extension, "sc4") == 0) {
+		if (rct1_load_scenario(path)) {
+			scenario_begin();
+		}
 	}
 
 	return false;
@@ -437,8 +449,9 @@ void rct2_update()
 	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = tick2 = min(tick2, 500);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32) = tick;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0)
-		RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, sint32) += tick2;
+	if (game_is_not_paused()) {
+		gPaletteEffectFrame += tick2;
+	}
 
 	// TODO: screenshot countdown process
 
@@ -448,7 +461,7 @@ void rct2_update()
 	// Screens
 	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
 		intro_update();
-	else if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
+	else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
 		title_update();
 	else
 		game_update();
@@ -496,4 +509,17 @@ const utf8 *get_file_path(int pathId)
 	}
 
 	return path;
+}
+
+uint32 get_file_extension_type(const utf8 *path)
+{
+	const utf8 *extension = path_get_extension(path);
+	if (strcicmp(extension, ".dat") == 0) return FILE_EXTENSION_DAT;
+	if (strcicmp(extension, ".sc4") == 0) return FILE_EXTENSION_SC4;
+	if (strcicmp(extension, ".sv4") == 0) return FILE_EXTENSION_SV4;
+	if (strcicmp(extension, ".td4") == 0) return FILE_EXTENSION_TD4;
+	if (strcicmp(extension, ".sc6") == 0) return FILE_EXTENSION_SC6;
+	if (strcicmp(extension, ".sv6") == 0) return FILE_EXTENSION_SV6;
+	if (strcicmp(extension, ".td6") == 0) return FILE_EXTENSION_TD6;
+	return FILE_EXTENSION_UNKNOWN;
 }

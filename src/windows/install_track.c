@@ -123,8 +123,8 @@ void window_install_track_open(const char* path)
 	_currentTrackPieceDirection = 2;
 	reset_track_list_cache();
 
-	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 201;
-	y = max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 200);
+	x = gScreenWidth / 2 - 201;
+	y = max(28, gScreenHeight / 2 - 200);
 
 	w = window_create(x, y, 402, 400, &window_install_track_events, WC_INSTALL_TRACK, 0);
 	w->widgets = window_install_track_widgets;
@@ -158,7 +158,7 @@ static void window_install_track_select(rct_window *w, int index)
 	w->track_list.var_480 = index;
 
 	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && index == 0) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && index == 0) {
 		window_close(w);
 		ride_construct_new(_window_install_track_item);
 		return;
@@ -167,7 +167,7 @@ static void window_install_track_select(rct_window *w, int index)
 	if (RCT2_GLOBAL(0x00F44153, uint8) != 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 1;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER))
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
 		index--;
 
 	trackDesignItem = trackDesignList + (index * 128);
@@ -176,7 +176,7 @@ static void window_install_track_select(rct_window *w, int index)
 	window_track_list_format_name(
 		(char*)0x009BC313,
 		trackDesignItem,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ?
+		gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ?
 		0 :
 		FORMAT_WHITE,
 		1);
@@ -184,7 +184,7 @@ static void window_install_track_select(rct_window *w, int index)
 	char track_path[MAX_PATH] = { 0 };
 	substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
 		return;
 	}

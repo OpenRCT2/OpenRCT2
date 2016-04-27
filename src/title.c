@@ -105,10 +105,10 @@ void title_load()
 {
 	log_verbose("loading title");
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) & 1)
+	if (gGamePaused & GAME_PAUSED_NORMAL)
 		pause_toggle();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TITLE_DEMO;
+	gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
 
 	reset_park_entrances();
 	user_string_clear_all();
@@ -134,7 +134,7 @@ void title_load()
 	title_create_windows();
 	title_init_showcase();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 #ifndef DISABLE_NETWORK
 	network_close();
 #endif
@@ -159,7 +159,7 @@ static void title_create_windows()
 	window_title_exit_open();
 	window_title_options_open();
 	window_title_logo_open();
-	window_resize_gui(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
+	window_resize_gui(gScreenWidth, gScreenHeight);
 }
 
 /**
@@ -191,21 +191,21 @@ static int title_load_park(const char *path)
 
 	w = window_get_main();
 	w->viewport_target_sprite = -1;
-	w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	w->saved_view_x = gSavedViewX;
+	w->saved_view_y = gSavedViewY;
 
 	{
-		char _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - w->viewport->zoom;
-		w->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
-		*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
-		if (_cl != 0) {
-			if (_cl < 0) {
-				_cl = -_cl;
-				w->viewport->view_width >>= _cl;
-				w->viewport->view_height >>= _cl;
+		char zoomDifference = gSavedViewZoom - w->viewport->zoom;
+		w->viewport->zoom = gSavedViewZoom;
+		gCurrentRotation = gSavedViewRotation;
+		if (zoomDifference != 0) {
+			if (zoomDifference < 0) {
+				zoomDifference = -zoomDifference;
+				w->viewport->view_width >>= zoomDifference;
+				w->viewport->view_height >>= zoomDifference;
 			} else {
-				w->viewport->view_width <<= _cl;
-				w->viewport->view_height <<= _cl;
+				w->viewport->view_width <<= zoomDifference;
+				w->viewport->view_height <<= zoomDifference;
 			}
 		}
 		w->saved_view_x -= w->viewport->view_width >> 1;
@@ -220,7 +220,7 @@ static int title_load_park(const char *path)
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenAge = 0;
 	gGameSpeed = 1;
 	return 1;
 }
@@ -252,7 +252,7 @@ static void title_set_location(int x, int y)
  */
 void title_fix_location()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+	if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
 		rct_xy16 position = _titleScriptCurrentCentralPosition;
 		if (position.x != -1) {
 			title_set_location(position.x, position.y);
@@ -497,7 +497,7 @@ static void title_update_showcase()
 void DrawOpenRCT2(int x, int y)
 {
 	utf8 buffer[256];
-	rct_drawpixelinfo *dpi = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
+	rct_drawpixelinfo *dpi = &gScreenDPI;
 
 	// Draw background
 	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, TRANSLUCENT(COLOUR_DARK_GREEN), 0x8);
@@ -523,7 +523,7 @@ void title_update()
 	screenshot_check();
 	title_handle_keyboard_input();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+	if (game_is_not_paused()) {
 		title_update_showcase();
 
 		if (gGameSpeed > 1) {
@@ -786,7 +786,7 @@ bool title_refresh_sequence()
 		gTitleScriptCommand = -1;
 		gTitleScriptSave = 0xFF;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+		if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
 			title_update_showcase();
 			gfx_invalidate_screen();
 		}
@@ -808,7 +808,7 @@ bool title_refresh_sequence()
 	window_invalidate_by_class(WC_OPTIONS);
 	window_invalidate_by_class(WC_TITLE_EDITOR);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_TITLE_DEMO) {
+	if (gScreenFlags == SCREEN_FLAGS_TITLE_DEMO) {
 		title_update_showcase();
 		gfx_invalidate_screen();
 	}

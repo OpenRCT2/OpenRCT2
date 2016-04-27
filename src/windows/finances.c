@@ -600,13 +600,13 @@ static void window_finances_summary_mousedown(int widgetIndex, rct_window*w, rct
 
 	switch (widgetIndex) {
 	case WIDX_LOAN_INCREASE:
-		newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) + MONEY(1000, 00);
+		newLoan = gBankLoan + MONEY(1000, 00);
 		gGameCommandErrorTitle = STR_CANT_BORROW_ANY_MORE_MONEY;
 		finance_set_loan(newLoan);
 		break;
 	case WIDX_LOAN_DECREASE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) > 0) {
-			newLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) - MONEY(1000, 00);
+		if (gBankLoan > 0) {
+			newLoan = gBankLoan - MONEY(1000, 00);
 			gGameCommandErrorTitle = STR_CANT_PAY_BACK_LOAN;
 			finance_set_loan(newLoan);
 		}
@@ -640,7 +640,7 @@ static void window_finances_summary_invalidate(rct_window *w)
 	}
 
 	window_finances_set_pressed_tab(w);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, money32) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, money32) = gBankLoan;
 }
 
 /**
@@ -673,7 +673,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Expenditure / Income values for each month
 	x = w->x + 118;
-	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	sint16 currentMonthYear = gDateMonthsElapsed;
 	for (i = 4; i >= 0; i--) {
 		y = w->y + 47;
 
@@ -734,19 +734,19 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Loan and interest rate
 	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, NULL, 0, w->x + 4, w->y + 229);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = gBankLoanInterestRate;
 	gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 156, w->y + 229);
 
 	// Current cash
-	money32 currentCash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	money32 currentCash = DECRYPT_MONEY(gCashEncrypted);
 	rct_string_id stringId = currentCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
 	gfx_draw_string_left(dpi, stringId, &currentCash, 0, w->x + 4, w->y + 244);
 
 	// Objective related financial information
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_MONTHLY_FOOD_INCOME) {
+	if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
 		// Last month's profit from food, drink and merchandise
 		money32 lastMonthProfit = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) != 0) {
+		if (gDateMonthsElapsed != 0) {
 			lastMonthProfit += RCT2_GLOBAL(0x01357898, money32);
 			lastMonthProfit += RCT2_GLOBAL(0x0135789C, money32);
 			lastMonthProfit += RCT2_GLOBAL(0x013578A0, money32);
@@ -756,8 +756,8 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, w->x + 280, w->y + 229);
 	} else {
 		// Park value and company value
-		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_PARK_VALUE, 0, w->x + 280, w->y + 229);
-		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, (void*)RCT2_ADDRESS_CURRENT_COMPANY_VALUE, 0, w->x + 280, w->y + 244);
+		gfx_draw_string_left(dpi, STR_PARK_VALUE_LABEL, &gParkValue, 0, w->x + 280, w->y + 229);
+		gfx_draw_string_left(dpi, STR_COMPANY_VALUE_LABEL, &gCompanyValue, 0, w->x + 280, w->y + 244);
 	}
 }
 
@@ -824,8 +824,8 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 
 	// Cash (less loan)
 	money32 cashLessLoan =
-		DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) -
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+		DECRYPT_MONEY(gCashEncrypted) -
+		gBankLoan;
 
 	gfx_draw_string_left(
 		dpi,
@@ -933,7 +933,7 @@ static void window_finances_park_value_graph_paint(rct_window *w, rct_drawpixeli
 	graphBottom = w->y + pageWidget->bottom - 4;
 
 	// Park value
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	money32 parkValue = gParkValue;
 	gfx_draw_string_left(
 		dpi,
 		STR_FINACNES_PARK_VALUE,
@@ -1183,8 +1183,8 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
 			continue;
 
 		noCampaignsActive = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = gParkName;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 
 		// Set special parameters
 		switch (i) {
@@ -1263,7 +1263,7 @@ static void window_finances_research_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_WATER_RIDES:
 	case WIDX_SHOPS_AND_STALLS:
 	case WIDX_SCENERY_AND_THEMING:
-		activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
+		activeResearchTypes = gResearchPriorities;
 		activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
 		research_set_priority(activeResearchTypes);
 		break;
@@ -1298,7 +1298,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
 
-	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	int currentResearchLevel = gResearchFundingLevel;
 	dropdown_set_checked(currentResearchLevel, true);
 }
 
@@ -1340,17 +1340,17 @@ static void window_finances_research_invalidate(rct_window *w)
 	}
 
 	window_finances_set_pressed_tab(w);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8) == RESEARCH_STAGE_FINISHED_ALL) {
+	if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL) {
 		window_finances_research_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
 		window_finances_research_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
 	}
-	int currentResearchLevel = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8);
+	int currentResearchLevel = gResearchFundingLevel;
 
 	// Current funding
 	window_finances_research_widgets[WIDX_RESEARCH_FUNDING].image = STR_NO_FUNDING + currentResearchLevel;
 
 	// Checkboxes
-	int activeResearchTypes = RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint16);
+	uint8 activeResearchTypes = gResearchPriorities;
 	int uncompletedResearchTypes = gResearchUncompletedCategories;
 	for (int i = 0; i < 7; i++) {
 		int mask = 1 << i;

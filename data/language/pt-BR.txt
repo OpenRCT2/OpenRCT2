@@ -3465,7 +3465,7 @@ STR_5123    :Renovar atrações
 STR_5124    :<not used anymore>
 STR_5125    :Tudo destruível
 STR_5126    :Música de título aleatória
-STR_5127    :{SMALLFONT}{BLACK}Enquanto arrastando, pinta a paisagem ao invés de mudar a elevação
+STR_5127    :{SMALLFONT}{BLACK}Enquanto arrasta, pinta a paisagem ao invés de mudar a elevação
 STR_5128    :Tamanho da seleção
 STR_5129    :Insira o tamanho da seleção entre {COMMA16} e {COMMA16}
 STR_5130    :Tamanho do mapa
@@ -4003,6 +4003,7 @@ STR_5661    :Definir Grupo do Jogador
 STR_5662    :N/A
 STR_5663    :Limpar Paisagem
 STR_5664    :Trapaças
+STR_5665    :Alternar Conjunto de Cenário
 STR_5701    :{WINDOW_COLOUR_2}Última ação: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizar ação mais recente do jogador
 STR_5703    :Não é possível expulsar o anfitrião
@@ -4059,11 +4060,11 @@ STR_5751    :Sem dados
 STR_5752    :{OUTLINE}{RED}{STRING} se desconectou
 STR_5753    :{OUTLINE}{RED}{STRING} se desconectou ({STRING})
 STR_5754    :Nome de Jogador Ruim
-STR_5755    :Versão de Software Incorreta
+STR_5755    :Versão de Software Incorreta (Servidor está usando {STRING})
 STR_5756    :Senha Ruim
 STR_5757    :Servidor Cheio
 STR_5758    :{OUTLINE}{GREEN}{STRING} entrou no jogo
-STR_5759    :Baixando mapa ... ({INT32} / {INT32})
+STR_5759    :Baixando mapa ... ({INT32} / {INT32}) KiB
 STR_5760    :Dólar de Hong Kong (HK$)
 STR_5761    :Dólar de New Taiwan (NT$)
 STR_5762    :Yuan Chinês(CN{YEN})
@@ -4105,6 +4106,12 @@ STR_5797    :{SMALLFONT}{BLACK}Desliga a mudança de clima e{NEWLINE}congela no 
 STR_5798    :{SMALLFONT}{BLACK}Permite construir no modo pausado
 STR_5799    :{SMALLFONT}{BLACK}Desabilita quebras nas atrações e acidentes causados por falha nos freios
 STR_5800    :{SMALLFONT}{BLACK}Previne atrações de quebrar
+STR_5801    :Desabilitar lixo
+STR_5802    :{SMALLFONT}{BLACK}Impede que visitantes joguem lixo ou vomitem
+STR_5803    :{SMALLFONT}{BLACK}Rotaciona elemento de mapa selecionado
+STR_5804    :Som Mudo
+STR_5805    :{SMALLFONT}{BLACK}Se selecionado, seu servidor será adicionado à{NEWLINE}lista de servidores públicos para que todos possam encontrar
+
 
 #############
 # Scenarios #

@@ -22,6 +22,7 @@
 #define _PARK_H_
 
 #include "../common.h"
+#include "map.h"
 
 #define DECRYPT_MONEY(money) rol32((money) ^ 0xF4EC9621, 13)
 #define ENCRYPT_MONEY(money) (ror32((money), 13) ^ 0xF4EC9621)
@@ -47,10 +48,33 @@ enum {
 	PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
 };
 
+#define gParkName			RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id)
+#define gParkNameArgs		RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32)
+#define gParkFlags			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32)
+#define gParkSize			RCT2_GLOBAL(RCT2_ADDRESS_PARK_SIZE, uint16)
+#define gParkRating			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16)
+#define gParkEntranceFee	RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16)
+
+#define	gParkValue			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)
+#define gCompanyValue		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32)
+
+#define gLandPrice					RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16)
+#define gConstructionRightsPrice	RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16)
+
 extern uint8 *gParkRatingHistory;
 extern uint8 *gGuestsInParkHistory;
 extern int _guestGenerationProbability;
 extern int _suggestedGuestMaximum;
+
+extern sint16 *gParkEntranceX;
+extern sint16 *gParkEntranceY;
+extern sint16 *gParkEntranceZ;
+extern uint8 *gParkEntranceDirection;
+
+extern bool gParkEntranceGhostExists;
+extern rct_xyz16 gParkEntranceGhostPosition;
+extern uint8 gParkEntranceGhostDirection;
+extern money32 gParkEntranceGhostPrice;
 
 void set_forced_park_rating(int rating);
 int get_forced_park_rating();

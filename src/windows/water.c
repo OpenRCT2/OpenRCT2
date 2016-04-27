@@ -103,7 +103,7 @@ void window_water_open()
 		return;
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 76,
+		gScreenWidth - 76,
 		29,
 		76,
 		77,
@@ -116,8 +116,8 @@ void window_water_open()
 	window_init_scroll_widgets(window);
 	window_push_others_below(window);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
+	gWaterToolRaiseCost = MONEY32_UNDEFINED;
+	gWaterToolLowerCost = MONEY32_UNDEFINED;
 }
 
 /**
@@ -143,14 +143,14 @@ static void window_water_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
+		gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Increment land tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
+		gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -173,7 +173,7 @@ static void window_water_textinput(rct_window *w, int widgetIndex, char *text)
 	if (*end == '\0') {
 		size = max(MINIMUM_TOOL_SIZE,size);
 		size = min(MAXIMUM_TOOL_SIZE,size);
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+		gLandToolSize = size;
 
 		window_invalidate(w);
 	}
@@ -209,10 +209,10 @@ static void window_water_invalidate(rct_window *w)
 	w->pressed_widgets |= (1 << WIDX_PREVIEW);
 
 	// Update the preview image
-	//window_water_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16);
+	//window_water_widgets[WIDX_PREVIEW].image = SPR_LAND_TOOL_SIZE_0 + gLandToolSize;
 
-	window_water_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ?
-		SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) :
+	window_water_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
+		SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
 		0xFFFFFFFF;
 
 }
@@ -230,8 +230,8 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 	// Draw number for tool sizes bigger than 7
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
-		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
+	if (gLandToolSize > 7) {
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &gLandToolSize);
 	}
 	y = w->y + window_water_widgets[WIDX_PREVIEW].bottom + 5;
 
@@ -239,13 +239,13 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw raise cost amount
 	x = (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2 + w->x;
 	y = window_water_widgets[WIDX_PREVIEW].bottom + w->y + 5;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) != 0)
-		gfx_draw_string_centred(dpi, 984, x, y, 0, (void*)RCT2_ADDRESS_WATER_RAISE_COST);
+	if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
+		gfx_draw_string_centred(dpi, 984, x, y, 0, &gWaterToolRaiseCost);
 	y += 10;
 
 	// Draw lower cost amount
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) != 0)
-		gfx_draw_string_centred(dpi, 985, x, y, 0, (void*)RCT2_ADDRESS_WATER_LOWER_COST);
+	if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
+		gfx_draw_string_centred(dpi, 985, x, y, 0, &gWaterToolLowerCost);
 
 
 }

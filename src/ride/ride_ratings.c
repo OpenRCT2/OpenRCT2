@@ -20,6 +20,7 @@
 
 #include "../addresses.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
 #include "../world/map.h"
 #include "ride.h"
 #include "ride_data.h"
@@ -100,7 +101,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *mapElement);
  */
 void ride_ratings_update_all()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
 	switch (_rideRatingsState) {
@@ -647,7 +648,7 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 		(((ride->intensity  * RideRatings[ride->type].intensity) * 32) >> 15) +
 		(((ride->nausea     * RideRatings[ride->type].nausea) * 32) >> 15);
 
-	int monthsOld = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date;
+	int monthsOld = gDateMonthsElapsed - ride->build_date;
 
 	// New ride reward
 	if (monthsOld <= 12) {

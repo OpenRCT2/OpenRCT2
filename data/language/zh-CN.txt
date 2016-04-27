@@ -4079,27 +4079,27 @@ STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
 STR_5766    :<available string id>
-STR_5767    :Income
-STR_5768    :Total customers
-STR_5769    :Total profit
+STR_5767    :收入
+STR_5768    :总游客数
+STR_5769    :总利润
 STR_5770    :Customers per hour
-STR_5771    :Running cost
-STR_5772    :Age
+STR_5771    :运营成本
+STR_5772    :年龄
 STR_5773    :Total customers: {COMMA32}
 STR_5774    :Total profit: {CURRENCY2DP}
 STR_5775    :Customers: {COMMA32} per hour
-STR_5776    :Built: This Year
-STR_5777    :Built: Last Year
-STR_5778    :Built: {COMMA16} Years Ago
+STR_5776    :建成年份: 今年
+STR_5777    :建成年份: 去年
+STR_5778    :建成年份: {COMMA16} 年前
 STR_5779    :Income: {CURRENCY2DP} per hour
-STR_5780    :Running cost: {CURRENCY2DP} per hour
-STR_5781    :Running cost: Unknown
-STR_5782    :You are now connected. Press '{STRING}' to chat.
-STR_5783    :{WINDOW_COLOUR_2}Scenario Locked
-STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
-STR_5785    :Can't rename group...
-STR_5786    :Invalid group name
-STR_5787    :{COMMA32} players online
+STR_5780    :运营成本: {CURRENCY2DP} 每小时
+STR_5781    :运营成本: 未知
+STR_5782    :你已经连接到服务器. 请按 '{STRING}' 开始聊天.
+STR_5783    :{WINDOW_COLOUR_2}剧情未解锁
+STR_5784    :{BLACK}完成稍早的剧情来解锁此剧情.
+STR_5785    :不能重命名组...
+STR_5786    :不正确的组名称
+STR_5787    :{COMMA32} 玩家在线
 STR_5788    :默认检查的时间间隔:
 STR_5789    :禁用闪电效果
 STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
@@ -4113,10 +4113,11 @@ STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the 
 STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
 STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
 STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
-STR_5801    :禁止丢弃
-STR_5802    :{SMALLFONT}{BLACK}阻止游客丢弃或呕吐
+STR_5801    :禁止乱丢垃圾
+STR_5802    :{SMALLFONT}{BLACK}阻止游客乱丢垃圾或呕吐
 STR_5803    :{SMALLFONT}{BLACK}旋转选中的地图元素
 STR_5804    :静音
+STR_5805    :{SMALLFONT}{BLACK}若选中此选项, 你的服务器将会添加至{NEWLINE}公共服务区列表，所有玩家均可以找到它
 
 #############
 # Scenarios #

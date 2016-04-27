@@ -36,9 +36,9 @@ static int _tick_counter;				///< Used mainly for timing but also for Y coordina
 // rct2: 0x0068E966
 void intro_update()
 {
-	rct_drawpixelinfo *screenDPI = RCT2_ADDRESS(RCT2_ADDRESS_SCREEN_DPI, rct_drawpixelinfo);
-	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	rct_drawpixelinfo *screenDPI = &gScreenDPI;
+	int screenWidth = gScreenWidth;
+	int screenHeight = gScreenHeight;
 	uint8 (*part) = RCT2_ADDRESS(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8);
 
 	screen_intro_process_mouse_input();

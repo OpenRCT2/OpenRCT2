@@ -92,8 +92,8 @@ rct_window *window_changelog_open()
 	if (!window_changelog_read_file())
 		return NULL;
 
-	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int screenWidth = gScreenWidth;
+	int screenHeight = gScreenHeight;
 
 	window = window_create_centred(
 		screenWidth * 4 / 5,
@@ -129,8 +129,8 @@ static void window_changelog_mouseup(rct_window *w, int widgetIndex)
 
 static void window_changelog_resize(rct_window *w)
 {
-	int screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	int screenHeight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	int screenWidth = gScreenWidth;
+	int screenHeight = gScreenHeight;
 
 	w->max_width = (screenWidth * 4) / 5;
 	w->max_height = (screenHeight * 4) / 5;
@@ -175,10 +175,8 @@ static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	uint16 *currentFontFlags = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
-	sint16 *currentFontSpriteBase = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
-	*currentFontFlags = 0;
-	*currentFontSpriteBase = 224;
+	gCurrentFontFlags = 0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_draw_string(dpi, (char*)0x009C383D, 1, dpi->x, dpi->y);
 
 	int x = 3;
@@ -231,7 +229,7 @@ static bool window_changelog_read_file()
 
 	_changelogLines = realloc(_changelogLines, _changelogNumLines * sizeof(char*));
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	_changelogLongestLineWidth = 0;
 	for (int i = 0; i < _changelogNumLines; i++) {
 		int width = gfx_get_string_width(_changelogLines[i]);

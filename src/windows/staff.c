@@ -1052,7 +1052,7 @@ void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
 	int y = w->y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)){
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS,uint32) = RCT2_ADDRESS(0x992A00,uint16)[peep->staff_type];
 		gfx_draw_string_left(dpi, 2349, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
@@ -1112,7 +1112,7 @@ void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 		map_invalidate_selection_rect();
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
+	gPickupPeepImage = UINT32_MAX;
 
 	int interactionType;
 	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_NONE, NULL, NULL, &interactionType, NULL, NULL);
@@ -1121,8 +1121,8 @@ void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 
 	x--;
 	y += 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_Y, uint16) = y;
+	gPickupPeepX = x;
+	gPickupPeepY = y;
 	w->picked_peep_frame++;
 	if (w->picked_peep_frame >= 48) {
 		w->picked_peep_frame = 0;
@@ -1135,7 +1135,7 @@ void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 	imageId += w->picked_peep_frame >> 2;
 
 	imageId |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24) | 0xA0000000;
-	RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, uint32) = imageId;
+	gPickupPeepImage = imageId;
 }
 
 /**
@@ -1188,7 +1188,7 @@ void window_staff_overview_tool_down(rct_window* w, int widgetIndex, int x, int 
 		peep->var_C4 = 0;
 
 		tool_cancel();
-		RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
+		gPickupPeepImage = UINT32_MAX;
 	}
 	else if (widgetIndex == WIDX_PATROL){
 		int dest_x, dest_y;
@@ -1224,7 +1224,7 @@ void window_staff_overview_tool_abort(rct_window *w, int widgetIndex)
 			peep->var_C4 = 0;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_PICKEDUP_PEEP_IMAGE, sint32) = -1;
+		gPickupPeepImage = UINT32_MAX;
 	}
 	else if (widgetIndex == WIDX_PATROL){
 		hide_gridlines();

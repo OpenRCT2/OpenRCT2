@@ -34,9 +34,9 @@ An open source re-implementation of Roller Coaster Tycoon 2. A construction and 
 **OpenRCT2** is an attempt to decompile RollerCoaster Tycoon 2 into C. RollerCoaster Tycoon 2 was originally written in MASM and Visual C++ where functions related to interfacing with the operating system were written in C (supposedly 1%), with the rest of the game being written in pure x86 assembly. For an example of this method, OpenTTD was formed through a similar procedure; the original game, Transport Tycoon Deluxe, was decompiled into C which allowed for the addition of thousands of features to the game. RollerCoaster Tycoon 2 uses the third version of Chris Sawyer's engine, which shares some code with Transport Tycoon. This is reflected in the usage of OpenTTD 0.1 code such as the windowing system and graphics rendering. While the version of the engine used in Chris Sawyer's Locomotion is newer, OpenRCT2 is currently targeting the RollerCoaster Tycoon 2 engine to ease the decompilation process.
 
 ## 1.2 Decompiling the game
-In order to decompile the game gradually without introducing new bugs, each procedure in RollerCoaster Tycoon 2 is to be re-written in C on an individual basis. To test the accuracy of the re-written procedures, the decompiled C procedures are compiled into a DLL (*openrct2.dll*) which exports an entry procedure mimicking the WinMain function in RollerCoaster Tycoon 2. The original executable *rct2.exe* has been patched so that *openrct2.dll* and WinMain are in the DLL import table and the WinMain export procedure in *openrct2.dll* is called at the start of the WinMain procedure in *rct2.exe* before returning. With this system implemented, starting rct2.exe calls the new DLL as part of its initialization; the DLL can then run all the decompiled code whilst still being able to read / write to the *rct2.exe* memory model and run *rct2.exe* procedures.
+In order to decompile the game gradually without introducing new bugs, each procedure in RollerCoaster Tycoon 2 is to be re-written in C on an individual basis. To test the accuracy of the re-written procedures, the decompiled C procedures are compiled into a DLL (```openrct2.dll```) which exports an entry procedure mimicking the ```WinMain``` function in RollerCoaster Tycoon 2. The original executable ```rct2.exe``` has been patched so that ```openrct2.dll``` and ```WinMain``` are in the DLL import table and the ```WinMain``` export procedure in ```openrct2.dll``` is called at the start of the ``WinMain`` procedure in ```rct2.exe``` before returning. With this system implemented, starting ```rct2.exe``` calls the new DLL as part of its initialization; the DLL can then run all the decompiled code whilst still being able to read / write to the ```rct2.exe``` memory model and run ```rct2.exe``` procedures.
 
-The project therefore acts as a patch to RollerCoaster Tycoon 2, allowing each procedure to be gradually implemented while simultaneously adding new features where possible. Until all procedures of the original game are re-written in C, the project must remain a DLL which is called from the patched *rct2.exe*.
+The project therefore acts as a patch to RollerCoaster Tycoon 2, allowing each procedure to be gradually implemented while simultaneously adding new features where possible. Until all procedures of the original game are re-written in C, the project must remain a DLL which is called from the patched ```rct2.exe```.
 
 ## 1.3 Progress
 Currently, the windowing system, graphics rendering and basic game loop are being decompiled. Decompiling all of the game's procedures is a convenient way of identifying the game's memory structure. SDL2 has been used as a replacement for the operating system calls, allowing for cross-platform support after the dependency on the original game's executable has been removed.
@@ -88,16 +88,16 @@ All libs listed here (bar cmake) required in 32 bit variants.
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
 2. Open a new PowerShell window and navigate to the repository.
-3. Run the setenv.ps1 script in the repository to setup your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
+3. Run the ```setenv.ps1``` script in the repository to setup your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
 4. Run ```install``` to download the required dependencies to build OpenRCT2.
 5. Run ```build all``` to build all the required components for OpenRCT2.
 6. Run ```run``` to run OpenRCT2.
 
-These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have use the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such g2.dat or language files.
+These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have use the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such ```g2.dat``` or language files.
 
 ### Mac OS X:
 We support native builds OS X (limited to i386 only for now).
-Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build openrct2.
+Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build OpenRCT2.
 ```
 # Install libraries
 ./install.sh
@@ -115,7 +115,7 @@ As the easiest approach depends on your distribution, please take a look at the 
 
 
 # 3 Contributing
-OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to **develop**. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. **master** only contains tagged releases, you should never branch off this.
+OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
 
 Please read our [contributing guidelines](https://github.com/OpenRCT2/OpenRCT2/blob/develop/CONTRIBUTING.md) for information.
 
@@ -141,7 +141,7 @@ In general, small changes that improve code quality and make it easier to reason
 While decompilation is an ongoing process, this does not prohibit changes being made to the game. New features or bugfixes can be added, with caution, if the underlying code has been decompiled. When implementing these changes, ensure that comments are added to clearly identify where code has been intentionally changed so that it functions differently to the original game; this is essential to ensuring all research from reverse-engineering can still be applied.
 
 ## 3.5 Translation
-Translations are in progress for German, Dutch, French, Hungarian, Polish, Spanish, Swedish, Italian, and more. You can translate the game into other languages by editing the language files in the data directory. Please join discussions and submit pull requests to https://github.com/OpenRCT2/Localisation.
+Translations are in progress for German, Dutch, French, Hungarian, Polish, Spanish, Swedish, Italian, and more. You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions and submit pull requests to https://github.com/OpenRCT2/Localisation.
 
 # 4 Licence
 **OpenRCT2** is licensed under the GNU General Public License version 3.
@@ -151,5 +151,5 @@ Translations are in progress for German, Dutch, French, Hungarian, Polish, Spani
 - [OpenRCT2.org](https://openrct2.org)
 - [Forums](https://openrct2.org/forums/)
 - [Facebook](https://www.facebook.com/OpenRCT2)
-- [rct subreddit](http://www.reddit.com/r/rct/)
-- [openrct2 subreddit](http://www.reddit.com/r/openrct2/)
+- [RCT subreddit](http://www.reddit.com/r/rct/)
+- [OpenRCT2 subreddit](http://www.reddit.com/r/openrct2/)

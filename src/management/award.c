@@ -91,7 +91,7 @@ static int award_is_deserved_most_untidy(int awardType, int activeAwardTypes)
 		}
 	}
 
-	return (negativeCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 16);
+	return (negativeCount > gNumGuestsInPark / 16);
 }
 
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
@@ -127,7 +127,7 @@ static int award_is_deserved_most_tidy(int awardType, int activeAwardTypes)
 		}
 	}
 
-	return (negativeCount <= 5 && positiveCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 64);
+	return (negativeCount <= 5 && positiveCount > gNumGuestsInPark / 64);
 }
 
 /** At least 6 open roller coasters. */
@@ -162,11 +162,11 @@ static int award_is_deserved_best_value(int awardType, int activeAwardTypes)
 		return 0;
 	if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & (PARK_FLAGS_NO_MONEY | PARK_FLAGS_PARK_FREE_ENTRY))
+	if (gParkFlags & (PARK_FLAGS_NO_MONEY | PARK_FLAGS_PARK_FREE_ENTRY))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) < MONEY(10, 00))
+	if (gTotalRideValue < MONEY(10, 00))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) + MONEY(0, 10) >= RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) / 2)
+	if (gParkEntranceFee + MONEY(0, 10) >= gTotalRideValue / 2)
 		return 0;
 	return 1;
 }
@@ -204,7 +204,7 @@ static int award_is_deserved_most_beautiful(int awardType, int activeAwardTypes)
 		}
 	}
 
-	return (negativeCount <= 15 && positiveCount > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128);
+	return (negativeCount <= 15 && positiveCount > gNumGuestsInPark / 128);
 }
 
 /** Entrance fee is more than total ride value. */
@@ -212,11 +212,11 @@ static int award_is_deserved_worse_value(int awardType, int activeAwardTypes)
 {
 	if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == MONEY(0, 00))
+	if (gParkEntranceFee == MONEY(0, 00))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16) >= RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16))
+	if (gTotalRideValue >= gParkEntranceFee)
 		return 0;
 	return 1;
 }
@@ -308,7 +308,7 @@ static int award_is_deserved_best_food(int awardType, int activeAwardTypes)
 		}
 	}
 
-	if (shops < 7 || uniqueShops < 4 || shops < RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128)
+	if (shops < 7 || uniqueShops < 4 || shops < gNumGuestsInPark / 128)
 		return 0;
 
 	// Count hungry peeps
@@ -357,7 +357,7 @@ static int award_is_deserved_worst_food(int awardType, int activeAwardTypes)
 		}
 	}
 
-	if (uniqueShops > 2 || shops > RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 256)
+	if (uniqueShops > 2 || shops > gNumGuestsInPark / 256)
 		return 0;
 
 	// Count hungry peeps
@@ -392,7 +392,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 		return 0;
 
 	// At least one open restroom for every 128 guests
-	if (numRestrooms < RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) / 128U)
+	if (numRestrooms < gNumGuestsInPark / 128U)
 		return 0;
 
 	// Count number of guests who are thinking they need the restroom
@@ -416,7 +416,7 @@ static int award_is_deserved_most_disappointing(int awardType, int activeAwardTy
 
 	if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
 		return 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) > 650)
+	if (gParkRating > 650)
 		return 0;
 
 	// Count the number of disappointing rides
@@ -611,7 +611,7 @@ void award_update_all()
 	int i, activeAwardTypes, freeAwardEntryIndex;
 
 	// Only add new awards if park is open
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) {
+	if (gParkFlags & PARK_FLAGS_PARK_OPEN) {
 		// Set active award types as flags
 		activeAwardTypes = 0;
 		freeAwardEntryIndex = -1;

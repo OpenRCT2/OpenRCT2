@@ -425,14 +425,14 @@ static void window_track_place_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_ROTATE:
 		window_track_place_clear_provisional();
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) + 1) & 3;
+		_currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();
 		break;
 	case WIDX_MIRROR:
 		track_mirror();
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16) = (-RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_ROTATION, uint16)) & 3;
+		_currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
 		window_track_place_draw_mini_preview();
@@ -486,7 +486,7 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 
 	// Get base Z position
 	mapZ = window_track_place_get_base_z(mapX, mapY);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 || gCheatsBuildInPauseMode) {
+	if (game_is_not_paused() || gCheatsBuildInPauseMode) {
 		window_track_place_clear_provisional();
 
 		// Try increasing Z until a feasible placement is found
@@ -617,6 +617,6 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Price
 	if (_window_track_place_last_cost != MONEY32_UNDEFINED)
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 			gfx_draw_string_centred(dpi, STR_COST_LABEL, w->x + 88, w->y + 94, 0, &_window_track_place_last_cost);
 }

@@ -599,6 +599,16 @@ enum {
 	FOR_ALL_PEEPS(sprite_index, peep) \
 		if (peep->type == PEEP_TYPE_STAFF)
 
+#define gGuestChangeModifier		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8)
+#define gNumGuestsInPark			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)
+#define gNumGuestsInParkLastWeek	RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16)
+#define gNumGuestsHeadingForPark	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)
+
+#define gGuestInitialCash			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16)
+#define gGuestInitialHappiness		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8)
+#define gGuestInitialHunger			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8)
+#define gGuestInitialThirst			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8)
+
 int peep_get_staff_count();
 int peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();

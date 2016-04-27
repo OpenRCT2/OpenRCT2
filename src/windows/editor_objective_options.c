@@ -20,16 +20,17 @@
 
 #include "../addresses.h"
 #include "../game.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
 #include "../scenario.h"
+#include "../util/util.h"
+#include "../world/climate.h"
 #include "../world/park.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../interface/themes.h"
-#include "../util/util.h"
 
 #pragma region Widgets
 
@@ -346,7 +347,7 @@ static void window_editor_objective_options_set_page(rct_window *w, int page)
  */
 static void window_editor_objective_options_set_objective(rct_window *w, int objective)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) = objective;
+	gScenarioObjectiveType = objective;
 	window_invalidate(w);
 
 	// Set default objective arguments
@@ -357,30 +358,30 @@ static void window_editor_objective_options_set_objective(rct_window *w, int obj
 	case OBJECTIVE_10_ROLLERCOASTERS:
 		break;
 	case OBJECTIVE_GUESTS_BY:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 3;
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1500;
+		gScenarioObjectiveYear = 3;
+		gScenarioObjectiveNumGuests = 1500;
 		break;
 	case OBJECTIVE_PARK_VALUE_BY:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) = 3;
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(50000,00);
+		gScenarioObjectiveYear = 3;
+		gScenarioObjectiveCurrency = MONEY(50000,00);
 		break;
 	case OBJECTIVE_GUESTS_AND_RATING:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 2000;
+		gScenarioObjectiveNumGuests = 2000;
 		break;
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(10000,00);
+		gScenarioObjectiveCurrency = MONEY(10000,00);
 		break;
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) = 1200;
+		gScenarioObjectiveNumGuests = 1200;
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = FIXED_2DP(6,70);
+		gScenarioObjectiveCurrency = FIXED_2DP(6,70);
 		break;
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(50000,00);
+		gScenarioObjectiveCurrency = MONEY(50000,00);
 		break;
 	case OBJECTIVE_MONTHLY_FOOD_INCOME:
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) = MONEY(1000,00);
+		gScenarioObjectiveCurrency = MONEY(1000,00);
 		break;
 	}
 }
@@ -402,8 +403,8 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PARK_NAME:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
-		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), 0, 32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = gParkNameArgs;
+		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
 		safe_strcpy((char*)0x009BC677, s6Info->name, 64);
@@ -432,7 +433,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 	uint32 parkFlags;
 
 	dropdownWidget = &w->widgets[WIDX_OBJECTIVE];
-	parkFlags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
+	parkFlags = gParkFlags;
 	numItems = 0;
 
 	if (!(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) {
@@ -494,7 +495,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window *
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
 
-	objectiveType = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	objectiveType = gScenarioObjectiveType;
 	for (i = 0; i < numItems; i++) {
 		if (gDropdownItemsArgs[i] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType) {
 			dropdown_set_checked(i, true);
@@ -523,7 +524,7 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window *w)
 		4,
 		dropdownWidget->right - dropdownWidget->left - 3
 	);
-	dropdown_set_checked(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8), true);
+	dropdown_set_checked(gClimate, true);
 }
 
 static void window_editor_objective_options_show_category_dropdown(rct_window *w)
@@ -552,46 +553,46 @@ static void window_editor_objective_options_show_category_dropdown(rct_window *w
 
 static void window_editor_objective_options_arg_1_increase(rct_window *w)
 {
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_PARK_VALUE_BY:
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) >= MONEY(2000000,00)) {
+		if (gScenarioObjectiveCurrency >= MONEY(2000000,00)) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) += MONEY(1000,0);
+			gScenarioObjectiveCurrency += MONEY(1000,0);
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_MONTHLY_FOOD_INCOME:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) >= MONEY(2000000,00)) {
+		if (gScenarioObjectiveCurrency >= MONEY(2000000,00)) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) += MONEY(100,0);
+			gScenarioObjectiveCurrency += MONEY(100,0);
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) >= 5000) {
+		if (gScenarioObjectiveNumGuests >= 5000) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) += 100;
+			gScenarioObjectiveNumGuests += 100;
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) >= FIXED_2DP(9,90)) {
+		if (gScenarioObjectiveCurrency >= FIXED_2DP(9,90)) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) += FIXED_2DP(0,10);
+			gScenarioObjectiveCurrency += FIXED_2DP(0,10);
 			window_invalidate(w);
 		}
 		break;
 	default:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) >= 5000) {
+		if (gScenarioObjectiveNumGuests >= 5000) {
 			window_error_open(3264, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) += 50;
+			gScenarioObjectiveNumGuests += 50;
 			window_invalidate(w);
 		}
 		break;
@@ -600,46 +601,46 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
 
 static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 {
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_PARK_VALUE_BY:
 	case OBJECTIVE_MONTHLY_RIDE_INCOME:
 	case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) <= MONEY(1000,00)) {
+		if (gScenarioObjectiveCurrency <= MONEY(1000,00)) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) -= MONEY(1000,0);
+			gScenarioObjectiveCurrency -= MONEY(1000,0);
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_MONTHLY_FOOD_INCOME:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) <= MONEY(1000,00)) {
+		if (gScenarioObjectiveCurrency <= MONEY(1000,00)) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) -= MONEY(100,0);
+			gScenarioObjectiveCurrency -= MONEY(100,0);
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) <= 1000) {
+		if (gScenarioObjectiveNumGuests <= 1000) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) -= 100;
+			gScenarioObjectiveNumGuests -= 100;
 			window_invalidate(w);
 		}
 		break;
 	case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) <= FIXED_2DP(4,00)) {
+		if (gScenarioObjectiveCurrency <= FIXED_2DP(4,00)) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32) -= FIXED_2DP(0,10);
+			gScenarioObjectiveCurrency -= FIXED_2DP(0,10);
 			window_invalidate(w);
 		}
 		break;
 	default:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) <= 250) {
+		if (gScenarioObjectiveNumGuests <= 250) {
 			window_error_open(3265, STR_NONE);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16) -= 50;
+			gScenarioObjectiveNumGuests -= 50;
 			window_invalidate(w);
 		}
 		break;
@@ -648,20 +649,20 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 
 static void window_editor_objective_options_arg_2_increase(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) >= 25) {
+	if (gScenarioObjectiveYear >= 25) {
 		window_error_open(3264, STR_NONE);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8)++;
+		gScenarioObjectiveYear++;
 		window_invalidate(w);
 	}
 }
 
 static void window_editor_objective_options_arg_2_decrease(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) <= 1) {
+	if (gScenarioObjectiveYear <= 1) {
 		window_error_open(3265, STR_NONE);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8)--;
+		gScenarioObjectiveYear--;
 		window_invalidate(w);
 	}
 }
@@ -712,12 +713,12 @@ static void window_editor_objective_options_main_dropdown(rct_window *w, int wid
 	switch (widgetIndex) {
 	case WIDX_OBJECTIVE_DROPDOWN:
 		newObjectiveType = (uint8)(gDropdownItemsArgs[dropdownIndex] - 2397);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != newObjectiveType)
+		if (gScenarioObjectiveType != newObjectiveType)
 			window_editor_objective_options_set_objective(w, newObjectiveType);
 		break;
 	case WIDX_CLIMATE_DROPDOWN:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8) != (uint8)dropdownIndex) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8) = (uint8)dropdownIndex;
+		if (gClimate != (uint8)dropdownIndex) {
+			gClimate = (uint8)dropdownIndex;
 			window_invalidate(w);
 		}
 		break;
@@ -743,8 +744,8 @@ static void window_editor_objective_options_main_update(rct_window *w)
 	window_event_invalidate_call(w);
 	widget_invalidate(w, WIDX_TAB_1);
 
-	parkFlags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
-	objectiveType = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	parkFlags = gParkFlags;
+	objectiveType = gScenarioObjectiveType;
 
 	// Reset objective if invalid
 	if ((
@@ -782,7 +783,7 @@ static void window_editor_objective_options_main_textinput(rct_window *w, int wi
 		park_set_name(text);
 
 		if (s6Info->name[0] == 0)
-			format_string(s6Info->name, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+			format_string(s6Info->name, gParkName, &gParkNameArgs);
 		break;
 	case WIDX_SCENARIO_NAME:
 		strncpy(s6Info->name, text, 64);
@@ -833,7 +834,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	else
 		w->disabled_widgets |= (WIDX_PARK_NAME | WIDX_SCENARIO_NAME);
 
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_GUESTS_BY:
 	case OBJECTIVE_PARK_VALUE_BY:
 		window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_SPINNER;
@@ -867,7 +868,7 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
 	}
 
 	window_editor_objective_options_main_widgets[WIDX_CLOSE].type =
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_objective_options_anchor_border_widgets(w);
 }
@@ -899,14 +900,14 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Objective value
 	x = w->x + w->widgets[WIDX_OBJECTIVE].left + 1;
 	y = w->y + w->widgets[WIDX_OBJECTIVE].top;
-	stringId = STR_OBJECTIVE_DROPDOWN_NONE + RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
+	stringId = STR_OBJECTIVE_DROPDOWN_NONE + gScenarioObjectiveType;
 	gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 
 	if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY) {
 		// Objective argument 1 label
 		x = w->x + 28;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+		switch (gScenarioObjectiveType) {
 		case OBJECTIVE_GUESTS_BY:
 		case OBJECTIVE_GUESTS_AND_RATING:
 			stringId = 3303;
@@ -933,26 +934,26 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		// Objective argument 1 value
 		x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
-		switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+		switch (gScenarioObjectiveType) {
 		case OBJECTIVE_GUESTS_BY:
 		case OBJECTIVE_GUESTS_AND_RATING:
 			stringId = 3309;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+			arg = gScenarioObjectiveNumGuests;
 			break;
 		case OBJECTIVE_PARK_VALUE_BY:
 		case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
 		case OBJECTIVE_MONTHLY_RIDE_INCOME:
 		case OBJECTIVE_MONTHLY_FOOD_INCOME:
 			stringId = 3246;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+			arg = gScenarioObjectiveCurrency;
 			break;
 		case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
 			stringId = 3310;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+			arg = gScenarioObjectiveNumGuests;
 			break;
 		default:
 			stringId = 3311;
-			arg = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+			arg = gScenarioObjectiveCurrency;
 			break;
 		}
 		gfx_draw_string_left(dpi, stringId, &arg, 0, x, y);
@@ -967,7 +968,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		// Objective argument 2 value
 		x = w->x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
 		y = w->y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
-		arg = (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8) * MONTH_COUNT) - 1;
+		arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
 		gfx_draw_string_left(dpi, 3302, &arg, 0, x, y);
 	}
 
@@ -979,7 +980,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	// Climate value
 	x = w->x + w->widgets[WIDX_CLIMATE].left + 1;
 	y = w->y + w->widgets[WIDX_CLIMATE].top;
-	stringId = STR_CLIMATE_COOL_AND_WET + RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8);
+	stringId = STR_CLIMATE_COOL_AND_WET + gClimate;
 	gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
 
 	// Park name
@@ -990,9 +991,9 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	if (stex != NULL) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->park_name;
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = gParkName;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 	gfx_draw_string_left_clipped(dpi, 3298, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
 
 	// Scenario name
@@ -1006,7 +1007,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		safe_strcpy((char*)0x009BC677, s6Info->name, 64);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 3165;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 	gfx_draw_string_left_clipped(dpi, 3300, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
 
 	// Scenario details label
@@ -1025,7 +1026,7 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 		safe_strcpy((char*)0x009BC677, s6Info->details, 256);
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 3165;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
 	gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1191, 0);
 
 	// Scenario category label
@@ -1160,7 +1161,7 @@ static void window_editor_objective_options_rides_invalidate(rct_window *w)
 	window_editor_objective_options_set_pressed_tab(w);
 
 	window_editor_objective_options_main_widgets[WIDX_CLOSE].type =
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+		gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
 
 	window_editor_objective_options_anchor_border_widgets(w);
 }
@@ -1210,7 +1211,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
 		// Checkbox mark
 		ride = get_ride(i);
 		if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = stringId == 1193 ? 0xFFFE : 0xFFFF;
+			gCurrentFontSpriteBase = stringId == 1193 ? -2 : -1;
 			gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
 		}
 

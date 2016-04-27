@@ -105,8 +105,11 @@ enum {
 	GAME_COMMAND_FLAG_NETWORKED = (1 << 31) // Game command is coming from network
 };
 
-
-
+enum {
+	GAME_PAUSED_NORMAL			= 1 << 0,
+	GAME_PAUSED_MODAL			= 1 << 1,
+	GAME_PAUSED_SAVING_TRACK	= 1 << 2,
+};
 
 typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
@@ -122,6 +125,9 @@ extern rct_string_id gGameCommandErrorText;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[66];
 
+#define gCurrentTicks		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
+
+extern uint8 gGamePaused;
 extern int gGameSpeed;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
@@ -148,6 +154,8 @@ bool game_load_save(const utf8 *path);
 void game_load_init();
 void game_pause_toggle(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void pause_toggle();
+bool game_is_paused();
+bool game_is_not_paused();
 void save_game();
 void save_game_as();
 void rct2_exit();

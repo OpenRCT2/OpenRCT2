@@ -27,8 +27,8 @@ static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, int 
 {
 	int i, x, y, yearOver32, currentMonth, currentDay;
 
-	currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
-	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+	currentMonth = date_get_month(gDateMonthsElapsed);
+	currentDay = gDateMonthTicks;
 	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
 	x = baseX;
 	y = baseY;
@@ -103,8 +103,8 @@ static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, 
 {
 	int i, x, y, yearOver32, currentMonth, currentDay;
 
-	currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
-	currentDay = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+	currentMonth = date_get_month(gDateMonthsElapsed);
+	currentDay = gDateMonthTicks;
 	yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
 	x = baseX;
 	y = baseY;

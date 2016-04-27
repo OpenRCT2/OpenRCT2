@@ -23,6 +23,7 @@
 #include "../game.h"
 #include "../scenario.h"
 #include "../interface/viewport.h"
+#include "../localisation/date.h"
 #include "../localisation/string_ids.h"
 #include "../management/finance.h"
 #include "../util/util.h"
@@ -63,7 +64,7 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	colour = (*edx >> 8) & 0xFF;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
-		RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staffType] = colour;
+		gStaffColours[staffType] = colour;
 
 		FOR_ALL_PEEPS(spriteIndex, peep) {
 			if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == staffType) {
@@ -86,10 +87,10 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 	uint8 _bl = *ebx & 0xFF, staff_type = (*ebx & 0xFF00) >> 8;
 	uint16 _ax = *eax & 0xFFFF, _cx = *ecx & 0xFFFF, _dx = *edx & 0xFFFF;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = _ax;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = _cx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = _dx;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
+	gCommandPosition.x = _ax;
+	gCommandPosition.y = _cx;
+	gCommandPosition.z = _dx;
 
 	if (RCT2_GLOBAL(0x13573C8, uint16) < 0x190) {
 		*ebx = MONEY32_UNDEFINED;
@@ -204,22 +205,22 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 				count = 0;
 				uint8 i;
 				for (i = 0; i < 4; ++i) {
-					if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL) ++count;
+					if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) ++count;
 				}
 
 				if (count > 0) {
 					uint32 rand = scenario_rand_max(count);
 					for (i = 0; i < 4; ++i) {
-						if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL) {
+						if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
 							if (rand == 0) break;
 							--rand;
 						}
 					}
 
-					uint8 dir = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i];
-					x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i];
-					y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[i];
-					z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[i];
+					uint8 dir = gParkEntranceDirection[i];
+					x = gParkEntranceX[i];
+					y = gParkEntranceY[i];
+					z = gParkEntranceZ[i];
 					x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
 					y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
 				} else {
@@ -250,13 +251,13 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 			invalidate_sprite_2((rct_sprite*)newPeep);
 		}
 
-		newPeep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		newPeep->time_in_park = gDateMonthsElapsed;
 		newPeep->pathfind_goal.x = 0xFF;
 		newPeep->pathfind_goal.y = 0xFF;
 		newPeep->pathfind_goal.z = 0xFF;
 		newPeep->pathfind_goal.direction = 0xFF;
 
-		uint8 colour = RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, uint8)[staff_type > 2 ? 2 : staff_type];
+		uint8 colour = gStaffColours[staff_type > 2 ? 2 : staff_type];
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
@@ -292,7 +293,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
  */
 void game_command_set_staff_order(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
 	uint8 order_id = *ebx >> 8;
 	uint16 sprite_id = *edx;
 	if (sprite_id >= MAX_SPRITES)
@@ -383,7 +384,7 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
  */
 void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_WAGES * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
 	if(*ebx & GAME_COMMAND_FLAG_APPLY){
 		window_close_by_class(WC_FIRE_PROMPT);
 		uint16 sprite_id = *edx;
@@ -538,7 +539,7 @@ void staff_reset_stats()
 	rct_peep *peep;
 
 	FOR_ALL_STAFF(spriteIndex, peep) {
-		peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
+		peep->time_in_park = gDateMonthsElapsed;
 		peep->staff_lawns_mown = 0;
 		peep->staff_rides_fixed = 0;
 		peep->staff_gardens_watered = 0;
@@ -739,7 +740,7 @@ static int staff_path_finding_handyman(rct_peep* peep)
 	uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
 	if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) &&
-		((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + peep->sprite_index) & 0xFFF) > 110) {
+		((gCurrentTicks + peep->sprite_index) & 0xFFF) > 110) {
 		litterDirection = staff_handyman_direction_to_nearest_litter(peep);
 	}
 	

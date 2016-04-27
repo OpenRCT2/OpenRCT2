@@ -70,8 +70,8 @@ void window_main_open()
 {
 	rct_window* window;
 
-	window_main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	window_main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	window_main_widgets[0].right = gScreenWidth;
+	window_main_widgets[0].bottom = gScreenHeight;
 	window = window_create(
 		0, 0,
 		window_main_widgets[0].right, window_main_widgets[0].bottom,
@@ -83,7 +83,7 @@ void window_main_open()
 
 	viewport_create(window, window->x, window->y, window->width, window->height, 0,0x0FFF,0x0FFF, 0, 0x1, -1);
 	window->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32) = 0;
+	gCurrentRotation = 0;
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B3, uint8) = 0;

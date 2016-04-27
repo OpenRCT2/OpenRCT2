@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 
-#include "../addresses.h"
+#include "../game.h"
 #include "../scenario.h"
 #include "fountain.h"
 #include "map.h"
@@ -106,7 +106,7 @@ void jumping_fountain_begin(int type, int x, int y, rct_map_element *mapElement)
 	int z = mapElement->base_height * 8;
 
 	// Change pattern approximately every 51 seconds
-	int pattern = (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >> 11) & 7;
+	int pattern = (gCurrentTicks >> 11) & 7;
 	switch (pattern) {
 	case PATTERN_CYCLIC_SQUARES:
 		// 0, 1, 2, 3

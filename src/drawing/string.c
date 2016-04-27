@@ -232,7 +232,7 @@ int gfx_wrap_string(utf8 *text, int width, int *outNumLines, int *outFontHeight)
 		}
 	}
 	maxWidth = max(maxWidth, lineWidth);
-	*outFontHeight = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	*outFontHeight = gCurrentFontSpriteBase;
 	return maxWidth == 0 ? lineWidth : maxWidth;
 }
 
@@ -255,7 +255,7 @@ void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, int format, void* args
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	// Clip text - return value is not needed
 	gfx_clip_string(buffer, width);
@@ -283,7 +283,7 @@ void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, int format, void *a
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 0xE0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	// Clip text
 	text_width = gfx_clip_string(buffer, width);
@@ -352,21 +352,18 @@ void gfx_draw_string_centred(rct_drawpixelinfo *dpi, int format, int x, int y, i
 int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int y, int width, int format, int colour)
 {
 	int font_height, line_height, line_width, line_y, num_lines;
-	// Location of font sprites
-	sint16* current_font_sprite_base;
-
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 
-	current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16);
-	if (*current_font_sprite_base >= 0) *current_font_sprite_base = 0xE0;
+	if (gCurrentFontSpriteBase >= 0) {
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+	}
 
 	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
 
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
-
 	format_string(buffer, format, args);
 
-	*current_font_sprite_base = 0xE0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	// line_width unused here
 	line_width = gfx_wrap_string(buffer, width, &num_lines, &font_height);
@@ -379,7 +376,7 @@ int gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, int x, i
 	font_height = (line_height / 2) * num_lines;
 	line_y = y - font_height;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	gCurrentFontFlags = 0;
 
 	for (int line = 0; line <= num_lines; ++line) {
 		int half_width = gfx_get_string_width(buffer) / 2;
@@ -408,20 +405,18 @@ int gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, int x, int 
 	// font height might actually be something else
 	int fontSpriteBase, lineHeight, lineY, numLines;
 
-	// Location of font sprites
-	uint16* current_font_sprite_base = RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	*current_font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	char* buffer = RCT2_ADDRESS(0x009C383D, char);
 	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
 
-	*current_font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
 	lineHeight = font_get_line_height(fontSpriteBase);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	gCurrentFontFlags = 0;
 	lineY = y;
 	for (int line = 0; line <= numLines; ++line) {
 		gfx_draw_string(dpi, buffer, 0xFE, x, lineY);
@@ -447,7 +442,7 @@ void gfx_draw_string_left(rct_drawpixelinfo *dpi, int format, void *args, int co
 
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	format_string(buffer, format, args);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_draw_string(dpi, buffer, colour, x, y);
 }
 
@@ -458,7 +453,7 @@ void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, 
 {
 	char* buffer;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 	format_string(buffer, format, args);
 	int height = string_get_height_raw(buffer);
@@ -526,7 +521,7 @@ void draw_string_left_underline(rct_drawpixelinfo *dpi, int format, void *args, 
 	int width;
 
 	format_string(buffer, format, args);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width(buffer);
 	gfx_draw_string(dpi, buffer, colour, x, y);
 	gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
@@ -540,7 +535,7 @@ void draw_string_right_underline(rct_drawpixelinfo *dpi, int format, void *args,
 	int width;
 
 	format_string(buffer, format, args);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width(buffer);
 	x -= width;
 	gfx_draw_string(dpi, buffer, colour, x, y);
@@ -555,7 +550,7 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *arg
 	int width;
 
 	format_string(buffer, format, args);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	width = gfx_get_string_width(buffer);
 	x -= width / 2;
 	gfx_draw_string(dpi, buffer, colour, x, y);
@@ -576,9 +571,9 @@ void draw_string_centred_underline(rct_drawpixelinfo *dpi, int format, void *arg
  */
 void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines, char *text)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_draw_string(dpi, (char*)0x009C383D, 0, dpi->x, dpi->y);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	gCurrentFontFlags = 0;
 
 	for (int i = 0; i <= numLines; i++) {
 		int width = gfx_get_string_width(text);
@@ -593,18 +588,18 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, int x, int y, int numLines,
 		}
 		text = (char*)(ch + 1);
 
-		y += font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
+		y += font_get_line_height(gCurrentFontSpriteBase);
 	}
 }
 
 int string_get_height_raw(char *buffer)
 {
-	uint16 fontBase = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
+	uint16 fontBase = gCurrentFontSpriteBase;
 
 	int height = 0;
-	if (fontBase <= 224)
+	if (fontBase <= FONT_SPRITE_BASE_MEDIUM)
 		height += 10;
-	else if (fontBase == 448)
+	else if (fontBase == FONT_SPRITE_BASE_TINY)
 		height += 6;
 
 	char *ch = buffer;
@@ -678,19 +673,19 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, int x, int 
 	int numLines, fontSpriteBase, lineHeight, lineY;
 	utf8 *buffer = (utf8*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_draw_string(dpi, (char*)0x009C383D, colour, dpi->x, dpi->y);
 	format_string(buffer, format, args);
 
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
 	lineHeight = font_get_line_height(fontSpriteBase);
 
 	int numCharactersDrawn = 0;
 	int numCharactersToDraw = ticks;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	gCurrentFontFlags = 0;
 	lineY = y - ((numLines * lineHeight) / 2);
 	for (int line = 0; line <= numLines; line++) {
 		int halfWidth = gfx_get_string_width(buffer) / 2;
@@ -1285,8 +1280,8 @@ static void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, int colour, int 
 	if (text == NULL) return;
 
 	text_draw_info info;
-	info.font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	info.flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
+	info.font_sprite_base = gCurrentFontSpriteBase;
+	info.flags = gCurrentFontFlags;
 	info.startX = x;
 	info.startY = x;
 	info.x = x;
@@ -1299,8 +1294,8 @@ static void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, int colour, int 
 	ttf_process_string(dpi, text, &info);
 	memcpy(text_palette, info.palette, sizeof(info.palette));
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = info.font_sprite_base;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = info.flags;
+	gCurrentFontSpriteBase = info.font_sprite_base;
+	gCurrentFontFlags = info.flags;
 
 	gLastDrawStringX = info.x;
 	gLastDrawStringY = info.y;
@@ -1309,8 +1304,8 @@ static void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, int colour, int 
 static int ttf_get_string_width(const utf8 *text)
 {
 	text_draw_info info;
-	info.font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	info.flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
+	info.font_sprite_base = gCurrentFontSpriteBase;
+	info.flags = gCurrentFontFlags;
 	info.startX = 0;
 	info.startY = 0;
 	info.x = 0;
@@ -1333,8 +1328,8 @@ static int ttf_get_string_width(const utf8 *text)
 void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, int colour, int x, int y, const sint8 *yOffsets, bool forceSpriteFont)
 {
 	text_draw_info info;
-	info.font_sprite_base = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16);
-	info.flags = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16);
+	info.font_sprite_base = gCurrentFontSpriteBase;
+	info.flags = gCurrentFontFlags;
 	info.startX = x;
 	info.startY = x;
 	info.x = x;
@@ -1352,8 +1347,8 @@ void gfx_draw_string_with_y_offsets(rct_drawpixelinfo *dpi, const utf8 *text, in
 	ttf_process_string(dpi, text, &info);
 	memcpy(text_palette, info.palette, sizeof(info.palette));
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = info.font_sprite_base;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = info.flags;
+	gCurrentFontSpriteBase = info.font_sprite_base;
+	gCurrentFontFlags = info.flags;
 
 	gLastDrawStringX = info.x;
 	gLastDrawStringY = info.y;

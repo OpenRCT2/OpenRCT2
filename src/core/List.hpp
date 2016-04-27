@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <vector>
 
 #include "../common.h"
@@ -21,6 +22,8 @@ public:
     const T * GetItems()    const { return this->data(); }
 
     List() : std::vector<T>() { }
+
+    List(std::initializer_list<T> initializerList) : std::vector<T>(initializerList) { }
 
     List(size_t capacity) : std::vector<T>(capacity) { }
 
@@ -44,6 +47,11 @@ public:
     void Add(T item)
     {
         this->push_back(item);
+    }
+
+    void AddRange(std::initializer_list<T> initializerList)
+    {
+        this->insert(this->end(), initializerList.begin(), initializerList.end());
     }
 
     void Insert(T item, size_t index)
@@ -86,5 +94,41 @@ public:
     {
         Guard::ArgumentInRange(index, (size_t)0, this->size() - 1);
         return std::vector<T>::operator[](index);
+    }
+
+    size_t IndexOf(std::function<bool(T)> predicate)
+    {
+        for (size_t i = 0; i < this->size(); i++)
+        {
+            T item = std::vector<T>::operator[](i);
+            if (predicate(item))
+            {
+                return i;
+            }
+        }
+        return SIZE_MAX;
+    }
+
+    size_t IndexOf(T item, std::function<bool(T, T)> comparer)
+    {
+        for (size_t i = 0; i < this->size(); i++)
+        {
+            T element = std::vector<T>::operator[](i);
+            if (comparer(item, element))
+            {
+                return i;
+            }
+        }
+        return SIZE_MAX;
+    }
+
+    bool Contains(std::function<bool(T)> predicate)
+    {
+        return IndexOf(predicate) != SIZE_MAX;
+    }
+
+    bool Contains(T item, std::function<bool(T, T)> comparer)
+    {
+        return IndexOf(item, comparer) != SIZE_MAX;
     }
 };

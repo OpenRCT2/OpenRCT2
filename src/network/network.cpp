@@ -45,6 +45,7 @@ extern "C" {
 #include "../interface/keyboard_shortcut.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../network/http.h"
 #include "../scenario.h"
 #include "../windows/error.h"
@@ -912,7 +913,7 @@ void Network::UpdateClient()
 		ProcessGameCommandQueue();
 
 		// Check synchronisation
-		if (!_desynchronised && !CheckSRAND(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32), RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32))) {
+		if (!_desynchronised && !CheckSRAND(gCurrentTicks, gScenarioSrand0)) {
 			_desynchronised = true;
 			char str_desync[256];
 			format_string(str_desync, STR_MULTIPLAYER_DESYNC, NULL);
@@ -1124,13 +1125,13 @@ void Network::AdvertiseHeartbeat()
 	json_object_set_new(body, "players", json_integer(network_get_num_players()));
 
 	json_t *gameInfo = json_object();
-	json_object_set_new(gameInfo, "mapSize", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)));
-	json_object_set_new(gameInfo, "day", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)));
-	json_object_set_new(gameInfo, "month", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16)));
-	json_object_set_new(gameInfo, "guests", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)));
-	json_object_set_new(gameInfo, "parkValue", json_integer(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32)));
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		money32 cash = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32));
+	json_object_set_new(gameInfo, "mapSize", json_integer(gMapSizeMinus2));
+	json_object_set_new(gameInfo, "day", json_integer(gDateMonthTicks));
+	json_object_set_new(gameInfo, "month", json_integer(gDateMonthsElapsed));
+	json_object_set_new(gameInfo, "guests", json_integer(gNumGuestsInPark));
+	json_object_set_new(gameInfo, "parkValue", json_integer(gParkValue));
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+		money32 cash = DECRYPT_MONEY(gCashEncrypted);
 		json_object_set_new(gameInfo, "cash", json_integer(cash));
 	}
 
@@ -1386,14 +1387,14 @@ void Network::Server_Send_CHAT(const char* text)
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << callback;
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << callback;
 	server_connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << playerid << callback;
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << playerid << callback;
 	SendPacketToClients(*packet);
 }
 
@@ -1401,7 +1402,7 @@ void Network::Server_Send_TICK()
 {
 	last_tick_sent_time = SDL_GetTicks();
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) << (uint32)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
+	*packet << (uint32)NETWORK_COMMAND_TICK << (uint32)gCurrentTicks << (uint32)gScenarioSrand0;
 	SendPacketToClients(*packet);
 }
 
@@ -1574,7 +1575,7 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 
 void Network::ProcessGameCommandQueue()
 {
-	while (game_command_queue.begin() != game_command_queue.end() && game_command_queue.begin()->tick == RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)) {
+	while (game_command_queue.begin() != game_command_queue.end() && game_command_queue.begin()->tick == gCurrentTicks) {
 		// run all the game commands at the current tick
 		const GameCommand& gc = (*game_command_queue.begin());
 		if (GetPlayerID() == gc.playerid) {
@@ -1776,7 +1777,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 		if (game_load_network(rw)) {
 			game_load_init();
 			game_command_queue.clear();
-			server_tick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
+			server_tick = gCurrentTicks;
 			server_srand0_tick = 0;
 			// window_network_status_open("Loaded new map from network");
 			_desynchronised = false;
@@ -2450,7 +2451,7 @@ void network_set_password(const char* password)
 int network_get_mode() { return NETWORK_MODE_NONE; }
 int network_get_status() { return NETWORK_STATUS_NONE; }
 int network_get_authstatus() { return NETWORK_AUTH_NONE; }
-uint32 network_get_server_tick() { return RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32); }
+uint32 network_get_server_tick() { return gCurrentTicks; }
 void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback) {}
 void network_send_map() {}
 void network_update() {}

@@ -19,29 +19,30 @@
 *****************************************************************************/
 
 #include "../addresses.h"
-#include "../util/util.h"
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
+#include "../cheats.h"
+#include "../config.h"
+#include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/finance.h"
+#include "../management/marketing.h"
 #include "../management/news_item.h"
-#include "../config.h"
 #include "../openrct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/track.h"
 #include "../scenario.h"
 #include "../sprites.h"
-#include "../world/sprite.h"
-#include "../world/scenery.h"
+#include "../util/util.h"
+#include "../world/climate.h"
 #include "../world/footpath.h"
-#include "../management/marketing.h"
-#include "../game.h"
-#include "../ride/track.h"
-#include "../cheats.h"
+#include "../world/map.h"
+#include "../world/scenery.h"
+#include "../world/sprite.h"
 #include "peep.h"
 #include "staff.h"
-#include "../world/map.h"
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -168,7 +169,7 @@ void peep_update_all()
 	uint16 spriteIndex;
 	rct_peep* peep;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 0x0E)
+	if (gScreenFlags & 0x0E)
 		return;
 
 	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
@@ -177,7 +178,7 @@ void peep_update_all()
 		peep = &(g_sprite_list[spriteIndex].peep);
 		spriteIndex = peep->next;
 
-		if ((i & 0x7F) != (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x7F)) {
+		if ((i & 0x7F) != (gCurrentTicks & 0x7F)) {
 			peep_update(peep);
 		} else {
 			sub_68F41A(peep, i);
@@ -335,7 +336,7 @@ static void sub_68F8CD(rct_peep *peep)
 		peep->energy_growth_rate -= 2;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint8) >= 21 && peep->thirst >= 5) {
+	if (gClimateCurrentTemperature >= 21 && peep->thirst >= 5) {
 		peep->thirst--;
 	}
 
@@ -344,7 +345,7 @@ static void sub_68F8CD(rct_peep *peep)
 	}
 
 	if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 			if (peep->energy >= 70 && peep->happiness >= 60) {
 				return;
 			}
@@ -399,7 +400,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 		return;
 	}
 
-	if ((index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF)){
+	if ((index & 0x1FF) == (gCurrentTicks & 0x1FF)){
 		//RCT2_GLOBAL(0x00F1EDFE, uint32) = index; not needed all cases accounted for
 
 		if (peep->peep_flags & PEEP_FLAGS_CROWDED){
@@ -504,7 +505,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep_pick_ride_to_go_on(peep);
 		}
 
-		if ((index & 0x3FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x3FF)){
+		if ((index & 0x3FF) == (gCurrentTicks & 0x3FF)){
 
 			if (peep->outside_of_park == 0 &&
 				(peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)){
@@ -536,7 +537,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 					}
 
 					// Not sure why the happiness check is like that seems wrong to me
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) &&
+					if (!(gParkFlags & PARK_FLAGS_NO_MONEY) &&
 						peep->cash_in_pocket <= MONEY(9, 00) &&
 						peep->happiness >= 105 &&
 						peep->happiness >= 70){
@@ -1183,7 +1184,7 @@ void peep_update_sprite_type(rct_peep* peep)
 	}
 
 	if (
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 &&
+		gClimateCurrentRainLevel != 0 &&
 		(peep->item_standard_flags & PEEP_ITEM_UMBRELLA) &&
 		peep->x != SPRITE_LOCATION_NULL
 	) {
@@ -1317,11 +1318,11 @@ void peep_sprite_remove(rct_peep* peep){
 void peep_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
 		if (peep->outside_of_park == 0){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
-			RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+			gNumGuestsInPark--;
+			gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		}
 		if (peep->state == PEEP_STATE_ENTERING_PARK){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 		}
 	}
 	peep_sprite_remove(peep);
@@ -1798,7 +1799,7 @@ static void peep_update_ride_sub_state_0(rct_peep* peep){
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
 		return;
 
-	if (ride->price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (ride->price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) ||
 			!(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) ||
 			!(peep->voucher_arguments == peep->current_ride)){
@@ -2099,7 +2100,7 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
  *  rct2: 0x006920B4
  */
 static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ride){
-	if (ride->price != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+	if (ride->price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)){
 		if ((peep->item_standard_flags & PEEP_ITEM_VOUCHER) &&
 			(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) &&
 			(peep->voucher_arguments == peep->current_ride)){
@@ -2110,7 +2111,7 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 		else{
 			ride->total_profit += ride->price;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 			peep_spend_money(peep, &peep->paid_on_rides, ride->price);
 		}
 	}
@@ -3266,7 +3267,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
 	}
 
 	// Do not play toilet flush sound on title screen as its considered loud and annoying
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
 		audio_play_sound_at_location(SOUND_TOILET_FLUSH, peep->x, peep->y, peep->z);
 	}
 
@@ -4342,7 +4343,7 @@ static void peep_update_1(rct_peep* peep){
  *  rct2: 0x690009
  */
 static void peep_update_picked(rct_peep* peep){
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1F) return;
+	if (gCurrentTicks & 0x1F) return;
 	peep->sub_state++;
 	if (peep->sub_state == 13){
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HELP, 0xFF);
@@ -4371,8 +4372,8 @@ static void peep_update_leaving_park(rct_peep* peep){
 
 	peep->outside_of_park = 1;
 	peep->destination_tolerence = 5;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)--;
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+	gNumGuestsInPark--;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	peep->var_37 = 1;
 
 	window_invalidate_by_class(WC_GUEST_LIST);
@@ -4476,7 +4477,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	if (peep->var_37 != 1){
 		sub_693C9E(peep);
 		if ((RCT2_GLOBAL(0xF1EE18, uint16) & 2)){
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_sprite_remove(peep);
 		}
 		return;
@@ -4494,9 +4495,9 @@ static void peep_update_entering_park(rct_peep* peep){
 
 	peep->outside_of_park = 0;
 	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16)++;
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+	gNumGuestsInPark++;
+	gNumGuestsHeadingForPark--;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 	window_invalidate_by_class(WC_GUEST_LIST);
 }
 
@@ -5452,7 +5453,7 @@ static void peep_update_walking(rct_peep* peep){
 	}
 	else if (peep_has_empty_container(peep)){
 		if ((!(peep->next_var_29 & 0x18)) &&
-			((peep->sprite_index & 0x1FF) == (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 0x1FF))&&
+			((peep->sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))&&
 			((0xFFFF & scenario_rand()) <= 4096)){
 
 			uint8 pos_stnd = 0;
@@ -5785,7 +5786,7 @@ void peep_problem_warnings_update()
 	rct_peep* peep;
 	rct_ride* ride;
 	uint16 spriteIndex;
-	uint16 guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
+	uint16 guests_in_park = gNumGuestsInPark;
 	int hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0,
 		litter_counter = 0, disgust_counter = 0, bathroom_counter = 0 ,vandalism_counter = 0;
 	uint8* warning_throttle = RCT2_ADDRESS(0x01358750, uint8);
@@ -5934,7 +5935,7 @@ void peep_update_crowd_noise()
 	if (!gConfigSound.sound_enabled)
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 2)
+	if (gScreenFlags & 2)
 		return;
 
 	viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
@@ -6027,7 +6028,7 @@ void peep_applause()
 	}
 
 	// Play applause noise
-	audio_play_sound_panned(SOUND_APPLAUSE, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+	audio_play_sound_panned(SOUND_APPLAUSE, gScreenWidth / 2, 0, 0, 0);
 }
 
 /**
@@ -6097,12 +6098,12 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	if (al >= 7) al = 15;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES){
+	if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES){
 		ah = 0;
 		al = 4;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
+	if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
 		ah = 9;
 		al = 15;
 	}
@@ -6110,15 +6111,15 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->intensity = (al << 4) | ah;
 
 	uint8 nausea_tolerance = scenario_rand() & 0x7;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
+	if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES){
 		nausea_tolerance += 4;
 	}
 
 	peep->nausea_tolerance = RCT2_ADDRESS(0x009823A0, uint8)[nausea_tolerance];
 
-	sint8 happiness = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
+	sint8 happiness = (scenario_rand() & 0x1F) - 15 + gGuestInitialHappiness;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) == 0)
+	if (gGuestInitialHappiness == 0)
 		happiness += 0x80;
 
 	peep->happiness = happiness;
@@ -6126,11 +6127,11 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->nausea = 0;
 	peep->nausea_growth_rate = 0;
 
-	sint8 hunger = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8);
+	sint8 hunger = (scenario_rand() & 0x1F) - 15 + gGuestInitialHunger;
 
 	peep->hunger = hunger;
 
-	sint8 thirst = (scenario_rand() & 0x1F) - 15 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8);
+	sint8 thirst = (scenario_rand() & 0x1F) - 15 + gGuestInitialThirst;
 
 	peep->thirst = thirst;
 
@@ -6143,18 +6144,18 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
 	peep->name_string_idx = 767;
 
-	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16);
+	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
 	if (cash < 0) cash = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == 0){
+	if (gGuestInitialCash == 0){
 		cash = 500;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY){
+	if (gParkFlags & PARK_FLAGS_NO_MONEY){
 		cash = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) == (money16)0xFFFF){
+	if (gGuestInitialCash == (money16)0xFFFF){
 		cash = 0;
 	}
 
@@ -6193,12 +6194,12 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->energy = energy;
 	peep->energy_growth_rate = energy;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_SHOW_REAL_GUEST_NAMES){
+	if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES){
 		peep_give_real_name(peep);
 	}
 	peep_update_name_sort(peep);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)++;
+	gNumGuestsHeadingForPark++;
 
 	return peep;
 }
@@ -6927,7 +6928,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 
 			if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
 				// If the park is open and leaving flag isnt set return to center
-				if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)
+				if (gParkFlags & PARK_FLAGS_PARK_OPEN)
 					return peep_return_to_center_of_tile(peep);
 			}
 
@@ -6958,24 +6959,24 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		if (peep->state != PEEP_STATE_ENTERING_PARK)
 			return peep_return_to_center_of_tile(peep);
 
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN)){
+		if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
 
 		uint8 entranceIndex = 0;
 		while (1){
-			if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceIndex] == (x & 0xFFE0) &&
-				RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceIndex] == (y & 0xFFE0))
+			if (gParkEntranceX[entranceIndex] == (x & 0xFFE0) &&
+				gParkEntranceY[entranceIndex] == (y & 0xFFE0))
 				break;
 			entranceIndex++;
 		}
 
-		sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceIndex] / 8;
-		entranceDirection = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[entranceIndex];
+		sint16 z = gParkEntranceZ[entranceIndex] / 8;
+		entranceDirection = gParkEntranceDirection[entranceIndex];
 
 		sint16 next_x = (x & 0xFFE0) + TileDirectionDelta[entranceDirection].x;
 		sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
@@ -7019,13 +7020,13 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		if (!found){
 			peep->state = PEEP_STATE_LEAVING_PARK;
 			peep->var_37 = 1;
-			RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+			gNumGuestsHeadingForPark--;
 			peep_window_state_update(peep);
 			return peep_return_to_center_of_tile(peep);
 		}
 
-		money16 entranceFee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16);
-		if (entranceFee != 0 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)){
+		money16 entranceFee = gParkEntranceFee;
+		if (entranceFee != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)){
 			if (peep->item_standard_flags & PEEP_ITEM_VOUCHER){
 				if (peep->voucher_type == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE){
 					entranceFee /= 2;
@@ -7041,13 +7042,13 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 			if (entranceFee > peep->cash_in_pocket){
 				peep->state = PEEP_STATE_LEAVING_PARK;
 				peep->var_37 = 1;
-				RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16)--;
+				gNumGuestsHeadingForPark--;
 				peep_window_state_update(peep);
 				return peep_return_to_center_of_tile(peep);
 			}
 
 			RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) += entranceFee;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
 			peep_spend_money(peep, &peep->paid_to_enter, entranceFee);
 			peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
 		}
@@ -7336,7 +7337,7 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		if (cost != 0){
 			ride->total_profit += cost;
 			ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS;
 			peep_spend_money(peep, NULL, cost);
 		}
 		peep->destination_x = (x & 0xFFE0) + 16;
@@ -7903,11 +7904,11 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	uint8 chosenEntrance = 0xFF;
 	uint16 nearestDist = 0xFFFF;
 	for (uint8 entranceNum = 0; entranceNum < 4; ++entranceNum){
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] == (sint16)0x8000)
+		if (gParkEntranceX[entranceNum] == (sint16)0x8000)
 			continue;
 
-		uint16 dist = abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] - peep->next_x) +
-			abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum] - peep->next_y);
+		uint16 dist = abs(gParkEntranceX[entranceNum] - peep->next_x) +
+					abs(gParkEntranceY[entranceNum] - peep->next_y);
 
 		if (dist >= nearestDist)
 			continue;
@@ -7919,9 +7920,9 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	if (chosenEntrance == 0xFF)
 		return guest_path_find_aimless(peep, edges);
 
-	sint16 x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[chosenEntrance];
-	sint16 y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[chosenEntrance];
-	sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[chosenEntrance];
+	sint16 x = gParkEntranceX[chosenEntrance];
+	sint16 y = gParkEntranceY[chosenEntrance];
+	sint16 z = gParkEntranceZ[chosenEntrance];
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;
@@ -7980,19 +7981,20 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	
 	// Resolves already-corrupt guests (e.g. loaded from save)
 	if (peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN &&
-		(peep->current_ride >= 4 ||
-		 RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[peep->current_ride] == (sint16)0x8000)
-		) peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+		(peep->current_ride >= 4 || gParkEntranceX[peep->current_ride] == (sint16)0x8000)
+	) {
+		peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+	}
 
 	if (!(peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)){
 		uint8 chosenEntrance = 0xFF;
 		uint16 nearestDist = 0xFFFF;
 		for (entranceNum = 0; entranceNum < 4; ++entranceNum){
-			if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] == (sint16)0x8000)
+			if (gParkEntranceX[entranceNum] == (sint16)0x8000)
 				continue;
 
-			uint16 dist = abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum] - peep->next_x) +
-				abs(RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum] - peep->next_y);
+			uint16 dist = abs(gParkEntranceX[entranceNum] - peep->next_x) +
+				abs(gParkEntranceY[entranceNum] - peep->next_y);
 
 			if (dist >= nearestDist)
 				continue;
@@ -8009,9 +8011,9 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	}
 
 	entranceNum = peep->current_ride;
-	sint16 x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[entranceNum];
-	sint16 y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[entranceNum];
-	sint16 z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, sint16)[entranceNum];
+	sint16 x = gParkEntranceX[entranceNum];
+	sint16 y = gParkEntranceY[entranceNum];
+	sint16 z = gParkEntranceZ[entranceNum];
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;
@@ -8378,7 +8380,7 @@ static int sub_693C9E(rct_peep *peep)
 		return 1;
 	}
 
-	if (x < 32 || y < 32 || x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)){
+	if (x < 32 || y < 32 || x >= gMapSizeUnits || y >= gMapSizeUnits){
 		if (peep->outside_of_park == 1){
 			RCT2_GLOBAL(0x00F1EE18, uint16) |= (1 << 1);
 		}
@@ -8457,7 +8459,7 @@ static int sub_693C9E(rct_peep *peep)
  */
 static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 amount)
 {
-	assert(!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY));
+	assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
 	peep->cash_in_pocket = max(0, peep->cash_in_pocket - amount);
 	peep->cash_spent += amount;
@@ -8467,7 +8469,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 	window_invalidate_by_number(WC_PEEP, peep->sprite_index);
 
 	RCT2_GLOBAL(0x00141F568, uint8) = RCT2_GLOBAL(0x0013CA740, uint8);
-	finance_payment(-amount, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
+	finance_payment(-amount, gCommandExpenditureType);
 
 	audio_play_sound_at_location(SOUND_PURCHASE, peep->x, peep->y, peep->z);
 }
@@ -8564,7 +8566,7 @@ static sint8 peep_calculate_ride_satisfaction(rct_peep *peep, rct_ride *ride)
 	// Calculate satisfaction based on the price and value of the ride.
 	uint8 valueSatisfaction = 1;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		if (ride->value != 0xFFFF) {
 			if (ride->price <= (money16)ride->value) {
 				valueSatisfaction = 2;
@@ -8736,7 +8738,7 @@ static bool peep_should_go_on_ride_again(rct_peep *peep, rct_ride *ride)
 
 static bool peep_should_preferred_intensity_increase(rct_peep *peep)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) return false;
+	if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) return false;
 	if (peep->happiness < 200) return false;
 
 	return (scenario_rand() & 0xFF) >= peep->intensity;
@@ -8865,12 +8867,12 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
 
 	if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM)
 		|| (shopItem == SHOP_ITEM_COTTON_CANDY) || (shopItem == SHOP_ITEM_SUNGLASSES)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0)
+		if (gClimateCurrentRainLevel != 0)
 			return 0;
 	}
 
 	if ((shopItem == SHOP_ITEM_SUNGLASSES) || (shopItem == SHOP_ITEM_ICE_CREAM)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8) < 12)
+		if (gClimateCurrentTemperature < 12)
 			return 0;
 	}
 
@@ -8884,7 +8886,7 @@ static bool sub_69AF1E(rct_peep *peep, int rideIndex, int shopItem, money32 pric
 		return 0;
 	}
 
-	if ((shopItem == SHOP_ITEM_UMBRELLA) && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0))
+	if ((shopItem == SHOP_ITEM_UMBRELLA) && (gClimateCurrentRainLevel != 0))
 			goto loc_69B119;
 
 	if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher) {
@@ -8907,9 +8909,9 @@ loc_69B119:
 			}
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) >= 21)
+		if (gClimateCurrentTemperature >= 21)
 			value = get_shop_hot_value(shopItem);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) <= 11)
+		else if (gClimateCurrentTemperature <= 11)
 			value = get_shop_cold_value(shopItem);
 		else
 			value = get_shop_base_value(shopItem);
@@ -8917,7 +8919,7 @@ loc_69B119:
 		if (value < price) {
 			value -= price;
 			if (shopItem == SHOP_ITEM_UMBRELLA) {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, sint8) != 0)
+				if (gClimateCurrentRainLevel != 0)
 					goto loc_69B221;
 			}
 
@@ -8939,7 +8941,7 @@ loc_69B119:
 			value -= price;
 			value = max(8, value);
 
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+			if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 				if (value >= (money32)(scenario_rand() & 0x07)) {
 					// "This x is a really good value"
 					uint8 thought_item = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32)) : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
@@ -8955,9 +8957,9 @@ loc_69B119:
 
 loc_69B221:
 	if (!has_voucher) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) >= 21)
+		if (gClimateCurrentTemperature >= 21)
 			value = get_shop_hot_value(shopItem);
-		else if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, uint16) <= 11)
+		else if (gClimateCurrentTemperature <= 11)
 			value = get_shop_cold_value(shopItem);
 		else
 			value = get_shop_base_value(shopItem);
@@ -9039,28 +9041,28 @@ loc_69B221:
 		peep->no_of_souvenirs++;
 
 	money16* expend_type = &peep->paid_on_souvenirs;
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_SHOP_STOCK * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_SHOP_STOCK;
 
 	if (shop_item_is_food(shopItem)) {
 		expend_type = &peep->paid_on_food;
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK * 4;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
 	}
 
 	if (shop_item_is_drink(shopItem)) {
 		expend_type = &peep->paid_on_drink;
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK * 4;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
-		finance_payment(get_shop_item_cost(shopItem), (RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4));
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+		finance_payment(get_shop_item_cost(shopItem), gCommandExpenditureType);
 
 	// Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) -= 4;
+	gCommandExpenditureType--;
 	if (has_voucher) {
 		peep->item_standard_flags &= ~PEEP_ITEM_VOUCHER;
 		peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	}
-	else if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	else if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		peep_spend_money(peep, expend_type, price);
 	}
 	ride->total_profit += (price - get_shop_item_cost(shopItem));
@@ -9078,7 +9080,7 @@ loc_69B221:
  */
 static bool peep_should_use_cash_machine(rct_peep *peep, int rideIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) return false;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) return false;
 	if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) return false;
 	if (peep->cash_in_pocket > MONEY(20,00)) return false;
 	if (115 + (scenario_rand() % 128) > peep->happiness) return false;
@@ -9695,7 +9697,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 				// Peeps won't go on rides that aren't sufficiently undercover while it's raining.
 				// The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-				if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RAIN_LEVEL, uint8) != 0 && (ride->undercover_portion >> 5) < 3) {
+				if (gClimateCurrentRainLevel != 0 && (ride->undercover_portion >> 5) < 3) {
 					if (peepAtRide) {
 						peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, rideIndex);
 						if (peep->happiness_growth_rate >= 64) {
@@ -9774,7 +9776,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 			uint32 value = ride->value;
 
 			// If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex) && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+			if (value != 0xFFFF && !peep_has_voucher_for_free_ride(peep, rideIndex) && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 
 				// The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
 				if (peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
@@ -9795,7 +9797,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 				// A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
 				if (ride->price <= (money16)(value / 2) && peepAtRide) {
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+					if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 						if (!(peep->peep_flags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)) {
 							peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GOOD_VALUE, rideIndex);
 						}
@@ -10390,7 +10392,7 @@ void peep_update_names(bool realNames)
 	bool restart;
 
 	if (realNames) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+		gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 		do {
 			restart = false;
 			FOR_ALL_GUESTS(spriteIndex, peep) {
@@ -10403,7 +10405,7 @@ void peep_update_names(bool realNames)
 		} while (restart);
 		gfx_invalidate_screen();
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+		gParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 		do {
 			restart = false;
 			FOR_ALL_GUESTS(spriteIndex, peep) {
@@ -10438,7 +10440,7 @@ static bool peep_heading_for_ride_or_park_exit(rct_peep *peep)
 }
 
 money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3) {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 	if (state == 1) {
 		RCT2_GLOBAL(0x00F1AEF4, uint16) = sprite_index;
 	}

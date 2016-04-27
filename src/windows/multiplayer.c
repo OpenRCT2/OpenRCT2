@@ -264,7 +264,7 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window *w, rct_wid
 
 	for (i = 0; i < network_get_num_groups(); i++) {
 		gDropdownItemsFormat[i] = 2777;
-		gDropdownItemsArgs[i] = (sint64)network_get_group_name(i);
+		gDropdownItemsArgs[i] = (int)network_get_group_name(i);
 	}
 	if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN]) {
 		dropdown_set_checked(network_get_group_index(network_get_default_group()), true);

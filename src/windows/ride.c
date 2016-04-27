@@ -28,6 +28,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
@@ -1160,10 +1161,10 @@ void window_ride_disable_tabs(rct_window *w)
 
 	if (ride_type == RIDE_TYPE_CASH_MACHINE ||
 		ride_type == RIDE_TYPE_FIRST_AID ||
-		(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) != 0)
+		(gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_9); // 0x1000
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint32) & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
 		disabled_tabs |= (1 << WIDX_TAB_4 | 1 << WIDX_TAB_6 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10); // 0x3280
 
 	rct_ride_entry *type = get_ride_entry(ride->subtype);
@@ -3360,7 +3361,7 @@ static void window_ride_maintenance_draw_bar(rct_window *w, rct_drawpixelinfo *d
 	gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], 0x30);
 	if (unk & (1u << 31)) {
 		unk &= ~(1u << 31);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0 && (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8))
+		if (game_is_not_paused() && (gCurrentTicks & 8))
 			return;
 	}
 
@@ -3672,7 +3673,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
 	x = w->x + widget->left;
 	y = w->y + widget->top;
-	gfx_draw_sprite(dpi, (RCT2_GLOBAL(RCT2_ADDRESS_MECHANIC_COLOUR, uint8) << 24) | 0xA0000000 | 5196, x, y, 0);
+	gfx_draw_sprite(dpi, (gStaffMechanicColour << 24) | 0xA0000000 | 5196, x, y, 0);
 
 	// Inspection label
 	widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
@@ -4645,7 +4646,7 @@ static void window_ride_music_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *  rct2: 0x006D2804
   when al == 0*/
 static void cancel_scenery_selection(){
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) &= ~(1 << 2);
+	gGamePaused &= ~GAME_PAUSED_SAVING_TRACK;
 	RCT2_GLOBAL(0x9DEA6F, uint8) &= ~(1 << 0);
 	audio_unpause_sounds();
 
@@ -4676,7 +4677,7 @@ static void setup_scenery_selection(rct_window* w){
 	RCT2_GLOBAL(0x009DA193, uint8) = 0xFF;
 
 	gTrackSavedMapElements[0] = (rct_map_element*)-1;
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) |= (1 << 2);
+	gGamePaused |= GAME_PAUSED_SAVING_TRACK;
 	RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
 
 	audio_pause_sounds();
@@ -4807,7 +4808,7 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 		2
 	);
 	gDropdownDefaultIndex = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 		gDropdownItemsDisabled |= 2;
 }
 
@@ -5563,7 +5564,7 @@ static void window_ride_income_increase_primary_price(rct_window *w)
 	ride = get_ride(w->number);
 	ride_type = get_ride_entry(ride->subtype);
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
 		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
 			if (!gCheatsUnlockAllPrices)
 				return;
@@ -5588,7 +5589,7 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
 	ride = get_ride(w->number);
 	ride_type = get_ride_entry(ride->subtype);
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
+	if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
 		if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
 			if (!gCheatsUnlockAllPrices)
 				return;
@@ -5752,7 +5753,7 @@ static void window_ride_income_invalidate(rct_window *w)
 	w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
 
 	//If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
-	if ((!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == 255 && ride->type != RIDE_TYPE_TOILETS)
+	if ((!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == 255 && ride->type != RIDE_TYPE_TOILETS)
 		&& (!gCheatsUnlockAllPrices))
 	{
 		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
@@ -6119,7 +6120,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Age
 	//If the ride has a build date that is in the future, show it as built this year.
-	age = max((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date) / 8, 0);
+	age = max((gDateMonthsElapsed - ride->build_date) / 8, 0);
 	stringId = age == 0 ?
 		STR_BUILT_THIS_YEAR :
 		age == 1 ?

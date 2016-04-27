@@ -104,7 +104,7 @@ void window_land_rights_open()
 	if (window_find_by_class(WC_LAND_RIGHTS) != NULL)
 		return;
 
-	window = window_create(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
+	window = window_create(gScreenWidth - 98, 29, 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
 	window->widgets = window_land_rights_widgets;
 	window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW) |
 		(1 << WIDX_BUY_LAND_RIGHTS) | (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
@@ -114,8 +114,8 @@ void window_land_rights_open()
 	LandRightsMode = true;
 	window->pressed_widgets = (1 << WIDX_BUY_LAND_RIGHTS);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_RAISE_COST, uint32) = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(RCT2_ADDRESS_WATER_LOWER_COST, uint32) = MONEY32_UNDEFINED;
+	gWaterToolRaiseCost = MONEY32_UNDEFINED;
+	gWaterToolLowerCost = MONEY32_UNDEFINED;
 
 	show_land_rights();
 }
@@ -135,14 +135,14 @@ static void window_land_rights_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_DECREMENT:
 		// Decrement land rights tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = max(MINIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)-1);
+		gLandToolSize = max(MINIMUM_TOOL_SIZE, gLandToolSize-1);
 
 		// Invalidate the window
 		window_invalidate(w);
 		break;
 	case WIDX_INCREMENT:
 		// Decrement land rights tool size
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = min(MAXIMUM_TOOL_SIZE, RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16)+1);
+		gLandToolSize = min(MAXIMUM_TOOL_SIZE, gLandToolSize+1);
 
 		// Invalidate the window
 		window_invalidate(w);
@@ -181,7 +181,7 @@ static void window_land_rights_textinput(rct_window *w, int widgetIndex, char *t
 	if (*end == '\0') {
 		size = max(MINIMUM_TOOL_SIZE,size);
 		size = min(MAXIMUM_TOOL_SIZE,size);
-		RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) = size;
+		gLandToolSize = size;
 		window_invalidate(w);
 	}
 }
@@ -209,8 +209,8 @@ static void window_land_rights_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(1 << (!LandRightsMode ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
 	// Update the preview image
-	window_land_rights_widgets[WIDX_PREVIEW].image = RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) <= 7 ?
-		SPR_LAND_TOOL_SIZE_0 + RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) :
+	window_land_rights_widgets[WIDX_PREVIEW].image = gLandToolSize <= 7 ?
+		SPR_LAND_TOOL_SIZE_0 + gLandToolSize :
 		0xFFFFFFFF;
 }
 
@@ -223,8 +223,8 @@ static void window_land_rights_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 	// Draw number for tool sizes bigger than 7
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16) > 7) {
-		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &RCT2_GLOBAL(RCT2_ADDRESS_LAND_TOOL_SIZE, sint16));
+	if (gLandToolSize > 7) {
+		gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, 0, &gLandToolSize);
 	}
 	y = w->y + window_land_rights_widgets[WIDX_PREVIEW].bottom + 5;
 

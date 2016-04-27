@@ -120,9 +120,9 @@ void window_track_list_open(ride_list_item item)
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*) = mem;
 	reset_track_list_cache();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
-		x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2 - 300;
-		y = max(28, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) / 2 - 200);
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
+		x = gScreenWidth / 2 - 300;
+		y = max(28, gScreenHeight / 2 - 200);
 	} else {
 		x = 0;
 		y = 29;
@@ -140,7 +140,7 @@ void window_track_list_open(ride_list_item item)
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_BACK);
 	window_init_scroll_widgets(w);
 	w->track_list.var_480 = 0xFFFF;
-	w->track_list.var_482 = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
+	w->track_list.var_482 = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
 	w->track_list.var_484 = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
 	window_push_others_right(w);
@@ -159,7 +159,7 @@ static void window_track_list_select(rct_window *w, int index)
 	w->track_list.var_480 = index;
 
 	audio_play_sound_panned(SOUND_CLICK_1, w->x + (w->width / 2), 0, 0, 0);
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) && index == 0) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && index == 0) {
 		window_close(w);
 		ride_construct_new(_window_track_list_item);
 		return;
@@ -168,7 +168,7 @@ static void window_track_list_select(rct_window *w, int index)
 	if (RCT2_GLOBAL(0x00F44153, uint8) != 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 1;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER))
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
 		index--;
 
 	trackDesignItem = trackDesignList + (index * 128);
@@ -177,7 +177,7 @@ static void window_track_list_select(rct_window *w, int index)
 	window_track_list_format_name(
 		(char*)0x009BC313,
 		trackDesignItem,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ?
+		gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ?
 		0 :
 		FORMAT_WHITE,
 		1);
@@ -185,7 +185,7 @@ static void window_track_list_select(rct_window *w, int index)
 	char track_path[MAX_PATH] = { 0 };
 	substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open();
 		return;
 	}
@@ -211,7 +211,7 @@ static int window_track_list_get_list_item_index_from_position(int x, int y)
 	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 
 	index = 0;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		y -= 10;
 		if (y < 0)
 			return index;
@@ -246,7 +246,7 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 			window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
 			window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
 			trackmanager_load();
@@ -264,7 +264,7 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_BACK:
 		window_close(w);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 			window_close_by_number(WC_MANAGE_TRACK_DESIGN, w->number);
 			window_close_by_number(WC_TRACK_DELETE_PROMPT, w->number);
 			trackmanager_load();
@@ -283,7 +283,7 @@ static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int 
 {
 	uint8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
 
-	*height = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 10;
+	*height = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 10;
 	for (trackDesignItem = trackDesignList; *trackDesignItem != 0; trackDesignItem += 128)
 		*height += 10;
 }
@@ -349,7 +349,7 @@ static void window_track_list_invalidate(rct_window *w)
 		stringId = _window_track_list_item.type + 2;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_list_widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS;
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
 	} else {
@@ -357,7 +357,7 @@ static void window_track_list_invalidate(rct_window *w)
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
 	}
 
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) || w->track_list.var_482 != 0) {
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || w->track_list.var_482 != 0) {
 		w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_FLATBTN;
@@ -392,7 +392,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	trackIndex = w->track_list.var_482;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (*trackDesignList == 0 || trackIndex == -1)
 			return;
 	} else if (trackIndex-- == 0) {
@@ -428,7 +428,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	RCT2_GLOBAL(0x00F44153, uint8) = 0;
 	// Warnings
-	if ((track_td6->track_flags & 4) && !(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
+	if ((track_td6->track_flags & 4) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Vehicle design not available
 		gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, NULL, 0, x, y, 368);
 		y -= 10;
@@ -571,7 +571,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 	y = 0;
 
 	trackDesignItem = trackDesignList;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (*trackDesignItem == 0) {
 			// No track designs
 			gfx_draw_string_left(dpi, STR_NO_TRACK_DESIGNS_OF_THIS_TYPE, NULL, 0, x, y - 1);

@@ -141,32 +141,30 @@ void game_handle_input()
 		game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 2, 0);
 	}
 
-	if (RCT2_GLOBAL(0x009ABDF2, uint8) != 0) {
-		for (w = g_window_list; w < gWindowNextSlot; w++)
-			window_event_unknown_07_call(w);
+	for (w = g_window_list; w < gWindowNextSlot; w++)
+		window_event_unknown_07_call(w);
 
-		sub_6EA73F();
+	sub_6EA73F();
 
-		for (;;) {
-			game_get_next_input(&x, &y, &state);
-			if (state == 0) {
-				break;
-			}
-
-			game_handle_input_mouse(x, y, state & 0xFF);
+	for (;;) {
+		game_get_next_input(&x, &y, &state);
+		if (state == 0) {
+			break;
 		}
 
-		if (gInputFlags & INPUT_FLAG_5) {
-			game_handle_input_mouse(x, y, state);
-		}
-		else if (x != 0x80000000) {
-			x = clamp(0, x, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 1);
-			y = clamp(0, y, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 1);
+		game_handle_input_mouse(x, y, state & 0xFF);
+	}
 
-			game_handle_input_mouse(x, y, state);
-			process_mouse_over(x, y);
-			process_mouse_tool(x, y);
-		}
+	if (gInputFlags & INPUT_FLAG_5) {
+		game_handle_input_mouse(x, y, state);
+	}
+	else if (x != 0x80000000) {
+		x = clamp(0, x, (int)gScreenWidth - 1);
+		y = clamp(0, y, (int)gScreenHeight - 1);
+
+		game_handle_input_mouse(x, y, state);
+		process_mouse_over(x, y);
+		process_mouse_tool(x, y);
 	}
 
 	for (w = g_window_list; w < gWindowNextSlot; w++)
@@ -327,7 +325,7 @@ static void game_handle_input_mouse(int x, int y, int state)
 			if (widgetIndex != -1) {
 				switch (widget->type) {
 				case WWT_VIEWPORT:
-					if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))) {
+					if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))) {
 						input_viewport_drag_begin(w, x, y);
 					}
 					break;
@@ -489,7 +487,7 @@ static void input_window_resize_continue(rct_window *w, int x, int y)
 {
 	int dx, dy, targetWidth, targetHeight;
 
-	if (y < RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 2) {
+	if (y < (int)gScreenHeight - 2) {
 		dx = x - gInputDragLastX;
 		dy = y - gInputDragLastY;
 		targetWidth = _originalWindowWidth + dx;
@@ -1610,7 +1608,7 @@ void game_handle_edge_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_NO_SCROLLING) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & 9))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;
@@ -1625,13 +1623,13 @@ void game_handle_edge_scroll()
 	// Scroll left / right
 	if (gCursorState.x == 0)
 		scrollX = -1;
-	else if (gCursorState.x == RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 1)
+	else if (gCursorState.x == gScreenWidth - 1)
 		scrollX = 1;
 
 	// Scroll up / down
 	if (gCursorState.y == 0)
 		scrollY = -1;
-	else if (gCursorState.y == RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 1)
+	else if (gCursorState.y == gScreenHeight - 1)
 		scrollY = 1;
 
 	// Scroll viewport
@@ -1653,7 +1651,7 @@ void game_handle_key_scroll()
 	mainWindow = window_get_main();
 	if (mainWindow == NULL)
 		return;
-	if ((mainWindow->flags & WF_NO_SCROLLING) || (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 9))
+	if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & 9))
 		return;
 	if (mainWindow->viewport == NULL)
 		return;

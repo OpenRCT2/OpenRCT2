@@ -83,25 +83,25 @@ static TTFFontSetDescriptor TTFFontArial = {{
 }};
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
-	{ "",			 "",						 "",						"",							FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_UNDEFINED
-	{ "en-GB",		"English (UK)",				"English (UK)",				"english_uk",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_ENGLISH_UK
-	{ "en-US",		"English (US)",				"English (US)",				"english_us",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_US				},	// LANGUAGE_ENGLISH_US
-	{ "de-DE",		"German",					"Deutsch",					"german",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_GERMAN					},	// LANGUAGE_GERMAN
-	{ "nl-NL",		"Dutch",					"Nederlands",				"dutch",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_DUTCH					},	// LANGUAGE_DUTCH
-	{ "fr-FR",		"French",					"Fran\xC3\xA7" "ais",		"french",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_FRENCH					},	// LANGUAGE_FRENCH
-	{ "hu-HU",		"Hungarian",				"Magyar",					"hungarian",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_HUNGARIAN
-	{ "pl-PL",		"Polish",					"Polski",					"polish",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_POLISH
-	{ "es-ES",		"Spanish",					"Espa\xC3\xB1ol",			"spanish_sp",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SPANISH				},	// LANGUAGE_SPANISH
-	{ "sv-SE",		"Swedish",					"Svenska",					"swedish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SWEDISH				},	// LANGUAGE_SWEDISH
-	{ "it-IT",		"Italian",					"Italiano",					"italian",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ITALIAN				},	// LANGUAGE_ITALIAN
-	{ "pt-BR",		"Portuguese (BR)",			"Portugu\xC3\xAAs (BR)",	"portuguese_br",			FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_PORTUGUESE				},	// LANGUAGE_PORTUGUESE_BR
-	{ "zh-Hant",	"Chinese (Traditional)",	"Chinese (Traditional)",	"chinese_traditional",		&TTFFontMingLiu,		RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
-	{ "zh-Hans",	"Chinese (Simplified)",		"Chinese (Simplified)",		"chinese_simplified",		&TTFFontSimSun,			RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
-	{ "fi-FI",		"Finnish",					"Suomi",					"finnish",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_FINNISH
-	{ "ko",			"Korean",					"Korean",					"korean",					&TTFFontGulim,			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
-	{ "ru-RU",		"Russian",					"Russian",					"russian",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_RUSSIAN
-	{ "cz-CZ",		"Czech",					"Czech",					"czech",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_CZECH
-	{ "jp-JP",		"Japanese",					"Japanese",					"japanese",					&TTFFontMSGothic,		RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_JAPANESE
+	{ "",			 "",						 "",						FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_UNDEFINED
+	{ "en-GB",		"English (UK)",				"English (UK)",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_ENGLISH_UK
+	{ "en-US",		"English (US)",				"English (US)",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_US				},	// LANGUAGE_ENGLISH_US
+	{ "de-DE",		"German",					"Deutsch",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_GERMAN					},	// LANGUAGE_GERMAN
+	{ "nl-NL",		"Dutch",					"Nederlands",				FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_DUTCH					},	// LANGUAGE_DUTCH
+	{ "fr-FR",		"French",					"Fran\xC3\xA7" "ais",		FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_FRENCH					},	// LANGUAGE_FRENCH
+	{ "hu-HU",		"Hungarian",				"Magyar",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_HUNGARIAN
+	{ "pl-PL",		"Polish",					"Polski",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_POLISH
+	{ "es-ES",		"Spanish",					"Espa\xC3\xB1ol",			FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SPANISH				},	// LANGUAGE_SPANISH
+	{ "sv-SE",		"Swedish",					"Svenska",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_SWEDISH				},	// LANGUAGE_SWEDISH
+	{ "it-IT",		"Italian",					"Italiano",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ITALIAN				},	// LANGUAGE_ITALIAN
+	{ "pt-BR",		"Portuguese (BR)",			"Portugu\xC3\xAAs (BR)",	FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_PORTUGUESE				},	// LANGUAGE_PORTUGUESE_BR
+	{ "zh-TW",		"Chinese (Traditional)",	"Chinese (Traditional)",	&TTFFontMingLiu,		RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL	},	// LANGUAGE_CHINESE_TRADITIONAL
+	{ "zh-CN",		"Chinese (Simplified)",		"Chinese (Simplified)",		&TTFFontSimSun,			RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED		},	// LANGUAGE_CHINESE_SIMPLIFIED
+	{ "fi-FI",		"Finnish",					"Suomi",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_FINNISH
+	{ "ko-KR",		"Korean",					"Korean",					&TTFFontGulim,			RCT2_LANGUAGE_ID_KOREAN					},	// LANGUAGE_KOREAN
+	{ "ru-RU",		"Russian",					"Russian",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_RUSSIAN
+	{ "cs-CZ",		"Czech",					"Czech",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_CZECH
+	{ "ja-JP",		"Japanese",					"Japanese",					&TTFFontMSGothic,		RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_JAPANESE
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;
@@ -164,11 +164,11 @@ int language_open(int id)
 
 	platform_get_openrct_data_path(dataPath);
 	if (id != LANGUAGE_ENGLISH_UK) {
-		sprintf(filename, languagePath, dataPath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].path);
+		sprintf(filename, languagePath, dataPath, LanguagesDescriptors[LANGUAGE_ENGLISH_UK].locale);
 		_languageFallback = LanguagePack::FromFile(LANGUAGE_ENGLISH_UK, filename);
 	}
 
-	sprintf(filename, languagePath, dataPath, LanguagesDescriptors[id].path);
+	sprintf(filename, languagePath, dataPath, LanguagesDescriptors[id].locale);
 	_languageCurrent = LanguagePack::FromFile(id, filename);
 	if (_languageCurrent != nullptr) {
 		gCurrentLanguage = id;

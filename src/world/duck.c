@@ -1,5 +1,6 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../game.h"
 #include "../localisation/date.h"
 #include "../scenario.h"
 #include "sprite.h"
@@ -113,7 +114,7 @@ static void duck_invalidate(rct_duck *duck)
  */
 static void duck_update_fly_to_water(rct_duck *duck)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
+	if (gCurrentTicks & 3)
 		return;
 
 	duck->var_26++;
@@ -167,7 +168,7 @@ static void duck_update_fly_to_water(rct_duck *duck)
  */
 static void duck_update_swim(rct_duck *duck)
 {
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) + duck->sprite_index) & 3)
+	if ((gCurrentTicks + duck->sprite_index) & 3)
 		return;
 
 	uint32 randomNumber = scenario_rand();
@@ -184,7 +185,7 @@ static void duck_update_swim(rct_duck *duck)
 		return;
 	}
 
-	int currentMonth = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16));
+	int currentMonth = date_get_month(gDateMonthsElapsed);
 	if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218) {
 		duck->state = DUCK_STATE_FLY_AWAY;
 		duck_update_fly_away(duck);
@@ -261,7 +262,7 @@ static void duck_update_double_drink(rct_duck *duck)
  */
 static void duck_update_fly_away(rct_duck *duck)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 3)
+	if (gCurrentTicks & 3)
 		return;
 
 	duck->var_26++;

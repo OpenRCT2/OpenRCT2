@@ -83,9 +83,9 @@ static void news_item_tick_current()
 	int ticks;
 	ticks = ++news_item_get(0)->ticks;
 	// Only play news item sound when in normal playing mode
-	if (ticks == 1 && (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING)) {
+	if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING)) {
 		// Play sound
-		audio_play_sound_panned(SOUND_NEWS_ITEM, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) / 2, 0, 0, 0);
+		audio_play_sound_panned(SOUND_NEWS_ITEM, gScreenWidth / 2, 0, 0, 0);
 	}
 }
 
@@ -292,8 +292,8 @@ void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 	newsItem->flags = 0;
 	newsItem->assoc = assoc;
 	newsItem->ticks = 0;
-	newsItem->month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16);
-	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16)) >> 16) + 1;
+	newsItem->month_year = gDateMonthsElapsed;
+	newsItem->day = ((days_in_month[(newsItem->month_year & 7)] * gDateMonthTicks) >> 16) + 1;
 	safe_strcpy(newsItem->text, text, 255);
 	newsItem->text[254] = 0;
 

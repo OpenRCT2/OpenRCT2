@@ -297,7 +297,7 @@ static void window_ride_list_mousedown(int widgetIndex, rct_window*w, rct_widget
 		int numItems = 0;
 		int selectedIndex = -1;
 		for (int type = INFORMATION_TYPE_STATUS; type <= lastType; type++) {
-			if ((RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+			if ((gParkFlags & PARK_FLAGS_NO_MONEY)) {
 				if (ride_info_type_money_mapping[type]) {
 					continue;
 				}
@@ -577,7 +577,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride_customers_per_hour(ride);
 			break;
 		case INFORMATION_TYPE_AGE:;
-			sint16 age = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) - ride->build_date);
+			sint16 age = date_get_year(gDateMonthsElapsed - ride->build_date);
 			switch (age) {
 			case 0:  formatSecondary = STR_RIDE_LIST_BUILT_THIS_YEAR_LABEL; break;
 			case 1:  formatSecondary = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL; break;

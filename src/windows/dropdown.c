@@ -139,7 +139,7 @@ void window_dropdown_show_text(int x, int y, int extray, uint8 colour, uint8 fla
 	max_string_width = 0;
 	for (i = 0; i < num_items; i++) {
 		format_string(buffer, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, sint16) = 224;
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 		string_width = gfx_get_string_width(buffer);
 		max_string_width = max(string_width, max_string_width);
 	}
@@ -183,10 +183,10 @@ void window_dropdown_show_text_custom_width(int x, int y, int extray, uint8 colo
 
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	int height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
-		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height);
+	if (x + width > gScreenWidth)
+		x = max(0, gScreenWidth - width);
+	if (y + height > gScreenHeight)
+		y = max(0, gScreenHeight - height);
 
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = _dropdown_item_height * num_items + 3;
 	window_dropdown_widgets[WIDX_BACKGROUND].right = _dropdown_item_width + 3;
@@ -256,10 +256,10 @@ void window_dropdown_show_image(int x, int y, int extray, uint8 colour, uint8 fl
 	// Calculate position and size
 	width = _dropdown_item_width * _dropdown_num_columns + 3;
 	height = _dropdown_item_height * _dropdown_num_rows + 3;
-	if (x + width > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16))
-		x = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
-	if (y + height > RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16))
-		y = max(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height);
+	if (x + width > gScreenWidth)
+		x = max(0, gScreenWidth - width);
+	if (y + height > gScreenHeight)
+		y = max(0, gScreenHeight - height);
 	window_dropdown_widgets[WIDX_BACKGROUND].right = width;
 	window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 

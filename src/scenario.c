@@ -61,6 +61,9 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 static char _scenarioPath[MAX_PATH];
 static const char *_scenarioFileName = "";
 
+char *gScenarioName = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char);
+char *gScenarioDetails = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char);
+char *gScenarioCompletedBy = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char);
 char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
 uint32 gLastAutoSaveTick = 0;
@@ -234,26 +237,26 @@ void scenario_begin()
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+	gScreenFlags = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();
 	mainWindow = window_get_main();
 
 	mainWindow->viewport_target_sprite = -1;
-	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	mainWindow->saved_view_x = gSavedViewX;
+	mainWindow->saved_view_y = gSavedViewY;
 
-	uint8 _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - mainWindow->viewport->zoom;
-	mainWindow->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
-	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
-	if (_cl != 0) {
-		if (_cl < 0) {
-			_cl = -_cl;
-			mainWindow->viewport->view_width >>= _cl;
-			mainWindow->viewport->view_height >>= _cl;
+	uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = gSavedViewZoom;
+	gCurrentRotation = gSavedViewRotation;
+	if (zoomDifference != 0) {
+		if (zoomDifference < 0) {
+			zoomDifference = -zoomDifference;
+			mainWindow->viewport->view_width >>= zoomDifference;
+			mainWindow->viewport->view_height >>= zoomDifference;
 		} else {
-			mainWindow->viewport->view_width <<= _cl;
-			mainWindow->viewport->view_height <<= _cl;
+			mainWindow->viewport->view_width <<= zoomDifference;
+			mainWindow->viewport->view_height <<= zoomDifference;
 		}
 	}
 	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
@@ -264,29 +267,29 @@ void scenario_begin()
 	window_new_ride_init_vars();
 
 	// Set the scenario pseduo-random seeds
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, sint32) ^= platform_get_ticks();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, sint32) ^= platform_get_ticks();
+	gScenarioSrand0 ^= platform_get_ticks();
+	gScenarioSrand1 ^= platform_get_ticks();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) &= 0xFFFFF7FF;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) & PARK_FLAGS_NO_MONEY_SCENARIO)
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, sint32) |= PARK_FLAGS_NO_MONEY;
+	gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
 	sub_684AC3();
 	scenery_set_default_placement_configuration();
 	news_item_init_queue();
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) != OBJECTIVE_NONE)
+	if (gScenarioObjectiveType != OBJECTIVE_NONE)
 		window_park_objective_open();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) = calculate_park_rating();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32) = calculate_park_value();
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32) = calculate_company_value();
-	RCT2_GLOBAL(0x013587D0, money32) = RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32) - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32) = ENCRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, sint32));
+	gParkRating = calculate_park_rating();
+	gParkValue = calculate_park_value();
+	gCompanyValue = calculate_company_value();
+	RCT2_GLOBAL(0x013587D0, money32) = gInitialCash - gBankLoan;
+	gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 
 	finance_update_loan_hash();
 
-	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, s6Info->details, 256);
-	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, s6Info->name, 64);
+	safe_strcpy(gScenarioDetails, s6Info->details, 256);
+	safe_strcpy(gScenarioName, s6Info->name, 64);
 
 	{
 		utf8 normalisedName[64];
@@ -296,13 +299,13 @@ void scenario_begin()
 		rct_string_id localisedStringIds[3];
 		if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {
 			if (localisedStringIds[0] != STR_NONE) {
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(localisedStringIds[0]), 32);
+				safe_strcpy(gScenarioName, language_get_string(localisedStringIds[0]), 32);
 			}
 			if (localisedStringIds[1] != STR_NONE) {
 				park_set_name(language_get_string(localisedStringIds[1]));
 			}
 			if (localisedStringIds[2] != STR_NONE) {
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, language_get_string(localisedStringIds[2]), 256);
+				safe_strcpy(gScenarioDetails, language_get_string(localisedStringIds[2]), 256);
 			}
 		} else {
 			rct_stex_entry* stex = g_stexEntries[0];
@@ -315,20 +318,18 @@ void scenario_begin()
 
 				// Set localised scenario name
 				format_string(buffer, stex->scenario_name, 0);
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, buffer, 31);
-				((char*)RCT2_ADDRESS_SCENARIO_NAME)[31] = '\0';
+				safe_strcpy(gScenarioName, buffer, 64);
 
 				// Set localised scenario details
 				format_string(buffer, stex->details, 0);
-				safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_DETAILS, buffer, 255);
-				((char*)RCT2_ADDRESS_SCENARIO_DETAILS)[255] = '\0';
+				safe_strcpy(gScenarioDetails, buffer, 256);
 			}
 		}
 	}
 
 	// Set the last saved game path
 	char parkName[128];
-	format_string(parkName, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+	format_string(parkName, gParkName, &gParkNameArgs);
 
 	platform_get_user_directory(gScenarioSavePath, "save");
 	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
@@ -343,7 +344,7 @@ void scenario_begin()
 	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
 	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = MONEY32_UNDEFINED;
+	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
@@ -361,17 +362,17 @@ void scenario_begin()
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;
 
 	// Open park with free entry when there is no money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16) = 0;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
+		gParkFlags |= PARK_FLAGS_PARK_OPEN;
+		gParkEntranceFee = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_18;
+	gParkFlags |= PARK_FLAGS_18;
 
 	load_palette();
 
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 	gGameSpeed = 1;
 }
 
@@ -399,7 +400,7 @@ void scenario_set_filename(const char *value)
  */
 void scenario_failure()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = 0x80000001;
+	gScenarioCompletedCompanyValue = 0x80000001;
 	scenario_end();
 }
 
@@ -409,9 +410,9 @@ void scenario_failure()
  */
 void scenario_success()
 {
-	const money32 companyValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_COMPANY_VALUE, money32);
+	const money32 companyValue = gCompanyValue;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32) = companyValue;
+	gScenarioCompletedCompanyValue = companyValue;
 	peep_applause();
 
 	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
@@ -429,7 +430,7 @@ void scenario_success()
 			scenario->highscore->timestamp = platform_get_datetime_now_utc();
 
 			// Allow name entry
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+			gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 			RCT2_GLOBAL(0x013587C0, money32) = companyValue;
 			scenario_scores_save();
 		}
@@ -448,12 +449,12 @@ void scenario_success_submit_name(const char *name)
 		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
 		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
 			scenario->highscore->name = _strdup(name);
-			safe_strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char), name, 32);
+			safe_strcpy(gScenarioCompletedBy, name, 32);
 			scenario_scores_save();
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+	gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -463,15 +464,15 @@ void scenario_success_submit_name(const char *name)
 void scenario_entrance_fee_too_high_check()
 {
 	uint16 x = 0, y = 0;
-	uint16 totalRideValue = RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, uint16);
-	uint16 park_entrance_fee = RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, uint16);
-	int max_fee = totalRideValue + (totalRideValue / 2);
-	uint32 game_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), packed_xy;
+	money16 totalRideValue = gTotalRideValue;
+	money16 park_entrance_fee = gParkEntranceFee;
+	money16 max_fee = totalRideValue + (totalRideValue / 2);
+	uint32 game_flags = gParkFlags, packed_xy;
 
 	if ((game_flags & PARK_FLAGS_PARK_OPEN) && !(game_flags & PARK_FLAGS_NO_MONEY) && park_entrance_fee > max_fee) {
-		for (int i = 0; RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] != SPRITE_LOCATION_NULL; i++) {
-			x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, sint16)[i] + 16;
-			y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, sint16)[i] + 16;
+		for (int i = 0; gParkEntranceX[i] != SPRITE_LOCATION_NULL; i++) {
+			x = gParkEntranceX[i] + 16;
+			y = gParkEntranceY[i] + 16;
 		}
 
 		packed_xy = (y << 16) | x;
@@ -515,7 +516,7 @@ static void scenario_day_update()
 {
 	finance_update_daily_profit();
 	peep_update_days_in_queue();
-	switch (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_10_ROLLERCOASTERS:
 	case OBJECTIVE_GUESTS_AND_RATING:
 	case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
@@ -525,15 +526,15 @@ static void scenario_day_update()
 		break;
 	}
 
-	uint16 unk = (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+	uint16 unk = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
 	RCT2_GLOBAL(0x00135882E, uint16) = RCT2_GLOBAL(0x00135882E, uint16) > unk ? RCT2_GLOBAL(0x00135882E, uint16) - unk : 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint32) |= BTM_TB_DIRTY_FLAG_DATE;
+	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
 }
 
 static void scenario_week_update()
 {
-	int month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+	int month = gDateMonthsElapsed & 7;
 
 	finance_pay_wages();
 	finance_pay_research();
@@ -574,8 +575,8 @@ static void scenario_update_daynight_cycle()
 	float currentDayNightCycle = gDayNightCycle;
 	gDayNightCycle = 0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
-		float monthFraction = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) / (float)0x10000;
+	if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
+		float monthFraction = gDateMonthTicks / (float)0x10000;
 		if (monthFraction < (1 / 8.0f)) {
 			gDayNightCycle = 0.0f;
 		} else if (monthFraction < (3 / 8.0f)) {
@@ -591,7 +592,7 @@ static void scenario_update_daynight_cycle()
 
 	// Only update palette if day / night cycle has changed
 	if (gDayNightCycle != currentDayNightCycle) {
-		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
+		platform_update_palette(gGamePalette, 10, 236);
 	}
 }
 
@@ -601,10 +602,10 @@ static void scenario_update_daynight_cycle()
  */
 void scenario_update()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & ~SCREEN_FLAGS_PLAYING)) {
-		uint32 currentMonthTick = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16);
+	if (!(gScreenFlags & ~SCREEN_FLAGS_PLAYING)) {
+		uint32 currentMonthTick = gDateMonthTicks;
 		uint32 nextMonthTick = currentMonthTick + 4;
-		uint8 currentMonth = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
+		uint8 currentMonth = gDateMonthsElapsed & 7;
 		uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
 
 		if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
@@ -617,9 +618,9 @@ void scenario_update()
 			scenario_fortnight_update();
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) = (uint16)nextMonthTick;
+		gDateMonthTicks = (uint16)nextMonthTick;
 		if (nextMonthTick >= 0x10000) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)++;
+			gDateMonthsElapsed++;
 			scenario_month_update();
 		}
 	}
@@ -697,9 +698,9 @@ unsigned int scenario_rand()
 	}
 #endif
 
-	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32) += ror32(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) ^ 0x1234567F, 7);
-	return RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32) = ror32(eax, 3);
+	uint32 originalSrand0 = gScenarioSrand0;
+	gScenarioSrand0 += ror32(gScenarioSrand1 ^ 0x1234567F, 7);
+	return gScenarioSrand1 = ror32(originalSrand0, 3);
 }
 
 unsigned int scenario_rand_max(unsigned int max)
@@ -724,7 +725,7 @@ void scenario_prepare_rides_for_save()
 	rct_ride *ride;
 	map_element_iterator it;
 
-	int isFiveCoasterObjective = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+	int isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
 
 	// Set all existing track to be indestructible
 	map_element_iterator_begin(&it);
@@ -766,20 +767,20 @@ int scenario_prepare_for_save()
 	}
 
 	if (s6Info->name[0] == 0)
-		format_string(s6Info->name, RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id), (void*)RCT2_ADDRESS_PARK_NAME_ARGS);
+		format_string(s6Info->name, gParkName, &gParkNameArgs);
 
-	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
-	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
-	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	s6Info->objective_type = gScenarioObjectiveType;
+	s6Info->objective_arg_1 = gScenarioObjectiveYear;
+	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
+	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 
 	scenario_prepare_rides_for_save();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8) == OBJECTIVE_GUESTS_AND_RATING)
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_OPEN;
+	if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
+		gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
 	// Fix #2385: saved scenarios did not initialise temperatures to selected climate
-	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+	climate_reset(gClimate);
 
 	return 1;
 }
@@ -982,15 +983,16 @@ int scenario_save(SDL_RWops* rw, int flags)
 		viewZoom = viewport->zoom;
 		viewRotation = get_current_rotation();
 	} else {
-		viewX = 0;
-		viewY = 0;
-		viewZoom = 0;
-		viewRotation = 0;
+		viewX = gSavedViewX;
+		viewY = gSavedViewY;
+		viewZoom = gSavedViewZoom;
+		viewRotation = gSavedViewRotation;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = viewX;
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = viewY;
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = viewZoom | (viewRotation << 8);
+	gSavedViewX = viewX;
+	gSavedViewY = viewY;
+	gSavedViewZoom = viewZoom;
+	gSavedViewRotation = viewRotation;
 
 	// Prepare S6
 	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
@@ -1029,7 +1031,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 
 	gfx_invalidate_screen();
 	if (!(flags & 0x80000000))
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+		gScreenAge = 0;
 	return 1;
 }
 
@@ -1062,9 +1064,10 @@ int scenario_save_network(SDL_RWops* rw)
 		viewRotation = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = viewX;
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = viewY;
-	RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = viewZoom | (viewRotation << 8);
+	gSavedViewX = viewX;
+	gSavedViewY = viewY;
+	gSavedViewZoom = viewZoom;
+	gSavedViewRotation = viewRotation;
 
 	// Prepare S6
 	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
@@ -1100,7 +1103,7 @@ int scenario_save_network(SDL_RWops* rw)
 	reset_loaded_objects();
 
 	// Write other data not in normal save files
-	SDL_WriteLE32(rw, RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32));
+	SDL_WriteLE32(rw, gGamePaused);
 	SDL_WriteLE32(rw, _guestGenerationProbability);
 	SDL_WriteLE32(rw, _suggestedGuestMaximum);
 	SDL_WriteU8(rw, gCheatsSandboxMode);
@@ -1253,11 +1256,11 @@ bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
 
 static void scenario_objective_check_guests_by()
 {
-	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 parkRating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
-	sint16 guestsInPark = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16);
-	sint16 objectiveGuests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
-	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
+	uint8 objectiveYear = gScenarioObjectiveYear;
+	sint16 parkRating = gParkRating;
+	sint16 guestsInPark = gNumGuestsInPark;
+	sint16 objectiveGuests = gScenarioObjectiveNumGuests;
+	sint16 currentMonthYear = gDateMonthsElapsed;
 
 	if (currentMonthYear == 8 * objectiveYear){
 		if (parkRating >= 600 && guestsInPark >= objectiveGuests)
@@ -1269,10 +1272,10 @@ static void scenario_objective_check_guests_by()
 
 static void scenario_objective_check_park_value_by()
 {
-	uint8 objectiveYear = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 currentMonthYear = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
-	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
+	uint8 objectiveYear = gScenarioObjectiveYear;
+	sint16 currentMonthYear = gDateMonthsElapsed;
+	money32 objectiveParkValue = gScenarioObjectiveCurrency;
+	money32 parkValue = gParkValue;
 
 	if (currentMonthYear == 8 * objectiveYear) {
 		if (parkValue >= objectiveParkValue)
@@ -1321,42 +1324,42 @@ static void scenario_objective_check_10_rollercoasters()
  */
 static void scenario_objective_check_guests_and_rating()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) < 700 && RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, uint16) >= 1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 1) {
+	if (gParkRating < 700 && gDateMonthsElapsed >= 1) {
+		gScenarioParkRatingWarningDays++;
+		if (gScenarioParkRatingWarningDays == 1) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 8) {
+		} else if (gScenarioParkRatingWarningDays == 8) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 15) {
+		} else if (gScenarioParkRatingWarningDays == 15) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 22) {
+		} else if (gScenarioParkRatingWarningDays == 22) {
 			if (gConfigNotifications.park_rating_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
 			}
-		} else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) == 29) {
+		} else if (gScenarioParkRatingWarningDays == 29) {
 			news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_OPEN;
+			gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
 			scenario_failure();
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = 50;
+			gGuestInitialHappiness = 50;
 		}
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32) != 0x80000001) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16) = 0;
+	} else if (gScenarioCompletedCompanyValue != 0x80000001) {
+		gScenarioParkRatingWarningDays = 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, uint16) >= 700)
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) >= RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16))
+	if (gParkRating >= 700)
+		if (gNumGuestsInPark >= gScenarioObjectiveNumGuests)
 			scenario_success();
 }
 
 static void scenario_objective_check_monthly_ride_income()
 {
-	money32 objectiveMonthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveMonthlyRideIncome = gScenarioObjectiveCurrency;
 	money32 monthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32);
 	if (monthlyRideIncome >= objectiveMonthlyRideIncome)
 		scenario_success();
@@ -1371,7 +1374,7 @@ static void scenario_objective_check_10_rollercoasters_length()
 {
 	int i, rcs = 0;
 	uint8 type_already_counted[256];
-	sint16 objective_length = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16);
+	sint16 objective_length = gScenarioObjectiveNumGuests;
 	rct_ride* ride;
 
 	memset(type_already_counted, 0, 256);
@@ -1402,7 +1405,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
 	int i;
 	rct_ride* ride;
 
-	money32 objectiveRideExcitement = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveRideExcitement = gScenarioObjectiveCurrency;
 
 	// ORIGINAL BUG?:
 	// This does not check if the rides are even rollercoasters nevermind the right rollercoasters to be finished.
@@ -1418,9 +1421,9 @@ static void scenario_objective_check_finish_5_rollercoasters()
 
 static void scenario_objective_check_replay_loan_and_park_value()
 {
-	money32 objectiveParkValue = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
-	money32 parkValue = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, money32);
-	money32 currentLoan = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32);
+	money32 objectiveParkValue = gScenarioObjectiveCurrency;
+	money32 parkValue = gParkValue;
+	money32 currentLoan = gBankLoan;
 
 	if (currentLoan <= 0 && parkValue >= objectiveParkValue)
 		scenario_success();
@@ -1428,7 +1431,7 @@ static void scenario_objective_check_replay_loan_and_park_value()
 
 static void scenario_objective_check_monthly_food_income()
 {
-	money32 objectiveMonthlyIncome = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32);
+	money32 objectiveMonthlyIncome = gScenarioObjectiveCurrency;
 	sint32 monthlyIncome =
 		RCT2_GLOBAL(0x013578A4, money32) +
 		RCT2_GLOBAL(0x013578A0, money32) +
@@ -1445,21 +1448,11 @@ static void scenario_objective_check_monthly_food_income()
  */
 static void scenario_objective_check()
 {
-	uint8 objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8),
-		objective_year = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	sint16 park_rating = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16),
-		guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16),
-		objective_guests = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16),
-		cur_month_year = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16);
-	uint32 scenario_completed_company_value = RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, uint32);
-	sint32 objective_currency = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32),
-		park_value = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
-
-
-	if (scenario_completed_company_value != MONEY32_UNDEFINED)
+	if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
 		return;
+	}
 
-	switch (objective_type) {
+	switch (gScenarioObjectiveType) {
 	case OBJECTIVE_GUESTS_BY:
 		scenario_objective_check_guests_by();
 		break;

@@ -71,8 +71,8 @@ void window_editor_main_open()
 {
 	rct_window* window;
 
-	window_editor_main_widgets[0].right = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
-	window_editor_main_widgets[0].bottom = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16);
+	window_editor_main_widgets[0].right = gScreenWidth;
+	window_editor_main_widgets[0].bottom = gScreenHeight;
 	window = window_create(0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
 		&window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
 	window->widgets = window_editor_main_widgets;
@@ -80,7 +80,7 @@ void window_editor_main_open()
 	viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, -1);
 	window->viewport->flags |= 0x0400;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32) = 0;
+	gCurrentRotation = 0;
 	RCT2_GLOBAL(0x009E32B0, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B2, uint8) = 0;
 	RCT2_GLOBAL(0x009E32B3, uint8) = 0;

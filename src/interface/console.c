@@ -15,7 +15,9 @@
 #include "../network/twitch.h"
 #include "../object.h"
 #include "../world/banner.h"
+#include "../world/climate.h"
 #include "../world/scenery.h"
+#include "../management/finance.h"
 #include "../management/research.h"
 #include "../util/util.h"
 #include "console.h"
@@ -103,7 +105,7 @@ void console_update()
 
 	_consoleLeft = 0;
 	_consoleTop = 0;
-	_consoleRight = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	_consoleRight = gScreenWidth;
 	_consoleBottom = 322;
 
 	if (gConsoleOpen) {
@@ -137,9 +139,9 @@ void console_draw(rct_drawpixelinfo *dpi)
 		return;
 
 	// Set font
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
-	int lineHeight = font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16));
+	gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
+	gCurrentFontFlags = 0;
+	int lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
 	int lines = 0;
 	int maxLines = ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;
@@ -467,80 +469,80 @@ static int cc_get(const utf8 **argv, int argc)
 {
 	if (argc > 0) {
 		if (strcmp(argv[0], "park_rating") == 0) {
-			console_printf("park_rating %d", RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16));
+			console_printf("park_rating %d", gParkRating);
 		}
 		else if (strcmp(argv[0], "money") == 0) {
-			console_printf("money %d.%d0", DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) / 10, DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)) % 10);
+			console_printf("money %d.%d0", DECRYPT_MONEY(gCashEncrypted) / 10, DECRYPT_MONEY(gCashEncrypted) % 10);
 		}
 		else if (strcmp(argv[0], "current_loan") == 0) {
-			console_printf("current_loan %d", RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) / 10);
+			console_printf("current_loan %d", gBankLoan / 10);
 		}
 		else if (strcmp(argv[0], "max_loan") == 0) {
-			console_printf("max_loan %d", RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) / 10);
+			console_printf("max_loan %d", gMaxBankLoan / 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0) {
-			console_printf("guest_initial_cash %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) / 10, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) % 10);
+			console_printf("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0) {
-			uint32 current_happiness = RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8);
+			uint32 current_happiness = gGuestInitialHappiness;
 			for (int i = 15; i <= 99; i++) {
 				if (i == 99) {
-					console_printf("guest_initial_happiness %d%%  (%d)", 15, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8));
+					console_printf("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
 				}
 				else if (current_happiness == calculate_guest_initial_happiness(i)) {
-					console_printf("guest_initial_happiness %d%%  (%d)", i, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8));
+					console_printf("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
 					break;
 				}
 			}
 		}
 		else if (strcmp(argv[0], "guest_initial_hunger") == 0) {
-			console_printf("guest_initial_hunger %d%%  (%d)", ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8)) * 100) / 255, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8));
+			console_printf("guest_initial_hunger %d%%  (%d)", ((255 - gGuestInitialHunger) * 100) / 255, gGuestInitialHunger);
 		}
 		else if (strcmp(argv[0], "guest_initial_thirst") == 0) {
-			console_printf("guest_initial_thirst %d%%  (%d)", ((255 - RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8)) * 100) / 255, RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8));
+			console_printf("guest_initial_thirst %d%%  (%d)", ((255 - gGuestInitialThirst) * 100) / 255, gGuestInitialThirst);
 		}
 		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0) {
-			console_printf("guest_prefer_less_intense_rides %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
+			console_printf("guest_prefer_less_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
 		}
 		else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0) {
-			console_printf("guest_prefer_more_intense_rides %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
+			console_printf("guest_prefer_more_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_marketing_campagns") == 0) {
-			console_printf("forbid_marketing_campagns %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+			console_printf("forbid_marketing_campagns %d", (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_landscape_changes") == 0) {
-			console_printf("forbid_landscape_changes %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
+			console_printf("forbid_landscape_changes %d", (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_tree_removal") == 0) {
-			console_printf("forbid_tree_removal %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
+			console_printf("forbid_tree_removal %d", (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
 		}
 		else if (strcmp(argv[0], "forbid_high_construction") == 0) {
-			console_printf("forbid_high_construction %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
+			console_printf("forbid_high_construction %d", (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
 		}
 		else if (strcmp(argv[0], "pay_for_rides") == 0) {
-			console_printf("pay_for_rides %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
+			console_printf("pay_for_rides %d", (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
 		}
 		else if (strcmp(argv[0], "no_money") == 0) {
-			console_printf("no_money %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) != 0);
+			console_printf("no_money %d", (gParkFlags & PARK_FLAGS_NO_MONEY) != 0);
 		}
 		else if (strcmp(argv[0], "difficult_park_rating") == 0) {
-			console_printf("difficult_park_rating %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
+			console_printf("difficult_park_rating %d", (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
 		}
 		else if (strcmp(argv[0], "difficult_guest_generation") == 0) {
-			console_printf("difficult_guest_generation %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
+			console_printf("difficult_guest_generation %d", (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
 		}
 		else if (strcmp(argv[0], "park_open") == 0) {
-			console_printf("park_open %d", (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_PARK_OPEN) != 0);
+			console_printf("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0) {
-			console_printf("land_rights_cost %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) / 10, RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) % 10);
+			console_printf("land_rights_cost %d.%d0", gLandPrice / 10, gLandPrice % 10);
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0) {
-			console_printf("construction_rights_cost %d.%d0", RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money32) / 10, RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money32) % 10);
+			console_printf("construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
 			const utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
-			console_printf("climate %s  (%d)", climate_names[RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8)], RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8));
+			console_printf("climate %s  (%d)", climate_names[gClimate], gClimate);
 		}
 		else if (strcmp(argv[0], "game_speed") == 0) {
 			console_printf("game_speed %d", gGameSpeed);
@@ -601,94 +603,94 @@ static int cc_set(const utf8 **argv, int argc)
 		}
 
 		if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32) = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
+			gCashEncrypted = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
 			console_execute_silent("get money");
 		}
 		else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32));
+			gBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
 			console_execute_silent("get current_loan");
 		}
 		else if (strcmp(argv[0], "max_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
+			gMaxBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
 			console_execute_silent("get max_loan");
 		}
 		else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
+			gGuestInitialCash = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
 			console_execute_silent("get guest_initial_cash");
 		}
 		else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HAPPINESS, uint8) = calculate_guest_initial_happiness((uint8)int_val[0]);
+			gGuestInitialHappiness = calculate_guest_initial_happiness((uint8)int_val[0]);
 			console_execute_silent("get guest_initial_happiness");
 		}
 		else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8) = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
+			gGuestInitialHunger = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
 			console_execute_silent("get guest_initial_hunger");
 		}
 		else if (strcmp(argv[0], "guest_initial_thirst") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8) = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
+			gGuestInitialThirst = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
 			console_execute_silent("get guest_initial_thirst");
 		}
 		else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_LESS_INTENSE_RIDES, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PREF_LESS_INTENSE_RIDES, int_val[0]);
 			console_execute_silent("get guest_prefer_less_intense_rides");
 		}
 		else if (strcmp(argv[0], "guest_prefer_more_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PREF_MORE_INTENSE_RIDES, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PREF_MORE_INTENSE_RIDES, int_val[0]);
 			console_execute_silent("get guest_prefer_more_intense_rides");
 		}
 		else if (strcmp(argv[0], "forbid_marketing_campagns") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_MARKETING_CAMPAIGN, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_MARKETING_CAMPAIGN, int_val[0]);
 			console_execute_silent("get forbid_marketing_campagns");
 		}
 		else if (strcmp(argv[0], "forbid_landscape_changes") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_LANDSCAPE_CHANGES, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_LANDSCAPE_CHANGES, int_val[0]);
 			console_execute_silent("get forbid_landscape_changes");
 		}
 		else if (strcmp(argv[0], "forbid_tree_removal") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_TREE_REMOVAL, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_TREE_REMOVAL, int_val[0]);
 			console_execute_silent("get forbid_tree_removal");
 		}
 		else if (strcmp(argv[0], "forbid_high_construction") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_FORBID_HIGH_CONSTRUCTION, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_FORBID_HIGH_CONSTRUCTION, int_val[0]);
 			console_execute_silent("get forbid_high_construction");
 		}
 		else if (strcmp(argv[0], "pay_for_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
 			console_execute_silent("get pay_for_rides");
 		}
 		else if (strcmp(argv[0], "no_money") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_NO_MONEY, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_NO_MONEY, int_val[0]);
 			console_execute_silent("get no_money");
 		}
 		else if (strcmp(argv[0], "difficult_park_rating") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_PARK_RATING, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_DIFFICULT_PARK_RATING, int_val[0]);
 			console_execute_silent("get difficult_park_rating");
 		}
 		else if (strcmp(argv[0], "difficult_guest_generation") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_DIFFICULT_GUEST_GENERATION, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_DIFFICULT_GUEST_GENERATION, int_val[0]);
 			console_execute_silent("get difficult_guest_generation");
 		}
 		else if (strcmp(argv[0], "park_open") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-			SET_FLAG(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32), PARK_FLAGS_PARK_OPEN, int_val[0]);
+			SET_FLAG(gParkFlags, PARK_FLAGS_PARK_OPEN, int_val[0]);
 			console_execute_silent("get park_open");
 		}
 		else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_LAND_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gLandPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get land_rights_cost");
 		}
 		else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-			RCT2_GLOBAL(RCT2_ADDRESS_CONSTRUCTION_RIGHTS_COST, money16) = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+			gConstructionRightsPrice = clamp(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
 			console_execute_silent("get construction_rights_cost");
 		}
 		else if (strcmp(argv[0], "climate") == 0) {
 			if (int_valid[0]) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = clamp(int_val[0], 0, 3);
+				gClimate = clamp(int_val[0], 0, 3);
 			}
 			else {
 				utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
 				for (i = 0; i < 4; i++) {
 					if (strcmp(argv[1], climate_names[i]) == 0) {
-						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, sint8) = i;
+						gClimate = i;
 						break;
 					}
 				}
@@ -901,7 +903,7 @@ static int cc_fix_banner_count(const utf8 **argv, int argc)
 
 static int cc_open(const utf8 **argv, int argc) {
 	if (argc > 0) {
-		bool title = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TITLE_DEMO) != 0;
+		bool title = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) != 0;
 		bool invalidTitle = false;
 		if (strcmp(argv[0], "object_selection") == 0 && invalidArguments(&invalidTitle, !title)) {
 			// Only this window should be open for safety reasons

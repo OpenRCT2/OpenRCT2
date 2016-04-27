@@ -253,8 +253,8 @@ static void window_track_delete_prompt_open()
 	window_close_by_class(WC_TRACK_DELETE_PROMPT);
 
 	w = window_create(
-		max(28, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 250) / 2),
-		(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 44) / 2,
+		max(28, (gScreenWidth - 250) / 2),
+		(gScreenHeight - 44) / 2,
 		250,
 		74,
 		&window_track_delete_prompt_events,

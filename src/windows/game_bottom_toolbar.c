@@ -20,12 +20,14 @@
 
 #include "../addresses.h"
 #include "../config.h"
+#include "../game.h"
 #include "../input.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
+#include "../management/finance.h"
 #include "../management/news_item.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
@@ -133,8 +135,8 @@ void window_game_bottom_toolbar_open()
 	rct_window* window;
 
 	window = window_create(
-		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 32,
+		0, gScreenHeight - 32,
+		gScreenWidth, 32,
 		&window_game_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR,
 		WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
@@ -172,7 +174,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 	switch (widgetIndex) {
 	case WIDX_LEFT_OUTSET:
 	case WIDX_MONEY:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 			window_finances_open();
 		break;
 	case WIDX_GUESTS:
@@ -220,14 +222,14 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 	switch (widgetIndex) {
 	case WIDX_MONEY:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, sint32);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_VALUE, sint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = gParkValue;
 		break;
 	case WIDX_PARK_RATING:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16);
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = gParkRating;
 		break;
 	case WIDX_DATE:
-		month = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7;
-		day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
+		month = gDateMonthsElapsed & 7;
+		day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = STR_MONTH_MARCH + month;
@@ -247,7 +249,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	// Anchor the middle and right panel to the right
-	x = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	x = gScreenWidth;
 	w->width = x;
 	x--;
 	window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
@@ -303,7 +305,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
 	}
 
 	// Hide money if there is no money
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 		window_game_bottom_toolbar_widgets[WIDX_MONEY].type = WWT_EMPTY;
 		window_game_bottom_toolbar_widgets[WIDX_GUESTS].top = 1;
 		window_game_bottom_toolbar_widgets[WIDX_GUESTS].bottom = 17;
@@ -379,8 +381,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	y = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + w->y + 4;
 
 	// Draw money
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32));
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = DECRYPT_MONEY(gCashEncrypted);
 		gfx_draw_string_centred(
 			dpi,
 			(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) < 0 ? 1391 : 1390),
@@ -394,10 +396,10 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 	// Draw guests
 	gfx_draw_string_centred(
 		dpi,
-		STR_NUM_GUESTS + RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint8),
+		STR_NUM_GUESTS + gGuestChangeModifier,
 		x, y,
 		(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS ? COLOUR_WHITE : w->colours[0] & 0x7F),
-		(void*)RCT2_ADDRESS_GUESTS_IN_PARK
+		&gNumGuestsInPark
 	);
 
 	// Draw park rating
@@ -407,7 +409,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		w->colours[3],
 		w->x + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].left + 11,
 		w->y + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top,
-		max(10, ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PARK_RATING, sint16) / 4) * 263) / 256)
+		max(10, ((gParkRating / 4) * 263) / 256)
 	);
 }
 
@@ -421,7 +423,7 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
 	bar_width = (factor * (90 + WIDTH_MOD)) / 256;
 	gfx_fill_rect_inset(dpi, x, y + 1, x + (93 + WIDTH_MOD), y + 9, w->colours[1], 48);
-	if (!(colour & 0x80000000) || RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 || (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) & 8)) {
+	if (!(colour & 0x80000000) || game_is_paused() || (gCurrentTicks & 8)) {
 		if (bar_width > 2)
 			gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
 	}
@@ -450,9 +452,9 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
 	// Date
-	int year = date_get_year(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16)) + 1;
-	int month = date_get_month(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_YEAR, sint16) & 7);
-	int day = ((RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONTH_TICKS, uint16) * days_in_month[month]) >> 16) & 0xFF;
+	int year = date_get_year(gDateMonthsElapsed) + 1;
+	int month = date_get_month(gDateMonthsElapsed & 7);
+	int day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
@@ -471,7 +473,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x = w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
 	y += 11;
 
-	temperature = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TEMPERATURE, sint8);
+	temperature = gClimateCurrentTemperature;
 	format = STR_CELSIUS_VALUE;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
 		temperature = climate_celsius_to_fahrenheit(temperature);
@@ -482,11 +484,11 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	x += 30;
 
 	// Current weather
-	gfx_draw_sprite(dpi, climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id, x, y, 0);
+	gfx_draw_sprite(dpi, climate_weather_data[gClimateCurrentWeather].sprite_id, x, y, 0);
 
 	// Next weather
-	if (climate_weather_data[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, sint8)].sprite_id != climate_weather_data[gClimateNextWeather].sprite_id) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, sint16) < 960) {
+	if (climate_weather_data[gClimateCurrentWeather].sprite_id != climate_weather_data[gClimateNextWeather].sprite_id) {
+		if (gClimateUpdateTimer < 960) {
 			gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
 			gfx_draw_sprite(dpi, climate_weather_data[gClimateNextWeather].sprite_id, x + 40, y, 0);
 		}
@@ -641,28 +643,28 @@ static void window_game_bottom_toolbar_unknown05(rct_window *w)
  */
 static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_MONEY){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_MONEY;
+	if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY){
+		gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
 		widget_invalidate(w, WIDX_LEFT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_DATE){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_DATE;
+	if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE){
+		gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
 		widget_invalidate(w, WIDX_RIGHT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_PEEP_COUNT){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+	if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT){
+		gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
 		widget_invalidate(w, WIDX_LEFT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_CLIMATE){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
+	if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE){
+		gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
 		widget_invalidate(w, WIDX_RIGHT_INSET);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) & BTM_TB_DIRTY_FLAG_PARK_RATING){
-		RCT2_GLOBAL(RCT2_ADDRESS_BTM_TOOLBAR_DIRTY_FLAGS, uint16) &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
+	if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING){
+		gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
 		widget_invalidate(w, WIDX_LEFT_INSET);
 	}
 }

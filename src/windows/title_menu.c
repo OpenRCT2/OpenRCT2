@@ -95,7 +95,7 @@ void window_title_menu_open()
 	rct_window* window;
 
 	window = window_create(
-		0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 142,
+		0, gScreenHeight - 142,
 		0, 100,
 		&window_title_menu_events,
 		WC_TITLE_MENU,
@@ -127,7 +127,7 @@ void window_title_menu_open()
 		i++;
 	}
 	window->width = x;
-	window->x = (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - window->width) / 2;
+	window->x = (gScreenWidth - window->width) / 2;
 
 	window_init_scroll_widgets(window);
 }

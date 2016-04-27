@@ -263,7 +263,7 @@ static bool _trackSelectionByType;
 */
 void window_new_ride_init_vars() {
 	// If we are in the track designer, default to the Roller Coaster tab
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_RIDE_LIST_SELECTED_TAB, uint8) = WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER;
 	}
 	else {
@@ -334,17 +334,15 @@ static void window_new_ride_populate_list()
 					continue;
 
 				// Skip if the vehicle isn't the preferred vehicle for this generic track type
-				if(gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
-					if(strcmp(preferredVehicleName,"        \0")==0) {
-						strcpy(preferredVehicleName,rideEntryName);
-						preferredVehicleName[8]=0;
-					}
-					else {
-						if(vehicleIsHigherInHierarchy(rideType,preferredVehicleName,rideEntryName)) {
-							strcpy(preferredVehicleName,rideEntryName);
-							preferredVehicleName[8]=0;
-						}
-						else {
+				if (gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
+					if (strcmp(preferredVehicleName, "        \0") == 0) {
+						strcpy(preferredVehicleName, rideEntryName);
+						preferredVehicleName[8] = 0;
+					} else {
+						if (vehicle_preference_compare(rideType, preferredVehicleName, rideEntryName) == 1) {
+							strcpy(preferredVehicleName, rideEntryName);
+							preferredVehicleName[8] = 0;
+						} else {
 							continue;
 						}
 					}
@@ -542,7 +540,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window *w)
 		window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WWT_GROUPBOX;
 		window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WWT_GROUPBOX;
 		window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY))
+		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
 			window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WWT_FLATBTN;
 
 		width = 300;
@@ -685,10 +683,6 @@ static void window_new_ride_scrollmousedown(rct_window *w, int scrollIndex, int 
 {
 	ride_list_item item;
 
-	// Made it impossible to click a ride in pause mode. Since the UI now stays responsive in pause mode, always allow clicking a ride.
-	/*if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0)
-		return;*/
-
 	item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
 	if (item.type == 255 && item.entry_index == 255)
 		return;
@@ -743,7 +737,7 @@ static void window_new_ride_invalidate(rct_window *w)
 
 	window_new_ride_widgets[WIDX_TITLE].image = STR_NEW_TRANSPORT_RIDES + _window_new_ride_current_tab;
 	window_new_ride_widgets[WIDX_TAB_7].type = WWT_TAB;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & 4)
+	if (gScreenFlags & 4)
 		window_new_ride_widgets[WIDX_TAB_7].type = WWT_EMPTY;
 
 	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {
@@ -909,7 +903,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 	}
 
 	// Price
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		// Get price of ride
 		int unk2 = RCT2_GLOBAL(0x0097CC68 + (item.type * 2), uint8);
 		money32 price = RideTrackCosts[item.type].track_price;

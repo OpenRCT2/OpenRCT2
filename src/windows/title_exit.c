@@ -76,7 +76,7 @@ void window_title_exit_open()
 	rct_window* window;
 
 	window = window_create(
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - 40, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 64,
+		gScreenWidth - 40, gScreenHeight - 64,
 		40, 64,
 		&window_title_exit_events,
 		WC_TITLE_EXIT,

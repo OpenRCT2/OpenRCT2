@@ -94,29 +94,29 @@ void window_tooltip_show(rct_string_id id, int x, int y)
 	char* buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 
 	format_string(buffer, id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	int tooltip_text_width;
 	tooltip_text_width = gfx_get_string_width_new_lined(buffer);
 	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
 	tooltip_text_width = min(tooltip_text_width, 196);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	int numLines, fontSpriteBase;
 	tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &numLines, &fontSpriteBase);
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOOLTIP_TEXT_HEIGHT, sint16) = numLines;
 	width = tooltip_text_width + 3;
-	height = ((numLines + 1) * font_get_line_height(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16))) + 4;
+	height = ((numLines + 1) * font_get_line_height(gCurrentFontSpriteBase)) + 4;
 	window_tooltip_widgets[WIDX_BACKGROUND].right = width;
 	window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
 	memcpy(gTooltip_text_buffer, buffer, 512);
 
-	x = clamp(0, x - (width / 2), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16) - width);
+	x = clamp(0, x - (width / 2), gScreenWidth - width);
 
-	int max_y = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - height;
+	int max_y = gScreenHeight - height;
 	y += 26; // Normally, we'd display the tooltip 26 lower
 	if (y > max_y)
 		// If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,

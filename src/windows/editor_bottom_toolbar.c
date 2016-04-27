@@ -131,8 +131,8 @@ void window_editor_bottom_toolbar_open()
 {
 	rct_window* window;
 
-	window = window_create(0, RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16) - 32,
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), 32,
+	window = window_create(0, gScreenHeight - 32,
+		gScreenWidth, 32,
 		&window_editor_bottom_toolbar_events,
 		WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 	window->widgets = window_editor_bottom_toolbar_widgets;
@@ -270,7 +270,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 	if (!window_editor_bottom_toolbar_check_object_selection())
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		sub_66F6E3();
 	} else {
 		sub_6DFED0();
@@ -344,8 +344,8 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18))) {
+		if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||
+			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(gParkFlags & PARK_FLAGS_18))) {
 			previous_button_mouseup_events[g_editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {
@@ -369,9 +369,9 @@ void hide_next_step_button() {
 */
 void window_editor_bottom_toolbar_invalidate(rct_window *w)
 {
-	colour_scheme_update_by_class(w, (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
+	colour_scheme_update_by_class(w, (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
-	uint16 screenWidth = RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16);
+	uint16 screenWidth = gScreenWidth;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
@@ -382,7 +382,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 	window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WWT_IMGBTN;
 	window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WWT_IMGBTN;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		hide_previous_step_button();
 		hide_next_step_button();
 	} else {
@@ -390,8 +390,8 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 			hide_previous_step_button();
 		} else if (g_editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			hide_next_step_button();
-		} else if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)) {
-			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
+		} else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)) {
+			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || gParkFlags & PARK_FLAGS_18) {
 				hide_previous_step_button();
 			}
 		}
@@ -410,20 +410,20 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (g_editor_step == EDITOR_STEP_OBJECT_SELECTION) {
 		drawNextButton = true;
 	}
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) {
+	else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		drawPreviousButton = true;
 	}
 	else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
 		drawNextButton = true;
 	}
-	else if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_18) {
+	else if (gParkFlags & PARK_FLAGS_18) {
 		drawNextButton = true;
 	}
 	else {
 		drawPreviousButton = true;
 	}
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 		if (drawPreviousButton) {
 			gfx_fill_rect(dpi,
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + w->x,
@@ -443,7 +443,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 
 
 		if (drawPreviousButton) {
@@ -488,7 +488,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			short textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y;
 
 			short stringId = STR_OBJECT_SELECTION_STEP + g_editor_step - 1;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+			if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 				stringId = STR_OBJECT_SELECTION_STEP;
 
 			gfx_draw_string_centred(dpi, STR_BACK_TO_PREVIOUS_STEP, textX, textY, textColour, 0);
@@ -513,7 +513,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			short textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
 
 			short stringId = STR_OBJECT_SELECTION_STEP + g_editor_step + 1;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER)
+			if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 				stringId = STR_ROLLERCOASTER_DESIGNER_STEP;
 
 			gfx_draw_string_centred(dpi, STR_FORWARD_TO_NEXT_STEP, textX, textY, textColour, 0);

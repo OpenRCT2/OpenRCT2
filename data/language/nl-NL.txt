@@ -4104,7 +4104,7 @@ STR_5801    :Bevuiling voorkomen
 STR_5802    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers braken of afval op de grond gooien.
 STR_5803    :{SMALLFONT}{BLACK}Geselecteerd kaartelement draaien
 STR_5804    :Geluid dempen
-
+STR_5805    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zal je server worden aangemeld{NEWLINE}bij de openbare serverlijst, zodat iedereen hem kan zien.
 
 #############
 # Scenarios #

@@ -269,8 +269,8 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	y += 25;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = 224;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_FLAGS, uint16) = 0;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontFlags = 0;
 
 	char wrapped_string[512];
 	safe_strcpy(wrapped_string, text_input, 512);

@@ -46,11 +46,19 @@ enum {
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define EXPENDITURE_TABLE_TOTAL_COUNT (EXPENDITURE_TABLE_MONTH_COUNT * RCT_EXPENDITURE_TYPE_COUNT)
 
+#define gInitialCash				RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, money32)
+#define gCashEncrypted				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, money32)
+#define gBankLoan					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32)
+#define gBankLoanInterestRate		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint8)
+#define gMaxBankLoan				RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)
+
 extern const money32 research_cost_table[4];
 
 extern money32 *gCashHistory;
 extern money32 *gWeeklyProfitHistory;
 extern money32 *gParkValueHistory;
+
+extern uint8 gCommandExpenditureType;
 
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();

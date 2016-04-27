@@ -432,6 +432,9 @@ static bool scenario_scores_load()
 		SDL_RWread(file, &highscore->timestamp, sizeof(highscore->timestamp), 1);
 
 		// Attach highscore to correct scenario entry
+		if (highscore->fileName == NULL) {
+			continue;
+		}
 		scenario_index_entry *scenarioIndexEntry = scenario_list_find_by_filename(highscore->fileName);
 		if (scenarioIndexEntry != NULL) {
 			scenarioIndexEntry->highscore = highscore;

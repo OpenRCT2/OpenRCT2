@@ -53,11 +53,11 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 	rct_vehicle *vehicle;
 
 	// No click input for title screen or scenario editor or track manager
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
+	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	//
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };
@@ -86,8 +86,8 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		ride_set_map_tooltip(mapElement);
 		break;
 	case VIEWPORT_INTERACTION_ITEM_PARK:
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME, rct_string_id);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint32) = RCT2_GLOBAL(RCT2_ADDRESS_PARK_NAME_ARGS, uint32);
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = gParkName;
+		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint32) = gParkNameArgs;
 		break;
 	default:
 		info->type = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -137,7 +137,7 @@ int viewport_interaction_left_click(int x, int y)
 			window_guest_open(info.peep);
 			break;
 		case SPRITE_IDENTIFIER_MISC:
-			if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) == 0) {
+			if (game_is_not_paused()) {
 				switch (info.sprite->unknown.misc_identifier) {
 				case SPRITE_MISC_BALLOON:
 					balloon_press(&info.sprite->balloon);
@@ -176,11 +176,11 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	int i, stationIndex;
 
 	// No click input for title screen or track manager
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
+	if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	//
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };
@@ -192,7 +192,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 
 	switch (info->type) {
 	case VIEWPORT_INTERACTION_ITEM_SPRITE:
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || mapElement->type != 0)
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || mapElement->type != 0)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 		mapElement += 6;
@@ -205,7 +205,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_RIDE:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR)
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
 			return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -304,7 +304,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_PARK:
-		if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+		if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
 			break;
 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)

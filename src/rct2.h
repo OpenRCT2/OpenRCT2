@@ -262,9 +262,30 @@ enum {
 	PATH_ID_END
 };
 
+enum {
+	FILE_EXTENSION_UNKNOWN,
+	FILE_EXTENSION_DAT,
+	FILE_EXTENSION_SC4,
+	FILE_EXTENSION_SV4,
+	FILE_EXTENSION_TD4,
+	FILE_EXTENSION_SC6,
+	FILE_EXTENSION_SV6,
+	FILE_EXTENSION_TD6,
+};
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const char * const RCT2FilePaths[PATH_ID_END];
 
 extern uint32 gCurrentDrawCount;
+
+extern uint8 gScreenFlags;
+extern uint32 gScreenAge;
+extern uint8 gSavePromptMode;
+extern sint32 gScreenWidth;
+extern sint32 gScreenHeight;
 
 int rct2_init();
 void rct2_dispose();
@@ -279,5 +300,11 @@ const char *get_file_path(int pathId);
 void rct2_quit();
 
 bool rct2_open_file(const char *path);
+
+uint32 get_file_extension_type(const utf8 *path);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

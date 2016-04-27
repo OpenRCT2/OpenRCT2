@@ -513,7 +513,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_draw_widgets(w, dpi);
 
 	// Set medium font size
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
 	// Draw column headers
 	rct_widget *widget;
@@ -572,7 +572,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 	rct_map_element *element = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint16) = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	do {
 		int type = map_element_get_type(element);
 		char *type_name;

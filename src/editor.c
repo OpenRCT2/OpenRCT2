@@ -51,6 +51,7 @@ static int editor_load_landscape_from_sv4(const char *path);
 static int editor_load_landscape_from_sc4(const char *path);
 static void editor_finalise_main_view();
 static int editor_read_s6(const char *path);
+static void editor_clear_map_for_editing();
 
 /**
  *
@@ -76,9 +77,9 @@ void editor_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	RCT2_GLOBAL(0x0141F570, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+	gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x0141F571, uint8) = 4;
 	viewport_init_all();
@@ -89,9 +90,9 @@ void editor_load()
 	mainWindow->flags &= ~WF_SCROLLING_TO_LOCATION;
 	load_palette();
 	gfx_invalidate_screen();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenAge = 0;
 
-	safe_strcpy((char*)RCT2_ADDRESS_SCENARIO_NAME, language_get_string(2749), 0x40);
+	safe_strcpy(gScenarioName, language_get_string(2749), 64);
 }
 
 /**
@@ -113,19 +114,19 @@ void editor_convert_save_to_scenario_callback(int result)
 
 	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
+		gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
 	else
-		RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
+		gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+	gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-	safe_strcpy(s6Info->name, (const char*)RCT2_ADDRESS_SCENARIO_NAME, 64);
-	safe_strcpy(s6Info->details, (const char*)RCT2_ADDRESS_SCENARIO_DETAILS, 256);
-	s6Info->objective_type = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8);
-	s6Info->objective_arg_1 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8);
-	s6Info->objective_arg_2 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, sint32);
-	s6Info->objective_arg_3 = RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, sint16);
-	climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
+	safe_strcpy(s6Info->name, gScenarioName, 64);
+	safe_strcpy(s6Info->details, gScenarioDetails, 256);
+	s6Info->objective_type = gScenarioObjectiveType;
+	s6Info->objective_arg_1 = gScenarioObjectiveYear;
+	s6Info->objective_arg_2 = gScenarioObjectiveCurrency;
+	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
+	climate_reset(gClimate);
 
 	rct_stex_entry* stex = g_stexEntries[0];
 	if ((int)stex != 0xFFFFFFFF) {
@@ -136,14 +137,14 @@ void editor_convert_save_to_scenario_callback(int result)
 		s6Info->name[0] = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	s6Info->category = SCENARIO_CATEGORY_OTHER;
 	viewport_init_all();
 	news_item_init_queue();
 	window_editor_main_open();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 }
 
 /**
@@ -154,8 +155,8 @@ void trackdesigner_load()
 {
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_DESIGNER;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
+	gScreenAge = 0;
 
 	object_unload_all();
 	map_init(150);
@@ -192,8 +193,8 @@ void trackmanager_load()
 {
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_TRACK_MANAGER;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) = 0;
+	gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
+	gScreenAge = 0;
 
 	object_unload_all();
 	map_init(150);
@@ -228,7 +229,7 @@ void trackmanager_load()
  */
 static void set_all_land_owned()
 {
-	int mapSize = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16);
+	int mapSize = gMapSize;
 
 	game_do_command(64, 1, 64, 2, GAME_COMMAND_SET_LAND_OWNERSHIP, (mapSize - 2) * 32, (mapSize - 2) * 32);
 }
@@ -260,37 +261,29 @@ bool editor_load_landscape(const utf8 *path)
  */
 static int editor_load_landscape_from_sv4(const char *path)
 {
-	rct1_s4 *s4;
+	rct1_load_saved_game(path);
+	editor_clear_map_for_editing();
 
-	s4 = malloc(sizeof(rct1_s4));
-	if (!rct1_read_sv4(path, s4)) {
-		free(s4);
-		return 0;
-	}
-	rct1_import_s4(s4);
-	free(s4);
-
-	rct1_fix_landscape();
+	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gScreenAge = 0;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+	viewport_init_all();
+	window_editor_main_open();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	return 1;
 }
 
 static int editor_load_landscape_from_sc4(const char *path)
 {
-	rct1_s4 *s4;
+	rct1_load_scenario(path);
+	editor_clear_map_for_editing();
 
-	s4 = malloc(sizeof(rct1_s4));
-	if (!rct1_read_sc4(path, s4)) {
-		free(s4);
-		return 0;
-	}
-	rct1_import_s4(s4);
-	free(s4);
-
-	rct1_fix_landscape();
+	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gScreenAge = 0;
+	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+	viewport_init_all();
+	window_editor_main_open();
 	editor_finalise_main_view();
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
 	return 1;
 }
 
@@ -388,95 +381,13 @@ static int editor_read_s6(const char *path)
 
 		reset_loaded_objects();
 		map_update_tile_pointers();
-		map_remove_all_rides();
+		game_convert_strings_to_utf8();
 
-		//
-		for (i = 0; i < MAX_BANNERS; i++)
-			if (gBanners[i].type == 255)
-				gBanners[i].flags &= ~BANNER_FLAG_2;
-
-		//
-		rct_ride *ride;
-		FOR_ALL_RIDES(i, ride)
-			user_string_free(ride->name);
-
-		ride_init_all();
-
-		//
-		for (i = 0; i < MAX_SPRITES; i++) {
-			rct_sprite *sprite = &g_sprite_list[i];
-			user_string_free(sprite->unknown.name_string_idx);
-		}
-
-		reset_sprite_list();
-		staff_reset_modes();
-		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_HEADING_FOR_PARK, uint16) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_GUEST_CHANGE_MODIFIER, uint16) = 0;
-		if (s6Header->type != S6_TYPE_SCENARIO) {
-			research_populate_list_random();
-			research_remove_non_separate_vehicle_types();
-
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY_SCENARIO;
-			else
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_NO_MONEY;
-
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_ENTRANCE_FEE, money16) == 0)
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) |= PARK_FLAGS_PARK_FREE_ENTRY;
-			else
-				RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_18;
-
-			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16) = clamp(
-				MONEY(10,00),
-				RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_CASH, money16),
-				MONEY(100,00)
-			);
-
-			RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32) = min(RCT2_GLOBAL(RCT2_ADDRESS_INITIAL_CASH, uint32), 100000);
-			finance_reset_cash_to_initial();
-			finance_update_loan_hash();
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32) = clamp(
-				MONEY(0,00),
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32),
-				MONEY(5000000,00)
-			);
-
-			RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32) = clamp(
-				MONEY(0,00),
-				RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32),
-				MONEY(5000000,00)
-			);
-
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8) = clamp(
-				5,
-				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, uint8),
-				80
-			);
-		}
-
-		climate_reset(RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8));
-
-		rct_stex_entry* stex = g_stexEntries[0];
-		if ((int)stex != 0xFFFFFFFF) {
-			object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-			reset_loaded_objects();
-
-			format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
-			s6Info->name[0] = 0;
-		}
-
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_SCENARIO_EDITOR;
+		gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+		editor_clear_map_for_editing();
 		viewport_init_all();
-		news_item_init_queue();
 		window_editor_main_open();
 		editor_finalise_main_view();
-		game_convert_strings_to_utf8();
 		return 1;
 	}
 
@@ -486,13 +397,102 @@ static int editor_read_s6(const char *path)
 	return 0;
 }
 
+static void editor_clear_map_for_editing()
+{
+	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
+	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+
+	map_remove_all_rides();
+
+	//
+	for (int i = 0; i < MAX_BANNERS; i++) {
+		if (gBanners[i].type == 255) {
+			gBanners[i].flags &= ~BANNER_FLAG_2;
+		}
+	}
+
+	//
+	{
+		int i;
+		rct_ride *ride;
+		FOR_ALL_RIDES(i, ride) {
+			user_string_free(ride->name);
+		}
+	}
+
+	ride_init_all();
+
+	//
+	for (int i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite *sprite = &g_sprite_list[i];
+		user_string_free(sprite->unknown.name_string_idx);
+	}
+
+	reset_sprite_list();
+	staff_reset_modes();
+	gNumGuestsInPark = 0;
+	gNumGuestsHeadingForPark = 0;
+	gNumGuestsInParkLastWeek = 0;
+	gGuestChangeModifier = 0;
+	if (s6Header->type != S6_TYPE_SCENARIO) {
+		research_populate_list_random();
+		research_remove_non_separate_vehicle_types();
+
+		if (gParkFlags & PARK_FLAGS_NO_MONEY)
+			gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
+		else
+			gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+		gParkFlags |= PARK_FLAGS_NO_MONEY;
+
+		if (gParkEntranceFee == 0)
+			gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+		else
+			gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+
+		gParkFlags &= ~PARK_FLAGS_18;
+
+		gGuestInitialCash = clamp(MONEY(10,00), gGuestInitialCash, MONEY(100,00));
+
+		gInitialCash = min(gInitialCash, 100000);
+		finance_reset_cash_to_initial();
+		finance_update_loan_hash();
+
+		gBankLoan = clamp(
+			MONEY(0,00),
+			gBankLoan,
+			MONEY(5000000,00)
+		);
+
+		gMaxBankLoan = clamp(
+			MONEY(0,00),
+			gMaxBankLoan,
+			MONEY(5000000,00)
+		);
+
+		gBankLoanInterestRate = clamp(5, gBankLoanInterestRate, 80);
+	}
+
+	climate_reset(gClimate);
+
+	rct_stex_entry* stex = g_stexEntries[0];
+	if ((int)stex != 0xFFFFFFFF) {
+		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
+		reset_loaded_objects();
+
+		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
+		s6Info->name[0] = 0;
+	}
+
+	news_item_init_queue();
+}
+
 /**
  *
  *  rct2: 0x0067009A
  */
 void editor_open_windows_for_current_step()
 {
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_EDITOR))
+	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
 		return;
 
 	switch (g_editor_step) {
@@ -503,7 +503,7 @@ void editor_open_windows_for_current_step()
 		if (window_find_by_class(49))
 			return;
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER) {
+		if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 			object_unload_all();
 		}
 
@@ -536,13 +536,12 @@ static void editor_finalise_main_view()
 	rct_viewport *viewport = w->viewport;
 
 	w->viewport_target_sprite = -1;
-	w->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	w->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
+	w->saved_view_x = gSavedViewX;
+	w->saved_view_y = gSavedViewY;
+	gCurrentRotation = gSavedViewRotation;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) >> 8;
-
-	int zoom_difference = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) - viewport->zoom;
-	viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) & 0xFF;
+	int zoom_difference = gSavedViewZoom - viewport->zoom;
+	viewport->zoom = gSavedViewZoom;
 	if (zoom_difference != 0) {
 		if (zoom_difference >= 0) {
 			viewport->view_width <<= zoom_difference;
@@ -587,7 +586,7 @@ static bool editor_check_object_group_at_least_one_selected(int objectType)
 int editor_check_object_selection()
 {
 	bool isTrackDesignerManager =
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
+		gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
 	if (!isTrackDesignerManager) {
 		if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS)) {
@@ -629,7 +628,7 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] != 0x8000)
+		if (gParkEntranceX[i] != (sint16)0x8000)
 			break;
 
 		if (i == 3) {
@@ -639,13 +638,13 @@ bool editor_check_park()
 	}
 
 	for (int i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i] == 0x8000)
+		if (gParkEntranceX[i] == (sint16)0x8000)
 			continue;
 
-		int x = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_X, uint16)[i];
-		int y = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Y, uint16)[i];
-		int z = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_Z, uint16)[i] / 8;
-		int direction = RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_DIRECTION, uint8)[i] ^ 2;
+		int x = gParkEntranceX[i];
+		int y = gParkEntranceY[i];
+		int z = gParkEntranceZ[i] / 8;
+		int direction = gParkEntranceDirection[i] ^ 2;
 
 		switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0)) {
 		case FOOTPATH_SEARCH_NOT_FOUND:

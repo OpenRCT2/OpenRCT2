@@ -884,6 +884,8 @@ rct_ride_measurement *get_ride_measurement(int index);
 	for (i = 0; i < MAX_RIDES; i++) \
 		if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
+#define gTotalRideValue			RCT2_GLOBAL(RCT2_TOTAL_RIDE_VALUE, money16)
+
 extern const uint8 gRideClassifications[255];
 
 extern money32 _currentTrackPrice;

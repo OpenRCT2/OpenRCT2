@@ -4112,6 +4112,7 @@ STR_5801    :Avaktivera nedskräpning
 STR_5802    :{SMALLFONT}{BLACK}Stoppar gästerna från att skräpa ner och kräkas i parken
 STR_5803    :{SMALLFONT}{BLACK}Rotera valda element
 STR_5804    :Stäng av ljudet
+STR_5805    :{SMALLFONT}{BLACK}Om ibockad, kommer din server att läggas till i{NEWLINE}offentliga server listan så alla kan hitta den
 
 #############
 # Scenarion #

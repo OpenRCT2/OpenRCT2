@@ -267,11 +267,23 @@ typedef struct {
 
 extern const rct_xy16 TileDirectionDelta[];
 
+#define gWidePathTileLoopX				RCT2_GLOBAL(0x013CE774, uint16)
+#define gWidePathTileLoopY				RCT2_GLOBAL(0x013CE776, uint16)
+#define gGrassSceneryTileLoopPosition	RCT2_GLOBAL(RCT2_ADDRESS_GRASS_SCENERY_TILEPOS, uint16)
+
+#define gMapSizeUnits		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, sint16)
+#define gMapSizeMinus2		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)
+#define gMapSize			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16)
+#define gMapSizeMaxXY		RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16)
+
 extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;
 
 extern rct_xy16 *gMapSelectionTiles;
 extern rct2_peep_spawn *gPeepSpawns;
+
+extern rct_map_element *gNextFreeMapElement;
+
 // Used in the land tool window to enable mountain tool / land smoothing
 extern bool gLandMountainMode;
 // Used in the land tool window to allow dragging and changing land styles
@@ -282,6 +294,16 @@ extern bool LandRightsMode;
 extern bool gClearSmallScenery;
 extern bool gClearLargeScenery;
 extern bool gClearFootpath;
+
+extern uint16 gLandToolSize;
+extern money32 gLandToolRaiseCost;
+extern money32 gLandToolLowerCost;
+extern uint8 gLandToolTerrainSurface;
+extern uint8 gLandToolTerrainEdge;
+extern money32 gWaterToolRaiseCost;
+extern money32 gWaterToolLowerCost;
+
+extern rct_xyz16 gCommandPosition;
 
 void map_init(int size);
 void map_update_tile_pointers();

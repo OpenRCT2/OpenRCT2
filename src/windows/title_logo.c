@@ -136,7 +136,7 @@ static void window_title_logo_draw_expansion_packs(rct_drawpixelinfo *dpi)
 				i++;
 			} while (names[i - 1] != 0);
 
-			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_FONT_SPRITE_BASE, uint32) = 0;
+			gCurrentFontSpriteBase = FONT_SPRITE_BASE_SMALL;
 			gfx_draw_string(dpi, buffer, 0, x, y);
 			y += 10;
 		}

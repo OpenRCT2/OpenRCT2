@@ -66,6 +66,15 @@ enum {
 	RESEARCH_CATEGORY_SCENERYSET
 };
 
+#define gResearchFundingLevel		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_RESEARCH_LEVEL, uint8)
+#define gResearchPriorities			RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8)
+#define gResearchProgress			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16)
+#define gResearchProgressStage		RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8)
+#define gResearchExpectedMonth		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8)
+#define gResearchExpectedDay		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8)
+#define gResearchNextCategory		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8)
+#define gResearchNextItem			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_ITEM, uint32)
+
 extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
 extern bool gSilentResearch;
@@ -84,5 +93,8 @@ void game_command_set_research_funding(int* eax, int* ebx, int* ecx, int* edx, i
 void research_finish_item(sint32 entryIndex);
 void research_insert(int researched, int entryIndex, int category);
 void research_remove(sint32 entryIndex);
+
+void research_insert_ride_entry(uint8 entryIndex, bool researched);
+void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
 
 #endif

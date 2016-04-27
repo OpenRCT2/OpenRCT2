@@ -616,12 +616,12 @@ rct_track_td6* load_track_design(const char *path)
 		// Unsure why it is 67
 		edi = (uint8*)&track_design->vehicle_colours;
 		for (i = 0; i < 67; i++, edi++)
-			*edi = RCT1ColourConversionTable[*edi];
+			*edi = rct1_get_colour(*edi);
 
 		// Edit the colours to use the new versions
 		edi = (uint8*)&track_design->track_spine_colour;
 		for (i = 0; i < 12; i++, edi++)
-			*edi = RCT1ColourConversionTable[*edi];
+			*edi = rct1_get_colour(*edi);
 
 		// Highest drop height is 1bit = 3/4 a meter in td6
 		// Highest drop height is 1bit = 1/3 a meter in td4
@@ -630,9 +630,6 @@ rct_track_td6* load_track_design(const char *path)
 
 		// If it has boosters then sadly track has to be discarded.
 		if (td4_track_has_boosters(track_design, track_elements))
-			track_design->type = RIDE_TYPE_NULL;
-
-		if (track_design->type == RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER)
 			track_design->type = RIDE_TYPE_NULL;
 
 		if (track_design->type == RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER)
@@ -654,8 +651,8 @@ rct_track_td6* load_track_design(const char *path)
 			vehicle_object = RCT2_ADDRESS(0x0097F66C, rct_object_entry);
 		} else {
 			int vehicle_type = track_design->vehicle_type;
-			if (vehicle_type == 3 && track_design->type == RIDE_TYPE_INVERTED_ROLLER_COASTER)
-				vehicle_type = 80;
+			if (vehicle_type == RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN && track_design->type == RIDE_TYPE_INVERTED_ROLLER_COASTER)
+				vehicle_type = RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN;
 			vehicle_object = &RCT2_ADDRESS(0x0097F0DC, rct_object_entry)[vehicle_type];
 		}
 
@@ -697,7 +694,8 @@ void reset_track_list_cache(){
  *
  *  rct2: 0x006D1C68
  */
-int backup_map(){
+int backup_map()
+{
 	RCT2_GLOBAL(0xF440ED, uint8*) = malloc(0xED600);
 	if (RCT2_GLOBAL(0xF440ED, uint32) == 0) return 0;
 
@@ -721,10 +719,10 @@ int backup_map(){
 	memcpy(RCT2_GLOBAL(0xF440F1, uint32*), tile_map_pointers, 0x40000);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
-	*(uint32*)backup_info = RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32);
-	*(uint16*)(backup_info + 4) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16);
-	*(uint16*)(backup_info + 6) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16);
-	*(uint16*)(backup_info + 8) = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16);
+	*(uint32*)backup_info = (uint32)gNextFreeMapElement;
+	*(uint16*)(backup_info + 4) = gMapSizeUnits;
+	*(uint16*)(backup_info + 6) = gMapSizeMinus2;
+	*(uint16*)(backup_info + 8) = gMapSize;
 	*(uint32*)(backup_info + 10) = get_current_rotation();
 	return 1;
 }
@@ -733,7 +731,8 @@ int backup_map(){
  *
  *  rct2: 0x006D2378
  */
-void reload_map_backup(){
+void reload_map_backup()
+{
 	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
 	memcpy(map_elements, RCT2_GLOBAL(0xF440ED, uint32*), 0xED600);
 
@@ -741,11 +740,11 @@ void reload_map_backup(){
 	memcpy(tile_map_pointers, RCT2_GLOBAL(0xF440F1, uint32*), 0x40000);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_FREE_MAP_ELEMENT, uint32) = *(uint32*)backup_info;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = *(uint16*)(backup_info + 4);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = *(uint16*)(backup_info + 6);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = *(uint16*)(backup_info + 8);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = *(uint32*)(backup_info + 10);
+	gNextFreeMapElement = (rct_map_element*)backup_info;
+	gMapSizeUnits = *(uint16*)(backup_info + 4);
+	gMapSizeMinus2 = *(uint16*)(backup_info + 6);
+	gMapSize = *(uint16*)(backup_info + 8);
+	gCurrentRotation = *(uint8*)(backup_info + 10);
 
 	free(RCT2_GLOBAL(0xF440ED, uint8*));
 	free(RCT2_GLOBAL(0xF440F1, uint8*));
@@ -760,9 +759,9 @@ void blank_map(){
 
 	// These values were previously allocated in backup map but
 	// it seems more fitting to place in this function
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) = 0x1FE0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, uint16) = 0x20FE;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) = 0x100;
+	gMapSizeUnits = 0x1FE0;
+	gMapSizeMinus2 = 0x20FE;
+	gMapSize = 0x100;
 
 	rct_map_element* map_element;
 	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
@@ -1088,7 +1087,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 					entry_type = scenery->scenery_object.flags & 0xF;
 					if (entry_type != OBJECT_TYPE_PATHS)
 						entry_type = 0xFF;
-					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8)&SCREEN_FLAGS_TRACK_DESIGNER)
+					if (gScreenFlags&SCREEN_FLAGS_TRACK_DESIGNER)
 						entry_type = 0xFF;
 
 					entry_index = 0;
@@ -1187,7 +1186,7 @@ int track_place_scenery(rct_track_scenery* scenery_start, uint8 rideIndex, int o
 						continue;
 					}
 
-					if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8)&SCREEN_FLAGS_TRACK_DESIGNER){
+					if (gScreenFlags&SCREEN_FLAGS_TRACK_DESIGNER){
 						RCT2_GLOBAL(0x00F4414E, uint8) |= 1 << 1;
 						continue;
 					}
@@ -2045,9 +2044,9 @@ int sub_6D2189(int* cost, uint8* ride_id){
 
 	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
 	uint8 backup_rotation = _currentTrackPieceDirection;
-	uint32 backup_park_flags = RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-	int map_size = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, uint16) << 4;
+	uint32 backup_park_flags = gParkFlags;
+	gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+	int map_size = gMapSize << 4;
 
 	_currentTrackPieceDirection = 0;
 	int z = sub_6D01B3(3, 0, map_size, map_size, 16);
@@ -2064,7 +2063,7 @@ int sub_6D2189(int* cost, uint8* ride_id){
 		RCT2_GLOBAL(0xF44151, uint8) |= 1;
 	}
 	edi = sub_6D01B3(bl, *ride_id, map_size, map_size, z);
-	RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) = backup_park_flags;
+	gParkFlags = backup_park_flags;
 
 	if (edi != MONEY32_UNDEFINED){
 
@@ -2107,7 +2106,7 @@ void draw_track_preview(uint8** preview){
 
 	blank_map();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_TRACK_MANAGER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER){
 		load_track_scenery_objects();
 	}
 
@@ -2150,7 +2149,7 @@ void draw_track_preview(uint8** preview){
 	int x = center_y - center_x - width / 2;
 	int y = (center_y + center_x) / 2 - center_z - height / 2;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 0;
+	gCurrentRotation = 0;
 
 	view->width = 370;
 	view->height = 217;
@@ -2180,7 +2179,7 @@ void draw_track_preview(uint8** preview){
 
 	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 1;
+	gCurrentRotation = 1;
 	x = -center_y - center_x - width / 2;
 	y = (center_y - center_x) / 2 - center_z - height / 2;
 
@@ -2195,7 +2194,7 @@ void draw_track_preview(uint8** preview){
 
 	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 2;
+	gCurrentRotation = 2;
 	x =  center_x - center_y - width / 2;
 	y = (-center_y - center_x) / 2 - center_z - height / 2;
 
@@ -2210,7 +2209,7 @@ void draw_track_preview(uint8** preview){
 
 	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint32) = 3;
+	gCurrentRotation = 3;
 	x = center_x + center_y - width / 2;
 	y = (center_x - center_y) / 2 - center_z - height / 2;
 
@@ -3255,12 +3254,12 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	int z = *edi;
 	uint8 flags = *ebx;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = z;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z;
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)){
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+		if (game_is_paused() && !gCheatsBuildInPauseMode){
 			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			*ebx = MONEY32_UNDEFINED;
 			return;
@@ -3288,7 +3287,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		game_do_command_p(GAME_COMMAND_CREATE_RIDE, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
 		if (_ebx == MONEY32_UNDEFINED){
 			*ebx = MONEY32_UNDEFINED;
-			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 			RCT2_GLOBAL(0x00F44121, money32) = MONEY32_UNDEFINED;
 			return;
 		}
@@ -3330,7 +3329,7 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 		*ebx = cost;
 		gGameCommandErrorText = error_reason;
-		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 		RCT2_GLOBAL(0x00F44121, money32) = cost;
 		return;
 	}
@@ -3393,17 +3392,17 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 
 	ride_set_name(rideIndex, RCT2_ADDRESS(0x009E3504,const char));
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	*ebx = RCT2_GLOBAL(0x00F44121, money32);
 	*edi = rideIndex;
 }
 
 money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16 x, sint16 y, sint16 z)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = x + 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = y + 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = z;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	gCommandPosition.x = x + 8;
+	gCommandPosition.y = y + 8;
+	gCommandPosition.z = z;
 	if (!sub_68B044()) {
 		return MONEY32_UNDEFINED;
 	}
@@ -3413,7 +3412,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	}
 
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) != 0) {
+		if (game_is_paused()) {
 			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
@@ -3473,7 +3472,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 	
 	// Calculate price
 	money32 price = 0;
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)) {
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		price = RideTrackCosts[ride->type].track_price * RCT2_GLOBAL(0x0099DBC8, money32);
 		price = (price >> 17) * 10;
 	}
@@ -4407,10 +4406,10 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	}
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = originX + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = originY + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = originZ;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	gCommandPosition.x = originX + 16;
+	gCommandPosition.y = originY + 16;
+	gCommandPosition.z = originZ;
 	sint16 trackpieceZ = originZ;
 	direction &= 3;
 	RCT2_GLOBAL(0x00F441D5, uint32) = properties_1;
@@ -4433,7 +4432,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		return MONEY32_UNDEFINED;
 	}
 	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+		if (game_is_paused() && !gCheatsBuildInPauseMode) {
 			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 			return MONEY32_UNDEFINED;
 		}
@@ -4881,7 +4880,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	price >>= 16;
 	price = cost + ((price / 2) * 10);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 		return 0;
 	}
 	else {
@@ -4911,10 +4910,10 @@ void game_command_place_track(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 }
 
 money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY, sint16 originZ, uint8 rotation, uint8 flags){
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, sint16) = originX + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, sint16) = originY + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, sint16) = originZ;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	gCommandPosition.x = originX + 16;
+	gCommandPosition.y = originY + 16;
+	gCommandPosition.z = originZ;
 	sint16 trackpieceZ = originZ;
 	RCT2_GLOBAL(0x00F440E1, uint8) = sequence;
 
@@ -4925,7 +4924,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		break;
 	}
 
-	if (!(flags & (1 << 3)) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode){
+	if (!(flags & (1 << 3)) && game_is_paused() && !gCheatsBuildInPauseMode){
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -5175,7 +5174,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY)
+	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		return 0;
 	else
 		return price;
@@ -5219,10 +5218,10 @@ uint8 maze_element_get_segment_bit(uint16 x, uint16 y) {
 }
 
 money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 rideIndex, uint8 mode, uint16 z) {
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 8;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	gCommandPosition.x = x + 8;
+	gCommandPosition.y = y + 8;
+	gCommandPosition.z = z;
 
 	RCT2_GLOBAL(0xF4413E, money32) = 0;
 
@@ -5230,7 +5229,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !gCheatsBuildInPauseMode && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !gCheatsBuildInPauseMode && game_is_paused()) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -5297,7 +5296,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		RCT2_GLOBAL(0x00F4413E, money32) = price / 2 * 10;
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+			if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 				return 0;
 			}
 
@@ -5333,7 +5332,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 	}
 
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+		if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 			return 0;
 		}
 
@@ -5414,7 +5413,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 		get_ride(rideIndex)->maze_tiles--;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) {
+	if (gParkFlags & PARK_FLAGS_NO_MONEY) {
 		return 0;
 	}
 
@@ -5454,10 +5453,10 @@ void game_command_set_brakes_speed(int *eax, int *ebx, int *ecx, int *edx, int *
 	trackType = (*edx & 0xFF);
 	brakesSpeed = ((*ebx >> 8) & 0xFF);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z;
 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		*ebx = 0;

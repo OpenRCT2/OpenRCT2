@@ -77,13 +77,12 @@ static bool entrance_has_direction(rct_map_element *mapElement, int direction)
  */
 static void automatically_set_peep_spawn(int x, int y, int z)
 {
-	rct2_peep_spawn *peepSpawn = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 	int direction = 0;
 	if (x != 32) {
 		direction++;
-		if (y != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
+		if (y != gMapSizeUnits - 32) {
 			direction++;
-			if (x != RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) - 32) {
+			if (x != gMapSizeUnits - 32) {
 				direction++;
 				if (y != 32)
 					return;
@@ -91,6 +90,7 @@ static void automatically_set_peep_spawn(int x, int y, int z)
 		}
 	}
 
+	rct2_peep_spawn *peepSpawn = &gPeepSpawns[0];
 	peepSpawn->x = x + (word_981D6C[direction].x * 15) + 16;
 	peepSpawn->y = y + (word_981D6C[direction].y * 15) + 16;
 	peepSpawn->direction = direction;
@@ -156,7 +156,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		return MONEY32_UNDEFINED;
 
 	if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
-		footpath_remove_litter(x, y, RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16));
+		footpath_remove_litter(x, y, gCommandPosition.z);
 
 	// loc_6A649D:
 	RCT2_GLOBAL(0x00F3EFD9, money32) += MONEY(12, 00);
@@ -200,12 +200,12 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		if (!(flags & (1 << 7)))
 			footpath_remove_edges_at(x, y, mapElement);
 
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & (1 << 6)))
 			automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
 
 		loc_6A6620(flags, x, y, mapElement);
 	}
-	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
 
 static money32 footpath_element_update(int x, int y, rct_map_element *mapElement, int type, int flags, uint8 pathItemType)
@@ -221,7 +221,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 			if (flags & GAME_COMMAND_FLAG_4)
 				return MONEY32_UNDEFINED;
 
-			return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 		}
 
 		if (pathItemType != 0) {
@@ -268,7 +268,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		}
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
-			return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 
 		if (
 			(pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST)) ||
@@ -286,7 +286,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 				mapElement->properties.path.addition_status = 255;
 		}
 		map_invalidate_tile_full(x, y);
-		return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+		return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 	}
 
 	if (flags & GAME_COMMAND_FLAG_4)
@@ -306,19 +306,19 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		loc_6A6620(flags, x, y, mapElement);
 	}
 
-	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
 
 static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z * 8;
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -329,12 +329,12 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
 
-	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)) {
+	if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	if (slope & 8) {
@@ -390,12 +390,12 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z * 8;
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -405,7 +405,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 		footpath_remove_litter(x, y, z * 8);
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	mapElement = map_get_footpath_element(x / 32, y / 32, z);
@@ -426,7 +426,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 		sub_6A759F();
 	}
 
-	return (flags & (1 << 5)) || (RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY) ? 0 : -MONEY(10,00);
+	return (flags & (1 << 5)) || (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : -MONEY(10,00);
 }
 
 /**
@@ -450,12 +450,12 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 {
 	rct_map_element *mapElement;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) = RCT_EXPENDITURE_TYPE_LANDSCAPING * 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_X, uint16) = x + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Y, uint16) = y + 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMAND_MAP_Z, uint16) = z * 8;
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z * 8;
 
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0 && !gCheatsBuildInPauseMode) {
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode) {
 		gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 		return MONEY32_UNDEFINED;
 	}
@@ -470,7 +470,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		return MONEY32_UNDEFINED;
 	}
 
-	if (!((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
+	if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
 		return MONEY32_UNDEFINED;
 
 	if (z < 2) {
@@ -535,7 +535,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 
 		map_invalidate_tile_full(x, y);
 	}
-	return RCT2_GLOBAL(RCT2_ADDRESS_PARK_FLAGS, uint32) & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
 }
 
 /**
@@ -860,8 +860,8 @@ bool map_is_edge(int x, int y)
 	return (
 		x < 32 ||
 		y < 32 ||
-		x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) ||
-		y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16)
+		x >= gMapSizeUnits ||
+		y >= gMapSizeUnits
 	);
 }
 
@@ -954,6 +954,7 @@ typedef struct {
 	uint8 order;
 	uint8 direction;
 	uint8 ride_index;
+	uint8 entrance_index;
 } rct_neighbour;
 
 typedef struct {
@@ -970,8 +971,8 @@ static int rct_neighbour_compare(const void *a, const void *b)
 	else {
 		uint8 da = ((rct_neighbour*)a)->direction;
 		uint8 db = ((rct_neighbour*)b)->direction;
-		if (va < vb) return -1;
-		else if (va > vb) return 1;
+		if (da < db) return -1;
+		else if (da > db) return 1;
 		else return 0;
 	}
 }
@@ -981,11 +982,12 @@ static void neighbour_list_init(rct_neighbour_list *neighbourList)
 	neighbourList->count = 0;
 }
 
-static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex)
+static void neighbour_list_push(rct_neighbour_list *neighbourList, int order, int direction, uint8 rideIndex, uint8 entrance_index)
 {
 	neighbourList->items[neighbourList->count].order = order;
 	neighbourList->items[neighbourList->count].direction = direction;
 	neighbourList->items[neighbourList->count].ride_index = rideIndex;
+	neighbourList->items[neighbourList->count].entrance_index = entrance_index;
 	neighbourList->count++;
 }
 
@@ -1120,9 +1122,9 @@ static void loc_6A6D7E(
 ) {
 	int x = initialX + TileDirectionDelta[direction].x;
 	int y = initialY + TileDirectionDelta[direction].y;
-	if (((RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
+	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && map_is_edge(x, y)) {
 		if (query) {
-			neighbour_list_push(neighbourList, 7, direction, 255);
+			neighbour_list_push(neighbourList, 7, direction, 255, 255);
 		}
 	} else {
 		rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
@@ -1158,7 +1160,7 @@ static void loc_6A6D7E(
 						return;
 					}
 					if (query) {
-						neighbour_list_push(neighbourList, 1, direction, mapElement->properties.track.ride_index);
+						neighbour_list_push(neighbourList, 1, direction, mapElement->properties.track.ride_index, 255);
 					}
 					goto loc_6A6FD2;
 				}
@@ -1167,7 +1169,7 @@ static void loc_6A6D7E(
 				if (z == mapElement->base_height) {
 					if (entrance_has_direction(mapElement, ((direction - mapElement->type) & 3) ^ 2)) {
 						if (query) {
-							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index);
+							neighbour_list_push(neighbourList, 8, direction, mapElement->properties.entrance.ride_index,  mapElement->properties.entrance.index);
 						} else {
 							if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE) {
 								sub_6A76E9(mapElement->properties.entrance.ride_index);
@@ -1188,17 +1190,17 @@ static void loc_6A6D7E(
 			}
 			if (footpath_element_is_queue(mapElement)) {
 				if (RCT2_ADDRESS(0x0098D7F0, uint8)[mapElement->properties.path.edges & 0x0F] < 2) {
-					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index);
+					neighbour_list_push(neighbourList, 4, direction, mapElement->properties.path.ride_index, mapElement->properties.entrance.index);
 				} else {
 					if (map_element_get_type(initialMapElement) == MAP_ELEMENT_TYPE_PATH &&
 						footpath_element_is_queue(initialMapElement)) {
 						if (footpath_disconnect_queue_from_path(x, y, mapElement, 0)) {
-							neighbour_list_push(neighbourList, 3, direction, mapElement->properties.path.ride_index);
+							neighbour_list_push(neighbourList, 3, direction, mapElement->properties.path.ride_index, mapElement->properties.entrance.index);
 						}
 					}
 				}
 			} else {
-				neighbour_list_push(neighbourList, 2, direction, 255);
+				neighbour_list_push(neighbourList, 2, direction, 255, 255);
 			}
 		} else {
 			footpath_disconnect_queue_from_path(x, y, mapElement, 1 + ((flags >> 6) & 1));
@@ -1287,11 +1289,17 @@ void footpath_connect_edges(int x, int y, rct_map_element *mapElement, int flags
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH && footpath_element_is_queue(mapElement)) {
 		int rideIndex = -1;
+		uint8 entranceIndex = 255;
 		for (int i = 0; i < neighbourList.count; i++) {
 			if (neighbourList.items[i].ride_index != 255) {
 				if (rideIndex == -1) {
 					rideIndex = neighbourList.items[i].ride_index;
+					entranceIndex = neighbourList.items[i].entrance_index;
 				} else if (rideIndex != neighbourList.items[i].ride_index) {
+					neighbour_list_remove(&neighbourList, i);
+				} else if (rideIndex == neighbourList.items[i].ride_index
+					&& entranceIndex != neighbourList.items[i].entrance_index
+					&&  neighbourList.items[i].entrance_index != 255) {
 					neighbour_list_remove(&neighbourList, i);
 				}
 			}
@@ -1506,7 +1514,7 @@ int footpath_is_connected_to_map_edge_recurse(
 	// Check if we are at edge of map
 	if (x < 32 || y < 32)
 		return FOOTPATH_SEARCH_SUCCESS;
-	if (x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16) || y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_UNITS, uint16))
+	if (x >= gMapSizeUnits || y >= gMapSizeUnits)
 		return FOOTPATH_SEARCH_SUCCESS;
 
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);

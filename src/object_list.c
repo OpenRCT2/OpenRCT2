@@ -606,10 +606,7 @@ uint32 _installedObjectHashTableCollisions;
 uint32 object_get_hash_code(rct_object_entry *object)
 {
 	uint32 hash = 5381;
-	uint8 *byte = (uint8*)object;
-	int i;
-
-	for (i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++)
 		hash = ((hash << 5) + hash) + object->name[i];
 
 	return hash;
@@ -672,6 +669,24 @@ int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8
 	return 1;
 }
 
+rct_object_entry *object_list_find_by_name(const char * name)
+{
+	rct_object_entry entry;
+	memcpy(entry.name, name, 8);
+
+	uint32 hash = object_get_hash_code(&entry);
+	uint32 index = hash % _installedObjectHashTableSize;
+
+	while (_installedObjectHashTable[index] != NULL) {
+		if (memcmp(_installedObjectHashTable[index]->name, entry.name, 8) == 0)
+			return _installedObjectHashTable[index];
+
+		index++;
+		if (index >= _installedObjectHashTableSize) index = 0;
+	}
+
+	return NULL;
+}
 
 rct_object_entry *object_list_find(rct_object_entry *entry)
 {

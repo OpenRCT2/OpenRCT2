@@ -41,6 +41,7 @@
 #include "peep/peep.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
+#include "rct1.h"
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
@@ -61,6 +62,7 @@
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
+uint8 gGamePaused = 0;
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
@@ -125,7 +127,7 @@ void game_create_windows()
 	window_main_open();
 	window_top_toolbar_open();
 	window_game_bottom_toolbar_open();
-	window_resize_gui(RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_WIDTH, uint16), RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_HEIGHT, uint16));
+	window_resize_gui(gScreenWidth, gScreenHeight);
 }
 
 /**
@@ -136,7 +138,7 @@ void update_palette_effects()
 {
 	rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 1) {
+	if (gClimateLightningFlash == 1) {
 		// change palette to lighter colour during lightning
 		int palette = 1532;
 
@@ -146,15 +148,16 @@ void update_palette_effects()
 		rct_g1_element g1_element = g1Elements[palette];
 		int xoffset = g1_element.x_offset;
 		xoffset = xoffset * 4;
+		uint8 *paletteOffset = gGamePalette + xoffset;
 		for (int i = 0; i < g1_element.width; i++) {
-			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
-			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
-			RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
+			paletteOffset[(i * 4) + 0] = -((0xFF - g1_element.offset[(i * 3) + 0]) / 2) - 1;
+			paletteOffset[(i * 4) + 1] = -((0xFF - g1_element.offset[(i * 3) + 1]) / 2) - 1;
+			paletteOffset[(i * 4) + 2] = -((0xFF - g1_element.offset[(i * 3) + 2]) / 2) - 1;
 		}
-		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
-		RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8)++;
+		platform_update_palette(gGamePalette, 10, 236);
+		gClimateLightningFlash++;
 	} else {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
+		if (gClimateLightningFlash == 2) {
 			// change palette back to normal after lightning
 			int palette = 1532;
 
@@ -165,23 +168,24 @@ void update_palette_effects()
 			rct_g1_element g1_element = g1Elements[palette];
 			int xoffset = g1_element.x_offset;
 			xoffset = xoffset * 4;
+			uint8 *paletteOffset = gGamePalette + xoffset;
 			for (int i = 0; i < g1_element.width; i++) {
-				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
-				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
-				RCT2_ADDRESS(RCT2_ADDRESS_PALETTE + xoffset, uint8)[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
+				paletteOffset[(i * 4) + 0] = g1_element.offset[(i * 3) + 0];
+				paletteOffset[(i * 4) + 1] = g1_element.offset[(i * 3) + 1];
+				paletteOffset[(i * 4) + 2] = g1_element.offset[(i * 3) + 2];
 			}
 		}
 
 		// animate the water/lava/chain movement palette
 		int q = 0;
-		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER_GLOOM, uint8)];
+		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[gClimateCurrentWeatherGloom];
 		if (weather_colour != -1) {
 			q = 1;
 			if (weather_colour != 0x2000031) {
 				q = 2;
 			}
 		}
-		uint32 j = RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32);
+		uint32 j = gPaletteEffectFrame;
 		j = (((uint16)((~j / 2) * 128) * 15) >> 16);
 		int p = 1533;
 		if ((sint32)water_type != -1) {
@@ -189,7 +193,7 @@ void update_palette_effects()
 		}
 		rct_g1_element g1_element = g1Elements[q + p];
 		uint8* vs = &g1_element.offset[j * 3];
-		uint8* vd = RCT2_ADDRESS(0x01424A18, uint8);
+		uint8* vd = &gGamePalette[230 * 4];
 		int n = 5;
 		for (int i = 0; i < n; i++) {
 			vd[0] = vs[0];
@@ -220,7 +224,7 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		j = ((uint16)(RCT2_GLOBAL(RCT2_ADDRESS_PALETTE_EFFECT_FRAME_NO, uint32) * -960) * 3) >> 16;
+		j = ((uint16)(gPaletteEffectFrame * -960) * 3) >> 16;
 		p = 1539;
 		g1_element = g1Elements[q + p];
 		vs = &g1_element.offset[j * 3];
@@ -237,10 +241,10 @@ void update_palette_effects()
 			vd += 4;
 		}
 
-		platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 230, 16);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) == 2) {
-			platform_update_palette(RCT2_ADDRESS(RCT2_ADDRESS_PALETTE, uint8), 10, 236);
-			RCT2_GLOBAL(RCT2_ADDRESS_LIGHTNING_ACTIVE, uint8) = 0;
+		platform_update_palette(gGamePalette, 230, 16);
+		if (gClimateLightningFlash == 2) {
+			platform_update_palette(gGamePalette, 10, 236);
+			gClimateLightningFlash = 0;
 		}
 	}
 	if (RCT2_GLOBAL(0x009E2C4C, uint32) == 2 || RCT2_GLOBAL(0x009E2C4C, uint32) == 1) {
@@ -265,12 +269,12 @@ void game_update()
 	}
 
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
-		if (network_get_server_tick() - RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= 10) {
+		if (network_get_server_tick() - gCurrentTicks >= 10) {
 			// make sure client doesn't fall behind the server too much
 			numUpdates += 10;
 		}
 	} else {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint8) != 0) {
+		if (game_is_paused()) {
 			numUpdates = 0;
 			// Update the animation list. Note this does not 
 			// increment the map animation.
@@ -318,7 +322,7 @@ void game_update()
 	// the flickering frequency is reduced by 4, compared to the original
 	// it was done due to inability to reproduce original frequency
 	// and decision that the original one looks too fast
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) % 4 == 0)
+	if (gCurrentTicks % 4 == 0)
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) ^= (1 << 15);
 
 	// Handle guest map flashing
@@ -347,16 +351,16 @@ void game_logic_update()
 	///////////////////////////
 	network_update();
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) >= network_get_server_tick()) {
+		if (gCurrentTicks >= network_get_server_tick()) {
 			// dont run past the server
 			return;
 		}
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)++;
+	gCurrentTicks++;
 	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)++;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16) == 0)
-		RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, sint16)--;
+	gScreenAge++;
+	if (gScreenAge == 0)
+		gScreenAge--;
 
 	sub_68B089();
 	scenario_update();
@@ -409,7 +413,7 @@ static int game_check_affordability(int cost)
 {
 	if (cost <= 0)return cost;
 	if (RCT2_GLOBAL(0x141F568, uint8) & 0xF0)return cost;
-	if (cost <= (sint32)(DECRYPT_MONEY(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_MONEY_ENCRYPTED, sint32))))return cost;
+	if (cost <= (sint32)(DECRYPT_MONEY(gCashEncrypted)))return cost;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = cost;
 
@@ -535,7 +539,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			//
 			if (!(flags & 0x20)) {
 				// Update money balance
-				finance_payment(cost, RCT2_GLOBAL(RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE, uint8) / 4);
+				finance_payment(cost, gCommandExpenditureType);
 				if (RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
 					// Create a +/- money text effect
 					if (cost != 0)
@@ -569,14 +573,24 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 void pause_toggle()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) ^= 1;
+	gGamePaused ^= GAME_PAUSED_NORMAL;
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) & 1) {
+	if (gGamePaused & GAME_PAUSED_NORMAL) {
 		audio_pause_sounds();
 		audio_unpause_sounds();
 	} else {
 		audio_unpause_sounds();
 	}
+}
+
+bool game_is_paused()
+{
+	return gGamePaused != 0;
+}
+
+bool game_is_not_paused()
+{
+	return gGamePaused == 0;
 }
 
 /**
@@ -600,7 +614,7 @@ static void game_load_or_quit(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		switch (*edx & 0xFF) {
 		case 0:
-			RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) = *edi & 0xFF;
+			gSavePromptMode = *edi & 0xFF;
 			window_save_prompt_open();
 			break;
 		case 1:
@@ -668,9 +682,9 @@ static void rct2_to_utf8_self(char *buffer, size_t length)
 void game_convert_strings_to_utf8()
 {
 	// Scenario details
-	rct2_to_utf8_self(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char), 32);
-	rct2_to_utf8_self(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char), 64);
-	rct2_to_utf8_self(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char), 256);
+	rct2_to_utf8_self(gScenarioCompletedBy, 32);
+	rct2_to_utf8_self(gScenarioName, 64);
+	rct2_to_utf8_self(gScenarioDetails, 256);
 
 	// User strings
 	for (int i = 0; i < MAX_USER_STRINGS; i++) {
@@ -783,7 +797,7 @@ int game_load_sv6(SDL_RWops* rw)
 	game_fix_save_vars(); // OpenRCT2 fix broken save games
 
 	// #2407: Resetting screen time to not open a save prompt shortly after loading a park.
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+	gScreenAge = 0;
 
 	gLastAutoSaveTick = SDL_GetTicks();
 	return 1;
@@ -802,7 +816,7 @@ void game_fix_save_vars() {
 			peepCount++;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_GUESTS_IN_PARK, uint16) = peepCount;
+	gNumGuestsInPark = peepCount;
 
 	// Fixes broken saves where a surface element could be null
 	for (int y = 0; y < 256; y++) {
@@ -860,7 +874,7 @@ int game_load_network(SDL_RWops* rw)
 	SDL_RWread(rw, &checksum, sizeof(uint32), 1);
 
 	// Read other data not in normal save files
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_PAUSED, uint32) = SDL_ReadLE32(rw);
+	gGamePaused = SDL_ReadLE32(rw);
 	_guestGenerationProbability = SDL_ReadLE32(rw);
 	_suggestedGuestMaximum = SDL_ReadLE32(rw);
 	gCheatsSandboxMode = SDL_ReadU8(rw);
@@ -920,7 +934,17 @@ bool game_load_save(const utf8 *path)
 		return false;
 	}
 
-	bool result = game_load_sv6(rw);
+	uint32 extension_type = get_file_extension_type(path);
+	bool result = false;
+
+	if (extension_type == FILE_EXTENSION_SV6) {
+		result = game_load_sv6(rw);
+	} else if (extension_type == FILE_EXTENSION_SV4) {
+		result = rct1_load_saved_game(path);
+		if (result)
+			gFirstTimeSave = 1;
+	}
+
 	SDL_RWclose(rw);
 
 	if (result) {
@@ -933,7 +957,7 @@ bool game_load_save(const utf8 *path)
 		}
 		return true;
 	} else {
-		// If loading the SV6 failed, the current park state will be corrupted
+		// If loading the SV6 or SV4 failed, the current park state will be corrupted
 		// so just go back to the title screen.
 		title_load();
 		return false;
@@ -944,25 +968,25 @@ void game_load_init()
 {
 	rct_window *mainWindow;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) = SCREEN_FLAGS_PLAYING;
+	gScreenFlags = SCREEN_FLAGS_PLAYING;
 	viewport_init_all();
 	game_create_windows();
 	mainWindow = window_get_main();
 
 	mainWindow->viewport_target_sprite = -1;
-	mainWindow->saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16);
-	mainWindow->saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16);
-	uint8 _cl = (RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF) - mainWindow->viewport->zoom;
-	mainWindow->viewport->zoom = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) & 0xFF;
-	*((char*)(&RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, sint32))) = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, sint16) >> 8;
-	if (_cl != 0) {
-		if (_cl < 0) {
-			_cl = -_cl;
-			mainWindow->viewport->view_width >>= _cl;
-			mainWindow->viewport->view_height >>= _cl;
+	mainWindow->saved_view_x = gSavedViewX;
+	mainWindow->saved_view_y = gSavedViewY;
+	uint8 zoomDifference = gSavedViewZoom - mainWindow->viewport->zoom;
+	mainWindow->viewport->zoom = gSavedViewZoom;
+	gCurrentRotation = gSavedViewRotation;
+	if (zoomDifference != 0) {
+		if (zoomDifference < 0) {
+			zoomDifference = -zoomDifference;
+			mainWindow->viewport->view_width >>= zoomDifference;
+			mainWindow->viewport->view_height >>= zoomDifference;
 		} else {
-			mainWindow->viewport->view_width <<= _cl;
-			mainWindow->viewport->view_height <<= _cl;
+			mainWindow->viewport->view_width <<= zoomDifference;
+			mainWindow->viewport->view_height <<= zoomDifference;
 		}
 	}
 	mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
@@ -1010,7 +1034,7 @@ void save_game()
 
 			// Setting screen age to zero, so no prompt will pop up when closing the
 			// game shortly after saving.
-			RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_AGE, uint16) = 0;
+			gScreenAge = 0;
 		}
 	} else {
 		save_game_as();
@@ -1165,15 +1189,17 @@ void rct2_exit()
  */
 void game_load_or_quit_no_save_prompt()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) < 1) {
+	switch (gSavePromptMode) {
+	case PM_SAVE_BEFORE_LOAD:
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREEN_FLAGS, uint8) & SCREEN_FLAGS_SCENARIO_EDITOR) {
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			load_landscape();
 		} else {
 			window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
 		}
-	} else if (RCT2_GLOBAL(RCT2_ADDRESS_SAVE_PROMPT_MODE, uint16) == 1) {
+		break;
+	case PM_SAVE_BEFORE_QUIT:
 		game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
 		tool_cancel();
 		if (gInputFlags & INPUT_FLAG_5) {
@@ -1181,8 +1207,10 @@ void game_load_or_quit_no_save_prompt()
 		}
 		gGameSpeed = 1;
 		title_load();
-	} else {
+		break;
+	default:
 		rct2_exit();
+		break;
 	}
 }
 
