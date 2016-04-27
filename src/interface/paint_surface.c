@@ -36,7 +36,7 @@ const rct_xy16 viewport_surface_paint_data[][4] = {
 	{
 		{32,  0},
 		{-32, 32},
-		{-64, 32},
+		{-64, -32},
 		{0,   -64}
 	},
 	{
