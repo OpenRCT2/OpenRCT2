@@ -700,53 +700,37 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 
 		// Tunnels
 		uint8 tunnelType = RCT2_GLOBAL(0x9E3138 + 1, uint8);
+		uint8 tunnelHeight = stru_97B570[tunnelType][0];
+		sint16 zOffset = curHeight;
 
-		regs.dh = curHeight;
-		uint32 saved_edx = regs.edx;
-		uint32 saved_eax = regs.eax;
-		regs.dh = 0;
-		regs.dl = curHeight + stru_97B570[tunnelType][0];
-
-		if (regs.dl > regs.ah || regs.dl > regs.al) {
-			regs.dl -= stru_97B570[tunnelType][0];
+		if ((zOffset + tunnelHeight) > regs.ah || (zOffset + tunnelHeight) > regs.al) {
 			tunnelType = byte_97B5B0[tunnelType];
-		} else {
-			regs.dl -= stru_97B570[tunnelType][0];
 		}
 
-		regs.dx <<= 4;
-		sint16 imageHeight = regs.dx;
-		regs.ah = stru_97B570[tunnelType][1];
-		//save edx
+		zOffset *= 16;
 
-		uint16 boundOffsetZ = regs.dx;
-		boundOffsetZ += word_97B590[tunnelType];
-		regs.ah /= 16;
-		if (boundOffsetZ < 16) {
-			boundOffsetZ += 16;
-			regs.ah -= 16;
+		sint16 boundBoxOffsetZ = zOffset + word_97B590[tunnelType];
+		sint8 boundBoxLength = stru_97B570[tunnelType][1] * 16;
+		if (boundBoxOffsetZ < 16) {
+			boundBoxOffsetZ += 16;
+			boundBoxLength -= 16;
 		}
 
 		uint32 image_id = stru_97B640[3][tunnelType];
-		sub_98197C(image_id, 30, 0, 32, 1, regs.ah, imageHeight, 0, 0, boundOffsetZ, get_current_rotation());
+		sub_98197C(image_id, 30, 0, 32, 1, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, get_current_rotation());
 
-		regs.edx = saved_edx;
-		regs.eax = saved_eax;
 
-		// push edx
-		boundOffsetZ = regs.dh * 16;
-		sint8 boundHeight = stru_97B570[tunnelType][1] * 16;
-		boundOffsetZ += word_97B590[tunnelType];
-		if (boundOffsetZ == 0) {
-			boundOffsetZ += 16;
-			boundHeight -= 16;
+		boundBoxOffsetZ = curHeight * 16;
+		boundBoxLength = stru_97B570[tunnelType][1] * 16;
+		boundBoxOffsetZ += word_97B590[tunnelType];
+		if (boundBoxOffsetZ == 0) {
+			boundBoxOffsetZ += 16;
+			boundBoxLength -= 16;
 		}
 
 		image_id = stru_97B640[3][tunnelType] + 1;
-		sub_98197C(image_id, 30, 0, 32, 1, boundHeight - 1, regs.dh * 16, 0, 31, boundOffsetZ, get_current_rotation());
+		sub_98197C(image_id, 30, 0, 32, 1, boundBoxLength - 1, curHeight * 16, 0, 31, boundBoxOffsetZ, get_current_rotation());
 
-		regs.edx = saved_edx;
-		regs.eax = saved_eax;
 		curHeight += stru_97B570[tunnelType][0];
 
 		for (int offset = 0; offset <= 0x7E; offset += 4) {
