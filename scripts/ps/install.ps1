@@ -34,6 +34,10 @@ if ($currentLibsVersion -ge $libsVersion)
     $updateLibs = $false
 }
 
+#symlink data to bin\data
+Write-Host "Symlink data to bin..." -ForegroundColor Cyan
+New-Item -force -ItemType SymbolicLink -Name bin\data -Target data
+
 # Check if user needs to download dependencies
 $libsPathExists = Test-Path $libsPath
 if ($libsPathExists -and -not $updateLibs -and -not $Force)
