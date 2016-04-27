@@ -1109,7 +1109,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			} else if (mapSelectionType <= 4) {
 				// Corners
 				uint32 eax = mapSelectionType;
-				if (mapSelectionType == 4) {
+				if (mapSelectionType != 4) {
 					eax = (mapSelectionType + get_current_rotation()) & 3;
 				}
 
