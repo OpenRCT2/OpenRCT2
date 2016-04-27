@@ -304,34 +304,6 @@ const uint32 dword_97B898[][2] = {
 };
 
 
-#define _dword_9E3240 RCT2_GLOBAL(0x9E3240, rct_map_element *)
-#define _dword_9E3244 RCT2_GLOBAL(0x9E3244, rct_map_element *)
-#define _dword_9E3248 RCT2_GLOBAL(0x9E3248, rct_map_element *)
-#define _dword_9E324C RCT2_GLOBAL(0x9E324C, rct_map_element *)
-#define _dword_9E3250 RCT2_GLOBAL(0x9E3250, rct_map_element *)
-
-#define _dword_9E3254 RCT2_GLOBAL(0x9E3254, uint32)
-#define _dword_9E3258 RCT2_GLOBAL(0x9E3258, uint32)
-#define _dword_9E325C RCT2_GLOBAL(0x9E325C, uint32)
-#define _dword_9E3260 RCT2_GLOBAL(0x9E3260, uint32)
-#define _dword_9E3264 RCT2_GLOBAL(0x9E3264, uint32)
-
-#define _dword_9E3268 RCT2_GLOBAL(0x9E3268, uint32)
-#define _dword_9E326C RCT2_GLOBAL(0x9E326C, uint32)
-#define _dword_9E3270 RCT2_GLOBAL(0x9E3270, uint32)
-#define _dword_9E3274 RCT2_GLOBAL(0x9E3274, uint32)
-#define _dword_9E3278 RCT2_GLOBAL(0x9E3278, uint32)
-
-#define _dword_9E327C RCT2_GLOBAL(0x9E327C, uint16)
-#define _dword_9E327E RCT2_GLOBAL(0x9E327E, uint16)
-#define _dword_9E3280 RCT2_GLOBAL(0x9E3280, uint16)
-#define _dword_9E3282 RCT2_GLOBAL(0x9E3282, uint16)
-
-#define _dword_9E3284 RCT2_GLOBAL(0x9E3284, uint16)
-#define _dword_9E3286 RCT2_GLOBAL(0x9E3286, uint16)
-#define _dword_9E3288 RCT2_GLOBAL(0x9E3288, uint16)
-#define _dword_9E328A RCT2_GLOBAL(0x9E328A, uint16)
-
 enum
 {
 	SEGMENT_B4 = (1 << 0),
@@ -1019,15 +991,15 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				ebp = 0x20080000;
 			}
 		} else {
-			ebx = (_dword_9E3278 + 200) * 512;
+			ebx = (surfaceShape + 200) * 512;
 			if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ebx, uint32)[eax] & (1 << ecx)) {
 				do_it = true;
 			}
 		}
 
 		if (do_it) {
-			assert(_dword_9E3278 < countof(byte_97B444));
-			ebx = SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[_dword_9E3278];
+			assert(surfaceShape < countof(byte_97B444));
+			ebx = SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
 			sub_68818E(ebx | ebp, 0, 0, NULL);
 		}
 	}
@@ -1291,9 +1263,9 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_1 = 22872;
 					image_2 = 22876;
 					image_3 = 22874;
-					offset = (struct rct_xy16) {1, 0x1F};
-					box_size = (struct rct_xy16) {.x=0x1E, .y=1};
-					box_offset = (struct rct_xy16) {.x=1, .y=0x1F};
+					offset = (struct rct_xy16) {1, 31};
+					box_size = (struct rct_xy16) {.x=30, .y=1};
+					box_offset = (struct rct_xy16) {.x=1, .y=31};
 					break;
 
 				case 1:
@@ -1305,9 +1277,9 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_1 = 22873;
 					image_2 = 22877;
 					image_3 = 22875;
-					offset = (struct rct_xy16) {0x1F, 0};
-					box_size = (struct rct_xy16) {.x=1, .y=0x1E};
-					box_offset = (struct rct_xy16) {.x=0x1F, .y=1};
+					offset = (struct rct_xy16) {31, 0};
+					box_size = (struct rct_xy16) {.x=1, .y=30};
+					box_offset = (struct rct_xy16) {.x=31, .y=1};
 					break;
 
 				case 2:
@@ -1320,7 +1292,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_2 = 22874;
 					image_3 = 22876;
 					offset = (struct rct_xy16) {1, 0};
-					box_size = (struct rct_xy16) {0x1E, 1};
+					box_size = (struct rct_xy16) {30, 1};
 					box_offset = (struct rct_xy16) {1, 1};
 					// TODO: Fences on top tile get clipped after a while
 					break;
@@ -1335,7 +1307,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_2 = 22875;
 					image_3 = 22877;
 					offset = (struct rct_xy16) {1, 1};
-					box_size = (struct rct_xy16) {1, 0x1E};
+					box_size = (struct rct_xy16) {1, 30};
 					box_offset = (struct rct_xy16) {1, 1};
 					break;
 			}
