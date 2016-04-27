@@ -609,6 +609,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 	rct_xy8 offset = {0, 0};
 	rct_xy8 bounds = {0, 0};
 	rct_xy16 tunnelBounds = {1, 1};
+	rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
 
 	uint32 tunnelArray;
 	switch (edge) {
@@ -622,6 +623,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 			offset.x = 30;
 			bounds.y = 30;
 			tunnelBounds.x = 32;
+			tunnelTopBoundBoxOffset.y = 31;
 
 			tunnelArray = 0x9E3138;
 			break;
@@ -636,6 +638,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 			offset.y = 30;
 			bounds.x = 30;
 			tunnelBounds.y = 32;
+			tunnelTopBoundBoxOffset.x = 31;
 
 			tunnelArray = 0x009E30B6;
 			break;
@@ -743,7 +746,7 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 		}
 
 		image_id = stru_97B640[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
-		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, 0, 31, boundBoxOffsetZ, get_current_rotation());
+		sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, get_current_rotation());
 
 		curHeight += stru_97B570[tunnelType][0];
 
