@@ -47,7 +47,9 @@ enum
 	CORNER_LEFT
 };
 
-typedef struct corner_height
+typedef struct corner_height corner_height;
+
+struct corner_height
 {
 	uint8 top;
 	uint8 right;
@@ -58,7 +60,7 @@ typedef struct corner_height
 /**
  * rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
  */
-const struct corner_height corner_heights[] = {
+const corner_height corner_heights[] = {
 //   T  R  B  L
 	{0, 0, 0, 0},
 	{0, 0, 1, 0},
@@ -304,7 +306,7 @@ struct tile_descriptor
 	rct_map_element * map_element;
 	uint8 terrain;
 	uint8 slope;
-	struct corner_height corner_heights;
+	corner_height corner_heights;
 };
 
 static void paint_setup_set_segment_support_height(int flags, uint16 height, uint8 segment_flags)
@@ -494,7 +496,6 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 ter
 			return;
 	}
 
-	regs.al;
 	regs.dl = height;
 
 	// save ecx
@@ -807,7 +808,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		.y = RCT2_GLOBAL(0x9DE56C, sint16)
 	};
 
-	struct corner_height ch = corner_heights[surfaceShape];
+	corner_height ch = corner_heights[surfaceShape];
 	tile_descriptor selfDescriptor = {
 		.map_element = mapElement,
 		.slope = surfaceShape,
@@ -843,7 +844,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		tileDescriptors[i + 1].slope = ebx;
 
 		uint8 baseHeight = surfaceElement->base_height / 2;
-		struct corner_height ch = corner_heights[ebx];
+		corner_height ch = corner_heights[ebx];
 		tileDescriptors[i + 1].corner_heights.top = baseHeight + ch.top;
 		tileDescriptors[i + 1].corner_heights.right = baseHeight + ch.right;
 		tileDescriptors[i + 1].corner_heights.bottom = baseHeight + ch.bottom;
@@ -880,7 +881,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		int branch = -1;
 		if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
 			if ((mapElement->type & 0x3) == 0) {
-				if ((zoomLevel == 0)) {
+				if (zoomLevel == 0) {
 					if ((gCurrentViewportFlags & 0x1001) == 0) {
 						branch = mapElement->properties.surface.grass_length & 0x7;
 					}
