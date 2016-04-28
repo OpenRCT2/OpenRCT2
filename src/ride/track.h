@@ -573,6 +573,20 @@ enum {
 	TRACK_ELEMENT_LOCATION_IS_UNDERGROUND = 2,
 };
 
+enum {
+	TDPF_PLACE_SCENERY = 1 << 0,
+};
+
+enum {
+	PTD_OPERATION_DRAW_OUTLINES,
+	PTD_OPERATION_1,
+	PTD_OPERATION_2,
+	PTD_OPERATION_GET_PLACE_Z,
+	PTD_OPERATION_4,
+	PTD_OPERATION_GET_COST,
+	PTD_OPERATION_CLEAR_OUTLINES
+};
+
 typedef struct {
 	rct_xy_element last;
 	rct_xy_element current;
@@ -594,6 +608,8 @@ extern const rct_trackdefinition *gTrackDefinitions;
 extern rct_map_element **gTrackSavedMapElements;
 
 extern rct_track_td6 *gActiveTrackDesign;
+extern money32 gTrackDesignCost;
+extern uint8 gTrackDesignPlaceFlags;
 
 void track_load_list(ride_list_item item);
 int sub_67726A(const char *path);

@@ -425,6 +425,8 @@ bool map_large_scenery_get_origin(
 	int *outX, int *outY, int *outZ, rct_map_element** outElement
 );
 
+void map_offset_with_rotation(sint16 *x, sint16 *y, sint16 offsetX, sint16 offsetY, uint8 rotation);
+
 rct_map_element *map_get_track_element_at(int x, int y, int z);
 rct_map_element *map_get_track_element_at_of_type(int x, int y, int z, int trackType);
 rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int trackType, int sequence);

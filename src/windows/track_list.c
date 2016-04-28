@@ -413,7 +413,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		// Load in a new preview image, calculate cost variable, calculate var_06
 		draw_track_preview(td6, (uint8**)_loadedTrackDesignPreview);
 
-		td6->cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
+		td6->cost = gTrackDesignCost;
 		td6->track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 
 		_loadedTrackDesignIndex = trackIndex;

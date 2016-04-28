@@ -5494,3 +5494,25 @@ rct_map_element *map_get_track_element_at_with_direction_from_ride(int x, int y,
 
 	return NULL;
 };
+
+void map_offset_with_rotation(sint16 *x, sint16 *y, sint16 offsetX, sint16 offsetY, uint8 rotation)
+{
+	switch (rotation & 3) {
+	case MAP_ELEMENT_DIRECTION_WEST:
+		*x += offsetX;
+		*y += offsetY;
+		break;
+	case MAP_ELEMENT_DIRECTION_NORTH:
+		*x += offsetY;
+		*y -= offsetX;
+		break;
+	case MAP_ELEMENT_DIRECTION_EAST:
+		*x -= offsetX;
+		*y -= offsetY;
+		break;
+	case MAP_ELEMENT_DIRECTION_SOUTH:
+		*x -= offsetY;
+		*y += offsetX;
+		break;
+	}
+}

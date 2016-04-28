@@ -241,6 +241,8 @@ const rct_trackdefinition gTrackDefinitions_INCORRECT[] = {
 
 rct_map_element **gTrackSavedMapElements = (rct_map_element**)0x00F63674;
 rct_track_td6 *gActiveTrackDesign;
+money32 gTrackDesignCost;
+uint8 gTrackDesignPlaceFlags;
 
 static bool track_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
 static void track_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
@@ -1010,6 +1012,23 @@ void track_update_max_min_coordinates(sint16 x, sint16 y, sint16 z){
 	}
 }
 
+static void track_add_selection_tile(sint16 x, sint16 y)
+{
+	rct_xy16 *selectionTile = gMapSelectionTiles;
+	for (; selectionTile->x != -1; selectionTile++) {
+		if (selectionTile->x == x && selectionTile->y == y) {
+			return;
+		}
+		if (selectionTile + 1 >= &gMapSelectionTiles[300]) {
+			return;
+		}
+	}
+	selectionTile->x = x;
+	selectionTile->y = y;
+	selectionTile++;
+	selectionTile->x = -1;
+}
+
 /**
  *
  *  rct2: 0x006D0964
@@ -1561,7 +1580,7 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	RCT2_GLOBAL(0x00F44144, sint16) = y;
 	RCT2_GLOBAL(0x00F44146, sint16) = z;
 
-	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
+	if (RCT2_GLOBAL(0x00F440D4, uint8) == 0) {
 		gMapSelectionTiles->x = -1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
@@ -1574,83 +1593,42 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	uint8 rotation = _currentTrackPieceDirection;
 
 	rct_track_element* track = (rct_track_element*)(*track_elements);
-	for (; track->type != 0xFF; track++){
-
-		uint8 track_type = track->type;
-		if (track_type == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
-			track_type = 0xFF;
+	for (; track->type != 0xFF; track++) {
+		uint8 trackType = track->type;
+		if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
+			trackType = 0xFF;
+		}
 
 		track_update_max_min_coordinates(x, y, z);
 
-		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
-			for (const rct_preview_track* trackBlock = TrackBlocks[track_type];
-				trackBlock->index != 0xFF;
-				trackBlock++){
-				rct_xy16 tile;
-				tile.x = x;
-				tile.y = y;
-
-				switch (rotation & 3){
-				case MAP_ELEMENT_DIRECTION_WEST:
-					tile.x += trackBlock->x;
-					tile.y += trackBlock->y;
-					break;
-				case MAP_ELEMENT_DIRECTION_NORTH:
-					tile.x += trackBlock->y;
-					tile.y -= trackBlock->x;
-					break;
-				case MAP_ELEMENT_DIRECTION_EAST:
-					tile.x -= trackBlock->x;
-					tile.y -= trackBlock->y;
-					break;
-				case MAP_ELEMENT_DIRECTION_SOUTH:
-					tile.x -= trackBlock->y;
-					tile.y += trackBlock->x;
-					break;
-				}
-
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0) {
+			for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
+				rct_xy16 tile = { x, y };
+				map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
 				track_update_max_min_coordinates(tile.x, tile.y, z);
-
-				uint8 new_tile = 1;
-				rct_xy16* selectionTile = gMapSelectionTiles;
-				for (; selectionTile->x != -1; selectionTile++){
-					if (selectionTile->x == tile.x && selectionTile->y == tile.y){
-						new_tile = 0;
-						break;
-					}
-					if (selectionTile + 1 >= &gMapSelectionTiles[300]){
-						new_tile = 0;
-						break;
-					}
-				}
-				if (new_tile){
-					selectionTile->x = tile.x;
-					selectionTile->y = tile.y;
-					selectionTile++;
-					selectionTile->x = -1;
-				}
+				track_add_selection_tile(tile.x, tile.y);
 			}
 		}
 
-		if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
-			const rct_track_coordinates* track_coordinates = &TrackCoordinates[track_type];
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 6) {
+			const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
 
 			//di
 			int temp_z = z;
 			temp_z -= track_coordinates->z_begin;
-			const rct_preview_track* trackBlock = TrackBlocks[track_type];
+			const rct_preview_track* trackBlock = TrackBlocks[trackType];
 
 			temp_z += trackBlock->z;
 			// rotation in bh
 			// track_type in dl
-			game_do_command(x, 0x69 | ((rotation & 3) << 8), y, track_type, GAME_COMMAND_REMOVE_TRACK, temp_z, 0);
+			game_do_command(x, 0x69 | ((rotation & 3) << 8), y, trackType, GAME_COMMAND_REMOVE_TRACK, temp_z, 0);
 		}
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 1 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 2 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 4 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 5){
-			const rct_track_coordinates* track_coordinates = &TrackCoordinates[track_type];
+			const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
 
 			//di
 			int temp_z = z;
@@ -1660,10 +1638,9 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 				(((track->flags >> 4) & 0x3) << 24) |
 				(temp_z & 0xFFFF);
 
-			int edx = _currentRideIndex | (track_type << 8);
-
-			if (track->flags & 0x80)edx |= 0x10000;
-			if (track->flags & 0x40)edx |= 0x20000;
+			int edx = _currentRideIndex | (trackType << 8);
+			if (track->flags & 0x80) edx |= 0x10000;
+			if (track->flags & 0x40) edx |= 0x20000;
 
 			uint8 bl = 1;
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
@@ -1680,103 +1657,48 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 			}
 		}
 
-		if (RCT2_GLOBAL(0x00F440D4, uint8) == 3){
-			int temp_z = z - TrackCoordinates[track_type].z_begin;
-			for (const rct_preview_track* trackBlock = TrackBlocks[track_type];
-				trackBlock->index != 0xFF;
-				trackBlock++){
-				rct_xy16 tile;
-				tile.x = x;
-				tile.y = y;
-
-				switch (rotation & 3){
-				case MAP_ELEMENT_DIRECTION_WEST:
-					tile.x += trackBlock->x;
-					tile.y += trackBlock->y;
-					break;
-				case MAP_ELEMENT_DIRECTION_NORTH:
-					tile.x += trackBlock->y;
-					tile.y -= trackBlock->x;
-					break;
-				case MAP_ELEMENT_DIRECTION_EAST:
-					tile.x -= trackBlock->x;
-					tile.y -= trackBlock->y;
-					break;
-				case MAP_ELEMENT_DIRECTION_SOUTH:
-					tile.x -= trackBlock->y;
-					tile.y += trackBlock->x;
-					break;
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 3) {
+			int tempZ = z - TrackCoordinates[trackType].z_begin;
+			for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
+				rct_xy16 tile = { x, y };
+				map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
+				if (tile.x < 0 || tile.y < 0 || tile.x >= (256 * 32) || tile.y >= (256 * 32)) {
+					continue;
 				}
 
-				if (tile.x > 0x1FFF)
-					continue;
-
-				if (tile.y > 0x1FFF)
-					continue;
-
-				if (tile.x < 0)
-					continue;
-
-				if (tile.y < 0)
-					continue;
-
-				rct_map_element* map_element = map_get_surface_element_at(tile.x / 32, tile.y / 32);
-
-				if (map_element == NULL)
+				rct_map_element *mapElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
+				if (mapElement == NULL) {
 					return 0;
+				}
 
-				int height = map_element->base_height * 8;
-				if (map_element->properties.surface.slope & 0xF){
+				int height = mapElement->base_height * 8;
+				if (mapElement->properties.surface.slope & 0x0F) {
 					height += 16;
-					if (map_element->properties.surface.slope & 0x10){
+					if (mapElement->properties.surface.slope & 0x10) {
 						height += 16;
 					}
 				}
 
-				uint8 water_height = 16 * map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
-				if (water_height){
-					if (water_height > height){
-						height = water_height;
-					}
+				uint8 water_height = 16 * mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+				if (water_height > 0 && water_height > height) {
+					height = water_height;
 				}
-				int height_diff = temp_z + RCT2_GLOBAL(0x00F440D5, sint16) + trackBlock->z - height;
-
-				if (height_diff < 0){
-					RCT2_GLOBAL(0x00F440D5, sint16) -= height_diff;
+				int heightDifference = tempZ + RCT2_GLOBAL(0x00F440D5, sint16) + trackBlock->z - height;
+				if (heightDifference < 0) {
+					RCT2_GLOBAL(0x00F440D5, sint16) -= heightDifference;
 				}
 			}
 		}
 
-		const rct_track_coordinates* track_coordinates = &TrackCoordinates[track_type];
-		rotation &= 3;
-		switch (rotation & 3){
-		case 0:
-			x += track_coordinates->x;
-			y += track_coordinates->y;
-			break;
-		case 1:
-			x += track_coordinates->y;
-			y -= track_coordinates->x;
-			break;
-		case 2:
-			x -= track_coordinates->x;
-			y -= track_coordinates->y;
-			break;
-		case 3:
-			x -= track_coordinates->y;
-			y += track_coordinates->x;
-			break;
-		}
-
+		const rct_track_coordinates *track_coordinates = &TrackCoordinates[trackType];
+		map_offset_with_rotation(&x, &y, track_coordinates->x, track_coordinates->y, rotation);
 		z -= track_coordinates->z_begin;
 		z += track_coordinates->z_end;
 
-		rotation += track_coordinates->rotation_end - track_coordinates->rotation_begin;
-		rotation &= 3;
-		if (track_coordinates->rotation_end & (1 << 2))
+		rotation = (rotation + track_coordinates->rotation_end - track_coordinates->rotation_begin) & 3;
+		if (track_coordinates->rotation_end & (1 << 2)) {
 			rotation |= (1 << 2);
-
-		if (!(rotation & (1 << 2))){
+		} else {
 			x += TileDirectionDelta[rotation].x;
 			y += TileDirectionDelta[rotation].y;
 		}
@@ -1787,128 +1709,81 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	*track_elements = (uint8*)track + 1;
 	rct_track_entrance* entrance = (rct_track_entrance*)(*track_elements);
 	for (; entrance->z != -1; entrance++){
-		rotation = _currentTrackPieceDirection;
+		rotation = _currentTrackPieceDirection & 3;
 		x = entrance->x;
 		y = entrance->y;
-
-		switch (rotation & 3){
-		case MAP_ELEMENT_DIRECTION_WEST:
-			break;
-		case MAP_ELEMENT_DIRECTION_NORTH:{
-			int temp_x = -x;
-			x = y;
-			y = temp_x;
-		}
-			break;
-		case MAP_ELEMENT_DIRECTION_EAST:
-			x = -x;
-			y = -y;
-			break;
-		case MAP_ELEMENT_DIRECTION_SOUTH:{
-			int temp_y = -y;
-			y = x;
-			x = temp_y;
-		}
-			break;
-		}
-
+		rotate_map_coordinates(&x, &y, rotation);
 		x += RCT2_GLOBAL(0x00F44142, sint16);
 		y += RCT2_GLOBAL(0x00F44144, sint16);
 
-
 		track_update_max_min_coordinates(x, y, z);
 
-		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0){
-			uint8 new_tile = 1;
-			rct_xy16* selectionTile = gMapSelectionTiles;
-			for (; selectionTile->x != -1; selectionTile++){
-				if (selectionTile->x == x && selectionTile->y == y){
-					new_tile = 0;
-					break;
-				}
-				if (selectionTile + 1 >= &gMapSelectionTiles[300]){
-					new_tile = 0;
-					break;
-				}
-			}
-			if (new_tile){
-				selectionTile->x = x;
-				selectionTile->y = y;
-				selectionTile++;
-				selectionTile->x = -1;
-			}
+		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0) {
+			track_add_selection_tile(x, y);
 		}
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 1 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 2 ||
 			RCT2_GLOBAL(0x00F440D4, uint8) == 4 ||
-			RCT2_GLOBAL(0x00F440D4, uint8) == 5){
-
-			//bh
-			rotation += entrance->direction;
-			rotation &= 3;
-
-			//dh rideIndex is dl
-			uint8 is_exit = 0;
-			if (entrance->direction & (1 << 7)){
-				is_exit = 1;
+			RCT2_GLOBAL(0x00F440D4, uint8) == 5
+		) {
+			rotation = (rotation + entrance->direction) & 3;
+			uint8 isExit = 0;
+			if (entrance->direction & (1 << 7)) {
+				isExit = 1;
 			}
 
 			if (RCT2_GLOBAL(0x00F440D4, uint8) != 1){
-				rct_xy16 tile;
-				tile.x = x + TileDirectionDelta[rotation].x;
-				tile.y = y + TileDirectionDelta[rotation].y;
-
-				rct_map_element* map_element = map_get_first_element_at(tile.x / 32, tile.y / 32);
+				rct_xy16 tile = {
+					x + TileDirectionDelta[rotation].x,
+					y + TileDirectionDelta[rotation].y
+				};
+				rct_map_element* map_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
 				z = RCT2_GLOBAL(0x00F44146, sint16) / 8;
-
 				z += (entrance->z == (sint8)0x80) ? -1 : entrance->z;
 
-				do{
-					if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
-						continue;
-					if (map_element->base_height != z)
-						continue;
+				do {
+					if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK) continue;
+					if (map_element->base_height != z) continue;
 
-					int di = (map_element->properties.track.sequence >> 4) & 0x7;
+					int di = (map_element->properties.track.sequence >> 4) & 0x07;
 					uint8 bl = 1;
-					if (RCT2_GLOBAL(0x00F440D4, uint8) == 5)bl = 41;
-					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4)bl = 105;
-					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1)bl = 0;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 5) bl = 41;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 4) bl = 105;
+					if (RCT2_GLOBAL(0x00F440D4, uint8) == 1) bl = 0;
 
 					gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-					money32 cost = game_do_command(x, bl | (rotation << 8), y, rideIndex | (is_exit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, di, 0);
+					money32 cost = game_do_command(x, bl | (rotation << 8), y, rideIndex | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, di, 0);
 					RCT2_GLOBAL(0x00F440D5, money32) += cost;
 
-					if (cost == MONEY32_UNDEFINED){
+					if (cost == MONEY32_UNDEFINED) {
 						RCT2_GLOBAL(0x00F440D5, money32) = cost;
 						return 0;
 					}
 					RCT2_GLOBAL(0x00F4414E, uint8) |= (1 << 0);
 					break;
 				} while (!map_element_is_last_for_tile(map_element++));
-			}
-			else{
+			} else {
 				//dl
 				z = (entrance->z == (sint8)0x80) ? -1 : entrance->z;
 				z *= 8;
 				z += RCT2_GLOBAL(0x00F44146, sint16);
-				z /= 16;
+				z >>= 4;
 
 				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-				money32 cost = game_do_command(x, 0 | (rotation << 8), y, z | (is_exit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
-				RCT2_GLOBAL(0x00F440D5, money32) += cost;
-
-				if (cost == MONEY32_UNDEFINED){
+				money32 cost = game_do_command(x, 0 | (rotation << 8), y, z | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
+				if (cost == MONEY32_UNDEFINED) {
 					RCT2_GLOBAL(0x00F440D5, money32) = cost;
 					return 0;
+				} else {
+					RCT2_GLOBAL(0x00F440D5, money32) += cost;
+					RCT2_GLOBAL(0x00F4414E, uint8) |= (1 << 0);
 				}
-				RCT2_GLOBAL(0x00F4414E, uint8) |= (1 << 0);
 			}
 		}
 	}
 
-	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6){
+	if (RCT2_GLOBAL(0x00F440D4, uint8) == 6) {
 		sub_6CB945(_currentRideIndex);
 		rct_ride* ride = get_ride(_currentRideIndex);
 		user_string_free(ride->name);
@@ -1916,7 +1791,6 @@ int track_place_ride(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8** trac
 	}
 
 	*track_elements = ((uint8*)(entrance)) + 1;
-
 	return 1;
 }
 
@@ -1986,53 +1860,62 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 	return RCT2_GLOBAL(0x00F440D5, money32);
 }
 
+money32 ride_create_command(int type, int subType, int flags, uint8 *outRideIndex, uint8 *outRideColour)
+{
+	int eax = 0;
+	int ebx = flags;
+	int ecx = 0;
+	int edx = type | (subType << 8);
+	int esi = 0;
+	int edi = 0;
+	int ebp = 0;
+	money32 cost = game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*outRideIndex = edi & 0xFF;
+	*outRideColour = eax;
+	return cost;
+}
+
 /**
  *
  *  rct2: 0x006D2189
  * ebx = ride_id
  * cost = edi
  */
-int sub_6D2189(rct_track_td6 *td6, int* cost, uint8* ride_id)
+bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId)
 {
-	RCT2_GLOBAL(0xF44151, uint8) = 0;
+	RCT2_GLOBAL(0x00F44151, uint8) = 0;
+
 	uint8 entry_type, entry_index;
-
-	if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
+	if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)) {
 		entry_index = 0xFF;
+	}
 
-	int eax = 0, ebx, ecx = 0, edx, esi, edi = 0, ebp = 0;
-	ebx = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-	edx = td6->type | (entry_index << 8);
-	esi = GAME_COMMAND_CREATE_RIDE;
+	uint8 rideIndex;
+	uint8 colour;
+	uint8 rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+	if (ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex, &colour) == MONEY32_UNDEFINED) {
+		return false;
+	}
 
-	if (MONEY32_UNDEFINED == game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp)) return 1;
-
-	// bh
-	*ride_id = edi & 0xFF;
-
-	rct_ride* ride = get_ride(*ride_id);
-
-	const utf8* ride_name = RCT2_ADDRESS(0x9E3504, const utf8);
+	rct_ride *ride = get_ride(rideIndex);
+	const utf8 *ride_name = RCT2_ADDRESS(0x009E3504, const utf8);
 	rct_string_id new_ride_name = user_string_allocate(132, ride_name);
-
-	if (new_ride_name){
+	if (new_ride_name != 0) {
 		rct_string_id old_name = ride->name;
 		ride->name = new_ride_name;
 		user_string_free(old_name);
 	}
 
 	uint8 version = td6->version_and_colour_scheme >> 2;
-
-	if (version == 2){
+	if (version == 2) {
 		ride->entrance_style = td6->entrance_style;
 	}
 
-	if (version != 0){
+	if (version != 0) {
 		memcpy(&ride->track_colour_main, &td6->track_spine_colour, 4);
 		memcpy(&ride->track_colour_additional, &td6->track_rail_colour, 4);
 		memcpy(&ride->track_colour_supports, &td6->track_support_colour, 4);
-	}
-	else{
+	} else {
 		memset(&ride->track_colour_main, td6->track_spine_colour_rct1, 4);
 		memset(&ride->track_colour_additional, td6->track_rail_colour_rct1, 4);
 		memset(&ride->track_colour_supports, td6->track_support_colour_rct1, 4);
@@ -2042,43 +1925,42 @@ int sub_6D2189(rct_track_td6 *td6, int* cost, uint8* ride_id)
 	uint8 backup_rotation = _currentTrackPieceDirection;
 	uint32 backup_park_flags = gParkFlags;
 	gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-	int map_size = gMapSize << 4;
+	int mapSize = gMapSize << 4;
 
 	_currentTrackPieceDirection = 0;
-	int z = sub_6D01B3(td6, 3, 0, map_size, map_size, 16);
+	int z = sub_6D01B3(td6, PTD_OPERATION_GET_PLACE_Z, 0, mapSize, mapSize, 16);
 
-	if (RCT2_GLOBAL(0xF4414E, uint8) & 4){
-		RCT2_GLOBAL(0xF44151, uint8) |= 2;
+	if (RCT2_GLOBAL(0x00F4414E, uint8) & 4){
+		RCT2_GLOBAL(0x00F44151, uint8) |= 2;
 	}
-	//dx
+	
 	z += 16 - RCT2_GLOBAL(0xF44129, uint16);
 
-	int bl = 5;
-	if (RCT2_GLOBAL(0xF4414E, uint8) & 2){
-		bl |= 0x80;
-		RCT2_GLOBAL(0xF44151, uint8) |= 1;
+	int operation = PTD_OPERATION_GET_COST;
+	if (RCT2_GLOBAL(0x00F4414E, uint8) & 2) {
+		operation |= 0x80;
+		RCT2_GLOBAL(0x00F44151, uint8) |= 1;
 	}
-	edi = sub_6D01B3(td6, bl, *ride_id, map_size, map_size, z);
+
+	money32 resultCost = sub_6D01B3(td6, operation, rideIndex, mapSize, mapSize, z);
 	gParkFlags = backup_park_flags;
 
-	if (edi != MONEY32_UNDEFINED){
-
+	if (resultCost != MONEY32_UNDEFINED) {
 		if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)){
-			RCT2_GLOBAL(0xF44151, uint8) |= 4;
+			RCT2_GLOBAL(0x00F44151, uint8) |= 4;
 		}
 
 		_currentTrackPieceDirection = backup_rotation;
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
-		*cost = edi;
-		return 1;
-	}
-	else{
-
+		*cost = resultCost;
+		*rideId = rideIndex;
+		return true;
+	} else {
 		_currentTrackPieceDirection = backup_rotation;
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
-		return 0;
+		return false;
 	}
 }
 
@@ -2107,16 +1989,14 @@ void draw_track_preview(rct_track_td6 *td6, uint8** preview)
 		load_track_scenery_objects();
 	}
 
-	int cost;
+	money32 cost;
 	uint8 ride_id;
-
 	if (!sub_6D2189(td6, &cost, &ride_id)) {
 		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
 		reload_map_backup();
 		return;
 	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32) = cost;
+	gTrackDesignCost = cost;
 
 	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
 	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
@@ -2274,7 +2154,7 @@ rct_track_design *track_get_info(int index, uint8** preview)
 		// Load in a new preview image, calculate cost variable, calculate var_06
 		draw_track_preview(&trackDesign->track_td6, (uint8**)trackDesign->preview);
 
-		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
+		trackDesign->track_td6.cost = gTrackDesignCost;
 		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 	}
 
@@ -2629,7 +2509,7 @@ int maze_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* track_
 
 	// Save global vars as they are still used by scenery
 	sint16 start_z = RCT2_GLOBAL(0x00F44146, sint16);
-	sub_6D01B3(track_design, 0, 0, 4096, 4096, 0);
+	sub_6D01B3(track_design, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
 	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
 	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
 	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
@@ -2888,7 +2768,7 @@ int tracked_ride_to_td6(uint8 rideIndex, rct_track_td6* track_design, uint8* tra
 
 	RCT2_GLOBAL(0x00F44058, uint8*) = track_elements;
 
-	sub_6D01B3(track_design, 0, 0, 4096, 4096, 0);
+	sub_6D01B3(track_design, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
 
 	// Resave global vars for scenery reasons.
 	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
@@ -3166,7 +3046,7 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 		// Load in a new preview image, calculate cost variable, calculate var_06
 		draw_track_preview(&trackDesign->track_td6, (uint8**)trackDesign->preview);
 
-		trackDesign->track_td6.cost = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_COST, money32);
+		trackDesign->track_td6.cost = gTrackDesignCost;
 		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 	}
 
@@ -3302,19 +3182,18 @@ void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int
 	money32 cost = 0;
 	if (!(flags & GAME_COMMAND_FLAG_APPLY)){
 		RCT2_GLOBAL(0x00F44150, uint8) = 0;
-		cost = sub_6D01B3(track_design, 1, rideIndex, x, y, z);
+		cost = sub_6D01B3(track_design, PTD_OPERATION_1, rideIndex, x, y, z);
 		if (RCT2_GLOBAL(0x00F4414E, uint8) & (1 << 1)){
 			RCT2_GLOBAL(0x00F44150, uint8) |= 1 << 7;
-			cost = sub_6D01B3(track_design, 0x81, rideIndex, x, y, z);
+			cost = sub_6D01B3(track_design, 0x80 | PTD_OPERATION_1, rideIndex, x, y, z);
 		}
 	}
 	else{
-		uint8 bl = 0;
-		if (flags & GAME_COMMAND_FLAG_GHOST){
-			bl = 4;
-		}
-		else{
-			bl = 2;
+		uint8 bl;
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			bl = PTD_OPERATION_4;
+		} else {
+			bl = PTD_OPERATION_2;
 		}
 		bl |= RCT2_GLOBAL(0x00F44150, uint8);
 		cost = sub_6D01B3(track_design, bl, rideIndex, x, y, z);
