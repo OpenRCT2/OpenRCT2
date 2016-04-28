@@ -217,12 +217,12 @@ static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *
 	if (widgetIndex != WIDX_RENAME || text == NULL)
 		return;
 
-	if (track_rename(text)) {
-		window_close_by_class(WC_TRACK_DELETE_PROMPT);
-		window_close(w);
-	} else {
-		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, gGameCommandErrorText);
-	}
+	// if (track_rename(text)) {
+	// 	window_close_by_class(WC_TRACK_DELETE_PROMPT);
+	// 	window_close(w);
+	// } else {
+	// 	window_error_open(STR_CANT_RENAME_TRACK_DESIGN, gGameCommandErrorText);
+	// }
 }
 
 static void window_track_manage_invalidate(rct_window *w)

@@ -123,7 +123,7 @@ void window_track_list_open(ride_list_item item)
 		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*) = mem;
-	reset_track_list_cache();
+	// reset_track_list_cache();
 
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		x = gScreenWidth / 2 - 300;
@@ -191,21 +191,21 @@ static void window_track_list_select(rct_window *w, int index)
 		return;
 	}
 
-	if (!load_track_design(tdRef->path)) {
-		w->track_list.var_480 = 0xFFFF;
-		window_invalidate(w);
-		return;
-	}
+	// if (!load_track_design(tdRef->path)) {
+	// 	w->track_list.var_480 = 0xFFFF;
+	// 	window_invalidate(w);
+	// 	return;
+	// }
 
-	rct_track_design *trackDesign = track_get_info(index, NULL);
-	if (trackDesign != NULL) {
-		if (trackDesign->track_td6.track_flags & 4) {
-			window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
-		}
-
-		window_close(w);
-		window_track_place_open();
-	}
+	// rct_track_design *trackDesign = track_get_info(index, NULL);
+	// if (trackDesign != NULL) {
+	// 	if (trackDesign->track_td6.track_flags & 4) {
+	// 		window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
+	// 	}
+	// 
+	// 	window_close(w);
+	// 	window_track_place_open();
+	// }
 }
 
 static int window_track_list_get_list_item_index_from_position(int x, int y)
@@ -261,7 +261,7 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TOGGLE_SCENERY:
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) ^= 1;
-		reset_track_list_cache();
+		// reset_track_list_cache();
 		window_invalidate(w);
 		break;
 	case WIDX_BACK:

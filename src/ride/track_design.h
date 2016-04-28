@@ -111,26 +111,17 @@ extern rct_track_td6 *gActiveTrackDesign;
 extern money32 gTrackDesignCost;
 extern uint8 gTrackDesignPlaceFlags;
 
-void track_load_list(ride_list_item item);
-int sub_67726A(const char *path);
-rct_track_design *track_get_info(int index, uint8** preview);
+// void track_load_list(ride_list_item item);
+// rct_track_design *track_get_info(int index, uint8** preview);
 rct_track_design *temp_track_get_info(char* path, uint8** preview);
-rct_track_td6* load_track_design(const char *path);
-int track_rename(const char *text);
+// int track_rename(const char *text);
 int track_delete();
 void track_mirror();
-void reset_track_list_cache();
 bool track_design_open(rct_track_td6 *td6, const utf8 *path);
 void draw_track_preview(rct_track_td6 *td6, uint8** preview);
 
 int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z);
-int save_track_design(uint8 rideIndex);
 int install_track(char* source_path, char* dest_name);
-void window_track_list_format_name(utf8 *dst, const utf8 *src, int colour, bool quotes);
-
-void track_save_reset_scenery();
-void track_save_select_nearby_scenery(int rideIndex);
-void track_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 
 void track_design_index_create();
 size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rideType, const char *entry);
@@ -138,5 +129,13 @@ utf8 *track_design_get_name_from_path(const utf8 *path);
 
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
+///////////////////////////////////////////////////////////////////////////////
+// Track design saving
+///////////////////////////////////////////////////////////////////////////////
+void track_design_save_reset_scenery();
+void track_design_save_select_nearby_scenery(int rideIndex);
+void track_design_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
+bool track_design_save(uint8 rideIndex);
 
 #endif

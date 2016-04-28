@@ -118,7 +118,7 @@ void window_install_track_open(const char* path)
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*) = mem;
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
 	_currentTrackPieceDirection = 2;
-	reset_track_list_cache();
+	// reset_track_list_cache();
 
 	x = gScreenWidth / 2 - 201;
 	y = max(28, gScreenHeight / 2 - 200);
@@ -170,13 +170,13 @@ static void window_install_track_select(rct_window *w, int index)
 	trackDesignItem = trackDesignList + (index * 128);
 	RCT2_GLOBAL(0x00F4403C, utf8*) = trackDesignItem;
 
-	window_track_list_format_name(
-		(char*)0x009BC313,
-		trackDesignItem,
-		gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ?
-		0 :
-		FORMAT_WHITE,
-		1);
+	// window_track_list_format_name(
+	// 	(char*)0x009BC313,
+	// 	trackDesignItem,
+	// 	gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ?
+	// 	0 :
+	// 	FORMAT_WHITE,
+	// 	1);
 
 	char track_path[MAX_PATH] = { 0 };
 	substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
@@ -186,16 +186,16 @@ static void window_install_track_select(rct_window *w, int index)
 		return;
 	}
 
-	if (!load_track_design(track_path)) {
-		w->track_list.var_480 = 0xFFFF;
-		window_invalidate(w);
-		return;
-	}
+	// if (!load_track_design(track_path)) {
+	// 	w->track_list.var_480 = 0xFFFF;
+	// 	window_invalidate(w);
+	// 	return;
+	// }
 
-	trackDesign = track_get_info(index, NULL);
-	if (trackDesign == NULL) return;
-	if (trackDesign->track_td6.track_flags & 4)
-		window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, -1);
+	// trackDesign = track_get_info(index, NULL);
+	// if (trackDesign == NULL) return;
+	// if (trackDesign->track_td6.track_flags & 4)
+	// 	window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, -1);
 
 	window_close(w);
 	window_track_place_open();
@@ -230,7 +230,7 @@ static void window_install_track_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TOGGLE_SCENERY:
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) ^= 1;
-		reset_track_list_cache();
+		// reset_track_list_cache();
 		window_invalidate(w);
 		break;
 	case WIDX_INSTALL:
@@ -244,7 +244,7 @@ static void window_install_track_mouseup(rct_window *w, int widgetIndex)
 		}
 		else{
 			// Copy the track name into the string buffer.
-			window_track_list_format_name(RCT2_ADDRESS(0x009BC677, char), track_dest_name, 0, 0);
+			// window_track_list_format_name(RCT2_ADDRESS(0x009BC677, char), track_dest_name, 0, 0);
 			window_text_input_open(w, WIDX_INSTALL, 3383, 3384, 3165, 0, 255);
 		}
 		break;
@@ -334,7 +334,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Track design name
-	window_track_list_format_name((char*)0x009BC677, (char*)0x009E3504, FORMAT_WINDOW_COLOUR_1, 1);
+	// window_track_list_format_name((char*)0x009BC677, (char*)0x009E3504, FORMAT_WINDOW_COLOUR_1, 1);
 	gfx_draw_string_centred_clipped(dpi, 3165, NULL, 0, x, y, 368);
 
 	// Information

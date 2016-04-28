@@ -4663,7 +4663,7 @@ static void setup_scenery_selection(rct_window* w){
  */
 static void window_ride_measurements_design_reset()
 {
-	track_save_reset_scenery();
+	track_design_save_reset_scenery();
 }
 
 /**
@@ -4672,7 +4672,7 @@ static void window_ride_measurements_design_reset()
  */
 static void window_ride_measurements_design_select_nearby_scenery()
 {
-	track_save_select_nearby_scenery(RCT2_GLOBAL(0x00F64DE8, uint8));
+	track_design_save_select_nearby_scenery(RCT2_GLOBAL(0x00F64DE8, uint8));
 }
 
 /**
@@ -4691,7 +4691,7 @@ static void window_ride_measurements_design_cancel()
  */
 static void window_ride_measurements_design_save(rct_window *w)
 {
-	if (save_track_design((uint8)w->number) == 0) return;
+	if (track_design_save((uint8)w->number) == 0) return;
 
 	window_ride_measurements_design_cancel();
 }
@@ -4791,7 +4791,7 @@ static void window_ride_measurements_dropdown(rct_window *w, int widgetIndex, in
 		dropdownIndex = gDropdownHighlightedIndex;
 
 	if (dropdownIndex == 0)
-		save_track_design((uint8)w->number);
+		track_design_save((uint8)w->number);
 	else
 		setup_scenery_selection(w);
 }
@@ -4823,7 +4823,7 @@ static void window_ride_measurements_tooldown(rct_window *w, int widgetIndex, in
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-		track_save_toggle_map_element(interactionType, mapX, mapY, mapElement);
+		track_design_save_toggle_map_element(interactionType, mapX, mapY, mapElement);
 		break;
 	}
 }

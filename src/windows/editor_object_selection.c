@@ -1962,7 +1962,7 @@ static void window_editor_object_selection_manage_tracks()
 	RCT2_GLOBAL(0xF44158, uint8) = ride_type;
 
 	ride_list_item item = { ride_type, entry_index };
-	track_load_list(item);
+	// track_load_list(item);
 	window_track_list_open(item);
 }
 

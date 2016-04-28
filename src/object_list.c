@@ -337,7 +337,7 @@ void object_list_load()
 	ride_list_item ride_list;
 	ride_list.entry_index = 0xFC;
 	ride_list.type = 0xFC;
-	track_load_list(ride_list);
+	// track_load_list(ride_list);
 
 	object_list_examine();
 }

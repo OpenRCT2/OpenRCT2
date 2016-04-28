@@ -842,7 +842,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 
 static int get_num_track_designs(ride_list_item item)
 {
-	track_load_list(item);
+	// track_load_list(item);
 
 	char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
 	int count = 0;
@@ -943,7 +943,7 @@ static void window_new_ride_select(rct_window *w)
 #endif
 
 	if (allowTrackDesigns && ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-		track_load_list(item);
+		// track_load_list(item);
 
 		char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
 		if (*trackDesignList != 0) {
