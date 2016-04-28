@@ -157,14 +157,15 @@ int rct2_init()
 	gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 	// config_load();
 
+	gfx_load_g1();
+	gfx_load_g2();
+
 	object_list_load();
 	scenario_load_list();
 
 	ride_list_item item = { 253, 0 };
 	track_load_list(item);
 
-	gfx_load_g1();
-	gfx_load_g2();
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {
 		platform_init();
