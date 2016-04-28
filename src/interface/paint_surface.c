@@ -405,8 +405,6 @@ void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self,
 		return;
 	}
 
-	registers regs;
-
 	uint8 dh, cl;
 	switch(edge) {
 		case EDGE_BOTTOMLEFT:
@@ -874,8 +872,6 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		sub_98197C(1577, 0, 0, 1, 30, 0, height, 31, 1, height, get_current_rotation());
 		sub_98197C(1578, 0, 0, 30, 1, 39, height, 1, -2, height - 40, get_current_rotation());
 	} else {
-		registers regs;
-
 		bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
 
 		int branch = -1;
@@ -1226,7 +1222,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 
 			int bit_1, bit_8, bit_4, bit_2;
-			rct_xy16 offset, box_offset, box_size;
+			rct_xy8 offset;
+			rct_xy16 box_offset, box_size;
 			uint32 image_1, image_2, image_3;
 			switch (i) {
 				case 0:
@@ -1238,7 +1235,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_1 = 22872;
 					image_2 = 22876;
 					image_3 = 22874;
-					offset = (struct rct_xy16) {1, 31};
+					offset = (rct_xy8) {1, 31};
 					box_size = (struct rct_xy16) {.x=30, .y=1};
 					box_offset = (struct rct_xy16) {.x=1, .y=31};
 					break;
@@ -1252,7 +1249,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_1 = 22873;
 					image_2 = 22877;
 					image_3 = 22875;
-					offset = (struct rct_xy16) {31, 0};
+					offset = (rct_xy8) {31, 0};
 					box_size = (struct rct_xy16) {.x=1, .y=30};
 					box_offset = (struct rct_xy16) {.x=31, .y=1};
 					break;
@@ -1266,7 +1263,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_1 = 22872;
 					image_2 = 22874;
 					image_3 = 22876;
-					offset = (struct rct_xy16) {1, 0};
+					offset = (rct_xy8) {1, 0};
 					box_size = (struct rct_xy16) {30, 1};
 					box_offset = (struct rct_xy16) {1, 1};
 					// TODO: Fences on top tile get clipped after a while
@@ -1281,7 +1278,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 					image_1 = 22873;
 					image_2 = 22875;
 					image_3 = 22877;
-					offset = (struct rct_xy16) {1, 1};
+					offset = (rct_xy8) {1, 1};
 					box_size = (struct rct_xy16) {1, 30};
 					box_offset = (struct rct_xy16) {1, 1};
 					break;
@@ -1323,7 +1320,6 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 			sub_98197C(image_id, offset.x, offset.y, box_size.x, box_size.y, 9, local_height, box_offset.x, box_offset.y, local_height + 1, get_current_rotation());
 		}
-
 	}
 
 	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
