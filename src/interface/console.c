@@ -153,7 +153,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 	}
 
 	// Background
-	gfx_fill_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, 10);
+	gfx_fill_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, 0x2000000 | 57);
 
 	int x = _consoleLeft + 4;
 	int y = _consoleTop + 4;
