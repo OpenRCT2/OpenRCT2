@@ -138,6 +138,11 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 			}
 		}
 	}
+
+	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0) {
+		chunk = object_load(objectType, chunk, groupIndex, chunkSize);
+	}
+
 	chunk_list[groupIndex] = chunk;
 
 	rct_object_entry_extended* extended_entry = &object_entry_groups[objectType].entries[groupIndex];
@@ -147,9 +152,6 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	gLastLoadedObjectChunkData = chunk;
 
-	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0) {
-		object_load(objectType, chunk, groupIndex);
-	}
 	return 1;
 }
 
@@ -485,10 +487,25 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 	return image_start_no;
 }
 
-typedef bool (*object_load_func)(void *objectEntry, uint32 entryIndex);
-typedef void (*object_unload_func)(void *objectEntry);
-typedef bool (*object_test_func)(void *objectEntry);
-typedef void (*object_paint_func)(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
+/**
+ * object_load_func will receive the struct as it is stored in a file, this
+ * means 32bit pointers. On non-32bit platforms it's supposed to upconvert
+ * structure to native pointer types and return pointer to newly allocated
+ * space. It should not be the same pointer as input.
+ *
+ * object_unload_func will receive a pointer to the structure created with
+ * object_load_func, i.e. with native pointer types
+ *
+ * object_test_func will receive a pointer to the struct as it is stored in a
+ * file.
+ *
+ * object_paint_func and object_paint_func will receive structs with native
+ * pointer types.
+ */
+typedef uint8* (*object_load_func)(void *objectEntry, uint32 entryIndex, int *chunkSize);
+typedef void   (*object_unload_func)(void *objectEntry);
+typedef bool   (*object_test_func)(void *objectEntry);
+typedef void   (*object_paint_func)(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 typedef rct_string_id (*object_desc_func)(void *objectEntry);
 
 /**
@@ -506,12 +523,115 @@ typedef struct {
 // Ride (rct2: 0x006E6E2A)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
+/**
+ * Ride type vehicle structure.
+ * size: 0x65
+ */
+typedef struct {
+	uint16 rotation_frame_mask;		// 0x00 , 0x1A
+	uint8 var_02;					// 0x02 , 0x1C
+	uint8 var_03;					// 0x03 , 0x1D
+	uint32 spacing;					// 0x04 , 0x1E
+	uint16 car_friction;			// 0x08 , 0x22
+	sint8 tab_height;				// 0x0A , 0x24
+	uint8 num_seats;				// 0x0B , 0x25
+	uint16 sprite_flags;			// 0x0C , 0x26
+	uint8 sprite_width;				// 0x0E , 0x28
+	uint8 sprite_height_negative;	// 0x0F , 0x29
+	uint8 sprite_height_positive;	// 0x10 , 0x2A
+	uint8 var_11;					// 0x11 , 0x2B
+	uint16 flags_a;					// 0x12 , 0x2C
+	uint16 flags_b;					// 0x14 , 0x2E
+	uint16 var_16;					// 0x16 , 0x30
+	uint32 base_image_id;			// 0x18 , 0x32
+	uint32 var_1C;					// 0x1C , 0x36
+	uint32 var_20;					// 0x20 , 0x3A
+	uint32 var_24;					// 0x24 , 0x3E
+	uint32 var_28;					// 0x28 , 0x42
+	uint32 var_2C;					// 0x2C , 0x46
+	uint32 var_30;					// 0x30 , 0x4A
+	uint32 var_34;					// 0x34 , 0x4E
+	uint32 var_38;					// 0x38 , 0x52
+	uint32 var_3C;					// 0x3C , 0x56
+	uint32 var_40;					// 0x40 , 0x5A
+	uint32 var_44;					// 0x44 , 0x5E
+	uint32 var_48;					// 0x48 , 0x62
+	uint32 var_4C;					// 0x4C , 0x66
+	uint32 no_vehicle_images;		// 0x50 , 0x6A
+	uint8 no_seating_rows;			// 0x54 , 0x6E
+	uint8 spinning_inertia;			// 0x55 , 0x6F
+	uint8 spinning_friction;		// 0x56 , 0x70
+	uint8 friction_sound_id;		// 0x57 , 0x71
+	uint8 var_58;					// 0x58 , 0x72
+	uint8 sound_range;				// 0x59 , 0x73
+	uint8 var_5A;					// 0x5A , 0x74
+	uint8 powered_acceleration;		// 0x5B , 0x75
+	uint8 powered_max_speed;		// 0x5C , 0x76
+	uint8 car_visual;				// 0x5D , 0x77
+	uint8 pad_5E;
+	uint8 draw_order;
+	uint8 special_frames;			// 0x60 , 0x7A
+	uint32 peep_loading_positions;	// 0x61 , 0x7B note: uint32
+} rct_ride_entry_vehicle_32bit;
+
+/**
+ * Ride type structure.
+ * size: unknown
+ */
+typedef struct {
+	rct_string_id name;						// 0x000
+	rct_string_id description;				// 0x002
+	uint32 images_offset;					// 0x004
+	uint32 flags;							// 0x008
+	uint8 ride_type[3];						// 0x00C
+	uint8 min_cars_in_train;				// 0x00F
+	uint8 max_cars_in_train;				// 0x010
+	uint8 cars_per_flat_ride;				// 0x011
+	// Number of cars that can't hold passengers
+	uint8 zero_cars;						// 0x012
+	// The index to the vehicle type displayed in
+	// the vehicle tab.
+	uint8 tab_vehicle;						// 0x013
+	uint8 default_vehicle;					// 0x014
+	// Convert from first - fourth vehicle to
+	// vehicle structure
+	uint8 front_vehicle;					// 0x015
+	uint8 second_vehicle;					// 0x016
+	uint8 rear_vehicle;						// 0x017
+	uint8 third_vehicle;					// 0x018
+	uint8 pad_019;
+	rct_ride_entry_vehicle_32bit vehicles[4];		// 0x1A note: 32bit!
+	uint32 vehicle_preset_list;				// 0x1AE note: uint32!
+	sint8 excitement_multipler;				// 0x1B2
+	sint8 intensity_multipler;				// 0x1B3
+	sint8 nausea_multipler;					// 0x1B4
+	uint8 max_height;						// 0x1B5
+	union {
+		uint64 enabledTrackPieces;						// 0x1B6
+		struct {
+			uint32 enabledTrackPiecesA;					// 0x1B6
+			uint32 enabledTrackPiecesB;					// 0x1BA
+		};
+	};
+	uint8 category[2];									// 0x1BE
+	uint8 shop_item;									// 0x1C0
+	uint8 shop_item_secondary;							// 0x1C1
+} rct_ride_entry_32bit;
+
+static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
-	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
+	rct_ride_entry_32bit *rideEntry = (rct_ride_entry_32bit*)objectEntry;
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_ride_entry_32bit));
+	const size_t extendedDataSize = *chunkSize - sizeof(rct_ride_entry_32bit);
+	*chunkSize = *chunkSize + sizeof(rct_ride_entry) - sizeof(rct_ride_entry_32bit);
+	assert(*chunkSize > 0);
+	rct_ride_entry* outRideEntry = malloc(*chunkSize);
+	assert(outRideEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outRideEntry + sizeof(rct_ride_entry));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
+	log_warning("loading ride %p", objectEntry);
 
 	// After rideEntry is 3 string tables
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_ride_entry));
 	rideEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 0);
 	rideEntry->description = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 1);
 
@@ -521,7 +641,7 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 	}
 
 	object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 2);
-	rideEntry->vehicle_preset_list = (vehicle_colour_preset_list*)extendedEntryData;
+	outRideEntry->vehicle_preset_list = (vehicle_colour_preset_list*)extendedEntryData;
 
 	// If Unknown struct size is 0xFF then there are 32 3 byte structures
 	uint8 unknown_size = *extendedEntryData++;
@@ -545,12 +665,13 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 	}
 
 	int images_offset = object_chunk_load_image_directory(&extendedEntryData);
-	rideEntry->images_offset = images_offset;
+	outRideEntry->images_offset = images_offset;
 
 	int cur_vehicle_images_offset = images_offset + 3;
 
 	for (int i = 0; i < 4; i++) {
-		rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[i];
+		rct_ride_entry_vehicle_32bit* vehicleEntry = &rideEntry->vehicles[i];
+		rct_ride_entry_vehicle* outVehicleEntry = &outRideEntry->vehicles[i];
 
 		if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
 			int al = 1;
@@ -716,12 +837,58 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 				set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
 			}
 
+			// Copy the vehicle entry over to new one
+			outVehicleEntry->rotation_frame_mask = vehicleEntry->rotation_frame_mask;
+			outVehicleEntry->var_02 = vehicleEntry->var_02;
+			outVehicleEntry->var_03 = vehicleEntry->var_03;
+			outVehicleEntry->spacing = vehicleEntry->spacing;
+			outVehicleEntry->car_friction = vehicleEntry->car_friction;
+			outVehicleEntry->tab_height = vehicleEntry->tab_height;
+			outVehicleEntry->num_seats = vehicleEntry->num_seats;
+			outVehicleEntry->sprite_flags = vehicleEntry->sprite_flags;
+			outVehicleEntry->sprite_width = vehicleEntry->sprite_width;
+			outVehicleEntry->sprite_height_negative = vehicleEntry->sprite_height_negative;
+			outVehicleEntry->sprite_height_positive = vehicleEntry->sprite_height_positive;
+			outVehicleEntry->var_11 = vehicleEntry->var_11;
+			outVehicleEntry->flags_a = vehicleEntry->flags_a;
+			outVehicleEntry->flags_b = vehicleEntry->flags_b;
+			outVehicleEntry->var_16 = vehicleEntry->var_16;
+			outVehicleEntry->base_image_id = vehicleEntry->base_image_id;
+			outVehicleEntry->var_1C = vehicleEntry->var_1C;
+			outVehicleEntry->var_20 = vehicleEntry->var_20;
+			outVehicleEntry->var_24 = vehicleEntry->var_24;
+			outVehicleEntry->var_28 = vehicleEntry->var_28;
+			outVehicleEntry->var_2C = vehicleEntry->var_2C;
+			outVehicleEntry->var_30 = vehicleEntry->var_30;
+			outVehicleEntry->var_34 = vehicleEntry->var_34;
+			outVehicleEntry->var_38 = vehicleEntry->var_38;
+			outVehicleEntry->var_3C = vehicleEntry->var_3C;
+			outVehicleEntry->var_40 = vehicleEntry->var_40;
+			outVehicleEntry->var_44 = vehicleEntry->var_44;
+			outVehicleEntry->var_48 = vehicleEntry->var_48;
+			outVehicleEntry->var_4C = vehicleEntry->var_4C;
+			outVehicleEntry->no_vehicle_images = vehicleEntry->no_vehicle_images;
+			outVehicleEntry->no_seating_rows = vehicleEntry->no_seating_rows;
+			outVehicleEntry->spinning_inertia = vehicleEntry->spinning_inertia;
+			outVehicleEntry->spinning_friction = vehicleEntry->spinning_friction;
+			outVehicleEntry->friction_sound_id = vehicleEntry->friction_sound_id;
+			outVehicleEntry->var_58 = vehicleEntry->var_58;
+			outVehicleEntry->sound_range = vehicleEntry->sound_range;
+			outVehicleEntry->var_5A = vehicleEntry->var_5A;
+			outVehicleEntry->powered_acceleration = vehicleEntry->powered_acceleration;
+			outVehicleEntry->powered_max_speed = vehicleEntry->powered_max_speed;
+			outVehicleEntry->car_visual = vehicleEntry->car_visual;
+			outVehicleEntry->pad_5E = vehicleEntry->pad_5E;
+			outVehicleEntry->draw_order = vehicleEntry->draw_order;
+			outVehicleEntry->special_frames = vehicleEntry->special_frames;
+
 			sint8 no_positions = *peep_loading_positions++;
 			if (no_positions == -1) {
 				// The no_positions is 16 bit skip over
 				peep_loading_positions += 2;
 			}
-			vehicleEntry->peep_loading_positions = peep_loading_positions;
+			// not set for original entry
+			outVehicleEntry->peep_loading_positions = peep_loading_positions;
 		}
 	}
 
@@ -751,8 +918,9 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 	}
 
 	// 0x6DEBAA
-	if (RCT2_GLOBAL(0x9ADAF4, sint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
 
 	int di = rideEntry->ride_type[0] | (rideEntry->ride_type[1] << 8) | (rideEntry->ride_type[2] << 16);
@@ -762,7 +930,38 @@ static bool object_type_ride_load(void *objectEntry, uint32 entryIndex)
 	}
 
 	RCT2_GLOBAL(0xF433DD, uint32) = di;
-	return true;
+
+	outRideEntry->name = rideEntry->name;
+	outRideEntry->description = rideEntry->description;
+	outRideEntry->images_offset = rideEntry->images_offset;
+	outRideEntry->flags = rideEntry->flags;
+	outRideEntry->ride_type[0] = rideEntry->ride_type[0];
+	outRideEntry->ride_type[1] = rideEntry->ride_type[1];
+	outRideEntry->ride_type[2] = rideEntry->ride_type[2];
+	outRideEntry->min_cars_in_train = rideEntry->min_cars_in_train;
+	outRideEntry->max_cars_in_train = rideEntry->max_cars_in_train;
+	outRideEntry->cars_per_flat_ride = rideEntry->cars_per_flat_ride;
+	outRideEntry->zero_cars = rideEntry->zero_cars;
+	outRideEntry->tab_vehicle = rideEntry->tab_vehicle;
+	outRideEntry->default_vehicle = rideEntry->default_vehicle;
+	outRideEntry->front_vehicle = rideEntry->front_vehicle;
+	outRideEntry->second_vehicle = rideEntry->second_vehicle;
+	outRideEntry->rear_vehicle = rideEntry->rear_vehicle;
+	outRideEntry->third_vehicle = rideEntry->third_vehicle;
+	outRideEntry->pad_019 = rideEntry->pad_019;
+	// 0x1a vehicles already set
+	// 0a1ae vehicle_preset_list already set
+	outRideEntry->excitement_multipler = rideEntry->excitement_multipler;
+	outRideEntry->intensity_multipler = rideEntry->intensity_multipler;
+	outRideEntry->nausea_multipler = rideEntry->nausea_multipler;
+	outRideEntry->max_height = rideEntry->max_height;
+	outRideEntry->enabledTrackPieces = rideEntry->enabledTrackPieces;
+	outRideEntry->category[0] = rideEntry->category[0];
+	outRideEntry->category[1] = rideEntry->category[1];
+	outRideEntry->shop_item = rideEntry->shop_item;
+	outRideEntry->shop_item_secondary = rideEntry->shop_item_secondary;
+
+	return outRideEntry;
 }
 
 static void object_type_ride_unload(void *objectEntry)
@@ -807,7 +1006,8 @@ static void object_type_ride_unload(void *objectEntry)
 
 static bool object_type_ride_test(void *objectEntry)
 {
-	rct_ride_entry* rideEntry = (rct_ride_entry*)objectEntry;
+	log_warning("testing ride");
+	rct_ride_entry_32bit* rideEntry = (rct_ride_entry_32bit*)objectEntry;
 	if (rideEntry->excitement_multipler > 75) return false;
 	if (rideEntry->intensity_multipler > 75) return false;
 	if (rideEntry->nausea_multipler > 75) return false;
@@ -816,7 +1016,7 @@ static bool object_type_ride_test(void *objectEntry)
 
 static void object_type_ride_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
-	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
+	rct_ride_entry_32bit *rideEntry = (rct_ride_entry_32bit*)objectEntry;
 	int imageId = rideEntry->images_offset;
 	if (rideEntry->ride_type[0] == 0xFF) {
 		imageId++;
@@ -829,7 +1029,7 @@ static void object_type_ride_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 
 static rct_string_id object_type_ride_desc(void *objectEntry)
 {
-	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
+	rct_ride_entry_32bit *rideEntry = (rct_ride_entry_32bit*)objectEntry;
 
 	// Get description
 	rct_string_id stringId = rideEntry->description;
@@ -858,10 +1058,52 @@ static const object_type_vtable object_type_ride_vtable[] = {
 // Small Scenery (rct2: 0x006E3466)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_small_scenery_load(void *objectEntry, uint32 entryIndex)
+typedef struct {
+	uint8 tool_id;			// 0x06
+	uint8 flags;			// 0x07
+	sint16 price;			// 0x08
+	sint16 removal_price;	// 0x0A
+	uint32 tiles;			// 0x0C note: 32bit!
+	uint8 scenery_tab_id;	// 0x10
+	uint8 var_11;
+	uint32 var_12;
+	uint32 var_16;
+} rct_large_scenery_entry_32bit;
+
+typedef struct {
+	uint32 flags;			// 0x06
+	uint8 height;			// 0x0A
+	uint8 tool_id;			// 0x0B
+	sint16 price;			// 0x0C
+	sint16 removal_price;	// 0x0E
+	uint32 var_10;			// note: uint32!
+	uint8 pad_14[0x06];
+	uint8 scenery_tab_id;	// 0x1A
+} rct_small_scenery_entry_32bit;
+
+typedef struct {
+	rct_string_id name;		// 0x00
+	uint32 image;			// 0x02
+	union {
+		rct_small_scenery_entry_32bit small_scenery;
+		rct_large_scenery_entry_32bit large_scenery;
+		rct_wall_scenery_entry wall;
+		rct_path_bit_scenery_entry path_bit;
+		rct_banner_scenery_entry banner;
+	};
+} rct_scenery_entry_32bit;
+
+static uint8* object_type_small_scenery_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
-	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x1C);
+	rct_scenery_entry_32bit* sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x1C);
+	const size_t extendedDataSize = *chunkSize - 0x1C;
+	*chunkSize = *chunkSize + sizeof(rct_scenery_entry) - 0x1C;
+	assert(*chunkSize > 0);
+	rct_scenery_entry* outSceneryEntry = malloc(*chunkSize);
+	assert(outSceneryEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outSceneryEntry + sizeof(rct_scenery_entry));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_SMALL_SCENERY, entryIndex, 0);
 	sceneryEntry->small_scenery.scenery_tab_id = 0xFF;
@@ -874,22 +1116,36 @@ static bool object_type_small_scenery_load(void *objectEntry, uint32 entryIndex)
 
 	extendedEntryData += sizeof(rct_object_entry);
 	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG16){
-		sceneryEntry->small_scenery.var_10 = (uint32)extendedEntryData;
+		outSceneryEntry->small_scenery.var_10 = (uintptr_t)extendedEntryData;
 		while (*++extendedEntryData != 0xFF);
 		extendedEntryData++;
+	} else {
+		outSceneryEntry->small_scenery.var_10 = sceneryEntry->small_scenery.var_10;
 	}
 
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
-	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
+
+	outSceneryEntry->name = sceneryEntry->name;
+	outSceneryEntry->image = sceneryEntry->image;
+	outSceneryEntry->small_scenery.flags = sceneryEntry->small_scenery.flags;
+	outSceneryEntry->small_scenery.height = sceneryEntry->small_scenery.height;
+	outSceneryEntry->small_scenery.tool_id = sceneryEntry->small_scenery.tool_id;
+	outSceneryEntry->small_scenery.price = sceneryEntry->small_scenery.price;
+	outSceneryEntry->small_scenery.removal_price = sceneryEntry->small_scenery.removal_price;
+	// var10 already set
+	// pad_14 not needed set
+	outSceneryEntry->small_scenery.scenery_tab_id = sceneryEntry->small_scenery.scenery_tab_id;
 
 	return true;
 }
 
 static void object_type_small_scenery_unload(void *objectEntry)
 {
-	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	rct_scenery_entry_32bit *sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 	sceneryEntry->name = 0;
 	sceneryEntry->image = 0;
 	sceneryEntry->small_scenery.var_10 = 0;
@@ -898,7 +1154,7 @@ static void object_type_small_scenery_unload(void *objectEntry)
 
 static bool object_type_small_scenery_test(void *objectEntry)
 {
-	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	rct_scenery_entry_32bit *sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 
 	if (sceneryEntry->small_scenery.price <= 0) return false;
 	if (sceneryEntry->small_scenery.removal_price > 0) return true;
@@ -911,7 +1167,7 @@ static bool object_type_small_scenery_test(void *objectEntry)
 
 static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
-	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	rct_scenery_entry_32bit* sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 	rct_drawpixelinfo clipDPI;
 	if (!clip_drawpixelinfo(&clipDPI, dpi, x - 56, y - 56, 112, 112)) {
 		return;
@@ -970,10 +1226,17 @@ static const object_type_vtable object_type_small_scenery_vtable[] = {
 // Large Scenery (rct2: 0x006B92A7)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
+static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
-	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x1A);
+	rct_scenery_entry_32bit* sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x1A);
+	const size_t extendedDataSize = *chunkSize - 0x1A;
+	*chunkSize = *chunkSize + sizeof(rct_scenery_entry) - 0x1A;
+	assert(*chunkSize > 0);
+	rct_scenery_entry* outSceneryEntry = malloc(*chunkSize);
+	assert(outSceneryEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outSceneryEntry + sizeof(rct_scenery_entry));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_LARGE_SCENERY, entryIndex, 0);
 	sceneryEntry->large_scenery.scenery_tab_id = 0xFF;
@@ -984,13 +1247,14 @@ static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
 		}
 	}
 
-	extendedEntryData += sizeof(rct_object_entry);
+	extendedEntryData += sizeof(rct_scenery_entry_32bit);
 	if (sceneryEntry->large_scenery.flags & (1 << 2)) {
-		sceneryEntry->large_scenery.var_12 = (uint32)extendedEntryData;
+		outSceneryEntry->large_scenery.var_12 = (uintptr_t)extendedEntryData;
 		extendedEntryData += 1038;
 	}
 
-	sceneryEntry->large_scenery.tiles = (rct_large_scenery_tile*)extendedEntryData;
+	// output only
+	outSceneryEntry->large_scenery.tiles = (rct_large_scenery_tile*)extendedEntryData;
 
 	// skip over large scenery tiles
 	while (*((uint16*)extendedEntryData) != 0xFFFF){
@@ -1011,9 +1275,20 @@ static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
 		}
 	}
 	sceneryEntry->image = imageId;
-	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
+
+	outSceneryEntry->large_scenery.tool_id = sceneryEntry->large_scenery.tool_id;
+	outSceneryEntry->large_scenery.flags = sceneryEntry->large_scenery.flags;
+	outSceneryEntry->large_scenery.price = sceneryEntry->large_scenery.price;
+	outSceneryEntry->large_scenery.removal_price = sceneryEntry->large_scenery.removal_price;
+	// 0x0a tiles is a pointer, already set
+	outSceneryEntry->large_scenery.scenery_tab_id = sceneryEntry->large_scenery.scenery_tab_id;
+	outSceneryEntry->large_scenery.var_11 = sceneryEntry->large_scenery.var_11;
+	// var_12 is a pointer, already set
+	outSceneryEntry->large_scenery.var_16 = sceneryEntry->large_scenery.var_16;
 
 	return true;
 }
@@ -1031,7 +1306,7 @@ static void object_type_large_scenery_unload(void *objectEntry)
 
 static bool object_type_large_scenery_test(void *objectEntry)
 {
-	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	rct_scenery_entry_32bit *sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 
 	if (sceneryEntry->large_scenery.price <= 0) return false;
 	if (sceneryEntry->large_scenery.removal_price > 0) return true;
@@ -1067,10 +1342,17 @@ static const object_type_vtable object_type_large_scenery_vtable[] = {
 // Wall (rct2: 0x006E5A25)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_wall_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_wall_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
-	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
+	rct_scenery_entry_32bit* sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x0E);
+	const size_t extendedDataSize = *chunkSize - 0x0E;
+	*chunkSize = *chunkSize + sizeof(rct_scenery_entry) - 0x0E;
+	assert(*chunkSize > 0);
+	rct_scenery_entry* outSceneryEntry = malloc(*chunkSize);
+	assert(outSceneryEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outSceneryEntry + sizeof(rct_scenery_entry));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_WALLS, entryIndex, 0);
 	sceneryEntry->wall.scenery_tab_id = 0xFF;
@@ -1084,11 +1366,22 @@ static bool object_type_wall_load(void *objectEntry, uint32 entryIndex)
 	extendedEntryData += sizeof(rct_object_entry);
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
 
-	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
 
-	return true;
+	outSceneryEntry->name = sceneryEntry->name;
+	outSceneryEntry->image = sceneryEntry->image;
+	outSceneryEntry->wall.tool_id = sceneryEntry->wall.tool_id;
+	outSceneryEntry->wall.flags = sceneryEntry->wall.flags;
+	outSceneryEntry->wall.height = sceneryEntry->wall.height;
+	outSceneryEntry->wall.flags2 = sceneryEntry->wall.flags2;
+	outSceneryEntry->wall.price = sceneryEntry->wall.price;
+	outSceneryEntry->wall.scenery_tab_id = sceneryEntry->wall.scenery_tab_id;
+	outSceneryEntry->wall.var_0D = sceneryEntry->wall.var_0D;
+
+	return outSceneryEntry;
 
 }
 
@@ -1102,7 +1395,7 @@ static void object_type_wall_unload(void *objectEntry)
 
 static bool object_type_wall_test(void *objectEntry)
 {
-	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	rct_scenery_entry_32bit *sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 	if (sceneryEntry->wall.price <= 0) return false;
 	return true;
 }
@@ -1151,10 +1444,17 @@ static const object_type_vtable object_type_wall_vtable[] = {
 // Banner (rct2: 0x006BA84E)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_banner_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_banner_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
-	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0C);
+	rct_scenery_entry_32bit* sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x0C);
+	const size_t extendedDataSize = *chunkSize - 0x0C;
+	*chunkSize = *chunkSize + sizeof(rct_scenery_entry) - 0x0C;
+	assert(*chunkSize > 0);
+	rct_scenery_entry* outSceneryEntry = malloc(*chunkSize);
+	assert(outSceneryEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outSceneryEntry + sizeof(rct_scenery_entry));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_BANNERS, entryIndex, 0);
 	sceneryEntry->banner.scenery_tab_id = 0xFF;
@@ -1168,11 +1468,18 @@ static bool object_type_banner_load(void *objectEntry, uint32 entryIndex)
 	extendedEntryData += sizeof(rct_object_entry);
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
 
-	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
+	outSceneryEntry->name = sceneryEntry->name;
+	outSceneryEntry->image = sceneryEntry->image;
+	outSceneryEntry->banner.scrolling_mode = sceneryEntry->banner.scrolling_mode;
+	outSceneryEntry->banner.flags = sceneryEntry->banner.flags;
+	outSceneryEntry->banner.price = sceneryEntry->banner.price;
+	outSceneryEntry->banner.scenery_tab_id = sceneryEntry->banner.scenery_tab_id;
 
-	return true;
+	return outSceneryEntry;
 }
 
 static void object_type_banner_unload(void *objectEntry)
@@ -1185,7 +1492,7 @@ static void object_type_banner_unload(void *objectEntry)
 
 static bool object_type_banner_test(void *objectEntry)
 {
-	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	rct_scenery_entry_32bit *sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 	if (sceneryEntry->banner.price <= 0) return false;
 	return true;
 }
@@ -1216,10 +1523,17 @@ static const object_type_vtable object_type_banner_vtable[] = {
 // Path (rct2: 0x006A8621)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_path_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x0E);
+	const size_t extendedDataSize = *chunkSize - 0x0E;
+	*chunkSize = *chunkSize + sizeof(rct_path_type) - 0x0E;
+	assert(*chunkSize > 0);
+	rct_path_type* outPathEntry = malloc(*chunkSize);
+	assert(outPathEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outPathEntry + sizeof(rct_path_type));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	pathEntry->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATHS, entryIndex, 0);
 
@@ -1227,8 +1541,9 @@ static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 	pathEntry->image = imageId;
 	pathEntry->bridge_image = imageId + 109;
 
-	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
 
 	gFootpathSelectedId = 0;
@@ -1245,7 +1560,10 @@ static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 		gFootpathSelectedId = i;
 	}
 
-	return true;
+	// rct_path_Type has no pointer, its size does not change, safe to memcpy
+	memcpy(outPathEntry, pathEntry, sizeof(rct_path_type));
+
+	return outPathEntry;
 }
 
 static void object_type_path_unload(void *objectEntry)
@@ -1287,10 +1605,17 @@ static const object_type_vtable object_type_path_vtable[] = {
 // Path Item (rct2: 0x006A86E2)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_path_bit_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_path_bit_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
-	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
+	rct_scenery_entry_32bit* sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x0E);
+	const size_t extendedDataSize = *chunkSize - 0x0E;
+	*chunkSize = *chunkSize + sizeof(rct_scenery_entry) - 0x0E;
+	assert(*chunkSize > 0);
+	rct_scenery_entry* outSceneryEntry = malloc(*chunkSize);
+	assert(outSceneryEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outSceneryEntry + sizeof(rct_scenery_entry));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATH_BITS, entryIndex, 0);
 	sceneryEntry->path_bit.scenery_tab_id = 0xFF;
@@ -1304,11 +1629,20 @@ static bool object_type_path_bit_load(void *objectEntry, uint32 entryIndex)
 	extendedEntryData += sizeof(rct_object_entry);
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
 
-	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
 
-	return true;
+	outSceneryEntry->name = sceneryEntry->name;
+	outSceneryEntry->image = sceneryEntry->image;
+	outSceneryEntry->path_bit.var_06 = sceneryEntry->path_bit.var_06;
+	outSceneryEntry->path_bit.pad_08 = sceneryEntry->path_bit.pad_08;
+	outSceneryEntry->path_bit.tool_id = sceneryEntry->path_bit.tool_id;
+	outSceneryEntry->path_bit.price = sceneryEntry->path_bit.price;
+	outSceneryEntry->path_bit.scenery_tab_id = sceneryEntry->path_bit.scenery_tab_id;
+
+	return outSceneryEntry;
 }
 
 static void object_type_path_bit_unload(void *objectEntry)
@@ -1321,7 +1655,7 @@ static void object_type_path_bit_unload(void *objectEntry)
 
 static bool object_type_path_bit_test(void *objectEntry)
 {
-	rct_scenery_entry *sceneryEntry = (rct_scenery_entry*)objectEntry;
+	rct_scenery_entry_32bit *sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 	if (sceneryEntry->path_bit.price <= 0) return false;
 	return true;
 }
@@ -1349,15 +1683,22 @@ static const object_type_vtable object_type_path_bit_vtable[] = {
 // Scenery Set (rct2: 0x006B93AA)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_scenery_set_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_scenery_set_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_set_entry));
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_set_entry));
+	const size_t extendedDataSize = *chunkSize - sizeof(rct_scenery_set_entry);
+	*chunkSize = *chunkSize + sizeof(rct_scenery_set_entry) - sizeof(rct_scenery_set_entry);
+	assert(*chunkSize > 0);
+	rct_scenery_set_entry* outSceneryEntry = malloc(*chunkSize);
+	assert(outSceneryEntry != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outSceneryEntry + sizeof(rct_scenery_set_entry));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	scenerySetEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_SCENERY_SETS, entryIndex, 0);
 	
 	rct_object_entry *entryObjects = NULL;
-	uint8 *eax = RCT2_GLOBAL(0x9ADAF4, uint8*);
+	uint32 eax = RCT2_GLOBAL(0x9ADAF4, uint32);
 	if ((uint32)eax != 0xFFFFFFFF){
 		*((uint16*)eax) = 0;
 		entryObjects = (rct_object_entry*)(eax + 2);
@@ -1372,7 +1713,7 @@ static bool object_type_scenery_set_load(void *objectEntry, uint32 entryIndex)
 		if (entryObjects != NULL){
 			memcpy(entryObjects, extendedEntryData, sizeof(rct_object_entry));
 			entryObjects++;
-			(*(eax + 1))++;
+			(*((uint8*)(eax + 1)))++;
 		}
 		uint8 entry_type;
 		uint8 entry_index = 0;
@@ -1404,7 +1745,9 @@ static bool object_type_scenery_set_load(void *objectEntry, uint32 entryIndex)
 	extendedEntryData++;
 	scenerySetEntry->image = object_chunk_load_image_directory(&extendedEntryData);
 
-	return true;
+	memcpy(outSceneryEntry, scenerySetEntry, sizeof(rct_scenery_set_entry));
+
+	return outSceneryEntry;
 }
 
 static void object_type_scenery_set_unload(void *objectEntry)
@@ -1446,19 +1789,29 @@ static const object_type_vtable object_type_scenery_set_vtable[] = {
 // Park Entrance (rct2: 0x00666E42)
 ///////////////////////////////////////////////////////////////////////////////
 
-bool object_type_park_entrance_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_park_entrance_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_entrance_type));
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_entrance_type));
+	const size_t extendedDataSize = *chunkSize - sizeof(rct_entrance_type);
+	*chunkSize = *chunkSize + sizeof(rct_entrance_type) - sizeof(rct_entrance_type);
+	assert(*chunkSize > 0);
+	rct_entrance_type* outEntranceType = malloc(*chunkSize);
+	assert(outEntranceType != NULL);
+	uint8 *extendedEntryData = (uint8*)((size_t)outEntranceType + sizeof(rct_entrance_type));
+	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	entranceType->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PARK_ENTRANCE, entryIndex, 0);
 	entranceType->image_id = object_chunk_load_image_directory(&extendedEntryData);
 
-	if (RCT2_GLOBAL(0x9ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x9ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
 
-	return true;
+	memcpy(outEntranceType, entranceType, sizeof(rct_entrance_type));
+
+	return outEntranceType;
 }
 
 static void object_type_park_entrance_unload(void *objectEntry)
@@ -1505,11 +1858,18 @@ static const object_type_vtable object_type_park_entrance_vtable[] = {
 // Water (rct2: 0x006E6E2A)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_water_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_water_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	rct_water_type *waterEntry = (rct_water_type*)objectEntry;
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_water_type));
+	const size_t extendedDataSize = *chunkSize - sizeof(rct_water_type);
+	*chunkSize = *chunkSize + sizeof(rct_water_type) - sizeof(rct_water_type);
+	assert(*chunkSize > 0);
+	rct_water_type* outWaterEntry = malloc(*chunkSize);
+	assert(outWaterEntry != NULL);
+	uint8 *pStringTable = (uint8*)((size_t)outWaterEntry + sizeof(rct_water_type));
+	memcpy(pStringTable, origExtendedEntryData, extendedDataSize);
 
-	uint8 *pStringTable = (uint8*)((size_t)objectEntry + sizeof(rct_water_type));
 	waterEntry->string_idx = object_get_localised_text(&pStringTable, OBJECT_TYPE_WATER, entryIndex, 0);
 
 	int imageId = object_chunk_load_image_directory(&pStringTable);
@@ -1517,8 +1877,9 @@ static bool object_type_water_load(void *objectEntry, uint32 entryIndex)
 	waterEntry->var_06 = imageId + 1;
 	waterEntry->var_0A = imageId + 4;
 
-	if (RCT2_GLOBAL(0x009ADAF4, uint32) != 0xFFFFFFFF) {
-		*RCT2_GLOBAL(0x009ADAF4, uint16*) = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
 
 	if (RCT2_GLOBAL(0x009ADAFD, uint8) == 0) {
@@ -1526,7 +1887,9 @@ static bool object_type_water_load(void *objectEntry, uint32 entryIndex)
 		gfx_invalidate_screen();
 	}
 
-	return true;
+	memcpy(outWaterEntry, waterEntry, sizeof(rct_water_type));
+
+	return outWaterEntry;
 }
 
 static void object_type_water_unload(void *objectEntry)
@@ -1566,20 +1929,30 @@ static const object_type_vtable object_type_water_vtable[] = {
 // Stex (rct2: 0x0066B355)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_stex_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_stex_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
-	uint8 *stringTable = (uint8*)((size_t)objectEntry + (size_t)0x08);
+	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x08);
+	const size_t extendedDataSize = *chunkSize - 0x08;
+	*chunkSize = *chunkSize + sizeof(rct_stex_entry) - 0x08;
+	assert(*chunkSize > 0);
+	rct_stex_entry* outStexEntry = malloc(*chunkSize);
+	assert(outStexEntry != NULL);
+	uint8 *stringTable = (uint8*)((size_t)outStexEntry + sizeof(rct_stex_entry));
+	memcpy(stringTable, origExtendedEntryData, extendedDataSize);
 	
 	stexEntry->scenario_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 0);
 	stexEntry->park_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 1);
 	stexEntry->details = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 2);
 
-	if (RCT2_GLOBAL(0x9ADAF4, int) != -1) {
-		RCT2_GLOBAL(0x9ADAF4, uint16*)[0] = 0;
+	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if ((uint32)some_pointer != 0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
 	}
 
-	return true;
+	memcpy(outStexEntry, stexEntry, sizeof(rct_stex_entry));
+
+	return outStexEntry;
 }
 
 static void object_type_stex_unload(void *objectEntry)
@@ -1631,11 +2004,11 @@ static const object_type_vtable * const object_type_vtables[] = {
 	object_type_stex_vtable
 };
 
-bool object_load(int type, void *objectEntry, uint32 entryIndex)
+uint8* object_load(int type, void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
 	const object_type_vtable *vtable = object_type_vtables[type];
-	return vtable->load(objectEntry, entryIndex) ? 0 : 1;
+	return vtable->load(objectEntry, entryIndex, chunkSize);
 }
 
 void object_unload(int type, void *objectEntry)
@@ -1733,6 +2106,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 			// This is being changed to force the images to be loaded into a different
 			// image id.
+			chunk = object_load(openedEntry.flags & 0x0F, chunk, 0, &chunkSize);
 			RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0x726E;
 			gStexTempChunk = (rct_stex_entry*)chunk;
 			// Not used anywhere.
@@ -1743,7 +2117,6 @@ int object_get_scenario_text(rct_object_entry *entry)
 			memcpy(gTempObjectLoadName, openedEntry.name, 8);
 			// Not used??
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 1;
-			object_load(openedEntry.flags & 0x0F, chunk, 0);
 			// Tell text to be loaded into normal address
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
 			// Not used??

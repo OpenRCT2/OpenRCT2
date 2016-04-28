@@ -30,7 +30,7 @@ typedef struct {
 	uint8 tool_id;			// 0x0B
 	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
-	uint32 var_10;
+	uintptr_t var_10;
 	uint8 pad_14[0x06];
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
@@ -80,7 +80,7 @@ typedef struct {
 	rct_large_scenery_tile* tiles; // 0x0C
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
-	uint32 var_12;
+	uintptr_t var_12;
 	uint32 var_16;
 } rct_large_scenery_entry;
 
