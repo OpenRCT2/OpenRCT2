@@ -48,7 +48,8 @@ enum GAME_COMMAND {
 	GAME_COMMAND_REMOVE_PATH,
 	GAME_COMMAND_CHANGE_SURFACE_STYLE,
 	GAME_COMMAND_SET_RIDE_PRICE,
-	GAME_COMMAND_SET_PEEP_NAME,
+	GAME_COMMAND_SET_GUEST_NAME,
+	GAME_COMMAND_SET_STAFF_NAME,
 	GAME_COMMAND_RAISE_LAND,
 	GAME_COMMAND_LOWER_LAND,
 	GAME_COMMAND_EDIT_LAND_SMOOTH,
@@ -123,7 +124,7 @@ extern int game_command_playerid;
 extern rct_string_id gGameCommandErrorTitle;
 extern rct_string_id gGameCommandErrorText;
 
-extern GAME_COMMAND_POINTER* new_game_command_table[66];
+extern GAME_COMMAND_POINTER* new_game_command_table[67];
 
 #define gCurrentTicks		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
 

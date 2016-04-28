@@ -1212,3 +1212,22 @@ int staff_path_finding(rct_peep* peep) {
 		return 0;
 	}
 }
+
+void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
+	uint16 sprite_index = *ecx & 0xFFFF;
+
+	rct_peep *peep = GET_PEEP(sprite_index);
+	if (peep->type != PEEP_TYPE_STAFF) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
+	*ebx = set_peep_name(
+		*ebx & 0xFF,
+		*eax & 0xFFFF,
+		sprite_index,
+		(uint8*)edx,
+		(uint8*)ebp,
+		(uint8*)edi
+	);
+}
