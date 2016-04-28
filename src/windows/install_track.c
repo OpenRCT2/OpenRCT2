@@ -17,14 +17,15 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../editor.h"
-#include "../localisation/localisation.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "../localisation/localisation.h"
 #include "../ride/ride.h"
 #include "../ride/track.h"
+#include "../ride/track_design.h"
 #include "../sprites.h"
 #include "error.h"
-#include "../interface/themes.h"
 
 enum {
 	WIDX_BACKGROUND,

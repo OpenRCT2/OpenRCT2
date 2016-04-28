@@ -21,6 +21,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
+#include "../ride/track_design.h"
 #include "error.h"
 
 #pragma region Widgets

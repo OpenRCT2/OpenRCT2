@@ -29,6 +29,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
+#include "../ride/track_design.h"
 #include "../scenario.h"
 #include "../util/util.h"
 #include "../world/footpath.h"

@@ -2,6 +2,7 @@
 #include "../config.h"
 #include "../util/util.h"
 #include "track.h"
+#include "track_design.h"
 
 typedef struct {
 	uint8 ride_type;

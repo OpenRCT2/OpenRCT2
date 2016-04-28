@@ -30,6 +30,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
+#include "../ride/track_design.h"
 #include "../sprites.h"
 #include "../windows/error.h"
 #include "../world/map.h"

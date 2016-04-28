@@ -25,6 +25,7 @@
 #include "../sprites.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
+#include "../ride/track_design.h"
 #include "../interface/themes.h"
 #include "../cheats.h"
 

@@ -29,6 +29,7 @@
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/track.h"
+#include "../ride/track_design.h"
 #include "../world/scenery.h"
 #include "../ride/ride_data.h"
 

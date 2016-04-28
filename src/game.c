@@ -42,6 +42,7 @@
 #include "ride/ride_ratings.h"
 #include "ride/vehicle.h"
 #include "ride/track.h"
+#include "ride/track_design.h"
 #include "scenario.h"
 #include "title.h"
 #include "util/sawyercoding.h"
