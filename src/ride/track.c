@@ -694,29 +694,30 @@ void reset_track_list_cache(){
  *
  *  rct2: 0x006D1C68
  */
-int backup_map()
+rct_map_element **backup_map()
 {
 	RCT2_GLOBAL(0xF440ED, uint8*) = malloc(0xED600);
 	if (RCT2_GLOBAL(0xF440ED, uint32) == 0) return 0;
 
-	RCT2_GLOBAL(0xF440F1, uint8*) = malloc(0x40000);
-	if (RCT2_GLOBAL(0xF440F1, uint32) == 0){
-		free(RCT2_GLOBAL(0xF440ED, uint8*));
-		return 0;
+	rct_map_element **gMapElementTilePointersBackup;
+	gMapElementTilePointersBackup = malloc(sizeof(rct_map_element**) * MAX_TILE_MAP_ELEMENT_POINTERS);
+	if (gMapElementTilePointersBackup == NULL){
+		free(gMapElementTilePointersBackup);
+		return NULL;
 	}
 
 	RCT2_GLOBAL(0xF440F5, uint8*) = malloc(14);
 	if (RCT2_GLOBAL(0xF440F5, uint32) == 0){
 		free(RCT2_GLOBAL(0xF440ED, uint8*));
-		free(RCT2_GLOBAL(0xF440F1, uint8*));
-		return 0;
+		free(gMapElementTilePointersBackup);
+		return NULL;
 	}
 
 	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
 	memcpy(RCT2_GLOBAL(0xF440ED, uint32*), map_elements, 0xED600);
 
-	uint32* tile_map_pointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32);
-	memcpy(RCT2_GLOBAL(0xF440F1, uint32*), tile_map_pointers, 0x40000);
+	rct_map_element** tile_map_pointers = gMapElementTilePointers;
+	memcpy(gMapElementTilePointersBackup, tile_map_pointers, sizeof(rct_map_element**) * MAX_TILE_MAP_ELEMENT_POINTERS);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
 	*(uint32*)backup_info = (uint32)gNextFreeMapElement;
@@ -724,20 +725,20 @@ int backup_map()
 	*(uint16*)(backup_info + 6) = gMapSizeMinus2;
 	*(uint16*)(backup_info + 8) = gMapSize;
 	*(uint32*)(backup_info + 10) = get_current_rotation();
-	return 1;
+	return gMapElementTilePointersBackup;
 }
 
 /**
  *
  *  rct2: 0x006D2378
  */
-void reload_map_backup()
+void reload_map_backup(rct_map_element **backup)
 {
 	uint32* map_elements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, uint32);
 	memcpy(map_elements, RCT2_GLOBAL(0xF440ED, uint32*), 0xED600);
 
 	uint32* tile_map_pointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, uint32);
-	memcpy(tile_map_pointers, RCT2_GLOBAL(0xF440F1, uint32*), 0x40000);
+	memcpy(tile_map_pointers, backup, sizeof(rct_map_element**) * MAX_TILE_MAP_ELEMENT_POINTERS);
 
 	uint8* backup_info = RCT2_GLOBAL(0xF440F5, uint8*);
 	gNextFreeMapElement = (rct_map_element*)backup_info;
@@ -747,7 +748,7 @@ void reload_map_backup()
 	gCurrentRotation = *(uint8*)(backup_info + 10);
 
 	free(RCT2_GLOBAL(0xF440ED, uint8*));
-	free(RCT2_GLOBAL(0xF440F1, uint8*));
+	free(backup);
 	free(RCT2_GLOBAL(0xF440F5, uint8*));
 }
 
@@ -765,7 +766,7 @@ void blank_map(){
 
 	rct_map_element* map_element;
 	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
-		map_element = GET_MAP_ELEMENT(i);
+		map_element = &gMapElements[i];
 		map_element->type = MAP_ELEMENT_TYPE_SURFACE;
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 2;
@@ -2102,7 +2103,10 @@ void sub_6D235B(uint8 ride_id){
  */
 void draw_track_preview(uint8** preview){
 	// Make a copy of the map
-	if (!backup_map())return;
+	rct_map_element **backup_elements = backup_map();
+	if (backup_elements == NULL) {
+		return;
+	}
 
 	blank_map();
 
@@ -2115,7 +2119,7 @@ void draw_track_preview(uint8** preview){
 
 	if (!sub_6D2189(&cost, &ride_id)){
 		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
-		reload_map_backup();
+		reload_map_backup(backup_elements);
 		return;
 	}
 
@@ -2223,7 +2227,7 @@ void draw_track_preview(uint8** preview){
 	viewport_paint(view, dpi, left, top, right, bottom);
 
 	sub_6D235B(ride_id);
-	reload_map_backup();
+	reload_map_backup(backup_elements);
 }
 
 /**
