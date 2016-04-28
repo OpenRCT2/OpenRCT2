@@ -35,7 +35,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int x, int y, i
 		sprite_move(x, y, z, (rct_sprite*)sprite);
 		sprite->misc_identifier = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
-		sprite->var_26 = (util_rand() & 0xFF) * 12;
+		sprite->frame = (util_rand() & 0xFF) * 12;
 		sprite->var_24 = (util_rand() & 0x7F) + 140;
 		sprite->var_2E = ((util_rand() & 0xFF) * 5) >> 8;
 		sprite->acceleration_x = ((sint16)(util_rand() & 0xFFFF)) * 4;
@@ -102,9 +102,9 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle *particle)
 	sprite_move(x, y, z, (rct_sprite*)particle);
 	invalidate_sprite_0((rct_sprite*)particle);
 
-	particle->var_26 += 85;
-	if (particle->var_26 >= 3072) {
-		particle->var_26 = 0;
+	particle->frame += 85;
+	if (particle->frame >= 3072) {
+		particle->frame = 0;
 	}
 }
 
@@ -122,7 +122,7 @@ void crash_splash_create(int x, int y, int z)
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z + 3, (rct_sprite*)sprite);
 		sprite->misc_identifier = SPRITE_MISC_CRASH_SPLASH;
-		sprite->var_26 = 0;
+		sprite->frame = 0;
 	}
 }
 
@@ -133,8 +133,8 @@ void crash_splash_create(int x, int y, int z)
 void crash_splash_update(rct_crash_splash *splash)
 {
 	invalidate_sprite_2((rct_sprite*)splash);
-	splash->var_26 += 85;
-	if (splash->var_26 >= 7168) {
+	splash->frame += 85;
+	if (splash->frame >= 7168) {
 		sprite_remove((rct_sprite*)splash);
 	}
 }

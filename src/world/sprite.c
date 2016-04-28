@@ -288,8 +288,8 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
 			(rct_sprite*)steam
 		);
 	}
-	steam->var_26 += 64;
-	if (steam->var_26 >= (56 * 64)) {
+	steam->frame += 64;
+	if (steam->frame >= (56 * 64)) {
 		sprite_remove((rct_sprite*)steam);
 	}
 }
@@ -298,7 +298,7 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
  *
  *  rct2: 0x0067363D
  */
-void sprite_misc_3_create(int x, int y, int z)
+void sprite_misc_explosion_cloud_create(int x, int y, int z)
 {
 	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
 	if (sprite != NULL) {
@@ -307,8 +307,8 @@ void sprite_misc_3_create(int x, int y, int z)
 		sprite->sprite_height_positive = 34;
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
-		sprite->misc_identifier = SPRITE_MISC_3;
-		sprite->var_26 = 0;
+		sprite->misc_identifier = SPRITE_MISC_EXPLOSION_CLOUD;
+		sprite->frame = 0;
 	}
 }
 
@@ -316,11 +316,11 @@ void sprite_misc_3_create(int x, int y, int z)
  *
  *  rct2: 0x00673385
  */
-static void sprite_misc_3_update(rct_sprite *sprite)
+static void sprite_misc_explosion_cloud_update(rct_sprite * sprite)
 {
 	invalidate_sprite_2(sprite);
-	sprite->unknown.var_26 += 128;
-	if (sprite->unknown.var_26 >= (36 * 128)) {
+	sprite->unknown.frame += 128;
+	if (sprite->unknown.frame >= (36 * 128)) {
 		sprite_remove(sprite);
 	}
 }
@@ -329,7 +329,7 @@ static void sprite_misc_3_update(rct_sprite *sprite)
  *
  *  rct2: 0x0067366B
  */
-void sprite_misc_5_create(int x, int y, int z)
+void sprite_misc_explosion_flare_create(int x, int y, int z)
 {
 	rct_unk_sprite *sprite = (rct_unk_sprite*)create_sprite(2);
 	if (sprite != NULL) {
@@ -338,8 +338,8 @@ void sprite_misc_5_create(int x, int y, int z)
 		sprite->sprite_height_positive = 8;
 		sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z + 4, (rct_sprite*)sprite);
-		sprite->misc_identifier = SPRITE_MISC_5;
-		sprite->var_26 = 0;
+		sprite->misc_identifier = SPRITE_MISC_EXPLOSION_FLARE;
+		sprite->frame = 0;
 	}
 }
 
@@ -347,11 +347,11 @@ void sprite_misc_5_create(int x, int y, int z)
  *
  *  rct2: 0x006733B4
  */
-static void sprite_misc_5_update(rct_sprite *sprite)
+static void sprite_misc_explosion_flare_update(rct_sprite * sprite)
 {
 	invalidate_sprite_2(sprite);
-	sprite->unknown.var_26 += 64;
-	if (sprite->unknown.var_26 >= (124 * 64)) {
+	sprite->unknown.frame += 64;
+	if (sprite->unknown.frame >= (124 * 64)) {
 		sprite_remove(sprite);
 	}
 }
@@ -372,14 +372,14 @@ void sprite_misc_update(rct_sprite *sprite)
 	case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
 		crashed_vehicle_particle_update((rct_crashed_vehicle_particle*)sprite);
 		break;
-	case SPRITE_MISC_3:
-		sprite_misc_3_update(sprite);
+	case SPRITE_MISC_EXPLOSION_CLOUD:
+		sprite_misc_explosion_cloud_update(sprite);
 		break;
 	case SPRITE_MISC_CRASH_SPLASH:
 		crash_splash_update((rct_crash_splash*)sprite);
 		break;
-	case SPRITE_MISC_5:
-		sprite_misc_5_update(sprite);
+	case SPRITE_MISC_EXPLOSION_FLARE:
+		sprite_misc_explosion_flare_update(sprite);
 		break;
 	case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
 	case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:

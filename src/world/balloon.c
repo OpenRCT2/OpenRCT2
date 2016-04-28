@@ -33,7 +33,7 @@ void create_balloon(int x, int y, int z, int colour, uint8 bl)
 		sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		sprite_move(x, y, z, sprite);
 		sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
-		sprite->balloon.var_26 = 0;
+		sprite->balloon.frame = 0;
 		sprite->balloon.colour = colour;
 		sprite->balloon.popped = bl;
 	}
@@ -42,7 +42,7 @@ void create_balloon(int x, int y, int z, int colour, uint8 bl)
 void balloon_pop(rct_balloon *balloon)
 {
 	balloon->popped = 1;
-	balloon->var_26 = 0;
+	balloon->frame = 0;
 	audio_play_sound_at_location(SOUND_BALLOON_POP, balloon->x, balloon->y, balloon->z);
 }
 
@@ -54,8 +54,8 @@ void balloon_update(rct_balloon *balloon)
 {
 	invalidate_sprite_2((rct_sprite*)balloon);
 	if (balloon->popped == 1) {
-		balloon->var_26 += 256;
-		if (balloon->var_26 >= 1280)
+		balloon->frame += 256;
+		if (balloon->frame >= 1280)
 			sprite_remove((rct_sprite*)balloon);
 
 		return;
