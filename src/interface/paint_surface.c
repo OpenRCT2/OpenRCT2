@@ -978,12 +978,14 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
+	// Draw Peep Spawns
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR
 	    && gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
 
-		rct2_peep_spawn * spawn = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_SPAWNS, rct2_peep_spawn);
 		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 		for (int i = 0; i < 2; ++i) {
+			rct2_peep_spawn * spawn = &gPeepSpawns[i];
+
 			if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
 				// TODO: SPR_TERRAIN_SELECTION_SQUARE_SIMPLE ??? (no variations)
 				sub_98196C(2624, 0, 0, 32, 32, 16, spawn->z * 16, get_current_rotation());
@@ -992,7 +994,6 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				uint32 image_id = 3111 + offset | 0x20380000;
 				sub_98196C(image_id, 0, 0, 32, 32, 19, spawn->z * 16, get_current_rotation());
 			}
-			spawn++;
 		}
 	}
 
@@ -1003,7 +1004,6 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			// TODO: SPR_TERRAIN_SELECTION_SQUARE?
 			sub_68818E(2625 + byte_97B444[surfaceShape], 0, 0, NULL);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
-			// TODO: Fix this. Currently not working.
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 			paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
 			int height = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
