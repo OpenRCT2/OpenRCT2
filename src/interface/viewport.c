@@ -1105,11 +1105,47 @@ bool sub_98197C(
 
 /**
  *
+ *  rct2: 0x006D6258
+ */
+static void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+{
+	int image_id;
+	int baseImage_id = (vehicle->restraints_position / 64);
+	if (vehicle->restraints_position >= 64) {
+		if ((imageDirection / 8) && (imageDirection / 8) != 3) {
+			baseImage_id *= 2;
+			baseImage_id += vehicleEntry->base_image_id + 28;
+			if ((imageDirection / 8) != 1) {
+				baseImage_id -= 6;
+			}
+		} else {
+			baseImage_id = vehicleEntry->base_image_id + 8;
+		}
+	} else {
+		baseImage_id = (vehicle->var_C5 * 2) + vehicleEntry->base_image_id + 8;
+	}
+
+	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
+	if (sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation())) {
+		paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*) - 1; // sub_98197C increments this but need original
+		ps->var_04 = vehicle->colours_extended;
+	}
+
+	image_id++;
+	if (sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation())) {
+		paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*) - 1; // sub_98197C increments this but need original
+		ps->var_04 = vehicle->colours_extended;
+	}
+
+	assert(vehicleEntry->pad_5E == 1);
+}
+
+/**
+ *
  *  rct2: 0x006D5DA9
  */
-static void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat)
+static void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
-	const rct_ride_entry_vehicle *vehicleEntry = (const rct_ride_entry_vehicle *)(rct2VehiclePtrFormat + 0x1A);
 	int image_id;
 	int baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->var_C5 / 4) & 0x3);
 	if (vehicle->restraints_position >= 64) {
@@ -1233,13 +1269,13 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	switch (vehicleEntry->car_visual) {
 	case VEHICLE_VISUAL_DEFAULT:						RCT2_CALLPROC_X(0x006D45F8, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_LAUNCHED_FREEFALL:				RCT2_CALLPROC_X(0x006D5FAB, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case VEHICLE_VISUAL_OBSERVATION_TOWER:				RCT2_CALLPROC_X(0x006D6258, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_OBSERVATION_TOWER:				vehicle_visual_observation_tower(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_RIVER_RAPIDS:					RCT2_CALLPROC_X(0x006D5889, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_MINI_GOLF_PLAYER:				RCT2_CALLPROC_X(0x006D42F0, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_MINI_GOLF_BALL:					RCT2_CALLPROC_X(0x006D43C6, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_REVERSER:						RCT2_CALLPROC_X(0x006D4453, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:	RCT2_CALLPROC_X(0x006D4295, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case VEHICLE_VISUAL_ROTO_DROP:						vehicle_visual_roto_drop(x, imageDirection, y, z, vehicle, rct2VehiclePtrFormat); break;
+	case VEHICLE_VISUAL_ROTO_DROP:						vehicle_visual_roto_drop(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case 10:											RCT2_CALLPROC_X(0x006D5600, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 11:											RCT2_CALLPROC_X(0x006D5696, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 12:											RCT2_CALLPROC_X(0x006D57EE, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
