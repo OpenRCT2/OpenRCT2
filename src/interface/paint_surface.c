@@ -2,6 +2,7 @@
 #include "paint_surface.h"
 #include "viewport.h"
 #include "../config.h"
+#include "../peep/staff.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -944,38 +945,36 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		has_surface = true;
 	}
 
+// Draw Staff Patrol Areas
 	// loc_660D02
 	if (RCT2_GLOBAL(0x009DEA50, sint16) != -1) {
-		sint32 di = RCT2_GLOBAL(0x009DEA50, sint16);
+		sint32 staffIndex = RCT2_GLOBAL(0x009DEA50, sint16);
+		bool is_staff_list = staffIndex & 0x8000;
+		uint8 staffType = staffIndex & 0x7FFF;
 		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 
-		uint32 pos = (x & 0x1F80) >> 7 | (y & 0x1F80) >> 1;
-		sint32 ebx = di & 0x7FFF;
+		uint32 image_id = 0x20000000;
+		uint8 patrolColour = 7;
 
-		uint32 ecx = pos & 0x1f;
-		uint32 eax = pos >> 5;
-		uint32 ebp = 0x20380000;
-
-		bool do_it = false;
-		if (di >= 0) {
-			rct_sprite * edi = &g_sprite_list[di];
-			if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + (edi->peep.staff_id * 512), uint32)[eax] & (1 << ecx)) {
-				do_it = true;
-			} else {
-				ebx = edi->peep.staff_type;
-				ebp = 0x20080000;
+		if (!is_staff_list) {
+			rct_peep * staff = GET_PEEP(staffIndex);
+			if (!staff_is_patrol_area_set(staffIndex, x, y)) {
+				patrolColour = 1;
 			}
-		} else {
-			ebx = (surfaceShape + 200) * 512;
-			if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ebx, uint32)[eax] & (1 << ecx)) {
-				do_it = true;
-			}
+			staffType = staff->staff_type;
 		}
 
-		if (do_it) {
+		x = (x & 0x1F80) >> 7;
+		y = (y & 0x1F80) >> 1;
+		int offset = (x | y) >> 5;
+		int bitIndex = (x | y) & 0x1F;
+		int ebx = (staffType + 200) * 512;
+		if (RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ebx, uint32)[offset] & (1 << bitIndex)) {
 			assert(surfaceShape < countof(byte_97B444));
-			ebx = SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
-			sub_68818E(ebx | ebp, 0, 0, NULL);
+
+			image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
+			image_id |= patrolColour << 19;
+			sub_68818E(image_id, 0, 0, NULL);
 		}
 	}
 
