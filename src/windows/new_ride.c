@@ -842,15 +842,17 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 
 static int get_num_track_designs(ride_list_item item)
 {
-	// track_load_list(item);
-
-	char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
-	int count = 0;
-	while (*trackDesignList != 0 && trackDesignList < (char*)0x00F635EC) {
-		trackDesignList += 128;
-		count++;
+	char entry[9];
+	const char *entryPtr = NULL;
+	if (item.type < 0x80) {
+		rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
+		if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+			get_ride_entry_name(entry, item.entry_index);
+			entryPtr = entry;
+		}
 	}
-	return count;
+
+	return track_design_index_get_count_for_ride(item.type, entryPtr);
 }
 
 /**
@@ -943,10 +945,7 @@ static void window_new_ride_select(rct_window *w)
 #endif
 
 	if (allowTrackDesigns && ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-		// track_load_list(item);
-
-		char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
-		if (*trackDesignList != 0) {
+		if (_lastTrackDesignCount > 0) {
 			window_track_list_open(item);
 			return;
 		}

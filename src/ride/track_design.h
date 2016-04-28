@@ -124,6 +124,7 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 int install_track(char* source_path, char* dest_name);
 
 void track_design_index_create();
+size_t track_design_index_get_count_for_ride(uint8 rideType, const char *entry);
 size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rideType, const char *entry);
 utf8 *track_design_get_name_from_path(const utf8 *path);
 

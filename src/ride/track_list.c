@@ -10,6 +10,7 @@ typedef struct {
 	utf8 path[MAX_PATH];
 } td_index_item;
 
+static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount);
 static void track_design_index_scan();
 static int track_design_index_item_compare(const void *a, const void *b);
 static void track_design_index_include(const utf8 *directory);
@@ -47,6 +48,36 @@ void track_design_index_create()
 	}
 }
 
+size_t track_design_index_get_count_for_ride(uint8 rideType, const char *entry)
+{
+	log_verbose("reading track design index (tracks.idx)");
+
+	utf8 path[MAX_PATH];
+	track_design_index_get_path(path, sizeof(path));
+
+	// Return list
+	size_t refsCount = 0;
+	SDL_RWops *file = SDL_RWFromFile(path, "rb");
+	if (file != NULL) {
+		uint32 tdidxCount;
+		if (!track_design_index_read_header(file, &tdidxCount)) {
+			SDL_RWclose(file);
+			return 0;
+		}
+
+		for (uint32 i = 0; i < tdidxCount; i++) {
+			td_index_item tdItem;
+			SDL_RWread(file, &tdItem, sizeof(td_index_item), 1);
+
+			if (tdItem.ride_type != rideType) continue;
+			if (entry != NULL && _strcmpi(entry, tdItem.ride_entry) != 0) continue;
+			refsCount++;
+		}
+	}
+
+	return refsCount;
+}
+
 size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rideType, const char *entry)
 {
 	log_verbose("reading track design index (tracks.idx)");
@@ -61,17 +92,8 @@ size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rid
 
 	SDL_RWops *file = SDL_RWFromFile(path, "rb");
 	if (file != NULL) {
-		uint32 tdidxMagicNumber, tdidxVersion, tdidxCount;
-		SDL_RWread(file, &tdidxMagicNumber, 4, 1);
-		SDL_RWread(file, &tdidxVersion, 4, 1);
-		SDL_RWread(file, &tdidxCount, 4, 1);
-		if (tdidxMagicNumber != TrackIndexMagicNumber) {
-			log_error("invalid track index file");
-			SDL_RWclose(file);
-			return 0;
-		}
-		if (tdidxVersion != TrackIndexVersion) {
-			log_error("unsupported track index file version");
+		uint32 tdidxCount;
+		if (!track_design_index_read_header(file, &tdidxCount)) {
 			SDL_RWclose(file);
 			return 0;
 		}
@@ -113,6 +135,23 @@ utf8 *track_design_get_name_from_path(const utf8 *path)
 		nameLength = (size_t)(lastDot - filename);
 	}
 	return strndup(filename, nameLength);
+}
+
+static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount)
+{
+	uint32 tdidxMagicNumber, tdidxVersion;
+	SDL_RWread(file, &tdidxMagicNumber, 4, 1);
+	SDL_RWread(file, &tdidxVersion, 4, 1);
+	SDL_RWread(file, tdidxCount, 4, 1);
+	if (tdidxMagicNumber != TrackIndexMagicNumber) {
+		log_error("invalid track index file");
+		return false;
+	}
+	if (tdidxVersion != TrackIndexVersion) {
+		log_error("unsupported track index file version");
+		return false;
+	}
+	return true;
 }
 
 static void track_design_index_scan()

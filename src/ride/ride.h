@@ -874,6 +874,7 @@ enum {
 /** Helper macros until rides are stored in this module. */
 rct_ride *get_ride(int index);
 rct_ride_entry *get_ride_entry(int index);
+void get_ride_entry_name(char *name, int index);
 rct_ride_measurement *get_ride_measurement(int index);
 
 /**

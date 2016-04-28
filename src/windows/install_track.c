@@ -150,7 +150,7 @@ void window_install_track_open(const char* path)
 static void window_install_track_select(rct_window *w, int index)
 {
 	utf8 *trackDesignItem, *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, utf8);
-	rct_track_design *trackDesign;
+	// rct_track_design *trackDesign;
 
 	w->track_list.var_480 = index;
 

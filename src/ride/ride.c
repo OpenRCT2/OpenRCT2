@@ -199,12 +199,25 @@ rct_ride *get_ride(int index)
 
 rct_ride_entry *get_ride_entry(int index)
 {
-	if (index < 0 || index >= object_entry_group_counts[0])
+	if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
 	{
 		log_error("invalid index %d for ride type", index);
 		return NULL;
 	}
 	return gRideTypeList[index];
+}
+
+void get_ride_entry_name(char *name, int index)
+{
+	if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+	{
+		log_error("invalid index %d for ride type", index);
+		return;
+	}
+
+	const char *entryName = object_entry_groups[OBJECT_TYPE_RIDE].entries[index].name;
+	memcpy(name, entryName, 8);
+	name[8] = '\0';
 }
 
 rct_ride_measurement *get_ride_measurement(int index)

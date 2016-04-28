@@ -113,7 +113,16 @@ void window_track_list_open(ride_list_item item)
 	window_close_construction_windows();
 	_window_track_list_item = item;
 
-	_trackDesignsCount = track_design_index_get_for_ride(&_trackDesigns, item.type, NULL);
+	char entry[9];
+	const char *entryPtr = NULL;
+	if (item.type < 0x80) {
+		rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
+		if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+			get_ride_entry_name(entry, item.entry_index);
+			entryPtr = entry;
+		}
+	}
+	_trackDesignsCount = track_design_index_get_for_ride(&_trackDesigns, item.type, entryPtr);
 
 	if (RCT2_GLOBAL(0x00F635ED, uint8) & 1)
 		window_error_open(STR_WARNING, STR_TOO_MANY_TRACK_DESIGNS_OF_THIS_TYPE);
