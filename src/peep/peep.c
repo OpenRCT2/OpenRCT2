@@ -10607,17 +10607,21 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
  *
  *  rct2: 0x00698D6C
  */
-void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
+void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
+	uint16 sprite_index = *ecx & 0xFFFF;
+
+	rct_peep *peep = GET_PEEP(sprite_index);
+	if (peep->type != PEEP_TYPE_GUEST) {
+		*ebx = MONEY32_UNDEFINED;
+		return;
+	}
+
 	*ebx = set_peep_name(
 		*ebx & 0xFF,
 		*eax & 0xFFFF,
-		*ecx & 0xFFFF,
+		sprite_index,
 		(uint8*)edx,
 		(uint8*)ebp,
 		(uint8*)edi
 		);
-}
-
-void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp) {
- 	game_command_set_peep_name(eax, ebx, ecx, edx, esi, edi, ebp);	
 }

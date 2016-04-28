@@ -649,8 +649,8 @@ void sub_693BE5(rct_peep* peep, uint8 al);
 void peep_update_name_sort(rct_peep *peep);
 void peep_update_names(bool realNames);
 
-void game_command_set_peep_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3);
+void game_command_set_guest_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
 int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep);
 
