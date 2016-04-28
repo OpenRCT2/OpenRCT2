@@ -4922,7 +4922,7 @@ STR_CPTY    :차량당 4명의 승객
 
 [SPDRCR]
 STR_NAME    :스파이럴 롤러코스터
-STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는, 짜임새 있는 강철 트랙 롤러코스터
+STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 6명의 승객
 
 [STEEP1]
@@ -7113,12 +7113,12 @@ STR_CPTY    :차량당 4명의 승객
 
 [CONDORRD]
 STR_NAME    :콘도르 라이드
-STR_DESC    :Passengers ride face-down in a lying position, suspended in a Condor-shaped car from the single-rail track, swinging freely from side to side around corners
+STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 콘도르 모양의 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
 STR_CPTY    :차량당 승객 1명
 
 [CONGAEEL]
 STR_NAME    :콩가 뱀장어 코스터
-STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
+STR_DESC    :뱀장어 모양의 차량이 나선과 루프를 통과하는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [DRAGON]
@@ -7128,12 +7128,12 @@ STR_CPTY    :차량당 4명의 승객
 
 [FOOTBALL]
 STR_NAME    :풋볼 라이드
-STR_DESC    :Suspended roller coaster train consisting of football-shaped cars able to swing freely as the train goes around corners
+STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 풋볼 모양의 서스펜디드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [GORILLA]
 STR_NAME    :고릴라 라이드
-STR_DESC    :Suspended roller coaster train consisting of gorilla-shaped cars able to swing freely as the train goes around corners
+STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 고릴라 모양의 서스펜디드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [GRATWHTE]
@@ -7153,7 +7153,7 @@ STR_CPTY    :차량당 8명의 승객
 
 [LIONRIDE]
 STR_NAME    :사자 라이드
-STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops.
+STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [MINECART]
@@ -7163,7 +7163,7 @@ STR_CPTY    :차량당 4명의 승객
 
 [OSTRICH]
 STR_NAME    :타조 라이드
-STR_DESC    :A looping roller coaster where the riders ride in a standing position
+STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [PENGUINB]
@@ -7178,7 +7178,7 @@ STR_CPTY    :차량당 4명의 승객
 
 [RHINORID]
 STR_NAME    :코뿔소 라이드
-STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
+STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 6명의 승객
 
 [ROCKET]
@@ -7193,17 +7193,17 @@ STR_CPTY    :차량당 4명의 승객
 
 [SEALS]
 STR_NAME    :물개 롤러코스터
-STR_DESC    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_DESC    :나선 모양 트랙과 루프를 도는 구성을 지닌 강철 트랙의 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [SLOTH]
 STR_NAME    :나무늘보 라이드
-STR_DESC    :Suspended roller coaster train consisting of Sloth-shaped cars able to swing freely as the train goes around corners
+STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 나무늘보 모양의 서스펜디드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [SPUTNIKR]
 STR_NAME    :스푸트니크 서스펜디드 플라잉 코스터
-STR_DESC    :Passengers ride face-down in a lying position, suspended in a specially designed car from the single-rail track, swinging freely from side to side around corners
+STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 특수 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
 STR_CPTY    :차량당 승객 2명
 
 [STGCCSTR]
@@ -9311,7 +9311,7 @@ STR_CPTY    :차량당 4명의 승객
 
 [BATTRRAM]
 STR_NAME    :공성 망치 코스터
-STR_DESC    :A compact steel-tracked roller coaster with a spiral lift hill and cars with in-line seating
+STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
 STR_CPTY    :차량당 6명의 승객
 
 [BLCKDETH]
@@ -9361,7 +9361,7 @@ STR_CPTY    :차량당 8명의 승객
 
 [JETPLANE]
 STR_NAME    :제트여객기 코스터
-STR_DESC    :A compact roller coaster with individual cars and smooth twisting drops
+STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [JOUSTING]
@@ -9371,7 +9371,7 @@ STR_CPTY    :차량당 2명의 승객
 
 [POLCHASE]
 STR_NAME    :폴리스 체이스 코스터
-STR_DESC    :A looping roller coaster where the riders ride in a sitting position
+STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
 STR_CPTY    :차량당 4명의 승객
 
 [POLICECR]
@@ -9391,12 +9391,12 @@ STR_CPTY    :차량당 2명의 승객
 
 [SEAPLANE]
 STR_NAME    :수상비행기 라이드
-STR_DESC    :Suspended roller coaster train consisting of cars able to swing freely as the train goes around corners
+STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 서스펜디드 롤러코스터 차량
 STR_CPTY    :차량당 4명의 승객
 
 [STAMPHRD]
-STR_NAME    :소 떼 코스터
-STR_DESC    :A looping roller coaster with vehicles in the shape of a stampeding dinosaur herd.
+STR_NAME    :공룡 무리 코스터
+STR_DESC    :질주하는 공룡 무리 모습의 차량을 타고 가는 루핑 롤러 코스터
 STR_CPTY    :차량당 4명의 승객
 
 [VALKYRIE]
@@ -9613,49 +9613,49 @@ STR_NAME    :오토바이
 STR_NAME    :오토바이
 
 [ELECFEN5]
-STR_NAME    :Electric Fence Inverted 구석 조각
+STR_NAME    :반전된 전기 울타리 구석 조각
 
 [FIREMANX]
 STR_NAME    :움직이는 소방관
 
 [FUTSKY16]
-STR_NAME    :Sandstone Skyscraper Mid Slope 구석
+STR_NAME    :사암 마천루 중간 경사 구석
 
 [FUTSKY17]
-STR_NAME    :Sandstone Skyscraper Filler
+STR_NAME    :사암 마천루 필러
 
 [FUTSKY18]
-STR_NAME    :Sandstone Skyscraper Doorway
+STR_NAME    :사암 마천루 출입문
 
 [FUTSKY19]
-STR_NAME    :Sandstone Skyscraper Bottom 구석
+STR_NAME    :사암 마천루 하단 구석
 
 [FUTSKY21]
-STR_NAME    :Sandstone Skyscraper Mid 벽 Section
+STR_NAME    :사암 마천루 중간 벽 조각
 
 [FUTSKY23]
-STR_NAME    :Sandstone Skyscraper Inverted 구석 Top
+STR_NAME    :반전된 사암 마천루 구석 상단
 
 [FUTSKY29]
-STR_NAME    :Sandstone Skyscraper Bottom 곡선형 Slope
+STR_NAME    :사암 마천루 바닥 곡선형 경사
 
 [FUTSKY34]
-STR_NAME    :Sandstone Skyscraper 지붕
+STR_NAME    :사암 마천루 지붕
 
 [FUTSKY35]
-STR_NAME    :Sandstone Skyscraper Mid 곡선형 Slope
+STR_NAME    :사암 마천루 중간 곡선형 경사
 
 [FUTSKY42]
-STR_NAME    :Sandstone Skyscraper 곡선형 Slope Top
+STR_NAME    :사암 마천루 곡선형 경사 상단
 
 [FUTSKY52]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
+STR_NAME    :반전된 사암 마천루 바닥 구석
 
 [FUTSKY53]
-STR_NAME    :Sandstone Skyscraper Mid 구석
+STR_NAME    :사암 마천루 중간 구석
 
 [FUTSKY54]
-STR_NAME    :Obsidian SkyScraper 지붕 조각
+STR_NAME    :흑요석 마천루 지붕 조각
 
 [GLDCHEST]
 STR_NAME    :보물 상자
@@ -9667,166 +9667,166 @@ STR_NAME    :황금 양모
 STR_NAME    :건초
 
 [HEVBTH05]
-STR_NAME    :Heavenly Baths Arch
+STR_NAME    :천상의 욕실 아치형 구조물
 
 [HEVBTH06]
-STR_NAME    :Heavenly Baths Arch
+STR_NAME    :천상의 욕실 아치형 구조물
 
 [HEVBTH07]
-STR_NAME    :Heavenly Baths Arch
+STR_NAME    :천상의 욕실 아치형 구조물
 
 [HEVBTH08]
-STR_NAME    :Heavenly Baths 계단
+STR_NAME    :천상의 욕실 계단
 
 [HEVBTH09]
-STR_NAME    :Heavenly Baths 계단
+STR_NAME    :천상의 욕실 계단
 
 [HEVBTH10]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :천상의 욕실 건축물
 
 [HEVBTH11]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :천상의 욕실 건축물
 
 [HEVBTH12]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :천상의 욕실 건축물
 
 [HEVBTH13]
-STR_NAME    :Heavenly Baths Architecture
+STR_NAME    :천상의 욕실 건축물
 
 [HEVBTH14]
-STR_NAME    :Heavenly Bath Window
+STR_NAME    :천상의 욕실 창문
 
 [HEVBTH15]
-STR_NAME    :Heavenly Bath Floor
+STR_NAME    :천상의 욕실 바닥
 
 [HEVROF01]
-STR_NAME    :Heavenly Bath 지붕
+STR_NAME    :천상의 욕실 지붕
 
 [HEVROF02]
-STR_NAME    :Heavenly Bath 지붕
+STR_NAME    :천상의 욕실 지붕
 
 [HEVROF03]
-STR_NAME    :Heavenly Bath 지붕
+STR_NAME    :천상의 욕실 지붕
 
 [HEVROF04]
-STR_NAME    :Heavenly Bath 지붕
+STR_NAME    :천상의 욕실 지붕
 
 [HRBWAL01]
 STR_NAME    :항구 벽
 
 [HRBWAL02]
-STR_NAME    :항구 벽 with Fishing Gear
+STR_NAME    :항구 벽과 낚시 도구
 
 [HRBWAL03]
-STR_NAME    :항구 벽 with Moor
+STR_NAME    :항구 벽과 정박소
 
 [HRBWAL04]
-STR_NAME    :항구 벽 with Moor
+STR_NAME    :항구 벽과 정박소
 
 [HRBWAL05]
-STR_NAME    :항구 벽 with Moor
+STR_NAME    :항구 벽과 정박소
 
 [HRBWAL06]
-STR_NAME    :항구 벽 with Moor
+STR_NAME    :항구 벽과 정박소
 
 [HURCLULS]
 STR_NAME    :헤라클레스
 
 [INDWAL01]
-STR_NAME    :Industrial 벽 Set
+STR_NAME    :산업 벽 세트
 
 [INDWAL02]
-STR_NAME    :Industrial 벽 Set
+STR_NAME    :산업 벽 세트
 
 [INDWAL03]
-STR_NAME    :Industrial 벽 Set
+STR_NAME    :산업 벽 세트
 
 [INDWAL04]
-STR_NAME    :Industrial 벽 Set
+STR_NAME    :산업 벽 세트
 
 [INDWAL05]
-STR_NAME    :Industrial 지붕 구석 조각
+STR_NAME    :산업 지붕 구석 조각
 
 [INDWAL06]
-STR_NAME    :Industrial 지붕 구석 조각
+STR_NAME    :산업 지붕 구석 조각
 
 [INDWAL07]
-STR_NAME    :Industrial 벽 with Doorway
+STR_NAME    :출입구가 있는 산업 벽
 
 [INDWAL08]
-STR_NAME    :Industrial 벽 with Doorway
+STR_NAME    :출입구가 있는 산업 벽
 
 [INDWAL09]
-STR_NAME    :Industrial 벽 with Doorway
+STR_NAME    :출입구가 있는 산업 벽
 
 [INDWAL10]
-STR_NAME    :Industrial 벽 with Doorway
+STR_NAME    :출입구가 있는 산업 벽
 
 [INDWAL11]
-STR_NAME    :Industrial 벽 with Doorway
+STR_NAME    :출입구가 있는 산업 벽
 
 [INDWAL12]
-STR_NAME    :Industrial 벽 with Doorway
+STR_NAME    :출입구가 있는 산업 벽
 
 [INDWAL13]
-STR_NAME    :Industrial 벽 with Doorway
+STR_NAME    :출입구가 있는 산업 벽
 
 [INDWAL14]
-STR_NAME    :Industrial 벽 구석 조각
+STR_NAME    :산업 벽 구석 조각
 
 [INDWAL15]
-STR_NAME    :Industrial 벽 구석 조각
+STR_NAME    :산업 벽 구석 조각
 
 [INDWAL16]
-STR_NAME    :Industrial 벽 with Window
+STR_NAME    :창문이 있는 산업 벽
 
 [INDWAL17]
-STR_NAME    :Industrial 벽 with Window
+STR_NAME    :창문이 있는 산업 벽
 
 [INDWAL18]
-STR_NAME    :Industrial 벽 with Window
+STR_NAME    :창문이 있는 산업 벽
 
 [INDWAL19]
-STR_NAME    :Industrial 벽 with Window
+STR_NAME    :창문이 있는 산업 벽
 
 [INDWAL20]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL21]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL22]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL23]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL24]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL25]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL26]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL27]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL28]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL29]
-STR_NAME    :Industrial 지붕 조각
+STR_NAME    :산업 지붕 조각
 
 [INDWAL30]
-STR_NAME    :Industrial 벽 with Window
+STR_NAME    :창문이 있는 산업 벽
 
 [INDWAL31]
-STR_NAME    :Industrial 벽 with Window
+STR_NAME    :창문이 있는 산업 벽
 
 [INDWAL32]
-STR_NAME    :Industrial 벽 with Window
+STR_NAME    :창문이 있는 산업 벽
 
 [JAILXX01]
 STR_NAME    :감옥 벽 조각
@@ -9901,16 +9901,16 @@ STR_NAME    :대형 매머드 울타리
 STR_NAME    :대형 매머드 울타리
 
 [MAMTHW03]
-STR_NAME    :Large Angled Mammoth Fence
+STR_NAME    :크게 각진 매머드 울타리
 
 [MAMTHW04]
-STR_NAME    :Large Angled Mammoth Fence
+STR_NAME    :크게 각진 매머드 울타리
 
 [MAMTHW05]
-STR_NAME    :Small Angled Mammoth Fence
+STR_NAME    :작게 각진 매머드 울타리
 
 [MAMTHW06]
-STR_NAME    :Small Angled Mammoth Fence
+STR_NAME    :작게 각진 매머드 울타리
 
 [MCASTL02]
 STR_NAME    :성벽
@@ -9922,49 +9922,49 @@ STR_NAME    :성벽
 STR_NAME    :성벽
 
 [MCASTL05]
-STR_NAME    :Castle Ramparts 구석
+STR_NAME    :성벽 구석
 
 [MCASTL06]
-STR_NAME    :Castle Ramparts
+STR_NAME    :성벽
 
 [MCASTL07]
-STR_NAME    :Castle Ramparts 구석
+STR_NAME    :성벽 구석
 
 [MCASTL08]
-STR_NAME    :Castle Ramparts Inverted 구석
+STR_NAME    :반전된 성벽 구석
 
 [MCASTL09]
-STR_NAME    :Castle 구석 조각
+STR_NAME    :성 구석 조각
 
 [MCASTL10]
-STR_NAME    :Castle Ramparts 구석
+STR_NAME    :성벽 구석
 
 [MCASTL19]
-STR_NAME    :Castle 구석 조각
+STR_NAME    :성 구석 조각
 
 [MDBUCKET]
 STR_NAME    :바구니
 
 [MEDSTOOL]
-STR_NAME    :Stool
+STR_NAME    :변
 
 [MEDTOOLS]
-STR_NAME    :Farm Tools
+STR_NAME    :농기구
 
 [MEDTRGET]
 STR_NAME    :화살 과녁
 
 [METEORCR]
-STR_NAME    :Meteor Crater 구석
+STR_NAME    :운석 크레이터 구석
 
 [METEORST]
-STR_NAME    :Meteor Crater 벽
+STR_NAME    :운석 크레이터 벽
 
 [METRCRS1]
-STR_NAME    :Meteor Crater 벽 with Crystals
+STR_NAME    :수정이 있는 운석 크레이터 벽
 
 [METRCRS2]
-STR_NAME    :Meteor Crater 벽 with Crystals
+STR_NAME    :수정이 있는 운석 크레이터 벽
 
 [MINOTAUR]
 STR_NAME    :미노타우로스 상
@@ -10039,13 +10039,13 @@ STR_NAME    :뉴욕 벽 조각
 STR_NAME    :뉴욕 지붕 조각
 
 [PRIMWAL1]
-STR_NAME    :Wood Fence with Dead Vines
+STR_NAME    :죽은 넝쿨이 있는 나무 울타리
 
 [PRIMWAL2]
-STR_NAME    :Wood Fence with Dead Vines
+STR_NAME    :죽은 넝쿨이 있는 나무 울타리
 
 [PRIMWAL3]
-STR_NAME    :Wood Fence with Dead Vines
+STR_NAME    :죽은 넝쿨이 있는 나무 울타리
 
 [PSNTWL02]
 STR_NAME    :암흑 시대 마을 하단 벽 조각
@@ -10133,6 +10133,7 @@ STR_NAME    :활주로 조각
 
 [RUNWAY03]
 STR_NAME    :활주로 구석 조각
+
 [RUNWAY04]
 STR_NAME    :활주로 가장자리 조각
 
@@ -10161,22 +10162,22 @@ STR_NAME    :레이싱 스피커 장치
 STR_NAME    :숲 속 나무
 
 [SMOKSK02]
-STR_NAME    :Smoke Stack Mid
+STR_NAME    :굴뚝 중간
 
 [SMOKSK03]
-STR_NAME    :Smoke Stack 기본
+STR_NAME    :굴뚝 기본
 
 [SPCSHP06]
-STR_NAME    :Space Ship Cross Section
+STR_NAME    :우주선 교차 섹션
 
 [SPCSHP09]
-STR_NAME    :Space Ship Docking Section
+STR_NAME    :우주선 도킹 섹션
 
 [SPCSHP10]
-STR_NAME    :Space Ship Engine Section
+STR_NAME    :우주선 엔진 섹션
 
 [SPCSHP11]
-STR_NAME    :Space Ship Living Section
+STR_NAME    :우주선 거주 섹션
 
 [STNESTA1]
 STR_NAME    :돌이 된 사람
@@ -10194,34 +10195,34 @@ STR_NAME    :돌이 된 사람
 STR_NAME    :의자
 
 [SWAMPLT1]
-STR_NAME    :Swamp Plant
+STR_NAME    :슾지 식물
 
 [SWAMPLT2]
-STR_NAME    :Swamp Fern
+STR_NAME    :슾지 양치식물
 
 [SWAMPLT3]
-STR_NAME    :Swamp Fern
+STR_NAME    :슾지 양치식물
 
 [SWAMPLT4]
-STR_NAME    :Swamp Plant
+STR_NAME    :슾지 식물
 
 [SWAMPLT5]
-STR_NAME    :Swamp Plant
+STR_NAME    :슾지 식물
 
 [SWAMPLT6]
-STR_NAME    :Swamp Fern
+STR_NAME    :슾지 양치식물
 
 [SWAMPLT7]
-STR_NAME    :Swamp Fern
+STR_NAME    :슾지 양치식물
 
 [SWAMPLT8]
-STR_NAME    :Swamp Fern
+STR_NAME    :슾지 양치식물
 
 [SWAMPLT9]
-STR_NAME    :Swamp Fern
+STR_NAME    :슾지 양치식물
 
 [SWRDSTNE]
-STR_NAME    :Sword in the Stone
+STR_NAME    :돌에 꽂힌 검
 
 [TARPIT04]
 STR_NAME    :거품이 이는 타르갱
@@ -10260,145 +10261,145 @@ STR_NAME    :거품이 이는 타르갱
 STR_NAME    :발키리
 
 [VALKRI02]
-STR_NAME    :Valkyrie
+STR_NAME    :발키리
 
 [WDNCART2]
-STR_NAME    :Wooden Cart
+STR_NAME    :나무 수레
 
 [WEPNRACK]
-STR_NAME    :Weapon Set
+STR_NAME    :무기 세트
 
 [WISKYBL1]
-STR_NAME    :Whisky Barrel
+STR_NAME    :위스키 통
 
 [WISKYBL2]
-STR_NAME    :Whisky Barrels
+STR_NAME    :위스키 통
 
 [YEWTREEX]
-STR_NAME    :Yew Tree
+STR_NAME    :주목나무
 
 [ZEUSSTAT]
-STR_NAME    :Zeus Statue
+STR_NAME    :제우드 동상
 
 [ALENPLT1]
-STR_NAME    :Alien Plant
+STR_NAME    :외계 식물
 
 [ALENPLT2]
-STR_NAME    :Alien Plant
+STR_NAME    :외계 식물
 
 [ALLSEEYE]
-STR_NAME    :Animatronic All Seeing Eye
+STR_NAME    :움직이는 천리안
 
 [ALNSTR01]
-STR_NAME    :Alien Structure Small
+STR_NAME    :소형 외계 구조물
 
 [ALNSTR02]
-STR_NAME    :Alien Structure Small
+STR_NAME    :소형 외계 구조물
 
 [ALNSTR03]
-STR_NAME    :Alien Structure Small
+STR_NAME    :소형 외계 구조물
 
 [ALNSTR04]
-STR_NAME    :Alien Skylight Small
+STR_NAME    :소형 외계 채광창
 
 [ALNSTR05]
-STR_NAME    :Alien Tower Bottom
+STR_NAME    :외계 탑 하단
 
 [ALNSTR06]
-STR_NAME    :Alien Tower Middle
+STR_NAME    :외계 탑 중간
 
 [ALNSTR07]
-STR_NAME    :Alien Tower Top
+STR_NAME    :외계 탑 상단
 
 [ARGONAU1]
-STR_NAME    :Animatronic Argonaut
+STR_NAME    :움직이는 아르고호 승무원
 
 [ARGONAU2]
-STR_NAME    :Animatronic Argonaut
+STR_NAME    :움직이는 아르고호 승무원
 
 [ARGONAU3]
-STR_NAME    :Animatronic Argonaut
+STR_NAME    :움직이는 아르고호 승무원
 
 [ASTRONGT]
-STR_NAME    :Animatronic Astronaut
+STR_NAME    :움직이는 우주비행사
 
 [BKRGANG1]
-STR_NAME    :Biker
+STR_NAME    :자전거를 타는 사람
 
 [BOLPOT01]
-STR_NAME    :Boiling Pot
+STR_NAME    :끓고 있는 솥
 
 [CAGDSTAT]
-STR_NAME    :Animatronic Eagle on Cage
+STR_NAME    :움직이는 새장 안의 독수리
 
 [CAVEMENX]
-STR_NAME    :Animatronic Caveman lighting Fire
+STR_NAME    :움직이며 불을 밝히는 혈거인
 
 [CHANMAID]
-STR_NAME    :Animatronic Chained Maiden
+STR_NAME    :움직이는 체인 소녀
 
 [CLNSMEN1]
-STR_NAME    :Animatronic Clansman
+STR_NAME    :움직이는 문중 사람
 
 [COMPEYEX]
-STR_NAME    :Super Computer Monitor
+STR_NAME    :수퍼 컴퓨터 모니터
 
 [COOKSPIT]
-STR_NAME    :Animal cooking on Spit
+STR_NAME    :꼬치에 꽂힌 동물 요리
 
 [DINSIGN1]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :식당 네온 사인
 
 [DINSIGN2]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :식당 네온 사인
 
 [DINSIGN3]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :식당 네온 사인
 
 [DINSIGN4]
-STR_NAME    :Neon Diner Sign
+STR_NAME    :식당 네온 사인
 
 [DKFIGHT1]
-STR_NAME    :Animatronic Knight
+STR_NAME    :움직이는 기사
 
 [DKFIGHT2]
-STR_NAME    :Animatronic Knight
+STR_NAME    :움직이는 기사
 
 [DRGNATTK]
-STR_NAME    :Dragon Attacking
+STR_NAME    :드래곤 공격
 
 [ELECFEN1]
-STR_NAME    :Electric Fence 구석 조각
+STR_NAME    :전기 울타리 구석 조각
 
 [ELECFEN2]
-STR_NAME    :Electric Fence
+STR_NAME    :전기 울타리
 
 [ELECFEN3]
-STR_NAME    :Electric Fence with Light
+STR_NAME    :전등이 달린 전기 울타리
 
 [ELECFEN4]
-STR_NAME    :Electric Fence 부서진
+STR_NAME    :부서진 전기 울타리
 
 [EVALIEN1]
-STR_NAME    :Animatronic Evil Alien
+STR_NAME    :움직이는 나쁜 외계인
 
 [EVALIEN2]
-STR_NAME    :Animatronic Evil Alien
+STR_NAME    :움직이는 나쁜 외계인
 
 [EVALIEN3]
-STR_NAME    :Animatronic Evil Alien
+STR_NAME    :움직이는 나쁜 외계인
 
 [FIRCANON]
-STR_NAME    :Animatronic Firing Cannon
+STR_NAME    :움직이는 대포
 
 [FLTSIGN1]
-STR_NAME    :Anti-Gravity LCD Billboard
+STR_NAME    :반중력 LCD 광고판
 
 [FLTSIGN2]
-STR_NAME    :Anti-Gravity LCD Billboard
+STR_NAME    :반중력 LCD 광고판
 
 [FRBEACON]
-STR_NAME    :Fiery Beacon
+STR_NAME    :불타는 신호
 
 [FUROBOT1]
 STR_NAME    :로봇
@@ -10407,172 +10408,172 @@ STR_NAME    :로봇
 STR_NAME    :로봇
 
 [FUTSKY01]
-STR_NAME    :Sandstone Skyscraper Walkway
+STR_NAME    :사암 마천루 보도
 
 [FUTSKY02]
-STR_NAME    :Sandstone Skyscraper Filler
+STR_NAME    :사암 마천루 충전재
 
 [FUTSKY03]
-STR_NAME    :Sandstone Skyscraper Bottom 구석
+STR_NAME    :사암 마천루 바닥 구석
 
 [FUTSKY04]
-STR_NAME    :Sandstone Skyscraper 곡선형 Slope Top
+STR_NAME    :사암 마천루 곡선형 경사 꼭대기
 
 [FUTSKY05]
-STR_NAME    :Sandstone Skyscraper 구석 Top
+STR_NAME    :사암 마천루 구석 꼭대기
 
 [FUTSKY06]
-STR_NAME    :Sandstone Skyscraper Mid 곡선형 Slope
+STR_NAME    :사암 마천루 중앙 곡선형 경사
 
 [FUTSKY07]
-STR_NAME    :Sandstone Skyscraper Mid 벽 Section
+STR_NAME    :사암 마천루 중앙 벽 조각
 
 [FUTSKY08]
-STR_NAME    :Sandstone Skyscraper Mid 벽 Section
+STR_NAME    :사암 마천루 중앙 벽 조각
 
 [FUTSKY09]
-STR_NAME    :Sandstone Skyscraper Mid 벽 Section
+STR_NAME    :사암 마천루 중앙 벽 조각
 
 [FUTSKY10]
-STR_NAME    :Sandstone Skyscraper Bottom Slope 기본
+STR_NAME    :사암 마천루 바닥 경사 기본
 
 [FUTSKY11]
-STR_NAME    :Sandstone Skyscraper Mid 구석
+STR_NAME    :사암 마천루 중앙 구석
 
 [FUTSKY12]
-STR_NAME    :Sandstone Skyscraper Mid 벽 Section
+STR_NAME    :사암 마천루 중앙 벽 섹션
 
 [FUTSKY13]
-STR_NAME    :Sandstone Skyscraper 지붕 Spire
+STR_NAME    :사암 마천루 지붕 첨탑
 
 [FUTSKY14]
-STR_NAME    :Sandstone Skyscraper 지붕 Spire
+STR_NAME    :사암 마천루 지붕 첨탑
 
 [FUTSKY15]
-STR_NAME    :Sandstone Skyscraper Docking Bay
+STR_NAME    :사암 마천루 도킹 베이
 
 [FUTSKY33]
-STR_NAME    :Sandstone Skyscraper Walkway
+STR_NAME    :사암 마천루 보도
 
 [FUTSKY36]
-STR_NAME    :Obsidian SkyScraper Door 조각
+STR_NAME    :흑요석 마천루 문 조각
 
 [FUTSKY37]
-STR_NAME    :Obsidian SkyScraper Shallow Slope 구석
+STR_NAME    :흑요석 마천루 앝은 경사 구석
 
 [FUTSKY38]
-STR_NAME    :Obsidian SkyScraper Shallow Sloped 벽
+STR_NAME    :흑요석 마천루 얕은 경사 벽
 
 [FUTSKY39]
-STR_NAME    :Obsidian SkyScraper Shallow Slope 구석
+STR_NAME    :흑요석 마천루 얕은 경사 구석
 
 [FUTSKY40]
-STR_NAME    :Obsidian SkyScraper Steep Sloped 벽
+STR_NAME    :흑요석 마천루 급한 경사 벽
 
 [FUTSKY41]
-STR_NAME    :Obsidian SkyScraper Steep Sloped 벽
+STR_NAME    :흑요석 마천루 급한 경사 벽
 
 [FUTSKY44]
-STR_NAME    :Obsidian SkyScraper Steep Sloped 벽
+STR_NAME    :흑요석 마천루 급한 경사 벽
 
 [FUTSKY46]
-STR_NAME    :Obsidian SkyScraper Steep Slope 구석
+STR_NAME    :흑요석 마천루 급한 경사 구석
 
 [FUTSKY47]
-STR_NAME    :Obsidian SkyScraper 벽
+STR_NAME    :흑요석 마천루 벽
 
 [FUTSKY48]
-STR_NAME    :Obsidian SkyScraper 벽 with Window
+STR_NAME    :창문이 있는 흑요석 마천루 벽
 
 [FWRPRDC1]
-STR_NAME    :Groovy Dancer
+STR_NAME    :근사한 춤꾼
 
 [GANGSTER]
-STR_NAME    :Animatronic Gangster
+STR_NAME    :움직이는 폭력배
 
 [GDALIEN1]
-STR_NAME    :Animatronic Good Alien
+STR_NAME    :움직이는 착한 외계인
 
 [GDALIEN2]
-STR_NAME    :Animatronic Good Alien
+STR_NAME    :움직이는 착한 외계인
 
 [GDALIEN3]
-STR_NAME    :Animatronic Good Alien
+STR_NAME    :움직이는 착한 외계인
 
 [GEYSERXX]
 STR_NAME    :간헐천
 
 [GGNTOCTO]
-STR_NAME    :B-Movie 대형 Octopus
+STR_NAME    :B급 영화 대형 문어
 
 [GGNTSPID]
-STR_NAME    :B-Movie 대형 Spider
+STR_NAME    :B급 영화 대형 거미
 
 [GSCORPO2]
-STR_NAME    :Animatronic attacking Scorpion
+STR_NAME    :움직이는 전갈
 
 [GSCORPON]
-STR_NAME    :Animatronic attacking Scorpion
+STR_NAME    :움직이는 전갈
 
 [GUYQWIFX]
-STR_NAME    :Singer with Quiff
+STR_NAME    :밤 무대 가수
 
 [HEVBTH01]
-STR_NAME    :Heavenly Bath Pool
+STR_NAME    :천상의 욕실 풀
 
 [HEVBTH02]
-STR_NAME    :Heavenly Bath Pool 구석
+STR_NAME    :천상의 욕실 풀 구석
 
 [HEVBTH03]
-STR_NAME    :Heavenly Baths Fountain
+STR_NAME    :천상의 욕실 분수
 
 [HEVBTH04]
-STR_NAME    :Heavenly Baths Fountain
+STR_NAME    :천상의 욕실 분수
 
 [HEVBTH16]
-STR_NAME    :Heavenly Bath Pool Steps
+STR_NAME    :천상의 욕실 풀 계단
 
 [HEVBTH17]
-STR_NAME    :Heavenly Bath Pool Edge
+STR_NAME    :천상의 욕실 풀 가장자리
 
 [HORSECRT]
 STR_NAME    :말
 
 [HOVRCAR1]
-STR_NAME    :Hovercar on Stand
+STR_NAME    :서 있는 호버카
 
 [HOVRCAR2]
-STR_NAME    :Hovercar on Stand
+STR_NAME    :서 있는 호버카
 
 [HOVRCAR3]
-STR_NAME    :Hovercar Flying
+STR_NAME    :나는 호버카
 
 [HOVRCAR4]
-STR_NAME    :Hovercar Flying
+STR_NAME    :나는 호버카
 
 [HVRBIKE1]
-STR_NAME    :Hoverbike on Stand
+STR_NAME    :서 있는 호버바이크
 
 [HVRBIKE2]
-STR_NAME    :Hoverbike on Stand
+STR_NAME    :서 있는 호버바이크
 
 [HVRBIKE3]
-STR_NAME    :Hoverbike Flying
+STR_NAME    :나는 호버바이크
 
 [HVRBIKE4]
-STR_NAME    :Hoverbike Flying
+STR_NAME    :나는 호버바이크
 
 [KILLRVIN]
-STR_NAME    :Climbing Vine Tree
+STR_NAME    :넝쿨 나무
 
 [KNFIGHT1]
-STR_NAME    :Animatronic Dark Knight
+STR_NAME    :움직이는 흑기사
 
 [KNFIGHT2]
-STR_NAME    :Animatronic Dark Knight
+STR_NAME    :움직이는 흑기사
 
 [LARGECPU]
-STR_NAME    :Super Computer Large CPU
+STR_NAME    :수퍼 컴퓨터 대형 CPU
 
 [LASERX01]
 STR_NAME    :레이저 울타리
@@ -10581,79 +10582,79 @@ STR_NAME    :레이저 울타리
 STR_NAME    :레이저 울타리 구석
 
 [MDUSASTA]
-STR_NAME    :Animatronic Medusa
+STR_NAME    :움직이는 메두사
 
 [PDFLAG02]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG03]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG04]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG05]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG06]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG08]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG13]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG14]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG15]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [PDFLAG16]
-STR_NAME    :Period Flag
+STR_NAME    :시대적인 깃발
 
 [POLWTBTN]
-STR_NAME    :Animatronic Police Officer
+STR_NAME    :움직이는 경찰관
 
 [PRIMHEAD]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :식인 식물 나무 울타리
 
 [PRIMHEAR]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :식인 식물 나무 울타리
 
 [PRIMROOR]
-STR_NAME    :Wood Fence with Climbing Vines
+STR_NAME    :넝쿨이 자란 나무 울타리
 
 [PRIMROOT]
-STR_NAME    :Wood Fence with Climbing Vines
+STR_NAME    :넝쿨이 자란 나무 울타리
 
 [PRIMSCRN]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :식인 식물 나무 울타리
 
 [PRIMST01]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :식인 식물 나무 울타리
 
 [PRIMST02]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :식인 식물 나무 울타리
 
 [PRIMST03]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :식인 식물 나무 울타리
 
 [PRIMTALL]
-STR_NAME    :Wood Fence with Man Eating Plant
+STR_NAME    :식인 식물 나무 울타리
 
 [PSNTWL01]
-STR_NAME    :암흑 시대 마을 지붕 with Chimney
+STR_NAME    :굴뚝이 있는 암흑 시대 마을 지붕
 
 [RCKNROLR]
-STR_NAME    :Cool Dude
+STR_NAME    :멋진 녀석
 
 [ROBNHOOD]
-STR_NAME    :Animatronic Robin Hood
+STR_NAME    :움직이는 로빈 후드
 
 [RSWATRES]
-STR_NAME    :Rollerskating Waitress
+STR_NAME    :롤러스케이팅 웨이트리스
 
 [SCHNBOST]
 STR_NAME    :부표
@@ -10674,22 +10675,22 @@ STR_NAME    :수상비행기
 STR_NAME    :수상비행기
 
 [SDRAGFLY]
-STR_NAME    :Animatronic Dragonflies
+STR_NAME    :움직이는 잠자리
 
 [SKELETO1]
-STR_NAME    :Animatronic Skeletal Army
+STR_NAME    :움직이는 해골 군대
 
 [SKELETO2]
-STR_NAME    :Animatronic Skeletal Army
+STR_NAME    :움직이는 해골 군대
 
 [SKELETO3]
-STR_NAME    :Animatronic Skeletal Army
+STR_NAME    :움직이는 해골 군대
 
 [SMALLCPU]
-STR_NAME    :Super Computer Small CPU
+STR_NAME    :수퍼 컴퓨터 소형 CPU
 
 [SMOKSK01]
-STR_NAME    :Large Smoking Chimney
+STR_NAME    :연기 나는 대형 굴뚝
 
 [SOUPCRN2]
 STR_NAME    :원생액
@@ -10710,43 +10711,43 @@ STR_NAME    :원생액
 STR_NAME    :원생액
 
 [SPACRANG]
-STR_NAME    :Animatronic Space Ranger
+STR_NAME    :움직이는 우주 전사
 
 [SPCSHP01]
-STR_NAME    :Space Ship Cargo Section
+STR_NAME    :우주선 화물 섹션
 
 [SPCSHP02]
-STR_NAME    :Space Ship Comms Section
+STR_NAME    :우주선 통신 섹션
 
 [SPCSHP03]
-STR_NAME    :Space Ship Solar Section
+STR_NAME    :우주선 태양열 섹션
 
 [SPCSHP04]
-STR_NAME    :Space Ship Solar Panels
+STR_NAME    :우주선 태양열 판넬
 
 [SPCSHP05]
-STR_NAME    :Space Ship Gravity Section
+STR_NAME    :우주선 중력 섹션
 
 [SPCSHP07]
-STR_NAME    :Space Ship Control Deck
+STR_NAME    :우주선 컨트롤 덱
 
 [SPCSHP08]
-STR_NAME    :Space Ship Fuel Section
+STR_NAME    :우주선 연료 섹션
 
 [SPCSHP12]
-STR_NAME    :Space Ship Science Section
+STR_NAME    :우주선 과학 섹션
 
 [SPEAKR01]
-STR_NAME    :Small Speaker
+STR_NAME    :소형 스피커
 
 [SPEAKR02]
-STR_NAME    :Large Speaker
+STR_NAME    :대형 스피커
 
 [SPIKTAIL]
-STR_NAME    :Animatronic Stegosaurus
+STR_NAME    :움직이는 스테고사우르스
 
 [SPTERDAC]
-STR_NAME    :Animatronic flapping Pterodactyl
+STR_NAME    :날개를 움직이는 익룡
 
 [STGBAND1]
 STR_NAME    :밴드 멤버
@@ -10761,10 +10762,10 @@ STR_NAME    :밴드 멤버
 STR_NAME    :밴드 멤버
 
 [STMDRAN1]
-STR_NAME    :Steaming Drains
+STR_NAME    :증기 배출
 
 [STRICTOP]
-STR_NAME    :Animatronic Triceratops
+STR_NAME    :움직이는 트리케라톱스
 
 [TARPIT01]
 STR_NAME    :거품이 이는 타르갱
@@ -10776,55 +10777,55 @@ STR_NAME    :거품이 이는 타르갱
 STR_NAME    :거품이 이는 타르갱
 
 [TITANSTA]
-STR_NAME    :Atlas Statue
+STR_NAME    :아틀라스 동상
 
 [TYRANREX]
-STR_NAME    :Animatronic T-Rex
+STR_NAME    :움직이는 티라노사우르스
 
 [VOLCVENT]
-STR_NAME    :Active Volcanic Vent
+STR_NAME    :활화도
 
 [WAVEKING]
-STR_NAME    :Animatronic Waving King
+STR_NAME    :움직이는 파도 왕
 
 [WHCCOLDS]
-STR_NAME    :Witches around Cauldron
+STR_NAME    :가마솥 근처의 마녀
 
 [ARTDEC25]
-STR_NAME    :아트 데코 구석 with Windows
+STR_NAME    :창문이 있는 아트 데코 구석
 
 [ARTDEC26]
-STR_NAME    :아트 데코 구석 with Railings
+STR_NAME    :울타리가 있는 아트 데코 구석
 
 [ARTDEC27]
-STR_NAME    :아트 데코 Top 구석 Section
+STR_NAME    :아트 데코 상단 구석 조각
 
 [FUTSKY20]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
+STR_NAME    :반전된 사암 마천루 바닥 구석
 
 [FUTSKY22]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
+STR_NAME    :반전된 사암 마천루 바닥 구석
 
 [FUTSKY24]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
+STR_NAME    :반전된 사암 마천루 바닥 구석
 
 [FUTSKY25]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
+STR_NAME    :반전된 사암 마천루 바닥 구석
 
 [FUTSKY26]
-STR_NAME    :Sandstone Skyscraper Bottom Inverted 구석
+STR_NAME    :반전된 사암 마천루 바닥 구석
 
 [FUTSKY28]
-STR_NAME    :Sandstone Walkway T-Junction
+STR_NAME    :사암 도보 T자형 교차로
 
 [FUTSKY30]
-STR_NAME    :Sandstone Walkway 구석
+STR_NAME    :사암 도보 구석
 
 [FUTSKY31]
-STR_NAME    :Sandstone Walkway Cross Section
+STR_NAME    :사암 도보 교차 조각
 
 [FUTSKY32]
-STR_NAME    :Sandstone Walkway End Section
+STR_NAME    :사암 도보 끝 조각
 
 [JAILXX17]
 STR_NAME    :감옥 문
@@ -10833,16 +10834,16 @@ STR_NAME    :감옥 문
 STR_NAME    :대형 오크
 
 [MCASTL01]
-STR_NAME    :Castle Inverted 구석
+STR_NAME    :반전된 성 구석
 
 [MCASTL11]
-STR_NAME    :Castle Portcullis
+STR_NAME    :성 내리닫이 쇠창살문
 
 [MCASTL12]
-STR_NAME    :Castle Entrance
+STR_NAME    :성 입구
 
 [MELMTREE]
-STR_NAME    :Large Elm Tree
+STR_NAME    :대형 느릅나무
 
 [OLDNYK24]
 STR_NAME    :반전된 뉴욕 구석 지붕
@@ -10860,103 +10861,103 @@ STR_NAME    :뉴욕 지붕 조각
 STR_NAME    :1950년대 자동차
 
 [4X4DINER]
-STR_NAME    :Period Diner
+STR_NAME    :시대적인 식당차
 
 [4X4GMANT]
-STR_NAME    :대형 Mangrove Tree
+STR_NAME    :대형 맹그로브 나무
 
 [4X4STNHN]
-STR_NAME    :Stone Age Temple
+STR_NAME    :석기시대 사원
 
 [4X4TRPIT]
 STR_NAME    :거품이 이는 타르갱
 
 [4X4VOLCA]
-STR_NAME    :Volcano with small trees
+STR_NAME    :작은 나무가 있는 화산
 
 [ALENCRSH]
 STR_NAME    :UFO 추락 현장
 
 [ALNSTR08]
-STR_NAME    :Alien Structure Large
+STR_NAME    :대형 외계 구조물
 
 [ALNSTR09]
-STR_NAME    :Alien Structure Large
+STR_NAME    :대형 외계 구조물
 
 [ALNSTR10]
-STR_NAME    :Alien Structure Large
+STR_NAME    :대형 외계 구조물
 
 [ALNSTR11]
-STR_NAME    :Alien Skylight Large
+STR_NAME    :대형 외계 채광창
 
 [ASHNYMPH]
-STR_NAME    :Ash Tree with Nymphs
+STR_NAME    :정령이 있는 물푸레나무
 
 [BANDBUSX]
-STR_NAME    :Rock Band Tour Bus
+STR_NAME    :록 밴드 관광 버스
 
 [BIGDRUMS]
 STR_NAME    :대형 드럼 키트
 
 [CAVENTRA]
-STR_NAME    :Cave Entrance
+STR_NAME    :동굴 입구
 
 [CORNS2X2]
-STR_NAME    :Roman Palace 구석 조각
+STR_NAME    :로마궁 구석 조각
 
 [CORVS2X2]
-STR_NAME    :Roman Palace 구석 조각
+STR_NAME    :로마궁 구석 조각
 
 [CRATR2X2]
-STR_NAME    :Small Meteor Crater
+STR_NAME    :소형 운석 크레이터
 
 [CRATR4X4]
-STR_NAME    :Large Meteor Crater
+STR_NAME    :대형 운석 크레이터
 
 [CRSSS2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :로마궁 교차 조각
 
 [CRSVS2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :로마궁 교차 조각
 
 [CYCLOPSS]
-STR_NAME    :Cyclops Statue
+STR_NAME    :사이클롭스 동상
 
 [FEASTABL]
-STR_NAME    :Feast Table
+STR_NAME    :잔칫상
 
 [FOOTPRNT]
 STR_NAME    :대형 공룡 발자국
 
 [FORBIDFT]
-STR_NAME    :Forbidden Fruit Tree
+STR_NAME    :선악과 나무
 
 [GBEETLEX]
 STR_NAME    :1950년대 자동차
 
 [GHOTROD1]
-STR_NAME    :Hot Rod Car
+STR_NAME    :개조된 자동차
 
 [GHOTROD2]
-STR_NAME    :Hot Rod Car
+STR_NAME    :개조된 자동차
 
 [GSCHLBUS]
 STR_NAME    :스쿨 버스
 
 [HADESXXX]
-STR_NAME    :Hades Statue
+STR_NAME    :하데스 동상
 
 [HISTFIX1]
-STR_NAME    :Alien Historical Structures
+STR_NAME    :외계인의 역사적 구조물
 
 [HISTFIX2]
-STR_NAME    :Alien Historical Structures
+STR_NAME    :외계인의 역사적 구조물
 
 [HODSHUT1]
-STR_NAME    :Robin Hood's Hut
+STR_NAME    :로빈 후드의 막사
 
 [HODSHUT2]
-STR_NAME    :Robin Hood's Hut
+STR_NAME    :로빈 후드의 막사
 
 [HRBWAL07]
 STR_NAME    :항구 벽 구석 조각
@@ -10965,46 +10966,46 @@ STR_NAME    :항구 벽 구석 조각
 STR_NAME    :항구 벽 구석 조각
 
 [HRBWAL09]
-STR_NAME    :항구 벽 with Dock
+STR_NAME    :항구 벽
 
 [HRBWAL11]
-STR_NAME    :항구 Dock
+STR_NAME    :항구
 
 [JAILXX18]
-STR_NAME    :감옥 Water Tower
+STR_NAME    :감옥 급수탑
 
 [JETPLAN1]
-STR_NAME    :Jet Aeroplane
+STR_NAME    :제트 항공기
 
 [JETPLAN2]
-STR_NAME    :Jet Aeroplane
+STR_NAME    :제트 항공기
 
 [JETPLAN3]
-STR_NAME    :Jet Aeroplane
+STR_NAME    :제트 항공기
 
 [MCASTL13]
-STR_NAME    :Castle Tower 구석 조각
+STR_NAME    :성탑 구석 조각
 
 [MCASTL14]
-STR_NAME    :Castle Tower 구석 조각
+STR_NAME    :성탑 구석 조각
 
 [MCASTL15]
-STR_NAME    :Castle Tower Cross 조각
+STR_NAME    :성탑 구석 조각
 
 [MCASTL16]
-STR_NAME    :Castle Tower Straight 조각
+STR_NAME    :성탑 직선 조각
 
 [MCASTL17]
-STR_NAME    :Castle Tower T 조각
+STR_NAME    :성탑 T 조각
 
 [MCASTL18]
-STR_NAME    :Castle Tower T 조각
+STR_NAME    :성탑 T 조각
 
 [METOAN01]
-STR_NAME    :Meteor Crater 구석
+STR_NAME    :운석 크레이터 구석
 
 [METOAN02]
-STR_NAME    :Meteor Crater Inverted 구석
+STR_NAME    :운석 크레이터 반전된 구석
 
 [OLDNYK20]
 STR_NAME    :뉴욕 지붕 조각
@@ -11031,25 +11032,25 @@ STR_NAME    :뉴욕 벽 조각
 STR_NAME    :뉴욕 벽 조각
 
 [PEASTHUT]
-STR_NAME    :Peasant Hut
+STR_NAME    :소작농 막사
 
 [PERAMOB1]
-STR_NAME    :Period Automobile
+STR_NAME    :시대적인 자동차
 
 [PERAMOB2]
-STR_NAME    :Period Automobile
+STR_NAME    :시대적인 자동차
 
 [PERDTK01]
-STR_NAME    :Period Truck
+STR_NAME    :시대적인 트럭
 
 [PERDTK02]
-STR_NAME    :Period Truck
+STR_NAME    :시대적인 트럭
 
 [PLOUGHXX]
-STR_NAME    :Plough
+STR_NAME    :쟁기
 
 [PRDYACHT]
-STR_NAME    :Period Sailing Yacht
+STR_NAME    :기간 항해 요트
 
 [PSNTWL26]
 STR_NAME    :암흑 시대 마을 지붕 조각
@@ -11061,97 +11062,97 @@ STR_NAME    :암흑 시대 마을 구석 지붕 조각
 STR_NAME    :반전된 암흑 시대 마을 지붕 조각
 
 [RDMET2X2]
-STR_NAME    :Small Red Meteor Crater
+STR_NAME    :소형 붉은색 크레이터
 
 [RDMET4X4]
-STR_NAME    :Large Red Meteor Crater
+STR_NAME    :대형 붉은색 크레이터
 
 [RDMETO01]
-STR_NAME    :Red Meteor Crater 구석
+STR_NAME    :붉은색 운석 크레이터 구석
 
 [RDMETO02]
-STR_NAME    :Red Meteor Crater 구석
+STR_NAME    :붉은색 운석 크레이터 구석
 
 [ROBNCAMP]
-STR_NAME    :Robin Hood's Camp
+STR_NAME    :로빈 후드의 캠프
 
 [ROMNC2X2]
-STR_NAME    :Roman Palace 구석 조각
+STR_NAME    :로마궁 구석 조각
 
 [ROMNE2X1]
-STR_NAME    :Roman Palace End 조각
+STR_NAME    :로마궁 End 조각
 
 [ROMNM2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :로마궁 교차 조각
 
 [ROMNS2X2]
-STR_NAME    :Roman Palace Straight 조각
+STR_NAME    :로마궁 직선 조각
 
 [ROMVC2X2]
-STR_NAME    :Roman Palace 구석 조각
+STR_NAME    :로마궁 구석 조각
 
 [ROMVE2X1]
-STR_NAME    :Roman Palace End 조각
+STR_NAME    :로마궁 끝 조각
 
 [ROMVM2X2]
-STR_NAME    :Roman Palace Cross Section
+STR_NAME    :로마궁 교차 조각
 
 [ROMVS2X2]
-STR_NAME    :Roman Palace Straight 조각
+STR_NAME    :로마궁 직선 조각
 
 [SCHNPIT2]
-STR_NAME    :Seaplane Pits
+STR_NAME    :수상기 피트
 
 [SCHNPITS]
-STR_NAME    :Seaplane Pits
+STR_NAME    :수상기 피트
 
 [SCHNTENT]
-STR_NAME    :Marquee
+STR_NAME    :대형 천막
 
 [SHIPB4X4]
-STR_NAME    :Luxury Liner Bow
+STR_NAME    :호화 여객선 선두
 
 [SHIPM4X4]
-STR_NAME    :Luxury Liner 중간 섹션
+STR_NAME    :호화 여객선 중간 섹션
 
 [SHIPS4X4]
-STR_NAME    :Luxury Liner Stern
+STR_NAME    :호화 여객선 선미
 
 [STRGS2X2]
-STR_NAME    :Roman Palace Straight 조각
+STR_NAME    :로마 궁 직선 조각
 
 [STRVS2X2]
-STR_NAME    :Roman Palace Straight 조각
+STR_NAME    :로마 궁 직선 조각
 
 [TAVERNXX]
-STR_NAME    :Dark Ages Tavern
+STR_NAME    :암흑 시대 터번
 
 [TRAVLR01]
-STR_NAME    :Traveller Van
+STR_NAME    :여행자 밴
 
 [TRAVLR02]
-STR_NAME    :Microbus
+STR_NAME    :마이크로버스
 
 [JAILXX19]
 STR_NAME    :감옥 울타리
 
 [MSPKWA01]
-STR_NAME    :Spiked Fence
+STR_NAME    :침 달린 울타리
 
 [1920PATH]
-STR_NAME    :Sidewalk FootPath
+STR_NAME    :포장 보도
 
 [FUTRPAT2]
-STR_NAME    :Sky Walk FootPath
+STR_NAME    :공중 보도
 
 [FUTRPATH]
-STR_NAME    :Circuit FootPath
+STR_NAME    :서킷 보도
 
 [JURRPATH]
-STR_NAME    :Rocky FootPath
+STR_NAME    :돌무더기 보도
 
 [MEDIPATH]
-STR_NAME    :Wooden FootPath
+STR_NAME    :나무 보도
 
 [MYTHPATH]
 STR_NAME    :모자이크 보도
