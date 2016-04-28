@@ -109,8 +109,6 @@ void console_update()
 	_consoleBottom = 322;
 
 	if (gConsoleOpen) {
-		console_invalidate();
-
 		// When scrolling the map, the console pixels get copied... therefore invalidate the screen
 		rct_window *mainWindow = window_get_main();
 		if (mainWindow != NULL) {
@@ -153,7 +151,8 @@ void console_draw(rct_drawpixelinfo *dpi)
 	}
 
 	// Background
-	gfx_fill_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, 0x2000000 | 57);
+	console_invalidate();
+	gfx_fill_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, 0x2000000 | 56);
 
 	int x = _consoleLeft + 4;
 	int y = _consoleTop + 4;
