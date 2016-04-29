@@ -1325,6 +1325,17 @@ void window_staff_viewport_init(rct_window* w){
 	window_invalidate(w);
 }
 
+void staff_get_valid_skins(int* ebx)
+{
+	init_scenery();
+	*ebx = 0;
+	for (int i = 0; i < 19; i++) {
+		if (window_scenery_tab_entries[i][0] != -1) {
+			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
+			*ebx |= scenery_entry->var_10A;
+		}
+	}
+}
 /**
 * Handle the costume of staff member.
 * rct2: 0x006BE802
@@ -1335,15 +1346,8 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		return;
 	}
 
-	init_scenery();
-
-	int ebx = 0;
-	for (int i = 0; i < 19; i++) {
-		if (window_scenery_tab_entries[i][0] != -1) {
-			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
-			ebx |= scenery_entry->var_10A;
-		}
-	}
+	int ebx;
+	staff_get_valid_skins(&ebx);
 
 	uint8* ebp = RCT2_ADDRESS(0xF4391B, uint8);
 	uint16 no_entries = 0;
