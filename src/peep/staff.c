@@ -80,8 +80,8 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 
 
 /*
-Select random skins for entertainers on palcement.
-+ only select valid skins for the current scenery
+*  Select random skins for entertainers on placement.
+*  returns 0 if the staff_type != 3 (= entertainer)
 */
 int staff_select_random_skin(int staff_type)
 {
