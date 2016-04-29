@@ -183,7 +183,7 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int 
 
 void sub_68B2B7(int x, int y);
 void painter_setup();
-void sub_688485();
+void paint_quadrant_ps();
 void sub_688217();
 
 bool sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, uint32 rotation);

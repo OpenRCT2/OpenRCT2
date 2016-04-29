@@ -698,372 +698,6 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 }
 
 /**
-*
-*  rct2: 0x0068615B
-*/
-void painter_setup(){
-	RCT2_GLOBAL(0xEE7888, uint32) = 0x00EE788C;
-	RCT2_GLOBAL(0xF1AD28, uint32) = 0;
-	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
-	uint8* edi = RCT2_ADDRESS(0xF1A50C, uint8);
-	memset(edi, 0, 2048);
-	RCT2_GLOBAL(0xF1AD0C, sint32) = -1;
-	RCT2_GLOBAL(0xF1AD10, uint32) = 0;
-	RCT2_GLOBAL(0xF1AD20, uint32) = 0;
-	RCT2_GLOBAL(0xF1AD24, uint32) = 0;
-}
-
-/**
- *
- *  rct2: 0x00688596
- *  Part of 0x688485
- */
-void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_ps, rct_drawpixelinfo* dpi){
-	for (; attached_ps; attached_ps = attached_ps->next){
-		sint16 x = attached_ps->x + ps->x;
-		sint16 y = attached_ps->y + ps->y;
-
-		int image_id = attached_ps->image_id;
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
-			if (ps->sprite_type == 3){
-				if (image_id & 0x40000000){
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
-			if (ps->sprite_type == 5){
-				if (image_id & 0x40000000){
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-
-		if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED) {
-			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, attached_ps->colour_image_id);
-		} else {
-			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
-		}
-	}
-}
-
-void sub_688485(){
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
-	paint_struct* previous_ps = ps->next_quadrant_ps;
-
-	for (ps = ps->next_quadrant_ps; ps;){
-		sint16 x = ps->x;
-		sint16 y = ps->y;
-		if (ps->sprite_type == 2){
-			if (dpi->zoom_level >= 1){
-				x &= 0xFFFE;
-				y &= 0xFFFE;
-				if (dpi->zoom_level >= 2){
-					x &= 0xFFFC;
-					y &= 0xFFFC;
-				}
-			}
-		}
-		int image_id = ps->image_id;
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
-			if (ps->sprite_type == 3){
-				if (!(image_id & 0x40000000)){
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
-			if (ps->sprite_type == 9){
-				if (!(image_id & 0x40000000)){
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
-			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5){
-				if (!(image_id & 0x40000000)){
-					image_id &= 0x7FFFF;
-					image_id |= 0x41880000;
-				}
-			}
-		}
-
-		if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
-			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->colour_image_id);
-		else
-			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
-
-		if (ps->var_20 != 0){
-			ps = ps->var_20;
-			continue;
-		}
-
-		paint_attached_ps(ps, ps->attached_ps, dpi);
-		ps = previous_ps->next_quadrant_ps;
-		previous_ps = ps;
-	}
-
-}
-
-/**
- *
- *  rct2: 0x006874B0, 0x00687618, 0x0068778C, 0x00687902, 0x0098199C
- *
- * @param image_id (ebx)
- * @param x_offset (al)
- * @param y_offset (cl)
- * @param bound_box_length_x (di)
- * @param bound_box_length_y (si)
- * @param bound_box_length_z (ah)
- * @param z_offset (dx)
- * @param bound_box_offset_x (0x009DEA52)
- * @param bound_box_offset_y (0x009DEA54)
- * @param bound_box_offset_z (0x009DEA56)
- * @param rotation (ebp)
- * @return (!CF) success
- */
-bool sub_98199C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
-	sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z,
-	uint32 rotation
-) {
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, uint16) = bound_box_offset_x;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
-
-	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[rotation],
-		x_offset | (bound_box_length_z << 8),
-		image_id,
-		y_offset,
-		z_offset,
-		bound_box_length_y,
-		bound_box_length_x,
-		rotation);
-
-	return !(flags & (1 << 8));
-}
-
-/**
- *  rct2: 0x006861AC, 0x00686337, 0x006864D0, 0x0068666B, 0x0098196C
- *
- * @param image_id (ebx)
- * @param x_offset (al)
- * @param y_offset (cl)
- * @param bound_box_length_x (di)
- * @param bound_box_length_y (si)
- * @param bound_box_length_z (ah)
- * @param z_offset (dx)
- * @param rotation (ebp)
- * @return (!CF) success
- */
-bool sub_98196C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
-	uint32 rotation
-) {
-	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[rotation],
-		x_offset | (bound_box_length_z << 8),
-		image_id,
-		y_offset,
-		z_offset,
-		bound_box_length_y,
-		bound_box_length_x,
-		rotation
-	);
-
-	return !(flags & (1 << 8));
-}
-
-/**
- *  rct2: 0x00686806, 0x006869B2, 0x00686B6F, 0x00686D31, 0x0098197C
- *
- * @param image_id (ebx)
- * @param x_offset (al)
- * @param y_offset (cl)
- * @param bound_box_length_x (di)
- * @param bound_box_length_y (si)
- * @param bound_box_length_z (ah)
- * @param z_offset (dx)
- * @param bound_box_offset_x (0x009DEA52)
- * @param bound_box_offset_y (0x009DEA54)
- * @param bound_box_offset_z (0x009DEA56)
- * @param rotation (ebp)
- * @return (!CF) success
- */
-bool sub_98197C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
-	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
-	uint32 rotation
-) {
-	
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
-	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
-
-	//Not a paint struct but something similar
-	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
-
-	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))return false;
-
-	ps->image_id = image_id;
-
-	uint32 image_element = image_id & 0x7FFFF;
-	rct_g1_element *g1Element = gfx_get_g1_element(image_element);
-
-	rct_xyz16 coord_3d = {
-		.x = x_offset,
-		.y = y_offset,
-		.z = z_offset
-	};
-
-	switch (rotation) {
-	case 0:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 0);
-		break;
-	case 1:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 3);
-		break;
-	case 2:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 2);
-		break;
-	case 3:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 1);
-		break;
-	}
-	coord_3d.x += RCT2_GLOBAL(0x9DE568, sint16);
-	coord_3d.y += RCT2_GLOBAL(0x9DE56C, sint16);
-
-	rct_xy16 map = coordinate_3d_to_2d(&coord_3d, rotation);
-
-	ps->x = map.x;
-	ps->y = map.y;
-
-	int left = map.x + g1Element->x_offset;
-	int bottom = map.y + g1Element->y_offset;
-
-	int right = left + g1Element->width;
-	int top = bottom + g1Element->height;
-
-	RCT2_GLOBAL(0xF1AD1C, uint16) = left;
-	RCT2_GLOBAL(0xF1AD1E, uint16) = bottom;
-
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-
-	if (right <= dpi->x)return false;
-	if (top <= dpi->y)return false;
-	if (left > dpi->x + dpi->width)return false;
-	if (bottom > dpi->y + dpi->height)return false;
-
-	rct_xy16 boundBox = {
-		.x = bound_box_length_x,
-		.y = bound_box_length_y
-	};
-
-	rct_xy16 boundBoxOffset = {
-		.x = bound_box_offset_x,
-		.y = bound_box_offset_y
-	};
-
-	// Unsure why rots 1 and 3 need to swap
-	switch (rotation){
-	case 0:		
-		boundBox.x--;
-		boundBox.y--;
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 0);
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 0);
-		break;
-	case 1:
-		boundBox.x--;
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 3);
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 3);
-		break;
-	case 2:
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 2);
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 2);
-		break;
-	case 3:
-		boundBox.y--;
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 1);
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 1);
-		break;
-	}
-
-	ps->bound_box_x_end = boundBox.x + boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
-	ps->bound_box_z = bound_box_offset_z;
-	int boundBoxZEnd = bound_box_length_z + bound_box_offset_z;
-	ps->bound_box_z_end = boundBoxZEnd;
-	ps->bound_box_y_end = boundBox.y + boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
-	ps->flags = 0;
-	ps->bound_box_x = boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
-	ps->bound_box_y = boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
-	ps->attached_ps = NULL;
-	ps->var_20 = NULL;
-	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
-	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
-	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
-	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
-	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
-
-	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
-
-	rct_xy16 attach = {
-		.x = ps->bound_box_x,
-		.y = ps->bound_box_y
-	};
-
-	rotate_map_coordinates(&attach.x, &attach.y, rotation);
-	switch (rotation){
-	case 0:
-		break;
-	case 1:
-	case 3:
-		attach.x += 0x2000;
-		break;
-	case 2:
-		attach.x += 0x4000;
-		break;
-	}
-
-	sint16 di = attach.x + attach.y;
-
-	if (di < 0)
-		di = 0;
-
-	di /= 32;
-	if (di > 511)
-		di = 511;
-
-	ps->var_18 = di;
-	paint_struct* old_ps = RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di];
-	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[di] = ps;
-	ps->next_quadrant_ps = old_ps;
-
-	if ((uint16)di < RCT2_GLOBAL(0x00F1AD0C, uint32)){
-		RCT2_GLOBAL(0x00F1AD0C, uint32) = di;
-	}
-
-	if ((uint16)di > RCT2_GLOBAL(0x00F1AD10, uint32)){
-		RCT2_GLOBAL(0x00F1AD10, uint32) = di;
-	}
-
-	RCT2_GLOBAL(0xEE7888, paint_struct*)++;
-	return true;
-}
-
-/**
  *
  *  rct2: 0x006D5FAB
  */
@@ -1255,48 +889,6 @@ static void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z
 	}
 
 	assert(vehicleEntry->pad_5E == 1);
-}
-
-/**
- *
- *  rct2: 0x00686EF0, 0x00687056, 0x006871C8, 0x0068733C, 0x0098198C
- *
- * @param image_id (ebx)
- * @param x_offset (al)
- * @param y_offset (cl)
- * @param bound_box_length_x (di)
- * @param bound_box_length_y (si)
- * @param bound_box_length_z (ah)
- * @param z_offset (dx)
- * @param bound_box_offset_x (0x009DEA52)
- * @param bound_box_offset_y (0x009DEA54)
- * @param bound_box_offset_z (0x009DEA56)
- * @param rotation
- * @return (!CF) success
- */
-bool sub_98198C(
-	uint32 image_id,
-	sint8 x_offset, sint8 y_offset,
-	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
-	sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z,
-	uint32 rotation
-) {
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, uint16) = bound_box_offset_x;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
-
-	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[rotation],
-		x_offset | (bound_box_length_z << 8),
-		image_id, 
-		y_offset,
-		z_offset,
-		bound_box_length_y,
-		bound_box_length_x,
-		rotation
-	);
-
-	return !(flags & (1 << 8));
 }
 
 /**
@@ -2463,16 +2055,6 @@ void sub_688217()
 		sub_688217_helper(eax & 0xFFFF, 0);
 }
 
-typedef struct paint_string_struct paint_string_struct;
-struct paint_string_struct {
-	rct_string_id string_id;		// 0x00
-	paint_string_struct *next;		// 0x02
-	uint16 x;						// 0x06
-	uint16 y;						// 0x08
-	uint8 args[16];					// 0x0A
-	uint8 *y_offsets;				// 0x1A
-};
-
 static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 {
 	int zoom = dpi->zoom_level;
@@ -2481,6 +2063,106 @@ static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo *dpi)
 	dpi->y >>= zoom;
 	dpi->width >>= zoom;
 	dpi->height >>= zoom;
+}
+
+/**
+ *
+ *  rct2: 0x00688596
+ *  Part of 0x688485
+ */
+void paint_attached_ps(paint_struct* ps, attached_paint_struct* attached_ps, rct_drawpixelinfo* dpi) {
+	for (; attached_ps; attached_ps = attached_ps->next) {
+		sint16 x = attached_ps->x + ps->x;
+		sint16 y = attached_ps->y + ps->y;
+
+		int image_id = attached_ps->image_id;
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
+			if (ps->sprite_type == 3) {
+				if (image_id & 0x40000000) {
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
+			if (ps->sprite_type == 5) {
+				if (image_id & 0x40000000) {
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+
+		if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED) {
+			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, attached_ps->colour_image_id);
+		}
+		else {
+			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
+		}
+	}
+}
+
+/* rct2: 0x00688485 */
+void paint_quadrant_ps() {
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	paint_struct* ps = RCT2_GLOBAL(0xEE7884, paint_struct*);
+	paint_struct* previous_ps = ps->next_quadrant_ps;
+
+	for (ps = ps->next_quadrant_ps; ps;) {
+		sint16 x = ps->x;
+		sint16 y = ps->y;
+		if (ps->sprite_type == 2) {
+			if (dpi->zoom_level >= 1) {
+				x &= 0xFFFE;
+				y &= 0xFFFE;
+				if (dpi->zoom_level >= 2) {
+					x &= 0xFFFC;
+					y &= 0xFFFC;
+				}
+			}
+		}
+		int image_id = ps->image_id;
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) {
+			if (ps->sprite_type == 3) {
+				if (!(image_id & 0x40000000)) {
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+			if (ps->sprite_type == 9) {
+				if (!(image_id & 0x40000000)) {
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+		if (gCurrentViewportFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) {
+			if (ps->sprite_type == 10 || ps->sprite_type == 12 || ps->sprite_type == 9 || ps->sprite_type == 5) {
+				if (!(image_id & 0x40000000)) {
+					image_id &= 0x7FFFF;
+					image_id |= 0x41880000;
+				}
+			}
+		}
+
+		if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
+			gfx_draw_sprite_raw_masked(dpi, x, y, image_id, ps->colour_image_id);
+		else
+			gfx_draw_sprite(dpi, image_id, x, y, ps->tertiary_colour);
+
+		if (ps->var_20 != 0) {
+			ps = ps->var_20;
+			continue;
+		}
+
+		paint_attached_ps(ps, ps->attached_ps, dpi);
+		ps = previous_ps->next_quadrant_ps;
+		previous_ps = ps;
+	}
+
 }
 
 /**
@@ -2603,7 +2285,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		painter_setup();
 		viewport_paint_setup();
 		sub_688217();
-		sub_688485();
+		paint_quadrant_ps();
 
 		int weather_colour = RCT2_ADDRESS(0x98195C, uint32)[gClimateCurrentWeatherGloom];
 		if ((weather_colour != -1) && (!(gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)) && (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1))){
