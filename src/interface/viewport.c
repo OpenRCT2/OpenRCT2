@@ -32,6 +32,10 @@
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "paint_surface.h"
+#include "colour.h"
+#include "paint.h"
+#include "viewport.h"
+#include "window.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
 

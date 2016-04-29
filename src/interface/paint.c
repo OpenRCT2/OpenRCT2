@@ -1,4 +1,5 @@
 #include "paint.h"
+#include "../addresses.h"
 
 /**
  * rct2: 0x006881D0
@@ -14,23 +15,23 @@ bool paint_6881D0(uint32 image_id, uint16 x, uint16 y)
         return paint_68818E(image_id, x, y, NULL);
     }
 
-    paint_struct * ps = RCT2_GLOBAL(0xEE7888, paint_struct * );
+    attached_paint_struct * ps = RCT2_GLOBAL(0xEE7888, attached_paint_struct *);
 
     if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
         return false;
     }
 
     ps->image_id = image_id;
-    ps->attached_x = x;
-    ps->attached_y = y;
-    ps->var_0C = 0;
+    ps->x = x;
+    ps->y = y;
+    ps->flags = 0;
 
-    paint_struct * ebx = RCT2_GLOBAL(0xF1AD2C, paint_struct * );
+    attached_paint_struct * ebx = RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *);
 
-    ps->next_attached_ps = NULL;
-    ebx->next_attached_ps = ps;
+    ps->next = NULL;
+    ebx->next = ps;
 
-    RCT2_GLOBAL(0xF1AD2C, paint_struct * ) = ps;
+    RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *) = ps;
 
     RCT2_GLOBAL(0xEE7888, uint32) += 0x12;
 
@@ -46,7 +47,37 @@ bool paint_6881D0(uint32 image_id, uint16 x, uint16 y)
  * @param[out] paint (ebp)
  * @return (!CF) success
  */
-bool paint_68818E(uint32 image_id, uint16 x, uint16 y, paint_struct ** paint)
+bool paint_68818E(uint32 image_id, uint16 x, uint16 y, attached_paint_struct ** paint)
 {
+    //Not a paint struct but something similar
+    attached_paint_struct * ps = RCT2_GLOBAL(0xEE7888, attached_paint_struct *);
+
+    if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+        return false;
+    }
+
+    ps->image_id = image_id;
+    ps->x = x;
+    ps->y = y;
+    ps->flags = 0;
+
+    attached_paint_struct * ebx2 = RCT2_GLOBAL(0xF1AD28, attached_paint_struct *);
+    if (ebx2 == NULL) {
+        return false;
+    }
+
+    RCT2_GLOBAL(0x00EE7888, uint32) += 0x12;
+
+    attached_paint_struct * edi = ebx2->next;
+    ebx2->next = ps;
+
+    ps->next = edi;
+
+    RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *) = ps;
+
+    if (paint != NULL) {
+        *paint = ps;
+    }
+
     return true;
 }
