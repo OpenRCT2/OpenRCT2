@@ -88,8 +88,7 @@ int staff_select_random_skin(int staff_type)
 	if (staff_type != 3)
 		return 0;
 
-	int ebx = 0;
-	staff_get_valid_skins(&ebx);
+	int ebx = staff_get_valid_skins();
 
 	uint16 num_entries = 0;
 	for (uint8 i = 4; i < 19; ++i) {

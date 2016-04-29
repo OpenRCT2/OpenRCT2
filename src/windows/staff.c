@@ -1325,16 +1325,27 @@ void window_staff_viewport_init(rct_window* w){
 	window_invalidate(w);
 }
 
-void staff_get_valid_skins(int* ebx)
+int staff_get_valid_skins()
 {
-	init_scenery();
-	*ebx = 0;
+	int ebx = 0;
 	for (int i = 0; i < 19; i++) {
-		if (window_scenery_tab_entries[i][0] != -1) {
-			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
-			*ebx |= scenery_entry->var_10A;
+		if (i == 13)
+			continue;
+		rct_scenery_set_entry* scenerySetEntry = g_scenerySetEntries[i];
+
+		if ((uint32)scenerySetEntry == 0xFFFFFFFF)
+			continue;
+
+		for (int i = 0; i < scenerySetEntry->entry_count; i++) {
+			uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
+			uint32 ecx = RCT2_ADDRESS(0x01357BD0, uint32)[sceneryEntryId >> 5];
+			uint32 edx = 1u << (sceneryEntryId & 0x1F);
+			if (ecx & edx) {
+				ebx |= scenerySetEntry->var_10A;
+			}
 		}
 	}
+	return ebx;
 }
 /**
 * Handle the costume of staff member.
@@ -1346,8 +1357,7 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 		return;
 	}
 
-	int ebx;
-	staff_get_valid_skins(&ebx);
+	int ebx = staff_get_valid_skins();
 
 	uint8* ebp = RCT2_ADDRESS(0xF4391B, uint8);
 	uint16 no_entries = 0;
