@@ -1434,7 +1434,7 @@ STR_1428    :{WINDOW_COLOUR_2}Precio de la entrada:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1430    :Gratis
 STR_1431    :Caminando
-STR_1432    :Yendo a {STRINGID}
+STR_1432    :Dirigiéndose a {STRINGID}
 STR_1433    :Esperando en {STRINGID}
 STR_1434    :Ahogándose
 STR_1435    :En {STRINGID}
@@ -1843,7 +1843,7 @@ STR_1837    :Satisfacción: Desconocido
 STR_1838    :Satisfacción: {COMMA16}%
 STR_1839    :Fiabilidad: {COMMA16}%
 STR_1840    :Tiempo averiado: {COMMA16}%
-STR_1841    :Beneficio: {CURRENCY2DP} per hour
+STR_1841    :Beneficio: {CURRENCY2DP} por hora
 STR_1842    :Favorito de: {COMMA16} visitante
 STR_1843    :Favorito de: {COMMA16} visitantes
 STR_1844    :{SMALLFONT}{BLACK}Selecciona el tipo de información a mostrar en la lista
@@ -1853,8 +1853,8 @@ STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitantes
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitantes
 STR_1849    :{WINDOW_COLOUR_2}Reproducir música
 STR_1850    :{SMALLFONT}{BLACK}Activar música para esta atracción.
-STR_1851    :{WINDOW_COLOUR_2}Coste funcionamiento: {BLACK}{CURRENCY2DP} por hora
-STR_1852    :{WINDOW_COLOUR_2}Coste funcionamiento: {BLACK}Desconocido
+STR_1851    :{WINDOW_COLOUR_2}Coste de funcionamiento: {BLACK}{CURRENCY2DP} por hora
+STR_1852    :{WINDOW_COLOUR_2}Coste de funcionamiento: {BLACK}Desconocido
 STR_1853    :{WINDOW_COLOUR_2}Construido: {BLACK}Este año
 STR_1854    :{WINDOW_COLOUR_2}Construido: {BLACK}El año pasado
 STR_1855    :{WINDOW_COLOUR_2}Construido: {BLACK}Hace {COMMA16} años
@@ -2010,7 +2010,7 @@ STR_2002    :Cupón
 STR_2003    :Palomitas de Maíz
 STR_2004    :Perrito Caliente
 STR_2005    :Tentáculo
-STR_2006    :Gorra
+STR_2006    :Sombrero
 STR_2007    :Manzana de Caramelo
 STR_2008    :Camiseta
 STR_2009    :Rosquilla
@@ -2066,7 +2066,7 @@ STR_2058    :un Cupón
 STR_2059    :unas Palomitas de Maíz
 STR_2060    :un Perrito Caliente
 STR_2061    :un Tentáculo
-STR_2062    :una Gorra
+STR_2062    :un Sombrero
 STR_2063    :una Manzana de Caramelo
 STR_2064    :una Camiseta
 STR_2065    :una Rosquilla
@@ -4075,17 +4075,17 @@ STR_5767    :Ingresos
 STR_5768    :Clientes totales
 STR_5769    :Beneficio total
 STR_5770    :Clientes por hora
-STR_5771    :Coste de funcionamiento
+STR_5771    :Coste funcionamiento
 STR_5772    :Edad
 STR_5773    :Clientes totales: {COMMA32}
 STR_5774    :Beneficio total: {CURRENCY2DP}
-STR_5775    :Clientes: {COMMA32} per hour
+STR_5775    :Clientes: {COMMA32} por hora
 STR_5776    :Construido: Este año
 STR_5777    :Construido: El año pasado
 STR_5778    :Construido: Hace {COMMA16} años
 STR_5779    :Ingresos: {CURRENCY2DP} por hora
-STR_5780    :Coste de funcionamiento: {CURRENCY2DP} por hora
-STR_5781    :Coste de funcionamiento: Desconocido
+STR_5780    :Coste: {CURRENCY2DP} por hora
+STR_5781    :Coste: Desconocido
 STR_5782    :Ahora estas conectado. Presiona '{STRING}' para chatear.
 STR_5783    :{WINDOW_COLOUR_2}Escenario bloqueado
 STR_5784    :{BLACK}Completa escenarios anteriores para desbloquear este escenario.

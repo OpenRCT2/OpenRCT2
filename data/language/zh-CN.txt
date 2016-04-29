@@ -4013,34 +4013,34 @@ STR_5664    :Cheat
 STR_5665    :Toggle Scenery Cluster
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
-STR_5703    :Can't kick the host
-STR_5704    :Last Action:
+STR_5703    :不能提出创建者
+STR_5704    :最近的行为:
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
 STR_5708    :Can't change the group that the host belongs to
-STR_5709    :Rename Group
-STR_5710    :Group name
-STR_5711    :Enter new name for this group:
-STR_5712    :Can't modify permission that you do not have yourself
-STR_5713    :Kick Player
-STR_5714    :Show options window
-STR_5715    :New Game
-STR_5716    :Not allowed in multiplayer mode
+STR_5709    :重命名组
+STR_5710    :组名
+STR_5711    :请输入该组的新名称:
+STR_5712    :不能修改你没有的权限
+STR_5713    :踢出玩家
+STR_5714    :显示设置窗口
+STR_5715    :新游戏
+STR_5716    :不能在多人模式中使用
 # For identifying client network version in server list window
 STR_5717    :Network version: {STRING}
 STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
-STR_5719    :Sunny
-STR_5720    :Partially Cloudy
-STR_5721    :Cloudy
-STR_5722    :Rain
-STR_5723    :Heavy Rain
-STR_5724    :Thunderstorm
-STR_5725    :{BLACK}Force weather:
-STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
+STR_5719    :晴天
+STR_5720    :多云间晴
+STR_5721    :多云
+STR_5722    :下雨
+STR_5723    :大雨
+STR_5724    :大雷雨
+STR_5725    :{BLACK}强制设定天气为:
+STR_5726    :{SMALLFONT}{BLACK}设定游乐园当前的天气
 STR_5727    :缩放质量
 STR_5728    :需要开启硬件渲染
-STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
+STR_5729    :{SMALLFONT}{BLACK}需要开启硬件渲染选项
 STR_5730    :最近相邻
 STR_5731    :线性
 STR_5732    :各向异性
@@ -4049,49 +4049,49 @@ STR_5733    :以整数比例调整最近相邻缩放
 STR_5734    :{SMALLFONT}{BLACK}渲染
 STR_5735    :网络状态
 STR_5736    :玩家
-STR_5737    :Closed, {COMMA16} person still on ride
-STR_5738    :Closed, {COMMA16} people still on ride
-STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
-STR_5740    :Never-ending marketing campaigns
+STR_5737    :已关闭, {COMMA16} 个游客仍在此游乐设施上
+STR_5738    :已关闭, {COMMA16} 个游客仍在此游乐设施上
+STR_5739    :{WINDOW_COLOUR_2}此游乐设施上的游客: {BLACK}{COMMA16}
+STR_5740    :永不结束的市场推广计划
 STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
-STR_5742    :Authenticating ...
-STR_5743    :Connecting ...
+STR_5742    :认证中 ...
+STR_5743    :连接中 ...
 STR_5744    :Resolving ...
-STR_5745    :Network desync detected
-STR_5746    :Disconnected
-STR_5747    :Disconnected: {STRING}
-STR_5748    :Kicked
-STR_5749    :Get out of the server!
-STR_5750    :Connection Closed
+STR_5745    :检测到网络不同步
+STR_5746    :已断线
+STR_5747    :已断线: {STRING}
+STR_5748    :已被踢出
+STR_5749    :请离开当前服务器!
+STR_5750    :连接已关闭
 STR_5751    :No Data
-STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
-STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
-STR_5754    :Bad Player Name
+STR_5752    :{OUTLINE}{RED}{STRING} 已离开游戏
+STR_5753    :{OUTLINE}{RED}{STRING} 已离开游戏 ({STRING})
+STR_5754    :玩家命名错误
 STR_5755    :不正确的游戏版本 (服务器版本为 {STRING})
-STR_5756    :Bad Password
-STR_5757    :Server Full
-STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
+STR_5756    :密码错误
+STR_5757    :服务器人数已满
+STR_5758    :{OUTLINE}{GREEN}{STRING} 已加入游戏
 STR_5759    :下载地图中 ... ({INT32} / {INT32}) KB
 STR_5760    :港币 (HK$)
 STR_5761    :新台币 (NT$)
 STR_5762    :人民币 (CN{YEN})
 STR_5763    :All files
-STR_5764    :Invalid ride type
-STR_5765    :Cannot edit rides of invalid type
+STR_5764    :不正确的游乐设施类型
+STR_5765    :无法修改类型不正确的游乐设施
 STR_5766    :<available string id>
 STR_5767    :收入
 STR_5768    :总游客数
 STR_5769    :总利润
-STR_5770    :Customers per hour
+STR_5770    :每小时游客数
 STR_5771    :运营成本
 STR_5772    :年龄
-STR_5773    :Total customers: {COMMA32}
-STR_5774    :Total profit: {CURRENCY2DP}
-STR_5775    :Customers: {COMMA32} per hour
+STR_5773    :总游客数: {COMMA32}
+STR_5774    :总利润: {CURRENCY2DP}
+STR_5775    :游客数: {COMMA32} 每小时
 STR_5776    :建成年份: 今年
 STR_5777    :建成年份: 去年
 STR_5778    :建成年份: {COMMA16} 年前
-STR_5779    :Income: {CURRENCY2DP} per hour
+STR_5779    :收入: {CURRENCY2DP} 每小时
 STR_5780    :运营成本: {CURRENCY2DP} 每小时
 STR_5781    :运营成本: 未知
 STR_5782    :你已经连接到服务器. 请按 '{STRING}' 开始聊天.
@@ -4104,15 +4104,15 @@ STR_5788    :默认检查的时间间隔:
 STR_5789    :禁用闪电效果
 STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
 STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
-STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
+STR_5792    :{SMALLFONT}{BLACK}修理所有已有故障的游乐设施
 STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
 STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
 STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
-STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
-STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
-STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
-STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
-STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
+STR_5796    :{SMALLFONT}{BLACK}强制开发或关闭游乐园
+STR_5797    :{SMALLFONT}{BLACK}禁止天气变化并{NEWLINE}固定于选择的天气
+STR_5798    :{SMALLFONT}{BLACK}暂停时允许建造
+STR_5799    :{SMALLFONT}{BLACK}禁止因刹车故障产生的损坏及撞毁
+STR_5800    :{SMALLFONT}{BLACK}防止游乐设施发生故障
 STR_5801    :禁止乱丢垃圾
 STR_5802    :{SMALLFONT}{BLACK}阻止游客乱丢垃圾或呕吐
 STR_5803    :{SMALLFONT}{BLACK}旋转选中的地图元素
