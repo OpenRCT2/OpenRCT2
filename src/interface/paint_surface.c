@@ -553,6 +553,9 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 ter
 	sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
 }
 
+/**
+ * rct2: 0x0065EB7D, 0x0065F0D8
+ */
 void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	registers regs;
@@ -707,10 +710,16 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 	}
 }
 
+/**
+ * rct2: 0x0066039B, 0x006604F1
+ */
 void viewport_surface_draw_water_side_top(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 }
 
+/**
+ * rct2: 0x0065F8B9, 0x0065FE26
+ */
 void viewport_surface_draw_water_side_bottom(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	uint32 baseImageId;
@@ -760,26 +769,6 @@ void viewport_surface_draw_water_side_bottom(enum edge edge, struct tile_descrip
 	while (curHeight < waterHeight) {
 		sub_98196C(baseImageId, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, get_current_rotation());
 		curHeight++;
-	}
-}
-
-void viewport_surface_draw_water_side(enum edge edge, uint16 height)
-{
-	return;
-
-	switch (edge) {
-		case EDGE_BOTTOMLEFT:
-			RCT2_CALLPROC_X(0x65F8B9, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-			break;
-		case EDGE_BOTTOMRIGHT:
-			RCT2_CALLPROC_X(0x65FE26, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-			break;
-		case EDGE_TOPLEFT:
-			RCT2_CALLPROC_X(0x66039B, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-			break;
-		case EDGE_TOPRIGHT:
-			RCT2_CALLPROC_X(0x6604F1, 0x99999999, 0, 0xBBBBBBBB, height / 16, 0xDDDDDDDD, 0, 0);
-			break;
 	}
 }
 
@@ -1060,7 +1049,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | 0x20000000;
 				sub_68818E(image_id, 0, 0, NULL);
 			} else {
-				int local_ebx = surfaceShape;
+				int local_surfaceShape = surfaceShape;
 				int local_height = height;
 				// Water tool
 				if (mapElement->properties.surface.terrain & 0x1F) {
@@ -1069,20 +1058,20 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 						local_height += 16;
 
 						if (waterHeight != local_height
-						    || local_ebx == 0x10) {
+						    || !(local_surfaceShape == 0x10)) {
 							local_height = waterHeight;
-							local_ebx = 0;
+							local_surfaceShape = 0;
 						} else {
 							registers regs = { 0 };
 
 							regs.bl = (surfaceShape ^ 0xF) << 2;
 							regs.bh = regs.bl >> 4;
-							local_ebx = (regs.bl & 0x3) | (regs.bh & 0xC); // other way around?
+							local_surfaceShape = (regs.bl & 0x3) | (regs.bh & 0xC);
 						}
 					}
 				}
 
-				int image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_ebx]) | 0x21300000;
+				int image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
 				paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
 				sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, get_current_rotation());
@@ -1093,29 +1082,21 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 2) {
 		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
-		uint32 ebp = pos.y << 16 | pos.x;
-		uint32 edi = 0;
 
-		while (true) {
-			rct_xy16 tile = gMapSelectionTiles[edi];
-
-			if (tile.x == -1) {
-				break;
-			}
-
-			edi++;
-			if (tile.x != pos.x || tile.y != pos.y) {
+		rct_xy16 * tile;
+		for (tile = gMapSelectionTiles; tile->x != -1; tile++) {
+			if (tile->x != pos.x || tile->y != pos.y) {
 				continue;
 			}
 
-			uint32 eax = 0x1580000;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 8) {
-				// Something with path tunnels?
-				eax = g_sprite_list[6556].vehicle.var_44;
+			uint32 colours = COLOUR_GREY << 24 | COLOUR_SATURATED_GREEN << 19;
+			if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 8)) {
+				colours = COLOUR_GREY << 24 | COLOUR_BRIGHT_PURPLE << 19;
 			}
 
-			uint32 image_id = (0x20000BE3 + byte_97B444[surfaceShape]) | eax;
+			uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | 0x20000000;
 			sub_68818E(image_id, 0, 0, NULL);
+			break;
 		}
 	}
 
@@ -1138,7 +1119,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		uint8 image_offset = byte_97B444[surfaceShape];
 		uint32 base_image = terrain_type;
 		if (get_current_rotation() & 1) {
-			base_image = byte_97B84A[base_image];
+			base_image = byte_97B84A[terrain_type];
 		}
 		uint32 image_id = dword_97B7C8[base_image] + image_offset;
 		sub_68818E(image_id, 0, 0, NULL);
@@ -1171,20 +1152,20 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		// loc_6615A9: (water height)
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WATER;
 
-		uint16 ax = height + 16;
-		uint16 dx = (mapElement->properties.surface.terrain & 0x1F) * 16;
+		uint16 localHeight = height + 16;
+		uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
 
-		RCT2_GLOBAL(0x009E3298, uint16) = dx;
+		RCT2_GLOBAL(0x009E3298, uint16) = waterHeight;
 		if ((RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) == 0) {
-			RCT2_GLOBAL(0x0141E9DC, uint16) = dx;
+			RCT2_GLOBAL(0x0141E9DC, uint16) = waterHeight;
 
 			int image_offset = 0;
-			if (dx <= ax) {
+			if (waterHeight <= localHeight) {
 				image_offset = byte_97B740[surfaceShape & 0xF];
 			}
 
 			int image_id = (SPR_WATER_MASK + image_offset) | 0x61000000;
-			sub_98196C(image_id, 0, 0, 32, 32, -1, dx, get_current_rotation());
+			sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, get_current_rotation());
 
 			sub_68818E(SPR_WATER_OVERLAY + image_offset, 0, 0, NULL);
 
