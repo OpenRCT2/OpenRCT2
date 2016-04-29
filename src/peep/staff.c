@@ -31,6 +31,7 @@
 #include "../world/footpath.h"
 #include "peep.h"
 #include "staff.h"
+#include "../world/scenery.h"
 
 uint32 *gStaffPatrolAreas = (uint32*)RCT2_ADDRESS_STAFF_PATROL_AREAS;
 uint8 *gStaffModes = (uint8*)RCT2_ADDRESS_STAFF_MODE_ARRAY;
@@ -76,6 +77,49 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 
 	gfx_invalidate_screen();
 	*ebx = 0;
+}
+
+
+/*
+Select random skins for entertainers on palcement.
++ only select valid skins for the current scenery
+*/
+int selectRandomSkin(int staff_type)
+{
+	if (staff_type != 3)
+		return 0;
+
+	// Some code is 1:1 out of window_staff_options_mousedown in windows\staff.c, but is needed also here!
+
+	init_scenery();
+
+	int ebx = 0;
+	for (int i = 0; i < 19; i++) {
+		if (window_scenery_tab_entries[i][0] != -1) {
+			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
+			ebx |= scenery_entry->var_10A;
+		}
+	}
+
+	uint16 no_entries = 0;
+	for (uint8 i = 0; i < 19; ++i) {
+		if (ebx & (1 << i)) {
+			no_entries++;
+		}
+	}
+	uint16 randVal = rand() % no_entries;
+
+	no_entries = 0;
+	for (uint8 i = 0; i < 19; ++i) {
+		if (ebx & (1 << i)) {
+			if (no_entries++ == randVal)
+			{
+				return i - 4;
+			}
+		}
+	}
+
+	return 0; // Fallback
 }
 
 /**
@@ -181,7 +225,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->id = newStaffIndex;
 		newPeep->staff_type = staff_type;
 
-		_eax = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
+		_eax = RCT2_ADDRESS(0x009929FC, uint8)[staff_type] + selectRandomSkin(staff_type);
 		newPeep->name_string_idx = staff_type + 0x300;
 		newPeep->sprite_type = _eax;
 
