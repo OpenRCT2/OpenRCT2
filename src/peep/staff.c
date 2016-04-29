@@ -91,18 +91,18 @@ int staff_select_random_skin(int staff_type)
 	int ebx = 0;
 	staff_get_valid_skins(&ebx);
 
-	uint16 no_entries = 0;
+	uint16 num_entries = 0;
 	for (uint8 i = 4; i < 19; ++i) {
 		if (ebx & (1 << i)) {
-			no_entries++;
+			num_entries++;
 		}
 	}
-	uint16 randVal = scenario_rand() % no_entries;
+	uint16 randVal = scenario_rand() % num_entries;
 
-	no_entries = 0;
+	num_entries = 0;
 	for (uint8 i = 4; i < 19; ++i) {
 		if (ebx & (1 << i)) {
-			if (no_entries++ == randVal)
+			if (num_entries++ == randVal)
 			{
 				return i - 4;
 			}
