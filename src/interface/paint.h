@@ -71,5 +71,6 @@ enum PAINT_STRUCT_FLAGS {
 
 bool paint_attach_to_previous_attach(uint32 image_id, uint16 x, uint16 y);
 bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y);
+void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation);
 
 #endif

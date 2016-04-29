@@ -386,3 +386,48 @@ bool paint_attach_to_previous_ps(uint32 image_id, uint16 x, uint16 y)
 
     return true;
 }
+
+/**
+ * rct2: 0x00685EBC, 0x00686046, 0x00685FC8, 0x00685F4A, 0x00685ECC
+ * @param amount (eax)
+ * @param string_id (bx)
+ * @param y (cx)
+ * @param z (dx)
+ * @param offset_x (si)
+ * @param y_offsets (di)
+ * @param rotation (ebp)
+ */
+void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_offsets[], sint16 offset_x, uint32 rotation)
+{
+	paint_string_struct * ps = RCT2_GLOBAL(0xEE7888, paint_string_struct*);
+
+	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+		return;
+	}
+
+	ps->string_id = string_id;
+	ps->next = 0;
+	ps->args[0] = amount;
+	ps->args[4] = y;
+	ps->args[8] = y_offsets;
+	ps->args[12] = 0;
+	ps->y_offsets = y_offsets;
+
+	rct_xyz16 position = {.x = RCT2_GLOBAL(0x9DE568, sint16), .y = RCT2_GLOBAL(0x9DE56C, sint16), .z = z};
+	rct_xy16 coord = coordinate_3d_to_2d(&position, rotation);
+
+	ps->x = coord.x + offset_x;
+	ps->y = coord.y;
+
+	RCT2_GLOBAL(0xEE7888, uint32) += 0x1E;
+
+	paint_string_struct * oldPs = RCT2_GLOBAL(0xF1AD24, paint_string_struct*);
+
+	RCT2_GLOBAL(0xF1AD24, paint_string_struct*) = ps;
+
+	if (oldPs == 0) { // 0 or NULL?
+		RCT2_GLOBAL(0xF1AD20, paint_string_struct *) = ps;
+	} else {
+		oldPs->next = ps;
+	}
+}
