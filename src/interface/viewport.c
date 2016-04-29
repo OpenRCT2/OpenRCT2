@@ -1105,6 +1105,50 @@ bool sub_98197C(
 
 /**
  *
+ *  rct2: 0x006D5FAB
+ */
+static void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+{
+	int image_id;
+	int baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
+
+	// Draw back:
+	image_id = (baseImage_id + 2) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
+	sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation());
+
+	// Draw front:
+	image_id = (baseImage_id + 1) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
+	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+
+	// Draw peeps:
+	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2) {
+		if (vehicle->num_peeps > 0) {
+			baseImage_id = vehicleEntry->base_image_id + 9;
+			if ((vehicle->restraints_position / 64) == 3) {
+				baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
+			}
+			image_id = (baseImage_id + ((((imageDirection / 8) + 0) & 3) * 3)) | (vehicle->peep_tshirt_colours[0] << 19) | (vehicle->peep_tshirt_colours[1] << 24) | 0xA0000000;
+			sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+			if (vehicle->num_peeps > 2) {
+				image_id = (baseImage_id + ((((imageDirection / 8) + 1) & 3) * 3)) | (vehicle->peep_tshirt_colours[2] << 19) | (vehicle->peep_tshirt_colours[3] << 24) | 0xA0000000;
+				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+			}
+			if (vehicle->num_peeps > 4) {
+				image_id = (baseImage_id + ((((imageDirection / 8) + 2) & 3) * 3)) | (vehicle->peep_tshirt_colours[4] << 19) | (vehicle->peep_tshirt_colours[5] << 24) | 0xA0000000;
+				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+			}
+			if (vehicle->num_peeps > 6) {
+				image_id = (baseImage_id + ((((imageDirection / 8) + 3) & 3) * 3)) | (vehicle->peep_tshirt_colours[6] << 19) | (vehicle->peep_tshirt_colours[7] << 24) | 0xA0000000;
+				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+			}
+		}
+	}
+
+	assert(vehicleEntry->pad_5E == 1);
+}
+
+/**
+ *
  *  rct2: 0x006D6258
  */
 static void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
@@ -1268,7 +1312,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	RCT2_GLOBAL(0x00F64DFC, uint32) = rct2VehiclePtrFormat;
 	switch (vehicleEntry->car_visual) {
 	case VEHICLE_VISUAL_DEFAULT:						RCT2_CALLPROC_X(0x006D45F8, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case VEHICLE_VISUAL_LAUNCHED_FREEFALL:				RCT2_CALLPROC_X(0x006D5FAB, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_LAUNCHED_FREEFALL:				vehicle_visual_launched_freefall(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_OBSERVATION_TOWER:				vehicle_visual_observation_tower(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_RIVER_RAPIDS:					RCT2_CALLPROC_X(0x006D5889, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_MINI_GOLF_PLAYER:				RCT2_CALLPROC_X(0x006D42F0, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
