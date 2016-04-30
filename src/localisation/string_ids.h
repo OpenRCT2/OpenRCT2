@@ -2444,6 +2444,10 @@ enum {
 	
 	STR_ADVERTISE_SERVER_TIP = 5805,
 
+	STR_NUMBER_RIDES = 5807,
+	STR_NUMBER_SHOPS_AND_STALLS = 5808,
+	STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS = 5809,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

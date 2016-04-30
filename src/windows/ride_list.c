@@ -506,7 +506,7 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_ride_list_draw_tab_images(dpi, w);
 
 	// Draw number of attractions on bottom
-	gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, &w->no_list_items, 0, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
+	gfx_draw_string_left(dpi, STR_NUMBER_RIDES + w->page, &w->no_list_items, 0, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
 }
 
 /**
