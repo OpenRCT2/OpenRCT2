@@ -459,7 +459,7 @@ static void window_ride_list_invalidate(rct_window *w)
 	w->widgets[WIDX_CLOSE].left = w->width - 13;
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
 	w->widgets[WIDX_LIST].right = w->width - 26;
-	w->widgets[WIDX_LIST].bottom = w->height - 4;
+	w->widgets[WIDX_LIST].bottom = w->height - 0x0F;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].right = w->width - 2;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].left = w->width - 25;
 	w->widgets[WIDX_CLOSE_LIGHT].right = w->width - 7;
@@ -504,6 +504,9 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 	window_ride_list_draw_tab_images(dpi, w);
+
+	// Draw number of attractions on bottom
+	gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, &w->no_list_items, 0, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
 }
 
 /**
