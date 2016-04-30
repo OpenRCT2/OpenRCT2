@@ -29,7 +29,7 @@ typedef struct rct_map_element_surface_properties {
 assert_struct_size(rct_map_element_surface_properties, 4);
 
 typedef struct rct_map_element_path_properties {
-	uint8 type; //4 0xF0 Path type, 0x08 Unknown/Unused, 0x04 Set when path is diagonal, 0x03 Rotation
+	uint8 type; //4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
 	uint8 additions; //5
 	uint8 edges; //6
 	union {
