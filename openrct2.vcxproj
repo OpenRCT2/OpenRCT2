@@ -183,7 +183,7 @@
     <ClCompile Include="src\ride\track_data.c" />
     <ClCompile Include="src\ride\track_design.c" />
     <ClCompile Include="src\ride\track_design_save.c" />
-    <ClCompile Include="src\ride\track_list.c" />
+    <ClCompile Include="src\ride\track_design_index.c" />
     <ClCompile Include="src\ride\track_paint.c" />
     <ClCompile Include="src\ride\transport\chairlift.c" />
     <ClCompile Include="src\ride\transport\lift.c" />
