@@ -54,51 +54,6 @@ typedef struct {
 	sint16 y;				// 0x08
 } rct_track_coordinates;
 
-/**
-* Size: 0x04
-*/
-typedef struct {
-	union {
-		uint32 all;
-		struct {
-			sint8 x;
-			sint8 y;
-			union{
-				uint16 maze_entry;
-				struct{
-					uint8 unk_2;
-					uint8 type;
-				};
-			};
-		};
-	};
-} rct_maze_element;
-
-/* Size: 0x02 */
-typedef struct {
-	uint8 type;
-	uint8 flags;
-} rct_track_element;
-
-/* Track Scenery entry size: 0x16 */
-typedef struct {
-	rct_object_entry scenery_object; // 0x00
-	sint8 x;                        // 0x10
-	sint8 y;                        // 0x11
-	sint8 z;                        // 0x12
-	uint8 flags;                    // 0x13 direction quadrant tertiary colour
-	uint8 primary_colour;           // 0x14
-	uint8 secondary_colour;         // 0x15
-} rct_track_scenery;
-
-/* Track Entrance entry size: 0x6 */
-typedef struct {
-	sint8 z;
-	uint8 direction;			// 0x01
-	sint16 x;					// 0x02
-	sint16 y;					// 0x04
-} rct_track_entrance;
-
 enum{
 	TRACK_ELEMENT_FLAG_TERMINAL_STATION	= 1 << 3,
 	TRACK_ELEMENT_FLAG_INVERTED			= 1 << 6,

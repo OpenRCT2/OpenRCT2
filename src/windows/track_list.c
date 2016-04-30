@@ -621,7 +621,6 @@ static bool track_list_load_design_for_preview(utf8 *path)
 
 	if (track_design_open(&_loadedTrackDesign, path)) {
 		// Load in a new preview image, calculate cost variable, calculate var_06
-		gActiveTrackDesign = &_loadedTrackDesign;
 		draw_track_preview(&_loadedTrackDesign, (uint8**)_loadedTrackDesignPreview);
 
 		_loadedTrackDesign.cost = gTrackDesignCost;

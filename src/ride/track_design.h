@@ -8,6 +8,49 @@
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
+/* Maze Element entry   size: 0x04 */
+typedef struct {
+	union {
+		uint32 all;
+		struct {
+			sint8 x;
+			sint8 y;
+			union {
+				uint16 maze_entry;
+				struct{
+					uint8 unk_2;
+					uint8 type;
+				};
+			};
+		};
+	};
+} rct_td6_maze_element;
+
+/* Track Element entry  size: 0x02 */
+typedef struct {
+	uint8 type;							// 0x00
+	uint8 flags;						// 0x01
+} rct_td6_track_element;
+
+/* Track Entrance entry size: 0x06 */
+typedef struct {
+	sint8 z;							// 0x00
+	uint8 direction;					// 0x01
+	sint16 x;							// 0x02
+	sint16 y;							// 0x04
+} rct_td6_entrance_element;
+
+/* Track Scenery entry  size: 0x16 */
+typedef struct {
+	rct_object_entry scenery_object;	// 0x00
+	sint8 x;							// 0x10
+	sint8 y;							// 0x11
+	sint8 z;							// 0x12
+	uint8 flags;						// 0x13 direction quadrant tertiary colour
+	uint8 primary_colour;				// 0x14
+	uint8 secondary_colour;				// 0x15
+} rct_td6_scenery_element;
+
 /**
  * Track design structure.
  * size: 0x4E72B
@@ -74,6 +117,11 @@ typedef struct {
 	uint8 lift_hill_speed_num_circuits;				// 0xA2 0bCCCL_LLLL
 	void *elements;									// 0xA3 (data starts here in file)
 	size_t elementsSize;
+
+	rct_td6_maze_element		*maze_elements;
+	rct_td6_track_element		*track_elements;
+	rct_td6_entrance_element	*entrance_elements;
+	rct_td6_scenery_element		*scenery_elements;
 } rct_track_td6;
 
 typedef struct{

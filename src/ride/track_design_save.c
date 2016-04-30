@@ -205,12 +205,12 @@ static int map_element_get_total_element_count(rct_map_element *mapElement)
 	}
 }
 
-static bool track_design_save_scenery_is_null(rct_track_scenery *trackScenery)
+static bool track_design_save_scenery_is_null(rct_td6_scenery_element *trackScenery)
 {
 	return *((uint8*)trackScenery) == 0xFF;
 }
 
-static void track_design_save_scenery_set_to_null(rct_track_scenery *trackScenery)
+static void track_design_save_scenery_set_to_null(rct_td6_scenery_element *trackScenery)
 {
 	*((uint8*)trackScenery) = 0xFF;
 }
@@ -247,9 +247,9 @@ static bool track_design_save_can_add_map_element(rct_map_element *mapElement)
 	}
 
 	// Probably checking for spare elements in the TD6 struct
-	rct_track_scenery *trackScenery = (rct_track_scenery*)0x009DA193;
+	rct_td6_scenery_element *trackScenery = (rct_td6_scenery_element*)0x009DA193;
 	while (!track_design_save_scenery_is_null(trackScenery)) { trackScenery++; }
-	if (trackScenery >= (rct_track_scenery*)0x9DE207) {
+	if (trackScenery >= (rct_td6_scenery_element*)0x9DE207) {
 		return false;
 	}
 
@@ -276,7 +276,7 @@ static void track_design_save_push_map_element(int x, int y, rct_map_element *ma
  */
 static void track_design_save_push_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
 {
-	rct_track_scenery *item = (rct_track_scenery*)0x009DA193;
+	rct_td6_scenery_element *item = (rct_td6_scenery_element*)0x009DA193;
 	while (!track_design_save_scenery_is_null(item)) { item++; }
 
 	item->scenery_object = *entry;
@@ -447,8 +447,8 @@ static void track_design_save_pop_map_element_desc(rct_object_entry *entry, int 
 	int removeIndex = -1;
 	int totalItems = 0;
 
-	rct_track_scenery *items = (rct_track_scenery*)0x009DA193;
-	rct_track_scenery *item = items;
+	rct_td6_scenery_element *items = (rct_td6_scenery_element*)0x009DA193;
+	rct_td6_scenery_element *item = items;
 	for (; !track_design_save_scenery_is_null(item); item++, totalItems++) {
 		if (item->x != x / 32) continue;
 		if (item->y != y / 32) continue;
@@ -465,7 +465,7 @@ static void track_design_save_pop_map_element_desc(rct_object_entry *entry, int 
 
 	// Remove item and shift rest up one item
 	if (removeIndex < totalItems - 1) {
-		memmove(&items[removeIndex], &items[removeIndex + 1], (totalItems - removeIndex - 1) * sizeof(rct_track_scenery));
+		memmove(&items[removeIndex], &items[removeIndex + 1], (totalItems - removeIndex - 1) * sizeof(rct_td6_scenery_element));
 	}
 	track_design_save_scenery_set_to_null(&items[totalItems - 1]);
 }
@@ -644,11 +644,11 @@ static void track_design_save_select_nearby_scenery_for_tile(int rideIndex, int 
 /* Based on rct2: 0x006D2897 */
 static bool track_design_save_copy_scenery_to_track(uint8 **track_pointer)
 {
-	rct_track_scenery* track_scenery = (rct_track_scenery*)(*track_pointer - 1);
-	rct_track_scenery* scenery_source = RCT2_ADDRESS(0x009DA193, rct_track_scenery);
+	rct_td6_scenery_element *track_scenery = (rct_td6_scenery_element*)(*track_pointer - 1);
+	rct_td6_scenery_element* scenery_source = RCT2_ADDRESS(0x009DA193, rct_td6_scenery_element);
 
 	while (true) {
-		memcpy(track_scenery, scenery_source, sizeof(rct_track_scenery));
+		memcpy(track_scenery, scenery_source, sizeof(rct_td6_scenery_element));
 		if ((track_scenery->scenery_object.flags & 0xFF) == 0xFF) break;
 
 		//0x00F4414D is direction of track?
@@ -833,7 +833,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 	RCT2_GLOBAL(0x00F44144, sint16) = startY;
 	RCT2_GLOBAL(0x00F44146, sint16) = mapElement->base_height * 8;
 
-	rct_maze_element *maze = (rct_maze_element*)trackElements;
+	rct_td6_maze_element *maze = (rct_td6_maze_element*)trackElements;
 
 	// x is defined here as we can start the search
 	// on tile start_x, start_y but then the next row
@@ -850,7 +850,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 				maze->y = (y - startY) / 32;
 				maze++;
 
-				if (maze >= RCT2_ADDRESS(0x009DA151, rct_maze_element)) {
+				if (maze >= RCT2_ADDRESS(0x009DA151, rct_td6_maze_element)) {
 					gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 					return false;
 				}
@@ -999,7 +999,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
 	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
 
-	rct_track_element *track = (rct_track_element*)trackElements;
+	rct_td6_track_element *track = (rct_td6_track_element*)trackElements;
 	do{
 		track->type = trackElement.element->properties.track.type;
 		if (track->type == 0xFF) {
@@ -1098,7 +1098,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	// Mark the elements as finished.
 	*trackElements++ = 0xFF;
 
-	rct_track_entrance *entrance = (rct_track_entrance*)trackElements;
+	rct_td6_entrance_element *entrance = (rct_td6_entrance_element*)trackElements;
 
 	// First entrances, second exits
 	for (int i = 0; i < 2; i++) {
