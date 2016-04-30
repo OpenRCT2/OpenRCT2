@@ -2444,6 +2444,8 @@ enum {
 	
 	STR_ADVERTISE_SERVER_TIP = 5805,
 
+	STR_SHORTCUT_WINDOWED_MODE_TOGGLE = 5806,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
