@@ -164,7 +164,7 @@ extern uint8 gTrackDesignPlaceFlags;
 rct_track_design *temp_track_get_info(char* path, uint8** preview);
 // int track_rename(const char *text);
 int track_delete();
-void track_mirror();
+void track_design_mirror();
 bool track_design_open(rct_track_td6 *td6, const utf8 *path);
 void draw_track_preview(rct_track_td6 *td6, uint8** preview);
 

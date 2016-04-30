@@ -264,7 +264,7 @@ static bool td4_track_has_boosters(rct_track_td6* track_design, uint8* track_ele
 	return false;
 }
 
-uint32* sub_6AB49A(rct_object_entry* entry)
+uint32 *sub_6AB49A(rct_object_entry* entry)
 {
 	rct_object_entry* object_list_entry = object_list_find(entry);
 
@@ -274,38 +274,11 @@ uint32* sub_6AB49A(rct_object_entry* entry)
 	return (((uint32*)object_get_next(object_list_entry)) - 1);
 }
 
-void track_update_max_min_coordinates(sint16 x, sint16 y, sint16 z)
-{
-	if (x < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
-	}
-
-	if (x > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
-	}
-
-	if (y < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
-	}
-
-	if (y > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
-	}
-
-	if (z < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) = z;
-	}
-
-	if (z > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16) = z;
-	}
-}
-
 /**
  *
  *  rct2: 0x006ABDB0
  */
-void load_track_scenery_objects(rct_track_td6 *td6)
+static void track_design_load_scenery_objects(rct_track_td6 *td6)
 {
 	uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
 	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
@@ -333,7 +306,7 @@ void load_track_scenery_objects(rct_track_td6 *td6)
  *
  *  rct2: 0x006D247A
  */
-void track_mirror_scenery(rct_track_td6 *td6)
+static void track_design_mirror_scenery(rct_track_td6 *td6)
 {
 	rct_td6_scenery_element *scenery = td6->scenery_elements;
 	for (; (scenery->scenery_object.flags & 0xFF) != 0xFF; scenery++) {
@@ -420,7 +393,7 @@ void track_mirror_scenery(rct_track_td6 *td6)
  *
  *  rct2: 0x006D2443
  */
-void track_mirror_ride(rct_track_td6 *td6)
+static void track_design_mirror_ride(rct_track_td6 *td6)
 {
 	rct_td6_track_element *track = td6->track_elements;
 	for (; track->type != 0xFF; track++) {
@@ -440,7 +413,7 @@ void track_mirror_ride(rct_track_td6 *td6)
  *
  *  rct2: 0x006D25FA
  */
-void track_mirror_maze(rct_track_td6 *td6)
+static void track_design_mirror_maze(rct_track_td6 *td6)
 {
 	rct_td6_maze_element *maze = td6->maze_elements;
 	for (; maze->all != 0; maze++) {
@@ -467,14 +440,14 @@ void track_mirror_maze(rct_track_td6 *td6)
  *
  *  rct2: 0x006D2436
  */
-void track_mirror(rct_track_td6 *td6)
+void track_design_mirror(rct_track_td6 *td6)
 {
 	if (td6->type == RIDE_TYPE_MAZE) {
-		track_mirror_maze(td6);
+		track_design_mirror_maze(td6);
 	} else {
-		track_mirror_ride(td6);
+		track_design_mirror_ride(td6);
 	}
-	track_mirror_scenery(td6);
+	track_design_mirror_scenery(td6);
 }
 
 static void track_add_selection_tile(sint16 x, sint16 y)
@@ -492,6 +465,33 @@ static void track_add_selection_tile(sint16 x, sint16 y)
 	selectionTile->y = y;
 	selectionTile++;
 	selectionTile->x = -1;
+}
+
+static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z)
+{
+	if (x < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)){
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
+	}
+
+	if (x > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16)){
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
+	}
+
+	if (y < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)){
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
+	}
+
+	if (y > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16)){
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
+	}
+
+	if (z < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16)){
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) = z;
+	}
+
+	if (z > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)){
+		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16) = z;
+	}
 }
 
 /**
@@ -537,7 +537,7 @@ int track_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex,
 			}
 
 			rct_xy16 mapCoord = { .x = tile.x * 32, .y = tile.y * 32 };
-			track_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
+			track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
 			if (RCT2_GLOBAL(0x00F440D4, uint8) == 0 &&
 				mode == 0){
@@ -883,7 +883,7 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		mapCoord.x += x;
 		mapCoord.y += y;
 
-		track_update_max_min_coordinates(mapCoord.x, mapCoord.y, z);
+		track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, z);
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0) {
 			track_add_selection_tile(mapCoord.x, mapCoord.y);
@@ -1023,13 +1023,13 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 			trackType = 0xFF;
 		}
 
-		track_update_max_min_coordinates(x, y, z);
+		track_design_update_max_min_coordinates(x, y, z);
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0) {
 			for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
 				rct_xy16 tile = { x, y };
 				map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
-				track_update_max_min_coordinates(tile.x, tile.y, z);
+				track_design_update_max_min_coordinates(tile.x, tile.y, z);
 				track_add_selection_tile(tile.x, tile.y);
 			}
 		}
@@ -1139,7 +1139,7 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		x += RCT2_GLOBAL(0x00F44142, sint16);
 		y += RCT2_GLOBAL(0x00F44144, sint16);
 
-		track_update_max_min_coordinates(x, y, z);
+		track_design_update_max_min_coordinates(x, y, z);
 
 		if (RCT2_GLOBAL(0x00F440D4, uint8) == 0) {
 			track_add_selection_tile(x, y);
@@ -1213,21 +1213,6 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		ride->type = RIDE_TYPE_NULL;
 	}
 	return 1;
-}
-
-money32 ride_create_command(int type, int subType, int flags, uint8 *outRideIndex, uint8 *outRideColour)
-{
-	int eax = 0;
-	int ebx = flags;
-	int ecx = 0;
-	int edx = type | (subType << 8);
-	int esi = 0;
-	int edi = 0;
-	int ebp = 0;
-	money32 cost = game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-	*outRideIndex = edi & 0xFF;
-	*outRideColour = eax;
-	return cost;
 }
 
 /**
@@ -1393,214 +1378,6 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId)
 }
 
 /**
- *
- *  rct2: 0x006D1EF0
- */
-void draw_track_preview(rct_track_td6 *td6, uint8** preview)
-{
-	// Make a copy of the map
-	if (!track_design_preview_backup_map()) {
-		return;
-	}
-	track_design_preview_clear_map();
-
-	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-		load_track_scenery_objects(td6);
-	}
-
-	money32 cost;
-	uint8 ride_id;
-	if (!sub_6D2189(td6, &cost, &ride_id)) {
-		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
-		track_design_preview_restore_map();
-		return;
-	}
-	gTrackDesignCost = cost;
-
-	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
-	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
-	int left, top, right, bottom;
-
-	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)) / 2 + 16;
-	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)) / 2 + 16;
-	int center_z = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)) / 2;
-
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
-
-	if (width < height)
-		width = height;
-
-	int zoom_level = 1;
-
-	if (width > 1120)
-		zoom_level = 2;
-
-	if (width > 2240)
-		zoom_level = 3;
-
-	width = 370 << zoom_level;
-	height = 217 << zoom_level;
-
-	int x = center_y - center_x - width / 2;
-	int y = (center_y + center_x) / 2 - center_z - height / 2;
-
-	gCurrentRotation = 0;
-
-	view->width = 370;
-	view->height = 217;
-	view->view_width = width;
-	view->view_height = height;
-	view->x = 0;
-	view->y = 0;
-	view->view_x = x;
-	view->view_y = y;
-	view->zoom = zoom_level;
-	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
-
-	dpi->zoom_level = zoom_level;
-	dpi->x = 0;
-	dpi->y = 0;
-	dpi->width = 370;
-	dpi->height = 217;
-	dpi->pitch = 0;
-	dpi->bits = (uint8*)preview;
-
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 1;
-	x = -center_y - center_x - width / 2;
-	y = (center_y - center_x) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 2;
-	x =  center_x - center_y - width / 2;
-	y = (-center_y - center_x) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
-
-	gCurrentRotation = 3;
-	x = center_x + center_y - width / 2;
-	y = (center_x - center_y) / 2 - center_z - height / 2;
-
-	view->view_x = x;
-	view->view_y = y;
-	top = y;
-	left = x;
-	bottom = y + height;
-	right = x + width;
-
-	viewport_paint(view, dpi, left, top, right, bottom);
-
-	sub_6D235B(ride_id);
-	track_design_preview_restore_map();
-}
-
-/**
- *
- *  rct2: 0x006D3664
- */
-bool track_design_rename(const char *text)
-{
-	const char* txt_chr = text;
-
-	while (*txt_chr != '\0'){
-		switch (*txt_chr){
-		case '.':
-		case '/':
-		case '\\':
-		case '*':
-		case '?':
-			// Invalid characters
-			gGameCommandErrorText = STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS;
-			return false;
-		}
-		txt_chr++;
-	}
-
-	char new_path[MAX_PATH];
-	substitute_path(new_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), text);
-	strcat(new_path, ".TD6");
-
-	rct_window* w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-
-	char old_path[MAX_PATH];
-	substitute_path(old_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
-
-	if (!platform_file_move(old_path, new_path)) {
-		gGameCommandErrorText = STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED;
-		return false;
-	}
-
-	ride_list_item item = { 0xFC, 0 };
-	// track_load_list(item);
-
-	item.type = RCT2_GLOBAL(0xF44158, uint8);
-	item.entry_index = RCT2_GLOBAL(0xF44159, uint8);
-	// track_load_list(item);
-
-	// reset_track_list_cache();
-
-	window_invalidate(w);
-	return true;
-}
-
-/**
- *
- *  rct2: 0x006D3761
- */
-int track_delete()
-{
-	rct_window* w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-
-	char path[MAX_PATH];
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
-
-	if (!platform_file_delete(path)) {
-		gGameCommandErrorText = STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED;
-		return 0;
-	}
-
-	ride_list_item item = { 0xFC, 0 };
-	// track_load_list(item);
-
-	item.type = RCT2_GLOBAL(0xF44158, uint8);
-	item.entry_index = RCT2_GLOBAL(0xF44159, uint8);
-	// track_load_list(item);
-
-	// reset_track_list_cache();
-
-	window_invalidate(w);
-	return 1;
-}
-
-/**
 *
 *  rct2: 0x006D399D
 */
@@ -1669,44 +1446,124 @@ rct_track_design *temp_track_get_info(char* path, uint8** preview)
 	return trackDesign;
 }
 
-/**
-*
-*  rct2: 0x006D40B2
-* returns 0 for copy fail, 1 for success, 2 for file exists.
-*/
-int install_track(char* source_path, char* dest_name){
+money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *outRideIndex)
+{
+	*outRideIndex = 255;
 
-	// Make a copy of the track name (no extension)
-	char track_name[MAX_PATH] = { 0 };
-	char* dest = track_name;
-	char* dest_name_pointer = dest_name;
-	while (*dest_name_pointer != '.') *dest++ = *dest_name_pointer++;
+	gCommandPosition.x = x + 16;
+	gCommandPosition.y = y + 16;
+	gCommandPosition.z = z;
 
-	// Check if .TD4 file exists under that name
-	char* temp_extension_pointer = dest;
-	strcat(track_name, ".TD4");
+	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)) {
+		if (game_is_paused() && !gCheatsBuildInPauseMode) {
+			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+			return MONEY32_UNDEFINED;
+		}
+	}
 
-	char dest_path[MAX_PATH];
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+	rct_track_td6 *td6 = gActiveTrackDesign;
+	rct_object_entry *rideEntryObject = &td6->vehicle_object;
 
-	if (platform_file_exists(dest_path))
-		return 2;
+	uint8 entryType, entryIndex;
+	if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex)) {
+		entryIndex = 0xFF;
+	}
 
-	// Allow a concat onto the track_name but before extension
-	*temp_extension_pointer = '\0';
+	uint8 rideIndex;
+	uint8 rideColour;
+	money32 createRideResult = ride_create_command(td6->type, entryIndex, GAME_COMMAND_FLAG_APPLY, &rideIndex, &rideColour);
+	if (createRideResult == MONEY32_UNDEFINED) {
+		gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+		return MONEY32_UNDEFINED;
+	}
 
-	// Check if .TD6 file exists under that name
-	strcat(track_name, ".TD6");
+	rct_ride* ride = get_ride(rideIndex);
+	if (ride->type == RIDE_TYPE_NULL) {
+		log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+		return MONEY32_UNDEFINED;
+	}
 
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+	money32 cost = 0;
+	if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+		RCT2_GLOBAL(0x00F44150, uint8) = 0;
+		cost = sub_6D01B3(td6, PTD_OPERATION_1, rideIndex, x, y, z);
+		if (RCT2_GLOBAL(0x00F4414E, uint8) & (1 << 1)) {
+			RCT2_GLOBAL(0x00F44150, uint8) |= 1 << 7;
+			cost = sub_6D01B3(td6, 0x80 | PTD_OPERATION_1, rideIndex, x, y, z);
+		}
+	} else {
+		uint8 operation;
+		if (flags & GAME_COMMAND_FLAG_GHOST) {
+			operation = PTD_OPERATION_4;
+		} else {
+			operation = PTD_OPERATION_2;
+		}
+		operation |= RCT2_GLOBAL(0x00F44150, uint8);
+		cost = sub_6D01B3(td6, operation, rideIndex, x, y, z);
+	}
 
-	if (platform_file_exists(dest_path))
-		return 2;
+	if (cost == MONEY32_UNDEFINED || !(flags & GAME_COMMAND_FLAG_APPLY)) {
+		rct_string_id error_reason = gGameCommandErrorText;
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+		gGameCommandErrorText = error_reason;
+		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+		return cost;
+	}
 
-	// Set path for actual copy
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
+	if (entryIndex != 0xFF) {
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY | (2 << 8), 0, rideIndex | (entryIndex << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+	}
 
-	return platform_file_copy(source_path, dest_path, false);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->ride_mode << 8), 0, rideIndex | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (0 << 8), 0, rideIndex | (td6->number_of_trains << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (1 << 8), 0, rideIndex | (td6->number_of_cars_per_train << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->min_waiting_time << 8), 0, rideIndex | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->var_50 << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	
+	uint8 num_circuits = td6->lift_hill_speed_num_circuits >> 5;
+	if (num_circuits == 0) {
+		num_circuits = 1;
+	}
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+	
+	ride_set_to_default_inspection_interval(rideIndex);
+	ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
+	ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
+
+	uint8 version = td6->version_and_colour_scheme >> 2;
+	if (version >= 2) {
+		ride->entrance_style = td6->entrance_style;
+	}
+
+	if (version >= 1) {
+		for (int i = 0; i < 4; i++) {
+			ride->track_colour_main[i] = td6->track_spine_colour[i];
+			ride->track_colour_additional[i] = td6->track_rail_colour[i];
+			ride->track_colour_supports[i] = td6->track_support_colour[i];
+		}
+	} else {
+		for (int i = 0; i < 4; i++) {
+			ride->track_colour_main[i] = td6->track_spine_colour_rct1;
+			ride->track_colour_additional[i] = td6->track_rail_colour_rct1;
+			ride->track_colour_supports[i] = td6->track_support_colour_rct1;
+		}
+	}
+
+	for (int i = 0; i < 32; i++) {
+		ride->vehicle_colours[i].body_colour = td6->vehicle_colours[i].body_colour;
+		ride->vehicle_colours[i].trim_colour = td6->vehicle_colours[i].trim_colour;
+		ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
+	}
+
+	ride_set_name(rideIndex, RCT2_ADDRESS(0x009E3504, const char));
+
+	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+	*outRideIndex = rideIndex;
+	return cost;
 }
 
 money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16 x, sint16 y, sint16 z)
@@ -1833,150 +1690,12 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
  */
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	int x = *eax;
-	int y = *ecx;
-	int z = *edi;
+	sint16 x = *eax & 0xFFFF;
+	sint16 y = *ecx & 0xFFFF;
+	sint16 z = *edi & 0xFFFF;
 	uint8 flags = *ebx;
-
-	gCommandPosition.x = x + 16;
-	gCommandPosition.y = y + 16;
-	gCommandPosition.z = z;
-
-	if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)){
-		if (game_is_paused() && !gCheatsBuildInPauseMode){
-			gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-			*ebx = MONEY32_UNDEFINED;
-			return;
-		}
-	}
-
-	rct_track_td6 *td6 = gActiveTrackDesign;
-	rct_object_entry *ride_object = &td6->vehicle_object;
-
-	uint8 entry_type, entry_index;
-	if (!find_object_in_entry_group(ride_object, &entry_type, &entry_index)){
-		entry_index = 0xFF;
-	}
-
-	gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
-	int rideIndex = 0;
-	{
-		int _eax = 0,
-			_ebx = GAME_COMMAND_FLAG_APPLY,
-			_ecx = 0,
-			_edx = td6->type | (entry_index << 8),
-			_esi = GAME_COMMAND_CREATE_RIDE,
-			_edi = 0,
-			_ebp = 0;
-		game_do_command_p(GAME_COMMAND_CREATE_RIDE, &_eax, &_ebx, &_ecx, &_edx, &_esi, &_edi, &_ebp);
-		if (_ebx == MONEY32_UNDEFINED){
-			*ebx = MONEY32_UNDEFINED;
-			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-			RCT2_GLOBAL(0x00F44121, money32) = MONEY32_UNDEFINED;
-			return;
-		}
-		rideIndex = _edi & 0xFF;
-	}
-
-	rct_ride* ride = get_ride(rideIndex);
-	if (ride->type == RIDE_TYPE_NULL)
-	{
-		log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-		*ebx = MONEY32_UNDEFINED;
-		return;
-	}
-
-	money32 cost = 0;
-	if (!(flags & GAME_COMMAND_FLAG_APPLY)){
-		RCT2_GLOBAL(0x00F44150, uint8) = 0;
-		cost = sub_6D01B3(td6, PTD_OPERATION_1, rideIndex, x, y, z);
-		if (RCT2_GLOBAL(0x00F4414E, uint8) & (1 << 1)){
-			RCT2_GLOBAL(0x00F44150, uint8) |= 1 << 7;
-			cost = sub_6D01B3(td6, 0x80 | PTD_OPERATION_1, rideIndex, x, y, z);
-		}
-	}
-	else{
-		uint8 bl;
-		if (flags & GAME_COMMAND_FLAG_GHOST) {
-			bl = PTD_OPERATION_4;
-		} else {
-			bl = PTD_OPERATION_2;
-		}
-		bl |= RCT2_GLOBAL(0x00F44150, uint8);
-		cost = sub_6D01B3(td6, bl, rideIndex, x, y, z);
-	}
-
-	if (cost == MONEY32_UNDEFINED ||
-		!(flags & GAME_COMMAND_FLAG_APPLY)){
-		rct_string_id error_reason = gGameCommandErrorText;
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
-		*ebx = cost;
-		gGameCommandErrorText = error_reason;
-		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-		RCT2_GLOBAL(0x00F44121, money32) = cost;
-		return;
-	}
-
-	if (entry_index != 0xFF){
-		game_do_command(0, GAME_COMMAND_FLAG_APPLY | (2 << 8), 0, rideIndex | (entry_index << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
-	}
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->ride_mode << 8), 0, rideIndex | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (0 << 8), 0, rideIndex | (td6->number_of_trains << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (1 << 8), 0, rideIndex | (td6->number_of_cars_per_train << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->min_waiting_time << 8), 0, rideIndex | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (td6->var_50 << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-
-	uint8 num_circuits = td6->lift_hill_speed_num_circuits >> 5;
-	if (num_circuits == 0) num_circuits = 1;
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-	
-	ride_set_to_default_inspection_interval(rideIndex);
-
-	ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
-
-	ride->colour_scheme_type = td6->version_and_colour_scheme & 3;
-
-	uint8 version = td6->version_and_colour_scheme >> 2;
-	if (version >= 2){
-		ride->entrance_style = td6->entrance_style;
-	}
-
-	if (version >= 1){
-		for (int i = 0; i < 4; ++i){
-			ride->track_colour_main[i] = td6->track_spine_colour[i];
-			ride->track_colour_additional[i] = td6->track_rail_colour[i];
-			ride->track_colour_supports[i] = td6->track_support_colour[i];
-		}
-	}
-	else{
-		for (int i = 0; i < 4; ++i){
-			ride->track_colour_main[i] = td6->track_spine_colour_rct1;
-			ride->track_colour_additional[i] = td6->track_rail_colour_rct1;
-			ride->track_colour_supports[i] = td6->track_support_colour_rct1;
-		}
-	}
-
-	for (int i = 0; i < 32; ++i){
-		ride->vehicle_colours[i].body_colour = td6->vehicle_colours[i].body_colour;
-		ride->vehicle_colours[i].trim_colour = td6->vehicle_colours[i].trim_colour;
-		ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
-	}
-
-	ride_set_name(rideIndex, RCT2_ADDRESS(0x009E3504,const char));
-
-	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-	*ebx = RCT2_GLOBAL(0x00F44121, money32);
+	uint8 rideIndex;
+	*ebx = place_track_design(x, y, z, flags, &rideIndex);
 	*edi = rideIndex;
 }
 
@@ -1997,6 +1716,136 @@ void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int*
 }
 
 #pragma region Track Design Preview
+
+/**
+ *
+ *  rct2: 0x006D1EF0
+ */
+void draw_track_preview(rct_track_td6 *td6, uint8** preview)
+{
+	// Make a copy of the map
+	if (!track_design_preview_backup_map()) {
+		return;
+	}
+	track_design_preview_clear_map();
+
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
+		track_design_load_scenery_objects(td6);
+	}
+
+	money32 cost;
+	uint8 ride_id;
+	if (!sub_6D2189(td6, &cost, &ride_id)) {
+		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
+		track_design_preview_restore_map();
+		return;
+	}
+	gTrackDesignCost = cost;
+
+	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
+	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
+	int left, top, right, bottom;
+
+	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)) / 2 + 16;
+	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)) / 2 + 16;
+	int center_z = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)) / 2;
+
+	int width = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
+	int height = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
+
+	if (width < height)
+		width = height;
+
+	int zoom_level = 1;
+
+	if (width > 1120)
+		zoom_level = 2;
+
+	if (width > 2240)
+		zoom_level = 3;
+
+	width = 370 << zoom_level;
+	height = 217 << zoom_level;
+
+	int x = center_y - center_x - width / 2;
+	int y = (center_y + center_x) / 2 - center_z - height / 2;
+
+	gCurrentRotation = 0;
+
+	view->width = 370;
+	view->height = 217;
+	view->view_width = width;
+	view->view_height = height;
+	view->x = 0;
+	view->y = 0;
+	view->view_x = x;
+	view->view_y = y;
+	view->zoom = zoom_level;
+	view->flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_INVISIBLE_SPRITES;
+
+	dpi->zoom_level = zoom_level;
+	dpi->x = 0;
+	dpi->y = 0;
+	dpi->width = 370;
+	dpi->height = 217;
+	dpi->pitch = 0;
+	dpi->bits = (uint8*)preview;
+
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	gCurrentRotation = 1;
+	x = -center_y - center_x - width / 2;
+	y = (center_y - center_x) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	gCurrentRotation = 2;
+	x =  center_x - center_y - width / 2;
+	y = (-center_y - center_x) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	dpi->bits += TRACK_PREVIEW_IMAGE_SIZE;
+
+	gCurrentRotation = 3;
+	x = center_x + center_y - width / 2;
+	y = (center_x - center_y) / 2 - center_z - height / 2;
+
+	view->view_x = x;
+	view->view_y = y;
+	top = y;
+	left = x;
+	bottom = y + height;
+	right = x + width;
+
+	viewport_paint(view, dpi, left, top, right, bottom);
+
+	sub_6D235B(ride_id);
+	track_design_preview_restore_map();
+}
 
 /**
  * Create a backup of the map as it will be cleared for drawing the track
@@ -2090,3 +1939,121 @@ static void track_design_preview_clear_map()
 }
 
 #pragma endregion
+
+/**
+ *
+ *  rct2: 0x006D3664
+ */
+bool track_design_rename(const char *text)
+{
+	const char* txt_chr = text;
+
+	while (*txt_chr != '\0'){
+		switch (*txt_chr){
+		case '.':
+		case '/':
+		case '\\':
+		case '*':
+		case '?':
+			// Invalid characters
+			gGameCommandErrorText = STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS;
+			return false;
+		}
+		txt_chr++;
+	}
+
+	char new_path[MAX_PATH];
+	substitute_path(new_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), text);
+	strcat(new_path, ".TD6");
+
+	rct_window* w = window_find_by_class(WC_TRACK_DESIGN_LIST);
+
+	char old_path[MAX_PATH];
+	substitute_path(old_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
+
+	if (!platform_file_move(old_path, new_path)) {
+		gGameCommandErrorText = STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED;
+		return false;
+	}
+
+	ride_list_item item = { 0xFC, 0 };
+	// track_load_list(item);
+
+	item.type = RCT2_GLOBAL(0xF44158, uint8);
+	item.entry_index = RCT2_GLOBAL(0xF44159, uint8);
+	// track_load_list(item);
+
+	// reset_track_list_cache();
+
+	window_invalidate(w);
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x006D3761
+ */
+int track_delete()
+{
+	rct_window* w = window_find_by_class(WC_TRACK_DESIGN_LIST);
+
+	char path[MAX_PATH];
+	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[128 * w->track_list.var_482]);
+
+	if (!platform_file_delete(path)) {
+		gGameCommandErrorText = STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED;
+		return 0;
+	}
+
+	ride_list_item item = { 0xFC, 0 };
+	// track_load_list(item);
+
+	item.type = RCT2_GLOBAL(0xF44158, uint8);
+	item.entry_index = RCT2_GLOBAL(0xF44159, uint8);
+	// track_load_list(item);
+
+	// reset_track_list_cache();
+
+	window_invalidate(w);
+	return 1;
+}
+
+/**
+*
+*  rct2: 0x006D40B2
+* returns 0 for copy fail, 1 for success, 2 for file exists.
+*/
+int install_track(char* source_path, char* dest_name){
+
+	// Make a copy of the track name (no extension)
+	char track_name[MAX_PATH] = { 0 };
+	char* dest = track_name;
+	char* dest_name_pointer = dest_name;
+	while (*dest_name_pointer != '.') *dest++ = *dest_name_pointer++;
+
+	// Check if .TD4 file exists under that name
+	char* temp_extension_pointer = dest;
+	strcat(track_name, ".TD4");
+
+	char dest_path[MAX_PATH];
+	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+
+	if (platform_file_exists(dest_path))
+		return 2;
+
+	// Allow a concat onto the track_name but before extension
+	*temp_extension_pointer = '\0';
+
+	// Check if .TD6 file exists under that name
+	strcat(track_name, ".TD6");
+
+	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+
+	if (platform_file_exists(dest_path))
+		return 2;
+
+	// Set path for actual copy
+	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
+
+	return platform_file_copy(source_path, dest_path, false);
+}

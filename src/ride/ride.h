@@ -984,6 +984,7 @@ void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, in
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+money32 ride_create_command(int type, int subType, int flags, uint8 *outRideIndex, uint8 *outRideColour);
 
 void ride_clear_for_construction(int rideIndex);
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int num_images);

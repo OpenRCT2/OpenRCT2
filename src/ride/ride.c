@@ -5849,6 +5849,21 @@ bool shop_item_has_common_price(int shopItem)
 	}
 }
 
+money32 ride_create_command(int type, int subType, int flags, uint8 *outRideIndex, uint8 *outRideColour)
+{
+	int eax = 0;
+	int ebx = flags;
+	int ecx = 0;
+	int edx = type | (subType << 8);
+	int esi = 0;
+	int edi = 0;
+	int ebp = 0;
+	money32 cost = game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+	*outRideIndex = edi & 0xFF;
+	*outRideColour = eax;
+	return cost;
+}
+
 /**
  *
  *  rct2: 0x006B3F0F

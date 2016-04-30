@@ -204,7 +204,7 @@ static void window_track_place_mouseup(rct_window *w, int widgetIndex)
 		window_track_place_draw_mini_preview(_trackDesign);
 		break;
 	case WIDX_MIRROR:
-		track_mirror();
+		track_design_mirror();
 		_currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
