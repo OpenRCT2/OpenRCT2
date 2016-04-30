@@ -19,6 +19,9 @@
  *****************************************************************************/
 
 #include "common.h"
+#include "hook.h"
+
+#if !defined(NO_RCT2)
 
 #ifdef __WINDOWS__
 	#include <windows.h>
@@ -26,7 +29,6 @@
 	#include <sys/mman.h>
 #endif // __WINDOWS__
 
-#include "hook.h"
 #include "platform/platform.h"
 
 void* g_hooktableaddress = 0;
@@ -210,9 +212,11 @@ void hookfunc(int address, int newaddress, int stacksize, int registerargs[], in
 	memcpy((void *)address, data, i);
 #endif // __WINDOWS__
 }
+#endif // !defined(NO_RCT2)
 
 void addhook(int address, int newaddress, int stacksize, int registerargs[], int registersreturned, int eaxDestinationRegister)
 {
+#if !defined(NO_RCT2)
 	if (!g_hooktableaddress) {
 		size_t size = g_maxhooks * 100;
 #ifdef __WINDOWS__
@@ -258,4 +262,5 @@ void addhook(int address, int newaddress, int stacksize, int registerargs[], int
 #endif // __WINDOWS__
 	hookfunc(hookaddress, newaddress, stacksize, registerargs, registersreturned, eaxDestinationRegister);
 	g_hooktableoffset++;
+#endif // !defined(NO_RCT2)
 }
