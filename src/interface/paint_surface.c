@@ -3,6 +3,7 @@
 #include "viewport.h"
 #include "../config.h"
 #include "../peep/staff.h"
+#include "../world/map.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -713,14 +714,108 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 /**
  * rct2: 0x0066039B, 0x006604F1
  */
-void viewport_surface_draw_water_side_top(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+void viewport_surface_draw_water_side_top(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
+	registers regs;
+
+	rct_xy8 offset = {0, 0};
+	rct_xy8 bounds = {0, 0};
+	switch (edge) {
+		case EDGE_TOPLEFT:
+			regs.al = self.corner_heights.top;
+			regs.cl = self.corner_heights.left;
+
+			regs.ah = neighbour.corner_heights.right;
+			regs.ch = neighbour.corner_heights.bottom;
+
+			offset.y = -2;
+			bounds.x = 30;
+			break;
+
+		case EDGE_TOPRIGHT:
+			regs.al = self.corner_heights.top;
+			regs.cl = self.corner_heights.right;
+
+			regs.ah = neighbour.corner_heights.left;
+			regs.ch = neighbour.corner_heights.bottom;
+
+			offset.x = -2;
+			bounds.y = 30;
+			break;
+
+		default:
+			return;
+	}
+
+
+	regs.dl = height;
+
+	// save ecx
+	if (neighbour.map_element == NULL) {
+		regs.ah = 1;
+		regs.ch = 1;
+	} else {
+		regs.dh = neighbour.map_element->properties.surface.terrain & 0x1F;
+		if (regs.dl == regs.dh) {
+			return;
+		}
+
+		regs.al = regs.dl;
+		regs.cl = regs.dl;
+	}
+
+	// al + cl probably are self tile corners, while ah/ch are neighbour tile corners
+	if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+		return;
+	}
+
+	uint32 base_image_id = stru_97B5C0[terrain][2]; // var_08
+
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+		base_image_id = stru_97B5C0[terrain][1];  // var_04
+	}
+
+	base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
+
+	uint8 cur_height = min(regs.ch, regs.ah);
+	if (regs.ch != regs.ah) {
+		// neightbour tile corners aren't level
+		uint32 image_offset = 3;
+		if (regs.ch > regs.ah) {
+			image_offset = 4;
+		}
+
+		if (cur_height != regs.al && cur_height != regs.cl) {
+			uint32 image_id = base_image_id + image_offset;
+			sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
+			cur_height++;
+		}
+	}
+
+	regs.ah = regs.cl;
+
+	while (cur_height < regs.al && cur_height < regs.ah) {
+		sub_98196C(base_image_id, 0, 0, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
+		cur_height++;
+	}
+
+	uint32 image_offset = 1;
+	if (cur_height >= regs.al) {
+		image_offset = 2;
+
+		if (cur_height >= regs.ah) {
+			return;
+		}
+	}
+
+	uint32 image_id = base_image_id + image_offset;
+	sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, get_current_rotation());
 }
 
 /**
  * rct2: 0x0065F8B9, 0x0065FE26
  */
-void viewport_surface_draw_water_side_bottom(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
+void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 	uint32 baseImageId;
 	registers regs;
@@ -1174,10 +1269,18 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				RCT2_GLOBAL(0x009E30B6 + i, uint32) = RCT2_GLOBAL(0x009E2EAE + i, uint32);
 			}
 
-			viewport_surface_draw_water_side_top(EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
-			viewport_surface_draw_water_side_top(EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
-			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
-			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
+			// This wasn't in the original, but the code depended on globals that were only set in a different conditional
+			uint8 al_edgeStyle = mapElement->properties.surface.slope & 0xE0;
+			uint8 di_type = mapElement->type & 0x80;
+
+			uint32 eax = al_edgeStyle + di_type * 2;
+			assert(eax % 32 == 0);
+			// end new code
+
+			viewport_surface_draw_water_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
+			viewport_surface_draw_water_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
+			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
+			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 		}
 	}
 
