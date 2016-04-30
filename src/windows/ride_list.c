@@ -459,7 +459,7 @@ static void window_ride_list_invalidate(rct_window *w)
 	w->widgets[WIDX_CLOSE].left = w->width - 13;
 	w->widgets[WIDX_CLOSE].right = w->width - 3;
 	w->widgets[WIDX_LIST].right = w->width - 26;
-	w->widgets[WIDX_LIST].bottom = w->height - 0x0F;
+	w->widgets[WIDX_LIST].bottom = w->height - 15;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].right = w->width - 2;
 	w->widgets[WIDX_OPEN_CLOSE_ALL].left = w->width - 25;
 	w->widgets[WIDX_CLOSE_LIGHT].right = w->width - 7;
