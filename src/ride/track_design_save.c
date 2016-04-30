@@ -785,7 +785,7 @@ static bool track_design_save_to_td6(rct_track_td6 *td6, uint8 rideIndex)
 	td6->flags = 0;
 	td6->flags2 = 0;
 
-	uint8 *trackElements = RCT2_ADDRESS(0x9D821B, uint8);
+	uint8 *trackElements = td6->elements;
 	memset(trackElements, 0, 8000);
 
 	if (td6->type == RIDE_TYPE_MAZE) {

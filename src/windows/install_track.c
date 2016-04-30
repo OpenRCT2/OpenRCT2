@@ -198,7 +198,7 @@ static void window_install_track_select(rct_window *w, int index)
 	// 	window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, -1);
 
 	window_close(w);
-	window_track_place_open();
+	window_track_place_open(NULL);
 }
 
 /**

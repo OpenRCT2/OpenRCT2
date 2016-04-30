@@ -274,159 +274,12 @@ void track_update_max_min_coordinates(sint16 x, sint16 y, sint16 z)
 	}
 }
 
-#ifdef ADSIASD
-
-void track_list_populate(ride_list_item item, uint8* track_list_cache){
-	uint8* track_pointer = track_list_cache;
-
-	int cur_track_entry_index = 0;
-	for (uint8 track_type = *track_pointer++; track_type != 0xFE;
-		track_pointer += strlen((const char *)track_pointer) + 1,
-		track_type = *track_pointer++){
-		rct_object_entry* track_object = (rct_object_entry*)track_pointer;
-		track_pointer += sizeof(rct_object_entry);
-
-		if (track_type != item.type){
-			continue;
-		}
-
-		uint8 entry_type, entry_index;
-		if (item.entry_index != 0xFF){
-
-			if (!find_object_in_entry_group(track_object, &entry_type, &entry_index))continue;
-
-			if (item.entry_index != entry_index)continue;
-		}
-		else{
-			if (find_object_in_entry_group(track_object, &entry_type, &entry_index)){
-				if ((get_ride_entry(entry_index)->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME | RIDE_ENTRY_FLAG_SEPARATE_RIDE)) &&
-					!rideTypeShouldLoseSeparateFlag(get_ride_entry(entry_index)))
-					continue;
-			}
-			else{
-				uint32* esi = sub_6AB49A(track_object);
-				if (esi == NULL) continue;
-				if (*esi & 0x1000000)continue;
-			}
-		}
-
-		// If cur_track_entry_index is greater than max number of tracks
-		if (cur_track_entry_index >= 1000){
-			RCT2_GLOBAL(0xF635ED, uint8) |= 1;
-			break;
-		}
-
-		int track_entry_index = 0;
-		uint8 isBelow = 0;
-		for (; track_entry_index != cur_track_entry_index; track_entry_index++){
-			if (strcicmp((const char *)track_pointer, &RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, const char)[track_entry_index * 128]) < 0){
-				isBelow = 1;
-				break;
-			}
-		}
-
-		if (isBelow == 1){
-			memmove(
-				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128 + 128],
-				&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[track_entry_index * 128],
-				(cur_track_entry_index - track_entry_index) * 128);
-		}
-
-		strcpy(&RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char)[track_entry_index * 128], (const char *)track_pointer);
-		cur_track_entry_index++;
-	}
-
-	RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8)[cur_track_entry_index * 128] = '\0';
-}
-
-/**
- *
- *  rct2: 0x006CED50
- */
-void track_load_list(ride_list_item item)
-{
-	RCT2_GLOBAL(0xF635ED, uint8) = 0;
-
-	if (item.type < 0x80){
-		rct_ride_entry* ride_type = get_ride_entry(item.entry_index);
-		if (!(ride_type->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(ride_type)){
-			item.entry_index = 0xFF;
-		}
-	}
-
-	int totalFiles;
-
-	track_list_query_directory(&totalFiles);
-
-	uint8* track_list_cache;
-
-	if (item.type == 0xFC || !(track_list_cache = track_list_cache_load(totalFiles))){
-		uint8* new_track_file;
-
-		new_track_file = malloc(0x40000);
-
-		uint8* new_file_pointer = new_track_file;
-		file_info enumFileInfo;
-
-		int enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char));
-		if (enumFileHandle == INVALID_HANDLE)
-		{
-			free(new_file_pointer);
-			return;
-		}
-
-		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
-			if (new_file_pointer > new_track_file + 0x3FF00)break;
-
-			char path[MAX_PATH];
-			substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), enumFileInfo.path);
-
-			rct_track_td6* loaded_track = load_track_design(path);
-			if (loaded_track){
-				*new_file_pointer++ = loaded_track->type;
-			}
-			else{
-				*new_file_pointer++ = 0xFF;
-				// Garbage object
-				new_file_pointer += sizeof(rct_object_entry);
-				// Empty string
-				*new_file_pointer++ = '\0';
-				// Unsure why it previously didn't continue on load fail??
-				continue;
-			}
-			memcpy(new_file_pointer, &loaded_track->vehicle_object, sizeof(rct_object_entry));
-			new_file_pointer += sizeof(rct_object_entry);
-
-			int file_name_length = strlen(enumFileInfo.path);
-			strcpy((char *)new_file_pointer, enumFileInfo.path);
-			new_file_pointer += file_name_length + 1;
-		}
-		platform_enumerate_files_end(enumFileHandle);
-
-		if (!track_list_cache_save(totalFiles, new_track_file, new_file_pointer - new_track_file)){
-			log_error("Track list failed to save.");
-			return;
-		}
-		free(new_track_file);
-
-		track_list_cache = track_list_cache_load(totalFiles);
-		if (!track_list_cache){
-			log_error("Track list failed to load after new save");
-			return;
-		}
-	}
-
-	track_list_populate(item, track_list_cache);
-	free(track_list_cache);
-}
-
-#endif
-
 /**
  *
  *  rct2: 0x006ABDB0
  */
-void load_track_scenery_objects(){
+void load_track_scenery_objects()
+{
 	uint8 entry_index = RCT2_GLOBAL(0xF44157, uint8);
 	rct_object_entry_extended* object_entry = &object_entry_groups[0].entries[entry_index];
 
@@ -439,8 +292,8 @@ void load_track_scenery_objects(){
 	find_object_in_entry_group(copied_entry, &entry_type, &entry_index);
 	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
 
-	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
-	uint8* track_elements = RCT2_ADDRESS(0x9D821B, uint8);
+	rct_track_td6 *track_design = gActiveTrackDesign;
+	uint8 *track_elements = gActiveTrackDesign->elements;
 
 	if (track_design->type == RIDE_TYPE_MAZE){
 		// Skip all of the maze track elements
@@ -616,19 +469,14 @@ void track_mirror_maze(uint8** track_elements){
  *
  *  rct2: 0x006D2436
  */
-void track_mirror(){
-	uint8* track_elements = RCT2_ADDRESS(0x009D821B, uint8);
-
-	rct_track_td6* track_design = RCT2_ADDRESS(0x009D8178, rct_track_td6);
-
-	if (track_design->type == RIDE_TYPE_MAZE){
-		track_mirror_maze(&track_elements);
+void track_mirror()
+{
+	if (gActiveTrackDesign->type == RIDE_TYPE_MAZE) {
+		track_mirror_maze(gActiveTrackDesign->elements);
+	} else {
+		track_mirror_ride(gActiveTrackDesign->elements);
 	}
-	else{
-		track_mirror_ride(&track_elements);
-	}
-
-	track_mirror_scenery(&track_elements);
+	track_mirror_scenery(gActiveTrackDesign->elements);
 }
 
 static void track_add_selection_tile(sint16 x, sint16 y)
@@ -1468,7 +1316,7 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16) = z;
 
 	RCT2_GLOBAL(0x00F44129, uint16) = 0;
-	uint8* track_elements = RCT2_ADDRESS(0x009D821B, uint8);
+	uint8* track_elements = td6->elements;
 
 	uint8 track_place_success = 0;
 
@@ -1721,72 +1569,6 @@ void draw_track_preview(rct_track_td6 *td6, uint8** preview)
 	sub_6D235B(ride_id);
 	track_design_preview_restore_map();
 }
-
-#ifdef fsdfds
-
-/**
- *
- * I don't think preview is a necessary output argument. It can be obtained easily using the track design structure.
- *  rct2: 0x006D1DEC
- */
-rct_track_design *track_get_info(int index, uint8** preview)
-{
-	rct_track_design *trackDesign;
-	uint8 *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
-	int i;
-
-	trackDesign = NULL;
-
-	// Check if track design has already been loaded
-	for (i = 0; i < 4; i++) {
-		if (index == RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i]) {
-			trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
-			break;
-		}
-	}
-
-	if (trackDesign == NULL) {
-		// Load track design
-		i = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) >= 4)
-			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
-
-		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = index;
-
-		char track_path[MAX_PATH] = { 0 };
-		substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, (char *)trackDesignList + (index * 128));
-
-		rct_track_td6* loaded_track = NULL;
-
-		log_verbose("Loading track: %s", trackDesignList + (index * 128));
-
-		if (!(loaded_track = load_track_design(track_path))) {
-			if (preview != NULL) *preview = NULL;
-			// Mark cache as empty.
-			RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = 0;
-			log_error("Failed to load track: %s", trackDesignList + (index * 128));
-			return NULL;
-		}
-
-		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
-
-		// Copy the track design apart from the preview image
-		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
-		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview(&trackDesign->track_td6, (uint8**)trackDesign->preview);
-
-		trackDesign->track_td6.cost = gTrackDesignCost;
-		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
-	}
-
-	// Set preview to correct preview image based on rotation
-	if (preview != NULL)
-		*preview = trackDesign->preview[_currentTrackPieceDirection];
-
-	return trackDesign;
-}
-
-#endif
 
 /**
  *

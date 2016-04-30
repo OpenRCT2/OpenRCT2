@@ -105,6 +105,15 @@ static sint16 _window_track_place_last_valid_y;
 static sint16 _window_track_place_last_valid_z;
 static money32 _window_track_place_last_cost;
 
+static void window_track_place_clear_provisional();
+static int window_track_place_get_base_z(int x, int y);
+static void window_track_place_attempt_placement(int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex);
+
+static void window_track_place_clear_mini_preview();
+static void window_track_place_draw_mini_preview();
+static void window_track_place_draw_mini_preview_track(int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
+static void window_track_place_draw_mini_preview_maze(int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
+
 /**
  *
  *  rct2: 0x006D182E
@@ -118,259 +127,19 @@ static void window_track_place_clear_mini_preview()
 
 /**
  *
- *  rct2: 0x006D1845
- */
-static void window_track_place_draw_mini_preview()
-{
-	rct_track_td6 *track = RCT2_ADDRESS(0x009D8178, rct_track_td6);
-	uint8 *pixel, colour, bits;
-	int i, rotation, pass, x, y, pixelX, pixelY, originX, originY, minX, minY, maxX, maxY;
-	rct_maze_element *mazeElement;
-	rct_track_element *trackElement;
-	const rct_preview_track *trackBlock;
-
-	window_track_place_clear_mini_preview();
-
-	minX = 0;
-	minY = 0;
-	maxX = 0;
-	maxY = 0;
-
-	// First pass is used to determine the width and height of the image so it can centre it
-	for (pass = 0; pass < 2; pass++) {
-		originX = 0;
-		originY = 0;
-		if (pass == 1) {
-			originX -= ((maxX + minX) >> 6) << 5;
-			originY -= ((maxY + minY) >> 6) << 5;
-		}
-
-		if (track->type != RIDE_TYPE_MAZE) {
-			#pragma region Track
-
-			rotation = _currentTrackPieceDirection + get_current_rotation();
-			trackElement = RCT2_ADDRESS(0x009D821B, rct_track_element);
-
-			while (trackElement->type != 255) {
-				int trackType = trackElement->type;
-				if (trackType == 101)
-					trackType = 255;
-
-				// Station track is a lighter colour
-				colour = RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10 ? 222 : 218;
-
-				// Follow a single track piece shape
-				trackBlock = TrackBlocks[trackType];
-				while (trackBlock->index != 255) {
-					x = originX;
-					y = originY;
-
-					switch (rotation & 3) {
-					case 0:
-						x += trackBlock->x;
-						y += trackBlock->y;
-						break;
-					case 1:
-						x += trackBlock->y;
-						y -= trackBlock->x;
-						break;
-					case 2:
-						x -= trackBlock->x;
-						y -= trackBlock->y;
-						break;
-					case 3:
-						x -= trackBlock->y;
-						y += trackBlock->x;
-						break;
-					}
-
-					if (pass == 0) {
-						minX = min(minX, x);
-						maxX = max(maxX, x);
-						minY = min(minY, y);
-						maxY = max(maxY, y);
-					} else {
-						pixelX = 80 + ((y / 32) - (x / 32)) * 4;
-						pixelY = 38 + ((y / 32) + (x / 32)) * 2;
-						if (pixelX >= 0 && pixelY >= 0 && pixelX <= 160 && pixelY <= 75) {
-							pixel = &_window_track_place_mini_preview[pixelY * TRACK_MINI_PREVIEW_WIDTH + pixelX];
-
-							bits = trackBlock->var_08 << (rotation & 3);
-							bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
-
-							for (i = 0; i < 4; i++) {
-								if (bits & 1) pixel[338 + i] = colour;
-								if (bits & 2) pixel[168 + i] = colour;
-								if (bits & 4) pixel[  2 + i] = colour;
-								if (bits & 8) pixel[172 + i] = colour;
-							}
-						}
-					}
-					trackBlock++;
-				}
-
-				// Change rotation and next position based on track curvature
-				rotation &= 3;
-				const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
-
-				trackType *= 10;
-				switch (rotation) {
-				case 0:
-					originX += track_coordinate->x;
-					originY += track_coordinate->y;
-					break;
-				case 1:
-					originX += track_coordinate->y;
-					originY -= track_coordinate->x;
-					break;
-				case 2:
-					originX -= track_coordinate->x;
-					originY -= track_coordinate->y;
-					break;
-				case 3:
-					originX -= track_coordinate->y;
-					originY += track_coordinate->x;
-					break;
-				}
-				rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
-				rotation &= 3;
-				if (track_coordinate->rotation_end & 4)
-					rotation |= 4;
-				if (!(rotation & 4)) {
-					originX += TileDirectionDelta[rotation].x;
-					originY += TileDirectionDelta[rotation].y;
-				}
-				trackElement++;
-			}
-
-			#pragma endregion
-		} else {
-			#pragma region Maze
-
-			rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
-			mazeElement = RCT2_ADDRESS(0x009D821B, rct_maze_element);
-			while (mazeElement->all != 0) {
-				x = mazeElement->x * 32;
-				y = mazeElement->y * 32;
-				switch (rotation) {
-				case 1:
-					x = -x;
-					swap(x, y);
-					break;
-				case 2:
-					x = -x;
-					y = -y;
-					break;
-				case 3:
-					x = -x;
-					swap(x, y);
-					break;
-				}
-				x += originX;
-				y += originY;
-
-				// Entrance or exit is a lighter colour
-				colour = mazeElement->type == 8 || mazeElement->type == 128 ? 222 : 218;
-
-				if (pass == 0) {
-					minX = min(minX, x);
-					maxX = max(maxX, x);
-					minY = min(minY, y);
-					maxY = max(maxY, y);
-				} else {
-					pixelX = 80 + ((y / 32) - (x / 32)) * 4;
-					pixelY = 38 + ((y / 32) + (x / 32)) * 2;
-					if (pixelX <= 160 && pixelY <= 75) {
-						pixel = &_window_track_place_mini_preview[pixelY * TRACK_MINI_PREVIEW_WIDTH + pixelX];
-
-						for (i = 0; i < 4; i++) {
-							pixel[338 + i] = colour;
-							pixel[168 + i] = colour;
-							pixel[  2 + i] = colour;
-							pixel[172 + i] = colour;
-						}
-					}
-				}
-				mazeElement++;
-			}
-
-			#pragma endregion
-		}
-	}
-}
-
-/**
- *
- *  rct2: 0x006D017F
- */
-static void window_track_place_clear_provisional()
-{
-	if (_window_track_place_last_was_valid) {
-		sub_6D01B3(
-			gActiveTrackDesign,
-			PTD_OPERATION_CLEAR_OUTLINES,
-			RCT2_GLOBAL(0x00F440EB, uint8),
-			_window_track_place_last_valid_x,
-			_window_track_place_last_valid_y,
-			_window_track_place_last_valid_z
-		);
-		_window_track_place_last_was_valid = 0;
-	}
-}
-
-/**
- *
- *  rct2: 0x006D17C6
- */
-static int window_track_place_get_base_z(int x, int y)
-{
-	rct_map_element *mapElement;
-	int z;
-
-	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-	z = mapElement->base_height * 8;
-
-	// Increase Z above slope
-	if (mapElement->properties.surface.slope & 0x0F) {
-		z += 16;
-
-		// Increase Z above double slope
-		if (mapElement->properties.surface.slope & 0x10)
-			z += 16;
-	}
-
-	// Increase Z above water
-	if (mapElement->properties.surface.terrain & 0x1F)
-		z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
-
-	return z + sub_6D01B3(gActiveTrackDesign, PTD_OPERATION_GET_PLACE_Z, 0, x, y, z);
-}
-
-static void window_track_place_attempt_placement(int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex)
-{
-	int eax, ebx, ecx, edx, esi, edi, ebp;
-	money32 result;
-
-	edx = esi = ebp = 0;
-	eax = x;
-	ebx = bl;
-	ecx = y;
-	edi = z;
-	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-
-	if (cost != NULL) *cost = result;
-	if (rideIndex != NULL) *rideIndex = edi & 0xFF;
-}
-
-/**
- *
  *  rct2: 0x006CFCA0
  */
-void window_track_place_open()
+void window_track_place_open(utf8 *tdPath)
 {
 	rct_window *w;
 
 	window_close_construction_windows();
+
+	gActiveTrackDesign = malloc(sizeof(rct_track_td6));
+	if (!track_design_open(gActiveTrackDesign, tdPath)) {
+		SafeFree(gActiveTrackDesign);
+		return;
+	}
 
 	_window_track_place_mini_preview = malloc(TRACK_MINI_PREVIEW_SIZE);
 	window_track_place_clear_mini_preview();
@@ -408,7 +177,8 @@ static void window_track_place_close(rct_window *w)
 	map_invalidate_map_selection_tiles();
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~6;
 	hide_gridlines();
-	free(_window_track_place_mini_preview);
+	SafeFree(_window_track_place_mini_preview);
+	SafeFree(gActiveTrackDesign);
 }
 
 /**
@@ -590,19 +360,80 @@ static void window_track_place_invalidate(rct_window *w)
 
 /**
  *
+ *  rct2: 0x006D017F
+ */
+static void window_track_place_clear_provisional()
+{
+	if (_window_track_place_last_was_valid) {
+		sub_6D01B3(
+			gActiveTrackDesign,
+			PTD_OPERATION_CLEAR_OUTLINES,
+			RCT2_GLOBAL(0x00F440EB, uint8),
+			_window_track_place_last_valid_x,
+			_window_track_place_last_valid_y,
+			_window_track_place_last_valid_z
+		);
+		_window_track_place_last_was_valid = 0;
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006D17C6
+ */
+static int window_track_place_get_base_z(int x, int y)
+{
+	rct_map_element *mapElement;
+	int z;
+
+	mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+	z = mapElement->base_height * 8;
+
+	// Increase Z above slope
+	if (mapElement->properties.surface.slope & 0x0F) {
+		z += 16;
+
+		// Increase Z above double slope
+		if (mapElement->properties.surface.slope & 0x10)
+			z += 16;
+	}
+
+	// Increase Z above water
+	if (mapElement->properties.surface.terrain & 0x1F)
+		z = max(z, (mapElement->properties.surface.terrain & 0x1F) << 4);
+
+	return z + sub_6D01B3(gActiveTrackDesign, PTD_OPERATION_GET_PLACE_Z, 0, x, y, z);
+}
+
+static void window_track_place_attempt_placement(int x, int y, int z, int bl, money32 *cost, uint8 *rideIndex)
+{
+	int eax, ebx, ecx, edx, esi, edi, ebp;
+	money32 result;
+
+	edx = esi = ebp = 0;
+	eax = x;
+	ebx = bl;
+	ecx = y;
+	edi = z;
+	result = game_do_command_p(GAME_COMMAND_PLACE_TRACK_DESIGN, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
+
+	if (cost != NULL) *cost = result;
+	if (rideIndex != NULL) *rideIndex = edi & 0xFF;
+}
+
+/**
+ *
  *  rct2: 0x006CFD9D
  */
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_drawpixelinfo clippedDpi;
-	rct_g1_element tmpElement, *substituteElement;
-
 	window_draw_widgets(w, dpi);
 
 	// Draw mini tile preview
+	rct_drawpixelinfo clippedDpi;
 	if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
-		substituteElement = &g1Elements[0];
-		tmpElement = *substituteElement;
+		rct_g1_element *substituteElement = &g1Elements[0];
+		rct_g1_element tmpElement = *substituteElement;
 		substituteElement->offset = _window_track_place_mini_preview;
 		substituteElement->width = TRACK_MINI_PREVIEW_WIDTH;
 		substituteElement->height = TRACK_MINI_PREVIEW_HEIGHT;
@@ -614,7 +445,136 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	// Price
-	if (_window_track_place_last_cost != MONEY32_UNDEFINED)
-		if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-			gfx_draw_string_centred(dpi, STR_COST_LABEL, w->x + 88, w->y + 94, 0, &_window_track_place_last_cost);
+	if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+		gfx_draw_string_centred(dpi, STR_COST_LABEL, w->x + 88, w->y + 94, 0, &_window_track_place_last_cost);
+	}
+}
+
+/**
+ *
+ *  rct2: 0x006D1845
+ */
+static void window_track_place_draw_mini_preview()
+{
+	window_track_place_clear_mini_preview();
+
+	bool isMaze = gActiveTrackDesign->type == RIDE_TYPE_MAZE;
+	
+	// First pass is used to determine the width and height of the image so it can centre it
+	rct_xy16 min = { 0, 0 };
+	rct_xy16 max = { 0, 0 };
+	for (int pass = 0; pass < 2; pass++) {
+		rct_xy16 origin = { 0, 0 };
+		if (pass == 1) {
+			origin.x -= ((max.x + min.x) >> 6) << 5;
+			origin.y -= ((max.y + min.y) >> 6) << 5;
+		}
+
+		if (isMaze) {
+			window_track_place_draw_mini_preview_maze(pass, origin, &min, &max);
+		} else {
+			window_track_place_draw_mini_preview_track(pass, origin, &min, &max);
+		}
+	}
+}
+
+static void window_track_place_draw_mini_preview_track(int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
+{
+	int rotation = _currentTrackPieceDirection + get_current_rotation();
+	rct_track_element *trackElement = (rct_track_element*)gActiveTrackDesign->elements;
+
+	while (trackElement->type != 255) {
+		int trackType = trackElement->type;
+		if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
+			trackType = 255;
+		}
+
+		// Station track is a lighter colour
+		uint8 colour = RCT2_ADDRESS(0x0099BA64, uint8)[trackType * 16] & 0x10 ? 222 : 218;
+
+		// Follow a single track piece shape
+		const rct_preview_track *trackBlock = TrackBlocks[trackType];
+		while (trackBlock->index != 255) {
+			sint16 x = origin.x;
+			sint16 y = origin.y;
+			map_offset_with_rotation(&x, &y, trackBlock->x, trackBlock->y, rotation);
+
+			if (pass == 0) {
+				min->x = min(min->x, x);
+				max->x = max(max->x, x);
+				min->y = min(min->y, y);
+				max->y = max(max->y, y);
+			} else {
+				int pixelX = 80 + ((y / 32) - (x / 32)) * 4;
+				int pixelY = 38 + ((y / 32) + (x / 32)) * 2;
+				if (pixelX >= 0 && pixelY >= 0 && pixelX <= 160 && pixelY <= 75) {
+					uint8 *pixel = &_window_track_place_mini_preview[pixelY * TRACK_MINI_PREVIEW_WIDTH + pixelX];
+
+					uint8 bits = trackBlock->var_08 << (rotation & 3);
+					bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
+
+					for (int i = 0; i < 4; i++) {
+						if (bits & 1) pixel[338 + i] = colour;
+						if (bits & 2) pixel[168 + i] = colour;
+						if (bits & 4) pixel[  2 + i] = colour;
+						if (bits & 8) pixel[172 + i] = colour;
+					}
+				}
+			}
+			trackBlock++;
+		}
+
+		// Change rotation and next position based on track curvature
+		rotation &= 3;
+		const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
+
+		trackType *= 10;
+		map_offset_with_rotation(&origin.x, &origin.y, track_coordinate->x, track_coordinate->y, rotation);
+		rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
+		rotation &= 3;
+		if (track_coordinate->rotation_end & 4)
+			rotation |= 4;
+		if (!(rotation & 4)) {
+			origin.x += TileDirectionDelta[rotation].x;
+			origin.y += TileDirectionDelta[rotation].y;
+		}
+		trackElement++;
+	}
+}
+
+static void window_track_place_draw_mini_preview_maze(int pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
+{
+	int rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+	rct_maze_element *mazeElement = gActiveTrackDesign->elements;
+	while (mazeElement->all != 0) {
+		sint16 x = mazeElement->x * 32;
+		sint16 y = mazeElement->y * 32;
+		rotate_map_coordinates(&x, &y, rotation);
+
+		x += origin.x;
+		y += origin.y;
+
+		// Entrance or exit is a lighter colour
+		uint8 colour = mazeElement->type == 8 || mazeElement->type == 128 ? 222 : 218;
+
+		if (pass == 0) {
+			min->x = min(min->x, x);
+			max->x = max(max->x, x);
+			min->y = min(min->y, y);
+			max->y = max(max->y, y);
+		} else {
+			int pixelX = 80 + ((y / 32) - (x / 32)) * 4;
+			int pixelY = 38 + ((y / 32) + (x / 32)) * 2;
+			if (pixelX <= 160 && pixelY <= 75) {
+				uint8 *pixel = &_window_track_place_mini_preview[pixelY * TRACK_MINI_PREVIEW_WIDTH + pixelX];
+				for (int i = 0; i < 4; i++) {
+					pixel[338 + i] = colour;
+					pixel[168 + i] = colour;
+					pixel[  2 + i] = colour;
+					pixel[172 + i] = colour;
+				}
+			}
+		}
+		mazeElement++;
+	}
 }
