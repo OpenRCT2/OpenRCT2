@@ -122,6 +122,8 @@ typedef struct {
 	rct_td6_track_element		*track_elements;
 	rct_td6_entrance_element	*entrance_elements;
 	rct_td6_scenery_element		*scenery_elements;
+
+	utf8 *name;
 } rct_track_td6;
 
 typedef struct{
@@ -159,14 +161,11 @@ extern rct_track_td6 *gActiveTrackDesign;
 extern money32 gTrackDesignCost;
 extern uint8 gTrackDesignPlaceFlags;
 
-// void track_load_list(ride_list_item item);
-// rct_track_design *track_get_info(int index, uint8** preview);
 rct_track_design *temp_track_get_info(char* path, uint8** preview);
-// int track_rename(const char *text);
 int track_delete();
-void track_design_mirror();
+void track_design_mirror(rct_track_td6 *td6);
 bool track_design_open(rct_track_td6 *td6, const utf8 *path);
-void draw_track_preview(rct_track_td6 *td6, uint8** preview);
+void track_design_dispose(rct_track_td6 *td6);
 
 int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z);
 int install_track(char* source_path, char* dest_name);
@@ -178,6 +177,11 @@ utf8 *track_design_get_name_from_path(const utf8 *path);
 
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+
+///////////////////////////////////////////////////////////////////////////////
+// Track design preview
+///////////////////////////////////////////////////////////////////////////////
+void draw_track_preview(rct_track_td6 *td6, uint8** preview);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

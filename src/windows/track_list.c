@@ -97,7 +97,7 @@ ride_list_item _window_track_list_item;
 static track_design_file_ref *_trackDesigns = NULL;
 static size_t _trackDesignsCount = 0;
 static uint16 _loadedTrackDesignIndex;
-static rct_track_td6 _loadedTrackDesign;
+static rct_track_td6 *_loadedTrackDesign;
 static uint8 _loadedTrackDesignPreview[4][TRACK_PREVIEW_IMAGE_SIZE];
 
 static void track_list_load_designs(ride_list_item item);
@@ -151,8 +151,8 @@ void window_track_list_open(ride_list_item item)
  */
 static void window_track_list_close(rct_window *w)
 {
-	// Dispose loaded track
-	SafeFree(_loadedTrackDesign.elements);
+	free(_loadedTrackDesign);
+	_loadedTrackDesign = NULL;
 
 	// Dispose track list
 	for (size_t i = 0; i < _trackDesignsCount; i++) {
@@ -202,7 +202,7 @@ static void window_track_list_select(rct_window *w, int index)
 		return;
 	}
 
-	if (_loadedTrackDesignIndex != -1 && _loadedTrackDesign.track_flags & 4) {
+	if (_loadedTrackDesignIndex != -1 && (_loadedTrackDesign->track_flags & 4)) {
 		window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
 	}
 
@@ -384,7 +384,6 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	colour = ColourMapA[w->colours[0]].darkest;
 	gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
-	rct_track_td6 *td6 = &_loadedTrackDesign;
 	if (_loadedTrackDesignIndex != trackIndex) {
 		uint8 *path = _trackDesigns[trackIndex].path;
 		if (track_list_load_design_for_preview(path)) {
@@ -395,11 +394,12 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 	}
 
+	rct_track_td6 *td6 = _loadedTrackDesign;
+	if (td6 == NULL) {
+		return;
+	}
+
 	uint8 *image = _loadedTrackDesignPreview[_currentTrackPieceDirection];
-	// trackDesign = track_get_info(trackIndex, &image);
-	// if (trackDesign == NULL) {
-	//	return;
-	// }
 
 	rct_g1_element *substituteElement = &g1Elements[0];
 	rct_g1_element tmpElement = *substituteElement;
@@ -617,15 +617,20 @@ static void track_list_load_designs(ride_list_item item)
 static bool track_list_load_design_for_preview(utf8 *path)
 {
 	// Dispose currently loaded track
-	SafeFree(_loadedTrackDesign.elements);
+	track_design_dispose(_loadedTrackDesign);
+	_loadedTrackDesign = NULL;
 
-	if (track_design_open(&_loadedTrackDesign, path)) {
+	_loadedTrackDesign = calloc(sizeof(rct_track_td6), 1);
+	if (track_design_open(_loadedTrackDesign, path)) {
 		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview(&_loadedTrackDesign, (uint8**)_loadedTrackDesignPreview);
+		draw_track_preview(_loadedTrackDesign, (uint8**)_loadedTrackDesignPreview);
 
-		_loadedTrackDesign.cost = gTrackDesignCost;
-		_loadedTrackDesign.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+		_loadedTrackDesign->cost = gTrackDesignCost;
+		_loadedTrackDesign->track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 		return true;
+	} else {
+		track_design_dispose(_loadedTrackDesign);
+		_loadedTrackDesign = NULL;
 	}
 	return false;
 }

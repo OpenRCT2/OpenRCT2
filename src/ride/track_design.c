@@ -68,6 +68,8 @@ bool track_design_open(rct_track_td6 *td6, const utf8 *path)
 		} else {
 			track_design_open_from_buffer(td6, decoded, decodedLength);
 			free(decoded);
+
+			td6->name = track_design_get_name_from_path(path);
 			return true;
 		}
 	}
@@ -262,6 +264,15 @@ static bool td4_track_has_boosters(rct_track_td6* track_design, uint8* track_ele
 		}
 	}
 	return false;
+}
+
+void track_design_dispose(rct_track_td6 *td6)
+{
+	if (td6 != NULL) {
+		free(td6->elements);
+		free(td6->name);
+		free(td6);
+	}
 }
 
 uint32 *sub_6AB49A(rct_object_entry* entry)
@@ -1559,7 +1570,7 @@ money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *out
 		ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
 	}
 
-	ride_set_name(rideIndex, RCT2_ADDRESS(0x009E3504, const char));
+	ride_set_name(rideIndex, td6->name);
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
 	*outRideIndex = rideIndex;

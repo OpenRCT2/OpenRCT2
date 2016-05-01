@@ -1820,16 +1820,7 @@ money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 x2, sin
 	y1 = clamp(0, y1, gMapSizeUnits);
 	x2 = min(x2, gMapSizeUnits);
 	y2 = min(y2, gMapSizeUnits);
-	for (sint16 y = y1; y <= y2; y += 32) {
-		for (sint16 x = x1; x <= x2; x += 32) {
-			if (x > gMapSizeUnits)
-				continue;
-			if (y > gMapSizeUnits)
-				continue;
-
-			map_buy_land_rights(x, y, x2, y2, 6, flags | (newOwnership << 8));
-		}
-	}
+	map_buy_land_rights(x1, y1, x2, y2, 6, flags | (newOwnership << 8));
 
 	if (!(RCT2_GLOBAL(0x9E2E28, uint8) & 1)) {
 		return 0;

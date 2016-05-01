@@ -16,18 +16,19 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
+#include "../cheats.h"
 #include "../game.h"
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../sprites.h"
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../ride/track_design.h"
-#include "../interface/themes.h"
-#include "../cheats.h"
+#include "../sprites.h"
+#include "../util/util.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH	168
 #define TRACK_MINI_PREVIEW_HEIGHT	78
@@ -142,7 +143,8 @@ void window_track_place_open(utf8 *tdPath)
 
 	_trackDesign = malloc(sizeof(rct_track_td6));
 	if (!track_design_open(_trackDesign, tdPath)) {
-		SafeFree(_trackDesign);
+		track_design_dispose(_trackDesign);
+		_trackDesign = NULL;
 		return;
 	}
 
@@ -169,6 +171,9 @@ void window_track_place_open(utf8 *tdPath)
 	_window_track_place_last_x = 0xFFFF;
 	_currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 	window_track_place_draw_mini_preview(_trackDesign);
+
+	char *title = (char*)language_get_string(3155);
+	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &_trackDesign->name);
 }
 
 /**
@@ -183,7 +188,8 @@ static void window_track_place_close(rct_window *w)
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~6;
 	hide_gridlines();
 	SafeFree(_window_track_place_mini_preview);
-	SafeFree(_trackDesign);
+	track_design_dispose(_trackDesign);
+	_trackDesign = NULL;
 }
 
 /**
@@ -204,7 +210,7 @@ static void window_track_place_mouseup(rct_window *w, int widgetIndex)
 		window_track_place_draw_mini_preview(_trackDesign);
 		break;
 	case WIDX_MIRROR:
-		track_design_mirror();
+		track_design_mirror(_trackDesign);
 		_currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
 		window_invalidate(w);
 		_window_track_place_last_x = 0xFFFF;
