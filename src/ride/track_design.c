@@ -18,12 +18,13 @@
 #include "track_design.h"
 #include "track.h"
 
-static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t srcLength);
+static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
 
 rct_map_element **gTrackSavedMapElements = (rct_map_element**)0x00F63674;
 rct_track_td6 *gActiveTrackDesign;
 money32 gTrackDesignCost;
 uint8 gTrackDesignPlaceFlags;
+bool gTrackDesignSceneryToggle;
 
 static bool track_design_preview_backup_map();
 static void track_design_preview_restore_map();
@@ -37,7 +38,7 @@ static void copy(void *dst, uint8 **src, int length)
 	*src += length;
 }
 
-bool track_design_open(rct_track_td6 *td6, const utf8 *path)
+rct_track_td6 *track_design_open(const utf8 *path)
 {
 	SDL_RWops *file = SDL_RWFromFile(path, "rb");
 	if (file != NULL) {
@@ -55,7 +56,7 @@ bool track_design_open(rct_track_td6 *td6, const utf8 *path)
 		if (!sawyercoding_validate_track_checksum(buffer, bufferLength)) {
 			log_error("Track checksum failed.");
 			free(buffer);
-			return false;
+			return NULL;
 		}
 
 		// Decode the track data
@@ -66,18 +67,19 @@ bool track_design_open(rct_track_td6 *td6, const utf8 *path)
 		if (decoded == NULL) {
 			log_error("failed to realloc");
 		} else {
-			track_design_open_from_buffer(td6, decoded, decodedLength);
+			rct_track_td6 *td6 = track_design_open_from_buffer(decoded, decodedLength);
 			free(decoded);
 
 			td6->name = track_design_get_name_from_path(path);
-			return true;
+			return td6;
 		}
 	}
-	return false;
+	return NULL;
 }
 
-static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t srcLength)
+static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength)
 {
+	rct_track_td6 *td6 = calloc(sizeof(rct_track_td6), 1);
 	uint8 *readPtr = src;
 
 	// Clear top of track_design as this is not loaded from the td4 files
@@ -89,7 +91,8 @@ static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t
 	uint8 version = td6->version_and_colour_scheme >> 2;
 	if (version > 2) {
 		log_error("Unsupported track design.");
-		return false;
+		free(td6);
+		return NULL;
 	}
 
 	// In TD6 there are 32 sets of two byte vehicle colour specifiers
@@ -110,7 +113,8 @@ static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t
 	uint8 *elementData = malloc(elementDataLength);
 	if (elementData == NULL) {
 		log_error("Unable to allocate memory for TD6 element data.");
-		return false;
+		free(td6);
+		return NULL;
 	}
 	copy(elementData, &readPtr, elementDataLength);
 	td6->elements = elementData;
@@ -162,8 +166,8 @@ static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t
 		if (td4_track_has_boosters(td6, elementData)) {
 			log_error("Track design contains RCT1 boosters which are not yet supported.");
 			free(td6->elements);
-			td6->elements = NULL;
-			return false;
+			free(td6);
+			return NULL;
 		}
 
 		// Convert RCT1 ride type to RCT2 ride type
@@ -245,7 +249,7 @@ static bool track_design_open_from_buffer(rct_track_td6 *td6, uint8 *src, size_t
 	rct_td6_scenery_element *sceneryElement = (rct_td6_scenery_element*)sceneryElementsStart;
 	td6->scenery_elements = sceneryElement;
 
-	return true;
+	return td6;
 }
 
 /**
@@ -1253,7 +1257,7 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 {
 	RCT2_GLOBAL(0x00F4414E, uint8) = bl & 0x80;
 	RCT2_GLOBAL(0x00F440D4, uint8) = bl & 0x7F;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) != 0){
+	if (gTrackDesignSceneryToggle) {
 		RCT2_GLOBAL(0x00F4414E, uint8) |= 0x80;
 	}
 	_currentRideIndex = rideIndex;

@@ -218,15 +218,14 @@ static void track_design_index_include(const utf8 *directory)
 
 static void track_design_add_file(const utf8 *path)
 {
-	rct_track_td6 td6;
-	if (track_design_open(&td6, path)) {
+	rct_track_td6 *td6 = track_design_open(path);
+	if (td6 != NULL) {
 		td_index_item tdIndexItem = { 0 };
 		safe_strcpy(tdIndexItem.path, path, sizeof(tdIndexItem.path));
-		memcpy(tdIndexItem.ride_entry, td6.vehicle_object.name, 8);
-		tdIndexItem.ride_type = td6.type;
+		memcpy(tdIndexItem.ride_entry, td6->vehicle_object.name, 8);
+		tdIndexItem.ride_type = td6->type;
 		track_design_add(&tdIndexItem);
-
-		free(td6.elements);
+		track_design_dispose(td6);
 	}
 }
 

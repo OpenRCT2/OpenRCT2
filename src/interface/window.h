@@ -628,7 +628,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY);
 void ride_construction_tooldown_construct(int screenX, int screenY);
 
 void window_maze_construction_update_pressed_widgets();
-void window_track_place_open(utf8 *tdPath);
+void window_track_place_open(const track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
 void window_install_track_open(const char* path);

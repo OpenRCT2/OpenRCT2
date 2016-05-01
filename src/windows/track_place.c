@@ -135,23 +135,19 @@ static void window_track_place_clear_mini_preview()
  *
  *  rct2: 0x006CFCA0
  */
-void window_track_place_open(utf8 *tdPath)
+void window_track_place_open(const track_design_file_ref *tdFileRef)
 {
-	rct_window *w;
-
-	window_close_construction_windows();
-
-	_trackDesign = malloc(sizeof(rct_track_td6));
-	if (!track_design_open(_trackDesign, tdPath)) {
-		track_design_dispose(_trackDesign);
-		_trackDesign = NULL;
+	rct_track_td6 *td6 = track_design_open(tdFileRef->path);
+	if (td6 == NULL) {
 		return;
 	}
+
+	window_close_construction_windows();
 
 	_window_track_place_mini_preview = malloc(TRACK_MINI_PREVIEW_SIZE);
 	window_track_place_clear_mini_preview();
 
-	w = window_create(
+	rct_window *w = window_create(
 		0,
 		29,
 		200,
@@ -170,10 +166,12 @@ void window_track_place_open(utf8 *tdPath)
 	_window_track_place_last_cost = MONEY32_UNDEFINED;
 	_window_track_place_last_x = 0xFFFF;
 	_currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
-	window_track_place_draw_mini_preview(_trackDesign);
+	window_track_place_draw_mini_preview(td6);
 
 	char *title = (char*)language_get_string(3155);
-	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &_trackDesign->name);
+	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &td6->name);
+	
+	_trackDesign = td6;
 }
 
 /**

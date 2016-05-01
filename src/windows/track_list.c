@@ -140,7 +140,7 @@ void window_track_list_open(ride_list_item item)
 	w->track_list.var_480 = 0xFFFF;
 	w->track_list.var_482 = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
 	w->track_list.var_484 = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
+	gTrackDesignSceneryToggle = false;
 	window_push_others_right(w);
 	_currentTrackPieceDirection = 2;
 }
@@ -182,7 +182,7 @@ static void window_track_list_select(rct_window *w, int index)
 	}
 
 	if (RCT2_GLOBAL(0x00F44153, uint8) != 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 1;
+		gTrackDesignSceneryToggle = true;
 	}
 
 	track_design_file_ref *tdRef = &_trackDesigns[index];
@@ -193,8 +193,7 @@ static void window_track_list_select(rct_window *w, int index)
 			window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
 		}
 
-		window_close(w);
-		window_track_place_open(tdRef->path);
+		window_track_place_open(tdRef);
 	}
 }
 
@@ -234,7 +233,7 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_TOGGLE_SCENERY:
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) ^= 1;
+		gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
 		_loadedTrackDesignIndex = -1;
 		window_invalidate(w);
 		break;
@@ -335,10 +334,11 @@ static void window_track_list_invalidate(rct_window *w)
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_FLATBTN;
 		window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WWT_FLATBTN;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0)
-			w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
-		else
+		if (gTrackDesignSceneryToggle) {
 			w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
+		} else {
+			w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
+		}
 	} else {
 		w->pressed_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 		w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
@@ -413,7 +413,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (td6->track_flags & 1) {
 		RCT2_GLOBAL(0x00F44153, uint8) = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0) {
+		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
 			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);
 			y -= 10;
@@ -605,17 +605,14 @@ static bool track_list_load_design_for_preview(utf8 *path)
 	track_design_dispose(_loadedTrackDesign);
 	_loadedTrackDesign = NULL;
 
-	_loadedTrackDesign = calloc(sizeof(rct_track_td6), 1);
-	if (track_design_open(_loadedTrackDesign, path)) {
+	_loadedTrackDesign = track_design_open(path);
+	if (_loadedTrackDesign != NULL) {
 		// Load in a new preview image, calculate cost variable, calculate var_06
 		draw_track_preview(_loadedTrackDesign, (uint8**)_loadedTrackDesignPreview);
 
 		_loadedTrackDesign->cost = gTrackDesignCost;
 		_loadedTrackDesign->track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
 		return true;
-	} else {
-		track_design_dispose(_loadedTrackDesign);
-		_loadedTrackDesign = NULL;
 	}
 	return false;
 }

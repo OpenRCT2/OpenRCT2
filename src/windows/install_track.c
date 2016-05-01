@@ -116,7 +116,7 @@ void window_install_track_open(const char* path)
 		return;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, void*) = mem;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 0;
+	gTrackDesignSceneryToggle = false;
 	_currentTrackPieceDirection = 2;
 	// reset_track_list_cache();
 
@@ -161,8 +161,9 @@ static void window_install_track_select(rct_window *w, int index)
 		return;
 	}
 
-	if (RCT2_GLOBAL(0x00F44153, uint8) != 0)
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) = 1;
+	if (RCT2_GLOBAL(0x00F44153, uint8) != 0) {
+		gTrackDesignSceneryToggle = true;
+	}
 
 	if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
 		index--;
@@ -229,7 +230,7 @@ static void window_install_track_mouseup(rct_window *w, int widgetIndex)
 		window_invalidate(w);
 		break;
 	case WIDX_TOGGLE_SCENERY:
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) ^= 1;
+		gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
 		// reset_track_list_cache();
 		window_invalidate(w);
 		break;
@@ -261,15 +262,15 @@ static void window_install_track_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0)
+	if (!gTrackDesignSceneryToggle) {
 		w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
-	else
+	} else {
 		w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
+	}
 
 	if (w->track_list.var_482 != 0xFFFF) {
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
-	}
-	else {
+	} else {
 		w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
 	}
 }
@@ -326,7 +327,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Warnings
 	if (track_td6->track_flags & 1) {
 		RCT2_GLOBAL(0x00F44153, uint8) = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) == 0) {
+		if (!gTrackDesignSceneryToggle) {
 			// Scenery not available
 			gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, NULL, 0, x, y, 368);
 			y -= 10;
