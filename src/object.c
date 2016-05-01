@@ -822,15 +822,6 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 			cur_vehicle_images_offset = image_index + vehicleEntry->no_seating_rows * vehicleEntry->no_vehicle_images;
 			// 0x6DEB0D
 
-			if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10)) {
-				int num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
-				if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_13) {
-					num_images *= 2;
-				}
-
-				set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
-			}
-
 			// Copy the vehicle entry over to new one
 			outVehicleEntry->rotation_frame_mask = vehicleEntry->rotation_frame_mask;
 			outVehicleEntry->var_02 = vehicleEntry->var_02;
@@ -875,6 +866,15 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 			outVehicleEntry->pad_5E = vehicleEntry->pad_5E;
 			outVehicleEntry->draw_order = vehicleEntry->draw_order;
 			outVehicleEntry->special_frames = vehicleEntry->special_frames;
+
+			if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10)) {
+				int num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
+				if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_13) {
+					num_images *= 2;
+				}
+
+				set_vehicle_type_image_max_sizes(outVehicleEntry, num_images);
+			}
 
 			sint8 no_positions = *peep_loading_positions++;
 			if (no_positions == -1) {
@@ -2322,7 +2322,7 @@ static rct_string_id object_type_park_entrance_desc(void *objectEntry)
 	return STR_NONE;
 }
 
-static bool object_type_park_entrance_reset(void *objectEntry, uint32 entryIndex)
+static void object_type_park_entrance_reset(void *objectEntry, uint32 entryIndex)
 {
 	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_entrance_type));
