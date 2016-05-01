@@ -507,16 +507,18 @@ typedef void   (*object_unload_func)(void *objectEntry);
 typedef bool   (*object_test_func)(void *objectEntry);
 typedef void   (*object_paint_func)(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 typedef rct_string_id (*object_desc_func)(void *objectEntry);
+typedef void   (*object_reset_func)(void *objectEntry, uint32 entryIndex);
 
 /**
  * Represents addresses for virtual object functions.
  */
-typedef struct {
-	object_load_func load;
+typedef struct object_type_vtable {
+	object_load_func   load;
 	object_unload_func unload;
-	object_test_func test;
-	object_paint_func paint;
-	object_desc_func desc;
+	object_test_func   test;
+	object_paint_func  paint;
+	object_desc_func   desc;
+	object_reset_func  reset;
 } object_type_vtable;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -527,7 +529,7 @@ typedef struct {
  * Ride type vehicle structure.
  * size: 0x65
  */
-typedef struct {
+typedef struct rct_ride_entry_vehicle_32bit {
 	uint16 rotation_frame_mask;		// 0x00 , 0x1A
 	uint8 var_02;					// 0x02 , 0x1C
 	uint8 var_03;					// 0x03 , 0x1D
@@ -578,7 +580,7 @@ typedef struct {
  * Ride type structure.
  * size: unknown
  */
-typedef struct {
+typedef struct rct_ride_entry_32bit {
 	rct_string_id name;						// 0x000
 	rct_string_id description;				// 0x002
 	uint32 images_offset;					// 0x004
@@ -918,8 +920,8 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 	}
 
 	// 0x6DEBAA
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1046,19 +1048,278 @@ static rct_string_id object_type_ride_desc(void *objectEntry)
 	return stringId;
 }
 
+static void object_type_ride_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_ride_entry *rideEntry = (rct_ride_entry*)objectEntry;
+
+	// After rideEntry is 3 string tables
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_ride_entry));
+	rideEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 0);
+	rideEntry->description = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 1);
+
+	//TODO: Move to its own function when ride construction window is merged.
+	if (gConfigInterface.select_by_track_type) {
+		rideEntry->enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
+	}
+
+	object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 2);
+	rideEntry->vehicle_preset_list = (vehicle_colour_preset_list*)extendedEntryData;
+
+	// If Unknown struct size is 0xFF then there are 32 3 byte structures
+	uint8 unknown_size = *extendedEntryData++;
+	if (unknown_size != 0xFF) {
+		extendedEntryData += unknown_size * 3;
+	} else {
+		extendedEntryData += 0x60;
+	}
+
+	sint8 *peep_loading_positions = (sint8*)extendedEntryData;
+	// Peep loading positions variable size
+	// 4 different vehicle subtypes are available
+	for (int i = 0; i < 4; i++){
+		uint16 no_peep_positions = *extendedEntryData++;
+		// If no_peep_positions is 0xFF then no_peep_positions is a word
+		if (no_peep_positions == 0xFF) {
+			no_peep_positions = *((uint16*)extendedEntryData);
+			extendedEntryData += 2;
+		}
+		extendedEntryData += no_peep_positions;
+	}
+
+	int images_offset = object_chunk_load_image_directory(&extendedEntryData);
+	rideEntry->images_offset = images_offset;
+
+	int cur_vehicle_images_offset = images_offset + 3;
+
+	for (int i = 0; i < 4; i++) {
+		rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[i];
+
+		if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT) {
+			int al = 1;
+			if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_SWINGING) {
+				al = 13;
+				if ((vehicleEntry->flags_b & (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11)) != (VEHICLE_ENTRY_FLAG_B_5 | VEHICLE_ENTRY_FLAG_B_11)) {
+					al = 7;
+					if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_5)) {
+						if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_11)) {
+							al = 5;
+							if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_9) {
+								al = 3;
+							}
+						}
+					}
+				}
+			}
+			vehicleEntry->var_03 = al;
+			// 0x6DE90B
+
+			al = 0x20;
+			if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14)) {
+				al = 1;
+				if (vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_7) {
+					if (vehicleEntry->var_11 != 6) {
+						al = 2;
+						if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_7)) {
+							al = 4;
+						}
+					}
+				}
+			}
+			if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_12) {
+				al = vehicleEntry->special_frames;
+			}
+			vehicleEntry->var_02 = al;
+			// 0x6DE946
+
+			vehicleEntry->var_16 = vehicleEntry->var_02 * vehicleEntry->var_03;
+			vehicleEntry->base_image_id = cur_vehicle_images_offset;
+			int image_index = vehicleEntry->base_image_id;
+
+			if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS) {
+				int b = vehicleEntry->var_16 * 32;
+
+				if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_11) b /= 2;
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
+
+				image_index += b;
+
+				// Incline 25
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
+					vehicleEntry->var_20 = image_index;
+					b = vehicleEntry->var_16 * 72;
+					if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_14)
+						b = vehicleEntry->var_16 * 16;
+
+					image_index += b;
+				}
+
+				// Incline 60
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
+					vehicleEntry->var_24 = image_index;
+					b = vehicleEntry->var_16 * 80;
+					image_index += b;
+				}
+
+				// Verticle
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
+					vehicleEntry->var_28 = image_index;
+					b = vehicleEntry->var_16 * 116;
+					image_index += b;
+				}
+
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
+					vehicleEntry->var_2C = image_index;
+					b = vehicleEntry->var_16 * 24;
+					image_index += b;
+				}
+
+				// Bank
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
+					vehicleEntry->var_30 = image_index;
+					b = vehicleEntry->var_16 * 80;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
+					vehicleEntry->var_34 = image_index;
+					b = vehicleEntry->var_16 * 40;
+					image_index += b;
+				}
+
+				// Track half? Up/Down
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_38 = image_index;
+					b = vehicleEntry->var_16 * 128;
+					image_index += b;
+				}
+
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_3C = image_index;
+					b = vehicleEntry->var_16 * 16;
+					image_index += b;
+				}
+
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_40 = image_index;
+					b = vehicleEntry->var_16 * 16;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS) {
+					vehicleEntry->var_44 = image_index;
+					b = vehicleEntry->var_16 * 128;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
+					vehicleEntry->var_48 = image_index;
+					b = vehicleEntry->var_16 * 16;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS) {
+					vehicleEntry->var_4C = image_index;
+					b = vehicleEntry->var_16 * 80;
+					image_index += b;
+				}
+
+				// Unknown
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) {
+					vehicleEntry->var_1C = image_index;
+					b = vehicleEntry->var_16 * 12;
+					image_index += b;
+				}
+
+				if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_14) {
+					// Same offset as above???
+					vehicleEntry->var_4C = image_index;
+					b = vehicleEntry->var_16 * 32;
+					image_index += b;
+				}
+			} else {
+				image_index += vehicleEntry->var_16 * 36;
+			}
+			// No vehicle images
+			vehicleEntry->no_vehicle_images = image_index - cur_vehicle_images_offset;
+
+			// Move the offset over this vehicles images. Including peeps
+			cur_vehicle_images_offset = image_index + vehicleEntry->no_seating_rows * vehicleEntry->no_vehicle_images;
+			// 0x6DEB0D
+
+			if (!(vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_10)) {
+				int num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
+				if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_13) {
+					num_images *= 2;
+				}
+
+				set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
+			}
+
+			sint8 no_positions = *peep_loading_positions++;
+			if (no_positions == -1) {
+				// The no_positions is 16 bit skip over
+				peep_loading_positions += 2;
+			}
+			vehicleEntry->peep_loading_positions = peep_loading_positions;
+		}
+	}
+
+	// 0x6DEB71
+	if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0) {
+		for (int i = 0; i < 3; i++) {
+			int dl = rideEntry->ride_type[i];
+			if (dl == 0xFF) {
+				continue;
+			}
+
+			uint8 *typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
+			while (dl >= 0) {
+				if (*typeToRideEntryIndexMap++ == 0xFF) {
+					dl--;
+				}
+			}
+
+			typeToRideEntryIndexMap--;
+			uint8 previous_entry = entryIndex;
+			while (typeToRideEntryIndexMap < RCT2_ADDRESS(0x9E34E4, uint8)){
+				uint8 backup_entry = *typeToRideEntryIndexMap;
+				*typeToRideEntryIndexMap++ = previous_entry;
+				previous_entry = backup_entry;
+			}
+		}
+	}
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+
+	int di = rideEntry->ride_type[0] | (rideEntry->ride_type[1] << 8) | (rideEntry->ride_type[2] << 16);
+
+	if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+		di |= 0x1000000;
+	}
+
+	RCT2_GLOBAL(0xF433DD, uint32) = di;
+}
+
 static const object_type_vtable object_type_ride_vtable[] = {
 	object_type_ride_load,
 	object_type_ride_unload,
 	object_type_ride_test,
 	object_type_ride_paint,
-	object_type_ride_desc
+	object_type_ride_desc,
+	object_type_ride_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 // Small Scenery (rct2: 0x006E3466)
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef struct {
+typedef struct rct_large_scenery_entry_32bit {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
@@ -1070,7 +1331,7 @@ typedef struct {
 	uint32 var_16;
 } rct_large_scenery_entry_32bit;
 
-typedef struct {
+typedef struct rct_small_scenery_entry_32bit {
 	uint32 flags;			// 0x06
 	uint8 height;			// 0x0A
 	uint8 tool_id;			// 0x0B
@@ -1081,7 +1342,7 @@ typedef struct {
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry_32bit;
 
-typedef struct {
+typedef struct rct_scenery_entry_32bit {
 	rct_string_id name;		// 0x00
 	uint32 image;			// 0x02
 	union {
@@ -1124,8 +1385,8 @@ static uint8* object_type_small_scenery_load(void *objectEntry, uint32 entryInde
 	}
 
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1214,13 +1475,43 @@ static rct_string_id object_type_small_scenery_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_small_scenery_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_entry));
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_SMALL_SCENERY, entryIndex, 0);
+	sceneryEntry->small_scenery.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF) {
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)) {
+			sceneryEntry->small_scenery.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG16){
+		sceneryEntry->small_scenery.var_10 = (uintptr_t)extendedEntryData;
+		while (*++extendedEntryData != 0xFF);
+		extendedEntryData++;
+	}
+
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+}
+
 static const object_type_vtable object_type_small_scenery_vtable[] = {
 	object_type_small_scenery_load,
 	object_type_small_scenery_unload,
 	object_type_small_scenery_test,
 	object_type_small_scenery_paint,
-	object_type_small_scenery_desc
+	object_type_small_scenery_desc,
+	object_type_small_scenery_reset,
 };
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Large Scenery (rct2: 0x006B92A7)
@@ -1275,8 +1566,8 @@ static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex,
 		}
 	}
 	sceneryEntry->image = imageId;
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1330,12 +1621,60 @@ static rct_string_id object_type_large_scenery_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_large_scenery_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_entry));
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_LARGE_SCENERY, entryIndex, 0);
+	sceneryEntry->large_scenery.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF) {
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)) {
+			sceneryEntry->large_scenery.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	if (sceneryEntry->large_scenery.flags & (1 << 2)) {
+		sceneryEntry->large_scenery.var_12 = (uintptr_t)extendedEntryData;
+		extendedEntryData += 1038;
+	}
+
+	sceneryEntry->large_scenery.tiles = (rct_large_scenery_tile*)extendedEntryData;
+
+	// skip over large scenery tiles
+	while (*((uint16*)extendedEntryData) != 0xFFFF){
+		extendedEntryData += sizeof(rct_large_scenery_tile);
+	}
+
+	extendedEntryData += 2;
+
+	int imageId = object_chunk_load_image_directory(&extendedEntryData);
+	if (sceneryEntry->large_scenery.flags & (1 << 2)){
+		sceneryEntry->large_scenery.var_16 = imageId;
+
+		uint8* edx = (uint8*)sceneryEntry->large_scenery.var_12;
+		if (!(edx[0xC] & 1)) {
+			imageId += edx[0xD] * 4;
+		} else{
+			imageId += edx[0xD] * 2;
+		}
+	}
+	sceneryEntry->image = imageId;
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+}
+
 static const object_type_vtable object_type_large_scenery_vtable[] = {
 	object_type_large_scenery_load,
 	object_type_large_scenery_unload,
 	object_type_large_scenery_test,
 	object_type_large_scenery_paint,
-	object_type_large_scenery_desc
+	object_type_large_scenery_desc,
+	object_type_large_scenery_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1366,8 +1705,8 @@ static uint8* object_type_wall_load(void *objectEntry, uint32 entryIndex, int *c
 	extendedEntryData += sizeof(rct_object_entry);
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
 
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1432,12 +1771,36 @@ static rct_string_id object_type_wall_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_wall_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_entry));
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_WALLS, entryIndex, 0);
+	sceneryEntry->wall.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF){
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)) {
+			sceneryEntry->wall.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+}
+
 static const object_type_vtable object_type_wall_vtable[] = {
 	object_type_wall_load,
 	object_type_wall_unload,
 	object_type_wall_test,
 	object_type_wall_paint,
-	object_type_wall_desc
+	object_type_wall_desc,
+	object_type_wall_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1468,8 +1831,8 @@ static uint8* object_type_banner_load(void *objectEntry, uint32 entryIndex, int 
 	extendedEntryData += sizeof(rct_object_entry);
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
 
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 	outSceneryEntry->name = sceneryEntry->name;
@@ -1511,12 +1874,36 @@ static rct_string_id object_type_banner_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_banner_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_entry));
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_BANNERS, entryIndex, 0);
+	sceneryEntry->banner.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF){
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)){
+			sceneryEntry->banner.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+}
+
 static const object_type_vtable object_type_banner_vtable[] = {
 	object_type_banner_load,
 	object_type_banner_unload,
 	object_type_banner_test,
 	object_type_banner_paint,
-	object_type_banner_desc
+	object_type_banner_desc,
+	object_type_banner_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1541,8 +1928,8 @@ static uint8* object_type_path_load(void *objectEntry, uint32 entryIndex, int *c
 	pathEntry->image = imageId;
 	pathEntry->bridge_image = imageId + 109;
 
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1593,12 +1980,44 @@ static rct_string_id object_type_path_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_path_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_path_type));
+
+	pathEntry->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATHS, entryIndex, 0);
+
+	int imageId = object_chunk_load_image_directory(&extendedEntryData);
+	pathEntry->image = imageId;
+	pathEntry->bridge_image = imageId + 109;
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+
+	gFootpathSelectedId = 0;
+	// Set the default path for when opening footpath window
+	for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++) {
+		rct_path_type *pathEntry2 = (rct_path_type*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
+		if (pathEntry2 == (rct_path_type*)-1) {
+			continue;
+		}
+		if (!(pathEntry2->flags & 4)) {
+			gFootpathSelectedId = i;
+			break;
+		}
+		gFootpathSelectedId = i;
+	}
+}
+
 static const object_type_vtable object_type_path_vtable[] = {
 	object_type_path_load,
 	object_type_path_unload,
 	object_type_path_test,
 	object_type_path_paint,
-	object_type_path_desc
+	object_type_path_desc,
+	object_type_path_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1629,8 +2048,8 @@ static uint8* object_type_path_bit_load(void *objectEntry, uint32 entryIndex, in
 	extendedEntryData += sizeof(rct_object_entry);
 	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
 
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1671,12 +2090,36 @@ static rct_string_id object_type_path_bit_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_path_bit_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_entry* sceneryEntry = (rct_scenery_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_entry));
+
+	sceneryEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATH_BITS, entryIndex, 0);
+	sceneryEntry->path_bit.scenery_tab_id = 0xFF;
+	if (*extendedEntryData != 0xFF) {
+		uint8 entry_type, entry_index;
+		if (find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index)){
+			sceneryEntry->path_bit.scenery_tab_id = entry_index;
+		}
+	}
+
+	extendedEntryData += sizeof(rct_object_entry);
+	sceneryEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+}
+
 static const object_type_vtable object_type_path_bit_vtable[] = {
 	object_type_path_bit_load,
 	object_type_path_bit_unload,
 	object_type_path_bit_test,
 	object_type_path_bit_paint,
-	object_type_path_bit_desc
+	object_type_path_bit_desc,
+	object_type_path_bit_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1698,12 +2141,11 @@ static uint8* object_type_scenery_set_load(void *objectEntry, uint32 entryIndex,
 	scenerySetEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_SCENERY_SETS, entryIndex, 0);
 	
 	rct_object_entry *entryObjects = NULL;
-	uint32 eax = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)eax != 0xFFFFFFFF){
+	uintptr_t eax = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (eax != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)eax) = 0;
 		entryObjects = (rct_object_entry*)(eax + 2);
 	}
-
 	scenerySetEntry->entry_count = 0;
 	scenerySetEntry->var_107 = 0;
 
@@ -1777,12 +2219,69 @@ static rct_string_id object_type_scenery_set_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_scenery_set_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_scenery_set_entry *scenerySetEntry = (rct_scenery_set_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_scenery_set_entry));
+
+	scenerySetEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_SCENERY_SETS, entryIndex, 0);
+
+	rct_object_entry *entryObjects = NULL;
+	uintptr_t eax = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (eax != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)eax) = 0;
+		entryObjects = (rct_object_entry*)(eax + 2);
+	}
+
+	scenerySetEntry->entry_count = 0;
+	scenerySetEntry->var_107 = 0;
+
+	for (; *extendedEntryData != 0xFF; extendedEntryData += sizeof(rct_object_entry)) {
+		scenerySetEntry->var_107++;
+
+		if (entryObjects != NULL){
+			memcpy(entryObjects, extendedEntryData, sizeof(rct_object_entry));
+			entryObjects++;
+			(*((uint16*)(eax + 1)))++;
+		}
+		uint8 entry_type;
+		uint8 entry_index = 0;
+		if (!find_object_in_entry_group((rct_object_entry*)extendedEntryData, &entry_type, &entry_index))
+			continue;
+
+		uint16 scenery_entry = entry_index;
+
+		switch (entry_type){
+		case OBJECT_TYPE_SMALL_SCENERY:
+			break;
+		case OBJECT_TYPE_LARGE_SCENERY:
+			scenery_entry |= 0x300;
+			break;
+		case OBJECT_TYPE_WALLS:
+			scenery_entry |= 0x200;
+			break;
+		case OBJECT_TYPE_PATH_BITS:
+			scenery_entry |= 0x100;
+			break;
+		default:
+			scenery_entry |= 0x400;
+			break;
+		}
+
+		scenerySetEntry->scenery_entries[scenerySetEntry->entry_count++] = scenery_entry;
+	}
+
+	extendedEntryData++;
+	scenerySetEntry->image = object_chunk_load_image_directory(&extendedEntryData);
+}
+
 static const object_type_vtable object_type_scenery_set_vtable[] = {
 	object_type_scenery_set_load,
 	object_type_scenery_set_unload,
 	object_type_scenery_set_test,
 	object_type_scenery_set_paint,
-	object_type_scenery_set_desc
+	object_type_scenery_set_desc,
+	object_type_scenery_set_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1804,8 +2303,8 @@ static uint8* object_type_park_entrance_load(void *objectEntry, uint32 entryInde
 	entranceType->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PARK_ENTRANCE, entryIndex, 0);
 	entranceType->image_id = object_chunk_load_image_directory(&extendedEntryData);
 
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1846,12 +2345,27 @@ static rct_string_id object_type_park_entrance_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static bool object_type_park_entrance_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_entrance_type *entranceType = (rct_entrance_type*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_entrance_type));
+
+	entranceType->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PARK_ENTRANCE, entryIndex, 0);
+	entranceType->image_id = object_chunk_load_image_directory(&extendedEntryData);
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+}
+
 static const object_type_vtable object_type_park_entrance_vtable[] = {
 	object_type_park_entrance_load,
 	object_type_park_entrance_unload,
 	object_type_park_entrance_test,
 	object_type_park_entrance_paint,
-	object_type_park_entrance_desc
+	object_type_park_entrance_desc,
+	object_type_park_entrance_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1877,8 +2391,8 @@ static uint8* object_type_water_load(void *objectEntry, uint32 entryIndex, int *
 	waterEntry->var_06 = imageId + 1;
 	waterEntry->var_0A = imageId + 4;
 
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1917,12 +2431,36 @@ static rct_string_id object_type_water_desc(void *objectEntry)
 	return STR_NONE;
 }
 
+static void object_type_water_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_water_type *waterEntry = (rct_water_type*)objectEntry;
+
+	uint8 *pStringTable = (uint8*)((size_t)objectEntry + sizeof(rct_water_type));
+	waterEntry->string_idx = object_get_localised_text(&pStringTable, OBJECT_TYPE_WATER, entryIndex, 0);
+
+	int imageId = object_chunk_load_image_directory(&pStringTable);
+	waterEntry->image_id = imageId;
+	waterEntry->var_06 = imageId + 1;
+	waterEntry->var_0A = imageId + 4;
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+
+	if (RCT2_GLOBAL(0x009ADAFD, uint8) == 0) {
+		load_palette();
+		gfx_invalidate_screen();
+	}
+}
+
 static const object_type_vtable object_type_water_vtable[] = {
 	object_type_water_load,
 	object_type_water_unload,
 	object_type_water_test,
 	object_type_water_paint,
-	object_type_water_desc
+	object_type_water_desc,
+	object_type_water_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1945,8 +2483,8 @@ static uint8* object_type_stex_load(void *objectEntry, uint32 entryIndex, int *c
 	stexEntry->park_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 1);
 	stexEntry->details = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 2);
 
-	uint32 some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
-	if ((uint32)some_pointer != 0xFFFFFFFF){
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
 		*((uint16*)some_pointer) = 0;
 	}
 
@@ -1980,12 +2518,28 @@ static rct_string_id object_type_stex_desc(void *objectEntry)
 	return stexEntry->details;
 }
 
+static void object_type_stex_reset(void *objectEntry, uint32 entryIndex)
+{
+	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
+	uint8 *stringTable = (uint8*)((size_t)objectEntry + (size_t)0x08);
+
+	stexEntry->scenario_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 0);
+	stexEntry->park_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 1);
+	stexEntry->details = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 2);
+
+	uintptr_t some_pointer = RCT2_GLOBAL(0x9ADAF4, uint32);
+	if (some_pointer != (uintptr_t)0xFFFFFFFF){
+		*((uint16*)some_pointer) = 0;
+	}
+}
+
 static const object_type_vtable object_type_stex_vtable[] = {
 	object_type_stex_load,
 	object_type_stex_unload,
 	object_type_stex_test,
 	object_type_stex_paint,
-	object_type_stex_desc
+	object_type_stex_desc,
+	object_type_stex_reset,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2037,6 +2591,13 @@ rct_string_id object_desc(int type, void *objectEntry)
 	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
 	const object_type_vtable *vtable = object_type_vtables[type];
 	return vtable->desc(objectEntry);
+}
+
+void object_reset(int type, void *objectEntry, uint32 entryIndex)
+{
+	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
+	const object_type_vtable *vtable = object_type_vtables[type];
+	return vtable->reset(objectEntry, entryIndex);
 }
 
 /**
