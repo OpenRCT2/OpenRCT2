@@ -56,17 +56,6 @@ int gfx_load_g1()
 			 * pointers to however long our machine wants them.
 			 */
 
-			// Size: 0x10
-			typedef struct {
-				uint32 offset;			// 0x00 note: uint32 always!
-				sint16 width;			// 0x04
-				sint16 height;			// 0x06
-				sint16 x_offset;		// 0x08
-				sint16 y_offset;		// 0x0A
-				uint16 flags;			// 0x0C
-				uint16 zoomed_offset;	// 0x0E
-			} rct_g1_element_32bit;
-
 			/* number of elements is stored in g1.dat, but because the entry
 			 * headers are static, this can't be variable until made into a
 			 * dynamic array.
@@ -96,8 +85,9 @@ int gfx_load_g1()
 			SDL_RWclose(file);
 
 			// Fix entry data offsets
-			for (i = 0; i < header.num_entries; i++)
+			for (i = 0; i < header.num_entries; i++) {
 				g1Elements[i].offset += (uintptr_t)_g1Buffer;
+			}
 
 			// Successful
 			return 1;
