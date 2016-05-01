@@ -990,7 +990,8 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 {
 	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_TERRAIN;
-	RCT2_GLOBAL(0x9DE57C, uint16) |= 1;
+	RCT2_GLOBAL(0x9DE57C, uint16) |= 1; // Probably a boolean indicating 'above surface'
+	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
 
 	uint16 zoomLevel = dpi->zoom_level;
 
@@ -1265,7 +1266,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 						local_height += 16;
 
 						if (waterHeight != local_height
-						    || !(local_surfaceShape == 0x10)) {
+						    || !(local_surfaceShape & 0x10)) {
 							local_height = waterHeight;
 							local_surfaceShape = 0;
 						} else {
@@ -1389,16 +1390,16 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			assert(eax % 32 == 0);
 			// end new code
 
-			viewport_surface_draw_water_side_top(EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
-			viewport_surface_draw_water_side_top(EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
-			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
-			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
+			viewport_surface_draw_water_side_top(EDGE_TOPLEFT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
+			viewport_surface_draw_water_side_top(EDGE_TOPRIGHT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
+			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMLEFT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
+			viewport_surface_draw_water_side_bottom(EDGE_BOTTOMRIGHT, waterHeight / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 		}
 	}
 
 	if (mapElement->properties.surface.ownership & 0x0F
 	    && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1)) {
-		// loc_66195F:
+		// Owned land boundary fences
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_PARK;
 
 		registers regs = { 0 };
@@ -1518,6 +1519,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 	}
 
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_TERRAIN;
 	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
 
 	switch (surfaceShape) {
