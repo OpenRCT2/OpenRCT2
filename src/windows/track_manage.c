@@ -22,6 +22,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/track.h"
 #include "../ride/track_design.h"
+#include "../util/util.h"
 #include "error.h"
 
 #pragma region Widgets
@@ -48,10 +49,10 @@ static rct_widget window_track_manage_widgets[] = {
 
 static rct_widget window_track_delete_prompt_widgets[] = {
 	{ WWT_FRAME,			0,	0,		249,	0,		73,		STR_NONE,					STR_NONE				},
-	{ WWT_CAPTION,			0,	1,		248,	1,		14,		3356,						STR_WINDOW_TITLE_TIP	},
+	{ WWT_CAPTION,			0,	1,		248,	1,		14,		STR_DELETE_FILE,			STR_WINDOW_TITLE_TIP	},
 	{ WWT_CLOSEBOX,			0,	237,	247,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP	},
-	{ WWT_DROPDOWN_BUTTON,	0,	10,		119,	54,		65,		3349,						STR_NONE				},
-	{ WWT_DROPDOWN_BUTTON,	0,	130,	239,	54,		65,		972,						STR_NONE				},
+	{ WWT_DROPDOWN_BUTTON,	0,	10,		119,	54,		65,		STR_TRACK_MANAGE_DELETE,	STR_NONE				},
+	{ WWT_DROPDOWN_BUTTON,	0,	130,	239,	54,		65,		STR_CANCEL,					STR_NONE				},
 	{ WIDGETS_END }
 };
 
@@ -135,19 +136,19 @@ static rct_window_event_list window_track_delete_prompt_events = {
 
 #pragma endregion
 
+static track_design_file_ref *_trackDesignFileReference;
+
 static void window_track_delete_prompt_open();
 
 /**
  *
  *  rct2: 0x006D348F
  */
-void window_track_manage_open()
+void window_track_manage_open(track_design_file_ref *tdFileRef)
 {
-	rct_window *w, *trackDesignListWindow;
-
 	window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
-	w = window_create_centred(
+	rct_window *w = window_create_centred(
 		250,
 		44,
 		&window_track_manage_events,
@@ -161,9 +162,15 @@ void window_track_manage_open()
 		(1 << WIDX_DELETE);
 	window_init_scroll_widgets(w);
 
-	trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-	if (trackDesignListWindow != NULL)
+	rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+	if (trackDesignListWindow != NULL) {
 		trackDesignListWindow->track_list.var_484 |= 1;
+	}
+
+	utf8 *title = (utf8*)language_get_string(3155);
+	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &tdFileRef->name);
+
+	_trackDesignFileReference = tdFileRef;
 }
 
 /**
@@ -173,8 +180,9 @@ void window_track_manage_open()
 static void window_track_manage_close(rct_window *w)
 {
 	rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-	if (trackDesignListWindow != NULL)
+	if (trackDesignListWindow != NULL) {
 		trackDesignListWindow->track_list.var_484 &= ~1;
+	}
 }
 
 /**
@@ -183,24 +191,19 @@ static void window_track_manage_close(rct_window *w)
  */
 static void window_track_manage_mouseup(rct_window *w, int widgetIndex)
 {
-	char *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, char);
-	rct_window *trackDesignListWindow;
-	char *dst, *src;
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);
 		break;
 	case WIDX_RENAME:
-		trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-		if (trackDesignListWindow != NULL) {
-			src = &trackDesignList[trackDesignListWindow->track_list.var_482 * 128];
-			dst = (char*)0x009BC677;
-			while (*src != 0 && *src != '.')
-				*dst++ = *src++;
-			*dst = 0;
-			window_text_input_open(w, widgetIndex, 3350, 3351, 3165, 0, 127);
-		}
+		window_text_input_raw_open(
+			w,
+			widgetIndex,
+			STR_TRACK_DESIGN_RENAME_TITLE,
+			STR_TRACK_DESIGN_RENAME_DESC,
+			_trackDesignFileReference->name,
+			127
+		);
 		break;
 	case WIDX_DELETE:
 		window_track_delete_prompt_open();
@@ -214,8 +217,9 @@ static void window_track_manage_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	if (widgetIndex != WIDX_RENAME || text == NULL)
+	if (widgetIndex != WIDX_RENAME || text == NULL) {
 		return;
+	}
 
 	// if (track_rename(text)) {
 	// 	window_close_by_class(WC_TRACK_DELETE_PROMPT);
@@ -280,10 +284,11 @@ static void window_track_delete_prompt_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_PROMPT_DELETE:
 		window_close(w);
-		if (track_delete())
+		if (track_delete()) {
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
-		else
+		} else {
 			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, gGameCommandErrorText);
+		}
 		break;
 	}
 }
@@ -299,12 +304,15 @@ static void window_track_delete_prompt_invalidate(rct_window *w)
  */
 static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	rct_string_id stringId;
-
 	window_draw_widgets(w, dpi);
 
-	stringId = 3155;
 	gfx_draw_string_centred_wrapped(
-		dpi, &stringId, w->x + 125, w->y + 28, 246, STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, 0
+		dpi,
+		&_trackDesignFileReference->name,
+		w->x + 125,
+		w->y + 28,
+		246,
+		STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK,
+		0
 	);
 }

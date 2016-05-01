@@ -19,12 +19,13 @@
 
 #include "../common.h"
 #include "../drawing/drawing.h"
+#include "../management/research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../ride/track_design.h"
 #include "../ride/vehicle.h"
-#include "../world/park.h"
-#include "../management/research.h"
 #include "../scenario.h"
+#include "../world/park.h"
 #include "colour.h"
 
 struct rct_window;
@@ -651,7 +652,7 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, i
 void window_scenery_open();
 void window_music_credits_open();
 void window_publisher_credits_open();
-void window_track_manage_open();
+void window_track_manage_open(track_design_file_ref *tdFileRef);
 void window_viewport_open();
 void window_themes_open();
 void window_title_editor_open(int tab);

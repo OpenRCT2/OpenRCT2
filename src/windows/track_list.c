@@ -186,28 +186,16 @@ static void window_track_list_select(rct_window *w, int index)
 	}
 
 	track_design_file_ref *tdRef = &_trackDesigns[index];
-
-	// trackDesignItem = trackDesignList + (index * 128);
-	// RCT2_GLOBAL(0x00F4403C, utf8*) = trackDesignItem;
-	// window_track_list_format_name(
-	// 	(char*)0x009BC313,
-	// 	trackDesignItem,
-	// 	gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ?
-	// 	0 :
-	// 	FORMAT_WHITE,
-	// 	1);
-
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-		window_track_manage_open();
-		return;
-	}
+		window_track_manage_open(tdRef);
+	} else {
+		if (_loadedTrackDesignIndex != -1 && (_loadedTrackDesign->track_flags & 4)) {
+			window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
+		}
 
-	if (_loadedTrackDesignIndex != -1 && (_loadedTrackDesign->track_flags & 4)) {
-		window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
+		window_close(w);
+		window_track_place_open(tdRef->path);
 	}
-
-	window_close(w);
-	window_track_place_open(tdRef->path);
 }
 
 static int window_track_list_get_list_item_index_from_position(int x, int y)
@@ -247,7 +235,7 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TOGGLE_SCENERY:
 		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_SCENERY_TOGGLE, uint8) ^= 1;
-		// reset_track_list_cache();
+		_loadedTrackDesignIndex = -1;
 		window_invalidate(w);
 		break;
 	case WIDX_BACK:
@@ -547,17 +535,13 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	rct_string_id stringId, stringId2;
-	int i, x, y, colour;
-
-	colour = ColourMapA[w->colours[0]].mid_light;
+	int colour = ColourMapA[w->colours[0]].mid_light;
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	i = 0;
-	x = 0;
-	y = 0;
-
+	int x = 0;
+	int y = 0;
+	size_t listIndex = 0;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (_trackDesignsCount == 0) {
 			// No track designs
@@ -566,7 +550,8 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 		}
 	} else {
 		// Build custom track item
-		if (i == w->track_list.var_482) {
+		rct_string_id stringId;
+		if (listIndex == w->track_list.var_482) {
 			// Highlight
 			gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
 			stringId = 1193;
@@ -574,15 +559,15 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			stringId = 1191;
 		}
 
-		stringId2 = STR_BUILD_CUSTOM_DESIGN;
+		rct_string_id stringId2 = STR_BUILD_CUSTOM_DESIGN;
 		gfx_draw_string_left(dpi, stringId, &stringId2, 0, x, y - 1);
 		y += 10;
-		i++;
+		listIndex++;
 	}
 
-	for (size_t i = 0; i < _trackDesignsCount; i++) {
+	for (size_t i = 0; i < _trackDesignsCount; i++, listIndex++) {
 		if (y + 10 >= dpi->y && y < dpi->y + dpi->height) {
-			uint16 listIndex = (uint16)(i + 1);
+			rct_string_id stringId;
 			if (listIndex == w->track_list.var_482) {
 				// Highlight
 				gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);

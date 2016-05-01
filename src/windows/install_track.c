@@ -182,7 +182,7 @@ static void window_install_track_select(rct_window *w, int index)
 	substitute_path(track_path, (char*)RCT2_ADDRESS_TRACKS_PATH, trackDesignItem);
 
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-		window_track_manage_open();
+		window_track_manage_open(NULL);
 		return;
 	}
 
