@@ -472,15 +472,21 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 	rct_g1_element* g1_dest = &g1Elements[image_start_no];
 
 	// After length of data is the start of all g1 element structs
-	rct_g1_element* g1_source = (rct_g1_element*)(*chunk);
+	rct_g1_element_32bit* g1_source = (rct_g1_element_32bit*)(*chunk);
 
 	// After the g1 element structs is the actual images.
-	uint8* image_offset = no_images * sizeof(rct_g1_element) + (uint8*)g1_source;
+	uintptr_t image_offset = no_images * sizeof(rct_g1_element_32bit) + (uintptr_t)g1_source;
 
-	for (int i = 0; i < no_images; ++i){
-		*g1_dest = *g1_source++;
-		g1_dest->offset += (uint32)image_offset;
+	for (int i = 0; i < no_images; ++i) {
+		g1_dest->offset        = (uint8*)(g1_source->offset + image_offset);
+		g1_dest->width         = g1_source->width;
+		g1_dest->height        = g1_source->height;
+		g1_dest->x_offset      = g1_source->x_offset;
+		g1_dest->y_offset      = g1_source->y_offset;
+		g1_dest->flags         = g1_source->flags;
+		g1_dest->zoomed_offset = g1_source->zoomed_offset;
 		g1_dest++;
+		g1_source++;
 	}
 
 	*chunk = ((uint8*)g1_source) + length_of_data;
@@ -927,12 +933,6 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 
 	int di = rideEntry->ride_type[0] | (rideEntry->ride_type[1] << 8) | (rideEntry->ride_type[2] << 16);
 
-	if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
-		di |= 0x1000000;
-	}
-
-	RCT2_GLOBAL(0xF433DD, uint32) = di;
-
 	outRideEntry->name = rideEntry->name;
 	outRideEntry->description = rideEntry->description;
 	outRideEntry->images_offset = rideEntry->images_offset;
@@ -963,7 +963,13 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 	outRideEntry->shop_item = rideEntry->shop_item;
 	outRideEntry->shop_item_secondary = rideEntry->shop_item_secondary;
 
-	return outRideEntry;
+	if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) && !rideTypeShouldLoseSeparateFlag(outRideEntry)) {
+		di |= 0x1000000;
+	}
+
+	RCT2_GLOBAL(0xF433DD, uint32) = di;
+
+	return (uint8*)outRideEntry;
 }
 
 static void object_type_ride_unload(void *objectEntry)
@@ -1035,7 +1041,7 @@ static rct_string_id object_type_ride_desc(void *objectEntry)
 
 	// Get description
 	rct_string_id stringId = rideEntry->description;
-	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+	if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlagByRideType(rideEntry->ride_type)) {
 		uint8 rideType = rideEntry->ride_type[0];
 		if (rideType == 0xFF) {
 			rideType = rideEntry->ride_type[1];
@@ -1401,7 +1407,7 @@ static uint8* object_type_small_scenery_load(void *objectEntry, uint32 entryInde
 	// pad_14 not needed set
 	outSceneryEntry->small_scenery.scenery_tab_id = sceneryEntry->small_scenery.scenery_tab_id;
 
-	return true;
+	return (uint8*)outSceneryEntry;
 }
 
 static void object_type_small_scenery_unload(void *objectEntry)
@@ -1517,7 +1523,7 @@ static const object_type_vtable object_type_small_scenery_vtable[] = {
 // Large Scenery (rct2: 0x006B92A7)
 ///////////////////////////////////////////////////////////////////////////////
 
-static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
+static uint8* object_type_large_scenery_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	rct_scenery_entry_32bit* sceneryEntry = (rct_scenery_entry_32bit*)objectEntry;
 	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x1A);
@@ -1558,7 +1564,7 @@ static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex,
 	if (sceneryEntry->large_scenery.flags & (1 << 2)){
 		sceneryEntry->large_scenery.var_16 = imageId;
 
-		uint8* edx = (uint8*)sceneryEntry->large_scenery.var_12;
+		uint8* edx = (uint8*)outSceneryEntry->large_scenery.var_12;
 		if (!(edx[0xC] & 1)) {
 			imageId += edx[0xD] * 4;
 		} else{
@@ -1581,7 +1587,7 @@ static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex,
 	// var_12 is a pointer, already set
 	outSceneryEntry->large_scenery.var_16 = sceneryEntry->large_scenery.var_16;
 
-	return true;
+	return (uint8*)outSceneryEntry;
 }
 
 static void object_type_large_scenery_unload(void *objectEntry)
@@ -1720,7 +1726,7 @@ static uint8* object_type_wall_load(void *objectEntry, uint32 entryIndex, int *c
 	outSceneryEntry->wall.scenery_tab_id = sceneryEntry->wall.scenery_tab_id;
 	outSceneryEntry->wall.var_0D = sceneryEntry->wall.var_0D;
 
-	return outSceneryEntry;
+	return (uint8*)outSceneryEntry;
 
 }
 
@@ -1842,7 +1848,7 @@ static uint8* object_type_banner_load(void *objectEntry, uint32 entryIndex, int 
 	outSceneryEntry->banner.price = sceneryEntry->banner.price;
 	outSceneryEntry->banner.scenery_tab_id = sceneryEntry->banner.scenery_tab_id;
 
-	return outSceneryEntry;
+	return (uint8*)outSceneryEntry;
 }
 
 static void object_type_banner_unload(void *objectEntry)
@@ -1950,7 +1956,7 @@ static uint8* object_type_path_load(void *objectEntry, uint32 entryIndex, int *c
 	// rct_path_Type has no pointer, its size does not change, safe to memcpy
 	memcpy(outPathEntry, pathEntry, sizeof(rct_path_type));
 
-	return outPathEntry;
+	return (uint8*)outPathEntry;
 }
 
 static void object_type_path_unload(void *objectEntry)
@@ -2061,7 +2067,7 @@ static uint8* object_type_path_bit_load(void *objectEntry, uint32 entryIndex, in
 	outSceneryEntry->path_bit.price = sceneryEntry->path_bit.price;
 	outSceneryEntry->path_bit.scenery_tab_id = sceneryEntry->path_bit.scenery_tab_id;
 
-	return outSceneryEntry;
+	return (uint8*)outSceneryEntry;
 }
 
 static void object_type_path_bit_unload(void *objectEntry)
@@ -2189,7 +2195,7 @@ static uint8* object_type_scenery_set_load(void *objectEntry, uint32 entryIndex,
 
 	memcpy(outSceneryEntry, scenerySetEntry, sizeof(rct_scenery_set_entry));
 
-	return outSceneryEntry;
+	return (uint8*)outSceneryEntry;
 }
 
 static void object_type_scenery_set_unload(void *objectEntry)
@@ -2310,7 +2316,7 @@ static uint8* object_type_park_entrance_load(void *objectEntry, uint32 entryInde
 
 	memcpy(outEntranceType, entranceType, sizeof(rct_entrance_type));
 
-	return outEntranceType;
+	return (uint8*)outEntranceType;
 }
 
 static void object_type_park_entrance_unload(void *objectEntry)
@@ -2403,7 +2409,7 @@ static uint8* object_type_water_load(void *objectEntry, uint32 entryIndex, int *
 
 	memcpy(outWaterEntry, waterEntry, sizeof(rct_water_type));
 
-	return outWaterEntry;
+	return (uint8*)outWaterEntry;
 }
 
 static void object_type_water_unload(void *objectEntry)
@@ -2490,7 +2496,7 @@ static uint8* object_type_stex_load(void *objectEntry, uint32 entryIndex, int *c
 
 	memcpy(outStexEntry, stexEntry, sizeof(rct_stex_entry));
 
-	return outStexEntry;
+	return (uint8*)outStexEntry;
 }
 
 static void object_type_stex_unload(void *objectEntry)
