@@ -14,12 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../common.h"
-#include "paint_surface.h"
-#include "viewport.h"
-#include "../config.h"
-#include "../peep/staff.h"
-#include "../world/map.h"
+#include "../../common.h"
+#include "surface.h"
+#include "../../interface/viewport.h"
+#include "../paint.h"
+#include "../../config.h"
+#include "../../peep/staff.h"
+#include "../../world/map.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -467,11 +468,12 @@ void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self,
 
 	uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
-	paint_struct * out;
-	if (sub_68818E(image_id, 0, 0, &out)) {
+	attached_paint_struct * out;
+	if (paint_attach_to_previous_ps(image_id, 0, 0)) {
+		out = RCT2_GLOBAL(0xF1AD2C, attached_paint_struct *);
 		// set content and enable masking
-		out->var_04 = dword_97B804[neighbour.terrain] + cl;
-		out->var_0C |= 1;
+		out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
+		out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
 	}
 }
 
@@ -529,7 +531,7 @@ void viewport_surface_draw_land_side_top(enum edge edge, uint8 height, uint8 ter
 
 		uint32 image_id = stru_97B5C0[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
 		sint16 y = (regs.dl - regs.al) * 16;
-		sub_68818E(image_id, 0, y, NULL);
+		paint_attach_to_previous_ps(image_id, 0, y);
 		return;
 	}
 
@@ -1002,7 +1004,7 @@ void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height, uint8
  * @param height (dx)
  * @param map_element (esi)
  */
-void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_element * mapElement)
+void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
 	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_TERRAIN;
@@ -1184,7 +1186,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 			image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
 			image_id |= patrolColour << 19;
-			sub_68818E(image_id, 0, 0, NULL);
+			paint_attach_to_previous_ps(image_id, 0, 0);
 		}
 	}
 
@@ -1212,7 +1214,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) {
 			assert(surfaceShape < countof(byte_97B444));
 			// TODO: SPR_TERRAIN_SELECTION_SQUARE?
-			sub_68818E(2625 + byte_97B444[surfaceShape], 0, 0, NULL);
+			paint_attach_to_previous_ps(2625 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 			paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
@@ -1227,7 +1229,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 			assert(surfaceShape < countof(byte_97B444));
 			// TODO: SPR_TERRAIN_SELECTION_DOTTED ???
-			sub_68818E(2644 + byte_97B444[surfaceShape], 0, 0, NULL);
+			paint_attach_to_previous_ps(2644 + byte_97B444[surfaceShape], 0, 0);
 		} else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
 			paint_struct * backup = RCT2_GLOBAL(0xF1AD28, paint_struct*);
 			rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -1255,13 +1257,13 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 				// loc_661089:
 				uint32 eax = ((((mapSelectionType - 9) + get_current_rotation()) & 3) + 0x21) << 19;
 				uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | 0x20000000;
-				sub_68818E(image_id, 0, 0, NULL);
+				paint_attach_to_previous_ps(image_id, 0, 0);
 			} else if (mapSelectionType >= 6) {
 				// loc_661051:(no jump)
 				// Selection split into four quarter segments
 				uint32 eax = ((((mapSelectionType - 6) + get_current_rotation()) & 3) + 0x27) << 19;
 				uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | 0x20000000;
-				sub_68818E(image_id, 0, 0, NULL);
+				paint_attach_to_previous_ps(image_id, 0, 0);
 			} else if (mapSelectionType <= 4) {
 				// Corners
 				uint32 eax = mapSelectionType;
@@ -1271,7 +1273,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 				eax = (eax + 0x21) << 19;
 				uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | 0x20000000;
-				sub_68818E(image_id, 0, 0, NULL);
+				paint_attach_to_previous_ps(image_id, 0, 0);
 			} else {
 				int local_surfaceShape = surfaceShape;
 				int local_height = height;
@@ -1319,7 +1321,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			}
 
 			uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | 0x20000000;
-			sub_68818E(image_id, 0, 0, NULL);
+			paint_attach_to_previous_ps(image_id, 0, 0);
 			break;
 		}
 	}
@@ -1346,7 +1348,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			base_image = byte_97B84A[terrain_type];
 		}
 		uint32 image_id = dword_97B7C8[base_image] + image_offset;
-		sub_68818E(image_id, 0, 0, NULL);
+		paint_attach_to_previous_ps(image_id, 0, 0);
 	}
 
 	if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL)) {
@@ -1391,7 +1393,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 			int image_id = (SPR_WATER_MASK + image_offset) | 0x61000000;
 			sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, get_current_rotation());
 
-			sub_68818E(SPR_WATER_OVERLAY + image_offset, 0, 0, NULL);
+			paint_attach_to_previous_ps(SPR_WATER_OVERLAY + image_offset, 0, 0);
 
 			for (int i = 0; i <= 0x7C; i += 4) {
 				RCT2_GLOBAL(0x009E3138 + i, uint32) = RCT2_GLOBAL(0x009E2F30 + i, uint32);

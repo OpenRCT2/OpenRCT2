@@ -72,56 +72,6 @@ enum {
 	VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-typedef struct paint_struct paint_struct;
-typedef struct attached_paint_struct attached_paint_struct;
-
-struct attached_paint_struct {
-	uint32 image_id;		// 0x00
-	union {
-		uint32 tertiary_colour;
-		// If masked image_id is masked_id
-		uint32 colour_image_id;
-	};
-	uint16 x;		// 0x08
-	uint16 y;		// 0x0A
-	uint8 flags;
-	uint8 pad_0D;
-	attached_paint_struct* next;	//0x0E
-};
-
-struct paint_struct {
-	uint32 image_id;		// 0x00
-	union {
-		uint32 tertiary_colour;
-		// If masked image_id is masked_id
-		uint32 colour_image_id;
-	};
-	uint16 bound_box_x;		// 0x08
-	uint16 bound_box_y;		// 0x0A
-	uint16 bound_box_z; // 0x0C
-	uint16 bound_box_z_end; // 0x0E
-	uint16 bound_box_x_end; // 0x10
-	uint16 bound_box_y_end; // 0x12
-	uint16 x;				// 0x14
-	uint16 y;				// 0x16
-	uint16 var_18;
-	uint8 flags;
-	uint8 var_1B;
-	attached_paint_struct* attached_ps;	//0x1C
-	paint_struct* var_20;
-	paint_struct* next_quadrant_ps; // 0x24
-	uint8 sprite_type;		//0x28
-	uint8 var_29;
-	uint16 pad_2A;
-	uint16 map_x;			// 0x2C
-	uint16 map_y;			// 0x2E
-	rct_map_element *mapElement; // 0x30 (or sprite pointer)
-};
-
-enum PAINT_STRUCT_FLAGS {
-	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
-};
-
 typedef struct {
 	int type;
 	int x;
@@ -185,11 +135,6 @@ void sub_68B2B7(int x, int y);
 void painter_setup();
 void paint_quadrant_ps();
 void sub_688217();
-
-bool sub_98196C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, uint32 rotation);
-bool sub_98197C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
-bool sub_98198C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
-bool sub_98199C(uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, uint16 z_offset, sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z, uint32 rotation);
 
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom);
 
