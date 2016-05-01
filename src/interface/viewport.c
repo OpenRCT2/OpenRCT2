@@ -27,7 +27,6 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
-#include "../ride/track_paint.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/map.h"
@@ -36,50 +35,11 @@
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
-#include "colour.h"
-#include "viewport.h"
-#include "window.h"
+#include "paint_surface.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
-
-typedef struct paint_struct paint_struct;
-
-struct paint_struct{
-	uint32 image_id;		// 0x00
-	uint32 var_04;
-	uint16 attached_x;		// 0x08
-	uint16 attached_y;		// 0x0A
-	union {
-		struct {
-			uint8 var_0C;
-			uint8 pad_0D;
-			paint_struct* next_attached_ps;	//0x0E
-			uint16 pad_12;
-		};
-		struct {
-			uint16 attached_z; // 0x0C
-			uint16 attached_z_end; // 0x0E
-			uint16 attached_x_end; // 0x10
-			uint16 attached_y_end; // 0x12
-		};
-	};
-	uint16 x;				// 0x14
-	uint16 y;				// 0x16
-	uint16 var_18;
-	uint8 var_1A;
-	uint8 var_1B;
-	paint_struct* attached_ps;	//0x1C
-	paint_struct* var_20;
-	paint_struct* next_quadrant_ps; // 0x24
-	uint8 sprite_type;		//0x28
-	uint8 var_29;
-	uint16 pad_2A;
-	uint16 map_x;			// 0x2C
-	uint16 map_y;			// 0x2E
-	rct_map_element *mapElement; // 0x30 (or sprite pointer)
-};
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -1278,6 +1238,51 @@ bool sub_98198C(
 }
 
 /**
+ * rct2: 68818E
+ *
+ * @param image_id (ebx)
+ * @param x (ax)
+ * @param y (cx)
+ * @param[out] paint (ebp)
+ * @return (!CF) success
+ */
+bool sub_68818E(uint32 image_id, uint16 x, uint16 y, paint_struct ** paint)
+{
+
+	//Not a paint struct but something similar
+	paint_struct * ps = RCT2_GLOBAL(0xEE7888, paint_struct *);
+
+	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+		return false;
+	}
+
+	ps->image_id = image_id;
+	ps->attached_x = x;
+	ps->attached_y = y;
+	ps->var_0C = 0;
+
+	paint_struct * ebx2 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+	if (ebx2 == NULL) {
+		return false;
+	}
+
+	RCT2_GLOBAL(0x00EE7888, uint32) += 0x12;
+
+	paint_struct * edi = ebx2->attached_ps;
+	ebx2->attached_ps = ps;
+
+	ps->next_attached_ps = edi;
+
+	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
+	
+	if (paint != NULL) {
+		*paint = ps;
+	}
+
+	return true;
+}
+
+/**
  *
  *  rct2: 0x006D4244
  */
@@ -2003,7 +2008,7 @@ static void sub_68B3FB(int x, int y)
 		switch (map_element_get_type(map_element))
 		{
 		case MAP_ELEMENT_TYPE_SURFACE:
-			RCT2_CALLPROC_X(0x66062C, 0, 0, direction, height, (int)map_element, 0, 0);
+			viewport_surface_paint_setup(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)map_element, 0, 0);

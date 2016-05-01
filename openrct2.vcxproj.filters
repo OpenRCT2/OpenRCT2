@@ -603,6 +603,7 @@
     <ClCompile Include="src\cmdline\ConvertCommand.cpp">
       <Filter>Source\CommandLine</Filter>
     </ClCompile>
+    <ClCompile Include="src\interface\paint_surface.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\management\award.h">
@@ -923,6 +924,7 @@
     <ClInclude Include="src\rct1\Tables.h">
       <Filter>Source\RCT1</Filter>
     </ClInclude>
+    <ClInclude Include="src\interface\paint_surface.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\logo\icon.ico">
