@@ -1197,6 +1197,68 @@ static void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rc
 
 /**
  *
+ *  rct2: 0x006D5B48
+ */
+static void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+{
+	int image_id;
+	int baseImage_id = imageDirection;
+	int ecx = ((vehicle->var_BA / 8) + (get_current_rotation() * 8)) & 31;
+	int j = 0;
+	if (vehicle->vehicle_sprite_type == 0) {
+		baseImage_id = ecx & 7;
+	} else {
+		if (vehicle->vehicle_sprite_type == 1 || vehicle->vehicle_sprite_type == 5) {
+			if (vehicle->vehicle_sprite_type == 5){
+				baseImage_id = imageDirection ^ 16;
+			}
+			baseImage_id &= 24;
+			j = (baseImage_id / 8) + 1;
+			baseImage_id += (ecx & 7);
+			baseImage_id += 8;
+		} else
+		if (vehicle->vehicle_sprite_type == 2 || vehicle->vehicle_sprite_type == 6) {
+			if (vehicle->vehicle_sprite_type == 6){
+				baseImage_id = imageDirection ^ 16;
+			}
+			baseImage_id &= 24;
+			j = (baseImage_id / 8) + 5;
+			baseImage_id += (ecx & 7);
+			baseImage_id += 40;
+		} else {
+			baseImage_id = ecx & 7;
+		}
+	}
+	baseImage_id += vehicleEntry->base_image_id;
+
+	sint16 bbo_x = RCT2_ADDRESS(0x009927E6, sint8)[j * 8];
+	sint16 bbo_y = RCT2_ADDRESS(0x009927E7, sint8)[j * 8];
+	sint16 bbo_z = RCT2_ADDRESS(0x009927E8, sint8)[j * 8] + z;
+	uint16 bbl_x = RCT2_ADDRESS(0x009927E9, uint8)[j * 8];
+	uint16 bbl_y = RCT2_ADDRESS(0x009927EA, uint8)[j * 8];
+	uint8 bbl_z = RCT2_ADDRESS(0x009927EB, uint8)[j * 8];
+	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
+	sub_98197C(image_id, 0, 0, bbl_x, bbl_y, bbl_z, z, bbo_x, bbo_y, bbo_z, get_current_rotation());
+
+	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2 && vehicle->num_peeps > 0) {
+		uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
+		for (int i = 0; i < vehicle->num_peeps; i++) {
+			riding_peep_sprites[((ecx / 8) + i) & 3] = vehicle->peep_tshirt_colours[i];
+		}
+		int draw_order[4] = {0, 1, 3, 2};
+		for (int i = 0; i < countof(draw_order); i++) {
+			if (riding_peep_sprites[draw_order[i]] != 0xFF) {
+				image_id = (baseImage_id + ((draw_order[i] + 1) * 72)) | (riding_peep_sprites[draw_order[i]] << 19) | 0x20000000;
+				sub_98199C(image_id, 0, 0, bbl_x, bbl_y, bbl_z, z, bbo_x, bbo_y, bbo_z, get_current_rotation());
+			}
+		}
+	}
+
+	assert(vehicleEntry->pad_5E == 1);
+}
+
+/**
+ *
  *  rct2: 0x00686EF0, 0x00687056, 0x006871C8, 0x0068733C, 0x0098198C
  *
  * @param image_id (ebx)
@@ -1330,7 +1392,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	case 12:											RCT2_CALLPROC_X(0x006D57EE, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 13:											RCT2_CALLPROC_X(0x006D5783, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 14:											RCT2_CALLPROC_X(0x006D5701, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case VEHICLE_VISUAL_VIRGINIA_REEL:					RCT2_CALLPROC_X(0x006D5B48, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_VIRGINIA_REEL:					vehicle_visual_virginia_reel(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_SUBMARINE:						RCT2_CALLPROC_X(0x006D44D5, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	}
 }
