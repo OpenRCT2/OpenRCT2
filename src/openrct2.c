@@ -52,6 +52,8 @@
 #endif // defined(__unix__)
 
 int gExitCode;
+int fdData;
+void *segments;
 
 int gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
@@ -340,6 +342,8 @@ void openrct2_dispose()
 	language_close_all();
 	rct2_dispose();
 	config_release();
+	munmap(segments, 16941056);
+	close(fdData);
 	platform_free();
 }
 
@@ -530,6 +534,19 @@ bool openrct2_setup_rct2_segment()
 	int pageSize = getpagesize();
 	int numPages = (len + pageSize - 1) / pageSize;
 	unsigned char *dummy = malloc(numPages);
+
+	fdData = open("openrct2_load", O_RDONLY);
+	if (fdData < 0)
+	{
+		log_fatal("failed to load rct2 data. cat openrct2_text openrct2_data > openrct2_load");
+		exit(1);
+	}
+	segments = mmap((void*)0x401000, 16941056, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE, fdData, 0);
+	if (segments != (void*)0x401000)
+	{
+		log_fatal("mmap failed");
+		exit(1);
+	}
 	int err = mincore((void *)0x8a4000, len, dummy);
 	bool pagesMissing = false;
 	if (err != 0)

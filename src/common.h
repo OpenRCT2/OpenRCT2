@@ -36,6 +36,8 @@
 
 #if defined(__i386__) || defined(_M_IX86)
 #define PLATFORM_X86
+#else
+#define NO_RCT2 1
 #endif
 
 #ifdef PLATFORM_X86

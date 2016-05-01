@@ -142,7 +142,7 @@ static void object_list_sort()
 	entry = *objectBuffer;
 	for (i = 0; i < numObjects; i++)
 		entry = object_get_next(entry);
-	bufferSize = (int)entry - (int)*objectBuffer;
+	bufferSize = (uintptr_t)entry - (uintptr_t)*objectBuffer;
 
 	// Create new buffer
 	newBuffer = (rct_object_entry*)malloc(bufferSize);
@@ -170,7 +170,7 @@ static void object_list_sort()
 		}
 		entrySize = object_get_length(lowestEntry);
 		memcpy(destEntry, lowestEntry, entrySize);
-		destEntry = (rct_object_entry*)((int)destEntry + entrySize);
+		destEntry = (rct_object_entry*)((uintptr_t)destEntry + entrySize);
 		if (_installedObjectFilters)
 			destFilter[i] = _installedObjectFilters[lowestIndex];
 		copied[lowestIndex] = 1;
