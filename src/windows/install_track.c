@@ -127,7 +127,6 @@ void window_install_track_open(const char* path)
 	w->widgets = window_install_track_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL) | (1 << WIDX_CANCEL);
 	window_init_scroll_widgets(w);
-	w->track_list.var_482 = 0;
 	w->track_list.var_484 = 0;
 	window_push_others_right(w);
 
@@ -268,11 +267,11 @@ static void window_install_track_invalidate(rct_window *w)
 		w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
 	}
 
-	if (w->track_list.var_482 != 0xFFFF) {
-		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
-	} else {
-		w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
-	}
+	// if (w->track_list.var_482 != 0xFFFF) {
+	// 	w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
+	// } else {
+	// 	w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
+	// }
 }
 
 /**
@@ -291,8 +290,8 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 
-	if (w->track_list.var_482 == 0xFFFF)
-		return;
+	// if (w->track_list.var_482 == 0xFFFF)
+	// 	return;
 
 	// Track preview
 	widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];

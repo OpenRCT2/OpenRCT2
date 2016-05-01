@@ -217,16 +217,16 @@ static void window_track_manage_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_track_manage_textinput(rct_window *w, int widgetIndex, char *text)
 {
-	if (widgetIndex != WIDX_RENAME || text == NULL) {
+	if (widgetIndex != WIDX_RENAME || str_is_null_or_empty(text)) {
 		return;
 	}
 
-	// if (track_rename(text)) {
-	// 	window_close_by_class(WC_TRACK_DELETE_PROMPT);
-	// 	window_close(w);
-	// } else {
-	// 	window_error_open(STR_CANT_RENAME_TRACK_DESIGN, gGameCommandErrorText);
-	// }
+	if (track_design_index_rename(_trackDesignFileReference->path, text)) {
+		window_close_by_class(WC_TRACK_DELETE_PROMPT);
+		window_close(w);
+	} else {
+		window_error_open(STR_CANT_RENAME_TRACK_DESIGN, gGameCommandErrorText);
+	}
 }
 
 static void window_track_manage_invalidate(rct_window *w)
@@ -284,7 +284,7 @@ static void window_track_delete_prompt_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_PROMPT_DELETE:
 		window_close(w);
-		if (track_delete()) {
+		if (track_design_index_delete(_trackDesignFileReference->path)) {
 			window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 		} else {
 			window_error_open(STR_CANT_DELETE_TRACK_DESIGN, gGameCommandErrorText);

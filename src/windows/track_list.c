@@ -53,6 +53,7 @@ static rct_widget window_track_list_widgets[] = {
 
 static void window_track_list_close(rct_window *w);
 static void window_track_list_mouseup(rct_window *w, int widgetIndex);
+static void window_track_list_update(rct_window *w);
 static void window_track_list_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
 static void window_track_list_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
 static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
@@ -72,7 +73,7 @@ static rct_window_event_list window_track_list_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_track_list_update,
 	NULL,
 	NULL,
 	NULL,
@@ -138,8 +139,9 @@ void window_track_list_open(ride_list_item item)
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_BACK);
 	window_init_scroll_widgets(w);
 	w->track_list.var_480 = 0xFFFF;
-	w->track_list.var_482 = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
 	w->track_list.var_484 = 0;
+	w->track_list.reload_track_designs = false;
+	w->selected_list_item = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 1;
 	gTrackDesignSceneryToggle = false;
 	window_push_others_right(w);
 	_currentTrackPieceDirection = 2;
@@ -287,8 +289,8 @@ static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, in
 {
 	if (!(w->track_list.var_484 & 1)) {
 		int i = window_track_list_get_list_item_index_from_position(x, y);
-		if (i != -1 && w->track_list.var_482 != i) {
-			w->track_list.var_482 = i;
+		if (i != -1 && w->selected_list_item != i) {
+			w->selected_list_item = i;
 			window_invalidate(w);
 		}
 	}
@@ -301,6 +303,15 @@ static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, in
 static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+}
+
+static void window_track_list_update(rct_window *w)
+{
+	if (w->track_list.reload_track_designs) {
+		track_list_load_designs(_window_track_list_item);
+		w->selected_list_item = 0;
+		window_invalidate(w);
+	}
 }
 
 /**
@@ -329,7 +340,7 @@ static void window_track_list_invalidate(rct_window *w)
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
 	}
 
-	if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || w->track_list.var_482 != 0) {
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || w->selected_list_item != 0) {
 		w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
 		w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
 		window_track_list_widgets[WIDX_ROTATE].type = WWT_FLATBTN;
@@ -355,7 +366,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	int trackIndex = w->track_list.var_482;
+	int trackIndex = w->selected_list_item;
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		if (_trackDesignsCount == 0 || trackIndex == -1) {
 			return;
@@ -551,7 +562,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 	} else {
 		// Build custom track item
 		rct_string_id stringId;
-		if (listIndex == w->track_list.var_482) {
+		if (listIndex == w->selected_list_item) {
 			// Highlight
 			gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
 			stringId = 1193;
@@ -568,7 +579,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 	for (size_t i = 0; i < _trackDesignsCount; i++, listIndex++) {
 		if (y + 10 >= dpi->y && y < dpi->y + dpi->height) {
 			rct_string_id stringId;
-			if (listIndex == w->track_list.var_482) {
+			if (listIndex == w->selected_list_item) {
 				// Highlight
 				gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
 				stringId = 1193;

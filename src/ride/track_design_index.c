@@ -1,5 +1,8 @@
 #include "../common.h"
 #include "../config.h"
+#include "../game.h"
+#include "../interface/window.h"
+#include "../localisation/string_ids.h"
 #include "../util/util.h"
 #include "track.h"
 #include "track_design.h"
@@ -118,6 +121,7 @@ size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rid
 			refs[nextIndex].path = _strdup(tdItem.path);
 			refsCount++;
 		}
+		SDL_RWclose(file);
 	}
 
 	*tdRefs = realloc(refs, refsCount * sizeof(track_design_file_ref));
@@ -135,6 +139,107 @@ utf8 *track_design_get_name_from_path(const utf8 *path)
 		nameLength = (size_t)(lastDot - filename);
 	}
 	return strndup(filename, nameLength);
+}
+
+/**
+ *
+ *  rct2: 0x006D3664
+ */
+bool track_design_index_rename(const utf8 *path, const utf8 *newName)
+{
+	if (str_is_null_or_empty(newName)) {
+		gGameCommandErrorText = STR_CANT_RENAME_TRACK_DESIGN;
+		return false;
+	}
+
+	if (!filename_valid_characters(newName)) {
+		gGameCommandErrorText = STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS;
+		return false;
+	}
+
+	utf8 newPath[MAX_PATH];
+	const char *lastPathSep = strrchr(path, platform_get_path_separator());
+	if (lastPathSep == NULL) {
+		gGameCommandErrorText = STR_CANT_RENAME_TRACK_DESIGN;
+		return false;
+	}
+	size_t directoryLength = (size_t)(lastPathSep - path + 1);
+	memcpy(newPath, path, directoryLength);
+	strcpy(newPath + directoryLength, newName);
+	strcat(newPath, ".td6");
+
+	if (!platform_file_move(path, newPath)) {
+		gGameCommandErrorText = STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED;
+		return false;
+	}
+
+	track_design_index_create();
+
+	rct_window *trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+	if (trackListWindow != NULL) {
+		trackListWindow->track_list.reload_track_designs = true;
+	}
+	return true;
+}
+
+/**
+ *
+ *  rct2: 0x006D3761
+ */
+bool track_design_index_delete(const utf8 *path)
+{
+	if (!platform_file_delete(path)) {
+		gGameCommandErrorText = STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED;
+		return false;
+	}
+
+	track_design_index_create();
+
+	rct_window *trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+	if (trackListWindow != NULL) {
+		trackListWindow->track_list.reload_track_designs = true;
+	}
+	return true;
+}
+
+/**
+*
+*  rct2: 0x006D40B2
+* returns 0 for copy fail, 1 for success, 2 for file exists.
+*/
+int install_track(char* source_path, char* dest_name){
+
+	// Make a copy of the track name (no extension)
+	char track_name[MAX_PATH] = { 0 };
+	char* dest = track_name;
+	char* dest_name_pointer = dest_name;
+	while (*dest_name_pointer != '.') *dest++ = *dest_name_pointer++;
+
+	// Check if .TD4 file exists under that name
+	char* temp_extension_pointer = dest;
+	strcat(track_name, ".TD4");
+
+	char dest_path[MAX_PATH];
+	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+
+	if (platform_file_exists(dest_path))
+		return 2;
+
+	// Allow a concat onto the track_name but before extension
+	*temp_extension_pointer = '\0';
+
+	// Check if .TD6 file exists under that name
+	strcat(track_name, ".TD6");
+
+	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
+
+	if (platform_file_exists(dest_path))
+		return 2;
+
+	// Set path for actual copy
+	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
+
+	return platform_file_copy(source_path, dest_path, false);
 }
 
 static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount)
@@ -182,7 +287,7 @@ static int track_design_index_item_compare(const void *a, const void *b)
 
 	const utf8 *tdAName = path_get_filename(tdA->path);
 	const utf8 *tdBName = path_get_filename(tdB->path);
-	return strcmp(tdAName, tdBName);
+	return _stricmp(tdAName, tdBName);
 }
 
 static void track_design_index_include(const utf8 *directory)
@@ -246,7 +351,7 @@ static void track_design_add(const td_index_item *item)
 
 static void track_design_index_dispose()
 {
-	free(_tdIndex);
+	SafeFree(_tdIndex);
 	_tdIndexSize = 0;
 	_tdIndexCapacity = 0;
 }

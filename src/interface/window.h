@@ -210,8 +210,8 @@ typedef struct {
 
 typedef struct {
 	uint16 var_480;
-	uint16 var_482;
 	uint16 var_484;
+	bool reload_track_designs;
 } track_list_variables;
 
 typedef struct {
