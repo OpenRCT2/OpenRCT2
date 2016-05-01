@@ -1274,7 +1274,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 
 							regs.bl = (surfaceShape ^ 0xF) << 2;
 							regs.bh = regs.bl >> 4;
-							local_surfaceShape = (regs.bl & 0x3) | (regs.bh & 0xC);
+							local_surfaceShape = (regs.bh & 0x3) | (regs.bl & 0xC);
 						}
 					}
 				}
