@@ -24,6 +24,7 @@ static size_t _trackSavedMapElementsDescCount;
 static rct_td6_scenery_element _trackSavedMapElementsDesc[TRACK_MAX_SAVED_MAP_ELEMENTS];
 
 static rct_track_td6 *_trackDesign;
+static uint8 _trackSaveDirection;
 
 static bool track_design_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
 static void track_design_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
@@ -645,12 +646,11 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 	for (size_t i = 0; i < _trackSavedMapElementsDescCount; i++) {
 		rct_td6_scenery_element *scenery = &td6->scenery_elements[i];
 
-		//0x00F4414D is direction of track?
 		switch (scenery->scenery_object.flags & 0x0F) {
 		case OBJECT_TYPE_PATHS:
 		{
 			uint8 slope = (scenery->flags & 0x60) >> 5;
-			slope -= RCT2_GLOBAL(0x00F4414D, uint8);
+			slope -= _trackSaveDirection;
 
 			scenery->flags &= 0x9F;
 			scenery->flags |= ((slope & 3) << 5);
@@ -658,7 +658,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 			// Direction of connection on path
 			uint8 direction = scenery->flags & 0xF;
 			// Rotate the direction by the track direction
-			direction = ((direction << 4) >> RCT2_GLOBAL(0x00F4414D, uint8));
+			direction = ((direction << 4) >> _trackSaveDirection);
 
 			scenery->flags &= 0xF0;
 			scenery->flags |= (direction & 0xF) | (direction >> 4);
@@ -667,7 +667,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 		case OBJECT_TYPE_WALLS:
 		{
 			uint8 direction = scenery->flags & 3;
-			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
+			direction -= _trackSaveDirection;
 
 			scenery->flags &= 0xFC;
 			scenery->flags |= (direction & 3);
@@ -678,8 +678,8 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 			uint8 direction = scenery->flags & 3;
 			uint8 quadrant = (scenery->flags & 0x0C) >> 2;
 
-			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
-			quadrant -= RCT2_GLOBAL(0x00F4414D, uint8);
+			direction -= _trackSaveDirection;
+			quadrant -= _trackSaveDirection;
 
 			scenery->flags &= 0xF0;
 			scenery->flags |= (direction & 3) | ((quadrant & 3) << 2);
@@ -689,7 +689,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 
 		sint16 x = ((uint8)scenery->x) * 32 - gTrackPreviewOrigin.x;
 		sint16 y = ((uint8)scenery->y) * 32 - gTrackPreviewOrigin.y;
-		rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8) ^ 2);
+		rotate_map_coordinates(&x, &y, _trackSaveDirection ^ 2);
 		x /= 32;
 		y /= 32;
 
@@ -971,7 +971,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	z = trackElement.element->base_height * 8;
 	uint8 track_type = trackElement.element->properties.track.type;
 	uint8 direction = trackElement.element->type & MAP_ELEMENT_DIRECTION_MASK;
-	RCT2_GLOBAL(0x00F4414D, uint8) = direction;
+	_trackSaveDirection = direction;
 
 	if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)) {
 		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -1120,14 +1120,14 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 			// Add something that stops this from walking off the end
 
 			uint8 entrance_direction = map_element->type & MAP_ELEMENT_DIRECTION_MASK;
-			entrance_direction -= RCT2_GLOBAL(0x00F4414D, uint8);
+			entrance_direction -= _trackSaveDirection;
 			entrance_direction &= MAP_ELEMENT_DIRECTION_MASK;
 			entrance->direction = entrance_direction;
 
 			x -= gTrackPreviewOrigin.x;
 			y -= gTrackPreviewOrigin.y;
 
-			rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8) ^ 2);
+			rotate_map_coordinates(&x, &y, _trackSaveDirection);
 			entrance->x = x;
 			entrance->y = y;
 
