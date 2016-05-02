@@ -20,15 +20,20 @@ static size_t _trackSavedMapElementsCount;
 	static rct_map_element **_trackSavedMapElements = (rct_map_element**)0x00F63674;
 #endif
 
+static size_t _trackSavedMapElementsDescCount;
+static rct_td6_scenery_element _trackSavedMapElementsDesc[TRACK_MAX_SAVED_MAP_ELEMENTS];
+
+static rct_track_td6 *_trackDesign;
+
 static bool track_design_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
 static void track_design_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
 static bool track_design_save_contains_map_element(rct_map_element *mapElement);
 static bool track_design_save_add_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 static void track_design_save_remove_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
-static bool track_design_save_copy_scenery_to_track(uint8 **track_pointer);
-static bool track_design_save_to_td6(rct_track_td6 *td6, uint8 rideIndex);
-static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6, uint8 *trackElements);
-static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6, uint8 *trackElements);
+static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6);
+static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex);
+static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6);
+static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6);
 static bool track_design_save_to_file(rct_track_td6 *track_design, utf8 *path);
 
 void track_design_save_init()
@@ -38,6 +43,9 @@ void track_design_save_init()
 #ifndef NO_RCT2
 	_trackSavedMapElements[0] = (rct_map_element*)-1;
 #endif
+
+	_trackSavedMapElementsDescCount = 0;
+	memset(_trackSavedMapElementsDesc, 0xFF, sizeof(_trackSavedMapElementsDesc));
 }
 
 /**
@@ -114,33 +122,29 @@ bool track_design_save(uint8 rideIndex)
 		return false;
 	}
 
-	rct_track_td6 *td6 = RCT2_ADDRESS(0x009D8178, rct_track_td6);
-	if (!track_design_save_to_td6(td6, rideIndex)) {
+	_trackDesign = track_design_save_to_td6(rideIndex);
+	if (_trackDesign == NULL) {
 		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
 		return false;
 	}
 
-	uint8 *trackPointer = RCT2_GLOBAL(0x00F44058, uint8*);
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
-		if (!track_design_save_copy_scenery_to_track(&trackPointer)) {
+		if (!track_design_save_copy_scenery_to_td6(_trackDesign)) {
+			free(_trackDesign->track_elements);
+			free(_trackDesign->entrance_elements);
+			free(_trackDesign);
 			return false;
 		}
 	}
 
-	while (trackPointer < RCT2_ADDRESS(0x009DE217, uint8))*trackPointer++ = 0;
-
-	char track_name[MAX_PATH];
-	// Get track name
+	utf8 track_name[MAX_PATH];
 	format_string(track_name, ride->name, &ride->name_arguments);
 
-	char path[MAX_PATH];
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
-
-	// Save track design
-	format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), 2306, NULL);
-
-	// Track design files
-	format_string(RCT2_ADDRESS(0x141EE68, char), 2305, NULL);
+	// Default location
+	utf8 path[MAX_PATH];
+	platform_get_user_directory(path, "tracks");
+	strcat(path, track_name);
+	strcat(path, ".td6");
 
 	// Show save dialog
 	utf8 initialDirectory[MAX_PATH];
@@ -167,16 +171,18 @@ bool track_design_save(uint8 rideIndex)
 	bool result = platform_open_common_file_dialog(path, &desc);
 	audio_unpause_sounds();
 
-	if (!result) {
-		ride_list_item item = { .type = 0xFD, .entry_index = 0 };
-		// track_load_list(item);
-		return true;
+	if (result) {
+		result = track_design_save_to_file(_trackDesign, path);
 	}
 
-	track_design_save_to_file(RCT2_ADDRESS(0x009D8178, rct_track_td6), path);
+	free(_trackDesign->track_elements);
+	free(_trackDesign->entrance_elements);
+	free(_trackDesign->scenery_elements);
+	free(_trackDesign);
 
-	ride_list_item item = { .type = 0xFC, .entry_index = 0 };
-	// track_load_list(item);
+	if (result) {
+		track_design_index_create();
+	}
 	gfx_invalidate_screen();
 	return true;
 }
@@ -218,16 +224,6 @@ static int map_element_get_total_element_count(rct_map_element *mapElement)
 	}
 }
 
-static bool track_design_save_scenery_is_null(rct_td6_scenery_element *trackScenery)
-{
-	return *((uint8*)trackScenery) == 0xFF;
-}
-
-static void track_design_save_scenery_set_to_null(rct_td6_scenery_element *trackScenery)
-{
-	*((uint8*)trackScenery) = 0xFF;
-}
-
 /**
  *
  *  rct2: 0x006D2ED2
@@ -246,13 +242,6 @@ static bool track_design_save_can_add_map_element(rct_map_element *mapElement)
 		return false;
 	}
 
-	// Probably checking for spare elements in the TD6 struct
-	rct_td6_scenery_element *trackScenery = (rct_td6_scenery_element*)0x009DA193;
-	while (!track_design_save_scenery_is_null(trackScenery)) { trackScenery++; }
-	if (trackScenery >= (rct_td6_scenery_element*)0x9DE207) {
-		return false;
-	}
-
 	return true;
 }
 
@@ -267,6 +256,7 @@ static void track_design_save_push_map_element(int x, int y, rct_map_element *ma
 		map_invalidate_tile_full(x, y);
 
 #ifndef NO_RCT2
+		// Required as drawing still uses 0xFFFFFFFF as a list terminator
 		_trackSavedMapElements[_trackSavedMapElementsCount] = (rct_map_element*)-1;
 #endif
 	}
@@ -278,9 +268,7 @@ static void track_design_save_push_map_element(int x, int y, rct_map_element *ma
  */
 static void track_design_save_push_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
 {
-	rct_td6_scenery_element *item = (rct_td6_scenery_element*)0x009DA193;
-	while (!track_design_save_scenery_is_null(item)) { item++; }
-
+	rct_td6_scenery_element *item = &_trackSavedMapElementsDesc[_trackSavedMapElementsDescCount++];
 	item->scenery_object = *entry;
 	item->x = x / 32;
 	item->y = y / 32;
@@ -288,8 +276,6 @@ static void track_design_save_push_map_element_desc(rct_object_entry *entry, int
 	item->flags = flags;
 	item->primary_colour = primaryColour;
 	item->secondary_colour = secondaryColour;
-
-	track_design_save_scenery_set_to_null(item + 1);
 }
 
 static void track_design_save_add_scenery(int x, int y, rct_map_element *mapElement)
@@ -450,30 +436,29 @@ static void track_design_save_pop_map_element(int x, int y, rct_map_element *map
  */
 static void track_design_save_pop_map_element_desc(rct_object_entry *entry, int x, int y, int z, uint8 flags, uint8 primaryColour, uint8 secondaryColour)
 {
-	int removeIndex = -1;
-	int totalItems = 0;
-
-	rct_td6_scenery_element *items = (rct_td6_scenery_element*)0x009DA193;
-	rct_td6_scenery_element *item = items;
-	for (; !track_design_save_scenery_is_null(item); item++, totalItems++) {
+	size_t removeIndex = SIZE_MAX;
+	for (size_t i = 0; i < _trackSavedMapElementsDescCount; i++) {
+		rct_td6_scenery_element *item = &_trackSavedMapElementsDesc[i];
 		if (item->x != x / 32) continue;
 		if (item->y != y / 32) continue;
 		if (item->z != z) continue;
 		if (item->flags != flags) continue;
 		if (!object_entry_compare(&item->scenery_object, entry)) continue;
 
-		removeIndex = totalItems;
+		removeIndex = i;
 	}
 
-	if (removeIndex == -1) {
-		return;
+	if (removeIndex != SIZE_MAX) {
+		size_t remainingNumItems = _trackSavedMapElementsDescCount - removeIndex - 1;
+		if (remainingNumItems > 0) {
+			memmove(
+				&_trackSavedMapElementsDesc[removeIndex],
+				&_trackSavedMapElementsDesc[removeIndex + 1],
+				remainingNumItems * sizeof(rct_td6_scenery_element*)
+			);
+		}
+		_trackSavedMapElementsDescCount--;
 	}
-
-	// Remove item and shift rest up one item
-	if (removeIndex < totalItems - 1) {
-		memmove(&items[removeIndex], &items[removeIndex + 1], (totalItems - removeIndex - 1) * sizeof(rct_td6_scenery_element));
-	}
-	track_design_save_scenery_set_to_null(&items[totalItems - 1]);
 }
 
 static void track_design_save_remove_scenery(int x, int y, rct_map_element *mapElement)
@@ -648,80 +633,85 @@ static void track_design_save_select_nearby_scenery_for_tile(int rideIndex, int 
 }
 
 /* Based on rct2: 0x006D2897 */
-static bool track_design_save_copy_scenery_to_track(uint8 **track_pointer)
+static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 {
-	rct_td6_scenery_element *track_scenery = (rct_td6_scenery_element*)(*track_pointer - 1);
-	rct_td6_scenery_element* scenery_source = RCT2_ADDRESS(0x009DA193, rct_td6_scenery_element);
+	// Copy TD6 scenery elements to new memory and add end marker
+	size_t totalSceneryElementsSize = _trackSavedMapElementsDescCount * sizeof(rct_td6_scenery_element);
+	td6->scenery_elements = malloc(totalSceneryElementsSize + 1);
+	memcpy(td6->scenery_elements, _trackSavedMapElementsDesc, totalSceneryElementsSize);
+	*((uint8*)&td6->scenery_elements[_trackSavedMapElementsDescCount]) = 0xFF;
 
-	while (true) {
-		memcpy(track_scenery, scenery_source, sizeof(rct_td6_scenery_element));
-		if ((track_scenery->scenery_object.flags & 0xFF) == 0xFF) break;
+	// Run an element loop
+	for (size_t i = 0; i < _trackSavedMapElementsDescCount; i++) {
+		rct_td6_scenery_element *scenery = &td6->scenery_elements[i];
 
 		//0x00F4414D is direction of track?
-		if ((track_scenery->scenery_object.flags & 0xF) == OBJECT_TYPE_PATHS){
-
-			uint8 slope = (track_scenery->flags & 0x60) >> 5;
+		switch (scenery->scenery_object.flags & 0x0F) {
+		case OBJECT_TYPE_PATHS:
+		{
+			uint8 slope = (scenery->flags & 0x60) >> 5;
 			slope -= RCT2_GLOBAL(0x00F4414D, uint8);
 
-			track_scenery->flags &= 0x9F;
-			track_scenery->flags |= ((slope & 3) << 5);
+			scenery->flags &= 0x9F;
+			scenery->flags |= ((slope & 3) << 5);
 
 			// Direction of connection on path
-			uint8 direction = track_scenery->flags & 0xF;
+			uint8 direction = scenery->flags & 0xF;
 			// Rotate the direction by the track direction
 			direction = ((direction << 4) >> RCT2_GLOBAL(0x00F4414D, uint8));
 
-			track_scenery->flags &= 0xF0;
-			track_scenery->flags |= (direction & 0xF) | (direction >> 4);
-
-		} else if ((track_scenery->scenery_object.flags & 0xF) == OBJECT_TYPE_WALLS){
-			uint8 direction = track_scenery->flags & 3;
-
+			scenery->flags &= 0xF0;
+			scenery->flags |= (direction & 0xF) | (direction >> 4);
+			break;
+		}
+		case OBJECT_TYPE_WALLS:
+		{
+			uint8 direction = scenery->flags & 3;
 			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
 
-			track_scenery->flags &= 0xFC;
-			track_scenery->flags |= (direction & 3);
-		} else {
-			uint8 direction = track_scenery->flags & 3;
-			uint8 quadrant = (track_scenery->flags & 0xC) >> 2;
+			scenery->flags &= 0xFC;
+			scenery->flags |= (direction & 3);
+			break;
+		}
+		default:
+		{
+			uint8 direction = scenery->flags & 3;
+			uint8 quadrant = (scenery->flags & 0x0C) >> 2;
 
 			direction -= RCT2_GLOBAL(0x00F4414D, uint8);
 			quadrant -= RCT2_GLOBAL(0x00F4414D, uint8);
 
-			track_scenery->flags &= 0xF0;
-			track_scenery->flags |= (direction & 3) | ((quadrant & 3) << 2);
+			scenery->flags &= 0xF0;
+			scenery->flags |= (direction & 3) | ((quadrant & 3) << 2);
+			break;
+		}
 		}
 
-		sint16 x = ((uint8)track_scenery->x) * 32 - RCT2_GLOBAL(0x00F44142, sint16);
-		sint16 y = ((uint8)track_scenery->y) * 32 - RCT2_GLOBAL(0x00F44144, sint16);
-		rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8));
+		sint16 x = ((uint8)scenery->x) * 32 - RCT2_GLOBAL(0x00F44142, sint16);
+		sint16 y = ((uint8)scenery->y) * 32 - RCT2_GLOBAL(0x00F44144, sint16);
+		rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8) ^ 2);
 		x /= 32;
 		y /= 32;
 
 		if (x > 127 || y > 127 || x < -126 || y < -126){
 			window_error_open(3346, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
+			SafeFree(td6->scenery_elements);
 			return false;
 		}
 
-		track_scenery->x = (sint8)x;
-		track_scenery->y = (sint8)y;
+		scenery->x = (sint8)x;
+		scenery->y = (sint8)y;
 
-		int z = track_scenery->z * 8 - RCT2_GLOBAL(0xF44146, sint16);
+		int z = scenery->z * 8 - RCT2_GLOBAL(0xF44146, sint16);
 		z /= 8;
-		if (z > 127 || z < -126){
+		if (z > 127 || z < -126) {
 			window_error_open(3346, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
+			SafeFree(td6->scenery_elements);
 			return false;
 		}
-
-		track_scenery->z = z;
-
-		track_scenery++;
-		scenery_source++;
+		scenery->z = z;
 	}
 
-	*track_pointer = (uint8*)track_scenery;
-	//Skip end of scenery elements byte
-	(*track_pointer)++;
 	return true;
 }
 
@@ -729,8 +719,9 @@ static bool track_design_save_copy_scenery_to_track(uint8 **track_pointer)
  *
  *  rct2: 0x006CE44F
  */
-static bool track_design_save_to_td6(rct_track_td6 *td6, uint8 rideIndex)
+static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
 {
+	rct_track_td6 *td6 = calloc(1, sizeof(rct_track_td6));
 	rct_ride *ride = get_ride(rideIndex);
 	td6->type = ride->type;
 	rct_object_entry_extended *object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
@@ -791,21 +782,25 @@ static bool track_design_save_to_td6(rct_track_td6 *td6, uint8 rideIndex)
 	td6->flags = 0;
 	td6->flags2 = 0;
 
-	uint8 *trackElements = td6->elements;
-	memset(trackElements, 0, 8000);
-
+	bool result;
 	if (td6->type == RIDE_TYPE_MAZE) {
-		return track_design_save_to_td6_for_maze(rideIndex, td6, trackElements);
+		result = track_design_save_to_td6_for_maze(rideIndex, td6);
 	} else {
-		return track_design_save_to_td6_for_tracked_ride(rideIndex, td6, trackElements);
+		result = track_design_save_to_td6_for_tracked_ride(rideIndex, td6);
 	}
+
+	if (!result) {
+		track_design_dispose(td6);
+		td6 = NULL;
+	}
+	return td6;
 }
 
 /**
  *
  *  rct2: 0x006CEAAE
  */
-static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6, uint8 *trackElements)
+static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6)
 {
 	rct_map_element *mapElement = NULL;
 	bool mapFound = false;
@@ -839,7 +834,9 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 	RCT2_GLOBAL(0x00F44144, sint16) = startY;
 	RCT2_GLOBAL(0x00F44146, sint16) = mapElement->base_height * 8;
 
-	rct_td6_maze_element *maze = (rct_td6_maze_element*)trackElements;
+	size_t numMazeElements = 0;
+	td6->maze_elements = calloc(8192, sizeof(rct_td6_maze_element));
+	rct_td6_maze_element *maze = td6->maze_elements;
 
 	// x is defined here as we can start the search
 	// on tile start_x, start_y but then the next row
@@ -855,9 +852,11 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 				maze->x = (x - startX) / 32;
 				maze->y = (y - startY) / 32;
 				maze++;
+				numMazeElements++;
 
 				if (maze >= RCT2_ADDRESS(0x009DA151, rct_td6_maze_element)) {
 					gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+					SafeFree(td6->maze_elements);
 					return false;
 				}
 			} while (!map_element_is_last_for_tile(mapElement++));
@@ -871,6 +870,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 
 	if (location == 0xFFFF) {
 		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+		SafeFree(td6->maze_elements);
 		return false;
 	}
 
@@ -891,10 +891,12 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 	maze->x = (sint8)((x - startX) / 32);
 	maze->y = (sint8)((y - startY) / 32);
 	maze++;
+	numMazeElements++;
 
 	location = ride->exits[0];
 	if (location == 0xFFFF) {
 		gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+		SafeFree(td6->maze_elements);
 		return 0;
 	}
 
@@ -916,11 +918,10 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 	maze++;
 	maze->all = 0;
 	maze++;
+	numMazeElements++;
 
-	trackElements = (uint8*)maze;
-	*trackElements++ = 0xFF;
-
-	RCT2_GLOBAL(0x00F44058, uint8*) = trackElements;
+	td6->maze_elements = realloc(td6->maze_elements, numMazeElements * sizeof(rct_td6_maze_element) + 1);
+	*((uint8*)&td6->maze_elements[numMazeElements]) = 0xFF;
 
 	// Save global vars as they are still used by scenery
 	sint16 start_z = RCT2_GLOBAL(0x00F44146, sint16);
@@ -941,7 +942,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
  *
  *  rct2: 0x006CE68D
  */
-static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6, uint8 *trackElements)
+static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6)
 {
 	rct_ride *ride = get_ride(rideIndex);
 	rct_xy_element trackElement;
@@ -994,8 +995,10 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
 	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
 
-	rct_td6_track_element *track = (rct_td6_track_element*)trackElements;
-	do{
+	size_t numTrackElements = 0;
+	td6->track_elements = calloc(8192, sizeof(rct_td6_track_element));
+	rct_td6_track_element *track = td6->track_elements;
+	do {
 		track->type = trackElement.element->properties.track.type;
 		if (track->type == 0xFF) {
 			track->type = 101;
@@ -1075,6 +1078,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 
 		track->flags = flags;
 		track++;
+		numTrackElements++;
 
 		if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL)) {
 			break;
@@ -1088,12 +1092,12 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 			break;
 		}
 	} while (trackElement.element != initialMap);
+	td6->track_elements = realloc(td6->track_elements, numTrackElements * sizeof(rct_td6_track_element) + 1);
+	*((uint8*)&td6->track_elements[numTrackElements]) = 0xFF;
 
-	trackElements = (uint8*)track;
-	// Mark the elements as finished.
-	*trackElements++ = 0xFF;
-
-	rct_td6_entrance_element *entrance = (rct_td6_entrance_element*)trackElements;
+	size_t numEntranceElements = 0;
+	td6->entrance_elements = calloc(32, sizeof(rct_td6_entrance_element));
+	rct_td6_entrance_element *entrance = td6->entrance_elements;
 
 	// First entrances, second exits
 	for (int i = 0; i < 2; i++) {
@@ -1129,7 +1133,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 			x -= RCT2_GLOBAL(0x00F44142, sint16);
 			y -= RCT2_GLOBAL(0x00F44144, sint16);
 
-			rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8));
+			rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8) ^ 2);
 			entrance->x = x;
 			entrance->y = y;
 
@@ -1153,14 +1157,11 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 				entrance->direction |= (1 << 7);
 			}
 			entrance++;
+			numEntranceElements++;
 		}
 	}
-
-	trackElements = (uint8*)entrance;
-	*trackElements++ = 0xFF;
-	*trackElements++ = 0xFF;
-
-	RCT2_GLOBAL(0x00F44058, uint8*) = trackElements;
+	td6->entrance_elements = realloc(td6->entrance_elements, numEntranceElements * sizeof(rct_td6_entrance_element) + 1);
+	*((uint8*)&td6->entrance_elements[numEntranceElements]) = 0xFF;
 
 	sub_6D01B3(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
 
@@ -1177,18 +1178,104 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	return true;
 }
 
+static size_t track_design_get_maze_elements_count(rct_track_td6 *td6)
+{
+	size_t count = 0;
+	rct_td6_maze_element *mazeElement = td6->maze_elements;
+	while (mazeElement->all != 0) {
+		count++;
+		mazeElement++;
+	}
+	return count;
+}
+
+static size_t track_design_get_track_elements_count(rct_track_td6 *td6)
+{
+	size_t count = 0;
+	rct_td6_track_element *trackElement = td6->track_elements;
+	while (trackElement->type != 0xFF) {
+		count++;
+		trackElement++;
+	}
+	return count;
+}
+
+static size_t track_design_get_entrance_elements_count(rct_track_td6 *td6)
+{
+	size_t count = 0;
+	rct_td6_entrance_element *entranceElement = td6->entrance_elements;
+	while (entranceElement->z != -1) {
+		count++;
+		entranceElement++;
+	}
+	return count;
+}
+
+static size_t track_design_get_scenery_elements_count(rct_track_td6 *td6)
+{
+	size_t count = 0;
+	rct_td6_scenery_element *sceneryElement = td6->scenery_elements;
+	if (sceneryElement != NULL) {
+		while ((sceneryElement->scenery_object.flags & 0xFF) != 0xFF) {
+			count++;
+			sceneryElement++;
+		}
+	}
+	return count;
+}
+
+typedef struct {
+	void *ptr;
+	size_t length;
+	size_t capacity;
+} auto_buffer;
+
+static void auto_buffer_write(auto_buffer *buffer, const void *src, size_t len)
+{
+	size_t remainingSpace = buffer->capacity - buffer->length;
+	if (remainingSpace < len) {
+		do {
+			buffer->capacity = max(8, buffer->capacity * 2);
+			remainingSpace = buffer->capacity - buffer->length;
+		} while (remainingSpace < len);
+		
+		buffer->ptr = realloc(buffer->ptr, buffer->capacity);
+	}
+	memcpy((void*)((uintptr_t)buffer->ptr + buffer->length), src, len);
+	buffer->length += len;
+}
+
 /**
  *
  *  rct2: 0x006771DC but not really its branched from that
  *  quite far.
  */
-static bool track_design_save_to_file(rct_track_td6 *track_design, utf8 *path)
+static bool track_design_save_to_file(rct_track_td6 *td6, utf8 *path)
 {
+	const uint8 EndMarker = 0xFF;
+
 	window_close_construction_windows();
+
+	// Create TD6 data buffer
+	auto_buffer td6Buffer = { 0 };
+	auto_buffer_write(&td6Buffer, td6, 0xA3);
+	if (td6->type == RIDE_TYPE_MAZE) {
+		auto_buffer_write(&td6Buffer, td6->maze_elements, track_design_get_maze_elements_count(td6) * sizeof(rct_td6_maze_element));
+		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
+		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
+		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
+	} else {
+		auto_buffer_write(&td6Buffer, td6->track_elements, track_design_get_track_elements_count(td6) * sizeof(rct_td6_track_element));
+		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
+		auto_buffer_write(&td6Buffer, td6->entrance_elements, track_design_get_entrance_elements_count(td6) * sizeof(rct_td6_entrance_element));
+		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
+		auto_buffer_write(&td6Buffer, td6->scenery_elements, track_design_get_scenery_elements_count(td6) * sizeof(rct_td6_scenery_element));
+		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
+	}
 
 	// Encode TD6 data
 	uint8 *encodedData = malloc(0x8000);
-	int encodedDataLength = sawyercoding_encode_td6((uint8 *)track_design, encodedData, 0x609F);
+	int encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
 
 	// Save encoded TD6 data to file
 	bool result;
@@ -1204,5 +1291,6 @@ static bool track_design_save_to_file(rct_track_td6 *track_design, utf8 *path)
 	}
 
 	free(encodedData);
+	free(td6Buffer.ptr);
 	return result;
 }

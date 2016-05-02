@@ -76,6 +76,7 @@ size_t track_design_index_get_count_for_ride(uint8 rideType, const char *entry)
 			if (entry != NULL && _strcmpi(entry, tdItem.ride_entry) != 0) continue;
 			refsCount++;
 		}
+		SDL_RWclose(file);
 	}
 
 	return refsCount;

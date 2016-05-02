@@ -1267,7 +1267,7 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 
 	// Scenery elements
 	rct_td6_scenery_element *scenery = td6->scenery_elements;
-	if (track_place_success) {
+	if (track_place_success && scenery != NULL) {
 		if (!track_place_scenery(
 			scenery,
 			rideIndex,
