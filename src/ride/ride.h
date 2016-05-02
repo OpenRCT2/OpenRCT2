@@ -1075,4 +1075,6 @@ void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
 void game_command_callback_place_ride_entrance_or_exit(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 
+void ride_delete(uint8 rideIndex);
+
 #endif

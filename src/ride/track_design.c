@@ -1226,21 +1226,9 @@ bool track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 ri
 
 	if (byte_F440D4 == PTD_OPERATION_CLEAR_OUTLINES) {
 		sub_6CB945(_currentRideIndex);
-		rct_ride* ride = get_ride(_currentRideIndex);
-		user_string_free(ride->name);
-		ride->type = RIDE_TYPE_NULL;
+		ride_delete(_currentRideIndex);
 	}
 	return true;
-}
-
-/**
- *
- *  rct2: 0x006D235B
- */
-void sub_6D235B(uint8 ride_id){
-	rct_ride* ride = get_ride(ride_id);
-	user_string_free(ride->name);
-	ride->type = RIDE_TYPE_NULL;
 }
 
 /**
@@ -1792,7 +1780,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 
 	viewport_paint(view, dpi, left, top, right, bottom);
 
-	sub_6D235B(rideIndex);
+	ride_delete(rideIndex);
 	track_design_preview_restore_map(mapBackup);
 }
 

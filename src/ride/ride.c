@@ -7839,25 +7839,15 @@ void sub_6CB945(int rideIndex)
 					location.x -= TileDirectionDelta[direction].x;
 					location.y -= TileDirectionDelta[direction].y;
 				}
-				mapElement = map_get_first_element_at(location.x / 32, location.y / 32);
+				mapElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
 
 				bool trackFound = false;
 				do {
-					if (mapElement->base_height != location.z)
-						continue;
-
-					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-						continue;
-
-					if (mapElement->properties.track.ride_index != rideIndex)
-						continue;
-
-					// Only allow sequence 0
-					if (mapElement->properties.track.sequence & 0xF)
-						continue;
-
-					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & (1 << 4)))
-						continue;
+					if (mapElement->base_height != location.z) continue;
+					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+					if (mapElement->properties.track.ride_index != rideIndex) continue;
+					if ((mapElement->properties.track.sequence & 0x0F) != 0) continue;
+					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & (1 << 4))) continue;
 
 					trackFound = true;
 					break;
@@ -7878,53 +7868,29 @@ void sub_6CB945(int rideIndex)
 				}
 			}
 
-			if (specialTrack == false)
+			if (specialTrack == false) {
 				continue;
-
+			}
 
 			const rct_preview_track *trackBlock = get_track_def_from_ride(ride, mapElement->properties.track.type);
-
 			while ((++trackBlock)->index != 0xFF) {
 				rct_xyz16 blockLocation = location;
-
-				switch (direction) {
-				case 0:
-					blockLocation.x += trackBlock->x;
-					blockLocation.y += trackBlock->y;
-					break;
-				case 1:
-					blockLocation.x += trackBlock->y;
-					blockLocation.y -= trackBlock->x;
-					break;
-				case 2:
-					blockLocation.x -= trackBlock->x;
-					blockLocation.y -= trackBlock->y;
-					break;
-				case 3:
-					blockLocation.x -= trackBlock->y;
-					blockLocation.y += trackBlock->x;
-					break;
-				}
-
-				blockLocation.z += trackBlock->z / 8;
+				map_offset_with_rotation(&blockLocation.x, &blockLocation.y, trackBlock->x, trackBlock->y, direction);
 
 				bool trackFound = false;
-				mapElement = map_get_first_element_at(blockLocation.x / 32, blockLocation.y / 32);
+				mapElement = map_get_first_element_at(blockLocation.x >> 5, blockLocation.y >> 5);
 				do {
-					if (blockLocation.z != mapElement->base_height)
-						continue;
-					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-						continue;
-
-					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & 0x10))
-						continue;
+					if (blockLocation.z != mapElement->base_height) continue;
+					if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+					if (!(RCT2_ADDRESS(0x0099BA64, uint8)[mapElement->properties.track.type * 16] & (1 << 4))) continue;
 
 					trackFound = true;
 					break;
 				} while (!map_element_is_last_for_tile(mapElement++));
 
-				if (trackFound == false)
+				if (!trackFound) {
 					break;
+				}
 
 				mapElement->properties.track.sequence &= 0x8F;
 				mapElement->properties.track.sequence |= (stationId << 4);
@@ -7932,8 +7898,7 @@ void sub_6CB945(int rideIndex)
 		}
 	}
 
-	uint16* locationList = RCT2_ADDRESS(0x00F441B0, uint16);
-
+	uint16 *locationList = RCT2_ADDRESS(0x00F441B0, uint16);
 	for (uint8 stationId = 0; stationId < 4; ++stationId) {
 		if (ride->entrances[stationId] != 0xFFFF) {
 			*locationList++ = ride->entrances[stationId];
@@ -7945,11 +7910,9 @@ void sub_6CB945(int rideIndex)
 			ride->exits[stationId] = 0xFFFF;
 		}
 	}
-
 	*locationList++ = 0xFFFF;
 
 	locationList = RCT2_ADDRESS(0x00F441B0, uint16);
-
 	for (; *locationList != 0xFFFF; locationList++) {
 		uint16* locationList2 = locationList;
 		locationList2++;
@@ -7962,50 +7925,40 @@ void sub_6CB945(int rideIndex)
 			}
 		} while (*locationList2++ != 0xFFFF);
 
-		if (duplicateLocation == true)
+		if (duplicateLocation == true) {
 			continue;
+		}
 
 		rct_xy16 location = {
 			.x = (*locationList & 0xFF) * 32,
 			.y = ((*locationList >> 8) & 0xFF) * 32
 		};
 
-		rct_map_element* mapElement = map_get_first_element_at(location.x / 32, location.y / 32);
-
+		rct_map_element *mapElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
 		do {
-			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
-				continue;
-
-			if (mapElement->properties.entrance.ride_index != rideIndex)
-				continue;
-
-			// If its a park entrance
-			if (mapElement->properties.entrance.type > ENTRANCE_TYPE_RIDE_EXIT)
-				continue;
+			if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE) continue;
+			if (mapElement->properties.entrance.ride_index != rideIndex) continue;
+			if (mapElement->properties.entrance.type > ENTRANCE_TYPE_RIDE_EXIT) continue;
 
 			rct_xy16 nextLocation = location;
 			nextLocation.x += TileDirectionDelta[map_element_get_direction(mapElement)].x;
 			nextLocation.y += TileDirectionDelta[map_element_get_direction(mapElement)].y;
 
 			bool shouldRemove = true;
-			rct_map_element* trackElement = map_get_first_element_at(nextLocation.x / 32, nextLocation.y / 32);
+			rct_map_element *trackElement = map_get_first_element_at(nextLocation.x >> 5, nextLocation.y >> 5);
 			do {
-				if (map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
-					continue;
-
-				if (trackElement->properties.track.ride_index != rideIndex)
-					continue;
-
-				if (trackElement->base_height != mapElement->base_height)
-					continue;
+				if (map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK) continue;
+				if (trackElement->properties.track.ride_index != rideIndex) continue;
+				if (trackElement->base_height != mapElement->base_height) continue;
 
 				uint32 edi = trackElement->properties.track.type * 16;
 				edi |= trackElement->properties.track.sequence & 0xF;
 
 				uint8 direction = (map_element_get_direction(mapElement) - map_element_get_direction(trackElement) + 2) & 3;
 
-				if (!(RCT2_GLOBAL(0x0099BA64 + edi, uint32) & (1 << direction)))
+				if (!(RCT2_GLOBAL(0x0099BA64 + edi, uint32) & (1 << direction))) {
 					continue;
+				}
 
 				uint8 stationId = 0;
 				if (trackElement->properties.track.type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
@@ -8013,15 +7966,14 @@ void sub_6CB945(int rideIndex)
 				}
 
 				if (mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT) {
-					if (ride->exits[stationId] != 0xFFFF)
+					if (ride->exits[stationId] != 0xFFFF) {
 						break;
-
+					}
 					ride->exits[stationId] = (location.x / 32) | ((location.y / 32) << 8);
-				}
-				else {
-					if (ride->entrances[stationId] != 0xFFFF)
+				} else {
+					if (ride->entrances[stationId] != 0xFFFF) {
 						break;
-
+					}
 					ride->entrances[stationId] = (location.x / 32) | ((location.y / 32) << 8);
 				}
 
@@ -8642,4 +8594,15 @@ rct_vehicle *ride_get_broken_vehicle(rct_ride *ride) {
 	}
 
 	return vehicle;
+}
+
+/**
+ *
+ *  rct2: 0x006D235B
+ */
+void ride_delete(uint8 rideIndex)
+{
+	rct_ride *ride = get_ride(rideIndex);
+	user_string_free(ride->name);
+	ride->type = RIDE_TYPE_NULL;
 }
