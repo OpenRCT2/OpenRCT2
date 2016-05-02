@@ -35,6 +35,7 @@ uint8 gTrackDesignPlaceFlags;
 bool gTrackDesignSceneryToggle;
 rct_xyz16 gTrackPreviewMin;
 rct_xyz16 gTrackPreviewMax;
+rct_xyz16 gTrackPreviewOrigin;
 
 uint8 byte_F4414E;
 static uint8 byte_F440D4;
@@ -999,18 +1000,13 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		game_do_command(0, 0x69, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 	}
 
-	RCT2_GLOBAL(0x00F44142, sint16) = x;
-	RCT2_GLOBAL(0x00F44144, sint16) = y;
-	RCT2_GLOBAL(0x00F44146, sint16) = z;
+	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
 	return 1;
 }
 
 int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
-	RCT2_GLOBAL(0x00F44142, sint16) = x;
-	RCT2_GLOBAL(0x00F44144, sint16) = y;
-	RCT2_GLOBAL(0x00F44146, sint16) = z;
-
+	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
 	if (byte_F440D4== 0) {
 		gMapSelectionTiles->x = -1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
@@ -1143,8 +1139,8 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		x = entrance->x;
 		y = entrance->y;
 		rotate_map_coordinates(&x, &y, rotation);
-		x += RCT2_GLOBAL(0x00F44142, sint16);
-		y += RCT2_GLOBAL(0x00F44144, sint16);
+		x += gTrackPreviewOrigin.x;
+		y += gTrackPreviewOrigin.y;
 
 		track_design_update_max_min_coordinates(x, y, z);
 
@@ -1169,7 +1165,7 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 					y + TileDirectionDelta[rotation].y
 				};
 				rct_map_element* map_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
-				z = RCT2_GLOBAL(0x00F44146, sint16) / 8;
+				z = gTrackPreviewOrigin.z / 8;
 				z += (entrance->z == (sint8)0x80) ? -1 : entrance->z;
 
 				do {
@@ -1197,7 +1193,7 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 				//dl
 				z = (entrance->z == (sint8)0x80) ? -1 : entrance->z;
 				z *= 8;
-				z += RCT2_GLOBAL(0x00F44146, sint16);
+				z += gTrackPreviewOrigin.z;
 				z >>= 4;
 
 				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -1271,9 +1267,10 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 		if (!track_place_scenery(
 			scenery,
 			rideIndex,
-			RCT2_GLOBAL(0x00F44142, sint16),
-			RCT2_GLOBAL(0x00F44144, sint16),
-			RCT2_GLOBAL(0x00F44146, sint16))){
+			gTrackPreviewOrigin.x,
+			gTrackPreviewOrigin.y,
+			gTrackPreviewOrigin.z
+		)) {
 			return RCT2_GLOBAL(0x00F440D5, money32);
 		}
 	}

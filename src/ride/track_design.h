@@ -160,6 +160,7 @@ extern uint8 gTrackDesignPlaceFlags;
 extern bool gTrackDesignSceneryToggle;
 extern rct_xyz16 gTrackPreviewMin;
 extern rct_xyz16 gTrackPreviewMax;
+extern rct_xyz16 gTrackPreviewOrigin;
 
 extern uint8 byte_F4414E;
 

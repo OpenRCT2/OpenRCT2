@@ -687,8 +687,8 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 		}
 		}
 
-		sint16 x = ((uint8)scenery->x) * 32 - RCT2_GLOBAL(0x00F44142, sint16);
-		sint16 y = ((uint8)scenery->y) * 32 - RCT2_GLOBAL(0x00F44144, sint16);
+		sint16 x = ((uint8)scenery->x) * 32 - gTrackPreviewOrigin.x;
+		sint16 y = ((uint8)scenery->y) * 32 - gTrackPreviewOrigin.y;
 		rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8) ^ 2);
 		x /= 32;
 		y /= 32;
@@ -702,7 +702,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 		scenery->x = (sint8)x;
 		scenery->y = (sint8)y;
 
-		int z = scenery->z * 8 - RCT2_GLOBAL(0xF44146, sint16);
+		int z = scenery->z * 8 - gTrackPreviewOrigin.z;
 		z /= 8;
 		if (z > 127 || z < -126) {
 			window_error_open(3346, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
@@ -830,9 +830,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 		return false;
 	}
 
-	RCT2_GLOBAL(0x00F44142, sint16) = startX;
-	RCT2_GLOBAL(0x00F44144, sint16) = startY;
-	RCT2_GLOBAL(0x00F44146, sint16) = mapElement->base_height * 8;
+	gTrackPreviewOrigin = (rct_xyz16) { startX, startY, mapElement->base_height * 8 };
 
 	size_t numMazeElements = 0;
 	td6->maze_elements = calloc(8192, sizeof(rct_td6_maze_element));
@@ -924,11 +922,9 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 	*((uint8*)&td6->maze_elements[numMazeElements]) = 0xFF;
 
 	// Save global vars as they are still used by scenery
-	sint16 start_z = RCT2_GLOBAL(0x00F44146, sint16);
+	sint16 startZ = gTrackPreviewOrigin.z;
 	sub_6D01B3(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
-	RCT2_GLOBAL(0x00F44142, sint16) = startX;
-	RCT2_GLOBAL(0x00F44144, sint16) = startY;
-	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
+	gTrackPreviewOrigin = (rct_xyz16) { startX, startY, startZ };
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
@@ -991,9 +987,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	sint16 start_x = trackElement.x;
 	sint16 start_y = trackElement.y;
 	sint16 start_z = z + trackCoordinates->z_begin;
-	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
-	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
-	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
+	gTrackPreviewOrigin = (rct_xyz16) { start_x, start_y, start_z };
 
 	size_t numTrackElements = 0;
 	td6->track_elements = calloc(8192, sizeof(rct_td6_track_element));
@@ -1130,15 +1124,15 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 			entrance_direction &= MAP_ELEMENT_DIRECTION_MASK;
 			entrance->direction = entrance_direction;
 
-			x -= RCT2_GLOBAL(0x00F44142, sint16);
-			y -= RCT2_GLOBAL(0x00F44144, sint16);
+			x -= gTrackPreviewOrigin.x;
+			y -= gTrackPreviewOrigin.y;
 
 			rotate_map_coordinates(&x, &y, RCT2_GLOBAL(0x00F4414D, uint8) ^ 2);
 			entrance->x = x;
 			entrance->y = y;
 
 			z *= 8;
-			z -= RCT2_GLOBAL(0x00F44146, sint16);
+			z -= gTrackPreviewOrigin.z;
 			z /= 8;
 
 			if (z > 127 || z < -126) {
@@ -1166,9 +1160,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	sub_6D01B3(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
 
 	// Resave global vars for scenery reasons.
-	RCT2_GLOBAL(0x00F44142, sint16) = start_x;
-	RCT2_GLOBAL(0x00F44144, sint16) = start_y;
-	RCT2_GLOBAL(0x00F44146, sint16) = start_z;
+	gTrackPreviewOrigin = (rct_xyz16) { start_x, start_y, start_z };
 
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
 	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
