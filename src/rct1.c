@@ -33,8 +33,8 @@ bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 	bool success;
 
 	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		gErrorType = ERROR_TYPE_FILE_LOAD;
+		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 
@@ -63,8 +63,8 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 	bool success;
 
 	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+		gErrorType = ERROR_TYPE_FILE_LOAD;
+		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 

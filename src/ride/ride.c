@@ -6017,7 +6017,7 @@ foundRideEntry:
 		}
 
 		if (ride->type == RIDE_TYPE_TOILETS) {
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) & (1 << 31)) {
+			if (shop_item_has_common_price(SHOP_ITEM_ADMISSION)) {
 				money32 price = ride_get_common_price(ride);
 				if (price != MONEY32_UNDEFINED) {
 					ride->price = (money16)price;

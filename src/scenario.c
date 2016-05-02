@@ -117,8 +117,8 @@ int scenario_load(const char *path)
 	if (rw != NULL) {
 		if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
 			SDL_RWclose(rw);
-			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
-			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+			gErrorType = ERROR_TYPE_FILE_LOAD;
+			gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 
 			log_error("failed to load scenario, invalid checksum");
 			return 0;
@@ -197,8 +197,8 @@ int scenario_load(const char *path)
 	}
 
 	log_error("failed to find scenario file.");
-	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
-	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_FILE_CONTAINS_INVALID_DATA;
+	gErrorType = ERROR_TYPE_FILE_LOAD;
+	gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 	return 0;
 }
 
