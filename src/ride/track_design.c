@@ -243,13 +243,14 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 
 	// Set the element helper pointers
 	uintptr_t entranceElementsStart;
+	uintptr_t sceneryElementsStart;
 	if (td6->type == RIDE_TYPE_MAZE) {
 		td6->track_elements = NULL;
 		td6->maze_elements = (rct_td6_maze_element*)td6->elements;
 
 		rct_td6_maze_element *maze = td6->maze_elements;
 		for (; maze->all != 0; maze++) { }
-		entranceElementsStart = (uintptr_t)(++maze);
+		sceneryElementsStart = (uintptr_t)(++maze);
 	} else {
 		td6->maze_elements = NULL;
 		td6->track_elements = (rct_td6_track_element*)td6->elements;
@@ -257,13 +258,12 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 		rct_td6_track_element *track = td6->track_elements;
 		for (; track->type != 0xFF; track++) { }
 		entranceElementsStart = (uintptr_t)track + 1;
-	}
 
-	uintptr_t sceneryElementsStart;
-	rct_td6_entrance_element *entranceElement = (rct_td6_entrance_element*)entranceElementsStart;
-	td6->entrance_elements = entranceElement;
-	for (; entranceElement->z != -1; entranceElement++) { }
-	sceneryElementsStart = (uintptr_t)entranceElement + 1;
+		rct_td6_entrance_element *entranceElement = (rct_td6_entrance_element*)entranceElementsStart;
+		td6->entrance_elements = entranceElement;
+		for (; entranceElement->z != -1; entranceElement++) { }
+		sceneryElementsStart = (uintptr_t)entranceElement + 1;
+	}
 
 	rct_td6_scenery_element *sceneryElement = (rct_td6_scenery_element*)sceneryElementsStart;
 	td6->scenery_elements = sceneryElement;
@@ -884,6 +884,7 @@ int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, ui
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
 	}
 
+	word_F440D5 = 0;
 	dword_F440D5 = 0;
 
 	rct_td6_maze_element *maze = td6->maze_elements;

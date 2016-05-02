@@ -688,7 +688,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 
 		sint16 x = ((uint8)scenery->x) * 32 - gTrackPreviewOrigin.x;
 		sint16 y = ((uint8)scenery->y) * 32 - gTrackPreviewOrigin.y;
-		rotate_map_coordinates(&x, &y, _trackSaveDirection ^ 2);
+		rotate_map_coordinates(&x, &y, (0 - _trackSaveDirection) & 3);
 		x /= 32;
 		y /= 32;
 
@@ -851,7 +851,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 				maze++;
 				numMazeElements++;
 
-				if (maze >= RCT2_ADDRESS(0x009DA151, rct_td6_maze_element)) {
+				if (numMazeElements >= 2000) {
 					gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
 					SafeFree(td6->maze_elements);
 					return false;
@@ -917,8 +917,13 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 	maze++;
 	numMazeElements++;
 
-	td6->maze_elements = realloc(td6->maze_elements, numMazeElements * sizeof(rct_td6_maze_element) + 1);
-	*((uint8*)&td6->maze_elements[numMazeElements]) = 0xFF;
+	// Write end marker
+	maze->all = 0;
+	maze++;
+	numMazeElements++;
+
+	// Trim memory
+	td6->maze_elements = realloc(td6->maze_elements, numMazeElements * sizeof(rct_td6_maze_element));
 
 	// Save global vars as they are still used by scenery
 	sint16 startZ = gTrackPreviewOrigin.z;
@@ -1243,6 +1248,7 @@ static void auto_buffer_write(auto_buffer *buffer, const void *src, size_t len)
  */
 static bool track_design_save_to_file(rct_track_td6 *td6, utf8 *path)
 {
+	const rct_td6_maze_element EndMarkerForMaze = { 0 };
 	const uint8 EndMarker = 0xFF;
 
 	window_close_construction_windows();
@@ -1252,17 +1258,15 @@ static bool track_design_save_to_file(rct_track_td6 *td6, utf8 *path)
 	auto_buffer_write(&td6Buffer, td6, 0xA3);
 	if (td6->type == RIDE_TYPE_MAZE) {
 		auto_buffer_write(&td6Buffer, td6->maze_elements, track_design_get_maze_elements_count(td6) * sizeof(rct_td6_maze_element));
-		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
-		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
-		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
+		auto_buffer_write(&td6Buffer, &EndMarkerForMaze, sizeof(EndMarkerForMaze));
 	} else {
 		auto_buffer_write(&td6Buffer, td6->track_elements, track_design_get_track_elements_count(td6) * sizeof(rct_td6_track_element));
 		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
 		auto_buffer_write(&td6Buffer, td6->entrance_elements, track_design_get_entrance_elements_count(td6) * sizeof(rct_td6_entrance_element));
 		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
-		auto_buffer_write(&td6Buffer, td6->scenery_elements, track_design_get_scenery_elements_count(td6) * sizeof(rct_td6_scenery_element));
-		auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
 	}
+	auto_buffer_write(&td6Buffer, td6->scenery_elements, track_design_get_scenery_elements_count(td6) * sizeof(rct_td6_scenery_element));
+	auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
 
 	// Encode TD6 data
 	uint8 *encodedData = malloc(0x8000);
