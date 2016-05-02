@@ -620,11 +620,7 @@ static bool track_list_load_design_for_preview(utf8 *path)
 
 	_loadedTrackDesign = track_design_open(path);
 	if (_loadedTrackDesign != NULL) {
-		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview(_loadedTrackDesign, (uint8**)_trackDesignPreviewPixels);
-
-		_loadedTrackDesign->cost = gTrackDesignCost;
-		_loadedTrackDesign->track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+		track_design_draw_preview(_loadedTrackDesign, _trackDesignPreviewPixels);
 		return true;
 	}
 	return false;

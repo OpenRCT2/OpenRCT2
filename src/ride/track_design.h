@@ -158,16 +158,15 @@ enum {
 extern rct_map_element **gTrackSavedMapElements;
 
 extern rct_track_td6 *gActiveTrackDesign;
-extern money32 gTrackDesignCost;
 extern uint8 gTrackDesignPlaceFlags;
 extern bool gTrackDesignSceneryToggle;
 extern rct_xyz16 gTrackPreviewMin;
 extern rct_xyz16 gTrackPreviewMax;
 
-rct_track_design *temp_track_get_info(char* path, uint8** preview);
-void track_design_mirror(rct_track_td6 *td6);
 rct_track_td6 *track_design_open(const utf8 *path);
 void track_design_dispose(rct_track_td6 *td6);
+
+void track_design_mirror(rct_track_td6 *td6);
 
 int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z);
 
@@ -185,7 +184,7 @@ void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int*
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
-void draw_track_preview(rct_track_td6 *td6, uint8** preview);
+void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

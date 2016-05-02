@@ -22,7 +22,6 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 
 rct_map_element **gTrackSavedMapElements = (rct_map_element**)0x00F63674;
 rct_track_td6 *gActiveTrackDesign;
-money32 gTrackDesignCost;
 uint8 gTrackDesignPlaceFlags;
 bool gTrackDesignSceneryToggle;
 rct_xyz16 gTrackPreviewMin;
@@ -1290,9 +1289,9 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
  * ebx = ride_id
  * cost = edi
  */
-bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId)
+bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 {
-	RCT2_GLOBAL(0x00F44151, uint8) = 0;
+	*flags = 0;
 
 	uint8 entry_type, entry_index;
 	if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)) {
@@ -1339,8 +1338,8 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId)
 	_currentTrackPieceDirection = 0;
 	int z = sub_6D01B3(td6, PTD_OPERATION_GET_PLACE_Z, 0, mapSize, mapSize, 16);
 
-	if (RCT2_GLOBAL(0x00F4414E, uint8) & 4){
-		RCT2_GLOBAL(0x00F44151, uint8) |= 2;
+	if (RCT2_GLOBAL(0x00F4414E, uint8) & 4) {
+		*flags |= 2;
 	}
 	
 	z += 16 - RCT2_GLOBAL(0xF44129, uint16);
@@ -1348,7 +1347,7 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId)
 	int operation = PTD_OPERATION_GET_COST;
 	if (RCT2_GLOBAL(0x00F4414E, uint8) & 2) {
 		operation |= 0x80;
-		RCT2_GLOBAL(0x00F44151, uint8) |= 1;
+		*flags |= 1;
 	}
 
 	money32 resultCost = sub_6D01B3(td6, operation, rideIndex, mapSize, mapSize, z);
@@ -1356,7 +1355,7 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId)
 
 	if (resultCost != MONEY32_UNDEFINED) {
 		if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index)){
-			RCT2_GLOBAL(0x00F44151, uint8) |= 4;
+			*flags |= 4;
 		}
 
 		_currentTrackPieceDirection = backup_rotation;
@@ -1648,7 +1647,7 @@ void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int*
  *
  *  rct2: 0x006D1EF0
  */
-void draw_track_preview(rct_track_td6 *td6, uint8** preview)
+void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels)
 {
 	// Make a copy of the map
 	if (!track_design_preview_backup_map()) {
@@ -1661,13 +1660,15 @@ void draw_track_preview(rct_track_td6 *td6, uint8** preview)
 	}
 
 	money32 cost;
-	uint8 ride_id;
-	if (!sub_6D2189(td6, &cost, &ride_id)) {
-		memset(preview, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
+	uint8 rideIndex;
+	uint8 flags;
+	if (!sub_6D2189(td6, &cost, &rideIndex, &flags)) {
+		memset(pixels, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
 		track_design_preview_restore_map();
 		return;
 	}
-	gTrackDesignCost = cost;
+	td6->cost = cost;
+	td6->track_flags = flags & 7;
 
 	rct_viewport* view = RCT2_ADDRESS(0x9D8161, rct_viewport);
 	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
@@ -1716,7 +1717,7 @@ void draw_track_preview(rct_track_td6 *td6, uint8** preview)
 	dpi->width = 370;
 	dpi->height = 217;
 	dpi->pitch = 0;
-	dpi->bits = (uint8*)preview;
+	dpi->bits = pixels;
 
 	top = y;
 	left = x;
@@ -1770,7 +1771,7 @@ void draw_track_preview(rct_track_td6 *td6, uint8** preview)
 
 	viewport_paint(view, dpi, left, top, right, bottom);
 
-	sub_6D235B(ride_id);
+	sub_6D235B(rideIndex);
 	track_design_preview_restore_map();
 }
 

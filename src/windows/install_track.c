@@ -375,9 +375,7 @@ static void window_install_track_text_input(rct_window *w, int widgetIndex, char
 
 static void window_install_track_update_preview()
 {
-	draw_track_preview(_trackDesign, (uint8**)_trackDesignPreviewPixels);
-	_trackDesign->cost = gTrackDesignCost;
-	_trackDesign->track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
+	track_design_draw_preview(_trackDesign, _trackDesignPreviewPixels);
 }
 
 static void window_install_track_design(rct_window *w)
