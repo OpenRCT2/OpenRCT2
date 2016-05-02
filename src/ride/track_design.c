@@ -42,8 +42,7 @@ uint8 byte_9D8150;
 static uint8 byte_F440D4;
 static uint8 byte_F44150;
 static money32 dword_F440D5;
-#define word_F440D5 *((sint16*)&dword_F440D5)
-// static sint16 word_F440D5;
+static sint16 word_F440D5;
 static sint16 word_F44129;
 
 static map_backup *track_design_preview_backup_map();
@@ -1008,18 +1007,18 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 	return 1;
 }
 
-int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+bool track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
 	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
-	if (byte_F440D4 == 0) {
+	if (byte_F440D4 == PTD_OPERATION_DRAW_OUTLINES) {
 		gMapSelectionTiles->x = -1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
-
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
 	}
 
+	word_F440D5 = 0;
 	dword_F440D5 = 0;
 	uint8 rotation = _currentTrackPieceDirection;
 
@@ -1032,65 +1031,75 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 
 		track_design_update_max_min_coordinates(x, y, z);
 
-		if (byte_F440D4== 0) {
+		switch (byte_F440D4) {
+		case PTD_OPERATION_DRAW_OUTLINES:
 			for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
 				rct_xy16 tile = { x, y };
 				map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
 				track_design_update_max_min_coordinates(tile.x, tile.y, z);
 				track_add_selection_tile(tile.x, tile.y);
 			}
+			break;
+		case PTD_OPERATION_CLEAR_OUTLINES:
+		{
+			const rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
+			const rct_preview_track *trackBlock = TrackBlocks[trackType];
+			int tempZ = z - trackCoordinates->z_begin + trackBlock->z;
+			uint8 flags =
+				GAME_COMMAND_FLAG_APPLY |
+				GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED |
+				GAME_COMMAND_FLAG_5 |
+				GAME_COMMAND_FLAG_GHOST;
+			ride_remove_track_piece(x, y, tempZ, rotation & 3, trackType, flags);
+			break;
 		}
-
-		if (byte_F440D4== 6) {
-			const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
+		case PTD_OPERATION_1:
+		case PTD_OPERATION_2:
+		case PTD_OPERATION_4:
+		case PTD_OPERATION_GET_COST:
+		{
+			const rct_track_coordinates *trackCoordinates = &TrackCoordinates[trackType];
 
 			//di
-			int temp_z = z;
-			temp_z -= track_coordinates->z_begin;
-			const rct_preview_track* trackBlock = TrackBlocks[trackType];
-
-			temp_z += trackBlock->z;
-			// rotation in bh
-			// track_type in dl
-			game_do_command(x, 0x69 | ((rotation & 3) << 8), y, trackType, GAME_COMMAND_REMOVE_TRACK, temp_z, 0);
-		}
-
-		if (byte_F440D4== 1 ||
-			byte_F440D4== 2 ||
-			byte_F440D4== 4 ||
-			byte_F440D4== 5){
-			const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
-
-			//di
-			int temp_z = z;
-			temp_z -= track_coordinates->z_begin;
-			uint32 edi = ((track->flags & 0xF) << 17) |
-				((uint32)(track->flags & 0xF) << 28) |
-				(((track->flags >> 4) & 0x3) << 24) |
-				(temp_z & 0xFFFF);
+			sint16 tempZ = z - trackCoordinates->z_begin;
+			uint32 trackFlags = track->flags;
+			uint32 edi =
+				((track->flags & 0x0F) << 17) |
+				((track->flags & 0x0F) << 28) |
+				(((track->flags >> 4) & 0x03) << 24) |
+				(tempZ & 0xFFFF);
 
 			int edx = _currentRideIndex | (trackType << 8);
 			if (track->flags & 0x80) edx |= 0x10000;
 			if (track->flags & 0x40) edx |= 0x20000;
 
-			uint8 bl = 1;
-			if (byte_F440D4== 5)bl = 41;
-			if (byte_F440D4== 4)bl = 105;
-			if (byte_F440D4== 1)bl = 0;
+			uint8 flags = GAME_COMMAND_FLAG_APPLY;
+			if (byte_F440D4 == PTD_OPERATION_GET_COST) {
+				flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+				flags |= GAME_COMMAND_FLAG_5;
+			}
+			else if (byte_F440D4 == PTD_OPERATION_4) {
+				flags |= GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+				flags |= GAME_COMMAND_FLAG_5;
+				flags |= GAME_COMMAND_FLAG_GHOST;
+			}
+			else if (byte_F440D4 == PTD_OPERATION_1) {
+				flags = 0;
+			}
 
 			gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, 0);
+			money32 cost = game_do_command(x, flags | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, 0);
 			dword_F440D5 += cost;
-
-			if (cost == MONEY32_UNDEFINED){
+			if (cost == MONEY32_UNDEFINED) {
 				dword_F440D5 = cost;
-				return 0;
+				return false;
 			}
+			break;
 		}
-
-		if (byte_F440D4 == 3) {
+		case PTD_OPERATION_GET_PLACE_Z:
+		{
 			int tempZ = z - TrackCoordinates[trackType].z_begin;
-			for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
+			for (const rct_preview_track *trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
 				rct_xy16 tile = { x, y };
 				map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
 				if (tile.x < 0 || tile.y < 0 || tile.x >= (256 * 32) || tile.y >= (256 * 32)) {
@@ -1099,7 +1108,7 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 
 				rct_map_element *mapElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
 				if (mapElement == NULL) {
-					return 0;
+					return false;
 				}
 
 				int height = mapElement->base_height * 8;
@@ -1119,6 +1128,8 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 					word_F440D5 -= heightDifference;
 				}
 			}
+			break;
+		}
 		}
 
 		const rct_track_coordinates *track_coordinates = &TrackCoordinates[trackType];
@@ -1136,7 +1147,6 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 	}
 
 	// Entrance elements
-	//0x6D06D8
 	rct_td6_entrance_element *entrance = td6->entrance_elements;
 	for (; entrance->z != -1; entrance++) {
 		rotation = _currentTrackPieceDirection & 3;
@@ -1148,22 +1158,22 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 
 		track_design_update_max_min_coordinates(x, y, z);
 
-		if (byte_F440D4== 0) {
+		switch (byte_F440D4) {
+		case PTD_OPERATION_DRAW_OUTLINES:
 			track_add_selection_tile(x, y);
-		}
-
-		if (byte_F440D4== 1 ||
-			byte_F440D4== 2 ||
-			byte_F440D4== 4 ||
-			byte_F440D4== 5
-		) {
+			break;
+		case PTD_OPERATION_1:
+		case PTD_OPERATION_2:
+		case PTD_OPERATION_4:
+		case PTD_OPERATION_GET_COST:
+		{
 			rotation = (rotation + entrance->direction) & 3;
 			uint8 isExit = 0;
 			if (entrance->direction & (1 << 7)) {
 				isExit = 1;
 			}
 
-			if (byte_F440D4!= 1){
+			if (byte_F440D4 != PTD_OPERATION_1) {
 				rct_xy16 tile = {
 					x + TileDirectionDelta[rotation].x,
 					y + TileDirectionDelta[rotation].y
@@ -1178,9 +1188,9 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 
 					int di = (map_element->properties.track.sequence >> 4) & 0x07;
 					uint8 bl = 1;
-					if (byte_F440D4== 5) bl = 41;
-					if (byte_F440D4== 4) bl = 105;
-					if (byte_F440D4== 1) bl = 0;
+					if (byte_F440D4 == 5) bl = 41;
+					if (byte_F440D4 == 4) bl = 105;
+					if (byte_F440D4 == 1) bl = 0;
 
 					gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 					money32 cost = game_do_command(x, bl | (rotation << 8), y, rideIndex | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, di, 0);
@@ -1194,7 +1204,6 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 					break;
 				} while (!map_element_is_last_for_tile(map_element++));
 			} else {
-				//dl
 				z = (entrance->z == (sint8)0x80) ? -1 : entrance->z;
 				z *= 8;
 				z += gTrackPreviewOrigin.z;
@@ -1210,16 +1219,18 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 					byte_F4414E |= (1 << 0);
 				}
 			}
+			break;
+		}
 		}
 	}
 
-	if (byte_F440D4 == 6) {
+	if (byte_F440D4 == PTD_OPERATION_CLEAR_OUTLINES) {
 		sub_6CB945(_currentRideIndex);
 		rct_ride* ride = get_ride(_currentRideIndex);
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
 	}
-	return 1;
+	return true;
 }
 
 /**

@@ -7228,14 +7228,14 @@ bool ride_select_forwards_from_back()
 	}
 }
 
-money32 ride_remove_track_piece(int x, int y, int z, int direction, int type)
+money32 ride_remove_track_piece(int x, int y, int z, int direction, int type, uint8 flags)
 {
 	gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
 	if (network_get_mode() == NETWORK_MODE_CLIENT)
 	{
 		game_command_callback = game_command_callback_ride_remove_track_piece;
 	}
-	return game_do_command(x, (GAME_COMMAND_FLAG_APPLY) | ((direction & 3) << 8), y, type, GAME_COMMAND_REMOVE_TRACK, z, 0);
+	return game_do_command(x, flags | ((direction & 3) << 8), y, type, GAME_COMMAND_REMOVE_TRACK, z, 0);
 }
 
 /**
