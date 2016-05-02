@@ -95,7 +95,6 @@ void track_design_save_select_nearby_scenery(int rideIndex)
  */
 void track_design_save_reset_scenery()
 {
-	RCT2_GLOBAL(0x009DA193, uint8) = 255;
 	track_design_save_init();
 	gfx_invalidate_screen();
 }

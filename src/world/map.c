@@ -2916,8 +2916,8 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	gCommandPosition.x += 16;
 	gCommandPosition.y += 16;
 	if(game_is_not_paused() || gCheatsBuildInPauseMode){
-		if(sub_68B044()){
-			if(RCT2_GLOBAL(0x009D8150, uint8) & 1 || (x <= gMapSizeMaxXY && y <= gMapSizeMaxXY)){
+		if (sub_68B044()) {
+			if ((byte_9D8150 & 1) || (x <= gMapSizeMaxXY && y <= gMapSizeMaxXY)) {
 				rct_scenery_entry* scenery_entry = (rct_scenery_entry*)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks[scenery_type];
 				if(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || !(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG9)){
 					if(scenery_entry->small_scenery.flags & (SMALL_SCENERY_FLAG9 | SMALL_SCENERY_FLAG24 | SMALL_SCENERY_FLAG25)){

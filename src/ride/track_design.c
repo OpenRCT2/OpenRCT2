@@ -38,8 +38,13 @@ rct_xyz16 gTrackPreviewMax;
 rct_xyz16 gTrackPreviewOrigin;
 
 uint8 byte_F4414E;
+uint8 byte_9D8150;
 static uint8 byte_F440D4;
 static uint8 byte_F44150;
+static money32 dword_F440D5;
+#define word_F440D5 *((sint16*)&dword_F440D5)
+// static sint16 word_F440D5;
+static sint16 word_F44129;
 
 static map_backup *track_design_preview_backup_map();
 static void track_design_preview_restore_map(map_backup *backup);
@@ -659,9 +664,9 @@ int track_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex,
 			}
 
 			if (byte_F440D4== 3){
-				int z = scenery->z * 8 + RCT2_GLOBAL(0x00F440D5, sint16);
-				if (z < RCT2_GLOBAL(0x00F44129, sint16)){
-					RCT2_GLOBAL(0x00F44129, sint16) = z;
+				int z = scenery->z * 8 + word_F440D5;
+				if (z < word_F44129) {
+					word_F44129 = z;
 				}
 			}
 
@@ -850,19 +855,18 @@ int track_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex,
 					continue;
 					break;
 				}
-				RCT2_GLOBAL(0x00F440D5, money32) += cost;
-				if (byte_F440D4!= 2){
+				dword_F440D5 += cost;
+				if (byte_F440D4 != 2) {
 					if (cost == MONEY32_UNDEFINED){
-						RCT2_GLOBAL(0x00F440D5, money32) = MONEY32_UNDEFINED;
+						dword_F440D5 = MONEY32_UNDEFINED;
 					}
 				}
-
-				if (RCT2_GLOBAL(0x00F440D5, money32) != MONEY32_UNDEFINED)
+				if (dword_F440D5 != MONEY32_UNDEFINED) {
 					continue;
-
-				if (byte_F440D4== 2)
+				}
+				if (byte_F440D4 == 2) {
 					continue;
-
+				}
 				return 0;
 			}
 		}
@@ -881,7 +885,7 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
 	}
 
-	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
+	dword_F440D5 = 0;
 
 	rct_td6_maze_element *maze = td6->maze_elements;
 	for (; maze->all != 0; maze++){
@@ -948,9 +952,9 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 				maze_entry = rol16(maze->maze_entry, rotation * 4);
 
 				bl = 1;
-				if (byte_F440D4== 5)bl = 0x29;
-				if (byte_F440D4== 4)bl = 0x69;
-				if (byte_F440D4== 1)bl = 0;
+				if (byte_F440D4 == 5) bl = 0x29;
+				if (byte_F440D4 == 4) bl = 0x69;
+				if (byte_F440D4 == 1) bl = 0;
 
 				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
@@ -958,15 +962,15 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 				break;
 			}
 
-			RCT2_GLOBAL(0x00F440D5, money32) += cost;
+			dword_F440D5 += cost;
 
 			if (cost == MONEY32_UNDEFINED){
-				RCT2_GLOBAL(0x00F440D5, money32) = cost;
+				dword_F440D5 = cost;
 				return 0;
 			}
 		}
 
-		if (byte_F440D4== 3){
+		if (byte_F440D4 == 3) {
 			if (mapCoord.x < 0) continue;
 			if (mapCoord.y < 0) continue;
 			if (mapCoord.x >= 256 * 32) continue;
@@ -989,14 +993,14 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 				}
 			}
 
-			sint16 temp_z = z + RCT2_GLOBAL(0x00F440D5, sint16) - map_height;
+			sint16 temp_z = z + word_F440D5 - map_height;
 			if (temp_z < 0) {
-				RCT2_GLOBAL(0x00F440D5, sint16) -= temp_z;
+				word_F440D5 -= temp_z;
 			}
 		}
 	}
 
-	if (byte_F440D4== 6) {
+	if (byte_F440D4 == 6) {
 		game_do_command(0, 0x69, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 	}
 
@@ -1007,7 +1011,7 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
 	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
-	if (byte_F440D4== 0) {
+	if (byte_F440D4 == 0) {
 		gMapSelectionTiles->x = -1;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
@@ -1016,7 +1020,7 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
 	}
 
-	RCT2_GLOBAL(0x00F440D5, uint32) = 0;
+	dword_F440D5 = 0;
 	uint8 rotation = _currentTrackPieceDirection;
 
 	rct_td6_track_element *track = td6->track_elements;
@@ -1076,15 +1080,15 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 
 			gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 			money32 cost = game_do_command(x, bl | (rotation << 8), y, edx, GAME_COMMAND_PLACE_TRACK, edi, 0);
-			RCT2_GLOBAL(0x00F440D5, money32) += cost;
+			dword_F440D5 += cost;
 
 			if (cost == MONEY32_UNDEFINED){
-				RCT2_GLOBAL(0x00F440D5, money32) = cost;
+				dword_F440D5 = cost;
 				return 0;
 			}
 		}
 
-		if (byte_F440D4== 3) {
+		if (byte_F440D4 == 3) {
 			int tempZ = z - TrackCoordinates[trackType].z_begin;
 			for (const rct_preview_track* trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++) {
 				rct_xy16 tile = { x, y };
@@ -1110,9 +1114,9 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 				if (water_height > 0 && water_height > height) {
 					height = water_height;
 				}
-				int heightDifference = tempZ + RCT2_GLOBAL(0x00F440D5, sint16) + trackBlock->z - height;
+				int heightDifference = tempZ + word_F440D5 + trackBlock->z - height;
 				if (heightDifference < 0) {
-					RCT2_GLOBAL(0x00F440D5, sint16) -= heightDifference;
+					word_F440D5 -= heightDifference;
 				}
 			}
 		}
@@ -1180,10 +1184,10 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 
 					gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 					money32 cost = game_do_command(x, bl | (rotation << 8), y, rideIndex | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, di, 0);
-					RCT2_GLOBAL(0x00F440D5, money32) += cost;
+					dword_F440D5 += cost;
 
 					if (cost == MONEY32_UNDEFINED) {
-						RCT2_GLOBAL(0x00F440D5, money32) = cost;
+						dword_F440D5 = cost;
 						return 0;
 					}
 					byte_F4414E |= (1 << 0);
@@ -1199,17 +1203,17 @@ int track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 				gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 				money32 cost = game_do_command(x, 0 | (rotation << 8), y, z | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
 				if (cost == MONEY32_UNDEFINED) {
-					RCT2_GLOBAL(0x00F440D5, money32) = cost;
+					dword_F440D5 = cost;
 					return 0;
 				} else {
-					RCT2_GLOBAL(0x00F440D5, money32) += cost;
+					dword_F440D5 += cost;
 					byte_F4414E |= (1 << 0);
 				}
 			}
 		}
 	}
 
-	if (byte_F440D4== 6) {
+	if (byte_F440D4 == 6) {
 		sub_6CB945(_currentRideIndex);
 		rct_ride* ride = get_ride(_currentRideIndex);
 		user_string_free(ride->name);
@@ -1253,7 +1257,7 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 	gTrackPreviewMin = (rct_xyz16){ x, y, z };
 	gTrackPreviewMax = (rct_xyz16){ x, y, z };
 
-	RCT2_GLOBAL(0x00F44129, uint16) = 0;
+	word_F44129 = 0;
 	uint8 track_place_success = 0;
 	if (td6->type == RIDE_TYPE_MAZE) {
 		track_place_success = track_place_maze(td6, x, y, z, rideIndex);
@@ -1271,21 +1275,21 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 			gTrackPreviewOrigin.y,
 			gTrackPreviewOrigin.z
 		)) {
-			return RCT2_GLOBAL(0x00F440D5, money32);
+			return dword_F440D5;
 		}
 	}
 
 	// 0x6D0FE6
-	if (byte_F440D4== 0){
+	if (byte_F440D4 == 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 0x6;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 3);
 		map_invalidate_map_selection_tiles();
 	}
 
 	if (bl == 3) {
-		return RCT2_GLOBAL(0x00F440D5, sint16);
+		return word_F440D5;
 	}
-	return RCT2_GLOBAL(0x00F440D5, money32);
+	return dword_F440D5;
 }
 
 /**
@@ -1334,7 +1338,7 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 		memset(&ride->track_colour_supports, td6->track_support_colour_rct1, 4);
 	}
 
-	RCT2_GLOBAL(0x009D8150, uint8) |= 1;
+	byte_9D8150 |= 1;
 	uint8 backup_rotation = _currentTrackPieceDirection;
 	uint32 backup_park_flags = gParkFlags;
 	gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
@@ -1347,7 +1351,7 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 		*flags |= 2;
 	}
 	
-	z += 16 - RCT2_GLOBAL(0xF44129, uint16);
+	z += 16 - word_F44129;
 
 	int operation = PTD_OPERATION_GET_COST;
 	if (byte_F4414E & 2) {
@@ -1364,7 +1368,7 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 		}
 
 		_currentTrackPieceDirection = backup_rotation;
-		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
+		byte_9D8150 &= ~1;
 		*cost = resultCost;
 		*rideId = rideIndex;
 		return true;
@@ -1372,7 +1376,7 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId, uint8 *flags)
 		_currentTrackPieceDirection = backup_rotation;
 		user_string_free(ride->name);
 		ride->type = RIDE_TYPE_NULL;
-		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
+		byte_9D8150 &= ~1;
 		return false;
 	}
 }

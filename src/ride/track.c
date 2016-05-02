@@ -856,7 +856,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			return MONEY32_UNDEFINED;
 		}
 
-		if ((rideTypeFlags & RIDE_TYPE_FLAG_6) && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
+		if ((rideTypeFlags & RIDE_TYPE_FLAG_6) && !(byte_9D8150 & 1)) {
 			mapElement = map_get_surface_element_at(x / 32, y / 32);
 
 			uint8 water_height = 2 * (mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK);
@@ -919,7 +919,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 					maxHeight = RideData5[ride->type].max_height;
 				}
 				ride_height /= 2;
-				if (ride_height > maxHeight && !(RCT2_GLOBAL(0x009D8150, uint8) & 1)) {
+				if (ride_height > maxHeight && !(byte_9D8150 & 1)) {
 					gGameCommandErrorText = STR_TOO_HIGH_FOR_SUPPORTS;
 					return MONEY32_UNDEFINED;
 				}

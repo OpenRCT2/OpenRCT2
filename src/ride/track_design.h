@@ -163,6 +163,7 @@ extern rct_xyz16 gTrackPreviewMax;
 extern rct_xyz16 gTrackPreviewOrigin;
 
 extern uint8 byte_F4414E;
+extern uint8 byte_9D8150;
 
 rct_track_td6 *track_design_open(const utf8 *path);
 void track_design_dispose(rct_track_td6 *td6);
