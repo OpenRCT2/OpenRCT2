@@ -24,7 +24,7 @@ bool gCheatsDisableVandalism = false;
 bool gCheatsDisableLittering = false;
 bool gCheatsNeverendingMarketing = false;
 bool gCheatsFreezeClimate = false;
-bool gCheatsDisableTrainLengthLimit=false;
+bool gCheatsDisableTrainLengthLimit = false;
 
 int park_rating_spinner_value;
 

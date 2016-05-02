@@ -367,7 +367,7 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 		priceMinusCost += ride->price_secondary;
 		priceMinusCost -= get_shop_item_cost(currentShopItem);
 
-		if(entry->shop_item!=255)
+		if (entry->shop_item != 255)
 			priceMinusCost /= 2;
 	}
 
@@ -782,7 +782,7 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
 			*argument = ride->num_riders;
 			*formatSecondary = STR_PERSON_ON_RIDE;
-			if(*argument != 1)
+			if (*argument != 1)
 				*formatSecondary = STR_PEOPLE_ON_RIDE;
 
 		} else {
@@ -3342,7 +3342,7 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  */
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-	if(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
 		rct_xy16 rotatedCoords;
 
 		switch (get_current_rotation()) {
@@ -4579,7 +4579,8 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int vehicleIn
 
 	train_ref train = { NULL, NULL };
 	for (int carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++) {
-		rct_vehicle *car = vehicle_create_car(rideIndex, ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex), carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
+		const uint8 vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex);
+		rct_vehicle *car = vehicle_create_car(rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
 		if (carIndex == 0) {
 			train.head = car;
 		} else {
@@ -7368,7 +7369,7 @@ void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 
 
 uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex,int numCarsPerTrain,int position)
 {
-rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+	rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 	if (position == 0 && rideEntry->front_vehicle != 255) {
 		return rideEntry->front_vehicle;
 	} else if (position == 1 && rideEntry->second_vehicle != 255) {
@@ -7481,7 +7482,7 @@ void ride_update_max_vehicles(int rideIndex)
 			trainLength = 0;
 			int totalFriction = 0;
 			for (int i = 0; i < numCars; i++) {
-				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,numCars,i)];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, numCars, i)];
 				trainLength += vehicleEntry->spacing;
 				totalFriction += vehicleEntry->car_friction;
 			}
@@ -7493,7 +7494,7 @@ void ride_update_max_vehicles(int rideIndex)
 		}
 		int newCarsPerTrain = max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
 		maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
-		if(!gCheatsDisableTrainLengthLimit) {
+		if (!gCheatsDisableTrainLengthLimit) {
 			newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
 		}
 		ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
@@ -7514,7 +7515,7 @@ void ride_update_max_vehicles(int rideIndex)
 			// Calculate maximum number of trains
 			trainLength = 0;
 			for (int i = 0; i < newCarsPerTrain; i++) {
-				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,i)];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
 				trainLength += vehicleEntry->spacing;
 			}
 
@@ -7534,12 +7535,12 @@ void ride_update_max_vehicles(int rideIndex)
 			) {
 				maxNumTrains = min(maxNumTrains, 31);
 			} else {
-				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,0)];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, 0)];
 				int speed = vehicleEntry->powered_max_speed;
 
 				int totalSpacing = 0;
 				for (int i = 0; i < newCarsPerTrain; i++) {
-					vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype,newCarsPerTrain,i)];
+					vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
 					totalSpacing += vehicleEntry->spacing;
 				}
 
@@ -7711,7 +7712,7 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 
 		invalidate_test_results(rideIndex);
 		rideEntry = get_ride_entry(ride->subtype);
-		if(!gCheatsDisableTrainLengthLimit) {
+		if (!gCheatsDisableTrainLengthLimit) {
 			value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
 		}
 		ride->proposed_num_cars_per_train = value;
@@ -7739,7 +7740,7 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 			preset = ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
 		}
 		ride_set_vehicle_colours_to_random_preset(ride, preset);
-		if(!gCheatsDisableTrainLengthLimit) {
+		if (!gCheatsDisableTrainLengthLimit) {
 			ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
 		}
 		break;
@@ -8569,7 +8570,7 @@ const uint8* ride_seek_available_modes(rct_ride *ride)
 {
 	const uint8* availableModes;
 
-	if(!gCheatsShowAllOperatingModes) {
+	if (!gCheatsShowAllOperatingModes) {
 		availableModes = RideAvailableModes;
 
 		for (int i = 0; i < ride->type; i++) {
