@@ -1398,14 +1398,51 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 }
 
 /**
- *
- *  rct2: 0x0068F0FB
+ * rct2: 0x0068F0FB
  */
-void viewport_peep_paint_setup(rct_peep *peep, int imageDirection)
+void viewport_peep_paint_setup(rct_peep * peep, int imageDirection)
 {
-	RCT2_CALLPROC_X(0x0068F0FB, peep->x, imageDirection, peep->y, peep->z, (int)peep, 0, 0);
-}
+	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	if (dpi->zoom_level > 2) {
+		return;
+	}
 
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
+		return;
+	}
+
+	rct_sprite_entry sprite = g_sprite_entries[peep->sprite_type];
+
+	uint8 spriteType = peep->action_sprite_type;
+	uint8 imageOffset = peep->action_sprite_image_offset;
+
+	if (peep->action == PEEP_ACTION_NONE_1) {
+		spriteType = peep->next_action_sprite_type;
+		imageOffset = 0;
+	}
+
+	uint32 baseImageId = (imageDirection >> 3) + sprite.sprite_image[spriteType].base_image + imageOffset * 4;
+	uint32 imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | 0xA0000000;
+	sub_98197C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+
+	if (baseImageId >= 10717 && baseImageId < 10749) {
+		imageId = baseImageId + 32 | peep->hat_colour << 19 | 0x20000000;
+		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+		return;
+	}
+
+	if (baseImageId >= 10781 && baseImageId < 10813) {
+		imageId = baseImageId + 32 | peep->balloon_colour << 19 | 0x20000000;
+		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+		return;
+	}
+
+	if (baseImageId >= 11197 && baseImageId < 11229) {
+		imageId = baseImageId + 32 | peep->umbrella_colour << 19 | 0x20000000;
+		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+		return;
+	}
+}
 /**
  *
  *  rct2: 0x00672AC9
