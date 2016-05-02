@@ -163,6 +163,8 @@ extern bool gTrackDesignSceneryToggle;
 extern rct_xyz16 gTrackPreviewMin;
 extern rct_xyz16 gTrackPreviewMax;
 
+extern uint8 byte_F4414E;
+
 rct_track_td6 *track_design_open(const utf8 *path);
 void track_design_dispose(rct_track_td6 *td6);
 

@@ -4630,7 +4630,8 @@ static void cancel_scenery_selection(){
  *
  *  rct2: 0x006D27A3
  */
-static void setup_scenery_selection(rct_window* w){
+static void setup_scenery_selection(rct_window* w)
+{
 	rct_ride* ride = get_ride(w->number);
 
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
