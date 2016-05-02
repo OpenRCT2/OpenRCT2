@@ -168,7 +168,6 @@ rct_track_td6 *track_design_open(const utf8 *path);
 void track_design_dispose(rct_track_td6 *td6);
 
 int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int z);
-int install_track(char* source_path, char* dest_name);
 
 void track_design_index_create();
 size_t track_design_index_get_count_for_ride(uint8 rideType, const char *entry);
@@ -176,6 +175,7 @@ size_t track_design_index_get_for_ride(track_design_file_ref **tdRefs, uint8 rid
 utf8 *track_design_get_name_from_path(const utf8 *path);
 bool track_design_index_rename(const utf8 *path, const utf8 *newName);
 bool track_design_index_delete(const utf8 *path);
+bool track_design_index_install(const utf8 *srcPath, const utf8 *destPath);
 
 void game_command_place_track_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_place_maze_design(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);

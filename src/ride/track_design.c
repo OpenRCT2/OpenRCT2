@@ -79,7 +79,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
 
 static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength)
 {
-	rct_track_td6 *td6 = calloc(sizeof(rct_track_td6), 1);
+	rct_track_td6 *td6 = calloc(1, sizeof(rct_track_td6));
 	uint8 *readPtr = src;
 
 	// Clear top of track_design as this is not loaded from the td4 files
@@ -1390,75 +1390,6 @@ bool sub_6D2189(rct_track_td6 *td6, money32 *cost, uint8 *rideId)
 		RCT2_GLOBAL(0x009D8150, uint8) &= ~1;
 		return false;
 	}
-}
-
-/**
-*
-*  rct2: 0x006D399D
-*/
-rct_track_design *temp_track_get_info(char* path, uint8** preview)
-{
-	rct_track_design *trackDesign;
-	uint8 *trackDesignList = RCT2_ADDRESS(RCT2_ADDRESS_TRACK_LIST, uint8);
-	int i;
-
-	trackDesign = NULL;
-
-	// Check if track design has already been loaded
-	for (i = 0; i < 4; i++) {
-		if (RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] == 0) {
-			trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
-			break;
-		}
-	}
-
-	if (trackDesign == NULL) {
-		// Load track design
-		i = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32)++;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) >= 4)
-			RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_NEXT_INDEX_CACHE, uint32) = 0;
-
-		RCT2_ADDRESS(RCT2_ADDRESS_TRACK_DESIGN_INDEX_CACHE, uint32)[i] = 0;
-
-		rct_track_td6* loaded_track = NULL;
-
-		log_verbose("Loading track: %s", path);
-
-		// if (!(loaded_track = load_track_design(path))) {
-		// 	if (preview != NULL) *preview = NULL;
-		// 	log_error("Failed to load track: %s", path);
-		// 	return NULL;
-		// }
-
-		trackDesign = &RCT2_GLOBAL(RCT2_ADDRESS_TRACK_DESIGN_CACHE, rct_track_design*)[i];
-
-		object_unload_all();
-		if (loaded_track->type == RIDE_TYPE_NULL){
-			if (preview != NULL) *preview = NULL;
-			log_error("Failed to load track (ride type null): %s", path);
-			return NULL;
-		}
-
-		if (!object_load_chunk(0, &loaded_track->vehicle_object, NULL)){
-			if (preview != NULL) *preview = NULL;
-			log_error("Failed to load track (vehicle load fail): %s", path);
-			return NULL;
-		}
-
-		// Copy the track design apart from the preview image
-		memcpy(&trackDesign->track_td6, loaded_track, sizeof(rct_track_td6));
-		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview(&trackDesign->track_td6, (uint8**)trackDesign->preview);
-
-		trackDesign->track_td6.cost = gTrackDesignCost;
-		trackDesign->track_td6.track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
-	}
-
-	// Set preview to correct preview image based on rotation
-	if (preview != NULL)
-		*preview = trackDesign->preview[_currentTrackPieceDirection];
-
-	return trackDesign;
 }
 
 money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *outRideIndex)

@@ -203,43 +203,22 @@ bool track_design_index_delete(const utf8 *path)
 }
 
 /**
-*
-*  rct2: 0x006D40B2
-* returns 0 for copy fail, 1 for success, 2 for file exists.
-*/
-int install_track(char* source_path, char* dest_name){
+ *
+ *  rct2: 0x006D40B2
+ */
+bool track_design_index_install(const utf8 *srcPath, const utf8 *destPath)
+{
+	if (!platform_file_copy(srcPath, destPath, false)) {
+		return false;
+	}
 
-	// Make a copy of the track name (no extension)
-	char track_name[MAX_PATH] = { 0 };
-	char* dest = track_name;
-	char* dest_name_pointer = dest_name;
-	while (*dest_name_pointer != '.') *dest++ = *dest_name_pointer++;
+	track_design_index_create();
 
-	// Check if .TD4 file exists under that name
-	char* temp_extension_pointer = dest;
-	strcat(track_name, ".TD4");
-
-	char dest_path[MAX_PATH];
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
-
-	if (platform_file_exists(dest_path))
-		return 2;
-
-	// Allow a concat onto the track_name but before extension
-	*temp_extension_pointer = '\0';
-
-	// Check if .TD6 file exists under that name
-	strcat(track_name, ".TD6");
-
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), track_name);
-
-	if (platform_file_exists(dest_path))
-		return 2;
-
-	// Set path for actual copy
-	substitute_path(dest_path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), dest_name);
-
-	return platform_file_copy(source_path, dest_path, false);
+	rct_window *trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+	if (trackListWindow != NULL) {
+		trackListWindow->track_list.reload_track_designs = true;
+	}
+	return true;
 }
 
 static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount)

@@ -99,7 +99,7 @@ static track_design_file_ref *_trackDesigns = NULL;
 static size_t _trackDesignsCount = 0;
 static uint16 _loadedTrackDesignIndex;
 static rct_track_td6 *_loadedTrackDesign;
-static uint8 _loadedTrackDesignPreview[4][TRACK_PREVIEW_IMAGE_SIZE];
+static uint8 *_trackDesignPreviewPixels;
 
 static void track_list_load_designs(ride_list_item item);
 static bool track_list_load_design_for_preview(utf8 *path);
@@ -145,6 +145,8 @@ void window_track_list_open(ride_list_item item)
 	gTrackDesignSceneryToggle = false;
 	window_push_others_right(w);
 	_currentTrackPieceDirection = 2;
+
+	_trackDesignPreviewPixels = calloc(4, TRACK_PREVIEW_IMAGE_SIZE);
 }
 
 /**
@@ -153,8 +155,10 @@ void window_track_list_open(ride_list_item item)
  */
 static void window_track_list_close(rct_window *w)
 {
-	free(_loadedTrackDesign);
+	// Dispose track design and preview
+	track_design_dispose(_loadedTrackDesign);
 	_loadedTrackDesign = NULL;
+	SafeFree(_trackDesignPreviewPixels);
 
 	// Dispose track list
 	for (size_t i = 0; i < _trackDesignsCount; i++) {
@@ -398,11 +402,9 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		return;
 	}
 
-	uint8 *image = _loadedTrackDesignPreview[_currentTrackPieceDirection];
-
 	rct_g1_element *substituteElement = &g1Elements[0];
 	rct_g1_element tmpElement = *substituteElement;
-	substituteElement->offset = image;
+	substituteElement->offset = _trackDesignPreviewPixels + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
 	substituteElement->width = 370;
 	substituteElement->height = 217;
 	substituteElement->x_offset = 0;
@@ -619,7 +621,7 @@ static bool track_list_load_design_for_preview(utf8 *path)
 	_loadedTrackDesign = track_design_open(path);
 	if (_loadedTrackDesign != NULL) {
 		// Load in a new preview image, calculate cost variable, calculate var_06
-		draw_track_preview(_loadedTrackDesign, (uint8**)_loadedTrackDesignPreview);
+		draw_track_preview(_loadedTrackDesign, (uint8**)_trackDesignPreviewPixels);
 
 		_loadedTrackDesign->cost = gTrackDesignCost;
 		_loadedTrackDesign->track_flags = RCT2_GLOBAL(0x00F44151, uint8) & 7;
