@@ -4111,6 +4111,10 @@ STR_5801    :禁止亂拋垃圾
 STR_5802    :{SMALLFONT}{BLACK}停止遊客亂拋垃圾及嘔吐的行為
 STR_5803    :{SMALLFONT}{BLACK}旋轉被選中的地圖元素
 STR_5804    :靜音
+STR_5805    :{SMALLFONT}{BLACK}如勾選, 你的伺服器將會列名在公共伺服器列表上{NEWLINE}並容許其他人加入
+STR_5807    :{WINDOW_COLOUR_2}遊樂設施數目: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}商店及攤販數目: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}訪客資訊中心及其他設施數目: {BLACK}{COMMA16}
 
 
 #############

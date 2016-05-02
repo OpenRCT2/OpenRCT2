@@ -44,16 +44,16 @@ STR_0039    :Ruota panoramica
 STR_0040    :Simulatore di movimento
 STR_0041    :Cinema 3D
 STR_0042    :Top Spin
-STR_0043    :Space Rings
+STR_0043    :Anelli spaziali
 STR_0044    :Attraz. a caduta libera rov.
 STR_0045    :Traino
 STR_0046    :Ottovolante a caduta verticale
-STR_0047    :Cash Machine
+STR_0047    :Bancomat
 STR_0048    :Twist
 STR_0049    :Casa dei fantasmi
 STR_0050    :Pronto soccorso
 STR_0051    :Circo
-STR_0052    :Ghost Train
+STR_0052    :Treno dei fantasmi
 STR_0053    :Ottov. super-serpentina
 STR_0054    :Ottovolante di legno
 STR_0055    :Ottov. a frizione laterale
@@ -63,9 +63,9 @@ STR_0058    :Unknown Ride (38)
 STR_0059    :Ottovolante aereo invertito
 STR_0060    :Unknown Ride (3A)
 STR_0061    :Virginia Reel
-STR_0062    :Splash Boats
+STR_0062    :Barche con lo schizzo
 STR_0063    :Mini-elicotteri
-STR_0064    :Lay-down Roller Coaster
+STR_0064    :Ottovolante sdraiato
 STR_0065    :Monorotaia sospesa
 STR_0066    :Unknown Ride (40)
 STR_0067    :Ottovolante al contrario
@@ -74,11 +74,11 @@ STR_0069    :Mini golf
 STR_0070    :Giga Coaster
 STR_0071    :Roto-Drop
 STR_0072    :Flying Saucers
-STR_0073    :Crooked House
+STR_0073    :Casa distorta
 STR_0074    :Monorail Cycles
-STR_0075    :Compact Inverted Coaster
+STR_0075    :Ottovolante invertito compatto
 STR_0076    :Attrazione acquatica
-STR_0077    :Air Powered Vertical Coaster
+STR_0077    :Ottovolante verticale ad aria
 STR_0078    :Inverted Hairpin Coaster
 STR_0079    :Tappeto magico
 STR_0080    :Corsa sottomarina
@@ -522,8 +522,8 @@ STR_0517    :I passeggeri viaggiano su treni in miniatura su una strada ferrata 
 STR_0518    :I passeggeri viaggiano su treni elettrici lungo un tracciato monorotaia
 STR_0519    :I passeggeri viaggiano a bordo di piccole carrozze appese al circuito, oscillando liberamente da lato a lato a ogni curva
 STR_0520    :Una piattaforma dalla quale i passeggeri possono guidare una piccola imbarcazione sull'acqua
-STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
+STR_0521    :Un ottovolante veloce e snodato con curve strette e discese ripide. L'intensità non può essere che alta.
+STR_0522    :Un piccolo ottovolante dove i passeggeri siedono sopra al percorso senza un vagone attorno
 STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
 STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
 STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
@@ -537,7 +537,7 @@ STR_0532    :
 STR_0533    :
 STR_0534    :Go kart guidati con motore a benzina
 STR_0535    :Barche a forma di tronchi viaggiano lungo un canale d'acqua, schizzando i passeggeri mentre volano giù per ripide discese
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0536    :Barche rotonde scorrono lungo un largo canale d'acqua, schizzando attraverso cascate e spaventando i passeggeri attraverso schiumose rapide
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -2753,39 +2753,39 @@ STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Barra
-STR_2749    :My new scenario
+STR_2749    :Nuovo scenario
 # New strings used in the cheats window previously these were ???
-STR_2750    :Move all items to top
-STR_2751    :Move all items to bottom
-STR_2752    :Clear grass
-STR_2753    :Mowed grass
-STR_2754    :Water plants
-STR_2755    :Fix vandalism
-STR_2756    :Remove litter
-STR_2757    :Force Sun
-STR_2758    :Force Thunder
-STR_2759    :Zero Clearance
+STR_2750    :Sposta tutti gli elementi sopra
+STR_2751    :Sposta tutti gli elementi sotto
+STR_2752    :Pulisci erba
+STR_2753    :Tosa erba
+STR_2754    :Annaffia piante
+STR_2755    :Aggiusta vandalismi
+STR_2756    :Rimuovi spazzatura
+STR_2757    :Forza il sole
+STR_2758    :Forza il temporale
+STR_2759    :Permetti sovrapposizioni
 STR_2760    :+{CURRENCY}
 STR_2761    :<not used anymore>
 STR_2762    :<not used anymore>
 STR_2763    :???
 STR_2764    :<not used anymore>
-STR_2765    :Large Tram
-STR_2766    :Win scenario
-STR_2767    :Freeze Climate
-STR_2768    :Unfreeze Climate
-STR_2769    :Open Park
-STR_2770    :Close Park
-STR_2771    :Slower Gamespeed
-STR_2772    :Faster Gamespeed
-STR_2773    :Windowed
-STR_2774    :Fullscreen
-STR_2775    :Fullscreen (desktop)
-STR_2776    :Language:
+STR_2765    :Trenino lungo
+STR_2766    :Vinci scenario
+STR_2767    :Blocca il clima
+STR_2768    :Sblocca il clima
+STR_2769    :Apri parco
+STR_2770    :Chiudi parco
+STR_2771    :Diminuisci velocità di gioco
+STR_2772    :Aumenta velocità di gioco
+STR_2773    :In finestra
+STR_2774    :A schermo intero
+STR_2775    :A schermo intero (desktop)
+STR_2776    :Lingua:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
-STR_2779    :Viewport #{COMMA16}
-STR_2780    :Extra viewport
+STR_2779    :Finestra #{COMMA16}
+STR_2780    :Finestra extra
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
@@ -2799,7 +2799,7 @@ STR_2790    :Digita il tuo nome in classifica
 STR_2791    :Digita il tuo nome
 STR_2792    :Digita il tuo nome per la classifica degli scenari:
 STR_2793    :{SMALLFONT}(Completato da {STRINGID})
-STR_2794    :{WINDOW_COLOUR_2}Completato da: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} con una società del valore di: {BLACK}{CURRENCY}
+STR_2794    :{WINDOW_COLOUR_2}Completato da: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} con un valore societario di: {BLACK}{CURRENCY}
 STR_2795    :Ordina
 STR_2796    :{SMALLFONT}{BLACK}Ordina la lista delle attrazioni secondo il tipo di informazioni visualizzate
 STR_2797    :Scorri lo schermo col puntatore sul bordo
@@ -2996,11 +2996,11 @@ STR_2987    :{SMALLFONT}{BLACK}Imposta quest'insegna come cartello di {OPENQUOTE
 STR_2988    :{SMALLFONT}{BLACK}Demolisci questa insegna
 STR_2989    :{SMALLFONT}{BLACK}Scegli il colore principale
 STR_2990    :{SMALLFONT}{BLACK}Scegli il colore del testo
-STR_2991    :Cartello
-STR_2992    :Testo del cartello
-STR_2993    :Digita il testo del cartello:
-STR_2994    :{SMALLFONT}{BLACK}Modifica il testo del cartello
-STR_2995    :{SMALLFONT}{BLACK}Demolisci il cartello
+STR_2991    :Insegna
+STR_2992    :Testo dell'insegna
+STR_2993    :Digita il testo dell'insegna:
+STR_2994    :{SMALLFONT}{BLACK}Modifica il testo dell'insegna
+STR_2995    :{SMALLFONT}{BLACK}Demolisci l'insegna
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -3550,14 +3550,12 @@ STR_5207    :Staff
 STR_5208    :Lista staff
 STR_5209    :Cartello
 STR_5210    :Selezione oggetti
-# TODO
-STR_5211    :Invention List
+STR_5211    :Lista delle invenzioni
 STR_5212    :Opzioni scenario
 STR_5213    :Opzioni obiettivo
 STR_5214    :Genera mappa
-# TODO
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
+STR_5215    :Gestione design dei circuiti
+STR_5216    :Lista della gestione design dei circuiti
 STR_5217    :Trucchi
 STR_5218    :Temi
 STR_5219    :Opzioni
@@ -4076,45 +4074,48 @@ STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
 STR_5766    :<available string id>
-STR_5767    :Income
-STR_5768    :Total customers
-STR_5769    :Total profit
-STR_5770    :Customers per hour
-STR_5771    :Running cost
-STR_5772    :Age
-STR_5773    :Total customers: {COMMA32}
-STR_5774    :Total profit: {CURRENCY2DP}
-STR_5775    :Customers: {COMMA32} per hour
-STR_5776    :Built: This Year
-STR_5777    :Built: Last Year
-STR_5778    :Built: {COMMA16} Years Ago
-STR_5779    :Income: {CURRENCY2DP} per hour
-STR_5780    :Running cost: {CURRENCY2DP} per hour
-STR_5781    :Running cost: Unknown
-STR_5782    :You are now connected. Press '{STRING}' to chat.
-STR_5783    :{WINDOW_COLOUR_2}Scenario Locked
-STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
-STR_5785    :Can't rename group...
-STR_5786    :Invalid group name
-STR_5787    :{COMMA32} players online
-STR_5788    :Default inspection interval:
-STR_5789    :Disable lightning effect
-STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
-STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
-STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
-STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
-STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
-STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
-STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
-STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
-STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
-STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
-STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
-STR_5801    :Disable littering
-STR_5802    :{SMALLFONT}{BLACK}Stops guests from littering and vomiting
-STR_5803    :{SMALLFONT}{BLACK}Rotate selected map element
-STR_5804    :Mute sound
-STR_5805    :{SMALLFONT}{BLACK}If checked, your server will be added to the{NEWLINE}public server list so everyone can find it
+STR_5767    :Guadagno
+STR_5768    :Clienti totali
+STR_5769    :Profitto totale
+STR_5770    :Clienti all'ora
+STR_5771    :Costo mantenimento
+STR_5772    :Età
+STR_5773    :Clienti totali: {COMMA32}
+STR_5774    :Profitto totale: {CURRENCY2DP}
+STR_5775    :Clienti: {COMMA32} all'ora
+STR_5776    :Costruito: quest'anno
+STR_5777    :Costruito: l'anno scorso
+STR_5778    :Costruito: {COMMA16} anni fa
+STR_5779    :Guadagno: {CURRENCY2DP} all'ora
+STR_5780    :Costo mantenimento: {CURRENCY2DP} all'ora
+STR_5781    :Costo mantenimento: Sconosciuto
+STR_5782    :Ora sei connesso. Premi "{STRING}" per chattare.
+STR_5783    :{WINDOW_COLOUR_2}Scenario bloccato
+STR_5784    :{BLACK}Completa gli scenari precedenti per sbloccare questo.
+STR_5785    :Impossibile rinominare il gruppo...
+STR_5786    :Nome di gruppo invalido
+STR_5787    :{COMMA32} giocatori connessi
+STR_5788    :Intervallo ispezioni predefinito:
+STR_5789    :Disattiva effetto fulmine
+STR_5790    :{SMALLFONT}{BLACK}Attiva/disattiva i prezzi di RCT1{NEWLINE}(es. sia prezzo di ingresso che prezzo sulle attrazioni)
+STR_5791    :{SMALLFONT}{BLACK}Imposta l'affidabilità di tutte le attrazioni a 100%{NEWLINE}e reimposta la loro data di costruzione a "quest'anno"
+STR_5792    :{SMALLFONT}{BLACK}Aggiusta tutte le attrazioni rotte
+STR_5793    :{SMALLFONT}{BLACK}Pulisce lo storico degli incidenti di questa attrazione,{NEWLINE}affinché i visitatori non si lamentino che non è sicura
+STR_5794    :{SMALLFONT}{BLACK}Alcuni scenari disattivano la modifica{NEWLINE}dei percorsi già presenti nel parco.{NEWLINE}Questa opzione la riattiva
+STR_5795    :{SMALLFONT}{BLACK}I visitatori salgono su tutte le attrazioni{NEWLINE}a prescindere dal loro livello di intensità
+STR_5796    :{SMALLFONT}{BLACK}Forza il parco a chiudere o riaprire
+STR_5797    :{SMALLFONT}{BLACK}Disattiva modifiche al tempo atmosferico{NEWLINE}e blocca quello attuale
+STR_5798    :{SMALLFONT}{BLACK}Permette di costruire mentre il gioco è in pausa
+STR_5799    :{SMALLFONT}{BLACK}Disattiva rotture dei freni nelle attrazioni
+STR_5800    :{SMALLFONT}{BLACK}Impedisce alle attrazioni di rompersi
+STR_5801    :Disattiva spazzatura
+STR_5802    :{SMALLFONT}{BLACK}Impedisce ai visitatori di sporcare e vomitare
+STR_5803    :{SMALLFONT}{BLACK}Ruota elemento della mappa selezionato
+STR_5804    :Disattiva suoni
+STR_5805    :{SMALLFONT}{BLACK}Se selezionato, il server sarà aggiunto alla lista{NEWLINE}dei server pubblici, affinché chiunque possa trovarlo
+STR_5807    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
 
 
 #############
