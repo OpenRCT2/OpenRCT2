@@ -30,7 +30,6 @@ typedef struct {
 
 static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
 
-rct_map_element **gTrackSavedMapElements = (rct_map_element**)0x00F63674;
 rct_track_td6 *gActiveTrackDesign;
 uint8 gTrackDesignPlaceFlags;
 bool gTrackDesignSceneryToggle;

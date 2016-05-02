@@ -4643,7 +4643,7 @@ static void setup_scenery_selection(rct_window* w)
 	RCT2_GLOBAL(0x00F64DE8, uint8) = (uint8)w->number;
 	RCT2_GLOBAL(0x009DA193, uint8) = 0xFF;
 
-	gTrackSavedMapElements[0] = (rct_map_element*)-1;
+	track_design_save_init();
 	gGamePaused |= GAME_PAUSED_SAVING_TRACK;
 	RCT2_GLOBAL(0x009DEA6F, uint8) |= 1;
 

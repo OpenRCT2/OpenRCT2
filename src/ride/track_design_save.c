@@ -13,6 +13,13 @@
 
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
 
+static size_t _trackSavedMapElementsCount;
+#ifdef NO_RCT2
+	static rct_map_element *_trackSavedMapElements[TRACK_MAX_SAVED_MAP_ELEMENTS];
+#else
+	static rct_map_element **_trackSavedMapElements = (rct_map_element**)0x00F63674;
+#endif
+
 static bool track_design_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
 static void track_design_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
 static bool track_design_save_contains_map_element(rct_map_element *mapElement);
@@ -23,6 +30,15 @@ static bool track_design_save_to_td6(rct_track_td6 *td6, uint8 rideIndex);
 static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td6, uint8 *trackElements);
 static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6, uint8 *trackElements);
 static bool track_design_save_to_file(rct_track_td6 *track_design, utf8 *path);
+
+void track_design_save_init()
+{
+	_trackSavedMapElementsCount = 0;
+	memset(_trackSavedMapElements, 0, sizeof(_trackSavedMapElements));
+#ifndef NO_RCT2
+	_trackSavedMapElements[0] = (rct_map_element*)-1;
+#endif
+}
 
 /**
  *
@@ -71,7 +87,7 @@ void track_design_save_select_nearby_scenery(int rideIndex)
 void track_design_save_reset_scenery()
 {
 	RCT2_GLOBAL(0x009DA193, uint8) = 255;
-	gTrackSavedMapElements[0] = (rct_map_element*)0xFFFFFFFF;
+	track_design_save_init();
 	gfx_invalidate_screen();
 }
 
@@ -167,14 +183,11 @@ bool track_design_save(uint8 rideIndex)
 
 static bool track_design_save_contains_map_element(rct_map_element *mapElement)
 {
-	rct_map_element **savedMapElement;
-
-	savedMapElement = gTrackSavedMapElements;
-	do {
-		if (*savedMapElement == mapElement) {
+	for (size_t i = 0; i < _trackSavedMapElementsCount; i++) {
+		if (_trackSavedMapElements[i] == mapElement) {
 			return true;
 		}
-	} while (*savedMapElement++ != (rct_map_element*)-1);
+	}
 	return false;
 }
 
@@ -215,15 +228,6 @@ static void track_design_save_scenery_set_to_null(rct_td6_scenery_element *track
 	*((uint8*)trackScenery) = 0xFF;
 }
 
-static rct_map_element **track_design_save_get_next_spare_map_element()
-{
-	rct_map_element **savedMapElement = gTrackSavedMapElements;
-	while (*savedMapElement != (rct_map_element*)0xFFFFFFFF) {
-		savedMapElement++;
-	}
-	return savedMapElement;
-}
-
 /**
  *
  *  rct2: 0x006D2ED2
@@ -235,12 +239,8 @@ static bool track_design_save_can_add_map_element(rct_map_element *mapElement)
 		return false;
 	}
 
-	// Get number of saved elements so far
-	rct_map_element **savedMapElement = track_design_save_get_next_spare_map_element();
-
 	// Get number of spare elements left
-	int numSavedElements = savedMapElement - gTrackSavedMapElements;
-	int spareSavedElements = TRACK_MAX_SAVED_MAP_ELEMENTS - numSavedElements;
+	int spareSavedElements = TRACK_MAX_SAVED_MAP_ELEMENTS - _trackSavedMapElementsCount;
 	if (newElementCount > spareSavedElements) {
 		// No more spare saved elements left
 		return false;
@@ -262,12 +262,14 @@ static bool track_design_save_can_add_map_element(rct_map_element *mapElement)
  */
 static void track_design_save_push_map_element(int x, int y, rct_map_element *mapElement)
 {
-	rct_map_element **savedMapElement;
+	if (_trackSavedMapElementsCount < TRACK_MAX_SAVED_MAP_ELEMENTS) {
+		_trackSavedMapElements[_trackSavedMapElementsCount++] = mapElement;
+		map_invalidate_tile_full(x, y);
 
-	map_invalidate_tile_full(x, y);
-	savedMapElement = track_design_save_get_next_spare_map_element();
-	*savedMapElement = mapElement;
-	*(savedMapElement + 1) = (rct_map_element*)0xFFFFFFFF;
+#ifndef NO_RCT2
+		_trackSavedMapElements[_trackSavedMapElementsCount] = (rct_map_element*)-1;
+#endif
+	}
 }
 
 /**
@@ -415,27 +417,31 @@ static void track_design_save_pop_map_element(int x, int y, rct_map_element *map
 {
 	map_invalidate_tile_full(x, y);
 
-	// Find map element and total of saved elements
-	int removeIndex = -1;
-	int numSavedElements = 0;
-	rct_map_element **savedMapElement = gTrackSavedMapElements;
-	while (*savedMapElement != (rct_map_element*)0xFFFFFFFF) {
-		if (*savedMapElement == mapElement) {
-			removeIndex = numSavedElements;
+	// Find index of map element to remove
+	size_t removeIndex = SIZE_MAX;
+	for (size_t i = 0; i < _trackSavedMapElementsCount; i++) {
+		if (_trackSavedMapElements[i] == mapElement) {
+			removeIndex = i;
 		}
-		savedMapElement++;
-		numSavedElements++;
 	}
 
-	if (removeIndex == -1) {
-		return;
+	// Remove map element from list
+	if (removeIndex != SIZE_MAX) {
+		size_t remainingNumItems = _trackSavedMapElementsCount - removeIndex - 1;
+		if (remainingNumItems > 0) {
+			memmove(
+				&_trackSavedMapElements[removeIndex],
+				&_trackSavedMapElements[removeIndex + 1],
+				remainingNumItems * sizeof(rct_map_element*)
+			);
+		}
+		_trackSavedMapElementsCount--;
+#ifdef NO_RCT2
+		_trackSavedMapElements[_trackSavedMapElementsCount] = NULL;
+#else
+		_trackSavedMapElements[_trackSavedMapElementsCount] = (rct_map_element*)-1;
+#endif
 	}
-
-	// Remove item and shift rest up one item
-	if (removeIndex < numSavedElements - 1) {
-		memmove(&gTrackSavedMapElements[removeIndex], &gTrackSavedMapElements[removeIndex + 1], (numSavedElements - removeIndex - 1) * sizeof(rct_map_element*));
-	}
-	gTrackSavedMapElements[numSavedElements - 1] = (rct_map_element*)0xFFFFFFFF;
 }
 
 /**

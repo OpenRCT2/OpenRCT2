@@ -155,8 +155,6 @@ enum {
 	PTD_OPERATION_CLEAR_OUTLINES
 };
 
-extern rct_map_element **gTrackSavedMapElements;
-
 extern rct_track_td6 *gActiveTrackDesign;
 extern uint8 gTrackDesignPlaceFlags;
 extern bool gTrackDesignSceneryToggle;
@@ -191,6 +189,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels);
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving
 ///////////////////////////////////////////////////////////////////////////////
+void track_design_save_init();
 void track_design_save_reset_scenery();
 void track_design_save_select_nearby_scenery(int rideIndex);
 void track_design_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
