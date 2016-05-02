@@ -161,6 +161,8 @@ extern rct_track_td6 *gActiveTrackDesign;
 extern money32 gTrackDesignCost;
 extern uint8 gTrackDesignPlaceFlags;
 extern bool gTrackDesignSceneryToggle;
+extern rct_xyz16 gTrackPreviewMin;
+extern rct_xyz16 gTrackPreviewMax;
 
 rct_track_design *temp_track_get_info(char* path, uint8** preview);
 void track_design_mirror(rct_track_td6 *td6);

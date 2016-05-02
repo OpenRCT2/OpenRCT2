@@ -25,6 +25,8 @@ rct_track_td6 *gActiveTrackDesign;
 money32 gTrackDesignCost;
 uint8 gTrackDesignPlaceFlags;
 bool gTrackDesignSceneryToggle;
+rct_xyz16 gTrackPreviewMin;
+rct_xyz16 gTrackPreviewMax;
 
 static bool track_design_preview_backup_map();
 static void track_design_preview_restore_map();
@@ -484,29 +486,12 @@ static void track_add_selection_tile(sint16 x, sint16 y)
 
 static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z)
 {
-	if (x < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
-	}
-
-	if (x > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
-	}
-
-	if (y < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
-	}
-
-	if (y > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
-	}
-
-	if (z < RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) = z;
-	}
-
-	if (z > RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)){
-		RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16) = z;
-	}
+	gTrackPreviewMin.x = min(gTrackPreviewMin.x, x);
+	gTrackPreviewMax.x = max(gTrackPreviewMax.x, x);
+	gTrackPreviewMin.y = min(gTrackPreviewMin.y, y);
+	gTrackPreviewMax.y = max(gTrackPreviewMax.y, y);
+	gTrackPreviewMin.z = min(gTrackPreviewMin.z, z);
+	gTrackPreviewMax.z = max(gTrackPreviewMax.z, z);
 }
 
 /**
@@ -1262,12 +1247,8 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 	}
 	_currentRideIndex = rideIndex;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) = z;
-	RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16) = z;
+	gTrackPreviewMin = (rct_xyz16){ x, y, z };
+	gTrackPreviewMax = (rct_xyz16){ x, y, z };
 
 	RCT2_GLOBAL(0x00F44129, uint16) = 0;
 	uint8 track_place_success = 0;
@@ -1692,23 +1673,23 @@ void draw_track_preview(rct_track_td6 *td6, uint8** preview)
 	rct_drawpixelinfo* dpi = RCT2_ADDRESS(0x9D8151, rct_drawpixelinfo);
 	int left, top, right, bottom;
 
-	int center_x = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16)) / 2 + 16;
-	int center_y = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16)) / 2 + 16;
-	int center_z = (RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MIN, sint16) + RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Z_MAX, sint16)) / 2;
+	int center_x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
+	int center_y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
+	int center_z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
 
-	int width = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_X_MIN, sint16);
-	int height = RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MAX, sint16) - RCT2_GLOBAL(RCT2_ADDRESS_TRACK_PREVIEW_Y_MIN, sint16);
-
-	if (width < height)
+	int width = gTrackPreviewMax.x - gTrackPreviewMin.x;
+	int height = gTrackPreviewMax.y - gTrackPreviewMin.y;
+	if (width < height) {
 		width = height;
+	}
 
 	int zoom_level = 1;
-
-	if (width > 1120)
+	if (width > 1120) {
 		zoom_level = 2;
-
-	if (width > 2240)
+	}
+	if (width > 2240) {
 		zoom_level = 3;
+	}
 
 	width = 370 << zoom_level;
 	height = 217 << zoom_level;
