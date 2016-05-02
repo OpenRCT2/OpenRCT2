@@ -484,7 +484,7 @@ void track_design_mirror(rct_track_td6 *td6)
 	track_design_mirror_scenery(td6);
 }
 
-static void track_add_selection_tile(sint16 x, sint16 y)
+static void track_design_add_selection_tile(sint16 x, sint16 y)
 {
 	rct_xy16 *selectionTile = gMapSelectionTiles;
 	for (; selectionTile->x != -1; selectionTile++) {
@@ -515,7 +515,7 @@ static void track_design_update_max_min_coordinates(sint16 x, sint16 y, sint16 z
  *
  *  rct2: 0x006D0964
  */
-int track_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, int originX, int originY, int originZ)
+int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex, int originX, int originY, int originZ)
 {
 	for (uint8 mode = 0; mode <= 1; mode++) {
 		if ((scenery_start->scenery_object.flags & 0xFF) != 0xFF) {
@@ -873,7 +873,7 @@ int track_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rideIndex,
 	return 1;
 }
 
-int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
 	if (byte_F440D4== 0){
 		gMapSelectionTiles->x = -1;
@@ -897,7 +897,7 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 		track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, z);
 
 		if (byte_F440D4== 0) {
-			track_add_selection_tile(mapCoord.x, mapCoord.y);
+			track_design_add_selection_tile(mapCoord.x, mapCoord.y);
 		}
 
 		if (byte_F440D4== 1 ||
@@ -1007,7 +1007,7 @@ int track_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rid
 	return 1;
 }
 
-bool track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
+bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
 	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
 	if (byte_F440D4 == PTD_OPERATION_DRAW_OUTLINES) {
@@ -1022,6 +1022,7 @@ bool track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 ri
 	dword_F440D5 = 0;
 	uint8 rotation = _currentTrackPieceDirection;
 
+	// Track elements
 	rct_td6_track_element *track = td6->track_elements;
 	for (; track->type != 0xFF; track++) {
 		uint8 trackType = track->type;
@@ -1037,7 +1038,7 @@ bool track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 ri
 				rct_xy16 tile = { x, y };
 				map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
 				track_design_update_max_min_coordinates(tile.x, tile.y, z);
-				track_add_selection_tile(tile.x, tile.y);
+				track_design_add_selection_tile(tile.x, tile.y);
 			}
 			break;
 		case PTD_OPERATION_CLEAR_OUTLINES:
@@ -1160,7 +1161,7 @@ bool track_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, uint8 ri
 
 		switch (byte_F440D4) {
 		case PTD_OPERATION_DRAW_OUTLINES:
-			track_add_selection_tile(x, y);
+			track_design_add_selection_tile(x, y);
 			break;
 		case PTD_OPERATION_1:
 		case PTD_OPERATION_2:
@@ -1259,15 +1260,15 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 	word_F44129 = 0;
 	uint8 track_place_success = 0;
 	if (td6->type == RIDE_TYPE_MAZE) {
-		track_place_success = track_place_maze(td6, x, y, z, rideIndex);
+		track_place_success = track_design_place_maze(td6, x, y, z, rideIndex);
 	} else {
-		track_place_success = track_place_ride(td6, x, y, z, rideIndex);
+		track_place_success = track_design_place_ride(td6, x, y, z, rideIndex);
 	}
 
 	// Scenery elements
 	rct_td6_scenery_element *scenery = td6->scenery_elements;
 	if (track_place_success && scenery != NULL) {
-		if (!track_place_scenery(
+		if (!track_design_place_scenery(
 			scenery,
 			rideIndex,
 			gTrackPreviewOrigin.x,
