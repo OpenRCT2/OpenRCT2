@@ -503,7 +503,7 @@ void set_load_objects_fail_reason()
 		format_string(string_buffer, STR_MISSING_OBJECT_DATA_ID, 0);
 
 		object_create_identifier_name(string_buffer, object);
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
 		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 		return;
 	}
@@ -516,7 +516,7 @@ void set_load_objects_fail_reason()
 			expansionNameId = STR_OBJECT_FILTER_TT;
 			break;
 		default:
-			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
 			RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = STR_REQUIRES_AN_ADDON_PACK;
 			return;
 	}
@@ -525,7 +525,7 @@ void set_load_objects_fail_reason()
 
 	format_string(string_buffer, STR_REQUIRES_THE_FOLLOWING_ADDON_PACK, &expansionNameId);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0xFF;
+	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
 	RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3165;
 }
 

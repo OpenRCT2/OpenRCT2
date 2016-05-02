@@ -5831,12 +5831,12 @@ static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
 	return MONEY32_UNDEFINED;
 }
 
-static bool shop_item_has_common_price(int shopItem)
+bool shop_item_has_common_price(int shopItem)
 {
 	if (shopItem < 32) {
-		return RCT2_GLOBAL(0x01358838, uint32) & (1u << shopItem);
+		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) & (1u << shopItem);
 	} else {
-		return RCT2_GLOBAL(0x0135934C, uint32) & (1u << (shopItem - 32));
+		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) & (1u << (shopItem - 32));
 	}
 }
 
@@ -6017,7 +6017,7 @@ foundRideEntry:
 		}
 
 		if (ride->type == RIDE_TYPE_TOILETS) {
-			if (RCT2_GLOBAL(0x01358838, uint32) & (1 << 31)) {
+			if (RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) & (1 << 31)) {
 				money32 price = ride_get_common_price(ride);
 				if (price != MONEY32_UNDEFINED) {
 					ride->price = (money16)price;
@@ -6552,7 +6552,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 				}
 			}
 			// Check same price in park flags
-			if ((shop_item < 32 ? RCT2_GLOBAL(0x01358838, uint32) & (1 << shop_item) : RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shop_item - 32))) == 0) {
+			if (!shop_item_has_common_price(shop_item)) {
 				ride->price = price;
 				window_invalidate_by_class(WC_RIDE);
 				return;
@@ -6569,7 +6569,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 				}
 			}
 			// Check same price in park flags
-			if ((shop_item < 32 ? RCT2_GLOBAL(0x01358838, uint32) & (1 << shop_item) : RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shop_item - 32))) == 0) {
+			if (!shop_item_has_common_price(shop_item)) {
 				ride->price_secondary = price;
 				window_invalidate_by_class(WC_RIDE);
 				return;

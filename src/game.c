@@ -390,14 +390,14 @@ void game_logic_update()
 	// Update windows
 	//window_dispatch_update_all();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) != 0) {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) != ERROR_TYPE_NONE) {
 		rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
 		rct_string_id body_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) == 254) {
+		if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) == ERROR_TYPE_GENERIC) {
 			title_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
 			body_text = 0xFFFF;
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_NONE;
 
 		window_error_open(title_text, body_text);
 	}
@@ -417,7 +417,7 @@ static int game_check_affordability(int cost)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = cost;
 
-	gGameCommandErrorText = 827;
+	gGameCommandErrorText = STR_NOT_ENOUGH_CASH_REQUIRES;
 	return MONEY32_UNDEFINED;
 }
 
@@ -745,7 +745,7 @@ int game_load_sv6(SDL_RWops* rw)
 	if (!sawyercoding_validate_checksum(rw)) {
 		log_error("invalid checksum");
 
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
 		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
@@ -930,7 +930,7 @@ bool game_load_save(const utf8 *path)
 	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw == NULL) {
 		log_error("unable to open %s", path);
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = ERROR_TYPE_FILE_LOAD;
 		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return false;
 	}
@@ -998,7 +998,7 @@ void game_load_init()
 	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
-	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32) == 0)		// this check is not in scenario play
 		finance_update_loan_hash();
 
 	load_palette();
