@@ -67,14 +67,15 @@ static bool OnCrash(const wchar_t * dumpPath,
 
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
-    wsprintfW(dumpFilePathNew, L"%s%s (%s).dmp", dumpPath, miniDumpId, WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
+    wsprintfW(dumpFilePathNew, L"%s%s(%s).dmp", dumpPath, miniDumpId, WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
     }
 
     // Log information to output
-    wprintf(L"Dump Path: %s\n", dumpFilePath);
+    wprintf(L"Dump Path: %s\n", dumpPath);
+    wprintf(L"Dump File Path: %s\n", dumpFilePath);
     wprintf(L"Dump Id: %s\n", miniDumpId);
     wprintf(L"Version: %s\n", WSZ(OPENRCT2_VERSION));
     wprintf(L"Commit: %s\n", WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
