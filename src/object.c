@@ -2603,7 +2603,7 @@ void object_reset(int type, void *objectEntry, uint32 entryIndex)
 {
 	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
 	const object_type_vtable *vtable = object_type_vtables[type];
-	return vtable->reset(objectEntry, entryIndex);
+	vtable->reset(objectEntry, entryIndex);
 }
 
 /**
