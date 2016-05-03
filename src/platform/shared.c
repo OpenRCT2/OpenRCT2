@@ -583,13 +583,6 @@ void platform_process_messages()
 
 			gLastKeyPressed = e.key.keysym.sym;
 			gKeysPressed[e.key.keysym.scancode] = 1;
-			if (e.key.keysym.sym == SDLK_RETURN && e.key.keysym.mod & KMOD_ALT) {
-				int targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
-				platform_set_fullscreen_mode(targetMode);
-				gConfigGeneral.fullscreen_mode = targetMode;
-				config_save_default();
-				break;
-			}
 
 			// Text input
 			if (gTextInput.buffer == NULL) break;
@@ -863,6 +856,14 @@ void platform_set_fullscreen_mode(int mode)
 
 		// TODO try another display mode rather than just exiting the game
 	}
+}
+
+void platform_toggle_windowed_mode()
+{
+	int targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
+	platform_set_fullscreen_mode(targetMode);
+	gConfigGeneral.fullscreen_mode = targetMode;
+	config_save_default();
 }
 
 /**
