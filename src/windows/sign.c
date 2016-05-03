@@ -210,7 +210,7 @@ void window_sign_open(rct_windownumber number)
 		-1
 	);
 
-	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
+	w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
 	window_invalidate(w);
 }
 
@@ -398,7 +398,7 @@ static void window_sign_unknown_14(rct_window *w)
 		-1
 		);
 
-	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
+	w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
 	window_invalidate(w);
 }
 
@@ -475,7 +475,7 @@ void window_sign_small_open(rct_windownumber number){
 		-1
 	);
 
-	w->viewport->flags = (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES) ? VIEWPORT_FLAG_GRIDLINES : 0;
+	w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
 	w->flags |= WF_NO_SCROLLING;
 	window_invalidate(w);
 }

@@ -1157,14 +1157,12 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 		switch (widgetIndex) {
 		case WIDX_HEIGHT_LABELS_DROPDOWN:
 			// reset flag and set it to 1 if height as units is selected
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) &= ~CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
 			gConfigGeneral.show_height_as_units = 0;
 
 			if (dropdownIndex == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) |= CONFIG_FLAG_SHOW_HEIGHT_AS_UNITS;
 				gConfigGeneral.show_height_as_units = 1;
 			}
-
+			config_save_default();
 			window_options_update_height_markers();
 			break;
 		case WIDX_CURRENCY_DROPDOWN:
@@ -1371,8 +1369,8 @@ static void window_options_invalidate(rct_window *w)
 		break;
 
 	case WINDOW_OPTIONS_PAGE_RENDERING:
-		widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE) == 0);
-		widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES);
+		widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
+		widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
 		widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
 		widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 		widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
@@ -1743,8 +1741,6 @@ static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int 
 
 static void window_options_update_height_markers()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16) = gConfigGeneral.show_height_as_units ?
-		0 : (gConfigGeneral.measurement_format + 1) * 256;
 	config_save_default();
 	gfx_invalidate_screen();
 }

@@ -1054,7 +1054,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		dx += 3;
 
 		int image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
-		image_id += RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16);
+		image_id += get_height_marker_offset();
 		image_id -= RCT2_GLOBAL(0x01359208, uint16);
 
 		sub_98196C(image_id, 16, 16, 1, 1, 0, height, get_current_rotation());
@@ -1312,7 +1312,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 	    && has_surface
 	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
 	    && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
-	    && !(RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) & CONFIG_FLAG_DISABLE_SMOOTH_LANDSCAPE)) {
+	    && gConfigGeneral.landscape_smoothing) {
 		viewport_surface_smoothen_edge(EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
 		viewport_surface_smoothen_edge(EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
 		viewport_surface_smoothen_edge(EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);

@@ -1813,7 +1813,7 @@ void viewport_track_paint_setup(uint8 direction, int height, rct_map_element *ma
 			if (RCT2_ADDRESS(0x00999694, uint32)[trackType] & (1 << trackSequence)) {
 				uint16 ax = RideData5[ride->type].z_offset;
 				uint32 ebx = 0x20381689 + (height + 8) / 16;
-				ebx += RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16);
+				ebx += get_height_marker_offset();
 				ebx -= RCT2_GLOBAL(0x01359208, uint16);
 				sub_98197C(ebx, 16, 16, 1, 1, 0, height + ax + 3, 1000, 1000, 2047, get_current_rotation());
 			}
@@ -1909,7 +1909,7 @@ void viewport_entrance_paint_setup(uint8 direction, int height, rct_map_element*
 			int z = map_element->base_height * 8 + 3;
 			uint32 image_id =
 				z / 16 +
-				RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS,sint16) +
+				get_height_marker_offset() +
 				0x20101689;
 
 			image_id -= RCT2_GLOBAL(0x01359208, sint16);
@@ -3504,4 +3504,18 @@ uint8 get_current_rotation()
 	}
 #endif // DEBUG_LEVEL_1
 	return rotation_masked;
+}
+
+sint16 get_height_marker_offset()
+{
+	// Height labels in units
+	if (gConfigGeneral.show_height_as_units)
+		return 0;
+
+	// Height labels in feet
+	if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL)
+		return 1 * 256;
+
+	// Height labels in metres
+	return 2 * 256;
 }

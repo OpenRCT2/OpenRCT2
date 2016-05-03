@@ -23,6 +23,7 @@
 #include "interface/keyboard_shortcut.h"
 #include "interface/themes.h"
 #include "interface/title_sequences.h"
+#include "interface/viewport.h"
 #include "localisation/language.h"
 #include "localisation/localisation.h"
 #include "network/network.h"
@@ -942,20 +943,8 @@ void config_apply_to_old_addresses()
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, sint8) = gConfigGeneral.temperature_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CONSTRUCTION_MARKER, uint8) = gConfigGeneral.construction_marker_colour;
-	if (gConfigGeneral.show_height_as_units) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 0;
-	} else {
-		switch (gConfigGeneral.measurement_format) {
-		default:
-		case MEASUREMENT_FORMAT_IMPERIAL:
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 1 * 256;
-			break;
-		case MEASUREMENT_FORMAT_METRIC:
-		case MEASUREMENT_FORMAT_SI:
-			RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = 2 * 256;
-			break;
-		}
-	}
+	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, sint16) = get_height_marker_offset();
+
 	int configFlags = 0;
 	if (gConfigGeneral.always_show_gridlines)
 		configFlags |= CONFIG_FLAG_ALWAYS_SHOW_GRIDLINES;

@@ -475,7 +475,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 
 	temperature = gClimateCurrentTemperature;
 	format = STR_CELSIUS_VALUE;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_TEMPERATURE, uint8)) {
+	if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F) {
 		temperature = climate_celsius_to_fahrenheit(temperature);
 		format = STR_FAHRENHEIT_VALUE;
 	}

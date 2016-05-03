@@ -193,5 +193,6 @@ void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16
 void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side);
 
 uint8 get_current_rotation();
+sint16 get_height_marker_offset();
 
 #endif
