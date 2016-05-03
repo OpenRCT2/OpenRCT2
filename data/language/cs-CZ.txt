@@ -4112,6 +4112,9 @@ STR_5802    :{SMALLFONT}{BLACK}Návštěvníci nebudou odhazovat odpadky a zvrac
 STR_5803    :{SMALLFONT}{BLACK}Otočit vybraný prvek mapy
 STR_5804    :Vypnout zvuky
 STR_5805    :{SMALLFONT}{BLACK}Pokud zaškrtnete, bude váš server zařazen do{NEWLINE}veřejného seznamu, aby ho mohl kdokoliv najít
+STR_5807    :{WINDOW_COLOUR_2}Počet atrakcí: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}Počet obchodů a stánků: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Počet informačníh kiosků a ostatních zařízení: {BLACK}{COMMA16}
 
 
 ###############################################################################
