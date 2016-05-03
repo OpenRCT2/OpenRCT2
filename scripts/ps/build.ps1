@@ -28,9 +28,17 @@ $openrct2Path = Join-Path $binPath "openrct2.exe"
 
 function Build-Data()
 {
-    Write-Host "Copying data to bin..." -ForegroundColor Cyan
-    New-Item -Force -ItemType Directory $binPath > $null
-    Copy-Item -Force -Recurse "$rootPath\data" $binPath
+    $dataPath    = "$rootPath\data"
+    $binDataPath = "$binPath\data"
+
+    # Create data directory in bin
+    Write-Host "Create data directory..." -ForegroundColor Cyan
+    New-Item -Force -ItemType Directory $binDataPath > $null
+
+    # Create symlinks
+    Symlink-or-Copy "$binDataPath\language" "$dataPath\language"
+    Symlink-or-Copy "$binDataPath\title"    "$dataPath\title"
+
     return 0
 }
 
