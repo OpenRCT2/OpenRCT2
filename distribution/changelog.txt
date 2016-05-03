@@ -5,11 +5,13 @@
 - Feature: Add ride console command for diagnostics and changing vehicle type.
 - Feature: Allow setting ownership of map edges.
 - Feature: Allow up to 255 cars per train.
+- Feature: Importing SV4 and SC4 files with rides.
 - Fix: [#3282] Launched Freefall ride ratings are fixed for Downward Launch.
 - Fix: [#3307] Ride music and sound has degraded since RCT2.
 - Fix: [#3344] Build new ride window can be opened in scenario editor.
 - Fix: [#3347] Ride windows are auto-positioned below the HUD when using RCT1 lights.
 - Fix: [#3352] Assertion triggered while fixing surface tiles.
+- Fix: [#3361] Missing Twister coaster piece.
 - Fix: [#3418] Launched freefall restraints are drawn incorrectly when up (original bug).
 - Fix: [#3451] Renaming staff is a guest command.
 
