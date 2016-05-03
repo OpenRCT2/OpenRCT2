@@ -1084,7 +1084,7 @@ static void vehicle_visual_launched_freefall(int x, int imageDirection, int y, i
 	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
 
 	// Draw peeps:
-	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2) {
+	if (unk_140E9A8->zoom_level < 2) {
 		if (vehicle->num_peeps > 0) {
 			baseImage_id = vehicleEntry->base_image_id + 9;
 			if ((vehicle->restraints_position / 64) == 3) {
@@ -1243,7 +1243,7 @@ static void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z
 	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
 	sub_98197C(image_id, 0, 0, bbl_x, bbl_y, bbl_z, z, bbo_x, bbo_y, bbo_z, get_current_rotation());
 
-	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2 && vehicle->num_peeps > 0) {
+	if (unk_140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
 		uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
 		for (int i = 0; i < vehicle->num_peeps; i++) {
 			riding_peep_sprites[((ecx / 8) + i) & 3] = vehicle->peep_tshirt_colours[i];
@@ -1405,7 +1405,7 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
  */
 void viewport_peep_paint_setup(rct_peep * peep, int imageDirection)
 {
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 	if (dpi->zoom_level > 2) {
 		return;
 	}
