@@ -249,7 +249,7 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(2),			HPL(2),			STR_CHEAT_10_MINUTE_INSPECTIONS,	STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },	// 10 minute inspections
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,	STR_NONE }, 							// Show all operating modes
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(6),			OHPL(6),		STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,	STR_NONE }, 				// Show vehicles from other track types
-	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,	STR_NONE },							// Disable train length limits
+	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,	STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP },	// Disable train length limits
 	{ WIDGETS_END },
 };
 
