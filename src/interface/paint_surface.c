@@ -357,7 +357,7 @@ typedef struct
 } viewport_surface_paint_struct_0;
 
 /**
- * rct2: 0x0065E890
+ * rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
 void viewport_surface_smoothen_edge(enum edge edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
@@ -1034,7 +1034,7 @@ void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_elemen
 		}
 
 		tileDescriptors[i + 1].map_element = surfaceElement;
-		tileDescriptors[i + 1].terrain = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
+		tileDescriptors[i + 1].terrain = ((surfaceElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (surfaceElement->properties.surface.terrain >> 5);
 		uint32 ebx = viewport_surface_paint_setup_get_relative_slope(surfaceElement, get_current_rotation());
 		tileDescriptors[i + 1].slope = ebx;
 
