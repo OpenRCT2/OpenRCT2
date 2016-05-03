@@ -260,7 +260,7 @@ void finance_update_loan_hash()
 	value = ror32(value, 7);
 	value += gMaxBankLoan;
 	value = ror32(value, 3);
-	RCT2_GLOBAL(0x013587C4, sint32) = value;
+	RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, sint32) = value;
 }
 
 void finance_set_loan(money32 loan)

@@ -57,6 +57,7 @@
     <ClCompile Include="src\input.c" />
     <ClCompile Include="src\interface\chat.c" />
     <ClCompile Include="src\interface\colour.c" />
+    <ClCompile Include="src\interface\paint_surface.c" />
     <ClCompile Include="src\interface\Theme.cpp" />
     <ClCompile Include="src\interface\console.c" />
     <ClCompile Include="src\interface\graph.c" />
@@ -239,6 +240,7 @@
     <ClInclude Include="src\input.h" />
     <ClInclude Include="src\interface\chat.h" />
     <ClInclude Include="src\interface\colour.h" />
+    <ClInclude Include="src\interface\paint_surface.h" />
     <ClInclude Include="src\interface\themes.h" />
     <ClInclude Include="src\interface\console.h" />
     <ClInclude Include="src\interface\graph.h" />

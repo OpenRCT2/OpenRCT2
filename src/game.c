@@ -83,6 +83,8 @@ int game_command_playerid = -1;
 
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
+uint8 gErrorType;
+uint16 gErrorStringId;
 
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
@@ -390,14 +392,14 @@ void game_logic_update()
 	// Update windows
 	//window_dispatch_update_all();
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) != 0) {
+	if (gErrorType != ERROR_TYPE_NONE) {
 		rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-		rct_string_id body_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) == 254) {
-			title_text = RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16);
+		rct_string_id body_text = gErrorStringId;
+		if (gErrorType == ERROR_TYPE_GENERIC) {
+			title_text = gErrorStringId;
 			body_text = 0xFFFF;
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 0;
+		gErrorType = ERROR_TYPE_NONE;
 
 		window_error_open(title_text, body_text);
 	}
@@ -417,7 +419,7 @@ static int game_check_affordability(int cost)
 
 	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = cost;
 
-	gGameCommandErrorText = 827;
+	gGameCommandErrorText = STR_NOT_ENOUGH_CASH_REQUIRES;
 	return MONEY32_UNDEFINED;
 }
 
@@ -745,7 +747,7 @@ int game_load_sv6(SDL_RWops* rw)
 	if (!sawyercoding_validate_checksum(rw)) {
 		log_error("invalid checksum");
 
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		gErrorType = ERROR_TYPE_FILE_LOAD;
 		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
@@ -880,6 +882,7 @@ int game_load_network(SDL_RWops* rw)
 	gCheatsSandboxMode = SDL_ReadU8(rw);
 	gCheatsDisableClearanceChecks = SDL_ReadU8(rw);
 	gCheatsDisableSupportLimits = SDL_ReadU8(rw);
+	gCheatsDisableTrainLengthLimit = SDL_ReadU8(rw);
 	gCheatsShowAllOperatingModes = SDL_ReadU8(rw);
 	gCheatsShowVehiclesFromOtherTrackTypes = SDL_ReadU8(rw);
 	gCheatsFastLiftHill = SDL_ReadU8(rw);
@@ -929,7 +932,7 @@ bool game_load_save(const utf8 *path)
 	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
 	if (rw == NULL) {
 		log_error("unable to open %s", path);
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
+		gErrorType = ERROR_TYPE_FILE_LOAD;
 		gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
 		return false;
 	}
@@ -997,7 +1000,7 @@ void game_load_init()
 	scenery_set_default_placement_configuration();
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, uint16) = 0;
-	if (RCT2_GLOBAL(0x0013587C4, uint32) == 0)		// this check is not in scenario play
+	if (RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32) == 0)		// this check is not in scenario play
 		finance_update_loan_hash();
 
 	load_palette();

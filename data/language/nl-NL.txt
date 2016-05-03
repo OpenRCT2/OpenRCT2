@@ -4105,6 +4105,9 @@ STR_5802    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers braken of afval op de gron
 STR_5803    :{SMALLFONT}{BLACK}Geselecteerd kaartelement draaien
 STR_5804    :Geluid dempen
 STR_5805    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zal je server worden aangemeld{NEWLINE}bij de openbare serverlijst, zodat iedereen hem kan zien.
+STR_5807    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}Aantal winkels en kraampjes: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Aantal informatiekiosken en andere faciliteiten: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

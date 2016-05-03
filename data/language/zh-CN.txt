@@ -4118,6 +4118,9 @@ STR_5802    :{SMALLFONT}{BLACK}阻止游客乱丢垃圾或呕吐
 STR_5803    :{SMALLFONT}{BLACK}旋转选中的地图元素
 STR_5804    :静音
 STR_5805    :{SMALLFONT}{BLACK}若选中此选项, 你的服务器将会添加至{NEWLINE}公共服务区列表，所有玩家均可以找到它
+STR_5807    :{WINDOW_COLOUR_2}游乐设施数量: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}商店及摊贩数量: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}信息亭及其他设施数量: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

@@ -4109,6 +4109,9 @@ STR_5802    :{SMALLFONT}{BLACK}손님들이 구토를 하거나 쓰레기를 버
 STR_5803    :{SMALLFONT}{BLACK}선택한 맵 요소를 회전시킵니다.
 STR_5804    :음소거
 STR_5805    :{SMALLFONT}{BLACK}이 설정을 켜면, 서버가 마스터 서버 목록에 홍보·추가되어 누구나 검색할 수 있게 됩니다.
+STR_5807    :{WINDOW_COLOUR_2}놀이기구 수: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}상점 및 매점 수: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}안내소 및 기타 시설 수: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

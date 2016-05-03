@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C61FAAE21CD1643A0010C9D8 /* paint_surface.c in Sources */ = {isa = PBXBuildFile; fileRef = C61FAAE01CD1643A0010C9D8 /* paint_surface.c */; };
 		C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2151CCABBDD00B4D91C /* S4Importer.cpp */; };
 		C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2171CCABBDD00B4D91C /* tables.cpp */; };
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
@@ -229,6 +230,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C61FAAE01CD1643A0010C9D8 /* paint_surface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paint_surface.c; sourceTree = "<group>"; };
+		C61FAAE11CD1643A0010C9D8 /* paint_surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paint_surface.h; sourceTree = "<group>"; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; };
 		C650B2161CCABBDD00B4D91C /* S4Importer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = S4Importer.h; sourceTree = "<group>"; };
 		C650B2171CCABBDD00B4D91C /* tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tables.cpp; sourceTree = "<group>"; };
@@ -796,6 +799,8 @@
 				D44271201CC81B3200D84D28 /* graph.h */,
 				D44271211CC81B3200D84D28 /* keyboard_shortcut.c */,
 				D44271221CC81B3200D84D28 /* keyboard_shortcut.h */,
+				C61FAAE01CD1643A0010C9D8 /* paint_surface.c */,
+				C61FAAE11CD1643A0010C9D8 /* paint_surface.h */,
 				D44271231CC81B3200D84D28 /* screenshot.c */,
 				D44271241CC81B3200D84D28 /* screenshot.h */,
 				D44271251CC81B3200D84D28 /* Theme.cpp */,
@@ -1499,6 +1504,7 @@
 				D44272401CC81B3200D84D28 /* windows.c in Sources */,
 				D44272881CC81B3200D84D28 /* text_input.c in Sources */,
 				D442720F1CC81B3200D84D28 /* scrolling_text.c in Sources */,
+				C61FAAE21CD1643A0010C9D8 /* paint_surface.c in Sources */,
 				D44271F51CC81B3200D84D28 /* addresses.c in Sources */,
 				D44272041CC81B3200D84D28 /* Stopwatch.cpp in Sources */,
 				D44272241CC81B3200D84D28 /* intro.c in Sources */,

@@ -112,6 +112,12 @@ enum {
 	GAME_PAUSED_SAVING_TRACK	= 1 << 2,
 };
 
+enum {
+	ERROR_TYPE_NONE = 0,
+	ERROR_TYPE_GENERIC = 254,
+	ERROR_TYPE_FILE_LOAD = 255
+};
+
 typedef void (GAME_COMMAND_POINTER)(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 
 typedef void (GAME_COMMAND_CALLBACK_POINTER)(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
@@ -123,6 +129,8 @@ extern int game_command_playerid;
 
 extern rct_string_id gGameCommandErrorTitle;
 extern rct_string_id gGameCommandErrorText;
+extern uint8 gErrorType;
+extern uint16 gErrorStringId;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[67];
 

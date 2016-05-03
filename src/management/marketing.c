@@ -168,7 +168,7 @@ void game_command_start_campaign(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_MARKETING;
 	if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) {
-		gGameCommandErrorText = 3048;
+		gGameCommandErrorText = STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY;
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}

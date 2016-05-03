@@ -4104,6 +4104,9 @@ STR_5802    :{SMALLFONT}{BLACK}Hält Besucher davon ab Müll wegzuwerfen oder si
 STR_5803    :{SMALLFONT}{BLACK}Ausgewähltes Kartenelement drehen
 STR_5804    :Ton ein-/ausschalten
 STR_5805    :{SMALLFONT}{BLACK}Wenn aktiviert, wird der Server zur öffentlichen Serverliste hinzugefügt und für jeden sichtbar
+STR_5807    :{WINDOW_COLOUR_2}Anzahl der Bahnen: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}Anzahl der Läden und Stände: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Anzahl der Informationsstände und anderer Einrichtungen: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

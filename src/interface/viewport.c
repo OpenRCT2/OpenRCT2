@@ -27,7 +27,6 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
-#include "../ride/track_paint.h"
 #include "../sprites.h"
 #include "../world/climate.h"
 #include "../world/map.h"
@@ -36,50 +35,11 @@
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
-#include "colour.h"
-#include "viewport.h"
-#include "window.h"
+#include "paint_surface.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
-
-typedef struct paint_struct paint_struct;
-
-struct paint_struct{
-	uint32 image_id;		// 0x00
-	uint32 var_04;
-	uint16 attached_x;		// 0x08
-	uint16 attached_y;		// 0x0A
-	union {
-		struct {
-			uint8 var_0C;
-			uint8 pad_0D;
-			paint_struct* next_attached_ps;	//0x0E
-			uint16 pad_12;
-		};
-		struct {
-			uint16 attached_z; // 0x0C
-			uint16 attached_z_end; // 0x0E
-			uint16 attached_x_end; // 0x10
-			uint16 attached_y_end; // 0x12
-		};
-	};
-	uint16 x;				// 0x14
-	uint16 y;				// 0x16
-	uint16 var_18;
-	uint8 var_1A;
-	uint8 var_1B;
-	paint_struct* attached_ps;	//0x1C
-	paint_struct* var_20;
-	paint_struct* next_quadrant_ps; // 0x24
-	uint8 sprite_type;		//0x28
-	uint8 var_29;
-	uint16 pad_2A;
-	uint16 map_x;			// 0x2C
-	uint16 map_y;			// 0x2E
-	rct_map_element *mapElement; // 0x30 (or sprite pointer)
-};
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -1237,6 +1197,68 @@ static void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rc
 
 /**
  *
+ *  rct2: 0x006D5B48
+ */
+static void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+{
+	int image_id;
+	int baseImage_id = imageDirection;
+	int ecx = ((vehicle->var_BA / 8) + (get_current_rotation() * 8)) & 31;
+	int j = 0;
+	if (vehicle->vehicle_sprite_type == 0) {
+		baseImage_id = ecx & 7;
+	} else {
+		if (vehicle->vehicle_sprite_type == 1 || vehicle->vehicle_sprite_type == 5) {
+			if (vehicle->vehicle_sprite_type == 5){
+				baseImage_id = imageDirection ^ 16;
+			}
+			baseImage_id &= 24;
+			j = (baseImage_id / 8) + 1;
+			baseImage_id += (ecx & 7);
+			baseImage_id += 8;
+		} else
+		if (vehicle->vehicle_sprite_type == 2 || vehicle->vehicle_sprite_type == 6) {
+			if (vehicle->vehicle_sprite_type == 6){
+				baseImage_id = imageDirection ^ 16;
+			}
+			baseImage_id &= 24;
+			j = (baseImage_id / 8) + 5;
+			baseImage_id += (ecx & 7);
+			baseImage_id += 40;
+		} else {
+			baseImage_id = ecx & 7;
+		}
+	}
+	baseImage_id += vehicleEntry->base_image_id;
+
+	sint16 bbo_x = RCT2_ADDRESS(0x009927E6, sint8)[j * 8];
+	sint16 bbo_y = RCT2_ADDRESS(0x009927E7, sint8)[j * 8];
+	sint16 bbo_z = RCT2_ADDRESS(0x009927E8, sint8)[j * 8] + z;
+	uint16 bbl_x = RCT2_ADDRESS(0x009927E9, uint8)[j * 8];
+	uint16 bbl_y = RCT2_ADDRESS(0x009927EA, uint8)[j * 8];
+	uint8 bbl_z = RCT2_ADDRESS(0x009927EB, uint8)[j * 8];
+	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
+	sub_98197C(image_id, 0, 0, bbl_x, bbl_y, bbl_z, z, bbo_x, bbo_y, bbo_z, get_current_rotation());
+
+	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2 && vehicle->num_peeps > 0) {
+		uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
+		for (int i = 0; i < vehicle->num_peeps; i++) {
+			riding_peep_sprites[((ecx / 8) + i) & 3] = vehicle->peep_tshirt_colours[i];
+		}
+		int draw_order[4] = {0, 1, 3, 2};
+		for (int i = 0; i < countof(draw_order); i++) {
+			if (riding_peep_sprites[draw_order[i]] != 0xFF) {
+				image_id = (baseImage_id + ((draw_order[i] + 1) * 72)) | (riding_peep_sprites[draw_order[i]] << 19) | 0x20000000;
+				sub_98199C(image_id, 0, 0, bbl_x, bbl_y, bbl_z, z, bbo_x, bbo_y, bbo_z, get_current_rotation());
+			}
+		}
+	}
+
+	assert(vehicleEntry->pad_5E == 1);
+}
+
+/**
+ *
  *  rct2: 0x00686EF0, 0x00687056, 0x006871C8, 0x0068733C, 0x0098198C
  *
  * @param image_id (ebx)
@@ -1275,6 +1297,51 @@ bool sub_98198C(
 	);
 
 	return !(flags & (1 << 8));
+}
+
+/**
+ * rct2: 68818E
+ *
+ * @param image_id (ebx)
+ * @param x (ax)
+ * @param y (cx)
+ * @param[out] paint (ebp)
+ * @return (!CF) success
+ */
+bool sub_68818E(uint32 image_id, uint16 x, uint16 y, paint_struct ** paint)
+{
+
+	//Not a paint struct but something similar
+	paint_struct * ps = RCT2_GLOBAL(0xEE7888, paint_struct *);
+
+	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+		return false;
+	}
+
+	ps->image_id = image_id;
+	ps->attached_x = x;
+	ps->attached_y = y;
+	ps->var_0C = 0;
+
+	paint_struct * ebx2 = RCT2_GLOBAL(0xF1AD28, paint_struct *);
+	if (ebx2 == NULL) {
+		return false;
+	}
+
+	RCT2_GLOBAL(0x00EE7888, uint32) += 0x12;
+
+	paint_struct * edi = ebx2->attached_ps;
+	ebx2->attached_ps = ps;
+
+	ps->next_attached_ps = edi;
+
+	RCT2_GLOBAL(0xF1AD2C, paint_struct *) = ps;
+	
+	if (paint != NULL) {
+		*paint = ps;
+	}
+
+	return true;
 }
 
 /**
@@ -1325,20 +1392,57 @@ void viewport_vehicle_paint_setup(rct_vehicle *vehicle, int imageDirection)
 	case 12:											RCT2_CALLPROC_X(0x006D57EE, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 13:											RCT2_CALLPROC_X(0x006D5783, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 14:											RCT2_CALLPROC_X(0x006D5701, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case VEHICLE_VISUAL_VIRGINIA_REEL:					RCT2_CALLPROC_X(0x006D5B48, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_VIRGINIA_REEL:					vehicle_visual_virginia_reel(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_SUBMARINE:						RCT2_CALLPROC_X(0x006D44D5, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	}
 }
 
 /**
- *
- *  rct2: 0x0068F0FB
+ * rct2: 0x0068F0FB
  */
-void viewport_peep_paint_setup(rct_peep *peep, int imageDirection)
+void viewport_peep_paint_setup(rct_peep * peep, int imageDirection)
 {
-	RCT2_CALLPROC_X(0x0068F0FB, peep->x, imageDirection, peep->y, peep->z, (int)peep, 0, 0);
-}
+	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	if (dpi->zoom_level > 2) {
+		return;
+	}
 
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
+		return;
+	}
+
+	rct_sprite_entry sprite = g_sprite_entries[peep->sprite_type];
+
+	uint8 spriteType = peep->action_sprite_type;
+	uint8 imageOffset = peep->action_sprite_image_offset;
+
+	if (peep->action == PEEP_ACTION_NONE_1) {
+		spriteType = peep->next_action_sprite_type;
+		imageOffset = 0;
+	}
+
+	uint32 baseImageId = (imageDirection >> 3) + sprite.sprite_image[spriteType].base_image + imageOffset * 4;
+	uint32 imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | 0xA0000000;
+	sub_98197C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+
+	if (baseImageId >= 10717 && baseImageId < 10749) {
+		imageId = baseImageId + 32 | peep->hat_colour << 19 | 0x20000000;
+		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+		return;
+	}
+
+	if (baseImageId >= 10781 && baseImageId < 10813) {
+		imageId = baseImageId + 32 | peep->balloon_colour << 19 | 0x20000000;
+		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+		return;
+	}
+
+	if (baseImageId >= 11197 && baseImageId < 11229) {
+		imageId = baseImageId + 32 | peep->umbrella_colour << 19 | 0x20000000;
+		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
+		return;
+	}
+}
 /**
  *
  *  rct2: 0x00672AC9
@@ -2003,7 +2107,7 @@ static void sub_68B3FB(int x, int y)
 		switch (map_element_get_type(map_element))
 		{
 		case MAP_ELEMENT_TYPE_SURFACE:
-			RCT2_CALLPROC_X(0x66062C, 0, 0, direction, height, (int)map_element, 0, 0);
+			viewport_surface_paint_setup(direction, height, map_element);
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
 			RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)map_element, 0, 0);

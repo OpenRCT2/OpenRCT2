@@ -355,7 +355,7 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 	priceMinusCost = ride->price;
 
 	currentShopItem = entry->shop_item;
-	if (currentShopItem != 255) {
+	if (currentShopItem != SHOP_ITEM_NONE) {
 		priceMinusCost -= get_shop_item_cost(currentShopItem);
 	}
 
@@ -363,11 +363,11 @@ money32 ride_calculate_income_per_hour(rct_ride *ride)
 			RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
 			entry->shop_item_secondary;
 
-	if (currentShopItem != 255) {
+	if (currentShopItem != SHOP_ITEM_NONE) {
 		priceMinusCost += ride->price_secondary;
 		priceMinusCost -= get_shop_item_cost(currentShopItem);
 
-		if(entry->shop_item!=255)
+		if (entry->shop_item != SHOP_ITEM_NONE)
 			priceMinusCost /= 2;
 	}
 
@@ -782,7 +782,7 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 		if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
 			*argument = ride->num_riders;
 			*formatSecondary = STR_PERSON_ON_RIDE;
-			if(*argument != 1)
+			if (*argument != 1)
 				*formatSecondary = STR_PEOPLE_ON_RIDE;
 
 		} else {
@@ -2977,6 +2977,12 @@ track_colour ride_get_track_colour(rct_ride *ride, int colourScheme)
 vehicle_colour ride_get_vehicle_colour(rct_ride *ride, int vehicleIndex)
 {
 	vehicle_colour result;
+
+	//Prevent indexing array out of bounds
+	if (vehicleIndex > 31) {
+		vehicleIndex = 31;
+	}
+
 	result.main = ride->vehicle_colours[vehicleIndex].body_colour;
 	result.additional_1 = ride->vehicle_colours[vehicleIndex].trim_colour;
 	result.additional_2 = ride->vehicle_colours_extended[vehicleIndex];
@@ -3336,7 +3342,7 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  */
 int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-	if(!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && RCT2_GLOBAL(0x00F438A4, rct_viewport*) != (rct_viewport*)-1) {
 		rct_xy16 rotatedCoords;
 
 		switch (get_current_rotation()) {
@@ -4571,12 +4577,10 @@ train_ref vehicle_create_train(int rideIndex, int x, int y, int z, int vehicleIn
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	uint8 trainLayout[42];
-	ride_entry_get_train_layout(ride->subtype, ride->num_cars_per_train, trainLayout);
-
 	train_ref train = { NULL, NULL };
 	for (int carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++) {
-		rct_vehicle *car = vehicle_create_car(rideIndex, trainLayout[carIndex], carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
+		const uint8 vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex);
+		rct_vehicle *car = vehicle_create_car(rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, mapElement);
 		if (carIndex == 0) {
 			train.head = car;
 		} else {
@@ -5827,12 +5831,12 @@ static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
 	return MONEY32_UNDEFINED;
 }
 
-static bool shop_item_has_common_price(int shopItem)
+bool shop_item_has_common_price(int shopItem)
 {
 	if (shopItem < 32) {
-		return RCT2_GLOBAL(0x01358838, uint32) & (1u << shopItem);
+		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) & (1u << shopItem);
 	} else {
-		return RCT2_GLOBAL(0x0135934C, uint32) & (1u << (shopItem - 32));
+		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) & (1u << (shopItem - 32));
 	}
 }
 
@@ -5997,14 +6001,14 @@ foundRideEntry:
 		ride->price = RideData4[ride->type].price;
 		ride->price_secondary = RideData4[ride->type].price_secondary;
 
-		if (rideEntry->shop_item == 255) {
+		if (rideEntry->shop_item == SHOP_ITEM_NONE) {
 			if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) {
 				ride->price = 0;
 			}
 		} else {
 			ride->price = DefaultShopItemPrice[rideEntry->shop_item];
 		}
-		if (rideEntry->shop_item_secondary != 255) {
+		if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE) {
 			ride->price_secondary = DefaultShopItemPrice[rideEntry->shop_item_secondary];
 		}
 
@@ -6013,7 +6017,7 @@ foundRideEntry:
 		}
 
 		if (ride->type == RIDE_TYPE_TOILETS) {
-			if (RCT2_GLOBAL(0x01358838, uint32) & (1 << 31)) {
+			if (shop_item_has_common_price(SHOP_ITEM_ADMISSION)) {
 				money32 price = ride_get_common_price(ride);
 				if (price != MONEY32_UNDEFINED) {
 					ride->price = (money16)price;
@@ -6021,7 +6025,7 @@ foundRideEntry:
 			}
 		}
 
-		if (rideEntry->shop_item != 255) {
+		if (rideEntry->shop_item != SHOP_ITEM_NONE) {
 			if (shop_item_has_common_price(rideEntry->shop_item)) {
 				money32 price = shop_item_get_common_price(ride, rideEntry->shop_item);
 				if (price != MONEY32_UNDEFINED) {
@@ -6030,7 +6034,7 @@ foundRideEntry:
 			}
 		}
 
-		if (rideEntry->shop_item_secondary != 255) {
+		if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE) {
 			if (shop_item_has_common_price(rideEntry->shop_item_secondary)) {
 				money32 price = shop_item_get_common_price(ride, rideEntry->shop_item_secondary);
 				if (price != MONEY32_UNDEFINED) {
@@ -6538,17 +6542,17 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 		}
 
 		if (!secondary_price) {
-			shop_item = 0x1F;
+			shop_item = SHOP_ITEM_ADMISSION;
 			if (ride->type != RIDE_TYPE_TOILETS) {
 				shop_item = rideEntry->shop_item;
-				if (shop_item == 0xFF) {
+				if (shop_item == SHOP_ITEM_NONE) {
 					ride->price = price;
 					window_invalidate_by_class(WC_RIDE);
 					return;
 				}
 			}
 			// Check same price in park flags
-			if ((shop_item < 32 ? RCT2_GLOBAL(0x01358838, uint32) & (1 << shop_item) : RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shop_item - 32))) == 0) {
+			if (!shop_item_has_common_price(shop_item)) {
 				ride->price = price;
 				window_invalidate_by_class(WC_RIDE);
 				return;
@@ -6556,7 +6560,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 		}
 		else {
 			shop_item = rideEntry->shop_item_secondary;
-			if (shop_item == 0xFF) {
+			if (shop_item == SHOP_ITEM_NONE) {
 				shop_item = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
 				if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0) {
 					ride->price_secondary = price;
@@ -6565,7 +6569,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 				}
 			}
 			// Check same price in park flags
-			if ((shop_item < 32 ? RCT2_GLOBAL(0x01358838, uint32) & (1 << shop_item) : RCT2_GLOBAL(0x0135934C, uint32) & (1 << (shop_item - 32))) == 0) {
+			if (!shop_item_has_common_price(shop_item)) {
 				ride->price_secondary = price;
 				window_invalidate_by_class(WC_RIDE);
 				return;
@@ -6580,7 +6584,7 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 
 			rideEntry = get_ride_entry(ride->subtype);
 
-			if (ride->type != RIDE_TYPE_TOILETS || shop_item != 0x1F) {
+			if (ride->type != RIDE_TYPE_TOILETS || shop_item != SHOP_ITEM_ADMISSION) {
 				if (rideEntry->shop_item == shop_item) {
 					ride->price = price;
 					window_invalidate_by_number(WC_RIDE, rideId);
@@ -6592,8 +6596,8 @@ void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *es
 			}
 			// If the shop item is the same or an on-ride photo
 			if (rideEntry->shop_item_secondary == shop_item ||
-				(rideEntry->shop_item_secondary == 0xFF &&
-				(shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22))) {
+				(rideEntry->shop_item_secondary == SHOP_ITEM_NONE &&
+				(shop_item == SHOP_ITEM_PHOTO || shop_item == SHOP_ITEM_PHOTO2 || shop_item == SHOP_ITEM_PHOTO3 || shop_item == SHOP_ITEM_PHOTO4))) {
 
 				ride->price_secondary = price;
 				window_invalidate_by_number(WC_RIDE, rideId);
@@ -7325,8 +7329,8 @@ static void ride_update_vehicle_colours(int rideIndex)
 				coloursExtended = ride->vehicle_colours_extended[i];
 				break;
 			case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-				colours = ride->vehicle_colours[carIndex];
-				coloursExtended = ride->vehicle_colours_extended[carIndex];
+				colours = ride->vehicle_colours[carIndex > 31 ? 31 : carIndex];
+				coloursExtended = ride->vehicle_colours_extended[carIndex > 31 ? 31 : carIndex];
 				break;
 			}
 
@@ -7360,6 +7364,22 @@ void ride_entry_get_train_layout(int rideEntryIndex, int numCarsPerTrain, uint8 
 			vehicleType = rideEntry->rear_vehicle;
 		}
 		trainLayout[i] = vehicleType;
+	}
+}
+
+uint8 ride_entry_get_vehicle_at_position(int rideEntryIndex,int numCarsPerTrain,int position)
+{
+	rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
+	if (position == 0 && rideEntry->front_vehicle != 255) {
+		return rideEntry->front_vehicle;
+	} else if (position == 1 && rideEntry->second_vehicle != 255) {
+		return rideEntry->second_vehicle;
+	} else if (position == 2 && rideEntry->third_vehicle != 255) {
+		return rideEntry->third_vehicle;
+	} else if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255) {
+		return rideEntry->rear_vehicle;
+	} else {
+		return rideEntry->default_vehicle;
 	}
 }
 
@@ -7437,7 +7457,7 @@ void ride_update_max_vehicles(int rideIndex)
 	rct_ride *ride;
 	rct_ride_entry *rideEntry;
 	rct_ride_entry_vehicle *vehicleEntry;
-	uint8 trainLayout[16], numCarsPerTrain, numVehicles;
+	uint8 numCarsPerTrain, numVehicles;
 	int trainLength, maxNumTrains;
 
 	ride = get_ride(rideIndex);
@@ -7445,6 +7465,7 @@ void ride_update_max_vehicles(int rideIndex)
 		return;
 
 	rideEntry = get_ride_entry(ride->subtype);
+
 	if (rideEntry->cars_per_flat_ride == 0xFF) {
 		ride->num_cars_per_train = max(rideEntry->min_cars_in_train, ride->num_cars_per_train);
 		ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
@@ -7458,11 +7479,10 @@ void ride_update_max_vehicles(int rideIndex)
 		int maxFriction = RideData5[ride->type].max_friction << 8;
 		int maxCarsPerTrain = 1;
 		for (int numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
-			ride_entry_get_train_layout(ride->subtype, numCars, trainLayout);
 			trainLength = 0;
 			int totalFriction = 0;
 			for (int i = 0; i < numCars; i++) {
-				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, numCars, i)];
 				trainLength += vehicleEntry->spacing;
 				totalFriction += vehicleEntry->car_friction;
 			}
@@ -7474,7 +7494,9 @@ void ride_update_max_vehicles(int rideIndex)
 		}
 		int newCarsPerTrain = max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
 		maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
-		newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
+		if (!gCheatsDisableTrainLengthLimit) {
+			newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
+		}
 		ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
 
 		switch (ride->mode) {
@@ -7491,10 +7513,9 @@ void ride_update_max_vehicles(int rideIndex)
 			break;
 		default:
 			// Calculate maximum number of trains
-			ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
 			trainLength = 0;
 			for (int i = 0; i < newCarsPerTrain; i++) {
-				vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
 				trainLength += vehicleEntry->spacing;
 			}
 
@@ -7514,13 +7535,12 @@ void ride_update_max_vehicles(int rideIndex)
 			) {
 				maxNumTrains = min(maxNumTrains, 31);
 			} else {
-				ride_entry_get_train_layout(ride->subtype, newCarsPerTrain, trainLayout);
-				vehicleEntry = &rideEntry->vehicles[trainLayout[0]];
+				vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, 0)];
 				int speed = vehicleEntry->powered_max_speed;
 
 				int totalSpacing = 0;
 				for (int i = 0; i < newCarsPerTrain; i++) {
-					vehicleEntry = &rideEntry->vehicles[trainLayout[i]];
+					vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
 					totalSpacing += vehicleEntry->spacing;
 				}
 
@@ -7692,7 +7712,9 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 
 		invalidate_test_results(rideIndex);
 		rideEntry = get_ride_entry(ride->subtype);
-		value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+		if (!gCheatsDisableTrainLengthLimit) {
+			value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+		}
 		ride->proposed_num_cars_per_train = value;
 		break;
 	case RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY:
@@ -7718,7 +7740,9 @@ money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, uint32 fl
 			preset = ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
 		}
 		ride_set_vehicle_colours_to_random_preset(ride, preset);
-		ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
+		if (!gCheatsDisableTrainLengthLimit) {
+			ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
+		}
 		break;
 	default:
 		log_error("Unknown vehicle command.");
@@ -8546,7 +8570,7 @@ const uint8* ride_seek_available_modes(rct_ride *ride)
 {
 	const uint8* availableModes;
 
-	if(!gCheatsShowAllOperatingModes) {
+	if (!gCheatsShowAllOperatingModes) {
 		availableModes = RideAvailableModes;
 
 		for (int i = 0; i < ride->type; i++) {

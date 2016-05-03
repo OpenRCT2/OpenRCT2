@@ -260,10 +260,10 @@ typedef struct {
 	uint16 word_01358774;
 	uint8 pad_01358776[2];
 	uint32 dword_01358778[17];
-	uint32 dword_013587BC;
+	uint32 game_version_number;
 	uint32 dword_013587C0;
-	uint32 dword_013587C4;
-	uint16 dword_013587C8;
+	uint32 loan_hash;
+	uint16 ride_count;
 	uint8 pad_013587CA[6];
 	uint32 dword_013587D0;
 	uint8 pad_013587D4[4];
@@ -275,7 +275,7 @@ typedef struct {
 	uint16 map_size_minus_2;
 	uint16 map_size;
 	uint16 map_max_xy;
-	uint32 word_01358838;
+	uint32 same_price_throughout;
 	uint16 suggested_max_guests;
 	uint16 park_rating_warning_days;
 	uint8 word_01358840;
@@ -287,7 +287,7 @@ typedef struct {
 	char scenario_description[256];
 	uint8 current_interest_rate;
 	uint8 pad_0135934B;
-	uint32 dword_0135934C;
+	uint32 same_price_throughout_extended;
 	uint16 park_entrance_x[4];
 	uint16 park_entrance_y[4];
 	uint16 park_entrance_z[4];
