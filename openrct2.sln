@@ -1,18 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2", "openrct2.vcxproj", "{D24D94F6-2A74-480C-B512-629C306CE92F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug (RCT2)|Win32 = Debug (RCT2)|Win32
 		Debug|Win32 = Debug|Win32
+		Release (RCT2)|Win32 = Release (RCT2)|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug (RCT2)|Win32.ActiveCfg = Debug (RCT2)|Win32
+		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug (RCT2)|Win32.Build.0 = Debug (RCT2)|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Debug|Win32.Build.0 = Debug|Win32
+		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release (RCT2)|Win32.ActiveCfg = Release (RCT2)|Win32
+		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release (RCT2)|Win32.Build.0 = Release (RCT2)|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|Win32.ActiveCfg = Release|Win32
 		{D24D94F6-2A74-480C-B512-629C306CE92F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

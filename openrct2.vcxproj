@@ -4,7 +4,16 @@
     <Copy SourceFiles="openrct2.exe" DestinationFolder="$(OutDir)" />
     <Copy SourceFiles="curl-ca-bundle.crt" DestinationFolder="$(OutDir)" />
   </Target>
+
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug (RCT2)|Win32">
+      <Configuration>Debug (RCT2)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (RCT2)|Win32">
+      <Configuration>Release (RCT2)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -14,9 +23,134 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
+    <RootNamespace>openrct2</RootNamespace>
+    <ProjectName>openrct2</ProjectName>
+  </PropertyGroup>
+
+  <!-- Helper Properties -->
+  <PropertyGroup Condition="'$(Configuration)'=='Debug (RCT2)' Or '$(Configuration)'=='Release (RCT2)'">
+    <UseRCT2>true</UseRCT2>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Debug (RCT2)'">
+    <IsDebug>true</IsDebug>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
+  <!-- General configuration -->
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(IsDebug)'=='true'">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(UseRCT2)'!='true'">
+    <ConfigurationType>Application</ConfigurationType>
+    <TargetName>openrct2_standalone</TargetName>
+  </PropertyGroup>
+
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+
+  <!-- Library configuration -->
+  <PropertyGroup>
+    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+
+  <!-- Compiler configuration -->
+  <ItemDefinitionGroup Condition="'$(Breakpad)'=='true'">
+    <ClCompile>
+      <PreprocessorDefinitions>USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(UseRCT2)'!='true'">
+    <ClCompile>
+      <PreprocessorDefinitions>NO_RCT2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <WarningLevel>Level3</WarningLevel>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
+      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(IsDebug)'=='true'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(IsDebug)'!='true'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck />
+      <OmitFramePointers />
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <!-- Linker configuration -->
+  <ItemDefinitionGroup>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>openrct2-libs-vs2015.lib;imm32.lib;version.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(IsDebug)'=='true'">
+    <Link>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalOptions>/OPT:NOLBR %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(IsDebug)'!='true'">
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(IsDebug)'=='true'">
+    <LinkIncremental />
+  </PropertyGroup>
+
+  <!-- Defaults -->
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+
+  <!-- Items -->
   <ItemGroup>
     <None Include="curl-ca-bundle.crt" />
     <None Include="openrct2.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\OpenRCT2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\logo\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\addresses.c" />
@@ -310,105 +444,4 @@
     <ClInclude Include="src\world\sprite.h" />
     <ClInclude Include="src\world\water.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="resources\OpenRCT2.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="resources\logo\icon.ico" />
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
-    <RootNamespace>openrct2</RootNamespace>
-    <ProjectName>openrct2</ProjectName>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings" />
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
-    <LinkIncremental />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)lib\include;$(SolutionDir)lib\include\breakpad;$(SolutionDir)lib\include\libspeex;$(SolutionDir)lib\include\sdl;$(SolutionDir)lib\include\jansson;$(SolutionDir)lib\include\sdl_ttf;$(SolutionDir)lib\include\libpng;$(SolutionDir)lib\include\zlib;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Breakpad)'=='true'">
-    <ClCompile>
-      <PreprocessorDefinitions>USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <StructMemberAlignment>1Byte</StructMemberAlignment>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;NO_RCT2;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
-      <MinimalRebuild>false</MinimalRebuild>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>openrct2-libs-vs2015.lib;imm32.lib;version.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <DisableSpecificWarnings>4091;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck />
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <StructMemberAlignment>1Byte</StructMemberAlignment>
-      <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
-      <OmitFramePointers />
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>openrct2-libs-vs2015.lib;imm32.lib;version.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-  </ItemDefinitionGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
 </Project>

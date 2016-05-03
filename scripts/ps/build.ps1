@@ -7,7 +7,7 @@ param (
     [string]$Task = "openrct2",
 
     [Parameter(Mandatory = $false)]
-    [string]$Configuration = "Release",
+    [string]$Configuration = "Release (RCT2)",
 
     [Parameter(Mandatory = $false)]
     [switch]$Rebuild = $false,
