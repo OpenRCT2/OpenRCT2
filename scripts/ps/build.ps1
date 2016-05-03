@@ -28,26 +28,17 @@ $openrct2Path = Join-Path $binPath "openrct2.exe"
 
 function Build-Data()
 {
-    if(Test-Path "$binPath\data")
-    {
-        $object = Get-Item "$binPath\data"
+    $dataPath    = "$rootPath\data"
+    $binDataPath = "$binPath\data"
 
-        if(-not ([bool]($object.Attributes -band [IO.FileAttributes]::ReparsePoint)))
-        {
-            Write-Host "Copying data to bin..." -ForegroundColor Cyan
-            New-Item -Force -ItemType Directory $binPath > $null
-            Copy-Item -Force -Recurse "$rootPath\data" $binPath
-        }
-        else
-        {
-            Write-Host "Symlink already in place" -ForegroundColor Cyan
-        }
-    }
-    else
-    {
-        Write-Host "Symlink data to bin..." -ForegroundColor Cyan
-        New-Item -force -ItemType SymbolicLink -Name bin\data -Target data
-    }
+    # Create data directory in bin
+    Write-Host "Create data directory..." -ForegroundColor Cyan
+    New-Item -Force -ItemType Directory $binDataPath > $null
+
+    # Create symlinks
+    Symlink-or-Copy "$binDataPath\language" "$dataPath\language"
+    Symlink-or-Copy "$binDataPath\title"    "$dataPath\title"
+
     return 0
 }
 
