@@ -701,11 +701,11 @@ void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		}
 		break;
 	case 2:
-		RCT2_GLOBAL(0x01358838, uint32) = *edi;
+		RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) = *edi;
 		window_invalidate_by_class(WC_RIDE);
 		break;
 	case 3:
-		RCT2_GLOBAL(0x0135934C, uint32) = *edi;
+		RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) = *edi;
 		window_invalidate_by_class(WC_RIDE);
 		break;
 	}

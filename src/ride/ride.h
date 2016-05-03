@@ -820,6 +820,7 @@ enum {
 	SHOP_ITEM_LEMONADE,
 	SHOP_ITEM_EMPTY_BOX,
 	SHOP_ITEM_EMPTY_BOTTLE,
+	SHOP_ITEM_ADMISSION = 31,
 	SHOP_ITEM_PHOTO2 = 32,
 	SHOP_ITEM_PHOTO3,
 	SHOP_ITEM_PHOTO4,
@@ -842,7 +843,8 @@ enum {
 	SHOP_ITEM_EMPTY_JUICE_CUP,
 	SHOP_ITEM_ROAST_SAUSAGE,
 	SHOP_ITEM_EMPTY_BOWL_BLUE,
-	SHOP_ITEM_COUNT = 56
+	SHOP_ITEM_COUNT = 56,
+	SHOP_ITEM_NONE = 255
 };
 
 enum {
@@ -976,6 +978,7 @@ void ride_set_name(int rideIndex, const char *name);
 void game_command_set_ride_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_setting(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 int ride_get_refund_price(int ride_id);
+bool shop_item_has_common_price(int shopItem);
 void game_command_create_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_callback_ride_construct_new(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 void game_command_callback_ride_construct_placed_front(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);

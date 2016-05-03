@@ -20,6 +20,8 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "game.h"
+#include "localisation/string_ids.h"
 #include "rct1.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
@@ -31,8 +33,8 @@ bool rct1_read_sc4(const char *path, rct1_s4 *s4)
 	bool success;
 
 	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
+		gErrorType = ERROR_TYPE_FILE_LOAD;
+		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 
@@ -61,8 +63,8 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 	bool success;
 
 	if (!readentirefile(path, (void**)&buffer, (int*)&length)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_TYPE, uint8) = 255;
-		RCT2_GLOBAL(RCT2_ADDRESS_ERROR_STRING_ID, uint16) = 3011;
+		gErrorType = ERROR_TYPE_FILE_LOAD;
+		gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
 		return 0;
 	}
 

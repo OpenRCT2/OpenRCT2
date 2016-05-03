@@ -5435,6 +5435,33 @@ static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 #pragma region Income
 
+static void update_same_price_throughout_flags(uint32 shop_item)
+{
+	uint32 newFlags;
+
+	if (shop_item == SHOP_ITEM_PHOTO || shop_item == SHOP_ITEM_PHOTO2 || shop_item == SHOP_ITEM_PHOTO3 || shop_item == SHOP_ITEM_PHOTO4) {
+		newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32);
+		newFlags ^= (1 << SHOP_ITEM_PHOTO);
+		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+
+		newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32);
+		newFlags ^= (SHOP_ITEM_PHOTO2 - 32) | (SHOP_ITEM_PHOTO3 - 32) | (SHOP_ITEM_PHOTO4 - 32);
+		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+	}
+	else {
+		if (shop_item < 32) {
+			newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32);
+			newFlags ^= (1u << shop_item);
+			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+		}
+		else {
+			newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32);
+			newFlags ^= (1u << (shop_item - 32));
+			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+		}
+	}
+}
+
 /**
  *
  *  rct2: 0x006ADEFD
@@ -5443,41 +5470,23 @@ static void window_ride_income_toggle_primary_price(rct_window *w)
 {
 	rct_ride *ride;
 	rct_ride_entry *ride_type;
-	uint32 newFlags, shop_item;
+	uint32 shop_item;
 	money16 price;
 
 	ride = get_ride(w->number);
 	ride_type = get_ride_entry(ride->subtype);
 
 	if (ride->type == RIDE_TYPE_TOILETS) {
-		shop_item = 0x1F;
+		shop_item = SHOP_ITEM_ADMISSION;
 	}
 	else {
 		shop_item = ride_type->shop_item;
 		if (shop_item == 0xFFFF)
 			return;
 	}
-	if (shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22) {
-		newFlags = RCT2_GLOBAL(0x01358838, uint32);
-		newFlags ^= (1 << 0x3);
-		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 
-		newFlags = RCT2_GLOBAL(0x0135934C, uint32);
-		newFlags ^= (1 << 0x0) | (1 << 0x1) | (1 << 0x2);
-		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-	}
-	else {
-		if (shop_item < 32) {
-			newFlags = RCT2_GLOBAL(0x01358838, uint32);
-			newFlags ^= (1u << shop_item);
-			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-		}
-		else {
-			newFlags = RCT2_GLOBAL(0x0135934C, uint32);
-			newFlags ^= (1u << (shop_item - 32));
-			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-		}
-	}
+	update_same_price_throughout_flags(shop_item);
+
 	price = ride->price;
 	game_do_command(0, 1, 0, w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
@@ -5490,7 +5499,7 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
 {
 	rct_ride *ride;
 	rct_ride_entry *ride_type;
-	uint32 newFlags, shop_item;
+	uint32 shop_item;
 	money16 price;
 
 	ride = get_ride(w->number);
@@ -5500,27 +5509,8 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
 	if (shop_item == 0xFF)
 		shop_item = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
 
-	if (shop_item == 0x3 || shop_item == 0x20 || shop_item == 0x21 || shop_item == 0x22) {
-		newFlags = RCT2_GLOBAL(0x01358838, uint32);
-		newFlags ^= (1 << 0x3);
-		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
+	update_same_price_throughout_flags(shop_item);
 
-		newFlags = RCT2_GLOBAL(0x0135934C, uint32);
-		newFlags ^= (1 << 0x0) | (1 << 0x1) | (1 << 0x2);
-		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-	}
-	else {
-		if (shop_item < 32) {
-			newFlags = RCT2_GLOBAL(0x01358838, uint32);
-			newFlags ^= (1u << shop_item);
-			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-		}
-		else {
-			newFlags = RCT2_GLOBAL(0x0135934C, uint32);
-			newFlags ^= (1u << (shop_item - 32));
-			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
-		}
-	}
 	price = ride->price_secondary;
 	game_do_command(0, 1, 0, (1 << 8) | w->number, GAME_COMMAND_SET_RIDE_PRICE, price, 0);
 }
@@ -5726,7 +5716,7 @@ static void window_ride_income_invalidate(rct_window *w)
 	w->disabled_widgets &= ~(1 << WIDX_PRIMARY_PRICE);
 
 	//If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
-	if ((!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == 255 && ride->type != RIDE_TYPE_TOILETS)
+	if ((!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == SHOP_ITEM_NONE && ride->type != RIDE_TYPE_TOILETS)
 		&& (!gCheatsUnlockAllPrices))
 	{
 		w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
@@ -5741,30 +5731,24 @@ static void window_ride_income_invalidate(rct_window *w)
 	if (ride->price == 0)
 		window_ride_income_widgets[WIDX_PRIMARY_PRICE].image = STR_FREE;
 
-	primaryItem = 31;
-	if (ride->type == RIDE_TYPE_TOILETS || ((primaryItem = (sint8)rideEntry->shop_item) != -1)) {
+	primaryItem = SHOP_ITEM_ADMISSION;
+	if (ride->type == RIDE_TYPE_TOILETS || ((primaryItem = rideEntry->shop_item) != SHOP_ITEM_NONE)) {
 		window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WWT_CHECKBOX;
-		if (primaryItem < 32) {
-			if (RCT2_GLOBAL(0x01358838, uint32) & (1u << primaryItem))
-				w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
-			if (primaryItem != 31)
-				window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 1960 + primaryItem;
-		}
-		else {
-			primaryItem -= 32;
-			if (RCT2_GLOBAL(0x0135934C, uint32) & (1u << primaryItem))
-				w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
+		if (shop_item_has_common_price(primaryItem))
+			w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
-			window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 2100 + primaryItem;
-		}
 
+		if (primaryItem < SHOP_ITEM_ADMISSION)
+			window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 1960 + primaryItem;
+		else if (primaryItem > SHOP_ITEM_ADMISSION)
+			window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].image = 2068 + primaryItem;
 	}
 
 	// Get secondary item
 	secondaryItem = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)) {
-		if ((secondaryItem = (sint8)rideEntry->shop_item_secondary) != -1) {
+		if ((secondaryItem = rideEntry->shop_item_secondary) != SHOP_ITEM_NONE) {
 			// Set secondary item label
 			stringId = 1960 + secondaryItem;
 			if (stringId >= 1992)
@@ -5774,7 +5758,7 @@ static void window_ride_income_invalidate(rct_window *w)
 		}
 	}
 
-	if (secondaryItem == -1) {
+	if (secondaryItem == SHOP_ITEM_NONE) {
 		// Hide secondary item widgets
 		window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WWT_EMPTY;
 		window_ride_income_widgets[WIDX_SECONDARY_PRICE].type = WWT_EMPTY;
@@ -5784,14 +5768,8 @@ static void window_ride_income_invalidate(rct_window *w)
 	} else {
 		// Set same price throughout park checkbox
 		w->pressed_widgets &= ~(1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
-		if (secondaryItem < 32) {
-			if (RCT2_GLOBAL(0x01358838, uint32) & (1u << secondaryItem))
-				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
-		} else {
-			secondaryItem -= 32;
-			if (RCT2_GLOBAL(0x0135934C, uint32) & (1u << secondaryItem))
-				w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
-		}
+		if (shop_item_has_common_price(secondaryItem))
+			w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 
 		// Show widgets
 		window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WWT_24;
@@ -5833,8 +5811,8 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_ride_income_widgets[WIDX_PAGE_BACKGROUND].top + 29;
 
 	// Primary item profit / loss per item sold
-	primaryItem = (sint8)rideEntry->shop_item;
-	if (primaryItem != -1) {
+	primaryItem = rideEntry->shop_item;
+	if (primaryItem != SHOP_ITEM_NONE) {
 		profit = ride->price;
 
 		stringId = STR_PROFIT_PER_ITEM_SOLD;
@@ -5851,9 +5829,9 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Secondary item profit / loss per item sold
 	secondaryItem = RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8);
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
-		secondaryItem = (sint8)rideEntry->shop_item_secondary;
+		secondaryItem = rideEntry->shop_item_secondary;
 
-	if (secondaryItem != -1) {
+	if (secondaryItem != SHOP_ITEM_NONE) {
 		profit = ride->price_secondary;
 
 		stringId = STR_PROFIT_PER_ITEM_SOLD;
@@ -6059,7 +6037,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Primary shop items sold
 	shopItem = get_ride_entry_by_ride(ride)->shop_item;
-	if (shopItem != 0xFF) {
+	if (shopItem != SHOP_ITEM_NONE) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ShopItemStringIds[shopItem].plural;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->no_primary_items_sold;
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
@@ -6070,7 +6048,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	shopItem = ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO ?
 		RCT2_GLOBAL(0x0097D7CB + (ride->type * 4), uint8) :
 		get_ride_entry_by_ride(ride)->shop_item_secondary;
-	if (shopItem != 0xFF) {
+	if (shopItem != SHOP_ITEM_NONE) {
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ShopItemStringIds[shopItem].plural;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->no_secondary_items_sold;
 		gfx_draw_string_left(dpi, STR_ITEMS_SOLD, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
