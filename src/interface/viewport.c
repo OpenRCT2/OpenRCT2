@@ -1134,13 +1134,13 @@ static void vehicle_visual_observation_tower(int x, int imageDirection, int y, i
 
 	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
 	if (sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation())) {
-		paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*) - 1; // sub_98197C increments this but need original
+		paint_struct* ps = unk_EE7888 - 1; // sub_98197C increments this but need original
 		ps->var_04 = vehicle->colours_extended;
 	}
 
 	image_id++;
 	if (sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation())) {
-		paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*) - 1; // sub_98197C increments this but need original
+		paint_struct* ps = unk_EE7888 - 1; // sub_98197C increments this but need original
 		ps->var_04 = vehicle->colours_extended;
 	}
 
@@ -1315,7 +1315,7 @@ bool sub_68818E(uint32 image_id, uint16 x, uint16 y, paint_struct ** paint)
 {
 
 	//Not a paint struct but something similar
-	paint_struct * ps = RCT2_GLOBAL(0xEE7888, paint_struct *);
+	paint_struct * ps = unk_EE7888;
 
 	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
 		return false;
@@ -1331,7 +1331,7 @@ bool sub_68818E(uint32 image_id, uint16 x, uint16 y, paint_struct ** paint)
 		return false;
 	}
 
-	RCT2_GLOBAL(0x00EE7888, uint32) += 0x12;
+	unk_EE7888 = (paint_struct *)((uintptr_t)unk_EE7888 + 0x12);
 
 	paint_struct * edi = ebx2->attached_ps;
 	ebx2->attached_ps = ps;
