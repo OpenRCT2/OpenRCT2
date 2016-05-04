@@ -4121,6 +4121,8 @@ STR_5805    :{SMALLFONT}{BLACK}若选中此选项, 你的服务器将会添加�
 STR_5807    :{WINDOW_COLOUR_2}游乐设施数量: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}商店及摊贩数量: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}信息亭及其他设施数量: {BLACK}{COMMA16}
+STR_5810    :解除车厢长度限制
+STR_5811    :{SMALLFONT}{BLACK}若选中此选项, 每列车将最多{NEWLINE}有255辆车厢
 
 #############
 # Scenarios #

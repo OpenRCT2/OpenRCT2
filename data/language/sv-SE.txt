@@ -4113,9 +4113,12 @@ STR_5802    :{SMALLFONT}{BLACK}Stoppar gästerna från att skräpa ner och kräk
 STR_5803    :{SMALLFONT}{BLACK}Rotera valda element
 STR_5804    :Stäng av ljudet
 STR_5805    :{SMALLFONT}{BLACK}Om ibockad, kommer din server att läggas till i{NEWLINE}offentliga server listan så alla kan hitta den
+STR_5806    :Växla mellan fönster och helskärm
 STR_5807    :{WINDOW_COLOUR_2}Antal åkturer: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal affärer och stånd: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal informationskioskar och toaletter: {BLACK}{COMMA16}
+STR_5810    :Avaktivera gränsen för vagnar per tåg
+STR_5811    :{SMALLFONT}{BLACK}Om ibockad, kan du ha upp till{NEWLINE}255 vagnar per tåg
 
 #############
 # Scenarion #

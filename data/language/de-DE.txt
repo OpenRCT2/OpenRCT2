@@ -4107,6 +4107,8 @@ STR_5805    :{SMALLFONT}{BLACK}Wenn aktiviert, wird der Server zur öffentlichen
 STR_5807    :{WINDOW_COLOUR_2}Anzahl der Bahnen: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Anzahl der Läden und Stände: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Anzahl der Informationsstände und anderer Einrichtungen: {BLACK}{COMMA16}
+STR_5810    :Zuglängenlimit deaktivieren
+STR_5811    :{SMALLFONT}{BLACK}Dieser Cheat ermöglicht eine Zuglänge{NEWLINE}von bis zu 255 Wagen pro Zug
 
 #############
 # Scenarios #

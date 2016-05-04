@@ -4113,6 +4113,8 @@ STR_5805    :{SMALLFONT}{BLACK}Si se selecciona tu servidor será añadido a la 
 STR_5807    :{WINDOW_COLOUR_2}Número de Juegos/Atracciones: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de Tiendas y Puestos: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de Quioscos y Otras Facilidades: {BLACK}{COMMA16}
+STR_5810    :Desactivar límite de longitud de los trenes
+STR_5811    :{SMALLFONT}{BLACK}Si se activa, puedes tener hasta 255 vagones por tren.
 
 ##############
 # Escenarios #
