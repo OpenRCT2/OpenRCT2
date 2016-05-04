@@ -41,7 +41,7 @@ Name "${APPNAMEANDVERSION} ${APPBITS}-bit for Windows ${EXTRA_VERSION}"
 ; NOTE: Keep trailing backslash!
 InstallDirRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Install Folder"
 !ifndef OUTFILE
-	!define OUTFILE "openrct2-${APPVERSION}-${APPARCH}.exe"
+	!define OUTFILE "openrct2-install.exe"
 !endif
 OutFile "${OUTFILE}"
 CRCCheck force

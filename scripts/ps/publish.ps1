@@ -18,17 +18,17 @@ param (
     [switch]$Symbols      = $false
 )
 
-if ($GitTag -eq "")
+if (-not $GitTag)
 {
-    if ($GitBranch -eq $null)
+    if (-not $GitBranch)
     {
         $GitBranch = (git rev-parse --abbrev-ref HEAD)
     }
-    if ($GitCommitSha1 -eq $null)
+    if (-not $GitCommitSha1)
     {
         $GitCommitSha1 = (git rev-parse HEAD)
     }
-    if ($GitCommitSha1Short -eq $null)
+    if (-not $GitCommitSha1Short)
     {
         $GitCommitSha1Short = (git rev-parse --short HEAD)
     }
