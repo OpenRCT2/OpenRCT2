@@ -8,21 +8,13 @@ environment:
   OPENRCT2.ORG_TOKEN:
     secure: leQX3xCQpmBLGuMqrxjFlzexDt96ypNRMM5TTRVHbGE8PwVg9crgeykLc2BIZU6HDHveJCHqh2cGMdHtHYJYcw==
 install:
-- cmd: >-
-    IF DEFINED ENCKEY ( nuget install secure-file -ExcludeVersion && secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret %ENCKEY% )
-
-    cinst nsis.portable --version=3.01-beta1 > nul
 - ps: >-
-    curl "http://nsis.sourceforge.net/mediawiki/images/5/53/KillProcDll%26FindProcDll.zip" -OutFile nsisxtra.zip
-
-    7z x nsisxtra.zip > $null
-
-    cp FindProcDLL.dll "C:\ProgramData\chocolatey\lib\nsis.portable\tools\nsis-3.0b1\Plugins\x86-ansi"
+    .\scripts\ps\appveyor_install.ps1
 build_script:
 - ps: >-
     .\setenv.ps1
 
-    appveyor_run
+    appveyor_build
 artifacts:
 - path: .\artifacts\openrct2.zip
   name: OpenRCT2-portable
