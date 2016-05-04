@@ -56,8 +56,10 @@ static bool track_design_save_to_file(rct_track_td6 *track_design, utf8 *path);
 void track_design_save_init()
 {
 	_trackSavedMapElementsCount = 0;
+#ifdef NO_RCT2
 	memset(_trackSavedMapElements, 0, sizeof(_trackSavedMapElements));
-#ifndef NO_RCT2
+#else
+	memset(_trackSavedMapElements, 0, sizeof(rct_map_element*) * TRACK_MAX_SAVED_MAP_ELEMENTS);
 	_trackSavedMapElements[0] = (rct_map_element*)-1;
 #endif
 

@@ -69,11 +69,11 @@ static rct_window_event_list window_track_list_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
 	window_track_list_update,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	NULL,
 	NULL,
 	NULL,
@@ -92,6 +92,8 @@ static rct_window_event_list window_track_list_events = {
 	window_track_list_paint,
 	window_track_list_scrollpaint
 };
+
+#define TRACK_DESIGN_INDEX_UNLOADED UINT16_MAX
 
 ride_list_item _window_track_list_item;
 
@@ -195,7 +197,7 @@ static void window_track_list_select(rct_window *w, int index)
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_manage_open(tdRef);
 	} else {
-		if (_loadedTrackDesignIndex != -1 && (_loadedTrackDesign->track_flags & 4)) {
+		if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED && (_loadedTrackDesign->track_flags & 4)) {
 			window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
 		}
 
@@ -240,7 +242,7 @@ static void window_track_list_mouseup(rct_window *w, int widgetIndex)
 		break;
 	case WIDX_TOGGLE_SCENERY:
 		gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
-		_loadedTrackDesignIndex = -1;
+		_loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
 		window_invalidate(w);
 		break;
 	case WIDX_BACK:
@@ -388,11 +390,11 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
 	if (_loadedTrackDesignIndex != trackIndex) {
-		uint8 *path = _trackDesigns[trackIndex].path;
+		utf8 *path = _trackDesigns[trackIndex].path;
 		if (track_list_load_design_for_preview(path)) {
 			_loadedTrackDesignIndex = trackIndex;
 		} else {
-			_loadedTrackDesignIndex = -1;
+			_loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
 			return;
 		}
 	}
