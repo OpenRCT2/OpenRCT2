@@ -3,6 +3,7 @@ os: Visual Studio 2015
 cache:
 - C:\ProgramData\chocolatey\bin -> scripts\ps\appveyor_install.ps1
 - C:\ProgramData\chocolatey\lib -> scripts\ps\appveyor_install.ps1
+- secure-file -> scripts\ps\appveyor_install.ps1
 environment:
   ENCKEY:
     secure: saYAIpqXzpq0U+JH+MNi/isRQ6Y51PZhm4BrnePDiAPptFO5htxFOLegrYqxdy67
