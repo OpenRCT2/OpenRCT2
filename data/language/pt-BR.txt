@@ -4111,7 +4111,12 @@ STR_5802    :{SMALLFONT}{BLACK}Impede que visitantes joguem lixo ou vomitem
 STR_5803    :{SMALLFONT}{BLACK}Rotaciona elemento de mapa selecionado
 STR_5804    :Som Mudo
 STR_5805    :{SMALLFONT}{BLACK}Se selecionado, seu servidor será adicionado à{NEWLINE}lista de servidores públicos para que todos possam encontrar
-
+STR_5806    :Alternar modo janela
+STR_5807    :{WINDOW_COLOUR_2}Número de atrações: {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}Número de lojas e barracas: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Número de quiosques de informações e outras instalações: {BLACK}{COMMA16}
+STR_5810    :Desabilitar limite de comprimento do trem
+STR_5811    :{SMALLFONT}{BLACK}Se selecionado, você pode ter até {NEWLINE}255 carros por trem
 
 #############
 # Scenarios #

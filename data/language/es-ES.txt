@@ -2499,7 +2499,7 @@ STR_2491    :Reiniciar teclas
 STR_2492    :{SMALLFONT}{BLACK}Cambiar todos los atajos de teclado a los valores por defecto
 STR_2493    :Cerrar ventana más-arriba
 STR_2494    :Cerrar todas las ventanas
-STR_2495    :Cancelar construction mode
+STR_2495    :Cancelar modo de construcción
 STR_2496    :Pausar juego
 STR_2497    :Alejar vista
 STR_2498    :Acercar vista
@@ -4110,6 +4110,7 @@ STR_5802    :{SMALLFONT}{BLACK}Evita que los visitantes tiren basura o vomiten e
 STR_5803    :{SMALLFONT}{BLACK}Rotar el elemento del mapa seleccionado.
 STR_5804    :Silenciar sonido
 STR_5805    :{SMALLFONT}{BLACK}Si se selecciona tu servidor será añadido a la lista de servidores publicos en donde cualquiera puede encontrar tu servidor.
+STR_5806    :Alternar Modo de Pantalla Completa
 STR_5807    :{WINDOW_COLOUR_2}Número de Juegos/Atracciones: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de Tiendas y Puestos: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de Quioscos y Otras Facilidades: {BLACK}{COMMA16}
