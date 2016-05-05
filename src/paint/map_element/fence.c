@@ -51,10 +51,57 @@ const uint8 byte_9A40CC[] = {
     0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0
 };
 
+void do_part_1(uint32 imageId,
+               rct_scenery_entry * dword_141F70C,
+               uint32 dword_141F714, uint32 dword_141F71C, uint32 dword_141F710,
+               rct_xyz16 offset,
+               rct_xyz16 boundsR1, rct_xyz16 boundsR1_,
+               rct_xyz16 boundsR2, rct_xyz16 boundsR2_,
+               rct_xyz16 boundsL1, rct_xyz16 boundsL1_)
+{
+    if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
+        imageId |= dword_141F714;
+    }
+
+    if (dword_141F710 != 0) {
+        imageId = (imageId & 0x7FFFF) | dword_141F710;
+    }
+
+    if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
+        paint_struct * ps;
+
+        ps = sub_98197C(imageId, offset.x, offset.y, boundsR1.x, boundsR1.y, boundsR1.z, offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z, get_current_rotation());
+        if (ps != NULL) {
+            ps->tertiary_colour = dword_141F71C;
+        }
+
+        ps = sub_98197C(imageId + 1, offset.x, offset.y, boundsR2.x, boundsR2.y, boundsR2.z, offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z, get_current_rotation());
+        if (ps != NULL) {
+            ps->tertiary_colour = dword_141F71C;
+        }
+    } else {
+        paint_struct * ps;
+
+        ps = sub_98197C(imageId, offset.x, offset.y, boundsL1.x, boundsL1.y, boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
+        if (ps != NULL) {
+            ps->tertiary_colour = dword_141F71C;
+        }
+
+        ps = sub_98199C(imageId + 1, offset.x, offset.y, boundsL1.x, boundsL1.y, boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
+        if (ps != NULL) {
+            ps->tertiary_colour = dword_141F71C;
+        }
+    }
+}
+
+/**
+ * rct2: 0x006E44B0
+ * @param direction (cl)
+ * @param height (dx)
+ * @param map_element (esi)
+ */
 void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 {
-    //RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, height, (int) map_element, 0, 0);
-
     rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *);
     RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WALL;
 
@@ -103,156 +150,73 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
     uint8 ah = dword_141F70C->wall.height * 8 - 2;
 
+    rct_xyz16 offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
+
     if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG5) {
         uint32 ebx = (map_element->properties.fence.item[2] >> 3) & 0x1F;
-
         switch (direction) {
             case 0:
                 ebx = dword_141F70C->image + byte_9A406C[ebx];
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    ebx |= dword_141F714;
-                }
 
-                if (dword_141F710 != 0) {
-                    ebx = (ebx & 0x7FFFF) | dword_141F710;
-                }
+                boundsR1 = (rct_xyz16) {1, 3, ah - 5};
+                boundsR1_ = (rct_xyz16) {1, 1, height + 1};
+                boundsR2 = (rct_xyz16) {1, 28, 3};
+                boundsR2_ = (rct_xyz16) {1, 1, height + ah - 9};
 
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
-                    paint_struct * ps;
+                boundsL1 = (rct_xyz16) {1, 28, ah};
+                boundsL1_ = (rct_xyz16) {1, 1, height + 1};
 
-                    ps = sub_98197C(ebx, 0, 0, 1, 3, ah - 5, height, 1, 1, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
+                offset = (rct_xyz16) {0, 0, height};
 
-                    ps = sub_98197C(ebx + 1, 0, 0, 1, 28, 3, height, 1, 1, height + ah - 5 - 4, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                } else {
-                    paint_struct * ps;
-
-                    ps = sub_98197C(ebx, 0, 0, 1, 28, ah, height, 1, 1, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-
-                    ps = sub_98199C(ebx + 1, 0, 0, 1, 28, ah, height, 1, 1, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                }
+                do_part_1(ebx, dword_141F70C, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 1:
                 ebx = dword_141F70C->image + byte_9A408C[ebx];
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    ebx |= dword_141F714;
-                }
 
-                if (dword_141F710 != 0) {
-                    ebx = (ebx & 0x7FFFF) | dword_141F710;
-                }
+                boundsR1 = (rct_xyz16) {3, 3, ah - 5};
+                boundsR1_ = (rct_xyz16) {1, 30, height + 1};
+                boundsR2 = (rct_xyz16) {29, 3, 2};
+                boundsR2_ = (rct_xyz16) {1, 30, height + ah - 8};
 
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
-                    paint_struct * ps;
+                boundsL1 = (rct_xyz16) {29, 1, ah};
+                boundsL1_ = (rct_xyz16) {2, 30, height + 1};
 
-                    ps = sub_98197C(ebx, 1, 31, 3, 3, ah - 5, height, 1, 30, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
+                offset = (rct_xyz16) {1, 31, height};
 
-                    ps = sub_98197C(ebx + 1, 1, 31, 29, 3, 2, height, 1, 30, height + ah - 8, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                } else {
-                    paint_struct * ps;
-
-                    ps = sub_98197C(ebx, 1, 31, 29, 1, ah, height, 2, 30, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-
-                    ps = sub_98199C(ebx + 1, 1, 31, 29, 1, ah, height, 2, 30, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                }
+                do_part_1(ebx, dword_141F70C, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 2:
                 ebx = dword_141F70C->image + byte_9A40AC[ebx];
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    ebx |= dword_141F714;
-                }
 
-                if (dword_141F710 != 0) {
-                    ebx = (ebx & 0x7FFFF) | dword_141F710;
-                }
+                boundsR1 = (rct_xyz16) {3, 3, ah - 5};
+                boundsR1_ = (rct_xyz16) {30, 1, height + 1};
+                boundsR2 = (rct_xyz16) {3, 29, 2};
+                boundsR2_ = (rct_xyz16) {30, 1, height + ah - 8};
 
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
-                    paint_struct * ps;
+                boundsL1 = (rct_xyz16) {1, 29, ah};
+                boundsL1_ = (rct_xyz16) {30, 2, height + 1};
 
-                    ps = sub_98197C(ebx, 31, 0, 3, 3, ah - 5, height, 1, 30, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
+                offset = (rct_xyz16) {31, 0, height};
 
-                    ps = sub_98197C(ebx + 1, 31, 0, 3, 29, 2, height, 1, 30, height + ah - 8, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                } else {
-                    paint_struct * ps;
-
-                    ps = sub_98197C(ebx, 31, 0, 1, 29, ah, height, 30, 2, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-
-                    ps = sub_98199C(ebx + 1, 31, 0, 1, 29, ah, height, 30, 2, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                }
+                do_part_1(ebx, dword_141F70C, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 3:
                 ebx = dword_141F70C->image + byte_9A40CC[ebx];
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    ebx |= dword_141F714;
-                }
 
-                if (dword_141F710 != 0) {
-                    ebx = (ebx & 0x7FFFF) | dword_141F710;
-                }
+                boundsR1 = (rct_xyz16) {3, 1, ah - 5};
+                boundsR1_ = (rct_xyz16) {1, 1, height + 1};
+                boundsR2 = (rct_xyz16) {28, 1, 3};
+                boundsR2_ = (rct_xyz16) {1, 1, height + ah - 9};
 
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
-                    paint_struct * ps;
+                boundsL1 = (rct_xyz16) {28, 1, ah};
+                boundsL1_ = (rct_xyz16) {1, 1, height + 1};
 
-                    ps = sub_98197C(ebx, 2, 1, 3, 1, ah - 5, height, 1, 1, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
+                offset = (rct_xyz16) {2, 1, height};
 
-                    ps = sub_98197C(ebx + 1, 2, 1, 28, 1, 3, height, 1, 1, height + ah - 5 - 4, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                } else {
-                    paint_struct * ps;
-
-                    ps = sub_98197C(ebx, 2, 1, 28, 1, ah, height, 1, 1, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-
-                    ps = sub_98199C(ebx + 1, 2, 1, 28, 1, ah, height, 1, 1, height + 1, get_current_rotation());
-                    if (ps != NULL) {
-                        ps->tertiary_colour = dword_141F71C;
-                    }
-                }
+                do_part_1(ebx, dword_141F70C, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
         }
 
@@ -395,7 +359,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
                     sub_98199C(imageId, 31, 0, 1, 29, ah, height, 30, 2, height + 1, get_current_rotation());
                 }
             } else {
-                uint32 imageId = imageId + dword_141F708;
+                uint32 imageId = baseImageId + dword_141F708;
 
                 if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
                     imageId |= dword_141F714;
