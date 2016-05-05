@@ -266,7 +266,7 @@ static void track_design_index_scan()
 	track_design_index_include(directory);
 
 	// Get track directory from user directory
-	platform_get_user_directory(directory, "tracks");
+	platform_get_user_directory(directory, "track");
 	track_design_index_include(directory);
 
 	// Sort items by ride type then by filename

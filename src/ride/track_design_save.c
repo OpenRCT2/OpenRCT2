@@ -160,7 +160,7 @@ bool track_design_save(uint8 rideIndex)
 
 	// Default location
 	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, "tracks");
+	platform_get_user_directory(path, "track");
 	strcat(path, track_name);
 	strcat(path, ".td6");
 

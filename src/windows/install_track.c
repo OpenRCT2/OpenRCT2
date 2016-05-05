@@ -382,7 +382,7 @@ static void window_install_track_design(rct_window *w)
 {
 	utf8 destPath[MAX_PATH];
 
-	platform_get_user_directory(destPath, "tracks");
+	platform_get_user_directory(destPath, "track");
 	if (!platform_ensure_directory_exists(destPath)) {
 		log_error("Unable to create directory '%s'", destPath);
 		window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
