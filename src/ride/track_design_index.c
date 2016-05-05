@@ -58,9 +58,9 @@ void track_design_index_create()
 	if (file != NULL) {
 		track_design_index_scan();
 
-		SDL_RWwrite(file, &TrackIndexMagicNumber, 4, 1);
-		SDL_RWwrite(file, &TrackIndexVersion, 4, 1);
-		SDL_RWwrite(file, &_tdIndexSize, 4, 1);
+		SDL_RWwrite(file, &TrackIndexMagicNumber, sizeof(TrackIndexMagicNumber), 1);
+		SDL_RWwrite(file, &TrackIndexVersion, sizeof(TrackIndexVersion), 1);
+		SDL_RWwrite(file, &_tdIndexSize, sizeof(uint32), 1);
 		SDL_RWwrite(file, _tdIndex, sizeof(td_index_item), _tdIndexSize);
 		SDL_RWclose(file);
 		track_design_index_dispose();
@@ -240,10 +240,11 @@ bool track_design_index_install(const utf8 *srcPath, const utf8 *destPath)
 
 static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount)
 {
-	uint32 tdidxMagicNumber, tdidxVersion;
-	SDL_RWread(file, &tdidxMagicNumber, 4, 1);
-	SDL_RWread(file, &tdidxVersion, 4, 1);
-	SDL_RWread(file, tdidxCount, 4, 1);
+	uint32 tdidxMagicNumber;
+	uint16 tdidxVersion;
+	SDL_RWread(file, &tdidxMagicNumber, sizeof(tdidxMagicNumber), 1);
+	SDL_RWread(file, &tdidxVersion, sizeof(tdidxVersion), 1);
+	SDL_RWread(file, tdidxCount, sizeof(uint32), 1);
 	if (tdidxMagicNumber != TrackIndexMagicNumber) {
 		log_error("invalid track index file");
 		return false;
@@ -355,5 +356,5 @@ static void track_design_index_dispose()
 static void track_design_index_get_path(utf8 * buffer, size_t bufferLength)
 {
 	platform_get_user_directory(buffer, NULL);
-	safe_strcat(buffer, "tracks2.idx", bufferLength);
+	safe_strcat(buffer, "tracks.idx", bufferLength);
 }
