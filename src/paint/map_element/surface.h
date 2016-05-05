@@ -17,8 +17,8 @@
 #ifndef _PAINT_SURFACE_H
 #define _PAINT_SURFACE_H
 
-#include "../common.h"
-#include "../world/map.h"
+#include "../../common.h"
+#include "../../world/map.h"
 
 enum
 {
@@ -100,6 +100,6 @@ enum
     SPR_TERRAIN_PATTERN_ICE = 29007,
 };
 
-void viewport_surface_paint_setup(uint8 direction, uint16 height, rct_map_element *mapElement);
+
 
 #endif //_PAINT_SURFACE_H
