@@ -100,7 +100,8 @@ static uint8 *_window_track_place_mini_preview;
 static sint16 _window_track_place_last_x;
 static sint16 _window_track_place_last_y;
 
-static uint8 _window_track_place_last_was_valid;
+static uint8 _window_track_place_ride_index;
+static bool _window_track_place_last_was_valid;
 static sint16 _window_track_place_last_valid_x;
 static sint16 _window_track_place_last_valid_y;
 static sint16 _window_track_place_last_valid_z;
@@ -270,11 +271,11 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 		for (i = 0; i < 7; i++) {
 			window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, 105, &cost, &rideIndex);
 			if (cost != MONEY32_UNDEFINED) {
-				RCT2_GLOBAL(0x00F440EB, uint16) = rideIndex;
+				_window_track_place_ride_index = rideIndex;
 				_window_track_place_last_valid_x = mapX;
 				_window_track_place_last_valid_y = mapY;
 				_window_track_place_last_valid_z = mapZ;
-				_window_track_place_last_was_valid = 1;
+				_window_track_place_last_was_valid = true;
 				break;
 			}
 			mapZ += 8;
@@ -377,12 +378,12 @@ static void window_track_place_clear_provisional()
 		sub_6D01B3(
 			_trackDesign,
 			PTD_OPERATION_CLEAR_OUTLINES,
-			RCT2_GLOBAL(0x00F440EB, uint8),
+			_window_track_place_ride_index,
 			_window_track_place_last_valid_x,
 			_window_track_place_last_valid_y,
 			_window_track_place_last_valid_z
 		);
-		_window_track_place_last_was_valid = 0;
+		_window_track_place_last_was_valid = false;
 	}
 }
 

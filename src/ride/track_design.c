@@ -1452,6 +1452,7 @@ money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uint8 *out
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
 		gGameCommandErrorText = error_reason;
 		gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
+		*outRideIndex = rideIndex;
 		return cost;
 	}
 
