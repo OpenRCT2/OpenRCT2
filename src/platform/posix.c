@@ -579,11 +579,11 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 	if (dstFile == NULL) {
 		if (errno == EEXIST) {
 			log_warning("platform_file_copy: Not overwriting %s, because overwrite flag == false", dstPath);
-			return 0;
+			return false;
 		}
 
 		log_error("Could not open destination file %s for copying", dstPath);
-		return 0;
+		return false;
 	}
 
 	// Open both files and check whether they are opened correctly
@@ -591,7 +591,7 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 	if (srcFile == NULL) {
 		fclose(dstFile);
 		log_error("Could not open source file %s for copying", srcPath);
-		return 0;
+		return false;
 	}
 
 	size_t amount_read = 0;
@@ -605,7 +605,7 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 	fclose(dstFile);
 	free(buffer);
 
-	return 0;
+	return true;
 }
 
 bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
