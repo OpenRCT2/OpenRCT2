@@ -595,11 +595,20 @@ bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite
 	}
 
 	size_t amount_read = 0;
+	size_t file_offset = 0;
 
+	// Copy file in FILE_BUFFER_SIZE-d chunks
 	char* buffer = (char*) malloc(FILE_BUFFER_SIZE);
 	while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile))) {
 		fwrite(buffer, amount_read, 1, dstFile);
+		file_offset += amount_read;
 	}
+
+	// Finish the left-over data from file, which may not be a full
+	// FILE_BUFFER_SIZE-d chunk.
+	fseek(srcFile, file_offset, SEEK_SET);
+	amount_read = fread(buffer, 1, FILE_BUFFER_SIZE, srcFile);
+	fwrite(buffer, amount_read, 1, dstFile);
 
 	fclose(srcFile);
 	fclose(dstFile);
