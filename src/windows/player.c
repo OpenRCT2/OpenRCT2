@@ -104,6 +104,7 @@ void window_player_overview_dropdown(rct_window *w, int widgetIndex, int dropdow
 void window_player_overview_update(rct_window* w);
 void window_player_overview_invalidate(rct_window *w);
 void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
+void window_player_kick_text_input(rct_window *w, int widgetIndex, char *text);
 
 static rct_window_event_list window_player_overview_events = {
 	window_player_overview_close,
@@ -125,7 +126,7 @@ static rct_window_event_list window_player_overview_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_player_kick_text_input,
 	NULL,
 	NULL,
 	NULL,
@@ -298,9 +299,24 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 		}
 	}break;
 	case WIDX_KICK:
-		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
+		window_text_input_raw_open(w, widgetIndex, STR_INSERT_KICK_MESSAGE, STR_INSERT_KICK_MESSAGE_DESC, (utf8*)"", 32);
 		break;
 	}
+}
+
+static void window_player_kick_text_input(rct_window *w, int widgetIndex, char *text)
+{
+	if (widgetIndex != WIDX_KICK)
+		return;
+
+	if (text == NULL)
+		return;
+
+	game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, *(int*)(text + 0));
+
+	//game_do_command(3 | (_selectedGroup << 8) | (1 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 0)), GAME_COMMAND_MODIFY_GROUPS, *((int*)(text + 8)), *((int*)(text + 4)));
+	//game_do_command(3 | (_selectedGroup << 8) | (2 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 12)), GAME_COMMAND_MODIFY_GROUPS, *((int*)(text + 20)), *((int*)(text + 16)));
+	//game_do_command(3 | (_selectedGroup << 8) | (0 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int*)(text + 24)), GAME_COMMAND_MODIFY_GROUPS, *((int*)(text + 32)), *((int*)(text + 28)));
 }
 
 void window_player_overview_mouse_down(int widgetIndex, rct_window *w, rct_widget *widget)

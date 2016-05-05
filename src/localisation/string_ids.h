@@ -2443,6 +2443,8 @@ enum {
 	STR_SHORTCUT_MUTE_SOUND = 5804,
 	
 	STR_ADVERTISE_SERVER_TIP = 5805,
+	STR_INSERT_KICK_MESSAGE = 5808,
+	STR_INSERT_KICK_MESSAGE_DESC = 5809,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768

@@ -306,7 +306,7 @@ public:
 	static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
-	void KickPlayer(int playerId);
+	void KickPlayer(int playerId, int* message_ptr);
 	void SetPassword(const char* password);
 	void ShutdownClient();
 	void AdvertiseRegister();
