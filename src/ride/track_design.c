@@ -79,6 +79,12 @@ rct_track_td6 *track_design_open(const utf8 *path)
 	if (file != NULL) {
 		// Read whole file into a buffer
 		size_t bufferLength = (size_t)SDL_RWsize(file);
+		if (bufferLength < 4) {
+			log_error("Invalid track file: %s.", path);
+			SDL_RWclose(file);
+			return false;
+		}
+
 		uint8 *buffer = (uint8*)malloc(bufferLength);
 		if (buffer == NULL) {
 			log_error("Unable to allocate memory for track design file.");
