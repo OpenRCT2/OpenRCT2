@@ -60,7 +60,7 @@ void misc_paint(rct_sprite *misc, int imageDirection)
 				stringId = 1389; // {OUTLINE}{RED}- {CURRENCY}
 			}
 
-			sub_685EBC(amount, stringId, moneyEffect.y, moneyEffect.z, &money_wave[moneyEffect.wiggle % 22], moneyEffect.offset_x, get_current_rotation());
+			sub_685EBC(amount, stringId, moneyEffect.y, moneyEffect.z, (sint8 *) &money_wave[moneyEffect.wiggle % 22], moneyEffect.offset_x, get_current_rotation());
 			break;
 		}
 

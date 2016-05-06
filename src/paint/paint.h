@@ -77,7 +77,7 @@ struct paint_string_struct {
 	paint_string_struct *next;		// 0x02
 	uint16 x;						// 0x06
 	uint16 y;						// 0x08
-	uint8 args[16];					// 0x0A
+	uint32 args[4];					// 0x0A
 	uint8 *y_offsets;				// 0x1A
 };
 
