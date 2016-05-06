@@ -123,9 +123,6 @@ static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength
 	rct_track_td6 *td6 = calloc(1, sizeof(rct_track_td6));
 	uint8 *readPtr = src;
 
-	// Clear top of track_design as this is not loaded from the td4 files
-	memset(&td6->track_spine_colour, 0, 67);
-
 	// Read start of track_design
 	copy(td6, &readPtr, 32);
 

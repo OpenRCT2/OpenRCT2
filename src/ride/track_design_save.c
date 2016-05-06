@@ -472,7 +472,7 @@ static void track_design_save_pop_map_element_desc(rct_object_entry *entry, int 
 			memmove(
 				&_trackSavedMapElementsDesc[removeIndex],
 				&_trackSavedMapElementsDesc[removeIndex + 1],
-				remainingNumItems * sizeof(rct_td6_scenery_element*)
+				remainingNumItems * sizeof(rct_td6_scenery_element)
 			);
 		}
 		_trackSavedMapElementsDescCount--;
@@ -1288,6 +1288,7 @@ static bool track_design_save_to_file(rct_track_td6 *td6, utf8 *path)
 
 	// Encode TD6 data
 	uint8 *encodedData = malloc(0x8000);
+	assert(td6Buffer.ptr != NULL);
 	int encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
 
 	// Save encoded TD6 data to file
