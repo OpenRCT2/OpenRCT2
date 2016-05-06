@@ -537,6 +537,11 @@ static void shortcut_windowed_mode_toggle()
 	platform_toggle_windowed_mode();
 }
 
+static void shortcut_show_multiplayer()
+{
+	window_multiplayer_open();
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -585,7 +590,8 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_quick_save_game,
 	shortcut_show_options,
 	shortcut_mute_sound,
-	shortcut_windowed_mode_toggle
+	shortcut_windowed_mode_toggle,
+	shortcut_show_multiplayer,
 };
 
 #pragma endregion
