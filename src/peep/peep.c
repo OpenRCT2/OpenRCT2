@@ -409,8 +409,8 @@ static void sub_68F41A(rct_peep *peep, int index)
 		if (peep->peep_flags & PEEP_FLAGS_EXPLODE && peep->x != (sint16)0x8000){
 			audio_play_sound_at_location(SOUND_CRASH, peep->x, peep->y, peep->z);
 
-			sprite_misc_3_create(peep->x, peep->y, peep->z + 16);
-			sprite_misc_5_create(peep->x, peep->y, peep->z + 16);
+			sprite_misc_explosion_cloud_create(peep->x, peep->y, peep->z + 16);
+			sprite_misc_explosion_flare_create(peep->x, peep->y, peep->z + 16);
 
 			peep_remove(peep);
 			return;

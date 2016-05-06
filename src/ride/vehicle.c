@@ -2544,11 +2544,11 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 			train->z
 			);
 
-		sprite_misc_3_create(
+		sprite_misc_explosion_cloud_create(
 			train->x,
 			train->y,
 			train->z
-			);
+		);
 
 		for (int i = 0; i < 10; i++) {
 			crashed_vehicle_particle_create(
@@ -4128,8 +4128,8 @@ static void vehicle_crash_on_land(rct_vehicle* vehicle) {
 	vehicle->sub_state = 2;
 	audio_play_sound_at_location(SOUND_CRASH, vehicle->x, vehicle->y, vehicle->z);
 
-	sprite_misc_3_create(vehicle->x, vehicle->y, vehicle->z);
-	sprite_misc_5_create(vehicle->x, vehicle->y, vehicle->z);
+	sprite_misc_explosion_cloud_create(vehicle->x, vehicle->y, vehicle->z);
+	sprite_misc_explosion_flare_create(vehicle->x, vehicle->y, vehicle->z);
 
 	uint8 numParticles = min(vehicle->sprite_width, 7);
 
@@ -4214,11 +4214,11 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 			if (curVehicle->var_4E <= 96) {
 				curVehicle->var_4E++;
 				if ((scenario_rand() & 0xFFFF) <= 0x1555) {
-					sprite_misc_3_create(
+					sprite_misc_explosion_cloud_create(
 						curVehicle->x + ((scenario_rand() & 2) - 1),
 						curVehicle->y + ((scenario_rand() & 2) - 1),
 						curVehicle->z
-						);
+					);
 				}
 			}
 			if (curVehicle->var_C8 + 7281 > 0xFFFF) {
@@ -6089,7 +6089,7 @@ static void steam_particle_create(sint16 x, sint16 y, sint16 z)
 		steam->sprite_height_positive = 16;
 		steam->sprite_identifier = SPRITE_IDENTIFIER_MISC;
 		steam->misc_identifier = SPRITE_MISC_STEAM_PARTICLE;
-		steam->var_26 = 256;
+		steam->frame = 256;
 		steam->var_24 = 0;
 		sprite_move(x, y, z, (rct_sprite*)steam);
 	}

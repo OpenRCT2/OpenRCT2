@@ -68,7 +68,7 @@ typedef struct {
 	uint8 pad_1F[3]; // 0x1f
 	uint16 name_string_idx;			// 0x22
 	uint16 var_24;
-	uint16 var_26;
+	uint16 frame;					// 0x26
 	uint8 var_28[3];
 	uint8 var_2B;
 	uint8 pad_2C[0x45];
@@ -114,7 +114,7 @@ typedef struct {
 	uint8 pad_16[0xE];
 	uint16 popped;					// 0x24
 	union {
-		uint16 var_26;
+		uint16 frame;				// 0x26
 		struct {
 			uint8 var_26a;
 			uint8 var_26b;
@@ -235,7 +235,7 @@ typedef struct {
 	uint8 pad_1F[3]; // 0x1f
 	uint16 name_string_idx;			// 0x22
 	uint16 var_24;
-	uint16 var_26;
+	uint16 frame;					// 0x26
 	uint8 var_28[3];
 	uint8 var_2B;
 	uint8 colour[2];
@@ -277,7 +277,7 @@ typedef struct {
 	uint8 pad_1F[3]; // 0x1f
 	uint16 name_string_idx;			// 0x22
 	uint16 var_24;
-	uint16 var_26;
+	uint16 frame;					// 0x26
 } rct_crash_splash;
 
 typedef struct {
@@ -306,7 +306,7 @@ typedef struct {
 	uint8 pad_1F[3];				// 0x1F
 	uint16 name_string_idx;			// 0x22
 	uint16 var_24;
-	uint16 var_26;
+	uint16 frame;					// 0x26
 } rct_steam_particle;
 
 /**
@@ -349,9 +349,9 @@ enum {
 	SPRITE_MISC_STEAM_PARTICLE,
 	SPRITE_MISC_MONEY_EFFECT,
 	SPRITE_MISC_CRASHED_VEHICLE_PARTICLE,
-	SPRITE_MISC_3,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_EXPLOSION_CLOUD,
 	SPRITE_MISC_CRASH_SPLASH,
-	SPRITE_MISC_5,							// (related to vehicle crash, probably crash particles)
+	SPRITE_MISC_EXPLOSION_FLARE,
 	SPRITE_MISC_JUMPING_FOUNTAIN_WATER,
 	SPRITE_MISC_BALLOON,
 	SPRITE_MISC_DUCK,
@@ -384,8 +384,8 @@ void invalidate_sprite_2(rct_sprite *sprite);
 void sprite_remove(rct_sprite *sprite);
 void litter_create(int x, int y, int z, int direction, int type);
 void litter_remove_at(int x, int y, int z);
-void sprite_misc_3_create(int x, int y, int z);
-void sprite_misc_5_create(int x, int y, int z);
+void sprite_misc_explosion_cloud_create(int x, int y, int z);
+void sprite_misc_explosion_flare_create(int x, int y, int z);
 uint16 sprite_get_first_in_quadrant(int x, int y);
 
 ///////////////////////////////////////////////////////////////
