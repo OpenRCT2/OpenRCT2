@@ -538,10 +538,10 @@ static void shortcut_windowed_mode_toggle()
 }
 
 static void shortcut_show_multiplayer()
-	{
+{
 	if (network_get_mode() != NETWORK_MODE_NONE)
-	window_multiplayer_open();
-	}
+		window_multiplayer_open();
+}
 
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
