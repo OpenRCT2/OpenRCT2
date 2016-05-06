@@ -429,10 +429,10 @@ void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_of
 	ps->string_id = string_id;
 	ps->next = 0;
 	ps->args[0] = amount;
-	ps->args[4] = y;
-	ps->args[8] = y_offsets;
-	ps->args[12] = 0;
-	ps->y_offsets = y_offsets;
+	ps->args[1] = y;
+	ps->args[2] = (int) y_offsets;
+	ps->args[3] = 0;
+	ps->y_offsets = (uint8 *) y_offsets;
 
 	rct_xyz16 position = {.x = RCT2_GLOBAL(0x9DE568, sint16), .y = RCT2_GLOBAL(0x9DE56C, sint16), .z = z};
 	rct_xy16 coord = coordinate_3d_to_2d(&position, rotation);
