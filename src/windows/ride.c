@@ -237,7 +237,7 @@ static rct_widget window_ride_vehicle_widgets[] = {
 	{ WWT_SPINNER,			1,	7,		151,	190,	201,	1021,										STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	191,	195,	STR_NUMERIC_UP,								STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	140,	150,	196,	200,	STR_NUMERIC_DOWN,							STR_NONE										},
-	{ WWT_SPINNER,			1,	164,	308,	190,	201,	1022,										STR_NONE										},
+	{ WWT_SPINNER,			1,	164,	308,	190,	201,	STR_1_CAR_PER_TRAIN,										STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	191,	195,	STR_NUMERIC_UP,								STR_NONE										},
 	{ WWT_DROPDOWN_BUTTON,	1,	297,	307,	196,	200,	STR_NUMERIC_DOWN,							STR_NONE										},
 	{ WIDGETS_END },
@@ -2459,20 +2459,10 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 	case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
 		if (ride->num_cars_per_train < 255)
 			ride_set_num_cars_per_vehicle(w->number, ride->num_cars_per_train + 1);
-		if (ride->num_cars_per_train > 1) {
-			window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = 1023;
-		} else {
-			window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = 1022;
-		}
 		break;
 	case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
 		if (ride->num_cars_per_train > rideEntry->zero_cars + 1)
 			ride_set_num_cars_per_vehicle(w->number, ride->num_cars_per_train - 1);
-		if (ride->num_cars_per_train > 1) {
-			window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = 1023;
-		} else {
-			window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = 1022;
-		}
 		break;
 	}
 }
@@ -2588,6 +2578,12 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 
 	window_ride_anchor_border_widgets(w);
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
+
+	if (ride->num_cars_per_train > (rideEntry->zero_cars + 1)) {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = STR_X_CARS_PER_TRAIN;
+	} else {
+		window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN].image = STR_1_CAR_PER_TRAIN;
+	}
 }
 
 /**

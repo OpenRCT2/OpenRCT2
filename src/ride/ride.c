@@ -7384,7 +7384,7 @@ int ride_get_smallest_station_length(rct_ride *ride)
 	uint32 result = -1;
 	for (int i = 0; i < 4; i++) {
 		if (ride->station_starts[i] != 0xFFFF) {
-			result = min(result, (uint32)(ride->station_length[i] & 0x0F));
+			result = min(result, (uint32)(ride->station_length[i]));
 		}
 	}
 	return (int)result;

@@ -4186,7 +4186,7 @@ static bool track_add_station_element(int x, int y, int z, int direction, int ri
 		return false;
 	}
 
-	if (stationLength > 12) {
+	if (stationLength > 32) {
 		gGameCommandErrorText = STR_STATION_PLATFORM_TOO_LONG;
 		return false;
 	}
