@@ -1156,9 +1156,9 @@ STR_1149    :Moitié de la charge
 STR_1150    :Trois-quarts de la charge
 STR_1151    :Charge totale
 STR_1152    :N'importe quelle charge
-STR_1153    :Repère de hauteur sur les voies
-STR_1154    :Repère de hauteur sur le terrain
-STR_1155    :Repère de hauteur sur les chemins
+STR_1153    :Repères de hauteur sur les voies
+STR_1154    :Repères de hauteur sur le terrain
+STR_1155    :Repères de hauteur sur les chemins
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Impossible de supprimer ceci...
@@ -3895,11 +3895,11 @@ STR_5553    :Mettre en pause quand l'overlay Steam est ouvert
 STR_5554    :{SMALLFONT}{BLACK}Outil montagne
 STR_5555    :Afficher véhicules d'autres types de voie
 STR_5556    :{SMALLFONT}{BLACK}Sortir le joueur
-STR_5557    :Rester connecter après désynchronisation (multij.)
+STR_5557    :Rester connecté après désynchronisation (multij.)
 STR_5558    :Redémarrez le jeu pour appliquer ce paramètre
 STR_5559    :Inspections 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Définit l'intervalle d'inspection de toutes les attractions à toutes les 10 minutes
-STR_5561    :Le chargement de la langue à échoué
+STR_5561    :Le chargement de la langue a échoué
 STR_5562    :ATTENTION!
 STR_5563    :Cette fonctionnalité est actuellement instable, faites attention.
 STR_5564    :Insérer un élément corrompu
@@ -3948,7 +3948,7 @@ STR_5606    :Visiteurs décèdent
 STR_5607    :{SMALLFONT}{BLACK}Forcer la suppression de l'élément sélectionné
 STR_5608    :HB
 STR_5609    :HC
-STR_5610    :{SMALLFONT}{BLACK}Supprime l'élément sélectoonné. La suppression va être forcée, pas d'argent ne va être dépensé/gagné. A utiliser avec précaution.
+STR_5610    :{SMALLFONT}{BLACK}Supprime l'élément sélectionné. La suppression va être forcée, l'argent ne va pas être dépensé/gagné. A utiliser avec précaution.
 STR_5611    :F
 STR_5612    :{SMALLFONT}{BLACK}Drapeau {OPENQUOTES}fantôme{ENDQUOTES}
 STR_5613    :C
@@ -4029,7 +4029,7 @@ STR_5722    :Pluie
 STR_5723    :Forte Pluie
 STR_5724    :Orage
 STR_5725    :{BLACK}Forcer la météo :
-STR_5726    :{SMALLFONT}{BLACK}Défini la météo actuelle dans le parc
+STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
 STR_5728    :Requiert l'option d'affichage matériel
 STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'affichage matériel
@@ -4049,7 +4049,7 @@ STR_5741    :{SMALLFONT}{BLACK}Les campagnes marketings ne s'arrêtent jamais
 STR_5742    :Authentification...
 STR_5743    :Connection...
 STR_5744    :Résolution...
-STR_5745    :Désynchronisation détéctée
+STR_5745    :Désynchronisation détectée
 STR_5746    :Déconnecté
 STR_5747    :Déconnecté : {STRING}
 STR_5748    :Expulsé
