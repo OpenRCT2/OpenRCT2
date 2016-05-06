@@ -94,6 +94,41 @@ void do_part_1(uint32 imageId,
     }
 }
 
+void do_part_2(uint32 dword_141F708, const rct_scenery_entry * dword_141F70C, uint32 dword_141F710, uint32 dword_141F714, uint32 dword_141F718, uint32 dword_141F71C, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
+{
+    uint32 baseImageId = dword_141F70C->image + imageOffset + dword_141F708;
+    uint32 imageId = baseImageId;
+
+
+    if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG2) {
+        if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
+            imageId |= dword_141F714;
+        }
+
+        if (dword_141F710 != 0) {
+            imageId = (imageId & 0x7FFFF) | dword_141F710;
+        }
+
+        sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+        if (dword_141F710 == 0) {
+            imageId = baseImageId + dword_141F718;
+            sub_98199C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+        }
+    } else {
+        if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
+            imageId |= dword_141F714;
+        }
+
+        if (dword_141F710 != 0) {
+            imageId = (imageId & 0x7FFFF) | dword_141F710;
+        }
+
+        paint_struct * paint = sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+        if (paint != NULL) {
+            paint->tertiary_colour = dword_141F71C;
+        }
+    }
+}
 /**
  * rct2: 0x006E44B0
  * @param direction (cl)
@@ -150,9 +185,9 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
     uint8 ah = dword_141F70C->wall.height * 8 - 2;
 
-    rct_xyz16 offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
 
     if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG5) {
+        rct_xyz16 offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
         uint32 ebx = (map_element->properties.fence.item[2] >> 3) & 0x1F;
         switch (direction) {
             case 0:
@@ -225,204 +260,83 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
 
     uint8 al = map_element->type;
+    uint32 imageOffset;
+    rct_xyz16 offset, bounds, boundsOffset;
 
     switch (direction) {
-        case 0: {
-            uint32 offset;
+        case 0:
             if (al & 0x80) {
-                offset = 3;
+                imageOffset = 3;
             } else if (al & 0x40) {
-                offset = 5;
+                imageOffset = 5;
             } else {
-                offset = 1;
+                imageOffset = 1;
             }
 
-            uint32 baseImageId = offset + dword_141F70C->image + dword_141F708;
+            offset = (rct_xyz16){1, 31, height};
+            bounds = (rct_xyz16){29, 1, ah};
+            boundsOffset = (rct_xyz16){2, 30, height + 1};
+			break;
 
-            uint32 imageId = baseImageId;
-            if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG2) {
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                sub_98197C(imageId, 0, 0, 1, 28, ah, height, 1, 1, height + 1, get_current_rotation());
-                if (dword_141F710 == 0) {
-                    imageId = baseImageId + dword_141F718;
-                    sub_98199C(imageId, 0, 0, 1, 28, ah, height, 1, 1, height + 1, get_current_rotation());
-                }
-            } else {
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                paint_struct * paint = sub_98197C(imageId, 0, 0, 1, 28, ah, height, 1, 1, height + 1, get_current_rotation());
-                if (paint != NULL) {
-                    paint->tertiary_colour = dword_141F71C;
-                }
-            }
-
-            break;
-        }
-
-        case 1: {
-            uint32 offset;
+        case 1:
             if (al & 0x80) {
-                offset = 2;
+                imageOffset = 2;
             } else if (al & 0x40) {
-                offset = 4;
+                imageOffset = 4;
             } else {
-                offset = 0;
+                imageOffset = 0;
             }
 
             if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG2) {
                 if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
-                    offset += 12;
-                }
-
-                uint32 baseImageId = offset + dword_141F70C->image;
-                uint32 imageId = baseImageId;
-
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                sub_98197C(imageId, 1, 31, 29, 1, ah, height, 2, 30, height + 1, get_current_rotation());
-                if (dword_141F710 == 0) {
-                    imageId = baseImageId + dword_141F718;
-                    sub_98199C(imageId, 1, 31, 29, 1, ah, height, 2, 30, height + 1, get_current_rotation());
+                    imageOffset += 12;
                 }
             } else {
                 if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
-                    offset += 6;
-                }
-
-                uint32 imageId = offset + dword_141F70C->image + dword_141F708;
-
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                paint_struct * paint = sub_98197C(imageId, 1, 31, 29, 1, ah, height, 2, 30, height + 1, get_current_rotation());
-                if (paint != NULL) {
-                    paint->tertiary_colour = dword_141F71C;
+                    imageOffset += 6;
                 }
             }
 
+            offset = (rct_xyz16){1, 31, height};
+            bounds = (rct_xyz16){29, 1, ah};
+            boundsOffset = (rct_xyz16){2, 30, height + 1};
             break;
-        }
 
-        case 2: {
-            uint32 offset;
+        case 2:
             if (al & 0x80) {
-                offset = 5;
+                imageOffset = 5;
             } else if (al & 0x40) {
-                offset = 3;
+                imageOffset = 3;
             } else {
-                offset = 1;
+                imageOffset = 1;
             }
 
             if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG4) {
-                offset += 6;
+                imageOffset += 6;
             }
 
-            uint32 baseImageId = offset + dword_141F70C->image;
-            uint32 imageId = baseImageId;
-
-            if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG2) {
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                sub_98197C(imageId, 31, 0, 1, 29, ah, height, 30, 2, height + 1, get_current_rotation());
-                if (dword_141F710 == 0) {
-                    imageId = baseImageId + dword_141F718;
-                    sub_98199C(imageId, 31, 0, 1, 29, ah, height, 30, 2, height + 1, get_current_rotation());
-                }
-            } else {
-                uint32 imageId = baseImageId + dword_141F708;
-
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                paint_struct * paint = sub_98197C(imageId, 31, 0, 1, 29, ah, height, 30, 2, height + 1, get_current_rotation());
-                if (paint != NULL) {
-                    paint->tertiary_colour = dword_141F71C;
-                }
-            }
-
+            offset = (rct_xyz16){30, 0, height};
+            bounds = (rct_xyz16){1, 29, ah};
+            boundsOffset = (rct_xyz16){30, 2, height + 1};
             break;
-        }
 
-        case 3: {
-            uint32 offset;
+        case 3:
             if (al & 0x80) {
-                offset = 4;
+                imageOffset = 4;
             } else if (al & 0x40) {
-                offset = 2;
+                imageOffset = 2;
             } else {
-                offset = 0;
+                imageOffset = 0;
             }
 
-            uint32 baseImageId = offset + dword_141F70C->image + dword_141F708;
-            uint32 imageId = baseImageId;
-
-            if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG2) {
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                sub_98197C(imageId, 2, 1, 28, 1, ah, height, 1, 1, height + 1, get_current_rotation());
-                if (dword_141F710 == 0) {
-                    imageId = baseImageId + dword_141F718;
-                    sub_98199C(imageId, 2, 1, 28, 1, ah, height, 1, 1, height + 1, get_current_rotation());
-                }
-            } else {
-                if (dword_141F70C->wall.flags & WALL_SCENERY_FLAG1) {
-                    imageId |= dword_141F714;
-                }
-
-                if (dword_141F710 != 0) {
-                    imageId = (imageId & 0x7FFFF) | dword_141F710;
-                }
-
-                paint_struct * paint = sub_98197C(imageId, 2, 1, 28, 1, ah, height, 1, 1, height + 1, get_current_rotation());
-                if (paint != NULL) {
-                    paint->tertiary_colour = dword_141F71C;
-                }
-            }
-
+            offset = (rct_xyz16){2, 1, height};
+            bounds = (rct_xyz16){28, 1, ah};
+            boundsOffset = (rct_xyz16){1, 1, height + 1};
             break;
-        }
     }
+
+    do_part_2(dword_141F708, dword_141F70C, dword_141F710, dword_141F714, dword_141F718, dword_141F71C, imageOffset, offset, bounds, boundsOffset);
+
 
     if (dword_141F70C->wall.var_0D == 0xFF) {
         return;
