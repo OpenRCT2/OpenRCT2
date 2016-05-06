@@ -5498,12 +5498,17 @@ void game_command_set_ride_status(int *eax, int *ebx, int *ecx, int *edx, int *e
 
 void ride_set_name(int rideIndex, const char *name)
 {
-	char name_buffer[36];
-	safe_strcpy(name_buffer, name, sizeof(name_buffer));
+	typedef union name_union {
+		char as_char[4];
+		int as_int;
+	} name_union;
+
+	name_union name_buffer[9];
+	safe_strcpy((char *)name_buffer, name, sizeof(name_buffer));
 	gGameCommandErrorTitle = STR_CANT_RENAME_RIDE_ATTRACTION;
-	game_do_command(1, (rideIndex << 8) | 1, 0, *((int*)(name_buffer +  0)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name_buffer +  8)), *((int*)(name_buffer +  4)));
-	game_do_command(2, (rideIndex << 8) | 1, 0, *((int*)(name_buffer + 12)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name_buffer + 20)), *((int*)(name_buffer + 16)));
-	game_do_command(0, (rideIndex << 8) | 1, 0, *((int*)(name_buffer + 24)), GAME_COMMAND_SET_RIDE_NAME, *((int*)(name_buffer + 32)), *((int*)(name_buffer + 28)));
+	game_do_command(1, (rideIndex << 8) | 1, 0, name_buffer[0].as_int, GAME_COMMAND_SET_RIDE_NAME, name_buffer[2].as_int, name_buffer[1].as_int);
+	game_do_command(2, (rideIndex << 8) | 1, 0, name_buffer[3].as_int, GAME_COMMAND_SET_RIDE_NAME, name_buffer[5].as_int, name_buffer[4].as_int);
+	game_do_command(0, (rideIndex << 8) | 1, 0, name_buffer[6].as_int, GAME_COMMAND_SET_RIDE_NAME, name_buffer[8].as_int, name_buffer[7].as_int);
 }
 
 /**
