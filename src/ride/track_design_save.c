@@ -175,6 +175,7 @@ bool track_design_save(uint8 rideIndex)
 			*c = '\0';
 		}
 	}
+	platform_ensure_directory_exists(initialDirectory);
 
 	file_dialog_desc desc;
 	memset(&desc, 0, sizeof(desc));
