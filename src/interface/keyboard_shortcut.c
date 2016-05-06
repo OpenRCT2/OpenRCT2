@@ -539,6 +539,7 @@ static void shortcut_windowed_mode_toggle()
 
 static void shortcut_show_multiplayer()
 {
+	if (network_get_mode() != NETWORK_MODE_NONE)
 	window_multiplayer_open();
 }
 
