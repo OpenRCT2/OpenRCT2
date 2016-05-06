@@ -2448,6 +2448,8 @@ enum {
 
 	STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT = 5810,
 	STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP = 5811,
+	
+	STR_SHORTCUT_SHOW_MULTIPLAYER = 5812,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
