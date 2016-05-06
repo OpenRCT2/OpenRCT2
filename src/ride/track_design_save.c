@@ -179,7 +179,11 @@ bool track_design_save(uint8 rideIndex)
 	file_dialog_desc desc;
 	memset(&desc, 0, sizeof(desc));
 	desc.type = FD_SAVE;
-	desc.title = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
+	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+		desc.title = language_get_string(STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM);
+	} else {
+		desc.title = language_get_string(STR_SAVE_TRACK_DESIGN_ITEM);
+	}
 	desc.initial_directory = initialDirectory;
 	desc.default_filename = path;
 	desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
