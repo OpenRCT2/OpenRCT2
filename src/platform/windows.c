@@ -806,7 +806,11 @@ HWND windows_get_window_handle()
 	HWND handle = wmInfo.info.win.window;
 	#ifdef __MINGW32__
 	assert(sizeof(HWND) == sizeof(uint32));
-	HWND result = (((uint32)handle & 0xff000000) >> 8) | (((uint32)handle & 0xff0000) << 8) | (((uint32)handle & 0xff00) >> 8) | (((uint32)handle & 0xff) << 8);
+	uint8 A = (uint32)handle & 0xff000000 >> 24;
+	uint8 B = (uint32)handle & 0xff0000 >> 16;
+	uint8 C = (uint32)handle & 0xff00 >> 8;
+	uint8 D = (uint32)handle & 0xff;
+	HWND result = (HWND)(D << 24 | A << 16 | B << 8 | C);
 	log_warning("twisting bits of handle, a workaround for mingw/sdl bug");
 	#else
 	HWND result = handle;
