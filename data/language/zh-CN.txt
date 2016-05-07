@@ -40,7 +40,7 @@ STR_0033    :Unknown Stall (1F)
 STR_0034    :商店
 STR_0035    :旋转木马
 STR_0036    :Unknown Stall (22)
-STR_0037    :问讯处
+STR_0037    :信息亭
 STR_0038    :厕所
 STR_0039    :摩天轮
 STR_0040    :动感模拟器
@@ -855,12 +855,12 @@ STR_0844    :<not used anymore>
 STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
 STR_0847    :关于'OpenRCT2'
-STR_0848    :RollerCoaster Tycoon 2
+STR_0848    :过山车大亨2
 STR_0849    :{WINDOW_COLOUR_2}版本 2.01.028
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
-STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
+STR_0850    :{WINDOW_COLOUR_2}版权 {COPYRIGHT} 2002 Chris Sawyer, 版权所有
+STR_0851    :{WINDOW_COLOUR_2}设计及程序 by Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}美术 by Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}音效及音乐 by Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}致谢:
@@ -944,13 +944,13 @@ STR_0933    :请先将地面抬升或降低
 STR_0934    :游乐设施入口挡在此处
 STR_0935    :游乐设施出口挡在此处
 STR_0936    :游乐场的入口挡在此处
-STR_0937    :{SMALLFONT}{BLACK}View options
+STR_0937    :{SMALLFONT}{BLACK}查看选项
 STR_0938    :{SMALLFONT}{BLACK}调整地势高低及陡峭程度
 STR_0939    :地下/内部 视图模式
 STR_0940    :移除地表
 STR_0941    :移除垂直地面
-STR_0942    :略过游乐设施
-STR_0943    :掠过景物
+STR_0942    :半透明游乐设施
+STR_0943    :半透明景观
 STR_0944    :保存
 STR_0945    :不保存
 STR_0946    :取消
@@ -983,7 +983,7 @@ STR_0972    :取消
 STR_0973    :确定
 STR_0974    :游乐设施
 STR_0975    :商店及摊贩
-STR_0976    :洗手间及服务台
+STR_0976    :洗手间及信息亭
 STR_0977    :建造新的运输类游乐设施
 STR_0978    :建造新的温和类游乐设施
 STR_0979    :建造新的过山车
@@ -1058,8 +1058,8 @@ STR_1047    :存储游戏失败!
 STR_1048    :存储关卡失败!
 STR_1049    :存储地形失败!
 STR_1050    :载入失败...{NEWLINE}文件中含有不可读取的数据!
-STR_1051    :Invisible Supports
-STR_1052    :Invisible People
+STR_1051    :透明化支撑物
+STR_1052    :透明化游客
 STR_1053    :{SMALLFONT}{BLACK}游乐园内的游乐设施
 STR_1054    :{SMALLFONT}{BLACK}命名游乐设施/店铺
 STR_1055    :{SMALLFONT}{BLACK}命名游客
@@ -1160,9 +1160,9 @@ STR_1149    :Half load
 STR_1150    :Three-quarter load
 STR_1151    :Full load
 STR_1152    :Any load
-STR_1153    :Height Marks on Ride Tracks
-STR_1154    :Height Marks on Land
-STR_1155    :Height Marks on Paths
+STR_1153    :Height Marks on Ride Tracks设施轨道高度标记
+STR_1154    :Height Marks on Land土地高度标记
+STR_1155    :Height Marks on Paths道路高度标记
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Can't remove this...
@@ -2242,7 +2242,7 @@ STR_2229    :Slope up to vertical
 STR_2230    :Vertical track
 STR_2231    :Holding brake for drop
 STR_2232    :Cable lift hill
-STR_2233    :{SMALLFONT}{BLACK}Park information
+STR_2233    :{SMALLFONT}{BLACK}游乐园信息
 STR_2234    :Recent Messages
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
 STR_2236    :January
@@ -2393,7 +2393,7 @@ STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
 STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
 STR_2382    :Land
 STR_2383    :Water
-STR_2384    :{WINDOW_COLOUR_2}Your objective:
+STR_2384    :{WINDOW_COLOUR_2}你的目标
 STR_2385    :{BLACK}None
 STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
 STR_2387    :{BLACK}To achieve a park value of at least {POP16}{POP16}{CURRENCY} at the end of {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
@@ -2532,8 +2532,8 @@ STR_2519    :Show park information
 STR_2520    :Show guest list
 STR_2521    :Show staff list
 STR_2522    :Show recent messages
-STR_2523    :Show map
-STR_2524    :Screenshot
+STR_2523    :显示地图
+STR_2524    :截图
 ### The following need to be reordered to match SDL_keycode layout.
 STR_2525    :???
 STR_2526    :???
@@ -2791,8 +2791,8 @@ STR_2775    :全屏幕 (无边框窗口)
 STR_2776    :语言:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
-STR_2779    :Viewport #{COMMA16}
-STR_2780    :Extra viewport
+STR_2779    :查看窗口 #{COMMA16}
+STR_2780    :额外的查看窗口
 # End of new strings
 
 
@@ -2817,10 +2817,10 @@ STR_2798    :{SMALLFONT}{BLACK}选择当鼠标位于屏幕边缘时是否滚动�
 STR_2799    :{SMALLFONT}{BLACK}查看或改变控制按键分配
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
-STR_2802    :Map
+STR_2802    :地图
 STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
 STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
-STR_2805    :{SMALLFONT}{BLACK}Show map of park
+STR_2805    :{SMALLFONT}{BLACK}显示游乐园地图
 STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organising them better
 STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organising them better
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organising them better
@@ -3158,8 +3158,8 @@ STR_3139    :Cable lift unable to work in this operating mode
 STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
-STR_3143    :{SMALLFONT}{BLACK}Show people on map
-STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
+STR_3143    :{SMALLFONT}{BLACK}显示地图上所有人物
+STR_3144    :{SMALLFONT}{BLACK}显示地图上所有游乐设施和店铺
 STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} left
 STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} right
 STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} left fast
@@ -3172,7 +3172,7 @@ STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
 STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
 STR_3155    :
 STR_3156    :
-STR_3157    :map
+STR_3157    :地图
 STR_3158    :graph
 STR_3159    :list
 STR_3160    :<not used anymore>
@@ -3222,8 +3222,8 @@ STR_3203    :Invention List Set Up
 STR_3204    :Options Selection
 STR_3205    :Objective Selection
 STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
-STR_3208    :Track Designs Manager
+STR_3207    :过山车设计工具
+STR_3208    :轨道设计管理工具
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :{WINDOW_COLOUR_2}Map size:
@@ -3357,8 +3357,8 @@ STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}游戏工具
-STR_3342    :Scenario Editor
-STR_3343    :Convert Saved Game to Scenario
+STR_3342    :剧情编辑器
+STR_3343    :将游戏存档转换成剧情关
 STR_3344    :Roller Coaster Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
@@ -3381,14 +3381,14 @@ STR_3362    :<not used anymore>
 STR_3363    :<not used anymore>
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
-STR_3366    :{BLACK}= Ride
-STR_3367    :{BLACK}= Food Stall
-STR_3368    :{BLACK}= Drink Stall
-STR_3369    :{BLACK}= Souvenir Stall
-STR_3370    :{BLACK}= Info. Kiosk
-STR_3371    :{BLACK}= First Aid
-STR_3372    :{BLACK}= Cash Machine
-STR_3373    :{BLACK}= Toilet
+STR_3366    :{BLACK}= 游乐设施
+STR_3367    :{BLACK}= 食品店
+STR_3368    :{BLACK}= 饮品店
+STR_3369    :{BLACK}= 纪念品店
+STR_3370    :{BLACK}= 信息亭
+STR_3371    :{BLACK}= 急救室
+STR_3372    :{BLACK}= 取款机
+STR_3373    :{BLACK}= 厕所
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Install new track design...
@@ -3488,13 +3488,13 @@ STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
 STR_5141    :Disable all breakdowns
-STR_5142    :Normal Speed
-STR_5143    :Quick Speed
-STR_5144    :Fast Speed
-STR_5145    :Turbo Speed
-STR_5146    :Hyper Speed
+STR_5142    :正常速度
+STR_5143    :稍快速度
+STR_5144    :加快速度
+STR_5145    :更快速度
+STR_5146    :超快速度
 STR_5147    :作弊
-STR_5148    :{SMALLFONT}{BLACK}Change the game speed
+STR_5148    :{SMALLFONT}{BLACK}调整游戏速度
 STR_5149    :{SMALLFONT}{BLACK}Show cheat options
 STR_5150    :开启调试工具
 STR_5151    :,
@@ -3606,7 +3606,7 @@ STR_5256    :Create a new theme to make changes to
 STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
 STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
-STR_5260    :Giant Screenshot
+STR_5260    :大型截图
 STR_5261    :Filter
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
@@ -3933,7 +3933,7 @@ STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :自动开放商店和摊位
 STR_5587    :{SMALLFONT}{BLACK}当选中此设定时, 商店和摊位将在建造好后自动开放
-STR_5588    :{SMALLFONT}{BLACK}Play with other players
+STR_5588    :{SMALLFONT}{BLACK}与其他玩家一起玩
 STR_5589    :Notification Settings
 STR_5590    :Park awards
 STR_5591    :Marketing campaign has finished
@@ -3964,61 +3964,62 @@ STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
 STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
 STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
-STR_5619    :RollerCoaster Tycoon
+STR_5619    :过山车大亨
 STR_5620    :Added Attractions
 STR_5621    :Loopy Landscapes
-STR_5622    :RollerCoaster Tycoon 2
+STR_5622    :过山车大亨2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
-STR_5626    :Other Parks
+STR_5625    :{OPENQUOTES}真实的{ENDQUOTES}游乐园
+STR_5626    :其他游乐园
 STR_5627    :剧情列表排序方法:
-STR_5628    :Source game
+STR_5628    :游戏出处
 STR_5629    :困难度
 STR_5630    :允许剧情解锁
-STR_5631    :Original DLC Parks
-STR_5632    :Build your own...
+STR_5631    :原版DLC游乐园
+STR_5632    :修建你自己的...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
-STR_5637    :Can't do this...
-STR_5638    :Permission denied
-STR_5639    :{SMALLFONT}{BLACK}Show list of players
-STR_5640    :{SMALLFONT}{BLACK}Manage groups
-STR_5641    :Default Group:
-STR_5642    :Group:
-STR_5643    :Add Group
-STR_5644    :Remove Group
-STR_5645    :Chat
+STR_5637    :不能做此行为...
+STR_5638    :权限不够
+STR_5639    :{SMALLFONT}{BLACK}显示玩家列表
+STR_5640    :{SMALLFONT}{BLACK}组管理
+STR_5641    :默认组:
+STR_5642    :组:
+STR_5643    :添加组
+STR_5644    :删除组
+STR_5645    :聊天
 STR_5646    :Terraform
 STR_5647    :Toggle Pause
 STR_5648    :Set Water Level
-STR_5649    :Create Ride
-STR_5650    :Remove Ride
-STR_5651    :Build Ride
-STR_5652    :Ride Properties
-STR_5653    :Scenery
-STR_5654    :Path
-STR_5655    :Guest
-STR_5656    :Staff
-STR_5657    :Park Properties
-STR_5658    :Park Funding
-STR_5659    :Kick Player
-STR_5660    :Modify Groups
-STR_5661    :Set Player Group
+STR_5649    :创建游乐设施
+STR_5650    :移除游乐设施
+STR_5651    :修建游乐设施
+STR_5652    :游乐设施属性
+# TODO 是否需要添加动词
+STR_5653    :景观
+STR_5654    :道路
+STR_5655    :游客
+STR_5656    :职员
+STR_5657    :游乐园属性
+STR_5658    :游乐园资金
+STR_5659    :踢出玩家
+STR_5660    :修改组
+STR_5661    :设置玩家组
 STR_5662    :N/A
-STR_5663    :Clear Landscape
-STR_5664    :Cheat
+STR_5663    :清除景物
+STR_5664    :作弊
 STR_5665    :Toggle Scenery Cluster
-STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
+STR_5701    :{WINDOW_COLOUR_2}最近的行为: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
-STR_5703    :不能提出创建者
+STR_5703    :不能踢出创建者
 STR_5704    :最近的行为:
-STR_5705    :Can't set to this group
-STR_5706    :Can't remove group that players belong to
-STR_5707    :This group cannot be modified
-STR_5708    :Can't change the group that the host belongs to
+STR_5705    :不能将此玩家分配到该组
+STR_5706    :不能删除有玩家在内的组
+STR_5707    :不能修改此组
+STR_5708    :不能改变创建者所在的组
 STR_5709    :重命名组
 STR_5710    :组名
 STR_5711    :请输入该组的新名称:
@@ -4028,8 +4029,8 @@ STR_5714    :显示设置窗口
 STR_5715    :新游戏
 STR_5716    :不能在多人模式中使用
 # For identifying client network version in server list window
-STR_5717    :Network version: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
+STR_5717    :网络版本: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}网络版本: {STRING}
 STR_5719    :晴天
 STR_5720    :多云间晴
 STR_5721    :多云
