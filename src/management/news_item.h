@@ -49,6 +49,8 @@ typedef struct {
 
 #define MAX_NEWS_ITEMS 60
 
+extern rct_news_item *gNewsItems;
+
 void news_item_init_queue();
 void news_item_update_current();
 void news_item_close_current();

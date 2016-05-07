@@ -20,6 +20,23 @@
 #include "../common.h"
 #include "ride.h"
 
+#define _rideRatingsProximityX				RCT2_GLOBAL(0x0138B584, uint16)
+#define _rideRatingsProximityY				RCT2_GLOBAL(0x0138B586, uint16)
+#define _rideRatingsProximityZ				RCT2_GLOBAL(0x0138B588, uint16)
+#define _rideRatingsCurrentRide				RCT2_GLOBAL(0x0138B590, uint8)
+#define _rideRatingsState					RCT2_GLOBAL(0x0138B591, uint8)
+#define _rideRatingsProximityTrackType		RCT2_GLOBAL(0x0138B592, uint8)
+#define _rideRatingsProximityBaseHeight		RCT2_GLOBAL(0x0138B593, uint8)
+#define _rideRatingsProximityTotal			RCT2_GLOBAL(0x0138B594, uint16)
+#define _rideRatingsProximityStartX			RCT2_GLOBAL(0x0138B58A, uint16)
+#define _rideRatingsProximityStartY			RCT2_GLOBAL(0x0138B58C, uint16)
+#define _rideRatingsProximityStartZ			RCT2_GLOBAL(0x0138B58E, uint16)
+
+#define _rideRatingsNumBrakes				RCT2_GLOBAL(0x0138B5CA, uint16)
+#define _rideRatingsNumReversers			RCT2_GLOBAL(0x0138B5CC, uint16)
+
+extern uint16 *_proximityScores;
+
 void ride_ratings_update_all();
 
 #endif

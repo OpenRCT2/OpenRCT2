@@ -20,7 +20,20 @@
 
 extern "C"
 {
+    #include "../localisation/date.h"
+    #include "../localisation/localisation.h"
+    #include "../management/finance.h"
+    #include "../management/marketing.h"
+    #include "../management/news_item.h"
+    #include "../management/research.h"
+    #include "../peep/staff.h"
+    #include "../ride/ride.h"
+    #include "../ride/ride_ratings.h"
+    #include "../scenario.h"
     #include "../util/sawyercoding.h"
+    #include "../world/climate.h"
+    #include "../world/map_animation.h"
+    #include "../world/park.h"
 }
 
 S6Importer::S6Importer()
@@ -126,5 +139,211 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
 
 void S6Importer::Import()
 {
+    gDateMonthsElapsed = _s6.elapsed_months;
+    gDateMonthTicks = _s6.current_day;
+    RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = _s6.scenario_ticks;
+    gScenarioSrand0 = _s6.scenario_srand_0;
+    gScenarioSrand1 = _s6.scenario_srand_1;
 
+    memcpy(gMapElements, _s6.map_elements, sizeof(_s6.map_elements));
+
+    RCT2_GLOBAL(0x0010E63B8, uint32) = _s6.dword_010E63B8;
+    memcpy(g_sprite_list, _s6.sprites, sizeof(_s6.sprites));
+
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16) = _s6.sprites_next_index;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16) = _s6.sprites_start_vehicle;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = _s6.sprites_start_peep;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16) = _s6.sprites_start_textfx;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16) = _s6.sprites_start_litter;
+    // pad_013573C6
+    RCT2_GLOBAL(0x13573C8, uint16) = _s6.word_013573C8;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_VEHICLE, uint16) = _s6.sprites_next_index;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_PEEP, uint16) = _s6.sprites_count_peep;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16) = _s6.sprites_count_misc;
+    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_LITTER, uint16) = _s6.sprites_count_litter;
+    // pad_013573D2
+    gParkName = _s6.park_name;
+    // pad_013573D6
+    gParkNameArgs = _s6.park_name_args;
+    gInitialCash = _s6.initial_cash;
+    gBankLoan = _s6.current_loan;
+    gParkFlags = _s6.park_flags;
+    gParkEntranceFee = _s6.park_entrance_fee;
+    // rct1_park_entrance_x
+    // rct1_park_entrance_y
+    // pad_013573EE
+    // rct1_park_entrance_z
+    memcpy(gPeepSpawns, _s6.peep_spawns, sizeof(_s6.peep_spawns));
+    gGuestChangeModifier = _s6.guest_count_change_modifier;
+    gResearchFundingLevel = _s6.current_research_level;
+    // pad_01357400
+    memcpy(RCT2_ADDRESS(0x01357404, uint32), _s6.ride_types_researched, sizeof(_s6.ride_types_researched));
+    memcpy(RCT2_ADDRESS(0x01357424, uint32), _s6.ride_entries_researched, sizeof(_s6.ride_entries_researched));
+    memcpy(RCT2_ADDRESS(0x01357444, uint32), _s6.dword_01357444, sizeof(_s6.dword_01357444));
+    memcpy(RCT2_ADDRESS(0x01357644, uint32), _s6.dword_01357644, sizeof(_s6.dword_01357644));
+
+    gNumGuestsInPark = _s6.guests_in_park;
+    gNumGuestsHeadingForPark = _s6.guests_heading_for_park;
+
+    memcpy(RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32), _s6.expenditure_table, sizeof(_s6.expenditure_table));
+    memcpy(RCT2_ADDRESS(0x01357880, uint32), _s6.dword_01357880, sizeof(_s6.dword_01357880));
+    RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32) = _s6.monthly_ride_income;
+    RCT2_GLOBAL(0x01357898, money32) = _s6.dword_01357898;
+    RCT2_GLOBAL(0x0135789C, money32) = _s6.dword_0135789C;
+    RCT2_GLOBAL(0x013578A0, money32) = _s6.dword_013578A0;
+    memcpy(RCT2_ADDRESS(0x013578A4, money32), _s6.dword_013578A4, sizeof(_s6.dword_013578A4));
+
+    RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = _s6.last_guests_in_park;
+    // pad_01357BCA
+    gStaffHandymanColour = _s6.handyman_colour;
+    gStaffMechanicColour = _s6.mechanic_colour;
+    gStaffSecurityColour = _s6.security_colour;
+
+    memcpy(RCT2_ADDRESS(0x01357BD0, uint32), _s6.dword_01357BD0, sizeof(_s6.dword_01357BD0));
+
+    gParkRating = _s6.park_rating;
+
+    memcpy(gParkRatingHistory, _s6.park_rating_history, sizeof(_s6.park_rating_history));
+    memcpy(gGuestsInParkHistory, _s6.guests_in_park_history, sizeof(_s6.guests_in_park_history));
+
+    gResearchPriorities = _s6.active_research_types;
+    gResearchProgressStage = _s6.research_progress_stage;
+    RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32) = _s6.last_researched_item_subject;
+    // pad_01357CF8
+    gResearchNextItem = _s6.next_research_item;
+    gResearchProgress = _s6.research_progress;
+    gResearchNextCategory = _s6.next_research_category;
+    gResearchExpectedDay = _s6.next_research_expected_day;
+    gResearchExpectedMonth = _s6.next_research_expected_month;
+    gGuestInitialHappiness = _s6.guest_initial_happiness;
+    gParkSize = _s6.park_size;
+    _guestGenerationProbability = _s6.guest_generation_probability;
+    gTotalRideValue = _s6.total_ride_value;
+    gMaxBankLoan = _s6.maximum_loan;
+    gGuestInitialCash = _s6.guest_initial_cash;
+    gGuestInitialHunger = _s6.guest_initial_hunger;
+    gGuestInitialThirst = _s6.guest_initial_thirst;
+    gScenarioObjectiveType = _s6.objective_type;
+    gScenarioObjectiveYear = _s6.objective_year;
+    // pad_013580FA
+    gScenarioObjectiveCurrency = _s6.objective_currency;
+    gScenarioObjectiveNumGuests = _s6.objective_guests;
+    memcpy(gMarketingCampaignDaysLeft, _s6.campaign_weeks_left, sizeof(_s6.campaign_weeks_left));
+    memcpy(gMarketingCampaignRideIndex, _s6.campaign_ride_index, sizeof(_s6.campaign_ride_index));
+
+    memcpy(gCashHistory, _s6.balance_history, sizeof(_s6.balance_history));
+
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = _s6.current_expenditure;
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = _s6.current_profit;
+    RCT2_GLOBAL(0x01358334, uint32) = _s6.dword_01358334;
+    RCT2_GLOBAL(0x01358338, uint16) = _s6.word_01358338;
+    // pad_0135833A
+
+    memcpy(gWeeklyProfitHistory, _s6.weekly_profit_history, sizeof(_s6.weekly_profit_history));
+
+    gParkValue = _s6.park_value;
+
+    memcpy(gParkValueHistory, _s6.park_value_history, sizeof(_s6.park_value_history));
+
+    gScenarioCompletedCompanyValue = _s6.completed_company_value;
+    RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, money32) = _s6.total_admissions;
+    RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) = _s6.income_from_admissions;
+    gCompanyValue = _s6.company_value;
+    memcpy(RCT2_ADDRESS(0x01358750, uint8), _s6.byte_01358750, sizeof(_s6.byte_01358750));
+    memcpy(gCurrentAwards, _s6.awards, sizeof(_s6.awards));
+    gLandPrice = _s6.land_price;
+    gConstructionRightsPrice = _s6.construction_rights_price;
+    RCT2_GLOBAL(0x01358774, uint16) = _s6.word_01358774;
+    // pad_01358776
+    memcpy(RCT2_ADDRESS(0x01358778, uint32), _s6.dword_01358778, sizeof(_s6.dword_01358778));
+    _gameVersion = _s6.game_version_number;
+    RCT2_GLOBAL(0x013587C0, uint32) = _s6.dword_013587C0;
+    RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32) = _s6.loan_hash;
+    RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16) = _s6.ride_count;
+    // pad_013587CA
+    RCT2_GLOBAL(0x013587D0, uint32) = _s6.dword_013587D0;
+    // pad_013587D4
+    memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
+    gCashEncrypted = _s6.cash;
+    // pad_013587FC
+    RCT2_GLOBAL(0x0135882E, uint16) = _s6.word_0135882E;
+    gMapSizeUnits = _s6.map_size_units;
+    gMapSizeMinus2 = _s6.map_size_minus_2;
+    gMapSize = _s6.map_size;
+    gMapSizeMaxXY = _s6.map_max_xy;
+    RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) = _s6.same_price_throughout;
+    _suggestedGuestMaximum = _s6.suggested_max_guests;
+    gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
+    RCT2_GLOBAL(0x01358840, uint16) = _s6.word_01358840;
+    // rct1_water_colour
+    // pad_01358842
+    memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+    RCT2_GLOBAL(0x01359208, uint16) = _s6.word_01359208;
+    memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
+    memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
+    gBankLoanInterestRate = _s6.current_interest_rate;
+    // pad_0135934B
+    RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) = _s6.same_price_throughout_extended;
+    memcpy(gParkEntranceX, _s6.park_entrance_x, sizeof(_s6.park_entrance_x));
+    memcpy(gParkEntranceY, _s6.park_entrance_y, sizeof(_s6.park_entrance_y));
+    memcpy(gParkEntranceZ, _s6.park_entrance_z, sizeof(_s6.park_entrance_z));
+    memcpy(gParkEntranceDirection, _s6.park_entrance_direction, sizeof(_s6.park_entrance_direction));
+    memcpy(RCT2_ADDRESS(0x0135936C, char), _s6.scenario_filename, sizeof(_s6.scenario_filename));
+    memcpy(RCT2_ADDRESS(0x0135946C, uint8), _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
+    memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
+    memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
+    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) = _s6.game_ticks_1;
+    memcpy(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride*), _s6.rides, sizeof(_s6.rides));
+    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = _s6.saved_age;
+    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = _s6.saved_view_x;
+    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = _s6.saved_view_y;
+    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = _s6.saved_view_zoom_and_rotation;
+    memcpy(RCT2_ADDRESS(gAnimatedObjects, rct_map_animation), _s6.map_animations, sizeof(_s6.map_animations));
+    // rct1_map_animations
+    RCT2_GLOBAL(0x0138B580, uint16) = _s6.num_map_animations;
+    // pad_0138B582
+
+    _rideRatingsProximityX = _s6.ride_ratings_proximity_x;
+    _rideRatingsProximityY = _s6.ride_ratings_proximity_y;
+    _rideRatingsProximityZ = _s6.ride_ratings_proximity_z;
+    _rideRatingsProximityStartX = _s6.ride_ratings_proximity_start_x;
+    _rideRatingsProximityStartY = _s6.ride_ratings_proximity_start_y;
+    _rideRatingsProximityStartZ = _s6.ride_ratings_proximity_start_z;
+    _rideRatingsCurrentRide = _s6.ride_ratings_current_ride;
+    _rideRatingsState = _s6.ride_ratings_state;
+    _rideRatingsProximityTrackType = _s6.ride_ratings_proximity_track_type;
+    _rideRatingsProximityBaseHeight = _s6.ride_ratings_proximity_base_height;
+    _rideRatingsProximityTotal = _s6.ride_ratings_proximity_total;
+    memcpy(_proximityScores, _s6.ride_ratings_proximity_scores, sizeof(_s6.ride_ratings_proximity_scores));
+    _rideRatingsNumBrakes = _s6.ride_ratings_num_brakes;
+    _rideRatingsNumReversers = _s6.ride_ratings_num_reversers;
+    RCT2_GLOBAL(0x00138B5CE, uint16) = _s6.word_0138B5CE;
+    memcpy(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement), _s6.ride_measurements, sizeof(_s6.ride_measurements));
+    RCT2_GLOBAL(0x013B0E6C, uint32) = _s6.next_guest_index;
+    gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
+    memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
+    memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
+    // unk_13CA73E
+    // pad_13CA73F
+    RCT2_GLOBAL(0x013CA740, uint8) = _s6.byte_13CA740;
+    gClimate = _s6.climate;
+    // pad_13CA741;
+    memcpy(RCT2_ADDRESS(0x013CA742, uint8), _s6.byte_13CA742, sizeof(_s6.byte_13CA742));
+    // pad_013CA747
+    gClimateUpdateTimer = _s6.climate_update_timer;
+    gClimateCurrentWeather = _s6.current_weather;
+    gClimateNextWeather = _s6.next_weather;
+    gClimateNextTemperature = _s6.temperature;
+    gClimateCurrentWeatherEffect = _s6.current_weather_effect;
+    gClimateNextWeatherEffect = _s6.next_weather_effect;
+    gClimateCurrentWeatherGloom = _s6.current_weather_gloom;
+    gClimateNextWeatherGloom = _s6.next_weather_gloom;
+    gClimateCurrentRainLevel = _s6.current_rain_level;
+    gClimateNextRainLevel = _s6.next_rain_level;
+    memcpy(gNewsItems, _s6.news_items, sizeof(_s6.news_items));
+    // pad_13CE730
+    // rct1_scenario_flags
+    gWidePathTileLoopX = _s6.wide_path_tile_loop_x;
+    gWidePathTileLoopY = _s6.wide_path_tile_loop_y;
+    // pad_13CE778
 }
