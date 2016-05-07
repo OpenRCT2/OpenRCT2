@@ -749,6 +749,11 @@ void game_fix_save_vars() {
 
 	gNumGuestsInPark = peepCount;
 
+	// Needed to be done twice to make sure the order is correct.
+	// This is needed because the sort function assumes the order is correct already. By making it switch between 'real' names and number this is solved.
+	peep_update_names(!(gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES));
+	peep_update_names(!(gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES));
+
 	// Fixes broken saves where a surface element could be null
 	for (int y = 0; y < 256; y++) {
 		for (int x = 0; x < 256; x++) {
