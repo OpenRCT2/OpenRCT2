@@ -20,6 +20,7 @@
 
 extern "C"
 {
+    #include "../config.h"
     #include "../game.h"
     #include "../localisation/date.h"
     #include "../localisation/localisation.h"
@@ -38,6 +39,13 @@ extern "C"
     #include "../world/park.h"
 }
 
+class ObjectLoadException : public Exception
+{
+public:
+    ObjectLoadException() : Exception("Unable to load objects.") { }
+    ObjectLoadException(const char * message) : Exception(message) { }
+};
+
 S6Importer::S6Importer()
 {
     memset(&_s6, 0, sizeof(_s6));
@@ -48,6 +56,15 @@ void S6Importer::LoadSavedGame(const utf8 * path)
     SDL_RWops * rw = SDL_RWFromFile(path, "rb");
     if (rw == nullptr) {
         throw IOException("Unable to open SV6.");
+    }
+
+    if (!sawyercoding_validate_checksum(rw))
+    {
+        gErrorType = ERROR_TYPE_FILE_LOAD;
+        gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
+
+        log_error("failed to load saved game, invalid checksum");
+        throw IOException("Invalid SV6 checksum.");
     }
 
     LoadSavedGame(rw);
@@ -64,6 +81,17 @@ void S6Importer::LoadScenario(const utf8 * path)
         throw IOException("Unable to open SV6.");
     }
 
+    if (!gConfigGeneral.allow_loading_with_incorrect_checksum && !sawyercoding_validate_checksum(rw))
+    {
+        SDL_RWclose(rw);
+
+        gErrorType = ERROR_TYPE_FILE_LOAD;
+        gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+
+        log_error("failed to load scenario, invalid checksum");
+        throw IOException("Invalid SC6 checksum.");
+    }
+
     LoadScenario(rw);
 
     SDL_RWclose(rw);
@@ -73,7 +101,13 @@ void S6Importer::LoadScenario(const utf8 * path)
 
 void S6Importer::LoadSavedGame(SDL_RWops *rw)
 {
+    auto meh = SDL_RWtell(rw);
+
     sawyercoding_read_chunk(rw, (uint8*)&_s6.header);
+    if (_s6.header.type != S6_TYPE_SAVEDGAME)
+    {
+        throw Exception("Data is not a saved game.");
+    }
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
@@ -93,24 +127,17 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
     sawyercoding_read_chunk(rw, (uint8*)&_s6.elapsed_months);
     sawyercoding_read_chunk(rw, (uint8*)&_s6.map_elements);
     sawyercoding_read_chunk(rw, (uint8*)&_s6.dword_010E63B8);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.guests_in_park);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.expenditure_table);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.last_guests_in_park);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.dword_01357BD0);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.park_rating);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.park_rating_history);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.active_research_types);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.balance_history);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.current_expenditure);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.weekly_profit_history);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.park_value);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.park_value_history);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.completed_company_value);
 }
 
 void S6Importer::LoadScenario(SDL_RWops *rw)
 {
     sawyercoding_read_chunk(rw, (uint8*)&_s6.header);
+    if (_s6.header.type != S6_TYPE_SCENARIO)
+    {
+        throw Exception("Data is not a scenario.");
+    }
+
+    sawyercoding_read_chunk(rw, (uint8*)&_s6.info);
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
@@ -353,7 +380,7 @@ void S6Importer::Import()
 
     // Fix and set dynamic variables
     if (!object_load_entries(_s6.objects)) {
-        throw Exception("Unable to load objects.");
+        throw ObjectLoadException();
     }
     reset_loaded_objects();
     map_update_tile_pointers();
@@ -368,9 +395,10 @@ extern "C"
      *
      *  rct2: 0x00675E1B
      */
-    int game_load_sv6(SDL_RWops* rw)
+    int game_load_sv6(SDL_RWops * rw)
     {
-        if (!sawyercoding_validate_checksum(rw)) {
+        if (!sawyercoding_validate_checksum(rw))
+        {
             log_error("invalid checksum");
 
             gErrorType = ERROR_TYPE_FILE_LOAD;
@@ -388,13 +416,51 @@ extern "C"
             openrct2_reset_object_tween_locations();
             result = true;
         }
-        catch (Exception ex)
+        catch (ObjectLoadException)
         {
             set_load_objects_fail_reason();
         }
         delete s6Importer;
 
         // #2407: Resetting screen time to not open a save prompt shortly after loading a park.
+        gScreenAge = 0;
+        gLastAutoSaveTick = SDL_GetTicks();
+        return result;
+    }
+
+    /**
+     *
+     *  rct2: 0x00676053
+     * scenario (ebx)
+     */
+    int scenario_load(const char * path)
+    {
+        bool result = false;
+        auto s6Importer = new S6Importer();
+        try
+        {
+            s6Importer->LoadScenario(path);
+            s6Importer->Import();
+
+            openrct2_reset_object_tween_locations();
+            result = true;
+        }
+        catch (ObjectLoadException)
+        {
+            set_load_objects_fail_reason();
+        }
+        catch (IOException)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_UNABLE_TO_LOAD_FILE;
+        }
+        catch (Exception)
+        {
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
+        }
+        delete s6Importer;
+
         gScreenAge = 0;
         gLastAutoSaveTick = SDL_GetTicks();
         return result;
