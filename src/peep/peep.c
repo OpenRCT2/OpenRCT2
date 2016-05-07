@@ -10306,11 +10306,29 @@ static void peep_give_real_name(rct_peep *peep)
 	peep->name_string_idx = dx;
 }
 
-static int peep_name_compare(const utf8 *a, const utf8 *b)
+static int peep_name_compare(utf8 const *a, utf8 const *b)
 {
-	// TODO be smarter about numbers being on the end
-	//      e.g. Handyman 10 should go after Handyman 4
-	return _stricmp(a, b);
+	for (;; a++, b++) {
+		int result = tolower(*a) - tolower(*b);
+		bool both_numeric = *a >= '0' && *a <= '9' && *b >= '0' && *b <= '9';
+		if (result != 0 || !*a || both_numeric) { // difference found || end of string
+			if (both_numeric) { // a and b both start with a number
+				// Get the numbers in the string at current positions
+				int na = 0 , nb = 0;
+				for (; *a >= '0' && *a <= '9'; a++) { na *= 10; na += *a - '0'; }
+				for (; *b >= '0' && *b <= '9'; b++) { nb *= 10; nb += *b - '0'; }
+				// In case the numbers are the same
+				if (na == nb)
+					continue;
+				return na - nb;
+			}
+			else {
+				return result;
+			}
+		}
+	}
+
+	assert(false);
 }
 
 /**
