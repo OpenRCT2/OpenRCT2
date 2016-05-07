@@ -1022,7 +1022,7 @@ int scenario_save(SDL_RWops* rw, int flags)
 
 	free(s6);
 
-	if (!(flags & 0x80000000))
+	if (flags & 1)
 		reset_loaded_objects();
 
 	gfx_invalidate_screen();
