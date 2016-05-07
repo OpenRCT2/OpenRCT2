@@ -1170,7 +1170,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 		if (!is_staff_list) {
 			rct_peep * staff = GET_PEEP(staffIndex);
-			if (!staff_is_patrol_area_set(staffIndex, x, y)) {
+			if (!staff_is_patrol_area_set(staff->staff_id, x, y)) {
 				patrolColour = 1;
 			}
 			staffType = staff->staff_type;
