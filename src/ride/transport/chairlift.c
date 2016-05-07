@@ -258,8 +258,7 @@ enum
     SPR_STATION_COVER_OFFSET_SE_NW_BACK_0,
     SPR_STATION_COVER_OFFSET_SE_NW_BACK_1,
     SPR_STATION_COVER_OFFSET_SE_NW_FRONT,
-    SPR_STATION_COVER_OFFSET_HIGH,
-    SPR_STATION_COVER_OFFSET_FLASS
+    SPR_STATION_COVER_OFFSET_HIGH
 } SPR_STATION_COVER;
 
 static bool paint_util_draw_station_covers(EDGE edge, bool hasFence, rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
@@ -272,6 +271,9 @@ static bool paint_util_draw_station_covers(EDGE edge, bool hasFence, rct_ride_en
     offset = (rct_xyz16) {0, 0, height};
     switch (edge) {
         case EDGE_NE:
+            bounds = (rct_xyz16) {1, 30, 0};
+            boundsOffset = (rct_xyz16) {0, 1, height + 1};
+            imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
             break;
         case EDGE_SE:
             bounds = (rct_xyz16) {32, 32, 0};
@@ -279,6 +281,9 @@ static bool paint_util_draw_station_covers(EDGE edge, bool hasFence, rct_ride_en
             imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
             break;
         case EDGE_SW:
+            bounds = (rct_xyz16) {32, 32, 0};
+            boundsOffset = (rct_xyz16) {0, 0, height + 31};
+            imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
             break;
         case EDGE_NW:
             bounds = (rct_xyz16) {30, 1, 30};
@@ -312,6 +317,40 @@ static bool paint_util_draw_station_covers(EDGE edge, bool hasFence, rct_ride_en
     return true;
 }
 
+bool paint_utils_is_first_track(uint8 rideIndex, const rct_map_element * mapElement, rct_xy16 pos, uint8 trackType)
+{
+    if (mapElement->properties.track.type != TRACK_ELEM_BEGIN_STATION) {
+        return false;
+    }
+
+    rct_xy16 delta = TileDirectionDelta[map_element_get_direction(mapElement)];
+    rct_xy16 newPos = {
+        .x = pos.x - delta.x,
+        .y = pos.y - delta.y,
+    };
+
+    rct_map_element * nextTrack = map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
+
+    return nextTrack == NULL;
+}
+
+bool paint_utils_is_last_track(uint8 rideIndex, const rct_map_element * mapElement, rct_xy16 pos, uint8 trackType)
+{
+    if (mapElement->properties.track.type != TRACK_ELEM_END_STATION) {
+        return false;
+    }
+
+    rct_xy16 delta = TileDirectionDelta[map_element_get_direction(mapElement)];
+    rct_xy16 newPos = {
+        .x = pos.x + delta.x,
+        .y = pos.y + delta.y,
+    };
+
+    rct_map_element * nextTrack = map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
+
+    return nextTrack == NULL;
+}
+
 static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
     const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -319,37 +358,10 @@ static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, 
     rct_ride * ride = get_ride(rideIndex);
     uint32 imageId;
 
-    bool isStart = false;
-    bool isEnd = false;
-
-    if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_END_STATION) {
-        rct_xy16 delta = TileDirectionDelta[map_element_get_direction(mapElement)];
-
-        rct_xy16 newPos;
-        if (trackType == TRACK_ELEM_BEGIN_STATION) {
-            newPos = (rct_xy16) {
-                .x = pos.x - delta.x,
-                .y = pos.y - delta.y,
-            };
-        } else {
-            newPos = (rct_xy16) {
-                .x = pos.x + delta.x,
-                .y = pos.y + delta.y,
-            };
-        }
-
-        rct_map_element * nextTrack = map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
-        if (nextTrack == NULL && trackType == TRACK_ELEM_BEGIN_STATION) {
-            isStart = true;
-        }
-
-        if (nextTrack == NULL && trackType == TRACK_ELEM_END_STATION) {
-            isEnd = true;
-        }
-    }
+    bool isStart = paint_utils_is_first_track(rideIndex, mapElement, pos, trackType);;
+    bool isEnd = paint_utils_is_last_track(rideIndex, mapElement, pos, trackType);
 
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-
 
     wooden_a_supports_paint_setup(0, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
 
@@ -374,7 +386,7 @@ static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, 
     }
 
     if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
-		hasFence = paint_util_has_fence(EDGE_NW, pos, mapElement, ride, get_current_rotation());
+		hasFence = paint_util_has_fence(EDGE_SE, pos, mapElement, ride, get_current_rotation());
         if (hasFence) {
             imageId = SPR_METAL_FENCE_SE | RCT2_GLOBAL(0x00F44198, uint32);
             sub_98197C(imageId, 0, 0, 32, 1, 27, height, 0, 30, height + 2, get_current_rotation());
@@ -420,10 +432,93 @@ static void chairlift_paint_station_ne_sw(uint8 rideIndex, uint8 trackSequence, 
     paint_util_set_support_height(height + 32, 0x20);
 }
 
+static void chairlift_paint_station_se_nw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+    const rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+    uint8 trackType = mapElement->properties.track.type;
+    rct_ride * ride = get_ride(rideIndex);
+    uint32 imageId;
+
+    bool isStart = paint_utils_is_first_track(rideIndex, mapElement, pos, trackType);;
+    bool isEnd = paint_utils_is_last_track(rideIndex, mapElement, pos, trackType);
+
+    const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+
+    wooden_a_supports_paint_setup(1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+
+    if (!isStart && !isEnd) {
+        imageId = ((direction == 1) ? SPR_20503 : SPR_20505) | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98197C(imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
+    }
+
+    imageId = SPR_METAL_FLOOR | RCT2_GLOBAL(0x00F4419C, uint32);
+    sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+
+    bool hasFence = paint_util_has_fence(EDGE_NE, pos, mapElement, ride, get_current_rotation());
+    if (hasFence) {
+        imageId = SPR_METAL_FENCE_NE | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98199C(imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
+    }
+    paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+
+    if ((direction == 1 && isStart) || (direction == 3 && isEnd)) {
+        imageId = SPR_METAL_FENCE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98199C(imageId, 0, 0, 28, 1, 7, height, 2, 2, height + 4, get_current_rotation());
+    }
+
+    if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
+        hasFence = paint_util_has_fence(EDGE_SW, pos, mapElement, ride, get_current_rotation());
+        if (hasFence) {
+            imageId = SPR_METAL_FENCE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+            sub_98197C(imageId, 0, 0, 1, 32, 27, height, 30, 0, height + 2, get_current_rotation());
+        }
+        paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+    }
+
+    bool drawRightColumn = true;
+    bool drawLeftColumn = true;
+    if ((direction == 1 && isStart) || (direction == 3 && isEnd)) {
+        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98197C(imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
+
+        imageId = SPR_CHAIRLIFT_STATION_END_CAP_SE | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98199C(imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
+
+        drawLeftColumn = false;
+    } else if ((direction == 3 && isStart) || (direction == 1 && isEnd)) {
+        imageId = SPR_METAL_FENCE_SE | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98197C(imageId, 0, 0, 28, 1, 27, height, 2, 30, height + 4, get_current_rotation());
+
+        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98197C(imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
+
+        imageId = SPR_CHAIRLIFT_STATION_END_CAP_NW | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98199C(imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
+
+        drawRightColumn = false;
+    }
+
+    if (drawLeftColumn) {
+        imageId = SPR_CHAIRLIFT_STATION_COLUMN_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98197C(imageId, 16, 0, 1, 1, 7, height + 2, 16, 1, height + 2, get_current_rotation());
+    }
+
+    if (drawRightColumn) {
+        imageId = SPR_CHAIRLIFT_STATION_COLUMN_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+        sub_98197C(imageId, 16, 30, 1, 1, 7, height + 2, 16, 1, height + 2, get_current_rotation()); // bound offset x is wrong?
+
+        paint_util_push_tunnel_right(height, TUNNEL_FLAT);
+    }
+
+    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_support_height(height + 32, 0x20);
+}
+
+/** rct2: 0x00744068 */
 static void chairlift_paint_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
     if (direction % 2) {
-
+        chairlift_paint_station_se_nw(rideIndex, trackSequence, direction, height, mapElement);
     } else {
         chairlift_paint_station_ne_sw(rideIndex, trackSequence, direction, height, mapElement);
     }
