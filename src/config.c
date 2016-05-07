@@ -144,13 +144,13 @@ config_enum_definition _languageEnum[] = {
 	{ "sv-SE", 	LANGUAGE_SWEDISH },
 	{ "it-IT", 	LANGUAGE_ITALIAN },
 	{ "pt-BR", 	LANGUAGE_PORTUGUESE_BR },
-	{ "zh-Hant",LANGUAGE_CHINESE_TRADITIONAL },
-	{ "zh-Hans",LANGUAGE_CHINESE_SIMPLIFIED },
+	{ "zh-TW",	LANGUAGE_CHINESE_TRADITIONAL },
+	{ "zh-CN",	LANGUAGE_CHINESE_SIMPLIFIED },
 	{ "fi-FI", 	LANGUAGE_FINNISH },
-	{ "ko", 	LANGUAGE_KOREAN },
+	{ "ko-KR", 	LANGUAGE_KOREAN },
 	{ "ru-RU", 	LANGUAGE_RUSSIAN },
-	{ "cz-CZ", 	LANGUAGE_CZECH },
-	{ "jp-JP", 	LANGUAGE_JAPANESE },
+	{ "cs-CZ", 	LANGUAGE_CZECH },
+	{ "ja-JP", 	LANGUAGE_JAPANESE },
 	END_OF_ENUM
 };
 
