@@ -117,6 +117,8 @@ enum {
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
+#define MAX_STATION_PLATFORM_LENGTH 32
+
 /**
  * Track design structure.
  * size: 0x4E72B
