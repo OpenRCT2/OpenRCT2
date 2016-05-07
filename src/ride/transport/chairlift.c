@@ -301,13 +301,13 @@ static bool paint_util_draw_station_covers(EDGE edge, bool hasFence, rct_ride_en
     }
 
     if (baseImageId & 0x40000000) {
-        imageId = baseImageId & 0xBFFFFFFF + imageOffset;
+        imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
         sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 
         uint32 edi = RCT2_GLOBAL(0x00F44198, uint32) & (0b11111 << 19);
 
         // weird jump
-        imageId = baseImageId | edi + 0x3800000 + imageOffset + 12;
+        imageId = (baseImageId | edi) + 0x3800000 + imageOffset + 12;
         sub_98199C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
         return true;
     }
