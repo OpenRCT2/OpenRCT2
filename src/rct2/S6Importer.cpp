@@ -20,12 +20,14 @@
 
 extern "C"
 {
+    #include "../game.h"
     #include "../localisation/date.h"
     #include "../localisation/localisation.h"
     #include "../management/finance.h"
     #include "../management/marketing.h"
     #include "../management/news_item.h"
     #include "../management/research.h"
+    #include "../openrct2.h"
     #include "../peep/staff.h"
     #include "../ride/ride.h"
     #include "../ride/ride_ratings.h"
@@ -139,6 +141,8 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
 
 void S6Importer::Import()
 {
+    RCT2_GLOBAL(0x009E34E4, rct_s6_header) = _s6.header;
+
     gDateMonthsElapsed = _s6.elapsed_months;
     gDateMonthTicks = _s6.current_day;
     RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = _s6.scenario_ticks;
@@ -346,4 +350,53 @@ void S6Importer::Import()
     gWidePathTileLoopX = _s6.wide_path_tile_loop_x;
     gWidePathTileLoopY = _s6.wide_path_tile_loop_y;
     // pad_13CE778
+
+    // Fix and set dynamic variables
+    if (!object_load_entries(_s6.objects)) {
+        throw Exception("Unable to load objects.");
+    }
+    reset_loaded_objects();
+    map_update_tile_pointers();
+    reset_0x69EBE4();
+    game_convert_strings_to_utf8();
+    game_fix_save_vars(); // OpenRCT2 fix broken save games
+}
+
+extern "C"
+{
+    /**
+     *
+     *  rct2: 0x00675E1B
+     */
+    int game_load_sv6(SDL_RWops* rw)
+    {
+        if (!sawyercoding_validate_checksum(rw)) {
+            log_error("invalid checksum");
+
+            gErrorType = ERROR_TYPE_FILE_LOAD;
+            gGameCommandErrorTitle = STR_FILE_CONTAINS_INVALID_DATA;
+            return 0;
+        }
+
+        bool result = false;
+        auto s6Importer = new S6Importer();
+        try
+        {
+            s6Importer->LoadSavedGame(rw);
+            s6Importer->Import();
+
+            openrct2_reset_object_tween_locations();
+            result = true;
+        }
+        catch (Exception ex)
+        {
+            set_load_objects_fail_reason();
+        }
+        delete s6Importer;
+
+        // #2407: Resetting screen time to not open a save prompt shortly after loading a park.
+        gScreenAge = 0;
+        gLastAutoSaveTick = SDL_GetTicks();
+        return result;
+    }
 }
