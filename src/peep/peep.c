@@ -37,6 +37,7 @@
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
+#include "../network/network.h"
 #include "peep.h"
 #include "staff.h"
 
