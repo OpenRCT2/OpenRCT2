@@ -315,7 +315,8 @@ static void peep_leave_park(rct_peep* peep){
 		peep->peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
 	}
 
-	peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GO_HOME, 0xFF);
+	if (peep->peep_flags & PEEP_FLAGS_TRACKING) { return; }
+	else { peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GO_HOME, 0xFF); }
 
 	rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
 	if (w != NULL) window_event_invalidate_call(w);
@@ -360,6 +361,7 @@ static void sub_68F8CD(rct_peep *peep)
 		return;
 	}
 
+	if (peep->peep_flags & PEEP_FLAGS_TRACKING) { return; }
 	peep_leave_park(peep);
 }
 
@@ -490,6 +492,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 				if (peep->guest_heading_to_ride_id == 0xFF){
 					peep->happiness_growth_rate = max(peep->happiness_growth_rate - 128, 0);
+					if (peep->peep_flags & PEEP_FLAGS_TRACKING) { return; }
 					peep_leave_park(peep);
 					peep_update_hunger(peep);
 					goto loc_68F9F3;
@@ -5735,6 +5738,7 @@ static void peep_update(rct_peep *peep)
 			peep_update_entering_park(peep);
 			break;
 		case PEEP_STATE_LEAVING_PARK:
+			if (peep->peep_flags & PEEP_FLAGS_TRACKING) { break; }
 			peep_update_leaving_park(peep);
 			break;
 		case PEEP_STATE_ANSWERING:
