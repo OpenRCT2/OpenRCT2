@@ -236,6 +236,8 @@ bool sub_98197C(
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
 
+	// START FUNCTION EXTRACTION
+
 	//Not a paint struct but something similar
 	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
 
@@ -340,6 +342,8 @@ bool sub_98197C(
 	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
 	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
 	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
+
+	// END FUNCTION EXTRACTION
 
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
 
