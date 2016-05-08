@@ -262,7 +262,6 @@
     <ClCompile Include="src\ride\gentle\ghost_train.c" />
     <ClCompile Include="src\ride\gentle\haunted_house.c" />
     <ClCompile Include="src\ride\gentle\maze.c" />
-    <ClCompile Include="src\ride\gentle\merry_go_round.c" />
     <ClCompile Include="src\ride\gentle\mini_golf.c" />
     <ClCompile Include="src\ride\gentle\mini_helicopters.c" />
     <ClCompile Include="src\ride\gentle\monorail_cycles.c" />
@@ -270,6 +269,7 @@
     <ClCompile Include="src\ride\gentle\space_rings.c" />
     <ClCompile Include="src\ride\gentle\spiral_slide.c" />
     <ClCompile Include="src\ride\vehicle_paint.c" />
+    <ClCompile Include="src\ride\gentle\merry_go_round.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources\resource.h" />
@@ -382,6 +382,7 @@
     <ClInclude Include="src\world\sprite.h" />
     <ClInclude Include="src\world\water.h" />
     <ClInclude Include="src\ride\vehicle_paint.h" />
+    <ClInclude Include="src\ride\ride_type.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\OpenRCT2.rc" />
