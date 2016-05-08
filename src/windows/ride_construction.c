@@ -1789,7 +1789,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 		_currentTrackBeginY,
 		_currentTrackBeginZ,
 		_currentTrackPieceDirection,
-		_currentTrackPieceType
+		_currentTrackPieceType,
+		GAME_COMMAND_FLAG_APPLY
 	);
 	if (cost == MONEY32_UNDEFINED) {
 		sub_6C84CE();

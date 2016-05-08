@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		008BF72A1CDAA5C30019A2AD /* track_design_index.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7261CDAA5C30019A2AD /* track_design_index.c */; };
+		008BF72B1CDAA5C30019A2AD /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7271CDAA5C30019A2AD /* track_design_save.c */; };
+		008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7281CDAA5C30019A2AD /* track_design.c */; };
+		C61FAAE21CD1643A0010C9D8 /* paint_surface.c in Sources */ = {isa = PBXBuildFile; fileRef = C61FAAE01CD1643A0010C9D8 /* paint_surface.c */; };
 		C650B2191CCABBDD00B4D91C /* S4Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2151CCABBDD00B4D91C /* S4Importer.cpp */; };
 		C650B21A1CCABBDD00B4D91C /* tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B2171CCABBDD00B4D91C /* tables.cpp */; };
 		C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C650B21B1CCABC4400B4D91C /* ConvertCommand.cpp */; };
@@ -318,6 +322,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		008BF7261CDAA5C30019A2AD /* track_design_index.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_design_index.c; sourceTree = "<group>"; };
+		008BF7271CDAA5C30019A2AD /* track_design_save.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_design_save.c; sourceTree = "<group>"; };
+		008BF7281CDAA5C30019A2AD /* track_design.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_design.c; sourceTree = "<group>"; };
+		008BF7291CDAA5C30019A2AD /* track_design.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = track_design.h; sourceTree = "<group>"; };
+		C61FAAE01CD1643A0010C9D8 /* paint_surface.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = paint_surface.c; sourceTree = "<group>"; };
+		C61FAAE11CD1643A0010C9D8 /* paint_surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paint_surface.h; sourceTree = "<group>"; };
 		C650B2151CCABBDD00B4D91C /* S4Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; };
 		C650B2161CCABBDD00B4D91C /* S4Importer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = S4Importer.h; sourceTree = "<group>"; };
 		C650B2171CCABBDD00B4D91C /* tables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tables.cpp; sourceTree = "<group>"; };
@@ -1250,6 +1260,10 @@
 				C686F8F01CDBC3B7009F9BFC /* thrill */,
 				C686F8FC1CDBC3B7009F9BFC /* transport */,
 				C686F9021CDBC3B7009F9BFC /* water */,
+				008BF7261CDAA5C30019A2AD /* track_design_index.c */,
+				008BF7271CDAA5C30019A2AD /* track_design_save.c */,
+				008BF7281CDAA5C30019A2AD /* track_design.c */,
+				008BF7291CDAA5C30019A2AD /* track_design.h */,
 				D442716F1CC81B3200D84D28 /* cable_lift.c */,
 				D44271701CC81B3200D84D28 /* cable_lift.h */,
 				D44271731CC81B3200D84D28 /* ride_data.c */,
@@ -1721,6 +1735,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				008BF72B1CDAA5C30019A2AD /* track_design_save.c in Sources */,
 				D44272491CC81B3200D84D28 /* track.c in Sources */,
 				C686F9201CDBC3B7009F9BFC /* side_friction_roller_coaster.c in Sources */,
 				D44272561CC81B3200D84D28 /* cheats.c in Sources */,
@@ -1799,6 +1814,7 @@
 				C686F9321CDBC3B7009F9BFC /* haunted_house.c in Sources */,
 				D442720A1CC81B3200D84D28 /* drawing_fast.cpp in Sources */,
 				C686F9521CDBC3B7009F9BFC /* river_rapids.c in Sources */,
+				008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */,
 				D44272191CC81B3200D84D28 /* colour.c in Sources */,
 				D442724C1CC81B3200D84D28 /* vehicle.c in Sources */,
 				D44272261CC81B3200D84D28 /* currency.c in Sources */,
@@ -1919,6 +1935,7 @@
 				C686F9501CDBC3B7009F9BFC /* log_flume.c in Sources */,
 				D44272241CC81B3200D84D28 /* intro.c in Sources */,
 				D44272631CC81B3200D84D28 /* game_bottom_toolbar.c in Sources */,
+				008BF72A1CDAA5C30019A2AD /* track_design_index.c in Sources */,
 				D44272091CC81B3200D84D28 /* drawing.c in Sources */,
 				C686F94C1CDBC3B7009F9BFC /* monorail.c in Sources */,
 				D442728E1CC81B3200D84D28 /* title_logo.c in Sources */,

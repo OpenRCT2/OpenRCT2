@@ -19,12 +19,13 @@
 
 #include "../common.h"
 #include "../drawing/drawing.h"
+#include "../management/research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
+#include "../ride/track_design.h"
 #include "../ride/vehicle.h"
-#include "../world/park.h"
-#include "../management/research.h"
 #include "../scenario.h"
+#include "../world/park.h"
 #include "colour.h"
 
 struct rct_window;
@@ -209,8 +210,8 @@ typedef struct {
 
 typedef struct {
 	uint16 var_480;
-	uint16 var_482;
 	uint16 var_484;
+	bool reload_track_designs;
 } track_list_variables;
 
 typedef struct {
@@ -627,7 +628,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY);
 void ride_construction_tooldown_construct(int screenX, int screenY);
 
 void window_maze_construction_update_pressed_widgets();
-void window_track_place_open();
+void window_track_place_open(const track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
 void window_install_track_open(const char* path);
@@ -651,7 +652,7 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, i
 void window_scenery_open();
 void window_music_credits_open();
 void window_publisher_credits_open();
-void window_track_manage_open();
+void window_track_manage_open(track_design_file_ref *tdFileRef);
 void window_viewport_open();
 void window_themes_open();
 void window_title_editor_open(int tab);

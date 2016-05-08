@@ -19,6 +19,7 @@
 
 #include "../common.h"
 #include "../object.h"
+#include "../world/map.h"
 
 typedef struct {
 	uint32 flags;			// 0x06

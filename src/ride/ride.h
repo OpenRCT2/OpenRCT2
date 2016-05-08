@@ -874,6 +874,7 @@ enum {
 /** Helper macros until rides are stored in this module. */
 rct_ride *get_ride(int index);
 rct_ride_entry *get_ride_entry(int index);
+void get_ride_entry_name(char *name, int index);
 rct_ride_measurement *get_ride_measurement(int index);
 
 /**
@@ -983,6 +984,7 @@ void game_command_callback_ride_remove_track_piece(int eax, int ebx, int ecx, in
 void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_ride_price(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+money32 ride_create_command(int type, int subType, int flags, uint8 *outRideIndex, uint8 *outRideColour);
 
 void ride_clear_for_construction(int rideIndex);
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int num_images);
@@ -1030,7 +1032,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int x, int y, int *
 bool ride_select_backwards_from_front();
 bool ride_select_forwards_from_back();
 
-money32 ride_remove_track_piece(int x, int y, int z, int direction, int type);
+money32 ride_remove_track_piece(int x, int y, int z, int direction, int type, uint8 flags);
 
 bool ride_are_all_possible_entrances_and_exits_built(rct_ride *ride);
 void ride_fix_breakdown(int rideIndex, int reliabilityIncreaseFactor);
@@ -1072,5 +1074,7 @@ rct_vehicle * ride_get_broken_vehicle(rct_ride *ride);
 void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
 void game_command_callback_place_ride_entrance_or_exit(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
+
+void ride_delete(uint8 rideIndex);
 
 #endif

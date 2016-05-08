@@ -16,13 +16,14 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "game.h"
 #include "localisation/localisation.h"
 #include "object.h"
 #include "platform/platform.h"
-#include "ride/track.h"
-#include "util/sawyercoding.h"
-#include "game.h"
 #include "rct1.h"
+#include "ride/track.h"
+#include "ride/track_design.h"
+#include "util/sawyercoding.h"
 #include "world/entrance.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
@@ -336,7 +337,7 @@ void object_list_load()
 	ride_list_item ride_list;
 	ride_list.entry_index = 0xFC;
 	ride_list.type = 0xFC;
-	track_load_list(ride_list);
+	// track_load_list(ride_list);
 
 	object_list_examine();
 }

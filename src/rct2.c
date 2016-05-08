@@ -41,6 +41,7 @@
 #include "rct1.h"
 #include "ride/ride.h"
 #include "ride/track.h"
+#include "ride/track_design.h"
 #include "scenario.h"
 #include "title.h"
 #include "util/util.h"
@@ -158,9 +159,7 @@ int rct2_init()
 
 	object_list_load();
 	scenario_load_list();
-
-	ride_list_item item = { 253, 0 };
-	track_load_list(item);
+	track_design_index_create();
 
 	font_sprite_initialise_characters();
 	if (!gOpenRCT2Headless) {

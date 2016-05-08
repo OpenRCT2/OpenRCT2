@@ -3364,7 +3364,7 @@ STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
 STR_3355    :File is write-protected or locked
 STR_3356    :Delete File
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRING} ?
 STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
@@ -4118,6 +4118,8 @@ STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities:
 STR_5810    :Disable train length limit
 STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train
 STR_5812    :Show multiplayer window
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #
