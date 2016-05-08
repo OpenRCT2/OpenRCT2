@@ -587,7 +587,7 @@ void litter_create(int x, int y, int z, int direction, int type)
 	litter->type = type;
 	sprite_move(x, y, z, (rct_sprite*)litter);
 	invalidate_sprite_0((rct_sprite*)litter);
-	litter->creationTick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	litter->creationTick = gScenarioTicks;
 }
 
 /**

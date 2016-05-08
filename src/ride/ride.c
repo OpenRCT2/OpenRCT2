@@ -2802,7 +2802,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 		verticalG = clamp(-127, verticalG / 8, 127);
 		lateralG = clamp(-127, lateralG / 8, 127);
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+		if (gScenarioTicks & 1) {
 			verticalG = (verticalG + measurement->vertical[measurement->current_item]) / 2;
 			lateralG = (lateralG + measurement->lateral[measurement->current_item]) / 2;
 		}
@@ -2814,7 +2814,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	velocity = min(abs((vehicle->velocity * 5) >> 16), 255);
 	altitude = min(vehicle->z / 8, 255);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+	if (gScenarioTicks & 1) {
 		velocity = (velocity + measurement->velocity[measurement->current_item]) / 2;
 		altitude = (altitude + measurement->altitude[measurement->current_item]) / 2;
 	}
@@ -2822,7 +2822,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	measurement->velocity[measurement->current_item] = velocity & 0xFF;
 	measurement->altitude[measurement->current_item] = altitude & 0xFF;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+	if (gScenarioTicks & 1) {
 		measurement->current_item++;
 		measurement->num_items = max(measurement->num_items, measurement->current_item);
 	}
@@ -2958,7 +2958,7 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 		measurement->current_item = 0;
 	}
 
-	measurement->last_use_tick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	measurement->last_use_tick = gScenarioTicks;
 	if (measurement->flags & 1) {
 		if (message != NULL) *message = 0;
 		return measurement;

@@ -176,7 +176,7 @@ void S6Importer::Import()
 
     gDateMonthsElapsed = _s6.elapsed_months;
     gDateMonthTicks = _s6.current_day;
-    RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = _s6.scenario_ticks;
+    gScenarioTicks = _s6.scenario_ticks;
     gScenarioSrand0 = _s6.scenario_srand_0;
     gScenarioSrand1 = _s6.scenario_srand_1;
 

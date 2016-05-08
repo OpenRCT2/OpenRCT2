@@ -482,7 +482,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep->no_of_rides == 0 &&
 			peep->guest_heading_to_ride_id == 0xFF){
 
-			uint32 time_duration = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) - peep->time_in_park;
+			uint32 time_duration = gScenarioTicks - peep->time_in_park;
 			time_duration /= 2048;
 
 			if (time_duration >= 5){
@@ -4490,7 +4490,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	peep_window_state_update(peep);
 
 	peep->outside_of_park = 0;
-	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	peep->time_in_park = gScenarioTicks;
 	gNumGuestsInPark++;
 	gNumGuestsHeadingForPark--;
 	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;

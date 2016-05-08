@@ -240,7 +240,7 @@ void research_update()
 	if (gScreenFlags & editorScreenFlags)
 		return;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) % 32 != 0)
+	if (gScenarioTicks % 32 != 0)
 		return;
 
 	researchLevel = gResearchFundingLevel;

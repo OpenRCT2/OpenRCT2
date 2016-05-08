@@ -433,6 +433,7 @@ typedef struct {
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
+#define gScenarioTicks						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)
 #define gScenarioSrand0						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32)
 #define gScenarioSrand1						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32)
 

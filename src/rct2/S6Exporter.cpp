@@ -244,7 +244,7 @@ void S6Exporter::Export()
 
     _s6.elapsed_months = gDateMonthsElapsed;
     _s6.current_day = gDateMonthTicks;
-    _s6.scenario_ticks = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+    _s6.scenario_ticks = gScenarioTicks;
     _s6.scenario_srand_0 = gScenarioSrand0;
     _s6.scenario_srand_1 = gScenarioSrand1;
 

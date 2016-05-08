@@ -161,8 +161,8 @@ void update_rain_animation()
  */
 static void draw_light_rain(int left, int top, int width, int height)
 {
-	int x_start = -(int)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) + 8;
-	int y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) * 3) + 7;
+	int x_start = -(int)gScenarioTicks + 8;
+	int y_start = (gScenarioTicks * 3) + 7;
 	y_start = -y_start;
 
 	x_start += left;
@@ -170,8 +170,8 @@ static void draw_light_rain(int left, int top, int width, int height)
 
 	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	x_start = -(int)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) + 0x18;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) * 4) + 0x0D;
+	x_start = -(int)gScenarioTicks + 0x18;
+	y_start = (gScenarioTicks * 4) + 0x0D;
 	y_start = -y_start;
 
 	x_start += left;
@@ -185,8 +185,8 @@ static void draw_light_rain(int left, int top, int width, int height)
  */
 static void draw_heavy_rain(int left, int top, int width, int height)
 {
-	int x_start = -(int)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
-	int y_start = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) * 5;
+	int x_start = -(int)gScenarioTicks;
+	int y_start = gScenarioTicks * 5;
 	y_start = -y_start;
 
 	x_start += left;
@@ -194,8 +194,8 @@ static void draw_heavy_rain(int left, int top, int width, int height)
 
 	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	x_start = -(int)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) + 0x10;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) * 6) + 5;
+	x_start = -(int)gScenarioTicks + 0x10;
+	y_start = (gScenarioTicks * 6) + 5;
 	y_start = -y_start;
 
 	x_start += left;
@@ -203,8 +203,8 @@ static void draw_heavy_rain(int left, int top, int width, int height)
 
 	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	x_start = -(int)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) + 8;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) * 3) + 7;
+	x_start = -(int)gScenarioTicks + 8;
+	y_start = (gScenarioTicks * 3) + 7;
 	y_start = -y_start;
 
 	x_start += left;
@@ -212,8 +212,8 @@ static void draw_heavy_rain(int left, int top, int width, int height)
 
 	gfx_draw_rain(left, top, width, height, x_start, y_start);
 
-	x_start = -(int)RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) + 0x18;
-	y_start = (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) * 4) + 0x0D;
+	x_start = -(int)gScenarioTicks + 0x18;
+	y_start = (gScenarioTicks * 4) + 0x0D;
 	y_start = -y_start;
 
 	x_start += left;

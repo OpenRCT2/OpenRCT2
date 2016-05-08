@@ -356,7 +356,7 @@ void game_logic_update()
 		}
 	}
 	gCurrentTicks++;
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)++;
+	gScenarioTicks++;
 	gScreenAge++;
 	if (gScreenAge == 0)
 		gScreenAge--;

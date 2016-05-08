@@ -1530,7 +1530,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Time in park
 	y += 11;
 	if (peep->time_in_park != -1){
-		int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+		int eax = gScenarioTicks;
 		eax -= peep->time_in_park;
 		eax >>= 11;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = eax & 0xFFFF;
@@ -1587,7 +1587,7 @@ void window_guest_rides_update(rct_window *w)
 	rct_peep* peep = GET_PEEP(w->number);
 
 	// Every 2048 ticks do a full window_invalidate
-	int number_of_ticks = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) - peep->time_in_park;
+	int number_of_ticks = gScenarioTicks - peep->time_in_park;
 	if (!(number_of_ticks & 0x7FF)) window_invalidate(w);
 
 	uint8 curr_list_position = 0;
