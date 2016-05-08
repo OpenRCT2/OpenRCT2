@@ -24,21 +24,23 @@ extern "C"
 }
 
 /**
- * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
+ * Class to export RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
  */
-class S6Importer
+class S6Exporter
 {
 public:
-    S6Importer();
+    bool ExportObjects;
 
-    void LoadSavedGame(const utf8 * path);
-    void LoadSavedGame(SDL_RWops *rw);
-    void LoadScenario(const utf8 * path);
-    void LoadScenario(SDL_RWops *rw);
-    void Import();
+    S6Exporter();
+
+    void SaveGame(const utf8 * path);
+    void SaveGame(SDL_RWops *rw);
+    void SaveScenario(const utf8 * path);
+    void SaveScenario(SDL_RWops *rw);
+    void Export();
 
 private:
-    const utf8 * _s6Path;
-    rct_s6_data  _s6;
-    uint8        _gameVersion;
+    rct_s6_data _s6;
+
+    void Save(SDL_RWops *rw, bool isScenario);
 };

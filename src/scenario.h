@@ -455,6 +455,8 @@ extern char gScenarioSavePath[MAX_PATH];
 extern int gFirstTimeSave;
 extern uint32 gLastAutoSaveTick;
 
+extern const char *_scenarioFileName;
+
 bool scenario_scores_save();
 void scenario_load_list();
 void scenario_list_dispose();
@@ -473,6 +475,9 @@ int scenario_prepare_for_save();
 int scenario_save(SDL_RWops* rw, int flags);
 int scenario_save_network(SDL_RWops* rw);
 bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6);
+int scenario_get_num_packed_objects_to_write();
+int scenario_write_packed_objects(SDL_RWops* rw);
+void scenario_fix_ghosts(rct_s6_data *s6);
 void scenario_set_filename(const char *value);
 void scenario_failure();
 void scenario_success();

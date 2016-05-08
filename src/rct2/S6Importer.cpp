@@ -54,7 +54,8 @@ S6Importer::S6Importer()
 void S6Importer::LoadSavedGame(const utf8 * path)
 {
     SDL_RWops * rw = SDL_RWFromFile(path, "rb");
-    if (rw == nullptr) {
+    if (rw == nullptr)
+    {
         throw IOException("Unable to open SV6.");
     }
 
@@ -77,7 +78,8 @@ void S6Importer::LoadSavedGame(const utf8 * path)
 void S6Importer::LoadScenario(const utf8 * path)
 {
     SDL_RWops * rw = SDL_RWFromFile(path, "rb");
-    if (rw == nullptr) {
+    if (rw == nullptr)
+    {
         throw IOException("Unable to open SV6.");
     }
 
@@ -452,7 +454,7 @@ extern "C"
         catch (IOException)
         {
             gErrorType = ERROR_TYPE_FILE_LOAD;
-            gErrorStringId = STR_UNABLE_TO_LOAD_FILE;
+            gErrorStringId = STR_GAME_SAVE_FAILED;
         }
         catch (Exception)
         {
