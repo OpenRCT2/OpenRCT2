@@ -250,7 +250,7 @@ void scenario_begin()
 	duck_remove_all();
 	park_calculate_size();
 	staff_reset_stats();
-	RCT2_GLOBAL(0x01358840, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = 0;
 	memset((void*)0x001358102, 0, 20);
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;
 

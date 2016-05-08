@@ -275,7 +275,7 @@ typedef struct {
 	uint32 same_price_throughout;
 	uint16 suggested_max_guests;
 	uint16 park_rating_warning_days;
-	uint8 word_01358840;
+	uint8 last_entrance_style;
 	uint8 rct1_water_colour;
 	uint8 pad_01358842[2];
 	rct_research_item research_items[500];

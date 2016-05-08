@@ -6494,7 +6494,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 	case 6:
 		if (apply) {
 			ride->entrance_style = value;
-			RCT2_GLOBAL(0x01358840, uint8) = value;
+			RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = value;
 			gfx_invalidate_screen();
 		}
 		break;
