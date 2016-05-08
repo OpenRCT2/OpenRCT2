@@ -29,6 +29,8 @@ extern "C"
 class S6Importer
 {
 public:
+    bool FixIssues;
+
     S6Importer();
 
     void LoadSavedGame(const utf8 * path);

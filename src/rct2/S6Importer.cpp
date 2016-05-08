@@ -48,6 +48,7 @@ public:
 
 S6Importer::S6Importer()
 {
+    FixIssues = false;
     memset(&_s6, 0, sizeof(_s6));
 }
 
@@ -388,7 +389,10 @@ void S6Importer::Import()
     map_update_tile_pointers();
     reset_0x69EBE4();
     game_convert_strings_to_utf8();
-    game_fix_save_vars(); // OpenRCT2 fix broken save games
+    if (FixIssues)
+    {
+        game_fix_save_vars();
+    }
 }
 
 extern "C"
@@ -412,6 +416,7 @@ extern "C"
         auto s6Importer = new S6Importer();
         try
         {
+            s6Importer->FixIssues = true;
             s6Importer->LoadSavedGame(rw);
             s6Importer->Import();
 
@@ -444,6 +449,7 @@ extern "C"
         auto s6Importer = new S6Importer();
         try
         {
+            s6Importer->FixIssues = true;
             s6Importer->LoadScenario(path);
             s6Importer->Import();
 
@@ -469,5 +475,60 @@ extern "C"
         gScreenAge = 0;
         gLastAutoSaveTick = SDL_GetTicks();
         return result;
+    }
+
+    int game_load_network(SDL_RWops* rw)
+    {
+        bool result = false;
+        auto s6Importer = new S6Importer();
+        try
+        {
+            s6Importer->LoadSavedGame(rw);
+            s6Importer->Import();
+
+            openrct2_reset_object_tween_locations();
+            result = true;
+        }
+        catch (ObjectLoadException)
+        {
+            set_load_objects_fail_reason();
+        }
+        catch (Exception)
+        {
+        }
+        delete s6Importer;
+
+        if (!result)
+        {
+            return 0;
+        }
+
+        // Read checksum
+        uint32 checksum;
+        SDL_RWread(rw, &checksum, sizeof(uint32), 1);
+
+        // Read other data not in normal save files
+        gGamePaused = SDL_ReadLE32(rw);
+        _guestGenerationProbability = SDL_ReadLE32(rw);
+        _suggestedGuestMaximum = SDL_ReadLE32(rw);
+        gCheatsSandboxMode = SDL_ReadU8(rw) != 0;
+        gCheatsDisableClearanceChecks = SDL_ReadU8(rw) != 0;
+        gCheatsDisableSupportLimits = SDL_ReadU8(rw) != 0;
+        gCheatsDisableTrainLengthLimit = SDL_ReadU8(rw) != 0;
+        gCheatsShowAllOperatingModes = SDL_ReadU8(rw) != 0;
+        gCheatsShowVehiclesFromOtherTrackTypes = SDL_ReadU8(rw) != 0;
+        gCheatsFastLiftHill = SDL_ReadU8(rw) != 0;
+        gCheatsDisableBrakesFailure = SDL_ReadU8(rw) != 0;
+        gCheatsDisableAllBreakdowns = SDL_ReadU8(rw) != 0;
+        gCheatsUnlockAllPrices = SDL_ReadU8(rw) != 0;
+        gCheatsBuildInPauseMode = SDL_ReadU8(rw) != 0;
+        gCheatsIgnoreRideIntensity = SDL_ReadU8(rw) != 0;
+        gCheatsDisableVandalism = SDL_ReadU8(rw) != 0;
+        gCheatsDisableLittering = SDL_ReadU8(rw) != 0;
+        gCheatsNeverendingMarketing = SDL_ReadU8(rw) != 0;
+        gCheatsFreezeClimate = SDL_ReadU8(rw) != 0;
+
+        gLastAutoSaveTick = SDL_GetTicks();
+        return 1;
     }
 }
