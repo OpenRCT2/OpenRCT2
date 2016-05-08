@@ -361,8 +361,9 @@ static void sub_68F8CD(rct_peep *peep)
 		return;
 	}
 
-	if (peep->peep_flags & PEEP_FLAGS_TRACKING) { return; }
-	peep_leave_park(peep);
+	if (!((peep->peep_flags & PEEP_FLAGS_TRACKING) && network_get_mode() == NETWORK_MODE_NONE)) {
+		peep_leave_park(peep);
+	}
 }
 
 /**
@@ -492,10 +493,11 @@ static void sub_68F41A(rct_peep *peep, int index)
 
 				if (peep->guest_heading_to_ride_id == 0xFF){
 					peep->happiness_growth_rate = max(peep->happiness_growth_rate - 128, 0);
-					if (peep->peep_flags & PEEP_FLAGS_TRACKING && network_get_mode() == NETWORK_MODE_NONE) {}
-					else peep_leave_park(peep);
-					peep_update_hunger(peep);
-					goto loc_68F9F3;
+					if (!((peep->peep_flags & PEEP_FLAGS_TRACKING) && network_get_mode() == NETWORK_MODE_NONE)) {
+						peep_leave_park(peep);
+						peep_update_hunger(peep);
+						goto loc_68F9F3;
+					}
 				}
 			}
 		}
