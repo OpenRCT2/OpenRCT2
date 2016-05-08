@@ -4119,6 +4119,7 @@ STR_5808    :{WINDOW_COLOUR_2}Antal affärer och stånd: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal informationskioskar och toaletter: {BLACK}{COMMA16}
 STR_5810    :Avaktivera gränsen för vagnar per tåg
 STR_5811    :{SMALLFONT}{BLACK}Om ibockad, kan du ha upp till{NEWLINE}255 vagnar per tåg
+STR_5812    :Visa flerspelar- fönstret
 
 #############
 # Scenarion #

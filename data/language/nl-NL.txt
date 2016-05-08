@@ -4111,6 +4111,7 @@ STR_5808    :{WINDOW_COLOUR_2}Aantal winkels en kraampjes: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Aantal informatiekiosken en andere faciliteiten: {BLACK}{COMMA16}
 STR_5810    :Tot 255 karretjes per trein toestaan
 STR_5811    :{SMALLFONT}{BLACK}Als dit is ingeschakeld kun je achtbaantreinen tot 255 karretjes hebben,{NEWLINE}ongeacht de normale limiet of de grootte van het station.
+STR_5812    :Status multiplayer tonen
 
 #############
 # Scenarios #

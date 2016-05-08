@@ -1087,7 +1087,7 @@ STR_1081    :Film 3D: {ENDQUOTES}Code di topo{ENDQUOTES}
 STR_1082    :Modalità anelli spaziali
 STR_1083    :Modalità principianti
 STR_1084    :Lancio a MIL
-STR_1085    :Film: {ENDQUOTES}Corse da paura{ENDQUOTES}
+STR_1085    :Film: {ENDQUOTES}Attrazioni da paura{ENDQUOTES}
 STR_1086    :Film 3D: {ENDQUOTES}Via con la tempesta{ENDQUOTES}
 STR_1087    :Film 3D: {ENDQUOTES}I predatori dello spazio{ENDQUOTES}
 STR_1088    :Modalità intensa
@@ -2301,8 +2301,8 @@ STR_2293    :{BLACK} Niente
 STR_2294    :{SMALLFONT}{BLACK}Modifica lo stile del terreno alla base
 STR_2295    :{SMALLFONT}{BLACK}Modifica gli spigoli verticali del terreno
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} pagati per entrare
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} corsa
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in  {BLACK}{COMMA16} corse
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in attrazione {BLACK}{COMMA16}
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in attrazione {BLACK}{COMMA16}
 STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} unità di cibo
 STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16}unità di cibo
 STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spesi in {BLACK}{COMMA16} bevanda
@@ -2429,13 +2429,13 @@ STR_2421    :Gratis: {STRINGID}
 STR_2422    :Campagna pubblicitaria per {STRINGID}
 STR_2423    :Campagna pubblicitaria per {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Buoni-sconto con ingresso gratis
-STR_2425    :{WINDOW_COLOUR_2}Buoni-sconto con corse gratis specifiche 
+STR_2425    :{WINDOW_COLOUR_2}Buoni-sconto con attrazioni gratis specifiche 
 STR_2426    :{WINDOW_COLOUR_2}Buoni-sconto per ingresso a metà prezzo
 STR_2427    :{WINDOW_COLOUR_2}Buoni-sconto per cibo/bevanda gratis
 STR_2428    :{WINDOW_COLOUR_2}Campagna pubblicitaria per il parco
 STR_2429    :{WINDOW_COLOUR_2}Campagna pubblicitaria per un'attrazione
 STR_2430    :{BLACK}Buoni-sconto ingresso gratis a {STRINGID}
-STR_2431    :{BLACK}Buoni-sconto corsa gratis su {STRINGID}
+STR_2431    :{BLACK}Buoni-sconto attrazione gratis su {STRINGID}
 STR_2432    :{BLACK}Buoni-sconto metà prezzo per {STRINGID}
 STR_2433    :{BLACK}Buoni sconto gratis per: {STRINGID}
 STR_2434    :{BLACK}Campagna pubblicitaria per {STRINGID}
@@ -2451,7 +2451,7 @@ STR_2443    :{WINDOW_COLOUR_2}Costo settimanale: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Costo totale: {BLACK}{CURRENCY2DP}
 STR_2445    :Comincia la campagna di marketing
 STR_2446    :{YELLOW}La campagna di marketing per l'ingresso gratis al parco è terminata
-STR_2447    :{YELLOW}La campagna di marketing per le corse gratis su  {STRINGID} è terminata
+STR_2447    :{YELLOW}La campagna di marketing per le attrazioni gratis su  {STRINGID} è terminata
 STR_2448    :{YELLOW}La campagna di marketing per l'ingresso a metà prezzo al parco è terminata
 STR_2449    :{YELLOW}La campagna di marketing per {STRINGID} gratis è terminata
 STR_2450    :{YELLOW}La campagna pubblicitaria per il parco è terminata
@@ -3514,7 +3514,7 @@ STR_5172    :{SMALLFONT}{BLACK}Attiva informazioni per seguire i visitatori che 
 STR_5173    :Mostra la chat di Twitch come avvisi
 STR_5174    :{SMALLFONT}{BLACK}Mostra i messaggi di chat su Twitch preceduti da !news nelle notifiche all'interno del gioco
 STR_5175    :Inserire il nome del proprio canale Twitch
-STR_5176    :Attivare integrazione con Twitch
+STR_5176    :Attiva integrazione con Twitch
 STR_5177    :Modalità schermo:
 STR_5178    :{SMALLFONT}{BLACK}Mostra trucchi finanziari
 STR_5179    :{SMALLFONT}{BLACK}Mostra trucchi dei visitatori
@@ -3626,33 +3626,33 @@ STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
 STR_5285    :ESPLODE!!!
-STR_5286    :{SMALLFONT}{BLACK}Makes some guests explode
+STR_5286    :{SMALLFONT}{BLACK}Qualche visitatore esplode
 STR_5287    :Ride is already broken down
-STR_5288    :Ride is closed
+STR_5288    :Corsa chiusa
 STR_5289    :No breakdowns available for this ride
-STR_5290    :Fix ride
+STR_5290    :Ripara corsa
 STR_5291    :Can't force breakdown
 STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
 STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
 STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
 STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
-STR_5296    :{SMALLFONT}{BLACK}Close park
-STR_5297    :{SMALLFONT}{BLACK}Open park
+STR_5296    :{SMALLFONT}{BLACK}Chiudi parco
+STR_5297    :{SMALLFONT}{BLACK}Apri parco
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
-STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
-STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
-STR_5302    :Clear loan
+STR_5300    :{SMALLFONT}{BLACK}Licenzia velocemente lo staff
+STR_5301    :{MEDIUMFONT}{BLACK}Cancella il prestito
+STR_5302    :Azzera prestito
 STR_5303    :Allow building in pause mode
-STR_5304    :Title Sequence:
+STR_5304    :Sequenza Titolo:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
-STR_5310    :Random
+STR_5310    :Casuale
 STR_5311    :{SMALLFONT}{BLACK}Debug tools
-STR_5312    :Show console
+STR_5312    :Mostra console
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
 STR_5315    :Erba
@@ -3667,49 +3667,49 @@ STR_5323    :Grid (red)
 STR_5324    :Grid (yellow)
 STR_5325    :Grid (blue)
 STR_5326    :Grid (green)
-STR_5327    :Sand (dark)
-STR_5328    :Sand (light)
+STR_5327    :Sabbia (dark)
+STR_5328    :Sabbia (light)
 STR_5329    :Checkerboard (inverted)
-STR_5330    :Underground view
-STR_5331    :Rock
+STR_5330    :Visione sotterranea
+STR_5331    :Roccia
 STR_5332    :Legno (red)
 STR_5333    :Legno (black)
 STR_5334    :Ghiaccio
-STR_5335    :Ride entrance
-STR_5336    :Ride exit
+STR_5335    :Entrata corsa
+STR_5336    :Uscita corsa
 STR_5337    :Entrata Parco
-STR_5338    :Element type
+STR_5338    :Tipo elemento
 STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
 STR_5341    :Bandiere
-STR_5342    :Choose a map tile
+STR_5342    :Scegli una mappatura
 STR_5343    :Piazza Automaticamente lo staff
 STR_5344    :Changelog
-STR_5345    :Cheat Finanziari
-STR_5346    :Cheat Ospiti
-STR_5347    :Cheat Parco
-STR_5348    :Cheat Corse
-STR_5349    :{SMALLFONT}{BLACK}Tutte le corse
+STR_5345    :Trucchi Finanziari
+STR_5346    :Trucchi Visitatori
+STR_5347    :Trucchi Parco
+STR_5348    :Trucchi Attrazione
+STR_5349    :{SMALLFONT}{BLACK}Tutte le attrazioni
 STR_5350    :Max
 STR_5351    :Min
-STR_5352    :{BLACK}Felicita:
+STR_5352    :{BLACK}Felicità:
 STR_5353    :{BLACK}Energia:
 STR_5354    :{BLACK}Fame:
 STR_5355    :{BLACK}Sete:
 STR_5356    :{BLACK}Nausea:
 STR_5357    :{BLACK}Tolleranza Nausea:
-STR_5358    :{BLACK}Bagni:
-STR_5359    :Rimuovi Ospiti
-STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
-STR_5361    :Give all guests:
-STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
+STR_5358    :{BLACK}Necessità Bagno:
+STR_5359    :Rimuovi Visitatori
+STR_5360    :{SMALLFONT}{BLACK}Rimuovi tutti i visitatori dalla mappa
+STR_5361    :Su titti i visitatori:
+STR_5362    :{BLACK}Imposta a tutti i visitatori l'intensità attrazione:
 STR_5363    :Piu di 1
 STR_5364    :Meno di 15
 STR_5365    :{BLACK}Velocita staff:
 STR_5366    :Normale
-STR_5367    :Beloce
+STR_5367    :Veloce
 STR_5368    :Reset crash status
-STR_5369    :Park parameters...
+STR_5369    :Parametri Parco...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
@@ -3744,9 +3744,9 @@ STR_5400    :Can't change this title sequence
 STR_5401    :Create a new title sequence to make changes to
 STR_5402    :Failed to load title sequence
 STR_5403    :There may be no Load or Wait command or a save may be invalid
-STR_5404    :Name already exists
-STR_5405    :Enter a name for the save
-STR_5406    :Enter a name for the title sequence
+STR_5404    :Il nome é già utilizzato
+STR_5405    :Inserisci un nome per il salvataggio
+STR_5406    :Inserisci un nome per la sequenza del titolo
 STR_5407    :Aggiungi
 STR_5408    :Rimuovi
 STR_5409    :Inserisci
@@ -3754,11 +3754,11 @@ STR_5410    :Modifica
 STR_5411    :Ricarica
 STR_5412    :Salta a
 STR_5413    :Carica
-STR_5414    :Load{MOVE_X}{87}Six Flags Magic Mountain.SC6
-STR_5415    :Load{MOVE_X}{87}{STRING}
-STR_5416    :Load{MOVE_X}{87}No save selected
-STR_5417    :Location
-STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5414    :Carica{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :Carica{MOVE_X}{87}{STRING}
+STR_5416    :Carica{MOVE_X}{87}Nessun salvataggio selezionato
+STR_5417    :Posizione
+STR_5418    :Posizione{MOVE_X}{87}{COMMA16}   {COMMA16}
 STR_5419    :Ruota
 STR_5420    :Ruota{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
@@ -3767,95 +3767,95 @@ STR_5423    :Aspetta
 STR_5424    :Aspetta{MOVE_X}{87}{COMMA16}
 STR_5425    :Riavvia
 STR_5426    :Fine
-STR_5427    :Coordinates:
-STR_5428    :Anticlockwise rotations:
+STR_5427    :Coordinate:
+STR_5428    :Rotazione Antiorario:
 STR_5429    :Livello di Zoom:
-STR_5430    :Seconds to wait:
-STR_5431    :Save to load:
-STR_5432    :Command:
-STR_5433    :Title Sequences
-STR_5434    :Command Editor
+STR_5430    :Secondi di attesa:
+STR_5431    :Salvataggio da caricare:
+STR_5432    :Comando:
+STR_5433    :Sequenza Titoli
+STR_5434    :Editor Comandi
 STR_5435    :Rinomina salvataggio
-STR_5436    :Edit Title Sequences...
-STR_5437    :No save selected
+STR_5436    :Modifica Sequenza dei Titoli...
+STR_5437    :Nessun salvataggio selezionato
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
-STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
-STR_5442    :Force park rating:
-STR_5443    :Speed{MOVE_X}{87}{STRINGID}
-STR_5444    :Speed:
-STR_5445    :Speed
-STR_5446    :Get
-STR_5447    :Type {STRINGID}
-STR_5448    :Ride / Vehicle {STRINGID}
-STR_5449    :Reduce game speed
-STR_5450    :Increase game speed
-STR_5451    :Open cheats window
-STR_5452    :Toggle visibility of toolbars
-STR_5453    :Select another ride
+STR_5440    :Minimizza la schermata a tutto quando si perde il focus
+STR_5441    :{SMALLFONT}{BLACK}Identifica per tipologia,{NEWLINE}i veicoli possono essere diversi{NEWLINE}, come in RCT1.
+STR_5442    :Forza voto del parco:
+STR_5443    :Velocita{MOVE_X}{87}{STRINGID}
+STR_5444    :Velocita:
+STR_5445    :Velocita
+STR_5446    :Ottieni
+STR_5447    :Tipo {STRINGID}
+STR_5448    :Corsa / Veicolo {STRINGID}
+STR_5449    :Rallenta il tempo di gioco
+STR_5450    :Incrementa il tempo di gioco
+STR_5451    :Apri finestra dei cheat
+STR_5452    :Visibilità della barra
+STR_5453    :Selezione altra corsa
 STR_5454    :Uncap FPS
-STR_5455    :Enable sandbox mode
-STR_5456    :Disable clearance checks
-STR_5457    :Disable support limits
-STR_5458    :Rotate clockwise
-STR_5459    :Rotate anti-clockwise
-STR_5460    :Rotate view anti-clockwise
-STR_5461    :Set guests' parameters
+STR_5455    :Abilita modalità sandbox
+STR_5456    :Disabilita verifiche di pulizia
+STR_5457    :Disabilita limite supporti
+STR_5458    :Ruota senso orario
+STR_5459    :Ruota antiorario
+STR_5460    :Ruota visuale antiorario
+STR_5461    :Imposta parametri visitatori
 STR_5462    :{CURRENCY}
-STR_5463    :Goal: Have fun!
-STR_5464    :General
-STR_5465    :Climate
+STR_5463    :Goal: Divertiti!
+STR_5464    :Generale
+STR_5465    :Clima
 STR_5466    :Staff
 STR_5467    :ALT + 
-STR_5468    :Recent messages
-STR_5469    :Scroll map up
-STR_5470    :Scroll map left
-STR_5471    :Scroll map down
-STR_5472    :Scroll map right
-STR_5473    :Cycle day / night
-STR_5474    :Display text on banners in upper case
-STR_5475    :{COMMA16} weeks
+STR_5468    :Messaggi recenti
+STR_5469    :Scorri la mappa in alto
+STR_5470    :Scorri la mappa a destra
+STR_5471    :Scorri la mappa in basso
+STR_5472    :Scorri la mappa a destra
+STR_5473    :Ciclo giorno / notte
+STR_5474    :Mostra testo nei banner in maiuscolo
+STR_5475    :{COMMA16} settimane
 STR_5476    :Hardware
-STR_5477    :Map rendering
-STR_5478    :Controls
-STR_5479    :Toolbar
-STR_5480    :Show toolbar buttons for:
-STR_5481    :Themes
-STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
-STR_5483    :{BLACK}({COMMA16} weeks remaining)
-STR_5484    :{BLACK}({COMMA16} week remaining)
+STR_5477    :Rendering della Mappa
+STR_5478    :Strumenti
+STR_5479    :Barra
+STR_5480    :Mostra i pulsanti nella barra per:
+STR_5481    :Temi
+STR_5482    :{WINDOW_COLOUR_2}Tempo dall'ultima inspezione: {BLACK}1 minuto
+STR_5483    :{BLACK}({COMMA16} settimane rimaste)
+STR_5484    :{BLACK}({COMMA16} settimana rimasta)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}Show recent messages
-STR_5488    :No entrance (OpenRCT2 only!)
-STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
-STR_5490    :Disable audio on focus loss
-STR_5491    :Inventions list
-STR_5492    :Scenario options
-STR_5493    :Send Message
+STR_5487    :{SMALLFONT}{BLACK}Mostra i messaggi recenti
+STR_5488    :Nessuna entrata (solo OpenRCT2!)
+STR_5489    :{SMALLFONT}{BLACK}Mostra solo i visitatori tracciati
+STR_5490    :Disabilità audio quando si perde il focus
+STR_5491    :Lista Invenzioni
+STR_5492    :Opzioni Scenario
+STR_5493    :Mostra Messaggio
 STR_5494    :<not used anymore>
-STR_5495    :Player List
-STR_5496    :Player:
+STR_5495    :Lista Giocatore
+STR_5496    :Giocatore:
 STR_5497    :Ping:
-STR_5498    :Server List
-STR_5499    :Player Name:
-STR_5500    :Add Server
-STR_5501    :Start Server
+STR_5498    :Lista Server
+STR_5499    :Nome Giocatore:
+STR_5500    :Aggiungi Server
+STR_5501    :Avvia Server
 STR_5502    :Multiplayer
-STR_5503    :Enter hostname or IP address:
+STR_5503    :Inserisci hostname o indirizzo IP:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
-STR_5505    :Unable to connect to server.
-STR_5506    :Guests ignore intensities
-STR_5507    :Handymen mow grass by default
+STR_5505    :Connessione al server non possibile.
+STR_5506    :I visitatori ignorano l'intensità
+STR_5507    :Il tuttofare taglia l'erba di default
 STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
-STR_5510    :Default sound device
+STR_5510    :Scheda audio predefinita
 STR_5511    :(UNKNOWN)
-STR_5512    :Save Game As
-STR_5513    :(Quick) save game
-STR_5514    :Disable vandalism
-STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
+STR_5512    :Salva Gioco Come
+STR_5513    :Salvataggio veloce
+STR_5514    :Disabilita vandalismo
+STR_5515    :{SMALLFONT}{BLACK}Disabilita il vandalismo quando i visitatori sono arrabbiati
 STR_5516    :{SMALLFONT}{BLACK}Black
 STR_5517    :{SMALLFONT}{BLACK}Grey
 STR_5518    :{SMALLFONT}{BLACK}White
@@ -3888,191 +3888,191 @@ STR_5544    :{SMALLFONT}{BLACK}Bright red
 STR_5545    :{SMALLFONT}{BLACK}Dark pink
 STR_5546    :{SMALLFONT}{BLACK}Bright pink
 STR_5547    :{SMALLFONT}{BLACK}Light pink
-STR_5548    :Show all operating modes
-STR_5549    :Year/Month/Day
+STR_5548    :Mostra tutti i modi operativi
+STR_5549    :Anno/Mese/Giorno
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
-STR_5551    :Year/Day/Month
+STR_5551    :Anno/Giorno/Mese
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause game when Steam overlay is open
+STR_5553    :Gioco in pausa quando l'overlay di Steam é aperto
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
-STR_5555    :Show vehicles from other track types
-STR_5556    :{SMALLFONT}{BLACK}Kick player
-STR_5557    :Stay connected after desynchronisation (Multiplayer)
-STR_5558    :A restart is required for this setting to take effect
-STR_5559    :10 min. inspections
+STR_5555    :Mostra i veicoli di altre attrazioni
+STR_5556    :{SMALLFONT}{BLACK}Caccia giocatore
+STR_5557    :Rimani connesso dopo la desincronizzazione (Multiplayer)
+STR_5558    :Un riavvio é richiesto per questa opzione per essere attivata
+STR_5559    :ispezioni da 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
-STR_5561    :Failed to load language
-STR_5562    :WARNING!
-STR_5563    :This feature is currently unstable, take extra caution.
-STR_5564    :Insert Corrupt Element
-STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5561    :Caricamento lingua fallito
+STR_5562    :ATTENZIONE!
+STR_5563    :Questa funzionalità é instabile utilizzala con attenzione.
+STR_5564    :Inserisci Elemento Corrotto
+STR_5565    :{SMALLFONT}{BLACK}Inserisci un elemento della mappa corrotto. Questo nasconderà ogni elemento sopra l'elemento corrotto.
 STR_5566    :Password:
-STR_5567    :Advertise
-STR_5568    :Password Required
-STR_5569    :This server requires a password
-STR_5570    :Fetch Servers
-STR_5571    :Join Game
-STR_5572    :Add To Favourites
-STR_5573    :Remove From Favourites
-STR_5574    :Server Name:
-STR_5575    :Max Players:
-STR_5576    :Port:
+STR_5567    :Pubblicita
+STR_5568    :Password Richiesta
+STR_5569    :Questo server richiede una password
+STR_5570    :Scarica i Server
+STR_5571    :Entra in Gioco
+STR_5572    :Aggiungi ai Preferiti
+STR_5573    :Rimuovi dai Preferiti
+STR_5574    :Nome del Server:
+STR_5575    :Giocatori Massimi:
+STR_5576    :Porta:
 STR_5577    :South Korean Won (W)
-STR_5578    :Russian Rouble (R)
+STR_5578    :Rubli Russi (R)
 STR_5579    :Window scale factor:
-STR_5580    :Czech koruna (Kc)
-STR_5581    :Show FPS
-STR_5582    :Trap mouse cursor in window
+STR_5580    :Corona Ceca (Kc)
+STR_5581    :Mostra FPS
+STR_5582    :Blocca il mouse nella finestra
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
-STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
-STR_5586    :Automatically open shops and stalls
+STR_5585    :{SMALLFONT}{BLACK}Sblocca i limiti delle attrazioni, permettendo cose come la {VELOCITY} nelle salite
+STR_5586    :Automaticamente apri i negozi e code
 STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after building them
-STR_5588    :{SMALLFONT}{BLACK}Play with other players
-STR_5589    :Notification Settings
-STR_5590    :Park awards
-STR_5591    :Marketing campaign has finished
-STR_5592    :Park warnings
-STR_5593    :Park rating warnings
-STR_5594    :Ride has broken down
-STR_5595    :Ride has crashed
-STR_5596    :Ride warnings
-STR_5597    :Ride / scenery researched
-STR_5598    :Guest warnings
-STR_5599    :Guest is lost
-STR_5600    :Guest has left the park
-STR_5601    :Guest is queuing for ride
-STR_5602    :Guest is on ride
-STR_5603    :Guest has left ride
-STR_5604    :Guest has bought item
-STR_5605    :Guest has used facility
-STR_5606    :Guest has died
-STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
+STR_5588    :{SMALLFONT}{BLACK}Gioca con altri giocatori
+STR_5589    :Impostazioni Notifiche
+STR_5590    :Premi del Parco
+STR_5591    :Campagna Marketing finita
+STR_5592    :Avvisi del Parco
+STR_5593    :Avvisi di votazione del Parco
+STR_5594    :La corsa é ripartita
+STR_5595    :La corsa é danneggiata
+STR_5596    :Avvisi della Corsa
+STR_5597    :Corsa / scenario cercati
+STR_5598    :Avvisi Visitatori
+STR_5599    :Il visitatore si é perso
+STR_5600    :Il visitatore ha lasciato il parco
+STR_5601    :Il visitatore sta aspettando la corsa
+STR_5602    :Il visitatore é sulla corsa
+STR_5603    :Il visitatore ha lasciato la corsa
+STR_5604    :Il visitatore ha comprato
+STR_5605    :Il visitatore usa con facilità
+STR_5606    :Il visitatore é morto
+STR_5607    :{SMALLFONT}{BLACK}Rimuovi forzatamente l'elemento della mappa selezionato.
 STR_5608    :BH
 STR_5609    :CH
-STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5610    :{SMALLFONT}{BLACK}Rimuovi l'elemento selezionato dalla mappa. Questo forzerà la rimozione ma i soldi non verranno influenzati da questa zione. Usa con cautela.
 STR_5611    :G
-STR_5612    :{SMALLFONT}{BLACK}Ghost flag
+STR_5612    :{SMALLFONT}{BLACK}Bandiera fantasma
 STR_5613    :B
-STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5614    :{SMALLFONT}{BLACK}Bandiera rotta
 STR_5615    :L
-STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
-STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
-STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
+STR_5616    :{SMALLFONT}{BLACK}Ultimo elemento per le piastrelle
+STR_5617    :{SMALLFONT}{BLACK}Sposta l'elemento selezionato in alto.
+STR_5618    :{SMALLFONT}{BLACK}Sposta l'elemento selezionato in basso.
 STR_5619    :RollerCoaster Tycoon
-STR_5620    :Added Attractions
+STR_5620    :Attrazioni aggiunte
 STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
-STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :Source game
-STR_5629    :Difficulty level
-STR_5630    :Enable unlocking of scenarios
-STR_5631    :Original DLC Parks
-STR_5632    :Build your own...
+STR_5625    :Parchi {OPENQUOTES}Reali{ENDQUOTES}
+STR_5626    :Altri Parchi
+STR_5627    :Gruppo scenario per:
+STR_5628    :Codice del gioco
+STR_5629    :Livello difficoltà
+STR_5630    :Abilita Lo sblocco degli scenario
+STR_5631    :DLC Parchi Originali
+STR_5632    :Costruisci il tuo...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
-STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
-STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
-STR_5637    :Can't do this...
-STR_5638    :Permission denied
-STR_5639    :{SMALLFONT}{BLACK}Show list of players
-STR_5640    :{SMALLFONT}{BLACK}Manage groups
-STR_5641    :Default Group:
-STR_5642    :Group:
-STR_5643    :Add Group
-STR_5644    :Remove Group
+STR_5635    :{WINDOW_COLOUR_2}Soldi spesi: {BLACK}{CURRENCY2DP}
+STR_5636    :{WINDOW_COLOUR_2}Comandi eseguiti: {BLACK}{COMMA16}
+STR_5637    :Non puoi farlo...
+STR_5638    :Permissi negati
+STR_5639    :{SMALLFONT}{BLACK}Mostra lista di giocatore
+STR_5640    :{SMALLFONT}{BLACK}Gestisci Gruppo
+STR_5641    :Gruppo Predefinito:
+STR_5642    :Gruppo:
+STR_5643    :Aggiungi Gruppo
+STR_5644    :Rimuovi Gruppo
 STR_5645    :Chat
 STR_5646    :Terraform
-STR_5647    :Toggle Pause
-STR_5648    :Set Water Level
-STR_5649    :Create Ride
-STR_5650    :Remove Ride
-STR_5651    :Build Ride
-STR_5652    :Ride Properties
-STR_5653    :Scenery
-STR_5654    :Path
-STR_5655    :Guest
+STR_5647    :Vai in Pausa
+STR_5648    :Imposta Livello Acqua
+STR_5649    :Crea Corsa
+STR_5650    :Rimuovi Corsa
+STR_5651    :Costruisci Corsa
+STR_5652    :Proprietà corsa
+STR_5653    :Scenario
+STR_5654    :Percorso
+STR_5655    :Visitatori
 STR_5656    :Staff
-STR_5657    :Park Properties
-STR_5658    :Park Funding
-STR_5659    :Kick Player
-STR_5660    :Modify Groups
-STR_5661    :Set Player Group
+STR_5657    :Proprietà Parco
+STR_5658    :Fondi del Parco
+STR_5659    :Caccia Giocatore
+STR_5660    :Modifica Gruppo
+STR_5661    :Imposta Gruppo Giocatore
 STR_5662    :N/A
-STR_5663    :Clear Landscape
-STR_5664    :Cheat
+STR_5663    :Pulisci Paesaggio
+STR_5664    :Trucchi
 STR_5665    :Toggle Scenery Cluster
-STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
-STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
-STR_5703    :Can't kick the host
-STR_5704    :Last Action:
-STR_5705    :Can't set to this group
-STR_5706    :Can't remove group that players belong to
-STR_5707    :This group cannot be modified
-STR_5708    :Can't change the group that the host belongs to
-STR_5709    :Rename Group
-STR_5710    :Group name
-STR_5711    :Enter new name for this group:
-STR_5712    :Can't modify permission that you do not have yourself
-STR_5713    :Kick Player
-STR_5714    :Show options window
-STR_5715    :New Game
-STR_5716    :Not allowed in multiplayer mode
+STR_5701    :{WINDOW_COLOUR_2}Ultima azione: {BLACK}{STRINGID}
+STR_5702    :{SMALLFONT}{BLACK}Localizza l'ultima azione del giocatore
+STR_5703    :Non puoi cacciare l'host
+STR_5704    :Ultima Azione:
+STR_5705    :Non puoi impostare questo gruppo
+STR_5706    :Non puoi rimuovere il gruppo a cui appartengono i giocatori
+STR_5707    :Questo gruppo non può essere modificato
+STR_5708    :Non puoi modificare il gruppo al quale appartiene host
+STR_5709    :Rinomina Gruppo
+STR_5710    :Nome gruppo
+STR_5711    :Inserisci un nuovo nome per questo gruppo:
+STR_5712    :Non puoi modificare i permessi che non possiedi
+STR_5713    :Caccia giocatore
+STR_5714    :Mostra finestra opzioni
+STR_5715    :Nuovo Gioco
+STR_5716    :Non permettere la modalità multiplayer
 # For identifying client network version in server list window
-STR_5717    :Network version: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
-STR_5719    :Sunny
-STR_5720    :Partially Cloudy
-STR_5721    :Cloudy
-STR_5722    :Rain
-STR_5723    :Heavy Rain
-STR_5724    :Thunderstorm
-STR_5725    :{BLACK}Force weather:
-STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
-STR_5727    :Scaling quality
-STR_5728    :Requires hardware display option
-STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
+STR_5717    :Versione della rete: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}Versione della rete: {STRING}
+STR_5719    :Soleggiato
+STR_5720    :Parzialmente Nuvoloso
+STR_5721    :Nuvoloso
+STR_5722    :Piovoso
+STR_5723    :Fortemente Piovoso
+STR_5724    :Tempesta
+STR_5725    :{BLACK}Forza clima:
+STR_5726    :{SMALLFONT}{BLACK}Imposta il tempo corrente nel parco
+STR_5727    :Regola qualità
+STR_5728    :Richiede opzioni visuali per hardware
+STR_5729    :{SMALLFONT}{BLACK}Richiede opzioni visuali per hardware
 STR_5730    :Nearest neighbour
-STR_5731    :Linear
-STR_5732    :Anisotropic
-STR_5733    :Use NN scaling at integer scales
+STR_5731    :Lineare
+STR_5732    :Anisotropico
+STR_5733    :Usa NN scaling come valori interi
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
-STR_5735    :Network Status
-STR_5736    :Player
-STR_5737    :Closed, {COMMA16} person still on ride
-STR_5738    :Closed, {COMMA16} people still on ride
-STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
-STR_5740    :Never-ending marketing campaigns
-STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
-STR_5742    :Authenticating ...
-STR_5743    :Connecting ...
-STR_5744    :Resolving ...
-STR_5745    :Network desync detected
-STR_5746    :Disconnected
-STR_5747    :Disconnected: {STRING}
-STR_5748    :Kicked
-STR_5749    :Get out of the server!
-STR_5750    :Connection Closed
-STR_5751    :No Data
-STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
-STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
-STR_5754    :Bad Player Name
-STR_5755    :Incorrect Software Version (Server is using {STRING})
-STR_5756    :Bad Password
-STR_5757    :Server Full
-STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
-STR_5759    :Downloading map ... ({INT32} / {INT32}) KiB
+STR_5735    :Stato della rete
+STR_5736    :Giocatore
+STR_5737    :Chiuso, ma {COMMA16} persone sono sulla corsa
+STR_5738    :Chiuso, ma {COMMA16} persone sono sulla corsa
+STR_5739    :{WINDOW_COLOUR_2}Clienti nelle attrazioni: {BLACK}{COMMA16}
+STR_5740    :Campagne di Marketing senza fine
+STR_5741    :{SMALLFONT}{BLACK}Campagna di Marketing infinita
+STR_5742    :Autenticazione ...
+STR_5743    :Connessione ...
+STR_5744    :Risoluzione ...
+STR_5745    :Desync della rete identificato
+STR_5746    :Disconnesso
+STR_5747    :Disconnesso: {STRING}
+STR_5748    :Cacciato
+STR_5749    :Esci dal server!
+STR_5750    :Connessione Chiusa
+STR_5751    :Nessun Dato
+STR_5752    :{OUTLINE}{RED}{STRING} si é disconnesso
+STR_5753    :{OUTLINE}{RED}{STRING} si é disconnesso ({STRING})
+STR_5754    :Nome Giocatore errato
+STR_5755    :Versione del Software errata (il Server usa {STRING})
+STR_5756    :Password Sbagliata
+STR_5757    :Server Pieno
+STR_5758    :{OUTLINE}{GREEN}{STRING} é entrato in gioco
+STR_5759    :Scaricamento mappa ... ({INT32} / {INT32}) KiB
 STR_5760    :Hong Kong Dollars (HK$)
-STR_5761    :New Taiwan Dollar (NT$)
-STR_5762    :Chinese Yuan (CN{YEN})
-STR_5763    :All files
-STR_5764    :Invalid ride type
-STR_5765    :Cannot edit rides of invalid type
+STR_5761    :Nuovi Dollari Taiwan (NT$)
+STR_5762    :Yuan Cinesi (CN{YEN})
+STR_5763    :Tutti i file
+STR_5764    :Tipo di corsa non valida
+STR_5765    :Non puoi modificare attrazioni di tipologia errata
 STR_5766    :<available string id>
 STR_5767    :Guadagno
 STR_5768    :Clienti totali
@@ -4113,10 +4113,12 @@ STR_5802    :{SMALLFONT}{BLACK}Impedisce ai visitatori di sporcare e vomitare
 STR_5803    :{SMALLFONT}{BLACK}Ruota elemento della mappa selezionato
 STR_5804    :Disattiva suoni
 STR_5805    :{SMALLFONT}{BLACK}Se selezionato, il server sarà aggiunto alla lista{NEWLINE}dei server pubblici, affinché chiunque possa trovarlo
+STR_5806    :Disattiva Modalità finestra
 STR_5807    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
-
+STR_5810    :Disabilita limite di lunghezza del treno
+STR_5811    :{SMALLFONT}{BLACK}If selezionato, puoi avere{NEWLINE}255 macchine per treno
 
 #############
 # Scenarios #
@@ -4231,13 +4233,13 @@ STR_DTLS    :L'altopiano di Thunder Rock si trova in mezzo al deserto e attira m
 <Mega Park>
 STR_SCNR    :Mega Park
 STR_PARK    :Mega Park
-STR_DTLS    :Divertumento puro!
+STR_DTLS    :Divertimento puro!
 
 ## Added Attractions
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :Crea delle cascate in questo parco molto interessante
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
@@ -4499,17 +4501,17 @@ STR_DTLS    :A desert park with some cleverly designed coasters is yours to expa
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :In this tiny park you must finish building the five existing coasters
+STR_DTLS    :In questo piccolo parco devi finire cinque montagne russe preesistenti
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :A large park with a novel transporation system around its edge
+STR_DTLS    :Un grande parco con un nuovo sistem adi trasporto lungo i confini
 
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :This large island is all yours to develop as an amusement park
+STR_DTLS    :Questa grande isola é tutta tua pornta per diventare un parco bellissimo
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
@@ -4568,4 +4570,4 @@ STR_DTLS    :
 [CONDORRD]
 STR_NAME    :Condor Ride
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 passengers per car
+STR_CPTY    :4 passeggeri per macchina

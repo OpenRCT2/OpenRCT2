@@ -2829,40 +2829,40 @@ STR_2810    :{RED}Guests are thirsty and can't find anywhere to buy drinks
 STR_2811    :{RED}Guests are complaining because they can't find the toilets in your park
 STR_2812    :{RED}Guests are getting lost or stuck{NEWLINE}Check whether the layout of your footpaths needs improving to help the guests find their way around
 STR_2813    :{RED}Your park entrance fee is too high!{NEWLINE}Reduce your entrance fee or improve the value of the park to attract more guests
-STR_2814    :{WINDOW_COLOUR_2}Most untidy park award
-STR_2815    :{WINDOW_COLOUR_2}Tidiest park award
-STR_2816    :{WINDOW_COLOUR_2}Award for the park with the best roller coasters
-STR_2817    :{WINDOW_COLOUR_2}Best value park award
-STR_2818    :{WINDOW_COLOUR_2}Most beautiful park award
-STR_2819    :{WINDOW_COLOUR_2}Worst value park award
-STR_2820    :{WINDOW_COLOUR_2}Safest park award
-STR_2821    :{WINDOW_COLOUR_2}Best staff award
-STR_2822    :{WINDOW_COLOUR_2}Best park food award
-STR_2823    :{WINDOW_COLOUR_2}Worst park food award
-STR_2824    :{WINDOW_COLOUR_2}Best park toilets award
-STR_2825    :{WINDOW_COLOUR_2}Most disappointing park award
-STR_2826    :{WINDOW_COLOUR_2}Best water rides award
-STR_2827    :{WINDOW_COLOUR_2}Best custom-designed rides award
-STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride colour schemes award
-STR_2829    :{WINDOW_COLOUR_2}Most confusing park layout award
-STR_2830    :{WINDOW_COLOUR_2}Best gentle ride award
-STR_2831    :{TOPAZ}Your park has received an award for being 'The most untidy park in the country'!
-STR_2832    :{TOPAZ}Your park has received an award for being 'The tidiest park in the country'!
-STR_2833    :{TOPAZ}Your park has received an award for being 'The park with the best roller coasters'!
-STR_2834    :{TOPAZ}Your park has received an award for being 'The best value park in the country'!
-STR_2835    :{TOPAZ}Your park has received an award for being 'The most beautiful park in the country'!
-STR_2836    :{TOPAZ}Your park has received an award for being 'The worst value park in the country'!
-STR_2837    :{TOPAZ}Your park has received an award for being 'The safest park in the country'!
-STR_2838    :{TOPAZ}Your park has received an award for being 'The park with the best staff'!
-STR_2839    :{TOPAZ}Your park has received an award for being 'The park with the best food in the country'!
-STR_2840    :{TOPAZ}Your park has received an award for being 'The park with the worst food in the country'!
-STR_2841    :{TOPAZ}Your park has received an award for being 'The park with the best toilet facilities in the country'!
-STR_2842    :{TOPAZ}Your park has received an award for being 'The most disappointing park in the country'!
-STR_2843    :{TOPAZ}Your park has received an award for being 'The park with the best water rides in the country'!
-STR_2844    :{TOPAZ}Your park has received an award for being 'The park with the best custom-designed rides'!
-STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of colour schemes'!
-STR_2846    :{TOPAZ}Your park has received an award for being 'The park with the most confusing layout'!
-STR_2847    :{TOPAZ}Your park has received an award for being 'The park with the best gentle rides'!
+STR_2814    :{WINDOW_COLOUR_2}最杂乱无章乐园奖
+STR_2815    :{WINDOW_COLOUR_2}最整洁乐园奖
+STR_2816    :{WINDOW_COLOUR_2}拥有最棒过山车乐园奖
+STR_2817    :{WINDOW_COLOUR_2}最有价值乐园奖
+STR_2818    :{WINDOW_COLOUR_2}最美乐园奖
+STR_2819    :{WINDOW_COLOUR_2}最差价值乐园奖
+STR_2820    :{WINDOW_COLOUR_2}最安全乐园奖
+STR_2821    :{WINDOW_COLOUR_2}拥有最佳员工乐园奖
+STR_2822    :{WINDOW_COLOUR_2}拥有最佳食物乐园奖
+STR_2823    :{WINDOW_COLOUR_2}拥有最差食物乐园奖
+STR_2824    :{WINDOW_COLOUR_2}拥有最佳厕所乐园奖
+STR_2825    :{WINDOW_COLOUR_2}最让人失望乐园奖
+STR_2826    :{WINDOW_COLOUR_2}拥有最佳水上游乐设施乐园奖
+STR_2827    :{WINDOW_COLOUR_2}拥有最佳自行设计的游乐设施乐园奖
+STR_2828    :{WINDOW_COLOUR_2}拥有最大胆色彩搭配乐园奖
+STR_2829    :{WINDOW_COLOUR_2}拥有最令人迷失布局乐园奖
+STR_2830    :{WINDOW_COLOUR_2}拥有最温和游乐设施乐园奖
+STR_2831    :{TOPAZ}你的游乐园获得了'全国最杂乱无章乐园奖'!
+STR_2832    :{TOPAZ}你的游乐园获得了'全国最整洁乐园奖'!
+STR_2833    :{TOPAZ}你的游乐园获得了'拥有最棒过山车乐园奖'!
+STR_2834    :{TOPAZ}你的游乐园获得了'全国最有价值乐园奖'!
+STR_2835    :{TOPAZ}你的游乐园获得了'全国最美乐园奖'!
+STR_2836    :{TOPAZ}你的游乐园获得了'全国最差价值乐园奖'!
+STR_2837    :{TOPAZ}你的游乐园获得了'全国最安全乐园奖'!
+STR_2838    :{TOPAZ}你的游乐园获得了'拥有最佳员工乐园奖'!
+STR_2839    :{TOPAZ}你的游乐园获得了'拥有最佳食物乐园奖'!
+STR_2840    :{TOPAZ}你的游乐园获得了'拥有最差食物乐园奖'!
+STR_2841    :{TOPAZ}你的游乐园获得了'拥有最佳厕所乐园奖'!
+STR_2842    :{TOPAZ}你的游乐园获得了'全国最让人失望乐园奖'!
+STR_2843    :{TOPAZ}你的游乐园获得了'拥有最佳水上游乐设施乐园奖'!
+STR_2844    :{TOPAZ}你的游乐园获得了'拥有最佳自行设计的游乐设施乐园奖'!
+STR_2845    :{TOPAZ}你的游乐园获得了'拥有最大胆色彩搭配乐园奖'!
+STR_2846    :{TOPAZ}你的游乐园获得了'拥有最令人迷失布局乐园奖'!
+STR_2847    :{TOPAZ}你的游乐园获得了'拥有最温和游乐设施乐园奖'!
 STR_2848    :{WINDOW_COLOUR_2}No recent awards
 STR_2849    :New scenario installed successfully
 STR_2850    :New track design installed successfully
@@ -3965,11 +3965,11 @@ STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
 STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
 STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
 STR_5619    :过山车大亨
-STR_5620    :Added Attractions
-STR_5621    :Loopy Landscapes
+STR_5620    :过山车大亨：快乐天地
+STR_5621    :过山车大亨：极限反转
 STR_5622    :过山车大亨2
-STR_5623    :Wacky Worlds
-STR_5624    :Time Twister
+STR_5623    :过山车大亨2：异国风情
+STR_5624    :过山车大亨2：欢乐时光
 STR_5625    :{OPENQUOTES}真实的{ENDQUOTES}游乐园
 STR_5626    :其他游乐园
 STR_5627    :剧情列表排序方法:
