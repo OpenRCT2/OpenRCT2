@@ -137,16 +137,7 @@ static void blank_tiles_paint(int x, int y)
 	RCT2_GLOBAL(0x9DE568, sint16) = x;
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
-	RCT2_CALLPROC_X(
-		(int)RCT2_ADDRESS(0x98196C, uint32_t*)[get_current_rotation()],
-		0xFF00,
-		3123,
-		y & 0xFF00,
-		16,
-		32,
-		32,
-		get_current_rotation()
-	);
+	sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
 /**
