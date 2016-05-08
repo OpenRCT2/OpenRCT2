@@ -320,11 +320,7 @@ extern "C"
         }
         delete s6exporter;
 
-        if (flags & S6_SAVE_FLAG_EXPORT)
-        {
-            reset_loaded_objects();
-        }
-
+        reset_loaded_objects();
         gfx_invalidate_screen();
 
         if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
