@@ -4122,8 +4122,6 @@ STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #tooltips
-STR_5813    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
-STR_5814    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
 STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
 STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type
@@ -4167,6 +4165,8 @@ STR_5854    :{SMALLFONT}{BLACK}Enable/disable ride music
 STR_5855    :{SMALLFONT}{BLACK}Set fullscreen, windowed,{NEWLINE}or borderless display
 STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
 STR_5857    :{SMALLFONT}{BLACK}Game options
+STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
+STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 
 #############
 # Scenarios #
