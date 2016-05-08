@@ -190,27 +190,27 @@ static rct_widget window_options_display_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
 	{ WWT_GROUPBOX,			1,	5,		304,	53,		205,	STR_HARDWARE_GROUP,		STR_NONE },					// Hardware group
 
-	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,					STR_NONE },					// fullscreen
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE },
+	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,					STR_NONE },					// Fullscreen
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_FULLSCREEN_MODE_TIP },
 
-		{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		STR_RESOLUTION_X_BY_Y,	STR_NONE },					// resolution
-		{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
+		{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		STR_RESOLUTION_X_BY_Y,	STR_NONE },				// Resolution
+		{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_DISPLAY_RESOLUTION_TIP },
 
-	{ WWT_SPINNER,			1,	155,	299,	98,		109,	STR_NONE,				STR_NONE },					// scale spinner
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		103,	STR_NUMERIC_UP,			STR_NONE },					// scale spinner up
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	104,	108,	STR_NUMERIC_DOWN,		STR_NONE },					// scale spinner down
+	{ WWT_SPINNER,			1,	155,	299,	98,		109,	STR_NONE,				STR_WINDOW_SCALE_TIP },		// Scale spinner
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		103,	STR_NUMERIC_UP,			STR_NONE },					// Scale spinner up
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	104,	108,	STR_NUMERIC_DOWN,		STR_NONE },					// Scale spinner down
 
-	{ WWT_CHECKBOX,			1,	10,		290,	113,	124,	STR_HARDWARE_DISPLAY,	STR_NONE },					// hardware display
+	{ WWT_CHECKBOX,			1,	10,		290,	113,	124,	STR_HARDWARE_DISPLAY,	STR_HARDWARE_DISPLAY_TIP },	// Hardware display
 
-		{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,				STR_REQUIRES_HW_DISPLAY },	// scaling quality hint
-		{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	STR_DROPDOWN_GLYPH,		STR_REQUIRES_HW_DISPLAY_TIP },
-		{ WWT_CHECKBOX,			1,	25,		290,	143,	154,	STR_USE_NN_AT_INTEGER_SCALE,	STR_REQUIRES_HW_DISPLAY_TIP },	// use nn scaling at integer scales
+		{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,						STR_NONE },							// Scaling quality hint
+		{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	STR_DROPDOWN_GLYPH,				STR_SCALE_QUALITY_TIP },
+		{ WWT_CHECKBOX,			1,	25,		290,	143,	154,	STR_USE_NN_AT_INTEGER_SCALE,	STR_USE_NN_AT_INTEGER_SCALE_TIP },	// Use nn scaling at integer scales
 
-		{ WWT_CHECKBOX,			1,	25,		290,	158,	169,	STR_STEAM_OVERLAY_PAUSE,	STR_NONE },				// pause on steam overlay
+		{ WWT_CHECKBOX,			1,	25,		290,	158,	169,	STR_STEAM_OVERLAY_PAUSE,		STR_STEAM_OVERLAY_PAUSE_TIP },		// Pause on steam overlay
 
-	{ WWT_CHECKBOX,			1,	10,		290,	174,	185,	STR_UNCAP_FPS,			STR_NONE },					// uncap fps
-	{ WWT_CHECKBOX,			1,	155,	299,	174,	185,	STR_SHOW_FPS,			STR_NONE },					// show fps
-	{ WWT_CHECKBOX,			1,	10,		290,	189,	200,	STR_MININISE_FULL_SCREEN_ON_FOCUS_LOSS,	STR_NONE },	// minimise fullscreen focus loss
+	{ WWT_CHECKBOX,			1,	10,		290,	174,	185,	STR_UNCAP_FPS,			STR_UNCAP_FPS_TIP },		// Uncap fps
+	{ WWT_CHECKBOX,			1,	155,	299,	174,	185,	STR_SHOW_FPS,			STR_SHOW_FPS_TIP },			// Show fps
+	{ WWT_CHECKBOX,			1,	10,		290,	189,	200,	STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,	STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },	// Minimise fullscreen focus loss
 
 
 	{ WIDGETS_END },
@@ -219,14 +219,14 @@ static rct_widget window_options_display_widgets[] = {
 static rct_widget window_options_rendering_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-	{ WWT_GROUPBOX,			1,	5,      304,	FRAME_RENDERING_START + 0,	FRAME_RENDERING_START + 106,	STR_RENDERING_GROUP,	STR_NONE },					// Rendering group
-	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 15,	FRAME_RENDERING_START + 26,	STR_TILE_SMOOTHING, 	STR_TILE_SMOOTHING_TIP },	// landscape smoothing
-	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 30,	FRAME_RENDERING_START + 41,	STR_GRIDLINES,			STR_GRIDLINES_TIP },		// gridlines
-	{ WWT_DROPDOWN,			1,	155,	299,	FRAME_RENDERING_START + 45,	FRAME_RENDERING_START + 55,	STR_NONE,				STR_NONE },					// construction marker
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	FRAME_RENDERING_START + 46,	FRAME_RENDERING_START + 54,	STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 60,	FRAME_RENDERING_START + 71,	STR_CYCLE_DAY_NIGHT,	STR_NONE },					// cycle day-night
-	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 75,	FRAME_RENDERING_START + 86,	STR_UPPER_CASE_BANNERS,	STR_NONE },					// upper case banners
-	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 90,	FRAME_RENDERING_START + 101,	STR_DISABLE_LIGHTNING_EFFECT,	STR_NONE },		// disable lightning effect
+	{ WWT_GROUPBOX,			1,	5,      304,	FRAME_RENDERING_START + 0,	FRAME_RENDERING_START + 106,	STR_RENDERING_GROUP,			STR_NONE },								// Rendering group
+	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 15,	FRAME_RENDERING_START + 26,		STR_TILE_SMOOTHING, 			STR_TILE_SMOOTHING_TIP },				// Landscape smoothing
+	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 30,	FRAME_RENDERING_START + 41,		STR_GRIDLINES,					STR_GRIDLINES_TIP },					// Gridlines
+	{ WWT_DROPDOWN,			1,	155,	299,	FRAME_RENDERING_START + 45,	FRAME_RENDERING_START + 55,		STR_NONE,						STR_NONE },								// Construction marker
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	FRAME_RENDERING_START + 46,	FRAME_RENDERING_START + 54,		STR_DROPDOWN_GLYPH,				STR_CONSTRUCTION_MARKER_COLOUR_TIP },
+	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 60,	FRAME_RENDERING_START + 71,		STR_CYCLE_DAY_NIGHT,			STR_CYCLE_DAY_NIGHT_TIP },				// Cycle day-night
+	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 75,	FRAME_RENDERING_START + 86,		STR_UPPERCASE_BANNERS,			STR_UPPERCASE_BANNERS_TIP },			// Uppercase banners
+	{ WWT_CHECKBOX,			1,	10,		290,	FRAME_RENDERING_START + 90,	FRAME_RENDERING_START + 101,	STR_DISABLE_LIGHTNING_EFFECT,	STR_DISABLE_LIGHTNING_EFFECT_TIP },		// Disable lightning effect
 #undef FRAME_RENDERING_START
 	{ WIDGETS_END },
 };
@@ -234,57 +234,57 @@ static rct_widget window_options_rendering_widgets[] = {
 static rct_widget window_options_culture_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
 	{ WWT_DROPDOWN,			1,	155,	299,	53,		64,		STR_NONE,				STR_NONE },	// language
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,					STR_NONE },	// currency
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_NONE }, //
-	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		872,					STR_NONE },	// distance
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	98,		110,	875,					STR_NONE },	// temperature
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	868,					STR_NONE },	// height labels
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	STR_DROPDOWN_GLYPH,		STR_NONE },
-	{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,				STR_NONE },	// date format
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	STR_DROPDOWN_GLYPH,		STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		STR_DROPDOWN_GLYPH,		STR_LANGUAGE_TIP },
+	{ WWT_DROPDOWN,			1,	155,	299,	68,		79,		871,					STR_NONE },	// Currency
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	69,		78,		STR_DROPDOWN_GLYPH,		STR_CURRENCY_TIP },
+	{ WWT_DROPDOWN,			1,	155,	299,	83,		94,		872,					STR_NONE },	// Distance and speed
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	84,		93,		STR_DROPDOWN_GLYPH,		STR_DISTANCE_AND_SPEED_TIP },
+	{ WWT_DROPDOWN,			1,	155,	299,	98,		110,	875,					STR_NONE },	// Temperature
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		108,	STR_DROPDOWN_GLYPH,		STR_TEMPERATURE_FORMAT_TIP },
+	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	868,					STR_NONE },	// Height labels
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	STR_DROPDOWN_GLYPH,		STR_HEIGHT_LABELS_UNITS_TIP },
+	{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,				STR_NONE },	// Date format
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	STR_DROPDOWN_GLYPH,		STR_DATE_FORMAT_TIP },
 	{ WIDGETS_END },
 };
 
 static rct_widget window_options_audio_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_DROPDOWN,			1,	10,		299,	53,		64,		865,					STR_NONE },	// audio device
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		STR_DROPDOWN_GLYPH,					STR_NONE },
-	{ WWT_CHECKBOX,			1,	10,		229,	69,		80,		STR_SOUND,				STR_NONE },	// enable / disable sound
-	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_RIDE_MUSIC,			STR_NONE },	// enable / disable ride music
-	{ WWT_CHECKBOX,			1,	10,		229,	98,		110,	STR_AUDIO_FOCUS,		STR_NONE },	// enable / disable audio disabled on focus lost
-	{ WWT_DROPDOWN,			1,	155,	299,	112,	124,	STR_NONE,				STR_NONE },	// title music
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	113,	123,	STR_DROPDOWN_GLYPH,					STR_NONE },
-	{ WWT_SCROLL,			1,	155,	299,	68,		80,		1,						STR_NONE }, // master volume
-	{ WWT_SCROLL,			1,	155,	299,	83,		95,		1,						STR_NONE }, // music volume
+	{ WWT_DROPDOWN,			1,	10,		299,	53,		64,		865,					STR_NONE },						// Audio device
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	54,		63,		STR_DROPDOWN_GLYPH,		STR_AUDIO_DEVICE_TIP },
+	{ WWT_CHECKBOX,			1,	10,		229,	69,		80,		STR_SOUND_EFFECTS,		STR_SOUND_EFFECTS_TIP },		// Enable / disable sound effects
+	{ WWT_CHECKBOX,			1,	10,		229,	84,		95,		STR_RIDE_MUSIC,			STR_RIDE_MUSIC_TIP },			// Enable / disable ride music
+	{ WWT_CHECKBOX,			1,	10,		229,	98,		110,	STR_AUDIO_FOCUS,		STR_AUDIO_FOCUS_TIP },			// Enable / disable audio disabled on focus lost
+	{ WWT_DROPDOWN,			1,	155,	299,	112,	124,	STR_NONE,				STR_NONE },						// Title music
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	113,	123,	STR_DROPDOWN_GLYPH,		STR_TITLE_MUSIC_TIP },
+	{ WWT_SCROLL,			1,	155,	299,	68,		80,		1,						STR_NONE }, 					// Sound effect volume
+	{ WWT_SCROLL,			1,	155,	299,	83,		95,		1,						STR_NONE }, 					// Music volume
 	{ WIDGETS_END },
 };
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_GROUPBOX,			1,	5,      304,	53,			129,	STR_CONTROLS_GROUP,						STR_NONE },							// Controls group
-	{ WWT_CHECKBOX,			2,	10,		299,	68,			79,		STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },	// Edge scrolling
-	{ WWT_CHECKBOX,			2,	10,		299,	83,			94,		STR_TRAP_MOUSE,							STR_NONE },	// Trap mouse
-	{ WWT_CHECKBOX,			2,	10,		299,	98,			109,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_NONE },							// Invert right mouse dragging
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	113,		124,	STR_HOTKEY,								STR_HOTKEY_TIP },					// Set hotkeys buttons
+	{ WWT_GROUPBOX,			1,	5,      304,	53,			129,	STR_CONTROLS_GROUP,						STR_NONE },									// Controls group
+	{ WWT_CHECKBOX,			2,	10,		299,	68,			79,		STR_SCREEN_EDGE_SCROLLING,				STR_SCREEN_EDGE_SCROLLING_TIP },			// Edge scrolling
+	{ WWT_CHECKBOX,			2,	10,		299,	83,			94,		STR_TRAP_MOUSE,							STR_TRAP_MOUSE_TIP },						// Trap mouse
+	{ WWT_CHECKBOX,			2,	10,		299,	98,			109,	STR_INVERT_RIGHT_MOUSE_DRAG,			STR_INVERT_RIGHT_MOUSE_DRAG_TIP },			// Invert right mouse dragging
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	113,		124,	STR_HOTKEY,								STR_HOTKEY_TIP },							// Set hotkeys buttons
 
-	{ WWT_GROUPBOX,			1,	5,      304,	133,		179,	STR_THEMES_GROUP,						STR_NONE },							// Toolbar buttons group
-	{ WWT_DROPDOWN,			1,	155,	299,	147,		158,	STR_NONE,								STR_NONE },							// Themes
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	148,		157,	STR_DROPDOWN_GLYPH,						STR_NONE },
-	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	163,		174,	STR_EDIT_THEMES_BUTTON,					STR_NONE },							// Themes button
+	{ WWT_GROUPBOX,			1,	5,      304,	133,		179,	STR_THEMES_GROUP,						STR_NONE },									// Toolbar buttons group
+	{ WWT_DROPDOWN,			1,	155,	299,	147,		158,	STR_NONE,								STR_NONE },									// Themes
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	148,		157,	STR_DROPDOWN_GLYPH,						STR_CURRENT_THEME_TIP },
+	{ WWT_DROPDOWN_BUTTON,	1,	10,		145,	163,		174,	STR_EDIT_THEMES_BUTTON,					STR_EDIT_THEMES_BUTTON_TIP },				// Themes button
 
-	{ WWT_GROUPBOX,			1,	5,      304,	183,		245,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },							// Toolbar buttons group
-	{ WWT_CHECKBOX,			2,	10,		145,	214,		225,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_NONE },							// Finances
-	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_NONE },							// Research
-	{ WWT_CHECKBOX,			2,	155,	299,	214,		225,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_NONE },							// Cheats
-	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_NONE },							// Recent messages
+	{ WWT_GROUPBOX,			1,	5,      304,	183,		245,	STR_TOOLBAR_BUTTONS_GROUP,				STR_NONE },									// Toolbar buttons group
+	{ WWT_CHECKBOX,			2,	10,		145,	214,		225,	STR_FINANCES_BUTTON_ON_TOOLBAR,			STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },		// Finances
+	{ WWT_CHECKBOX,			2,	10,		145,	229,		240,	STR_RESEARCH_BUTTON_ON_TOOLBAR,			STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },		// Research
+	{ WWT_CHECKBOX,			2,	155,	299,	214,		225,	STR_CHEATS_BUTTON_ON_TOOLBAR,			STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },			// Cheats
+	{ WWT_CHECKBOX,			2,	155,	299,	229,		240,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,	STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },	// Recent messages
 
-	{ WWT_CHECKBOX,			2,	10,		299,	254,		265,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },		// Select by track type
-	{ WWT_DROPDOWN,			2,	155,	299,	269,		280,	STR_NONE,								STR_NONE },							// Scenario select mode
-	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	270,		279,	STR_DROPDOWN_GLYPH,						STR_NONE },
-	{ WWT_CHECKBOX,			2,	18,		299,	284,		295,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_NONE },							// Unlocking of scenarios
+	{ WWT_CHECKBOX,			2,	10,		299,	254,		265,	STR_SELECT_BY_TRACK_TYPE,				STR_SELECT_BY_TRACK_TYPE_TIP },				// Select by track type
+	{ WWT_DROPDOWN,			2,	155,	299,	269,		280,	STR_NONE,								STR_NONE },									// Scenario select mode
+	{ WWT_DROPDOWN_BUTTON,	2,	288,	298,	270,		279,	STR_DROPDOWN_GLYPH,						STR_SCENARIO_GROUPING_TIP },
+	{ WWT_CHECKBOX,			2,	18,		299,	284,		295,	STR_OPTIONS_SCENARIO_UNLOCKING,			STR_SCENARIO_UNLOCKING_TIP },				// Unlocking of scenarios
 	{ WIDGETS_END },
 };
 
@@ -293,25 +293,25 @@ static rct_widget window_options_misc_widgets[] = {
 	{ WWT_CHECKBOX,			2,	10,		299,	54,		65,		STR_REAL_NAME,								STR_REAL_NAME_TIP },								// Show 'real' names of guests
 	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,	STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },	// Allow loading with incorrect checksum
 	{ WWT_CHECKBOX,			2,	10,		299,	84,		95,		STR_SAVE_PLUGIN_DATA,						STR_SAVE_PLUGIN_DATA_TIP },							// Export plug-in objects with saved games
-	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	STR_TEST_UNFINISHED_TRACKS,					STR_TEST_UNFINISHED_TRACKS_TIP },					// test unfinished tracks
-	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	STR_ENABLE_DEBUGGING_TOOLS,					STR_NONE },											// enable debugging tools
-	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	STR_STAY_CONNECTED_AFTER_DESYNC,			STR_NONE },											// Do not disconnect after the client desynchronises with the server
-	{ WWT_DROPDOWN,			1,	155,	299,	144,	155,	STR_NONE,									STR_NONE },											// autosave dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	145,	154,	STR_DROPDOWN_GLYPH,							STR_NONE },											// autosave dropdown button
-	{ WWT_DROPDOWN,			1,	155,	299,	159,	170,	STR_NONE,									STR_NONE },											// title sequence dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	169,	STR_DROPDOWN_GLYPH,							STR_NONE },											// title seqeuence dropdown button
-	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	STR_EDIT_TITLE_SEQUENCES_BUTTON,			STR_NONE },											// Title sequences button
-	{ WWT_CHECKBOX,			2,	10,		299,	189,	200,	STR_AUTO_STAFF_PLACEMENT,					STR_NONE }, 										// auto staff placement
-	{ WWT_CHECKBOX,			2,	10,		299,	204,	215,	STR_HANDYMEN_MOW_BY_DEFAULT,				STR_NONE },											// handymen mow by default
+	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	STR_TEST_UNFINISHED_TRACKS,					STR_TEST_UNFINISHED_TRACKS_TIP },					// Test unfinished tracks
+	{ WWT_CHECKBOX,			2,	10,		299,	114,	125,	STR_ENABLE_DEBUGGING_TOOLS,					STR_ENABLE_DEBUGGING_TOOLS_TIP },					// Enable debugging tools
+	{ WWT_CHECKBOX,			2,	10,		299,	129,	140,	STR_STAY_CONNECTED_AFTER_DESYNC,			STR_STAY_CONNECTED_AFTER_DESYNC_TIP },				// Do not disconnect after the client desynchronises with the server
+	{ WWT_DROPDOWN,			1,	155,	299,	144,	155,	STR_NONE,									STR_NONE },											// Autosave dropdown
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	145,	154,	STR_DROPDOWN_GLYPH,							STR_AUTOSAVE_FREQUENCY_TIP },						// Autosave dropdown button
+	{ WWT_DROPDOWN,			1,	155,	299,	159,	170,	STR_NONE,									STR_NONE },											// Title sequence dropdown
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	160,	169,	STR_DROPDOWN_GLYPH,							STR_TITLE_SEQUENCE_TIP },							// Title seqeuence dropdown button
+	{ WWT_DROPDOWN_BUTTON,	1,	26,		185,	174,	185,	STR_EDIT_TITLE_SEQUENCES_BUTTON,			STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },				// Edit title sequences button
+	{ WWT_CHECKBOX,			2,	10,		299,	189,	200,	STR_AUTO_STAFF_PLACEMENT,					STR_AUTO_STAFF_PLACEMENT_TIP },						// Auto staff placement
+	{ WWT_CHECKBOX,			2,	10,		299,	204,	215,	STR_HANDYMEN_MOW_BY_DEFAULT,				STR_HANDYMEN_MOW_BY_DEFAULT_TIP },					// Handymen mow by default
 	{ WWT_CHECKBOX,			2,	10,		299,	219,	230,	STR_AUTO_OPEN_SHOPS,						STR_AUTO_OPEN_SHOPS_TIP },							// Automatically open shops & stalls
-	{ WWT_DROPDOWN,			1,	155,	299,	234,	245,	STR_NONE,									STR_NONE },											// default inspection time dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	235,	244,	STR_DROPDOWN_GLYPH,							STR_NONE },											// default inspection time dropdown button
+	{ WWT_DROPDOWN,			1,	155,	299,	234,	245,	STR_NONE,									STR_NONE },											// Default inspection time dropdown
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	235,	244,	STR_DROPDOWN_GLYPH,							STR_DEFAULT_INSPECTION_INTERVAL_TIP },				// Default inspection time dropdown button
 	{ WIDGETS_END },
 };
 
 static rct_widget window_options_twitch_widgets[] = {
 	MAIN_OPTIONS_WIDGETS,
-	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	54,		65,		STR_TWITCH_NAME,			STR_NONE },							// Twitch channel name
+	{ WWT_DROPDOWN_BUTTON,	2,	10,		299,	54,		65,		STR_TWITCH_NAME,			STR_TWITCH_NAME_TIP },				// Twitch channel name
 	{ WWT_CHECKBOX,			2,	10,		299,	69,		80,		STR_TWITCH_PEEP_FOLLOWERS,	STR_TWITCH_PEEP_FOLLOWERS_TIP },	// Twitch name peeps by follows
 	{ WWT_CHECKBOX,			2,	10,		299,	84,		95,		STR_TWITCH_FOLLOWERS_TRACK,	STR_TWITCH_FOLLOWERS_TRACK_TIP },	// Twitch information on for follows
 	{ WWT_CHECKBOX,			2,	10,		299,	99,		110,	STR_TWITCH_PEEP_CHAT,		STR_TWITCH_PEEP_CHAT_TIP },			// Twitch name peeps by chat
