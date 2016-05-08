@@ -1,0 +1,580 @@
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+/*****************************************************************************
+ * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ *
+ * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+ * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * A full copy of the GNU General Public License can be found in licence.txt
+ *****************************************************************************/
+#pragma endregion
+
+#include "../core/Exception.hpp"
+#include "../core/IStream.hpp"
+#include "../core/String.hpp"
+#include "S6Exporter.h"
+
+extern "C"
+{
+    #include "../config.h"
+    #include "../game.h"
+    #include "../interface/viewport.h"
+    #include "../interface/window.h"
+    #include "../localisation/date.h"
+    #include "../localisation/localisation.h"
+    #include "../management/finance.h"
+    #include "../management/marketing.h"
+    #include "../management/news_item.h"
+    #include "../management/research.h"
+    #include "../object.h"
+    #include "../openrct2.h"
+    #include "../peep/staff.h"
+    #include "../ride/ride.h"
+    #include "../ride/ride_ratings.h"
+    #include "../scenario.h"
+    #include "../util/sawyercoding.h"
+    #include "../world/climate.h"
+    #include "../world/map_animation.h"
+    #include "../world/park.h"
+}
+
+S6Exporter::S6Exporter()
+{
+    ExportObjects = false;
+    RemoveTracklessRides = false;
+    memset(&_s6, 0, sizeof(_s6));
+}
+
+void S6Exporter::SaveGame(const utf8 * path)
+{
+    SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+    if (rw == nullptr)
+    {
+        throw IOException("Unable to write to destination file.");
+    }
+
+    SaveGame(rw);
+
+    SDL_RWclose(rw);
+}
+
+void S6Exporter::SaveGame(SDL_RWops *rw)
+{
+    Save(rw, false);
+}
+
+void S6Exporter::SaveScenario(const utf8 * path)
+{
+    SDL_RWops * rw = SDL_RWFromFile(path, "rb");
+    if (rw == nullptr)
+    {
+        throw IOException("Unable to write to destination file.");
+    }
+
+    SaveGame(rw);
+
+    SDL_RWclose(rw);
+}
+
+void S6Exporter::SaveScenario(SDL_RWops *rw)
+{
+    Save(rw, true);
+}
+
+void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
+{
+    _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
+    _s6.header.num_packed_objects = scenario_get_num_packed_objects_to_write();
+    _s6.header.version = S6_RCT2_VERSION;
+    _s6.header.magic_number = S6_MAGIC_NUMBER;
+
+    _s6.game_version_number = 201028;
+
+    uint8 * buffer = (uint8 *)malloc(0x600000);
+    if (buffer == NULL)
+    {
+        log_error("Unable to allocate enough space for a write buffer.");
+        throw Exception("Unable to allocate memory.");
+    }
+    
+    sawyercoding_chunk_header chunkHeader;
+    int encodedLength;
+
+    // 0: Write header chunk
+    chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
+    chunkHeader.length = sizeof(rct_s6_header);
+    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.header, chunkHeader);
+    SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+    // 1: Write scenario info chunk
+    if (_s6.header.type == S6_TYPE_SCENARIO)
+    {
+        chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
+        chunkHeader.length = sizeof(rct_s6_info);
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.info, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+    }
+
+    // 2: Write packed objects
+    if (_s6.header.num_packed_objects > 0)
+    {
+        if (!scenario_write_packed_objects(rw))
+        {
+            free(buffer);
+            throw Exception("Unable to pack objects.");
+        }
+    }
+
+    // 3: Write available objects chunk
+    chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
+    chunkHeader.length = 721 * sizeof(rct_object_entry);
+    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)_s6.objects, chunkHeader);
+    SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+    // 4: Misc fields (data, rand...) chunk
+    chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+    chunkHeader.length = 16;
+    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.elapsed_months, chunkHeader);
+    SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+    // 5: Map elements + sprites and other fields chunk
+    chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+    chunkHeader.length = 0x180000;
+    encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)_s6.map_elements, chunkHeader);
+    SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+    if (_s6.header.type == S6_TYPE_SCENARIO)
+    {
+        // 6:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 0x27104C;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.dword_010E63B8, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+        // 7:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 4;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.guests_in_park, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+        // 8:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 8;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.last_guests_in_park, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+        // 9:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 2;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.park_rating, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+        // 10:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 1082;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.active_research_types, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+        // 11:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 16;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.current_expenditure, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+        // 12:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 4;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.park_value, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+
+        // 13:
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 0x761E8;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.completed_company_value, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+    }
+    else
+    {
+        // 6: Everything else...
+        chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
+        chunkHeader.length = 0x2E8570;
+        encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&_s6.dword_010E63B8, chunkHeader);
+        SDL_RWwrite(rw, buffer, encodedLength, 1);
+    }
+
+    free(buffer);
+    
+    // Determine number of bytes written
+    size_t fileSize = (size_t)SDL_RWtell(rw);
+    SDL_RWseek(rw, 0, RW_SEEK_SET);
+
+    // Read all written bytes back into a single buffer
+    buffer = (uint8 *)malloc(fileSize);
+    SDL_RWread(rw, buffer, fileSize, 1);
+    uint32 checksum = sawyercoding_calculate_checksum(buffer, fileSize);
+    free(buffer);
+
+    // Append the checksum
+    SDL_RWseek(rw, fileSize, RW_SEEK_SET);
+    SDL_RWwrite(rw, &checksum, sizeof(uint32), 1);
+}
+
+void S6Exporter::Export()
+{
+    _s6.info = *(RCT2_ADDRESS(0x0141F570, rct_s6_info));
+
+    for (int i = 0; i < 721; i++)
+    {
+        rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
+
+        if (gObjectList[i] == (void *)0xFFFFFFFF)
+        {
+            memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
+        }
+        else
+        {
+            _s6.objects[i] = *((rct_object_entry*)entry);
+        }
+    }
+
+    _s6.elapsed_months = gDateMonthsElapsed;
+    _s6.current_day = gDateMonthTicks;
+    _s6.scenario_ticks = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+    _s6.scenario_srand_0 = gScenarioSrand0;
+    _s6.scenario_srand_1 = gScenarioSrand1;
+
+    memcpy(_s6.map_elements, gMapElements, sizeof(_s6.map_elements));
+
+    _s6.dword_010E63B8 = RCT2_GLOBAL(0x0010E63B8, uint32);
+    memcpy(_s6.sprites, g_sprite_list, sizeof(_s6.sprites));
+
+    _s6.sprites_next_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16);
+    _s6.sprites_start_vehicle = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16);
+    _s6.sprites_start_peep = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+    _s6.sprites_start_textfx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16);
+    _s6.sprites_start_litter = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16);
+    // pad_013573C6
+    _s6.word_013573C8 = RCT2_GLOBAL(0x13573C8, uint16);
+    _s6.sprites_next_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_VEHICLE, uint16);
+    _s6.sprites_count_peep = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_PEEP, uint16);
+    _s6.sprites_count_misc = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
+    _s6.sprites_count_litter = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_LITTER, uint16);
+    // pad_013573D2
+    _s6.park_name = gParkName;
+    // pad_013573D6
+    _s6.park_name_args = gParkNameArgs;
+    _s6.initial_cash = gInitialCash;
+    _s6.current_loan = gBankLoan;
+    _s6.park_flags = gParkFlags;
+    _s6.park_entrance_fee = gParkEntranceFee;
+    // rct1_park_entrance_x
+    // rct1_park_entrance_y
+    // pad_013573EE
+    // rct1_park_entrance_z
+    memcpy(_s6.peep_spawns, gPeepSpawns, sizeof(_s6.peep_spawns));
+    _s6.guest_count_change_modifier = gGuestChangeModifier;
+    _s6.current_research_level = gResearchFundingLevel;
+    // pad_01357400
+    memcpy(_s6.ride_types_researched, RCT2_ADDRESS(0x01357404, uint32), sizeof(_s6.ride_types_researched));
+    memcpy(_s6.ride_entries_researched, RCT2_ADDRESS(0x01357424, uint32), sizeof(_s6.ride_entries_researched));
+    memcpy(_s6.dword_01357444, RCT2_ADDRESS(0x01357444, uint32), sizeof(_s6.dword_01357444));
+    memcpy(_s6.dword_01357644, RCT2_ADDRESS(0x01357644, uint32), sizeof(_s6.dword_01357644));
+
+    _s6.guests_in_park = gNumGuestsInPark;
+    _s6.guests_heading_for_park = gNumGuestsHeadingForPark;
+
+    memcpy(_s6.expenditure_table, RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32), sizeof(_s6.expenditure_table));
+    memcpy(_s6.dword_01357880, RCT2_ADDRESS(0x01357880, uint32), sizeof(_s6.dword_01357880));
+    _s6.monthly_ride_income = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32);
+    _s6.dword_01357898 = RCT2_GLOBAL(0x01357898, money32);
+    _s6.dword_0135789C = RCT2_GLOBAL(0x0135789C, money32);
+    _s6.dword_013578A0 = RCT2_GLOBAL(0x013578A0, money32);
+    memcpy(_s6.dword_013578A4, RCT2_ADDRESS(0x013578A4, money32), sizeof(_s6.dword_013578A4));
+
+    _s6.last_guests_in_park = RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16);
+    // pad_01357BCA
+    _s6.handyman_colour = gStaffHandymanColour;
+    _s6.mechanic_colour = gStaffMechanicColour;
+    _s6.security_colour = gStaffSecurityColour;
+
+    memcpy(_s6.dword_01357BD0, RCT2_ADDRESS(0x01357BD0, uint32), sizeof(_s6.dword_01357BD0));
+
+    _s6.park_rating = gParkRating;
+
+    memcpy(_s6.park_rating_history, gParkRatingHistory, sizeof(_s6.park_rating_history));
+    memcpy(_s6.guests_in_park_history, gGuestsInParkHistory, sizeof(_s6.guests_in_park_history));
+
+    _s6.active_research_types = gResearchPriorities;
+    _s6.research_progress_stage = gResearchProgressStage;
+    _s6.last_researched_item_subject = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
+    // pad_01357CF8
+    _s6.next_research_item = gResearchNextItem;
+    _s6.research_progress = gResearchProgress;
+    _s6.next_research_category = gResearchNextCategory;
+    _s6.next_research_expected_day = gResearchExpectedDay;
+    _s6.next_research_expected_month = gResearchExpectedMonth;
+    _s6.guest_initial_happiness = gGuestInitialHappiness;
+    _s6.park_size = gParkSize;
+    _s6.guest_generation_probability = _guestGenerationProbability;
+    _s6.total_ride_value = gTotalRideValue;
+    _s6.maximum_loan = gMaxBankLoan;
+    _s6.guest_initial_cash = gGuestInitialCash;
+    _s6.guest_initial_hunger = gGuestInitialHunger;
+    _s6.guest_initial_thirst = gGuestInitialThirst;
+    _s6.objective_type = gScenarioObjectiveType;
+    _s6.objective_year = gScenarioObjectiveYear;
+    // pad_013580FA
+    _s6.objective_currency = gScenarioObjectiveCurrency;
+    _s6.objective_guests = gScenarioObjectiveNumGuests;
+    memcpy(_s6.campaign_weeks_left, gMarketingCampaignDaysLeft, sizeof(_s6.campaign_weeks_left));
+    memcpy(_s6.campaign_ride_index, gMarketingCampaignRideIndex, sizeof(_s6.campaign_ride_index));
+
+    memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
+
+    _s6.current_expenditure = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32);
+    _s6.current_profit = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
+    _s6.dword_01358334 = RCT2_GLOBAL(0x01358334, uint32);
+    _s6.word_01358338 = RCT2_GLOBAL(0x01358338, uint16);
+    // pad_0135833A
+
+    memcpy(_s6.weekly_profit_history, gWeeklyProfitHistory, sizeof(_s6.weekly_profit_history));
+
+    _s6.park_value = gParkValue;
+
+    memcpy(_s6.park_value_history, gParkValueHistory, sizeof(_s6.park_value_history));
+
+    _s6.completed_company_value = gScenarioCompletedCompanyValue;
+    _s6.total_admissions = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, money32);
+    _s6.income_from_admissions = RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32);
+    _s6.company_value = gCompanyValue;
+    memcpy(_s6.byte_01358750, RCT2_ADDRESS(0x01358750, uint8), sizeof(_s6.byte_01358750));
+    memcpy(_s6.awards, gCurrentAwards, sizeof(_s6.awards));
+    _s6.land_price = gLandPrice;
+    _s6.construction_rights_price = gConstructionRightsPrice;
+    _s6.word_01358774 = RCT2_GLOBAL(0x01358774, uint16);
+    // pad_01358776
+    memcpy(_s6.dword_01358778, RCT2_ADDRESS(0x01358778, uint32), sizeof(_s6.dword_01358778));
+    // _s6.game_version_number
+    _s6.dword_013587C0 = RCT2_GLOBAL(0x013587C0, uint32);
+    _s6.loan_hash = RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32);
+    _s6.ride_count = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16);
+    // pad_013587CA
+    _s6.dword_013587D0 = RCT2_GLOBAL(0x013587D0, uint32);
+    // pad_013587D4
+    memcpy(_s6.scenario_completed_name, gScenarioCompletedBy, sizeof(_s6.scenario_completed_name));
+    _s6.cash = gCashEncrypted;
+    // pad_013587FC
+    _s6.word_0135882E = RCT2_GLOBAL(0x0135882E, uint16);
+    _s6.map_size_units = gMapSizeUnits;
+    _s6.map_size_minus_2 = gMapSizeMinus2;
+    _s6.map_size = gMapSize;
+    _s6.map_max_xy = gMapSizeMaxXY;
+    _s6.same_price_throughout = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32);
+    _s6.suggested_max_guests = _suggestedGuestMaximum;
+    _s6.park_rating_warning_days = gScenarioParkRatingWarningDays;
+    _s6.last_entrance_style = RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8);
+    // rct1_water_colour
+    // pad_01358842
+    memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
+    _s6.word_01359208 = RCT2_GLOBAL(0x01359208, uint16);
+    memcpy(_s6.scenario_name, gScenarioName, sizeof(_s6.scenario_name));
+    memcpy(_s6.scenario_description, gScenarioDetails, sizeof(_s6.scenario_description));
+    _s6.current_interest_rate = gBankLoanInterestRate;
+    // pad_0135934B
+    _s6.same_price_throughout_extended = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32);
+    memcpy(_s6.park_entrance_x, gParkEntranceX, sizeof(_s6.park_entrance_x));
+    memcpy(_s6.park_entrance_y, gParkEntranceY, sizeof(_s6.park_entrance_y));
+    memcpy(_s6.park_entrance_z, gParkEntranceZ, sizeof(_s6.park_entrance_z));
+    memcpy(_s6.park_entrance_direction, gParkEntranceDirection, sizeof(_s6.park_entrance_direction));
+    memcpy(_s6.scenario_filename, RCT2_ADDRESS(0x0135936C, char), sizeof(_s6.scenario_filename));
+    memcpy(_s6.saved_expansion_pack_names, RCT2_ADDRESS(0x0135946C, uint8), sizeof(_s6.saved_expansion_pack_names));
+    memcpy(_s6.banners, gBanners, sizeof(_s6.banners));
+    memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
+    _s6.game_ticks_1 = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
+    memcpy(_s6.rides, RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride*), sizeof(_s6.rides));
+    _s6.saved_age = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16);
+    _s6.saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16);
+    _s6.saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16);
+    _s6.saved_view_zoom_and_rotation = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16);
+    memcpy(_s6.map_animations, RCT2_ADDRESS(gAnimatedObjects, rct_map_animation), sizeof(_s6.map_animations));
+    // rct1_map_animations
+    _s6.num_map_animations = RCT2_GLOBAL(0x0138B580, uint16);
+    // pad_0138B582
+
+    _s6.ride_ratings_proximity_x = _rideRatingsProximityX;
+    _s6.ride_ratings_proximity_y = _rideRatingsProximityY;
+    _s6.ride_ratings_proximity_z = _rideRatingsProximityZ;
+    _s6.ride_ratings_proximity_start_x = _rideRatingsProximityStartX;
+    _s6.ride_ratings_proximity_start_y = _rideRatingsProximityStartY;
+    _s6.ride_ratings_proximity_start_z = _rideRatingsProximityStartZ;
+    _s6.ride_ratings_current_ride = _rideRatingsCurrentRide;
+    _s6.ride_ratings_state = _rideRatingsState;
+    _s6.ride_ratings_proximity_track_type = _rideRatingsProximityTrackType;
+    _s6.ride_ratings_proximity_base_height = _rideRatingsProximityBaseHeight;
+    _s6.ride_ratings_proximity_total = _rideRatingsProximityTotal;
+    memcpy(_s6.ride_ratings_proximity_scores, _proximityScores, sizeof(_s6.ride_ratings_proximity_scores));
+    _s6.ride_ratings_num_brakes = _rideRatingsNumBrakes;
+    _s6.ride_ratings_num_reversers = _rideRatingsNumReversers;
+    _s6.word_0138B5CE = RCT2_GLOBAL(0x00138B5CE, uint16);
+    memcpy(_s6.ride_measurements, RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement), sizeof(_s6.ride_measurements));
+    _s6.next_guest_index = RCT2_GLOBAL(0x013B0E6C, uint32);
+    _s6.grass_and_scenery_tilepos = gGrassSceneryTileLoopPosition;
+    memcpy(_s6.patrol_areas, gStaffPatrolAreas, sizeof(_s6.patrol_areas));
+    memcpy(_s6.staff_modes, gStaffModes, sizeof(_s6.staff_modes));
+    // unk_13CA73E
+    // pad_13CA73F
+    _s6.byte_13CA740 = RCT2_GLOBAL(0x013CA740, uint8);
+    _s6.climate = gClimate;
+    // pad_13CA741;
+    memcpy(_s6.byte_13CA742, RCT2_ADDRESS(0x013CA742, uint8), sizeof(_s6.byte_13CA742));
+    // pad_013CA747
+    _s6.climate_update_timer = gClimateUpdateTimer;
+    _s6.current_weather = gClimateCurrentWeather;
+    _s6.next_weather = gClimateNextWeather;
+    _s6.temperature = gClimateNextTemperature;
+    _s6.current_weather_effect = gClimateCurrentWeatherEffect;
+    _s6.next_weather_effect = gClimateNextWeatherEffect;
+    _s6.current_weather_gloom = gClimateCurrentWeatherGloom;
+    _s6.next_weather_gloom = gClimateNextWeatherGloom;
+    _s6.current_rain_level = gClimateCurrentRainLevel;
+    _s6.next_rain_level = gClimateNextRainLevel;
+    memcpy(_s6.news_items, gNewsItems, sizeof(_s6.news_items));
+    // pad_13CE730
+    // rct1_scenario_flags
+    _s6.wide_path_tile_loop_x = gWidePathTileLoopX;
+    _s6.wide_path_tile_loop_y = gWidePathTileLoopY;
+    // pad_13CE778
+
+    String::Set(_s6.scenario_filename, sizeof(_s6.scenario_filename), _scenarioFileName);
+
+    if (RemoveTracklessRides)
+    {
+        scenario_remove_trackless_rides(&_s6);
+    }
+
+    scenario_fix_ghosts(&_s6);
+    game_convert_strings_to_rct2(&_s6);
+}
+
+extern "C"
+{
+    enum {
+        S6_SAVE_FLAG_EXPORT    = 1 << 0,
+        S6_SAVE_FLAG_SCENARIO  = 1 << 1,
+        S6_SAVE_FLAG_AUTOMATIC = 1 << 31,
+    };
+
+    /**
+     *
+     *  rct2: 0x006754F5
+     * @param flags bit 0: pack objects, 1: save as scenario
+     */
+    int scenario_save(SDL_RWops* rw, int flags)
+    {
+        if (flags & S6_SAVE_FLAG_SCENARIO)
+        {
+            log_verbose("saving scenario");
+        }
+        else
+        {
+            log_verbose("saving game");
+        }
+
+        if (!(flags & S6_SAVE_FLAG_AUTOMATIC))
+        {
+            window_close_construction_windows();
+        }
+
+        map_reorganise_elements();
+        reset_0x69EBE4();
+        sprite_clear_all_unused();
+
+        viewport_set_saved_view();
+
+        bool result = false;
+        auto s6exporter = new S6Exporter();
+        try
+        {
+            s6exporter->ExportObjects = (flags & S6_SAVE_FLAG_EXPORT);
+            s6exporter->RemoveTracklessRides = true;
+            s6exporter->Export();
+            if (flags & S6_SAVE_FLAG_SCENARIO)
+            {
+                s6exporter->SaveScenario(rw);
+            }
+            else
+            {
+                s6exporter->SaveGame(rw);
+            }
+            result = true;
+        }
+        catch (Exception)
+        {
+        }
+        delete s6exporter;
+
+        reset_loaded_objects();
+        gfx_invalidate_screen();
+
+        if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
+        {
+            gScreenAge = 0;
+        }
+        return result;
+    }
+
+    // Save game state without modifying any of the state for multiplayer
+    int scenario_save_network(SDL_RWops * rw)
+    {
+        viewport_set_saved_view();
+
+        bool result = false;
+        auto s6exporter = new S6Exporter();
+        try
+        {
+            s6exporter->Export();
+            s6exporter->SaveGame(rw);
+            result = true;
+        }
+        catch (Exception)
+        {
+        }
+        delete s6exporter;
+
+        if (!result)
+        {
+            return 0;
+        }
+
+        reset_loaded_objects();
+
+        // Write other data not in normal save files
+        SDL_WriteLE32(rw, gGamePaused);
+        SDL_WriteLE32(rw, _guestGenerationProbability);
+        SDL_WriteLE32(rw, _suggestedGuestMaximum);
+        SDL_WriteU8(rw, gCheatsSandboxMode);
+        SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
+        SDL_WriteU8(rw, gCheatsDisableSupportLimits);
+        SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
+        SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
+        SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
+        SDL_WriteU8(rw, gCheatsFastLiftHill);
+        SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
+        SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
+        SDL_WriteU8(rw, gCheatsUnlockAllPrices);
+        SDL_WriteU8(rw, gCheatsBuildInPauseMode);
+        SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
+        SDL_WriteU8(rw, gCheatsDisableVandalism);
+        SDL_WriteU8(rw, gCheatsDisableLittering);
+        SDL_WriteU8(rw, gCheatsNeverendingMarketing);
+        SDL_WriteU8(rw, gCheatsFreezeClimate);
+
+        gfx_invalidate_screen();
+        return 1;
+    }
+}

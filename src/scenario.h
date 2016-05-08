@@ -26,6 +26,7 @@
 #include "platform/platform.h"
 #include "world/banner.h"
 #include "world/map.h"
+#include "world/map_animation.h"
 #include "world/sprite.h"
 
 /**
@@ -126,7 +127,7 @@ typedef struct {
 	// SC6[4]
 	uint16 elapsed_months;
 	uint16 current_day;
-	uint32 dword_F663AC;
+	uint32 scenario_ticks;
 	uint32 scenario_srand_0;
 	uint32 scenario_srand_1;
 
@@ -155,10 +156,10 @@ typedef struct {
 	money32 current_loan;
 	uint32 park_flags;
 	money16 park_entrance_fee;
-	uint16 word_013573EA;
-	uint16 word_013573EC;
+	uint16 rct1_park_entrance_x;
+	uint16 rct1_park_entrance_y;
 	uint8 pad_013573EE[2];
-	uint8 byte_013573F0;
+	uint8 rct1_park_entrance_z;
 	uint8 pad_013573F1;
 	rct2_peep_spawn peep_spawns[2];
 	uint8 guest_count_change_modifier;
@@ -176,7 +177,7 @@ typedef struct {
 	// Ignored in scenario
 	money32 expenditure_table[14];
 	uint32 dword_01357880[5];
-	uint32 dword_01357894;
+	uint32 monthly_ride_income;
 	uint32 dword_01357898;
 	uint32 dword_0135789C;
 	uint32 dword_013578A0;
@@ -202,8 +203,8 @@ typedef struct {
 	// SC6[10]
 	uint8 active_research_types;
 	uint8 research_progress_stage;
-	uint32 dword_01357CF4;
-	uint8 byte_01357CF8[1000];
+	uint32 last_researched_item_subject;
+	uint8 pad_01357CF8[1000];
 	uint32 next_research_item;
 	uint16 research_progress;
 	uint8 next_research_category;
@@ -274,7 +275,7 @@ typedef struct {
 	uint32 same_price_throughout;
 	uint16 suggested_max_guests;
 	uint16 park_rating_warning_days;
-	uint8 word_01358840;
+	uint8 last_entrance_style;
 	uint8 rct1_water_colour;
 	uint8 pad_01358842[2];
 	rct_research_item research_items[500];
@@ -294,12 +295,12 @@ typedef struct {
 	char custom_strings[0x8000];
 	uint32 game_ticks_1;
 	rct_ride rides[255];
-	uint16 word_01388698;
+	uint16 saved_age;
 	uint16 saved_view_x;
 	uint16 saved_view_y;
 	uint16 saved_view_zoom_and_rotation;
-	uint8 map_animations[6000];
-	uint8 byte_01389E10[6000];
+	rct_map_animation map_animations[1000];
+	rct_map_animation rct1_map_animations[1000];
 	uint16 num_map_animations;
 	uint8 pad_0138B582[2];
 	uint16 ride_ratings_proximity_x;
@@ -313,46 +314,20 @@ typedef struct {
 	uint8 ride_ratings_proximity_track_type;
 	uint8 ride_ratings_proximity_base_height;
 	uint16 ride_ratings_proximity_total;
-	uint16 word_0138B596;
-	uint16 word_0138B598;
-	uint16 word_0138B59A;
-	uint16 word_0138B59C;
-	uint16 word_0138B59E;
-	uint16 word_0138B5A0;
-	uint16 word_0138B5A2;
-	uint16 word_0138B5A4;
-	uint16 word_0138B5A6;
-	uint16 word_0138B5A8;
-	uint16 word_0138B5AA;
-	uint16 word_0138B5AC;
-	uint16 word_0138B5AE;
-	uint16 word_0138B5B0;
-	uint16 word_0138B5B2;
-	uint16 word_0138B5B4;
-	uint16 word_0138B5B6;
-	uint16 word_0138B5B8;
-	uint16 word_0138B5BA;
-	uint16 word_0138B5BC;
-	uint16 word_0138B5BE;
-	uint16 word_0138B5C0;
-	uint16 word_0138B5C2;
-	uint16 word_0138B5C4;
-	uint16 word_0138B5C6;
-	uint16 word_0138B5C8;
-	uint16 word_0138B5CA;
-	uint16 word_0138B5CC;
-	uint16 word_0138B5CE[31];
-	uint8 ride_measurements[0x25860];
+	uint16 ride_ratings_proximity_scores[26];
+	uint16 ride_ratings_num_brakes;
+	uint16 ride_ratings_num_reversers;
+	uint16 word_0138B5CE;
+	uint8 pad_0138B5D0[60];
+	rct_ride_measurement ride_measurements[8];
 	uint32 next_guest_index;
 	uint16 grass_and_scenery_tilepos;
 	uint32 patrol_areas[0x6600]; // 512 bytes per staff peep
-	uint8 byte_13CA672[116];
-	uint8 byte_13CA6E6[84];
-	uint8 byte_13CA73A[4];
+	uint8 staff_modes[204];
 	uint8 unk_13CA73E;
 	uint8 pad_13CA73F;
 	uint8 byte_13CA740;
-	uint8 byte_13CA741;
+	uint8 pad_13CA741;
 	uint8 byte_13CA742[4];
 	uint8 climate;
 	uint8 pad_013CA747;
@@ -368,8 +343,8 @@ typedef struct {
 	uint8 current_rain_level;
 	uint8 next_rain_level;
 	rct_news_item news_items[61];
-	uint8 byte_13CE730[64];
-	uint32 dword_13CE770;
+	uint8 pad_13CE730[64];
+	uint32 rct1_scenario_flags;
 	uint16 wide_path_tile_loop_x;
 	uint16 wide_path_tile_loop_y;
 	uint8 pad_13CE778[434];
@@ -480,6 +455,8 @@ extern char gScenarioSavePath[MAX_PATH];
 extern int gFirstTimeSave;
 extern uint32 gLastAutoSaveTick;
 
+extern const char *_scenarioFileName;
+
 bool scenario_scores_save();
 void scenario_load_list();
 void scenario_list_dispose();
@@ -497,7 +474,10 @@ unsigned int scenario_rand_max(unsigned int max);
 int scenario_prepare_for_save();
 int scenario_save(SDL_RWops* rw, int flags);
 int scenario_save_network(SDL_RWops* rw);
-bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6);
+int scenario_get_num_packed_objects_to_write();
+int scenario_write_packed_objects(SDL_RWops* rw);
+void scenario_remove_trackless_rides(rct_s6_data *s6);
+void scenario_fix_ghosts(rct_s6_data *s6);
 void scenario_set_filename(const char *value);
 void scenario_failure();
 void scenario_success();

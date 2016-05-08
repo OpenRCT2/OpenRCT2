@@ -530,28 +530,32 @@ void set_load_objects_fail_reason()
  *
  *  rct2: 0x006AA0C6
  */
-int object_read_and_load_entries(SDL_RWops* rw)
+bool object_read_and_load_entries(SDL_RWops* rw)
 {
 	object_unload_all();
 
-	int i, j;
-	rct_object_entry *entries;
+	// Read all the object entries
+	rct_object_entry *entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
+	sawyercoding_read_chunk(rw, (uint8*)entries);
+	bool result = object_load_entries(entries);
+	free(entries);
+	return result;
+}
 
+bool object_load_entries(rct_object_entry* entries)
+{
 	log_verbose("loading required objects");
 
-	// Read all the object entries
-	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
-	sawyercoding_read_chunk(rw, (uint8*)entries);
-
-	uint8 load_fail = 0;
+	bool loadFailed = false;
 	// Load each object
-	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		if (!check_object_entry(&entries[i]))
+	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
+		if (!check_object_entry(&entries[i])) {
 			continue;
+		}
 
 		// Get entry group index
 		int entryGroupIndex = i;
-		for (j = 0; j < countof(object_entry_group_counts); j++) {
+		for (int j = 0; j < countof(object_entry_group_counts); j++) {
 			if (entryGroupIndex < object_entry_group_counts[j])
 				break;
 			entryGroupIndex -= object_entry_group_counts[j];
@@ -561,18 +565,17 @@ int object_read_and_load_entries(SDL_RWops* rw)
 		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
 			memcpy((char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, &entries[i], sizeof(rct_object_entry));
-			load_fail = 1;
+			loadFailed = true;
 		}
 	}
 
-	free(entries);
-	if (load_fail){
+	if (loadFailed) {
 		object_unload_all();
-		return 0;
+		return false;
 	}
 
 	log_verbose("finished loading required objects");
-	return 1;
+	return true;
 }
 
 

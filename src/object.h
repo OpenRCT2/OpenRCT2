@@ -104,7 +104,8 @@ extern void *gLastLoadedObjectChunkData;
 int object_load_entry(const utf8 *path, rct_object_entry *outEntry);
 void object_list_load();
 void set_load_objects_fail_reason();
-int object_read_and_load_entries(SDL_RWops* rw);
+bool object_read_and_load_entries(SDL_RWops* rw);
+bool object_load_entries(rct_object_entry* entries);
 int object_load_packed(SDL_RWops* rw);
 void object_unload_all();
 
