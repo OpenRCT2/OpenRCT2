@@ -148,4 +148,6 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
 uint8 get_current_rotation();
 sint16 get_height_marker_offset();
 
+void viewport_set_saved_view();
+
 #endif

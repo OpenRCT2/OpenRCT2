@@ -422,6 +422,9 @@ extern "C"
         {
             set_load_objects_fail_reason();
         }
+        catch (Exception)
+        {
+        }
         delete s6Importer;
 
         // #2407: Resetting screen time to not open a save prompt shortly after loading a park.

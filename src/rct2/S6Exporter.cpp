@@ -45,6 +45,8 @@ extern "C"
 
 S6Exporter::S6Exporter()
 {
+    ExportObjects = false;
+    RemoveTracklessRides = false;
     memset(&_s6, 0, sizeof(_s6));
 }
 
@@ -86,10 +88,12 @@ void S6Exporter::SaveScenario(SDL_RWops *rw)
 
 void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 {
-    _s6.header.type = isScenario ? S6_TYPE_SAVEDGAME : S6_TYPE_SCENARIO;
+    _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
     _s6.header.num_packed_objects = scenario_get_num_packed_objects_to_write();
     _s6.header.version = S6_RCT2_VERSION;
     _s6.header.magic_number = S6_MAGIC_NUMBER;
+
+    _s6.game_version_number = 201028;
 
     uint8 * buffer = (uint8 *)malloc(0x600000);
     if (buffer == NULL)
@@ -250,41 +254,91 @@ void S6Exporter::Export()
 
     String::Set(_s6.scenario_filename, sizeof(_s6.scenario_filename), _scenarioFileName);
 
+    if (RemoveTracklessRides)
+    {
+        scenario_remove_trackless_rides(&_s6);
+    }
+
     scenario_fix_ghosts(&_s6);
     game_convert_strings_to_rct2(&_s6);
 }
 
 extern "C"
 {
-    // Save game state without modifying any of the state for multiplayer
-    int scenario_save_network(SDL_RWops * rw)
-    {
-        // Set saved view
-        sint16 viewX, viewY;
-        uint8 viewZoom, viewRotation;
-        rct_window * w = window_get_main();
-        if (w != nullptr)
-        {
-            rct_viewport *viewport = w->viewport;
+    enum {
+        S6_SAVE_FLAG_EXPORT    = 1 << 0,
+        S6_SAVE_FLAG_SCENARIO  = 1 << 1,
+        S6_SAVE_FLAG_AUTOMATIC = 1 << 31,
+    };
 
-            viewX = viewport->view_width / 2 + viewport->view_x;
-            viewY = viewport->view_height / 2 + viewport->view_y;
-            viewZoom = viewport->zoom;
-            viewRotation = get_current_rotation();
+    /**
+     *
+     *  rct2: 0x006754F5
+     * @param flags bit 0: pack objects, 1: save as scenario
+     */
+    int scenario_save(SDL_RWops* rw, int flags)
+    {
+        if (flags & S6_SAVE_FLAG_SCENARIO)
+        {
+            log_verbose("saving scenario");
         }
         else
         {
-            viewX = 0;
-            viewY = 0;
-            viewZoom = 0;
-            viewRotation = 0;
+            log_verbose("saving game");
         }
 
-        gSavedViewX = viewX;
-        gSavedViewY = viewY;
-        gSavedViewZoom = viewZoom;
-        gSavedViewRotation = viewRotation;
-        
+        if (!(flags & S6_SAVE_FLAG_AUTOMATIC))
+        {
+            window_close_construction_windows();
+        }
+
+        map_reorganise_elements();
+        reset_0x69EBE4();
+        sprite_clear_all_unused();
+
+        viewport_set_saved_view();
+
+        bool result = false;
+        auto s6exporter = new S6Exporter();
+        try
+        {
+            s6exporter->ExportObjects = (flags & S6_SAVE_FLAG_EXPORT);
+            s6exporter->RemoveTracklessRides = true;
+            s6exporter->Export();
+            if (flags & S6_SAVE_FLAG_SCENARIO)
+            {
+                s6exporter->SaveScenario(rw);
+            }
+            else
+            {
+                s6exporter->SaveGame(rw);
+            }
+            result = true;
+        }
+        catch (Exception)
+        {
+        }
+        delete s6exporter;
+
+        if (flags & S6_SAVE_FLAG_EXPORT)
+        {
+            reset_loaded_objects();
+        }
+
+        gfx_invalidate_screen();
+
+        if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
+        {
+            gScreenAge = 0;
+        }
+        return result;
+    }
+
+    // Save game state without modifying any of the state for multiplayer
+    int scenario_save_network(SDL_RWops * rw)
+    {
+        viewport_set_saved_view();
+
         bool result = false;
         auto s6exporter = new S6Exporter();
         try

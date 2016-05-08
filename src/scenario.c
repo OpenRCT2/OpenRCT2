@@ -767,27 +767,6 @@ int scenario_write_available_objects(FILE *file)
 	return 1;
 }
 
-static void sub_677552()
-{
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_VERSION_NUMBER, uint32) = 201028;
-	RCT2_GLOBAL(0x001358778, uint32) = RCT2_GLOBAL(0x009E2D28, uint32);
-}
-
-static void sub_674BCF()
-{
-	char *savedExpansionPackNames = (char*)0x0135946C;
-
-	for (int i = 0; i < 16; i++) {
-		char *dst = &savedExpansionPackNames[i * 128];
-		if (RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << i)) {
-			char *src = &(RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[i * 128]);
-			safe_strcpy(dst, src, 128);
-		} else {
-			*dst = 0;
-		}
-	}
-}
-
 /**
  * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
  */
@@ -822,7 +801,7 @@ void scenario_fix_ghosts(rct_s6_data *s6)
 	}
 }
 
-static void scenario_remove_trackless_rides(rct_s6_data *s6)
+void scenario_remove_trackless_rides(rct_s6_data *s6)
 {
 	bool rideHasTrack[MAX_RIDES];
 	ride_all_has_any_track_elements(rideHasTrack);
@@ -838,94 +817,6 @@ static void scenario_remove_trackless_rides(rct_s6_data *s6)
 			s6->custom_strings[(ride->name % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
 		}
 	}
-}
-
-/**
- *
- *  rct2: 0x006754F5
- * @param flags bit 0: pack objects, 1: save as scenario
- */
-int scenario_save(SDL_RWops* rw, int flags)
-{
-	rct_window *w;
-	rct_viewport *viewport;
-	int viewX, viewY, viewZoom, viewRotation;
-
-	if (flags & 2)
-		log_verbose("saving scenario");
-	else
-		log_verbose("saving game");
-
-
-	if (!(flags & 0x80000000))
-		window_close_construction_windows();
-
-	map_reorganise_elements();
-	reset_0x69EBE4();
-	sprite_clear_all_unused();
-	sub_677552();
-	sub_674BCF();
-
-	// Set saved view
-	w = window_get_main();
-	if (w != NULL) {
-		viewport = w->viewport;
-
-		viewX = viewport->view_width / 2 + viewport->view_x;
-		viewY = viewport->view_height / 2 + viewport->view_y;
-		viewZoom = viewport->zoom;
-		viewRotation = get_current_rotation();
-	} else {
-		viewX = gSavedViewX;
-		viewY = gSavedViewY;
-		viewZoom = gSavedViewZoom;
-		viewRotation = gSavedViewRotation;
-	}
-
-	gSavedViewX = viewX;
-	gSavedViewY = viewY;
-	gSavedViewZoom = viewZoom;
-	gSavedViewRotation = viewRotation;
-
-	// Prepare S6
-	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
-	s6->header.type = flags & 2 ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
-	s6->header.num_packed_objects = flags & 1 ? scenario_get_num_packed_objects_to_write() : 0;
-	s6->header.version = S6_RCT2_VERSION;
-	s6->header.magic_number = S6_MAGIC_NUMBER;
-
-	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
-
-	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
-
-		if (gObjectList[i] == (void *)0xFFFFFFFF) {
-			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
-		} else {
-			s6->objects[i] = *((rct_object_entry*)entry);
-		}
-	}
-
-	memcpy(&s6->elapsed_months, (void*)0x00F663A8, 16);
-	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
-	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
-
-	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
-
-	scenario_fix_ghosts(s6);
-	scenario_remove_trackless_rides(s6);
-	game_convert_strings_to_rct2(s6);
-	scenario_save_s6(rw, s6);
-
-	free(s6);
-
-	if (flags & 1)
-		reset_loaded_objects();
-
-	gfx_invalidate_screen();
-	if (!(flags & 0x80000000))
-		gScreenAge = 0;
-	return 1;
 }
 
 bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)

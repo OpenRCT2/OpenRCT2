@@ -30,6 +30,7 @@ class S6Exporter
 {
 public:
     bool ExportObjects;
+    bool RemoveTracklessRides;
 
     S6Exporter();
 
