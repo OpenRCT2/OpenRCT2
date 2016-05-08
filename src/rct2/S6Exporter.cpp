@@ -398,10 +398,11 @@ void S6Exporter::Export()
     _s6.game_ticks_1 = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32);
     memcpy(_s6.rides, RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride*), sizeof(_s6.rides));
     _s6.saved_age = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16);
-    _s6.saved_view_x = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16);
-    _s6.saved_view_y = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16);
-    _s6.saved_view_zoom_and_rotation = RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16);
-    memcpy(_s6.map_animations, RCT2_ADDRESS(gAnimatedObjects, rct_map_animation), sizeof(_s6.map_animations));
+    _s6.saved_view_x = gSavedViewX;
+    _s6.saved_view_y = gSavedViewY;
+    _s6.saved_view_zoom = gSavedViewZoom;
+    _s6.saved_view_rotation = gSavedViewRotation;
+    memcpy(_s6.map_animations, gAnimatedObjects, sizeof(_s6.map_animations));
     // rct1_map_animations
     _s6.num_map_animations = RCT2_GLOBAL(0x0138B580, uint16);
     // pad_0138B582

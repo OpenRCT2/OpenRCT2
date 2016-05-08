@@ -22,6 +22,7 @@ extern "C"
 {
     #include "../config.h"
     #include "../game.h"
+    #include "../interface/viewport.h"
     #include "../localisation/date.h"
     #include "../localisation/localisation.h"
     #include "../management/finance.h"
@@ -329,10 +330,11 @@ void S6Importer::Import()
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) = _s6.game_ticks_1;
     memcpy(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride*), _s6.rides, sizeof(_s6.rides));
     RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = _s6.saved_age;
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, uint16) = _s6.saved_view_x;
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, uint16) = _s6.saved_view_y;
-    RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint16) = _s6.saved_view_zoom_and_rotation;
-    memcpy(RCT2_ADDRESS(gAnimatedObjects, rct_map_animation), _s6.map_animations, sizeof(_s6.map_animations));
+    gSavedViewX = _s6.saved_view_x;
+    gSavedViewY = _s6.saved_view_y;
+    gSavedViewZoom = _s6.saved_view_zoom;
+    gSavedViewRotation = _s6.saved_view_rotation;
+    memcpy(gAnimatedObjects, _s6.map_animations, sizeof(_s6.map_animations));
     // rct1_map_animations
     RCT2_GLOBAL(0x0138B580, uint16) = _s6.num_map_animations;
     // pad_0138B582

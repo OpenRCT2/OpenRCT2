@@ -88,8 +88,8 @@ typedef struct {
 
 #define gSavedViewX				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16)
 #define gSavedViewY				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16)
-#define gSavedViewZoom			RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint8)
-#define gSavedViewRotation		RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION + 1, uint8)
+#define gSavedViewZoom			RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM, uint8)
+#define gSavedViewRotation		RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ROTATION, uint8)
 #define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 #define gCurrentViewportFlags	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16)
 

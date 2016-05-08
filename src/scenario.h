@@ -298,7 +298,8 @@ typedef struct {
 	uint16 saved_age;
 	uint16 saved_view_x;
 	uint16 saved_view_y;
-	uint16 saved_view_zoom_and_rotation;
+	uint8 saved_view_zoom;
+	uint8 saved_view_rotation;
 	rct_map_animation map_animations[1000];
 	rct_map_animation rct1_map_animations[1000];
 	uint16 num_map_animations;
