@@ -19,6 +19,20 @@
 #include "../../interface/viewport.h"
 #include "../../world/sprite.h"
 #include "../../paint/paint.h"
+#include "../vehicle_paint.h"
+
+// 0x009927E6:
+static const vehicle_boundbox _virginiaReelBoundbox[] = {
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+	{ -11, -11,  1, 22, 22, 13 },
+};
 
 /**
  *
@@ -56,14 +70,9 @@ void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_v
 	}
 	baseImage_id += vehicleEntry->base_image_id;
 
-	sint16 bbo_x = RCT2_ADDRESS(0x009927E6, sint8)[j * 8];
-	sint16 bbo_y = RCT2_ADDRESS(0x009927E7, sint8)[j * 8];
-	sint16 bbo_z = RCT2_ADDRESS(0x009927E8, sint8)[j * 8] + z;
-	uint16 bbl_x = RCT2_ADDRESS(0x009927E9, uint8)[j * 8];
-	uint16 bbl_y = RCT2_ADDRESS(0x009927EA, uint8)[j * 8];
-	uint8 bbl_z = RCT2_ADDRESS(0x009927EB, uint8)[j * 8];
+	vehicle_boundbox bb = _virginiaReelBoundbox[j];
 	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
-	sub_98197C(image_id, 0, 0, bbl_x, bbl_y, bbl_z, z, bbo_x, bbo_y, bbo_z, get_current_rotation());
+	sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
 
 	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2 && vehicle->num_peeps > 0) {
 		uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
@@ -74,7 +83,7 @@ void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_v
 		for (int i = 0; i < countof(draw_order); i++) {
 			if (riding_peep_sprites[draw_order[i]] != 0xFF) {
 				image_id = (baseImage_id + ((draw_order[i] + 1) * 72)) | (riding_peep_sprites[draw_order[i]] << 19) | 0x20000000;
-				sub_98199C(image_id, 0, 0, bbl_x, bbl_y, bbl_z, z, bbo_x, bbo_y, bbo_z, get_current_rotation());
+				sub_98199C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
 			}
 		}
 	}

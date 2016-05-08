@@ -19,6 +19,7 @@
 #include "../world/sprite.h"
 #include "../ride/ride_data.h"
 #include "../interface/viewport.h"
+#include "../game.h"
 #include "vehicle_paint.h"
 
 // 0x0098E52C:
@@ -888,6 +889,25 @@ const vehicle_boundbox VehicleBoundboxes[16][224] = {
 
 /**
  *
+ *  rct2: 0x006D5696
+ */
+void vehicle_visual_splash_effect(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+{
+	if (vehicle->sprite_direction & 7) {
+		return;
+	}
+	if (vehicle->vehicle_sprite_type != 0) {
+		return;
+	}
+	if (vehicle->velocity <= 0x50000) {
+		return;
+	}
+	int image_id = 29046 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+	sub_98199C(image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
+}
+
+/**
+ *
  *  rct2: 0x006D4244
  */
 void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
@@ -923,14 +943,14 @@ void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
 	case VEHICLE_VISUAL_DEFAULT:						RCT2_CALLPROC_X(0x006D45F8, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_LAUNCHED_FREEFALL:				vehicle_visual_launched_freefall(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_OBSERVATION_TOWER:				vehicle_visual_observation_tower(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-	case VEHICLE_VISUAL_RIVER_RAPIDS:					RCT2_CALLPROC_X(0x006D5889, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_RIVER_RAPIDS:					vehicle_visual_river_rapids(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_MINI_GOLF_PLAYER:				RCT2_CALLPROC_X(0x006D42F0, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_MINI_GOLF_BALL:					RCT2_CALLPROC_X(0x006D43C6, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_REVERSER:						RCT2_CALLPROC_X(0x006D4453, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:	RCT2_CALLPROC_X(0x006D4295, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case VEHICLE_VISUAL_ROTO_DROP:						vehicle_visual_roto_drop(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case 10:											RCT2_CALLPROC_X(0x006D5600, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case 11:											RCT2_CALLPROC_X(0x006D5696, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_SPLASH_EFFECT:					vehicle_visual_splash_effect(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case 12:											RCT2_CALLPROC_X(0x006D57EE, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 13:											RCT2_CALLPROC_X(0x006D5783, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
 	case 14:											RCT2_CALLPROC_X(0x006D5701, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
