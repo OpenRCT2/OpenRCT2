@@ -107,7 +107,7 @@ static void cheat_remove_litter()
 	rct_litter* litter;
 	uint16 spriteIndex, nextSpriteIndex;
 
-	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+	for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
 		litter = &(g_sprite_list[spriteIndex].litter);
 		nextSpriteIndex = litter->next;
 		sprite_remove((rct_sprite*)litter);
@@ -318,7 +318,7 @@ static void cheat_remove_all_guests()
 	rct_peep *peep;
 	uint16 spriteIndex, nextSpriteIndex;
 
-	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+	for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
 		peep = &(g_sprite_list[spriteIndex].peep);
 		nextSpriteIndex = peep->next;
 		if (peep->type == PEEP_TYPE_GUEST) {

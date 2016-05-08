@@ -21,11 +21,12 @@
 #include "../peep/peep.h"
 #include "../ride/vehicle.h"
 
-#define SPRITE_INDEX_NULL    0xFFFF
-#define SPRITE_LOCATION_NULL ((sint16)0x8000)
-#define MAX_SPRITES          10000
+#define SPRITE_INDEX_NULL		0xFFFF
+#define SPRITE_LOCATION_NULL	((sint16)0x8000)
+#define MAX_SPRITES				10000
+#define NUM_SPRITE_LISTS		6
 
-enum SPRITE_IDENTIFIER{
+enum SPRITE_IDENTIFIER {
 	SPRITE_IDENTIFIER_VEHICLE = 0,
 	SPRITE_IDENTIFIER_PEEP = 1,
 	SPRITE_IDENTIFIER_MISC = 2,
@@ -33,14 +34,14 @@ enum SPRITE_IDENTIFIER{
 	SPRITE_IDENTIFIER_NULL = 255
 };
 
-typedef enum {
-	SPRITE_LINKEDLIST_OFFSET_NULL = 0,
-	SPRITE_LINKEDLIST_OFFSET_VEHICLE = 2,
-	SPRITE_LINKEDLIST_OFFSET_PEEP = 4,
-	SPRITE_LINKEDLIST_OFFSET_MISC = 6,
-	SPRITE_LINKEDLIST_OFFSET_LITTER = 8,
-	SPRITE_LINKEDLIST_OFFSET_UNKNOWN = 10
-} SPRITE_LINKEDLIST_OFFSET;
+enum SPRITE_LIST {
+	SPRITE_LIST_NULL,
+	SPRITE_LIST_VEHICLE,
+	SPRITE_LIST_PEEP,
+	SPRITE_LIST_MISC,
+	SPRITE_LIST_LITTER,
+	SPRITE_LIST_UNKNOWN,
+};
 
 typedef struct {
 	uint8 sprite_identifier;		// 0x00
@@ -370,6 +371,8 @@ extern rct_sprite* g_sprite_list;
 // rct2: 0x00982708
 extern rct_sprite_entry* g_sprite_entries;
 
+extern uint16 *gSpriteListHead;
+extern uint16 *gSpriteListCount;
 
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();

@@ -782,7 +782,7 @@ void footpath_remove_litter(int x, int y, int z)
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		sprite = &g_sprite_list[spriteIndex].litter;
 		nextSpriteIndex = sprite->next_in_quadrant;
-		if (sprite->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_LITTER) {
+		if (sprite->linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
 			int distanceZ = abs(sprite->z - z);
 			if (distanceZ <= 32) {
 				invalidate_sprite_0((rct_sprite*)sprite);
@@ -808,7 +808,7 @@ void footpath_interrupt_peeps(int x, int y, int z)
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		peep = &g_sprite_list[spriteIndex].peep;
 		nextSpriteIndex = peep->next_in_quadrant;
-		if (peep->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP) {
+		if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2) {
 			if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
 				if (peep->z == z) {
 					peep_decrement_num_riders(peep);

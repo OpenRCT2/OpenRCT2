@@ -869,9 +869,12 @@ void game_load_init()
  */
 void reset_all_sprite_quadrant_placements()
 {
-	for (rct_sprite* spr = g_sprite_list; spr < (rct_sprite*)RCT2_ADDRESS_SPRITES_NEXT_INDEX; spr++)
-		if (spr->unknown.sprite_identifier != 0xFF)
+	for (size_t i = 0; i < MAX_SPRITES; i++) {
+		rct_sprite *spr = &g_sprite_list[i];
+		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
 			sprite_move(spr->unknown.x, spr->unknown.y, spr->unknown.z, spr);
+		}
+	}
 }
 
 void save_game()

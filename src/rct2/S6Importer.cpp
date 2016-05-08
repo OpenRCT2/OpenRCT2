@@ -185,18 +185,11 @@ void S6Importer::Import()
     RCT2_GLOBAL(0x0010E63B8, uint32) = _s6.dword_010E63B8;
     memcpy(g_sprite_list, _s6.sprites, sizeof(_s6.sprites));
 
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_NEXT_INDEX, uint16) = _s6.sprites_next_index;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16) = _s6.sprites_start_vehicle;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = _s6.sprites_start_peep;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16) = _s6.sprites_start_textfx;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16) = _s6.sprites_start_litter;
-    // pad_013573C6
-    RCT2_GLOBAL(0x13573C8, uint16) = _s6.word_013573C8;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_VEHICLE, uint16) = _s6.sprites_next_index;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_PEEP, uint16) = _s6.sprites_count_peep;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16) = _s6.sprites_count_misc;
-    RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_LITTER, uint16) = _s6.sprites_count_litter;
-    // pad_013573D2
+    for (int i = 0; i < NUM_SPRITE_LISTS; i++)
+    {
+        gSpriteListHead[i] = _s6.sprite_lists_head[i];
+        gSpriteListCount[i] = _s6.sprite_lists_count[i];
+    }
     gParkName = _s6.park_name;
     // pad_013573D6
     gParkNameArgs = _s6.park_name_args;

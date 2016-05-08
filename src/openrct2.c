@@ -340,13 +340,12 @@ void openrct2_dispose()
  */
 static bool sprite_should_tween(rct_sprite *sprite)
 {
-	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE)
+	switch (sprite->unknown.linked_list_type_offset >> 1) {
+	case SPRITE_LIST_VEHICLE:
+	case SPRITE_LIST_PEEP:
+	case SPRITE_LIST_UNKNOWN:
 		return true;
-	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP)
-		return true;
-	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)
-		return true;
-
+	}
 	return false;
 }
 

@@ -137,18 +137,8 @@ typedef struct {
 	// SC6[6]
 	uint32 dword_010E63B8;
 	rct_sprite sprites[10000];
-	uint16 sprites_next_index;
-	uint16 sprites_start_vehicle;
-	uint16 sprites_start_peep;
-	uint16 sprites_start_textfx;
-	uint16 sprites_start_litter;
-	uint8 pad_013573C6[2];
-	uint16 word_013573C8;
-	uint16 sprites_count_vehicle;
-	uint16 sprites_count_peep;
-	uint16 sprites_count_misc;
-	uint16 sprites_count_litter;
-	uint8 pad_013573D2[2];
+	uint16 sprite_lists_head[6];
+	uint16 sprite_lists_count[6];
 	rct_string_id park_name;
 	uint8 pad_013573D6[2];
 	uint32 park_name_args;

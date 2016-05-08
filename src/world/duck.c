@@ -317,7 +317,7 @@ void duck_remove_all()
 	rct_unk_sprite* sprite;
 	uint16 spriteIndex, nextSpriteIndex;
 
-	for (spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_MISC, uint16); spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
+	for (spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex) {
 		sprite = &(g_sprite_list[spriteIndex].unknown);
 		nextSpriteIndex = sprite->next;
 		if (sprite->misc_identifier == SPRITE_MISC_DUCK)

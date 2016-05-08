@@ -341,7 +341,8 @@ static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(gParkFlags & PARK_FLAGS_18))) {
+			(gSpriteListCount[SPRITE_LIST_NULL] == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_18))
+		) {
 			previous_button_mouseup_events[g_editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {
@@ -387,7 +388,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 		} else if (g_editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			hide_next_step_button();
 		} else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)) {
-			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || gParkFlags & PARK_FLAGS_18) {
+			if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES || gParkFlags & PARK_FLAGS_18) {
 				hide_previous_step_button();
 			}
 		}
@@ -409,7 +410,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		drawPreviousButton = true;
 	}
-	else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
+	else if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES) {
 		drawNextButton = true;
 	}
 	else if (gParkFlags & PARK_FLAGS_18) {

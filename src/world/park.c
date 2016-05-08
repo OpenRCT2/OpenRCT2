@@ -278,7 +278,7 @@ int calculate_park_rating()
 		short num_litter;
 
 		num_litter = 0;
-		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
+		for (sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
 			litter = &(g_sprite_list[sprite_idx].litter);
 
 			// Ignore recently dropped litter

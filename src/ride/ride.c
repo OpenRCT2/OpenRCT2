@@ -303,7 +303,7 @@ void ride_update_favourited_stat()
 		ride->guests_favourite = 0;
 
 	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)
+		if (peep->linked_list_type_offset != SPRITE_LIST_PEEP * 2)
 			return;
 		if (peep->favourite_ride != 0xff) {
 			ride = &gRideList[peep->favourite_ride];
@@ -4376,9 +4376,9 @@ void ride_set_start_finish_points(int rideIndex, rct_xy_element *startElement)
  */
 static int sub_69ED9E()
 {
-	int miscSpriteCount = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
-	int unkCount = RCT2_GLOBAL(0x013573C8, uint16);
-	return max(0, miscSpriteCount + unkCount - 300);
+	int miscSpriteCount = gSpriteListCount[SPRITE_LIST_MISC];
+	int remainingSpriteCount = gSpriteListCount[SPRITE_LIST_NULL];
+	return max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
 const rct_xy16 word_9A3AB4[4] = {
@@ -4624,7 +4624,7 @@ void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_element *
 		lastTrain = train;
 
 		// Add train to ride vehicle list
-		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LINKEDLIST_OFFSET_VEHICLE);
+		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_VEHICLE * 2);
 		for (int i = 0; i < 32; i++) {
 			if (ride->vehicles[i] == SPRITE_INDEX_NULL) {
 				ride->vehicles[i] = train.head->sprite_index;

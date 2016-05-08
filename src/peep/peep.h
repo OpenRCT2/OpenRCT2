@@ -584,7 +584,7 @@ enum {
  * applied in tautology if statements.
  */
 #define FOR_ALL_PEEPS(sprite_index, peep) \
-	for (sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next) \
+	for (sprite_index = gSpriteListHead[SPRITE_LIST_PEEP]; sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next) \
 		if ((peep = GET_PEEP(sprite_index)) || 1)
 
 #define FOR_ALL_GUESTS(sprite_index, peep) \
