@@ -135,8 +135,8 @@ if (APPLE)
 endif (APPLE)
 
 # force 32bit build for now and set necessary flags to compile code as is
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 -fno-omit-frame-pointer -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
 
@@ -205,10 +205,9 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLU
 
 LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR})
 
-if (CMAKE_C_COMPILER_ID MATCHES "Clang")
-	# Disable optimizations for clang, to allow optimized builds
-	set_source_files_properties(src/addresses.c PROPERTIES COMPILE_FLAGS -O0)
-endif()
+# Disable optimizations for addresses.c for all compilers, to allow optimized
+# builds without need for -fno-omit-frame-pointer
+set_source_files_properties(src/addresses.c PROPERTIES COMPILE_FLAGS -O0)
 
 if (WIN32)
 	# build as library for now, replace with add_executable
