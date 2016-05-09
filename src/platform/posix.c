@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) && !defined(__ANDROID__)
 
 #include <dirent.h>
 #include <errno.h>
@@ -849,9 +849,13 @@ uint8 platform_get_locale_currency(){
 		return platform_get_currency_value(NULL);
 	}
 	
+#ifdef __ANDROID__
+	return platform_get_currency_value(NULL);
+#else
 	struct lconv *lc = localeconv();
 	
 	return platform_get_currency_value(lc->int_curr_symbol);
+#endif
 }
 
 uint8 platform_get_locale_measurement_format(){

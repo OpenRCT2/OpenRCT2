@@ -1,0 +1,27 @@
+apply plugin: "com.android.model.native"
+
+model {
+  android {
+    compileSdkVersion 23
+    ndk {
+      moduleName "libjansson"
+      CFlags.addAll(["-O3", "-DHAVE_STDINT_H=1"])
+      abiFilters.addAll(["armeabi", "armeabi-v7a", "x86"])
+      //ldLibs.addAll(["c"])
+      platformVersion 16
+    }
+    sources {
+      main {
+        jni {
+          exportedHeaders {
+            srcDirs = ["external/include", "external/android"]
+          }
+
+          source {
+            srcDir "external/src"
+          }
+        }
+      }
+    }
+  }
+}
