@@ -63,5 +63,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direct
 TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
 
 #endif
