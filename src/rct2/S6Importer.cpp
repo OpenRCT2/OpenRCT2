@@ -299,7 +299,7 @@ void S6Importer::Import()
     gMapSizeMinus2 = _s6.map_size_minus_2;
     gMapSize = _s6.map_size;
     gMapSizeMaxXY = _s6.map_max_xy;
-    RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) = _s6.same_price_throughout;
+    gSamePriceThroughoutParkA = _s6.same_price_throughout;
     _suggestedGuestMaximum = _s6.suggested_max_guests;
     gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
     RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = _s6.last_entrance_style;
@@ -311,7 +311,7 @@ void S6Importer::Import()
     memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
     gBankLoanInterestRate = _s6.current_interest_rate;
     // pad_0135934B
-    RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) = _s6.same_price_throughout_extended;
+    gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
     memcpy(gParkEntranceX, _s6.park_entrance_x, sizeof(_s6.park_entrance_x));
     memcpy(gParkEntranceY, _s6.park_entrance_y, sizeof(_s6.park_entrance_y));
     memcpy(gParkEntranceZ, _s6.park_entrance_z, sizeof(_s6.park_entrance_z));

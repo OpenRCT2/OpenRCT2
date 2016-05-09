@@ -5433,22 +5433,22 @@ static void update_same_price_throughout_flags(uint32 shop_item)
 	uint32 newFlags;
 
 	if (shop_item == SHOP_ITEM_PHOTO || shop_item == SHOP_ITEM_PHOTO2 || shop_item == SHOP_ITEM_PHOTO3 || shop_item == SHOP_ITEM_PHOTO4) {
-		newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32);
+		newFlags = gSamePriceThroughoutParkA;
 		newFlags ^= (1 << SHOP_ITEM_PHOTO);
 		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 
-		newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32);
+		newFlags = gSamePriceThroughoutParkB;
 		newFlags ^= (SHOP_ITEM_PHOTO2 - 32) | (SHOP_ITEM_PHOTO3 - 32) | (SHOP_ITEM_PHOTO4 - 32);
 		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 	}
 	else {
 		if (shop_item < 32) {
-			newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32);
+			newFlags = gSamePriceThroughoutParkA;
 			newFlags ^= (1u << shop_item);
 			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}
 		else {
-			newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32);
+			newFlags = gSamePriceThroughoutParkB;
 			newFlags ^= (1u << (shop_item - 32));
 			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}

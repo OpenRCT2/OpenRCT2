@@ -5850,9 +5850,9 @@ static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
 bool shop_item_has_common_price(int shopItem)
 {
 	if (shopItem < 32) {
-		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) & (1u << shopItem);
+		return gSamePriceThroughoutParkA & (1u << shopItem);
 	} else {
-		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) & (1u << (shopItem - 32));
+		return gSamePriceThroughoutParkB & (1u << (shopItem - 32));
 	}
 }
 
