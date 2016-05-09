@@ -233,8 +233,8 @@ void scenario_begin()
 	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
 
 	memset((void*)0x001357848, 0, 56);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
+	gCurrentExpenditure = 0;
+	gCurrentProfit = 0;
 	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;

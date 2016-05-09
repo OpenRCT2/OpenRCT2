@@ -1035,7 +1035,7 @@ static void window_finances_profit_graph_paint(rct_window *w, rct_drawpixelinfo 
 	graphBottom = w->y + pageWidget->bottom - 4;
 
 	// Weekly profit
-	money32 weeklyPofit = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
+	money32 weeklyPofit = gCurrentProfit;
 	gfx_draw_string_left(
 		dpi,
 		weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS,

@@ -64,7 +64,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 	gCashEncrypted = ENCRYPT_MONEY(new_money);
 	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
 	if (dword_988E60[type] & 1)
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
+		gCurrentExpenditure -= amount; // Cumulative amount of money spent this day
 
 
 	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
@@ -168,8 +168,8 @@ void finance_init() {
 		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
+	gCurrentExpenditure = 0;
+	gCurrentProfit = 0;
 
 	RCT2_GLOBAL(0x01358334, money32) = 0;
 	RCT2_GLOBAL(0x01358338, uint16) = 0;
@@ -200,8 +200,8 @@ void finance_init() {
 */
 void finance_update_daily_profit()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 7 * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = 0; // Reset daily expenditure
+	gCurrentProfit = 7 * gCurrentExpenditure;
+	gCurrentExpenditure = 0; // Reset daily expenditure
 
 	money32 current_profit = 0;
 
@@ -237,10 +237,10 @@ void finance_update_daily_profit()
 	// This is not equivalent to / 4 due to rounding of negative numbers
 	current_profit = current_profit >> 2;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) += current_profit;
+	gCurrentProfit += current_profit;
 
 	// These are related to weekly profit graph
-	RCT2_GLOBAL(0x1358334, money32) += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
+	RCT2_GLOBAL(0x1358334, money32) += gCurrentProfit;
 	RCT2_GLOBAL(0x1358338, uint16) += 1;
 
 	window_invalidate_by_class(WC_FINANCES);

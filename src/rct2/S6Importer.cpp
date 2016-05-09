@@ -261,8 +261,8 @@ void S6Importer::Import()
 
     memcpy(gCashHistory, _s6.balance_history, sizeof(_s6.balance_history));
 
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = _s6.current_expenditure;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = _s6.current_profit;
+    gCurrentExpenditure = _s6.current_expenditure;
+    gCurrentProfit = _s6.current_profit;
     RCT2_GLOBAL(0x01358334, uint32) = _s6.dword_01358334;
     RCT2_GLOBAL(0x01358338, uint16) = _s6.word_01358338;
     // pad_0135833A

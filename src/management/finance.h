@@ -47,6 +47,8 @@ enum {
 #define gBankLoan					RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_LOAN, money32)
 #define gBankLoanInterestRate		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_INTEREST_RATE, sint8)
 #define gMaxBankLoan				RCT2_GLOBAL(RCT2_ADDRESS_MAXIMUM_LOAN, money32)
+#define gCurrentExpenditure			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32)
+#define gCurrentProfit				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32)
 
 extern const money32 research_cost_table[4];
 

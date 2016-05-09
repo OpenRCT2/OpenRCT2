@@ -685,7 +685,7 @@ void S4Importer::ImportFinance()
 
     gCompanyValue = _s4.company_value;
     gParkValue = _s4.park_value;
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = _s4.profit;
+    gCurrentProfit = _s4.profit;
 
     for (int i = 0; i < 128; i++)
     {
@@ -698,7 +698,7 @@ void S4Importer::ImportFinance()
     {
         RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = _s4.expenditure[i];
     }
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = _s4.total_expenditure;
+    gCurrentExpenditure = _s4.total_expenditure;
 
     gTotalAdmissions = _s4.num_admissions;
     gTotalIncomeFromAdmissions = _s4.admission_total_income;

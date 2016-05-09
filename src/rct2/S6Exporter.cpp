@@ -329,8 +329,8 @@ void S6Exporter::Export()
 
     memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
 
-    _s6.current_expenditure = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32);
-    _s6.current_profit = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
+    _s6.current_expenditure = gCurrentExpenditure;
+    _s6.current_profit = gCurrentProfit;
     _s6.dword_01358334 = RCT2_GLOBAL(0x01358334, uint32);
     _s6.word_01358338 = RCT2_GLOBAL(0x01358338, uint16);
     // pad_0135833A
