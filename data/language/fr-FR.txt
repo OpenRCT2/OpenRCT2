@@ -3364,7 +3364,7 @@ STR_3353    :Le nouveau nom contient des caractères invalides
 STR_3354    :Un autre fichier existe avec ce nom, ou il est en lecture seule
 STR_3355    :Le fichier est verrouillé ou est en lecture seule
 STR_3356    :Supprimer fichier
-STR_3357    :{WINDOW_COLOUR_2}Etes-vous sûr(e) de vouloir supprimer de manière permanente {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Etes-vous sûr(e) de vouloir supprimer de manière permanente {STRING} ?
 STR_3358    :Impossible de supprimer le modèle du circuit...
 STR_3359    :{BLACK}Pas de modèle de circuit pour ce type
 STR_3360    :Attention !
@@ -4023,7 +4023,7 @@ STR_5716    :Pas autorisé en multijoueur
 STR_5717    :Version du serveur : {STRING}
 STR_5718    :{SMALLFONT}{BLACK}Version du serveur : {STRING}
 STR_5719    :Ensoleillé
-STR_5720    :Partiellement Nuageux
+STR_5720    :Partiellement nuageux
 STR_5721    :Nuageux
 STR_5722    :Pluie
 STR_5723    :Forte Pluie
@@ -4059,7 +4059,7 @@ STR_5751    :Aucune Données
 STR_5752    :{OUTLINE}{RED}{STRING} s'est déconnecté
 STR_5753    :{OUTLINE}{RED}{STRING} s'est déconnecté ({STRING})
 STR_5754    :Mauvais pseudo
-STR_5755    :Mauvaise version du programme
+STR_5755    :Mauvaise version du programme (le serveur utilise {STRING})
 STR_5756    :Mauvais mot de passe
 STR_5757    :Serveur plein
 STR_5758    :{OUTLINE}{GREEN}{STRING} a rejoint la partie
@@ -4107,6 +4107,18 @@ STR_5799    :{SMALLFONT}{BLACK}Empêche les accidents sur les attractions en dé
 STR_5800    :{SMALLFONT}{BLACK}Empêche les attractions de tomber en panne
 STR_5801    :Désactiver déchets
 STR_5802    :{SMALLFONT}{BLACK}Empêche les visiteurs de jeter leurs détritus et de vomir par terre
+STR_5803    :{SMALLFONT}{BLACK}Fais pivoter l'élément sélectionné
+STR_5804    :Muet
+STR_5805    :{SMALLFONT}{BLACK}Ajoute le serveur à la liste des serveurs publics pour que tout le monde puisse le trouver
+STR_5806    :Mode fenêtré
+STR_5807    :{WINDOW_COLOUR_2}Nombre d'attractions : {BLACK}{COMMA16}
+STR_5808    :{WINDOW_COLOUR_2}Nombre de stands et boutiques : {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Nombre de kiosques d'informations et autres services : {BLACK}{COMMA16}
+STR_5810    :Désactiver la limite de longueur des trains
+STR_5811    :{SMALLFONT}{BLACK}Permet d'avoir des trains longs au maximum de 255 voitures
+STR_5812    :Afficher la fenêtre multijoueurs
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #

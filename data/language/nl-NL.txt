@@ -3358,7 +3358,7 @@ STR_3353    :Nieuwe naam bevat ongeldige tekens
 STR_3354    :Er bestaat al een bestand met deze naam, of het bestand is beveiligd tegen schrijven
 STR_3355    :Bestand is beveiligd tegen schrijven of vergrendeld
 STR_3356    :Bestand verwijderen
-STR_3357    :{WINDOW_COLOUR_2}Weet je zeker dat je {STRINGID} permanent wilt verwijderen?
+STR_3357    :{WINDOW_COLOUR_2}Weet je zeker dat je {STRING} permanent wilt verwijderen?
 STR_3358    :Kan het baanontwerp niet verwijderen...
 STR_3359    :{BLACK}Geen baanontwerpen van dit type
 STR_3360    :Waarschuwing!
@@ -4112,6 +4112,8 @@ STR_5809    :{WINDOW_COLOUR_2}Aantal informatiekiosken en andere faciliteiten: {
 STR_5810    :Tot 255 karretjes per trein toestaan
 STR_5811    :{SMALLFONT}{BLACK}Als dit is ingeschakeld kun je achtbaantreinen tot 255 karretjes hebben,{NEWLINE}ongeacht de normale limiet of de grootte van het station.
 STR_5812    :Status multiplayer tonen
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #

@@ -3362,7 +3362,7 @@ STR_3353    :Il nuovo nome contiene dei caratteri non validi
 STR_3354    :Esiste già un altro file con quel nome, o il file è protetto dalla scrittura
 STR_3355    :Il file è protetto dalla scrittura o è chiuso all'accesso
 STR_3356    :Cancella il file
-STR_3357    :{WINDOW_COLOUR_2}Sei sicuro di voler cancellare permanentemente {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Sei sicuro di voler cancellare permanentemente {STRING} ?
 STR_3358    :Impossibile cancellare il progetto di tracciato...
 STR_3359    :{BLACK}Non ci sono progetti di tracciato di questi tipo
 STR_3360    :Attenzione!
@@ -4119,6 +4119,10 @@ STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
 STR_5810    :Disabilita limite di lunghezza del treno
 STR_5811    :{SMALLFONT}{BLACK}If selezionato, puoi avere{NEWLINE}255 macchine per treno
+
+
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #

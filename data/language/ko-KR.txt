@@ -3364,7 +3364,7 @@ STR_3353    :새 이름에 유효하지 않은 문자가 있습니다
 STR_3354    :이 이름으로 된 파일이 이미 존재하거나 파일이 쓰기 불가능한 상태입니다
 STR_3355    :파일이 쓰기 불가능한 상태이거나 잠겨있습니다
 STR_3356    :파일 삭제
-STR_3357    :{WINDOW_COLOUR_2}{STRINGID} 파일을 영구적으로 삭제하시겠습니까 ?
+STR_3357    :{WINDOW_COLOUR_2}{STRING} 파일을 영구적으로 삭제하시겠습니까 ?
 STR_3358    :트랙 디자인을 삭제할 수 없습니다...
 STR_3359    :{BLACK}이 종류의 트랙 디자인 없음
 STR_3360    :경고!
@@ -4116,6 +4116,8 @@ STR_5809    :{WINDOW_COLOUR_2}안내소 및 기타 시설 수: {BLACK}{COMMA16}
 STR_5810    :열차 길이 제한 해제
 STR_5811    :{SMALLFONT}{BLACK}이 설정을 켜면, 열차 1대당 차량 수를 255대까지 늘릴 수 있습니다.
 STR_5812    :멀티플레이 창 열기
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #

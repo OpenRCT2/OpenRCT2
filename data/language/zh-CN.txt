@@ -3372,7 +3372,7 @@ STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
 STR_3355    :File is write-protected or locked
 STR_3356    :Delete File
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRING} ?
 STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
@@ -4125,6 +4125,9 @@ STR_5808    :{WINDOW_COLOUR_2}商店及摊贩数量: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}信息亭及其他设施数量: {BLACK}{COMMA16}
 STR_5810    :解除车厢长度限制
 STR_5811    :{SMALLFONT}{BLACK}若选中此选项, 每列车将最多{NEWLINE}有255辆车厢
+STR_5812    :显示多人模式窗口
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #

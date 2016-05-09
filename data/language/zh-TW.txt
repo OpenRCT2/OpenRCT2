@@ -3364,7 +3364,7 @@ STR_3353    :新名稱含有不合適的字符
 STR_3354    :已有另外一個相同名稱的檔案, 或檔案被寫入保護
 STR_3355    :檔案被寫入保護或被鎖定
 STR_3356    :刪除檔案
-STR_3357    :{WINDOW_COLOUR_2}你確定要永久刪除{STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}你確定要永久刪除{STRING} ?
 STR_3358    :不能刪除軌道設計...
 STR_3359    :{BLACK}這類遊樂設施沒有已設計好的軌道設計
 STR_3360    :警告!
@@ -4119,7 +4119,8 @@ STR_5809    :{WINDOW_COLOUR_2}訪客資訊中心及其他設施數目: {BLACK}{C
 STR_5810    :去除車卡長度限制
 STR_5811    :{SMALLFONT}{BLACK}勾選後, 你可以選擇高達每列車255車卡
 STR_5812    :顯示多人連線模式的視窗
-
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #

@@ -3366,7 +3366,7 @@ STR_3353    :Det nya namnet innehåller ogiltiga bokstäver eller symboler
 STR_3354    :En annan fil finns redan med detta namn, eller så är filen skrivskyddad
 STR_3355    :Filen är skrivskyddad eller låst
 STR_3356    :Ta bort fil
-STR_3357    :{WINDOW_COLOUR_2}Är du säker på att du permanent vill ta bort {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Är du säker på att du permanent vill ta bort {STRING} ?
 STR_3358    :Kan inte ta bort bandesign...
 STR_3359    :{BLACK}Inga bandesigner av denna typ
 STR_3360    :Varning!
@@ -4120,6 +4120,8 @@ STR_5809    :{WINDOW_COLOUR_2}Antal informationskioskar och toaletter: {BLACK}{C
 STR_5810    :Avaktivera gränsen för vagnar per tåg
 STR_5811    :{SMALLFONT}{BLACK}Om ibockad, kan du ha upp till{NEWLINE}255 vagnar per tåg
 STR_5812    :Visa flerspelar- fönstret
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarion #

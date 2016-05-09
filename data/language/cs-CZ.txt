@@ -3365,7 +3365,7 @@ STR_3353    :Nový název obsahuje neplatné znaky
 STR_3354    :Existuje soubor se stejným jménem, nebo je soubor jen pro čtení
 STR_3355    :Soubor je jen pro čtení, nebo zamčený
 STR_3356    :Smazat soubor
-STR_3357    :{WINDOW_COLOUR_2}Opravdu chcete nevratně odstranit {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Opravdu chcete nevratně odstranit {STRING} ?
 STR_3358    :Nelze odstranit návrh trati...
 STR_3359    :{BLACK}Žádné návrhy tratí tohoto typu
 STR_3360    :Pozor!
@@ -4119,6 +4119,8 @@ STR_5809    :{WINDOW_COLOUR_2}Počet informačníh kiosků a ostatních zaříze
 STR_5810    :Zrušit limit délky vlaků
 STR_5811    :{SMALLFONT}{BLACK}Pokud zaškrtnete, vlaky budou {NEWLINE}moci mít až 255 vagonů
 STR_5812    :Zobrazit okno Hry více hráčů
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 
 ###############################################################################
