@@ -19,6 +19,7 @@
 
 #include "common.h"
 #include "management/award.h"
+#include "management/finance.h"
 #include "management/news_item.h"
 #include "management/research.h"
 #include "ride/ride.h"
@@ -165,13 +166,7 @@ typedef struct {
 	uint16 guests_heading_for_park;
 
 	// Ignored in scenario
-	money32 expenditure_table[14];
-	uint32 dword_01357880[5];
-	uint32 monthly_ride_income;
-	uint32 dword_01357898;
-	uint32 dword_0135789C;
-	uint32 dword_013578A0;
-	uint32 dword_013578A4[201];
+	money32 expenditure_table[224];
 
 	// SC6[8]
 	uint16 last_guests_in_park;

@@ -213,13 +213,7 @@ void S6Importer::Import()
     gNumGuestsInPark = _s6.guests_in_park;
     gNumGuestsHeadingForPark = _s6.guests_heading_for_park;
 
-    memcpy(RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32), _s6.expenditure_table, sizeof(_s6.expenditure_table));
-    memcpy(RCT2_ADDRESS(0x01357880, uint32), _s6.dword_01357880, sizeof(_s6.dword_01357880));
-    RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32) = _s6.monthly_ride_income;
-    RCT2_GLOBAL(0x01357898, money32) = _s6.dword_01357898;
-    RCT2_GLOBAL(0x0135789C, money32) = _s6.dword_0135789C;
-    RCT2_GLOBAL(0x013578A0, money32) = _s6.dword_013578A0;
-    memcpy(RCT2_ADDRESS(0x013578A4, money32), _s6.dword_013578A4, sizeof(_s6.dword_013578A4));
+    memcpy(gExpenditureTable, _s6.expenditure_table, sizeof(_s6.expenditure_table));
 
     RCT2_GLOBAL(RCT2_ADDRESS_LAST_GUESTS_IN_PARK, uint16) = _s6.last_guests_in_park;
     // pad_01357BCA
@@ -320,8 +314,8 @@ void S6Importer::Import()
     memcpy(RCT2_ADDRESS(0x0135946C, uint8), _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
     memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
     memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
-    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32) = _s6.game_ticks_1;
-    memcpy(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride*), _s6.rides, sizeof(_s6.rides));
+    gCurrentTicks = _s6.game_ticks_1;
+    memcpy(gRideList, _s6.rides, sizeof(_s6.rides));
     RCT2_GLOBAL(RCT2_ADDRESS_SAVED_AGE, uint16) = _s6.saved_age;
     gSavedViewX = _s6.saved_view_x;
     gSavedViewY = _s6.saved_view_y;

@@ -55,6 +55,7 @@ extern const money32 research_cost_table[4];
 extern money32 *gCashHistory;
 extern money32 *gWeeklyProfitHistory;
 extern money32 *gParkValueHistory;
+extern money32 *gExpenditureTable;
 
 extern uint8 gCommandExpenditureType;
 

@@ -728,7 +728,7 @@ void window_guest_viewport_init(rct_window* w){
 			|| peep->state == PEEP_STATE_ENTERING_RIDE
 			|| (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == SPRITE_LOCATION_NULL)){
 
-			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+			rct_ride *ride = get_ride(peep->current_ride);
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
 				rct_vehicle* train = GET_VEHICLE(ride->vehicles[peep->current_train]);
 				int car = peep->current_car;
@@ -742,7 +742,7 @@ void window_guest_viewport_init(rct_window* w){
 			}
 		}
 		if (peep->x == SPRITE_LOCATION_NULL && final_check){
-			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+			rct_ride *ride = get_ride(peep->current_ride);
 			int x = (ride->overall_view & 0xFF) * 32 + 16;
 			int y = (ride->overall_view >> 8) * 32 + 16;
 			int height = map_element_height(x, y);

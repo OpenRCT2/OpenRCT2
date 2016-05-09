@@ -890,6 +890,8 @@ rct_ride_measurement *get_ride_measurement(int index);
 
 extern const uint8 gRideClassifications[255];
 
+extern rct_ride *gRideList;
+
 extern money32 _currentTrackPrice;
 
 extern uint16 _numCurrentPossibleRideConfigurations;

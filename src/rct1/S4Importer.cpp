@@ -696,7 +696,7 @@ void S4Importer::ImportFinance()
 
     for (int i = 0; i < 14 * 16; i++)
     {
-        RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = _s4.expenditure[i];
+        gExpenditureTable[i] = _s4.expenditure[i];
     }
     gCurrentExpenditure = _s4.total_expenditure;
 
