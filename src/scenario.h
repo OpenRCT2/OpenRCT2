@@ -156,10 +156,10 @@ typedef struct {
 	uint8 guest_count_change_modifier;
 	uint8 current_research_level;
 	uint8 pad_01357400[4];
-	uint32 ride_types_researched[8];
-	uint32 ride_entries_researched[8];
-	uint32 dword_01357444[128];
-	uint32 dword_01357644[128];
+	uint32 researched_ride_types[8];
+	uint32 researched_ride_entries[8];
+	uint32 researched_track_types_a[128];
+	uint32 researched_track_types_b[128];
 
 	// SC6[7]
 	uint16 guests_in_park;

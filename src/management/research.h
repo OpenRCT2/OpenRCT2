@@ -74,6 +74,10 @@ enum {
 
 extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
+extern uint32 *gResearchedRideTypes;
+extern uint32 *gResearchedRideEntries;
+extern uint32 *gResearchedTrackTypesA;
+extern uint32 *gResearchedTrackTypesB;
 extern bool gSilentResearch;
 
 void research_reset_items();
@@ -93,5 +97,9 @@ void research_remove(sint32 entryIndex);
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
+
+bool ride_type_is_invented(int rideType);
+bool ride_entry_is_invented(int rideEntryIndex);
+bool track_type_is_invented(uint8 rideType, int trackType);
 
 #endif

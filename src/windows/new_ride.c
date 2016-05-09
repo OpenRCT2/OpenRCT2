@@ -285,13 +285,11 @@ void window_new_ride_init_vars() {
  */
 static void window_new_ride_populate_list()
 {
-	int i, quadIndex, bitIndex;
-
 	uint8 currentCategory = _window_new_ride_current_tab;
 	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
 
 	// For each ride type in the view order list
-	for (i = 0; i < countof(RideTypeViewOrder); i++) {
+	for (int i = 0; i < countof(RideTypeViewOrder); i++) {
 		uint8 rideType = RideTypeViewOrder[i];
 		if (rideType == RIDE_TYPE_NULL)
 			continue;
@@ -304,9 +302,7 @@ static void window_new_ride_populate_list()
 		char preferredVehicleName[9];
 		strcpy(preferredVehicleName,"        ");
 
-		quadIndex = rideType >> 5;
-		bitIndex = rideType & 0x1F;
-		if (RCT2_ADDRESS(0x01357404, uint32)[quadIndex] & (1u << bitIndex)) {
+		if (ride_type_is_invented(rideType)) {
 			int dh = 0;
 			uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
 
@@ -317,10 +313,8 @@ static void window_new_ride_populate_list()
 				memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
 				rideEntryName[8]=0;
 
-				quadIndex = rideEntryIndex >> 5;
-				bitIndex = rideEntryIndex & 0x1F;
 				// Skip if vehicle type is not invented yet
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1u << bitIndex)))
+				if (!ride_entry_is_invented(rideEntryIndex))
 					continue;
 
 				// Ride entries

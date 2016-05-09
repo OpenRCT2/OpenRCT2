@@ -7652,14 +7652,6 @@ void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle)
 	);
 }
 
-static bool ride_entry_is_invented(int rideEntryIndex)
-{
-	int quadIndex = rideEntryIndex >> 5;
-	int bitIndex = rideEntryIndex & 0x1F;
-	bool invented = (RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex));
-	return invented;
-}
-
 static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex)
 {
 	bool selectionShouldBeExpanded;

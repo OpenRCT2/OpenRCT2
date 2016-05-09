@@ -273,10 +273,10 @@ void S6Exporter::Export()
     _s6.guest_count_change_modifier = gGuestChangeModifier;
     _s6.current_research_level = gResearchFundingLevel;
     // pad_01357400
-    memcpy(_s6.ride_types_researched, RCT2_ADDRESS(0x01357404, uint32), sizeof(_s6.ride_types_researched));
-    memcpy(_s6.ride_entries_researched, RCT2_ADDRESS(0x01357424, uint32), sizeof(_s6.ride_entries_researched));
-    memcpy(_s6.dword_01357444, RCT2_ADDRESS(0x01357444, uint32), sizeof(_s6.dword_01357444));
-    memcpy(_s6.dword_01357644, RCT2_ADDRESS(0x01357644, uint32), sizeof(_s6.dword_01357644));
+    memcpy(_s6.researched_ride_types, gResearchedRideTypes, sizeof(_s6.researched_ride_types));
+    memcpy(_s6.researched_ride_entries, gResearchedRideEntries, sizeof(_s6.researched_ride_entries));
+    memcpy(_s6.researched_track_types_a, gResearchedTrackTypesA, sizeof(_s6.researched_track_types_a));
+    memcpy(_s6.researched_track_types_b, gResearchedTrackTypesB, sizeof(_s6.researched_track_types_b));
 
     _s6.guests_in_park = gNumGuestsInPark;
     _s6.guests_heading_for_park = gNumGuestsHeadingForPark;

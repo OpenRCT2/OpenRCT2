@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../platform/platform.h"
+#include "../ride/track_data.h"
 #include "../title.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
@@ -238,18 +239,17 @@ bool window_editor_bottom_toolbar_check_object_selection()
  */
 static void sub_66F6E3()
 {
-	RCT2_GLOBAL(0x01357404, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x01357408, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x0135740C, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x01357410, uint32) = 0xFFFFFFFF;
+	for (int i = 0; i < 4; i++) {
+		gResearchedRideTypes[i] = 0xFFFFFFFF;
+	}
 
 	for (int i = 0; i < 128; i++) {
-		RCT2_ADDRESS(0x01357444, uint32)[i] = RCT2_ADDRESS(0x0097C468, uint32)[i];
-		RCT2_ADDRESS(0x01357644, uint32)[i] = RCT2_ADDRESS(0x0097C5D4, uint32)[i];
+		gResearchedTrackTypesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
+		gResearchedTrackTypesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
 	}
 
 	for (int i = 0; i < 8; i++) {
-		RCT2_ADDRESS(0x01357424, uint32)[i] = 0xFFFFFFFF;
+		gResearchedRideEntries[i] = 0xFFFFFFFF;
 	}
 
 	window_new_ride_open();
