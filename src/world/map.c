@@ -646,19 +646,19 @@ int map_height_from_slope(int x, int y, int slope)
 	return 0;
 }
 
-int map_is_location_valid(int x, int y)
+bool map_is_location_valid(int x, int y)
 {
 	if (x <= (256 * 32) && x >= 0 && y <= (256 * 32) && y >= 0) {
-		return 1;
+		return true;
 	}
-	return 0;
+	return false;
 }
 
 /**
  *
  *  rct2: 0x00664F72
  */
-int map_is_location_owned(int x, int y, int z)
+bool map_is_location_owned(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
@@ -667,38 +667,38 @@ int map_is_location_owned(int x, int y, int z)
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement != NULL) {
 			if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
-				return 1;
+				return true;
 
 			if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 				z /= 8;
 				if (z < mapElement->base_height || z - 2 > mapElement->base_height)
-					return 1;
+					return true;
 			}
 		}
 	}
 
 	gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
-	return 0;
+	return false;
 }
 
 /**
  *
  *  rct2: 0x00664F2C
  */
-int map_is_location_in_park(int x, int y)
+bool map_is_location_in_park(int x, int y)
 {
 	rct_map_element *mapElement;
 
 	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement == NULL)
-			return 0;
+			return false;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
-			return 1;
+			return true;
 	}
 
 	gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
-	return 0;
+	return false;
 }
 
 bool map_is_location_owned_or_has_rights(int x, int y)
