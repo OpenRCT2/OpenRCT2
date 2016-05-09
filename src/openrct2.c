@@ -59,6 +59,7 @@ utf8 gCustomPassword[MAX_PATH] = { 0 };
 bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
+bool gOpenRCT2SilentBreakpad;
 
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
