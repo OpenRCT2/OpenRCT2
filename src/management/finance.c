@@ -186,8 +186,8 @@ void finance_init() {
 	gParkValue = 0;
 	gCompanyValue = 0;
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
+	gTotalAdmissions = 0;
+	gTotalIncomeFromAdmissions = 0;
 
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 

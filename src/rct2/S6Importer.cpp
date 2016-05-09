@@ -274,8 +274,8 @@ void S6Importer::Import()
     memcpy(gParkValueHistory, _s6.park_value_history, sizeof(_s6.park_value_history));
 
     gScenarioCompletedCompanyValue = _s6.completed_company_value;
-    RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, money32) = _s6.total_admissions;
-    RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) = _s6.income_from_admissions;
+    gTotalAdmissions = _s6.total_admissions;
+    gTotalIncomeFromAdmissions = _s6.income_from_admissions;
     gCompanyValue = _s6.company_value;
     memcpy(RCT2_ADDRESS(0x01358750, uint8), _s6.byte_01358750, sizeof(_s6.byte_01358750));
     memcpy(gCurrentAwards, _s6.awards, sizeof(_s6.awards));

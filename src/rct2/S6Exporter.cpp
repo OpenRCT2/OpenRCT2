@@ -342,8 +342,8 @@ void S6Exporter::Export()
     memcpy(_s6.park_value_history, gParkValueHistory, sizeof(_s6.park_value_history));
 
     _s6.completed_company_value = gScenarioCompletedCompanyValue;
-    _s6.total_admissions = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, money32);
-    _s6.income_from_admissions = RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32);
+    _s6.total_admissions = gTotalAdmissions;
+    _s6.income_from_admissions = gTotalIncomeFromAdmissions;
     _s6.company_value = gCompanyValue;
     memcpy(_s6.byte_01358750, RCT2_ADDRESS(0x01358750, uint8), sizeof(_s6.byte_01358750));
     memcpy(_s6.awards, gCurrentAwards, sizeof(_s6.awards));

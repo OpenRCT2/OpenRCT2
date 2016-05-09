@@ -700,8 +700,8 @@ void S4Importer::ImportFinance()
     }
     RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = _s4.total_expenditure;
 
-    RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = _s4.num_admissions;
-    RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) = _s4.admission_total_income;
+    gTotalAdmissions = _s4.num_admissions;
+    gTotalIncomeFromAdmissions = _s4.admission_total_income;
 
     // TODO marketing campaigns not working
     for (int i = 0; i < 6; i++)

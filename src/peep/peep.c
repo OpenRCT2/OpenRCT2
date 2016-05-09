@@ -7044,13 +7044,13 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 				return peep_return_to_center_of_tile(peep);
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) += entranceFee;
+			gTotalIncomeFromAdmissions += entranceFee;
 			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
 			peep_spend_money(peep, &peep->paid_to_enter, entranceFee);
 			peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32)++;
+		gTotalAdmissions++;
 		window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
 		peep->var_37 = 1;
