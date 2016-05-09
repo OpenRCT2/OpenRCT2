@@ -391,7 +391,7 @@ void S6Exporter::Export()
     _s6.saved_view_rotation = gSavedViewRotation;
     memcpy(_s6.map_animations, gAnimatedObjects, sizeof(_s6.map_animations));
     // rct1_map_animations
-    _s6.num_map_animations = RCT2_GLOBAL(0x0138B580, uint16);
+    _s6.num_map_animations = gNumMapAnimations;
     // pad_0138B582
 
     _s6.ride_ratings_proximity_x = _rideRatingsProximityX;
@@ -408,9 +408,9 @@ void S6Exporter::Export()
     memcpy(_s6.ride_ratings_proximity_scores, _proximityScores, sizeof(_s6.ride_ratings_proximity_scores));
     _s6.ride_ratings_num_brakes = _rideRatingsNumBrakes;
     _s6.ride_ratings_num_reversers = _rideRatingsNumReversers;
-    _s6.word_0138B5CE = RCT2_GLOBAL(0x00138B5CE, uint16);
-    memcpy(_s6.ride_measurements, RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement), sizeof(_s6.ride_measurements));
-    _s6.next_guest_index = RCT2_GLOBAL(0x013B0E6C, uint32);
+    _s6.ride_ratings_station_flags = _rideRatingsStationFlags;
+    memcpy(_s6.ride_measurements, gRideMeasurements, sizeof(_s6.ride_measurements));
+    _s6.next_guest_index = gNextGuestNumber;
     _s6.grass_and_scenery_tilepos = gGrassSceneryTileLoopPosition;
     memcpy(_s6.patrol_areas, gStaffPatrolAreas, sizeof(_s6.patrol_areas));
     memcpy(_s6.staff_modes, gStaffModes, sizeof(_s6.staff_modes));

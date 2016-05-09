@@ -48,6 +48,8 @@ enum {
 	MAP_ANIMATION_TYPE_COUNT
 };
 
+#define gNumMapAnimations		RCT2_GLOBAL(RCT2_ADDRESS_NUM_MAP_ANIMATIONS, uint16)
+
 extern rct_map_animation *gAnimatedObjects;
 
 void map_animation_create(int type, int x, int y, int z);

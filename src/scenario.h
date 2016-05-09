@@ -303,7 +303,7 @@ typedef struct {
 	uint16 ride_ratings_proximity_scores[26];
 	uint16 ride_ratings_num_brakes;
 	uint16 ride_ratings_num_reversers;
-	uint16 word_0138B5CE;
+	uint16 ride_ratings_station_flags;
 	uint8 pad_0138B5D0[60];
 	rct_ride_measurement ride_measurements[8];
 	uint32 next_guest_index;

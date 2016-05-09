@@ -45,7 +45,7 @@ rct_map_animation *gAnimatedObjects = (rct_map_animation*)0x013886A0;
 void map_animation_create(int type, int x, int y, int z)
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
+	int numAnimatedObjects = gNumMapAnimations;
 	if (numAnimatedObjects >= 2000) {
 		log_error("Exceeded the maximum number of animations");
 		return;
@@ -64,7 +64,7 @@ void map_animation_create(int type, int x, int y, int z)
 	}
 
 	// Create new animation
-	RCT2_GLOBAL(0x0138B580, uint16)++;
+	gNumMapAnimations++;
 	aobj->type = type;
 	aobj->x = x;
 	aobj->y = y;
@@ -78,11 +78,11 @@ void map_animation_create(int type, int x, int y, int z)
 void map_animation_invalidate_all()
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
+	int numAnimatedObjects = gNumMapAnimations;
 	while (numAnimatedObjects > 0) {
 		if (map_animation_invalidate(aobj)) {
 			// Remove animated object
-			RCT2_GLOBAL(0x0138B580, uint16)--;
+			gNumMapAnimations--;
 			numAnimatedObjects--;
 			if (numAnimatedObjects > 0)
 				memmove(aobj, aobj + 1, numAnimatedObjects * sizeof(rct_map_animation));

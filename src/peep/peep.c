@@ -6138,7 +6138,7 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->no_of_rides = 0;
 	memset(&peep->ride_types_been_on, 0, 16);
-	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
+	peep->id = gNextGuestNumber++;
 	peep->name_string_idx = 767;
 
 	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;

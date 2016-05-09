@@ -669,7 +669,7 @@ void S4Importer::ImportMapAnimations()
         gAnimatedObjects[i] = s4Animations[i];
         gAnimatedObjects[i].baseZ /= 2;
     }
-    RCT2_GLOBAL(0x0138B580, uint16) = _s4.num_map_animations;
+    gNumMapAnimations = _s4.num_map_animations;
 }
 
 void S4Importer::ImportFinance()

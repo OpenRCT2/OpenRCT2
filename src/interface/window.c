@@ -1824,7 +1824,7 @@ void tool_cancel()
 */
 void window_guest_list_init_vars_a()
 {
-	RCT2_GLOBAL(0x013B0E6C, uint32) = 1;
+	gNextGuestNumber = 1;
 	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
 	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;

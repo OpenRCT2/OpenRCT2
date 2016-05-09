@@ -140,7 +140,7 @@ static void ride_ratings_update_state_1()
 	RCT2_GLOBAL(0x0138B5CA, uint16) = 0;
 	RCT2_GLOBAL(0x0138B5CC, uint16) = 0;
 	_rideRatingsState = RIDE_RATINGS_STATE_2;
-	RCT2_GLOBAL(0x0138B5CE, uint16) = 0;
+	_rideRatingsStationFlags = 0;
 	ride_ratings_begin_proximity_loop();
 }
 
@@ -175,10 +175,11 @@ static void ride_ratings_update_state_2()
 
 		if (trackType == 255 || ((mapElement->properties.track.sequence & 0x0F) == 0 && trackType == mapElement->properties.track.type)) {
 			if (trackType == TRACK_ELEM_END_STATION) {
-				entranceIndex = (mapElement->properties.track.sequence >> 4) & 7;
-				RCT2_GLOBAL(0x0138B5CE, uint16) &= ~1;
-				if (ride->entrances[entranceIndex] == 0xFFFF)
-					RCT2_GLOBAL(0x0138B5CE, uint16) |= 1;
+				entranceIndex = map_get_station(mapElement);
+				_rideRatingsStationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
+				if (ride->entrances[entranceIndex] == 0xFFFF) {
+					_rideRatingsStationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
+				}
 			}
 
 			ride_ratings_score_close_proximity(mapElement);
@@ -320,9 +321,10 @@ static void ride_ratings_begin_proximity_loop()
 
 	for (i = 0; i < 4; i++) {
 		if (ride->station_starts[i] != 0xFFFF) {
-			RCT2_GLOBAL(0x0138B5CE, uint16) &= ~1;
-			if (ride->entrances[i] == 0xFFFF)
-				RCT2_GLOBAL(0x0138B5CE, uint16) |= 1;
+			_rideRatingsStationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
+			if (ride->entrances[i] == 0xFFFF) {
+				_rideRatingsStationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
+			}
 
 			x = (ride->station_starts[i] & 0xFF) * 32;
 			y = (ride->station_starts[i] >> 8) * 32;
@@ -462,8 +464,9 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 	int x, y, z, direction, waterHeight, trackType, sequence;
 	bool isStation;
 
-	if (RCT2_GLOBAL(0x0138B5CE, uint16) & 1)
+	if (_rideRatingsStationFlags & RIDE_RATING_STATION_FLAG_NO_ENTRANCE) {
 		return;
+	}
 
 	_rideRatingsProximityTotal++;
 	x = _rideRatingsProximityX;

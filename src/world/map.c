@@ -314,7 +314,7 @@ void map_init(int size)
 	rct_map_element *map_element;
 
 	date_reset();
-	RCT2_GLOBAL(0x0138B580, sint16) = 0;
+	gNumMapAnimations = 0;
 	RCT2_GLOBAL(0x010E63B8, sint32) = 0;
 
 	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {

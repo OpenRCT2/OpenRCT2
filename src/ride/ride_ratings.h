@@ -20,6 +20,10 @@
 #include "../common.h"
 #include "ride.h"
 
+enum {
+	RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
+};
+
 #define _rideRatingsProximityX				RCT2_GLOBAL(0x0138B584, uint16)
 #define _rideRatingsProximityY				RCT2_GLOBAL(0x0138B586, uint16)
 #define _rideRatingsProximityZ				RCT2_GLOBAL(0x0138B588, uint16)
@@ -34,6 +38,7 @@
 
 #define _rideRatingsNumBrakes				RCT2_GLOBAL(0x0138B5CA, uint16)
 #define _rideRatingsNumReversers			RCT2_GLOBAL(0x0138B5CC, uint16)
+#define _rideRatingsStationFlags			RCT2_GLOBAL(0x0138B5CE, uint16)
 
 extern uint16 *_proximityScores;
 

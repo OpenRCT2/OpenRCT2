@@ -605,6 +605,8 @@ enum {
 #define gGuestInitialHunger			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_HUNGER, uint8)
 #define gGuestInitialThirst			RCT2_GLOBAL(RCT2_ADDRESS_GUEST_INITIAL_THIRST, uint8)
 
+#define gNextGuestNumber			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_GUEST_NUMBER, uint32)
+
 int peep_get_staff_count();
 int peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();

@@ -127,6 +127,7 @@ static const int RideInspectionInterval[] = {
 
 rct_ride_entry **gRideTypeList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_entry*);
 rct_ride* gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
+rct_ride_measurement *gRideMeasurements = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement);
 bool gGotoStartPlacementMode = false;
 int gRideRemoveTrackPieceCallbackX;
 int gRideRemoveTrackPieceCallbackY;
@@ -222,7 +223,7 @@ void get_ride_entry_name(char *name, int index)
 
 rct_ride_measurement *get_ride_measurement(int index)
 {
-	return &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[index]);
+	return &gRideMeasurements[index];
 }
 
 rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
