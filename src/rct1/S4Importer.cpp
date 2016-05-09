@@ -329,6 +329,7 @@ void S4Importer::AddAvailableEntriesFromSceneryGroups()
 
 void S4Importer::AddEntryForRideType(uint8 rideType)
 {
+    assert(rideType < Util::CountOf(_rideTypeToRideEntryMap));
     if (_rideTypeToRideEntryMap[rideType] == 255)
     {
         const char * entryName = RCT1::GetRideTypeObject(rideType);
@@ -339,6 +340,7 @@ void S4Importer::AddEntryForRideType(uint8 rideType)
 
 void S4Importer::AddEntryForVehicleType(uint8 rideType, uint8 vehicleType)
 {
+    assert(vehicleType < Util::CountOf(_vehicleTypeToRideEntryMap));
     if (_vehicleTypeToRideEntryMap[vehicleType] == 255)
     {
         const char * entryName = RCT1::GetVehicleObject(vehicleType);
@@ -354,6 +356,7 @@ void S4Importer::AddEntryForVehicleType(uint8 rideType, uint8 vehicleType)
 
 void S4Importer::AddEntryForSmallScenery(uint8 smallSceneryType)
 {
+    assert(smallSceneryType < Util::CountOf(_smallSceneryTypeToEntryMap));
     if (_smallSceneryTypeToEntryMap[smallSceneryType] == 255)
     {
         const char * entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
@@ -364,6 +367,7 @@ void S4Importer::AddEntryForSmallScenery(uint8 smallSceneryType)
 
 void S4Importer::AddEntryForLargeScenery(uint8 largeSceneryType)
 {
+    assert(largeSceneryType < Util::CountOf(_largeSceneryTypeToEntryMap));
     if (_largeSceneryTypeToEntryMap[largeSceneryType] == 255)
     {
         const char * entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
@@ -374,6 +378,7 @@ void S4Importer::AddEntryForLargeScenery(uint8 largeSceneryType)
 
 void S4Importer::AddEntryForWall(uint8 wallType)
 {
+    assert(wallType < Util::CountOf(_wallTypeToEntryMap));
     if (_wallTypeToEntryMap[wallType] == 255)
     {
         const char * entryName = RCT1::GetWallObject(wallType);
@@ -384,6 +389,7 @@ void S4Importer::AddEntryForWall(uint8 wallType)
 
 void S4Importer::AddEntryForPath(uint8 pathType)
 {
+    assert(pathType < Util::CountOf(_pathTypeToEntryMap));
     if (_pathTypeToEntryMap[pathType] == 255)
     {
         const char * entryName = RCT1::GetPathObject(pathType);
