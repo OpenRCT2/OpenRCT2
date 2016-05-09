@@ -361,7 +361,7 @@ static void sub_68F8CD(rct_peep *peep)
 		return;
 	}
 
-	if (!((peep->peep_flags & PEEP_FLAGS_TRACKING) && network_get_mode() == NETWORK_MODE_NONE)) {
+	if (!(peep->peep_flags & PEEP_FLAGS_TRACKING)) {
 		peep_leave_park(peep);
 	}
 }
