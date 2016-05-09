@@ -326,6 +326,7 @@ int map_element_height(int x, int y);
 void sub_68B089();
 int map_coord_is_connected(int x, int y, int z, uint8 faceDirection);
 void map_update_path_wide_flags();
+int map_is_location_valid(int x, int y);
 int map_is_location_owned(int x, int y, int z);
 int map_is_location_in_park(int x, int y);
 bool map_is_location_owned_or_has_rights(int x, int y);
