@@ -646,58 +646,66 @@ int map_height_from_slope(int x, int y, int slope)
 	return 0;
 }
 
+bool map_is_location_valid(int x, int y)
+{
+	if (x <= (256 * 32) && x >= 0 && y <= (256 * 32) && y >= 0) {
+		return true;
+	}
+	return false;
+}
+
 /**
  *
  *  rct2: 0x00664F72
  */
-int map_is_location_owned(int x, int y, int z)
+bool map_is_location_owned(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
 	// This check is to avoid throwing lots of messages in logs.
-	if (x < (256 * 32) && y < (256 * 32)) {
+	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement != NULL) {
 			if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
-				return 1;
+				return true;
 
 			if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 				z /= 8;
 				if (z < mapElement->base_height || z - 2 > mapElement->base_height)
-					return 1;
+					return true;
 			}
 		}
 	}
 
 	gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
-	return 0;
+	return false;
 }
 
 /**
  *
  *  rct2: 0x00664F2C
  */
-int map_is_location_in_park(int x, int y)
+bool map_is_location_in_park(int x, int y)
 {
 	rct_map_element *mapElement;
 
-	if (x < (256 * 32) && y < (256 * 32)) {
+	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement == NULL)
-			return 0;
+			return false;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
-			return 1;
+			return true;
 	}
 
 	gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
-	return 0;
+	return false;
 }
 
 bool map_is_location_owned_or_has_rights(int x, int y)
 {
 	rct_map_element *mapElement;
 
-	if (x < (256 * 32) && y < (256 * 32)) {
+	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) return true;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) return true;
@@ -2235,7 +2243,7 @@ static int map_get_corner_height(rct_map_element *mapElement, int direction)
 static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, int targetBaseZ, int minBaseZ)
 {
 	// Check if inside map bounds
-	if (x < 0 || y < 0 || x >= (256 * 32) || y >= (256 * 32)) {
+	if (!map_is_location_valid(x, y)) {
 		return MONEY32_UNDEFINED;
 	}
 
@@ -5410,6 +5418,7 @@ rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int t
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
+		if (mapElement == NULL) break;
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->base_height != z) continue;
 		if (mapElement->properties.track.type != trackType) continue;

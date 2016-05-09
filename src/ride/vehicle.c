@@ -6647,13 +6647,17 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 
 	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
-	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
-		vehicle->track_x,
-		vehicle->track_y,
-		vehicle->track_z >> 3,
-		trackType,
-		0
-	);
+	rct_map_element *mapElement = NULL;
+	if (map_is_location_valid(vehicle->track_x, vehicle->track_y)) {
+		mapElement = map_get_track_element_at_of_type_seq(
+			vehicle->track_x,
+			vehicle->track_y,
+			vehicle->track_z >> 3,
+			trackType,
+			0
+		);
+
+	}
 	if (RCT2_GLOBAL(0x00F64E1C, uint32) == 0xFFFFFFFF) {
 		RCT2_GLOBAL(0x00F64E1C, uint32) = (mapElement->properties.track.sequence >> 4) & 7;
 	}
