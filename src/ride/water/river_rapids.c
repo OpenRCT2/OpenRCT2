@@ -97,9 +97,5 @@ void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_ve
 		}
 	}
 
-	switch (vehicleEntry->pad_5E) {
-		case 1: /* nullsub */ break;
-		case VEHICLE_VISUAL_SPLASH_EFFECT: vehicle_visual_splash_effect(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-		default: assert(false); break;
-	}
+	vehicle_visual_splash_effect(z, vehicle, vehicleEntry);
 }

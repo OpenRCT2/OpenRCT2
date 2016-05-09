@@ -28,9 +28,9 @@
 void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
 	if (vehicle->is_child) {
-		vehicle = &g_sprite_list[vehicle->prev_vehicle_on_ride].vehicle;
+		vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
 	} else {
-		vehicle = &g_sprite_list[vehicle->next_vehicle_on_ride].vehicle;
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
 	}
 	RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
 	imageDirection = ((get_current_rotation() * 8) + vehicle->sprite_direction) & 0x1F;
