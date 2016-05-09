@@ -304,7 +304,7 @@ void S6Exporter::Export()
 
     _s6.active_research_types = gResearchPriorities;
     _s6.research_progress_stage = gResearchProgressStage;
-    _s6.last_researched_item_subject = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
+    _s6.last_researched_item_subject = gResearchLastItemSubject;
     // pad_01357CF8
     _s6.next_research_item = gResearchNextItem;
     _s6.research_progress = gResearchProgress;

@@ -236,7 +236,7 @@ void S6Importer::Import()
 
     gResearchPriorities = _s6.active_research_types;
     gResearchProgressStage = _s6.research_progress_stage;
-    RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32) = _s6.last_researched_item_subject;
+    gResearchLastItemSubject = _s6.last_researched_item_subject;
     // pad_01357CF8
     gResearchNextItem = _s6.next_research_item;
     gResearchProgress = _s6.research_progress;

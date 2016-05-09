@@ -89,7 +89,7 @@ void park_init()
 	gParkRating = 0;
 	_guestGenerationProbability = 0;
 	gTotalRideValue = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
+	gResearchLastItemSubject = (uint32)-1;
 
 	for (i = 0; i < 20; i++)
 		gMarketingCampaignDaysLeft[i] = 0;

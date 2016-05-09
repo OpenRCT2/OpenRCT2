@@ -164,7 +164,7 @@ void research_finish_item(sint32 entryIndex)
 	rct_ride_entry *rideEntry, *rideEntry2;
 	rct_scenery_set_entry *scenerySetEntry;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = entryIndex;
+	gResearchLastItemSubject = (uint32)entryIndex;
 	research_invalidate_related_windows();
 	if (entryIndex >= 0x10000) {
 		// Ride
@@ -330,7 +330,7 @@ void sub_684AC3(){
 		research_finish_item(research->entryIndex);
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
+	gResearchLastItemSubject = (uint32)-1;
 	gResearchProgressStage = 0;
 	gResearchProgress = 0;
 }
