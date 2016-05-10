@@ -107,7 +107,7 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
 {
     auto meh = SDL_RWtell(rw);
 
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.header);
+    sawyercoding_read_chunk_safe(rw, &_s6.header, sizeof(_s6.header));
     if (_s6.header.type != S6_TYPE_SAVEDGAME)
     {
         throw Exception("Data is not a saved game.");
@@ -127,21 +127,21 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
         }
     }
 
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.objects);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.elapsed_months);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.map_elements);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.dword_010E63B8);
+    sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
+    sawyercoding_read_chunk_safe(rw, &_s6.elapsed_months, 16);
+    sawyercoding_read_chunk_safe(rw, &_s6.map_elements, sizeof(_s6.map_elements));
+    sawyercoding_read_chunk_safe(rw, &_s6.dword_010E63B8, 3048816);
 }
 
 void S6Importer::LoadScenario(SDL_RWops *rw)
 {
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.header);
+    sawyercoding_read_chunk_safe(rw, &_s6.header, sizeof(_s6.header));
     if (_s6.header.type != S6_TYPE_SCENARIO)
     {
         throw Exception("Data is not a scenario.");
     }
 
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.info);
+    sawyercoding_read_chunk_safe(rw, &_s6.info, sizeof(_s6.info));
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
@@ -157,17 +157,17 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
         }
     }
 
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.objects);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.elapsed_months);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.map_elements);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.dword_010E63B8);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.guests_in_park);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.last_guests_in_park);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.park_rating);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.active_research_types);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.current_expenditure);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.park_value);
-    sawyercoding_read_chunk(rw, (uint8*)&_s6.completed_company_value);
+    sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
+    sawyercoding_read_chunk_safe(rw, &_s6.elapsed_months, 16);
+    sawyercoding_read_chunk_safe(rw, &_s6.map_elements, sizeof(_s6.map_elements));
+    sawyercoding_read_chunk_safe(rw, &_s6.dword_010E63B8, 2560076);
+    sawyercoding_read_chunk_safe(rw, &_s6.guests_in_park, 4);
+    sawyercoding_read_chunk_safe(rw, &_s6.last_guests_in_park, 8);
+    sawyercoding_read_chunk_safe(rw, &_s6.park_rating, 2);
+    sawyercoding_read_chunk_safe(rw, &_s6.active_research_types, 1082);
+    sawyercoding_read_chunk_safe(rw, &_s6.current_expenditure, 16);
+    sawyercoding_read_chunk_safe(rw, &_s6.park_value, 4);
+    sawyercoding_read_chunk_safe(rw, &_s6.completed_company_value, 483816);
 }
 
 void S6Importer::Import()

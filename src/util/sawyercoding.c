@@ -80,6 +80,21 @@ int sawyercoding_validate_checksum(SDL_RWops* rw)
 	return checksum == fileChecksum;
 }
 
+bool sawyercoding_read_chunk_safe(SDL_RWops *rw, void *dst, size_t dstLength)
+{
+	// Allocate 16 MB to store uncompressed data
+	uint8 *tempBuffer = malloc(16 * 1024 * 1024);
+	size_t uncompressedLength = sawyercoding_read_chunk(rw, tempBuffer);
+	if (uncompressedLength == SIZE_MAX) {
+		free(tempBuffer);
+		return false;
+	} else {
+		memcpy(dst, tempBuffer, min(dstLength, uncompressedLength));
+		free(tempBuffer);
+		return true;
+	}
+}
+
 /**
  *
  *  rct2: 0x0067685F
