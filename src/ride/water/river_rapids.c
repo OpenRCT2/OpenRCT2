@@ -71,29 +71,29 @@ void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_ve
 	}
 	baseImage_id += vehicleEntry->base_image_id;
 
-	vehicle_boundbox bb = _riverRapidsBoundbox[j];
+	const vehicle_boundbox *bb = &_riverRapidsBoundbox[j];
 	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
-	sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+	sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, get_current_rotation());
 
 	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2 && vehicle->num_peeps > 0) {
 		// Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but thats how the original does it...)
 		int peeps = ((ecx / 8) + 0) & 3;
 		image_id = (baseImage_id + ((peeps + 1) * 72)) | (vehicle->peep_tshirt_colours[0] << 19) | (vehicle->peep_tshirt_colours[1] << 24) | 0xA0000000;
-		sub_98199C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+		sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, get_current_rotation());
 		if (vehicle->num_peeps > 2) {
 			peeps = ((ecx / 8) + 2) & 3;
 			image_id = (baseImage_id + ((peeps + 1) * 72)) | (vehicle->peep_tshirt_colours[2] << 19) | (vehicle->peep_tshirt_colours[3] << 24) | 0xA0000000;
-			sub_98199C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+			sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, get_current_rotation());
 		}
 		if (vehicle->num_peeps > 4) {
 			peeps = ((ecx / 8) + 1) & 3;
 			image_id = (baseImage_id + ((peeps + 1) * 72)) | (vehicle->peep_tshirt_colours[4] << 19) | (vehicle->peep_tshirt_colours[5] << 24) | 0xA0000000;
-			sub_98199C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+			sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, get_current_rotation());
 		}
 		if (vehicle->num_peeps > 6) {
 			peeps = ((ecx / 8) + 3) & 3;
 			image_id = (baseImage_id + ((peeps + 1) * 72)) | (vehicle->peep_tshirt_colours[6] << 19) | (vehicle->peep_tshirt_colours[7] << 24) | 0xA0000000;
-			sub_98199C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+			sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, get_current_rotation());
 		}
 	}
 

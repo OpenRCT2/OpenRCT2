@@ -54,5 +54,5 @@ void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, r
 		ps->tertiary_colour = vehicle->colours_extended;
 	}
 
-	assert(vehicleEntry->pad_5E == 1);
+	assert(vehicleEntry->effect_visual == 1);
 }

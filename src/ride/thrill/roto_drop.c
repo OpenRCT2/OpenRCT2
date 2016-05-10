@@ -66,7 +66,6 @@ void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehic
 		}
 	};
 
-	assert(vehicleEntry->pad_5E == 1);
-	// 0x5E is treated as another car_visual paint setup jump table like in viewport_vehicle_paint_setup
-	// in the original code right here but appears to only ever be 1 which goes to a nullsub so it was taken out.
+	assert(vehicleEntry->effect_visual == 1);
+	// Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense so it was taken out
 }

@@ -70,9 +70,9 @@ void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_v
 	}
 	baseImage_id += vehicleEntry->base_image_id;
 
-	vehicle_boundbox bb = _virginiaReelBoundbox[j];
+	const vehicle_boundbox *bb = &_virginiaReelBoundbox[j];
 	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
-	sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+	sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, get_current_rotation());
 
 	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2 && vehicle->num_peeps > 0) {
 		uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
@@ -83,10 +83,10 @@ void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_v
 		for (int i = 0; i < countof(draw_order); i++) {
 			if (riding_peep_sprites[draw_order[i]] != 0xFF) {
 				image_id = (baseImage_id + ((draw_order[i] + 1) * 72)) | (riding_peep_sprites[draw_order[i]] << 19) | 0x20000000;
-				sub_98199C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+				sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, get_current_rotation());
 			}
 		}
 	}
 
-	assert(vehicleEntry->pad_5E == 1);
+	assert(vehicleEntry->effect_visual == 1);
 }
