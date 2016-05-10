@@ -335,8 +335,10 @@ static size_t decode_chunk_repeat(uint8 *buffer, size_t length)
 		} else {
 			count = (src[i] & 7) + 1;
 			copyOffset = dst + (int)(src[i] >> 3) - 32;
-			for (j = 0; j < count; j++)
+			assert(dst + count < buffer + length);
+			for (j = 0; j < count; j++) {
 				*dst++ = *copyOffset++;
+			}
 		}
 	}
 
