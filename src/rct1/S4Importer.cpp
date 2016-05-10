@@ -875,7 +875,7 @@ void S4Importer::ImportResearch()
     }
 
     research_remove_non_separate_vehicle_types();
-    // Fixes avaibility of rides
+    // Fixes availability of rides
     sub_684AC3();
 
     // Research funding / priority
