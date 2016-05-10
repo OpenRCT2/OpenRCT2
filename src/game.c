@@ -691,6 +691,7 @@ void game_convert_strings_to_utf8()
 
 		if (!str_is_null_or_empty(userString)) {
 			rct2_to_utf8_self(userString, 32);
+			utf8_remove_formatting(userString);
 		}
 	}
 
