@@ -32,9 +32,14 @@ extern const vehicle_boundbox VehicleBoundboxes[16][224];
 
 void vehicle_paint(rct_vehicle *vehicle, int imageDirection);
 
+void vehicle_visual_default(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
+void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
+void vehicle_visual_reverser(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
+void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
+void vehicle_visual_splash_effect(int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_submarine(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 

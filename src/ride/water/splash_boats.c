@@ -13,3 +13,28 @@
  * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
 #pragma endregion
+
+#include "../../addresses.h"
+#include "../../config.h"
+#include "../../interface/viewport.h"
+#include "../../world/sprite.h"
+#include "../../paint/paint.h"
+#include "../vehicle_paint.h"
+
+/**
+ *
+ *  rct2: 0x006D4295
+ */
+void vehicle_visual_splash_boats_or_water_coaster(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+{
+	if (vehicle->is_child) {
+		vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+	} else {
+		vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+	}
+	RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+	imageDirection = ((get_current_rotation() * 8) + vehicle->sprite_direction) & 0x1F;
+	RCT2_GLOBAL(0x9DE568, sint16) = vehicle->x;
+	RCT2_GLOBAL(0x9DE56C, sint16) = vehicle->y;
+	vehicle_paint(vehicle, imageDirection);
+}

@@ -70,7 +70,7 @@ typedef struct {
 	uint8 powered_acceleration;		// 0x5B , 0x75
 	uint8 powered_max_speed;		// 0x5C , 0x76
 	uint8 car_visual;				// 0x5D , 0x77
-	uint8 pad_5E;
+	uint8 effect_visual;
 	uint8 draw_order;
 	uint8 special_frames;			// 0x60 , 0x7A
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
@@ -330,7 +330,12 @@ enum {
 	VEHICLE_VISUAL_REVERSER,
 	VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER,
 	VEHICLE_VISUAL_ROTO_DROP,
-	VEHICLE_VISUAL_VIRGINIA_REEL = 15,
+	VEHICLE_VISUAL_SPLASH1_EFFECT,
+	VEHICLE_VISUAL_SPLASH2_EFFECT,
+	VEHICLE_VISUAL_SPLASH3_EFFECT,
+	VEHICLE_VISUAL_SPLASH4_EFFECT,
+	VEHICLE_VISUAL_SPLASH5_EFFECT,
+	VEHICLE_VISUAL_VIRGINIA_REEL,
 	VEHICLE_VISUAL_SUBMARINE
 };
 

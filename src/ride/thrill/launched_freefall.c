@@ -61,5 +61,5 @@ void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, r
 		}
 	}
 
-	assert(vehicleEntry->pad_5E == 1);
+	assert(vehicleEntry->effect_visual == 1);
 }
