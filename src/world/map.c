@@ -113,19 +113,19 @@ rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation){
 	switch (rotation){
 	case 0:
 		coordinate_2d.x = coordinate_3d->y - coordinate_3d->x;
-		coordinate_2d.y = (coordinate_3d->y + coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	case 1:
 		coordinate_2d.x = -coordinate_3d->y - coordinate_3d->x;
-		coordinate_2d.y = (coordinate_3d->y - coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	case 2:
 		coordinate_2d.x = -coordinate_3d->y + coordinate_3d->x;
-		coordinate_2d.y = (-coordinate_3d->y - coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((-coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	case 3:
 		coordinate_2d.x = coordinate_3d->y + coordinate_3d->x;
-		coordinate_2d.y = (-coordinate_3d->y + coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((-coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	}
 	return coordinate_2d;
