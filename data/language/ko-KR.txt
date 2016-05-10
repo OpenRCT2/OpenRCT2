@@ -3776,7 +3776,7 @@ STR_5436    :타이틀 시퀀스 편집하기...
 STR_5437    :선택된 세이브 없음
 STR_5438    :명령 에디터가 열려있을 때 변경할 수 없습니다
 STR_5439    :4초 이상의 기다림 명령은 재시작 명령이 필요합니다.
-STR_5440    :커서가 게임 밖으로 나가면 풀스크린을 최소화
+STR_5440    :커서가 게임 밖으로 나가면 전체 화면을 최소화
 STR_5441    :{SMALLFONT}{BLACK}놀이기구를 RCT1처럼 종류별로 구분합니다.
 STR_5442    :공원 등급 고정:
 STR_5443    :속도{MOVE_X}{87}{STRINGID}
@@ -4118,6 +4118,52 @@ STR_5811    :{SMALLFONT}{BLACK}이 설정을 켜면, 열차 1대당 차량 수�
 STR_5812    :멀티플레이 창 열기
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}게임 화면에 FPS를 표시합니다.
+STR_5816    :{SMALLFONT}{BLACK}게임 화면을 조절할 비율을 설정합니다.{NEWLINE}고해상도에서 플레이할 때 사용하면 좋습니다.
+STR_5817    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}게임 UI를 조절할 방식을 선택합니다.
+STR_5818    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}창 크기 조절 배수를 정수 값으로 사용할 경우 최근접 인접 픽셀 방식을 사용하여 UI의 크기를 조절합니다.
+STR_5819    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}스팀 인게임 오버레이가 열려있으면 게임을 일시정지시킵니다.
+STR_5820    :{SMALLFONT}{BLACK}전체 화면 모드에서 커서가 게임 밖으로 나가면 게임을 최소화시킵니다.
+STR_5821    :{SMALLFONT}{BLACK}놀이기구, 보도, 상점, 풍경 등을 건설할 때 건설 예정지를 표시하는 방식을 변경합니다.
+STR_5822    :{SMALLFONT}{BLACK}낮밤을 순환하도록 설정합니다.{NEWLINE}낮밤이 바뀌는 데에는 한 달이 걸립니다.
+STR_5823    :{SMALLFONT}{BLACK}팻말의 영문을 대문자로 표시합니다. (RCT1처럼)
+STR_5824    :{SMALLFONT}{BLACK}폭풍이 칠 때 번개가 치는 효과를 끕니다.
+STR_5825    :{SMALLFONT}{BLACK}마우스 커서를 화면 밖으로 나가지 못하게 만듭니다.
+STR_5826    :{SMALLFONT}{BLACK}게임 화면에서 마우스 오른쪽 클릭으로 드래그할 때의 방향을 반대로 바꿉니다.
+STR_5827    :{SMALLFONT}{BLACK}GUI에서 사용할 색상 조합을 설정합니다.
+STR_5828    :{SMALLFONT}{BLACK}거리, 속도 등에서 사용할 거리 단위를 설정합니다.
+STR_5829    :{SMALLFONT}{BLACK}화폐 단위를 변경합니다. 단순히 표기 방식만 변경되고, 환율은 아직 적용되지 않습니다.
+STR_5830    :{SMALLFONT}{BLACK}사용할 언어를 설정합니다.
+STR_5831    :{SMALLFONT}{BLACK}사용할 온도 단위를 설정합니다.
+STR_5832    :{SMALLFONT}{BLACK}높이를 "거리 및 속력"에 설정된 거리 단위 대신 칸 단위로 표시합니다.
+STR_5833    :{SMALLFONT}{BLACK}사용할 날짜 형식을 설정합니다.
+STR_5834    :{SMALLFONT}{BLACK}OpenRCT2가 사용할 오디오 장치를 선택합니다.
+STR_5835    :{SMALLFONT}{BLACK}게임 밖으로 커서가 나가면 게임에서 소리가 나지 않도록 만듭니다.
+STR_5836    :{SMALLFONT}{BLACK}첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두어야 합니다.
+STR_5837    :{SMALLFONT}{BLACK}사용자 UI 테마를 생성하고 관리합니다.
+STR_5838    :{SMALLFONT}{BLACK}메인 메뉴에 재정 창을 위한 별도의 버튼을 표시합니다.
+STR_5839    :{SMALLFONT}{BLACK}메인 매뉴에 연구 및 개발 창을 위한 별도의 버튼을 표시합니다.
+STR_5840    :{SMALLFONT}{BLACK}메인 메뉴에 치트 창을 위한 별도의 버튼을 표시합니다.
+STR_5841    :{SMALLFONT}{BLACK}메인 메뉴에 최근 메시지 창을 위한 별도의 버튼을 표시합니다.
+STR_5842    :{SMALLFONT}{BLACK}시나리오를 (RCT2처럼) 난이도 별로 정렬하거나 (RCT1처럼) 출신 게임별로 정렬합니다.
+STR_5843    :{SMALLFONT}{BLACK}시나리오 해제 기능을 켭니다. (RCT1처럼)
+STR_5844    :{SMALLFONT}{BLACK}멀티 플레이 서버에서 비동기화나 오류가 발생하여도 접속을 유지합니다.
+STR_5845    :{SMALLFONT}{BLACK}메인 메뉴에 디버깅 툴을 위한 버튼을 추가합니다.{NEWLINE}개발자 콘솔을 여는 키보드 단축키가 활성화됩니다.
+STR_5846    :{SMALLFONT}{BLACK}OpenRCT2의 자동 저장 빈도를 설정합니다.
+STR_5847    :{SMALLFONT}{BLACK}타이틀 스크린에서 사용할 공원 시퀀스를 선택합니다. RCT1/2의 타이틀 시퀀스를 사용하기 위해서는 특정 시나리오가 필요합니다.
+STR_5848    :{SMALLFONT}{BLACK}사용자 타이틀 시퀀스를 생성하고 관리합니다.
+STR_5849    :{SMALLFONT}{BLACK}새로 고용한 직원을 자동으로 보도 위에 놓습니다.
+STR_5850    :{SMALLFONT}{BLACK}새로 고용된 미화원이 기본적으로 잔디를 깎습니다. (RCT1처럼)
+STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
+STR_5852    :{SMALLFONT}{BLACK}트위치 통합에 사용할 트위치TV 채널 명을 설정합니다.
+STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
+STR_5854    :{SMALLFONT}{BLACK}놀이기구 음악 켜기/끄기
+STR_5855    :{SMALLFONT}{BLACK}전체화면, 창 모드, 전체화면 (창모드) 중에서 선택합니다.
+STR_5856    :{SMALLFONT}{BLACK}전체화면에서 사용할 게임 해상도를 설정합니다.
+STR_5857    :{SMALLFONT}{BLACK}게임 설정
+STR_5858    :{SMALLFONT}{BLACK}CPU 대신 GPU를 이용하여 화면을 표시합니다. 스크린 캡쳐 소프트웨어의 호환성을 향상시켜줍니다. 약간의 속도 저하가 발생할 수 있습니다.
+STR_5859    :{SMALLFONT}{BLACK}시각적으로 더 부드러운 게임 플레이를 위해 프레임 제한을 해제합니다. 설정을 끄면 게임이 40 FPS로 실행됩니다.
 
 #############
 # Scenarios #

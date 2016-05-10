@@ -4119,6 +4119,52 @@ STR_5811    :{SMALLFONT}{BLACK}Si se activa, puedes tener hasta 255 vagones por 
 STR_5812    :Mostrar ventana Multijugador
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}Muestra la cantidad de FPS en el juego.
+STR_5816    :{SMALLFONT}{BLACK}Establece la relación de escala del juego.{NEWLINE}Suele ser util cuando se juega en pantallas con resoluciones altas.
+STR_5817    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Establece el tipo de escala usado para la interfaz.
+STR_5818    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Usar escala "vecino próximo" (nearest-neighbour) si el coeficiente de la escala toma valores enteros.
+STR_5819    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Pausa el juego si Steam se superpone durante el juego.
+STR_5820    :{SMALLFONT}{BLACK}Minimizar el juego si se pierde el foco en el modo de pantalla completa.
+STR_5821    :{SMALLFONT}{BLACK}Cambiar el color de la marca de construcción cuando se construyen atracciones, senderos, tiendas, escenarios, etc.
+STR_5822    :{SMALLFONT}{BLACK}Habilita los ciclos de día y noche.{NEWLINE}Un ciclo completo tarda un mes en el juego.
+STR_5823    :{SMALLFONT}{BLACK}Muestra el texto de los letreros en mayúsculas (como en RCT1)
+STR_5824    :{SMALLFONT}{BLACK}Desactiva los relámpagos durante una tormenta eléctrica.
+STR_5825    :{SMALLFONT}{BLACK}Mantener el puntero del ratón en la ventana.
+STR_5826    :{SMALLFONT}{BLACK}Invertir desplazamiento derecho del ratón.
+STR_5827    :{SMALLFONT}{BLACK}Establecer el esquema de color (tema) que se utiliza para la interfaz.
+STR_5828    :{SMALLFONT}{BLACK}Cambiar el formato usado para la medición de distancias, velocidades, etc.
+STR_5829    :{SMALLFONT}{BLACK}Cambiar el formato usado en la moneda. Esto solo es visual, no se calcula el tipo de cambio.
+STR_5830    :{SMALLFONT}{BLACK}Cambiar el idioma del juego.
+STR_5831    :{SMALLFONT}{BLACK}Cambiar el formato mostrado para la temperatura.
+STR_5832    :{SMALLFONT}{BLACK}Mostrar marcas de altura con{NEWLINE}valores relativos{NEWLINE}(+1, +2, +3, etc.){NEWLINE}o con valores reales{NEWLINE}(1m, 5m, 10m, etc.).
+STR_5833    :{SMALLFONT}{BLACK}Cambiar el formato de fecha a usar en el juego.
+STR_5834    :{SMALLFONT}{BLACK}Selecciona el dispositivo de sonido que OpenRCT2 debe usar.
+STR_5835    :{SMALLFONT}{BLACK}Silenciar el juego si la ventana pierde el foco.
+STR_5836    :{SMALLFONT}{BLACK}Selecciona la música usada en el menú principal.{NEWLINE}Seleccionar el tema de RCT1 requiere copiar el archivo 'data/css17.dat' de la carpeta de RCT1 a 'data/css50.dat' en la carpeta de RCT2.
+STR_5837    :{SMALLFONT}{BLACK}Crea y gestiona tus temas personalizados de la interfaz.
+STR_5838    :{SMALLFONT}{BLACK}Mostrar un botón separado para las finanzas en la barra de herramienta superior.
+STR_5839    :{SMALLFONT}{BLACK}Mostrar un botón separado para la investigación y desarrollo en la barra de herramienta superior.
+STR_5840    :{SMALLFONT}{BLACK}Mostrar un botón separado para los trucos en la barra de herramienta superior.
+STR_5841    :{SMALLFONT}{BLACK}Mostrar un botón separado para los mensajes recientes en la barra de herramienta superior.
+STR_5842    :{SMALLFONT}{BLACK}Ordenar las pestañas de los escenarios por su dificultad (como en RCT2) o por su origen (como en RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Habilitar desbloqueo de escenarios (como en RCT1)
+STR_5844    :{SMALLFONT}{BLACK}Mantenerse conectado en el servidor multijugador incluso si ocurre un error de desincronización.
+STR_5845    :{SMALLFONT}{BLACK}Añadir un botón para las herramientas de depuración en la barra de herramienta superior. Con esto se permite el atajo del teclado para abrir la consola de desarrollo.
+STR_5846    :{SMALLFONT}{BLACK}Establece con cuanta frecuencia OpenRCT2 guarda la partida automáticamente.
+STR_5847    :{SMALLFONT}{BLACK}Selecciona la secuencia del parque usada en el menú principal. Secuencias de RCT1/RCT2 requieren la importación de los escenarios para funcionar.
+STR_5848    :{SMALLFONT}{BLACK}Crea o modifica las secuencias del menú principal.
+STR_5849    :{SMALLFONT}{BLACK}Colocar automáticamente los nuevos empleados contratados.
+STR_5850    :{SMALLFONT}{BLACK}Los nuevos jardineros contratados cortan el césped por defecto. (como en RCT1)
+STR_5851    :{SMALLFONT}{BLACK}Establece el tiempo de inspección por defecto en las atracciones nuevas.
+STR_5852    :{SMALLFONT}{BLACK}Establece el nombre del canal TwitchTV que se utilizará para la integración de Twitch.
+STR_5853    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar efectos de sonido.
+STR_5854    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar músicas de atracciones.
+STR_5855    :{SMALLFONT}{BLACK}Establecer modo de pantalla completa, ventana, o pantalla sin bordes.
+STR_5856    :{SMALLFONT}{BLACK}Establece la resolución del juego usada en el modo de pantalla completa.
+STR_5857    :{SMALLFONT}{BLACK}Opciones del juego
+STR_5858    :{SMALLFONT}{BLACK}Utilizar el GPU para la visualización en lugar del CPU. Esto mejora la compatibilidad con el software para la captura de pantalla. Esto puede disminuir ligeramente el rendimiento del juego.
+STR_5859    :{SMALLFONT}{BLACK}Permite la interpolación de{NEWLINE}los FPS (Fotograma por segundo) para un juego visualmente más suave. Si se encuentra desactivado el juego funcionará a 40 FPS como máximo.
 
 ##############
 # Escenarios #
