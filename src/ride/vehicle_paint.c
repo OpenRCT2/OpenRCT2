@@ -900,8 +900,8 @@ void vehicle_sprite_paint(rct_vehicle *vehicle, int ebx, int ecx, int z, const r
 		baseImage_id += vehicle->var_C5;
 	}
 	int image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
-	if (sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation())) {
-		paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*) - 1; // sub_98197C increments this but need original
+	paint_struct* ps = sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+	if (ps != NULL) {
 		ps->tertiary_colour = vehicle->colours_extended;
 	}
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);

@@ -43,14 +43,15 @@ void vehicle_visual_observation_tower(int x, int imageDirection, int y, int z, r
 	}
 
 	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0x80000000;
-	if (sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation())) {
-		paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*) - 1; // sub_98197C increments this but need original
+	paint_struct* ps = sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation());
+	if (ps != NULL) {
 		ps->tertiary_colour = vehicle->colours_extended;
 	}
 
 	image_id++;
-	if (sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation())) {
-		paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*) - 1; // sub_98197C increments this but need original
+
+	ps = sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+	if (ps != NULL) {
 		ps->tertiary_colour = vehicle->colours_extended;
 	}
 

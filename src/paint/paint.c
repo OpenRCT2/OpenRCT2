@@ -298,7 +298,7 @@ paint_struct * sub_98196C(
 		RCT2_GLOBAL(0x00F1AD10, uint32) = edi;
 	}
 
-	RCT2_GLOBAL(0xEE7888, uint32) += 0x34;
+	RCT2_GLOBAL(0xEE7888, paint_struct*) ++;
 
 	return ps;
 }
@@ -469,7 +469,7 @@ paint_struct * sub_98199C(
 			z_offset,
 			bound_box_offset_x, bound_box_offset_y, bound_box_offset_z,
 			rotation
-		) == 1;
+		);
 	}
 
 	rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
@@ -596,7 +596,7 @@ void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_of
 	ps->x = coord.x + offset_x;
 	ps->y = coord.y;
 
-	RCT2_GLOBAL(0xEE7888, uint32) += 0x1E;
+	RCT2_GLOBAL(0xEE7888, paint_string_struct*)++;
 
 	paint_string_struct * oldPs = RCT2_GLOBAL(0xF1AD24, paint_string_struct*);
 
