@@ -176,7 +176,7 @@ typedef struct {
 	uint8 security_colour;
 
 	// Ignored in scenario
-	uint32 dword_01357BD0[56];
+	uint32 researched_scenery_items[56];
 
 	// SC6[9]
 	uint16 park_rating;

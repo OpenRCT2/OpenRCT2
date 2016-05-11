@@ -160,8 +160,9 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
  */
 static void sub_6DFED0()
 {
-	for (int i = 0; i < 56; i++)
-		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
+	for (int i = 0; i < 56; i++) {
+		gResearchedSceneryItems[i] = 0xFFFFFFFF;
+	}
 }
 
 /**

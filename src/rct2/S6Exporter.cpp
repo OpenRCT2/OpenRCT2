@@ -289,7 +289,7 @@ void S6Exporter::Export()
     _s6.mechanic_colour = gStaffMechanicColour;
     _s6.security_colour = gStaffSecurityColour;
 
-    memcpy(_s6.dword_01357BD0, RCT2_ADDRESS(0x01357BD0, uint32), sizeof(_s6.dword_01357BD0));
+    memcpy(_s6.researched_scenery_items, gResearchedSceneryItems, sizeof(_s6.researched_scenery_items));
 
     _s6.park_rating = gParkRating;
 

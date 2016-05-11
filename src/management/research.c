@@ -42,6 +42,7 @@ uint32 *gResearchedRideTypes = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_RIDE_TYPES, 
 uint32 *gResearchedRideEntries = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_RIDE_ENTRIES, uint32);
 uint32 *gResearchedTrackTypesA = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_TRACK_TYPES_A, uint32);
 uint32 *gResearchedTrackTypesB = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_TRACK_TYPES_B, uint32);
+uint32 *gResearchedSceneryItems = RCT2_ADDRESS(RCT2_ADDRESS_RESEARCHED_SCENERY_ITEMS, uint32);
 
 bool gSilentResearch = false;
 
@@ -223,7 +224,7 @@ void research_finish_item(sint32 entryIndex)
 		scenerySetEntry = g_scenerySetEntries[entryIndex & 0xFFFF];
 		for (i = 0; i < scenerySetEntry->entry_count; i++) {
 			subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
-			RCT2_ADDRESS(0x01357BD0, sint32)[subSceneryEntryIndex >> 5] |= 1u << (subSceneryEntryIndex & 0x1F);
+			gResearchedSceneryItems[subSceneryEntryIndex >> 5] |= 1UL << (subSceneryEntryIndex & 0x1F);
 		}
 
 		// I don't think 0x009AC06C is ever not 0, so probably redundant
@@ -324,8 +325,8 @@ void sub_684AC3(){
 		gResearchedRideEntries[i] = 0;
 	}
 
-	for (int i = 0; i < 56; i++){
-		RCT2_ADDRESS(0x01357BD0, uint32)[i] = -1;
+	for (int i = 0; i < 56; i++) {
+		gResearchedSceneryItems[i] = 0xFFFFFFFF;
 	}
 
 	for (int i = 0; i < 19; ++i){
@@ -334,7 +335,7 @@ void sub_684AC3(){
 
 		for (int j = 0; j < scenery_set->entry_count; ++j){
 			uint8 value = scenery_set->scenery_entries[j] & 0x1F;
-			RCT2_ADDRESS(0x01357BD0, uint32)[scenery_set->scenery_entries[j] >> 5] &= ~(1u << value);
+			gResearchedSceneryItems[scenery_set->scenery_entries[j] >> 5] &= ~(1UL << value);
 		}
 	}
 

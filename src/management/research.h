@@ -78,6 +78,7 @@ extern uint32 *gResearchedRideTypes;
 extern uint32 *gResearchedRideEntries;
 extern uint32 *gResearchedTrackTypesA;
 extern uint32 *gResearchedTrackTypesB;
+extern uint32 *gResearchedSceneryItems;
 extern bool gSilentResearch;
 
 void research_reset_items();

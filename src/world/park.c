@@ -100,8 +100,9 @@ void park_init()
 	for (i = 0; i < 2; i++)
 		gResearchedRideTypes[i] = 0;
 
-	for (i = 0; i < 56; i++)
-		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
+	for (i = 0; i < 56; i++) {
+		gResearchedSceneryItems[i] = 0xFFFFFFFF;
+	}
 
 	gParkEntranceFee = MONEY(10, 00);
 	gPeepSpawns[0].x = UINT16_MAX;

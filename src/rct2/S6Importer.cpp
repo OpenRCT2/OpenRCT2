@@ -221,7 +221,7 @@ void S6Importer::Import()
     gStaffMechanicColour = _s6.mechanic_colour;
     gStaffSecurityColour = _s6.security_colour;
 
-    memcpy(RCT2_ADDRESS(0x01357BD0, uint32), _s6.dword_01357BD0, sizeof(_s6.dword_01357BD0));
+    memcpy(gResearchedSceneryItems, _s6.researched_scenery_items, sizeof(_s6.researched_scenery_items));
 
     gParkRating = _s6.park_rating;
 
