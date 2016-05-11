@@ -339,7 +339,7 @@ void S6Exporter::Export()
     _s6.total_admissions = gTotalAdmissions;
     _s6.income_from_admissions = gTotalIncomeFromAdmissions;
     _s6.company_value = gCompanyValue;
-    memcpy(_s6.byte_01358750, RCT2_ADDRESS(0x01358750, uint8), sizeof(_s6.byte_01358750));
+    memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
     memcpy(_s6.awards, gCurrentAwards, sizeof(_s6.awards));
     _s6.land_price = gLandPrice;
     _s6.construction_rights_price = gConstructionRightsPrice;

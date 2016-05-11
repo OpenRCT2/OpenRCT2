@@ -271,7 +271,7 @@ void S6Importer::Import()
     gTotalAdmissions = _s6.total_admissions;
     gTotalIncomeFromAdmissions = _s6.income_from_admissions;
     gCompanyValue = _s6.company_value;
-    memcpy(RCT2_ADDRESS(0x01358750, uint8), _s6.byte_01358750, sizeof(_s6.byte_01358750));
+    memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
     memcpy(gCurrentAwards, _s6.awards, sizeof(_s6.awards));
     gLandPrice = _s6.land_price;
     gConstructionRightsPrice = _s6.construction_rights_price;

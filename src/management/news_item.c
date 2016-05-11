@@ -67,9 +67,11 @@ void news_item_init_queue()
 
 	news_item_get(0)->type = NEWS_ITEM_NULL;
 	news_item_get(11)->type = NEWS_ITEM_NULL;
+
 	// Throttles for warning types (PEEP_*_WARNING)
-	for (i = 0; i < 16; i++)
-		RCT2_ADDRESS(0x01358750, uint8)[i] = 0;
+	for (i = 0; i < 16; i++) {
+		gPeepWarningThrottle[i] = 0;
+	}
 
 	window_game_bottom_toolbar_invalidate_news_item();
 }

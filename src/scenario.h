@@ -235,7 +235,7 @@ typedef struct {
 	uint32 total_admissions;
 	money32 income_from_admissions;
 	money32 company_value;
-	uint8 byte_01358750[16];
+	uint8 peep_warning_throttle[16];
 	rct_award awards[4];
 	money16 land_price;
 	money16 construction_rights_price;

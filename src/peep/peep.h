@@ -607,6 +607,8 @@ enum {
 
 #define gNextGuestNumber			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_GUEST_NUMBER, uint32)
 
+extern uint8 *gPeepWarningThrottle;
+
 int peep_get_staff_count();
 int peep_can_be_picked_up(rct_peep* peep);
 void peep_update_all();
