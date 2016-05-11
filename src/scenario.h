@@ -241,9 +241,10 @@ typedef struct {
 	money16 construction_rights_price;
 	uint16 word_01358774;
 	uint8 pad_01358776[2];
-	uint32 dword_01358778[17];
+	uint32 cd_key;
+	uint8 pad_0135877C[64];
 	uint32 game_version_number;
-	uint32 dword_013587C0;
+	money32 completed_company_value_record;
 	uint32 loan_hash;
 	uint16 ride_count;
 	uint8 pad_013587CA[6];
@@ -308,9 +309,9 @@ typedef struct {
 	rct_ride_measurement ride_measurements[8];
 	uint32 next_guest_index;
 	uint16 grass_and_scenery_tilepos;
-	uint32 patrol_areas[0x6600]; // 512 bytes per staff peep
+	uint32 patrol_areas[204 * 128];
 	uint8 staff_modes[204];
-	uint8 unk_13CA73E;
+	uint8 pad_13CA73E;
 	uint8 pad_13CA73F;
 	uint8 byte_13CA740;
 	uint8 pad_13CA741;
@@ -429,6 +430,7 @@ extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 #define gScenarioParkRatingWarningDays		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)
 #define gScenarioCompletedCompanyValue		RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32)
+#define gScenarioCompanyValueRecord			RCT2_GLOBAL(RCT2_ADDRESS_COMPANY_VALUE_RECORD, money32)
 
 // Scenario list
 extern int gScenarioListCount;

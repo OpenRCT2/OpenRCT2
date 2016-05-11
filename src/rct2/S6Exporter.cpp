@@ -345,9 +345,9 @@ void S6Exporter::Export()
     _s6.construction_rights_price = gConstructionRightsPrice;
     _s6.word_01358774 = RCT2_GLOBAL(0x01358774, uint16);
     // pad_01358776
-    memcpy(_s6.dword_01358778, RCT2_ADDRESS(0x01358778, uint32), sizeof(_s6.dword_01358778));
+    // _s6.cd_key
     // _s6.game_version_number
-    _s6.dword_013587C0 = RCT2_GLOBAL(0x013587C0, uint32);
+    _s6.completed_company_value_record = gScenarioCompanyValueRecord;
     _s6.loan_hash = RCT2_GLOBAL(RCT2_ADDRESS_LOAN_HASH, uint32);
     _s6.ride_count = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, uint16);
     // pad_013587CA
