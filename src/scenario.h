@@ -217,8 +217,8 @@ typedef struct {
 	// SC6[11]
 	money32 current_expenditure;
 	money32 current_profit;
-	uint32 dword_01358334;
-	uint16 word_01358338;
+	uint32 weekly_profit_average_dividend;
+	uint16 weekly_profit_average_divisor;
 	uint8 pad_0135833A[2];
 
 	// Ignored in scenario

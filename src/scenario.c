@@ -235,8 +235,8 @@ void scenario_begin()
 	memset((void*)0x001357848, 0, 56);
 	gCurrentExpenditure = 0;
 	gCurrentProfit = 0;
-	RCT2_GLOBAL(0x01358334, money32) = 0;
-	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	gWeeklyProfitAverageDividend = 0;
+	gWeeklyProfitAverageDivisor = 0;
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
 	gTotalAdmissions = 0;
 	gTotalIncomeFromAdmissions = 0;

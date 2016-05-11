@@ -172,8 +172,8 @@ void finance_init() {
 	gCurrentExpenditure = 0;
 	gCurrentProfit = 0;
 
-	RCT2_GLOBAL(0x01358334, money32) = 0;
-	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	gWeeklyProfitAverageDividend = 0;
+	gWeeklyProfitAverageDivisor = 0;
 
 	gInitialCash = MONEY(10000,00); // Cheat detection
 
@@ -241,8 +241,8 @@ void finance_update_daily_profit()
 	gCurrentProfit += current_profit;
 
 	// These are related to weekly profit graph
-	RCT2_GLOBAL(0x1358334, money32) += gCurrentProfit;
-	RCT2_GLOBAL(0x1358338, uint16) += 1;
+	gWeeklyProfitAverageDividend += gCurrentProfit;
+	gWeeklyProfitAverageDivisor += 1;
 
 	window_invalidate_by_class(WC_FINANCES);
 }

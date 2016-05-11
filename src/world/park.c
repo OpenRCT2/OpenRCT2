@@ -628,16 +628,17 @@ void park_update_histories()
 	window_invalidate_by_class(WC_FINANCES);
 
 	// Update weekly profit history
-	money32 currentWeeklyProfit = RCT2_GLOBAL(0x01358334, money32);
-	if (RCT2_GLOBAL(0x01358338, uint16) != 0)
-		currentWeeklyProfit /= RCT2_GLOBAL(0x01358338, uint16);
+	money32 currentWeeklyProfit = gWeeklyProfitAverageDividend;
+	if (gWeeklyProfitAverageDivisor != 0) {
+		currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
+	}
 
 	for (int i = 127; i > 0; i--)
 		gWeeklyProfitHistory[i] = gWeeklyProfitHistory[i - 1];
 	gWeeklyProfitHistory[0] = currentWeeklyProfit;
 
-	RCT2_GLOBAL(0x01358334, money32) = 0;
-	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	gWeeklyProfitAverageDividend = 0;
+	gWeeklyProfitAverageDivisor = 0;
 	window_invalidate_by_class(WC_FINANCES);
 
 	// Update park value history

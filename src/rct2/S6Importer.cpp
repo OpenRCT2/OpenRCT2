@@ -257,8 +257,8 @@ void S6Importer::Import()
 
     gCurrentExpenditure = _s6.current_expenditure;
     gCurrentProfit = _s6.current_profit;
-    RCT2_GLOBAL(0x01358334, uint32) = _s6.dword_01358334;
-    RCT2_GLOBAL(0x01358338, uint16) = _s6.word_01358338;
+    gWeeklyProfitAverageDividend = _s6.weekly_profit_average_dividend;
+    gWeeklyProfitAverageDivisor = _s6.weekly_profit_average_divisor;
     // pad_0135833A
 
     memcpy(gWeeklyProfitHistory, _s6.weekly_profit_history, sizeof(_s6.weekly_profit_history));
