@@ -82,14 +82,14 @@ rct_track_td6 *track_design_open(const utf8 *path)
 		if (bufferLength < 4) {
 			log_error("Invalid track file: %s.", path);
 			SDL_RWclose(file);
-			return false;
+			return NULL;
 		}
 
 		uint8 *buffer = (uint8*)malloc(bufferLength);
 		if (buffer == NULL) {
 			log_error("Unable to allocate memory for track design file.");
 			SDL_RWclose(file);
-			return false;
+			return NULL;
 		}
 		SDL_RWread(file, buffer, bufferLength, 1);
 		SDL_RWclose(file);
@@ -101,7 +101,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
 		}
 
 		// Decode the track data
-		uint8 *decoded = malloc(0x10000);
+		uint8 *decoded = (uint8*)malloc(0x10000);
 		size_t decodedLength = sawyercoding_decode_td6(buffer, decoded, bufferLength);
 		free(buffer);
 		decoded = realloc(decoded, decodedLength);
@@ -111,8 +111,10 @@ rct_track_td6 *track_design_open(const utf8 *path)
 			rct_track_td6 *td6 = track_design_open_from_buffer(decoded, decodedLength);
 			free(decoded);
 
-			td6->name = track_design_get_name_from_path(path);
-			return td6;
+			if (td6 != NULL) {
+				td6->name = track_design_get_name_from_path(path);
+				return td6;
+			}
 		}
 	}
 	return NULL;
