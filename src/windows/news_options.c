@@ -26,7 +26,7 @@ enum {
 	NOTIFICATION_CATEGORY_GUEST
 };
 
-typedef struct {
+typedef struct notification_def {
 	uint8 category;
 	rct_string_id caption;
 	size_t config_offset;

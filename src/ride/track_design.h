@@ -25,7 +25,7 @@
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
 /* Maze Element entry   size: 0x04 */
-typedef struct {
+typedef struct rct_td6_maze_element {
 	union {
 		uint32 all;
 		struct {
@@ -43,13 +43,13 @@ typedef struct {
 } rct_td6_maze_element;
 
 /* Track Element entry  size: 0x02 */
-typedef struct {
+typedef struct rct_td6_track_element {
 	uint8 type;							// 0x00
 	uint8 flags;						// 0x01
 } rct_td6_track_element;
 
 /* Track Entrance entry size: 0x06 */
-typedef struct {
+typedef struct rct_td6_entrance_element {
 	sint8 z;							// 0x00
 	uint8 direction;					// 0x01
 	sint16 x;							// 0x02
@@ -57,7 +57,7 @@ typedef struct {
 } rct_td6_entrance_element;
 
 /* Track Scenery entry  size: 0x16 */
-typedef struct {
+typedef struct rct_td6_scenery_element {
 	rct_object_entry scenery_object;	// 0x00
 	sint8 x;							// 0x10
 	sint8 y;							// 0x11
@@ -71,7 +71,7 @@ typedef struct {
  * Track design structure.
  * size: 0x4E72B
  */
-typedef struct {
+typedef struct rct_track_td6 {
 	uint8 type;										// 0x00
 	uint8 vehicle_type;
 	union{
@@ -142,12 +142,12 @@ typedef struct {
 	utf8 *name;
 } rct_track_td6;
 
-typedef struct{
+typedef struct rct_track_design {
 	rct_track_td6 track_td6;
 	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
 } rct_track_design;
 
-typedef struct {
+typedef struct track_design_file_ref {
 	utf8 *name;
 	utf8 *path;
 } track_design_file_ref;

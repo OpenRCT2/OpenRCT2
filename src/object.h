@@ -54,7 +54,7 @@ typedef enum{
  * Object entry structure.
  * size: 0x10
  */
-typedef struct {
+typedef struct rct_object_entry {
 	uint32 flags;
 	char name[8];
 	uint32 checksum;
@@ -64,7 +64,7 @@ typedef struct {
  * Object entry structure extended.
  * size: 0x14
  */
-typedef struct {
+typedef struct rct_object_entry_extended {
 	uint32 flags;
 	char name[8];
 	uint32 checksum;
@@ -74,17 +74,17 @@ typedef struct {
 extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
 
-typedef struct {
+typedef struct rct_object_entry_group {
 	uint8 **chunks;
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
 
-typedef struct {
+typedef struct rct_ride_filters {
 	uint8 category[2];
 	uint8 ride_type;
 } rct_ride_filters;
 
-typedef struct {
+typedef struct rct_object_filters {
 	union {
 		rct_ride_filters ride;
 	};

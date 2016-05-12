@@ -189,7 +189,7 @@ static void my_png_flush(png_structp png_ptr)
 }
 
 // Bitmap header structs, for cross platform purposes
-typedef struct {
+typedef struct BitmapFileHeader {
 	uint16 bfType;
 	uint32 bfSize;
 	uint16 bfReserved1;
@@ -197,7 +197,7 @@ typedef struct {
 	uint32 bfOffBits;
 } BitmapFileHeader;
 
-typedef struct {
+typedef struct BitmapInfoHeader {
 	uint32 biSize;
 	sint32 biWidth;
 	sint32 biHeight;

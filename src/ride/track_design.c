@@ -34,7 +34,7 @@
 #include "track_design.h"
 #include "track.h"
 
-typedef struct {
+typedef struct map_backup {
 	rct_map_element map_elements[MAX_MAP_ELEMENTS];
 	rct_map_element *tile_pointers[256 * 256];
 	rct_map_element *next_free_map_element;

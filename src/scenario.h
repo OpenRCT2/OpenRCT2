@@ -34,7 +34,7 @@
  * SV6/SC6 header chunk
  * size: 0x20
  */
-typedef struct {
+typedef struct rct_s6_header {
 	uint16 type;				// 0x00
 	uint16 num_packed_objects;	// 0x02
 	uint32 version;				// 0x04
@@ -46,7 +46,7 @@ typedef struct {
  * SC6 information chunk
  * size: 0x198
  */
-typedef struct {
+typedef struct rct_s6_info {
 	uint8 editor_step;
 	uint8 category;				// 0x01
 	uint8 objective_type;		// 0x02
@@ -63,14 +63,14 @@ typedef struct {
  * Scenario scores file header.
  * size: 0x10
  */
-typedef struct {
+typedef struct rct_scenario_scores_header {
 	uint32 var_0;
 	uint32 var_4;
 	uint32 var_8;
 	uint32 scenario_count;		// 0x0C
 } rct_scenario_scores_header;
 
-typedef enum {
+typedef enum scenario_source {
 	SCENARIO_SOURCE_RCT1,
 	SCENARIO_SOURCE_RCT1_AA,
 	SCENARIO_SOURCE_RCT1_LL,
@@ -85,7 +85,7 @@ typedef enum {
  * Scenario basic structure, mainly for scenario select
  * size: 0x02B0
  */
-typedef struct {
+typedef struct rct_scenario_basic {
 	char path[256];				// 0x0000
 	uint8 category;				// 0x0100
 	uint8 pad_0101[0x1F];
@@ -102,7 +102,7 @@ typedef struct {
 	// sint16 source_index;		// new in OpenRCT2
 } rct_scenario_basic;
 
-typedef struct {
+typedef struct rct_stex_entry {
 	rct_string_id scenario_name;	// 0x00
 	rct_string_id park_name;		// 0x02
 	rct_string_id details;			// 0x04
@@ -112,7 +112,7 @@ typedef struct {
 #define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
 
 // This will be useful for backwards compatibility
-typedef struct {
+typedef struct rct_s6_data {
 	// SC6[0]
 	rct_s6_header header;
 
@@ -381,14 +381,14 @@ enum {
 	OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
-typedef struct {
+typedef struct scenario_highscore_entry {
 	utf8 *fileName;
 	utf8 *name;
 	money32 company_value;
 	datetime64 timestamp;
 } scenario_highscore_entry;
 
-typedef struct {
+typedef struct scenario_index_entry {
 	utf8 path[MAX_PATH];
 	uint64 timestamp;
 
@@ -409,7 +409,7 @@ typedef struct {
 	utf8 details[256];
 } scenario_index_entry;
 
-typedef struct {
+typedef struct source_desc {
 	const utf8 *title;
 	uint8 id;
 	uint8 source;

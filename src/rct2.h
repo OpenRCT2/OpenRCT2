@@ -181,7 +181,7 @@ typedef fixed32_1dp money32;
 typedef void (EMPTY_ARGS_VOID_POINTER)();
 typedef unsigned short rct_string_id;
 
-typedef struct {
+typedef struct rct2_install_info {
 	uint32 installLevel;
 	char title[260];
 	char path[260];

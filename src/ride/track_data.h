@@ -29,7 +29,7 @@ extern const rct_preview_track *FlatRideTrackBlocks[255];
 
 extern const uint8 TrackPieceLengths[256];
 
-typedef struct {
+typedef struct track_curve_chain {
 	uint16 next;
 	uint16 previous;
 } track_curve_chain;
@@ -40,7 +40,7 @@ extern const track_curve_chain gFlatRideTrackCurveChain[256];
 extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91];
 extern const uint32 RideTypeTrackPaintFunctionsOld[91];
 
-typedef struct {
+typedef struct track_descriptor {
 	bool starts_diagonal;
 	uint8 slope_start;
 	uint8 bank_start;

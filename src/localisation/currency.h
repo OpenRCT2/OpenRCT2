@@ -49,7 +49,7 @@ typedef enum {
 #define CURRENCY_SYMBOL_MAX_SIZE 8
 
 // Currency format specification - inspired by OpenTTD
-typedef struct {
+typedef struct currency_descriptor {
 	char isoCode[4];
 	// Rate is relative to 0.10 GBP
 	int rate;

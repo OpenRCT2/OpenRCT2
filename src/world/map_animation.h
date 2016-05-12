@@ -23,7 +23,7 @@
  * Animated object
  * size: 0x06
  */
-typedef struct {
+typedef struct rct_map_animation {
 	uint8 baseZ;
 	uint8 type;
 	uint16 x;

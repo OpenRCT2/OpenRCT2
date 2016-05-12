@@ -27,7 +27,7 @@ enum {
 	PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
-typedef struct {
+typedef struct rct_path_type {
 	rct_string_id string_idx;	// 0x00
 	uint32 image;				// 0x02
 	uint32 bridge_image;		// 0x06

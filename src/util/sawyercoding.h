@@ -20,7 +20,7 @@
 #include <SDL.h>
 #include "../common.h"
 
-typedef struct {
+typedef struct sawyercoding_chunk_header {
 	uint8 encoding;
 	uint32 length;
 } sawyercoding_chunk_header;

@@ -23,7 +23,7 @@
 #include "track.h"
 #include "track_design.h"
 
-typedef struct {
+typedef struct td_index_item {
 	uint8 ride_type;
 	char ride_entry[9];
 	utf8 path[MAX_PATH];

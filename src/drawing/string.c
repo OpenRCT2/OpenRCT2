@@ -31,7 +31,7 @@ static bool _ttfInitialised = false;
 #define TTF_SURFACE_CACHE_SIZE 256
 #define TTF_GETWIDTH_CACHE_SIZE 1024
 
-typedef struct {
+typedef struct ttf_cache_entry {
 	SDL_Surface *surface;
 	TTF_Font *font;
 	utf8 *text;
@@ -43,7 +43,7 @@ static int _ttfSurfaceCacheCount = 0;
 static int _ttfSurfaceCacheHitCount = 0;
 static int _ttfSurfaceCacheMissCount = 0;
 
-typedef struct {
+typedef struct ttf_getwidth_cache_entry {
 	uint32 width;
 	TTF_Font *font;
 	utf8 *text;
@@ -910,7 +910,7 @@ enum {
 	TEXT_DRAW_FLAG_NO_DRAW = 1 << 31
 };
 
-typedef struct {
+typedef struct text_draw_info {
 	int startX;
 	int startY;
 	int x;

@@ -45,7 +45,7 @@ enum {
 
 #define FONT_OPENRCT2_SPRITE NULL
 
-typedef struct {
+typedef struct language_descriptor {
 	const char *locale;
 	const utf8 *english_name;
 	const utf8 *native_name;

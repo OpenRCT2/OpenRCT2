@@ -34,7 +34,7 @@
 #define WHEIGHT_MAX 800
 #define ITEM_HEIGHT (3 + 9 + 3)
 
-typedef struct {
+typedef struct server_entry {
 	char *address;
 	utf8 *name;
 	bool requiresPassword;

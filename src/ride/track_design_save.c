@@ -1243,7 +1243,7 @@ static size_t track_design_get_scenery_elements_count(rct_track_td6 *td6)
 	return count;
 }
 
-typedef struct {
+typedef struct auto_buffer {
 	void *ptr;
 	size_t length;
 	size_t capacity;

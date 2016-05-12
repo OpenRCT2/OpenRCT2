@@ -489,7 +489,7 @@ typedef rct_string_id (*object_desc_func)(void *objectEntry);
 /**
  * Represents addresses for virtual object functions.
  */
-typedef struct {
+typedef struct object_type_vtable {
 	object_load_func load;
 	object_unload_func unload;
 	object_test_func test;

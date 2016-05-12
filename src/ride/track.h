@@ -21,7 +21,7 @@
 #include "../object.h"
 #include "ride.h"
 
-typedef struct {
+typedef struct rct_trackdefinition {
 	uint8 type;
 	uint8 vangle_end;
 	uint8 vangle_start;
@@ -34,7 +34,7 @@ typedef struct {
 /**
 * Size: 0x0A
 */
-typedef struct {
+typedef struct rct_preview_track {
 	uint8 index;	// 0x00
 	sint16 x;		// 0x01
 	sint16 y;		// 0x03
@@ -45,7 +45,7 @@ typedef struct {
 } rct_preview_track;
 
 /* size 0x0A */
-typedef struct {
+typedef struct rct_track_coordinates  {
 	sint8 rotation_begin;	// 0x00
 	sint8 rotation_end;		// 0x01
 	sint16 z_begin;			// 0x02
@@ -54,7 +54,7 @@ typedef struct {
 	sint16 y;				// 0x08
 } rct_track_coordinates;
 
-enum{
+enum {
 	TRACK_ELEMENT_FLAG_TERMINAL_STATION	= 1 << 3,
 	TRACK_ELEMENT_FLAG_INVERTED			= 1 << 6,
 	TRACK_ELEMENT_FLAG_CHAIN_LIFT		= 1 << 7,
@@ -448,7 +448,7 @@ enum {
 	TRACK_ELEMENT_LOCATION_IS_UNDERGROUND = 2,
 };
 
-typedef struct {
+typedef struct track_circuit_iterator {
 	rct_xy_element last;
 	rct_xy_element current;
 	int currentZ;

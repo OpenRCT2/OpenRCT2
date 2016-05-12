@@ -37,7 +37,7 @@ enum {
 	FONT_SPRITE_BASE_BIG = 672
 };
 
-typedef struct {
+typedef struct TTFFontDescriptor {
 	const utf8 *filename;
 	const utf8 *font_name;
 	int ptSize;
@@ -47,7 +47,7 @@ typedef struct {
 	TTF_Font *font;
 } TTFFontDescriptor;
 
-typedef struct {
+typedef struct  TTFFontSetDescriptor {
 	TTFFontDescriptor size[FONT_SIZE_COUNT];
 } TTFFontSetDescriptor;
 

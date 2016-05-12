@@ -2636,7 +2636,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-typedef struct {
+typedef struct rct_vehichle_paintinfo {
 	short x;
 	short y;
 	int sprite_index;

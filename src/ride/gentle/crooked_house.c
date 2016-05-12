@@ -122,7 +122,7 @@ static void crooked_house_fence_bottom_left(rct_ride *ride, int height, rct_map_
 	sub_98199C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
 }
 
-typedef struct {
+typedef struct rct_crooked_house_bound_box {
 	sint16 offset_x;
 	sint16 offset_y;
 	sint16 length_x;

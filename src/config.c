@@ -69,14 +69,14 @@ typedef union {
 	utf8string value_string;
 } value_union;
 
-typedef struct {
+typedef struct config_enum_definition {
 	const_utf8string key;
 	value_union value;
 } config_enum_definition;
 
 #define END_OF_ENUM { NULL, 0 }
 
-typedef struct {
+typedef struct config_property_definition {
 	size_t offset;
 	const_utf8string property_name;
 	uint8 type;
@@ -84,7 +84,7 @@ typedef struct {
 	config_enum_definition *enum_definitions;
 } config_property_definition;
 
-typedef struct {
+typedef struct config_section_definition {
 	void *base_address;
 	const_utf8string section_name;
 	config_property_definition *property_definitions;

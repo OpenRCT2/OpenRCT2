@@ -21,7 +21,7 @@
 #include "../object.h"
 #include "../world/map.h"
 
-typedef struct {
+typedef struct rct_small_scenery_entry {
 	uint32 flags;			// 0x06
 	uint8 height;			// 0x0A
 	uint8 tool_id;			// 0x0B
@@ -61,7 +61,7 @@ typedef enum {
 	SMALL_SCENERY_FLAG25 = (1 << 25),							// 0x2000000
 } SMALL_SCENERY_FLAGS;
 
-typedef struct {
+typedef struct rct_large_scenery_tile {
 	sint16 x_offset;
 	sint16 y_offset;
 	sint16 z_offset;
@@ -69,7 +69,7 @@ typedef struct {
 	uint16 var_7;
 } rct_large_scenery_tile;
 
-typedef struct {
+typedef struct rct_large_scenery_entry {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
@@ -82,7 +82,7 @@ typedef struct {
 } rct_large_scenery_entry;
 
 
-typedef struct {
+typedef struct rct_wall_scenery_entry {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
 	uint8 height;			// 0x08
@@ -103,7 +103,7 @@ typedef enum {
 	WALL_SCENERY_HAS_TERNARY_COLOUR = (1 << 7),			// 0x80
 } WALL_SCENERY_FLAGS;
 
-typedef struct {
+typedef struct rct_path_bit_scenery_entry {
 	uint16 var_06;
 	uint8 pad_08;
 	uint8 tool_id;			// 0x09
@@ -111,14 +111,14 @@ typedef struct {
 	uint8 scenery_tab_id;	// 0x0C
 } rct_path_bit_scenery_entry;
 
-typedef struct {
+typedef struct rct_banner_scenery_entry {
 	uint8 scrolling_mode;	// 0x06
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
 	uint8 scenery_tab_id;	// 0x0A
 } rct_banner_scenery_entry;
 
-typedef struct {
+typedef struct rct_scenery_entry {
 	rct_string_id name;		// 0x00
 	uint32 image;			// 0x02
 	union {
@@ -130,7 +130,7 @@ typedef struct {
 	};
 } rct_scenery_entry;
 
-typedef struct {
+typedef struct rct_scenery_set_entry {
 	rct_string_id name;				// 0x00
 	uint32 image;					// 0x02
 	uint16 scenery_entries[0x80];	// 0x06

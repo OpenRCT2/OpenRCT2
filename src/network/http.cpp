@@ -39,13 +39,13 @@ void http_dispose() { }
 #define MIME_TYPE_APPLICATION_JSON "application/json"
 #define DEFAULT_CA_BUNDLE_PATH "curl-ca-bundle.crt"
 
-typedef struct {
+typedef struct read_buffer {
 	char *ptr;
 	int length;
 	int position;
 } read_buffer;
 
-typedef struct {
+typedef struct write_buffer {
 	char *ptr;
 	int length;
 	int capacity;

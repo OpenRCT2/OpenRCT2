@@ -31,7 +31,7 @@
 
 #define FILTER_VERSION 1
 
-typedef struct {
+typedef struct rct_plugin_header {
 	uint32 total_files;
 	uint32 total_file_size;
 	uint32 date_modified_checksum;

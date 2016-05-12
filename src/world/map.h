@@ -19,14 +19,14 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct rct_map_element_surface_properties {
 	uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
 	uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
 	uint8 grass_length; //6
 	uint8 ownership; //7
 } rct_map_element_surface_properties;
 
-typedef struct {
+typedef struct rct_map_element_path_properties {
 	uint8 type; //4 0xF0 Path type, 0x08 Unknown/Unused, 0x04 Set when path is diagonal, 0x03 Rotation
 	uint8 additions; //5
 	uint8 edges; //6
@@ -36,7 +36,7 @@ typedef struct {
 	};
 } rct_map_element_path_properties;
 
-typedef struct {
+typedef struct rct_map_element_track_properties {
 	uint8 type; //4
 	union{
 		struct{
@@ -48,31 +48,31 @@ typedef struct {
 	uint8 ride_index; //7
 } rct_map_element_track_properties;
 
-typedef struct {
+typedef struct rct_map_element_scenery_properties {
 	uint8 type; //4
 	uint8 age; //5
 	uint8 colour_1; //6
 	uint8 colour_2; //7
 } rct_map_element_scenery_properties;
 
-typedef struct {
+typedef struct rct_map_element_entrance_properties {
 	uint8 type; //4
 	uint8 index; //5
 	uint8 path_type; //6
 	uint8 ride_index; //7
 } rct_map_element_entrance_properties;
 
-typedef struct {
+typedef struct rct_map_element_fence_properties {
 	uint8 type; //4
 	uint8 item[3]; //5
 } rct_map_element_fence_properties;
 
-typedef struct {
+typedef struct rct_map_element_scenerymultiple_properties {
 	uint16 type; //4
 	uint8 colour[2]; //6
 } rct_map_element_scenerymultiple_properties;
 
-typedef struct {
+typedef struct rct_map_element_banner_properties {
 	uint8 index; //4
 	uint8 position; //5
 	uint8 flags; //6
@@ -94,7 +94,7 @@ typedef union {
  * Map element structure
  * size: 0x08
  */
-typedef struct {
+typedef struct rct_map_element {
 	uint8 type; //0
 	uint8 flags; //1
 	uint8 base_height; //2
@@ -228,7 +228,7 @@ enum {
 
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
-typedef struct {
+typedef struct rct_xy8 {
 	union {
 		struct {
 			uint8 x, y;
@@ -237,28 +237,28 @@ typedef struct {
 	};
 } rct_xy8;
 
-typedef struct {
+typedef struct rct_xyz8 {
 	uint8 x, y, z;
 } rct_xyz8;
 
-typedef struct{
+typedef struct rct_xyzd8 {
 	uint8 x, y, z, direction;
 } rct_xyzd8;
 
-typedef struct rct_xy16{
+typedef struct rct_xy16 {
 	sint16 x, y;
 } rct_xy16;
 
-typedef struct {
+typedef struct rct_xyz16 {
 	sint16 x, y, z;
 } rct_xyz16;
 
-typedef struct {
+typedef struct rct_xy_element {
 	int x, y;
 	rct_map_element *element;
 } rct_xy_element;
 
-typedef struct {
+typedef struct rct2_peep_spawn {
 	uint16 x;
 	uint16 y;
 	uint8 z;
@@ -382,7 +382,7 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 #define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
 #define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])
 
-typedef struct {
+typedef struct map_element_iterator {
 	int x;
 	int y;
 	rct_map_element *element;

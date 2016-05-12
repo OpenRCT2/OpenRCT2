@@ -19,7 +19,7 @@
 #include "../paint/paint.h"
 #include "supports.h"
 
-typedef struct {
+typedef struct supports_id_desc {
 	uint16 full;
 	uint16 half;
 	uint16 flat;
@@ -58,7 +58,7 @@ const uint16 WoodenCurveSupportImageIds[] = {
 	0,
 };
 
-typedef struct {
+typedef struct unk_supports_desc_bound_box {
 	struct {
 		uint8 x, y, z;
 	} offset;
@@ -67,7 +67,7 @@ typedef struct {
 	} length;
 } unk_supports_desc_bound_box;
 
-typedef struct {
+typedef struct unk_supports_desc {
 	unk_supports_desc_bound_box bounding_box;
 	uint8 var_6;
 	uint8 var_7;

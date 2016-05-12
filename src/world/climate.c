@@ -33,7 +33,7 @@ enum {
 	MAX_THUNDER_INSTANCES = 2
 };
 
-typedef struct {
+typedef struct rct_weather_transition {
 	sint8 base_temperature;
 	sint8 distribution_size;
 	sint8 distribution[24];

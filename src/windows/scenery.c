@@ -517,7 +517,7 @@ static int count_rows(int items){
 	return rows;
 }
 
-typedef struct {
+typedef struct scenery_item {
 	int allRows;
 	int selected_item;
 	sint16 sceneryId;

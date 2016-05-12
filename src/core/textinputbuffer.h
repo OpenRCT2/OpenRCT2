@@ -19,7 +19,7 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct textinputbuffer {
 	utf8 * buffer;
 	size_t max_size;			// Maximum number of bytes (excluding null terminator)
 	size_t current_size;		// Number of bytes (excluding null terminator)

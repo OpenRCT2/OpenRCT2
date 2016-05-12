@@ -1836,7 +1836,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	}
 }
 
-typedef struct {
+typedef struct rct_synchrnoised_vehicle {
 	uint8 ride_id;
 	uint8 station_id;
 	uint16 vehicle_id;

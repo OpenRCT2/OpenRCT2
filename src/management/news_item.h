@@ -36,7 +36,7 @@ enum {
  * News item structure.
  * size: 0x10C
  */
-typedef struct {
+typedef struct rct_news_item {
 	uint8 type;					// 0x00
 	uint8 flags;				// 0x01
 	uint32 assoc;				// 0x02

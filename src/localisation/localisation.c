@@ -32,7 +32,7 @@
 
 #pragma region Format codes
 
-typedef struct {
+typedef struct format_code_token {
 	uint32 code;
 	const char *token;
 } format_code_token;
