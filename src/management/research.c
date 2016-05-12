@@ -606,7 +606,7 @@ bool ride_type_is_invented(int rideType)
 {
 	int quadIndex = rideType >> 5;
 	int bitIndex = rideType & 0x1F;
-	bool invented = (gResearchedRideTypes[quadIndex] & (1 << bitIndex));
+	bool invented = (gResearchedRideTypes[quadIndex] & ((uint32)1 << bitIndex));
 	return invented;
 }
 
@@ -614,7 +614,7 @@ bool ride_entry_is_invented(int rideEntryIndex)
 {
 	int quadIndex = rideEntryIndex >> 5;
 	int bitIndex = rideEntryIndex & 0x1F;
-	bool invented = (gResearchedRideEntries[quadIndex] & (1 << bitIndex));
+	bool invented = (gResearchedRideEntries[quadIndex] & ((uint32)1 << bitIndex));
 	return invented;
 }
 
