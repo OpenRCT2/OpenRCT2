@@ -149,7 +149,7 @@ const char *language_get_string(rct_string_id id)
 	}
 }
 
-int language_open(int id)
+bool language_open(int id)
 {
 	static const char *languagePath = "%s/language/%s.txt";
 	char filename[MAX_PATH];
@@ -157,7 +157,7 @@ int language_open(int id)
 
 	language_close_all();
 	if (id == LANGUAGE_UNDEFINED)
-		return 1;
+		return false;
 
 	platform_get_openrct_data_path(dataPath);
 	if (id != LANGUAGE_ENGLISH_UK) {
@@ -213,14 +213,14 @@ int language_open(int id)
 				log_warning("Falling back to sprite font.");
 				gUseTrueTypeFont = false;
 				gCurrentTTFFontSet = nullptr;
-				return 0;
+				return false;
 			}
 		}
 
 		// Objects and their localized strings need to be refreshed
 		reset_loaded_objects();
 
-		return 1;
+		return true;
 	}
 
 	return 0;
