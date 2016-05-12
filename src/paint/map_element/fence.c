@@ -94,9 +94,9 @@ void do_part_1(uint32 imageId,
     }
 }
 
-void do_part_2(uint32 dword_141F708, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 dword_141F714, uint32 dword_141F718, uint32 dword_141F71C, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
+void do_part_2(uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 dword_141F714, uint32 dword_141F718, uint32 dword_141F71C, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
 {
-    uint32 baseImageId = sceneryEntry->image + imageOffset + dword_141F708;
+    uint32 baseImageId = sceneryEntry->image + imageOffset + frameNum;
     uint32 imageId = baseImageId;
 
 
@@ -141,11 +141,11 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WALL;
 
     rct_scenery_entry * sceneryEntry = g_wallSceneryEntries[map_element->properties.fence.type];
-    uint32 dword_141F708 = 0;
+    uint32 frameNum = 0;
 
     if (sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG5) {
         // animation?
-        dword_141F708 = (gCurrentTicks & 7) * 2;
+        frameNum = (gCurrentTicks & 7) * 2;
     }
 
 
@@ -335,7 +335,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
             break;
     }
 
-    do_part_2(dword_141F708, sceneryEntry, dword_141F710, dword_141F714, dword_141F718, dword_141F71C, imageOffset, offset, bounds, boundsOffset);
+    do_part_2(frameNum, sceneryEntry, dword_141F710, dword_141F714, dword_141F718, dword_141F71C, imageOffset, offset, bounds, boundsOffset);
 
 
     if (sceneryEntry->wall.var_0D == 0xFF) {
