@@ -53,7 +53,7 @@ const uint8 byte_9A40CC[] = {
 
 void do_part_1(uint32 imageId,
                rct_scenery_entry * sceneryEntry,
-               uint32 dword_141F714, uint32 dword_141F71C, uint32 dword_141F710,
+               uint32 dword_141F714, uint32 tertiaryColour, uint32 dword_141F710,
                rct_xyz16 offset,
                rct_xyz16 boundsR1, rct_xyz16 boundsR1_,
                rct_xyz16 boundsR2, rct_xyz16 boundsR2_,
@@ -72,29 +72,29 @@ void do_part_1(uint32 imageId,
 
         ps = sub_98197C(imageId, offset.x, offset.y, boundsR1.x, boundsR1.y, boundsR1.z, offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z, get_current_rotation());
         if (ps != NULL) {
-            ps->tertiary_colour = dword_141F71C;
+            ps->tertiary_colour = tertiaryColour;
         }
 
         ps = sub_98197C(imageId + 1, offset.x, offset.y, boundsR2.x, boundsR2.y, boundsR2.z, offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z, get_current_rotation());
         if (ps != NULL) {
-            ps->tertiary_colour = dword_141F71C;
+            ps->tertiary_colour = tertiaryColour;
         }
     } else {
         paint_struct * ps;
 
         ps = sub_98197C(imageId, offset.x, offset.y, boundsL1.x, boundsL1.y, boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
         if (ps != NULL) {
-            ps->tertiary_colour = dword_141F71C;
+            ps->tertiary_colour = tertiaryColour;
         }
 
         ps = sub_98199C(imageId + 1, offset.x, offset.y, boundsL1.x, boundsL1.y, boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
         if (ps != NULL) {
-            ps->tertiary_colour = dword_141F71C;
+            ps->tertiary_colour = tertiaryColour;
         }
     }
 }
 
-void do_part_2(uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 dword_141F714, uint32 dword_141F718, uint32 dword_141F71C, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
+void do_part_2(uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 dword_141F714, uint32 dword_141F718, uint32 tertiaryColour, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
 {
     uint32 baseImageId = sceneryEntry->image + imageOffset + frameNum;
     uint32 imageId = baseImageId;
@@ -125,7 +125,7 @@ void do_part_2(uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 d
 
         paint_struct * paint = sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
         if (paint != NULL) {
-            paint->tertiary_colour = dword_141F71C;
+            paint->tertiary_colour = tertiaryColour;
         }
     }
 }
@@ -157,9 +157,9 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
         dword_141F714 |= secondaryColour << 24 | 0x80000000;
     }
 
-    uint32 dword_141F71C = 0;
+    uint32 tertiaryColour = 0;
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
-        dword_141F71C = map_element->properties.fence.item[0];
+        tertiaryColour = map_element->properties.fence.item[0];
         dword_141F714 &= 0x0DFFFFFFF;
     }
 
@@ -203,7 +203,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {0, 0, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 1:
@@ -219,7 +219,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {1, 31, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 2:
@@ -235,7 +235,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {31, 0, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 3:
@@ -251,7 +251,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {2, 1, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, dword_141F71C, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
         }
 
@@ -335,7 +335,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
             break;
     }
 
-    do_part_2(frameNum, sceneryEntry, dword_141F710, dword_141F714, dword_141F718, dword_141F71C, imageOffset, offset, bounds, boundsOffset);
+    do_part_2(frameNum, sceneryEntry, dword_141F710, dword_141F714, dword_141F718, tertiaryColour, imageOffset, offset, bounds, boundsOffset);
 
 
     if (sceneryEntry->wall.var_0D == 0xFF) {
