@@ -1111,7 +1111,7 @@ void set_sprite_type(rct_peep* peep, uint8 type){
 	}
 }
 
-typedef struct{
+typedef struct item_pref {
 	uint8 type; // 0 for standard, 1 for extra
 	uint32 item; // And this with the relevant flags
 	uint8 sprite_type;

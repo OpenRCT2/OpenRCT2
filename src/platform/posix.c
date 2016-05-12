@@ -251,7 +251,7 @@ bool platform_lock_single_instance()
 	return true;
 }
 
-typedef struct {
+typedef struct enumerate_file_info {
 	char active;
 	char pattern[MAX_PATH];
 	struct dirent **fileListTemp;

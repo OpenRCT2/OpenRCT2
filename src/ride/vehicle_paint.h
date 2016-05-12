@@ -19,7 +19,7 @@
 
 #include "vehicle.h"
 
-typedef struct {
+typedef struct vehicle_boundbox {
 	sint8 offset_x;
 	sint8 offset_y;
 	sint8 offset_z;

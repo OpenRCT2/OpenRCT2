@@ -62,7 +62,7 @@ enum {
 	PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
 };
 
-typedef struct {
+typedef struct widget_ref {
 	rct_windowclass window_classification;
 	rct_windownumber window_number;
 	rct_widgetindex widget_index;

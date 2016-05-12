@@ -660,7 +660,7 @@ static int RCT2_CALLPROC_EBPSAFE(int address)
  */
 int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp);
 
-typedef struct {
+typedef struct registers {
 	union {
 		int eax;
 		short ax;

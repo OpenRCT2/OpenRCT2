@@ -114,7 +114,7 @@ enum {
 	TYPE_FILE,
 };
 
-typedef struct {
+typedef struct loadsave_list_item {
 	char name[256];
 	char path[MAX_PATH];
 	time_t date_modified;

@@ -135,7 +135,7 @@ enum {
 	SCENARIO_SELECT_MODE_ORIGIN,
 };
 
-typedef struct {
+typedef struct general_configuration {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
 	uint8 screenshot_format;
@@ -188,7 +188,7 @@ typedef struct {
 	uint8 scenario_hide_mega_park;
 } general_configuration;
 
-typedef struct {
+typedef struct interface_configuration {
 	uint8 toolbar_show_finances;
 	uint8 toolbar_show_research;
 	uint8 toolbar_show_cheats;
@@ -200,7 +200,7 @@ typedef struct {
 	uint32 object_selection_filter_flags;
 } interface_configuration;
 
-typedef struct {
+typedef struct sound_configuration {
 	uint8 master_volume;
 	uint8 title_music;
 	uint8 sound_enabled;
@@ -211,7 +211,7 @@ typedef struct {
 	utf8string device;
 } sound_configuration;
 
-typedef struct {
+typedef struct twitch_configuration {
 	utf8string channel;
 	uint8 enable_follower_peep_names;
 	uint8 enable_follower_peep_tracking;
@@ -220,7 +220,7 @@ typedef struct {
 	uint8 enable_news;
 } twitch_configuration;
 
-typedef struct {
+typedef struct network_configuration {
 	utf8string player_name;
 	uint32 default_port;
 	utf8string default_password;
@@ -235,7 +235,7 @@ typedef struct {
 	utf8string provider_website;
 } network_configuration;
 
-typedef struct {
+typedef struct notification_configuration {
 	bool park_award;
 	bool park_marketing_campaign_finished;
 	bool park_warnings;
@@ -255,7 +255,7 @@ typedef struct {
 	bool guest_died;
 } notification_configuration;
 
-typedef struct {
+typedef struct font_configuration {
 	utf8string file_name;
 	utf8string font_name;
 	sint8 x_offset;
@@ -263,7 +263,7 @@ typedef struct {
 } font_configuration;
 
 // Define structures for any other settings here
-typedef struct {
+typedef struct theme_features {
 	uint8 rct1_ride_lights;
 	uint8 rct1_park_lights;
 	uint8 rct1_scenario_font;
@@ -271,7 +271,7 @@ typedef struct {
 
 #define TITLE_SEQUENCE_MAX_SAVE_LENGTH 51
 
-typedef struct {
+typedef struct title_command {
 	uint8 command;
 	union {
 		uint8 saveIndex;	// LOAD (this index is internal only)
@@ -286,7 +286,7 @@ typedef struct {
 
 #define TITLE_SEQUENCE_NAME_SIZE 256
 
-typedef struct {
+typedef struct title_sequence {
 	char name[TITLE_SEQUENCE_NAME_SIZE];
 	char path[MAX_PATH]; // Needed for non-modifiable presets
 	char (*saves)[TITLE_SEQUENCE_MAX_SAVE_LENGTH];
@@ -296,13 +296,13 @@ typedef struct {
 
 } title_sequence;
 
-typedef struct {
+typedef struct title_sequences_configuration {
 	title_sequence *presets;
 	uint16 num_presets;
 
 } title_sequences_configuration;
 
-typedef struct {
+typedef struct shortcut_entry {
 	uint8 key;
 	uint8 modifier;
 } shortcut_entry;

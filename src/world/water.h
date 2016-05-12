@@ -19,7 +19,7 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct rct_water_type {
 	rct_string_id string_idx;	// 0x00
 	uint32 image_id;			// 0x02
 	uint32 var_06;

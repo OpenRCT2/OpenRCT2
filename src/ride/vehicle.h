@@ -20,7 +20,7 @@
 #include "../common.h"
 
 /* size: 0x2 */
-typedef struct{
+typedef struct rct_vehicle_colour {
 	uint8 body_colour;
 	uint8 trim_colour;
 } rct_vehicle_colour;
@@ -29,7 +29,7 @@ typedef struct{
  * Ride type vehicle structure.
  * size: 0x65
  */
-typedef struct {
+typedef struct rct_ride_entry_vehicle {
 	uint16 rotation_frame_mask;		// 0x00 , 0x1A
 	uint8 var_02;					// 0x02 , 0x1C
 	uint8 var_03;					// 0x03 , 0x1D
@@ -76,7 +76,7 @@ typedef struct {
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
 } rct_ride_entry_vehicle;
 
-typedef struct {
+typedef struct rct_vehicle {
 	uint8 sprite_identifier;		// 0x00
 	uint8 is_child;					// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -194,13 +194,13 @@ typedef struct {
 	uint8 target_seat_rotation;		// 0xD9
 } rct_vehicle;
 
-typedef struct {
+typedef struct train_ref {
 	rct_vehicle *head;
 	rct_vehicle *tail;
 } train_ref;
 
 // Size: 0x09
-typedef struct {
+typedef struct rct_vehicle_info {
 	uint16 x;			// 0x00
 	uint16 y;			// 0x02
 	uint16 z;			// 0x04

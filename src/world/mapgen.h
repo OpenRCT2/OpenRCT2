@@ -17,7 +17,7 @@
 #ifndef _MAPGEN_H_
 #define _MAPGEN_H_
 
-typedef struct {
+typedef struct mapgen_settings {
 	// Base
 	int mapSize;
 	int height;

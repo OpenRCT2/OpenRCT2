@@ -20,14 +20,14 @@
 #include "../common.h"
 #include "ride.h"
 
-typedef struct {
+typedef struct rct_ride_name_convention {
 	rct_string_id vehicle_name;
 	rct_string_id structure_name;
 	rct_string_id station_name;
 	rct_string_id unk_name;
 } rct_ride_name_convention;
 
-typedef struct {
+typedef struct rct_ride_entrance_definition {
 	uint32 sprite_index;
 	uint16 height;
 	uint16 scrolling_mode;
@@ -36,14 +36,14 @@ typedef struct {
 	uint16 colour_use_flags;
 } rct_ride_entrance_definition;
 
-typedef struct {
+typedef struct rct_shop_item_string_types {
 	rct_string_id singular;			// Balloon
 	rct_string_id plural;			// Balloons
 	rct_string_id indefinite;		// a Balloon
 	rct_string_id display;			// "Diamond Heights" Balloon
 } rct_shop_item_string_types;
 
-typedef struct {
+typedef struct rct_ride_data_4 {
 	uint8 price;
 	uint8 price_secondary;
 	uint16 flags;
@@ -52,12 +52,12 @@ typedef struct {
 	uint8 pad[2];
 } rct_ride_data_4;
 
-typedef struct {
+typedef struct ride_cost {
 	uint16 track_price;
 	uint16 support_price;
 } ride_cost;
 
-typedef struct {
+typedef struct rct_ride_data_5 {
 	uint8 max_height;
 	uint8 clearance_height;
 	sint8 z_offset;
@@ -68,7 +68,7 @@ typedef struct {
 	uint8 pad;
 } rct_ride_data_5;
 
-typedef struct {
+typedef struct rct_ride_lift_data {
 	uint8 sound_id;
 	uint8 minimum_speed;
 	uint8 maximum_speed;

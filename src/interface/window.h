@@ -42,12 +42,12 @@ typedef uint8 rct_windowclass;
 typedef uint16 rct_windownumber;
 typedef sint16 rct_widgetindex;
 
-typedef struct {
+typedef struct window_identifier {
 	rct_windowclass classification;
 	rct_windownumber number;
 } window_identifier;
 
-typedef struct {
+typedef struct widget_identifier {
 	window_identifier window;
 	int widget_index;
 } widget_identifier;
@@ -58,7 +58,7 @@ extern widget_identifier gCurrentTextBox;
  * Widget structure
  * size: 0x10
  */
-typedef struct {
+typedef struct rct_widget {
 	uint8 type;						// 0x00
 	uint8 colour;					// 0x01
 	sint16 left;					// 0x02
@@ -73,7 +73,7 @@ typedef struct {
  * Viewport structure
  * size: 0x14
  */
-typedef struct {
+typedef struct rct_viewport {
 	sint16 width;					// 0x00
 	sint16 height;					// 0x02
 	sint16 x;						// 0x04
@@ -91,7 +91,7 @@ typedef struct {
  * Scroll structure
  * size: 0x12
  */
-typedef struct {
+typedef struct rct_scroll {
 	uint16 flags;				// 0x00
 	uint16 h_left;				// 0x02
 	uint16 h_right;				// 0x04
@@ -108,7 +108,7 @@ typedef struct {
  * size: 0xA
  * Use sprite.type to work out type.
  */
-typedef struct{
+typedef struct coordinate_focus {
 	sint16 var_480;
 	sint16 x; //0x482
 	sint16 y; //0x484 & VIEWPORT_FOCUS_Y_MASK
@@ -118,7 +118,7 @@ typedef struct{
 } coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
-typedef struct{
+typedef struct sprite_focus {
 	sint16 var_480;
 	uint16 sprite_id; //0x482
 	uint8 pad_484;
@@ -135,7 +135,7 @@ enum{
 };
 #define VIEWPORT_FOCUS_Y_MASK 0x3FFF
 
-typedef struct {
+typedef struct rct_window_event_list {
 	void (*close)(struct rct_window*);
 	void (*mouse_up)(struct rct_window*, int);
 	void (*resize)(struct rct_window*);
@@ -166,14 +166,14 @@ typedef struct {
 	void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int);
 } rct_window_event_list;
 
-typedef struct{
+typedef struct campaign_variables {
 	sint16 campaign_type;
 	sint16 no_weeks; //0x482
 	uint16 ride_id; //0x484
 	uint32 pad_486;
 } campaign_variables;
 
-typedef struct{
+typedef struct new_ride_variables {
 	sint16 selected_ride_id; //0x480
 	sint16 highlighted_ride_id; //0x482
 	uint16 pad_484;
@@ -181,7 +181,7 @@ typedef struct{
 	uint16 selected_ride_countdown; //488
 } new_ride_variables;
 
-typedef struct{
+typedef struct news_variables {
 	sint16 var_480;
 	sint16 var_482;
 	uint16 var_484;
@@ -189,7 +189,7 @@ typedef struct{
 	uint16 var_488;
 } news_variables;
 
-typedef struct{
+typedef struct map_variables {
 	sint16 rotation;
 	sint16 var_482;
 	uint16 var_484;
@@ -197,24 +197,24 @@ typedef struct{
 	uint16 var_488;
 } map_variables;
 
-typedef struct {
+typedef struct ride_variables {
 	sint16 view;
 	sint32 var_482;
 	sint32 var_486;
 } ride_variables;
 
-typedef struct {
+typedef struct scenery_variables {
 	sint16 selected_scenery_id;
 	sint16 hover_counter;
 } scenery_variables;
 
-typedef struct {
+typedef struct track_list_variables {
 	uint16 var_480;
 	uint16 var_484;
 	bool reload_track_designs;
 } track_list_variables;
 
-typedef struct {
+typedef struct error_variables {
 	uint16 var_480;
 } error_variables;
 

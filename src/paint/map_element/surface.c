@@ -363,8 +363,7 @@ enum edge
 };
 
 
-typedef struct
-{
+typedef struct viewport_surface_paint_struct_0 {
 	uint32 var_00;
 	uint32 var_04;
 	uint32 var_08;

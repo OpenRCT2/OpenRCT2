@@ -47,7 +47,7 @@ enum {
 	MOUSE_STATE_RIGHT_RELEASE
 };
 
-typedef struct {
+typedef struct rct_mouse_data {
 	uint32 x;
 	uint32 y;
 	uint32 state;

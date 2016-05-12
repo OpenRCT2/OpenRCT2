@@ -23,7 +23,7 @@
 // C wrapper for Stopwatch //
 /////////////////////////////
 
-typedef struct {
+typedef struct stopwatch {
 	void *context;
 } stopwatch;
 

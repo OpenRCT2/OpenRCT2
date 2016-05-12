@@ -19,7 +19,7 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct rct_award {
 	uint16 time;
 	uint16 type;
 } rct_award;

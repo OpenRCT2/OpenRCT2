@@ -946,14 +946,14 @@ static void footpath_connect_corners(int initialX, int initialY, rct_map_element
 	}
 }
 
-typedef struct {
+typedef struct rct_neighbour {
 	uint8 order;
 	uint8 direction;
 	uint8 ride_index;
 	uint8 entrance_index;
 } rct_neighbour;
 
-typedef struct {
+typedef struct rct_neighbour_list {
 	rct_neighbour items[8];
 	int count;
 } rct_neighbour_list;

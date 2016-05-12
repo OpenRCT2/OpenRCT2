@@ -19,7 +19,7 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct rct_research_item {
 	// Bit 16 (0: scenery entry, 1: ride entry)
 	sint32 entryIndex;
 	uint8 category;

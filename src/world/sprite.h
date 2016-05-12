@@ -43,7 +43,7 @@ enum SPRITE_LIST {
 	SPRITE_LIST_UNKNOWN,
 };
 
-typedef struct {
+typedef struct rct_unk_sprite {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -76,7 +76,7 @@ typedef struct {
 	uint8 var_71;
 } rct_unk_sprite;
 
-typedef struct {
+typedef struct rct_litter {
 	uint8 sprite_identifier;		// 0x00
 	uint8 type;						// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -97,7 +97,7 @@ typedef struct {
 	uint32 creationTick;			// 0x24
 } rct_litter;
 
-typedef struct {
+typedef struct rct_balloon {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -126,7 +126,7 @@ typedef struct {
 	uint8 var_2D;
 } rct_balloon;
 
-typedef struct {
+typedef struct rct_duck {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -152,7 +152,7 @@ typedef struct {
 	uint8 state;					// 0x48
 } rct_duck;
 
-typedef struct {
+typedef struct rct_jumping_fountain {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -186,7 +186,7 @@ typedef struct {
 	uint16 iteration;				// 0x46
 } rct_jumping_fountain;
 
-typedef struct {
+typedef struct rct_money_effect {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 var_02;					// 0x02
@@ -210,7 +210,7 @@ typedef struct {
 	uint16 wiggle;					// 0x46
 } rct_money_effect;
 
-typedef struct {
+typedef struct rct_crashed_vehicle_particle {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -252,7 +252,7 @@ typedef struct {
 	uint8 var_71;
 } rct_crashed_vehicle_particle;
 
-typedef struct {
+typedef struct rct_crash_splash {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -281,7 +281,7 @@ typedef struct {
 	uint16 frame;					// 0x26
 } rct_crash_splash;
 
-typedef struct {
+typedef struct rct_steam_particle {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -329,19 +329,19 @@ typedef union {
 	rct_steam_particle steam_particle;
 } rct_sprite;
 
-typedef struct {
+typedef struct rct_sprite_bounds {
 	uint8 sprite_width;             // 0x00
 	uint8 sprite_height_negative;   // 0x01
 	uint8 sprite_height_positive;   // 0x02
 	uint8 unused;                   // 0x03
 } rct_sprite_bounds;
 
-typedef struct {
+typedef struct rct_sprite_image {
 	uint32 base_image;   // 0x00
 	uint8* unkn_04;      // 0x04
 } rct_sprite_image;
 
-typedef struct {
+typedef struct rct_sprite_entry {
 	rct_sprite_image *sprite_image;      // 0x00
 	rct_sprite_bounds *sprite_bounds;    // 0x04
 } rct_sprite_entry;

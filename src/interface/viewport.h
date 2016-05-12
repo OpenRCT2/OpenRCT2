@@ -72,7 +72,7 @@ enum {
 	VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-typedef struct {
+typedef struct viewport_interaction_info {
 	int type;
 	int x;
 	int y;

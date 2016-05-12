@@ -21,13 +21,13 @@
 #include <jansson.h>
 #include "../common.h"
 
-typedef struct {
+typedef struct http_json_request {
 	const char *method;
 	const char *url;
 	const json_t *body;
 } http_json_request;
 
-typedef struct {
+typedef struct http_json_response {
 	int status_code;
 	json_t *root;
 } http_json_response;

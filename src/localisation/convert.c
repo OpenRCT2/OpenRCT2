@@ -16,7 +16,7 @@
 
 #include "localisation.h"
 
-typedef struct {
+typedef struct encoding_convert_entry {
 	uint16 code;
 	uint16 unicode;
 } encoding_convert_entry;

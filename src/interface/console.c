@@ -945,7 +945,7 @@ static int cc_open(const utf8 **argv, int argc) {
 
 
 typedef int (*console_command_func)(const utf8 **argv, int argc);
-typedef struct {
+typedef struct console_command {
 	utf8 *command;
 	console_command_func func;
 	utf8 *help;

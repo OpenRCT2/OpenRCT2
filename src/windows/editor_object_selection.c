@@ -274,7 +274,7 @@ enum {
 	RIDE_SORT_RIDE
 };
 
-typedef struct {
+typedef struct list_item {
 	rct_object_entry *entry;
 	rct_object_filters *filter;
 	uint8 *flags;

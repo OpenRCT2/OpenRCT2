@@ -31,7 +31,7 @@ typedef fixed16_2dp ride_rating;
 
 
 // Used for return values, for functions that modify all three.
-typedef struct {
+typedef struct rating_tuple {
 	ride_rating excitement;
 	ride_rating intensity;
 	ride_rating nausea;
@@ -40,7 +40,7 @@ typedef struct {
 /**
  * Couples a ride type and subtype together.
  */
-typedef struct {
+typedef struct ride_list_item {
 	union {
 		struct {
 			uint8 type;
@@ -50,24 +50,24 @@ typedef struct {
 	};
 } ride_list_item;
 
-typedef struct {
+typedef struct track_colour {
 	uint8 main;
 	uint8 additional;
 	uint8 supports;
 } track_colour;
 
-typedef struct {
+typedef struct vehicle_colour {
 	uint8 main;
 	uint8 additional_1;
 	uint8 additional_2;
 } vehicle_colour;
 
-typedef struct {
+typedef struct track_colour_preset_list {
 	uint8 count;
 	track_colour list[256];
 } track_colour_preset_list;
 
-typedef struct {
+typedef struct vehicle_colour_preset_list {
 	uint8 count;
 	vehicle_colour list[256];
 } vehicle_colour_preset_list;
@@ -76,7 +76,7 @@ typedef struct {
  * Ride type structure.
  * size: unknown
  */
-typedef struct {
+typedef struct rct_ride_entry {
 	rct_string_id name;						// 0x000
 	rct_string_id description;				// 0x002
 	uint32 images_offset;					// 0x004
@@ -120,7 +120,7 @@ typedef struct {
  * Ride structure.
  * size: 0x0260
  */
-typedef struct {
+typedef struct rct_ride {
 	uint8 type;						// 0x000
 	// pointer to static info. for example, wild mouse type is 0x36, subtype is
 	// 0x4c.
@@ -328,7 +328,7 @@ typedef struct {
  * Ride measurement structure.
  * size: 0x04B0C
  */
-typedef struct {
+typedef struct rct_ride_measurement {
 	uint8 ride_index;							// 0x0000
 	uint8 flags;								// 0x0001
 	uint32 last_use_tick;						// 0x0002
@@ -342,7 +342,7 @@ typedef struct {
 	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
 } rct_ride_measurement;
 
-typedef struct {
+typedef struct track_begin_end {
 	int begin_x;
 	int begin_y;
 	int begin_z;
