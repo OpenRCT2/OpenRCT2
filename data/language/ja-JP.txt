@@ -27,18 +27,18 @@ STR_0022    :迷路
 STR_0023    :スパイラル滑り台
 STR_0024    :ゴーカート
 STR_0025    :ログ・フリューム
-STR_0026    :川の急流
+STR_0026    :急流川下り
 STR_0027    :バンパーカー
-STR_0028    :海賊船
-STR_0029    :揺れるインバータバイキング
-STR_0030    :食べ物の屋台
+STR_0028    :パイレーツシップ
+STR_0029    :スイング・インバータ・シップ
+STR_0030    :食べ物の店
 STR_0031    :Unknown Stall (1D)
-STR_0032    :飲み物の屋台
+STR_0032    :飲料の店
 STR_0033    :Unknown Stall (1F)
 STR_0034    :ショップ
 STR_0035    :メリーゴーラウンド
 STR_0036    :Unknown Stall (22)
-STR_0037    :案内所
+STR_0037    :インフォーメーションセンター
 STR_0038    :トイレ
 STR_0039    :観覧車
 STR_0040    :モーションシミュレーター
@@ -58,14 +58,14 @@ STR_0053    :鋼鉄ツイスタージェットコースター
 STR_0054    :木製ジェットコースター
 STR_0055    :サイドフリクションジェットコースター
 STR_0056    :ワイルドマウス
-STR_0057    :多次元ジェットコースター
+STR_0057    :四次元コースター
 STR_0058    :Unknown Ride (38)
-STR_0059    :フライングジェットコースター
+STR_0059    :フライングコースター
 STR_0060    :Unknown Ride (3A)
 STR_0061    :バージニア・リール
 STR_0062    :スプラッシュ・ボート
 STR_0063    :ミニヘリコプター
-STR_0064    :Lay-down Roller Coaster
+STR_0064    :レイダウンコースター
 STR_0065    :サスペンデッドモノレール
 STR_0066    :Unknown Ride (40)
 STR_0067    :リバーサージェットコースター
@@ -75,12 +75,12 @@ STR_0070    :ギガコースター
 STR_0071    :ロトドロップ
 STR_0072    :空飛ぶ円盤
 STR_0073    :ねじれた家
-STR_0074    :Monorail Cycles
+STR_0074    :モノレールサイクル
 STR_0075    :コンパクト倒立コースター
 STR_0076    :ウォーターコースター
 STR_0077    :エアパワード垂直コースター
-STR_0078    :倒立ヘアピンコースター
-STR_0079    :魔法のじゅうたん
+STR_0078    :インバーテッドヘアピンコースター
+STR_0079    :空飛ぶじゅうたん
 STR_0080    :潜水艦ライド
 STR_0081    :River Rafts
 STR_0082    :Unknown Ride (50)
@@ -89,11 +89,11 @@ STR_0084    :Unknown Ride (52)
 STR_0085    :Unknown Ride (53)
 STR_0086    :Unknown Ride (54)
 STR_0087    :Unknown Ride (55)
-STR_0088    :倒立インパルスコースター
+STR_0088    :インバーテッドインパルスコースター
 STR_0089    :ミニジェットコースター
 STR_0090    :Mine Ride
 STR_0091    :Unknown Ride (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0092    :リニアモーターコースター
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -555,7 +555,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
+STR_0554    :リニア誘導モーターで加速された車両が垂直トラックを上昇し、それから乗り場まで自由落下する
 STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :

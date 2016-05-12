@@ -3492,7 +3492,7 @@ STR_5151    :
 #Decimal separator
 STR_5152    :,
 STR_5153    :Thèmes...
-STR_5154    :Affichage matériel
+STR_5154    :Accélération matérielle
 STR_5155    :Autoriser le test de circuits incomplets
 STR_5156    :{SMALLFONT}{BLACK}Autorise le test de la plupart des attractions même si le circuit est incomplet. Ne s'applique pas aux modes à blocs de voie.
 STR_5157    :Débloquer tous les prix
@@ -4031,8 +4031,8 @@ STR_5724    :Orage
 STR_5725    :{BLACK}Forcer la météo :
 STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
-STR_5728    :Requiert l'option d'affichage matériel
-STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'affichage matériel
+STR_5728    :Requiert l'option d'accélération matérielle
+STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'accélération matérielle
 STR_5730    :Au plus proche
 STR_5731    :Linéaire
 STR_5732    :Anisotropique
@@ -4108,7 +4108,7 @@ STR_5800    :{SMALLFONT}{BLACK}Empêche les attractions de tomber en panne
 STR_5801    :Désactiver déchets
 STR_5802    :{SMALLFONT}{BLACK}Empêche les visiteurs de jeter leurs détritus et de vomir par terre
 STR_5803    :{SMALLFONT}{BLACK}Fais pivoter l'élément sélectionné
-STR_5804    :Muet
+STR_5804    :Couper le son
 STR_5805    :{SMALLFONT}{BLACK}Ajoute le serveur à la liste des serveurs publics pour que tout le monde puisse le trouver
 STR_5806    :Mode fenêtré
 STR_5807    :{WINDOW_COLOUR_2}Nombre d'attractions : {BLACK}{COMMA16}
@@ -4119,6 +4119,53 @@ STR_5811    :{SMALLFONT}{BLACK}Permet d'avoir des trains longs au maximum de 255
 STR_5812    :Afficher la fenêtre multijoueurs
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}Affiche le nombre d'images par seconde durant le jeu
+STR_5816    :{SMALLFONT}{BLACK}Définit le ratio de mise à l'échelle du jeu.{NEWLINE}Utile lors de l'utilisation de résolutions élevées
+STR_5817    :{SMALLFONT}{BLACK}[Requiert l'accélération matérielle]{NEWLINE}Définit le type de mise à l'échelle
+STR_5818    :{SMALLFONT}{BLACK}[Requiert l'accélération matérielle]{NEWLINE}Utilise l'échelle la plus proche quand le ratio de mise à l'échelle est un entier (1, 2, 3, etc.)
+STR_5819    :{SMALLFONT}{BLACK}[Requiert l'accélération matérielle]{NEWLINE}Met le jeu en pause quand l'overlay Steam est ouvert
+STR_5820    :{SMALLFONT}{BLACK}Minimise le jeu si le focus est perdu en plein écran
+STR_5821    :{SMALLFONT}{BLACK}Change la couleur de la marque de construction pendant la construction d'attractions, allées, boutiques, éléments de décor, etc.
+STR_5822    :{SMALLFONT}{BLACK}Active le cycle jour / nuit.{NEWLINE}Chaque cycle dure un mois de jeu
+STR_5823    :{SMALLFONT}{BLACK}Affiche le texte des bannières en majuscule (comme dans RCT1)
+STR_5824    :{SMALLFONT}{BLACK}Désactive les éclairs pendant les orages
+STR_5825    :{SMALLFONT}{BLACK}Garde le curseur dans la fenêtre
+STR_5826    :{SMALLFONT}{BLACK}Inverse le déplacement de la vue lors de l'utilisation du clic droit
+STR_5827    :{SMALLFONT}{BLACK}Définit le thème de couleurs utilisé pour l'interface
+STR_5828    :{SMALLFONT}{BLACK}Change le système de mesure utilisé pour les distances, la vitesse, etc.
+STR_5829    :{SMALLFONT}{BLACK}Change la monnaie utilisée. Uniquement visuel, les taux de change ne sont pas intégrés
+STR_5830    :{SMALLFONT}{BLACK}Change la langue utilisée
+STR_5831    :{SMALLFONT}{BLACK}Change l'unité de température utilisée
+STR_5832    :{SMALLFONT}{BLACK}Affiche les hauteurs comme des unités génériques au lieu des unités définies dans {OPENQUOTES}Distance, vitesse{ENDQUOTES}
+STR_5833    :{SMALLFONT}{BLACK}Change le format de date utilisé
+STR_5834    :{SMALLFONT}{BLACK}Sélectionne le périphérique audio que doit utiliser OpenRCT2
+STR_5835    :{SMALLFONT}{BLACK}Coupe le son du jeu si la fenêtre passe à l'arrière-plan
+STR_5836    :{SMALLFONT}{BLACK}Sélectionne la musique du menu principal.{NEWLINE}La musique RCT1 nécessite que vous copiiez et renommiez le fichier {OPENQUOTES}data/css17.dat{ENDQUOTES} de votre dossier RCT1 en {OPENQUOTES}data/css50.dat{ENDQUOTES} dans votre dossier RCT2
+STR_5837    :{SMALLFONT}{BLACK}Créer et gérer des thèmes d'interface personnalisés
+STR_5838    :{SMALLFONT}{BLACK}Affiche un bouton séparé pour les options financières dans la barre d'outils
+STR_5839    :{SMALLFONT}{BLACK}Affiche un bouton séparé pour la recherche et développement dans la barre d'outils
+STR_5840    :{SMALLFONT}{BLACK}Affiche un bouton séparé pour la fenêtre de triche dans la barre d'outils
+STR_5841    :{SMALLFONT}{BLACK}Affiche un bouton séparé pour la fenêtre des notifications dans la barre d'outils
+STR_5842    :{SMALLFONT}{BLACK}Trie les scénarios en onglets en fonction de leur difficulté (comme RCT2) ou du jeu d'origine (comme RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Active le déblocage progressif des scénarios (comme RCT1)
+STR_5844    :{SMALLFONT}{BLACK}Reste connecté à un serveur même si une désynchronisation ou une erreur survient
+STR_5845    :{SMALLFONT}{BLACK}Ajoute un bouton pour les outils de débogage dans la barre d'outils.{NEWLINE}Active le raccourci clavier pour la console de développement
+STR_5846    :{SMALLFONT}{BLACK}Définit la fréquence de la sauvegarde automatique
+STR_5847    :{SMALLFONT}{BLACK}Sélectionne la séquence de parcs utilisée dans le menu principal. Les séquences titre de RCT1/2 requièrent des scénarios importés pour fonctionner
+STR_5848    :{SMALLFONT}{BLACK}Créer et gérer des séquences titre personnalisées
+STR_5849    :{SMALLFONT}{BLACK}Placer automatiquement les nouveaux employés
+STR_5850    :{SMALLFONT}{BLACK}Les nouveaux agents d'entretien tondent la pelouse par défaut (comme RCT1)
+STR_5851    :{SMALLFONT}{BLACK}Définit le délai d'inspection par défaut sur les nouvelles attractions
+STR_5852    :{SMALLFONT}{BLACK}Définit le nom de la chaîne TwitchTV utilisée pour l'intégration à Twitch
+STR_5853    :{SMALLFONT}{BLACK}Active/désactive les effets sonores
+STR_5854    :{SMALLFONT}{BLACK}Active/désactive les musiques des attractions
+STR_5855    :{SMALLFONT}{BLACK}Définit le mode fenêtré, plein écran, ou plein écran dans un nouveau bureau
+STR_5856    :{SMALLFONT}{BLACK}Définit la résolution du jeu en plein écran
+STR_5857    :{SMALLFONT}{BLACK}Options du jeu
+STR_5858    :{SMALLFONT}{BLACK}Utilise la carte graphique au lieu du processeur pour l'affichage. Améliore la compatibilité avec les logiciels de capture. Peut dégrader légèrement les performances
+STR_5859    :{SMALLFONT}{BLACK}Active l'extrapolation des frames pour des animations plus fluides. Désactivé, le jeu s'affichera à 40FPS
 
 #############
 # Scenarios #
