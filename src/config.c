@@ -285,6 +285,14 @@ config_property_definition _notificationsDefinitions[] = {
 	{ offsetof(notification_configuration, guest_died),							"guest_died",							CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
 };
 
+config_property_definition _fontsDefinitions[] = {
+	{ offsetof(font_configuration, file_name),				"file_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
+	{ offsetof(font_configuration, font_name),					"font_name",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
+	{ offsetof(font_configuration, x_offset),					"x_offset",				CONFIG_VALUE_TYPE_SINT8,		{.value_string = NULL },		NULL					},
+	{ offsetof(font_configuration, y_offset),				"y_offset",				CONFIG_VALUE_TYPE_SINT8,		{.value_string = NULL },		NULL					}
+};
+
+
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
@@ -292,6 +300,7 @@ config_section_definition _sectionDefinitions[] = {
 	{ &gConfigTwitch, "twitch", _twitchDefinitions, countof(_twitchDefinitions) },
 	{ &gConfigNetwork, "network", _networkDefinitions, countof(_networkDefinitions) },
 	{ &gConfigNotifications, "notifications", _notificationsDefinitions, countof(_notificationsDefinitions) },
+	{ &gConfigFonts, "fonts", _fontsDefinitions, countof(_fontsDefinitions) }
 };
 
 #pragma endregion
@@ -302,6 +311,7 @@ sound_configuration gConfigSound;
 twitch_configuration gConfigTwitch;
 network_configuration gConfigNetwork;
 notification_configuration gConfigNotifications;
+font_configuration gConfigFonts;
 title_sequences_configuration gConfigTitleSequences;
 
 static bool config_open(const utf8string path);
