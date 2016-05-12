@@ -255,6 +255,13 @@ typedef struct {
 	bool guest_died;
 } notification_configuration;
 
+typedef struct {
+	utf8string file_name;
+	utf8string font_name;
+	sint8 x_offset;
+	sint8 y_offset;
+} font_configuration;
+
 // Define structures for any other settings here
 typedef struct {
 	uint8 rct1_ride_lights;
@@ -306,6 +313,7 @@ extern sound_configuration gConfigSound;
 extern twitch_configuration gConfigTwitch;
 extern network_configuration gConfigNetwork;
 extern notification_configuration gConfigNotifications;
+extern font_configuration gConfigFonts;
 extern title_sequences_configuration gConfigTitleSequences;
 
 extern uint16 gShortcutKeys[SHORTCUT_COUNT];

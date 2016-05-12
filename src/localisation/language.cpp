@@ -19,6 +19,7 @@
 extern "C" {
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../drawing/drawing.h"
 #include "../object.h"
 #include "../openrct2.h"
@@ -174,6 +175,27 @@ int language_open(int id)
 			gUseTrueTypeFont = false;
 			gCurrentTTFFontSet = nullptr;
 		} else {
+			if (gConfigFonts.file_name != nullptr) {
+				static TTFFontSetDescriptor TTFFontCustom = {{
+					{ gConfigFonts.file_name,		gConfigFonts.font_name,	11,		gConfigFonts.x_offset,		gConfigFonts.y_offset,		15,		nullptr },
+					{ gConfigFonts.file_name,		gConfigFonts.font_name,	11,		gConfigFonts.x_offset,		gConfigFonts.y_offset,		17,		nullptr },
+					{ gConfigFonts.file_name,		gConfigFonts.font_name,	11,		gConfigFonts.x_offset,		gConfigFonts.y_offset,		17,		nullptr },
+					{ gConfigFonts.file_name,		gConfigFonts.font_name,	11,		gConfigFonts.x_offset,		gConfigFonts.y_offset,		20,		nullptr },
+				}};
+				ttf_dispose();
+				gUseTrueTypeFont = true;
+				gCurrentTTFFontSet = &TTFFontCustom;
+				
+				bool font_initialised = ttf_initialise();
+				if(!font_initialised) {
+					log_warning("Unable to initialise configured TrueType font -- falling back to Language default.");
+				} else {
+					// Objects and their localized strings need to be refreshed
+					reset_loaded_objects();
+					
+					return 1;
+				}
+			}
 			ttf_dispose();
 			gUseTrueTypeFont = true;
 			gCurrentTTFFontSet = LanguagesDescriptors[id].font;
