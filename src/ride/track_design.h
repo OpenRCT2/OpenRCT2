@@ -209,6 +209,7 @@ void track_design_draw_preview(rct_track_td6 *td6, uint8 *pixels);
 ///////////////////////////////////////////////////////////////////////////////
 void track_design_save_init();
 void track_design_save_reset_scenery();
+bool track_design_save_contains_map_element(rct_map_element *mapElement);
 void track_design_save_select_nearby_scenery(int rideIndex);
 void track_design_save_toggle_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 bool track_design_save(uint8 rideIndex);
