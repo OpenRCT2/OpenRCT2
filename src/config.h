@@ -260,6 +260,14 @@ typedef struct font_configuration {
 	utf8string font_name;
 	sint8 x_offset;
 	sint8 y_offset;
+	uint8 size_tiny;
+	uint8 size_small;
+	uint8 size_medium;
+	uint8 size_big;
+	uint8 height_tiny;
+	uint8 height_small;
+	uint8 height_medium;
+	uint8 height_big;
 } font_configuration;
 
 // Define structures for any other settings here

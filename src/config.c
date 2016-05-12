@@ -286,10 +286,18 @@ config_property_definition _notificationsDefinitions[] = {
 };
 
 config_property_definition _fontsDefinitions[] = {
-	{ offsetof(font_configuration, file_name),				"file_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
-	{ offsetof(font_configuration, font_name),					"font_name",				CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL					},
-	{ offsetof(font_configuration, x_offset),					"x_offset",				CONFIG_VALUE_TYPE_SINT8,		{.value_string = NULL },		NULL					},
-	{ offsetof(font_configuration, y_offset),				"y_offset",				CONFIG_VALUE_TYPE_SINT8,		{.value_string = NULL },		NULL					}
+	{ offsetof(font_configuration, file_name),				"file_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL			},
+	{ offsetof(font_configuration, font_name),				"font_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL			},
+	{ offsetof(font_configuration, x_offset),				"x_offset",				CONFIG_VALUE_TYPE_SINT8,		0,								NULL			},
+	{ offsetof(font_configuration, y_offset),				"y_offset",				CONFIG_VALUE_TYPE_SINT8,		-1,								NULL			},
+	{ offsetof(font_configuration, size_tiny),				"size_tiny",			CONFIG_VALUE_TYPE_UINT8,		8,								NULL			},
+	{ offsetof(font_configuration, size_small),				"size_small",			CONFIG_VALUE_TYPE_UINT8,		10,								NULL			},
+	{ offsetof(font_configuration, size_medium),			"size_medium",			CONFIG_VALUE_TYPE_UINT8,		11,								NULL			},
+	{ offsetof(font_configuration, size_big),				"size_big",				CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_tiny),			"height_tiny",			CONFIG_VALUE_TYPE_UINT8,		6,								NULL			},
+	{ offsetof(font_configuration, height_small),			"height_small",			CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_medium),			"height_medium",		CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_big),				"height_big",			CONFIG_VALUE_TYPE_UINT8,		20,								NULL			}
 };
 
 config_section_definition _sectionDefinitions[] = {
