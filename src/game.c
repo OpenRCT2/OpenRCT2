@@ -322,19 +322,19 @@ void game_update()
 	// it was done due to inability to reproduce original frequency
 	// and decision that the original one looks too fast
 	if (gCurrentTicks % 4 == 0)
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) ^= (1 << 15);
+		gWindowMapFlashingFlags ^= (1 << 15);
 
 	// Handle guest map flashing
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 1);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 0))
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 1);
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 0);
+	gWindowMapFlashingFlags &= ~(1 << 1);
+	if (gWindowMapFlashingFlags & (1 << 0))
+		gWindowMapFlashingFlags |= (1 << 1);
+	gWindowMapFlashingFlags &= ~(1 << 0);
 
 	// Handle staff map flashing
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 3);
-	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 2))
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 3);
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) &= ~(1 << 2);
+	gWindowMapFlashingFlags &= ~(1 << 3);
+	if (gWindowMapFlashingFlags & (1 << 2))
+		gWindowMapFlashingFlags |= (1 << 3);
+	gWindowMapFlashingFlags &= ~(1 << 2);
 
 	window_map_tooltip_update_visibility();
 

@@ -1027,17 +1027,17 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 
 		if ((peep->flags & SPRITE_FLAGS_PEEP_FLASHING) != 0) {
 			if (peep->type == PEEP_TYPE_STAFF) {
-				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 3)) != 0) {
+				if ((gWindowMapFlashingFlags & (1 << 3)) != 0) {
 					colour = 0x8A;
 					left--;
-					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
+					if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
 						colour = 0xA;
 				}
 			} else {
-				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 1)) != 0) {
+				if ((gWindowMapFlashingFlags & (1 << 1)) != 0) {
 					colour = 0xAC;
 					left--;
-					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
+					if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
 						colour = 0x15;
 				}
 			}

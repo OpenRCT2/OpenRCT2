@@ -512,6 +512,7 @@ extern rct_window * gWindowNextSlot;
 extern ride_list_item _window_track_list_item;
 
 extern uint8 gToolbarDirtyFlags;
+extern uint16 gWindowMapFlashingFlags;
 
 void window_dispatch_update_all();
 void window_update_all_viewports();
