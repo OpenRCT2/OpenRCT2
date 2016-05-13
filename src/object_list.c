@@ -108,12 +108,22 @@ static void get_plugin_path(utf8 *outPath)
 	strcat(outPath, "plugin.dat");
 }
 
+static rct_object_entry **_entryCache = NULL;
+
+static int object_comparator(const void *left, const void *right)
+{
+	const size_t leftIndex  = *(const size_t *)left;
+	const size_t rightIndex = *(const size_t *)right;
+	const char *leftName  = object_get_name(_entryCache[leftIndex]);
+	const char *rightName = object_get_name(_entryCache[rightIndex]);
+	return strcmp(leftName, rightName);
+}
+
 static void object_list_sort()
 {
-	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry = NULL;
+	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry;
 	rct_object_filters *newFilters = NULL, *destFilter = NULL;
 	int numObjects, bufferSize, entrySize, lowestIndex = 0;
-	char *objectName, *lowestString;
 	uint8 *copied;
 
 	objectBuffer = &gInstalledObjects;
@@ -134,37 +144,29 @@ static void object_list_sort()
 		destFilter = newFilters;
 	}
 
-	rct_object_entry **entryCache = malloc(numObjects * sizeof(rct_object_entry*));
+	_entryCache = malloc(numObjects * sizeof(rct_object_entry*));
+	size_t *sortLUT = malloc(numObjects * sizeof(size_t));
 	entry = *objectBuffer;
 	// This loop initialises entry cache, so it doesn't have to be called 17M
 	// times, but only a few thousand.
 	int i = 0;
 	do {
-		entryCache[i] = entry;
+		_entryCache[i] = entry;
+		sortLUT[i] = i;
 	} while (++i < numObjects && (entry = object_get_next(entry)));
+	qsort(sortLUT, numObjects, sizeof(size_t), object_comparator);
 
 	// Copy over sorted objects
 	for (int i = 0; i < numObjects; i++) {
-		// Find next lowest string
-		lowestString = NULL;
-		for (int j = 0; j < numObjects; j++) {
-			if (!copied[j]) {
-				objectName = object_get_name(entryCache[j]);
-				if (lowestString == NULL || strcmp(objectName, lowestString) < 0) {
-					lowestEntry = entryCache[j];
-					lowestString = objectName;
-					lowestIndex = j;
-				}
-			}
-		}
-		entrySize = object_get_length(lowestEntry);
-		memcpy(destEntry, lowestEntry, entrySize);
+		entrySize = object_get_length(_entryCache[sortLUT[i]]);
+		memcpy(destEntry, _entryCache[sortLUT[i]], entrySize);
 		destEntry = (rct_object_entry*)((int)destEntry + entrySize);
 		if (_installedObjectFilters)
 			destFilter[i] = _installedObjectFilters[lowestIndex];
 		copied[lowestIndex] = 1;
 	}
-	free(entryCache);
+	free(_entryCache);
+	free(sortLUT);
 
 	// Replace old buffer
 	free(*objectBuffer);
