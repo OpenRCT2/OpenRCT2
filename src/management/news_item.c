@@ -274,7 +274,6 @@ void news_item_add_to_queue(uint8 type, rct_string_id string_id, uint32 assoc)
 
 void news_item_add_to_queue_raw(uint8 type, const utf8 *text, uint32 assoc)
 {
-	int i = 0;
 	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	// find first open slot
@@ -404,7 +403,6 @@ void news_item_disable_news(uint8 type, uint32 assoc)
 
 void news_item_add_to_queue_custom(rct_news_item *newNewsItem)
 {
-	int i = 0;
 	rct_news_item *newsItem = RCT2_ADDRESS(RCT2_ADDRESS_NEWS_ITEM_LIST, rct_news_item);
 
 	// Find first open slot

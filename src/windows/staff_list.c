@@ -180,8 +180,6 @@ void window_staff_list_open()
 }
 
 void window_staff_list_cancel_tools(rct_window *w) {
-	int toolWindowClassification = gCurrentToolWidget.window_classification;
-	int toolWindowNumber = gCurrentToolWidget.window_number;
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();

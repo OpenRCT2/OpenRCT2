@@ -3374,19 +3374,19 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 				break;
 		}
 		rct_viewport* viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
-		sint16 view_width = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width;
+		sint16 view_width = viewport->view_width;
 		sint16 view_width2 = view_width * 2;
-		sint16 view_x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x - view_width2;
-		sint16 view_y = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y - view_width;
-		sint16 view_x2 = view_width2 + view_width2 + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + view_x;
-		sint16 view_y2 = view_width + view_width + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + view_y;
+		sint16 view_x = viewport->view_x - view_width2;
+		sint16 view_y = viewport->view_y - view_width;
+		sint16 view_x2 = view_width2 + view_width2 + viewport->view_width + view_x;
+		sint16 view_y2 = view_width + view_width + viewport->view_height + view_y;
 		if (view_x >= rotatedCoords.x ||
 			view_y >= rotatedCoords.y ||
 			view_x2 < rotatedCoords.x ||
 			view_y2 < rotatedCoords.y) {
 				goto label58;
 		}
-		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((rotatedCoords.x - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int x2 = viewport->x + ((rotatedCoords.x - viewport->view_x) >> viewport->zoom);
 		x2 *= 0x10000;
 		uint16 screenwidth = gScreenWidth;
 		if (screenwidth < 64) {
@@ -3394,7 +3394,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		}
 		int pan_x = ((x2 / screenwidth) - 0x8000) >> 4;
 
-		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((rotatedCoords.y - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int y2 = viewport->y + ((rotatedCoords.y - viewport->view_y) >> viewport->zoom);
 		y2 *= 0x10000;
 		uint16 screenheight = gScreenHeight;
 		if (screenheight < 64) {
@@ -4788,7 +4788,6 @@ bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element
 			for (int i = 0; i < ride->num_vehicles; i++) {
 				rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[i]);
 
-				rct_ride_entry *rideType = get_ride_entry(vehicle->vehicle_type);
 				rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 				if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_15)) {

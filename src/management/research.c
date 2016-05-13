@@ -598,7 +598,6 @@ void research_insert_ride_entry(uint8 entryIndex, bool researched)
 
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched)
 {
-	rct_scenery_set_entry *scenerySetEntry = g_scenerySetEntries[entryIndex];
 	research_insert(researched, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
 }
 

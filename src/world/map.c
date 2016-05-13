@@ -1040,7 +1040,6 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 		}
 	}
 
-	bool found = false;
 	rct_map_element *map_element = map_get_small_scenery_element_at(x, y, base_height, scenery_type, quadrant);
 
 	if (map_element == NULL) {
@@ -1093,7 +1092,6 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 		return;
 	}
 
-	bool fence_found = false;
 	rct_map_element* map_element = map_get_fence_element_at(x, y, base_height, map_element_direction);
 
 	if (map_element == NULL) {
@@ -4160,7 +4158,6 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUN
 				}
 				loc_68BABC:
 				if (clearFunc != NULL) {
-					int zero = 0;
 					if (!clearFunc(&map_element, x, y, flags, price)) {
 						continue;
 					}
@@ -4171,7 +4168,6 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUN
 				return false;
 				loc_68BAE6:
 				if (clearFunc != NULL) {
-					int zero = 0;
 					if (!clearFunc(&map_element, x, y, flags, price)) {
 						goto loc_68B9B7;
 					}

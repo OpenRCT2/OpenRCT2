@@ -773,7 +773,6 @@ int scenario_write_available_objects(FILE *file)
 void scenario_fix_ghosts(rct_s6_data *s6)
 {
 	// Remove all ghost elements
-	size_t mapElementTotalSize = MAX_MAP_ELEMENTS * sizeof(rct_map_element);
 	rct_map_element *destinationElement = s6->map_elements;
 
 	for (int y = 0; y < 256; y++) {

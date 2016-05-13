@@ -26,9 +26,6 @@
 #include "openrct2.h"
 #include "util/util.h"
 
-// Magic number for original game cfg file
-static const int MagicNumber = 0x0003113A;
-
 enum {
 	CONFIG_VALUE_TYPE_BOOLEAN,
 	CONFIG_VALUE_TYPE_UINT8,
@@ -1196,7 +1193,6 @@ static void title_sequence_open(const char *path, const char *customName)
 	SDL_RWops *file;
 	int fileEnumHandle, i, preset;
 	char parts[3 * 128], *token, *part1, *part2;
-	char separator = platform_get_path_separator();
 
 	// Check for the script file
 	safe_strcpy(scriptPath, path, MAX_PATH);

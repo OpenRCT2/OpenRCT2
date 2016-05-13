@@ -31,7 +31,6 @@
  */
 void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_element)
 {
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	uint8 is_exit = map_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
 	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1){
@@ -234,7 +233,7 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 		if (entrance->scrolling_mode == 0xFF)
 			break;
 
-			sub_98199C(scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 2, 2, height + entrance->text_height, get_current_rotation());
+		sub_98199C(scrolling_text_setup(park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 2, 2, height + entrance->text_height, get_current_rotation());
 		break;
 	case 1:
 	case 2:

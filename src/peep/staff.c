@@ -108,7 +108,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 	int newStaffId = i;
 
-	int _eax, _ebx, _ecx = _cx;
+	int _eax, _ebx;
 	rct_sprite_bounds *spriteBounds;
 	_ebx = _bl;
 

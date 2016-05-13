@@ -3160,9 +3160,6 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 		}
 	}
 
-	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
-
 	if (vehicle->velocity <= 439800) {
 		vehicle->acceleration = 4398;
 	}
@@ -8012,8 +8009,6 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-
-	rct_map_element *mapElement = NULL;
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
 		return vehicle_update_track_motion_mini_golf(vehicle, outStation);

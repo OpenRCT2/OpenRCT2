@@ -556,8 +556,6 @@ void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdown
 	// Clear patrol
 	if (dropdownIndex == 1) {
 		rct_peep* peep = GET_PEEP(w->number);
-		int edi = peep->staff_id;
-		int ebx = edi << 9;
 
 		for (int i = 0; i < 128; i++)
 		{

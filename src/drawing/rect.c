@@ -204,7 +204,6 @@ void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bot
 		right |= colour;
 		RCT2_GLOBAL(0xEDF838,sint32) = right;
 		//right <<= 4;
-		int edi = esi;
 		esi = RCT2_GLOBAL(0xEDF828,sint32);
 		esi *= 0x40;
 		left = 0;

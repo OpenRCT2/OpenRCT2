@@ -662,7 +662,9 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	if (left >= viewport->x + viewport->width)return;
 	if (top >= viewport->y + viewport->height)return;
 
+#ifdef DEBUG_SHOW_DIRTY_BOX
 	int l = left, t = top, r = right, b = bottom;
+#endif
 
 	left = max(left - viewport->x, 0);
 	right = min(right - viewport->x, viewport->width);
@@ -783,7 +785,6 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		}
 		RCT2_GLOBAL(0xEE7880, uint32) = 0xF1A4CC;
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
-		int ebp = 0, ebx = 0, esi = 0, ecx = 0;
 		painter_setup();
 		viewport_paint_setup();
 		sub_688217();

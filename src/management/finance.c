@@ -213,7 +213,6 @@ void finance_update_daily_profit()
 		rct_peep *peep;
 
 		FOR_ALL_STAFF(sprite_index, peep) {
-			uint8 staff_type = peep->staff_type;
 			current_profit -= wage_table[peep->staff_type];
 		}
 

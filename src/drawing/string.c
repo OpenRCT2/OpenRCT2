@@ -67,7 +67,6 @@ int gfx_get_string_width_new_lined(utf8 *text)
 	utf8 backup;
 	int codepoint;
 
-	int width = 0;
 	int maxWidth = 0;
 	while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
 		if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER) {
@@ -979,7 +978,6 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 			}
 		}
 
-		int fontSize = font_get_size_from_sprite_base(info->font_sprite_base);
 		int drawX = info->x + fontDesc->offset_x;
 		int drawY = info->y + fontDesc->offset_y;
 		int width = surface->w;

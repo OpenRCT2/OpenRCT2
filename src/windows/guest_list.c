@@ -850,7 +850,6 @@ static void window_guest_list_find_groups()
 		if (groupIndex >= 240)
 			break;
 
-		int ax = peep->sprite_index;
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
 		peep->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);

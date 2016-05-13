@@ -791,8 +791,6 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 
 		//6c53dc
-		// push baseZ and clearanceZ
-		int cur_z = baseZ * 8;
 
 		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);

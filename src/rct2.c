@@ -326,7 +326,7 @@ static void rct2_draw_fps()
 	int y = 2;
 
 	// Measure FPS
-	float fps = rct2_measure_fps();
+	rct2_measure_fps();
 
 	// Format string
 	utf8 buffer[64];

@@ -332,7 +332,6 @@ int platform_enumerate_files_begin(const utf8 *pattern)
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
 			// 256 is size of dirent.d_name
-			const int buf_len = min(MAX_PATH, 256);
 			const int dir_name_len = strnlen(dir_name, MAX_PATH);
 			char separator[] = {platform_get_path_separator(), 0};
 			for (int idx = 0; idx < cnt; idx++)
@@ -472,7 +471,6 @@ int platform_enumerate_directories_begin(const utf8 *directory)
 			enumFileInfo->paths = malloc(cnt * sizeof(char *));
 			char **paths = enumFileInfo->paths;
 			// 256 is size of dirent.d_name
-			const int buf_len = min(MAX_PATH, 256);
 			const int dir_name_len = strnlen(npattern, MAX_PATH);
 			char separator[] = {platform_get_path_separator(), 0};
 			for (int idx = 0; idx < cnt; idx++)
@@ -877,8 +875,6 @@ datetime64 platform_get_datetime_now_utc()
 
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
-
-	uint64 utcEpoch = tv.tv_sec;
 
 	// Epoch starts from: 1970-01-01T00:00:00Z
 	// Convert to ticks from 0001-01-01T00:00:00Z

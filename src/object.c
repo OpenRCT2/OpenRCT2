@@ -359,7 +359,6 @@ int object_load_packed(SDL_RWops* rw)
 		for (char* curr_char = last_char - 1;; --curr_char){
 			if (*curr_char == '\\'){
 				substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "00000000.DAT");
-				char* last_char = path + strlen(path);
 				break;
 			}
 			if (*curr_char < '0') *curr_char = '0';

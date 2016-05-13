@@ -1077,7 +1077,6 @@ bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, u
 
 			//di
 			sint16 tempZ = z - trackCoordinates->z_begin;
-			uint32 trackFlags = track->flags;
 			uint32 edi =
 				((track->flags & 0x0F) << 17) |
 				((track->flags & 0x0F) << 28) |

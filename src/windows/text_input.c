@@ -342,7 +342,6 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 void window_text_input_key(rct_window* w, int key)
 {
-	int text = key;
 	char new_char = platform_scancode_to_rct_keycode(0xFF&key);
 
 	// If the return button is pressed stop text input
