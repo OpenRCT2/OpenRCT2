@@ -149,7 +149,8 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     }
 
 
-    uint32 dword_141F714 = (map_element->properties.fence.item[1] & 0b11111) << 19 | 0x20000000;
+    int primaryColour = map_element->properties.fence.item[1] & 0x1F;
+    uint32 dword_141F714 = primaryColour << 19 | 0x20000000;
     uint32 dword_141F718 = dword_141F714 + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
@@ -188,10 +189,11 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
         rct_xyz16 offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint32 ebx = (map_element->properties.fence.item[2] >> 3) & 0x1F;
+        uint animationFrame = (map_element->properties.fence.item[2] >> 3) & 0x1F;
+        uint32 imageId;
         switch (direction) {
             case 0:
-                ebx = sceneryEntry->image + byte_9A406C[ebx];
+                imageId = sceneryEntry->image + byte_9A406C[animationFrame];
 
                 boundsR1 = (rct_xyz16) {1, 3, ah - 5};
                 boundsR1_ = (rct_xyz16) {1, 1, height + 1};
@@ -203,11 +205,11 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {0, 0, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(imageId, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 1:
-                ebx = sceneryEntry->image + byte_9A408C[ebx];
+                imageId = sceneryEntry->image + byte_9A408C[animationFrame];
 
                 boundsR1 = (rct_xyz16) {3, 3, ah - 5};
                 boundsR1_ = (rct_xyz16) {1, 30, height + 1};
@@ -219,11 +221,11 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {1, 31, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(imageId, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 2:
-                ebx = sceneryEntry->image + byte_9A40AC[ebx];
+                imageId = sceneryEntry->image + byte_9A40AC[animationFrame];
 
                 boundsR1 = (rct_xyz16) {3, 3, ah - 5};
                 boundsR1_ = (rct_xyz16) {30, 1, height + 1};
@@ -235,11 +237,11 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {31, 0, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(imageId, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
 
             case 3:
-                ebx = sceneryEntry->image + byte_9A40CC[ebx];
+                imageId = sceneryEntry->image + byte_9A40CC[animationFrame];
 
                 boundsR1 = (rct_xyz16) {3, 1, ah - 5};
                 boundsR1_ = (rct_xyz16) {1, 1, height + 1};
@@ -251,7 +253,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
                 offset = (rct_xyz16) {2, 1, height};
 
-                do_part_1(ebx, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
+                do_part_1(imageId, sceneryEntry, dword_141F714, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
         }
 
