@@ -276,7 +276,7 @@ int rct2_startup_checks()
 
 void rct2_draw()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
+	if (gIntroState != INTRO_STATE_NONE) {
 		return;
 	}
 
@@ -454,12 +454,13 @@ void rct2_update()
 
 	// check_cmdline_arg();
 	// Screens
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
+	if (gIntroState != INTRO_STATE_NONE) {
 		intro_update();
-	else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
+	} else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless) {
 		title_update();
-	else
+	} else {
 		game_update();
+	}
 
 	//stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
 
