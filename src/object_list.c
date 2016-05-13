@@ -108,23 +108,43 @@ static void get_plugin_path(utf8 *outPath)
 	strcat(outPath, "plugin.dat");
 }
 
+static rct_object_entry **_entryCache = NULL;
+
+static int object_comparator(const void *left, const void *right)
+{
+	const size_t leftIndex  = *(const size_t *)left;
+	const size_t rightIndex = *(const size_t *)right;
+	const char *leftName  = object_get_name(_entryCache[leftIndex]);
+	const char *rightName = object_get_name(_entryCache[rightIndex]);
+	return strcmp(leftName, rightName);
+}
+
 static void object_list_sort()
 {
-	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry = NULL;
+	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry;
 	rct_object_filters *newFilters = NULL, *destFilter = NULL;
-	int numObjects, i, j, bufferSize, entrySize, lowestIndex = 0;
-	char *objectName, *lowestString;
-	uint8 *copied;
+	int numObjects, bufferSize, entrySize;
 
 	objectBuffer = &gInstalledObjects;
 	numObjects = gInstalledObjectsCount;
-	copied = calloc(numObjects, sizeof(uint8));
+
+
+	_entryCache = malloc(numObjects * sizeof(rct_object_entry*));
+	size_t *sortLUT = malloc(numObjects * sizeof(size_t));
+	entry = *objectBuffer;
+	// This loop initialises entry cache, so it doesn't have to be called 17M
+	// times, but only a few thousand.
+	int i = 0;
+	do {
+		_entryCache[i] = entry;
+		sortLUT[i] = i;
+	} while (++i < numObjects && (entry = object_get_next(entry)));
+	qsort(sortLUT, numObjects, sizeof(size_t), object_comparator);
+	// Get size of last entry so buffer is allocated properly.
+	entry = object_get_next(entry);
 
 	// Get buffer size
-	entry = *objectBuffer;
-	for (i = 0; i < numObjects; i++)
-		entry = object_get_next(entry);
-	bufferSize = (int)entry - (int)*objectBuffer;
+	bufferSize = (uintptr_t)entry - (uintptr_t)*objectBuffer;
 
 	// Create new buffer
 	newBuffer = (rct_object_entry*)malloc(bufferSize);
@@ -135,28 +155,15 @@ static void object_list_sort()
 	}
 
 	// Copy over sorted objects
-	for (i = 0; i < numObjects; i++) {
-		// Find next lowest string
-		lowestString = NULL;
-		entry = *objectBuffer;
-		for (j = 0; j < numObjects; j++) {
-			if (!copied[j]) {
-				objectName = object_get_name(entry);
-				if (lowestString == NULL || strcmp(objectName, lowestString) < 0) {
-					lowestEntry = entry;
-					lowestString = objectName;
-					lowestIndex = j;
-				}
-			}
-			entry = object_get_next(entry);
-		}
-		entrySize = object_get_length(lowestEntry);
-		memcpy(destEntry, lowestEntry, entrySize);
-		destEntry = (rct_object_entry*)((int)destEntry + entrySize);
+	for (int i = 0; i < numObjects; i++) {
+		entrySize = object_get_length(_entryCache[sortLUT[i]]);
+		memcpy(destEntry, _entryCache[sortLUT[i]], entrySize);
+		destEntry = (rct_object_entry*)((uintptr_t)destEntry + entrySize);
 		if (_installedObjectFilters)
-			destFilter[i] = _installedObjectFilters[lowestIndex];
-		copied[lowestIndex] = 1;
+			destFilter[i] = _installedObjectFilters[sortLUT[i]];
 	}
+	free(_entryCache);
+	free(sortLUT);
 
 	// Replace old buffer
 	free(*objectBuffer);
@@ -165,8 +172,6 @@ static void object_list_sort()
 		free(_installedObjectFilters);
 		_installedObjectFilters = newFilters;
 	}
-
-	free(copied);
 }
 
 static uint32 object_list_count_custom_objects()
