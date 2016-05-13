@@ -2063,6 +2063,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		peep->destination_x++;
 	}
 
+	const uint8 current_rotation = get_current_rotation();
 	// Invalidate something related to station start
 	for (i = 0; i < 4; i++) {
 		if (ride->station_starts[i] == 0xFFFF)
@@ -2073,7 +2074,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		z = ride->station_heights[i];
 
 		mapElement = ride_get_station_start_track_element(ride, i);
-		int rotation = ((mapElement->type & 3) << 2) | get_current_rotation();
+		int rotation = ((mapElement->type & 3) << 2) | current_rotation;
 		x *= 32;
 		y *= 32;
 		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
