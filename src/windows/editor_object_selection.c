@@ -1938,7 +1938,7 @@ static void window_editor_object_selection_manage_tracks()
 		gResearchedRideTypes[i] = 0xFFFFFFFF;
 	}
 
-	for (int i = 0; i < 128; i++) {
+	for (int i = 0; i < countof(RideTypePossibleTrackConfigurations); i++) {
 		gResearchedTrackTypesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
 		gResearchedTrackTypesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
 	}

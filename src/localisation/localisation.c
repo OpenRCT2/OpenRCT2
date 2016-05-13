@@ -188,7 +188,7 @@ void utf8_remove_formatting(utf8* string) {
 	utf8* writePtr = string;
 
 	while (true) {
-		uint32 code = utf8_get_next(readPtr, &readPtr);
+		uint32 code = utf8_get_next(readPtr, (const utf8**)&readPtr);
 
 		if (code == 0) {
 			*writePtr = 0;

@@ -244,7 +244,7 @@ static void sub_66F6E3()
 		gResearchedRideTypes[i] = 0xFFFFFFFF;
 	}
 
-	for (int i = 0; i < 128; i++) {
+	for (int i = 0; i < countof(RideTypePossibleTrackConfigurations); i++) {
 		gResearchedTrackTypesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
 		gResearchedTrackTypesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
 	}

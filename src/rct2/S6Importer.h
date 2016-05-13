@@ -40,7 +40,7 @@ public:
     void Import();
 
 private:
-    const utf8 * _s6Path;
-    rct_s6_data  _s6;
-    uint8        _gameVersion;
+    const utf8 * _s6Path = nullptr;
+    rct_s6_data  _s6 = { 0 };
+    uint8        _gameVersion = 0;
 };
