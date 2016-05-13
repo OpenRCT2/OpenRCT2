@@ -123,26 +123,11 @@ static void object_list_sort()
 {
 	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry;
 	rct_object_filters *newFilters = NULL, *destFilter = NULL;
-	int numObjects, bufferSize, entrySize, lowestIndex = 0;
-	uint8 *copied;
+	int numObjects, bufferSize, entrySize;
 
 	objectBuffer = &gInstalledObjects;
 	numObjects = gInstalledObjectsCount;
-	copied = calloc(numObjects, sizeof(uint8));
 
-	// Get buffer size
-	entry = *objectBuffer;
-	for (int i = 0; i < numObjects; i++)
-		entry = object_get_next(entry);
-	bufferSize = (int)entry - (int)*objectBuffer;
-
-	// Create new buffer
-	newBuffer = (rct_object_entry*)malloc(bufferSize);
-	destEntry = newBuffer;
-	if (_installedObjectFilters) {
-		newFilters = malloc(numObjects * sizeof(rct_object_filters));
-		destFilter = newFilters;
-	}
 
 	_entryCache = malloc(numObjects * sizeof(rct_object_entry*));
 	size_t *sortLUT = malloc(numObjects * sizeof(size_t));
@@ -156,14 +141,24 @@ static void object_list_sort()
 	} while (++i < numObjects && (entry = object_get_next(entry)));
 	qsort(sortLUT, numObjects, sizeof(size_t), object_comparator);
 
+	// Get buffer size
+	bufferSize = (uintptr_t)entry - (uintptr_t)*objectBuffer;
+
+	// Create new buffer
+	newBuffer = (rct_object_entry*)malloc(bufferSize);
+	destEntry = newBuffer;
+	if (_installedObjectFilters) {
+		newFilters = malloc(numObjects * sizeof(rct_object_filters));
+		destFilter = newFilters;
+	}
+
 	// Copy over sorted objects
 	for (int i = 0; i < numObjects; i++) {
 		entrySize = object_get_length(_entryCache[sortLUT[i]]);
 		memcpy(destEntry, _entryCache[sortLUT[i]], entrySize);
-		destEntry = (rct_object_entry*)((int)destEntry + entrySize);
+		destEntry = (rct_object_entry*)((uintptr_t)destEntry + entrySize);
 		if (_installedObjectFilters)
-			destFilter[i] = _installedObjectFilters[lowestIndex];
-		copied[lowestIndex] = 1;
+			destFilter[i] = _installedObjectFilters[sortLUT[i]];
 	}
 	free(_entryCache);
 	free(sortLUT);
@@ -175,8 +170,6 @@ static void object_list_sort()
 		free(_installedObjectFilters);
 		_installedObjectFilters = newFilters;
 	}
-
-	free(copied);
 }
 
 static uint32 object_list_count_custom_objects()
