@@ -1092,17 +1092,17 @@ void window_staff_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 
 	map_invalidate_selection_rect();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
 	int map_x, map_y;
 	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
 	if (map_x != (sint16)0x8000) {
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = map_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = map_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = map_y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = map_y;
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+		gMapSelectType = MAP_SELECT_TYPE_FULL;
+		gMapSelectPositionA.x = map_x;
+		gMapSelectPositionB.x = map_x;
+		gMapSelectPositionA.y = map_y;
+		gMapSelectPositionB.y = map_y;
 		map_invalidate_selection_rect();
 	}
 

@@ -348,7 +348,7 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 	short mapX, mapY;
 
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
 	mapX = x;
 	mapY = y;
@@ -357,12 +357,12 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 		return;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapX;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapY;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapX;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapY;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+	gMapSelectPositionA.x = mapX;
+	gMapSelectPositionA.y = mapY;
+	gMapSelectPositionB.x = mapX;
+	gMapSelectPositionB.y = mapY;
+	gMapSelectType = MAP_SELECT_TYPE_FULL;
 
 	map_invalidate_selection_rect();
 

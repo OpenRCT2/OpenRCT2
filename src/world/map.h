@@ -265,6 +265,30 @@ typedef struct rct2_peep_spawn {
 	uint8 direction;
 } rct2_peep_spawn;
 
+enum {
+	MAP_SELECT_FLAG_ENABLE				= 1 << 0,
+	MAP_SELECT_FLAG_ENABLE_CONSTRUCT	= 1 << 1,
+	MAP_SELECT_FLAG_ENABLE_ARROW		= 1 << 2,
+	MAP_SELECT_FLAG_GREEN				= 1 << 3,
+};
+
+enum {
+	MAP_SELECT_TYPE_CORNER_0,
+	MAP_SELECT_TYPE_CORNER_1,
+	MAP_SELECT_TYPE_CORNER_2,
+	MAP_SELECT_TYPE_CORNER_3,
+	MAP_SELECT_TYPE_FULL,
+	MAP_SELECT_TYPE_5,
+	MAP_SELECT_TYPE_QUARTER_0,
+	MAP_SELECT_TYPE_QUARTER_1,
+	MAP_SELECT_TYPE_QUARTER_2,
+	MAP_SELECT_TYPE_QUARTER_3,
+	MAP_SELECT_TYPE_EDGE_0,
+	MAP_SELECT_TYPE_EDGE_1,
+	MAP_SELECT_TYPE_EDGE_2,
+	MAP_SELECT_TYPE_EDGE_3,
+};
+
 extern const rct_xy16 TileDirectionDelta[];
 
 #define gWidePathTileLoopX				RCT2_GLOBAL(0x013CE774, uint16)
@@ -275,6 +299,13 @@ extern const rct_xy16 TileDirectionDelta[];
 #define gMapSizeMinus2		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE_MINUS_2, sint16)
 #define gMapSize			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SIZE, sint16)
 #define gMapSizeMaxXY		RCT2_GLOBAL(RCT2_ADDRESS_MAP_MAX_XY, sint16)
+
+extern uint16		gMapSelectFlags;
+extern uint16		gMapSelectType;
+extern rct_xy16		gMapSelectPositionA;
+extern rct_xy16		gMapSelectPositionB;
+extern rct_xyz16	gMapSelectArrowPosition;
+extern uint8		gMapSelectArrowDirection;
 
 extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;

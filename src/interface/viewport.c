@@ -64,7 +64,7 @@ void viewport_init_all()
 	gPressedWidget.window_classification = 255;
 	gPickupPeepImage = UINT32_MAX;
 	gTooltipNotShownTicks = -1;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) = 0;
+	gMapSelectFlags = 0;
 	RCT2_GLOBAL(0x009DEA50, sint16) = -1;
 	textinput_cancel();
 	format_string((char*)0x0141FA44, STR_CANCEL, NULL);

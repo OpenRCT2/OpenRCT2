@@ -891,11 +891,10 @@ int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, ui
 {
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
 		gMapSelectionTiles->x = -1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
+		gMapSelectArrowPosition.x = x;
+		gMapSelectArrowPosition.y = y;
+		gMapSelectArrowPosition.z = map_element_height(x, y) & 0xFFFF;
+		gMapSelectArrowDirection = _currentTrackPieceDirection;
 	}
 
 	_trackDesignPlaceZ = 0;
@@ -1026,10 +1025,10 @@ bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, u
 	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
 		gMapSelectionTiles->x = -1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
+		gMapSelectArrowPosition.x = x;
+		gMapSelectArrowPosition.y = y;
+		gMapSelectArrowPosition.z = map_element_height(x, y) & 0xFFFF;
+		gMapSelectArrowDirection = _currentTrackPieceDirection;
 	}
 
 	_trackDesignPlaceZ = 0;
@@ -1294,8 +1293,9 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 
 	// 0x6D0FE6
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 0x6;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 3);
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 		map_invalidate_map_selection_tiles();
 	}
 

@@ -180,18 +180,19 @@ static void sub_68B3FB(int x, int y)
 	}
 	dx >>= 1;
 	// Display little yellow arrow when building footpaths?
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 4) &&
-		RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
-		RCT2_GLOBAL(0x9DE56E, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16)){
+	if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) &&
+		RCT2_GLOBAL(0x9DE56A, uint16) == gMapSelectArrowPosition.x &&
+		RCT2_GLOBAL(0x9DE56E, uint16) == gMapSelectArrowPosition.y
+	) {
 		uint8 arrowRotation =
 			(rotation
-			+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3)) & 3;
+			+ (gMapSelectArrowDirection & 3)) & 3;
 
 		uint32 imageId =
 			arrowRotation +
-			(RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 0xFC) +
+			(gMapSelectArrowDirection & 0xFC) +
 			0x20900C27;
-		int arrowZ = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16);
+		int arrowZ = gMapSelectArrowPosition.z;
 
 		RCT2_GLOBAL(0x9DE568, sint16) = x;
 		RCT2_GLOBAL(0x9DE56C, sint16) = y;

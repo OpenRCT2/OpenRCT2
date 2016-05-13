@@ -184,7 +184,8 @@ static void window_track_place_close(rct_window *w)
 	window_track_place_clear_provisional();
 	viewport_set_visibility(0);
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~6;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	hide_gridlines();
 	SafeFree(_window_track_place_mini_preview);
 	track_design_dispose(_trackDesign);
@@ -245,7 +246,9 @@ static void window_track_place_toolupdate(rct_window* w, int widgetIndex, int x,
 	uint8 rideIndex;
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~7;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	// Get the tool map position
 	sub_68A15E(x, y, &mapX, &mapY, NULL, NULL);
@@ -305,7 +308,9 @@ static void window_track_place_tooldown(rct_window* w, int widgetIndex, int x, i
 
 	window_track_place_clear_provisional();
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~7;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	sub_68A15E(x, y, &mapX, &mapY, NULL, NULL);
 	if (mapX == (short)0x8000)

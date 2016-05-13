@@ -163,7 +163,7 @@ static void window_maze_construction_close(rct_window *w)
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 
 	// In order to cancel the yellow arrow correctly the
 	// selection tool should be cancelled.
@@ -349,7 +349,8 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 
 	map_invalidate_selection_rect();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~((1 << 0) | (1 << 2));
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	int direction = 0;
 	ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);

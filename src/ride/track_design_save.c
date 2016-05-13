@@ -953,8 +953,9 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
 	sub_6D01B3(td6, PTD_OPERATION_DRAW_OUTLINES, 0, 4096, 4096, 0);
 	gTrackPreviewOrigin = (rct_xyz16) { startX, startY, startZ };
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 
 	td6->space_required_x = ((gTrackPreviewMax.x - gTrackPreviewMin.x) / 32) + 1;
 	td6->space_required_y = ((gTrackPreviewMax.y - gTrackPreviewMin.y) / 32) + 1;
@@ -1189,8 +1190,9 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
 	// Resave global vars for scenery reasons.
 	gTrackPreviewOrigin = (rct_xyz16) { start_x, start_y, start_z };
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF9;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) &= 0xFFF7;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 
 	td6->space_required_x = ((gTrackPreviewMax.x - gTrackPreviewMin.x) / 32) + 1;
 	td6->space_required_y = ((gTrackPreviewMax.y - gTrackPreviewMin.y) / 32) + 1;

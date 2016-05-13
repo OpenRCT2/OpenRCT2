@@ -1798,7 +1798,7 @@ void tool_cancel()
 		map_invalidate_map_selection_tiles();
 
 		// Reset map selection
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
+		gMapSelectFlags = 0;
 
 		if (gCurrentToolWidget.widget_index != -1) {
 			// Invalidate tool widget

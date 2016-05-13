@@ -52,6 +52,13 @@ const rct_xy16 TileDirectionDelta[] = {
 	{ -32, -32 }
 };
 
+uint16			gMapSelectFlags;
+uint16			gMapSelectType;
+rct_xy16		gMapSelectPositionA;
+rct_xy16		gMapSelectPositionB;
+rct_xyz16		gMapSelectArrowPosition;
+uint8			gMapSelectArrowDirection;
+
 rct_map_element *gMapElements = (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS;
 rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
@@ -3826,7 +3833,7 @@ void map_invalidate_map_selection_tiles()
 {
 	rct_xy16 *position;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 1)))
+	if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
 		return;
 
 	for (position = gMapSelectionTiles; position->x != -1; position++)
@@ -3875,13 +3882,13 @@ void map_invalidate_selection_rect()
 {
 	int x0, y0, x1, y1, left, right, top, bottom;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
+	if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
 		return;
 
-	x0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) + 16;
-	y0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) + 16;
-	x1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) + 16;
-	y1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) + 16;
+	x0 = gMapSelectPositionA.x + 16;
+	y0 = gMapSelectPositionA.y + 16;
+	x1 = gMapSelectPositionB.x + 16;
+	y1 = gMapSelectPositionB.y + 16;
 	map_get_bounding_box(x0, y0, x1, y1, &left, &top, &right, &bottom);
 	left -= 32;
 	right += 32;

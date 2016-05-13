@@ -1247,31 +1247,31 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	// ebp[4] = ebp;
 	// ebp[8] = ebx
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 1) {
+	if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
 		// loc_660FB8:
 		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
-		if (pos.x >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16)
-		    && pos.x <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16)
-		    && pos.y >= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16)
-		    && pos.y <= RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)) {
-
-			uint16 mapSelectionType = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16);
-			if (mapSelectionType >= 0xA) {
+		if (pos.x >= gMapSelectPositionA.x &&
+			pos.x <= gMapSelectPositionB.x &&
+			pos.y >= gMapSelectPositionA.y &&
+			pos.y <= gMapSelectPositionB.y
+		) {
+			uint16 mapSelectionType = gMapSelectType;
+			if (mapSelectionType >= MAP_SELECT_TYPE_EDGE_0) {
 				// Walls
 				// loc_661089:
 				uint32 eax = ((((mapSelectionType - 9) + rotation) & 3) + 0x21) << 19;
 				uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | 0x20000000;
 				paint_attach_to_previous_ps(image_id, 0, 0);
-			} else if (mapSelectionType >= 6) {
+			} else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0) {
 				// loc_661051:(no jump)
 				// Selection split into four quarter segments
-				uint32 eax = ((((mapSelectionType - 6) + rotation) & 3) + 0x27) << 19;
+				uint32 eax = ((((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27) << 19;
 				uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | 0x20000000;
 				paint_attach_to_previous_ps(image_id, 0, 0);
-			} else if (mapSelectionType <= 4) {
+			} else if (mapSelectionType <= MAP_SELECT_TYPE_FULL) {
 				// Corners
 				uint32 eax = mapSelectionType;
-				if (mapSelectionType != 4) {
+				if (mapSelectionType != MAP_SELECT_TYPE_FULL) {
 					eax = (mapSelectionType + rotation) & 3;
 				}
 
@@ -1310,7 +1310,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		}
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 2) {
+	if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
 		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 
 		rct_xy16 * tile;
@@ -1319,9 +1319,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 				continue;
 			}
 
-			uint32 colours = COLOUR_GREY << 24 | COLOUR_SATURATED_GREEN << 19;
-			if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) & 8)) {
-				colours = COLOUR_GREY << 24 | COLOUR_BRIGHT_PURPLE << 19;
+			uint32 colours = COLOUR_GREY << 24 | COLOUR_BRIGHT_PURPLE << 19;
+			if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN) {
+				colours = COLOUR_GREY << 24 | COLOUR_SATURATED_GREEN << 19;
 			}
 
 			uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | 0x20000000;

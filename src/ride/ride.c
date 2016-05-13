@@ -1375,13 +1375,13 @@ void sub_6C9627()
 				_currentTrackBeginX & 0xFFE0,
 				_currentTrackBeginY & 0xFFE0
 			);
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 		}
 		break;
 	default:
 		if (_currentTrackSelectionFlags & 1) {
 			_currentTrackSelectionFlags &= ~1;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) &= ~4;
+			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 			map_invalidate_tile_full(_currentTrackBeginX, _currentTrackBeginY);
 		}
 		sub_6C96C0();
@@ -1693,7 +1693,7 @@ static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int 
 		}
 
 		sub_6C84CE();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	} else {
 		// Remove entrance / exit
 		game_do_command(x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, bl, 0);
