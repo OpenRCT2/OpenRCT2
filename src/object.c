@@ -1764,12 +1764,12 @@ void object_free_scenario_text()
 	}
 }
 
-int object_get_length(rct_object_entry *entry)
+uintptr_t object_get_length(const rct_object_entry *entry)
 {
-	return (int)object_get_next(entry) - (int)entry;
+	return (uintptr_t)object_get_next(entry) - (uintptr_t)entry;
 }
 
-rct_object_entry *object_get_next(rct_object_entry *entry)
+rct_object_entry *object_get_next(const rct_object_entry *entry)
 {
 	uint8 *pos = (uint8*)entry;
 

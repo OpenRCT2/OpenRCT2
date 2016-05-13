@@ -108,6 +108,11 @@ static void get_plugin_path(utf8 *outPath)
 	strcat(outPath, "plugin.dat");
 }
 
+static uintptr_t object_get_length_cached(const rct_object_entry **entryCache, const size_t index)
+{
+	return (uintptr_t)entryCache[index + 1] - (uintptr_t)entryCache[index];
+}
+
 static rct_object_entry **_entryCache = NULL;
 
 static int object_comparator(const void *left, const void *right)
@@ -123,14 +128,15 @@ static void object_list_sort()
 {
 	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry;
 	rct_object_filters *newFilters = NULL, *destFilter = NULL;
-	int numObjects, bufferSize, entrySize;
+	int numObjects, bufferSize;
+	size_t entrySize;
 
 	objectBuffer = &gInstalledObjects;
 	numObjects = gInstalledObjectsCount;
 
 
-	_entryCache = malloc(numObjects * sizeof(rct_object_entry*));
-	size_t *sortLUT = malloc(numObjects * sizeof(size_t));
+	_entryCache = malloc((numObjects + 1)* sizeof(rct_object_entry*));
+	size_t *sortLUT = malloc((numObjects + 1) * sizeof(size_t));
 	entry = *objectBuffer;
 	// This loop initialises entry cache, so it doesn't have to be called 17M
 	// times, but only a few thousand.
@@ -138,10 +144,8 @@ static void object_list_sort()
 	do {
 		_entryCache[i] = entry;
 		sortLUT[i] = i;
-	} while (++i < numObjects && (entry = object_get_next(entry)));
+	} while (i++ < numObjects && (entry = object_get_next(entry)));
 	qsort(sortLUT, numObjects, sizeof(size_t), object_comparator);
-	// Get size of last entry so buffer is allocated properly.
-	entry = object_get_next(entry);
 
 	// Get buffer size
 	bufferSize = (uintptr_t)entry - (uintptr_t)*objectBuffer;
@@ -156,7 +160,7 @@ static void object_list_sort()
 
 	// Copy over sorted objects
 	for (int i = 0; i < numObjects; i++) {
-		entrySize = object_get_length(_entryCache[sortLUT[i]]);
+		entrySize = object_get_length_cached((const rct_object_entry **)_entryCache, sortLUT[i]);
 		memcpy(destEntry, _entryCache[sortLUT[i]], entrySize);
 		destEntry = (rct_object_entry*)((uintptr_t)destEntry + entrySize);
 		if (_installedObjectFilters)
