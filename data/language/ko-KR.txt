@@ -2805,7 +2805,7 @@ STR_2794    :{WINDOW_COLOUR_2}달성: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2
 STR_2795    :정렬
 STR_2796    :{SMALLFONT}{BLACK}놀이기구 목록을 정보 종류에 따라 정렬하여 표시합니다.
 STR_2797    :화면 가장자리에 커서를 가져가면 화면을 스크롤
-STR_2798    :{SMALLFONT}{BLACK}화면 가장자리에 마우스 커서를 가까이 대면 게임 화면을 스크롤할지를 선택합니다
+STR_2798    :{SMALLFONT}{BLACK}화면 가장자리에 마우스 커서를 가까이 대면 게임 화면을 스크롤합니다
 STR_2799    :{SMALLFONT}{BLACK}지정되어 있는 조작 키를 확인하거나 변경합니다
 STR_2800    :{WINDOW_COLOUR_2}총 입장료: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}입장료로 벌어들인 수익: {BLACK}{CURRENCY2DP}
@@ -3777,7 +3777,7 @@ STR_5437    :선택된 세이브 없음
 STR_5438    :명령 에디터가 열려있을 때 변경할 수 없습니다
 STR_5439    :4초 이상의 기다림 명령은 재시작 명령이 필요합니다.
 STR_5440    :커서가 게임 밖으로 나가면 전체 화면을 최소화
-STR_5441    :{SMALLFONT}{BLACK}놀이기구를 RCT1처럼 종류별로 구분합니다.
+STR_5441    :{SMALLFONT}{BLACK}놀이기구를 종류별로 구분합니다. (RCT1처럼)
 STR_5442    :공원 등급 고정:
 STR_5443    :속도{MOVE_X}{87}{STRINGID}
 STR_5444    :속도:
@@ -3923,7 +3923,7 @@ STR_5583    :{COMMA1DP16}m/s
 STR_5584    :국제단위(SI)법
 STR_5585    :{SMALLFONT}{BLACK}체인/발사 속력을 {VELOCITY}으로 만드는 등, 일부 놀이기구 운행 제한을 없애줍니다
 STR_5586    :상점이나 가게를 자동으로 엶
-STR_5587    :{SMALLFONT}{BLACK}이 설정을 켜면 상점이나 가게를 건설한 뒤에 자동으로 열도록 만들어 줍니다.
+STR_5587    :{SMALLFONT}{BLACK}상점이나 가게를 건설한 뒤에 자동으로 엽니다.
 STR_5588    :{SMALLFONT}{BLACK}다른 참가자와 함께 플레이합니다.
 STR_5589    :알림 설정
 STR_5590    :공원 수상 내역

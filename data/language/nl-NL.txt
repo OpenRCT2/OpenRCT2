@@ -3636,7 +3636,7 @@ STR_5300    :{SMALLFONT}{BLACK}Snel ontslaan
 STR_5301    :{MEDIUMFONT}{BLACK}Wist je lening
 STR_5302    :Lening afbetalen
 STR_5303    :Bouwen in pauzemodus toestaan
-STR_5304    :Titelshow:
+STR_5304    :Titelpresentatie:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
@@ -4114,6 +4114,51 @@ STR_5811    :{SMALLFONT}{BLACK}Als dit is ingeschakeld kun je achtbaantreinen to
 STR_5812    :Status multiplayer tonen
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5815    :{SMALLFONT}{BLACK}Toont FPS-teller aan de bovenkant van het scherm.
+STR_5816    :{SMALLFONT}{BLACK}Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
+STR_5817    :{SMALLFONT}{BLACK}[Vereist 'Weergave uitgevoerd door hardware']{NEWLINE}Stelt manier van vergroten in.
+STR_5818    :{SMALLFONT}{BLACK}[Vereist 'Weergave uitgevoerd door hardware']{NEWLINE}Gebruik 'nearest neighbour' als de vergrotingsfactor{NEWLINE}is ingesteld op een geheel getal (1, 2, 3, etc.).
+STR_5819    :{SMALLFONT}{BLACK}[Vereist 'Weergave uitgevoerd door hardware']{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
+STR_5820    :{SMALLFONT}{BLACK}Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
+STR_5821    :{SMALLFONT}{BLACK}Verandert hoe wordt aangegeven dat een attractie, winkel, decorstuk, etc. in aanbouw is.
+STR_5822    :{SMALLFONT}{BLACK}Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
+STR_5823    :{SMALLFONT}{BLACK}Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).
+STR_5824    :{SMALLFONT}{BLACK}Schakelt bliksemeffect tijdens onweer uit.
+STR_5825    :{SMALLFONT}{BLACK}Houdt de muisaanwijzer vast in het venster.
+STR_5826    :{SMALLFONT}{BLACK}Keert de scrollrichting bij het slepen met rechtermuisknop om.
+STR_5827    :{SMALLFONT}{BLACK}Stelt het kleurenschema dat de GUI gebruikt in.
+STR_5828    :{SMALLFONT}{BLACK}Stelt het gebruikte systeem voor onder meer afstanden, snelheden en hoogtes in.
+STR_5829    :{SMALLFONT}{BLACK}Stelt de valuta in. Dit is voornamelijk cosmetisch, er wordt geen exacte wisselkoers gebruikt.
+STR_5830    :{SMALLFONT}{BLACK}Stelt de gebruikte taal in.
+STR_5831    :{SMALLFONT}{BLACK}Stelt de temperatuureenheid in.
+STR_5832    :{SMALLFONT}{BLACK}Toon hoogtes in eenheden in plaats van echte maten.
+STR_5833    :{SMALLFONT}{BLACK}Stelt de datumindeling in.
+STR_5834    :{SMALLFONT}{BLACK}Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
+STR_5835    :{SMALLFONT}{BLACK}Dempt het geluid als het venster de focus kwijtraakt.
+STR_5836    :{SMALLFONT}{BLACK}Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand 'data/css17.dat' uit je RCT1-map kopiëren naar 'data/css50.dat' in je RCT2-map.
+STR_5837    :{SMALLFONT}{BLACK}Eigen thema's voor de GUI aanmaken en beheren.
+STR_5838    :{SMALLFONT}{BLACK}Toont een knop voor financiën in de werkbalk.
+STR_5839    :{SMALLFONT}{BLACK}Toont een knop voor onderzoek en ontwikkeling in de werkbalk.
+STR_5840    :{SMALLFONT}{BLACK}Toont een knop voor cheats in de werkbalk.
+STR_5841    :{SMALLFONT}{BLACK}Toont een knop voor recente berichten in de werkbalk.
+STR_5842    :{SMALLFONT}{BLACK}Stelt in of scenarios moeten worden gegroepeerd op moeilijkheidgraad (zoals in RCT2) of op oorsprong (zoals in RCT1).
+STR_5843    :{SMALLFONT}{BLACK}Vereist dat gemakkelijke scenario's eerst worden voltooid voordat moeilijkere beschikbaar komen (zoals in RCT1).
+STR_5844    :{SMALLFONT}{BLACK}Blijf altijd verbonden met een multiplayerserver,{NEWLINE}zelfs als er desynchronisatie optreedt.
+STR_5845    :{SMALLFONT}{BLACK}Toont knoppen om het spel te debuggen en geeft toegang tot de console.
+STR_5846    :{SMALLFONT}{BLACK}Stelt in hoe vaak OpenRCT2 automatisch een back-up maakt van je park.
+STR_5847    :{SMALLFONT}{BLACK}Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario's hebt geïmporteerd.
+STR_5848    :{SMALLFONT}{BLACK}Eigen titelpresentaties maken en beheren.
+STR_5849    :{SMALLFONT}{BLACK}Nieuwe werknemers automatisch plaatsen.
+STR_5850    :{SMALLFONT}{BLACK}Nieuwe klusjesmannen maaien standaard gras (zoals in RCT1).
+STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe attracties in.
+STR_5852    :{SMALLFONT}{BLACK}Stelt de naam van het Twitch.tv-kanaal in waarmee moet worden geïntegreerd.
+STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
+STR_5854    :{SMALLFONT}{BLACK}Attractiemuziek in-/uitschakelen.
+STR_5855    :{SMALLFONT}{BLACK}Stelt in of er volledige scherm, een randloos venster of een regulier venster moet worden gebruikt.
+STR_5856    :{SMALLFONT}{BLACK}Stelt de gebruikte schermresolutie bij volledig scherm in.
+STR_5857    :{SMALLFONT}{BLACK}Spelopties
+STR_5858    :{SMALLFONT}{BLACK}Leidt de grafische uitvoer door de GPU. Dit verbetert de compatibiliteit met schermopnamesoftware, maar kan de prestaties iets verminderen.
+STR_5859    :{SMALLFONT}{BLACK}Frame tweening gebruiken om de weergave vloeiender te maken. Als dit is uitgeschakeld zal het spel draaien op 40 FPS.
 
 #############
 # Scenarios #
