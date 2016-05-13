@@ -220,8 +220,8 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 	char result[MAX_PATH];
 	size_t size;
 	dialog_type dtype;
-	char *action;
-	char *flags;
+	char *action = NULL;
+	char *flags = NULL;
 	char filter[MAX_PATH] = { 0 };
 	char filterPatternRegex[64];
 

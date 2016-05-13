@@ -29,13 +29,14 @@ void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, r
 	int image_id;
 	int baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
 
+	const uint8 rotation = get_current_rotation();
 	// Draw back:
 	image_id = (baseImage_id + 2) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
-	sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, rotation);
 
 	// Draw front:
 	image_id = (baseImage_id + 1) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
-	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 
 	// Draw peeps:
 	if (RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*)->zoom_level < 2) {
@@ -45,18 +46,18 @@ void vehicle_visual_launched_freefall(int x, int imageDirection, int y, int z, r
 				baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
 			}
 			image_id = (baseImage_id + ((((imageDirection / 8) + 0) & 3) * 3)) | (vehicle->peep_tshirt_colours[0] << 19) | (vehicle->peep_tshirt_colours[1] << 24) | 0xA0000000;
-			sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+			sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 			if (vehicle->num_peeps > 2) {
 				image_id = (baseImage_id + ((((imageDirection / 8) + 1) & 3) * 3)) | (vehicle->peep_tshirt_colours[2] << 19) | (vehicle->peep_tshirt_colours[3] << 24) | 0xA0000000;
-				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 			}
 			if (vehicle->num_peeps > 4) {
 				image_id = (baseImage_id + ((((imageDirection / 8) + 2) & 3) * 3)) | (vehicle->peep_tshirt_colours[4] << 19) | (vehicle->peep_tshirt_colours[5] << 24) | 0xA0000000;
-				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 			}
 			if (vehicle->num_peeps > 6) {
 				image_id = (baseImage_id + ((((imageDirection / 8) + 3) & 3) * 3)) | (vehicle->peep_tshirt_colours[6] << 19) | (vehicle->peep_tshirt_colours[7] << 24) | 0xA0000000;
-				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+				sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 			}
 		}
 	}

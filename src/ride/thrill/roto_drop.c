@@ -33,13 +33,14 @@ void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehic
 		baseImage_id += (vehicle->restraints_position / 64);
 	}
 
+	const uint8 rotation = get_current_rotation();
 	// Draw back:
 	image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
-	sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, rotation);
 
 	// Draw front:
 	image_id = (baseImage_id + 4) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | 0xA0000000;
-	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+	sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 
 	uint8 riding_peep_sprites[64];
 	memset(riding_peep_sprites, 0xFF, sizeof(riding_peep_sprites));
@@ -62,7 +63,7 @@ void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehic
 				baseImage_id += vehicle->restraints_position / 64;
 			}
 			image_id = baseImage_id | (riding_peep_sprites[i] << 19) | 0x20000000;
-			sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, get_current_rotation());
+			sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 		}
 	};
 

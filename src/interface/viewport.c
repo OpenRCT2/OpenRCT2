@@ -197,6 +197,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	sint16 start_y = *y;
 	sint16 height = 0;
 
+	uint32 rotation = get_current_rotation();
 	rct_xy16 pos;
 	for (int i = 0; i < 6; i++) {
 		pos = viewport_coord_to_map_coord(start_x, start_y, height);
@@ -208,7 +209,6 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 		if (pos.x > max && pos.y > max) {
 			int x_corr[] = { -1, 1, 1, -1 };
 			int y_corr[] = { -1, -1, 1, 1 };
-			uint32 rotation = get_current_rotation();
 			pos.x += x_corr[rotation] * height;
 			pos.y += y_corr[rotation] * height;
 		}

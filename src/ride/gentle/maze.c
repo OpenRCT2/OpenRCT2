@@ -52,9 +52,10 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	uint16 maze_entry = mapElement->properties.track.maze_entry;
 	maze_entry = rol16(maze_entry, direction * 4);
 
+	uint32 rotation = get_current_rotation();
 	// draw ground
 	int image_id = 2485 | RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_98196C(image_id, 0, 0, 32, 32, 0, height, get_current_rotation());
+	sub_98196C(image_id, 0, 0, 32, 32, 0, height, rotation);
 
 	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
 
@@ -80,98 +81,98 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_CENTER;
 	if (maze_entry & (1 << 3))
-		sub_98197C(image_id, 2, 2, 10, 10, 9, height, 3, 3, height + 2, get_current_rotation());
+		sub_98197C(image_id, 2, 2, 10, 10, 9, height, 3, 3, height + 2, rotation);
 
 	if (maze_entry & (1 << 7))
-		sub_98197C(image_id, 2, 18, 10, 10, 9, height, 3, 19, height + 2, get_current_rotation());
+		sub_98197C(image_id, 2, 18, 10, 10, 9, height, 3, 19, height + 2, rotation);
 
 	if (maze_entry & (1 << 11))
-		sub_98197C(image_id, 18, 18, 10, 10, 9, height, 19, 19, height + 2, get_current_rotation());
+		sub_98197C(image_id, 18, 18, 10, 10, 9, height, 19, 19, height + 2, rotation);
 
 	if (maze_entry & (1 << 15))
-		sub_98197C(image_id, 18, 2, 10, 10, 9, height, 19, 3, height + 2, get_current_rotation());
+		sub_98197C(image_id, 18, 2, 10, 10, 9, height, 19, 3, height + 2, rotation);
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_TOP_LEFT;
 	if (maze_entry & (1 << 0))
-		sub_98197C(image_id, 2, 0, 10, 1, 9, height, 3, 1, height + 2, get_current_rotation());
+		sub_98197C(image_id, 2, 0, 10, 1, 9, height, 3, 1, height + 2, rotation);
 
 	if (maze_entry & (1 << 13))
-		sub_98197C(image_id, 18, 0, 10, 1, 9, height, 19, 1, height + 2, get_current_rotation());
+		sub_98197C(image_id, 18, 0, 10, 1, 9, height, 19, 1, height + 2, rotation);
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_RIGHT;
 	if (maze_entry & (1 << 5))
-		sub_98197C(image_id, 2, 30, 10, 1, 9, height, 3, 30, height + 2, get_current_rotation());
+		sub_98197C(image_id, 2, 30, 10, 1, 9, height, 3, 30, height + 2, rotation);
 
 	if (maze_entry & (1 << 8))
-		sub_98197C(image_id, 18, 30, 10, 1, 9, height, 19, 30, height + 2, get_current_rotation());
+		sub_98197C(image_id, 18, 30, 10, 1, 9, height, 19, 30, height + 2, rotation);
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_TOP_RIGHT;
 	if (maze_entry & (1 << 1))
-		sub_98197C(image_id, 0, 2, 1, 10, 9, height, 1, 3, height + 2, get_current_rotation());
+		sub_98197C(image_id, 0, 2, 1, 10, 9, height, 1, 3, height + 2, rotation);
 
 	if (maze_entry & (1 << 4))
-		sub_98197C(image_id, 0, 18, 1, 10, 9, height, 1, 19, height + 2, get_current_rotation());
+		sub_98197C(image_id, 0, 18, 1, 10, 9, height, 1, 19, height + 2, rotation);
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_BOTTOM_LEFT;
 	if (maze_entry & (1 << 12))
-		sub_98197C(image_id, 30, 2, 1, 10, 9, height, 30, 3, height + 2, get_current_rotation());
+		sub_98197C(image_id, 30, 2, 1, 10, 9, height, 30, 3, height + 2, rotation);
 
 	if (maze_entry & (1 << 9))
-		sub_98197C(image_id, 30, 18, 1, 10, 9, height, 30, 19, height + 2, get_current_rotation());
+		sub_98197C(image_id, 30, 18, 1, 10, 9, height, 30, 19, height + 2, rotation);
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_INNER_NE_SW;
 	if (maze_entry & (1 << 2))
-		sub_98197C(image_id, 2, 14, 10, 4, 9, height, 3, 14, height + 2, get_current_rotation());
+		sub_98197C(image_id, 2, 14, 10, 4, 9, height, 3, 14, height + 2, rotation);
 
 	if (maze_entry & (1 << 10))
-		sub_98197C(image_id, 18, 14, 10, 4, 9, height, 19, 14, height + 2, get_current_rotation());
+		sub_98197C(image_id, 18, 14, 10, 4, 9, height, 19, 14, height + 2, rotation);
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_WALL_INNER_NW_SE;
 	if (maze_entry & (1 << 14))
-		sub_98197C(image_id, 14, 2, 4, 10, 9, height, 14, 3, height + 2, get_current_rotation());
+		sub_98197C(image_id, 14, 2, 4, 10, 9, height, 14, 3, height + 2, rotation);
 
 	if (maze_entry & (1 << 6))
-		sub_98197C(image_id, 14, 18, 4, 10, 9, height, 14, 19, height + 2, get_current_rotation());
+		sub_98197C(image_id, 14, 18, 4, 10, 9, height, 14, 19, height + 2, rotation);
 
 
 	image_id = base_image_id + SPR_MAZE_OFFSET_COLUMN_CORNER;
 	if (maze_entry & (1 << 0 | 1 << 1))
-		sub_98197C(image_id, 0, 0, 1, 1, 9, height, 1, 1, height + 2, get_current_rotation());
+		sub_98197C(image_id, 0, 0, 1, 1, 9, height, 1, 1, height + 2, rotation);
 
 	if (maze_entry & (1 << 4 | 1 << 5))
-		sub_98197C(image_id, 0, 30, 1, 1, 9, height, 1, 30, height + 2, get_current_rotation());
+		sub_98197C(image_id, 0, 30, 1, 1, 9, height, 1, 30, height + 2, rotation);
 
 	if (maze_entry & (1 << 8 | 1 << 9))
-		sub_98197C(image_id, 30, 30, 1, 1, 9, height, 30, 30, height + 2, get_current_rotation());
+		sub_98197C(image_id, 30, 30, 1, 1, 9, height, 30, 30, height + 2, rotation);
 
 	if (maze_entry & (1 << 12 | 1 << 13))
-		sub_98197C(image_id, 30, 0, 1, 1, 9, height, 30, 1, height + 2, get_current_rotation());
+		sub_98197C(image_id, 30, 0, 1, 1, 9, height, 30, 1, height + 2, rotation);
 
 
 	if (maze_entry & (1 << 0 | 1 << 13 | 1 << 14))
-		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_LEFT, 14, 0, 2, 1, 9, height, 15, 1, height + 2, get_current_rotation());
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_LEFT, 14, 0, 2, 1, 9, height, 15, 1, height + 2, rotation);
 
 
 	if (maze_entry & (1 << 5 | 1 << 6 | 1 << 8))
-		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_RIGHT, 14, 30, 2, 1, 9, height, 15, 30, height + 2, get_current_rotation());
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_RIGHT, 14, 30, 2, 1, 9, height, 15, 30, height + 2, rotation);
 
 
 	if (maze_entry & (1 << 1 | 1 << 2 | 1 << 4))
-		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_RIGHT, 0, 14, 1, 2, 9, height, 1, 15, height + 2, get_current_rotation());
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_TOP_RIGHT, 0, 14, 1, 2, 9, height, 1, 15, height + 2, rotation);
 
 
 	if (maze_entry & (1 << 9 | 1 << 10 | 1 << 12))
-		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT, 30, 14, 1, 2, 9, height, 30, 15, height + 2, get_current_rotation());
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT, 30, 14, 1, 2, 9, height, 30, 15, height + 2, rotation);
 	
 
 	if (maze_entry & (1 << 2 | 1 << 6 | 1 << 10 | 1 << 14)) {
-		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTER, 14, 14, 2, 2, 8, height, 15, 15, height + 2, get_current_rotation());
+		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTER, 14, 14, 2, 2, 8, height, 15, 15, height + 2, rotation);
 
 		RCT2_GLOBAL(0x141E9C4, uint16) = height + 12;
 		RCT2_GLOBAL(0x141E9C6, uint8) = 0x20;
