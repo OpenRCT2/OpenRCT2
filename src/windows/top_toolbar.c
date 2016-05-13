@@ -1442,12 +1442,10 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 	int selectedTab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
 	uint8 sceneryType = (selectedTab & 0xFF00) >> 8;
-	uint8 selectedScenery = selectedTab & 0xFF;
 
 	if (selectedTab == -1) return;
 
 	sint16 gridX, gridY;
-	int ebp = selectedTab;
 	uint32 parameter_1, parameter_2, parameter_3;
 
 	sub_6E1F34(x, y, selectedTab, &gridX, &gridY, &parameter_1, &parameter_2, &parameter_3);
@@ -2110,7 +2108,6 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 	scenery_remove_ghost_tool_placement();
 
 	uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
-	uint8 selected_scenery = selected_tab & 0xFF;
 	money32 cost = 0;
 	rct_map_element* mapElement;
 

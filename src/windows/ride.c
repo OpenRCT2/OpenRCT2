@@ -4627,8 +4627,6 @@ static void cancel_scenery_selection(){
  */
 static void setup_scenery_selection(rct_window* w)
 {
-	rct_ride* ride = get_ride(w->number);
-
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
 		cancel_scenery_selection();
 	}
@@ -4754,8 +4752,6 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 {
 	if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
 		return;
-
-	rct_ride *ride = get_ride(w->number);
 
 	gDropdownItemsFormat[0] = STR_SAVE_TRACK_DESIGN_ITEM;
 	gDropdownItemsFormat[1] = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;

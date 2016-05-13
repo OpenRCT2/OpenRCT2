@@ -54,7 +54,6 @@ static utf8 _consoleBuffer[CONSOLE_BUFFER_SIZE] = { 0 };
 static utf8 *_consoleBufferPointer = _consoleBuffer;
 static utf8 *_consoleViewBufferStart = _consoleBuffer;
 static utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE];
-static utf8 *_consoleCurrentLinePointer = _consoleCurrentLine;
 static int _consoleCaretTicks;
 static utf8 _consolePrintfBuffer[CONSOLE_BUFFER_2_SIZE];
 static utf8 _consoleErrorBuffer[CONSOLE_BUFFER_2_SIZE];
@@ -806,8 +805,6 @@ static int cc_load_object(const utf8 **argv, int argc) {
 		utf8 path[MAX_PATH];
 
 		substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
-		// Require pointer to start of filename
-		utf8* last_char = path + strlen(path);
 		strcat(path, ".DAT\0");
 
 		rct_object_entry entry;

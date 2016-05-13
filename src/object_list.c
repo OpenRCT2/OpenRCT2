@@ -775,8 +775,6 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 		return 0;
 	}
 
-	uint8 objectType = entry->flags & 0xF;
-
 	// See above note
 	RCT2_GLOBAL(0x009ADAF4, sint32) = -1;
 	RCT2_GLOBAL(0x009ADAFD, uint8) = 0;

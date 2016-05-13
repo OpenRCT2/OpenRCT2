@@ -34,7 +34,6 @@ void intro_update()
 {
 	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 	int screenWidth = gScreenWidth;
-	int screenHeight = gScreenHeight;
 	uint8 (*part) = RCT2_ADDRESS(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8);
 
 	screen_intro_process_mouse_input();

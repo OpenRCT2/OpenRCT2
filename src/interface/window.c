@@ -1937,9 +1937,6 @@ void window_event_unknown_0E_call(rct_window *w)
 void window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
 {
 	if (w->event_handlers->get_scroll_size != NULL) {
-		rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
-		int widgetIndex = window_get_widget_index(w, widget);
-
 		w->event_handlers->get_scroll_size(w, scrollIndex, width, height);
 	}
 }

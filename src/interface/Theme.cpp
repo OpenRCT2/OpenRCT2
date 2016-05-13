@@ -414,7 +414,6 @@ UITheme * UITheme::FromJson(const json_t * json)
     }
 
     json_t * jsonEntries = json_object_get(json, "entries");
-    size_t numEntries = json_object_size(jsonEntries);
 
     UITheme * result = nullptr;
     try
@@ -436,7 +435,6 @@ UITheme * UITheme::FromJson(const json_t * json)
 
         const char * jkey;
         json_t     * jvalue;
-        size_t       i = 0;
         json_object_foreach(jsonEntries, jkey, jvalue)
         {
             const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(jkey);

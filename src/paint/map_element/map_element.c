@@ -42,7 +42,6 @@ static void sub_68B3FB(int x, int y);
  */
 void map_element_paint_setup(int x, int y)
 {
-	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	if (
 		x < gMapSizeUnits &&
 		y < gMapSizeUnits &&

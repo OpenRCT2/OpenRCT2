@@ -590,7 +590,6 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int resourceLength = strlen(resourcePath);
 
 		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
-		bool fileExists = true;
 		SDL_RWops *file;
 
 		spriteFileHeader.num_entries = 0;

@@ -1012,7 +1012,6 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 
 void Network::KickPlayer(int playerId)
 {
-	NetworkPlayer *player = GetPlayerByID(playerId);
 	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		if ((*it)->player->id == playerId) {
 			// Disconnect the client gracefully

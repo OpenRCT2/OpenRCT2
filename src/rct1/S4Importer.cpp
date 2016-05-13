@@ -232,7 +232,6 @@ void S4Importer::AddAvailableEntriesFromMap()
         {
             uint8 pathColour = mapElement->type & 3;
             uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
-            uint8 supportsType = (mapElement->flags & 0x60) >> 5;
 
             pathType = (pathType << 2) | pathColour;
             uint8 pathAdditionsType = mapElement->properties.path.additions & 0x0F;
@@ -1062,7 +1061,7 @@ void S4Importer::ImportSavedView()
 
 void S4Importer::ClearExtraTileEntries()
 {
-	// Reset the map tile pointers
+    // Reset the map tile pointers
     for (int i = 0; i < 0x10000; i++)
     {
         gMapElementTilePointers[i] = (rct_map_element *)-1;
@@ -1103,7 +1102,7 @@ void S4Importer::ClearExtraTileEntries()
         }
     }
 
-	// 128 extra rows left to fill with blank tiles
+    // 128 extra rows left to fill with blank tiles
     for (int y = 0; y < 128 * 256; y++)
     {
         nextFreeMapElement->type = MAP_ELEMENT_TYPE_SURFACE;
@@ -1233,7 +1232,6 @@ void S4Importer::FixPaths()
             // Type
             uint8 pathColour = mapElement->type & 3;
             uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
-            uint8 supportsType = (mapElement->flags & 0x60) >> 5;
 
             pathType = (pathType << 2) | pathColour;
             uint8 entryIndex = _pathTypeToEntryMap[pathType];

@@ -284,8 +284,6 @@ static void window_server_list_scroll_mousedown(rct_window *w, int scrollIndex, 
 	if (serverIndex < 0) return;
 	if (serverIndex >= _numServerEntries) return;
 
-	char *serverAddress = _serverEntries[serverIndex].address;
-
 	rct_widget *listWidget = &w->widgets[WIDX_LIST];
 	int ddx = w->x + listWidget->left + x + 2 - w->scrolls[0].h_left;
 	int ddy = w->y + listWidget->top + y + 2 - w->scrolls[0].v_top;
@@ -782,7 +780,6 @@ static void fetch_servers_callback(http_json_response* response)
 		json_t *maxPlayers = json_object_get(server, "maxPlayers");
 		json_t *ip = json_object_get(server, "ip");
 		json_t *ip4 = json_object_get(ip, "v4");
-		json_t *ip6 = json_object_get(ip, "v6");
 		json_t *addressIp = json_array_get(ip4, 0);
 
 		if (name == NULL || version == NULL)

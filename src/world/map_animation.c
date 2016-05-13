@@ -310,7 +310,6 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 {
 	rct_map_element *mapElement;
 
-	bool wasInvalidated = false;
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		if (mapElement->base_height != baseZ)
@@ -319,7 +318,6 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 			continue;
 
 		if (mapElement->properties.track.type == TRACK_ELEM_ON_RIDE_PHOTO) {
-			int z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 			if (game_is_paused()) {
 				return false;

@@ -331,7 +331,6 @@ static void visible_list_refresh(rct_window *w)
 	for (int i = 0; i < numObjects; i++) {
 		rct_object_filters *filter = get_object_filter(i);
 		int type = entry->flags & 0x0F;
-		int source = (entry->flags & 0xF0) >> 4;
 		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry, filter) && filter_chunks(entry, filter)) {
 			currentListItem->entry = entry;
 			currentListItem->filter = filter;

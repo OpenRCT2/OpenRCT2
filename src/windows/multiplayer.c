@@ -338,10 +338,6 @@ static void window_multiplayer_players_scrollmousedown(rct_window *w, int scroll
 	w->selected_list_item = index;
 	window_invalidate(w);
 
-	rct_widget *listWidget = &w->widgets[WIDX_LIST];
-	int ddx = w->x + listWidget->left + x - w->scrolls[0].h_left;
-	int ddy = w->y + listWidget->top + y - w->scrolls[0].v_top;
-
 	window_player_open(network_get_player_id(index));
 }
 
@@ -558,10 +554,6 @@ static void window_multiplayer_groups_scrollmousedown(rct_window *w, int scrollI
 
 	w->selected_list_item = index;
 	window_invalidate(w);
-
-	rct_widget *listWidget = &w->widgets[WIDX_LIST];
-	int ddx = w->x + listWidget->left + x - w->scrolls[0].h_left;
-	int ddy = w->y + listWidget->top + y - w->scrolls[0].v_top;
 
 	game_do_command(2 | (_selectedGroup << 8), GAME_COMMAND_FLAG_APPLY, index, 0, GAME_COMMAND_MODIFY_GROUPS, 0, 0);
 }

@@ -3939,7 +3939,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 		STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
 
 	game_command_callback = game_command_callback_place_ride_entrance_or_exit;
-	money32 cost = game_do_command(
+	game_do_command(
 		RCT2_GLOBAL(0x00F44188, uint16),
 		(GAME_COMMAND_FLAG_APPLY) | ((RCT2_GLOBAL(0x00F44194, uint8) ^ 2) << 8),
 		RCT2_GLOBAL(0x00F4418A, uint16),

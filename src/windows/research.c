@@ -521,7 +521,6 @@ static void window_research_funding_invalidate(rct_window *w)
 
 	// Checkboxes
 	uint8 activeResearchTypes = gResearchPriorities;
-	int uncompletedResearchTypes = gResearchUncompletedCategories;
 	for (int i = 0; i < 7; i++) {
 		int mask = 1 << i;
 		int widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);

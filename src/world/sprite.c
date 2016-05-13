@@ -275,7 +275,6 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
 {
 	invalidate_sprite_2((rct_sprite*)steam);
 
-	int original_var24 = steam->var_24;
 	steam->var_24 += 0x5555;
 	if (steam->var_24 < 0x5555) {
 		sprite_move(
