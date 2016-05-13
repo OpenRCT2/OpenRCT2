@@ -1943,6 +1943,12 @@ static void window_editor_object_selection_manage_tracks()
 		gResearchedTrackTypesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
 	}
 
+
+	for (int i = countof(RideTypePossibleTrackConfigurations); i < 128; i++) {
+		gResearchedTrackTypesA[i] = (uint32)-1;
+		gResearchedTrackTypesB[i] = (uint32)-1;
+	}
+
 	for (int i = 0; i < 8; i++) {
 		gResearchedRideEntries[i] = 0xFFFFFFFF;
 	}

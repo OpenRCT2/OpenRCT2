@@ -50,6 +50,7 @@ public:
 S6Importer::S6Importer()
 {
     FixIssues = false;
+    memset(&_s6, 0, sizeof(_s6));
 }
 
 void S6Importer::LoadSavedGame(const utf8 * path)
