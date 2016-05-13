@@ -276,6 +276,10 @@ int rct2_startup_checks()
 
 void rct2_draw()
 {
+	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
+		return;
+	}
+
 	redraw_rain();
 	window_update_all();
 	gfx_invalidate_pickedup_peep();
@@ -286,13 +290,8 @@ void rct2_draw()
 	chat_draw();
 	console_draw(&gScreenDPI);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
-		//intro
-	} else if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
-		//title
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		DrawOpenRCT2(0, gScreenHeight - 20);
-	} else {
-		//game
 	}
 
 	if (gConfigGeneral.show_fps) {
