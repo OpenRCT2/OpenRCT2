@@ -17,6 +17,7 @@
 #include "../addresses.h"
 #include "../config.h"
 #include "../game.h"
+#include "../intro.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -83,7 +84,7 @@ void window_title_options_open()
 
 static void window_title_options_mouseup(rct_window *w, int widgetIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
+	if (gIntroState != INTRO_STATE_NONE)
 		return;
 
 	if (widgetIndex == 0)

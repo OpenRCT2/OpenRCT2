@@ -25,6 +25,7 @@
 #include "interface/themes.h"
 #include "interface/window.h"
 #include "interface/viewport.h"
+#include "intro.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "network/network.h"
@@ -264,13 +265,13 @@ bool openrct2_initialise()
 void openrct2_launch()
 {
 	if (openrct2_initialise()) {
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		gIntroState = INTRO_STATE_NONE;
 		if((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
 			gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
 
 		switch (gOpenRCT2StartupAction) {
 		case STARTUP_ACTION_INTRO:
-			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 1;
+			gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
 			break;
 		case STARTUP_ACTION_TITLE:
 			gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
