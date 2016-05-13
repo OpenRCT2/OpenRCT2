@@ -97,9 +97,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
-		char buffer[100];
-		sprintf(buffer, "Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
-		log_error(buffer);
+		log_error("Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 		free(chunk);
 		return 0;
