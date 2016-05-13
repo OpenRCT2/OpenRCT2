@@ -112,7 +112,7 @@ static void object_list_sort()
 {
 	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry = NULL;
 	rct_object_filters *newFilters = NULL, *destFilter = NULL;
-	int numObjects, i, j, bufferSize, entrySize, lowestIndex = 0;
+	int numObjects, bufferSize, entrySize, lowestIndex = 0;
 	char *objectName, *lowestString;
 	uint8 *copied;
 
@@ -122,7 +122,7 @@ static void object_list_sort()
 
 	// Get buffer size
 	entry = *objectBuffer;
-	for (i = 0; i < numObjects; i++)
+	for (int i = 0; i < numObjects; i++)
 		entry = object_get_next(entry);
 	bufferSize = (int)entry - (int)*objectBuffer;
 
@@ -134,21 +134,28 @@ static void object_list_sort()
 		destFilter = newFilters;
 	}
 
+	rct_object_entry **entryCache = malloc(numObjects * sizeof(rct_object_entry*));
+	entry = *objectBuffer;
+	// This loop initialises entry cache, so it doesn't have to be called 17M
+	// times, but only a few thousand.
+	int i = 0;
+	do {
+		entryCache[i] = entry;
+	} while (++i < numObjects && (entry = object_get_next(entry)));
+
 	// Copy over sorted objects
-	for (i = 0; i < numObjects; i++) {
+	for (int i = 0; i < numObjects; i++) {
 		// Find next lowest string
 		lowestString = NULL;
-		entry = *objectBuffer;
-		for (j = 0; j < numObjects; j++) {
+		for (int j = 0; j < numObjects; j++) {
 			if (!copied[j]) {
-				objectName = object_get_name(entry);
+				objectName = object_get_name(entryCache[j]);
 				if (lowestString == NULL || strcmp(objectName, lowestString) < 0) {
-					lowestEntry = entry;
+					lowestEntry = entryCache[j];
 					lowestString = objectName;
 					lowestIndex = j;
 				}
 			}
-			entry = object_get_next(entry);
 		}
 		entrySize = object_get_length(lowestEntry);
 		memcpy(destEntry, lowestEntry, entrySize);
@@ -157,6 +164,7 @@ static void object_list_sort()
 			destFilter[i] = _installedObjectFilters[lowestIndex];
 		copied[lowestIndex] = 1;
 	}
+	free(entryCache);
 
 	// Replace old buffer
 	free(*objectBuffer);
