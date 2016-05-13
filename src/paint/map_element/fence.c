@@ -143,7 +143,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     rct_scenery_entry * sceneryEntry = g_wallSceneryEntries[map_element->properties.fence.type];
     uint32 frameNum = 0;
 
-    if (sceneryEntry->wall.flags2 & WALL_SCENERY_FLAG5) {
+    if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG_5) {
         // animation?
         frameNum = (gCurrentTicks & 7) * 2;
     }
@@ -186,7 +186,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     uint8 ah = sceneryEntry->wall.height * 8 - 2;
 
 
-    if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG5) {
+    if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
         rct_xyz16 offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
         uint32 ebx = (map_element->properties.fence.item[2] >> 3) & 0x1F;
         switch (direction) {

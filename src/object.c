@@ -1116,7 +1116,7 @@ static void object_type_wall_paint(void *objectEntry, rct_drawpixelinfo *dpi, si
 	if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG2){
 		imageId = sceneryEntry->image + 0x44500006;
 		gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
-	} else if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG5){
+	} else if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR){
 		imageId++;
 		gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	}
