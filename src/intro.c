@@ -16,6 +16,7 @@
 
 #include "addresses.h"
 #include "audio/audio.h"
+#include "audio/mixer.h"
 #include "drawing/drawing.h"
 #include "intro.h"
 #include "localisation/localisation.h"
@@ -26,8 +27,8 @@ static void screen_intro_process_mouse_input();
 static void screen_intro_process_keyboard_input();
 static void screen_intro_skip_part();
 
-static int _sound_playing_flag = 0;		///< Used to test if a sound is currently playing.
 static int _tick_counter;				///< Used mainly for timing but also for Y coordinate and fading.
+static void *_soundChannel = NULL;
 
 // rct2: 0x0068E966
 void intro_update()
@@ -53,13 +54,7 @@ void intro_update()
 		_tick_counter = -580;
 
 		// Chain lift sound
-		_sound_playing_flag = 0;
-		/*if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
-			// Prepare and play the sound
-			if (sound_prepare(SOUND_LIFT_7, &_prepared_sound, 0, 1))
-				if (sound_play(&_prepared_sound, 1, 0, 0, 0))
-					_sound_playing_flag = 1;
-		}*/
+		_soundChannel = Mixer_Play_Effect(SOUND_LIFT_7, MIXER_LOOP_INFINITE, SDL_MIX_MAXVOLUME, 0.5f, 1, true);
 
 		// Move to next part
 		(*part)++;
@@ -125,18 +120,13 @@ void intro_update()
 		// Check if logo is at 259 pixels
 		if (_tick_counter == 259) {
 			// Stop the chain lift sound
-			if (_sound_playing_flag == 1) {
-				//sound_stop(&_prepared_sound);
-				_sound_playing_flag = 0;
+			if (_soundChannel != NULL) {
+				Mixer_Stop_Channel(_soundChannel);
+				_soundChannel = NULL;
 			}
 
 			// Play the track friction sound
-			/*if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1) {
-				// Prepare and play the sound
-				if (sound_prepare(SOUND_TRACK_FRICTION_3, &_prepared_sound, 1, 1))
-					if (sound_play(&_prepared_sound, 1, -800, 0, 0x3A98))
-						_sound_playing_flag = 1;
-			}*/
+			_soundChannel = Mixer_Play_Effect(SOUND_TRACK_FRICTION_3, MIXER_LOOP_INFINITE, SDL_MIX_MAXVOLUME, 0.25f, 0.75, true);
 		}
 
 		// Check if logo is off the screen .ish
@@ -156,16 +146,13 @@ void intro_update()
 			gfx_transpose_palette(23224, 0);
 
 			// Stop the track friction sound
-			if (_sound_playing_flag == 1) {
-				//sound_stop(&_prepared_sound);
-				_sound_playing_flag = 0;
+			if (_soundChannel != NULL) {
+				Mixer_Stop_Channel(_soundChannel);
+				_soundChannel = NULL;
 			}
 
 			// Play long peep scream sound
-			/*if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_SOUND_DEVICE, sint32) != -1)
-				if (sound_prepare(SOUND_SCREAM_1, &_prepared_sound, 0, 1))
-					if (sound_play(&_prepared_sound, 0, 0, 0, 0))
-						_sound_playing_flag = 1;*/
+			_soundChannel = Mixer_Play_Effect(SOUND_SCREAM_1, MIXER_LOOP_NONE, SDL_MIX_MAXVOLUME, 0.5f, 1, true);
 
 			// Move to the next part
 			(*part)++;
@@ -223,9 +210,9 @@ void intro_update()
 		gfx_clear(screenDPI, 10);
 
 		// Stop any playing sound
-		if (_sound_playing_flag == 1) {
-			//sound_stop(&_prepared_sound);
-			_sound_playing_flag = 0;
+		if (_soundChannel != NULL) {
+			Mixer_Stop_Channel(_soundChannel);
+			_soundChannel = NULL;
 		}
 
 		// Move to next part
