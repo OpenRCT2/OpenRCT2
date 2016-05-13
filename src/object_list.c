@@ -140,6 +140,8 @@ static void object_list_sort()
 		sortLUT[i] = i;
 	} while (++i < numObjects && (entry = object_get_next(entry)));
 	qsort(sortLUT, numObjects, sizeof(size_t), object_comparator);
+	// Get size of last entry so buffer is allocated properly.
+	entry = object_get_next(entry);
 
 	// Get buffer size
 	bufferSize = (uintptr_t)entry - (uintptr_t)*objectBuffer;
