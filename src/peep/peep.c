@@ -40,7 +40,7 @@
 #include "peep.h"
 #include "staff.h"
 
-extern uint8 *gPeepWarningThrottle = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_WARNING_THROTTLE, uint8);
+uint8 *gPeepWarningThrottle = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_WARNING_THROTTLE, uint8);
 
 enum {
 	PATH_SEARCH_DEAD_END,
