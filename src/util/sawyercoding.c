@@ -293,21 +293,22 @@ int sawyercoding_validate_track_checksum(const uint8* src, size_t length){
  */
 static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length)
 {
-	size_t i, j, count;
+	size_t count;
 	uint8 *dst, rleCodeByte;
 
 	dst = dst_buffer;
 
-	for (i = 0; i < length; i++) {
+	for (int i = 0; i < length; i++) {
 		rleCodeByte = src_buffer[i];
 		if (rleCodeByte & 128) {
 			i++;
 			count = 257 - rleCodeByte;
-			for (j = 0; j < count; j++)
-				*dst++ = src_buffer[i];
+			memset(dst, src_buffer[i], count);
+			dst = (uint8*)((uintptr_t)dst + count);
 		} else {
-			for (j = 0; j <= rleCodeByte; j++)
-				*dst++ = src_buffer[++i];
+			memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
+			dst = (uint8*)((uintptr_t)dst + rleCodeByte + 1);
+			i += rleCodeByte + 1;
 		}
 	}
 
@@ -321,7 +322,7 @@ static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_
  */
 static size_t decode_chunk_repeat(uint8 *buffer, size_t length)
 {
-	size_t i, j, count;
+	size_t i, count;
 	uint8 *src, *dst, *copyOffset;
 
 	// Backup buffer
@@ -335,8 +336,8 @@ static size_t decode_chunk_repeat(uint8 *buffer, size_t length)
 		} else {
 			count = (src[i] & 7) + 1;
 			copyOffset = dst + (int)(src[i] >> 3) - 32;
-			for (j = 0; j < count; j++)
-				*dst++ = *copyOffset++;
+			memcpy(dst, copyOffset, count);
+			dst = (uint8*)((uintptr_t)dst + count);
 		}
 	}
 
@@ -381,9 +382,10 @@ static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_
 
 		if ((count && *src == src[1]) || count > 125){
 			*dst++ = count - 1;
-			for (; count != 0; --count){
-				*dst++ = *src_norm_start++;
-			}
+			memcpy(dst, src_norm_start, count);
+			dst += count;
+			src_norm_start += count;
+			count = 0;
 		}
 		if (*src == src[1]){
 			for (; (count < 125) && ((src + count) < end_src); count++){
@@ -403,9 +405,10 @@ static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_
 	if (src == end_src - 1)count++;
 	if (count){
 		*dst++ = count - 1;
-		for (; count != 0; --count){
-			*dst++ = *src_norm_start++;
-		}
+		memcpy(dst, src_norm_start, count);
+		dst += count;
+		src_norm_start += count;
+		count = 0;
 	}
 	return dst - dst_buffer;
 }
@@ -428,16 +431,17 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
 
 	// Iterate through remainder of the source buffer
 	for (i = 1; i < length; ) {
-		searchIndex = max(0, i - 32);
+		searchIndex = (i < 32) ? 0 : (i - 32);
 		searchEnd = i - 1;
 
 		bestRepeatCount = 0;
 		for (repeatIndex = searchIndex; repeatIndex <= searchEnd; repeatIndex++) {
 			repeatCount = 0;
 			maxRepeatCount = min(min(7, searchEnd - repeatIndex), length - i - 1);
+			// maxRepeatCount should not exceed length
+			assert(repeatIndex + maxRepeatCount < length);
+			assert(i + maxRepeatCount < length);
 			for (j = 0; j <= maxRepeatCount; j++) {
-				assert(repeatIndex + j < length);
-				assert(i + j < length);
 				if (src_buffer[repeatIndex + j] == src_buffer[i + j]) {
 					repeatCount++;
 				} else {
