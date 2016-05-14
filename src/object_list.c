@@ -541,8 +541,6 @@ void set_load_objects_fail_reason()
  */
 bool object_read_and_load_entries(SDL_RWops* rw)
 {
-	object_unload_all();
-
 	// Read all the object entries
 	rct_object_entry *entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
 	sawyercoding_read_chunk(rw, (uint8*)entries);
@@ -554,6 +552,8 @@ bool object_read_and_load_entries(SDL_RWops* rw)
 bool object_load_entries(rct_object_entry* entries)
 {
 	log_verbose("loading required objects");
+
+	object_unload_all();
 
 	bool loadFailed = false;
 	// Load each object

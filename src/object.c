@@ -398,6 +398,7 @@ void object_unload_chunk(rct_object_entry *entry)
 	object_unload(object_type, chunk);
 
 	free(chunk);
+	memset(&object_entry_groups[object_type].entries[object_index], 0, sizeof(rct_object_entry_extended));
 	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
 }
 
