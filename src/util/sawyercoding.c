@@ -293,21 +293,22 @@ int sawyercoding_validate_track_checksum(const uint8* src, size_t length){
  */
 static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length)
 {
-	size_t i, j, count;
+	size_t count;
 	uint8 *dst, rleCodeByte;
 
 	dst = dst_buffer;
 
-	for (i = 0; i < length; i++) {
+	for (int i = 0; i < length; i++) {
 		rleCodeByte = src_buffer[i];
 		if (rleCodeByte & 128) {
 			i++;
 			count = 257 - rleCodeByte;
-			for (j = 0; j < count; j++)
-				*dst++ = src_buffer[i];
+			memset(dst, src_buffer[i], count);
+			dst = (uint8*)((uintptr_t)dst + count);
 		} else {
-			for (j = 0; j <= rleCodeByte; j++)
-				*dst++ = src_buffer[++i];
+			memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
+			dst = (uint8*)((uintptr_t)dst + rleCodeByte + 1);
+			i += rleCodeByte + 1;
 		}
 	}
 
