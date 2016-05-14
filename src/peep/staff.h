@@ -60,6 +60,7 @@ void game_command_set_staff_patrol(int *eax, int *ebx, int *ecx, int *edx, int *
 void game_command_fire_staff_member(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 void game_command_set_staff_name(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
 
+int staff_get_valid_skins(); 
 void staff_reset_modes();
 void update_staff_colour(uint8 staffType, uint16 colour);
 uint16 hire_new_staff_member(uint8 staffType);

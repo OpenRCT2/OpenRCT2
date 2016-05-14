@@ -74,6 +74,39 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	*ebx = 0;
 }
 
+
+/*
+*  Select random skins for entertainers on placement.
+*  returns 0 if the staff_type != 3 (= entertainer)
+*/
+int staff_select_random_skin(int staff_type)
+{
+	if (staff_type != 3)
+		return 0;
+
+	int ebx = staff_get_valid_skins();
+
+	uint16 num_entries = 0;
+	for (uint8 i = 4; i < 19; ++i) {
+		if (ebx & (1 << i)) {
+			num_entries++;
+		}
+	}
+	uint16 randVal = scenario_rand() % num_entries;
+
+	num_entries = 0;
+	for (uint8 i = 4; i < 19; ++i) {
+		if (ebx & (1 << i)) {
+			if (num_entries++ == randVal)
+			{
+				return i - 4;
+			}
+		}
+	}
+
+	return 0; // Fallback
+}
+
 /**
  *
  *  rct2: 0x006BEFA1
@@ -178,6 +211,8 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->staff_type = staff_type;
 
 		_eax = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
+		_eax += staff_select_random_skin(staff_type);
+
 		newPeep->name_string_idx = staff_type + 0x300;
 		newPeep->sprite_type = _eax;
 
