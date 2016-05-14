@@ -3718,7 +3718,7 @@ STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object Selection
-STR_5372    :拖拽时反转鼠标左键
+STR_5372    :拖拽时反转鼠标右键
 STR_5373    :Name {STRINGID}
 STR_5374    :日期 {STRINGID}
 STR_5375    :{UP}
@@ -4128,6 +4128,53 @@ STR_5811    :{SMALLFONT}{BLACK}若选中此选项, 每列车将最多{NEWLINE}�
 STR_5812    :显示多人模式窗口
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}游戏内显示FPS帧数
+STR_5816    :{SMALLFONT}{BLACK}设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
+STR_5817    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}设置UI缩放类型
+STR_5818    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}使用最近相邻缩放{NEWLINE}当窗口缩放比例设置为{NEWLINE}整数值时 (例如1, 2, 3等等)
+STR_5819    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
+STR_5820    :{SMALLFONT}{BLACK}全屏模式时若游戏失焦{NEWLINE}则最小化游戏
+STR_5821    :{SMALLFONT}{BLACK}当修建游乐设施, 道路, 商店, 景观等时{NEWLINE}调整建造的颜色.
+STR_5822    :{SMALLFONT}{BLACK}日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
+STR_5823    :{SMALLFONT}{BLACK}横幅上显示全大写英文(RCT1效果)
+STR_5824    :{SMALLFONT}{BLACK}当暴风雨来临时{NEWLINE}禁用闪电效果
+STR_5825    :{SMALLFONT}{BLACK}在窗口内保持鼠标指针
+STR_5826    :{SMALLFONT}{BLACK}拖拽视野时时反转鼠标右键
+STR_5827    :{SMALLFONT}{BLACK}设置游戏界面使用的配色主题
+STR_5828    :{SMALLFONT}{BLACK}修改距离, 速度等度量单位.
+STR_5829    :{SMALLFONT}{BLACK}修改游戏使用的货币. 只是纯视觉效果并没有根据汇率换算
+STR_5830    :{SMALLFONT}{BLACK}修改游戏使用的语言
+STR_5831    :{SMALLFONT}{BLACK}修改温度显示的单位
+STR_5832    :{SMALLFONT}{BLACK}高度用通用单位替换"距离和速度单位"中设置的单位
+STR_5833    :{SMALLFONT}{BLACK}修改日期格式
+STR_5834    :{SMALLFONT}{BLACK}选择OpenRCT2使用的音频设备
+STR_5835    :{SMALLFONT}{BLACK}游戏窗口失焦时静音
+STR_5836    :{SMALLFONT}{BLACK}选择主菜单使用的音乐.{NEWLINE}选择过山车大亨1的主题音乐时需要手动将过山车大亨1游戏目录下的'data/css17.dat'拷贝并重命名为过山车大亨2游戏目录下的'data/css50.dat'.
+STR_5837    :{SMALLFONT}{BLACK}创建并管理自定义游戏界面配色主题
+STR_5838    :{SMALLFONT}{BLACK}在工具栏上为财务窗口显示一个单独的按钮
+STR_5839    :{SMALLFONT}{BLACK}在工具栏上为研发窗口显示一个单独的按钮
+STR_5840    :{SMALLFONT}{BLACK}在工具栏上为作弊窗口显示一个单独的按钮
+STR_5841    :{SMALLFONT}{BLACK}在工具栏上为最近消息窗口显示一个单独的按钮
+STR_5842    :{SMALLFONT}{BLACK}对剧情排序是根据困难度(过山车大亨2行为)还是游戏出处(过山车大亨1行为)
+STR_5843    :{SMALLFONT}{BLACK}允许剧情解锁 (过山车大亨1行为)
+STR_5844    :{SMALLFONT}{BLACK}即使发生不同步或错误{NEWLINE}依然保持和多人服务器的连接
+STR_5845    :{SMALLFONT}{BLACK}在工具栏上为调试工具增加一个按钮.{NEWLINE}允许在调试控制台使用快捷键
+STR_5846    :{SMALLFONT}{BLACK}设置自动保存的频率
+STR_5847    :{SMALLFONT}{BLACK}选择主菜单界面使用的游乐园动画. 过山车大亨1/2的主菜单动画需要导入响应的文件
+STR_5848    :{SMALLFONT}{BLACK}创建并管理自定义主菜单动画
+STR_5849    :{SMALLFONT}{BLACK}自动放置新雇佣的员工
+STR_5850    :{SMALLFONT}{BLACK}新雇佣的清洁工默认会修剪草坪(过山车大亨1行为)
+STR_5851    :{SMALLFONT}{BLACK}设置新建游乐设施的默认检查的时间间隔
+STR_5852    :{SMALLFONT}{BLACK}设置Twitch集成中使用的TwitchTV频道名
+STR_5853    :{SMALLFONT}{BLACK}开启/关闭音效
+STR_5854    :{SMALLFONT}{BLACK}开启/关闭游乐设施音乐
+STR_5855    :{SMALLFONT}{BLACK}设置全屏, 窗口或无边框窗口显示
+STR_5856    :{SMALLFONT}{BLACK}全屏模式时设置游戏分辨率
+STR_5857    :{SMALLFONT}{BLACK}游戏选项
+STR_5858    :{SMALLFONT}{BLACK}使用GPU代替CPU渲染画面. 提高截屏软件的兼容性. 可能会轻微降低游戏性能.
+STR_5859    :{SMALLFONT}{BLACK}启用补帧从而平滑游戏表现. {NEWLINE}当禁用时,{NEWLINE}游戏帧数会稳定在40 FPS.
 
 #############
 # Scenarios #

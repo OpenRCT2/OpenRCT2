@@ -2805,7 +2805,7 @@ STR_2794    :{WINDOW_COLOUR_2}Réussi par : {BLACK}{STRINGID}{NEWLINE}{WINDOW_CO
 STR_2795    :Trier
 STR_2796    :{SMALLFONT}{BLACK}Trier la liste des attractions dans l'ordre avec le type d'informations affiché
 STR_2797    :Faire défiler vue quand curseur atteint bord de l'écran
-STR_2798    :{SMALLFONT}{BLACK}Choisir s'il faut faire défiler la vue quand le curseur atteint e bord de l'écran
+STR_2798    :{SMALLFONT}{BLACK}Fait défiler la vue quand le curseur atteint le bord de l'écran
 STR_2799    :{SMALLFONT}{BLACK}Voir ou modifier les touches de raccourci
 STR_2800    :{WINDOW_COLOUR_2}Nombre total d'entrées : {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Revenu issu des entrées : {BLACK}{CURRENCY2DP}
@@ -3504,15 +3504,15 @@ STR_5162    :Jour/Mois/Année
 STR_5163    :Mois/Jour/Année
 STR_5164    :Nom de la chaîne Twitch
 STR_5165    :Nommer les visiteurs d'après les abonnés
-STR_5166    :{SMALLFONT}{BLACK}Renommera les visiteurs d'après les abonnés à la chaîne Twitch
+STR_5166    :{SMALLFONT}{BLACK}Renomme les visiteurs d'après les abonnés à la chaîne Twitch
 STR_5167    :Suivre les visiteurs abonnés
-STR_5168    :{SMALLFONT}{BLACK}Activera les informations de suivi pour les visiteurs nommés d'après les abonnés à la chaîne Twitch
+STR_5168    :{SMALLFONT}{BLACK}Active les informations de suivi pour les visiteurs nommés d'après les abonnés à la chaîne Twitch
 STR_5169    :Nommer les visiteurs d'après les participants du chat
-STR_5170    :{SMALLFONT}{BLACK}Renommera les visiteurs d'après les participants du chat Twitch
+STR_5170    :{SMALLFONT}{BLACK}Renomme les visiteurs d'après les participants du chat Twitch
 STR_5171    :Suivre les visiteurs du chat
-STR_5172    :{SMALLFONT}{BLACK}Activera les informations de suivi pour les visiteurs nommés d'après les participants du chat Twitch
+STR_5172    :{SMALLFONT}{BLACK}Active les informations de suivi pour les visiteurs nommés d'après les participants du chat Twitch
 STR_5173    :Passer les messages Twitch dans les actualités
-STR_5174    :{SMALLFONT}{BLACK}Utilisera les messages de chat Twitch précédés de !news pour les notifications durant le jeu
+STR_5174    :{SMALLFONT}{BLACK}Utilise les messages de chat Twitch précédés de !news pour les notifications durant le jeu
 STR_5175    :Saisir le nom de votre chaîne Twitch
 STR_5176    :Activer l'intégration Twitch
 STR_5177    :Mode plein écran :
@@ -3779,7 +3779,7 @@ STR_5437    :Aucune sauvegarde sélectionnée
 STR_5438    :Impossible de modifier tant que l'éditeur de commande est ouvert
 STR_5439    :Une commande d'attente d'au moins 4 secondes est requise pour redémarrer
 STR_5440    :Minimiser le plein écran au passage en arrière-plan
-STR_5441    :{SMALLFONT}{BLACK}Identifie les attractions par type de voie, pour que les voitures puissent être changées plus tard, comme dans RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identifie les attractions par type de voie, pour que les véhicules puissent être changés plus tard, comme dans RCT1.
 STR_5442    :Eval. du parc :
 STR_5443    :Vitesse{MOVE_X}{87}{STRINGID}
 STR_5444    :Vitesse:
@@ -3847,7 +3847,7 @@ STR_5505    :Impossible de se connecter au serveur
 STR_5506    :Les visiteurs ignorent l'intensité
 STR_5507    :Les agents d'entretien tondent la pelouse par défaut
 STR_5508    :Autor. charg. de fichiers avec une empreinte incorrecte
-STR_5509    :{SMALLFONT}{BLACK}Autoriser le chargement de scénarios et sauvegardes ayant une empreinte incorrecte, par exemple les scénarios de la démo ou des sauvegardes corrompues.
+STR_5509    :{SMALLFONT}{BLACK}Autorise le chargement de scénarios et sauvegardes ayant une empreinte incorrecte, par exemple les scénarios de la démo ou des sauvegardes corrompues.
 STR_5510    :Périphérique audio par défaut
 STR_5511    :(UNKNOWN)
 STR_5512    :Sauvegarder partie sous
@@ -3925,7 +3925,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Débloque les limites d'exploitation des attractions, permettant par exemple une remontée à {VELOCITY}
 STR_5586    :Ouvrir les magasins et boutiques automatiquement
-STR_5587    :{SMALLFONT}{BLACK}Activé, les magasins et boutiques seront automatiquement ouverts après être construits
+STR_5587    :{SMALLFONT}{BLACK}Ouvre automatiquement les magasins et boutiques après leur construction
 STR_5588    :{SMALLFONT}{BLACK}Jouer avec d'autres joueurs
 STR_5589    :Paramètres de notifications
 STR_5590    :Prix du parc
