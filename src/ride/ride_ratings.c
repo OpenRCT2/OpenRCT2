@@ -116,13 +116,11 @@ void ride_ratings_update_all()
  */
 static void ride_ratings_update_state_0()
 {
-	rct_ride *ride;
-
 	_rideRatingsCurrentRide += 1;
 	if (_rideRatingsCurrentRide == 255)
 		_rideRatingsCurrentRide = 0;
 
-	ride = get_ride(_rideRatingsCurrentRide);
+	rct_ride *ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type != RIDE_TYPE_NULL && ride->status != RIDE_STATUS_CLOSED)
 		_rideRatingsState = RIDE_RATINGS_STATE_INITIALISE;
 }
@@ -150,23 +148,18 @@ static void ride_ratings_update_state_1()
  */
 static void ride_ratings_update_state_2()
 {
-	rct_ride *ride;
-	rct_map_element *mapElement;
-	rct_xy_element trackElement, nextTrackElement;
-	int x, y, z, trackType, entranceIndex;
-
-	ride = get_ride(_rideRatingsCurrentRide);
+	rct_ride *ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
 	}
 
-	x = _rideRatingsProximityX / 32;
-	y = _rideRatingsProximityY / 32;
-	z = _rideRatingsProximityZ / 8;
-	trackType = _rideRatingsProximityTrackType;
+	int x = _rideRatingsProximityX / 32;
+	int y = _rideRatingsProximityY / 32;
+	int z = _rideRatingsProximityZ / 8;
+	int trackType = _rideRatingsProximityTrackType;
 
-	mapElement = map_get_first_element_at(x, y);
+	rct_map_element *mapElement = map_get_first_element_at(x, y);
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
@@ -175,7 +168,7 @@ static void ride_ratings_update_state_2()
 
 		if (trackType == 255 || ((mapElement->properties.track.sequence & 0x0F) == 0 && trackType == mapElement->properties.track.type)) {
 			if (trackType == TRACK_ELEM_END_STATION) {
-				entranceIndex = map_get_station(mapElement);
+				int entranceIndex = map_get_station(mapElement);
 				_rideRatingsStationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
 				if (ride->entrances[entranceIndex] == 0xFFFF) {
 					_rideRatingsStationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
@@ -184,9 +177,12 @@ static void ride_ratings_update_state_2()
 
 			ride_ratings_score_close_proximity(mapElement);
 
-			trackElement.x = _rideRatingsProximityX;
-			trackElement.y = _rideRatingsProximityY;
-			trackElement.element = mapElement;
+			rct_xy_element trackElement = {
+				.x = _rideRatingsProximityX,
+				.y = _rideRatingsProximityY,
+				.element = mapElement
+			};
+			rct_xy_element nextTrackElement;
 			if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_4;
 				return;
@@ -217,9 +213,7 @@ static void ride_ratings_update_state_2()
  */
 static void ride_ratings_update_state_3()
 {
-	rct_ride *ride;
-
-	ride = get_ride(_rideRatingsCurrentRide);
+	rct_ride *ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
@@ -248,23 +242,18 @@ static void ride_ratings_update_state_4()
  */
 static void ride_ratings_update_state_5()
 {
-	rct_ride *ride;
-	rct_map_element *mapElement;
-	track_begin_end trackBeginEnd;
-	int x, y, z, trackType;
-
-	ride = get_ride(_rideRatingsCurrentRide);
+	rct_ride *ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
 	}
 
-	x = _rideRatingsProximityX / 32;
-	y = _rideRatingsProximityY / 32;
-	z = _rideRatingsProximityZ / 8;
-	trackType = _rideRatingsProximityTrackType;
+	int x = _rideRatingsProximityX / 32;
+	int y = _rideRatingsProximityY / 32;
+	int z = _rideRatingsProximityZ / 8;
+	int trackType = _rideRatingsProximityTrackType;
 
-	mapElement = map_get_first_element_at(x, y);
+	rct_map_element *mapElement = map_get_first_element_at(x, y);
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
 			continue;
@@ -276,6 +265,7 @@ static void ride_ratings_update_state_5()
 
 			x = _rideRatingsProximityX;
 			y = _rideRatingsProximityY;
+			track_begin_end trackBeginEnd;
 			if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
 				_rideRatingsState = RIDE_RATINGS_STATE_CALCULATE;
 				return;
@@ -305,10 +295,7 @@ static void ride_ratings_update_state_5()
  */
 static void ride_ratings_begin_proximity_loop()
 {
-	rct_ride *ride;
-	int i, x, y, z;
-
-	ride = get_ride(_rideRatingsCurrentRide);
+	rct_ride *ride = get_ride(_rideRatingsCurrentRide);
 	if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED) {
 		_rideRatingsState = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 		return;
@@ -319,16 +306,16 @@ static void ride_ratings_begin_proximity_loop()
 		return;
 	}
 
-	for (i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 		if (ride->station_starts[i] != 0xFFFF) {
 			_rideRatingsStationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
 			if (ride->entrances[i] == 0xFFFF) {
 				_rideRatingsStationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
 			}
 
-			x = (ride->station_starts[i] & 0xFF) * 32;
-			y = (ride->station_starts[i] >> 8) * 32;
-			z = ride->station_heights[i] * 8;
+			int x = (ride->station_starts[i] & 0xFF) * 32;
+			int y = (ride->station_starts[i] >> 8) * 32;
+			int z = ride->station_heights[i] * 8;
 
 			_rideRatingsProximityX = x;
 			_rideRatingsProximityY = y;
@@ -355,15 +342,12 @@ static void proximity_score_increment(int type)
  */
 static void ride_ratings_score_close_proximity_in_direction(rct_map_element *inputMapElement, int direction)
 {
-	rct_map_element *mapElement;
-	int x, y;
-
-	x = _rideRatingsProximityX + TileDirectionDelta[direction].x;
-	y = _rideRatingsProximityY + TileDirectionDelta[direction].y;
+	int x = _rideRatingsProximityX + TileDirectionDelta[direction].x;
+	int y = _rideRatingsProximityY + TileDirectionDelta[direction].y;
 	if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
 		return;
 
-	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_SURFACE:
@@ -402,33 +386,37 @@ static void ride_ratings_score_close_proximity_in_direction(rct_map_element *inp
 
 static void ride_ratings_score_close_proximity_loops_helper(rct_map_element *inputMapElement, int x, int y)
 {
-	rct_map_element *mapElement;
-	int zDiff, unk;
-
-	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_PATH:
-			zDiff = (int)mapElement->base_height - (int)inputMapElement->base_height;
-			if (zDiff >= 0 && zDiff <= 16) {
+		{
+			int zDiff = (int)mapElement->base_height - (int)inputMapElement->base_height;
+			if (zDiff >= 0 && zDiff <= 16)
+			{
 				proximity_score_increment(PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
 			}
-			break;
+		} break;
+
 		case MAP_ELEMENT_TYPE_TRACK:
-			unk = (mapElement->type ^ inputMapElement->type) & 1;
-			if (unk != 0) {
-				zDiff = (int)mapElement->base_height - (int)inputMapElement->base_height;
-				if (zDiff >= 0 && zDiff <= 16) {
+		{
+			int unk = (mapElement->type ^ inputMapElement->type) & 1;
+			if (unk != 0)
+			{
+				int zDiff = (int)mapElement->base_height - (int)inputMapElement->base_height;
+				if (zDiff >= 0 && zDiff <= 16)
+				{
 					proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
 					if (
 						mapElement->properties.track.type == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
 						mapElement->properties.track.type == TRACK_ELEM_RIGHT_VERTICAL_LOOP
-					) {
+						)
+					{
 						proximity_score_increment(PROXIMITY_INTERSECTING_VERTICAL_LOOP);
 					}
 				}
 			}
-			break;
+		} break;
 		}
 	} while (!map_element_is_last_for_tile(mapElement++));
 }
@@ -439,15 +427,13 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_map_element *inp
  */
 static void ride_ratings_score_close_proximity_loops(rct_map_element *inputMapElement)
 {
-	int x, y, direction, trackType;
-
-	trackType = inputMapElement->properties.track.type;
+	int trackType = inputMapElement->properties.track.type;
 	if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
-		x = _rideRatingsProximityX;
-		y = _rideRatingsProximityY;
+		int x = _rideRatingsProximityX;
+		int y = _rideRatingsProximityY;
 		ride_ratings_score_close_proximity_loops_helper(inputMapElement, _rideRatingsProximityX, _rideRatingsProximityY);
 
-		direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+		int direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 		x = _rideRatingsProximityX + TileDirectionDelta[direction].x;
 		y = _rideRatingsProximityY + TileDirectionDelta[direction].y;
 		ride_ratings_score_close_proximity_loops_helper(inputMapElement, x, y);
@@ -460,18 +446,14 @@ static void ride_ratings_score_close_proximity_loops(rct_map_element *inputMapEl
  */
 static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 {
-	rct_map_element *mapElement;
-	int x, y, z, direction, waterHeight, trackType, sequence;
-	bool isStation;
-
 	if (_rideRatingsStationFlags & RIDE_RATING_STATION_FLAG_NO_ENTRANCE) {
 		return;
 	}
 
 	_rideRatingsProximityTotal++;
-	x = _rideRatingsProximityX;
-	y = _rideRatingsProximityY;
-	mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	int x = _rideRatingsProximityX;
+	int y = _rideRatingsProximityY;
+	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_SURFACE:
@@ -479,9 +461,9 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 			if (mapElement->base_height * 8 == _rideRatingsProximityZ) {
 				proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
 			}
-			waterHeight = (mapElement->properties.surface.terrain & 0x1F);
+			int waterHeight = (mapElement->properties.surface.terrain & 0x1F);
 			if (waterHeight != 0) {
-				z = waterHeight * 16;
+				int z = waterHeight * 16;
 				if (z <= _rideRatingsProximityZ) {
 					proximity_score_increment(PROXIMITY_WATER_OVER);
 					if (z == _rideRatingsProximityZ) {
@@ -519,9 +501,10 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 			}
 			break;
 		case MAP_ELEMENT_TYPE_TRACK:
-			trackType = mapElement->properties.track.type;
+		{
+			int trackType = mapElement->properties.track.type;
 			if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
-				sequence = mapElement->properties.track.sequence & 0x0F;
+				int sequence = mapElement->properties.track.sequence & 0x0F;
 				if (sequence == 3 || sequence == 6) {
 					if (mapElement->base_height - inputMapElement->clearance_height <= 10) {
 						proximity_score_increment(PROXIMITY_THROUGH_VERTICAL_LOOP);
@@ -548,7 +531,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 				}
 			} else {
 				trackType = mapElement->properties.track.type;
-				isStation = (
+				bool isStation = (
 					trackType == TRACK_ELEM_END_STATION ||
 					trackType == TRACK_ELEM_MIDDLE_STATION ||
 					trackType == TRACK_ELEM_BEGIN_STATION
@@ -567,7 +550,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 						}
 					}
 				}
-
+			
 				if (inputMapElement->clearance_height == mapElement->base_height) {
 					proximity_score_increment(PROXIMITY_OWN_TRACK_TOUCH_ABOVE);
 					if (isStation) {
@@ -583,11 +566,11 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 					}
 				}
 			}
-			break;
-		}
+		} break;
+		} // switch map_element_get_type
 	} while (!map_element_is_last_for_tile(mapElement++));
 
-	direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
+	uint8 direction = inputMapElement->type & MAP_ELEMENT_DIRECTION_MASK;
 	ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction + 1) & 3);
 	ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction - 1) & 3);
 	ride_ratings_score_close_proximity_loops(inputMapElement);
@@ -605,9 +588,7 @@ static void ride_ratings_score_close_proximity(rct_map_element *inputMapElement)
 
 static void ride_ratings_calculate(rct_ride *ride)
 {
-	ride_ratings_calculation calcFunc;
-
-	calcFunc = ride_ratings_calculate_func_table[ride->type];
+	ride_ratings_calculation calcFunc = ride_ratings_calculate_func_table[ride->type];
 	if (calcFunc != NULL) {
 		calcFunc(ride);
 	}
@@ -624,9 +605,6 @@ static void ride_ratings_calculate(rct_ride *ride)
 
 static void ride_ratings_calculate_value(rct_ride *ride)
 {
-	rct_ride *ride2;
-	int i, otherRidesOfSameType;
-
 	if (ride->excitement == (ride_rating)0xFFFF)
 		return;
 
@@ -655,7 +633,9 @@ static void ride_ratings_calculate_value(rct_ride *ride)
 	}
 
 	// Other ride of same type penalty
-	otherRidesOfSameType = 0;
+	int otherRidesOfSameType = 0;
+	rct_ride *ride2;
+	int i;
 	FOR_ALL_RIDES(i, ride2) {
 		if (ride2->type == ride->type)
 			otherRidesOfSameType++;
@@ -768,9 +748,7 @@ static uint16 ride_compute_upkeep(rct_ride *ride)
  */
 static void ride_ratings_apply_adjustments(rct_ride *ride, rating_tuple *ratings)
 {
-	rct_ride_entry *rideEntry;
-
-	rideEntry = get_ride_entry(ride->subtype);
+	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 
 	// Apply ride entry multipliers
 	ratings->excitement += ((ratings->excitement * rideEntry->excitement_multipler) >> 7);
@@ -911,13 +889,13 @@ static int sub_65E72D(rct_ride *ride)
 	return (dh << 8) | numShelteredEighths;
 }
 
-static rating_tuple get_flat_turns_rating(rct_ride* ride) {
-	rating_tuple rating;
-
+static rating_tuple get_flat_turns_rating(rct_ride* ride)
+{
 	int no_3_plus_turns = get_turn_count_3_elements(ride, 0);
 	int no_2_turns = get_turn_count_2_elements(ride, 0);
 	int no_1_turns = get_turn_count_1_element(ride, 0);
 
+	rating_tuple rating;
 	rating.excitement = (no_3_plus_turns * 0x28000) >> 16;
 	rating.excitement += (no_2_turns * 0x30000) >> 16;
 	rating.excitement += (no_1_turns * 63421) >> 16;
@@ -937,13 +915,13 @@ static rating_tuple get_flat_turns_rating(rct_ride* ride) {
  *
  *  rct2: 0x0065DF72
  */
-static rating_tuple get_banked_turns_rating(rct_ride* ride) {
-	rating_tuple rating;
-
+static rating_tuple get_banked_turns_rating(rct_ride* ride)
+{
 	int no_3_plus_turns = get_turn_count_3_elements(ride, 1);
 	int no_2_turns = get_turn_count_2_elements(ride, 1);
 	int no_1_turns = get_turn_count_1_element(ride, 1);
 
+	rating_tuple rating;
 	rating.excitement = (no_3_plus_turns * 0x3C000) >> 16;
 	rating.excitement += (no_2_turns * 0x3C000) >> 16;
 	rating.excitement += (no_1_turns * 73992) >> 16;
@@ -1121,12 +1099,11 @@ static rating_tuple sub_65E1C2(rct_ride *ride)
  */
 static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
 {
-	rating_tuple result;
-	fixed16_2dp gforce;
-
-	result.excitement = 0;
-	result.intensity = 0;
-	result.nausea = 0;
+	rating_tuple result = {
+		.excitement = 0,
+		.intensity = 0,
+		.nausea = 0
+	};
 
 	// Apply maximum positive G force factor
 	result.excitement += (ride->max_positive_vertical_g * 5242) >> 16;
@@ -1134,7 +1111,7 @@ static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
 	result.nausea += (ride->max_positive_vertical_g * 17039) >> 16;
 
 	// Apply maximum negative G force factor
-	gforce = ride->max_negative_vertical_g;
+	fixed16_2dp gforce = ride->max_negative_vertical_g;
 	result.excitement += (clamp(-FIXED_2DP(2,50), gforce, FIXED_2DP(0,00)) * -15728) >> 16;
 	result.intensity += ((gforce - FIXED_2DP(1,00)) * -52428) >> 16;
 	result.nausea += ((gforce - FIXED_2DP(1,00)) * -14563) >> 16;
@@ -1164,15 +1141,14 @@ static rating_tuple ride_ratings_get_gforce_ratings(rct_ride *ride)
  */
 static rating_tuple ride_ratings_get_drop_ratings(rct_ride *ride)
 {
-	rating_tuple result;
-	int drops;
-
-	result.excitement = 0;
-	result.intensity = 0;
-	result.nausea = 0;
+	rating_tuple result = {
+		.excitement = 0,
+		.intensity = 0,
+		.nausea = 0
+	};
 
 	// Apply number of drops factor
-	drops = ride->drops & 0x3F;
+	int drops = ride->drops & 0x3F;
 	result.excitement += (min(9, drops) * 728177) >> 16;
 	result.intensity += (drops * 928426) >> 16;
 	result.nausea += (drops * 655360) >> 16;
@@ -1191,10 +1167,8 @@ static rating_tuple ride_ratings_get_drop_ratings(rct_ride *ride)
  */
 static int ride_ratings_get_scenery_score(rct_ride *ride)
 {
-	int i, x, y, z, xx, yy, type, numSceneryItems;
+	int i;
 	uint16 stationXY;
-	rct_map_element *mapElement;
-
 	for (i = 0; i < 4; i++) {
 		stationXY = ride->station_starts[i];
 		if (stationXY != 0xFFFF)
@@ -1206,25 +1180,25 @@ static int ride_ratings_get_scenery_score(rct_ride *ride)
 	if (ride->type == RIDE_TYPE_MAZE)
 		stationXY = ride->entrances[0];
 
-	x = stationXY & 0xFF;
-	y = stationXY >> 8;
-	z = map_element_height(x * 32, y * 32) & 0xFFFF;
+	int x = stationXY & 0xFF;
+	int y = stationXY >> 8;
+	int z = map_element_height(x * 32, y * 32) & 0xFFFF;
 
 	// Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
 	if (z > ride->station_heights[i] * 8)
 		return 40;
 
 	// Count surrounding scenery items
-	numSceneryItems = 0;
-	for (yy = max(y - 5, 0); yy <= min(y + 5, 255); yy++) {
-		for (xx = max(x - 5, 0); xx <= min(x + 5, 255); xx++) {
+	int numSceneryItems = 0;
+	for (int yy = max(y - 5, 0); yy <= min(y + 5, 255); yy++) {
+		for (int xx = max(x - 5, 0); xx <= min(x + 5, 255); xx++) {
 			// Count scenery items on this tile
-			mapElement = map_get_first_element_at(xx, yy);
+			rct_map_element *mapElement = map_get_first_element_at(xx, yy);
 			do {
 				if (mapElement->flags & (1 << 4))
 					continue;
 
-				type = map_element_get_type(mapElement);
+				int type = map_element_get_type(mapElement);
 				if (type == MAP_ELEMENT_TYPE_SCENERY || type == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
 					numSceneryItems++;
 			} while (!map_element_is_last_for_tile(mapElement++));
@@ -1388,14 +1362,13 @@ static void ride_ratings_apply_first_length_penalty(rating_tuple *ratings, rct_r
 
 static void ride_ratings_calculate_spiral_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,30), RIDE_RATING(0,30), RIDE_RATING(0,30));
 	ride_ratings_apply_length(&ratings, ride, 6000, 819);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -1434,14 +1407,13 @@ static void ride_ratings_calculate_spiral_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_stand_up_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 17;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,50), RIDE_RATING(3,00), RIDE_RATING(3,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,10));
@@ -1473,14 +1445,13 @@ static void ride_ratings_calculate_stand_up_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_suspended_swinging_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,30), RIDE_RATING(2,90), RIDE_RATING(3,50));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,10));
@@ -1514,14 +1485,13 @@ static void ride_ratings_calculate_suspended_swinging_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_inverted_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 17;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,60), RIDE_RATING(2,80), RIDE_RATING(3,20));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,42), RIDE_RATING(0,05));
@@ -1558,14 +1528,13 @@ static void ride_ratings_calculate_inverted_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_junior_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 13;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,40), RIDE_RATING(2,50), RIDE_RATING(1,80));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -1597,14 +1566,13 @@ static void ride_ratings_calculate_junior_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_miniature_railway(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 11;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,50), RIDE_RATING(0,00), RIDE_RATING(0,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_train_length(&ratings, ride, 140434);
@@ -1634,14 +1602,13 @@ static void ride_ratings_calculate_miniature_railway(rct_ride *ride)
 
 static void ride_ratings_calculate_monorail(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,00), RIDE_RATING(0,00), RIDE_RATING(0,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_train_length(&ratings, ride, 93622);
@@ -1671,14 +1638,13 @@ static void ride_ratings_calculate_monorail(rct_ride *ride)
 
 static void ride_ratings_calculate_mini_suspended_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(2,50), RIDE_RATING(2,70));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,45), RIDE_RATING(0,15));
@@ -1711,8 +1677,6 @@ static void ride_ratings_calculate_mini_suspended_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_boat_ride(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->unreliability_factor = 7;
 	set_unreliability_factor(ride);
 
@@ -1720,6 +1684,7 @@ static void ride_ratings_calculate_boat_ride(rct_ride *ride)
 	// the calculation functions do this before hand. This is because set_unreliability_factor alters the value of
 	// ebx (excitement). This is assumed to be a bug and therefore fixed.
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,90), RIDE_RATING(0,80), RIDE_RATING(0,90));
 
 	// Most likely checking if the ride has does not have a circuit
@@ -1743,14 +1708,13 @@ static void ride_ratings_calculate_boat_ride(rct_ride *ride)
 
 static void ride_ratings_calculate_wooden_wild_mouse(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,90), RIDE_RATING(2,90), RIDE_RATING(2,10));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0, 8));
@@ -1785,14 +1749,13 @@ static void ride_ratings_calculate_wooden_wild_mouse(rct_ride *ride)
 
 static void ride_ratings_calculate_steeplechase(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,70), RIDE_RATING(2,40), RIDE_RATING(1,80));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,75), RIDE_RATING(0, 9));
@@ -1826,14 +1789,13 @@ static void ride_ratings_calculate_steeplechase(rct_ride *ride)
 
 static void ride_ratings_calculate_car_ride(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 12;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,00), RIDE_RATING(0,50), RIDE_RATING(0,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,15), RIDE_RATING(0,00));
@@ -1862,14 +1824,13 @@ static void ride_ratings_calculate_car_ride(rct_ride *ride)
 
 static void ride_ratings_calculate_launched_freefall(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,70), RIDE_RATING(3,00), RIDE_RATING(3,50));
 
 	if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH) {
@@ -1914,14 +1875,13 @@ static void ride_ratings_calculate_launched_freefall(rct_ride *ride)
 
 static void ride_ratings_calculate_bobsleigh_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(3,20), RIDE_RATING(2,50));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,20), RIDE_RATING(0,00));
@@ -1953,14 +1913,13 @@ static void ride_ratings_calculate_bobsleigh_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_observation_tower(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(0,00), RIDE_RATING(0,10));
 	ratings.excitement += ((ride_get_total_length(ride) >> 16) * 45875) >> 16;
 	ratings.nausea += ((ride_get_total_length(ride) >> 16) * 26214) >> 16;
@@ -1985,14 +1944,13 @@ static void ride_ratings_calculate_observation_tower(rct_ride *ride)
 
 static void ride_ratings_calculate_looping_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = ride_is_powered_launched(ride) ? 20 : 15;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,00), RIDE_RATING(0,50), RIDE_RATING(0,20));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2031,14 +1989,13 @@ static void ride_ratings_calculate_looping_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_dinghy_slide(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 13;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,70), RIDE_RATING(2,00), RIDE_RATING(1,50));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,50), RIDE_RATING(0,05));
@@ -2070,14 +2027,13 @@ static void ride_ratings_calculate_dinghy_slide(rct_ride *ride)
 
 static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,90), RIDE_RATING(2,30), RIDE_RATING(2,10));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2111,14 +2067,13 @@ static void ride_ratings_calculate_mine_train_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_chairlift(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14 + (ride->speed * 2);
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,60), RIDE_RATING(0,40), RIDE_RATING(0,50));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_train_length(&ratings, ride, 187245);
@@ -2154,14 +2109,13 @@ static void ride_ratings_calculate_chairlift(rct_ride *ride)
 
 static void ride_ratings_calculate_corkscrew_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,00), RIDE_RATING(0,50), RIDE_RATING(0,20));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2200,13 +2154,12 @@ static void ride_ratings_calculate_corkscrew_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_maze(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 8;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,30), RIDE_RATING(0,50), RIDE_RATING(0,00));
 
 	int size = min(ride->maze_tiles, 100);
@@ -2229,13 +2182,12 @@ static void ride_ratings_calculate_maze(rct_ride *ride)
 
 static void ride_ratings_calculate_spiral_slide(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 8;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(1,40), RIDE_RATING(0,90));
 
 	// Unlimited slides boost
@@ -2261,14 +2213,13 @@ static void ride_ratings_calculate_spiral_slide(rct_ride *ride)
 
 static void ride_ratings_calculate_go_karts(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,42), RIDE_RATING(1,73), RIDE_RATING(0,40));
 	ride_ratings_apply_length(&ratings, ride, 700, 32768);
 
@@ -2306,14 +2257,13 @@ static void ride_ratings_calculate_go_karts(rct_ride *ride)
 
 static void ride_ratings_calculate_log_flume(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(0,55), RIDE_RATING(0,30));
 	ride_ratings_apply_length(&ratings, ride, 2000, 7208);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2340,14 +2290,13 @@ static void ride_ratings_calculate_log_flume(rct_ride *ride)
 
 static void ride_ratings_calculate_river_rapids(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,20), RIDE_RATING(0,70), RIDE_RATING(0,50));
 	ride_ratings_apply_length(&ratings, ride, 2000, 6225);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,30), RIDE_RATING(0,05));
@@ -2375,13 +2324,12 @@ static void ride_ratings_calculate_river_rapids(rct_ride *ride)
 
 static void ride_ratings_calculate_dodgems(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,30), RIDE_RATING(0,50), RIDE_RATING(0,35));
 
 	if (ride->num_vehicles >= 4)
@@ -2409,13 +2357,12 @@ static void ride_ratings_calculate_dodgems(rct_ride *ride)
 
 static void ride_ratings_calculate_pirate_ship(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 10;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(1,90), RIDE_RATING(1,41));
 
 	ratings.excitement += ride->operation_option * 5;
@@ -2438,13 +2385,12 @@ static void ride_ratings_calculate_pirate_ship(rct_ride *ride)
 
 static void ride_ratings_calculate_inverter_ship(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,50), RIDE_RATING(2,70), RIDE_RATING(2,74));
 
 	ratings.excitement += ride->operation_option * 11;
@@ -2485,13 +2431,12 @@ static void ride_ratings_calculate_shop(rct_ride *ride)
 
 static void ride_ratings_calculate_merry_go_round(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(0,60), RIDE_RATING(0,15), RIDE_RATING(0,30));
 
 	int rotationsFactor = ride->rotations * 5;
@@ -2527,13 +2472,12 @@ static void ride_ratings_calculate_toilets(rct_ride *ride)
 
 static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(0,60), RIDE_RATING(0,25), RIDE_RATING(0,30));
 
 	int rotationsFactor = ride->rotations * 25;
@@ -2557,14 +2501,13 @@ static void ride_ratings_calculate_ferris_wheel(rct_ride *ride)
 
 static void ride_ratings_calculate_motion_simulator(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 21;
 	set_unreliability_factor(ride);
 
 	// Base ratings
+	rating_tuple ratings;
 	if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS) {
 		ratings.excitement	= RIDE_RATING(3,25);
 		ratings.intensity	= RIDE_RATING(4,10);
@@ -2589,14 +2532,13 @@ static void ride_ratings_calculate_motion_simulator(rct_ride *ride)
 
 static void ride_ratings_calculate_3d_cinema(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 21;
 	set_unreliability_factor(ride);
 
 	// Base ratings
+	rating_tuple ratings;
 	switch (ride->mode) {
 	default:
 	case RIDE_MODE_3D_FILM_MOUSE_TAILS:
@@ -2630,14 +2572,13 @@ static void ride_ratings_calculate_3d_cinema(rct_ride *ride)
 
 static void ride_ratings_calculate_top_spin(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
 	// Base ratings
+	rating_tuple ratings;
 	switch (ride->mode) {
 	default:
 	case RIDE_MODE_BEGINNERS:
@@ -2673,13 +2614,12 @@ static void ride_ratings_calculate_top_spin(rct_ride *ride)
 
 static void ride_ratings_calculate_space_rings(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 7;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(2,10), RIDE_RATING(6,50));
 	ride_ratings_apply_scenery(&ratings, ride, 25098);
 
@@ -2697,14 +2637,13 @@ static void ride_ratings_calculate_space_rings(rct_ride *ride)
 
 static void ride_ratings_calculate_reverse_freefall_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 25;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,00), RIDE_RATING(3,20), RIDE_RATING(2,80));
 	ride_ratings_apply_length(&ratings, ride, 6000, 327);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,60), RIDE_RATING(0,15));
@@ -2729,7 +2668,6 @@ static void ride_ratings_calculate_reverse_freefall_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_lift(rct_ride *ride)
 {
-	rating_tuple ratings;
 	int totalLength;
 
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -2738,6 +2676,7 @@ static void ride_ratings_calculate_lift(rct_ride *ride)
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,11), RIDE_RATING(0,35), RIDE_RATING(0,30));
 
 	totalLength = ride_get_total_length(ride) >> 16;
@@ -2764,14 +2703,13 @@ static void ride_ratings_calculate_lift(rct_ride *ride)
 
 static void ride_ratings_calculate_vertical_drop_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,20), RIDE_RATING(0,80), RIDE_RATING(0,30));
 	ride_ratings_apply_length(&ratings, ride, 4000, 1146);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2809,13 +2747,12 @@ static void ride_ratings_calculate_cash_machine(rct_ride *ride)
 
 static void ride_ratings_calculate_twist(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,13), RIDE_RATING(0,97), RIDE_RATING(1,90));
 
 	ratings.excitement += ride->rotations * 20;
@@ -2838,16 +2775,16 @@ static void ride_ratings_calculate_twist(rct_ride *ride)
 
 static void ride_ratings_calculate_haunted_house(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 8;
 	set_unreliability_factor(ride);
 
-	ratings.excitement	= RIDE_RATING(3,41);
-	ratings.intensity	= RIDE_RATING(1,53);
-	ratings.nausea		= RIDE_RATING(0,10);
+	rating_tuple ratings = {
+		.excitement = RIDE_RATING(3,41),
+		.intensity = RIDE_RATING(1,53),
+		.nausea = RIDE_RATING(0,10)
+	};
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -2863,14 +2800,13 @@ static void ride_ratings_calculate_haunted_house(rct_ride *ride)
 
 static void ride_ratings_calculate_flying_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 17;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(4,35), RIDE_RATING(1,85), RIDE_RATING(4,33));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2909,14 +2845,13 @@ static void ride_ratings_calculate_flying_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_virginia_reel(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,10), RIDE_RATING(1,90), RIDE_RATING(3,70));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2947,14 +2882,13 @@ static void ride_ratings_calculate_virginia_reel(rct_ride *ride)
 
 static void ride_ratings_calculate_splash_boats(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,46), RIDE_RATING(0,35), RIDE_RATING(0,30));
 	ride_ratings_apply_length(&ratings, ride, 2000, 7208);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -2981,14 +2915,13 @@ static void ride_ratings_calculate_splash_boats(rct_ride *ride)
 
 static void ride_ratings_calculate_mini_helicopters(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 12;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,60), RIDE_RATING(0,40), RIDE_RATING(0,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,15), RIDE_RATING(0,00));
@@ -3017,14 +2950,13 @@ static void ride_ratings_calculate_mini_helicopters(rct_ride *ride)
 
 static void ride_ratings_calculate_lay_down_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,85), RIDE_RATING(1,15), RIDE_RATING(2,75));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3066,14 +2998,13 @@ static void ride_ratings_calculate_lay_down_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_suspended_monorail(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,15), RIDE_RATING(0,23), RIDE_RATING(0, 8));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_train_length(&ratings, ride, 93622);
@@ -3103,14 +3034,13 @@ static void ride_ratings_calculate_suspended_monorail(rct_ride *ride)
 
 static void ride_ratings_calculate_reverser_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,40), RIDE_RATING(1,80), RIDE_RATING(1,70));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3151,14 +3081,13 @@ static void ride_ratings_calculate_reverser_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_heartline_twister_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,40), RIDE_RATING(1,70), RIDE_RATING(1,65));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,20), RIDE_RATING(0,04));
@@ -3192,14 +3121,13 @@ static void ride_ratings_calculate_heartline_twister_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_mini_golf(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 0;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,50), RIDE_RATING(0,90), RIDE_RATING(0,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_65DDD1(&ratings, ride, 14860, 0, 0);
@@ -3237,16 +3165,16 @@ static void ride_ratings_calculate_first_aid(rct_ride *ride)
 
 static void ride_ratings_calculate_circus_show(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 9;
 	set_unreliability_factor(ride);
 
-	ratings.excitement	= RIDE_RATING(2,10);
-	ratings.intensity	= RIDE_RATING(0,30);
-	ratings.nausea		= RIDE_RATING(0,0);
+	rating_tuple ratings = {
+		.excitement	= RIDE_RATING(2,10),
+		.intensity	= RIDE_RATING(0,30),
+		.nausea		= RIDE_RATING(0,0)
+	};
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -3262,14 +3190,13 @@ static void ride_ratings_calculate_circus_show(rct_ride *ride)
 
 static void ride_ratings_calculate_ghost_train(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 12;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,00), RIDE_RATING(0,20), RIDE_RATING(0,03));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,15), RIDE_RATING(0,00));
@@ -3297,14 +3224,13 @@ static void ride_ratings_calculate_ghost_train(rct_ride *ride)
 
 static void ride_ratings_calculate_twister_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 15;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,50), RIDE_RATING(0,40), RIDE_RATING(0,30));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3343,14 +3269,13 @@ static void ride_ratings_calculate_twister_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_wooden_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,20), RIDE_RATING(2,60), RIDE_RATING(2,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3384,14 +3309,13 @@ static void ride_ratings_calculate_wooden_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_side_friction_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 19;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,50), RIDE_RATING(2,00), RIDE_RATING(1,50));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3424,14 +3348,13 @@ static void ride_ratings_calculate_side_friction_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_wild_mouse(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(2,50), RIDE_RATING(2,10));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0, 8));
@@ -3465,14 +3388,13 @@ static void ride_ratings_calculate_wild_mouse(rct_ride *ride)
 
 static void ride_ratings_calculate_multi_dimension_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 18;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,75), RIDE_RATING(1,95), RIDE_RATING(4,79));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3511,14 +3433,13 @@ static void ride_ratings_calculate_multi_dimension_roller_coaster(rct_ride *ride
 
 static void ride_ratings_calculate_giga_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,85), RIDE_RATING(0,40), RIDE_RATING(0,35));
 	ride_ratings_apply_length(&ratings, ride, 6000, 819);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3557,14 +3478,13 @@ static void ride_ratings_calculate_giga_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_roto_drop(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 24;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,80), RIDE_RATING(3,50), RIDE_RATING(3,50));
 
 	int lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
@@ -3589,16 +3509,16 @@ static void ride_ratings_calculate_roto_drop(rct_ride *ride)
 
 static void ride_ratings_calculate_flying_saucers(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 32;
 	set_unreliability_factor(ride);
 
-	ratings.excitement	= RIDE_RATING(2,40);
-	ratings.intensity	= RIDE_RATING(0,55);
-	ratings.nausea		= RIDE_RATING(0,39);
+	rating_tuple ratings = {
+		.excitement = RIDE_RATING(2,40),
+		.intensity =  RIDE_RATING(0,55),
+		.nausea =     RIDE_RATING(0,39)
+	};
 
 	if (ride->num_vehicles >= 4)
 		ratings.excitement += RIDE_RATING(0,40);
@@ -3625,16 +3545,16 @@ static void ride_ratings_calculate_flying_saucers(rct_ride *ride)
 
 static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 5;
 	set_unreliability_factor(ride);
 
-	ratings.excitement	= RIDE_RATING(2,15);
-	ratings.intensity	= RIDE_RATING(0,62);
-	ratings.nausea		= RIDE_RATING(0,34);
+	rating_tuple ratings = {
+		.excitement	= RIDE_RATING(2,15),
+		.intensity	= RIDE_RATING(0,62),
+		.nausea		= RIDE_RATING(0,34)
+	};
 
 	ride_ratings_apply_intensity_penalty(&ratings);
 	ride_ratings_apply_adjustments(ride, &ratings);
@@ -3650,14 +3570,13 @@ static void ride_ratings_calculate_crooked_house(rct_ride *ride)
 
 static void ride_ratings_calculate_monorail_cycles(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 4;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,40), RIDE_RATING(0,20), RIDE_RATING(0,00));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,15), RIDE_RATING(0,00));
@@ -3686,14 +3605,13 @@ static void ride_ratings_calculate_monorail_cycles(rct_ride *ride)
 
 static void ride_ratings_calculate_compact_inverted_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE ? 31 : 21;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,15), RIDE_RATING(2,80), RIDE_RATING(3,20));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,42), RIDE_RATING(0,05));
@@ -3730,14 +3648,13 @@ static void ride_ratings_calculate_compact_inverted_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_water_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,70), RIDE_RATING(2,80), RIDE_RATING(2,10));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3772,14 +3689,13 @@ static void ride_ratings_calculate_water_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_air_powered_vertical_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 28;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(4,13), RIDE_RATING(2,50), RIDE_RATING(2,80));
 	ride_ratings_apply_length(&ratings, ride, 6000, 327);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,60), RIDE_RATING(0,05));
@@ -3804,14 +3720,13 @@ static void ride_ratings_calculate_air_powered_vertical_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_inverted_hairpin_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 14;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(3,00), RIDE_RATING(2,65), RIDE_RATING(2,25));
 	ride_ratings_apply_length(&ratings, ride, 6000, 873);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0, 8));
@@ -3846,13 +3761,12 @@ static void ride_ratings_calculate_inverted_hairpin_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,45), RIDE_RATING(1,60), RIDE_RATING(2,60));
 
 	ratings.excitement += ride->operation_option * 10;
@@ -3875,13 +3789,12 @@ static void ride_ratings_calculate_magic_carpet(rct_ride *ride)
 
 static void ride_ratings_calculate_submarine_ride(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->unreliability_factor = 7;
 	set_unreliability_factor(ride);
 
 	// NOTE Fixed bug from original game, see boat ride.
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,20), RIDE_RATING(1,80), RIDE_RATING(1,40));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_proximity(&ratings, ride, 11183);
@@ -3901,14 +3814,13 @@ static void ride_ratings_calculate_submarine_ride(rct_ride *ride)
 
 static void ride_ratings_calculate_river_rafts(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 12;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(1,45), RIDE_RATING(0,25), RIDE_RATING(0,34));
 	ride_ratings_apply_length(&ratings, ride, 2000, 7208);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -3933,17 +3845,17 @@ static void ride_ratings_calculate_river_rafts(rct_ride *ride)
 
 static void ride_ratings_calculate_enterprise(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
 	ride->unreliability_factor = 22;
 	set_unreliability_factor(ride);
 
 	// Base ratings
-	ratings.excitement	= RIDE_RATING(3,60);
-	ratings.intensity	= RIDE_RATING(4,55);
-	ratings.nausea		= RIDE_RATING(5,72);
+	rating_tuple ratings = {
+		.excitement	= RIDE_RATING(3,60),
+		.intensity	= RIDE_RATING(4,55),
+		.nausea		= RIDE_RATING(5,72)
+	};
 
 	ratings.excitement += ride->operation_option;
 	ratings.intensity += ride->operation_option * 16;
@@ -3965,14 +3877,13 @@ static void ride_ratings_calculate_enterprise(rct_ride *ride)
 
 static void ride_ratings_calculate_inverted_impulse_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 20;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(4,00), RIDE_RATING(3,00), RIDE_RATING(3,20));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,42), RIDE_RATING(0,05));
@@ -4003,14 +3914,13 @@ static void ride_ratings_calculate_inverted_impulse_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_mini_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 13;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,55), RIDE_RATING(2,40), RIDE_RATING(1,85));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -4043,14 +3953,13 @@ static void ride_ratings_calculate_mini_roller_coaster(rct_ride *ride)
 
 static void ride_ratings_calculate_mine_ride(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 16;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,75), RIDE_RATING(1,00), RIDE_RATING(1,80));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));
@@ -4080,14 +3989,13 @@ static void ride_ratings_calculate_mine_ride(rct_ride *ride)
 
 static void ride_ratings_calculate_lim_launched_roller_coaster(rct_ride *ride)
 {
-	rating_tuple ratings;
-
 	if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
 		return;
 
 	ride->unreliability_factor = 25;
 	set_unreliability_factor(ride);
 
+	rating_tuple ratings;
 	ride_ratings_set(&ratings, RIDE_RATING(2,90), RIDE_RATING(1,50), RIDE_RATING(2,20));
 	ride_ratings_apply_length(&ratings, ride, 6000, 764);
 	ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0,40), RIDE_RATING(0,05));

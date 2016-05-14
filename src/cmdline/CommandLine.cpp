@@ -130,8 +130,7 @@ namespace CommandLine
 
         if (allCommands)
         {
-            const CommandLineCommand * command;
-            for (command = RootCommands; command->Name != nullptr; command++)
+            for (const CommandLineCommand *command = RootCommands; command->Name != nullptr; command++)
             {
                 if (command->SubCommands != nullptr)
                 {
@@ -159,8 +158,6 @@ namespace CommandLine
 
     static void PrintHelpFor(const CommandLineCommand * commands)
     {
-        const CommandLineCommand * command;
-
         // Print usage
         const char * usageString = "usage: openrct2 ";
         const size_t usageStringLength = String::LengthOf(usageString);
@@ -169,6 +166,7 @@ namespace CommandLine
         // Get the largest command name length and parameter length
         size_t maxNameLength = 0;
         size_t maxParamsLength = 0;
+        const CommandLineCommand * command;
         for (command = commands; command->Name != nullptr; command++)
         {
             maxNameLength = Math::Max(maxNameLength, String::LengthOf(command->Name));

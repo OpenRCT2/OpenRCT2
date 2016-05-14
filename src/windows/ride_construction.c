@@ -36,9 +36,7 @@
 /* move to ride.c */
 void sub_6B2FA9(rct_windownumber number)
 {
-	rct_window* w;
-
-	w = window_find_by_number(WC_RIDE, number);
+	rct_window* w  = window_find_by_number(WC_RIDE, number);
 	if (w != NULL && w->page == 1)
 		window_close(w);
 }
