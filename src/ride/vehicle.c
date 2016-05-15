@@ -150,13 +150,54 @@ const uint8 _soundParams[SOUND_MAXID][2] = {
 	{ 0, 0 }	// SOUND_62
 };
 
+bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
+{
+	if (cd >= countof(gTrackVehicleInfo)) {
+		return false;
+	}
+	int size = 0;
+	switch (cd) {
+	case 0: size = 1024; break;
+	case 1: size = 692; break;
+	case 2: size = 404; break;
+	case 3: size = 404; break;
+	case 4: size = 404; break;
+	case 5: size = 208; break;
+	case 6: size = 208; break;
+	case 7: size = 208; break;
+	case 8: size = 208; break;
+	case 9: size = 824; break;
+	case 10: size = 824; break;
+	case 11: size = 824; break;
+	case 12: size = 824; break;
+	case 13: size = 824; break;
+	case 14: size = 824; break;
+	case 15: size = 868; break;
+	case 16: size = 868; break;
+	}
+	if (typeAndDirection >= size) {
+		return false;
+	}
+	if (offset >= gTrackVehicleInfo[cd][typeAndDirection]->size) {
+		return false;
+	}
+	return true;
+}
+
 const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
 {
+	if (!vehicle_move_info_valid(cd, typeAndDirection, offset)) {
+		static const rct_vehicle_info zero = { 0 };
+		return &zero;
+	}
 	return &gTrackVehicleInfo[cd][typeAndDirection]->info[offset];
 }
 
 uint16 vehicle_get_move_info_size(int cd, int typeAndDirection)
 {
+	if (!vehicle_move_info_valid(cd, typeAndDirection, 0)) {
+		return 0;
+	}
 	return gTrackVehicleInfo[cd][typeAndDirection]->size;
 }
 
