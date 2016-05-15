@@ -201,9 +201,9 @@ typedef struct train_ref {
 
 // Size: 0x09
 typedef struct rct_vehicle_info {
-	uint16 x;			// 0x00
-	uint16 y;			// 0x02
-	uint16 z;			// 0x04
+	sint16 x;			// 0x00
+	sint16 y;			// 0x02
+	sint16 z;			// 0x04
 	uint8 direction;	// 0x06
 	uint8 vehicle_sprite_type;	// 0x07
 	uint8 bank_rotation;	// 0x08
@@ -375,6 +375,7 @@ void vehicle_peep_easteregg_here_we_are(rct_vehicle* vehicle);
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle);
 rct_vehicle *vehicle_get_tail(rct_vehicle *vehicle);
 const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset);
+uint16 vehicle_get_move_info_size(int cd, int typeAndDirection);
 bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 y, uint16 *spriteId);
 
 /** Helper macro until rides are stored in this module. */
