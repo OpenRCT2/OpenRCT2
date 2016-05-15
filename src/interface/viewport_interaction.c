@@ -242,7 +242,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		if (sceneryEntry->wall.var_0D != 255) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
@@ -251,7 +251,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		break;
 
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF];
+		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
 		if (sceneryEntry->large_scenery.var_11 != 255) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
@@ -261,7 +261,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 
 	case VIEWPORT_INTERACTION_ITEM_BANNER:
 		banner = &gBanners[mapElement->properties.banner.index];
-		sceneryEntry = g_bannerSceneryEntries[banner->type];
+		sceneryEntry = get_banner_entry(banner->type);
 
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
@@ -276,7 +276,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 
 	switch (info->type) {
 	case VIEWPORT_INTERACTION_ITEM_SCENERY:
-		sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
 		return info->type;
@@ -289,7 +289,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-		sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(mapElement)];
+		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
 		if (mapElement->flags & 0x20) {
 			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3124;
@@ -311,13 +311,13 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenery.type & 0x3FF];
+		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type & 0x3FF);
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
 		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
 		return info->type;
@@ -477,7 +477,7 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int 
  */
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, int x, int y)
 {
-	rct_scenery_entry* sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
 	if (sceneryEntry->wall.var_0D != 0xFF){
 		window_sign_small_open(mapElement->properties.fence.item[0]);
 	} else {
@@ -500,7 +500,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
  */
 static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y)
 {
-	rct_scenery_entry* sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
+	rct_scenery_entry *sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
 
 	if (sceneryEntry->large_scenery.var_11 != 0xFF){
 		int id = (mapElement->type & 0xC0) |

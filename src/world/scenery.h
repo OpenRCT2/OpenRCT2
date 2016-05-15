@@ -156,16 +156,15 @@ enum {
 
 #define SCENERY_ENTRIES_BY_TAB 128
 
-#define g_smallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
-#define g_largeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
-#define g_wallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
-#define g_bannerSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_BANNERS].chunks)
-#define g_pathSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
+#define gSmallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
+#define gLargeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
+#define gWallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
+#define gBannerSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_BANNERS].chunks)
 
 // Often 0x009ADA50 is used for pathBits this is 1 entry before g_pathBitSceneryEntries and is used
 // because 0 represents no path bits on a path. So remember to remove 1 when using it for 0x009ADA50
-#define g_pathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
-#define g_scenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
+#define gPathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
+#define gScenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
 
 #define window_scenery_active_tab_index RCT2_GLOBAL(0x00F64EDC, uint8)
 #define window_scenery_selected_scenery_by_tab RCT2_ADDRESS(0x00F64EDD, sint16)
@@ -184,5 +183,13 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 void scenery_set_default_placement_configuration();
+
+rct_scenery_entry *get_small_scenery_entry(int entryIndex);
+rct_scenery_entry *get_large_scenery_entry(int entryIndex);
+rct_scenery_entry *get_wall_entry(int entryIndex);
+rct_scenery_entry *get_banner_entry(int entryIndex);
+rct_scenery_entry *get_footpath_item_entry(int entryIndex);
+rct_scenery_set_entry *get_scenery_group_entry(int entryIndex);
+
 
 #endif

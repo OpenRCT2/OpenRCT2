@@ -39,7 +39,7 @@ void scenery_update_tile(int x, int y)
 		} else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
 			if (footpath_element_has_path_scenery(mapElement) && !footpath_element_path_scenery_is_ghost(mapElement)) {
 				rct_scenery_entry *sceneryEntry;
-				sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(mapElement)];
+				sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
 				if (sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER) {
 					jumping_fountain_begin(JUMPING_FOUNTAIN_TYPE_WATER, x, y, mapElement);
 				} else if (sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW) {
@@ -59,7 +59,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 	rct_map_element *mapElementAbove;
 	rct_scenery_entry *sceneryEntry;
 
-	sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
+	sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
 	if (
 		!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
 		(gClimateCurrentWeather < WEATHER_RAIN) ||
@@ -82,7 +82,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 			scenery_increase_age(x, y, mapElement);
 			return;
 		case MAP_ELEMENT_TYPE_SCENERY:
-			sceneryEntry = g_smallSceneryEntries[mapElementAbove->properties.scenery.type];
+			sceneryEntry = get_small_scenery_entry(mapElementAbove->properties.scenery.type);
 			if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
 				scenery_increase_age(x, y, mapElement);
 				return;
@@ -188,4 +188,34 @@ void scenery_remove_ghost_tool_placement(){
 			0,
 			0);
 	}
+}
+
+rct_scenery_entry *get_small_scenery_entry(int entryIndex)
+{
+	return gSmallSceneryEntries[entryIndex];
+}
+
+rct_scenery_entry *get_large_scenery_entry(int entryIndex)
+{
+	return gLargeSceneryEntries[entryIndex];
+}
+
+rct_scenery_entry *get_wall_entry(int entryIndex)
+{
+	return gWallSceneryEntries[entryIndex];
+}
+
+rct_scenery_entry *get_banner_entry(int entryIndex)
+{
+	return gBannerSceneryEntries[entryIndex];
+}
+
+rct_scenery_entry *get_footpath_item_entry(int entryIndex)
+{
+	return gPathBitSceneryEntries[entryIndex];
+}
+
+rct_scenery_set_entry *get_scenery_group_entry(int entryIndex)
+{
+	return gScenerySetEntries[entryIndex];
 }

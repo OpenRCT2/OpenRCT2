@@ -124,7 +124,7 @@ static void cheat_remove_litter()
 		if (!footpath_element_has_path_scenery(it.element))
 			continue;
 
-		sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(it.element)];
+		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(it.element));
 		if(sceneryEntry->path_bit.var_06 & (1 << 0))
 			it.element->properties.path.addition_status = 0xFF;
 

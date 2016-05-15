@@ -236,7 +236,7 @@ void init_scenery()
 		if (scenerySetIndex == 0x13)
 			continue;
 
-		rct_scenery_set_entry* scenerySetEntry = g_scenerySetEntries[scenerySetIndex];
+		rct_scenery_set_entry* scenerySetEntry = get_scenery_group_entry(scenerySetIndex);
 		if ((uint32)scenerySetEntry == 0xFFFFFFFF)
 			continue;
 
@@ -257,10 +257,10 @@ void init_scenery()
 
 	// small scenery
 	for (uint16 sceneryId = 0; sceneryId < 0xFC; sceneryId++) {
-		if ((uint32)g_smallSceneryEntries[sceneryId] == 0xFFFFFFFF)
+		if ((uint32)get_small_scenery_entry(sceneryId) == 0xFFFFFFFF)
 			continue;
 
-		rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[sceneryId];
+		rct_scenery_entry* sceneryEntry = get_small_scenery_entry(sceneryId);
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->small_scenery.scenery_tab_id);
 	}
 
@@ -268,10 +268,10 @@ void init_scenery()
 	for (int sceneryId = 0x300; sceneryId < 0x380; sceneryId++) {
 		int largeSceneryIndex = sceneryId - 0x300;
 
-		if ((uint32)g_largeSceneryEntries[largeSceneryIndex] == 0xFFFFFFFF)
+		if ((uint32)get_large_scenery_entry(largeSceneryIndex) == 0xFFFFFFFF)
 			continue;
 
-		rct_scenery_entry* sceneryEntry = g_largeSceneryEntries[largeSceneryIndex];
+		rct_scenery_entry* sceneryEntry = get_large_scenery_entry(largeSceneryIndex);
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->large_scenery.scenery_tab_id);
 	}
 
@@ -279,10 +279,10 @@ void init_scenery()
 	for (int sceneryId = 0x200; sceneryId < 0x280; sceneryId++) {
 		int wallSceneryIndex = sceneryId - 0x200;
 
-		if ((uint32)g_wallSceneryEntries[wallSceneryIndex] == 0xFFFFFFFF)
+		if ((uint32)get_wall_entry(wallSceneryIndex) == 0xFFFFFFFF)
 			continue;
 
-		rct_scenery_entry* sceneryEntry = g_wallSceneryEntries[wallSceneryIndex];
+		rct_scenery_entry* sceneryEntry = get_wall_entry(wallSceneryIndex);
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->wall.scenery_tab_id);
 	}
 
@@ -290,10 +290,10 @@ void init_scenery()
 	for (int sceneryId = 0x400; sceneryId < 0x420; sceneryId++) {
 		int bannerIndex = sceneryId - 0x400;
 
-		if ((uint32)g_bannerSceneryEntries[bannerIndex] == 0xFFFFFFFF)
+		if ((uint32)get_banner_entry(bannerIndex) == 0xFFFFFFFF)
 			continue;
 
-		rct_scenery_entry* sceneryEntry = g_bannerSceneryEntries[bannerIndex];
+		rct_scenery_entry* sceneryEntry = get_banner_entry(bannerIndex);
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->banner.scenery_tab_id);
 	}
 
@@ -301,10 +301,10 @@ void init_scenery()
 	for (int sceneryId = 0x100; sceneryId < 0x10F; sceneryId++) {
 		int pathBitIndex = sceneryId - 0x100;
 
-		if ((uint32)g_pathBitSceneryEntries[pathBitIndex] == 0xFFFFFFFF)
+		if ((uint32)get_footpath_item_entry(pathBitIndex) == 0xFFFFFFFF)
 			continue;
 
-		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[pathBitIndex];
+		rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathBitIndex);
 		init_scenery_entry(sceneryEntry, sceneryId, sceneryEntry->path_bit.scenery_tab_id);
 	}
 
@@ -316,7 +316,7 @@ void init_scenery()
 	int usedValues = 0;
 
 	for (int scenerySetId = 0; scenerySetId < 19; scenerySetId++) {
-		rct_scenery_set_entry* sceneryEntry = g_scenerySetEntries[scenerySetId];
+		rct_scenery_set_entry* sceneryEntry = get_scenery_group_entry(scenerySetId);
 		if ((uint32)sceneryEntry == 0xFFFFFFFF)
 			continue;
 
@@ -368,7 +368,7 @@ void init_scenery()
 		if (tabIndex >= 19)
 			continue;
 
-		tabWidget->image = g_scenerySetEntries[tabIndex]->image | 0x20000000;
+		tabWidget->image = get_scenery_group_entry(tabIndex)->image | 0x20000000;
 	}
 
 	window_invalidate_by_class(WC_SCENERY);
@@ -786,17 +786,13 @@ static void window_scenery_update(rct_window *w)
 			if (tabSelectedSceneryId >= 0x400) { // banner
 				gCurrentToolId = 0x18;
 			} else if (tabSelectedSceneryId >= 0x300) { // large scenery
-				gCurrentToolId =
-					g_largeSceneryEntries[tabSelectedSceneryId - 0x300]->large_scenery.tool_id;
+				gCurrentToolId = get_large_scenery_entry(tabSelectedSceneryId - 0x300)->large_scenery.tool_id;
 			} else if (tabSelectedSceneryId >= 0x200) { // wall
-				gCurrentToolId =
-					g_wallSceneryEntries[tabSelectedSceneryId - 0x200]->wall.tool_id;
+				gCurrentToolId = get_wall_entry(tabSelectedSceneryId - 0x200)->wall.tool_id;
 			} else if (tabSelectedSceneryId >= 0x100) { // path bit
-				gCurrentToolId =
-					g_pathBitSceneryEntries[tabSelectedSceneryId - 0x100]->path_bit.tool_id;
+				gCurrentToolId = get_footpath_item_entry(tabSelectedSceneryId - 0x100)->path_bit.tool_id;
 			} else { // small scenery
-				gCurrentToolId =
-					g_smallSceneryEntries[tabSelectedSceneryId]->small_scenery.tool_id;
+				gCurrentToolId = get_small_scenery_entry(tabSelectedSceneryId)->small_scenery.tool_id;
 			}
 		}
 	}
@@ -892,7 +888,7 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 	case WIDX_SCENERY_TAB_17:
 	case WIDX_SCENERY_TAB_18:
 	case WIDX_SCENERY_TAB_19:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = g_scenerySetEntries[widgetIndex - WIDX_SCENERY_TAB_1]->name;
+		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name;
 		break;
 	case WIDX_SCENERY_TAB_20:
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 1813;
@@ -911,7 +907,7 @@ void window_scenery_invalidate(rct_window *w)
 	uint16 tabIndex = window_scenery_active_tab_index;
 	uint32 titleStringId = 1813;
 	if (tabIndex < 19)
-		titleStringId = g_scenerySetEntries[tabIndex]->name;
+		titleStringId = get_scenery_group_entry(tabIndex)->name;
 
 	window_scenery_widgets[WIDX_SCENERY_TITLE].image = titleStringId;
 
@@ -932,7 +928,7 @@ void window_scenery_invalidate(rct_window *w)
 			if (!(window_scenery_is_repaint_scenery_tool_on & 1))
 				window_scenery_widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WWT_FLATBTN;
 
-			rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[tabSelectedSceneryId];
+			rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 			if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG4) {
 				window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
 			}
@@ -962,19 +958,19 @@ void window_scenery_invalidate(rct_window *w)
 		rct_scenery_entry* sceneryEntry = NULL;
 
 		if (tabSelectedSceneryId >= 0x400) {
-			sceneryEntry = g_bannerSceneryEntries[tabSelectedSceneryId - 0x400];
+			sceneryEntry = get_banner_entry(tabSelectedSceneryId - 0x400);
 
 			if (sceneryEntry->banner.flags & 1)
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x300) {
-			sceneryEntry = g_largeSceneryEntries[tabSelectedSceneryId - 0x300];
+			sceneryEntry = get_large_scenery_entry(tabSelectedSceneryId - 0x300);
 
 			if (sceneryEntry->large_scenery.flags & 1)
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 			if (sceneryEntry->large_scenery.flags & 2)
 				window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 		} else if (tabSelectedSceneryId >= 0x200) {
-			sceneryEntry = g_wallSceneryEntries[tabSelectedSceneryId - 0x200];
+			sceneryEntry = get_wall_entry(tabSelectedSceneryId - 0x200);
 			if (sceneryEntry->wall.flags & (WALL_SCENERY_FLAG1 | WALL_SCENERY_FLAG2)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
@@ -988,7 +984,7 @@ void window_scenery_invalidate(rct_window *w)
 				}
 			}
 		} else if (tabSelectedSceneryId < 0x100) {
-			sceneryEntry = g_smallSceneryEntries[tabSelectedSceneryId];
+			sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 
 			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG10)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
@@ -1056,19 +1052,19 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	rct_scenery_entry* sceneryEntry = NULL;
 	if (selectedSceneryEntryId >= 0x400) {
-		sceneryEntry = g_bannerSceneryEntries[selectedSceneryEntryId - 0x400];
+		sceneryEntry = get_banner_entry(selectedSceneryEntryId - 0x400);
 		price = sceneryEntry->banner.price;
 	} else if (selectedSceneryEntryId >= 0x300) {
-		sceneryEntry = g_largeSceneryEntries[selectedSceneryEntryId - 0x300];
+		sceneryEntry = get_large_scenery_entry(selectedSceneryEntryId - 0x300);
 		price = sceneryEntry->large_scenery.price * 10;
 	} else if (selectedSceneryEntryId >= 0x200) {
-		sceneryEntry = g_wallSceneryEntries[selectedSceneryEntryId - 0x200];
+		sceneryEntry = get_wall_entry(selectedSceneryEntryId - 0x200);
 		price = sceneryEntry->wall.price;
 	} else if (selectedSceneryEntryId >= 0x100) {
-		sceneryEntry = g_pathBitSceneryEntries[selectedSceneryEntryId - 0x100];
+		sceneryEntry = get_footpath_item_entry(selectedSceneryEntryId - 0x100);
 		price = sceneryEntry->path_bit.price;
 	} else {
-		sceneryEntry = g_smallSceneryEntries[selectedSceneryEntryId];
+		sceneryEntry = get_small_scenery_entry(selectedSceneryEntryId);
 		price = sceneryEntry->small_scenery.price * 10;
 	}
 
@@ -1125,21 +1121,21 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 
 		rct_scenery_entry* sceneryEntry;
 		if (currentSceneryGlobalId >= 0x400) {
-			sceneryEntry = g_bannerSceneryEntries[currentSceneryGlobalId - 0x400];
+			sceneryEntry = get_banner_entry(currentSceneryGlobalId - 0x400);
 			uint32 imageId = sceneryEntry->image + window_scenery_rotation * 2;
 			imageId |= (window_scenery_primary_colour << 19) | 0x20000000;
 
 			gfx_draw_sprite(dpi, imageId, left + 0x21, top + 0x28, w->colours[1]);
 			gfx_draw_sprite(dpi, imageId + 1, left + 0x21, top + 0x28, w->colours[1]);
 		} else if (currentSceneryGlobalId >= 0x300) {
-			sceneryEntry = g_largeSceneryEntries[currentSceneryGlobalId - 0x300];
+			sceneryEntry = get_large_scenery_entry(currentSceneryGlobalId - 0x300);
 			uint32 imageId = sceneryEntry->image + window_scenery_rotation;
 			imageId |= (window_scenery_primary_colour << 19) | 0x20000000;
 			imageId |= (window_scenery_secondary_colour << 24) | 0x80000000;
 
 			gfx_draw_sprite(dpi, imageId, left + 0x21, top, w->colours[1]);
 		} else if (currentSceneryGlobalId >= 0x200) {
-			sceneryEntry = g_wallSceneryEntries[currentSceneryGlobalId - 0x200];
+			sceneryEntry = get_wall_entry(currentSceneryGlobalId - 0x200);
 			rct_drawpixelinfo clipdpi;
 			if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, 64, 78)) {
 				uint32 imageId = sceneryEntry->image;
@@ -1180,12 +1176,12 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 				}
 			}
 		} else if (currentSceneryGlobalId >= 0x100) {
-			sceneryEntry = g_pathBitSceneryEntries[currentSceneryGlobalId - 0x100];
+			sceneryEntry = get_footpath_item_entry(currentSceneryGlobalId - 0x100);
 			uint32 imageId = sceneryEntry->image;
 
 			gfx_draw_sprite(dpi, imageId, left + 0x0B, top + 0x10, w->colours[1]);
 		} else {
-			sceneryEntry = g_smallSceneryEntries[currentSceneryGlobalId];
+			sceneryEntry = get_small_scenery_entry(currentSceneryGlobalId);
 			rct_drawpixelinfo clipdpi;
 			if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2)) {
 				uint32 imageId = sceneryEntry->image + window_scenery_rotation;

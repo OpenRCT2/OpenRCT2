@@ -734,7 +734,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 	uint8 flags = *ebx & 0xFF;
 	money32 cost;
 
-	rct_scenery_entry *entry = g_smallSceneryEntries[scenery_type];
+	rct_scenery_entry *entry = get_small_scenery_entry(scenery_type);
 	if (entry == (rct_scenery_entry *)0xFFFFFFFF)
 	{
 		log_warning("Invalid game command for scenery removal, scenery_type = %u", scenery_type);
@@ -868,7 +868,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 
 	map_element_remove_banner_entry(map_element);
 
-	rct_scenery_entry* scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & 0x3FF];
+	rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & 0x3FF);
 	rct_xyz16 firstTile = {
 		.x = scenery_entry->large_scenery.tiles[tileIndex].x_offset,
 		.y = scenery_entry->large_scenery.tiles[tileIndex].y_offset,
@@ -996,7 +996,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	}
 
 	rct_banner *banner = &gBanners[map_element->properties.banner.index];
-	rct_scenery_entry *scenery_entry = g_bannerSceneryEntries[banner->type];
+	rct_scenery_entry *scenery_entry = get_banner_entry(banner->type);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
@@ -1112,7 +1112,7 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 	}
 
 	if(flags & GAME_COMMAND_FLAG_APPLY){
-		rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 		map_element->properties.fence.item[1] &= 0xE0;
 		map_element->properties.fence.item[1] |= colour1;
 		map_element->properties.fence.item[1] &= 0x1F;
@@ -1161,7 +1161,7 @@ void game_command_set_large_scenery_colour(int* eax, int* ebx, int* ecx, int* ed
 		return;
 	}
 
-	rct_scenery_entry *scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & 0x3FF];
+	rct_scenery_entry *scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & 0x3FF);
 
 	// Work out the base tile coordinates (Tile with index 0)
 	rct_xyz16 baseTile = {
@@ -1681,7 +1681,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 				continue;
 			if (height + 4 < mapElement->base_height)
 				continue;
-			rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type]; //sceneryEntry = eax
+			rct_scenery_entry *sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
 			if (sceneryEntry->small_scenery.height > 64 && gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
 			{
 				map_obstruction_set_error_text(mapElement);
@@ -2840,7 +2840,7 @@ int map_place_scenery_clear_func(rct_map_element** map_element, int x, int y, ui
 	if (!(flags & GAME_COMMAND_FLAG_7))
 		return 1;
 
-	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
+	rct_scenery_entry* scenery = get_small_scenery_entry((*map_element)->properties.scenery.type);
 
 	if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) {
 		if (scenery->small_scenery.height > 64)
@@ -2872,7 +2872,7 @@ int map_place_non_scenery_clear_func(rct_map_element** map_element, int x, int y
 	if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
 		return 1;
 
-	rct_scenery_entry* scenery = g_smallSceneryEntries[(*map_element)->properties.scenery.type];
+	rct_scenery_entry* scenery = get_small_scenery_entry((*map_element)->properties.scenery.type);
 
 	if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) {
 		if (scenery->small_scenery.height > 64)
@@ -3241,7 +3241,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
 			entryType = mapElement->properties.scenerymultiple.type & 0x3FF;
 			sequence = mapElement->properties.scenerymultiple.type >> 10;
-			entry = g_largeSceneryEntries[entryType];
+			entry = get_large_scenery_entry(entryType);
 			tile = &entry->large_scenery.tiles[sequence];
 
 			int direction = ((edge - mapElement->type) & 3) + 8;
@@ -3252,7 +3252,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
 			entryType = mapElement->properties.scenery.type;
-			entry = g_smallSceneryEntries[entryType];
+			entry = get_small_scenery_entry(entryType);
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS) {
 				map_obstruction_set_error_text(mapElement);
 				return false;
@@ -3421,7 +3421,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 		}
 	}
 	int banner_index = 0xFF;
-	rct_scenery_entry* fence = g_wallSceneryEntries[fence_type];
+	rct_scenery_entry* fence = get_wall_entry(fence_type);
 	if (fence->wall.var_0D != 0xFF){
 		banner_index = create_new_banner(fence->wall.var_0D);
 
@@ -3580,7 +3580,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 		return;
 	}
 
-	rct_scenery_entry *scenery_entry = g_largeSceneryEntries[entry_index];
+	rct_scenery_entry *scenery_entry = get_large_scenery_entry(entry_index);
 	if (scenery_entry == (rct_scenery_entry *)0xFFFFFFFF)
 	{
 		log_warning("Invalid game command for scenery placement, entry_index = %u", entry_index);
@@ -4050,7 +4050,7 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
 		break;
 	case MAP_ELEMENT_TYPE_SCENERY:
-		sceneryEntry = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
 		errorStringId = STR_X_IN_THE_WAY;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = sceneryEntry->name;
 		break;
@@ -4068,12 +4068,12 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
 		}
 		break;
 	case MAP_ELEMENT_TYPE_FENCE:
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		errorStringId = STR_X_IN_THE_WAY;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = sceneryEntry->name;
 		break;
 	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenery.type];
+		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type);
 		errorStringId = STR_X_IN_THE_WAY;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = sceneryEntry->name;
 		break;
@@ -4349,7 +4349,7 @@ int map_element_get_banner_index(rct_map_element *mapElement)
 
 	switch (map_element_get_type(mapElement)) {
 	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF];
+		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
 		if (sceneryEntry->large_scenery.var_11 == 0xFF)
 			return -1;
 
@@ -4358,7 +4358,7 @@ int map_element_get_banner_index(rct_map_element *mapElement)
 			((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
 			((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 	case MAP_ELEMENT_TYPE_FENCE:
-		sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+		sceneryEntry = get_wall_entry(mapElement->properties.fence.type);
 		if (sceneryEntry->wall.var_0D == 0xFF)
 			return -1;
 
@@ -4658,7 +4658,7 @@ bool map_large_scenery_get_origin(
 	if (mapElement == NULL)
 		return false;
 
-	sceneryEntry = g_largeSceneryEntries[(mapElement->properties.scenerymultiple.type) & 0x3FF];
+	sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
 	tile = &sceneryEntry->large_scenery.tiles[sequence];
 
 	offsetX = tile->x_offset;
@@ -4689,7 +4689,7 @@ bool sign_set_colour(int x, int y, int z, int direction, int sequence, uint8 mai
 		return false;
 	}
 
-	sceneryEntry = g_largeSceneryEntries[(mapElement->properties.scenerymultiple.type) & 0x3FF];
+	sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
 	sceneryTiles = sceneryEntry->large_scenery.tiles;
 
 	// Iterate through each tile of the large scenery element
@@ -4897,7 +4897,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
 			return true;
 
-		rct_scenery_entry* scenery = g_smallSceneryEntries[mapElement->properties.scenery.type];
+		rct_scenery_entry* scenery = get_small_scenery_entry(mapElement->properties.scenery.type);
 		if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
 			return true;
 	}
@@ -5309,7 +5309,7 @@ void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* es
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_FENCE)
 				continue;
 
-			rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+			rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 			if (scenery_entry->wall.var_0D == 0xFF)
 				continue;
 			if (map_element->properties.fence.item[0] != bannerId)

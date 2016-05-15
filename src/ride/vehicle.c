@@ -1080,7 +1080,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
 				continue;
 
-			rct_scenery_entry* scenery = g_smallSceneryEntries[map_element->properties.scenery.type];
+			rct_scenery_entry* scenery = get_small_scenery_entry(map_element->properties.scenery.type);
 			if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
 				cover_found = true;
 				break;
@@ -6229,7 +6229,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
  */
 static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		int soundId = DoorOpenSoundIds[doorSoundType - 1];
@@ -6245,7 +6245,7 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_e
  */
 static void vehicle_play_scenery_door_close_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		int soundId = DoorCloseSoundIds[doorSoundType - 1];

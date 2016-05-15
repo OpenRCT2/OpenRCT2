@@ -906,7 +906,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	switch (type){
 	case VIEWPORT_INTERACTION_ITEM_SCENERY:
 	{
-		rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
+		rct_scenery_entry* scenery_entry = get_small_scenery_entry(map_element->properties.scenery.type);
 
 		// If can't repaint
 		if (!(scenery_entry->small_scenery.flags &
@@ -927,7 +927,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 	{
-		rct_scenery_entry* scenery_entry = g_wallSceneryEntries[map_element->properties.fence.type];
+		rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.fence.type);
 
 		// If can't repaint
 		if (!(scenery_entry->wall.flags &
@@ -948,7 +948,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	}
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 	{
-		rct_scenery_entry* scenery_entry = g_largeSceneryEntries[map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
+		rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
 
 		// If can't repaint
 		if (!(scenery_entry->large_scenery.flags &
@@ -969,7 +969,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 	case VIEWPORT_INTERACTION_ITEM_BANNER:
 	{
 		rct_banner* banner = &gBanners[map_element->properties.banner.index];
-		rct_scenery_entry* scenery_entry = g_bannerSceneryEntries[banner->type];
+		rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
 
 		// If can't repaint
 		if (!(scenery_entry->banner.flags &
@@ -1016,7 +1016,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	uint8 type = 0;
 
 	if (scenery_type == 0){
-		rct_scenery_entry* scenery_entry = g_smallSceneryEntries[selected_scenery];
+		rct_scenery_entry* scenery_entry = get_small_scenery_entry(selected_scenery);
 
 		if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG18){
 			type = 1;
@@ -1084,7 +1084,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	case 0:
 	{
 		// Small scenery
-		rct_scenery_entry* scenery = g_smallSceneryEntries[selected_scenery];
+		rct_scenery_entry* scenery = get_small_scenery_entry(selected_scenery);
 		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
 			uint8 cl = 0;
 
@@ -1463,7 +1463,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		int successfulPlacements = 0;
 		for (int q = 0; q < quantity; q++) {
 			int zCoordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
-			rct_scenery_entry* scenery = g_smallSceneryEntries[(parameter_1 >> 8) & 0xFF];
+			rct_scenery_entry* scenery = get_small_scenery_entry((parameter_1 >> 8) & 0xFF);
 
 			sint16 cur_grid_x = gridX;
 			sint16 cur_grid_y = gridY;
@@ -2304,7 +2304,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		gMapSelectPositionB.x = mapTile.x;
 		gMapSelectPositionB.y = mapTile.y;
 
-		scenery = g_smallSceneryEntries[selected_scenery];
+		scenery = get_small_scenery_entry(selected_scenery);
 
 		gMapSelectType = MAP_SELECT_TYPE_FULL;
 		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)){
@@ -2426,7 +2426,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
 		break;
 	case 3:
-		scenery = g_largeSceneryEntries[selected_scenery];
+		scenery = get_large_scenery_entry(selected_scenery);
 		rct_xy16* selectedTile = gMapSelectionTiles;
 
 		for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)0xFFFF; tile++){

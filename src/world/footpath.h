@@ -42,7 +42,7 @@ enum {
 	FOOTPATH_SEARCH_TOO_COMPLEX
 };
 
-#define g_pathTypeEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
+#define gFootpathEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
 
 extern uint8 gFootpathProvisionalFlags;
 extern rct_xyz16 gFootpathProvisionalPosition;
@@ -89,5 +89,7 @@ uint8 footpath_element_get_path_scenery_index(rct_map_element *mapElement);
 bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
 void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
+
+rct_path_type *get_footpath_entry(int entryIndex);
 
 #endif

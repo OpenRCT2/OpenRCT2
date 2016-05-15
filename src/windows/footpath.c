@@ -206,7 +206,7 @@ void window_footpath_open()
 
 	// If a restricted path was selected when the game is no longer in Sandbox mode, reset it
 	pathId = gFootpathSelectedId;
-	pathType = g_pathTypeEntries[pathId];
+	pathType = get_footpath_entry(pathId);
 	if((pathType->flags & 4) && !gCheatsSandboxMode) {
 		gFootpathSelectedId = 0;
 	}
@@ -346,7 +346,7 @@ static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdow
 
 		j = 0;
 		for (i = 0; i < 16; i++) {
-			pathType = g_pathTypeEntries[i];
+			pathType = get_footpath_entry(i);
 			if (pathType == (rct_path_type*)-1)
 				continue;
 			if (pathType->flags & flags)
@@ -516,7 +516,7 @@ static void window_footpath_invalidate(rct_window *w)
 
 	// Set footpath and queue type button images
 	selectedPath = gFootpathSelectedId;
-	pathType = g_pathTypeEntries[selectedPath];
+	pathType = get_footpath_entry(selectedPath);
 
 	int pathImage = 71 + pathType->image;
 	window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
@@ -555,7 +555,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		image = RCT2_ADDRESS(0x0098D7E0, uint8)[image];
 
 		selectedPath = gFootpathSelectedId;
-		pathType = g_pathTypeEntries[selectedPath];
+		pathType = get_footpath_entry(selectedPath);
 		image += pathType->image;
 		if (gFootpathSelectedType != SELECTED_PATH_TYPE_NORMAL)
 			image += 51;
@@ -595,7 +595,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 		flags = 0;
 
 	for (i = 0; i < 16; i++) {
-		pathType = g_pathTypeEntries[i];
+		pathType = get_footpath_entry(i);
 		if (pathType == (rct_path_type*)-1)
 			continue;
 		if (pathType->flags & flags)

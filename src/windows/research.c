@@ -351,7 +351,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 						rideEntry->name :
 						((typeId >> 8) & 0xFF) + 2;
 				} else {
-					stringId = g_scenerySetEntries[typeId]->name;
+					stringId = get_scenery_group_entry(typeId)->name;
 				}
 			}
 		}
@@ -391,7 +391,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 
 			lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
 		} else {
-			stringId = g_scenerySetEntries[typeId]->name;
+			stringId = get_scenery_group_entry(typeId)->name;
 			lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
 		}
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, 0);

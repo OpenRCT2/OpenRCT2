@@ -220,7 +220,7 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 					if (!footpath_element_has_path_scenery(mapElement))
 						break;
 
-					scenery = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(mapElement)];
+					scenery = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
 					if (footpath_element_path_scenery_is_ghost(mapElement))
 						break;
 
@@ -617,7 +617,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 					// Check if the footpath has ghost path scenery on it
 					if (footpath_element_has_path_scenery(mapElement) && footpath_element_path_scenery_is_ghost(mapElement)){
 						uint8 pathSceneryIndex = footpath_element_get_path_scenery_index(mapElement);
-						rct_scenery_entry *sceneryEntry = g_pathBitSceneryEntries[pathSceneryIndex];
+						rct_scenery_entry *sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
 						if (sceneryEntry->path_bit.var_06 & (1 << 8)){
 							found = 1;
 						}
@@ -4193,7 +4193,7 @@ static void peep_update_watering(rct_peep* peep){
 			if (abs(((int)peep->next_z) - map_element->base_height) > 4)
 				continue;
 
-			rct_scenery_entry* scenery_entry = g_smallSceneryEntries[map_element->properties.scenery.type];
+			rct_scenery_entry* scenery_entry = get_small_scenery_entry(map_element->properties.scenery.type);
 
 			if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED))
 				continue;
@@ -4260,7 +4260,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 			return;
 		}
 
-		rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
+		rct_scenery_entry* scenery_entry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 		if (
 			!(scenery_entry->path_bit.var_06 & 1)
 			|| map_element->flags & (1 << 5)
@@ -4520,7 +4520,7 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	}
 
 	if (!footpath_element_has_path_scenery(map_element)) return 0;
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
+	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x2))return 0;
 
@@ -4595,7 +4595,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	}
 
 	if (!footpath_element_has_path_scenery(map_element)) return 0;
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
+	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x1))return 0;
 
@@ -4676,7 +4676,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	}
 
 	if (!footpath_element_has_path_scenery(map_element)) return;
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
+	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
 	if (!(sceneryEntry->path_bit.var_06 & 0x4))return;
 
@@ -4848,7 +4848,7 @@ static void peep_update_using_bin(rct_peep* peep){
 			return;
 		}
 
-		rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
+		rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 		if (!(sceneryEntry->path_bit.var_06 & 1)){
 			peep_state_reset(peep);
 			return;
@@ -5188,7 +5188,7 @@ static int peep_update_patrolling_find_watering(rct_peep* peep){
 				continue;
 			}
 
-			rct_scenery_entry* sceneryEntry = g_smallSceneryEntries[map_element->properties.scenery.type];
+			rct_scenery_entry* sceneryEntry = get_small_scenery_entry(map_element->properties.scenery.type);
 
 			if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED)){
 				continue;
@@ -5244,7 +5244,7 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 	}
 
 	if (!footpath_element_has_path_scenery(map_element)) return 0;
-	rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
+	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
 	if (!(sceneryEntry->path_bit.var_06 & 1))
 		return 0;
@@ -5548,7 +5548,7 @@ static void peep_update_walking(rct_peep* peep){
 
 	if (footpath_element_has_path_scenery(map_element)) {
 		if (!footpath_element_path_scenery_is_ghost(map_element)) {
-			rct_scenery_entry* sceneryEntry = g_pathBitSceneryEntries[footpath_element_get_path_scenery_index(map_element)];
+			rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
 			if (!(sceneryEntry->path_bit.var_06 & 0x2)) ebp = 9;
 		}
@@ -9309,7 +9309,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if (map_element_get_direction(mapElement) != edge) continue;
-		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
 		if (peep->next_z + 4 <= mapElement->base_height) continue;
 		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
 
@@ -9330,7 +9330,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
 		// TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
 		if (peep->next_z + 4 >= mapElement->base_height) continue;
 		if (peep->next_z + 1 >= mapElement->clearance_height) continue;
@@ -9352,7 +9352,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		}
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
+			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & 0x10)) {
 				continue;
 			}
 
@@ -9377,7 +9377,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
-			if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
+			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) {
 				continue;
 			}
 		}
@@ -9400,7 +9400,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
 		if (peep->next_z + 6 <= mapElement->base_height) continue;
 		if (peep->next_z >= mapElement->clearance_height) continue;
 
@@ -9421,7 +9421,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		}
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
+			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & 0x10)) {
 				continue;
 			}
 
@@ -9446,7 +9446,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) continue;
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_FENCE) {
-			if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) {
+			if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) {
 				continue;
 			}
 		}
@@ -9468,7 +9468,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_FENCE) continue;
 		if ((map_element_get_direction(mapElement) ^ 0x2) != edge) continue;
-		if (g_wallSceneryEntries[mapElement->properties.fence.type]->wall.flags2 & WALL_SCENERY_FLAG4) continue;
+		if (get_wall_entry(mapElement->properties.fence.type)->wall.flags2 & WALL_SCENERY_FLAG4) continue;
 		if (peep->next_z + 8 <= mapElement->base_height) continue;
 		if (peep->next_z >= mapElement->clearance_height) continue;
 
@@ -9489,7 +9489,7 @@ static bool peep_find_ride_to_look_at(rct_peep *peep, uint8 edge, uint8 *rideToV
 		}
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-			if (!(g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF]->large_scenery.flags & 0x10)) {
+			if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags & 0x10)) {
 				continue;
 			}
 

@@ -226,7 +226,7 @@ static void mapgen_place_tree(int type, int x, int y)
 {
 	int surfaceZ;
 	rct_map_element *mapElement;
-	rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[type];
+	rct_scenery_entry *sceneryEntry = get_small_scenery_entry(type);
 
 	surfaceZ = map_element_height(x * 32 + 16, y * 32 + 16) / 8;
 	mapElement = map_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
@@ -254,7 +254,7 @@ static void mapgen_place_trees()
 	int *snowTreeIds = (int*)malloc(countof(SnowTrees) * sizeof(int));
 
 	for (i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
-		rct_scenery_entry *sceneryEntry = g_smallSceneryEntries[i];
+		rct_scenery_entry *sceneryEntry = get_small_scenery_entry(i);
 		rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
 
 		if (sceneryEntry == (rct_scenery_entry*)0xFFFFFFFF || sceneryEntry == NULL)
