@@ -938,7 +938,7 @@ void vehicle_sprite_paint_6D51EB(rct_vehicle *vehicle, int ebx, int z, const rct
  	if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
 		ebx = ebx / 8;
 	}
-	ebx = (ebx * vehicleEntry->var_16) + vehicleEntry->base_image_id;
+	ebx = (ebx * vehicleEntry->var_16) + vehicle->var_4A + vehicleEntry->base_image_id;
 	vehicle_sprite_paint(vehicle, ebx, ecx, z, vehicleEntry);
 }
 
