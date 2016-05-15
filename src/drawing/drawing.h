@@ -115,6 +115,7 @@ void load_palette();
 
 // other
 void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start);
+void gfx_draw_snow(int left, int top, int width, int height, sint32 x_start, sint32 y_start);
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
 void gfx_invalidate_pickedup_peep();
@@ -170,6 +171,10 @@ void ttf_dispose();
 // rain
 void update_rain_animation();
 void redraw_rain();
+
+//snow
+void update_snow_animation();
+void redraw_snow();
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();

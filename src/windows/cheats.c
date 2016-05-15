@@ -458,9 +458,12 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 	dropdownWidget = widget - 1;
 
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < 7; i++) {
 		gDropdownItemsFormat[i] = 1142;
-		gDropdownItemsArgs[i] = STR_SUNNY + i;
+		if (i == 6) {
+			gDropdownItemsArgs[i] = STR_SNOWING;
+		}
+		else { gDropdownItemsArgs[i] = STR_SUNNY + i; }
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -468,7 +471,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 		dropdownWidget->bottom - dropdownWidget->top + 1,
 		w->colours[1],
 		DROPDOWN_FLAG_STAY_OPEN,
-		6,
+		7,
 		dropdownWidget->right - dropdownWidget->left - 3
 		);
 
