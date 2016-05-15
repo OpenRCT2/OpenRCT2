@@ -51,3 +51,10 @@ typedef struct track_descriptor {
 } track_descriptor;
 
 extern const track_descriptor gTrackDescriptors[142];
+
+typedef struct {
+	uint16 size;
+	const rct_vehicle_info info[];
+} rct_vehicle_info_list;
+
+extern const rct_vehicle_info_list **gTrackVehicleInfo[];
