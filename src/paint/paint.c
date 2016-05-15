@@ -151,12 +151,11 @@ paint_struct * sub_98196C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
+	sint16 z_offset,
 	uint32 rotation
 ) {
 	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
 	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
-	assert((uint16) z_offset == (sint16) z_offset);
 
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
@@ -323,7 +322,7 @@ paint_struct * sub_98197C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
+	sint16 z_offset,
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
@@ -407,13 +406,12 @@ paint_struct * sub_98198C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
+	sint16 z_offset,
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
 	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
 	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
-	assert((uint16) z_offset == (sint16) z_offset);
 
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
@@ -453,13 +451,12 @@ paint_struct * sub_98199C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
-	uint16 z_offset,
+	sint16 z_offset,
 	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
 	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
 	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
-	assert((uint16) z_offset == (sint16) z_offset);
 
 	if (RCT2_GLOBAL(0xF1AD28, uint32) == 0) {
 		return sub_98197C(
