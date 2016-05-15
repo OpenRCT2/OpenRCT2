@@ -23,13 +23,11 @@ typedef void(*draw_snow_func)(int left, int top, int width, int height);
 
 static void draw_snow(int left, int top, int width, int height);
 
-//
 const draw_snow_func draw_snow_function[] = {
 	NULL,
 	&draw_snow
 };
 
-//
 static void call_draw_snow_func(rct_window* w, short left, short right, short top, short bottom, uint32 draw_snow_func)
 {
 	rct_viewport* vp = w->viewport;
@@ -53,7 +51,6 @@ static void call_draw_snow_func(rct_window* w, short left, short right, short to
 	draw_snow_function[draw_snow_func](left, top, width, height);
 }
 
-//
 static void draw_snow_window(rct_window* original_w, short left, short right, short top, short bottom, uint32 draw_snow_func)
 {
 	rct_window* newWindow = gWindowNextSlot;
@@ -112,10 +109,6 @@ static void draw_snow_window(rct_window* original_w, short left, short right, sh
 	}
 }
 
-/**
-*
-*  rct2: 0x00684266
-*/
 static void draw_snow_animation(uint32 draw_snow_func)
 {
 	rct_drawpixelinfo *screenDPI = &gScreenDPI;
@@ -131,10 +124,6 @@ static void draw_snow_animation(uint32 draw_snow_func)
 	}
 }
 
-/**
-*
-*  rct2: 0x00684218
-*/
 void update_snow_animation()
 {
 	// Get snow draw function and draw snow
@@ -143,10 +132,6 @@ void update_snow_animation()
 		draw_snow_animation(draw_snow_func);
 }
 
-/**
-*
-*  rct2: 0x00684114
-*/
 static void draw_snow(int left, int top, int width, int height)
 {
 	int x_start = -(int)gScenarioTicks + 8;
