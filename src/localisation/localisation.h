@@ -63,6 +63,11 @@ extern const char *real_names[1024];
 extern utf8 *gUserStrings;
 extern uint8 gCommonFormatArgs[80];
 
-#define set_format_arg(offset, type, value)		((*((type*)&gCommonFormatArgs[(offset)])) = (value))
+static inline void set_format_arg_body(size_t offset, uintptr_t value, size_t size)
+{
+	memcpy(gCommonFormatArgs + offset, &value, size);
+}
+
+#define set_format_arg(offset, type, value)		set_format_arg_body(offset, (uintptr_t)value, sizeof(type))
 
 #endif
