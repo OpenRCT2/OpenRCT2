@@ -25,6 +25,7 @@
 #include "interface/themes.h"
 #include "interface/window.h"
 #include "interface/viewport.h"
+#include "intro.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "network/network.h"
@@ -59,6 +60,7 @@ utf8 gCustomPassword[MAX_PATH] = { 0 };
 bool gOpenRCT2Headless = false;
 
 bool gOpenRCT2ShowChangelog;
+bool gOpenRCT2SilentBreakpad;
 
 /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to 0. */
 int _finished;
@@ -263,13 +265,13 @@ bool openrct2_initialise()
 void openrct2_launch()
 {
 	if (openrct2_initialise()) {
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		gIntroState = INTRO_STATE_NONE;
 		if((gOpenRCT2StartupAction == STARTUP_ACTION_TITLE) && gConfigGeneral.play_intro)
 			gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
 
 		switch (gOpenRCT2StartupAction) {
 		case STARTUP_ACTION_INTRO:
-			RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 1;
+			gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
 			break;
 		case STARTUP_ACTION_TITLE:
 			gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
@@ -340,13 +342,12 @@ void openrct2_dispose()
  */
 static bool sprite_should_tween(rct_sprite *sprite)
 {
-	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_VEHICLE)
+	switch (sprite->unknown.linked_list_type_offset >> 1) {
+	case SPRITE_LIST_VEHICLE:
+	case SPRITE_LIST_PEEP:
+	case SPRITE_LIST_UNKNOWN:
 		return true;
-	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP)
-		return true;
-	if (sprite->unknown.linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_UNKNOWN)
-		return true;
-
+	}
 	return false;
 }
 

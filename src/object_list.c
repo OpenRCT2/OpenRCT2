@@ -31,7 +31,7 @@
 
 #define FILTER_VERSION 1
 
-typedef struct {
+typedef struct rct_plugin_header {
 	uint32 total_files;
 	uint32 total_file_size;
 	uint32 date_modified_checksum;
@@ -108,23 +108,47 @@ static void get_plugin_path(utf8 *outPath)
 	strcat(outPath, "plugin.dat");
 }
 
+static uintptr_t object_get_length_cached(const rct_object_entry **entryCache, const size_t index)
+{
+	return (uintptr_t)entryCache[index + 1] - (uintptr_t)entryCache[index];
+}
+
+static rct_object_entry **_entryCache = NULL;
+
+static int object_comparator(const void *left, const void *right)
+{
+	const size_t leftIndex  = *(const size_t *)left;
+	const size_t rightIndex = *(const size_t *)right;
+	const char *leftName  = object_get_name(_entryCache[leftIndex]);
+	const char *rightName = object_get_name(_entryCache[rightIndex]);
+	return strcmp(leftName, rightName);
+}
+
 static void object_list_sort()
 {
-	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry, *lowestEntry = NULL;
+	rct_object_entry **objectBuffer, *newBuffer, *entry, *destEntry;
 	rct_object_filters *newFilters = NULL, *destFilter = NULL;
-	int numObjects, i, j, bufferSize, entrySize, lowestIndex = 0;
-	char *objectName, *lowestString;
-	uint8 *copied;
+	int numObjects, bufferSize;
+	size_t entrySize;
 
 	objectBuffer = &gInstalledObjects;
 	numObjects = gInstalledObjectsCount;
-	copied = calloc(numObjects, sizeof(uint8));
+
+
+	_entryCache = malloc((numObjects + 1)* sizeof(rct_object_entry*));
+	size_t *sortLUT = malloc((numObjects + 1) * sizeof(size_t));
+	entry = *objectBuffer;
+	// This loop initialises entry cache, so it doesn't have to be called 17M
+	// times, but only a few thousand.
+	int i = 0;
+	do {
+		_entryCache[i] = entry;
+		sortLUT[i] = i;
+	} while (i++ < numObjects && (entry = object_get_next(entry)));
+	qsort(sortLUT, numObjects, sizeof(size_t), object_comparator);
 
 	// Get buffer size
-	entry = *objectBuffer;
-	for (i = 0; i < numObjects; i++)
-		entry = object_get_next(entry);
-	bufferSize = (int)entry - (int)*objectBuffer;
+	bufferSize = (uintptr_t)entry - (uintptr_t)*objectBuffer;
 
 	// Create new buffer
 	newBuffer = (rct_object_entry*)malloc(bufferSize);
@@ -135,28 +159,15 @@ static void object_list_sort()
 	}
 
 	// Copy over sorted objects
-	for (i = 0; i < numObjects; i++) {
-		// Find next lowest string
-		lowestString = NULL;
-		entry = *objectBuffer;
-		for (j = 0; j < numObjects; j++) {
-			if (!copied[j]) {
-				objectName = object_get_name(entry);
-				if (lowestString == NULL || strcmp(objectName, lowestString) < 0) {
-					lowestEntry = entry;
-					lowestString = objectName;
-					lowestIndex = j;
-				}
-			}
-			entry = object_get_next(entry);
-		}
-		entrySize = object_get_length(lowestEntry);
-		memcpy(destEntry, lowestEntry, entrySize);
-		destEntry = (rct_object_entry*)((int)destEntry + entrySize);
+	for (int i = 0; i < numObjects; i++) {
+		entrySize = object_get_length_cached((const rct_object_entry **)_entryCache, sortLUT[i]);
+		memcpy(destEntry, _entryCache[sortLUT[i]], entrySize);
+		destEntry = (rct_object_entry*)((uintptr_t)destEntry + entrySize);
 		if (_installedObjectFilters)
-			destFilter[i] = _installedObjectFilters[lowestIndex];
-		copied[lowestIndex] = 1;
+			destFilter[i] = _installedObjectFilters[sortLUT[i]];
 	}
+	free(_entryCache);
+	free(sortLUT);
 
 	// Replace old buffer
 	free(*objectBuffer);
@@ -165,8 +176,6 @@ static void object_list_sort()
 		free(_installedObjectFilters);
 		_installedObjectFilters = newFilters;
 	}
-
-	free(copied);
 }
 
 static uint32 object_list_count_custom_objects()
@@ -530,28 +539,32 @@ void set_load_objects_fail_reason()
  *
  *  rct2: 0x006AA0C6
  */
-int object_read_and_load_entries(SDL_RWops* rw)
+bool object_read_and_load_entries(SDL_RWops* rw)
 {
-	object_unload_all();
+	// Read all the object entries
+	rct_object_entry *entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
+	sawyercoding_read_chunk(rw, (uint8*)entries);
+	bool result = object_load_entries(entries);
+	free(entries);
+	return result;
+}
 
-	int i, j;
-	rct_object_entry *entries;
-
+bool object_load_entries(rct_object_entry* entries)
+{
 	log_verbose("loading required objects");
 
-	// Read all the object entries
-	entries = malloc(OBJECT_ENTRY_COUNT * sizeof(rct_object_entry));
-	sawyercoding_read_chunk(rw, (uint8*)entries);
+	object_unload_all();
 
-	uint8 load_fail = 0;
+	bool loadFailed = false;
 	// Load each object
-	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		if (!check_object_entry(&entries[i]))
+	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
+		if (!check_object_entry(&entries[i])) {
 			continue;
+		}
 
 		// Get entry group index
 		int entryGroupIndex = i;
-		for (j = 0; j < countof(object_entry_group_counts); j++) {
+		for (int j = 0; j < countof(object_entry_group_counts); j++) {
 			if (entryGroupIndex < object_entry_group_counts[j])
 				break;
 			entryGroupIndex -= object_entry_group_counts[j];
@@ -561,18 +574,17 @@ int object_read_and_load_entries(SDL_RWops* rw)
 		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
 			memcpy((char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, &entries[i], sizeof(rct_object_entry));
-			load_fail = 1;
+			loadFailed = true;
 		}
 	}
 
-	free(entries);
-	if (load_fail){
+	if (loadFailed) {
 		object_unload_all();
-		return 0;
+		return false;
 	}
 
 	log_verbose("finished loading required objects");
-	return 1;
+	return true;
 }
 
 
@@ -771,8 +783,6 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 		gInstalledObjectsCount--;
 		return 0;
 	}
-
-	uint8 objectType = entry->flags & 0xF;
 
 	// See above note
 	RCT2_GLOBAL(0x009ADAF4, sint32) = -1;

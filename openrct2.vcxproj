@@ -112,6 +112,8 @@
     <ClCompile Include="src\rct1\S4Importer.cpp" />
     <ClCompile Include="src\rct1\Tables.cpp" />
     <ClCompile Include="src\rct2.c" />
+    <ClCompile Include="src\rct2\S6Exporter.cpp" />
+    <ClCompile Include="src\rct2\S6Importer.cpp" />
     <ClCompile Include="src\ride\cable_lift.c" />
     <ClCompile Include="src\ride\coaster\air_powered_vertical_coaster.c" />
     <ClCompile Include="src\ride\coaster\bobsleigh_coaster.c" />
@@ -370,6 +372,8 @@
     <ClInclude Include="src\rct1\Tables.h" />
     <ClInclude Include="src\rct1\S4Importer.h" />
     <ClInclude Include="src\rct2.h" />
+    <ClInclude Include="src\rct2\S6Exporter.h" />
+    <ClInclude Include="src\rct2\S6Importer.h" />
     <ClInclude Include="src\ride\cable_lift.h" />
     <ClInclude Include="src\ride\ride.h" />
     <ClInclude Include="src\ride\ride_data.h" />

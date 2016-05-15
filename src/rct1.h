@@ -26,7 +26,7 @@
 #include "world/map.h"
 #include "world/sprite.h"
 
-typedef struct {
+typedef struct rct1_entrance {
 	uint16 x;
 	uint16 y;
 	uint16 z;
@@ -37,7 +37,7 @@ typedef struct {
  * RCT1 ride structure
  * size: 0x260
  */
-typedef struct {
+typedef struct rct1_ride {
 	uint8 type;
 	uint8 vehicle_type;
 	uint16 lifecycle_flags;
@@ -161,7 +161,7 @@ typedef struct {
 	uint8 unk_17A[230];
 } rct1_ride;
 
-typedef struct {
+typedef struct rct1_research_item {
 	uint8 item;
 	uint8 related_ride;
 	uint8 category;
@@ -173,7 +173,7 @@ typedef struct {
  * RCT1,AA,LL scenario / saved game structure.
  * size: 0x1F850C
  */
-typedef struct {
+typedef struct rct1_s4 {
 	uint16 month;
 	uint16 day;
 	uint32 ticks;
@@ -522,11 +522,11 @@ enum {
 	RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
 };
 
-enum{
+enum {
 	RCT1_TRACK_ELEM_BOOSTER = 100
 };
 
-enum{
+enum {
 	RCT1_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE = 2,
 	RCT1_RIDE_MODE_POWERED_LAUNCH = 3,
 };
@@ -645,7 +645,7 @@ enum {
 	RCT1_RESEARCH_SPECIAL_REVERSING_SECTIONS = 0x23,
 };
 
-typedef struct{
+typedef struct rct_track_td4 {
 	uint8 type;										// 0x00
 	uint8 vehicle_type;								// 0x01
 	uint32 special_track_flags;						// 0x02
@@ -688,7 +688,7 @@ typedef struct{
 	};
 	uint8 pad_41[0x83];
 	uint16 start_track_data_AA_CF;					// 0xC4
-}rct_track_td4; // Information based off RCTTechDepot
+} rct_track_td4; // Information based off RCTTechDepot
 
 enum {
 	RCT1_SCENARIO_FLAG_0 = 1 << 0,

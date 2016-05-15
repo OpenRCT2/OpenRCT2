@@ -88,7 +88,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 	gCommandPosition.y = _cx;
 	gCommandPosition.z = _dx;
 
-	if (RCT2_GLOBAL(0x13573C8, uint16) < 0x190) {
+	if (gSpriteListCount[SPRITE_LIST_NULL] < 400) {
 		*ebx = MONEY32_UNDEFINED;
 		gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
 		return;
@@ -108,7 +108,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 	int newStaffId = i;
 
-	int _eax, _ebx, _ecx = _cx;
+	int _eax, _ebx;
 	rct_sprite_bounds *spriteBounds;
 	_ebx = _bl;
 
@@ -124,7 +124,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 	if (_bl == 0) {
 		sprite_remove((rct_sprite*)newPeep);
 	} else {
-		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LINKEDLIST_OFFSET_PEEP);
+		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LIST_PEEP * 2);
 
 		newPeep->sprite_identifier = 1;
 		newPeep->window_invalidate_flags = 0;
@@ -445,7 +445,7 @@ void staff_update_greyed_patrol_areas()
 		for (int i = 0; i < 128; ++i)
 			RCT2_ADDRESS(RCT2_ADDRESS_STAFF_PATROL_AREAS + ((staff_type + STAFF_MAX_COUNT) * 512), uint32)[i] = 0;
 
-		for (uint16 sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16); sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next)
+		for (uint16 sprite_index = gSpriteListHead[SPRITE_LIST_PEEP]; sprite_index != SPRITE_INDEX_NULL; sprite_index = peep->next)
 		{
 			peep = GET_PEEP(sprite_index);
 
@@ -567,7 +567,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
 	rct_litter* nearestLitter = NULL;
 	rct_litter* litter = NULL;
 	
-	for(uint16 litterIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); litterIndex != 0xFFFF; litterIndex = litter->next){
+	for (uint16 litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next){
 		litter = &g_sprite_list[litterIndex].litter;
 		
 		uint16 distance = 

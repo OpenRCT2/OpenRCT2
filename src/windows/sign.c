@@ -536,8 +536,6 @@ static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
  */
 static void window_sign_small_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
-	rct_banner* banner = &gBanners[w->number];
-
 	switch (widgetIndex){
 	case WIDX_MAIN_COLOUR:
 		if (dropdownIndex == -1) return;

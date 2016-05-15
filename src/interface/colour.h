@@ -70,7 +70,7 @@ enum {
 
 #define NUM_COLOURS 32
 
-typedef struct {
+typedef struct rct_colour_map_a {
 	uint8 darkest;
 	uint8 darker;
 	uint8 dark;
@@ -81,7 +81,7 @@ typedef struct {
 	uint8 lightest;
 } rct_colour_map_a;
 
-typedef struct {
+typedef struct rct_colour_map_b {
 	uint8 a;
 	uint8 b;
 	uint8 c;

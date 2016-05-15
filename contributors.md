@@ -61,6 +61,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Chanwoong Kim (kexplo)
 * Josué Acevedo (Wirlie)
 * Martin Černáč (octaroot)
+* (marcovmun)
 
 ## Toolchain
 * (Balletie) - OSX
@@ -82,17 +83,17 @@ Includes all git commit authors. Aliases are GitHub user names.
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
-* Reviewing and merging: Rune Laenen (runelaenen), Michael Steenbeek (Gymnasiast)
+* Reviewing and merging: Michael Steenbeek (Gymnasiast), (Nubbie), Rune Laenen (runelaenen)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
-* English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: LRFLEW, mike-koch
+* English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: (LRFLEW), (mike-koch), Harry Lam (daihakken)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van de Werf (marijnvdwerf); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
-* Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako)
+* Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - "TELK" (telk5093), (NeverDruid); small fixes: (kexplo)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes)

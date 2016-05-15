@@ -31,7 +31,7 @@ static bool _ttfInitialised = false;
 #define TTF_SURFACE_CACHE_SIZE 256
 #define TTF_GETWIDTH_CACHE_SIZE 1024
 
-typedef struct {
+typedef struct ttf_cache_entry {
 	SDL_Surface *surface;
 	TTF_Font *font;
 	utf8 *text;
@@ -43,7 +43,7 @@ static int _ttfSurfaceCacheCount = 0;
 static int _ttfSurfaceCacheHitCount = 0;
 static int _ttfSurfaceCacheMissCount = 0;
 
-typedef struct {
+typedef struct ttf_getwidth_cache_entry {
 	uint32 width;
 	TTF_Font *font;
 	utf8 *text;
@@ -67,7 +67,6 @@ int gfx_get_string_width_new_lined(utf8 *text)
 	utf8 backup;
 	int codepoint;
 
-	int width = 0;
 	int maxWidth = 0;
 	while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
 		if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER) {
@@ -910,7 +909,7 @@ enum {
 	TEXT_DRAW_FLAG_NO_DRAW = 1 << 31
 };
 
-typedef struct {
+typedef struct text_draw_info {
 	int startX;
 	int startY;
 	int x;
@@ -979,7 +978,6 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
 			}
 		}
 
-		int fontSize = font_get_size_from_sprite_base(info->font_sprite_base);
 		int drawX = info->x + fontDesc->offset_x;
 		int drawY = info->y + fontDesc->offset_y;
 		int width = surface->w;

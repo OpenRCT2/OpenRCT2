@@ -632,8 +632,13 @@ void platform_process_messages()
 			}
 			else if (e.key.keysym.sym == SDLK_v && (SDL_GetModState() & KEYBOARD_PRIMARY_MODIFIER)) {
 				if (SDL_HasClipboardText()) {
-					utf8 *text = SDL_GetClipboardText();
+					utf8* text = SDL_GetClipboardText();
+
+					utf8_remove_formatting(text);
 					textinputbuffer_insert(&gTextInput, text);
+
+					SDL_free(text);
+
 					window_update_textbox();
 				}
 			}
@@ -676,13 +681,11 @@ void platform_process_messages()
 				break;
 			}
 
-			// Entering formatting characters is not allowed
-			if (utf8_is_format_code(utf8_get_next(e.text.text, NULL))) {
-				break;
-			}
+			utf8* newText = e.text.text;
 
-			utf8 *newText = e.text.text;
+			utf8_remove_formatting(newText);
 			textinputbuffer_insert(&gTextInput, newText);
+
 			console_refresh_caret();
 			window_update_textbox();
 			break;

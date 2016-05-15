@@ -270,6 +270,8 @@
     <ClCompile Include="src\ride\gentle\space_rings.c" />
     <ClCompile Include="src\ride\gentle\spiral_slide.c" />
     <ClCompile Include="src\ride\vehicle_paint.c" />
+    <ClCompile Include="src\rct2\S6Importer.cpp" />
+    <ClCompile Include="src\rct2\S6Exporter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources\resource.h" />
@@ -382,6 +384,8 @@
     <ClInclude Include="src\world\sprite.h" />
     <ClInclude Include="src\world\water.h" />
     <ClInclude Include="src\ride\vehicle_paint.h" />
+    <ClInclude Include="src\rct2\S6Importer.h" />
+    <ClInclude Include="src\rct2\S6Exporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\OpenRCT2.rc" />

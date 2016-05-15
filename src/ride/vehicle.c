@@ -377,7 +377,7 @@ void vehicle_sounds_update()
 				}
 			}
 			gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
-			for (uint16 i = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16); i != SPRITE_INDEX_NULL; i = g_sprite_list[i].vehicle.next) {
+			for (uint16 i = gSpriteListHead[SPRITE_LIST_VEHICLE]; i != SPRITE_INDEX_NULL; i = g_sprite_list[i].vehicle.next) {
 				vehicle_update_sound_params(&g_sprite_list[i].vehicle);
 			}
 			for(int i = 0; i < countof(gVehicleSoundList); i++){
@@ -626,7 +626,7 @@ void vehicle_update_all()
 		return;
 
 
-	sprite_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16);
+	sprite_index = gSpriteListHead[SPRITE_LIST_VEHICLE];
 	while (sprite_index != SPRITE_INDEX_NULL) {
 		vehicle = &(g_sprite_list[sprite_index].vehicle);
 		sprite_index = vehicle->next;
@@ -1836,7 +1836,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	}
 }
 
-typedef struct {
+typedef struct rct_synchrnoised_vehicle {
 	uint8 ride_id;
 	uint8 station_id;
 	uint16 vehicle_id;
@@ -3159,9 +3159,6 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle) {
 			}
 		}
 	}
-
-	rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
-	rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
 	if (vehicle->velocity <= 439800) {
 		vehicle->acceleration = 4398;
@@ -6647,13 +6644,17 @@ void sub_6DBF3E(rct_vehicle *vehicle)
 
 	RCT2_GLOBAL(0x00F64E18, uint32) |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
-	rct_map_element *mapElement = map_get_track_element_at_of_type_seq(
-		vehicle->track_x,
-		vehicle->track_y,
-		vehicle->track_z >> 3,
-		trackType,
-		0
-	);
+	rct_map_element *mapElement = NULL;
+	if (map_is_location_valid(vehicle->track_x, vehicle->track_y)) {
+		mapElement = map_get_track_element_at_of_type_seq(
+			vehicle->track_x,
+			vehicle->track_y,
+			vehicle->track_z >> 3,
+			trackType,
+			0
+		);
+
+	}
 	if (RCT2_GLOBAL(0x00F64E1C, uint32) == 0xFFFFFFFF) {
 		RCT2_GLOBAL(0x00F64E1C, uint32) = (mapElement->properties.track.sequence >> 4) & 7;
 	}
@@ -8008,8 +8009,6 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	rct_ride *ride = get_ride(vehicle->ride);
 	rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
 	rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-
-	rct_map_element *mapElement = NULL;
 
 	if (vehicleEntry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF) {
 		return vehicle_update_track_motion_mini_golf(vehicle, outStation);

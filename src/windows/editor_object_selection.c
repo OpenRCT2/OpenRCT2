@@ -29,6 +29,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
+#include "../ride/track_data.h"
 #include "../ride/track_design.h"
 #include "../scenario.h"
 #include "../util/util.h"
@@ -273,7 +274,7 @@ enum {
 	RIDE_SORT_RIDE
 };
 
-typedef struct {
+typedef struct list_item {
 	rct_object_entry *entry;
 	rct_object_filters *filter;
 	uint8 *flags;
@@ -330,7 +331,6 @@ static void visible_list_refresh(rct_window *w)
 	for (int i = 0; i < numObjects; i++) {
 		rct_object_filters *filter = get_object_filter(i);
 		int type = entry->flags & 0x0F;
-		int source = (entry->flags & 0xF0) >> 4;
 		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry, filter) && filter_chunks(entry, filter)) {
 			currentListItem->entry = entry;
 			currentListItem->filter = filter;
@@ -1933,18 +1933,23 @@ static int get_object_from_object_selection(uint8 object_type, int y, uint8 *obj
  */
 static void window_editor_object_selection_manage_tracks()
 {
-	RCT2_GLOBAL(0x1357404, sint32) = -1;
-	RCT2_GLOBAL(0x1357408, sint32) = -1;
-	RCT2_GLOBAL(0x135740C, sint32) = -1;
-	RCT2_GLOBAL(0x1357410, sint32) = -1;
-
-	for (int i = 0; i < 128; ++i){
-		RCT2_ADDRESS(0x1357444, uint32)[i] = RCT2_ADDRESS(0x97C468, uint32)[i];
-		RCT2_ADDRESS(0x1357644, uint32)[i] = RCT2_ADDRESS(0x97C5D4, uint32)[i];
+	for (int i = 0; i < 4; i++) {
+		gResearchedRideTypes[i] = 0xFFFFFFFF;
 	}
 
-	for (int i = 0; i < 8; ++i){
-		RCT2_ADDRESS(0x1357424, sint32)[i] = -1;
+	for (int i = 0; i < countof(RideTypePossibleTrackConfigurations); i++) {
+		gResearchedTrackTypesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
+		gResearchedTrackTypesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
+	}
+
+
+	for (int i = countof(RideTypePossibleTrackConfigurations); i < 128; i++) {
+		gResearchedTrackTypesA[i] = (uint32)-1;
+		gResearchedTrackTypesB[i] = (uint32)-1;
+	}
+
+	for (int i = 0; i < 8; i++) {
+		gResearchedRideEntries[i] = 0xFFFFFFFF;
 	}
 
 	RCT2_GLOBAL(0x141F570, uint8) = 7;

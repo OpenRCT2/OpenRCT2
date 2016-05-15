@@ -34,7 +34,7 @@ rct_vehicle *cable_lift_segment_create(int rideIndex, int x, int y, int z, int d
 	current->ride = rideIndex;
 	current->ride_subtype = 0xFF;
 	if (head) {
-		move_sprite_to_list((rct_sprite*)current, SPRITE_LINKEDLIST_OFFSET_VEHICLE);
+		move_sprite_to_list((rct_sprite*)current, SPRITE_LIST_VEHICLE * 2);
 		ride->cable_lift = current->sprite_index;
 	}
 	current->is_child = head ? 0 : 1;
@@ -395,8 +395,6 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
  */
 int cable_lift_update_track_motion(rct_vehicle *cableLift)
 {
-	rct_ride* ride = get_ride(cableLift->ride);
-
 	RCT2_GLOBAL(0x00F64E2C, uint8) = 0;
 	RCT2_GLOBAL(0x00F64E04, rct_vehicle*) = cableLift;
 	RCT2_GLOBAL(0x00F64E18, uint32) = 0;

@@ -1234,7 +1234,7 @@ rct_window *window_ride_open(int rideIndex)
 	rct_window *w;
 	rct_ride *ride;
 	uint8 *rideEntryIndexPtr;
-	int numSubTypes, quadIndex, bitIndex;
+	int numSubTypes;
 
 	w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
 	w->widgets = window_ride_page_widgets[0];
@@ -1259,12 +1259,9 @@ rct_window *window_ride_open(int rideIndex)
 	numSubTypes = 0;
 	rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(ride->type);
 	for (; *rideEntryIndexPtr != 0xFF; rideEntryIndexPtr++) {
-		quadIndex = *rideEntryIndexPtr >> 5;
-		bitIndex = *rideEntryIndexPtr & 0x1F;
-		if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex)))
-			continue;
-
-		numSubTypes++;
+		if (ride_entry_is_invented(*rideEntryIndexPtr)) {
+			numSubTypes++;
+		}
 	}
 	var_496(w) = numSubTypes;
 	return w;
@@ -2175,13 +2172,13 @@ static rct_string_id window_ride_get_status_vehicle(rct_window *w, void *argumen
 	vehicle = &(g_sprite_list[vehicleSpriteIndex].vehicle);
 	if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED) {
 		int trackType = vehicle->track_type >> 2;
-		if (trackType == 216 ||
+		if (trackType == TRACK_ELEM_BLOCK_BRAKES ||
 			trackType == TRACK_ELEM_CABLE_LIFT_HILL ||
 			trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT ||
 			trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT ||
 			trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT ||
 			trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT) {
-			if ((RCT2_ADDRESS(0x01357644, uint32)[ride->type] & 0x40) && vehicle->velocity == 0) {
+			if (track_type_is_invented(ride->type, TRACK_BLOCK_BRAKES) && vehicle->velocity == 0) {
 				RCT2_GLOBAL((int)arguments + 0, uint16) = STR_STOPPED_BY_BLOCK_BRAKES;
 				return 1191;
 			}
@@ -2381,7 +2378,7 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 	rct_widget *dropdownWidget = widget - 1;
 	rct_ride *ride;
 	rct_ride_entry *rideEntry, *currentRideEntry;
-	int numItems, quadIndex, bitIndex, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
+	int numItems, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
 	uint8 *rideEntryIndexPtr;
 	bool selectionShouldBeExpanded;
 
@@ -2421,10 +2418,8 @@ static void window_ride_vehicle_mousedown(int widgetIndex, rct_window *w, rct_wi
 				if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !(gConfigInterface.select_by_track_type || selectionShouldBeExpanded))
 					continue;
 
-				quadIndex = rideEntryIndex >> 5;
-				bitIndex = rideEntryIndex & 0x1F;
 				// Skip if vehicle type is not invented yet
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1u << bitIndex)))
+				if (!ride_entry_is_invented(rideEntryIndex))
 					continue;
 
 				if (ride->subtype == rideEntryIndex)
@@ -2641,7 +2636,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-typedef struct {
+typedef struct rct_vehichle_paintinfo {
 	short x;
 	short y;
 	int sprite_index;
@@ -3087,7 +3082,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 	w->pressed_widgets &= ~0x44700000;
 
 	// Lift hill speed
-	if ((rideEntry->enabledTrackPiecesA & RCT2_ADDRESS(0x01357444, uint32)[ride->type]) & 8) {
+	if ((rideEntry->enabledTrackPiecesA & (1UL << TRACK_LIFT_HILL)) && track_type_is_invented(ride->type, TRACK_LIFT_HILL)) {
 		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_24;
 		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
 		window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_DROPDOWN_BUTTON;
@@ -4632,8 +4627,6 @@ static void cancel_scenery_selection(){
  */
 static void setup_scenery_selection(rct_window* w)
 {
-	rct_ride* ride = get_ride(w->number);
-
 	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1){
 		cancel_scenery_selection();
 	}
@@ -4759,8 +4752,6 @@ static void window_ride_measurements_mousedown(int widgetIndex, rct_window *w, r
 {
 	if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
 		return;
-
-	rct_ride *ride = get_ride(w->number);
 
 	gDropdownItemsFormat[0] = STR_SAVE_TRACK_DESIGN_ITEM;
 	gDropdownItemsFormat[1] = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
@@ -5433,22 +5424,22 @@ static void update_same_price_throughout_flags(uint32 shop_item)
 	uint32 newFlags;
 
 	if (shop_item == SHOP_ITEM_PHOTO || shop_item == SHOP_ITEM_PHOTO2 || shop_item == SHOP_ITEM_PHOTO3 || shop_item == SHOP_ITEM_PHOTO4) {
-		newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32);
+		newFlags = gSamePriceThroughoutParkA;
 		newFlags ^= (1 << SHOP_ITEM_PHOTO);
 		game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 
-		newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32);
+		newFlags = gSamePriceThroughoutParkB;
 		newFlags ^= (SHOP_ITEM_PHOTO2 - 32) | (SHOP_ITEM_PHOTO3 - 32) | (SHOP_ITEM_PHOTO4 - 32);
 		game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 	}
 	else {
 		if (shop_item < 32) {
-			newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32);
+			newFlags = gSamePriceThroughoutParkA;
 			newFlags ^= (1u << shop_item);
 			game_do_command(0, 1, 0, (0x2 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}
 		else {
-			newFlags = RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32);
+			newFlags = gSamePriceThroughoutParkB;
 			newFlags ^= (1u << (shop_item - 32));
 			game_do_command(0, 1, 0, (0x3 << 8), GAME_COMMAND_SET_PARK_OPEN, newFlags, shop_item);
 		}

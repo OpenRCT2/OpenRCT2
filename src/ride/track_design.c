@@ -34,7 +34,7 @@
 #include "track_design.h"
 #include "track.h"
 
-typedef struct {
+typedef struct map_backup {
 	rct_map_element map_elements[MAX_MAP_ELEMENTS];
 	rct_map_element *tile_pointers[256 * 256];
 	rct_map_element *next_free_map_element;
@@ -82,14 +82,14 @@ rct_track_td6 *track_design_open(const utf8 *path)
 		if (bufferLength < 4) {
 			log_error("Invalid track file: %s.", path);
 			SDL_RWclose(file);
-			return false;
+			return NULL;
 		}
 
 		uint8 *buffer = (uint8*)malloc(bufferLength);
 		if (buffer == NULL) {
 			log_error("Unable to allocate memory for track design file.");
 			SDL_RWclose(file);
-			return false;
+			return NULL;
 		}
 		SDL_RWread(file, buffer, bufferLength, 1);
 		SDL_RWclose(file);
@@ -101,7 +101,7 @@ rct_track_td6 *track_design_open(const utf8 *path)
 		}
 
 		// Decode the track data
-		uint8 *decoded = malloc(0x10000);
+		uint8 *decoded = (uint8*)malloc(0x10000);
 		size_t decodedLength = sawyercoding_decode_td6(buffer, decoded, bufferLength);
 		free(buffer);
 		decoded = realloc(decoded, decodedLength);
@@ -111,8 +111,10 @@ rct_track_td6 *track_design_open(const utf8 *path)
 			rct_track_td6 *td6 = track_design_open_from_buffer(decoded, decodedLength);
 			free(decoded);
 
-			td6->name = track_design_get_name_from_path(path);
-			return td6;
+			if (td6 != NULL) {
+				td6->name = track_design_get_name_from_path(path);
+				return td6;
+			}
 		}
 	}
 	return NULL;
@@ -889,11 +891,10 @@ int track_design_place_maze(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, ui
 {
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
 		gMapSelectionTiles->x = -1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
+		gMapSelectArrowPosition.x = x;
+		gMapSelectArrowPosition.y = y;
+		gMapSelectArrowPosition.z = map_element_height(x, y) & 0xFFFF;
+		gMapSelectArrowDirection = _currentTrackPieceDirection;
 	}
 
 	_trackDesignPlaceZ = 0;
@@ -1024,10 +1025,10 @@ bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, u
 	gTrackPreviewOrigin = (rct_xyz16) { x, y, z };
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
 		gMapSelectionTiles->x = -1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, sint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, sint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, sint16) = map_element_height(x, y) & 0xFFFF;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
+		gMapSelectArrowPosition.x = x;
+		gMapSelectArrowPosition.y = y;
+		gMapSelectArrowPosition.z = map_element_height(x, y) & 0xFFFF;
+		gMapSelectArrowDirection = _currentTrackPieceDirection;
 	}
 
 	_trackDesignPlaceZ = 0;
@@ -1075,7 +1076,6 @@ bool track_design_place_ride(rct_track_td6 *td6, sint16 x, sint16 y, sint16 z, u
 
 			//di
 			sint16 tempZ = z - trackCoordinates->z_begin;
-			uint32 trackFlags = track->flags;
 			uint32 edi =
 				((track->flags & 0x0F) << 17) |
 				((track->flags & 0x0F) << 28) |
@@ -1293,8 +1293,9 @@ int sub_6D01B3(rct_track_td6 *td6, uint8 bl, uint8 rideIndex, int x, int y, int 
 
 	// 0x6D0FE6
 	if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES) {
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 0x6;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 3);
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
 		map_invalidate_map_selection_tiles();
 	}
 

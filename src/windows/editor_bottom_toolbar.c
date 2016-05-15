@@ -28,6 +28,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../platform/platform.h"
+#include "../ride/track_data.h"
 #include "../title.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
@@ -159,8 +160,9 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
  */
 static void sub_6DFED0()
 {
-	for (int i = 0; i < 56; i++)
-		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
+	for (int i = 0; i < 56; i++) {
+		gResearchedSceneryItems[i] = 0xFFFFFFFF;
+	}
 }
 
 /**
@@ -238,18 +240,22 @@ bool window_editor_bottom_toolbar_check_object_selection()
  */
 static void sub_66F6E3()
 {
-	RCT2_GLOBAL(0x01357404, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x01357408, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x0135740C, uint32) = 0xFFFFFFFF;
-	RCT2_GLOBAL(0x01357410, uint32) = 0xFFFFFFFF;
+	for (int i = 0; i < 4; i++) {
+		gResearchedRideTypes[i] = 0xFFFFFFFF;
+	}
 
-	for (int i = 0; i < 128; i++) {
-		RCT2_ADDRESS(0x01357444, uint32)[i] = RCT2_ADDRESS(0x0097C468, uint32)[i];
-		RCT2_ADDRESS(0x01357644, uint32)[i] = RCT2_ADDRESS(0x0097C5D4, uint32)[i];
+	for (int i = 0; i < countof(RideTypePossibleTrackConfigurations); i++) {
+		gResearchedTrackTypesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
+		gResearchedTrackTypesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
+	}
+
+	for (int i = countof(RideTypePossibleTrackConfigurations); i < 128; i++) {
+		gResearchedTrackTypesA[i] = (uint32)-1;
+		gResearchedTrackTypesB[i] = (uint32)-1;
 	}
 
 	for (int i = 0; i < 8; i++) {
-		RCT2_ADDRESS(0x01357424, uint32)[i] = 0xFFFFFFFF;
+		gResearchedRideEntries[i] = 0xFFFFFFFF;
 	}
 
 	window_new_ride_open();
@@ -341,7 +347,8 @@ static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 {
 	if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON) {
 		if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||
-			(RCT2_GLOBAL(0x13573C8, uint16) == 0x2710 && !(gParkFlags & PARK_FLAGS_18))) {
+			(gSpriteListCount[SPRITE_LIST_NULL] == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_18))
+		) {
 			previous_button_mouseup_events[g_editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {
@@ -387,7 +394,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 		} else if (g_editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			hide_next_step_button();
 		} else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)) {
-			if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710 || gParkFlags & PARK_FLAGS_18) {
+			if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES || gParkFlags & PARK_FLAGS_18) {
 				hide_previous_step_button();
 			}
 		}
@@ -409,7 +416,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		drawPreviousButton = true;
 	}
-	else if (RCT2_GLOBAL(0x13573C8, uint16) != 0x2710) {
+	else if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES) {
 		drawNextButton = true;
 	}
 	else if (gParkFlags & PARK_FLAGS_18) {

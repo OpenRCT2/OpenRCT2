@@ -26,9 +26,6 @@
 #include "openrct2.h"
 #include "util/util.h"
 
-// Magic number for original game cfg file
-static const int MagicNumber = 0x0003113A;
-
 enum {
 	CONFIG_VALUE_TYPE_BOOLEAN,
 	CONFIG_VALUE_TYPE_UINT8,
@@ -69,14 +66,14 @@ typedef union {
 	utf8string value_string;
 } value_union;
 
-typedef struct {
+typedef struct config_enum_definition {
 	const_utf8string key;
 	value_union value;
 } config_enum_definition;
 
 #define END_OF_ENUM { NULL, 0 }
 
-typedef struct {
+typedef struct config_property_definition {
 	size_t offset;
 	const_utf8string property_name;
 	uint8 type;
@@ -84,7 +81,7 @@ typedef struct {
 	config_enum_definition *enum_definitions;
 } config_property_definition;
 
-typedef struct {
+typedef struct config_section_definition {
 	void *base_address;
 	const_utf8string section_name;
 	config_property_definition *property_definitions;
@@ -285,6 +282,21 @@ config_property_definition _notificationsDefinitions[] = {
 	{ offsetof(notification_configuration, guest_died),							"guest_died",							CONFIG_VALUE_TYPE_BOOLEAN,	true,	NULL	},
 };
 
+config_property_definition _fontsDefinitions[] = {
+	{ offsetof(font_configuration, file_name),				"file_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL			},
+	{ offsetof(font_configuration, font_name),				"font_name",			CONFIG_VALUE_TYPE_STRING,		{.value_string = NULL },		NULL			},
+	{ offsetof(font_configuration, x_offset),				"x_offset",				CONFIG_VALUE_TYPE_SINT8,		0,								NULL			},
+	{ offsetof(font_configuration, y_offset),				"y_offset",				CONFIG_VALUE_TYPE_SINT8,		-1,								NULL			},
+	{ offsetof(font_configuration, size_tiny),				"size_tiny",			CONFIG_VALUE_TYPE_UINT8,		8,								NULL			},
+	{ offsetof(font_configuration, size_small),				"size_small",			CONFIG_VALUE_TYPE_UINT8,		10,								NULL			},
+	{ offsetof(font_configuration, size_medium),			"size_medium",			CONFIG_VALUE_TYPE_UINT8,		11,								NULL			},
+	{ offsetof(font_configuration, size_big),				"size_big",				CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_tiny),			"height_tiny",			CONFIG_VALUE_TYPE_UINT8,		6,								NULL			},
+	{ offsetof(font_configuration, height_small),			"height_small",			CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_medium),			"height_medium",		CONFIG_VALUE_TYPE_UINT8,		12,								NULL			},
+	{ offsetof(font_configuration, height_big),				"height_big",			CONFIG_VALUE_TYPE_UINT8,		20,								NULL			}
+};
+
 config_section_definition _sectionDefinitions[] = {
 	{ &gConfigGeneral, "general", _generalDefinitions, countof(_generalDefinitions) },
 	{ &gConfigInterface, "interface", _interfaceDefinitions, countof(_interfaceDefinitions) },
@@ -292,6 +304,7 @@ config_section_definition _sectionDefinitions[] = {
 	{ &gConfigTwitch, "twitch", _twitchDefinitions, countof(_twitchDefinitions) },
 	{ &gConfigNetwork, "network", _networkDefinitions, countof(_networkDefinitions) },
 	{ &gConfigNotifications, "notifications", _notificationsDefinitions, countof(_notificationsDefinitions) },
+	{ &gConfigFonts, "fonts", _fontsDefinitions, countof(_fontsDefinitions) }
 };
 
 #pragma endregion
@@ -302,6 +315,7 @@ sound_configuration gConfigSound;
 twitch_configuration gConfigTwitch;
 network_configuration gConfigNetwork;
 notification_configuration gConfigNotifications;
+font_configuration gConfigFonts;
 title_sequences_configuration gConfigTitleSequences;
 
 static bool config_open(const utf8string path);
@@ -1187,7 +1201,6 @@ static void title_sequence_open(const char *path, const char *customName)
 	SDL_RWops *file;
 	int fileEnumHandle, i, preset;
 	char parts[3 * 128], *token, *part1, *part2;
-	char separator = platform_get_path_separator();
 
 	// Check for the script file
 	safe_strcpy(scriptPath, path, MAX_PATH);

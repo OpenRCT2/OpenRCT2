@@ -21,7 +21,7 @@
 #include "font.h"
 
 // Size: 0x10
-typedef struct {
+typedef struct rct_drawpixelinfo {
 	uint8* bits;		// 0x00
 	short x;			// 0x04
 	short y;			// 0x06
@@ -32,7 +32,7 @@ typedef struct {
 } rct_drawpixelinfo;
 
 // Size: 0x10
-typedef struct {
+typedef struct rct_g1_element {
 	uint8* offset;			// 0x00
 	sint16 width;			// 0x04
 	sint16 height;			// 0x06
@@ -42,37 +42,37 @@ typedef struct {
 	uint16 zoomed_offset;	// 0x0E
 } rct_g1_element;
 
-enum{
+enum {
 	G1_FLAG_BMP = (1 << 0), //No invisible sections
 	G1_FLAG_RLE_COMPRESSION = (1<<2),
 };
 
-enum{
+enum {
 	IMAGE_TYPE_NO_BACKGROUND = 0,
 	IMAGE_TYPE_USE_PALETTE= (1 << 1),
 	IMAGE_TYPE_MIX_BACKGROUND = (1<<2),
 	IMAGE_TYPE_UNKNOWN = (1<<3)
 };
 
-typedef struct {
+typedef struct rct_g1_header {
 	uint32 num_entries;
 	uint32 total_size;
 } rct_g1_header;
 
-typedef struct {
+typedef struct rct_gx {
 	rct_g1_header header;
 	rct_g1_element *elements;
 	void *data;
 } rct_gx;
 
-typedef struct {
+typedef struct rct_palette_entry {
 	uint8 blue;
 	uint8 green;
 	uint8 red;
 	uint8 alpha;
 } rct_palette_entry;
 
-typedef struct {
+typedef struct rct_palette {
 	rct_palette_entry entries[256];
 } rct_palette;
 

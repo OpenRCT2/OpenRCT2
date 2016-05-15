@@ -3368,7 +3368,7 @@ STR_3353    :Uusi nimi sisältää virheellisiä merkkejä
 STR_3354    :Toinen saman niminen tiedosto on jo olemassa tai tiedosto on kirjoitussuojattu
 STR_3355    :Tiedosto on kirjoitussuojattu tai lukittu
 STR_3356    :Poista tiedosto
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRING} ?
 STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Varoitus!

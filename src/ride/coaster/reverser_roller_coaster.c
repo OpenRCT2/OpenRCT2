@@ -13,3 +13,26 @@
  * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
 #pragma endregion
+
+#include "../../addresses.h"
+#include "../../config.h"
+#include "../../interface/viewport.h"
+#include "../../world/sprite.h"
+#include "../../paint/paint.h"
+#include "../vehicle_paint.h"
+
+/**
+ *
+ *  rct2: 0x006D4453
+ */
+void vehicle_visual_reverser(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+{
+	rct_vehicle *v1 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+	rct_vehicle *v2 = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+	x = (v1->x + v2->x) / 2;
+	y = (v1->y + v2->y) / 2;
+	z = (v1->z + v2->z) / 2;
+	RCT2_GLOBAL(0x9DE568, sint16) = x;
+	RCT2_GLOBAL(0x9DE56C, sint16) = y;
+	vehicle_visual_default(x, imageDirection, y, z, vehicle, vehicleEntry);
+}

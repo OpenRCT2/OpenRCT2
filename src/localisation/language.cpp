@@ -19,6 +19,7 @@
 extern "C" {
 
 #include "../addresses.h"
+#include "../config.h"
 #include "../drawing/drawing.h"
 #include "../object.h"
 #include "../openrct2.h"
@@ -148,7 +149,7 @@ const char *language_get_string(rct_string_id id)
 	}
 }
 
-int language_open(int id)
+bool language_open(int id)
 {
 	static const char *languagePath = "%s/language/%s.txt";
 	char filename[MAX_PATH];
@@ -156,7 +157,7 @@ int language_open(int id)
 
 	language_close_all();
 	if (id == LANGUAGE_UNDEFINED)
-		return 1;
+		return false;
 
 	platform_get_openrct_data_path(dataPath);
 	if (id != LANGUAGE_ENGLISH_UK) {
@@ -174,6 +175,27 @@ int language_open(int id)
 			gUseTrueTypeFont = false;
 			gCurrentTTFFontSet = nullptr;
 		} else {
+			if (gConfigFonts.file_name != nullptr) {
+				static TTFFontSetDescriptor TTFFontCustom = {{
+					{ gConfigFonts.file_name,	gConfigFonts.font_name,	gConfigFonts.size_tiny,		gConfigFonts.x_offset,	gConfigFonts.y_offset,	gConfigFonts.height_tiny,	nullptr },
+					{ gConfigFonts.file_name,	gConfigFonts.font_name,	gConfigFonts.size_small,	gConfigFonts.x_offset,	gConfigFonts.y_offset,	gConfigFonts.height_small,	nullptr },
+					{ gConfigFonts.file_name,	gConfigFonts.font_name,	gConfigFonts.size_medium,	gConfigFonts.x_offset,	gConfigFonts.y_offset,	gConfigFonts.height_medium,	nullptr },
+					{ gConfigFonts.file_name,	gConfigFonts.font_name,	gConfigFonts.size_big,		gConfigFonts.x_offset,	gConfigFonts.y_offset,	gConfigFonts.height_big,	nullptr },
+				}};
+				ttf_dispose();
+				gUseTrueTypeFont = true;
+				gCurrentTTFFontSet = &TTFFontCustom;
+				
+				bool font_initialised = ttf_initialise();
+				if(!font_initialised) {
+					log_warning("Unable to initialise configured TrueType font -- falling back to Language default.");
+				} else {
+					// Objects and their localized strings need to be refreshed
+					reset_loaded_objects();
+					
+					return 1;
+				}
+			}
 			ttf_dispose();
 			gUseTrueTypeFont = true;
 			gCurrentTTFFontSet = LanguagesDescriptors[id].font;
@@ -191,14 +213,14 @@ int language_open(int id)
 				log_warning("Falling back to sprite font.");
 				gUseTrueTypeFont = false;
 				gCurrentTTFFontSet = nullptr;
-				return 0;
+				return false;
 			}
 		}
 
 		// Objects and their localized strings need to be refreshed
 		reset_loaded_objects();
 
-		return 1;
+		return true;
 	}
 
 	return 0;

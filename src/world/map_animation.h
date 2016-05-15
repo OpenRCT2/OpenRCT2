@@ -23,7 +23,7 @@
  * Animated object
  * size: 0x06
  */
-typedef struct {
+typedef struct rct_map_animation {
 	uint8 baseZ;
 	uint8 type;
 	uint16 x;
@@ -47,6 +47,8 @@ enum {
 	MAP_ANIMATION_TYPE_WALL,
 	MAP_ANIMATION_TYPE_COUNT
 };
+
+#define gNumMapAnimations		RCT2_GLOBAL(RCT2_ADDRESS_NUM_MAP_ANIMATIONS, uint16)
 
 extern rct_map_animation *gAnimatedObjects;
 

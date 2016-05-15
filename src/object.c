@@ -97,9 +97,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
-		char buffer[100];
-		sprintf(buffer, "Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
-		log_error(buffer);
+		log_error("Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
 		RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 		free(chunk);
 		return 0;
@@ -359,7 +357,6 @@ int object_load_packed(SDL_RWops* rw)
 		for (char* curr_char = last_char - 1;; --curr_char){
 			if (*curr_char == '\\'){
 				substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "00000000.DAT");
-				char* last_char = path + strlen(path);
 				break;
 			}
 			if (*curr_char < '0') *curr_char = '0';
@@ -401,6 +398,7 @@ void object_unload_chunk(rct_object_entry *entry)
 	object_unload(object_type, chunk);
 
 	free(chunk);
+	memset(&object_entry_groups[object_type].entries[object_index], 0, sizeof(rct_object_entry_extended));
 	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
 }
 
@@ -489,7 +487,7 @@ typedef rct_string_id (*object_desc_func)(void *objectEntry);
 /**
  * Represents addresses for virtual object functions.
  */
-typedef struct {
+typedef struct object_type_vtable {
 	object_load_func load;
 	object_unload_func unload;
 	object_test_func test;
@@ -1767,12 +1765,12 @@ void object_free_scenario_text()
 	}
 }
 
-int object_get_length(rct_object_entry *entry)
+uintptr_t object_get_length(const rct_object_entry *entry)
 {
-	return (int)object_get_next(entry) - (int)entry;
+	return (uintptr_t)object_get_next(entry) - (uintptr_t)entry;
 }
 
-rct_object_entry *object_get_next(rct_object_entry *entry)
+rct_object_entry *object_get_next(const rct_object_entry *entry)
 {
 	uint8 *pos = (uint8*)entry;
 

@@ -140,7 +140,7 @@ int rct2_init()
 {
 	log_verbose("initialising game");
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) = 0;
+	gScenarioTicks = 0;
 	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	util_srand((unsigned int)time(0));
 	if (!rct2_init_directories())
@@ -276,6 +276,10 @@ int rct2_startup_checks()
 
 void rct2_draw()
 {
+	if (gIntroState != INTRO_STATE_NONE) {
+		return;
+	}
+
 	redraw_rain();
 	window_update_all();
 	gfx_invalidate_pickedup_peep();
@@ -286,13 +290,8 @@ void rct2_draw()
 	chat_draw();
 	console_draw(&gScreenDPI);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0) {
-		//intro
-	} else if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
-		//title
+	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
 		DrawOpenRCT2(0, gScreenHeight - 20);
-	} else {
-		//game
 	}
 
 	if (gConfigGeneral.show_fps) {
@@ -326,7 +325,7 @@ static void rct2_draw_fps()
 	int y = 2;
 
 	// Measure FPS
-	float fps = rct2_measure_fps();
+	rct2_measure_fps();
 
 	// Format string
 	utf8 buffer[64];
@@ -455,12 +454,13 @@ void rct2_update()
 
 	// check_cmdline_arg();
 	// Screens
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
+	if (gIntroState != INTRO_STATE_NONE) {
 		intro_update();
-	else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
+	} else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless) {
 		title_update();
-	else
+	} else {
 		game_update();
+	}
 
 	//stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
 

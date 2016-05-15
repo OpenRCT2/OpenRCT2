@@ -22,6 +22,7 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../interface/themes.h"
+#include "../intro.h"
 
 static rct_widget window_title_exit_widgets[] = {
 	{ WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
@@ -89,7 +90,7 @@ void window_title_exit_open()
 */
 static void window_title_exit_mouseup(rct_window *w, int widgetIndex)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) != 0)
+	if (gIntroState != INTRO_STATE_NONE)
 		return;
 
 	if (widgetIndex == 0)

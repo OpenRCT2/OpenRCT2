@@ -20,7 +20,7 @@
 #include "../common.h"
 
 /* size: 0x2 */
-typedef struct{
+typedef struct rct_vehicle_colour {
 	uint8 body_colour;
 	uint8 trim_colour;
 } rct_vehicle_colour;
@@ -29,7 +29,7 @@ typedef struct{
  * Ride type vehicle structure.
  * size: 0x65
  */
-typedef struct {
+typedef struct rct_ride_entry_vehicle {
 	uint16 rotation_frame_mask;		// 0x00 , 0x1A
 	uint8 var_02;					// 0x02 , 0x1C
 	uint8 var_03;					// 0x03 , 0x1D
@@ -70,13 +70,13 @@ typedef struct {
 	uint8 powered_acceleration;		// 0x5B , 0x75
 	uint8 powered_max_speed;		// 0x5C , 0x76
 	uint8 car_visual;				// 0x5D , 0x77
-	uint8 pad_5E;
+	uint8 effect_visual;
 	uint8 draw_order;
 	uint8 special_frames;			// 0x60 , 0x7A
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
 } rct_ride_entry_vehicle;
 
-typedef struct {
+typedef struct rct_vehicle {
 	uint8 sprite_identifier;		// 0x00
 	uint8 is_child;					// 0x01
 	uint16 next_in_quadrant;		// 0x02
@@ -194,13 +194,13 @@ typedef struct {
 	uint8 target_seat_rotation;		// 0xD9
 } rct_vehicle;
 
-typedef struct {
+typedef struct train_ref {
 	rct_vehicle *head;
 	rct_vehicle *tail;
 } train_ref;
 
 // Size: 0x09
-typedef struct {
+typedef struct rct_vehicle_info {
 	uint16 x;			// 0x00
 	uint16 y;			// 0x02
 	uint16 z;			// 0x04
@@ -330,7 +330,12 @@ enum {
 	VEHICLE_VISUAL_REVERSER,
 	VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER,
 	VEHICLE_VISUAL_ROTO_DROP,
-	VEHICLE_VISUAL_VIRGINIA_REEL = 15,
+	VEHICLE_VISUAL_SPLASH1_EFFECT,
+	VEHICLE_VISUAL_SPLASH2_EFFECT,
+	VEHICLE_VISUAL_SPLASH3_EFFECT,
+	VEHICLE_VISUAL_SPLASH4_EFFECT,
+	VEHICLE_VISUAL_SPLASH5_EFFECT,
+	VEHICLE_VISUAL_VIRGINIA_REEL,
 	VEHICLE_VISUAL_SUBMARINE
 };
 

@@ -46,6 +46,7 @@ int dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
 money32 *gCashHistory = RCT2_ADDRESS(RCT2_ADDRESS_BALANCE_HISTORY, money32);
 money32 *gWeeklyProfitHistory = RCT2_ADDRESS(RCT2_ADDRESS_WEEKLY_PROFIT_HISTORY, money32);
 money32 *gParkValueHistory = RCT2_ADDRESS(RCT2_ADDRESS_PARK_VALUE_HISTORY, money32);
+money32 *gExpenditureTable = RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32);
 
 uint8 gCommandExpenditureType;
 
@@ -62,9 +63,9 @@ void finance_payment(money32 amount, rct_expenditure_type type)
 
 	//overflow check
 	gCashEncrypted = ENCRYPT_MONEY(new_money);
-	RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[type] -= amount;
+	gExpenditureTable[type] -= amount;
 	if (dword_988E60[type] & 1)
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) -= amount; // Cumulative amount of money spent this day
+		gCurrentExpenditure -= amount; // Cumulative amount of money spent this day
 
 
 	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
@@ -165,14 +166,14 @@ void finance_init() {
 
 	// It only initializes the first month
 	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
+		gExpenditureTable[i] = 0;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
+	gCurrentExpenditure = 0;
+	gCurrentProfit = 0;
 
-	RCT2_GLOBAL(0x01358334, money32) = 0;
-	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	gWeeklyProfitAverageDividend = 0;
+	gWeeklyProfitAverageDivisor = 0;
 
 	gInitialCash = MONEY(10000,00); // Cheat detection
 
@@ -186,8 +187,8 @@ void finance_init() {
 	gParkValue = 0;
 	gCompanyValue = 0;
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
+	gTotalAdmissions = 0;
+	gTotalIncomeFromAdmissions = 0;
 
 	RCT2_GLOBAL(0x013587D8, uint16) = 0x3F;
 
@@ -200,8 +201,8 @@ void finance_init() {
 */
 void finance_update_daily_profit()
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 7 * RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, money32) = 0; // Reset daily expenditure
+	gCurrentProfit = 7 * gCurrentExpenditure;
+	gCurrentExpenditure = 0; // Reset daily expenditure
 
 	money32 current_profit = 0;
 
@@ -212,7 +213,6 @@ void finance_update_daily_profit()
 		rct_peep *peep;
 
 		FOR_ALL_STAFF(sprite_index, peep) {
-			uint8 staff_type = peep->staff_type;
 			current_profit -= wage_table[peep->staff_type];
 		}
 
@@ -237,11 +237,11 @@ void finance_update_daily_profit()
 	// This is not equivalent to / 4 due to rounding of negative numbers
 	current_profit = current_profit >> 2;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) += current_profit;
+	gCurrentProfit += current_profit;
 
 	// These are related to weekly profit graph
-	RCT2_GLOBAL(0x1358334, money32) += RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32);
-	RCT2_GLOBAL(0x1358338, uint16) += 1;
+	gWeeklyProfitAverageDividend += gCurrentProfit;
+	gWeeklyProfitAverageDivisor += 1;
 
 	window_invalidate_by_class(WC_FINANCES);
 }
@@ -327,32 +327,32 @@ void game_command_set_current_loan(int* eax, int* ebx, int* ecx, int* edx, int* 
 }
 
 /**
-* Shift the expenditure table history one month to the left
-* If the table is full, acumulate the sum of the oldest month first
-* rct2: 0x0069DEAD
-*/
-
-void finance_shift_expenditure_table() {
-
+ * Shift the expenditure table history one month to the left
+ * If the table is full, acumulate the sum of the oldest month first
+ * rct2: 0x0069DEAD
+ */
+void finance_shift_expenditure_table()
+{
 	// If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
 	if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT) {
 		money32 sum = 0;
 		for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++) {
-			sum += RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i];
+			sum += gExpenditureTable[i];
 		}
 		RCT2_GLOBAL(0x013587D0, money32) += sum;
 	}
+
 	// Shift the table
 	for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - 1; i >= RCT_EXPENDITURE_TYPE_COUNT; i--) {
-		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] =
-			RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i - RCT_EXPENDITURE_TYPE_COUNT];
+		gExpenditureTable[i] = gExpenditureTable[i - RCT_EXPENDITURE_TYPE_COUNT];
 	}
-	// Zero the beggining of the table, which is the new month
+
+	// Zero the beginning of the table, which is the new month
 	for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
-		RCT2_ADDRESS(RCT2_ADDRESS_EXPENDITURE_TABLE, money32)[i] = 0;
+		gExpenditureTable[i] = 0;
 	}
-	// Invalidate the expenditure table window
-	window_invalidate_by_number(0x1C, 0);
+
+	window_invalidate_by_class(WC_FINANCES);
 }
 
 /**

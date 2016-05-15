@@ -1,0 +1,21 @@
+# http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-1.0.html
+[Desktop Entry]
+Type=Application
+Version=1.0
+Exec=openrct2
+Icon=openrct2
+Name=OpenRCT2
+GenericName=Theme park management game
+GenericName[de]=Freizeitpark-Simulation
+GenericName[es]=Simulación de parque de atracciones.
+GenericName[nl]=Pretparksimulator
+GenericName[sv]=Nöjesparks-simulator
+GenericName[cs]=Strategická simulace zábavního parku
+Comment=Open Source re-implementation of RollerCoaster Tycoon 2.
+Comment[de]=Quelloffene Neuimplementierung von RollerCoaster Tycoon 2
+Comment[es]=Re-implementación de código abierto de RollerCoaster Tycoon 2.
+Comment[it]=Versione Open Source di RollerCoaster
+Comment[nl]=Een opensource-versie van RollerCoaster Tycoon 2
+Comment[sv]=Open Source om-implementation av RollerCoaster Tycoon 2.
+Comment[cs]=Open Source remake hry RollerCoaster Tycoon 2.
+Categories=Game;Simulation;

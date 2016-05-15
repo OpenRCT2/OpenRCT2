@@ -20,6 +20,7 @@
 #include "../drawing/drawing.h"
 #include "../game.h"
 #include "../image_io.h"
+#include "../intro.h"
 #include "../localisation/localisation.h"
 #include "../openrct2.h"
 #include "../platform/platform.h"
@@ -301,7 +302,7 @@ int cmdline_for_screenshot(const char **argv, int argc)
 	if (openrct2_initialise()) {
 		rct2_open_file(inputPath);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_RUN_INTRO_TICK_PART, uint8) = 0;
+		gIntroState = INTRO_STATE_NONE;
 		gScreenFlags = SCREEN_FLAGS_PLAYING;
 
 		int mapSize = gMapSize;

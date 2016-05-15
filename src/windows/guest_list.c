@@ -658,7 +658,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			if (_window_guest_list_selected_filter != -1) {
 				if (window_guest_list_is_peep_in_filter(peep))
 					continue;
-				RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 0);
+				gWindowMapFlashingFlags |= (1 << 0);
 				peep->flags |= SPRITE_FLAGS_PEEP_FLASHING;
 			}
 			if (_window_guest_list_tracking_only && !(peep->peep_flags & PEEP_FLAGS_TRACKING))
@@ -825,7 +825,7 @@ static void window_guest_list_find_groups()
 	int spriteIndex, spriteIndex2, groupIndex, faceIndex;
 	rct_peep *peep, *peep2;
 
-	int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 0xFFFFFF00;
+	int eax = gScenarioTicks & 0xFFFFFF00;
 	if (_window_guest_list_selected_view == RCT2_GLOBAL(0x00F1EE02, uint32))
 		if (RCT2_GLOBAL(0x00F1AF20, uint16) != 0 || eax == RCT2_GLOBAL(0x00F1AF1C, uint32))
 			return;
@@ -850,7 +850,6 @@ static void window_guest_list_find_groups()
 		if (groupIndex >= 240)
 			break;
 
-		int ax = peep->sprite_index;
 		_window_guest_list_num_groups++;
 		_window_guest_list_groups_num_guests[groupIndex] = 1;
 		peep->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);

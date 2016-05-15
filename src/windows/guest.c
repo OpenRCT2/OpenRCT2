@@ -728,7 +728,7 @@ void window_guest_viewport_init(rct_window* w){
 			|| peep->state == PEEP_STATE_ENTERING_RIDE
 			|| (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == SPRITE_LOCATION_NULL)){
 
-			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+			rct_ride *ride = get_ride(peep->current_ride);
 			if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
 				rct_vehicle* train = GET_VEHICLE(ride->vehicles[peep->current_train]);
 				int car = peep->current_car;
@@ -742,7 +742,7 @@ void window_guest_viewport_init(rct_window* w){
 			}
 		}
 		if (peep->x == SPRITE_LOCATION_NULL && final_check){
-			rct_ride* ride = &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride)[peep->current_ride]);
+			rct_ride *ride = get_ride(peep->current_ride);
 			int x = (ride->overall_view & 0xFF) * 32 + 16;
 			int y = (ride->overall_view >> 8) * 32 + 16;
 			int height = map_element_height(x, y);
@@ -1171,17 +1171,17 @@ void window_guest_overview_tool_update(rct_window* w, int widgetIndex, int x, in
 
 	map_invalidate_selection_rect();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
 	int map_x, map_y;
 	footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, NULL, NULL);
 	if (map_x != (sint16)0x8000){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = map_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = map_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = map_y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = map_y;
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+		gMapSelectType = MAP_SELECT_TYPE_FULL;
+		gMapSelectPositionA.x = map_x;
+		gMapSelectPositionB.x = map_x;
+		gMapSelectPositionA.y = map_y;
+		gMapSelectPositionB.y = map_y;
 		map_invalidate_selection_rect();
 	}
 
@@ -1530,7 +1530,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Time in park
 	y += 11;
 	if (peep->time_in_park != -1){
-		int eax = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+		int eax = gScenarioTicks;
 		eax -= peep->time_in_park;
 		eax >>= 11;
 		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = eax & 0xFFFF;
@@ -1587,7 +1587,7 @@ void window_guest_rides_update(rct_window *w)
 	rct_peep* peep = GET_PEEP(w->number);
 
 	// Every 2048 ticks do a full window_invalidate
-	int number_of_ticks = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) - peep->time_in_park;
+	int number_of_ticks = gScenarioTicks - peep->time_in_park;
 	if (!(number_of_ticks & 0x7FF)) window_invalidate(w);
 
 	uint8 curr_list_position = 0;

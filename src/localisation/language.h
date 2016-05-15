@@ -45,7 +45,7 @@ enum {
 
 #define FONT_OPENRCT2_SPRITE NULL
 
-typedef struct {
+typedef struct language_descriptor {
 	const char *locale;
 	const utf8 *english_name;
 	const utf8 *native_name;
@@ -65,7 +65,7 @@ extern const utf8 BlackRightArrowString[];
 extern const utf8 CheckBoxMarkString[];
 
 const char *language_get_string(rct_string_id id);
-int language_open(int id);
+bool language_open(int id);
 void language_close_all();
 
 rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/);

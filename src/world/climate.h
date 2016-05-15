@@ -35,7 +35,7 @@ enum{
 	WEATHER_THUNDER
 };
 
-typedef struct {
+typedef struct rct_weather {
 	sint8 temp_delta;
 	sint8 effect_level;
 	sint8 gloom_level;

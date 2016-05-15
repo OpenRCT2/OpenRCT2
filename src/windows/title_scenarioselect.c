@@ -35,7 +35,7 @@ enum {
 	LIST_ITEM_TYPE_END,
 };
 
-typedef struct {
+typedef struct sc_list_item {
 	uint8 type;
 	union {
 		struct {

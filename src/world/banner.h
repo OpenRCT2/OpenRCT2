@@ -23,7 +23,7 @@
 #define BANNER_NULL 255
 #define MAX_BANNERS 250
 
-typedef struct {
+typedef struct rct_banner {
 	uint8 type;
 	uint8 flags; //0x01 bit 0 is no entry
 	rct_string_id string_idx; //0x02

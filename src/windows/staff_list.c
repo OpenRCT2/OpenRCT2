@@ -180,8 +180,6 @@ void window_staff_list_open()
 }
 
 void window_staff_list_cancel_tools(rct_window *w) {
-	int toolWindowClassification = gCurrentToolWidget.window_classification;
-	int toolWindowNumber = gCurrentToolWidget.window_number;
 	if (gInputFlags & INPUT_FLAG_TOOL_ACTIVE)
 		if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
 			tool_cancel();
@@ -308,7 +306,7 @@ void window_staff_list_update(rct_window *w)
 		w->list_information_type = 0;
 	} else {
 		widget_invalidate(w, WIDX_STAFF_LIST_HANDYMEN_TAB + RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_STAFF_LIST_SELECTED_TAB, uint8));
-		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) |= (1 << 2);
+		gWindowMapFlashingFlags |= (1 << 2);
 		FOR_ALL_STAFF(spriteIndex, peep) {
 			peep->flags &= ~(SPRITE_FLAGS_PEEP_FLASHING);
 

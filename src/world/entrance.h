@@ -19,7 +19,7 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct rct_entrance_type {
 	rct_string_id string_idx;	// 0x00
 	uint32 image_id;			// 0x02
 	uint8 scrolling_mode;		// 0x06

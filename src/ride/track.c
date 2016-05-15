@@ -617,9 +617,9 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) = 0;
 
 	uint64 enabledTrackPieces = 0;
-	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & RCT2_ADDRESS(0x01357644, uint32)[ride->type];
+	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[ride->type];
 	enabledTrackPieces <<= 32;
-	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & RCT2_ADDRESS(0x01357444, uint32)[ride->type];
+	enabledTrackPieces |= rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[ride->type];
 	uint32 rideTypeFlags = RCT2_GLOBAL(RCT2_ADDRESS_RIDE_FLAGS + (ride->type * 8), uint32);
 	RCT2_GLOBAL(0x00F44068, uint32) = rideTypeFlags;
 
@@ -791,8 +791,6 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 
 		//6c53dc
-		// push baseZ and clearanceZ
-		int cur_z = baseZ * 8;
 
 		if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			footpath_remove_litter(x, y, z);

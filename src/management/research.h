@@ -19,7 +19,7 @@
 
 #include "../common.h"
 
-typedef struct {
+typedef struct rct_research_item {
 	// Bit 16 (0: scenery entry, 1: ride entry)
 	sint32 entryIndex;
 	uint8 category;
@@ -66,6 +66,7 @@ enum {
 #define gResearchPriorities			RCT2_GLOBAL(RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES, uint8)
 #define gResearchProgress			RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS, uint16)
 #define gResearchProgressStage		RCT2_GLOBAL(RCT2_ADDRESS_RESEARH_PROGRESS_STAGE, uint8)
+#define gResearchLastItemSubject	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32)
 #define gResearchExpectedMonth		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_MONTH, uint8)
 #define gResearchExpectedDay		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_EXPECTED_DAY, uint8)
 #define gResearchNextCategory		RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RESEARCH_CATEGORY, uint8)
@@ -73,6 +74,11 @@ enum {
 
 extern rct_research_item *gResearchItems;
 extern uint8 gResearchUncompletedCategories;
+extern uint32 *gResearchedRideTypes;
+extern uint32 *gResearchedRideEntries;
+extern uint32 *gResearchedTrackTypesA;
+extern uint32 *gResearchedTrackTypesB;
+extern uint32 *gResearchedSceneryItems;
 extern bool gSilentResearch;
 
 void research_reset_items();
@@ -92,5 +98,9 @@ void research_remove(sint32 entryIndex);
 
 void research_insert_ride_entry(uint8 entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
+
+bool ride_type_is_invented(int rideType);
+bool ride_entry_is_invented(int rideEntryIndex);
+bool track_type_is_invented(uint8 rideType, int trackType);
 
 #endif

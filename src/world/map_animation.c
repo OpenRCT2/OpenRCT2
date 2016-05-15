@@ -45,7 +45,7 @@ rct_map_animation *gAnimatedObjects = (rct_map_animation*)0x013886A0;
 void map_animation_create(int type, int x, int y, int z)
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
+	int numAnimatedObjects = gNumMapAnimations;
 	if (numAnimatedObjects >= 2000) {
 		log_error("Exceeded the maximum number of animations");
 		return;
@@ -64,7 +64,7 @@ void map_animation_create(int type, int x, int y, int z)
 	}
 
 	// Create new animation
-	RCT2_GLOBAL(0x0138B580, uint16)++;
+	gNumMapAnimations++;
 	aobj->type = type;
 	aobj->x = x;
 	aobj->y = y;
@@ -78,11 +78,11 @@ void map_animation_create(int type, int x, int y, int z)
 void map_animation_invalidate_all()
 {
 	rct_map_animation *aobj = &gAnimatedObjects[0];
-	int numAnimatedObjects = RCT2_GLOBAL(0x0138B580, uint16);
+	int numAnimatedObjects = gNumMapAnimations;
 	while (numAnimatedObjects > 0) {
 		if (map_animation_invalidate(aobj)) {
 			// Remove animated object
-			RCT2_GLOBAL(0x0138B580, uint16)--;
+			gNumMapAnimations--;
 			numAnimatedObjects--;
 			if (numAnimatedObjects > 0)
 				memmove(aobj, aobj + 1, numAnimatedObjects * sizeof(rct_map_animation));
@@ -199,7 +199,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 				uint16 spriteIdx = RCT2_ADDRESS(0x00F1EF60, uint16)[((x2 & 0x1FE0) << 3) | (y2 >> 5)];
 				for (; spriteIdx != 0xFFFF; spriteIdx = sprite->unknown.next_in_quadrant) {
 					sprite = &g_sprite_list[spriteIdx];
-					if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)
+					if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
 						continue;
 
 					peep = &sprite->peep;
@@ -310,7 +310,6 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 {
 	rct_map_element *mapElement;
 
-	bool wasInvalidated = false;
 	mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
 		if (mapElement->base_height != baseZ)
@@ -319,7 +318,6 @@ static bool map_animation_invalidate_track_onridephoto(int x, int y, int baseZ)
 			continue;
 
 		if (mapElement->properties.track.type == TRACK_ELEM_ON_RIDE_PHOTO) {
-			int z = mapElement->base_height * 8;
 			map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 			if (game_is_paused()) {
 				return false;

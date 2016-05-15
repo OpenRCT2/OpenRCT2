@@ -42,30 +42,30 @@
 
 #define TOUCH_DOUBLE_TIMEOUT 300
 
-typedef struct {
+typedef struct resolution {
 	int width, height;
 } resolution;
 
-typedef struct {
+typedef struct file_info {
 	const char *path;
 	uint64 size;
 	uint64 last_modified;
 } file_info;
 
-typedef struct {
+typedef struct rct2_date {
 	sint16 day;
 	sint16 month;
 	sint16 year;
 	sint16 day_of_week;
 } rct2_date;
 
-typedef struct {
+typedef struct rct2_time {
 	sint16 hour;
 	sint16 minute;
 	sint16 second;
 } rct2_time;
 
-typedef struct {
+typedef struct openrct2_cursor {
 	int x, y;
 	unsigned char left, middle, right, any;
 	int wheel;
@@ -84,7 +84,7 @@ enum {
 
 typedef enum {FD_OPEN, FD_SAVE} filedialog_type;
 
-typedef struct {
+typedef struct file_dialog_desc {
 	uint8 type;
 	const utf8 *title;
 	const utf8 *initial_directory;

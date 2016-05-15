@@ -3362,7 +3362,7 @@ STR_3353    :Neuer Name enthält ungültige Zeichen
 STR_3354    :Entweder besteht bereits eine Datei mit diesem Namen oder die Datei ist schreibgeschützt
 STR_3355    :Datei ist schreibgeschützt oder gesperrt
 STR_3356    :Datei löschen
-STR_3357    :{WINDOW_COLOUR_2}Soll {STRINGID} wirklich dauerhaft gelöscht werden?
+STR_3357    :{WINDOW_COLOUR_2}Soll {STRING} wirklich dauerhaft gelöscht werden?
 STR_3358    :Streckenentwurf kann nicht gelöscht werden...
 STR_3359    :{BLACK}Keine Streckenentwürfe dieser Art
 STR_3360    :Warnung!
@@ -4111,6 +4111,8 @@ STR_5809    :{WINDOW_COLOUR_2}Anzahl der Informationsstände und anderer Einrich
 STR_5810    :Zuglängenlimit deaktivieren
 STR_5811    :{SMALLFONT}{BLACK}Dieser Cheat ermöglicht eine Zuglänge{NEWLINE}von bis zu 255 Wagen pro Zug
 STR_5812    :Mehrspielerstatus anzeigen
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 
 #############
 # Scenarios #

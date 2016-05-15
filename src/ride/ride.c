@@ -127,6 +127,7 @@ static const int RideInspectionInterval[] = {
 
 rct_ride_entry **gRideTypeList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_entry*);
 rct_ride* gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
+rct_ride_measurement *gRideMeasurements = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement);
 bool gGotoStartPlacementMode = false;
 int gRideRemoveTrackPieceCallbackX;
 int gRideRemoveTrackPieceCallbackY;
@@ -222,7 +223,7 @@ void get_ride_entry_name(char *name, int index)
 
 rct_ride_measurement *get_ride_measurement(int index)
 {
-	return &(RCT2_ADDRESS(RCT2_ADDRESS_RIDE_MEASUREMENTS, rct_ride_measurement)[index]);
+	return &gRideMeasurements[index];
 }
 
 rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
@@ -303,7 +304,7 @@ void ride_update_favourited_stat()
 		ride->guests_favourite = 0;
 
 	FOR_ALL_PEEPS(spriteIndex, peep) {
-		if (peep->linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)
+		if (peep->linked_list_type_offset != SPRITE_LIST_PEEP * 2)
 			return;
 		if (peep->favourite_ride != 0xff) {
 			ride = &gRideList[peep->favourite_ride];
@@ -1374,13 +1375,13 @@ void sub_6C9627()
 				_currentTrackBeginX & 0xFFE0,
 				_currentTrackBeginY & 0xFFE0
 			);
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 		}
 		break;
 	default:
 		if (_currentTrackSelectionFlags & 1) {
 			_currentTrackSelectionFlags &= ~1;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) &= ~4;
+			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 			map_invalidate_tile_full(_currentTrackBeginX, _currentTrackBeginY);
 		}
 		sub_6C96C0();
@@ -1692,7 +1693,7 @@ static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int 
 		}
 
 		sub_6C84CE();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	} else {
 		// Remove entrance / exit
 		game_do_command(x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, bl, 0);
@@ -2062,6 +2063,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		peep->destination_x++;
 	}
 
+	const uint8 current_rotation = get_current_rotation();
 	// Invalidate something related to station start
 	for (i = 0; i < 4; i++) {
 		if (ride->station_starts[i] == 0xFFFF)
@@ -2072,7 +2074,7 @@ static void ride_spiral_slide_update(rct_ride *ride)
 		z = ride->station_heights[i];
 
 		mapElement = ride_get_station_start_track_element(ride, i);
-		int rotation = ((mapElement->type & 3) << 2) | get_current_rotation();
+		int rotation = ((mapElement->type & 3) << 2) | current_rotation;
 		x *= 32;
 		y *= 32;
 		x += RCT2_GLOBAL(0x0098DDB8 + (rotation * 4), sint16);
@@ -2802,7 +2804,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 		verticalG = clamp(-127, verticalG / 8, 127);
 		lateralG = clamp(-127, lateralG / 8, 127);
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+		if (gScenarioTicks & 1) {
 			verticalG = (verticalG + measurement->vertical[measurement->current_item]) / 2;
 			lateralG = (lateralG + measurement->lateral[measurement->current_item]) / 2;
 		}
@@ -2814,7 +2816,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	velocity = min(abs((vehicle->velocity * 5) >> 16), 255);
 	altitude = min(vehicle->z / 8, 255);
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+	if (gScenarioTicks & 1) {
 		velocity = (velocity + measurement->velocity[measurement->current_item]) / 2;
 		altitude = (altitude + measurement->altitude[measurement->current_item]) / 2;
 	}
@@ -2822,7 +2824,7 @@ void ride_measurement_update(rct_ride_measurement *measurement)
 	measurement->velocity[measurement->current_item] = velocity & 0xFF;
 	measurement->altitude[measurement->current_item] = altitude & 0xFF;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) & 1) {
+	if (gScenarioTicks & 1) {
 		measurement->current_item++;
 		measurement->num_items = max(measurement->num_items, measurement->current_item);
 	}
@@ -2958,7 +2960,7 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 		measurement->current_item = 0;
 	}
 
-	measurement->last_use_tick = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	measurement->last_use_tick = gScenarioTicks;
 	if (measurement->flags & 1) {
 		if (message != NULL) *message = 0;
 		return measurement;
@@ -3373,19 +3375,19 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 				break;
 		}
 		rct_viewport* viewport = RCT2_GLOBAL(0x00F438A4, rct_viewport*);
-		sint16 view_width = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width;
+		sint16 view_width = viewport->view_width;
 		sint16 view_width2 = view_width * 2;
-		sint16 view_x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x - view_width2;
-		sint16 view_y = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y - view_width;
-		sint16 view_x2 = view_width2 + view_width2 + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_width + view_x;
-		sint16 view_y2 = view_width + view_width + RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_height + view_y;
+		sint16 view_x = viewport->view_x - view_width2;
+		sint16 view_y = viewport->view_y - view_width;
+		sint16 view_x2 = view_width2 + view_width2 + viewport->view_width + view_x;
+		sint16 view_y2 = view_width + view_width + viewport->view_height + view_y;
 		if (view_x >= rotatedCoords.x ||
 			view_y >= rotatedCoords.y ||
 			view_x2 < rotatedCoords.x ||
 			view_y2 < rotatedCoords.y) {
 				goto label58;
 		}
-		int x2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->x + ((rotatedCoords.x - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int x2 = viewport->x + ((rotatedCoords.x - viewport->view_x) >> viewport->zoom);
 		x2 *= 0x10000;
 		uint16 screenwidth = gScreenWidth;
 		if (screenwidth < 64) {
@@ -3393,7 +3395,7 @@ int ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint
 		}
 		int pan_x = ((x2 / screenwidth) - 0x8000) >> 4;
 
-		int y2 = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->y + ((rotatedCoords.y - RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_y) >> RCT2_GLOBAL(0x00F438A4, rct_viewport*)->zoom);
+		int y2 = viewport->y + ((rotatedCoords.y - viewport->view_y) >> viewport->zoom);
 		y2 *= 0x10000;
 		uint16 screenheight = gScreenHeight;
 		if (screenheight < 64) {
@@ -4376,9 +4378,9 @@ void ride_set_start_finish_points(int rideIndex, rct_xy_element *startElement)
  */
 static int sub_69ED9E()
 {
-	int miscSpriteCount = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_COUNT_MISC, uint16);
-	int unkCount = RCT2_GLOBAL(0x013573C8, uint16);
-	return max(0, miscSpriteCount + unkCount - 300);
+	int miscSpriteCount = gSpriteListCount[SPRITE_LIST_MISC];
+	int remainingSpriteCount = gSpriteListCount[SPRITE_LIST_NULL];
+	return max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
 const rct_xy16 word_9A3AB4[4] = {
@@ -4624,7 +4626,7 @@ void vehicle_create_trains(int rideIndex, int x, int y, int z, rct_map_element *
 		lastTrain = train;
 
 		// Add train to ride vehicle list
-		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LINKEDLIST_OFFSET_VEHICLE);
+		move_sprite_to_list((rct_sprite*)train.head, SPRITE_LIST_VEHICLE * 2);
 		for (int i = 0; i < 32; i++) {
 			if (ride->vehicles[i] == SPRITE_INDEX_NULL) {
 				ride->vehicles[i] = train.head->sprite_index;
@@ -4787,7 +4789,6 @@ bool ride_create_vehicles(rct_ride *ride, int rideIndex, rct_xy_element *element
 			for (int i = 0; i < ride->num_vehicles; i++) {
 				rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[i]);
 
-				rct_ride_entry *rideType = get_ride_entry(vehicle->vehicle_type);
 				rct_ride_entry_vehicle *vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
 				if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_15)) {
@@ -5850,9 +5851,9 @@ static money32 shop_item_get_common_price(rct_ride *forRide, int shopItem)
 bool shop_item_has_common_price(int shopItem)
 {
 	if (shopItem < 32) {
-		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) & (1u << shopItem);
+		return gSamePriceThroughoutParkA & (1u << shopItem);
 	} else {
-		return RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) & (1u << (shopItem - 32));
+		return gSamePriceThroughoutParkB & (1u << (shopItem - 32));
 	}
 }
 
@@ -6494,7 +6495,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 	case 6:
 		if (apply) {
 			ride->entrance_style = value;
-			RCT2_GLOBAL(0x01358840, uint8) = value;
+			RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = value;
 			gfx_invalidate_screen();
 		}
 		break;
@@ -7649,14 +7650,6 @@ void ride_set_num_cars_per_vehicle(int rideIndex, int numCarsPerVehicle)
 		0,
 		0
 	);
-}
-
-static bool ride_entry_is_invented(int rideEntryIndex)
-{
-	int quadIndex = rideEntryIndex >> 5;
-	int bitIndex = rideEntryIndex & 0x1F;
-	bool invented = (RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1 << bitIndex));
-	return invented;
 }
 
 static bool ride_is_vehicle_type_valid(rct_ride *ride, uint8 inputRideEntryIndex)

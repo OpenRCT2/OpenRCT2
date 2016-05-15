@@ -228,7 +228,7 @@ static void window_footpath_close(rct_window *w)
 	footpath_provisional_update();
 	viewport_set_visibility(0);
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	window_invalidate_by_class(WC_TOP_TOOLBAR);
 	hide_gridlines();
 }
@@ -257,7 +257,7 @@ static void window_footpath_mouseup(rct_window *w, int widgetIndex)
 		tool_cancel();
 		footpath_provisional_update();
 		map_invalidate_map_selection_tiles();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 		gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
 		tool_set(w, WIDX_CONSTRUCT_ON_LAND, 17);
 		gInputFlags |= INPUT_FLAG_6;
@@ -272,7 +272,7 @@ static void window_footpath_mouseup(rct_window *w, int widgetIndex)
 		tool_cancel();
 		footpath_provisional_update();
 		map_invalidate_map_selection_tiles();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~2;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 		gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
 		tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, 12);
 		gInputFlags |= INPUT_FLAG_6;
@@ -445,14 +445,14 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *
 		_window_footpath_provisional_path_arrow_timer = 5;
 		gFootpathProvisionalFlags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 		footpath_get_next_path_info(&type, &x, &y, &z, &slope);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z * 8;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = gFootpathConstructDirection;
+		gMapSelectArrowPosition.x = x;
+		gMapSelectArrowPosition.y = y;
+		gMapSelectArrowPosition.z = z * 8;
+		gMapSelectArrowDirection = gFootpathConstructDirection;
 		if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 2);
+			gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
 		else
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
+			gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 		map_invalidate_tile_full(x, y);
 	}
 }
@@ -655,7 +655,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 	rct_map_element *mapElement;
 
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	rct_xy16 mapCoord = { 0 };
 	get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
@@ -663,7 +663,7 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 	y = mapCoord.y;
 
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 		footpath_provisional_update();
 	} else {
 		// Check for change
@@ -677,12 +677,12 @@ static void window_footpath_set_provisional_path_at_point(int x, int y)
 		}
 
 		// Set map selection
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = y;
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+		gMapSelectType = MAP_SELECT_TYPE_FULL;
+		gMapSelectPositionA.x = x;
+		gMapSelectPositionA.y = y;
+		gMapSelectPositionB.x = x;
+		gMapSelectPositionB.y = y;
 
 		footpath_provisional_update();
 
@@ -707,22 +707,24 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 	rct_map_element *mapElement;
 
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0) & ~(1 << 2);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
 	if (x == (sint16)0x8000)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0) | (1 << 2);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = y;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+	gMapSelectType = MAP_SELECT_TYPE_FULL;
+	gMapSelectPositionA.x = x;
+	gMapSelectPositionB.x = x;
+	gMapSelectPositionA.y = y;
+	gMapSelectPositionB.y = y;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = direction;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = y;
+	gMapSelectArrowDirection = direction;
+	gMapSelectArrowPosition.x = x;
+	gMapSelectArrowPosition.y = y;
 
 	int z = mapElement->base_height;
 
@@ -734,7 +736,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int screenX, int
 			z += 2; // Add another 2 for a steep slope
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z << 3;
+	gMapSelectArrowPosition.z = z << 3;
 
 	map_invalidate_selection_rect();
 }
@@ -1016,7 +1018,8 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 
 	if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
 		map_invalidate_map_selection_tiles();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 1) | (1 << 3);
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+		gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
 		direction = gFootpathConstructDirection;
 		gMapSelectionTiles[0].x = gFootpathConstructFromPosition.x + TileDirectionDelta[direction].x;

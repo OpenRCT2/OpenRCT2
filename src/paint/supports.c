@@ -19,7 +19,7 @@
 #include "../paint/paint.h"
 #include "supports.h"
 
-typedef struct {
+typedef struct supports_id_desc {
 	uint16 full;
 	uint16 half;
 	uint16 flat;
@@ -58,7 +58,7 @@ const uint16 WoodenCurveSupportImageIds[] = {
 	0,
 };
 
-typedef struct {
+typedef struct unk_supports_desc_bound_box {
 	struct {
 		uint8 x, y, z;
 	} offset;
@@ -67,7 +67,7 @@ typedef struct {
 	} length;
 } unk_supports_desc_bound_box;
 
-typedef struct {
+typedef struct unk_supports_desc {
 	unk_supports_desc_bound_box bounding_box;
 	uint8 var_6;
 	uint8 var_7;
@@ -295,9 +295,10 @@ bool wooden_a_supports_paint_setup(int supportType, int special, int height, uin
 				hasSupports = true;
 			} else {
 				hasSupports = true;
-				if (sub_98198C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation)) {
-					int edi = RCT2_GLOBAL(0x009DEA58, uint32);
-					RCT2_GLOBAL(edi + 0x20, uint32) = imageColourFlags;
+				paint_struct* ps = sub_98198C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
+				if (ps != NULL) {
+					paint_struct* edi = RCT2_GLOBAL(0x009DEA58, paint_struct*);
+					edi->var_20 = ps;
 				}
 			}
 		}
@@ -338,6 +339,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 
 	sint16 originalHeight = height;
 
+	const uint8 rotation = get_current_rotation();
 	RCT2_GLOBAL(0x009E3294, sint16) = -1;
 	if (height < RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2]){
 		RCT2_GLOBAL(0x009E3294, sint16) = height;
@@ -346,7 +348,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		if (height < 0)
 			return false;
 
-		uint8* esi = &(RCT2_ADDRESS(0x0097AF32, uint8)[get_current_rotation() * 2]);
+		uint8* esi = &(RCT2_ADDRESS(0x0097AF32, uint8)[rotation * 2]);
 
 		uint8 newSegment = esi[segment * 8];
 		if (height <= RCT2_ADDRESS(0x0141E9B4, uint16)[newSegment * 2]) {
@@ -379,7 +381,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 
 		uint32 image_id = RCT2_ADDRESS(0x0097B072, uint16)[supportType * 8 + ebp];
 		image_id |= imageColourFlags;
-		sub_98196C(image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height, get_current_rotation());
+		sub_98196C(image_id, xOffset, yOffset, boundBoxLengthX, boundBoxLengthY, 1, height, rotation);
 
 		segment = newSegment;
 	}
@@ -398,7 +400,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		image_id += RCT2_ADDRESS(0x0097B404, sint16)[RCT2_ADDRESS(0x00141E9B4 + 2, sint16)[segment * 2] & 0x1F];
 		image_id |= imageColourFlags;
 
-		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2], get_current_rotation());
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, 5, RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2], rotation);
 
 		height = RCT2_ADDRESS(0x0141E9B4, uint16)[segment * 2] + 6;
 	}
@@ -422,7 +424,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		image_id |= imageColourFlags;
 
 
-		sub_98196C(image_id, xOffset, yOffset, 0, 0, heightDiff - 1, height, get_current_rotation());
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, heightDiff - 1, height, rotation);
 	}
 
 	height += heightDiff;
@@ -451,7 +453,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		if (count == 3 && z == 0x10)
 			image_id++;
 
-		sub_98196C(image_id, xOffset, yOffset, 0, 0, z - 1, height, get_current_rotation());
+		sub_98196C(image_id, xOffset, yOffset, 0, 0, z - 1, height, rotation);
 
 		height += z;
 	}
@@ -491,7 +493,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 		image_id |= imageColourFlags;
 
 
-		sub_98197C(image_id, xOffset, yOffset, 0, 0, z - 1, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+		sub_98197C(image_id, xOffset, yOffset, 0, 0, z - 1, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
 		height += z;
 	}

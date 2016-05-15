@@ -55,7 +55,7 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 };
 
 static char _scenarioPath[MAX_PATH];
-static const char *_scenarioFileName = "";
+const char *_scenarioFileName = "";
 
 char *gScenarioName = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char);
 char *gScenarioDetails = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char);
@@ -93,109 +93,6 @@ bool scenario_load_basic(const char *path, rct_s6_header *header, rct_s6_info *i
 
 	log_error("unable to open scenario, %s", path);
 	return false;
-}
-
-/**
- *
- *  rct2: 0x00676053
- * scenario (ebx)
- */
-int scenario_load(const char *path)
-{
-	log_verbose("loading scenario, %s", path);
-
-	SDL_RWops* rw;
-	int i, j;
-	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
-	rw = SDL_RWFromFile(path, "rb");
-	if (rw != NULL) {
-		if (!sawyercoding_validate_checksum(rw) && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
-			SDL_RWclose(rw);
-			gErrorType = ERROR_TYPE_FILE_LOAD;
-			gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-
-			log_error("failed to load scenario, invalid checksum");
-			return 0;
-		}
-
-		// Read first chunk
-		sawyercoding_read_chunk(rw, (uint8*)s6Header);
-		if (s6Header->type == S6_TYPE_SCENARIO) {
-			// Read second chunk
-			sawyercoding_read_chunk(rw, (uint8*)s6Info);
-
-			// Read packed objects
-			if (s6Header->num_packed_objects > 0) {
-				j = 0;
-				for (i = 0; i < s6Header->num_packed_objects; i++)
-					j += object_load_packed(rw);
-				if (j > 0)
-					object_list_load();
-			}
-
-			uint8 load_success = object_read_and_load_entries(rw);
-
-			// Read flags (16 bytes). Loads:
-			//	RCT2_ADDRESS_CURRENT_MONTH_YEAR
-			//	RCT2_ADDRESS_CURRENT_MONTH_TICKS
-			//	RCT2_ADDRESS_SCENARIO_TICKS
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
-
-			// Read map elements
-			memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
-
-			// Read game data, including sprites
-			sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);
-
-			// Read number of guests in park and something else
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_GUESTS_IN_PARK);
-
-			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_LAST_GUESTS_IN_PARK);
-
-			// Read park rating
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_RATING);
-
-			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_ACTIVE_RESEARCH_TYPES);
-
-			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_EXPENDITURE);
-
-			// Read ?
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_PARK_VALUE);
-
-			// Read more game data, including research items and rides
-			sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_COMPLETED_COMPANY_VALUE);
-
-			SDL_RWclose(rw);
-			if (!load_success){
-				log_error("failed to load all entries.");
-				set_load_objects_fail_reason();
-				return 0;
-			}
-
-			reset_loaded_objects();
-			map_update_tile_pointers();
-			reset_0x69EBE4();
-			openrct2_reset_object_tween_locations();
-			game_convert_strings_to_utf8();
-			game_fix_save_vars(); // OpenRCT2 fix broken save games
-
-			gLastAutoSaveTick = SDL_GetTicks();
-			return 1;
-		}
-
-		SDL_RWclose(rw);
-	}
-
-	log_error("failed to find scenario file.");
-	gErrorType = ERROR_TYPE_FILE_LOAD;
-	gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
-	return 0;
 }
 
 int scenario_load_and_play_from_path(const char *path)
@@ -336,13 +233,13 @@ void scenario_begin()
 	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
 
 	memset((void*)0x001357848, 0, 56);
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_EXPENDITURE, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PROFIT, money32) = 0;
-	RCT2_GLOBAL(0x01358334, money32) = 0;
-	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	gCurrentExpenditure = 0;
+	gCurrentProfit = 0;
+	gWeeklyProfitAverageDividend = 0;
+	gWeeklyProfitAverageDivisor = 0;
 	gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
-	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, uint32) = 0;
+	gTotalAdmissions = 0;
+	gTotalIncomeFromAdmissions = 0;
 	RCT2_GLOBAL(0x013587D8, uint16) = 63;
 	finance_update_loan_hash();
 	park_reset_history();
@@ -353,7 +250,7 @@ void scenario_begin()
 	duck_remove_all();
 	park_calculate_size();
 	staff_reset_stats();
-	RCT2_GLOBAL(0x01358840, uint8) = 0;
+	RCT2_GLOBAL(RCT2_ADDRESS_LAST_ENTRANCE_STYLE, uint8) = 0;
 	memset((void*)0x001358102, 0, 20);
 	RCT2_GLOBAL(0x00135882E, uint16) = 0;
 
@@ -427,7 +324,7 @@ void scenario_success()
 
 			// Allow name entry
 			gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-			RCT2_GLOBAL(0x013587C0, money32) = companyValue;
+			gScenarioCompanyValueRecord = companyValue;
 			scenario_scores_save();
 		}
 	}
@@ -442,7 +339,7 @@ void scenario_success_submit_name(const char *name)
 {
 	scenario_index_entry *scenario = scenario_list_find_by_filename(_scenarioFileName);
 	if (scenario != NULL) {
-		money32 scenarioWinCompanyValue = RCT2_GLOBAL(0x013587C0, money32);
+		money32 scenarioWinCompanyValue = gScenarioCompanyValueRecord;
 		if (scenario->highscore->company_value == scenarioWinCompanyValue) {
 			scenario->highscore->name = _strdup(name);
 			safe_strcpy(gScenarioCompletedBy, name, 32);
@@ -870,34 +767,12 @@ int scenario_write_available_objects(FILE *file)
 	return 1;
 }
 
-static void sub_677552()
-{
-	RCT2_GLOBAL(RCT2_ADDRESS_GAME_VERSION_NUMBER, uint32) = 201028;
-	RCT2_GLOBAL(0x001358778, uint32) = RCT2_GLOBAL(0x009E2D28, uint32);
-}
-
-static void sub_674BCF()
-{
-	char *savedExpansionPackNames = (char*)0x0135946C;
-
-	for (int i = 0; i < 16; i++) {
-		char *dst = &savedExpansionPackNames[i * 128];
-		if (RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << i)) {
-			char *src = &(RCT2_ADDRESS(RCT2_ADDRESS_EXPANSION_NAMES, char)[i * 128]);
-			safe_strcpy(dst, src, 128);
-		} else {
-			*dst = 0;
-		}
-	}
-}
-
 /**
- * Modifys the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
+ * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
  */
-static void scenario_fix_ghosts(rct_s6_data *s6)
+void scenario_fix_ghosts(rct_s6_data *s6)
 {
 	// Remove all ghost elements
-	size_t mapElementTotalSize = MAX_MAP_ELEMENTS * sizeof(rct_map_element);
 	rct_map_element *destinationElement = s6->map_elements;
 
 	for (int y = 0; y < 256; y++) {
@@ -925,7 +800,7 @@ static void scenario_fix_ghosts(rct_s6_data *s6)
 	}
 }
 
-static void scenario_remove_trackless_rides(rct_s6_data *s6)
+void scenario_remove_trackless_rides(rct_s6_data *s6)
 {
 	bool rideHasTrack[MAX_RIDES];
 	ride_all_has_any_track_elements(rideHasTrack);
@@ -941,314 +816,6 @@ static void scenario_remove_trackless_rides(rct_s6_data *s6)
 			s6->custom_strings[(ride->name % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
 		}
 	}
-}
-
-/**
- *
- *  rct2: 0x006754F5
- * @param flags bit 0: pack objects, 1: save as scenario
- */
-int scenario_save(SDL_RWops* rw, int flags)
-{
-	rct_window *w;
-	rct_viewport *viewport;
-	int viewX, viewY, viewZoom, viewRotation;
-
-	if (flags & 2)
-		log_verbose("saving scenario");
-	else
-		log_verbose("saving game");
-
-
-	if (!(flags & 0x80000000))
-		window_close_construction_windows();
-
-	map_reorganise_elements();
-	reset_0x69EBE4();
-	sprite_clear_all_unused();
-	sub_677552();
-	sub_674BCF();
-
-	// Set saved view
-	w = window_get_main();
-	if (w != NULL) {
-		viewport = w->viewport;
-
-		viewX = viewport->view_width / 2 + viewport->view_x;
-		viewY = viewport->view_height / 2 + viewport->view_y;
-		viewZoom = viewport->zoom;
-		viewRotation = get_current_rotation();
-	} else {
-		viewX = gSavedViewX;
-		viewY = gSavedViewY;
-		viewZoom = gSavedViewZoom;
-		viewRotation = gSavedViewRotation;
-	}
-
-	gSavedViewX = viewX;
-	gSavedViewY = viewY;
-	gSavedViewZoom = viewZoom;
-	gSavedViewRotation = viewRotation;
-
-	// Prepare S6
-	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
-	s6->header.type = flags & 2 ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
-	s6->header.num_packed_objects = flags & 1 ? scenario_get_num_packed_objects_to_write() : 0;
-	s6->header.version = S6_RCT2_VERSION;
-	s6->header.magic_number = S6_MAGIC_NUMBER;
-
-	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
-
-	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
-
-		if (gObjectList[i] == (void *)0xFFFFFFFF) {
-			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
-		} else {
-			s6->objects[i] = *((rct_object_entry*)entry);
-		}
-	}
-
-	memcpy(&s6->elapsed_months, (void*)0x00F663A8, 16);
-	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
-	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
-
-	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
-
-	scenario_fix_ghosts(s6);
-	scenario_remove_trackless_rides(s6);
-	game_convert_strings_to_rct2(s6);
-	scenario_save_s6(rw, s6);
-
-	free(s6);
-
-	if (flags & 1)
-		reset_loaded_objects();
-
-	gfx_invalidate_screen();
-	if (!(flags & 0x80000000))
-		gScreenAge = 0;
-	return 1;
-}
-
-// Save game state without modifying any of the state for multiplayer
-int scenario_save_network(SDL_RWops* rw)
-{
-	rct_window *w;
-	rct_viewport *viewport;
-	int viewX, viewY, viewZoom, viewRotation;
-
-	/*map_reorganise_elements();
-	reset_0x69EBE4();
-	sprite_clear_all_unused();
-	sub_677552();
-	sub_674BCF();*/
-
-	// Set saved view
-	w = window_get_main();
-	if (w != NULL) {
-		viewport = w->viewport;
-
-		viewX = viewport->view_width / 2 + viewport->view_x;
-		viewY = viewport->view_height / 2 + viewport->view_y;
-		viewZoom = viewport->zoom;
-		viewRotation = get_current_rotation();
-	} else {
-		viewX = 0;
-		viewY = 0;
-		viewZoom = 0;
-		viewRotation = 0;
-	}
-
-	gSavedViewX = viewX;
-	gSavedViewY = viewY;
-	gSavedViewZoom = viewZoom;
-	gSavedViewRotation = viewRotation;
-
-	// Prepare S6
-	rct_s6_data *s6 = malloc(sizeof(rct_s6_data));
-	s6->header.type = S6_TYPE_SAVEDGAME;
-	s6->header.num_packed_objects = scenario_get_num_packed_objects_to_write();
-	s6->header.version = S6_RCT2_VERSION;
-	s6->header.magic_number = S6_MAGIC_NUMBER;
-
-	memcpy(&s6->info, (rct_s6_info*)0x0141F570, sizeof(rct_s6_info));
-
-	for (int i = 0; i < 721; i++) {
-		rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
-
-		if (gObjectList[i] == (void *)0xFFFFFFFF) {
-			memset(&s6->objects[i], 0xFF, sizeof(rct_object_entry));
-		} else {
-			s6->objects[i] = *((rct_object_entry*)entry);
-		}
-	}
-
-	memcpy(&s6->elapsed_months, (void*)0x00F663A8, 16);
-	memcpy(s6->map_elements, (void*)0x00F663B8, 0x180000);
-	memcpy(&s6->dword_010E63B8, (void*)0x010E63B8, 0x2E8570);
-
-	safe_strcpy(s6->scenario_filename, _scenarioFileName, sizeof(s6->scenario_filename));
-
-	scenario_fix_ghosts(s6);
-	game_convert_strings_to_rct2(s6);
-	scenario_save_s6(rw, s6);
-
-	free(s6);
-
-	reset_loaded_objects();
-
-	// Write other data not in normal save files
-	SDL_WriteLE32(rw, gGamePaused);
-	SDL_WriteLE32(rw, _guestGenerationProbability);
-	SDL_WriteLE32(rw, _suggestedGuestMaximum);
-	SDL_WriteU8(rw, gCheatsSandboxMode);
-	SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
-	SDL_WriteU8(rw, gCheatsDisableSupportLimits);
-	SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
-	SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
-	SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
-	SDL_WriteU8(rw, gCheatsFastLiftHill);
-	SDL_WriteU8(rw, gCheatsDisableBrakesFailure);
-	SDL_WriteU8(rw, gCheatsDisableAllBreakdowns);
-	SDL_WriteU8(rw, gCheatsUnlockAllPrices);
-	SDL_WriteU8(rw, gCheatsBuildInPauseMode);
-	SDL_WriteU8(rw, gCheatsIgnoreRideIntensity);
-	SDL_WriteU8(rw, gCheatsDisableVandalism);
-	SDL_WriteU8(rw, gCheatsDisableLittering);
-	SDL_WriteU8(rw, gCheatsNeverendingMarketing);
-	SDL_WriteU8(rw, gCheatsFreezeClimate);
-
-	gfx_invalidate_screen();
-	return 1;
-}
-
-bool scenario_save_s6(SDL_RWops* rw, rct_s6_data *s6)
-{
-	uint8 *buffer;
-	sawyercoding_chunk_header chunkHeader;
-	int encodedLength;
-	long fileSize;
-	uint32 checksum;
-
-	buffer = malloc(0x600000);
-	if (buffer == NULL) {
-		log_error("Unable to allocate enough space for a write buffer.");
-		return false;
-	}
-
-	// 0: Write header chunk
-	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-	chunkHeader.length = sizeof(rct_s6_header);
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->header, chunkHeader);
-	SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-	// 1: Write scenario info chunk
-	if (s6->header.type == S6_TYPE_SCENARIO) {
-		chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-		chunkHeader.length = sizeof(rct_s6_info);
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->info, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-	}
-
-	// 2: Write packed objects
-	if (s6->header.num_packed_objects > 0) {
-		if (!scenario_write_packed_objects(rw)) {
-			free(buffer);
-			return false;
-		}
-	}
-
-	// 3: Write available objects chunk
-	chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-	chunkHeader.length = 721 * sizeof(rct_object_entry);
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->objects, chunkHeader);
-	SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-	// 4: Misc fields (data, rand...) chunk
-	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-	chunkHeader.length = 16;
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->elapsed_months, chunkHeader);
-	SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-	// 5: Map elements + sprites and other fields chunk
-	chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-	chunkHeader.length = 0x180000;
-	encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)s6->map_elements, chunkHeader);
-	SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-	if (s6->header.type == S6_TYPE_SCENARIO) {
-		// 6:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 0x27104C;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-		// 7:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 4;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->guests_in_park, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-		// 8:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 8;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->last_guests_in_park, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-		// 9:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 2;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_rating, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-		// 10:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 1082;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->active_research_types, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-		// 11:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 16;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->current_expenditure, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-		// 12:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 4;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->park_value, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-
-		// 13:
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 0x761E8;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->completed_company_value, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-	} else {
-		// 6: Everything else...
-		chunkHeader.encoding = CHUNK_ENCODING_RLECOMPRESSED;
-		chunkHeader.length = 0x2E8570;
-		encodedLength = sawyercoding_write_chunk_buffer(buffer, (uint8*)&s6->dword_010E63B8, chunkHeader);
-		SDL_RWwrite(rw, buffer, encodedLength, 1);
-	}
-
-	free(buffer);
-
-	// Determine number of bytes written
-	fileSize = (long)SDL_RWtell(rw);
-	SDL_RWseek(rw, 0, RW_SEEK_SET);
-
-	// Read all written bytes back into a single buffer
-	buffer = malloc(fileSize);
-	SDL_RWread(rw, buffer, fileSize, 1);
-	checksum = sawyercoding_calculate_checksum(buffer, fileSize);
-	free(buffer);
-
-	// Append the checksum
-	SDL_RWseek(rw, fileSize, RW_SEEK_SET);
-	SDL_RWwrite(rw, &checksum, sizeof(uint32), 1);
-	return true;
 }
 
 static void scenario_objective_check_guests_by()
@@ -1356,10 +923,11 @@ static void scenario_objective_check_guests_and_rating()
 
 static void scenario_objective_check_monthly_ride_income()
 {
-	money32 objectiveMonthlyRideIncome = gScenarioObjectiveCurrency;
-	money32 monthlyRideIncome = RCT2_GLOBAL(RCT2_ADDRESS_MONTHLY_RIDE_INCOME, money32);
-	if (monthlyRideIncome >= objectiveMonthlyRideIncome)
+	money32 *expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
+	money32 lastMonthRideIncome = expenditureLastMonth[RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS];
+	if (lastMonthRideIncome >= gScenarioObjectiveCurrency) {
 		scenario_success();
+	}
 }
 
 /**
@@ -1428,15 +996,16 @@ static void scenario_objective_check_replay_loan_and_park_value()
 
 static void scenario_objective_check_monthly_food_income()
 {
-	money32 objectiveMonthlyIncome = gScenarioObjectiveCurrency;
-	sint32 monthlyIncome =
-		RCT2_GLOBAL(0x013578A4, money32) +
-		RCT2_GLOBAL(0x013578A0, money32) +
-		RCT2_GLOBAL(0x0135789C, money32) +
-		RCT2_GLOBAL(0x01357898, money32);
+	money32 *expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
+	sint32 lastMonthProfit =
+		expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] +
+		expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
+		expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] +
+		expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
 
-	if (monthlyIncome >= objectiveMonthlyIncome)
+	if (lastMonthProfit >= gScenarioObjectiveCurrency) {
 		scenario_success();
+	}
 }
 
 /**

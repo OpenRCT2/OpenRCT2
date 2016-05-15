@@ -54,7 +54,7 @@ typedef enum{
  * Object entry structure.
  * size: 0x10
  */
-typedef struct {
+typedef struct rct_object_entry {
 	uint32 flags;
 	char name[8];
 	uint32 checksum;
@@ -64,7 +64,7 @@ typedef struct {
  * Object entry structure extended.
  * size: 0x14
  */
-typedef struct {
+typedef struct rct_object_entry_extended {
 	uint32 flags;
 	char name[8];
 	uint32 checksum;
@@ -74,17 +74,17 @@ typedef struct {
 extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
 
-typedef struct {
+typedef struct rct_object_entry_group {
 	uint8 **chunks;
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
 
-typedef struct {
+typedef struct rct_ride_filters {
 	uint8 category[2];
 	uint8 ride_type;
 } rct_ride_filters;
 
-typedef struct {
+typedef struct rct_object_filters {
 	union {
 		rct_ride_filters ride;
 	};
@@ -104,7 +104,8 @@ extern void *gLastLoadedObjectChunkData;
 int object_load_entry(const utf8 *path, rct_object_entry *outEntry);
 void object_list_load();
 void set_load_objects_fail_reason();
-int object_read_and_load_entries(SDL_RWops* rw);
+bool object_read_and_load_entries(SDL_RWops* rw);
+bool object_load_entries(rct_object_entry* entries);
 int object_load_packed(SDL_RWops* rw);
 void object_unload_all();
 
@@ -114,10 +115,10 @@ int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunk_size);
 void object_unload_chunk(rct_object_entry *entry);
 int object_get_scenario_text(rct_object_entry *entry);
 void object_free_scenario_text();
-int object_get_length(rct_object_entry *entry);
+uintptr_t object_get_length(const rct_object_entry *entry);
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
 int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength);
-rct_object_entry *object_get_next(rct_object_entry *entry);
+rct_object_entry *object_get_next(const rct_object_entry *entry);
 int write_object_file(SDL_RWops* rw, rct_object_entry* entry);
 void reset_loaded_objects();
 int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);

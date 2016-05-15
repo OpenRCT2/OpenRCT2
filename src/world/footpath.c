@@ -620,7 +620,7 @@ void footpath_provisional_update()
 	if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW) {
 		gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint8) &= ~(1 << 2);
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 		map_invalidate_tile_full(
 			gFootpathConstructFromPosition.x,
 			gFootpathConstructFromPosition.y
@@ -782,7 +782,7 @@ void footpath_remove_litter(int x, int y, int z)
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		sprite = &g_sprite_list[spriteIndex].litter;
 		nextSpriteIndex = sprite->next_in_quadrant;
-		if (sprite->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_LITTER) {
+		if (sprite->linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
 			int distanceZ = abs(sprite->z - z);
 			if (distanceZ <= 32) {
 				invalidate_sprite_0((rct_sprite*)sprite);
@@ -808,7 +808,7 @@ void footpath_interrupt_peeps(int x, int y, int z)
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		peep = &g_sprite_list[spriteIndex].peep;
 		nextSpriteIndex = peep->next_in_quadrant;
-		if (peep->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP) {
+		if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2) {
 			if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
 				if (peep->z == z) {
 					peep_decrement_num_riders(peep);
@@ -946,14 +946,14 @@ static void footpath_connect_corners(int initialX, int initialY, rct_map_element
 	}
 }
 
-typedef struct {
+typedef struct rct_neighbour {
 	uint8 order;
 	uint8 direction;
 	uint8 ride_index;
 	uint8 entrance_index;
 } rct_neighbour;
 
-typedef struct {
+typedef struct rct_neighbour_list {
 	rct_neighbour items[8];
 	int count;
 } rct_neighbour_list;

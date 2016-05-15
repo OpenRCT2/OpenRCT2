@@ -20,6 +20,7 @@ extern "C"
 {
     #include "../config.h"
     #include "../openrct2.h"
+    #include "../platform/crash.h"
 }
 
 #include "../core/Console.hpp"
@@ -48,6 +49,13 @@ static uint32 _port            = 0;
 static utf8 * _password        = nullptr;
 static utf8 * _userDataPath    = nullptr;
 static utf8 * _openrctDataPath = nullptr;
+static bool   _silentBreakpad  = false;
+
+#ifdef USE_BREAKPAD
+#define IMPLIES_SILENT_BREAKPAD ", implies --silent-breakpad"
+#else
+#define IMPLIES_SILENT_BREAKPAD
+#endif // USE_BREAKPAD
 
 static const CommandLineOptionDefinition StandardOptions[]
 {
@@ -57,13 +65,16 @@ static const CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_SWITCH,  &_all,             'a', "all",               "show help for all commands"                                 },
     { CMDLINE_TYPE_SWITCH,  &_about,           NAC, "about",             "show information about " OPENRCT2_NAME                      },
     { CMDLINE_TYPE_SWITCH,  &_verbose,         NAC, "verbose",           "log verbose messages"                                       },
-    { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless"                             },
+    { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
 #ifndef DISABLE_NETWORK
     { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
 #endif
     { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
     { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
+#ifdef USE_BREAKPAD
+    { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
+#endif // USE_BREAKPAD
     OptionTableEnd
 };
 
@@ -160,6 +171,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     }
 
     gOpenRCT2Headless = _headless;
+    gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
     if (_userDataPath != NULL) {
         String::Set(gCustomUserDataPath, sizeof(gCustomUserDataPath), _userDataPath);

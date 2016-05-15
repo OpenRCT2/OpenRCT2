@@ -40,6 +40,8 @@
 #include "peep.h"
 #include "staff.h"
 
+uint8 *gPeepWarningThrottle = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_WARNING_THROTTLE, uint8);
+
 enum {
 	PATH_SEARCH_DEAD_END,
 	PATH_SEARCH_RIDE_EXIT,
@@ -168,7 +170,7 @@ void peep_update_all()
 	if (gScreenFlags & 0x0E)
 		return;
 
-	spriteIndex = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
+	spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP];
 	i = 0;
 	while (spriteIndex != SPRITE_INDEX_NULL) {
 		peep = &(g_sprite_list[spriteIndex].peep);
@@ -178,8 +180,9 @@ void peep_update_all()
 			peep_update(peep);
 		} else {
 			sub_68F41A(peep, i);
-			if (peep->linked_list_type_offset == SPRITE_LINKEDLIST_OFFSET_PEEP)
+			if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2) {
 				peep_update(peep);
+			}
 		}
 
 		i++;
@@ -260,7 +263,7 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 	}
 
 	rct_litter* litter;
-	for (uint16 sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
+	for (uint16 sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
 		litter = &(g_sprite_list[sprite_idx].litter);
 
 		sint16 dist_x = abs(litter->x - center_x);
@@ -482,7 +485,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			peep->no_of_rides == 0 &&
 			peep->guest_heading_to_ride_id == 0xFF){
 
-			uint32 time_duration = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) - peep->time_in_park;
+			uint32 time_duration = gScenarioTicks - peep->time_in_park;
 			time_duration /= 2048;
 
 			if (time_duration >= 5){
@@ -1108,7 +1111,7 @@ void set_sprite_type(rct_peep* peep, uint8 type){
 	}
 }
 
-typedef struct{
+typedef struct item_pref {
 	uint8 type; // 0 for standard, 1 for extra
 	uint32 item; // And this with the relevant flags
 	uint8 sprite_type;
@@ -4490,7 +4493,7 @@ static void peep_update_entering_park(rct_peep* peep){
 	peep_window_state_update(peep);
 
 	peep->outside_of_park = 0;
-	peep->time_in_park = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32);
+	peep->time_in_park = gScenarioTicks;
 	gNumGuestsInPark++;
 	gNumGuestsHeadingForPark--;
 	gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
@@ -4537,7 +4540,7 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
 		sprite = &g_sprite_list[sprite_id];
 
-		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)continue;
+		if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2) continue;
 
 		if (sprite->peep.state != PEEP_STATE_SITTING)continue;
 
@@ -5323,7 +5326,7 @@ static int peep_update_patrolling_find_sweeping(rct_peep* peep){
 
 		sprite = &g_sprite_list[sprite_id];
 
-		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_LITTER)continue;
+		if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_LITTER * 2) continue;
 
 		uint16 z_diff = abs(peep->z - sprite->litter.z);
 
@@ -5565,7 +5568,7 @@ static void peep_update_walking(rct_peep* peep){
 	for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant){
 		sprite = &g_sprite_list[sprite_id];
 
-		if (sprite->unknown.linked_list_type_offset != SPRITE_LINKEDLIST_OFFSET_PEEP)continue;
+		if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2) continue;
 
 		if (sprite->peep.state != PEEP_STATE_WATCHING)continue;
 
@@ -5785,7 +5788,7 @@ void peep_problem_warnings_update()
 	uint16 guests_in_park = gNumGuestsInPark;
 	int hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0,
 		litter_counter = 0, disgust_counter = 0, bathroom_counter = 0 ,vandalism_counter = 0;
-	uint8* warning_throttle = RCT2_ADDRESS(0x01358750, uint8);
+	uint8 *warning_throttle = gPeepWarningThrottle;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_RIDE_COUNT, sint16) = ride_get_count(); // refactor this to somewhere else
 
@@ -6051,12 +6054,12 @@ void peep_update_days_in_queue()
  */
 rct_peep *peep_generate(int x, int y, int z)
 {
-	if (RCT2_GLOBAL(0x13573C8, uint16) < 400)
+	if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
 		return NULL;
 
 	rct_peep* peep = (rct_peep*)create_sprite(1);
 
-	move_sprite_to_list((rct_sprite*)peep, SPRITE_LINKEDLIST_OFFSET_PEEP);
+	move_sprite_to_list((rct_sprite*)peep, SPRITE_LIST_PEEP * 2);
 
 	peep->sprite_identifier = 1;
 	peep->sprite_type = PEEP_SPRITE_TYPE_NORMAL;
@@ -6137,7 +6140,7 @@ rct_peep *peep_generate(int x, int y, int z)
 
 	peep->no_of_rides = 0;
 	memset(&peep->ride_types_been_on, 0, 16);
-	peep->id = RCT2_GLOBAL(0x013B0E6C, uint32)++;
+	peep->id = gNextGuestNumber++;
 	peep->name_string_idx = 767;
 
 	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
@@ -7043,13 +7046,13 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 				return peep_return_to_center_of_tile(peep);
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, money32) += entranceFee;
+			gTotalIncomeFromAdmissions += entranceFee;
 			gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
 			peep_spend_money(peep, &peep->paid_to_enter, entranceFee);
 			peep->peep_flags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_ADMISSIONS, uint32)++;
+		gTotalAdmissions++;
 		window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
 		peep->var_37 = 1;
@@ -10316,7 +10319,7 @@ void peep_update_name_sort(rct_peep *peep)
 		rct_peep *prevPeep = GET_PEEP(prevSpriteIndex);
 		prevPeep->next = nextSpriteIndex;
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = nextSpriteIndex;
+		gSpriteListHead[SPRITE_LIST_PEEP] = nextSpriteIndex;
 	}
 
 	if (nextSpriteIndex != SPRITE_INDEX_NULL) {
@@ -10350,8 +10353,8 @@ void peep_update_name_sort(rct_peep *peep)
 			peep->next = prevPeep->next;
 			prevPeep->next = peep->sprite_index;
 		} else {
-			peep->next = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16);
-			RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = peep->sprite_index;
+			peep->next = gSpriteListHead[SPRITE_LIST_PEEP];
+			gSpriteListHead[SPRITE_LIST_PEEP] = peep->sprite_index;
 		}
 		goto finish_peep_sort;
 	}
@@ -10366,7 +10369,7 @@ void peep_update_name_sort(rct_peep *peep)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = peep->sprite_index;
+	gSpriteListHead[SPRITE_LIST_PEEP] = peep->sprite_index;
 	peep->next = SPRITE_INDEX_NULL;
 	peep->previous = SPRITE_INDEX_NULL;
 

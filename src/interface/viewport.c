@@ -64,7 +64,7 @@ void viewport_init_all()
 	gPressedWidget.window_classification = 255;
 	gPickupPeepImage = UINT32_MAX;
 	gTooltipNotShownTicks = -1;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, sint16) = 0;
+	gMapSelectFlags = 0;
 	RCT2_GLOBAL(0x009DEA50, sint16) = -1;
 	textinput_cancel();
 	format_string((char*)0x0141FA44, STR_CANCEL, NULL);
@@ -197,6 +197,7 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 	sint16 start_y = *y;
 	sint16 height = 0;
 
+	uint32 rotation = get_current_rotation();
 	rct_xy16 pos;
 	for (int i = 0; i < 6; i++) {
 		pos = viewport_coord_to_map_coord(start_x, start_y, height);
@@ -208,7 +209,6 @@ void sub_689174(sint16* x, sint16* y, sint16 *z)
 		if (pos.x > max && pos.y > max) {
 			int x_corr[] = { -1, 1, 1, -1 };
 			int y_corr[] = { -1, -1, 1, 1 };
-			uint32 rotation = get_current_rotation();
 			pos.x += x_corr[rotation] * height;
 			pos.y += y_corr[rotation] * height;
 		}
@@ -662,7 +662,9 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, int left, i
 	if (left >= viewport->x + viewport->width)return;
 	if (top >= viewport->y + viewport->height)return;
 
+#ifdef DEBUG_SHOW_DIRTY_BOX
 	int l = left, t = top, r = right, b = bottom;
+#endif
 
 	left = max(left - viewport->x, 0);
 	right = min(right - viewport->x, viewport->width);
@@ -783,7 +785,6 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 		}
 		RCT2_GLOBAL(0xEE7880, uint32) = 0xF1A4CC;
 		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
-		int ebp = 0, ebx = 0, esi = 0, ecx = 0;
 		painter_setup();
 		viewport_paint_setup();
 		sub_688217();
@@ -1667,4 +1668,27 @@ sint16 get_height_marker_offset()
 
 	// Height labels in metres
 	return 2 * 256;
+}
+
+void viewport_set_saved_view()
+{
+	sint16 viewX = 0;
+	sint16 viewY = 0;
+	uint8 viewZoom = 0;
+	uint8 viewRotation = 0;
+
+	rct_window * w = window_get_main();
+	if (w != NULL) {
+		rct_viewport *viewport = w->viewport;
+
+		viewX = viewport->view_width / 2 + viewport->view_x;
+		viewY = viewport->view_height / 2 + viewport->view_y;
+		viewZoom = viewport->zoom;
+		viewRotation = get_current_rotation();
+	}
+
+	gSavedViewX = viewX;
+	gSavedViewY = viewY;
+	gSavedViewZoom = viewZoom;
+	gSavedViewRotation = viewRotation;
 }

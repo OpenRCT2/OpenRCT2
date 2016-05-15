@@ -42,7 +42,6 @@ static void sub_68B3FB(int x, int y);
  */
 void map_element_paint_setup(int x, int y)
 {
-	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
 	if (
 		x < gMapSizeUnits &&
 		y < gMapSizeUnits &&
@@ -137,16 +136,7 @@ static void blank_tiles_paint(int x, int y)
 	RCT2_GLOBAL(0x9DE568, sint16) = x;
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
-	RCT2_CALLPROC_X(
-		(int)RCT2_ADDRESS(0x98196C, uint32_t*)[get_current_rotation()],
-		0xFF00,
-		3123,
-		y & 0xFF00,
-		16,
-		32,
-		32,
-		get_current_rotation()
-	);
+	sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
 /**
@@ -190,18 +180,19 @@ static void sub_68B3FB(int x, int y)
 	}
 	dx >>= 1;
 	// Display little yellow arrow when building footpaths?
-	if ((RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 4) &&
-		RCT2_GLOBAL(0x9DE56A, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) &&
-		RCT2_GLOBAL(0x9DE56E, uint16) == RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16)){
+	if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) &&
+		RCT2_GLOBAL(0x9DE56A, uint16) == gMapSelectArrowPosition.x &&
+		RCT2_GLOBAL(0x9DE56E, uint16) == gMapSelectArrowPosition.y
+	) {
 		uint8 arrowRotation =
 			(rotation
-			+ (RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 3)) & 3;
+			+ (gMapSelectArrowDirection & 3)) & 3;
 
 		uint32 imageId =
 			arrowRotation +
-			(RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) & 0xFC) +
+			(gMapSelectArrowDirection & 0xFC) +
 			0x20900C27;
-		int arrowZ = RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16);
+		int arrowZ = gMapSelectArrowPosition.z;
 
 		RCT2_GLOBAL(0x9DE568, sint16) = x;
 		RCT2_GLOBAL(0x9DE56C, sint16) = y;

@@ -220,12 +220,10 @@ bool platform_open_common_file_dialog(utf8 *outFilename, file_dialog_desc *desc)
 	char result[MAX_PATH];
 	size_t size;
 	dialog_type dtype;
-	char *action;
-	char *flags;
+	char *action = NULL;
+	char *flags = NULL;
 	char filter[MAX_PATH] = { 0 };
 	char filterPatternRegex[64];
-	char *allFilesPatternDescription;
-	int allFilesPatternLength = 0;
 
 	size = MAX_PATH;
 	dtype = get_dialog_app(executable, &size);
@@ -397,7 +395,6 @@ utf8 *platform_open_directory_browser(utf8 *title) {
 void platform_show_messagebox(char *message) {
 	size_t size;
 	dialog_type dtype;
-	int exit_value;
 	char cmd[MAX_PATH];
 	char executable[MAX_PATH];
 

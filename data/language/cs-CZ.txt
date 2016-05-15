@@ -2338,7 +2338,7 @@ STR_2329    :{WINDOW_COLOUR_2}Délka a rychlost:
 STR_2330    :{WINDOW_COLOUR_2}Teplota:
 STR_2331    :{WINDOW_COLOUR_2}Výškové značky:
 STR_2332    :Jednotky
-STR_2333    :Efekty
+STR_2333    :Zvukové efekty
 STR_2334    :Libra ({POUND})
 STR_2335    :Dolar ($)
 STR_2336    :Frank (F)
@@ -2806,7 +2806,7 @@ STR_2794    :{WINDOW_COLOUR_2}Dosáhl: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_
 STR_2795    :Seřadit
 STR_2796    :{SMALLFONT}{BLACK}Seřadit seznam podle zobrazené informace
 STR_2797    :Posouvat pohled při najetí myší k okraji
-STR_2798    :{SMALLFONT}{BLACK}Vyberte, zda posouvat pohled když ukazatel myši narazí na hranu displeje
+STR_2798    :{SMALLFONT}{BLACK}Posouvat pohled, když ukazatel myši narazí na hranu displeje
 STR_2799    :{SMALLFONT}{BLACK}Zobrazit a upravit přiřazení controlu
 STR_2800    :{WINDOW_COLOUR_2}Celkem vstupů: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Příjem ze vstupů: {BLACK}{CURRENCY2DP}
@@ -3365,7 +3365,7 @@ STR_3353    :Nový název obsahuje neplatné znaky
 STR_3354    :Existuje soubor se stejným jménem, nebo je soubor jen pro čtení
 STR_3355    :Soubor je jen pro čtení, nebo zamčený
 STR_3356    :Smazat soubor
-STR_3357    :{WINDOW_COLOUR_2}Opravdu chcete nevratně odstranit {STRINGID} ?
+STR_3357    :{WINDOW_COLOUR_2}Opravdu chcete nevratně odstranit {STRING} ?
 STR_3358    :Nelze odstranit návrh trati...
 STR_3359    :{BLACK}Žádné návrhy tratí tohoto typu
 STR_3360    :Pozor!
@@ -3504,16 +3504,16 @@ STR_5161    :Formát data:
 STR_5162    :Den/Měsíc/Rok
 STR_5163    :Měsíc/Den/Rok
 STR_5164    :Název Twitch kanálu
-STR_5165    :Pojmenovávat návstěvníky podle foldolníů
-STR_5166    :{SMALLFONT}{BLACK}Pojmenovávat návstěvníky podle foldolníů Twitch kanálu
-STR_5167    :Sledovat návštěvníky-foldolníy
-STR_5168    :{SMALLFONT}{BLACK}Zapne sledování návštěvníků, pojmenovaných po Twitch foldolníech
+STR_5165    :Pojmenovávat návstěvníky podle Twitch followerů
+STR_5166    :{SMALLFONT}{BLACK}Pojmenovávat návstěvníky podle{NEWLINE}followerů Twitch kanálu
+STR_5167    :Sledovat návštěvníky-followery
+STR_5168    :{SMALLFONT}{BLACK}Zapnout sledování návštěvníků{NEWLINE}pojmenovaných po Twitch followerech
 STR_5169    :Pojmenovávat návštěvníky podle lidí v Twitch chatu
-STR_5170    :{SMALLFONT}{BLACK}Bude pojmenovávat návštěvníky podle lidí v Twitch chatu
+STR_5170    :{SMALLFONT}{BLACK}Pojmenovávat návštěvníky podle{NEWLINE}lidí v Twitch chatu
 STR_5171    :Sledovat návštěvníky z chatu
-STR_5172    :{SMALLFONT}{BLACK}Zapne sledování návštěvníků, pojmenovaných po lidech v Twitch chatu
+STR_5172    :{SMALLFONT}{BLACK}Zapnout sledování návštěvníků{NEWLINE}pojmenovaných po lidech v Twitch chatu
 STR_5173    :Použít Twitch chat jako zprávy
-STR_5174    :{SMALLFONT}{BLACK}Bude používat zprávy z Twitch chatu, začínající !news pro herní notifikace
+STR_5174    :{SMALLFONT}{BLACK}Bude používat zprávy z Twitch{NEWLINE}chatu, začínající !news pro herní notifikace
 STR_5175    :Zadejte název vašeho Twitch kanálu
 STR_5176    :Povolit Twitch integraci
 STR_5177    :Režim zobrazení:
@@ -3780,7 +3780,7 @@ STR_5437    :Nevybrána žádná ulžoená hra
 STR_5438    :Nelze vytvářet změny, když je otevřený editor příkazů
 STR_5439    :Příkaz "Čekat" alespoň 4 vteřiny je vyžadován společně s příkazem "Restart"
 STR_5440    :Minimalizovat celoobrazovkový režim při přepnutí ze hry
-STR_5441    :{SMALLFONT}{BLACK}Identifikovat atrakce podle typu,{NEWLINE}potom lze později měnit vozy,{NEWLINE}tak jako v RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identifikovat atrakce podle typu,{NEWLINE}aby šly měnit vozy (RCT1 chování)
 STR_5442    :Hodnocení parku:
 STR_5443    :Rychlost{MOVE_X}{87}{STRINGID}
 STR_5444    :Rychlost:
@@ -3848,7 +3848,7 @@ STR_5505    :Nelze se připojit k serveru.
 STR_5506    :Návštěvníci ingnorují intenzitu atrakcí
 STR_5507    :Údržbáři nyní sekají trávu ve výchozím nastavení
 STR_5508    :Povolit nahrávání souborů s chybným kontrolním součtem
-STR_5509    :{SMALLFONT}{BLACK}Povolí nahrávání scénářů s neplatným kontrolním součtem - například scénáře demoverze, nebo poškozené uložené hry.
+STR_5509    :{SMALLFONT}{BLACK}Povolit nahrávání scénářů s neplatným{NEWLINE}kontrolním součtem - například{NEWLINE}scénáře demoverze, nebo{NEWLINE}poškozené uložené hry.
 STR_5510    :Výchozí zvukové zařízení
 STR_5511    :(UNKNOWN)
 STR_5512    :Uložit hru jako
@@ -3926,7 +3926,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Odemkne limity atrakcí, například {VELOCITY} stoupání
 STR_5586    :Automaticky otevírat obchody a stánky
-STR_5587    :{SMALLFONT}{BLACK}Po zapnutí budou nově postavené stánky a obchody automaticky otevírány
+STR_5587    :{SMALLFONT}{BLACK}Nově postavené stánky a obchody budou automaticky otevírány
 STR_5588    :{SMALLFONT}{BLACK}Hrát s jinými hráči
 STR_5589    :Nastavení upozornění
 STR_5590    :Ocenění zábavního parku
@@ -4119,6 +4119,54 @@ STR_5809    :{WINDOW_COLOUR_2}Počet informačníh kiosků a ostatních zaříze
 STR_5810    :Zrušit limit délky vlaků
 STR_5811    :{SMALLFONT}{BLACK}Pokud zaškrtnete, vlaky budou {NEWLINE}moci mít až 255 vagonů
 STR_5812    :Zobrazit okno Hry více hráčů
+STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}Zobrazovat počítadlo FPS ve hře
+STR_5816    :{SMALLFONT}{BLACK}Nastaví poměr stran pro škálování{NEWLINE} velikosti herního okna.{NEWLINE}Nejužitečnější je tato volba při hře ve vysokém rozlišení.
+STR_5817    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Nastaví typ škálování UI prvků
+STR_5818    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Použít škálování pomocí{NEWLINE}algoritmu nejbližších sousedů, v případě,{NEWLINE}že koeficinet škálování nabývá celočíselných hodnot (1, 2, 3, atd.)
+STR_5819    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Pozastavit hru, pokud je {NEWLINE}zapnutý Steam in-game overlay
+STR_5820    :{SMALLFONT}{BLACK}Minimalizovat hru, pokud je v{NEWLINE}režimu celé obrazovky a jiné okno se stane aktivním
+STR_5821    :{SMALLFONT}{BLACK}Mění barvu naznačeného místa stavby pří stavbě atrakcí, cest, kulis{NEWLINE}, obchodů, stánků a dalších
+STR_5822    :{SMALLFONT}{BLACK}Zapnout cyklus dne a noci.{NEWLINE}Jeden cyklus trvá jeden herní měsíc
+STR_5823    :{SMALLFONT}{BLACK}Zobrazit banery kapátálkami (RCT1 chování)
+STR_5824    :{SMALLFONT}{BLACK}Zakáže blesky během bouřek
+STR_5825    :{SMALLFONT}{BLACK}Udržet kurzor v okně
+STR_5826    :{SMALLFONT}{BLACK}Obrátit směr posouvání pohledu při držení pravého tlačítka myši
+STR_5827    :{SMALLFONT}{BLACK}Nastaví paletu barev UI
+STR_5828    :{SMALLFONT}{BLACK}Změní jednotky použíté pro měření dílky, rychlosti a dalších
+STR_5829    :{SMALLFONT}{BLACK}Změní herní měnu. Jedná se pouze o kosmetickou změnu, bez kurzovních omezení
+STR_5830    :{SMALLFONT}{BLACK}Změní použitý jazyk hry
+STR_5831    :{SMALLFONT}{BLACK}Změní jednotky teploty
+STR_5832    :{SMALLFONT}{BLACK}Výškové jednotky zobrazit pouze číslem, bez jednotek uvedených v nastavení "Délka a rychlost"
+STR_5833    :{SMALLFONT}{BLACK}Změní formát data
+STR_5834    :{SMALLFONT}{BLACK}Vyberte zvukové zařízení pro použití v OpenRCT2
+STR_5835    :{SMALLFONT}{BLACK}Zakázat zvuky, pokud herní okno přestane být aktivní
+STR_5836    :{SMALLFONT}{BLACK}Vyberte hudbu, která bude hrát na úvodní obrazovce.{NEWLINE}Výběr RCT1 znělky vyžaduje zkopírování a přejmenování 'data/css17.dat' ze složky RCT1 jako 'data/css50.dat' do vaší RCT2 složky.
+STR_5837    :{SMALLFONT}{BLACK}Vytvořit a spravovat vlastní barevné palety UI
+STR_5838    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro financí na nástrojové liště
+STR_5839    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro výzkum a vývoj na nástrojové liště
+STR_5840    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro cheaty na nástrojové liště
+STR_5841    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro poslední novinky na nástrojové liště
+STR_5842    :{SMALLFONT}{BLACK}Roztřídit scénáře do záložek podle obtížnosti (RCT2 chování), nebo podle hry, ze které pocházejí (RCT1 chování)
+STR_5843    :{SMALLFONT}{BLACK}Zapnout odemykání scínářů (RCT1 chování)
+STR_5844    :{SMALLFONT}{BLACK}Zachovat připojení do hry více hráčů,{NEWLINE}i když dojde k desynchronizaci
+STR_5845    :{SMALLFONT}{BLACK}Přidá tlačítko s vývojářskými nástroji na nástrojovou lištu.{NEWLINE}Povolí klávesovou zkratku pro vývojářskou konzoli
+STR_5846    :{SMALLFONT}{BLACK}Nastavení frekvence automatického ukládání hry
+STR_5847    :{SMALLFONT}{BLACK}Vyberte ukázky parků na hlavní obrazovce. Ukázky parků z her RCT1/2 vyžadují importované scénáře
+STR_5848    :{SMALLFONT}{BLACK}Vytvořit a spravovat vlastní ukázky parků pro hlavní obrazovku
+STR_5849    :{SMALLFONT}{BLACK}Automaticky umisťovat{NEWLINE}nově najatý personál
+STR_5850    :{SMALLFONT}{BLACK}Nově najatí údržbáři{NEWLINE}budou ve výchozím stavu sekat trávu (RCT1 chování)
+STR_5851    :{SMALLFONT}{BLACK}Nastaví výchozí interval inspekcí{NEWLINE}na nově postavených atrakcích
+STR_5852    :{SMALLFONT}{BLACK}Nastaví název TwitchTV kanálu, který bude použit pro Twitch integraci
+STR_5853    :{SMALLFONT}{BLACK}Povolit/zakázat zvukové efekty
+STR_5854    :{SMALLFONT}{BLACK}Povolit/zakázat hudbu atrakcí
+STR_5855    :{SMALLFONT}{BLACK}Nastavit reřim celé obrazovky, hry v okně, nebo bezkrajové zobrazení
+STR_5856    :{SMALLFONT}{BLACK}Nastavit rozlišení hry v reřimu celé obrazovky
+STR_5857    :{SMALLFONT}{BLACK}Herní nastavení
+STR_5858    :{SMALLFONT}{BLACK}Použít GPU pro vykeslování místo CPU. Zvyšuje kompatibilitu se softwarem pro nahrávání obrazkovy. Může lehce snžit výkonnost hry.
+STR_5859    :{SMALLFONT}{BLACK}Zapnout generování mezilehlých snímků{NEWLINE}pro jemnější obraz. Hra dosahuje{NEWLINE} 40 FPS, když je tato možnost zakázaná.
 
 
 ###############################################################################

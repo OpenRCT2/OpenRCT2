@@ -122,7 +122,7 @@ static void crooked_house_fence_bottom_left(rct_ride *ride, int height, rct_map_
 	sub_98199C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
 }
 
-typedef struct {
+typedef struct rct_crooked_house_bound_box {
 	sint16 offset_x;
 	sint16 offset_y;
 	sint16 length_x;
@@ -162,7 +162,7 @@ static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 s
 	RCT2_GLOBAL(0x0014281B8, uint32) = ride_type->vehicles[0].base_image_id;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
-		if (ride->vehicles[0] != -1) {
+		if (ride->vehicles[0] != (uint16)-1) {
 			rct_sprite *sprite = &g_sprite_list[ride->vehicles[0]];
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
 			RCT2_GLOBAL(0x9DE578, rct_sprite *) = sprite;

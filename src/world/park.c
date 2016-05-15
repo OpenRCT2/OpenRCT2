@@ -89,7 +89,7 @@ void park_init()
 	gParkRating = 0;
 	_guestGenerationProbability = 0;
 	gTotalRideValue = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32) = -1;
+	gResearchLastItemSubject = (uint32)-1;
 
 	for (i = 0; i < 20; i++)
 		gMarketingCampaignDaysLeft[i] = 0;
@@ -98,10 +98,11 @@ void park_init()
 	finance_init();
 
 	for (i = 0; i < 2; i++)
-		RCT2_ADDRESS(0x01357404, uint32)[i] = 0;
+		gResearchedRideTypes[i] = 0;
 
-	for (i = 0; i < 56; i++)
-		RCT2_ADDRESS(0x01357BD0, sint32)[i] = -1;
+	for (i = 0; i < 56; i++) {
+		gResearchedSceneryItems[i] = 0xFFFFFFFF;
+	}
 
 	gParkEntranceFee = MONEY(10, 00);
 	gPeepSpawns[0].x = UINT16_MAX;
@@ -278,11 +279,11 @@ int calculate_park_rating()
 		short num_litter;
 
 		num_litter = 0;
-		for (sprite_idx = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_LITTER, uint16); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
+		for (sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
 			litter = &(g_sprite_list[sprite_idx].litter);
 
 			// Ignore recently dropped litter
-			if (litter->creationTick - RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32) >= 7680)
+			if (litter->creationTick - gScenarioTicks >= 7680)
 				num_litter++;
 		}
 		result -= 600 - (4 * (150 - min(150, num_litter)));
@@ -627,16 +628,17 @@ void park_update_histories()
 	window_invalidate_by_class(WC_FINANCES);
 
 	// Update weekly profit history
-	money32 currentWeeklyProfit = RCT2_GLOBAL(0x01358334, money32);
-	if (RCT2_GLOBAL(0x01358338, uint16) != 0)
-		currentWeeklyProfit /= RCT2_GLOBAL(0x01358338, uint16);
+	money32 currentWeeklyProfit = gWeeklyProfitAverageDividend;
+	if (gWeeklyProfitAverageDivisor != 0) {
+		currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
+	}
 
 	for (int i = 127; i > 0; i--)
 		gWeeklyProfitHistory[i] = gWeeklyProfitHistory[i - 1];
 	gWeeklyProfitHistory[0] = currentWeeklyProfit;
 
-	RCT2_GLOBAL(0x01358334, money32) = 0;
-	RCT2_GLOBAL(0x01358338, uint16) = 0;
+	gWeeklyProfitAverageDividend = 0;
+	gWeeklyProfitAverageDivisor = 0;
 	window_invalidate_by_class(WC_FINANCES);
 
 	// Update park value history
@@ -697,11 +699,11 @@ void game_command_set_park_open(int* eax, int* ebx, int* ecx, int* edx, int* esi
 		}
 		break;
 	case 2:
-		RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT, uint32) = *edi;
+		gSamePriceThroughoutParkA = *edi;
 		window_invalidate_by_class(WC_RIDE);
 		break;
 	case 3:
-		RCT2_GLOBAL(RCT2_ADDRESS_SAME_PRICE_THROUGHOUT_EXTENDED, uint32) = *edi;
+		gSamePriceThroughoutParkB = *edi;
 		window_invalidate_by_class(WC_RIDE);
 		break;
 	}

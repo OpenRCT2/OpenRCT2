@@ -52,6 +52,13 @@ const rct_xy16 TileDirectionDelta[] = {
 	{ -32, -32 }
 };
 
+uint16			gMapSelectFlags;
+uint16			gMapSelectType;
+rct_xy16		gMapSelectPositionA;
+rct_xy16		gMapSelectPositionB;
+rct_xyz16		gMapSelectArrowPosition;
+uint8			gMapSelectArrowDirection;
+
 rct_map_element *gMapElements = (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS;
 rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
@@ -113,19 +120,19 @@ rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, int rotation){
 	switch (rotation){
 	case 0:
 		coordinate_2d.x = coordinate_3d->y - coordinate_3d->x;
-		coordinate_2d.y = (coordinate_3d->y + coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	case 1:
 		coordinate_2d.x = -coordinate_3d->y - coordinate_3d->x;
-		coordinate_2d.y = (coordinate_3d->y - coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	case 2:
 		coordinate_2d.x = -coordinate_3d->y + coordinate_3d->x;
-		coordinate_2d.y = (-coordinate_3d->y - coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((-coordinate_3d->y - coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	case 3:
 		coordinate_2d.x = coordinate_3d->y + coordinate_3d->x;
-		coordinate_2d.y = (-coordinate_3d->y + coordinate_3d->x) / 2 - coordinate_3d->z;
+		coordinate_2d.y = ((-coordinate_3d->y + coordinate_3d->x) >> 1) - coordinate_3d->z;
 		break;
 	}
 	return coordinate_2d;
@@ -314,7 +321,7 @@ void map_init(int size)
 	rct_map_element *map_element;
 
 	date_reset();
-	RCT2_GLOBAL(0x0138B580, sint16) = 0;
+	gNumMapAnimations = 0;
 	RCT2_GLOBAL(0x010E63B8, sint32) = 0;
 
 	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
@@ -646,58 +653,66 @@ int map_height_from_slope(int x, int y, int slope)
 	return 0;
 }
 
+bool map_is_location_valid(int x, int y)
+{
+	if (x <= (256 * 32) && x >= 0 && y <= (256 * 32) && y >= 0) {
+		return true;
+	}
+	return false;
+}
+
 /**
  *
  *  rct2: 0x00664F72
  */
-int map_is_location_owned(int x, int y, int z)
+bool map_is_location_owned(int x, int y, int z)
 {
 	rct_map_element *mapElement;
 
 	// This check is to avoid throwing lots of messages in logs.
-	if (x < (256 * 32) && y < (256 * 32)) {
+	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement != NULL) {
 			if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
-				return 1;
+				return true;
 
 			if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
 				z /= 8;
 				if (z < mapElement->base_height || z - 2 > mapElement->base_height)
-					return 1;
+					return true;
 			}
 		}
 	}
 
 	gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
-	return 0;
+	return false;
 }
 
 /**
  *
  *  rct2: 0x00664F2C
  */
-int map_is_location_in_park(int x, int y)
+bool map_is_location_in_park(int x, int y)
 {
 	rct_map_element *mapElement;
 
-	if (x < (256 * 32) && y < (256 * 32)) {
+	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement == NULL)
-			return 0;
+			return false;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED)
-			return 1;
+			return true;
 	}
 
 	gGameCommandErrorText = STR_LAND_NOT_OWNED_BY_PARK;
-	return 0;
+	return false;
 }
 
 bool map_is_location_owned_or_has_rights(int x, int y)
 {
 	rct_map_element *mapElement;
 
-	if (x < (256 * 32) && y < (256 * 32)) {
+	if (map_is_location_valid(x, y)) {
 		mapElement = map_get_surface_element_at(x / 32, y / 32);
 		if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) return true;
 		if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) return true;
@@ -1032,7 +1047,6 @@ void game_command_set_scenery_colour(int* eax, int* ebx, int* ecx, int* edx, int
 		}
 	}
 
-	bool found = false;
 	rct_map_element *map_element = map_get_small_scenery_element_at(x, y, base_height, scenery_type, quadrant);
 
 	if (map_element == NULL) {
@@ -1085,7 +1099,6 @@ void game_command_set_fence_colour(int* eax, int* ebx, int* ecx, int* edx, int* 
 		return;
 	}
 
-	bool fence_found = false;
 	rct_map_element* map_element = map_get_fence_element_at(x, y, base_height, map_element_direction);
 
 	if (map_element == NULL) {
@@ -2235,7 +2248,7 @@ static int map_get_corner_height(rct_map_element *mapElement, int direction)
 static money32 smooth_land_tile(int direction, uint8 flags, int x, int y, int targetBaseZ, int minBaseZ)
 {
 	// Check if inside map bounds
-	if (x < 0 || y < 0 || x >= (256 * 32) || y >= (256 * 32)) {
+	if (!map_is_location_valid(x, y)) {
 		return MONEY32_UNDEFINED;
 	}
 
@@ -3820,7 +3833,7 @@ void map_invalidate_map_selection_tiles()
 {
 	rct_xy16 *position;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 1)))
+	if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
 		return;
 
 	for (position = gMapSelectionTiles; position->x != -1; position++)
@@ -3832,28 +3845,29 @@ void map_get_bounding_box(int ax, int ay, int bx, int by, int *left, int *top, i
 	int x, y;
 	x = ax;
 	y = ay;
-	translate_3d_to_2d(get_current_rotation(), &x, &y);
+	uint32 rotation = get_current_rotation();
+	translate_3d_to_2d(rotation, &x, &y);
 	*left = x;
 	*right = x;
 	*top = y;
 	*bottom = y;
 	x = bx;
 	y = ay;
-	translate_3d_to_2d(get_current_rotation(), &x, &y);
+	translate_3d_to_2d(rotation, &x, &y);
 	if (x < *left) *left = x;
 	if (x > *right) *right = x;
 	if (y > *bottom) *bottom = y;
 	if (y < *top) *top = y;
 	x = bx;
 	y = by;
-	translate_3d_to_2d(get_current_rotation(), &x, &y);
+	translate_3d_to_2d(rotation, &x, &y);
 	if (x < *left) *left = x;
 	if (x > *right) *right = x;
 	if (y > *bottom) *bottom = y;
 	if (y < *top) *top = y;
 	x = ax;
 	y = by;
-	translate_3d_to_2d(get_current_rotation(), &x, &y);
+	translate_3d_to_2d(rotation, &x, &y);
 	if (x < *left) *left = x;
 	if (x > *right) *right = x;
 	if (y > *bottom) *bottom = y;
@@ -3868,13 +3882,13 @@ void map_invalidate_selection_rect()
 {
 	int x0, y0, x1, y1, left, right, top, bottom;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)))
+	if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
 		return;
 
-	x0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) + 16;
-	y0 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) + 16;
-	x1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) + 16;
-	y1 = RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) + 16;
+	x0 = gMapSelectPositionA.x + 16;
+	y0 = gMapSelectPositionA.y + 16;
+	x1 = gMapSelectPositionB.x + 16;
+	y1 = gMapSelectPositionB.y + 16;
 	map_get_bounding_box(x0, y0, x1, y1, &left, &top, &right, &bottom);
 	left -= 32;
 	right += 32;
@@ -4152,7 +4166,6 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUN
 				}
 				loc_68BABC:
 				if (clearFunc != NULL) {
-					int zero = 0;
 					if (!clearFunc(&map_element, x, y, flags, price)) {
 						continue;
 					}
@@ -4163,7 +4176,6 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUN
 				return false;
 				loc_68BAE6:
 				if (clearFunc != NULL) {
-					int zero = 0;
 					if (!clearFunc(&map_element, x, y, flags, price)) {
 						goto loc_68B9B7;
 					}
@@ -5410,6 +5422,7 @@ rct_map_element *map_get_track_element_at_of_type_seq(int x, int y, int z, int t
 {
 	rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
 	do {
+		if (mapElement == NULL) break;
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->base_height != z) continue;
 		if (mapElement->properties.track.type != trackType) continue;

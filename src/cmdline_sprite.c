@@ -26,12 +26,14 @@
 
 extern int gSpriteMode;
 
-typedef struct {
+typedef struct rct_sprite_file_header {
 	uint32 num_entries;
 	uint32 total_size;
 } rct_sprite_file_header;
 
-typedef struct { uint8 b, g, r, a; } rct_sprite_file_palette_entry;
+typedef struct rct_sprite_file_palette_entry {
+    uint8 b, g, r, a;
+} rct_sprite_file_palette_entry;
 
 rct_sprite_file_palette_entry spriteFilePalette[256];
 static rct_sprite_file_palette_entry _standardPalette[256];
@@ -229,7 +231,7 @@ int get_palette_index(sint16 *colour)
 	return -1;
 }
 
-typedef struct {
+typedef struct rle_code {
 	uint8 num_pixels;
 	uint8 offset_x;
 } rle_code;
@@ -588,7 +590,6 @@ int cmdline_for_sprite(const char **argv, int argc)
 		int resourceLength = strlen(resourcePath);
 
 		bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
-		bool fileExists = true;
 		SDL_RWops *file;
 
 		spriteFileHeader.num_entries = 0;

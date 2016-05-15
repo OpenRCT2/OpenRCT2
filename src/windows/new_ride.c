@@ -285,13 +285,11 @@ void window_new_ride_init_vars() {
  */
 static void window_new_ride_populate_list()
 {
-	int i, quadIndex, bitIndex;
-
 	uint8 currentCategory = _window_new_ride_current_tab;
 	ride_list_item *nextListItem = (ride_list_item*)0x00F43523;
 
 	// For each ride type in the view order list
-	for (i = 0; i < countof(RideTypeViewOrder); i++) {
+	for (int i = 0; i < countof(RideTypeViewOrder); i++) {
 		uint8 rideType = RideTypeViewOrder[i];
 		if (rideType == RIDE_TYPE_NULL)
 			continue;
@@ -304,9 +302,7 @@ static void window_new_ride_populate_list()
 		char preferredVehicleName[9];
 		strcpy(preferredVehicleName,"        ");
 
-		quadIndex = rideType >> 5;
-		bitIndex = rideType & 0x1F;
-		if (RCT2_ADDRESS(0x01357404, uint32)[quadIndex] & (1u << bitIndex)) {
+		if (ride_type_is_invented(rideType)) {
 			int dh = 0;
 			uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
 
@@ -317,10 +313,8 @@ static void window_new_ride_populate_list()
 				memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
 				rideEntryName[8]=0;
 
-				quadIndex = rideEntryIndex >> 5;
-				bitIndex = rideEntryIndex & 0x1F;
 				// Skip if vehicle type is not invented yet
-				if (!(RCT2_ADDRESS(0x01357424, uint32)[quadIndex] & (1u << bitIndex)))
+				if (!ride_entry_is_invented(rideEntryIndex))
 					continue;
 
 				// Ride entries
@@ -617,7 +611,7 @@ static void window_new_ride_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_LAST_DEVELOPMENT_BUTTON:
-		news_item_open_subject(NEWS_ITEM_RESEARCH, RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32));
+		news_item_open_subject(NEWS_ITEM_RESEARCH, (int)gResearchLastItemSubject);
 		break;
 	case WIDX_RESEARCH_FUNDING_BUTTON:
 		window_finances_research_open();
@@ -739,7 +733,7 @@ static void window_new_ride_invalidate(rct_window *w)
 
 	if (_window_new_ride_current_tab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {
 		window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-		uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
+		uint32 typeId = gResearchLastItemSubject;
 		if (typeId != 0xFFFFFFFF) {
 			window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
 			window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? 5189 : 5191;

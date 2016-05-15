@@ -461,16 +461,16 @@ static void window_map_tooldrag(rct_window* w, int widgetIndex, int x, int y)
 {
 	switch (widgetIndex) {
 	case WIDX_SET_LAND_RIGHTS:
-		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0)) {
+		if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
 			gGameCommandErrorTitle = 0;
 			game_do_command(
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+				gMapSelectPositionA.x,
 				GAME_COMMAND_FLAG_APPLY,
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+				gMapSelectPositionA.y,
 				RCT2_GLOBAL(0x00F1AD61, uint8),
 				GAME_COMMAND_SET_LAND_OWNERSHIP,
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+				gMapSelectPositionB.x,
+				gMapSelectPositionB.y
 			);
 		}
 		break;
@@ -546,23 +546,23 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 		mapY = (mapY - radius) & 0xFFE0;
 
 		map_invalidate_selection_rect();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX + size;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+		gMapSelectType = MAP_SELECT_TYPE_FULL;
+		gMapSelectPositionA.x = mapX;
+		gMapSelectPositionA.y = mapY;
+		gMapSelectPositionB.x = mapX + size;
+		gMapSelectPositionB.y = mapY + size;
 		map_invalidate_selection_rect();
 
 		gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
 		game_do_command(
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+			gMapSelectPositionA.x,
 			GAME_COMMAND_FLAG_APPLY,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+			gMapSelectPositionA.y,
 			gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
 			GAME_COMMAND_CHANGE_SURFACE_STYLE,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+			gMapSelectPositionB.x,
+			gMapSelectPositionB.y
 		);
 	} else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS)) {
 		// Set land rights
@@ -573,23 +573,23 @@ static void window_map_scrollmousedown(rct_window *w, int scrollIndex, int x, in
 		mapY = (mapY - radius) & 0xFFE0;
 
 		map_invalidate_selection_rect();
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX + size;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+		gMapSelectType = MAP_SELECT_TYPE_FULL;
+		gMapSelectPositionA.x = mapX;
+		gMapSelectPositionA.y = mapY;
+		gMapSelectPositionB.x = mapX + size;
+		gMapSelectPositionB.y = mapY + size;
 		map_invalidate_selection_rect();
 
 		gGameCommandErrorTitle = 0;
 		game_do_command(
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16),
+			gMapSelectPositionA.x,
 			GAME_COMMAND_FLAG_APPLY,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16),
+			gMapSelectPositionA.y,
 			RCT2_GLOBAL(0x00F1AD61, uint8),
 			GAME_COMMAND_SET_LAND_OWNERSHIP,
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16),
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16)
+			gMapSelectPositionB.x,
+			gMapSelectPositionB.y
 		);
 	}
 }
@@ -1027,17 +1027,17 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
 
 		if ((peep->flags & SPRITE_FLAGS_PEEP_FLASHING) != 0) {
 			if (peep->type == PEEP_TYPE_STAFF) {
-				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 3)) != 0) {
+				if ((gWindowMapFlashingFlags & (1 << 3)) != 0) {
 					colour = 0x8A;
 					left--;
-					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
+					if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
 						colour = 0xA;
 				}
 			} else {
-				if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 1)) != 0) {
+				if ((gWindowMapFlashingFlags & (1 << 1)) != 0) {
 					colour = 0xAC;
 					left--;
-					if ((RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_MAP_FLASHING_FLAGS, uint16) & (1 << 15)) == 0)
+					if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
 						colour = 0x15;
 				}
 			}
@@ -1057,7 +1057,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
 
 	sint16 left, top, right, bottom;
 
-	for (train_index = RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_VEHICLE, uint16); train_index != SPRITE_INDEX_NULL; train_index = train->next) {
+	for (train_index = gSpriteListHead[SPRITE_LIST_VEHICLE]; train_index != SPRITE_INDEX_NULL; train_index = train->next) {
 		train = GET_VEHICLE(train_index);
 		for (vehicle_index = train_index; vehicle_index != SPRITE_INDEX_NULL; vehicle_index = vehicle->next_vehicle_on_train) {
 			vehicle = GET_VEHICLE(vehicle_index);
@@ -1127,13 +1127,13 @@ static void window_map_set_land_rights_tool_update(int x, int y)
 	rct_viewport *viewport;
 
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 	screen_get_map_xy(x, y, &mapX, &mapY, &viewport);
 	if (mapX == (sint16)0x8000)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+	gMapSelectType = MAP_SELECT_TYPE_FULL;
 
 	int landToolSize = gLandToolSize;
 	if (landToolSize == 0)
@@ -1143,10 +1143,10 @@ static void window_map_set_land_rights_tool_update(int x, int y)
 	int radius = (landToolSize * 16) - 16;
 	mapX = (mapX - radius) & 0xFFE0;
 	mapY = (mapY - radius) & 0xFFE0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX + size;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY + size;
+	gMapSelectPositionA.x = mapX;
+	gMapSelectPositionA.y = mapY;
+	gMapSelectPositionB.x = mapX + size;
+	gMapSelectPositionB.y = mapY + size;
 	map_invalidate_selection_rect();
 }
 
@@ -1187,8 +1187,8 @@ static void window_map_place_park_entrance_tool_update(int x, int y)
 
 	map_invalidate_selection_rect();
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	sub_666EEF(x, y, &mapX, &mapY, &mapZ, &direction);
 	if (mapX == (sint16)-1) {
 		park_remove_ghost_entrance();
@@ -1205,7 +1205,7 @@ static void window_map_place_park_entrance_tool_update(int x, int y)
 	gMapSelectionTiles[3].x = -1;
 	gMapSelectionTiles[3].y = -1;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 1);
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	map_invalidate_map_selection_tiles();
 	if (
 		gParkEntranceGhostExists &&
@@ -1230,8 +1230,8 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
 	rct_map_element *mapElement;
 
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 2);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	footpath_bridge_get_info_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
 	if ((mapX & 0xFFFF) == 0x8000)
 		return;
@@ -1244,17 +1244,17 @@ static void window_map_set_peep_spawn_tool_update(int x, int y)
 			mapZ += 16;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 2);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = mapX;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = mapY;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = mapX;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = mapY;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = direction ^ 2;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = mapX;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = mapY;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = mapZ;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+	gMapSelectType = MAP_SELECT_TYPE_FULL;
+	gMapSelectPositionA.x = mapX;
+	gMapSelectPositionA.y = mapY;
+	gMapSelectPositionB.x = mapX;
+	gMapSelectPositionB.y = mapY;
+	gMapSelectArrowDirection = direction ^ 2;
+	gMapSelectArrowPosition.x = mapX;
+	gMapSelectArrowPosition.y = mapY;
+	gMapSelectArrowPosition.z = mapZ;
 	map_invalidate_selection_rect();
 }
 

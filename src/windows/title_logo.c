@@ -20,11 +20,6 @@
 #include "../interface/widget.h"
 #include "../interface/window.h"
 
-static rct_widget window_title_logo_widgets[] = {
-	{ WWT_EMPTY, 0, 0, 0, 0, 0, 0xFFFFFFFF, STR_NONE },
-	{ WIDGETS_END },
-};
-
 static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_logo_events = {

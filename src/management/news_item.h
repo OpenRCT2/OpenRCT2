@@ -36,7 +36,7 @@ enum {
  * News item structure.
  * size: 0x10C
  */
-typedef struct {
+typedef struct rct_news_item {
 	uint8 type;					// 0x00
 	uint8 flags;				// 0x01
 	uint32 assoc;				// 0x02
@@ -48,6 +48,8 @@ typedef struct {
 } rct_news_item;
 
 #define MAX_NEWS_ITEMS 60
+
+extern rct_news_item *gNewsItems;
 
 void news_item_init_queue();
 void news_item_update_current();

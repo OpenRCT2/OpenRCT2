@@ -180,7 +180,6 @@ void title_sequence_delete_preset(int preset)
 	if (preset >= TITLE_SEQUENCE_DEFAULT_PRESETS && preset < gConfigTitleSequences.num_presets) {
 		// Delete the folder
 		utf8 path[MAX_PATH];
-		char separator = platform_get_path_separator();
 		platform_get_user_directory(path, "title sequences");
 		strcat(path, gConfigTitleSequences.presets[preset].name);
 		if (!platform_directory_delete(path)) {

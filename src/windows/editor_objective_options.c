@@ -1043,8 +1043,6 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
  */
 static void window_editor_objective_options_rides_mouseup(rct_window *w, int widgetIndex)
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x00141F570;
-
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
 		window_close(w);

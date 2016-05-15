@@ -46,6 +46,7 @@ bool gUsingWidgetTextBox = 0;
 bool gLoadSaveTitleSequenceSave = 0;
 
 uint8 gToolbarDirtyFlags;
+uint16 gWindowMapFlashingFlags;
 
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to center to, if a window is obscuring a location, the next is tried
@@ -1797,7 +1798,7 @@ void tool_cancel()
 		map_invalidate_map_selection_tiles();
 
 		// Reset map selection
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) = 0;
+		gMapSelectFlags = 0;
 
 		if (gCurrentToolWidget.widget_index != -1) {
 			// Invalidate tool widget
@@ -1824,7 +1825,7 @@ void tool_cancel()
 */
 void window_guest_list_init_vars_a()
 {
-	RCT2_GLOBAL(0x013B0E6C, uint32) = 1;
+	gNextGuestNumber = 1;
 	RCT2_GLOBAL(0x00F1AF1C, uint32) = 0xFFFFFFFF;
 	RCT2_GLOBAL(0x00F1EE02, uint32) = 0xFFFFFFFF;
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_GUEST_LIST_SELECTED_FILTER, uint8) = 0xFF;
@@ -1937,9 +1938,6 @@ void window_event_unknown_0E_call(rct_window *w)
 void window_get_scroll_size(rct_window *w, int scrollIndex, int *width, int *height)
 {
 	if (w->event_handlers->get_scroll_size != NULL) {
-		rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
-		int widgetIndex = window_get_widget_index(w, widget);
-
 		w->event_handlers->get_scroll_size(w, scrollIndex, width, height);
 	}
 }

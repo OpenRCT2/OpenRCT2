@@ -40,6 +40,101 @@ void painter_setup() {
 }
 
 /**
+ * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
+ */
+paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxSize, rct_xyz16 boundBoxOffset, uint8 rotation)
+{
+	paint_struct * ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
+
+	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32))return NULL;
+
+	ps->image_id = image_id;
+
+	uint32 image_element = image_id & 0x7FFFF;
+	rct_g1_element * g1Element = gfx_get_g1_element(image_element);
+
+	switch (rotation) {
+		case 0:
+			rotate_map_coordinates(&offset.x, &offset.y, 0);
+			break;
+		case 1:
+			rotate_map_coordinates(&offset.x, &offset.y, 3);
+			break;
+		case 2:
+			rotate_map_coordinates(&offset.x, &offset.y, 2);
+			break;
+		case 3:
+			rotate_map_coordinates(&offset.x, &offset.y, 1);
+			break;
+	}
+	offset.x += RCT2_GLOBAL(0x9DE568, sint16);
+	offset.y += RCT2_GLOBAL(0x9DE56C, sint16);
+
+	rct_xy16 map = coordinate_3d_to_2d(&offset, rotation);
+
+	ps->x = map.x;
+	ps->y = map.y;
+
+	int left = map.x + g1Element->x_offset;
+	int bottom = map.y + g1Element->y_offset;
+
+	int right = left + g1Element->width;
+	int top = bottom + g1Element->height;
+
+	RCT2_GLOBAL(0xF1AD1C, uint16) = left;
+	RCT2_GLOBAL(0xF1AD1E, uint16) = bottom;
+
+	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (right <= dpi->x)return NULL;
+	if (top <= dpi->y)return NULL;
+	if (left >= dpi->x + dpi->width)return NULL;
+	if (bottom >= dpi->y + dpi->height)return NULL;
+
+
+	// This probably rotates the variables so they're relative to rotation 0.
+	switch (rotation) {
+		case 0:
+			boundBoxSize.x--;
+			boundBoxSize.y--;
+			rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 0);
+			rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 0);
+			break;
+		case 1:
+			boundBoxSize.x--;
+			rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 3);
+			rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 3);
+			break;
+		case 2:
+			rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 2);
+			rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 2);
+			break;
+		case 3:
+			boundBoxSize.y--;
+			rotate_map_coordinates(&boundBoxSize.x, &boundBoxSize.y, 1);
+			rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 1);
+			break;
+	}
+
+	ps->bound_box_x_end = boundBoxSize.x + boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->bound_box_z = boundBoxOffset.z;
+	ps->bound_box_z_end = boundBoxOffset.z + boundBoxSize.z;
+	ps->bound_box_y_end = boundBoxSize.y + boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->flags = 0;
+	ps->bound_box_x = boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
+	ps->bound_box_y = boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
+	ps->attached_ps = NULL;
+	ps->var_20 = NULL;
+	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
+	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
+	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
+	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
+	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
+
+	return ps;
+}
+
+/**
  *  rct2: 0x006861AC, 0x00686337, 0x006864D0, 0x0068666B, 0x0098196C
  *
  * @param image_id (ebx)
@@ -50,26 +145,162 @@ void painter_setup() {
  * @param bound_box_length_z (ah)
  * @param z_offset (dx)
  * @param rotation (ebp)
- * @return (!CF) success
+ * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
-bool sub_98196C(
+paint_struct * sub_98196C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
 	uint16 z_offset,
 	uint32 rotation
 ) {
-	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098196C, uint32)[rotation],
-		x_offset | (bound_box_length_z << 8),
-		image_id,
-		y_offset,
-		z_offset,
-		bound_box_length_y,
-		bound_box_length_x,
-		rotation
-	);
+	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
+	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
+	assert((uint16) z_offset == (sint16) z_offset);
 
-	return !(flags & (1 << 8));
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
+	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
+
+	//Not a paint struct but something similar
+	paint_struct *ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
+
+	if ((uint32) ps >= RCT2_GLOBAL(0xEE7880, uint32)) {
+		return NULL;
+	}
+
+	ps->image_id = image_id;
+
+	uint32 image_element = image_id & 0x7FFFF;
+	rct_g1_element *g1Element = gfx_get_g1_element(image_element);
+
+	rct_xyz16 coord_3d = {
+		.x = x_offset, // ax
+		.y = y_offset, // cx
+		.z = z_offset
+	};
+
+	rct_xyz16 boundBox = {
+		.x = bound_box_length_x, // di
+		.y = bound_box_length_y, // si
+		.z = bound_box_length_z,
+	};
+
+	switch (rotation) {
+		case 0:
+			rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_WEST);
+
+			boundBox.x--;
+			boundBox.y--;
+			rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_WEST);
+			break;
+
+		case 1:
+			rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_SOUTH);
+
+			boundBox.x--;
+			rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_SOUTH);
+			break;
+
+		case 2:
+			rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_EAST);
+			rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_EAST);
+			break;
+
+		case 3:
+			rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_NORTH);
+
+			boundBox.y--;
+			rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_NORTH);
+			break;
+	}
+
+	coord_3d.x += RCT2_GLOBAL(0x9DE568, sint16);
+	coord_3d.y += RCT2_GLOBAL(0x9DE56C, sint16);
+
+	ps->bound_box_x_end = coord_3d.x + boundBox.x;
+	ps->bound_box_y_end = coord_3d.y + boundBox.y;
+
+	// TODO: check whether this is right. edx is ((bound_box_length_z + z_offset) << 16 | z_offset)
+	ps->bound_box_z = coord_3d.z;
+	ps->bound_box_z_end = (boundBox.z + coord_3d.z);
+
+	rct_xy16 map = coordinate_3d_to_2d(&coord_3d, rotation);
+
+	ps->x = map.x;
+	ps->y = map.y;
+
+	sint16 left = map.x + g1Element->x_offset;
+	sint16 bottom = map.y + g1Element->y_offset;
+
+	sint16 right = left + g1Element->width;
+	sint16 top = bottom + g1Element->height;
+
+	RCT2_GLOBAL(0xF1AD1C, sint16) = left;
+	RCT2_GLOBAL(0xF1AD1E, sint16) = bottom;
+
+	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (right <= dpi->x) return NULL;
+	if (top <= dpi->y) return NULL;
+	if (left >= (dpi->x + dpi->width)) return NULL;
+	if (bottom >= (dpi->y + dpi->height)) return NULL;
+
+	ps->flags = 0;
+	ps->bound_box_x = coord_3d.x;
+	ps->bound_box_y = coord_3d.y;
+	ps->attached_ps = NULL;
+	ps->var_20 = NULL;
+	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
+	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
+	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
+	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
+	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
+
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+
+	sint32 edi;
+	switch (rotation) {
+		case 0:
+			edi = coord_3d.y + coord_3d.x;
+			break;
+
+		case 1:
+			edi = coord_3d.y - coord_3d.x + 0x2000;
+			break;
+
+		case 2:
+			edi = -(coord_3d.y + coord_3d.x) + 0x4000;
+			break;
+
+		case 3:
+			edi = coord_3d.x - coord_3d.y + 0x2000;
+			break;
+	}
+
+	if (edi < 0) {
+		edi = 0;
+	}
+
+	edi /= 32;
+	edi = min(edi, 0x1FF); // 511
+
+	ps->var_18 = edi;
+
+	paint_struct *old_ps = RCT2_ADDRESS(0x00F1A50C, paint_struct*)[edi];
+	RCT2_ADDRESS(0x00F1A50C, paint_struct*)[edi] = ps;
+	ps->next_quadrant_ps = old_ps;
+
+	if ((uint16)edi < RCT2_GLOBAL(0x00F1AD0C, uint32)) {
+		RCT2_GLOBAL(0x00F1AD0C, uint32) = edi;
+	}
+
+	if ((uint16)edi > RCT2_GLOBAL(0x00F1AD10, uint32)) {
+		RCT2_GLOBAL(0x00F1AD10, uint32) = edi;
+	}
+
+	RCT2_GLOBAL(0xEE7888, paint_struct*) ++;
+
+	return ps;
 }
 
 /**
@@ -86,9 +317,9 @@ bool sub_98196C(
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
  * @param rotation (ebp)
- * @return (!CF) success
+ * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
-bool sub_98197C(
+paint_struct * sub_98197C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
@@ -100,109 +331,14 @@ bool sub_98197C(
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
 	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
 
-	//Not a paint struct but something similar
-	paint_struct* ps = RCT2_GLOBAL(0xEE7888, paint_struct*);
+	rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
+	rct_xyz16 boundBoxSize = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
+	rct_xyz16 boundBoxOffset = {.x = bound_box_offset_x, .y = bound_box_offset_y, .z = bound_box_offset_z};
+	paint_struct * ps = sub_9819_c(image_id, offset, boundBoxSize, boundBoxOffset, rotation);
 
-	if ((uint32)ps >= RCT2_GLOBAL(0xEE7880, uint32))return false;
-
-	ps->image_id = image_id;
-
-	uint32 image_element = image_id & 0x7FFFF;
-	rct_g1_element *g1Element = gfx_get_g1_element(image_element);
-
-	rct_xyz16 coord_3d = {
-		.x = x_offset,
-		.y = y_offset,
-		.z = z_offset
-	};
-
-	switch (rotation) {
-	case 0:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 0);
-		break;
-	case 1:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 3);
-		break;
-	case 2:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 2);
-		break;
-	case 3:
-		rotate_map_coordinates(&coord_3d.x, &coord_3d.y, 1);
-		break;
+	if (ps == NULL) {
+		return NULL;
 	}
-	coord_3d.x += RCT2_GLOBAL(0x9DE568, sint16);
-	coord_3d.y += RCT2_GLOBAL(0x9DE56C, sint16);
-
-	rct_xy16 map = coordinate_3d_to_2d(&coord_3d, rotation);
-
-	ps->x = map.x;
-	ps->y = map.y;
-
-	int left = map.x + g1Element->x_offset;
-	int bottom = map.y + g1Element->y_offset;
-
-	int right = left + g1Element->width;
-	int top = bottom + g1Element->height;
-
-	RCT2_GLOBAL(0xF1AD1C, uint16) = left;
-	RCT2_GLOBAL(0xF1AD1E, uint16) = bottom;
-
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
-
-	if (right <= dpi->x)return false;
-	if (top <= dpi->y)return false;
-	if (left > dpi->x + dpi->width)return false;
-	if (bottom > dpi->y + dpi->height)return false;
-
-	rct_xy16 boundBox = {
-		.x = bound_box_length_x,
-		.y = bound_box_length_y
-	};
-
-	rct_xy16 boundBoxOffset = {
-		.x = bound_box_offset_x,
-		.y = bound_box_offset_y
-	};
-
-	// Unsure why rots 1 and 3 need to swap
-	switch (rotation) {
-	case 0:
-		boundBox.x--;
-		boundBox.y--;
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 0);
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 0);
-		break;
-	case 1:
-		boundBox.x--;
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 3);
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 3);
-		break;
-	case 2:
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 2);
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 2);
-		break;
-	case 3:
-		boundBox.y--;
-		rotate_map_coordinates(&boundBox.x, &boundBox.y, 1);
-		rotate_map_coordinates(&boundBoxOffset.x, &boundBoxOffset.y, 1);
-		break;
-	}
-
-	ps->bound_box_x_end = boundBox.x + boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
-	ps->bound_box_z = bound_box_offset_z;
-	int boundBoxZEnd = bound_box_length_z + bound_box_offset_z;
-	ps->bound_box_z_end = boundBoxZEnd;
-	ps->bound_box_y_end = boundBox.y + boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
-	ps->flags = 0;
-	ps->bound_box_x = boundBoxOffset.x + RCT2_GLOBAL(0x9DE568, sint16);
-	ps->bound_box_y = boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
-	ps->attached_ps = NULL;
-	ps->var_20 = NULL;
-	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
-	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
-	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
-	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
-	ps->mapElement = RCT2_GLOBAL(0x9DE578, rct_map_element*);
 
 	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
 
@@ -247,7 +383,7 @@ bool sub_98197C(
 	}
 
 	RCT2_GLOBAL(0xEE7888, paint_struct*)++;
-	return true;
+	return ps;
 }
 
 /**
@@ -264,32 +400,36 @@ bool sub_98197C(
  * @param bound_box_offset_x (0x009DEA52)
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
- * @param rotation
- * @return (!CF) success
+ * @param rotation (ebp)
+ * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
-bool sub_98198C(
+paint_struct * sub_98198C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
 	uint16 z_offset,
-	sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z,
+	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, uint16) = bound_box_offset_x;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
+	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
+	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
+	assert((uint16) z_offset == (sint16) z_offset);
 
-	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098198C, uint32)[rotation],
-		x_offset | (bound_box_length_z << 8),
-		image_id,
-		y_offset,
-		z_offset,
-		bound_box_length_y,
-		bound_box_length_x,
-		rotation
-	);
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = 0;
+	RCT2_GLOBAL(0xF1AD2C, uint32) = 0;
 
-	return !(flags & (1 << 8));
+	rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
+	rct_xyz16 boundBoxSize = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
+	rct_xyz16 boundBoxOffset = {.x = bound_box_offset_x, .y = bound_box_offset_y, .z = bound_box_offset_z};
+	paint_struct * ps = sub_9819_c(image_id, offset, boundBoxSize, boundBoxOffset, rotation);
+
+	if (ps == NULL) {
+		return NULL;
+	}
+
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+	RCT2_GLOBAL(0xEE7888, paint_struct*)++;
+	return ps;
 }
 
 /**
@@ -307,30 +447,46 @@ bool sub_98198C(
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
  * @param rotation (ebp)
- * @return (!CF) success
+ * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
-bool sub_98199C(
+paint_struct * sub_98199C(
 	uint32 image_id,
 	sint8 x_offset, sint8 y_offset,
 	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
 	uint16 z_offset,
-	sint16 bound_box_offset_x, uint16 bound_box_offset_y, sint16 bound_box_offset_z,
+	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
 	uint32 rotation
 ) {
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, uint16) = bound_box_offset_x;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, uint16) = bound_box_offset_y;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, uint16) = bound_box_offset_z;
+	assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
+	assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
+	assert((uint16) z_offset == (sint16) z_offset);
 
-	int flags = RCT2_CALLPROC_X(RCT2_ADDRESS(0x98199C, uint32_t)[rotation],
-		x_offset | (bound_box_length_z << 8),
-		image_id,
-		y_offset,
-		z_offset,
-		bound_box_length_y,
-		bound_box_length_x,
-		rotation);
+	if (RCT2_GLOBAL(0xF1AD28, uint32) == 0) {
+		return sub_98197C(
+			image_id,
+			x_offset, y_offset,
+			bound_box_length_x, bound_box_length_y, bound_box_length_z,
+			z_offset,
+			bound_box_offset_x, bound_box_offset_y, bound_box_offset_z,
+			rotation
+		);
+	}
 
-	return !(flags & (1 << 8));
+	rct_xyz16 offset = {.x = x_offset, .y = y_offset, .z = z_offset};
+	rct_xyz16 boundBox = {.x = bound_box_length_x, .y = bound_box_length_y, .z = bound_box_length_z};
+	rct_xyz16 boundBoxOffset = {.x = bound_box_offset_x, .y = bound_box_offset_y, .z = bound_box_offset_z};
+	paint_struct * ps = sub_9819_c(image_id, offset, boundBox, boundBoxOffset, rotation);
+
+	if (ps == NULL) {
+		return NULL;
+	}
+
+	paint_struct *old_ps = RCT2_GLOBAL(0xF1AD28, paint_struct*);
+	old_ps->var_20 = ps;
+
+	RCT2_GLOBAL(0xF1AD28, paint_struct*) = ps;
+	RCT2_GLOBAL(0xEE7888, paint_struct*)++;
+	return ps;
 }
 
 /**
@@ -440,7 +596,7 @@ void sub_685EBC(money32 amount, uint16 string_id, sint16 y, sint16 z, sint8 y_of
 	ps->x = coord.x + offset_x;
 	ps->y = coord.y;
 
-	RCT2_GLOBAL(0xEE7888, uint32) += 0x1E;
+	RCT2_GLOBAL(0xEE7888, paint_string_struct*)++;
 
 	paint_string_struct * oldPs = RCT2_GLOBAL(0xF1AD24, paint_string_struct*);
 

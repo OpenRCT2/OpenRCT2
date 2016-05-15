@@ -585,7 +585,7 @@ static void window_ride_construction_close(rct_window *w)
 	viewport_set_visibility(0);
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 1);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 
 	// In order to cancel the yellow arrow correctly the
 	// selection tool should be cancelled. Don't do a tool cancel if
@@ -2664,8 +2664,8 @@ static void window_ride_construction_update_enabled_track_pieces()
 		return;
 
 	int rideType = _currentTrackCovered & 2 ? RCT2_ADDRESS(0x0097D4F5, uint8)[ride->type * 8] : ride->type;
-	_enabledRidePieces.a = rideEntry->enabledTrackPiecesA & RCT2_ADDRESS(0x01357444, uint32)[rideType];
-	_enabledRidePieces.b = rideEntry->enabledTrackPiecesB & RCT2_ADDRESS(0x01357644, uint32)[rideType];
+	_enabledRidePieces.a = rideEntry->enabledTrackPiecesA & gResearchedTrackTypesA[rideType];
+	_enabledRidePieces.b = rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[rideType];
 }
 
 /**
@@ -2753,17 +2753,17 @@ void sub_6C94D8()
 		z = _currentTrackBeginZ;
 		direction = _currentTrackPieceDirection;
 		type = _currentTrackPieceType;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z;
+		gMapSelectArrowPosition.x = x;
+		gMapSelectArrowPosition.y = y;
+		gMapSelectArrowPosition.z = z;
 		if (direction >= 4)
 			direction += 4;
 		if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
 			direction ^= 2;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = direction;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+		gMapSelectArrowDirection = direction;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 		if (_currentTrackSelectionFlags & 1)
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 4;
+			gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
 		map_invalidate_tile_full(x, y);
 		break;
 	case RIDE_CONSTRUCTION_STATE_SELECTED:
@@ -2795,21 +2795,21 @@ void sub_6C94D8()
 		x = _currentTrackBeginX & 0xFFE0;
 		y = _currentTrackBeginY & 0xFFE0;
 		z = _currentTrackBeginZ + 15;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = x;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = 4;
+		gMapSelectArrowPosition.x = x;
+		gMapSelectArrowPosition.y = y;
+		gMapSelectArrowPosition.z = z;
+		gMapSelectArrowDirection = 4;
 		if (((_currentTrackBeginX & 0x1F) | (_currentTrackBeginY & 0x1F)) != 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = 6;
+			gMapSelectArrowDirection = 6;
 			if (((_currentTrackBeginX & 0x1F) & (_currentTrackBeginY & 0x1F)) == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = 5;
+				gMapSelectArrowDirection = 5;
 				if ((_currentTrackBeginY & 0x1F) == 0)
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = 7;
+					gMapSelectArrowDirection = 7;
 			}
 		}
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~4;
+		gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 		if (_currentTrackSelectionFlags & 1)
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 4;
+			gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
 		map_invalidate_tile_full(x, y);
 		break;
 	}
@@ -2825,7 +2825,8 @@ static void window_ride_construction_update_map_selection()
 	int trackType, trackDirection, x, y;
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 10;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
 
 	switch (_rideConstructionState) {
 	case RIDE_CONSTRUCTION_STATE_0:
@@ -3546,7 +3547,9 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 	const rct_preview_track *trackBlock;
 
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 | 2 | 4);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	if (!ride_get_place_position_from_screen_position(screenX, screenY, &x, &y)) {
 		sub_6C9627();
 		map_invalidate_map_selection_tiles();
@@ -3557,13 +3560,13 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 	if (z == 0)
 		z = map_get_highest_z(x >> 5, y >> 5);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 2;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~8;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = _currentTrackPieceDirection;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_GREEN;
+	gMapSelectArrowDirection = _currentTrackPieceDirection;
+	gMapSelectArrowPosition.x = x;
+	gMapSelectArrowPosition.y = y;
+	gMapSelectArrowPosition.z = z;
 	gMapSelectionTiles[0].x = x;
 	gMapSelectionTiles[0].y = y;
 	gMapSelectionTiles[1].x = -1;
@@ -3583,11 +3586,11 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 	//   - Original code checks this first as its already set origin tile, probably just a micro optimisation
 	window_ride_construction_select_map_tiles(ride, trackType, trackDirection, x, y);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z;
+	gMapSelectArrowPosition.z = z;
 	if (_trackPlaceZ == 0) {
 		// Raise z above all slopes and water
 		highestZ = 0;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 2) {
+		if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
 			rct_xy16 *selectedTile = gMapSelectionTiles;
 			while (selectedTile->x != -1) {
 				if (selectedTile->x < (256 * 32) && selectedTile->y < (256 * 32)) {
@@ -3610,7 +3613,7 @@ void ride_construction_toolupdate_construct(int screenX, int screenY)
 	} while (trackBlock->index != 255);
 	z -= bx;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = z;
+	gMapSelectArrowPosition.z = z;
 	bx = 41;
 	_currentTrackBeginX = x;
 	_currentTrackBeginY = y;
@@ -3685,22 +3688,25 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 
 	map_invalidate_selection_rect();
 	map_invalidate_map_selection_tiles();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 | 2 | 4);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &x, &y, &direction);
 	if (RCT2_GLOBAL(0x00F44194, uint8) == 255) {
 		sub_6C9627();
 		return;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= 1 | 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_DIRECTION, uint8) = direction ^ 2;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_X, uint16) = x;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Y, uint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_ARROW_Z, uint16) = RCT2_GLOBAL(0x00F44190, uint8) * 8;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+	gMapSelectType = MAP_SELECT_TYPE_FULL;
+	gMapSelectPositionA.x = x;
+	gMapSelectPositionA.y = y;
+	gMapSelectPositionB.x = x;
+	gMapSelectPositionB.y = y;
+	gMapSelectArrowDirection = direction ^ 2;
+	gMapSelectArrowPosition.x = x;
+	gMapSelectArrowPosition.y = y;
+	gMapSelectArrowPosition.z = RCT2_GLOBAL(0x00F44190, uint8) * 8;
 	map_invalidate_selection_rect();
 
 	direction = RCT2_GLOBAL(0x00F44194, uint8) ^ 2;
@@ -3738,7 +3744,7 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 	// Raise z above all slopes and water
 	highestZ = 0;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & 2) {
+	if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
 		rct_xy16 *selectedTile = gMapSelectionTiles;
 		while (selectedTile->x != -1) {
 			if (selectedTile->x >= (256 * 32) || selectedTile->y >= (256 * 32))
@@ -3754,7 +3760,9 @@ void ride_construction_tooldown_construct(int screenX, int screenY)
 
 	RCT2_GLOBAL(0x00F440E2, uint16) = z;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 | 2 | 4);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	if (!ride_get_place_position_from_screen_position(screenX, screenY, &x, &y))
 		return;
 
@@ -3927,7 +3935,8 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 {
 	sub_6C9627();
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 | 4);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
 	int mapX, mapY, direction;
 	ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &mapX, &mapY, &direction);
@@ -3939,7 +3948,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 		STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION;
 
 	game_command_callback = game_command_callback_place_ride_entrance_or_exit;
-	money32 cost = game_do_command(
+	game_do_command(
 		RCT2_GLOBAL(0x00F44188, uint16),
 		(GAME_COMMAND_FLAG_APPLY) | ((RCT2_GLOBAL(0x00F44194, uint8) ^ 2) << 8),
 		RCT2_GLOBAL(0x00F4418A, uint16),

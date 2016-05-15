@@ -28,7 +28,7 @@
 #include "../title.h"
 #include "dropdown.h"
 
-typedef struct {
+typedef struct TITLE_COMMAND_ORDER {
 	uint8 command;
 	rct_string_id nameStringId;
 	rct_string_id descStringId;

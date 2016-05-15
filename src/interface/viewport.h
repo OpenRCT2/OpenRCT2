@@ -72,7 +72,7 @@ enum {
 	VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-typedef struct {
+typedef struct viewport_interaction_info {
 	int type;
 	int x;
 	int y;
@@ -88,8 +88,8 @@ typedef struct {
 
 #define gSavedViewX				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_X, sint16)
 #define gSavedViewY				RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_Y, sint16)
-#define gSavedViewZoom			RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION, uint8)
-#define gSavedViewRotation		RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM_AND_ROTATION + 1, uint8)
+#define gSavedViewZoom			RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ZOOM, uint8)
+#define gSavedViewRotation		RCT2_GLOBAL(RCT2_ADDRESS_SAVED_VIEW_ROTATION, uint8)
 #define gCurrentRotation		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 #define gCurrentViewportFlags	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16)
 
@@ -147,5 +147,7 @@ void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sin
 
 uint8 get_current_rotation();
 sint16 get_height_marker_offset();
+
+void viewport_set_saved_view();
 
 #endif

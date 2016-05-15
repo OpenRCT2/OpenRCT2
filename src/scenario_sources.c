@@ -17,7 +17,7 @@
 #include "scenario.h"
 #include "util/util.h"
 
-typedef struct {
+typedef struct scenario_alias {
 	const utf8 *original;
 	const utf8 *alternative;
 } scenario_alias;
@@ -37,7 +37,7 @@ const scenario_alias ScenarioAliases[] = {
 	{ "Geoffrey Gardens",						"Geoffery Gardens"							},
 };
 
-typedef struct {
+typedef struct scenario_title_desc {
 	const uint8 id;
 	const utf8 *title;
 	const uint8 category;

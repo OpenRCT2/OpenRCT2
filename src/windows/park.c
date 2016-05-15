@@ -726,9 +726,10 @@ static void window_park_entrance_update(rct_window *w)
 }
 
 
-void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
+void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y)
+{
 	map_invalidate_selection_rect();
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) &= ~(1 << 0);
+	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
 	rct_xy16 mapTile = { 0 };
 	screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, NULL);
@@ -743,13 +744,13 @@ void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
 
 	uint8 state_changed = 0;
 
-	if (!(RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) & (1 << 0))){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_FLAGS, uint16) |= (1 << 0);
+	if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)) {
+		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
 		state_changed++;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) != 4){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_TYPE, uint16) = 4;
+	if (gMapSelectType != MAP_SELECT_TYPE_FULL) {
+		gMapSelectType = MAP_SELECT_TYPE_FULL;
 		state_changed++;
 	}
 
@@ -765,26 +766,26 @@ void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
 	mapTile.x &= 0xFFE0;
 	mapTile.y &= 0xFFE0;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) != mapTile.x){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16) = mapTile.x;
+	if (gMapSelectPositionA.x != mapTile.x){
+		gMapSelectPositionA.x = mapTile.x;
 		state_changed++;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) != mapTile.y){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16) = mapTile.y;
+	if (gMapSelectPositionA.y != mapTile.y){
+		gMapSelectPositionA.y = mapTile.y;
 		state_changed++;
 	}
 
 	mapTile.x += tool_length;
 	mapTile.y += tool_length;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) != mapTile.x){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16) = mapTile.x;
+	if (gMapSelectPositionB.x != mapTile.x){
+		gMapSelectPositionB.x = mapTile.x;
 		state_changed++;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) != mapTile.y){
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16) = mapTile.y;
+	if (gMapSelectPositionB.y != mapTile.y){
+		gMapSelectPositionB.y = mapTile.y;
 		state_changed++;
 	}
 
@@ -793,13 +794,13 @@ void window_park_entrance_tool_update_land_rights(sint16 x, sint16 y){
 		return;
 
 	RCT2_GLOBAL(0x00F1AD62, uint32) = game_do_command(
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+		gMapSelectPositionA.x,
 		0x4,
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+		gMapSelectPositionA.y,
 		LandRightsMode ? 0x00E : 0x20F,
 		35,
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+		gMapSelectPositionB.x,
+		gMapSelectPositionB.y
 		);
 }
 
@@ -828,13 +829,13 @@ static void window_park_entrance_tooldown(rct_window* w, int widgetIndex, int x,
 			if (x != (sint16)0x8000) {
 				gGameCommandErrorTitle = 0x6BD; // Can't buy land...
 				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+					gMapSelectPositionA.x,
 					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+					gMapSelectPositionA.y,
 					0x00E,
 					GAME_COMMAND_BUY_LAND_RIGHTS,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+					gMapSelectPositionB.x,
+					gMapSelectPositionB.y
 					);
 			}
 		}
@@ -842,13 +843,13 @@ static void window_park_entrance_tooldown(rct_window* w, int widgetIndex, int x,
 			if (x != (sint16)0x8000) {
 				gGameCommandErrorTitle = 0x6C0; // Can't buy construction rights here...
 				game_do_command(
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+					gMapSelectPositionA.x,
 					1,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+					gMapSelectPositionA.y,
 					0x20F,
 					GAME_COMMAND_BUY_LAND_RIGHTS,
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-					RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+					gMapSelectPositionB.x,
+					gMapSelectPositionB.y
 					);
 			}
 		}
@@ -871,13 +872,13 @@ static void window_park_entrance_tooldrag(rct_window* w, int widgetIndex, int x,
 				if (x != (sint16)0x8000) {
 					gGameCommandErrorTitle = 0x6BD; // Can't buy land...
 					game_do_command(
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+						gMapSelectPositionA.x,
 						1,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+						gMapSelectPositionA.y,
 						0x00E,
 						GAME_COMMAND_BUY_LAND_RIGHTS,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+						gMapSelectPositionB.x,
+						gMapSelectPositionB.y
 						);
 				}
 			}
@@ -885,13 +886,13 @@ static void window_park_entrance_tooldrag(rct_window* w, int widgetIndex, int x,
 				if (x != (sint16)0x8000) {
 					gGameCommandErrorTitle = 0x6C0; // Can't buy construction rights here...
 					game_do_command(
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_X, sint16),
+						gMapSelectPositionA.x,
 						1,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_A_Y, sint16),
+						gMapSelectPositionA.y,
 						0x20F,
 						GAME_COMMAND_BUY_LAND_RIGHTS,
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_X, sint16),
-						RCT2_GLOBAL(RCT2_ADDRESS_MAP_SELECTION_B_Y, sint16)
+						gMapSelectPositionB.x,
+						gMapSelectPositionB.y
 						);
 				}
 			}
@@ -1486,7 +1487,7 @@ static void window_park_price_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_park_price_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	y = w->y + window_park_price_widgets[WIDX_PAGE_BACKGROUND].top + 30;
 
-	gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, (void*)RCT2_ADDRESS_INCOME_FROM_ADMISSIONS, 0, x, y);
+	gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, 0, x, y);
 }
 
 #pragma endregion
@@ -1605,7 +1606,7 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw number of guests in park
 	gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, 0, x, y);
 	y += 10;
-	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, (void*)RCT2_ADDRESS_TOTAL_ADMISSIONS, 0, x, y);
+	gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, 0, x, y);
 }
 
 #pragma endregion

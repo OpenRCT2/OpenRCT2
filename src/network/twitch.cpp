@@ -511,7 +511,6 @@ namespace Twitch
      */
     static char * strchrm(const char * str, const char * find)
     {
-        const char * result = nullptr;
         do
         {
             const char * fch = find;

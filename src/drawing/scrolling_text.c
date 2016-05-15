@@ -21,7 +21,7 @@
 #include "drawing.h"
 
 /* size: 0xA12 */
-typedef struct {
+typedef struct rct_draw_scroll_text {
 	rct_string_id string_id;	// 0x00
 	uint32 string_args_0;		// 0x02
 	uint32 string_args_1;		// 0x06

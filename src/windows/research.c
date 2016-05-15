@@ -266,7 +266,7 @@ static void window_research_development_mouseup(rct_window *w, int widgetIndex)
 		window_research_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_LAST_DEVELOPMENT_BUTTON:
-		news_item_open_subject(NEWS_ITEM_RESEARCH, RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, sint32));
+		news_item_open_subject(NEWS_ITEM_RESEARCH, (int)gResearchLastItemSubject);
 		break;
 	}
 }
@@ -299,7 +299,7 @@ static void window_research_development_invalidate(rct_window *w)
 	window_research_set_pressed_tab(w);
 
 	window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-	uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
+	uint32 typeId = gResearchLastItemSubject;
 	if (typeId != 0xFFFFFFFF) {
 		window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
 		window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? 5189 : 5191;
@@ -380,7 +380,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 	x = w->x + 10;
 	y = w->y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
-	uint32 typeId = RCT2_GLOBAL(RCT2_ADDRESS_LAST_RESEARCHED_ITEM_SUBJECT, uint32);
+	uint32 typeId = gResearchLastItemSubject;
 	int lastDevelopmentFormat;
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
@@ -521,7 +521,6 @@ static void window_research_funding_invalidate(rct_window *w)
 
 	// Checkboxes
 	uint8 activeResearchTypes = gResearchPriorities;
-	int uncompletedResearchTypes = gResearchUncompletedCategories;
 	for (int i = 0; i < 7; i++) {
 		int mask = 1 << i;
 		int widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);

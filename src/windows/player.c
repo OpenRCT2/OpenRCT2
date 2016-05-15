@@ -200,7 +200,6 @@ void window_player_open(uint8 id)
 {
 	rct_window* window;
 
-	int player = network_get_player_index(id);
 	window = window_bring_to_front_by_number(WC_PLAYER, id);
 	if (window == NULL) {
 		window = window_create_auto_pos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
