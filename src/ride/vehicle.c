@@ -7550,7 +7550,7 @@ loc_6DC743:
 
 	for (;;) {
 		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
-		if (moveInfo->x != (uint16)0x8000) {
+		if (moveInfo->x != (sint16)0x8000) {
 			break;
 		}
 		switch (moveInfo->y) {
