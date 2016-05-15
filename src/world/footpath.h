@@ -27,13 +27,13 @@ enum {
 	PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
-typedef struct rct_path_type {
+typedef struct rct_footpath_entry {
 	rct_string_id string_idx;	// 0x00
 	uint32 image;				// 0x02
 	uint32 bridge_image;		// 0x06
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
-} rct_path_type;
+} rct_footpath_entry;
 
 enum {
 	FOOTPATH_SEARCH_SUCCESS,
@@ -42,7 +42,7 @@ enum {
 	FOOTPATH_SEARCH_TOO_COMPLEX
 };
 
-#define gFootpathEntries ((rct_path_type**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
+#define gFootpathEntries ((rct_footpath_entry**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
 
 extern uint8 gFootpathProvisionalFlags;
 extern rct_xyz16 gFootpathProvisionalPosition;
@@ -90,6 +90,6 @@ bool footpath_element_path_scenery_is_ghost(rct_map_element *mapElement);
 void footpath_scenery_set_is_ghost(rct_map_element *mapElement, bool isGhost);
 void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
 
-rct_path_type *get_footpath_entry(int entryIndex);
+rct_footpath_entry *get_footpath_entry(int entryIndex);
 
 #endif

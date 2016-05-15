@@ -186,7 +186,7 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 		RCT2_GLOBAL(0x009E32BC, uint32) = ghost_id;
 	}
 
-	rct_path_type* path_entry = get_footpath_entry(map_element->properties.entrance.path_type);
+	rct_footpath_entry* path_entry = get_footpath_entry(map_element->properties.entrance.path_type);
 
 	// Index to which part of the entrance
 	// Middle, left, right

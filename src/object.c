@@ -1211,7 +1211,7 @@ static const object_type_vtable object_type_banner_vtable[] = {
 
 static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 {
-	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	rct_footpath_entry *pathEntry = (rct_footpath_entry*)objectEntry;
 	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + (size_t)0x0E);
 
 	pathEntry->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATHS, entryIndex, 0);
@@ -1227,8 +1227,8 @@ static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 	gFootpathSelectedId = 0;
 	// Set the default path for when opening footpath window
 	for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++) {
-		rct_path_type *pathEntry2 = (rct_path_type*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
-		if (pathEntry2 == (rct_path_type*)-1) {
+		rct_footpath_entry *pathEntry2 = (rct_footpath_entry*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
+		if (pathEntry2 == (rct_footpath_entry*)-1) {
 			continue;
 		}
 		if (!(pathEntry2->flags & 4)) {
@@ -1243,7 +1243,7 @@ static bool object_type_path_load(void *objectEntry, uint32 entryIndex)
 
 static void object_type_path_unload(void *objectEntry)
 {
-	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	rct_footpath_entry *pathEntry = (rct_footpath_entry*)objectEntry;
 	pathEntry->string_idx = 0;
 	pathEntry->image = 0;
 	pathEntry->bridge_image = 0;
@@ -1251,14 +1251,14 @@ static void object_type_path_unload(void *objectEntry)
 
 static bool object_type_path_test(void *objectEntry)
 {
-	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	rct_footpath_entry *pathEntry = (rct_footpath_entry*)objectEntry;
 	if (pathEntry->var_0A >= 2) return false;
 	return true;
 }
 
 static void object_type_path_paint(void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y)
 {
-	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
+	rct_footpath_entry *pathEntry = (rct_footpath_entry*)objectEntry;
 	gfx_draw_sprite(dpi, pathEntry->image + 71, x - 49, y - 17, 0);
 	gfx_draw_sprite(dpi, pathEntry->image + 72, x + 4, y - 17, 0);
 }

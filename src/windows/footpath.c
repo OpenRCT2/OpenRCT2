@@ -167,7 +167,7 @@ void window_footpath_open()
 {
 	rct_window* window;
 	sint16 pathId;
-	rct_path_type *pathType;
+	rct_footpath_entry *pathType;
 
 	// Check if window is already open
 	window = window_bring_to_front_by_class(WC_FOOTPATH);
@@ -326,7 +326,7 @@ static void window_footpath_mousedown(int widgetIndex, rct_window*w, rct_widget*
 static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	int i, j, pathId;
-	rct_path_type *pathType;
+	rct_footpath_entry *pathType;
 
 	if (widgetIndex == WIDX_FOOTPATH_TYPE)
 		gFootpathSelectedType = SELECTED_PATH_TYPE_NORMAL;
@@ -347,7 +347,7 @@ static void window_footpath_dropdown(rct_window *w, int widgetIndex, int dropdow
 		j = 0;
 		for (i = 0; i < 16; i++) {
 			pathType = get_footpath_entry(i);
-			if (pathType == (rct_path_type*)-1)
+			if (pathType == (rct_footpath_entry*)-1)
 				continue;
 			if (pathType->flags & flags)
 				continue;
@@ -498,7 +498,7 @@ static void window_footpath_update(rct_window *w)
 static void window_footpath_invalidate(rct_window *w)
 {
 	int selectedPath;
-	rct_path_type *pathType;
+	rct_footpath_entry *pathType;
 
 	colour_scheme_update(w);
 
@@ -541,7 +541,7 @@ static void window_footpath_invalidate(rct_window *w)
 static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	int x, y, image, selectedPath;
-	rct_path_type *pathType;
+	rct_footpath_entry *pathType;
 
 	window_draw_widgets(w, dpi);
 
@@ -586,7 +586,7 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, int showQueues)
 {
 	int i, flags, numPathTypes, image;
-	rct_path_type *pathType;
+	rct_footpath_entry *pathType;
 
 	numPathTypes = 0;
 	flags = 4;
@@ -596,7 +596,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget
 
 	for (i = 0; i < 16; i++) {
 		pathType = get_footpath_entry(i);
-		if (pathType == (rct_path_type*)-1)
+		if (pathType == (rct_footpath_entry*)-1)
 			continue;
 		if (pathType->flags & flags)
 			continue;

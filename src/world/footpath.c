@@ -2023,7 +2023,7 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 		mapElement->properties.path.edges = 0;
 }
 
-rct_path_type *get_footpath_entry(int entryIndex)
+rct_footpath_entry *get_footpath_entry(int entryIndex)
 {
 	return gFootpathEntries[entryIndex];
 }
