@@ -175,6 +175,29 @@ enum {
 #define window_scenery_secondary_colour RCT2_GLOBAL(0x00F64F07, uint8)
 #define window_scenery_tertiary_colour RCT2_GLOBAL(0x00F64F08, uint8)
 
+extern rct_map_element *gSceneryMapElement;
+extern uint8 gSceneryMapElementType; 
+
+extern money32 gSceneryPlaceCost;
+extern sint16 gSceneryPlaceObject;
+extern sint16 gSceneryPlaceZ;
+extern uint8 gSceneryPlacePathType;
+extern uint8 gSceneryPlacePathSlope;
+extern uint8 gSceneryPlaceRotation;
+
+extern uint8 gSceneryGhostType;
+extern rct_xyz16 gSceneryGhostPosition;
+extern uint32 gSceneryGhostPathObjectType;
+extern uint8 gSceneryGhostWallRotation;
+
+extern sint16 gSceneryShiftPressed;
+extern sint16 gSceneryShiftPressX;
+extern sint16 gSceneryShiftPressY;
+extern sint16 gSceneryShiftPressZOffset;
+
+extern sint16 gSceneryCtrlPressed;
+extern sint16 gSceneryCtrlPressZ;
+
 extern sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
 
 void init_scenery();

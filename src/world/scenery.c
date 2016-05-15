@@ -26,6 +26,29 @@
 #include "scenery.h"
 #include "footpath.h"
 
+rct_map_element *gSceneryMapElement;
+uint8 gSceneryMapElementType; 
+
+money32 gSceneryPlaceCost;
+sint16 gSceneryPlaceObject;
+sint16 gSceneryPlaceZ;
+uint8 gSceneryPlacePathType;
+uint8 gSceneryPlacePathSlope;
+uint8 gSceneryPlaceRotation;
+
+uint8 gSceneryGhostType;
+rct_xyz16 gSceneryGhostPosition;
+uint32 gSceneryGhostPathObjectType;
+uint8 gSceneryGhostWallRotation;
+
+sint16 gSceneryShiftPressed;
+sint16 gSceneryShiftPressX;
+sint16 gSceneryShiftPressY;
+sint16 gSceneryShiftPressZOffset;
+
+sint16 gSceneryCtrlPressed;
+sint16 gSceneryCtrlPressZ;
+
 void scenery_increase_age(int x, int y, rct_map_element *mapElement);
 
 void scenery_update_tile(int x, int y)
@@ -114,24 +137,24 @@ void scenery_increase_age(int x, int y, rct_map_element *mapElement)
 void scenery_remove_ghost_tool_placement(){
 	sint16 x, y, z;
 
-	x = RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16);
-	y = RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16);
-	z = RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8);
+	x = gSceneryGhostPosition.x;
+	y = gSceneryGhostPosition.y;
+	z = gSceneryGhostPosition.z;
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 0)){
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 0);
+	if (gSceneryGhostType & (1 << 0)){
+		gSceneryGhostType &= ~(1 << 0);
 		game_do_command(
 			x,
-			105 | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) << 8),
+			105 | (gSceneryMapElementType << 8),
 			y,
-			z | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint8) << 8),
+			z | (gSceneryPlaceObject << 8),
 			GAME_COMMAND_REMOVE_SCENERY,
 			0,
 			0);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 1)){
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 1);
+	if (gSceneryGhostType & (1 << 1)){
+		gSceneryGhostType &= ~(1 << 1);
 		rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
 
 		do{
@@ -143,33 +166,33 @@ void scenery_remove_ghost_tool_placement(){
 
 			game_do_command(
 				x,
-				233 | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TARGET_PATH_INCLINE, uint8) << 8),
+				233 | (gSceneryPlacePathSlope << 8),
 				y,
-				z | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TARGET_PATH_TYPE, uint8) << 8),
+				z | (gSceneryPlacePathType << 8),
 				GAME_COMMAND_PLACE_PATH,
-				RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_PATH_OBJECT_TYPE, uint32) & 0xFFFF0000,
+				gSceneryGhostPathObjectType & 0xFFFF0000,
 				0);
 			break;
 		} while (!map_element_is_last_for_tile(map_element++));
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 2)){
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 2);
+	if (gSceneryGhostType & (1 << 2)){
+		gSceneryGhostType &= ~(1 << 2);
 		game_do_command(
 			x,
-			105 | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) << 8),
+			105 | (gSceneryMapElementType << 8),
 			y,
-			RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) |(z << 8),
+			gSceneryGhostWallRotation |(z << 8),
 			GAME_COMMAND_REMOVE_FENCE,
 			0,
 			0);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 3)){
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 3);
+	if (gSceneryGhostType & (1 << 3)){
+		gSceneryGhostType &= ~(1 << 3);
 		game_do_command(
 			x,
-			105 | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) << 8),
+			105 | (gSceneryPlaceRotation << 8),
 			y,
 			z,
 			GAME_COMMAND_REMOVE_LARGE_SCENERY,
@@ -177,13 +200,13 @@ void scenery_remove_ghost_tool_placement(){
 			0);
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 4)){
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) &= ~(1 << 4);
+	if (gSceneryGhostType & (1 << 4)){
+		gSceneryGhostType &= ~(1 << 4);
 		game_do_command(
 			x,
 			105,
 			y,
-			z | (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) << 8),
+			z | (gSceneryPlaceRotation << 8),
 			GAME_COMMAND_REMOVE_BANNER,
 			0,
 			0);

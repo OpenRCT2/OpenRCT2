@@ -3045,7 +3045,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 								int collisionQuadrants = (bl & 0xf);
 								rct_map_element* new_map_element = map_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
 								assert(new_map_element != NULL);
-								RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*) = new_map_element;
+								gSceneryMapElement = new_map_element;
 								uint8 type = quadrant << 6;
 								type |= MAP_ELEMENT_TYPE_SCENERY;
 								type |= rotation;
@@ -3510,7 +3510,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 			map_element->flags |= MAP_ELEMENT_FLAG_GHOST;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*) = map_element;
+		gSceneryMapElement = map_element;
 		map_invalidate_tile_zoom1(position.x, position.y, map_element->base_height * 8, map_element->base_height * 8 + 72);
 	}
 
@@ -3754,7 +3754,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 			}
 
 			if (tile_num == 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*) = new_map_element;
+				gSceneryMapElement = new_map_element;
 			}
 			map_invalidate_tile_full(curTile.x, curTile.y);
 		}

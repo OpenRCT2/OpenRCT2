@@ -1027,10 +1027,10 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 	}
 
 	if (type == 0 && !gCheatsDisableSupportLimits) {
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
+		gSceneryCtrlPressed = false;
+		gSceneryShiftPressed = false;
 	} else {
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0) {
+		if (!gSceneryCtrlPressed) {
 			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
 				// CTRL pressed
 				rct_map_element* map_element;
@@ -1045,37 +1045,36 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				get_map_coordinates_from_pos(x, y, flags, NULL, NULL, &interaction_type, &map_element, NULL);
 
 				if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
-					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 1;
-					RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, uint16) = map_element->base_height * 8;
+					gSceneryCtrlPressed = true;
+					gSceneryPlaceZ = map_element->base_height * 8;
 				}
 			}
 		} else {
 			if (!(gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z)) {
 				// CTRL not pressed
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) = 0;
+				gSceneryCtrlPressed = false;
 			}
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) == 0){
+		if (!gSceneryShiftPressed) {
 			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
 				// SHIFT pressed
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 1;
-				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, uint16) = x;
-				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, uint16) = y;
-				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, uint16) = 0;
+				gSceneryShiftPressed = true;
+				gSceneryShiftPressX = x;
+				gSceneryShiftPressY = y;
+				gSceneryShiftPressZOffset = 0;
 			}
 		}
 		else{
 			if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z) {
 				// SHIFT pressed
-				RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16) =
-					(RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16) - y + 4) & 0xFFF8;
+				gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4) & 0xFFF8;
 
-				x = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_X_COORDINATE, sint16);
-				y = RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Y_COORDINATE, sint16);
+				x = gSceneryShiftPressX;
+				y = gSceneryShiftPressY;
 			} else {
 				// SHIFT not pressed
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) = 0;
+				gSceneryShiftPressed = false;
 			}
 		}
 	}
@@ -1089,16 +1088,16 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			uint8 cl = 0;
 
 			// If CTRL not pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+			if (!gSceneryCtrlPressed) {
 				screen_get_map_xy_quadrant(x, y, grid_x, grid_y, &cl);
 
 				if (*grid_x == (sint16)0x8000)
 					return;
 
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+				gSceneryPlaceZ = 0;
 
 				// If SHIFT pressed
-				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+				if (gSceneryShiftPressed) {
 
 					rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
@@ -1108,30 +1107,30 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 					}
 
 					sint16 z = (map_element->base_height * 8) & 0xFFF0;
-					z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+					z += gSceneryShiftPressZOffset;
 
 					if (z < 16){
 						z = 16;
 					}
 
-					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+					gSceneryPlaceZ = z;
 				}
 			}
 			else{
-				sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+				sint16 z = gSceneryPlaceZ;
 
 				screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
 
 				// If SHIFT pressed
-				if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
-					z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+				if (gSceneryShiftPressed) {
+					z += gSceneryShiftPressZOffset;
 				}
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+				gSceneryPlaceZ = z;
 			}
 
 			if (*grid_x == (sint16)0x8000)
@@ -1154,7 +1153,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		}
 
 		// If CTRL not pressed
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+		if (!gSceneryCtrlPressed) {
 			uint16 flags =
 				VIEWPORT_INTERACTION_MASK_TERRAIN &
 				VIEWPORT_INTERACTION_MASK_WATER;
@@ -1169,14 +1168,14 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				return;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+			gSceneryPlaceZ = 0;
 			uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
 			if (water_height != 0){
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = water_height * 16;
+				gSceneryPlaceZ = water_height * 16;
 			}
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			if (gSceneryShiftPressed) {
 				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
 				if (map_element == NULL){
@@ -1185,29 +1184,29 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				}
 
 				sint16 z = (map_element->base_height * 8) & 0xFFF0;
-				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+				z += gSceneryShiftPressZOffset;
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+				gSceneryPlaceZ = z;
 			}
 		}
 		else{
-			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+			sint16 z = gSceneryPlaceZ;
 			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
-				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+			if (gSceneryShiftPressed) {
+				z += gSceneryShiftPressZOffset;
 			}
 
 			if (z < 16){
 				z = 16;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+			gSceneryPlaceZ = z;
 		}
 
 		if (*grid_x == (sint16)0x8000)
@@ -1261,16 +1260,16 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		// Walls
 		uint8 cl;
 		// If CTRL not pressed
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+		if (!gSceneryCtrlPressed) {
 			screen_get_map_xy_side(x, y, grid_x, grid_y, &cl);
 
 			if (*grid_x == (sint16)0x8000)
 				return;
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+			gSceneryPlaceZ = 0;
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			if (gSceneryShiftPressed) {
 				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
 				if (map_element == NULL){
@@ -1279,29 +1278,29 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				}
 
 				sint16 z = (map_element->base_height * 8) & 0xFFF0;
-				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+				z += gSceneryShiftPressZOffset;
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+				gSceneryPlaceZ = z;
 			}
 		}
 		else{
-			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+			sint16 z = gSceneryPlaceZ;
 			screen_get_map_xy_side_with_z(x, y, z, grid_x, grid_y, &cl);
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
-				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+			if (gSceneryShiftPressed) {
+				z += gSceneryShiftPressZOffset;
 			}
 
 			if (z < 16){
 				z = 16;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+			gSceneryPlaceZ = z;
 		}
 
 		if (*grid_x == (sint16)0x8000)
@@ -1320,16 +1319,16 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		// Large scenery
 
 		// If CTRL not pressed
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_CTRL_PRESSED, uint8) == 0){
+		if (!gSceneryCtrlPressed) {
 			sub_68A15E(x, y, grid_x, grid_y, NULL, NULL);
 
 			if (*grid_x == (sint16)0x8000)
 				return;
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = 0;
+			gSceneryPlaceZ = 0;
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+			if (gSceneryShiftPressed) {
 				rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
 				if (map_element == NULL){
@@ -1338,29 +1337,29 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				}
 
 				sint16 z = (map_element->base_height * 8) & 0xFFF0;
-				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+				z += gSceneryShiftPressZOffset;
 
 				if (z < 16){
 					z = 16;
 				}
 
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+				gSceneryPlaceZ = z;
 			}
 		}
 		else{
-			sint16 z = RCT2_GLOBAL(RCT2_ADDRESS_CTRL_PRESS_Z_COORDINATE, sint16);
+			sint16 z = gSceneryPlaceZ;
 			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
-			if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
-				z += RCT2_GLOBAL(RCT2_ADDRESS_SHIFT_PRESS_Z_VECTOR, sint16);
+			if (gSceneryShiftPressed) {
+				z += gSceneryShiftPressZOffset;
 			}
 
 			if (z < 16){
 				z = 16;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = z;
+			gSceneryPlaceZ = z;
 		}
 
 		if (*grid_x == (sint16)0x8000)
@@ -1462,7 +1461,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 		}
 		int successfulPlacements = 0;
 		for (int q = 0; q < quantity; q++) {
-			int zCoordinate = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+			int zCoordinate = gSceneryPlaceZ;
 			rct_scenery_entry* scenery = get_small_scenery_entry((parameter_1 >> 8) & 0xFF);
 
 			sint16 cur_grid_x = gridX;
@@ -1478,15 +1477,14 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 				cur_grid_y += ((util_rand() % 16) - 8) * 32;
 
 				if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
-					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16)++;
-					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16) &= 3;
+					gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
 				}
 			}
 
 			uint8 zAttemptRange = 1;
 			if (
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0
+				gSceneryPlaceZ != 0 &&
+				gSceneryShiftPressed
 			) {
 				zAttemptRange = 20;
 			}
@@ -1503,8 +1501,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 					cur_grid_y,
 					parameter_2,
 					GAME_COMMAND_PLACE_SCENERY,
-					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) | (parameter_3 & 0xFFFF0000),
-					RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16)
+					gSceneryPlaceRotation | (parameter_3 & 0xFFFF0000),
+					gSceneryPlaceZ
 				);
 				RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
@@ -1522,7 +1520,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 					break;
 				}
 
-				RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+				gSceneryPlaceZ += 8;
 			}
 
 			if (success) {
@@ -1532,7 +1530,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 					break;
 				}
 			}
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) = zCoordinate;
+			gSceneryPlaceZ = zCoordinate;
 		}
 
 		if (successfulPlacements > 0) {
@@ -1557,8 +1555,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	{
 		uint8 zAttemptRange = 1;
 		if (
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0
+			gSceneryPlaceZ != 0 &&
+			gSceneryShiftPressed
 		) {
 			zAttemptRange = 20;
 		}
@@ -1568,7 +1566,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 			gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
-			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16), RCT2_GLOBAL(0x00F64F15, uint16));
+			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_FENCE, gSceneryPlaceZ, RCT2_GLOBAL(0x00F64F15, uint16));
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 			if (cost != MONEY32_UNDEFINED){
@@ -1584,7 +1582,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 				break;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+			gSceneryPlaceZ += 8;
 		}
 
 		audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
@@ -1594,8 +1592,8 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	{
 		uint8 zAttemptRange = 1;
 		if (
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0
+			gSceneryPlaceZ != 0 &&
+			gSceneryShiftPressed
 		) {
 			zAttemptRange = 20;
 		}
@@ -1605,7 +1603,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 
 			RCT2_GLOBAL(0x009A8C29, uint8) |= 1;
 			gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
-			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+			int cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3, gSceneryPlaceZ);
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
 
 			if (cost != MONEY32_UNDEFINED){
@@ -1621,7 +1619,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 				break;
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+			gSceneryPlaceZ += 8;
 		}
 
 		audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
@@ -2122,19 +2120,19 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			parameter_2,
 			GAME_COMMAND_PLACE_SCENERY,
 			parameter_3,
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16));
+			gSceneryPlaceZ);
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint16) = (uint16)(parameter_3 & 0xFFFF);
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, sint16) = selected_tab;
+		gSceneryGhostPosition.x = map_tile.x;
+		gSceneryGhostPosition.y = map_tile.y;
+		gSceneryPlaceRotation = (uint16)(parameter_3 & 0xFF);
+		gSceneryPlaceObject = selected_tab;
 
-		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT_TYPE, uint8) = mapElement->type;
+		mapElement = gSceneryMapElement;
+		gSceneryGhostPosition.z = mapElement->base_height;
+		gSceneryMapElementType = mapElement->type;
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
 			//Set underground on
 			viewport_set_visibility(4);
@@ -2144,7 +2142,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			viewport_set_visibility(5);
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 0);
+		gSceneryGhostType |= (1 << 0);
 		break;
 	case 1:
 		// Path Bits
@@ -2167,14 +2165,14 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = (parameter_2 & 0xFF);
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TARGET_PATH_INCLINE, uint8) = ((parameter_1 >> 8) & 0xFF);
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TARGET_PATH_TYPE, uint8) = ((parameter_2 >> 8) & 0xFF);
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_PATH_OBJECT_TYPE, uint32) = parameter_3;
+		gSceneryGhostPosition.x = map_tile.x;
+		gSceneryGhostPosition.y = map_tile.y;
+		gSceneryGhostPosition.z = (parameter_2 & 0xFF);
+		gSceneryPlacePathSlope = ((parameter_1 >> 8) & 0xFF);
+		gSceneryPlacePathType = ((parameter_2 >> 8) & 0xFF);
+		gSceneryGhostPathObjectType = parameter_3;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 1);
+		gSceneryGhostType |= (1 << 1);
 		break;
 	case 2:
 		// Walls
@@ -2185,20 +2183,20 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			map_tile.y,
 			parameter_2,
 			GAME_COMMAND_PLACE_FENCE,
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, uint16),
+			gSceneryPlaceZ,
 			RCT2_GLOBAL(0x00F64F15, uint16));
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) = (parameter_2 & 0xFF);
+		gSceneryGhostPosition.x = map_tile.x;
+		gSceneryGhostPosition.y = map_tile.y;
+		gSceneryGhostWallRotation = (parameter_2 & 0xFF);
 
-		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
+		mapElement = gSceneryMapElement;
+		gSceneryGhostPosition.z = mapElement->base_height;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 2);
+		gSceneryGhostType |= (1 << 2);
 		break;
 	case 3:
 		// Large Scenery
@@ -2210,17 +2208,17 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			parameter_2,
 			GAME_COMMAND_PLACE_LARGE_SCENERY,
 			parameter_3,
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, uint16));
+			gSceneryPlaceZ);
 
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) = ((parameter_1 >> 8) & 0xFF);
+		gSceneryGhostPosition.x = map_tile.x;
+		gSceneryGhostPosition.y = map_tile.y;
+		gSceneryPlaceRotation = ((parameter_1 >> 8) & 0xFF);
 
-		mapElement = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_MAP_ELEMENT, rct_map_element*);
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = mapElement->base_height;
+		mapElement = gSceneryMapElement;
+		gSceneryGhostPosition.z = mapElement->base_height;
 
 		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
 			//Set underground on
@@ -2231,7 +2229,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 			viewport_set_visibility(5);
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 3);
+		gSceneryGhostType |= (1 << 3);
 		break;
 	case 4:
 		// Banners
@@ -2248,11 +2246,11 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		if (cost == MONEY32_UNDEFINED)
 			return cost;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) = map_tile.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) = map_tile.y;
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) = (parameter_2 & 0xFF) * 2 + 2;
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8) = ((parameter_2 >> 8) & 0xFF);
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) |= (1 << 4);
+		gSceneryGhostPosition.x = map_tile.x;
+		gSceneryGhostPosition.y = map_tile.y;
+		gSceneryGhostPosition.z = (parameter_2 & 0xFF) * 2 + 2;
+		gSceneryPlaceRotation = ((parameter_2 >> 8) & 0xFF);
+		gSceneryGhostType |= (1 << 4);
 		break;
 	}
 
@@ -2314,23 +2312,24 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 0)) &&
-			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
-			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
+		if ((gSceneryGhostType & (1 << 0)) &&
+			mapTile.x == gSceneryGhostPosition.x &&
+			mapTile.y == gSceneryGhostPosition.y &&
 			(parameter2 & 0xFF) == RCT2_GLOBAL(0x00F64F0E, uint8)&&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16) == selected_tab){
+			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			gSceneryPlaceObject == selected_tab){
 			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
 
 		RCT2_GLOBAL(0x00F64F0E, uint8) = (parameter2 & 0xFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
 
 		bl = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+		if (gSceneryPlaceZ != 0 &&
+			gSceneryShiftPressed
+		) {
 			bl = 20;
 		}
 
@@ -2344,10 +2343,10 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 			if (cost != MONEY32_UNDEFINED)
 				break;
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+			gSceneryPlaceZ += 8;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
+		gSceneryPlaceCost = cost;
 		break;
 	case 1:
 		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -2360,10 +2359,10 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 1)) &&
-			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
-			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8)){
+		if ((gSceneryGhostType & (1 << 1)) &&
+			mapTile.x == gSceneryGhostPosition.x &&
+			mapTile.y == gSceneryGhostPosition.y &&
+			(parameter2 & 0xFF) == gSceneryGhostPosition.z){
 			return;
 		}
 
@@ -2376,7 +2375,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			parameter3,
 			selected_tab);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
+		gSceneryPlaceCost = cost;
 		break;
 	case 2:
 		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -2389,23 +2388,24 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 2)) &&
-			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
-			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16)
+		if ((gSceneryGhostType & (1 << 2)) &&
+			mapTile.x == gSceneryGhostPosition.x &&
+			mapTile.y == gSceneryGhostPosition.y &&
+			(parameter2 & 0xFF) == gSceneryGhostWallRotation &&
+			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16)
 			){
 			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_WALL_ROTATION, uint8) = (parameter2 & 0xFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+		gSceneryGhostWallRotation = (parameter2 & 0xFF);
+		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
 
 		bl = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+		if (gSceneryPlaceZ != 0 &&
+			gSceneryShiftPressed
+		) {
 			bl = 20;
 		}
 
@@ -2420,10 +2420,10 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 			if (cost != MONEY32_UNDEFINED)
 				break;
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+			gSceneryPlaceZ += 8;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
+		gSceneryPlaceCost = cost;
 		break;
 	case 3:
 		scenery = get_large_scenery_entry(selected_scenery);
@@ -2450,22 +2450,22 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_map_selection_tiles();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 3)) &&
-			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
-			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) == RCT2_GLOBAL(0x00F64F0A, sint16) &&
-			(parameter3 & 0xFFFF) == RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16)){
+		if ((gSceneryGhostType & (1 << 3)) &&
+			mapTile.x == gSceneryGhostPosition.x &&
+			mapTile.y == gSceneryGhostPosition.y &&
+			gSceneryPlaceZ == RCT2_GLOBAL(0x00F64F0A, sint16) &&
+			(parameter3 & 0xFFFF) == gSceneryPlaceObject
+		) {
 			return;
 		}
 
 		scenery_remove_ghost_tool_placement();
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_SELECTED_OBJECT, uint16) = (parameter3 & 0xFFFF);
-		RCT2_GLOBAL(0x00F64F0A, sint16) = RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16);
+		gSceneryPlaceObject = (parameter3 & 0xFFFF);
+		RCT2_GLOBAL(0x00F64F0A, sint16) = gSceneryPlaceZ;
 
 		bl = 1;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) != 0 &&
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_TOOL_SHIFT_PRESSED, uint8) != 0){
+		if (gSceneryPlaceZ != 0 && gSceneryShiftPressed) {
 			bl = 20;
 		}
 
@@ -2480,10 +2480,10 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
 			if (cost != MONEY32_UNDEFINED)
 				break;
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_Z_COORDINATE, sint16) += 8;
+			gSceneryPlaceZ += 8;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
+		gSceneryPlaceCost = cost;
 		break;
 	case 4:
 		gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -2496,11 +2496,12 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 		map_invalidate_selection_rect();
 
 		// If no change in ghost placement
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_TYPE, uint8) & (1 << 4)) &&
-			mapTile.x == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_X, sint16) &&
-			mapTile.y == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Y, sint16) &&
-			(parameter2 & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_GHOST_SCENERY_Z, uint8) &&
-			((parameter2 >> 8) & 0xFF) == RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_ROTATION, uint8)){
+		if ((gSceneryGhostType & (1 << 4)) &&
+			mapTile.x == gSceneryGhostPosition.x &&
+			mapTile.y == gSceneryGhostPosition.y &&
+			(parameter2 & 0xFF) == gSceneryGhostPosition.z &&
+			((parameter2 >> 8) & 0xFF) == gSceneryPlaceRotation
+		) {
 			return;
 		}
 
@@ -2513,7 +2514,7 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 			parameter3,
 			selected_tab);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENERY_COST, money32) = cost;
+		gSceneryPlaceCost = cost;
 		break;
 	}
 }
