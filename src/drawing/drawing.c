@@ -124,14 +124,11 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
  */
 void gfx_clear(rct_drawpixelinfo *dpi, int colour)
 {
-	int y, w, h;
-	uint8* ptr;
+	int w = dpi->width >> dpi->zoom_level;
+	int h = dpi->height >> dpi->zoom_level;
+	uint8* ptr = dpi->bits;
 
-	w = dpi->width >> dpi->zoom_level;
-	h = dpi->height >> dpi->zoom_level;
-
-	ptr = dpi->bits;
-	for (y = 0; y < h; y++) {
+	for (int y = 0; y < h; y++) {
 		memset(ptr, colour, w);
 		ptr += w + dpi->pitch;
 	}
@@ -338,7 +335,6 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
  */
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 {
-	rct_window* w;
 	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 	rct_drawpixelinfo *windowDPI = &gWindowDPI;
 
@@ -349,7 +345,7 @@ void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 	windowDPI->height = bottom - top;
 	windowDPI->pitch = screenDPI->width + screenDPI->pitch + left - right;
 
-	for (w = g_window_list; w < gWindowNextSlot; w++) {
+	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
 		if (w->flags & WF_TRANSPARENT)
 			continue;
 		if (right <= w->x || bottom <= w->y)

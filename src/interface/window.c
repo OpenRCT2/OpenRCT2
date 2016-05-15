@@ -76,10 +76,8 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
 
 int window_get_widget_index(rct_window *w, rct_widget *widget)
 {
-	rct_widget *widget2;
-
 	int i = 0;
-	for (widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
+	for (rct_widget *widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
 		if (widget == widget2)
 			return i;
 	return -1;
@@ -87,15 +85,12 @@ int window_get_widget_index(rct_window *w, rct_widget *widget)
 
 int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
 {
-	int widgetIndex, scrollIndex;
-	rct_widget *widget;
-
 	if (w->widgets[targetWidgetIndex].type != WWT_SCROLL)
 		return -1;
 
-	scrollIndex = 0;
-	widgetIndex = 0;
-	for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
+	int scrollIndex = 0;
+	int widgetIndex = 0;
+	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
 		if (widgetIndex == targetWidgetIndex)
 			break;
 		if (widget->type == WWT_SCROLL)
@@ -107,14 +102,11 @@ int window_get_scroll_index(rct_window *w, int targetWidgetIndex)
 
 int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
 {
-	int scrollIndex;
-	rct_widget *widget2;
-
 	if (widget->type != WWT_SCROLL)
 		return -1;
 
-	scrollIndex = 0;
-	for (widget2 = w->widgets; widget2->type != WWT_LAST; widget2++) {
+	int scrollIndex = 0;
+	for (rct_widget *widget2 = w->widgets; widget2->type != WWT_LAST; widget2++) {
 		if (widget2 == widget)
 			break;
 		if (widget2->type == WWT_SCROLL)
@@ -126,9 +118,7 @@ int window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
 
 rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
 {
-	rct_widget *widget;
-
-	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
 		if (widget->type != WWT_SCROLL)
 			continue;
 
@@ -146,11 +136,9 @@ rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
  */
 void window_dispatch_update_all()
 {
-	rct_window *w;
-
 	RCT2_GLOBAL(0x01423604, sint32)++;
 	// gTooltipNotShownTicks++;
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		window_event_update_call(w);
 }
 
@@ -167,8 +155,6 @@ void window_update_all_viewports()
  */
 void window_update_all()
 {
-	rct_window* w;
-
 	RCT2_GLOBAL(0x009E3CD8, sint32)++;
 
 	gfx_draw_all_dirty_blocks();
@@ -179,12 +165,12 @@ void window_update_all()
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16);
 	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) >= 1000) {
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
-		for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+		for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 			window_event_unknown_07_call(w);
 	}
 
 	// Border flash invalidation
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
+	for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		if (w->flags & WF_WHITE_BORDER_MASK) {
 			w->flags -= WF_WHITE_BORDER_ONE;
 			if (!(w->flags & WF_WHITE_BORDER_MASK))
@@ -201,22 +187,18 @@ void window_update_all()
  */
 static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
 {
-	int widgetIndex, size;
-	rct_scroll *scroll;
-	rct_widget *widget;
-
-	scroll = &w->scrolls[scrollIndex];
-	widget = window_get_scroll_widget(w, scrollIndex);
-	widgetIndex = window_get_widget_index(w, widget);
+	rct_scroll *scroll = &w->scrolls[scrollIndex];
+	rct_widget *widget = window_get_scroll_widget(w, scrollIndex);
+	int widgetIndex = window_get_widget_index(w, widget);
 
 	if (scroll->flags & VSCROLLBAR_VISIBLE) {
-		size = widget->bottom - widget->top - 1;
+		int size = widget->bottom - widget->top - 1;
 		if (scroll->flags & HSCROLLBAR_VISIBLE)
 			size -= 11;
 		size = max(0, scroll->v_bottom - size);
 		scroll->v_top = min(max(0, scroll->v_top + wheel), size);
 	} else {
-		size = widget->right - widget->left - 1;
+		int size = widget->right - widget->left - 1;
 		if (scroll->flags & VSCROLLBAR_VISIBLE)
 			size -= 11;
 		size = max(0, scroll->h_right - size);
@@ -233,17 +215,13 @@ static void window_scroll_wheel_input(rct_window *w, int scrollIndex, int wheel)
  */
 static int window_wheel_input(rct_window *w, int wheel)
 {
-	int i;
-	rct_widget *widget;
-	rct_scroll *scroll;
-
-	i = 0;
-	for (widget = w->widgets; widget->type != WWT_LAST; widget++) {
+	int i = 0;
+	for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
 		if (widget->type != WWT_SCROLL)
 			continue;
 
 		// Originally always checked first scroll view, bug maybe?
-		scroll = &w->scrolls[i];
+		rct_scroll *scroll = &w->scrolls[i];
 		if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 			window_scroll_wheel_input(w, i, wheel);
 			return 1;
@@ -308,14 +286,9 @@ static bool window_other_wheel_input(rct_window *w, int widgetIndex, int wheel)
  */
 static void window_all_wheel_input()
 {
-	int raw, wheel, widgetIndex;
-	rct_window *w;
-	rct_widget *widget;
-	rct_scroll *scroll;
-
 	// Get wheel value
-	raw = gCursorState.wheel;
-	wheel = 0;
+	int raw = gCursorState.wheel;
+	int wheel = 0;
 	while (1) {
 		raw -= 120;
 		if (raw < 0)
@@ -337,7 +310,7 @@ static void window_all_wheel_input()
 
 	// Check window cursor is over
 	if (!(gInputFlags & INPUT_FLAG_5)) {
-		w = window_find_from_point(gCursorState.x, gCursorState.y);
+		rct_window *w = window_find_from_point(gCursorState.x, gCursorState.y);
 		if (w != NULL) {
 			// Check if main window
 			if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
@@ -346,11 +319,11 @@ static void window_all_wheel_input()
 			}
 
 			// Check scroll view, cursor is over
-			widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
+			int widgetIndex = window_find_widget_from_point(w, gCursorState.x, gCursorState.y);
 			if (widgetIndex != -1) {
-				widget = &w->widgets[widgetIndex];
+				rct_widget *widget = &w->widgets[widgetIndex];
 				if (widget->type == WWT_SCROLL) {
-					scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8)];
+					rct_scroll *scroll = &w->scrolls[RCT2_GLOBAL(0x01420075, uint8)];
 					if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
 						window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
 						return;
@@ -369,7 +342,7 @@ static void window_all_wheel_input()
 	}
 
 	// Check windows, front to back
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		if (window_wheel_input(w, wheel))
 			return;
 }
@@ -388,9 +361,9 @@ static void window_all_wheel_input()
  */
 rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	rct_window *w;
 	// Check if there are any window slots left
 	if (RCT2_NEW_WINDOW >= &(g_window_list[MAX_WINDOW_COUNT])) {
+		rct_window *w = NULL;
 		// Close least recently used window
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
@@ -399,7 +372,7 @@ rct_window *window_create(int x, int y, int width, int height, rct_window_event_
 		window_close(w);
 	}
 
-	w = RCT2_NEW_WINDOW;
+	rct_window *w = RCT2_NEW_WINDOW;
 
 	// Flags
 	if (flags & WF_STICK_TO_BACK) {
@@ -515,9 +488,7 @@ static bool sub_6EA934(int x, int y, int width, int height)
  */
 static bool sub_6EA95D(int x, int y, int width, int height)
 {
-	rct_window *w;
-
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
@@ -543,22 +514,19 @@ static bool sub_6EA95D(int x, int y, int width, int height)
  */
 rct_window *window_create_auto_pos(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
-	rct_window *w;
-	int x, y;
-
 	uint16 screenWidth = gScreenWidth;
 	uint16 screenHeight = gScreenHeight;
 
 	if (cls & 0x80) {
 		cls &= ~0x80;
-		w = window_find_by_number(RCT2_GLOBAL(0x0013CE928, rct_windowclass), RCT2_GLOBAL(0x0013CE92A, rct_windownumber));
+		rct_window *w = window_find_by_number(RCT2_GLOBAL(0x0013CE928, rct_windowclass), RCT2_GLOBAL(0x0013CE92A, rct_windownumber));
 		if (w != NULL) {
 			if (w->x > -60 && w->x < gScreenWidth - 20) {
 				if (w->y < gScreenHeight - 20) {
-					x = w->x;
+					int x = w->x;
 					if (w->x + width > gScreenWidth)
 						x = gScreenWidth - 20 - width;
-					y = w->y;
+					int y = w->y;
 					return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
 				}
 			}
@@ -566,8 +534,8 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	}
 
 	// Place window in an empty corner of the screen
-	x = 0;
-	y = 30;
+	int x = 0;
+	int y = 30;
 	if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 	x = screenWidth - width;
@@ -583,12 +551,12 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 	// Place window next to another
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		x = w->x + w->width + 2;
-		y = w->y;
+		int x = w->x + w->width + 2;
+		int y = w->y;
 		if (sub_6EA934(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -621,12 +589,12 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	}
 
 	// Overlap
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (w->flags & WF_STICK_TO_BACK)
 			continue;
 
-		x = w->x + w->width + 2;
-		y = w->y;
+		int x = w->x + w->width + 2;
+		int y = w->y;
 		if (sub_6EA8EC(x, y, width, height)) goto foundSpace;
 
 		x = w->x - w->width - 2;
@@ -645,7 +613,7 @@ rct_window *window_create_auto_pos(int width, int height, rct_window_event_list 
 	// Cascade
 	x = 0;
 	y = 30;
-	for (w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_LAST_WINDOW; w++) {
 		if (x != w->x || y != w->y)
 			continue;
 
@@ -721,9 +689,7 @@ void window_close(rct_window* window)
  */
 void window_close_by_class(rct_windowclass cls)
 {
-	rct_window *w;
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 		if (w->classification == cls) {
 			window_close(w);
 			w = g_window_list - 1;
@@ -739,9 +705,7 @@ void window_close_by_class(rct_windowclass cls)
  */
 void window_close_by_number(rct_windowclass cls, rct_windownumber number)
 {
-	rct_window* w;
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+	for (rct_window* w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
 		if (w->classification == cls && w->number == number) {
 			window_close(w);
 			w = g_window_list - 1;
@@ -757,9 +721,7 @@ void window_close_by_number(rct_windowclass cls, rct_windownumber number)
  */
 rct_window *window_find_by_class(rct_windowclass cls)
 {
-	rct_window *w;
-
-	for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
+	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
 		if (w->classification == cls)
 			return w;
 
