@@ -514,27 +514,27 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Draw column headers
 	rct_widget *widget;
 	if ((widget= &w->widgets[WIDX_COLUMN_TYPE])->type != WWT_EMPTY) {
-		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, gCommonFormatArgs, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 	if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY)
 	{
-		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 	if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WWT_EMPTY)
 	{
-		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 	if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WWT_EMPTY)
 	{
-		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, gCommonFormatArgs, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 	if ((widget = &w->widgets[WIDX_COLUMN_BROKENFLAG])->type != WWT_EMPTY)
 	{
-		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_BROKEN_SHORT, gCommonFormatArgs, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 	if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WWT_EMPTY)
 	{
-		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
+		gfx_draw_string_left_clipped(dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, gCommonFormatArgs, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 
 	// Draw coordinates

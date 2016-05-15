@@ -1070,11 +1070,10 @@ static void window_editor_object_selection_tooltip(rct_window* w, int widgetInde
 	case WIDX_TAB_9:
 	case WIDX_TAB_10:
 	case WIDX_TAB_11:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) =
-			STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + (widgetIndex - WIDX_TAB_1);
+		set_format_arg(0, rct_string_id, STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + (widgetIndex - WIDX_TAB_1));
 		break;
 	default:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = STR_LIST;
+		set_format_arg(0, rct_string_id, STR_LIST);
 		break;
 	}
 }
@@ -1118,7 +1117,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
 		w->pressed_widgets &= ~(1 << WIDX_ADVANCED);
 
 	// Set window title and buttons
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + w->selected_tab;
+	set_format_arg(0, rct_string_id, STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + w->selected_tab);
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		w->widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
 		w->widgets[WIDX_INSTALL_TRACK].type = WWT_DROPDOWN_BUTTON;
@@ -1293,9 +1292,9 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 			totalSelectable = 4;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = numSelected;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = totalSelectable;
-		gfx_draw_string_left(dpi, 3164, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		set_format_arg(0, uint16, numSelected);
+		set_format_arg(2, uint16, totalSelectable);
+		gfx_draw_string_left(dpi, 3164, gCommonFormatArgs, 0, x, y);
 	}
 
 	rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
@@ -1309,11 +1308,11 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		0x30
 		);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&_filter_string;
+	set_format_arg(0, uint32, (uint32)&_filter_string);
 	gfx_draw_string_left_clipped(
 		dpi,
 		1170,
-		(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+		gCommonFormatArgs,
 		w->colours[1],
 		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left + 1,
 		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
@@ -1879,9 +1878,8 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		}
 
 		if (bh != 0 && !(flags&(1 << 1))){
-			uint32* arguments = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32);
 			object_create_identifier_name((char*)0x009BC95A, installedObject);
-			*arguments = (uint32)0x009BC95A;
+			set_format_arg(0, uint32, 0x009BC95A);
 			set_object_selection_error(bh, 3172);
 			return 0;
 		}

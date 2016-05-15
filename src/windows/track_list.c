@@ -308,7 +308,7 @@ static void window_track_list_scrollmouseover(rct_window *w, int scrollIndex, in
  */
 static void window_track_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 static void window_track_list_update(rct_window *w)
@@ -337,7 +337,7 @@ static void window_track_list_invalidate(rct_window *w)
 	if (!(entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(entry))
 		stringId = _window_track_list_item.type + 2;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
+	set_format_arg(0, uint16, stringId);
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		window_track_list_widgets[WIDX_TITLE].image = STR_TRACK_DESIGNS;
 		window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
@@ -475,9 +475,9 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		// Ride length
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 1345;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = td6->ride_length;
-		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, 214);
+		set_format_arg(0, uint16, 1345);
+		set_format_arg(2, uint16, td6->ride_length);
+		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 214);
 		y += 10;
 	}
 
@@ -531,9 +531,9 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (td6->space_required_x != 0xFF) {
 		// Space required
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = td6->space_required_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = td6->space_required_y;
-		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		set_format_arg(0, uint16, td6->space_required_x);
+		set_format_arg(2, uint16, td6->space_required_y);
+		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, 0, x, y);
 		y += 10;
 	}
 
@@ -591,9 +591,9 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			}
 
 			// Draw track name
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = STR_TRACK_LIST_NAME_FORMAT;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, utf8*) = _trackDesigns[i].name;
-			gfx_draw_string_left(dpi, stringId, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y - 1);
+			set_format_arg(0, rct_string_id, STR_TRACK_LIST_NAME_FORMAT);
+			set_format_arg(2, utf8*, _trackDesigns[i].name);
+			gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, 0, x, y - 1);
 		}
 		y += 10;
 	}

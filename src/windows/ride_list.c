@@ -424,7 +424,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, int scrollIndex, int
  */
 static void window_ride_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 /**
@@ -537,43 +537,43 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		switch (_window_ride_list_information_type) {
 		case INFORMATION_TYPE_STATUS:
 			ride_get_status(w->list_item_positions[i], &formatSecondary, &argument);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = argument;
+			set_format_arg(2, sint32, argument);
 			break;
 		case INFORMATION_TYPE_POPULARITY:
 			formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
 			if (ride->popularity != 255) {
 				formatSecondary = STR_POPULARITY_LABEL;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->popularity * 4;
+				set_format_arg(2, uint16, ride->popularity * 4);
 			}
 			break;
 		case INFORMATION_TYPE_SATISFACTION:
 			formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
 			if (ride->satisfaction != 255) {
 				formatSecondary = STR_SATISFACTION_LABEL;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->satisfaction * 5;
+				set_format_arg(2, uint16, ride->satisfaction * 5);
 			}
 			break;
 		case INFORMATION_TYPE_PROFIT:
 			formatSecondary = 0;
 			if (ride->profit != MONEY32_UNDEFINED) {
 				formatSecondary = STR_PROFIT_LABEL;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->profit;
+				set_format_arg(2, sint32, ride->profit);
 			}
 			break;
 		case INFORMATION_TYPE_TOTAL_CUSTOMERS:
 			formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->total_customers;
+			set_format_arg(2, uint32, ride->total_customers);
 			break;
 		case INFORMATION_TYPE_TOTAL_PROFIT:
 			formatSecondary = 0;
 			if (ride->total_profit != MONEY32_UNDEFINED) {
 				formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->total_profit;
+				set_format_arg(2, sint32, ride->total_profit);
 			}
 			break;
 		case INFORMATION_TYPE_CUSTOMERS:
 			formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride_customers_per_hour(ride);
+			set_format_arg(2, uint32, ride_customers_per_hour(ride));
 			break;
 		case INFORMATION_TYPE_AGE:;
 			sint16 age = date_get_year(gDateMonthsElapsed - ride->build_date);
@@ -582,52 +582,62 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 			case 1:  formatSecondary = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL; break;
 			default: formatSecondary = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL; break;
 			}
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint16) = age;
+			set_format_arg(2, sint16, age);
 			break;
 		case INFORMATION_TYPE_INCOME:
 			formatSecondary = 0;
 			if (ride->income_per_hour != MONEY32_UNDEFINED) {
 				formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->income_per_hour;
+				set_format_arg(2, sint32, ride->income_per_hour);
 			}
 			break;
 		case INFORMATION_TYPE_RUNNING_COST:
 			formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
 			if (ride->upkeep_cost != (money16)0xFFFF) {
 				formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, sint32) = ride->upkeep_cost * 16;
+				set_format_arg(2, sint32, ride->upkeep_cost * 16);
 			}
 			break;
 		case INFORMATION_TYPE_QUEUE_LENGTH:
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride_get_total_queue_length(ride);
+			set_format_arg(2, uint16, ride_get_total_queue_length(ride));
 			formatSecondary = STR_QUEUE_EMPTY;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) == 1)
-				formatSecondary = STR_QUEUE_ONE_PERSON;
-			else if (RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) > 1)
-				formatSecondary = STR_QUEUE_PEOPLE;
+			{
+				uint16 arg;
+				memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16));
+
+				if (arg == 1)
+					formatSecondary = STR_QUEUE_ONE_PERSON;
+				else if (arg > 1)
+					formatSecondary = STR_QUEUE_PEOPLE;
+			}
 			break;
 		case INFORMATION_TYPE_QUEUE_TIME:
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride_get_max_queue_time(ride);
+			set_format_arg(2, uint16, ride_get_max_queue_time(ride));
 			formatSecondary = STR_QUEUE_TIME_LABEL;
-			if (RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) > 1)
-				formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+			{
+				uint16 arg;
+				memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16));
+
+				if (arg > 1)
+					formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+			}
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->reliability >> 8;
+			set_format_arg(2, uint16, ride->reliability >> 8);
 			formatSecondary = STR_RELIABILITY_LABEL;
 			break;
 		case INFORMATION_TYPE_DOWN_TIME:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);
 
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->downtime;
+			set_format_arg(2, uint16, ride->downtime);
 			formatSecondary = STR_DOWN_TIME_LABEL;
 			break;
 		case INFORMATION_TYPE_GUESTS_FAVOURITE:
 			formatSecondary = 0;
 			if (RCT2_ADDRESS(0x0097C3AF, uint8)[ride->type] == PAGE_RIDES) {
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->guests_favourite;
+				set_format_arg(2, uint16, ride->guests_favourite);
 				formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
 			}
 			break;
@@ -637,8 +647,8 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		if (formatSecondary == STR_BROKEN_DOWN || formatSecondary == STR_CRASHED)
 			format = 1192;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = formatSecondary;
-		gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 160, y - 1, 157);
+		set_format_arg(0, uint16, formatSecondary);
+		gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 160, y - 1, 157);
 		y += 10;
 	}
 }
@@ -867,8 +877,8 @@ static void window_ride_list_close_all(rct_window *w)
 			continue;
 		if (ride->status == RIDE_STATUS_CLOSED)
 			continue;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = w->scrolls[0].v_top;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = w->scrolls[0].v_bottom;
+		set_format_arg(6, uint16, w->scrolls[0].v_top);
+		set_format_arg(8, uint32, w->scrolls[0].v_bottom);
 
 		ride_set_status(i, RIDE_STATUS_CLOSED);
 	}
@@ -884,8 +894,8 @@ static void window_ride_list_open_all(rct_window *w)
 			continue;
 		if (ride->status == RIDE_STATUS_OPEN)
 			continue;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = w->scrolls[0].v_top;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = w->scrolls[0].v_bottom;
+		set_format_arg(6, uint16, w->scrolls[0].v_top);
+		set_format_arg(8, uint32, w->scrolls[0].v_bottom);
 
 		ride_set_status(i, RIDE_STATUS_OPEN);
 	}

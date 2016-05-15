@@ -541,7 +541,7 @@ static void window_guest_list_scrollmouseover(rct_window *w, int scrollIndex, in
  */
 static void window_guest_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 /**
@@ -626,8 +626,8 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
 		x = w->x + 4;
 		y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, sint16) = w->var_492;
-		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		set_format_arg(0, sint16, w->var_492);
+		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), gCommonFormatArgs, 0, x, y);
 	}
 }
 
@@ -678,9 +678,9 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				}
 
 				// Guest name
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
-				gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1, 113);
+				set_format_arg(0, uint16, peep->name_string_idx);
+				set_format_arg(2, uint32, peep->id);
+				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 113);
 
 				switch (_window_guest_list_selected_view) {
 				case VIEW_ACTIONS:
@@ -695,9 +695,9 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 					get_arguments_from_action(peep, &argument_1, &argument_2);
 
-					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument_1;
-					RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument_2;
-					gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 133, y - 1, 314);
+					set_format_arg(0, uint32, argument_1);
+					set_format_arg(4, uint32, argument_2);
+					gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 133, y - 1, 314);
 					break;
 				case VIEW_THOUGHTS:
 					// For each thought
@@ -712,9 +712,9 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 						get_arguments_from_thought(peep->thoughts[j], &argument_1, &argument_2);
 
-						RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument_1;
-						RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument_2;
-						gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 118, y - 1, 329);
+						set_format_arg(0, uint32, argument_1);
+						set_format_arg(4, uint32, argument_2);
+						gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 118, y - 1, 329);
 						break;
 					}
 					break;
@@ -750,14 +750,14 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9, 0);
 
 				// Draw action
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = _window_guest_list_groups_argument_1[i];
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = _window_guest_list_groups_argument_2[i];
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 10, uint32) = numGuests;
-				gfx_draw_string_left_clipped(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, 0, y - 1, 414);
+				set_format_arg(0, uint32, _window_guest_list_groups_argument_1[i]);
+				set_format_arg(4, uint32, _window_guest_list_groups_argument_2[i]);
+				set_format_arg(10, uint32, numGuests);
+				gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 0, y - 1, 414);
 
 				// Draw guest count
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = STR_GUESTS_COUNT_COMMA_SEP;
-				gfx_draw_string_right(dpi, format, (void*)(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8), 0, 326, y - 1);
+				set_format_arg(8, uint16, STR_GUESTS_COUNT_COMMA_SEP);
+				gfx_draw_string_right(dpi, format, gCommonFormatArgs + 8, 0, 326, y - 1);
 			}
 			y += 21;
 		}
@@ -793,8 +793,8 @@ static int window_guest_list_is_peep_in_filter(rct_peep* peep)
  * Calculates a hash value (arguments) for comparing peep actions/thoughts
  *  rct2: 0x0069B7EA
  * peep (esi)
- * argument_1 (0x013CE952) (RCT2_ADDRESS_COMMON_FORMAT_ARGS)
- * argument_2 (0x013CE954) (RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2)
+ * argument_1 (0x013CE952) gCommonFormatArgs
+ * argument_2 (0x013CE954) gCommonFormatArgs + 2
  */
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2)
 {

@@ -736,7 +736,7 @@ static void window_title_editor_textinput(rct_window *w, int widgetIndex, char *
 
 void window_title_editor_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 void window_title_editor_invalidate(rct_window *w)
@@ -855,12 +855,12 @@ void window_title_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	switch (w->selected_tab) {
 	case WINDOW_TITLE_EDITOR_TAB_PRESETS:
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name;
+		set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].name);
 		gfx_draw_string_left(dpi, 5304, NULL, w->colours[1], w->x + 10, w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
 			1170,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			gCommonFormatArgs,
 			w->colours[1],
 			w->x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
 			w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top,
@@ -907,16 +907,16 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 				gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&title->saves[i];
+			set_format_arg(0, uint32, (uint32)&title->saves[i]);
 			if (selected || hover) {
-				format_string(buffer, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				format_string(buffer, 1170, gCommonFormatArgs);
 			}
 			else {
-				format_string(buffer + 1, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				format_string(buffer + 1, 1170, gCommonFormatArgs);
 				buffer[0] = FORMAT_BLACK;
 			}
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&buffer;
-			gfx_draw_string_left(dpi, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], x + 5, y);
+			set_format_arg(0, uint32, (uint32)&buffer);
+			gfx_draw_string_left(dpi, 1170, gCommonFormatArgs, w->colours[1], x + 5, y);
 		}
 	}
 	else if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SCRIPT) {
@@ -947,35 +947,35 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 					commandName = 5416;
 					error = true;
 				}
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&title->saves[command->saveIndex];
+				set_format_arg(0, uint32, (uint32)&title->saves[command->saveIndex]);
 				break;
 			case TITLE_SCRIPT_LOADMM:
 				commandName = 5414;
 				break;
 			case TITLE_SCRIPT_LOCATION:
 				commandName = 5418;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->x;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = command->y;
+				set_format_arg(0, uint16, command->x);
+				set_format_arg(2, uint16, command->y);
 				break;
 			case TITLE_SCRIPT_ROTATE:
 				commandName = 5420;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->rotations;
+				set_format_arg(0, uint16, command->rotations);
 				break;
 			case TITLE_SCRIPT_ZOOM:
 				commandName = 5422;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->zoom;
+				set_format_arg(0, uint16, command->zoom);
 				break;
 			case TITLE_SCRIPT_SPEED:
 				commandName = 5443;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = (uint16)(5142 + command->speed - 1);
+				set_format_arg(0, uint16, (uint16)(5142 + command->speed - 1));
 				break;
 			case TITLE_SCRIPT_WAIT:
 				commandName = 5424;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->seconds;
+				set_format_arg(0, uint16, command->seconds);
 				break;
 			case TITLE_SCRIPT_RESTART:
 				commandName = 5425;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = command->zoom;
+				set_format_arg(0, uint16, command->zoom);
 				break;
 			case TITLE_SCRIPT_END:
 				commandName = 5426;
@@ -985,14 +985,14 @@ void window_title_editor_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int 
 			}
 
 			if ((selected || hover) && !error) {
-				format_string(buffer, commandName, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				format_string(buffer, commandName, gCommonFormatArgs);
 			}
 			else {
-				format_string(buffer + 1, commandName, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				format_string(buffer + 1, commandName, gCommonFormatArgs);
 				buffer[0] = (error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
 			}
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&buffer;
-			gfx_draw_string_left(dpi, 1170, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, w->colours[1], x + 5, y);
+			set_format_arg(0, uint32, (uint32)&buffer);
+			gfx_draw_string_left(dpi, 1170, gCommonFormatArgs, w->colours[1], x + 5, y);
 		}
 	}
 }

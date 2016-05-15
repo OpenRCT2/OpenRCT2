@@ -405,7 +405,7 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		price += numTiles * 100;
 
 	if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, sint32) = price;
-		gfx_draw_string_centred(dpi, 986, x, y, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+		set_format_arg(0, sint32, price);
+		gfx_draw_string_centred(dpi, 986, x, y, 0, gCommonFormatArgs);
 	}
 }

@@ -336,8 +336,8 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
 		y += 15;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_UNKNOWN;
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		set_format_arg(0, uint16, STR_UNKNOWN);
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, 0, x, y);
 	} else {
 		// Research type
 		stringId = STR_RESEARCH_UNKNOWN;
@@ -364,16 +364,16 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 		y += 15;
 
 		// Expected
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_UNKNOWN;
+		set_format_arg(0, uint16, STR_UNKNOWN);
 		if (gResearchProgressStage != 0) {
 			uint16 expectedDay = gResearchExpectedDay;
 			if (expectedDay != 255) {
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 2289;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = STR_DATE_DAY_1 + expectedDay;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = STR_MONTH_MARCH + gResearchExpectedMonth;
+				set_format_arg(0, uint16, 2289);
+				set_format_arg(2, uint16, STR_DATE_DAY_1 + expectedDay);
+				set_format_arg(4, uint16, STR_MONTH_MARCH + gResearchExpectedMonth);
 			}
 		}
-		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, 0, x, y);
 	}
 
 	// Last development

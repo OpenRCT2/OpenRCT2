@@ -780,10 +780,10 @@ static void window_cheats_invalidate(rct_window *w)
 
 	switch (w->page) {
 	case WINDOW_CHEATS_PAGE_MONEY:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = 50000;
+		set_format_arg(0, int, 50000);
 		break;
 	case WINDOW_CHEATS_PAGE_GUESTS:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = 10000;
+		set_format_arg(0, int, 10000);
 		widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
 		widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
 		widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
@@ -798,7 +798,7 @@ static void window_cheats_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 255;
+		set_format_arg(0, uint16, 255);
 		widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
 		widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
 		widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
@@ -829,8 +829,8 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_cheats_draw_tab_images(dpi, w);
 
 	if (w->page == WINDOW_CHEATS_PAGE_MONEY){
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = CHEATS_MONEY_INCREMENT;
-		gfx_draw_string_left(dpi, STR_CHEAT_5K_MONEY_TIP,	(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
+		set_format_arg(0, money32, CHEATS_MONEY_INCREMENT);
+		gfx_draw_string_left(dpi, STR_CHEAT_5K_MONEY_TIP,	gCommonFormatArgs,	0, w->x + XPL(0) + TXTO, w->y + YPL(0) + TXTO);
 		gfx_draw_string_left(dpi, STR_CHEAT_CLEAR_LOAN_TIP,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){

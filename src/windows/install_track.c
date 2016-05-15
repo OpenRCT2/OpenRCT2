@@ -288,9 +288,9 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		// Ride length
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 1345;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = td6->ride_length;
-		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, 214);
+		set_format_arg(0, uint16, 1345);
+		set_format_arg(2, uint16, td6->ride_length);
+		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 214);
 		y += 10;
 	}
 
@@ -344,9 +344,9 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (td6->space_required_x != 0xFF) {
 		// Space required
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = td6->space_required_x;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = td6->space_required_y;
-		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		set_format_arg(0, uint16, td6->space_required_x);
+		set_format_arg(2, uint16, td6->space_required_y);
+		gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, 0, x, y);
 		y += 10;
 	}
 

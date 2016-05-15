@@ -366,12 +366,12 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		lineCh = buffer;
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
 		strcpy(lineCh, network_get_group_name(groupindex));
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = buffer;
+		set_format_arg(0, const char *, buffer);
 
 		gfx_draw_string_centred_clipped(
 			dpi,
 			STR_STRING,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			gCommonFormatArgs,
 			0,
 			w->x + (widget->left + widget->right - 11) / 2,
 			w->y + widget->top,
@@ -383,8 +383,8 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + 90;
 	int y = w->y + 24;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_PING;
-	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	set_format_arg(0, uint16, STR_PING);
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, gCommonFormatArgs, 0, x, y);
 	char ping[64];
 	sprintf(ping, "%d ms", network_get_player_ping(player));
 	gfx_draw_string(dpi, ping, w->colours[2], x + 30, y);
@@ -394,11 +394,11 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + w->height - 13;
 	int width = w->width - 8;
 	int lastaction = network_get_player_last_action(player, 0);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_ACTION_NA;
+	set_format_arg(0, uint16, STR_ACTION_NA);
 	if (lastaction != -999) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = network_get_action_name_string_id(lastaction);
+		set_format_arg(0, uint16, network_get_action_name_string_id(lastaction));
 	}
-	gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, 0, x, y, width);
 
 	if (w->viewport != NULL && w->var_492 != -1) {
 		window_draw_viewport(dpi, w);
@@ -530,13 +530,13 @@ void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4;
 	int y = w->y + window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = network_get_player_commands_ran(player);
-	gfx_draw_string_left(dpi, STR_COMMANDS_RAN, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
+	set_format_arg(0, uint32, network_get_player_commands_ran(player));
+	gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, 0,x, y);
 
 	y += 10;
 	
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = network_get_player_money_spent(player);
-	gfx_draw_string_left(dpi, STR_MONEY_SPENT, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
+	set_format_arg(0, uint32, network_get_player_money_spent(player));
+	gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, 0,x, y);
 }
 
 static void window_player_set_page(rct_window* w, int page)
@@ -649,8 +649,8 @@ static void window_player_update_title(rct_window* w)
 {
 	int player = network_get_player_index((uint8)w->number);
 	if (player != -1) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = network_get_player_name(player); // set title caption to player name
+		set_format_arg(0, const char *, network_get_player_name(player)); // set title caption to player name
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, const char *) = "";
+		set_format_arg(0, const char *, "");
 	}
 }

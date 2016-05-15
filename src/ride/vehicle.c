@@ -2529,19 +2529,17 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_11;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id)
-		= RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4] + 6;
+	set_format_arg(0, rct_string_id, RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4] + 6);
 
 	uint8 vehicleIndex = 0;
 	for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
 		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index) break;
 
 	vehicleIndex++;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = vehicleIndex;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, rct_string_id) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = ride->name_arguments;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 10, rct_string_id) =
-		RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4 + 2];
+	set_format_arg(2, uint16, vehicleIndex);
+	set_format_arg(4, rct_string_id, ride->name);
+	set_format_arg(6, uint32, ride->name_arguments);
+	set_format_arg(10, rct_string_id, RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4 + 2]);
 
 	news_item_add_to_queue(NEWS_ITEM_RIDE, 2218, vehicle->ride);
 }
@@ -4097,7 +4095,7 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 	}
 
 	rct_ride* ride = get_ride(vehicle->ride);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = numFatalities;
+	set_format_arg(0, uint16, numFatalities);
 
 	uint8 crashType = numFatalities == 0 ?
 		RIDE_CRASH_TYPE_NO_FATALITIES :
@@ -4107,8 +4105,8 @@ static void vehicle_kill_all_passengers(rct_vehicle* vehicle) {
 		ride->last_crash_type = crashType;
 
 	if (numFatalities != 0) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = ride->name_arguments;
+		set_format_arg(2, uint16, ride->name);
+		set_format_arg(4, uint32, ride->name_arguments);
 		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_X_PEOPLE_DIED_ON_X, vehicle->ride);
 
 		if (RCT2_GLOBAL(0x135882E, uint16) < 500) {

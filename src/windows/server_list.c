@@ -215,7 +215,7 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		int serverIndex = w->selected_list_item;
 		if (serverIndex >= 0 && serverIndex < _numServerEntries) {
 			if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0 && strcmp(_serverEntries[serverIndex].version, "") != 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void *) = _serverEntries[serverIndex].version;
+				set_format_arg(0, void *, _serverEntries[serverIndex].version);
 				window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
 				break;
 			}
@@ -251,7 +251,7 @@ static void window_server_list_dropdown(rct_window *w, int widgetIndex, int drop
 	switch (dropdownIndex) {
 	case DDIDX_JOIN:
 		if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0 && strcmp(_serverEntries[serverIndex].version, "") != 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void *) = _serverEntries[serverIndex].version;
+			set_format_arg(0, void *, _serverEntries[serverIndex].version);
 			window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
 			break;
 		}
@@ -375,7 +375,7 @@ static void window_server_list_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, char *) = gVersion;
+	set_format_arg(0, char *, gVersion);
 	window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 	window_server_list_widgets[WIDX_TITLE].right = w->width - 2;

@@ -1007,13 +1007,13 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	uint32 argument1, argument2;
 	rct_peep* peep = GET_PEEP(w->number);
 	get_arguments_from_action(peep, &argument1, &argument2);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument1;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument2;
+	set_format_arg(0, uint32, argument1);
+	set_format_arg(4, uint32, argument2);
 	rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
 	int x = (widget->left + widget->right) / 2 + w->x;
 	int y = w->y + widget->top - 1;
 	int width = widget->right - widget->left;
-	gfx_draw_string_centred_clipped(dpi, 1191, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, 1191, gCommonFormatArgs, 0, x, y, width);
 
 	// Draw the marquee thought
 	widget = &w->widgets[WIDX_MARQUEE];
@@ -1043,12 +1043,12 @@ void window_guest_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	get_arguments_from_thought(peep->thoughts[i], &argument1, &argument2);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument1;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument2;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = 0;
+	set_format_arg(0, uint32, argument1);
+	set_format_arg(4, uint32, argument2);
+	set_format_arg(8, uint16, 0);
 
 	x = widget->right - widget->left - w->list_information_type;
-	gfx_draw_string_left(&dpi_marquee, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, 0);
+	gfx_draw_string_left(&dpi_marquee, 1193, gCommonFormatArgs, 0, x, 0);
 }
 
 /**
@@ -1068,8 +1068,8 @@ void window_guest_overview_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS,uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2,uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	w->pressed_widgets &= ~(1<<WIDX_TRACK);
 	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
@@ -1367,8 +1367,8 @@ void window_guest_stats_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	window_guest_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1433,7 +1433,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	//Happiness
-	gfx_draw_string_left(dpi, 1662, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	gfx_draw_string_left(dpi, 1662, gCommonFormatArgs, 0, x, y);
 
 	int happiness = peep->happiness;
 	if (happiness < 10)happiness = 10;
@@ -1445,7 +1445,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Energy
 	y += 10;
-	gfx_draw_string_left(dpi, 1664, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	gfx_draw_string_left(dpi, 1664, gCommonFormatArgs, 0, x, y);
 
 	int energy = ((peep->energy - 32) * 85) / 32;
 	ebp = 14;
@@ -1457,7 +1457,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Hunger
 	y += 10;
-	gfx_draw_string_left(dpi, 1665, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	gfx_draw_string_left(dpi, 1665, gCommonFormatArgs, 0, x, y);
 
 	int hunger = peep->hunger;
 	if (hunger > 190) hunger = 190;
@@ -1476,7 +1476,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Thirst
 	y += 10;
-	gfx_draw_string_left(dpi, 1666, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	gfx_draw_string_left(dpi, 1666, gCommonFormatArgs, 0, x, y);
 
 	int thirst = peep->thirst;
 	if (thirst > 190) thirst = 190;
@@ -1495,7 +1495,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Nausea
 	y += 10;
-	gfx_draw_string_left(dpi, 1663, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	gfx_draw_string_left(dpi, 1663, gCommonFormatArgs, 0, x, y);
 
 	int nausea = peep->nausea - 32;
 
@@ -1511,7 +1511,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	//Bathroom
 	y += 10;
-	gfx_draw_string_left(dpi, 1667, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	gfx_draw_string_left(dpi, 1667, gCommonFormatArgs, 0, x, y);
 
 	int bathroom = peep->bathroom - 32;
 	if (bathroom > 210) bathroom = 210;
@@ -1533,8 +1533,8 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		int eax = gScenarioTicks;
 		eax -= peep->time_in_park;
 		eax >>= 11;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = eax & 0xFFFF;
-		gfx_draw_string_left(dpi, 1458, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		set_format_arg(0, uint16, eax & 0xFFFF);
+		gfx_draw_string_left(dpi, 1458, gCommonFormatArgs, 0, x, y);
 	}
 
 	y += 19;
@@ -1546,22 +1546,22 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Intensity
 	int intensity = peep->intensity / 16;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = intensity;
+	set_format_arg(0, uint16, intensity);
 	int string_id = 1658;
 	if (peep->intensity & 0xF){
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->intensity & 0xF;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = intensity;
+		set_format_arg(0, uint16, peep->intensity & 0xF);
+		set_format_arg(2, uint16, intensity);
 		string_id = 1659;
 		if (intensity == 15) string_id = 1660;
 	}
 
-	gfx_draw_string_left(dpi, string_id, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 4, y);
+	gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, 0, x + 4, y);
 
 	// Nausea tolerance
 	y += 10;
 	int nausea_tolerance = peep->nausea_tolerance & 0x3;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = nausea_tolerance + 2368;
-	gfx_draw_string_left(dpi, 1661, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	set_format_arg(0, uint16, nausea_tolerance + 2368);
+	gfx_draw_string_left(dpi, 1661, gCommonFormatArgs, 0, x, y);
 }
 
 /**
@@ -1616,7 +1616,7 @@ void window_guest_rides_update(rct_window *w)
  */
 void window_guest_rides_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 /**
@@ -1692,8 +1692,8 @@ void window_guest_rides_invalidate(rct_window *w)
 	w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
 	rct_peep* peep = GET_PEEP(w->number);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	window_guest_rides_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_rides_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1744,10 +1744,10 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		ride_string_arguments = ride->name_arguments;
 		ride_string_id = ride->name;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride_string_id;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride_string_arguments;
+	set_format_arg(0, uint16, ride_string_id);
+	set_format_arg(2, uint32, ride_string_arguments);
 
-	gfx_draw_string_left_clipped(dpi, 3093, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, w->width - 14);
+	gfx_draw_string_left_clipped(dpi, 3093, gCommonFormatArgs, 0, x, y, w->width - 14);
 }
 
 /**
@@ -1819,8 +1819,8 @@ void window_guest_finance_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	window_guest_finance_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_finance_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1858,63 +1858,63 @@ void window_guest_finance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
 	// Cash in pocket
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->cash_in_pocket;
-	gfx_draw_string_left(dpi, 1457, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	set_format_arg(0, money32, peep->cash_in_pocket);
+	gfx_draw_string_left(dpi, 1457, gCommonFormatArgs, 0, x, y);
 
 	// Cash spent
 	y += 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->cash_spent;
-	gfx_draw_string_left(dpi, 1456, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	set_format_arg(0, money32, peep->cash_spent);
+	gfx_draw_string_left(dpi, 1456, gCommonFormatArgs, 0, x, y);
 
 	y += 20;
 	gfx_fill_rect_inset(dpi, x, y - 6, x + 179, y - 5, w->colours[1], 32);
 
 	// Paid to enter
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_to_enter;
-	gfx_draw_string_left(dpi, 2296, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+	set_format_arg(0, money32, peep->paid_to_enter);
+	gfx_draw_string_left(dpi, 2296, gCommonFormatArgs, 0, x, y);
 
 	// Paid on rides
 	y += 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_rides;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_rides;
+	set_format_arg(0, money32, peep->paid_on_rides);
+	set_format_arg(4, uint16, peep->no_of_rides);
 	if (peep->no_of_rides != 1){
-		gfx_draw_string_left(dpi, 2298, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2298, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2297, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2297, gCommonFormatArgs, 0, x, y);
 	}
 
 	// Paid on food
 	y += 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_food;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_food;
+	set_format_arg(0, money32, peep->paid_on_food);
+	set_format_arg(4, uint16, peep->no_of_food);
 	if (peep->no_of_food != 1){
-		gfx_draw_string_left(dpi, 2300, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2300, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2299, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2299, gCommonFormatArgs, 0, x, y);
 	}
 
 	// Paid on drinks
 	y += 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_drink;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_drinks;
+	set_format_arg(0, money32, peep->paid_on_drink);
+	set_format_arg(4, uint16, peep->no_of_drinks);
 	if (peep->no_of_drinks != 1){
-		gfx_draw_string_left(dpi, 2302, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2302, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2301, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2301, gCommonFormatArgs, 0, x, y);
 	}
 
 	// Paid on souvenirs
 	y += 10;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, money32) = peep->paid_on_souvenirs;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = peep->no_of_souvenirs;
+	set_format_arg(0, money32, peep->paid_on_souvenirs);
+	set_format_arg(4, uint16, peep->no_of_souvenirs);
 	if (peep->no_of_souvenirs != 1){
-		gfx_draw_string_left(dpi, 2304, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2304, gCommonFormatArgs, 0, x, y);
 	}
 	else{
-		gfx_draw_string_left(dpi, 2303, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y);
+		gfx_draw_string_left(dpi, 2303, gCommonFormatArgs, 0, x, y);
 	}
 }
 
@@ -1962,8 +1962,8 @@ void window_guest_thoughts_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	window_guest_thoughts_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_thoughts_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -2009,14 +2009,14 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		uint32 argument1, argument2;
 		get_arguments_from_thought(*thought, &argument1, &argument2);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument1;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument2;
+		set_format_arg(0, uint32, argument1);
+		set_format_arg(4, uint32, argument2);
 
 		int width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
 			- window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left
 			- 8;
 
-		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1191, 0);
+		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, 1191, 0);
 
 		// If this is the last visable line end drawing.
 		if (y > w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32) return;
@@ -2068,8 +2068,8 @@ void window_guest_inventory_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	window_guest_inventory_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_guest_inventory_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -2189,7 +2189,7 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (y >= maxY) break;
 		if (!peep_has_item(peep, item)) continue;
 
-		void *args = (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
+		void *args = gCommonFormatArgs;
 		rct_string_id stringId = window_guest_inventory_format_item(peep, item, (uint8*)args);
 		y += gfx_draw_string_left_wrapped(dpi, args, x, y, itemNameWidth, stringId, 0);
 		numItems++;

@@ -217,18 +217,18 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 
 	switch (widgetIndex) {
 	case WIDX_MONEY:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = gCurrentProfit;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, int) = gParkValue;
+		set_format_arg(0, int, gCurrentProfit);
+		set_format_arg(4, int, gParkValue);
 		break;
 	case WIDX_PARK_RATING:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = gParkRating;
+		set_format_arg(0, short, gParkRating);
 		break;
 	case WIDX_DATE:
 		month = gDateMonthsElapsed & 7;
 		day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = STR_MONTH_MARCH + month;
+		set_format_arg(0, short, STR_DATE_DAY_1 + day);
+		set_format_arg(2, short, STR_MONTH_MARCH + month);
 		break;
 	}
 }
@@ -378,13 +378,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 
 	// Draw money
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) = DECRYPT_MONEY(gCashEncrypted);
+		money32 cash = DECRYPT_MONEY(gCashEncrypted);
+		set_format_arg(0, money32, cash);
 		gfx_draw_string_centred(
 			dpi,
-			(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, int) < 0 ? 1391 : 1390),
+			(cash < 0 ? 1391 : 1390),
 			x, y - 3,
 			(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY ? COLOUR_WHITE : w->colours[0] & 0x7F),
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
+			gCommonFormatArgs
 			);
 		y += 7;
 	}
@@ -453,16 +454,16 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	int day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = STR_DATE_DAY_1 + day;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = month;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, short) = year;
+	set_format_arg(0, short, STR_DATE_DAY_1 + day);
+	set_format_arg(2, short, month);
+	set_format_arg(4, short, year);
 	gfx_draw_string_centred(
 		dpi,
 		stringId,
 		x,
 		y,
 		(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE ? COLOUR_WHITE : w->colours[0] & 0x7F),
-		(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS
+		gCommonFormatArgs
 	);
 
 	// Temperature
@@ -475,8 +476,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 		temperature = climate_celsius_to_fahrenheit(temperature);
 		format = STR_FAHRENHEIT_VALUE;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, short) = temperature;
-	gfx_draw_string_left(dpi, format, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y + 6);
+	set_format_arg(0, short, temperature);
+	gfx_draw_string_left(dpi, format, gCommonFormatArgs, 0, x, y + 6);
 	x += 30;
 
 	// Current weather

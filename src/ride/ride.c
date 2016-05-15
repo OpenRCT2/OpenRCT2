@@ -889,15 +889,15 @@ static int ride_check_if_construction_allowed(rct_ride *ride)
 		return 0;
 	}
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
 		return 0;
 	}
 
 	if (ride->status != RIDE_STATUS_CLOSED) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
 		return 0;
 	}
@@ -1746,8 +1746,8 @@ int ride_modify(rct_xy_element *input)
 		return 0;
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 		window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
 		return 0;
 	}
@@ -2367,8 +2367,8 @@ void ride_breakdown_add_news_item(int rideIndex)
 {
 	rct_ride *ride = get_ride(rideIndex);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+	set_format_arg(0, uint16, ride->name);
+	set_format_arg(2, uint32, ride->name_arguments);
 	if (gConfigNotifications.ride_broken_down) {
 		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, rideIndex);
 	}
@@ -2396,8 +2396,8 @@ static void ride_breakdown_status_update(int rideIndex)
 			ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING &&
 			ride->mechanic_status != RIDE_MECHANIC_STATUS_4
 		) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+			set_format_arg(0, uint16, ride->name);
+			set_format_arg(2, uint32, ride->name_arguments);
 			if (gConfigNotifications.ride_warnings) {
 				news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, rideIndex);
 			}
@@ -2965,8 +2965,8 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 		if (message != NULL) *message = 0;
 		return measurement;
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = RideNameConvention[ride->type].vehicle_name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = RideNameConvention[ride->type].station_name;
+		set_format_arg(0, uint16, RideNameConvention[ride->type].vehicle_name);
+		set_format_arg(2, uint16, RideNameConvention[ride->type].station_name);
 		if (message != NULL) *message = STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES;
 		return NULL;
 	}
@@ -3140,8 +3140,8 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 			continue;
 		if (entrance != 0xFFFF && !ride_entrance_exit_is_reachable(entrance, ride, i)) {
 			// name of ride is parameter of the format string
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+			set_format_arg(0, uint16, ride->name);
+			set_format_arg(2, uint32, ride->name_arguments);
 			if (gConfigNotifications.ride_warnings) {
 			news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
 			}
@@ -3150,8 +3150,8 @@ static void ride_entrance_exit_connected(rct_ride* ride, int ride_idx)
 
 		if (exit != 0xFFFF && !ride_entrance_exit_is_reachable(exit, ride, i)) {
 			// name of ride is parameter of the format string
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+			set_format_arg(0, uint16, ride->name);
+			set_format_arg(2, uint32, ride->name_arguments);
 			if (gConfigNotifications.ride_warnings) {
 			news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride_idx);
 			}
@@ -3218,8 +3218,8 @@ static void ride_shop_connected(rct_ride* ride, int ride_idx)
 	}
 
 	// Name of ride is parameter of the format string
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+	set_format_arg(0, uint16, ride->name);
+	set_format_arg(2, uint32, ride->name_arguments);
 	if (gConfigNotifications.ride_warnings) {
 	news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride_idx);
 	}
@@ -8397,8 +8397,8 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+	set_format_arg(0, rct_string_id, ride->name);
+	set_format_arg(2, uint32, ride->name_arguments);
 	if (gConfigNotifications.ride_crashed) {
 	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, rideIndex);
 }

@@ -370,11 +370,11 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = STR_SCENARIO_CATEGORY_RCT1 + i;
+			set_format_arg(0, short, STR_SCENARIO_CATEGORY_RCT1 + i);
 		} else { // old-style
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = ScenarioCategoryStringIds[i];
+			set_format_arg(0, short, ScenarioCategoryStringIds[i]);
 		}
-		gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 87, format, 10);
+		gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 87, format, 10);
 	}
 
 	// Return if no scenario highlighted
@@ -406,21 +406,21 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	safe_strcpy((char*)0x009BC677, scenario->name, 64);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
-	gfx_draw_string_centred_clipped(dpi, 1193, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x + 85, y, 170);
+	set_format_arg(0, short, 3165); // empty string
+	gfx_draw_string_centred_clipped(dpi, 1193, gCommonFormatArgs, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
 	safe_strcpy((char*)0x009BC677, scenario->details, 256);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
-	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, 1191, 0) + 5;
+	set_format_arg(0, short, 3165); // empty string
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, 1191, 0) + 5;
 
 	// Scenario objective
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = scenario->objective_type + STR_OBJECTIVE_NONE;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, short) = scenario->objective_arg_3;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, short) = date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, int) = scenario->objective_arg_2;
-	y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_OBJECTIVE, 0) + 5;
+	set_format_arg(0, short, scenario->objective_type + STR_OBJECTIVE_NONE);
+	set_format_arg(2, short, scenario->objective_arg_3);
+	set_format_arg(4, short, date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
+	set_format_arg(6, int, scenario->objective_arg_2);
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_OBJECTIVE, 0) + 5;
 
 	// Scenario score
 	if (scenario->highscore != NULL) {
@@ -429,9 +429,9 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			completedByName = scenario->highscore->name;
 		}
 		safe_strcpy((char*)0x009BC677, completedByName, 64);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, short) = 3165; // empty string
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, int) = scenario->highscore->company_value;
-		y += gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
+		set_format_arg(0, short, 3165); // empty string
+		set_format_arg(2, int, scenario->highscore->company_value);
+		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
 	}
 }
 
@@ -493,9 +493,9 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 					completedByName = scenario->highscore->name;
 				}
 				safe_strcpy((char*)language_get_string(placeholderStringId), completedByName, 64);
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = 2793;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = placeholderStringId;
-				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS);
+				set_format_arg(0, rct_string_id, 2793);
+				set_format_arg(2, rct_string_id, placeholderStringId);
+				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, gCommonFormatArgs);
 			}
 
 			y += 24;

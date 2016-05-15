@@ -713,7 +713,7 @@ static void window_new_ride_scrollmouseover(rct_window *w, int scrollIndex, int 
  */
 static void window_new_ride_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 3159;
+	set_format_arg(0, uint16, 3159);
 }
 
 /**
@@ -865,9 +865,9 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 		rideDescription = item.type + 512;
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = rideName;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, rct_string_id) = rideDescription;
-	gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1690, 0);
+	set_format_arg(0, rct_string_id, rideName);
+	set_format_arg(2, rct_string_id, rideDescription);
+	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, 1690, 0);
 
 	// Number of designs available
 	if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {

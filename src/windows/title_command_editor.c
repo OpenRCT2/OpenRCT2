@@ -564,11 +564,11 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
 				);
 		}
 		else {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[command.saveIndex];
+			set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentTitleSequence].saves[command.saveIndex]);
 			gfx_draw_string_left_clipped(
 				dpi,
 				1170,
-				(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+				gCommonFormatArgs,
 				w->colours[1],
 				w->x + w->widgets[WIDX_INPUT].left + 1,
 				w->y + w->widgets[WIDX_INPUT].top,

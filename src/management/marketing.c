@@ -95,10 +95,10 @@ void marketing_update()
 		// This sets the string parameters for the marketing types that have an argument.
 		if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE) {
 			rct_ride* ride = get_ride(campaignItem);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+			set_format_arg(0, uint16, ride->name);
+			set_format_arg(2, uint32, ride->name_arguments);
 		} else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ShopItemStringIds[campaignItem].plural;
+			set_format_arg(0, uint16, ShopItemStringIds[campaignItem].plural);
 		}
 
 		if (gConfigNotifications.park_marketing_campaign_finished) {

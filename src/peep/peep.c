@@ -1340,8 +1340,8 @@ void peep_update_falling(rct_peep* peep){
 		if (peep->action == PEEP_ACTION_DROWNING) return;
 
 		if (gConfigNotifications.guest_died) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+			set_format_arg(0, uint16, peep->name_string_idx);
+			set_format_arg(2, uint32, peep->id);
 			news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
 		}
 
@@ -2127,10 +2127,10 @@ static void peep_update_ride_sub_state_2_enter_ride(rct_peep* peep, rct_ride* ri
 	}
 
 	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+		set_format_arg(0, uint16, peep->name_string_idx);
+		set_format_arg(2, uint32, peep->id);
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 
 		rct_string_id msg_string;
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
@@ -3180,10 +3180,10 @@ static void peep_update_ride_sub_state_18(rct_peep* peep){
 	peep_on_enter_or_exit_ride(peep, peep->current_ride, 1);
 
 	if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+		set_format_arg(0, uint16, peep->name_string_idx);
+		set_format_arg(2, uint32, peep->id);
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 
 		if (gConfigNotifications.guest_left_ride) {
 			news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_RIDE_X, peep->sprite_index);
@@ -6899,10 +6899,10 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 		peep->sub_state = 11;
 		peep->time_in_queue = 0;
 		if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, rct_string_id) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+			set_format_arg(0, rct_string_id, peep->name_string_idx);
+			set_format_arg(2, uint32, peep->id);
+			set_format_arg(6, rct_string_id, ride->name);
+			set_format_arg(8, uint32, ride->name_arguments);
 			if (gConfigNotifications.guest_queuing_for_ride) {
 				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
 			}
@@ -6945,8 +6945,8 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 
 			peep->var_37 = 0;
 			if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+				set_format_arg(0, rct_string_id, peep->name_string_idx);
+				set_format_arg(2, uint32, peep->id);
 				if (gConfigNotifications.guest_left_park) {
 					news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
 				}
@@ -7280,10 +7280,10 @@ static int peep_interact_with_path(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		peep->destination_tolerence = 2;
 		peep->time_in_queue = 0;
 		if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, rct_string_id) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+			set_format_arg(0, rct_string_id, peep->name_string_idx);
+			set_format_arg(2, uint32, peep->id);
+			set_format_arg(6, rct_string_id, ride->name);
+			set_format_arg(8, uint32, ride->name_arguments);
 			if (gConfigNotifications.guest_queuing_for_ride) {
 				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
 			}
@@ -7353,10 +7353,10 @@ static int peep_interact_with_shop(rct_peep* peep, sint16 x, sint16 y, rct_map_e
 		peep->time_on_ride = 0;
 		ride->cur_num_customers++;
 		if (peep->peep_flags & PEEP_FLAGS_TRACKING){
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = peep->name_string_idx;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, rct_string_id) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint32) = ride->name_arguments;
+			set_format_arg(0, rct_string_id, peep->name_string_idx);
+			set_format_arg(2, uint32, peep->id);
+			set_format_arg(6, rct_string_id, ride->name);
+			set_format_arg(8, uint32, ride->name_arguments);
 			rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X : STR_PEEP_TRACKING_PEEP_IS_ON_X;
 			if (gConfigNotifications.guest_used_facility) {
 				news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
@@ -9023,9 +9023,9 @@ loc_69B221:
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	peep_update_sprite_type(peep);
 	if (peep->peep_flags & PEEP_FLAGS_TRACKING) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS,uint16) = peep->name_string_idx;
-		RCT2_GLOBAL((RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2), uint32) = peep->id;
-		RCT2_GLOBAL((RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6), uint16) = (shopItem >= 32 ? STR_SHOP_ITEM_INDEFINITE_PHOTO2 + (shopItem - 32) : STR_SHOP_ITEM_INDEFINITE_BALLOON + shopItem);
+		set_format_arg(0, uint16, peep->name_string_idx);
+		set_format_arg(2, uint32, peep->id);
+		set_format_arg(6, uint16, (shopItem >= 32 ? STR_SHOP_ITEM_INDEFINITE_PHOTO2 + (shopItem - 32) : STR_SHOP_ITEM_INDEFINITE_BALLOON + shopItem));
 		if (gConfigNotifications.guest_bought_item) {
 			news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
 		}
@@ -10457,10 +10457,10 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		return 0;
 
 	rct_peep* peep = GET_PEEP(sprite_index);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = peep->id;
+	set_format_arg(0, uint32, peep->id);
 	utf8* curName = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, utf8);
 	rct_string_id curId = peep->name_string_idx;
-	format_string(curName, curId, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+	format_string(curName, curId, gCommonFormatArgs);
 
 	if (strcmp(curName, fullText) == 0)
 		return 0;

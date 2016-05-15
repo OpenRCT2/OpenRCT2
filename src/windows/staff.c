@@ -728,8 +728,8 @@ void window_staff_stats_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	window_staff_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_staff_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -763,8 +763,8 @@ void window_staff_options_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	switch (peep->staff_type){
 	case STAFF_TYPE_ENTERTAINER:
@@ -838,8 +838,8 @@ void window_staff_overview_invalidate(rct_window *w)
 
 	rct_peep* peep = GET_PEEP(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = peep->name_string_idx;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = peep->id;
+	set_format_arg(0, uint16, peep->name_string_idx);
+	set_format_arg(2, uint32, peep->id);
 
 	window_staff_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
 	window_staff_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -902,13 +902,13 @@ void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	uint32 argument1, argument2;
 	rct_peep* peep = GET_PEEP(w->number);
 	get_arguments_from_action(peep, &argument1, &argument2);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = argument1;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = argument2;
+	set_format_arg(0, uint32, argument1);
+	set_format_arg(4, uint32, argument2);
 	rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
 	int x = (widget->left + widget->right) / 2 + w->x;
 	int y = w->y + widget->top;
 	int width = widget->right - widget->left;
-	gfx_draw_string_centred_clipped(dpi, 1191, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, 1191, gCommonFormatArgs, 0, x, y, width);
 }
 
 /**
@@ -1044,11 +1044,9 @@ void window_staff_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = w->x + window_staff_stats_widgets[WIDX_RESIZE].left + 4;
 	int y = w->y + window_staff_stats_widgets[WIDX_RESIZE].top + 4;
 
-	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)){
-
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS,uint32) = RCT2_ADDRESS(0x992A00,uint16)[peep->staff_type];
-		gfx_draw_string_left(dpi, 2349, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0,x, y);
-
+	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+		set_format_arg(0, uint32, RCT2_ADDRESS(0x00992A00, uint16)[peep->staff_type]);
+		gfx_draw_string_left(dpi, 2349, gCommonFormatArgs, 0, x, y);
 		y += 10;
 	}
 

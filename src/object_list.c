@@ -495,15 +495,14 @@ void object_create_identifier_name(char* string_buffer, const rct_object_entry* 
  */
 void set_load_objects_fail_reason()
 {
-	rct_string_id expansionNameId;
-
-	rct_object_entry* object = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_object_entry);
+	rct_object_entry *object;
+	memcpy(&object, gCommonFormatArgs, sizeof(rct_object_entry*));
+	
 	int expansion = (object->flags & 0xFF) >> 4;
-
-	if (expansion == 0
-		|| expansion == 8
-		|| RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << expansion)){
-
+	if (expansion == 0 ||
+		expansion == 8 ||
+		RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << expansion)
+	) {
 		char* string_buffer = RCT2_ADDRESS(0x9BC677, char);
 
 		format_string(string_buffer, STR_MISSING_OBJECT_DATA_ID, 0);
@@ -514,6 +513,7 @@ void set_load_objects_fail_reason()
 		return;
 	}
 
+	rct_string_id expansionNameId;
 	switch(expansion) {
 		case 1: // Wacky Worlds
 			expansionNameId = STR_OBJECT_FILTER_WW;
@@ -573,7 +573,7 @@ bool object_load_entries(rct_object_entry* entries)
 		// Load the obect
 		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
-			memcpy((char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, &entries[i], sizeof(rct_object_entry));
+			memcpy(gCommonFormatArgs, &entries[i], sizeof(rct_object_entry));
 			loadFailed = true;
 		}
 	}

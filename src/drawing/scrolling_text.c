@@ -89,10 +89,13 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 		}
 
 		// If exact match return the matching index
+		uint32 stringArgs0, stringArgs1;
+		memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32));
+		memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32));
 		if (
 			scrollText->string_id == stringId &&
-			scrollText->string_args_0 == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) &&
-			scrollText->string_args_1 == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) &&
+			scrollText->string_args_0 == stringArgs0 &&
+			scrollText->string_args_1 == stringArgs1 &&
 			scrollText->position == scroll &&
 			scrollText->mode == scrollingMode
 		) {
@@ -142,10 +145,14 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 	if (scrollIndex >= 0x606) return scrollIndex;
 
 	// Setup scrolling text
+	uint32 stringArgs0, stringArgs1;
+	memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32));
+	memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32));
+
 	rct_draw_scroll_text* scrollText = &gDrawScrollTextList[scrollIndex];
 	scrollText->string_id = stringId;
-	scrollText->string_args_0 = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32);
-	scrollText->string_args_1 = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32);
+	scrollText->string_args_0 = stringArgs0;
+	scrollText->string_args_1 = stringArgs1;
 	scrollText->position = scroll;
 	scrollText->mode = scrollingMode;
 	scrollText->id = RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32);
@@ -168,7 +175,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 
 void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)
 {
-	uint8 characterColour = scrolling_text_get_colour(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 7, uint8));
+	uint8 characterColour = scrolling_text_get_colour(gCommonFormatArgs[7]);
 
 	utf8 *ch = text;
 	while (true) {
@@ -244,7 +251,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, si
 	*dstCh = 0;
 
 	if (colour == 0) {
-		colour = scrolling_text_get_colour(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 7, uint8));
+		colour = scrolling_text_get_colour(gCommonFormatArgs[7]);
 	} else {
 		colour = RCT2_GLOBAL(0x009FF048, uint8*)[(colour - FORMAT_COLOUR_CODE_START) * 4];
 	}
