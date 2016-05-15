@@ -12,7 +12,7 @@
 *
 * A full copy of the GNU General Public License can be found in licence.txt
 *****************************************************************************/
-#pragma endregion**************/
+#pragma endregion
 
 #include "../addresses.h"
 #include "../interface/window.h"
