@@ -2813,7 +2813,7 @@ STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_CO
 STR_2795    :Sort
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :当鼠标位于屏幕边缘时滚动视图
-STR_2798    :{SMALLFONT}{BLACK}选择当鼠标位于屏幕边缘时是否滚动视图
+STR_2798    :{SMALLFONT}{BLACK}当鼠标位于屏幕边缘时滚动视图
 STR_2799    :{SMALLFONT}{BLACK}查看或改变控制按键分配
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
@@ -3512,13 +3512,13 @@ STR_5162    :日/月/年
 STR_5163    :月/日/年
 STR_5164    :Twitch频道名称
 STR_5165    :以关注者的用户名命名游客
-STR_5166    :{SMALLFONT}{BLACK}将会以Twitch频道的关注者命名游客
+STR_5166    :{SMALLFONT}{BLACK}用Twitch频道的关注者来命名游客
 STR_5167    :跟踪'关注者'游客
-STR_5168    :{SMALLFONT}{BLACK}将会开启跟踪关注者用户名的游客信息
+STR_5168    :{SMALLFONT}{BLACK}启用跟踪关注者用户名的游客信息
 STR_5169    :以Twitch聊天中的名字命名游客
-STR_5170    :{SMALLFONT}{BLACK}将会以Twitch聊天中的名字命名游客
+STR_5170    :{SMALLFONT}{BLACK}用Twitch聊天中的名字来命名游客
 STR_5171    :跟踪'聊天'游客
-STR_5172    :{SMALLFONT}{BLACK}将会开启跟踪参与聊天用户名的游客信息
+STR_5172    :{SMALLFONT}{BLACK}启用跟踪参与聊天用户名的游客信息
 STR_5173    :将Twitch聊天的内容以新闻的方式推送
 STR_5174    :{SMALLFONT}{BLACK}将Twitch聊天中所有标'!news'的内容以通知的方式推送
 STR_5175    :请输入你的Twitch频道名称
@@ -3787,7 +3787,7 @@ STR_5437    :暂无存档被选中
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :当焦点失去时最小化全屏幕的游戏
-STR_5441    :{SMALLFONT}{BLACK}根据轨道类型区分游乐设施,{NEWLINE}使得车辆类型可以在建造后更改{NEWLINE}就像过山车大亨1(RCT1)一样.
+STR_5441    :{SMALLFONT}{BLACK}根据轨道类型区分游乐设施{NEWLINE}使得车辆类型可以在建造后更改{NEWLINE}(过山车大亨1行为).
 STR_5442    :Force park rating:
 STR_5443    :速度{MOVE_X}{87}{STRINGID}
 STR_5444    :速度:
@@ -3854,7 +3854,7 @@ STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
 STR_5507    :清洁工默认会修剪草皮
 STR_5508    :允许读取校验失败的文件
-STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件, 例如试玩版的剧情或损坏的存档.
+STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件,{NEWLINE}例如试玩版的剧情或损坏的存档.
 STR_5510    :默认音频设备
 STR_5511    :(UNKNOWN)
 STR_5512    :另存游戏
@@ -3932,7 +3932,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :自动开放商店和摊位
-STR_5587    :{SMALLFONT}{BLACK}当选中此设定时, 商店和摊位将在建造好后自动开放
+STR_5587    :{SMALLFONT}{BLACK}商店和摊位将在建造好后自动开放
 STR_5588    :{SMALLFONT}{BLACK}与其他玩家一起玩
 STR_5589    :Notification Settings
 STR_5590    :Park awards
