@@ -299,8 +299,6 @@ rct_window *window_staff_open(rct_peep* peep)
 	if (w == NULL) {
 		w = window_create_auto_pos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
-		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
-		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
 		w->number = peep->sprite_index;
 		w->page = 0;
 		w->viewport_focus_coordinates.y = 0;
