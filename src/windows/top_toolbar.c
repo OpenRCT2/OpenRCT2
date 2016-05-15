@@ -922,7 +922,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			map_element->base_height | (map_element->properties.scenery.type << 8),
 			GAME_COMMAND_SET_SCENERY_COLOUR,
 			0,
-			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+			gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
 		break;
 	}
 	case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -938,12 +938,12 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
 		game_do_command(
 			grid_x,
-			1 | (window_scenery_primary_colour << 8),
+			1 | (gWindowSceneryPrimaryColour << 8),
 			grid_y,
 			(map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
 			GAME_COMMAND_SET_FENCE_COLOUR,
 			0,
-			window_scenery_secondary_colour | (window_scenery_tertiary_colour << 8));
+			gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
 		break;
 	}
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -963,7 +963,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
 			GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
 			0,
-			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+			gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
 		break;
 	}
 	case VIEWPORT_INTERACTION_ITEM_BANNER:
@@ -984,7 +984,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 			map_element->base_height | ((map_element->properties.banner.position & 0x3) << 8),
 			GAME_COMMAND_SET_BANNER_COLOUR,
 			0,
-			window_scenery_primary_colour | (window_scenery_secondary_colour << 8));
+			gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
 		break;
 	}
 	default:
@@ -1136,7 +1136,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			if (*grid_x == (sint16)0x8000)
 				return;
 
-			uint8 rotation = window_scenery_rotation;
+			uint8 rotation = gWindowSceneryRotation;
 
 			if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
 				rotation = util_rand() & 0xFF;
@@ -1147,8 +1147,8 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 			// Also places it in lower but think thats for clobering
 			*parameter_1 = (selected_scenery & 0xFF) << 8;
-			*parameter_2 = (cl ^ (1 << 1)) | (window_scenery_primary_colour << 8);
-			*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
+			*parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
+			*parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
 			return;
 		}
 
@@ -1214,7 +1214,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 		*grid_x &= 0xFFE0;
 		*grid_y &= 0xFFE0;
-		uint8 rotation = window_scenery_rotation;
+		uint8 rotation = gWindowSceneryRotation;
 
 		if (!(scenery->small_scenery.flags & SMALL_SCENERY_FLAG4)){
 			rotation = util_rand() & 0xFF;
@@ -1225,8 +1225,8 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 		// Also places it in lower but think thats for clobering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
-		*parameter_2 = 0 | (window_scenery_primary_colour << 8);
-		*parameter_3 = rotation | (window_scenery_secondary_colour << 16);
+		*parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
+		*parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
 		break;
 	}
 	case 1:
@@ -1306,11 +1306,11 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		if (*grid_x == (sint16)0x8000)
 			return;
 
-		RCT2_GLOBAL(0x00F64F15, uint8) = window_scenery_secondary_colour;
-		RCT2_GLOBAL(0x00F64F16, uint8) = window_scenery_tertiary_colour;
+		RCT2_GLOBAL(0x00F64F15, uint8) = gWindowScenerySecondaryColour;
+		RCT2_GLOBAL(0x00F64F16, uint8) = gWindowSceneryTertiaryColour;
 		// Also places it in lower but think thats for clobering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
-		*parameter_2 = cl | (window_scenery_primary_colour << 8);
+		*parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
 		*parameter_3 = 0;
 		break;
 	}
@@ -1368,12 +1368,12 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		*grid_x &= 0xFFE0;
 		*grid_y &= 0xFFE0;
 
-		uint8 rotation = window_scenery_rotation;
+		uint8 rotation = gWindowSceneryRotation;
 		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
 		*parameter_1 = (rotation << 8);
-		*parameter_2 = window_scenery_primary_colour | (window_scenery_secondary_colour << 8);
+		*parameter_2 = gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8);
 		*parameter_3 = selected_scenery & 0xFF;
 		break;
 	}
@@ -1395,7 +1395,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			return;
 		}
 
-		uint8 rotation = window_scenery_rotation;
+		uint8 rotation = gWindowSceneryRotation;
 		rotation -= get_current_rotation();
 		rotation &= 0x3;
 
@@ -1412,7 +1412,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 		// Also places it in lower but think thats for clobering
 		*parameter_1 = (selected_scenery & 0xFF) << 8;
 		*parameter_2 = z | (rotation << 8);
-		*parameter_3 = window_scenery_primary_colour;
+		*parameter_3 = gWindowSceneryPrimaryColour;
 		break;
 	}
 	}
@@ -1434,12 +1434,12 @@ void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int 
 static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w, short widgetIndex)
 {
 	scenery_remove_ghost_tool_placement();
-	if (window_scenery_is_repaint_scenery_tool_on & 1) {
+	if (gWindowSceneryPaintEnabled & 1) {
 		repaint_scenery_tool_down(x, y, widgetIndex);
 		return;
 	}
 
-	int selectedTab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
+	int selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
 	uint8 sceneryType = (selectedTab & 0xFF00) >> 8;
 
 	if (selectedTab == -1) return;
@@ -1455,7 +1455,7 @@ static void window_top_toolbar_scenery_tool_down(short x, short y, rct_window *w
 	case SCENERY_TYPE_SMALL:
 	{
 		int quantity = 1;
-		bool isCluster = window_scenery_is_build_cluster_tool_on && (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_command(network_get_current_player_group_index(), -2));
+		bool isCluster = gWindowSceneryClusterEnabled && (network_get_mode() != NETWORK_MODE_CLIENT || network_can_perform_command(network_get_current_player_group_index(), -2));
 		if (isCluster) {
 			quantity = 35;
 		}
@@ -2268,10 +2268,10 @@ void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 
-	if (window_scenery_is_repaint_scenery_tool_on)
+	if (gWindowSceneryPaintEnabled)
 		return;
 
-	sint16 selected_tab = window_scenery_selected_scenery_by_tab[window_scenery_active_tab_index];
+	sint16 selected_tab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
 
 	if (selected_tab == -1){
 		scenery_remove_ghost_tool_placement();
@@ -2796,7 +2796,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, int widgetIndex, int x, 
 		window_top_toolbar_water_tool_drag(x, y);
 		break;
 	case WIDX_SCENERY:
-		if (window_scenery_is_repaint_scenery_tool_on & 1)
+		if (gWindowSceneryPaintEnabled & 1)
 			window_top_toolbar_scenery_tool_down(x, y, w, widgetIndex);
 		break;
 	}

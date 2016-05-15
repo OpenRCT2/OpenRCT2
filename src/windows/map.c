@@ -322,7 +322,7 @@ static void window_map_mouseup(rct_window *w, int widgetIndex)
 		show_construction_rights();
 		break;
 	case WIDX_ROTATE_90:
-		window_scenery_rotation = (window_scenery_rotation + 1) & 3;
+		gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
 		break;
 	case WIDX_PEOPLE_STARTING_POSITION:
 		if (tool_set(w, widgetIndex, 2))
@@ -1173,7 +1173,7 @@ void sub_666EEF(int x, int y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, int *dir
 			}
 		}
 	}
-	*direction = (window_scenery_rotation - get_current_rotation()) & 3;
+	*direction = (gWindowSceneryRotation - get_current_rotation()) & 3;
 }
 
 /**

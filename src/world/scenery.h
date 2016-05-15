@@ -166,14 +166,14 @@ enum {
 #define gPathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
 #define gScenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
 
-#define window_scenery_active_tab_index RCT2_GLOBAL(0x00F64EDC, uint8)
-#define window_scenery_selected_scenery_by_tab RCT2_ADDRESS(0x00F64EDD, sint16)
-#define window_scenery_is_build_cluster_tool_on RCT2_GLOBAL(0x00F64F1A, uint8)
-#define window_scenery_is_repaint_scenery_tool_on RCT2_GLOBAL(0x00F64F19, uint8)
-#define window_scenery_rotation RCT2_GLOBAL(0x00F64F05, uint8)
-#define window_scenery_primary_colour RCT2_GLOBAL(0x00F64F06, uint8)
-#define window_scenery_secondary_colour RCT2_GLOBAL(0x00F64F07, uint8)
-#define window_scenery_tertiary_colour RCT2_GLOBAL(0x00F64F08, uint8)
+extern uint8 gWindowSceneryActiveTabIndex;
+extern uint16 gWindowSceneryTabSelections[20];
+extern uint8 gWindowSceneryClusterEnabled;
+extern uint8 gWindowSceneryPaintEnabled;
+extern uint8 gWindowSceneryRotation;
+extern colour_t gWindowSceneryPrimaryColour;
+extern colour_t gWindowScenerySecondaryColour;
+extern colour_t gWindowSceneryTertiaryColour;
 
 extern rct_map_element *gSceneryMapElement;
 extern uint8 gSceneryMapElementType; 

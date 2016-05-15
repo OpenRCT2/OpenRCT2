@@ -26,6 +26,15 @@
 #include "scenery.h"
 #include "footpath.h"
 
+uint8 gWindowSceneryActiveTabIndex;
+uint16 gWindowSceneryTabSelections[20];
+uint8 gWindowSceneryClusterEnabled;
+uint8 gWindowSceneryPaintEnabled;
+uint8 gWindowSceneryRotation;
+colour_t gWindowSceneryPrimaryColour;
+colour_t gWindowScenerySecondaryColour;
+colour_t gWindowSceneryTertiaryColour;
+
 rct_map_element *gSceneryMapElement;
 uint8 gSceneryMapElementType; 
 
