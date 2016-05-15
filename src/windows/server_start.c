@@ -275,7 +275,7 @@ static void window_server_start_invalidate(rct_window *w)
 	colour_scheme_update_by_class(w, WC_SERVER_LIST);
 
 	widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = gConfigNetwork.maxplayers;
+	set_format_arg(18, uint16, gConfigNetwork.maxplayers);
 }
 
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)

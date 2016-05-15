@@ -91,8 +91,8 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 		// If exact match return the matching index
 		if (
 			scrollText->string_id == stringId &&
-			scrollText->string_args_0 == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) &&
-			scrollText->string_args_1 == RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) &&
+			scrollText->string_args_0 == get_format_arg(0, uint32) &&
+			scrollText->string_args_1 == get_format_arg(4, uint32) &&
 			scrollText->position == scroll &&
 			scrollText->mode == scrollingMode
 		) {
@@ -144,8 +144,8 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 	// Setup scrolling text
 	rct_draw_scroll_text* scrollText = &gDrawScrollTextList[scrollIndex];
 	scrollText->string_id = stringId;
-	scrollText->string_args_0 = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32);
-	scrollText->string_args_1 = RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32);
+	scrollText->string_args_0 = get_format_arg(0, uint32);
+	scrollText->string_args_1 = get_format_arg(4, uint32);
 	scrollText->position = scroll;
 	scrollText->mode = scrollingMode;
 	scrollText->id = RCT2_GLOBAL(RCT2_ADDRESS_DRAW_SCROLL_NEXT_ID, uint32);
@@ -168,7 +168,7 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 
 void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)
 {
-	uint8 characterColour = scrolling_text_get_colour(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 7, uint8));
+	uint8 characterColour = scrolling_text_get_colour(get_format_arg(7, uint8));
 
 	utf8 *ch = text;
 	while (true) {
@@ -244,7 +244,7 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, int scroll, uint8 *bitmap, si
 	*dstCh = 0;
 
 	if (colour == 0) {
-		colour = scrolling_text_get_colour(RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 7, uint8));
+		colour = scrolling_text_get_colour(get_format_arg(7, uint8));
 	} else {
 		colour = RCT2_GLOBAL(0x009FF048, uint8*)[(colour - FORMAT_COLOUR_CODE_START) * 4];
 	}

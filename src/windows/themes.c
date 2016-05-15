@@ -679,7 +679,7 @@ static void window_themes_textinput(rct_window *w, int widgetIndex, char *text)
 
 void window_themes_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_LIST;
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 void window_themes_invalidate(rct_window *w)
@@ -766,12 +766,12 @@ void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS) {
 		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)activeThemeName;
+		set_format_arg(0, uint32, (uint32)activeThemeName);
 		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
 			1170,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			gCommonFormatArgs,
 			w->colours[1],
 			w->x + window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
 			w->y + window_themes_widgets[WIDX_THEMES_PRESETS].top,

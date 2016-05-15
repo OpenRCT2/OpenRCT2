@@ -250,7 +250,7 @@ static void window_news_scrollmousedown(rct_window *w, int scrollIndex, int x, i
  */
 static void window_news_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 3159;
+	set_format_arg(0, uint16, 3159);
 }
 
 /**
@@ -291,9 +291,9 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int s
 		gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], 0x24);
 
 		// Date text
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_DATE_DAY_1 + newsItem->day - 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = STR_MONTH_MARCH + (newsItem->month_year % 8);
-		gfx_draw_string_left(dpi, 2235, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 2, 4, y);
+		set_format_arg(0, uint16, STR_DATE_DAY_1 + newsItem->day - 1);
+		set_format_arg(2, uint16, STR_MONTH_MARCH + (newsItem->month_year % 8));
+		gfx_draw_string_left(dpi, 2235, gCommonFormatArgs, 2, 4, y);
 
 		// Item text
 		utf8 buffer[400];

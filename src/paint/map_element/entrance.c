@@ -117,25 +117,25 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 		!(map_element->flags & MAP_ELEMENT_FLAG_GHOST) &&
 		map_element->properties.entrance.ride_index != 0xFF){
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = 0;
+		set_format_arg(0, uint32, 0);
+		set_format_arg(4, uint32, 0);
 
 		rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
 
 		if (ride->status == RIDE_STATUS_OPEN &&
 			!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
 
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, rct_string_id) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+			set_format_arg(0, rct_string_id, ride->name);
+			set_format_arg(2, uint32, ride->name_arguments);
 
 			string_id = STR_RIDE_ENTRANCE_NAME;
 		}
 
 		utf8 entrance_string[MAX_PATH];
 		if (gConfigGeneral.upper_case_banners) {
-			format_string_to_upper(entrance_string, string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+			format_string_to_upper(entrance_string, string_id, gCommonFormatArgs);
 		} else {
-			format_string(entrance_string, string_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+			format_string(entrance_string, string_id, gCommonFormatArgs);
 		}
 
 		gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -209,21 +209,21 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 			break;
 
 		rct_string_id park_text_id = 1730;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = 0;
+		set_format_arg(0, uint32, 0);
+		set_format_arg(4, uint32, 0);
 
 		if (gParkFlags & PARK_FLAGS_PARK_OPEN){
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = gParkName;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
+			set_format_arg(0, rct_string_id, gParkName);
+			set_format_arg(2, uint32, gParkNameArgs);
 
 			park_text_id = 1731;
 		}
 
 		utf8 park_name[MAX_PATH];
 		if (gConfigGeneral.upper_case_banners) {
-			format_string_to_upper(park_name, park_text_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+			format_string_to_upper(park_name, park_text_id, gCommonFormatArgs);
 		} else {
-			format_string(park_name, park_text_id, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+			format_string(park_name, park_text_id, gCommonFormatArgs);
 		}
 
 		gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

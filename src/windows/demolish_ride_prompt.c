@@ -132,11 +132,11 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	rct_ride* ride = get_ride(w->number);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+	set_format_arg(0, uint16, ride->name);
+	set_format_arg(2, uint32, ride->name_arguments);
 
 	int x = w->x + WW / 2;
 	int y = w->y + (WH / 2) - 3;
 
-	gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, 0);
+	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, 0);
 }

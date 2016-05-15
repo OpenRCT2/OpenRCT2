@@ -30,6 +30,8 @@
 #include "date.h"
 #include "localisation.h"
 
+uint8 gCommonFormatArgs[80];
+
 #pragma region Format codes
 
 typedef struct format_code_token {
@@ -864,11 +866,10 @@ void error_string_quit(int error, rct_string_id format)
 	RCT2_GLOBAL(0x9E2DA0, uint32) = 1;
 
 	char* error_string = RCT2_ADDRESS(0x1424080, char);
-	void* args = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void);
 	*error_string = 0;
 
 	if (format != 0xFFFF){
-		format_string(error_string, format, args);
+		format_string(error_string, format, gCommonFormatArgs);
 	}
 	RCT2_GLOBAL(0x9E2D9C, uint32) = 1;
 	rct2_exit();

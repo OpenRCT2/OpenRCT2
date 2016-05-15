@@ -399,7 +399,7 @@ static void window_editor_objective_options_main_mouseup(rct_window *w, int widg
 		window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
 		break;
 	case WIDX_PARK_NAME:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = gParkNameArgs;
+		set_format_arg(16, uint32, gParkNameArgs);
 		window_text_input_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
 		break;
 	case WIDX_SCENARIO_NAME:
@@ -985,12 +985,12 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_PARK_NAME].left - 16;
 
 	if (stex != NULL) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->park_name;
+		set_format_arg(0, uint16, stex->park_name);
 	} else {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = gParkName;
+		set_format_arg(0, uint16, gParkName);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
-	gfx_draw_string_left_clipped(dpi, 3298, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
+	set_format_arg(2, uint32, gParkNameArgs);
+	gfx_draw_string_left_clipped(dpi, 3298, gCommonFormatArgs, 0, x, y, width);
 
 	// Scenario name
 	x = w->x + 8;
@@ -998,13 +998,13 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
 	if (stex != NULL) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->scenario_name;
+		set_format_arg(0, uint16, stex->scenario_name);
 	} else {
 		safe_strcpy((char*)0x009BC677, s6Info->name, 64);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 3165;
+		set_format_arg(0, uint16, 3165);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
-	gfx_draw_string_left_clipped(dpi, 3300, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, 0, x, y, width);
+	set_format_arg(2, uint32, gParkNameArgs);
+	gfx_draw_string_left_clipped(dpi, 3300, gCommonFormatArgs, 0, x, y, width);
 
 	// Scenario details label
 	x = w->x + 8;
@@ -1017,13 +1017,13 @@ static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpi
 	width = w->widgets[WIDX_DETAILS].left - 4;
 
 	if (stex != NULL) {
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = stex->details;
+		set_format_arg(0, uint16, stex->details);
 	} else {
 		safe_strcpy((char*)0x009BC677, s6Info->details, 256);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint16) = 3165;
+		set_format_arg(0, uint16, 3165);
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = gParkNameArgs;
-	gfx_draw_string_left_wrapped(dpi, (void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, x, y, width, 1191, 0);
+	set_format_arg(2, uint32, gParkNameArgs);
+	gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, 1191, 0);
 
 	// Scenario category label
 	x = w->x + 8;

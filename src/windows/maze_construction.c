@@ -419,8 +419,8 @@ static void window_maze_construction_invalidate(rct_window *w)
 	rct_ride *ride = get_ride(_currentRideIndex);
 
 	// Set window title arguments
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, rct_string_id) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = ride->name_arguments;
+	set_format_arg(4, rct_string_id, ride->name);
+	set_format_arg(6, uint32, ride->name_arguments);
 }
 
 /**

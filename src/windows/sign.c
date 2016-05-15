@@ -254,7 +254,7 @@ static void window_sign_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_SIGN_TEXT:
 		if (banner->flags&BANNER_FLAG_2){
 			rct_ride* ride = get_ride(banner->colour);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = ride->name_arguments;
+			set_format_arg(16, uint32, ride->name_arguments);
 			string_id = ride->name;
 		}
 		else
@@ -518,7 +518,7 @@ static void window_sign_small_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_SIGN_TEXT:
 		if (banner->flags&BANNER_FLAG_2){
 			rct_ride* ride = get_ride(banner->colour);
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint32) = ride->name_arguments;
+			set_format_arg(16, uint32, ride->name_arguments);
 			string_id = ride->name;
 		}
 		else

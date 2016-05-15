@@ -1318,9 +1318,9 @@ static void window_options_invalidate(rct_window *w)
 
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 16, uint16) = (uint16)gConfigGeneral.fullscreen_width;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 18, uint16) = (uint16)gConfigGeneral.fullscreen_height;
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 12, uint16) = 2773 + gConfigGeneral.fullscreen_mode;
+		set_format_arg(16, uint16, (uint16)gConfigGeneral.fullscreen_width);
+		set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
+		set_format_arg(12, uint16, 2773 + gConfigGeneral.fullscreen_mode);
 
 		// disable resolution dropdown on "Fullscreen (desktop)"
 		if (gConfigGeneral.fullscreen_mode == 2){
@@ -1385,7 +1385,7 @@ static void window_options_invalidate(rct_window *w)
 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		// currency: pounds, dollars, etc. (10 total)
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 12, uint16) = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
+		set_format_arg(12, uint16, CurrencyDescriptors[gConfigGeneral.currency_format].stringId);
 
 		// distance: metric / imperial / si
 		{
@@ -1396,14 +1396,14 @@ static void window_options_invalidate(rct_window *w)
 			case MEASUREMENT_FORMAT_METRIC: stringId = STR_METRIC; break;
 			case MEASUREMENT_FORMAT_SI: stringId = STR_SI; break;
 			}
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 14, uint16) = stringId;
+			set_format_arg(14, uint16, stringId);
 		}
 
 		// temperature: celsius/fahrenheit
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 20, uint16) = STR_CELSIUS + gConfigGeneral.temperature_format;
+		set_format_arg(20, uint16, STR_CELSIUS + gConfigGeneral.temperature_format);
 
 		// height: units/real values
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint16) = gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES;
+		set_format_arg(6, uint16, gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES);
 
 		window_options_culture_widgets[WIDX_LANGUAGE].type = WWT_DROPDOWN;
 		window_options_culture_widgets[WIDX_LANGUAGE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -1422,21 +1422,21 @@ static void window_options_invalidate(rct_window *w)
 	case WINDOW_OPTIONS_PAGE_AUDIO:
 		// sound devices
 		if (gAudioCurrentDevice == -1 || gAudioDeviceCount == 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = STR_SOUND_NONE;
+			set_format_arg(0, uint16, STR_SOUND_NONE);
 		}
 		else {
 #ifndef __LINUX__
 			if (gAudioCurrentDevice == 0)
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 5510;
+				set_format_arg(0, uint16, 5510);
 			else
 #endif // __LINUX__
-				RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = 1170;
+				set_format_arg(0, uint16, 1170);
 
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = (uint32)gAudioDevices[gAudioCurrentDevice].name;
+			set_format_arg(2, uint32, (uint32)gAudioDevices[gAudioCurrentDevice].name);
 		}
 
 		// music: on/off
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 8, uint16) = STR_OFF + gConfigSound.ride_music_enabled;
+		set_format_arg(8, uint16, STR_OFF + gConfigSound.ride_music_enabled);
 
 		widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
 		widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
@@ -1660,13 +1660,13 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		int activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
 		const utf8 * activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)activeThemeName;
+		set_format_arg(0, uint32, (uint32)activeThemeName);
 
 		gfx_draw_string_left(dpi, 5238, NULL, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
 			1170,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			gCommonFormatArgs,
 			w->colours[1],
 			w->x + window_options_controls_and_interface_widgets[WIDX_THEMES].left + 1,
 			w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top,
@@ -1696,12 +1696,12 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
 		);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = (uint32)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name;
+		set_format_arg(0, uint32, (uint32)&gConfigTitleSequences.presets[gCurrentPreviewTitleSequence].name);
 		gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
 		gfx_draw_string_left_clipped(
 			dpi,
 			1170,
-			(void*)RCT2_ADDRESS_COMMON_FORMAT_ARGS,
+			gCommonFormatArgs,
 			w->colours[1],
 			w->x + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left + 1,
 			w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top,

@@ -2112,20 +2112,20 @@ static void window_ride_construction_invalidate(rct_window *w)
 		if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
 			stringId = STR_LOG_BUMPS;
 	}
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint16) = stringId;
+	set_format_arg(0, uint16, stringId);
 
 	if (RCT2_GLOBAL(0x00F440D3, uint8) == 1)
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ((RCT2_GLOBAL(0x00F440CD, uint8) * 9) >> 2) & 0xFFFF;
+		set_format_arg(2, uint16, ((RCT2_GLOBAL(0x00F440CD, uint8) * 9) >> 2) & 0xFFFF);
 
 	window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].image =
 		STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180 + _currentSeatRotationAngle;
 
 	if (RCT2_GLOBAL(0x00F440D3, uint8) == 2)
-		RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint16) = ((RCT2_GLOBAL(0x00F440CE, uint8) * 9) >> 2) & 0xFFFF;
+		set_format_arg(2, uint16, ((RCT2_GLOBAL(0x00F440CE, uint8) * 9) >> 2) & 0xFFFF);
 
 	// Set window title arguments
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 6, uint32) = ride->name_arguments;
+	set_format_arg(4, uint16, ride->name);
+	set_format_arg(6, uint32, ride->name_arguments);
 }
 
 /**

@@ -217,7 +217,7 @@ static void window_viewport_invalidate(rct_window *w)
 	}
 
 	// Set title
-	RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 0, uint32) = w->number;
+	set_format_arg(0, uint32, w->number);
 
 	// Set disabled widgets
 	w->disabled_widgets = 0;

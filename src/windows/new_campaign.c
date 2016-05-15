@@ -342,7 +342,7 @@ static void window_new_campaign_invalidate(rct_window *w)
 		if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
 			rct_ride *ride = get_ride(w->campaign.ride_id);
 			window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].image = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = ride->name_arguments;
+			set_format_arg(0, uint32, ride->name_arguments);
 		}
 		break;
 	case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:

@@ -77,25 +77,23 @@ static uint16 _window_error_num_lines;
 void window_error_open(rct_string_id title, rct_string_id message)
 {
 	utf8 *dst;
-	char *args;
 	int numLines, fontHeight, x, y, width, height, maxY;
 	rct_window *w;
 
 	window_close_by_class(WC_ERROR);
 	dst = _window_error_text;
-	args = (char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS;
 
 	// Format the title
 	dst = utf8_write_codepoint(dst, FORMAT_BLACK);
 	if (title != STR_NONE) {
-		format_string(dst, title, args);
+		format_string(dst, title, gCommonFormatArgs);
 		dst = get_string_end(dst);
 	}
 
 	// Format the message
 	if (message != STR_NONE) {
 		dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
-		format_string(dst, message, args);
+		format_string(dst, message, gCommonFormatArgs);
 		dst = get_string_end(dst);
 	}
 

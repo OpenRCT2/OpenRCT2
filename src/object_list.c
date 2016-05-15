@@ -497,7 +497,7 @@ void set_load_objects_fail_reason()
 {
 	rct_string_id expansionNameId;
 
-	rct_object_entry* object = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_object_entry);
+	rct_object_entry* object = get_format_arg(0, rct_object_entry*);
 	int expansion = (object->flags & 0xFF) >> 4;
 
 	if (expansion == 0
@@ -573,7 +573,7 @@ bool object_load_entries(rct_object_entry* entries)
 		// Load the obect
 		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
 			log_error("failed to load entry: %.8s", entries[i].name);
-			memcpy((char*)RCT2_ADDRESS_COMMON_FORMAT_ARGS, &entries[i], sizeof(rct_object_entry));
+			memcpy(gCommonFormatArgs, &entries[i], sizeof(rct_object_entry));
 			loadFailed = true;
 		}
 	}

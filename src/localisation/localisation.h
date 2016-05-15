@@ -61,5 +61,9 @@ extern const char real_name_initials[16];
 extern const char *real_names[1024];
 
 extern utf8 *gUserStrings;
+extern uint8 gCommonFormatArgs[80];
+
+#define get_format_arg(offset, type)			(*((type*)&gCommonFormatArgs[(offset)]))
+#define set_format_arg(offset, type, value)		((*((type*)&gCommonFormatArgs[(offset)])) = (value))
 
 #endif
