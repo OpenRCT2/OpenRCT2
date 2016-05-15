@@ -50,7 +50,7 @@ static bool OnCrash(const wchar_t * dumpPath,
 {
     if (!succeeded)
     {
-        constexpr const char * DumpFailedMessage = "Failed to create the dump. Nothing left to do. Please file an issue with OpenRCT2 on Github and provide latest save.";
+        constexpr const char * DumpFailedMessage = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub and provide latest save, and provide information about what you did before the crash occured.";
         printf("%s\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
@@ -59,12 +59,23 @@ static bool OnCrash(const wchar_t * dumpPath,
         return succeeded;
     }
 
+    // Get filenames
     wchar_t dumpFilePath[MAX_PATH];
     wchar_t saveFilePath[MAX_PATH];
     wsprintfW(dumpFilePath, L"%s%s.dmp", dumpPath, miniDumpId);
     wsprintfW(saveFilePath, L"%s%s.sv6", dumpPath, miniDumpId);
 
-    wprintf(L"Dump Path: %s\n", dumpFilePath);
+    // Try to rename the files
+    wchar_t dumpFilePathNew[MAX_PATH];
+    wsprintfW(dumpFilePathNew, L"%s%s(%s).dmp", dumpPath, miniDumpId, WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
+    if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
+    {
+        std::wcscpy(dumpFilePath, dumpFilePathNew);
+    }
+
+    // Log information to output
+    wprintf(L"Dump Path: %s\n", dumpPath);
+    wprintf(L"Dump File Path: %s\n", dumpFilePath);
     wprintf(L"Dump Id: %s\n", miniDumpId);
     wprintf(L"Version: %s\n", WSZ(OPENRCT2_VERSION));
     wprintf(L"Commit: %s\n", WSZ(OPENRCT2_COMMIT_SHA1_SHORT));
@@ -84,7 +95,7 @@ static bool OnCrash(const wchar_t * dumpPath,
     {
         return succeeded;
     }
-    constexpr const wchar_t * MessageFormat = L"A crash has occurred and dump was created at\n%s.\n\nPlease create an issue with OpenRCT2 on Github and provide the dump and save.\n\nVersion: %s\nCommit: %s";
+    constexpr const wchar_t * MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue with OpenRCT2 on GitHub, and provide the dump and saved game there.\n\nVersion: %s\nCommit: %s";
     wchar_t message[MAX_PATH * 2];
     swprintf_s(message,
                MessageFormat,

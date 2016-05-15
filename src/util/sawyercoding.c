@@ -298,7 +298,7 @@ static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_
 
 	dst = dst_buffer;
 
-	for (int i = 0; i < length; i++) {
+	for (size_t i = 0; i < length; i++) {
 		rleCodeByte = src_buffer[i];
 		if (rleCodeByte & 128) {
 			i++;
