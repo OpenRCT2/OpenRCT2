@@ -175,7 +175,7 @@ bool language_open(int id)
 			gUseTrueTypeFont = false;
 			gCurrentTTFFontSet = nullptr;
 		} else {
-			if (gConfigFonts.file_name != nullptr) {
+			if (!String::IsNullOrEmpty(gConfigFonts.file_name)) {
 				static TTFFontSetDescriptor TTFFontCustom = {{
 					{ gConfigFonts.file_name,	gConfigFonts.font_name,	gConfigFonts.size_tiny,		gConfigFonts.x_offset,	gConfigFonts.y_offset,	gConfigFonts.height_tiny,	nullptr },
 					{ gConfigFonts.file_name,	gConfigFonts.font_name,	gConfigFonts.size_small,	gConfigFonts.x_offset,	gConfigFonts.y_offset,	gConfigFonts.height_small,	nullptr },
