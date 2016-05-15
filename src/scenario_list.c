@@ -379,7 +379,7 @@ static bool scenario_scores_legacy_load(const utf8 *path)
 			// Set new highscore
 			if (highscore != NULL) {
 				highscore->fileName = _strdup(scBasic.path);
-				highscore->name = _strdup(scBasic.completed_by);
+				highscore->name = win1252_to_utf8_alloc(scBasic.completed_by);
 				highscore->company_value = (money32)scBasic.company_value;
 				highscore->timestamp = DATETIME64_MIN;
 				highscoresDirty = true;
