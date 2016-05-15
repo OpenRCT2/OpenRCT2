@@ -651,6 +651,7 @@ void remove_peep_from_queue(rct_peep* peep);
 
 void sub_693BE5(rct_peep* peep, uint8 al);
 void peep_update_name_sort(rct_peep *peep);
+void peep_sort();
 void peep_update_names(bool realNames);
 
 money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3);

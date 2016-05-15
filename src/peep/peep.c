@@ -10306,17 +10306,17 @@ static void peep_give_real_name(rct_peep *peep)
 	peep->name_string_idx = dx;
 }
 
-static int peep_name_compare(utf8 const *a, utf8 const *b)
+static int peep_compare_name(utf8 const *peep_a_name, utf8 const *peep_b_name)
 {
-	for (;; a++, b++) {
-		int result = tolower(*a) - tolower(*b);
-		bool both_numeric = *a >= '0' && *a <= '9' && *b >= '0' && *b <= '9';
-		if (result != 0 || !*a || both_numeric) { // difference found || end of string
+	for (;; peep_a_name++, peep_b_name++) {
+		int result = tolower(*peep_a_name) - tolower(*peep_b_name);
+		bool both_numeric = *peep_a_name >= '0' && *peep_a_name <= '9' && *peep_b_name >= '0' && *peep_b_name <= '9';
+		if (result != 0 || !*peep_a_name || both_numeric) { // difference found || end of string
 			if (both_numeric) { // a and b both start with a number
 				// Get the numbers in the string at current positions
 				int na = 0 , nb = 0;
-				for (; *a >= '0' && *a <= '9'; a++) { na *= 10; na += *a - '0'; }
-				for (; *b >= '0' && *b <= '9'; b++) { nb *= 10; nb += *b - '0'; }
+				for (; *peep_a_name >= '0' && *peep_a_name <= '9'; peep_a_name++) { na *= 10; na += *peep_a_name - '0'; }
+				for (; *peep_b_name >= '0' && *peep_b_name <= '9'; peep_b_name++) { nb *= 10; nb += *peep_b_name - '0'; }
 				// In case the numbers are the same
 				if (na == nb)
 					continue;
@@ -10329,6 +10329,44 @@ static int peep_name_compare(utf8 const *a, utf8 const *b)
 	}
 
 	assert(false);
+}
+
+static int peep_compare(uint16 const *sprite_index_a, uint16 const *sprite_index_b)
+{
+	rct_peep const *peep_a = GET_PEEP(*sprite_index_a);
+	rct_peep const *peep_b = GET_PEEP(*sprite_index_b);
+
+	// Compare types
+	if (peep_a->type != peep_b->type) {
+		return peep_a->type - peep_b->type;
+	}
+
+	// Simple ID comparison for when both peeps use a number or a generated name
+	const bool both_numbers = (
+		peep_a->name_string_idx >= 767 && peep_a->name_string_idx <= 771 &&
+		peep_b->name_string_idx >= 767 && peep_b->name_string_idx <= 771
+	);
+	if (both_numbers) {
+		return peep_a->id - peep_b->id;
+	}
+	const bool both_have_generated_names = (
+		peep_a->name_string_idx >= 0xA000 && peep_a->name_string_idx < 0xE000 &&
+		peep_b->name_string_idx >= 0xA000 && peep_b->name_string_idx < 0xE000
+	);
+	if (both_have_generated_names) {
+		// This assumes the names are ordered alphabetically
+		return peep_a->name_string_idx - peep_b->name_string_idx;
+	}
+
+	// At least one of them has a custom name assigned
+	// Compare their names as strings
+	utf8 name_a[256];
+	utf8 name_b[256];
+	uint32 peepIndex = peep_a->id;
+	format_string(name_a, peep_a->name_string_idx, &peepIndex);
+	peepIndex = peep_b->id;
+	format_string(name_b, peep_b->name_string_idx, &peepIndex);
+	return peep_compare_name(name_a, name_b);
 }
 
 /**
@@ -10354,21 +10392,11 @@ void peep_update_name_sort(rct_peep *peep)
 		nextPeep->previous = prevSpriteIndex;
 	}
 
-	// Get peep name
-	utf8 name[256];
-	uint32 peepIndex = peep->id;
-	format_string_to_upper(name, peep->name_string_idx, &peepIndex);
-	
 	rct_peep *otherPeep;
 	uint16 spriteIndex;
 	FOR_ALL_PEEPS(spriteIndex, otherPeep) {
-		// Get other peep name
-		utf8 otherName[256];
-		peepIndex = otherPeep->id;
-		format_string_to_upper(otherName, otherPeep->name_string_idx, &peepIndex);
-
 		// Check if peep should go before this one
-		if (peep_name_compare(name, otherName) >= 0) {
+		if (peep_compare(&peep->sprite_index, &otherPeep->sprite_index) >= 0) {
 			continue;
 		}
 
@@ -10407,46 +10435,73 @@ finish_peep_sort:
 	openrct2_reset_object_tween_locations();
 }
 
+void peep_sort()
+{
+	// Count number of peeps
+	uint16 sprite_index, num_peeps = 0;
+	rct_peep *peep;
+	FOR_ALL_PEEPS(sprite_index, peep) {
+		num_peeps++;
+	}
+
+	// No need to sort
+	if (num_peeps < 2)
+		return;
+
+	// Create a copy of the peep list and sort it using peep_compare
+	uint16 *peep_list = (uint16*)malloc(num_peeps * sizeof(uint16));
+	int i = 0;
+	FOR_ALL_PEEPS(sprite_index, peep) {
+		peep_list[i++] = peep->sprite_index;
+	}
+	qsort(peep_list, num_peeps, sizeof(uint16), peep_compare);
+
+	// Set the correct peep->next and peep->previous using the sorted list
+	for (i = 0; i < num_peeps; i++) {
+		peep = GET_PEEP(peep_list[i]);
+		peep->previous = (i > 0) ? peep_list[i - 1] : SPRITE_INDEX_NULL;
+		peep->next = (i + 1 < num_peeps) ? peep_list[i + 1] : SPRITE_INDEX_NULL;
+	}
+	// Make sure the first peep is set
+	RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = peep_list[0];
+
+	free(peep_list);
+
+	i = 0;
+	FOR_ALL_PEEPS(sprite_index, peep) {
+		i++;
+	}
+	assert(i == num_peeps);
+}
+
 /**
  *
  *  rct2: 0x0069926C
  */
 void peep_update_names(bool realNames)
 {
-	rct_peep *peep;
-	uint16 spriteIndex;
-	bool restart;
-
 	if (realNames) {
 		gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-		do {
-			restart = false;
-			FOR_ALL_GUESTS(spriteIndex, peep) {
-				if (peep->name_string_idx == 767) {
-					peep_give_real_name(peep);
-					peep_update_name_sort(peep);
-					restart = true;
-				}
+		rct_peep *peep;
+		uint16 spriteIndex;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
+			if (peep->name_string_idx == 767) {
+				peep_give_real_name(peep);
 			}
-		} while (restart);
-		gfx_invalidate_screen();
+		}
 	} else {
 		gParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-		do {
-			restart = false;
-			FOR_ALL_GUESTS(spriteIndex, peep) {
-				if (peep->name_string_idx < 0xA000)
-					continue;
-				if (peep->name_string_idx >= 0xE000)
-					continue;
-
+		rct_peep *peep;
+		uint16 spriteIndex;
+		FOR_ALL_GUESTS(spriteIndex, peep) {
+			if (peep->name_string_idx >= 0xA000 && peep->name_string_idx < 0xE000) {
 				peep->name_string_idx = 767;
-				peep_update_name_sort(peep);
-				restart = true;
 			}
-		} while (restart);
-		gfx_invalidate_screen();
+		}
 	}
+
+	peep_sort();
+	gfx_invalidate_screen();
 }
 
 static void peep_read_map(rct_peep *peep)
