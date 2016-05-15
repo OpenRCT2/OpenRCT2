@@ -230,7 +230,7 @@ bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 		uint16 trackProgress = vehicle->track_progress + 1;
 
 		const rct_vehicle_info *moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-		uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+		uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 		if (trackProgress >= trackTotalProgress) {
 			RCT2_GLOBAL(0x00F64E36, uint8) = gTrackDefinitions[trackType].vangle_end;
 			RCT2_GLOBAL(0x00F64E37, uint8) = gTrackDefinitions[trackType].bank_end;
@@ -348,7 +348,7 @@ bool sub_6DF21B_loop(rct_vehicle* vehicle) {
 			}
 
 			moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
-			uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+			uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 			trackProgress = trackTotalProgress - 1;
 		}
 		vehicle->track_progress = trackProgress;

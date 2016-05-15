@@ -477,9 +477,7 @@ void viewport_interaction_remove_park_entrance(rct_map_element *mapElement, int 
  */
 static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, int x, int y)
 {
-	rct_scenery_entry* sceneryEntry;
-
-	sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry* sceneryEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
 	if (sceneryEntry->wall.var_0D != 0xFF){
 		window_sign_small_open(mapElement->properties.fence.item[0]);
 	} else {
@@ -502,9 +500,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, i
  */
 static void viewport_interaction_remove_large_scenery(rct_map_element *mapElement, int x, int y)
 {
-	rct_scenery_entry* sceneryEntry;
-
-	sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
+	rct_scenery_entry* sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK];
 
 	if (sceneryEntry->large_scenery.var_11 != 0xFF){
 		int id = (mapElement->type & 0xC0) |

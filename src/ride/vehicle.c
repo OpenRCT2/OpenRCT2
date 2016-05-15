@@ -152,9 +152,12 @@ const uint8 _soundParams[SOUND_MAXID][2] = {
 
 const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
 {
-	const rct_vehicle_info **infoListList = RCT2_ADDRESS(0x008B8F30, const rct_vehicle_info**)[cd];
-	const rct_vehicle_info *infoList = infoListList[typeAndDirection];
-	return &infoList[offset];
+	return &gTrackVehicleInfo[cd][typeAndDirection]->info[offset];
+}
+
+uint16 vehicle_get_move_info_size(int cd, int typeAndDirection)
+{
+	return gTrackVehicleInfo[cd][typeAndDirection]->size;
 }
 
 const uint8 DoorOpenSoundIds[] = {
@@ -6956,7 +6959,7 @@ loc_6DAEB9:
 		);
 
 	// Track Total Progress is in the two bytes before the move info list
-	uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+	uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 	if (regs.ax >= trackTotalProgress) {
 		if (!vehicle_update_track_motion_forwards_get_new_track(vehicle, trackType, ride, rideEntry)) {
 			goto loc_6DB94A;
@@ -7237,7 +7240,7 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 		);
 
 	// There are two bytes before the move info list
-	uint16 trackTotalProgress = *((uint16*)((int)moveInfo - 2));
+	uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 	*progress = trackTotalProgress - 1;
 	return true;
 }
@@ -7474,7 +7477,7 @@ loc_6DC476:
 	// There are two bytes before the move info list
 	{
 		uint16 unk16_v34 = vehicle->track_progress + 1;
-		uint16 unk16 = *((uint16*)((int)moveInfo - 2));
+		uint16 unk16 = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 		if (unk16_v34 < unk16) {
 			regs.ax = unk16_v34;
 			goto loc_6DC743;
@@ -7749,7 +7752,7 @@ loc_6DCA9A:
 	moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
 
 	// There are two bytes before the move info list
-	regs.ax = *((uint16*)((int)moveInfo - 2)) - 1;
+	regs.ax = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 
 loc_6DCC2C:
 	vehicle->track_progress = regs.ax;

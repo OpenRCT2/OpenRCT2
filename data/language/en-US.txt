@@ -2337,7 +2337,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
 STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
-STR_2333    :Sound
+STR_2333    :Sound effects
 STR_2334    :Pounds ({POUND})
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
@@ -2807,7 +2807,7 @@ STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_CO
 STR_2795    :Sort
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
-STR_2798    :{SMALLFONT}{BLACK}Select whether to scroll the view when the mouse pointer is at the screen edge
+STR_2798    :{SMALLFONT}{BLACK}Scroll the view when the mouse pointer is at the screen edge
 STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
@@ -3468,6 +3468,7 @@ STR_5572    :Add To Favorites
 STR_5573    :Remove From Favorites
 STR_5620    :Corkscrew Follies
 STR_5730    :Nearest neighbor
+STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbor scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
 STR_5821    :{SMALLFONT}{BLACK}Changes the color of the construction marker when building rides,{NEWLINE}paths, shops, scenery, etc.
 STR_5827    :{SMALLFONT}{BLACK}Sets the color scheme used for the GUI
 
