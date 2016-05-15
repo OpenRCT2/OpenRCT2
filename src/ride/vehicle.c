@@ -8168,7 +8168,10 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	}
 	regs.edx >>= 4;
 	regs.eax = regs.edx;
-	regs.eax = regs.eax / totalFriction;
+	// OpenRCT2: vehicles from different track types can have  0 friction.
+	if (totalFriction != 0) {
+		regs.eax = regs.eax / totalFriction;
+	}
 	regs.ecx -= regs.eax;
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)) {
