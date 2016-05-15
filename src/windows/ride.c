@@ -3237,8 +3237,11 @@ static void window_ride_operating_invalidate(rct_window *w)
 	}
 
 	if (format != 0) {
-		if (ride->type == RIDE_TYPE_TWIST)
-			get_format_arg(18, uint16) *= 3;
+		if (ride->type == RIDE_TYPE_TWIST) {
+			uint16 arg;
+			memcpy(&arg, gCommonFormatArgs + 18, sizeof(uint16));
+			set_format_arg(18, uint16, arg * 3);
+		}
 
 		window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_24;
 		window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].image = caption;

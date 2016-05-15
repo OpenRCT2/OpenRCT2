@@ -2526,8 +2526,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 
 	ride->lifecycle_flags |= RIDE_LIFECYCLE_11;
 
-	get_format_arg(0, rct_string_id)
-		= RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4] + 6;
+	set_format_arg(0, rct_string_id, RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4] + 6);
 
 	uint8 vehicleIndex = 0;
 	for (; vehicleIndex < ride->num_vehicles; ++vehicleIndex)
@@ -2537,8 +2536,7 @@ static void vehicle_check_if_missing(rct_vehicle* vehicle) {
 	set_format_arg(2, uint16, vehicleIndex);
 	set_format_arg(4, rct_string_id, ride->name);
 	set_format_arg(6, uint32, ride->name_arguments);
-	get_format_arg(10, rct_string_id) =
-		RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4 + 2];
+	set_format_arg(10, rct_string_id, RCT2_ADDRESS(0x0097C98E, rct_string_id)[ride->type * 4 + 2]);
 
 	news_item_add_to_queue(NEWS_ITEM_RIDE, 2218, vehicle->ride);
 }

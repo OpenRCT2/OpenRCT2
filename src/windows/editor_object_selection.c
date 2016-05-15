@@ -1070,8 +1070,7 @@ static void window_editor_object_selection_tooltip(rct_window* w, int widgetInde
 	case WIDX_TAB_9:
 	case WIDX_TAB_10:
 	case WIDX_TAB_11:
-		get_format_arg(0, rct_string_id) =
-			STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + (widgetIndex - WIDX_TAB_1);
+		set_format_arg(0, rct_string_id, STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS + (widgetIndex - WIDX_TAB_1));
 		break;
 	default:
 		set_format_arg(0, rct_string_id, STR_LIST);

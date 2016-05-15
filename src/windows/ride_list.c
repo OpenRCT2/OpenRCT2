@@ -601,16 +601,26 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		case INFORMATION_TYPE_QUEUE_LENGTH:
 			set_format_arg(2, uint16, ride_get_total_queue_length(ride));
 			formatSecondary = STR_QUEUE_EMPTY;
-			if (get_format_arg(2, uint16) == 1)
-				formatSecondary = STR_QUEUE_ONE_PERSON;
-			else if (get_format_arg(2, uint16) > 1)
-				formatSecondary = STR_QUEUE_PEOPLE;
+			{
+				uint16 arg;
+				memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16));
+
+				if (arg == 1)
+					formatSecondary = STR_QUEUE_ONE_PERSON;
+				else if (arg > 1)
+					formatSecondary = STR_QUEUE_PEOPLE;
+			}
 			break;
 		case INFORMATION_TYPE_QUEUE_TIME:
 			set_format_arg(2, uint16, ride_get_max_queue_time(ride));
 			formatSecondary = STR_QUEUE_TIME_LABEL;
-			if (get_format_arg(2, uint16) > 1)
-				formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+			{
+				uint16 arg;
+				memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16));
+
+				if (arg > 1)
+					formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+			}
 			break;
 		case INFORMATION_TYPE_RELIABILITY:
 			// edx = RCT2_GLOBAL(0x009ACFA4 + (ride->var_001 * 4), uint32);

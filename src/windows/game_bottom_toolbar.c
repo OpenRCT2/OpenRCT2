@@ -378,10 +378,11 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 
 	// Draw money
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
-		set_format_arg(0, int, DECRYPT_MONEY(gCashEncrypted));
+		money32 cash = DECRYPT_MONEY(gCashEncrypted);
+		set_format_arg(0, money32, cash);
 		gfx_draw_string_centred(
 			dpi,
-			(get_format_arg(0, int) < 0 ? 1391 : 1390),
+			(cash < 0 ? 1391 : 1390),
 			x, y - 3,
 			(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY ? COLOUR_WHITE : w->colours[0] & 0x7F),
 			gCommonFormatArgs
