@@ -152,4 +152,4 @@ static void draw_snow(int left, int top, int width, int height)
 	x_start += left;
 	y_start += top;
 	gfx_draw_snow(left, top, width, height, x_start, y_start);
-}
+};

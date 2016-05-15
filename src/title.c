@@ -486,6 +486,7 @@ static void title_update_showcase()
 			}
 			update_palette_effects();
 			update_rain_animation();
+			update_snow_animation();
 		}
 	} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1);
 }
