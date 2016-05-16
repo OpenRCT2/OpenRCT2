@@ -4168,6 +4168,8 @@ STR_5857    :{SMALLFONT}{BLACK}Game options
 STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
 STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 
+STR_5860    :Snow
+
 #############
 # Scenarios #
 ################
