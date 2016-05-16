@@ -140,11 +140,10 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *);
     RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WALL;
 
-    rct_scenery_entry * sceneryEntry = g_wallSceneryEntries[map_element->properties.fence.type];
+    rct_scenery_entry * sceneryEntry = gWallSceneryEntries[map_element->properties.fence.type];
     uint32 frameNum = 0;
 
     if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG_5) {
-        // animation?
         frameNum = (gCurrentTicks & 7) * 2;
     }
 
@@ -352,8 +351,8 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
         return;
     }
 
-    RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, uint32) = 0;
-    RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 4, uint32) = 0;
+    set_format_arg(0, uint32, 0);
+    set_format_arg(4, uint32, 0);
 
     uint8 al_2 = map_element->properties.fence.item[1] >> 5 | (map_element->flags & 0x60) >> 2;
 
@@ -365,17 +364,18 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
         al_2 |= 0x80;
     }
 
-    RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 7, uint8) = al_2;
+    set_format_arg(7, uint8, al_2);
 
     uint16 scrollingMode = sceneryEntry->wall.var_0D + (get_current_rotation() + 1) & 0x3;
 
     uint8 bannerIndex = map_element->properties.fence.item[0];
     rct_banner * banner = &gBanners[bannerIndex];
-    RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = banner->string_idx;
+
+    set_format_arg(0, rct_string_id, banner->string_idx);
     if (banner->flags & 0x04) {
         rct_ride * ride = get_ride(banner->colour);
-        RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS, rct_string_id) = ride->name;
-        RCT2_GLOBAL(RCT2_ADDRESS_COMMON_FORMAT_ARGS + 2, uint32) = ride->name_arguments;
+        set_format_arg(0, rct_string_id, ride->name);
+        set_format_arg(2, uint32, ride->name_arguments);
     }
 
     sub_98199C(0, 0, 0, 1, 1, 13, height + 8, 0, 0, 0, get_current_rotation());
@@ -384,9 +384,9 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     utf8 signString[MAX_PATH];
     rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
     if (gConfigGeneral.upper_case_banners) {
-        format_string_to_upper(signString, stringId, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+        format_string_to_upper(signString, stringId, gCommonFormatArgs);
     } else {
-        format_string(signString, stringId, RCT2_ADDRESS(RCT2_ADDRESS_COMMON_FORMAT_ARGS, void));
+        format_string(signString, stringId, gCommonFormatArgs);
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
