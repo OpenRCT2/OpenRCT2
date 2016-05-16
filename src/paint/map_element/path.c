@@ -18,6 +18,13 @@
 #include "../../addresses.h"
 #include "../../world/map.h"
 
+// #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
+//        to use the old string arguments array. Remove when scrolling_text_setup is no
+//        longer hooked.
+bool TempForScrollText = false;
+
 void path_paint(uint8 direction, uint16 height, rct_map_element *mapElement) {
+	TempForScrollText = true;
 	RCT2_CALLPROC_X(0x6A3590, 0, 0, direction, height, (int)mapElement, 0, 0);
+	TempForScrollText = false;
 }

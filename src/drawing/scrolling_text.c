@@ -125,6 +125,8 @@ static void scrolling_text_format(utf8 *dst, rct_draw_scroll_text *scrollText)
 	}
 }
 
+extern bool TempForScrollText;
+
 /**
  *
  *  rct2: 0x006C42D9
@@ -135,6 +137,10 @@ static void scrolling_text_format(utf8 *dst, rct_draw_scroll_text *scrollText)
  */
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode)
 {
+	if (TempForScrollText) {
+		memcpy(gCommonFormatArgs, (const void*)0x013CE952, 16);
+	}
+
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
 	if (dpi->zoom_level != 0) return 0x626;
