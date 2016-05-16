@@ -40,8 +40,11 @@ rct_drawpixelinfo gScreenDPI;
 rct_drawpixelinfo gWindowDPI;
 
 #define MAX_RAIN_PIXELS 0xFFFE
+#define MAX_SNOW_PIXELS 0xFFFE
 static uint32 _rainPixels[MAX_RAIN_PIXELS];
 static uint32 _numRainPixels;
+static uint32 _snowPixels[MAX_SNOW_PIXELS];
+static uint32 _numSnowPixels;
 
 uint8 gGamePalette[256 * 4];
 uint32 gPaletteEffectFrame;
@@ -476,6 +479,59 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 	}
 }
 
+// Draw_Snow
+void gfx_draw_snow(int left, int top, int width, int height, sint32 x_start, sint32 y_start)
+{
+	static const uint8 SnowPatten[] = {
+		32, 32, 0, 12, 0, 255, 0, 255, -1, 0, -1, 0, -1, 0, -1, 0, -1,
+		0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0,
+		-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1,
+		0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, 0, 0
+	};
+
+	const uint8 *pattern;
+	pattern = SnowPatten;
+	uint8 pattern_x_space = *pattern++;
+	uint8 pattern_y_space = *pattern++;
+
+	uint8 pattern_start_x_offset = x_start % pattern_x_space;
+	uint8 pattern_start_y_offset = y_start % pattern_y_space;
+
+	rct_drawpixelinfo *dpi = &gScreenDPI;
+	uint32 pixel_offset = (dpi->pitch + dpi->width) * top + left;
+	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
+
+	//Stores the colours of changed pixels
+	uint32 *pixel_store = _snowPixels;
+	pixel_store += _numSnowPixels;
+
+	for (; height != 0; height--) {
+		uint8 pattern_x = pattern[pattern_y_pos * 2];
+		if (pattern_x != 0xFF) {
+			if (_numSnowPixels < (MAX_SNOW_PIXELS - (uint32)width)) {
+				int final_pixel_offset = width + pixel_offset;
+
+				int x_pixel_offset = pixel_offset;
+				x_pixel_offset += ((uint8)(pattern_x - pattern_start_x_offset)) % pattern_x_space;
+
+				uint8 pattern_pixel = pattern[pattern_y_pos * 2 + 1];
+				for (; x_pixel_offset < final_pixel_offset; x_pixel_offset += pattern_x_space) {
+					uint8 current_pixel = dpi->bits[x_pixel_offset];
+					dpi->bits[x_pixel_offset] = pattern_pixel;
+					_numSnowPixels++;
+
+					// Store colour and position
+					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
+				}
+			}
+		}
+
+		pixel_offset += dpi->pitch + dpi->width;
+		pattern_y_pos++;
+		pattern_y_pos %= pattern_y_space;
+	}
+}
+
 /**
  *
  *  rct2: 0x006843DC
@@ -500,6 +556,30 @@ void redraw_rain()
 		}
 		RCT2_GLOBAL(0x009E2C78, uint32) = 1;
 		_numRainPixels = 0;
+	}
+}
+
+// Redraw_Snow
+void redraw_snow()
+{
+	if (_numSnowPixels > 0) {
+		rct_window *window = window_get_main();
+		uint32 numPixels = window->width * window->height;
+
+		uint8 *screenPixels = gScreenDPI.bits;
+		for (uint32 i = 0; i < _numSnowPixels; i++) {
+			uint32 pixel = _snowPixels[i];
+			uint32 pixelIndex = pixel >> 8;
+
+			// HACK
+			if (pixelIndex > numPixels) {
+				log_verbose("Pixel error, skipping snow draw in this frame");
+				break;
+			}
+			screenPixels[pixelIndex] = pixel & 0xFF;
+		}
+		RCT2_GLOBAL(0x009E2C78, uint32) = 1;
+		_numSnowPixels = 0;
 	}
 }
 

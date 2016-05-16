@@ -32,7 +32,8 @@ enum{
 	WEATHER_CLOUDY,
 	WEATHER_RAIN,
 	WEATHER_HEAVY_RAIN,
-	WEATHER_THUNDER
+	WEATHER_THUNDER,
+	WEATHER_SNOW
 };
 
 typedef struct rct_weather {
@@ -40,6 +41,7 @@ typedef struct rct_weather {
 	sint8 effect_level;
 	sint8 gloom_level;
 	sint8 rain_level;
+	sint8 snow_level;
 	uint32 sprite_id;
 } rct_weather;
 
@@ -56,7 +58,7 @@ typedef struct rct_weather {
 #define gClimateNextRainLevel			RCT2_GLOBAL(RCT2_ADDRESS_NEXT_RAIN_LEVEL, uint8)
 #define gClimateUpdateTimer				RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE_UPDATE_TIMER, uint16)
 
-extern const rct_weather climate_weather_data[6];
+extern const rct_weather climate_weather_data[7];
 
 extern uint16 gClimateLightningFlash;
 
