@@ -996,6 +996,12 @@ void S4Importer::ImportParkFlags()
     {
         gCheatsUnlockAllPrices = true;
     }
+    // RCT2 uses two flags for no money (for cheat detection). RCT1 used only one. 
+    // Copy its value to make no money scenarios such as Arid Heights work properly.
+    if (_s4.park_flags & PARK_FLAGS_NO_MONEY)
+    {
+        gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
+    }
 }
 
 void S4Importer::ImportClimate()
