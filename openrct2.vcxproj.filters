@@ -272,10 +272,6 @@
     <ClCompile Include="src\ride\vehicle_paint.c" />
     <ClCompile Include="src\rct2\S6Importer.cpp" />
     <ClCompile Include="src\rct2\S6Exporter.cpp" />
-    <ClCompile Include="src\ride\track_design.c" />
-    <ClCompile Include="src\ride\track_design_save.c" />
-    <ClCompile Include="src\ride\track_design_index.c" />
-    <ClCompile Include="src\drawing\snow.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources\resource.h" />
@@ -390,7 +386,6 @@
     <ClInclude Include="src\ride\vehicle_paint.h" />
     <ClInclude Include="src\rct2\S6Importer.h" />
     <ClInclude Include="src\rct2\S6Exporter.h" />
-    <ClInclude Include="src\ride\track_design.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resources\OpenRCT2.rc" />
