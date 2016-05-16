@@ -40,6 +40,7 @@ rct_xyz16 gFootpathConstructFromPosition;
 uint8 gFootpathConstructDirection;
 uint8 gFootpathConstructSlope;
 uint8 gFootpathConstructValidDirections;
+money32 gFootpathPrice;
 
 const rct_xy16 word_981D6C[4] = {
 	{ -1,  0 },
@@ -155,7 +156,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		footpath_remove_litter(x, y, gCommandPosition.z);
 
 	// loc_6A649D:
-	RCT2_GLOBAL(0x00F3EFD9, money32) += MONEY(12, 00);
+	gFootpathPrice += MONEY(12, 00);
 
 	bl = 15;
 	zHigh = z + 4;
@@ -164,7 +165,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 		zHigh += 2;
 	}
 
-	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F3EFD9, money32)))
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
 		return MONEY32_UNDEFINED;
 
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
@@ -176,7 +177,7 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	mapElement = map_get_surface_element_at((x / 32), (y / 32));
 
 	int supportHeight = z - mapElement->base_height;
-	RCT2_GLOBAL(0x00F3EFD9, money32) += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+	gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
@@ -201,13 +202,13 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 
 		loc_6A6620(flags, x, y, mapElement);
 	}
-	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
 static money32 footpath_element_update(int x, int y, rct_map_element *mapElement, int type, int flags, uint8 pathItemType)
 {
 	if ((mapElement->properties.path.type >> 4) != (type & 0x0F) || (mapElement->type & 1) != (type >> 7)) {
-		RCT2_GLOBAL(0x00F3EFD9, money32) += MONEY(6, 00);
+		gFootpathPrice += MONEY(6, 00);
 	} else if (pathItemType != 0) {
 		if (
 			!(flags & GAME_COMMAND_FLAG_GHOST) &&
@@ -217,7 +218,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 			if (flags & GAME_COMMAND_FLAG_4)
 				return MONEY32_UNDEFINED;
 
-			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 		}
 
 		if (pathItemType != 0) {
@@ -244,7 +245,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 				return MONEY32_UNDEFINED;
 			}
 
-			RCT2_GLOBAL(0x00F3EFD9, money32) += scenery_entry->path_bit.price;
+			gFootpathPrice += scenery_entry->path_bit.price;
 		}
 
 		if (flags & GAME_COMMAND_FLAG_4)
@@ -264,7 +265,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		}
 
 		if (!(flags & GAME_COMMAND_FLAG_APPLY))
-			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+			return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 
 		if (
 			(pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST)) ||
@@ -282,7 +283,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 				mapElement->properties.path.addition_status = 255;
 		}
 		map_invalidate_tile_full(x, y);
-		return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+		return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 	}
 
 	if (flags & GAME_COMMAND_FLAG_4)
@@ -302,7 +303,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		loc_6A6620(flags, x, y, mapElement);
 	}
 
-	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
 static money32 footpath_place_real(int type, int x, int y, int z, int slope, int flags, uint8 pathItemType)
@@ -322,7 +323,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 		footpath_interrupt_peeps(x, y, z * 8);
 
-	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
+	gFootpathPrice = 0;
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
 
 	if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
@@ -459,7 +460,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	if (flags & GAME_COMMAND_FLAG_APPLY)
 		footpath_interrupt_peeps(x, y, z * 8);
 
-	RCT2_GLOBAL(0x00F3EFD9, money32) = 0;
+	gFootpathPrice = 0;
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
 
 	if (!map_is_location_owned(x, y, z * 8) && !gCheatsSandboxMode) {
@@ -485,7 +486,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		}
 	}
 
-	RCT2_GLOBAL(0x00F3EFD9, money32) += 120;
+	gFootpathPrice += 120;
 	uint8 bl = 15;
 	int zHigh = z + 4;
 	if (slope & 4) {
@@ -493,7 +494,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		zHigh += 2;
 	}
 
-	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F3EFD9, money32)))
+	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
 		return MONEY32_UNDEFINED;
 
 	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
@@ -505,7 +506,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	mapElement = map_get_surface_element_at((x / 32), (y / 32));
 
 	int supportHeight = z - mapElement->base_height;
-	RCT2_GLOBAL(0x00F3EFD9, money32) += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
+	gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
 		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
@@ -531,7 +532,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 
 		map_invalidate_tile_full(x, y);
 	}
-	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : RCT2_GLOBAL(0x00F3EFD9, money32);
+	return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
 /**

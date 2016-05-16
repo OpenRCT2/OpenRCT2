@@ -777,7 +777,7 @@ static void window_footpath_place_path_at_point(int x, int y)
 
 	if (cost == MONEY32_UNDEFINED) {
 		_footpathErrorOccured = true;
-	} else if (RCT2_GLOBAL(0x00F3EFD9, uint32) != 0) {
+	} else if (gFootpathPrice != 0) {
 		// bp = RCT2_ADDRESS_COMMAND_MAP_Z
 		// dx = RCT2_ADDRESS_COMMAND_MAP_Y
 		// cx = RCT2_ADDRESS_COMMAND_MAP_X
