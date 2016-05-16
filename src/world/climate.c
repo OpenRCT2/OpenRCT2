@@ -26,6 +26,9 @@
 #include "../util/util.h"
 #include "climate.h"
 
+int SnowLevel;
+int NextSnowLevel;
+
 enum {
 	THUNDER_STATUS_NULL = 0,
 	THUNDER_STATUS_PLAYING = 1,
@@ -82,6 +85,7 @@ void climate_reset(int climate)
 	gClimateCurrentWeatherEffect = climate_weather_data[weather].effect_level;
 	gClimateCurrentWeatherGloom = climate_weather_data[weather].gloom_level;
 	gClimateCurrentRainLevel = climate_weather_data[weather].rain_level;
+	SnowLevel = climate_weather_data[weather].snow_level;
 
 	_lightningTimer = 0;
 	_thunderTimer = 0;
@@ -115,7 +119,9 @@ void climate_update()
 		cur_gloom = gClimateCurrentWeatherGloom,
 		next_gloom = gClimateNextWeatherGloom,
 		cur_rain = gClimateCurrentRainLevel,
-		next_rain = gClimateNextRainLevel;
+		next_rain = gClimateNextRainLevel;		
+		cur_snow = SnowLevel,
+		next_snow = NextSnowLevel;
 
 	if (gCheatsFreezeClimate) //for cheats
 		return;
@@ -135,12 +141,17 @@ void climate_update()
 				_thunderTimer = 0;
 				_lightningTimer = 0;
 
+				if (cur_snow == next_snow) {
+					gClimateCurrentWeather = gClimateNextWeather;
+					climate_determine_future_weather(scenario_rand());
+					gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;}
 				if (cur_rain == next_rain) {
 					gClimateCurrentWeather = gClimateNextWeather;
 					climate_determine_future_weather(scenario_rand());
 					gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-				} else if (next_rain <= 2) { // Safe-guard
+				} else if (next_rain <= 2  || next_snow <= 2) { // Safe-guard
 					gClimateCurrentRainLevel = step_weather_level(cur_rain, next_rain);
+					SnowLevel = step_weather_level(cur_snow, next_snow);
 				}
 			} else {
 				gClimateCurrentWeatherGloom = step_weather_level(cur_gloom, next_gloom);
@@ -171,6 +182,7 @@ void climate_force_weather(uint8 weather){
 	gClimateCurrentWeather = weather;
 	gClimateCurrentWeatherGloom = climate_weather_data[weather].gloom_level;
 	gClimateCurrentRainLevel = climate_weather_data[weather].rain_level;
+	SnowLevel = climate_weather_data[weather].snow_level;
 	gClimateCurrentWeatherEffect = climate_weather_data[weather].effect_level;
 	gClimateUpdateTimer = 1920;
 
@@ -203,6 +215,7 @@ static void climate_determine_future_weather(int randomDistribution)
 	gClimateNextWeatherEffect = climate_weather_data[next_weather].effect_level;
 	gClimateNextWeatherGloom = climate_weather_data[next_weather].gloom_level;
 	gClimateNextRainLevel = climate_weather_data[next_weather].rain_level;
+	SnowLevel = climate_weather_data[next_weather].snow_level;
 
 	gClimateUpdateTimer = 1920;
 }
@@ -330,13 +343,14 @@ static int climate_play_thunder(int instanceIndex, int soundId, int volume, int 
 
 // rct2: 0x00993C94
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const rct_weather climate_weather_data[6] = {
-	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A96 }, // Sunny
-	{ .temp_delta = 5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
-	{ .temp_delta = 0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .sprite_id = 0x5A98 }, // Cloudy
-	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .sprite_id = 0x5A99 }, // Rain
-	{ .temp_delta = -4, .effect_level = 1, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9A }, // Heavy Rain
-	{ .temp_delta = 2, .effect_level = 2, .gloom_level = 2, .rain_level = 2, .sprite_id = 0x5A9B }, // Thunderstorm
+const rct_weather climate_weather_data[7] = {
+	{ .temp_delta = 10, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .snow_level = 0, .sprite_id = 0x5A96 }, // Sunny
+	{ .temp_delta = 5, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .snow_level = 0, .sprite_id = 0x5A97 }, // Partially Cloudy
+	{ .temp_delta = 0, .effect_level = 0, .gloom_level = 0, .rain_level = 0, .snow_level = 0, .sprite_id = 0x5A98 }, // Cloudy
+	{ .temp_delta = -2, .effect_level = 1, .gloom_level = 1, .rain_level = 1, .snow_level = 0, .sprite_id = 0x5A99 }, // Rain
+	{ .temp_delta = -4, .effect_level = 1, .gloom_level = 2, .rain_level = 2, .snow_level = 0, .sprite_id = 0x5A9A }, // Heavy Rain
+	{ .temp_delta = 2, .effect_level = 2, .gloom_level = 2, .rain_level = 2, .snow_level = 0, .sprite_id = 0x5A9B }, // Thunderstorm
+	{ .temp_delta = -10, .effect_level = 1, .gloom_level = 0, .rain_level = 0, .snow_level = 1, .sprite_id = 0x5A9C }, // Snow
 };
 
 
@@ -345,7 +359,7 @@ static const rct_weather_transition climate_cool_and_wet_transitions[] = {
 	{ .base_temperature = 8, .distribution_size = 18,
 	.distribution = { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
 	{ .base_temperature = 10, .distribution_size = 21,
-	.distribution = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 0, 0 } },
+	.distribution = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6, 0 } },
 	{ .base_temperature = 14, .distribution_size = 17,
 	.distribution = { 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0 } },
 	{ .base_temperature = 17, .distribution_size = 17,
@@ -355,7 +369,7 @@ static const rct_weather_transition climate_cool_and_wet_transitions[] = {
 	{ .base_temperature = 20, .distribution_size = 23,
 	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 5 } },
 	{ .base_temperature = 16, .distribution_size = 19,
-	.distribution = { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 0, 0, 0, 0 } },
+	.distribution = { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 6, 0, 0, 0 } },
 	{ .base_temperature = 13, .distribution_size = 16,
 	.distribution = { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } }
 };
@@ -396,10 +410,12 @@ static const rct_weather_transition climate_hot_and_dry_transitions[] = {
 	.distribution = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } }
 };
 static const rct_weather_transition climate_cold_transitions[] = {
+	{ .base_temperature = 0,.distribution_size = 18,
+	.distribution = { 6 } },
 	{ .base_temperature = 4, .distribution_size = 18,
-	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 6, 0, 0, 0, 0 } },
 	{ .base_temperature = 5, .distribution_size = 21,
-	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
+	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 0 } },
 	{ .base_temperature = 7, .distribution_size = 17,
 	.distribution = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },
 	{ .base_temperature = 9, .distribution_size = 17,
@@ -409,7 +425,7 @@ static const rct_weather_transition climate_cold_transitions[] = {
 	{ .base_temperature = 11, .distribution_size = 23,
 	.distribution = { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 5 } },
 	{ .base_temperature = 9, .distribution_size = 19,
-	.distribution = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0, 0, 0 } },
+	.distribution = { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 0, 0, 0 } },
 	{ .base_temperature = 6, .distribution_size = 16,
 	.distribution = { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } }
 };
