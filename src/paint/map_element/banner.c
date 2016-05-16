@@ -38,7 +38,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 
 	height -= 16;
 
-	rct_scenery_entry* banner_scenery = g_bannerSceneryEntries[gBanners[map_element->properties.banner.index].type];
+	rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[map_element->properties.banner.index].type);
 
 	direction += map_element->properties.banner.position;
 	direction &= 3;

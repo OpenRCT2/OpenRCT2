@@ -221,7 +221,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		}
 
 		if (pathItemType != 0) {
-			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
+			rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
 			uint16 unk6 = scenery_entry->path_bit.var_06;
 
 			if ((unk6 & 0x80) && (mapElement->properties.path.type & 4)) {
@@ -276,7 +276,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		footpath_element_set_path_scenery(mapElement, pathItemType);
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (pathItemType != 0) {
-			rct_scenery_entry* scenery_entry = g_pathBitSceneryEntries[pathItemType - 1];
+			rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
 			uint16 unk6 = scenery_entry->path_bit.var_06;
 			if (unk6 & 1)
 				mapElement->properties.path.addition_status = 255;
@@ -2021,4 +2021,9 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement)
 
 	if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
 		mapElement->properties.path.edges = 0;
+}
+
+rct_footpath_entry *get_footpath_entry(int entryIndex)
+{
+	return gFootpathEntries[entryIndex];
 }

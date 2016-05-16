@@ -150,13 +150,54 @@ const uint8 _soundParams[SOUND_MAXID][2] = {
 	{ 0, 0 }	// SOUND_62
 };
 
+bool vehicle_move_info_valid(int cd, int typeAndDirection, int offset)
+{
+	if (cd >= countof(gTrackVehicleInfo)) {
+		return false;
+	}
+	int size = 0;
+	switch (cd) {
+	case 0: size = 1024; break;
+	case 1: size = 692; break;
+	case 2: size = 404; break;
+	case 3: size = 404; break;
+	case 4: size = 404; break;
+	case 5: size = 208; break;
+	case 6: size = 208; break;
+	case 7: size = 208; break;
+	case 8: size = 208; break;
+	case 9: size = 824; break;
+	case 10: size = 824; break;
+	case 11: size = 824; break;
+	case 12: size = 824; break;
+	case 13: size = 824; break;
+	case 14: size = 824; break;
+	case 15: size = 868; break;
+	case 16: size = 868; break;
+	}
+	if (typeAndDirection >= size) {
+		return false;
+	}
+	if (offset >= gTrackVehicleInfo[cd][typeAndDirection]->size) {
+		return false;
+	}
+	return true;
+}
+
 const rct_vehicle_info *vehicle_get_move_info(int cd, int typeAndDirection, int offset)
 {
+	if (!vehicle_move_info_valid(cd, typeAndDirection, offset)) {
+		static const rct_vehicle_info zero = { 0 };
+		return &zero;
+	}
 	return &gTrackVehicleInfo[cd][typeAndDirection]->info[offset];
 }
 
 uint16 vehicle_get_move_info_size(int cd, int typeAndDirection)
 {
+	if (!vehicle_move_info_valid(cd, typeAndDirection, 0)) {
+		return 0;
+	}
 	return gTrackVehicleInfo[cd][typeAndDirection]->size;
 }
 
@@ -1080,7 +1121,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
 			if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
 				continue;
 
-			rct_scenery_entry* scenery = g_smallSceneryEntries[map_element->properties.scenery.type];
+			rct_scenery_entry* scenery = get_small_scenery_entry(map_element->properties.scenery.type);
 			if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
 				cover_found = true;
 				break;
@@ -6229,7 +6270,7 @@ static void sub_6D63D4(rct_vehicle *vehicle)
  */
 static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		int soundId = DoorOpenSoundIds[doorSoundType - 1];
@@ -6245,7 +6286,7 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle *vehicle, rct_map_e
  */
 static void vehicle_play_scenery_door_close_sound(rct_vehicle *vehicle, rct_map_element *mapElement)
 {
-	rct_scenery_entry *wallEntry = g_wallSceneryEntries[mapElement->properties.fence.type];
+	rct_scenery_entry *wallEntry = get_wall_entry(mapElement->properties.fence.type);
 	int doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
 	if (doorSoundType != 0) {
 		int soundId = DoorCloseSoundIds[doorSoundType - 1];
@@ -7550,7 +7591,7 @@ loc_6DC743:
 
 	for (;;) {
 		moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
-		if (moveInfo->x != (uint16)0x8000) {
+		if (moveInfo->x != (sint16)0x8000) {
 			break;
 		}
 		switch (moveInfo->y) {
@@ -8168,7 +8209,10 @@ int vehicle_update_track_motion(rct_vehicle *vehicle, int *outStation)
 	}
 	regs.edx >>= 4;
 	regs.eax = regs.edx;
-	regs.eax = regs.eax / totalFriction;
+	// OpenRCT2: vehicles from different track types can have  0 friction.
+	if (totalFriction != 0) {
+		regs.eax = regs.eax / totalFriction;
+	}
 	regs.ecx -= regs.eax;
 
 	if (!(vehicleEntry->flags_b & VEHICLE_ENTRY_FLAG_B_3)) {

@@ -30160,7 +30160,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BAD28[] = {
 };
 
 // rct2: 0x008B8F30
-const rct_vehicle_info_list **gTrackVehicleInfo[] = {
+const rct_vehicle_info_list **gTrackVehicleInfo[17] = {
 	TrackVehicleInfoList_8B8F98,
 	TrackVehicleInfoList_8BBAB8,
 	TrackVehicleInfoList_8BC588,

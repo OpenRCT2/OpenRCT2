@@ -726,7 +726,7 @@ rct_string_id object_get_name_string_id(rct_object_entry *entry, const void *chu
 	case OBJECT_TYPE_PATH_BITS:
 		return ((rct_scenery_entry*)chunk)->name;
 	case OBJECT_TYPE_PATHS:
-		return ((rct_path_type*)chunk)->string_idx;
+		return ((rct_footpath_entry*)chunk)->string_idx;
 	case OBJECT_TYPE_SCENERY_SETS:
 		return ((rct_scenery_set_entry*)chunk)->name;
 	case OBJECT_TYPE_PARK_ENTRANCE:

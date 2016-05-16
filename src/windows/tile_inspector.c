@@ -602,17 +602,17 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				if (footpath_element_is_queue(element)) {
 					sprintf(
 						buffer, "Queue (%s)%s%s for (%d)",
-						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
+						language_get_string(get_footpath_entry(pathType)->string_idx), // Path name
 						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
-						pathHasScenery ? language_get_string(g_pathBitSceneryEntries[pathAdditionType]->name) : "", // Path addition name
+						pathHasScenery ? language_get_string(get_footpath_item_entry(pathAdditionType)->name) : "", // Path addition name
 						element->properties.path.ride_index // Ride index for queue
 					);
 				} else {
 					sprintf(
 						buffer, "Path (%s)%s%s",
-						language_get_string(g_pathSceneryEntries[pathType]->name), // Path name
+						language_get_string(get_footpath_item_entry(pathType)->name), // Path name
 						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
-						pathHasScenery ? language_get_string(g_pathBitSceneryEntries[pathAdditionType]->name) : "" // Path addition name
+						pathHasScenery ? language_get_string(get_footpath_item_entry(pathAdditionType)->name) : "" // Path addition name
 					);
 				}
 			}
@@ -630,7 +630,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				sprintf(
 					buffer,
 					"Scenery (%s)",
-					language_get_string(g_smallSceneryEntries[element->properties.scenery.type]->name)
+					language_get_string(get_small_scenery_entry(element->properties.scenery.type)->name)
 				);
 				type_name = buffer;
 				break;
@@ -646,7 +646,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				sprintf(
 					buffer,
 					"Fence (%s)",
-					language_get_string(g_wallSceneryEntries[element->properties.scenery.type]->name)
+					language_get_string(get_wall_entry(element->properties.scenery.type)->name)
 					);
 				type_name = buffer;
 				break;

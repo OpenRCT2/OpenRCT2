@@ -233,7 +233,7 @@ static int map_element_get_total_element_count(rct_map_element *mapElement)
 		return 1;
 
 	case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-		sceneryEntry = g_largeSceneryEntries[mapElement->properties.scenerymultiple.type & 0x3FF];
+		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
 		tile = sceneryEntry->large_scenery.tiles;
 		elementCount = 0;
 		do {
@@ -325,7 +325,7 @@ static void track_design_save_add_large_scenery(int x, int y, rct_map_element *m
 
 	int entryType = mapElement->properties.scenerymultiple.type & 0x3FF;
 	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
-	sceneryTiles = g_largeSceneryEntries[entryType]->large_scenery.tiles;
+	sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
 	z = mapElement->base_height;
 	direction = mapElement->type & 3;
@@ -508,7 +508,7 @@ static void track_design_save_remove_large_scenery(int x, int y, rct_map_element
 
 	int entryType = mapElement->properties.scenerymultiple.type & 0x3FF;
 	rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
-	sceneryTiles = g_largeSceneryEntries[entryType]->large_scenery.tiles;
+	sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
 	z = mapElement->base_height;
 	direction = mapElement->type & 3;

@@ -306,7 +306,7 @@ static rct_string_id research_item_get_name(uint32 researchItem)
 	rct_scenery_set_entry *sceneryEntry;
 
 	if (researchItem < 0x10000) {
-		sceneryEntry = g_scenerySetEntries[researchItem & 0xFF];
+		sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
 		if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry*)0xFFFFFFFF)
 			return 0;
 

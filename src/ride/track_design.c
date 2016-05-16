@@ -605,11 +605,11 @@ int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rid
 					}
 
 					entry_index = 0;
-					for (rct_path_type *path = g_pathTypeEntries[0];
+					for (rct_footpath_entry *path = get_footpath_entry(0);
 						entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-						path = g_pathTypeEntries[entry_index], entry_index++
+						path = get_footpath_entry(entry_index), entry_index++
 					) {
-						if (path == (rct_path_type*)-1) {
+						if (path == (rct_footpath_entry*)-1) {
 							continue;
 						}
 						if (path->flags & (1 << 2)) {
@@ -634,7 +634,7 @@ int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rid
 
 					uint8 bh = rotation | (quadrant << 6) | MAP_ELEMENT_TYPE_SCENERY;
 
-					rct_scenery_entry* small_scenery = g_smallSceneryEntries[entry_index];
+					rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
 					if (!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
 						(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG9)){
 						bh = bh;
@@ -710,11 +710,11 @@ int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rid
 					}
 
 					entry_index = 0;
-					for (rct_path_type* path = g_pathTypeEntries[0];
+					for (rct_footpath_entry* path = get_footpath_entry(0);
 						entry_index < object_entry_group_counts[OBJECT_TYPE_PATHS];
-						path = g_pathTypeEntries[entry_index], entry_index++){
+						path = get_footpath_entry(entry_index), entry_index++){
 
-						if (path == (rct_path_type*)-1)
+						if (path == (rct_footpath_entry*)-1)
 							continue;
 						if (path->flags & (1 << 2))
 							continue;

@@ -852,7 +852,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 							else if (type == OBJECT_TYPE_SCENERY_SETS) {
 								rct_scenery_set_entry *scenerySetEntry;
 
-								scenerySetEntry = g_scenerySetEntries[entryGroupIndex];
+								scenerySetEntry = get_scenery_group_entry(entryGroupIndex);
 
 								research_insert(true, entryGroupIndex, RESEARCH_CATEGORY_SCENERYSET);
 

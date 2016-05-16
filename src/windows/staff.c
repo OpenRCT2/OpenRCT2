@@ -299,8 +299,6 @@ rct_window *window_staff_open(rct_peep* peep)
 	if (w == NULL) {
 		w = window_create_auto_pos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
-		w->widgets = RCT2_GLOBAL(0x9AF81C, rct_widget*);
-		w->enabled_widgets = RCT2_GLOBAL(0x9929B0, uint32);
 		w->number = peep->sprite_index;
 		w->page = 0;
 		w->viewport_focus_coordinates.y = 0;
@@ -1334,7 +1332,7 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 	int ebx = 0;
 	for (int i = 0; i < 19; i++) {
 		if (window_scenery_tab_entries[i][0] != -1) {
-			rct_scenery_set_entry* scenery_entry = g_scenerySetEntries[i];
+			rct_scenery_set_entry* scenery_entry = get_scenery_group_entry(i);
 			ebx |= scenery_entry->var_10A;
 		}
 	}
