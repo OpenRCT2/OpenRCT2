@@ -1046,7 +1046,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 
 				if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE){
 					gSceneryCtrlPressed = true;
-					gSceneryPlaceZ = map_element->base_height * 8;
+					gSceneryCtrlPressZ = map_element->base_height * 8;
 				}
 			}
 		} else {
@@ -1117,7 +1117,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 				}
 			}
 			else{
-				sint16 z = gSceneryPlaceZ;
+				sint16 z = gSceneryCtrlPressZ;
 
 				screen_get_map_xy_quadrant_with_z(x, y, z, grid_x, grid_y, &cl);
 
@@ -1194,7 +1194,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			}
 		}
 		else{
-			sint16 z = gSceneryPlaceZ;
+			sint16 z = gSceneryCtrlPressZ;
 			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
@@ -1288,7 +1288,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			}
 		}
 		else{
-			sint16 z = gSceneryPlaceZ;
+			sint16 z = gSceneryCtrlPressZ;
 			screen_get_map_xy_side_with_z(x, y, z, grid_x, grid_y, &cl);
 
 			// If SHIFT pressed
@@ -1347,7 +1347,7 @@ void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid_x, sin
 			}
 		}
 		else{
-			sint16 z = gSceneryPlaceZ;
+			sint16 z = gSceneryCtrlPressZ;
 			screen_get_map_xy_with_z(x, y, z, grid_x, grid_y);
 
 			// If SHIFT pressed
