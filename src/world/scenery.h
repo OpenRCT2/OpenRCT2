@@ -28,7 +28,9 @@ typedef struct rct_small_scenery_entry {
 	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
 	uint32 var_10;
-	uint8 pad_14[0x06];
+	uint16 var_14;
+	uint16 var_16;
+	uint16 var_18;
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
 
@@ -59,6 +61,8 @@ typedef enum {
 	SMALL_SCENERY_FLAG23 = (1 << 23),							// 0x800000
 	SMALL_SCENERY_FLAG24 = (1 << 24),							// 0x1000000
 	SMALL_SCENERY_FLAG25 = (1 << 25),							// 0x2000000
+	SMALL_SCENERY_FLAG26 = (1 << 26),							// 0x4000000
+	SMALL_SCENERY_FLAG27 = (1 << 27),							// 0x8000000
 } SMALL_SCENERY_FLAGS;
 
 typedef struct rct_large_scenery_tile {
