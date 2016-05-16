@@ -655,7 +655,7 @@ int map_height_from_slope(int x, int y, int slope)
 
 bool map_is_location_valid(int x, int y)
 {
-	if (x <= (256 * 32) && x >= 0 && y <= (256 * 32) && y >= 0) {
+	if (x < (256 * 32) && x >= 0 && y < (256 * 32) && y >= 0) {
 		return true;
 	}
 	return false;
