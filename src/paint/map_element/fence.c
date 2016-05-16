@@ -18,6 +18,10 @@
 #include "../../addresses.h"
 #include "../../world/map.h"
 
+extern bool TempForScrollText;
+
 void fence_paint(uint8 direction, int height, rct_map_element* mapElement) {
+	TempForScrollText = true;
 	RCT2_CALLPROC_X(0x6E44B0, 0, 0, direction, height, (int)mapElement, 0, 0);
+	TempForScrollText = false;
 }
