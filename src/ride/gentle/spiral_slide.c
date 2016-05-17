@@ -50,64 +50,8 @@ enum {
 	SPIRAL_SLIDE_PEEP = 20568, // 46 sprites per direction
 };
 
-static void spiral_slide_paint_tile_back(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	// Base
-	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
-
-	rct_ride *ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
-
-	if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_TOP_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
-	}
-
-	if (track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_TOP_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
-	}
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 128;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
 static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	// Base
-	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
-
-	rct_ride *ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
-
-	if (track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_TOP_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
-	}
-
-	if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98197C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
-	}
+	uint32 image_id;
 
 	if (direction == 0) image_id = SPIRAL_SLIDE_RIGHT_R0 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 1) image_id = SPIRAL_SLIDE_RIGHT_R1 | RCT2_GLOBAL(0x00F44198, uint32);
@@ -116,43 +60,10 @@ static void spiral_slide_paint_tile_right(uint8 rideIndex, uint8 trackSequence, 
 
 	sub_98197C(image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3, get_current_rotation());
 
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 128;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
 }
 
 static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	// Base
-	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
-
-	rct_ride *ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
-
-	if (track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_TOP_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
-	}
-
-	if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_BOTTOM_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98197C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
-	}
+	uint32 image_id;
 
 	if (direction == 0) image_id = SPIRAL_SLIDE_LEFT_R0 | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 1) image_id = SPIRAL_SLIDE_LEFT_R1 | RCT2_GLOBAL(0x00F44198, uint32);
@@ -160,44 +71,14 @@ static void spiral_slide_paint_tile_left(uint8 rideIndex, uint8 trackSequence, u
 	if (direction == 3) image_id = SPIRAL_SLIDE_LEFT_R3 | RCT2_GLOBAL(0x00F44198, uint32);
 
 	sub_98197C(image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3, get_current_rotation());
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 128;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
 }
 
 static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
+	uint32 image_id;
+	
 
-	// Base
-	image_id = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
 	rct_ride *ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
-
-	if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_BOTTOM_LEFT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98197C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
-	}
-
-	if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
-		image_id = SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT | RCT2_GLOBAL(0x00F44198, uint32);
-		sub_98197C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
-	}
 
 	if (direction == 1) {
 		image_id = SPIRAL_SLIDE_INSIDE_R1 | RCT2_GLOBAL(0x00F44198, uint32);
@@ -206,7 +87,6 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
 		image_id = SPIRAL_SLIDE_INSIDE_R2 | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3, get_current_rotation());
 	}
-
 
 	if (direction == 0) {
 		image_id = SPIRAL_SLIDE_CENTER_R0 | RCT2_GLOBAL(0x00F44198, uint32);
@@ -270,19 +150,13 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
 			sub_98199C(image_id, 16, 16, boundingBox.x, boundingBox.y, boundingBox.z, height, boundingBoxOffset.x, boundingBoxOffset.y, boundingBoxOffset.z, get_current_rotation());
 		}
 	}
-
-	height += 128;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
 }
 
-const uint8 track_map_2x2[][4] = {
-	{0, 1, 2, 3},
-	{1, 3, 0, 2},
-	{3, 2, 1, 0},
-	{2, 0, 3, 1}
+static const uint spiral_slide_fence_sprites[] = {
+	SPIRAL_SLIDE_FENCE_TOP_RIGHT,
+	SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT,
+	SPIRAL_SLIDE_FENCE_BOTTOM_LEFT,
+	SPIRAL_SLIDE_FENCE_TOP_LEFT,
 };
 
 /**
@@ -291,12 +165,26 @@ const uint8 track_map_2x2[][4] = {
 static void paint_spiral_slide(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
 	trackSequence = track_map_2x2[direction][trackSequence];
 
+	int edges = edges_2x2[trackSequence];
+	rct_ride * ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+
+	// Base
+	uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+	sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+
+	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, spiral_slide_fence_sprites, get_current_rotation());
+
 	switch (trackSequence) {
-		case 0: spiral_slide_paint_tile_back(rideIndex, trackSequence, direction, height, mapElement); break;
 		case 1: spiral_slide_paint_tile_right(rideIndex, trackSequence, direction, height, mapElement); break;
 		case 2: spiral_slide_paint_tile_left(rideIndex, trackSequence, direction, height, mapElement); break;
 		case 3: spiral_slide_paint_tile_front(rideIndex, trackSequence, direction, height, mapElement); break;
 	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 128, 0x20);
 }
 
 /**

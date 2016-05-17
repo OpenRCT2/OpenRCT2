@@ -21,6 +21,20 @@
 #include "../world/map.h"
 #include "../paint/map_element/map_element.h"
 
+static const uint8 track_map_2x2[][4] = {
+    {0, 1, 2, 3},
+    {1, 3, 0, 2},
+    {3, 2, 1, 0},
+    {2, 0, 3, 1}
+};
+
+static const uint8 edges_2x2[] = {
+    EDGE_NE | EDGE_NW,
+    EDGE_NE | EDGE_SE,
+    EDGE_SW | EDGE_NW,
+    EDGE_SW | EDGE_SE,
+};
+
 static const uint8 track_map_3x3[][9] = {
     {0, 1, 2, 3, 4, 5, 6, 7, 8},
     {0, 3, 5, 7, 2, 8, 1, 6, 4},

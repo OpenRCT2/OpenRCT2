@@ -95,19 +95,19 @@ void track_paint_util_paint_fences(uint edges, rct_xy16 position, rct_map_elemen
 	uint32 imageId;
 
 	if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_NW | colourFlags;
+		imageId = fenceSprites[3] | colourFlags;
 		sub_98199C(imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
 	}
+	if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation())) {
+		imageId = fenceSprites[0] | colourFlags;
+		sub_98199C(imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
+	}
 	if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_SW | colourFlags;
+		imageId = fenceSprites[2] | colourFlags;
 		sub_98197C(imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
 	}
-	if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_NE | colourFlags;
-		sub_98199C(imageId, 0, 0, 1, 32, 7, height, 0, 2, height + 2, get_current_rotation());
-	}
 	if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_SE | colourFlags;
+		imageId = fenceSprites[1] | colourFlags;
 		sub_98197C(imageId, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
 	}
 }
