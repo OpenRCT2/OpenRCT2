@@ -60,7 +60,7 @@ STR_0051    :马戏表演
 STR_0052    :恐怖隧道
 STR_0053    :铁架旋转式过山车
 STR_0054    :木制过山车
-STR_0055    :Side-Friction Roller Coaster
+STR_0055    :侧向阻力式过山车
 STR_0056    :疯狂老鼠过山车
 STR_0057    :多维过山车
 STR_0058    :Unknown Ride (38)
@@ -73,7 +73,7 @@ STR_0064    :躺卧式过山车
 STR_0065    :悬挂式单轨电车
 STR_0066    :Unknown Ride (40)
 STR_0067    :反转过山车
-STR_0068    :Heartline Twister Coaster
+STR_0068    :心跳回旋过山车
 STR_0069    :迷你高尔夫
 STR_0070    :巨型过山车
 STR_0071    :旋转落体
@@ -999,13 +999,13 @@ STR_0988    :不能新建游乐设施/店铺...
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}建造
 STR_0991    :车站站台
-STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
+STR_0992    :{SMALLFONT}{BLACK}拆除整个游乐设施/店铺
 STR_0993    :拆除游乐设施/店铺
 STR_0994    :拆除
 STR_0995    :{WINDOW_COLOUR_1}确定要完全拆除{STRINGID}?
 STR_0996    :整体外观
 STR_0997    :{SMALLFONT}{BLACK}View selection
-STR_0998    :No more stations allowed on this ride
+STR_0998    :此游乐设施的车站数量已达到上限
 STR_0999    :需要一个车站站台
 STR_1000    :轨道没有连接完整
 STR_1001    :轨道不适合此类型的车
@@ -1014,7 +1014,7 @@ STR_1003    :不能测试 {POP16}{POP16}{POP16}{STRINGID}...
 STR_1004    :不能关闭 {POP16}{POP16}{POP16}{STRINGID}...
 STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
 STR_1006    :必须先关闭
-STR_1007    :Unable to create enough vehicles
+STR_1007    :不能创建足够的车辆
 STR_1008    :{SMALLFONT}{BLACK}开放, 关闭或测试游乐设施/店铺
 STR_1009    :{SMALLFONT}{BLACK}开放或关闭所有游乐设施/店铺
 STR_1010    :{SMALLFONT}{BLACK}开放或关闭游乐园
@@ -1024,7 +1024,7 @@ STR_1013    :关闭游乐园
 STR_1014    :开放游乐园
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
-STR_1017    :Can't change operating mode...
+STR_1017    :不能改变运行模式...
 STR_1018    :Can't make changes...
 STR_1019    :Can't make changes...
 STR_1020    :Can't make changes...
@@ -1035,7 +1035,7 @@ STR_1024    :{COMMA16} car per train
 STR_1025    :{COMMA16} cars per train
 STR_1026    :车站站台太长!
 STR_1027    :{SMALLFONT}{BLACK}Locate this on Main View
-STR_1028    :Off edge of map!
+STR_1028    :离开地图边缘!
 STR_1029    :Cannot build partly above and partly below water!
 STR_1030    :Can only build this underwater!
 STR_1031    :Can't build this underwater!

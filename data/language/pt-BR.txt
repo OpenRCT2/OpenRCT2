@@ -2337,7 +2337,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distância e Velocidade:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Marcadores Altura:
 STR_2332    :Unidades
-STR_2333    :Som
+STR_2333    :Efeitos sonoros
 STR_2334    :Libras ({POUND})
 STR_2335    :Dólar ($)
 STR_2336    :Franco (F)
@@ -2804,8 +2804,8 @@ STR_2793    :{SMALLFONT}(Completado por {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completado por: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} com o valor da empresa de: {BLACK}{CURRENCY}
 STR_2795    :Organizar
 STR_2796    :{SMALLFONT}{BLACK}Organiza lista de atrações usando o tipo de informação exibida
-STR_2797    :Move a tela quando o ponteiro estiver na borda da tela
-STR_2798    :{SMALLFONT}{BLACK}Selecione se deseja mover a tela quando o ponteiro do mouse estiver na borda da tela
+STR_2797    :Mover tela quando o ponteiro estiver na borda da tela
+STR_2798    :{SMALLFONT}{BLACK}Move a tela quando o ponteiro do mouse estiver na borda da tela
 STR_2799    :{SMALLFONT}{BLACK}Visualiza ou muda atribuições de teclas de controle
 STR_2800    :{WINDOW_COLOUR_2}Total de ingressos: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Receita dos ingressos: {BLACK}{CURRENCY2DP}
@@ -3504,13 +3504,13 @@ STR_5162    :Dia/Mês/Ano
 STR_5163    :Mês/Dia/Ano
 STR_5164    :Nome do canal do Twitch
 STR_5165    :Usar nome dos seguidores
-STR_5166    :{SMALLFONT}{BLACK}Usa o nome dos seguidores do seu canal no Twitch nos visitantes
+STR_5166    :{SMALLFONT}{BLACK}Nomeia os visitantes com o nome{NEWLINE}dos seguidores do canal no Twitch
 STR_5167    :Rastrear visitantes seguidores
-STR_5168    :{SMALLFONT}{BLACK}Liga a informação de rastreamento dos visitantes com nome igual aos dos seguidores do seu canal no Twitch
+STR_5168    :{SMALLFONT}{BLACK}Habilita informação de rastreamento dos visitantes com nome igual aos dos seguidores do seu canal no Twitch
 STR_5169    :Usar nome das pessoas no chat do Twitch
-STR_5170    :{SMALLFONT}{BLACK}Usa o nome das pessoas no chat do Twitch nos visitantes
+STR_5170    :{SMALLFONT}{BLACK}Nomeia os visitantes com o nome das pessoas no chat do Twitch
 STR_5171    :Rastrear visitantes do chat
-STR_5172    :{SMALLFONT}{BLACK}Liga a informação de rastreamento dos visitantes com nome igual aos das pessoas do chat do Twitch
+STR_5172    :{SMALLFONT}{BLACK}Habilita informação de rastreamento dos visitantes com nome igual aos das pessoas do chat do Twitch
 STR_5173    :Mostrar chat do Twitch como notícias
 STR_5174    :{SMALLFONT}{BLACK}Usará as mensagens do chat do Twitch precedido por !news nas notificações dentro do jogo
 STR_5175    :Insira o nome do seu canal no Twitch
@@ -3779,7 +3779,7 @@ STR_5437    :Jogo salvo não selecionado
 STR_5438    :Impossível fazer mudanças enquanto editor de comando está aberto
 STR_5439    :Um comando de espera com pelo menos 4 segundos é necessário com um comando de reinicialização
 STR_5440    :Minimizar tela inteira quando perder o foco
-STR_5441    :{SMALLFONT}{BLACK}Identificar as atrações por tipo de pista,{NEWLINE}assim os veículos podem ser alterados {NEWLINE}depois, como no RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identificar as atrações por tipo de pista,{NEWLINE}assim os veículos podem ser alterados {NEWLINE}depois (como no RCT1)
 STR_5442    :Forçar a classificação do parque:
 STR_5443    :Velocidade{MOVE_X}{87}{STRINGID}
 STR_5444    :Velocidade:
@@ -3840,9 +3840,9 @@ STR_5498    :Lista de Servidores
 STR_5499    :Nome do Jogador:
 STR_5500    :Adicionar Servidor
 STR_5501    :Iniciar Servidor
-STR_5502    :Multijogador
+STR_5502    :Multiplayer
 STR_5503    :Digite o nome do servidor ou o endereço de IP:
-STR_5504    :{SMALLFONT}{BLACK}Exibir o estado do multijogador
+STR_5504    :{SMALLFONT}{BLACK}Exibir o estado do multiplayer
 STR_5505    :Impossível se conectar ao servidor.
 STR_5506    :Os Visistantes ignoram as intensidades
 STR_5507    :Faxineiro corta a grama por padrão
@@ -3895,7 +3895,7 @@ STR_5553    :Pausar jogo quando a Steam estiver sobrepondo
 STR_5554    :{SMALLFONT}{BLACK}Habilitar ferramenta de montanha
 STR_5555    :Exibir veículos de outras atrações
 STR_5556    :Remover Jogador
-STR_5557    :Ficar conectado após dessincronização (Multijogador)
+STR_5557    :Ficar conectado após dessincronização (Multiplayer)
 STR_5558    :Reinicie o jogo para esta configuração ter efeito
 STR_5559    :Inspeções de 10 min
 STR_5560    :{SMALLFONT}{BLACK}Define o tempo de inspeção para 'A cada 10 minutos' em todas as atrações
@@ -3925,7 +3925,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Destrava limites de operação na atração, permitindo coisas como corrente de elevação com {VELOCITY}
 STR_5586    :Abrir automaticamente lojas e barracas
-STR_5587    :{SMALLFONT}{BLACK}Quando habilitado, lojas e barracas serão abertas automaticamente depois de contruí-las
+STR_5587    :{SMALLFONT}{BLACK}Lojas e barracas serão abertas automaticamente depois de contruí-las
 STR_5588    :{SMALLFONT}{BLACK}Jogar com outros jogadores
 STR_5589    :Configurações de Notificação
 STR_5590    :Prêmios do parque
@@ -4019,7 +4019,7 @@ STR_5712    :Impossível modificar permissão que não é sua
 STR_5713    :Expulsar Jogador
 STR_5714    :Mostrar janela de opções
 STR_5715    :Novo Jogo
-STR_5716    :Não é permitido no modo multijogador
+STR_5716    :Não é permitido no modo multiplayer
 # For identifying client network version in server list window
 STR_5717    :Versão da rede: {STRING}
 STR_5718    :{SMALLFONT}{BLACK}Versão da rede: {STRING}
@@ -4117,9 +4117,56 @@ STR_5808    :{WINDOW_COLOUR_2}Número de lojas e barracas: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de quiosques de informações e outras instalações: {BLACK}{COMMA16}
 STR_5810    :Desabilitar limite de comprimento do trem
 STR_5811    :{SMALLFONT}{BLACK}Se selecionado, você pode ter até {NEWLINE}255 carros por trem
-
+STR_5812    :Mostrar janela multiplayer
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}Mostra o contador de FPS dentro do jogo
+STR_5816    :{SMALLFONT}{BLACK}Define a proporção de dimensionamento do jogo.{NEWLINE}Mais útil quando está jogando em{NEWLINE}alta resolução
+STR_5817    :{SMALLFONT}{BLACK}[Requer exibição de hardware]{NEWLINE}Define o tipo de escala da interface de usuário
+STR_5818    :{SMALLFONT}{BLACK}[Requer exibição de hardware]{NEWLINE}Usa a escala do vizinho mais próximo{NEWLINE}quando o fator de escala da janela está definido{NEWLINE}com valores integrais (1, 2, 3, etc)
+STR_5819    :{SMALLFONT}{BLACK}[Requer exibição de hardware]{NEWLINE}Pausa o jogo quando a interface da Steam{NEWLINE}estiver sobrepondo durante o jogo
+STR_5820    :{SMALLFONT}{BLACK}Minimiza o jogo se o foco for{NEWLINE}perdido enquanto estiver em modo tela cheia
+STR_5821    :{SMALLFONT}{BLACK}Muda a cor do marcador de construção enquanto estiver construindo atrações,{NEWLINE}caminhos, lojas, cenário, etc.
+STR_5822    :{SMALLFONT}{BLACK}Alterna entre dia e noite.{NEWLINE}Ciclo completo leva um mês do jogo
+STR_5823    :{SMALLFONT}{BLACK}Mostra banners em caixa alta (como no RCT1)
+STR_5824    :{SMALLFONT}{BLACK}Desabilita efeitos de raio{NEWLINE}durante uma tempestade
+STR_5825    :{SMALLFONT}{BLACK}Mantém o cursor do mouse dentro da janela
+STR_5826    :{SMALLFONT}{BLACK}Inverte o arrastar da tela com o botão direito do mouse
+STR_5827    :{SMALLFONT}{BLACK}Define o esquema de cores usados no interface gráfica do usuário
+STR_5828    :{SMALLFONT}{BLACK}Muda qual formato de medida é usado para distância, velocidade, etc.
+STR_5829    :{SMALLFONT}{BLACK}Muda qual formato de moeda é usado. Puramente visual, não há implementação exata de taxa de câmbio
+STR_5830    :{SMALLFONT}{BLACK}Mudam qual língua é usada
+STR_5831    :{SMALLFONT}{BLACK}Muda qual formato de{NEWLINE}temperatura é mostrado no jogo
+STR_5832    :{SMALLFONT}{BLACK}Mostra altura como unidade genérica ao invés de formato de medida definido em "Distância e Velocidade"
+STR_5833    :{SMALLFONT}{BLACK}Muda qual formato de data é usado
+STR_5834    :{SMALLFONT}{BLACK}Seleciona qual dispositivo de audio o OpenRCT2 irá usar
+STR_5835    :{SMALLFONT}{BLACK}Deixa o jogo mudo se a janela perder foco
+STR_5836    :{SMALLFONT}{BLACK}Seleciona música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT requer que você copie 'data/css17.dat' da pasta do seu RCT para 'data/css50.dat' da pasta do seu RCT2.
+STR_5837    :{SMALLFONT}{BLACK}Cria e gerencia temas de interface de usuário personalizadas
+STR_5838    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de finanças na barra de ferramentas
+STR_5839    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de pesquisa e desenvolvimento na barra de ferramentas
+STR_5840    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de trapaças na barra de ferramentas
+STR_5841    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de notícias recentes na barra de ferramentas
+STR_5842    :{SMALLFONT}{BLACK}Ordena os cenários nas abas por suas dificuldades (como no RCT2) ou por suas origens (como no RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Habilita destravamento de cenários (como no RCT1)
+STR_5844    :{SMALLFONT}{BLACK}Fica conectaro em um server multiplayer{NEWLINE}mesmo se uma dessincronização ou erro ocorrer
+STR_5845    :{SMALLFONT}{BLACK}Adiciona um botão para {NEWLINE}ferramentas de debugging na barra de ferramentas.{NEWLINE}Habilita atalho no teclado para console de desenvolvedor
+STR_5846    :{SMALLFONT}{BLACK}Define a frequência que o OpenRCT2 salva automaticamente
+STR_5847    :{SMALLFONT}{BLACK}Seleciona a sequência de parque usada na tela inicial.{NEWLINE}Sequências da tela inicial do RCT1/2 requer a importação dos cenários para funcionar
+STR_5848    :{SMALLFONT}{BLACK}Cria ou gerencia sequências de títulos personalizadas
+STR_5849    :{SMALLFONT}{BLACK}Posiciona automaticamente{NEWLINE}novos funcionários contratados
+STR_5850    :{SMALLFONT}{BLACK}Novos faxineiros contratados aparam{NEWLINE}a grama por padrão (como no RCT1)
+STR_5851    :{SMALLFONT}{BLACK}Define o intervalo de inspeção padrão{NEWLINE}nas novas atrações construídas
+STR_5852    :{SMALLFONT}{BLACK}Define o nome do canal do TwitchTV que será usado para a integração do Twitch
+STR_5853    :{SMALLFONT}{BLACK}Liga/Desliga os efeitos sonoros
+STR_5854    :{SMALLFONT}{BLACK}Liga/Desliga musica da atração
+STR_5855    :{SMALLFONT}{BLACK}Define tela cheia sem borda ou em modo janela
+STR_5856    :{SMALLFONT}{BLACK}Define a resolução de jogo quanto estiver em tela cheia
+STR_5857    :{SMALLFONT}{BLACK}Opções de jogo
+STR_5858    :{SMALLFONT}{BLACK}Usa GPU para mostrar ao invés da CPU. Melhora compatibilidade com software de captura de tela. Desempenho pode cair sutilmente.
+STR_5859    :{SMALLFONT}{BLACK}Habilita interpolação de quadros para{NEWLINE}um gameplay mais suave. Quando desabilitado,{NEWLINE}o jogo vai rodar em 40 FPS.
 
 #############
 # Scenarios #
