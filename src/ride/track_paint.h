@@ -18,6 +18,10 @@
 #define _TRACK_PAINT_H
 
 #include "../common.h"
+#include "../world/map.h"
+#include "../paint/map_element/map_element.h"
+
+bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
 
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
@@ -29,6 +33,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int directi
 TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_50_52_53_54(int trackType, int direction);
 
 #endif

@@ -24,6 +24,7 @@
 #include "../../ride/ride_data.h"
 #include "../../world/entrance.h"
 #include "../../world/footpath.h"
+#include "map_element.h"
 
 /**
  *
@@ -103,14 +104,10 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 		sub_98199C(transparant_image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
 	}
 
-	uint32 eax = 0xFFFF0600 | ((height / 16) & 0xFF);
-	if (direction & 1){
-		RCT2_ADDRESS(0x009E30B6, uint32)[RCT2_GLOBAL(0x141F56B, uint8) / 2] = eax;
-		RCT2_GLOBAL(0x141F56B, uint8)++;
-	}
-	else{
-		RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = eax;
-		RCT2_GLOBAL(0x141F56A, uint8)++;
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
 	}
 
 	if (!is_exit &&

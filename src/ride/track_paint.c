@@ -28,6 +28,50 @@
 #include "ride_data.h"
 #include "track_data.h"
 #include "track_paint.h"
+#include "../paint/map_element/map_element.h"
+
+/* rct2: 0x007667AC */
+static rct_xy16 loc_7667AC[] = {
+	{.x = -1, .y = 0},
+	{.x = 0, .y = -1},
+	{.x = 1, .y = 0},
+	{.x = 0, .y = 1},
+};
+
+/* rct2: 0x007667AE */
+static rct_xy16 loc_7667AE[] = {
+	{.x = 0, .y = -1},
+	{.x = 1, .y = 0},
+	{.x = 0, .y = 1},
+	{.x = -1, .y = 0},
+};
+
+bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
+{
+	rct_xy16 offset;
+	switch (edge) {
+		case EDGE_NE:
+			offset = loc_7667AC[rotation];
+			break;
+		case EDGE_SE:
+			offset = loc_7667AE[(rotation + 2) & 3];
+			break;
+		case EDGE_SW:
+			offset = loc_7667AC[(rotation + 2) & 3];
+			break;
+		case EDGE_NW:
+			offset = loc_7667AE[rotation];
+			break;
+	}
+
+	uint16 entranceLoc =
+		((position.x / 32) + offset.x) |
+		(((position.y / 32) + offset.y) << 8);
+
+	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
+
+	return (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc);
+}
 
 /**
  *
