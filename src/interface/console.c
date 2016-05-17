@@ -201,13 +201,13 @@ void console_draw(rct_drawpixelinfo *dpi)
 			break;
 		drawLines++;
 
-		int lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_GREEN), (size_t)(nextLine - ch));
+		int lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
 		lineCh = lineBuffer;
-		lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
+		lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
 		strncpy(lineCh, ch, lineLength);
 		lineCh[lineLength] = 0;
 
-		gfx_draw_string(dpi, lineBuffer, 255, x, y);
+		gfx_draw_string(dpi, lineBuffer, 100, x, y )	  //Value 100 outlines the letters
 
 		x = gLastDrawStringX;
 
@@ -224,7 +224,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 
 	// Draw current line
 	lineCh = lineBuffer;
-	lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
+	lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
 	strcpy(lineCh, _consoleCurrentLine);
 	gfx_draw_string(dpi, lineBuffer, 255, x, y);
 
@@ -235,7 +235,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 		int caretX = x + gfx_get_string_width(lineBuffer);
 		int caretY = y + lineHeight;
 
-		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, FORMAT_GREEN);
+		gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, FORMAT_WHITE);
 	}
 	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 21, _consoleRight, _consoleBottom - 21, 14);
 	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 20, _consoleRight, _consoleBottom - 20, 11);
