@@ -316,7 +316,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
                 imageOffset += 6;
             }
 
-            offset = (rct_xyz16){30, 0, height};
+            offset = (rct_xyz16){31, 0, height};
             bounds = (rct_xyz16){1, 29, ah};
             boundsOffset = (rct_xyz16){30, 2, height + 1};
             break;
