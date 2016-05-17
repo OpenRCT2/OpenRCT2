@@ -951,7 +951,7 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 	if (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) {
 		rct_ride* ride = get_ride(peep->current_ride);
 		uint8 z = ride->station_heights[peep->current_ride_station];
-		RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z;
+		gPeepPathFindGoalPosition.z = z;
 
 		uint16 location = ride->exits[peep->current_ride_station];
 		if (location == 0xFFFF) {
@@ -963,8 +963,8 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 			.y = (location >> 8) * 32
 		};
 
-		RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = chosenTile.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = chosenTile.y;
+		gPeepPathFindGoalPosition.x = chosenTile.x;
+		gPeepPathFindGoalPosition.y = chosenTile.y;
 
 		bool entranceFound = false;
 		rct_map_element* mapElement = map_get_first_element_at(chosenTile.x / 32, chosenTile.y / 32);
@@ -990,8 +990,8 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 		uint8 entranceDirection = map_element_get_direction(mapElement);
 		chosenTile.x -= TileDirectionDelta[entranceDirection].x;
 		chosenTile.y -= TileDirectionDelta[entranceDirection].y;
-		RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = chosenTile.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = chosenTile.y;
+		gPeepPathFindGoalPosition.x = chosenTile.x;
+		gPeepPathFindGoalPosition.y = chosenTile.y;
 
 		if (chosenTile.x == peep->next_x &&
 			chosenTile.y == peep->next_y &&
