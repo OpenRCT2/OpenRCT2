@@ -19,6 +19,8 @@
 
 #include "../common.h"
 #include "../world/map.h"
+#include "../interface/colour.h"
+#include "../drawing/drawing.h"
 
 typedef struct attached_paint_struct attached_paint_struct;
 
@@ -83,6 +85,12 @@ struct paint_string_struct {
 
 enum PAINT_STRUCT_FLAGS {
 	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
+};
+
+/** rct2: 0x00993CC4 */
+const uint32 construction_markers[] = {
+	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_USE_PALETTE << 28, // White
+	2 << 19 | 0b110000 << 19 | IMAGE_TYPE_MIX_BACKGROUND << 28, // Translucent
 };
 
 void painter_setup();

@@ -27,11 +27,6 @@
 #include "../../interface/viewport.h"
 #include "../paint.h"
 
-uint32 dword_993CC4[] = {
-    COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | 0x20000000,
-    COLOUR_YELLOW << 19 | COLOUR_GREY << 24 | 0x40000000
-};
-
 const uint8 byte_9A406C[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,
     2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2
@@ -178,7 +173,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
     if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) {
         RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
-        dword_141F710 = dword_993CC4[gConfigGeneral.construction_marker_colour];
+        dword_141F710 = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 
     // save map_element

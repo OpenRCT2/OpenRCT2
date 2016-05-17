@@ -238,7 +238,7 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 			RCT2_GLOBAL(0x00F441A4, uint32) = 0x21600000;
 		}
 		if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-			uint32 ghost_id = RCT2_ADDRESS(0x00993CC4, uint32)[gConfigGeneral.construction_marker_colour];
+			uint32 ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
 			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = 0;
 			RCT2_GLOBAL(0x00F44198, uint32) = ghost_id;
 			RCT2_GLOBAL(0x00F4419C, uint32) = ghost_id;
