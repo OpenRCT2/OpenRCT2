@@ -29,7 +29,7 @@ enum {
 	SPR_DODGEMS_FENCE_TOP_LEFT = 21937
 };
 
-const uint dodgems_fence_sprites[] = {
+const uint32 dodgems_fence_sprites[] = {
 	SPR_DODGEMS_FENCE_TOP_RIGHT,
 	SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
 	SPR_DODGEMS_FENCE_BOTTOM_LEFT,

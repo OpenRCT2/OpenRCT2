@@ -79,7 +79,7 @@ const uint8 edges_3x3[] = {
 	EDGE_SW,
 };
 
-const uint16 track_map_4x4[][16] = {
+const uint8 track_map_4x4[][16] = {
 	{0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15},
 	{3,  7,  11, 15, 2,  6,  10, 14, 1,  5,  9,  13, 0,  4,  8,  12},
 	{15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1,  0},
@@ -105,14 +105,14 @@ const uint8 edges_4x4[] = {
 	EDGE_SW | EDGE_SE
 };
 
-const uint floorSpritesCork[] = {
+const uint32 floorSpritesCork[] = {
 	SPR_FLOOR_CORK_SE_SW,
 	SPR_FLOOR_CORK_SW,
 	SPR_FLOOR_CORK_SE,
 	SPR_FLOOR_CORK
 };
 
-const uint fenceSpritesRope[] = {
+const uint32 fenceSpritesRope[] = {
 	SPR_FENCE_ROPE_NE,
 	SPR_FENCE_ROPE_SE,
 	SPR_FENCE_ROPE_SW,
@@ -146,7 +146,7 @@ bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_eleme
 	return (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc);
 }
 
-void track_paint_util_paint_floor(uint edges, uint32 colourFlags, uint16 height, const uint floorSprites[4], uint8 rotation)
+void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation)
 {
 	uint32 imageId;
 
@@ -163,7 +163,7 @@ void track_paint_util_paint_floor(uint edges, uint32 colourFlags, uint16 height,
 	sub_98197C(imageId | colourFlags, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
 }
 
-void track_paint_util_paint_fences(uint edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint fenceSprites[4], uint8 rotation)
+void track_paint_util_paint_fences(uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation)
 {
 	uint32 imageId;
 

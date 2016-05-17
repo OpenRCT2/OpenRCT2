@@ -291,7 +291,7 @@ void paint_util_force_set_general_support_height(sint16 height, uint8 slope)
 	RCT2_GLOBAL(0x141E9DA, uint8) = slope;
 }
 
-const uint segment_offsets[9] = {
+const uint16 segment_offsets[9] = {
 	SEGMENT_B4,
 	SEGMENT_B8,
 	SEGMENT_BC,

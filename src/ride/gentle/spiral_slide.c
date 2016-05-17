@@ -152,7 +152,7 @@ static void spiral_slide_paint_tile_front(uint8 rideIndex, uint8 trackSequence, 
 	}
 }
 
-static const uint spiral_slide_fence_sprites[] = {
+static const uint32 spiral_slide_fence_sprites[] = {
 	SPIRAL_SLIDE_FENCE_TOP_RIGHT,
 	SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT,
 	SPIRAL_SLIDE_FENCE_BOTTOM_LEFT,

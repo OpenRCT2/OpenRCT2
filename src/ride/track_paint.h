@@ -27,7 +27,7 @@ extern const uint8 edges_2x2[];
 extern const uint8 track_map_3x3[][9];
 extern const uint8 edges_3x3[];
 
-extern const uint16 track_map_4x4[][16];
+extern const uint8 track_map_4x4[][16];
 extern const uint8 edges_4x4[];
 
 enum {
@@ -41,13 +41,13 @@ enum {
     SPR_FENCE_ROPE_NW = 22141,
 };
 
-extern const uint floorSpritesCork[];
+extern const uint32 floorSpritesCork[];
 
-extern const uint fenceSpritesRope[];
+extern const uint32 fenceSpritesRope[];
 
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
-void track_paint_util_paint_floor(uint edges, uint32 colourFlags, uint16 height, const uint floorSprites[4], uint8 rotation);
-void track_paint_util_paint_fences(uint edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint fenceSprites[4], uint8 rotation);
+void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
+void track_paint_util_paint_fences(uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation);
 
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
