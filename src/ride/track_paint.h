@@ -21,64 +21,14 @@
 #include "../world/map.h"
 #include "../paint/map_element/map_element.h"
 
-static const uint8 track_map_2x2[][4] = {
-    {0, 1, 2, 3},
-    {1, 3, 0, 2},
-    {3, 2, 1, 0},
-    {2, 0, 3, 1}
-};
+extern const uint8 track_map_2x2[][4];
+extern const uint8 edges_2x2[];
 
-static const uint8 edges_2x2[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE | EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-};
+extern const uint8 track_map_3x3[][9];
+extern const uint8 edges_3x3[];
 
-static const uint8 track_map_3x3[][9] = {
-    {0, 1, 2, 3, 4, 5, 6, 7, 8},
-    {0, 3, 5, 7, 2, 8, 1, 6, 4},
-    {0, 7, 8, 6, 5, 4, 3, 1, 2},
-    {0, 6, 4, 1, 8, 2, 7, 3, 5}
-};
-
-static const uint8 edges_3x3[] = {
-    0,
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    EDGE_SE,
-    EDGE_SW | EDGE_NW,
-    EDGE_SW | EDGE_SE,
-    EDGE_SW,
-};
-
-static const uint16 track_map_4x4[][16] = {
-    {0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15},
-    {3,  7,  11, 15, 2,  6,  10, 14, 1,  5,  9,  13, 0,  4,  8,  12},
-    {15, 14, 13, 12, 11, 10, 9,  8,  7,  6,  5,  4,  3,  2,  1,  0},
-    {12, 8,  4,  0,  13, 9,  5,  1,  14, 10, 6,  2,  15, 11, 7,  3},
-};
-
-static const uint8 edges_4x4[] = {
-    EDGE_NE | EDGE_NW,
-    EDGE_NE,
-    EDGE_NE,
-    EDGE_NE | EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW,
-    0,
-    0,
-    EDGE_SE,
-    EDGE_NW | EDGE_SW,
-    EDGE_SW,
-    EDGE_SW,
-    EDGE_SW | EDGE_SE
-};
+extern const uint16 track_map_4x4[][16];
+extern const uint8 edges_4x4[];
 
 enum {
     SPR_FLOOR_CORK_SE_SW = 22134,
@@ -91,19 +41,9 @@ enum {
     SPR_FENCE_ROPE_NW = 22141,
 };
 
-static const uint floorSpritesCork[] = {
-    SPR_FLOOR_CORK_SE_SW,
-    SPR_FLOOR_CORK_SW,
-    SPR_FLOOR_CORK_SE,
-    SPR_FLOOR_CORK
-};
+extern const uint floorSpritesCork[];
 
-static const uint fenceSpritesRope[] = {
-    SPR_FENCE_ROPE_NE,
-    SPR_FENCE_ROPE_SE,
-    SPR_FENCE_ROPE_SW,
-    SPR_FENCE_ROPE_NW
-};
+extern const uint fenceSpritesRope[];
 
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
 void track_paint_util_paint_floor(uint edges, uint32 colourFlags, uint16 height, const uint floorSprites[4], uint8 rotation);

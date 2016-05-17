@@ -45,7 +45,7 @@ enum
     SEGMENT_C4 = (1 << 8), // 4
 };
 
-static const int SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
+extern const int SEGMENTS_ALL;
 
 enum
 {

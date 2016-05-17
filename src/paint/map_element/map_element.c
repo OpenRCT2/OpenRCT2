@@ -36,6 +36,8 @@
 static void blank_tiles_paint(int x, int y);
 static void sub_68B3FB(int x, int y);
 
+const int SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
+
 /**
  *
  *  rct2: 0x0068B35F
