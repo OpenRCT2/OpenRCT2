@@ -31,6 +31,7 @@
 #include "localisation.h"
 
 uint8 gCommonFormatArgs[80];
+uint8 gMapTooltipFormatArgs[40];
 
 #pragma region Format codes
 

@@ -88,9 +88,11 @@ void window_map_tooltip_update_visibility()
 	_lastCursorY = cursorY;
 
 	// Show or hide tooltip
-	if (
-		_cursorHoldDuration < 25 ||
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, sint16) == -1 ||
+	rct_string_id stringId;
+	memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+
+	if (_cursorHoldDuration < 25 ||
+		stringId == STR_NONE ||
 		(gInputPlaceObjectModifier & 3) ||
 		window_find_by_class(WC_ERROR) != NULL
 	) {
@@ -144,8 +146,11 @@ static void window_map_tooltip_update(rct_window *w)
  */
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, rct_string_id) == STR_NONE)
+	rct_string_id stringId;
+	memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+	if (stringId == STR_NONE) {
 		return;
+	}
 
-	gfx_draw_string_centred_wrapped(dpi, (void*)RCT2_ADDRESS_MAP_TOOLTIP_ARGS, w->x + (w->width / 2), w->y + (w->height / 2), w->width, 1162, 0);
+	gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, w->x + (w->width / 2), w->y + (w->height / 2), w->width, 1162, 0);
 }

@@ -5046,17 +5046,17 @@ void vehicle_set_map_toolbar(rct_vehicle *vehicle)
 		if (ride->vehicles[vehicleIndex] == vehicle->sprite_index)
 			break;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1165;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].vehicle_name + 2;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = vehicleIndex + 1;
+	set_map_tooltip_format_arg(0, uint16, 2215);
+	set_map_tooltip_format_arg(2, uint16, 1165);
+	set_map_tooltip_format_arg(4, uint16, ride->name);
+	set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
+	set_map_tooltip_format_arg(10, uint16, RideNameConvention[ride->type].vehicle_name + 2);
+	set_map_tooltip_format_arg(12, uint16, vehicleIndex + 1);
 
 	int arg0, arg1;
 	ride_get_status(vehicle->ride, &arg0, &arg1);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) = (uint16)arg0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint32) = (uint16)arg1;
+	set_map_tooltip_format_arg(14, uint16, (uint16)arg0);
+	set_map_tooltip_format_arg(16, uint32, (uint16)arg1);
 }
 
 rct_vehicle *vehicle_get_head(rct_vehicle *vehicle)

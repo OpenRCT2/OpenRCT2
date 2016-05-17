@@ -1061,7 +1061,7 @@ void process_mouse_over(int x, int y)
 	int ebx, esi, edi, ebp;
 
 	cursorId = CURSOR_ARROW;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS, sint16) = -1;
+	set_map_tooltip_format_arg(0, sint16, -1);
 	window = window_find_from_point(x, y);
 
 	if (window != NULL) {

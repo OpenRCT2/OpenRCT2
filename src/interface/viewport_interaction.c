@@ -20,6 +20,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
+#include "../ride/track.h"
 #include "../scenario.h"
 #include "../world/banner.h"
 #include "../world/footpath.h"
@@ -82,8 +83,8 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		ride_set_map_tooltip(mapElement);
 		break;
 	case VIEWPORT_INTERACTION_ITEM_PARK:
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = gParkName;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint32) = gParkNameArgs;
+		set_map_tooltip_format_arg(0, uint16, gParkName);
+		set_map_tooltip_format_arg(2, uint32, gParkNameArgs);
 		break;
 	default:
 		info->type = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -194,9 +195,9 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		mapElement += 6;
 		ride = get_ride(mapElement->type);
 		if (ride->status == RIDE_STATUS_CLOSED) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
+			set_map_tooltip_format_arg(0, uint16, 1163);
+			set_map_tooltip_format_arg(2, uint16, ride->name);
+			set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
 		}
 		return info->type;
 
@@ -210,42 +211,59 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		if (ride->status != RIDE_STATUS_CLOSED)
 			return info->type;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
+		set_map_tooltip_format_arg(0, uint16, 1163);
 
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) =
-				mapElement->properties.track.type == ENTRANCE_TYPE_RIDE_ENTRANCE ? 1335 : 1337;
-		} else if (mapElement->properties.track.type == 1 || mapElement->properties.track.type == 2 || mapElement->properties.track.type == 3) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1333;
+			rct_string_id stringId;
+			if (mapElement->properties.track.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+				if (ride->num_stations > 1) {
+					stringId = 1336;
+				} else {
+					stringId = 1335;
+				}
+			} else {
+				if (ride->num_stations > 1) {
+					stringId = 1338;
+				} else {
+					stringId = 1337;
+				}
+			}
+			set_map_tooltip_format_arg(2, uint16, stringId);
+		} else if (track_element_is_station(mapElement)) {
+			rct_string_id stringId;
+			if (ride->num_stations > 1) {
+				stringId = 1334;
+			} else {
+				stringId = 1333;
+			}
+			set_map_tooltip_format_arg(2, uint16, stringId);
 		} else {
-			if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, mapElement->base_height << 4))
+			if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, mapElement->base_height << 4)) {
 				return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+			}
 
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
+			set_map_tooltip_format_arg(2, uint16, ride->name);
+			set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
 			return info->type;
 		}
 
-		if (ride->num_stations > 1)
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16)++;
-
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].station_name + 2;
+		set_map_tooltip_format_arg(4, uint16, ride->name);
+		set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
+		set_map_tooltip_format_arg(10, uint16, RideNameConvention[ride->type].station_name + 2);
 
 		stationIndex = map_get_station(mapElement);
 		for (i = stationIndex; i >= 0; i--)
 			if (ride->station_starts[i] == 0xFFFF)
 				stationIndex--;
 		stationIndex++;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = stationIndex;
+		set_map_tooltip_format_arg(12, uint16, stationIndex);
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
 		if (sceneryEntry->wall.var_0D != 255) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+			set_map_tooltip_format_arg(0, uint16, 1163);
+			set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
 			return info->type;
 		}
 		break;
@@ -253,8 +271,8 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
 		if (sceneryEntry->large_scenery.var_11 != 255) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+			set_map_tooltip_format_arg(0, uint16, 1163);
+			set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
 			return info->type;
 		}
 		break;
@@ -263,8 +281,8 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		banner = &gBanners[mapElement->properties.banner.index];
 		sceneryEntry = get_banner_entry(banner->type);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1163;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		set_map_tooltip_format_arg(0, uint16, 1163);
+		set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
 		return info->type;
 	}
 
@@ -277,25 +295,25 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 	switch (info->type) {
 	case VIEWPORT_INTERACTION_ITEM_SCENERY:
 		sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		set_map_tooltip_format_arg(0, uint16, 1164);
+		set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1425;
+		set_map_tooltip_format_arg(0, uint16, 1164);
+		set_map_tooltip_format_arg(2, uint16, 1425);
 		if (mapElement->type & 1)
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 1426;
+			set_map_tooltip_format_arg(2, uint16, 1426);
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
 		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
+		set_map_tooltip_format_arg(0, uint16, 1164);
 		if (mapElement->flags & 0x20) {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3124;
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = sceneryEntry->name;
+			set_map_tooltip_format_arg(2, uint16, 3124);
+			set_map_tooltip_format_arg(4, uint16, sceneryEntry->name);
 		} else {
-			RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+			set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
 		}
 		return info->type;
 
@@ -306,20 +324,20 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
 			break;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = 3192;
+		set_map_tooltip_format_arg(0, uint16, 1164);
+		set_map_tooltip_format_arg(2, uint16, 3192);
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:
 		sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		set_map_tooltip_format_arg(0, uint16, 1164);
+		set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
 		sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type & 0x3FF);
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 1164;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = sceneryEntry->name;
+		set_map_tooltip_format_arg(0, uint16, 1164);
+		set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
 		return info->type;
 	}
 

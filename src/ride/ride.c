@@ -3239,14 +3239,14 @@ static void ride_track_set_map_tooltip(rct_map_element *mapElement)
 	rideIndex = mapElement->properties.track.ride_index;
 	ride = get_ride(rideIndex);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
+	set_map_tooltip_format_arg(0, uint16, 2215);
+	set_map_tooltip_format_arg(2, uint16, ride->name);
+	set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
 
 	int arg0, arg1;
 	ride_get_status(rideIndex, &arg0, &arg1);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 8, uint16) = (uint16)arg0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint32) = arg1;
+	set_map_tooltip_format_arg(8, uint16, (uint16)arg0);
+	set_map_tooltip_format_arg(10, uint32, arg1);
 }
 
 static void ride_station_set_map_tooltip(rct_map_element *mapElement)
@@ -3262,17 +3262,17 @@ static void ride_station_set_map_tooltip(rct_map_element *mapElement)
 		if (ride->station_starts[i] == 0xFFFF)
 			stationIndex--;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->num_stations <= 1 ? 1333 : 1334;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = RideNameConvention[ride->type].station_name + 2;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = stationIndex + 1;
+	set_map_tooltip_format_arg(0, uint16, 2215);
+	set_map_tooltip_format_arg(2, uint16, ride->num_stations <= 1 ? 1333 : 1334);
+	set_map_tooltip_format_arg(4, uint16, ride->name);
+	set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
+	set_map_tooltip_format_arg(10, uint16, RideNameConvention[ride->type].station_name + 2);
+	set_map_tooltip_format_arg(12, uint16, stationIndex + 1);
 
 	int arg0, arg1;
 	ride_get_status(rideIndex, &arg0, &arg1);
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) = (uint16)arg0;
-	RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint32) = arg1;
+	set_map_tooltip_format_arg(14, uint16, (uint16)arg0);
+	set_map_tooltip_format_arg(16, uint32, arg1);
 }
 
 static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
@@ -3295,18 +3295,19 @@ static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
 		if (ride->entrances[stationIndex] != 0xFFFF)
 			queueLength = ride->queue_length[stationIndex];
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = 2215;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->num_stations <= 1 ? 1335 : 1336;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 6, uint32) = ride->name_arguments;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 12, uint16) = stationIndex + 1;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 14, uint16) =
-			queueLength == 0 ?
-				1201 :
-				queueLength == 1 ?
-					1202 :
-					1203;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 16, uint16) = queueLength;
+		set_map_tooltip_format_arg(0, uint16, 2215);
+		set_map_tooltip_format_arg(2, uint16, ride->num_stations <= 1 ? 1335 : 1336);
+		set_map_tooltip_format_arg(4, uint16, ride->name);
+		set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
+		set_map_tooltip_format_arg(12, uint16, stationIndex + 1);
+		if (queueLength == 0) {
+			set_map_tooltip_format_arg(14, uint16, 1201);
+		} else if (queueLength == 1) {
+			set_map_tooltip_format_arg(14, uint16, 1202);
+		} else {
+			set_map_tooltip_format_arg(14, uint16, 1203);
+		}
+		set_map_tooltip_format_arg(16, uint16, queueLength);
 	} else {
 		// Get the station
 		stationIndex = map_get_station(mapElement);
@@ -3314,10 +3315,10 @@ static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
 			if (ride->station_starts[i] == 0xFFFF)
 				stationIndex--;
 
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 0, uint16) = ride->num_stations <= 1 ? 1337 : 1338;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 2, uint16) = ride->name;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 4, uint32) = ride->name_arguments;
-		RCT2_GLOBAL(RCT2_ADDRESS_MAP_TOOLTIP_ARGS + 10, uint16) = stationIndex + 1;
+		set_map_tooltip_format_arg(0, uint16, ride->num_stations <= 1 ? 1337 : 1338);
+		set_map_tooltip_format_arg(2, uint16, ride->name);
+		set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
+		set_map_tooltip_format_arg(10, uint16, stationIndex + 1);
 	}
 }
 
