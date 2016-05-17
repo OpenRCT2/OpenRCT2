@@ -21,6 +21,7 @@
 #include "../../config.h"
 #include "../../peep/staff.h"
 #include "../../world/map.h"
+#include "map_element.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -303,20 +304,6 @@ const uint32 dword_97B898[][2] = {
 	{SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID}
 };
 
-
-enum
-{
-	SEGMENT_B4 = (1 << 0),
-	SEGMENT_B8 = (1 << 1),
-	SEGMENT_BC = (1 << 2),
-	SEGMENT_C0 = (1 << 3),
-	SEGMENT_C4 = (1 << 4),
-	SEGMENT_C8 = (1 << 5),
-	SEGMENT_CC = (1 << 6),
-	SEGMENT_D0 = (1 << 7),
-	SEGMENT_D4 = (1 << 8),
-};
-
 typedef struct tile_descriptor tile_descriptor;
 
 struct tile_descriptor
@@ -326,22 +313,6 @@ struct tile_descriptor
 	uint8 slope;
 	corner_height corner_heights;
 };
-
-static void paint_setup_set_segment_support_height(int flags, uint16 height, uint8 segment_flags)
-{
-	for (int s = 0; s < 9; s++) {
-		if (flags & (1 << s)) {
-			RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16) = height;
-			RCT2_GLOBAL(0x0141E9B6 + s * 4, uint8) = segment_flags;
-		}
-	}
-}
-
-static void paint_setup_set_support_height(uint16 height, uint8 segment_flags)
-{
-	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, uint16) = height;
-	RCT2_GLOBAL(0x0141E9DA, uint8) = segment_flags;
-}
 
 uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, int rotation)
 {
@@ -353,15 +324,6 @@ uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapEleme
 	di = ((di >> 4) | di) & 0x0F;
 	return ebx | di;
 }
-
-enum edge
-{
-	EDGE_BOTTOMLEFT,
-	EDGE_BOTTOMRIGHT,
-	EDGE_TOPLEFT,
-	EDGE_TOPRIGHT
-};
-
 
 typedef struct viewport_surface_paint_struct_0 {
 	uint32 var_00;
@@ -1552,12 +1514,12 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 00  00  00
 			//   00  00
 			//     00
-			paint_setup_set_segment_support_height(
+			paint_util_set_segment_support_height(
 				SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
 				height,
 				0
 			);
-			paint_setup_set_support_height(height, 0);
+			paint_util_force_set_general_support_height(height, 0);
 			break;
 
 		case 1:
@@ -1567,11 +1529,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 01  01  01
 			//   1B  1B
 			//     1B
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, height, 0);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 1);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_C0, height + 6 + 6, 0x1B);
-			paint_setup_set_support_height(height, 1);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, height, 0);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 1);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_C0, height + 6 + 6, 0x1B);
+			paint_util_force_set_general_support_height(height, 1);
 			break;
 
 		case 2:
@@ -1581,11 +1543,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 17  02  00
 			//   17  00
 			//     02
-			paint_setup_set_segment_support_height(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, height, 0);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 2);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_B8, height + 6 + 6, 0x17);
-			paint_setup_set_support_height(height, 2);
+			paint_util_set_segment_support_height(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, height, 0);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 2);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_B8, height + 6 + 6, 0x17);
+			paint_util_force_set_general_support_height(height, 2);
 			break;
 
 		case 3:
@@ -1595,10 +1557,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 03  03  03
 			//   03  03
 			//     03
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2, 3);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 3);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2 + 6 + 6, 3);
-			paint_setup_set_support_height(height, 3);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2, 3);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 3);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2 + 6 + 6, 3);
+			paint_util_force_set_general_support_height(height, 3);
 			break;
 
 		case 4:
@@ -1608,11 +1570,11 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 04  04  04
 			//   00  00
 			//     00
-			paint_setup_set_segment_support_height(SEGMENT_C0 | SEGMENT_D0 | SEGMENT_D4, height, 0);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 4);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_B4, height + 6 + 6, 0x1E);
-			paint_setup_set_support_height(height, 4);
+			paint_util_set_segment_support_height(SEGMENT_C0 | SEGMENT_D0 | SEGMENT_D4, height, 0);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 4);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_B4, height + 6 + 6, 0x1E);
+			paint_util_force_set_general_support_height(height, 4);
 			break;
 
 		case 5:
@@ -1622,12 +1584,12 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 05  05  05  ░░  ░░  ░░
 			//   1B  1B      ▒▒  ▒▒
 			//     1B          ▓▓
-			paint_setup_set_segment_support_height(SEGMENT_B4, height + 6 + 6, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 5);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_C0, height + 6 + 6, 0x1B);
-			paint_setup_set_support_height(height, 5);
+			paint_util_set_segment_support_height(SEGMENT_B4, height + 6 + 6, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 5);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_C0, height + 6 + 6, 0x1B);
+			paint_util_force_set_general_support_height(height, 5);
 			break;
 
 		case 6:
@@ -1637,10 +1599,10 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 06  06  06  ▓▓  ▒▒  ░░
 			//   06  06      ▒▒  ░░
 			//     06          ░░
-			paint_setup_set_segment_support_height(SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0, height + 2, 6);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 6);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, height + 2 + 6 + 6, 6);
-			paint_setup_set_support_height(height, 6);
+			paint_util_set_segment_support_height(SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0, height + 2, 6);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 6);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, height + 2 + 6 + 6, 6);
+			paint_util_force_set_general_support_height(height, 6);
 			break;
 
 		case 7:
@@ -1650,113 +1612,113 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 			// 00  07  17  ▓▓  ▓▓  ░░
 			//   00  17      ▓▓  ▒▒
 			//     07          ▓▓
-			paint_setup_set_segment_support_height(SEGMENT_BC, height + 4, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 7);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0 | SEGMENT_B8, height + 4 + 6 + 6, 0);
-			paint_setup_set_support_height(height, 7);
+			paint_util_set_segment_support_height(SEGMENT_BC, height + 4, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 7);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0 | SEGMENT_B8, height + 4 + 6 + 6, 0);
+			paint_util_force_set_general_support_height(height, 7);
 			break;
 
 		case 8:
 			// loc_6620D8
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D0, height, 0);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 8);
-			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_BC, height + 6 + 6, 0x1D);
-			paint_setup_set_support_height(height, 8);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D0, height, 0);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 8);
+			paint_util_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_BC, height + 6 + 6, 0x1D);
+			paint_util_force_set_general_support_height(height, 8);
 			break;
 
 		case 9:
 			// loc_66216D
-			paint_setup_set_support_height(height, 9);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8, height + 2, 9);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 9);
-			paint_setup_set_segment_support_height(SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, height + 2 + 6 + 6, 9);
+			paint_util_force_set_general_support_height(height, 9);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8, height + 2, 9);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 9);
+			paint_util_set_segment_support_height(SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, height + 2 + 6 + 6, 9);
 			break;
 
 		case 10:
 			// loc_662206
-			paint_setup_set_support_height(height, 0xA);
-			paint_setup_set_segment_support_height(SEGMENT_B8, height + 6 + 6, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 0xA);
-			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_BC, height + 6 + 6, 0x1D);
+			paint_util_force_set_general_support_height(height, 0xA);
+			paint_util_set_segment_support_height(SEGMENT_B8, height + 6 + 6, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 0xA);
+			paint_util_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_BC, height + 6 + 6, 0x1D);
 			break;
 
 		case 11:
 			// loc_66229B
-			paint_setup_set_support_height(height, 0xB);
-			paint_setup_set_segment_support_height(SEGMENT_B4, height + 4, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xB);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4 | SEGMENT_C0, height + 4 + 6 + 6, 0);
+			paint_util_force_set_general_support_height(height, 0xB);
+			paint_util_set_segment_support_height(SEGMENT_B4, height + 4, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xB);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4 | SEGMENT_C0, height + 4 + 6 + 6, 0);
 			break;
 
 		case 12:
 			// loc_662334
-			paint_setup_set_support_height(height, 0xC);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2, 0xC);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 0xC);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2 + 6 + 6, 0xC);
+			paint_util_force_set_general_support_height(height, 0xC);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2, 0xC);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 0xC);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2 + 6 + 6, 0xC);
 			break;
 
 		case 13:
 			// loc_6623CD
-			paint_setup_set_support_height(height, 0xD);
-			paint_setup_set_segment_support_height(SEGMENT_B8, height + 4, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0xD);
-			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC, height + 4 + 6 + 6, 0);
+			paint_util_force_set_general_support_height(height, 0xD);
+			paint_util_set_segment_support_height(SEGMENT_B8, height + 4, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0xD);
+			paint_util_set_segment_support_height(SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC, height + 4 + 6 + 6, 0);
 			break;
 
 		case 14:
 			// loc_662466
-			paint_setup_set_support_height(height, 0xE);
-			paint_setup_set_segment_support_height(SEGMENT_C0, height + 4, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xE);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_B4, height + 4 + 6 + 6, 0);
+			paint_util_force_set_general_support_height(height, 0xE);
+			paint_util_set_segment_support_height(SEGMENT_C0, height + 4, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xE);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_B4, height + 4 + 6 + 6, 0);
 			break;
 
 		case 23:
 			// loc_6624FF
-			paint_setup_set_support_height(height, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_BC, height + 4, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6 + 6 + 6, 0x17);
-			paint_setup_set_segment_support_height(SEGMENT_B8, height + 4 + 6 + 6 + 6 + 6, 0x17);
+			paint_util_force_set_general_support_height(height, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_BC, height + 4, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6 + 6 + 6, 0x17);
+			paint_util_set_segment_support_height(SEGMENT_B8, height + 4 + 6 + 6 + 6 + 6, 0x17);
 			break;
 
 		case 27:
 			// loc_6625A0
-			paint_setup_set_support_height(height, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_B4, height + 4, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1B);
-			paint_setup_set_segment_support_height(SEGMENT_C0, height + 4 + 6 + 6 + 6 + 6, 0x1B);
+			paint_util_force_set_general_support_height(height, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_B4, height + 4, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1B);
+			paint_util_set_segment_support_height(SEGMENT_C0, height + 4 + 6 + 6 + 6 + 6, 0x1B);
 			break;
 
 		case 29:
 			// loc_662641
-			paint_setup_set_support_height(height, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_B8, height + 4, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1D);
-			paint_setup_set_segment_support_height(SEGMENT_BC, height + 4 + 6 + 6 + 6 + 6, 0x1D);
+			paint_util_force_set_general_support_height(height, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_B8, height + 4, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_CC | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1D);
+			paint_util_set_segment_support_height(SEGMENT_BC, height + 4 + 6 + 6 + 6 + 6, 0x1D);
 			break;
 
 		case 30:
 			// loc_6626E2
-			paint_setup_set_support_height(height, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_C0, height + 4, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6 + 6 + 6, 0x1E);
-			paint_setup_set_segment_support_height(SEGMENT_B4, height + 4 + 6 + 6 + 6 + 6, 0x1E);
+			paint_util_force_set_general_support_height(height, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_C0, height + 4, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC, height + 4 + 6 + 6 + 6, 0x1E);
+			paint_util_set_segment_support_height(SEGMENT_B4, height + 4 + 6 + 6 + 6 + 6, 0x1E);
 			break;
 	}
 

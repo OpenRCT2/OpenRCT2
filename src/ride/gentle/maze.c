@@ -21,6 +21,7 @@
 #include "../../sprites.h"
 #include "../../world/map.h"
 #include "../track_paint.h"
+#include "../../paint/map_element/surface.h"
 
 enum {
 	SPR_MAZE_BASE_HEDGE = 21938,
@@ -54,19 +55,12 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 
 	uint32 rotation = get_current_rotation();
 	// draw ground
-	int image_id = 2485 | RCT2_GLOBAL(0x00F441A0, uint32);
+	int image_id = SPR_TERRAIN_DIRT | RCT2_GLOBAL(0x00F441A0, uint32);
 	sub_98196C(image_id, 0, 0, 32, 32, 0, height, rotation);
 
 	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
 
-	RCT2_GLOBAL(0x0141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x0141E9D4, uint16) = 0xFFFF;
+	paint_util_set_segment_support_height(SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
 	int base_image_id;
 	switch (get_ride(rideIndex)->track_colour_supports[0]) {
@@ -174,15 +168,10 @@ static void maze_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 	if (maze_entry & (1 << 2 | 1 << 6 | 1 << 10 | 1 << 14)) {
 		sub_98197C(base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTER, 14, 14, 2, 2, 8, height, 15, 15, height + 2, rotation);
 
-		RCT2_GLOBAL(0x141E9C4, uint16) = height + 12;
-		RCT2_GLOBAL(0x141E9C6, uint8) = 0x20;
+		paint_util_set_segment_support_height(SEGMENT_C4, height + 12, 0x20);
 	}
 
-	height += 32;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
-	}
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /**

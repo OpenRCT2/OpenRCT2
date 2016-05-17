@@ -28,50 +28,6 @@
 
 /**
  *
- *  rct2: 0x0076687C
- */
-static void top_spin_paint_tile_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 112;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/* rct2: 0x007667AE */
-static rct_xy16 loc_7667AE[] = {
-	{ .x = 0,  .y = -1 },
-	{ .x = 1,  .y = 0 },
-	{ .x = 0,  .y = 1},
-	{ .x = -1, .y = 0 },
-};
-
-/* rct2: 0x007667AC */
-static rct_xy16 loc_7667AC[] = {
-	{ .x = -1, .y = 0 },
-	{ .x = 0,  .y = -1 },
-	{ .x = 1,  .y = 0 },
-	{ .x = 0,  .y = 1 },
-};
-
-/**
- *
  *  rct2: 0x0142811C
  * Can be calculated as Rounddown(34*sin(x)+0.5)
  * where x is in 7.5 deg segments.
@@ -296,569 +252,62 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 }
 
 /**
- *
- *  rct2: 0x0076693F
+ * rct2: 0x0076679C
  */
-static void top_spin_paint_tile_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
+static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
+	trackSequence = track_map_3x3[direction][trackSequence];
 
-	const uint8 rotation = get_current_rotation();
-	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
+	int edges = edges_3x3[trackSequence];
+	rct_ride *ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AE[rotation].x) |
-		(((y / 32) + loc_7667AE[rotation].y) << 8);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
 
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
+	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
 
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = 22141 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, rotation);
+	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F441A0, uint32), height, fenceSpritesRope, get_current_rotation());
+
+	switch (trackSequence) {
+		case 1: top_spin_paint_vehicle(32, 32, rideIndex, direction, height, mapElement); break;
+		case 3: top_spin_paint_vehicle(32, -32, rideIndex, direction, height, mapElement); break;
+		case 5: top_spin_paint_vehicle(0, -32, rideIndex, direction, height, mapElement); break;
+		case 6: top_spin_paint_vehicle(-32, 32, rideIndex, direction, height, mapElement); break;
+		case 7: top_spin_paint_vehicle(-32, -32, rideIndex, direction, height, mapElement); break;
+		case 8: top_spin_paint_vehicle(-32, 0, rideIndex, direction, height, mapElement); break;
 	}
 
-	entranceLoc =
-		((x / 32) + loc_7667AC[rotation].x) |
-		(((y / 32) + loc_7667AC[rotation].y) << 8);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = 22138 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 0, 2, height + 2, rotation);
+	int cornerSegments = 0;
+	switch (trackSequence) {
+		case 1:
+			// top
+			cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+			break;
+		case 3:
+			// right
+			cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
+			break;
+		case 6:
+			// left
+			cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
+			break;
+		case 7:
+			// bottom
+			cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
+			break;
 	}
 
-	top_spin_paint_vehicle(32, 32, rideIndex, direction, height, mapElement);
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9B6, uint16) = 32;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9CA, uint16) = 32;
-	RCT2_GLOBAL(0x141E9CC, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9CE, uint16) = 32;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 110;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
+	paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
+	paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 112, 0x20);
 }
 
-/**
- *
- *  rct2: 0x00767033
- */
-static void top_spin_paint_tile_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	const uint8 rotation = get_current_rotation();
-	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AC[rotation].x) |
-		(((y / 32) + loc_7667AC[rotation].y) << 8);
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = 22138 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 2, 0, height + 2, rotation);
-	}
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 110;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/**
- *
- *  rct2: 0x0076718D
- */
-static void top_spin_paint_tile_4(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	const uint8 rotation = get_current_rotation();
-	image_id = 22137 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AE[rotation].x) |
-		(((y / 32) + loc_7667AE[rotation].y) << 8);
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = 22141 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, rotation);
-	}
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 110;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/**
- *
- *  rct2: 0x00766B4C
- */
-static void top_spin_paint_tile_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	const uint8 rotation = get_current_rotation();
-	image_id = 22136 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AC[rotation].x) |
-		(((y / 32) + loc_7667AC[rotation].y) << 8);
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = 22138 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(image_id, 0, 0, 1, 32, 7, height, 2, 0, height + 2, rotation);
-	}
-
-	entranceLoc =
-		((x / 32) + loc_7667AC[(rotation + 3) & 3].x) |
-		(((y / 32) + loc_7667AC[(rotation + 3) & 3].y) << 8);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-
-		image_id = 22139 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, rotation);
-	}
-
-	top_spin_paint_vehicle(32, -32, rideIndex, direction, height, mapElement);
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9BE, uint16) = 32;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9CE, uint16) = 32;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9D6, uint16) = 32;
-
-	height += 110;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/**
- *
- *  rct2: 0x007672E7
- */
-static void top_spin_paint_tile_5(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	const uint8 rotation = get_current_rotation();
-	image_id = 22136 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
-
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AC[(rotation + 3) & 3].x) |
-		(((y / 32) + loc_7667AC[(rotation + 3) & 3].y) << 8);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = 22139 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, rotation);
-	}
-
-	top_spin_paint_vehicle(0, -32, rideIndex, direction, height, mapElement);
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 112;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/**
- *
- *  rct2: 0x00766D09
- */
-static void top_spin_paint_tile_6(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	const uint8 rotation = get_current_rotation();
-	image_id = 22135 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AE[rotation].x) |
-		(((y / 32) + loc_7667AE[rotation].y) << 8);
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = 22141 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, rotation);
-	}
-
-	entranceLoc =
-		((x / 32) + loc_7667AE[(rotation + 1) & 3].x) |
-		(((y / 32) + loc_7667AE[(rotation + 1) & 3].y) << 8);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-
-		image_id = 22140 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(image_id, 0, 0, 1, 32, 7, height, 30, 2, height + 2, rotation);
-	}
-
-	top_spin_paint_vehicle(-32, 32, rideIndex, direction, height, mapElement);
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9BA, uint16) = 32;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9CA, uint16) = 32;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9D2, uint16) = 32;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 110;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/**
- *
- *  rct2: 0x00766EC6
- */
-static void top_spin_paint_tile_7(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	const uint8 rotation = get_current_rotation();
-	image_id = 22134 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
-
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AE[(rotation + 1) & 3].x) |
-		(((y / 32) + loc_7667AE[(rotation + 1) & 3].y) << 8);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-
-		image_id = 22140 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(image_id, 0, 0, 1, 28, 7, height, 29, 0, height + 3, rotation);
-	}
-
-	entranceLoc =
-		((x / 32) + loc_7667AC[(rotation + 3) & 3].x) |
-		(((y / 32) + loc_7667AC[(rotation + 3) & 3].y) << 8);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-
-		image_id = 22139 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(image_id, 0, 0, 28, 1, 7, height, 0, 29, height + 3, rotation);
-	}
-
-	top_spin_paint_vehicle(-32, -32, rideIndex, direction, height, mapElement);
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9C2, uint16) = 32;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9D2, uint16) = 32;
-	RCT2_GLOBAL(0x141E9D4, uint16) = height + 2;
-	RCT2_GLOBAL(0x141E9D6, uint16) = 32;
-
-	height += 110;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/**
- *
- *  rct2: 0x007673FA
- */
-static void top_spin_paint_tile_8(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
-
-	const uint8 rotation = get_current_rotation();
-	image_id = 22135 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride* ride = get_ride(rideIndex);
-
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AE[(rotation + 1) & 3].x) |
-		(((y / 32) + loc_7667AE[(rotation + 1) & 3].y) << 8);
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-
-		image_id = 22140 | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(image_id, 0, 0, 1, 32, 7, height, 30, 0, height + 2, rotation);
-	}
-	top_spin_paint_vehicle(-32, 0, rideIndex, direction, height, mapElement);
-
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 112;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
-}
-
-/**
- *
- *  rct2: 0x007667BC
- */
-static void top_spin_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	switch (trackSequence)
-	{
-	case 0:
-		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 1:
-		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 2:
-		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 3:
-		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 4:
-		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 5:
-		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 6:
-		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 7:
-		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 8:
-		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	}
-	return;
-}
-
-/**
- *
- *  rct2: 0x007667EC
-*/
-static void top_spin_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	switch (trackSequence)
-	{
-	case 0:
-		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 1:
-		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 2:
-		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 3:
-		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 4:
-		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 5:
-		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 6:
-		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 7:
-		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 8:
-		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	}
-	return;
-}
-
-/**
- *
- *  rct2: 0x0076681C
-*/
-static void top_spin_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	switch (trackSequence)
-	{
-	case 0:
-		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 1:
-		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 2:
-		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 3:
-		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 4:
-		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 5:
-		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 6:
-		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 7:
-		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 8:
-		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	}
-	return;
-}
-
-/**
- *
- *  rct2: 0x0076684C
-*/
-static void top_spin_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement) {
-	switch (trackSequence)
-	{
-	case 0:
-		top_spin_paint_tile_0(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 1:
-		top_spin_paint_tile_6(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 2:
-		top_spin_paint_tile_4(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 3:
-		top_spin_paint_tile_1(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 4:
-		top_spin_paint_tile_8(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 5:
-		top_spin_paint_tile_2(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 6:
-		top_spin_paint_tile_7(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 7:
-		top_spin_paint_tile_3(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	case 8:
-		top_spin_paint_tile_5(rideIndex, trackSequence, direction, height, mapElement);
-		break;
-	}
-	return;
-}
 
 /* 0x0076659C */
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction)
 {
-	switch (trackType) {
-	case 123:
-		switch (direction) {
-		case 0: return top_spin_paint_setup_rot_0;
-		case 1: return top_spin_paint_setup_rot_1;
-		case 2: return top_spin_paint_setup_rot_2;
-		case 3: return top_spin_paint_setup_rot_3;
-		}
-		break;
+	if (trackType != 123) {
+		return NULL;
 	}
-	return NULL;
+
+	return paint_top_spin;
 }

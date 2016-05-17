@@ -19,228 +19,73 @@
 #include "../../paint/supports.h"
 #include "../track_paint.h"
 
-/* rct2: 0x007667AE */
-static rct_xy16 loc_7667AE[] = {
-	{ .x = 0,  .y = -1 },
-	{ .x = 1,  .y = 0 },
-	{ .x = 0,  .y = 1},
-	{ .x = -1, .y = 0 },
-};
-
-/* rct2: 0x007667AC */
-static rct_xy16 loc_7667AC[] = {
-	{ .x = -1, .y = 0 },
-	{ .x = 0,  .y = -1 },
-	{ .x = 1,  .y = 0 },
-	{ .x = 0,  .y = 1 },
-};
-
 enum {
-	DODGEMS_FLOOR = 21925,
-	DODGEMS_ROOF_FRAME = 21926, // 4 directions
-	DODGEMS_ROOF_GLASS = 21930, // 4 directions
-	DODGEMS_FENCE_TOP_RIGHT = 21934,
-	DODGEMS_FENCE_BOTTOM_RIGHT = 21935,
-	DODGEMS_FENCE_BOTTOM_LEFT = 21936,
-	DODGEMS_FENCE_TOP_LEFT = 21937
+	SPR_DODGEMS_FLOOR = 21925,
+	SPR_DODGEMS_ROOF_FRAME = 21926, // 4 directions
+	SPR_DODGEMS_ROOF_GLASS = 21930, // 4 directions
+	SPR_DODGEMS_FENCE_TOP_RIGHT = 21934,
+	SPR_DODGEMS_FENCE_BOTTOM_RIGHT = 21935,
+	SPR_DODGEMS_FENCE_BOTTOM_LEFT = 21936,
+	SPR_DODGEMS_FENCE_TOP_LEFT = 21937
 };
 
-static void dodgems_paint_sub_floor(uint8 direction, int height) {
-	uint32 image_id = RCT2_GLOBAL(0x00F441A0, uint32);
-	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
+const uint32 dodgems_fence_sprites[] = {
+	SPR_DODGEMS_FENCE_TOP_RIGHT,
+	SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
+	SPR_DODGEMS_FENCE_BOTTOM_LEFT,
+	SPR_DODGEMS_FENCE_TOP_LEFT
+};
 
-	image_id = DODGEMS_FLOOR | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98197C(image_id, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
-}
-
-static void dodgems_paint_sub_fence_top_left(uint8 rideIndex, int height, rct_map_element *mapElement) {
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AE[get_current_rotation()].x) |
-		(((y / 32) + loc_7667AE[get_current_rotation()].y) << 8);
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride *ride = get_ride(rideIndex);
-
-	if (ride->entrances[entranceId] == entranceLoc || ride->exits[entranceId] == entranceLoc) {
-		return;
-	}
-
-	uint32 image_id = DODGEMS_FENCE_TOP_LEFT | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98199C(image_id, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
-}
-
-static void dodgems_paint_sub_fence_top_right(uint8 rideIndex, int height, rct_map_element *mapElement) {
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc =
-		((x / 32) + loc_7667AC[get_current_rotation()].x) |
-		(((y / 32) + loc_7667AC[get_current_rotation()].y) << 8);
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-	rct_ride *ride = get_ride(rideIndex);
-
-	if (ride->entrances[entranceId] == entranceLoc || ride->exits[entranceId] == entranceLoc) {
-		return;
-	}
-
-	uint32 image_id = DODGEMS_FENCE_TOP_RIGHT | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98199C(image_id, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
-}
-
-static void dodgems_paint_sub_fence_bottom_right(uint8 rideIndex, int height, rct_map_element *mapElement) {
-	uint32 image_id = DODGEMS_FENCE_BOTTOM_RIGHT | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98197C(image_id, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
-}
-
-static void dodgems_paint_sub_fence_bottom_left(uint8 rideIndex, int height, rct_map_element *mapElement) {
-	uint32 image_id = DODGEMS_FENCE_BOTTOM_LEFT | RCT2_GLOBAL(0x00F4419C, uint32);
-	sub_98197C(image_id, 0, 0, 1, 13, 7, height, 30, 0, height + 2, get_current_rotation());
-}
-
-static void dodgems_paint_sub_roof(int height, int offset) {
-	uint32 image_id = (DODGEMS_ROOF_FRAME + offset) | RCT2_GLOBAL(0x00F44198, uint32);
+static void paint_dodgems_roof(int height, int offset)
+{
+	uint32 image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | RCT2_GLOBAL(0x00F44198, uint32);
 	sub_98196C(image_id, 0, 0, 32, 32, 2, height, get_current_rotation());
 
-	image_id = (DODGEMS_ROOF_GLASS + offset) | (0xF << 19) | (0x1 << 24) | 0x40000000;
+	image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (0xF << 19) | (0x1 << 24) | 0x40000000;
 	paint_attach_to_previous_ps(image_id, 0, 0);
 }
 
-static void dodgems_paint_setup_rot_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
-	dodgems_paint_sub_floor(direction, height);
+static void paint_dodgems(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-	switch (trackSequence) {
-		case 0:
-			dodgems_paint_sub_fence_top_left(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_top_right(rideIndex, height, mapElement);
-			break;
+	int edges = edges_4x4[relativeTrackSequence];
+	rct_ride * ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 
-		case 1:
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+
+	uint32 imageId = SPR_DODGEMS_FLOOR | RCT2_GLOBAL(0x00F4419C, uint32);
+	sub_98197C(imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
+
+	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F4419C, uint32), height, dodgems_fence_sprites, get_current_rotation());
+
+	switch (direction) {
 		case 2:
-			dodgems_paint_sub_fence_top_right(rideIndex, height, mapElement);
+			trackSequence = 15 - trackSequence;
+			// fallthrough
+		case 0:
+			if ((trackSequence / 4) & 1) {
+				paint_dodgems_roof(height + 30, 0);
+			} else {
+				paint_dodgems_roof(height + 30, 2);
+			}
 			break;
 
 		case 3:
-			dodgems_paint_sub_fence_top_right(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_bottom_right(rideIndex, height, mapElement);
-			break;
-
-		case 4:
-		case 8:
-			dodgems_paint_sub_fence_top_left(rideIndex, height, mapElement);
-			break;
-
-		case 7:
-		case 11:
-			dodgems_paint_sub_fence_bottom_right(rideIndex, height, mapElement);
-			break;
-
-		case 12:
-			dodgems_paint_sub_fence_top_left(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_bottom_left(rideIndex, height, mapElement);
-			break;
-
-		case 13:
-		case 14:
-			dodgems_paint_sub_fence_bottom_left(rideIndex, height, mapElement);
-			break;
-
-		case 15:
-			dodgems_paint_sub_fence_bottom_right(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_bottom_left(rideIndex, height, mapElement);
-			break;
-	}
-
-	height += 30;
-	if ((trackSequence / 4) & 1) {
-		dodgems_paint_sub_roof(height, 0);
-	} else {
-		dodgems_paint_sub_roof(height, 2);
-	}
-
-	height += 6;
-	for (int i = 0; i < 9; ++i) {
-		RCT2_GLOBAL(0x141E9B4 + i * 4, uint16) = height;
-		RCT2_GLOBAL(0x141E9B6 + i * 4, uint8) = 0x20;
-	}
-
-	height += 12;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
-	}
-}
-
-static void dodgems_paint_setup_rot_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
-	dodgems_paint_sub_floor(direction, height);
-
-	switch (trackSequence) {
-		case 0:
-			dodgems_paint_sub_fence_top_right(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_bottom_right(rideIndex, height, mapElement);
-			break;
-
+			trackSequence = 15 - trackSequence;
+			// fallthrough
 		case 1:
-		case 2:
-			dodgems_paint_sub_fence_bottom_right(rideIndex, height, mapElement);
-			break;
-
-		case 3:
-			dodgems_paint_sub_fence_bottom_right(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_bottom_left(rideIndex, height, mapElement);
-			break;
-
-		case 4:
-		case 8:
-			dodgems_paint_sub_fence_top_right(rideIndex, height, mapElement);
-			break;
-
-		case 7:
-		case 11:
-			dodgems_paint_sub_fence_bottom_left(rideIndex, height, mapElement);
-			break;
-
-		case 12:
-			dodgems_paint_sub_fence_top_left(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_top_right(rideIndex, height, mapElement);
-			break;
-
-		case 13:
-		case 14:
-			dodgems_paint_sub_fence_top_left(rideIndex, height, mapElement);
-			break;
-
-		case 15:
-			dodgems_paint_sub_fence_top_left(rideIndex, height, mapElement);
-			dodgems_paint_sub_fence_bottom_left(rideIndex, height, mapElement);
+			if ((trackSequence / 4) & 1) {
+				paint_dodgems_roof(height + 30, 1);
+			} else {
+				paint_dodgems_roof(height + 30, 3);
+			}
 			break;
 	}
 
-	height += 30;
-	if ((trackSequence / 4) & 1) {
-		dodgems_paint_sub_roof(height, 1);
-	} else {
-		dodgems_paint_sub_roof(height, 3);
-	}
-
-	height += 6;
-	for (int i = 0; i < 9; ++i) {
-		RCT2_GLOBAL(0x141E9B4 + i * 4, uint16) = height;
-		RCT2_GLOBAL(0x141E9B6 + i * 4, uint8) = 0x20;
-	}
-
-	height += 12;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
-	}
-}
-
-static void dodgems_paint_setup_rot_2(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
-	dodgems_paint_setup_rot_0(rideIndex, 15 - trackSequence, direction, height, mapElement);
-}
-
-static void dodgems_paint_setup_rot_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
-	dodgems_paint_setup_rot_1(rideIndex, 15 - trackSequence, direction, height, mapElement);
+	paint_util_set_segment_support_height(SEGMENTS_ALL, height + 36, 0x20);
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /**
@@ -251,12 +96,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int directi
 		return NULL;
 	}
 
-	switch (direction) {
-		case 0: return dodgems_paint_setup_rot_0;
-		case 1: return dodgems_paint_setup_rot_1;
-		case 2: return dodgems_paint_setup_rot_2;
-		case 3: return dodgems_paint_setup_rot_3;
-	}
-
-	return NULL;
+	return paint_dodgems;
 }

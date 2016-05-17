@@ -24,6 +24,7 @@
 #include "../../ride/ride_data.h"
 #include "../../world/entrance.h"
 #include "../../world/footpath.h"
+#include "map_element.h"
 
 /**
  *
@@ -103,14 +104,10 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 		sub_98199C(transparant_image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
 	}
 
-	uint32 eax = 0xFFFF0600 | ((height / 16) & 0xFF);
-	if (direction & 1){
-		RCT2_ADDRESS(0x009E30B6, uint32)[RCT2_GLOBAL(0x141F56B, uint8) / 2] = eax;
-		RCT2_GLOBAL(0x141F56B, uint8)++;
-	}
-	else{
-		RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = eax;
-		RCT2_GLOBAL(0x141F56A, uint8)++;
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
 	}
 
 	if (!is_exit &&
@@ -152,21 +149,10 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 	}
 	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
 
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
 	height += is_exit ? 40 : 56;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height){
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
+	paint_util_set_general_support_height(height, 0x20);
 }
 
 /**
@@ -249,21 +235,8 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 	}
 	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
 
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 80;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height){
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 80, 0x20);
 }
 
 /**
