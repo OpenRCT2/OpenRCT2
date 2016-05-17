@@ -55,9 +55,9 @@ enum
 void paint_util_push_tunnel_left(uint16 height, uint8 type);
 void paint_util_push_tunnel_right(uint16 height, uint8 type);
 
-void paint_util_set_general_support_height(uint16 height, uint8 flags);
-void paint_util_force_set_general_support_height(uint16 height, uint8 flags);
-void paint_util_set_segment_support_height(int segments, uint16 height, uint8 flags);
+void paint_util_set_general_support_height(sint16 height, uint8 slope);
+void paint_util_force_set_general_support_height(sint16 height, uint8 slope);
+void paint_util_set_segment_support_height(int segments, uint16 height, uint8 slope);
 
 void map_element_paint_setup(int x, int y);
 

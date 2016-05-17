@@ -149,21 +149,10 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 	}
 	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
 
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
 	height += is_exit ? 40 : 56;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height){
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
+	paint_util_set_general_support_height(height, 0x20);
 }
 
 /**
@@ -246,21 +235,8 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 	}
 	wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
 
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-
-	height += 80;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height){
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 80, 0x20);
 }
 
 /**
