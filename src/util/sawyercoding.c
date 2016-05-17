@@ -137,8 +137,6 @@ size_t sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
 		break;
 	}
 	free(src_buffer);
-	// Set length
-	RCT2_GLOBAL(0x009E3828, uint32) = chunkHeader.length;
 	return chunkHeader.length;
 }
 

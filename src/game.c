@@ -247,9 +247,6 @@ void update_palette_effects()
 			gClimateLightningFlash = 0;
 		}
 	}
-	if (RCT2_GLOBAL(0x009E2C4C, uint32) == 2 || RCT2_GLOBAL(0x009E2C4C, uint32) == 1) {
-		RCT2_GLOBAL(0x009E2C78, int) = 1;
-	}
 }
 
 void game_update()

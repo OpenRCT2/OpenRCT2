@@ -51,7 +51,6 @@ void viewport_init_all()
 
 	// Setting up windows
 	gWindowNextSlot = g_window_list;
-	RCT2_GLOBAL(0x01423604, sint32) = 0;
 
 	// Setting up viewports
 	for (int i = 0; i < MAX_VIEWPORT_COUNT; i++) {

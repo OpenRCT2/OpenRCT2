@@ -490,8 +490,6 @@ static void setup_track_manager_objects(){
 		installedObject = object_get_next(installedObject);
 		selection_flags++;
 	}
-
-	RCT2_GLOBAL(0x00F43412, uint16) = num_objects;
 }
 
 /**
@@ -547,8 +545,6 @@ static void setup_track_designer_objects(){
 		installedObject = object_get_next(installedObject);
 		selection_flags++;
 	}
-
-	RCT2_GLOBAL(0x00F43412, uint16) = num_objects;
 }
 
 /**

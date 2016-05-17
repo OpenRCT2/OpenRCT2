@@ -98,7 +98,6 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
 		log_error("Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
-		RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 		free(chunk);
 		return 0;
 			
@@ -108,14 +107,12 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	if (!object_test(objectType, chunk)) {
 		log_error("Object Load failed due to paint failure.");
-		RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
 		free(chunk);
 		return 0;
 	}
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
 		log_error("Object Load failed due to too many images loaded.");
-		RCT2_GLOBAL(0x00F42BD9, uint8) = 4;
 		free(chunk);
 		return 0;
 	}
@@ -125,7 +122,6 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		for (groupIndex = 0; chunk_list[groupIndex] != (uint8*)-1; groupIndex++) {
 			if (groupIndex + 1 >= object_entry_group_counts[objectType]) {
 				log_error("Object Load failed due to too many objects of a certain type.");
-				RCT2_GLOBAL(0x00F42BD9, uint8) = 5;
 				free(chunk);
 				return 0;
 			}
@@ -160,7 +156,6 @@ int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunkSize)
 	RCT2_GLOBAL(0xF42B64, uint32) = groupIndex;
 
 	if (gInstalledObjectsCount == 0) {
-		RCT2_GLOBAL(0xF42BD9, uint8) = 0;
 		log_error("Object Load failed due to no items installed check.");
 		return 1;
 	}
@@ -1657,7 +1652,6 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 	if (installedObject == NULL){
 		log_error("Object not found: %.8s", entry->name);
-		RCT2_GLOBAL(0x00F42BD9, uint8) = 0;
 		return 0;
 	}
 
@@ -1694,7 +1688,6 @@ int object_get_scenario_text(rct_object_entry *entry)
 			// Calculate and check checksum
 			if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
 				log_error("Opened object failed calculated checksum.");
-				RCT2_GLOBAL(0x00F42BD9, uint8) = 2;
 				free(chunk);
 				return 0;
 			}
@@ -1702,7 +1695,6 @@ int object_get_scenario_text(rct_object_entry *entry)
 			if (!object_test(openedEntry.flags & 0x0F, chunk)) {
 				// This is impossible for STEX entries to fail.
 				log_error("Opened object failed paint test.");
-				RCT2_GLOBAL(0x00F42BD9, uint8) = 3;
 				free(chunk);
 				return 0;
 			}
@@ -1735,7 +1727,6 @@ int object_get_scenario_text(rct_object_entry *entry)
 		return 0;
 	}
 	log_error("File failed to open.");
-	RCT2_GLOBAL(0x00F42BD9, uint8) = 0;
 	return 0;
 }
 

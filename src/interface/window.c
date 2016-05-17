@@ -136,7 +136,6 @@ rct_widget *window_get_scroll_widget(rct_window *w, int scrollIndex)
  */
 void window_dispatch_update_all()
 {
-	RCT2_GLOBAL(0x01423604, sint32)++;
 	// gTooltipNotShownTicks++;
 	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
 		window_event_update_call(w);
@@ -2182,12 +2181,7 @@ void window_invalidate_pressed_image_buttons(rct_window *w)
  */
 void sub_6EA73F()
 {
-	rct_window *w;
-
-	if (game_is_paused())
-		RCT2_GLOBAL(0x01423604, uint32)++;
-
-	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
+	for (rct_window *w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		window_update_scroll_widgets(w);
 		window_invalidate_pressed_image_buttons(w);
 		window_event_resize_call(w);

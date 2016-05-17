@@ -498,7 +498,6 @@ void redraw_rain()
 			}
 			screenPixels[pixelIndex] = pixel & 0xFF;
 		}
-		RCT2_GLOBAL(0x009E2C78, uint32) = 1;
 		_numRainPixels = 0;
 	}
 }
