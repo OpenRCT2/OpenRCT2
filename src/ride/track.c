@@ -1306,7 +1306,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 		}
 
 		invalidate_test_results(rideIndex);
-		sub_6A7594();
+		footpath_queue_chain_reset();
 		if (!gCheatsDisableClearanceChecks || !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST)) {
 			footpath_remove_edges_at(x, y, mapElement);
 		}

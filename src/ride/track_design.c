@@ -851,7 +851,7 @@ int track_design_place_scenery(rct_td6_scenery_element *scenery_start, uint8 rid
 						if (map_element == NULL)
 							continue;
 
-						sub_6A7594();
+						footpath_queue_chain_reset();
 						footpath_remove_edges_at(mapCoord.x, mapCoord.y, map_element);
 
 						bl = 1;

@@ -94,4 +94,7 @@ void footpath_remove_edges_at(int x, int y, rct_map_element *mapElement);
 
 rct_footpath_entry *get_footpath_entry(int entryIndex);
 
+void footpath_queue_chain_reset();
+void footpath_queue_chain_push(uint8 rideIndex);
+
 #endif

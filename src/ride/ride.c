@@ -7983,7 +7983,7 @@ void sub_6CB945(int rideIndex)
 			} while (!map_element_is_last_for_tile(trackElement++));
 
 			if (shouldRemove == true) {
-				sub_6A7594();
+				footpath_queue_chain_reset();
 				maze_entrance_hedge_replacement(location.x, location.y, mapElement);
 				footpath_remove_edges_at(location.x, location.y, mapElement);
 				sub_6A759F();
@@ -8233,7 +8233,7 @@ money32 place_ride_entrance_or_exit(sint16 x, sint16 y, sint16 z, uint8 directio
 				map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, x, y, z / 8);
 			}
 
-			sub_6A7594();
+			footpath_queue_chain_reset();
 			if (!(flags & GAME_COMMAND_FLAG_GHOST)) {
 				maze_entrance_hedge_removal(x, y, mapElement);
 			}
@@ -8326,7 +8326,7 @@ money32 remove_ride_entrance_or_exit(sint16 x, sint16 y, uint8 rideIndex, uint8 
 		coord.z = map_element_height(coord.x, coord.y);
 		network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
-		sub_6A7594();
+		footpath_queue_chain_reset();
 		maze_entrance_hedge_replacement(x, y, mapElement);
 		footpath_remove_edges_at(x, y, mapElement);
 
