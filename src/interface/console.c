@@ -207,7 +207,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 		strncpy(lineCh, ch, lineLength);
 		lineCh[lineLength] = 0;
 
-		gfx_draw_string(dpi, lineBuffer, 100, x, y )	  //Value 100 outlines the letters
+		gfx_draw_string(dpi, lineBuffer, 100, x, y );	  //Value 100 outlines the letters
 
 		x = gLastDrawStringX;
 
