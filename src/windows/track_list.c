@@ -149,6 +149,9 @@ void window_track_list_open(ride_list_item item)
 	_currentTrackPieceDirection = 2;
 
 	_trackDesignPreviewPixels = calloc(4, TRACK_PREVIEW_IMAGE_SIZE);
+
+	_loadedTrackDesign = NULL;
+	_loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
 }
 
 /**
