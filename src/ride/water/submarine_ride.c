@@ -22,241 +22,6 @@
 #include "../../paint/supports.h"
 #include "../ride_data.h"
 
-enum
-{
-	SEGMENT_B4 = (1 << 0),
-	SEGMENT_0 = SEGMENT_B4,
-	SEGMENT_B8 = (1 << 1),
-	SEGMENT_1 = SEGMENT_B8,
-	SEGMENT_BC = (1 << 2),
-	SEGMENT_2 = SEGMENT_BC,
-	SEGMENT_C0 = (1 << 3),
-	SEGMENT_3 = SEGMENT_C0,
-	SEGMENT_C4 = (1 << 4),
-	SEGMENT_4 = SEGMENT_C4,
-	SEGMENT_C8 = (1 << 5),
-	SEGMENT_5 = SEGMENT_C8,
-	SEGMENT_CC = (1 << 6),
-	SEGMENT_6 = SEGMENT_CC,
-	SEGMENT_D0 = (1 << 7),
-	SEGMENT_7 = SEGMENT_D0,
-	SEGMENT_D4 = (1 << 8),
-	SEGMENT_8 = SEGMENT_D4,
-};
-
-const int SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
-
-const int segmentOffsets[9] = {
-	1 << 0, // 0 -> 0
-	1 << 6,  // 1 -> 6
-	1 << 2,  // 2 -> 2
-	1 << 4,  // 3 -> 4
-	0,          // center is skipped
-	1 << 7,
-	1 << 1,
-	1 << 5,
-	1 << 3
-};
-
-static uint16 segments_rotate(uint16 segments, uint8 rotation)
-{
-	uint8 temp = 0;
-
-	for (int s = 0; s < 9; s++) {
-		if (segments & (1 << s)) {
-			temp |= segmentOffsets[s];
-		}
-	}
-
-	temp = ror8(temp, rotation * 2);
-
-	uint16 out = 0;
-
-	for (int s = 0; s < 9; s++) {
-		if (temp & segmentOffsets[s]) {
-			out |= (1 << s);
-		}
-	}
-
-	if (segments & SEGMENT_4) {
-		out |= SEGMENT_4;
-	}
-
-	return out;
-}
-
-static void paint_util_set_segment_support_height(int flags, uint16 height, uint8 segment_flags)
-{
-	for (int s = 0; s < 9; s++) {
-		if (flags & (1 << s)) {
-			RCT2_GLOBAL(0x0141E9B4 + s * 4, uint16) = height;
-			RCT2_GLOBAL(0x0141E9B6 + s * 4, uint8) = segment_flags;
-		}
-	}
-}
-
-static void paint_util_set_support_height(uint16 height, uint8 flags)
-{
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = flags;
-	}
-}
-
-enum
-{
-	TUNNEL_0,
-	TUNNEL_FLAT = 6,
-	TUNNEL_7 = 7,
-	TUNNEL_UP = 8,
-	TUNNEL_14 = 0x0E
-};
-
-static void paint_util_push_tunnel_left(uint16 height, uint8 type)
-{
-	uint32 eax = 0xFFFF0000 | ((height / 16) & 0xFF) | type << 8;
-	RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56A, uint8)++;
-}
-
-static void paint_util_push_tunnel_right(uint16 height, uint8 type)
-{
-	uint32 eax = 0xFFFF0000 | ((height / 16) & 0xFF) | type << 8;
-	RCT2_ADDRESS(0x009E30B6, uint32)[RCT2_GLOBAL(0x141F56B, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56B, uint8)++;
-}
-
-/* Supports are only placed every 2 tiles for flat pieces*/
-bool paint_util_should_paint_supports(rct_xy16 position)
-{
-	if ((position.x & (1 << 5)) == (position.y & (1 << 5)))
-		return true;
-
-	if ((!(position.x & (1 << 5))) && (!(position.y & (1 << 5))))
-		return true;
-
-	return false;
-}
-
-
-/* rct2: 0x007667AE */
-static rct_xy16 loc_7667AE[] = {
-	{.x = 0, .y = -1},
-	{.x = 1, .y = 0},
-	{.x = 0, .y = 1},
-	{.x = -1, .y = 0},
-};
-
-/* rct2: 0x007667AC */
-static rct_xy16 loc_7667AC[] = {
-	{.x = -1, .y = 0},
-	{.x = 0, .y = -1},
-	{.x = 1, .y = 0},
-	{.x = 0, .y = 1},
-};
-
-typedef enum EDGE
-{
-	EDGE_NE,
-	EDGE_SE,
-	EDGE_SW,
-	EDGE_NW
-} EDGE;
-
-static bool paint_util_has_fence(EDGE edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
-{
-	rct_xy16 offset;
-	switch (edge) {
-		case EDGE_NE:
-			offset = loc_7667AC[rotation];
-			break;
-		case EDGE_SE:
-			offset = loc_7667AE[(rotation + 2) & 3];
-			break;
-		case EDGE_SW:
-			offset = loc_7667AC[(rotation + 2) & 3];
-			break;
-		case EDGE_NW:
-			offset = loc_7667AE[rotation];
-			break;
-	};
-
-	uint16 entranceLoc =
-		((position.x / 32) + offset.x) |
-		(((position.y / 32) + offset.y) << 8);
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-
-	return (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc);
-}
-
-enum
-{
-	SPR_STATION_COVER_OFFSET_NE_SW_BACK_0 = 0,
-	SPR_STATION_COVER_OFFSET_NE_SW_BACK_1,
-	SPR_STATION_COVER_OFFSET_NE_SW_FRONT,
-	SPR_STATION_COVER_OFFSET_SE_NW_BACK_0,
-	SPR_STATION_COVER_OFFSET_SE_NW_BACK_1,
-	SPR_STATION_COVER_OFFSET_SE_NW_FRONT,
-	SPR_STATION_COVER_OFFSET_HIGH
-} SPR_STATION_COVER;
-
-static bool paint_util_draw_station_covers(EDGE edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
-{
-	uint32 imageId;
-	uint32 baseImageId = entranceStyle->flags;
-	int imageOffset;
-	rct_xyz16 offset, bounds, boundsOffset;
-
-	offset = (rct_xyz16) {0, 0, height};
-	switch (edge) {
-		case EDGE_NE:
-			bounds = (rct_xyz16) {1, 30, 0};
-			boundsOffset = (rct_xyz16) {0, 1, height + 1};
-			imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
-			break;
-		case EDGE_SE:
-			bounds = (rct_xyz16) {32, 32, 0};
-			boundsOffset = (rct_xyz16) {1, 0, height + 31};
-			imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
-			break;
-		case EDGE_SW:
-			bounds = (rct_xyz16) {32, 32, 0};
-			boundsOffset = (rct_xyz16) {0, 0, height + 31};
-			imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
-			break;
-		case EDGE_NW:
-			bounds = (rct_xyz16) {30, 1, 30};
-			boundsOffset = (rct_xyz16) {1, 0, height + 1};
-			imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
-			break;
-	}
-
-	if (RCT2_GLOBAL(0x00F441A0, uint32) != 0x20000000) {
-		baseImageId &= 0x7FFFF;
-	}
-
-	if (baseImageId <= 0x20) {
-		return false;
-	}
-
-	if (baseImageId & 0x40000000) {
-		imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
-		sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
-
-		uint32 edi = RCT2_GLOBAL(0x00F44198, uint32) & (0b11111 << 19);
-
-		// weird jump
-		imageId = (baseImageId | edi) + 0x3800000 + imageOffset + 12;
-		sub_98199C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
-		return true;
-	}
-
-	imageId = (baseImageId + imageOffset) | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
-	return true;
-}
-
 /**
  *
  *  rct2: 0x006D44D5
@@ -340,18 +105,6 @@ enum
 	SPR_SUBMARINE_RIDE_FLAT_QUARTER_TURN_1_TILE_SE_SW = 16899,
 };
 
-enum
-{
-	SPR_STATION_PIER_EDGE_SE = 22404,
-	SPR_STATION_PIER_EDGE_SW = 22405,
-	SPR_STATION_PIER_EDGE_NW = 22406,
-	SPR_STATION_PIER_EDGE_NE = 22407,
-	SPR_STATION_PIER_EDGE_NW_FENCED = 22408,
-	SPR_STATION_PIER_EDGE_NE_FENCED = 22409,
-	SPR_STATION_PIER_FENCE_SE = 22410,
-	SPR_STATION_PIER_FENCE_SW = 22411,
-};
-
 static void submarine_ride_paint_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
@@ -364,50 +117,50 @@ static void submarine_ride_paint_track_station(uint8 rideIndex, uint8 trackSeque
 	if (direction & 1) {
 		imageId = SPR_SUBMARINE_RIDE_FLAT_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower, get_current_rotation());
-		paint_util_push_tunnel_right(height, TUNNEL_FLAT);
+		paint_util_push_tunnel_right(height, TUNNEL_6);
 
-		hasFence = paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+		hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
 		imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE) | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98197C(imageId, 0, 0, 6, 32, 1, height, 2, 0, height, get_current_rotation());
-		paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
 
 		imageId = SPR_STATION_PIER_EDGE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98196C(imageId, 24, 0, 8, 32, 1, height, get_current_rotation());
 
 		if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
-			hasFence = paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+			hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
 			if (hasFence) {
 				imageId = SPR_STATION_PIER_FENCE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
 				sub_98196C(imageId, 31, 0, 1, 32, 7, height + 2, get_current_rotation());
 			}
-			paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+			track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
 		}
 
 	} else {
 		imageId = SPR_SUBMARINE_RIDE_FLAT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower, get_current_rotation());
-		paint_util_push_tunnel_left(height, TUNNEL_FLAT);
+		paint_util_push_tunnel_left(height, TUNNEL_6);
 
-		hasFence = paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
 		imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW) | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98197C(imageId, 0, 0, 32, 6, 1, height, 0, 2, height, get_current_rotation());
-		paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
 
 		imageId = SPR_STATION_PIER_EDGE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98196C(imageId, 0, 24, 32, 8, 1, height, get_current_rotation());
 
 		if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
-			hasFence = paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+			hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
 			if (hasFence) {
 				imageId = SPR_STATION_PIER_FENCE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
 				sub_98196C(imageId, 0, 31, 32, 1, 7, height + 2, get_current_rotation());
 			}
-			paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+			track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
 		}
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-	paint_util_set_support_height(height + 32, 0x20);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 static void submarine_ride_paint_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -426,12 +179,12 @@ static void submarine_ride_paint_track_flat(uint8 rideIndex, uint8 trackSequence
 		paint_util_push_tunnel_left(heightLower, TUNNEL_0);
 	}
 
-	if (paint_util_should_paint_supports(position)) {
+	if (track_paint_util_should_paint_supports(position)) {
 		metal_a_supports_paint_setup((direction & 1) ? 4 : 5, 4, -1, heightLower, RCT2_GLOBAL(0x00F4419C, uint32));
 	}
 
-	paint_util_set_segment_support_height(segments_rotate(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-	paint_util_set_support_height(height + 16, 0x20);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
 static void submarine_ride_paint_track_quarter_turn_3_tiles_nw_sw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -465,7 +218,7 @@ static void submarine_ride_paint_track_quarter_turn_3_tiles_nw_sw(uint8 rideInde
 			break;
 	}
 
-	paint_util_set_support_height(height + 16, 0x20);
+	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
 static void submarine_ride_paint_track_quarter_turn_3_tiles_ne_nw(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -498,7 +251,7 @@ static void submarine_ride_paint_track_quarter_turn_3_tiles_ne_nw(uint8 rideInde
 			break;
 	}
 
-	paint_util_set_support_height(height + 16, 0x20);
+	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
 static void submarine_ride_paint_track_quarter_turn_3_tiles_se_ne(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -532,7 +285,7 @@ static void submarine_ride_paint_track_quarter_turn_3_tiles_se_ne(uint8 rideInde
 			break;
 	}
 
-	paint_util_set_support_height(height + 16, 0x20);
+	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
 static void submarine_ride_paint_track_quarter_turn_3_tiles_sw_se(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -566,7 +319,7 @@ static void submarine_ride_paint_track_quarter_turn_3_tiles_sw_se(uint8 rideInde
 			break;
 	}
 
-	paint_util_set_support_height(height + 16, 0x20);
+	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
 static void submarine_ride_paint_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -622,8 +375,8 @@ static void submarine_ride_paint_track_left_quarter_turn_1_tile(uint8 rideIndex,
 			break;
 	}
 
-	paint_util_set_segment_support_height(segments_rotate(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
-	paint_util_set_support_height(height + 16, 0x20);
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
 static void submarine_ride_paint_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)

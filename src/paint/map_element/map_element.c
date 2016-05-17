@@ -315,3 +315,11 @@ void paint_util_set_segment_support_height(int segments, uint16 height, uint8 sl
 		}
 	}
 }
+
+uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation)
+{
+	uint8 temp = segments & 0xFF;
+	temp = rol8(temp, rotation * 2);
+
+	return (segments & 0xFF00) | temp;
+}

@@ -49,6 +49,7 @@ extern const int SEGMENTS_ALL;
 
 enum
 {
+    TUNNEL_0 = 0,
     TUNNEL_6 = 6,
 };
 
@@ -58,6 +59,7 @@ void paint_util_push_tunnel_right(uint16 height, uint8 type);
 void paint_util_set_general_support_height(sint16 height, uint8 slope);
 void paint_util_force_set_general_support_height(sint16 height, uint8 slope);
 void paint_util_set_segment_support_height(int segments, uint16 height, uint8 slope);
+uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation);
 
 void map_element_paint_setup(int x, int y);
 
