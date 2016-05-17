@@ -256,13 +256,12 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
  */
 static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement) {
 	trackSequence = track_map_3x3[direction][trackSequence];
-	uint32 imageId;
-
-	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
 
 	int edges = edges_3x3[trackSequence];
 	rct_ride *ride = get_ride(rideIndex);
 	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
 
 	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
 

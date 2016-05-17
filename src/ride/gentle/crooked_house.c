@@ -76,7 +76,6 @@ static void sub_88ABA4(uint8 direction, uint8 x_offset, uint8 y_offset, uint32 s
 static void paint_crooked_house(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = track_map_3x3[direction][trackSequence];
-	uint32 imageId;
 
 	int edges = edges_3x3[trackSequence];
 	rct_ride * ride = get_ride(rideIndex);
