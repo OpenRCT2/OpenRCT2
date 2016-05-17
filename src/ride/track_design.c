@@ -1575,7 +1575,7 @@ money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry, sint16
 			return MONEY32_UNDEFINED;
 		}
 
-		uint8 elctgaw = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
+		uint8 elctgaw = gMapGroundFlags;
 		if (elctgaw & ELEMENT_IS_UNDERWATER) {
 			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;

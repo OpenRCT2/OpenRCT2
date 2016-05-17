@@ -461,6 +461,8 @@ typedef struct track_circuit_iterator {
 extern const rct_trackdefinition *gFlatRideTrackDefinitions;
 extern const rct_trackdefinition *gTrackDefinitions;
 
+extern uint8 gTrackGroundFlags;
+
 int track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 
 const rct_preview_track *get_track_def_from_ride(rct_ride *ride, int trackType);

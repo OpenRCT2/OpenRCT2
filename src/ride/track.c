@@ -38,6 +38,8 @@
 #include "track.h"
 #include "track_data.h"
 
+uint8 gTrackGroundFlags;
+
 /**
  *
  *  rct2: 0x00997C9D
@@ -614,7 +616,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 	RCT2_GLOBAL(0x00F441D5, uint32) = properties_1;
 	RCT2_GLOBAL(0x00F441D9, uint32) = properties_2;
 	RCT2_GLOBAL(0x00F441DD, uint32) = properties_3;
-	RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) = 0;
+	gTrackGroundFlags = 0;
 
 	uint64 enabledTrackPieces = 0;
 	enabledTrackPieces |= rideEntry->enabledTrackPiecesB & gResearchedTrackTypesB[ride->type];
@@ -808,16 +810,16 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 			}
 		}
 
-		bh = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 3;
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) != 0 && (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) & bh) == 0) {
+		bh = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
+		if (gTrackGroundFlags != 0 && (gTrackGroundFlags & bh) == 0) {
 			gGameCommandErrorText = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
 			return MONEY32_UNDEFINED;
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) = bh;
+		gTrackGroundFlags = bh;
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
 			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 0x200) {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
+				if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
 				}
@@ -825,7 +827,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 		else {
 			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x200) {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_ABOVE_GROUND_FLAGS, uint8) & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
+				if (gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 					return MONEY32_UNDEFINED;
 				}
@@ -834,7 +836,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 
 		if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) {
 			if (RCT2_ADDRESS(0x0099443C, uint16)[type] & 1) {
-				if (!(RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
+				if (!(gMapGroundFlags & ELEMENT_IS_UNDERWATER)) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
 				}
@@ -842,14 +844,14 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		}
 		else {
 			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 1) {
-				if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
+				if (gMapGroundFlags & ELEMENT_IS_UNDERWATER) {
 					gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_UNDERWATER;
 					return MONEY32_UNDEFINED;
 				}
 			}
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
+		if (gMapGroundFlags & ELEMENT_IS_UNDERWATER) {
 			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
@@ -1477,12 +1479,12 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 			return MONEY32_UNDEFINED;
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) {
+		if (gMapGroundFlags & ELEMENT_IS_UNDERWATER) {
 			gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
 			return MONEY32_UNDEFINED;
 		}
 
-		if (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x02) {
+		if (gMapGroundFlags & ELEMENT_IS_UNDERGROUND) {
 			gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
 			return MONEY32_UNDEFINED;
 		}

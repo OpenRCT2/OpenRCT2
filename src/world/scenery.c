@@ -58,6 +58,8 @@ sint16 gSceneryShiftPressZOffset;
 sint16 gSceneryCtrlPressed;
 sint16 gSceneryCtrlPressZ;
 
+uint8 gSceneryGroundFlags;
+
 void scenery_increase_age(int x, int y, rct_map_element *mapElement);
 
 void scenery_update_tile(int x, int y)

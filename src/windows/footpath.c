@@ -878,7 +878,7 @@ static void window_footpath_construct()
 			gFootpathConstructValidDirections = gFootpathConstructDirection;
 		}
 
-		if (RCT2_GLOBAL(0x00F3EFA4, uint8) & 2)
+		if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
 			viewport_set_visibility(1);
 
 		// If we have just built an upwards slope, the next path to construct is

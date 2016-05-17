@@ -59,6 +59,8 @@ rct_xy16		gMapSelectPositionB;
 rct_xyz16		gMapSelectArrowPosition;
 uint8			gMapSelectArrowDirection;
 
+uint8 gMapGroundFlags;
+
 rct_map_element *gMapElements = (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS;
 rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
@@ -3033,7 +3035,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 						}
 
 						if(gCheatsDisableClearanceChecks || map_can_construct_with_clear_at(x, y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F64F26, money32))){
-							RCT2_GLOBAL(0x00F64F14, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x3;
+							gSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
 							if(flags & GAME_COMMAND_FLAG_APPLY){
 								if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 									rct_xyz16 coord;
@@ -3206,7 +3208,7 @@ static bool map_place_fence_check_obstruction(rct_scenery_entry *wall, int x, in
 	rct_large_scenery_tile *tile;
 
 	RCT2_GLOBAL(0x0141F725, uint8) = 0;
-	RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) = 1;
+	gMapGroundFlags = ELEMENT_IS_1;
 	if (map_is_location_at_edge(x, y)) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return false;
@@ -3556,7 +3558,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 	gCommandPosition.x = x + 16;
 	gCommandPosition.y = y + 16;
 	gCommandPosition.z = base_height;
-	RCT2_GLOBAL(0x00F64F14, uint8) = 0;
+	gSceneryGroundFlags = 0;
 	uint8 banner_id = 0xFF;
 
 	// Supports cost
@@ -3686,20 +3688,20 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 			return;
 		}
 
-		if ((RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER) || (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERGROUND)) {
+		if ((gMapGroundFlags & ELEMENT_IS_UNDERWATER) || (gMapGroundFlags & ELEMENT_IS_UNDERGROUND)) {
 			*ebx = MONEY32_UNDEFINED;
 			return;
 		}
 
-		int b = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & 0x3;
+		int b = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
 		if (!gCheatsDisableClearanceChecks) {
-			if (RCT2_GLOBAL(0x00F64F14, uint8) && !(RCT2_GLOBAL(0x00F64F14, uint8) & b)) {
+			if (gSceneryGroundFlags && !(gSceneryGroundFlags & b)) {
 				gGameCommandErrorText = STR_CANT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_GROUND;
 				*ebx = MONEY32_UNDEFINED;
 				return;
 			}
 		}
-		RCT2_GLOBAL(0x00F64F14, uint8) = b;
+		gSceneryGroundFlags = b;
 
 		if (curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits) {
 			gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
@@ -4094,7 +4096,7 @@ static void map_obstruction_set_error_text(rct_map_element *mapElement)
  */
 int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price)
 {
-	RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) = 1;
+	gMapGroundFlags = ELEMENT_IS_1;
 	if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
 		return false;
@@ -4111,7 +4113,7 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUN
 		}
 		int water_height = ((map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 2);
 		if (water_height && water_height > zLow && map_element->base_height < zHigh) {
-			RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) |= ELEMENT_IS_UNDERWATER;
+			gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
 			if (water_height < zHigh) {
 				goto loc_68BAE6;
 			}
@@ -4129,8 +4131,8 @@ int map_can_construct_with_clear_at(int x, int y, int zLow, int zHigh, CLEAR_FUN
 		if ((bl & 0xF0) != 0xF0) {
 			if (map_element->base_height >= zHigh) {
 				// loc_68BA81
-				RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) |= ELEMENT_IS_UNDERGROUND;
-				RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) &= 0xFE;
+				gMapGroundFlags |= ELEMENT_IS_UNDERGROUND;
+				gMapGroundFlags &= ~ELEMENT_IS_1;
 			} else {
 				int al = map_element->base_height;
 				int ah = al;

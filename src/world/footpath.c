@@ -41,6 +41,7 @@ uint8 gFootpathConstructDirection;
 uint8 gFootpathConstructSlope;
 uint8 gFootpathConstructValidDirections;
 money32 gFootpathPrice;
+uint8 gFootpathGroundFlags;
 
 const rct_xy16 word_981D6C[4] = {
 	{ -1,  0 },
@@ -168,8 +169,8 @@ static money32 footpath_element_insert(int type, int x, int y, int z, int slope,
 	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
 		return MONEY32_UNDEFINED;
 
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
-	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
+	gFootpathGroundFlags = gMapGroundFlags;
+	if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER)) {
 		gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
 		return MONEY32_UNDEFINED;
 	}
@@ -324,7 +325,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 		footpath_interrupt_peeps(x, y, z * 8);
 
 	gFootpathPrice = 0;
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
+	gFootpathGroundFlags = 0;
 
 	if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
 		gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
@@ -461,7 +462,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 		footpath_interrupt_peeps(x, y, z * 8);
 
 	gFootpathPrice = 0;
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = 0;
+	gFootpathGroundFlags = 0;
 
 	if (!map_is_location_owned(x, y, z * 8) && !gCheatsSandboxMode) {
 		return MONEY32_UNDEFINED;
@@ -497,8 +498,8 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
 		return MONEY32_UNDEFINED;
 
-	RCT2_GLOBAL(0x00F3EFA4, uint8) = RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8);
-	if (!gCheatsDisableClearanceChecks && (RCT2_GLOBAL(RCT2_ADDRESS_ELEMENT_LOCATION_COMPARED_TO_GROUND_AND_WATER, uint8) & ELEMENT_IS_UNDERWATER)) {
+	gFootpathGroundFlags = gMapGroundFlags;
+	if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER)) {
 		gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
 		return MONEY32_UNDEFINED;
 	}
@@ -588,7 +589,11 @@ money32 footpath_provisional_set(int type, int x, int y, int z, int slope)
 		gFootpathProvisionalPosition.z = z & 0xFF;
 		gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 
-		viewport_set_visibility(RCT2_GLOBAL(0x00F3EFA4, uint8) & 2 ? 1 : 3);
+		if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND) {
+			viewport_set_visibility(1);
+		} else {
+			viewport_set_visibility(3);
+		}
 	}
 
 	return cost;

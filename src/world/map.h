@@ -204,6 +204,7 @@ enum {
 };
 
 enum {
+	ELEMENT_IS_1 = 1 << 0,
 	ELEMENT_IS_UNDERGROUND = 1 << 1,
 	ELEMENT_IS_UNDERWATER = 1 << 2,
 };
@@ -306,6 +307,8 @@ extern rct_xy16		gMapSelectPositionA;
 extern rct_xy16		gMapSelectPositionB;
 extern rct_xyz16	gMapSelectArrowPosition;
 extern uint8		gMapSelectArrowDirection;
+
+extern uint8 gMapGroundFlags;
 
 extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;

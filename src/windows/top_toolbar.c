@@ -2133,7 +2133,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		mapElement = gSceneryMapElement;
 		gSceneryGhostPosition.z = mapElement->base_height;
 		gSceneryMapElementType = mapElement->type;
-		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+		if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND){
 			//Set underground on
 			viewport_set_visibility(4);
 		}
@@ -2220,7 +2220,7 @@ money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 pa
 		mapElement = gSceneryMapElement;
 		gSceneryGhostPosition.z = mapElement->base_height;
 
-		if (RCT2_GLOBAL(0x00F64F14, uint8) & (1 << 1)){
+		if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND){
 			//Set underground on
 			viewport_set_visibility(4);
 		}

@@ -54,6 +54,7 @@ extern uint8 gFootpathConstructDirection;
 extern uint8 gFootpathConstructSlope;
 extern uint8 gFootpathConstructValidDirections;
 extern money32 gFootpathPrice;
+extern uint8 gFootpathGroundFlags;
 
 extern const rct_xy16 word_981D6C[4];
 
