@@ -2085,73 +2085,73 @@ void window_guest_inventory_invalidate(rct_window *w)
 	window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_6);
 }
 
-static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item, uint8 *args)
+static rct_string_id window_guest_inventory_format_item(rct_peep *peep, int item)
 {
 	rct_ride *ride;
 
 	// Default arguments
-	RCT2_GLOBAL(args + 0, uint32) = ShopItemImage[item];
-	RCT2_GLOBAL(args + 4, uint16) = ShopItemStringIds[item].display;
-	RCT2_GLOBAL(args + 6, uint16) = gParkName;
-	RCT2_GLOBAL(args + 8, uint32) = gParkNameArgs;
+	set_format_arg(0, uint32, ShopItemImage[item]);
+	set_format_arg(4, uint16, ShopItemStringIds[item].display);
+	set_format_arg(6, uint16, gParkName);
+	set_format_arg(8, uint32, gParkNameArgs);
 
 	// Special overrides
 	switch (item) {
 	case SHOP_ITEM_BALLOON:
-		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->balloon_colour << 19;
+		set_format_arg(0, uint32, 0x20000000 | (peep->balloon_colour << 19) | ShopItemImage[item]);
 		break;
 	case SHOP_ITEM_PHOTO:
 		ride = get_ride(peep->photo1_ride_ref);
-		RCT2_GLOBAL(args + 6, uint16) = ride->name;
-		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	case SHOP_ITEM_UMBRELLA:
-		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->umbrella_colour << 19;
+		set_format_arg(0, uint32, 0x20000000 | (peep->umbrella_colour << 19) | ShopItemImage[item]);
 		break;
 	case SHOP_ITEM_VOUCHER:
 		switch (peep->voucher_type) {
 		case VOUCHER_TYPE_PARK_ENTRY_FREE:
-			RCT2_GLOBAL(args + 6, uint16) = 2418;
-			RCT2_GLOBAL(args + 8, uint16) = gParkName;
-			RCT2_GLOBAL(args + 10, uint32) = gParkNameArgs;
+			set_format_arg(6, uint16, 2418);
+			set_format_arg(8, uint16, gParkName);
+			set_format_arg(10, uint32, gParkNameArgs);
 			break;
 		case VOUCHER_TYPE_RIDE_FREE:
 			ride = get_ride(peep->voucher_arguments);
-			RCT2_GLOBAL(args + 6, uint16) = 2419;
-			RCT2_GLOBAL(args + 8, uint16) = ride->name;
-			RCT2_GLOBAL(args + 10, uint32) = ride->name_arguments;
+			set_format_arg(6, uint16, 2419);
+			set_format_arg(8, uint16, ride->name);
+			set_format_arg(10, uint32, ride->name_arguments);
 			break;
 		case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
-			RCT2_GLOBAL(args + 6, uint16) = 2420;
-			RCT2_GLOBAL(args + 8, uint16) = gParkName;
-			RCT2_GLOBAL(args + 10, uint32) = gParkNameArgs;
+			set_format_arg(6, uint16, 2420);
+			set_format_arg(8, uint16, gParkName);
+			set_format_arg(10, uint32, gParkNameArgs);
 			break;
 		case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
-			RCT2_GLOBAL(args + 6, uint16) = 2421;
-			RCT2_GLOBAL(args + 8, uint16) = ShopItemStringIds[peep->voucher_arguments].singular;
+			set_format_arg(6, uint16, 2421);
+			set_format_arg(8, uint16, ShopItemStringIds[peep->voucher_arguments].singular);
 			break;
 		}
 		break;
 	case SHOP_ITEM_HAT:
-		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->hat_colour << 19;
+		set_format_arg(0, uint32, 0x20000000 | (peep->hat_colour << 19) | ShopItemImage[item]);
 		break;
 	case SHOP_ITEM_TSHIRT:
-		RCT2_GLOBAL(args + 0, uint32) |= 0x20000000 | peep->tshirt_colour << 19;
+		set_format_arg(0, uint32, 0x20000000 | (peep->tshirt_colour << 19) | ShopItemImage[item]);
 		break;
 	case SHOP_ITEM_PHOTO2:
 		ride = get_ride(peep->photo2_ride_ref);
-		RCT2_GLOBAL(args + 6, uint16) = ride->name;
-		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	case SHOP_ITEM_PHOTO3:
 		ride = get_ride(peep->photo3_ride_ref);
-		RCT2_GLOBAL(args + 6, uint16) = ride->name;
-		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	case SHOP_ITEM_PHOTO4:
 		ride = get_ride(peep->photo4_ride_ref);
-		RCT2_GLOBAL(args + 6, uint16) = ride->name;
-		RCT2_GLOBAL(args + 8, uint32) = ride->name_arguments;
+		set_format_arg(6, uint16, ride->name);
+		set_format_arg(8, uint32, ride->name_arguments);
 		break;
 	}
 
@@ -2189,9 +2189,8 @@ void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		if (y >= maxY) break;
 		if (!peep_has_item(peep, item)) continue;
 
-		void *args = gCommonFormatArgs;
-		rct_string_id stringId = window_guest_inventory_format_item(peep, item, (uint8*)args);
-		y += gfx_draw_string_left_wrapped(dpi, args, x, y, itemNameWidth, stringId, 0);
+		rct_string_id stringId = window_guest_inventory_format_item(peep, item);
+		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, itemNameWidth, stringId, 0);
 		numItems++;
 	}
 
