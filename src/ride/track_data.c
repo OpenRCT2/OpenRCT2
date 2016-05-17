@@ -5642,11 +5642,11 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_MAGIC_CARPET
 	0,						// RIDE_TYPE_SUBMARINE_RIDE
 	0,						// RIDE_TYPE_RIVER_RAFTS
-	get_track_paint_function_50_52_53_54,						// RIDE_TYPE_50
+	get_track_paint_function_shop,						// RIDE_TYPE_50
 	0,						// RIDE_TYPE_ENTERPRISE
-	0,						// RIDE_TYPE_52
-	0,						// RIDE_TYPE_53
-	0,						// RIDE_TYPE_54
+	get_track_paint_function_shop,						// RIDE_TYPE_52
+	get_track_paint_function_shop,						// RIDE_TYPE_53
+	get_track_paint_function_shop,						// RIDE_TYPE_54
 	0,						// RIDE_TYPE_55
 	0,						// RIDE_TYPE_INVERTED_IMPULSE_COASTER
 	0,						// RIDE_TYPE_MINI_ROLLER_COASTER
