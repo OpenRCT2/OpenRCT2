@@ -33,16 +33,6 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 {
 	bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A4, uint32), NULL);
 
-	RCT2_GLOBAL(0x0141E9D0, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C4, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9CC, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9B8, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9BC, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9B4, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C0, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9C8, sint16) = -1;
-	RCT2_GLOBAL(0x0141E9D4, sint16) = -1;
-
 	rct_ride *ride = get_ride(rideIndex);
 	rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 	rct_ride_entry_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
@@ -51,36 +41,31 @@ static void facility_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 dir
 	imageId |= firstVehicleEntry->base_image_id;
 	imageId += (direction + 2) & 3;
 
-	sint16 height16 = (sint16)height;
 	int rotation = get_current_rotation();
 	int lengthX = (direction & 1) == 0 ? 28 : 2;
 	int lengthY = (direction & 1) == 0 ? 2 : 28;
 	if (hasSupports) {
-		uint32 foundationImageId = RCT2_GLOBAL(0x00F441A4, uint32);
-		foundationImageId |= 3395;
-		sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height16, rotation);
+		uint32 foundationImageId = (direction & 1 ? 3396 : 3395) | RCT2_GLOBAL(0x00F441A4, uint32);
+		sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
 
 		// Door image or base
-		sub_98199C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height16, rotation);
+		sub_98199C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
 	} else {
 		// Door image or base
-		sub_98197C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height16, rotation);
+		sub_98197C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
 	}
 
 	// Base image if door was drawn
 	if (direction == 1) {
 		imageId += 2;
-		sub_98197C(imageId, 0, 0, 2, 28, 29, height, 28, 2, height16, rotation);
+		sub_98197C(imageId, 0, 0, 2, 28, 29, height, 28, 2, height, rotation);
 	} else if (direction == 2) {
 		imageId += 4;
-		sub_98197C(imageId, 0, 0, 28, 2, 29, height, 2, 28, height16, rotation);
+		sub_98197C(imageId, 0, 0, 28, 2, 29, height, 2, 28, height, rotation);
 	}
 
-	height16 += 32;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height16) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height16;
-		RCT2_GLOBAL(0x00141E9DA, uint8) = 32;
-	}
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /* 0x00762D44 */
