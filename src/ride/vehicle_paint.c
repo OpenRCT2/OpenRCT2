@@ -953,7 +953,7 @@ void vehicle_sprite_paint_6D51DE(rct_vehicle *vehicle, int ebx, int z, const rct
 		vehicle_sprite_paint_6D51EB(vehicle, ebx, z, vehicleEntry);
 		return;
 	}
-	if (ebx & 3) {
+	if (ebx & 7) {
 		vehicle_sprite_paint_6D51EB(vehicle, ebx, z, vehicleEntry);
 		return;
 	}
