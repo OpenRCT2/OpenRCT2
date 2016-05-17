@@ -29,7 +29,6 @@
 
 void footpath_interrupt_peeps(int x, int y, int z);
 void sub_6A7642(int x, int y, rct_map_element *mapElement);
-void footpath_queue_chain_push(int rideIndex);
 
 uint8 gFootpathProvisionalFlags;
 rct_xyz16 gFootpathProvisionalPosition;
@@ -657,51 +656,44 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 	int z = 0, interactionType;
 	rct_map_element *myMapElement;
 	rct_viewport *viewport;
-	rct_xy16 map_pos = { 0 };
+	rct_xy16 position = { 0 };
 
-	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &map_pos.x, &map_pos.y, &interactionType, &myMapElement, &viewport);
+	get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &position.x, &position.y, &interactionType, &myMapElement, &viewport);
 	if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
-		get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x, &map_pos.y, &interactionType, &myMapElement, &viewport);
+		get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &position.x, &position.y, &interactionType, &myMapElement, &viewport);
 		if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
 			if (x != NULL) *x = (sint16)0x8000;
 			return;
 		}
 	}
 
-	RCT2_GLOBAL(0x00F1AD3E, uint8) = interactionType;
-	RCT2_GLOBAL(0x00F1AD30, rct_map_element*) = myMapElement;
+	rct_xy16 minPosition = position;
+	rct_xy16 maxPosition = { position.x + 31, position.y + 31 };
+
+	position.x += 16;
+	position.y += 16;
 
 	if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
 		z = myMapElement->base_height * 8;
-		if (myMapElement->properties.path.type & (1 << 2))
+		if (myMapElement->properties.path.type & (1 << 2)) {
 			z += 8;
+		}
 	}
-
-	RCT2_GLOBAL(0x00F1AD3C, uint16) = z;
-	RCT2_GLOBAL(0x00F1AD34, sint16) = map_pos.x;
-	RCT2_GLOBAL(0x00F1AD36, sint16) = map_pos.y;
-	RCT2_GLOBAL(0x00F1AD38, sint16) = map_pos.x + 31;
-	RCT2_GLOBAL(0x00F1AD3A, sint16) = map_pos.y + 31;
-
-	map_pos.x += 16;
-	map_pos.y += 16;
 
 	rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
 
 	for (int i = 0; i < 5; i++) {
-		if (RCT2_GLOBAL(0x00F1AD3E, uint8) != 6) {
-			z = map_element_height(map_pos.x, map_pos.y);
-		} else {
-			z = RCT2_GLOBAL(0x00F1AD3C, uint16);
+		if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
+			z = map_element_height(position.x, position.y);
 		}
-		map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-		map_pos.x = clamp(RCT2_GLOBAL(0x00F1AD34, sint16), map_pos.x, RCT2_GLOBAL(0x00F1AD38, sint16));
-		map_pos.y = clamp(RCT2_GLOBAL(0x00F1AD36, sint16), map_pos.y, RCT2_GLOBAL(0x00F1AD3A, sint16));
+		position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+		position.x = clamp(minPosition.x, position.x, maxPosition.x);
+		position.y = clamp(minPosition.y, position.y, maxPosition.y);
 	}
 
 	// Determine to which edge the cursor is closest
 	uint32 myDirection;
-	int mod_x = map_pos.x & 0x1F, mod_y = map_pos.y & 0x1F;
+	int mod_x = position.x & 0x1F, mod_y = position.y & 0x1F;
 	if (mod_x < mod_y) {
 		if (mod_x + mod_y < 32) {
 			myDirection = 0;
@@ -716,11 +708,10 @@ void footpath_get_coordinates_from_pos(int screenX, int screenY, int *x, int *y,
 		}
 	}
 
-	if (x != NULL) *x = map_pos.x & ~0x1F;
-	if (y != NULL) *y = map_pos.y & ~0x1F;
+	if (x != NULL) *x = position.x & ~0x1F;
+	if (y != NULL) *y = position.y & ~0x1F;
 	if (direction != NULL) *direction = myDirection;
 	if (mapElement != NULL) *mapElement = myMapElement;
-	// We should get the rct_map_element from 0x00F1AD30 here, but we set it earlier to our myMapElement anyway.
 }
 
 /**
