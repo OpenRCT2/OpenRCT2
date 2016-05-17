@@ -999,8 +999,8 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 			return entranceDirection;
 		}
 
-		RCT2_GLOBAL(0x00F1AEE0, uint8) = 0;
-		RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
+		gPeepPathFindIgnoreForeignQueues = false;
+		gPeepPathFindQueueRideIndex = 255;
 
 		int pathfindDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 

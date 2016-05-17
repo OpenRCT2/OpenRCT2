@@ -42,6 +42,9 @@
 
 uint8 *gPeepWarningThrottle = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_WARNING_THROTTLE, uint8);
 
+bool gPeepPathFindIgnoreForeignQueues;
+uint8 gPeepPathFindQueueRideIndex;
+
 enum {
 	PATH_SEARCH_DEAD_END,
 	PATH_SEARCH_RIDE_EXIT,
@@ -7754,9 +7757,11 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
 			if (footpath_element_is_wide(path)) continue;
 		}
 
-		if (!footpath_element_is_queue(path) ||
-			RCT2_GLOBAL(0x00F1AEE1, uint8) != path->properties.path.ride_index) {
-			if (path->type & RCT2_GLOBAL(0x00F1AEE0, uint8)) continue;
+		if (footpath_element_is_queue(path) && path->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
+			if (gPeepPathFindIgnoreForeignQueues) {
+				// Path is a queue we aren't interested in
+				continue;
+			}
 		}
 
 		found = true;
@@ -7927,8 +7932,8 @@ static int guest_path_find_entering_park(rct_peep *peep, rct_map_element *map_el
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;
 
-	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
-	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
+	gPeepPathFindIgnoreForeignQueues = true;
+	gPeepPathFindQueueRideIndex = 255;
 
 	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
@@ -7963,8 +7968,8 @@ static int guest_path_find_leaving_park(rct_peep *peep, rct_map_element *map_ele
 		return peep_move_one_tile(direction, peep);
 	}
 
-	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
-	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
+	gPeepPathFindIgnoreForeignQueues = true;
+	gPeepPathFindQueueRideIndex = 255;
 	direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 	if (direction == 0xFF)
 		return guest_path_find_aimless(peep, edges);
@@ -8018,8 +8023,8 @@ static int guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map_el
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = z / 8;
 
-	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
-	RCT2_GLOBAL(0x00F1AEE1, uint8) = 0xFF;
+	gPeepPathFindIgnoreForeignQueues = true;
+	gPeepPathFindQueueRideIndex = 255;
 
 	int chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
@@ -8265,7 +8270,7 @@ static int guest_path_finding(rct_peep* peep)
 	if (ride->status != RIDE_STATUS_OPEN)
 		return guest_path_find_aimless(peep, edges);
 
-	RCT2_GLOBAL(0x00F1AEE1, uint8) = rideIndex;
+	gPeepPathFindQueueRideIndex = rideIndex;
 
 	RCT2_GLOBAL(0x00F1AEBC, uint32) = 4;
 
@@ -8328,7 +8333,7 @@ static int guest_path_finding(rct_peep* peep)
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_X, sint16) = x;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Y, sint16) = y;
 	RCT2_GLOBAL(RCT2_ADDRESS_PEEP_PATHFINDING_GOAL_Z, uint8) = (uint8)z;
-	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
+	gPeepPathFindIgnoreForeignQueues = true;
 
 	direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 	if (direction == -1){
