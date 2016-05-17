@@ -652,7 +652,7 @@ bool editor_check_park()
 			return false;
 		case FOOTPATH_SEARCH_SUCCESS:
 			// Run the search again and unown the path
-			footpath_is_connected_to_map_edge(x, y, z, direction, 0x20);
+			footpath_is_connected_to_map_edge(x, y, z, direction, (1 << 5));
 			break;
 		}
 	}

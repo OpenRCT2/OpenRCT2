@@ -1506,6 +1506,9 @@ bool get_next_direction(int edges, int *direction)
 /**
  *
  *  rct2: 0x0069AC1A
+ * @param flags (1 << 0): Ignore queues
+ *              (1 << 5): Unown
+ *              (1 << 7): Ignore no entry signs
  */
 int footpath_is_connected_to_map_edge_recurse(
 	int x, int y, int z, int direction, int flags,
@@ -1540,14 +1543,18 @@ int footpath_is_connected_to_map_edge_recurse(
 			continue;
 		}
 
-		if (mapElement->type & RCT2_GLOBAL(0x00F1AEE0, uint8)) continue;
+		if (!(flags & (1 << 0))) {
+			if (footpath_element_is_queue(mapElement)) {
+				continue;
+			}
+		}
 
-		if (flags & 0x20) {
+		if (flags & (1 << 5)) {
 			footpath_unown(x, y, mapElement);
 		}
 		edges = mapElement->properties.path.edges & 0x0F;
 		direction ^= 2;
-		if (!(flags & 0x80)) {
+		if (!(flags & (1 << 7))) {
 			if (mapElement[1].type == MAP_ELEMENT_TYPE_BANNER) {
 				for (int i = 1; i < 4; i++) {
 					if (map_element_is_last_for_tile(&mapElement[i - 1])) break;
@@ -1614,7 +1621,7 @@ searchFromFootpath:
 
 int footpath_is_connected_to_map_edge(int x, int y, int z, int direction, int flags)
 {
-	RCT2_GLOBAL(0x00F1AEE0, uint8) = 1;
+	flags |= (1 << 0);
 	return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
 }
 
