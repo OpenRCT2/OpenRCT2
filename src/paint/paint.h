@@ -88,10 +88,7 @@ enum PAINT_STRUCT_FLAGS {
 };
 
 /** rct2: 0x00993CC4 */
-const uint32 construction_markers[] = {
-	COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_USE_PALETTE << 28, // White
-	2 << 19 | 0b110000 << 19 | IMAGE_TYPE_MIX_BACKGROUND << 28, // Translucent
-};
+extern const uint32 construction_markers[];
 
 void painter_setup();
 
