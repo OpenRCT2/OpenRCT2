@@ -207,7 +207,7 @@ void console_draw(rct_drawpixelinfo *dpi)
 		strncpy(lineCh, ch, lineLength);
 		lineCh[lineLength] = 0;
 
-		gfx_draw_string(dpi, lineBuffer, 100, x, y );	  //Value 100 outlines the letters
+		gfx_draw_string(dpi, lineBuffer, 100, x, y);	  //Value 100 outlines the letters
 
 		x = gLastDrawStringX;
 
@@ -1121,7 +1121,7 @@ void console_execute_silent(const utf8 *src)
 	if (!validCommand) {
 		utf8 output[128];
 		utf8 *dst = output;
-		dst = utf8_write_codepoint(dst, FORMAT_RED);
+		dst = utf8_write_codepoint(dst, FORMAT_TOPAZ);
 		strcpy(dst, "Unknown command. Type help to list available commands.");
 		console_writeline(output);
 	}
