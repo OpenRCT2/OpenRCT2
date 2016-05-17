@@ -251,36 +251,6 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
-const uint8 track_map_3x3[][9] = {
-	{0, 1, 2, 3, 4, 5, 6, 7, 8},
-	{0, 3, 5, 7, 2, 8, 1, 6, 4},
-	{0, 7, 8, 6, 5, 4, 3, 1, 2},
-	{0, 6, 4, 1, 8, 2, 7, 3, 5}
-};
-
-const uint8 edges_3x3[] = {
-	0,
-	EDGE_NE | EDGE_NW,
-	EDGE_NE,
-	EDGE_NE | EDGE_SE,
-	EDGE_NW,
-	EDGE_SE,
-	EDGE_SW | EDGE_NW,
-	EDGE_SW | EDGE_SE,
-	EDGE_SW,
-};
-
-enum {
-	SPR_FLOOR_CORK_SE_SW = 22134,
-	SPR_FLOOR_CORK_SW = 22135,
-	SPR_FLOOR_CORK_SE = 22136,
-	SPR_FLOOR_CORK = 22137,
-	SPR_FENCE_ROPE_NE = 22138,
-	SPR_FENCE_ROPE_SE = 22139,
-	SPR_FENCE_ROPE_SW = 22140,
-	SPR_FENCE_ROPE_NW = 22141,
-};
-
 /**
  * rct2: 0x0076679C
  */
@@ -294,36 +264,12 @@ static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction
 	rct_ride *ride = get_ride(rideIndex);
 	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 
-	if (edges & EDGE_SW && edges & EDGE_SE) {
-		imageId = SPR_FLOOR_CORK_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
-	} else if (edges & EDGE_SW) {
-		imageId = SPR_FLOOR_CORK_SW | RCT2_GLOBAL(0x00F44198, uint32);
-	} else if (edges & EDGE_SE) {
-		imageId = SPR_FLOOR_CORK_SE | RCT2_GLOBAL(0x00F44198, uint32);
-	} else {
-		imageId = SPR_FLOOR_CORK | RCT2_GLOBAL(0x00F44198, uint32);
-	}
-	sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
 
-	if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_NW | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
-	}
-	if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_SW | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
-	}
-	if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_NE | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(imageId, 0, 0, 1, 32, 7, height, 0, 2, height + 2, get_current_rotation());
-	}
-	if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
-		imageId = SPR_FENCE_ROPE_SE | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98197C(imageId, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
-	}
+	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F441A0, uint32), height, fenceSpritesRope, get_current_rotation());
 
 	switch (trackSequence) {
-		case 0: top_spin_paint_vehicle(32, 32, rideIndex, direction, height, mapElement); break;
+		case 1: top_spin_paint_vehicle(32, 32, rideIndex, direction, height, mapElement); break;
 		case 3: top_spin_paint_vehicle(32, -32, rideIndex, direction, height, mapElement); break;
 		case 5: top_spin_paint_vehicle(0, -32, rideIndex, direction, height, mapElement); break;
 		case 6: top_spin_paint_vehicle(-32, 32, rideIndex, direction, height, mapElement); break;

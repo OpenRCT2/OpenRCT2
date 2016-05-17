@@ -73,6 +73,46 @@ bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_eleme
 	return (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc);
 }
 
+void track_paint_util_paint_floor(uint edges, uint32 colourFlags, uint16 height, const uint floorSprites[4], uint8 rotation)
+{
+	uint32 imageId;
+
+	if (edges & EDGE_SW && edges & EDGE_SE) {
+		imageId = floorSprites[0];
+	} else if (edges & EDGE_SW) {
+		imageId = floorSprites[1];
+	} else if (edges & EDGE_SE) {
+		imageId = floorSprites[2];
+	} else {
+		imageId = floorSprites[3];
+	}
+
+	sub_98197C(imageId | colourFlags, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
+}
+
+void track_paint_util_paint_fences(uint edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint fenceSprites[4], uint8 rotation)
+{
+	uint32 imageId;
+
+	if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation())) {
+		imageId = SPR_FENCE_ROPE_NW | colourFlags;
+		sub_98199C(imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
+	}
+	if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
+		imageId = SPR_FENCE_ROPE_SW | colourFlags;
+		sub_98197C(imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2, get_current_rotation());
+	}
+	if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation())) {
+		imageId = SPR_FENCE_ROPE_NE | colourFlags;
+		sub_98199C(imageId, 0, 0, 1, 32, 7, height, 0, 2, height + 2, get_current_rotation());
+	}
+	if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
+		imageId = SPR_FENCE_ROPE_SE | colourFlags;
+		sub_98197C(imageId, 0, 0, 32, 1, 7, height, 0, 30, height + 2, get_current_rotation());
+	}
+}
+
+
 /**
  *
  *  rct2: 0x006C4794
