@@ -6414,7 +6414,7 @@ void game_command_set_ride_appearance(int *eax, int *ebx, int *ecx, int *edx, in
 		return;
 	}
 
-	if (apply && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+	if (apply && gGameCommandNestLevel == 1) {
 		if (ride->overall_view != (uint16)-1) {
 			rct_xyz16 coord;
 			coord.x = (ride->overall_view & 0xFF) * 32 + 16;

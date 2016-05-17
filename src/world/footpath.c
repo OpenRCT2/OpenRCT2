@@ -355,7 +355,7 @@ static money32 footpath_place_real(int type, int x, int y, int z, int slope, int
 	// Force ride construction to recheck area
 	_currentTrackSelectionFlags |= 8;
 
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+	if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 		rct_xyz16 coord;
 		coord.x = x + 16;
 		coord.y = y + 16;
@@ -410,7 +410,7 @@ money32 footpath_remove_real(int x, int y, int z, int flags)
 
 	mapElement = map_get_footpath_element(x / 32, y / 32, z);
 	if (mapElement != NULL && (flags & GAME_COMMAND_FLAG_APPLY)) {
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;
@@ -512,7 +512,7 @@ static money32 footpath_place_from_track(int type, int x, int y, int z, int slop
 	gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;

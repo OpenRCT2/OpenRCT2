@@ -136,6 +136,7 @@ extern uint8 gGamePaused;
 extern int gGameSpeed;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
+extern int gGameCommandNestLevel;
 
 void game_increase_game_speed();
 void game_reduce_game_speed();

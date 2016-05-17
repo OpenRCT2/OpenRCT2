@@ -796,7 +796,7 @@ void game_command_remove_scenery(int* eax, int* ebx, int* ecx, int* edx, int* es
 
 	// Remove element
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;
@@ -945,7 +945,7 @@ void game_command_remove_large_scenery(int* eax, int* ebx, int* ecx, int* edx, i
 		}
 	}
 
-	if (flags & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+	if (flags & GAME_COMMAND_FLAG_APPLY && gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 		rct_xyz16 coord;
 		coord.x = x + 16;
 		coord.y = y + 16;
@@ -1001,7 +1001,7 @@ void game_command_remove_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi
 	rct_scenery_entry *scenery_entry = get_banner_entry(banner->type);
 
 	if (flags & GAME_COMMAND_FLAG_APPLY) {
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;
@@ -1420,7 +1420,7 @@ money32 map_clear_scenery(int x0, int y0, int x1, int y1, int clear, int flags)
 		}
 	}
 
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && flags & GAME_COMMAND_FLAG_APPLY) {
+	if (gGameCommandNestLevel == 1 && flags & GAME_COMMAND_FLAG_APPLY) {
 		rct_xyz16 coord;
 		coord.x = ((x0 + x1) / 2) + 16;
 		coord.y = ((y0 + y1) / 2) + 16;
@@ -1557,7 +1557,7 @@ money32 map_change_surface_style(int x0, int y0, int x1, int y1, uint8 surfaceSt
 		}
 	}
 
-	if (flags & GAME_COMMAND_FLAG_APPLY && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+	if (flags & GAME_COMMAND_FLAG_APPLY && gGameCommandNestLevel == 1) {
 		rct_xyz16 coord;
 		coord.x = ((x0 + x1) / 2) + 16;
 		coord.y = ((y0 + y1) / 2) + 16;
@@ -1787,7 +1787,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 
 	if(flags & GAME_COMMAND_FLAG_APPLY)
 	{
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+		if (gGameCommandNestLevel == 1) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;
@@ -1879,7 +1879,7 @@ money32 raise_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 		return MONEY32_UNDEFINED;
 	}
 
-	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+	if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1) {
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 	}
 
@@ -1935,7 +1935,7 @@ money32 lower_land(int flags, int x, int y, int z, int ax, int ay, int bx, int b
 {
 	money32 cost = 0;
 
-	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+	if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1) {
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, x, y, z);
 	}
 
@@ -2313,7 +2313,7 @@ money32 smooth_land(int flags, int centreX, int centreY, int mapLeft, int mapTop
 	int mapTopBottom = mapTop | (mapBottom << 16);
 
 	// Play sound (only once)
-	if ((flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+	if ((flags & GAME_COMMAND_FLAG_APPLY) && gGameCommandNestLevel == 1) {
 		audio_play_sound_at_location(SOUND_PLACE_ITEM, centreX, centreY, centreZ);
 	}
 
@@ -2697,7 +2697,7 @@ void game_command_remove_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 		return;
 	}
 
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+	if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
 		rct_xyz16 coord;
 		coord.x = x + 16;
 		coord.y = y + 16;
@@ -2798,7 +2798,7 @@ void game_command_place_banner(int* eax, int* ebx, int* ecx, int* edx, int* esi,
 	}
 	*edi = banner_index;
 	if(*ebx & GAME_COMMAND_FLAG_APPLY){
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = x + 16;
 			coord.y = y + 16;
@@ -3037,7 +3037,7 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 						if(gCheatsDisableClearanceChecks || map_can_construct_with_clear_at(x, y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, RCT2_ADDRESS(0x00F64F26, money32))){
 							gSceneryGroundFlags = gMapGroundFlags & (ELEMENT_IS_1 | ELEMENT_IS_UNDERGROUND);
 							if(flags & GAME_COMMAND_FLAG_APPLY){
-								if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
+								if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 									rct_xyz16 coord;
 									coord.x = x + 16;
 									coord.y = y + 16;
@@ -3474,7 +3474,7 @@ void game_command_place_fence(int* eax, int* ebx, int* ecx, int* edx, int* esi, 
 	}
 
 	if (flags & GAME_COMMAND_FLAG_APPLY){
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+		if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
 			rct_xyz16 coord;
 			coord.x = position.x + 16;
 			coord.y = position.y + 16;
@@ -3723,7 +3723,7 @@ void game_command_place_large_scenery(int* eax, int* ebx, int* ecx, int* edx, in
 					map_remove_walls_at(curTile.x, curTile.y, zLow * 8, zHigh * 8);
 				}
 			}
-			if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
+			if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
 				rct_xyz16 coord;
 				coord.x = x + 16;
 				coord.y = y + 16;

@@ -1063,7 +1063,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 		map_invalidate_tile_full(x, y);
 	}
 
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+	if (gGameCommandNestLevel == 1) {
 		rct_xyz16 coord;
 		coord.x = originX + 16;
 		coord.y = originY + 16;
@@ -1365,7 +1365,7 @@ money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 originY,
 	else
 		price *= -10;
 
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+	if (gGameCommandNestLevel == 1) {
 		rct_xyz16 coord;
 		coord.x = originX + 16;
 		coord.y = originY + 16;

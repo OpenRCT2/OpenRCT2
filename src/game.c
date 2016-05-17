@@ -63,6 +63,7 @@ uint8 gGamePaused = 0;
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
+int gGameCommandNestLevel;
 
 extern void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 
@@ -314,7 +315,7 @@ void game_update()
 	news_item_update_current();
 	window_dispatch_update_all();
 
-	RCT2_GLOBAL(0x009A8C28, uint8) = 0;
+	gGameCommandNestLevel = 0;
 
 	gInputFlags &= ~INPUT_FLAG_VIEWPORT_SCROLLING;
 
@@ -459,7 +460,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	gGameCommandErrorText = 0xFFFF;
 
 	// Increment nest count
-	RCT2_GLOBAL(0x009A8C28, uint8)++;
+	gGameCommandNestLevel++;
 
 	// Remove ghost scenery so it doesn't interfere with incoming network command
 	if ((flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) &&
@@ -484,7 +485,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	if (cost != MONEY32_UNDEFINED) {
 		// Check funds
 		insufficientFunds = 0;
-		if (RCT2_GLOBAL(0x009A8C28, uint8) == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
+		if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_2) && !(flags & GAME_COMMAND_FLAG_5) && cost != 0)
 			insufficientFunds = game_check_affordability(cost);
 
 		if (insufficientFunds != MONEY32_UNDEFINED) {
@@ -496,17 +497,17 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 
 			if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
 				// Decrement nest count
-				RCT2_GLOBAL(0x009A8C28, uint8)--;
+				gGameCommandNestLevel--;
 				return cost;
 			}
 
-			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && RCT2_GLOBAL(0x009A8C28, uint8) == 1 /* Send only top-level commands */) {
+			if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && gGameCommandNestLevel == 1 /* Send only top-level commands */) {
 				if (command != GAME_COMMAND_LOAD_OR_QUIT) { // Disable these commands over the network
 					network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
 					if (network_get_mode() == NETWORK_MODE_CLIENT) { // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it
 						game_command_callback = 0;
 						// Decrement nest count
-						RCT2_GLOBAL(0x009A8C28, uint8)--;
+						gGameCommandNestLevel--;
 						return cost;
 					}
 				}
@@ -516,7 +517,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 			new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
 			// Do the callback (required for multiplayer to work correctly), but only for top level commands
-			if (RCT2_GLOBAL(0x009A8C28, uint8) == 1) {
+			if (gGameCommandNestLevel == 1) {
 				if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST)) {
 					game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
 					game_command_callback = 0;
@@ -531,8 +532,8 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 				cost = *edx;
 
 			// Decrement nest count
-			RCT2_GLOBAL(0x009A8C28, uint8)--;
-			if (RCT2_GLOBAL(0x009A8C28, uint8) != 0)
+			gGameCommandNestLevel--;
+			if (gGameCommandNestLevel != 0)
 				return cost;
 
 			//
@@ -558,13 +559,13 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	// Error occured
 
 	// Decrement nest count
-	RCT2_GLOBAL(0x009A8C28, uint8)--;
+	gGameCommandNestLevel--;
 	
 	// Clear the game command callback to prevent the next command triggering it
 	game_command_callback = 0;
 
 	// Show error window
-	if (RCT2_GLOBAL(0x009A8C28, uint8) == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+	if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
 		window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
 
 	return MONEY32_UNDEFINED;
