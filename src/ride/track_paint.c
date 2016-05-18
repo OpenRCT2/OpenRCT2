@@ -119,6 +119,17 @@ const uint32 fenceSpritesRope[] = {
 	SPR_FENCE_ROPE_NW
 };
 
+enum
+{
+	SPR_STATION_COVER_OFFSET_NE_SW_BACK_0 = 0,
+	SPR_STATION_COVER_OFFSET_NE_SW_BACK_1,
+	SPR_STATION_COVER_OFFSET_NE_SW_FRONT,
+	SPR_STATION_COVER_OFFSET_SE_NW_BACK_0,
+	SPR_STATION_COVER_OFFSET_SE_NW_BACK_1,
+	SPR_STATION_COVER_OFFSET_SE_NW_FRONT,
+	SPR_STATION_COVER_OFFSET_HIGH
+};
+
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
 {
 	rct_xy16 offset;
@@ -185,6 +196,77 @@ void track_paint_util_paint_fences(uint8 edges, rct_xy16 position, rct_map_eleme
 	}
 }
 
+/* Supports are only placed every 2 tiles for flat pieces*/
+bool track_paint_util_should_paint_supports(rct_xy16 position)
+{
+	if ((position.x & (1 << 5)) == (position.y & (1 << 5)))
+		return true;
+
+	if ((!(position.x & (1 << 5))) && (!(position.y & (1 << 5))))
+		return true;
+
+	return false;
+}
+
+bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
+{
+	if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
+		return false;
+	}
+
+	uint32 imageId;
+	uint32 baseImageId = entranceStyle->base_image_id;
+	int imageOffset;
+	rct_xyz16 offset, bounds, boundsOffset;
+
+	offset = (rct_xyz16) {0, 0, height};
+	switch (edge) {
+		case EDGE_NE:
+			bounds = (rct_xyz16) {1, 30, 0};
+			boundsOffset = (rct_xyz16) {0, 1, height + 1};
+			imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
+			break;
+		case EDGE_SE:
+			bounds = (rct_xyz16) {32, 32, 0};
+			boundsOffset = (rct_xyz16) {1, 0, height + 31};
+			imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
+			break;
+		case EDGE_SW:
+			bounds = (rct_xyz16) {32, 32, 0};
+			boundsOffset = (rct_xyz16) {0, 0, height + 31};
+			imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
+			break;
+		case EDGE_NW:
+			bounds = (rct_xyz16) {30, 1, 30};
+			boundsOffset = (rct_xyz16) {1, 0, height + 1};
+			imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
+			break;
+	}
+
+	if (RCT2_GLOBAL(0x00F441A0, uint32) != 0x20000000) {
+		baseImageId &= 0x7FFFF;
+	}
+
+	if (baseImageId <= 0x20) {
+		return false;
+	}
+
+	if (baseImageId & 0x40000000) {
+		imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
+		sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+
+		uint32 edi = RCT2_GLOBAL(0x00F44198, uint32) & (0b11111 << 19);
+
+		// weird jump
+		imageId = (baseImageId | edi) + 0x3800000 + imageOffset + 12;
+		sub_98199C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+		return true;
+	}
+
+	imageId = (baseImageId + imageOffset) | RCT2_GLOBAL(0x00F44198, uint32);
+	sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+	return true;
+}
 
 /**
  *

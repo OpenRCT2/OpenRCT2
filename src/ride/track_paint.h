@@ -17,6 +17,7 @@
 #ifndef _TRACK_PAINT_H
 #define _TRACK_PAINT_H
 
+#include "ride_data.h"
 #include "../common.h"
 #include "../world/map.h"
 #include "../paint/map_element/map_element.h"
@@ -39,6 +40,15 @@ enum {
     SPR_FENCE_ROPE_SE = 22139,
     SPR_FENCE_ROPE_SW = 22140,
     SPR_FENCE_ROPE_NW = 22141,
+
+    SPR_STATION_PIER_EDGE_SE = 22404,
+    SPR_STATION_PIER_EDGE_SW = 22405,
+    SPR_STATION_PIER_EDGE_NW = 22406,
+    SPR_STATION_PIER_EDGE_NE = 22407,
+    SPR_STATION_PIER_EDGE_NW_FENCED = 22408,
+    SPR_STATION_PIER_EDGE_NE_FENCED = 22409,
+    SPR_STATION_PIER_FENCE_SE = 22410,
+    SPR_STATION_PIER_FENCE_SW = 22411,
 };
 
 extern const uint32 floorSpritesCork[];
@@ -48,6 +58,8 @@ extern const uint32 fenceSpritesRope[];
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
 void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
 void track_paint_util_paint_fences(uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation);
+bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height);
+bool track_paint_util_should_paint_supports(rct_xy16 position);
 
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
@@ -63,5 +75,6 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direct
 TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
 
 #endif
