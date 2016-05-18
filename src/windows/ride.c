@@ -4967,17 +4967,21 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 					for (i = 0; i < ride->num_stations; i++) {
 						time = ride->time[numTimes];
 						if (time != 0) {
-							set_format_arg(0 + (numTimes * 4), uint16, 1343);
+							set_format_arg(0 + (numTimes * 4), uint16, STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
 							set_format_arg(2 + (numTimes * 4), uint16, time);
 							numTimes++;
 						}
 					}
 					if (numTimes == 0) {
-						set_format_arg(0, uint16, 1343);
+						set_format_arg(0, uint16, STR_RIDE_TIME_ENTRY);
 						set_format_arg(2, uint16, 0);
 						numTimes++;
+					} else {
+						//sadly, STR_RIDE_TIME_ENTRY_WITH_SEPARATOR are defined with the separator AFTER an entry
+						//therefore we set the last entry to use the no-separator format now, post-format
+						set_format_arg(0 + ((numTimes - 1) * 4), uint16, STR_RIDE_TIME_ENTRY);
 					}
-					RCT2_GLOBAL(0x013CE94E + (numTimes * 4), uint16) = 1342;
+					RCT2_GLOBAL(0x013CE94E + (numTimes * 4), uint16) = STR_RIDE_TIME_ENTRY;
 					set_format_arg(0 + (numTimes * 4), uint16, 0);
 					set_format_arg(2 + (numTimes * 4), uint16, 0);
 					set_format_arg(4 + (numTimes * 4), uint16, 0);
@@ -4992,17 +4996,21 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 					length = ride->length[numLengths];
 					if (length != 0) {
 						length >>= 16;
-						set_format_arg(0 + (numLengths * 4), uint16, 1346);
+						set_format_arg(0 + (numLengths * 4), uint16, STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR);
 						set_format_arg(2 + (numLengths * 4), uint16, (length & 0xFFFF));
 						numLengths++;
 					}
 				}
 				if (numLengths == 0) {
-					set_format_arg(0, uint16, 1346);
+					set_format_arg(0, uint16, STR_RIDE_LENGTH_ENTRY);
 					set_format_arg(2, uint16, 0);
 					numLengths++;
+				} else {
+					//sadly, STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR are defined with the separator AFTER an entry
+					//therefore we set the last entry to use the no-separator format now, post-format
+					set_format_arg(0 + ((numTimes - 1) * 4), uint16, STR_RIDE_LENGTH_ENTRY);
 				}
-				RCT2_GLOBAL(0x013CE94E + (numLengths * 4), uint16) = 1345;
+				RCT2_GLOBAL(0x013CE94E + (numLengths * 4), uint16) = STR_RIDE_LENGTH_ENTRY;
 				set_format_arg(0 + (numLengths * 4), uint16, 0);
 				set_format_arg(2 + (numLengths * 4), uint16, 0);
 				set_format_arg(4 + (numLengths * 4), uint16, 0);
