@@ -1125,8 +1125,8 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 // Draw Staff Patrol Areas
 	// loc_660D02
-	if (RCT2_GLOBAL(0x009DEA50, sint16) != -1) {
-		sint32 staffIndex = RCT2_GLOBAL(0x009DEA50, sint16);
+	if (gStaffDrawPatrolAreas != 0xFFFF) {
+		sint32 staffIndex = gStaffDrawPatrolAreas;
 		bool is_staff_list = staffIndex & 0x8000;
 		uint8 staffType = staffIndex & 0x7FFF;
 		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);

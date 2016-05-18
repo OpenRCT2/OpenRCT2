@@ -21,6 +21,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
+#include "../peep/staff.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
 #include "../sprites.h"
@@ -64,7 +65,7 @@ void viewport_init_all()
 	gPickupPeepImage = UINT32_MAX;
 	gTooltipNotShownTicks = -1;
 	gMapSelectFlags = 0;
-	RCT2_GLOBAL(0x009DEA50, sint16) = -1;
+	gStaffDrawPatrolAreas = 0xFFFF;
 	textinput_cancel();
 	format_string((char*)0x0141FA44, STR_CANCEL, NULL);
 	format_string((char*)0x0141F944, STR_OK, NULL);

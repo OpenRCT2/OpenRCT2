@@ -47,6 +47,7 @@ enum STAFF_ORDERS{
 
 extern uint32 *gStaffPatrolAreas;
 extern uint8 *gStaffModes;
+#define gStaffDrawPatrolAreas	RCT2_GLOBAL(0x009DEA50, uint16)
 
 #define gStaffColours			RCT2_ADDRESS(RCT2_ADDRESS_HANDYMAN_COLOUR, colour_t)
 #define gStaffHandymanColour	RCT2_GLOBAL(RCT2_ADDRESS_HANDYMAN_COLOUR, colour_t)

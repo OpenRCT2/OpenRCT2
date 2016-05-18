@@ -567,7 +567,7 @@ void window_staff_overview_dropdown(rct_window *w, int widgetIndex, int dropdown
 	else {
 		if (!tool_set(w, widgetIndex, 22)) {
 			show_gridlines();
-			RCT2_GLOBAL(0x009DEA50, sint16) = w->number;
+			gStaffDrawPatrolAreas = w->number;
 			gfx_invalidate_screen();
 		}
 	}
@@ -1218,7 +1218,7 @@ void window_staff_overview_tool_abort(rct_window *w, int widgetIndex)
 	}
 	else if (widgetIndex == WIDX_PATROL){
 		hide_gridlines();
-		RCT2_GLOBAL(0x009DEA50, sint16) = -1;
+		gStaffDrawPatrolAreas = 0xFFFF;
 		gfx_invalidate_screen();
 	}
 }
