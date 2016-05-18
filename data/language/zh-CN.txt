@@ -1470,12 +1470,12 @@ STR_1459    :Track style
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
 STR_1462    :Too steep for lift hill
-STR_1463    :Guests
+STR_1463    :游客
 STR_1464    :Helix up (small)
 STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
 STR_1467    :Helix down (large)
-STR_1468    :Staff
+STR_1468    :职员
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
 STR_1471    :{WINDOW_COLOUR_2}Speed:
@@ -3130,8 +3130,8 @@ STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
 STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
 STR_3113    :Select a different design
 STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3115    :{SMALLFONT}{BLACK}保存轨道设计
+STR_3116    :{SMALLFONT}{BLACK}保存轨道设计(在测试完成及统计结果生成前不可用)
 STR_3117    :{BLACK}Calling mechanic...
 STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
@@ -3143,10 +3143,10 @@ STR_3124    :Broken {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
-STR_3128    :Save Track Design
-STR_3129    :Save Track Design with Scenery
-STR_3130    :Save
-STR_3131    :Cancel
+STR_3128    :保存轨道设计
+STR_3129    :保存轨道设计及周边景观
+STR_3130    :保存
+STR_3131    :取消
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
@@ -3350,8 +3350,8 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :在存档中导出附加物
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
-STR_3336    :Track Designs Manager - Select Ride Type
+STR_3335    :过山车设计工具 - 选择游乐设施的类型及车辆种类
+STR_3336    :轨道设计管理工具 - 选择游乐设施的类型
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
@@ -3359,16 +3359,16 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}游戏工具
 STR_3342    :剧情编辑器
 STR_3343    :将游戏存档转换成剧情关
-STR_3344    :Roller Coaster Designer
-STR_3345    :Track Designs Manager
-STR_3346    :Can't save track design...
+STR_3344    :过山车设计工具
+STR_3345    :轨道设计管理工具
+STR_3346    :不能保存轨道设计...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
-STR_3348    :Rename
-STR_3349    :Delete
-STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:
-STR_3352    :Can't rename track design...
-STR_3353    :New name contains invalid characters
+STR_3348    :重命名
+STR_3349    :删除
+STR_3350    :轨道设计名称
+STR_3351    :请输入此轨道设计的新名称:
+STR_3352    :不能重命名此轨道设计...
+STR_3353    :新名称包含不可用的字符
 STR_3354    :Another file exists with this name, or file is write-protected
 STR_3355    :File is write-protected or locked
 STR_3356    :Delete File
@@ -3454,7 +3454,7 @@ STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
 STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
 STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customise the ride a bit...
 # End of tutorial strings
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
+STR_3437    :{SMALLFONT}{BLACK}在地形中清理大范围内的景物Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
 STR_3439    :Clear Scenery
 STR_3440    :Page 1
@@ -3479,8 +3479,8 @@ STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Map size
 STR_5131    :Enter map size between {COMMA16} and {COMMA16}
 STR_5132    :Fix all rides
-STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
-STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
+STR_5133    :{SMALLFONT}{BLACK}选择较小一些的土地范围
+STR_5134    :{SMALLFONT}{BLACK}选择较大一些的土地范围
 STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
 STR_5136    :Land rights
 STR_5137    :Unlock operating limits
@@ -3495,7 +3495,7 @@ STR_5145    :更快速度
 STR_5146    :超快速度
 STR_5147    :作弊
 STR_5148    :{SMALLFONT}{BLACK}调整游戏速度
-STR_5149    :{SMALLFONT}{BLACK}Show cheat options
+STR_5149    :{SMALLFONT}{BLACK}显示作弊选项
 STR_5150    :开启调试工具
 STR_5151    :,
 STR_5152    :.
@@ -3657,15 +3657,15 @@ STR_5307    :过山车大亨1 (+资料片1&2 - AA+LL)
 STR_5308    :过山车大亨2(RCT2)
 STR_5309    :OpenRCT2
 STR_5310    :Random
-STR_5311    :{SMALLFONT}{BLACK}Debug tools
-STR_5312    :Show console
+STR_5311    :{SMALLFONT}{BLACK}调试工具
+STR_5312    :显示控制台
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :Grass
-STR_5316    :Sand
-STR_5317    :Dirt
-STR_5318    :Rock
-STR_5319    :Martian
+STR_5315    :草地
+STR_5316    :沙地
+STR_5317    :泥地
+STR_5318    :石地
+STR_5319    :火星地
 STR_5320    :Checkerboard
 STR_5321    :Grass clumps
 STR_5322    :Ice
@@ -3861,38 +3861,38 @@ STR_5512    :另存游戏
 STR_5513    :(快速)保存游戏
 STR_5514    :Disable vandalism
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
-STR_5516    :{SMALLFONT}{BLACK}Black
-STR_5517    :{SMALLFONT}{BLACK}Grey
-STR_5518    :{SMALLFONT}{BLACK}White
-STR_5519    :{SMALLFONT}{BLACK}Dark purple
-STR_5520    :{SMALLFONT}{BLACK}Light purple
-STR_5521    :{SMALLFONT}{BLACK}Bright purple
-STR_5522    :{SMALLFONT}{BLACK}Dark blue
-STR_5523    :{SMALLFONT}{BLACK}Light blue
-STR_5524    :{SMALLFONT}{BLACK}Icy blue
-STR_5525    :{SMALLFONT}{BLACK}Dark water
-STR_5526    :{SMALLFONT}{BLACK}Light water
-STR_5527    :{SMALLFONT}{BLACK}Saturated green
-STR_5528    :{SMALLFONT}{BLACK}Dark green
-STR_5529    :{SMALLFONT}{BLACK}Moss green
-STR_5530    :{SMALLFONT}{BLACK}Bright green
-STR_5531    :{SMALLFONT}{BLACK}Olive green
-STR_5532    :{SMALLFONT}{BLACK}Dark olive green
-STR_5533    :{SMALLFONT}{BLACK}Bright yellow
-STR_5534    :{SMALLFONT}{BLACK}Yellow
-STR_5535    :{SMALLFONT}{BLACK}Dark yellow
-STR_5536    :{SMALLFONT}{BLACK}Light orange
-STR_5537    :{SMALLFONT}{BLACK}Dark orange
-STR_5538    :{SMALLFONT}{BLACK}Light brown
-STR_5539    :{SMALLFONT}{BLACK}Saturated brown
-STR_5540    :{SMALLFONT}{BLACK}Dark brown
-STR_5541    :{SMALLFONT}{BLACK}Salmon pink
-STR_5542    :{SMALLFONT}{BLACK}Bordeaux red
-STR_5543    :{SMALLFONT}{BLACK}Saturated red
-STR_5544    :{SMALLFONT}{BLACK}Bright red
-STR_5545    :{SMALLFONT}{BLACK}Dark pink
-STR_5546    :{SMALLFONT}{BLACK}Bright pink
-STR_5547    :{SMALLFONT}{BLACK}Light pink
+STR_5516    :{SMALLFONT}{BLACK}黑色
+STR_5517    :{SMALLFONT}{BLACK}灰色
+STR_5518    :{SMALLFONT}{BLACK}白色
+STR_5519    :{SMALLFONT}{BLACK}暗紫色
+STR_5520    :{SMALLFONT}{BLACK}淡紫色
+STR_5521    :{SMALLFONT}{BLACK}亮紫色
+STR_5522    :{SMALLFONT}{BLACK}深蓝色
+STR_5523    :{SMALLFONT}{BLACK}淡蓝色
+STR_5524    :{SMALLFONT}{BLACK}冰蓝色
+STR_5525    :{SMALLFONT}{BLACK}深水配色
+STR_5526    :{SMALLFONT}{BLACK}浅水配色
+STR_5527    :{SMALLFONT}{BLACK}深绿色
+STR_5528    :{SMALLFONT}{BLACK}暗绿色
+STR_5529    :{SMALLFONT}{BLACK}苔绿色
+STR_5530    :{SMALLFONT}{BLACK}亮绿色
+STR_5531    :{SMALLFONT}{BLACK}橄榄绿色
+STR_5532    :{SMALLFONT}{BLACK}暗橄榄绿色
+STR_5533    :{SMALLFONT}{BLACK}亮黄色
+STR_5534    :{SMALLFONT}{BLACK}黄色
+STR_5535    :{SMALLFONT}{BLACK}暗黄色
+STR_5536    :{SMALLFONT}{BLACK}亮橙色
+STR_5537    :{SMALLFONT}{BLACK}暗橙色
+STR_5538    :{SMALLFONT}{BLACK}亮棕色
+STR_5539    :{SMALLFONT}{BLACK}深棕色
+STR_5540    :{SMALLFONT}{BLACK}暗棕色
+STR_5541    :{SMALLFONT}{BLACK}橙红色
+STR_5542    :{SMALLFONT}{BLACK}波尔多红色
+STR_5543    :{SMALLFONT}{BLACK}深红色
+STR_5544    :{SMALLFONT}{BLACK}亮红色
+STR_5545    :{SMALLFONT}{BLACK}暗红色
+STR_5546    :{SMALLFONT}{BLACK}亮粉色
+STR_5547    :{SMALLFONT}{BLACK}浅粉色
 STR_5548    :Show all operating modes
 STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
