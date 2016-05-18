@@ -73,6 +73,21 @@ typedef struct rct_large_scenery_tile {
 	uint16 var_7;
 } rct_large_scenery_tile;
 
+typedef struct rct_large_scenery_text_glyph {
+	uint8 image_offset;
+	uint8 width;
+	uint8 height;
+	uint8 var_3;
+} rct_large_scenery_text_glyph;
+
+typedef struct rct_large_scenery_text {
+	rct_xy16 offset[2];		// 0x0
+	uint16 max_width;		// 0x8
+	uint16 var_A;			// 0xA
+	uint16 var_C;			// 0xC
+	rct_large_scenery_text_glyph glyphs[256]; // 0xE
+} rct_large_scenery_text;
+
 typedef struct rct_large_scenery_entry {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
@@ -81,8 +96,8 @@ typedef struct rct_large_scenery_entry {
 	rct_large_scenery_tile* tiles; // 0x0C
 	uint8 scenery_tab_id;	// 0x10
 	uint8 var_11;
-	uint32 var_12;
-	uint32 var_16;
+	rct_large_scenery_text* text; // 0x12
+	uint32 text_image;	// 0x16
 } rct_large_scenery_entry;
 
 

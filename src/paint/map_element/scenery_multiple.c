@@ -15,9 +15,314 @@
 #pragma endregion
 
 #include "map_element.h"
+#include "../paint.h"
+#include "../supports.h"
 #include "../../addresses.h"
+#include "../../config.h"
+#include "../../game.h"
+#include "../../interface/viewport.h"
+#include "../../localisation/localisation.h"
 #include "../../world/map.h"
+#include "../../world/scenery.h"
 
+// 6B8172:
+void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_map_element *mapElement, uint32 dword_F4387C, rct_scenery_entry *entry)
+{
+	if (entry->large_scenery.flags & 0x20) {
+		return;
+	}
+
+	int ax = 0;
+	int supportHeight = height;
+
+	if (supportHeight & 0xF) {
+		supportHeight &= 0xFFFFFFF0;
+		ax = 49;
+	}
+
+	int supportImageColourFlags = 0x20000000;
+
+	if (dword_F4387C) {
+		supportImageColourFlags = dword_F4387C;
+	}
+
+	wooden_b_supports_paint_setup((direction & 1), ax, supportHeight, supportImageColourFlags);
+
+	int clearanceHeight = ceil2(mapElement->clearance_height * 8 + 15, 16);
+
+	if (entry->large_scenery.flags & 0x40) {
+		paint_util_set_segment_support_height(SEGMENTS_ALL, clearanceHeight, 0x20);
+	} else {
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	}
+
+	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < clearanceHeight) {
+		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = clearanceHeight;
+		RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
+	}
+}
+
+int scenery_multiple_sign_text_width(const char *str, rct_large_scenery_text *text)
+{
+	int width = 0;
+	for(size_t i = 0; i < strlen(str); i++) {
+		width += text->glyphs[str[i]].width;
+	}
+	return width;
+}
+
+int scenery_multiple_sign_text_height(const char *str, rct_large_scenery_text *text)
+{
+	int height = 0;
+	for(size_t i = 0; i < strlen(str); i++) {
+		height += text->glyphs[str[i]].height;
+	}
+	return height;
+}
+
+const char *scenery_multiple_sign_fit_text(const char *str, rct_large_scenery_text *text, bool height)
+{
+	static char fitStr[32] = {0};
+	char *fitStrEnd = fitStr;
+	strncpy(fitStr, str, sizeof(fitStr) - 1);
+	int w = 0;
+	do {
+		if (height) {
+			w += text->glyphs[*fitStrEnd].height;
+		} else {
+			w += text->glyphs[*fitStrEnd].width;
+		}
+	} while (w < text->max_width && *fitStrEnd++);
+	*fitStrEnd = 0;
+	return fitStr;
+}
+
+void scenery_multiple_sign_paint_line(const char *str, rct_large_scenery_text *text, int textImage, int textColour, uint8 direction, int y_offset)
+{
+	const char *fitStr = scenery_multiple_sign_fit_text(str, text, false);
+	int width = scenery_multiple_sign_text_width(fitStr, text);
+	int x_offset = text->offset[(direction & 1)].x;
+	int acc = 0;
+	if (!(text->var_C & 0x1)) {
+		// sign is horizontal, center text:
+		x_offset -= (width / 2);
+		if (direction & 1) {
+			y_offset += ((width / 2) / 2);
+		} else {
+			y_offset -= ((width / 2) / 2);
+		}
+	}
+	for (size_t i = 0; i < strlen(fitStr); i++) {
+		int glyph_offset = text->glyphs[fitStr[i]].image_offset;
+		uint8 glyph_type = direction & 1;
+		if (text->var_C & 0x1) { // vertical sign
+			glyph_offset *= 2;
+		} else {
+			glyph_offset *= 4;
+			// set slightly different glyph on horizontal sign, which was rendered 1/2 pixel lower to deal with aliasing:
+			if (direction & 1) {
+				if (!(acc % 2)) {
+					glyph_type += 2;
+				}
+			} else {
+				if (acc % 2) {
+					glyph_type += 2;
+				}
+			}
+		}
+		int image_id = textImage + glyph_offset + glyph_type | textColour;
+		if (direction == 3) {
+			paint_attach_to_previous_ps(image_id, x_offset, y_offset - (acc / 2));
+		} else {
+			paint_attach_to_previous_attach(image_id, x_offset,  y_offset + (acc / 2));
+		}
+		x_offset += text->glyphs[fitStr[i]].width;
+		acc += text->glyphs[fitStr[i]].width;
+	}
+}
+
+/*
+*
+* rct2: 0x006B7F0C
+*/
 void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *mapElement) {
-	RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (int)mapElement, 0, 0);
+	//RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (int)mapElement, 0, 0); return;
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
+	uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
+	rct_scenery_entry *entry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
+	uint32 image_id = (ebp << 2) + entry->image + 4 + direction;
+	rct_large_scenery_tile *tile = &entry->large_scenery.tiles[ebp];
+	uint32 dword_F4387C = 0;
+	image_id |= ((mapElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((mapElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | 0xA0000000;
+	rct_xyz16 boxlength;
+	rct_xyz16 boxoffset;
+	if (RCT2_GLOBAL(0x009DEA6F, uint8) & 1) {
+		if (!track_design_save_contains_map_element(mapElement)) {
+			ebp = 0x21700000;
+			image_id &= 0x7FFFF;
+			dword_F4387C = ebp;
+			image_id |= dword_F4387C;
+		}
+	}
+	if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
+		ebp = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
+		image_id &= 0x7FFFF;
+		dword_F4387C = ebp;
+		image_id |= dword_F4387C;
+	}
+	int ah = tile->z_clearance;
+	if (ah > 0x80) {
+		ah = 0x80;
+	}
+	ah -= 3;
+	uint16 edi = tile->var_7;
+	int esi = 16;
+	if (edi & 0xF00) {
+		edi &= 0xF000;
+		edi = (edi << direction) | (edi >> (16 - direction)); // rol
+		esi = (edi & 0xF) | (edi >> 12);
+	}
+	boxoffset.x = RCT2_ADDRESS(0x0098E3C4, uint16)[esi * 4];
+	boxoffset.y = RCT2_ADDRESS(0x0098E3C6, uint16)[esi * 4];
+	boxoffset.z = height;
+	boxlength.x =  RCT2_ADDRESS(0x0098E3C8, uint16)[esi * 4];
+	boxlength.y =  RCT2_ADDRESS(0x0098E3CA, uint16)[esi * 4];
+	boxlength.z = ah;
+	sub_98197C(image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
+	if (entry->large_scenery.var_11 == 0xFF || direction == 1 || direction == 2) {
+		scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, entry);
+		return;
+	}
+	if (entry->large_scenery.flags & 0x4) {
+		int al;
+		if (entry->large_scenery.tiles[1].x_offset != (sint16)0xFFFF) {
+			al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
+			if (al != direction) {
+				scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, entry);
+				return;
+			}
+		}
+		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+		if (dpi->zoom_level > 1) {
+			scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, entry);
+			return;
+		}
+		// 6B8331:
+		// Draw sign text:
+		set_format_arg(0, uint32, 0);
+		set_format_arg(4, uint32, 0);
+		int textColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
+		if (dword_F4387C) {
+			textColour = COLOUR_GREY;
+		}
+		textColour = (textColour << 19) | 0x20000000;
+		uint32 dword_F4388A = textColour;
+		uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+		rct_banner *banner = &gBanners[bannerIndex];
+		rct_string_id stringId = banner->string_idx;
+		if (banner->flags & BANNER_FLAG_2) {
+			rct_ride * ride = get_ride(banner->colour);
+			stringId = ride->name;
+			set_format_arg(0, uint32, ride->name_arguments);
+		}
+		utf8 signString[MAX_PATH] = {0};
+		format_string(signString, stringId, gCommonFormatArgs);
+		rct_large_scenery_text *text = entry->large_scenery.text;
+		int y_offset = text->offset[(direction & 1)].y;
+		if (text->var_C & 0x1) {
+			// Draw vertical sign:
+			char fitStr[32] = {0};
+			strncpy(fitStr, scenery_multiple_sign_fit_text(signString, text, true), sizeof(fitStr) - 1);
+			int height = scenery_multiple_sign_text_height(fitStr, text);
+			char str[2] = {0};
+			for (size_t i = 0; i < strlen(fitStr); i++) {
+				str[0] = fitStr[i];
+				scenery_multiple_sign_paint_line(str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - (height / 2));
+				y_offset += text->glyphs[fitStr[i]].height;
+			}
+		} else {
+			if (text->var_C & 0x2) {
+				// Draw two-line sign:
+				int width = scenery_multiple_sign_text_width(signString, text);
+				if (width > text->max_width) {
+					y_offset -= (text->glyphs['A'].height / 2);
+					char *src = signString;
+					for (int i = 0; i < 2; i++) {
+						char str1[32] = {0};
+						char *dst = str1;
+						char *srcold = src;
+						int space = -1;
+						int w = 0;
+						int j = 0;
+						do {
+							w += text->glyphs[*src].width;
+							if (*src == ' ') {
+								space = j;
+							}
+							j++;
+						} while(w < text->max_width && j < sizeof(str1) && (*dst++ = *src++));
+						if (space != -1 && *src) {
+							str1[space] = 0;
+							src = &srcold[space + 1];
+						}
+						scenery_multiple_sign_paint_line(str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+						y_offset += text->glyphs['A'].height;
+					}
+				} else {
+					scenery_multiple_sign_paint_line(signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+				}
+			} else {
+				// Draw one-line sign:
+				scenery_multiple_sign_paint_line(signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset);
+			}
+		}
+		return;
+	}
+	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	if (dpi->zoom_level > 0) {
+		scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, entry);
+		return;
+	}
+	uint8 al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
+	if (al != direction) {
+		scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, entry);
+		return;
+	}
+	// Draw scrolling text:
+	set_format_arg(0, uint32, 0);
+	set_format_arg(4, uint32, 0);
+	uint8 textColour = mapElement->properties.banner.unused & 0x1F;
+	if (dword_F4387C) {
+		textColour = COLOUR_GREY;
+	}
+	if (direction == 3) {
+		textColour |= (1 << 7);
+	}
+	// 6B809A:
+	set_format_arg(7, uint8, textColour);
+	uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+	uint16 scrollMode = entry->large_scenery.var_11 + ((direction + 1) & 0x3);
+	rct_banner *banner = &gBanners[bannerIndex];
+	set_format_arg(0, rct_string_id, banner->string_idx);
+	if (banner->flags & BANNER_FLAG_2) {
+		rct_ride * ride = get_ride(banner->colour);
+		set_format_arg(0, rct_string_id, ride->name);
+		set_format_arg(2, uint32, ride->name_arguments);
+	}
+	utf8 signString[MAX_PATH];
+	rct_string_id stringId = STR_SCROLLING_SIGN_TEXT;
+	if (gConfigGeneral.upper_case_banners) {
+		format_string_to_upper(signString, stringId, gCommonFormatArgs);
+	} else {
+		format_string(signString, stringId, gCommonFormatArgs);
+	}
+
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
+
+	uint16 string_width = gfx_get_string_width(signString);
+	uint16 scroll = (gCurrentTicks / 2) % string_width;
+	sub_98199C(scrolling_text_setup(stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
+		
+	scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, entry);
 }

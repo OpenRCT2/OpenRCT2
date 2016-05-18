@@ -109,7 +109,7 @@ static int scrolling_text_get_matching_or_oldest(rct_string_id stringId, uint16 
 static uint8 scrolling_text_get_colour(uint32 character)
 {
 	int colour = character & 0x7F;
-	if (colour & (1 << 7)) {
+	if (character & (1 << 7)) {
 		return ColourMapA[colour].light;
 	} else {
 		return ColourMapA[colour].mid_dark;

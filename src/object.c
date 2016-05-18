@@ -974,7 +974,7 @@ static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
 
 	extendedEntryData += sizeof(rct_object_entry);
 	if (sceneryEntry->large_scenery.flags & (1 << 2)) {
-		sceneryEntry->large_scenery.var_12 = (uint32)extendedEntryData;
+		sceneryEntry->large_scenery.text = (rct_large_scenery_text*)extendedEntryData;
 		extendedEntryData += 1038;
 	}
 
@@ -989,9 +989,9 @@ static bool object_type_large_scenery_load(void *objectEntry, uint32 entryIndex)
 
 	int imageId = object_chunk_load_image_directory(&extendedEntryData);
 	if (sceneryEntry->large_scenery.flags & (1 << 2)){
-		sceneryEntry->large_scenery.var_16 = imageId;
+		sceneryEntry->large_scenery.text_image = imageId;
 
-		uint8* edx = (uint8*)sceneryEntry->large_scenery.var_12;
+		uint8* edx = (uint8*)sceneryEntry->large_scenery.text;
 		if (!(edx[0xC] & 1)) {
 			imageId += edx[0xD] * 4;
 		} else{
@@ -1013,8 +1013,8 @@ static void object_type_large_scenery_unload(void *objectEntry)
 	sceneryEntry->image = 0;
 	sceneryEntry->large_scenery.tiles = 0;
 	sceneryEntry->large_scenery.scenery_tab_id = 0;
-	sceneryEntry->large_scenery.var_12 = 0;
-	sceneryEntry->large_scenery.var_16 = 0;
+	sceneryEntry->large_scenery.text = 0;
+	sceneryEntry->large_scenery.text_image = 0;
 }
 
 static bool object_type_large_scenery_test(void *objectEntry)
