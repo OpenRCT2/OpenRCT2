@@ -282,7 +282,7 @@ static void window_loadsave_mouseup(rct_window *w, int widgetIndex)
 	}
 	case WIDX_NEW:
 	{		
-		rct_string_id templateStringId = 3165;
+		rct_string_id templateStringId = STR_PLACEHOLDER;
 		char *templateString;
 		
 		templateString = (char *)language_get_string(templateStringId);
@@ -524,7 +524,7 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
 	int i, y;
-	rct_string_id stringId, templateStringId = 3165;
+	rct_string_id stringId, templateStringId = STR_PLACEHOLDER;
 	char *templateString;
 
 	gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
@@ -931,7 +931,7 @@ static void window_overwrite_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
 
-	rct_string_id templateStringId = 3165;
+	rct_string_id templateStringId = STR_PLACEHOLDER;
 	char *templateString;
 
 	templateString = (char*)language_get_string(templateStringId);

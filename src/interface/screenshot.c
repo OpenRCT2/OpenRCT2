@@ -247,7 +247,7 @@ void screenshot_giant()
 	free(dpi.bits);
 
 	// Show user that screenshot saved successfully
-	rct_string_id stringId = 3165;
+	rct_string_id stringId = STR_PLACEHOLDER;
 	strcpy((char*)language_get_string(stringId), path_get_filename(path));
 	set_format_arg(0, uint16, stringId);
 	window_error_open(STR_SCREENSHOT_SAVED_AS, -1);

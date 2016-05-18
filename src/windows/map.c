@@ -68,7 +68,7 @@ enum WINDOW_MAP_WIDGET_IDX {
 
 static rct_widget window_map_widgets[] = {
 	{ WWT_FRAME,			0,	0,		244,	0,		258,	STR_NONE,							STR_NONE },
-	{ WWT_CAPTION,			0,	1,		243,	1,		14,		STR_MAP,							STR_WINDOW_TITLE_TIP },
+	{ WWT_CAPTION,			0,	1,		243,	1,		14,		STR_MAP_LABEL,						STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	232,	242,	2,		13,		STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		244,	43,		257,	STR_NONE,							STR_NONE },
 	{ WWT_COLOURBTN,		1,	3,		33,		17,		43,		0x02000144E,						STR_SHOW_PEOPLE_ON_MAP_TIP },
@@ -639,7 +639,7 @@ static void window_map_textinput(rct_window *w, int widgetIndex, char *text)
  */
 static void window_map_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, short, 3157);
+	set_format_arg(0, short, STR_MAP);
 }
 
 /**
@@ -934,14 +934,14 @@ static void window_map_inputsize_land(rct_window *w)
 {
 	TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
 	TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-	window_text_input_open(w, WIDX_LAND_TOOL, 5128, 5129, STR_NONE, STR_NONE, 3);
+	window_text_input_open(w, WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
 }
 
 static void window_map_inputsize_map(rct_window *w)
 {
 	TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
 	TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
-	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, 5130, 5131, STR_NONE, STR_NONE, 4);
+	window_text_input_open(w, WIDX_MAP_SIZE_SPINNER, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, STR_NONE, STR_NONE, 4);
 }
 
 static void window_map_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)

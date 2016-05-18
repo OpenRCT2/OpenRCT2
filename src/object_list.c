@@ -509,7 +509,7 @@ void set_load_objects_fail_reason()
 
 		object_create_identifier_name(string_buffer, object);
 		gErrorType = ERROR_TYPE_FILE_LOAD;
-		gErrorStringId = 3165;
+		gErrorStringId = STR_PLACEHOLDER;
 		return;
 	}
 
@@ -532,7 +532,7 @@ void set_load_objects_fail_reason()
 	format_string(string_buffer, STR_REQUIRES_THE_FOLLOWING_ADDON_PACK, &expansionNameId);
 
 	gErrorType = ERROR_TYPE_FILE_LOAD;
-	gErrorStringId = 3165;
+	gErrorStringId = STR_PLACEHOLDER;
 }
 
 /**

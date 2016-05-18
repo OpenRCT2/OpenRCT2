@@ -310,7 +310,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
 		set_map_tooltip_format_arg(0, uint16, 1164);
 		if (mapElement->flags & 0x20) {
-			set_map_tooltip_format_arg(2, uint16, 3124);
+			set_map_tooltip_format_arg(2, uint16, STR_BROKEN);
 			set_map_tooltip_format_arg(4, uint16, sceneryEntry->name);
 		} else {
 			set_map_tooltip_format_arg(2, uint16, sceneryEntry->name);
@@ -325,7 +325,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 			break;
 
 		set_map_tooltip_format_arg(0, uint16, 1164);
-		set_map_tooltip_format_arg(2, uint16, 3192);
+		set_map_tooltip_format_arg(2, uint16, STR_OBJECT_SELECTION_PARK_ENTRANCE);
 		return info->type;
 
 	case VIEWPORT_INTERACTION_ITEM_WALL:

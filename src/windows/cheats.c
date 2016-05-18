@@ -459,7 +459,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 	dropdownWidget = widget - 1;
 
 	for (i = 0; i < 6; i++) {
-		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 		gDropdownItemsArgs[i] = STR_SUNNY + i;
 	}
 	window_dropdown_show_text_custom_width(
@@ -856,7 +856,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 
 	// Money tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_1))) {
-		sprite_idx = 5261;
+		sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
 		if (w->page == WINDOW_CHEATS_PAGE_MONEY)
 			sprite_idx += (w->frame_no / 2) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_1].left, w->y + w->widgets[WIDX_TAB_1].top, 0);
@@ -864,7 +864,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 
 	// Guests tab
 	if (!(w->disabled_widgets & (1 << WIDX_TAB_2))) {
-		sprite_idx = 5568;
+		sprite_idx = SPR_TAB_GUESTS_0;
 		if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
 			sprite_idx += (w->frame_no / 3) % 8;
 		gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_2].left, w->y + w->widgets[WIDX_TAB_2].top, 0);

@@ -867,7 +867,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		break;
 	case WIDX_FILTER_STRING_BUTTON:
 		//window_text_input_open(w, widgetIndex, 5275, 5276, 1170, (uint32)_filter_string, 40);
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_filter_string, 40);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_filter_string, 40);
 		break;
 	case WIDX_FILTER_CLEAR_BUTTON:
 		memset(_filter_string, 0, sizeof(_filter_string));
@@ -1355,8 +1355,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 	RCT2_GLOBAL(0x009BC677, uint8) = 14;
 
-	stringId = 3165;
-	stringBuffer = (char*)language_get_string(3165) + 1;
+	stringId = STR_PLACEHOLDER;
+	stringBuffer = (char*)language_get_string(STR_PLACEHOLDER) + 1;
 	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
 		// Skip name
 		do {
@@ -1424,7 +1424,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	// gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, w->y + w->height - 3 - 12 - 14);
 
 	// Draw object dat name
-	stringId = 3165;
+	stringId = STR_PLACEHOLDER;
 	strcpy(stringBuffer, datName);
 	gfx_draw_string_right(dpi, stringId, NULL, 0, w->x + w->width - 5, w->y + w->height - 3 - 12);
 }
