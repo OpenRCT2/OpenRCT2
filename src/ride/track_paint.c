@@ -210,6 +210,10 @@ bool track_paint_util_should_paint_supports(rct_xy16 position)
 
 bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height)
 {
+	if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
+		return false;
+	}
+
 	uint32 imageId;
 	uint32 baseImageId = entranceStyle->flags;
 	int imageOffset;

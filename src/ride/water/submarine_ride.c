@@ -127,14 +127,12 @@ static void submarine_ride_paint_track_station(uint8 rideIndex, uint8 trackSeque
 		imageId = SPR_STATION_PIER_EDGE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98196C(imageId, 24, 0, 8, 32, 1, height, get_current_rotation());
 
-		if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
-			hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
-			if (hasFence) {
-				imageId = SPR_STATION_PIER_FENCE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
-				sub_98196C(imageId, 31, 0, 1, 32, 7, height + 2, get_current_rotation());
-			}
-			track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+		hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_STATION_PIER_FENCE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 31, 0, 1, 32, 7, height + 2, get_current_rotation());
 		}
+		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
 
 	} else {
 		imageId = SPR_SUBMARINE_RIDE_FLAT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
@@ -149,14 +147,12 @@ static void submarine_ride_paint_track_station(uint8 rideIndex, uint8 trackSeque
 		imageId = SPR_STATION_PIER_EDGE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98196C(imageId, 0, 24, 32, 8, 1, height, get_current_rotation());
 
-		if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3) {
-			hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
-			if (hasFence) {
-				imageId = SPR_STATION_PIER_FENCE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
-				sub_98196C(imageId, 0, 31, 32, 1, 7, height + 2, get_current_rotation());
-			}
-			track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_STATION_PIER_FENCE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 0, 31, 32, 1, 7, height + 2, get_current_rotation());
 		}
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
