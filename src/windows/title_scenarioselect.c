@@ -406,13 +406,13 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = w->x + window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4;
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	safe_strcpy((char*)0x009BC677, scenario->name, 64);
-	set_format_arg(0, short, 3165); // empty string
+	set_format_arg(0, short, STR_PLACEHOLDER); // empty string
 	gfx_draw_string_centred_clipped(dpi, 1193, gCommonFormatArgs, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
 	safe_strcpy((char*)0x009BC677, scenario->details, 256);
-	set_format_arg(0, short, 3165); // empty string
+	set_format_arg(0, short, STR_PLACEHOLDER); // empty string
 	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, 1191, 0) + 5;
 
 	// Scenario objective
@@ -429,7 +429,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			completedByName = scenario->highscore->name;
 		}
 		safe_strcpy((char*)0x009BC677, completedByName, 64);
-		set_format_arg(0, short, 3165); // empty string
+		set_format_arg(0, short, STR_PLACEHOLDER); // empty string
 		set_format_arg(2, int, scenario->highscore->company_value);
 		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, 0);
 	}
@@ -473,7 +473,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			bool isDisabled = listItem->scenario.is_locked;
 
 			// Draw scenario name
-			rct_string_id placeholderStringId = 3165;
+			rct_string_id placeholderStringId = STR_PLACEHOLDER;
 			safe_strcpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
 			int format = isDisabled ? 865 : (isHighlighted ? highlighted_format : unhighlighted_format);
 			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;

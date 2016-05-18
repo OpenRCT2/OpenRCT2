@@ -26,6 +26,7 @@
 #include "../interface/themes.h"
 #include "../rct1.h"
 #include "../util/util.h"
+#include "../sprites.h"
 
 #pragma region Widgets
 
@@ -53,8 +54,8 @@ static rct_widget window_editor_inventions_list_widgets[] = {
 	{ WWT_SCROLL,			1,	4,		371,	189,	396,	2,						STR_NONE				},
 	{ WWT_FLATBTN,			1,	431,	544,	106,	219,	0xFFFFFFFF,				STR_NONE				},
 	{ WWT_DROPDOWN_BUTTON,	1,	375,	594,	385,	396,	STR_RANDOM_SHUFFLE,		STR_RANDOM_SHUFFLE_TIP	},
-	{ WWT_DROPDOWN_BUTTON,	1,	375,	594,	372,	383,	2751,					STR_NONE				},
-	{ WWT_DROPDOWN_BUTTON,	1,	375,	594,	359,	370,	2750,					STR_NONE				},
+	{ WWT_DROPDOWN_BUTTON,	1,	375,	594,	372,	383,	STR_MOVE_ALL_BOTTOM,	STR_NONE				},
+	{ WWT_DROPDOWN_BUTTON,	1,	375,	594,	359,	370,	STR_MOVE_ALL_TOP,		STR_NONE				},
 	{ WIDGETS_END }
 };
 
@@ -675,7 +676,7 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, int scr
  */
 static void window_editor_inventions_list_tooltip(rct_window* w, int widgetIndex, rct_string_id *stringId)
 {
-	set_format_arg(0, uint16, 3159);
+	set_format_arg(0, uint16, STR_LIST);
 }
 
 /**
@@ -740,17 +741,17 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	// Tab image
 	x = w->x + w->widgets[WIDX_TAB_1].left;
 	y = w->y + w->widgets[WIDX_TAB_1].top;
-	gfx_draw_sprite(dpi, 5327 + (w->frame_no / 2) % 8, x, y, 0);
+	gfx_draw_sprite(dpi, SPR_TAB_FINANCES_RESEARCH_0 + (w->frame_no / 2) % 8, x, y, 0);
 
 	// Pre-researched items label
 	x = w->x + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left;
 	y = w->y + w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11;
-	gfx_draw_string_left(dpi, 3197, NULL, 0, x, y - 1);
+	gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, NULL, 0, x, y - 1);
 
 	// Research order label
 	x = w->x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left;
 	y = w->y + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11;
-	gfx_draw_string_left(dpi, 3198, NULL, 0, x, y - 1);
+	gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, NULL, 0, x, y - 1);
 
 	// Preview background
 	widget = &w->widgets[WIDX_PREVIEW];
@@ -791,13 +792,13 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	y = w->y + widget->bottom + 3;
 	width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 	stringId = research_item_get_name(eax);
-	gfx_draw_string_centred_clipped(dpi, 1193, &stringId, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 0, x, y, width);
 	y += 15;
 
 	// Item category
 	x = w->x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
-	stringId = 2253 + researchItem->category;
-	gfx_draw_string_left(dpi, 3196, &stringId, 0, x, y);
+	stringId = STR_RESEARCH_TRANSPORT_RIDES + researchItem->category;
+	gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, 0, x, y);
 }
 
 /**
@@ -971,7 +972,7 @@ static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixe
 	x = w->x;
 	y = w->y + 2;
 	stringId = research_item_get_name(_editorInventionsListDraggedItem->entryIndex & 0xFFFFFF);
-	gfx_draw_string_left(dpi, 1193, &stringId, 32, x, y);
+	gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 32, x, y);
 }
 
 #pragma endregion

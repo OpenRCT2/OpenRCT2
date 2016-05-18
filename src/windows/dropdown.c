@@ -35,7 +35,7 @@ enum {
 };
 
 static rct_widget window_dropdown_widgets[] = {
-	{ WWT_IMGBTN, 0, 0, 0, 0, 0, -1, STR_NONE },
+	{ WWT_IMGBTN, 0, 0, 0, 0, 0, STR_NONE, STR_NONE },
 	{ WIDGETS_END },
 };
 

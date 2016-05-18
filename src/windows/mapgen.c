@@ -487,17 +487,17 @@ static void window_mapgen_base_mouseup(rct_window *w, int widgetIndex)
 		TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
 		TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 		// Practical map size is 2 lower than the technical map size
-		window_text_input_open(w, WIDX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
+		window_text_input_open(w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, 5182, _mapSize - 2, 4);
 		break;
 	case WIDX_BASE_HEIGHT:
 		TextInputDescriptionArgs[0] = (BASESIZE_MIN - 12) / 2;
 		TextInputDescriptionArgs[1] = (BASESIZE_MAX - 12) / 2;
-		window_text_input_open(w, WIDX_BASE_HEIGHT, 5183, 5184, 5182, (_baseHeight - 12) / 2, 3);
+		window_text_input_open(w, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, 5182, (_baseHeight - 12) / 2, 3);
 		break;
 	case WIDX_WATER_LEVEL:
 		TextInputDescriptionArgs[0] = (WATERLEVEL_MIN - 12) / 2;
 		TextInputDescriptionArgs[1] = (WATERLEVEL_MAX - 12) / 2;
-		window_text_input_open(w, WIDX_WATER_LEVEL, 5185, 5186, 5182, (_waterLevel - 12) / 2, 3);
+		window_text_input_open(w, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, 5182, (_waterLevel - 12) / 2, 3);
 		break;
 	}
 }
@@ -675,9 +675,9 @@ static void window_mapgen_base_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_mapgen_draw_tab_images(dpi, w);
 
 	gfx_draw_string_left(dpi, STR_MAP_SIZE, 0, 0, w->x + 4, w->y + w->widgets[WIDX_MAP_SIZE].top + 1);
-	gfx_draw_string_left(dpi, 2691, 0, 0, w->x + 4, w->y + w->widgets[WIDX_BASE_HEIGHT].top + 1);
-	gfx_draw_string_left(dpi, 2692, 0, 0, w->x + 4, w->y + w->widgets[WIDX_WATER_LEVEL].top + 1);
-	gfx_draw_string_left(dpi, 2693, 0, 0, w->x + 4, w->y + w->widgets[WIDX_FLOOR_TEXTURE].top + 1);
+	gfx_draw_string_left(dpi, STR_BASE_HEIGHT_LABEL, 0, 0, w->x + 4, w->y + w->widgets[WIDX_BASE_HEIGHT].top + 1);
+	gfx_draw_string_left(dpi, STR_WATER_LEVEL_LABEL, 0, 0, w->x + 4, w->y + w->widgets[WIDX_WATER_LEVEL].top + 1);
+	gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, 0, 0, w->x + 4, w->y + w->widgets[WIDX_FLOOR_TEXTURE].top + 1);
 
 	// The practical map size is 2 lower than the technical map size
 	uint16 mapSizeArgs[2] = { _mapSize - 2, _mapSize -2 };
@@ -791,7 +791,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, int widgetIndex)
 		TextInputDescriptionArgs[0] = MINIMUM_MAP_SIZE_PRACTICAL;
 		TextInputDescriptionArgs[1] = MAXIMUM_MAP_SIZE_PRACTICAL;
 		// Practical map size is 2 lower than the technical map size
-		window_text_input_open(w, WIDX_SIMPLEX_MAP_SIZE, 5130, 5131, 5182, _mapSize - 2, 4);
+		window_text_input_open(w, WIDX_SIMPLEX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, 5182, _mapSize - 2, 4);
 		break;
 	case WIDX_GENERATE:
 		mapgenSettings.mapSize = _mapSize;

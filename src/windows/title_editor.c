@@ -199,7 +199,7 @@ static int window_title_editor_tab_animation_divisor[] = {
 };
 static int window_title_editor_tab_sprites[] = {
 	SPR_TAB_RIDE_0,
-	5183,
+	SPR_FLOPPY,
 	SPR_TAB_STATS_0
 };
 
