@@ -5500,7 +5500,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0,						// RIDE_TYPE_DRINK_STALL
 	0,						// RIDE_TYPE_1F
 	0,						// RIDE_TYPE_SHOP
-	0x0076190C,						// RIDE_TYPE_MERRY_GO_ROUND
+	0,						// RIDE_TYPE_MERRY_GO_ROUND
 	0,						// RIDE_TYPE_22
 	0,						// RIDE_TYPE_INFORMATION_KIOSK
 	0,						// RIDE_TYPE_TOILETS
@@ -5595,7 +5595,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_shop,			// RIDE_TYPE_DRINK_STALL
 	get_track_paint_function_shop,			// RIDE_TYPE_1F
 	get_track_paint_function_shop,			// RIDE_TYPE_SHOP
-	0,						// RIDE_TYPE_MERRY_GO_ROUND
+	get_track_paint_function_merry_go_round,// RIDE_TYPE_MERRY_GO_ROUND
 	get_track_paint_function_shop,			// RIDE_TYPE_22
 	get_track_paint_function_shop,			// RIDE_TYPE_INFORMATION_KIOSK
 	get_track_paint_function_facility,		// RIDE_TYPE_TOILETS
