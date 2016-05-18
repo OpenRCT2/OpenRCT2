@@ -1169,7 +1169,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 					gfx_draw_sprite(&clipdpi, imageId, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 					tertiaryColour);
 
-					if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG5){
+					if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR){
 						gfx_draw_sprite(&clipdpi, imageId + 1, 0x2F, (sceneryEntry->wall.height * 2) + 0x32,
 							tertiaryColour);
 					}

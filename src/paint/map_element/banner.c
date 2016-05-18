@@ -53,7 +53,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST)//if being placed
 	{
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
-		image_id |= RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
+		image_id |= construction_markers[gConfigGeneral.construction_marker_colour];
 	}
 	else{
 		image_id |=

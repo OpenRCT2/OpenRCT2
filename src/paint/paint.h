@@ -19,6 +19,8 @@
 
 #include "../common.h"
 #include "../world/map.h"
+#include "../interface/colour.h"
+#include "../drawing/drawing.h"
 
 typedef struct attached_paint_struct attached_paint_struct;
 
@@ -43,9 +45,9 @@ typedef struct paint_struct paint_struct;
 struct paint_struct {
 	uint32 image_id;		// 0x00
 	union {
-		uint32 tertiary_colour;
+		uint32 tertiary_colour;	// 0x04
 		// If masked image_id is masked_id
-		uint32 colour_image_id;
+		uint32 colour_image_id;	// 0x04
 	};
 	uint16 bound_box_x;		// 0x08
 	uint16 bound_box_y;		// 0x0A
@@ -84,6 +86,9 @@ struct paint_string_struct {
 enum PAINT_STRUCT_FLAGS {
 	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };
+
+/** rct2: 0x00993CC4 */
+extern const uint32 construction_markers[];
 
 void painter_setup();
 

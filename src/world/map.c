@@ -3130,7 +3130,7 @@ static bool map_place_fence_check_obstruction_with_track(rct_scenery_entry *wall
 		}
 	}
 
-	if (!(wall->wall.flags & WALL_SCENERY_FLAG5)) {
+	if (!(wall->wall.flags & WALL_SCENERY_IS_DOOR)) {
 		return false;
 	}
 

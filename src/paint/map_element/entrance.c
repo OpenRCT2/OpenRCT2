@@ -60,7 +60,7 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
-		image_id = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
+		image_id = construction_markers[gConfigGeneral.construction_marker_colour];
 		RCT2_GLOBAL(0x009E32BC, uint32) = image_id;
 		if (transparant_image_id)
 			transparant_image_id = image_id;
@@ -168,7 +168,7 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 	uint32 image_id, ghost_id = 0;
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
 		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
-		ghost_id = RCT2_ADDRESS(0x993CC4, uint32)[gConfigGeneral.construction_marker_colour];
+		ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
 		RCT2_GLOBAL(0x009E32BC, uint32) = ghost_id;
 	}
 
