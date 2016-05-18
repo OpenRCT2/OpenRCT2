@@ -253,18 +253,18 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 
 	if (baseImageId & 0x40000000) {
 		imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
-		sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+		sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 
 		uint32 edi = RCT2_GLOBAL(0x00F44198, uint32) & (0b11111 << 19);
 
 		// weird jump
 		imageId = (baseImageId | edi) + 0x3800000 + imageOffset + 12;
-		sub_98199C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+		sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 		return true;
 	}
 
 	imageId = (baseImageId + imageOffset) | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(imageId, offset.x, offset.y, bounds.x, bounds.y, bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
+	sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 	return true;
 }
 

@@ -340,7 +340,7 @@ uint8 right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
 static void submarine_ride_paint_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	trackSequence = right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
-	return submarine_ride_paint_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
+	submarine_ride_paint_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 static void submarine_ride_paint_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
