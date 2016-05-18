@@ -302,7 +302,7 @@ static void window_maze_construction_update(rct_window *w)
 		break;
 	case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
 		if (!widget_is_active_tool(w, WIDX_MAZE_ENTRANCE) && !widget_is_active_tool(w, WIDX_MAZE_EXIT)) {
-			_rideConstructionState = RCT2_GLOBAL(0x00F440CC, uint8);
+			_rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
 			window_maze_construction_update_pressed_widgets();
 		}
 		break;
@@ -355,7 +355,7 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 	int direction = 0;
 	ride_get_entrance_or_exit_position_from_screen_position(x, y, &x, &y, &direction);
 
-	if (RCT2_GLOBAL(0x00F44194, uint8) == 0xFF)
+	if (gRideEntranceExitPlaceDirection == 0xFF)
 		return;
 
 	uint8 rideIndex = gRideEntranceExitPlaceRideIndex;

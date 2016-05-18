@@ -169,6 +169,8 @@ uint8 _currentSeatRotationAngle;
 uint8 gRideEntranceExitPlaceType;
 uint8 gRideEntranceExitPlaceRideIndex;
 uint8 gRideEntranceExitPlaceStationIndex;
+uint8 gRideEntranceExitPlacePreviousRideConstructionState;
+uint8 gRideEntranceExitPlaceDirection;
 
 // Static function declarations
 rct_peep *find_closest_mechanic(int x, int y, int forInspection);
@@ -1692,7 +1694,7 @@ static int ride_modify_entrance_or_exit(rct_map_element *mapElement, int x, int 
 		gRideEntranceExitPlaceStationIndex = bl;
 		gInputFlags |= INPUT_FLAG_6;
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
-			RCT2_GLOBAL(0x00F440CC, uint8) = _rideConstructionState;
+			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
 		}
 
@@ -7059,7 +7061,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 	rct_viewport *viewport;
 	rct_ride *ride;
 
-	RCT2_GLOBAL(0x00F44194, uint8) = 255;
+	gRideEntranceExitPlaceDirection = 255;
 	get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapX, &mapY, &interactionType, &mapElement, &viewport);
 	if (interactionType != 0) {
 		if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
@@ -7121,8 +7123,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 						continue;
 					if (mapElement->properties.track.ride_index != gRideEntranceExitPlaceRideIndex)
 						continue;
-					if (mapElement->properties.track.type == 101) {
-						RCT2_GLOBAL(0x00F44194, uint8) = direction ^ 2;
+					if (mapElement->properties.track.type == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
+						gRideEntranceExitPlaceDirection = direction ^ 2;
 						*outDirection = direction ^ 2;
 						return;
 					}
@@ -7132,7 +7134,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 					int ebx = (mapElement->properties.track.type << 4) + (mapElement->properties.track.sequence & 0x0F);
 					int eax = (direction + 2 - mapElement->type) & MAP_ELEMENT_DIRECTION_MASK;
 					if (RCT2_ADDRESS(0x0099CA64, uint8)[ebx] & (1 << eax)) {
-						RCT2_GLOBAL(0x00F44194, uint8) = direction ^ 2;
+						gRideEntranceExitPlaceDirection = direction ^ 2;
 						*outDirection = direction ^ 2;
 						return;
 					}
@@ -7140,7 +7142,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 			}
 			direction = (direction + 1) & 3;
 		}
-		RCT2_GLOBAL(0x00F44194, uint8) = 0xFF;
+		gRideEntranceExitPlaceDirection = 0xFF;
 	} else {
 		mapX = (stationStartXY & 0xFF) * 32;
 		mapY = (stationStartXY >> 8) * 32;
@@ -7187,7 +7189,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int screenX, int sc
 
 		direction = loc_6CD18E(*outX, *outY, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32, entranceMaxY + 32);
 		if (direction != -1 && direction != stationDirection && direction != (stationDirection ^ 2)) {
-			RCT2_GLOBAL(0x00F44194, uint8) = direction;
+			gRideEntranceExitPlaceDirection = direction;
 			*outDirection = direction;
 			return;
 		}

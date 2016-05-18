@@ -1904,7 +1904,7 @@ static void window_ride_construction_entrance_click(rct_window *w)
 		gInputFlags |= INPUT_FLAG_6;
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
-			RCT2_GLOBAL(0x00F440CC, uint8) = _rideConstructionState;
+			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
 		}
 		sub_6C84CE();
@@ -1928,7 +1928,7 @@ static void window_ride_construction_exit_click(rct_window *w)
 		gInputFlags |= INPUT_FLAG_6;
 		sub_6C9627();
 		if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
-			RCT2_GLOBAL(0x00F440CC, uint8) = _rideConstructionState;
+			gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
 			_rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
 		}
 		sub_6C84CE();
@@ -1968,7 +1968,7 @@ static void window_ride_construction_update(rct_window *w)
 
 	if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT) {
 		if (!widget_is_active_tool(w, WIDX_ENTRANCE) && !widget_is_active_tool(w, WIDX_EXIT)) {
-			_rideConstructionState = RCT2_GLOBAL(0x00F440CC, uint8);
+			_rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
 			sub_6C84CE();
 		}
 	}
@@ -3690,7 +3690,7 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 	gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 	ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &x, &y, &direction);
-	if (RCT2_GLOBAL(0x00F44194, uint8) == 255) {
+	if (gRideEntranceExitPlaceDirection == 255) {
 		sub_6C9627();
 		return;
 	}
@@ -3707,7 +3707,7 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY)
 	gMapSelectArrowPosition.z = RCT2_GLOBAL(0x00F44190, uint8) * 8;
 	map_invalidate_selection_rect();
 
-	direction = RCT2_GLOBAL(0x00F44194, uint8) ^ 2;
+	direction = gRideEntranceExitPlaceDirection ^ 2;
 	unk = gRideEntranceExitPlaceStationIndex;
 	if (
 		!(_currentTrackSelectionFlags & 4) ||
@@ -3938,7 +3938,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 
 	int mapX, mapY, direction;
 	ride_get_entrance_or_exit_position_from_screen_position(screenX, screenY, &mapX, &mapY, &direction);
-	if (RCT2_GLOBAL(0x00F44194, uint8) == 255)
+	if (gRideEntranceExitPlaceDirection == 255)
 		return;
 
 	gGameCommandErrorTitle = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ?
@@ -3948,7 +3948,7 @@ static void ride_construction_tooldown_entrance_exit(int screenX, int screenY)
 	game_command_callback = game_command_callback_place_ride_entrance_or_exit;
 	game_do_command(
 		RCT2_GLOBAL(0x00F44188, uint16),
-		(GAME_COMMAND_FLAG_APPLY) | ((RCT2_GLOBAL(0x00F44194, uint8) ^ 2) << 8),
+		(GAME_COMMAND_FLAG_APPLY) | ((gRideEntranceExitPlaceDirection ^ 2) << 8),
 		RCT2_GLOBAL(0x00F4418A, uint16),
 		gRideEntranceExitPlaceRideIndex | (gRideEntranceExitPlaceType << 8),
 		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
