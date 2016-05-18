@@ -187,9 +187,9 @@ static void window_maze_construction_entrance_mouseup(rct_window *w, int widgetI
 	if (tool_set(w, widgetIndex, 12))
 		return;
 
-	RCT2_GLOBAL(0x00F44191, uint8) = widgetIndex == WIDX_MAZE_ENTRANCE ? 0 : 1;
-	RCT2_GLOBAL(0x00F44192, uint8) = (uint8)w->number;
-	RCT2_GLOBAL(0x00F44193, uint8) = 0;
+	gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
+	gRideEntranceExitPlaceRideIndex = (uint8)w->number;
+	gRideEntranceExitPlaceStationIndex = 0;
 	gInputFlags |= INPUT_FLAG_6;
 
 	sub_6C9627();
@@ -358,17 +358,17 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 	if (RCT2_GLOBAL(0x00F44194, uint8) == 0xFF)
 		return;
 
-	uint8 rideIndex = RCT2_GLOBAL(0x00F44192, uint8);
-	uint8 is_exit = RCT2_GLOBAL(0x00F44191, uint8);
-	gGameCommandErrorTitle = is_exit ? 1144 : 1145;
+	uint8 rideIndex = gRideEntranceExitPlaceRideIndex;
+	uint8 entranceExitType = gRideEntranceExitPlaceType;
+	gGameCommandErrorTitle = entranceExitType ? 1144 : 1145;
 
 	money32 cost = game_do_command(
 		x,
 		GAME_COMMAND_FLAG_APPLY | ((direction ^ 2) << 8),
 		y,
-		rideIndex | (is_exit << 8),
+		rideIndex | (entranceExitType << 8),
 		GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-		RCT2_GLOBAL(0x00F44193, uint8),
+		gRideEntranceExitPlaceStationIndex,
 		0);
 
 	if (cost == MONEY32_UNDEFINED)
@@ -387,9 +387,9 @@ static void window_maze_construction_entrance_tooldown(int x, int y, rct_window*
 			window_close(w);
 	}
 	else{
-		RCT2_GLOBAL(0x00F44191, uint8) = is_exit ^ 1;
+		gRideEntranceExitPlaceType = entranceExitType ^ 1;
 		window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
-		gCurrentToolWidget.widget_index = is_exit ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
+		gCurrentToolWidget.widget_index = entranceExitType ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
 	}
 }
 
