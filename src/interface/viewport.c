@@ -1154,7 +1154,8 @@ static bool sub_67933B_679788_679C4A_67A117(uint8 *esi, sint16 x_start_point, si
  * @param y (dx)
  * @return value originally stored in 0x00141F569
  */
-static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
+static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y)
+{
 	rct_g1_element *image = gfx_get_g1_element(imageId & 0x7FFFF);
 
 	if (dpi->zoom_level != 0) {
@@ -1174,7 +1175,7 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 					.zoom_level = dpi->zoom_level - 1
 			};
 
-			return new_sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
+			return sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
 		}
 	}
 
@@ -1312,26 +1313,6 @@ static bool new_sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16
 	free(new_source_pointer_start);
 
 	return output;
-}
-
-static bool sub_679074(rct_drawpixelinfo *dpi, int imageId, sint16 x, sint16 y) {
-	sint16 before_x = RCT2_GLOBAL(0x9ABDAE, sint16);
-	uint8 before_output = RCT2_GLOBAL(0x00141F569, uint8);
-
-	RCT2_CALLPROC_X(0x00679074, 0, imageId, x, y, 0, (int) dpi, 0);
-	sint16 original_x = RCT2_GLOBAL(0x9ABDAE, sint16);
-	uint8 original_output = RCT2_GLOBAL(0x00141F569, uint8);
-
-	RCT2_GLOBAL(0x9ABDAE, sint16) = before_x;
-	RCT2_GLOBAL(0x00141F569, uint8) = before_output;
-
-	bool new_output = new_sub_679074(dpi, imageId, x, y);
-	sint16 new_x = RCT2_GLOBAL(0x9ABDAE, sint16);
-
-	assert(new_x == original_x);
-	assert(new_output == original_output);
-
-	return new_output;
 }
 
 /**
