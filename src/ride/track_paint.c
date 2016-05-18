@@ -152,7 +152,7 @@ bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_eleme
 		((position.x / 32) + offset.x) |
 		(((position.y / 32) + offset.y) << 8);
 
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
+	int entranceId = map_get_station(mapElement);
 
 	return (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc);
 }

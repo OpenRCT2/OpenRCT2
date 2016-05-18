@@ -5485,7 +5485,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0x008A5B88,						// RIDE_TYPE_LOOPING_ROLLER_COASTER
 	0x0070EDB4,						// RIDE_TYPE_DINGHY_SLIDE
 	0x0071BC40,						// RIDE_TYPE_MINE_TRAIN_COASTER
-	0x00743EC8,						// RIDE_TYPE_CHAIRLIFT
+	0,						// RIDE_TYPE_CHAIRLIFT
 	0x008A7784,						// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
 	0,						// RIDE_TYPE_MAZE
 	0,						// RIDE_TYPE_SPIRAL_SLIDE
@@ -5580,7 +5580,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_LOOPING_ROLLER_COASTER
 	0,						// RIDE_TYPE_DINGHY_SLIDE
 	0,						// RIDE_TYPE_MINE_TRAIN_COASTER
-	0,						// RIDE_TYPE_CHAIRLIFT
+	get_track_paint_function_chairlift,		// RIDE_TYPE_CHAIRLIFT
 	0,						// RIDE_TYPE_CORKSCREW_ROLLER_COASTER
 	get_track_paint_function_maze,			// RIDE_TYPE_MAZE
 	get_track_paint_function_spiral_slide,	// RIDE_TYPE_SPIRAL_SLIDE

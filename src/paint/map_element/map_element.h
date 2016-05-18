@@ -46,11 +46,15 @@ enum
 };
 
 extern const int SEGMENTS_ALL;
+extern const uint16 segment_offsets[9];
 
 enum
 {
     TUNNEL_0 = 0,
     TUNNEL_6 = 6,
+	TUNNEL_7 = 7,
+	TUNNEL_8 = 8,
+	TUNNEL_14 = 0x0E
 };
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type);

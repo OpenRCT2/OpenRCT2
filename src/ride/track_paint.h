@@ -32,6 +32,12 @@ extern const uint8 track_map_4x4[][16];
 extern const uint8 edges_4x4[];
 
 enum {
+	SPR_FLOOR_METAL = 14567,
+	SPR_FENCE_METAL_NE = 14568,
+	SPR_FENCE_METAL_SE = 14569,
+	SPR_FENCE_METAL_SW = 14570,
+	SPR_FENCE_METAL_NW = 14571,
+
     SPR_FLOOR_CORK_SE_SW = 22134,
     SPR_FLOOR_CORK_SW = 22135,
     SPR_FLOOR_CORK_SE = 22136,
@@ -64,6 +70,7 @@ bool track_paint_util_should_paint_supports(rct_xy16 position);
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
+TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int direction);
