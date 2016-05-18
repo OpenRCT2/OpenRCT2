@@ -111,9 +111,13 @@ static void chairlift_paint_util_draw_supports(int segments, uint16 height)
 	}
 }
 
-rct_map_element * map_get_track_element_at_from_ride_fuzzy(int x, int y, int z, int rideIndex)
+rct_map_element * chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int x, int y, int z, int rideIndex)
 {
 	rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+	if (mapElement == NULL) {
+		return NULL;
+	}
+	
 	do {
 		if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK) continue;
 		if (mapElement->properties.track.ride_index != rideIndex) continue;
@@ -137,7 +141,7 @@ static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_map_e
 		.y = pos.y - delta.y,
 	};
 
-	rct_map_element * nextTrack = map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
+	rct_map_element * nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
 
 	return nextTrack == NULL;
 }
@@ -154,7 +158,7 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 		.y = pos.y + delta.y,
 	};
 
-	rct_map_element * nextTrack = map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
+	rct_map_element * nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
 
 	return nextTrack == NULL;
 }
