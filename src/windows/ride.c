@@ -4316,7 +4316,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				const rct_ride_entrance_definition *entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
 				terniaryColour = 0;
-				if (entranceStyle->flags & 0x40000000) {
+				if (entranceStyle->base_image_id & 0x40000000) {
 					terniaryColour = 0x40000000 | ((trackColour.main + 112) << 19);
 				}
 

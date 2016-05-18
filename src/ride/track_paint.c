@@ -215,7 +215,7 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 	}
 
 	uint32 imageId;
-	uint32 baseImageId = entranceStyle->flags;
+	uint32 baseImageId = entranceStyle->base_image_id;
 	int imageOffset;
 	rct_xyz16 offset, bounds, boundsOffset;
 
