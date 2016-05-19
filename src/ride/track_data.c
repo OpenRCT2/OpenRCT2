@@ -5491,7 +5491,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0,						// RIDE_TYPE_SPIRAL_SLIDE
 	0x0074A668,						// RIDE_TYPE_GO_KARTS
 	0x0074DDEC,						// RIDE_TYPE_LOG_FLUME
-	0x0075745C,						// RIDE_TYPE_RIVER_RAPIDS
+	0,						// RIDE_TYPE_RIVER_RAPIDS
 	0,						// RIDE_TYPE_DODGEMS
 	0x008A83E0,						// RIDE_TYPE_PIRATE_SHIP
 	0x00760070,						// RIDE_TYPE_SWINGING_INVERTER_SHIP
@@ -5586,7 +5586,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_spiral_slide,	// RIDE_TYPE_SPIRAL_SLIDE
 	0,						// RIDE_TYPE_GO_KARTS
 	0,						// RIDE_TYPE_LOG_FLUME
-	0,						// RIDE_TYPE_RIVER_RAPIDS
+	get_track_paint_function_river_rapids,	// RIDE_TYPE_RIVER_RAPIDS
 	get_track_paint_function_dodgems,		// RIDE_TYPE_DODGEMS
 	0,						// RIDE_TYPE_PIRATE_SHIP
 	0,						// RIDE_TYPE_SWINGING_INVERTER_SHIP
