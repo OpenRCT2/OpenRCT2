@@ -20,6 +20,7 @@
 #include <openssl/evp.h>
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
+#include <vector>
 
 #define KEY_LENGTH_BITS 2048
 #define KEY_TYPE EVP_PKEY_RSA
@@ -37,6 +38,7 @@ NetworkKey::~NetworkKey()
     Unload();
     if (m_ctx != nullptr) {
         EVP_PKEY_CTX_free(m_ctx);
+        m_ctx = nullptr;
     }
 }
 
@@ -57,18 +59,20 @@ bool NetworkKey::Generate()
 #if KEY_TYPE == EVP_PKEY_RSA
     if (!EVP_PKEY_CTX_set_rsa_keygen_bits(m_ctx, KEY_LENGTH_BITS)) {
         log_error("Failed to set keygen params");
-        EVP_PKEY_CTX_free(m_ctx);
-        m_ctx = nullptr;
         return false;
     }
 #else
     #error Only RSA is supported!
 #endif
-    if (!EVP_PKEY_keygen(m_ctx, &m_key)) {
-        log_error("Failed to generate new key!");
-        EVP_PKEY_CTX_free(m_ctx);
-        m_ctx = nullptr;
+    if (EVP_PKEY_keygen_init(m_ctx) <= 0) {
+        log_error("Failed to initialise keygen algorithm");
         return false;
+    }
+    if (EVP_PKEY_keygen(m_ctx, &m_key) <= 0) {
+        log_error("Failed to generate new key!");
+        return false;
+    } else {
+        log_warning("key ok");
     }
     log_verbose("New key of type %d, length %d generated successfully.", KEY_TYPE, KEY_LENGTH_BITS);
     return true;
@@ -84,19 +88,20 @@ bool NetworkKey::LoadPrivate(SDL_RWops *file)
         log_error("Key file suspiciously large, refusing to load it");
         return false;
     }
-    BIO *bio = BIO_new(BIO_s_mem());
-    if (bio == nullptr) {
-        log_error("Failed to initialise OpenSSL's BIO!");
-        return false;
-    }
     char *priv_key = new char[size];
     file->read(file, priv_key, 1, size);
-    BIO_write(bio, priv_key, size);
+    BIO *bio = BIO_new_mem_buf(priv_key, size);
+    if (bio == nullptr) {
+        log_error("Failed to initialise OpenSSL's BIO!");
+        delete [] priv_key;
+        return false;
+    }
     RSA *rsa;
-    PEM_read_bio_RSAPrivateKey(bio, &rsa, nullptr, nullptr);
+    rsa = PEM_read_bio_RSAPrivateKey(bio, nullptr, nullptr, nullptr);
     if (!RSA_check_key(rsa)) {
         log_error("Loaded RSA key is invalid");
         BIO_free_all(bio);
+        delete [] priv_key;
         return false;
     }
     if (m_key != nullptr) {
@@ -106,6 +111,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops *file)
     EVP_PKEY_set1_RSA(m_key, rsa);
     BIO_free_all(bio);
     RSA_free(rsa);
+    delete [] priv_key;
     return true;
 }
 
@@ -119,16 +125,16 @@ bool NetworkKey::LoadPublic(SDL_RWops *file)
         log_error("Key file suspiciously large, refusing to load it");
         return false;
     }
-    BIO *bio = BIO_new(BIO_s_mem());
+    char *pub_key = new char[size];
+    file->read(file, pub_key, 1, size);
+    BIO *bio = BIO_new_mem_buf(pub_key, size);
     if (bio == nullptr) {
         log_error("Failed to initialise OpenSSL's BIO!");
+        delete [] pub_key;
         return false;
     }
-    char *priv_key = new char[size];
-    file->read(file, priv_key, 1, size);
-    BIO_write(bio, priv_key, size);
     RSA *rsa;
-    PEM_read_bio_RSAPublicKey(bio, &rsa, nullptr, nullptr);
+    rsa = PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
     if (m_key != nullptr) {
         EVP_PKEY_free(m_key);
     }
@@ -136,6 +142,7 @@ bool NetworkKey::LoadPublic(SDL_RWops *file)
     EVP_PKEY_set1_RSA(m_key, rsa);
     BIO_free_all(bio);
     RSA_free(rsa);
+    delete [] pub_key;
     return true;
 }
 
@@ -172,6 +179,7 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
     char *pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
     file->write(file, pem_key, keylen, 1);
+    log_verbose("saving key of length %u", keylen);
     BIO_free_all(bio);
     delete [] pem_key;
 #else
@@ -215,7 +223,7 @@ bool NetworkKey::SavePublic(SDL_RWops *file)
     return true;
 }
 
-char *NetworkKey::PublicKeyString()
+std::string NetworkKey::PublicKeyString()
 {
     if (m_key == nullptr) {
         log_error("No key loaded");
@@ -246,11 +254,56 @@ char *NetworkKey::PublicKeyString()
     BIO_read(bio, pem_key, keylen);
     BIO_free_all(bio);
     pem_key[keylen] = '\0';
+    std::string pem_key_out(pem_key);
+    free(pem_key);
 
-    return pem_key;
+    return pem_key_out;
 }
 
-bool NetworkKey::Sign(const char *md, const size_t len, char **signature, size_t *out_size)
+/**
+ * @brief NetworkKey::PublicKeyHash
+ * Computes a short, human-readable (e.g. asciif-ied hex) hash for a given
+ * public key. Serves a purpose of easy identification keys in multiplayer
+ * overview, multiplayer settings.
+ *
+ * In particular, any of digest functions applied to a standarised key
+ * representation, like PEM, will be sufficient.
+ *
+ * @return returns a string containing key hash.
+ */
+std::string NetworkKey::PublicKeyHash()
+{
+    std::string key = PublicKeyString();
+    if (key.empty()) {
+        log_error("No key found");
+        return nullptr;
+    }
+    EVP_MD_CTX *ctx = EVP_MD_CTX_create();
+    if (EVP_DigestInit_ex(ctx, EVP_sha1(), nullptr) <= 0) {
+        log_error("Failed to initialise digest context");
+        EVP_MD_CTX_destroy(ctx);
+        return nullptr;
+    }
+    if (EVP_DigestUpdate(ctx, key.c_str(), key.size()) <= 0) {
+        log_error("Failed to update digset");
+        EVP_MD_CTX_destroy(ctx);
+        return nullptr;
+    }
+    unsigned int digest_size = EVP_MAX_MD_SIZE;
+    std::vector<unsigned char> digest(EVP_MAX_MD_SIZE);
+    // Cleans up `ctx` automatically.
+    EVP_DigestFinal(ctx, digest.data(), &digest_size);
+    std::string digest_out;
+    digest_out.reserve(EVP_MAX_MD_SIZE * 2 + 1);
+    for (int i = 0; i < digest_size; i++) {
+        char buf[3];
+        sprintf(buf, "%02x", digest[i]);
+        digest_out.append(buf);
+    }
+    return digest_out;
+}
+
+bool NetworkKey::Sign(const char *md, const size_t len, char **signature, unsigned int *out_size)
 {
     EVP_MD_CTX *mdctx = NULL;
 
@@ -335,6 +388,6 @@ bool NetworkKey::Verify(const char *md, const size_t len, const char* sig, const
     } else {
         EVP_MD_CTX_destroy(mdctx);
         log_error("Signature is invalid");
-        return true;
+        return false;
     }
 }

@@ -17,8 +17,13 @@
 #ifndef NETWORKKEY_H
 #define NETWORKKEY_H
 
-#include <SDL2/SDL_rwops.h>
-#include <openssl/evp.h>
+#ifndef DISABLE_NETWORK
+
+#include <SDL_rwops.h>
+#include <string>
+
+typedef struct evp_pkey_st EVP_PKEY;
+typedef struct evp_pkey_ctx_st EVP_PKEY_CTX;
 
 class NetworkKey
 {
@@ -26,17 +31,21 @@ public:
     NetworkKey();
     ~NetworkKey();
     bool Generate();
-    bool LoadPrivate(SDL_RWops *file);
-    bool LoadPublic(SDL_RWops *file);
-    bool SavePrivate(SDL_RWops *file);
-    bool SavePublic(SDL_RWops *file);
-    char *PublicKeyString();
+    bool LoadPrivate(SDL_RWops * file);
+    bool LoadPublic(SDL_RWops * file);
+    bool SavePrivate(SDL_RWops * file);
+    bool SavePublic(SDL_RWops * file);
+    std::string PublicKeyString();
+    std::string PublicKeyHash();
     void Unload();
-    bool Sign(const char *md, const size_t len, char **signature, size_t *out_size);
-    bool Verify(const char *md, const size_t len, const char* sig, const size_t siglen);
+    bool Sign(const char * md, const size_t len, char ** signature, unsigned int * out_size);
+    bool Verify(const char * md, const size_t len, const char * sig, const size_t siglen);
 private:
-    EVP_PKEY_CTX *m_ctx = nullptr;
-    EVP_PKEY *m_key = nullptr;
+    NetworkKey ( const NetworkKey & ) = delete;
+    EVP_PKEY_CTX * m_ctx = nullptr;
+    EVP_PKEY * m_key = nullptr;
 };
+
+#endif // DISABLE_NETWORK
 
 #endif // NETWORKKEY_H
