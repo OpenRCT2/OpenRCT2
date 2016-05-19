@@ -42,9 +42,11 @@ static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSeq
 	if (direction & 1) {
 
 	} else {
+		// height -= 2 (height - 2)
 		imageId = SPR_22428 | RCT2_GLOBAL(0x00F441A0, uint32);
 		sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
 
+		// height += 2 (height)
 		imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
 
@@ -53,29 +55,29 @@ static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSeq
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		paint_util_push_tunnel_left(height, TUNNEL_6);
 
-		//height += 6;
+		//height += 5 (height + 5);
 		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
 		imageId = (hasFence ? SPR_22364 : SPR_22362) | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98196C(imageId, 0, 0, 32, 8, 1, height + 6, get_current_rotation());
-		//height -= 5 (height + 1)
-		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height + 1);
-		//height += 5 (height + 6)
+		//height -= 5 (height)
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+		//height += 5 (height + 5)
 
 		imageId = SPR_22362 | RCT2_GLOBAL(0x00F4419C, uint32);
-		sub_98196C(imageId, 0, 24, 32, 8, 1, height, get_current_rotation());
-		//height += 2 (height + 8)
+		sub_98196C(imageId, 0, 24, 32, 8, 1, height + 5, get_current_rotation());
+		//height += 2 (height + 7)
 
 		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
 		if (hasFence) {
 			imageId = SPR_22370 | RCT2_GLOBAL(0x00F4419C, uint32);
-			sub_98196C(imageId, 0, 31, 32, 1, 7, height + 2, get_current_rotation());
+			sub_98196C(imageId, 0, 31, 32, 1, 7, height + 7, get_current_rotation());
 		}
-		//height -= 7 (height + 1)
+		//height -= 7 (height)
 		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
-		//height += 7 (height + 8)
+		//height += 7 (height + 7)
 
-		//height += 25 (height + 33)
-		paint_util_set_general_support_height(height + 33, 0x20);
+		//height += 25 (height + 32)
+		paint_util_set_general_support_height(height + 32, 0x20);
 	}
 }
 
