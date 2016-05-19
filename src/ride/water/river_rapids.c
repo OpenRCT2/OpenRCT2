@@ -73,6 +73,14 @@ enum
 	SPR_RIVER_RAPIDS_25_DEG_UP_FRONT_NE_SW = 21162,
 	SPR_RIVER_RAPIDS_25_DEG_UP_FRONT_SE_NW = 21163,
 
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_SW_NE = 21172,
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_NW_SE = 21173,
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_NE_SW = 21174,
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_SE_NW = 21175,
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_SW_NE = 21176,
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_NW_SE = 21177,
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_NE_SW = 21178,
+	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_SE_NW = 21179,
 	SPR_RIVER_RAPIDS_25_DEG_DOWN_SW_NE = 21180,
 	SPR_RIVER_RAPIDS_25_DEG_DOWN_NW_SE = 21181,
 	SPR_RIVER_RAPIDS_25_DEG_DOWN_NE_SW = 21182,
@@ -90,11 +98,25 @@ static const uint32 river_rapids_track_pieces_25_deg_up[][2] = {
 	{SPR_RIVER_RAPIDS_25_DEG_UP_SE_NW, SPR_RIVER_RAPIDS_25_DEG_UP_FRONT_SE_NW},
 };
 
+static const uint32 river_rapids_track_pieces_25_deg_up_to_flat[][2] = {
+	{SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SW_NE, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SW_NE},
+	{SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NW_SE, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NW_SE},
+	{SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NE_SW, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NE_SW},
+	{SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SE_NW, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SE_NW},
+};
+
 static const uint32 river_rapids_track_pieces_25_deg_down[][2] = {
 	{SPR_RIVER_RAPIDS_25_DEG_DOWN_SW_NE, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_SW_NE},
 	{SPR_RIVER_RAPIDS_25_DEG_DOWN_NW_SE, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_NW_SE},
 	{SPR_RIVER_RAPIDS_25_DEG_DOWN_NE_SW, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_NE_SW},
 	{SPR_RIVER_RAPIDS_25_DEG_DOWN_SE_NW, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_SE_NW},
+};
+
+static const uint32 river_rapids_track_pieces_flat_to_25_deg_down[][2] = {
+	{SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_SW_NE, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_SW_NE},
+	{SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_NW_SE, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_NW_SE},
+	{SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_NE_SW, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_NE_SW},
+	{SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_SE_NW, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_SE_NW},
 };
 
 /**
@@ -257,6 +279,63 @@ static void paint_river_rapids_track_25_deg(uint8 direction, int height, const u
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
+static void paint_river_rapids_track_25_deg_to_flat_a(uint8 direction, int height, const uint32 sprites[4][2])
+{
+	uint32 imageId;
+	paint_struct * ps;
+
+	switch (direction) {
+		case 0:
+			imageId = sprites[direction][0] | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+
+			imageId = sprites[direction][1] | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(0, 5, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height - 8, TUNNEL_6);
+			break;
+
+		case 1:
+			imageId = sprites[direction][0] | RCT2_GLOBAL(0x00F44198, uint32);
+			ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+
+			imageId = sprites[direction][1] | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(1, 6, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height + 8, TUNNEL_14);
+			break;
+
+		case 2:
+			imageId = sprites[direction][0] | RCT2_GLOBAL(0x00F44198, uint32);
+			ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+
+			imageId = sprites[direction][1] | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(0, 7, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height + 8, TUNNEL_14);
+			break;
+
+		case 3:
+			imageId = sprites[direction][0] | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+
+			imageId = sprites[direction][1] | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(1, 8, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height - 8, TUNNEL_6);
+			break;
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 40, 0x20);
+}
+
 /** rct2: 0x00757660 */
 static void paint_river_rapids_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
@@ -324,60 +403,7 @@ static void paint_river_rapids_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tr
 /** rct2: 0x00757680 */
 static void paint_river_rapids_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-
-	uint32 imageId;
-	paint_struct * ps;
-
-	switch (direction) {
-		case 0:
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
-
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
-
-			wooden_a_supports_paint_setup(0, 5, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
-			paint_util_push_tunnel_left(height - 8, TUNNEL_6);
-			break;
-
-		case 1:
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
-			ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
-			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
-
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
-
-			wooden_a_supports_paint_setup(1, 6, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
-			paint_util_push_tunnel_right(height + 8, TUNNEL_14);
-			break;
-
-		case 2:
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
-			ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
-			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
-
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
-
-			wooden_a_supports_paint_setup(0, 7, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
-			paint_util_push_tunnel_left(height + 8, TUNNEL_14);
-			break;
-
-		case 3:
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
-
-			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
-
-			wooden_a_supports_paint_setup(1, 8, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
-			paint_util_push_tunnel_right(height - 8, TUNNEL_6);
-			break;
-	}
-
-	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-	paint_util_force_set_general_support_height(height + 40, 0x20);
+	paint_river_rapids_track_25_deg_to_flat_a(direction, height, river_rapids_track_pieces_25_deg_up_to_flat);
 }
 
 /** rct2: 0x00757690 */
@@ -386,10 +412,10 @@ static void paint_river_rapids_track_25_deg_down(uint8 rideIndex, uint8 trackSeq
 	paint_river_rapids_track_25_deg((direction + 2) % 4, height, river_rapids_track_pieces_25_deg_down);
 }
 
-/** rct2: 0x */
+/** rct2: 0x007576A0 */
 static void paint_river_rapids_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-
+	paint_river_rapids_track_25_deg_to_flat_a((direction + 2) % 4, height, river_rapids_track_pieces_flat_to_25_deg_down);
 }
 
 /** rct2: 0x */
