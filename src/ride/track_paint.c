@@ -302,7 +302,74 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 	return true;
 }
 
-void track_paint_util_paint_left_quarter_turn_1_tile(sint16 height, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation)
+static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
+void track_paint_util_left_quarter_turn_3_tiles_paint(sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
+{
+	sint8 sprite = left_quarter_turn_3_tiles_sprite_map[trackSequence];
+	if (sprite < 0) {
+		return;
+	}
+
+	uint32 imageId = sprites[(direction + 1) % 4][sprite] | colourFlags;
+
+	switch (direction) {
+		case 0:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 16, 0, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
+			}
+			break;
+
+		case 1:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 0, 0, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
+			}
+			break;
+
+		case 2:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 0, 16, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
+			}
+			break;
+
+		case 3:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 16, 16, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
+			}
+			break;
+	}
+}
+
+void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence)
+{
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+
+	if (direction == 2 && trackSequence == 3) {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	if (direction == 3 && trackSequence == 3) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+}
+
+
+void track_paint_util_left_quarter_turn_1_tile_paint(sint16 height, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation)
 {
 	uint32 imageId = sprites[direction] | colourFlags;
 
@@ -311,6 +378,22 @@ void track_paint_util_paint_left_quarter_turn_1_tile(sint16 height, int directio
 		case 1: sub_98197C(imageId, 0, 0, 26, 26, 1, height, 0, 0, height, rotation); break;
 		case 2: sub_98197C(imageId, 0, 0, 24, 26, 1, height, 2, 6, height, rotation); break;
 		case 3: sub_98197C(imageId, 0, 0, 24, 24, 1, height, 6, 6, height, rotation); break;
+	}
+}
+
+void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direction, uint8 trackSequence)
+{
+	switch (direction) {
+		case 0:
+			paint_util_push_tunnel_left(height, TUNNEL_0);
+			break;
+		case 2:
+			paint_util_push_tunnel_right(height, TUNNEL_0);
+			break;
+		case 3:
+			paint_util_push_tunnel_right(height, TUNNEL_0);
+			paint_util_push_tunnel_left(height, TUNNEL_0);
+			break;
 	}
 }
 
