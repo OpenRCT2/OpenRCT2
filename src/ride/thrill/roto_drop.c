@@ -14,11 +14,23 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../common.h"
 #include "../../addresses.h"
-#include "../../config.h"
 #include "../../interface/viewport.h"
-#include "../../world/sprite.h"
 #include "../../paint/paint.h"
+#include "../track_paint.h"
+#include "../track.h"
+#include "../../paint/supports.h"
+
+enum
+{
+	SPR_ROTO_DROP_TOWER_SEGMENT = 14558,
+	SPR_ROTO_DROP_TOWER_SEGMENT_TOP = 14559,
+	SPR_ROTO_DROP_TOWER_BASE = 14560,
+	SPR_ROTO_DROP_TOWER_BASE_SEGMENT = 14561,
+	SPR_ROTO_DROP_TOWER_BASE_90_DEG = 14562,
+	SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG = 14563,
+};
 
 /**
  *
@@ -69,4 +81,90 @@ void vehicle_visual_roto_drop(int x, int imageDirection, int y, int z, rct_vehic
 
 	assert(vehicleEntry->effect_visual == 1);
 	// Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense so it was taken out
+}
+
+/** rct2: 0x00886194 */
+static void paint_roto_drop_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = track_map_3x3[direction][trackSequence];
+
+	int edges = edges_3x3[trackSequence];
+	rct_ride * ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+
+	uint32 imageId = SPR_FLOOR_METAL_B | RCT2_GLOBAL(0x00F4419C, uint32);
+	sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+
+	track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, fenceSpritesMetalB, get_current_rotation());
+
+	if (trackSequence == 0) {
+		imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
+
+		height += 32;
+		imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+
+		height += 32;
+		imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+
+		RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+	}
+
+	int blockedSegments = 0;
+	switch (trackSequence) {
+		case 0: blockedSegments = SEGMENTS_ALL; break;
+		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 3: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 4: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8; break;
+		case 5: blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 6: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+		case 7: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
+		case 8: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+	}
+	paint_util_set_segment_support_height(blockedSegments, 0xFFFF, 0);
+	paint_util_set_segment_support_height(SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+/** rct2: 0x008861A4 */
+static void paint_roto_drop_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	if (trackSequence == 1) {
+		return;
+	}
+
+	uint32 imageId = SPR_ROTO_DROP_TOWER_SEGMENT | RCT2_GLOBAL(0x00F44198, uint32);
+	sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+
+	rct_map_element * nextMapElement = mapElement + 1;
+	if (map_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height) {
+		uint32 imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98199C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+
+	RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+/**
+ * rct2: 0x00886074
+ */
+TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int trackType, int direction)
+{
+	switch (trackType) {
+		case TRACK_ELEM_TOWER_BASE:
+			return paint_roto_drop_base;
+
+		case TRACK_ELEM_TOWER_SECTION:
+			return paint_roto_drop_tower_section;
+	}
+
+	return NULL;
 }
