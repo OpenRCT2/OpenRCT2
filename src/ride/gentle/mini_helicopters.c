@@ -23,40 +23,6 @@
 #include "../ride_data.h"
 #include "../../world/map.h"
 
-enum
-{
-	SPR_STATION_PLATFORM_SW_NE = 22362,
-	SPR_STATION_PLATFORM_NW_SE = 22363,
-	SPR_STATION_PLATFORM_FENCED_SW_NE = 22364,
-	SPR_STATION_PLATFORM_FENCED_NW_SE = 22365,
-	SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE = 22366,
-	SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE = 22367,
-	SPR_STATION_PLATFORM_BEGIN_SW_NE = 22368,
-	SPR_STATION_PLATFORM_BEGIN_NW_SE = 22369,
-	SPR_STATION_FENCE_SW_NE = 22370,
-	SPR_STATION_FENCE_NW_SE = 22371,
-	SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE = 22372,
-	SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE = 22373,
-	SPR_STATION_FENCE_SMALL_NW_SE = 22374,
-	SPR_STATION_FENCE_SMALL_SW_NE = 22375,
-
-	SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE = 22380,
-	SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE = 22381,
-	SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE = 22382,
-	SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE = 22383,
-	SPR_STATION_LIGHT_BACK_NE_SW = 22384,
-	SPR_STATION_LIGHT_BACK_NW_SE = 22385,
-	SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NE_SW = 22386,
-	SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NW_SE = 22387,
-	SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE = 22388,
-	SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE = 22389,
-	SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE = 22390,
-	SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE = 22391,
-
-	SPR_STATION_BASE_B_SW_NE = 22428,
-	SPR_STATION_BASE_B_NW_SE = 22429,
-};
-
 /** rct2: 0x */
 static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
@@ -388,26 +354,16 @@ static void paint_mini_helicopters_track_right_quarter_turn_3_tiles(uint8 rideIn
 /** rct2: 0x0081F408 */
 static void paint_mini_helicopters_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	uint32 imageId;
+	track_paint_util_paint_left_quarter_turn_1_tile(height, direction, RCT2_GLOBAL(0x00F44198, uint32), trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile, get_current_rotation());
 
 	switch (direction) {
 		case 0:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SW_NW | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation());
 			paint_util_push_tunnel_left(height, TUNNEL_0);
 			break;
-		case 1:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NW_NE | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 26, 26, 1, height, 0, 0, height, get_current_rotation());
-			break;
 		case 2:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 24, 26, 1, height, 2, 6, height, get_current_rotation());
 			paint_util_push_tunnel_right(height, TUNNEL_0);
 			break;
 		case 3:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 24, 24, 1, height, 6, 6, height, get_current_rotation());
 			paint_util_push_tunnel_right(height, TUNNEL_0);
 			paint_util_push_tunnel_left(height, TUNNEL_0);
 			break;

@@ -306,29 +306,18 @@ static void submarine_ride_paint_track_right_quarter_turn_3_tiles(uint8 rideInde
 
 static void submarine_ride_paint_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	int heightLower = height - 16;
-	uint32 imageId;
+	track_paint_util_paint_left_quarter_turn_1_tile(height - 16, direction, RCT2_GLOBAL(0x00F44198, uint32), trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile, get_current_rotation());
 
 	switch (direction) {
 		case 0:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SW_NW | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 26, 24, 1, heightLower, 6, 2, heightLower, get_current_rotation());
-			paint_util_push_tunnel_left(heightLower, TUNNEL_0);
-			break;
-		case 1:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NW_NE | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 26, 26, 1, heightLower, 0, 0, heightLower, get_current_rotation());
+			paint_util_push_tunnel_left(height - 16, TUNNEL_0);
 			break;
 		case 2:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 24, 26, 1, heightLower, 2, 6, heightLower, get_current_rotation());
-			paint_util_push_tunnel_right(heightLower, TUNNEL_0);
+			paint_util_push_tunnel_right(height - 16, TUNNEL_0);
 			break;
 		case 3:
-			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(imageId, 0, 0, 24, 24, 1, heightLower, 6, 6, heightLower, get_current_rotation());
-			paint_util_push_tunnel_right(heightLower, TUNNEL_0);
-			paint_util_push_tunnel_left(heightLower, TUNNEL_0);
+			paint_util_push_tunnel_right(height - 16, TUNNEL_0);
+			paint_util_push_tunnel_left(height - 16, TUNNEL_0);
 			break;
 	}
 

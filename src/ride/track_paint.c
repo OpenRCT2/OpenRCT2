@@ -126,6 +126,33 @@ const uint32 fenceSpritesMetalB[] = {
 	SPR_FENCE_METAL_B_NW
 };
 
+const uint32 trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3] = {
+	{
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2
+	}, {
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2
+	}, {
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2
+	}, {
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+		SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2
+	}
+};
+
+const uint32 trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] = {
+	SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SW_NW,
+	SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NW_NE,
+	SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE,
+	SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
+};
+
 enum
 {
 	SPR_STATION_COVER_OFFSET_NE_SW_BACK_0 = 0,
@@ -273,6 +300,18 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 	imageId = (baseImageId + imageOffset) | RCT2_GLOBAL(0x00F44198, uint32);
 	sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 	return true;
+}
+
+void track_paint_util_paint_left_quarter_turn_1_tile(sint16 height, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation)
+{
+	uint32 imageId = sprites[direction] | colourFlags;
+
+	switch (direction) {
+		case 0: sub_98197C(imageId, 0, 0, 26, 24, 1, height, 6, 2, height, rotation); break;
+		case 1: sub_98197C(imageId, 0, 0, 26, 26, 1, height, 0, 0, height, rotation); break;
+		case 2: sub_98197C(imageId, 0, 0, 24, 26, 1, height, 2, 6, height, rotation); break;
+		case 3: sub_98197C(imageId, 0, 0, 24, 24, 1, height, 6, 6, height, rotation); break;
+	}
 }
 
 /**
