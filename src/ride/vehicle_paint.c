@@ -1343,7 +1343,7 @@ void vehicle_sprite_2_0(rct_vehicle *vehicle, int imageDirection, int z, const r
 	if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
 		if (vehicleEntry->flags_a & 0x4000) {
 			int ecx = (imageDirection / 2) + 16;
-			int ebx = (((imageDirection/ 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_20;
+			int ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_20;
 			vehicle_sprite_paint_6D520E(vehicle, ebx, ecx, z, vehicleEntry);
 		} else {
 			int ecx = (imageDirection / 2) + 16;
@@ -1450,10 +1450,11 @@ void vehicle_sprite_3(rct_vehicle *vehicle, int imageDirection, int z, const rct
 {
 	if (!(vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)) {
 		vehicle_sprite_2(vehicle, imageDirection, z, vehicleEntry);
+	} else {
+		int ecx = (imageDirection / 4) + 32;
+		int ebx = ((imageDirection / 4) * vehicleEntry->var_16) + vehicleEntry->var_24;
+		vehicle_sprite_paint_6D520E(vehicle, ebx, ecx, z, vehicleEntry);
 	}
-	int ecx = (imageDirection / 4) + 32;
-	int ebx = ((imageDirection / 4) * vehicleEntry->var_16) + vehicleEntry->var_24;
-	vehicle_sprite_paint_6D520E(vehicle, ebx, ecx, z, vehicleEntry);
 }
 
 // 6D4A31
@@ -1461,10 +1462,11 @@ void vehicle_sprite_4(rct_vehicle *vehicle, int imageDirection, int z, const rct
 {
 	if (!(vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)) {
 		vehicle_sprite_2(vehicle, imageDirection, z, vehicleEntry);
+	} else {
+		int ecx = (imageDirection / 2) + 40;
+		int ebx = ((imageDirection + 16) * vehicleEntry->var_16) + vehicleEntry->var_24;
+		vehicle_sprite_paint_6D520E(vehicle, ebx, ecx, z, vehicleEntry);
 	}
-	int ecx = (imageDirection / 2) + 40;
-	int ebx = ((imageDirection + 16) * vehicleEntry->var_16) + vehicleEntry->var_24;
-	vehicle_sprite_paint_6D520E(vehicle, ebx, ecx, z, vehicleEntry);
 }
 
 // 6D463D
