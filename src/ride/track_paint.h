@@ -38,6 +38,12 @@ enum {
 	SPR_FENCE_METAL_SW = 14570,
 	SPR_FENCE_METAL_NW = 14571,
 
+	SPR_FLOOR_METAL_B = 14989,
+	SPR_FENCE_METAL_B_NE = 14990,
+	SPR_FENCE_METAL_B_SE = 14991,
+	SPR_FENCE_METAL_B_SW = 14992,
+	SPR_FENCE_METAL_B_NW = 14993,
+
     SPR_FLOOR_CORK_SE_SW = 22134,
     SPR_FLOOR_CORK_SW = 22135,
     SPR_FLOOR_CORK_SE = 22136,
@@ -60,6 +66,7 @@ enum {
 extern const uint32 floorSpritesCork[];
 
 extern const uint32 fenceSpritesRope[];
+extern const uint32 fenceSpritesMetalB[];
 
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
 void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
@@ -70,6 +77,7 @@ bool track_paint_util_should_paint_supports(rct_xy16 position);
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
+TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int direction);
