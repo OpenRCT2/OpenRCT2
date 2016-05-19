@@ -24,6 +24,7 @@
 #include "../track_paint.h"
 #include "../track.h"
 #include "../../paint/supports.h"
+#include "../../world/map.h"
 
 // 0x0099279E:
 static const vehicle_boundbox _riverRapidsBoundbox[] = {
@@ -453,7 +454,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(uint8 direction, int heigh
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-	paint_util_force_set_general_support_height(height + 48, 0x20);
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /** rct2: 0x00757660 */
@@ -683,10 +684,61 @@ static void paint_river_rapids_track_rapids(uint8 rideIndex, uint8 trackSequence
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00757740 */
 static void paint_river_rapids_track_on_ride_photo(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_river_rapids_track_flat(rideIndex, trackSequence, direction, height, mapElement);
 
+	uint32 imageId;
+
+	const bool takingPhoto = (bool) (mapElement->properties.track.sequence & 0xF0);
+	switch (direction) {
+		case 0:
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 26, 0, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 26, 31, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_S : SPR_ON_RIDE_PHOTO_CAMERA_S) | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 6, 0, 1, 1, 19, height + 13, get_current_rotation());
+			break;
+
+		case 1:
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 0, 6, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 31, 6, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_W : SPR_ON_RIDE_PHOTO_CAMERA_W) | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 0, 26, 1, 1, 19, height + 13, get_current_rotation());
+			break;
+
+		case 2:
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_NE_SW | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 6, 0, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_NE_SW | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 6, 31, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_N : SPR_ON_RIDE_PHOTO_CAMERA_N) | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 26, 31, 1, 1, 19, height + 13, get_current_rotation());
+			break;
+
+		case 3:
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_SE_NW | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 0, 26, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = SPR_ON_RIDE_PHOTO_SIGN_SE_NW | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 31, 26, 1, 1, 19, height + 13, get_current_rotation());
+
+			imageId = (takingPhoto ? SPR_ON_RIDE_PHOTO_CAMERA_FLASH_E : SPR_ON_RIDE_PHOTO_CAMERA_E) | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98196C(imageId, 31, 6, 1, 1, 19, height + 13, get_current_rotation());
+			break;
+	}
+
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /** rct2: 0x */
@@ -725,7 +777,7 @@ static void paint_river_rapids_track_whirlpool(uint8 rideIndex, uint8 trackSeque
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-	paint_util_force_set_general_support_height(height + 32, 0x20);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /**
