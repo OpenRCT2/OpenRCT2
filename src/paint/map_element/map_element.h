@@ -22,27 +22,27 @@
 
 typedef enum edge
 {
-    EDGE_NE = (1 << 0),
-    EDGE_SE = (1 << 1),
-    EDGE_SW = (1 << 2),
-    EDGE_NW = (1 << 3),
-    EDGE_BOTTOMLEFT = EDGE_SW,
-    EDGE_BOTTOMRIGHT = EDGE_SE,
-    EDGE_TOPLEFT = EDGE_NW,
-    EDGE_TOPRIGHT = EDGE_NE
+	EDGE_NE = (1 << 0),
+	EDGE_SE = (1 << 1),
+	EDGE_SW = (1 << 2),
+	EDGE_NW = (1 << 3),
+	EDGE_BOTTOMLEFT = EDGE_SW,
+	EDGE_BOTTOMRIGHT = EDGE_SE,
+	EDGE_TOPLEFT = EDGE_NW,
+	EDGE_TOPRIGHT = EDGE_NE
 } edge;
 
 enum
 {
-    SEGMENT_B4 = (1 << 0), // 0
-    SEGMENT_CC = (1 << 1), // 6
-    SEGMENT_BC = (1 << 2), // 2
-    SEGMENT_D4 = (1 << 3), // 8
-    SEGMENT_C0 = (1 << 4), // 3
-    SEGMENT_D0 = (1 << 5), // 7
-    SEGMENT_B8 = (1 << 6), // 1
-    SEGMENT_C8 = (1 << 7), // 5
-    SEGMENT_C4 = (1 << 8), // 4
+	SEGMENT_B4 = (1 << 0), // 0
+	SEGMENT_CC = (1 << 1), // 6
+	SEGMENT_BC = (1 << 2), // 2
+	SEGMENT_D4 = (1 << 3), // 8
+	SEGMENT_C0 = (1 << 4), // 3
+	SEGMENT_D0 = (1 << 5), // 7
+	SEGMENT_B8 = (1 << 6), // 1
+	SEGMENT_C8 = (1 << 7), // 5
+	SEGMENT_C4 = (1 << 8), // 4
 };
 
 extern const int SEGMENTS_ALL;
@@ -50,10 +50,10 @@ extern const uint16 segment_offsets[9];
 
 enum
 {
-    TUNNEL_0 = 0,
+	TUNNEL_0 = 0,
 	TUNNEL_1 = 1,
 	TUNNEL_2 = 2,
-    TUNNEL_6 = 6,
+	TUNNEL_6 = 6,
 	TUNNEL_7 = 7,
 	TUNNEL_8 = 8,
 	TUNNEL_12 = 0x0C,
