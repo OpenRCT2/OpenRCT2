@@ -908,7 +908,7 @@ void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int x = (widget->left + widget->right) / 2 + w->x;
 	int y = w->y + widget->top;
 	int width = widget->right - widget->left;
-	gfx_draw_string_centred_clipped(dpi, 1191, gCommonFormatArgs, 0, x, y, width);
+	gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0, x, y, width);
 }
 
 /**
@@ -1357,7 +1357,7 @@ void window_staff_options_mousedown(int widgetIndex, rct_window* w, rct_widget* 
 			item_checked = 1 << i;
 		}
 		gDropdownItemsArgs[i] = eax + 1775;
-		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 	}
 
 	//Get the dropdown box widget instead of button.

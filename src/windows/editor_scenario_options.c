@@ -99,7 +99,7 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
 	{ WWT_TAB,				1,	34,		64,		17,		46,		0x2000144E,								STR_SCENARIO_OPTIONS_GUESTS_TIP				},
 	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,								STR_SCENARIO_OPTIONS_PARK_TIP				},
 
-	{ WWT_CHECKBOX,			1,	8,		271,	48,		59,		3238,									STR_MAKE_PARK_NO_MONEY_TIP					},
+	{ WWT_CHECKBOX,			1,	8,		271,	48,		59,		STR_MAKE_PARK_NO_MONEY,					STR_MAKE_PARK_NO_MONEY_TIP					},
 	{ WWT_SPINNER,			1,	168,	267,	65,		76,		STR_NONE,								STR_NONE									},
 	{ WWT_DROPDOWN_BUTTON,	1,	256,	266,	66,		70,		STR_NUMERIC_UP,							STR_NONE									},
 	{ WWT_DROPDOWN_BUTTON,	1,	256,	266,	71,		75,		STR_NUMERIC_DOWN,						STR_NONE									},
@@ -112,7 +112,7 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
 	{ WWT_SPINNER,			1,	168,	237,	116,	127,	STR_NONE,								STR_NONE									},
 	{ WWT_DROPDOWN_BUTTON,	1,	226,	236,	117,	121,	STR_NUMERIC_UP,							STR_NONE									},
 	{ WWT_DROPDOWN_BUTTON,	1,	226,	236,	122,	126,	STR_NUMERIC_DOWN,						STR_NONE									},
-	{ WWT_CHECKBOX,			1,	8,		271,	133,	144,	3244,									STR_FORBID_MARKETING_TIP					},
+	{ WWT_CHECKBOX,			1,	8,		271,	133,	144,	STR_FORBID_MARKETING,					STR_FORBID_MARKETING_TIP					},
 	{ WIDGETS_END }
 };
 
@@ -483,7 +483,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 			finance_update_loan_hash();
 		} else {
-			window_error_open(3248, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_CASH, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -493,7 +493,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 			gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
 			finance_update_loan_hash();
 		} else {
-			window_error_open(3249, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_CASH, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -503,7 +503,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
-			window_error_open(3250, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -513,7 +513,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 			gMaxBankLoan = max(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
-			window_error_open(3251, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -523,7 +523,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 			gBankLoan = min(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
-			window_error_open(3252, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -533,7 +533,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 			gBankLoan = min(gBankLoan, gMaxBankLoan);
 			finance_update_loan_hash();
 		} else {
-			window_error_open(3253, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -545,7 +545,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 				gBankLoanInterestRate++;
 			}
 		} else {
-			window_error_open(3254, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -557,7 +557,7 @@ static void window_editor_scenario_options_financial_mousedown(int widgetIndex, 
 				gBankLoanInterestRate--;
 			}
 		} else {
-			window_error_open(3255, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -646,43 +646,43 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
 	if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
-		gfx_draw_string_left(dpi, 3240, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, NULL, 0, x, y);
 
 		x = w->x + w->widgets[WIDX_INITIAL_CASH].left + 1;
 		y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
-		gfx_draw_string_left(dpi, 3246, &gInitialCash, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
-		gfx_draw_string_left(dpi, 3241, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, NULL, 0, x, y);
 
 		x = w->x + w->widgets[WIDX_INITIAL_LOAN].left + 1;
 		y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
-		gfx_draw_string_left(dpi, 3246, &gBankLoan, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-		gfx_draw_string_left(dpi, 3242, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, NULL, 0, x, y);
 
 		x = w->x + w->widgets[WIDX_MAXIMUM_LOAN].left + 1;
 		y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-		gfx_draw_string_left(dpi, 3246, &gMaxBankLoan, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY) {
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
-		gfx_draw_string_left(dpi, 3243, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, NULL, 0, x, y);
 
 		x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
 		y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
 
 		sint16 interestRate = clamp(INT16_MIN, (sint16)gBankLoanInterestRate, INT16_MAX);
-		gfx_draw_string_left(dpi, 3247, &interestRate, 0, x, y);
+		gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, 0, x, y);
 	}
 }
 
@@ -736,7 +736,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialCash < MONEY(1000, 00)) {
 			gGuestInitialCash += MONEY(1, 00);
 		} else {
-			window_error_open(3264, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -744,7 +744,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialCash > MONEY(0, 00)) {
 			gGuestInitialCash -= MONEY(1, 00);
 		} else {
-			window_error_open(3265, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -752,7 +752,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialHappiness < 250) {
 			gGuestInitialHappiness += 4;
 		} else {
-			window_error_open(3264, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -760,7 +760,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialHappiness > 40) {
 			gGuestInitialHappiness -= 4;
 		} else {
-			window_error_open(3265, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -768,7 +768,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialHunger > 40) {
 			gGuestInitialHunger -= 4;
 		} else {
-			window_error_open(3264, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -776,7 +776,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialHunger < 250) {
 			gGuestInitialHunger += 4;
 		} else {
-			window_error_open(3265, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -784,7 +784,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialThirst > 40) {
 			gGuestInitialThirst -= 4;
 		} else {
-			window_error_open(3264, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -792,7 +792,7 @@ static void window_editor_scenario_options_guests_mousedown(int widgetIndex, rct
 		if (gGuestInitialThirst < 250) {
 			gGuestInitialThirst += 4;
 		} else {
-			window_error_open(3265, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -872,47 +872,47 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
 		// Cash per guest label
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
-		gfx_draw_string_left(dpi, 3260, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, NULL, 0, x, y);
 
 		// Cash per guest value
 		x = w->x + w->widgets[WIDX_CASH_PER_GUEST].left + 1;
 		y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
 		arg = gGuestInitialCash;
-		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
 	}
 
 	// Guest initial happiness label
 	x = w->x + 8;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
-	gfx_draw_string_left(dpi, 3261, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, NULL, 0, x, y);
 
 	// Guest initial happiness value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
 	arg = (gGuestInitialHappiness * 100) / 255;
-	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
+	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, 0, x, y);
 
 	// Guest initial hunger label
 	x = w->x + 8;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
-	gfx_draw_string_left(dpi, 3262, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, NULL, 0, x, y);
 
 	// Guest initial hunger value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
 	arg = ((255 - gGuestInitialHunger) * 100) / 255;
-	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
+	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, 0, x, y);
 
 	// Guest initial thirst label
 	x = w->x + 8;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
-	gfx_draw_string_left(dpi, 3263, NULL, 0, x, y);
+	gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, NULL, 0, x, y);
 
 	// Guest initial thirst value
 	x = w->x + w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1;
 	y = w->y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
 	arg = ((255 - gGuestInitialThirst) * 100) / 255;
-	gfx_draw_string_left(dpi, 3247, &arg, 0, x, y);
+	gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, 0, x, y);
 }
 
 #pragma endregion
@@ -979,7 +979,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 		if (gLandPrice < MONEY(200,00)) {
 			gLandPrice += MONEY(1,00);
 		} else {
-			window_error_open(3264, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -987,7 +987,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 		if (gLandPrice > MONEY(5,00)) {
 			gLandPrice -= MONEY(1,00);
 		} else {
-			window_error_open(3265, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -995,7 +995,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 		if (gConstructionRightsPrice < MONEY(200,00)) {
 			gConstructionRightsPrice += MONEY(1,00);
 		} else {
-			window_error_open(3264, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -1003,7 +1003,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 		if (gConstructionRightsPrice > MONEY(5,00)) {
 			gConstructionRightsPrice -= MONEY(1,00);
 		} else {
-			window_error_open(3265, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -1011,7 +1011,7 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 		if (gParkEntranceFee < MONEY(100,00)) {
 			gParkEntranceFee += MONEY(1,00);
 		} else {
-			window_error_open(3264, STR_NONE);
+			window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
@@ -1019,17 +1019,17 @@ static void window_editor_scenario_options_park_mousedown(int widgetIndex, rct_w
 		if (gParkEntranceFee > MONEY(0,00)) {
 			gParkEntranceFee -= MONEY(1,00);
 		} else {
-			window_error_open(3265, STR_NONE);
+			window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
 		}
 		window_invalidate(w);
 		break;
 	case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
 		dropdownWidget = widget - 1;
 
-		gDropdownItemsFormat[0] = 1142;
-		gDropdownItemsArgs[0] = 3279;
-		gDropdownItemsFormat[1] = 1142;
-		gDropdownItemsArgs[1] = 3280;
+		gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+		gDropdownItemsArgs[0] = STR_FREE_PARK_ENTER;
+		gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+		gDropdownItemsArgs[1] = STR_PAY_PARK_ENTER;
 
 		window_dropdown_show_text_custom_width(
 			w->x + dropdownWidget->left,
@@ -1182,50 +1182,50 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
 		// Cost to buy land label
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_LAND_COST].top;
-		gfx_draw_string_left(dpi, 3277, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, NULL, 0, x, y);
 
 		// Cost to buy land value
 		x = w->x + w->widgets[WIDX_LAND_COST].left + 1;
 		y = w->y + w->widgets[WIDX_LAND_COST].top;
 		arg = gLandPrice;
-		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WWT_EMPTY) {
 		// Cost to buy construction rights label
 		x = w->x + 8;
 		y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
-		gfx_draw_string_left(dpi, 3278, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, NULL, 0, x, y);
 
 		// Cost to buy construction rights value
 		x = w->x + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1;
 		y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
 		arg = gConstructionRightsPrice;
-		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WWT_EMPTY) {
 		// Pay for park or rides label
 		x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1;
 		y = w->y + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top;
-		gfx_draw_string_left(dpi, 3279, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, NULL, 0, x, y);
 
 		// Pay for park or rides value
-		stringId = gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? 3279 : 3280;
-		gfx_draw_string_left(dpi, 1193, &stringId, 0, x, y);
+		stringId = gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? STR_FREE_PARK_ENTER : STR_PAY_PARK_ENTER;
+		gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, &stringId, 0, x, y);
 	}
 
 	if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY) {
 		// Entry price label
 		x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8;
 		y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;
-		gfx_draw_string_left(dpi, 3281, NULL, 0, x, y);
+		gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, NULL, 0, x, y);
 
 		// Entry price value
 		x = w->x + w->widgets[WIDX_ENTRY_PRICE].left + 1;
 		y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;
 		arg = gParkEntranceFee;
-		gfx_draw_string_left(dpi, 3246, &arg, 0, x, y);
+		gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, 0, x, y);
 	}
 }
 

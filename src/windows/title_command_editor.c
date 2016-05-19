@@ -307,7 +307,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 	case WIDX_COMMAND_DROPDOWN:
 		num_items = NUM_COMMANDS;
 		for (i = 0; i < num_items; i++) {
-			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = window_title_command_editor_orders[i].nameStringId;
 		}
 
@@ -327,7 +327,7 @@ static void window_title_command_editor_mousedown(int widgetIndex, rct_window* w
 		if (command.command == TITLE_SCRIPT_SPEED) {
 			num_items = 4;
 			for (i = 0; i < num_items; i++) {
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = 5142 + i;
 			}
 

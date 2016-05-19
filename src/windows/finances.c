@@ -682,7 +682,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		set_format_arg(2, uint16, monthyear);
 		draw_string_right_underline(
 			dpi,
-			monthyear == currentMonthYear ? 1193 : 1191,
+			monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRING : STR_BLACK_STRING,
 			gCommonFormatArgs,
 			0,
 			x + 80,
@@ -1281,7 +1281,7 @@ static void window_finances_research_mousedown(int widgetIndex, rct_window *w, r
 	dropdownWidget = widget - 1;
 
 	for (i = 0; i < 4; i++) {
-		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 		gDropdownItemsArgs[i] = STR_NO_FUNDING + i;
 	}
 	window_dropdown_show_text_custom_width(

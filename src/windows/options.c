@@ -824,7 +824,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			for (i = 0; i < gNumResolutions; i++) {
 				resolution *resolution = &gResolutions[i];
 
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 
 				uint16 *args = (uint16*)&gDropdownItemsArgs[i];
 				args[0] = 839;
@@ -844,9 +844,9 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 		break;
 		case WIDX_FULLSCREEN_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
-			gDropdownItemsFormat[1] = 1142;
-			gDropdownItemsFormat[2] = 1142;
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[0] = 2773;
 			gDropdownItemsArgs[1] = 2774;
 			gDropdownItemsArgs[2] = 2775;
@@ -869,9 +869,9 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			platform_trigger_resize();
 			break;
 		case WIDX_SCALE_QUALITY_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
-			gDropdownItemsFormat[1] = 1142;
-			gDropdownItemsFormat[2] = 1142;
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[0] = STR_SCALING_QUALITY_NN;
 			gDropdownItemsArgs[1] = STR_SCALING_QUALITY_LINEAR;
 			gDropdownItemsArgs[2] = STR_SCALING_QUALITY_ANISOTROPIC;
@@ -886,8 +886,8 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_RENDERING:
 		switch (widgetIndex) {
 		case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
-			gDropdownItemsFormat[1] = 1142;
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[0] = STR_WHITE;
 			gDropdownItemsArgs[1] = STR_TRANSLUCENT;
 
@@ -901,8 +901,8 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 	case WINDOW_OPTIONS_PAGE_CULTURE:
 		switch (widgetIndex) {
 		case WIDX_HEIGHT_LABELS_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
-			gDropdownItemsFormat[1] = 1142;
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[0] = STR_UNITS;
 			gDropdownItemsArgs[1] = STR_REAL_VALUES;
 
@@ -914,7 +914,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			num_items = CURRENCY_END;
 
 			for (i = 0; i < num_items; i++) {
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
 			}
 
@@ -923,9 +923,9 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.currency_format, true);
 			break;
 		case WIDX_DISTANCE_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
-			gDropdownItemsFormat[1] = 1142;
-			gDropdownItemsFormat[2] = 1142;
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[0] = STR_IMPERIAL;
 			gDropdownItemsArgs[1] = STR_METRIC;
 			gDropdownItemsArgs[2] = STR_SI;
@@ -935,8 +935,8 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.measurement_format, true);
 			break;
 		case WIDX_TEMPERATURE_DROPDOWN:
-			gDropdownItemsFormat[0] = 1142;
-			gDropdownItemsFormat[1] = 1142;
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[0] = STR_CELSIUS;
 			gDropdownItemsArgs[1] = STR_FAHRENHEIT;
 
@@ -954,7 +954,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			break;
 		case WIDX_DATE_FORMAT_DROPDOWN:
 			for (i = 0; i < 4; i++) {
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = DateFormatStringIds[i];
 			}
 			window_options_show_dropdown(w, widget, 4);
@@ -970,7 +970,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			// populate the list with the sound devices
 			for (i = 0; i < gAudioDeviceCount; i++) {
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = 1170 | ((uint64)(intptr_t)gAudioDevices[i].name << 16);
 			}
 
@@ -982,11 +982,11 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			num_items = 4;
 
 			for (i = 0; i < num_items - 1; i++) {
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = 2739 + i;
 			}
 			// Random title music
-			gDropdownItemsFormat[3] = 1142;
+			gDropdownItemsFormat[3] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[3] = 5126;
 
 			window_options_show_dropdown(w, widget, num_items);
@@ -1023,9 +1023,9 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		case WIDX_SCENARIO_GROUPING_DROPDOWN:
 			num_items = 2;
 
-			gDropdownItemsFormat[0] = 1142;
+			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
-			gDropdownItemsFormat[1] = 1142;
+			gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
 			window_dropdown_show_text_custom_width(
@@ -1047,7 +1047,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 		switch (widgetIndex) {
 		case WIDX_AUTOSAVE_DROPDOWN:
 			for (i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = STR_SAVE_EVERY_MINUTE + i;
 			}
 
@@ -1075,7 +1075,7 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			break;
 		case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
 			for (i = 0; i < 7; i++) {
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = STR_EVERY_10_MINUTES + i;
 			}
 

@@ -672,8 +672,8 @@ static void window_park_entrance_resize(rct_window *w)
 static void window_park_entrance_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	if (widgetIndex == WIDX_OPEN_OR_CLOSE) {
-		gDropdownItemsFormat[0] = 1142;
-		gDropdownItemsFormat[1] = 1142;
+		gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+		gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
 		gDropdownItemsArgs[0] = STR_CLOSE_PARK;
 		gDropdownItemsArgs[1] = STR_OPEN_PARK;
 		window_dropdown_show_text(
@@ -1035,7 +1035,7 @@ static void window_park_entrance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
 	gfx_draw_string_centred_clipped(
 		dpi,
-		1191,
+		STR_BLACK_STRING,
 		gCommonFormatArgs,
 		0,
 		w->x + (labelWidget->left + labelWidget->right) / 2,
@@ -1746,7 +1746,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
 	safe_strcpy((char*)0x009BC677, gScenarioDetails, 256);
 	set_format_arg(0, short, STR_PLACEHOLDER);
-	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, 1191, 0);
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_BLACK_STRING, 0);
 	y += 5;
 
 	// Your objective:

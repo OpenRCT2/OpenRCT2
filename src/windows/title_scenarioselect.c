@@ -358,7 +358,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 
-	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5138 : 1193;
+	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5138 : STR_WINDOW_COLOUR_2_STRING;
 
 	// Text for each tab
 	for (i = 0; i < 8; i++) {
@@ -399,7 +399,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		shorten_path(path, sizeof(path), scenario->path, w->width - 6);
 
 		const utf8 *pathPtr = path;
-		gfx_draw_string_left(dpi, 1170, (void*)&pathPtr, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
+		gfx_draw_string_left(dpi, STR_STRING, (void*)&pathPtr, w->colours[1], w->x + 3, w->y + w->height - 3 - 11);
 	}
 
 	// Scenario name
@@ -407,13 +407,13 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	safe_strcpy((char*)0x009BC677, scenario->name, 64);
 	set_format_arg(0, short, STR_PLACEHOLDER); // empty string
-	gfx_draw_string_centred_clipped(dpi, 1193, gCommonFormatArgs, 0, x + 85, y, 170);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRING, gCommonFormatArgs, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
 	safe_strcpy((char*)0x009BC677, scenario->details, 256);
 	set_format_arg(0, short, STR_PLACEHOLDER); // empty string
-	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, 1191, 0) + 5;
+	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, 0) + 5;
 
 	// Scenario objective
 	set_format_arg(0, short, scenario->objective_type + STR_OBJECTIVE_NONE);
@@ -441,8 +441,8 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	int highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : 1193;
-	int unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : 1191;
+	int highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : STR_WINDOW_COLOUR_2_STRING;
+	int unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : STR_BLACK_STRING;
 
 	bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
 

@@ -432,7 +432,7 @@ static void window_multiplayer_players_scrollpaint(rct_window *w, rct_drawpixeli
 			if (action != -999) {
 				set_format_arg(0, uint16, network_get_action_name_string_id(action));
 			}
-			gfx_draw_string_left_clipped(dpi, 1191, gCommonFormatArgs, 0, 256, y - 1, 100);
+			gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0, 256, y - 1, 100);
 
 			// Draw ping
 			lineCh = buffer;
@@ -681,7 +681,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window *w, rct_drawpixelin
 
 			// Draw action name
 			set_format_arg(0, uint16, network_get_action_name_string_id(i));
-			gfx_draw_string_left(dpi, 1193, gCommonFormatArgs, 0, 10, y - 1);
+			gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRING, gCommonFormatArgs, 0, 10, y - 1);
 		}
 		y += 10;
 	}

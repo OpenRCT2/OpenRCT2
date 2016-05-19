@@ -447,7 +447,7 @@ static void window_research_funding_mousedown(int widgetIndex, rct_window *w, rc
 	dropdownWidget = widget - 1;
 
 	for (i = 0; i < 4; i++) {
-		gDropdownItemsFormat[i] = 1142;
+		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 		gDropdownItemsArgs[i] = STR_NO_FUNDING + i;
 	}
 	window_dropdown_show_text_custom_width(

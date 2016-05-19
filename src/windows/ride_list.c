@@ -518,12 +518,12 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 
 	y = 0;
 	for (i = 0; i < w->no_list_items; i++) {
-		format = 1191;
+		format = STR_BLACK_STRING;
 
 		// Background highlight
 		if (i == w->selected_list_item) {
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
-			format = 1193;
+			format = STR_WINDOW_COLOUR_2_STRING;
 		}
 
 		// Get ride

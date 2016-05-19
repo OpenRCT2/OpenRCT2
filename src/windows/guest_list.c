@@ -62,7 +62,7 @@ static rct_widget window_guest_list_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	73,		83,		60,	69, 	876,			STR_NONE },						// page dropdown button
 	{ WWT_DROPDOWN,			1,	120,	295,	59,	70, 	0x0FFFFFFFF,	STR_INFORMATION_TYPE_TIP },		// information type dropdown
 	{ WWT_DROPDOWN_BUTTON,	1,	284,	294,	60,	69, 	876,			STR_INFORMATION_TYPE_TIP },		// information type dropdown button
-	{ WWT_FLATBTN,			1,	297,	320,	46,	69, 	5192,			STR_SHOW_GUESTS_ON_MAP_TIP },	// map
+	{ WWT_FLATBTN,			1,	297,	320,	46,	69, 	SPR_MAP,		STR_SHOW_GUESTS_ON_MAP_TIP },	// map
 	{ WWT_FLATBTN,			1,	321,	344,	46,	69,		SPR_TRACK_PEEP,	STR_TRACKED_GUESTS_ONLY_TIP },	// tracking
 	{ WWT_TAB,				1,	3,		33,		17,	43, 	0x02000144E,	STR_INDIVIDUAL_GUESTS_TIP },	// tab 1
 	{ WWT_TAB,				1,	34,		64,		17,	43, 	0x02000144E,	STR_SUMMARISED_GUESTS_TIP },	// tab 2
@@ -345,7 +345,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 		);
 
 		for (i = 0; i < 2; i++) {
-			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = STR_PAGE_1 + i;
 		}
 		dropdown_set_checked(_window_guest_list_selected_view, true);
@@ -354,7 +354,7 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 		widget = &w->widgets[widgetIndex - 1];
 
 		for (i = 0; i < 2; i++) {
-			gDropdownItemsFormat[i] = 1142;
+			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 			gDropdownItemsArgs[i] = STR_ACTIONS + i;
 		}
 
@@ -627,7 +627,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		x = w->x + 4;
 		y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
 		set_format_arg(0, sint16, w->var_492);
-		gfx_draw_string_left(dpi, (w->var_492 == 1 ? 1755 : 1754), gCommonFormatArgs, 0, x, y);
+		gfx_draw_string_left(dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs, 0, x, y);
 	}
 }
 
@@ -671,10 +671,10 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					break;
 
 				// Highlight backcolour and text colour (format)
-				format = 1191;
+				format = STR_BLACK_STRING;
 				if (i == _window_guest_list_highlighted_index) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
-					format = 1193;
+					format = STR_WINDOW_COLOUR_2_STRING;
 				}
 
 				// Guest name
@@ -689,7 +689,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 					// Tracking icon
 					if (peep->peep_flags & PEEP_FLAGS_TRACKING)
-						gfx_draw_sprite(dpi, 5129, 112, y, 0);
+						gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, 112, y, 0);
 
 					// Action
 
@@ -738,16 +738,16 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 					break;
 
 				// Highlight backcolour and text colour (format)
-				format = 1191;
+				format = STR_BLACK_STRING;
 				if (i == _window_guest_list_highlighted_index) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 20, 0x02000031);
-					format = 1193;
+					format = STR_WINDOW_COLOUR_2_STRING;
 				}
 
 				// Draw guest faces
 				numGuests = _window_guest_list_groups_num_guests[i];
 				for (j = 0; j < 56 && j < numGuests; j++)
-					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + 5486, j * 8, y + 9, 0);
+					gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY, j * 8, y + 9, 0);
 
 				// Draw action
 				set_format_arg(0, uint32, _window_guest_list_groups_argument_1[i]);
@@ -860,7 +860,7 @@ static void window_guest_list_find_groups()
 
 		RCT2_ADDRESS(0x00F1AF26, uint8)[groupIndex] = groupIndex;
 		faceIndex = groupIndex * 56;
-		_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep) - 5486;
+		_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
 		// Find more peeps that belong to same group
 		FOR_ALL_GUESTS(spriteIndex2, peep2) {
@@ -880,7 +880,7 @@ static void window_guest_list_find_groups()
 			// Add face sprite, cap at 56 though
 			if (_window_guest_list_groups_num_guests[groupIndex] >= 56)
 				continue;
-			_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep2) - 5486;
+			_window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep2) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 		}
 
 		if (RCT2_GLOBAL(0x00F1EDF6, uint16) == 0) {

@@ -122,9 +122,9 @@ static rct_widget window_staff_list_widgets[] = {
 	{ WWT_SCROLL,			1,	3,			316,		72,		266,	3,				STR_NONE },							// staff list
 	{ WWT_COLOURBTN,		1,	130,		141,		58,		69,		STR_NONE,		STR_UNIFORM_COLOUR_TIP },			// uniform colour picker
 	{ WWT_DROPDOWN_BUTTON,	0,	WW - 155,	WW - 11,	17,		29,		STR_NONE,		STR_HIRE_STAFF_TIP },				// hire button
-	{ WWT_FLATBTN,			1,	WW - 77,	WW - 54,	46,		69,		SPR_DEMOLISH,	5300 },								// quick fire staff
-	{ WWT_FLATBTN,			1,	WW - 53,	WW - 30,	46,		69,		5175,			STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
-	{ WWT_FLATBTN,			1,	WW - 29,	WW - 6,		46,		69,		5192,			STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
+	{ WWT_FLATBTN,			1,	WW - 77,	WW - 54,	46,		69,		SPR_DEMOLISH,	STR_QUICK_FIRE_STAFF },				// quick fire staff
+	{ WWT_FLATBTN,			1,	WW - 53,	WW - 30,	46,		69,		SPR_PATROL_BTN,	STR_SHOW_PATROL_AREA_TIP },			// show staff patrol area tool
+	{ WWT_FLATBTN,			1,	WW - 29,	WW - 6,		46,		69,		SPR_MAP,		STR_SHOW_STAFF_ON_MAP_TIP },		// show staff on map button
 	{ WIDGETS_END },
 };
 
@@ -584,14 +584,14 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
 		set_format_arg(0, uint32, RCT2_ADDRESS(0x00992A00, uint16)[selectedTab]);
-		gfx_draw_string_left(dpi, 1858, gCommonFormatArgs, 0, w->x + w->width - 155, w->y + 0x20);
+		gfx_draw_string_left(dpi, STR_COST_PER_MONTH, gCommonFormatArgs, 0, w->x + w->width - 155, w->y + 0x20);
 	}
 
 	if (selectedTab < 3) {
 		gfx_draw_string_left(dpi, STR_UNIFORM_COLOUR, w, 0, w->x + 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + w->y + 1);
 	}
 
-	int staffTypeStringId = 1859 + selectedTab;
+	int staffTypeStringId = STR_HANDYMAN_PLURAL + selectedTab;
 	// If the number of staff for a given type is 1, we use the singular forms of the names
 	if (_window_staff_list_selected_type_count == 1) {
 		staffTypeStringId += 4;
@@ -626,11 +626,11 @@ void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int sc
 			}
 
 			if (y + 11 >= dpi->y) {
-				int format = (_quick_fire_mode ? 5298 : 1191);
+				int format = (_quick_fire_mode ? 5298 : STR_BLACK_STRING);
 
 				if (i == _windowStaffListHighlightedIndex) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x2000031);
-					format = (_quick_fire_mode ? 5299 : 1193);
+					format = (_quick_fire_mode ? 5299 : STR_WINDOW_COLOUR_2_STRING);
 				}
 
 				set_format_arg(0, uint16, peep->name_string_idx);
