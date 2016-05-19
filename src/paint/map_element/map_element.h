@@ -56,6 +56,7 @@ enum
     TUNNEL_6 = 6,
 	TUNNEL_7 = 7,
 	TUNNEL_8 = 8,
+	TUNNEL_12 = 0x0C,
 	TUNNEL_14 = 0x0E
 };
 

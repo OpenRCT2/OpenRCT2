@@ -126,16 +126,47 @@ static void paint_mini_helicopters_track_25_deg_up(uint8 rideIndex, uint8 trackS
 	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x0081F378 */
 static void paint_mini_helicopters_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	uint32 imageId;
 
+	switch (direction) {
+		case 0:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+			paint_util_push_tunnel_left(height - 8, TUNNEL_0);
+			break;
+		case 1:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+			paint_util_push_tunnel_right(height + 8, TUNNEL_12);
+			break;
+		case 2:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+			paint_util_push_tunnel_left(height + 8, TUNNEL_12);
+			break;
+		case 3:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+			paint_util_push_tunnel_right(height - 8, TUNNEL_0);
+			break;
+	}
+
+	if (track_paint_util_should_paint_supports(position)) {
+		metal_a_supports_paint_setup(4, 4, -7, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
 /** rct2: 0x */
 static void paint_mini_helicopters_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-
+	paint_mini_helicopters_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x0081F388 */
