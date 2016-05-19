@@ -479,6 +479,42 @@ static int cc_rides(const utf8 **argv, int argc)
 	return 0;
 }
 
+static int cc_staff(const utf8 **argv, int argc)
+{
+	if (argc > 0) {
+		if (strcmp(argv[0], "list") == 0) {
+			rct_peep *peep;
+			int i;
+			FOR_ALL_STAFF(i, peep) {
+				char name[128];
+				format_string(name, peep->name_string_idx, &peep->id);
+				console_printf("staff id %03d type: %02u energy %03u name %s", i, peep->staff_type, peep->energy, name);
+			}
+		} else if (strcmp(argv[0], "set") == 0) {
+			if (argc < 4) {
+				console_printf("staff set energy <staff id> [value 0-255]");
+				return 0;
+			}
+			if (strcmp(argv[1], "energy") == 0) {
+				int int_val[3];
+				bool int_valid[3] = { 0 };
+				int_val[0] = console_parse_int(argv[2], &int_valid[0]);
+				int_val[1] = console_parse_int(argv[3], &int_valid[1]);
+				
+				if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != NULL)) {
+					rct_peep *peep = GET_PEEP(int_val[0]);
+
+					peep->energy = int_val[1];
+					peep->energy_growth_rate = int_val[1];
+				}
+			}
+		}
+	} else {
+		console_printf("subcommands: list, set");
+	}
+	return 0;
+}
+
 static int cc_get(const utf8 **argv, int argc)
 {
 	if (argc > 0) {
@@ -1007,6 +1043,7 @@ console_command console_command_table[] = {
 	{ "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
 	{ "fix_banner_count", cc_fix_banner_count, "Fixes incorrectly appearing 'Too many banners' error by marking every banner entry without a map element as null.", "fix_banner_count" },
 	{ "rides", cc_rides, "Ride management.", "rides <subcommand>" },
+	{ "staff", cc_staff, "Staff management.", "staff <subcommand>"},
 };
 
 static int cc_windows(const utf8 **argv, int argc) {
