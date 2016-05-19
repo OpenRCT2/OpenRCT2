@@ -3166,7 +3166,7 @@ STR_3156    :
 STR_3157    :mapa
 STR_3158    :gráfica
 STR_3159    :lista
-STR_3160    :<not used anymore>
+STR_3160    :{SMALLFONT}{BLACK}Selecciona el número de circuitos por paseo.
 STR_3161    :<not used anymore>
 STR_3162    :No se puede asignar memoria suficiente
 STR_3163    :Instalar nuevo dato: 

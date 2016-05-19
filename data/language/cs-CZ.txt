@@ -3168,7 +3168,7 @@ STR_3156    :
 STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
-STR_3160    :<not used anymore>
+STR_3160    :Vyberte počet koleček za jednu jízdu
 STR_3161    :<not used anymore>
 STR_3162    :Nepodařilo se alokovat dostatek paměti
 STR_3163    :Instaluji nová data: 
