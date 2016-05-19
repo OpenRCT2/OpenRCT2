@@ -53,6 +53,9 @@ enum {
     SPR_FENCE_ROPE_SW = 22140,
     SPR_FENCE_ROPE_NW = 22141,
 
+	SPR_STATION_FENCE_SW_NE = 22370,
+	SPR_STATION_FENCE_NW_SE = 22371,
+
     SPR_STATION_PIER_EDGE_SE = 22404,
     SPR_STATION_PIER_EDGE_SW = 22405,
     SPR_STATION_PIER_EDGE_NW = 22406,
@@ -61,6 +64,25 @@ enum {
     SPR_STATION_PIER_EDGE_NE_FENCED = 22409,
     SPR_STATION_PIER_FENCE_SE = 22410,
     SPR_STATION_PIER_FENCE_SW = 22411,
+	SPR_STATION_NARROW_EDGE_SE = 22412,
+	SPR_STATION_NARROW_EDGE_SW = 22413,
+	SPR_STATION_NARROW_EDGE_FENCED_NW = 22414,
+	SPR_STATION_NARROW_EDGE_FENCED_NE = 22415,
+	SPR_STATION_NARROW_EDGE_NW = 22416,
+	SPR_STATION_NARROW_EDGE_NE = 22417,
+
+	SPR_ON_RIDE_PHOTO_CAMERA_N = 25615,
+	SPR_ON_RIDE_PHOTO_CAMERA_E = 25616,
+	SPR_ON_RIDE_PHOTO_CAMERA_S = 25617,
+	SPR_ON_RIDE_PHOTO_CAMERA_W = 25618,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_N = 25619,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_E = 25620,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_S = 25621,
+	SPR_ON_RIDE_PHOTO_CAMERA_FLASH_W = 25622,
+	SPR_ON_RIDE_PHOTO_SIGN_SW_NE = 25623,
+	SPR_ON_RIDE_PHOTO_SIGN_NW_SE = 25624,
+	SPR_ON_RIDE_PHOTO_SIGN_NE_SW = 25625,
+	SPR_ON_RIDE_PHOTO_SIGN_SE_NW = 25626,
 };
 
 extern const uint32 floorSpritesCork[];
@@ -81,6 +103,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, i
 TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction);
