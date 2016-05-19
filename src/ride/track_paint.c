@@ -119,6 +119,13 @@ const uint32 fenceSpritesRope[] = {
 	SPR_FENCE_ROPE_NW
 };
 
+const uint32 fenceSpritesMetalB[] = {
+	SPR_FENCE_METAL_B_NE,
+	SPR_FENCE_METAL_B_SE,
+	SPR_FENCE_METAL_B_SW,
+	SPR_FENCE_METAL_B_NW
+};
+
 enum
 {
 	SPR_STATION_COVER_OFFSET_NE_SW_BACK_0 = 0,
