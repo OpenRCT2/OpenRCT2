@@ -300,16 +300,42 @@ static void paint_mini_helicopters_track_right_quarter_turn_3_tiles(uint8 rideIn
 
 }
 
-/** rct2: 0x */
+/** rct2: 0x0081F408 */
 static void paint_mini_helicopters_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
 
+	switch (direction) {
+		case 0:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SW_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation());
+			paint_util_push_tunnel_left(height, TUNNEL_0);
+			break;
+		case 1:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 26, 26, 1, height, 0, 0, height, get_current_rotation());
+			break;
+		case 2:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 24, 26, 1, height, 2, 6, height, get_current_rotation());
+			paint_util_push_tunnel_right(height, TUNNEL_0);
+			break;
+		case 3:
+			imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 24, 24, 1, height, 6, 6, height, get_current_rotation());
+			paint_util_push_tunnel_right(height, TUNNEL_0);
+			paint_util_push_tunnel_left(height, TUNNEL_0);
+			break;
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x0081F418 */
 static void paint_mini_helicopters_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-
+	paint_mini_helicopters_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /**
