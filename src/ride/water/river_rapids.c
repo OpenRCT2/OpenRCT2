@@ -56,7 +56,14 @@ enum
 	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_FRONT_NW_SE = 21145,
 	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_FRONT_NE_SW = 21146,
 	SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_FRONT_SE_NW = 21147,
-
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SW_NE = 21148,
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NW_SE = 21149,
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NE_SW = 21150,
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SE_NW = 21151,
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SW_NE = 21152,
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NW_SE = 21153,
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NE_SW = 21154,
+	SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SE_NW = 21155,
 	SPR_RIVER_RAPIDS_25_DEG_UP_SW_NE = 21156,
 	SPR_RIVER_RAPIDS_25_DEG_UP_NW_SE = 21157,
 	SPR_RIVER_RAPIDS_25_DEG_UP_NE_SW = 21158,
@@ -286,10 +293,63 @@ static void paint_river_rapids_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tr
 	paint_util_force_set_general_support_height(height + 48, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00757680 */
 static void paint_river_rapids_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 
+	uint32 imageId;
+	paint_struct * ps;
+
+	switch (direction) {
+		case 0:
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(0, 5, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height - 8, TUNNEL_6);
+			break;
+
+		case 1:
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(1, 6, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height + 8, TUNNEL_14);
+			break;
+
+		case 2:
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(0, 7, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height + 8, TUNNEL_14);
+			break;
+
+		case 3:
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+
+			imageId = SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
+
+			wooden_a_supports_paint_setup(1, 8, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height - 8, TUNNEL_6);
+			break;
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_force_set_general_support_height(height + 40, 0x20);
 }
 
 /** rct2: 0x */
