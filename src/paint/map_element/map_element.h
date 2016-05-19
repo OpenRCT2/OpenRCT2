@@ -51,6 +51,8 @@ extern const uint16 segment_offsets[9];
 enum
 {
     TUNNEL_0 = 0,
+	TUNNEL_1 = 1,
+	TUNNEL_2 = 2,
     TUNNEL_6 = 6,
 	TUNNEL_7 = 7,
 	TUNNEL_8 = 8,
