@@ -4162,7 +4162,7 @@ STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on n
 STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
-STR_5855    :{SMALLFONT}{BLACK}Set normal, borderless fullscreen{NEWLINE}or windowed display
+STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
 STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
 STR_5857    :{SMALLFONT}{BLACK}Game options
 STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
