@@ -429,25 +429,25 @@ static void paint_mini_helicopters_track_right_quarter_turn_1_tile(uint8 rideInd
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int trackType, int direction)
 {
 	switch (trackType) {
-		case TRACK_ELEM_BEGIN_STATION:
-		case TRACK_ELEM_MIDDLE_STATION:
-		case TRACK_ELEM_END_STATION:
-			return paint_mini_helicopters_track_station;
-
 		case TRACK_ELEM_FLAT:
 			return paint_mini_helicopters_track_flat;
 
-		case TRACK_ELEM_FLAT_TO_25_DEG_UP:
-			return paint_mini_helicopters_track_flat_to_25_deg_up;
+		case TRACK_ELEM_END_STATION:
+		case TRACK_ELEM_BEGIN_STATION:
+		case TRACK_ELEM_MIDDLE_STATION:
+			return paint_mini_helicopters_track_station;
+
 		case TRACK_ELEM_25_DEG_UP:
 			return paint_mini_helicopters_track_25_deg_up;
+		case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+			return paint_mini_helicopters_track_flat_to_25_deg_up;
 		case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 			return paint_mini_helicopters_track_25_deg_up_to_flat;
 
-		case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
-			return paint_mini_helicopters_track_flat_to_25_deg_down;
 		case TRACK_ELEM_25_DEG_DOWN:
 			return paint_mini_helicopters_track_25_deg_down;
+		case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+			return paint_mini_helicopters_track_flat_to_25_deg_down;
 		case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
 			return paint_mini_helicopters_track_25_deg_down_to_flat;
 
