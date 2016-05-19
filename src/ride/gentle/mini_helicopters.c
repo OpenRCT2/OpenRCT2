@@ -22,10 +22,61 @@
 #include "../../paint/supports.h"
 #include "../ride_data.h"
 
+enum
+{
+	SPR_22362 = 22362,
+	SPR_22364 = 22364,
+	SPR_22370 = 22370,
+	SPR_22428 = 22428,
+};
+
 /** rct2: 0x */
 static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_ride * ride = get_ride(rideIndex);
+	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+	uint32 imageId;
+	bool hasFence;
 
+	if (direction & 1) {
+
+	} else {
+		imageId = SPR_22428 | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
+
+		imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
+
+		metal_a_supports_paint_setup(3, 5, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(3, 8, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+
+		//height += 6;
+		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+		imageId = (hasFence ? SPR_22364 : SPR_22362) | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 0, 32, 8, 1, height + 6, get_current_rotation());
+		//height -= 5 (height + 1)
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height + 1);
+		//height += 5 (height + 6)
+
+		imageId = SPR_22362 | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 24, 32, 8, 1, height, get_current_rotation());
+		//height += 2 (height + 8)
+
+		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_22370 | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 0, 31, 32, 1, 7, height + 2, get_current_rotation());
+		}
+		//height -= 7 (height + 1)
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+		//height += 7 (height + 8)
+
+		//height += 25 (height + 33)
+		paint_util_set_general_support_height(height + 33, 0x20);
+	}
 }
 
 /** rct2: 0x0081F348 */
