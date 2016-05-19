@@ -138,6 +138,7 @@ enum
 	SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 = 21269,
 
 	SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE = 21277,
+	SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 = 21278,
 };
 
 static const uint32 river_rapids_track_pieces_25_deg_up[][2] = {
@@ -691,7 +692,40 @@ static void paint_river_rapids_track_on_ride_photo(uint8 rideIndex, uint8 trackS
 /** rct2: 0x */
 static void paint_river_rapids_track_whirlpool(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
 
+	uint8 frameNum = (gScenarioTicks / 4) % 16;
+
+	if (direction & 1) {
+		imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+
+		imageId = SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+
+		imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 27, 0, height + 17, get_current_rotation());
+	} else {
+		imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+
+		imageId = SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+
+		imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_force_set_general_support_height(height + 32, 0x20);
 }
 
 /**
