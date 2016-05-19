@@ -5008,7 +5008,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
 				} else {
 					//sadly, STR_RIDE_LENGTH_ENTRY_WITH_SEPARATOR are defined with the separator AFTER an entry
 					//therefore we set the last entry to use the no-separator format now, post-format
-					set_format_arg(0 + ((numTimes - 1) * 4), uint16, STR_RIDE_LENGTH_ENTRY);
+					set_format_arg(0 + ((numLengths - 1) * 4), uint16, STR_RIDE_LENGTH_ENTRY);
 				}
 				RCT2_GLOBAL(0x013CE94E + (numLengths * 4), uint16) = STR_RIDE_LENGTH_ENTRY;
 				set_format_arg(0 + (numLengths * 4), uint16, 0);
