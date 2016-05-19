@@ -194,7 +194,7 @@ static void window_banner_mouseup(rct_window *w, int widgetIndex)
 		game_do_command(x, 1, y, map_element->base_height | (map_element->properties.banner.position << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
 		break;
 	case WIDX_BANNER_TEXT:
-		window_text_input_open(w, WIDX_BANNER_TEXT, 2982, 2983, gBanners[w->number].string_idx, 0, 32);
+		window_text_input_open(w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);
 		break;
 	case WIDX_BANNER_NO_ENTRY:
 		textinput_cancel();
@@ -218,9 +218,8 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 	case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
 		for( int i = 0; i < 13; ++i){
-			gDropdownItemsFormat[i] = 1142;
-			gDropdownItemsArgs[i] = 2997 + i;
-
+			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsArgs[i] = STR_TEXT_COLOR_GREY + i;
 		}
 
 		//Switch to the dropdown box widget.
@@ -311,7 +310,7 @@ static void window_banner_invalidate(rct_window *w)
 	colour_btn->image = (banner->colour << 19) + 0x600013C3;
 
 	rct_widget* drop_down_widget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-	drop_down_widget->image = banner->text_colour + 2996;
+	drop_down_widget->image = banner->text_colour + STR_TEXT_COLOR_BLACK;
 }
 
 /* rct2: 0x006BA4C5 */

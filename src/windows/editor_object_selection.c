@@ -1238,7 +1238,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 		x = w->x + widget->left;
 		y = w->y + widget->top;
-		gfx_draw_sprite(dpi, 5458 + i, x, y, 0);
+		gfx_draw_sprite(dpi, STR_ROTATE_CLOCKWISE + i, x, y, 0);
 	}
 
 	const int ride_tabs[] = { 5458, 0x200015A1, 5542, 0x200015AA, 5557, 5551, 5530, 5327 };
@@ -1391,7 +1391,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		if (type == OBJECT_TYPE_SCENARIO_TEXT) {
 			gfx_draw_string_left_wrapped(dpi, &stringId, x, y, width, 3168, 0);
 		} else {
-			gfx_draw_string_left_wrapped(dpi, &stringId, x, y + 5, width, 1191, 0);
+			gfx_draw_string_left_wrapped(dpi, &stringId, x, y + 5, width, STR_BLACK_STRING, 0);
 		}
 	}
 

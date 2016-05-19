@@ -45,7 +45,7 @@ static rct_widget window_track_list_widgets[] = {
 	{ WWT_CLOSEBOX,			0,	587,	597,	2,		13,		STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP					},
 	{ WWT_SCROLL,			0,	4,		221,	33,		395,	2,						STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP		},
 	{ WWT_FLATBTN,			0,	224,	595,	18,		236,	0xFFFFFFFF,				STR_NONE								},
-	{ WWT_FLATBTN,			0,	574,	597,	374,	397,	5169,					STR_ROTATE_90_TIP						},
+	{ WWT_FLATBTN,			0,	574,	597,	374,	397,	SPR_ROTATE_ARROW,		STR_ROTATE_90_TIP						},
 	{ WWT_FLATBTN,			0,	574,	597,	350,	373,	5171,					STR_TOGGLE_SCENERY_TIP					},
 	{ WWT_13,				0,	4,		221,	18,		29,		STR_SELECT_OTHER_RIDE,	STR_NONE								},
 	{ WIDGETS_END },
@@ -478,7 +478,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		// Ride length
-		set_format_arg(0, uint16, 1345);
+		set_format_arg(0, uint16, STR_RIDE_LENGTH_ENTRY);
 		set_format_arg(2, uint16, td6->ride_length);
 		gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, 0, x, y, 214);
 		y += 10;
@@ -571,9 +571,9 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 		if (listIndex == w->selected_list_item) {
 			// Highlight
 			gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
-			stringId = 1193;
+			stringId = STR_WINDOW_COLOUR_2_STRING;
 		} else {
-			stringId = 1191;
+			stringId = STR_BLACK_STRING;
 		}
 
 		rct_string_id stringId2 = STR_BUILD_CUSTOM_DESIGN;
@@ -588,9 +588,9 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 			if (listIndex == w->selected_list_item) {
 				// Highlight
 				gfx_fill_rect(dpi, x, y, w->width, y + 9, 0x2000000 | 49);
-				stringId = 1193;
+				stringId = STR_WINDOW_COLOUR_2_STRING;
 			} else {
-				stringId = 1191;
+				stringId = STR_BLACK_STRING;
 			}
 
 			// Draw track name

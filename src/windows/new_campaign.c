@@ -252,7 +252,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 					if (window_new_campaign_shop_items[i] == 255)
 						break;
 
-					gDropdownItemsFormat[i] = 1142;
+					gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 					gDropdownItemsArgs[i] = ShopItemStringIds[window_new_campaign_shop_items[i]].plural;
 					numItems++;
 				}
@@ -274,7 +274,7 @@ static void window_new_campaign_mousedown(int widgetIndex, rct_window *w, rct_wi
 					break;
 
 				rct_ride *ride = get_ride(window_new_campaign_rides[i]);
-				gDropdownItemsFormat[i] = 1142;
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
 				numItems++;
 			}
