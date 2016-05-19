@@ -129,8 +129,15 @@ enum
 	SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 = 21236,
 
 	SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 = 21244,
-	
+
 	SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 = 21252,
+
+	SPR_RIVER_RAPIDS_RAPIDS_SW_NE_FRAME_0 = 21260,
+
+	SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE = 21268,
+	SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 = 21269,
+
+	SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE = 21277,
 };
 
 static const uint32 river_rapids_track_pieces_25_deg_up[][2] = {
@@ -642,10 +649,37 @@ static void paint_river_rapids_track_waterfall(uint8 rideIndex, uint8 trackSeque
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00757720 */
 static void paint_river_rapids_track_rapids(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
 
+	uint16 frameNum = (gScenarioTicks / 2) & 7;
+
+	if (direction & 1) {
+		imageId = SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 + frameNum | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+
+		imageId = SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 1, 32, 11, height, 27, 0, height + 17, get_current_rotation());
+	} else {
+		imageId = SPR_RIVER_RAPIDS_RAPIDS_SW_NE_FRAME_0 + frameNum | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+
+		imageId = SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 1, 11, height, 0, 27, height + 17, get_current_rotation());
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x */
