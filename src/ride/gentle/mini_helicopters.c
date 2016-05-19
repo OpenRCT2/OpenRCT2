@@ -27,11 +27,15 @@ enum
 {
 	SPR_22362 = 22362,
 	SPR_22364 = 22364,
+	SPR_22366 = 22366,
+	SPR_22368 = 22368,
 	SPR_22370 = 22370,
 	SPR_22372 = 22372,
 	SPR_22374 = 22374,
 	SPR_22380 = 22380,
 	SPR_22382 = 22382,
+	SPR_22384 = 22384,
+	SPR_22386 = 22386,
 	SPR_22388 = 22388,
 	SPR_22390 = 22390,
 	SPR_22428 = 22428,
@@ -48,7 +52,7 @@ static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSeq
 
 	bool hasGreenLight = (bool) (mapElement->properties.track.sequence & 0x80);
 
-	if (direction == 0) {
+	if (direction == 0 || direction == 2) {
 		// height -= 2 (height - 2)
 		imageId = SPR_22428 | RCT2_GLOBAL(0x00F441A0, uint32);
 		sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
@@ -65,12 +69,14 @@ static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSeq
 		//height += 5 (height + 5);
 		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
 
-		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
+		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
 			if (hasGreenLight) {
 				imageId = (hasFence ? SPR_22382 : SPR_22390) | RCT2_GLOBAL(0x00F4419C, uint32);
 			} else {
 				imageId = (hasFence ? SPR_22380 : SPR_22388) | RCT2_GLOBAL(0x00F4419C, uint32);
 			}
+		} else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 2) {
+			imageId = (hasFence ? SPR_22366 : SPR_22368) | RCT2_GLOBAL(0x00F4419C, uint32);
 		} else {
 			imageId = (hasFence ? SPR_22364 : SPR_22362) | RCT2_GLOBAL(0x00F4419C, uint32);
 		}
@@ -79,8 +85,10 @@ static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSeq
 		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
 		//height += 5 (height + 5)
 
-		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
+		if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
 			imageId = (hasGreenLight ? SPR_22390 : SPR_22388) | RCT2_GLOBAL(0x00F4419C, uint32);
+		} else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 2) {
+			imageId = SPR_22368 | RCT2_GLOBAL(0x00F4419C, uint32);
 		} else {
 			imageId = SPR_22362 | RCT2_GLOBAL(0x00F4419C, uint32);
 		}
@@ -89,31 +97,38 @@ static void paint_mini_helicopters_track_station(uint8 rideIndex, uint8 trackSeq
 
 		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
 		if (hasFence) {
-			if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION) {
+			if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
 				imageId = SPR_22372 | RCT2_GLOBAL(0x00F4419C, uint32);
+			} else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
+				imageId = SPR_22386 | RCT2_GLOBAL(0x00F4419C, uint32);
 			} else {
 				imageId = SPR_22370 | RCT2_GLOBAL(0x00F4419C, uint32);
 			}
 			sub_98196C(imageId, 0, 31, 32, 1, 7, height + 7, get_current_rotation());
-		} else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION) {
+		} else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
 			// Addition: draw only small fence if there is an entrance/exit at the beginning
 			imageId = SPR_22374 | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 31, 23, 1, 8, 7, height + 7, get_current_rotation());
+		} else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
+			// Addition: draw only small fence if there is an entrance/exit at the beginning
+			imageId = SPR_22384 | RCT2_GLOBAL(0x00F4419C, uint32);
 			sub_98196C(imageId, 31, 23, 1, 8, 7, height + 7, get_current_rotation());
 		}
 		//height -= 7 (height)
 		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
 		//height += 7 (height + 7)
 
-		if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION) {
+		if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
 			imageId = SPR_22374 | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 31, 0, 1, 8, 7, height + 7, get_current_rotation());
+		} else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
+			imageId = SPR_22384 | RCT2_GLOBAL(0x00F4419C, uint32);
 			sub_98196C(imageId, 31, 0, 1, 8, 7, height + 7, get_current_rotation());
 		}
 
 		//height += 25 (height + 32)
 		paint_util_set_general_support_height(height + 32, 0x20);
 	} else if (direction == 1) {
-
-	} else if (direction == 2) {
 
 	} else if (direction == 3) {
 
