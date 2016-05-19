@@ -23,6 +23,7 @@
 #include "../../game.h"
 #include "../track_paint.h"
 #include "../track.h"
+#include "../../paint/supports.h"
 
 // 0x0099279E:
 static const vehicle_boundbox _riverRapidsBoundbox[] = {
@@ -35,6 +36,18 @@ static const vehicle_boundbox _riverRapidsBoundbox[] = {
 	{ -13, -13,  1, 26, 26, 13 },
 	{ -13, -13,  1, 26, 26, 13 },
 	{ -13, -13,  1, 26, 26, 13 }
+};
+
+enum
+{
+	SPR_RIVER_RAPIDS_FLAT_SW_NE = 21132,
+	SPR_RIVER_RAPIDS_FLAT_NW_SE = 21133,
+	SPR_RIVER_RAPIDS_FLAT_NE_SW = 21134,
+	SPR_RIVER_RAPIDS_FLAT_SE_NW = 21135,
+	SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE = 21136,
+	SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE = 21137,
+	SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW = 21138,
+	SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW = 21139,
 };
 
 /**
@@ -103,10 +116,35 @@ void vehicle_visual_river_rapids(int x, int imageDirection, int y, int z, rct_ve
 	vehicle_visual_splash_effect(z, vehicle, vehicleEntry);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00757650 */
 static void paint_river_rapids_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
 
+	if (direction & 1) {
+		imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+
+		imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 27, 0, height + 17, get_current_rotation());
+	} else {
+		imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+
+		imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x */
