@@ -30,7 +30,8 @@
 NetworkKey::NetworkKey()
 {
     m_ctx = EVP_PKEY_CTX_new_id(KEY_TYPE, NULL);
-    if (m_ctx == nullptr) {
+    if (m_ctx == nullptr)
+    {
         log_error("Failed to create OpenSSL context");
     }
 }
@@ -38,7 +39,8 @@ NetworkKey::NetworkKey()
 NetworkKey::~NetworkKey()
 {
     Unload();
-    if (m_ctx != nullptr) {
+    if (m_ctx != nullptr)
+    {
         EVP_PKEY_CTX_free(m_ctx);
         m_ctx = nullptr;
     }
@@ -46,7 +48,8 @@ NetworkKey::~NetworkKey()
 
 void NetworkKey::Unload()
 {
-    if (m_key != nullptr) {
+    if (m_key != nullptr)
+    {
         EVP_PKEY_free(m_key);
         m_key = nullptr;
     }
@@ -66,47 +69,56 @@ bool NetworkKey::Generate()
 #else
     #error Only RSA is supported!
 #endif
-    if (EVP_PKEY_keygen_init(m_ctx) <= 0) {
+    if (EVP_PKEY_keygen_init(m_ctx) <= 0)
+    {
         log_error("Failed to initialise keygen algorithm");
         return false;
     }
-    if (EVP_PKEY_keygen(m_ctx, &m_key) <= 0) {
+    if (EVP_PKEY_keygen(m_ctx, &m_key) <= 0)
+    {
         log_error("Failed to generate new key!");
         return false;
-    } else {
+    }
+    else
+    {
         log_warning("key ok");
     }
     log_verbose("New key of type %d, length %d generated successfully.", KEY_TYPE, KEY_LENGTH_BITS);
     return true;
 }
 
-bool NetworkKey::LoadPrivate(SDL_RWops *file)
+bool NetworkKey::LoadPrivate(SDL_RWops * file)
 {
     int64_t size = file->size(file);
     if (size == -1) {
         log_error("unknown size, refusing to load key");
         return false;
-    } else if (size > 4 * 1024 * 1024) {
+    }
+    else if (size > 4 * 1024 * 1024)
+    {
         log_error("Key file suspiciously large, refusing to load it");
         return false;
     }
-    char *priv_key = new char[size];
+    char * priv_key = new char[size];
     file->read(file, priv_key, 1, size);
-    BIO *bio = BIO_new_mem_buf(priv_key, size);
-    if (bio == nullptr) {
+    BIO * bio = BIO_new_mem_buf(priv_key, size);
+    if (bio == nullptr)
+    {
         log_error("Failed to initialise OpenSSL's BIO!");
         delete [] priv_key;
         return false;
     }
-    RSA *rsa;
+    RSA * rsa;
     rsa = PEM_read_bio_RSAPrivateKey(bio, nullptr, nullptr, nullptr);
-    if (!RSA_check_key(rsa)) {
+    if (!RSA_check_key(rsa))
+    {
         log_error("Loaded RSA key is invalid");
         BIO_free_all(bio);
         delete [] priv_key;
         return false;
     }
-    if (m_key != nullptr) {
+    if (m_key != nullptr)
+    {
         EVP_PKEY_free(m_key);
     }
     m_key = EVP_PKEY_new();
@@ -117,27 +129,31 @@ bool NetworkKey::LoadPrivate(SDL_RWops *file)
     return true;
 }
 
-bool NetworkKey::LoadPublic(SDL_RWops *file)
+bool NetworkKey::LoadPublic(SDL_RWops * file)
 {
     int64_t size = file->size(file);
-    if (size == -1) {
+    if (size == -1)
+    {
         log_error("unknown size, refusing to load key");
         return false;
-    } else if (size > 4 * 1024 * 1024) {
+    }
+    else if (size > 4 * 1024 * 1024)
+    {
         log_error("Key file suspiciously large, refusing to load it");
         return false;
     }
-    char *pub_key = new char[size];
+    char * pub_key = new char[size];
     file->read(file, pub_key, 1, size);
-    BIO *bio = BIO_new_mem_buf(pub_key, size);
+    BIO * bio = BIO_new_mem_buf(pub_key, size);
     if (bio == nullptr) {
         log_error("Failed to initialise OpenSSL's BIO!");
         delete [] pub_key;
         return false;
     }
-    RSA *rsa;
+    RSA * rsa;
     rsa = PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
-    if (m_key != nullptr) {
+    if (m_key != nullptr)
+    {
         EVP_PKEY_free(m_key);
     }
     m_key = EVP_PKEY_new();
@@ -150,13 +166,15 @@ bool NetworkKey::LoadPublic(SDL_RWops *file)
 
 bool NetworkKey::SavePrivate(SDL_RWops *file)
 {
-    if (m_key == nullptr) {
+    if (m_key == nullptr)
+    {
         log_error("No key loaded");
         return false;
     }
 #if KEY_TYPE == EVP_PKEY_RSA
-    RSA *rsa = EVP_PKEY_get1_RSA(m_key);
-    if (rsa == nullptr) {
+    RSA * rsa = EVP_PKEY_get1_RSA(m_key);
+    if (rsa == nullptr)
+    {
         log_error("Failed to get RSA key handle!");
         return false;
     }
@@ -164,13 +182,15 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
         log_error("Loaded RSA key is invalid");
         return false;
     }
-    BIO *bio = BIO_new(BIO_s_mem());
-    if (bio == nullptr) {
+    BIO * bio = BIO_new(BIO_s_mem());
+    if (bio == nullptr)
+    {
         log_error("Failed to initialise OpenSSL's BIO!");
         return false;
     }
     int result = PEM_write_bio_RSAPrivateKey(bio, rsa, NULL, NULL, 0, NULL, NULL);
-    if (result != 1) {
+    if (result != 1)
+    {
         log_error("failed to write private key!");
         BIO_free_all(bio);
         return false;
@@ -178,7 +198,7 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
     RSA_free(rsa);
 
     int keylen = BIO_pending(bio);
-    char *pem_key = new char[keylen];
+    char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
     file->write(file, pem_key, keylen, 1);
     log_verbose("saving key of length %u", keylen);
@@ -193,22 +213,26 @@ bool NetworkKey::SavePrivate(SDL_RWops *file)
 
 bool NetworkKey::SavePublic(SDL_RWops *file)
 {
-    if (m_key == nullptr) {
+    if (m_key == nullptr)
+    {
         log_error("No key loaded");
         return false;
     }
-    RSA *rsa = EVP_PKEY_get1_RSA(m_key);
-    if (rsa == nullptr) {
+    RSA * rsa = EVP_PKEY_get1_RSA(m_key);
+    if (rsa == nullptr)
+    {
         log_error("Failed to get RSA key handle!");
         return false;
     }
-    BIO *bio = BIO_new(BIO_s_mem());
-    if (bio == nullptr) {
+    BIO * bio = BIO_new(BIO_s_mem());
+    if (bio == nullptr)
+    {
         log_error("Failed to initialise OpenSSL's BIO!");
         return false;
     }
     int result = PEM_write_bio_RSAPublicKey(bio, rsa);
-    if (result != 1) {
+    if (result != 1)
+    {
         log_error("failed to write private key!");
         BIO_free_all(bio);
         return false;
@@ -216,7 +240,7 @@ bool NetworkKey::SavePublic(SDL_RWops *file)
     RSA_free(rsa);
 
     int keylen = BIO_pending(bio);
-    char *pem_key = new char[keylen];
+    char * pem_key = new char[keylen];
     BIO_read(bio, pem_key, keylen);
     file->write(file, pem_key, keylen, 1);
     BIO_free_all(bio);
@@ -227,22 +251,25 @@ bool NetworkKey::SavePublic(SDL_RWops *file)
 
 std::string NetworkKey::PublicKeyString()
 {
-    if (m_key == nullptr) {
+    if (m_key == nullptr)
+    {
         log_error("No key loaded");
         return nullptr;
     }
-    RSA *rsa = EVP_PKEY_get1_RSA(m_key);
+    RSA * rsa = EVP_PKEY_get1_RSA(m_key);
     if (rsa == nullptr) {
         log_error("Failed to get RSA key handle!");
         return nullptr;
     }
-    BIO *bio = BIO_new(BIO_s_mem());
-    if (bio == nullptr) {
+    BIO * bio = BIO_new(BIO_s_mem());
+    if (bio == nullptr)
+    {
         log_error("Failed to initialise OpenSSL's BIO!");
         return nullptr;
     }
     int result = PEM_write_bio_RSAPublicKey(bio, rsa);
-    if (result != 1) {
+    if (result != 1)
+    {
         log_error("failed to write private key!");
         BIO_free_all(bio);
         return nullptr;
@@ -250,14 +277,12 @@ std::string NetworkKey::PublicKeyString()
     RSA_free(rsa);
 
     int keylen = BIO_pending(bio);
-    /* Use malloc here rather than new, so this pointer can be passed and
-     * freed in C */
-    char *pem_key = (char*)malloc(keylen + 1);
+    char * pem_key = new char[keylen + 1];
     BIO_read(bio, pem_key, keylen);
     BIO_free_all(bio);
     pem_key[keylen] = '\0';
     std::string pem_key_out(pem_key);
-    free(pem_key);
+    delete [] pem_key;
 
     return pem_key_out;
 }
@@ -280,13 +305,15 @@ std::string NetworkKey::PublicKeyHash()
         log_error("No key found");
         return nullptr;
     }
-    EVP_MD_CTX *ctx = EVP_MD_CTX_create();
-    if (EVP_DigestInit_ex(ctx, EVP_sha1(), nullptr) <= 0) {
+    EVP_MD_CTX * ctx = EVP_MD_CTX_create();
+    if (EVP_DigestInit_ex(ctx, EVP_sha1(), nullptr) <= 0)
+    {
         log_error("Failed to initialise digest context");
         EVP_MD_CTX_destroy(ctx);
         return nullptr;
     }
-    if (EVP_DigestUpdate(ctx, key.c_str(), key.size()) <= 0) {
+    if (EVP_DigestUpdate(ctx, key.c_str(), key.size()) <= 0)
+    {
         log_error("Failed to update digset");
         EVP_MD_CTX_destroy(ctx);
         return nullptr;
@@ -297,7 +324,8 @@ std::string NetworkKey::PublicKeyHash()
     EVP_DigestFinal(ctx, digest.data(), &digest_size);
     std::string digest_out;
     digest_out.reserve(EVP_MAX_MD_SIZE * 2 + 1);
-    for (int i = 0; i < digest_size; i++) {
+    for (int i = 0; i < digest_size; i++)
+    {
         char buf[3];
         sprintf(buf, "%02x", digest[i]);
         digest_out.append(buf);
@@ -305,25 +333,28 @@ std::string NetworkKey::PublicKeyHash()
     return digest_out;
 }
 
-bool NetworkKey::Sign(const char *md, const size_t len, char **signature, unsigned int *out_size)
+bool NetworkKey::Sign(const char * md, const size_t len, char ** signature, unsigned int * out_size)
 {
-    EVP_MD_CTX *mdctx = NULL;
+    EVP_MD_CTX * mdctx = nullptr;
 
     *signature = nullptr;
 
     /* Create the Message Digest Context */
-    if (!(mdctx = EVP_MD_CTX_create())) {
+    if (!(mdctx = EVP_MD_CTX_create()))
+    {
         log_error("Failed to create MD context");
         return false;
     }
     /* Initialise the DigestSign operation - SHA-256 has been selected as the message digest function in this example */
-    if (1 != EVP_DigestSignInit(mdctx, NULL, EVP_sha256(), NULL, m_key)) {
+    if (1 != EVP_DigestSignInit(mdctx, NULL, EVP_sha256(), NULL, m_key))
+    {
         log_error("Failed to init digest sign");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
     /* Call update with the message */
-    if (1 != EVP_DigestSignUpdate(mdctx, md, len)) {
+    if (1 != EVP_DigestSignUpdate(mdctx, md, len))
+    {
         log_error("Failed to goto update digest");
         EVP_MD_CTX_destroy(mdctx);
         return false;
@@ -332,15 +363,17 @@ bool NetworkKey::Sign(const char *md, const size_t len, char **signature, unsign
     /* Finalise the DigestSign operation */
     /* First call EVP_DigestSignFinal with a NULL sig parameter to obtain the length of the
      * signature. Length is returned in slen */
-    if (1 != EVP_DigestSignFinal(mdctx, NULL, out_size)) {
+    if (1 != EVP_DigestSignFinal(mdctx, NULL, out_size))
+    {
         log_error("failed to finalise signature");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
 
-    unsigned char *sig;
+    unsigned char * sig;
     /* Allocate memory for the signature based on size in slen */
-    if (!(sig = (unsigned char*)OPENSSL_malloc(sizeof(unsigned char) * (*out_size)))) {
+    if (!(sig = (unsigned char*)OPENSSL_malloc(sizeof(unsigned char) * (*out_size))))
+    {
         log_error("Failed to crypto-allocate space fo signature");
         EVP_MD_CTX_destroy(mdctx);
         return false;
@@ -360,34 +393,40 @@ bool NetworkKey::Sign(const char *md, const size_t len, char **signature, unsign
     return true;
 }
 
-bool NetworkKey::Verify(const char *md, const size_t len, const char* sig, const size_t siglen)
+bool NetworkKey::Verify(const char * md, const size_t len, const char * sig, const size_t siglen)
 {
-    EVP_MD_CTX *mdctx = NULL;
+    EVP_MD_CTX * mdctx = NULL;
 
     /* Create the Message Digest Context */
-    if (!(mdctx = EVP_MD_CTX_create())) {
+    if (!(mdctx = EVP_MD_CTX_create()))
+    {
         log_error("Failed to create MD context");
         return false;
     }
 
-    if (1 != EVP_DigestVerifyInit(mdctx, NULL, EVP_sha256(), NULL, m_key)) {
+    if (1 != EVP_DigestVerifyInit(mdctx, NULL, EVP_sha256(), NULL, m_key))
+    {
         log_error("Failed to initalise verification routine");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
 
     /* Initialize `key` with a public key */
-    if (1 != EVP_DigestVerifyUpdate(mdctx, md, len)) {
+    if (1 != EVP_DigestVerifyUpdate(mdctx, md, len))
+    {
         log_error("Failed to update verification");
         EVP_MD_CTX_destroy(mdctx);
         return false;
     }
 
-    if (1 == EVP_DigestVerifyFinal(mdctx, (unsigned char*)sig, siglen)) {
+    if (1 == EVP_DigestVerifyFinal(mdctx, (unsigned char *)sig, siglen))
+    {
         EVP_MD_CTX_destroy(mdctx);
         log_verbose("Succesfully verified signature");
         return true;
-    } else {
+    }
+    else
+    {
         EVP_MD_CTX_destroy(mdctx);
         log_error("Signature is invalid");
         return false;
