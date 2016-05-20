@@ -302,6 +302,44 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 	return true;
 }
 
+void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation)
+{
+	bool hasFence;
+	uint32 imageId;
+
+	if (direction & 1) {
+		hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+		imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE) | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98197C(imageId, 0, 0, 6, 32, 1, height, 2, 0, height, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+
+		imageId = SPR_STATION_PIER_EDGE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 24, 0, 8, 32, 1, height, get_current_rotation());
+
+		hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_STATION_PIER_FENCE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 31, 0, 1, 32, 7, height + 2, get_current_rotation());
+		}
+		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+	} else {
+		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, rotation);
+		imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW) | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98197C(imageId, 0, 0, 32, 6, 1, height, 0, 2, height, rotation);
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+
+		imageId = SPR_STATION_PIER_EDGE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 24, 32, 8, 1, height, rotation);
+
+		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, rotation);
+		if (hasFence) {
+			imageId = SPR_STATION_PIER_FENCE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 0, 31, 32, 1, 7, height + 2, rotation);
+		}
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+	}
+}
+
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
 {
