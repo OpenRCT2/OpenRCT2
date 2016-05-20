@@ -13,3 +13,258 @@
  * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
 #pragma endregion
+
+#include "../../interface/viewport.h"
+#include "../../paint/paint.h"
+#include "../../paint/supports.h"
+#include "../track_paint.h"
+
+// 1 2 0 3 4
+static const uint8 track_map_1x5[][5] = {
+	{0, 1, 2, 3, 4},
+	{0, 4, 3, 2, 1},
+	{0, 4, 3, 2, 1},
+	{0, 1, 2, 3, 4},
+};
+
+typedef struct pirate_ship_bound_box
+{
+	sint16 length_x;
+	sint16 length_y;
+	sint16 offset_x;
+	sint16 offset_y;
+} pirate_ship_bound_box;
+
+/** rct2: 0x008A83B0 */
+static const uint32 pirate_ship_base_sprite_offset[] = {
+	0,
+	9,
+	0,
+	9
+};
+
+/** rct2: 0x008A83C0 */
+static const pirate_ship_bound_box pirate_ship_data[] = {
+	{31, 16, 1, 8},
+	{16, 31, 8, 1},
+	{31, 16, 1, 8},
+	{16, 31, 8, 1},
+};
+
+enum
+{
+	SPR_PIRATE_SHIP_FRAME_SW_NE = 21994,
+	SPR_PIRATE_SHIP_FRAME_FRONT_SW_NE = 21995,
+	SPR_PIRATE_SHIP_FRAME_NW_SE = 21996,
+	SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE = 21997,
+};
+
+static const uint32 pirate_ship_frame_sprites[][2] = {
+	{SPR_PIRATE_SHIP_FRAME_SW_NE, SPR_PIRATE_SHIP_FRAME_FRONT_SW_NE},
+	{SPR_PIRATE_SHIP_FRAME_NW_SE, SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE},
+};
+
+/** rct2: 0x4AF254 */
+static void paint_pirate_ship_structure(rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
+{
+	uint32 imageId, baseImageId;
+
+	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+
+	rct_ride_entry * rideType = get_ride_entry(ride->subtype);
+	rct_vehicle * vehicle = NULL;
+
+	sint8 xOffset = !(direction & 1) ? axisOffset : 0;
+	sint8 yOffset = (direction & 1) ? axisOffset : 0;
+
+	height += 7;
+
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
+	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
+		vehicle = GET_VEHICLE(ride->vehicles[0]);
+
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
+		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+	}
+
+	baseImageId = rideType->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
+	if (vehicle != NULL) {
+		sint32 rotation = (sint8) vehicle->vehicle_sprite_type;
+		if (rotation != 0) {
+			if (direction & 2) {
+				rotation = -rotation;
+			}
+			if (rotation < 0) {
+				rotation = -rotation + 9;
+			}
+
+			baseImageId += rotation * 18;
+		}
+	}
+
+	uint32 imageColourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
+	if (imageColourFlags == 0x20000000) {
+		imageColourFlags = ride->vehicle_colours[0].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+	}
+
+	pirate_ship_bound_box bounds = pirate_ship_data[direction];
+
+	imageId = pirate_ship_frame_sprites[(direction & 1)][0] | RCT2_GLOBAL(0x00F44198, uint32);
+	sub_98197C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
+
+	imageId = baseImageId | imageColourFlags;
+	sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
+
+	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+
+	if (dpi->zoom_level <= 1
+	    && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
+	    && vehicle != NULL) {
+		int frameNum;
+		int peep = 0;
+		int offset = 1;
+		while (peep < 16) {
+			if (vehicle->num_peeps <= peep) {
+				break;
+			}
+
+			frameNum = offset + (direction >> 1);
+			imageColourFlags = vehicle->peep_tshirt_colours[peep] << 19 | vehicle->peep_tshirt_colours[peep + 1] << 24 | 0xA0000000;
+			imageId = (baseImageId + frameNum) | imageColourFlags;
+			sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
+
+			peep += 2;
+
+			if (vehicle->num_peeps <= peep) {
+				break;
+			}
+
+			frameNum = offset + ((direction >> 1) ^ 1);
+			imageColourFlags = vehicle->peep_tshirt_colours[peep] << 19 | vehicle->peep_tshirt_colours[peep + 1] << 24 | 0xA0000000;
+			imageId = (baseImageId + frameNum) | imageColourFlags;
+			sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
+
+			peep += 2;
+			offset += 2;
+		}
+	}
+
+	imageId = pirate_ship_frame_sprites[(direction & 1)][1] | RCT2_GLOBAL(0x00F44198, uint32);
+	sub_98199C(imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y, height, get_current_rotation());
+
+	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+}
+
+/** rct2: 0x008A85C4 */
+static void paint_pirate_ship(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	uint8 relativeTrackSequence = track_map_1x5[direction][trackSequence];
+	rct_ride * ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	uint32 imageId;
+	bool hasFence;
+
+	if (relativeTrackSequence == 1 || relativeTrackSequence == 4) {
+		wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+	} else if (direction & 1) {
+		metal_a_supports_paint_setup(0, 6, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(0, 7, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+
+		imageId = SPR_STATION_BASE_A_NW_SE | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+	} else {
+		metal_a_supports_paint_setup(0, 5, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(0, 8, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+
+		imageId = SPR_STATION_BASE_A_SW_NE | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+
+	if (direction & 1) {
+		if (relativeTrackSequence != 1 && relativeTrackSequence != 4) {
+			hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+			if (relativeTrackSequence == 2) {
+				imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE) | RCT2_GLOBAL(0x00F44198, uint32);
+			} else {
+				imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE) | RCT2_GLOBAL(0x00F44198, uint32);
+			}
+			sub_98199C(imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9, get_current_rotation());
+
+			imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE) | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98196C(imageId, 24, 0, 8, 32, 1, height + 9, get_current_rotation());
+
+			hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+			if (relativeTrackSequence == 3) {
+				if (hasFence) {
+					imageId = SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+					sub_98196C(imageId, 31, 0, 1, 32, 7, height + 11, get_current_rotation());
+				} else {
+					imageId = SPR_STATION_FENCE_SMALL_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+					sub_98196C(imageId, 23, 31, 8, 1, 7, height + 11, get_current_rotation());
+				}
+
+				imageId = SPR_STATION_FENCE_SMALL_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98196C(imageId, 0, 31, 8, 1, 7, height + 11, get_current_rotation());
+			} else if (hasFence) {
+				imageId = SPR_STATION_FENCE_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98196C(imageId, 31, 0, 1, 32, 7, height + 11, get_current_rotation());
+			}
+		}
+	} else {
+		if (relativeTrackSequence != 1 && relativeTrackSequence != 4) {
+			hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+			if (relativeTrackSequence == 2) {
+				imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE) | RCT2_GLOBAL(0x00F44198, uint32);
+			} else {
+				imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE) | RCT2_GLOBAL(0x00F44198, uint32);
+			}
+			sub_98199C(imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9, get_current_rotation());
+
+			imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE) | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98196C(imageId, 0, 24, 32, 8, 1, height + 9, get_current_rotation());
+
+			hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+			if (relativeTrackSequence == 3) {
+				if (hasFence) {
+					imageId = SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+					sub_98196C(imageId, 0, 31, 32, 1, 7, height + 11, get_current_rotation());
+				} else {
+					imageId = SPR_STATION_FENCE_SMALL_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+					sub_98196C(imageId, 31, 23, 1, 8, 7, height + 11, get_current_rotation());
+				}
+
+				imageId = SPR_STATION_FENCE_SMALL_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98196C(imageId, 31, 0, 1, 8, 7, height + 11, get_current_rotation());
+			} else if (hasFence) {
+				imageId = SPR_STATION_FENCE_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98196C(imageId, 0, 31, 32, 1, 7, height + 11, get_current_rotation());
+			}
+		}
+	}
+
+	switch (relativeTrackSequence) {
+		case 1: paint_pirate_ship_structure(ride, direction, 64, height); break;
+		case 2: paint_pirate_ship_structure(ride, direction, 32, height); break;
+		case 0: paint_pirate_ship_structure(ride, direction, 0, height); break;
+		case 3: paint_pirate_ship_structure(ride, direction, -32, height); break;
+		case 4: paint_pirate_ship_structure(ride, direction, -64, height); break;
+	}
+
+	paint_util_set_general_support_height(height + 112, 0x20);
+}
+
+/**
+ * rct2: 0x008A83E0
+ */
+TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int trackType, int direction)
+{
+	if (trackType != 116) {
+		return NULL;
+	}
+
+	return paint_pirate_ship;
+}
