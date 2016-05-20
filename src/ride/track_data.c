@@ -5534,7 +5534,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0x008245A8,						// RIDE_TYPE_40
 	0x0086E2F8,						// RIDE_TYPE_REVERSER_ROLLER_COASTER
 	0x00876618,						// RIDE_TYPE_HEARTLINE_TWISTER_COASTER
-	0x0087EDC4,						// RIDE_TYPE_MINI_GOLF
+	0,						// RIDE_TYPE_MINI_GOLF
 	0x008AD280,						// RIDE_TYPE_GIGA_COASTER
 	0,						// RIDE_TYPE_ROTO_DROP
 	0,						// RIDE_TYPE_FLYING_SAUCERS
@@ -5629,7 +5629,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_40
 	0,						// RIDE_TYPE_REVERSER_ROLLER_COASTER
 	0,						// RIDE_TYPE_HEARTLINE_TWISTER_COASTER
-	0,						// RIDE_TYPE_MINI_GOLF
+	get_track_paint_function_mini_golf,		// RIDE_TYPE_MINI_GOLF
 	0,						// RIDE_TYPE_GIGA_COASTER
 	get_track_paint_function_roto_drop,		// RIDE_TYPE_ROTO_DROP
 	get_track_paint_function_flying_saucers,// RIDE_TYPE_FLYING_SAUCERS

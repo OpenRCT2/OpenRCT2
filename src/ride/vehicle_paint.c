@@ -2366,8 +2366,8 @@ void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
 	case VEHICLE_VISUAL_LAUNCHED_FREEFALL:				vehicle_visual_launched_freefall(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_OBSERVATION_TOWER:				vehicle_visual_observation_tower(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_RIVER_RAPIDS:					vehicle_visual_river_rapids(x, imageDirection, y, z, vehicle, vehicleEntry); break;
-	case VEHICLE_VISUAL_MINI_GOLF_PLAYER:				RCT2_CALLPROC_X(0x006D42F0, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
-	case VEHICLE_VISUAL_MINI_GOLF_BALL:					RCT2_CALLPROC_X(0x006D43C6, x, imageDirection, y, z, (int)vehicle, rct2VehiclePtrFormat, 0); break;
+	case VEHICLE_VISUAL_MINI_GOLF_PLAYER:				vehicle_visual_mini_golf_player(x, imageDirection, y, z, vehicle, rct2VehiclePtrFormat); break;
+	case VEHICLE_VISUAL_MINI_GOLF_BALL:					vehicle_visual_mini_golf_ball(x, imageDirection, y, z, vehicle, rct2VehiclePtrFormat); break;
 	case VEHICLE_VISUAL_REVERSER:						vehicle_visual_reverser(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:	vehicle_visual_splash_boats_or_water_coaster(x, imageDirection, y, z, vehicle, vehicleEntry); break;
 	case VEHICLE_VISUAL_ROTO_DROP:						vehicle_visual_roto_drop(x, imageDirection, y, z, vehicle, vehicleEntry); break;
