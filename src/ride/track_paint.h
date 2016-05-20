@@ -166,6 +166,7 @@ void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direc
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
+TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction);
