@@ -839,16 +839,16 @@ STR_0834    :{SMALLFONT}{BLACK}디스크 및 게임 옵션
 STR_0835    :게임 초기화 실패
 STR_0836    :게임을 최소화 상태에서 실행할 수 없습니다
 STR_0837    :그래픽 시스템을 초기화할 수 없습니다
-STR_0838    :<더 이상 사용하지 않음>
+STR_0838    :
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<더 이상 사용하지 않음>
-STR_0842    :<더 이상 사용하지 않음>
-STR_0843    :<더 이상 사용하지 않음>
-STR_0844    :<더 이상 사용하지 않음>
-STR_0845    :<더 이상 사용하지 않음>
-STR_0846    :<더 이상 사용하지 않음>
+STR_0841    :
+STR_0842    :
+STR_0843    :
+STR_0844    :
+STR_0845    :
+STR_0846    :
 STR_0847    :'OpenRCT2'에 대해서
 STR_0848    :롤러코스터 타이쿤 2
 STR_0849    :{WINDOW_COLOUR_2}버전 2.01.028
@@ -1896,8 +1896,8 @@ STR_1890    :{SMALLFONT}{BLACK}정비기술자가 놀이기구를 얼마나 자�
 STR_1891    :공원에 아직 {STRINGID}(이)가 없습니다!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
-STR_1892    :<더 이상 사용하지 않음>
-STR_1893    :<더 이상 사용하지 않음>
+STR_1892    :
+STR_1893    :
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} 판매: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}새 놀이기구/시설 건설
 STR_1896    :{WINDOW_COLOUR_2}수익/지출
@@ -2321,10 +2321,10 @@ STR_2313    :{WINDOW_COLOUR_2}멀미도: {BLACK}{COMMA2DP32} (근사치)
 STR_2314    :{WINDOW_COLOUR_2}놀이기구 길이: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}비용: {BLACK}약 {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}필요한 공간: {BLACK}{COMMA16} x {COMMA16}칸
-STR_2317    :<더 이상 사용하지 않음>
-STR_2318    :<더 이상 사용하지 않음>
-STR_2319    :<더 이상 사용하지 않음>
-STR_2320    :<더 이상 사용하지 않음>
+STR_2317    :
+STR_2318    :
+STR_2319    :
+STR_2320    :
 STR_2321    :{WINDOW_COLOUR_2}놀이기구/시설 수: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}직원: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}공원 크기: {BLACK}{COMMA32}m{SQUARED}
@@ -2441,12 +2441,12 @@ STR_2433    :{BLACK}{STRINGID} 무료 이용권
 STR_2434    :{BLACK}{STRINGID} 광고
 STR_2435    :{BLACK}{STRINGID} 광고
 STR_2436    :1주
-STR_2437    :<더 이상 사용하지 않음>
-STR_2438    :<더 이상 사용하지 않음>
-STR_2439    :<더 이상 사용하지 않음>
-STR_2440    :<더 이상 사용하지 않음>
-STR_2441    :<더 이상 사용하지 않음>
-STR_2442    :<더 이상 사용하지 않음>
+STR_2437    :
+STR_2438    :
+STR_2439    :
+STR_2440    :
+STR_2441    :
+STR_2442    :
 STR_2443    :{WINDOW_COLOUR_2}1주당 비용: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}총 비용: {BLACK}{CURRENCY2DP}
 STR_2445    :이 광고 행사를 시작합니다
@@ -2687,8 +2687,8 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :모든 연구가 완료되었습니다
 STR_2681    :{MEDIUMFONT}{BLACK}돈 {CURRENCY} 늘리기
-STR_2682    :<더 이상 사용하지 않음>
-STR_2683    :<더 이상 사용하지 않음>
+STR_2682    :
+STR_2683    :
 STR_2684    :{SMALLFONT}{BLACK}손님 대규모로 불러오기
 STR_2685    :단일 노이즈 매개 변수
 STR_2686    :{WINDOW_COLOUR_2}저:
@@ -2767,10 +2767,10 @@ STR_2757    :(더 이상 사용 안 함)
 STR_2758    :(더 이상 사용 안 함)
 STR_2759    :보도 청소
 STR_2760    :+{CURRENCY}
-STR_2761    :<더 이상 사용하지 않음>
-STR_2762    :<더 이상 사용하지 않음>
+STR_2761    :
+STR_2762    :
 STR_2763    :???
-STR_2764    :<더 이상 사용하지 않음>
+STR_2764    :
 STR_2765    :손님 많이 부르기
 STR_2766    :시나리오 클리어
 STR_2767    :날씨 고정
@@ -2976,8 +2976,8 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :<더 이상 사용하지 않음>
-STR_2970    :<더 이상 사용하지 않음>
+STR_2969    :
+STR_2970    :
 STR_2971    :주 색상 조합
 STR_2972    :부 색상 조합 1
 STR_2973    :부 색상 조합 2
@@ -3167,8 +3167,8 @@ STR_3156    :
 STR_3157    :지도
 STR_3158    :그래프
 STR_3159    :목록
-STR_3160    :<더 이상 사용하지 않음>
-STR_3161    :<더 이상 사용하지 않음>
+STR_3160    :{SMALLFONT}{BLACK}한 운행마다 트랙을 몇 번 돌지를 선택합니다.
+STR_3161    :
 STR_3162    :충분한 메모리를 할당할 수 없습니다
 STR_3163    :새 데이터 설치중:
 STR_3164    :{BLACK}{COMMA16}개 선택 됨 (최대 {COMMA16}개)
@@ -3344,7 +3344,7 @@ STR_3333    :게임 저장시 사용한 오브젝트를 같이 포함하여 저�
 STR_3334    :{SMALLFONT}{BLACK}필요한 경우 내장된 오브젝트(기본 오브젝트가 아닌 사용자가 추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다. 이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일 용량이 늘어납니다
 STR_3335    :롤러코스터 디자이너 - 놀이기구 종류 & 차량을 선택하세요
 STR_3336    :트랙 디자인 매니저 - 놀이기구 종류를 선택하세요
-STR_3337    :<더 이상 사용하지 않음>
+STR_3337    :
 STR_3338    :{BLACK}커스텀 디자인 구조
 STR_3339    :{BLACK}{COMMA16}개의 디자인, 커스텀 디자인 구조 사용 가능
 STR_3340    :{BLACK}{COMMA16}개의 디자인, 커스텀 디자인 구조 사용 가능
@@ -3369,8 +3369,8 @@ STR_3358    :트랙 디자인을 삭제할 수 없습니다...
 STR_3359    :{BLACK}이 종류의 트랙 디자인 없음
 STR_3360    :경고!
 STR_3361    :트랙 디자인이 너무 많습니다. 일부가 표시되지 않을 것입니다.
-STR_3362    :<더 이상 사용하지 않음>
-STR_3363    :<더 이상 사용하지 않음>
+STR_3362    :
+STR_3363    :
 STR_3364    :고급
 STR_3365    :{SMALLFONT}{BLACK}조형물 그룹과 함께 조형물 각각을 따로 선택할 수 있게 허용합니다
 STR_3366    :{BLACK}= 놀이기구
@@ -3460,7 +3460,7 @@ STR_5120    :재정
 STR_5121    :연구
 STR_5122    :놀이기구를 (RCT1처럼) 트랙 종류 별로 선택
 STR_5123    :놀이기구 새 걸로
-STR_5124    :<더 이상 사용하지 않음>
+STR_5124    :
 STR_5125    :모두 파괴 가능
 STR_5126    :무작위 타이틀 음악
 STR_5127    :{SMALLFONT}{BLACK}땅을 올리거나 내리지 않고 지형을 편집합니다
@@ -3830,7 +3830,7 @@ STR_5490    :게임 밖으로 커서가 나가면 효과음 끄기
 STR_5491    :개발 목록
 STR_5492    :시나리오 설정
 STR_5493    :메시지 보내기
-STR_5494    :<더 이상 사용하지 않음>
+STR_5494    :
 STR_5495    :플레이어 목록
 STR_5496    :플레이어:
 STR_5497    :핑:

@@ -1738,7 +1738,7 @@ STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Construction
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Nombre de tours :
-STR_1735    :{SMALLFONT}{BLACK}Nombre de tours du circuit
+STR_1735    :{SMALLFONT}{BLACK}Nombre de tours de circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1737    :{COMMA16}
 STR_1738    :Impossible de changer le nombre de tours...
@@ -1960,8 +1960,8 @@ STR_1951    :Graphique valeur du parc
 STR_1952    :Graphique bénéfices
 STR_1953    :Marketing
 STR_1954    :Financement recherches
-STR_1955    :{WINDOW_COLOUR_2}Nombre de circuits :
-STR_1956    :{SMALLFONT}{BLACK}Nombre de circuits de voie par attraction
+STR_1955    :{WINDOW_COLOUR_2}Nombre de tours :
+STR_1956    :{SMALLFONT}{BLACK}Nombre de tours de circuit à effectuer
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Impossible de changer le nombre de circuits...
@@ -3167,7 +3167,7 @@ STR_3156    :
 STR_3157    :plan
 STR_3158    :graphique
 STR_3159    :liste
-STR_3160    :<not used anymore>
+STR_3160    :{SMALLFONT}{BLACK}Sélectionne le nombre de tours de circuit à effectuer
 STR_3161    :<not used anymore>
 STR_3162    :Impossible d'allouer assez de mémoire
 STR_3163    :Installation des nouvelles données : 

@@ -67,7 +67,7 @@ STR_0062    :Barche con lo schizzo
 STR_0063    :Mini-elicotteri
 STR_0064    :Ottovolante sdraiato
 STR_0065    :Monorotaia sospesa
-STR_0066    :Unknown Ride (40)
+STR_0066    :Attrazione sconosciuta (40)
 STR_0067    :Ottovolante al contrario
 STR_0068    :Serpentone volante
 STR_0069    :Mini golf
@@ -83,16 +83,16 @@ STR_0078    :Inverted Hairpin Coaster
 STR_0079    :Tappeto magico
 STR_0080    :Corsa sottomarina
 STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
+STR_0082    :Attrazione sconosciuta (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
+STR_0084    :Attrazione sconosciuta (52)
+STR_0085    :Attrazione sconosciuta (53)
+STR_0086    :Attrazione sconosciuta (54)
+STR_0087    :Attrazione sconosciuta (55)
 STR_0088    :Ottovolante invertito a impulso
 STR_0089    :Mini-ottovolante
 STR_0090    :Corsa nella miniera
-STR_0091    :Unknown Ride (59)
+STR_0091    :Attrazione sconosciuta (59)
 STR_0092    :Ottovolante a lancio LIM
 STR_0093    :
 STR_0094    :
@@ -525,12 +525,12 @@ STR_0520    :Una piattaforma dalla quale i passeggeri possono guidare una piccol
 STR_0521    :Un ottovolante veloce e snodato con curve strette e discese ripide. L'intensità non può essere che alta.
 STR_0522    :Un piccolo ottovolante dove i passeggeri siedono sopra al percorso senza un vagone attorno
 STR_0523    :I passeggeri viaggiano lentamente su veicoli elettrici lungo un percorso basato su un circuito
-STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
+STR_0524    :Le macchine in caduta libera sono lanciate pneumaticamente su una torre alta di acciaio e poi scendono in caduta libera
 STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
+STR_0526    :I passeggeri viaggiano in una cabina di osservazione rotante mentre salgono su un'alta torre
 STR_0527    :Un rapido ottovolante d'acciaio caratterizzato da cadute verticali
 STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
+STR_0529    :Il treno della miniera é una montagna russa a tema fatta in acciaio realizzata per ricordare una vecchia ferrovia
 STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il tracciato
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
@@ -555,8 +555,8 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :La carrozza acquista accelerazione a partire dalla stazione attraverso un lungo tratto pianeggiante grazie a dei motori a induzione lineare, quindi percorre una ripida salita per poi scendere in caduta libera e tornare alla stazione
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0554    :La carrozza acquista velocità a partire dalla stazione attraverso un lungo tratto pianeggiante grazie a dei motori a induzione lineare, quindi percorre una salita ripida per poi scendere in caduta libera e tornare alla stazione
+STR_0555    :Gli ospiti della attrazione usano l'ascensore su una torre verticale per andare da un livello all'altro
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :
 STR_0558    :
@@ -582,7 +582,7 @@ STR_0577    :Bogied cars run on wooden tracks, turning around on special reversi
 STR_0578    :Le carrozze corrono per il tracciato caratterizzato da vari giri,  ripide discese e curve ondulanti
 STR_0579    :
 STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
-STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
+STR_0581    :Un anello di sedie é posizionato in cima alla torre mentre ruota piano, quindi precipita fermandosi gentilmente alla base tramite freni magnetici
 STR_0582    :
 STR_0583    :
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
@@ -4119,7 +4119,7 @@ STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
 STR_5810    :Disabilita limite di lunghezza del treno
 STR_5811    :{SMALLFONT}{BLACK}If selezionato, puoi avere{NEWLINE}255 macchine per treno
-
+STR_5812    :Mostra la finestra multiplayer
 
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
