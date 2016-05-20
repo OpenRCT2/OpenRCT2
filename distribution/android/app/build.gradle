@@ -61,5 +61,57 @@ model {
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   testCompile 'junit:junit:4.12'
+  compile 'commons-io:commons-io:2.5'
   compile 'com.android.support:appcompat-v7:23.3.0'
+}
+
+task createSegmentFile() {
+  ext.srcFile = file('../../../openrct2.exe')
+  ext.destFile = new File(buildDir, "openrct2_load")
+  inputs.file srcFile
+  outputs.file destFile
+
+  doLast {
+    delete(destFile)
+    exec {
+      executable "dd"
+      args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1", "count=1187"
+    }
+    exec {
+      executable "dd"
+      args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1188", "seek=1187", "count=318"
+    }
+    exec {
+      executable "dd"
+      args "if=/dev/zero", "of=${destFile}", "bs=4096", "seek=1505", "count=2630", "conv=notrunc"
+    }
+    exec {
+      executable "dd"
+      args "if=/dev/zero", "of=${destFile}", "bs=4096", "skip=1506", "seek=4135", "count=1", "conv=notrunc"
+    }
+  }
+}
+
+task copySegmentFile(type: Copy) {
+  from '/Users/Marijn/temp/openrct2_load'
+  into 'src/main/assets'
+}
+
+task copyLanguageAssets(type: Copy) {
+  from '../../../data'
+  into 'src/main/assets/data'
+}
+
+tasks.whenTaskAdded { mergeAssetsTask ->
+  if (!mergeAssetsTask.hasProperty("variantName") || mergeAssetsTask.variantName == null) {
+    return;
+  }
+
+  String variant = mergeAssetsTask.variantName.capitalize()
+  if (mergeAssetsTask.name != "merge${variant}Assets") {
+    return;
+  }
+
+  mergeAssetsTask.dependsOn copyLanguageAssets
+  mergeAssetsTask.dependsOn copySegmentFile
 }
