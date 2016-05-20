@@ -325,88 +325,57 @@ static void paint_mini_golf_track_25_deg_down_to_flat(uint8 rideIndex, uint8 tra
 	paint_mini_golf_track_flat_to_25_deg_up(rideIndex, trackSequence, direction, (height + 2) % 4, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
 static void paint_mini_golf_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	rct_ride *ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_ride * ride = get_ride(rideIndex);
+	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+	uint32 imageId;
+	bool hasFence;
 
-	int ebx = ride->entrance_style;
-	uint32 flags = 0;
+	imageId = SPR_MINI_GOLF_STATION_FLOOR | RCT2_GLOBAL(0x00F44198, uint32);
+	mini_golf_paint_util_7c(direction, imageId, 0, 0, 32, 28, 1, height, 0, 0, height, get_current_rotation());
 
-
-	if (RCT2_GLOBAL(0x00F441A0, uint32) & 0x20000000) {
-		flags &= 0x7FFFF;
-	}
-
-	RCT2_GLOBAL(0xF441E8, uint32) = flags;
-	RCT2_GLOBAL(0xF441E4, uint32) = flags;
-
-	uint32 image_id = SPR_MINI_GOLF_STATION_FLOOR | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 28, 1, height, 0, 0, height, get_current_rotation());
-
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-	uint16 entranceLoc = 0;
-
-	uint8 entranceId = (mapElement->properties.track.sequence & 0x70) >> 4;
-
-	if (ride->entrances[entranceId] != entranceLoc && ride->exits[entranceId] != entranceLoc) {
-		image_id = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
-		sub_98199C(image_id, 0, -10, 32, 1, 7, height, 0, 0, height + 1, get_current_rotation());
-
-		RCT2_GLOBAL(0xF441E8, uint32)++;
-	}
-
-	image_id = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
-	sub_98199C(image_id, 0, 10, 32, 1, 7, height, 0, 31, height + 2, get_current_rotation());
-
-
-	if (RCT2_GLOBAL(0xF441E8, uint32) > 32) {
-
-	}
-
-
-	// Something with covered stations based on entrance style
-	uint32 ebx_2 = RCT2_GLOBAL(0xF441E4, uint32);
-	if (RCT2_GLOBAL(0x0141E9DB, uint8) & 3 && ebx_2 >= 32) {
-		if (ebx_2 & 0x40000000) {
-			image_id = (ebx_2 & 0xBFFFFFFF) + 2;
-			sub_98197C(image_id, 0, 0, 32, 32, 0, height, 0, 0, height + 23, get_current_rotation());
-
-			uint32 edi = RCT2_GLOBAL(0x00F44198, uint32);
-			// and     edi, (offset map_elements.field_0+19C48h)
-			// cmp     edi, (offset map_elements.field_0+99C48h)
-			// ja      short loc_87F582
-
-			image_id = (ebx | edi) + 0x380000C + 2;
-			sub_98199C(image_id, 0, 0, 32, 32, 0, height, 0, 0, height + 23, get_current_rotation());
-		} else {
-			image_id = (ebx_2 + 2) | RCT2_GLOBAL(0x00F44198, uint32);
-			sub_98197C(image_id, 0, 0, 32, 32, 0, height, 0, 0, height + 23, get_current_rotation());
+	if (direction & 1) {
+		hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98197C(imageId, -10, 0, 1, 32, 7, height, 0, 0, height + 2, get_current_rotation());
 		}
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+
+		hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98197C(imageId, 10, 0, 1, 32, 7, height, 31, 0, height + 2, get_current_rotation());
+		}
+		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+
+		// Was leftwards tunnel in game, seems odd
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	} else {
+		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98197C(imageId, 0, -10, 32, 1, 7, height, 0, 0, height + 2, get_current_rotation());
+		}
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+
+		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+			sub_98197C(imageId, 0, 10, 32, 1, 7, height, 0, 31, height + 2, get_current_rotation());
+		}
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+
+		paint_util_push_tunnel_left(height, TUNNEL_6);
 	}
 
-	wooden_a_supports_paint_setup(0, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
 
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-
-	uint32 eax = 0xFFFF0000 | (height & 0xFF) | (6 << 8);
-	RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56A, uint16)++;
-
-
-	height += 32;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 32;
-	}
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /**
