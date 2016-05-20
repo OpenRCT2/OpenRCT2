@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include "NetworkKey.h"
 #include "../diagnostic.h"
 
@@ -391,3 +393,5 @@ bool NetworkKey::Verify(const char *md, const size_t len, const char* sig, const
         return false;
     }
 }
+
+#endif // DISABLE_NETWORK

@@ -83,6 +83,7 @@
     <ClCompile Include="src\management\research.c" />
     <ClCompile Include="src\network\http.cpp" />
     <ClCompile Include="src\network\network.cpp" />
+    <ClCompile Include="src\network\NetworkKey.cpp" />
     <ClCompile Include="src\network\twitch.cpp" />
     <ClCompile Include="src\object.c" />
     <ClCompile Include="src\object_list.c" />
@@ -357,6 +358,7 @@
     <ClInclude Include="src\network\http.h" />
     <ClInclude Include="src\network\twitch.h" />
     <ClInclude Include="src\network\network.h" />
+    <ClInclude Include="src\network\NetworkKey.h" />
     <ClInclude Include="src\object.h" />
     <ClInclude Include="src\openrct2.h" />
     <ClInclude Include="src\paint\map_element\map_element.h" />
