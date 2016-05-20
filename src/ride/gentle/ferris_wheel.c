@@ -174,10 +174,10 @@ static void paint_ferris_wheel(uint8 rideIndex, uint8 trackSequence, uint8 direc
 	}
 
 	switch (relativeTrackSequence) {
-		case 1: paint_ferris_wheel_structure(rideIndex, rotation, 48, height); break;
-		case 2: paint_ferris_wheel_structure(rideIndex, rotation, 16, height); break;
-		case 0: paint_ferris_wheel_structure(rideIndex, rotation, -16, height); break;
-		case 3: paint_ferris_wheel_structure(rideIndex, rotation, -48, height); break;
+		case 1: paint_ferris_wheel_structure(rideIndex, direction, 48, height); break;
+		case 2: paint_ferris_wheel_structure(rideIndex, direction, 16, height); break;
+		case 0: paint_ferris_wheel_structure(rideIndex, direction, -16, height); break;
+		case 3: paint_ferris_wheel_structure(rideIndex, direction, -48, height); break;
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
