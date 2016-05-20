@@ -320,11 +320,11 @@ bool wooden_b_supports_paint_setup(int supportType, int special, int height, uin
 
 /**
  * Metal pole supports
- * eax = special,
- * ebx = segment, 
- * edx = height, 
- * edi = supportType, 
- * ebp = imageColourFlags;
+ * @param supportType (edi)
+ * @param segment (ebx)
+ * @param special (ax)
+ * @param height (edx)
+ * @param imageColourFlags (ebp)
  *  rct2: 0x00663105
  */
 bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags)
