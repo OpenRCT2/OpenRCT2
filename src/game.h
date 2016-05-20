@@ -130,8 +130,10 @@ extern uint16 gErrorStringId;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[67];
 
-#define gCurrentTicks		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
+#define gCurrentTicks				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
 
+extern uint16 gTicksSinceLastUpdate;
+extern uint32 gLastTickCount;
 extern uint8 gGamePaused;
 extern int gGameSpeed;
 extern float gDayNightCycle;

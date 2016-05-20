@@ -59,6 +59,8 @@
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
+uint16 gTicksSinceLastUpdate;
+uint32 gLastTickCount;
 uint8 gGamePaused = 0;
 int gGameSpeed = 1;
 float gDayNightCycle = 0;
@@ -261,7 +263,7 @@ void game_update()
 	if (gGameSpeed > 1) {
 		numUpdates = 1 << (gGameSpeed - 1);
 	} else {
-		numUpdates = RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, uint16) / 31;
+		numUpdates = gTicksSinceLastUpdate / 31;
 		numUpdates = clamp(1, numUpdates, 4);
 	}
 

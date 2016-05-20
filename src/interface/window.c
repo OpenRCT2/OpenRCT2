@@ -161,7 +161,7 @@ void window_update_all()
 	gfx_draw_all_dirty_blocks();
 
 	// 1000 tick update
-	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) += RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16);
+	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) += gTicksSinceLastUpdate;
 	if (RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) >= 1000) {
 		RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) = 0;
 		for (rct_window* w = RCT2_LAST_WINDOW; w >= g_window_list; w--)

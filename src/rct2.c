@@ -141,7 +141,6 @@ int rct2_init()
 	log_verbose("initialising game");
 
 	gScenarioTicks = 0;
-	RCT2_GLOBAL(0x009AC310, char*) = RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, char*);
 	util_srand((unsigned int)time(0));
 	if (!rct2_init_directories())
 		return 0;
@@ -436,16 +435,11 @@ int check_file_path(int pathId)
 
 void rct2_update()
 {
-	int tick, tick2;
-
-	tick = SDL_GetTicks();
-
-	tick2 = tick - RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32);
-	RCT2_GLOBAL(RCT2_ADDRESS_TICKS_SINCE_LAST_UPDATE, sint16) = tick2 = min(tick2, 500);
-
-	RCT2_GLOBAL(RCT2_ADDRESS_LAST_TICK_COUNT, sint32) = tick;
+	int tickCount = SDL_GetTicks();
+	gTicksSinceLastUpdate = min(tickCount - gLastTickCount, 500);
+	gLastTickCount = tickCount;
 	if (game_is_not_paused()) {
-		gPaletteEffectFrame += tick2;
+		gPaletteEffectFrame += gTicksSinceLastUpdate;
 	}
 
 	date_update_real_time_of_day();

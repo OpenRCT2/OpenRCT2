@@ -91,7 +91,6 @@ __declspec(dllexport) int StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevInsta
 	}
 
 	RCT2_GLOBAL(RCT2_ADDRESS_HINSTANCE, HINSTANCE) = hInstance;
-	RCT2_GLOBAL(RCT2_ADDRESS_CMDLINE, LPSTR) = lpCmdLine;
 
 	// argv = CommandLineToArgvA(lpCmdLine, &argc);
 	argv = (char**)windows_get_command_line_args(&argc);
