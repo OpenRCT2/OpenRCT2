@@ -150,7 +150,7 @@ void window_editor_bottom_toolbar_open()
 */
 void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 	window_close_all();
-	g_editor_step = EDITOR_STEP_OBJECT_SELECTION;
+	gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	gfx_invalidate_screen();
 }
 
@@ -173,7 +173,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 	window_close_all();
 	sub_6DFED0();
 	scenery_set_default_placement_configuration();
-	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	window_map_open();
 	gfx_invalidate_screen();
 }
@@ -185,7 +185,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
 void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 	window_close_all();
 	window_editor_inventions_list_open();
-	g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
+	gS6Info->editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
 	gfx_invalidate_screen();
 }
 
@@ -196,7 +196,7 @@ void window_editor_bottom_toolbar_jump_back_to_invention_list_set_up() {
 void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
 	window_close_all();
 	window_editor_scenario_options_open();
-	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
+	gS6Info->editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
 
@@ -207,7 +207,7 @@ void window_editor_bottom_toolbar_jump_back_to_scenario_options() {
 void window_editor_bottom_toolbar_jump_back_to_options_selection() {
 	window_close_all();
 	window_editor_scenario_options_open();
-	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
+	gS6Info->editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
 
@@ -259,7 +259,7 @@ static void sub_66F6E3()
 	}
 
 	window_new_ride_open();
-	RCT2_GLOBAL(0x0141F570, uint8) = 6;
+	gS6Info->editor_step = EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 	gfx_invalidate_screen();
 }
 
@@ -277,7 +277,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 	} else {
 		sub_6DFED0();
 		scenery_set_default_placement_configuration();
-		RCT2_GLOBAL(0x00141F570, uint8) = 1;
+		gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 		window_map_open();
 		gfx_invalidate_screen();
 	}
@@ -291,7 +291,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 	if (editor_check_park()) {
 		window_close_all();
 		window_editor_inventions_list_open();
-		g_editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
+		gS6Info->editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
 	} else {
 		window_error_open(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText);
 	}
@@ -306,7 +306,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
 	window_close_all();
 	window_editor_scenario_options_open();
-	g_editor_step = EDITOR_STEP_OPTIONS_SELECTION;
+	gS6Info->editor_step = EDITOR_STEP_OPTIONS_SELECTION;
 	gfx_invalidate_screen();
 }
 
@@ -317,7 +317,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
 void window_editor_bottom_toolbar_jump_forward_to_objective_selection() {
 	window_close_all();
 	window_editor_objective_options_open();
-	g_editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+	gS6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	gfx_invalidate_screen();
 }
 
@@ -327,8 +327,6 @@ void window_editor_bottom_toolbar_jump_forward_to_objective_selection() {
  */
 void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-
 	if (!scenario_prepare_for_save()) {
 		window_error_open(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText);
 		gfx_invalidate_screen();
@@ -336,7 +334,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 	}
 
 	window_close_all();
-	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO, s6Info->name);
+	window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO, gS6Info->name);
 }
 
 /**
@@ -349,10 +347,10 @@ static void window_editor_bottom_toolbar_mouseup(rct_window *w, int widgetIndex)
 		if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) ||
 			(gSpriteListCount[SPRITE_LIST_NULL] == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_18))
 		) {
-			previous_button_mouseup_events[g_editor_step]();
+			previous_button_mouseup_events[gS6Info->editor_step]();
 		}
 	} else if (widgetIndex == WIDX_NEXT_STEP_BUTTON) {
-		next_button_mouseup_events[g_editor_step]();
+		next_button_mouseup_events[gS6Info->editor_step]();
 	}
 }
 
@@ -389,9 +387,9 @@ void window_editor_bottom_toolbar_invalidate(rct_window *w)
 		hide_previous_step_button();
 		hide_next_step_button();
 	} else {
-		if (g_editor_step == EDITOR_STEP_OBJECT_SELECTION) {
+		if (gS6Info->editor_step == EDITOR_STEP_OBJECT_SELECTION) {
 			hide_previous_step_button();
-		} else if (g_editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		} else if (gS6Info->editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			hide_next_step_button();
 		} else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)) {
 			if (gSpriteListCount[SPRITE_LIST_NULL] != MAX_SPRITES || gParkFlags & PARK_FLAGS_18) {
@@ -410,7 +408,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	bool drawPreviousButton = false;
 	bool drawNextButton = false;
 
-	if (g_editor_step == EDITOR_STEP_OBJECT_SELECTION) {
+	if (gS6Info->editor_step == EDITOR_STEP_OBJECT_SELECTION) {
 		drawNextButton = true;
 	}
 	else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
@@ -435,7 +433,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->y, 0x2000033);
 		}
 
-		if ((drawPreviousButton || drawNextButton) && g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		if ((drawPreviousButton || drawNextButton) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			gfx_fill_rect(dpi,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + w->y,
@@ -458,7 +456,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				w->colours[1], 0x30);
 		}
 
-		if ((drawPreviousButton || drawNextButton) && g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		if ((drawPreviousButton || drawNextButton) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			gfx_fill_rect_inset(dpi,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + 1 + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 1 + w->y,
@@ -471,7 +469,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			(window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right +
 			window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left) / 2 + w->x;
 		short stateY = w->height - 0x0C + w->y;
-		gfx_draw_string_centred(dpi, STR_OBJECT_SELECTION_STEP + g_editor_step,
+		gfx_draw_string_centred(dpi, STR_OBJECT_SELECTION_STEP + gS6Info->editor_step,
 			stateX, stateY, (w->colours[2] & 0x7F) | 0x20, 0);
 
 		if (drawPreviousButton) {
@@ -490,7 +488,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + w->x;
 			short textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y;
 
-			short stringId = STR_OBJECT_SELECTION_STEP + g_editor_step - 1;
+			short stringId = STR_OBJECT_SELECTION_STEP + gS6Info->editor_step - 1;
 			if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 				stringId = STR_OBJECT_SELECTION_STEP;
 
@@ -498,7 +496,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			gfx_draw_string_centred(dpi, stringId, textX, textY + 10, textColour, 0);
 		}
 
-		if ((drawPreviousButton || drawNextButton) && g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		if ((drawPreviousButton || drawNextButton) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			gfx_draw_sprite(dpi, SPR_NEXT,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29 + w->x,
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y, 0);
@@ -515,7 +513,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
 				window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + w->x;
 			short textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y;
 
-			short stringId = STR_OBJECT_SELECTION_STEP + g_editor_step + 1;
+			short stringId = STR_OBJECT_SELECTION_STEP + gS6Info->editor_step + 1;
 			if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 				stringId = STR_ROLLERCOASTER_DESIGNER_STEP;
 

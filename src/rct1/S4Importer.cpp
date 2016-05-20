@@ -28,6 +28,7 @@ extern "C"
 {
     #include "../audio/audio.h"
     #include "../cheats.h"
+    #include "../editor.h"
     #include "../game.h"
     #include "../interface/window.h"
     #include "../localisation/date.h"
@@ -123,7 +124,7 @@ void S4Importer::Initialise()
     date_reset();
     window_guest_list_init_vars_b();
     window_staff_list_init_vars();
-    RCT2_GLOBAL(0x0141F570, uint8) = 0;
+    gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
     gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     window_new_ride_init_vars();
     RCT2_GLOBAL(0x0141F571, uint8) = 4;
@@ -1022,7 +1023,7 @@ void S4Importer::ImportClimate()
 
 void S4Importer::ImportScenarioNameDetails()
 {
-    rct_s6_info * s6Info = (rct_s6_info*)0x0141F570;
+    rct_s6_info * s6Info = gS6Info;
 
     String::Set(s6Info->name, sizeof(s6Info->name), _s4.scenario_name);
     String::Set(s6Info->details, sizeof(s6Info->details), "");

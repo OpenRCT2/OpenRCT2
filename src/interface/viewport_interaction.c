@@ -44,7 +44,6 @@ static rct_peep *viewport_interaction_get_closest_peep(int x, int y, int maxDist
  */
 int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *info)
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x00141F570;
 	rct_map_element *mapElement;
 	rct_sprite *sprite;
 	rct_vehicle *vehicle;
@@ -54,7 +53,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	//
-	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };
@@ -164,7 +163,6 @@ int viewport_interaction_left_click(int x, int y)
  */
 int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info *info)
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x00141F570;
 	rct_map_element *mapElement;
 	rct_sprite *sprite;
 	rct_scenery_entry *sceneryEntry;
@@ -177,7 +175,7 @@ int viewport_interaction_get_item_right(int x, int y, viewport_interaction_info 
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	//
-	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && s6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
 	rct_xy16 mapCoord = { 0 };

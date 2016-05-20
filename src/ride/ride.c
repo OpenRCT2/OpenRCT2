@@ -1889,13 +1889,12 @@ int sub_6CC3FB(int rideIndex)
  */
 void ride_update_all()
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 	rct_ride *ride;
 	int i;
 
 	// Remove all rides if scenario editor
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-		if (s6Info->editor_step <= EDITOR_STEP_INVENTIONS_LIST_SET_UP)
+		if (gS6Info->editor_step <= EDITOR_STEP_INVENTIONS_LIST_SET_UP)
 			FOR_ALL_RIDES(i, ride)
 				ride->type = RIDE_TYPE_NULL;
 		return;

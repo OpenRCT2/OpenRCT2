@@ -19,6 +19,7 @@
 #include "../audio/audio.h"
 #include "../config.h"
 #include "../game.h"
+#include "../editor.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
@@ -1946,7 +1947,7 @@ static void window_editor_object_selection_manage_tracks()
 		gResearchedRideEntries[i] = 0xFFFFFFFF;
 	}
 
-	RCT2_GLOBAL(0x141F570, uint8) = 7;
+	gS6Info->editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
 	int entry_index = 0;
 	for (; ((int)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);

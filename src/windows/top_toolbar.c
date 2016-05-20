@@ -466,7 +466,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 		gDropdownItemsFormat[1] = 2780;
 		numItems = 2;
 
-		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && g_editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+		if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info->editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
 			gDropdownItemsFormat[2] = 2690;
 			numItems++;
 		}
@@ -537,8 +537,7 @@ static void window_top_toolbar_dropdown(rct_window *w, int widgetIndex, int drop
 			break;
 		case DDIDX_SAVE_GAME_AS:
 			if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-				rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
-				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, s6Info->name);
+				window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info->name);
 			}
 			else {
 				tool_cancel();
@@ -668,7 +667,7 @@ static void window_top_toolbar_invalidate(rct_window *w)
 		window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
 		window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
-		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
+		if (gS6Info->editor_step != EDITOR_STEP_LANDSCAPE_EDITOR) {
 			window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_LAND].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_WATER].type = WWT_EMPTY;
@@ -677,12 +676,12 @@ static void window_top_toolbar_invalidate(rct_window *w)
 			window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_EMPTY;
 		}
 
-		if (g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		if (gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
 		}
 
-		if (g_editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && g_editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
+		if (gS6Info->editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER) {
 			window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_EMPTY;
 			window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_EMPTY;

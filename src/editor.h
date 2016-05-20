@@ -31,8 +31,6 @@ typedef enum {
 	EDITOR_STEP_TRACK_DESIGNS_MANAGER		// 7
 } RCT2_EDITOR_STEP;
 
-#define g_editor_step RCT2_GLOBAL(0x0141F570, uint8)
-
 void editor_load();
 void editor_convert_save_to_scenario();
 void trackdesigner_load();

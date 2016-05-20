@@ -74,7 +74,7 @@ void editor_load()
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-	RCT2_GLOBAL(0x0141F570, uint8) = 0;
+	gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 	window_new_ride_init_vars();
 	RCT2_GLOBAL(0x0141F571, uint8) = 4;
@@ -108,7 +108,7 @@ void editor_convert_save_to_scenario_callback(int result)
 		return;
 	}
 
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	rct_s6_info *s6Info = gS6Info;
 
 	if (gParkFlags & PARK_FLAGS_NO_MONEY)
 		gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
@@ -169,7 +169,7 @@ void trackdesigner_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	RCT2_GLOBAL(0x0141F570, uint8) = 0;
+	gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	window_new_ride_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
@@ -207,7 +207,7 @@ void trackmanager_load()
 	date_reset();
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
-	RCT2_GLOBAL(0x0141F570, uint8) = 0;
+	gS6Info->editor_step = EDITOR_STEP_OBJECT_SELECTION;
 	window_new_ride_init_vars();
 	viewport_init_all();
 	news_item_init_queue();
@@ -260,7 +260,7 @@ static int editor_load_landscape_from_sv4(const char *path)
 	rct1_load_saved_game(path);
 	editor_clear_map_for_editing();
 
-	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	viewport_init_all();
@@ -274,7 +274,7 @@ static int editor_load_landscape_from_sc4(const char *path)
 	rct1_load_scenario(path);
 	editor_clear_map_for_editing();
 
-	g_editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+	gS6Info->editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
 	gScreenAge = 0;
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	viewport_init_all();
@@ -292,7 +292,7 @@ static int editor_read_s6(const char *path)
 	int i, j;
 	SDL_RWops* rw;
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	rct_s6_info *s6Info = gS6Info;
 
 	log_verbose("loading landscape, %s", path);
 
@@ -396,7 +396,6 @@ static int editor_read_s6(const char *path)
 static void editor_clear_map_for_editing()
 {
 	rct_s6_header *s6Header = (rct_s6_header*)0x009E34E4;
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 
 	map_remove_all_rides();
 
@@ -475,8 +474,8 @@ static void editor_clear_map_for_editing()
 		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
 		reset_loaded_objects();
 
-		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
-		s6Info->name[0] = 0;
+		format_string(gS6Info->details, STR_NO_DETAILS_YET, NULL);
+		gS6Info->name[0] = 0;
 	}
 
 	news_item_init_queue();
@@ -491,7 +490,7 @@ void editor_open_windows_for_current_step()
 	if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
 		return;
 
-	switch (g_editor_step) {
+	switch (gS6Info->editor_step) {
 	case EDITOR_STEP_OBJECT_SELECTION:
 		if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
 			return;

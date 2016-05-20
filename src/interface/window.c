@@ -16,18 +16,19 @@
 
 #include "../addresses.h"
 #include "../audio/audio.h"
-#include "../game.h"
+#include "../cursors.h"
 #include "../drawing/drawing.h"
+#include "../editor.h"
+#include "../game.h"
 #include "../input.h"
+#include "../localisation/localisation.h"
+#include "../localisation/string_ids.h"
 #include "../platform/platform.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
+#include "viewport.h"
 #include "widget.h"
 #include "window.h"
-#include "viewport.h"
-#include "../localisation/string_ids.h"
-#include "../localisation/localisation.h"
-#include "../cursors.h"
 
 #define RCT2_FIRST_WINDOW		(g_window_list)
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
@@ -757,7 +758,7 @@ void window_close_top()
 	window_close_by_class(WC_DROPDOWN);
 
 	if (gScreenFlags & 2)
-		if (RCT2_GLOBAL(0x0141F570, uint8) != 1)
+		if (gS6Info->editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
 			return;
 
 	for (w = RCT2_NEW_WINDOW - 1; w >= g_window_list; w--) {

@@ -19,6 +19,7 @@
 #include "../audio/audio.h"
 #include "../audio/mixer.h"
 #include "../config.h"
+#include "../editor.h"
 #include "../hook.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
@@ -273,7 +274,7 @@ void vehicle_invalidate(rct_vehicle *vehicle)
  */
 void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
-	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || RCT2_GLOBAL(0x0141F570, uint8) == 6)) {
+	if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info->editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
 		if (vehicle->sound1_id != (uint8)-1 || vehicle->sound2_id != (uint8)-1) {
 			if (vehicle->sprite_left != (sint16)0x8000) {
 				sint16 x = RCT2_GLOBAL(0x00F438A4, rct_viewport*)->view_x;
@@ -666,7 +667,7 @@ void vehicle_update_all()
 	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
 		return;
 
-	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && RCT2_GLOBAL(0x0141F570, uint8) != 6)
+	if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info->editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
 		return;
 
 

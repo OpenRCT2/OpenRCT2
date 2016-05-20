@@ -57,6 +57,7 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 static char _scenarioPath[MAX_PATH];
 const char *_scenarioFileName = "";
 
+rct_s6_info *gS6Info = (rct_s6_info*)0x0141F570;
 char *gScenarioName = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_NAME, char);
 char *gScenarioDetails = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_DETAILS, char);
 char *gScenarioCompletedBy = RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_COMPLETED_BY, char);
@@ -127,7 +128,6 @@ int scenario_load_and_play_from_path(const char *path)
 
 void scenario_begin()
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 	rct_window *mainWindow;
 
 	gScreenFlags = SCREEN_FLAGS_PLAYING;
@@ -181,12 +181,12 @@ void scenario_begin()
 
 	finance_update_loan_hash();
 
-	safe_strcpy(gScenarioDetails, s6Info->details, 256);
-	safe_strcpy(gScenarioName, s6Info->name, 64);
+	safe_strcpy(gScenarioDetails, gS6Info->details, 256);
+	safe_strcpy(gScenarioName, gS6Info->name, 64);
 
 	{
 		utf8 normalisedName[64];
-		safe_strcpy(normalisedName, s6Info->name, sizeof(normalisedName));
+		safe_strcpy(normalisedName, gS6Info->name, sizeof(normalisedName));
 		scenario_normalise_name(normalisedName);
 
 		rct_string_id localisedStringIds[3];
@@ -646,7 +646,7 @@ void scenario_prepare_rides_for_save()
  */
 int scenario_prepare_for_save()
 {
-	rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
+	rct_s6_info *s6Info = gS6Info;
 	char buffer[256];
 
 	s6Info->entry.flags = 255;

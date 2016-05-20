@@ -226,7 +226,7 @@ void S6Exporter::Save(SDL_RWops * rw, bool isScenario)
 
 void S6Exporter::Export()
 {
-    _s6.info = *(RCT2_ADDRESS(0x0141F570, rct_s6_info));
+    _s6.info = *gS6Info;
 
     for (int i = 0; i < 721; i++)
     {

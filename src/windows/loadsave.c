@@ -791,10 +791,9 @@ static void window_loadsave_select(rct_window *w, const char *path)
 		break;
 	case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO) :
 	{
-		rct_s6_info *s6Info = (rct_s6_info*)0x0141F570;
 		int parkFlagsBackup = gParkFlags;
 		gParkFlags &= ~PARK_FLAGS_18;
-		s6Info->editor_step = 255;
+		gS6Info->editor_step = 255;
 		rw = SDL_RWFromFile(path, "wb+");
 		int success = 0;
 		if (rw != NULL) {
@@ -810,7 +809,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 			title_load();
 		} else {
 			window_error_open(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
-			s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+			gS6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 			window_loadsave_invoke_callback(MODAL_RESULT_FAIL);
 		}
 		break;
