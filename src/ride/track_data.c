@@ -5493,7 +5493,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0x0074DDEC,						// RIDE_TYPE_LOG_FLUME
 	0,						// RIDE_TYPE_RIVER_RAPIDS
 	0,						// RIDE_TYPE_DODGEMS
-	0x008A83E0,						// RIDE_TYPE_PIRATE_SHIP
+	0,						// RIDE_TYPE_PIRATE_SHIP
 	0x00760070,						// RIDE_TYPE_SWINGING_INVERTER_SHIP
 	0,						// RIDE_TYPE_FOOD_STALL
 	0,						// RIDE_TYPE_1D
@@ -5588,7 +5588,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_LOG_FLUME
 	get_track_paint_function_river_rapids,	// RIDE_TYPE_RIVER_RAPIDS
 	get_track_paint_function_dodgems,		// RIDE_TYPE_DODGEMS
-	0,						// RIDE_TYPE_PIRATE_SHIP
+	get_track_paint_function_pirate_ship,	// RIDE_TYPE_PIRATE_SHIP
 	0,						// RIDE_TYPE_SWINGING_INVERTER_SHIP
 	get_track_paint_function_shop,			// RIDE_TYPE_FOOD_STALL
 	get_track_paint_function_shop,			// RIDE_TYPE_1D

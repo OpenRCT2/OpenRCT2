@@ -127,6 +127,8 @@ enum {
 	SPR_STATION_NARROW_EDGE_NW = 22416,
 	SPR_STATION_NARROW_EDGE_NE = 22417,
 
+	SPR_STATION_BASE_A_SW_NE = 22426,
+	SPR_STATION_BASE_A_NW_SE = 22427,
 	SPR_STATION_BASE_B_SW_NE = 22428,
 	SPR_STATION_BASE_B_NW_SE = 22429,
 
@@ -173,6 +175,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_maze(int trackType, int direction)
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction);
