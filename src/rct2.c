@@ -448,6 +448,8 @@ void rct2_update()
 		gPaletteEffectFrame += tick2;
 	}
 
+	date_update_real_time_of_day();
+
 	// TODO: screenshot countdown process
 
 	network_update();

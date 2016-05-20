@@ -19,6 +19,7 @@
 #include "../../config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
+#include "../../localisation/date.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../../world/map.h"
@@ -155,16 +156,16 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			} else
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
 				// 6E035C:
-				int si = ((RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, uint16) + 6) * 17) / 256;
-				int bx = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_HOUR, uint16);
-				while (bx >= 12) {
-					bx -= 12;
+				int minuteImageOffset = ((gRealTimeOfDay.minute + 6) * 17) / 256;
+				int timeImageBase = gRealTimeOfDay.hour;
+				while (timeImageBase >= 12) {
+					timeImageBase -= 12;
 				}
-				bx = (bx * 4) + si;
-				if (bx >= 48) {
-					bx -= 48;
+				timeImageBase = (timeImageBase * 4) + minuteImageOffset;
+				if (timeImageBase >= 48) {
+					timeImageBase -= 48;
 				}
-				int image_id = bx + (direction * 12);
+				int image_id = timeImageBase + (direction * 12);
 				if (image_id >= 48) {
 					image_id -= 48;
 				}
@@ -175,7 +176,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				}
 				sub_98199C(image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 
-				image_id = RCT2_GLOBAL(RCT2_ADDRESS_OS_TIME_MINUTE, uint16) + (direction * 15);
+				image_id = gRealTimeOfDay.minute + (direction * 15);
 				if (image_id >= 60) {
 					image_id -= 60;
 				}

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <time.h>
 #include "../addresses.h"
 #include "../game.h"
 #include "date.h"
@@ -35,6 +36,8 @@ const rct_string_id DateFormatStringFormatIds[] = {
 	STR_DATE_FORMAT_YMD,
 	STR_DATE_FORMAT_YDM
 };
+
+openrct_timeofday gRealTimeOfDay;
 
 int date_get_month(int months)
 {
@@ -60,4 +63,14 @@ void date_reset()
 	gDateMonthsElapsed = 0;
 	gDateMonthTicks = 0;
 	gCurrentTicks = 0;
+}
+
+void date_update_real_time_of_day()
+{
+	time_t timestamp = time(0);
+	struct tm *now = localtime(&timestamp);
+
+	gRealTimeOfDay.second = now->tm_sec;
+	gRealTimeOfDay.minute = now->tm_min;
+	gRealTimeOfDay.hour = now->tm_hour;
 }
