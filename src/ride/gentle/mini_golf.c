@@ -35,6 +35,20 @@ enum {
 	SPR_MINI_GOLF_TURN_NW_NE = 14412,
 	SPR_MINI_GOLF_TURN_NE_SE = 14413,
 	SPR_MINI_GOLF_TURN_SE_SW = 14413,
+
+	SPR_MINI_GOLF_25_DEG_UP_SW_NE = 14433,
+	SPR_MINI_GOLF_25_DEG_UP_NW_SE = 14434,
+	SPR_MINI_GOLF_25_DEG_UP_NE_SW = 14435,
+	SPR_MINI_GOLF_25_DEG_UP_SE_NW = 14436,
+
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_SW_NE = 14453,
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_NW_SE = 14454,
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_NE_SW = 14455,
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_SE_NW = 14456,
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_SW_NE = 14457,
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_NW_SE = 14458,
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_NE_SW = 14459,
+	SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_SE_NW = 14460,
 };
 
 /** rct2: 0x0087F10C */
@@ -75,6 +89,75 @@ static void paint_mini_golf_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 	}
 
 	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+/** rct2: 0x0087F11C */
+static void paint_mini_golf_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	uint32 imageId;
+
+	switch (direction) {
+		case 0:
+			imageId = SPR_MINI_GOLF_25_DEG_UP_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+			break;
+		case 1:
+			imageId = SPR_MINI_GOLF_25_DEG_UP_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+			break;
+		case 2:
+			imageId = SPR_MINI_GOLF_25_DEG_UP_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+			break;
+		case 3:
+			imageId = SPR_MINI_GOLF_25_DEG_UP_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+			break;
+	}
+
+	metal_a_supports_paint_setup(3, 4, 8, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+
+	switch (direction) {
+		case 0:
+			paint_util_push_tunnel_left(height - 8, TUNNEL_1);
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 15, height, 0, 10, height + 2, get_current_rotation());
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 15, height, 0, 22, height + 2, get_current_rotation());
+			break;
+		case 1:
+			paint_util_push_tunnel_right(height + 8, TUNNEL_2);
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 15, height, 10, 0, height + 2, get_current_rotation());
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 15, height, 22, 0, height + 2, get_current_rotation());
+			break;
+		case 2:
+			paint_util_push_tunnel_left(height + 8, TUNNEL_2);
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 15, height, 0, 10, height + 2, get_current_rotation());
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 1, 15, height, 0, 22, height + 2, get_current_rotation());
+			break;
+		case 3:
+			paint_util_push_tunnel_right(height - 8, TUNNEL_1);
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 15, height, 10, 0, height + 2, get_current_rotation());
+
+			imageId = SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_SE_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 1, 32, 15, height, 22, 0, height + 2, get_current_rotation());
+			break;
+	}
+
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x */
@@ -256,6 +339,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direc
 			return paint_mini_golf_station;
 
 		case TRACK_ELEM_25_DEG_UP:
+			return paint_mini_golf_track_25_deg_up;
 		case TRACK_ELEM_FLAT_TO_25_DEG_UP:
 		case TRACK_ELEM_25_DEG_UP_TO_FLAT:
 
