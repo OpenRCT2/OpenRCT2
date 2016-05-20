@@ -51,9 +51,23 @@ static void paint_boat_ride_track_flat(uint8 rideIndex, uint8 trackSequence, uin
 	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008B0E50 */
 static void paint_boat_ride_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_ride * ride = get_ride(rideIndex);
+	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+		track_paint_util_draw_pier(ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+		track_paint_util_draw_pier(ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x */
