@@ -24,6 +24,9 @@
 #include "../../world/map.h"
 
 enum {
+	SPR_FLOOR_A = 3395,
+	SPR_FLOOR_B = 3396,
+
 	SPR_MINI_GOLF_FLAT_SW_NE = 14404,
 	SPR_MINI_GOLF_FLAT_NW_SE = 14405,
 	SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE = 14406,
@@ -81,6 +84,82 @@ enum {
 	SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_NW_SE = 14458,
 	SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_NE_SW = 14459,
 	SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_SE_NW = 14460,
+
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_1_SW_NE = 14461,
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_2_SW_NE = 14462,
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_1_NW_SE = 14463,
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_2_NW_SE = 14464,
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_1_NE_SW = 14465,
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_2_NE_SW = 14466,
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_1_SE_NW = 14467,
+	SPR_MINI_GOLF_HOLE_A_BASE_PART_2_SE_NW = 14468,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_SW_NE = 14469,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_SW_NE = 14470,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_NW_SE = 14471,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_NW_SE = 14472,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_NE_SW = 14473,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_NE_SW = 14474,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_SE_NW = 14475,
+	SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_SE_NW = 14476,
+
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_1_SW_NE = 14477,
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_2_SW_NE = 14478,
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_1_NW_SE = 14479,
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_2_NW_SE = 14480,
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_1_NE_SW = 14481,
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_2_NE_SW = 14482,
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_1_SE_NW = 14483,
+	SPR_MINI_GOLF_HOLE_B_BASE_PART_2_SE_NW = 14484,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_SW_NE = 14485,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_SW_NE = 14486,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_NW_SE = 14487,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_NW_SE = 14488,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_NE_SW = 14489,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_NE_SW = 14490,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_SE_NW = 14491,
+	SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_SE_NW = 14492,
+
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_1_SW_NE = 14493,
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_2_SW_NE = 14494,
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_1_NW_SE = 14495,
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_2_NW_SE = 14496,
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_1_NE_SW = 14497,
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_2_NE_SW = 14498,
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_1_SE_NW = 14499,
+	SPR_MINI_GOLF_HOLE_C_BASE_PART_2_SE_NW = 14500,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_SW_NE = 14501,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_SW_NE = 14502,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_NW_SE = 14503,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_NW_SE = 14504,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_NE_SW = 14505,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_NE_SW = 14506,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_SE_NW = 14507,
+	SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_SE_NW = 14508,
+
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_1_SW_NE = 14509,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_2_SW_NE = 14510,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_3_SW_NE = 14511,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_1_NW_SE = 14512,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_2_NW_SE = 14513,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_3_NW_SE = 14514,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_1_NE_SW = 14515,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_2_NE_SW = 14516,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_3_NE_SW = 14517,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_1_SE_NW = 14518,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_2_SE_NW = 14519,
+	SPR_MINI_GOLF_HOLE_D_BASE_PART_3_SE_NW = 14520,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_SW_NE = 14521,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_SW_NE = 14522,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_SW_NE = 14523,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_NW_SE = 14524,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_NW_SE = 14525,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_NW_SE = 14526,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_NE_SW = 14527,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_NE_SW = 14528,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_NE_SW = 14529,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_SE_NW = 14530,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_SE_NW = 14531,
+	SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_SE_NW = 14532,
 };
 
 static const uint32 mini_golf_track_sprites_25_deg_up[][3] = {
@@ -167,6 +246,85 @@ static const uint32 mini_golf_track_sprites_quarter_turn_1_tile_fence_front[] = 
 	SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_FRONT_SE_SW,
 };
 
+static const uint32 mini_golf_track_sprites_hole_a[4][2][2] = {
+	{
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_1_SW_NE, SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_SW_NE},
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_2_SW_NE, SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_SW_NE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_1_NW_SE, SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_NW_SE},
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_2_NW_SE, SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_NW_SE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_1_NE_SW, SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_NE_SW},
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_2_NE_SW, SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_NE_SW}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_1_SE_NW, SPR_MINI_GOLF_HOLE_A_TRIM_PART_1_SE_NW},
+		{SPR_MINI_GOLF_HOLE_A_BASE_PART_2_SE_NW, SPR_MINI_GOLF_HOLE_A_TRIM_PART_2_SE_NW}
+	},
+};
+
+static const uint32 mini_golf_track_sprites_hole_b[4][2][2] = {
+	{
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_1_SW_NE, SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_SW_NE},
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_2_SW_NE, SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_SW_NE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_1_NW_SE, SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_NW_SE},
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_2_NW_SE, SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_NW_SE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_1_NE_SW, SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_NE_SW},
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_2_NE_SW, SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_NE_SW}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_1_SE_NW, SPR_MINI_GOLF_HOLE_B_TRIM_PART_1_SE_NW},
+		{SPR_MINI_GOLF_HOLE_B_BASE_PART_2_SE_NW, SPR_MINI_GOLF_HOLE_B_TRIM_PART_2_SE_NW}
+	},
+};
+
+static const uint32 mini_golf_track_sprites_hole_c[][2][2] = {
+	{
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_1_SW_NE, SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_SW_NE},
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_2_SW_NE, SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_SW_NE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_1_NW_SE, SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_NW_SE},
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_2_NW_SE, SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_NW_SE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_1_NE_SW, SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_NE_SW},
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_2_NE_SW, SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_NE_SW}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_1_SE_NW, SPR_MINI_GOLF_HOLE_C_TRIM_PART_1_SE_NW},
+		{SPR_MINI_GOLF_HOLE_C_BASE_PART_2_SE_NW, SPR_MINI_GOLF_HOLE_C_TRIM_PART_2_SE_NW}
+	},
+};
+
+static const uint32 mini_golf_track_sprites_hole_d[][3][2] = {
+	{
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_1_SW_NE, SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_SW_NE},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_2_SW_NE, SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_SW_NE},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_3_SW_NE, SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_SW_NE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_1_NW_SE, SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_NW_SE},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_2_NW_SE, SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_NW_SE},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_3_NW_SE, SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_NW_SE}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_1_NE_SW, SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_NE_SW},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_2_NE_SW, SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_NE_SW},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_3_NE_SW, SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_NE_SW}
+	},
+	{
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_1_SE_NW, SPR_MINI_GOLF_HOLE_D_TRIM_PART_1_SE_NW},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_2_SE_NW, SPR_MINI_GOLF_HOLE_D_TRIM_PART_2_SE_NW},
+		{SPR_MINI_GOLF_HOLE_D_BASE_PART_3_SE_NW, SPR_MINI_GOLF_HOLE_D_TRIM_PART_3_SE_NW}
+	},
+};
 
 static paint_struct * mini_golf_paint_util_7c(
 	uint8 direction,
@@ -490,55 +648,96 @@ static void paint_mini_golf_track_right_quarter_turn_1_tile(uint8 rideIndex, uin
 	paint_mini_golf_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
-/**
- * rct2: 0x0088129C
- */
-static void mini_golf_hole_a_paint_setup_0_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
+static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, int height, const uint32 sprites[4][2][2])
+{
+	uint32 imageId;
 
-	bool drewSupports = wooden_a_supports_paint_setup(0, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	bool drewSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
 
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-	RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 
-	uint32 eax = 0xFFFF0A00 | ((height >> 4) & 0xFF);
-	RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = eax;
-	RCT2_GLOBAL(0x141F56A, uint8)++;
-
-	height += 32;
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x00141E9DA, uint8) = 32;
-	}
-	height -= 32;
-
-	uint32 image_id = 14469 | RCT2_GLOBAL(0x00F44198, uint32);
-	sub_98197C(image_id, 0, 0, 32, 26, 0, height, 0, 3, height + 24, get_current_rotation());
-
-	if (drewSupports) {
-		image_id = 3395 + RCT2_GLOBAL(0x00F4419C, uint32);
-		sub_98197C(image_id, 0, 0, 32, 26, 1, height, 0, 3, height, get_current_rotation());
+	if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1)) {
+		paint_util_push_tunnel_left(height, TUNNEL_10);
+	} else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1)) {
+		paint_util_push_tunnel_right(height, TUNNEL_10);
 	}
 
-	image_id = 14461 | RCT2_GLOBAL(0x00F44198, uint32);
+	rct_xy16 boundBox = (direction & 1) ? (rct_xy16) {26, 32} : (rct_xy16) {32, 26};
+	rct_xy16 boundBoxOffset = (direction & 1) ? (rct_xy16) {3, 0} : (rct_xy16) {0, 3};
+
+	imageId = sprites[direction][trackSequence][1] | RCT2_GLOBAL(0x00F44198, uint32);
+	sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24, get_current_rotation());
+
 	if (drewSupports) {
-		sub_98199C(image_id, 0, 0, 32, 26, 1, height, 0, 3, height, get_current_rotation());
+		imageId = (direction & 1 ? SPR_FLOOR_B : SPR_FLOOR_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
+
+		imageId = sprites[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98199C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 	} else {
-		sub_98197C(image_id, 0, 0, 32, 26, 1, height, 0, 3, height, get_current_rotation());
+		imageId = sprites[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 	}
 }
 
-/**
- * rct2: 0x0088125D
- */
-static void mini_golf_hole_a_paint_setup_0(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element *mapElement) {
-	if (trackSequence == 0) mini_golf_hole_a_paint_setup_0_0(rideIndex, trackSequence, direction, height, mapElement);
+/** rct2: 0x0087F1CC */
+static void paint_mini_golf_hole_a(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	paint_mini_golf_hole_ab(trackSequence, direction, height, mini_golf_track_sprites_hole_a);
+}
+
+/** rct2: 0x0087F1DC */
+static void paint_mini_golf_hole_b(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	paint_mini_golf_hole_ab(trackSequence, direction, height, mini_golf_track_sprites_hole_b);
+}
+
+/** rct2: 0x0087F1EC */
+static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	uint32 imageId;
+
+	bool drewSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+
+	if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1)) {
+		paint_util_push_tunnel_left(height, TUNNEL_10);
+	} else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1)) {
+		paint_util_push_tunnel_right(height, TUNNEL_10);
+	}
+
+	rct_xy16 boundBox = (direction & 1) ? (rct_xy16) {26, 32} : (rct_xy16) {32, 26};
+	rct_xy16 boundBoxOffset = (direction & 1) ? (rct_xy16) {3, 0} : (rct_xy16) {0, 3};
+
+	imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][1] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	switch ((direction << 4) | trackSequence) {
+		case 0x01:
+		case 0x20:
+			sub_98197C(imageId, 0, 0, 2, 26, 3, height, 30, 3, height + 4, get_current_rotation());
+			break;
+		case 0x10:
+		case 0x31:
+			sub_98197C(imageId, 0, 0, 26, 2, 3, height, 3, 30, height + 4, get_current_rotation());
+			break;
+		default:
+			sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24, get_current_rotation());
+			break;
+	}
+
+	if (drewSupports) {
+		imageId = (direction & 1 ? SPR_FLOOR_B : SPR_FLOOR_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
+
+		imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98199C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
+	} else {
+		imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
+	}
 }
 
 /**
@@ -574,8 +773,11 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direc
 			return paint_mini_golf_track_right_quarter_turn_1_tile;
 
 		case TRACK_ELEM_MINI_GOLF_HOLE_A:
+			return paint_mini_golf_hole_a;
 		case TRACK_ELEM_MINI_GOLF_HOLE_B:
+			return paint_mini_golf_hole_b;
 		case TRACK_ELEM_MINI_GOLF_HOLE_C:
+			return paint_mini_golf_hole_c;
 		case TRACK_ELEM_MINI_GOLF_HOLE_D:
 		case TRACK_ELEM_MINI_GOLF_HOLE_E:
 			return NULL;
