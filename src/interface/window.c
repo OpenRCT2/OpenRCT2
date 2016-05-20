@@ -28,6 +28,7 @@
 #include "../localisation/string_ids.h"
 #include "../localisation/localisation.h"
 #include "../cursors.h"
+#include "widget.h"
 
 #define RCT2_FIRST_WINDOW		(g_window_list)
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
@@ -934,6 +935,10 @@ void widget_invalidate(rct_window *w, int widgetIndex)
 	rct_widget* widget;
 
 	assert(w != NULL);
+	for (int i = 0; i <= widgetIndex; i++)
+	{
+		assert(w->widgets[i].type != WWT_LAST);
+	}
 	widget = &w->widgets[widgetIndex];
 	if (widget->left == -2)
 		return;
