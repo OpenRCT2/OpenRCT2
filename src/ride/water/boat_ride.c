@@ -26,6 +26,14 @@ enum
 	SPR_BOAT_RIDE_FLAT_FRONT_SW_NE = 28524,
 	SPR_BOAT_RIDE_FLAT_BACK_NW_SE = 28525,
 	SPR_BOAT_RIDE_FLAT_FRONT_NW_SE = 28526,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW = 28527,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW = 28528,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE = 28529,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE = 28530,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE = 28531,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE = 28532,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW = 28533,
+	SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW = 28534,
 };
 
 /** rct2: 0x008B0E40 */
@@ -70,14 +78,49 @@ static void paint_boat_ride_station(uint8 rideIndex, uint8 trackSequence, uint8 
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008B0E80 */
 static void paint_boat_ride_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
+	switch (direction) {
+		case 0:
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
+
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
+			break;
+		case 1:
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
+
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
+			break;
+		case 2:
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
+
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
+			break;
+		case 3:
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
+
+			imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+			sub_98197C(imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
+			break;
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C8, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 16, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008B0E90 */
 static void paint_boat_ride_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_boat_ride_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /**
