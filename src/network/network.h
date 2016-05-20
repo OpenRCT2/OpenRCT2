@@ -111,6 +111,7 @@ extern "C" {
 #include <string>
 #include <vector>
 #include <SDL.h>
+#include "../core/Json.hpp"
 
 template <std::size_t size>
 struct ByteSwapT { };
@@ -210,10 +211,12 @@ public:
 	~NetworkGroup();
 	void Read(NetworkPacket& packet);
 	void Write(NetworkPacket& packet);
+	json_t * ToJson() const;
+	static NetworkGroup FromJson(const json_t * json);
 	void ToggleActionPermission(size_t index);
 	bool CanPerformAction(size_t index);
 	bool CanPerformCommand(int command);
-	std::string& GetName();
+	const std::string& GetName() const;
 	void SetName(std::string name);
 	std::array<uint8, 8> actions_allowed;
 	uint8 id = 0;

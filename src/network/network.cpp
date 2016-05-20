@@ -33,6 +33,7 @@ extern "C" {
 #include <set>
 #include <string>
 #include "../core/Util.hpp"
+#include "../core/Json.hpp"
 extern "C" {
 #include "../config.h"
 #include "../game.h"
@@ -260,6 +261,43 @@ void NetworkGroup::Write(NetworkPacket& packet)
 	}
 }
 
+json_t * NetworkGroup::ToJson() const
+{
+	json_t * jsonGroup = json_object();
+	json_object_set_new(jsonGroup, "id", json_integer(id));
+	json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
+	json_t * actionsArray = json_array();
+	for (size_t i = 0; i < actions_allowed.size(); i++) {
+		json_array_append_new(actionsArray, json_integer(actions_allowed[i]));
+	}
+	json_object_set_new(jsonGroup, "permissions", actionsArray);
+	return jsonGroup;
+}
+
+NetworkGroup NetworkGroup::FromJson(const json_t * json)
+{
+	NetworkGroup group;
+	json_t * jsonId = json_object_get(json, "id");
+	json_t * jsonName = json_object_get(json, "name");
+	json_t * jsonPermissions = json_object_get(json, "permissions");
+	if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr) {
+		throw Exception("Missing group data");
+	}
+	group.id = (uint8)json_integer_value(jsonId);
+	group.name = std::string(json_string_value(jsonName));
+	for (size_t i = 0; i < group.actions_allowed.size(); i++) {
+		json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
+		// This guards a case where there are less permissions in file than we want,
+		// which could happen when we add permissions or user has malformed the file.
+		if (jsonPermissionValue == nullptr) {
+			group.actions_allowed[i] = 0;
+		} else {
+			group.actions_allowed[i] = (uint8)json_integer_value(jsonPermissionValue);
+		}
+	}
+	return group;
+}
+
 void NetworkGroup::ToggleActionPermission(size_t index)
 {
 	size_t byte = index / 8;
@@ -289,7 +327,7 @@ bool NetworkGroup::CanPerformCommand(int command)
 	return false;
 }
 
-std::string& NetworkGroup::GetName()
+const std::string& NetworkGroup::GetName() const
 {
 	return name;
 }
@@ -1202,26 +1240,31 @@ void Network::SaveGroups()
 {
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		utf8 path[MAX_PATH];
-		SDL_RWops *file;
 
 		platform_get_user_directory(path, NULL);
-		strcat(path, "groups.cfg");
-
-		file = SDL_RWFromFile(path, "wb");
-		if (file == NULL) {
-			return;
-		}
+		strcat(path, "groups.json");
 
 		std::unique_ptr<NetworkPacket> stream = std::move(NetworkPacket::Allocate());
-		*stream << (uint8)group_list.size();
-		*stream << default_group;
+		json_t * jsonGroupsCfg = json_object();
+		json_t * jsonGroups = json_array();
 		for (auto it = group_list.begin(); it != group_list.end(); it++) {
-			(*it)->Write(*stream);
+			json_array_append_new(jsonGroups, (*it)->ToJson());
+		}
+		json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
+		json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
+		bool result;
+		try
+		{
+			Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
+			result = true;
+		}
+		catch (Exception ex)
+		{
+			log_error("Unable to save %s: %s", path, ex.GetMessage());
+			result = false;
 		}
 
-		SDL_RWwrite(file, stream->GetData(), stream->data->size(), 1);
-
-		SDL_RWclose(file);
+		json_decref(jsonGroupsCfg);
 	}
 }
 
@@ -1230,13 +1273,11 @@ void Network::LoadGroups()
 	group_list.clear();
 
 	utf8 path[MAX_PATH];
-	SDL_RWops *file;
 
 	platform_get_user_directory(path, NULL);
-	strcat(path, "groups.cfg");
+	strcat(path, "groups.json");
 
-	file = SDL_RWFromFile(path, "rb");
-	if (file == NULL) {
+	if (!platform_file_exists(path)) {
 		// Hardcoded permission groups
 		std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
 		admin->SetName("Admin");
@@ -1261,23 +1302,21 @@ void Network::LoadGroups()
 		return;
 	}
 
-	std::unique_ptr<NetworkPacket> stream = std::move(NetworkPacket::Allocate());
-	uint8 byte;
-	while(SDL_RWread(file, &byte, sizeof(byte), 1)){
-		*stream << byte;
-	}
-	stream->size = (uint16)stream->data->size();
+	json_t * json = Json::ReadFromFile(path);
 
-	uint8 num;
-	*stream >> num >> default_group;
-	for (unsigned int i = 0; i < num; i++) {
-		NetworkGroup group;
-		group.Read(*stream);
-		std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(group)); // change to make_unique in c++14
+	json_t * json_groups = json_object_get(json, "groups");
+	size_t groupCount = (size_t)json_array_size(json_groups);
+	for (size_t i = 0; i < groupCount; i++) {
+		json_t * jsonGroup = json_array_get(json_groups, i);
+
+		std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
 		group_list.push_back(std::move(newgroup));
 	}
-
-	SDL_RWclose(file);
+	json_t * jsonDefaultGroup = json_object_get(json, "default_group");
+	default_group = (uint8)json_integer_value(jsonDefaultGroup);
+	if (default_group >= group_list.size()) {
+		default_group = 0;
+	}
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password)
