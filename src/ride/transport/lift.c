@@ -13,3 +13,119 @@
  * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
 #pragma endregion
+
+#include "../../common.h"
+#include "../../interface/viewport.h"
+#include "../../paint/paint.h"
+#include "../../paint/supports.h"
+#include "../track_paint.h"
+#include "../track.h"
+
+enum {
+	SPR_LIFT_CAGE_BACK = 14994,
+	SPR_LIFT_CAGE_FRONT = 14995,
+	SPR_LIFT_CAGE_NE_BACK = 14996,
+	SPR_LIFT_CAGE_NE_FRONT = 14997,
+	SPR_LIFT_CAGE_SE_BACK = 14998,
+	SPR_LIFT_CAGE_SE_FRONT = 14999,
+	SPR_LIFT_CAGE_SW_BACK = 15000,
+	SPR_LIFT_CAGE_SW_FRONT = 15001,
+	SPR_LIFT_CAGE_NW_BACK = 15002,
+	SPR_LIFT_CAGE_NW_FRONT = 15003,
+};
+
+static const uint32 lift_cage_sprites[][2] = {
+	{SPR_LIFT_CAGE_BACK,    SPR_LIFT_CAGE_FRONT},
+	{SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT},
+	{SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT},
+	{SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT},
+	{SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT},
+};
+
+static void paint_lift_cage(sint8 index, uint32 colourFlags, int height, uint8 rotation)
+{
+	uint32 imageId;
+
+	imageId = lift_cage_sprites[1 + index][0] | colourFlags;
+	sub_98197C(imageId, 0, 0, 2, 2, 30, height, 2, 2, height, get_current_rotation());
+
+	imageId = lift_cage_sprites[1 + index][1] | colourFlags;
+	sub_98197C(imageId, 0, 0, 2, 2, 30, height, 28, 28, height, get_current_rotation());
+}
+
+/** rct2: 0x0076C6CC */
+static void paint_lift_base(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = track_map_3x3[direction][trackSequence];
+
+	if (trackSequence == 0) {
+		paint_lift_cage(direction, RCT2_GLOBAL(0x00F44198, uint32), height, get_current_rotation());
+
+		paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height + 32, get_current_rotation());
+
+		paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height + 64, get_current_rotation());
+
+		RCT2_GLOBAL(0x9E323C, uint16) = (((height + 96) >> 4) & 0x00FF) | (6 << 8);
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+
+		// Original set support height to (height + 32). Caused supports to code with lift cage.
+		paint_util_set_general_support_height(height + 96, 0x20);
+
+		return;
+	}
+
+	int edges = edges_3x3[trackSequence];
+	rct_ride * ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	uint32 imageId = SPR_FLOOR_METAL_B | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+
+		track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F44198, uint32), height, fenceSpritesMetalB, get_current_rotation());
+
+	int blockedSegments = 0;
+	switch (trackSequence) {
+		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 3: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 4: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8; break;
+		case 5: blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 6: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+		case 7: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
+		case 8: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+	}
+	paint_util_set_segment_support_height(blockedSegments, 0xFFFF, 0);
+	paint_util_set_segment_support_height(SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+/** rct2: 0x0076C6DC */
+static void paint_lift_tower_section(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	if (trackSequence == 1) {
+		return;
+	}
+
+	paint_lift_cage(-1, RCT2_GLOBAL(0x00F44198, uint32), height, get_current_rotation());
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+
+	RCT2_GLOBAL(0x9E323C, uint16) = (((height + 32) >> 4) & 0x00FF) | (6 << 8);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+/**
+ * rct2: 0x0076C5BC
+ */
+TRACK_PAINT_FUNCTION get_track_paint_function_lift(int trackType, int direction)
+{
+	switch (trackType) {
+		case TRACK_ELEM_TOWER_BASE:
+			return paint_lift_base;
+
+		case TRACK_ELEM_TOWER_SECTION:
+			return paint_lift_tower_section;
+	}
+
+	return NULL;
+}

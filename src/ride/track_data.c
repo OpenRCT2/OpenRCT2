@@ -5510,7 +5510,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0,						// RIDE_TYPE_TOP_SPIN
 	0x00767A40,						// RIDE_TYPE_SPACE_RINGS
 	0x00768BAC,						// RIDE_TYPE_REVERSE_FREEFALL_COASTER
-	0x0076C5BC,						// RIDE_TYPE_LIFT
+	0,						// RIDE_TYPE_LIFT
 	0x008A9C08,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
 	0,						// RIDE_TYPE_CASH_MACHINE
 	0x0076D658,						// RIDE_TYPE_TWIST
@@ -5605,7 +5605,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_topspin,		// RIDE_TYPE_TOP_SPIN
 	0,						// RIDE_TYPE_SPACE_RINGS
 	0,						// RIDE_TYPE_REVERSE_FREEFALL_COASTER
-	0,						// RIDE_TYPE_LIFT
+	get_track_paint_function_lift,			// RIDE_TYPE_LIFT
 	0,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
 	get_track_paint_function_shop,			// RIDE_TYPE_CASH_MACHINE
 	0,						// RIDE_TYPE_TWIST
