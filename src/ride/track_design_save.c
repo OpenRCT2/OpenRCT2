@@ -44,6 +44,7 @@ static uint8 _trackSaveDirection;
 
 static bool track_design_save_should_select_scenery_around(int rideIndex, rct_map_element *mapElement);
 static void track_design_save_select_nearby_scenery_for_tile(int rideIndex, int cx, int cy);
+bool track_design_save_contains_map_element(rct_map_element *mapElement);
 static bool track_design_save_add_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 static void track_design_save_remove_map_element(int interactionType, int x, int y, rct_map_element *mapElement);
 static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6);
