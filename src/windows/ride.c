@@ -3306,7 +3306,8 @@ static void window_ride_operating_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	// Number of block sections
 	if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED) {
 		blockSections = ride->num_block_brakes + ride->num_stations;
-		gfx_draw_string_left(dpi, STR_BLOCK_SECTIONS, &blockSections, 0, w->x + 21, ride->mode == 36 ? w->y + 76 : w->y + 61);
+		gfx_draw_string_left(dpi, STR_BLOCK_SECTIONS, &blockSections, 0, w->x + 21,
+							 ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED ? w->y + 89 : w->y + 61);
 	}
 }
 
