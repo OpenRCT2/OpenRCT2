@@ -38,7 +38,7 @@ public:
     std::string PublicKeyString();
     std::string PublicKeyHash();
     void Unload();
-    bool Sign(const char * md, const size_t len, char ** signature, unsigned int * out_size);
+    bool Sign(const char * md, const size_t len, char ** signature, size_t * out_size);
     bool Verify(const char * md, const size_t len, const char * sig, const size_t siglen);
 private:
     NetworkKey ( const NetworkKey & ) = delete;

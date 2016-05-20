@@ -1447,7 +1447,7 @@ void Network::LoadKeyMappings()
 	for (size_t i = 0; i < groupCount; i++) {
 		json_t * jsonKeyMapping = json_array_get(jsonKeyMappings, i);
 		std::string hash(json_string_value(json_object_get(jsonKeyMapping, "hash")));
-		key_group_map[hash] = json_integer_value(json_object_get(jsonKeyMapping, "groupId"));
+		key_group_map[hash] = (uint8)json_integer_value(json_object_get(jsonKeyMapping, "groupId"));
 	}
 	json_decref(jsonKeyMappings);
 }
@@ -1879,7 +1879,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	uint32 challenge_size;
 	packet >> challenge_size;
 	const char *challenge = (const char *)packet.Read(challenge_size);
-	uint32 sigsize;
+	size_t sigsize;
 	char *signature;
 	const std::string pubkey = key.PublicKeyString();
 	bool ok = key.Sign(challenge, challenge_size, &signature, &sigsize);
@@ -2713,7 +2713,7 @@ void network_send_password(const char* password)
 	// TODO: verify file exists
 	gNetwork.key.LoadPrivate(privkey);
 	const std::string pubkey = gNetwork.key.PublicKeyString();
-	uint32 sigsize;
+	size_t sigsize;
 	char *signature;
 	bool ok = gNetwork.key.Sign(gNetwork.challenge.c_str(), gNetwork.challenge.size(), &signature, &sigsize);
 	log_warning("sigsize = %u, strlen(signature) = %u, signature = %s", sigsize, strlen(signature), signature);

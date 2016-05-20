@@ -89,8 +89,8 @@ bool NetworkKey::Generate()
 
 bool NetworkKey::LoadPrivate(SDL_RWops * file)
 {
-    int64_t size = file->size(file);
-    if (size == -1) {
+    size_t size = (size_t)file->size(file);
+    if (size == (size_t)-1) {
         log_error("unknown size, refusing to load key");
         return false;
     }
@@ -131,8 +131,8 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
 
 bool NetworkKey::LoadPublic(SDL_RWops * file)
 {
-    int64_t size = file->size(file);
-    if (size == -1)
+    size_t size = (size_t)file->size(file);
+    if (size == (size_t)-1)
     {
         log_error("unknown size, refusing to load key");
         return false;
@@ -324,7 +324,7 @@ std::string NetworkKey::PublicKeyHash()
     EVP_DigestFinal(ctx, digest.data(), &digest_size);
     std::string digest_out;
     digest_out.reserve(EVP_MAX_MD_SIZE * 2 + 1);
-    for (int i = 0; i < digest_size; i++)
+    for (unsigned int i = 0; i < digest_size; i++)
     {
         char buf[3];
         sprintf(buf, "%02x", digest[i]);
@@ -333,7 +333,7 @@ std::string NetworkKey::PublicKeyHash()
     return digest_out;
 }
 
-bool NetworkKey::Sign(const char * md, const size_t len, char ** signature, unsigned int * out_size)
+bool NetworkKey::Sign(const char * md, const size_t len, char ** signature, size_t * out_size)
 {
     EVP_MD_CTX * mdctx = nullptr;
 
