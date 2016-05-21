@@ -45,7 +45,7 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
 		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
 
@@ -96,7 +96,7 @@ static void paint_merry_go_round_structure(uint8 rideIndex, uint8 direction, sin
 	}
 
 	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /**

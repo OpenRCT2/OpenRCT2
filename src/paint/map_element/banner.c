@@ -32,7 +32,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 	uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_BANNER;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 
 	if (dpi->zoom_level > 1 || RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1) return;
 
@@ -52,7 +52,7 @@ void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST)//if being placed
 	{
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		image_id |= construction_markers[gConfigGeneral.construction_marker_colour];
 	}
 	else{

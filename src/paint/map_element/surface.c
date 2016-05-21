@@ -972,7 +972,7 @@ void viewport_surface_draw_water_side_bottom(enum edge edge, uint8 height, uint8
 void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 {
 	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
 	RCT2_GLOBAL(0x9DE57C, uint16) |= 1; // Probably a boolean indicating 'above surface'
 	RCT2_GLOBAL(0x9E3250, rct_map_element *) = mapElement;
 
@@ -1342,7 +1342,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	RCT2_GLOBAL(0x009E3298, uint16) = 0;
 	if (mapElement->properties.surface.terrain & 0x1F) {
 		// loc_6615A9: (water height)
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WATER;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
 		uint16 localHeight = height + 16;
 		uint16 waterHeight = (mapElement->properties.surface.terrain & 0x1F) * 16;
@@ -1384,7 +1384,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	if (mapElement->properties.surface.ownership & 0x0F
 	    && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1)) {
 		// Owned land boundary fences
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_PARK;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
 		registers regs = { 0 };
 		regs.al = mapElement->properties.surface.ownership & 0x0F;
@@ -1503,7 +1503,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		}
 	}
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
 	RCT2_GLOBAL(0x0141E9DB, uint8) |= 1;
 
 	switch (surfaceShape) {

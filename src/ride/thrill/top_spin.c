@@ -62,7 +62,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 		ride->vehicles[0] != SPRITE_INDEX_NULL) {
 		vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
 
 		armRotation = vehicle->vehicle_sprite_type;
@@ -248,7 +248,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
 	sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
 	RCT2_GLOBAL(0x009DE578, rct_map_element*) = curMapElement;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /**

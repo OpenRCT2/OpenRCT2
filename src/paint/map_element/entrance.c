@@ -55,11 +55,11 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 	colour_2 = ride->track_colour_additional[0];
 	image_id = (colour_1 << 19) | (colour_2 << 24) | 0xA0000000;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		image_id = construction_markers[gConfigGeneral.construction_marker_colour];
 		RCT2_GLOBAL(0x009E32BC, uint32) = image_id;
 		if (transparant_image_id)
@@ -163,11 +163,11 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
 	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1)
 		return;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_PARK;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
 	uint32 image_id, ghost_id = 0;
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
 		RCT2_GLOBAL(0x009E32BC, uint32) = ghost_id;
 	}
@@ -244,7 +244,7 @@ void park_entrance_paint(uint8 direction, int height, rct_map_element* map_eleme
  *  rct2: 0x00664FD4
  */
 void entrance_paint(uint8 direction, int height, rct_map_element* map_element){
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_LABEL;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
 	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 

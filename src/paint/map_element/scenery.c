@@ -31,7 +31,7 @@
  */
 void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	//RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int)mapElement, 0, 0); return;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_SCENERY;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
 	rct_xyz16 boxlength;
 	rct_xyz16 boxoffset;
 	boxoffset.x = 0;
@@ -44,7 +44,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 		}
 	}
 	if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		baseImageid = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
 	}
 	uint32 dword_F64EB0 = baseImageid;

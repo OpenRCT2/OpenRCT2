@@ -61,7 +61,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 		RCT2_GLOBAL(0x9DE578, uint32) = (uint32)spr;
 
 		RCT2_GLOBAL(0x9DE568, sint16) = spr->unknown.x;
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		RCT2_GLOBAL(0x9DE56C, sint16) = spr->unknown.y;
 
 		switch (spr->unknown.sprite_identifier) {

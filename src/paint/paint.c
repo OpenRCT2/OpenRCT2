@@ -130,7 +130,7 @@ paint_struct * sub_9819_c(uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxS
 	ps->bound_box_y = boundBoxOffset.y + RCT2_GLOBAL(0x009DE56C, sint16);
 	ps->attached_ps = NULL;
 	ps->var_20 = NULL;
-	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
+	ps->sprite_type = gPaintInteractionType;
 	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
 	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
 	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);
@@ -254,7 +254,7 @@ paint_struct * sub_98196C(
 	ps->bound_box_y = coord_3d.y;
 	ps->attached_ps = NULL;
 	ps->var_20 = NULL;
-	ps->sprite_type = RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8);
+	ps->sprite_type = gPaintInteractionType;
 	ps->var_29 = RCT2_GLOBAL(0x9DE571, uint8);
 	ps->map_x = RCT2_GLOBAL(0x9DE574, uint16);
 	ps->map_y = RCT2_GLOBAL(0x9DE576, uint16);

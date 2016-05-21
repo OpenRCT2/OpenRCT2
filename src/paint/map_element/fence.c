@@ -133,7 +133,7 @@ void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryEntry, u
 void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 {
     rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *);
-    RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_WALL;
+    gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
     rct_scenery_entry * sceneryEntry = gWallSceneryEntries[map_element->properties.fence.type];
     uint32 frameNum = 0;
@@ -172,7 +172,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
     }
 
     if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) {
-        RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         dword_141F710 = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 

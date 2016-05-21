@@ -87,6 +87,8 @@ enum PAINT_STRUCT_FLAGS {
 	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };
 
+#define gPaintInteractionType		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
+
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];
 

@@ -120,7 +120,7 @@ static void blank_tiles_paint(int x, int y)
 	if (dx >= dpi->y) return;
 	RCT2_GLOBAL(0x9DE568, sint16) = x;
 	RCT2_GLOBAL(0x9DE56C, sint16) = y;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8_t) = VIEWPORT_INTERACTION_ITEM_NONE;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 	sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
@@ -181,7 +181,7 @@ static void sub_68B3FB(int x, int y)
 
 		RCT2_GLOBAL(0x9DE568, sint16) = x;
 		RCT2_GLOBAL(0x9DE56C, sint16) = y;
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
 		sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
 	}

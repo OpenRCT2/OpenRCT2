@@ -31,7 +31,7 @@ static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, s
 
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
 	    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 		RCT2_GLOBAL(0x009DE578, rct_vehicle*) = GET_VEHICLE(ride->vehicles[0]);
 	}
 
@@ -44,7 +44,7 @@ static void paint_circus_show_tent(uint8 rideIndex, uint8 direction, sint8 al, s
 	sub_98197C(imageId, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3, get_current_rotation());
 
 	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 /**
  * rct2: 0x0076FAD4
