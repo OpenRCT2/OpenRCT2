@@ -714,7 +714,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	safe_strcat(keyPath, gConfigNetwork.player_name, MAX_PATH);
 	safe_strcat(keyPath, ".privkey", MAX_PATH);
 	if (!platform_file_exists(keyPath)) {
-		log_warning("generating key… this may take a while");
+		log_warning("generating key... this may take a while");
 		key.Generate();
 		log_verbose("Key generated, saving private bits as %s", keyPath);
 		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "wb+");
@@ -1909,6 +1909,10 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
 		shutdown(connection.socket, SHUT_RDWR);
 		break;
+	case NETWORK_AUTH_VERIFICATIONFAILURE:
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+		shutdown(connection.socket, SHUT_RDWR);
+		break;
 	case NETWORK_AUTH_FULL:
 		connection.setLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
 		shutdown(connection.socket, SHUT_RDWR);
@@ -1953,7 +1957,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		uint32 sigsize;
 		packet >> sigsize;
 		if (pubkey == nullptr) {
-			connection.authstatus = NETWORK_AUTH_BADPASSWORD;
+			connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 		} else {
 			const char *signature = (const char *)packet.Read(sigsize);
 			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, strlen(pubkey));
@@ -1965,6 +1969,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 				const std::string hash = connection.key.PublicKeyHash();
 				log_verbose("Signature verification ok. Hash %s", hash.c_str());
 			} else {
+				connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 				log_verbose("Signature verification failed!");
 			}
 		}
@@ -2709,14 +2714,16 @@ void network_send_password(const char* password)
 	safe_strcat(keyPath, path, MAX_PATH);
 	safe_strcat(keyPath, gConfigNetwork.player_name, MAX_PATH);
 	safe_strcat(keyPath, ".privkey", MAX_PATH);
+	if (!platform_file_exists(keyPath)) {
+		log_error("Private key %s missing! Restart the game to generate it.", keyPath);
+		return;
+	}
 	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	// TODO: verify file exists
 	gNetwork.key.LoadPrivate(privkey);
 	const std::string pubkey = gNetwork.key.PublicKeyString();
 	size_t sigsize;
 	char *signature;
 	bool ok = gNetwork.key.Sign(gNetwork.challenge.c_str(), gNetwork.challenge.size(), &signature, &sigsize);
-	log_warning("sigsize = %u, strlen(signature) = %u, signature = %s", sigsize, strlen(signature), signature);
 	// Don't keep private key in memory. There's no need and it may get leaked
 	// when process dump gets collected at some point in future.
 	gNetwork.key.Unload();
