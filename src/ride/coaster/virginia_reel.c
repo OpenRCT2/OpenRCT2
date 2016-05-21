@@ -20,6 +20,7 @@
 #include "../vehicle_paint.h"
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
+#include "../../paint/supports.h"
 
 // 0x009927E6:
 static const vehicle_boundbox _virginiaReelBoundbox[] = {
@@ -32,6 +33,31 @@ static const vehicle_boundbox _virginiaReelBoundbox[] = {
 	{ -11, -11,  1, 22, 22, 13 },
 	{ -11, -11,  1, 22, 22, 13 },
 	{ -11, -11,  1, 22, 22, 13 },
+};
+
+enum
+{
+	SPR_VIRGINIA_REEL_FLAT_SW_NE = 21458,
+	SPR_VIRGINIA_REEL_FLAT_NW_SE = 21459,
+
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SW_NE = 21488,
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NW_SE = 21489,
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NE_SW = 21490,
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SE_NW = 21491,
+};
+
+static const uint32 virginia_reel_track_pieces_flat[4] = {
+	SPR_VIRGINIA_REEL_FLAT_SW_NE,
+	SPR_VIRGINIA_REEL_FLAT_NW_SE,
+	SPR_VIRGINIA_REEL_FLAT_SW_NE,
+	SPR_VIRGINIA_REEL_FLAT_NW_SE,
+};
+
+static const uint32 virginia_reel_track_pieces_flat_lift_hill[4] = {
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SW_NE,
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NW_SE,
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NE_SW,
+	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SE_NW,
 };
 
 /**
@@ -92,9 +118,27 @@ void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_v
 	assert(vehicleEntry->effect_visual == 1);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00811264 */
 static void paint_viriginia_reel_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	const uint32 * sprites = virginia_reel_track_pieces_flat;
+	if (mapElement->type & 0x80) {
+		sprites = virginia_reel_track_pieces_flat_lift_hill;
+	}
+
+	uint32 imageId = sprites[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction & 1) {
+		sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	} else {
+		sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x */
