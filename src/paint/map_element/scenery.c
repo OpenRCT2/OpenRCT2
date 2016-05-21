@@ -188,7 +188,11 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 			} else
 			if (entry->small_scenery.flags & SMALL_SCENERY_FLAG15) {
 				// 6E02F6:
-				int image_id = ((gCurrentTicks + (RCT2_GLOBAL(0x9DE568, sint16) / 4) + (RCT2_GLOBAL(0x9DE56C, sint16) / 4) / 4) & 0xF) + entry->image;
+				int image_id = gCurrentTicks;
+				image_id += RCT2_GLOBAL(0x009DE568, sint16) / 4;
+				image_id += RCT2_GLOBAL(0x009DE56C, sint16) / 4;
+				image_id = (image_id / 4) & 15;
+				image_id += entry->image;
 				if (dword_F64EB0 != 0) {
 					image_id = (image_id & 0x7FFFF) | dword_F64EB0;
 				}
