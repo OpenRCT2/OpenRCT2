@@ -31,6 +31,8 @@ extern const uint8 edges_3x3[];
 extern const uint8 track_map_4x4[][16];
 extern const uint8 edges_4x4[];
 
+extern const uint8 track_map_1x4[][4];
+
 enum {
 	SPR_FLOOR_PLANKS = 3395,
 	SPR_FLOOR_PLANKS_90_DEG = 3396,
@@ -135,6 +137,8 @@ enum {
 	SPR_STATION_BASE_B_SW_NE = 22428,
 	SPR_STATION_BASE_B_NW_SE = 22429,
 
+	SPR_STATION_BASE_D = 22432,
+
 	SPR_ON_RIDE_PHOTO_CAMERA_N = 25615,
 	SPR_ON_RIDE_PHOTO_CAMERA_E = 25616,
 	SPR_ON_RIDE_PHOTO_CAMERA_S = 25617,
@@ -181,6 +185,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int trackType, int di
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction);
