@@ -14,12 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../addresses.h"
-#include "../../config.h"
-#include "../../interface/viewport.h"
-#include "../../world/sprite.h"
-#include "../../paint/paint.h"
+#include "../../common.h"
+#include "../track_paint.h"
+#include "../track.h"
 #include "../vehicle_paint.h"
+#include "../../interface/viewport.h"
+#include "../../paint/paint.h"
 
 // 0x009927E6:
 static const vehicle_boundbox _virginiaReelBoundbox[] = {
@@ -90,4 +90,106 @@ void vehicle_visual_virginia_reel(int x, int imageDirection, int y, int z, rct_v
 	}
 
 	assert(vehicleEntry->effect_visual == 1);
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/** rct2: 0x */
+static void paint_viriginia_reel_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+}
+
+/**
+ * rct2: 0x00811184
+ */
+TRACK_PAINT_FUNCTION get_track_paint_function_virginia_reel(int trackType, int direction)
+{
+	switch (trackType) {
+		case TRACK_ELEM_FLAT:
+			return paint_viriginia_reel_track_flat;
+
+		case TRACK_ELEM_END_STATION:
+		case TRACK_ELEM_BEGIN_STATION:
+		case TRACK_ELEM_MIDDLE_STATION:
+			return paint_viriginia_reel_station;
+
+		case TRACK_ELEM_25_DEG_UP:
+			return paint_viriginia_reel_track_25_deg_up;
+		case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+			return paint_viriginia_reel_track_flat_to_25_deg_up;
+		case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+			return paint_viriginia_reel_track_25_deg_up_to_flat;
+
+		case TRACK_ELEM_25_DEG_DOWN:
+			return paint_viriginia_reel_track_25_deg_down;
+		case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+			return paint_viriginia_reel_track_flat_to_25_deg_down;
+		case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+			return paint_viriginia_reel_track_25_deg_down_to_flat;
+
+		case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+			return paint_viriginia_reel_track_left_quarter_turn_3_tiles;
+		case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+			return paint_viriginia_reel_track_right_quarter_turn_3_tiles;
+
+		case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+			return paint_viriginia_reel_track_left_quarter_turn_1_tile;
+		case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+			return paint_viriginia_reel_track_right_quarter_turn_1_tile;
+	}
+
+	return NULL;
 }
