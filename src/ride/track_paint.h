@@ -182,6 +182,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int trackType, int di
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int trackType, int direction);

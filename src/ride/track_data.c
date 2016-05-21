@@ -5505,7 +5505,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0,						// RIDE_TYPE_INFORMATION_KIOSK
 	0,						// RIDE_TYPE_TOILETS
 	0,						// RIDE_TYPE_FERRIS_WHEEL
-	0x00763520,						// RIDE_TYPE_MOTION_SIMULATOR
+	0,						// RIDE_TYPE_MOTION_SIMULATOR
 	0,						// RIDE_TYPE_3D_CINEMA
 	0,						// RIDE_TYPE_TOP_SPIN
 	0,						// RIDE_TYPE_SPACE_RINGS
@@ -5600,7 +5600,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_shop,			// RIDE_TYPE_INFORMATION_KIOSK
 	get_track_paint_function_facility,		// RIDE_TYPE_TOILETS
 	get_track_paint_function_ferris_wheel,	// RIDE_TYPE_FERRIS_WHEEL
-	0,						// RIDE_TYPE_MOTION_SIMULATOR
+	get_track_paint_function_motionsimulator,				// RIDE_TYPE_MOTION_SIMULATOR
 	get_track_paint_function_3d_cinema,						// RIDE_TYPE_3D_CINEMA
 	get_track_paint_function_topspin,		// RIDE_TYPE_TOP_SPIN
 	get_track_paint_function_space_rings,	// RIDE_TYPE_SPACE_RINGS
