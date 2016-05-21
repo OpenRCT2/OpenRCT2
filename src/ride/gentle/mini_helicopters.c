@@ -342,7 +342,7 @@ static void paint_mini_helicopters_track_25_deg_down_to_flat(uint8 rideIndex, ui
 /** rct2: 0x0081F3E8 */
 static void paint_mini_helicopters_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	track_paint_util_left_quarter_turn_3_tiles_paint(height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles, get_current_rotation());
+	track_paint_util_left_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles, get_current_rotation());
 	track_paint_util_left_quarter_turn_3_tiles_tunnel(height, direction, trackSequence);
 
 	switch (trackSequence) {

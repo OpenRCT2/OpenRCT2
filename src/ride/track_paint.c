@@ -350,7 +350,7 @@ void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definit
 }
 
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
-void track_paint_util_left_quarter_turn_3_tiles_paint(sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
+void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
 {
 	sint8 sprite = left_quarter_turn_3_tiles_sprite_map[trackSequence];
 	if (sprite < 0) {
@@ -362,33 +362,33 @@ void track_paint_util_left_quarter_turn_3_tiles_paint(sint16 height, int directi
 	switch (direction) {
 		case 0:
 			switch (trackSequence) {
-				case 0: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
-				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 16, 0, height, rotation); break;
-				case 3: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
+				case 0: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 16, 0, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
 			}
 			break;
 
 		case 1:
 			switch (trackSequence) {
-				case 0: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
-				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 0, 0, height, rotation); break;
-				case 3: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
+				case 0: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 0, 0, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
 			}
 			break;
 
 		case 2:
 			switch (trackSequence) {
-				case 0: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
-				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 0, 16, height, rotation); break;
-				case 3: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
+				case 0: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 0, 16, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
 			}
 			break;
 
 		case 3:
 			switch (trackSequence) {
-				case 0: sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, rotation); break;
-				case 2: sub_98197C(imageId, 0, 0, 16, 16, 3, height, 16, 16, height, rotation); break;
-				case 3: sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, rotation); break;
+				case 0: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 16, 16, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
 			}
 			break;
 	}

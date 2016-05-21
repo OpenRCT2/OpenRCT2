@@ -51,7 +51,18 @@ enum
 	SPR_VIRGINIA_REEL_25_DEG_UP_NW_SE = 21469,
 	SPR_VIRGINIA_REEL_25_DEG_UP_NE_SW = 21470,
 	SPR_VIRGINIA_REEL_25_DEG_UP_SE_NW = 21471,
-
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 21472,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 21473,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 21474,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 21475,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 21476,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 21477,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 21478,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 21479,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 21480,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 21481,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 21482,
+	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 21483,
 	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_SW_NW = 21484,
 	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NW_NE = 21485,
 	SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NE_SE = 21486,
@@ -128,6 +139,29 @@ static const uint32 virginia_reel_track_pieces_25_deg_up_lift_hill[4] = {
 	SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NW_SE,
 	SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NE_SW,
 	SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SE_NW,
+};
+
+static const uint32 virginia_reel_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+	{
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2
+	},
+	{
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2
+	},
+	{
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2
+	},
+	{
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+		SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2
+	}
 };
 
 static const uint32 virginia_reel_track_pieces_flat_quarter_turn_1_tile[4] = {
@@ -374,14 +408,35 @@ static void paint_viriginia_reel_station(uint8 rideIndex, uint8 trackSequence, u
 {
 }
 
-/** rct2: 0x */
+static const uint8 virginia_reel_left_quarter_turn_supports[] = {5, 2, 3, 4};
+
+/** rct2: 0x00811304 */
 static void paint_viriginia_reel_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	track_paint_util_left_quarter_turn_3_tiles_paint(2, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), virginia_reel_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
+	track_paint_util_left_quarter_turn_3_tiles_tunnel(height - 16, direction, trackSequence);
+
+	switch (trackSequence) {
+		case 2:
+			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
+			break;
+		case 0:
+		case 3:
+			wooden_a_supports_paint_setup(virginia_reel_left_quarter_turn_supports[direction], 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
+			break;
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+static const uint8 right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
+
+/** rct2: 0x00811314 */
 static void paint_viriginia_reel_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	trackSequence = right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
+	paint_viriginia_reel_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /** rct2: 0x00811324 */
