@@ -308,6 +308,9 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
 	for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
 		json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
 		const char * perm_name = json_string_value(jsonPermissionValue);
+		if (perm_name == nullptr) {
+			continue;
+		}
 		int action_id = gNetworkActions.FindCommandByPermissionName(perm_name);
 		if (action_id != -1) {
 			group.ToggleActionPermission(action_id);
