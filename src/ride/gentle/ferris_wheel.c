@@ -19,13 +19,6 @@
 #include "../../paint/supports.h"
 #include "../track_paint.h"
 
-static const uint8 track_map_1x4[][4] = {
-	{0, 1, 2, 3},
-	{2, 3, 0, 1},
-	{2, 3, 0, 1},
-	{0, 1, 2, 3},
-};
-
 static const uint8 edges_1x4_ne_sw[] = {
 	EDGE_NW | EDGE_SE,
 	EDGE_NW | EDGE_SE | EDGE_NE,
