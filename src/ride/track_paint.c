@@ -405,12 +405,12 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 			break;
 		case EDGE_SE:
 			bounds = (rct_xyz16) {32, 32, 0};
-			boundsOffset = (rct_xyz16) {1, 0, height + 31};
+			boundsOffset = (rct_xyz16) {1, 0, height + 23};
 			imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
 			break;
 		case EDGE_SW:
 			bounds = (rct_xyz16) {32, 32, 0};
-			boundsOffset = (rct_xyz16) {0, 0, height + 31};
+			boundsOffset = (rct_xyz16) {0, 0, height + 23};
 			imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
 			break;
 		case EDGE_NW:
