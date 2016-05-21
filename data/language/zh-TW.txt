@@ -3167,7 +3167,7 @@ STR_3156    :
 STR_3157    :地圖
 STR_3158    :圖表
 STR_3159    :列表
-STR_3160    :<not used anymore>
+STR_3160    :{SMALLFONT}{BLACK}選擇每次運轉遊樂設施的圈數
 STR_3161    :<not used anymore>
 STR_3162    :無法分配足夠的記憶體
 STR_3163    :安裝新資料檔中: 
@@ -3953,7 +3953,7 @@ STR_5610    :{SMALLFONT}{BLACK}移除選中的地圖元素. 使用時請注意. 
 STR_5611    :G
 STR_5612    :{SMALLFONT}{BLACK}Ghost flag
 STR_5613    :B
-STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5614    :{SMALLFONT}{BLACK}損壞標記
 STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
 STR_5617    :{SMALLFONT}{BLACK}將選中的元素移到上面.
@@ -4148,7 +4148,7 @@ STR_5837    :{SMALLFONT}{BLACK}建立或管理自訂的介面主題
 STR_5838    :{SMALLFONT}{BLACK}在工具列上顯示單獨的財政按鈕
 STR_5839    :{SMALLFONT}{BLACK}在工具列上顯示單獨的研發按鈕
 STR_5840    :{SMALLFONT}{BLACK}在工具列上顯示單獨的密技按鈕
-STR_5841    :{SMALLFONT}{BLACK}在工具列上顯示單獨的最近消息按鈕 toolbar
+STR_5841    :{SMALLFONT}{BLACK}在工具列上顯示單獨的最近消息按鈕
 STR_5842    :{SMALLFONT}{BLACK}以難易度(為模擬樂園(RCT2)的特色){NEWLINE}或出處的遊戲劇情(為夢幻遊樂園1((RCT1)的特色)分類劇情
 STR_5843    :{SMALLFONT}{BLACK}啟用劇情解鎖模式 (為夢幻遊樂園1((RCT1)的特色)
 STR_5844    :{SMALLFONT}{BLACK}即使有不同步或錯誤發生,{NEWLINE}保持連線到一個多人連線的伺服器
@@ -4529,7 +4529,7 @@ STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the begin
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :你需要在此大型樂園內建造十座雲霄飛車
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island

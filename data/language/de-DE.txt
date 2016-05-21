@@ -1214,8 +1214,8 @@ STR_1209    :{SMALLFONT}{BLACK}Auswählen, ob vor Abfahrt auf Fahrgäste gewarte
 STR_1210    :{SMALLFONT}{BLACK}Auswählen, ob abgefahren werden soll, wenn anderes Fahrzeug in gleicher Station ankommt
 STR_1211    :{WINDOW_COLOUR_2}Mindestwartezeit:
 STR_1212    :{WINDOW_COLOUR_2}Höchstwartezeit:
-STR_1213    :{SMALLFONT}{BLACK}Wählen Sie die Mindestwartezeit vor der Abfahrt aus
-STR_1214    :{SMALLFONT}{BLACK}Wählen Sie die Höchstwartezeit vor der Abfahrt aus
+STR_1213    :{SMALLFONT}{BLACK}Wählen Sie die Mindestwartezeit{NEWLINE}vor der Abfahrt aus
+STR_1214    :{SMALLFONT}{BLACK}Wählen Sie die Höchstwartezeit{NEWLINE}vor der Abfahrt aus
 STR_1215    :{WINDOW_COLOUR_2}Mit benachbarten Stationen synchronisieren
 STR_1216    :{SMALLFONT}{BLACK}Auswählen, ob Abfahrt mit allen benachbarten Stationen (für `Rennen') synchronisiert werden soll
 STR_1217    :{COMMA16} Sekunden
@@ -1331,7 +1331,7 @@ STR_1326    :Kurs {COMMA16}
 STR_1327    :{SMALLFONT}{BLACK}Objekte um 90{DEGREE} drehen
 STR_1328    :Ebenes Land erforderlich
 STR_1329    :{WINDOW_COLOUR_2}Startgeschwindigkeit:
-STR_1330    :{SMALLFONT}{BLACK}Höchstgeschwindigkeit beim Verlassen der Station
+STR_1330    :{SMALLFONT}{BLACK}Höchstgeschwindigkeit beim{NEWLINE}Verlassen der Station
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -2334,7 +2334,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distanz und Geschwind.:
 STR_2330    :{WINDOW_COLOUR_2}Temperatur:
 STR_2331    :{WINDOW_COLOUR_2}Höhenmarkierungen:
 STR_2332    :Einheiten
-STR_2333    :Sound
+STR_2333    :Soundeffekte
 STR_2334    :Pfund ({POUND})
 STR_2335    :Dollar ($)
 STR_2336    :Franc (F)
@@ -2802,8 +2802,8 @@ STR_2793    :{SMALLFONT}(Durchgeführt von {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Durchgeführt von: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} mit einem Firmenwert von: {BLACK}{CURRENCY}
 STR_2795    :Sortieren
 STR_2796    :{SMALLFONT}{BLACK}Sortieren Sie die Bahnliste in die richtige Reihenfolge mit Hilfe der angezeigten Informationsart
-STR_2797    :Ansicht rollen, wenn Zeiger am Bildschirmrand ist
-STR_2798    :{SMALLFONT}{BLACK}Wählen Sie aus, ob die Ansicht gerollt werden soll, wenn sich der Mauszeiger am Bildschirmrand befindet
+STR_2797    :Mauszeiger am Bildschirmrand verschiebt Ansicht
+STR_2798    :{SMALLFONT}{BLACK}Wenn sich der Mauszeiger am Bildschirmrand befindet, wird die Ansicht verschoben
 STR_2799    :{SMALLFONT}{BLACK}Tastenkürzel anzeigen oder ändern
 STR_2800    :{WINDOW_COLOUR_2}Besucher gesamt: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Einkünfte d. Eintrittskarten: {BLACK}{CURRENCY2DP}
@@ -3165,7 +3165,7 @@ STR_3156    :
 STR_3157    :Karte
 STR_3158    :Diagramm
 STR_3159    :Liste
-STR_3160    :<not used anymore>
+STR_3160    :{SMALLFONT}{BLACK}Rundenanzahl der Strecke pro Fahrt
 STR_3161    :<not used anymore>
 STR_3162    :Es kann nicht genügend Geld bereitgestellt werden
 STR_3163    :Neue Daten werden installiert:
@@ -3455,7 +3455,7 @@ STR_3446    :Patrouillenbereich verwerfen
 # New strings, cleaner
 STR_5120    :Finanzen
 STR_5121    :Forschung
-STR_5122    :Bahnen nach Streckentyp auswählen (wie in RCT1)
+STR_5122    :Bahnen nach Streckentyp auswählen (RCT1-Verhalten)
 STR_5123    :Bahnen erneuern
 STR_5124    :Keine Six Flags
 STR_5125    :Alles zerstörbar
@@ -3499,7 +3499,7 @@ STR_5162    :Tag/Monat/Jahr
 STR_5163    :Monat/Tag/Jahr
 STR_5164    :Twitch-Kanalname
 STR_5165    :Parkbesucher nach Followern benennen
-STR_5166    :{SMALLFONT}{BLACK}Benennt die Parkbesucher nach den Followern des Twitch-Kanals
+STR_5166    :{SMALLFONT}{BLACK}Benennt die Parkbesucher nach den{NEWLINE}Followern des Twitch-Kanals
 STR_5167    :Überwache Follower-Parkbesucher
 STR_5168    :{SMALLFONT}{BLACK}Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Followern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
 STR_5169    :Parkbesucher nach Twitch-Chatbenutzern benennen
@@ -3886,7 +3886,7 @@ STR_5549    :Jahr/Monat/Tag
 STR_5550    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jahr/Tag/Monat
 STR_5552    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Spiel bei geöffnetem Steam Overlay pausieren
+STR_5553    :Spiel bei geöffnetem Steam-Overlay pausieren
 STR_5554    :{SMALLFONT}{BLACK}Gebirgswerkzeug aktivieren
 STR_5555    :Fahrzeuge anderer Streckentyp. anzeigen
 STR_5556    :{SMALLFONT}{BLACK}Spieler entfernen
@@ -3920,7 +3920,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Hebt Beschränkungen von Attraktionen auf, um Dinge wie {VELOCITY} schnelle Lifthügel zu erlauben
 STR_5586    :Läden und Stände automatisch öffnen
-STR_5587    :{SMALLFONT}{BLACK}Wenn aktiviert, werden Läden und Stände nach dem Bauen automatisch geöffnet
+STR_5587    :{SMALLFONT}{BLACK}Läden und Stände werden nach dem{NEWLINE}Bauen automatisch geöffnet
 STR_5588    :{SMALLFONT}{BLACK}Mit anderen Spielern spielen
 STR_5589    :Benachrichtigungseinstellungen
 STR_5590    :Parkauszeichnungen
@@ -4103,7 +4103,7 @@ STR_5801    :Verschmutzung deaktivieren
 STR_5802    :{SMALLFONT}{BLACK}Hält Besucher davon ab Müll wegzuwerfen oder sich zu erbrechen
 STR_5803    :{SMALLFONT}{BLACK}Ausgewähltes Kartenelement drehen
 STR_5804    :Ton ein-/ausschalten
-STR_5805    :{SMALLFONT}{BLACK}Wenn aktiviert, wird der Server zur öffentlichen Serverliste hinzugefügt und für jeden sichtbar
+STR_5805    :{SMALLFONT}{BLACK}Server wird zur öffentlichen Serverliste hinzugefügt und für jeden sichtbar
 STR_5806    :Fenstermodus ein-/ausschalten
 STR_5807    :{WINDOW_COLOUR_2}Anzahl der Bahnen: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Anzahl der Läden und Stände: {BLACK}{COMMA16}
@@ -4113,6 +4113,51 @@ STR_5811    :{SMALLFONT}{BLACK}Dieser Cheat ermöglicht eine Zuglänge{NEWLINE}v
 STR_5812    :Mehrspielerstatus anzeigen
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5815    :{SMALLFONT}{BLACK}FPS-Zähler im Spiel anzeigen
+STR_5816    :{SMALLFONT}{BLACK}Stellt den Faktor für die Skalierung des{NEWLINE}Spiels ein. Besonders für hohe{NEWLINE}Auflösungen sinnvoll
+STR_5817    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Stellt die Skalierungsmethode ein
+STR_5818    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Benutzt die Pixelwiederholung, wenn der Skalierungsfaktor auf einen ganzzahligen Wert eingestellt{NEWLINE}ist (1, 2, 3 etc.)
+STR_5819    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
+STR_5820    :{SMALLFONT}{BLACK}Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
+STR_5821    :{SMALLFONT}{BLACK}Verändert die Farbe der Baumarkierung, wenn Attraktionen, Wege, Läden, Szenerien etc.++ gebaut werden
+STR_5822    :{SMALLFONT}{BLACK}Wechselt zwischen Tag und Nacht.{NEWLINE}Ein kompletter Zyklus dauert einen Monat im Spiel
+STR_5823    :{SMALLFONT}{BLACK}Zeigt Text auf Bannern in Großbuchstaben an (RCT1-Verhalten)
+STR_5824    :{SMALLFONT}{BLACK}Deaktiviert den Blitzeffekt{NEWLINE}während eines Gewitters
+STR_5825    :{SMALLFONT}{BLACK}Behält den Mauszeiger im Fenster
+STR_5826    :{SMALLFONT}{BLACK}Invertiert das Ziehen mit der rechten Maustaste des Ansichtsfensters
+STR_5827    :{SMALLFONT}{BLACK}Stellt das Farbschema für das GUI ein
+STR_5828    :{SMALLFONT}{BLACK}Verändert die verwendeten Maßeinheiten{NEWLINE}für Entfernung, Geschwindigkeit etc.
+STR_5829    :{SMALLFONT}{BLACK}Verändert die verwendete Währungseinheit. Das ist nur visuell und mit keinem Umrechnungskurs verbunden
+STR_5830    :{SMALLFONT}{BLACK}Verändert die verwendete Sprache
+STR_5831    :{SMALLFONT}{BLACK}Verändert die verwendete Temperatureinheit
+STR_5832    :{SMALLFONT}{BLACK}Zeigt Höhen als generische Einheiten,{NEWLINE}anstelle der unter "Distanz und Geschwindigkeit" gewählten Maßeinheit, an
+STR_5833    :{SMALLFONT}{BLACK}Verändert das verwendete Datumsformat
+STR_5834    :{SMALLFONT}{BLACK}Das zu verwendende Audiogerät auswählen
+STR_5835    :{SMALLFONT}{BLACK}Schaltet das Spiel stumm, wenn das{NEWLINE}Spiel nicht mehr im Vordergrund ist
+STR_5836    :{SMALLFONT}{BLACK}Die im Hauptmenü verwendete{NEWLINE}Musik auswählen.{NEWLINE}{NEWLINE}Die RCT1-Musik erfordert das Kopieren von 'data/css17.dat',{NEWLINE}aus dem RCT1-Ordner, nach 'data/css50.dat' im{NEWLINE}RCT2-Ordner
+STR_5837    :{SMALLFONT}{BLACK}Benutzerdefinierte GUIs{NEWLINE}erstellen und verwalten
+STR_5838    :{SMALLFONT}{BLACK}Zeigt für die Finanzen in der Symbolleiste{NEWLINE}eine gesonderte Schaltfläche an
+STR_5839    :{SMALLFONT}{BLACK}Zeigt für die Forschung & Entwicklung{NEWLINE}in der Symbolleiste eine gesonderte Schaltfläche an
+STR_5840    :{SMALLFONT}{BLACK}Zeigt für die Cheats in der Symbolleiste{NEWLINE}eine gesonderte Schaltfläche an
+STR_5841    :{SMALLFONT}{BLACK}Zeigt für die aktuellen Nachrichten in{NEWLINE}der Symbolleiste eine gesonderte Schaltfläche an
+STR_5842    :{SMALLFONT}{BLACK}Sortiert Szenarios, nach ihrer Schwierigkeit (RCT2-Verhalten) oder ihrer Spielherkunft (RCT1-Verhalten),{NEWLINE}in verschiedene Reiter
+STR_5843    :{SMALLFONT}{BLACK}Aktiviert das Freispielen der Szenarios (RCT1-Verhalten)
+STR_5844    :{SMALLFONT}{BLACK}Mit einem Mehrspielerserver verbunden bleiben, selbst dann, wenn eine Desynchronisation oder ein{NEWLINE}Fehler auftritt
+STR_5845    :{SMALLFONT}{BLACK}Zeigt für die Debugging-Tools in{NEWLINE}der Symbolleiste eine gesonderte Schaltfläche an.{NEWLINE}Aktiviert das Tastenkürzel für die Entwicklerkonsole
+STR_5846    :{SMALLFONT}{BLACK}Auswählen, wie oft OpenRCT2{NEWLINE}automatisch speichert
+STR_5847    :{SMALLFONT}{BLACK}Die auf dem Titelbildschirm angezeigte Parksequenz auswählen. Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
+STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen erstellen und verwalten
+STR_5849    :{SMALLFONT}{BLACK}Personal wird nach dem Einstellen automatisch platziert
+STR_5850    :{SMALLFONT}{BLACK}Neu eingestellte Parkpfleger{NEWLINE}mähen standardmäßig Gras (RCT1-Verhalten)
+STR_5851    :{SMALLFONT}{BLACK}Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
+STR_5852    :{SMALLFONT}{BLACK}Den Namen des TwitchTV-Kanals einstellen, der für die Twitch-Integration{NEWLINE}benutzt wird
+STR_5853    :{SMALLFONT}{BLACK}Soundeffekte aktivieren/deaktivieren
+STR_5854    :{SMALLFONT}{BLACK}Attraktionsmusik aktivieren/deaktivieren
+STR_5855    :{SMALLFONT}{BLACK}Fenstermodus, Vollbild oder{NEWLINE}randlose Anzeige einstellen
+STR_5856    :{SMALLFONT}{BLACK}Die im Vollbildmodus verwendete{NEWLINE}Auflösung einstellen
+STR_5857    :{SMALLFONT}{BLACK}Spieloptionen
+STR_5858    :{SMALLFONT}{BLACK}GPU anstelle der CPU für die Anzeige verwenden. Verbessert die Kompatibilität mit Aufnahmeprogrammen. Möglicherweise wird die Leistung geringfügig beeinträchtigt
+STR_5859    :{SMALLFONT}{BLACK}Aktiviert Tweening für ein sichtbar flüssigeres Spielverhalten. Wenn deaktiviert läuft das Spiel mit 40 FPS
 
 #############
 # Scenarios #

@@ -1489,14 +1489,14 @@ STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
 STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
 STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}我感到不舒服{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}我感到非常不舒服{ENDQUOTES}
 STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
 STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
 STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
 STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
 STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}我想回家{ENDQUOTES}
 STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
 STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
 STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
@@ -1557,18 +1557,18 @@ STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for chips from {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for candyfloss from {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}{OPENQUOTES}哇!{ENDQUOTES}
+STR_1551    :{SMALLFONT}{OPENQUOTES}我有种奇怪的感觉, 像是有人在监视我{ENDQUOTES}
+STR_1552    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一个气球{ENDQUOTES}
+STR_1553    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一只毛绒公仔{ENDQUOTES}
+STR_1554    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份游乐园地图{ENDQUOTES}
+STR_1555    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一张即时照片{ENDQUOTES}
+STR_1556    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一把雨伞{ENDQUOTES}
+STR_1557    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一杯饮料{ENDQUOTES}
+STR_1558    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一个汉堡{ENDQUOTES}
+STR_1559    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份薯条{ENDQUOTES}
+STR_1560    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一个冰激淋{ENDQUOTES}
+STR_1561    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一球棉花糖{ENDQUOTES}
 STR_1562    :
 STR_1563    :
 STR_1564    :
@@ -1591,27 +1591,27 @@ STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is really good value{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
+STR_1584    :{SMALLFONT}{OPENQUOTES}这张从{STRINGID}购买的即时照片真是超值{ENDQUOTES}
+STR_1585    :{SMALLFONT}{OPENQUOTES}这张从{STRINGID}购买的即时照片真是超值{ENDQUOTES}
+STR_1586    :{SMALLFONT}{OPENQUOTES}这张从{STRINGID}购买的即时照片真是超值{ENDQUOTES}
+STR_1587    :{SMALLFONT}{OPENQUOTES}这张从{STRINGID}购买的椒盐卷饼真是超值{ENDQUOTES}
+STR_1588    :{SMALLFONT}{OPENQUOTES}这杯从{STRINGID}购买的热巧克力真是超值{ENDQUOTES}
+STR_1589    :{SMALLFONT}{OPENQUOTES}这杯从{STRINGID}购买的冰红茶真是超值{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}这个从{STRINGID}购买的漏斗蛋糕真是超值{ENDQUOTES}
+STR_1591    :{SMALLFONT}{OPENQUOTES}这副从{STRINGID}购买的太阳镜真是超值{ENDQUOTES}
+STR_1592    :{SMALLFONT}{OPENQUOTES}这碗从{STRINGID}购买的牛肉面真是超值{ENDQUOTES}
+STR_1593    :{SMALLFONT}{OPENQUOTES}这份从{STRINGID}购买的炒米粉真是超值{ENDQUOTES}
+STR_1594    :{SMALLFONT}{OPENQUOTES}这份从{STRINGID}购买的上汤云吞真是超值{ENDQUOTES}
+STR_1595    :{SMALLFONT}{OPENQUOTES}这份从{STRINGID}购买的肉丸汤{真是超值{ENDQUOTES}
+STR_1596    :{SMALLFONT}{OPENQUOTES}这杯从{STRINGID}购买的果汁真是超值{ENDQUOTES}
+STR_1597    :{SMALLFONT}{OPENQUOTES}这杯从{STRINGID}购买的豆浆真是超值{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}这份从{STRINGID}购买的水正果真是超值{ENDQUOTES}
+STR_1599    :{SMALLFONT}{OPENQUOTES}这块从{STRINGID}购买的潜艇三明治真是超值{ENDQUOTES}
+STR_1600    :{SMALLFONT}{OPENQUOTES}这份从{STRINGID}购买的曲奇饼干真是超值{ENDQUOTES}
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}{OPENQUOTES}这条从{STRINGID}购买的烤香肠真是超值{ENDQUOTES}
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1623,23 +1623,23 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a funnel cake from {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sunglasses from {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for beef noodles from {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried rice noodles from {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup from {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去购买一张在{STRINGID}的即时照片{ENDQUOTES}
+STR_1617    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去购买一张在{STRINGID}的即时照片{ENDQUOTES}
+STR_1618    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去购买一张在{STRINGID}的即时照片{ENDQUOTES}
+STR_1619    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一张椒盐卷饼{ENDQUOTES}
+STR_1620    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一杯热巧克力{ENDQUOTES}
+STR_1621    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一杯冰红茶{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一个漏斗蛋糕{ENDQUOTES}
+STR_1623    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一副太阳镜{ENDQUOTES}
+STR_1624    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一碗牛肉面{ENDQUOTES}
+STR_1625    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份炒米粉{ENDQUOTES}
+STR_1626    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份上汤云吞{ENDQUOTES}
+STR_1627    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份肉丸汤{ENDQUOTES}
+STR_1628    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一杯果汁{ENDQUOTES}
+STR_1629    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一杯豆浆{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份水正果{ENDQUOTES}
+STR_1631    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一块潜艇三明治{ENDQUOTES}
+STR_1632    :{SMALLFONT}{OPENQUOTES}我不会花那么多钱去{STRINGID}购买一份曲奇饼干{ENDQUOTES}
 STR_1633    :
 STR_1634    :
 STR_1635    :
@@ -1700,18 +1700,18 @@ STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
-STR_1694    :{SMALLFONT}{BLACK}Staff
-STR_1695    :{SMALLFONT}{BLACK}Income and costs
-STR_1696    :{SMALLFONT}{BLACK}Customer information
+STR_1693    :{SMALLFONT}{BLACK}游客
+STR_1694    :{SMALLFONT}{BLACK}职员
+STR_1695    :{SMALLFONT}{BLACK}收入和支出
+STR_1696    :{SMALLFONT}{BLACK}顾客信息
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
 STR_1699    :Too many people in game
-STR_1700    :Hire new Handyman
-STR_1701    :Hire new Mechanic
-STR_1702    :Hire new Security Guard
-STR_1703    :Hire new Entertainer
-STR_1704    :Can't hire new staff...
+STR_1700    :雇佣新的清洁工
+STR_1701    :雇佣新的机械工
+STR_1702    :雇佣新的安保人员
+STR_1703    :雇佣新的表演人员
+STR_1704    :不能雇佣新职员...
 STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
 STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
@@ -1728,8 +1728,8 @@ STR_1717    :Can't rename park...
 STR_1718    :Park Name
 STR_1719    :Enter name for park:
 STR_1720    :{SMALLFONT}{BLACK}Name park
-STR_1721    :Park closed
-STR_1722    :Park open
+STR_1721    :游乐园已关闭
+STR_1722    :游乐园开放中
 STR_1723    :Can't open park...
 STR_1724    :Can't close park...
 STR_1725    :Can't buy land...
@@ -1761,12 +1761,12 @@ STR_1750    :{DURATION}
 STR_1751    :Can't change time limit for ride...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
-STR_1754    :{BLACK}{COMMA16} guests
-STR_1755    :{BLACK}{COMMA16} guest
-STR_1756    :{WINDOW_COLOUR_2}Admission price:
-STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}Build mode
-STR_1759    :{SMALLFONT}{BLACK}Move mode
+STR_1754    :{BLACK}{COMMA16}名游客
+STR_1755    :{BLACK}{COMMA16}名游客
+STR_1756    :{WINDOW_COLOUR_2}门票价格:
+STR_1757    :{WINDOW_COLOUR_2}可靠性: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1758    :{SMALLFONT}{BLACK}建造模式
+STR_1759    :{SMALLFONT}{BLACK}移动模式
 STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
 STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
 STR_1762    :Waterfalls
@@ -1825,14 +1825,14 @@ STR_1814    :Actions
 STR_1815    :Thoughts
 STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
 STR_1817    :({COMMA16})
-STR_1818    :{WINDOW_COLOUR_2}All guests
-STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
-STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
-STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
-STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
-STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
-STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
+STR_1818    :{WINDOW_COLOUR_2}所有游客
+STR_1819    :{WINDOW_COLOUR_2}所有游客(汇总)
+STR_1820    :{WINDOW_COLOUR_2}{STRINGID}的游客
+STR_1821    :{WINDOW_COLOUR_2}在想{STRINGID}的游客
+STR_1822    :{WINDOW_COLOUR_2}在想{POP16}{STRINGID}的游客
+STR_1823    :{SMALLFONT}{BLACK}显示游客对此游乐设施/店铺的想法
+STR_1824    :{SMALLFONT}{BLACK}显示在此游乐设施/店铺的游客
+STR_1825    :{SMALLFONT}{BLACK}显示在此游乐设施/店铺排队等候的游客
 STR_1826    :Status
 STR_1827    :Popularity
 STR_1828    :Satisfaction
@@ -2109,32 +2109,32 @@ STR_2096    :Fried Chicken
 STR_2097    :Lemonade
 STR_2098    :Empty Box
 STR_2099    :Empty Bottle
-STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
-STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
-STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
-STR_2106    :{WINDOW_COLOUR_2}Funnel Cake price:
-STR_2107    :{WINDOW_COLOUR_2}Sunglasses price:
-STR_2108    :{WINDOW_COLOUR_2}Beef Noodles price:
-STR_2109    :{WINDOW_COLOUR_2}Fried Rice Noodles price:
-STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
-STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
-STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
-STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
-STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
-STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
-STR_2116    :{WINDOW_COLOUR_2}Cookie price:
+STR_2100    :{WINDOW_COLOUR_2}即时照片价格:
+STR_2101    :{WINDOW_COLOUR_2}即时照片价格:
+STR_2102    :{WINDOW_COLOUR_2}即时照片价格:
+STR_2103    :{WINDOW_COLOUR_2}椒盐卷饼价格:
+STR_2104    :{WINDOW_COLOUR_2}热巧克力价格:
+STR_2105    :{WINDOW_COLOUR_2}冰红茶价格:
+STR_2106    :{WINDOW_COLOUR_2}漏斗蛋糕价格:
+STR_2107    :{WINDOW_COLOUR_2}太阳镜价格:
+STR_2108    :{WINDOW_COLOUR_2}牛肉面价格:
+STR_2109    :{WINDOW_COLOUR_2}炒米粉价格:
+STR_2110    :{WINDOW_COLOUR_2}上汤云吞价格:
+STR_2111    :{WINDOW_COLOUR_2}肉丸汤价格:
+STR_2112    :{WINDOW_COLOUR_2}果汁价格:
+STR_2113    :{WINDOW_COLOUR_2}豆浆价格:
+STR_2114    :{WINDOW_COLOUR_2}水正果价格:
+STR_2115    :{WINDOW_COLOUR_2}潜艇三明治价格:
+STR_2116    :{WINDOW_COLOUR_2}曲奇饼干价格:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
+STR_2120    :{WINDOW_COLOUR_2}烤香肠价格:
 STR_2121    :{WINDOW_COLOUR_2}
 STR_2122    :On-Ride Photo
 STR_2123    :On-Ride Photo
 STR_2124    :On-Ride Photo
-STR_2125    :Pretzel
+STR_2125    :椒盐卷饼
 STR_2126    :Hot Chocolate
 STR_2127    :Iced Tea
 STR_2128    :Funnel Cake
@@ -2145,7 +2145,7 @@ STR_2132    :Wonton Soup
 STR_2133    :Meatball Soup
 STR_2134    :Fruit Juice
 STR_2135    :Soybean Milk
-STR_2136    :Sujongkwa
+STR_2136    :水正果
 STR_2137    :Sub Sandwich
 STR_2138    :Cookie
 STR_2139    :Empty Bowl
@@ -2156,7 +2156,7 @@ STR_2143    :Empty Bowl
 STR_2144    :On-Ride Photos
 STR_2145    :On-Ride Photos
 STR_2146    :On-Ride Photos
-STR_2147    :Pretzels
+STR_2147    :椒盐卷饼
 STR_2148    :Hot Chocolates
 STR_2149    :Iced Teas
 STR_2150    :Funnel Cakes
@@ -2167,7 +2167,7 @@ STR_2154    :Wonton Soups
 STR_2155    :Meatball Soups
 STR_2156    :Fruit Juices
 STR_2157    :Soybean Milks
-STR_2158    :Sujongkwa
+STR_2158    :水正果
 STR_2159    :Sub Sandwiches
 STR_2160    :Cookies
 STR_2161    :Empty Bowls
@@ -2178,7 +2178,7 @@ STR_2165    :Empty Bowls
 STR_2166    :an On-Ride Photo
 STR_2167    :an On-Ride Photo
 STR_2168    :an On-Ride Photo
-STR_2169    :a Pretzel
+STR_2169    :一份椒盐卷饼
 STR_2170    :a Hot Chocolate
 STR_2171    :an Iced Tea
 STR_2172    :a Funnel Cake
@@ -2189,7 +2189,7 @@ STR_2176    :some Wonton Soup
 STR_2177    :some Meatball Soup
 STR_2178    :a Fruit Juice
 STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
+STR_2180    :一杯水正果
 STR_2181    :a Sub Sandwich
 STR_2182    :a Cookie
 STR_2183    :an Empty Bowl
@@ -2200,7 +2200,7 @@ STR_2187    :an Empty Bowl
 STR_2188    :On-Ride Photo of {STRINGID}
 STR_2189    :On-Ride Photo of {STRINGID}
 STR_2190    :On-Ride Photo of {STRINGID}
-STR_2191    :Pretzel
+STR_2191    :椒盐卷饼
 STR_2192    :Hot Chocolate
 STR_2193    :Iced Tea
 STR_2194    :Funnel Cake
@@ -3122,9 +3122,9 @@ STR_3103    :Can't re-paint this...
 STR_3104    :{SMALLFONT}{BLACK}List rides
 STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
 STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
-STR_3107    :Close
-STR_3108    :Test
-STR_3109    :Open
+STR_3107    :关闭
+STR_3108    :测试
+STR_3109    :开放
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
 STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
