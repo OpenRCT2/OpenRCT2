@@ -839,16 +839,10 @@ STR_0834    :{SMALLFONT}{BLACK}Disk and game options
 STR_0835    :Game initialisation failed
 STR_0836    :Unable to start game in a minimised state
 STR_0837    :Unable to initialise graphics system
-STR_0838    :<not used anymore>
+
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<not used anymore>
-STR_0842    :<not used anymore>
-STR_0843    :<not used anymore>
-STR_0844    :<not used anymore>
-STR_0845    :<not used anymore>
-STR_0846    :<not used anymore>
+
 STR_0847    :About 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
@@ -1894,10 +1888,7 @@ STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hou
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
-# The following two strings were used to display an error when the disc was missing.
-# This has been replaced in OpenRCT2.
-STR_1892    :<not used anymore>
-STR_1893    :<not used anymore>
+
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
@@ -2294,7 +2285,7 @@ STR_2286    :Designing
 STR_2287    :Completing design
 STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :<not used anymore>
+
 STR_2291    :Select scenario for new game
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
@@ -2321,10 +2312,7 @@ STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :<not used anymore>
-STR_2318    :<not used anymore>
-STR_2319    :<not used anymore>
-STR_2320    :<not used anymore>
+
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
@@ -2441,12 +2429,7 @@ STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
 STR_2435    :{BLACK}Advertising campaign for {STRINGID}
 STR_2436    :1 week
-STR_2437    :<not used anymore>
-STR_2438    :<not used anymore>
-STR_2439    :<not used anymore>
-STR_2440    :<not used anymore>
-STR_2441    :<not used anymore>
-STR_2442    :<not used anymore>
+
 STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
 STR_2445    :Start this marketing campaign
@@ -2687,8 +2670,7 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
-STR_2682    :<not used anymore>
-STR_2683    :<not used anymore>
+
 STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Low:
@@ -2763,14 +2745,12 @@ STR_2753    :Mowed grass
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
-STR_2757    :<not used anymore>
-STR_2758    :<not used anymore>
+
 STR_2759    :Zero Clearance
 STR_2760    :+{CURRENCY}
-STR_2761    :<not used anymore>
-STR_2762    :<not used anymore>
+
 STR_2763    :???
-STR_2764    :<not used anymore>
+
 STR_2765    :Large Tram
 STR_2766    :Win scenario
 STR_2767    :Freeze Climate
@@ -2976,8 +2956,7 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :<not used anymore>
-STR_2970    :<not used anymore>
+
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
@@ -3168,7 +3147,7 @@ STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
 STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
-STR_3161    :<not used anymore>
+
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
@@ -3344,7 +3323,7 @@ STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :<not used anymore>
+
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
@@ -3369,8 +3348,7 @@ STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :<not used anymore>
-STR_3363    :<not used anymore>
+
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= Ride
