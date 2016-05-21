@@ -19,6 +19,39 @@
 #include "../../paint/supports.h"
 #include "../track_paint.h"
 
+enum {
+	PLANE_BACK,
+	PLANE_FRONT,
+};
+
+static void paint_magic_carpet_frame(uint8 plane, uint8 direction,
+									 rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
+{
+	uint32 imageId = plane == PLANE_BACK ? 22002 : 22003;
+	imageId += (direction & 1) * 2;
+	imageId |= RCT2_GLOBAL(0x00F44198, uint32);
+	if (plane == PLANE_BACK) {
+		sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+	} else {
+		sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+	}
+}
+
+static void paint_magic_carpet_pendulum(uint8 plane, uint32 swingImageId, uint8 direction,
+										rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
+{
+	uint32 imageId = swingImageId;
+	if (direction & 2) {
+		imageId = (0 - ((sint32)imageId)) & 31;
+	}
+	if (direction & 1) {
+		imageId += 32;
+	}
+	imageId += plane == PLANE_BACK ? 22006 : 22070;
+	imageId |= RCT2_GLOBAL(0x00F44198, uint32);
+	sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+}
+
 /** rct2: 0x00899104 */
 static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
@@ -66,16 +99,11 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
 	bbSize.y = RCT2_ADDRESS(0x014281F2, sint16)[direction * 4];
 	bbSize.z = 127;
 
-	// Frame (BG)
-	imageId = RCT2_GLOBAL(0x00F44198, uint32) | (22002 + ((direction & 1) * 2));
-	sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+	paint_magic_carpet_frame(PLANE_BACK, direction, offset, bbOffset, bbSize);
+	paint_magic_carpet_pendulum(PLANE_BACK, dword_1428218, direction, offset, bbOffset, bbSize);
 
-
-
-
-	// Frame (FG)
-	imageId = RCT2_GLOBAL(0x00F44198, uint32) | (22003 + ((direction & 1) * 2));
-	sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+	paint_magic_carpet_pendulum(PLANE_FRONT, dword_1428218, direction, offset, bbOffset, bbSize);
+	paint_magic_carpet_frame(PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
@@ -86,7 +114,9 @@ static void paint_magic_carpet(uint8 rideIndex, uint8 trackSequence, uint8 direc
 	uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
 	// The end tiles do not have a platform
-	if (relativeTrackSequence != 1 && relativeTrackSequence != 3) {
+	switch (relativeTrackSequence) {
+	case 0:
+	case 2:
 		if (direction & 1) {
 			metal_a_supports_paint_setup(0, 6, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
 			metal_a_supports_paint_setup(0, 7, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
@@ -97,12 +127,15 @@ static void paint_magic_carpet(uint8 rideIndex, uint8 trackSequence, uint8 direc
 
 		uint32 imageId = SPR_STATION_BASE_D | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+		break;
 	}
 
 	rct_ride *ride = get_ride(rideIndex);
 	switch (relativeTrackSequence) {
-	case 2: paint_magic_carpet_structure(ride, direction,  16, height); break;
+	case 3: paint_magic_carpet_structure(ride, direction, -48, height); break;
 	case 0: paint_magic_carpet_structure(ride, direction, -16, height); break;
+	case 2: paint_magic_carpet_structure(ride, direction,  16, height); break;
+	case 1: paint_magic_carpet_structure(ride, direction,  48, height); break;
 	}
 
 	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
