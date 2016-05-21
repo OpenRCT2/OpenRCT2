@@ -33,6 +33,7 @@ extern "C" {
 #include <set>
 #include <string>
 #include "../core/Util.hpp"
+#include "../core/Json.hpp"
 extern "C" {
 #include "../config.h"
 #include "../game.h"
@@ -232,6 +233,20 @@ int NetworkActions::FindCommand(int command)
 	return -1;
 }
 
+int NetworkActions::FindCommandByPermissionName(const std::string &permission_name)
+{
+	auto it = std::find_if(actions.begin(), actions.end(), [&permission_name](NetworkAction const& action) {
+		if (action.permission_name == permission_name) {
+			return true;
+		}
+		return false;
+	});
+	if (it != actions.end()) {
+		return it - actions.begin();
+	}
+	return -1;
+}
+
 NetworkGroup::NetworkGroup()
 {
 	actions_allowed = {0};
@@ -260,6 +275,50 @@ void NetworkGroup::Write(NetworkPacket& packet)
 	}
 }
 
+json_t * NetworkGroup::ToJson() const
+{
+	json_t * jsonGroup = json_object();
+	json_object_set_new(jsonGroup, "id", json_integer(id));
+	json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
+	json_t * actionsArray = json_array();
+	for (size_t i = 0; i < gNetworkActions.actions.size(); i++) {
+		if (CanPerformAction(i)) {
+			const char * perm_name = gNetworkActions.actions[i].permission_name.c_str();
+			json_array_append_new(actionsArray, json_string(perm_name));
+		}
+	}
+	json_object_set_new(jsonGroup, "permissions", actionsArray);
+	return jsonGroup;
+}
+
+NetworkGroup NetworkGroup::FromJson(const json_t * json)
+{
+	NetworkGroup group;
+	json_t * jsonId = json_object_get(json, "id");
+	json_t * jsonName = json_object_get(json, "name");
+	json_t * jsonPermissions = json_object_get(json, "permissions");
+	if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr) {
+		throw Exception("Missing group data");
+	}
+	group.id = (uint8)json_integer_value(jsonId);
+	group.name = std::string(json_string_value(jsonName));
+	for (size_t i = 0; i < group.actions_allowed.size(); i++) {
+		group.actions_allowed[i] = 0;
+	}
+	for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
+		json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
+		const char * perm_name = json_string_value(jsonPermissionValue);
+		if (perm_name == nullptr) {
+			continue;
+		}
+		int action_id = gNetworkActions.FindCommandByPermissionName(perm_name);
+		if (action_id != -1) {
+			group.ToggleActionPermission(action_id);
+		}
+	}
+	return group;
+}
+
 void NetworkGroup::ToggleActionPermission(size_t index)
 {
 	size_t byte = index / 8;
@@ -270,7 +329,7 @@ void NetworkGroup::ToggleActionPermission(size_t index)
 	actions_allowed[byte] ^= (1 << bit);
 }
 
-bool NetworkGroup::CanPerformAction(size_t index)
+bool NetworkGroup::CanPerformAction(size_t index) const
 {
 	size_t byte = index / 8;
 	size_t bit = index % 8;
@@ -280,7 +339,7 @@ bool NetworkGroup::CanPerformAction(size_t index)
 	return (actions_allowed[byte] & (1 << bit)) ? true : false;
 }
 
-bool NetworkGroup::CanPerformCommand(int command)
+bool NetworkGroup::CanPerformCommand(int command) const
 {
 	int action = gNetworkActions.FindCommand(command);
 	if (action != -1) {
@@ -289,7 +348,7 @@ bool NetworkGroup::CanPerformCommand(int command)
 	return false;
 }
 
-std::string& NetworkGroup::GetName()
+const std::string& NetworkGroup::GetName() const
 {
 	return name;
 }
@@ -342,7 +401,8 @@ int NetworkConnection::ReadPacket()
 	} else {
 		// read packet data
 		if (inboundpacket.data->capacity() > 0) {
-			int readBytes = recv(socket, (char*)&inboundpacket.GetData()[inboundpacket.transferred - sizeof(inboundpacket.size)], sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.transferred, 0);
+			int readBytes = recv(socket, (char*)&inboundpacket.GetData()[inboundpacket.transferred - sizeof(inboundpacket.size)],
+					sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.transferred, 0);
 			if (readBytes == SOCKET_ERROR || readBytes == 0) {
 				if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN) {
 					return NETWORK_READPACKET_DISCONNECTED;
@@ -824,7 +884,8 @@ void Network::UpdateClient()
 				break;
 			}
 
-			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss), (*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
+			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss),
+						(*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
 				char str_connecting[256];
 				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, NULL);
 				window_network_status_open(str_connecting, []() -> void {
@@ -890,7 +951,8 @@ void Network::UpdateClient()
 	}break;
 	case NETWORK_STATUS_CONNECTED:
 		if (!ProcessConnection(server_connection)) {
-			if (server_connection.authstatus == NETWORK_AUTH_REQUIREPASSWORD) { // Do not show disconnect message window when password window closed/canceled
+			// Do not show disconnect message window when password window closed/canceled
+			if (server_connection.authstatus == NETWORK_AUTH_REQUIREPASSWORD) {
 				window_network_status_close();
 			} else {
 				char str_disconnected[256];
@@ -1163,7 +1225,9 @@ NetworkGroup* Network::AddGroup()
 	int newid = -1;
 	// Find first unused group id
 	for (int id = 0; id < 255; id++) {
-		if (std::find_if(group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) { return group->id == id; }) == group_list.end()) {
+		if (std::find_if(group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) {
+						 return group->id == id;
+			}) == group_list.end()) {
 			newid = id;
 			break;
 		}
@@ -1202,26 +1266,31 @@ void Network::SaveGroups()
 {
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		utf8 path[MAX_PATH];
-		SDL_RWops *file;
 
 		platform_get_user_directory(path, NULL);
-		strcat(path, "groups.cfg");
-
-		file = SDL_RWFromFile(path, "wb");
-		if (file == NULL) {
-			return;
-		}
+		strcat(path, "groups.json");
 
 		std::unique_ptr<NetworkPacket> stream = std::move(NetworkPacket::Allocate());
-		*stream << (uint8)group_list.size();
-		*stream << default_group;
+		json_t * jsonGroupsCfg = json_object();
+		json_t * jsonGroups = json_array();
 		for (auto it = group_list.begin(); it != group_list.end(); it++) {
-			(*it)->Write(*stream);
+			json_array_append_new(jsonGroups, (*it)->ToJson());
+		}
+		json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
+		json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
+		bool result;
+		try
+		{
+			Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
+			result = true;
+		}
+		catch (Exception ex)
+		{
+			log_error("Unable to save %s: %s", path, ex.GetMessage());
+			result = false;
 		}
 
-		SDL_RWwrite(file, stream->GetData(), stream->data->size(), 1);
-
-		SDL_RWclose(file);
+		json_decref(jsonGroupsCfg);
 	}
 }
 
@@ -1230,13 +1299,11 @@ void Network::LoadGroups()
 	group_list.clear();
 
 	utf8 path[MAX_PATH];
-	SDL_RWops *file;
 
 	platform_get_user_directory(path, NULL);
-	strcat(path, "groups.cfg");
+	strcat(path, "groups.json");
 
-	file = SDL_RWFromFile(path, "rb");
-	if (file == NULL) {
+	if (!platform_file_exists(path)) {
 		// Hardcoded permission groups
 		std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
 		admin->SetName("Admin");
@@ -1261,23 +1328,21 @@ void Network::LoadGroups()
 		return;
 	}
 
-	std::unique_ptr<NetworkPacket> stream = std::move(NetworkPacket::Allocate());
-	uint8 byte;
-	while(SDL_RWread(file, &byte, sizeof(byte), 1)){
-		*stream << byte;
-	}
-	stream->size = (uint16)stream->data->size();
+	json_t * json = Json::ReadFromFile(path);
 
-	uint8 num;
-	*stream >> num >> default_group;
-	for (unsigned int i = 0; i < num; i++) {
-		NetworkGroup group;
-		group.Read(*stream);
-		std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(group)); // change to make_unique in c++14
+	json_t * json_groups = json_object_get(json, "groups");
+	size_t groupCount = (size_t)json_array_size(json_groups);
+	for (size_t i = 0; i < groupCount; i++) {
+		json_t * jsonGroup = json_array_get(json_groups, i);
+
+		std::unique_ptr<NetworkGroup> newgroup(new NetworkGroup(NetworkGroup::FromJson(jsonGroup))); // change to make_unique in c++14
 		group_list.push_back(std::move(newgroup));
 	}
-
-	SDL_RWclose(file);
+	json_t * jsonDefaultGroup = json_object_get(json, "default_group");
+	default_group = (uint8)json_integer_value(jsonDefaultGroup);
+	if (default_group >= group_list.size()) {
+		default_group = 0;
+	}
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password)
@@ -1382,14 +1447,16 @@ void Network::Server_Send_CHAT(const char* text)
 void Network::Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << callback;
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
+			<< ecx << edx << esi << edi << ebp << callback;
 	server_connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx << esi << edi << ebp << playerid << callback;
+	*packet << (uint32)NETWORK_COMMAND_GAMECMD << (uint32)gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED)
+			<< ecx << edx << esi << edi << ebp << playerid << callback;
 	SendPacketToClients(*packet);
 }
 
@@ -1617,7 +1684,9 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 		chat_history_add(text);
 		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name, connection->getLastDisconnectReason());
 	}
-	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){ return player.get() == connection_player; }), player_list.end());
+	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){
+						  return player.get() == connection_player;
+					  }), player_list.end());
 	client_connection_list.remove(connection);
 	Server_Send_PLAYERLIST();
 }
@@ -1629,7 +1698,9 @@ NetworkPlayer* Network::AddPlayer()
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		// Find first unused player id
 		for (int id = 0; id < 255; id++) {
-			if (std::find_if(player_list.begin(), player_list.end(), [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->id == id; }) == player_list.end()) {
+			if (std::find_if(player_list.begin(), player_list.end(), [&id](std::unique_ptr<NetworkPlayer> const& player) {
+							 return player->id == id;
+				}) == player_list.end()) {
 				newid = id;
 				break;
 			}
@@ -1651,7 +1722,8 @@ void Network::PrintError()
 {
 #ifdef __WINDOWS__
 	wchar_t *s = NULL;
-	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, LAST_SOCKET_ERROR(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
+	FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL,
+				   LAST_SOCKET_ERROR(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPWSTR)&s, 0, NULL);
 	fprintf(stderr, "%S\n", s);
 	LocalFree(s);
 #else
