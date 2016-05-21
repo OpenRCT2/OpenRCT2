@@ -13,3 +13,138 @@
  * A full copy of the GNU General Public License can be found in licence.txt
  *****************************************************************************/
 #pragma endregion
+
+#include "../../common.h"
+#include "../../interface/viewport.h"
+#include "../track_paint.h"
+#include "../../paint/supports.h"
+#include "../../paint/paint.h"
+
+enum
+{
+	SPR_SPACE_RINGS_FENCE_NE = 22146,
+	SPR_SPACE_RINGS_FENCE_SE = 22147,
+	SPR_SPACE_RINGS_FENCE_SW = 22148,
+	SPR_SPACE_RINGS_FENCE_NW = 22149,
+};
+
+static const uint32 space_rings_fence_sprites[] = {
+	SPR_SPACE_RINGS_FENCE_NE,
+	SPR_SPACE_RINGS_FENCE_SE,
+	SPR_SPACE_RINGS_FENCE_SW,
+	SPR_SPACE_RINGS_FENCE_NW,
+};
+
+/** rct2: 0x00768A3B */
+static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint32 segment, int height)
+{
+	rct_map_element * savedMapElement = RCT2_GLOBAL(0x009DE578, rct_map_element*);
+
+	uint32 vehicleIndex = (segment - direction) & 0x3;
+
+	if (ride->num_stations == 0 || vehicleIndex < ride->num_vehicles) {
+		rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
+		rct_vehicle * vehicle = NULL;
+
+		int frameNum = direction;
+
+		uint32 baseImageId = ride_type->vehicles[0].base_image_id;
+
+		if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
+		    && ride->vehicles[0] != SPRITE_INDEX_NULL) {
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_SPRITE;
+			vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
+			RCT2_GLOBAL(0x009DE578, rct_vehicle*) = vehicle;
+			frameNum += (sint8) vehicle->vehicle_sprite_type * 4;
+		}
+
+		uint32 imageColourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
+		if ((ride->colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN) {
+			vehicleIndex = 0;
+		}
+
+		if (imageColourFlags == 0x20000000) {
+			imageColourFlags = ride->vehicle_colours[vehicleIndex].body_colour << 19 | ride->vehicle_colours[0].trim_colour << 24 | 0xA0000000;
+		}
+
+		uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
+		sub_98197C(imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+
+		if (vehicle != NULL && vehicle->num_peeps > 0) {
+			rct_peep * rider = GET_PEEP(vehicle->peep[0]);
+			imageColourFlags = rider->tshirt_colour << 19 | rider->trousers_colour << 24 | 0xA0000000;
+			imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
+			sub_98199C(imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+		}
+	}
+
+	RCT2_GLOBAL(0x009DE578, rct_map_element*) = savedMapElement;
+	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+}
+
+/** rct2: 0x00767C40 */
+static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	trackSequence = track_map_3x3[direction][trackSequence];
+
+	int edges = edges_3x3[trackSequence];
+	rct_ride * ride = get_ride(rideIndex);
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	uint32 imageId;
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+
+	track_paint_util_paint_floor(edges, RCT2_GLOBAL(0x00F44198, uint32), height, floorSpritesCork, get_current_rotation());
+
+	switch (trackSequence) {
+		case 7:
+			if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
+				imageId = SPR_SPACE_RINGS_FENCE_SW | RCT2_GLOBAL(0x00F441A0, uint32);
+				sub_98197C(imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2, get_current_rotation());
+			}
+			if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
+				imageId = SPR_SPACE_RINGS_FENCE_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+				sub_98197C(imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2, get_current_rotation());
+			}
+			break;
+		default:
+			track_paint_util_paint_fences(edges, position, mapElement, ride, RCT2_GLOBAL(0x00F441A0, uint32), height, space_rings_fence_sprites, get_current_rotation());
+			break;
+	}
+
+	switch (trackSequence) {
+		case 0: paint_space_rings_structure(ride, direction, 0, height + 3); break;
+		case 5: paint_space_rings_structure(ride, direction, 1, height + 3); break;
+		case 7: paint_space_rings_structure(ride, direction, 2, height + 3); break;
+		case 8: paint_space_rings_structure(ride, direction, 3, height + 3); break;
+	}
+
+	int blockedSegments = 0;
+	switch (trackSequence) {
+		case 0: blockedSegments = SEGMENTS_ALL; break;
+		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 3: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 4: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8; break;
+		case 5: blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 6: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+		case 7: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
+		case 8: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+	}
+	paint_util_set_segment_support_height(blockedSegments, 0xFFFF, 0);
+	paint_util_set_segment_support_height(SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+	paint_util_set_general_support_height(height + 48, 0x20);
+}
+
+/**
+ * rct2: 0x0x00767A40
+ */
+TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int trackType, int direction)
+{
+	if (trackType != 123) {
+		return NULL;
+	}
+
+	return paint_space_rings;
+}
