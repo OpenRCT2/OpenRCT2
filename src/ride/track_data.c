@@ -5513,7 +5513,7 @@ const uint32 RideTypeTrackPaintFunctionsOld[91] = {
 	0,						// RIDE_TYPE_LIFT
 	0x008A9C08,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
 	0,						// RIDE_TYPE_CASH_MACHINE
-	0x0076D658,						// RIDE_TYPE_TWIST
+	0,						// RIDE_TYPE_TWIST
 	0,						// RIDE_TYPE_HAUNTED_HOUSE
 	0,						// RIDE_TYPE_FIRST_AID
 	0,						// RIDE_TYPE_CIRCUS_SHOW
@@ -5608,7 +5608,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_lift,			// RIDE_TYPE_LIFT
 	0,						// RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
 	get_track_paint_function_shop,			// RIDE_TYPE_CASH_MACHINE
-	0,						// RIDE_TYPE_TWIST
+	get_track_paint_function_twist,						// RIDE_TYPE_TWIST
 	get_track_paint_function_haunted_house,	// RIDE_TYPE_HAUNTED_HOUSE
 	get_track_paint_function_facility,		// RIDE_TYPE_FIRST_AID
 	get_track_paint_function_circus_show,	// RIDE_TYPE_CIRCUS_SHOW
