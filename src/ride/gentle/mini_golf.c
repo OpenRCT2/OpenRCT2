@@ -865,11 +865,11 @@ static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 d
 
 	switch ((direction << 4) | trackSequence) {
 		case 0x00:
-		case 0x12:
+		case 0x32:
 			paint_util_push_tunnel_left(height, TUNNEL_10);
 			break;
 
-		case 0x02:
+		case 0x22:
 		case 0x30:
 			paint_util_push_tunnel_right(height, TUNNEL_10);
 			break;
