@@ -5639,7 +5639,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_WATER_COASTER
 	0,						// RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
 	0,						// RIDE_TYPE_INVERTED_HAIRPIN_COASTER
-	0,						// RIDE_TYPE_MAGIC_CARPET
+	get_track_paint_function_magic_carpet,							// RIDE_TYPE_MAGIC_CARPET
 	get_track_paint_function_submarine_ride,						// RIDE_TYPE_SUBMARINE_RIDE
 	0,						// RIDE_TYPE_RIVER_RAFTS
 	get_track_paint_function_shop,						// RIDE_TYPE_50
