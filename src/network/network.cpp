@@ -233,6 +233,20 @@ int NetworkActions::FindCommand(int command)
 	return -1;
 }
 
+int NetworkActions::FindCommandByPermissionName(const std::string &permission_name)
+{
+	auto it = std::find_if(actions.begin(), actions.end(), [&permission_name](NetworkAction const& action) {
+		if (action.permission_name == permission_name) {
+			return true;
+		}
+		return false;
+	});
+	if (it != actions.end()) {
+		return it - actions.begin();
+	}
+	return -1;
+}
+
 NetworkGroup::NetworkGroup()
 {
 	actions_allowed = {0};
@@ -267,8 +281,11 @@ json_t * NetworkGroup::ToJson() const
 	json_object_set_new(jsonGroup, "id", json_integer(id));
 	json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
 	json_t * actionsArray = json_array();
-	for (size_t i = 0; i < actions_allowed.size(); i++) {
-		json_array_append_new(actionsArray, json_integer(actions_allowed[i]));
+	for (size_t i = 0; i < gNetworkActions.actions.size(); i++) {
+		if (CanPerformAction(i)) {
+			const char * perm_name = gNetworkActions.actions[i].permission_name.c_str();
+			json_array_append_new(actionsArray, json_string(perm_name));
+		}
 	}
 	json_object_set_new(jsonGroup, "permissions", actionsArray);
 	return jsonGroup;
@@ -286,13 +303,14 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
 	group.id = (uint8)json_integer_value(jsonId);
 	group.name = std::string(json_string_value(jsonName));
 	for (size_t i = 0; i < group.actions_allowed.size(); i++) {
+		group.actions_allowed[i] = 0;
+	}
+	for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
 		json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
-		// This guards a case where there are less permissions in file than we want,
-		// which could happen when we add permissions or user has malformed the file.
-		if (jsonPermissionValue == nullptr) {
-			group.actions_allowed[i] = 0;
-		} else {
-			group.actions_allowed[i] = (uint8)json_integer_value(jsonPermissionValue);
+		const char * perm_name = json_string_value(jsonPermissionValue);
+		int action_id = gNetworkActions.FindCommandByPermissionName(perm_name);
+		if (action_id != -1) {
+			group.ToggleActionPermission(action_id);
 		}
 	}
 	return group;
@@ -308,7 +326,7 @@ void NetworkGroup::ToggleActionPermission(size_t index)
 	actions_allowed[byte] ^= (1 << bit);
 }
 
-bool NetworkGroup::CanPerformAction(size_t index)
+bool NetworkGroup::CanPerformAction(size_t index) const
 {
 	size_t byte = index / 8;
 	size_t bit = index % 8;
@@ -318,7 +336,7 @@ bool NetworkGroup::CanPerformAction(size_t index)
 	return (actions_allowed[byte] & (1 << bit)) ? true : false;
 }
 
-bool NetworkGroup::CanPerformCommand(int command)
+bool NetworkGroup::CanPerformCommand(int command) const
 {
 	int action = gNetworkActions.FindCommand(command);
 	if (action != -1) {
