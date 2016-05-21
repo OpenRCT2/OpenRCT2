@@ -171,6 +171,8 @@ enum
 	SPR_STATION_COVER_OFFSET_HIGH
 };
 
+bool gUseOriginalRidePaint = false;
+
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
 {
 	rct_xy16 offset;
@@ -522,15 +524,15 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 			}
 		}
 
-		TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctionsOld[rideType];
-		if (trackTypeList == NULL) {
-			TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
+		TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
+		if (paintFunctionGetter != NULL && !gUseOriginalRidePaint) {
 			TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
 			if (paintFunction != NULL) {
 				paintFunction(rideIndex, trackSequence, direction, height, mapElement);
 			}
 		}
 		else {
+			TRACK_PAINT_FUNCTION **trackTypeList = (TRACK_PAINT_FUNCTION**)RideTypeTrackPaintFunctionsOld[rideType];
 			uint32 *trackDirectionList = (uint32*)trackTypeList[trackType];
 
 			// Have to call from this point as it pushes esi and expects callee to pop it
