@@ -32,6 +32,9 @@ extern const uint8 track_map_4x4[][16];
 extern const uint8 edges_4x4[];
 
 enum {
+	SPR_FLOOR_PLANKS = 3395,
+	SPR_FLOOR_PLANKS_90_DEG = 3396,
+
 	SPR_FLOOR_METAL = 14567,
 	SPR_FENCE_METAL_NE = 14568,
 	SPR_FENCE_METAL_SE = 14569,

@@ -24,9 +24,6 @@
 #include "../../world/map.h"
 
 enum {
-	SPR_FLOOR_A = 3395,
-	SPR_FLOOR_B = 3396,
-
 	SPR_MINI_GOLF_FLAT_SW_NE = 14404,
 	SPR_MINI_GOLF_FLAT_NW_SE = 14405,
 	SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE = 14406,
@@ -718,7 +715,7 @@ static void paint_mini_golf_hole_ab(uint8 trackSequence, uint8 direction, int he
 	sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24, get_current_rotation());
 
 	if (drewSupports) {
-		imageId = (direction & 1 ? SPR_FLOOR_B : SPR_FLOOR_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+		imageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = sprites[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
@@ -777,7 +774,7 @@ static void paint_mini_golf_hole_c(uint8 rideIndex, uint8 trackSequence, uint8 d
 	}
 
 	if (drewSupports) {
-		imageId = (direction & 1 ? SPR_FLOOR_B : SPR_FLOOR_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+		imageId = (direction & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
@@ -843,7 +840,7 @@ static void paint_mini_golf_hole_d(uint8 rideIndex, uint8 trackSequence, uint8 d
 	}
 
 	if (drewSupports) {
-		imageId = (supportType & 1 ? SPR_FLOOR_B : SPR_FLOOR_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+		imageId = (supportType & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
@@ -908,7 +905,7 @@ static void paint_mini_golf_hole_e(uint8 rideIndex, uint8 trackSequence, uint8 d
 	}
 
 	if (drewSupports) {
-		imageId = (supportType & 1 ? SPR_FLOOR_B : SPR_FLOOR_A) | RCT2_GLOBAL(0x00F4419C, uint32);
+		imageId = (supportType & 1 ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | RCT2_GLOBAL(0x00F4419C, uint32);
 		sub_98197C(imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height, get_current_rotation());
 
 		imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | RCT2_GLOBAL(0x00F44198, uint32);
