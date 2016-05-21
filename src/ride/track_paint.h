@@ -32,6 +32,9 @@ extern const uint8 track_map_4x4[][16];
 extern const uint8 edges_4x4[];
 
 enum {
+	SPR_FLOOR_PLANKS = 3395,
+	SPR_FLOOR_PLANKS_90_DEG = 3396,
+
 	SPR_FLOOR_METAL = 14567,
 	SPR_FENCE_METAL_NE = 14568,
 	SPR_FENCE_METAL_SE = 14569,
@@ -163,7 +166,7 @@ void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definit
 
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation);
 void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
-void track_paint_util_left_quarter_turn_1_tile_paint(sint16 height, int direction, uint32 colourFlags, const uint32 sprites[4], uint8 rotation);
+void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation);
 void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
 
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
@@ -188,6 +191,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direct
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction);

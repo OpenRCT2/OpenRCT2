@@ -407,15 +407,15 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 dire
 }
 
 
-void track_paint_util_left_quarter_turn_1_tile_paint(sint16 height, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation)
+void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation)
 {
 	uint32 imageId = sprites[direction] | colourFlags;
 
 	switch (direction) {
-		case 0: sub_98197C(imageId, 0, 0, 26, 24, 1, height, 6, 2, height, rotation); break;
-		case 1: sub_98197C(imageId, 0, 0, 26, 26, 1, height, 0, 0, height, rotation); break;
-		case 2: sub_98197C(imageId, 0, 0, 24, 26, 1, height, 2, 6, height, rotation); break;
-		case 3: sub_98197C(imageId, 0, 0, 24, 24, 1, height, 6, 6, height, rotation); break;
+		case 0: sub_98197C(imageId, 0, 0, 26, 24, thickness, height, 6, 2, height + boundBoxZOffset, rotation); break;
+		case 1: sub_98197C(imageId, 0, 0, 26, 26, thickness, height, 0, 0, height + boundBoxZOffset, rotation); break;
+		case 2: sub_98197C(imageId, 0, 0, 24, 26, thickness, height, 2, 6, height + boundBoxZOffset, rotation); break;
+		case 3: sub_98197C(imageId, 0, 0, 24, 24, thickness, height, 6, 6, height + boundBoxZOffset, rotation); break;
 	}
 }
 
