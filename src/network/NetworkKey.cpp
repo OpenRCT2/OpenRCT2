@@ -110,7 +110,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
     }
     RSA * rsa;
     rsa = PEM_read_bio_RSAPrivateKey(bio, nullptr, nullptr, nullptr);
-    if (!RSA_check_key(rsa))
+    if (rsa == nullptr || !RSA_check_key(rsa))
     {
         log_error("Loaded RSA key is invalid");
         BIO_free_all(bio);

@@ -1875,14 +1875,27 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 		return;
 	}
 	SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
-	key.LoadPrivate(privkey);
+	bool ok = key.LoadPrivate(privkey);
+	SDL_RWclose(privkey);
+	if (!ok) {
+		log_error("Failed to load key %s", keyPath);
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+		shutdown(connection.socket, SHUT_RDWR);
+		return;
+	}
 	uint32 challenge_size;
 	packet >> challenge_size;
 	const char *challenge = (const char *)packet.Read(challenge_size);
 	size_t sigsize;
 	char *signature;
 	const std::string pubkey = key.PublicKeyString();
-	bool ok = key.Sign(challenge, challenge_size, &signature, &sigsize);
+	ok = key.Sign(challenge, challenge_size, &signature, &sigsize);
+	if (!ok) {
+		log_error("Failed to sign server's challenge.");
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+		shutdown(connection.socket, SHUT_RDWR);
+		return;
+	}
 	// Don't keep private key in memory. There's no need and it may get leaked
 	// when process dump gets collected at some point in future.
 	key.Unload();
