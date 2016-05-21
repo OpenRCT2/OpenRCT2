@@ -184,6 +184,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int trackType, int dir
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_lift(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int trackType, int direction);
