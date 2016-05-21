@@ -190,6 +190,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lift(int trackType, int direction)
 TRACK_PAINT_FUNCTION get_track_paint_function_shop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_twist(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int trackType, int direction);
