@@ -403,9 +403,34 @@ static void paint_viriginia_reel_track_25_deg_down_to_flat(uint8 rideIndex, uint
 	paint_viriginia_reel_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008112D4, 0x008112E4, 0x008112F4 */
 static void paint_viriginia_reel_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
+
+	if (direction == 0 || direction == 2) {
+		imageId = SPR_STATION_BASE_B_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98197C(imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height, get_current_rotation());
+
+		imageId = SPR_VIRGINIA_REEL_FLAT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	} else if (direction == 1 || direction == 3) {
+		imageId = SPR_STATION_BASE_B_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98197C(imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height, get_current_rotation());
+
+		imageId = SPR_VIRGINIA_REEL_FLAT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98199C(imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
+
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 static const uint8 virginia_reel_left_quarter_turn_supports[] = {5, 2, 3, 4};
