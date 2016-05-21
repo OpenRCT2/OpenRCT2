@@ -39,11 +39,19 @@ enum
 {
 	SPR_VIRGINIA_REEL_FLAT_SW_NE = 21458,
 	SPR_VIRGINIA_REEL_FLAT_NW_SE = 21459,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SW_NE = 21460,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NW_SE = 21461,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NE_SW = 21462,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SE_NW = 21463,
 
 	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SW_NE = 21488,
 	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NW_SE = 21489,
 	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NE_SW = 21490,
 	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SE_NW = 21491,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SW_NE = 21492,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NW_SE = 21493,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NE_SW = 21494,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SE_NW = 21495,
 };
 
 static const uint32 virginia_reel_track_pieces_flat[4] = {
@@ -58,6 +66,20 @@ static const uint32 virginia_reel_track_pieces_flat_lift_hill[4] = {
 	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NW_SE,
 	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NE_SW,
 	SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SE_NW,
+};
+
+static const uint32 virginia_reel_track_pieces_flat_to_25_deg_up[4] = {
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SW_NE,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NW_SE,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NE_SW,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SE_NW,
+};
+
+static const uint32 virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill[4] = {
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SW_NE,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NW_SE,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NE_SW,
+	SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SE_NW,
 };
 
 /**
@@ -146,9 +168,49 @@ static void paint_viriginia_reel_track_25_deg_up(uint8 rideIndex, uint8 trackSeq
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x00811294 */
 static void paint_viriginia_reel_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	const uint32 * sprites = virginia_reel_track_pieces_flat_to_25_deg_up;
+	if (mapElement->type & 0x80) {
+		sprites = virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill;
+	}
+
+	uint32 imageId = sprites[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+	paint_struct * ps;
+	switch (direction) {
+		case 0:
+			sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+
+			wooden_a_supports_paint_setup(0, 1, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height, TUNNEL_6);
+			break;
+		case 1:
+			ps = sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+
+			wooden_a_supports_paint_setup(1, 2, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height, TUNNEL_8);
+			break;
+		case 2:
+			ps = sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+			RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+
+			wooden_a_supports_paint_setup(0, 3, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height, TUNNEL_8);
+			break;
+		case 3:
+			sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+
+			wooden_a_supports_paint_setup(1, 4, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height, TUNNEL_6);
+			break;
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /** rct2: 0x */
@@ -166,9 +228,10 @@ static void paint_viriginia_reel_track_flat_to_25_deg_down(uint8 rideIndex, uint
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x008112C4 */
 static void paint_viriginia_reel_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_viriginia_reel_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x */
