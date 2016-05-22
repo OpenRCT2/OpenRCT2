@@ -23,9 +23,50 @@
 #include "../../paint/supports.h"
 #include "../../world/map.h"
 
-/** rct2: 0x*/
+enum
+{
+	SPR_MONORAIL_CYCLES_FLAT_SW_NE = 16820,
+	SPR_MONORAIL_CYCLES_FLAT_NW_SE = 16821,
+};
+
+static const uint32 monorail_cycles_track_pieces_flat[4] = {
+	SPR_MONORAIL_CYCLES_FLAT_SW_NE,
+	SPR_MONORAIL_CYCLES_FLAT_NW_SE
+};
+
+static paint_struct * paint_monorail_cycles_util_7c(
+	bool flip,
+	uint32 image_id,
+	sint8 x_offset, sint8 y_offset,
+	sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
+	sint16 z_offset,
+	sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
+	uint32 rotation
+)
+{
+	if (flip) {
+		return sub_98197C(image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, rotation);
+	}
+
+	return sub_98197C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, rotation);
+}
+
+/** rct2: 0x0088AD48 */
 static void paint_monorail_cycles_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | RCT2_GLOBAL(0x00F44198, uint32);
+	paint_monorail_cycles_util_7c((bool) (direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+	metal_a_supports_paint_setup((direction & 1) ? 5 : 4, 4, -1, height, RCT2_GLOBAL(0x00F4419C, uint32));
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x*/
