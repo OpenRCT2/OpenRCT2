@@ -2339,7 +2339,7 @@ STR_2329    :{WINDOW_COLOUR_2}Avstånd och Hastighet:
 STR_2330    :{WINDOW_COLOUR_2}Temperatur:
 STR_2331    :{WINDOW_COLOUR_2}Höjdmarkeringar:
 STR_2332    :Enheter
-STR_2333    :Ljud
+STR_2333    :Ljud effekter
 STR_2334    :Pund ({POUND})
 STR_2335    :Dollar ($)
 STR_2336    :Franc (F)
@@ -2763,7 +2763,7 @@ STR_2752    :Plocka ogräs
 STR_2753    :Klipp gräsmattan
 STR_2754    :Vattna blommorna
 STR_2755    :Fixa skadegörelsen
-STR_2756    :Städa nedskräpningen
+STR_2756    :Städa nedskräpning
 STR_2757    :Tvinga sol
 STR_2758    :Tvinga åska
 STR_2759    :Sätt föremål på varandra
@@ -2783,7 +2783,7 @@ STR_2771    :Långsammare Spelhastighet
 STR_2772    :Snabbare Spelhastighet
 STR_2773    :Fönster
 STR_2774    :Fullskärm
-STR_2775    :Fullskärm (skrivbord)
+STR_2775    :Fönster (Utan kanter)
 STR_2776    :Språk:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
@@ -3021,39 +3021,39 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan inte ladda fil...
 STR_3011    :Filen innehåller ogiltig data
-STR_3012    :Dodgems beat-stil
-STR_3013    :Marknadsplatsorgel-stil
-STR_3014    :Romersk stil
-STR_3015    :Orientalisk stil
-STR_3016    :Marsiansk stil
-STR_3017    :Djungeltrumme-stil
-STR_3018    :Egyptisk stil
-STR_3019    :Leksakslands-stil
+STR_3012    :Dodgems beat (Dodgems beat)
+STR_3013    :Marknadsplatsorgel (Fairground organ)
+STR_3014    :Romarriket (Roman fanfare)
+STR_3015    :Kina-Town (Oriental Style)
+STR_3016    :Det okända.. (Martian Style)
+STR_3017    :Djungelboken (Jungle drums)
+STR_3018    :Pyramiderna (Egyptian Style)
+STR_3019    :Leklandet (Toyland Style)
 STR_3020    :
-STR_3021    :Rymd-stil
-STR_3022    :Skräck-stil
-STR_3023    :Techno-stil
-STR_3024    :Lugn stil
-STR_3025    :Sommar-stil
-STR_3026    :Vatten-stil
-STR_3027    :Vilda västern-stil
-STR_3028    :Jurassic-stil
-STR_3029    :Rock-stil
-STR_3030    :Ragtime-stil
-STR_3031    :Fantasi-stil
-STR_3032    :Rock-stil 2
-STR_3033    :Is-stil
-STR_3034    :Snö-stil
-STR_3035    :Egen musik 1
-STR_3036    :Egen musik 2
-STR_3037    :Medeltids-stil
-STR_3038    :Stads-stil
-STR_3039    :Orgel-stil
-STR_3040    :Mekanisk-stil
-STR_3041    :Modern-stil
-STR_3042    :Pirat-stil
-STR_3043    :Rock-stil 3
-STR_3044    :Godis-stil
+STR_3021    :Rymden (Space Style)
+STR_3022    :Skräcken (Horror Style)
+STR_3023    :Techno (Techno Style)
+STR_3024    :Mysteriet (Gentle Style)
+STR_3025    :Sommartider (Summer Style)
+STR_3026    :Älven (Water Style)
+STR_3027    :Vilda västern (Wild west Style)
+STR_3028    :Jurassic world (Jurassic Style)
+STR_3029    :Rocka! (Rock 1)
+STR_3030    :Glade-Chapplie's Piano (Ragtime)
+STR_3031    :Fantasin (Fantasy Style)
+STR_3032    :Rockare! (Rock 2)
+STR_3033    :Istiden (Ice style)
+STR_3034    :Snön faller (Snow style)
+STR_3035    :Egen musik 1 (Custom music 1)
+STR_3036    :Egen musik 2 (Custom music 2)
+STR_3037    :Medeltidsmarknaden (Medieval style)
+STR_3038    :Stadslivet (Urban style)
+STR_3039    :Ljusa orgeln (Organ style)
+STR_3040    :Pumpande Mekare (Mechanical style)
+STR_3041    :Luftäventyr (Modern style)
+STR_3042    :Sjörövare (Pirates style)
+STR_3043    :Rockande! (Rock 3)
+STR_3044    :Gottegris (Candy style)
 STR_3045    :{SMALLFONT}{BLACK}Välj musikstil som ska spelas
 STR_3046    :Denna åktur kan inte modifieras
 STR_3047    :Lokala myndigheter har förbjudit rivning och modifikation av denna Åktur
@@ -3450,7 +3450,7 @@ STR_3436    :{SMALLFONT}{BLACK}Medans vi väntar på våra första passagerare k
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Rensa stora områden av dekorationer från terrängen
 STR_3438    :Kan inte ta bort alla dekorationer härifrån...
-STR_3439    :Rensa Dekorationer
+STR_3439    :Rensa Land
 STR_3440    :Sida 1
 STR_3441    :Sida 2
 STR_3442    :Sida 3
@@ -3490,7 +3490,7 @@ STR_5146    :Hyper Hastighet
 STR_5147    :Fusk
 STR_5148    :{SMALLFONT}{BLACK}Ändra spelets hastighet
 STR_5149    :{SMALLFONT}{BLACK}Visa fusk
-STR_5150    :Aktivera felsöknings verktygen
+STR_5150    :Aktivera verktyg för felsökning
 STR_5151    :,
 STR_5152    :.
 STR_5153    :Redigera Teman...
@@ -3535,7 +3535,7 @@ STR_5191    :Bildskärm
 STR_5192    :Nyliga Nyheter
 STR_5193    :Land
 STR_5194    :Vatten
-STR_5195    :Rensa Dekorationer
+STR_5195    :Rensa Land
 STR_5196    :Landsrättigheter
 STR_5197    :Dekorationer
 STR_5198    :Gångväg
@@ -3651,7 +3651,7 @@ STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Slumpvald
-STR_5311    :{SMALLFONT}{BLACK}Felsöknings verktyg
+STR_5311    :{SMALLFONT}{BLACK}Verktyg för felsökning
 STR_5312    :Visa konsol
 STR_5313    :Visa rut-inspekteraren
 STR_5314    :Rut-inspekteraren
@@ -3708,7 +3708,7 @@ STR_5364    :Mindre än 15 (Högt)
 STR_5365    :{BLACK}Personal hastighet:
 STR_5366    :Normal
 STR_5367    :Snabb
-STR_5368    :Återställ krasch status
+STR_5368    :Återställ krasch
 STR_5369    :Park inställningar...
 STR_5370    :{SMALLFONT}{BLACK}Klicka på denna knapp för att modifiera{NEWLINE}park inställningar som begränsningar,{NEWLINE}gäst generering och pengar.
 STR_5371    :Objekt väljare
@@ -3781,7 +3781,7 @@ STR_5437    :Ingen sparfil vald
 STR_5438    :Kan inte göra ändringar medan kommando redigeraren är öppen
 STR_5439    :Ett wait kommando med åtminstone 4 sekunder krävs för ett restart kommando
 STR_5440    :Minimera fullskärm vid tappad fokus
-STR_5441    :{SMALLFONT}{BLACK}Identifiera åkturer via spår typ,{NEWLINE}så vagnar kan bli ändrade{NEWLINE}efteråt, som i RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identifiera åkturer via spår typ,{NEWLINE}så vagnar kan bli ändrade{NEWLINE}efteråt (Som i RCT1)
 STR_5442    :Tvinga park betyg:
 STR_5443    :Hastighet{MOVE_X}{87}{STRINGID}
 STR_5444    :Hastighet:
@@ -3814,7 +3814,7 @@ STR_5470    :Skrolla kartan vänster
 STR_5471    :Skrolla kartan ner
 STR_5472    :Skrolla kartan höger
 STR_5473    :Växla mellan dag / natt
-STR_5474    :Visa text i banderoller med stora bokstäver
+STR_5474    :Visa text i banderoller med versaler
 STR_5475    :{COMMA16} veckor
 STR_5476    :Hårdvara
 STR_5477    :Rendering
@@ -4003,7 +4003,7 @@ STR_5659    :Sparka ut spelare
 STR_5660    :Modifiera grupper
 STR_5661    :Sätt spelares grupp
 STR_5662    :N/A
-STR_5663    :Rensa landskap
+STR_5663    :Rensa Land
 STR_5664    :Fusk
 STR_5665    :Dekoration Utspridning
 STR_5701    :{WINDOW_COLOUR_2}Senaste handling: {BLACK}{STRINGID}
@@ -4035,7 +4035,7 @@ STR_5725    :{BLACK}Tvinga Väder:
 STR_5726    :{SMALLFONT}{BLACK}Sätter vädret i parken
 STR_5727    :Skalnings kvalité
 STR_5728    :Kräver att Hårdvaruhantering är ikryssad
-STR_5729    :{SMALLFONT}{BLACK}Kräver att Hårdvaruhantering är ibockad
+STR_5729    :{SMALLFONT}{BLACK}Kräver att Hårdvaruhantering är ikryssad
 STR_5730    :Närmsta granne
 STR_5731    :Linjär
 STR_5732    :Anisotropisk
@@ -4112,16 +4112,63 @@ STR_5801    :Avaktivera nedskräpning
 STR_5802    :{SMALLFONT}{BLACK}Stoppar gästerna från att skräpa ner och kräkas i parken
 STR_5803    :{SMALLFONT}{BLACK}Rotera valda element
 STR_5804    :Stäng av ljudet
-STR_5805    :{SMALLFONT}{BLACK}Om ibockad, kommer din server att läggas till i{NEWLINE}offentliga server listan så alla kan hitta den
+STR_5805    :{SMALLFONT}{BLACK}Om ikryssad, kommer din server att läggas till i{NEWLINE}offentliga server listan så alla kan hitta den
 STR_5806    :Växla mellan fönster och helskärm
 STR_5807    :{WINDOW_COLOUR_2}Antal åkturer: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal affärer och stånd: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal informationskioskar och toaletter: {BLACK}{COMMA16}
 STR_5810    :Avaktivera gränsen för vagnar per tåg
-STR_5811    :{SMALLFONT}{BLACK}Om ibockad, kan du ha upp till{NEWLINE}255 vagnar per tåg
+STR_5811    :{SMALLFONT}{BLACK}Om ikryssad, kan du ha upp till{NEWLINE}255 vagnar per tåg
 STR_5812    :Visa flerspelar- fönstret
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}Visa FPS mätare i spelet
+STR_5816    :{SMALLFONT}{BLACK}Sätter skalan i spelet.{NEWLINE}Mest användbar när du spelar i{NEWLINE}hög upplösning
+STR_5817    :{SMALLFONT}{BLACK}[Kräver Hårdvaruhantering]{NEWLINE}Välj UI skalningstyp
+STR_5818    :{SMALLFONT}{BLACK}[Kräver Hårdvaruhantering]{NEWLINE}Använd 'närmsta granne' för skalning{NEWLINE}när fönster faktorer är satta, ger en krispigare bild o sätter heltalen{NEWLINE}(1, 2, 3, o.s.v)
+STR_5819    :{SMALLFONT}{BLACK}[Kräver Hårdvaruhantering]{NEWLINE}Pausa spelet om Steam{NEWLINE}in-game overlayen är öppen
+STR_5820    :{SMALLFONT}{BLACK}Minimera spelet om fokusen{NEWLINE}tappas medan du är i fullskärmsläge 
+STR_5821    :{SMALLFONT}{BLACK}Ändra färgen av konstruktionsmarkören när du bygger åkturer, gångvägar, butiker, dekorationer, o.s.v
+STR_5822    :{SMALLFONT}{BLACK}Växla mellan natt och dag.{NEWLINE}En full växling tar 1 månad i spelet.
+STR_5823    :{SMALLFONT}{BLACK}Visa banderoller i stora bokstäver (Som i RCT1)
+STR_5824    :{SMALLFONT}{BLACK}Avaktivera blixtrarna som kommer när det åskar{NEWLINE}Blixtrarna visar en ljusare bild i ungefär 1 sekund varje gång det åskar till
+STR_5825    :{SMALLFONT}{BLACK}Behåll musen i fönstret om du spelar i ett fönster
+STR_5826    :{SMALLFONT}{BLACK}Växla om 'upp och ner' med varandra när du drar spelets kamera vid höger klick
+STR_5827    :{SMALLFONT}{BLACK}Välj färgschema använd för spelets GUI (menyer o.s.v)
+STR_5828    :{SMALLFONT}{BLACK}Ändra vilket mått du vill använda för längd, hastighet, o.s.v
+STR_5829    :{SMALLFONT}{BLACK}Ändra vilken valuta du vill använda.{NEWLINE}Bara visuellt, det finns ingen valutaomvandlare i spelet
+STR_5830    :{SMALLFONT}{BLACK}Välj vilket språk du ska använda
+STR_5831    :{SMALLFONT}{BLACK}Välj vilket format{NEWLINE}temperaturen visas i
+STR_5832    :{SMALLFONT}{BLACK}Visa höjd som generella enheter istället för verkligen enheter som finns
+STR_5833    :{SMALLFONT}{BLACK}Välj vilket datumformat du ska använda
+STR_5834    :{SMALLFONT}{BLACK}Välj vilken uppspelningsenhet OpenRCT2 ska använda
+STR_5835    :{SMALLFONT}{BLACK}Tysta spelet om spelet är utanför fokus
+STR_5836    :{SMALLFONT}{BLACK}Välj vilken musik som ska spelas på startsidan.{NEWLINE}Val av RCT1 sången kräver att du kopierar 'data/css17.dat' från din RCT1 spel mapp till 'data/css50.dat' i din RCT2 mapp.
+STR_5837    :{SMALLFONT}{BLACK}Skapa och hantera egna UI teman
+STR_5838    :{SMALLFONT}{BLACK}Visa en knapp för 'finans' fönstret i verktygsfältet
+STR_5839    :{SMALLFONT}{BLACK}Visa en knapp för 'forskning & utveckling' fönstret i verktygsfältet
+STR_5840    :{SMALLFONT}{BLACK}Visa en knapp för 'fusk' i verktygsfältet
+STR_5841    :{SMALLFONT}{BLACK}Visa en knapp för 'senaste nyheterna' fönstret i verktygsfältet
+STR_5842    :{SMALLFONT}{BLACK}Sortera scenarion via svårighetsgrad (Som i RCT2) eller som det kommer från början (Som i RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Tillåt upplåsning av scenarion (Som i RCT1 & RCT3)
+STR_5844    :{SMALLFONT}{BLACK}Behåll anslutningen på servrar i flerspelsläget{NEWLINE}även om du hamnar i osynk eller fel uppstår
+STR_5845    :{SMALLFONT}{BLACK}Lägger till en knapp för{NEWLINE}'verktyg för felsökning' i verktygsraden.{NEWLINE}Aktiverar snabbknapp för utvecklar konsolen
+STR_5846    :{SMALLFONT}{BLACK}Välj hur ofta OpenRCT2 ska spara automatiskt
+STR_5847    :{SMALLFONT}{BLACK}Välj vilket park intro spelet ska använda på startsidan. Titelsekvenser från RCT1/2 kräver importerade filer för att fungera korrekt
+STR_5848    :{SMALLFONT}{BLACK}Skapa och hantera egna titelsekvenser
+STR_5849    :{SMALLFONT}{BLACK}Placera automatiskt ut ny personal när dem anställs
+STR_5850    :{SMALLFONT}{BLACK}Nya anställda vaktmästare klipper{NEWLINE}gräs som standard (Som i RCT1)
+STR_5851    :{SMALLFONT}{BLACK}Sätter standarden på inspektions mellanrummen{NEWLINE}på nybyggda attraktioner
+STR_5852    :{SMALLFONT}{BLACK}Välj namnet på TwitchTV kanalen som kan använda funktionerna nedanför efteråt
+STR_5853    :{SMALLFONT}{BLACK}Stäng av/Sätt på ljud effekter
+STR_5854    :{SMALLFONT}{BLACK}Stäng av/Sätt på åkturernas musik
+STR_5855    :{SMALLFONT}{BLACK}Välj att spela i fullskärm, fönster,{NEWLINE}eller fullskärmsläge utan kanter
+STR_5856    :{SMALLFONT}{BLACK}Sätter spelets upplösning när du spelar i fullskärm
+STR_5857    :{SMALLFONT}{BLACK}Spel inställningar
+STR_5858    :{SMALLFONT}{BLACK}Använd GPU för grafiken istället för CPU. Ökar kompatibiliteten med skärminspelningsprogram som till exempel Fraps{NEWLINE}Kan försämra prestandan lite grann
+STR_5859    :{SMALLFONT}{BLACK}Aktiverar 'frame tweening' för en visuellt mjukare spelupplevelse.{NEWLINE}Om avaktiverad kommer spelet köras i 40 fps.
+STR_3160    :{SMALLFONT}{BLACK}Välj hur många gånger åkturen åker runt
 
 #############
 # Scenarion #

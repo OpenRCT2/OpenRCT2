@@ -3161,7 +3161,7 @@ STR_3156    :
 STR_3157    :kaart
 STR_3158    :grafiek
 STR_3159    :lijst
-STR_3160    :<not used anymore>
+STR_3160    :{SMALLFONT}{BLACK}Selecteer het aantal rondes dat de trein per rit zal afleggen
 STR_3161    :<not used anymore>
 STR_3162    :Kan niet voldoende geheugen toewijzen
 STR_3163    :Nieuwe data installeren: 
