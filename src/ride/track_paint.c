@@ -483,6 +483,59 @@ void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definit
 	}
 }
 
+static const sint8 right_quarter_turn_5_tiles_sprite_map[] = {0, -1, 1, 2, -1, 3, 4};
+void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], uint8 rotation)
+{
+	sint8 sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
+	if (sprite < 0) {
+		return;
+	}
+
+	uint32 imageId = sprites[direction][sprite] | colourFlags;
+
+	switch (direction) {
+		case 0:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 32, 16, thickness, height, 0, 16, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 0, 0, height, rotation); break;
+				case 5: sub_98197C(imageId, 0, 0, 16, 32, thickness, height, 16, 0, height, rotation); break;
+				case 6: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
+			}
+			break;
+
+		case 1:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 32, thickness, height, 16, 0, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 0, 16, height, rotation); break;
+				case 5: sub_98197C(imageId, 0, 0, 32, 16, thickness, height, 0, 0, height, rotation); break;
+				case 6: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
+			}
+			break;
+
+		case 2:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 32, 16, thickness, height, 0, 0, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 16, 16, height, rotation); break;
+				case 5: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 0, 0, height, rotation); break;
+				case 6: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
+			}
+			break;
+
+		case 3:
+			switch (trackSequence) {
+				case 0: sub_98197C(imageId, 0, 0, 20, 32, thickness, height, 6, 0, height, rotation); break;
+				case 2: sub_98197C(imageId, 0, 0, 16, 32, thickness, height, 0, 0, height, rotation); break;
+				case 3: sub_98197C(imageId, 0, 0, 16, 16, thickness, height, 16, 0, height, rotation); break;
+				case 5: sub_98197C(imageId, 0, 0, 32, 16, thickness, height, 0, 16, height, rotation); break;
+				case 6: sub_98197C(imageId, 0, 0, 32, 20, thickness, height, 0, 6, height, rotation); break;
+			}
+			break;
+	}
+}
+
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
 {

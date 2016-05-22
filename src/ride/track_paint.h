@@ -169,6 +169,7 @@ void track_paint_util_draw_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 bool track_paint_util_should_paint_supports(rct_xy16 position);
 void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation);
 
+void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], uint8 rotation);
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation);
 void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
 void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation);
@@ -206,6 +207,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direc
 TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int direction);
