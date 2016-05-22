@@ -445,6 +445,43 @@ bool track_paint_util_draw_station_covers(enum edge edge, bool hasFence, const r
 	return true;
 }
 
+void track_paint_util_draw_station_platform(rct_ride *ride, uint8 direction, int height, int zOffset, rct_map_element * mapElement)
+{
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+	if (direction & 1) {
+		bool hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+		uint32 imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NE : SPR_STATION_NARROW_EDGE_NE) | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 0, 8, 32, 1, height + zOffset, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+
+		imageId = SPR_STATION_NARROW_EDGE_SW | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 24, 0, 8, 32, 1, height + zOffset, get_current_rotation());
+
+		hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_STATION_FENCE_NW_SE | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 31, 0, 1, 32, 7, height + zOffset + 2, get_current_rotation());
+		}
+		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+	} else {
+		bool hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+		uint32 imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NW : SPR_STATION_NARROW_EDGE_NW) | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 0, 32, 8, 1, height + zOffset, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+
+		imageId = SPR_STATION_NARROW_EDGE_SE | RCT2_GLOBAL(0x00F4419C, uint32);
+		sub_98196C(imageId, 0, 24, 32, 8, 1, height + zOffset, get_current_rotation());
+
+		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+		if (hasFence) {
+			imageId = SPR_STATION_FENCE_SW_NE | RCT2_GLOBAL(0x00F4419C, uint32);
+			sub_98196C(imageId, 0, 31, 32, 1, 7, height + zOffset + 2, get_current_rotation());
+		}
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+	}
+}
+
 void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, int height, rct_map_element * mapElement, uint8 rotation)
 {
 	bool hasFence;

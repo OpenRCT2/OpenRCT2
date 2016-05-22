@@ -63,6 +63,38 @@ static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, u
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x0089B1A0 */
+static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	rct_ride *ride = get_ride(rideIndex);
+
+	if (direction & 1) {
+		uint32 imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_NW_SE : SPR_RIVER_RAFTS_FLAT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height + 3, get_current_rotation());
+
+		imageId = SPR_STATION_BASE_B_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+	} else {
+		uint32 imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_SW_NE : SPR_RIVER_RAFTS_FLAT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3, get_current_rotation());
+
+		imageId = SPR_STATION_BASE_B_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+	}
+
+	track_paint_util_draw_station_platform(ride, direction, height, 7, mapElement);
+	
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	if (direction & 1) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
 
 static void paint_river_rafts_track_s_bend(uint32 baseImageId, uint8 trackSequence, uint8 direction, int height, const uint8 supportTypes[][4], uint16 ssegs1, uint16 ssegs2)
 {
@@ -155,9 +187,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(int trackType, int dir
 	switch (trackType) {
 	case TRACK_ELEM_FLAT:			return paint_river_rafts_track_flat;
 
-	case TRACK_ELEM_END_STATION:	break;
-	case TRACK_ELEM_BEGIN_STATION:	break;
-	case TRACK_ELEM_MIDDLE_STATION:	break;
+	case TRACK_ELEM_END_STATION:
+	case TRACK_ELEM_BEGIN_STATION:
+	case TRACK_ELEM_MIDDLE_STATION:
+		return paint_river_rafts_station;
 
 	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:	break;
 	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:	break;
