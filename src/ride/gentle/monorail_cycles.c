@@ -27,11 +27,47 @@ enum
 {
 	SPR_MONORAIL_CYCLES_FLAT_SW_NE = 16820,
 	SPR_MONORAIL_CYCLES_FLAT_NW_SE = 16821,
+
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 16842,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 16843,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 16844,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 16845,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 16846,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 16847,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 16848,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 16849,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 16850,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 16851,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 16852,
+	SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 16853,
 };
 
 static const uint32 monorail_cycles_track_pieces_flat[4] = {
 	SPR_MONORAIL_CYCLES_FLAT_SW_NE,
 	SPR_MONORAIL_CYCLES_FLAT_NW_SE
+};
+
+static const uint32 monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+	{
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2
+	},
+	{
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2
+	},
+	{
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2
+	},
+	{
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+		SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2
+	}
 };
 
 static paint_struct * paint_monorail_cycles_util_7c(
@@ -74,14 +110,36 @@ static void paint_monorail_cycles_station(uint8 rideIndex, uint8 trackSequence, 
 {
 }
 
-/** rct2: 0x*/
+/** rct2: 0x0088AD88 */
 static void paint_monorail_cycles_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	track_paint_util_left_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), monorail_cycles_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
+	track_paint_util_left_quarter_turn_3_tiles_tunnel(height, direction, trackSequence);
+
+	switch (trackSequence) {
+		case 0:
+			metal_a_supports_paint_setup(4, 4, -1, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
+			break;
+		case 2:
+			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
+			break;
+		case 3:
+			metal_a_supports_paint_setup(4, 4, -1, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
+			break;
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x*/
+static const uint8 right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
+
+/** rct2: 0x0088AD98 */
 static void paint_monorail_cycles_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	trackSequence = right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
+	paint_monorail_cycles_track_left_quarter_turn_3_tiles(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /** rct2: 0x*/
