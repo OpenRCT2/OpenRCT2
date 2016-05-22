@@ -64,7 +64,7 @@ static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, u
 }
 
 
-static void paint_river_rafts_track_s_bend(uint32 baseImageId, uint8 trackSequence, uint8 direction, int height, const uint8 supportTypes[][4])
+static void paint_river_rafts_track_s_bend(uint32 baseImageId, uint8 trackSequence, uint8 direction, int height, const uint8 supportTypes[][4], uint16 ssegs1, uint16 ssegs2)
 {
 	uint32 imageId = baseImageId;
 	imageId += (direction & 1) * 4;
@@ -80,30 +80,42 @@ static void paint_river_rafts_track_s_bend(uint32 baseImageId, uint8 trackSequen
 		switch (trackSequence) {
 		case 0: sub_98197C(imageId    , 0, 0, 32, 27, 2, height, 0, 2, height     , get_current_rotation());
 				sub_98197C(sideImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27, get_current_rotation()); break;
-		case 1: sub_98197C(imageId    , 0, 0, 32, 26, 2, height, 0, 0, height     , get_current_rotation());
-				sub_98197C(sideImageId, 0, 0, 32, 26, 2, height, 0, 0, height + 27, get_current_rotation()); break;
+		case 1: sub_98197C(imageId    , 0, 0, 32, 26, 2, height, 0, 6, height     , get_current_rotation());
+				sub_98197C(sideImageId, 0, 0, 32, 26, 0, height, 0, 6, height + 27, get_current_rotation()); break;
 		case 2: sub_98197C(imageId    , 0, 0, 32, 26, 2, height, 0, 6, height     , get_current_rotation());
-				sub_98197C(sideImageId, 0, 0, 32, 26, 2, height, 0, 6, height + 27, get_current_rotation()); break;
+				sub_98197C(sideImageId, 0, 0, 32, 26, 0, height, 0, 6, height + 27, get_current_rotation()); break;
 		case 3: sub_98197C(imageId    , 0, 0, 32, 27, 2, height, 0, 2, height     , get_current_rotation());
-				sub_98197C(sideImageId, 0, 0, 32, 27, 2, height, 0, 2, height + 27, get_current_rotation()); break;
+				sub_98197C(sideImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27, get_current_rotation()); break;
 		}
 	case 1:
 		switch (trackSequence) {
 		case 0: sub_98197C(imageId    , 0, 0, 27, 32, 2, height, 2, 0, height     , get_current_rotation());
-				sub_98197C(sideImageId, 0, 0, 27, 32, 2, height, 2, 0, height + 27, get_current_rotation()); break;
-		case 1: sub_98197C(imageId    , 0, 0, 26, 32, 2, height, 0, 0, height     , get_current_rotation());
-				sub_98197C(sideImageId, 0, 0, 26, 32, 2, height, 0, 0, height + 27, get_current_rotation()); break;
+				sub_98197C(sideImageId, 0, 0, 27, 32, 0, height, 2, 0, height + 27, get_current_rotation()); break;
+		case 1: sub_98197C(imageId    , 0, 0, 26, 32, 2, height, 6, 0, height     , get_current_rotation());
+				sub_98197C(sideImageId, 0, 0, 26, 32, 0, height, 6, 0, height + 27, get_current_rotation()); break;
 		case 2: sub_98197C(imageId    , 0, 0, 26, 32, 2, height, 6, 0, height     , get_current_rotation());
-				sub_98197C(sideImageId, 0, 0, 26, 32, 2, height, 6, 0, height + 27, get_current_rotation()); break;
+				sub_98197C(sideImageId, 0, 0, 26, 32, 0, height, 6, 0, height + 27, get_current_rotation()); break;
 		case 3: sub_98197C(imageId    , 0, 0, 27, 32, 2, height, 2, 0, height     , get_current_rotation());
-				sub_98197C(sideImageId, 0, 0, 27, 32, 2, height, 2, 0, height + 27, get_current_rotation()); break;
+				sub_98197C(sideImageId, 0, 0, 27, 32, 0, height, 2, 0, height + 27, get_current_rotation()); break;
 		}
 	}
 
 	uint8 supportType = supportTypes[direction][trackSequence];
 	wooden_a_supports_paint_setup(supportType, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
 
-	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	switch (trackSequence) {
+	case 0:
+	case 3:
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		break;
+	case 1:
+		paint_util_set_segment_support_height(paint_util_rotate_segments(ssegs1, direction), 0xFFFF, 0);
+		break;
+	case 2:
+		paint_util_set_segment_support_height(paint_util_rotate_segments(ssegs2, direction), 0xFFFF, 0);
+		break;
+	}
+
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
@@ -116,7 +128,9 @@ static void paint_river_rafts_track_s_bend_left(uint8 rideIndex, uint8 trackSequ
 		{ 0, 3, 5, 0 },
 		{ 1, 4, 2, 1 },
 	};
-	paint_river_rafts_track_s_bend(20948, trackSequence, direction, height, supportTypes);
+	paint_river_rafts_track_s_bend(20948, trackSequence, direction, height, supportTypes,
+		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4,
+		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC);
 }
 
 /** rct2: 0x0089B190 */
@@ -128,7 +142,9 @@ static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSeq
 		{ 0, 2, 4, 0 },
 		{ 1, 3, 5, 1 },
 	};
-	paint_river_rafts_track_s_bend(20956, trackSequence, direction, height, supportTypes);
+	paint_river_rafts_track_s_bend(20956, trackSequence, direction, height, supportTypes,
+		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC,
+		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4);
 }
 
 /**
