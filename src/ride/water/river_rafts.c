@@ -96,6 +96,186 @@ static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
+/** rct2: 0x0089B1D0 */
+static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 spriteIds[4][5] = {
+		{
+			20937,
+			20936,
+			20935,
+			20934,
+			20933,
+		},
+		{
+			20942,
+			20941,
+			20940,
+			20939,
+			20938,
+		},
+		{
+			20947,
+			20946,
+			20945,
+			20944,
+			20943,
+		},
+		{
+			20932,
+			20931,
+			20930,
+			20929,
+			20928,
+		}
+	};
+	static const uint32 sideSpriteIds[4][5] = {
+		{
+			20937 - 20,
+			20936 - 20,
+			20935 - 20,
+			20934 - 20,
+			20933 - 20,
+		},
+		{
+			20942 - 20,
+			20941 - 20,
+			20940 - 20,
+			20939 - 20,
+			20938 - 20,
+		},
+		{
+			20947 - 20,
+			20946 - 20,
+			20945 - 20,
+			20944 - 20,
+			20943 - 20,
+		},
+		{
+			20932 - 20,
+			20931 - 20,
+			20930 - 20,
+			20929 - 20,
+			20928 - 20,
+		}
+	};
+	track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), spriteIds, get_current_rotation());
+	track_paint_util_right_quarter_turn_5_tiles_paint(0, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), sideSpriteIds, get_current_rotation());
+
+	if (trackSequence != 1 && trackSequence != 4) {
+		static const uint8 supportTypes[][7] = {
+			{ 0, 0xFF, 5, 3, 0xFF, 5, 1 },
+			{ 1, 0xFF, 2, 4, 0xFF, 2, 0 },
+			{ 0, 0xFF, 3, 5, 0xFF, 3, 1 },
+			{ 1, 0xFF, 4, 2, 0xFF, 4, 0 },
+		};
+		uint8 supportType = supportTypes[direction][trackSequence];
+		wooden_a_supports_paint_setup(supportType, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	}
+
+	switch (trackSequence) {
+	case 0: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+	case 1: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0); break;
+	case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4 | SEGMENT_B8 | SEGMENT_D0, direction), 0xFFFF, 0); break;
+	case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_B4 | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0); break;
+	case 4: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0); break;
+	case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_B8, direction), 0xFFFF, 0); break;
+	case 6: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
+/** rct2: 0x0089B1D0 */
+static void paint_river_rafts_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
+{
+	static const uint32 spriteIds[4][5] = {
+		{
+			20888,
+			20889,
+			20890,
+			20891,
+			20892,
+		},
+		{
+			20893,
+			20894,
+			20895,
+			20896,
+			20897,
+		},
+		{
+			20898,
+			20899,
+			20900,
+			20901,
+			20902,
+		},
+		{
+			20903,
+			20904,
+			20905,
+			20906,
+			20907,
+		}
+	};
+	static const uint32 sideSpriteIds[4][5] = {
+		{
+			20888 + 20,
+			20889 + 20,
+			20890 + 20,
+			20891 + 20,
+			20892 + 20,
+		},
+		{
+			20893 + 20,
+			20894 + 20,
+			20895 + 20,
+			20896 + 20,
+			20897 + 20,
+		},
+		{
+			20898 + 20,
+			20899 + 20,
+			20900 + 20,
+			20901 + 20,
+			20902 + 20,
+		},
+		{
+			20903 + 20,
+			20904 + 20,
+			20905 + 20,
+			20906 + 20,
+			20907 + 20,
+		}
+	};
+	track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), spriteIds, get_current_rotation());
+	track_paint_util_right_quarter_turn_5_tiles_paint(0, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), sideSpriteIds, get_current_rotation());
+
+	if (trackSequence != 1 && trackSequence != 4) {
+		static const uint8 supportTypes[][7] = {
+			{ 0, 0xFF, 4, 2, 0xFF, 4, 1 },
+			{ 1, 0xFF, 5, 3, 0xFF, 5, 0 },
+			{ 0, 0xFF, 2, 4, 0xFF, 2, 1 },
+			{ 1, 0xFF, 3, 5, 0xFF, 3, 0 },
+		};
+		uint8 supportType = supportTypes[direction][trackSequence];
+		wooden_a_supports_paint_setup(supportType, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+	}
+
+	switch (trackSequence) {
+	case 0: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+	case 1: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+	case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+	case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0); break;
+	case 4: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+	case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
+	case 6: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+	}
+
+	paint_util_set_general_support_height(height + 32, 0x20);
+}
+
 static void paint_river_rafts_track_s_bend(uint32 baseImageId, uint8 trackSequence, uint8 direction, int height, const uint8 supportTypes[][4], uint16 ssegs1, uint16 ssegs2)
 {
 	uint32 imageId = baseImageId;
@@ -185,15 +365,15 @@ static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSeq
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(int trackType, int direction)
 {
 	switch (trackType) {
-	case TRACK_ELEM_FLAT:			return paint_river_rafts_track_flat;
+	case TRACK_ELEM_FLAT: return paint_river_rafts_track_flat;
 
 	case TRACK_ELEM_END_STATION:
 	case TRACK_ELEM_BEGIN_STATION:
 	case TRACK_ELEM_MIDDLE_STATION:
 		return paint_river_rafts_station;
 
-	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:	break;
-	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:	break;
+	case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:	return paint_river_rafts_track_left_quarter_turn_5_tiles;
+	case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:	return paint_river_rafts_track_right_quarter_turn_5_tiles;
 
 	case TRACK_ELEM_S_BEND_LEFT:	return paint_river_rafts_track_s_bend_left;
 	case TRACK_ELEM_S_BEND_RIGHT:	return paint_river_rafts_track_s_bend_right;
