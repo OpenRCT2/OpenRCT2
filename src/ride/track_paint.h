@@ -210,6 +210,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int trackType, int d
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_river_rafts(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int trackType, int direction);
 
 #endif
