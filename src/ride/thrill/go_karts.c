@@ -22,9 +22,40 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 
-/** rct2: 0x */
+enum
+{
+	SPR_GO_KARTS_FLAT_SW_NE = 20752,
+	SPR_GO_KARTS_FLAT_NW_SE = 20753,
+	SPR_GO_KARTS_FLAT_FRONT_SW_NE = 20754,
+	SPR_GO_KARTS_FLAT_FRONT_NW_SE = 20755,
+};
+
+/** rct2: 0x0074A748 */
 static void paint_go_karts_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
+	if (direction == 0 || direction == 2) {
+		imageId = SPR_GO_KARTS_FLAT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
+
+		imageId = SPR_GO_KARTS_FLAT_FRONT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
+
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	} else {
+		imageId = SPR_GO_KARTS_FLAT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
+
+		imageId = SPR_GO_KARTS_FLAT_FRONT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 29, 0, height + 2, get_current_rotation());
+
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x */
