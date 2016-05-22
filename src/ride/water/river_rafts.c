@@ -32,6 +32,130 @@ enum {
 	SPR_RIVER_RAFTS_FLAT_FRONT_SE_NW	= 20827,
 };
 
+static const sprite_bb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
+	{
+		20937, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+		20936, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		20935, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 },
+		20934, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 34, 2 },
+		20933, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+	},
+	{
+		20942, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+		20941, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		20940, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
+		20939, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		20938, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+	},
+	{
+		20947, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+		20946, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		20945, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 },
+		20944, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		20943, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+	},
+	{
+		20932, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+		20931, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 },
+		20930, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 },
+		20929, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		20928, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+	}
+};
+
+static const sprite_bb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
+	{
+		20937 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+		20936 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		20935 - 20, { 0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 },
+		20934 - 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 34, 0 },
+		20933 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+	},
+	{
+		20942 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+		20941 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		20940 - 20, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
+		20939 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		20938 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+	},
+	{
+		20947 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+		20946 - 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		20945 - 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 },
+		20944 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		20943 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+	},
+	{
+		20932 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+		20931 - 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 },
+		20930 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 },
+		20929 - 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		20928 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+	}
+};
+
+static const sprite_bb RiverRaftsRightQuarterTurn5_Top[4][5] = {
+	{
+		20888, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+		20889, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		20890, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 },
+		20891, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 },
+		20892, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+	},
+	{
+		20893, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+		20894, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 34, 2 },
+		20895, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 },
+		20896, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		20897, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+	},
+	{
+		20898, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+		20899, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		20900, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
+		20901, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		20902, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+	},
+	{
+		20903, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+		20904, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		20905, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 },
+		20906, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		20907, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+	}
+};
+
+static const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
+	{
+		20888 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+		20889 + 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		20890 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 },
+		20891 + 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 },
+		20892 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+	},
+	{
+		20893 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+		20894 + 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 34, 0 },
+		20895 + 20, { 0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 },
+		20896 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		20897 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+	},
+	{
+		20898 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+		20899 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		20900 + 20, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
+		20901 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		20902 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+	},
+	{
+		20903 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+		20904 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		20905 + 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 },
+		20906 + 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		20907 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+	}
+};
+
 /** rct2: 0x0089B170 */
 static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
@@ -99,68 +223,8 @@ static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint
 /** rct2: 0x0089B1D0 */
 static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	static const uint32 spriteIds[4][5] = {
-		{
-			20937,
-			20936,
-			20935,
-			20934,
-			20933,
-		},
-		{
-			20942,
-			20941,
-			20940,
-			20939,
-			20938,
-		},
-		{
-			20947,
-			20946,
-			20945,
-			20944,
-			20943,
-		},
-		{
-			20932,
-			20931,
-			20930,
-			20929,
-			20928,
-		}
-	};
-	static const uint32 sideSpriteIds[4][5] = {
-		{
-			20937 - 20,
-			20936 - 20,
-			20935 - 20,
-			20934 - 20,
-			20933 - 20,
-		},
-		{
-			20942 - 20,
-			20941 - 20,
-			20940 - 20,
-			20939 - 20,
-			20938 - 20,
-		},
-		{
-			20947 - 20,
-			20946 - 20,
-			20945 - 20,
-			20944 - 20,
-			20943 - 20,
-		},
-		{
-			20932 - 20,
-			20931 - 20,
-			20930 - 20,
-			20929 - 20,
-			20928 - 20,
-		}
-	};
-	track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), spriteIds, get_current_rotation());
-	track_paint_util_right_quarter_turn_5_tiles_paint(0, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), sideSpriteIds, get_current_rotation());
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsLeftQuarterTurn5_Top);
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsLeftQuarterTurn5_Side);
 
 	if (trackSequence != 1 && trackSequence != 4) {
 		static const uint8 supportTypes[][7] = {
@@ -189,68 +253,8 @@ static void paint_river_rafts_track_left_quarter_turn_5_tiles(uint8 rideIndex, u
 /** rct2: 0x0089B1D0 */
 static void paint_river_rafts_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	static const uint32 spriteIds[4][5] = {
-		{
-			20888,
-			20889,
-			20890,
-			20891,
-			20892,
-		},
-		{
-			20893,
-			20894,
-			20895,
-			20896,
-			20897,
-		},
-		{
-			20898,
-			20899,
-			20900,
-			20901,
-			20902,
-		},
-		{
-			20903,
-			20904,
-			20905,
-			20906,
-			20907,
-		}
-	};
-	static const uint32 sideSpriteIds[4][5] = {
-		{
-			20888 + 20,
-			20889 + 20,
-			20890 + 20,
-			20891 + 20,
-			20892 + 20,
-		},
-		{
-			20893 + 20,
-			20894 + 20,
-			20895 + 20,
-			20896 + 20,
-			20897 + 20,
-		},
-		{
-			20898 + 20,
-			20899 + 20,
-			20900 + 20,
-			20901 + 20,
-			20902 + 20,
-		},
-		{
-			20903 + 20,
-			20904 + 20,
-			20905 + 20,
-			20906 + 20,
-			20907 + 20,
-		}
-	};
-	track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), spriteIds, get_current_rotation());
-	track_paint_util_right_quarter_turn_5_tiles_paint(0, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), sideSpriteIds, get_current_rotation());
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsRightQuarterTurn5_Top);
+	track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, RCT2_GLOBAL(0x00F44198, uint32), RiverRaftsRightQuarterTurn5_Side);
 
 	if (trackSequence != 1 && trackSequence != 4) {
 		static const uint8 supportTypes[][7] = {

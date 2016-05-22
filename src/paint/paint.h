@@ -83,6 +83,13 @@ struct paint_string_struct {
 	uint8 *y_offsets;				// 0x1A
 };
 
+typedef struct sprite_bb {
+	uint32 sprite_id;
+	rct_xyz16 offset;
+	rct_xyz16 bb_offset;
+	rct_xyz16 bb_size;
+} sprite_bb;
+
 enum PAINT_STRUCT_FLAGS {
 	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };

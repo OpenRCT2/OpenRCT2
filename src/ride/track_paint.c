@@ -573,6 +573,23 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 h
 	}
 }
 
+void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5])
+{
+	sint8 sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
+	if (sprite < 0) {
+		return;
+	}
+
+	const sprite_bb *spriteBB = &sprites[direction][sprite];
+	uint32 imageId = spriteBB->sprite_id | colourFlags;
+	sub_98197C(imageId,
+				spriteBB->offset.x, spriteBB->offset.y,
+				spriteBB->bb_size.x, spriteBB->bb_size.y, spriteBB->bb_size.z,
+				height + spriteBB->offset.z,
+				spriteBB->bb_offset.x, spriteBB->bb_offset.y, height + spriteBB->bb_offset.z,
+				rotation);
+}
+
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
 {
