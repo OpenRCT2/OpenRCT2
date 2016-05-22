@@ -24,6 +24,33 @@ enum {
 	PLANE_FRONT,
 };
 
+typedef struct bound_box {
+	sint16 x;
+	sint16 y;
+	sint16 width;
+	sint16 height;
+} bound_box;
+
+/** rct2: 0x01428220 */
+static const sint16 MagicCarpetOscillationZ[] = {
+	-2, -1, 1, 5, 10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76, 77,
+	76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5, 1, -1
+};
+
+/** rct2: 0x01428260 */
+static const sint8 MagicCarpetOscillationXY[] = {
+	0, 6, 12, 18, 23, 27, 30, 31, 32, 31, 30, 27, 23, 18, 12, 6, 0,
+	-5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5
+};
+
+/** rct2: 0x014281F0 */
+static const bound_box MagicCarpetBounds[] = {
+	{ 0, 8, 32, 16 },
+	{ 8, 0, 16, 32 },
+	{ 0, 8, 32, 16 },
+	{ 8, 0, 16, 32 }
+};
+
 static rct_vehicle *get_first_vehicle(rct_ride *ride)
 {
 	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
@@ -77,14 +104,15 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
 			(ride->vehicle_colours[0].body_colour << 19);
 	}
 
-	offset.z += RCT2_ADDRESS(0x01428220, uint16)[swingImageId];
-	sint8 directionalOffset = RCT2_ADDRESS(0x01428260, sint8)[swingImageId];
+	sint8 directionalOffset = MagicCarpetOscillationXY[swingImageId];
 	switch (direction) {
 	case 0: offset.x -= directionalOffset; break;
 	case 1: offset.y += directionalOffset; break;
 	case 2: offset.x += directionalOffset; break;
 	case 3: offset.y -= directionalOffset; break;
 	}
+	offset.z += MagicCarpetOscillationZ[swingImageId];
+
 	sub_98199C(vehicleImageId | imageColourFlags, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 
 	// Riders
@@ -113,15 +141,16 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
 		swingImageId = vehicle->vehicle_sprite_type;
 	}
 	
+	bound_box bb = MagicCarpetBounds[direction];
 	rct_xyz16 offset, bbOffset, bbSize;
 	offset.x = (direction & 1) ? 0 : axisOffset;
 	offset.y = (direction & 1) ? axisOffset : 0;
 	offset.z = height + 7;
-	bbOffset.x = RCT2_ADDRESS(0x014281F4, sint16)[direction * 4];
-	bbOffset.y = RCT2_ADDRESS(0x014281F6, sint16)[direction * 4];
+	bbOffset.x = bb.x;
+	bbOffset.y = bb.y;
 	bbOffset.z = height + 7;
-	bbSize.x = RCT2_ADDRESS(0x014281F0, sint16)[direction * 4];
-	bbSize.y = RCT2_ADDRESS(0x014281F2, sint16)[direction * 4];
+	bbSize.x = bb.width;
+	bbSize.y = bb.height;
 	bbSize.z = 127;
 
 	paint_magic_carpet_frame(PLANE_BACK, direction, offset, bbOffset, bbSize);
