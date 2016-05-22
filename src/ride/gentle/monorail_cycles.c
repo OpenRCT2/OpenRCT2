@@ -201,9 +201,37 @@ static void paint_monorail_cycles_track_flat(uint8 rideIndex, uint8 trackSequenc
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x*/
+/** rct2: 0x0088ADD8 */
 static void paint_monorail_cycles_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
+
+	if (direction == 0 || direction == 2) {
+		imageId = SPR_STATION_BASE_B_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
+
+		imageId = SPR_MONORAIL_CYCLES_FLAT_SW_NE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98199C(imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
+
+		metal_a_supports_paint_setup(3, 5, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(3, 8, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	} else if (direction == 1 || direction == 3) {
+		imageId = SPR_STATION_BASE_B_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98197C(imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
+
+		imageId = SPR_MONORAIL_CYCLES_FLAT_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98199C(imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
+
+		metal_a_supports_paint_setup(3, 6, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(3, 7, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	}
+
+	track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x0088AD88 */
