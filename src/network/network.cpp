@@ -1480,7 +1480,7 @@ void Network::Server_Send_TOKEN(NetworkConnection& connection)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN << (uint32)connection.challenge.size();
-	packet->Write((const uint8 *)connection.challenge.c_str(), connection.challenge.size());
+	packet->Write(connection.challenge.data(), connection.challenge.size());
 	connection.QueuePacket(std::move(packet));
 }
 
@@ -1889,7 +1889,9 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	size_t sigsize;
 	char *signature;
 	const std::string pubkey = key.PublicKeyString();
-	ok = key.Sign(challenge, challenge_size, &signature, &sigsize);
+	this->challenge.resize(challenge_size);
+	memcpy(this->challenge.data(), challenge, challenge_size);
+	ok = key.Sign(this->challenge.data(), this->challenge.size(), &signature, &sigsize);
 	if (!ok) {
 		log_error("Failed to sign server's challenge.");
 		connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
@@ -1955,8 +1957,11 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 
 void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
 {
-	// TODO: add some randomness here
-	connection.challenge = "test";
+	uint8 token_size = 10 + (rand() & 0x7f);
+	connection.challenge.resize(token_size);
+	for (int i = 0; i < token_size; i++) {
+		connection.challenge[i] = (uint8)(rand() & 0xff);
+	}
 	Server_Send_TOKEN(connection);
 }
 
@@ -1976,7 +1981,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, strlen(pubkey));
 			connection.key.LoadPublic(pubkey_rw);
 			SDL_RWclose(pubkey_rw);
-			bool verified = connection.key.Verify(connection.challenge.c_str(), connection.challenge.size(), signature, sigsize);
+			bool verified = connection.key.Verify(connection.challenge.data(), connection.challenge.size(), signature, sigsize);
 			if (verified) {
 				connection.authstatus = NETWORK_AUTH_VERIFIED;
 				const std::string hash = connection.key.PublicKeyHash();
@@ -2007,8 +2012,9 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			connection.authstatus = NETWORK_AUTH_OK;
 			const std::string hash = connection.key.PublicKeyHash();
 			Server_Client_Joined(name, hash, connection);
-		} else {
-			log_error("Unkown failure while authenticating client");
+		} else
+		if (!connection.authstatus != NETWORK_AUTH_REQUIREPASSWORD) {
+			log_error("Unkown failure (%d) while authenticating client", connection.authstatus);
 		}
 		Server_Send_AUTH(connection);
 	}
@@ -2720,7 +2726,6 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 
 void network_send_password(const char* password)
 {
-	log_warning("client name: %s", gConfigNetwork.player_name);
 	char path[MAX_PATH];
 	platform_get_user_directory(path, NULL);
 	char keyPath[MAX_PATH] = "";
@@ -2736,7 +2741,7 @@ void network_send_password(const char* password)
 	const std::string pubkey = gNetwork.key.PublicKeyString();
 	size_t sigsize;
 	char *signature;
-	bool ok = gNetwork.key.Sign(gNetwork.challenge.c_str(), gNetwork.challenge.size(), &signature, &sigsize);
+	bool ok = gNetwork.key.Sign(gNetwork.challenge.data(), gNetwork.challenge.size(), &signature, &sigsize);
 	// Don't keep private key in memory. There's no need and it may get leaked
 	// when process dump gets collected at some point in future.
 	gNetwork.key.Unload();

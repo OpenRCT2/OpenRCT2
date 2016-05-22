@@ -333,7 +333,7 @@ std::string NetworkKey::PublicKeyHash()
     return digest_out;
 }
 
-bool NetworkKey::Sign(const char * md, const size_t len, char ** signature, size_t * out_size)
+bool NetworkKey::Sign(const uint8_t *md, const size_t len, char ** signature, size_t * out_size)
 {
     EVP_MD_CTX * mdctx = nullptr;
 
@@ -393,7 +393,7 @@ bool NetworkKey::Sign(const char * md, const size_t len, char ** signature, size
     return true;
 }
 
-bool NetworkKey::Verify(const char * md, const size_t len, const char * sig, const size_t siglen)
+bool NetworkKey::Verify(const uint8_t * md, const size_t len, const char * sig, const size_t siglen)
 {
     EVP_MD_CTX * mdctx = NULL;
 
