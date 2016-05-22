@@ -21,6 +21,7 @@
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
+#include "../../world/map.h"
 
 enum
 {
@@ -28,7 +29,22 @@ enum
 	SPR_GO_KARTS_FLAT_NW_SE = 20753,
 	SPR_GO_KARTS_FLAT_FRONT_SW_NE = 20754,
 	SPR_GO_KARTS_FLAT_FRONT_NW_SE = 20755,
-
+	SPR_GO_KARTS_STARTING_GRID_END_SW_NE = 20756,
+	SPR_GO_KARTS_STARTING_GRID_END_NW_SE = 20757,
+	SPR_GO_KARTS_STARTING_GRID_END_NE_SW = 20758,
+	SPR_GO_KARTS_STARTING_GRID_END_SE_NW = 20759,
+	SPR_GO_KARTS_STARTING_GRID_END_FRONT_SW_NE = 20760,
+	SPR_GO_KARTS_STARTING_GRID_END_FRONT_NW_SE = 20761,
+	SPR_GO_KARTS_STARTING_GRID_END_FRONT_NE_SW = 20762,
+	SPR_GO_KARTS_STARTING_GRID_END_FRONT_SE_NW = 20763,
+	SPR_GO_KARTS_STARTING_GRID_SW_NE = 20764,
+	SPR_GO_KARTS_STARTING_GRID_NW_SE = 20765,
+	SPR_GO_KARTS_STARTING_GRID_NE_SW = 20766,
+	SPR_GO_KARTS_STARTING_GRID_SE_NW = 20767,
+	SPR_GO_KARTS_STARTING_GRID_FRONT_SW_NE = 20768,
+	SPR_GO_KARTS_STARTING_GRID_FRONT_NW_SE = 20769,
+	SPR_GO_KARTS_STARTING_GRID_FRONT_NE_SW = 20770,
+	SPR_GO_KARTS_STARTING_GRID_FRONT_SE_NW = 20771,
 	SPR_GO_KARTS_FLAT_TO_25_DEG_UP_SW_NE = 20772,
 	SPR_GO_KARTS_FLAT_TO_25_DEG_UP_NW_SE = 20773,
 	SPR_GO_KARTS_FLAT_TO_25_DEG_UP_NE_SW = 20774,
@@ -65,6 +81,32 @@ enum
 	SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NW_NE = 20805,
 	SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NE_SE = 20806,
 	SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_SE_SW = 20807,
+	SPR_GO_KARTS_START_POLE_RED_SW_NE = 20808,
+	SPR_GO_KARTS_START_POLE_GREEN_SW_NE = 20809,
+	SPR_GO_KARTS_START_POLE_NW_SE = 20810,
+	SPR_GO_KARTS_START_POLE_NE_SW = 20811,
+	SPR_GO_KARTS_START_POLE_RED_SE_NW = 20812,
+	SPR_GO_KARTS_START_POLE_GREEN_SE_NW = 20813,
+	SPR_GO_KARTS_START_LIGHTS_RED_SW_NE = 20814,
+	SPR_GO_KARTS_START_LIGHTS_GREEN_SW_NE = 20815,
+	SPR_GO_KARTS_START_LIGHTS_NW_SE = 20816,
+	SPR_GO_KARTS_START_LIGHTS_NE_SW = 20817,
+	SPR_GO_KARTS_START_LIGHTS_RED_SE_NW = 20818,
+	SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW = 20819,
+};
+
+static const uint32 go_karts_track_pieces_starting_grid_end[4][2] = {
+	{SPR_GO_KARTS_STARTING_GRID_END_SW_NE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SW_NE},
+	{SPR_GO_KARTS_STARTING_GRID_END_NW_SE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NW_SE},
+	{SPR_GO_KARTS_STARTING_GRID_END_NE_SW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NE_SW},
+	{SPR_GO_KARTS_STARTING_GRID_END_SE_NW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SE_NW},
+};
+
+static const uint32 go_karts_track_pieces_starting_grid[4][2] = {
+	{SPR_GO_KARTS_STARTING_GRID_SW_NE, SPR_GO_KARTS_STARTING_GRID_FRONT_SW_NE},
+	{SPR_GO_KARTS_STARTING_GRID_NW_SE, SPR_GO_KARTS_STARTING_GRID_FRONT_NW_SE},
+	{SPR_GO_KARTS_STARTING_GRID_NE_SW, SPR_GO_KARTS_STARTING_GRID_FRONT_NE_SW},
+	{SPR_GO_KARTS_STARTING_GRID_SE_NW, SPR_GO_KARTS_STARTING_GRID_FRONT_SE_NW},
 };
 
 static const uint32 go_karts_track_pieces_25_deg_up[4][2] = {
@@ -278,6 +320,91 @@ static void paint_go_karts_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trac
 /** rct2: 0x */
 static void paint_go_karts_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+	rct_ride * ride = get_ride(rideIndex);
+	const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+
+	bool hasFence;
+	uint32 imageId;
+	const uint32 (* sprites)[2] = go_karts_track_pieces_starting_grid;
+
+	if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
+		sprites = go_karts_track_pieces_starting_grid_end;
+	}
+
+	imageId = sprites[direction][0] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
+	} else {
+		sub_98197C(imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
+	}
+
+	if (direction == 0 || direction == 2) {
+		hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+	} else {
+		hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+	}
+
+	imageId = sprites[direction][1] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
+
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	} else {
+		sub_98197C(imageId, 0, 0, 1, 32, 3, height, 29, 0, height + 2, get_current_rotation());
+
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	if (direction == 0 || direction == 2) {
+		hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+	} else {
+		hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+		track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+	}
+
+	if (mapElement->properties.track.type == TRACK_ELEM_END_STATION) {
+		const bool hasGreenLight = (bool) (mapElement->properties.track.sequence & 0x80);
+
+		switch (direction) {
+			case 0:
+				imageId = (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SW_NE : SPR_GO_KARTS_START_POLE_RED_SW_NE) | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 1, 1, height + 4, get_current_rotation());
+
+				imageId = (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SW_NE : SPR_GO_KARTS_START_LIGHTS_RED_SW_NE) | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 1, 28, height + 4, get_current_rotation());
+				break;
+			case 1:
+				imageId = SPR_GO_KARTS_START_POLE_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 1, 28, height + 4, get_current_rotation());
+
+				imageId = SPR_GO_KARTS_START_LIGHTS_NW_SE | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 28, 28, height + 4, get_current_rotation());
+				break;
+			case 2:
+				imageId = SPR_GO_KARTS_START_POLE_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 28, 1, height + 4, get_current_rotation());
+
+				imageId = SPR_GO_KARTS_START_LIGHTS_NE_SW | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 28, 28, height + 4, get_current_rotation());
+				break;
+			case 3:
+				imageId = (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SE_NW : SPR_GO_KARTS_START_POLE_RED_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 1, 1, height + 4, get_current_rotation());
+
+				imageId = (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW : SPR_GO_KARTS_START_LIGHTS_RED_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+				sub_98197C(imageId, 0, 0, 3, 3, 13, height, 28, 1, height + 4, get_current_rotation());
+				break;
+		}
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x0074A7E8 */
