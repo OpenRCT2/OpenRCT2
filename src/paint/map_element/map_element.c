@@ -124,6 +124,8 @@ static void blank_tiles_paint(int x, int y)
 	sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
+bool gShowSupportSegmentHeights = false;
+
 /**
  *
  *  rct2: 0x0068B3FB
@@ -261,6 +263,41 @@ static void sub_68B3FB(int x, int y)
 		}
 		RCT2_GLOBAL(0x9DE574, uint32_t) = dword_9DE574;
 	} while (!map_element_is_last_for_tile(map_element++));
+
+	if (!gShowSupportSegmentHeights) {
+		return;
+	}
+
+	if (map_element_get_type(map_element - 1) == MAP_ELEMENT_TYPE_SURFACE) {
+		return;
+	}
+
+	static const int segmentOffsets[][3] = {
+		{0xB4, 0xCC, 0xBc},
+		{0xC8, 0xC4, 0xD4},
+		{0xB8, 0xD0, 0xC0},
+	};
+
+	for (int y = 0; y < 3; y++) {
+		for (int x = 0; x < 3; x++) {
+			uint16 segmentHeight = RCT2_GLOBAL(0x0141E900 + segmentOffsets[y][x], uint16);
+			int imageColourFlats = 0b101111 << 19 | 0x40000000;
+			if (segmentHeight == 0xFFFF) {
+				segmentHeight = RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16);
+				// white: 0b101101
+				imageColourFlats = 0b111011 << 19 | 0x40000000;
+			}
+
+			int xOffset = y * 10;
+			int yOffset = -22 + x * 10;
+			paint_struct * ps = sub_98197C(5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
+			if (ps != NULL) {
+				ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
+				ps->colour_image_id = COLOUR_BORDEAUX_RED;
+			}
+
+		}
+	}
 }
 
 void paint_util_push_tunnel_left(uint16 height, uint8 type)
