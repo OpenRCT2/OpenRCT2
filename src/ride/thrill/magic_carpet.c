@@ -24,6 +24,17 @@ enum {
 	PLANE_FRONT,
 };
 
+enum {
+	SPR_MAGIC_CARPET_FRAME_NW		= 22002,
+	SPR_MAGIC_CARPET_FRAME_SE		= 22003,
+	SPR_MAGIC_CARPET_FRAME_NE		= 22004,
+	SPR_MAGIC_CARPET_FRAME_SW		= 22005,
+	SPR_MAGIC_CARPET_PENDULUM_NW	= 22006,
+	SPR_MAGIC_CARPET_PENDULUM_NE	= 22038,
+	SPR_MAGIC_CARPET_PENDULUM_SE	= 22070,
+	SPR_MAGIC_CARPET_PENDULUM_SW	= 22102,
+};
+
 typedef struct bound_box {
 	sint16 x;
 	sint16 y;
@@ -65,8 +76,14 @@ static rct_vehicle *get_first_vehicle(rct_ride *ride)
 static void paint_magic_carpet_frame(uint8 plane, uint8 direction,
 									 rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
 {
-	uint32 imageId = plane == PLANE_BACK ? 22002 : 22003;
-	imageId += (direction & 1) * 2;
+	uint32 imageId;
+	if (direction & 1) {
+		imageId = plane == PLANE_BACK ? SPR_MAGIC_CARPET_FRAME_NE :
+										SPR_MAGIC_CARPET_FRAME_SW;
+	} else {
+		imageId = plane == PLANE_BACK ? SPR_MAGIC_CARPET_FRAME_NW :
+										SPR_MAGIC_CARPET_FRAME_SE;
+	}
 	imageId |= RCT2_GLOBAL(0x00F44198, uint32);
 	if (plane == PLANE_BACK) {
 		sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
@@ -83,9 +100,12 @@ static void paint_magic_carpet_pendulum(uint8 plane, uint32 swingImageId, uint8 
 		imageId = (0 - ((sint32)imageId)) & 31;
 	}
 	if (direction & 1) {
-		imageId += 32;
+		imageId += plane == PLANE_BACK ? SPR_MAGIC_CARPET_PENDULUM_NE :
+										 SPR_MAGIC_CARPET_PENDULUM_SW;
+	} else {
+		imageId += plane == PLANE_BACK ? SPR_MAGIC_CARPET_PENDULUM_NW :
+										 SPR_MAGIC_CARPET_PENDULUM_SE;
 	}
-	imageId += plane == PLANE_BACK ? 22006 : 22070;
 	imageId |= RCT2_GLOBAL(0x00F44198, uint32);
 	sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 }
