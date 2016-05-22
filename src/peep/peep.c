@@ -10438,7 +10438,7 @@ void peep_sort()
 		peep->next = (i + 1 < num_peeps) ? peep_list[i + 1] : SPRITE_INDEX_NULL;
 	}
 	// Make sure the first peep is set
-	RCT2_GLOBAL(RCT2_ADDRESS_SPRITES_START_PEEP, uint16) = peep_list[0];
+	gSpriteListHead[SPRITE_LIST_PEEP] = peep_list[0];
 
 	free(peep_list);
 
