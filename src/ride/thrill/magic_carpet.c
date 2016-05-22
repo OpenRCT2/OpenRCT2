@@ -24,6 +24,17 @@ enum {
 	PLANE_FRONT,
 };
 
+static rct_vehicle *get_first_vehicle(rct_ride *ride)
+{
+	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
+		uint16 vehicleSpriteIndex = ride->vehicles[0];
+		if (vehicleSpriteIndex != SPRITE_INDEX_NULL) {
+			return GET_VEHICLE(vehicleSpriteIndex);
+		}
+	}
+	return NULL;
+}
+
 static void paint_magic_carpet_frame(uint8 plane, uint8 direction,
 									 rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
 {
@@ -52,30 +63,13 @@ static void paint_magic_carpet_pendulum(uint8 plane, uint32 swingImageId, uint8 
 	sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 }
 
-/** rct2: 0x00899104 */
-static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 swingImageId,
+									   rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
 {
-	height += 7;
-
-	rct_vehicle *vehicle = NULL;
-	if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
-		uint16 vehicleSpriteIndex = ride->vehicles[0];
-		if (vehicleSpriteIndex != SPRITE_INDEX_NULL) {
-			gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-			vehicle = GET_VEHICLE(vehicleSpriteIndex);
-		}
-	}
-
 	rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
 	uint32 vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
-	uint32 dword_1428218 = 0;
-	if (vehicle != NULL) {
-		dword_1428218 = vehicle->vehicle_sprite_type;
-	}
 
-	uint32 dword_1428210 = vehicleImageId;
-	uint32 dword_1428214 = direction;
-
+	// Vehicle
 	uint32 imageColourFlags = RCT2_GLOBAL(0x00F441A0, uint32);
 	if (imageColourFlags == 0x20000000) {
 		imageColourFlags = 0xA0000000 |
@@ -83,26 +77,57 @@ static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 
 			(ride->vehicle_colours[0].body_colour << 19);
 	}
 
-	uint32 imageId = dword_1428210 | imageColourFlags;
+	offset.z += RCT2_ADDRESS(0x01428220, uint16)[swingImageId];
+	sint8 directionalOffset = RCT2_ADDRESS(0x01428260, sint8)[swingImageId];
+	switch (direction) {
+	case 0: offset.x -= directionalOffset; break;
+	case 1: offset.y += directionalOffset; break;
+	case 2: offset.x += directionalOffset; break;
+	case 3: offset.y -= directionalOffset; break;
+	}
+	sub_98199C(vehicleImageId | imageColourFlags, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+
+	// Riders
+	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
+		rct_vehicle *vehicle = get_first_vehicle(ride);
+		if (vehicle != NULL) {
+			uint32 baseImageId = 0xA0000000 | (vehicleImageId + 4);
+			for (uint8 peepIndex = 0; peepIndex < vehicle->num_peeps; peepIndex += 2) {
+				uint32 imageId = baseImageId + (peepIndex * 2);
+				imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
+				imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
+				sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+			}
+		}
+	}
+}
+
+/** rct2: 0x00899104 */
+static void paint_magic_carpet_structure(rct_ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
+{
+	rct_vehicle *vehicle = get_first_vehicle(ride);
+
+	uint32 swingImageId = 0;
+	if (vehicle != NULL) {
+		swingImageId = vehicle->vehicle_sprite_type;
+	}
 	
-	rct_xyz16 offset;
-	rct_xyz16 bbOffset;
-	rct_xyz16 bbSize;
-	
+	rct_xyz16 offset, bbOffset, bbSize;
 	offset.x = (direction & 1) ? 0 : axisOffset;
 	offset.y = (direction & 1) ? axisOffset : 0;
-	offset.z = height;
+	offset.z = height + 7;
 	bbOffset.x = RCT2_ADDRESS(0x014281F4, sint16)[direction * 4];
 	bbOffset.y = RCT2_ADDRESS(0x014281F6, sint16)[direction * 4];
-	bbOffset.z = height;
+	bbOffset.z = height + 7;
 	bbSize.x = RCT2_ADDRESS(0x014281F0, sint16)[direction * 4];
 	bbSize.y = RCT2_ADDRESS(0x014281F2, sint16)[direction * 4];
 	bbSize.z = 127;
 
 	paint_magic_carpet_frame(PLANE_BACK, direction, offset, bbOffset, bbSize);
-	paint_magic_carpet_pendulum(PLANE_BACK, dword_1428218, direction, offset, bbOffset, bbSize);
-
-	paint_magic_carpet_pendulum(PLANE_FRONT, dword_1428218, direction, offset, bbOffset, bbSize);
+	paint_magic_carpet_pendulum(PLANE_BACK, swingImageId, direction, offset, bbOffset, bbSize);
+	paint_magic_carpet_vehicle(ride, direction, swingImageId, offset, bbOffset, bbSize);
+	paint_magic_carpet_pendulum(PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
 	paint_magic_carpet_frame(PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
