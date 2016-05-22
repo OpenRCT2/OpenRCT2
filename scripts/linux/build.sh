@@ -17,7 +17,7 @@ if [[ $TARGET != "linux" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; the
 	# keep in sync with version in install.sh
 	if [[ $SYSTEM == "Darwin" ]]; then
 		# keep in sync with version in Xcode project
-		sha256sum=6562ce9e1f37f125e3345bfd8b961777800436bf607b30dc7c964e0e6991ad2c
+		sha256sum=a02f3708b880714888f0ddaaa2bf2ca22a866f894c983d0f8dbb3f7e1effe846
 	else
 		sha256sum=f124c954bbd0b58c93e5fba46902806bd3637d3a1c5fb8e4b67441052f182df2
 	fi
