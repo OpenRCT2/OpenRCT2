@@ -5621,7 +5621,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	0,						// RIDE_TYPE_38
 	0,						// RIDE_TYPE_FLYING_ROLLER_COASTER
 	0,						// RIDE_TYPE_3A
-	0,						// RIDE_TYPE_VIRGINIA_REEL
+	get_track_paint_function_virginia_reel,		// RIDE_TYPE_VIRGINIA_REEL
 	0,						// RIDE_TYPE_SPLASH_BOATS
 	get_track_paint_function_mini_helicopters,	// RIDE_TYPE_MINI_HELICOPTERS
 	0,						// RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
