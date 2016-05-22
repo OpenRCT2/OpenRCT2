@@ -10306,31 +10306,6 @@ static void peep_give_real_name(rct_peep *peep)
 	peep->name_string_idx = dx;
 }
 
-static int peep_compare_name(utf8 const *peep_a_name, utf8 const *peep_b_name)
-{
-	for (;; peep_a_name++, peep_b_name++) {
-		int result = tolower(*peep_a_name) - tolower(*peep_b_name);
-		bool both_numeric = *peep_a_name >= '0' && *peep_a_name <= '9' && *peep_b_name >= '0' && *peep_b_name <= '9';
-		if (result != 0 || !*peep_a_name || both_numeric) { // difference found || end of string
-			if (both_numeric) { // a and b both start with a number
-				// Get the numbers in the string at current positions
-				int na = 0 , nb = 0;
-				for (; *peep_a_name >= '0' && *peep_a_name <= '9'; peep_a_name++) { na *= 10; na += *peep_a_name - '0'; }
-				for (; *peep_b_name >= '0' && *peep_b_name <= '9'; peep_b_name++) { nb *= 10; nb += *peep_b_name - '0'; }
-				// In case the numbers are the same
-				if (na == nb)
-					continue;
-				return na - nb;
-			}
-			else {
-				return result;
-			}
-		}
-	}
-
-	assert(false);
-}
-
 static int peep_compare(uint16 const *sprite_index_a, uint16 const *sprite_index_b)
 {
 	rct_peep const *peep_a = GET_PEEP(*sprite_index_a);
@@ -10366,7 +10341,7 @@ static int peep_compare(uint16 const *sprite_index_a, uint16 const *sprite_index
 	format_string(name_a, peep_a->name_string_idx, &peepIndex);
 	peepIndex = peep_b->id;
 	format_string(name_b, peep_b->name_string_idx, &peepIndex);
-	return peep_compare_name(name_a, name_b);
+	return strlogicalcmp(name_a, name_b);
 }
 
 /**
