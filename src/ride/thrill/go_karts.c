@@ -28,6 +28,23 @@ enum
 	SPR_GO_KARTS_FLAT_NW_SE = 20753,
 	SPR_GO_KARTS_FLAT_FRONT_SW_NE = 20754,
 	SPR_GO_KARTS_FLAT_FRONT_NW_SE = 20755,
+
+	SPR_GO_KARTS_25_DEG_UP_SW_NE = 20780,
+	SPR_GO_KARTS_25_DEG_UP_NW_SE = 20781,
+	SPR_GO_KARTS_25_DEG_UP_NE_SW = 20782,
+	SPR_GO_KARTS_25_DEG_UP_SE_NW = 20783,
+
+	SPR_GO_KARTS_25_DEG_UP_FRONT_SW_NE = 20792,
+	SPR_GO_KARTS_25_DEG_UP_FRONT_NW_SE = 20793,
+	SPR_GO_KARTS_25_DEG_UP_FRONT_NE_SW = 20794,
+	SPR_GO_KARTS_25_DEG_UP_FRONT_SE_NW = 20795,
+};
+
+static const uint32 go_karts_track_pieces_25_deg_up[4][2] = {
+	{SPR_GO_KARTS_25_DEG_UP_SW_NE, SPR_GO_KARTS_25_DEG_UP_FRONT_SW_NE},
+	{SPR_GO_KARTS_25_DEG_UP_NW_SE, SPR_GO_KARTS_25_DEG_UP_FRONT_NW_SE},
+	{SPR_GO_KARTS_25_DEG_UP_NE_SW, SPR_GO_KARTS_25_DEG_UP_FRONT_NE_SW},
+	{SPR_GO_KARTS_25_DEG_UP_SE_NW, SPR_GO_KARTS_25_DEG_UP_FRONT_SE_NW},
 };
 
 /** rct2: 0x0074A748 */
@@ -58,9 +75,51 @@ static void paint_go_karts_track_flat(uint8 rideIndex, uint8 trackSequence, uint
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x0074A758 */
 static void paint_go_karts_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
+	paint_struct * ps;
+
+	imageId = go_karts_track_pieces_25_deg_up[direction][0] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0 || direction == 2) {
+		ps = sub_98197C(imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
+	} else {
+		ps = sub_98197C(imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
+	}
+
+	if (direction == 1 || direction == 2) {
+		RCT2_GLOBAL(0x009DEA58, paint_struct*) = ps;
+	}
+
+	imageId = go_karts_track_pieces_25_deg_up[direction][1] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 32, 1, 11, height, 0, 29, height + 2, get_current_rotation());
+	} else {
+		sub_98197C(imageId, 0, 0, 1, 32, 1, height, 29, 0, height + 2, get_current_rotation());
+	}
+
+	switch (direction) {
+		case 0:
+			wooden_a_supports_paint_setup(0, 9, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height - 8, TUNNEL_7);
+			break;
+		case 1:
+			wooden_a_supports_paint_setup(1, 10, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height + 8, TUNNEL_8);
+			break;
+		case 2:
+			wooden_a_supports_paint_setup(0, 11, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_left(height + 8, TUNNEL_8);
+			break;
+		case 3:
+			wooden_a_supports_paint_setup(1, 12, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
+			paint_util_push_tunnel_right(height - 8, TUNNEL_7);
+			break;
+	}
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x */
@@ -73,9 +132,10 @@ static void paint_go_karts_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackS
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x0074A788 */
 static void paint_go_karts_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_go_karts_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x */
