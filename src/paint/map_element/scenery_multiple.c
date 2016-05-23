@@ -94,7 +94,7 @@ const utf8 *scenery_multiple_sign_fit_text(const utf8 *str, rct_large_scenery_te
 	strncpy(fitStr, str, sizeof(fitStr) - 1);
 	int w = 0;
 	uint32 codepoint;
-	while (w <= text->max_width && (codepoint = utf8_get_next(fitStrEnd, &fitStrEnd)) != 0) {
+	while (w <= text->max_width && (codepoint = utf8_get_next(fitStrEnd, (const utf8**)&fitStrEnd)) != 0) {
 		if (height) {
 			w += scenery_multiple_sign_get_glyph(text, codepoint)->height;
 		} else {
@@ -273,14 +273,14 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 						utf8 *spacesrc = 0;
 						utf8 *spacedst = 0;
 						int w = 0;
-						uint32 codepoint = utf8_get_next(src, &src);
+						uint32 codepoint = utf8_get_next(src, (const utf8**)&src);
 						do {
 							w += scenery_multiple_sign_get_glyph(text, codepoint)->width;
 							if (codepoint == ' ') {
 								spacesrc = src;
 								spacedst = dst;
 							}
-						} while(w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) && (srcold = src) && (codepoint = utf8_get_next(src, &src)));
+						} while(w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) && (srcold = src) && (codepoint = utf8_get_next(src, (const utf8**)&src)));
 						src = srcold;
 						if (spacesrc && codepoint) {
 							*spacedst = 0;
