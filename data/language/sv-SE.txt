@@ -3169,7 +3169,7 @@ STR_3156    :
 STR_3157    :karta
 STR_3158    :graf
 STR_3159    :lista
-STR_3160    :<not used anymore>
+STR_3160    :{SMALLFONT}{BLACK}Välj hur många gånger åkturen åker runt
 STR_3161    :<not used anymore>
 STR_3162    :Kan inte allokera nog minne
 STR_3163    :Installerar ny data: 
@@ -4168,7 +4168,7 @@ STR_5856    :{SMALLFONT}{BLACK}Sätter spelets upplösning när du spelar i full
 STR_5857    :{SMALLFONT}{BLACK}Spel inställningar
 STR_5858    :{SMALLFONT}{BLACK}Använd GPU för grafiken istället för CPU. Ökar kompatibiliteten med skärminspelningsprogram som till exempel Fraps{NEWLINE}Kan försämra prestandan lite grann
 STR_5859    :{SMALLFONT}{BLACK}Aktiverar 'frame tweening' för en visuellt mjukare spelupplevelse.{NEWLINE}Om avaktiverad kommer spelet köras i 40 fps.
-STR_3160    :{SMALLFONT}{BLACK}Välj hur många gånger åkturen åker runt
+
 
 #############
 # Scenarion #

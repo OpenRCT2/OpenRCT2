@@ -2337,7 +2337,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distanza e velocità:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Indicazioni altezza:
 STR_2332    :Unità
-STR_2333    :Audio
+STR_2333    :Impostazioni Audio
 STR_2334    :Sterline ({POUND})
 STR_2335    :Dollari ($)
 STR_2336    :Franchi (F)
@@ -3165,7 +3165,7 @@ STR_3156    :
 STR_3157    :mappa
 STR_3158    :grafico
 STR_3159    :lista
-STR_3160    :<not used anymore>
+STR_3160    :{SMALLFONT}{BLACK}Seleziona il numero di circuiti per corsa
 STR_3161    :<not used anymore>
 STR_3162    :Impossibile assegnare abbastanza memoria
 STR_3163    :Installazione dei nuovi dati: 
@@ -3849,7 +3849,7 @@ STR_5505    :Connessione al server non possibile.
 STR_5506    :I visitatori ignorano l'intensità
 STR_5507    :Il tuttofare taglia l'erba di default
 STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
+STR_5509    :{SMALLFONT}{BLACK}Permetti il caricamenti di scenari e salvataggi{NEWLINE}che hanno un checksum errato,{NEWLINE}come gli scenari del demo{NEWLINE}o salvataggi danneggiati.
 STR_5510    :Scheda audio predefinita
 STR_5511    :(UNKNOWN)
 STR_5512    :Salva Gioco Come
@@ -3927,7 +3927,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Sblocca i limiti delle attrazioni, permettendo cose come la {VELOCITY} nelle salite
 STR_5586    :Automaticamente apri i negozi e code
-STR_5587    :{SMALLFONT}{BLACK}When enabled, shops and stalls will be automatically opened after building them
+STR_5587    :{SMALLFONT}{BLACK}Negozi e attività saranno automaticamente aperti dopo la creazione
 STR_5588    :{SMALLFONT}{BLACK}Gioca con altri giocatori
 STR_5589    :Impostazioni Notifiche
 STR_5590    :Premi del Parco
@@ -4120,9 +4120,54 @@ STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLAC
 STR_5810    :Disabilita limite di lunghezza del treno
 STR_5811    :{SMALLFONT}{BLACK}If selezionato, puoi avere{NEWLINE}255 macchine per treno
 STR_5812    :Mostra la finestra multiplayer
-
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+#tooltips
+STR_5815    :{SMALLFONT}{BLACK}Mostra il contatore FPS in gioco
+STR_5816    :{SMALLFONT}{BLACK}Imposta la ratio del gioco.{NEWLINE}Molto utile quando si gioca ad{NEWLINE}alta risoluzione
+STR_5817    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Imposta la tipologia di scalatura UI
+STR_5818    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Utilizza la scalatura piŭ vicina {NEWLINE}quando il fattore di scalatura é{NEWLINE}un valore intero (1, 2, 3, ecc)
+STR_5819    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Gioco in pausa quando Steam{NEWLINE}é in overlay é aperto
+STR_5820    :{SMALLFONT}{BLACK}Minimizza il gioco se il focus é{NEWLINE}perso quando é a tutto schermo
+STR_5821    :{SMALLFONT}{BLACK}Cambia il colore del marker della construzione con le attrazioni di corse,{NEWLINE}trattorie, negozi, scenari, ecc.
+STR_5822    :{SMALLFONT}{BLACK}Ciclo giorno e notte.{NEWLINE}Il ciclo completo dura un mese di gioco 
+STR_5823    :{SMALLFONT}{BLACK}Mostra gli avvisi in maiuscolo (RCT1)
+STR_5824    :{SMALLFONT}{BLACK}Disabilita gli effetti luminosi{NEWLINE}durante una tempesta
+STR_5825    :{SMALLFONT}{BLACK}Mantieni il cursore del mouse nella finestra
+STR_5826    :{SMALLFONT}{BLACK}Inverti il trascinamento del mouse
+STR_5827    :{SMALLFONT}{BLACK}Imposta il colore dello schema nella interfaccia
+STR_5828    :{SMALLFONT}{BLACK}Cambia le unità di misura usate per le distanze, velocità, ecc.
+STR_5829    :{SMALLFONT}{BLACK}Cambia la moneta utilizzata. Questo valore é solo visuale non cambia l'implementazione interna monetaria
+STR_5830    :{SMALLFONT}{BLACK}Cambia la lingua utilizzata
+STR_5831    :{SMALLFONT}{BLACK}Cambia il formato della{NEWLINE}temperatura visualizzata
+STR_5832    :{SMALLFONT}{BLACK}Mostra l'altezza in unita generiche invece del formato impostato in "Distanza e Velocità"
+STR_5833    :{SMALLFONT}{BLACK}Cambia il formato della data utilizzato
+STR_5834    :{SMALLFONT}{BLACK}Seleziona il dispositivo audio utilizzato da OpenRCT2
+STR_5835    :{SMALLFONT}{BLACK}Muta il gioco se la finestra perde il focus
+STR_5836    :{SMALLFONT}{BLACK}Seleziona la musica da usare nel menu.{NEWLINE}Il tema RCT1 richiede di copiare 'data/css17.dat' dal tuo gioco RCT1 in 'data/css50.dat' nella tua cartella RCT2.
+STR_5837    :{SMALLFONT}{BLACK}Crea e imposta il tema della interfaccia
+STR_5838    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le finanze nella barra
+STR_5839    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le ricerche e sviluppo nella barra
+STR_5840    :{SMALLFONT}{BLACK}Mostra un pulsante differente per i trucchi nella barra
+STR_5841    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le novità nella barra
+STR_5842    :{SMALLFONT}{BLACK}Ordina gli scenari nelle schede per difficultà (RCT2) o nel sorgente del gioco (RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Abilita lo sblocco dello scenario (RCT1)
+STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multiplayer {NEWLINE}anche se c'é il desync o errori
+STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante{NEWLINE}per debuggare nella barra.{NEWLINE}Abilita le shortcut nellatastiera per la console sviluppatori
+STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spesso
+STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l'importazione degli scenari per funzionare
+STR_5848    :{SMALLFONT}{BLACK}Crea e gestici sequenze di titoli personalizzate
+STR_5849    :{SMALLFONT}{BLACK}Posiziona automaticante{NEWLINE}i nuovi membri dello staff
+STR_5850    :{SMALLFONT}{BLACK}I nuovi tuttofare tagliano{NEWLINE}l'erba di default (RCT1)
+STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di inspezione{NEWLINE}nelle nuove attrazioni
+STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione di Twitch
+STR_5853    :{SMALLFONT}{BLACK}Abilita/Disabilita gli effetti sonori
+STR_5854    :{SMALLFONT}{BLACK}Abilita/Disabilita le musiche delle attrazioni
+STR_5855    :{SMALLFONT}{BLACK}Imposta a tutto schermo, senza bordi della finestra{NEWLINE}o come finestra
+STR_5856    :{SMALLFONT}{BLACK}Imposta la risoluzione del gioco quando a tutto schermo
+STR_5857    :{SMALLFONT}{BLACK}Opzioni del gioco
+STR_5858    :{SMALLFONT}{BLACK}Usa la GPU per la grafica invece della CPU. Migliora la compatibilità con i software per catturare le schermate. Potrebbe diminuire le performance.
+STR_5859    :{SMALLFONT}{BLACK}Abilita l'interpolazione{NEWLINE}morbida durante il gioco. Quando disabilitato,{NEWLINE}il gioco funzionerà a 40 FPS.
 
 #############
 # Scenarios #
