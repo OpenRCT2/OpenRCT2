@@ -10306,10 +10306,10 @@ static void peep_give_real_name(rct_peep *peep)
 	peep->name_string_idx = dx;
 }
 
-static int peep_compare(uint16 const *sprite_index_a, uint16 const *sprite_index_b)
+static int peep_compare(const void *sprite_index_a, const void *sprite_index_b)
 {
-	rct_peep const *peep_a = GET_PEEP(*sprite_index_a);
-	rct_peep const *peep_b = GET_PEEP(*sprite_index_b);
+	rct_peep const *peep_a = GET_PEEP(*(uint16*)sprite_index_a);
+	rct_peep const *peep_b = GET_PEEP(*(uint16*)sprite_index_b);
 
 	// Compare types
 	if (peep_a->type != peep_b->type) {
