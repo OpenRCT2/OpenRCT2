@@ -54,6 +54,7 @@ if (FORCE64)
 	set(TARGET_M "-m64")
 	set(OBJ_FORMAT "elf64-x86-64")
 	set(LINKER_SCRIPT "ld_script_x86_64.xc")
+	list(APPEND CMAKE_C_FLAGS "-Wno-error=pointer-to-int-cast -Wno-error=int-to-pointer-cast")
 else ()
 	set(TARGET_M "-m32")
 	set(OBJ_FORMAT "elf32-i386")
@@ -134,9 +135,9 @@ if (APPLE)
 	set_source_files_properties(${ORCT2_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c -fmodules")
 endif (APPLE)
 
-# force 32bit build for now and set necessary flags to compile code as is
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 -fno-pie -fstrict-aliasing -Werror=strict-aliasing")
+# set necessary flags to compile code as is
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M} -std=gnu99 -fno-pie -fstrict-aliasing -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M} -std=gnu++11 -fno-pie -fstrict-aliasing -Werror")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
 
