@@ -22,137 +22,273 @@
 #include "../track_paint.h"
 
 enum {
-	SPR_RIVER_RAFTS_FLAT_SW_NE			= 20820,
-	SPR_RIVER_RAFTS_FLAT_NW_SE			= 20821,
-	SPR_RIVER_RAFTS_FLAT_NE_SW			= 20822,
-	SPR_RIVER_RAFTS_FLAT_SE_NW			= 20823,
-	SPR_RIVER_RAFTS_FLAT_FRONT_SW_NE	= 20824,
-	SPR_RIVER_RAFTS_FLAT_FRONT_NW_SE	= 20825,
-	SPR_RIVER_RAFTS_FLAT_FRONT_NE_SW	= 20826,
-	SPR_RIVER_RAFTS_FLAT_FRONT_SE_NW	= 20827,
+	SPR_RIVER_RAFTS_FLAT_TOP_SW_NE					= 20820,
+	SPR_RIVER_RAFTS_FLAT_TOP_NW_SE					= 20821,
+	SPR_RIVER_RAFTS_FLAT_TOP_NE_SW					= 20822,
+	SPR_RIVER_RAFTS_FLAT_TOP_SE_NW					= 20823,
+
+	SPR_RIVER_RAFTS_FLAT_SIDE_SW_NE					= 20824,
+	SPR_RIVER_RAFTS_FLAT_SIDE_NW_SE					= 20825,
+	SPR_RIVER_RAFTS_FLAT_SIDE_NE_SW					= 20826,
+	SPR_RIVER_RAFTS_FLAT_SIDE_SE_NW					= 20827,
+
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_0	= 20888,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_2	= 20889,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_3	= 20890,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_5	= 20891,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_6	= 20892,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_0	= 20893,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_2	= 20894,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_3	= 20895,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_5	= 20896,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_6	= 20897,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_0	= 20898,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_2	= 20899,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_3	= 20900,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_5	= 20901,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_6	= 20902,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_0	= 20903,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_2	= 20904,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_3	= 20905,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_5	= 20906,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_6	= 20907,
+
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_0	= 20908,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_2	= 20909,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_3	= 20910,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_5	= 20911,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_6	= 20912,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_0	= 20913,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_2	= 20914,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_3	= 20915,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_5	= 20916,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_6	= 20917,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_0	= 20918,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_2	= 20919,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_3	= 20920,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_5	= 20921,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_6	= 20922,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_0	= 20923,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_2	= 20924,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_3	= 20925,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_5	= 20926,
+	SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_6	= 20927,
+
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_6	= 20908,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_5	= 20909,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_3	= 20910,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_2	= 20911,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_0	= 20912,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_6	= 20913,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_5	= 20914,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_3	= 20915,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_2	= 20916,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_0	= 20917,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_6	= 20918,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_5	= 20919,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_3	= 20920,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_2	= 20921,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_0	= 20922,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_6	= 20923,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_5	= 20924,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_3	= 20925,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_2	= 20926,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_0	= 20927,
+
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_6		= 20928,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_5		= 20929,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_3		= 20930,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_2		= 20931,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_0		= 20932,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_6		= 20933,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_5		= 20934,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_3		= 20935,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_2		= 20936,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_0		= 20937,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_6		= 20938,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_5		= 20939,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_3		= 20940,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_2		= 20941,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_0		= 20942,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_6		= 20943,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_5		= 20944,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_3		= 20945,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_2		= 20946,
+	SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_0		= 20947,
+
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_NW_NE_SEQ_0	= 20948,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_NW_NE_SEQ_1	= 20949,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_NW_NE_SEQ_2	= 20950,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_NW_NE_SEQ_3	= 20951,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_NE_SE_SEQ_0	= 20952,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_NE_SE_SEQ_1	= 20953,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_NE_SE_SEQ_2	= 20954,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_NE_SE_SEQ_3	= 20955,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_SE_NE_SEQ_0	= 20956,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_SE_NE_SEQ_1	= 20957,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_SE_NE_SEQ_2	= 20958,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_SE_NE_SEQ_3	= 20959,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_SW_SE_SEQ_0	= 20960,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_SW_SE_SEQ_1	= 20961,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_SW_SE_SEQ_2	= 20962,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_NW_SW_SE_SEQ_3	= 20963,
+
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_SW_NE_SEQ_0	= 20964,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_SW_NE_SEQ_1	= 20965,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_SW_NE_SEQ_2	= 20966,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_SW_NE_SEQ_3	= 20967,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_NW_SE_SEQ_0	= 20968,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_NW_SE_SEQ_1	= 20969,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_NW_SE_SEQ_2	= 20970,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SIDE_NW_SE_SEQ_3	= 20971,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_SW_NE_SEQ_0	= 20972,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_SW_NE_SEQ_1	= 20973,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_SW_NE_SEQ_2	= 20974,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_SW_NE_SEQ_3	= 20975,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_NW_SE_SEQ_0	= 20976,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_NW_SE_SEQ_1	= 20977,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_NW_SE_SEQ_2	= 20978,
+	SPR_RIVER_RAFTS_S_BEND_RIGHT_SIDE_NW_SE_SEQ_3	= 20979,
+
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_SE_SW_SEQ_3		= 20980,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_SE_SW_SEQ_2		= 20981,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_SE_SW_SEQ_1		= 20982,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_SE_SW_SEQ_0		= 20983,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_SW_NW_SEQ_3		= 20984,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_SW_NW_SEQ_2		= 20985,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_SW_NW_SEQ_1		= 20986,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_SW_NW_SEQ_0		= 20987,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_NW_SW_SEQ_3		= 20988,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_NW_SW_SEQ_2		= 20989,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_NW_SW_SEQ_1		= 20990,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_NE_NW_SW_SEQ_0		= 20991,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_NE_NW_SEQ_3		= 20992,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_NE_NW_SEQ_2		= 20993,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_NE_NW_SEQ_1		= 20994,
+	SPR_RIVER_RAFTS_S_BEND_LEFT_SE_NE_NW_SEQ_0		= 20995,
 };
 
 static const sprite_bb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
 	{
-		20937, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
-		20936, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
-		20935, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 },
-		20934, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 34, 2 },
-		20933, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_0, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_2, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_3, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_5, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 34, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SW_NW_SEQ_6, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
 	},
 	{
-		20942, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
-		20941, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
-		20940, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
-		20939, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
-		20938, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_0, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_2, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_3, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_5, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NW_NE_SEQ_6, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
 	},
 	{
-		20947, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
-		20946, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
-		20945, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 },
-		20944, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
-		20943, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_0, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_2, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_3, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_5, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_NE_SE_SEQ_6, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
 	},
 	{
-		20932, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
-		20931, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 },
-		20930, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 },
-		20929, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
-		20928, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_0, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_2, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_3, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_5, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_TOP_SE_SW_SEQ_6, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
 	}
 };
 
 static const sprite_bb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
 	{
-		20937 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
-		20936 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
-		20935 - 20, { 0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 },
-		20934 - 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 34, 0 },
-		20933 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_0, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_2, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_3, { 0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_5, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 34, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SW_NW_SEQ_6, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
 	},
 	{
-		20942 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
-		20941 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
-		20940 - 20, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
-		20939 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
-		20938 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_0, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_2, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_3, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_5, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NW_NE_SEQ_6, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
 	},
 	{
-		20947 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
-		20946 - 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
-		20945 - 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 },
-		20944 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
-		20943 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_0, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_2, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_3, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_5, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_NE_SE_SEQ_6, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
 	},
 	{
-		20932 - 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
-		20931 - 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 },
-		20930 - 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 },
-		20929 - 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
-		20928 - 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_0, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_2, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_3, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_5, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_LEFT_5_SIDE_SE_SW_SEQ_6, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
 	}
 };
 
 static const sprite_bb RiverRaftsRightQuarterTurn5_Top[4][5] = {
 	{
-		20888, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
-		20889, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
-		20890, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 },
-		20891, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 },
-		20892, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_0, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_2, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_3, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_5, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SW_SE_SEQ_6, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
 	},
 	{
-		20893, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
-		20894, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 34, 2 },
-		20895, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 },
-		20896, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
-		20897, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_0, { 0, 0, 0 }, {  2,  0, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_2, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 34, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_3, { 0, 0, 0 }, {  0, 16, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_5, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NW_SW_SEQ_6, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
 	},
 	{
-		20898, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
-		20899, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
-		20900, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
-		20901, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
-		20902, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_0, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 27, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_2, { 0, 0, 0 }, {  0,  0, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_5, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_NE_NW_SEQ_6, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
 	},
 	{
-		20903, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
-		20904, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
-		20905, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 },
-		20906, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
-		20907, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_0, { 0, 0, 0 }, {  2,  0, 0 }, { 27, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_2, { 0, 0, 0 }, {  0,  0, 0 }, { 16, 32, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_3, { 0, 0, 0 }, { 16,  0, 0 }, { 16, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_5, { 0, 0, 0 }, {  0, 16, 0 }, { 32, 16, 2 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_TOP_SE_NE_SEQ_6, { 0, 0, 0 }, {  0,  2, 0 }, { 32, 32, 2 },
 	}
 };
 
 static const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
 	{
-		20888 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
-		20889 + 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
-		20890 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 },
-		20891 + 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 },
-		20892 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_0, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_2, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_3, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_5, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_6, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
 	},
 	{
-		20893 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
-		20894 + 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 34, 0 },
-		20895 + 20, { 0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 },
-		20896 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
-		20897 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_0, { 0, 0, 0 }, {  2,  0, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_2, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 34, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_3, { 0, 0, 0 }, {  0, 16, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_5, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NW_SW_SEQ_6, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
 	},
 	{
-		20898 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
-		20899 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
-		20900 + 20, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
-		20901 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
-		20902 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_0, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 27, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_2, { 0, 0, 0 }, {  0,  0, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_3, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_5, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_NE_NW_SEQ_6, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
 	},
 	{
-		20903 + 20, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
-		20904 + 20, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
-		20905 + 20, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 },
-		20906 + 20, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
-		20907 + 20, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_0, { 0, 0, 0 }, {  2,  0, 27 }, { 27, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_2, { 0, 0, 0 }, {  0,  0, 27 }, { 16, 32, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_3, { 0, 0, 0 }, { 16,  0, 27 }, { 16, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_5, { 0, 0, 0 }, {  0, 16, 27 }, { 32, 16, 0 },
+		SPR_RIVER_RAFTS_TURN_RIGHT_5_SIDE_SE_NE_SEQ_6, { 0, 0, 0 }, {  0,  2, 27 }, { 32, 32, 0 },
 	}
 };
 
@@ -162,16 +298,16 @@ static void paint_river_rafts_track_flat(uint8 rideIndex, uint8 trackSequence, u
 	uint32 imageId;
 
 	if (direction & 1) {
-		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_NW_SE : SPR_RIVER_RAFTS_FLAT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_TOP_NW_SE : SPR_RIVER_RAFTS_FLAT_TOP_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 20, 32, 2, height, 6, 0, height, get_current_rotation());
 
-		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_FRONT_NW_SE : SPR_RIVER_RAFTS_FLAT_FRONT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_SIDE_NW_SE : SPR_RIVER_RAFTS_FLAT_SIDE_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
 	} else {
-		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_SW_NE : SPR_RIVER_RAFTS_FLAT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_TOP_SW_NE : SPR_RIVER_RAFTS_FLAT_TOP_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 32, 20, 2, height, 0, 6, height, get_current_rotation());
 
-		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_FRONT_SW_NE : SPR_RIVER_RAFTS_FLAT_FRONT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_SIDE_SW_NE : SPR_RIVER_RAFTS_FLAT_SIDE_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
 	}
 
@@ -193,13 +329,13 @@ static void paint_river_rafts_station(uint8 rideIndex, uint8 trackSequence, uint
 	rct_ride *ride = get_ride(rideIndex);
 
 	if (direction & 1) {
-		uint32 imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_NW_SE : SPR_RIVER_RAFTS_FLAT_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
+		uint32 imageId = (direction == 1 ? SPR_RIVER_RAFTS_FLAT_TOP_NW_SE : SPR_RIVER_RAFTS_FLAT_TOP_SE_NW) | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height + 3, get_current_rotation());
 
 		imageId = SPR_STATION_BASE_B_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
 		sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 	} else {
-		uint32 imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_SW_NE : SPR_RIVER_RAFTS_FLAT_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
+		uint32 imageId = (direction == 0 ? SPR_RIVER_RAFTS_FLAT_TOP_SW_NE : SPR_RIVER_RAFTS_FLAT_TOP_NE_SW) | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3, get_current_rotation());
 
 		imageId = SPR_STATION_BASE_B_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
@@ -344,7 +480,7 @@ static void paint_river_rafts_track_s_bend_left(uint8 rideIndex, uint8 trackSequ
 		{ 0, 3, 5, 0 },
 		{ 1, 4, 2, 1 },
 	};
-	paint_river_rafts_track_s_bend(20948, trackSequence, direction, height, supportTypes,
+	paint_river_rafts_track_s_bend(SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_NW_NE_SEQ_0, trackSequence, direction, height, supportTypes,
 		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4,
 		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC);
 }
@@ -358,7 +494,7 @@ static void paint_river_rafts_track_s_bend_right(uint8 rideIndex, uint8 trackSeq
 		{ 0, 2, 4, 0 },
 		{ 1, 3, 5, 1 },
 	};
-	paint_river_rafts_track_s_bend(20956, trackSequence, direction, height, supportTypes,
+	paint_river_rafts_track_s_bend(SPR_RIVER_RAFTS_S_BEND_LEFT_TOP_SW_SE_NE_SEQ_0, trackSequence, direction, height, supportTypes,
 		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC,
 		SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4);
 }
