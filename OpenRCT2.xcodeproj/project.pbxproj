@@ -1881,7 +1881,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}\" sprite build \"${SRCROOT}/data/g2.dat\" \"${SRCROOT}/resources/g2/\"";
+			shellScript = "\"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}\" sprite build \"${SRCROOT}/data/g2.dat\" \"${SRCROOT}/resources/g2/\"";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
