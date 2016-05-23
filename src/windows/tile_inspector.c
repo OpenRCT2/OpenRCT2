@@ -610,7 +610,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 				} else {
 					sprintf(
 						buffer, "Path (%s)%s%s",
-						language_get_string(get_footpath_item_entry(pathType)->name), // Path name
+						language_get_string(get_footpath_entry(pathType)->string_idx), // Path name
 						pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
 						pathHasScenery ? language_get_string(get_footpath_item_entry(pathAdditionType)->name) : "" // Path addition name
 					);
