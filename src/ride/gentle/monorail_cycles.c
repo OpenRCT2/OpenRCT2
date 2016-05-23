@@ -360,7 +360,7 @@ static void paint_monorail_cycles_track_s_bend_left(uint8 rideIndex, uint8 track
 		case 3: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
 	}
 
-	if (direction == 0 | direction == 2) {
+	if (direction == 0 || direction == 2) {
 		if (trackSequence == 0) {
 			paint_util_push_tunnel_left(height, TUNNEL_0);
 		}
@@ -406,7 +406,7 @@ static void paint_monorail_cycles_track_s_bend_right(uint8 rideIndex, uint8 trac
 		case 3: paint_monorail_cycles_util_7c(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
 	}
 
-	if (direction == 0 | direction == 2) {
+	if (direction == 0 || direction == 2) {
 		if (trackSequence == 0) {
 			paint_util_push_tunnel_left(height, TUNNEL_0);
 		}

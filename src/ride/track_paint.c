@@ -583,8 +583,8 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int dire
 	const sprite_bb *spriteBB = &sprites[direction][sprite];
 	uint32 imageId = spriteBB->sprite_id | colourFlags;
 	sub_98197C(imageId,
-				spriteBB->offset.x, spriteBB->offset.y,
-				spriteBB->bb_size.x, spriteBB->bb_size.y, spriteBB->bb_size.z,
+				(sint8)spriteBB->offset.x, (sint8)spriteBB->offset.y,
+				spriteBB->bb_size.x, spriteBB->bb_size.y, (sint8)spriteBB->bb_size.z,
 				height + spriteBB->offset.z,
 				spriteBB->bb_offset.x, spriteBB->bb_offset.y, height + spriteBB->bb_offset.z,
 				rotation);
