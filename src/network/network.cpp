@@ -2013,7 +2013,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			const std::string hash = connection.key.PublicKeyHash();
 			Server_Client_Joined(name, hash, connection);
 		} else
-		if (!connection.authstatus != NETWORK_AUTH_REQUIREPASSWORD) {
+		if (connection.authstatus != NETWORK_AUTH_REQUIREPASSWORD) {
 			log_error("Unkown failure (%d) while authenticating client", connection.authstatus);
 		}
 		Server_Send_AUTH(connection);
