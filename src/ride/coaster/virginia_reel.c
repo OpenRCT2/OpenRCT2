@@ -448,7 +448,7 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(uint8 rideIndex,
 		case 0:
 		case 3:
 			wooden_a_supports_paint_setup(virginia_reel_left_quarter_turn_supports[direction], 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
-			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
+			paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
 			break;
 	}
 

@@ -120,20 +120,20 @@ static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direct
 		case 8: paint_space_rings_structure(ride, direction, 3, height + 3); break;
 	}
 
-	int blockedSegments = 0;
+	int cornerSegments = 0;
 	switch (trackSequence) {
-		case 0: blockedSegments = SEGMENTS_ALL; break;
-		case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
-		case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
-		case 3: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
-		case 4: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8; break;
-		case 5: blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
-		case 6: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
-		case 7: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
-		case 8: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+		case 0: cornerSegments = 0; break;
+		case 1: cornerSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 2: cornerSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 3: cornerSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 4: cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8; break;
+		case 5: cornerSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
+		case 6: cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+		case 7: cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
+		case 8: cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
 	}
-	paint_util_set_segment_support_height(blockedSegments, 0xFFFF, 0);
-	paint_util_set_segment_support_height(SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+	paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
+	paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
