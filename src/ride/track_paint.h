@@ -161,6 +161,8 @@ extern const uint32 fenceSpritesMetalB[];
 extern const uint32 trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3];
 extern const uint32 trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4];
 
+extern bool gUseOriginalRidePaint;
+
 bool track_paint_util_has_fence(enum edge edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
 void track_paint_util_paint_floor(uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
 void track_paint_util_paint_fences(uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation);
