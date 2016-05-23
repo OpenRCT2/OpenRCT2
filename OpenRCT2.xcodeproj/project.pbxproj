@@ -720,17 +720,17 @@
 		D44271F21CC81B3200D84D28 /* sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
 		D44271F31CC81B3200D84D28 /* sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
 		D44271F41CC81B3200D84D28 /* water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = water.h; sourceTree = "<group>"; };
-		D45A38B21CF3006400659A24 /* engines */ = {isa = PBXFileReference; lastKnownFileType = folder; name = engines; path = lib/lib/engines; sourceTree = SOURCE_ROOT; };
-		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.dylib; path = lib/lib/libcrypto.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38B41CF3006400659A24 /* libfreetype.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.dylib; path = lib/lib/libfreetype.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38B51CF3006400659A24 /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjansson.dylib; path = lib/lib/libjansson.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38B61CF3006400659A24 /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng.dylib; path = lib/lib/libpng.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL2_ttf.dylib; path = lib/lib/libSDL2_ttf.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38B81CF3006400659A24 /* libSDL2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSDL2.dylib; path = lib/lib/libSDL2.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38B91CF3006400659A24 /* libspeexdsp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libspeexdsp.dylib; path = lib/lib/libspeexdsp.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38BA1CF3006400659A24 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.dylib; path = lib/lib/libssl.dylib; sourceTree = SOURCE_ROOT; };
-		D45A38C41CF3007A00659A24 /* jansson_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jansson_config.h; path = lib/include/jansson_config.h; sourceTree = SOURCE_ROOT; };
-		D45A38C51CF3007A00659A24 /* jansson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jansson.h; path = lib/include/jansson.h; sourceTree = SOURCE_ROOT; };
+		D45A38B21CF3006400659A24 /* engines */ = {isa = PBXFileReference; lastKnownFileType = folder; path = engines; sourceTree = "<group>"; };
+		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
+		D45A38B41CF3006400659A24 /* libfreetype.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreetype.dylib; sourceTree = "<group>"; };
+		D45A38B51CF3006400659A24 /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjansson.dylib; sourceTree = "<group>"; };
+		D45A38B61CF3006400659A24 /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng.dylib; sourceTree = "<group>"; };
+		D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSDL2_ttf.dylib; sourceTree = "<group>"; };
+		D45A38B81CF3006400659A24 /* libSDL2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libSDL2.dylib; sourceTree = "<group>"; };
+		D45A38B91CF3006400659A24 /* libspeexdsp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libspeexdsp.dylib; sourceTree = "<group>"; };
+		D45A38BA1CF3006400659A24 /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.dylib; sourceTree = "<group>"; };
+		D45A38C41CF3007A00659A24 /* jansson_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jansson_config.h; sourceTree = "<group>"; };
+		D45A38C51CF3007A00659A24 /* jansson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jansson.h; sourceTree = "<group>"; };
 		D45A38C71CF3007A00659A24 /* png.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = png.h; sourceTree = "<group>"; };
 		D45A38C81CF3007A00659A24 /* pngconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pngconf.h; sourceTree = "<group>"; };
 		D45A38C91CF3007A00659A24 /* pnglibconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pnglibconf.h; sourceTree = "<group>"; };
@@ -1159,6 +1159,7 @@
 				D4EC48CE1C26348E0024B507 /* system */,
 			);
 			name = Libraries;
+			path = libxc;
 			sourceTree = "<group>";
 		};
 		D44270CF1CC81B3200D84D28 /* audio */ = {
@@ -1533,9 +1534,8 @@
 				D45A38C81CF3007A00659A24 /* pngconf.h */,
 				D45A38C91CF3007A00659A24 /* pnglibconf.h */,
 			);
-			name = libpng16;
-			path = lib/include/libpng16;
-			sourceTree = SOURCE_ROOT;
+			path = libpng16;
+			sourceTree = "<group>";
 		};
 		D45A38CA1CF3007A00659A24 /* openssl */ = {
 			isa = PBXGroup;
@@ -1616,9 +1616,8 @@
 				D45A39141CF3007A00659A24 /* x509_vfy.h */,
 				D45A39151CF3007A00659A24 /* x509v3.h */,
 			);
-			name = openssl;
-			path = lib/include/openssl;
-			sourceTree = SOURCE_ROOT;
+			path = openssl;
+			sourceTree = "<group>";
 		};
 		D45A39161CF3007A00659A24 /* SDL2 */ = {
 			isa = PBXGroup;
@@ -1683,9 +1682,8 @@
 				D45A39501CF3007A00659A24 /* SDL_version.h */,
 				D45A39511CF3007A00659A24 /* SDL_video.h */,
 			);
-			name = SDL2;
-			path = lib/include/SDL2;
-			sourceTree = SOURCE_ROOT;
+			path = SDL2;
+			sourceTree = "<group>";
 		};
 		D45A39521CF3007A00659A24 /* speex */ = {
 			isa = PBXGroup;
@@ -1697,9 +1695,8 @@
 				D45A39571CF3007A00659A24 /* speexdsp_config_types.h */,
 				D45A39581CF3007A00659A24 /* speexdsp_types.h */,
 			);
-			name = speex;
-			path = lib/include/speex;
-			sourceTree = SOURCE_ROOT;
+			path = speex;
+			sourceTree = "<group>";
 		};
 		D497D06F1C20FD52002BF46A = {
 			isa = PBXGroup;
@@ -1751,8 +1748,7 @@
 				D45A39161CF3007A00659A24 /* SDL2 */,
 				D45A39521CF3007A00659A24 /* speex */,
 			);
-			name = include;
-			path = libxc/include;
+			path = include;
 			sourceTree = "<group>";
 		};
 		D4EC48C31C2634870024B507 /* lib */ = {
@@ -1768,8 +1764,7 @@
 				D45A38B91CF3006400659A24 /* libspeexdsp.dylib */,
 				D45A38BA1CF3006400659A24 /* libssl.dylib */,
 			);
-			name = lib;
-			path = libxc/lib;
+			path = lib;
 			sourceTree = "<group>";
 		};
 		D4EC48CE1C26348E0024B507 /* system */ = {
@@ -2311,16 +2306,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/lib/include",
-					"$(SRCROOT)/lib/include/SDL2",
-					"$(SRCROOT)/lib/include/libpng16",
-					"$(SRCROOT)/lib/include/openssl",
+					"$(SRCROOT)/libxc/include",
+					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
+					"$(SRCROOT)/libxc/include/openssl",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/lib/lib",
+					"$(PROJECT_DIR)/libxc/lib",
 				);
 				OTHER_LDFLAGS = (
 					"-sectcreate",
@@ -2362,16 +2357,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/lib/include",
-					"$(SRCROOT)/lib/include/SDL2",
-					"$(SRCROOT)/lib/include/libpng16",
-					"$(SRCROOT)/lib/include/openssl",
+					"$(SRCROOT)/libxc/include",
+					"$(SRCROOT)/libxc/include/SDL2",
+					"$(SRCROOT)/libxc/include/libpng16",
+					"$(SRCROOT)/libxc/include/openssl",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/distribution/osx/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/lib/lib",
+					"$(PROJECT_DIR)/libxc/lib",
 				);
 				OTHER_LDFLAGS = (
 					"-sectcreate",
