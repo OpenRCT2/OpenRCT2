@@ -61,6 +61,8 @@ enum
 	TUNNEL_14 = 0x0E
 };
 
+extern bool gShowSupportSegmentHeights;
+
 void paint_util_push_tunnel_left(uint16 height, uint8 type);
 void paint_util_push_tunnel_right(uint16 height, uint8 type);
 
