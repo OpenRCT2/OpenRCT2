@@ -171,10 +171,10 @@ public:
 	NetworkPlayer() = default;
 	void Read(NetworkPacket& packet);
 	void Write(NetworkPacket& packet);
-	void SetName(const char* name);
+	void SetName(const std::string &name);
 	void AddMoneySpent(money32 cost);
 	uint8 id = 0;
-	uint8 name[32 + 1] = { 0 };
+	std::string name;
 	uint16 ping = 0;
 	uint8 flags = 0;
 	uint8 group = 0;
@@ -409,9 +409,11 @@ private:
 	void AddClient(SOCKET socket);
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
 	NetworkPlayer* AddPlayer(const std::string &keyhash);
+	std::string MakePlayerNameUnique(const std::string &name);
 	void PrintError();
 	const char* GetMasterServerUrl();
 	std::string GenerateAdvertiseKey();
+	std::map<std::string, uint8> username_count_map;
 
 	struct GameCommand
 	{

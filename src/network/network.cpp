@@ -203,15 +203,15 @@ void NetworkPlayer::Read(NetworkPacket& packet)
 
 void NetworkPlayer::Write(NetworkPacket& packet)
 {
-	packet.WriteString((const char*)name);
+	packet.WriteString((const char*)name.c_str());
 	packet << id << flags << group;
 }
 
-void NetworkPlayer::SetName(const char* name)
+void NetworkPlayer::SetName(const std::string &name)
 {
-	safe_strcpy((char*)NetworkPlayer::name, name, sizeof(NetworkPlayer::name));
-	NetworkPlayer::name[sizeof(NetworkPlayer::name) - 1] = 0;
-	utf8_remove_format_codes((utf8*)NetworkPlayer::name, false);
+	// 36 == 31 + strlen(" #255");
+	NetworkPlayer::name = name.substr(0, 36);
+	utf8_remove_format_codes((utf8*)NetworkPlayer::name.data(), false);
 }
 
 void NetworkPlayer::AddMoneySpent(money32 cost)
@@ -790,7 +790,8 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	LoadGroups();
 
 	NetworkPlayer* player = AddPlayer("");
-	player->SetName(gConfigNetwork.player_name);
+	std::string player_name(gConfigNetwork.player_name);
+	player->SetName(MakePlayerNameUnique(player_name.substr(0, 31)));
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
 	player->group = 0;
 	player_id = player->id;
@@ -1076,7 +1077,7 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 	if (fromplayer) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-		safe_strcpy(lineCh, (const char*)fromplayer->name, sizeof(fromplayer->name));
+		safe_strcpy(lineCh, (const char*)fromplayer->name.c_str(), fromplayer->name.size() + 1);
 		strcat(lineCh, ": ");
 		lineCh = strchr(lineCh, '\0');
 	}
@@ -1800,7 +1801,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	if (connection_player) {
 		char text[256];
 		const char * has_disconnected_args[2] = {
-				(char *) connection_player->name,
+				(char *) connection_player->name.c_str(),
 				connection->getLastDisconnectReason()
 		};
 		if (has_disconnected_args[1]) {
@@ -1810,7 +1811,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 		}
 
 		chat_history_add(text);
-		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name, connection->getLastDisconnectReason());
+		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name.c_str(), connection->getLastDisconnectReason());
 	}
 	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){
 						  return player.get() == connection_player;
@@ -1845,6 +1846,20 @@ NetworkPlayer* Network::AddPlayer(const std::string &keyhash)
 		player_list.push_back(std::move(player));
 	}
 	return addedplayer;
+}
+
+std::string Network::MakePlayerNameUnique(const std::string &name)
+{
+	std::string new_name = name.substr(0, 31);
+	decltype(username_count_map.begin()) it;
+	while ((it = username_count_map.find(new_name)) != username_count_map.end()) {
+		it->second++;
+		new_name.append(" #");
+		new_name.append(std::to_string(it->second));
+	}
+	// username is guaranteed (to the point where counter overflows) to be unique now.
+	username_count_map[new_name] = 1;
+	return new_name;
 }
 
 void Network::PrintError()
@@ -1943,9 +1958,11 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 	NetworkPlayer* player = AddPlayer(keyhash);
 	connection.player = player;
 	if (player) {
-		player->SetName(name);
+		std::string string_name(name);
+		string_name = MakePlayerNameUnique(string_name.substr(0, 31));
+		player->SetName(string_name);
 		char text[256];
-		const char * player_name = (const char *) player->name;
+		const char * player_name = (const char *) player->name.c_str();
 		format_string(text, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
 		chat_history_add(text);
 		Server_Send_MAP(&connection);
@@ -2376,7 +2393,7 @@ int network_get_num_players()
 
 const char* network_get_player_name(unsigned int index)
 {
-	return (const char*)gNetwork.player_list[index]->name;
+	return (const char*)gNetwork.player_list[index]->name.c_str();
 }
 
 uint32 network_get_player_flags(unsigned int index)
@@ -2484,7 +2501,7 @@ void network_chat_show_connected_message()
 	keyboard_shortcut_format_string(templateString, gShortcutKeys[SHORTCUT_OPEN_CHAT_WINDOW]);
 	utf8 buffer[256];
 	NetworkPlayer server;
-	safe_strcpy((char*)&server.name, "Server", sizeof(server.name));
+	server.name = "Server";
 	format_string(buffer, STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &templateString);
 	const char *formatted = Network::FormatChat(&server, buffer);
 	chat_history_add(formatted);
