@@ -202,6 +202,37 @@ int strcicmp(char const *a, char const *b)
 	}
 }
 
+/* Case insensitive logical compare */
+// Example:
+// - Guest 10
+// - Guest 99
+// - Guest 100
+// - John v2.0
+// - John v2.1
+int strlogicalcmp(char const *a, char const *b) {
+	for (;; a++, b++) {
+		int result = tolower(*a) - tolower(*b);
+		bool both_numeric = *a >= '0' && *a <= '9' && *b >= '0' && *b <= '9';
+		if (result != 0 || !*a || both_numeric) { // difference found || end of string
+			if (both_numeric) { // a and b both start with a number
+				// Get the numbers in the string at current positions
+				int na = 0 , nb = 0;
+				for (; *a >= '0' && *a <= '9'; a++) { na *= 10; na += *a - '0'; }
+				for (; *b >= '0' && *b <= '9'; b++) { nb *= 10; nb += *b - '0'; }
+				// In case the numbers are the same
+				if (na == nb)
+					continue;
+				return na - nb;
+			}
+			else {
+				return result;
+			}
+		}
+	}
+
+	assert(false);
+}
+
 utf8 * safe_strtrunc(utf8 * text, size_t size)
 {
 	assert(text != NULL);
