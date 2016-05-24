@@ -28,6 +28,16 @@ enum
 	SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE = 28821,
 	SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE = 28822,
 
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SW_NE = 28831,
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NW_SE = 28832,
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NE_SW = 28833,
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SE_NW = 28834,
+
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SW_NE = 28843,
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NW_SE = 28844,
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NE_SW = 28845,
+	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SE_NW = 28846,
+
 	SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE = 28881,
 	SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE = 28882
 };
@@ -37,6 +47,13 @@ static const uint32 ghost_train_track_pieces_flat[4] = {
 	SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
 	SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE,
 	SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
+};
+
+static const uint32 ghost_train_track_pieces_25_deg_up[4][2] = {
+	{SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SW_NE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SW_NE},
+	{SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NW_SE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NW_SE},
+	{SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NE_SW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NE_SW},
+	{SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SE_NW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SE_NW},
 };
 
 static const uint32 ghost_train_track_pieces_brakes[4] = {
@@ -73,9 +90,47 @@ static void paint_ghost_train_track_flat(uint8 rideIndex, uint8 trackSequence, u
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770BFC */
 static void paint_ghost_train_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	uint32 imageId = ghost_train_track_pieces_25_deg_up[direction][0] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+	} else {
+		sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+	}
+
+	imageId = ghost_train_track_pieces_25_deg_up[direction][1] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 32, 1, 23, height, 0, 27, height, get_current_rotation());
+	} else {
+		sub_98197C(imageId, 0, 0, 1, 32, 23, height, 27, 0, height, get_current_rotation());
+	}
+
+	if (track_paint_util_should_paint_supports(position)) {
+		metal_a_supports_paint_setup(3, 4, 8, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+
+	switch (direction) {
+		case 0:
+			paint_util_push_tunnel_left(height - 8, TUNNEL_1);
+			break;
+		case 1:
+			paint_util_push_tunnel_right(height + 8, TUNNEL_2);
+			break;
+		case 2:
+			paint_util_push_tunnel_left(height + 8, TUNNEL_2);
+			break;
+		case 3:
+			paint_util_push_tunnel_right(height - 8, TUNNEL_1);
+			break;
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x */
