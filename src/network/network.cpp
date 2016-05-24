@@ -2073,19 +2073,24 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			}
 		}
 
-		// TODO: check if key is already known
+		const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
+		size_t actionIndex = gNetworkActions.FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
+		bool passwordless = group->CanPerformAction(actionIndex);
 		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADVERSION;
 		} else
 		if (!name) {
 			connection.authstatus = NETWORK_AUTH_BADNAME;
 		} else
-		if ((!password || strlen(password) == 0) && Network::password.size() > 0) {
-			connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
-		} else
-		if (password && Network::password != password) {
-			connection.authstatus = NETWORK_AUTH_BADPASSWORD;
-		} else
+		if (!passwordless) {
+			if ((!password || strlen(password) == 0) && Network::password.size() > 0) {
+				connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
+			} else
+			if (password && Network::password != password) {
+				connection.authstatus = NETWORK_AUTH_BADPASSWORD;
+			}
+		}
+
 		if (gConfigNetwork.maxplayers <= player_list.size()) {
 			connection.authstatus = NETWORK_AUTH_FULL;
 		} else
