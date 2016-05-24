@@ -895,6 +895,7 @@ static bool config_find_rct2_path(utf8 *resultPath)
 		"C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
 		"C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
+		"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Rollercoaster Tycoon 2",
 		gExePath
 	};
 
