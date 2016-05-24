@@ -27,6 +27,9 @@ enum
 {
 	SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE = 28821,
 	SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE = 28822,
+
+	SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE = 28881,
+	SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE = 28882
 };
 
 static const uint32 ghost_train_track_pieces_flat[4] = {
@@ -34,6 +37,13 @@ static const uint32 ghost_train_track_pieces_flat[4] = {
 	SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
 	SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE,
 	SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
+};
+
+static const uint32 ghost_train_track_pieces_brakes[4] = {
+	SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE,
+	SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE,
+	SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE,
+	SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE,
 };
 
 /** rct2: 0x00770BEC */
@@ -123,9 +133,31 @@ static void paint_ghost_train_track_spinning_tunnel(uint8 rideIndex, uint8 track
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770CDC */
 static void paint_ghost_train_track_brakes(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	uint32 imageId = ghost_train_track_pieces_brakes[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+	} else {
+		sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+	}
+
+	if (direction == 0 || direction == 2) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	if (track_paint_util_should_paint_supports(position)) {
+		metal_a_supports_paint_setup(3, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /**
