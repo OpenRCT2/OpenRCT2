@@ -49,7 +49,7 @@ const uint8 byte_9A40CC[] = {
 void fence_paint_door(uint32 imageId,
                       rct_scenery_entry * sceneryEntry,
                       uint32 imageColourFlags, uint32 tertiaryColour, uint32 dword_141F710,
-                      rct_xyz8 offset,
+                      rct_xyz16 offset,
                       rct_xyz16 boundsR1, rct_xyz16 boundsR1_,
                       rct_xyz16 boundsR2, rct_xyz16 boundsR2_,
                       rct_xyz16 boundsL1, rct_xyz16 boundsL1_)
@@ -65,24 +65,24 @@ void fence_paint_door(uint32 imageId,
     if (sceneryEntry->wall.flags & WALL_SCENERY_FLAG4) {
         paint_struct * ps;
 
-        ps = sub_98197C(imageId, offset.x, offset.y, boundsR1.x, boundsR1.y, (sint8) boundsR1.z, offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z, get_current_rotation());
+        ps = sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsR1.x, boundsR1.y, (sint8) boundsR1.z, offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z, get_current_rotation());
         if (ps != NULL) {
             ps->tertiary_colour = tertiaryColour;
         }
 
-        ps = sub_98197C(imageId + 1, offset.x, offset.y, boundsR2.x, boundsR2.y, (sint8) boundsR2.z, offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z, get_current_rotation());
+        ps = sub_98197C(imageId + 1, (sint8) offset.x, (sint8) offset.y, boundsR2.x, boundsR2.y, (sint8) boundsR2.z, offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z, get_current_rotation());
         if (ps != NULL) {
             ps->tertiary_colour = tertiaryColour;
         }
     } else {
         paint_struct * ps;
 
-        ps = sub_98197C(imageId, offset.x, offset.y, boundsL1.x, boundsL1.y, (sint8) boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
+        ps = sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsL1.x, boundsL1.y, (sint8) boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
         if (ps != NULL) {
             ps->tertiary_colour = tertiaryColour;
         }
 
-        ps = sub_98199C(imageId + 1, offset.x, offset.y, boundsL1.x, boundsL1.y, (sint8) boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
+        ps = sub_98199C(imageId + 1, (sint8) offset.x, (sint8) offset.y, boundsL1.x, boundsL1.y, (sint8) boundsL1.z, offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z, get_current_rotation());
         if (ps != NULL) {
             ps->tertiary_colour = tertiaryColour;
         }
@@ -182,7 +182,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
-        rct_xyz8 offset;
+        rct_xyz16 offset;
         rct_xyz16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
         uint8 animationFrame = (map_element->properties.fence.item[2] >> 3) & 0x1F;
         uint32 imageId;
@@ -198,7 +198,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
                 boundsL1 = (rct_xyz16) {1, 28, ah};
                 boundsL1_ = (rct_xyz16) {1, 1, height + 1};
 
-                offset = (rct_xyz8) {0, 0, height};
+                offset = (rct_xyz16) {0, 0, height};
 
                 fence_paint_door(imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -214,7 +214,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
                 boundsL1 = (rct_xyz16) {29, 1, ah};
                 boundsL1_ = (rct_xyz16) {2, 30, height + 1};
 
-                offset = (rct_xyz8) {1, 31, height};
+                offset = (rct_xyz16) {1, 31, height};
 
                 fence_paint_door(imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -230,7 +230,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
                 boundsL1 = (rct_xyz16) {1, 29, ah};
                 boundsL1_ = (rct_xyz16) {30, 2, height + 1};
 
-                offset = (rct_xyz8) {31, 0, height};
+                offset = (rct_xyz16) {31, 0, height};
 
                 fence_paint_door(imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -246,7 +246,7 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
                 boundsL1 = (rct_xyz16) {28, 1, ah};
                 boundsL1_ = (rct_xyz16) {1, 1, height + 1};
 
-                offset = (rct_xyz8) {2, 1, height};
+                offset = (rct_xyz16) {2, 1, height};
 
                 fence_paint_door(imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
