@@ -184,6 +184,7 @@ typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
 
 TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int trackType, int direction);
