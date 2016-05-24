@@ -1997,90 +1997,90 @@ STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
 STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
-STR_1988    :Balloon
-STR_1989    :Cuddly Toy
-STR_1990    :Park Map
-STR_1991    :On-Ride Photo
-STR_1992    :Umbrella
-STR_1993    :Drink
-STR_1994    :Burger
-STR_1995    :Chips
-STR_1996    :Ice Cream
-STR_1997    :Candyfloss
-STR_1998    :Empty Can
-STR_1999    :Rubbish
-STR_2000    :Empty Burger Box
-STR_2001    :Pizza
+STR_1988    :气球
+STR_1989    :毛绒公仔
+STR_1990    :游乐园地图
+STR_1991    :即时照片
+STR_1992    :雨伞
+STR_1993    :饮料
+STR_1994    :汉堡
+STR_1995    :薯条
+STR_1996    :冰激淋
+STR_1997    :棉花糖
+STR_1998    :空罐子
+STR_1999    :垃圾
+STR_2000    :空汉堡包装盒
+STR_2001    :披萨
 STR_2002    :Voucher
-STR_2003    :Popcorn
-STR_2004    :Hot Dog
-STR_2005    :Tentacle
-STR_2006    :Hat
-STR_2007    :Toffee Apple
-STR_2008    :T-Shirt
-STR_2009    :Doughnut
-STR_2010    :Coffee
-STR_2011    :Empty Cup
-STR_2012    :Fried Chicken
-STR_2013    :Lemonade
-STR_2014    :Empty Box
-STR_2015    :Empty Bottle
-STR_2016    :Balloons
-STR_2017    :Cuddly Toys
-STR_2018    :Park Maps
-STR_2019    :On-Ride Photos
-STR_2020    :Umbrellas
-STR_2021    :Drinks
-STR_2022    :Burgers
-STR_2023    :Chips
-STR_2024    :Ice Creams
-STR_2025    :Candyfloss
-STR_2026    :Empty Cans
-STR_2027    :Rubbish
-STR_2028    :Empty Burger Boxes
-STR_2029    :Pizzas
-STR_2030    :Vouchers
-STR_2031    :Popcorn
-STR_2032    :Hot Dogs
-STR_2033    :Tentacles
-STR_2034    :Hats
-STR_2035    :Toffee Apples
-STR_2036    :T-Shirts
-STR_2037    :Doughnuts
-STR_2038    :Coffees
-STR_2039    :Empty Cups
-STR_2040    :Fried Chicken
-STR_2041    :Lemonade
-STR_2042    :Empty Boxes
-STR_2043    :Empty Bottles
-STR_2044    :a Balloon
-STR_2045    :a Cuddly Toy
-STR_2046    :a Park Map
-STR_2047    :an On-Ride Photo
-STR_2048    :an Umbrella
-STR_2049    :a Drink
-STR_2050    :a Burger
-STR_2051    :some Chips
-STR_2052    :an Ice Cream
-STR_2053    :some Candyfloss
-STR_2054    :an Empty Can
-STR_2055    :some Rubbish
-STR_2056    :an Empty Burger Box
-STR_2057    :a Pizza
-STR_2058    :a Voucher
-STR_2059    :some Popcorn
-STR_2060    :a Hot Dog
-STR_2061    :a Tentacle
-STR_2062    :a Hat
-STR_2063    :a Toffee Apple
-STR_2064    :a T-Shirt
-STR_2065    :a Doughnut
-STR_2066    :a Coffee
-STR_2067    :an Empty Cup
-STR_2068    :some Fried Chicken
-STR_2069    :some Lemonade
-STR_2070    :an Empty Box
-STR_2071    :an Empty Bottle
+STR_2003    :爆米花
+STR_2004    :热狗
+STR_2005    :触手
+STR_2006    :帽子
+STR_2007    :太妃苹果糖
+STR_2008    :T恤
+STR_2009    :甜甜圈
+STR_2010    :咖啡
+STR_2011    :空杯子
+STR_2012    :炸鸡
+STR_2013    :柠檬水
+STR_2014    :空盒子
+STR_2015    :空瓶子
+STR_2016    :气球
+STR_2017    :毛绒公仔
+STR_2018    :游乐园地图
+STR_2019    :即时照片
+STR_2020    :雨伞
+STR_2021    :饮料
+STR_2022    :汉堡
+STR_2023    :薯条
+STR_2024    :冰激淋
+STR_2025    :棉花糖
+STR_2026    :空罐子
+STR_2027    :垃圾
+STR_2028    :空汉堡包装盒s
+STR_2029    :披萨
+STR_2030    :Voucher
+STR_2031    :爆米花
+STR_2032    :热狗
+STR_2033    :触手
+STR_2034    :帽子
+STR_2035    :太妃苹果糖
+STR_2036    :T恤
+STR_2037    :甜甜圈
+STR_2038    :咖啡
+STR_2039    :空杯子
+STR_2040    :炸鸡
+STR_2041    :柠檬水
+STR_2042    :空盒子
+STR_2043    :空瓶子
+STR_2044    :一只气球
+STR_2045    :一只毛绒公仔
+STR_2046    :一份游乐园地图
+STR_2047    :一张即时照片
+STR_2048    :一把雨伞
+STR_2049    :一杯饮料
+STR_2050    :一个汉堡
+STR_2051    :一份薯条
+STR_2052    :一个冰激淋
+STR_2053    :一球棉花糖
+STR_2054    :一个空罐子
+STR_2055    :一些垃圾
+STR_2056    :一个空汉堡包装盒
+STR_2057    :一块披萨
+STR_2058    :一张Voucher
+STR_2059    :一份爆米花
+STR_2060    :一只热狗
+STR_2061    :一只触手
+STR_2062    :一顶帽子
+STR_2063    :一个太妃苹果糖
+STR_2064    :一件T恤
+STR_2065    :一个甜甜圈
+STR_2066    :一杯咖啡
+STR_2067    :一个空杯子
+STR_2068    :一份炸鸡
+STR_2069    :一杯柠檬水
+STR_2070    :一个空盒子
+STR_2071    :一个空瓶子
 STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
 STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
 STR_2074    :Map of {STRINGID}
@@ -2131,94 +2131,94 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}烤香肠价格:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :On-Ride Photo
-STR_2123    :On-Ride Photo
-STR_2124    :On-Ride Photo
+STR_2122    :即时照片
+STR_2123    :即时照片
+STR_2124    :即时照片
 STR_2125    :椒盐卷饼
-STR_2126    :Hot Chocolate
-STR_2127    :Iced Tea
-STR_2128    :Funnel Cake
-STR_2129    :Sunglasses
-STR_2130    :Beef Noodles
-STR_2131    :Fried Rice Noodles
-STR_2132    :Wonton Soup
-STR_2133    :Meatball Soup
-STR_2134    :Fruit Juice
-STR_2135    :Soybean Milk
+STR_2126    :热巧克力
+STR_2127    :冰红茶
+STR_2128    :漏斗蛋糕
+STR_2129    :太阳镜
+STR_2130    :牛肉面
+STR_2131    :炒米粉
+STR_2132    :上汤云吞
+STR_2133    :肉丸汤
+STR_2134    :果汁
+STR_2135    :豆浆
 STR_2136    :水正果
-STR_2137    :Sub Sandwich
-STR_2138    :Cookie
-STR_2139    :Empty Bowl
-STR_2140    :Empty Drink Carton
-STR_2141    :Empty Juice Cup
-STR_2142    :Roast Sausage
-STR_2143    :Empty Bowl
-STR_2144    :On-Ride Photos
-STR_2145    :On-Ride Photos
-STR_2146    :On-Ride Photos
+STR_2137    :潜艇三明治
+STR_2138    :曲奇饼干
+STR_2139    :空碗
+STR_2140    :空饮料包装
+STR_2141    :空果汁杯
+STR_2142    :烤香肠
+STR_2143    :空碗
+STR_2144    :即时照片
+STR_2145    :即时照片
+STR_2146    :即时照片
 STR_2147    :椒盐卷饼
-STR_2148    :Hot Chocolates
-STR_2149    :Iced Teas
-STR_2150    :Funnel Cakes
-STR_2151    :Sunglasses
-STR_2152    :Beef Noodles
-STR_2153    :Fried Rice Noodles
-STR_2154    :Wonton Soups
-STR_2155    :Meatball Soups
-STR_2156    :Fruit Juices
-STR_2157    :Soybean Milks
+STR_2148    :热巧克力
+STR_2149    :冰红茶
+STR_2150    :漏斗蛋糕
+STR_2151    :太阳镜
+STR_2152    :牛肉面
+STR_2153    :炒米粉
+STR_2154    :上汤云吞
+STR_2155    :肉丸汤
+STR_2156    :果汁
+STR_2157    :豆浆
 STR_2158    :水正果
-STR_2159    :Sub Sandwiches
-STR_2160    :Cookies
-STR_2161    :Empty Bowls
-STR_2162    :Empty Drink Cartons
-STR_2163    :Empty Juice cups
-STR_2164    :Roast Sausages
-STR_2165    :Empty Bowls
-STR_2166    :an On-Ride Photo
-STR_2167    :an On-Ride Photo
-STR_2168    :an On-Ride Photo
+STR_2159    :潜艇三明治
+STR_2160    :曲奇饼干
+STR_2161    :空碗
+STR_2162    :空饮料包装
+STR_2163    :空果汁杯
+STR_2164    :烤香肠
+STR_2165    :空碗
+STR_2166    :一张即时照片
+STR_2167    :一张即时照片
+STR_2168    :一张即时照片
 STR_2169    :一份椒盐卷饼
-STR_2170    :a Hot Chocolate
-STR_2171    :an Iced Tea
-STR_2172    :a Funnel Cake
-STR_2173    :a pair of Sunglasses
-STR_2174    :some Beef Noodles
-STR_2175    :some Fried Rice Noodles
-STR_2176    :some Wonton Soup
-STR_2177    :some Meatball Soup
-STR_2178    :a Fruit Juice
-STR_2179    :some Soybean Milk
+STR_2170    :一杯热巧克力
+STR_2171    :一杯冰红茶
+STR_2172    :一个漏斗蛋糕
+STR_2173    :一副太阳镜
+STR_2174    :一份牛肉面
+STR_2175    :一份炒米粉
+STR_2176    :一碗上汤云吞
+STR_2177    :一碗肉丸汤
+STR_2178    :一杯果汁
+STR_2179    :一杯豆浆
 STR_2180    :一杯水正果
-STR_2181    :a Sub Sandwich
-STR_2182    :a Cookie
-STR_2183    :an Empty Bowl
-STR_2184    :an Empty Drink Carton
-STR_2185    :an Empty Juice Cup
-STR_2186    :a Roast Sausage
-STR_2187    :an Empty Bowl
-STR_2188    :On-Ride Photo of {STRINGID}
-STR_2189    :On-Ride Photo of {STRINGID}
-STR_2190    :On-Ride Photo of {STRINGID}
+STR_2181    :一份潜艇三明治
+STR_2182    :一份曲奇饼干
+STR_2183    :一个空碗
+STR_2184    :一个空饮料包装
+STR_2185    :一个空果汁杯
+STR_2186    :一条烤香肠
+STR_2187    :一个空碗
+STR_2188    :{STRINGID}的即时照片
+STR_2189    :{STRINGID}的即时照片
+STR_2190    :{STRINGID}的即时照片
 STR_2191    :椒盐卷饼
-STR_2192    :Hot Chocolate
-STR_2193    :Iced Tea
-STR_2194    :Funnel Cake
-STR_2195    :Sunglasses
-STR_2196    :Beef Noodles
-STR_2197    :Fried Rice Noodles
-STR_2198    :Wonton Soup
-STR_2199    :Meatball Soup
-STR_2200    :Fruit Juice
-STR_2201    :Soybean Milk
-STR_2202    :Sujongkwa
-STR_2203    :Sub Sandwich
-STR_2204    :Cookie
-STR_2205    :Empty Bowl
-STR_2206    :Empty Drink Carton
-STR_2207    :Empty Juice Cup
-STR_2208    :Roast Sausage
-STR_2209    :Empty Bowl
+STR_2192    :热巧克力
+STR_2193    :冰红茶
+STR_2194    :漏斗蛋糕
+STR_2195    :太阳镜
+STR_2196    :牛肉面
+STR_2197    :炒米粉
+STR_2198    :上汤云吞
+STR_2199    :肉丸汤
+STR_2200    :果汁
+STR_2201    :豆浆
+STR_2202    :水正果
+STR_2203    :潜艇三明治
+STR_2204    :曲奇饼干
+STR_2205    :空碗
+STR_2206    :空饮料包装
+STR_2207    :空果汁杯
+STR_2208    :烤香肠
+STR_2209    :空碗
 STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
 STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
 STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
