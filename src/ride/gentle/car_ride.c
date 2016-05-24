@@ -27,7 +27,8 @@
 enum {
 	SPR_CAR_RIDE_FLAT_SW_NE = 28773,
 	SPR_CAR_RIDE_FLAT_NW_SE = 28774,
-
+	SPR_CAR_RIDE_LOG_BUMPS_SW_NE = 28775,
+	SPR_CAR_RIDE_LOG_BUMPS_NW_SE = 28776,
 	SPR_CAR_RIDE_25_DEG_UP_SW_NE = 28777,
 	SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SW_NE = 28778,
 	SPR_CAR_RIDE_25_DEG_UP_NE_SW = 28779,
@@ -63,6 +64,13 @@ static const uint32 car_ride_track_pieces_flat[4] = {
 	SPR_CAR_RIDE_FLAT_NW_SE,
 	SPR_CAR_RIDE_FLAT_SW_NE,
 	SPR_CAR_RIDE_FLAT_NW_SE,
+};
+
+static const uint32 car_ride_track_pieces_log_bumps[4] = {
+	SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
+	SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
+	SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
+	SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
 };
 
 static const uint32 car_ride_track_pieces_25_deg_up[4] = {
@@ -427,9 +435,26 @@ static void paint_car_ride_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uin
 	paint_car_ride_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x006F7418 */
 static void paint_car_ride_track_log_bumps(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId = car_ride_track_pieces_log_bumps[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	if (direction == 0 || direction == 2) {
+		sub_98196C(imageId, 0, 6, 32, 20, 1, height, get_current_rotation());
+	} else {
+		sub_98196C(imageId, 6, 0, 20, 32, 1, height, get_current_rotation());
+	}
+
+	if (direction == 0 || direction == 2) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	metal_a_supports_paint_setup(3, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /**
