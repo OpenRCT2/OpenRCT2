@@ -19,6 +19,8 @@
 
 #ifndef DISABLE_NETWORK
 
+#include "../common.h"
+
 #include <SDL_rwops.h>
 #include <string>
 
@@ -38,8 +40,8 @@ public:
     std::string PublicKeyString();
     std::string PublicKeyHash();
     void Unload();
-    bool Sign(const uint8_t * md, const size_t len, char ** signature, size_t * out_size);
-    bool Verify(const uint8_t *md, const size_t len, const char * sig, const size_t siglen);
+    bool Sign(const uint8 * md, const size_t len, char ** signature, size_t * out_size);
+    bool Verify(const uint8 * md, const size_t len, const char * sig, const size_t siglen);
 private:
     NetworkKey ( const NetworkKey & ) = delete;
     EVP_PKEY_CTX * m_ctx = nullptr;
