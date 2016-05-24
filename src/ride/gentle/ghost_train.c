@@ -51,6 +51,10 @@ enum
 	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NW_SE = 28844,
 	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NE_SW = 28845,
 	SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SE_NW = 28846,
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SW_NW = 28847,
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NW_NE = 28848,
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NE_SE = 28849,
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SE_SW = 28850,
 
 	SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE = 28881,
 	SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE = 28882
@@ -82,6 +86,13 @@ static const uint32 ghost_train_track_pieces_25_deg_up[4][2] = {
 	{SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NW_SE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NW_SE},
 	{SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NE_SW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NE_SW},
 	{SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SE_NW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SE_NW},
+};
+
+static const uint32 ghost_train_track_pieces_quarter_turn_1_tile[4] = {
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SW_NW,
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NW_NE,
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NE_SE,
+	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SE_SW,
 };
 
 static const uint32 ghost_train_track_pieces_brakes[4] = {
@@ -278,14 +289,21 @@ static void paint_ghost_train_track_left_quarter_turn_3_tiles(uint8 rideIndex, u
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770CAC */
 static void paint_ghost_train_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	track_paint_util_left_quarter_turn_1_tile_paint(3, height, 0, direction, RCT2_GLOBAL(0x00F44198, uint32), ghost_train_track_pieces_quarter_turn_1_tile, get_current_rotation());
+	track_paint_util_left_quarter_turn_1_tile_tunnel(height, direction, trackSequence);
+
+	metal_a_supports_paint_setup(3, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770CBC */
 static void paint_ghost_train_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_ghost_train_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /** rct2: 0x */
