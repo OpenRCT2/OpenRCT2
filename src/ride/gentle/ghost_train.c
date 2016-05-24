@@ -245,19 +245,22 @@ static void paint_ghost_train_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tra
 	paint_util_set_general_support_height(height + 40, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770C2C */
 static void paint_ghost_train_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_ghost_train_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770C3C */
 static void paint_ghost_train_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_ghost_train_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770C4C */
 static void paint_ghost_train_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_ghost_train_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x */
