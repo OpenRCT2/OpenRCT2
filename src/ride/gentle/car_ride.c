@@ -57,6 +57,10 @@ enum {
 	SPR_CAR_RIDE_60_DEG_UP_NW_SE = 28802,
 	SPR_CAR_RIDE_60_DEG_UP_NE_SW = 28803,
 	SPR_CAR_RIDE_60_DEG_UP_SE_NW = 28804,
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SW_NW = 28805,
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NW_NE = 28806,
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NE_SE = 28807,
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SE_SW = 28808,
 };
 
 static const uint32 car_ride_track_pieces_flat[4] = {
@@ -113,6 +117,13 @@ static const uint32 car_ride_track_pieces_60_deg_up_to_25_deg_up[4][2] = {
 	{SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NW_SE, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NW_SE},
 	{SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NE_SW, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NE_SW},
 	{SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SE_NW, 0},
+};
+
+static const uint32 car_ride_track_pieces_left_quarter_turn_1_tile[4] = {
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SW_NW,
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NW_NE,
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NE_SE,
+	SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SE_SW,
 };
 
 static const uint32 car_ride_track_pieces_tunnel[2][2][4] = {
@@ -294,14 +305,30 @@ static void paint_car_ride_track_left_quarter_turn_3_tiles(uint8 rideIndex, uint
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x006F7388 */
 static void paint_car_ride_track_left_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId = car_ride_track_pieces_left_quarter_turn_1_tile[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	switch(direction) {
+		case 0: sub_98197C(imageId, 6, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation()); break;
+		case 1: sub_98196C(imageId, 0, 0, 26, 26, 1, height, get_current_rotation()); break;
+		case 2: sub_98197C(imageId, 0, 6, 24, 26, 1, height, 2, 6, height, get_current_rotation()); break;
+		case 3: sub_98196C(imageId, 6, 6, 24, 24, 1, height, get_current_rotation()); break;
+	}
+
+	metal_a_supports_paint_setup(3, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+
+	track_paint_util_left_quarter_turn_1_tile_tunnel(height, direction, trackSequence);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x006F7398 */
 static void paint_car_ride_track_right_quarter_turn_1_tile(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_car_ride_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F73A8 */
