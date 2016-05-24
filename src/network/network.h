@@ -373,6 +373,7 @@ public:
 	void LoadGroups();
 	void SaveKeyMappings();
 	void LoadKeyMappings();
+	void UpdateKeyMappings();
 
 	void Client_Send_TOKEN();
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);

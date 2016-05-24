@@ -1453,6 +1453,68 @@ void Network::LoadKeyMappings()
 	json_decref(jsonKeyMappings);
 }
 
+
+/**
+ * @brief Network::UpdateKeyMappings
+ * Reads mappings from JSON, updates them in-place and saves JSON.
+ *
+ * Useful for retaining custom entries in JSON file.
+ */
+void Network::UpdateKeyMappings()
+{
+	if (GetMode() != NETWORK_MODE_SERVER) {
+		return;
+	}
+	utf8 path[MAX_PATH];
+
+	platform_get_user_directory(path, NULL);
+	strcat(path, "keymappings.json");
+
+	std::map<std::string, uint8> local_key_map(key_group_map);
+
+	json_t * jsonKeyMappings;
+	if (platform_file_exists(path)) {
+		jsonKeyMappings = Json::ReadFromFile(path);
+
+		// Update all the existing entries in JSON
+		size_t groupCount = (size_t)json_array_size(jsonKeyMappings);
+		for (size_t i = 0; i < groupCount; i++) {
+			json_t * jsonKeyMapping = json_array_get(jsonKeyMappings, i);
+			std::string hash(json_string_value(json_object_get(jsonKeyMapping, "hash")));
+			decltype(local_key_map.begin()) it;
+			if ((it = local_key_map.find(hash)) != local_key_map.end()) {
+				json_object_set_new(jsonKeyMapping, "groupId", json_integer(it->second));
+				// remove item once it was found and set
+				local_key_map.erase(it);
+			}
+		}
+	} else {
+		jsonKeyMappings = json_array();
+	}
+
+	// Store remaining entries
+	for (auto it = local_key_map.cbegin(); it != local_key_map.cend(); it++) {
+		json_t *keyMapping = json_object();
+		json_object_set(keyMapping, "hash", json_string(it->first.c_str()));
+		json_object_set(keyMapping, "groupId", json_integer(it->second));
+		json_array_append(jsonKeyMappings, keyMapping);
+	}
+
+	bool result;
+	try
+	{
+		Json::WriteToFile(path, jsonKeyMappings, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
+		result = true;
+	}
+	catch (Exception ex)
+	{
+		log_error("Unable to save %s: %s", path, ex.GetMessage());
+		result = false;
+	}
+
+	json_decref(jsonKeyMappings);
+}
+
 void Network::Client_Send_TOKEN()
 {
 	log_verbose("requesting token");
@@ -2534,7 +2596,7 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		player->group = groupid;
 		gNetwork.key_group_map[player->keyhash] = groupid;
-		gNetwork.SaveKeyMappings();
+		gNetwork.UpdateKeyMappings();
 		window_invalidate_by_number(WC_PLAYER, playerid);
 	}
 	*ebx = 0;
