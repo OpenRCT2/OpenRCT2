@@ -115,6 +115,36 @@ static const uint32 car_ride_track_pieces_60_deg_up_to_25_deg_up[4][2] = {
 	{SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SE_NW, 0},
 };
 
+static const uint32 car_ride_track_pieces_tunnel[2][2][4] = {
+	{
+		{
+			SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0,
+			SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_1,
+			SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_2,
+			SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_3
+		},
+		{
+			SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_0,
+			SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_1,
+			SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_2,
+			SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_3
+		}
+	},
+	{
+		{
+			SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_0,
+			SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_1,
+			SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_2,
+			SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_3
+		},
+		{
+			SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_0,
+			SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_1,
+			SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_2,
+			SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_3
+		}
+	}
+};
 
 /** rct2: 0x006F72C8 */
 static void paint_car_ride_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
@@ -274,9 +304,49 @@ static void paint_car_ride_track_right_quarter_turn_1_tile(uint8 rideIndex, uint
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x006F73A8 */
 static void paint_car_ride_track_spinning_tunnel(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId = car_ride_track_pieces_flat[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	if (direction == 0 || direction == 2) {
+		sub_98196C(imageId, 0, 6, 32, 20, 1, height, get_current_rotation());
+	} else {
+		sub_98196C(imageId, 6, 0, 20, 32, 1, height, get_current_rotation());
+	}
+
+	int frame = gScenarioTicks >> 2 & 3;
+	uint32 colourFlags = RCT2_GLOBAL(0x00F4419C, uint32);
+
+	uint32 colourFlags2 = RCT2_GLOBAL(0x00F44198, uint32);
+	if (colourFlags2 & (IMAGE_TYPE_UNKNOWN << 28)) {
+		colourFlags |= colourFlags2 & (IMAGE_TYPE_UNKNOWN << 28 | 0x1F << 24);
+	}
+
+	imageId = car_ride_track_pieces_tunnel[direction & 1][0][frame] | colourFlags;
+	if (direction == 0 || direction == 2) {
+		sub_98199C(imageId, 0, 0, 28, 20, 1, height, 2, 6, height, get_current_rotation());
+	} else {
+		sub_98199C(imageId, 0, 0, 20, 28, 1, height, 6, 2, height, get_current_rotation());
+	}
+
+	imageId = car_ride_track_pieces_tunnel[direction & 1][1][frame] | colourFlags;
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 26, 1, 23, height, 4, 28, height, get_current_rotation());
+	} else {
+		sub_98197C(imageId, 0, 0, 1, 26, 23, height, 28, 4, height, get_current_rotation());
+	}
+
+	if (direction == 0 || direction == 2) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x006F73B8 */
