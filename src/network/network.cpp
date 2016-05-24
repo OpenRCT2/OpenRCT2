@@ -1431,7 +1431,6 @@ void Network::SaveKeyMappings()
 
 void Network::LoadKeyMappings()
 {
-	group_list.clear();
 
 	utf8 path[MAX_PATH];
 
@@ -1441,6 +1440,7 @@ void Network::LoadKeyMappings()
 	if (!platform_file_exists(path)) {
 		return;
 	}
+	key_group_map.clear();
 
 	json_t * jsonKeyMappings = Json::ReadFromFile(path);
 
@@ -1900,6 +1900,8 @@ NetworkPlayer* Network::AddPlayer(const std::string &keyhash)
 		newid = 0;
 	}
 	if (newid != -1) {
+		// Load keys host may have added manually
+		LoadKeyMappings();
 		std::unique_ptr<NetworkPlayer> player(new NetworkPlayer); // change to make_unique in c++14
 		player->id = newid;
 		player->keyhash = keyhash;
