@@ -56,6 +56,10 @@ enum
 	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NE_SE = 28849,
 	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SE_SW = 28850,
 
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_SW_NE = 28863,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_NW_SE = 28864,
+
+
 	SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE = 28881,
 	SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE = 28882
 };
@@ -93,6 +97,13 @@ static const uint32 ghost_train_track_pieces_quarter_turn_1_tile[4] = {
 	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NW_NE,
 	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NE_SE,
 	SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SE_SW,
+};
+
+static const uint32 ghost_train_track_pieces_spinning_tunnel_track[4] = {
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_SW_NE,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_NW_SE,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_SW_NE,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_NW_SE,
 };
 
 static const uint32 ghost_train_track_pieces_brakes[4] = {
@@ -306,9 +317,29 @@ static void paint_ghost_train_track_right_quarter_turn_1_tile(uint8 rideIndex, u
 	paint_ghost_train_track_left_quarter_turn_1_tile(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770CCC */
 static void paint_ghost_train_track_spinning_tunnel(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 28, 20, 3, height, 2, 6, height, get_current_rotation());
+	} else {
+		sub_98197C(imageId, 0, 0, 20, 28, 3, height, 6, 2, height, get_current_rotation());
+	}
+
+	track_paint_util_spinning_tunnel_paint(3, height, direction, get_current_rotation());
+
+	if (direction == 0 || direction == 2) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	} else {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+	wooden_a_supports_paint_setup((direction & 1), 0, height, RCT2_GLOBAL(0x00F441A0, uint32), NULL);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x00770CDC */

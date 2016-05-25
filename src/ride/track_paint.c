@@ -160,6 +160,37 @@ const uint32 trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] = {
 	SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
 };
 
+static const uint32 trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
+	{
+		{
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_1,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_2,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_3
+		},
+		{
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_0,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_1,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_2,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_3
+		}
+	},
+	{
+		{
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_0,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_1,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_2,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_3
+		},
+		{
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_0,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_1,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_2,
+			SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_3
+		}
+	}
+};
+
 enum
 {
 	SPR_STATION_COVER_OFFSET_NE_SW_BACK_0 = 0,
@@ -768,6 +799,32 @@ void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direc
 			paint_util_push_tunnel_right(height, TUNNEL_0);
 			paint_util_push_tunnel_left(height, TUNNEL_0);
 			break;
+	}
+}
+
+void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint8 direction, uint8 rotation)
+{
+
+	int frame = gScenarioTicks >> 2 & 3;
+	uint32 colourFlags = RCT2_GLOBAL(0x00F4419C, uint32);
+
+	uint32 colourFlags2 = RCT2_GLOBAL(0x00F44198, uint32);
+	if (colourFlags2 & (IMAGE_TYPE_UNKNOWN << 28)) {
+		colourFlags |= colourFlags2 & (IMAGE_TYPE_UNKNOWN << 28 | 0x1F << 24);
+	}
+
+	uint32 imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][0][frame] | colourFlags;
+	if (direction == 0 || direction == 2) {
+		sub_98199C(imageId, 0, 0, 28, 20, thickness, height, 2, 6, height, rotation);
+	} else {
+		sub_98199C(imageId, 0, 0, 20, 28, thickness, height, 6, 2, height, rotation);
+	}
+
+	imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame] | colourFlags;
+	if (direction == 0 || direction == 2) {
+		sub_98197C(imageId, 0, 0, 26, 1, 23, height, 4, 28, height, rotation);
+	} else {
+		sub_98197C(imageId, 0, 0, 1, 26, 23, height, 28, 4, height, rotation);
 	}
 }
 
