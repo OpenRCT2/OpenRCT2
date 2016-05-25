@@ -32,8 +32,11 @@ extern "C" {
 #include <algorithm>
 #include <set>
 #include <string>
-#include "../core/Util.hpp"
+
+#include "../core/Console.hpp"
 #include "../core/Json.hpp"
+#include "../core/Util.hpp"
+
 extern "C" {
 #include "../config.h"
 #include "../game.h"
@@ -714,10 +717,10 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	safe_strcat(keyPath, gConfigNetwork.player_name, MAX_PATH);
 	safe_strcat(keyPath, ".privkey", MAX_PATH);
 	if (!platform_file_exists(keyPath)) {
-		log_info("Generating key... This may take a while");
-		log_info("Need to collect enough entropy from the system");
+		Console::WriteLine("Generating key... This may take a while");
+		Console::WriteLine("Need to collect enough entropy from the system");
 		key.Generate();
-		log_info("Key generated, saving private bits as %s", keyPath);
+		Console::WriteLine("Key generated, saving private bits as %s", keyPath);
 		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "wb+");
 		key.SavePrivate(privkey);
 		SDL_RWclose(privkey);
@@ -728,7 +731,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 		safe_strcat(keyPath, "-", MAX_PATH);
 		safe_strcat(keyPath, key.PublicKeyHash().c_str(), MAX_PATH);
 		safe_strcat(keyPath, ".pubkey", MAX_PATH);
-		log_info("Key generated, saving public bits as %s", keyPath);
+		Console::WriteLine("Key generated, saving public bits as %s", keyPath);
 		SDL_RWops *pubkey = SDL_RWFromFile(keyPath, "wb+");
 		key.SavePublic(pubkey);
 		SDL_RWclose(pubkey);

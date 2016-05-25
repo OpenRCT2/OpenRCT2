@@ -28,7 +28,7 @@ namespace Console
     void WriteSpace(size_t count);
     void WriteFormat(const utf8 * format, ...);
     void WriteLine();
-    void WriteLine(const utf8 * str);
+    void WriteLine(const utf8 * format, ...);
 
     namespace Error
     {
