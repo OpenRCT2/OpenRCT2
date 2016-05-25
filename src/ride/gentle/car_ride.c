@@ -309,9 +309,9 @@ static void paint_car_ride_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 
 	imageId = car_ride_track_pieces_flat[direction] | RCT2_GLOBAL(0x00F44198, uint32);
 	if (direction == 0 || direction == 2) {
-		sub_98196C(imageId, 0, 6, 32, 20, 1, height, get_current_rotation());
+		sub_98199C(imageId, 0, 6, 32, 20, 1, height, 0, 0, height, get_current_rotation());
 	} else {
-		sub_98196C(imageId, 6, 0, 20, 32, 1, height, get_current_rotation());
+		sub_98199C(imageId, 6, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
 	}
 
 	if (direction == 0 || direction == 2) {
