@@ -83,8 +83,8 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	} else {
 		// 6DFFC2:
 		uint32 ecx = ((mapElement->type >> 6) + get_current_rotation()) & 3;
-		x_offset = RCT2_ADDRESS(0x009A3E74, sint8)[ecx * 2];
-		y_offset = RCT2_ADDRESS(0x009A3E75, sint8)[ecx * 2];
+		x_offset = ScenerySubTileOffsets[ecx].x;
+		y_offset = ScenerySubTileOffsets[ecx].y;
 	}
 	// 6E0074:
 	boxoffset.x = x_offset;
