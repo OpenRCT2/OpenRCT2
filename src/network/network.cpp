@@ -1318,7 +1318,8 @@ uint8 Network::GetGroupIDByHash(const std::string &keyhash)
 {
 	auto it = key_group_map.find(keyhash);
 	if (it != key_group_map.end()) {
-		return it->second.GroupId;
+		auto groupId = it->second.GroupId;
+		return groupId.GetValueOrDefault(GetDefaultGroup());
 	} else {
 		return GetDefaultGroup();
 	}
@@ -1429,7 +1430,15 @@ void Network::SaveKeyMappings()
 		for (auto it = key_group_map.cbegin(); it != key_group_map.cend(); it++) {
 			json_t *keyMapping = json_object();
 			json_object_set_new(keyMapping, "hash", json_string(it->first.c_str()));
-			json_object_set_new(keyMapping, "groupId", json_integer(it->second.GroupId));
+
+			json_t *jsonGroupId;
+			if (it->second.GroupId.HasValue()) {
+				jsonGroupId = json_integer(it->second.GroupId.GetValue());
+			} else {
+				jsonGroupId = json_null();
+			}
+			json_object_set_new(keyMapping, "groupId", jsonGroupId);
+
 			json_array_append_new(jsonKeyMappings, keyMapping);
 		}
 		bool result;
@@ -1466,11 +1475,14 @@ void Network::LoadKeyMappings()
 		
 		const char *hash = json_string_value(json_object_get(jsonKeyMapping, "hash"));
 		const char *name = json_string_value(json_object_get(jsonKeyMapping, "name"));
+		const json_t *jsonGroupId = json_object_get(jsonKeyMapping, "groupId");
 		if (hash != nullptr && name != nullptr) {
 			KeyMapping keyMapping;
 			keyMapping.Hash = std::string(hash);
 			keyMapping.Name = std::string(name);
-			keyMapping.GroupId = (uint8)json_integer_value(json_object_get(jsonKeyMapping, "groupId"));
+			if (!json_is_null(jsonGroupId)) {
+				keyMapping.GroupId = (uint8)json_integer_value(jsonGroupId);
+			}			
 			key_group_map[keyMapping.Hash] = keyMapping;
 		}
 	}
@@ -1507,7 +1519,14 @@ void Network::UpdateKeyMappings()
 			std::string hash(json_string_value(json_object_get(jsonKeyMapping, "hash")));
 			decltype(local_key_map.begin()) it;
 			if ((it = local_key_map.find(hash)) != local_key_map.end()) {
-				json_object_set_new(jsonKeyMapping, "groupId", json_integer(it->second.GroupId));
+				json_t *jsonGroupId;
+				if (it->second.GroupId.HasValue()) {
+					jsonGroupId = json_integer(it->second.GroupId.GetValue());
+				} else {
+					jsonGroupId = json_null();
+				}
+				json_object_set_new(jsonKeyMapping, "groupId", jsonGroupId);
+
 				// remove item once it was found and set
 				local_key_map.erase(it);
 			}
@@ -1521,7 +1540,15 @@ void Network::UpdateKeyMappings()
 		json_t *keyMapping = json_object();
 		json_object_set(keyMapping, "hash", json_string(it->first.c_str()));
 		json_object_set(keyMapping, "name", json_string(it->second.Name.c_str()));
-		json_object_set(keyMapping, "groupId", json_integer(it->second.GroupId));
+
+		json_t *jsonGroupId;
+		if (it->second.GroupId.HasValue()) {
+			jsonGroupId = json_integer(it->second.GroupId.GetValue());
+		} else {
+			jsonGroupId = json_null();
+		}
+		json_object_set(keyMapping, "groupId", jsonGroupId);
+
 		json_array_append(jsonKeyMappings, keyMapping);
 	}
 
@@ -1946,7 +1973,7 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
 				player->SetName(MakePlayerNameUnique(std::string(name)));
 			}
 		} else {
-			player->group = keyMapping->GroupId;
+			player->group = keyMapping->GroupId.GetValueOrDefault(GetDefaultGroup());
 			player->SetName(keyMapping->Name);
 		}
 

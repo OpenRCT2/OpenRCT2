@@ -314,6 +314,7 @@
     <ClInclude Include="src\core\List.hpp" />
     <ClInclude Include="src\core\Math.hpp" />
     <ClInclude Include="src\core\Memory.hpp" />
+    <ClInclude Include="src\core\Nullable.hpp" />
     <ClInclude Include="src\core\Path.hpp" />
     <ClInclude Include="src\core\stopwatch.h" />
     <ClInclude Include="src\core\Stopwatch.hpp" />
