@@ -28,7 +28,26 @@ enum
 {
 	SPR_MONORAIL_FLAT_SW_NE = 23231,
 	SPR_MONORAIL_FLAT_NW_SE = 23232,
-
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0 = 23233,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1 = 23234,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_2 = 23235,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_3 = 23236,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_4 = 23237,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_0 = 23238,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_1 = 23239,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_2 = 23240,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_3 = 23241,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_4 = 23242,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_0 = 23243,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_1 = 23244,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_2 = 23245,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_3 = 23246,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_4 = 23247,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_0 = 23248,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_1 = 23249,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_2 = 23250,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_3 = 23251,
+	SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_4 = 23252,
 	SPR_MONORAIL_25_DEG_UP_SW_NE = 23253,
 	SPR_MONORAIL_FLAT_TO_25_DEG_UP_SW_NE = 23254,
 	SPR_MONORAIL_25_DEG_UP_NE_SW = 23255,
@@ -81,6 +100,37 @@ static const uint32 monorail_track_pieces_flat[4] = {
 	SPR_MONORAIL_FLAT_NW_SE,
 	SPR_MONORAIL_FLAT_SW_NE,
 	SPR_MONORAIL_FLAT_NW_SE,
+};
+
+static const uint32 monorail_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+	{
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_2,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_3,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_4,
+	},
+	{
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_0,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_1,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_2,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_3,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_4,
+	},
+	{
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_0,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_1,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_2,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_3,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_4,
+	},
+	{
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_0,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_1,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_2,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_3,
+		SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_4,
+	}
 };
 
 static const uint32 monorail_track_pieces_25_deg_up[4] = {
@@ -400,14 +450,54 @@ static void paint_monorail_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trac
 	paint_monorail_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE22C */
 static void paint_monorail_track_right_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	track_paint_util_right_quarter_turn_5_tiles_paint(3, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), monorail_track_pieces_flat_quarter_turn_5_tiles, defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
+
+	switch (trackSequence) {
+		case 0:
+		case 6:
+			metal_a_supports_paint_setup(3, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			break;
+	}
+
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	}
+
+	if (direction == 0 && trackSequence == 6) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	}
+
+	if (direction == 1 && trackSequence == 6) {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	}
+
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	}
+
+	int blockedSegments = 0;
+	switch (trackSequence) {
+		case 0: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC; break;
+		case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC; break;
+		case 3: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4; break;
+		case 5: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8; break;
+		case 6: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8; break;
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+
+
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE21C */
 static void paint_monorail_track_left_quarter_turn_5_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
+	paint_monorail_track_right_quarter_turn_5_tiles(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
 /** rct2: 0x */
