@@ -590,6 +590,92 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, int dire
 				rotation);
 }
 
+const uint8 mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {3, 1, 2, 0};
+
+const rct_xy16 defaultRightQuarterTurn3TilesOffsets[4][3] = {
+	{
+		{0, 6},
+		{16, 16},
+		{6, 0},
+	},
+	{
+		{6, 0},
+		{16, 0},
+		{0, 6},
+	},
+	{
+		{0, 6},
+		{0,  0},
+		{6, 0},
+	},
+	{
+		{6, 0},
+		{0,  16},
+		{0, 6},
+	}
+};
+
+const rct_xy16 defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
+	{
+		{32, 20},
+		{16, 16},
+		{20, 32},
+	},
+	{
+		{20, 32},
+		{16, 16},
+		{32, 20},
+	},
+	{
+		{32, 20},
+		{16, 16},
+		{20, 32},
+	},
+	{
+		{20, 32},
+		{16, 16},
+		{32, 20},
+	}
+};
+
+static const sint8 right_quarter_turn_3_tiles_sprite_map[] = {0, -1, 1, 2};
+void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const rct_xy16 offsets[4][3], const rct_xy16 boundsLengths[4][3], const rct_xy16 boundsOffsets[4][3], uint8 rotation)
+{
+	int index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
+	if (index < 0) {
+		return;
+	}
+
+	uint32 imageId = sprites[direction][index] | colourFlags;
+	rct_xy16 offset = (offsets == NULL ? (rct_xy16){0, 0} : offsets[direction][index]);
+	rct_xy16 boundsLength = boundsLengths[direction][index];
+	rct_xy16 boundsOffset = (boundsOffsets == NULL ? offset : boundsOffsets[direction][index]);
+
+	sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x, boundsOffset.y, height, rotation);
+}
+
+void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence)
+{
+	if (direction == 0 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+	if (direction == 0 && trackSequence == 3) {
+		paint_util_push_tunnel_right(height, TUNNEL_0);
+	}
+
+
+	if (direction == 1 && trackSequence == 3) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+
+
+	if (direction == 3 && trackSequence == 0) {
+		paint_util_push_tunnel_left(height, TUNNEL_0);
+	}
+}
+
+
 static const sint8 left_quarter_turn_3_tiles_sprite_map[] = {2, -1, 1, 0};
 void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, int direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], uint8 rotation)
 {
