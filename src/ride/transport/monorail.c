@@ -29,6 +29,12 @@ enum
 	SPR_MONORAIL_FLAT_SW_NE = 23231,
 	SPR_MONORAIL_FLAT_NW_SE = 23232,
 
+	SPR_MONORAIL_25_DEG_UP_SW_NE = 23253,
+	SPR_MONORAIL_25_DEG_UP_NE_SW = 23255,
+
+	SPR_MONORAIL_25_DEG_UP_NW_SE = 23259,
+	SPR_MONORAIL_25_DEG_UP_SE_NW = 23260,
+
 	SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_0 = 23293,
 	SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_1 = 23294,
 	SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_2 = 23295,
@@ -68,6 +74,13 @@ static const uint32 monorail_track_pieces_flat[4] = {
 	SPR_MONORAIL_FLAT_NW_SE,
 	SPR_MONORAIL_FLAT_SW_NE,
 	SPR_MONORAIL_FLAT_NW_SE,
+};
+
+static const uint32 monorail_track_pieces_25_deg_up[4] = {
+	SPR_MONORAIL_25_DEG_UP_SW_NE,
+	SPR_MONORAIL_25_DEG_UP_NW_SE,
+	SPR_MONORAIL_25_DEG_UP_NE_SW,
+	SPR_MONORAIL_25_DEG_UP_SE_NW,
 };
 
 static const uint32 ghost_train_track_pieces_right_eight_to_diag[4][4] = {
@@ -264,9 +277,32 @@ static void paint_monorail_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE1BC */
 static void paint_monorail_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	uint32 imageId = monorail_track_pieces_25_deg_up[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	if (direction == 0 || direction == 2) {
+		sub_98196C(imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+	} else {
+		sub_98196C(imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+	}
+
+	switch (direction) {
+		case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_7); break;
+		case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_8); break;
+		case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_8); break;
+		case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_7); break;
+	}
+
+	if (track_paint_util_should_paint_supports(position)) {
+		metal_a_supports_paint_setup(3, 4, 8, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
 /** rct2: 0x */
@@ -279,9 +315,10 @@ static void paint_monorail_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackS
 {
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE1EC */
 static void paint_monorail_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	paint_monorail_track_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x */
