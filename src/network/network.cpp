@@ -113,6 +113,7 @@ void network_chat_show_connected_message();
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize);
 static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName);
 static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName, const utf8 * hash);
+static void network_get_keymap_path(utf8 *buffer, size_t bufferSize);
 
 NetworkPacket::NetworkPacket()
 {
@@ -1424,9 +1425,7 @@ void Network::SaveKeyMappings()
 {
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		utf8 path[MAX_PATH];
-
-		platform_get_user_directory(path, NULL);
-		strcat(path, "keymappings.json");
+		network_get_keymap_path(path, sizeof(path));
 
 		json_t * jsonKeyMappings = json_array();
 		for (auto it = key_group_map.cbegin(); it != key_group_map.cend(); it++) {
@@ -1453,11 +1452,8 @@ void Network::SaveKeyMappings()
 
 void Network::LoadKeyMappings()
 {
-
 	utf8 path[MAX_PATH];
-
-	platform_get_user_directory(path, NULL);
-	strcat(path, "keymappings.json");
+	network_get_keymap_path(path, sizeof(path));
 
 	if (!platform_file_exists(path)) {
 		return;
@@ -2873,6 +2869,12 @@ static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const u
 	String::Append(buffer, bufferSize, "-");
 	String::Append(buffer, bufferSize, hash);
 	String::Append(buffer, bufferSize, ".pubkey");
+}
+
+static void network_get_keymap_path(utf8 *buffer, size_t bufferSize)
+{
+	platform_get_user_directory(buffer, NULL);
+	Path::Append(buffer, bufferSize, "keymappings.json");
 }
 
 #else
