@@ -223,6 +223,8 @@ extern sint16 gSceneryCtrlPressZ;
 
 extern uint8 gSceneryGroundFlags;
 
+extern const rct_xy8 ScenerySubTileOffsets[];
+
 extern sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
 
 void init_scenery();

@@ -2959,8 +2959,8 @@ void game_command_place_scenery(int* eax, int* ebx, int* ecx, int* edx, int* esi
 					x2 += 16;
 					y2 += 16;
 				}else{
-					x2 += RCT2_ADDRESS(0x009A3E74, uint8)[(quadrant & 3) * 2] - 1;
-					y2 += RCT2_ADDRESS(0x009A3E75, uint8)[(quadrant & 3) * 2] - 1;
+					x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
+					y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
 				}
 				int base_height2 = map_element_height(x2, y2);
 				if(base_height2 & 0xFFFF0000){

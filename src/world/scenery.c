@@ -60,6 +60,14 @@ sint16 gSceneryCtrlPressZ;
 
 uint8 gSceneryGroundFlags;
 
+// rct2: 0x009A3E74
+const rct_xy8 ScenerySubTileOffsets[] = {
+	{  7,  7 },
+	{  7, 23 },
+	{ 23, 23 },
+	{ 23,  7 }
+};
+
 void scenery_increase_age(int x, int y, rct_map_element *mapElement);
 
 void scenery_update_tile(int x, int y)
