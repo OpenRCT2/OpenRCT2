@@ -712,24 +712,24 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 h
 	sub_98197C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x, boundsOffset.y, height, rotation);
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence)
+void track_paint_util_right_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType)
 {
 	if (direction == 0 && trackSequence == 0) {
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_left(height, tunnelType);
 	}
 
 	if (direction == 0 && trackSequence == 3) {
-		paint_util_push_tunnel_right(height, TUNNEL_0);
+		paint_util_push_tunnel_right(height, tunnelType);
 	}
 
 
 	if (direction == 1 && trackSequence == 3) {
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_left(height, tunnelType);
 	}
 
 
 	if (direction == 3 && trackSequence == 0) {
-		paint_util_push_tunnel_left(height, TUNNEL_0);
+		paint_util_push_tunnel_right(height, tunnelType);
 	}
 }
 
