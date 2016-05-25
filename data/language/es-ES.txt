@@ -4165,6 +4165,7 @@ STR_5856    :{SMALLFONT}{BLACK}Establece la resolución del juego usada en el mo
 STR_5857    :{SMALLFONT}{BLACK}Opciones del juego
 STR_5858    :{SMALLFONT}{BLACK}Utilizar el GPU para la visualización en lugar del CPU. Esto mejora la compatibilidad con el software para la captura de pantalla. Esto puede disminuir ligeramente el rendimiento del juego.
 STR_5859    :{SMALLFONT}{BLACK}Permite la interpolación de{NEWLINE}los FPS (Fotograma por segundo) para un juego visualmente más suave. Si se encuentra desactivado el juego funcionará a 40 FPS como máximo.
+STR_5860    :Cambiar dibujado vía orig./decomp.
 
 ##############
 # Escenarios #
