@@ -153,22 +153,22 @@ enum {
 	SPR_ON_RIDE_PHOTO_SIGN_NE_SW = 25625,
 	SPR_ON_RIDE_PHOTO_SIGN_SE_NW = 25626,
 
-	SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0 = 28865,
-	SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_1 = 28866,
-	SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_2 = 28867,
-	SPR_SPINNING_TUNNEL_BACK_SW_NE_FRAME_3 = 28868,
-	SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_0 = 28869,
-	SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_1 = 28870,
-	SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_2 = 28871,
-	SPR_SPINNING_TUNNEL_BACK_NW_SE_FRAME_3 = 28872,
-	SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_0 = 28873,
-	SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_1 = 28874,
-	SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_2 = 28875,
-	SPR_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_3 = 28876,
-	SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_0 = 28877,
-	SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_1 = 28878,
-	SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_2 = 28879,
-	SPR_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_3 = 28880,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0 = 28865,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_1 = 28866,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_2 = 28867,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_3 = 28868,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_0 = 28869,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_1 = 28870,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_2 = 28871,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_NW_SE_FRAME_3 = 28872,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_0 = 28873,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_1 = 28874,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_2 = 28875,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_SW_NE_FRAME_3 = 28876,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_0 = 28877,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_1 = 28878,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_2 = 28879,
+	SPR_GHOST_TRAIN_SPINNING_TUNNEL_FRONT_NW_SE_FRAME_3 = 28880,
 };
 
 extern const uint32 floorSpritesCork[];
@@ -202,6 +202,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint(sint8 thickness, sint16 he
 void track_paint_util_left_quarter_turn_3_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
 void track_paint_util_left_quarter_turn_1_tile_paint(sint8 thickness, sint16 height, sint16 boundBoxZOffset, int direction, uint32 colourFlags, const uint32 * sprites, uint8 rotation);
 void track_paint_util_left_quarter_turn_1_tile_tunnel(sint16 height, uint8 direction, uint8 trackSequence);
+void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint8 direction, uint8 rotation);
 
 typedef void (*TRACK_PAINT_FUNCTION)(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(int trackType, int direction);
@@ -230,6 +231,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(int trackType, int direct
 TRACK_PAINT_FUNCTION get_track_paint_function_twist(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int trackType, int direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_virginia_reel(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int trackType, int direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int trackType, int direction);

@@ -5612,7 +5612,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[91] = {
 	get_track_paint_function_haunted_house,	// RIDE_TYPE_HAUNTED_HOUSE
 	get_track_paint_function_facility,		// RIDE_TYPE_FIRST_AID
 	get_track_paint_function_circus_show,	// RIDE_TYPE_CIRCUS_SHOW
-	0,						// RIDE_TYPE_GHOST_TRAIN
+	get_track_paint_function_ghost_train,	// RIDE_TYPE_GHOST_TRAIN
 	0,						// RIDE_TYPE_TWISTER_ROLLER_COASTER
 	0,						// RIDE_TYPE_WOODEN_ROLLER_COASTER
 	0,						// RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
