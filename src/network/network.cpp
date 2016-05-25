@@ -812,9 +812,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	cheats_reset();
 	LoadGroups();
 
-	NetworkPlayer* player = AddPlayer("");
-	std::string player_name(gConfigNetwork.player_name);
-	player->SetName(MakePlayerNameUnique(player_name.substr(0, 31)));
+	NetworkPlayer *player = AddPlayer(gConfigNetwork.player_name, "");
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
 	player->group = 0;
 	player_id = player->id;
@@ -1320,7 +1318,7 @@ uint8 Network::GetGroupIDByHash(const std::string &keyhash)
 {
 	auto it = key_group_map.find(keyhash);
 	if (it != key_group_map.end()) {
-		return it->second;
+		return it->second.GroupId;
 	} else {
 		return GetDefaultGroup();
 	}
@@ -1431,7 +1429,7 @@ void Network::SaveKeyMappings()
 		for (auto it = key_group_map.cbegin(); it != key_group_map.cend(); it++) {
 			json_t *keyMapping = json_object();
 			json_object_set_new(keyMapping, "hash", json_string(it->first.c_str()));
-			json_object_set_new(keyMapping, "groupId", json_integer(it->second));
+			json_object_set_new(keyMapping, "groupId", json_integer(it->second.GroupId));
 			json_array_append_new(jsonKeyMappings, keyMapping);
 		}
 		bool result;
@@ -1465,8 +1463,16 @@ void Network::LoadKeyMappings()
 	size_t groupCount = (size_t)json_array_size(jsonKeyMappings);
 	for (size_t i = 0; i < groupCount; i++) {
 		json_t * jsonKeyMapping = json_array_get(jsonKeyMappings, i);
-		std::string hash(json_string_value(json_object_get(jsonKeyMapping, "hash")));
-		key_group_map[hash] = (uint8)json_integer_value(json_object_get(jsonKeyMapping, "groupId"));
+		
+		const char *hash = json_string_value(json_object_get(jsonKeyMapping, "hash"));
+		const char *name = json_string_value(json_object_get(jsonKeyMapping, "name"));
+		if (hash != nullptr && name != nullptr) {
+			KeyMapping keyMapping;
+			keyMapping.Hash = std::string(hash);
+			keyMapping.Name = std::string(name);
+			keyMapping.GroupId = (uint8)json_integer_value(json_object_get(jsonKeyMapping, "groupId"));
+			key_group_map[keyMapping.Hash] = keyMapping;
+		}
 	}
 	json_decref(jsonKeyMappings);
 }
@@ -1488,7 +1494,7 @@ void Network::UpdateKeyMappings()
 	platform_get_user_directory(path, NULL);
 	strcat(path, "keymappings.json");
 
-	std::map<std::string, uint8> local_key_map(key_group_map);
+	auto local_key_map = std::map<std::string, KeyMapping>(key_group_map);
 
 	json_t * jsonKeyMappings;
 	if (platform_file_exists(path)) {
@@ -1501,7 +1507,7 @@ void Network::UpdateKeyMappings()
 			std::string hash(json_string_value(json_object_get(jsonKeyMapping, "hash")));
 			decltype(local_key_map.begin()) it;
 			if ((it = local_key_map.find(hash)) != local_key_map.end()) {
-				json_object_set_new(jsonKeyMapping, "groupId", json_integer(it->second));
+				json_object_set_new(jsonKeyMapping, "groupId", json_integer(it->second.GroupId));
 				// remove item once it was found and set
 				local_key_map.erase(it);
 			}
@@ -1514,7 +1520,8 @@ void Network::UpdateKeyMappings()
 	for (auto it = local_key_map.cbegin(); it != local_key_map.cend(); it++) {
 		json_t *keyMapping = json_object();
 		json_object_set(keyMapping, "hash", json_string(it->first.c_str()));
-		json_object_set(keyMapping, "groupId", json_integer(it->second));
+		json_object_set(keyMapping, "name", json_string(it->second.Name.c_str()));
+		json_object_set(keyMapping, "groupId", json_integer(it->second.GroupId));
 		json_array_append(jsonKeyMappings, keyMapping);
 	}
 
@@ -1900,7 +1907,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 	Server_Send_PLAYERLIST();
 }
 
-NetworkPlayer* Network::AddPlayer(const std::string &keyhash)
+NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
 {
 	NetworkPlayer* addedplayer = nullptr;
 	int newid = -1;
@@ -1920,10 +1927,29 @@ NetworkPlayer* Network::AddPlayer(const std::string &keyhash)
 	if (newid != -1) {
 		// Load keys host may have added manually
 		LoadKeyMappings();
+
+		// Check if the key is registered
+		const KeyMapping *keyMapping = nullptr;
+		{
+			auto it = key_group_map.find(keyhash);
+			if (it != key_group_map.end()) {
+				keyMapping = &it->second;
+			}
+		}
+
 		std::unique_ptr<NetworkPlayer> player(new NetworkPlayer); // change to make_unique in c++14
 		player->id = newid;
 		player->keyhash = keyhash;
-		player->group = GetGroupIDByHash(keyhash);
+		if (keyMapping == nullptr) {
+			player->group = GetDefaultGroup();
+			if (!String::IsNullOrEmpty(name)) {
+				player->SetName(MakePlayerNameUnique(std::string(name)));
+			}
+		} else {
+			player->group = keyMapping->GroupId;
+			player->SetName(keyMapping->Name);
+		}
+
 		addedplayer = player.get();
 		player_list.push_back(std::move(player));
 	}
@@ -1932,15 +1958,38 @@ NetworkPlayer* Network::AddPlayer(const std::string &keyhash)
 
 std::string Network::MakePlayerNameUnique(const std::string &name)
 {
+	// Note: Player names are case-insensitive
+
 	std::string new_name = name.substr(0, 31);
-	decltype(username_count_map.begin()) it;
-	while ((it = username_count_map.find(new_name)) != username_count_map.end()) {
-		it->second++;
-		new_name.append(" #");
-		new_name.append(std::to_string(it->second));
-	}
-	// username is guaranteed (to the point where counter overflows) to be unique now.
-	username_count_map[new_name] = 1;
+	int counter = 1;
+	bool unique;
+	do {
+		unique = true;
+
+		// Check if there is already a player with this name in the server
+		for (const auto &player : player_list) {
+			if (String::Equals(player->name.c_str(), new_name.c_str(), true)) {
+				unique = false;
+				break;
+			}
+		}
+
+		if (unique) {
+			// Check if there is already a registered player with this name
+			for (const auto &keyMapping : this->key_group_map) {
+				if (String::Equals(keyMapping.second.Name.c_str(), new_name.c_str(), true)) {
+					unique = false;
+					break;
+				}
+			}
+		}
+
+		if (!unique) {
+			// Increment name counter
+			counter++;
+			new_name = name.substr(0, 31) + " #" + std::to_string(counter);
+		}
+	} while (!unique);
 	return new_name;
 }
 
@@ -2033,12 +2082,9 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 
 void Network::Server_Client_Joined(const char* name, const std::string &keyhash, NetworkConnection& connection)
 {
-	NetworkPlayer* player = AddPlayer(keyhash);
+	NetworkPlayer* player = AddPlayer(name, keyhash);
 	connection.player = player;
 	if (player) {
-		std::string string_name(name);
-		string_name = MakePlayerNameUnique(string_name.substr(0, 31));
-		player->SetName(string_name);
 		char text[256];
 		const char * player_name = (const char *) player->name.c_str();
 		format_string(text, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
@@ -2296,7 +2342,7 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
 		tempplayer.Read(packet);
 		ids.push_back(tempplayer.id);
 		if (!GetPlayerByID(tempplayer.id)) {
-			NetworkPlayer* player = AddPlayer("");
+			NetworkPlayer* player = AddPlayer("", "");
 			if (player) {
 				*player = tempplayer;
 				if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
@@ -2616,7 +2662,8 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		player->group = groupid;
-		gNetwork.key_group_map[player->keyhash] = groupid;
+		gNetwork.key_group_map[player->keyhash].GroupId = groupid;
+		gNetwork.key_group_map[player->keyhash].Name = player->name;
 		gNetwork.UpdateKeyMappings();
 		window_invalidate_by_number(WC_PLAYER, playerid);
 	}
