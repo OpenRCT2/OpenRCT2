@@ -35,6 +35,8 @@ extern "C" {
 
 #include "../core/Console.hpp"
 #include "../core/Json.hpp"
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 
 extern "C" {
@@ -108,6 +110,9 @@ constexpr int MASTER_SERVER_REGISTER_TIME = 120 * 1000;	// 2 minutes
 constexpr int MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000;	// 1 minute
 
 void network_chat_show_connected_message();
+static void network_get_keys_directory(utf8 *buffer, size_t bufferSize);
+static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName);
+static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName, const utf8 * hash);
 
 NetworkPacket::NetworkPacket()
 {
@@ -710,34 +715,47 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	});
 
 	mode = NETWORK_MODE_CLIENT;
-	char path[MAX_PATH];
-	platform_get_user_directory(path, NULL);
-	char keyPath[MAX_PATH] = "";
-	safe_strcat(keyPath, path, MAX_PATH);
-	safe_strcat(keyPath, gConfigNetwork.player_name, MAX_PATH);
-	safe_strcat(keyPath, ".privkey", MAX_PATH);
+	utf8 keyPath[MAX_PATH];
+	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
 	if (!platform_file_exists(keyPath)) {
 		Console::WriteLine("Generating key... This may take a while");
 		Console::WriteLine("Need to collect enough entropy from the system");
 		key.Generate();
 		Console::WriteLine("Key generated, saving private bits as %s", keyPath);
+
+		utf8 keysDirectory[MAX_PATH];
+		network_get_keys_directory(keysDirectory, sizeof(keysDirectory));
+		if (!platform_ensure_directory_exists(keysDirectory)) {
+			log_error("Unable to create directory %s.", keysDirectory);
+			return false;
+		}
+
 		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "wb+");
+		if (privkey == nullptr) {
+			log_error("Unable to save private key at %s.", keyPath);
+			return false;
+		}
 		key.SavePrivate(privkey);
 		SDL_RWclose(privkey);
 
-		keyPath[0] = '\0';
-		safe_strcat(keyPath, path, MAX_PATH);
-		safe_strcat(keyPath, gConfigNetwork.player_name, MAX_PATH);
-		safe_strcat(keyPath, "-", MAX_PATH);
-		safe_strcat(keyPath, key.PublicKeyHash().c_str(), MAX_PATH);
-		safe_strcat(keyPath, ".pubkey", MAX_PATH);
+		const utf8 *publicKeyHash = key.PublicKeyHash().c_str();
+		network_get_public_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
 		Console::WriteLine("Key generated, saving public bits as %s", keyPath);
 		SDL_RWops *pubkey = SDL_RWFromFile(keyPath, "wb+");
+		if (pubkey == nullptr) {
+			log_error("Unable to save public key at %s.", keyPath);
+			return false;
+		}
 		key.SavePublic(pubkey);
 		SDL_RWclose(pubkey);
 	} else {
 		log_verbose("Loading key from %s", keyPath);
 		SDL_RWops *privkey = SDL_RWFromFile(keyPath, "rb");
+		if (privkey == nullptr) {
+			log_error("Unable to read private key from %s.", keyPath);
+			return false;
+		}
+
 		// LoadPrivate returns validity of loaded key
 		bool ok = key.LoadPrivate(privkey);
 		SDL_RWclose(privkey);
@@ -1947,12 +1965,8 @@ void Network::PrintError()
 
 void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
 {
-	char path[MAX_PATH];
-	platform_get_user_directory(path, NULL);
-	char keyPath[MAX_PATH] = "";
-	safe_strcat(keyPath, path, MAX_PATH);
-	safe_strcat(keyPath, gConfigNetwork.player_name, MAX_PATH);
-	safe_strcat(keyPath, ".privkey", MAX_PATH);
+	utf8 keyPath[MAX_PATH];
+	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
 	if (!platform_file_exists(keyPath)) {
 		log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath);
 		return;
@@ -2816,12 +2830,8 @@ void network_send_gamecmd(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32
 
 void network_send_password(const char* password)
 {
-	char path[MAX_PATH];
-	platform_get_user_directory(path, NULL);
-	char keyPath[MAX_PATH] = "";
-	safe_strcat(keyPath, path, MAX_PATH);
-	safe_strcat(keyPath, gConfigNetwork.player_name, MAX_PATH);
-	safe_strcat(keyPath, ".privkey", MAX_PATH);
+	utf8 keyPath[MAX_PATH];
+	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
 	if (!platform_file_exists(keyPath)) {
 		log_error("Private key %s missing! Restart the game to generate it.", keyPath);
 		return;
@@ -2842,6 +2852,27 @@ void network_send_password(const char* password)
 void network_set_password(const char* password)
 {
 	gNetwork.SetPassword(password);
+}
+
+static void network_get_keys_directory(utf8 *buffer, size_t bufferSize)
+{
+	platform_get_user_directory(buffer, "keys");
+}
+
+static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName)
+{
+	network_get_keys_directory(buffer, bufferSize);
+	Path::Append(buffer, bufferSize, playerName);
+	String::Append(buffer, bufferSize, ".privkey");
+}
+
+static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName, const utf8 * hash)
+{
+	network_get_keys_directory(buffer, bufferSize);
+	Path::Append(buffer, bufferSize, playerName);
+	String::Append(buffer, bufferSize, "-");
+	String::Append(buffer, bufferSize, hash);
+	String::Append(buffer, bufferSize, ".pubkey");
 }
 
 #else
