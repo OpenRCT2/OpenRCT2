@@ -318,9 +318,44 @@ static void paint_ghost_train_track_25_deg_down_to_flat(uint8 rideIndex, uint8 t
 	paint_ghost_train_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-/** rct2: 0x */
+/** rct2: 0x00770C5C, 0x00770C6C, 0x00770C7C */
 static void paint_ghost_train_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	uint32 imageId;
+
+	if (direction == 0 || direction == 2) {
+		imageId = SPR_STATION_BASE_B_SW_NE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98197C(imageId, 0, 0, 32, 28, 3, height - 2, 0, 2, height, get_current_rotation());
+	} else if (direction == 1 || direction == 3) {
+		imageId = SPR_STATION_BASE_B_NW_SE | RCT2_GLOBAL(0x00F441A0, uint32);
+		sub_98197C(imageId, 0, 0, 28, 32, 3, height - 2, 2, 0, height, get_current_rotation());
+	}
+
+	imageId = ghost_train_track_pieces_flat[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+	if (direction == 0 || direction == 2) {
+		sub_98199C(imageId, 0, 0, 32, 20, 3, height, 0, 0, height, get_current_rotation());
+	} else {
+		sub_98199C(imageId, 0, 0, 20, 32, 3, height, 0, 0, height, get_current_rotation());
+	}
+
+	if (direction == 0 || direction == 2) {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	}
+
+	if (direction == 0 || direction == 2) {
+		metal_a_supports_paint_setup(3, 5, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(3, 8, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	} else {
+		metal_a_supports_paint_setup(3, 6, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+		metal_a_supports_paint_setup(3, 7, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+
+	paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x00770C9C */
