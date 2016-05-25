@@ -26,6 +26,9 @@
 
 enum
 {
+	SPR_MONORAIL_FLAT_SW_NE = 23231,
+	SPR_MONORAIL_FLAT_NW_SE = 23232,
+
 	SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_0 = 23293,
 	SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_1 = 23294,
 	SPR_MONORAIL_EIGHT_TO_DIAG_SW_E_PART_2 = 23295,
@@ -58,6 +61,13 @@ enum
 	SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_1 = 23322,
 	SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_2 = 23323,
 	SPR_MONORAIL_EIGHT_TO_DIAG_SE_W_PART_3 = 23324,
+};
+
+static const uint32 monorail_track_pieces_flat[4] = {
+	SPR_MONORAIL_FLAT_SW_NE,
+	SPR_MONORAIL_FLAT_NW_SE,
+	SPR_MONORAIL_FLAT_SW_NE,
+	SPR_MONORAIL_FLAT_NW_SE,
 };
 
 static const uint32 ghost_train_track_pieces_right_eight_to_diag[4][4] = {
@@ -222,9 +232,31 @@ static const rct_xy16 ghost_train_track_pieces_left_eight_to_diag_offset[4][4] =
 	},
 };
 
-/** rct2: 0x */
+/** rct2: 0x008AE1AC */
 static void paint_monorail_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
+
+	uint32 imageId = monorail_track_pieces_flat[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+
+	if (direction == 0 || direction == 2) {
+		sub_98196C(imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+	} else {
+		sub_98196C(imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+	}
+
+	if (direction == 0 || direction == 2) {
+		paint_util_push_tunnel_left(height, TUNNEL_6);
+	} else {
+		paint_util_push_tunnel_right(height, TUNNEL_6);
+	}
+
+	if (track_paint_util_should_paint_supports(position)) {
+		metal_a_supports_paint_setup(3, 4, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
 /** rct2: 0x */
