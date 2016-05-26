@@ -45,6 +45,12 @@ uint8 *gPeepWarningThrottle = RCT2_ADDRESS(RCT2_ADDRESS_PEEP_WARNING_THROTTLE, u
 rct_xyz16 gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
 uint8 gPeepPathFindQueueRideIndex;
+bool gPeepPathFindSingleChoiceSection;
+bool _peepPathFindIsStaff;
+uint8 _peepPathFindQueueRideIndex;
+sint8 _peepPathFindNumJunctions;
+sint32 _peepPathFindTilesChecked;
+uint8 _peepPathFindFewestNumSteps;
 
 enum {
 	PATH_SEARCH_DEAD_END,
@@ -7499,7 +7505,7 @@ rct_map_element* get_banner_on_path(rct_map_element *path_element)
 
 static int banner_clear_path_edges(rct_map_element *mapElement, int edges)
 {
-	if (RCT2_GLOBAL(0x00F1AEDD, uint8) & 0x80) return edges;
+	if (_peepPathFindIsStaff) return edges;
 	rct_map_element *bannerElement = get_banner_on_path(mapElement);
 	if (bannerElement != NULL) {
 		do {
@@ -7685,15 +7691,10 @@ static int guest_path_find_aimless(rct_peep* peep, uint8 edges){
  *
  *  rct2: 0x0069A60A
  */
-uint8 sub_69A60A(rct_peep* peep){
-	RCT2_GLOBAL(0x00F1AED8, uint32) = 0xC350;
-	RCT2_GLOBAL(0x00F1AEDD, uint8) = 0x80;
-
+uint8 peep_pathfind_get_max_number_junctions(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_STAFF)
 		return 16;
 
-	RCT2_GLOBAL(0x00F1AED8, uint32) = 0x3A98;
-	RCT2_GLOBAL(0x00F1AEDD, uint8) = 0;
 	if ((peep->peep_flags & PEEP_FLAGS_2)){
 		if ((scenario_rand() & 0xFFFF) <= 7281)
 			peep->peep_flags &= ~PEEP_FLAGS_2;
@@ -7724,7 +7725,7 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
 	y += TileDirectionDelta[test_edge].y;
 
 	++counter;
-	if (--RCT2_GLOBAL(0x00F1AED4, sint32) < 0) return score;
+	if (--_peepPathFindTilesChecked < 0) return score;
 	if (counter > 200) return score;
 
 	uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
@@ -7736,9 +7737,9 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
 	z_delta <<= 1;
 	new_score += z_delta;
 
-	if (new_score < score || (new_score == score && counter < RCT2_GLOBAL(0x00F1AED3, uint8))) {
+	if (new_score < score || (new_score == score && counter < _peepPathFindFewestNumSteps)) {
 		score = new_score;
-		RCT2_GLOBAL(0x00F1AED3, uint8) = counter;
+		_peepPathFindFewestNumSteps = counter;
 		if (score == 0) return score;
 	}
 
@@ -7779,27 +7780,27 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
 			footpath_element_get_slope_direction(path) == test_edge) {
 			z += 2;
 		}
-		++RCT2_GLOBAL(0x00F1AEDE, sint16);
+		_peepPathFindQueueRideIndex = true;
 		return sub_69A997(x, y, z, counter, score, test_edge);
 	}
 
-	if (RCT2_GLOBAL(0x00F1AEDE, sint16) != 0) {
-		--RCT2_GLOBAL(0x00F1AEDC, sint8);
+	if (_peepPathFindQueueRideIndex) {
+		--_peepPathFindNumJunctions;
 	}
-	--RCT2_GLOBAL(0x00F1AEDC, sint8);
-	if (RCT2_GLOBAL(0x00F1AEDC, sint8) < 0) return score;
+	--_peepPathFindNumJunctions;
+	if (_peepPathFindNumJunctions < 0) return score;
 
 	do {
 		edges &= ~(1 << test_edge);
-		int saved_f1aedc = *RCT2_ADDRESS(0x00F1AEDC, int);
+		sint8 savedNumJunctions = _peepPathFindNumJunctions;
 		uint8 height = z;
-		RCT2_GLOBAL(0x00F1AEDE, sint16) = 0;
+		_peepPathFindQueueRideIndex = false;
 		if (footpath_element_is_sloped(path) &&
 			footpath_element_get_slope_direction(path) == test_edge) {
 			height += 2;
 		}
 		score = sub_69A997(x, y, height, counter, score, test_edge);
-		*RCT2_ADDRESS(0x00F1AEDC, int) = saved_f1aedc;
+		_peepPathFindNumJunctions = savedNumJunctions;
 	} while ((test_edge = bitscanforward(edges)) != -1);
 
 	return score;
@@ -7811,7 +7812,13 @@ static uint16 sub_69A997(sint16 x, sint16 y, uint8 z, uint8 counter, uint16 scor
  */
 int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 {
-	RCT2_GLOBAL(0x00F1AEDC, uint8) = sub_69A60A(peep);
+	sint8 maxNumJunctions = peep_pathfind_get_max_number_junctions(peep);
+
+	// Mainly to prevent stack overflows.
+	sint32 maxTilesChecked = (peep->type == PEEP_TYPE_STAFF) ? 50000 : 15000;
+	// Used to allow walking through no entry banners
+	_peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
+
 	rct_xyz8 goal = {
 		.x = (uint8)(gPeepPathFindGoalPosition.x >> 5),
 		.y = (uint8)(gPeepPathFindGoalPosition.y >> 5),
@@ -7854,23 +7861,24 @@ int peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 		for (int test_edge = chosen_edge; test_edge != -1; test_edge = bitscanforward(edges)) {
 			edges &= ~(1 << test_edge);
 			uint8 height = z;
-			int saved_f1aedc = *RCT2_ADDRESS(0x00F1AEDC, int);
+
 			if (footpath_element_is_sloped(dest_map_element) &&
 				footpath_element_get_slope_direction(dest_map_element) == test_edge
 			) {
 				height += 0x2;
 			}
 
-			RCT2_GLOBAL(0x00F1AED3, uint8) = 0xFF;
-			RCT2_GLOBAL(0x00F1AED4, int) = RCT2_GLOBAL(0x00F1AED8, int);
-			RCT2_GLOBAL(0x00F1AEDE, uint16) = 0;
-			uint16 score = sub_69A997(x, y, height, 0, 0xFFFF, test_edge);
-			*RCT2_ADDRESS(0x00F1AEDC, int) = saved_f1aedc;
+			_peepPathFindFewestNumSteps = 255;
+			_peepPathFindTilesChecked = maxTilesChecked;
+			_peepPathFindQueueRideIndex = false;
+			_peepPathFindNumJunctions = maxNumJunctions;
 
-			if (score < best_score || (score == best_score && RCT2_GLOBAL(0x00F1AED3, uint8) < best_sub)) {
+			uint16 score = sub_69A997(x, y, height, 0, 0xFFFF, test_edge);
+
+			if (score < best_score || (score == best_score && _peepPathFindFewestNumSteps < best_sub)) {
 				chosen_edge = test_edge;
 				best_score = score;
-				best_sub = RCT2_GLOBAL(0x00F1AED3, uint8);
+				best_sub = _peepPathFindFewestNumSteps;
 			}
 		}
 	}
