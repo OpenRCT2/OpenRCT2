@@ -36,8 +36,8 @@ function Build-Data()
     New-Item -Force -ItemType Directory $binDataPath > $null
 
     # Create symlinks
-    Symlink-or-Copy "$binDataPath\language" "$dataPath\language"
-    Symlink-or-Copy "$binDataPath\title"    "$dataPath\title"
+    Symlink-or-Copy "$binDataPath\language" "$dataPath\language" > $null
+    Symlink-or-Copy "$binDataPath\title"    "$dataPath\title"    > $null
 
     return 0
 }
