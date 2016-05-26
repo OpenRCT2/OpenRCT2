@@ -139,7 +139,7 @@ void console_update()
 			}
 		}
 
-		// Remove unwated characters in console input
+		// Remove unwanted characters in console input
 		utf8_remove_format_codes(_consoleCurrentLine, false);
 	}
 
@@ -815,7 +815,7 @@ static int cc_set(const utf8 **argv, int argc)
 static int cc_twitch(const utf8 **argv, int argc)
 {
 #ifdef DISABLE_TWITCH
-	console_writeline_error("OpenRCT2 build not compiled with Twitch integeration.");
+	console_writeline_error("OpenRCT2 build not compiled with Twitch integration.");
 #else
 	// TODO add some twitch commands
 #endif
@@ -871,7 +871,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 						console_writeline_error("Too many objects of that type.");
 					}
 					else {
-						// Load the obect
+						// Load the object
 						if (!object_load_chunk(entryGroupIndex, &entry, NULL)) {
 							console_writeline_error("Could not load object file.");
 						}
@@ -1036,7 +1036,7 @@ utf8* console_window_table[] = {
 console_command console_command_table[] = {
 	{ "clear", cc_clear, "Clears the console.", "clear"},
 	{ "hide", cc_hide, "Hides the console.", "hide"},
-	{ "echo", cc_echo, "Echos the text to the console.", "echo <text>" },
+	{ "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
 	{ "help", cc_help, "Lists commands or info about a command.", "help [command]" },
 	{ "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
 	{ "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
