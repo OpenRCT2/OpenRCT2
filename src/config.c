@@ -1206,7 +1206,7 @@ static void title_sequence_open(const char *path, const char *customName)
 	}
 
 	// Check if the preset is already loaded
-	// No nead to read the first two presets as they're hardcoded in
+	// No need to read the first two presets as they're hardcoded in
 	for (preset = 0; preset < gConfigTitleSequences.num_presets; preset++) {
 		if (_stricmp(path, gConfigTitleSequences.presets[preset].name) == 0) {
 			return;

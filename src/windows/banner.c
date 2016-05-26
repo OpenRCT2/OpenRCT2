@@ -288,7 +288,7 @@ static void window_banner_invalidate(rct_window *w)
 	rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
 	colour_btn->type = WWT_EMPTY;
 
-	//sceneray item not sure why we use this instead of banner?
+	//scenery item not sure why we use this instead of banner?
 	rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
 
 	if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLOURBTN;

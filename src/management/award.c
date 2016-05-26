@@ -404,7 +404,7 @@ static int award_is_deserved_best_restrooms(int awardType, int activeAwardTypes)
 	return (guestsWhoNeedRestroom <= 16);
 }
 
-/** More than half of the rides have satisfication <= 6 and park rating <= 650. */
+/** More than half of the rides have satisfaction <= 6 and park rating <= 650. */
 static int award_is_deserved_most_disappointing(int awardType, int activeAwardTypes)
 {
 	unsigned int i, countedRides, disappointingRides;
