@@ -311,6 +311,9 @@ static void window_new_campaign_dropdown(rct_window *w, int widgetIndex, int dro
 	if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
 		return;
 
+	if (dropdownIndex == -1)
+		return;
+
 	if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
 		w->campaign.ride_id = window_new_campaign_shop_items[dropdownIndex];
 	} else {
