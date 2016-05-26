@@ -135,6 +135,8 @@ const char *gPeepEasterEggNames[] = {
 	"KATIE SMITH",
 	"EILIDH BELL",
 	"NANCY STILLWAGON",
+	"ANDY HINE",
+	"ELISSA WHITE",
 	"DAVID ELLIS"
 };
 
@@ -8798,6 +8800,10 @@ static void peep_on_exit_ride(rct_peep *peep, int rideIndex)
 		}
 	}
 
+	if (peep->peep_flags & PEEP_FLAGS_NICE_RIDE) {
+		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NICE_RIDE, 255);
+	}
+
 	if (peep_really_liked_ride(peep, ride)) {
 		peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
 
@@ -9811,6 +9817,9 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 		// At this point, the peep has decided to go on the ride.
 		if (peepAtRide) {
 			ride_update_popularity(ride, 1);
+			if ((peep->peep_flags & PEEP_FLAGS_INTAMIN) && ride_type_is_intamin(ride->type)) {
+				peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_EXCITED, 255);
+			}
 		}
 
 		if (rideIndex == peep->guest_heading_to_ride_id) {
@@ -10629,6 +10638,16 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 	peep->peep_flags &= ~PEEP_FLAGS_ICE_CREAM;
 	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON, peep)) {
 		peep->peep_flags |= PEEP_FLAGS_ICE_CREAM;
+	}
+
+	peep->peep_flags &= ~PEEP_FLAGS_NICE_RIDE;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_ANDY_HINE, peep)) {
+		peep->peep_flags |= PEEP_FLAGS_NICE_RIDE;
+	}
+
+	peep->peep_flags &= ~PEEP_FLAGS_INTAMIN;
+	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_ELISSA_WHITE, peep)) {
+		peep->peep_flags |= PEEP_FLAGS_INTAMIN;
 	}
 
 	peep->peep_flags &= ~PEEP_FLAGS_HERE_WE_ARE;
