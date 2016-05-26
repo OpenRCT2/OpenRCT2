@@ -492,7 +492,6 @@ private:
 	void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-	void get_key_data();
 };
 
 #endif // __cplusplus
