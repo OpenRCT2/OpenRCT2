@@ -180,8 +180,8 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
 	&window_multiplayer_groups_events
 };
 
-const int window_multiplayer_animation_divisor[] = { 4, 4 };
-const int window_multiplayer_animation_frames[] = { 8, 16 };
+static const int window_multiplayer_animation_divisor[] = { 4, 2 };
+static const int window_multiplayer_animation_frames[] = { 8, 7 };
 
 static void window_multiplayer_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_multiplayer_set_page(rct_window* w, int page);
@@ -707,5 +707,5 @@ static void window_multiplayer_draw_tab_image(rct_window *w, rct_drawpixelinfo *
 static void window_multiplayer_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_multiplayer_draw_tab_image(w, dpi, 0, SPR_TAB_GUESTS_0);
-	window_multiplayer_draw_tab_image(w, dpi, 1, SPR_TAB_OBJECTIVE_0);
+	window_multiplayer_draw_tab_image(w, dpi, 1, SPR_TAB_STAFF_OPTIONS_0);
 }
