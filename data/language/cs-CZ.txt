@@ -892,7 +892,7 @@ STR_0886    :Ukončit hru
 STR_0887    :Ukončit editor scénáře
 STR_0888    :Ukončit návrh horské dráhy
 STR_0889    :Ukončit správu návrhů tratí
-STR_0890    :SCR{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :Snímek obrazovky
 STR_0892    :Snímek obrazovky byl uložen jako '{STRINGID}'
 STR_0893    :Snímaní obrazovky selhalo!
@@ -1654,8 +1654,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Pomoc! Polož mě dolů!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Dochází mi hotovost!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Tady se staví nová atrakce!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Dobrá atrakce! Ale ne tak dobrá, jako Fénix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}Tolik se těším! - It's an Intamin ride!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...a teď jsme na {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Poslední myšlenky:
 STR_1655    :{SMALLFONT}{BLACK}Stavět cestu na povrchu

@@ -891,7 +891,7 @@ STR_0886    :Spiel beenden
 STR_0887    :Szenario-Editor beenden
 STR_0888    :Achterbahn-Designer beenden
 STR_0889    :Streckenentwurf-Manager beenden
-STR_0890    :SCR{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
 STR_0892    :Screenshot auf Festplatte gespeichert als `{STRINGID}'
 STR_0893    :Screenshot fehlgeschlagen!
@@ -1652,8 +1652,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Hilfe! Lasst mich runter!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Mir geht das Geld aus!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Eine neue Bahn im Bau!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Gute Bahn! Doch nicht so gut wie die Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}Ich bin ja so aufgeregt - eine Bahn von Intamin!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...und hier sind wir bei d. {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Aktuelle Gedanken:
 STR_1655    :{SMALLFONT}{BLACK}Fußweg auf Gelände anlegen

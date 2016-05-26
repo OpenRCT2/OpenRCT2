@@ -892,7 +892,7 @@ STR_0886    :게임 종료하기
 STR_0887    :시나리오 에디터 종료하기
 STR_0888    :롤러코스터 디자이너 종료하기
 STR_0889    :트랙 디자인 매니저 종료하기
-STR_0890    :SCR{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :스크린 샷
 STR_0892    :스크린 샷이 디스크에 다음 이름으로 저장되었습니다: {STRINGID}
 STR_0893    :스크린 샷 찍기 실패!
@@ -1653,8 +1653,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}살려주세요! 절 내려주세요!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}돈이 다 떨어져가고 있어요!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}와우! 새 놀이기구가 지어지고 있어요!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}멋진 놀이기구에요! 하지만 피닉스만큼 멋지진 않네요...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}정말 흥분돼요! 인타민 공원의 놀이기구에요!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...그리고 드디어 {STRINGID}에 왔어요!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}최근 생각:
 STR_1655    :{SMALLFONT}{BLACK}땅 위에 보도 건설
