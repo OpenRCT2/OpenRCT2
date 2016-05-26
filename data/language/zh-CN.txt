@@ -897,7 +897,7 @@ STR_0886    :退出游戏
 STR_0887    :退出场景编辑器
 STR_0888    :退出过山车设计工具
 STR_0889    :退出轨道设计管理工具
-STR_0890    :SCR{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :截图
 STR_0892    :截图 '{STRINGID}' 已保存
 STR_0893    :截图失败!
@@ -1058,8 +1058,8 @@ STR_1047    :存储游戏失败!
 STR_1048    :存储关卡失败!
 STR_1049    :存储地形失败!
 STR_1050    :载入失败...{NEWLINE}文件中含有不可读取的数据!
-STR_1051    :透明化支撑物
-STR_1052    :透明化游客
+STR_1051    :隐藏支撑物
+STR_1052    :隐藏游客
 STR_1053    :{SMALLFONT}{BLACK}游乐园内的游乐设施
 STR_1054    :{SMALLFONT}{BLACK}命名游乐设施/店铺
 STR_1055    :{SMALLFONT}{BLACK}命名游客
@@ -1658,8 +1658,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Nice ride! But not as good as the Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}I'm so excited - It's an Intamin ride!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
@@ -1786,17 +1787,17 @@ STR_1775    :Off
 STR_1776    :On
 STR_1777    :{WINDOW_COLOUR_2}设施音乐
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elephant costume
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Roman costume
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla costume
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snowman costume
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Knight costume
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊猫服装
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 老虎服装
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} 大象服装
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} 罗马人服装
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} 大猩猩服装
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} 雪人服装
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} 骑士服装
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 宇航员服装
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 土匪服装
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} 警长服装
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海盗服装
 STR_1790    :{SMALLFONT}{BLACK}Select uniform colour for this type of staff
 STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
 STR_1792    :Responding to {STRINGID} breakdown call
@@ -1969,32 +1970,32 @@ STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can't change number of circuits...
-STR_1960    :{WINDOW_COLOUR_2}Balloon price:
-STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
-STR_1962    :{WINDOW_COLOUR_2}Park Map price:
-STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
-STR_1965    :{WINDOW_COLOUR_2}Drink price:
-STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Chips price:
-STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Candyfloss price:
+STR_1960    :{WINDOW_COLOUR_2}气球价格:
+STR_1961    :{WINDOW_COLOUR_2}毛绒公仔价格:
+STR_1962    :{WINDOW_COLOUR_2}游乐园地图价格:
+STR_1963    :{WINDOW_COLOUR_2}即时照片价格:
+STR_1964    :{WINDOW_COLOUR_2}雨伞价格:
+STR_1965    :{WINDOW_COLOUR_2}饮料价格:
+STR_1966    :{WINDOW_COLOUR_2}汉堡价格:
+STR_1967    :{WINDOW_COLOUR_2}薯条价格:
+STR_1968    :{WINDOW_COLOUR_2}冰激淋价格:
+STR_1969    :{WINDOW_COLOUR_2}棉花糖价格:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
-STR_1973    :{WINDOW_COLOUR_2}Pizza price:
+STR_1973    :{WINDOW_COLOUR_2}披萨价格:
 STR_1974    :{WINDOW_COLOUR_2}
-STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
-STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
-STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
-STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Toffee Apple price:
-STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
-STR_1981    :{WINDOW_COLOUR_2}Doughnut price:
-STR_1982    :{WINDOW_COLOUR_2}Coffee price:
+STR_1975    :{WINDOW_COLOUR_2}爆米花价格:
+STR_1976    :{WINDOW_COLOUR_2}热狗价格:
+STR_1977    :{WINDOW_COLOUR_2}触手价格:
+STR_1978    :{WINDOW_COLOUR_2}帽子价格:
+STR_1979    :{WINDOW_COLOUR_2}太妃苹果糖价格:
+STR_1980    :{WINDOW_COLOUR_2}T恤价格:
+STR_1981    :{WINDOW_COLOUR_2}甜甜圈价格:
+STR_1982    :{WINDOW_COLOUR_2}咖啡价格:
 STR_1983    :{WINDOW_COLOUR_2}
-STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
-STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
+STR_1984    :{WINDOW_COLOUR_2}炸鸡价格
+STR_1985    :{WINDOW_COLOUR_2}柠檬水价格
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
 STR_1988    :气球
@@ -2037,7 +2038,7 @@ STR_2024    :冰激淋
 STR_2025    :棉花糖
 STR_2026    :空罐子
 STR_2027    :垃圾
-STR_2028    :空汉堡包装盒s
+STR_2028    :空汉堡包装盒
 STR_2029    :披萨
 STR_2030    :Voucher
 STR_2031    :爆米花
@@ -2081,34 +2082,34 @@ STR_2068    :一份炸鸡
 STR_2069    :一杯柠檬水
 STR_2070    :一个空盒子
 STR_2071    :一个空瓶子
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
-STR_2074    :Map of {STRINGID}
-STR_2075    :On-Ride Photo of {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
-STR_2077    :Drink
-STR_2078    :Burger
-STR_2079    :Chips
-STR_2080    :Ice Cream
-STR_2081    :Candyfloss
-STR_2082    :Empty Can
-STR_2083    :Rubbish
-STR_2084    :Empty Burger Box
-STR_2085    :Pizza
+STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES}气球
+STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES}毛绒公仔
+STR_2074    :{STRINGID}的地图
+STR_2075    :{STRINGID}的即时照片
+STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES}雨伞
+STR_2077    :饮料
+STR_2078    :汉堡
+STR_2079    :薯条
+STR_2080    :冰激淋
+STR_2081    :棉花糖
+STR_2082    :空罐子
+STR_2083    :垃圾
+STR_2084    :空汉堡包装盒
+STR_2085    :披萨
 STR_2086    :Voucher for {STRINGID}
-STR_2087    :Popcorn
-STR_2088    :Hot Dog
-STR_2089    :Tentacle
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
-STR_2091    :Toffee Apple
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
-STR_2093    :Doughnut
-STR_2094    :Coffee
-STR_2095    :Empty Cup
-STR_2096    :Fried Chicken
-STR_2097    :Lemonade
-STR_2098    :Empty Box
-STR_2099    :Empty Bottle
+STR_2087    :爆米花
+STR_2088    :热狗
+STR_2089    :触手
+STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES}帽子
+STR_2091    :太妃苹果糖
+STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES}T恤
+STR_2093    :甜甜圈
+STR_2094    :咖啡
+STR_2095    :空杯子
+STR_2096    :炸鸡
+STR_2097    :柠檬水
+STR_2098    :空盒子
+STR_2099    :空瓶子
 STR_2100    :{WINDOW_COLOUR_2}即时照片价格:
 STR_2101    :{WINDOW_COLOUR_2}即时照片价格:
 STR_2102    :{WINDOW_COLOUR_2}即时照片价格:
@@ -2245,18 +2246,18 @@ STR_2232    :Cable lift hill
 STR_2233    :{SMALLFONT}{BLACK}游乐园信息
 STR_2234    :Recent Messages
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
-STR_2236    :January
-STR_2237    :February
-STR_2238    :March
-STR_2239    :April
-STR_2240    :May
-STR_2241    :June
-STR_2242    :July
-STR_2243    :August
-STR_2244    :September
-STR_2245    :October
-STR_2246    :November
-STR_2247    :December
+STR_2236    :1月
+STR_2237    :2月
+STR_2238    :3月
+STR_2239    :4月
+STR_2240    :5月
+STR_2241    :6月
+STR_2242    :7月
+STR_2243    :8月
+STR_2244    :9月
+STR_2245    :10月
+STR_2246    :11月
+STR_2247    :12月
 STR_2248    :Can't demolish ride/attraction...
 STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/themeing now available:{NEWLINE}{STRINGID}
