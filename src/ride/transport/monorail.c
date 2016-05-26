@@ -124,6 +124,18 @@ enum
 	SPR_MONORAIL_DIAG_FLAT_N_S = 23326,
 	SPR_MONORAIL_DIAG_FLAT_E_W = 23327,
 	SPR_MONORAIL_DIAG_FLAT_S_N = 23328,
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E = 23329,
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S = 23330,
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W = 23331,
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N = 23332,
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E = 23333,
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S = 23334,
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W = 23335,
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N = 23336,
+	SPR_MONORAIL_DIAG_25_DEG_UP_W_E = 23337,
+	SPR_MONORAIL_DIAG_25_DEG_UP_N_S = 23338,
+	SPR_MONORAIL_DIAG_25_DEG_UP_E_W = 23339,
+	SPR_MONORAIL_DIAG_25_DEG_UP_S_N = 23340,
 };
 
 static const uint32 monorail_track_pieces_flat[4] = {
@@ -405,6 +417,27 @@ static const uint32 monorail_track_pieces_diag_flat[4] = {
 	SPR_MONORAIL_DIAG_FLAT_N_S,
 	SPR_MONORAIL_DIAG_FLAT_E_W,
 	SPR_MONORAIL_DIAG_FLAT_S_N,
+};
+
+static const uint32 monorail_track_pieces_diag_flat_to_25_deg_up[4] = {
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E,
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S,
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W,
+	SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_S_N,
+};
+
+static const uint32 monorail_track_pieces_diag_25_deg_up_to_flat[4] = {
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_W_E,
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_N_S,
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_E_W,
+	SPR_MONORAIL_DIAG_25_DEG_UP_TO_FLAT_S_N,
+};
+
+static const uint32 monorail_track_pieces_diag_25_deg_up[4] = {
+	SPR_MONORAIL_DIAG_25_DEG_UP_W_E,
+	SPR_MONORAIL_DIAG_25_DEG_UP_N_S,
+	SPR_MONORAIL_DIAG_25_DEG_UP_E_W,
+	SPR_MONORAIL_DIAG_25_DEG_UP_S_N,
 };
 
 /** rct2: 0x008AE1AC */
@@ -855,66 +888,157 @@ static void paint_monorail_track_right_eighth_to_orthogonal(uint8 rideIndex, uin
 	paint_monorail_track_left_eighth_to_diag(rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
+static void paint_monorail_util_diag_supports(uint8 direction, int height)
+{
+	switch (direction) {
+		case 0:
+			metal_a_supports_paint_setup(3, 1, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			break;
+		case 1:
+			metal_a_supports_paint_setup(3, 0, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			break;
+		case 2:
+			metal_a_supports_paint_setup(3, 2, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			break;
+		case 3:
+			metal_a_supports_paint_setup(3, 3, 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+			break;
+	}
+}
+
+static const bool monorail_diag_image_segment[][4] = {
+	{false, true,  false, false},
+	{false, false, false, true},
+	{false, false, true,  false},
+	{true,  false, false, false},
+};
+
+static const uint8 monorail_diag_support_segment[] = {1, 0, 2, 3};
+
+static const int monorail_diag_blocked_segments[] = {
+	SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
+	SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
+	SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
+	SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8
+};
+
 /** rct2: 0x008AE2AC */
 static void paint_monorail_track_diag_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
-	if ((direction == 0 && trackSequence == 1)
-	    || (direction == 1 && trackSequence == 3)
-	    || (direction == 2 && trackSequence == 2)
-	    || (direction == 3 && trackSequence == 0)) {
+	if (monorail_diag_image_segment[direction][trackSequence]) {
 		uint32 imageId = monorail_track_pieces_diag_flat[direction] | RCT2_GLOBAL(0x00F44198, uint32);
 		sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
 	}
 
 	if (trackSequence == 3) {
-		switch (direction) {
-			case 0: metal_a_supports_paint_setup(3, 1, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 1: metal_a_supports_paint_setup(3, 0, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 2: metal_a_supports_paint_setup(3, 2, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-			case 3: metal_a_supports_paint_setup(3, 3, 0, height, RCT2_GLOBAL(0x00F4419C, uint32)); break;
-		}
+		metal_a_supports_paint_setup(3, monorail_diag_support_segment[direction], 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
 	}
 
-	int blockedSegments;
-	switch (trackSequence) {
-		case 0: blockedSegments = SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC; break;
-		case 1: blockedSegments = SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4; break;
-		case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4; break;
-		case 3: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8; break;
-	}
-
+	int blockedSegments = monorail_diag_blocked_segments[trackSequence];
 	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 	paint_util_set_general_support_height(height + 32, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE2DC */
 static void paint_monorail_track_diag_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	if (monorail_diag_image_segment[direction][trackSequence]) {
+		uint32 imageId = monorail_track_pieces_diag_25_deg_up[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(3, monorail_diag_support_segment[direction], 8, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	int blockedSegments = monorail_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE2BC */
 static void paint_monorail_track_diag_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	if (monorail_diag_image_segment[direction][trackSequence]) {
+		uint32 imageId = monorail_track_pieces_diag_flat_to_25_deg_up[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(3, monorail_diag_support_segment[direction], 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	int blockedSegments = monorail_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE2CC */
 static void paint_monorail_track_diag_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	if (monorail_diag_image_segment[direction][trackSequence]) {
+		uint32 imageId = monorail_track_pieces_diag_25_deg_up_to_flat[direction] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(3, monorail_diag_support_segment[direction], 4, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	int blockedSegments = monorail_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE30C */
 static void paint_monorail_track_diag_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	if (monorail_diag_image_segment[direction][trackSequence]) {
+		uint32 imageId = monorail_track_pieces_diag_25_deg_up[(direction + 2) % 4] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(3, monorail_diag_support_segment[direction], 8, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	int blockedSegments = monorail_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE2EC */
 static void paint_monorail_track_diag_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	if (monorail_diag_image_segment[direction][trackSequence]) {
+		uint32 imageId = monorail_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(3, monorail_diag_support_segment[direction], 4, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	int blockedSegments = monorail_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 56, 0x20);
 }
 
-/** rct2: 0x */
+/** rct2: 0x008AE2FC */
 static void paint_monorail_track_diag_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
+	if (monorail_diag_image_segment[direction][trackSequence]) {
+		uint32 imageId = monorail_track_pieces_diag_flat_to_25_deg_up[(direction + 2) % 4] | RCT2_GLOBAL(0x00F44198, uint32);
+		sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+	}
+
+	if (trackSequence == 3) {
+		metal_b_supports_paint_setup(3, monorail_diag_support_segment[direction], 0, height, RCT2_GLOBAL(0x00F4419C, uint32));
+	}
+
+	int blockedSegments = monorail_diag_blocked_segments[trackSequence];
+	paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+	paint_util_set_general_support_height(height + 48, 0x20);
 }
 
 /**
