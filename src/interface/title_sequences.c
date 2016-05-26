@@ -265,7 +265,7 @@ void title_sequence_remove_save(int preset, int index)
 		strcat(path, gConfigTitleSequences.presets[preset].saves[index]);
 		platform_file_delete(path);
 
-		// Remove all references to this save in the commands and decrement save indecies
+		// Remove all references to this save in the commands and decrement save indices
 		for (int i = 0; i < gConfigTitleSequences.presets[preset].num_commands; i++) {
 			if (gConfigTitleSequences.presets[preset].commands[i].command == TITLE_SCRIPT_LOAD) {
 				if (gConfigTitleSequences.presets[preset].commands[i].saveIndex == index)
