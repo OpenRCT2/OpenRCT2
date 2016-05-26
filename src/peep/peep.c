@@ -1314,7 +1314,7 @@ void peep_sprite_remove(rct_peep* peep){
 }
 
 /**
- * New function removes peep from park existence. Works with staff.
+ * New function removes peep from park existance. Works with staff.
  */
 void peep_remove(rct_peep* peep){
 	if (peep->type == PEEP_TYPE_GUEST){
@@ -4057,7 +4057,7 @@ static void peep_update_queuing(rct_peep* peep){
 		}
 		if (peep->time_in_queue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
 		{
-			//Create the I have been waiting in line ages thought
+			//Create the ive been waiting in line ages thought
 			peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_QUEUING_AGES, peep->current_ride);
 		}
 	}
@@ -4610,7 +4610,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 
 	uint8 chosen_edge = scenario_rand() & 0x3;
 
-	// Note: Bin quantity is inverted 0 = full, 3 = empty
+	// Note: Bin qunatity is inverted 0 = full, 3 = empty
 	uint8 bin_quantities = map_element->properties.path.addition_status;
 
 	// Rotate the bin to the correct edge. Makes it easier for next calc.
@@ -4932,7 +4932,7 @@ static void peep_update_using_bin(rct_peep* peep){
 
 		// Place new amount in bin by first clearing the value
 		map_element->properties.path.addition_status &= ~(3 << selected_bin);
-		// Then placing the new value.
+		// Then placeing the new value.
 		map_element->properties.path.addition_status |= space_left_in_bin << selected_bin;
 
 		map_invalidate_tile_zoom0(peep->next_x, peep->next_y, map_element->base_height << 3, map_element->clearance_height << 3);
@@ -5770,7 +5770,7 @@ static void peep_update(rct_peep *peep)
 		case PEEP_STATE_INSPECTING:
 			peep_update_fixing(stepsToTake, peep);
 			break;
-			//There shouldn't be any more
+			//There shouldnt be any more
 		default:
 			assert(0);
 			break;
@@ -6929,7 +6929,7 @@ static int peep_interact_with_entrance(rct_peep* peep, sint16 x, sint16 y, rct_m
 				return peep_return_to_center_of_tile(peep);
 
 			if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)){
-				// If the park is open and leaving flag isn't set return to center
+				// If the park is open and leaving flag isnt set return to center
 				if (gParkFlags & PARK_FLAGS_PARK_OPEN)
 					return peep_return_to_center_of_tile(peep);
 			}
@@ -9689,7 +9689,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 
 			if (ride->excitement != (ride_rating)0xFFFF) {
 				// If a peep has already decided that they're going to go on a ride, they'll skip the weather and
-				// excitement check and will only do a basic intensity check when they arrive at the ride itself.
+				// excitment check and will only do a basic intensity check when they arrive at the ride itself.
 				if (rideIndex == peep->guest_heading_to_ride_id) {
 					if (ride->intensity > RIDE_RATING(10, 00) && !gCheatsIgnoreRideIntensity) {
 						peep_ride_is_too_intense(peep, rideIndex, peepAtRide);

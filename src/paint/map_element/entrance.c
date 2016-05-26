@@ -72,7 +72,7 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 	else{
 		image_id |= style->sprite_index + direction;
 	}
-	// Format modified to stop repeated code
+	// Format modifed to stop repeated code
 
 	// Each entrance is split into 2 images for drawing
 	// Certain entrance styles have another 2 images to draw for coloured windows

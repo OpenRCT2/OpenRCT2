@@ -351,7 +351,7 @@ void game_logic_update()
 	network_update();
 	if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
 		if (gCurrentTicks >= network_get_server_tick()) {
-			// don't run past the server
+			// dont run past the server
 			return;
 		}
 	}
@@ -555,7 +555,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 		}
 	}
 
-	// Error occurred
+	// Error occured
 
 	// Decrement nest count
 	gGameCommandNestLevel--;

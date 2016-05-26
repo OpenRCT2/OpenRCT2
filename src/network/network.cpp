@@ -1926,7 +1926,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
 	}
-	// In case someone modifies the code / memory to enable cluster build,
+	// Incase someone modifies the code / memory to enable cluster build,
 	// require a small delay in between placing scenery to provide some security, as 
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {

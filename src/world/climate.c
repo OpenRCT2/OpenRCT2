@@ -176,7 +176,7 @@ void climate_force_weather(uint8 weather){
 
 	climate_update();
 
-	// In case of change in gloom level force a complete redraw
+	// Incase of change in gloom level force a complete redraw
 	gfx_invalidate_screen();
 }
 
@@ -195,7 +195,7 @@ static void climate_determine_future_weather(int randomDistribution)
 	sint8 month = gDateMonthsElapsed & 7;
 	rct_weather_transition transition = climate_table[month];
 
-	// Generate a random variable with values 0 up to distribution_size-1 and chose weather from the distribution table accordingly
+	// Generate a random variable with values 0 upto distribution_size-1 and chose weather from the distribution table accordingly
 	sint8 next_weather = transition.distribution[ ((randomDistribution & 0xFF) * transition.distribution_size) >> 8 ];
 	gClimateNextWeather = next_weather;
 

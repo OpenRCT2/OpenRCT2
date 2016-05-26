@@ -96,7 +96,7 @@
 - Fix: [#2407] save game prompt delay is not reset on start scenario
 - Fix: [#2415] day / night cycle did not update colours during gameplay
 - Fix: [#2425] new campaign for ride shows invalid list when over 40 rides
-- Fix: [#2417] peep direction assertion sometimes during pathfinding
+- Fix: [#2417] peep direction assertion somtimes during pathfinding
 - Fix: [#2158] video freeze when window is maximised, minimised and then restored
 - Fix: [#2434] dropdown menus linger when toolbars are hidden
 
@@ -187,7 +187,7 @@
 - Feature: Finance window accessible from toolbar (enabled in settings).
 - Feature: Research and development / research funding now accessible as a stand alone window without the requirement of the finances window.
 - Feature: Extra viewport windows.
-- Feature: Park window viewport is resizeable.
+- Feature: Park window viewport is resizable.
 - Feature: Land, water and ownership tool sizes can now be increased to 64x64.
 - Feature: Mountain tool available in play mode.
 - Feature: Buy land and construction rights land tool window. (Currently only in-game).

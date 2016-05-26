@@ -2018,7 +2018,7 @@ void window_guest_thoughts_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, 0);
 
-		// If this is the last visible line end drawing.
+		// If this is the last visable line end drawing.
 		if (y > w->y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32) return;
 	}
 }

@@ -250,7 +250,7 @@ static void window_viewport_wheel_input(rct_window *w, int wheel)
 static bool window_other_wheel_input(rct_window *w, int widgetIndex, int wheel)
 {
 	// HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
-	//       this selective approach will have to do.
+	//       this selective approch will have to do.
 
 	// Allow mouse wheel scrolling to increment or decrement the land tool size for various windows
 	int previewWidgetIndex;
@@ -653,7 +653,7 @@ void window_close(rct_window* window)
 	if (window == NULL)
 		return;
 
-	// Make a copy of the window class and number in case
+	// Make a copy of the window class and number incase
 	// the window order is changed by the close event.
 	rct_windowclass cls = window->classification;
 	rct_windownumber number = window->number;

@@ -843,7 +843,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
 		if (balance == MONEY32_UNDEFINED)
 			continue;
 
-		// Modifier balance then keep halving until less than 127 pixels
+		// Modifier balance then keep halfing until less than 127 pixels
 		balance = abs(balance) >> yAxisScale;
 		while (balance > 127) {
 			balance /= 2;

@@ -90,7 +90,7 @@ int viewport_interaction_get_item_left(int x, int y, viewport_interaction_info *
 		break;
 	}
 
-	// If nothing is under cursor, find a close by peep
+	// If nothing is under cursor, find a closeby peep
 	if (info->type == VIEWPORT_INTERACTION_ITEM_NONE) {
 		info->peep = viewport_interaction_get_closest_peep(x, y, 32);
 		if (info->peep == NULL)
