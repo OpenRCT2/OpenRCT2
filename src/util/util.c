@@ -192,7 +192,7 @@ bool strequals(const char *a, const char *b, int length, bool caseInsensitive)
 		strncmp(a, b, length) == 0;
 }
 
-/* case insensitve compare */
+/* case insensitive compare */
 int strcicmp(char const *a, char const *b)
 {
 	for (;; a++, b++) {

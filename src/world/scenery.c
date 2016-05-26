@@ -111,7 +111,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 		return;
 	}
 
-	// Check map elements above, presumebly to see if map element is blocked from rain
+	// Check map elements above, presumably to see if map element is blocked from rain
 	mapElementAbove = mapElement;
 	while (!(mapElementAbove->flags & 7)) {
 		mapElementAbove++;
