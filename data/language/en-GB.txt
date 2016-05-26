@@ -4170,6 +4170,8 @@ STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves c
 STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 STR_5860    :Toggle original/decompiled track drawing
 STR_5861    :Key verification failure.
+STR_5862    :Allow joining with known keys only.
+STR_5863    :This host only allows known keys to connect.
 
 #############
 # Scenarios #

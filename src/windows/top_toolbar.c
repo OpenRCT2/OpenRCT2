@@ -109,7 +109,9 @@ typedef enum {
 } TOP_TOOLBAR_DEBUG_DDIDX;
 
 typedef enum {
-	DDIDX_MULTIPLAYER = 0
+	DDIDX_MULTIPLAYER = 0,
+	// separator
+	DDIDX_KNOWN_KEYS_ONLY = 2
 } TOP_TOOLBAR_NETWORK_DDIDX;
 
 enum {
@@ -408,8 +410,8 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
 				gDropdownItemsFormat[12] = 0;
-				gDropdownItemsFormat[13] = 1156;
-				gDropdownItemsArgs[13] = STR_TWITCH_ENABLE;
+				gDropdownItemsFormat[DDIDX_ENABLE_TWITCH] = 1156;
+				gDropdownItemsArgs[DDIDX_ENABLE_TWITCH] = STR_TWITCH_ENABLE;
 				numItems = 14;
 			}
 		#endif
@@ -425,7 +427,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 
 #ifndef DISABLE_TWITCH
 		if (_menuDropdownIncludesTwitch && gTwitchEnable) {
-			dropdown_set_checked(13, true);
+			dropdown_set_checked(DDIDX_ENABLE_TWITCH, true);
 		}
 #endif
 		break;
@@ -2955,6 +2957,15 @@ void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
 	gDropdownItemsFormat[0] = STR_MULTIPLAYER;
+	int num_items = 1;
+
+	if (network_get_mode() == NETWORK_MODE_SERVER) {
+		gDropdownItemsFormat[DDIDX_KNOWN_KEYS_ONLY - 1] = 0;
+		gDropdownItemsFormat[DDIDX_KNOWN_KEYS_ONLY] = 1156;
+		gDropdownItemsArgs[DDIDX_KNOWN_KEYS_ONLY] = STR_ALLOW_KNOWN_KEYS_ONLY;
+		// includes separator
+		num_items += 2;
+	}
 
 	window_dropdown_show_text(
 		w->x + widget->left,
@@ -2962,8 +2973,12 @@ void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 		widget->bottom - widget->top + 1,
 		w->colours[0] | 0x80,
 		0,
-		1
+		num_items
 	);
+
+	if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.known_keys_only) {
+		dropdown_set_checked(DDIDX_KNOWN_KEYS_ONLY, true);
+	}
 
 	gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3000,6 +3015,10 @@ void top_toolbar_network_menu_dropdown(short dropdownIndex)
 		switch (dropdownIndex) {
 		case DDIDX_MULTIPLAYER:
 			window_multiplayer_open();
+			break;
+		case DDIDX_KNOWN_KEYS_ONLY:
+			gConfigNetwork.known_keys_only = !gConfigNetwork.known_keys_only;
+			config_save_default();
 			break;
 		}
 	}

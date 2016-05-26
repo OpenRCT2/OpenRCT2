@@ -2110,6 +2110,10 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 	case NETWORK_AUTH_REQUIREPASSWORD:
 		window_network_status_open_password();
 		break;
+	case NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED:
+		connection.setLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
+		shutdown(connection.socket, SHUT_RDWR);
+		break;
 	}
 }
 
@@ -2156,13 +2160,16 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			connection.key.LoadPublic(pubkey_rw);
 			SDL_RWclose(pubkey_rw);
 			bool verified = connection.key.Verify(connection.challenge.data(), connection.challenge.size(), signature, sigsize);
+			const std::string hash = connection.key.PublicKeyHash();
 			if (verified) {
 				connection.authstatus = NETWORK_AUTH_VERIFIED;
-				const std::string hash = connection.key.PublicKeyHash();
 				log_verbose("Signature verification ok. Hash %s", hash.c_str());
 			} else {
 				connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 				log_verbose("Signature verification failed!");
+			}
+			if (gConfigNetwork.known_keys_only && key_group_map.find(hash) == key_group_map.end()) {
+				connection.authstatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
 			}
 		}
 

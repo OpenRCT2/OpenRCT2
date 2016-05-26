@@ -229,6 +229,7 @@ typedef struct network_configuration {
 	utf8string provider_name;
 	utf8string provider_email;
 	utf8string provider_website;
+	uint8 known_keys_only;
 } network_configuration;
 
 typedef struct notification_configuration {
