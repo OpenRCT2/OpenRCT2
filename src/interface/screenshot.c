@@ -29,9 +29,6 @@
 #include "screenshot.h"
 #include "viewport.h"
 
-static const char *_screenshot_format_extension[] = { ".bmp", ".png" };
-
-static int screenshot_dump_bmp();
 static int screenshot_dump_png();
 
 /**
@@ -75,7 +72,7 @@ static void screenshot_get_rendered_palette(rct_palette* palette) {
 	}
 }
 
-static int screenshot_get_next_path(char *path, int format)
+static int screenshot_get_next_path(char *path)
 {
 	char screenshotPath[MAX_PATH];
 
@@ -90,7 +87,7 @@ static int screenshot_get_next_path(char *path, int format)
 		set_format_arg(0, uint16, i);
 
 		// Glue together path and filename
-		sprintf(path, "%sSCR%d%s", screenshotPath, i, _screenshot_format_extension[format]);
+		sprintf(path, "%sSCR%d.png", screenshotPath, i);
 
 		if (!platform_file_exists(path)) {
 			return i;
@@ -103,39 +100,7 @@ static int screenshot_get_next_path(char *path, int format)
 
 int screenshot_dump()
 {
-	switch (gConfigGeneral.screenshot_format) {
-	case SCREENSHOT_FORMAT_BMP:
-		return screenshot_dump_bmp();
-	case SCREENSHOT_FORMAT_PNG:
-		return screenshot_dump_png();
-	default:
-		return -1;
-	}
-}
-
-/**
- *
- *  rct2: 0x00683D20
- */
-int screenshot_dump_bmp()
-{
-	// Get a free screenshot path
-	int index;
-	char path[MAX_PATH] = "";
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_BMP)) == -1) {
-		return -1;
-	}
-
-	rct_drawpixelinfo *dpi = &gScreenDPI;
-
-	rct_palette renderedPalette;
-	screenshot_get_rendered_palette(&renderedPalette);
-
-	if (image_io_bmp_write(dpi, &renderedPalette, path)) {
-		return index;
-	} else {
-		return -1;
-	}
+	return screenshot_dump_png();
 }
 
 int screenshot_dump_png()
@@ -143,7 +108,7 @@ int screenshot_dump_png()
 	// Get a free screenshot path
 	int index;
 	char path[MAX_PATH] = "";
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1) {
+	if ((index = screenshot_get_next_path(path)) == -1) {
 		return -1;
 	}
 
@@ -233,7 +198,7 @@ void screenshot_giant()
 	// Get a free screenshot path
 	char path[MAX_PATH];
 	int index;
-	if ((index = screenshot_get_next_path(path, SCREENSHOT_FORMAT_PNG)) == -1) {
+	if ((index = screenshot_get_next_path(path)) == -1) {
 		log_error("Giant screenshot failed, unable to find a suitable destination path.");
 		window_error_open(STR_SCREENSHOT_FAILED, -1);
 		return;

@@ -1065,7 +1065,6 @@ void ride_set_to_default_inspection_interval(int rideIndex);
 void sub_6CB945(int rideIndex);
 void ride_crash(uint8 rideIndex, uint8 vehicleIndex);
 
-bool ride_type_is_intamin(int rideType);
 void sub_6C94D8();
 
 bool shop_item_is_food_or_drink(int shopItem);

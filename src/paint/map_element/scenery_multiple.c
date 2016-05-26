@@ -154,6 +154,31 @@ void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *t
 	}
 }
 
+typedef struct boundbox {
+	rct_xy16 offset;
+	rct_xy16 length;
+} boundbox;
+
+static const boundbox s98E3C4[] = {
+	{ 3,   3, 26, 26 },
+	{ 17, 17, 12, 12 },
+	{ 17,  3, 12, 12 },
+	{ 17,  3, 12, 26 },
+	{ 3,   3, 12, 12 },
+	{ 3,   3, 26, 26 },
+	{ 3,   3, 28, 12 },
+	{ 3,   3, 26, 26 },
+	{ 3,  17, 12, 12 },
+	{ 3,  17, 26, 12 },
+	{ 3,   3, 26, 26 },
+	{ 3,   3, 26, 26 },
+	{ 3,   3, 12, 28 },
+	{ 3,   3, 26, 26 },
+	{ 3,   3, 26, 26 },
+	{ 3,   3, 26, 26 },
+	{ 1,   1, 30, 30 }
+};
+
 /*
 *
 * rct2: 0x006B7F0C
@@ -193,14 +218,14 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 	int esi = 16;
 	if (edi & 0xF00) {
 		edi &= 0xF000;
-		edi = (edi << direction) | (edi >> (16 - direction)); // rol
+		edi = rol16(edi, direction);
 		esi = (edi & 0xF) | (edi >> 12);
 	}
-	boxoffset.x = RCT2_ADDRESS(0x0098E3C4, uint16)[esi * 4];
-	boxoffset.y = RCT2_ADDRESS(0x0098E3C6, uint16)[esi * 4];
+	boxoffset.x = s98E3C4[esi].offset.x;
+	boxoffset.y = s98E3C4[esi].offset.y;
 	boxoffset.z = height;
-	boxlength.x =  RCT2_ADDRESS(0x0098E3C8, uint16)[esi * 4];
-	boxlength.y =  RCT2_ADDRESS(0x0098E3CA, uint16)[esi * 4];
+	boxlength.x =  s98E3C4[esi].length.x;
+	boxlength.y =  s98E3C4[esi].length.y;
 	boxlength.z = ah;
 	sub_98197C(image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 	if (entry->large_scenery.var_11 == 0xFF || direction == 1 || direction == 2) {
@@ -250,9 +275,9 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 			const utf8 *fitStrPtr = fitStr;
 			strncpy(fitStr, scenery_multiple_sign_fit_text(signString, text, true), sizeof(fitStr) - 1);
 			int height = scenery_multiple_sign_text_height(fitStr, text);
-			utf8 str[5] = {0};
 			uint32 codepoint;
 			while ((codepoint = utf8_get_next(fitStrPtr, &fitStrPtr)) != 0) {
+				utf8 str[5] = {0};
 				utf8_write_codepoint(str, codepoint);
 				scenery_multiple_sign_paint_line(str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction, y_offset - height);
 				y_offset += scenery_multiple_sign_get_glyph(text, codepoint)->height * 2;

@@ -431,7 +431,7 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
 	//6632e6
 
 	for (uint8 count = 0; ;count++) {
-		if (count > 4)
+		if (count >= 4)
 			count = 0;
 
 		sint16 z = height + 16;

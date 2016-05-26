@@ -8406,16 +8406,8 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 	set_format_arg(0, rct_string_id, ride->name);
 	set_format_arg(2, uint32, ride->name_arguments);
 	if (gConfigNotifications.ride_crashed) {
-	news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, rideIndex);
-}
-}
-
-bool ride_type_is_intamin(int rideType)
-{
-	return
-		rideType == RIDE_TYPE_HEARTLINE_TWISTER_COASTER ||
-		rideType == RIDE_TYPE_GIGA_COASTER ||
-		rideType == RIDE_TYPE_INVERTED_IMPULSE_COASTER;
+		news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, rideIndex);
+	}
 }
 
 bool shop_item_is_food_or_drink(int shopItem)
