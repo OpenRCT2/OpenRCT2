@@ -50,8 +50,8 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_GOOD_VALUE = 10, // "X is really good value"
 	PEEP_THOUGHT_TYPE_ALREADY_GOT = 11, // "I've already got"
 	PEEP_THOUGHT_TYPE_CANT_AFFORD = 12, // "I can't afford"
-	PEEP_THOUGHT_TYPE_NOT_HUNGRY = 13, // "I'm not not hungry"
-	PEEP_THOUGHT_TYPE_NOT_THIRSTY = 14, // "I'm not not thirsty"
+	PEEP_THOUGHT_TYPE_NOT_HUNGRY = 13, // "I'm not hungry"
+	PEEP_THOUGHT_TYPE_NOT_THIRSTY = 14, // "I'm not thirsty"
 	PEEP_THOUGHT_TYPE_DROWNING = 15, // "Help! I'm drowning!"
 	PEEP_THOUGHT_TYPE_LOST = 16, // "I'm lost!"
 	PEEP_THOUGHT_TYPE_WAS_GREAT = 17, // "X was great"
@@ -172,8 +172,8 @@ enum PEEP_THOUGHT_TYPE {
 	PEEP_THOUGHT_TYPE_HELP = 168, // "Help! Put me down!"
 	PEEP_THOUGHT_TYPE_RUNNING_OUT = 169, // "I'm running out of cash!"
 	PEEP_THOUGHT_TYPE_NEW_RIDE = 170, // "Wow! A new ride being built!"
-	PEEP_THOUGHT_TYPE_NICE_RIDE_DEPRECATED = 171, // "Nice ride! But not as good as the Phoenix..."
-	PEEP_THOUGHT_TYPE_EXCITED_DEPRECATED = 172, // "I'm so excited - It's an Intamin ride!"
+	PEEP_THOUGHT_TYPE_NICE_RIDE = 171, // "Nice ride! But not as good as the Phoenix..."
+	PEEP_THOUGHT_TYPE_EXCITED = 172, // "I'm so excited - It's an Intamin ride!"
 	PEEP_THOUGHT_TYPE_HERE_WE_ARE = 173, // "...and here we are on X!"
 
 	PEEP_THOUGHT_TYPE_NONE = 255
@@ -272,8 +272,8 @@ enum PEEP_FLAGS {
 	PEEP_FLAGS_JOY = (1 << 23), // Makes the peep jump in joy
 	PEEP_FLAGS_ANGRY = (1 << 24),
 	PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives passing peeps ice cream and they wave back
-	PEEP_FLAGS_NICE_RIDE_DEPRECATED = (1 << 26), // Used to make the peep think "Nice ride! But not as good as the Phoenix..." on exiting a ride
-	PEEP_FLAGS_INTAMIN_DEPRECATED = (1 << 27), // Used to make the peep think "I'm so excited - It's an Intamin ride!" while riding on a Intamin ride.
+	PEEP_FLAGS_NICE_RIDE = (1 << 26), // Makes the peep think "Nice ride! But not as good as the Phoenix..." on exiting a ride
+	PEEP_FLAGS_INTAMIN = (1 << 27), // Makes the peep think "I'm so excited - It's an Intamin ride!" while riding on a Intamin
 	PEEP_FLAGS_HERE_WE_ARE = (1 << 28), // Makes the peep think  "...and here we are on X!" while riding a ride
 	PEEP_FLAGS_TWITCH = (1 << 31)		// Added for twitch integration
 };
@@ -571,6 +571,8 @@ enum {
 	EASTEREGG_PEEP_NAME_KATIE_SMITH,
 	EASTEREGG_PEEP_NAME_EILIDH_BELL,
 	EASTEREGG_PEEP_NAME_NANCY_STILLWAGON,
+	EASTEREGG_PEEP_NAME_ANDY_HINE,
+	EASTEREGG_PEEP_NAME_ELISSA_WHITE,
 	EASTEREGG_PEEP_NAME_DAVID_ELLIS
 };
 
