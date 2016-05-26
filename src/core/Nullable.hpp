@@ -28,6 +28,12 @@ public:
         _hasValue = false;
     }
 
+    Nullable(nullptr_t)
+    {
+        _value = T();
+        _hasValue = false;
+    }
+
     Nullable(const T &value)
     {
         _value = value;

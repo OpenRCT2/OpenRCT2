@@ -774,7 +774,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	if (!Init())
 		return false;
 
-	LoadKeyMappings();
+	_userManager.Load();
 	NetworkAddress networkaddress;
 	networkaddress.Resolve(address, port, false);
 
@@ -1312,23 +1312,22 @@ void Network::RemoveGroup(uint8 id)
 	if (group != group_list.end()) {
 		group_list.erase(group);
 	}
-	for (auto &mapping : key_group_map) {
-		if (mapping.second.GroupId.HasValue() && mapping.second.GroupId.GetValue() == id) {
-			mapping.second.GroupId = Nullable<uint8>();
-		}
+
+	if (GetMode() == NETWORK_MODE_SERVER) {
+		_userManager.UnsetUsersOfGroup(id);
+		_userManager.Save();
 	}
-	UpdateKeyMappings();
 }
 
 uint8 Network::GetGroupIDByHash(const std::string &keyhash)
 {
-	auto it = key_group_map.find(keyhash);
-	if (it != key_group_map.end()) {
-		auto groupId = it->second.GroupId;
-		return groupId.GetValueOrDefault(GetDefaultGroup());
-	} else {
-		return GetDefaultGroup();
+	const NetworkUser * networkUser = _userManager.GetUserByHash(keyhash);
+
+	uint8 groupId = GetDefaultGroup();
+	if (networkUser != nullptr && networkUser->GroupId.HasValue()) {
+		groupId = networkUser->GroupId.GetValue();
 	}
+	return groupId;
 }
 
 uint8 Network::GetDefaultGroup()
@@ -1424,153 +1423,6 @@ void Network::LoadGroups()
 		default_group = 0;
 	}
 	json_decref(json);
-}
-
-void Network::SaveKeyMappings()
-{
-	if (GetMode() == NETWORK_MODE_SERVER) {
-		utf8 path[MAX_PATH];
-		network_get_keymap_path(path, sizeof(path));
-
-		json_t * jsonKeyMappings = json_array();
-		for (auto it = key_group_map.cbegin(); it != key_group_map.cend(); it++) {
-			json_t *keyMapping = json_object();
-			json_object_set_new(keyMapping, "hash", json_string(it->first.c_str()));
-
-			json_t *jsonGroupId;
-			if (it->second.GroupId.HasValue()) {
-				jsonGroupId = json_integer(it->second.GroupId.GetValue());
-			} else {
-				jsonGroupId = json_null();
-			}
-			json_object_set_new(keyMapping, "groupId", jsonGroupId);
-
-			json_array_append_new(jsonKeyMappings, keyMapping);
-		}
-		bool result;
-		try
-		{
-			Json::WriteToFile(path, jsonKeyMappings, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
-			result = true;
-		}
-		catch (Exception ex)
-		{
-			log_error("Unable to save %s: %s", path, ex.GetMessage());
-			result = false;
-		}
-
-		json_decref(jsonKeyMappings);
-	}
-}
-
-void Network::LoadKeyMappings()
-{
-	utf8 path[MAX_PATH];
-	network_get_keymap_path(path, sizeof(path));
-
-	if (!platform_file_exists(path)) {
-		return;
-	}
-	key_group_map.clear();
-
-	json_t * jsonKeyMappings = Json::ReadFromFile(path);
-
-	size_t groupCount = (size_t)json_array_size(jsonKeyMappings);
-	for (size_t i = 0; i < groupCount; i++) {
-		json_t * jsonKeyMapping = json_array_get(jsonKeyMappings, i);
-		
-		const char *hash = json_string_value(json_object_get(jsonKeyMapping, "hash"));
-		const char *name = json_string_value(json_object_get(jsonKeyMapping, "name"));
-		const json_t *jsonGroupId = json_object_get(jsonKeyMapping, "groupId");
-		if (hash != nullptr && name != nullptr) {
-			KeyMapping keyMapping;
-			keyMapping.Hash = std::string(hash);
-			keyMapping.Name = std::string(name);
-			if (!json_is_null(jsonGroupId)) {
-				keyMapping.GroupId = (uint8)json_integer_value(jsonGroupId);
-			}			
-			key_group_map[keyMapping.Hash] = keyMapping;
-		}
-	}
-	json_decref(jsonKeyMappings);
-}
-
-
-/**
- * @brief Network::UpdateKeyMappings
- * Reads mappings from JSON, updates them in-place and saves JSON.
- *
- * Useful for retaining custom entries in JSON file.
- */
-void Network::UpdateKeyMappings()
-{
-	if (GetMode() != NETWORK_MODE_SERVER) {
-		return;
-	}
-	utf8 path[MAX_PATH];
-
-	platform_get_user_directory(path, NULL);
-	strcat(path, "keymappings.json");
-
-	auto local_key_map = std::map<std::string, KeyMapping>(key_group_map);
-
-	json_t * jsonKeyMappings;
-	if (platform_file_exists(path)) {
-		jsonKeyMappings = Json::ReadFromFile(path);
-
-		// Update all the existing entries in JSON
-		size_t groupCount = (size_t)json_array_size(jsonKeyMappings);
-		for (size_t i = 0; i < groupCount; i++) {
-			json_t * jsonKeyMapping = json_array_get(jsonKeyMappings, i);
-			std::string hash(json_string_value(json_object_get(jsonKeyMapping, "hash")));
-			decltype(local_key_map.begin()) it;
-			if ((it = local_key_map.find(hash)) != local_key_map.end()) {
-				json_t *jsonGroupId;
-				if (it->second.GroupId.HasValue()) {
-					jsonGroupId = json_integer(it->second.GroupId.GetValue());
-				} else {
-					jsonGroupId = json_null();
-				}
-				json_object_set_new(jsonKeyMapping, "groupId", jsonGroupId);
-
-				// remove item once it was found and set
-				local_key_map.erase(it);
-			}
-		}
-	} else {
-		jsonKeyMappings = json_array();
-	}
-
-	// Store remaining entries
-	for (auto it = local_key_map.cbegin(); it != local_key_map.cend(); it++) {
-		json_t *keyMapping = json_object();
-		json_object_set(keyMapping, "hash", json_string(it->first.c_str()));
-		json_object_set(keyMapping, "name", json_string(it->second.Name.c_str()));
-
-		json_t *jsonGroupId;
-		if (it->second.GroupId.HasValue()) {
-			jsonGroupId = json_integer(it->second.GroupId.GetValue());
-		} else {
-			jsonGroupId = json_null();
-		}
-		json_object_set(keyMapping, "groupId", jsonGroupId);
-
-		json_array_append(jsonKeyMappings, keyMapping);
-	}
-
-	bool result;
-	try
-	{
-		Json::WriteToFile(path, jsonKeyMappings, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
-		result = true;
-	}
-	catch (Exception ex)
-	{
-		log_error("Unable to save %s: %s", path, ex.GetMessage());
-		result = false;
-	}
-
-	json_decref(jsonKeyMappings);
 }
 
 void Network::Client_Send_TOKEN()
@@ -1958,29 +1810,31 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
 		newid = 0;
 	}
 	if (newid != -1) {
-		// Load keys host may have added manually
-		LoadKeyMappings();
+		std::unique_ptr<NetworkPlayer> player;
+		if (GetMode() == NETWORK_MODE_SERVER) {
+			// Load keys host may have added manually
+			_userManager.Load();
 
-		// Check if the key is registered
-		const KeyMapping *keyMapping = nullptr;
-		{
-			auto it = key_group_map.find(keyhash);
-			if (it != key_group_map.end()) {
-				keyMapping = &it->second;
-			}
-		}
+			// Check if the key is registered
+			const NetworkUser * networkUser = _userManager.GetUserByHash(keyhash);
 
-		std::unique_ptr<NetworkPlayer> player(new NetworkPlayer); // change to make_unique in c++14
-		player->id = newid;
-		player->keyhash = keyhash;
-		if (keyMapping == nullptr) {
-			player->group = GetDefaultGroup();
-			if (!String::IsNullOrEmpty(name)) {
-				player->SetName(MakePlayerNameUnique(std::string(name)));
+			player = std::unique_ptr<NetworkPlayer>(new NetworkPlayer); // change to make_unique in c++14
+			player->id = newid;
+			player->keyhash = keyhash;
+			if (networkUser == nullptr) {
+				player->group = GetDefaultGroup();
+				if (!String::IsNullOrEmpty(name)) {
+					player->SetName(MakePlayerNameUnique(std::string(name)));
+				}
+			} else {
+				player->group = networkUser->GroupId.GetValueOrDefault(GetDefaultGroup());
+				player->SetName(networkUser->Name);
 			}
 		} else {
-			player->group = keyMapping->GroupId.GetValueOrDefault(GetDefaultGroup());
-			player->SetName(keyMapping->Name);
+			player = std::unique_ptr<NetworkPlayer>(new NetworkPlayer); // change to make_unique in c++14
+			player->id = newid;
+			player->group = GetDefaultGroup();
+			player->SetName(name);
 		}
 
 		addedplayer = player.get();
@@ -2009,11 +1863,8 @@ std::string Network::MakePlayerNameUnique(const std::string &name)
 
 		if (unique) {
 			// Check if there is already a registered player with this name
-			for (const auto &keyMapping : this->key_group_map) {
-				if (String::Equals(keyMapping.second.Name.c_str(), new_name.c_str(), true)) {
-					unique = false;
-					break;
-				}
+			if (_userManager.GetUserByName(new_name) != nullptr) {
+				unique = false;
 			}
 		}
 
@@ -2168,7 +2019,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 				connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 				log_verbose("Signature verification failed!");
 			}
-			if (gConfigNetwork.known_keys_only && key_group_map.find(hash) == key_group_map.end()) {
+			if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr) {
 				connection.authstatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
 			}
 		}
@@ -2702,9 +2553,16 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		player->group = groupid;
-		gNetwork.key_group_map[player->keyhash].GroupId = groupid;
-		gNetwork.key_group_map[player->keyhash].Name = player->name;
-		gNetwork.UpdateKeyMappings();
+
+		if (network_get_mode() == NETWORK_MODE_SERVER) {
+			// Add or update saved user
+			NetworkUserManager *userManager = &gNetwork._userManager;
+			NetworkUser *networkUser = userManager->GetOrAddUser(player->keyhash);
+			networkUser->GroupId = groupid;
+			networkUser->Name = player->name;
+			userManager->Save();
+		}
+
 		window_invalidate_by_number(WC_PLAYER, playerid);
 	}
 	*ebx = 0;
