@@ -2635,7 +2635,8 @@ enum {
 
 	STR_MULTIPLAYER_VERIFICATION_FAILURE = 5861,
 	STR_ALLOW_KNOWN_KEYS_ONLY = 5862,
-	STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED = 5863,
+	STR_ALLOW_KNOWN_KEYS_ONLY_TIP = 5863,
+	STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED = 5864,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
