@@ -1312,6 +1312,12 @@ void Network::RemoveGroup(uint8 id)
 	if (group != group_list.end()) {
 		group_list.erase(group);
 	}
+	for (auto &mapping : key_group_map) {
+		if (mapping.second.GroupId.HasValue() && mapping.second.GroupId.GetValue() == id) {
+			mapping.second.GroupId = Nullable<uint8>();
+		}
+	}
+	UpdateKeyMappings();
 }
 
 uint8 Network::GetGroupIDByHash(const std::string &keyhash)
