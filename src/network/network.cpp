@@ -428,7 +428,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
 	tosend.insert(tosend.end(), (uint8*)&sizen, (uint8*)&sizen + sizeof(sizen));
 	tosend.insert(tosend.end(), packet.data->begin(), packet.data->end());
 	while (1) {
-		int sentBytes = send(socket, (const char*)&tosend[packet.transferred], tosend.size() - packet.transferred, 0);
+		int sentBytes = send(socket, (const char*)&tosend[packet.transferred], tosend.size() - packet.transferred, FLAG_NO_PIPE);
 		if (sentBytes == SOCKET_ERROR) {
 			return false;
 		}

@@ -81,6 +81,7 @@ extern "C" {
 	#ifndef SHUT_RDWR
 		#define SHUT_RDWR SD_BOTH
 	#endif
+	#define FLAG_NO_PIPE 0
 #else
 	#include <errno.h>
 	#include <arpa/inet.h>
@@ -94,6 +95,11 @@ extern "C" {
 	#define LAST_SOCKET_ERROR() errno
 	#define closesocket close
 	#define ioctlsocket ioctl
+	#if defined(__LINUX__)
+		#define FLAG_NO_PIPE MSG_NOSIGNAL
+	#else
+		#define FLAG_NO_PIPE 0
+	#endif // defined(__LINUX__)
 #endif // __WINDOWS__
 
 // Fixes issues on OS X
