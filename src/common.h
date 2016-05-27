@@ -47,4 +47,7 @@
 #define FASTCALL
 #endif // PLATFORM_X86
 
+#define STOUT_LIGHT_EXPERIMENT
+#define STOUT_MULTITHREAD_EXPERIMENT
+
 #endif
