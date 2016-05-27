@@ -2029,9 +2029,12 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 			}
 		}
 
-		const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
-		size_t actionIndex = gNetworkActions.FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
-		bool passwordless = group->CanPerformAction(actionIndex);
+		bool passwordless = false;
+		if (connection.authstatus == NETWORK_AUTH_VERIFIED) {
+			const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
+			size_t actionIndex = gNetworkActions.FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
+			passwordless = group->CanPerformAction(actionIndex);
+		}
 		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADVERSION;
 		} else
