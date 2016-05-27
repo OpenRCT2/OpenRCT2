@@ -739,7 +739,8 @@ bool Network::BeginClient(const char* host, unsigned short port)
 		key.SavePrivate(privkey);
 		SDL_RWclose(privkey);
 
-		const utf8 *publicKeyHash = key.PublicKeyHash().c_str();
+		const std::string hash = key.PublicKeyHash();
+		const utf8 *publicKeyHash = hash.c_str();
 		network_get_public_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
 		Console::WriteLine("Key generated, saving public bits as %s", keyPath);
 		SDL_RWops *pubkey = SDL_RWFromFile(keyPath, "wb+");
