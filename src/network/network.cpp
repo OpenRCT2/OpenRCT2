@@ -1072,14 +1072,21 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 	return true;
 }
 
-void Network::KickPlayer(int playerId)
+void Network::KickPlayer(int playerId, int* message_ptr)
 {
 	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
 		if ((*it)->player->id == playerId) {
 			// Disconnect the client gracefully
-			(*it)->setLastDisconnectReason(STR_MULTIPLAYER_KICKED);
 			char str_disconnect_msg[256];
-			format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+			if (message_ptr == 0) {
+				(*it)->setLastDisconnectReason(STR_MULTIPLAYER_KICKED);
+				format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+			} else {
+				// Here is still an error.. Only the first four Bytes are copied; If I try "Cookie", it only sends "Cook?" 
+				(*it)->setLastDisconnectReason((char*)message_ptr);
+				safe_strcpy((char*)&str_disconnect_msg, (char*)message_ptr, sizeof(str_disconnect_msg));
+			}
+
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
 			shutdown((*it)->socket, SHUT_RD);
 			(*it)->SendQueuedPackets();
@@ -2438,7 +2445,7 @@ void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 	}
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
-			gNetwork.KickPlayer(playerid);
+			gNetwork.KickPlayer(playerid, ebp);
 		}
 	}
 	*ebx = 0;
