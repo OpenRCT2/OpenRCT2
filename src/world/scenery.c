@@ -60,6 +60,14 @@ sint16 gSceneryCtrlPressZ;
 
 uint8 gSceneryGroundFlags;
 
+// rct2: 0x009A3E74
+const rct_xy8 ScenerySubTileOffsets[] = {
+	{  7,  7 },
+	{  7, 23 },
+	{ 23, 23 },
+	{ 23,  7 }
+};
+
 void scenery_increase_age(int x, int y, rct_map_element *mapElement);
 
 void scenery_update_tile(int x, int y)
@@ -103,7 +111,7 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 		return;
 	}
 
-	// Check map elements above, presumebly to see if map element is blocked from rain
+	// Check map elements above, presumably to see if map element is blocked from rain
 	mapElementAbove = mapElement;
 	while (!(mapElementAbove->flags & 7)) {
 		mapElementAbove++;

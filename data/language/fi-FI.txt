@@ -894,7 +894,7 @@ STR_0886    :Lopeta peli
 STR_0887    :Lopeta skenaarioeditori
 STR_0888    :Lopeta vuoristoratasuunnittelu
 STR_0889    :Lopeta ratasuunnitelmahallinta
-STR_0890    :Kuva{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :Kuvankaappaus
 STR_0892    :Kuvankaappaus tallennettu levylle nimellä '{STRINGID}'
 STR_0893    :Kuvankaappaus epäonnistui !
@@ -1657,8 +1657,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Auta! Laske minut alas!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Rahat ovat loppumassa!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Vau! Uutta laitetta rakennetaan!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Hieno laite! Mutta se ei ole yhtä hyvä kuin Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}Olen niin innoissani - se on Intaminlaite!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...ja tässä me olemme {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Viimeisimmät ajatukset:
 STR_1655    :{SMALLFONT}{BLACK}Rakenna jalkakäytävä maahan

@@ -2756,8 +2756,6 @@ static void window_ride_mode_tweak_set(rct_window *w, uint8 value)
 		gGameCommandErrorTitle = STR_CANT_CHANGE_TIME_LIMIT;
 	if (ride->mode == RIDE_MODE_SWING)
 		gGameCommandErrorTitle = STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-	if (ride->mode == RIDE_MODE_ROTATION)
-		gGameCommandErrorTitle = STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
 	if (
 		ride->mode == RIDE_MODE_ROTATION ||
 		ride->mode == RIDE_MODE_FORWARD_ROTATION ||

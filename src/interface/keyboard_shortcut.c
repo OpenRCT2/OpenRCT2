@@ -28,6 +28,7 @@
 #include "widget.h"
 #include "../audio/audio.h"
 #include "../platform/platform.h"
+#include "../ride/track_paint.h"
 
 typedef void (*shortcut_action)();
 
@@ -543,6 +544,12 @@ static void shortcut_show_multiplayer()
 		window_multiplayer_open();
 }
 
+static void shortcut_orginal_painting_toggle()
+{
+	gUseOriginalRidePaint = !gUseOriginalRidePaint;
+	gfx_invalidate_screen();
+}
+
 static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_close_top_most_window,
 	shortcut_close_all_floating_windows,
@@ -593,6 +600,7 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
 	shortcut_mute_sound,
 	shortcut_windowed_mode_toggle,
 	shortcut_show_multiplayer,
+	shortcut_orginal_painting_toggle,
 };
 
 #pragma endregion

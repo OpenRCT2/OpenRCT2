@@ -892,7 +892,7 @@ STR_0886    :Avsluta Spel
 STR_0887    :Avsluta Scenarioskaparen
 STR_0888    :Avsluta Berg- och Dalbanabyggaren
 STR_0889    :Avsluta Spårredigeraren
-STR_0890    :SCR{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :Skärmdump
 STR_0892    :Skärmdumpen sparades som '{STRINGID}'
 STR_0893    :Skärmdumpen misslyckades!
@@ -1654,8 +1654,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Hjälp! Släpp ner mig!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Jag börjar få slut på pengar!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Dom bygger en ny åktur!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Najs åktur! Men inte lika bra som Fenixen...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}Jag är så taggad - Det är en intensiv åktur!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...och nu är vi på {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Nyliga tankar:
 STR_1655    :{SMALLFONT}{BLACK}Bygg gångväg på land
@@ -4168,6 +4169,7 @@ STR_5856    :{SMALLFONT}{BLACK}Sätter spelets upplösning när du spelar i full
 STR_5857    :{SMALLFONT}{BLACK}Spel inställningar
 STR_5858    :{SMALLFONT}{BLACK}Använd GPU för grafiken istället för CPU. Ökar kompatibiliteten med skärminspelningsprogram som till exempel Fraps{NEWLINE}Kan försämra prestandan lite grann
 STR_5859    :{SMALLFONT}{BLACK}Aktiverar 'frame tweening' för en visuellt mjukare spelupplevelse.{NEWLINE}Om avaktiverad kommer spelet köras i 40 fps.
+STR_5860    :Växla mellan spelets originala/omskrivna spår på karuseller
 
 
 #############

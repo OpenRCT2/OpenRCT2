@@ -25,6 +25,20 @@
 #include "../../world/map.h"
 #include "../../world/scenery.h"
 
+static const rct_xy16 offsets[] = {
+	{  3,  3 },
+	{  3, 17 },
+	{ 17,  3 },
+	{  3,  3 }
+};
+
+static const rct_xy16 lengths[] = {
+	{ 12, 26 },
+	{ 26, 12 },
+	{ 12, 26 },
+	{ 26, 12 }
+};
+
 /**
  *
  *  rct2: 0x006DFF47
@@ -58,10 +72,10 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
 		if (entry->small_scenery.flags & SMALL_SCENERY_FLAG24) {
 			// 6DFFE3:
-			boxoffset.x = RCT2_ADDRESS(0x009A3E7C, uint16)[direction * 4];
-			boxoffset.y = RCT2_ADDRESS(0x009A3E7E, uint16)[direction * 4];
-			boxlength.x = RCT2_ADDRESS(0x009A3E8C, uint16)[direction * 4];
-			boxlength.y = RCT2_ADDRESS(0x009A3E8E, uint16)[direction * 4];
+			boxoffset.x = offsets[direction].x;
+			boxoffset.y = offsets[direction].y;
+			boxlength.x = lengths[direction].x;
+			boxlength.y = lengths[direction].y;
 			x_offset = 3;
 			y_offset = 3;
 		} else {
@@ -79,16 +93,18 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 					boxlength.y = 30;
 				}
 			}
+			boxoffset.x = x_offset;
+			boxoffset.y = y_offset;
 		}
 	} else {
 		// 6DFFC2:
 		uint32 ecx = ((mapElement->type >> 6) + get_current_rotation()) & 3;
-		x_offset = RCT2_ADDRESS(0x009A3E74, sint8)[ecx * 2];
-		y_offset = RCT2_ADDRESS(0x009A3E75, sint8)[ecx * 2];
+		x_offset = ScenerySubTileOffsets[ecx].x;
+		y_offset = ScenerySubTileOffsets[ecx].y;
+		boxoffset.x = x_offset;
+		boxoffset.y = y_offset;
 	}
-	// 6E0074:
-	boxoffset.x = x_offset;
-	boxoffset.y = y_offset;
+	// 6E007F:
 	boxlength.z = entry->small_scenery.height - 4;
 	if (boxlength.z < 0) {
 		boxlength.z = -128;

@@ -892,7 +892,7 @@ STR_0886    :Sair do Jogo
 STR_0887    :Sair do Editor de Cenário
 STR_0888    :Sair do Construtor de Montanha-Russa
 STR_0889    :Sair do Gerenciador de Projetos de Pista
-STR_0890    :SCR{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :Captura de tela
 STR_0892    :Captura de tela salvo no disco como '{STRINGID}'
 STR_0893    :Capturas de tela falhou !
@@ -1653,8 +1653,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Socorro! Me solte!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Estou ficando sem dinheiro!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Uma nova atração está sendo construída!{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Atração legal! Mas não tão boa quanto a Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}Estou tão animado - É uma atração da Intamin!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...e aqui estamos no {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensamentos recentes:
 STR_1655    :{SMALLFONT}{BLACK}Construir caminho no terreno
