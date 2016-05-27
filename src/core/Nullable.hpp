@@ -28,7 +28,7 @@ public:
         _hasValue = false;
     }
 
-    Nullable(nullptr_t)
+    Nullable(std::nullptr_t)
     {
         _value = T();
         _hasValue = false;
