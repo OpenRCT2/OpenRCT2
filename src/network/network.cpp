@@ -2008,25 +2008,33 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		} else {
 			const char *signature = (const char *)packet.Read(sigsize);
 			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, strlen(pubkey));
-			connection.key.LoadPublic(pubkey_rw);
-			SDL_RWclose(pubkey_rw);
-			bool verified = connection.key.Verify(connection.challenge.data(), connection.challenge.size(), signature, sigsize);
-			const std::string hash = connection.key.PublicKeyHash();
-			if (verified) {
-				connection.authstatus = NETWORK_AUTH_VERIFIED;
-				log_verbose("Signature verification ok. Hash %s", hash.c_str());
-			} else {
+			if (pubkey_rw == nullptr) {
 				connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 				log_verbose("Signature verification failed!");
-			}
-			if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr) {
-				connection.authstatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
+			} else {
+				connection.key.LoadPublic(pubkey_rw);
+				SDL_RWclose(pubkey_rw);
+				bool verified = connection.key.Verify(connection.challenge.data(), connection.challenge.size(), signature, sigsize);
+				const std::string hash = connection.key.PublicKeyHash();
+				if (verified) {
+					connection.authstatus = NETWORK_AUTH_VERIFIED;
+					log_verbose("Signature verification ok. Hash %s", hash.c_str());
+				} else {
+					connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+					log_verbose("Signature verification failed!");
+				}
+				if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr) {
+					connection.authstatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
+				}
 			}
 		}
 
-		const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
-		size_t actionIndex = gNetworkActions.FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
-		bool passwordless = group->CanPerformAction(actionIndex);
+		bool passwordless = false;
+		if (connection.authstatus == NETWORK_AUTH_VERIFIED) {
+			const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
+			size_t actionIndex = gNetworkActions.FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
+			passwordless = group->CanPerformAction(actionIndex);
+		}
 		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
 			connection.authstatus = NETWORK_AUTH_BADVERSION;
 		} else

@@ -92,6 +92,7 @@ bool NetworkKey::Generate()
 
 bool NetworkKey::LoadPrivate(SDL_RWops * file)
 {
+    assert(file != nullptr);
     size_t size = (size_t)file->size(file);
     if (size == (size_t)-1)
     {
@@ -135,6 +136,7 @@ bool NetworkKey::LoadPrivate(SDL_RWops * file)
 
 bool NetworkKey::LoadPublic(SDL_RWops * file)
 {
+    assert(file != nullptr);
     size_t size = (size_t)file->size(file);
     if (size == (size_t)-1)
     {
