@@ -16,26 +16,46 @@
 
 #pragma once
 
-extern "C"
-{
-    #include "../common.h"
-}
+#include "../common.h"
 
-namespace Console
+template<typename T>
+struct Nullable
 {
-    void Write(char c);
-    void Write(const utf8 * str);
-    void WriteSpace(size_t count);
-    void WriteFormat(const utf8 * format, ...);
-    void WriteLine();
-    void WriteLine(const utf8 * format, ...);
-
-    namespace Error
+public:
+    Nullable()
     {
-        void Write(char c);
-        void Write(const utf8 * str);
-        void WriteFormat(const utf8 * format, ...);
-        void WriteLine();
-        void WriteLine(const utf8 * str);
+        _value = T();
+        _hasValue = false;
     }
-}
+
+    Nullable(std::nullptr_t)
+    {
+        _value = T();
+        _hasValue = false;
+    }
+
+    Nullable(const T &value)
+    {
+        _value = value;
+        _hasValue = true;
+    }
+
+    bool HasValue() const
+    {
+        return _hasValue;
+    }
+
+    T GetValue() const
+    {
+        return _value;
+    }
+
+    T GetValueOrDefault(T defaultValue) const
+    {
+        return _hasValue ? _value : defaultValue;
+    }
+
+private:
+    T       _value;
+    bool    _hasValue;
+};

@@ -183,9 +183,9 @@ endif (STATIC)
 
 if (NOT DISABLE_HTTP_TWITCH)
 	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
+	PKG_CHECK_MODULES(SSL REQUIRED openssl)
 	if (WIN32)
 		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
-		PKG_CHECK_MODULES(SSL REQUIRED openssl)
 		set(WSLIBS ws2_32)
 	endif (WIN32)
 	if (STATIC)

@@ -7,6 +7,8 @@
 - Feature: Allow up to 255 cars per train.
 - Feature: Importing SV4 and SC4 files with rides.
 - Removed: BMP screenshots.
+- Technical: [#3699] Assymmetric-key-based authorisation and assignment storage
+- Technical: Mulitplayer groups are now stored in JSON format
 - Fix: [#1038] Guest List is out of order.
 - Fix: [#3282] Launched Freefall ride ratings are fixed for Downward Launch.
 - Fix: [#3307] Ride music and sound has degraded since RCT2.

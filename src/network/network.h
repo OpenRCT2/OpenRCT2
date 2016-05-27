@@ -34,8 +34,11 @@ enum {
 	NETWORK_AUTH_BADVERSION,
 	NETWORK_AUTH_BADNAME,
 	NETWORK_AUTH_BADPASSWORD,
+	NETWORK_AUTH_VERIFICATIONFAILURE,
 	NETWORK_AUTH_FULL,
-	NETWORK_AUTH_REQUIREPASSWORD
+	NETWORK_AUTH_REQUIREPASSWORD,
+	NETWORK_AUTH_VERIFIED,
+	NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED,
 };
 
 enum {
@@ -64,7 +67,7 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "8"
+#define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
@@ -116,8 +119,12 @@ extern "C" {
 #include <memory>
 #include <string>
 #include <vector>
+#include <map>
 #include <SDL.h>
 #include "../core/Json.hpp"
+#include "../core/Nullable.hpp"
+#include "NetworkKey.h"
+#include "NetworkUser.h"
 
 template <std::size_t size>
 struct ByteSwapT { };
@@ -143,7 +150,7 @@ public:
 		T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value));
 		return *this;
 	}
-	void Write(uint8* bytes, unsigned int size);
+	void Write(const uint8* bytes, unsigned int size);
 	void WriteString(const char* string);
 	template <typename T>
 	NetworkPacket& operator>>(T& value) {
@@ -167,10 +174,10 @@ public:
 	NetworkPlayer() = default;
 	void Read(NetworkPacket& packet);
 	void Write(NetworkPacket& packet);
-	void SetName(const char* name);
+	void SetName(const std::string &name);
 	void AddMoneySpent(money32 cost);
 	uint8 id = 0;
-	uint8 name[32 + 1] = { 0 };
+	std::string name;
 	uint16 ping = 0;
 	uint8 flags = 0;
 	uint8 group = 0;
@@ -179,6 +186,7 @@ public:
 	int last_action = -999;
 	uint32 last_action_time = 0;
 	rct_xyz16 last_action_coord = { 0 };
+	std::string keyhash;
 };
 
 class NetworkAction
@@ -247,7 +255,9 @@ public:
 		{STR_ACTION_CHEAT,                  "PERMISSION_CHEAT",
 			{GAME_COMMAND_CHEAT}},
 		{STR_ACTION_TOGGLE_SCENERY_CLUSTER, "PERMISSION_TOGGLE_SCENERY_CLUSTER",
-			{-2}}
+			{-2}},
+		{STR_ACTION_PASSWORDLESS_LOGIN,     "PERMISSION_PASSWORDLESS_LOGIN",
+			{-3}},
 	};
 };
 
@@ -295,6 +305,8 @@ public:
 	int authstatus = NETWORK_AUTH_NONE;
 	NetworkPlayer* player;
 	uint32 ping_time = 0;
+	NetworkKey key;
+	std::vector<uint8> challenge;
 
 private:
 	char* last_disconnect_reason;
@@ -360,12 +372,16 @@ public:
 	NetworkGroup* AddGroup();
 	void RemoveGroup(uint8 id);
 	uint8 GetDefaultGroup();
+	uint8 GetGroupIDByHash(const std::string &keyhash);
 	void SetDefaultGroup(uint8 id);
 	void SaveGroups();
 	void LoadGroups();
 
-	void Client_Send_AUTH(const char* name, const char* password);
+	void Client_Send_TOKEN();
+	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
+	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey);
 	void Server_Send_AUTH(NetworkConnection& connection);
+	void Server_Send_TOKEN(NetworkConnection& connection);
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
@@ -385,6 +401,9 @@ public:
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
+	NetworkKey key;
+	std::vector<uint8> challenge;
+	NetworkUserManager _userManager;
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
@@ -392,7 +411,8 @@ private:
 	void ProcessGameCommandQueue();
 	void AddClient(SOCKET socket);
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
-	NetworkPlayer* AddPlayer();
+	NetworkPlayer* AddPlayer(const utf8 *name, const std::string &keyhash);
+	std::string MakePlayerNameUnique(const std::string &name);
 	void PrintError();
 	const char* GetMasterServerUrl();
 	std::string GenerateAdvertiseKey();
@@ -446,6 +466,7 @@ private:
 	std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
 	void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Client_Joined(const char* name, const std::string &keyhash, NetworkConnection& connection);
 	void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
@@ -461,6 +482,8 @@ private:
 	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
 };
 
 #endif // __cplusplus

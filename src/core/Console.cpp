@@ -55,9 +55,14 @@ namespace Console
         puts("");
     }
 
-    void WriteLine(const utf8 * str)
+    void WriteLine(const utf8 * format, ...)
     {
-        puts(str);
+        va_list args;
+
+        va_start(args, format);
+        vfprintf(stdout, format, args);
+        puts("");
+        va_end(args);
     }
 
     namespace Error

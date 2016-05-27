@@ -408,8 +408,8 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 			if (gConfigTwitch.channel != NULL && gConfigTwitch.channel[0] != 0) {
 				_menuDropdownIncludesTwitch = true;
 				gDropdownItemsFormat[12] = 0;
-				gDropdownItemsFormat[13] = 1156;
-				gDropdownItemsArgs[13] = STR_TWITCH_ENABLE;
+				gDropdownItemsFormat[DDIDX_ENABLE_TWITCH] = 1156;
+				gDropdownItemsArgs[DDIDX_ENABLE_TWITCH] = STR_TWITCH_ENABLE;
 				numItems = 14;
 			}
 		#endif
@@ -425,7 +425,7 @@ static void window_top_toolbar_mousedown(int widgetIndex, rct_window*w, rct_widg
 
 #ifndef DISABLE_TWITCH
 		if (_menuDropdownIncludesTwitch && gTwitchEnable) {
-			dropdown_set_checked(13, true);
+			dropdown_set_checked(DDIDX_ENABLE_TWITCH, true);
 		}
 #endif
 		break;
