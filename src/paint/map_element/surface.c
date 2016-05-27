@@ -644,12 +644,14 @@ void viewport_surface_draw_land_side_bottom(enum edge edge, uint8 height, uint8 
 				}
 			}
 
-			sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+			if (curHeight != RCT2_GLOBAL(tunnelArray, uint8)) {
+				sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
-			curHeight++;
-			continue;
+				curHeight++;
+				continue;
+			}
 		}
-
+		
 		// Tunnels
 		uint8 tunnelType = RCT2_GLOBAL(tunnelArray + 1, uint8);
 		uint8 tunnelHeight = stru_97B570[tunnelType][0];
