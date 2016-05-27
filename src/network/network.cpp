@@ -1090,7 +1090,7 @@ void Network::KickPlayer(int playerId)
 
 void Network::SetPassword(const char* password)
 {
-	Network::password = password;
+	Network::password = password == nullptr ? "" : password;
 }
 
 void Network::ShutdownClient()
