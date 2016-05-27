@@ -42,6 +42,7 @@ NetworkUser * NetworkUser::FromJson(json_t * json)
         if (!json_is_null(jsonGroupId)) {
             user->GroupId = (uint8)json_integer_value(jsonGroupId);
         }
+        user->Remove = false;
         return user;
     }
     return user;
@@ -137,8 +138,19 @@ void NetworkUserManager::Save()
         {
             auto hashString = std::string(hash);
             const NetworkUser * networkUser = GetUserByHash(hashString);
-            networkUser->ToJson(jsonUser);
-            savedHashes.insert(hashString);
+            if (networkUser != nullptr)
+            {
+                if (networkUser->Remove)
+                {
+                    json_array_remove(jsonUsers, i);
+                    i--;
+                }
+                else
+                {
+                    networkUser->ToJson(jsonUser);
+                    savedHashes.insert(hashString);
+                }
+            }
         }
     }
 
@@ -146,7 +158,7 @@ void NetworkUserManager::Save()
     for (const auto &kvp : _usersByHash)
     {
         const NetworkUser * networkUser = kvp.second;
-        if (savedHashes.find(networkUser->Hash) == savedHashes.end())
+        if (!networkUser->Remove && savedHashes.find(networkUser->Hash) == savedHashes.end())
         {
             json_t * jsonUser = networkUser->ToJson();
             json_array_append_new(jsonUsers, jsonUser);
@@ -168,6 +180,11 @@ void NetworkUserManager::UnsetUsersOfGroup(uint8 groupId)
             networkUser->GroupId = nullptr;
         }
     }
+}
+
+void NetworkUserManager::RemoveUser(const std::string &hash)
+{
+    _usersByHash[hash]->Remove = true;
 }
 
 NetworkUser * NetworkUserManager::GetUserByHash(const std::string &hash)

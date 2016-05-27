@@ -2704,6 +2704,11 @@ void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, 
 	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
 		if (gNetwork.GetMode() == NETWORK_MODE_SERVER) {
 			gNetwork.KickPlayer(playerid);
+
+			NetworkUserManager * networkUserManager = &gNetwork._userManager;
+			networkUserManager->Load();
+			networkUserManager->RemoveUser(player->keyhash);
+			networkUserManager->Save();
 		}
 	}
 	*ebx = 0;

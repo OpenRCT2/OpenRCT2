@@ -29,6 +29,7 @@ public:
     std::string         Hash;
     std::string         Name;
     Nullable<uint8>     GroupId;
+    bool                Remove;
 
     static NetworkUser * FromJson(json_t * json);
 
@@ -52,6 +53,8 @@ public:
     void Save();
 
     void UnsetUsersOfGroup(uint8 groupId);
+    void RemoveUser(const std::string &hash);
+
     NetworkUser * GetUserByHash(const std::string &hash);
     const NetworkUser * GetUserByHash(const std::string &hash) const;
     const NetworkUser * GetUserByName(const std::string &name) const;
