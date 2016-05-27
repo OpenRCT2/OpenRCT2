@@ -662,6 +662,10 @@ void platform_resolve_user_data_path()
 	const char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (gCustomUserDataPath[0] != 0) {
+		if (!platform_ensure_directory_exists(gCustomUserDataPath)) {
+			log_error("Failed to create directory \"%s\", make sure you have permissions.", gCustomUserDataPath);
+			return;
+		}
 		if (realpath(gCustomUserDataPath, _userDataDirectoryPath) == NULL) {
 			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
 			return;
