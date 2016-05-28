@@ -5784,6 +5784,19 @@ static void peep_update(rct_peep *peep)
 			stepsToTake += stepsToTake / 2;
 	}
 
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+	if (gConfigPeepsEx.peep_messy_congestion && peep->state == PEEP_STATE_WALKING) {
+		if (peep->peeps_ex_crowded_store > 15)
+			stepsToTake /= 3 + scenario_rand_max(5);
+		else if (peep->peeps_ex_crowded_store > 9)
+			stepsToTake /= 2 + scenario_rand_max(3);
+		else if (peep->peeps_ex_crowded_store > 4) {
+			stepsToTake *= 2;
+			stepsToTake /= 3 + scenario_rand_max(2);
+		}
+	}
+	#endif STOUT_PEEPS_EXPANDED_EXPERIMENT
+
 	unsigned int carryCheck = peep->var_73 + stepsToTake;
 	peep->var_73 = carryCheck;
 	if (carryCheck <= 255) {
