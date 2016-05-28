@@ -54,13 +54,14 @@ extern "C" {
 #include "../util/util.h"
 #include "../cheats.h"
 
+#include "NetworkAction.h"
+
 #include <openssl/evp.h> // just for OpenSSL_add_all_algorithms()
 }
 
 #pragma comment(lib, "Ws2_32.lib")
 
 Network gNetwork;
-NetworkActions gNetworkActions;
 
 enum {
 	ADVERTISE_STATUS_DISABLED,
@@ -114,147 +115,6 @@ void NetworkPlayer::AddMoneySpent(money32 cost)
 	money_spent += cost;
 	commands_ran++;
 	window_invalidate_by_number(WC_PLAYER, id);
-}
-
-int NetworkActions::FindCommand(int command)
-{
-	auto it = std::find_if(actions.begin(), actions.end(), [&command](NetworkAction const& action) {
-		for (auto it = action.commands.begin(); it != action.commands.end(); it++) {
-			if ((*it) == command) {
-				return true;
-			}
-		}
-		return false;
-	});
-	if (it != actions.end()) {
-		return it - actions.begin();
-	}
-	return -1;
-}
-
-int NetworkActions::FindCommandByPermissionName(const std::string &permission_name)
-{
-	auto it = std::find_if(actions.begin(), actions.end(), [&permission_name](NetworkAction const& action) {
-		if (action.permission_name == permission_name) {
-			return true;
-		}
-		return false;
-	});
-	if (it != actions.end()) {
-		return it - actions.begin();
-	}
-	return -1;
-}
-
-NetworkGroup::NetworkGroup()
-{
-	actions_allowed = {0};
-}
-
-NetworkGroup::~NetworkGroup()
-{
-
-}
-
-void NetworkGroup::Read(NetworkPacket& packet)
-{
-	packet >> id;
-	SetName(packet.ReadString());
-	for (size_t i = 0; i < actions_allowed.size(); i++) {
-		packet >> actions_allowed[i];
-	}
-}
-
-void NetworkGroup::Write(NetworkPacket& packet) 
-{
-	packet << id;
-	packet.WriteString(GetName().c_str());
-	for (size_t i = 0; i < actions_allowed.size(); i++) {
-		packet << actions_allowed[i];
-	}
-}
-
-json_t * NetworkGroup::ToJson() const
-{
-	json_t * jsonGroup = json_object();
-	json_object_set_new(jsonGroup, "id", json_integer(id));
-	json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
-	json_t * actionsArray = json_array();
-	for (size_t i = 0; i < gNetworkActions.actions.size(); i++) {
-		if (CanPerformAction(i)) {
-			const char * perm_name = gNetworkActions.actions[i].permission_name.c_str();
-			json_array_append_new(actionsArray, json_string(perm_name));
-		}
-	}
-	json_object_set_new(jsonGroup, "permissions", actionsArray);
-	return jsonGroup;
-}
-
-NetworkGroup NetworkGroup::FromJson(const json_t * json)
-{
-	NetworkGroup group;
-	json_t * jsonId = json_object_get(json, "id");
-	json_t * jsonName = json_object_get(json, "name");
-	json_t * jsonPermissions = json_object_get(json, "permissions");
-	if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr) {
-		throw Exception("Missing group data");
-	}
-	group.id = (uint8)json_integer_value(jsonId);
-	group.name = std::string(json_string_value(jsonName));
-	for (size_t i = 0; i < group.actions_allowed.size(); i++) {
-		group.actions_allowed[i] = 0;
-	}
-	for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
-		json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
-		const char * perm_name = json_string_value(jsonPermissionValue);
-		if (perm_name == nullptr) {
-			continue;
-		}
-		int action_id = gNetworkActions.FindCommandByPermissionName(perm_name);
-		if (action_id != -1) {
-			group.ToggleActionPermission(action_id);
-		}
-	}
-	return group;
-}
-
-void NetworkGroup::ToggleActionPermission(size_t index)
-{
-	size_t byte = index / 8;
-	size_t bit = index % 8;
-	if (byte >= actions_allowed.size()) {
-		return;
-	}
-	actions_allowed[byte] ^= (1 << bit);
-}
-
-bool NetworkGroup::CanPerformAction(size_t index) const
-{
-	size_t byte = index / 8;
-	size_t bit = index % 8;
-	if (byte >= actions_allowed.size()) {
-		return false;
-	}
-	return (actions_allowed[byte] & (1 << bit)) ? true : false;
-}
-
-bool NetworkGroup::CanPerformCommand(int command) const
-{
-	int action = gNetworkActions.FindCommand(command);
-	if (action != -1) {
-		return CanPerformAction(action);
-	}
-	return false;
-}
-
-const std::string& NetworkGroup::GetName() const
-{
-	return name;
-}
-
-void NetworkGroup::SetName(std::string name)
-{
-	NetworkGroup::name = name;
 }
 
 Network::Network()
@@ -1413,7 +1273,7 @@ void Network::ProcessGameCommandQueue()
 		if (cost != MONEY32_UNDEFINED) {
 			NetworkPlayer* player = GetPlayerByID(gc.playerid);
 			if (player) {
-				player->last_action = gNetworkActions.FindCommand(command);
+				player->last_action = NetworkActions::FindCommand(command);
 				player->last_action_time = SDL_GetTicks();
 				player->AddMoneySpent(cost);
 			}
@@ -1695,7 +1555,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		bool passwordless = false;
 		if (connection.authstatus == NETWORK_AUTH_VERIFIED) {
 			const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
-			size_t actionIndex = gNetworkActions.FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
+			size_t actionIndex = NetworkActions::FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
 			passwordless = group->CanPerformAction(actionIndex);
 		}
 		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
@@ -1878,7 +1738,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		return;
 	}
 
-	connection.player->last_action = gNetworkActions.FindCommand(commandCommand);
+	connection.player->last_action = NetworkActions::FindCommand(commandCommand);
 	connection.player->last_action_time = SDL_GetTicks();
 	connection.player->AddMoneySpent(cost);
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
@@ -2122,7 +1982,7 @@ int network_get_player_last_action(unsigned int index, int time)
 
 void network_set_player_last_action(unsigned int index, int command)
 {
-	gNetwork.player_list[index]->last_action = gNetworkActions.FindCommand(command);
+	gNetwork.player_list[index]->last_action = NetworkActions::FindCommand(command);
 	gNetwork.player_list[index]->last_action_time = SDL_GetTicks();
 }
 
@@ -2392,12 +2252,12 @@ uint8 network_get_default_group()
 
 int network_get_num_actions()
 {
-	return gNetworkActions.actions.size();
+	return NetworkActions::Actions.size();
 }
 
 rct_string_id network_get_action_name_string_id(unsigned int index)
 {
-	return gNetworkActions.actions[index].name;
+	return NetworkActions::Actions[index].name;
 }
 
 int network_can_perform_action(unsigned int groupindex, unsigned int index)

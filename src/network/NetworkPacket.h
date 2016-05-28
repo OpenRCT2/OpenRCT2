@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <vector>
+#include "NetworkTypes.h"
 #include "../common.h"
 
 class NetworkPacket
