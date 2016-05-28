@@ -893,7 +893,7 @@ STR_0886    :Quitter la partie
 STR_0887    :Quitter l'éditeur de scénario
 STR_0888    :Quitter le concepteur de montagnes russes
 STR_0889    :Quitter le gestionnaire des voies
-STR_0890    :SCR{COMMA16}.BMP
+STR_0890    :<removed string - do not use>
 STR_0891    :Capture d'écran
 STR_0892    :Capture d'écran sauvegardée en tant que '{STRINGID}'
 STR_0893    :Echec de la capture d'écran!
@@ -1654,8 +1654,9 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}À l'aide ! Déposez-moi !{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Je n'ai plus d'argent !{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Ouah! Ils construisent une nouvelle attraction !{ENDQUOTES}
-STR_1651    :{SMALLFONT}{OPENQUOTES}Super attraction ! Mais pas aussi bien que le Phoenix...{ENDQUOTES}
-STR_1652    :{SMALLFONT}{OPENQUOTES}Je suis tellement excité: c'est une attraction Intamin!{ENDQUOTES}
+# Two removed inside jokes about Intamin and Phoenix
+STR_1651    :<removed string - do not use>
+STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}... et là nous sommes sur {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensées récentes :
 STR_1655    :{SMALLFONT}{BLACK}Construire une allée sur le terrain

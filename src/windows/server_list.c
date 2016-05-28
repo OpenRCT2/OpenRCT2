@@ -137,6 +137,7 @@ static void dispose_server_entry_list();
 static void dispose_server_entry(server_entry *serverInfo);
 static server_entry* add_server_entry(char *address);
 static void remove_server_entry(int index);
+static void sort_servers();
 static void join_server(char *address);
 static void fetch_servers();
 #ifndef DISABLE_HTTP
@@ -365,6 +366,7 @@ static void window_server_list_textinput(rct_window *w, int widgetIndex, char *t
 
 	case WIDX_ADD_SERVER:
 		add_server_entry(text);
+		sort_servers();
 		server_list_save_server_entries();
 		window_invalidate(w);
 		break;
@@ -551,8 +553,9 @@ static void server_list_load_server_entries()
 		serverInfo->players = 0;
 		serverInfo->maxplayers = 0;
 	}
-
 	SDL_RWclose(file);
+
+	sort_servers();
 	SDL_UnlockMutex(_mutex);
 }
 
@@ -661,6 +664,40 @@ static void remove_server_entry(int index)
 	SDL_UnlockMutex(_mutex);
 }
 
+static int server_compare(const void *a, const void *b)
+{
+	const server_entry *serverA = (const server_entry*)a;
+	const server_entry *serverB = (const server_entry*)b;
+
+	// Order by favourite
+	if (serverA->favourite != serverB->favourite) {
+		if (serverA->favourite) return -1;
+		else return 1;
+	}
+
+	// Then by version
+	bool serverACompatible = strcmp(serverA->version, NETWORK_STREAM_ID) == 0;
+	bool serverBCompatible = strcmp(serverB->version, NETWORK_STREAM_ID) == 0;
+	if (serverACompatible != serverBCompatible) {
+		if (serverACompatible) return -1;
+		else return 1;
+	}
+
+	// Then by password protection
+	if (serverA->requiresPassword != serverB->requiresPassword) {
+		if (!serverA->requiresPassword) return -1;
+		else return 1;
+	}
+
+	// Then by name
+	return _strcmpi(serverA->name, serverB->name);
+}
+
+static void sort_servers()
+{
+	qsort(_serverEntries, _numServerEntries, sizeof(server_entry), server_compare);
+}
+
 static char *substr(char *start, int length)
 {
 	char *result = malloc(length + 1);
@@ -725,6 +762,7 @@ static void fetch_servers()
 			i = 0;
 		}
 	}
+	sort_servers();
 	SDL_UnlockMutex(_mutex);
 
 	http_json_request request;
@@ -806,6 +844,7 @@ static void fetch_servers_callback(http_json_response* response)
 	}
 	http_request_json_dispose(response);
 
+	sort_servers();
 	_numPlayersOnline = get_total_player_count();
 
 	rct_window *window = window_find_by_class(WC_SERVER_LIST);

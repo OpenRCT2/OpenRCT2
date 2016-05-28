@@ -49,8 +49,8 @@ utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 /**
- * The function that is called directly from the host application (rct2.exe)'s WinMain. This will be removed when OpenRCT2 can
- * be built as a stand alone application.
+ * The function that is called directly from the host application (rct2.exe)'s WinMain.
+ * This will be removed when OpenRCT2 can be built as a stand alone application.
  */
 int main(int argc, const char **argv)
 {
@@ -138,8 +138,9 @@ bool platform_original_game_data_exists(const utf8 *path)
 	wcstombs(buffer, wPath, len);
 	buffer[len] = '\0';
 	free(wPath);
+	char separator = platform_get_path_separator();
 	char checkPath[MAX_PATH];
-	sprintf(checkPath, "%s%c%s%c%s", buffer, platform_get_path_separator(), "Data", platform_get_path_separator(), "g1.dat");
+	sprintf(checkPath, "%s%c%s%c%s", buffer, separator, "Data", separator, "g1.dat");
 	return platform_file_exists(checkPath);
 }
 
@@ -661,15 +662,27 @@ void platform_resolve_user_data_path()
 	const char separator[2] = { platform_get_path_separator(), 0 };
 
 	if (gCustomUserDataPath[0] != 0) {
-		if (realpath(gCustomUserDataPath, _userDataDirectoryPath) == NULL) {
+		if (!platform_ensure_directory_exists(gCustomUserDataPath)) {
+			log_error("Failed to create directory \"%s\", make sure you have permissions.", gCustomUserDataPath);
+			return;
+		}
+		char *path;
+		if ((path = realpath(gCustomUserDataPath, NULL)) == NULL) {
 			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
 			return;
 		}
+
+		safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
+		free(path);
 
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
 			strncat(_userDataDirectoryPath, separator, MAX_PATH - 1);
+		}
+		log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
+		if (!platform_directory_exists(_userDataDirectoryPath)) {
+			log_error("Custom user data directory %s does not exist", _userDataDirectoryPath);
 		}
 		return;
 	}
@@ -689,6 +702,7 @@ void platform_resolve_user_data_path()
 	free(w_buffer);
 	safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
 	free(path);
+	log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
 }
 
 void platform_get_openrct_data_path(utf8 *outPath)
@@ -764,8 +778,10 @@ uint16 platform_get_locale_language(){
 	const char *langString = setlocale(LC_MESSAGES, "");
 	if(langString != NULL){
 		// The locale has the following form:
-		// language[_territory[.codeset]][@modifier] (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
-		char pattern[32]; // longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+		// language[_territory[.codeset]][@modifier]
+		// (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
+		// longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+		char pattern[32];
 		//strip the codeset and modifier part
 		int length = strlen(langString);
 		{
@@ -781,7 +797,9 @@ uint16 platform_get_locale_language(){
 		//find _ if present
 		const char *strip = strchr(pattern, '_');
 		if(strip != NULL){
-			pattern[strip - pattern] = '?'; // could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change. pattern is now "language?territory"
+			// could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change.
+			// pattern is now "language?territory"
+			pattern[strip - pattern] = '?';
 		}
 
 		// Iterate through all available languages
@@ -862,7 +880,11 @@ uint8 platform_get_locale_temperature_format(){
 	#endif
 
 	if(langstring != NULL){
-		if(!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0) || !fnmatch("*_PW*", langstring, 0)){
+		if (!fnmatch("*_US*", langstring, 0) ||
+			!fnmatch("*_BS*", langstring, 0) ||
+			!fnmatch("*_BZ*", langstring, 0) ||
+			!fnmatch("*_PW*", langstring, 0))
+		{
 			return TEMPERATURE_FORMAT_F;
 		}
 	}

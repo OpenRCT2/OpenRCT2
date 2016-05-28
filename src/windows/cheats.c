@@ -132,8 +132,8 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #define YOS				TAB_HEIGHT + YSPA								// Y offset from top (includes tabs height)
 #define BTNW			110												// button width
 #define BTNH			16												// button height
-#define OPTW			220												// Option (checkbox) width (two colums)
-#define OPTH			10												// Option (checkbox) height (two colums)
+#define OPTW			220												// Option (checkbox) width (two columns)
+#define OPTH			10												// Option (checkbox) height (two columns)
 #define GROUP_SPACE		6
 
 #define YPL(ROW)		((sint16)(YOS + ((BTNH + YSPA) * ROW)))
@@ -215,7 +215,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(4) + 8,		YPL(4) + 12,	STR_NUMERIC_DOWN,					STR_NONE },								// decrease rating
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(5), 		HPL(5),			STR_CHEAT_WIN_SCENARIO,				STR_NONE},								// Win scenario
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(5), 		HPL(5),			STR_CHEAT_HAVE_FUN,					STR_NONE},								// Have fun!
-	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(6),		HPL(6),		STR_CHEAT_NEVERENDING_MARKETING,			STR_CHEAT_NEVERENDING_MARKETING_TIP },	// neverending marketing campaigns
+	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(6),		HPL(6),		STR_CHEAT_NEVERENDING_MARKETING,			STR_CHEAT_NEVERENDING_MARKETING_TIP },	// never ending marketing campaigns
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(7.25),			HPL(9.5),		STR_CHEAT_CLIMATE_GROUP,			STR_NONE },							// Climate group
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_FREEZE_CLIMATE_TIP },			// Freeze climate
 	{ WWT_DROPDOWN,			1,		XPL(1),					WPL(1),					YPL(9) + 2,		YPL(9) + 13,	STR_NONE,							STR_FORCE_WEATHER_TOOLTIP },			// Force weather
@@ -235,7 +235,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 static rct_widget window_cheats_rides_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(0),			HPL(0),			STR_CHEAT_RENEW_RIDES,				STR_CHEAT_RENEW_RIDES_TIP },			// Renew rides
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,		STR_CHEAT_MAKE_DESTRUCTABLE_TIP },		// All destructable
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_MAKE_DESTRUCTABLE,		STR_CHEAT_MAKE_DESTRUCTABLE_TIP },		// All destructible
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_FIX_ALL_RIDES,			STR_CHEAT_FIX_ALL_RIDES_TIP },			// Fix all rides
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(11),		OHPL(11),		STR_CHEAT_UNLOCK_OPERATING_LIMITS,	STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(9),			OHPL(9),		STR_CHEAT_DISABLE_BRAKES_FAILURE,	STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP }, // Disable brakes failure

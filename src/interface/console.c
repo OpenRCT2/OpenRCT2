@@ -139,7 +139,7 @@ void console_update()
 			}
 		}
 
-		// Remove unwated characters in console input
+		// Remove unwanted characters in console input
 		utf8_remove_format_codes(_consoleCurrentLine, false);
 	}
 
@@ -525,6 +525,9 @@ static int cc_get(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "money") == 0) {
 			console_printf("money %d.%d0", DECRYPT_MONEY(gCashEncrypted) / 10, DECRYPT_MONEY(gCashEncrypted) % 10);
 		}
+		else if (strcmp(argv[0], "scenario_initial_cash") == 0) {
+			console_printf("scenario_initial_cash %d", gInitialCash / 10);
+		}
 		else if (strcmp(argv[0], "current_loan") == 0) {
 			console_printf("current_loan %d", gBankLoan / 10);
 		}
@@ -659,6 +662,10 @@ static int cc_set(const utf8 **argv, int argc)
 		if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
 			gCashEncrypted = ENCRYPT_MONEY(MONEY((int)double_val[0], ((int)(double_val[0] * 100)) % 100));
 			console_execute_silent("get money");
+		}
+		else if (strcmp(argv[0], "scenario_initial_cash") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gInitialCash = clamp(MONEY(int_val[0], 0), MONEY(0, 0), MONEY(1000000, 00));
+			console_execute_silent("get scenario_initial_cash");
 		}
 		else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			gBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
@@ -997,6 +1004,7 @@ typedef struct console_command {
 utf8* console_variable_table[] = {
 	"park_rating",
 	"money",
+	"scenario_initial_cash",
 	"current_loan",
 	"max_loan",
 	"guest_initial_cash",
@@ -1022,7 +1030,8 @@ utf8* console_variable_table[] = {
 	"test_unfinished_tracks",
 	"no_test_crashes",
 	"location",
-	"window_scale"
+	"window_scale",
+	"paint_segments",
 };
 utf8* console_window_table[] = {
 	"object_selection",
@@ -1036,7 +1045,7 @@ utf8* console_window_table[] = {
 console_command console_command_table[] = {
 	{ "clear", cc_clear, "Clears the console.", "clear"},
 	{ "hide", cc_hide, "Hides the console.", "hide"},
-	{ "echo", cc_echo, "Echos the text to the console.", "echo <text>" },
+	{ "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
 	{ "help", cc_help, "Lists commands or info about a command.", "help [command]" },
 	{ "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
 	{ "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },

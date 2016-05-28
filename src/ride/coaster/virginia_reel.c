@@ -476,7 +476,6 @@ static void paint_virginia_reel_track_left_quarter_turn_1_tile(uint8 rideIndex, 
 			break;
 		case 1:
 			wooden_a_supports_paint_setup(2, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
-			paint_util_push_tunnel_left(height, TUNNEL_6);
 			break;
 		case 2:
 			wooden_a_supports_paint_setup(3, 0, height, RCT2_GLOBAL(0x00F4419C, uint32), NULL);
