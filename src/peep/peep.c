@@ -7478,6 +7478,19 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 14);
 	}
 
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+
+		// Remember for a while what the tile was like; this allows us to
+		//	make the peeps walk a bit differently when congested without
+		//	repeating the check
+
+	if (peep->state == PEEP_STATE_WALKING) {
+		peep->peeps_ex_crowded_store /= 2;
+		peep->peeps_ex_crowded_store += min(100, crowded / 2);
+	}
+
+	#endif
+
 	litter_count = min(3, litter_count);
 	sick_count = min(3, sick_count);
 
