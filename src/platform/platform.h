@@ -20,7 +20,9 @@
 #include "../common.h"
 
 #ifdef __WINDOWS__
-#define HAVE_MATH_H
+	#ifndef HAVE_MATH_H
+		#define HAVE_MATH_H
+	#endif
 #endif // __WINDOWS__
 
 #include <SDL.h>
