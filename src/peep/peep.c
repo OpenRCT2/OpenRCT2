@@ -504,6 +504,23 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 
+		#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+
+			// If guests are idly walking and they have spent a lot of time here, make them always leave;
+			//	this gives some rides a bit of new life, makes new people spend entry fees again, also gets
+			//	rid of the bizarre '10 hours in park'. Note that enabling this at a low value on a long-running
+			//	park will cause a general exodus.
+
+		if (peep->state == PEEP_STATE_WALKING) {
+			uint32 time_duration = gScenarioTicks - peep->time_in_park;
+
+			if ((time_duration >> 11) > gConfigPeepsEx.guest_max_time_in_park) {
+				peep_leave_park(peep);
+			}
+		}
+
+		#endif
+
 		if ((scenario_rand() & 0xFFFF) <= (peep->item_standard_flags & PEEP_ITEM_MAP ? 8192U : 2184U)){
 			peep_pick_ride_to_go_on(peep);
 		}
