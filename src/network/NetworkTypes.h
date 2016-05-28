@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <sdl/SDL_endian.h>
-#include <sdl/SDL_platform.h>
+#include <SDL_endian.h>
+#include <SDL_platform.h>
 
 #ifdef __WINDOWS__
     // winsock2 must be included before windows.h

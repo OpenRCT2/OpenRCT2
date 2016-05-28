@@ -22,9 +22,9 @@
 class NetworkAction
 {
 public:
-    rct_string_id       name;
-    std::string         permission_name;
-    std::vector<int>    commands;
+    rct_string_id       Name;
+    std::string         PermissionName;
+    std::vector<int>    Commands;
 };
 
 class NetworkActions

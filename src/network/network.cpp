@@ -154,7 +154,7 @@ void Network::Close()
 		return;
 	}
 	if (mode == NETWORK_MODE_CLIENT) {
-		closesocket(server_connection.socket);
+		closesocket(server_connection.Socket);
 	} else
 	if (mode == NETWORK_MODE_SERVER) {
 		closesocket(listening_socket);
@@ -162,9 +162,9 @@ void Network::Close()
 
 	mode = NETWORK_MODE_NONE;
 	status = NETWORK_STATUS_NONE;
-	server_connection.authstatus = NETWORK_AUTH_NONE;
-	server_connection.inboundpacket.Clear();
-	server_connection.setLastDisconnectReason(nullptr);
+	server_connection.AuthStatus = NETWORK_AUTH_NONE;
+	server_connection.InboundPacket.Clear();
+	server_connection.SetLastDisconnectReason(nullptr);
 
 	client_connection_list.clear();
 	game_command_queue.clear();
@@ -341,7 +341,7 @@ int Network::GetStatus()
 int Network::GetAuthStatus()
 {
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		return server_connection.authstatus;
+		return server_connection.AuthStatus;
 	} else
 	if (GetMode() == NETWORK_MODE_SERVER) {
 		return NETWORK_AUTH_OK;
@@ -429,8 +429,8 @@ void Network::UpdateClient()
 		NetworkAddress::RESOLVE_STATUS result = server_address.GetResult(&ss, &ss_len);
 
 		if (result == NetworkAddress::RESOLVE_OK) {
-			server_connection.socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
-			if (server_connection.socket == INVALID_SOCKET) {
+			server_connection.Socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
+			if (server_connection.Socket == INVALID_SOCKET) {
 				log_error("Unable to create socket.");
 				connectfailed = true;
 				break;
@@ -443,7 +443,7 @@ void Network::UpdateClient()
 				break;
 			}
 
-			if (connect(server_connection.socket, (sockaddr *)&ss, ss_len) == SOCKET_ERROR &&
+			if (connect(server_connection.Socket, (sockaddr *)&ss, ss_len) == SOCKET_ERROR &&
 				(LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)
 			) {
 				char str_connecting[256];
@@ -468,7 +468,7 @@ void Network::UpdateClient()
 	case NETWORK_STATUS_CONNECTING:{
 		int error = 0;
 		socklen_t len = sizeof(error);
-		int result = getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+		int result = getsockopt(server_connection.Socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
 		if (result != 0) {
 			log_error("getsockopt failed with error %d", LAST_SOCKET_ERROR());
 			break;
@@ -485,14 +485,14 @@ void Network::UpdateClient()
 		}
 		fd_set writeFD;
 		FD_ZERO(&writeFD);
-		FD_SET(server_connection.socket, &writeFD);
+		FD_SET(server_connection.Socket, &writeFD);
 		timeval timeout;
 		timeout.tv_sec = 0;
 		timeout.tv_usec = 0;
-		if (select(server_connection.socket + 1, NULL, &writeFD, NULL, &timeout) > 0) {
+		if (select(server_connection.Socket + 1, NULL, &writeFD, NULL, &timeout) > 0) {
 			error = 0;
 			socklen_t len = sizeof(error);
-			result = getsockopt(server_connection.socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
+			result = getsockopt(server_connection.Socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len);
 			if (result != 0) {
 				log_error("getsockopt failed with error %d", LAST_SOCKET_ERROR());
 				break;
@@ -512,13 +512,13 @@ void Network::UpdateClient()
 	case NETWORK_STATUS_CONNECTED:
 		if (!ProcessConnection(server_connection)) {
 			// Do not show disconnect message window when password window closed/canceled
-			if (server_connection.authstatus == NETWORK_AUTH_REQUIREPASSWORD) {
+			if (server_connection.AuthStatus == NETWORK_AUTH_REQUIREPASSWORD) {
 				window_network_status_close();
 			} else {
 				char str_disconnected[256];
 
-				if (server_connection.getLastDisconnectReason()) {
-					const char * disconnect_reason = server_connection.getLastDisconnectReason();
+				if (server_connection.GetLastDisconnectReason()) {
+					const char * disconnect_reason = server_connection.GetLastDisconnectReason();
 					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
 				} else {
 					format_string(str_disconnected, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, NULL);
@@ -570,7 +570,7 @@ NetworkPlayer* Network::GetPlayerByID(uint8 id)
 
 std::vector<std::unique_ptr<NetworkGroup>>::iterator Network::GetGroupIteratorByID(uint8 id)
 {
-	auto it = std::find_if(group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) { return group->id == id; });
+	auto it = std::find_if(group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; });
 	if (it != group_list.end()) {
 		return it;
 	}
@@ -635,13 +635,13 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
 void Network::KickPlayer(int playerId)
 {
 	for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		if ((*it)->player->id == playerId) {
+		if ((*it)->Player->id == playerId) {
 			// Disconnect the client gracefully
-			(*it)->setLastDisconnectReason(STR_MULTIPLAYER_KICKED);
+			(*it)->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
 			char str_disconnect_msg[256];
 			format_string(str_disconnect_msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
 			Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
-			shutdown((*it)->socket, SHUT_RD);
+			shutdown((*it)->Socket, SHUT_RD);
 			(*it)->SendQueuedPackets();
 			break;
 		}
@@ -656,7 +656,7 @@ void Network::SetPassword(const char* password)
 void Network::ShutdownClient()
 {
 	if (GetMode() == NETWORK_MODE_CLIENT) {
-		shutdown(server_connection.socket, SHUT_RDWR);
+		shutdown(server_connection.Socket, SHUT_RDWR);
 	}
 }
 
@@ -786,7 +786,7 @@ NetworkGroup* Network::AddGroup()
 	// Find first unused group id
 	for (int id = 0; id < 255; id++) {
 		if (std::find_if(group_list.begin(), group_list.end(), [&id](std::unique_ptr<NetworkGroup> const& group) {
-						 return group->id == id;
+						 return group->Id == id;
 			}) == group_list.end()) {
 			newid = id;
 			break;
@@ -794,7 +794,7 @@ NetworkGroup* Network::AddGroup()
 	}
 	if (newid != -1) {
 		std::unique_ptr<NetworkGroup> group(new NetworkGroup); // change to make_unique in c++14
-		group->id = newid;
+		group->Id = newid;
 		group->SetName("Group #" + std::to_string(newid));
 		addedgroup = group.get();
 		group_list.push_back(std::move(group));
@@ -882,22 +882,22 @@ void Network::LoadGroups()
 		// Hardcoded permission groups
 		std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
 		admin->SetName("Admin");
-		admin->actions_allowed.fill(0xFF);
-		admin->id = 0;
+		admin->ActionsAllowed.fill(0xFF);
+		admin->Id = 0;
 		group_list.push_back(std::move(admin));
 		std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
 		spectator->SetName("Spectator");
 		spectator->ToggleActionPermission(0); // Chat
-		spectator->id = 1;
+		spectator->Id = 1;
 		group_list.push_back(std::move(spectator));
 		std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
 		user->SetName("User");
-		user->actions_allowed.fill(0xFF);
+		user->ActionsAllowed.fill(0xFF);
 		user->ToggleActionPermission(15); // Kick Player
 		user->ToggleActionPermission(16); // Modify Groups
 		user->ToggleActionPermission(17); // Set Player Group
 		user->ToggleActionPermission(18); // Cheat
-		user->id = 2;
+		user->Id = 2;
 		group_list.push_back(std::move(user));
 		SetDefaultGroup(1);
 		return;
@@ -926,7 +926,7 @@ void Network::Client_Send_TOKEN()
 	log_verbose("requesting token");
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_TOKEN;
-	server_connection.authstatus = NETWORK_AUTH_REQUESTED;
+	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
 	server_connection.QueuePacket(std::move(packet));
 }
 
@@ -941,32 +941,32 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
 	assert(sigsize <= (size_t)UINT32_MAX);
 	*packet << (uint32)sigsize;
 	packet->Write((const uint8 *)sig, sigsize);
-	server_connection.authstatus = NETWORK_AUTH_REQUESTED;
+	server_connection.AuthStatus = NETWORK_AUTH_REQUESTED;
 	server_connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
 {
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_TOKEN << (uint32)connection.challenge.size();
-	packet->Write(connection.challenge.data(), connection.challenge.size());
+	*packet << (uint32)NETWORK_COMMAND_TOKEN << (uint32)connection.Challenge.size();
+	packet->Write(connection.Challenge.data(), connection.Challenge.size());
 	connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_AUTH(NetworkConnection& connection)
 {
 	uint8 new_playerid = 0;
-	if (connection.player) {
-		new_playerid = connection.player->id;
+	if (connection.Player) {
+		new_playerid = connection.Player->id;
 	}
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
-	*packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.authstatus << (uint8)new_playerid;
-	if (connection.authstatus == NETWORK_AUTH_BADVERSION) {
+	*packet << (uint32)NETWORK_COMMAND_AUTH << (uint32)connection.AuthStatus << (uint8)new_playerid;
+	if (connection.AuthStatus == NETWORK_AUTH_BADVERSION) {
 		packet->WriteString(NETWORK_STREAM_ID);
 	}
 	connection.QueuePacket(std::move(packet));
-	if (connection.authstatus != NETWORK_AUTH_OK && connection.authstatus != NETWORK_AUTH_REQUIREPASSWORD) {
-		shutdown(connection.socket, SHUT_RD);
+	if (connection.AuthStatus != NETWORK_AUTH_OK && connection.AuthStatus != NETWORK_AUTH_REQUIREPASSWORD) {
+		shutdown(connection.Socket, SHUT_RD);
 		connection.SendQueuedPackets();
 	}
 }
@@ -1088,7 +1088,7 @@ void Network::Server_Send_PING()
 	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
 	*packet << (uint32)NETWORK_COMMAND_PING;
 	for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-		(*it)->ping_time = SDL_GetTicks();
+		(*it)->PingTime = SDL_GetTicks();
 	}
 	SendPacketToClients(*packet, true);
 }
@@ -1182,14 +1182,14 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 		switch(packetStatus) {
 		case NETWORK_READPACKET_DISCONNECTED:
 			// closed connection or network error
-			if (!connection.getLastDisconnectReason()) {
-				connection.setLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+			if (!connection.GetLastDisconnectReason()) {
+				connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
 			}
 			return false;
 			break;
 		case NETWORK_READPACKET_SUCCESS:
 			// done reading in packet
-			ProcessPacket(connection, connection.inboundpacket);
+			ProcessPacket(connection, connection.InboundPacket);
 			break;
 		case NETWORK_READPACKET_MORE_DATA:
 			// more data required to be read
@@ -1201,8 +1201,8 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 	} while (packetStatus == NETWORK_READPACKET_MORE_DATA || packetStatus == NETWORK_READPACKET_SUCCESS);
 	connection.SendQueuedPackets();
 	if (!connection.ReceivedPacketRecently()) {
-		if (!connection.getLastDisconnectReason()) {
-			connection.setLastDisconnectReason(STR_MULTIPLAYER_NO_DATA);
+		if (!connection.GetLastDisconnectReason()) {
+			connection.SetLastDisconnectReason(STR_MULTIPLAYER_NO_DATA);
 		}
 		return false;
 	}
@@ -1217,7 +1217,7 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
 		switch (gNetwork.GetMode()) {
 		case NETWORK_MODE_SERVER:
 			if (server_command_handlers[command]) {
-				if (connection.authstatus == NETWORK_AUTH_OK || !packet.CommandRequiresAuth()) {
+				if (connection.AuthStatus == NETWORK_AUTH_OK || !packet.CommandRequiresAuth()) {
 					(this->*server_command_handlers[command])(connection, packet);
 				}
 			}
@@ -1258,19 +1258,19 @@ void Network::ProcessGameCommandQueue()
 void Network::AddClient(SOCKET socket)
 {
 	auto connection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
-	connection->socket = socket;
+	connection->Socket = socket;
 	connection->SetTCPNoDelay(true);
 	client_connection_list.push_back(std::move(connection));
 }
 
 void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 {
-	NetworkPlayer* connection_player = connection->player;
+	NetworkPlayer* connection_player = connection->Player;
 	if (connection_player) {
 		char text[256];
 		const char * has_disconnected_args[2] = {
 				(char *) connection_player->name.c_str(),
-				connection->getLastDisconnectReason()
+				connection->GetLastDisconnectReason()
 		};
 		if (has_disconnected_args[1]) {
 			format_string(text, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
@@ -1279,7 +1279,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
 		}
 
 		chat_history_add(text);
-		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name.c_str(), connection->getLastDisconnectReason());
+		gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED((char*)connection_player->name.c_str(), connection->GetLastDisconnectReason());
 	}
 	player_list.erase(std::remove_if(player_list.begin(), player_list.end(), [connection_player](std::unique_ptr<NetworkPlayer>& player){
 						  return player.get() == connection_player;
@@ -1401,8 +1401,8 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	SDL_RWclose(privkey);
 	if (!ok) {
 		log_error("Failed to load key %s", keyPath);
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+		shutdown(connection.Socket, SHUT_RDWR);
 		return;
 	}
 	uint32 challenge_size;
@@ -1416,8 +1416,8 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 	ok = key.Sign(this->challenge.data(), this->challenge.size(), &signature, &sigsize);
 	if (!ok) {
 		log_error("Failed to sign server's challenge.");
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+		shutdown(connection.Socket, SHUT_RDWR);
 		return;
 	}
 	// Don't keep private key in memory. There's no need and it may get leaked
@@ -1429,37 +1429,37 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 
 void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
-	packet >> (uint32&)connection.authstatus >> (uint8&)player_id;
-	switch(connection.authstatus) {
+	packet >> (uint32&)connection.AuthStatus >> (uint8&)player_id;
+	switch(connection.AuthStatus) {
 	case NETWORK_AUTH_BADNAME:
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
+		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_BADVERSION:
 	{
 		const char *version = packet.ReadString();
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
+		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	}
 	case NETWORK_AUTH_BADPASSWORD:
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
+		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_VERIFICATIONFAILURE:
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_FULL:
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
+		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	case NETWORK_AUTH_REQUIREPASSWORD:
 		window_network_status_open_password();
 		break;
 	case NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED:
-		connection.setLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
-		shutdown(connection.socket, SHUT_RDWR);
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
+		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	}
 }
@@ -1467,7 +1467,7 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 void Network::Server_Client_Joined(const char* name, const std::string &keyhash, NetworkConnection& connection)
 {
 	NetworkPlayer* player = AddPlayer(name, keyhash);
-	connection.player = player;
+	connection.Player = player;
 	if (player) {
 		char text[256];
 		const char * player_name = (const char *) player->name.c_str();
@@ -1483,16 +1483,16 @@ void Network::Server_Client_Joined(const char* name, const std::string &keyhash,
 void Network::Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
 {
 	uint8 token_size = 10 + (rand() & 0x7f);
-	connection.challenge.resize(token_size);
+	connection.Challenge.resize(token_size);
 	for (int i = 0; i < token_size; i++) {
-		connection.challenge[i] = (uint8)(rand() & 0xff);
+		connection.Challenge[i] = (uint8)(rand() & 0xff);
 	}
 	Server_Send_TOKEN(connection);
 }
 
 void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
-	if (connection.authstatus != NETWORK_AUTH_OK) {
+	if (connection.AuthStatus != NETWORK_AUTH_OK) {
 		const char* gameversion = packet.ReadString();
 		const char* name = packet.ReadString();
 		const char* password = packet.ReadString();
@@ -1500,62 +1500,62 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		uint32 sigsize;
 		packet >> sigsize;
 		if (pubkey == nullptr) {
-			connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+			connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 		} else {
 			const char *signature = (const char *)packet.Read(sigsize);
 			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, strlen(pubkey));
 			if (pubkey_rw == nullptr) {
-				connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 				log_verbose("Signature verification failed!");
 			} else {
-				connection.key.LoadPublic(pubkey_rw);
+				connection.Key.LoadPublic(pubkey_rw);
 				SDL_RWclose(pubkey_rw);
-				bool verified = connection.key.Verify(connection.challenge.data(), connection.challenge.size(), signature, sigsize);
-				const std::string hash = connection.key.PublicKeyHash();
+				bool verified = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
+				const std::string hash = connection.Key.PublicKeyHash();
 				if (verified) {
-					connection.authstatus = NETWORK_AUTH_VERIFIED;
+					connection.AuthStatus = NETWORK_AUTH_VERIFIED;
 					log_verbose("Signature verification ok. Hash %s", hash.c_str());
 				} else {
-					connection.authstatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+					connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
 					log_verbose("Signature verification failed!");
 				}
 				if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr) {
-					connection.authstatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
+					connection.AuthStatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
 				}
 			}
 		}
 
 		bool passwordless = false;
-		if (connection.authstatus == NETWORK_AUTH_VERIFIED) {
-			const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.key.PublicKeyHash()));
+		if (connection.AuthStatus == NETWORK_AUTH_VERIFIED) {
+			const NetworkGroup * group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
 			size_t actionIndex = NetworkActions::FindCommandByPermissionName("PERMISSION_PASSWORDLESS_LOGIN");
 			passwordless = group->CanPerformAction(actionIndex);
 		}
 		if (!gameversion || strcmp(gameversion, NETWORK_STREAM_ID) != 0) {
-			connection.authstatus = NETWORK_AUTH_BADVERSION;
+			connection.AuthStatus = NETWORK_AUTH_BADVERSION;
 		} else
 		if (!name) {
-			connection.authstatus = NETWORK_AUTH_BADNAME;
+			connection.AuthStatus = NETWORK_AUTH_BADNAME;
 		} else
 		if (!passwordless) {
 			if ((!password || strlen(password) == 0) && Network::password.size() > 0) {
-				connection.authstatus = NETWORK_AUTH_REQUIREPASSWORD;
+				connection.AuthStatus = NETWORK_AUTH_REQUIREPASSWORD;
 			} else
 			if (password && Network::password != password) {
-				connection.authstatus = NETWORK_AUTH_BADPASSWORD;
+				connection.AuthStatus = NETWORK_AUTH_BADPASSWORD;
 			}
 		}
 
 		if (gConfigNetwork.maxplayers <= player_list.size()) {
-			connection.authstatus = NETWORK_AUTH_FULL;
+			connection.AuthStatus = NETWORK_AUTH_FULL;
 		} else
-		if (connection.authstatus == NETWORK_AUTH_VERIFIED) {
-			connection.authstatus = NETWORK_AUTH_OK;
-			const std::string hash = connection.key.PublicKeyHash();
+		if (connection.AuthStatus == NETWORK_AUTH_VERIFIED) {
+			connection.AuthStatus = NETWORK_AUTH_OK;
+			const std::string hash = connection.Key.PublicKeyHash();
 			Server_Client_Joined(name, hash, connection);
 		} else
-		if (connection.authstatus != NETWORK_AUTH_REQUIREPASSWORD) {
-			log_error("Unknown failure (%d) while authenticating client", connection.authstatus);
+		if (connection.AuthStatus != NETWORK_AUTH_REQUIREPASSWORD) {
+			log_error("Unknown failure (%d) while authenticating client", connection.AuthStatus);
 		}
 		Server_Send_AUTH(connection);
 	}
@@ -1634,15 +1634,15 @@ void Network::Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
 
 void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet)
 {
-	if (connection.player) {
-		NetworkGroup* group = GetGroupByID(connection.player->group);
+	if (connection.Player) {
+		NetworkGroup* group = GetGroupByID(connection.Player->group);
 		if (!group || (group && !group->CanPerformCommand(-1))) {
 			return;
 		}
 	}
 	const char* text = packet.ReadString();
 	if (text) {
-		const char* formatted = FormatChat(connection.player, text);
+		const char* formatted = FormatChat(connection.Player, text);
 		chat_history_add(formatted);
 		Server_Send_CHAT(formatted);
 	}
@@ -1667,11 +1667,11 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	uint8 playerid;
 	uint8 callback;
 
-	if (!connection.player) {
+	if (!connection.Player) {
 		return;
 	}
 
-	playerid = connection.player->id;
+	playerid = connection.Player->id;
 
 	packet >> tick >> args[0] >> args[1] >> args[2] >> args[3] >> args[4] >> args[5] >> args[6] >> callback;
 
@@ -1680,7 +1680,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	int ticks = SDL_GetTicks(); //tick count is different by time last_action_time is set, keep same value.
 	
 	// Check if player's group permission allows command to run
-	NetworkGroup* group = GetGroupByID(connection.player->group);
+	NetworkGroup* group = GetGroupByID(connection.Player->group);
 	if (!group || (group && !group->CanPerformCommand(commandCommand))) {
 		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
 		return;
@@ -1689,7 +1689,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 	// require a small delay in between placing scenery to provide some security, as 
 	// cluster mode is a for loop that runs the place_scenery code multiple times.
 	if (commandCommand == GAME_COMMAND_PLACE_SCENERY) {
-		if ((ticks - connection.player->last_action_time) < 20) {
+		if ((ticks - connection.Player->last_action_time) < 20) {
 			if (!(group->CanPerformCommand(-2))) {
 				Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
 				return;
@@ -1711,9 +1711,9 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 		return;
 	}
 
-	connection.player->last_action = NetworkActions::FindCommand(commandCommand);
-	connection.player->last_action_time = SDL_GetTicks();
-	connection.player->AddMoneySpent(cost);
+	connection.Player->last_action = NetworkActions::FindCommand(commandCommand);
+	connection.Player->last_action_time = SDL_GetTicks();
+	connection.Player->AddMoneySpent(cost);
 	Server_Send_GAMECMD(args[0], args[1], args[2], args[3], args[4], args[5], args[6], playerid, callback);
 }
 
@@ -1741,7 +1741,7 @@ void Network::Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPac
 			if (player) {
 				*player = tempplayer;
 				if (player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
-					server_connection.player = player;
+					server_connection.Player = player;
 				}
 			}
 		}
@@ -1764,13 +1764,13 @@ void Network::Client_Handle_PING(NetworkConnection& connection, NetworkPacket& p
 
 void Network::Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet)
 {
-	int ping = SDL_GetTicks() - connection.ping_time;
+	int ping = SDL_GetTicks() - connection.PingTime;
 	if (ping < 0) {
 		ping = 0;
 	}
-	if (connection.player) {
-		connection.player->ping = ping;
-		window_invalidate_by_number(WC_PLAYER, connection.player->id);
+	if (connection.Player) {
+		connection.Player->ping = ping;
+		window_invalidate_by_number(WC_PLAYER, connection.Player->id);
 	}
 }
 
@@ -1796,7 +1796,7 @@ void Network::Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, Netw
 	const char* disconnectmsg = packet.ReadString();
 	if (disconnectmsg) {
 		msg = disconnectmsg;
-		connection.setLastDisconnectReason(msg.c_str());
+		connection.SetLastDisconnectReason(msg.c_str());
 	}
 }
 
@@ -1992,7 +1992,7 @@ uint8 network_get_player_group(unsigned int index)
 
 void network_set_player_group(unsigned int index, unsigned int groupindex)
 {
-	gNetwork.player_list[index]->group = gNetwork.group_list[groupindex]->id;
+	gNetwork.player_list[index]->group = gNetwork.group_list[groupindex]->Id;
 }
 
 int network_get_group_index(uint8 id)
@@ -2006,7 +2006,7 @@ int network_get_group_index(uint8 id)
 
 uint8 network_get_group_id(unsigned int index)
 {
-	return gNetwork.group_list[index]->id;
+	return gNetwork.group_list[index]->Id;
 }
 
 int network_get_num_groups()
@@ -2050,7 +2050,7 @@ void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* 
 		*ebx = MONEY32_UNDEFINED;
 		return;
 	}
-	if (groupid == 0 && fromgroup && fromgroup->id != 0) {
+	if (groupid == 0 && fromgroup && fromgroup->Id != 0) {
 		gGameCommandErrorTitle = STR_CANT_SET_TO_THIS_GROUP;
 		*ebx = MONEY32_UNDEFINED;
 		return;
@@ -2134,9 +2134,9 @@ void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi
 				if (all) {
 					if (mygroup) {
 						if (allvalue) {
-							group->actions_allowed = mygroup->actions_allowed;
+							group->ActionsAllowed = mygroup->ActionsAllowed;
 						} else {
-							group->actions_allowed.fill(0x00);
+							group->ActionsAllowed.fill(0x00);
 						}
 					}
 				} else {
@@ -2230,7 +2230,7 @@ int network_get_num_actions()
 
 rct_string_id network_get_action_name_string_id(unsigned int index)
 {
-	return NetworkActions::Actions[index].name;
+	return NetworkActions::Actions[index].Name;
 }
 
 int network_can_perform_action(unsigned int groupindex, unsigned int index)

@@ -27,7 +27,7 @@ int NetworkActions::FindCommand(int command)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const &action)
     {
-        for (auto it = action.commands.begin(); it != action.commands.end(); it++)
+        for (auto it = action.Commands.begin(); it != action.Commands.end(); it++)
         {
             if ((*it) == command)
             {
@@ -47,7 +47,7 @@ int NetworkActions::FindCommandByPermissionName(const std::string &permission_na
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const &action)
     {
-        if (action.permission_name == permission_name)
+        if (action.PermissionName == permission_name)
         {
             return true;
         }

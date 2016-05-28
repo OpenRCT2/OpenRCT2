@@ -29,13 +29,13 @@ class NetworkPlayer;
 class NetworkConnection
 {
 public:
-    SOCKET              socket = INVALID_SOCKET;
-    NetworkPacket       inboundpacket;
-    NETWORK_AUTH        authstatus = NETWORK_AUTH_NONE;
-    NetworkPlayer *     player;
-    uint32              ping_time = 0;
-    NetworkKey          key;
-    std::vector<uint8>  challenge;
+    SOCKET              Socket          = INVALID_SOCKET;
+    NetworkPacket       InboundPacket;
+    NETWORK_AUTH        AuthStatus      = NETWORK_AUTH_NONE;
+    NetworkPlayer *     Player          = nullptr;
+    uint32              PingTime        = 0;
+    NetworkKey          Key;
+    std::vector<uint8>  Challenge;
 
     NetworkConnection();
     ~NetworkConnection();
@@ -45,18 +45,19 @@ public:
     void SendQueuedPackets();
     bool SetTCPNoDelay(bool on);
     bool SetNonBlocking(bool on);
-    static bool SetNonBlocking(SOCKET socket, bool on);
     void ResetLastPacketTime();
     bool ReceivedPacketRecently();
 
-    const utf8 * getLastDisconnectReason() const;
-    void setLastDisconnectReason(const utf8 * src);
-    void setLastDisconnectReason(const rct_string_id string_id, void * args = nullptr);
+    const utf8 * GetLastDisconnectReason() const;
+    void SetLastDisconnectReason(const utf8 * src);
+    void SetLastDisconnectReason(const rct_string_id string_id, void * args = nullptr);
+
+    static bool SetNonBlocking(SOCKET socket, bool on);
 
 private:
-    utf8 * last_disconnect_reason;
+    std::list<std::unique_ptr<NetworkPacket>>   _outboundPackets;
+    uint32                                      _lastPacketTime;
+    utf8 *                                      _lastDisconnectReason   = nullptr;
 
     bool SendPacket(NetworkPacket &packet);
-    std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
-    uint32 last_packet_time;
 };

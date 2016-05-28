@@ -21,7 +21,7 @@
 
 NetworkGroup::NetworkGroup()
 {
-	actions_allowed = { 0 };
+	ActionsAllowed = { 0 };
 }
 
 NetworkGroup::~NetworkGroup()
@@ -38,10 +38,10 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
     {
         throw Exception("Missing group data");
     }
-    group.id = (uint8)json_integer_value(jsonId);
-    group.name = std::string(json_string_value(jsonName));
-    for (size_t i = 0; i < group.actions_allowed.size(); i++) {
-        group.actions_allowed[i] = 0;
+    group.Id = (uint8)json_integer_value(jsonId);
+    group._name = std::string(json_string_value(jsonName));
+    for (size_t i = 0; i < group.ActionsAllowed.size(); i++) {
+        group.ActionsAllowed[i] = 0;
     }
     for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
         json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
@@ -60,14 +60,14 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
 json_t * NetworkGroup::ToJson() const
 {
     json_t * jsonGroup = json_object();
-    json_object_set_new(jsonGroup, "id", json_integer(id));
+    json_object_set_new(jsonGroup, "id", json_integer(Id));
     json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
     json_t * actionsArray = json_array();
     for (size_t i = 0; i < NetworkActions::Actions.size(); i++)
     {
         if (CanPerformAction(i))
         {
-            const char * perm_name = NetworkActions::Actions[i].permission_name.c_str();
+            const char * perm_name = NetworkActions::Actions[i].PermissionName.c_str();
             json_array_append_new(actionsArray, json_string(perm_name));
         }
     }
@@ -77,31 +77,31 @@ json_t * NetworkGroup::ToJson() const
 
 const std::string & NetworkGroup::GetName() const
 {
-    return name;
+    return _name;
 }
 
 void NetworkGroup::SetName(std::string name)
 {
-    NetworkGroup::name = name;
+    _name = name;
 }
 
 void NetworkGroup::Read(NetworkPacket &packet)
 {
-    packet >> id;
+    packet >> Id;
     SetName(packet.ReadString());
-    for (size_t i = 0; i < actions_allowed.size(); i++)
+    for (size_t i = 0; i < ActionsAllowed.size(); i++)
     {
-        packet >> actions_allowed[i];
+        packet >> ActionsAllowed[i];
     }
 }
 
 void NetworkGroup::Write(NetworkPacket &packet)
 {
-    packet << id;
+    packet << Id;
     packet.WriteString(GetName().c_str());
-    for (size_t i = 0; i < actions_allowed.size(); i++)
+    for (size_t i = 0; i < ActionsAllowed.size(); i++)
     {
-        packet << actions_allowed[i];
+        packet << ActionsAllowed[i];
     }
 }
 
@@ -109,22 +109,22 @@ void NetworkGroup::ToggleActionPermission(size_t index)
 {
     size_t byte = index / 8;
     size_t bit = index % 8;
-    if (byte >= actions_allowed.size())
+    if (byte >= ActionsAllowed.size())
     {
         return;
     }
-    actions_allowed[byte] ^= (1 << bit);
+    ActionsAllowed[byte] ^= (1 << bit);
 }
 
 bool NetworkGroup::CanPerformAction(size_t index) const
 {
     size_t byte = index / 8;
     size_t bit = index % 8;
-    if (byte >= actions_allowed.size())
+    if (byte >= ActionsAllowed.size())
     {
         return false;
     }
-    return (actions_allowed[byte] & (1 << bit)) ? true : false;
+    return (ActionsAllowed[byte] & (1 << bit)) ? true : false;
 }
 
 bool NetworkGroup::CanPerformCommand(int command) const

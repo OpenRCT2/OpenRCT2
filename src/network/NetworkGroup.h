@@ -24,8 +24,8 @@
 class NetworkGroup
 {
 public:
-    std::array<uint8, 8>    actions_allowed;
-    uint8                   id = 0;
+    std::array<uint8, 8>    ActionsAllowed;
+    uint8                   Id = 0;
 
     static NetworkGroup FromJson(const json_t * json);
 
@@ -44,5 +44,5 @@ public:
     json_t * ToJson() const;
 
 private:
-    std::string name;
+    std::string _name;
 };

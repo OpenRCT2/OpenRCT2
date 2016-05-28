@@ -27,31 +27,27 @@ constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
 
 NetworkConnection::NetworkConnection()
 {
-    authstatus = NETWORK_AUTH_NONE;
-    player = 0;
-    socket = INVALID_SOCKET;
     ResetLastPacketTime();
-    last_disconnect_reason = nullptr;
 }
 
 NetworkConnection::~NetworkConnection()
 {
-    if (socket != INVALID_SOCKET)
+    if (Socket != INVALID_SOCKET)
     {
-        closesocket(socket);
+        closesocket(Socket);
     }
-    if (last_disconnect_reason)
+    if (_lastDisconnectReason)
     {
-        delete[] last_disconnect_reason;
+        delete[] _lastDisconnectReason;
     }
 }
 
 int NetworkConnection::ReadPacket()
 {
-    if (inboundpacket.transferred < sizeof(inboundpacket.size))
+    if (InboundPacket.transferred < sizeof(InboundPacket.size))
     {
         // read packet size
-        int readBytes = recv(socket, &((char*)&inboundpacket.size)[inboundpacket.transferred], sizeof(inboundpacket.size) - inboundpacket.transferred, 0);
+        int readBytes = recv(Socket, &((char*)&InboundPacket.size)[InboundPacket.transferred], sizeof(InboundPacket.size) - InboundPacket.transferred, 0);
         if (readBytes == SOCKET_ERROR || readBytes == 0)
         {
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN)
@@ -63,25 +59,25 @@ int NetworkConnection::ReadPacket()
                 return NETWORK_READPACKET_NO_DATA;
             }
         }
-        inboundpacket.transferred += readBytes;
-        if (inboundpacket.transferred == sizeof(inboundpacket.size))
+        InboundPacket.transferred += readBytes;
+        if (InboundPacket.transferred == sizeof(InboundPacket.size))
         {
-            inboundpacket.size = ntohs(inboundpacket.size);
-            if (inboundpacket.size == 0) // Can't have a size 0 packet
+            InboundPacket.size = ntohs(InboundPacket.size);
+            if (InboundPacket.size == 0) // Can't have a size 0 packet
             {
                 return NETWORK_READPACKET_DISCONNECTED;
             }
-            inboundpacket.data->resize(inboundpacket.size);
+            InboundPacket.data->resize(InboundPacket.size);
         }
     }
     else
     {
         // read packet data
-        if (inboundpacket.data->capacity() > 0)
+        if (InboundPacket.data->capacity() > 0)
         {
-            int readBytes = recv(socket,
-                                 (char*)&inboundpacket.GetData()[inboundpacket.transferred - sizeof(inboundpacket.size)],
-                                 sizeof(inboundpacket.size) + inboundpacket.size - inboundpacket.transferred,
+            int readBytes = recv(Socket,
+                                 (char*)&InboundPacket.GetData()[InboundPacket.transferred - sizeof(InboundPacket.size)],
+                                 sizeof(InboundPacket.size) + InboundPacket.size - InboundPacket.transferred,
                                  0);
             if (readBytes == SOCKET_ERROR || readBytes == 0)
             {
@@ -94,11 +90,11 @@ int NetworkConnection::ReadPacket()
                     return NETWORK_READPACKET_NO_DATA;
                 }
             }
-            inboundpacket.transferred += readBytes;
+            InboundPacket.transferred += readBytes;
         }
-        if (inboundpacket.transferred == sizeof(inboundpacket.size) + inboundpacket.size)
+        if (InboundPacket.transferred == sizeof(InboundPacket.size) + InboundPacket.size)
         {
-            last_packet_time = SDL_GetTicks();
+            _lastPacketTime = SDL_GetTicks();
             return NETWORK_READPACKET_SUCCESS;
         }
     }
@@ -114,7 +110,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     tosend.insert(tosend.end(), packet.data->begin(), packet.data->end());
     while (true)
     {
-        int sentBytes = send(socket, (const char*)&tosend[packet.transferred], tosend.size() - packet.transferred, FLAG_NO_PIPE);
+        int sentBytes = send(Socket, (const char*)&tosend[packet.transferred], tosend.size() - packet.transferred, FLAG_NO_PIPE);
         if (sentBytes == SOCKET_ERROR)
         {
             return false;
@@ -130,36 +126,36 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
 
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)
 {
-    if (authstatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth())
+    if (AuthStatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth())
     {
         packet->size = (uint16)packet->data->size();
         if (front)
         {
-            outboundpackets.push_front(std::move(packet));
+            _outboundPackets.push_front(std::move(packet));
         }
         else
         {
-            outboundpackets.push_back(std::move(packet));
+            _outboundPackets.push_back(std::move(packet));
         }
     }
 }
 
 void NetworkConnection::SendQueuedPackets()
 {
-    while (outboundpackets.size() > 0 && SendPacket(*(outboundpackets.front()).get()))
+    while (_outboundPackets.size() > 0 && SendPacket(*(_outboundPackets.front()).get()))
     {
-        outboundpackets.remove(outboundpackets.front());
+        _outboundPackets.remove(_outboundPackets.front());
     }
 }
 
 bool NetworkConnection::SetTCPNoDelay(bool on)
 {
-    return setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&on, sizeof(on)) == 0;
+    return setsockopt(Socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&on, sizeof(on)) == 0;
 }
 
 bool NetworkConnection::SetNonBlocking(bool on)
 {
-    return SetNonBlocking(socket, on);
+    return SetNonBlocking(Socket, on);
 }
 
 bool NetworkConnection::SetNonBlocking(SOCKET socket, bool on)
@@ -175,13 +171,13 @@ bool NetworkConnection::SetNonBlocking(SOCKET socket, bool on)
 
 void NetworkConnection::ResetLastPacketTime()
 {
-    last_packet_time = SDL_GetTicks();
+    _lastPacketTime = SDL_GetTicks();
 }
 
 bool NetworkConnection::ReceivedPacketRecently()
 {
 #ifndef DEBUG
-    if (SDL_TICKS_PASSED(SDL_GetTicks(), last_packet_time + 7000))
+    if (SDL_TICKS_PASSED(SDL_GetTicks(), _lastPacketTime + 7000))
     {
         return false;
     }
@@ -189,33 +185,33 @@ bool NetworkConnection::ReceivedPacketRecently()
     return true;
 }
 
-const utf8 * NetworkConnection::getLastDisconnectReason() const
+const utf8 * NetworkConnection::GetLastDisconnectReason() const
 {
-    return this->last_disconnect_reason;
+    return this->_lastDisconnectReason;
 }
 
-void NetworkConnection::setLastDisconnectReason(const utf8 * src)
+void NetworkConnection::SetLastDisconnectReason(const utf8 * src)
 {
     if (src == nullptr)
     {
-        if (last_disconnect_reason)
+        if (_lastDisconnectReason)
         {
-            delete[] last_disconnect_reason;
-            last_disconnect_reason = nullptr;
+            delete[] _lastDisconnectReason;
+            _lastDisconnectReason = nullptr;
         }
         return;
     }
 
-    if (last_disconnect_reason == nullptr)
+    if (_lastDisconnectReason == nullptr)
     {
-        last_disconnect_reason = new utf8[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
+        _lastDisconnectReason = new utf8[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
     }
-    String::Set(last_disconnect_reason, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, src);
+    String::Set(_lastDisconnectReason, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, src);
 }
 
-void NetworkConnection::setLastDisconnectReason(const rct_string_id string_id, void *args)
+void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void *args)
 {
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
     format_string(buffer, string_id, args);
-    setLastDisconnectReason(buffer);
+    SetLastDisconnectReason(buffer);
 }
