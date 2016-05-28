@@ -7736,6 +7736,10 @@ static int peep_move_one_tile(uint8 direction, rct_peep* peep){
 		return guest_surface_path_finding(peep);
 	}
 
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+	if (!gConfigPeepsEx.peep_messy_walking) {
+	#endif
+
 	peep->var_78 = direction;
 	peep->destination_x = x + 16;
 	peep->destination_y = y + 16;
@@ -7743,6 +7747,64 @@ static int peep_move_one_tile(uint8 direction, rct_peep* peep){
 	if (peep->state != PEEP_STATE_QUEUING){
 		peep->destination_tolerence = (scenario_rand() & 7) + 2;
 	}
+
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+	}
+	else {
+		sint16 tileOffsetX = peep->x & ~0xFFE0;
+		sint16 tileOffsetY = peep->y & ~0xFFE0;
+
+		tileOffsetX -= 16;
+		tileOffsetY -= 16;
+
+		tileOffsetX -= scenario_rand_max(TileDirectionDelta[direction].x);
+		tileOffsetY -= scenario_rand_max(TileDirectionDelta[direction].y);
+
+		if (peep->state == PEEP_STATE_WALKING) {
+			if (peep->peeps_ex_crowded_store > 0) {
+				uint8 crowdedAdd = max((sint16)(50) - (sint16)(peep->peeps_ex_crowded_store), (sint16)(1));
+				tileOffsetX += TileDirectionDelta[(direction+1) & 0x3].x / crowdedAdd;
+				tileOffsetY += TileDirectionDelta[(direction+1) & 0x3].y / crowdedAdd;
+			}
+
+			int offset = 1 + min(10, (peep->nausea / 25) + (peep->peeps_ex_crowded_store / 5));
+
+			tileOffsetX += -offset + scenario_rand_max(1 + (offset << 1));
+			tileOffsetY += -offset + scenario_rand_max(1 + (offset << 1));
+
+			sint16 maxTileOffset = 6;
+
+			maxTileOffset += min(peep->peeps_ex_crowded_store / 3, 5);
+
+			if (tileOffsetX < -maxTileOffset)
+				tileOffsetX = -maxTileOffset;
+			else if (tileOffsetX > maxTileOffset)
+				tileOffsetX = maxTileOffset;
+			if (tileOffsetY < -maxTileOffset)
+				tileOffsetY = -maxTileOffset;
+			else if (tileOffsetY > maxTileOffset)
+				tileOffsetY = maxTileOffset;
+		}
+		else {
+			tileOffsetX = 0;
+			tileOffsetY = 0;
+		}
+
+		peep->var_78 = direction;
+		peep->destination_x = x + tileOffsetX + 16;
+		peep->destination_y = y + tileOffsetY + 16;
+		peep->destination_tolerence = 2;
+		if (peep->state != PEEP_STATE_QUEUING) {
+			peep->destination_tolerence = (scenario_rand() & 7) + 2;
+		}
+
+		if (peep->state == PEEP_STATE_QUEUING) {
+			peep->destination_tolerence = 1;
+		}
+	}
+
+	#endif
+
 	return 0;
 }
 
