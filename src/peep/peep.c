@@ -10038,6 +10038,14 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						// Unlike normal paths, peeps cannot overlap when queueing for a ride.
 						// This check enforces a minimum distance between peeps entering the queue.
 						if (maxD < 8) {
+							#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+								// Push the last peep anyway, so that he reduces his wait distance
+								//	This has no effect when messy queuing is disabled
+							if ((lastPeepInQueue->peeps_ex_queue_wait_distance & 0x7F) > 7) {
+								lastPeepInQueue->peeps_ex_queue_wait_distance -= 1;
+							}
+							#endif
+
 							peep_tried_to_enter_full_queue(peep, rideIndex);
 							return false;
 						}
@@ -10045,6 +10053,13 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						// This checks if there's a peep standing still at the very end of the queue.
 						if (maxD <= 13
 							&& lastPeepInQueue->time_in_queue > 10) {
+							#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+								// Push the last peep anyway, so that he reduces his wait distance
+								//	This has no effect when messy queuing is disabled
+							if ((lastPeepInQueue->peeps_ex_queue_wait_distance & 0x7F) > 6) {
+								lastPeepInQueue->peeps_ex_queue_wait_distance -= 1;
+							}
+							#endif
 							peep_tried_to_enter_full_queue(peep, rideIndex);
 							return false;
 						}
