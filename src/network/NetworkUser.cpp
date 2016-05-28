@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include <unordered_set>
 
 #include "../core/Json.hpp"
@@ -241,3 +243,5 @@ void NetworkUserManager::GetStorePath(utf8 * buffer, size_t bufferSize)
     platform_get_user_directory(buffer, nullptr);
     Path::Append(buffer, bufferSize, USER_STORE_FILENAME);
 }
+
+#endif

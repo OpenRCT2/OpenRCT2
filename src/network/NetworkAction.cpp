@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include <algorithm>
 #include "NetworkAction.h"
 
@@ -218,3 +220,5 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         }
     },
 };
+
+#endif

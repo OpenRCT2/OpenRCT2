@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include "NetworkTypes.h"
 #include "NetworkPacket.h"
 
@@ -112,3 +114,5 @@ const utf8 * NetworkPacket::ReadString()
     read++;
     return str;
 }
+
+#endif

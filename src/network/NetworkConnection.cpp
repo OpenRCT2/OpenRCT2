@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include "NetworkConnection.h"
 #include "../core/String.hpp"
 #include <SDL.h>
@@ -215,3 +217,5 @@ void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, v
     format_string(buffer, string_id, args);
     SetLastDisconnectReason(buffer);
 }
+
+#endif

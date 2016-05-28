@@ -48,6 +48,8 @@ extern "C" {
 }
 #endif // __cplusplus
 
+#include "NetworkTypes.h"
+
 #ifndef DISABLE_NETWORK
 
 // This define specifies which version of network stream current build uses.
@@ -55,8 +57,6 @@ extern "C" {
 // single OpenRCT2 version.
 #define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
-
-#include "NetworkTypes.h"
 
 // Fixes issues on OS X
 #if defined(_RCT2_H_) && !defined(_MSC_VER)

@@ -19,6 +19,7 @@
 #include <SDL_endian.h>
 #include <SDL_platform.h>
 
+#ifndef DISABLE_NETWORK
 #ifdef __WINDOWS__
     // winsock2 must be included before windows.h
     #include <winsock2.h>
@@ -55,6 +56,7 @@
 #endif // __WINDOWS__
 
 #include "../common.h"
+#endif
 
 enum NETWORK_READPACKET
 {

@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include "NetworkTypes.h"
 #include "NetworkAction.h"
 #include "NetworkGroup.h"
@@ -136,3 +138,5 @@ bool NetworkGroup::CanPerformCommand(int command) const
     }
     return false;
 }
+
+#endif

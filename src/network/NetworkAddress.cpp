@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include <string>
 #include <SDL_thread.h>
 #include "NetworkAddress.h"
@@ -121,3 +123,5 @@ void NetworkAddress::ResolveWorker(ResolveRequest * req)
     }
     delete req;
 }
+
+#endif

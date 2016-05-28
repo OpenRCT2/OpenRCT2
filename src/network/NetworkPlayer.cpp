@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_NETWORK
+
 #include "NetworkPacket.h"
 #include "NetworkPlayer.h"
 
@@ -49,3 +51,5 @@ void NetworkPlayer::AddMoneySpent(money32 cost)
     commands_ran++;
     window_invalidate_by_number(WC_PLAYER, id);
 }
+
+#endif
