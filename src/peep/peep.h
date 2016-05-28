@@ -400,16 +400,15 @@ typedef struct rct_peep {
 	sint16 sprite_right;			// 0x1A
 	sint16 sprite_bottom;			// 0x1C
 	uint8 sprite_direction;			// 0x1E
-#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 	union {
 		uint8 pad_1F[3];
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 		struct {
 			uint8 peeps_ex_direction_preference;
-			uint8 pad_1;
-			uint8 pad_2;
+			uint8 pad_1F_[2];
 		};
-	};
 #endif
+	};
 	uint16 name_string_idx;			// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
