@@ -28,20 +28,6 @@ enum {
 };
 
 enum {
-	NETWORK_AUTH_NONE,
-	NETWORK_AUTH_REQUESTED,
-	NETWORK_AUTH_OK,
-	NETWORK_AUTH_BADVERSION,
-	NETWORK_AUTH_BADNAME,
-	NETWORK_AUTH_BADPASSWORD,
-	NETWORK_AUTH_VERIFICATIONFAILURE,
-	NETWORK_AUTH_FULL,
-	NETWORK_AUTH_REQUIREPASSWORD,
-	NETWORK_AUTH_VERIFIED,
-	NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED,
-};
-
-enum {
 	NETWORK_STATUS_NONE,
 	NETWORK_STATUS_READY,
 	NETWORK_STATUS_RESOLVING,
@@ -70,40 +56,7 @@ extern "C" {
 #define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
-#define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
-
-#ifdef __WINDOWS__
-	#include <winsock2.h>
-	#include <ws2tcpip.h>
-	#define LAST_SOCKET_ERROR() WSAGetLastError()
-	#undef EWOULDBLOCK
-	#define EWOULDBLOCK WSAEWOULDBLOCK
-	#ifndef SHUT_RD
-		#define SHUT_RD SD_RECEIVE
-	#endif
-	#ifndef SHUT_RDWR
-		#define SHUT_RDWR SD_BOTH
-	#endif
-	#define FLAG_NO_PIPE 0
-#else
-	#include <errno.h>
-	#include <arpa/inet.h>
-	#include <netdb.h>
-	#include <netinet/tcp.h>
-	#include <sys/socket.h>
-	#include <fcntl.h>
-	typedef int SOCKET;
-	#define SOCKET_ERROR -1
-	#define INVALID_SOCKET -1
-	#define LAST_SOCKET_ERROR() errno
-	#define closesocket close
-	#define ioctlsocket ioctl
-	#if defined(__LINUX__)
-		#define FLAG_NO_PIPE MSG_NOSIGNAL
-	#else
-		#define FLAG_NO_PIPE 0
-	#endif // defined(__LINUX__)
-#endif // __WINDOWS__
+#include "NetworkTypes.h"
 
 // Fixes issues on OS X
 #if defined(_RCT2_H_) && !defined(_MSC_VER)
@@ -124,50 +77,10 @@ extern "C" {
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
 #include "NetworkAddress.h"
+#include "NetworkConnection.h"
 #include "NetworkKey.h"
+#include "NetworkPacket.h"
 #include "NetworkUser.h"
-
-template <std::size_t size>
-struct ByteSwapT { };
-template <>
-struct ByteSwapT<1> { static uint8 SwapBE(uint8 value) { return value; } };
-template <>
-struct ByteSwapT<2> { static uint16 SwapBE(uint16 value) { return SDL_SwapBE16(value); } };
-template <>
-struct ByteSwapT<4> { static uint32 SwapBE(uint32 value) { return SDL_SwapBE32(value); } };
-template <typename T>
-T ByteSwapBE(const T& value) { return ByteSwapT<sizeof(T)>::SwapBE(value); }
-
-class NetworkPacket
-{
-public:
-	NetworkPacket();
-	static std::unique_ptr<NetworkPacket> Allocate();
-	static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
-	uint8* GetData();
-	uint32 GetCommand();
-	template <typename T>
-	NetworkPacket& operator<<(T value) {
-		T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value));
-		return *this;
-	}
-	void Write(const uint8* bytes, unsigned int size);
-	void WriteString(const char* string);
-	template <typename T>
-	NetworkPacket& operator>>(T& value) {
-		if (read + sizeof(value) > size) { value = 0; } else { value = ByteSwapBE(*((T*)&GetData()[read])); read += sizeof(value); }
-		return *this;
-	}
-	const uint8* Read(unsigned int size);
-	const char* ReadString();
-	void Clear();
-	bool CommandRequiresAuth();
-
-	uint16 size;
-	std::shared_ptr<std::vector<uint8>> data;
-	unsigned int transferred;
-	int read;
-};
 
 class NetworkPlayer
 {
@@ -281,39 +194,6 @@ public:
 
 private:
 	std::string name;
-};
-
-class NetworkConnection
-{
-public:
-	NetworkConnection();
-	~NetworkConnection();
-	int ReadPacket();
-	void QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front = false);
-	void SendQueuedPackets();
-	bool SetTCPNoDelay(bool on);
-	bool SetNonBlocking(bool on);
-	static bool SetNonBlocking(SOCKET socket, bool on);
-	void ResetLastPacketTime();
-	bool ReceivedPacketRecently();
-
-	const char *getLastDisconnectReason() const;
-	void setLastDisconnectReason(const char *src);
-	void setLastDisconnectReason(const rct_string_id string_id, void *args = nullptr);
-
-	SOCKET socket = INVALID_SOCKET;
-	NetworkPacket inboundpacket;
-	int authstatus = NETWORK_AUTH_NONE;
-	NetworkPlayer* player;
-	uint32 ping_time = 0;
-	NetworkKey key;
-	std::vector<uint8> challenge;
-
-private:
-	char* last_disconnect_reason;
-	bool SendPacket(NetworkPacket& packet);
-	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
-	uint32 last_packet_time;
 };
 
 class Network

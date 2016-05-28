@@ -84,7 +84,9 @@
     <ClCompile Include="src\network\http.cpp" />
     <ClCompile Include="src\network\network.cpp" />
     <ClCompile Include="src\network\NetworkAddress.cpp" />
+    <ClCompile Include="src\network\NetworkConnection.cpp" />
     <ClCompile Include="src\network\NetworkKey.cpp" />
+    <ClCompile Include="src\network\NetworkPacket.cpp" />
     <ClCompile Include="src\network\NetworkUser.cpp" />
     <ClCompile Include="src\network\twitch.cpp" />
     <ClCompile Include="src\object.c" />
@@ -360,6 +362,8 @@
     <ClInclude Include="src\management\research.h" />
     <ClInclude Include="src\network\http.h" />
     <ClInclude Include="src\network\NetworkAddress.h" />
+    <ClInclude Include="src\network\NetworkConnection.h" />
+    <ClInclude Include="src\network\NetworkPacket.h" />
     <ClInclude Include="src\network\NetworkTypes.h" />
     <ClInclude Include="src\network\NetworkUser.h" />
     <ClInclude Include="src\network\twitch.h" />
