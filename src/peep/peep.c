@@ -1366,57 +1366,59 @@ void peep_update_falling(rct_peep* peep){
 	rct_map_element *saved_map = NULL;
 	int saved_height = 0;
 
-	do {
-		// If a path check if we are on it
-		if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH){
-			int height = map_height_from_slope(peep->x, peep->y, map_element->properties.surface.slope)
-				+ map_element->base_height * 8;
+	if (map_element != NULL) {
+		do {
+			// If a path check if we are on it
+			if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH) {
+				int height = map_height_from_slope(peep->x, peep->y, map_element->properties.surface.slope)
+					+ map_element->base_height * 8;
 
-			if (height < peep->z - 1 || height > peep->z + 4) continue;
+				if (height < peep->z - 1 || height > peep->z + 4) continue;
 
-			saved_height = height;
-			saved_map = map_element;
-			break;
-		} // If a surface get the height and see if we are on it
-		else if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SURFACE){
-			// If the surface is water check to see if we could be drowning
-			if (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK){
-				int height = (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16;
+				saved_height = height;
+				saved_map = map_element;
+				break;
+			} // If a surface get the height and see if we are on it
+			else if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SURFACE) {
+				// If the surface is water check to see if we could be drowning
+				if (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) {
+					int height = (map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK) * 16;
 
-				if (height - 4 >= peep->z && height < peep->z + 20){
-					// Looks like we are drowning!
-					invalidate_sprite_2((rct_sprite*)peep);
-					sprite_move(peep->x, peep->y, height, (rct_sprite*)peep);
-					// Drop balloon if held
-					if (peep->item_standard_flags & PEEP_ITEM_BALLOON){
-						peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
+					if (height - 4 >= peep->z && height < peep->z + 20) {
+						// Looks like we are drowning!
+						invalidate_sprite_2((rct_sprite*)peep);
+						sprite_move(peep->x, peep->y, height, (rct_sprite*)peep);
+						// Drop balloon if held
+						if (peep->item_standard_flags & PEEP_ITEM_BALLOON) {
+							peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
 
-						if (peep->sprite_type == 19 && peep->x != (sint16)0x8000){
-							create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
-							peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-							peep_update_sprite_type(peep);
+							if (peep->sprite_type == 19 && peep->x != (sint16)0x8000) {
+								create_balloon(peep->x, peep->y, height, peep->balloon_colour, 0);
+								peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+								peep_update_sprite_type(peep);
+							}
 						}
+
+						peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_DROWNING, -1);
+
+						peep->action = PEEP_ACTION_DROWNING;
+						peep->action_frame = 0;
+						peep->action_sprite_image_offset = 0;
+
+						sub_693B58(peep);
+						invalidate_sprite_2((rct_sprite*)peep);
+						peep_window_state_update(peep);
+						return;
 					}
-
-					peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_DROWNING, -1);
-
-					peep->action = PEEP_ACTION_DROWNING;
-					peep->action_frame = 0;
-					peep->action_sprite_image_offset = 0;
-
-					sub_693B58(peep);
-					invalidate_sprite_2((rct_sprite*)peep);
-					peep_window_state_update(peep);
-					return;
 				}
-			}
-			int map_height = map_element_height(0xFFFF & peep->x, 0xFFFF & peep->y) & 0xFFFF;
-			if (map_height < peep->z || map_height - 4 > peep->z) continue;
-			saved_height = map_height;
-			saved_map = map_element;
-		} // If not a path or surface go see next element
-		else continue;
-	} while (!map_element_is_last_for_tile(map_element++));
+				int map_height = map_element_height(0xFFFF & peep->x, 0xFFFF & peep->y) & 0xFFFF;
+				if (map_height < peep->z || map_height - 4 > peep->z) continue;
+				saved_height = map_height;
+				saved_map = map_element;
+			} // If not a path or surface go see next element
+			else continue;
+		} while (!map_element_is_last_for_tile(map_element++));
+	}
 
 	// This will be null if peep is falling
 	if (saved_map == NULL){

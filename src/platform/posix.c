@@ -666,15 +666,23 @@ void platform_resolve_user_data_path()
 			log_error("Failed to create directory \"%s\", make sure you have permissions.", gCustomUserDataPath);
 			return;
 		}
-		if (realpath(gCustomUserDataPath, _userDataDirectoryPath) == NULL) {
+		char *path;
+		if ((path = realpath(gCustomUserDataPath, NULL)) == NULL) {
 			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
 			return;
 		}
+
+		safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
+		free(path);
 
 		// Ensure path ends with separator
 		int len = strlen(_userDataDirectoryPath);
 		if (_userDataDirectoryPath[len - 1] != separator[0]) {
 			strncat(_userDataDirectoryPath, separator, MAX_PATH - 1);
+		}
+		log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
+		if (!platform_directory_exists(_userDataDirectoryPath)) {
+			log_error("Custom user data directory %s does not exist", _userDataDirectoryPath);
 		}
 		return;
 	}
@@ -694,6 +702,7 @@ void platform_resolve_user_data_path()
 	free(w_buffer);
 	safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
 	free(path);
+	log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
 }
 
 void platform_get_openrct_data_path(utf8 *outPath)
