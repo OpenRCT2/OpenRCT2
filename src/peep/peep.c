@@ -7798,7 +7798,7 @@ static int peep_move_one_tile(uint8 direction, rct_peep* peep){
 				tileOffsetY += TileDirectionDelta[(direction+1) & 0x3].y / crowdedAdd;
 			}
 
-			int offset = 1 + min(10, (peep->nausea / 25) + (peep->peeps_ex_crowded_store / 5));
+			int offset = 1 + min(10, max(0, (peep->nausea / 50) - 3) + (peep->peeps_ex_crowded_store / 20));
 
 			tileOffsetX += -offset + scenario_rand_max(1 + (offset << 1));
 			tileOffsetY += -offset + scenario_rand_max(1 + (offset << 1));
