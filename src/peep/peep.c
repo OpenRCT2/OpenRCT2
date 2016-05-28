@@ -10231,6 +10231,12 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 		// At this point, the peep has decided to go on the ride.
 		if (peepAtRide) {
 			ride_update_popularity(ride, 1);
+
+			#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+			// Set his random queue length quite low so late arrivers don't take up bizarre amounts of space
+			//	i.e., we are squishing a bit! This has no effect if messy queuing is not enabled
+			peep->peeps_ex_queue_wait_distance = 0x80 | 7;
+			#endif
 		}
 
 		if (rideIndex == peep->guest_heading_to_ride_id) {
