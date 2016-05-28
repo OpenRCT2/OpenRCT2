@@ -6870,54 +6870,276 @@ void sub_693BAB(rct_peep* peep) {
  */
 static int peep_update_queue_position(rct_peep* peep){
 	peep->time_in_queue++;
-	if (peep->next_in_queue == 0xFFFF)
+	if (peep->next_in_queue == 0xFFFF) {
 		return 0;
-
-	rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
-
-	sint16 x_diff = abs(peep_next->x - peep->x);
-	sint16 y_diff = abs(peep_next->y - peep->y);
-	sint16 z_diff = abs(peep_next->z - peep->z);
-
-	if (z_diff > 10)
-		return 0;
-
-	if (x_diff < y_diff){
-		sint16 temp_x = x_diff;
-		x_diff = y_diff;
-		y_diff = temp_x;
 	}
 
-	x_diff += y_diff / 2;
-	if (x_diff > 7){
-		if (x_diff > 13){
-			if ((peep->x & 0xFFE0) != (peep_next->x & 0xFFE0) ||
-				(peep->y & 0xFFE0) != (peep_next->y & 0xFFE0))
-				return 0;
-		}
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+	if (!gConfigPeepsEx.guest_messy_queuing) {
+	#endif
 
-		if (peep->sprite_direction != peep_next->sprite_direction)
+		rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
+
+		sint16 x_diff = abs(peep_next->x - peep->x);
+		sint16 y_diff = abs(peep_next->y - peep->y);
+		sint16 z_diff = abs(peep_next->z - peep->z);
+
+		if (z_diff > 10)
 			return 0;
 
-		switch (peep_next->sprite_direction / 8){
-		case 0:
-			if (peep->x >= peep_next->x)
+		if (x_diff < y_diff) {
+			sint16 temp_x = x_diff;
+			x_diff = y_diff;
+			y_diff = temp_x;
+		}
+
+		x_diff += y_diff / 2;
+
+		if (x_diff > 7) {
+			if (x_diff > 13) {
+				if ((peep->x & 0xFFE0) != (peep_next->x & 0xFFE0) ||
+					(peep->y & 0xFFE0) != (peep_next->y & 0xFFE0))
+					 return 0;
+				}
+			
+			if (peep->sprite_direction != peep_next->sprite_direction)
 				return 0;
-			break;
-		case 1:
-			if (peep->y <= peep_next->y)
-				return 0;
-			break;
-		case 2:
-			if (peep->x <= peep_next->x)
-				return 0;
-			break;
-		case 3:
-			if (peep->y >= peep_next->y)
-				return 0;
-			break;
+
+			switch (peep_next->sprite_direction / 8) {
+				case 0:
+					if (peep->x >= peep_next->x)
+						return 0;
+					break;
+				case 1:
+					if (peep->y <= peep_next->y)
+						return 0;
+					break;
+				case 2:
+					if (peep->x <= peep_next->x)
+						return 0;
+					break;
+				case 3:
+					if (peep->y >= peep_next->y)
+						return 0;
+					break;
+			};
+		}
+					
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+	}
+	else {
+		rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
+
+		sint16 x_diff = abs(peep_next->x - peep->x);
+		sint16 y_diff = abs(peep_next->y - peep->y);
+		sint16 z_diff = abs(peep_next->z - peep->z);
+
+		if (z_diff > 30)
+			return 0;
+
+		if (x_diff < y_diff){
+			sint16 temp_x = x_diff;
+			x_diff = y_diff;
+			y_diff = temp_x;
+		}
+
+		x_diff += y_diff / 2;
+
+			// At the last tile, it's best not to do any strange things.
+			//	this variable checks if there is a tile ahead (will not be
+			//	checked more often than once)
+
+		int		prohibitShenanigans	= 1;
+		bool	allowMove			= true;
+
+		uint16 macroCurX = peep->x >> 5;
+		uint16 macroCurY = peep->y >> 5;
+		uint16 macroDesX = peep->destination_x >> 5;
+		uint16 macroDesY = peep->destination_y >> 5;
+		uint16 macroCurNxX = peep_next->x >> 5;
+		uint16 macroCurNxY = peep_next->y >> 5;
+
+		if (peep_next->next_in_queue != 0xFFFF) {
+			rct_peep *nxtCue = peep_next;
+
+			while (true) {
+				if (nxtCue->next_in_queue == 0xFFFF) {
+					break;
+				}
+				nxtCue = GET_PEEP(nxtCue->next_in_queue);
+
+				uint16 macroCurFarX = nxtCue->x >> 5;
+				uint16 macroCurFarY = nxtCue->y >> 5;
+
+				if (macroCurFarX == macroCurNxX &&
+					macroCurFarY == macroCurNxY) {
+					continue;
+				}
+
+					// Someone is ahead of the person blocking us, in another tile;
+					//	we could never, ever share that tile!
+
+				if (macroCurX == macroCurFarX &&
+					macroCurY == macroCurFarY) {
+					allowMove = false;
+				}
+
+				if (prohibitShenanigans > 0)
+					prohibitShenanigans -= 1;
+
+				break;
+			}
+		}
+
+			// Are we moving? Take up more space! Are we not? Reduce space!
+			// Are we and the next both stopped? Nudge him to queue up better.
+
+			// The most significant bit in peeps_ex_queue_wait_distance contains
+			//	whether a peep was moving. This is used to 'propagate' peeps
+			//	waiting close-by one-another.
+
+		uint32 tickRef = peep->time_in_queue;
+
+		if (tickRef % 11 == 0) {
+			if (peep->peeps_ex_queue_wait_distance & 0x80) {
+				if ((peep->peeps_ex_queue_wait_distance & 0x7F) < 14) {
+					peep->peeps_ex_queue_wait_distance += scenario_rand_max(6);
+					if ((macroCurNxX != macroCurX || macroCurNxY != macroCurY) &&
+						(macroCurNxX != macroDesX || macroCurNxY != macroDesY)) {
+						peep->peeps_ex_queue_wait_distance += 2;
+					}
+				}
+			}
+		}
+		if (tickRef % 23 == 0) {
+			if (!(peep_next->peeps_ex_queue_wait_distance & 0x80)) {
+				if (peep->peeps_ex_queue_wait_distance < peep_next->peeps_ex_queue_wait_distance) {
+					peep_next->peeps_ex_queue_wait_distance = max(7, min(peep_next->peeps_ex_queue_wait_distance, peep->peeps_ex_queue_wait_distance + scenario_rand_max(2)));
+				}
+				if (!(peep->peeps_ex_queue_wait_distance & 0x80)) {
+					if ((peep->peeps_ex_queue_wait_distance & 0x7F) > 9) {
+						peep->peeps_ex_queue_wait_distance -= scenario_rand_max(2);
+					}
+				}
+			}
+			if ((peep->peeps_ex_queue_wait_distance & 0x7F) < 6) {
+				peep->peeps_ex_queue_wait_distance += 1;
+			}
+		}
+
+		if (allowMove) {	
+			rct_peep* peep_next	= peep;
+
+			for (int ahead = 0; ahead <3; ahead++) {
+				if (peep_next->next_in_queue == 0xFFFF) {
+					break;
+				}
+				peep_next = GET_PEEP(peep_next->next_in_queue);
+
+				sint16 x_diff = abs(peep_next->x - peep->x);
+				sint16 y_diff = abs(peep_next->y - peep->y);
+
+				if (x_diff < y_diff) {
+					sint16 temp_x = x_diff;
+					x_diff = y_diff;
+					y_diff = temp_x;
+				}
+
+				x_diff += y_diff / 2;
+
+				if (x_diff < (0x7F & peep->peeps_ex_queue_wait_distance)) {
+					allowMove = false;
+					break;
+				}
+			}
+		}
+		if (allowMove) {
+				// State that we are moving
+			peep->peeps_ex_queue_wait_distance |= 0x80;
+
+			if (prohibitShenanigans == 0) {
+				if (macroDesX == peep_next->x >> 5 &&
+					macroDesY == peep_next->y >> 5) {
+
+					bool overX = false, overY = false;
+
+					uint16 tarX = peep_next->x;
+					uint16 tarY = peep_next->y;
+
+					if (tickRef % 3 == 0) {
+						int maxOffset = 5;
+					
+						tarX += -maxOffset + scenario_rand_max(2 * maxOffset + 1);
+						tarY += -maxOffset + scenario_rand_max(2 * maxOffset + 1);
+					}
+
+					if (macroDesX != macroCurX) {
+						if (macroDesX > macroCurX) {
+							peep->destination_x = max((macroDesX << 5) + 10, tarX);
+						}
+						else {
+							peep->destination_x = min((macroDesX << 5) + 22, tarX);
+						}
+
+						peep->destination_y = min(max((macroDesY << 5) + 10, tarY), (macroDesY << 5) + 22);
+					}
+					else if (macroDesY != macroCurY) {
+						if (macroDesY > macroCurY) {
+							peep->destination_y = max((macroDesY << 5) + 10, tarY);
+						}
+						else {
+							peep->destination_y = min((macroDesY << 5) + 22, tarY);
+						}
+
+						peep->destination_x = min(max((macroDesX << 5) + 10, tarX), (macroDesX << 5) + 22);
+					}
+
+					peep->destination_tolerence = 2;
+				}
+				else {
+					sint16 x = peep->destination_x & 0xFFE0;
+					sint16 y = peep->destination_y & 0xFFE0;
+
+					sint16 tileOffsetX = peep->destination_x & ~0xFFE0;
+					sint16 tileOffsetY = peep->destination_y & ~0xFFE0;
+
+					tileOffsetX -= 16;
+					tileOffsetY -= 16;
+
+					tileOffsetX += (peep->x - peep->destination_x) / 3;
+					tileOffsetY += (peep->y - peep->destination_y) / 3;
+
+					if (tickRef % 3 == 0) {
+						tileOffsetX += -7 + scenario_rand_max(15);
+						tileOffsetY += -7 + scenario_rand_max(15);
+					}
+
+					sint16 maxTileOffset = 6;
+
+					if (tileOffsetX < -maxTileOffset)
+						tileOffsetX = -maxTileOffset;
+					else if (tileOffsetX > maxTileOffset)
+						tileOffsetX = maxTileOffset;
+					if (tileOffsetY < -maxTileOffset)
+						tileOffsetY = -maxTileOffset;
+					else if (tileOffsetY > maxTileOffset)
+						tileOffsetY = maxTileOffset;
+
+					peep->destination_x = x + tileOffsetX + 16;
+					peep->destination_y = y + tileOffsetY + 16;
+
+					peep->destination_tolerence = 3;
+				}
+			}
+
+			return 0;
+		}
+		else {
+				// We are not moving
+			peep->peeps_ex_queue_wait_distance &= 0x7F;
 		}
 	}
+	#endif
 
 	sint16 xy_dist, x, y;
 	if (peep->action < PEEP_ACTION_NONE_1)
