@@ -470,7 +470,12 @@ typedef struct rct_peep {
 		uint16 next_in_queue;		// 0x74
 	};
 	uint8 var_76;
-	uint8 pad_77;
+	union {
+		uint8 pad_77;
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		uint8 peeps_ex_queue_wait_distance;		// Messy Queue
+#endif
+	};
 	union{
 		uint8 maze_last_edge;			// 0x78
 		uint8 var_78;	//Direction ?
