@@ -1043,10 +1043,14 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 		}
 		else {
 			int spriteDirection = 0;
+			int preferenceDirection = peep->peeps_ex_direction_preference;
 			int sidestepX = 0;
 			int sidestepY = 0;
+			
+			int x_delta_weight = x_delta + ((preferenceDirection == 16 || preferenceDirection == 0)? max(0, x_delta - peep->destination_tolerence) * 3 : 0);
+			int y_delta_weight = y_delta + ((preferenceDirection == 8 || preferenceDirection == 24)? max(0, y_delta - peep->destination_tolerence) * 3 : 0);
 
-			if (y_delta > x_delta) {
+			if (y_delta_weight > x_delta_weight) {
 				spriteDirection = 8;
 				if (*y >= 0) {
 					spriteDirection = 24;
