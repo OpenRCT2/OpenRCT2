@@ -537,74 +537,6 @@ void NetworkConnection::setLastDisconnectReason(const rct_string_id string_id, v
 	setLastDisconnectReason(buffer);
 }
 
-NetworkAddress::NetworkAddress()
-{
-	ss = std::make_shared<sockaddr_storage>();
-	ss_len = std::make_shared<int>();
-	status = std::make_shared<int>();
-	*status = RESOLVE_NONE;
-}
-
-void NetworkAddress::Resolve(const char* host, unsigned short port, bool nonblocking)
-{
-	// A non-blocking hostname resolver
-	*status = RESOLVE_INPROGRESS;
-	mutex = SDL_CreateMutex();
-	cond = SDL_CreateCond();
-	NetworkAddress::host = host;
-	NetworkAddress::port = port;
-	SDL_LockMutex(mutex);
-	SDL_Thread* thread = SDL_CreateThread(ResolveFunc, 0, this);
-	// The mutex/cond is to make sure ResolveFunc doesn't ever get a dangling pointer
-	SDL_CondWait(cond, mutex);
-	SDL_UnlockMutex(mutex);
-	SDL_DestroyCond(cond);
-	SDL_DestroyMutex(mutex);
-	if (!nonblocking) {
-		int status;
-		SDL_WaitThread(thread, &status);
-	}
-}
-
-int NetworkAddress::GetResolveStatus(void)
-{
-	return *status;
-}
-
-int NetworkAddress::ResolveFunc(void* pointer)
-{
-	// Copy data for thread safety
-	NetworkAddress * networkaddress = (NetworkAddress*)pointer;
-	SDL_LockMutex(networkaddress->mutex);
-	std::string host;
-	if (networkaddress->host) host = networkaddress->host;
-	std::string port = std::to_string(networkaddress->port);
-	std::shared_ptr<sockaddr_storage> ss = networkaddress->ss;
-	std::shared_ptr<int> ss_len = networkaddress->ss_len;
-	std::shared_ptr<int> status = networkaddress->status;
-	SDL_CondSignal(networkaddress->cond);
-	SDL_UnlockMutex(networkaddress->mutex);
-
-	// Perform the resolve
-	addrinfo hints;
-	addrinfo* res;
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	if (host.length() == 0) {
-		hints.ai_flags = AI_PASSIVE;
-	}
-	getaddrinfo(host.length() == 0 ? NULL : host.c_str(), port.c_str(), &hints, &res);
-	if (res) {
-		memcpy(&(*ss), res->ai_addr, res->ai_addrlen);
-		*ss_len = res->ai_addrlen;
-		*status = RESOLVE_OK;
-		freeaddrinfo(res);
-	} else {
-		*status = RESOLVE_FAILED;
-	}
-	return 0;
-}
-
 Network::Network()
 {
 	wsa_initialized = false;
@@ -706,7 +638,7 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	if (!Init())
 		return false;
 
-	server_address.Resolve(host, port);
+	server_address.ResolveAsync(host, port);
 	status = NETWORK_STATUS_RESOLVING;
 
 	char str_resolving[256];
@@ -776,11 +708,16 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		return false;
 
 	_userManager.Load();
+
 	NetworkAddress networkaddress;
-	networkaddress.Resolve(address, port, false);
+	networkaddress.Resolve(address, port);
+
+	sockaddr_storage ss;
+	int ss_len;
+	networkaddress.GetResult(&ss, &ss_len);
 
 	log_verbose("Begin listening for clients");
-	listening_socket = socket(networkaddress.ss->ss_family, SOCK_STREAM, IPPROTO_TCP);
+	listening_socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
 	if (listening_socket == INVALID_SOCKET) {
 		log_error("Unable to create socket.");
 		return false;
@@ -792,7 +729,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
 	}
 
-	if (bind(listening_socket, (sockaddr*)&(*networkaddress.ss), (*networkaddress.ss_len)) != 0) {
+	if (bind(listening_socket, (sockaddr *)&ss, ss_len) != 0) {
 		closesocket(listening_socket);
 		log_error("Unable to bind to socket.");
 		return false;
@@ -934,8 +871,12 @@ void Network::UpdateClient()
 	bool connectfailed = false;
 	switch(status){
 	case NETWORK_STATUS_RESOLVING:{
-		if (server_address.GetResolveStatus() == NetworkAddress::RESOLVE_OK) {
-			server_connection.socket = socket(server_address.ss->ss_family, SOCK_STREAM, IPPROTO_TCP);
+		sockaddr_storage ss;
+		int ss_len;
+		NetworkAddress::RESOLVE_STATUS result = server_address.GetResult(&ss, &ss_len);
+
+		if (result == NetworkAddress::RESOLVE_OK) {
+			server_connection.socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
 			if (server_connection.socket == INVALID_SOCKET) {
 				log_error("Unable to create socket.");
 				connectfailed = true;
@@ -949,8 +890,9 @@ void Network::UpdateClient()
 				break;
 			}
 
-			if (connect(server_connection.socket, (sockaddr *)&(*server_address.ss),
-						(*server_address.ss_len)) == SOCKET_ERROR && (LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)){
+			if (connect(server_connection.socket, (sockaddr *)&ss, ss_len) == SOCKET_ERROR &&
+				(LAST_SOCKET_ERROR() == EINPROGRESS || LAST_SOCKET_ERROR() == EWOULDBLOCK)
+			) {
 				char str_connecting[256];
 				format_string(str_connecting, STR_MULTIPLAYER_CONNECTING, NULL);
 				window_network_status_open(str_connecting, []() -> void {
@@ -963,7 +905,7 @@ void Network::UpdateClient()
 				connectfailed = true;
 				break;
 			}
-		} else if (server_address.GetResolveStatus() == NetworkAddress::RESOLVE_INPROGRESS) {
+		} else if (result == NetworkAddress::RESOLVE_INPROGRESS) {
 			break;
 		} else {
 			log_error("Could not resolve address.");

@@ -123,6 +123,7 @@ extern "C" {
 #include <SDL.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
+#include "NetworkAddress.h"
 #include "NetworkKey.h"
 #include "NetworkUser.h"
 
@@ -313,33 +314,6 @@ private:
 	bool SendPacket(NetworkPacket& packet);
 	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
 	uint32 last_packet_time;
-};
-
-class NetworkAddress
-{
-public:
-	NetworkAddress();
-	void Resolve(const char* host, unsigned short port, bool nonblocking = true);
-	int GetResolveStatus(void);
-
-	std::shared_ptr<sockaddr_storage> ss;
-	std::shared_ptr<int> ss_len;
-
-	enum {
-		RESOLVE_NONE,
-		RESOLVE_INPROGRESS,
-		RESOLVE_OK,
-		RESOLVE_FAILED
-	};
-
-private:
-	static int ResolveFunc(void* pointer);
-
-	const char* host = nullptr;
-	unsigned short port = 0;
-	SDL_mutex* mutex = nullptr;
-	SDL_cond* cond = nullptr;
-	std::shared_ptr<int> status;
 };
 
 class Network
