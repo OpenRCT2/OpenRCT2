@@ -1056,7 +1056,7 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 					spriteDirection = 24;
 				}
 
-				if ((scenario_rand_max(*xy_distance)) < (uint32)x_delta) {
+				if (scenario_rand_max(*xy_distance) < (uint32)x_delta * 2) {
 					if (*x > 1)
 						sidestepX = -1;
 					else
@@ -1068,7 +1068,7 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 				if (*x >= 0) {
 					spriteDirection = 0;
 				}
-				if ((scenario_rand_max(*xy_distance)) < (uint32)y_delta) {
+				if (scenario_rand_max(*xy_distance) < (uint32)y_delta * 2) {
 					if (*y > 1)
 						sidestepY = -1;
 					else
