@@ -1075,7 +1075,9 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 						sidestepY = 1;
 				}
 			}
-			peep->sprite_direction = spriteDirection;
+
+			peep->sprite_direction = preferenceDirection;
+			peep->peeps_ex_direction_preference = spriteDirection;
 
 			sint16 actualStepX = RCT2_ADDRESS(0x981D7C, sint16)[spriteDirection / 4];
 			sint16 actualStepY = RCT2_ADDRESS(0x981D7E, sint16)[spriteDirection / 4];
