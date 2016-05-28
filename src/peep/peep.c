@@ -7767,6 +7767,31 @@ static int peep_move_one_tile(uint8 direction, rct_peep* peep){
 		tileOffsetY -= scenario_rand_max(TileDirectionDelta[direction].y);
 
 		if (peep->state == PEEP_STATE_WALKING) {
+			sint16 enterOffsetX = 0;
+			sint16 enterOffsetY = 0;
+
+			{
+				switch (peep->peeps_ex_direction_preference) {
+				case 0:
+					enterOffsetX = -7 + scenario_rand_max(4);
+					break;
+				case 8:
+					enterOffsetY = 7 + scenario_rand_max(4);
+					break;
+				case 16:
+					enterOffsetX = 7 + scenario_rand_max(4);
+					break;
+				case 24:
+					enterOffsetY = -7 + scenario_rand_max(4);
+					break;
+				default:
+					break;
+				};
+			}
+
+			tileOffsetX += enterOffsetX;
+			tileOffsetY += enterOffsetY;
+
 			if (peep->peeps_ex_crowded_store > 0) {
 				uint8 crowdedAdd = max((sint16)(50) - (sint16)(peep->peeps_ex_crowded_store), (sint16)(1));
 				tileOffsetX += TileDirectionDelta[(direction+1) & 0x3].x / crowdedAdd;
