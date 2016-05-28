@@ -81,28 +81,8 @@ extern "C" {
 #include "NetworkGroup.h"
 #include "NetworkKey.h"
 #include "NetworkPacket.h"
+#include "NetworkPlayer.h"
 #include "NetworkUser.h"
-
-class NetworkPlayer
-{
-public:
-	NetworkPlayer() = default;
-	void Read(NetworkPacket& packet);
-	void Write(NetworkPacket& packet);
-	void SetName(const std::string &name);
-	void AddMoneySpent(money32 cost);
-	uint8 id = 0;
-	std::string name;
-	uint16 ping = 0;
-	uint8 flags = 0;
-	uint8 group = 0;
-	money32 money_spent = MONEY(0, 0);
-	unsigned int commands_ran = 0;
-	int last_action = -999;
-	uint32 last_action_time = 0;
-	rct_xyz16 last_action_coord = { 0 };
-	std::string keyhash;
-};
 
 class Network
 {

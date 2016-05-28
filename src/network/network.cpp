@@ -90,33 +90,6 @@ static void network_get_private_key_path(utf8 *buffer, size_t bufferSize, const 
 static void network_get_public_key_path(utf8 *buffer, size_t bufferSize, const utf8 * playerName, const utf8 * hash);
 static void network_get_keymap_path(utf8 *buffer, size_t bufferSize);
 
-void NetworkPlayer::Read(NetworkPacket& packet)
-{
-	const char* name = packet.ReadString();
-	SetName(name);
-	packet >> id >> flags >> group;
-}
-
-void NetworkPlayer::Write(NetworkPacket& packet)
-{
-	packet.WriteString((const char*)name.c_str());
-	packet << id << flags << group;
-}
-
-void NetworkPlayer::SetName(const std::string &name)
-{
-	// 36 == 31 + strlen(" #255");
-	NetworkPlayer::name = name.substr(0, 36);
-	utf8_remove_format_codes((utf8*)NetworkPlayer::name.data(), false);
-}
-
-void NetworkPlayer::AddMoneySpent(money32 cost)
-{
-	money_spent += cost;
-	commands_ran++;
-	window_invalidate_by_number(WC_PLAYER, id);
-}
-
 Network::Network()
 {
 	wsa_initialized = false;
