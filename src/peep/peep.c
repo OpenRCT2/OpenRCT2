@@ -4106,8 +4106,20 @@ static void peep_update_queuing(rct_peep* peep){
 	}
 
 	if (peep->sub_state != 10){
-		if (peep->next_in_queue == 0xFFFF){
-			//Happens every time peep goes onto ride.
+		#ifndef STOUT_PEEPS_EXPANDED_EXPERIMENT
+
+		if (peep->next_in_queue == 0xFFFF) {
+
+		#else
+
+			// When we messy queue, we always let people in who reach the entrance:
+			//	the game can be quite fussy about who is truly in front when it comes
+			//	to riders showing up by themselves and being ejected again; this fix
+			//	prevents peeps from being denied entrance and technically allows peeps
+			//	to peep ahead (though they do not do it much at all)
+		if (gConfigPeepsEx.guest_messy_queuing || peep->next_in_queue == 0xFFFF) {
+
+		#endif
 			peep->destination_tolerence = 0;
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_QUEUING_FRONT;
