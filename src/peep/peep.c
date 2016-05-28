@@ -7826,7 +7826,7 @@ static int peep_move_one_tile(uint8 direction, rct_peep* peep){
 		peep->destination_y = y + tileOffsetY + 16;
 		peep->destination_tolerence = 2;
 		if (peep->state != PEEP_STATE_QUEUING) {
-			peep->destination_tolerence = (scenario_rand() & 7) + 2;
+			peep->destination_tolerence = 2;// (scenario_rand() & 7) + 2;
 		}
 
 		if (peep->state == PEEP_STATE_QUEUING) {
