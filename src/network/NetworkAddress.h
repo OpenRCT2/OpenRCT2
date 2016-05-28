@@ -17,7 +17,7 @@
 #pragma once
 
 #include <memory>
-#include <sdl/SDL_mutex.h>
+#include <SDL_mutex.h>
 #include "NetworkTypes.h"
 #include "../common.h"
 

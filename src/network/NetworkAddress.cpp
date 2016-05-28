@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <string>
-#include <sdl/SDL_thread.h>
+#include <SDL_thread.h>
 #include "NetworkAddress.h"
 
 NetworkAddress::NetworkAddress()

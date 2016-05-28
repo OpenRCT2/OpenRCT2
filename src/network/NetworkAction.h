@@ -17,6 +17,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 #include "../common.h"
 
 class NetworkAction

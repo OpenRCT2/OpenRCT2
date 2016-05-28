@@ -35,16 +35,18 @@
 #endif
 
 #ifdef PLATFORM_X86
-#ifdef __GNUC__
-#define FASTCALL __attribute__((fastcall))
-#elif _MSC_VER
-#define FASTCALL __fastcall
-#else
-#pragma message "Not using fastcall calling convention, please check your compiler support"
-#define FASTCALL
-#endif
+	#ifndef FASTCALL
+		#ifdef __GNUC__
+			#define FASTCALL __attribute__((fastcall))
+		#elif _MSC_VER
+			#define FASTCALL __fastcall
+		#else
+			#pragma message "Not using fastcall calling convention, please check your compiler support"
+			#define FASTCALL
+		#endif
+	#endif // FASTCALL
 #else // PLATFORM_X86
-#define FASTCALL
+	#define FASTCALL
 #endif // PLATFORM_X86
 
 #endif
