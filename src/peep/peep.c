@@ -1017,22 +1017,78 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 		if (*xy_distance <= peep->destination_tolerence){
 			return 0;
 		}
+
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		if (!gConfigPeepsEx.peep_allow_sidestepping) {
+	#endif
+
 		int direction = 0;
-		if (x_delta < y_delta){
+		if (x_delta < y_delta) {
 			direction = 8;
-			if (*y >= 0){
+			if (*y >= 0) {
 				direction = 24;
 			}
 		}
-		else{
+		else {
 			direction = 16;
-			if (*x >= 0){
+			if (*x >= 0) {
 				direction = 0;
 			}
 		}
 		peep->sprite_direction = direction;
 		*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
 		*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
+
+	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		}
+		else {
+			int spriteDirection = 0;
+			int sidestepX = 0;
+			int sidestepY = 0;
+
+			if (y_delta > x_delta) {
+				spriteDirection = 8;
+				if (*y >= 0) {
+					spriteDirection = 24;
+				}
+
+				if ((scenario_rand_max(*xy_distance)) < (uint32)x_delta) {
+					if (*x > 1)
+						sidestepX = -1;
+					else
+						sidestepX = 1;
+				}
+			}
+			else {
+				spriteDirection = 16;
+				if (*x >= 0) {
+					spriteDirection = 0;
+				}
+				if ((scenario_rand_max(*xy_distance)) < (uint32)y_delta) {
+					if (*y > 1)
+						sidestepY = -1;
+					else
+						sidestepY = 1;
+				}
+			}
+			peep->sprite_direction = spriteDirection;
+
+			sint16 actualStepX = RCT2_ADDRESS(0x981D7C, sint16)[spriteDirection / 4];
+			sint16 actualStepY = RCT2_ADDRESS(0x981D7E, sint16)[spriteDirection / 4];
+
+			if (sidestepX != 0) {
+				actualStepY += (actualStepY & 0x8000)? 1 : -1;
+			}
+			else if (sidestepY != 0) {
+				actualStepX += (actualStepX & 0x8000)? 1 : -1;
+			}
+
+			*x = peep->x + actualStepX + sidestepX;
+			*y = peep->y + actualStepY + sidestepY;
+		}
+
+	#endif
+
 		peep->no_action_frame_no++;
 		rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
 		uint8* _edi = (edi[peep->action_sprite_type]).unkn_04;
