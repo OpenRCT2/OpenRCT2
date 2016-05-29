@@ -159,7 +159,7 @@ void scenario_begin()
 	reset_all_sprite_quadrant_placements();
 	window_new_ride_init_vars();
 
-	// Set the scenario pseduo-random seeds
+	// Set the scenario pseudo-random seeds
 	gScenarioSrand0 ^= platform_get_ticks();
 	gScenarioSrand1 ^= platform_get_ticks();
 

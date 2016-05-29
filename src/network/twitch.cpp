@@ -568,7 +568,7 @@ namespace Twitch
             buffer[0] = (utf8)FORMAT_TOPAZ;
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
-            // Remove unsupport characters
+            // Remove unsupported characters
             // TODO allow when OpenRCT2 gains unicode support
             char * ch = buffer + 1;
             while (ch[0] != '\0')
