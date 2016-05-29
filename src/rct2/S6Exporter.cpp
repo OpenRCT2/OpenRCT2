@@ -562,6 +562,7 @@ extern "C"
         SDL_WriteU8(rw, gCheatsDisableLittering);
         SDL_WriteU8(rw, gCheatsNeverendingMarketing);
         SDL_WriteU8(rw, gCheatsFreezeClimate);
+	SDL_WriteU8(rw, gCheatsDisablePlantAging);
 
         gfx_invalidate_screen();
         return 1;

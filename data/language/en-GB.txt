@@ -4121,6 +4121,8 @@ STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars p
 STR_5812    :Show multiplayer window
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5871    :Plants don't age.
+STR_5872    :{SMALLFONT}{BLACK}Disable plant aging such that they don't wilt.
 
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
