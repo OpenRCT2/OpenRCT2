@@ -4170,6 +4170,10 @@ STR_5857    :{SMALLFONT}{BLACK}Spel inställningar
 STR_5858    :{SMALLFONT}{BLACK}Använd GPU för grafiken istället för CPU. Ökar kompatibiliteten med skärminspelningsprogram som till exempel Fraps{NEWLINE}Kan försämra prestandan lite grann
 STR_5859    :{SMALLFONT}{BLACK}Aktiverar 'frame tweening' för en visuellt mjukare spelupplevelse.{NEWLINE}Om avaktiverad kommer spelet köras i 40 fps.
 STR_5860    :Växla mellan spelets originala/omskrivna spår på karuseller
+STR_5861    :Nyckel verifikation misslyckades.
+STR_5862    :Blockera okända spelare.
+STR_5863    :{SMALLFONT}{BLACK}Tillåt endast spelare med kända nycklar att ansluta.
+STR_5864    :Denna server tillåter endast uppskrivna spelare att ansluta.
 
 
 #############
