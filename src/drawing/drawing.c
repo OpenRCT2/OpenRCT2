@@ -527,7 +527,7 @@ void gfx_draw_pickedup_peep()
 
 /**
  * Draws the given colour image masked out by the given mask image. This can currently only cope with bitmap formatted mask and
- * colour images. Presumebly the original game never used RLE images for masking. Colour 0 represents transparent.
+ * colour images. Presumably the original game never used RLE images for masking. Colour 0 represents transparent.
  *
  *  rct2: 0x00681DE2
  */

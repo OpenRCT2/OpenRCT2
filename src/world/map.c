@@ -611,7 +611,7 @@ void map_update_path_wide_flags()
 		return;
 	}
 
-	// Presumebly update_path_wide_flags is too computationally expensive to call for every
+	// Presumably update_path_wide_flags is too computationally expensive to call for every
 	// tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
 	// progress. A maximum of 128 calls is done per update.
 	uint16 x = gWidePathTileLoopX;
@@ -4299,7 +4299,7 @@ static void map_update_grass_length(int x, int y, rct_map_element *mapElement)
 	}
 
 	// Grass can't grow any further than CLUMPS_2 but this code also cuts grass
-	// if there is an object placed ontop of it.
+	// if there is an object placed on top of it.
 
 	int z0 = mapElement->base_height;
 	int z1 = mapElement->base_height + 2;
