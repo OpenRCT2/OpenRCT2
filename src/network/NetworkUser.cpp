@@ -184,7 +184,11 @@ void NetworkUserManager::UnsetUsersOfGroup(uint8 groupId)
 
 void NetworkUserManager::RemoveUser(const std::string &hash)
 {
-    _usersByHash[hash]->Remove = true;
+    NetworkUser * networkUser = GetUserByHash(hash);
+    if (networkUser != nullptr)
+    {
+        networkUser->Remove = true;
+    }
 }
 
 NetworkUser * NetworkUserManager::GetUserByHash(const std::string &hash)

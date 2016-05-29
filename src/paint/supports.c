@@ -509,9 +509,9 @@ bool metal_a_supports_paint_setup(int supportType, int segment, int special, int
  * Metal pole supports
  *  rct2: 0x00663584
  */
-bool metal_b_wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
+bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags)
 {
-	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
+	int eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x00663584, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
 }

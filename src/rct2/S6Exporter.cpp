@@ -424,7 +424,8 @@ void S6Exporter::Export()
     _s6.climate_update_timer = gClimateUpdateTimer;
     _s6.current_weather = gClimateCurrentWeather;
     _s6.next_weather = gClimateNextWeather;
-    _s6.temperature = gClimateNextTemperature;
+    _s6.temperature = gClimateCurrentTemperature;
+    _s6.next_temperature = gClimateNextTemperature;
     _s6.current_weather_effect = gClimateCurrentWeatherEffect;
     _s6.next_weather_effect = gClimateNextWeatherEffect;
     _s6.current_weather_gloom = gClimateCurrentWeatherGloom;
