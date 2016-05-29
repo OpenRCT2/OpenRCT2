@@ -41,6 +41,7 @@ bool gCheatsDisableLittering = false;
 bool gCheatsNeverendingMarketing = false;
 bool gCheatsFreezeClimate = false;
 bool gCheatsDisableTrainLengthLimit = false;
+bool gCheatsDisablePlantAging = false;
 
 int park_rating_spinner_value;
 
@@ -398,6 +399,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_WATERPLANTS: cheat_water_plants(); break;
 			case CHEAT_FIXVANDALISM: cheat_fix_vandalism(); break;
 			case CHEAT_REMOVELITTER: cheat_remove_litter(); break;
+			case CHEAT_DISABLEPLANTAGING: gCheatsDisablePlantAging = !gCheatsDisablePlantAging; break;
 			case CHEAT_SETSTAFFSPEED: cheat_set_staff_speed(*edx); break;
 			case CHEAT_RENEWRIDES: cheat_renew_rides(); break;
 			case CHEAT_MAKEDESTRUCTIBLE: cheat_make_destructible(); break;
@@ -437,4 +439,5 @@ void cheats_reset()
 	gCheatsDisableLittering = false;
 	gCheatsNeverendingMarketing = false;
 	gCheatsFreezeClimate = false;
+	gCheatsDisablePlantAging = false;
 }
