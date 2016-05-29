@@ -4228,6 +4228,28 @@ STR_5916    :{COMMA16} player
 STR_5917    :{COMMA16} players
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+STR_5920    :Surface details
+STR_5921    :Path details
+STR_5922    :Track details
+STR_5923    :Scenery details
+STR_5924    :Entrance details
+STR_5925    :Fence details
+STR_5926    :Large scenery details
+STR_5927    :Banner details
+STR_5928    :Currupt element details
+STR_5929    :Properties
+STR_5930    :Terrain texture: {BLACK}{STRINGID}
+STR_5931    :Terrain edge: {BLACK}{STRINGID}
+STR_5932    :Water level: {BLACK}{COMMA16}
+STR_5933    :Remove park fences
+STR_5934    :Restore park fences
+
+#TODO: Add and use those in strings_ids and tile_inspector.c
+STR_5835    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5836    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
+STR_5837    :{WINDOW_COLOUR_2}Track piece sequence: {BLACK}{COMMA16}/{COMMA16}
+
+#TODO: Fix rebase
 STR_5920    :Render weather effects
 STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
