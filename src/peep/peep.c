@@ -508,7 +508,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 
-		#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 
 			// If guests are idly walking and they have spent a lot of time here, make them always leave;
 			//	this gives some rides a bit of new life, makes new people spend entry fees again, also gets
@@ -523,7 +523,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 			}
 		}
 
-		#endif
+#endif
 
 		if ((scenario_rand() & 0xFFFF) <= (peep->item_standard_flags & PEEP_ITEM_MAP ? 8192U : 2184U)){
 			peep_pick_ride_to_go_on(peep);
@@ -1018,30 +1018,32 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 			return 0;
 		}
 
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
-		if (!gConfigPeepsEx.peep_allow_sidestepping) {
-	#endif
+		bool useVanillaWalking = true;
 
-		int direction = 0;
-		if (x_delta < y_delta) {
-			direction = 8;
-			if (*y >= 0) {
-				direction = 24;
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		useVanillaWalking = !gConfigPeepsEx.peep_allow_sidestepping;
+#endif
+
+		if (useVanillaWalking) {
+			int direction = 0;
+			if (x_delta < y_delta) {
+				direction = 8;
+				if (*y >= 0) {
+					direction = 24;
+				}
 			}
+			else {
+				direction = 16;
+				if (*x >= 0) {
+					direction = 0;
+				}
+			}
+			peep->sprite_direction = direction;
+			*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
+			*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
 		}
 		else {
-			direction = 16;
-			if (*x >= 0) {
-				direction = 0;
-			}
-		}
-		peep->sprite_direction = direction;
-		*x = peep->x + RCT2_ADDRESS(0x981D7C, sint16)[direction / 4];
-		*y = peep->y + RCT2_ADDRESS(0x981D7E, sint16)[direction / 4];
-
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
-		}
-		else {
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 			int spriteDirection = 0;
 			int preferenceDirection = peep->peeps_ex_direction_preference;
 			int sidestepX = 0;
@@ -1091,9 +1093,8 @@ int peep_update_action(sint16* x, sint16* y, sint16* xy_distance, rct_peep* peep
 
 			*x = peep->x + actualStepX + sidestepX;
 			*y = peep->y + actualStepY + sidestepY;
+#endif
 		}
-
-	#endif
 
 		peep->no_action_frame_no++;
 		rct_sprite_image * edi = g_sprite_entries[peep->sprite_type].sprite_image;
@@ -4112,20 +4113,20 @@ static void peep_update_queuing(rct_peep* peep){
 	}
 
 	if (peep->sub_state != 10){
-		#ifndef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		bool alwaysAllowEntry = false;
 
-		if (peep->next_in_queue == 0xFFFF) {
-
-		#else
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 
 			// When we messy queue, we always let people in who reach the entrance:
 			//	the game can be quite fussy about who is truly in front when it comes
 			//	to riders showing up by themselves and being ejected again; this fix
 			//	prevents peeps from being denied entrance and technically allows peeps
 			//	to peep ahead (though they do not do it much at all)
-		if (gConfigPeepsEx.guest_messy_queuing || peep->next_in_queue == 0xFFFF) {
+		alwaysAllowEntry	= gConfigPeepsEx.guest_messy_queuing;
 
-		#endif
+#endif
+
+		if (alwaysAllowEntry || peep->next_in_queue == 0xFFFF) {
 			peep->destination_tolerence = 0;
 			peep_decrement_num_riders(peep);
 			peep->state = PEEP_STATE_QUEUING_FRONT;
@@ -5790,7 +5791,7 @@ static void peep_update(rct_peep *peep)
 			stepsToTake += stepsToTake / 2;
 	}
 
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 	if (gConfigPeepsEx.peep_messy_congestion && peep->state == PEEP_STATE_WALKING) {
 		if (peep->peeps_ex_crowded_store > 15) {
 			stepsToTake /= 3 + scenario_rand_max(5);
@@ -5803,7 +5804,7 @@ static void peep_update(rct_peep *peep)
 			stepsToTake /= 3 + scenario_rand_max(2);
 		}
 	}
-	#endif
+#endif
 
 	unsigned int carryCheck = peep->var_73 + stepsToTake;
 	peep->var_73 = carryCheck;
@@ -6882,10 +6883,15 @@ static int peep_update_queue_position(rct_peep* peep){
 		return 0;
 	}
 
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
-	if (!gConfigPeepsEx.guest_messy_queuing) {
-	#endif
+	bool useVanillaQueuing = true;
 
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+
+	useVanillaQueuing = !gConfigPeepsEx.guest_messy_queuing;
+
+#endif
+
+	if (useVanillaQueuing) {
 		rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
 
 		sint16 x_diff = abs(peep_next->x - peep->x);
@@ -6931,11 +6937,10 @@ static int peep_update_queue_position(rct_peep* peep){
 						return 0;
 					break;
 			};
-		}
-					
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+		}		
 	}
 	else {
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 		rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
 
 		sint16 x_diff = abs(peep_next->x - peep->x);
@@ -7146,8 +7151,8 @@ static int peep_update_queue_position(rct_peep* peep){
 				// We are not moving
 			peep->peeps_ex_queue_wait_distance &= 0x7F;
 		}
+#endif
 	}
-	#endif
 
 	sint16 xy_dist, x, y;
 	if (peep->action < PEEP_ACTION_NONE_1)
@@ -7486,7 +7491,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		peep->happiness_growth_rate = max(0, peep->happiness_growth_rate - 14);
 	}
 
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 
 		// Remember for a while what the tile was like; this allows us to
 		//	make the peeps walk a bit differently when congested without
@@ -7497,7 +7502,7 @@ static int peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct_ma
 		peep->peeps_ex_crowded_store += min(100, crowded / 2);
 	}
 
-	#endif
+#endif
 
 	litter_count = min(3, litter_count);
 	sick_count = min(3, sick_count);
@@ -7744,21 +7749,25 @@ static int peep_move_one_tile(uint8 direction, rct_peep* peep){
 		return guest_surface_path_finding(peep);
 	}
 
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
-	if (!gConfigPeepsEx.peep_messy_walking) {
-	#endif
+	bool useVanillaWalking = true;
 
-	peep->var_78 = direction;
-	peep->destination_x = x + 16;
-	peep->destination_y = y + 16;
-	peep->destination_tolerence = 2;
-	if (peep->state != PEEP_STATE_QUEUING){
-		peep->destination_tolerence = (scenario_rand() & 7) + 2;
-	}
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+	
+	useVanillaWalking		= !gConfigPeepsEx.peep_messy_walking;
 
-	#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+#endif
+
+	if (useVanillaWalking) {
+		peep->var_78 = direction;
+		peep->destination_x = x + 16;
+		peep->destination_y = y + 16;
+		peep->destination_tolerence = 2;
+		if (peep->state != PEEP_STATE_QUEUING){
+			peep->destination_tolerence = (scenario_rand() & 7) + 2;
+		}
 	}
 	else {
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 		sint16 tileOffsetX = peep->x & ~0xFFE0;
 		sint16 tileOffsetY = peep->y & ~0xFFE0;
 
@@ -7834,9 +7843,8 @@ static int peep_move_one_tile(uint8 direction, rct_peep* peep){
 		if (peep->state == PEEP_STATE_QUEUING) {
 			peep->destination_tolerence = 2;
 		}
+#endif
 	}
-
-	#endif
 
 	return 0;
 }
@@ -10071,13 +10079,13 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						// Unlike normal paths, peeps cannot overlap when queueing for a ride.
 						// This check enforces a minimum distance between peeps entering the queue.
 						if (maxD < 8) {
-							#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 								// Push the last peep anyway, so that he reduces his wait distance
 								//	This has no effect when messy queuing is disabled
 							if ((lastPeepInQueue->peeps_ex_queue_wait_distance & 0x7F) > 7) {
 								lastPeepInQueue->peeps_ex_queue_wait_distance -= 1;
 							}
-							#endif
+#endif
 
 							peep_tried_to_enter_full_queue(peep, rideIndex);
 							return false;
@@ -10086,13 +10094,13 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 						// This checks if there's a peep standing still at the very end of the queue.
 						if (maxD <= 13
 							&& lastPeepInQueue->time_in_queue > 10) {
-							#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 								// Push the last peep anyway, so that he reduces his wait distance
 								//	This has no effect when messy queuing is disabled
 							if ((lastPeepInQueue->peeps_ex_queue_wait_distance & 0x7F) > 6) {
 								lastPeepInQueue->peeps_ex_queue_wait_distance -= 1;
 							}
-							#endif
+#endif
 							peep_tried_to_enter_full_queue(peep, rideIndex);
 							return false;
 						}
@@ -10265,11 +10273,11 @@ static bool peep_should_go_on_ride(rct_peep *peep, int rideIndex, int entranceNu
 		if (peepAtRide) {
 			ride_update_popularity(ride, 1);
 
-			#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
+#ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 			// Set his random queue length quite low so late arrivers don't take up bizarre amounts of space
 			//	i.e., we are squishing a bit! This has no effect if messy queuing is not enabled
 			peep->peeps_ex_queue_wait_distance = 0x80 | 7;
-			#endif
+#endif
 		}
 
 		if (rideIndex == peep->guest_heading_to_ride_id) {
