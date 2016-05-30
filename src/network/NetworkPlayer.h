@@ -14,39 +14,38 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#pragma once
 
-#include "diagnostic.h"
-#include "rct2.h"
+#include <string>
+#include "../common.h"
 
-#define SafeFree(x) do { free(x); (x) = NULL; } while (0)
+extern "C"
+{
+    #include "../world/map.h"
+}
 
-#define SafeDelete(x) do { delete (x); (x) = nullptr; } while (0)
-#define SafeDeleteArray(x) do { delete[] (x); (x) = nullptr; } while (0)
+class NetworkPacket;
 
-#ifndef interface
-	#define interface struct
-#endif
-#define abstract = 0
+class NetworkPlayer
+{
+public:
+    uint8       id                  = 0;
+    std::string name;
+    uint16      ping                = 0;
+    uint8       flags               = 0;
+    uint8       group               = 0;
+    money32     money_spent         = MONEY(0, 0);
+    uint32      commands_ran        = 0;
+    int         last_action         = -999;
+    uint32      last_action_time    = 0;
+    rct_xyz16   last_action_coord   = { 0 };
+    std::string keyhash;
 
-#if defined(__i386__) || defined(_M_IX86)
-#define PLATFORM_X86
-#endif
+    NetworkPlayer() = default;
 
-#ifdef PLATFORM_X86
-	#ifndef FASTCALL
-		#ifdef __GNUC__
-			#define FASTCALL __attribute__((fastcall))
-		#elif _MSC_VER
-			#define FASTCALL __fastcall
-		#else
-			#pragma message "Not using fastcall calling convention, please check your compiler support"
-			#define FASTCALL
-		#endif
-	#endif // FASTCALL
-#else // PLATFORM_X86
-	#define FASTCALL
-#endif // PLATFORM_X86
+    void SetName(const std::string &name);
 
-#endif
+    void Read(NetworkPacket &packet);
+    void Write(NetworkPacket &packet);
+    void AddMoneySpent(money32 cost);
+};

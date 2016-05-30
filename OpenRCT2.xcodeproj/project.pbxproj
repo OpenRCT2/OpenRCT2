@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		007A05CD1CFB2C8B00F419C3 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C01CFB2C8B00F419C3 /* NetworkAction.cpp */; };
+		007A05CE1CFB2C8B00F419C3 /* NetworkAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C21CFB2C8B00F419C3 /* NetworkAddress.cpp */; };
+		007A05CF1CFB2C8B00F419C3 /* NetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C41CFB2C8B00F419C3 /* NetworkConnection.cpp */; };
+		007A05D01CFB2C8B00F419C3 /* NetworkGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C61CFB2C8B00F419C3 /* NetworkGroup.cpp */; };
+		007A05D11CFB2C8B00F419C3 /* NetworkPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C81CFB2C8B00F419C3 /* NetworkPacket.cpp */; };
+		007A05D21CFB2C8B00F419C3 /* NetworkPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05CA1CFB2C8B00F419C3 /* NetworkPlayer.cpp */; };
 		008BF72A1CDAA5C30019A2AD /* track_design_index.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7261CDAA5C30019A2AD /* track_design_index.c */; };
 		008BF72B1CDAA5C30019A2AD /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7271CDAA5C30019A2AD /* track_design_save.c */; };
 		008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */ = {isa = PBXBuildFile; fileRef = 008BF7281CDAA5C30019A2AD /* track_design.c */; };
@@ -331,6 +337,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		007A05C01CFB2C8B00F419C3 /* NetworkAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkAction.cpp; sourceTree = "<group>"; };
+		007A05C11CFB2C8B00F419C3 /* NetworkAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkAction.h; sourceTree = "<group>"; };
+		007A05C21CFB2C8B00F419C3 /* NetworkAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkAddress.cpp; sourceTree = "<group>"; };
+		007A05C31CFB2C8B00F419C3 /* NetworkAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkAddress.h; sourceTree = "<group>"; };
+		007A05C41CFB2C8B00F419C3 /* NetworkConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkConnection.cpp; sourceTree = "<group>"; };
+		007A05C51CFB2C8B00F419C3 /* NetworkConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConnection.h; sourceTree = "<group>"; };
+		007A05C61CFB2C8B00F419C3 /* NetworkGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkGroup.cpp; sourceTree = "<group>"; };
+		007A05C71CFB2C8B00F419C3 /* NetworkGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkGroup.h; sourceTree = "<group>"; };
+		007A05C81CFB2C8B00F419C3 /* NetworkPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkPacket.cpp; sourceTree = "<group>"; };
+		007A05C91CFB2C8B00F419C3 /* NetworkPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkPacket.h; sourceTree = "<group>"; };
+		007A05CA1CFB2C8B00F419C3 /* NetworkPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkPlayer.cpp; sourceTree = "<group>"; };
+		007A05CB1CFB2C8B00F419C3 /* NetworkPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkPlayer.h; sourceTree = "<group>"; };
+		007A05CC1CFB2C8B00F419C3 /* NetworkTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkTypes.h; sourceTree = "<group>"; };
 		008BF7261CDAA5C30019A2AD /* track_design_index.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_design_index.c; sourceTree = "<group>"; };
 		008BF7271CDAA5C30019A2AD /* track_design_save.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_design_save.c; sourceTree = "<group>"; };
 		008BF7281CDAA5C30019A2AD /* track_design.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = track_design.c; sourceTree = "<group>"; };
@@ -1326,6 +1345,19 @@
 		D442714F1CC81B3200D84D28 /* network */ = {
 			isa = PBXGroup;
 			children = (
+				007A05C01CFB2C8B00F419C3 /* NetworkAction.cpp */,
+				007A05C11CFB2C8B00F419C3 /* NetworkAction.h */,
+				007A05C21CFB2C8B00F419C3 /* NetworkAddress.cpp */,
+				007A05C31CFB2C8B00F419C3 /* NetworkAddress.h */,
+				007A05C41CFB2C8B00F419C3 /* NetworkConnection.cpp */,
+				007A05C51CFB2C8B00F419C3 /* NetworkConnection.h */,
+				007A05C61CFB2C8B00F419C3 /* NetworkGroup.cpp */,
+				007A05C71CFB2C8B00F419C3 /* NetworkGroup.h */,
+				007A05C81CFB2C8B00F419C3 /* NetworkPacket.cpp */,
+				007A05C91CFB2C8B00F419C3 /* NetworkPacket.h */,
+				007A05CA1CFB2C8B00F419C3 /* NetworkPlayer.cpp */,
+				007A05CB1CFB2C8B00F419C3 /* NetworkPlayer.h */,
+				007A05CC1CFB2C8B00F419C3 /* NetworkTypes.h */,
 				D44271501CC81B3200D84D28 /* http.cpp */,
 				D44271511CC81B3200D84D28 /* http.h */,
 				D44271521CC81B3200D84D28 /* network.cpp */,
@@ -1960,12 +1992,15 @@
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
 				C686F8B31CDBC37E009F9BFC /* surface.c in Sources */,
 				D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */,
+				007A05CE1CFB2C8B00F419C3 /* NetworkAddress.cpp in Sources */,
 				D442729A1CC81B3200D84D28 /* banner.c in Sources */,
 				C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */,
 				D44272211CC81B3200D84D28 /* viewport_interaction.c in Sources */,
 				D442721B1CC81B3200D84D28 /* graph.c in Sources */,
 				C686F9581CDBC4C7009F9BFC /* vehicle_paint.c in Sources */,
+				007A05D11CFB2C8B00F419C3 /* NetworkPacket.cpp in Sources */,
 				D44272101CC81B3200D84D28 /* sprite.c in Sources */,
+				007A05CD1CFB2C8B00F419C3 /* NetworkAction.cpp in Sources */,
 				D442721F1CC81B3200D84D28 /* title_sequences.c in Sources */,
 				C686F8AE1CDBC37E009F9BFC /* fence.c in Sources */,
 				C686F8AC1CDBC37E009F9BFC /* banner.c in Sources */,
@@ -1982,6 +2017,7 @@
 				D442723F1CC81B3200D84D28 /* shared.c in Sources */,
 				D442727E1CC81B3200D84D28 /* save_prompt.c in Sources */,
 				D442726A1CC81B3200D84D28 /* main.c in Sources */,
+				007A05CF1CFB2C8B00F419C3 /* NetworkConnection.cpp in Sources */,
 				C686F9341CDBC3B7009F9BFC /* merry_go_round.c in Sources */,
 				C686F8B81CDBC37E009F9BFC /* sprite.c in Sources */,
 				C686F9221CDBC3B7009F9BFC /* stand_up_roller_coaster.c in Sources */,
@@ -2113,6 +2149,7 @@
 				D442729B1CC81B3200D84D28 /* climate.c in Sources */,
 				C686F9261CDBC3B7009F9BFC /* vertical_drop_roller_coaster.c in Sources */,
 				D442726F1CC81B3200D84D28 /* multiplayer.c in Sources */,
+				007A05D21CFB2C8B00F419C3 /* NetworkPlayer.cpp in Sources */,
 				D442725B1CC81B3200D84D28 /* editor_inventions_list.c in Sources */,
 				D44272311CC81B3200D84D28 /* news_item.c in Sources */,
 				D442720D1CC81B3200D84D28 /* rain.c in Sources */,
@@ -2143,6 +2180,7 @@
 				D442720F1CC81B3200D84D28 /* scrolling_text.c in Sources */,
 				D44271F51CC81B3200D84D28 /* addresses.c in Sources */,
 				D44272041CC81B3200D84D28 /* Stopwatch.cpp in Sources */,
+				007A05D01CFB2C8B00F419C3 /* NetworkGroup.cpp in Sources */,
 				C686F9491CDBC3B7009F9BFC /* chairlift.c in Sources */,
 				C686F9501CDBC3B7009F9BFC /* log_flume.c in Sources */,
 				D44272241CC81B3200D84D28 /* intro.c in Sources */,

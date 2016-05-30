@@ -4007,6 +4007,7 @@ STR_5662    :N/A
 STR_5663    :Rensa Land
 STR_5664    :Fusk
 STR_5665    :Dekoration Utspridning
+STR_5666    :Lösenordslös Inloggning
 STR_5701    :{WINDOW_COLOUR_2}Senaste handling: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Visa spelarens senaste handling
 STR_5703    :Kan inte sparka ut ägaren
