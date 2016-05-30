@@ -232,7 +232,7 @@ static uint8 peep_assess_surroundings(sint16 center_x, sint16 center_y, sint16 c
 					if (footpath_element_path_scenery_is_ghost(mapElement))
 						break;
 
-					if (scenery->path_bit.var_06 &
+					if (scenery->path_bit.flags &
 						(PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER |
 						PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)){
 						num_fountains++;
@@ -626,7 +626,7 @@ static void sub_68F41A(rct_peep *peep, int index)
 					if (footpath_element_has_path_scenery(mapElement) && footpath_element_path_scenery_is_ghost(mapElement)){
 						uint8 pathSceneryIndex = footpath_element_get_path_scenery_index(mapElement);
 						rct_scenery_entry *sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
-						if (sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_QUEUE_MONITOR) {
+						if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_QUEUE_MONITOR) {
 							found = 1;
 						}
 					}
@@ -4272,7 +4272,7 @@ static void peep_update_emptying_bin(rct_peep* peep){
 
 		rct_scenery_entry* scenery_entry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 		if (
-			!(scenery_entry->path_bit.var_06 & PATH_BIT_FLAG_BIN)
+			!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_BIN)
 			|| map_element->flags & (1 << 5)
 			|| footpath_element_path_scenery_is_ghost(map_element)
 		) {
@@ -4532,7 +4532,7 @@ static int peep_update_walking_find_bench(rct_peep* peep){
 	if (!footpath_element_has_path_scenery(map_element)) return 0;
 	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
-	if (!(sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_BENCH))return 0;
+	if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BENCH))return 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return 0;
 
@@ -4607,7 +4607,7 @@ static int peep_update_walking_find_bin(rct_peep* peep){
 	if (!footpath_element_has_path_scenery(map_element)) return 0;
 	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
-	if (!(sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_BIN))return 0;
+	if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BIN))return 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return 0;
 
@@ -4688,7 +4688,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
 	if (!footpath_element_has_path_scenery(map_element)) return;
 	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
-	if (!(sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_BREAKABLE))return;
+	if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))return;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)return;
 
@@ -4859,7 +4859,7 @@ static void peep_update_using_bin(rct_peep* peep){
 		}
 
 		rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
-		if (!(sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_BIN)){
+		if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BIN)){
 			peep_state_reset(peep);
 			return;
 		}
@@ -5256,7 +5256,7 @@ static int peep_update_patrolling_find_bin(rct_peep* peep){
 	if (!footpath_element_has_path_scenery(map_element)) return 0;
 	rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
-	if (!(sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_BIN))
+	if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BIN))
 		return 0;
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)
@@ -5560,7 +5560,7 @@ static void peep_update_walking(rct_peep* peep){
 		if (!footpath_element_path_scenery_is_ghost(map_element)) {
 			rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
-			if (!(sceneryEntry->path_bit.var_06 & PATH_BIT_FLAG_BENCH)) ebp = 9;
+			if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BENCH)) ebp = 9;
 		}
 	}
 
