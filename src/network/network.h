@@ -28,20 +28,6 @@ enum {
 };
 
 enum {
-	NETWORK_AUTH_NONE,
-	NETWORK_AUTH_REQUESTED,
-	NETWORK_AUTH_OK,
-	NETWORK_AUTH_BADVERSION,
-	NETWORK_AUTH_BADNAME,
-	NETWORK_AUTH_BADPASSWORD,
-	NETWORK_AUTH_VERIFICATIONFAILURE,
-	NETWORK_AUTH_FULL,
-	NETWORK_AUTH_REQUIREPASSWORD,
-	NETWORK_AUTH_VERIFIED,
-	NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED,
-};
-
-enum {
 	NETWORK_STATUS_NONE,
 	NETWORK_STATUS_READY,
 	NETWORK_STATUS_RESOLVING,
@@ -62,6 +48,8 @@ extern "C" {
 }
 #endif // __cplusplus
 
+#include "NetworkTypes.h"
+
 #ifndef DISABLE_NETWORK
 
 // This define specifies which version of network stream current build uses.
@@ -69,41 +57,6 @@ extern "C" {
 // single OpenRCT2 version.
 #define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
-
-#define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
-
-#ifdef __WINDOWS__
-	#include <winsock2.h>
-	#include <ws2tcpip.h>
-	#define LAST_SOCKET_ERROR() WSAGetLastError()
-	#undef EWOULDBLOCK
-	#define EWOULDBLOCK WSAEWOULDBLOCK
-	#ifndef SHUT_RD
-		#define SHUT_RD SD_RECEIVE
-	#endif
-	#ifndef SHUT_RDWR
-		#define SHUT_RDWR SD_BOTH
-	#endif
-	#define FLAG_NO_PIPE 0
-#else
-	#include <errno.h>
-	#include <arpa/inet.h>
-	#include <netdb.h>
-	#include <netinet/tcp.h>
-	#include <sys/socket.h>
-	#include <fcntl.h>
-	typedef int SOCKET;
-	#define SOCKET_ERROR -1
-	#define INVALID_SOCKET -1
-	#define LAST_SOCKET_ERROR() errno
-	#define closesocket close
-	#define ioctlsocket ioctl
-	#if defined(__LINUX__)
-		#define FLAG_NO_PIPE MSG_NOSIGNAL
-	#else
-		#define FLAG_NO_PIPE 0
-	#endif // defined(__LINUX__)
-#endif // __WINDOWS__
 
 // Fixes issues on OS X
 #if defined(_RCT2_H_) && !defined(_MSC_VER)
@@ -123,224 +76,13 @@ extern "C" {
 #include <SDL.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
+#include "NetworkAddress.h"
+#include "NetworkConnection.h"
+#include "NetworkGroup.h"
 #include "NetworkKey.h"
+#include "NetworkPacket.h"
+#include "NetworkPlayer.h"
 #include "NetworkUser.h"
-
-template <std::size_t size>
-struct ByteSwapT { };
-template <>
-struct ByteSwapT<1> { static uint8 SwapBE(uint8 value) { return value; } };
-template <>
-struct ByteSwapT<2> { static uint16 SwapBE(uint16 value) { return SDL_SwapBE16(value); } };
-template <>
-struct ByteSwapT<4> { static uint32 SwapBE(uint32 value) { return SDL_SwapBE32(value); } };
-template <typename T>
-T ByteSwapBE(const T& value) { return ByteSwapT<sizeof(T)>::SwapBE(value); }
-
-class NetworkPacket
-{
-public:
-	NetworkPacket();
-	static std::unique_ptr<NetworkPacket> Allocate();
-	static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
-	uint8* GetData();
-	uint32 GetCommand();
-	template <typename T>
-	NetworkPacket& operator<<(T value) {
-		T swapped = ByteSwapBE(value); uint8* bytes = (uint8*)&swapped; data->insert(data->end(), bytes, bytes + sizeof(value));
-		return *this;
-	}
-	void Write(const uint8* bytes, unsigned int size);
-	void WriteString(const char* string);
-	template <typename T>
-	NetworkPacket& operator>>(T& value) {
-		if (read + sizeof(value) > size) { value = 0; } else { value = ByteSwapBE(*((T*)&GetData()[read])); read += sizeof(value); }
-		return *this;
-	}
-	const uint8* Read(unsigned int size);
-	const char* ReadString();
-	void Clear();
-	bool CommandRequiresAuth();
-
-	uint16 size;
-	std::shared_ptr<std::vector<uint8>> data;
-	unsigned int transferred;
-	int read;
-};
-
-class NetworkPlayer
-{
-public:
-	NetworkPlayer() = default;
-	void Read(NetworkPacket& packet);
-	void Write(NetworkPacket& packet);
-	void SetName(const std::string &name);
-	void AddMoneySpent(money32 cost);
-	uint8 id = 0;
-	std::string name;
-	uint16 ping = 0;
-	uint8 flags = 0;
-	uint8 group = 0;
-	money32 money_spent = MONEY(0, 0);
-	unsigned int commands_ran = 0;
-	int last_action = -999;
-	uint32 last_action_time = 0;
-	rct_xyz16 last_action_coord = { 0 };
-	std::string keyhash;
-};
-
-class NetworkAction
-{
-public:
-	rct_string_id name;
-	std::string permission_name;
-	std::vector<int> commands;
-};
-
-class NetworkActions
-{
-public:
-	int FindCommand(int command);
-	int FindCommandByPermissionName(const std::string &permission_name);
-	const std::vector<NetworkAction> actions = {
-		{STR_ACTION_CHAT,                   "PERMISSION_CHAT",
-			{-1}},
-		{STR_ACTION_TERRAFORM,              "PERMISSION_TERRAFORM",
-			{GAME_COMMAND_SET_LAND_HEIGHT, GAME_COMMAND_RAISE_LAND, GAME_COMMAND_LOWER_LAND,
-			 GAME_COMMAND_EDIT_LAND_SMOOTH, GAME_COMMAND_CHANGE_SURFACE_STYLE}},
-		{STR_ACTION_SET_WATER_LEVEL,        "PERMISSION_SET_WATER_LEVEL",
-			{GAME_COMMAND_SET_WATER_HEIGHT, GAME_COMMAND_RAISE_WATER, GAME_COMMAND_LOWER_WATER}},
-		{STR_ACTION_TOGGLE_PAUSE,           "PERMISSION_TOGGLE_PAUSE",
-			{GAME_COMMAND_TOGGLE_PAUSE}},
-		{STR_ACTION_CREATE_RIDE,            "PERMISSION_CREATE_RIDE",
-			{GAME_COMMAND_CREATE_RIDE}},
-		{STR_ACTION_REMOVE_RIDE,            "PERMISSION_REMOVE_RIDE",
-			{GAME_COMMAND_DEMOLISH_RIDE}},
-		{STR_ACTION_BUILD_RIDE,             "PERMISSION_BUILD_RIDE",
-			{GAME_COMMAND_PLACE_TRACK, GAME_COMMAND_REMOVE_TRACK, GAME_COMMAND_SET_MAZE_TRACK,
-			 GAME_COMMAND_PLACE_TRACK_DESIGN, GAME_COMMAND_PLACE_MAZE_DESIGN, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-			 GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT}},
-		{STR_ACTION_RIDE_PROPERTIES,        "PERMISSION_RIDE_PROPERTIES",
-			{GAME_COMMAND_SET_RIDE_NAME, GAME_COMMAND_SET_RIDE_APPEARANCE, GAME_COMMAND_SET_RIDE_STATUS,
-			 GAME_COMMAND_SET_RIDE_VEHICLES, GAME_COMMAND_SET_RIDE_SETTING, GAME_COMMAND_SET_RIDE_PRICE,
-			 GAME_COMMAND_SET_BRAKES_SPEED}},
-		{STR_ACTION_SCENERY,                "PERMISSION_SCENERY",
-			{GAME_COMMAND_REMOVE_SCENERY, GAME_COMMAND_PLACE_SCENERY, GAME_COMMAND_SET_BRAKES_SPEED,
-			 GAME_COMMAND_REMOVE_FENCE, GAME_COMMAND_PLACE_FENCE, GAME_COMMAND_REMOVE_LARGE_SCENERY,
-			 GAME_COMMAND_PLACE_LARGE_SCENERY, GAME_COMMAND_PLACE_BANNER, GAME_COMMAND_REMOVE_BANNER,
-			 GAME_COMMAND_SET_SCENERY_COLOUR, GAME_COMMAND_SET_FENCE_COLOUR, GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
-			 GAME_COMMAND_SET_BANNER_COLOUR, GAME_COMMAND_SET_BANNER_NAME, GAME_COMMAND_SET_SIGN_NAME,
-			 GAME_COMMAND_SET_BANNER_STYLE, GAME_COMMAND_SET_SIGN_STYLE}},
-		{STR_ACTION_PATH,                   "PERMISSION_PATH",
-			{GAME_COMMAND_PLACE_PATH, GAME_COMMAND_PLACE_PATH_FROM_TRACK, GAME_COMMAND_REMOVE_PATH}},
-		{STR_ACTION_CLEAR_LANDSCAPE,        "PERMISSION_CLEAR_LANDSCAPE",
-			{GAME_COMMAND_CLEAR_SCENERY}},
-		{STR_ACTION_GUEST,                  "PERMISSION_GUEST",
-			{GAME_COMMAND_SET_GUEST_NAME}},
-		{STR_ACTION_STAFF,                  "PERMISSION_STAFF",
-			{GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, GAME_COMMAND_SET_STAFF_PATROL, GAME_COMMAND_FIRE_STAFF_MEMBER,
-			 GAME_COMMAND_SET_STAFF_ORDER, GAME_COMMAND_SET_STAFF_COLOUR, GAME_COMMAND_SET_STAFF_NAME}},
-		{STR_ACTION_PARK_PROPERTIES,        "PERMISSION_PARK_PROPERTIES",
-			{GAME_COMMAND_SET_PARK_NAME, GAME_COMMAND_SET_PARK_OPEN, GAME_COMMAND_SET_PARK_ENTRANCE_FEE,
-			 GAME_COMMAND_SET_LAND_OWNERSHIP, GAME_COMMAND_BUY_LAND_RIGHTS, GAME_COMMAND_PLACE_PARK_ENTRANCE,
-			 GAME_COMMAND_REMOVE_PARK_ENTRANCE}},
-		{STR_ACTION_PARK_FUNDING,           "PERMISSION_PARK_FUNDING",
-			{GAME_COMMAND_SET_CURRENT_LOAN, GAME_COMMAND_SET_RESEARCH_FUNDING, GAME_COMMAND_START_MARKETING_CAMPAIGN}},
-		{STR_ACTION_KICK_PLAYER,            "PERMISSION_KICK_PLAYER",
-			{GAME_COMMAND_KICK_PLAYER}},
-		{STR_ACTION_MODIFY_GROUPS,          "PERMISSION_MODIFY_GROUPS",
-			{GAME_COMMAND_MODIFY_GROUPS}},
-		{STR_ACTION_SET_PLAYER_GROUP,       "PERMISSION_SET_PLAYER_GROUP",
-			{GAME_COMMAND_SET_PLAYER_GROUP}},
-		{STR_ACTION_CHEAT,                  "PERMISSION_CHEAT",
-			{GAME_COMMAND_CHEAT}},
-		{STR_ACTION_TOGGLE_SCENERY_CLUSTER, "PERMISSION_TOGGLE_SCENERY_CLUSTER",
-			{-2}},
-		{STR_ACTION_PASSWORDLESS_LOGIN,     "PERMISSION_PASSWORDLESS_LOGIN",
-			{-3}},
-	};
-};
-
-class NetworkGroup
-{
-public:
-	NetworkGroup();
-	~NetworkGroup();
-	void Read(NetworkPacket& packet);
-	void Write(NetworkPacket& packet);
-	json_t * ToJson() const;
-	static NetworkGroup FromJson(const json_t * json);
-	void ToggleActionPermission(size_t index);
-	bool CanPerformAction(size_t index) const;
-	bool CanPerformCommand(int command) const;
-	const std::string& GetName() const;
-	void SetName(std::string name);
-	std::array<uint8, 8> actions_allowed;
-	uint8 id = 0;
-
-private:
-	std::string name;
-};
-
-class NetworkConnection
-{
-public:
-	NetworkConnection();
-	~NetworkConnection();
-	int ReadPacket();
-	void QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front = false);
-	void SendQueuedPackets();
-	bool SetTCPNoDelay(bool on);
-	bool SetNonBlocking(bool on);
-	static bool SetNonBlocking(SOCKET socket, bool on);
-	void ResetLastPacketTime();
-	bool ReceivedPacketRecently();
-
-	const char *getLastDisconnectReason() const;
-	void setLastDisconnectReason(const char *src);
-	void setLastDisconnectReason(const rct_string_id string_id, void *args = nullptr);
-
-	SOCKET socket = INVALID_SOCKET;
-	NetworkPacket inboundpacket;
-	int authstatus = NETWORK_AUTH_NONE;
-	NetworkPlayer* player;
-	uint32 ping_time = 0;
-	NetworkKey key;
-	std::vector<uint8> challenge;
-
-private:
-	char* last_disconnect_reason;
-	bool SendPacket(NetworkPacket& packet);
-	std::list<std::unique_ptr<NetworkPacket>> outboundpackets;
-	uint32 last_packet_time;
-};
-
-class NetworkAddress
-{
-public:
-	NetworkAddress();
-	void Resolve(const char* host, unsigned short port, bool nonblocking = true);
-	int GetResolveStatus(void);
-
-	std::shared_ptr<sockaddr_storage> ss;
-	std::shared_ptr<int> ss_len;
-
-	enum {
-		RESOLVE_NONE,
-		RESOLVE_INPROGRESS,
-		RESOLVE_OK,
-		RESOLVE_FAILED
-	};
-
-private:
-	static int ResolveFunc(void* pointer);
-
-	const char* host = nullptr;
-	unsigned short port = 0;
-	SDL_mutex* mutex = nullptr;
-	SDL_cond* cond = nullptr;
-	std::shared_ptr<int> status;
-};
 
 class Network
 {
