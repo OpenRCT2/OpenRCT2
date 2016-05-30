@@ -230,6 +230,7 @@ typedef struct network_configuration {
 	utf8string provider_email;
 	utf8string provider_website;
 	uint8 known_keys_only;
+	uint8 log_chat;
 } network_configuration;
 
 typedef struct notification_configuration {

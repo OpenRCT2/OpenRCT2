@@ -944,6 +944,10 @@ void Network::BeginChatLog()
 
 void Network::AppendChatLog(const utf8 *text)
 {
+	if (!gConfigNetwork.log_chat) {
+		return;
+	}
+
 	const utf8 *chatLogPath = _chatLogPath.c_str();
 
 	utf8 directory[MAX_PATH];
