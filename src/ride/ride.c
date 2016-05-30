@@ -5097,22 +5097,15 @@ void loc_6B51C0(int rideIndex)
  *
  *  rct2: 0x006B528A
  */
-void loc_6B528A(rct_xy_element *trackElement)
+void ride_scroll_to_track_error(rct_xy_element *trackElement)
 {
-	rct_ride *ride;
-	rct_window *w;
-
-	ride = get_ride(trackElement->element->properties.track.ride_index);
-
-	if (RCT2_GLOBAL(0x0141F568, uint8) != RCT2_GLOBAL(0x013CA740, uint8))
-		return;
-
-	w = window_get_main();
-	if (w == NULL)
-		return;
-
-	window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->base_height * 8);
-	ride_modify(trackElement);
+	if (!gGameCommandIsNetworked && RCT2_GLOBAL(0x0141F568, uint8) == RCT2_GLOBAL(0x013CA740, uint8)) {
+		rct_window *w = window_get_main();
+		if (w != NULL) {
+			window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->base_height * 8);
+			ride_modify(trackElement);
+		}
+	}
 }
 
 /**
@@ -5194,7 +5187,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		if (ride_find_track_gap(&trackElement, &problematicTrackElement) && (!gConfigGeneral.test_unfinished_tracks ||
 			ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
 			gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 	}
@@ -5204,7 +5197,7 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 		) {
 		if (!ride_check_block_brakes(&trackElement, &problematicTrackElement)) {
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 	}
@@ -5214,14 +5207,14 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
 			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
-				loc_6B528A(&problematicTrackElement);
+				ride_scroll_to_track_error(&problematicTrackElement);
 				return 0;
 			}
 		}
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
 			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
-				loc_6B528A(&problematicTrackElement);
+				ride_scroll_to_track_error(&problematicTrackElement);
 				return 0;
 			}
 		}
@@ -5235,13 +5228,13 @@ int ride_is_valid_for_test(int rideIndex, int goingToBeOpen, int isApplying)
 
 		gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
 		if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 
 		gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
 		if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 	}
@@ -5325,7 +5318,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 	) {
 		if (ride_find_track_gap(&trackElement, &problematicTrackElement)) {
 			gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 	}
@@ -5335,7 +5328,7 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED
 	) {
 		if (!ride_check_block_brakes(&trackElement, &problematicTrackElement)) {
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 	}
@@ -5345,14 +5338,14 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS) {
 			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement)) {
-				loc_6B528A(&problematicTrackElement);
+				ride_scroll_to_track_error(&problematicTrackElement);
 				return 0;
 			}
 		}
 		if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK) {
 			gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
 			if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement)) {
-				loc_6B528A(&problematicTrackElement);
+				ride_scroll_to_track_error(&problematicTrackElement);
 				return 0;
 			}
 		}
@@ -5366,13 +5359,13 @@ int ride_is_valid_for_open(int rideIndex, int goingToBeOpen, int isApplying)
 
 		gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
 		if (!ride_check_station_length(&trackElement, &problematicTrackElement)) {
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 
 		gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
 		if (!ride_check_start_and_end_is_station(&trackElement, &problematicTrackElement)) {
-			loc_6B528A(&problematicTrackElement);
+			ride_scroll_to_track_error(&problematicTrackElement);
 			return 0;
 		}
 	}

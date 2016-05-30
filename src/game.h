@@ -139,6 +139,7 @@ extern int gGameSpeed;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern int gGameCommandNestLevel;
+extern bool gGameCommandIsNetworked;
 
 void game_increase_game_speed();
 void game_reduce_game_speed();
