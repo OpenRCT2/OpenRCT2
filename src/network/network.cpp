@@ -1461,6 +1461,8 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
 		shutdown(connection.Socket, SHUT_RDWR);
 		break;
+	default:
+		break;
 	}
 }
 
