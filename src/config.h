@@ -196,6 +196,7 @@ typedef struct general_configuration {
 	utf8string last_save_landscape_directory;
 	utf8string last_save_scenario_directory;
 	utf8string last_save_track_directory;
+	uint8 window_limit;
 } general_configuration;
 
 typedef struct interface_configuration {

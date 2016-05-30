@@ -1129,7 +1129,7 @@ enum {
 	STR_NUMBER_OF_ROTATIONS = 1869,
 	STR_NUMBER_OF_ROTATIONS_TIP = 1870,
 	STR_ARG18_COMMA16 = 1871, // Should probably be in RIDE domain
-	STR_COMMA16 = 1872, // Unused
+	STR_COMMA16 = 1872,
 	STR_INCOME_PER_HOUR = 1873,
 	STR_PROFIT_PER_HOUR = 1874,
 	STR_GUEST_ITEM_FORMAT = 1875,
@@ -3329,6 +3329,8 @@ enum {
 	STR_FILE_DIALOG_TITLE_SAVE_TRACK = 5895,
 	STR_TRACK_SAVE_FAILED = 5896,
 	
+	STR_WINDOW_LIMIT = 5897,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };

@@ -29,6 +29,7 @@
 #include "viewport.h"
 #include "widget.h"
 #include "window.h"
+#include "../config.h"
 
 #define RCT2_FIRST_WINDOW		(g_window_list)
 #define RCT2_LAST_WINDOW		(gWindowNextSlot - 1)
@@ -348,6 +349,49 @@ static void window_all_wheel_input()
 			return;
 }
 
+void window_close_surplus(int cap, sint8 avoid_classification)
+{
+	int count, i, diff;
+	//find the amount of windows that are currently open
+	for (i = 0; i < MAX_WINDOW_COUNT; i++) {
+		if (&g_window_list[i] == RCT2_NEW_WINDOW) {
+			count = i;
+			break;
+		}
+	}
+	//difference between amount open and cap = amount to close
+	diff = count - cap; 
+	for (i = 0; i < diff; i++) {
+		rct_window *w = NULL;
+		//iterates through the list until it finds the newest window, or a window that can be closed
+		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++) {
+			if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
+				break;
+		}
+		//skip window if window matches specified rct_windowclass (as user may be modifying via options)
+		if (avoid_classification != -1 && w != NULL && w->classification == avoid_classification) {
+			continue;
+		}
+		window_close(w);
+	}
+}
+
+/*
+ * Changes the maximum amount of windows allowed
+ */
+void window_set_window_limit(int value) 
+{
+	int prev = gConfigGeneral.window_limit;
+	int val = clamp(value, MIN_WINDOW_COUNT, MAX_WINDOW_COUNT);
+	gConfigGeneral.window_limit = val;
+	config_save_default();
+	// Checks if value decreases and then closes surplus
+	// windows if one sets a limit lower than the number of windows open
+	if (val < prev) {
+		window_close_surplus(val, WC_OPTIONS);
+	}
+}
+
 /**
  * Opens a new window.
  *  rct2: 0x006EACA4
@@ -363,7 +407,7 @@ static void window_all_wheel_input()
 rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags)
 {
 	// Check if there are any window slots left
-	if (RCT2_NEW_WINDOW >= &(g_window_list[MAX_WINDOW_COUNT])) {
+	if (RCT2_NEW_WINDOW >= &(g_window_list[gConfigGeneral.window_limit])) {
 		rct_window *w = NULL;
 		// Close least recently used window
 		for (w = g_window_list; w < RCT2_NEW_WINDOW; w++)
@@ -775,7 +819,8 @@ void window_close_top()
  *
  *  rct2: 0x006EE927
  */
-void window_close_all() {
+void window_close_all()
+{
 	rct_window* w;
 
 	window_close_by_class(WC_DROPDOWN);
@@ -788,7 +833,8 @@ void window_close_all() {
 	}
 }
 
-void window_close_all_except_class(rct_windowclass cls) {
+void window_close_all_except_class(rct_windowclass cls)
+{
 	rct_window* w;
 
 	window_close_by_class(WC_DROPDOWN);
@@ -1223,7 +1269,6 @@ void window_push_others_below(rct_window *w1)
 			w2->viewport->y += push_amount;
 	}
 }
-
 
 /**
  *

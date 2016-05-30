@@ -515,6 +515,7 @@ extern modal_callback gLoadSaveCallback;
 
 typedef void (*close_callback)();
 
+#define MIN_WINDOW_COUNT 8
 #define MAX_WINDOW_COUNT 64
 
 // rct2: 0x01420078
@@ -532,6 +533,9 @@ extern uint16 gWindowMapFlashingFlags;
 void window_dispatch_update_all();
 void window_update_all_viewports();
 void window_update_all();
+
+void window_set_window_limit(int value);
+
 rct_window *window_create(int x, int y, int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
 rct_window *window_create_auto_pos(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
 rct_window *window_create_centred(int width, int height, rct_window_event_list *event_handlers, rct_windowclass cls, uint16 flags);
