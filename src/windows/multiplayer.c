@@ -442,23 +442,36 @@ static void window_multiplayer_information_paint(rct_window *w, rct_drawpixelinf
 		int x = 3;
 		int y = 50;
 		int width = w->width - 6;
-		gfx_draw_string_left_wrapped(dpi, &gConfigNetwork.server_name, x, y, width, STR_STRING, w->colours[1]);
-		y += 11 + 3;
-		if (!str_is_null_or_empty(gConfigNetwork.server_description)) {
-			gfx_draw_string_left_wrapped(dpi, &gConfigNetwork.server_description, x, y, width, STR_STRING, w->colours[1]);
+
+		const utf8 * name = network_get_server_name();
+		{
+			gfx_draw_string_left_wrapped(dpi, (void*)&name, x, y, width, STR_STRING, w->colours[1]);
+			y += 11;
+		}
+		y += 3;
+
+		const utf8 * description = network_get_server_description();
+		if (!str_is_null_or_empty(description)) {
+			gfx_draw_string_left_wrapped(dpi, (void*)&description, x, y, width, STR_STRING, w->colours[1]);
 			y += 11;
 		}
 		y += 8;
-		if (!str_is_null_or_empty(gConfigNetwork.provider_name)) {
-			gfx_draw_string_left(dpi, STR_PROVIDER_NAME, &gConfigNetwork.provider_name, 0, x, y);
+
+		const utf8 * providerName = network_get_server_provider_name();
+		if (!str_is_null_or_empty(providerName)) {
+			gfx_draw_string_left(dpi, STR_PROVIDER_NAME, (void*)&providerName, 0, x, y);
 			y += 11;
 		}
-		if (!str_is_null_or_empty(gConfigNetwork.provider_email)) {
-			gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, &gConfigNetwork.provider_email, 0, x, y);
+
+		const utf8 * providerEmail = network_get_server_provider_email();
+		if (!str_is_null_or_empty(providerEmail)) {
+			gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, (void*)&providerEmail, 0, x, y);
 			y += 11;
 		}
-		if (!str_is_null_or_empty(gConfigNetwork.provider_website)) {
-			gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, &gConfigNetwork.provider_website, 0, x, y);
+
+		const utf8 * providerWebsite = network_get_server_provider_website();
+		if (!str_is_null_or_empty(providerWebsite)) {
+			gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, (void*)&providerWebsite, 0, x, y);
 		}
 	}
 }
