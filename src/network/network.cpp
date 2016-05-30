@@ -178,6 +178,7 @@ void Network::Close()
 	}
 #endif
 
+	CloseChatLog();
 	gfx_invalidate_screen();
 }
 
@@ -199,6 +200,8 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	window_network_status_open(str_resolving, []() -> void {
 		gNetwork.Close();
 	});
+
+	BeginChatLog();
 
 	mode = NETWORK_MODE_CLIENT;
 	utf8 keyPath[MAX_PATH];
@@ -302,6 +305,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	cheats_reset();
 	LoadGroups();
+	BeginChatLog();
 
 	NetworkPlayer *player = AddPlayer(gConfigNetwork.player_name, "");
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
@@ -325,6 +329,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		advertise_status = ADVERTISE_STATUS_UNREGISTERED;
 	}
 #endif
+
 	return true;
 }
 
@@ -919,6 +924,53 @@ void Network::LoadGroups()
 		default_group = 0;
 	}
 	json_decref(json);
+}
+
+void Network::BeginChatLog()
+{
+	utf8 filename[32];
+	time_t timer;
+	struct tm * tmInfo;
+	time(&timer);
+	tmInfo = localtime(&timer);
+	strftime(filename, sizeof(filename), "%Y%m%d-%H%M%S.txt", tmInfo);
+
+	utf8 path[MAX_PATH];
+	platform_get_user_directory(path, "logs");
+	Path::Append(path, sizeof(path), filename);
+
+	_chatLogPath = std::string(path);
+}
+
+void Network::AppendChatLog(const utf8 *text)
+{
+	const utf8 *chatLogPath = _chatLogPath.c_str();
+
+	utf8 directory[MAX_PATH];
+	Path::GetDirectory(directory, sizeof(directory), chatLogPath);
+	if (platform_ensure_directory_exists(directory)) {
+		_chatLogStream = SDL_RWFromFile(chatLogPath, "a");
+		if (_chatLogStream != nullptr) {
+			utf8 buffer[256];
+
+			time_t timer;
+			struct tm * tmInfo;
+			time(&timer);
+			tmInfo = localtime(&timer);
+			strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo);
+
+			String::Append(buffer, sizeof(buffer), text);
+			utf8_remove_formatting(buffer);
+			String::Append(buffer, sizeof(buffer), platform_get_new_line());
+
+			SDL_RWwrite(_chatLogStream, buffer, strlen(buffer), 1);
+			SDL_RWclose(_chatLogStream);
+		}
+	}
+}
+
+void Network::CloseChatLog()
+{
 }
 
 void Network::Client_Send_TOKEN()
@@ -2306,6 +2358,11 @@ void network_set_password(const char* password)
 	gNetwork.SetPassword(password);
 }
 
+void network_append_chat_log(const utf8 *text)
+{
+	gNetwork.AppendChatLog(text);
+}
+
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize)
 {
 	platform_get_user_directory(buffer, "keys");
@@ -2379,4 +2436,5 @@ void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
 int network_get_current_player_group_index() { return 0; }
+void network_append_chat_log(const utf8 *text) { }
 #endif /* DISABLE_NETWORK */
