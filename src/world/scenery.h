@@ -127,7 +127,7 @@ typedef enum {
 } WALL_SCENERY_2_FLAGS;
 
 typedef struct rct_path_bit_scenery_entry {
-	uint16 var_06;
+	uint16 flags;			// 0x06
 	uint8 pad_08;
 	uint8 tool_id;			// 0x09
 	sint16 price;			// 0x0A

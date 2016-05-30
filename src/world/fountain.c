@@ -302,7 +302,7 @@ static bool is_jumping_fountain(int type, int x, int y, int z)
 
 		uint8 additionIndex = footpath_element_get_path_scenery_index(mapElement);
 		rct_scenery_entry *sceneryEntry = get_footpath_item_entry(additionIndex);
-		if (!(sceneryEntry->path_bit.var_06 & pathBitFlagMask))
+		if (!(sceneryEntry->path_bit.flags & pathBitFlagMask))
 			continue;
 
 		return true;

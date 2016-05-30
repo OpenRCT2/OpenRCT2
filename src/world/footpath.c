@@ -226,7 +226,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 
 		if (pathItemType != 0) {
 			rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
-			uint16 unk6 = scenery_entry->path_bit.var_06;
+			uint16 unk6 = scenery_entry->path_bit.flags;
 
 			if ((unk6 & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && footpath_element_is_sloped(mapElement)) {
 				gGameCommandErrorText = STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH;
@@ -282,7 +282,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (pathItemType != 0) {
 			rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
-			if (scenery_entry->path_bit.var_06 & PATH_BIT_FLAG_BIN) {
+			if (scenery_entry->path_bit.flags & PATH_BIT_FLAG_BIN) {
 				mapElement->properties.path.addition_status = 255;
 			}
 		}
