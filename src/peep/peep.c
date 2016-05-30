@@ -6942,6 +6942,7 @@ static int peep_update_queue_position(rct_peep* peep){
 	else {
 #ifdef STOUT_PEEPS_EXPANDED_EXPERIMENT
 		rct_peep* peep_next = GET_PEEP(peep->next_in_queue);
+		rct_ride* peep_ride = get_ride(peep->current_ride);
 
 		sint16 x_diff = abs(peep_next->x - peep->x);
 		sint16 y_diff = abs(peep_next->y - peep->y);
@@ -6963,6 +6964,7 @@ static int peep_update_queue_position(rct_peep* peep){
 			//	checked more often than once)
 
 		int		prohibitShenanigans	= 1;
+		int		peepsAhead			= 0;
 		bool	allowMove			= true;
 
 		uint16 macroCurX = peep->x >> 5;
@@ -6980,6 +6982,8 @@ static int peep_update_queue_position(rct_peep* peep){
 					break;
 				}
 				nxtCue = GET_PEEP(nxtCue->next_in_queue);
+
+				peepsAhead += 1;
 
 				uint16 macroCurFarX = nxtCue->x >> 5;
 				uint16 macroCurFarY = nxtCue->y >> 5;
@@ -6999,6 +7003,14 @@ static int peep_update_queue_position(rct_peep* peep){
 
 				if (prohibitShenanigans > 0)
 					prohibitShenanigans -= 1;
+
+				while (peepsAhead < 40) {
+					if (nxtCue->next_in_queue == 0xFFFF) {
+						break;
+					}
+					nxtCue = GET_PEEP(nxtCue->next_in_queue);
+					peepsAhead += 1;
+				}
 
 				break;
 			}
@@ -7030,8 +7042,13 @@ static int peep_update_queue_position(rct_peep* peep){
 					peep_next->peeps_ex_queue_wait_distance = max(7, min(peep_next->peeps_ex_queue_wait_distance, peep->peeps_ex_queue_wait_distance + scenario_rand_max(2)));
 				}
 				if (!(peep->peeps_ex_queue_wait_distance & 0x80)) {
-					if ((peep->peeps_ex_queue_wait_distance & 0x7F) > 9) {
-						peep->peeps_ex_queue_wait_distance -= scenario_rand_max(2);
+					int randomCount = 2048;
+					uint32 randNum = scenario_rand_max(16 * randomCount);
+					int customerCheck = 5 + peep_ride->cur_num_customers / 2;
+					uint32 decreaseCheck = min(randomCount, (customerCheck - max(customerCheck, peepsAhead) * (randomCount / 16)));
+					if ((randNum % randomCount) <= decreaseCheck) {
+						peep->peeps_ex_queue_wait_distance -= randNum / randomCount;
+						peep->peeps_ex_queue_wait_distance = max(7, peep->peeps_ex_queue_wait_distance);
 					}
 				}
 			}
