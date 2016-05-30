@@ -4708,7 +4708,7 @@ void ride_create_vehicles_find_first_block(rct_ride *ride, rct_xy_element *outXY
 					if ((mapElement->properties.track.sequence & 0x0F) != 0) continue;
 					if (mapElement->properties.track.type != trackType) continue;
 					break;
-				} while (!map_element_is_last_for_tile(mapElement));
+				} while (!map_element_is_last_for_tile(mapElement++));
 
 				outXYElement->x = x;
 				outXYElement->y = y;
