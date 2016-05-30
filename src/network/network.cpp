@@ -936,7 +936,7 @@ void Network::BeginChatLog()
 	strftime(filename, sizeof(filename), "%Y%m%d-%H%M%S.txt", tmInfo);
 
 	utf8 path[MAX_PATH];
-	platform_get_user_directory(path, "logs");
+	platform_get_user_directory(path, "chatlogs");
 	Path::Append(path, sizeof(path), filename);
 
 	_chatLogPath = std::string(path);
