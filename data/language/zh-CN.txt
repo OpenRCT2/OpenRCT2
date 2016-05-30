@@ -4176,6 +4176,10 @@ STR_5856    :{SMALLFONT}{BLACK}全屏模式时设置游戏分辨率
 STR_5857    :{SMALLFONT}{BLACK}游戏选项
 STR_5858    :{SMALLFONT}{BLACK}使用GPU代替CPU渲染画面. 提高截屏软件的兼容性. 可能会轻微降低游戏性能.
 STR_5859    :{SMALLFONT}{BLACK}启用补帧从而平滑游戏表现. {NEWLINE}当禁用时,{NEWLINE}游戏帧数会稳定在40 FPS.
+STR_5861    :密码验证失败.
+STR_5862    :阻止未知玩家进入.
+STR_5863    :{SMALLFONT}{BLACK}只允许拥有已知密码的用户加入.
+STR_5864    :本服务器只允许白名单用户连接.
 
 #############
 # Scenarios #
