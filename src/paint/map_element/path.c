@@ -33,13 +33,12 @@ void path_paint(uint8 direction, uint16 height, rct_map_element *mapElement) {
 
 #ifdef STOUT_EXPANDED_RENDERING_LIGHT
 
-	if (footpath_element_has_path_scenery(mapElement)) {
+	if (footpath_element_has_path_scenery(mapElement) && !(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
 		rct_scenery_entry *sceneryEntry;
 
 		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
 
 		if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {
-
 			if (!(mapElement->properties.path.edges & (1 << 0))) {
 				lightfx_add_3d_light_magic_from_drawing_tile(-16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 			}
