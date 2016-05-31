@@ -480,7 +480,7 @@ extern "C"
         }
 
         map_reorganise_elements();
-        reset_0x69EBE4();
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
         sprite_clear_all_unused();
 
         viewport_set_saved_view();

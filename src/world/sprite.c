@@ -17,6 +17,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
+#include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -121,7 +122,7 @@ void reset_sprite_list()
 
 	gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
 
-	reset_0x69EBE4();
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
 }
 
 /**
@@ -152,6 +153,14 @@ void reset_0x69EBE4()
 			spr->unknown.next_in_quadrant = ax;
 		}
 	}
+}
+
+void game_command_reset_sprites(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		reset_0x69EBE4();
+	}
+	*ebx = 0;
 }
 
 /**
