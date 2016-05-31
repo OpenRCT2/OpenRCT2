@@ -88,19 +88,17 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_COLUMN_GHOSTFLAG,
 	WIDX_COLUMN_BROKENFLAG,
 	WIDX_COLUMN_LASTFLAG,
+	WIDX_GROUPBOX_DETAILS,
+	WIDX_GROUPBOX_PROPERTIES,
 
-	PAGE_START,
+	PAGE_WIDGETS,
 
 	// Surface
-	WIDX_SURFACE_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_SURFACE_GROUPBOX_PROPERTIES,
-	WIDX_SURFACE_BUTTON_REMOVE_FENCES,
+	WIDX_SURFACE_BUTTON_REMOVE_FENCES = PAGE_WIDGETS,
 	WIDX_SURFACE_BUTTON_RESTORE_FENCES,
 
 	// Path
-	WIDX_PATH_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_PATH_GROUPBOX_PROPERTIES,
-	WIDX_PATH_BUTTON_RAISE,
+	WIDX_PATH_BUTTON_RAISE = PAGE_WIDGETS,
 	WIDX_PATH_BUTTON_LOWER,
 	WIDX_PATH_SPINNER_EDGES,
 	WIDX_PATH_SPINNER_EDGES_INCREASE,
@@ -109,33 +107,19 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_PATH_SPINNER_CORNERS_INCREASE,
 	WIDX_PATH_SPINNER_CORNERS_DECREASE,
 
-	// Path
-	WIDX_TRACK_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_TRACK_GROUPBOX_PROPERTIES,
+	// Track
 
-	// Path
-	WIDX_SCENERY_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_SCENERY_GROUPBOX_PROPERTIES,
+	// Scenery
 
-	// Path
-	WIDX_ENTRANCE_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_ENTRANCE_GROUPBOX_PROPERTIES,
+	// Entrance
 
-	// Path
-	WIDX_FENCE_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_FENCE_GROUPBOX_PROPERTIES,
+	// Fence
 
-	// Path
-	WIDX_LARGE_SCENERY_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_LARGE_SCENERY_GROUPBOX_PROPERTIES,
+	// Large
 
-	// Path
-	WIDX_BANNER_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_BANNER_GROUPBOX_PROPERTIES,
+	// Banner
 
-	// Path
-	WIDX_CORRUPT_GROUPBOX_DETAILS = PAGE_START,
-	WIDX_CORRUPT_GROUPBOX_PROPERTIES,
+	// Corrupt
 };
 
 #define WW 400
@@ -180,7 +164,9 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	{ WWT_13,			1, COL_X_CH,	COL_X_GF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_CLEARANCE_HEIGHT },						/* Clearance height */		\
 	{ WWT_13,			1, COL_X_GF,	COL_X_BF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_GHOST },							/* Ghost flag */			\
 	{ WWT_13,			1, COL_X_BF,	COL_X_LF - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_BROKEN },							/* Broken flag */			\
-	{ WWT_13,			1, COL_X_LF,	WW - 3,			42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_LAST }								/* Last of tile flag */
+	{ WWT_13,			1, COL_X_LF,	WW - 3,			42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_FLAG_LAST },								/* Last of tile flag */		\
+	{ WWT_GROUPBOX,		1, 6,			WW - 6,			-1,		-1,			STR_NONE,									STR_NONE },					/* Details group box */		\
+	{ WWT_GROUPBOX,		1, 6,			WW - 6,			-1,		-1,			STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }					/* Properties group box */
 
 rct_widget window_tile_inspector_widgets[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
@@ -188,30 +174,26 @@ rct_widget window_tile_inspector_widgets[] = {
 };
 
 // Calculates the .left, .right, .top and .bottom for buttons in a group box
-#define GBBL(col)			12 + col * 115
-#define GBBR(col)			GBBL(col) + 110
-#define GBBT(GBT, row)		WH - GBT + 14 + row * 21
-#define GBBB(GBT, row)		GBBT(GBT, row) + 17
-#define GBB(GBT, col, row)	GBBL(col), GBBR(col), GBBT(GBT, row), GBBB(GBT, row)
+#define GBBL(col)				12 + col * 115
+#define GBBR(col)				GBBL(col) + 110
+#define GBBT(GROUPTOP, row)		GROUPTOP + 14 + row * 21
+#define GBBB(GROUPTOP, row)		GBBT(GROUPTOP, row) + 17
+#define GBB(GROUPTOP, col, row)	GBBL(col), GBBR(col), GBBT(GROUPTOP, row), GBBB(GROUPTOP, row)
+
 // Same, but for spinners and their increase/decrease buttons
 #define GBS(GBT, col, row)	GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3
 #define GBSI(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBT(GBT, row) + 4, GBBT(GBT, row) + 8
 #define GBSD(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBB(GBT, row) - 8, GBBB(GBT, row) - 4
 
-// Offsets from the bottom for the group boxes. They are used as anchors for other widgets
+// Group boxes .top and .bottom for a given window height offsets from the bottom
 #define SUR_GBPB PADDING_BOTTOM					// Surface group box properties bottom
 #define SUR_GBPT (SUR_GBPB + 16 + 1 * 21)		// Surface group box properties top
 #define SUR_GBDB (SUR_GBPT + GROUPBOX_PADDING)	// Surface group box details bottom
 #define SUR_GBDT (SUR_GBDB + 20 + 3 * 11)		// Surface group box details top
 rct_widget window_tile_inspector_widgets_surface[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - SUR_GBDT,	WH - SUR_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_SURFACE_INFO,	STR_NONE }, // WIDX_SURFACE_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - SUR_GBPT,	WH - SUR_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_SURFACE_GROUPBOX_PROPERTIES
-	{ WWT_CLOSEBOX,		1,	GBB(SUR_GBPT, 0, 0),						STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
-	{ WWT_CLOSEBOX,		1,	GBB(SUR_GBPT, 1, 0),						STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
-
+	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 0, 0),					STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
+	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 1, 0),					STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
 	{ WIDGETS_END },
 };
 
@@ -221,117 +203,77 @@ rct_widget window_tile_inspector_widgets_surface[] = {
 #define PAT_GBDT (PAT_GBDB + 20 + 1 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_path[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,			1,	6,	WW - 6,	WH - PAT_GBDT,	WH - PAT_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_PATH_INFO,		STR_NONE }, // WIDX_PATH_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,			1,	6,	WW - 6,	WH - PAT_GBPT,	WH - PAT_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_PATH_GROUPBOX_PROPERTIES
-	{ WWT_CLOSEBOX,			1,	GBB(PAT_GBPT, 0, 0),						STR_TILE_INSPECTOR_RAISE,					STR_NONE }, // WIDX_PATH_BUTTON_RAISE
-	{ WWT_CLOSEBOX,			1,	GBB(PAT_GBPT, 1, 0),						STR_TILE_INSPECTOR_LOWER,					STR_NONE }, // WIDX_PATH_BUTTON_LOWER
-	{ WWT_SPINNER,			1,	GBS(PAT_GBPT, 1, 1),						STR_NONE,									STR_NONE }, // WIDX_PATH_SPINNER_EDGES - STR_TILE_INSPECTOR_PATH_CYCLE_EDGES
-	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(PAT_GBPT, 1, 1),						STR_NUMERIC_UP,								STR_NONE }, // WIDX_PATH_SPINNER_EDGES_INCREASE
-	{ WWT_DROPDOWN_BUTTON,	1,	GBSD(PAT_GBPT, 1, 1),						STR_NUMERIC_DOWN,							STR_NONE }, // WIDX_PATH_SPINNER_EDGES_DECREASE
-	{ WWT_SPINNER,			1,	GBS(PAT_GBPT, 1, 2),						STR_NONE,									STR_NONE }, // WIDX_PATH_SPINNER_CORNERS - STR_TILE_INSPECTOR_PATH_CYCLE_CORNERS
-	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(PAT_GBPT, 1, 2),						STR_NUMERIC_UP,								STR_NONE }, // WIDX_PATH_SPINNER_CORNERS_INCREASE
-	{ WWT_DROPDOWN_BUTTON,	1,	GBSD(PAT_GBPT, 1, 2),						STR_NUMERIC_DOWN,							STR_NONE }, // WIDX_PATH_SPINNER_CORNERS_DECREASE
-
+	{ WWT_CLOSEBOX,			1,	GBB(WH - PAT_GBPT, 0, 0),				STR_TILE_INSPECTOR_RAISE,					STR_NONE }, // WIDX_PATH_BUTTON_RAISE
+	{ WWT_CLOSEBOX,			1,	GBB(WH - PAT_GBPT, 1, 0),				STR_TILE_INSPECTOR_LOWER,					STR_NONE }, // WIDX_PATH_BUTTON_LOWER
+	{ WWT_SPINNER,			1,	GBS(WH - PAT_GBPT, 1, 1),				STR_NONE,									STR_NONE }, // WIDX_PATH_SPINNER_EDGES - STR_TILE_INSPECTOR_PATH_CYCLE_EDGES
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(WH - PAT_GBPT, 1, 1),				STR_NUMERIC_UP,								STR_NONE }, // WIDX_PATH_SPINNER_EDGES_INCREASE
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSD(WH - PAT_GBPT, 1, 1),				STR_NUMERIC_DOWN,							STR_NONE }, // WIDX_PATH_SPINNER_EDGES_DECREASE
+	{ WWT_SPINNER,			1,	GBS(WH - PAT_GBPT, 1, 2),				STR_NONE,									STR_NONE }, // WIDX_PATH_SPINNER_CORNERS - STR_TILE_INSPECTOR_PATH_CYCLE_CORNERS
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSI(WH - PAT_GBPT, 1, 2),				STR_NUMERIC_UP,								STR_NONE }, // WIDX_PATH_SPINNER_CORNERS_INCREASE
+	{ WWT_DROPDOWN_BUTTON,	1,	GBSD(WH - PAT_GBPT, 1, 2),				STR_NUMERIC_DOWN,							STR_NONE }, // WIDX_PATH_SPINNER_CORNERS_DECREASE
 	{ WIDGETS_END },
 };
 
-#define TRA_GBPB PADDING_BOTTOM					// Track group box properties bottom
-#define TRA_GBPT (TRA_GBPB + 16)				// Track group box properties top
-#define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)	// Track group box info bottom
-#define TRA_GBDT (TRA_GBDB + 20)				// Track group box info top
+#define TRA_GBPB PADDING_BOTTOM					// Path group box properties bottom
+#define TRA_GBPT (TRA_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
+#define TRA_GBDT (TRA_GBDB + 20 + 0 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_track[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - TRA_GBDT,	WH - TRA_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO,		STR_NONE }, // WIDX_TRACK_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - TRA_GBPT,	WH - TRA_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_TRACK_GROUPBOX_PROPERTIES
-
 	{ WIDGETS_END },
 };
 
-#define SCE_GBPB PADDING_BOTTOM					// Scenery group box properties bottom
-#define SCE_GBPT (SCE_GBPB + 16)				// Scenery group box properties top
-#define SCE_GBDB (SCE_GBPT + GROUPBOX_PADDING)	// Scenery group box info bottom
-#define SCE_GBDT (SCE_GBDB + 20)				// Scenery group box info top
+#define SCE_GBPB PADDING_BOTTOM					// Path group box properties bottom
+#define SCE_GBPT (SCE_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define SCE_GBDB (SCE_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
+#define SCE_GBDT (SCE_GBDB + 20 + 0 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_scenery[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - SCE_GBDT,	WH - SCE_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_SCENERY_INFO,	STR_NONE }, // WIDX_SCENERY_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - SCE_GBPT,	WH - SCE_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_SCENERY_GROUPBOX_PROPERTIES
-
 	{ WIDGETS_END },
 };
 
-#define ENT_GBPB PADDING_BOTTOM					// Entrance group box properties bottom
-#define ENT_GBPT (ENT_GBPB + 16)				// Entrance group box properties top
-#define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)	// Entrance group box info bottom
-#define ENT_GBDT (ENT_GBDB + 20)				// Entrance group box info top
+#define ENT_GBPB PADDING_BOTTOM					// Path group box properties bottom
+#define ENT_GBPT (ENT_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
+#define ENT_GBDT (ENT_GBDB + 20 + 0 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_entrance[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - ENT_GBDT,	WH - ENT_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_ENTRANCE_INFO,	STR_NONE }, // WIDX_ENTRANCE_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - ENT_GBPT,	WH - ENT_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_ENTRANCE_GROUPBOX_PROPERTIES
-
 	{ WIDGETS_END },
 };
 
-#define FEN_GBPB PADDING_BOTTOM					// Fence group box properties bottom
-#define FEN_GBPT (FEN_GBPB + 16)				// Fence group box properties top
-#define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Fence group box info bottom
-#define FEN_GBDT (FEN_GBDB + 20)				// Fence group box info top
+#define FEN_GBPB PADDING_BOTTOM					// Path group box properties bottom
+#define FEN_GBPT (FEN_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
+#define FEN_GBDT (FEN_GBDB + 20 + 0 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_fence[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - FEN_GBDT,	WH - FEN_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_FENCE_INFO,		STR_NONE }, // WIDX_FENCE_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - FEN_GBPT,	WH - FEN_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_FENCE_GROUPBOX_PROPERTIES
-
 	{ WIDGETS_END },
 };
 
-#define LAR_GBPB PADDING_BOTTOM					// Large scenery group box properties bottom
-#define LAR_GBPT (LAR_GBPB + 16)				// Large scenery group box properties top
-#define LAR_GBDB (LAR_GBPT + GROUPBOX_PADDING)	// Large scenery group box info bottom
-#define LAR_GBDT (LAR_GBDB + 20)				// Large scenery group box info top
+#define LAR_GBPB PADDING_BOTTOM					// Path group box properties bottom
+#define LAR_GBPT (LAR_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define LAR_GBDB (LAR_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
+#define LAR_GBDT (LAR_GBDB + 20 + 0 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_large_scenery[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - LAR_GBDT,	WH - LAR_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_LARGE_SCENERY_INFO,	STR_NONE }, // WIDX_LARGE_SCENERY_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - LAR_GBPT,	WH - LAR_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,			STR_NONE }, // WIDX_LARGE_SCENERY_GROUPBOX_PROPERTIES
-
 	{ WIDGETS_END },
 };
 
-#define BAN_GBPB PADDING_BOTTOM					// Banner group box properties bottom
-#define BAN_GBPT (BAN_GBPB + 16)				// Banner group box properties top
-#define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)	// Banner group box info bottom
-#define BAN_GBDT (BAN_GBDB + 20)				// Banner group box info top
+#define BAN_GBPB PADDING_BOTTOM					// Path group box properties bottom
+#define BAN_GBPT (BAN_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
+#define BAN_GBDT (BAN_GBDB + 20 + 0 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_banner[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - BAN_GBDT,	WH - BAN_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO,	STR_NONE }, // WIDX_BANNER_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - BAN_GBPT,	WH - BAN_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_BANNER_GROUPBOX_PROPERTIES
-
 	{ WIDGETS_END },
 };
 
-#define COR_GBPB PADDING_BOTTOM					// Corrupt element group box properties bottom
-#define COR_GBPT (COR_GBPB + 16)				// Corrupt element group box properties top
-#define COR_GBDB (COR_GBPT + GROUPBOX_PADDING)	// Corrupt element group box info bottom
-#define COR_GBDT (COR_GBDB + 20)				// Corrupt element group box info top
+#define COR_GBPB PADDING_BOTTOM					// Path group box properties bottom
+#define COR_GBPT (COR_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define COR_GBDB (COR_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
+#define COR_GBDT (COR_GBDB + 20 + 0 * 11)		// Path group box info top
 rct_widget window_tile_inspector_widgets_corrupt[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-
-	// Group boxes
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - COR_GBDT,	WH - COR_GBDB,	STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO,	STR_NONE }, // WIDX_CORRUPT_GROUPBOX_DETAILS
-	{ WWT_GROUPBOX,		1,	6,	WW - 6,	WH - COR_GBPT,	WH - COR_GBPB,	STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES,		STR_NONE }, // WIDX_CORRUPT_GROUPBOX_PROPERTIES
-
 	{ WIDGETS_END },
 };
 
@@ -348,17 +290,22 @@ rct_widget *tile_inspector_widgets[] = {
 	window_tile_inspector_widgets_corrupt,
 };
 
-unsigned short bottom_boxes_height[] = {
-	0,
-	SUR_GBDT - SUR_GBPB + GROUPBOX_PADDING,
-	PAT_GBDT - PAT_GBPB + GROUPBOX_PADDING,
-	TRA_GBDT - TRA_GBPB + GROUPBOX_PADDING,
-	SCE_GBDT - SCE_GBPB + GROUPBOX_PADDING,
-	ENT_GBDT - ENT_GBPB + GROUPBOX_PADDING,
-	FEN_GBDT - FEN_GBPB + GROUPBOX_PADDING,
-	LAR_GBDT - LAR_GBPB + GROUPBOX_PADDING,
-	BAN_GBDT - BAN_GBPB + GROUPBOX_PADDING,
-	COR_GBDT - COR_GBPB + GROUPBOX_PADDING,
+static struct {
+	// Offsets from the bottom of the window
+	sint16 details_top_offset, details_bottom_offset;
+	sint16 properties_top_offset, properties_bottom_offset;
+	// String to be displayed in the details groupbox
+	rct_string_id string_idx;
+} page_group_box_settings[] = {
+	{ SUR_GBDT, SUR_GBDB, SUR_GBPT, SUR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_SURFACE_INFO },
+	{ PAT_GBDT, PAT_GBDB, PAT_GBPT, PAT_GBPB, STR_TILE_INSPECTOR_GROUPBOX_PATH_INFO },
+	{ TRA_GBDT, TRA_GBDB, TRA_GBPT, TRA_GBPB, STR_TILE_INSPECTOR_GROUPBOX_TRACK_INFO },
+	{ SCE_GBDT, SCE_GBDB, SCE_GBPT, SCE_GBPB, STR_TILE_INSPECTOR_GROUPBOX_SCENERY_INFO },
+	{ ENT_GBDT, ENT_GBDB, ENT_GBPT, ENT_GBPB, STR_TILE_INSPECTOR_GROUPBOX_ENTRANCE_INFO },
+	{ FEN_GBDT, FEN_GBDB, FEN_GBPT, FEN_GBPB, STR_TILE_INSPECTOR_GROUPBOX_FENCE_INFO },
+	{ LAR_GBDT, LAR_GBDB, LAR_GBPT, LAR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_LARGE_SCENERY_INFO },
+	{ BAN_GBDT, BAN_GBDB, BAN_GBPT, BAN_GBPB, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO },
+	{ COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO }
 };
 
 static sint16 window_tile_inspector_highlighted_index = -1;
@@ -683,8 +630,6 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 	case PAGE_BANNER:
 	case PAGE_CORRUPT:
 		break;
-
-	default: assert(false);
 	} // switch page
 }
 
@@ -865,62 +810,73 @@ static void window_tile_inspector_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-	w->widgets[WIDX_LIST].bottom = w->height - bottom_boxes_height[w->page] - PADDING_BOTTOM;
 
+	if (w->page == PAGE_DEFAULT) {
+		w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_EMPTY;
+		w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_EMPTY;
+		w->widgets[WIDX_LIST].bottom = w->height - PADDING_BOTTOM;
+	}
+	else {
+		w->widgets[WIDX_GROUPBOX_DETAILS].type = WWT_GROUPBOX;
+		w->widgets[WIDX_GROUPBOX_PROPERTIES].type = WWT_GROUPBOX;
+		w->widgets[WIDX_GROUPBOX_DETAILS].image = page_group_box_settings[w->page - 1].string_idx;
+		w->widgets[WIDX_GROUPBOX_DETAILS].top = w->height - page_group_box_settings[w->page - 1].details_top_offset;
+		w->widgets[WIDX_GROUPBOX_DETAILS].bottom = w->height - page_group_box_settings[w->page - 1].details_bottom_offset;
+		w->widgets[WIDX_GROUPBOX_PROPERTIES].top = w->height - page_group_box_settings[w->page - 1].properties_top_offset;
+		w->widgets[WIDX_GROUPBOX_PROPERTIES].bottom = w->height - page_group_box_settings[w->page - 1].properties_bottom_offset;
+		w->widgets[WIDX_LIST].bottom = w->widgets[WIDX_GROUPBOX_DETAILS].top - GROUPBOX_PADDING;
+	}
+
+	// Using a switch, because I don't think giving each page their own callbacks is
+	// needed here, as only the mouseup and invalidate functions would be different.
+	int anchor;
 	switch (w->page) {
 	case PAGE_SURFACE:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - SUR_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - SUR_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - SUR_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - SUR_GBPB;
+		anchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
+		w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].top = GBBT(anchor, 0);
+		w->widgets[WIDX_SURFACE_BUTTON_REMOVE_FENCES].bottom = GBBB(anchor, 0);
+		w->widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].top = GBBT(anchor, 0);
+		w->widgets[WIDX_SURFACE_BUTTON_RESTORE_FENCES].bottom = GBBB(anchor, 0);
 		break;
 	case PAGE_PATH:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - PAT_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - PAT_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - PAT_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - PAT_GBPB;
+		anchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
+		w->widgets[WIDX_PATH_BUTTON_RAISE].top = GBBT(anchor, 0);
+		w->widgets[WIDX_PATH_BUTTON_RAISE].bottom = GBBB(anchor, 0);
+		w->widgets[WIDX_PATH_BUTTON_LOWER].top = GBBT(anchor, 0);
+		w->widgets[WIDX_PATH_BUTTON_LOWER].bottom = GBBB(anchor, 0);
+		w->widgets[WIDX_PATH_SPINNER_EDGES].top = GBBT(anchor, 1) + 3;
+		w->widgets[WIDX_PATH_SPINNER_EDGES].bottom = GBBB(anchor, 1) - 3;
+		w->widgets[WIDX_PATH_SPINNER_EDGES_INCREASE].top = GBBT(anchor, 1) + 4;
+		w->widgets[WIDX_PATH_SPINNER_EDGES_INCREASE].bottom = GBBT(anchor, 1) + 8;
+		w->widgets[WIDX_PATH_SPINNER_EDGES_DECREASE].top = GBBB(anchor, 1) - 8;
+		w->widgets[WIDX_PATH_SPINNER_EDGES_DECREASE].bottom = GBBB(anchor, 1) - 4;
+		w->widgets[WIDX_PATH_SPINNER_CORNERS].top = GBBT(anchor, 2) + 3;
+		w->widgets[WIDX_PATH_SPINNER_CORNERS].bottom = GBBB(anchor, 2) - 3;
+		w->widgets[WIDX_PATH_SPINNER_CORNERS_INCREASE].top = GBBT(anchor, 2) + 4;
+		w->widgets[WIDX_PATH_SPINNER_CORNERS_INCREASE].bottom = GBBT(anchor, 2) + 8;
+		w->widgets[WIDX_PATH_SPINNER_CORNERS_DECREASE].top = GBBB(anchor, 2) - 8;
+		w->widgets[WIDX_PATH_SPINNER_CORNERS_DECREASE].bottom = GBBB(anchor, 2) - 4;
 		break;
 	case PAGE_TRACK:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - TRA_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - TRA_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - TRA_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - TRA_GBPB;
+
 		break;
 	case PAGE_SCENERY:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - SCE_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - SCE_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - SCE_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - SCE_GBPB;
+
 		break;
 	case PAGE_ENTRANCE:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - ENT_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - ENT_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - ENT_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - ENT_GBPB;
+
 		break;
 	case PAGE_FENCE:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - FEN_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - FEN_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - FEN_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - FEN_GBPB;
+
 		break;
 	case PAGE_LARGE_SCENERY:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - LAR_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - LAR_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - LAR_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - LAR_GBPB;
+
 		break;
 	case PAGE_BANNER:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - BAN_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - BAN_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - BAN_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - BAN_GBPB;
+
 		break;
 	case PAGE_CORRUPT:
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top = w->height - COR_GBDT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].bottom = w->height - COR_GBDB;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].top = w->height - COR_GBPT;
-		w->widgets[WIDX_SURFACE_GROUPBOX_PROPERTIES].bottom = w->height - COR_GBPB;
+
 		break;
 	}
 }
@@ -979,8 +935,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		switch (map_element_get_type(mapElement)) {
 		case MAP_ELEMENT_TYPE_SURFACE: {
-			x = w->x + w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].left + 7;
-			y = w->y + w->widgets[WIDX_SURFACE_GROUPBOX_DETAILS].top + 14;
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 			rct_string_id terrain_name_id = TerrainTypes[map_element_get_terrain(mapElement)];
 			rct_string_id terrain_edge_name_id = TerrainEdgeTypes[map_element_get_terrain_edge(mapElement)];
 			int water_level = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
@@ -991,8 +947,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		}
 
 		case MAP_ELEMENT_TYPE_PATH: {
-			x = w->x + w->widgets[WIDX_PATH_GROUPBOX_DETAILS].left + 7;
-			y = w->y + w->widgets[WIDX_PATH_GROUPBOX_DETAILS].top + 14;
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 			if (footpath_element_has_path_scenery(mapElement)) {
 				const uint8 pathAdditionType = footpath_element_get_path_scenery_index(mapElement);
 				rct_string_id addition_name_id = get_footpath_item_entry(pathAdditionType)->name;
@@ -1001,19 +957,23 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			else
 				gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, NULL, 12, x, y);
 
+			// Edges spinner label and value
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_PATH_SPINNER_EDGES].top;
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CYCLE_EDGES, NULL, 12, x, y);
-			y += 21;
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CYCLE_CORNERS, NULL, 12, x, y);
-
-			// Draw values in the spinners
-			sint32 edge_value = mapElement->properties.path.edges & 0x0F;
-			sint32 corner_value = (mapElement->properties.path.edges & 0xF0) >> 4;
 			x = w->x + w->widgets[WIDX_PATH_SPINNER_EDGES].right - 14;
 			y = w->y + w->widgets[WIDX_PATH_SPINNER_EDGES].top + 1;
-			gfx_draw_string_right(dpi, 5182, &edge_value, 12, x, y); // Edges
-			y += 21;
-			gfx_draw_string_right(dpi, 5182, &corner_value, 12, x, y); // Corners
+			sint32 edge_value = mapElement->properties.path.edges & 0x0F;
+			gfx_draw_string_right(dpi, 5182, &edge_value, 12, x, y);
+
+			// Corners spinner label and value
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+			y = w->y + w->widgets[WIDX_PATH_SPINNER_CORNERS].top;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CYCLE_CORNERS, NULL, 12, x, y);
+			x = w->x + w->widgets[WIDX_PATH_SPINNER_EDGES].right - 14;
+			y = w->y + w->widgets[WIDX_PATH_SPINNER_CORNERS].top;
+			sint32 corner_value = (mapElement->properties.path.edges & 0xF0) >> 4;
+			gfx_draw_string_right(dpi, 5182, &corner_value, 12, x, y);
 			break;
 		}
 		}
