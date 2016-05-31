@@ -125,6 +125,7 @@ void chat_history_add(const char *src)
 	_chatHistoryTime[index] = SDL_GetTicks();
 	_chatHistoryIndex++;
 	Mixer_Play_Effect(SOUND_NEWS_ITEM, 0, SDL_MIX_MAXVOLUME, 0, 1.5f, true);
+	network_append_chat_log(src);
 }
 
 void chat_input(int c)

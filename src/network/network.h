@@ -119,6 +119,10 @@ public:
 	void SaveGroups();
 	void LoadGroups();
 
+	void BeginChatLog();
+	void AppendChatLog(const utf8 *text);
+	void CloseChatLog();
+
 	void Client_Send_TOKEN();
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey);
@@ -199,6 +203,8 @@ private:
 	int advertise_status = 0;
 	uint32 last_heartbeat_time = 0;
 	uint8 default_group = 0;
+	SDL_RWops *_chatLogStream;
+	std::string _chatLogPath;
 
 	void UpdateServer();
 	void UpdateClient();
@@ -285,6 +291,7 @@ void network_send_password(const char* password);
 void network_set_password(const char* password);
 
 void network_print_error();
+void network_append_chat_log(const utf8 *text);
 
 #ifdef __cplusplus
 }

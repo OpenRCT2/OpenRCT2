@@ -4173,6 +4173,8 @@ STR_5861    :Key verification failure.
 STR_5862    :Block unknown players.
 STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
 STR_5864    :This server only allows whitelisted players to connect.
+STR_5865    :Log chat history
+STR_5866    :{SMALLFONT}{BLACK}Logs all chat history to files in your user directory.
 
 #############
 # Scenarios #
