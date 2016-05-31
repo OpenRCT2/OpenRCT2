@@ -37,7 +37,7 @@ typedef struct rct_weather_transition {
 	sint8 base_temperature;
 	sint8 distribution_size;
 	sint8 distribution[24];
-} rct_weather_transition;
+} PACKED rct_weather_transition;
 
 static const rct_weather_transition* climate_transitions[4];
 

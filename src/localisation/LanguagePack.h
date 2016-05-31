@@ -56,7 +56,7 @@ private:
     {
         char         name[8];
         const utf8 * strings[4];
-    };
+    } PACKED;
 
     struct ScenarioOverride
     {
@@ -67,9 +67,9 @@ private:
                 const utf8 * name;
                 const utf8 * park;
                 const utf8 * details;
-            };
+            } PACKED;
         };
-    };
+    } PACKED;
 
     uint16 _id;
     utf8 * _stringData;

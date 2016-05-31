@@ -29,7 +29,7 @@ typedef struct rct_trackdefinition {
 	uint8 bank_start;
 	uint8 special;
 	uint8 pad[2];
-} rct_trackdefinition;
+} PACKED rct_trackdefinition;
 
 /**
 * Size: 0x0A
@@ -42,7 +42,7 @@ typedef struct rct_preview_track {
 	uint8 var_07;
 	uint8 var_08;
 	uint8 var_09;
-} rct_preview_track;
+} PACKED rct_preview_track;
 
 /* size 0x0A */
 typedef struct rct_track_coordinates  {
@@ -52,7 +52,7 @@ typedef struct rct_track_coordinates  {
 	sint16 z_end;			// 0x04
 	sint16 x;				// 0x06
 	sint16 y;				// 0x08
-} rct_track_coordinates;
+} PACKED rct_track_coordinates;
 
 enum {
 	TRACK_ELEMENT_FLAG_TERMINAL_STATION	= 1 << 3,
@@ -456,7 +456,7 @@ typedef struct track_circuit_iterator {
 	rct_map_element *first;
 	bool firstIteration;
 	bool looped;
-} track_circuit_iterator;
+} PACKED track_circuit_iterator;
 
 extern const rct_trackdefinition *gFlatRideTrackDefinitions;
 extern const rct_trackdefinition *gTrackDefinitions;

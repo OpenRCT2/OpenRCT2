@@ -45,12 +45,12 @@ typedef sint16 rct_widgetindex;
 typedef struct window_identifier {
 	rct_windowclass classification;
 	rct_windownumber number;
-} window_identifier;
+} PACKED window_identifier;
 
 typedef struct widget_identifier {
 	window_identifier window;
 	int widget_index;
-} widget_identifier;
+} PACKED widget_identifier;
 
 extern widget_identifier gCurrentTextBox;
 
@@ -67,7 +67,7 @@ typedef struct rct_widget {
 	sint16 bottom;					// 0x08
 	uint32 image;					// 0x0A
 	uint16 tooltip;					// 0x0E
-} rct_widget;
+} PACKED rct_widget;
 
 /**
  * Viewport structure
@@ -85,7 +85,7 @@ typedef struct rct_viewport {
 	uint8 zoom;						// 0x10
 	uint8 var_11;
 	uint16 flags;					// 0x12
-} rct_viewport;
+} PACKED rct_viewport;
 
 /**
  * Scroll structure
@@ -101,7 +101,7 @@ typedef struct rct_scroll {
 	uint16 v_bottom;			// 0x0C
 	uint16 v_thumb_top;			// 0x0E
 	uint16 v_thumb_bottom;		// 0x10
-} rct_scroll;
+} PACKED rct_scroll;
 
 /**
  * Viewport focus structure.
@@ -115,7 +115,7 @@ typedef struct coordinate_focus {
 	sint16 z; //0x486
 	uint8 rotation;//0x488
 	uint8 zoom;//0x489
-} coordinate_focus;
+} PACKED coordinate_focus;
 
 // Type is viewport_target_sprite_id & 0x80000000 != 0
 typedef struct sprite_focus {
@@ -164,14 +164,14 @@ typedef struct rct_window_event_list {
 	void (*invalidate)(struct rct_window*);
 	void (*paint)(struct rct_window*, rct_drawpixelinfo*);
 	void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int);
-} rct_window_event_list;
+} PACKED rct_window_event_list;
 
 typedef struct campaign_variables {
 	sint16 campaign_type;
 	sint16 no_weeks; //0x482
 	uint16 ride_id; //0x484
 	uint32 pad_486;
-} campaign_variables;
+} PACKED campaign_variables;
 
 typedef struct new_ride_variables {
 	sint16 selected_ride_id; //0x480
@@ -179,7 +179,7 @@ typedef struct new_ride_variables {
 	uint16 pad_484;
 	uint16 pad_486;
 	uint16 selected_ride_countdown; //488
-} new_ride_variables;
+} PACKED new_ride_variables;
 
 typedef struct news_variables {
 	sint16 var_480;
@@ -187,7 +187,7 @@ typedef struct news_variables {
 	uint16 var_484;
 	uint16 var_486;
 	uint16 var_488;
-} news_variables;
+} PACKED news_variables;
 
 typedef struct map_variables {
 	sint16 rotation;
@@ -195,28 +195,28 @@ typedef struct map_variables {
 	uint16 var_484;
 	uint16 var_486;
 	uint16 var_488;
-} map_variables;
+} PACKED map_variables;
 
 typedef struct ride_variables {
 	sint16 view;
 	sint32 var_482;
 	sint32 var_486;
-} ride_variables;
+} PACKED ride_variables;
 
 typedef struct scenery_variables {
 	sint16 selected_scenery_id;
 	sint16 hover_counter;
-} scenery_variables;
+} PACKED scenery_variables;
 
 typedef struct track_list_variables {
 	uint16 var_480;
 	uint16 var_484;
 	bool reload_track_designs;
-} track_list_variables;
+} PACKED track_list_variables;
 
 typedef struct error_variables {
 	uint16 var_480;
-} error_variables;
+} PACKED error_variables;
 
 /**
  * Window structure
@@ -288,7 +288,7 @@ typedef struct rct_window {
 	sint8 var_4B8;
 	sint8 var_4B9;
 	uint8 colours[6];			// 0x4BA
-} rct_window;
+} PACKED rct_window;
 
 #define RCT_WINDOW_RIGHT(w) (w->x + w->width)
 #define RCT_WINDOW_BOTTOM(w) (w->y + w->height)

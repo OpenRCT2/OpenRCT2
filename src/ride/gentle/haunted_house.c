@@ -26,7 +26,7 @@ typedef struct haunted_house_bound_box
 	sint16 offset_y;
 	sint16 length_x;
 	sint16 length_y;
-} haunted_house_bound_box;
+} PACKED haunted_house_bound_box;
 
 /** rct2: 0x1428180 */
 static haunted_house_bound_box haunted_house_data[] = {

@@ -35,7 +35,7 @@ typedef struct swinging_inverter_ship_bound_box
 	sint16 length_y;
 	sint16 offset_x;
 	sint16 offset_y;
-} swinging_inverter_ship_bound_box;
+} PACKED swinging_inverter_ship_bound_box;
 
 /** rct2: 0x01428020 */
 static const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {

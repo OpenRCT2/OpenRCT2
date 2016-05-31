@@ -36,7 +36,7 @@ typedef struct ttf_cache_entry {
 	TTF_Font *font;
 	utf8 *text;
 	uint32 lastUseTick;
-} ttf_cache_entry;
+} PACKED ttf_cache_entry;
 
 static ttf_cache_entry _ttfSurfaceCache[TTF_SURFACE_CACHE_SIZE] = { 0 };
 static int _ttfSurfaceCacheCount = 0;
@@ -48,7 +48,7 @@ typedef struct ttf_getwidth_cache_entry {
 	TTF_Font *font;
 	utf8 *text;
 	uint32 lastUseTick;
-} ttf_getwidth_cache_entry;
+} PACKED ttf_getwidth_cache_entry;
 
 static ttf_getwidth_cache_entry _ttfGetWidthCache[TTF_GETWIDTH_CACHE_SIZE] = { 0 };
 static int _ttfGetWidthCacheCount = 0;
@@ -908,7 +908,7 @@ typedef struct text_draw_info {
 	uint8 palette[8];
 	uint16 font_sprite_base;
 	const sint8 *y_offset;
-} text_draw_info;
+} PACKED text_draw_info;
 
 static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, text_draw_info *info)
 {

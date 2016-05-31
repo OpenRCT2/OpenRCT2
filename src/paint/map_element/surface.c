@@ -74,7 +74,7 @@ struct corner_height
 	uint8 right;
 	uint8 bottom;
 	uint8 left;
-};
+} PACKED;
 
 /**
  * rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
@@ -312,7 +312,7 @@ struct tile_descriptor
 	uint8 terrain;
 	uint8 slope;
 	corner_height corner_heights;
-};
+} PACKED;
 
 uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, int rotation)
 {
@@ -332,7 +332,7 @@ typedef struct viewport_surface_paint_struct_0 {
 	uint32 var_0C;
 	uint32 var_10;
 	uint32 pad[3];
-} viewport_surface_paint_struct_0;
+} PACKED viewport_surface_paint_struct_0;
 
 /**
  * rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2

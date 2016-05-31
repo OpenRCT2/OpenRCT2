@@ -29,7 +29,7 @@ typedef struct rct_drawpixelinfo {
 	short height;		// 0x0A
 	short pitch;		// 0x0C			note: this is actually (pitch - width)
 	uint16 zoom_level;	// 0x0E
-} rct_drawpixelinfo;
+} PACKED rct_drawpixelinfo;
 
 // Size: 0x10
 typedef struct rct_g1_element {
@@ -40,7 +40,7 @@ typedef struct rct_g1_element {
 	sint16 y_offset;		// 0x0A
 	uint16 flags;			// 0x0C
 	uint16 zoomed_offset;	// 0x0E
-} rct_g1_element;
+} PACKED rct_g1_element;
 
 enum {
 	G1_FLAG_BMP = (1 << 0), //No invisible sections
@@ -57,24 +57,24 @@ enum {
 typedef struct rct_g1_header {
 	uint32 num_entries;
 	uint32 total_size;
-} rct_g1_header;
+} PACKED rct_g1_header;
 
 typedef struct rct_gx {
 	rct_g1_header header;
 	rct_g1_element *elements;
 	void *data;
-} rct_gx;
+} PACKED rct_gx;
 
 typedef struct rct_palette_entry {
 	uint8 blue;
 	uint8 green;
 	uint8 red;
 	uint8 alpha;
-} rct_palette_entry;
+} PACKED rct_palette_entry;
 
 typedef struct rct_palette {
 	rct_palette_entry entries[256];
-} rct_palette;
+} PACKED rct_palette;
 
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
 

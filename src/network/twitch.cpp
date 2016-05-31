@@ -96,7 +96,7 @@ namespace Twitch
             member.ShouldTrack = false;
             return member;
         }
-    };
+    } PACKED;
 
     /**
      * The time between HTTP requests.

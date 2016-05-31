@@ -39,7 +39,7 @@ typedef struct ferris_wheel_bound_box
 	sint16 length_y;
 	sint16 offset_x;
 	sint16 offset_y;
-} ferris_wheel_bound_box;
+} PACKED ferris_wheel_bound_box;
 
 /** rct2: 0x008A8CA8 */
 static ferris_wheel_bound_box ferris_wheel_data[] = {

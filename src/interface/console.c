@@ -999,7 +999,7 @@ typedef struct console_command {
 	console_command_func func;
 	utf8 *help;
 	utf8 *usage;
-} console_command;
+} PACKED console_command;
 
 utf8* console_variable_table[] = {
 	"park_rating",

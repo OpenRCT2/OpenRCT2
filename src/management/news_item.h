@@ -45,7 +45,7 @@ typedef struct rct_news_item {
 	uint8 day;					// 0x0A
 	uint8 pad_0B;				// 0x0B
 	utf8 text[256];				// 0x0C
-} rct_news_item;
+} PACKED rct_news_item;
 
 #define MAX_NEWS_ITEMS 60
 

@@ -40,7 +40,7 @@ typedef struct rct_s6_header {
 	uint32 version;				// 0x04
 	uint32 magic_number;		// 0x08
 	uint8 pad_0C[0x14];
-} rct_s6_header;
+} PACKED rct_s6_header;
 
 /**
  * SC6 information chunk
@@ -57,7 +57,7 @@ typedef struct rct_s6_info {
 	char name[64];				// 0x48
 	char details[256];			// 0x88
 	rct_object_entry entry;		// 0x188
-} rct_s6_info;
+} PACKED rct_s6_info;
 
 /**
  * Scenario scores file header.
@@ -68,7 +68,7 @@ typedef struct rct_scenario_scores_header {
 	uint32 var_4;
 	uint32 var_8;
 	uint32 scenario_count;		// 0x0C
-} rct_scenario_scores_header;
+} PACKED rct_scenario_scores_header;
 
 typedef enum scenario_source {
 	SCENARIO_SOURCE_RCT1,
@@ -100,14 +100,14 @@ typedef struct rct_scenario_basic {
 	char completed_by[64];		// 0x0270
 	// uint8 source_game;			// new in OpenRCT2
 	// sint16 source_index;		// new in OpenRCT2
-} rct_scenario_basic;
+} PACKED rct_scenario_basic;
 
 typedef struct rct_stex_entry {
 	rct_string_id scenario_name;	// 0x00
 	rct_string_id park_name;		// 0x02
 	rct_string_id details;			// 0x04
 	uint8 var_06;
-} rct_stex_entry;
+} PACKED rct_stex_entry;
 
 #define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
 
@@ -335,7 +335,7 @@ typedef struct rct_s6_data {
 	uint16 wide_path_tile_loop_x;
 	uint16 wide_path_tile_loop_y;
 	uint8 pad_13CE778[434];
-} rct_s6_data;
+} PACKED rct_s6_data;
 
 enum {
 	SCENARIO_FLAGS_VISIBLE = (1 << 0),
@@ -386,7 +386,7 @@ typedef struct scenario_highscore_entry {
 	utf8 *name;
 	money32 company_value;
 	datetime64 timestamp;
-} scenario_highscore_entry;
+} PACKED scenario_highscore_entry;
 
 typedef struct scenario_index_entry {
 	utf8 path[MAX_PATH];
@@ -407,7 +407,7 @@ typedef struct scenario_index_entry {
 
 	utf8 name[64];
 	utf8 details[256];
-} scenario_index_entry;
+} PACKED scenario_index_entry;
 
 typedef struct source_desc {
 	const utf8 *title;
@@ -415,7 +415,7 @@ typedef struct source_desc {
 	uint8 source;
 	sint32 index;
 	uint8 category;
-} source_desc;
+} PACKED source_desc;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 

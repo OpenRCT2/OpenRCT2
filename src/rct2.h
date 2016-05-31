@@ -113,7 +113,9 @@ typedef uint8 colour_t;
 
 #ifndef _MSC_VER
 // use similar struct packing as MSVC for our structs
-#pragma pack(1)
+#define PACKED __attribute__((packed,aligned(1)))
+#else
+#define PACKED
 #endif
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
@@ -190,7 +192,7 @@ typedef struct rct2_install_info {
 	uint8 pad_210[256];
 	char expansionPackNames[16][128];
 	uint32 activeExpansionPacks;		//0xB10
-} rct2_install_info;
+} PACKED rct2_install_info;
 
 enum {
 	// Although this is labeled a flag it actually means when

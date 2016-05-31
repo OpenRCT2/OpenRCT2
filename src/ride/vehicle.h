@@ -23,7 +23,7 @@
 typedef struct rct_vehicle_colour {
 	uint8 body_colour;
 	uint8 trim_colour;
-} rct_vehicle_colour;
+} PACKED rct_vehicle_colour;
 
 /**
  * Ride type vehicle structure.
@@ -74,7 +74,7 @@ typedef struct rct_ride_entry_vehicle {
 	uint8 draw_order;
 	uint8 special_frames;			// 0x60 , 0x7A
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
-} rct_ride_entry_vehicle;
+} PACKED rct_ride_entry_vehicle;
 
 typedef struct rct_vehicle {
 	uint8 sprite_identifier;		// 0x00
@@ -113,7 +113,7 @@ typedef struct rct_vehicle {
 		struct {
 			sint8 var_34;
 			uint8 var_35;
-		};
+		} PACKED;
 	};
 	union {
 		sint16 track_direction;		// 0x36 (0000 0000 0000 0011)
@@ -142,7 +142,7 @@ typedef struct rct_vehicle {
 		struct {
 			sint8 ferris_wheel_var_0;	// 0x4C
 			sint8 ferris_wheel_var_1;	// 0x4D
-		};
+		} PACKED;
 	};
 	sint16 var_4E;
 	uint8 status;					// 0x50
@@ -192,12 +192,12 @@ typedef struct rct_vehicle {
 	uint8 colours_extended;			// 0xD7
 	uint8 seat_rotation;			// 0xD8
 	uint8 target_seat_rotation;		// 0xD9
-} rct_vehicle;
+} PACKED rct_vehicle;
 
 typedef struct train_ref {
 	rct_vehicle *head;
 	rct_vehicle *tail;
-} train_ref;
+} PACKED train_ref;
 
 // Size: 0x09
 typedef struct rct_vehicle_info {
@@ -207,7 +207,7 @@ typedef struct rct_vehicle_info {
 	uint8 direction;	// 0x06
 	uint8 vehicle_sprite_type;	// 0x07
 	uint8 bank_rotation;	// 0x08
-} rct_vehicle_info;
+} PACKED rct_vehicle_info;
 
 enum {
 	VEHICLE_ENTRY_FLAG_A_0 = 1 << 0,

@@ -66,7 +66,7 @@ typedef struct widget_ref {
 	rct_windowclass window_classification;
 	rct_windownumber window_number;
 	rct_widgetindex widget_index;
-} widget_ref;
+} PACKED widget_ref;
 
 extern uint8 gInputState;
 extern uint8 gInputFlags;

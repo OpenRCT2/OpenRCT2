@@ -23,7 +23,7 @@ typedef struct rct_research_item {
 	// Bit 16 (0: scenery entry, 1: ride entry)
 	sint32 entryIndex;
 	uint8 category;
-} rct_research_item;
+} PACKED rct_research_item;
 
 enum{
 	RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 29),

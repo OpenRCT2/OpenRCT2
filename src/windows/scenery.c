@@ -521,7 +521,7 @@ typedef struct scenery_item {
 	int allRows;
 	int selected_item;
 	sint16 sceneryId;
-} scenery_item;
+} PACKED scenery_item;
 
 static scenery_item window_scenery_count_rows_with_selected_item(int tabIndex)
 {	

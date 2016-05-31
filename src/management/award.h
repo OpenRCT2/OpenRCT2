@@ -22,7 +22,7 @@
 typedef struct rct_award {
 	uint16 time;
 	uint16 type;
-} rct_award;
+} PACKED rct_award;
 
 enum {
 	PARK_AWARD_MOST_UNTIDY,

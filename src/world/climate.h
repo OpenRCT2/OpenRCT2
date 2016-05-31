@@ -41,7 +41,7 @@ typedef struct rct_weather {
 	sint8 gloom_level;
 	sint8 rain_level;
 	uint32 sprite_id;
-} rct_weather;
+} PACKED rct_weather;
 
 #define gClimate						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8)
 #define gClimateCurrentWeather			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8)

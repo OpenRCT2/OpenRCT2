@@ -31,7 +31,7 @@ typedef struct rct_banner {
 	uint8 text_colour; //0x05
 	uint8 x; //0x06
 	uint8 y; //0x07
-} rct_banner;
+} PACKED rct_banner;
 
 enum{
 	BANNER_FLAG_NO_ENTRY = (1 << 0),

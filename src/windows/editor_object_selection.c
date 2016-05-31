@@ -279,7 +279,7 @@ typedef struct list_item {
 	rct_object_entry *entry;
 	rct_object_filters *filter;
 	uint8 *flags;
-} list_item;
+} PACKED list_item;
 
 typedef int (*sortFunc)(const void *, const void *);
 

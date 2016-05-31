@@ -23,7 +23,7 @@
 typedef struct sawyercoding_chunk_header {
 	uint8 encoding;
 	uint32 length;
-} sawyercoding_chunk_header;
+} PACKED sawyercoding_chunk_header;
 
 enum {
 	CHUNK_ENCODING_NONE,

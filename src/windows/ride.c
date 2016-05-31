@@ -958,7 +958,7 @@ static rct_window_event_list *window_ride_page_events[] = {
 typedef struct ride_overall_view_t {
 	sint16 x, y, z;
 	uint8 zoom;
-} ride_overall_view;
+} PACKED ride_overall_view;
 
 ride_overall_view ride_overall_views[MAX_RIDES] = {0};
 
@@ -2641,7 +2641,7 @@ typedef struct rct_vehichle_paintinfo {
 	short y;
 	int sprite_index;
 	int tertiary_colour;
-} rct_vehichle_paintinfo;
+} PACKED rct_vehichle_paintinfo;
 
 rct_vehichle_paintinfo _sprites_to_draw[144];
 

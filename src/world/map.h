@@ -24,7 +24,7 @@ typedef struct rct_map_element_surface_properties {
 	uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
 	uint8 grass_length; //6
 	uint8 ownership; //7
-} rct_map_element_surface_properties;
+} PACKED rct_map_element_surface_properties;
 
 typedef struct rct_map_element_path_properties {
 	uint8 type; //4 0xF0 Path type, 0x08 Unknown/Unused, 0x04 Set when path is diagonal, 0x03 Rotation
@@ -34,7 +34,7 @@ typedef struct rct_map_element_path_properties {
 		uint8 addition_status; //7
 		uint8 ride_index;
 	};
-} rct_map_element_path_properties;
+} PACKED rct_map_element_path_properties;
 
 typedef struct rct_map_element_track_properties {
 	uint8 type; //4
@@ -42,42 +42,42 @@ typedef struct rct_map_element_track_properties {
 		struct{
 			uint8 sequence; //5
 			uint8 colour; //6
-		};
+		} PACKED;
 		uint16 maze_entry; // 5
 	};
 	uint8 ride_index; //7
-} rct_map_element_track_properties;
+} PACKED rct_map_element_track_properties;
 
 typedef struct rct_map_element_scenery_properties {
 	uint8 type; //4
 	uint8 age; //5
 	uint8 colour_1; //6
 	uint8 colour_2; //7
-} rct_map_element_scenery_properties;
+} PACKED rct_map_element_scenery_properties;
 
 typedef struct rct_map_element_entrance_properties {
 	uint8 type; //4
 	uint8 index; //5
 	uint8 path_type; //6
 	uint8 ride_index; //7
-} rct_map_element_entrance_properties;
+} PACKED rct_map_element_entrance_properties;
 
 typedef struct rct_map_element_fence_properties {
 	uint8 type; //4
 	uint8 item[3]; //5
-} rct_map_element_fence_properties;
+} PACKED rct_map_element_fence_properties;
 
 typedef struct rct_map_element_scenerymultiple_properties {
 	uint16 type; //4
 	uint8 colour[2]; //6
-} rct_map_element_scenerymultiple_properties;
+} PACKED rct_map_element_scenerymultiple_properties;
 
 typedef struct rct_map_element_banner_properties {
 	uint8 index; //4
 	uint8 position; //5
 	uint8 flags; //6
 	uint8 unused; //7
-} rct_map_element_banner_properties;
+} PACKED rct_map_element_banner_properties;
 
 typedef union {
 	rct_map_element_surface_properties surface;
@@ -100,7 +100,7 @@ typedef struct rct_map_element {
 	uint8 base_height; //2
 	uint8 clearance_height; //3
 	rct_map_element_properties properties;
-} rct_map_element;
+} PACKED rct_map_element;
 
 enum {
 	MAP_ELEMENT_QUADRANT_SW,
@@ -233,38 +233,38 @@ typedef struct rct_xy8 {
 	union {
 		struct {
 			uint8 x, y;
-		};
+		} PACKED;
 		uint16 xy;
 	};
-} rct_xy8;
+} PACKED rct_xy8;
 
 typedef struct rct_xyz8 {
 	uint8 x, y, z;
-} rct_xyz8;
+} PACKED rct_xyz8;
 
 typedef struct rct_xyzd8 {
 	uint8 x, y, z, direction;
-} rct_xyzd8;
+} PACKED rct_xyzd8;
 
 typedef struct rct_xy16 {
 	sint16 x, y;
-} rct_xy16;
+} PACKED rct_xy16;
 
 typedef struct rct_xyz16 {
 	sint16 x, y, z;
-} rct_xyz16;
+} PACKED rct_xyz16;
 
 typedef struct rct_xy_element {
 	int x, y;
 	rct_map_element *element;
-} rct_xy_element;
+} PACKED rct_xy_element;
 
 typedef struct rct2_peep_spawn {
 	uint16 x;
 	uint16 y;
 	uint8 z;
 	uint8 direction;
-} rct2_peep_spawn;
+} PACKED rct2_peep_spawn;
 
 enum {
 	MAP_SELECT_FLAG_ENABLE				= 1 << 0,
@@ -420,7 +420,7 @@ typedef struct map_element_iterator {
 	int x;
 	int y;
 	rct_map_element *element;
-} map_element_iterator;
+} PACKED map_element_iterator;
 
 void map_element_iterator_begin(map_element_iterator *it);
 int map_element_iterator_next(map_element_iterator *it);

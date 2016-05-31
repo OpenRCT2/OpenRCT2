@@ -24,6 +24,6 @@ typedef struct rct_entrance_type {
 	uint32 image_id;			// 0x02
 	uint8 scrolling_mode;		// 0x06
 	uint8 text_height;			// 0x07
-} rct_entrance_type;
+} PACKED rct_entrance_type;
 
 #endif

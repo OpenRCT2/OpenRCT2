@@ -33,7 +33,7 @@ typedef struct rct_footpath_entry {
 	uint32 bridge_image;		// 0x06
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
-} rct_footpath_entry;
+} PACKED rct_footpath_entry;
 
 enum {
 	FOOTPATH_SEARCH_SUCCESS,

@@ -40,11 +40,11 @@ typedef struct sc_list_item {
 	union {
 		struct {
 			rct_string_id string_id;
-		} heading;
+		} PACKED heading;
 		struct {
 			scenario_index_entry *scenario;
 			bool is_locked;
-		} scenario;
+		} PACKED scenario;
 	};
 } sc_list_item;
 

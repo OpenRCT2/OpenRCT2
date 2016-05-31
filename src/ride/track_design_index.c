@@ -27,7 +27,7 @@ typedef struct td_index_item {
 	uint8 ride_type;
 	char ride_entry[9];
 	utf8 path[MAX_PATH];
-} td_index_item;
+} PACKED td_index_item;
 
 static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount);
 static void track_design_index_scan();

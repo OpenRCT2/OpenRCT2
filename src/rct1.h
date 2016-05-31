@@ -31,7 +31,7 @@ typedef struct rct1_entrance {
 	uint16 y;
 	uint16 z;
 	uint8 direction;
-} rct1_entrance;
+} PACKED rct1_entrance;
 
 /**
  * RCT1 ride structure
@@ -46,7 +46,7 @@ typedef struct rct1_ride {
 	struct {
 		colour_t body;
 		colour_t trim;
-	} vehicle_colours[12];
+	} PACKED vehicle_colours[12];
 	colour_t track_primary_colour;
 	colour_t track_secondary_colour;
 	colour_t track_support_colour;
@@ -123,7 +123,7 @@ typedef struct rct1_ride {
 			ride_rating excitement;
 			ride_rating intensity;
 			ride_rating nausea;
-		};
+		} PACKED;
 	};
 	uint16 value;
 	uint16 var_F8;
@@ -159,7 +159,7 @@ typedef struct rct1_ride {
 	uint8 music;
 	uint8 entrance_style;
 	uint8 unk_17A[230];
-} rct1_ride;
+} PACKED rct1_ride;
 
 typedef struct rct1_research_item {
 	uint8 item;
@@ -167,7 +167,7 @@ typedef struct rct1_research_item {
 	uint8 category;
 	uint8 flags;
 	uint8 expenditure_area;
-} rct1_research_item;
+} PACKED rct1_research_item;
 
 /**
  * RCT1,AA,LL scenario / saved game structure.
@@ -339,7 +339,7 @@ typedef struct rct1_s4 {
 	uint32 scenario_flags;
 	uint8 unk_1F8358[432];
 	uint32 expansion_pack_checksum;
-} rct1_s4;
+} PACKED rct1_s4;
 
 enum {
 	RCT1_RIDE_TYPE_NULL = 255,
@@ -688,7 +688,7 @@ typedef struct rct_track_td4 {
 	};
 	uint8 pad_41[0x83];
 	uint16 start_track_data_AA_CF;					// 0xC4
-} rct_track_td4; // Information based off RCTTechDepot
+} PACKED rct_track_td4; // Information based off RCTTechDepot
 
 enum {
 	RCT1_SCENARIO_FLAG_0 = 1 << 0,

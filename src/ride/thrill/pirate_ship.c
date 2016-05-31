@@ -33,7 +33,7 @@ typedef struct pirate_ship_bound_box
 	sint16 length_y;
 	sint16 offset_x;
 	sint16 offset_y;
-} pirate_ship_bound_box;
+} PACKED pirate_ship_bound_box;
 
 /** rct2: 0x008A83B0 */
 static const uint32 pirate_ship_base_sprite_offset[] = {

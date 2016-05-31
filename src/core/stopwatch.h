@@ -25,7 +25,7 @@
 
 typedef struct stopwatch {
 	void *context;
-} stopwatch;
+} PACKED stopwatch;
 
 void stopwatch_create(stopwatch *stopwatch);
 void stopwatch_dispose(stopwatch *stopwatch);

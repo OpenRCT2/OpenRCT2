@@ -37,7 +37,7 @@ struct attached_paint_struct {
     uint8 flags;    // 0x0C
     uint8 pad_0D;
     attached_paint_struct* next;	//0x0E
-};
+} PACKED;
 
 typedef struct paint_struct paint_struct;
 
@@ -69,7 +69,7 @@ struct paint_struct {
 	uint16 map_x;			// 0x2C
 	uint16 map_y;			// 0x2E
 	rct_map_element *mapElement; // 0x30 (or sprite pointer)
-};
+} PACKED;
 
 typedef struct paint_string_struct paint_string_struct;
 
@@ -81,14 +81,14 @@ struct paint_string_struct {
 	uint16 y;						// 0x08
 	uint32 args[4];					// 0x0A
 	uint8 *y_offsets;				// 0x1A
-};
+} PACKED;
 
 typedef struct sprite_bb {
 	uint32 sprite_id;
 	rct_xyz16 offset;
 	rct_xyz16 bb_offset;
 	rct_xyz16 bb_size;
-} sprite_bb;
+} PACKED sprite_bb;
 
 enum PAINT_STRUCT_FLAGS {
 	PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)

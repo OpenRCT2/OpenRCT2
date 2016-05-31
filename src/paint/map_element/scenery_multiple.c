@@ -157,7 +157,7 @@ void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *t
 typedef struct boundbox {
 	rct_xy16 offset;
 	rct_xy16 length;
-} boundbox;
+} PACKED boundbox;
 
 static const boundbox s98E3C4[] = {
 	{ 3,   3, 26, 26 },

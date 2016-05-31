@@ -36,17 +36,17 @@ typedef struct rct_td6_maze_element {
 				struct{
 					uint8 unk_2;
 					uint8 type;
-				};
+				} PACKED;
 			};
-		};
+		} PACKED;
 	};
-} rct_td6_maze_element;
+} PACKED rct_td6_maze_element;
 
 /* Track Element entry  size: 0x02 */
 typedef struct rct_td6_track_element {
 	uint8 type;							// 0x00
 	uint8 flags;						// 0x01
-} rct_td6_track_element;
+} PACKED rct_td6_track_element;
 
 /* Track Entrance entry size: 0x06 */
 typedef struct rct_td6_entrance_element {
@@ -54,7 +54,7 @@ typedef struct rct_td6_entrance_element {
 	uint8 direction;					// 0x01
 	sint16 x;							// 0x02
 	sint16 y;							// 0x04
-} rct_td6_entrance_element;
+} PACKED rct_td6_entrance_element;
 
 /* Track Scenery entry  size: 0x16 */
 typedef struct rct_td6_scenery_element {
@@ -65,7 +65,7 @@ typedef struct rct_td6_scenery_element {
 	uint8 flags;						// 0x13 direction quadrant tertiary colour
 	uint8 primary_colour;				// 0x14
 	uint8 secondary_colour;				// 0x15
-} rct_td6_scenery_element;
+} PACKED rct_td6_scenery_element;
 
 /**
  * Track design structure.
@@ -140,17 +140,17 @@ typedef struct rct_track_td6 {
 	rct_td6_scenery_element		*scenery_elements;
 
 	utf8 *name;
-} rct_track_td6;
+} PACKED rct_track_td6;
 
 typedef struct rct_track_design {
 	rct_track_td6 track_td6;
 	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
-} rct_track_design;
+} PACKED rct_track_design;
 
 typedef struct track_design_file_ref {
 	utf8 *name;
 	utf8 *path;
-} track_design_file_ref;
+} PACKED track_design_file_ref;
 
 enum {
 	TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),

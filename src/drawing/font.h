@@ -45,11 +45,11 @@ typedef struct TTFFontDescriptor {
 	int offset_y;
 	int line_height;
 	TTF_Font *font;
-} TTFFontDescriptor;
+} PACKED TTFFontDescriptor;
 
 typedef struct  TTFFontSetDescriptor {
 	TTFFontDescriptor size[FONT_SIZE_COUNT];
-} TTFFontSetDescriptor;
+} PACKED TTFFontSetDescriptor;
 
 extern TTFFontSetDescriptor *gCurrentTTFFontSet;
 

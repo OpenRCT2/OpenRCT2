@@ -25,7 +25,7 @@ typedef struct rct_ride_name_convention {
 	rct_string_id structure_name;
 	rct_string_id station_name;
 	rct_string_id unk_name;
-} rct_ride_name_convention;
+} PACKED rct_ride_name_convention;
 
 typedef struct rct_ride_entrance_definition {
 	uint32 sprite_index;
@@ -34,14 +34,14 @@ typedef struct rct_ride_entrance_definition {
 	rct_string_id string_id;
 	uint32 base_image_id;
 	uint16 colour_use_flags;
-} rct_ride_entrance_definition;
+} PACKED rct_ride_entrance_definition;
 
 typedef struct rct_shop_item_string_types {
 	rct_string_id singular;			// Balloon
 	rct_string_id plural;			// Balloons
 	rct_string_id indefinite;		// a Balloon
 	rct_string_id display;			// "Diamond Heights" Balloon
-} rct_shop_item_string_types;
+} PACKED rct_shop_item_string_types;
 
 typedef struct rct_ride_data_4 {
 	uint8 price;
@@ -50,12 +50,12 @@ typedef struct rct_ride_data_4 {
 	uint8 default_music;
 	uint8 var_3;
 	uint8 pad[2];
-} rct_ride_data_4;
+} PACKED rct_ride_data_4;
 
 typedef struct ride_cost {
 	uint16 track_price;
 	uint16 support_price;
-} ride_cost;
+} PACKED ride_cost;
 
 typedef struct rct_ride_data_5 {
 	uint8 max_height;
@@ -66,13 +66,13 @@ typedef struct rct_ride_data_5 {
 	uint8 price;
 	uint8 bonus_value;		// Deprecated. Use rideBonusValue instead
 	uint8 pad;
-} rct_ride_data_5;
+} PACKED rct_ride_data_5;
 
 typedef struct rct_ride_lift_data {
 	uint8 sound_id;
 	uint8 minimum_speed;
 	uint8 maximum_speed;
-} rct_ride_lift_data;
+} PACKED rct_ride_lift_data;
 
 enum {
 	RIDE_TYPE_FLAG4_0 = (1 << 0),

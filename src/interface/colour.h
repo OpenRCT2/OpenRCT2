@@ -79,7 +79,7 @@ typedef struct rct_colour_map_a {
 	uint8 light;
 	uint8 lighter;
 	uint8 lightest;
-} rct_colour_map_a;
+} PACKED rct_colour_map_a;
 
 typedef struct rct_colour_map_b {
 	uint8 a;
@@ -90,7 +90,7 @@ typedef struct rct_colour_map_b {
 	uint8 f;
 	uint8 g;
 	uint8 h;
-} rct_colour_map_b;
+} PACKED rct_colour_map_b;
 
 extern rct_colour_map_a *ColourMapA;
 extern rct_colour_map_b *ColourMapB;

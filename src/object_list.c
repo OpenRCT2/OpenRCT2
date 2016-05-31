@@ -37,7 +37,7 @@ typedef struct rct_plugin_header {
 	uint32 date_modified_checksum;
 	uint32 object_list_size;
 	uint32 object_list_no_items;
-} rct_plugin_header;
+} PACKED rct_plugin_header;
 
 // 98DA00
 int object_entry_group_counts[] = {

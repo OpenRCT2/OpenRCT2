@@ -43,13 +43,13 @@ typedef struct read_buffer {
 	char *ptr;
 	int length;
 	int position;
-} read_buffer;
+} PACKED read_buffer;
 
 typedef struct write_buffer {
 	char *ptr;
 	int length;
 	int capacity;
-} write_buffer;
+} PACKED write_buffer;
 
 #ifdef __WINDOWS__
 static utf8 _caBundlePath[MAX_PATH];
@@ -203,7 +203,7 @@ void http_request_json_async(const http_json_request *request, void (*callback)(
 	struct TempThreadArgs {
 		http_json_request request;
 		void (*callback)(http_json_response*);
-	};
+	} PACKED;
 
 	TempThreadArgs *args = (TempThreadArgs*)malloc(sizeof(TempThreadArgs));
 	args->request.url = _strdup(request->url);

@@ -60,7 +60,7 @@ struct CommandLineExample
 {
     const char * Arguments;
     const char * Description;
-};
+} PACKED;
 
 struct CommandLineOptionDefinition
 {
@@ -69,7 +69,7 @@ struct CommandLineOptionDefinition
     char         ShortName;
     const char * LongName;
     const char * Description;
-};
+} PACKED;
 
 struct CommandLineCommand
 {
@@ -78,7 +78,7 @@ struct CommandLineCommand
     const CommandLineOptionDefinition * Options;
     const CommandLineCommand *          SubCommands;
     CommandLineFunc                     Func;
-};
+} PACKED;
 
 enum
 {

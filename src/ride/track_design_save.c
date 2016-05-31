@@ -1249,7 +1249,7 @@ typedef struct auto_buffer {
 	void *ptr;
 	size_t length;
 	size_t capacity;
-} auto_buffer;
+} PACKED auto_buffer;
 
 static void auto_buffer_write(auto_buffer *buffer, const void *src, size_t len)
 {

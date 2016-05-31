@@ -446,7 +446,7 @@ union {
 	struct {
 		uint32 a;
 		uint32 b;
-	};
+	} PACKED;
 } _enabledRidePieces;
 
 static bool	_trackPlaceCtrlState;

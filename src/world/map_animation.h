@@ -28,7 +28,7 @@ typedef struct rct_map_animation {
 	uint8 type;
 	uint16 x;
 	uint16 y;
-} rct_map_animation;
+} PACKED rct_map_animation;
 
 enum {
 	MAP_ANIMATION_TYPE_RIDE_ENTRANCE,

@@ -375,7 +375,7 @@ typedef struct rct_peep_thought {
 	uint8 item;		//1
 	uint8 var_2;	//2
 	uint8 var_3;	//3
-} rct_peep_thought;
+} PACKED rct_peep_thought;
 
 typedef struct rct_peep {
 	uint8 sprite_identifier;		// 0x00
@@ -449,12 +449,12 @@ typedef struct rct_peep {
 		struct{
 			uint8 current_car;		// 0x6B
 			uint8 current_seat;		// 0x6C
-		};
+		} PACKED;
 		uint16 time_to_sitdown;		//0x6B
 		struct{
 			uint8 time_to_stand;	//0x6B
 			uint8 standing_flags;	//0x6C
-		};
+		} PACKED;
 	};
 	// Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
 	uint8 special_sprite;   	    // 0x6D
@@ -545,7 +545,7 @@ typedef struct rct_peep {
 	uint8 favourite_ride_rating;	// 0xFA
 	uint8 pad_FB;
 	uint32 item_standard_flags;		// 0xFC
-} rct_peep;
+} PACKED rct_peep;
 
 enum {
 	EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,

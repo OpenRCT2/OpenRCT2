@@ -42,7 +42,7 @@ typedef struct map_backup {
 	uint16 map_size_units_minus_2;
 	uint16 map_size;
 	uint8 current_rotation;
-} map_backup;
+} PACKED map_backup;
 
 static rct_track_td6 *track_design_open_from_buffer(uint8 *src, size_t srcLength);
 

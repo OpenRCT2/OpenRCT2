@@ -24,7 +24,7 @@ typedef struct supports_id_desc {
 	uint16 half;
 	uint16 flat;
 	uint16 slope;
-} supports_id_desc;
+} PACKED supports_id_desc;
 
 /* 0x0097B1C4 */
 const supports_id_desc WoodenSupportImageIds[] = {
@@ -61,17 +61,17 @@ const uint16 WoodenCurveSupportImageIds[] = {
 typedef struct unk_supports_desc_bound_box {
 	struct {
 		uint8 x, y, z;
-	} offset;
+	} PACKED offset;
 	struct {
 		uint8 y, x, z;
-	} length;
-} unk_supports_desc_bound_box;
+	} PACKED length;
+} PACKED unk_supports_desc_bound_box;
 
 typedef struct unk_supports_desc {
 	unk_supports_desc_bound_box bounding_box;
 	uint8 var_6;
 	uint8 var_7;
-} unk_supports_desc;
+} PACKED unk_supports_desc;
 
 /* 0x0097B23C */
 const unk_supports_desc byte_97B23C[] = {

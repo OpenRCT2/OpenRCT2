@@ -74,7 +74,7 @@ typedef struct rct_unk_sprite {
 	uint8 var_2B;
 	uint8 pad_2C[0x45];
 	uint8 var_71;
-} rct_unk_sprite;
+} PACKED rct_unk_sprite;
 
 typedef struct rct_litter {
 	uint8 sprite_identifier;		// 0x00
@@ -95,7 +95,7 @@ typedef struct rct_litter {
 	uint8 sprite_direction;			// 0x1E
 	uint8 pad_1F[5];
 	uint32 creationTick;			// 0x24
-} rct_litter;
+} PACKED rct_litter;
 
 typedef struct rct_balloon {
 	uint8 sprite_identifier;		// 0x00
@@ -119,12 +119,12 @@ typedef struct rct_balloon {
 		struct {
 			uint8 var_26a;
 			uint8 var_26b;
-		};
+		} PACKED;
 	};
 	uint8 pad_28[4];
 	uint8 colour;					// 0x2C
 	uint8 var_2D;
-} rct_balloon;
+} PACKED rct_balloon;
 
 typedef struct rct_duck {
 	uint8 sprite_identifier;		// 0x00
@@ -150,7 +150,7 @@ typedef struct rct_duck {
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x14];
 	uint8 state;					// 0x48
-} rct_duck;
+} PACKED rct_duck;
 
 typedef struct rct_jumping_fountain {
 	uint8 sprite_identifier;		// 0x00
@@ -175,7 +175,7 @@ typedef struct rct_jumping_fountain {
 		struct {
 			uint8 var_26a;
 			uint8 var_26b;
-		};
+		} PACKED;
 	};
 	uint8 pad_28[0x6];
 	uint8 var_2E;
@@ -184,7 +184,7 @@ typedef struct rct_jumping_fountain {
 	sint16 target_y;				// 0x32
 	uint8 pad_34[0x12];
 	uint16 iteration;				// 0x46
-} rct_jumping_fountain;
+} PACKED rct_jumping_fountain;
 
 typedef struct rct_money_effect {
 	uint8 sprite_identifier;		// 0x00
@@ -208,7 +208,7 @@ typedef struct rct_money_effect {
 	uint8 pad_2C[0x18];
 	sint16 offset_x;				// 0x44
 	uint16 wiggle;					// 0x46
-} rct_money_effect;
+} PACKED rct_money_effect;
 
 typedef struct rct_crashed_vehicle_particle {
 	uint8 sprite_identifier;		// 0x00
@@ -250,7 +250,7 @@ typedef struct rct_crashed_vehicle_particle {
 	sint32 acceleration_z;			// 0x40
 	uint8 pad_44[0x2D];
 	uint8 var_71;
-} rct_crashed_vehicle_particle;
+} PACKED rct_crashed_vehicle_particle;
 
 typedef struct rct_crash_splash {
 	uint8 sprite_identifier;		// 0x00
@@ -279,7 +279,7 @@ typedef struct rct_crash_splash {
 	uint16 name_string_idx;			// 0x22
 	uint16 var_24;
 	uint16 frame;					// 0x26
-} rct_crash_splash;
+} PACKED rct_crash_splash;
 
 typedef struct rct_steam_particle {
 	uint8 sprite_identifier;		// 0x00
@@ -308,7 +308,7 @@ typedef struct rct_steam_particle {
 	uint16 name_string_idx;			// 0x22
 	uint16 var_24;
 	uint16 frame;					// 0x26
-} rct_steam_particle;
+} PACKED rct_steam_particle;
 
 /**
  * Sprite structure.
@@ -334,17 +334,17 @@ typedef struct rct_sprite_bounds {
 	uint8 sprite_height_negative;   // 0x01
 	uint8 sprite_height_positive;   // 0x02
 	uint8 unused;                   // 0x03
-} rct_sprite_bounds;
+} PACKED rct_sprite_bounds;
 
 typedef struct rct_sprite_image {
 	uint32 base_image;   // 0x00
 	uint8* unkn_04;      // 0x04
-} rct_sprite_image;
+} PACKED rct_sprite_image;
 
 typedef struct rct_sprite_entry {
 	rct_sprite_image *sprite_image;      // 0x00
 	rct_sprite_bounds *sprite_bounds;    // 0x04
-} rct_sprite_entry;
+} PACKED rct_sprite_entry;
 
 enum {
 	SPRITE_MISC_STEAM_PARTICLE,
