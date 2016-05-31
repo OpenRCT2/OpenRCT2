@@ -4006,6 +4006,7 @@ STR_5662    :N/A
 STR_5663    :Vyčistit krajinu
 STR_5664    :Cheaty
 STR_5665    :Přepínat skupinové stavění kulis
+STR_5666    :Přihlášení bez hesla
 STR_5701    :{WINDOW_COLOUR_2}Poslední akce: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Najít hráčovu poslední akci
 STR_5703    :Nelze vyhodit zakladatele hry
@@ -4172,6 +4173,7 @@ STR_5861    :Selhalo ověření klíče.
 STR_5862    :Blokovat neznámé hráče.
 STR_5863    :{SMALLFONT}{BLACK}Připojit se smí pouze hráči s ověřenými klíči.
 STR_5864    :K tomuto serveru se mohou připojit jen ověření hráči.
+
 
 
 ###############################################################################
