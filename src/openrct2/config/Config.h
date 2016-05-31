@@ -193,6 +193,14 @@ typedef struct FontConfiguration
     sint32      height_big;
 } FontConfiguration;
 
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+typedef struct PeepWatchConfiguration
+{
+    bool        enable_maintain_park;
+    uint32      max_follow;
+} PeepWatchConfiguration;
+#endif
+
 enum SORT
 {
     SORT_NAME_ASCENDING,
@@ -235,6 +243,9 @@ extern "C"
     extern NetworkConfiguration         gConfigNetwork;
     extern NotificationConfiguration    gConfigNotifications;
     extern FontConfiguration            gConfigFonts;
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+    extern PeepWatchConfiguration       gConfigPeepwatch;
+#endif
 
     bool config_open(const utf8 * path);
     bool config_save(const utf8 * path);

@@ -54,6 +54,9 @@
 #include "world/park.h"
 #include "world/scenery.h"
 #include "world/sprite.h"
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+#include "mode/peepwatch.h"
+#endif
 
 // rct2: 0x0097F67C
 const char * const RCT2FilePaths[PATH_ID_END] = {
@@ -409,6 +412,9 @@ void rct2_update()
     //stop_completed_sounds(); // removes other sounds that are no longer playing in directsound
 
     twitch_update();
+#ifdef STOUT_PEEPWATCH_EXPERIMENT
+    peepwatch_update();
+#endif
     chat_update();
     console_update();
 }
