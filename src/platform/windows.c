@@ -875,9 +875,9 @@ uint16 platform_get_locale_language()
 	else if (strcmp(langCode, "FIN") == 0){
 		return LANGUAGE_FINNISH;
 	}
-    else if (strcmp(langCode, "NOR") == 0){
-        return LANGUAGE_NORWEGIAN;
-    }
+	else if (strcmp(langCode, "NOR") == 0){
+		return LANGUAGE_NORWEGIAN;
+	}
 	return LANGUAGE_UNDEFINED;
 }
 
