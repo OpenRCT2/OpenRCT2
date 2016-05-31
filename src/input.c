@@ -553,8 +553,8 @@ static void input_viewport_drag_continue()
 			// As the user moved the mouse, don't interpret it as right click in any case.
 			_ticksSinceDragStart = 1000;
 
-			dx <<= viewport->zoom + 1;
-			dy <<= viewport->zoom + 1;
+			dx *= 1 << (viewport->zoom + 1);
+			dy *= 1 << (viewport->zoom + 1);
 			if (gConfigGeneral.invert_viewport_drag){
 				w->saved_view_x -= dx;
 				w->saved_view_y -= dy;
