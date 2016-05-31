@@ -66,6 +66,7 @@ int gGameSpeed = 1;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 int gGameCommandNestLevel;
+bool gGameCommandIsNetworked;
 
 extern void game_command_callback_place_banner(int eax, int ebx, int ecx, int edx, int esi, int edi, int ebp);
 
@@ -458,6 +459,10 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	flags = *ebx;
 	gGameCommandErrorText = 0xFFFF;
 
+	if (gGameCommandNestLevel == 0) {
+		gGameCommandIsNetworked = (flags & GAME_COMMAND_FLAG_NETWORKED) != 0;
+	}
+	
 	// Increment nest count
 	gGameCommandNestLevel++;
 

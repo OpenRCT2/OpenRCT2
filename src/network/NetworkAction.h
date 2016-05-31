@@ -14,14 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _DRAWING_SUPPORTS_H_
-#define _DRAWING_SUPPORTS_H_
+#pragma once
 
+#include <vector>
+#include <string>
 #include "../common.h"
 
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags);
-bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags);
-bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
+class NetworkAction
+{
+public:
+    rct_string_id       Name;
+    std::string         PermissionName;
+    std::vector<int>    Commands;
+};
 
-#endif
+class NetworkActions
+{
+public:
+    static const std::vector<NetworkAction> Actions;
+
+    static int FindCommand(int command);
+    static int FindCommandByPermissionName(const std::string &permission_name);
+};

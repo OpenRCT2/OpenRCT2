@@ -14,14 +14,35 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _DRAWING_SUPPORTS_H_
-#define _DRAWING_SUPPORTS_H_
+#pragma once
 
+#include <array>
+#include <jansson.h>
+#include "NetworkPacket.h"
 #include "../common.h"
 
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags);
-bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags);
-bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
+class NetworkGroup
+{
+public:
+    std::array<uint8, 8>    ActionsAllowed;
+    uint8                   Id = 0;
 
-#endif
+    static NetworkGroup FromJson(const json_t * json);
+
+    NetworkGroup();
+    ~NetworkGroup();
+
+    const std::string & GetName() const;
+    void SetName(std::string name);
+
+    void Read(NetworkPacket &packet);
+    void Write(NetworkPacket &packet);
+    void ToggleActionPermission(size_t index);
+    bool CanPerformAction(size_t index) const;
+    bool CanPerformCommand(int command) const;
+
+    json_t * ToJson() const;
+
+private:
+    std::string _name;
+};

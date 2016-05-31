@@ -357,7 +357,8 @@ void S6Importer::Import()
     gClimateUpdateTimer = _s6.climate_update_timer;
     gClimateCurrentWeather = _s6.current_weather;
     gClimateNextWeather = _s6.next_weather;
-    gClimateNextTemperature = _s6.temperature;
+    gClimateCurrentTemperature = _s6.temperature;
+    gClimateNextTemperature = _s6.next_temperature;
     gClimateCurrentWeatherEffect = _s6.current_weather_effect;
     gClimateNextWeatherEffect = _s6.next_weather_effect;
     gClimateCurrentWeatherGloom = _s6.current_weather_gloom;

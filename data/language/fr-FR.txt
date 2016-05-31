@@ -3840,7 +3840,7 @@ STR_5497    :Ping :
 STR_5498    :Liste des serveurs
 STR_5499    :Nom du joueur :
 STR_5500    :Ajouter un serveur
-STR_5501    :Démarrer un serveur
+STR_5501    :Créer un serveur
 STR_5502    :Multijoueur
 STR_5503    :Saisir nom d'hôte ou adresse IP :
 STR_5504    :{SMALLFONT}{BLACK}Afficher le statut multijoueur
@@ -4004,6 +4004,8 @@ STR_5661    :Définir groupe
 STR_5662    :N/A
 STR_5663    :Nettoyer paysage
 STR_5664    :Triche
+STR_5665    :Placement d'ensemble aléatoire
+STR_5666    :Connexion sans mot de passe
 STR_5701    :{WINDOW_COLOUR_2}Dernière action : {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localise l'action la plus récente du joueur
 STR_5703    :Imposible d'expulser l'hébergeur
@@ -4167,6 +4169,11 @@ STR_5856    :{SMALLFONT}{BLACK}Définit la résolution du jeu en plein écran
 STR_5857    :{SMALLFONT}{BLACK}Options du jeu
 STR_5858    :{SMALLFONT}{BLACK}Utilise la carte graphique au lieu du processeur pour l'affichage. Améliore la compatibilité avec les logiciels de capture. Peut dégrader légèrement les performances
 STR_5859    :{SMALLFONT}{BLACK}Active l'extrapolation des frames pour des animations plus fluides. Désactivé, le jeu s'affichera à 40FPS
+#STR_5860    :Dessin des voies original/décompilé
+STR_5861    :Echec de la vérification de clé
+STR_5862    :Bloquer les joueurs inconnus
+STR_5863    :{SMALLFONT}{BLACK}Seuls les joueurs ayant une clé connue peuvent rejoindre la partie
+STR_5864    :Ce serveur n'autorise que les joueurs sur liste blanche à se connecter
 
 #############
 # Scenarios #

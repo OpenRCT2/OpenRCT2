@@ -14,14 +14,38 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _DRAWING_SUPPORTS_H_
-#define _DRAWING_SUPPORTS_H_
+#pragma once
 
+#include <string>
 #include "../common.h"
 
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool* underground);
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags);
-bool metal_a_supports_paint_setup(int supportType, int segment, int special, int height, uint32 imageColourFlags);
-bool metal_b_supports_paint_setup(int supportType, uint8 segment, int special, int height, uint32 imageColourFlags);
+extern "C"
+{
+    #include "../world/map.h"
+}
 
-#endif
+class NetworkPacket;
+
+class NetworkPlayer
+{
+public:
+    uint8       id                  = 0;
+    std::string name;
+    uint16      ping                = 0;
+    uint8       flags               = 0;
+    uint8       group               = 0;
+    money32     money_spent         = MONEY(0, 0);
+    uint32      commands_ran        = 0;
+    int         last_action         = -999;
+    uint32      last_action_time    = 0;
+    rct_xyz16   last_action_coord   = { 0 };
+    std::string keyhash;
+
+    NetworkPlayer() = default;
+
+    void SetName(const std::string &name);
+
+    void Read(NetworkPacket &packet);
+    void Write(NetworkPacket &packet);
+    void AddMoneySpent(money32 cost);
+};

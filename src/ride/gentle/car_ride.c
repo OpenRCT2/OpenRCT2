@@ -338,7 +338,7 @@ static void paint_car_ride_station(uint8 rideIndex, uint8 trackSequence, uint8 d
 static void paint_car_ride_track_right_quarter_turn_3_tiles(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)
 {
 	track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, RCT2_GLOBAL(0x00F44198, uint32), car_ride_track_pieces_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
-	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence);
+	track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
 
 	switch (trackSequence) {
 		case 0:

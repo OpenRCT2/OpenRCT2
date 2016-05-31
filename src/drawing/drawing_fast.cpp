@@ -115,7 +115,7 @@ static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
                     *dest_pointer = al;
                 }
             } else if (image_type & IMAGE_TYPE_MIX_BACKGROUND) {//In the .exe these are all unraveled loops
-                //Doesnt use source pointer ??? mix with background only?
+                //Doesn't use source pointer ??? mix with background only?
                 //Not Tested
 
                 for (; no_pixels > 0; no_pixels -= zoom_amount, dest_pointer++) {
