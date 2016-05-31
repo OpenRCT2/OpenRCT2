@@ -142,6 +142,7 @@ config_enum_definition _languageEnum[] = {
 	{ "ru-RU", 	LANGUAGE_RUSSIAN },
 	{ "cs-CZ", 	LANGUAGE_CZECH },
 	{ "ja-JP", 	LANGUAGE_JAPANESE },
+    { "nb-NO",  LANGUAGE_NORWEGIAN },
 	END_OF_ENUM
 };
 
