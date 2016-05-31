@@ -31,6 +31,7 @@
 #include "../title.h"
 #include "../util/util.h"
 #include "../world/climate.h"
+#include "../drawing/lightfx.h"
 #include "platform.h"
 
 typedef void(*update_palette_func)(const uint8*, int, int);
@@ -55,7 +56,9 @@ SDL_Renderer *gRenderer = NULL;
 SDL_Texture *gBufferTexture = NULL;
 SDL_PixelFormat *gBufferTextureFormat = NULL;
 SDL_Color gPalette[256];
+SDL_Color gPalette_light[256];
 uint32 gPaletteHWMapped[256];
+uint32 gPaletteHWMapped_light[256];
 bool gHardwareDisplay;
 
 bool gSteamOverlayActive = false;
@@ -65,6 +68,8 @@ static SDL_Surface *_RGBASurface = NULL;
 static SDL_Palette *_palette = NULL;
 
 static void *_screenBuffer;
+static void *_screenBuffer_back;
+static rct_drawpixelinfo _screenDPI_back;
 static int _screenBufferSize;
 static int _screenBufferWidth;
 static int _screenBufferHeight;
@@ -217,6 +222,120 @@ static void overlay_post_render_check(int width, int height) {
 	overlayActive = newOverlayActive;
 }
 
+typedef enum {
+	MTT_STATE_LOCK,
+	MTT_STATE_WAITING,
+	MTT_STATE_RENDER
+}
+dialog_type;
+
+static int _mtt_screen_width;
+static int _mtt_screen_height;
+static int _mtt_pitch;
+static void* _mtt_screenBuffer;
+static void* _mtt_pixels;
+static uint8 _mtt_state = MTT_STATE_LOCK;
+static SDL_Thread *_mtt_thread;
+static uint32 _mtt_palette_base[256];
+static uint32 _mtt_palette_light[256];
+static uint16 _mtt_palette_base_rich[256*4];
+static uint16 _mtt_palette_light_rich[256*4];
+
+int platform_draw_hardware(void *dat)
+{
+	uint8 *src = (uint8*)_mtt_screenBuffer;
+	int padding = _mtt_pitch - (_mtt_screen_width * 4);
+	if (_mtt_pitch == _mtt_screen_width * 4) {
+		uint32 *dst = _mtt_pixels;
+
+#ifndef STOUT_EXPANDED_RENDERING_LIGHT
+
+		for (int i = _mtt_screen_width * _mtt_screen_height; i > 0; i--) {
+			*dst++ = *(uint32 *)(&_mtt_palette_base[*src++]);
+		}
+
+#else
+
+		lightfx_render_lights_to_frontbuffer();
+
+		for (int i = 0; i < 256; i++) {
+			_mtt_palette_base_rich[i * 4 + 0] = (0xFF00 & (_mtt_palette_base[i] >> 8));
+			_mtt_palette_base_rich[i * 4 + 1] = (0xFF00 & (_mtt_palette_base[i] >> 0));
+			_mtt_palette_base_rich[i * 4 + 2] = (0xFF00 & (_mtt_palette_base[i] << 8));
+			_mtt_palette_light_rich[i * 4 + 0] = (0xFF0 & (_mtt_palette_light[i] >> 12));
+			_mtt_palette_light_rich[i * 4 + 1] = (0xFF0 & (_mtt_palette_light[i] >> 4));
+			_mtt_palette_light_rich[i * 4 + 2] = (0xFF0 & (_mtt_palette_light[i] << 4));
+		}
+
+		const uint8	*lightFXBuf = (uint8*)lightfx_get_front_buffer();
+
+		for (int i = _mtt_screen_width * _mtt_screen_height; i > 0; i--) {
+			uint32 srcIndex = *src * 4;
+
+			*dst =	((0xFF00 & (min(0xFF00, _mtt_palette_base_rich[srcIndex + 0] + (_mtt_palette_light_rich[srcIndex + 0] * *lightFXBuf)))) << 8) |
+					((0xFF00 & (min(0xFF00, _mtt_palette_base_rich[srcIndex + 1] + (_mtt_palette_light_rich[srcIndex + 1] * *lightFXBuf)))) << 0) |
+					((0xFF00 & (min(0xFF00, _mtt_palette_base_rich[srcIndex + 2] + (_mtt_palette_light_rich[srcIndex + 2] * *lightFXBuf)))) >> 8);
+			dst++;
+			src++;
+			lightFXBuf++;
+		}
+
+#endif
+
+	}
+	else if (_mtt_pitch == (_mtt_screen_width * 2) + padding) {
+		uint16 *dst = _mtt_pixels;
+		for (int y = _mtt_screen_height; y > 0; y--) {
+			for (int x = _mtt_screen_width; x > 0; x--) {
+				const uint8 lower = *(uint8 *)(&_mtt_palette_base[*src++]);
+				const uint8 upper = *(uint8 *)(&_mtt_palette_base[*src++]);
+				*dst++ = (lower << 8) | upper;
+			}
+			dst = (uint16*)(((uint8 *)dst) + padding);
+		}
+	}
+	else if (_mtt_pitch == _mtt_screen_width + padding) {
+		uint8 *dst = _mtt_pixels;
+		for (int y = _mtt_screen_height; y > 0; y--) {
+			for (int x = _mtt_screen_width; x > 0; x--) { *dst++ = *(uint8 *)(&_mtt_palette_base[*src++]); }
+			dst += padding;
+		}
+	}
+
+	return 1;
+}
+
+static void platfrom_do_render()
+{
+	SDL_UnlockTexture(gBufferTexture);
+
+	SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
+
+	if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
+		overlay_pre_render_check(_mtt_screen_width, _mtt_screen_height);
+	}
+
+	SDL_RenderPresent(gRenderer);
+
+	if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
+		overlay_post_render_check(_mtt_screen_width, _mtt_screen_height);
+	}
+
+	_mtt_state = MTT_STATE_LOCK;
+}
+
+void platform_draw_require_end()
+{
+#ifdef STOUT_EXPANDED_RENDERING_MTT
+	if (_mtt_state == MTT_STATE_WAITING) {
+		int out;
+		SDL_WaitThread(_mtt_thread, &out);
+		platfrom_do_render();
+	}
+#endif
+
+}
+
 void platform_draw()
 {
 	int width = gScreenWidth;
@@ -224,48 +343,57 @@ void platform_draw()
 
 	if (!gOpenRCT2Headless) {
 		if (gHardwareDisplay) {
-			void *pixels;
-			int pitch;
-			if (SDL_LockTexture(gBufferTexture, NULL, &pixels, &pitch) == 0) {
-				uint8 *src = (uint8*)_screenBuffer;
-				int padding = pitch - (width * 4);
-				if (pitch == width * 4) {
-					uint32 *dst = pixels;
-					for (int i = width * height; i > 0; i--) { *dst++ = *(uint32 *)(&gPaletteHWMapped[*src++]); }
-				}
-				else
-					if (pitch == (width * 2) + padding) {
-						uint16 *dst = pixels;
-						for (int y = height; y > 0; y--) {
-							for (int x = width; x > 0; x--) {
-								const uint8 lower = *(uint8 *)(&gPaletteHWMapped[*src++]);
-								const uint8 upper = *(uint8 *)(&gPaletteHWMapped[*src++]);
-								*dst++ = (lower << 8) | upper;
-							}
-							dst = (uint16*)(((uint8 *)dst) + padding);
-						}
+			_mtt_screen_width	= width;
+			_mtt_screen_height	= height;
+
+#ifdef STOUT_EXPANDED_RENDERING_MTT
+			platform_draw_require_end();
+			if (_mtt_state == MTT_STATE_RENDER) {
+				platfrom_do_render();
+			}
+#endif
+
+			if (_mtt_state == MTT_STATE_LOCK) {
+				if (SDL_LockTexture(gBufferTexture, NULL, &_mtt_pixels, &_mtt_pitch) == 0) {
+#ifndef STOUT_EXPANDED_RENDERING_MTT
+					platform_draw_hardware(0);
+					platfrom_do_render();
+#else
+
+						// Swap back and front
+
+					void *tmp = _screenBuffer_back;
+					_screenBuffer_back = _screenBuffer;
+					_screenBuffer = tmp;
+					rct_drawpixelinfo tmpPx;
+					memcpy(&tmpPx, &gScreenDPI, sizeof(rct_drawpixelinfo));
+					memcpy(&gScreenDPI, &_screenDPI_back, sizeof(rct_drawpixelinfo));
+					memcpy(&_screenDPI_back, &tmpPx, sizeof(rct_drawpixelinfo));
+
+						// This messes up drawing, so force a full redraw
+
+					gfx_invalidate_screen();
+
+					lightfx_add_3d_light(gCursorState.x, gCursorState.y, 0x7FFF, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+
+					lightfx_prepare_light_list();
+					lightfx_swap_buffers();
+
+						// Make palette safe
+
+					for (int i = 0; i < 256; i++) {
+						_mtt_palette_base[i] = gPaletteHWMapped[i];
+						_mtt_palette_light[i] = gPaletteHWMapped_light[i];
 					}
-					else
-						if (pitch == width + padding) {
-							uint8 *dst = pixels;
-							for (int y = height; y > 0; y--) {
-								for (int x = width; x > 0; x--) { *dst++ = *(uint8 *)(&gPaletteHWMapped[*src++]); }
-								dst += padding;
-							}
-						}
-				SDL_UnlockTexture(gBufferTexture);
-			}
 
-			SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
-
-			if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
-				overlay_pre_render_check(width, height);
-			}
-
-			SDL_RenderPresent(gRenderer);
-
-			if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
-				overlay_post_render_check(width, height);
+					_mtt_screenBuffer = _screenBuffer_back;
+					_mtt_thread = SDL_CreateThread(&platform_draw_hardware, "Blit", 0);
+					_mtt_state = MTT_STATE_WAITING;
+#endif
+				}
+				else {
+					_mtt_state = MTT_STATE_LOCK;
+				}
 			}
 		}
 		else {
@@ -314,6 +442,8 @@ void platform_draw()
 
 static void platform_resize(int width, int height)
 {
+	platform_draw_require_end();
+
 	uint32 flags;
 	int dst_w = (int)(width / gConfigGeneral.window_scale);
 	int dst_h = (int)(height / gConfigGeneral.window_scale);
@@ -390,8 +520,21 @@ static uint8 lerp(uint8 a, uint8 b, float t)
 	return (uint8)(a + amount);
 }
 
+static float flerp(float a, float b, float t)
+{
+	if (t <= 0) return a;
+	if (t >= 1) return b;
+
+	float range = b - a;
+	float amount = range * t;
+	return a + amount;
+}
+
 void platform_update_palette(const uint8* colours, int start_index, int num_colours)
 {
+	start_index= 0;
+	num_colours= 256;
+
 	SDL_Surface *surface;
 	int i;
 	colours += start_index * 4;
@@ -402,16 +545,138 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 		gPalette[i].b = colours[0];
 		gPalette[i].a = 0;
 
-		float night = gDayNightCycle;
-		if (night >= 0 && gClimateLightningFlash == 0) {
+		float night = (float)(pow(gDayNightCycle, 1.5));
+
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+
+		float natLightR = 1.0f;
+		float natLightG = 1.0f;
+		float natLightB = 1.0f;
+
+		static float wetness = 0.0f;
+		static float fogginess = 0.0f;
+
+		float sunLight = max(0.0f, min(1.0f, 2.0f - night * 3.0f));
+
+			// Night version
+		natLightR = flerp(natLightR * 4.0f, 0.335f, (float)(pow(night, 0.035f + sunLight * 10.50f)));
+		natLightG = flerp(natLightG * 4.0f, 0.350f, (float)(pow(night, 0.100f + sunLight *  5.50f)));
+		natLightB = flerp(natLightB * 4.0f, 0.550f, (float)(pow(night, 0.200f + sunLight *  1.5f)));
+
+		float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
+		float lightMax = (natLightR + natLightG + natLightB) / 3.0f;
+		float overExpose = 0.0f;
+
+	//	overExpose += ((lightMax - lightAvg) / lightMax) * 0.01f;
+
+		if (gClimateCurrentTemperature > 20) {
+			float offset = ((float)(gClimateCurrentTemperature - 20)) * 0.04f;
+			offset *= 1.0f - night;
+			lightAvg /= 1.0f + offset;
+	//		overExpose += offset * 0.1f;
+		}
+
+	//	lightAvg += (lightMax - lightAvg) * 0.6f;
+
+		if (lightAvg > 1.0f) {
+			natLightR /= lightAvg;
+			natLightG /= lightAvg;
+			natLightB /= lightAvg;
+		}
+
+		natLightR *= 1.0f + overExpose;
+		natLightG *= 1.0f + overExpose;
+		natLightB *= 1.0f + overExpose;
+		overExpose *= 255.0f;
+
+		float targetFogginess = (float)(gClimateCurrentRainLevel) / 5.0f;
+		targetFogginess += (night * night) * 0.35f;
+
+		if (gClimateCurrentTemperature < 10) {
+			targetFogginess += ((float)(10 - gClimateCurrentTemperature)) * 0.01f;
+		}
+
+		fogginess -= (fogginess - targetFogginess) * 0.00001f;
+
+		wetness *= 0.999995f;
+		wetness += fogginess * 0.001f;
+		wetness = min(wetness, 1.0f);
+
+		float boost = 1.0f;
+		float envFog = fogginess;
+		float lightFog = envFog;
+
+		float addLightNatR = 0.0f;
+		float addLightNatG = 0.0f;
+		float addLightNatB = 0.0f;
+
+		float reduceColourNat = 1.0f;
+		float reduceColourLit = 1.0f;
+
+		reduceColourLit *= night / (float)pow(max(1.01f, 0.4f + lightAvg), 2.0);
+
+		reduceColourLit += (float)(gClimateCurrentRainLevel) / 35.0f;
+
+		lightFog		*= reduceColourLit;
+
+		reduceColourNat	*= 1.0f - envFog;
+		reduceColourLit *= 1.0f - lightFog;
+
+		float fogR = 35.5f * natLightR * 1.3f;
+		float fogG = 45.0f * natLightG * 1.3f;
+		float fogB = 50.0f * natLightB * 1.3f;
+		lightFog *= 10.0f;
+
+		float wetnessBoost = 1.0f;//1.0f + wetness * wetness * 0.1f;
+
+#endif
+
+		if (night >= 0 && gClimateLightningFlash != 1) {
 			gPalette[i].r = lerp(gPalette[i].r, soft_light(gPalette[i].r, 8), night);
 			gPalette[i].g = lerp(gPalette[i].g, soft_light(gPalette[i].g, 8), night);
 			gPalette[i].b = lerp(gPalette[i].b, soft_light(gPalette[i].b, 128), night);
+
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+
+		//	if (i == 32)
+		//		boost = 300000.0f;
+			if ((i % 32) == 0)
+				boost = 1.01f * wetnessBoost;
+			else if ((i % 16) < 7)
+				boost = 1.001f * wetnessBoost;
+			if (i > 230 && i < 232)
+				boost = ((float)(gPalette[i].b)) / 64.0f;
+	
+			if (false) {
+			// This experiment shifts the colour of pixels as-if they are wet, but it is not a pretty solution at all
+				if ((i % 16)) {
+					float iVal = ((float)((i + 12) % 16)) / 16.0f;
+					float eff = (wetness * ((float)pow(iVal, 1.5) * 0.85f));
+					reduceColourNat *= 1.0f - eff;
+					addLightNatR += fogR * eff * 3.95f;
+					addLightNatG += fogR * eff * 3.95f;
+					addLightNatB += fogR * eff * 3.95f;
+				}
+			}
+			
+			addLightNatR *= 1.0f - envFog;
+			addLightNatG *= 1.0f - envFog;
+			addLightNatB *= 1.0f - envFog;
+		
+			gPalette[i].r = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(gPalette[i].r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
+			gPalette[i].g = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(gPalette[i].g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
+			gPalette[i].b = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(gPalette[i].b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
+			gPalette_light[i].r = (uint8)(min(0xFF, ((float)(gPalette[i].r) * reduceColourLit * boost + lightFog) * 1.0f));
+			gPalette_light[i].g = (uint8)(min(0xFF, ((float)(gPalette[i].g) * reduceColourLit * boost + lightFog) * 0.85f));
+			gPalette_light[i].b = (uint8)(min(0xFF, ((float)(gPalette[i].b) * reduceColourLit * boost + lightFog) * 0.30f));
+		
+#endif
 		}
 
 		colours += 4;
 		if (gBufferTextureFormat != NULL) {
 			gPaletteHWMapped[i] = SDL_MapRGB(gBufferTextureFormat, gPalette[i].r, gPalette[i].g, gPalette[i].b);
+			gPaletteHWMapped_light[i] = SDL_MapRGB(gBufferTextureFormat, gPalette_light[i].r, gPalette_light[i].g, gPalette_light[i].b);
 		}
 	}
 
@@ -986,6 +1251,13 @@ void platform_refresh_video()
 
 static void platform_refresh_screenbuffer(int width, int height, int pitch)
 {
+#ifdef STOUT_EXPANDED_RENDERING_MTT
+
+	platform_draw_require_end();
+
+#endif
+
+
 	int newScreenBufferSize = pitch * height;
 	char *newScreenBuffer = (char*)malloc(newScreenBufferSize);
 	if (_screenBuffer == NULL) {
@@ -1019,6 +1291,17 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	_screenBufferHeight = height;
 	_screenBufferPitch = pitch;
 
+#ifdef STOUT_EXPANDED_RENDERING_MTT
+	newScreenBuffer = (char*)malloc(newScreenBufferSize);
+	if (_screenBuffer_back == NULL) {
+		memset(newScreenBuffer, 0xFF, newScreenBufferSize);
+	}
+	else {
+		memset(newScreenBuffer, 0xFF, newScreenBufferSize);
+	}
+	_screenBuffer_back = newScreenBuffer;
+#endif
+
 	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 	screenDPI->bits = _screenBuffer;
 	screenDPI->x = 0;
@@ -1026,6 +1309,23 @@ static void platform_refresh_screenbuffer(int width, int height, int pitch)
 	screenDPI->width = width;
 	screenDPI->height = height;
 	screenDPI->pitch = _screenBufferPitch - width;
+
+#ifdef STOUT_EXPANDED_RENDERING_MTT
+	screenDPI = &_screenDPI_back;
+	screenDPI->bits = _screenBuffer_back;
+	screenDPI->x = 0;
+	screenDPI->y = 0;
+	screenDPI->width = width;
+	screenDPI->height = height;
+	screenDPI->pitch = _screenBufferPitch - width;
+
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+
+	lightfx_update_buffers(screenDPI);
+
+#endif
+
+#endif
 
 	gfx_configure_dirty_grid();
 }

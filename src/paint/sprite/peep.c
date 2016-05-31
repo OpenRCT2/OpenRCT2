@@ -18,6 +18,7 @@
 #include "../../interface/viewport.h"
 #include "../../peep/peep.h"
 #include "../paint.h"
+#include "../../drawing/lightfx.h"
 
 /**
  *
@@ -25,6 +26,37 @@
  */
 void peep_paint(rct_peep * peep, int imageDirection)
 {
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+
+	if (peep->type == PEEP_TYPE_STAFF){
+		sint16 peep_x, peep_y, peep_z;
+
+		peep_x = peep->x;
+		peep_y = peep->y;
+		peep_z = peep->z;
+
+		switch (peep->sprite_direction) {
+			case 0:
+				peep_x -= 10;
+				break;
+			case 8:
+				peep_y += 10;
+				break;
+			case 16:
+				peep_x += 10;
+				break;
+			case 24:
+				peep_y -= 10;
+				break;
+			default:
+				return;
+		};
+
+		lightfx_add_3d_light(peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+	}
+
+#endif
+
 	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
 	if (dpi->zoom_level > 2) {
 		return;

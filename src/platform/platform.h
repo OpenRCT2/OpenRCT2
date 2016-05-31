@@ -124,6 +124,7 @@ void platform_update_fullscreen_resolutions();
 void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, int *outHeight);
 void platform_init();
 void platform_draw();
+void platform_draw_require_end();
 void platform_free();
 void platform_trigger_resize();
 void platform_update_palette(const uint8 *colours, int start_index, int num_colours);

@@ -24,6 +24,7 @@
 #include "../../ride/ride_data.h"
 #include "../../world/entrance.h"
 #include "../../world/footpath.h"
+#include "../../drawing/lightfx.h"
 #include "map_element.h"
 
 /**
@@ -32,12 +33,36 @@
  */
 void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_element)
 {
+
 	uint8 is_exit = map_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
 	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1){
 		if (map_element->properties.entrance.ride_index != RCT2_GLOBAL(0x00F64DE8, uint8))
 			return;
 	}
+
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+
+	if (!is_exit) {
+		lightfx_add_3d_light_magic_from_drawing_tile(0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+	}
+
+	switch (map_element->type & MAP_ELEMENT_DIRECTION_MASK) {
+		case 0:
+			lightfx_add_3d_light_magic_from_drawing_tile(16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+			break;
+		case 1:
+			lightfx_add_3d_light_magic_from_drawing_tile(0, -16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+			break;
+		case 2:
+			lightfx_add_3d_light_magic_from_drawing_tile(-16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+			break;
+		case 3:
+			lightfx_add_3d_light_magic_from_drawing_tile(0, 16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+			break;
+	};
+
+#endif
 
 	rct_ride* ride = get_ride(map_element->properties.entrance.ride_index);
 	if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE) return;
@@ -162,6 +187,12 @@ void ride_entrance_exit_paint(uint8 direction, int height, rct_map_element* map_
 void park_entrance_paint(uint8 direction, int height, rct_map_element* map_element){
 	if (RCT2_GLOBAL(0x9DEA6F, uint8_t) & 1)
 		return;
+
+#ifdef STOUT_EXPANDED_RENDERING_LIGHT
+
+	lightfx_add_3d_light_magic_from_drawing_tile(0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+
+#endif
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 	RCT2_GLOBAL(0x009E32BC, uint32) = 0;
