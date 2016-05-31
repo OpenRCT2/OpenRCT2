@@ -119,6 +119,10 @@ public:
 	void SaveGroups();
 	void LoadGroups();
 
+	void BeginChatLog();
+	void AppendChatLog(const utf8 *text);
+	void CloseChatLog();
+
 	void Client_Send_TOKEN();
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
 	void Client_Send_AUTH(const char* name, const char* password, const char *pubkey);
@@ -140,12 +144,19 @@ public:
 	void Server_Send_GROUPLIST(NetworkConnection& connection);
 	void Server_Send_EVENT_PLAYER_JOINED(const char *playerName);
 	void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
+	void Client_Send_GAMEINFO();
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
 	NetworkKey key;
 	std::vector<uint8> challenge;
 	NetworkUserManager _userManager;
+
+	std::string ServerName;
+	std::string ServerDescription;
+	std::string ServerProviderName;
+	std::string ServerProviderEmail;
+	std::string ServerProviderWebsite;
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
@@ -199,6 +210,8 @@ private:
 	int advertise_status = 0;
 	uint32 last_heartbeat_time = 0;
 	uint8 default_group = 0;
+	SDL_RWops *_chatLogStream;
+	std::string _chatLogPath;
 
 	void UpdateServer();
 	void UpdateClient();
@@ -220,6 +233,7 @@ private:
 	void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
@@ -285,6 +299,12 @@ void network_send_password(const char* password);
 void network_set_password(const char* password);
 
 void network_print_error();
+void network_append_chat_log(const utf8 *text);
+const utf8 * network_get_server_name();
+const utf8 * network_get_server_description();
+const utf8 * network_get_server_provider_name();
+const utf8 * network_get_server_provider_email();
+const utf8 * network_get_server_provider_website();
 
 #ifdef __cplusplus
 }

@@ -4006,6 +4006,7 @@ STR_5662    :N/A
 STR_5663    :清除景物
 STR_5664    :密技
 STR_5665    :啟用/禁用景物批量放置
+STR_5666    :無密碼登入
 STR_5701    :{WINDOW_COLOUR_2}最近的動作: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}將這個玩家的最近的動作定位
 STR_5703    :無法踢除架設者
@@ -4168,6 +4169,11 @@ STR_5856    :{SMALLFONT}{BLACK}設置全屏幕模式下的解析度
 STR_5857    :{SMALLFONT}{BLACK}遊戲選項
 STR_5858    :{SMALLFONT}{BLACK}使用顯示卡取代中央處理器渲染. 改善與螢幕擷取軟件的兼容性. 可能會輕微影響效能.
 STR_5859    :{SMALLFONT}{BLACK}啟用影格漸變來令遊戲畫面變得更順滑. {NEWLINE}當禁用時, 遊戲會以40 FPS運行.
+STR_5860    :切換到原有/已反編譯的圖像渲染模式
+STR_5861    :金鑰驗證失敗.
+STR_5862    :封鎖未知的玩家.
+STR_5863    :{SMALLFONT}{BLACK}只允許已知金鑰的玩家加入.
+STR_5864    :此伺服器只允許白名單玩家連接.
 
 #############
 # Scenarios #
@@ -4288,7 +4294,7 @@ STR_DTLS    :盡情玩吧!
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :將這個海邊懸崖發展成一個很受歡迎的樂園
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
@@ -4520,7 +4526,7 @@ STR_DTLS    :This well-themed amusement park already has several rides, but has 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :一個在中心擁有一座巨大的雲霄飛車的恐怖樂園
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks

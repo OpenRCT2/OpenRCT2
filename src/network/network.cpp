@@ -111,6 +111,7 @@ Network::Network()
 	client_command_handlers[NETWORK_COMMAND_SHOWERROR] = &Network::Client_Handle_SHOWERROR;
 	client_command_handlers[NETWORK_COMMAND_GROUPLIST] = &Network::Client_Handle_GROUPLIST;
 	client_command_handlers[NETWORK_COMMAND_EVENT] = &Network::Client_Handle_EVENT;
+	client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
 	client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
 	server_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
 	server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
@@ -142,6 +143,12 @@ bool Network::Init()
 #endif
 
 	status = NETWORK_STATUS_READY;
+
+	ServerName = std::string();
+	ServerDescription = std::string();
+	ServerProviderName = std::string();
+	ServerProviderEmail = std::string();
+	ServerProviderWebsite = std::string();
 	return true;
 }
 
@@ -178,6 +185,7 @@ void Network::Close()
 	}
 #endif
 
+	CloseChatLog();
 	gfx_invalidate_screen();
 }
 
@@ -199,6 +207,8 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	window_network_status_open(str_resolving, []() -> void {
 		gNetwork.Close();
 	});
+
+	BeginChatLog();
 
 	mode = NETWORK_MODE_CLIENT;
 	utf8 keyPath[MAX_PATH];
@@ -300,8 +310,15 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		return false;
 	}
 
+	ServerName = gConfigNetwork.server_name;
+	ServerDescription = gConfigNetwork.server_description;
+	ServerProviderName = gConfigNetwork.provider_name;
+	ServerProviderEmail = gConfigNetwork.provider_email;
+	ServerProviderWebsite = gConfigNetwork.provider_website;
+
 	cheats_reset();
 	LoadGroups();
+	BeginChatLog();
 
 	NetworkPlayer *player = AddPlayer(gConfigNetwork.player_name, "");
 	player->flags |= NETWORK_PLAYER_FLAG_ISSERVER;
@@ -325,6 +342,7 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		advertise_status = ADVERTISE_STATUS_UNREGISTERED;
 	}
 #endif
+
 	return true;
 }
 
@@ -921,6 +939,57 @@ void Network::LoadGroups()
 	json_decref(json);
 }
 
+void Network::BeginChatLog()
+{
+	utf8 filename[32];
+	time_t timer;
+	struct tm * tmInfo;
+	time(&timer);
+	tmInfo = localtime(&timer);
+	strftime(filename, sizeof(filename), "%Y%m%d-%H%M%S.txt", tmInfo);
+
+	utf8 path[MAX_PATH];
+	platform_get_user_directory(path, "chatlogs");
+	Path::Append(path, sizeof(path), filename);
+
+	_chatLogPath = std::string(path);
+}
+
+void Network::AppendChatLog(const utf8 *text)
+{
+	if (!gConfigNetwork.log_chat) {
+		return;
+	}
+
+	const utf8 *chatLogPath = _chatLogPath.c_str();
+
+	utf8 directory[MAX_PATH];
+	Path::GetDirectory(directory, sizeof(directory), chatLogPath);
+	if (platform_ensure_directory_exists(directory)) {
+		_chatLogStream = SDL_RWFromFile(chatLogPath, "a");
+		if (_chatLogStream != nullptr) {
+			utf8 buffer[256];
+
+			time_t timer;
+			struct tm * tmInfo;
+			time(&timer);
+			tmInfo = localtime(&timer);
+			strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo);
+
+			String::Append(buffer, sizeof(buffer), text);
+			utf8_remove_formatting(buffer);
+			String::Append(buffer, sizeof(buffer), platform_get_new_line());
+
+			SDL_RWwrite(_chatLogStream, buffer, strlen(buffer), 1);
+			SDL_RWclose(_chatLogStream);
+		}
+	}
+}
+
+void Network::CloseChatLog()
+{
+}
+
 void Network::Client_Send_TOKEN()
 {
 	log_verbose("requesting token");
@@ -1431,6 +1500,9 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 {
 	packet >> (uint32&)connection.AuthStatus >> (uint8&)player_id;
 	switch(connection.AuthStatus) {
+	case NETWORK_AUTH_OK:
+		Client_Send_GAMEINFO();
+		break;
 	case NETWORK_AUTH_BADNAME:
 		connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
 		shutdown(connection.Socket, SHUT_RDWR);
@@ -1462,6 +1534,8 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	default:
+		connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+		shutdown(connection.Socket, SHUT_RDWR);
 		break;
 	}
 }
@@ -1855,6 +1929,39 @@ void Network::Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& 
 		break;
 	}
 	}
+}
+
+void Network::Client_Send_GAMEINFO()
+{
+	log_verbose("requesting gameinfo");
+	std::unique_ptr<NetworkPacket> packet = std::move(NetworkPacket::Allocate());
+	*packet << (uint32)NETWORK_COMMAND_GAMEINFO;
+	server_connection.QueuePacket(std::move(packet));
+}
+
+std::string json_stdstring_value(const json_t * string)
+{
+	const char * cstr = json_string_value(string);
+	return cstr == nullptr ? std::string() : std::string(cstr);
+}
+
+void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet)
+{
+	const char * jsonString = packet.ReadString();
+
+	json_error_t error;
+	json_t *root = json_loads(jsonString, 0, &error);
+
+	ServerName = json_stdstring_value(json_object_get(root, "name"));
+	ServerDescription = json_stdstring_value(json_object_get(root, "description"));
+
+	json_t *jsonProvider = json_object_get(root, "provider");
+	if (jsonProvider != nullptr) {
+		ServerProviderName = json_stdstring_value(json_object_get(jsonProvider, "name"));
+		ServerProviderEmail = json_stdstring_value(json_object_get(jsonProvider, "email"));
+		ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "website"));
+	}
+	json_decref(root);
 }
 
 int network_init()
@@ -2306,6 +2413,11 @@ void network_set_password(const char* password)
 	gNetwork.SetPassword(password);
 }
 
+void network_append_chat_log(const utf8 *text)
+{
+	gNetwork.AppendChatLog(text);
+}
+
 static void network_get_keys_directory(utf8 *buffer, size_t bufferSize)
 {
 	platform_get_user_directory(buffer, "keys");
@@ -2332,6 +2444,12 @@ static void network_get_keymap_path(utf8 *buffer, size_t bufferSize)
 	platform_get_user_directory(buffer, NULL);
 	Path::Append(buffer, bufferSize, "keymappings.json");
 }
+
+const utf8 * network_get_server_name() { return gNetwork.ServerName.c_str(); }
+const utf8 * network_get_server_description() { return gNetwork.ServerDescription.c_str(); }
+const utf8 * network_get_server_provider_name() { return gNetwork.ServerProviderName.c_str(); }
+const utf8 * network_get_server_provider_email() { return gNetwork.ServerProviderEmail.c_str(); }
+const utf8 * network_get_server_provider_website() { return gNetwork.ServerProviderWebsite.c_str(); }
 
 #else
 int network_get_mode() { return NETWORK_MODE_NONE; }
@@ -2379,4 +2497,10 @@ void network_shutdown_client() {}
 void network_set_password(const char* password) {}
 uint8 network_get_current_player_id() { return 0; }
 int network_get_current_player_group_index() { return 0; }
+void network_append_chat_log(const utf8 *text) { }
+const utf8 * network_get_server_name() { return nullptr; }
+const utf8 * network_get_server_description() { return nullptr; }
+const utf8 * network_get_server_provider_name() { return nullptr; }
+const utf8 * network_get_server_provider_email() { return nullptr; }
+const utf8 * network_get_server_provider_website() { return nullptr; }
 #endif /* DISABLE_NETWORK */

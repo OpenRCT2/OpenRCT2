@@ -4013,6 +4013,7 @@ STR_5662    :N/A
 STR_5663    :清除景物
 STR_5664    :作弊
 STR_5665    :Toggle Scenery Cluster
+STR_5666    :无密码登录
 STR_5701    :{WINDOW_COLOUR_2}最近的行为: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :不能踢出创建者
