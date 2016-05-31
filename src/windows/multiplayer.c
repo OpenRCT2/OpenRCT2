@@ -394,7 +394,7 @@ static rct_xy16 window_multiplayer_information_get_size()
 		return _windowInformationSize;
 	}
 
-	int width = 300;
+	int width = 450;
 	int height = 110;
 	char * buffer = gConfigNetwork.server_description;
 

@@ -1957,9 +1957,9 @@ void Network::Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacke
 
 	json_t *jsonProvider = json_object_get(root, "provider");
 	if (jsonProvider != nullptr) {
-		ServerProviderName = json_stdstring_value(json_object_get(root, "name"));
-		ServerProviderEmail = json_stdstring_value(json_object_get(root, "email"));
-		ServerProviderWebsite = json_stdstring_value(json_object_get(root, "website"));
+		ServerProviderName = json_stdstring_value(json_object_get(jsonProvider, "name"));
+		ServerProviderEmail = json_stdstring_value(json_object_get(jsonProvider, "email"));
+		ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "website"));
 	}
 	json_decref(root);
 }
