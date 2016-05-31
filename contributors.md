@@ -102,6 +102,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gdabi); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
+* Norwegian - (Goddesen)
 
 ## Graphics
 * OpenRCT2 Logo - Yannic Geurts (xzbobzx)
