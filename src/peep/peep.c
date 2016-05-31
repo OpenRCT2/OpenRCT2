@@ -1668,9 +1668,11 @@ static void peep_go_to_ride_entrance(rct_peep* peep, rct_ride* ride){
 
 	uint8 shift_multiplier = 21;
 	rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
-	if (ride_type->vehicles[ride_type->default_vehicle].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
-		ride_type->vehicles[ride_type->default_vehicle].flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
-		shift_multiplier = 32;
+	if (ride_type != NULL) {
+		if (ride_type->vehicles[ride_type->default_vehicle].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
+			ride_type->vehicles[ride_type->default_vehicle].flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
+			shift_multiplier = 32;
+		}
 	}
 
 	x_shift *= shift_multiplier;
@@ -1871,13 +1873,18 @@ void peep_update_ride_sub_state_1(rct_peep* peep){
 
 	if (peep_update_action(&x, &y, &xy_distance, peep))
 	{
-		uint8 vehicle = ride_entry->default_vehicle;
+		if (ride_entry != NULL) {
+			uint8 vehicle = ride_entry->default_vehicle;
 
-		if (ride_entry->vehicles[vehicle].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
-			ride_entry->vehicles[vehicle].flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14))
-			RCT2_GLOBAL(0xF1AECA, uint16) = 0x1C;
-		else
+			if (ride_entry->vehicles[vehicle].flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
+				ride_entry->vehicles[vehicle].flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)) {
+				RCT2_GLOBAL(0xF1AECA, uint16) = 0x1C;
+			} else {
+				RCT2_GLOBAL(0xF1AECA, uint16) = 0x10;
+			}
+		} else {
 			RCT2_GLOBAL(0xF1AECA, uint16) = 0x10;
+		}
 
 		if (peep->sub_state == 1 &&
 			xy_distance < RCT2_GLOBAL(0xF1AECA, uint16))
@@ -2084,10 +2091,12 @@ static void peep_go_to_ride_exit(rct_peep* peep, rct_ride* ride, sint16 x, sint1
 	sint16 shift_multiplier = 20;
 
 	rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
-	rct_ride_entry_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
-	if (vehicle_entry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
-		vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
-		shift_multiplier = 32;
+	if (ride_type != NULL) {
+		rct_ride_entry_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
+		if (vehicle_entry->flags_a & VEHICLE_ENTRY_FLAG_A_MINI_GOLF ||
+			vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
+			shift_multiplier = 32;
+		}
 	}
 
 	x_shift *= shift_multiplier;
@@ -2419,22 +2428,28 @@ void peep_update_ride_sub_state_7(rct_peep* peep){
 					break;
 			}
 
-			ride_entry = get_ride_entry(ride->subtype);
-			vehicle_entry = &ride_entry->vehicles[ride_entry->default_vehicle];
-
 			uint8 shift_multiplier = 12;
-			if (vehicle_entry->flags_b & VEHICLE_ENTRY_FLAG_B_14){
-				shift_multiplier = 9;
-			}
-
 			uint8 direction = exit_direction;
-			if (vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
-				direction = ((vehicle->sprite_direction + 3) / 8) + 1;
-				direction &= 3;
 
-				if (vehicle->var_CD == 6)
-					direction ^= (1 << 1);
+			ride_entry = get_ride_entry(ride->subtype);
+
+			if (ride_entry != NULL) {
+				vehicle_entry = &ride_entry->vehicles[ride_entry->default_vehicle];
+
+				if (vehicle_entry->flags_b & VEHICLE_ENTRY_FLAG_B_14){
+					shift_multiplier = 9;
+				}
+
+				if (vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
+					direction = ((vehicle->sprite_direction + 3) / 8) + 1;
+					direction &= 3;
+
+					if (vehicle->var_CD == 6)
+						direction ^= (1 << 1);
+				}
 			}
+
+
 
 			sint16 x_shift = RCT2_ADDRESS(0x00981D6C, sint16)[direction * 2];
 			sint16 y_shift = RCT2_ADDRESS(0x00981D6E, sint16)[direction * 2];
@@ -2568,9 +2583,11 @@ static void peep_update_ride_prepare_for_state_9(rct_peep* peep){
 	sint16 shift_multiplier = 20;
 
 	rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
-	rct_ride_entry_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
-	if (vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
-		shift_multiplier = 32;
+	if (ride_type != NULL) {
+		rct_ride_entry_vehicle* vehicle_entry = &ride_type->vehicles[ride_type->default_vehicle];
+		if (vehicle_entry->flags_b & (VEHICLE_ENTRY_FLAG_B_12 | VEHICLE_ENTRY_FLAG_B_14)){
+			shift_multiplier = 32;
+		}
 	}
 
 	x_shift *= shift_multiplier;
