@@ -144,12 +144,19 @@ public:
 	void Server_Send_GROUPLIST(NetworkConnection& connection);
 	void Server_Send_EVENT_PLAYER_JOINED(const char *playerName);
 	void Server_Send_EVENT_PLAYER_DISCONNECTED(const char *playerName, const char *reason);
+	void Client_Send_GAMEINFO();
 
 	std::vector<std::unique_ptr<NetworkPlayer>> player_list;
 	std::vector<std::unique_ptr<NetworkGroup>> group_list;
 	NetworkKey key;
 	std::vector<uint8> challenge;
 	NetworkUserManager _userManager;
+
+	std::string ServerName;
+	std::string ServerDescription;
+	std::string ServerProviderName;
+	std::string ServerProviderEmail;
+	std::string ServerProviderWebsite;
 
 private:
 	bool ProcessConnection(NetworkConnection& connection);
@@ -226,6 +233,7 @@ private:
 	void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
+	void Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
@@ -292,6 +300,11 @@ void network_set_password(const char* password);
 
 void network_print_error();
 void network_append_chat_log(const utf8 *text);
+const utf8 * network_get_server_name();
+const utf8 * network_get_server_description();
+const utf8 * network_get_server_provider_name();
+const utf8 * network_get_server_provider_email();
+const utf8 * network_get_server_provider_website();
 
 #ifdef __cplusplus
 }

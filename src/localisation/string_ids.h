@@ -2639,6 +2639,10 @@ enum {
 	STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED = 5864,
 	STR_LOG_CHAT = 5865,
 	STR_LOG_CHAT_TIP = 5866,
+	STR_PROVIDER_NAME = 5867,
+	STR_PROVIDER_EMAIL = 5868,
+	STR_PROVIDER_WEBSITE = 5869,
+	STR_SHOW_SERVER_INFO_TIP = 5870,
 
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
