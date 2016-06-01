@@ -518,7 +518,6 @@ extern "C"
         gCheatsDisableLittering = SDL_ReadU8(rw) != 0;
         gCheatsNeverendingMarketing = SDL_ReadU8(rw) != 0;
         gCheatsFreezeClimate = SDL_ReadU8(rw) != 0;
-        gCheatsDisablePlantAging = SDL_ReadU8(rw) != 0;
 
         gLastAutoSaveTick = SDL_GetTicks();
         return 1;
