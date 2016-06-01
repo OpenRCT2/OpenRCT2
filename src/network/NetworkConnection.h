@@ -19,17 +19,20 @@
 #include <list>
 #include <memory>
 #include <vector>
+
+#include "../common.h"
+
 #include "NetworkTypes.h"
 #include "NetworkKey.h"
 #include "NetworkPacket.h"
-#include "../common.h"
+#include "TcpSocket.h"
 
 class NetworkPlayer;
 
 class NetworkConnection
 {
 public:
-    SOCKET              Socket          = INVALID_SOCKET;
+    ITcpSocket *        Socket          = nullptr;
     NetworkPacket       InboundPacket;
     NETWORK_AUTH        AuthStatus      = NETWORK_AUTH_NONE;
     NetworkPlayer *     Player          = nullptr;
@@ -43,16 +46,12 @@ public:
     int  ReadPacket();
     void QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front = false);
     void SendQueuedPackets();
-    bool SetTCPNoDelay(bool on);
-    bool SetNonBlocking(bool on);
     void ResetLastPacketTime();
     bool ReceivedPacketRecently();
 
     const utf8 * GetLastDisconnectReason() const;
     void SetLastDisconnectReason(const utf8 * src);
     void SetLastDisconnectReason(const rct_string_id string_id, void * args = nullptr);
-
-    static bool SetNonBlocking(SOCKET socket, bool on);
 
 private:
     std::list<std::unique_ptr<NetworkPacket>>   _outboundPackets;
