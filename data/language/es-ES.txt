@@ -4171,6 +4171,12 @@ STR_5861    :Error en la comprobación de la clave.
 STR_5862    :Bloquear jugadores desconocidos.
 STR_5863    :{SMALLFONT}{BLACK}Sólo se permite unirse a jugadores con claves conocidas.
 STR_5864    :Sólo se permiten jugadores que estén en la lista blanca.
+STR_5865    :Registrar historial de chat.
+STR_5866    :{SMALLFONT}{BLACK}Registra todo el historial de chat en archivos en tu carpeta de usuario.
+STR_5867    :{WINDOW_COLOUR_2}Nombre proveedor: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}Correo proveedor: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Web proveedor: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}Mostrar información del servidor.
 
 ##############
 # Escenarios #

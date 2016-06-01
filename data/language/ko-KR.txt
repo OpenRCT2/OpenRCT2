@@ -4170,6 +4170,12 @@ STR_5861    :키 인증 실패
 STR_5862    :알 수 없는 플레이어를 차단합니다.
 STR_5863    :{SMALLFONT}{BLACK}알려진 키를 가진 플레이어만 입장을 허용합니다.
 STR_5864    :이 서버는 알려진 키를 가진 플레이어의 입장만을 허용합니다.
+STR_5865    :대화 내역 기록하기
+STR_5866    :{SMALLFONT}{BLACK}모든 대화 기록을 사용자 문서 폴더에 파일로 기록합니다.
+STR_5867    :{WINDOW_COLOUR_2}서버 운영자: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}서버 전자우편: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}서버 웹사이트: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}서버 정보 보기
 
 
 #############

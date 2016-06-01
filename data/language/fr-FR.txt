@@ -948,7 +948,7 @@ STR_0941    :Supprimer surfaces verticales
 STR_0942    :Attractions transparentes
 STR_0943    :Décor transparent
 STR_0944    :Sauvegarder
-STR_0945    :Ne pas sauvegarder
+STR_0945    :Ne pas sauv.
 STR_0946    :Annuler
 STR_0947    :Sauvegarder ceci avant de charger ?
 STR_0948    :Sauvegarder ceci avant de quitter ?
@@ -1078,8 +1078,8 @@ STR_1071    :Tours illimités par entrée
 STR_1072    :Mode labyrinthe
 STR_1073    :Mode course
 STR_1074    :Mode auto-tamponneuses
-STR_1075    :Mode Balancement
-STR_1076    :Mode Magasins et boutiques
+STR_1075    :Mode balancement
+STR_1076    :Mode magasins et boutiques
 STR_1077    :Mode rotation
 STR_1078    :Rotation avant
 STR_1079    :Rotation arrière
@@ -1553,7 +1553,7 @@ STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Ouah!{ENDQUOTES}
+STR_1550    :{SMALLFONT}{OPENQUOTES}Ouah !{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}J'ai l'étrange impression que quelqu'un m'observe{ENDQUOTES}
 STR_1552    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour un ballon de {STRINGID}{ENDQUOTES}
 STR_1553    :{SMALLFONT}{OPENQUOTES}Je ne paierai pas si cher pour une peluche de {STRINGID}{ENDQUOTES}
@@ -1653,11 +1653,11 @@ STR_1646    :
 STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}À l'aide ! Déposez-moi !{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Je n'ai plus d'argent !{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Ouah! Ils construisent une nouvelle attraction !{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Ouah ! Ils construisent une nouvelle attraction !{ENDQUOTES}
 # Two removed inside jokes about Intamin and Phoenix
 STR_1651    :<removed string - do not use>
 STR_1652    :<removed string - do not use>
-STR_1653    :{SMALLFONT}{OPENQUOTES}... et là nous sommes sur {STRINGID}!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}... et là nous sommes sur {STRINGID} !{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensées récentes :
 STR_1655    :{SMALLFONT}{BLACK}Construire une allée sur le terrain
 STR_1656    :{SMALLFONT}{BLACK}Construire un pont ou un tunnel
@@ -3512,7 +3512,7 @@ STR_5169    :Nommer les visiteurs d'après les participants du chat
 STR_5170    :{SMALLFONT}{BLACK}Renomme les visiteurs d'après les participants du chat Twitch
 STR_5171    :Suivre les visiteurs du chat
 STR_5172    :{SMALLFONT}{BLACK}Active les informations de suivi pour les visiteurs nommés d'après les participants du chat Twitch
-STR_5173    :Passer les messages Twitch dans les actualités
+STR_5173    :Passer les messages Twitch dans les notifications
 STR_5174    :{SMALLFONT}{BLACK}Utilise les messages de chat Twitch précédés de !news pour les notifications durant le jeu
 STR_5175    :Saisir le nom de votre chaîne Twitch
 STR_5176    :Activer l'intégration Twitch
@@ -4078,7 +4078,7 @@ STR_5767    :Revenu
 STR_5768    :Clients total
 STR_5769    :Bénéfice total
 STR_5770    :Clients par heure
-STR_5771    :Coûts d'exploitation
+STR_5771    :Coût d'exploitation
 STR_5772    :Age
 STR_5773    :Clients total : {COMMA32}
 STR_5774    :Bénéf. total : {CURRENCY2DP}
@@ -4174,6 +4174,8 @@ STR_5861    :Echec de la vérification de clé
 STR_5862    :Bloquer les joueurs inconnus
 STR_5863    :{SMALLFONT}{BLACK}Seuls les joueurs ayant une clé connue peuvent rejoindre la partie
 STR_5864    :Ce serveur n'autorise que les joueurs sur liste blanche à se connecter
+STR_5865    :Enregistrer un historique des conversations
+STR_5866    :{SMALLFONT}{BLACK}Enregistre toutes les conversations dans des fichiers de votre répertoire utilisateur
 
 #############
 # Scenarios #
