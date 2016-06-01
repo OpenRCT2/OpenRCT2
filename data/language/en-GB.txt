@@ -4243,18 +4243,16 @@ STR_5931    :Terrain edge: {BLACK}{STRINGID}
 STR_5932    :Water level: {BLACK}{COMMA16}
 STR_5933    :Remove park fences
 STR_5934    :Restore park fences
-STR_5935    :Raise
-STR_5936    :Lower
-STR_5937    :Path name: {BLACK}{STRINGID}
-STR_5938    :Additions: {BLACK}{STRINGID}
-STR_5939    :Additions: {BLACK}None
-STR_5940    :Cycle edges
-STR_5941    :Cycle corners
+STR_5935    :Raise / lower:
+STR_5936    :Path name: {BLACK}{STRINGID}
+STR_5937    :Additions: {BLACK}{STRINGID}
+STR_5938    :Additions: {BLACK}None
+STR_5939    :Connected edges:
 
 #TODO: Add and use those in strings_ids and tile_inspector.c
-STR_5942    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
-STR_5943    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Track piece sequence: {BLACK}{COMMA16}/{COMMA16}
+STR_5940    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5941    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
+STR_5942    :{WINDOW_COLOUR_2}Track piece sequence: {BLACK}{COMMA16}/{COMMA16}
 
 #TODO: Fix rebase
 STR_5920    :Render weather effects
