@@ -39,11 +39,15 @@
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
 // does not support it, feel free to drop it, at some performance hit.
 #ifdef __cplusplus
-	#if __GNUC__
+	#if _MSC_VER
+		#define RESTRICT __restrict
+	#else
 		#define RESTRICT __restrict__
 	#endif
 #else
-	#if __GNUC__
+	#if _MSC_VER
+		#define RESTRICT __restrict
+	#else
 		#define RESTRICT restrict
 	#endif
 #endif
