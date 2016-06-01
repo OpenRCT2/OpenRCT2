@@ -25,10 +25,10 @@ extern "C"
 #define less_or_equal_zero_mask(val) (((val - 1) >> (sizeof(val) * 8 - 1)))
 
 template<int image_type, int zoom_level>
-static void FASTCALL DrawRLESprite2(const uint8* source_bits_pointer,
-                                      uint8* dest_bits_pointer,
-                                      const uint8* palette_pointer,
-                                      const rct_drawpixelinfo *dpi,
+static void FASTCALL DrawRLESprite2(const uint8* RESTRICT source_bits_pointer,
+                                      uint8* RESTRICT dest_bits_pointer,
+                                      const uint8* RESTRICT palette_pointer,
+                                      const rct_drawpixelinfo *RESTRICT dpi,
                                       int source_y_start,
                                       int height,
                                       int source_x_start,
@@ -171,10 +171,10 @@ extern "C"
      * This function copies the sprite data onto the screen
      *  rct2: 0x0067AA18
      */
-    void FASTCALL gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer,
-                                             uint8* dest_bits_pointer,
-                                             const uint8* palette_pointer,
-                                             const rct_drawpixelinfo *dpi,
+    void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer,
+                                             uint8* RESTRICT dest_bits_pointer,
+                                             const uint8* RESTRICT palette_pointer,
+                                             const rct_drawpixelinfo * RESTRICT dpi,
                                              int image_type,
                                              int source_y_start,
                                              int height,
