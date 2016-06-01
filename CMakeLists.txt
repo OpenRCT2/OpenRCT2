@@ -93,7 +93,7 @@ if (UNIX)
   )
   add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
 	if (APPLE)
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -fno-pie -read_only_relocs suppress")
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -sectcreate rct2_text __text ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_text -sectcreate rct2_data __data ${CMAKE_CURRENT_SOURCE_DIR}/build/openrct2_data -segaddr rct2_data 0x8a4000 -segprot rct2_data rwx rwx -segaddr rct2_text 0x401000 -segprot rct2_text rwx rwx -segaddr __TEXT 0x2000000 -fno-pie -read_only_relocs suppress")
 	else (APPLE)
 		# For Linux we have to use objcopy to wrap regular binaries into a linkable
 		# format. We use specific section names which are then referenced in a
@@ -183,7 +183,9 @@ endif (STATIC)
 
 if (NOT DISABLE_HTTP_TWITCH)
 	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
-	PKG_CHECK_MODULES(SSL REQUIRED openssl)
+	# If you are on OS X, CMake might try using system-provided OpenSSL.
+	# This is too old and will not work.
+	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
 	if (WIN32)
 		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
 		set(WSLIBS ws2_32)
@@ -204,7 +206,7 @@ endif (UNIX)
 
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS} ${LIBCURL_INCLUDE_DIRS} ${JANSSON_INCLUDE_DIRS} ${SPEEX_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${ZLIB_INCLUDE_DIRS} ${BREAKPAD_INCLUDE_DIR})
 
-LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR})
+LINK_DIRECTORIES(${SDL2_LIBRARY_DIRS} ${JANSSON_LIBRARY_DIRS} ${LIBCURL_LIBRARY_DIRS} ${PNG_LIBRARY_DIRS} ${ZLIB_LIBRARY_DIRS} ${BREAKPAD_LIBRARY_DIR} ${SSL_LIBRARY_DIRS})
 
 # Disable optimizations for addresses.c for all compilers, to allow optimized
 # builds without need for -fno-omit-frame-pointer
