@@ -2363,19 +2363,19 @@ void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
 
 #ifdef STOUT_EXPANDED_RENDERING_LIGHT
 
-	sint16 peep_x, peep_y, peep_z;
+	sint16 place_x, place_y, place_z;
 
-	peep_x = vehicle->x;
-	peep_y = vehicle->y;
-	peep_z = vehicle->z;
+	place_x = vehicle->x;
+	place_y = vehicle->y;
+	place_z = vehicle->z;
 
 	static const sint16 offsetLookup[32] = { 10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10 };
 
 	switch (vehicleEntry->car_visual) {
 		case VEHICLE_VISUAL_MINI_GOLF_PLAYER: {
-			peep_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32];
-			peep_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32];
-			lightfx_add_3d_light(peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+			place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32];
+			place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32];
+			lightfx_add_3d_light(place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
 			break;
 		};
 		default: {
@@ -2389,13 +2389,13 @@ void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
 					break;
 				case RIDE_TYPE_MINE_TRAIN_COASTER:
 					if (vehicle == vehicle_get_head(vehicle)) {
-						peep_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
-						peep_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
-						lightfx_add_3d_light(peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+						place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+						lightfx_add_3d_light(place_x, place_x, place_z, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 					}
 					break;
 				case RIDE_TYPE_CHAIRLIFT:
-					lightfx_add_3d_light(peep_x, peep_y, peep_z - 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+					lightfx_add_3d_light(place_x, place_y, place_z - 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
 					break;
 				case RIDE_TYPE_BOAT_RIDE:
 				case RIDE_TYPE_CAR_RIDE:
@@ -2410,44 +2410,44 @@ void vehicle_paint(rct_vehicle *vehicle, int imageDirection)
 					if (vehicle_draw->next_vehicle_on_train != 0xFFFF) {
 						vehicle_draw = GET_VEHICLE(vehicle_draw->next_vehicle_on_train);
 					}
-					peep_x = vehicle_draw->x;
-					peep_y = vehicle_draw->y;
-					peep_z = vehicle_draw->z;
-					peep_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
-					peep_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
-					lightfx_add_3d_light(peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
-					peep_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
-					peep_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
-					lightfx_add_3d_light(peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
+					place_x = vehicle_draw->x;
+					place_y = vehicle_draw->y;
+					place_z = vehicle_draw->z;
+					place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
+					place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
+					lightfx_add_3d_light(place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
+					place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
+					place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
+					lightfx_add_3d_light(place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
 					}
 					break;
 				case RIDE_TYPE_MONORAIL:
 					lightfx_add_3d_light(vehicle->x, vehicle->y, vehicle->z + 12, LIGHTFX_LIGHT_TYPE_LANTERN_2);
 					if (vehicle == vehicle_get_head(vehicle)) {
-						peep_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
-						peep_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
-						lightfx_add_3d_light(peep_x, peep_y, peep_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-						peep_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 3;
-						peep_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 3;
-						lightfx_add_3d_light(peep_x, peep_y, peep_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+						place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+						lightfx_add_3d_light(place_x, place_y, place_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 3;
+						place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 3;
+						lightfx_add_3d_light(place_x, place_y, place_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 					}
 					if (vehicle == vehicle_get_tail(vehicle)) {
-						peep_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
-						peep_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
-						lightfx_add_3d_light(peep_x, peep_y, peep_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-						peep_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
-						peep_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
-						lightfx_add_3d_light(peep_x, peep_y, peep_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						place_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+						place_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+						lightfx_add_3d_light(place_x, place_y, place_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						place_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+						place_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+						lightfx_add_3d_light(place_x, place_y, place_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 					}
 					break;
 				case RIDE_TYPE_MINIATURE_RAILWAY:
 					if (vehicle == vehicle_get_head(vehicle)) {
-						peep_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
-						peep_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
-						lightfx_add_3d_light(peep_x, peep_y, peep_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
-						peep_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
-						peep_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
-						lightfx_add_3d_light(peep_x, peep_y, peep_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+						place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+						lightfx_add_3d_light(place_x, place_y, place_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+						place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+						lightfx_add_3d_light(place_x, place_y, place_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 					}
 					else {
 						lightfx_add_3d_light(vehicle->x, vehicle->y, vehicle->z + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
