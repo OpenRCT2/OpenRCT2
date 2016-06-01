@@ -277,6 +277,8 @@ bool Network::BeginServer(unsigned short port, const char* address)
 
 	sockaddr_storage ss;
 	int ss_len;
+	
+	retry:
 	networkaddress.GetResult(&ss, &ss_len);
 
 	log_verbose("Begin listening for clients");
@@ -285,17 +287,20 @@ bool Network::BeginServer(unsigned short port, const char* address)
 		log_error("Unable to create socket.");
 		return false;
 	}
-
+	
 	// Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
 	int value = 0;
 	if (setsockopt(listening_socket, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&value, sizeof(value)) != 0) {
 		log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
 	}
+	
+	if (bind(listening_socket, (sockaddr *)&ss, ss_len) != 0)
+	{
+		//closesocket(listening_socket);
+		log_error("Unable to bind to socket. Retrying");
+		Sleep(5000);
+		goto retry;
 
-	if (bind(listening_socket, (sockaddr *)&ss, ss_len) != 0) {
-		closesocket(listening_socket);
-		log_error("Unable to bind to socket.");
-		return false;
 	}
 
 	if (listen(listening_socket, SOMAXCONN) != 0) {
