@@ -66,7 +66,7 @@ uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
 
 	double light = 0.09 + pow(10.0 / (1.0 + distance / 100.0), 0.55);
 	light *= min(1.0, max(0.0f, 2.0 - sqrt(distance) / 64));
-	light *= 0.25f;
+	light *= 0.15f;
 
 	return (uint8)(min(255.0, light * 255.0));
 }
