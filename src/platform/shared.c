@@ -376,8 +376,9 @@ void platform_draw()
 
 					lightfx_add_3d_light(gCursorState.x, gCursorState.y, 0x7FFF, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 
-					lightfx_prepare_light_list();
+					lightfx_update_viewport_settings();
 					lightfx_swap_buffers();
+					lightfx_prepare_light_list();
 
 						// Make palette safe
 
