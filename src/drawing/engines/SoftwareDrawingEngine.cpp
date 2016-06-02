@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../config.h"
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
 #include "../IDrawingEngine.h"
 
 extern "C"
 {
+    #include "../../config.h"
     #include "../drawing.h"
 }
 
@@ -102,6 +102,22 @@ public:
         }
 
         ConfigureBits(width, height, _surface->pitch);
+    }
+
+    void SetPalette(SDL_Color * palette) override
+    {
+        SDL_Surface * windowSurface = SDL_GetWindowSurface(gWindow);
+        if (windowSurface == nullptr)
+        {
+            log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());
+            exit(1);
+        }
+
+        if (_palette != nullptr && SDL_SetPaletteColors(_palette, gPalette, 0, 256))
+        {
+            log_fatal("SDL_SetPaletteColors failed %s", SDL_GetError());
+            exit(1);
+        }
     }
 
     void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override
@@ -341,3 +357,8 @@ private:
         }
     }
 };
+
+IDrawingEngine * DrawingEngineFactory::CreateSoftware()
+{
+    return new SoftwareDrawingEngine();
+}

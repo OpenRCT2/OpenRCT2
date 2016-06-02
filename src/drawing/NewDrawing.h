@@ -16,23 +16,18 @@
 
 #pragma once
 
-#include "../common.h"
-
-#include <SDL_video.h>
-
-interface IDrawingEngine
+#ifdef _cplusplus
+extern "C"
 {
-    virtual ~IDrawingEngine() { }
+#endif
 
-    virtual void Initialise(SDL_Window * window)     abstract;
-    virtual void Resize(uint32 width, uint32 height) abstract;
-    virtual void SetPalette(SDL_Color * colours)     abstract;
+void drawing_engine_init();
+void drawing_engine_resize();
+void drawing_engine_set_palette(SDL_Color * colours);
+void drawing_engine_draw();
+void drawing_engine_dispose();
 
-    virtual void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-    virtual void Draw() abstract;
-};
+#ifdef _cplusplus
+}
+#endif
 
-namespace DrawingEngineFactory
-{
-    IDrawingEngine * CreateSoftware();
-};

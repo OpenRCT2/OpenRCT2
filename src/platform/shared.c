@@ -60,16 +60,6 @@ bool gHardwareDisplay;
 
 bool gSteamOverlayActive = false;
 
-static SDL_Surface *_surface = NULL;
-static SDL_Surface *_RGBASurface = NULL;
-static SDL_Palette *_palette = NULL;
-
-static void *_screenBuffer;
-static int _screenBufferSize;
-static int _screenBufferWidth;
-static int _screenBufferHeight;
-static int _screenBufferPitch;
-
 static SDL_Cursor* _cursors[CURSOR_COUNT];
 static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
 static unsigned int _lastGestureTimestamp;
@@ -81,8 +71,6 @@ static uint32 _pixelAfterOverlay;
 static void platform_create_window();
 static void platform_load_cursors();
 static void platform_unload_cursors();
-
-static void platform_refresh_screenbuffer(int width, int height, int pitch);
 
 int resolution_sort_func(const void *pa, const void *pb)
 {
@@ -219,96 +207,8 @@ static void overlay_post_render_check(int width, int height) {
 
 void platform_draw()
 {
-	int width = gScreenWidth;
-	int height = gScreenHeight;
-
 	if (!gOpenRCT2Headless) {
-		if (gHardwareDisplay) {
-			void *pixels;
-			int pitch;
-			if (SDL_LockTexture(gBufferTexture, NULL, &pixels, &pitch) == 0) {
-				uint8 *src = (uint8*)_screenBuffer;
-				int padding = pitch - (width * 4);
-				if (pitch == width * 4) {
-					uint32 *dst = pixels;
-					for (int i = width * height; i > 0; i--) { *dst++ = *(uint32 *)(&gPaletteHWMapped[*src++]); }
-				}
-				else
-					if (pitch == (width * 2) + padding) {
-						uint16 *dst = pixels;
-						for (int y = height; y > 0; y--) {
-							for (int x = width; x > 0; x--) {
-								const uint8 lower = *(uint8 *)(&gPaletteHWMapped[*src++]);
-								const uint8 upper = *(uint8 *)(&gPaletteHWMapped[*src++]);
-								*dst++ = (lower << 8) | upper;
-							}
-							dst = (uint16*)(((uint8 *)dst) + padding);
-						}
-					}
-					else
-						if (pitch == width + padding) {
-							uint8 *dst = pixels;
-							for (int y = height; y > 0; y--) {
-								for (int x = width; x > 0; x--) { *dst++ = *(uint8 *)(&gPaletteHWMapped[*src++]); }
-								dst += padding;
-							}
-						}
-				SDL_UnlockTexture(gBufferTexture);
-			}
-
-			SDL_RenderCopy(gRenderer, gBufferTexture, NULL, NULL);
-
-			if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
-				overlay_pre_render_check(width, height);
-			}
-
-			SDL_RenderPresent(gRenderer);
-
-			if (gSteamOverlayActive && gConfigGeneral.steam_overlay_pause) {
-				overlay_post_render_check(width, height);
-			}
-		}
-		else {
-			// Lock the surface before setting its pixels
-			if (SDL_MUSTLOCK(_surface)) {
-				if (SDL_LockSurface(_surface) < 0) {
-					log_error("locking failed %s", SDL_GetError());
-					return;
-				}
-			}
-
-			// Copy pixels from the virtual screen buffer to the surface
-			memcpy(_surface->pixels, _screenBuffer, _surface->pitch * _surface->h);
-
-			// Unlock the surface
-			if (SDL_MUSTLOCK(_surface))
-				SDL_UnlockSurface(_surface);
-
-			// Copy the surface to the window
-			if (gConfigGeneral.window_scale == 1 || gConfigGeneral.window_scale <= 0)
-			{
-				if (SDL_BlitSurface(_surface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
-					log_fatal("SDL_BlitSurface %s", SDL_GetError());
-					exit(1);
-				}
-			} else {
-				// first blit to rgba surface to change the pixel format
-				if (SDL_BlitSurface(_surface, NULL, _RGBASurface, NULL)) {
-					log_fatal("SDL_BlitSurface %s", SDL_GetError());
-					exit(1);
-				}
-				// then scale to window size. Without changing to RGBA first, SDL complains
-				// about blit configurations being incompatible.
-				if (SDL_BlitScaled(_RGBASurface, NULL, SDL_GetWindowSurface(gWindow), NULL)) {
-					log_fatal("SDL_BlitScaled %s", SDL_GetError());
-					exit(1);
-				}
-			}
-			if (SDL_UpdateWindowSurface(gWindow)) {
-				log_fatal("SDL_UpdateWindowSurface %s", SDL_GetError());
-				exit(1);
-			}
-		}
+		drawing_engine_draw();
 	}
 }
 
@@ -321,7 +221,7 @@ static void platform_resize(int width, int height)
 	gScreenWidth = dst_w;
 	gScreenHeight = dst_h;
 
-	platform_refresh_video();
+	drawing_engine_resize();
 
 	flags = SDL_GetWindowFlags(gWindow);
 
@@ -392,11 +292,9 @@ static uint8 lerp(uint8 a, uint8 b, float t)
 
 void platform_update_palette(const uint8* colours, int start_index, int num_colours)
 {
-	SDL_Surface *surface;
-	int i;
 	colours += start_index * 4;
 
-	for (i = start_index; i < num_colours + start_index; i++) {
+	for (int i = start_index; i < num_colours + start_index; i++) {
 		gPalette[i].r = colours[2];
 		gPalette[i].g = colours[1];
 		gPalette[i].b = colours[0];
@@ -416,16 +314,7 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 	}
 
 	if (!gOpenRCT2Headless && !gHardwareDisplay) {
-		surface = SDL_GetWindowSurface(gWindow);
-		if (!surface) {
-			log_fatal("SDL_GetWindowSurface failed %s", SDL_GetError());
-			exit(1);
-		}
-
-		if (_palette != NULL && SDL_SetPaletteColors(_palette, gPalette, 0, 256)) {
-			log_fatal("SDL_SetPaletteColors failed %s", SDL_GetError());
-			exit(1);
-		}
+		drawing_engine_set_palette(gPalette);
 	}
 }
 
@@ -528,15 +417,15 @@ void platform_process_messages()
 // Apple sends touchscreen events for trackpads, so ignore these events on OS X
 #ifndef __MACOSX__
 		case SDL_FINGERMOTION:
-			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * _screenBufferWidth);
-			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * _screenBufferHeight);
+			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * gScreenWidth);
+			RCT2_GLOBAL(0x01424070, int) = (int)(e.tfinger.y * gScreenHeight);
 
-			gCursorState.x = (int)(e.tfinger.x * _screenBufferWidth);
-			gCursorState.y = (int)(e.tfinger.y * _screenBufferHeight);
+			gCursorState.x = (int)(e.tfinger.x * gScreenWidth);
+			gCursorState.y = (int)(e.tfinger.y * gScreenHeight);
 			break;
 		case SDL_FINGERDOWN:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * gScreenWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * gScreenHeight);
 
 			gCursorState.touchIsDouble = (!gCursorState.touchIsDouble
 										  && e.tfinger.timestamp - gCursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
@@ -554,8 +443,8 @@ void platform_process_messages()
 			gCursorState.touchDownTimestamp = e.tfinger.timestamp;
 			break;
 		case SDL_FINGERUP:
-			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * _screenBufferWidth);
-			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * _screenBufferHeight);
+			RCT2_GLOBAL(0x01424318, int) = (int)(e.tfinger.x * gScreenWidth);
+			RCT2_GLOBAL(0x0142431C, int) = (int)(e.tfinger.y * gScreenHeight);
 
 			if (gCursorState.touchIsDouble) {
 				store_mouse_input(4);
@@ -703,14 +592,7 @@ void platform_process_messages()
 
 static void platform_close_window()
 {
-	if (gWindow != NULL)
-		SDL_DestroyWindow(gWindow);
-	if (_surface != NULL)
-		SDL_FreeSurface(_surface);
-	if (_palette != NULL)
-		SDL_FreePalette(_palette);
-	if (_RGBASurface != NULL)
-		SDL_FreeSurface(_RGBASurface);
+	drawing_engine_dispose();
 	platform_unload_cursors();
 }
 
@@ -920,114 +802,6 @@ void platform_refresh_video()
 
 	log_verbose("HardwareDisplay: %s", gHardwareDisplay ? "true" : "false");
 
-	if (gHardwareDisplay) {
-		if (gRenderer == NULL)
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-		if (gRenderer == NULL) {
-			log_warning("SDL_CreateRenderer failed: %s", SDL_GetError());
-			log_warning("Falling back to software rendering...");
-			gHardwareDisplay = false;
-			platform_refresh_video(); // try again without hardware rendering
-			return;
-		}
-
-		if (gBufferTexture != NULL)
-			SDL_DestroyTexture(gBufferTexture);
-
-		if (gBufferTextureFormat != NULL)
-			SDL_FreeFormat(gBufferTextureFormat);
-
-		SDL_RendererInfo rendererinfo;
-		SDL_GetRendererInfo(gRenderer, &rendererinfo);
-		Uint32 pixelformat = SDL_PIXELFORMAT_UNKNOWN;
-		for(unsigned int i = 0; i < rendererinfo.num_texture_formats; i++){
-			Uint32 format = rendererinfo.texture_formats[i];
-			if(!SDL_ISPIXELFORMAT_FOURCC(format) && !SDL_ISPIXELFORMAT_INDEXED(format) && (pixelformat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelformat))){
-				pixelformat = format;
-			}
-		}
-
-		gBufferTexture = SDL_CreateTexture(gRenderer, pixelformat, SDL_TEXTUREACCESS_STREAMING, width, height);
-		Uint32 format;
-		SDL_QueryTexture(gBufferTexture, &format, 0, 0, 0);
-		gBufferTextureFormat = SDL_AllocFormat(format);
-		platform_refresh_screenbuffer(width, height, width);
-		// Load the current palette into the HWmapped version.
-		for (int i = 0; i < 256; ++i) {
-			gPaletteHWMapped[i] = SDL_MapRGB(gBufferTextureFormat, gPalette[i].r, gPalette[i].g, gPalette[i].b);
-		}
-	} else {
-		if (_surface != NULL)
-			SDL_FreeSurface(_surface);
-		if (_RGBASurface != NULL)
-			SDL_FreeSurface(_RGBASurface);
-		if (_palette != NULL)
-			SDL_FreePalette(_palette);
-
-		_surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
-		_RGBASurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
-		SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
-		_palette = SDL_AllocPalette(256);
-
-		if (!_surface || !_palette || !_RGBASurface) {
-			log_fatal("%p || %p || %p == NULL %s", _surface, _palette, _RGBASurface, SDL_GetError());
-			exit(-1);
-		}
-
-		if (SDL_SetSurfacePalette(_surface, _palette)) {
-			log_fatal("SDL_SetSurfacePalette failed %s", SDL_GetError());
-			exit(-1);
-		}
-
-		platform_refresh_screenbuffer(width, height, _surface->pitch);
-	}
-}
-
-static void platform_refresh_screenbuffer(int width, int height, int pitch)
-{
-	int newScreenBufferSize = pitch * height;
-	char *newScreenBuffer = (char*)malloc(newScreenBufferSize);
-	if (_screenBuffer == NULL) {
-		memset(newScreenBuffer, 0, newScreenBufferSize);
-	} else {
-		if (_screenBufferPitch == pitch) {
-			memcpy(newScreenBuffer, _screenBuffer, min(_screenBufferSize, newScreenBufferSize));
-		} else {
-			char *src = _screenBuffer;
-			char *dst = newScreenBuffer;
-
-			int minWidth = min(_screenBufferWidth, width);
-			int minHeight = min(_screenBufferHeight, height);
-			for (int y = 0; y < minHeight; y++) {
-				memcpy(dst, src, minWidth);
-				if (pitch - minWidth > 0)
-					memset(dst + minWidth, 0, pitch - minWidth);
-
-				src += _screenBufferPitch;
-				dst += pitch;
-			}
-		}
-		//if (newScreenBufferSize - _screenBufferSize > 0)
-		//	memset((uint8*)newScreenBuffer + _screenBufferSize, 0, newScreenBufferSize - _screenBufferSize);
-		free(_screenBuffer);
-	}
-
-	_screenBuffer = newScreenBuffer;
-	_screenBufferSize = newScreenBufferSize;
-	_screenBufferWidth = width;
-	_screenBufferHeight = height;
-	_screenBufferPitch = pitch;
-
-	rct_drawpixelinfo *screenDPI = &gScreenDPI;
-	screenDPI->bits = _screenBuffer;
-	screenDPI->x = 0;
-	screenDPI->y = 0;
-	screenDPI->width = width;
-	screenDPI->height = height;
-	screenDPI->pitch = _screenBufferPitch - width;
-
-	gfx_configure_dirty_grid();
 }
 
 void platform_hide_cursor()

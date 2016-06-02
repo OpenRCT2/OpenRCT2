@@ -191,4 +191,6 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 
 void gfx_configure_dirty_grid();
 
+#include "NewDrawing.h"
+
 #endif
