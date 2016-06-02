@@ -554,15 +554,20 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 		float natLightG = 1.0f;
 		float natLightB = 1.0f;
 
+		float elecMultR = 1.0f;
+		float elecMultG = 0.95f;
+		float elecMultB = 0.45f;
+
 		static float wetness = 0.0f;
 		static float fogginess = 0.0f;
+		static float lightPolution = 0.0f;
 
 		float sunLight = max(0.0f, min(1.0f, 2.0f - night * 3.0f));
 
 			// Night version
-		natLightR = flerp(natLightR * 4.0f, 0.335f, (float)(pow(night, 0.035f + sunLight * 10.50f)));
-		natLightG = flerp(natLightG * 4.0f, 0.350f, (float)(pow(night, 0.100f + sunLight *  5.50f)));
-		natLightB = flerp(natLightB * 4.0f, 0.550f, (float)(pow(night, 0.200f + sunLight *  1.5f)));
+		natLightR = flerp(natLightR * 4.0f, 0.635f, (float)(pow(night, 0.035f + sunLight * 10.50f)));
+		natLightG = flerp(natLightG * 4.0f, 0.650f, (float)(pow(night, 0.100f + sunLight *  5.50f)));
+		natLightB = flerp(natLightB * 4.0f, 0.850f, (float)(pow(night, 0.200f + sunLight *  1.5f)));
 
 		float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
 		float lightMax = (natLightR + natLightG + natLightB) / 3.0f;
@@ -590,8 +595,8 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 		natLightB *= 1.0f + overExpose;
 		overExpose *= 255.0f;
 
-		float targetFogginess = (float)(gClimateCurrentRainLevel) / 5.0f;
-		targetFogginess += (night * night) * 0.35f;
+		float targetFogginess = (float)(gClimateCurrentRainLevel) / 8.0f;
+		targetFogginess += (night * night) * 0.15f;
 
 		if (gClimateCurrentTemperature < 10) {
 			targetFogginess += ((float)(10 - gClimateCurrentTemperature)) * 0.01f;
@@ -616,7 +621,25 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 
 		reduceColourLit *= night / (float)pow(max(1.01f, 0.4f + lightAvg), 2.0);
 
-		reduceColourLit += (float)(gClimateCurrentRainLevel) / 35.0f;
+		float	targetLightPollution = reduceColourLit * max(0.0f, 0.0f + 0.000001f * (float)lightfx_get_light_polution());
+		lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
+
+	//	lightPollution /= 1.0f + fogginess * 1.0f;
+
+		natLightR /= 1.0f + lightPolution * 50.0f;
+		natLightG /= 1.0f + lightPolution * 50.0f;
+		natLightB /= 1.0f + lightPolution * 50.0f;
+		natLightR += elecMultR * 0.6f * lightPolution;
+		natLightG += elecMultG * 0.6f * lightPolution;
+		natLightB += elecMultB * 0.6f * lightPolution;
+		natLightR /= 1.0f + lightPolution;
+		natLightG /= 1.0f + lightPolution;
+		natLightB /= 1.0f + lightPolution;
+
+		reduceColourLit += (float)(gClimateCurrentRainLevel) / 2.0f;
+
+		reduceColourNat /= 1.0f + fogginess;
+		reduceColourLit /= 1.0f + fogginess;
 
 		lightFog		*= reduceColourLit;
 
@@ -667,9 +690,9 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 			gPalette[i].r = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(gPalette[i].r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
 			gPalette[i].g = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(gPalette[i].g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
 			gPalette[i].b = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(gPalette[i].b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
-			gPalette_light[i].r = (uint8)(min(0xFF, ((float)(gPalette[i].r) * reduceColourLit * boost + lightFog) * 1.0f));
-			gPalette_light[i].g = (uint8)(min(0xFF, ((float)(gPalette[i].g) * reduceColourLit * boost + lightFog) * 0.85f));
-			gPalette_light[i].b = (uint8)(min(0xFF, ((float)(gPalette[i].b) * reduceColourLit * boost + lightFog) * 0.30f));
+			gPalette_light[i].r = (uint8)(min(0xFF, ((float)(gPalette[i].r) * reduceColourLit * boost + lightFog) * elecMultR));
+			gPalette_light[i].g = (uint8)(min(0xFF, ((float)(gPalette[i].g) * reduceColourLit * boost + lightFog) * elecMultG));
+			gPalette_light[i].b = (uint8)(min(0xFF, ((float)(gPalette[i].b) * reduceColourLit * boost + lightFog) * elecMultB));
 		
 #endif
 		}
