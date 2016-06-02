@@ -31,14 +31,16 @@
 
 #define FILTER_VERSION 1
 
+#pragma pack(push, 1)
 typedef struct rct_plugin_header {
 	uint32 total_files;
 	uint32 total_file_size;
 	uint32 date_modified_checksum;
 	uint32 object_list_size;
 	uint32 object_list_no_items;
-} PACKED rct_plugin_header;
+} rct_plugin_header;
 STATIC_ASSERT (sizeof(rct_plugin_header) == 20, "Improper struct size");
+#pragma pack(pop)
 
 // 98DA00
 int object_entry_group_counts[] = {

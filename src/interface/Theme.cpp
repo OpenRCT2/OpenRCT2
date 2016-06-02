@@ -43,7 +43,7 @@ constexpr uint64 MAX_THEME_SIZE = 64 * 1024 * 1024;
 struct WindowTheme
 {
     colour_t Colours[6];
-} PACKED;
+};
 
 /**
  * Represents the style for a particular type of window.
@@ -56,7 +56,7 @@ struct UIThemeWindowEntry
 
            json_t *           ToJson() const;
     static UIThemeWindowEntry FromJson(const WindowThemeDesc * wtDesc, const json_t * json);
-} PACKED;
+};
 
 /**
  * Represents a user interface theme. Contains window colour schemes and appearance features.
@@ -95,7 +95,7 @@ struct WindowThemeDesc
     rct_string_id   WindowName;
     uint8           NumColours;
     WindowTheme     DefaultTheme;
-} PACKED;
+};
 
 #pragma region Window Theme Descriptors
 
@@ -495,7 +495,7 @@ namespace ThemeManager
     {
         utf8 Path[MAX_PATH];
         utf8 Name[96];
-	} PACKED;
+	};
 
     utf8 *               CurrentThemePath;
     UITheme *            CurrentTheme;

@@ -26,7 +26,7 @@ typedef struct vehicle_boundbox {
 	uint8 length_x;
 	uint8 length_y;
 	uint8 length_z;
-} PACKED vehicle_boundbox;
+} vehicle_boundbox;
 
 extern const vehicle_boundbox VehicleBoundboxes[16][224];
 

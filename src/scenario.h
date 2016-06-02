@@ -30,6 +30,7 @@
 #include "world/map_animation.h"
 #include "world/sprite.h"
 
+#pragma pack(push, 1)
 /**
  * SV6/SC6 header chunk
  * size: 0x20
@@ -40,7 +41,7 @@ typedef struct rct_s6_header {
 	uint32 version;				// 0x04
 	uint32 magic_number;		// 0x08
 	uint8 pad_0C[0x14];
-} PACKED rct_s6_header;
+} rct_s6_header;
 STATIC_ASSERT (sizeof(rct_s6_header) == 0x20, "Improper struct size");
 
 /**
@@ -58,7 +59,7 @@ typedef struct rct_s6_info {
 	char name[64];				// 0x48
 	char details[256];			// 0x88
 	rct_object_entry entry;		// 0x188
-} PACKED rct_s6_info;
+} rct_s6_info;
 STATIC_ASSERT (sizeof(rct_s6_info) == 0x198, "Improper struct size");
 
 /**
@@ -70,7 +71,7 @@ typedef struct rct_scenario_scores_header {
 	uint32 var_4;
 	uint32 var_8;
 	uint32 scenario_count;		// 0x0C
-} PACKED rct_scenario_scores_header;
+} rct_scenario_scores_header;
 STATIC_ASSERT (sizeof(rct_scenario_scores_header) == 16, "Improper struct size");
 
 typedef enum scenario_source {
@@ -103,7 +104,7 @@ typedef struct rct_scenario_basic {
 	char completed_by[64];		// 0x0270
 	// uint8 source_game;			// new in OpenRCT2
 	// sint16 source_index;		// new in OpenRCT2
-} PACKED rct_scenario_basic;
+} rct_scenario_basic;
 STATIC_ASSERT (sizeof(rct_scenario_basic) == 0x02B0, "Improper struct size");
 
 typedef struct rct_stex_entry {
@@ -111,11 +112,13 @@ typedef struct rct_stex_entry {
 	rct_string_id park_name;		// 0x02
 	rct_string_id details;			// 0x04
 	uint8 var_06;
-} PACKED rct_stex_entry;
+} rct_stex_entry;
 STATIC_ASSERT (sizeof(rct_stex_entry) == 7, "Improper struct size");
+#pragma pack(pop)
 
 #define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
 
+#pragma pack(push, 1)
 // This will be useful for backwards compatibility
 typedef struct rct_s6_data {
 	// SC6[0]
@@ -340,7 +343,9 @@ typedef struct rct_s6_data {
 	uint16 wide_path_tile_loop_x;
 	uint16 wide_path_tile_loop_y;
 	uint8 pad_13CE778[434];
-} PACKED rct_s6_data;
+} rct_s6_data;
+STATIC_ASSERT (sizeof(rct_s6_data) == 0x46b44a, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	SCENARIO_FLAGS_VISIBLE = (1 << 0),
@@ -391,7 +396,7 @@ typedef struct scenario_highscore_entry {
 	utf8 *name;
 	money32 company_value;
 	datetime64 timestamp;
-} PACKED scenario_highscore_entry;
+} scenario_highscore_entry;
 // NOTE: Check if needed
 STATIC_ASSERT (sizeof(scenario_highscore_entry) == 20, "Improper struct size");
 
@@ -414,7 +419,7 @@ typedef struct scenario_index_entry {
 
 	utf8 name[64];
 	utf8 details[256];
-} PACKED scenario_index_entry;
+} scenario_index_entry;
 
 typedef struct source_desc {
 	const utf8 *title;
@@ -422,7 +427,7 @@ typedef struct source_desc {
 	uint8 source;
 	sint32 index;
 	uint8 category;
-} PACKED source_desc;
+} source_desc;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 

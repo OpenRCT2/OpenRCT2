@@ -21,6 +21,7 @@
 #include "../object.h"
 #include "../world/map.h"
 
+#pragma pack(push, 1)
 typedef struct rct_small_scenery_entry {
 	uint32 flags;			// 0x06
 	uint8 height;			// 0x0A
@@ -32,7 +33,7 @@ typedef struct rct_small_scenery_entry {
 	uint16 var_16;
 	uint16 var_18;
 	uint8 scenery_tab_id;	// 0x1A
-} PACKED rct_small_scenery_entry;
+} rct_small_scenery_entry;
 STATIC_ASSERT (sizeof(rct_small_scenery_entry) == 21, "Improper struct size");
 
 typedef enum {
@@ -72,7 +73,7 @@ typedef struct rct_large_scenery_tile {
 	sint16 z_offset;
 	uint8 z_clearance;
 	uint16 var_7;
-} PACKED rct_large_scenery_tile;
+} rct_large_scenery_tile;
 STATIC_ASSERT (sizeof(rct_large_scenery_tile) == 9, "Improper struct size");
 
 typedef struct rct_large_scenery_text_glyph {
@@ -80,7 +81,7 @@ typedef struct rct_large_scenery_text_glyph {
 	uint8 width;
 	uint8 height;
 	uint8 var_3;
-} PACKED rct_large_scenery_text_glyph;
+} rct_large_scenery_text_glyph;
 STATIC_ASSERT (sizeof(rct_large_scenery_text_glyph) == 4, "Improper struct size");
 
 typedef struct rct_large_scenery_text {
@@ -89,7 +90,7 @@ typedef struct rct_large_scenery_text {
 	uint16 var_A;			// 0xA
 	uint16 var_C;			// 0xC
 	rct_large_scenery_text_glyph glyphs[256]; // 0xE
-} PACKED rct_large_scenery_text;
+} rct_large_scenery_text;
 STATIC_ASSERT (sizeof(rct_large_scenery_text) == 14 + 4 * 256, "Improper struct size");
 
 typedef struct rct_large_scenery_entry {
@@ -102,7 +103,7 @@ typedef struct rct_large_scenery_entry {
 	uint8 var_11;
 	rct_large_scenery_text* text; // 0x12
 	uint32 text_image;	// 0x16
-} PACKED rct_large_scenery_entry;
+} rct_large_scenery_entry;
 STATIC_ASSERT (sizeof(rct_large_scenery_entry) == 20, "Improper struct size");
 
 
@@ -114,7 +115,7 @@ typedef struct rct_wall_scenery_entry {
 	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
 	uint8 var_0D;
-} PACKED rct_wall_scenery_entry;
+} rct_wall_scenery_entry;
 STATIC_ASSERT (sizeof(rct_wall_scenery_entry) == 8, "Improper struct size");
 
 typedef enum {
@@ -138,7 +139,7 @@ typedef struct rct_path_bit_scenery_entry {
 	uint8 tool_id;			// 0x09
 	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
-} PACKED rct_path_bit_scenery_entry;
+} rct_path_bit_scenery_entry;
 STATIC_ASSERT (sizeof(rct_path_bit_scenery_entry) == 7, "Improper struct size");
 
 typedef struct rct_banner_scenery_entry {
@@ -146,7 +147,7 @@ typedef struct rct_banner_scenery_entry {
 	uint8 flags;			// 0x07
 	sint16 price;			// 0x08
 	uint8 scenery_tab_id;	// 0x0A
-} PACKED rct_banner_scenery_entry;
+} rct_banner_scenery_entry;
 STATIC_ASSERT (sizeof(rct_banner_scenery_entry) == 5, "Improper struct size");
 
 typedef struct rct_scenery_entry {
@@ -159,7 +160,7 @@ typedef struct rct_scenery_entry {
 		rct_path_bit_scenery_entry path_bit;
 		rct_banner_scenery_entry banner;
 	};
-} PACKED rct_scenery_entry;
+} rct_scenery_entry;
 STATIC_ASSERT (sizeof(rct_scenery_entry) == 6 + 21, "Improper struct size");
 
 typedef struct rct_scenery_set_entry {
@@ -171,8 +172,9 @@ typedef struct rct_scenery_set_entry {
 	uint8 var_108;					// 0x108, order?
 	uint8 pad_109;
 	uint32 var_10A;
-} PACKED rct_scenery_set_entry;
+} rct_scenery_set_entry;
 STATIC_ASSERT (sizeof(rct_scenery_set_entry) == 14 + 2 * 0x80, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	PATH_BIT_FLAG_BIN						= 1 << 0,

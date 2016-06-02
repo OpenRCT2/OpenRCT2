@@ -38,7 +38,7 @@ uint8 gMapTooltipFormatArgs[40];
 typedef struct format_code_token {
 	uint32 code;
 	const char *token;
-} PACKED format_code_token;
+} format_code_token;
 
 format_code_token format_code_tokens[] = {
 	{ FORMAT_MOVE_X,					"MOVE_X"				},

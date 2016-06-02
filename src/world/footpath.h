@@ -27,14 +27,16 @@ enum {
 	PROVISIONAL_PATH_FLAG_2 = (1 << 2),
 };
 
+#pragma pack(push, 1)
 typedef struct rct_footpath_entry {
 	rct_string_id string_idx;	// 0x00
 	uint32 image;				// 0x02
 	uint32 bridge_image;		// 0x06
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
-} PACKED rct_footpath_entry;
+} rct_footpath_entry;
 STATIC_ASSERT (sizeof(rct_footpath_entry) == 12, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	FOOTPATH_SEARCH_SUCCESS,

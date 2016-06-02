@@ -111,13 +111,6 @@ typedef uint8 colour_t;
 #endif // __GNUC__
 #endif // __cplusplus
 
-#ifndef _MSC_VER
-// use similar struct packing as MSVC for our structs
-#define PACKED __attribute__((packed,aligned(1)))
-#else
-#define PACKED
-#endif
-
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <unistd.h>
 #define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
@@ -192,7 +185,7 @@ typedef struct rct2_install_info {
 	uint8 pad_210[256];
 	char expansionPackNames[16][128];
 	uint32 activeExpansionPacks;		//0xB10
-} PACKED rct2_install_info;
+} rct2_install_info;
 
 enum {
 	// Although this is labeled a flag it actually means when

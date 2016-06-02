@@ -82,7 +82,7 @@ typedef struct viewport_interaction_info {
 		rct_peep *peep;
 		rct_vehicle *vehicle;
 	};
-} PACKED viewport_interaction_info;
+} viewport_interaction_info;
 
 #define MAX_VIEWPORT_COUNT MAX_WINDOW_COUNT
 

@@ -24,7 +24,7 @@ typedef struct rct_crooked_house_bound_box {
 	sint16 offset_y;
 	sint16 length_x;
 	sint16 length_y;
-} PACKED rct_crooked_house_bound_box;
+} rct_crooked_house_bound_box;
 
 rct_crooked_house_bound_box crooked_house_data[] = {
 	{6,   0,   42, 24},

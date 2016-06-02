@@ -19,12 +19,13 @@
 
 #include "../common.h"
 
+#pragma pack(push, 1)
 typedef struct rct_map_element_surface_properties {
 	uint8 slope; //4 0xE0 Edge Style, 0x1F Slope
 	uint8 terrain; //5 0xE0 Terrain Style, 0x1F Water height
 	uint8 grass_length; //6
 	uint8 ownership; //7
-} PACKED rct_map_element_surface_properties;
+} rct_map_element_surface_properties;
 STATIC_ASSERT (sizeof(rct_map_element_surface_properties) == 4, "Improper struct size");
 
 typedef struct rct_map_element_path_properties {
@@ -35,7 +36,7 @@ typedef struct rct_map_element_path_properties {
 		uint8 addition_status; //7
 		uint8 ride_index;
 	};
-} PACKED rct_map_element_path_properties;
+} rct_map_element_path_properties;
 STATIC_ASSERT (sizeof(rct_map_element_path_properties) == 4, "Improper struct size");
 
 typedef struct rct_map_element_track_properties {
@@ -44,11 +45,11 @@ typedef struct rct_map_element_track_properties {
 		struct{
 			uint8 sequence; //5
 			uint8 colour; //6
-		} PACKED;
+		};
 		uint16 maze_entry; // 5
 	};
 	uint8 ride_index; //7
-} PACKED rct_map_element_track_properties;
+} rct_map_element_track_properties;
 STATIC_ASSERT (sizeof(rct_map_element_track_properties) == 4, "Improper struct size");
 
 typedef struct rct_map_element_scenery_properties {
@@ -56,7 +57,7 @@ typedef struct rct_map_element_scenery_properties {
 	uint8 age; //5
 	uint8 colour_1; //6
 	uint8 colour_2; //7
-} PACKED rct_map_element_scenery_properties;
+} rct_map_element_scenery_properties;
 STATIC_ASSERT (sizeof(rct_map_element_scenery_properties) == 4, "Improper struct size");
 
 typedef struct rct_map_element_entrance_properties {
@@ -64,19 +65,19 @@ typedef struct rct_map_element_entrance_properties {
 	uint8 index; //5
 	uint8 path_type; //6
 	uint8 ride_index; //7
-} PACKED rct_map_element_entrance_properties;
+} rct_map_element_entrance_properties;
 STATIC_ASSERT (sizeof(rct_map_element_entrance_properties) == 4, "Improper struct size");
 
 typedef struct rct_map_element_fence_properties {
 	uint8 type; //4
 	uint8 item[3]; //5
-} PACKED rct_map_element_fence_properties;
+} rct_map_element_fence_properties;
 STATIC_ASSERT (sizeof(rct_map_element_fence_properties) == 4, "Improper struct size");
 
 typedef struct rct_map_element_scenerymultiple_properties {
 	uint16 type; //4
 	uint8 colour[2]; //6
-} PACKED rct_map_element_scenerymultiple_properties;
+} rct_map_element_scenerymultiple_properties;
 STATIC_ASSERT (sizeof(rct_map_element_scenerymultiple_properties) == 4, "Improper struct size");
 
 typedef struct rct_map_element_banner_properties {
@@ -84,7 +85,7 @@ typedef struct rct_map_element_banner_properties {
 	uint8 position; //5
 	uint8 flags; //6
 	uint8 unused; //7
-} PACKED rct_map_element_banner_properties;
+} rct_map_element_banner_properties;
 STATIC_ASSERT (sizeof(rct_map_element_banner_properties) == 4, "Improper struct size");
 
 typedef union {
@@ -109,8 +110,9 @@ typedef struct rct_map_element {
 	uint8 base_height; //2
 	uint8 clearance_height; //3
 	rct_map_element_properties properties;
-} PACKED rct_map_element;
+} rct_map_element;
 STATIC_ASSERT (sizeof(rct_map_element) == 8, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	MAP_ELEMENT_QUADRANT_SW,
@@ -239,40 +241,41 @@ enum {
 
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
+#pragma pack(push, 1)
 typedef struct rct_xy8 {
 	union {
 		struct {
 			uint8 x, y;
-		} PACKED;
+		};
 		uint16 xy;
 	};
-} PACKED rct_xy8;
+} rct_xy8;
 STATIC_ASSERT (sizeof(rct_xy8) == 2, "Improper struct size");
 
 typedef struct rct_xyz8 {
 	uint8 x, y, z;
-} PACKED rct_xyz8;
+} rct_xyz8;
 STATIC_ASSERT (sizeof(rct_xyz8) == 3, "Improper struct size");
 
 typedef struct rct_xyzd8 {
 	uint8 x, y, z, direction;
-} PACKED rct_xyzd8;
+} rct_xyzd8;
 STATIC_ASSERT (sizeof(rct_xyzd8) == 4, "Improper struct size");
 
 typedef struct rct_xy16 {
 	sint16 x, y;
-} PACKED rct_xy16;
+} rct_xy16;
 STATIC_ASSERT (sizeof(rct_xy16) == 4, "Improper struct size");
 
 typedef struct rct_xyz16 {
 	sint16 x, y, z;
-} PACKED rct_xyz16;
+} rct_xyz16;
 STATIC_ASSERT (sizeof(rct_xyz16) == 6, "Improper struct size");
 
 typedef struct rct_xy_element {
 	int x, y;
 	rct_map_element *element;
-} PACKED rct_xy_element;
+} rct_xy_element;
 STATIC_ASSERT (sizeof(rct_xy_element) == 12, "Improper struct size");
 
 typedef struct rct2_peep_spawn {
@@ -280,8 +283,9 @@ typedef struct rct2_peep_spawn {
 	uint16 y;
 	uint8 z;
 	uint8 direction;
-} PACKED rct2_peep_spawn;
+} rct2_peep_spawn;
 STATIC_ASSERT (sizeof(rct2_peep_spawn) == 6, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	MAP_SELECT_FLAG_ENABLE				= 1 << 0,
@@ -437,7 +441,7 @@ typedef struct map_element_iterator {
 	int x;
 	int y;
 	rct_map_element *element;
-} PACKED map_element_iterator;
+} map_element_iterator;
 STATIC_ASSERT (sizeof(map_element_iterator) == 12, "Improper struct size");
 
 void map_element_iterator_begin(map_element_iterator *it);

@@ -119,7 +119,7 @@ typedef struct loadsave_list_item {
 	char path[MAX_PATH];
 	time_t date_modified;
 	uint8 type;
-} PACKED loadsave_list_item;
+} loadsave_list_item;
 
 modal_callback gLoadSaveCallback;
 

@@ -51,7 +51,7 @@ typedef struct rct_mouse_data {
 	uint32 x;
 	uint32 y;
 	uint32 state;
-} PACKED rct_mouse_data;
+} rct_mouse_data;
 
 static rct_mouse_data _mouseInputQueue[64];
 static uint8 _mouseInputQueueReadIndex = 0;

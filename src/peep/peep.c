@@ -1123,7 +1123,7 @@ typedef struct item_pref {
 	uint8 type; // 0 for standard, 1 for extra
 	uint32 item; // And this with the relevant flags
 	uint8 sprite_type;
-} PACKED item_pref;
+} item_pref;
 
 item_pref item_order_preference[] = {
 		{ 0, PEEP_ITEM_ICE_CREAM, 15 },

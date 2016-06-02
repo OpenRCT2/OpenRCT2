@@ -36,7 +36,7 @@ typedef struct rating_tuple {
 	ride_rating excitement;
 	ride_rating intensity;
 	ride_rating nausea;
-} PACKED rating_tuple;
+} rating_tuple;
 STATIC_ASSERT (sizeof(rating_tuple) == 6, "Improper struct size");
 
 /**
@@ -47,36 +47,36 @@ typedef struct ride_list_item {
 		struct {
 			uint8 type;
 			uint8 entry_index;
-		} PACKED;
+		};
 		uint16 ride_type_and_entry;
 	};
-} PACKED ride_list_item;
+} ride_list_item;
 STATIC_ASSERT (sizeof(ride_list_item) == 2, "Improper struct size");
 
 typedef struct track_colour {
 	uint8 main;
 	uint8 additional;
 	uint8 supports;
-} PACKED track_colour;
+} track_colour;
 STATIC_ASSERT (sizeof(track_colour) == 3, "Improper struct size");
 
 typedef struct vehicle_colour {
 	uint8 main;
 	uint8 additional_1;
 	uint8 additional_2;
-} PACKED vehicle_colour;
+} vehicle_colour;
 STATIC_ASSERT (sizeof(vehicle_colour) == 3, "Improper struct size");
 
 typedef struct track_colour_preset_list {
 	uint8 count;
 	track_colour list[256];
-} PACKED track_colour_preset_list;
+} track_colour_preset_list;
 STATIC_ASSERT (sizeof(track_colour_preset_list) == (1 + 256 * 3), "Improper struct size");
 
 typedef struct vehicle_colour_preset_list {
 	uint8 count;
 	vehicle_colour list[256];
-} PACKED vehicle_colour_preset_list;
+} vehicle_colour_preset_list;
 STATIC_ASSERT (sizeof(vehicle_colour_preset_list) == (1 + 256 * 3), "Improper struct size");
 
 /**
@@ -116,12 +116,12 @@ typedef struct rct_ride_entry {
 		struct {
 			uint32 enabledTrackPiecesA;					// 0x1B6
 			uint32 enabledTrackPiecesB;					// 0x1BA
-		} PACKED;
+		};
 	};
 	uint8 category[2];									// 0x1BE
 	uint8 shop_item;									// 0x1C0
 	uint8 shop_item_secondary;							// 0x1C1
-} PACKED rct_ride_entry;
+} rct_ride_entry;
 STATIC_ASSERT (sizeof(rct_ride_entry) == 0x1c2, "Improper struct size");
 
 /**
@@ -146,7 +146,7 @@ typedef struct rct_ride {
 		struct {
 			rct_string_id name_arguments_type_name;		// 0x04C
 			uint16 name_arguments_number;				// 0x04E
-		} PACKED;
+		};
 	};
 	uint16 overall_view;			// 0x050 00XX = X, XX00 = Y (* 32 + 16)
 	uint16 station_starts[4];		// 0x052
@@ -245,7 +245,7 @@ typedef struct rct_ride {
 			ride_rating excitement;	// 0x140
 			ride_rating intensity;	// 0x142
 			ride_rating nausea;		// 0x144
-		} PACKED;
+		};
 	};
 	uint16 value;					// 0x146
 	uint16 chairlift_bullwheel_rotation;	// 0x148
@@ -328,7 +328,7 @@ typedef struct rct_ride {
 	uint16 cable_lift;				// 0x1FE
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
-} PACKED rct_ride;
+} rct_ride;
 STATIC_ASSERT (sizeof(rct_ride) == 0x260, "Improper struct size");
 
 #define RIDE_MEASUREMENT_MAX_ITEMS 4800
@@ -349,7 +349,7 @@ typedef struct rct_ride_measurement {
 	sint8 lateral[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x12CC
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
 	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
-} PACKED rct_ride_measurement;
+} rct_ride_measurement;
 STATIC_ASSERT (sizeof(rct_ride_measurement) == 0x4b0c, "Improper struct size");
 
 typedef struct track_begin_end {
@@ -362,7 +362,7 @@ typedef struct track_begin_end {
 	int end_y;
 	int end_direction;
 	rct_map_element *end_element;
-} PACKED track_begin_end;
+} track_begin_end;
 STATIC_ASSERT (sizeof(track_begin_end) == 36, "Improper struct size");
 
 #pragma pack(pop)

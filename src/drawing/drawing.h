@@ -20,6 +20,7 @@
 #include "../common.h"
 #include "font.h"
 
+#pragma pack(push, 1)
 // Size: 0x10
 typedef struct rct_drawpixelinfo {
 	uint8* bits;		// 0x00
@@ -29,7 +30,7 @@ typedef struct rct_drawpixelinfo {
 	short height;		// 0x0A
 	short pitch;		// 0x0C			note: this is actually (pitch - width)
 	uint16 zoom_level;	// 0x0E
-} PACKED rct_drawpixelinfo;
+} rct_drawpixelinfo;
 STATIC_ASSERT (sizeof(rct_drawpixelinfo) == 0x10, "Improper struct size");
 
 // Size: 0x10
@@ -41,7 +42,7 @@ typedef struct rct_g1_element {
 	sint16 y_offset;		// 0x0A
 	uint16 flags;			// 0x0C
 	uint16 zoomed_offset;	// 0x0E
-} PACKED rct_g1_element;
+} rct_g1_element;
 STATIC_ASSERT (sizeof(rct_g1_element) == 0x10, "Improper struct size");
 
 enum {
@@ -59,14 +60,14 @@ enum {
 typedef struct rct_g1_header {
 	uint32 num_entries;
 	uint32 total_size;
-} PACKED rct_g1_header;
+} rct_g1_header;
 STATIC_ASSERT (sizeof(rct_g1_header) == 8, "Improper struct size");
 
 typedef struct rct_gx {
 	rct_g1_header header;
 	rct_g1_element *elements;
 	void *data;
-} PACKED rct_gx;
+} rct_gx;
 STATIC_ASSERT (sizeof(rct_gx) == 16, "Improper struct size");
 
 typedef struct rct_palette_entry {
@@ -74,12 +75,14 @@ typedef struct rct_palette_entry {
 	uint8 green;
 	uint8 red;
 	uint8 alpha;
-} PACKED rct_palette_entry;
+} rct_palette_entry;
 STATIC_ASSERT (sizeof(rct_palette_entry) == 4, "Improper struct size");
+
+#pragma pack(pop)
 
 typedef struct rct_palette {
 	rct_palette_entry entries[256];
-} PACKED rct_palette;
+} rct_palette;
 
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) ((IMAGE_TYPE_USE_PALETTE << 28) | ((colourId) << 19))
 

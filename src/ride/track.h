@@ -21,6 +21,7 @@
 #include "../object.h"
 #include "ride.h"
 
+#pragma pack(push, 1)
 typedef struct rct_trackdefinition {
 	uint8 type;
 	uint8 vangle_end;
@@ -29,8 +30,9 @@ typedef struct rct_trackdefinition {
 	uint8 bank_start;
 	uint8 special;
 	uint8 pad[2];
-} PACKED rct_trackdefinition;
+} rct_trackdefinition;
 STATIC_ASSERT (sizeof(rct_trackdefinition) == 8, "Improper struct size");
+#pragma pack(pop)
 
 /**
 * Size: 0x0A
@@ -43,7 +45,7 @@ typedef struct rct_preview_track {
 	uint8 var_07;
 	uint8 var_08;
 	uint8 var_09;
-} PACKED rct_preview_track;
+} rct_preview_track;
 
 /* size 0x0A */
 typedef struct rct_track_coordinates  {
@@ -53,7 +55,7 @@ typedef struct rct_track_coordinates  {
 	sint16 z_end;			// 0x04
 	sint16 x;				// 0x06
 	sint16 y;				// 0x08
-} PACKED rct_track_coordinates;
+} rct_track_coordinates;
 
 enum {
 	TRACK_ELEMENT_FLAG_TERMINAL_STATION	= 1 << 3,
@@ -457,7 +459,7 @@ typedef struct track_circuit_iterator {
 	rct_map_element *first;
 	bool firstIteration;
 	bool looped;
-} PACKED track_circuit_iterator;
+} track_circuit_iterator;
 
 extern const rct_trackdefinition *gFlatRideTrackDefinitions;
 extern const rct_trackdefinition *gTrackDefinitions;

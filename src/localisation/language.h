@@ -52,7 +52,7 @@ typedef struct language_descriptor {
 	const utf8 *native_name;
 	TTFFontSetDescriptor *font;
 	uint8 rct2_original_id;
-} PACKED language_descriptor;
+} language_descriptor;
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 

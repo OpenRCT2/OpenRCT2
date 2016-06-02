@@ -20,11 +20,13 @@
 #include <SDL.h>
 #include "../common.h"
 
+#pragma pack(push, 1)
 typedef struct sawyercoding_chunk_header {
 	uint8 encoding;
 	uint32 length;
-} PACKED sawyercoding_chunk_header;
+} sawyercoding_chunk_header;
 STATIC_ASSERT (sizeof(sawyercoding_chunk_header) == 5, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	CHUNK_ENCODING_NONE,

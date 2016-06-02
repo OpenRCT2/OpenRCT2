@@ -26,16 +26,27 @@
 
 extern int gSpriteMode;
 
+#pragma pack(push, 1)
+
 typedef struct rct_sprite_file_header {
 	uint32 num_entries;
 	uint32 total_size;
-} PACKED rct_sprite_file_header;
+} rct_sprite_file_header;
 
 STATIC_ASSERT (sizeof(rct_sprite_file_header) == 8, "Improper struct size");
 
 typedef struct rct_sprite_file_palette_entry {
     uint8 b, g, r, a;
-} PACKED rct_sprite_file_palette_entry;
+} rct_sprite_file_palette_entry;
+
+typedef struct rle_code {
+	uint8 num_pixels;
+	uint8 offset_x;
+} rle_code;
+
+STATIC_ASSERT (sizeof(rle_code) == 2, "Improper struct size");
+
+#pragma pack(pop)
 
 STATIC_ASSERT (sizeof(rct_sprite_file_palette_entry) == 4, "Improper struct size");
 
@@ -234,13 +245,6 @@ int get_palette_index(sint16 *colour)
 
 	return -1;
 }
-
-typedef struct rle_code {
-	uint8 num_pixels;
-	uint8 offset_x;
-} PACKED rle_code;
-
-STATIC_ASSERT (sizeof(rle_code) == 2, "Improper struct size");
 
 bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, int mode)
 {

@@ -32,7 +32,7 @@ extern const uint8 TrackPieceLengths[256];
 typedef struct track_curve_chain {
 	uint16 next;
 	uint16 previous;
-} PACKED track_curve_chain;
+} track_curve_chain;
 
 extern const track_curve_chain gTrackCurveChain[256];
 extern const track_curve_chain gFlatRideTrackCurveChain[256];
@@ -48,13 +48,13 @@ typedef struct track_descriptor {
 	uint8 slope_end;
 	uint8 bank_end;
 	uint8 track_element;
-} PACKED track_descriptor;
+} track_descriptor;
 
 extern const track_descriptor gTrackDescriptors[142];
 
 typedef struct {
 	uint16 size;
 	const rct_vehicle_info info[];
-} PACKED rct_vehicle_info_list;
+} rct_vehicle_info_list;
 
 extern const rct_vehicle_info_list **gTrackVehicleInfo[17];

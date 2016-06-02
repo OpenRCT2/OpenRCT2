@@ -19,11 +19,13 @@
 
 #include "../common.h"
 
+#pragma pack(push, 1)
 typedef struct rct_award {
 	uint16 time;
 	uint16 type;
-} PACKED rct_award;
+} rct_award;
 STATIC_ASSERT (sizeof(rct_award) == 4, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	PARK_AWARD_MOST_UNTIDY,

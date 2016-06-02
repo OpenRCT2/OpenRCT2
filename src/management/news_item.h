@@ -32,6 +32,7 @@ enum {
 	NEWS_ITEM_GRAPH
 };
 
+#pragma pack(push, 1)
 /**
  * News item structure.
  * size: 0x10C
@@ -45,8 +46,9 @@ typedef struct rct_news_item {
 	uint8 day;					// 0x0A
 	uint8 pad_0B;				// 0x0B
 	utf8 text[256];				// 0x0C
-} PACKED rct_news_item;
+} rct_news_item;
 STATIC_ASSERT (sizeof(rct_news_item) == 12 + 256, "Improper struct size");
+#pragma pack(pop)
 
 #define MAX_NEWS_ITEMS 60
 

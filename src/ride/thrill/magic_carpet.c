@@ -40,7 +40,7 @@ typedef struct bound_box {
 	sint16 y;
 	sint16 width;
 	sint16 height;
-} PACKED bound_box;
+} bound_box;
 
 /** rct2: 0x01428220 */
 static const sint16 MagicCarpetOscillationZ[] = {

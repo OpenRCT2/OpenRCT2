@@ -32,7 +32,7 @@ typedef struct rct_audio_params {
 	bool in_range;
 	int volume;
 	int pan;
-} PACKED rct_audio_params;
+} rct_audio_params;
 
 audio_device *gAudioDevices = NULL;
 int gAudioDeviceCount;

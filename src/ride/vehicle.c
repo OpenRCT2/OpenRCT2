@@ -1881,12 +1881,14 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	}
 }
 
+#pragma pack(push, 1)
 typedef struct rct_synchronised_vehicle {
 	uint8 ride_id;
 	uint8 station_id;
 	uint16 vehicle_id;
-} PACKED rct_synchronised_vehicle;
+} rct_synchronised_vehicle;
 STATIC_ASSERT (sizeof(rct_synchronised_vehicle) == 4, "Improper struct size");
+#pragma pack(pop)
 
 // 8 synchronised vehicle info
 rct_synchronised_vehicle *_synchronisedVehicles = (rct_synchronised_vehicle*)0x00F64E4C;

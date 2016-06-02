@@ -58,4 +58,4 @@ public:
 private:
     T       _value;
     bool    _hasValue;
-} PACKED;
+};

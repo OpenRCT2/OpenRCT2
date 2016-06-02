@@ -952,12 +952,12 @@ typedef struct rct_neighbour {
 	uint8 direction;
 	uint8 ride_index;
 	uint8 entrance_index;
-} PACKED rct_neighbour;
+} rct_neighbour;
 
 typedef struct rct_neighbour_list {
 	rct_neighbour items[8];
 	int count;
-} PACKED rct_neighbour_list;
+} rct_neighbour_list;
 
 static int rct_neighbour_compare(const void *a, const void *b)
 {

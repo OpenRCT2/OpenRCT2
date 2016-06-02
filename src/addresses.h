@@ -668,7 +668,7 @@ typedef struct registers {
 		struct {
 			char al;
 			char ah;
-		} PACKED;
+		};
 	};
 	union {
 		int ebx;
@@ -676,7 +676,7 @@ typedef struct registers {
 		struct {
 			char bl;
 			char bh;
-		} PACKED;
+		};
 	};
 	union {
 		int ecx;
@@ -684,7 +684,7 @@ typedef struct registers {
 		struct {
 			char cl;
 			char ch;
-		} PACKED;
+		};
 	};
 	union {
 		int edx;
@@ -692,7 +692,7 @@ typedef struct registers {
 		struct {
 			char dl;
 			char dh;
-		} PACKED;
+		};
 	};
 	union {
 		int esi;
@@ -706,7 +706,7 @@ typedef struct registers {
 		int ebp;
 		short bp;
 	};
-} PACKED registers;
+} registers;
 
 STATIC_ASSERT (sizeof(registers) == 7 * 4, "Improper struct size");
 

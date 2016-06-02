@@ -58,7 +58,7 @@ typedef struct currency_descriptor {
 	uint8 affix_ascii;
 	char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
 	rct_string_id stringId;
-} PACKED currency_descriptor;
+} currency_descriptor;
 
 // List of currency formats
 extern const currency_descriptor CurrencyDescriptors[CURRENCY_END];

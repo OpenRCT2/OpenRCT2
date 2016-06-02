@@ -19,7 +19,7 @@
 typedef struct encoding_convert_entry {
 	uint16 code;
 	uint16 unicode;
-} PACKED encoding_convert_entry;
+} encoding_convert_entry;
 
 static const encoding_convert_entry GB2312ToUnicodeTable[7445];
 static const encoding_convert_entry Big5ToUnicodeTable[13710];

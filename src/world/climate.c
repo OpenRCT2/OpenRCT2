@@ -33,11 +33,14 @@ enum {
 	MAX_THUNDER_INSTANCES = 2
 };
 
+#pragma pack(push, 1)
 typedef struct rct_weather_transition {
 	sint8 base_temperature;
 	sint8 distribution_size;
 	sint8 distribution[24];
-} PACKED rct_weather_transition;
+} rct_weather_transition;
+STATIC_ASSERT (sizeof(rct_weather_transition) == 26, "Improper struct size");
+#pragma pack(pop)
 
 static const rct_weather_transition* climate_transitions[4];
 

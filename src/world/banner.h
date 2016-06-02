@@ -23,6 +23,7 @@
 #define BANNER_NULL 255
 #define MAX_BANNERS 250
 
+#pragma pack(push, 1)
 typedef struct rct_banner {
 	uint8 type;
 	uint8 flags; //0x01 bit 0 is no entry
@@ -31,8 +32,9 @@ typedef struct rct_banner {
 	uint8 text_colour; //0x05
 	uint8 x; //0x06
 	uint8 y; //0x07
-} PACKED rct_banner;
+} rct_banner;
 STATIC_ASSERT (sizeof(rct_banner) == 8, "Improper struct size");
+#pragma pack(pop)
 
 enum{
 	BANNER_FLAG_NO_ENTRY = (1 << 0),

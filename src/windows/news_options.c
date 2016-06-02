@@ -30,7 +30,7 @@ typedef struct notification_def {
 	uint8 category;
 	rct_string_id caption;
 	size_t config_offset;
-} PACKED notification_def;
+} notification_def;
 
 static const notification_def NewsItemOptionDefinitions[] = {
 	{ NOTIFICATION_CATEGORY_PARK,	STR_NOTIFICATION_PARK_AWARD,						offsetof(notification_configuration, park_award)						},

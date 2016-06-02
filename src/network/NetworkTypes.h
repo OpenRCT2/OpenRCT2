@@ -72,7 +72,7 @@ struct ByteSwapT<1>
     {
         return value;
     }
-} PACKED;
+};
 
 template <>
 struct ByteSwapT<2>
@@ -81,7 +81,7 @@ struct ByteSwapT<2>
     {
         return SDL_SwapBE16(value);
     }
-} PACKED;
+};
 
 template <>
 struct ByteSwapT<4>
@@ -90,7 +90,7 @@ struct ByteSwapT<4>
     {
         return SDL_SwapBE32(value);
     }
-} PACKED;
+};
 
 template <typename T>
 T ByteSwapBE(const T& value)

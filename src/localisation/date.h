@@ -43,7 +43,7 @@ typedef struct openrct_timeofday {
 	uint8 second;
 	uint8 minute;
 	uint8 hour;
-} PACKED openrct_timeofday;
+} openrct_timeofday;
 
 extern const sint16 days_in_month[MONTH_COUNT];
 extern const rct_string_id DateFormatStringIds[];

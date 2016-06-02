@@ -25,12 +25,12 @@ typedef struct http_json_request {
 	const char *method;
 	const char *url;
 	const json_t *body;
-} PACKED http_json_request;
+} http_json_request;
 
 typedef struct http_json_response {
 	int status_code;
 	json_t *root;
-} PACKED http_json_response;
+} http_json_response;
 
 #define HTTP_METHOD_GET		"GET"
 #define HTTP_METHOD_POST	"POST"

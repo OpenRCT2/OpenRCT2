@@ -28,7 +28,7 @@ typedef struct textinputbuffer {
 
 	size_t selection_offset;	// Selection start, in bytes
 	size_t selection_size;		// Selection length in bytes
-} PACKED textinputbuffer;
+} textinputbuffer;
 
 void textinputbuffer_init(textinputbuffer * tib, utf8 * buffer, size_t size);
 void textinputbuffer_clear(textinputbuffer * tib);

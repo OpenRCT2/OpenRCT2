@@ -176,7 +176,7 @@ private:
 		bool operator<(const GameCommand& comp) const {
 			return tick < comp.tick;
 		}
-	} PACKED;
+	};
 
 	int mode = NETWORK_MODE_NONE;
 	int status = NETWORK_STATUS_NONE;

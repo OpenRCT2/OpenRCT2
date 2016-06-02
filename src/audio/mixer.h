@@ -48,7 +48,7 @@ typedef struct AudioFormat {
 	int freq;
 	SDL_AudioFormat format;
 	int channels;
-} PACKED AudioFormat;
+} AudioFormat;
 
 class Source
 {

@@ -70,6 +70,8 @@ enum {
 
 #define NUM_COLOURS 32
 
+#pragma pack(push, 1)
+
 typedef struct rct_colour_map_a {
 	uint8 darkest;
 	uint8 darker;
@@ -79,7 +81,7 @@ typedef struct rct_colour_map_a {
 	uint8 light;
 	uint8 lighter;
 	uint8 lightest;
-} PACKED rct_colour_map_a;
+} rct_colour_map_a;
 STATIC_ASSERT (sizeof(rct_colour_map_a) == 8, "Improper struct size");
 
 typedef struct rct_colour_map_b {
@@ -91,8 +93,10 @@ typedef struct rct_colour_map_b {
 	uint8 f;
 	uint8 g;
 	uint8 h;
-} PACKED rct_colour_map_b;
+} rct_colour_map_b;
 STATIC_ASSERT (sizeof(rct_colour_map_b) == 8, "Improper struct size");
+
+#pragma pack(pop)
 
 extern rct_colour_map_a *ColourMapA;
 extern rct_colour_map_b *ColourMapB;

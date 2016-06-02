@@ -26,12 +26,13 @@
 #include "world/map.h"
 #include "world/sprite.h"
 
+#pragma pack(push, 1)
 typedef struct rct1_entrance {
 	uint16 x;
 	uint16 y;
 	uint16 z;
 	uint8 direction;
-} PACKED rct1_entrance;
+} rct1_entrance;
 STATIC_ASSERT (sizeof(rct1_entrance) == 7, "Improper struct size");
 
 /**
@@ -47,7 +48,7 @@ typedef struct rct1_ride {
 	struct {
 		colour_t body;
 		colour_t trim;
-	} PACKED vehicle_colours[12];
+	} vehicle_colours[12];
 	colour_t track_primary_colour;
 	colour_t track_secondary_colour;
 	colour_t track_support_colour;
@@ -124,7 +125,7 @@ typedef struct rct1_ride {
 			ride_rating excitement;
 			ride_rating intensity;
 			ride_rating nausea;
-		} PACKED;
+		};
 	};
 	uint16 value;
 	uint16 var_F8;
@@ -160,7 +161,7 @@ typedef struct rct1_ride {
 	uint8 music;
 	uint8 entrance_style;
 	uint8 unk_17A[230];
-} PACKED rct1_ride;
+} rct1_ride;
 STATIC_ASSERT (sizeof(rct1_ride) == 0x260, "Improper struct size");
 
 typedef struct rct1_research_item {
@@ -169,7 +170,7 @@ typedef struct rct1_research_item {
 	uint8 category;
 	uint8 flags;
 	uint8 expenditure_area;
-} PACKED rct1_research_item;
+} rct1_research_item;
 STATIC_ASSERT (sizeof(rct1_research_item) == 5, "Improper struct size");
 
 /**
@@ -342,8 +343,55 @@ typedef struct rct1_s4 {
 	uint32 scenario_flags;
 	uint8 unk_1F8358[432];
 	uint32 expansion_pack_checksum;
-} PACKED rct1_s4;
+} rct1_s4;
 STATIC_ASSERT (sizeof(rct1_s4) == 0x1F850C, "Improper struct size");
+
+typedef struct rct_track_td4 {
+	uint8 type;										// 0x00
+	uint8 vehicle_type;								// 0x01
+	uint32 special_track_flags;						// 0x02
+	uint8 operating_mode;							// 0x06
+	uint8 vehicle_colour_version;					// 0x07 Vehicle colour type in first two bits, Version in bits 3,4
+	colour_t body_trim_colour[24];					// 0x08
+	colour_t track_spine_colour_rct1;				// 0x20
+	colour_t track_rail_colour_rct1;				// 0x21
+	colour_t track_support_colour_rct1;				// 0x22
+	uint8 departure_control_flags;					// 0x23
+	uint8 number_of_trains;							// 0x24
+	uint8 cars_per_train;							// 0x25
+	uint8 min_wait_time;							// 0x26
+	uint8 max_wait_time;							// 0x27
+	uint8 speed;									// 0x28
+	uint8 max_speed;								// 0x29
+	uint8 average_speed;							// 0x2A
+	uint16 ride_length;								// 0x2B
+	uint8 max_positive_vertical_g;					// 0x2D
+	uint8 max_negitive_vertical_g;					// 0x2E
+	uint8 max_lateral_g;							// 0x2F
+	union {
+		uint8 inversions;							// 0x30
+		uint8 holes;								// 0x30
+	};
+	uint8 drops;									// 0x31
+	uint8 highest_drop_height;						// 0x32
+	uint8 excitement;								// 0x33
+	uint8 intensity;								// 0x34
+	uint8 nausea;									// 0x35
+	uint8 pad_36[2];
+	union{
+		uint16 start_track_data_original;			// 0x38
+		colour_t track_spine_colour[4];				// 0x38
+	};
+	colour_t track_rail_colour[4];					// 0x3C
+	union{
+		colour_t track_support_colour[4];			// 0x40
+		uint8 wall_type[4];							// 0x40
+	};
+	uint8 pad_41[0x83];
+	uint16 start_track_data_AA_CF;					// 0xC4
+} rct_track_td4; // Information based off RCTTechDepot
+STATIC_ASSERT (sizeof(rct_track_td4) == 0xC9, "Improper struct size");
+#pragma pack(pop)
 
 enum {
 	RCT1_RIDE_TYPE_NULL = 255,
@@ -648,52 +696,6 @@ enum {
 	RCT1_RESEARCH_SPECIAL_HEARTLINE_ROLL = 0x22,
 	RCT1_RESEARCH_SPECIAL_REVERSING_SECTIONS = 0x23,
 };
-
-typedef struct rct_track_td4 {
-	uint8 type;										// 0x00
-	uint8 vehicle_type;								// 0x01
-	uint32 special_track_flags;						// 0x02
-	uint8 operating_mode;							// 0x06
-	uint8 vehicle_colour_version;					// 0x07 Vehicle colour type in first two bits, Version in bits 3,4
-	colour_t body_trim_colour[24];					// 0x08
-	colour_t track_spine_colour_rct1;				// 0x20
-	colour_t track_rail_colour_rct1;				// 0x21
-	colour_t track_support_colour_rct1;				// 0x22
-	uint8 departure_control_flags;					// 0x23
-	uint8 number_of_trains;							// 0x24
-	uint8 cars_per_train;							// 0x25
-	uint8 min_wait_time;							// 0x26
-	uint8 max_wait_time;							// 0x27
-	uint8 speed;									// 0x28
-	uint8 max_speed;								// 0x29
-	uint8 average_speed;							// 0x2A
-	uint16 ride_length;								// 0x2B
-	uint8 max_positive_vertical_g;					// 0x2D
-	uint8 max_negitive_vertical_g;					// 0x2E
-	uint8 max_lateral_g;							// 0x2F
-	union {
-		uint8 inversions;							// 0x30
-		uint8 holes;								// 0x30
-	};
-	uint8 drops;									// 0x31
-	uint8 highest_drop_height;						// 0x32
-	uint8 excitement;								// 0x33
-	uint8 intensity;								// 0x34
-	uint8 nausea;									// 0x35
-	uint8 pad_36[2];
-	union{
-		uint16 start_track_data_original;			// 0x38
-		colour_t track_spine_colour[4];				// 0x38
-	};
-	colour_t track_rail_colour[4];					// 0x3C
-	union{
-		colour_t track_support_colour[4];			// 0x40
-		uint8 wall_type[4];							// 0x40
-	};
-	uint8 pad_41[0x83];
-	uint16 start_track_data_AA_CF;					// 0xC4
-} PACKED rct_track_td4; // Information based off RCTTechDepot
-STATIC_ASSERT (sizeof(rct_track_td4) == 0xC9, "Improper struct size");
 
 enum {
 	RCT1_SCENARIO_FLAG_0 = 1 << 0,

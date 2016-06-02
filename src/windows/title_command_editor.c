@@ -32,7 +32,7 @@ typedef struct TITLE_COMMAND_ORDER {
 	uint8 command;
 	rct_string_id nameStringId;
 	rct_string_id descStringId;
-} PACKED TITLE_COMMAND_ORDER;
+} TITLE_COMMAND_ORDER;
 
 TITLE_COMMAND_ORDER window_title_command_editor_orders[] = {
 	{ TITLE_SCRIPT_LOAD,		5413, 5431 },
