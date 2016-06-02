@@ -1653,7 +1653,7 @@ static money32 map_set_land_height(int flags, int x, int y, int height, int styl
 	if (height > 142) {
 		gGameCommandErrorText = STR_TOO_HIGH;
 		return MONEY32_UNDEFINED;
-	} else if (height == 62 && (style & 0x1F) != 0) {
+	} else if (height > 140 && (style & 0x1F) != 0) {
 		gGameCommandErrorText = STR_TOO_HIGH;
 		return MONEY32_UNDEFINED;
 	}
