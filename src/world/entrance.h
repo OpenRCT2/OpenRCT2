@@ -25,5 +25,6 @@ typedef struct rct_entrance_type {
 	uint8 scrolling_mode;		// 0x06
 	uint8 text_height;			// 0x07
 } PACKED rct_entrance_type;
+STATIC_ASSERT (sizeof(rct_entrance_type) == 8, "Improper struct size");
 
 #endif

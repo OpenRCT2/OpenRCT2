@@ -29,6 +29,7 @@ typedef struct rct_map_animation {
 	uint16 x;
 	uint16 y;
 } PACKED rct_map_animation;
+STATIC_ASSERT (sizeof(rct_map_animation) == 6, "Improper struct size");
 
 enum {
 	MAP_ANIMATION_TYPE_RIDE_ENTRANCE,

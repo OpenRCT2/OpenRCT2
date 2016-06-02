@@ -24,6 +24,7 @@ typedef struct rct_vehicle_colour {
 	uint8 body_colour;
 	uint8 trim_colour;
 } PACKED rct_vehicle_colour;
+STATIC_ASSERT (sizeof(rct_vehicle_colour) == 2, "Improper struct size");
 
 /**
  * Ride type vehicle structure.
@@ -75,6 +76,7 @@ typedef struct rct_ride_entry_vehicle {
 	uint8 special_frames;			// 0x60 , 0x7A
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
 } PACKED rct_ride_entry_vehicle;
+STATIC_ASSERT (sizeof(rct_ride_entry_vehicle) == 0x65, "Improper struct size");
 
 typedef struct rct_vehicle {
 	uint8 sprite_identifier;		// 0x00
@@ -193,6 +195,7 @@ typedef struct rct_vehicle {
 	uint8 seat_rotation;			// 0xD8
 	uint8 target_seat_rotation;		// 0xD9
 } PACKED rct_vehicle;
+STATIC_ASSERT (sizeof(rct_vehicle) == 0xDA, "Improper struct size");
 
 typedef struct train_ref {
 	rct_vehicle *head;

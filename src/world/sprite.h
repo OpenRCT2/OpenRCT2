@@ -75,6 +75,7 @@ typedef struct rct_unk_sprite {
 	uint8 pad_2C[0x45];
 	uint8 var_71;
 } PACKED rct_unk_sprite;
+STATIC_ASSERT (sizeof(rct_unk_sprite) == 0x72, "Improper struct size");
 
 typedef struct rct_litter {
 	uint8 sprite_identifier;		// 0x00
@@ -96,6 +97,7 @@ typedef struct rct_litter {
 	uint8 pad_1F[5];
 	uint32 creationTick;			// 0x24
 } PACKED rct_litter;
+STATIC_ASSERT (sizeof(rct_litter) == 0x28, "Improper struct size");
 
 typedef struct rct_balloon {
 	uint8 sprite_identifier;		// 0x00
@@ -125,6 +127,7 @@ typedef struct rct_balloon {
 	uint8 colour;					// 0x2C
 	uint8 var_2D;
 } PACKED rct_balloon;
+STATIC_ASSERT (sizeof(rct_balloon) == 0x2e, "Improper struct size");
 
 typedef struct rct_duck {
 	uint8 sprite_identifier;		// 0x00
@@ -151,6 +154,7 @@ typedef struct rct_duck {
 	uint8 pad_34[0x14];
 	uint8 state;					// 0x48
 } PACKED rct_duck;
+STATIC_ASSERT (sizeof(rct_duck) == 0x49, "Improper struct size");
 
 typedef struct rct_jumping_fountain {
 	uint8 sprite_identifier;		// 0x00
@@ -185,6 +189,7 @@ typedef struct rct_jumping_fountain {
 	uint8 pad_34[0x12];
 	uint16 iteration;				// 0x46
 } PACKED rct_jumping_fountain;
+STATIC_ASSERT (sizeof(rct_jumping_fountain) == 0x48, "Improper struct size");
 
 typedef struct rct_money_effect {
 	uint8 sprite_identifier;		// 0x00
@@ -209,6 +214,7 @@ typedef struct rct_money_effect {
 	sint16 offset_x;				// 0x44
 	uint16 wiggle;					// 0x46
 } PACKED rct_money_effect;
+STATIC_ASSERT (sizeof(rct_money_effect) == 0x48, "Improper struct size");
 
 typedef struct rct_crashed_vehicle_particle {
 	uint8 sprite_identifier;		// 0x00
@@ -251,6 +257,7 @@ typedef struct rct_crashed_vehicle_particle {
 	uint8 pad_44[0x2D];
 	uint8 var_71;
 } PACKED rct_crashed_vehicle_particle;
+STATIC_ASSERT (sizeof(rct_crashed_vehicle_particle) == 0x45 + 0x2D, "Improper struct size");
 
 typedef struct rct_crash_splash {
 	uint8 sprite_identifier;		// 0x00
@@ -280,6 +287,7 @@ typedef struct rct_crash_splash {
 	uint16 var_24;
 	uint16 frame;					// 0x26
 } PACKED rct_crash_splash;
+STATIC_ASSERT (sizeof(rct_crash_splash) == 0x28, "Improper struct size");
 
 typedef struct rct_steam_particle {
 	uint8 sprite_identifier;		// 0x00
@@ -309,6 +317,7 @@ typedef struct rct_steam_particle {
 	uint16 var_24;
 	uint16 frame;					// 0x26
 } PACKED rct_steam_particle;
+STATIC_ASSERT (sizeof(rct_steam_particle) == 0x28, "Improper struct size");
 
 /**
  * Sprite structure.
@@ -328,6 +337,7 @@ typedef union {
 	rct_crash_splash crash_splash;
 	rct_steam_particle steam_particle;
 } rct_sprite;
+STATIC_ASSERT (sizeof(rct_sprite) == 0x100, "Improper struct size");
 
 typedef struct rct_sprite_bounds {
 	uint8 sprite_width;             // 0x00
@@ -335,16 +345,19 @@ typedef struct rct_sprite_bounds {
 	uint8 sprite_height_positive;   // 0x02
 	uint8 unused;                   // 0x03
 } PACKED rct_sprite_bounds;
+STATIC_ASSERT (sizeof(rct_sprite_bounds) == 4, "Improper struct size");
 
 typedef struct rct_sprite_image {
 	uint32 base_image;   // 0x00
 	uint8* unkn_04;      // 0x04
 } PACKED rct_sprite_image;
+STATIC_ASSERT (sizeof(rct_sprite_image) == 8, "Improper struct size");
 
 typedef struct rct_sprite_entry {
 	rct_sprite_image *sprite_image;      // 0x00
 	rct_sprite_bounds *sprite_bounds;    // 0x04
 } PACKED rct_sprite_entry;
+STATIC_ASSERT (sizeof(rct_sprite_entry) == 8, "Improper struct size");
 
 enum {
 	SPRITE_MISC_STEAM_PARTICLE,

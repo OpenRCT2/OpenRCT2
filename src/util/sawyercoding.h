@@ -24,6 +24,7 @@ typedef struct sawyercoding_chunk_header {
 	uint8 encoding;
 	uint32 length;
 } PACKED sawyercoding_chunk_header;
+STATIC_ASSERT (sizeof(sawyercoding_chunk_header) == 5, "Improper struct size");
 
 enum {
 	CHUNK_ENCODING_NONE,

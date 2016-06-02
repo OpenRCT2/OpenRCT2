@@ -26,5 +26,6 @@ typedef struct rct_water_type {
 	uint32 var_0A;
 	uint16 var_0E;
 } PACKED rct_water_type;
+STATIC_ASSERT (sizeof(rct_water_type) == 16, "Improper struct size");
 
 #endif

@@ -28,6 +28,9 @@ typedef struct td_index_item {
 	char ride_entry[9];
 	utf8 path[MAX_PATH];
 } PACKED td_index_item;
+// NOTE: this is our own struct and should not get packed, but it is stored in a file
+// so removing packing from it would require refactoring file access
+STATIC_ASSERT (sizeof(td_index_item) == 1 + 9 + 260, "Improper struct size");
 
 static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount);
 static void track_design_index_scan();

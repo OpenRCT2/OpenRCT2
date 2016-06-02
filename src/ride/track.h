@@ -30,6 +30,7 @@ typedef struct rct_trackdefinition {
 	uint8 special;
 	uint8 pad[2];
 } PACKED rct_trackdefinition;
+STATIC_ASSERT (sizeof(rct_trackdefinition) == 8, "Improper struct size");
 
 /**
 * Size: 0x0A

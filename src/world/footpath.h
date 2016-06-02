@@ -34,6 +34,7 @@ typedef struct rct_footpath_entry {
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
 } PACKED rct_footpath_entry;
+STATIC_ASSERT (sizeof(rct_footpath_entry) == 12, "Improper struct size");
 
 enum {
 	FOOTPATH_SEARCH_SUCCESS,

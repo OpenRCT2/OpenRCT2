@@ -32,6 +32,7 @@ typedef struct rct_banner {
 	uint8 x; //0x06
 	uint8 y; //0x07
 } PACKED rct_banner;
+STATIC_ASSERT (sizeof(rct_banner) == 8, "Improper struct size");
 
 enum{
 	BANNER_FLAG_NO_ENTRY = (1 << 0),

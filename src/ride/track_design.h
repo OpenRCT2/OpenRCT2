@@ -41,12 +41,14 @@ typedef struct rct_td6_maze_element {
 		} PACKED;
 	};
 } PACKED rct_td6_maze_element;
+STATIC_ASSERT (sizeof(rct_td6_maze_element) == 0x04, "Improper struct size");
 
 /* Track Element entry  size: 0x02 */
 typedef struct rct_td6_track_element {
 	uint8 type;							// 0x00
 	uint8 flags;						// 0x01
 } PACKED rct_td6_track_element;
+STATIC_ASSERT (sizeof(rct_td6_track_element) == 0x02, "Improper struct size");
 
 /* Track Entrance entry size: 0x06 */
 typedef struct rct_td6_entrance_element {
@@ -55,6 +57,7 @@ typedef struct rct_td6_entrance_element {
 	sint16 x;							// 0x02
 	sint16 y;							// 0x04
 } PACKED rct_td6_entrance_element;
+STATIC_ASSERT (sizeof(rct_td6_entrance_element) == 0x06, "Improper struct size");
 
 /* Track Scenery entry  size: 0x16 */
 typedef struct rct_td6_scenery_element {
@@ -66,6 +69,7 @@ typedef struct rct_td6_scenery_element {
 	uint8 primary_colour;				// 0x14
 	uint8 secondary_colour;				// 0x15
 } PACKED rct_td6_scenery_element;
+STATIC_ASSERT (sizeof(rct_td6_scenery_element) == 0x16, "Improper struct size");
 
 /**
  * Track design structure.
@@ -141,11 +145,8 @@ typedef struct rct_track_td6 {
 
 	utf8 *name;
 } PACKED rct_track_td6;
-
-typedef struct rct_track_design {
-	rct_track_td6 track_td6;
-	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
-} PACKED rct_track_design;
+//Warning: improper struct size in comment
+STATIC_ASSERT (sizeof(rct_track_td6) == 0xbf, "Improper struct size");
 
 typedef struct track_design_file_ref {
 	utf8 *name;

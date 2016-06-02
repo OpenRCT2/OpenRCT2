@@ -46,6 +46,7 @@ typedef struct rct_news_item {
 	uint8 pad_0B;				// 0x0B
 	utf8 text[256];				// 0x0C
 } PACKED rct_news_item;
+STATIC_ASSERT (sizeof(rct_news_item) == 12 + 256, "Improper struct size");
 
 #define MAX_NEWS_ITEMS 60
 

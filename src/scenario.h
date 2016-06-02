@@ -41,6 +41,7 @@ typedef struct rct_s6_header {
 	uint32 magic_number;		// 0x08
 	uint8 pad_0C[0x14];
 } PACKED rct_s6_header;
+STATIC_ASSERT (sizeof(rct_s6_header) == 0x20, "Improper struct size");
 
 /**
  * SC6 information chunk
@@ -58,6 +59,7 @@ typedef struct rct_s6_info {
 	char details[256];			// 0x88
 	rct_object_entry entry;		// 0x188
 } PACKED rct_s6_info;
+STATIC_ASSERT (sizeof(rct_s6_info) == 0x198, "Improper struct size");
 
 /**
  * Scenario scores file header.
@@ -69,6 +71,7 @@ typedef struct rct_scenario_scores_header {
 	uint32 var_8;
 	uint32 scenario_count;		// 0x0C
 } PACKED rct_scenario_scores_header;
+STATIC_ASSERT (sizeof(rct_scenario_scores_header) == 16, "Improper struct size");
 
 typedef enum scenario_source {
 	SCENARIO_SOURCE_RCT1,
@@ -101,6 +104,7 @@ typedef struct rct_scenario_basic {
 	// uint8 source_game;			// new in OpenRCT2
 	// sint16 source_index;		// new in OpenRCT2
 } PACKED rct_scenario_basic;
+STATIC_ASSERT (sizeof(rct_scenario_basic) == 0x02B0, "Improper struct size");
 
 typedef struct rct_stex_entry {
 	rct_string_id scenario_name;	// 0x00
@@ -108,6 +112,7 @@ typedef struct rct_stex_entry {
 	rct_string_id details;			// 0x04
 	uint8 var_06;
 } PACKED rct_stex_entry;
+STATIC_ASSERT (sizeof(rct_stex_entry) == 7, "Improper struct size");
 
 #define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
 
@@ -387,6 +392,8 @@ typedef struct scenario_highscore_entry {
 	money32 company_value;
 	datetime64 timestamp;
 } PACKED scenario_highscore_entry;
+// NOTE: Check if needed
+STATIC_ASSERT (sizeof(scenario_highscore_entry) == 20, "Improper struct size");
 
 typedef struct scenario_index_entry {
 	utf8 path[MAX_PATH];

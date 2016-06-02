@@ -448,6 +448,7 @@ union {
 		uint32 b;
 	} PACKED;
 } _enabledRidePieces;
+STATIC_ASSERT (sizeof(_enabledRidePieces) == 8, "Improper struct size");
 
 static bool	_trackPlaceCtrlState;
 static int	_trackPlaceCtrlZ;

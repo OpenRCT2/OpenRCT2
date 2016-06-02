@@ -1886,6 +1886,7 @@ typedef struct rct_synchronised_vehicle {
 	uint8 station_id;
 	uint16 vehicle_id;
 } PACKED rct_synchronised_vehicle;
+STATIC_ASSERT (sizeof(rct_synchronised_vehicle) == 4, "Improper struct size");
 
 // 8 synchronised vehicle info
 rct_synchronised_vehicle *_synchronisedVehicles = (rct_synchronised_vehicle*)0x00F64E4C;

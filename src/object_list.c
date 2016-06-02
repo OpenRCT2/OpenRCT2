@@ -38,6 +38,7 @@ typedef struct rct_plugin_header {
 	uint32 object_list_size;
 	uint32 object_list_no_items;
 } PACKED rct_plugin_header;
+STATIC_ASSERT (sizeof(rct_plugin_header) == 20, "Improper struct size");
 
 // 98DA00
 int object_entry_group_counts[] = {

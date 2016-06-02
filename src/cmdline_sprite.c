@@ -31,9 +31,13 @@ typedef struct rct_sprite_file_header {
 	uint32 total_size;
 } PACKED rct_sprite_file_header;
 
+STATIC_ASSERT (sizeof(rct_sprite_file_header) == 8, "Improper struct size");
+
 typedef struct rct_sprite_file_palette_entry {
     uint8 b, g, r, a;
 } PACKED rct_sprite_file_palette_entry;
+
+STATIC_ASSERT (sizeof(rct_sprite_file_palette_entry) == 4, "Improper struct size");
 
 rct_sprite_file_palette_entry spriteFilePalette[256];
 static rct_sprite_file_palette_entry _standardPalette[256];
@@ -235,6 +239,8 @@ typedef struct rle_code {
 	uint8 num_pixels;
 	uint8 offset_x;
 } PACKED rle_code;
+
+STATIC_ASSERT (sizeof(rle_code) == 2, "Improper struct size");
 
 bool sprite_file_import(const char *path, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, int mode)
 {

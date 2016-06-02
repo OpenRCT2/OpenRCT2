@@ -55,6 +55,17 @@
 	#define RESTRICT
 #endif
 
+#ifdef __cplusplus
+#define STATIC_ASSERT static_assert
+#else
+	// Visual Studio does not know _Static_assert
+	#if !defined(_MSC_VER)
+		#define STATIC_ASSERT _Static_assert
+	#else
+		#define STATIC_ASSERT(x, y)
+	#endif // !defined(_MSC_VER)
+#endif
+
 #ifdef PLATFORM_X86
 	#ifndef FASTCALL
 		#ifdef __GNUC__

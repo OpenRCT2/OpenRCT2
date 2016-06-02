@@ -23,6 +23,7 @@ typedef struct rct_award {
 	uint16 time;
 	uint16 type;
 } PACKED rct_award;
+STATIC_ASSERT (sizeof(rct_award) == 4, "Improper struct size");
 
 enum {
 	PARK_AWARD_MOST_UNTIDY,

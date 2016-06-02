@@ -31,6 +31,8 @@ typedef struct audio_device {
 	char name[AUDIO_DEVICE_NAME_SIZE];
 } PACKED audio_device;
 
+#pragma pack(push, 1)
+
 typedef struct rct_ride_music {
 	uint8 ride_id;
 	uint8 tune_id;
@@ -40,12 +42,16 @@ typedef struct rct_ride_music {
 	void* sound_channel;
 } PACKED rct_ride_music;
 
+STATIC_ASSERT (sizeof(rct_ride_music) == 12, "Improper struct size");
+
 typedef struct rct_ride_music_info {
 	uint32 length;
 	uint32 offset;
 	uint8 path_id;
 	uint8 var_9;
 } PACKED rct_ride_music_info;
+
+STATIC_ASSERT (sizeof(rct_ride_music_info) == 10, "Improper struct size");
 
 typedef struct rct_ride_music_params {
 	uint8 ride_id;
@@ -55,6 +61,8 @@ typedef struct rct_ride_music_params {
 	sint16 pan;
 	uint16 frequency;
 } PACKED rct_ride_music_params;
+
+STATIC_ASSERT (sizeof(rct_ride_music_params) == 12, "Improper struct size");
 
 typedef struct rct_vehicle_sound {
 	uint16 id;
@@ -71,6 +79,8 @@ typedef struct rct_vehicle_sound {
 	void* sound2_channel;
 } PACKED rct_vehicle_sound;
 
+STATIC_ASSERT (sizeof(rct_vehicle_sound) == 28, "Improper struct size");
+
 typedef struct rct_vehicle_sound_params {
 	uint16 id;
 	sint16 pan_x;
@@ -79,6 +89,10 @@ typedef struct rct_vehicle_sound_params {
 	sint16 volume;
 	uint16 var_A;
 } PACKED rct_vehicle_sound_params;
+
+STATIC_ASSERT (sizeof(rct_vehicle_sound_params) == 12, "Improper struct size");
+
+#pragma pack(pop)
 
 typedef enum RCT2_SOUND {
 	SOUND_LIFT_1 = 0,

@@ -32,6 +32,7 @@ typedef struct rct1_entrance {
 	uint16 z;
 	uint8 direction;
 } PACKED rct1_entrance;
+STATIC_ASSERT (sizeof(rct1_entrance) == 7, "Improper struct size");
 
 /**
  * RCT1 ride structure
@@ -160,6 +161,7 @@ typedef struct rct1_ride {
 	uint8 entrance_style;
 	uint8 unk_17A[230];
 } PACKED rct1_ride;
+STATIC_ASSERT (sizeof(rct1_ride) == 0x260, "Improper struct size");
 
 typedef struct rct1_research_item {
 	uint8 item;
@@ -168,6 +170,7 @@ typedef struct rct1_research_item {
 	uint8 flags;
 	uint8 expenditure_area;
 } PACKED rct1_research_item;
+STATIC_ASSERT (sizeof(rct1_research_item) == 5, "Improper struct size");
 
 /**
  * RCT1,AA,LL scenario / saved game structure.
@@ -340,6 +343,7 @@ typedef struct rct1_s4 {
 	uint8 unk_1F8358[432];
 	uint32 expansion_pack_checksum;
 } PACKED rct1_s4;
+STATIC_ASSERT (sizeof(rct1_s4) == 0x1F850C, "Improper struct size");
 
 enum {
 	RCT1_RIDE_TYPE_NULL = 255,
@@ -689,6 +693,7 @@ typedef struct rct_track_td4 {
 	uint8 pad_41[0x83];
 	uint16 start_track_data_AA_CF;					// 0xC4
 } PACKED rct_track_td4; // Information based off RCTTechDepot
+STATIC_ASSERT (sizeof(rct_track_td4) == 0xC9, "Improper struct size");
 
 enum {
 	RCT1_SCENARIO_FLAG_0 = 1 << 0,

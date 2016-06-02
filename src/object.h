@@ -59,6 +59,7 @@ typedef struct rct_object_entry {
 	char name[8];
 	uint32 checksum;
 } PACKED rct_object_entry;
+STATIC_ASSERT (sizeof(rct_object_entry) == 0x10, "Improper struct size");
 
 /**
  * Object entry structure extended.
@@ -70,6 +71,7 @@ typedef struct rct_object_entry_extended {
 	uint32 checksum;
 	uint32 chunk_size;
 } PACKED rct_object_entry_extended;
+STATIC_ASSERT (sizeof(rct_object_entry_extended) == 0x14, "Improper struct size");
 
 extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
@@ -78,17 +80,20 @@ typedef struct rct_object_entry_group {
 	uint8 **chunks;
 	rct_object_entry_extended *entries;
 } PACKED rct_object_entry_group;
+STATIC_ASSERT (sizeof(rct_object_entry_group) == 8, "Improper struct size");
 
 typedef struct rct_ride_filters {
 	uint8 category[2];
 	uint8 ride_type;
 } PACKED rct_ride_filters;
+STATIC_ASSERT (sizeof(rct_ride_filters) == 3, "Improper struct size");
 
 typedef struct rct_object_filters {
 	union {
 		rct_ride_filters ride;
 	};
 } PACKED rct_object_filters;
+STATIC_ASSERT (sizeof(rct_object_filters) == 3, "Improper struct size");
 
 extern rct_object_entry_group object_entry_groups[];
 extern void** gObjectList;

@@ -24,6 +24,7 @@ typedef struct rct_research_item {
 	sint32 entryIndex;
 	uint8 category;
 } PACKED rct_research_item;
+STATIC_ASSERT (sizeof(rct_research_item) == 5, "Improper struct size");
 
 enum{
 	RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 29),

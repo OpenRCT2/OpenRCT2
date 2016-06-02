@@ -80,6 +80,7 @@ typedef struct rct_colour_map_a {
 	uint8 lighter;
 	uint8 lightest;
 } PACKED rct_colour_map_a;
+STATIC_ASSERT (sizeof(rct_colour_map_a) == 8, "Improper struct size");
 
 typedef struct rct_colour_map_b {
 	uint8 a;
@@ -91,6 +92,7 @@ typedef struct rct_colour_map_b {
 	uint8 g;
 	uint8 h;
 } PACKED rct_colour_map_b;
+STATIC_ASSERT (sizeof(rct_colour_map_b) == 8, "Improper struct size");
 
 extern rct_colour_map_a *ColourMapA;
 extern rct_colour_map_b *ColourMapB;

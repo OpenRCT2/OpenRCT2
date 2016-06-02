@@ -376,6 +376,7 @@ typedef struct rct_peep_thought {
 	uint8 var_2;	//2
 	uint8 var_3;	//3
 } PACKED rct_peep_thought;
+STATIC_ASSERT (sizeof(rct_peep_thought) == 4, "Improper struct size");
 
 typedef struct rct_peep {
 	uint8 sprite_identifier;		// 0x00
@@ -546,6 +547,7 @@ typedef struct rct_peep {
 	uint8 pad_FB;
 	uint32 item_standard_flags;		// 0xFC
 } PACKED rct_peep;
+STATIC_ASSERT (sizeof(rct_peep) == 0x100, "Improper struct size");
 
 enum {
 	EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,
