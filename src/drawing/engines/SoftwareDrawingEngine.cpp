@@ -22,6 +22,7 @@ extern "C"
 {
     #include "../../config.h"
     #include "../drawing.h"
+    #include "../../interface/window.h"
 }
 
 struct DirtyGrid
@@ -75,9 +76,6 @@ public:
 
     void Resize(uint32 width, uint32 height) override
     {
-        _width = width;
-        _height = height;
-
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
         SDL_FreePalette(_palette);
@@ -152,7 +150,14 @@ public:
 
     void Draw() override
     {
+        redraw_rain();
+
         DrawAllDirtyBlocks();
+        window_update_all_viewports();
+        DrawAllDirtyBlocks();
+        window_update_all();
+
+        rct2_draw();
         Display();
     }
 

@@ -418,7 +418,7 @@ static void openrct2_loop()
 			}
 
 			if ((SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) == 0) {
-				rct2_draw();
+				// rct2_draw();
 				platform_draw();
 			}
 

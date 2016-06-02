@@ -279,8 +279,8 @@ void rct2_draw()
 		return;
 	}
 
-	redraw_rain();
-	window_update_all();
+	// redraw_rain();
+	// window_update_all();
 	gfx_invalidate_pickedup_peep();
 	gfx_draw_pickedup_peep();
 	update_rain_animation();

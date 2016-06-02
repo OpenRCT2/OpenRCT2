@@ -157,9 +157,9 @@ void window_update_all()
 {
 	RCT2_GLOBAL(0x009E3CD8, sint32)++;
 
-	gfx_draw_all_dirty_blocks();
-	window_update_all_viewports();
-	gfx_draw_all_dirty_blocks();
+	// gfx_draw_all_dirty_blocks();
+	// window_update_all_viewports();
+	// gfx_draw_all_dirty_blocks();
 
 	// 1000 tick update
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) += gTicksSinceLastUpdate;
