@@ -99,6 +99,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
 	{ "ru-RU",		"Russian",					"Russian",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_RUSSIAN
 	{ "cs-CZ",		"Czech",					"Czech",					&TTFFontArial,			RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_CZECH
 	{ "ja-JP",		"Japanese",					"Japanese",					&TTFFontMSGothic,		RCT2_LANGUAGE_ID_ENGLISH_UK				},	// LANGUAGE_JAPANESE
+	{ "nb-NO",		"Norwegian",				"Norsk",					FONT_OPENRCT2_SPRITE,	RCT2_LANGUAGE_ID_ENGLISH_UK,			},	// LANGUAGE_NORWEGIAN
 };
 
 int gCurrentLanguage = LANGUAGE_UNDEFINED;

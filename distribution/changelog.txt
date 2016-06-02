@@ -6,6 +6,7 @@
 - Feature: Allow setting ownership of map edges.
 - Feature: Allow up to 255 cars per train.
 - Feature: Importing SV4 and SC4 files with rides.
+- Feature: Added Norwegian translation
 - Removed: BMP screenshots.
 - Technical: [#3699] Assymmetric-key-based authorisation and assignment storage
 - Technical: Mulitplayer groups are now stored in JSON format
