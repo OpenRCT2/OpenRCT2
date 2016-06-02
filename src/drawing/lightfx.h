@@ -46,6 +46,7 @@ extern void lightfx_update_buffers(rct_drawpixelinfo*);
 extern void lightfx_prepare_light_list();
 extern void lightfx_swap_buffers();
 extern void lightfx_render_lights_to_frontbuffer();
+extern void lightfx_update_viewport_settings();
 
 extern void* lightfx_get_front_buffer();
 

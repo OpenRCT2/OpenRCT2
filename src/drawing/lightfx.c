@@ -51,6 +51,16 @@ static lightlist_entry	*_LightListFront;
 static uint32			LightListCurrentCountBack;
 static uint32			LightListCurrentCountFront;
 
+static sint16			_current_view_x_front			= 0;
+static sint16			_current_view_y_front			= 0;
+static uint8			_current_view_rotation_front	= 0;
+static uint8			_current_view_zoom_front		= 0;
+static sint16			_current_view_x_back			= 0;
+static sint16			_current_view_y_back			= 0;
+static uint8			_current_view_rotation_back		= 0;
+static uint8			_current_view_zoom_back			= 0;
+static uint8			_current_view_zoom_back_delay	= 0;
+
 uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
 	double distance = (double)(x * x + y * y);
 
@@ -132,14 +142,9 @@ void lightfx_update_buffers(rct_drawpixelinfo *info)
 
 void lightfx_prepare_light_list()
 {
-	rct_window *mainWindow = window_get_main();
-	if (!mainWindow) {
-		LightListCurrentCountBack = 0;
-		return;
-	}
 
 	for (uint32 light = 0; light < LightListCurrentCountFront; light++) {
-		lightlist_entry *entry = &_LightListBack[light];
+		lightlist_entry *entry = &_LightListFront[light];
 
 		if (entry->z == 0x7FFF) {
 			continue;
@@ -151,15 +156,20 @@ void lightfx_prepare_light_list()
 			.z = entry->z
 		};
 
-		rct_xy16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
+		rct_xy16 coord_2d = coordinate_3d_to_2d(&coord_3d, _current_view_rotation_front);
 
-		entry->x = coord_2d.x - mainWindow->viewport->view_x;
-		entry->y = coord_2d.y - mainWindow->viewport->view_y;
+		entry->x = coord_2d.x - _current_view_x_front;
+		entry->y = coord_2d.y - _current_view_y_front;
 
-		for (uint8 q = 0; q < mainWindow->viewport->zoom; q++) {
-			entry->x >>= 1;
-			entry->y >>= 1;
-			entry->lightType = max(entry->lightType & ~0x3, entry->lightType - 1);
+		if (_current_view_zoom_front > 0) {
+			if ((entry->lightType & 0x3) < _current_view_zoom_front) {
+				entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
+				continue;
+			}
+
+			entry->x >>= _current_view_zoom_front;
+			entry->y >>= _current_view_zoom_front;
+			entry->lightType -= _current_view_zoom_front;
 		}
 	}
 }
@@ -184,6 +194,23 @@ void lightfx_swap_buffers()
 	uint32 uTmp = _lightPolution_back;
 	_lightPolution_back	= _lightPolution_front;
 	_lightPolution_front = uTmp;
+
+	_current_view_x_front = _current_view_x_back;
+	_current_view_y_front = _current_view_y_back;
+	_current_view_rotation_front = _current_view_rotation_back;
+	_current_view_zoom_front = _current_view_zoom_back_delay;
+	_current_view_zoom_back_delay = _current_view_zoom_back;
+}
+
+void lightfx_update_viewport_settings()
+{
+	rct_window *mainWindow = window_get_main();
+	if (mainWindow) {
+		_current_view_x_back = mainWindow->viewport->view_x;
+		_current_view_y_back = mainWindow->viewport->view_y;
+		_current_view_rotation_back = get_current_rotation();
+		_current_view_zoom_back = mainWindow->viewport->zoom;
+	}
 }
 
 void lightfx_render_lights_to_frontbuffer()
