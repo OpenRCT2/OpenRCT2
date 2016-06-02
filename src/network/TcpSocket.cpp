@@ -74,7 +74,7 @@ public:
 
 struct ConnectRequest
 {
-    TcpSocket * TcpSocket;
+    TcpSocket * Socket;
     std::string Address;
     uint16      Port;
 };
@@ -309,7 +309,7 @@ public:
         {
             // Spin off a worker thread for resolving the address
             auto req = new ConnectRequest();
-            req->TcpSocket = this;
+            req->Socket = this;
             req->Address = std::string(address);
             req->Port = port;
             SDL_CreateThread([](void * pointer) -> int
@@ -317,15 +317,15 @@ public:
                 auto req = (ConnectRequest *)pointer;
                 try
                 {
-                    req->TcpSocket->Connect(req->Address.c_str(), req->Port);
+                    req->Socket->Connect(req->Address.c_str(), req->Port);
                 }
                 catch (Exception ex)
                 {
-                    req->TcpSocket->_error = std::string(ex.GetMsg());
+                    req->Socket->_error = std::string(ex.GetMsg());
                 }
                 delete req;
- 
-                SDL_UnlockMutex(req->TcpSocket->_connectMutex);
+
+                SDL_UnlockMutex(req->Socket->_connectMutex);
                 return 0;
             }, 0, req);
         }
@@ -386,7 +386,7 @@ public:
         }
     }
 
-    void Close()
+    void Close() override
     {
         SDL_LockMutex(_connectMutex);
         {

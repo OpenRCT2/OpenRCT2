@@ -16,7 +16,7 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "Network.h"
+#include "network.h"
 #include "NetworkConnection.h"
 #include "../core/String.hpp"
 #include <SDL.h>
