@@ -147,7 +147,9 @@ typedef struct rct_track_td6 {
 	utf8 *name;
 } rct_track_td6;
 //Warning: improper struct size in comment
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_track_td6) == 0xbf, "Improper struct size");
+#endif
 #pragma pack(pop)
 
 typedef struct track_design_file_ref {

@@ -398,7 +398,9 @@ typedef struct scenario_highscore_entry {
 	datetime64 timestamp;
 } scenario_highscore_entry;
 // NOTE: Check if needed
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(scenario_highscore_entry) == 20, "Improper struct size");
+#endif
 
 typedef struct scenario_index_entry {
 	utf8 path[MAX_PATH];

@@ -41,8 +41,9 @@ typedef struct rct_ride_music {
 	uint16 frequency;
 	void* sound_channel;
 } rct_ride_music;
-
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_ride_music) == 12, "Improper struct size");
+#endif
 
 typedef struct rct_ride_music_info {
 	uint32 length;
@@ -50,7 +51,6 @@ typedef struct rct_ride_music_info {
 	uint8 path_id;
 	uint8 var_9;
 } rct_ride_music_info;
-
 STATIC_ASSERT (sizeof(rct_ride_music_info) == 10, "Improper struct size");
 
 typedef struct rct_ride_music_params {
@@ -61,7 +61,6 @@ typedef struct rct_ride_music_params {
 	sint16 pan;
 	uint16 frequency;
 } rct_ride_music_params;
-
 STATIC_ASSERT (sizeof(rct_ride_music_params) == 12, "Improper struct size");
 
 typedef struct rct_vehicle_sound {
@@ -78,8 +77,9 @@ typedef struct rct_vehicle_sound {
 	void* sound1_channel;
 	void* sound2_channel;
 } rct_vehicle_sound;
-
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_vehicle_sound) == 28, "Improper struct size");
+#endif
 
 typedef struct rct_vehicle_sound_params {
 	uint16 id;
@@ -89,7 +89,6 @@ typedef struct rct_vehicle_sound_params {
 	sint16 volume;
 	uint16 var_A;
 } rct_vehicle_sound_params;
-
 STATIC_ASSERT (sizeof(rct_vehicle_sound_params) == 12, "Improper struct size");
 
 #pragma pack(pop)

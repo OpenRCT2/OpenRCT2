@@ -352,13 +352,17 @@ typedef struct rct_sprite_image {
 	uint32 base_image;   // 0x00
 	uint8* unkn_04;      // 0x04
 } rct_sprite_image;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_sprite_image) == 8, "Improper struct size");
+#endif
 
 typedef struct rct_sprite_entry {
 	rct_sprite_image *sprite_image;      // 0x00
 	rct_sprite_bounds *sprite_bounds;    // 0x04
 } rct_sprite_entry;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_sprite_entry) == 8, "Improper struct size");
+#endif
 #pragma pack(pop)
 
 enum {

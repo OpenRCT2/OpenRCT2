@@ -122,7 +122,9 @@ typedef struct rct_ride_entry {
 	uint8 shop_item;									// 0x1C0
 	uint8 shop_item_secondary;							// 0x1C1
 } rct_ride_entry;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_ride_entry) == 0x1c2, "Improper struct size");
+#endif
 
 /**
  * Ride structure.
@@ -363,7 +365,9 @@ typedef struct track_begin_end {
 	int end_direction;
 	rct_map_element *end_element;
 } track_begin_end;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(track_begin_end) == 36, "Improper struct size");
+#endif
 
 #pragma pack(pop)
 

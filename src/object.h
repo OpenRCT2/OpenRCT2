@@ -81,7 +81,9 @@ typedef struct rct_object_entry_group {
 	uint8 **chunks;
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_object_entry_group) == 8, "Improper struct size");
+#endif
 
 typedef struct rct_ride_filters {
 	uint8 category[2];

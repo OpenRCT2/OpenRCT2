@@ -31,7 +31,9 @@ typedef struct rct_drawpixelinfo {
 	short pitch;		// 0x0C			note: this is actually (pitch - width)
 	uint16 zoom_level;	// 0x0E
 } rct_drawpixelinfo;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_drawpixelinfo) == 0x10, "Improper struct size");
+#endif
 
 // Size: 0x10
 typedef struct rct_g1_element {
@@ -43,7 +45,9 @@ typedef struct rct_g1_element {
 	uint16 flags;			// 0x0C
 	uint16 zoomed_offset;	// 0x0E
 } rct_g1_element;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_g1_element) == 0x10, "Improper struct size");
+#endif
 
 enum {
 	G1_FLAG_BMP = (1 << 0), //No invisible sections
@@ -68,7 +72,9 @@ typedef struct rct_gx {
 	rct_g1_element *elements;
 	void *data;
 } rct_gx;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_gx) == 16, "Improper struct size");
+#endif
 
 typedef struct rct_palette_entry {
 	uint8 blue;

@@ -39,8 +39,10 @@ struct attached_paint_struct {
     uint8 pad_0D;
     attached_paint_struct* next;	//0x0E
 };
+#ifdef PLATFORM_32BIT
 // TODO: drop packing from this when all rendering is done.
 STATIC_ASSERT (sizeof(attached_paint_struct) == 0x12, "Improper struct size");
+#endif
 
 typedef struct paint_struct paint_struct;
 
@@ -73,8 +75,10 @@ struct paint_struct {
 	uint16 map_y;			// 0x2E
 	rct_map_element *mapElement; // 0x30 (or sprite pointer)
 };
+#ifdef PLATFORM_32BIT
 // TODO: drop packing from this when all rendering is done.
 STATIC_ASSERT (sizeof(paint_struct) == 0x34, "Improper struct size");
+#endif
 
 typedef struct paint_string_struct paint_string_struct;
 
@@ -87,7 +91,9 @@ struct paint_string_struct {
 	uint32 args[4];					// 0x0A
 	uint8 *y_offsets;				// 0x1A
 };
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(paint_string_struct) == 0x1e, "Improper struct size");
+#endif
 #pragma pack(pop)
 
 typedef struct sprite_bb {

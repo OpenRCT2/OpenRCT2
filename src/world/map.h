@@ -276,7 +276,9 @@ typedef struct rct_xy_element {
 	int x, y;
 	rct_map_element *element;
 } rct_xy_element;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_xy_element) == 12, "Improper struct size");
+#endif
 
 typedef struct rct2_peep_spawn {
 	uint16 x;
@@ -442,7 +444,9 @@ typedef struct map_element_iterator {
 	int y;
 	rct_map_element *element;
 } map_element_iterator;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(map_element_iterator) == 12, "Improper struct size");
+#endif
 
 void map_element_iterator_begin(map_element_iterator *it);
 int map_element_iterator_next(map_element_iterator *it);

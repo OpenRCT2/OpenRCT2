@@ -104,8 +104,9 @@ typedef struct rct_large_scenery_entry {
 	rct_large_scenery_text* text; // 0x12
 	uint32 text_image;	// 0x16
 } rct_large_scenery_entry;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_large_scenery_entry) == 20, "Improper struct size");
-
+#endif
 
 typedef struct rct_wall_scenery_entry {
 	uint8 tool_id;			// 0x06
@@ -161,7 +162,9 @@ typedef struct rct_scenery_entry {
 		rct_banner_scenery_entry banner;
 	};
 } rct_scenery_entry;
+#ifdef PLATFORM_32BIT
 STATIC_ASSERT (sizeof(rct_scenery_entry) == 6 + 21, "Improper struct size");
+#endif
 
 typedef struct rct_scenery_set_entry {
 	rct_string_id name;				// 0x00
