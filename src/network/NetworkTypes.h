@@ -20,51 +20,10 @@
 #include <SDL_platform.h>
 
 #ifndef DISABLE_NETWORK
-#ifdef __WINDOWS__
-    // winsock2 must be included before windows.h
-    #include <winsock2.h>
-    #include <ws2tcpip.h>
 
-    #define LAST_SOCKET_ERROR() WSAGetLastError()
-    #undef EWOULDBLOCK
-    #define EWOULDBLOCK WSAEWOULDBLOCK
-    #ifndef SHUT_RD
-        #define SHUT_RD SD_RECEIVE
-    #endif
-    #ifndef SHUT_RDWR
-        #define SHUT_RDWR SD_BOTH
-    #endif
-    #define FLAG_NO_PIPE 0
-#else
-    #include <errno.h>
-    #include <arpa/inet.h>
-    #include <netdb.h>
-    #include <netinet/tcp.h>
-    #include <sys/socket.h>
-    #include <fcntl.h>
-    typedef int SOCKET;
-    #define SOCKET_ERROR -1
-    #define INVALID_SOCKET -1
-    #define LAST_SOCKET_ERROR() errno
-    #define closesocket close
-    #define ioctlsocket ioctl
-    #if defined(__LINUX__)
-        #define FLAG_NO_PIPE MSG_NOSIGNAL
-    #else
-        #define FLAG_NO_PIPE 0
-    #endif // defined(__LINUX__)
-#endif // __WINDOWS__
 
 #include "../common.h"
 #endif
-
-enum NETWORK_READPACKET
-{
-    NETWORK_READPACKET_SUCCESS,
-    NETWORK_READPACKET_NO_DATA,
-    NETWORK_READPACKET_MORE_DATA,
-    NETWORK_READPACKET_DISCONNECTED
-};
 
 enum NETWORK_AUTH
 {
