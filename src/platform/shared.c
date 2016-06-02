@@ -626,9 +626,9 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 
 	//	lightPollution /= 1.0f + fogginess * 1.0f;
 
-		natLightR /= 1.0f + lightPolution * 50.0f;
-		natLightG /= 1.0f + lightPolution * 50.0f;
-		natLightB /= 1.0f + lightPolution * 50.0f;
+		natLightR /= 1.0f + lightPolution * 20.0f;
+		natLightG /= 1.0f + lightPolution * 20.0f;
+		natLightB /= 1.0f + lightPolution * 20.0f;
 		natLightR += elecMultR * 0.6f * lightPolution;
 		natLightG += elecMultG * 0.6f * lightPolution;
 		natLightB += elecMultB * 0.6f * lightPolution;
