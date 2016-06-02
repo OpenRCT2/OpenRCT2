@@ -210,6 +210,8 @@ bool Network::BeginClient(const char* host, unsigned short port)
 	if (!Init())
 		return false;
 
+	mode = NETWORK_MODE_CLIENT;
+
 	assert(server_connection.Socket == nullptr);
 	server_connection.Socket = CreateTcpSocket();
 	server_connection.Socket->ConnectAsync(host, port);
@@ -218,7 +220,6 @@ bool Network::BeginClient(const char* host, unsigned short port)
 
 	BeginChatLog();
 
-	mode = NETWORK_MODE_CLIENT;
 	utf8 keyPath[MAX_PATH];
 	network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
 	if (!platform_file_exists(keyPath)) {
@@ -278,13 +279,24 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	if (!Init())
 		return false;
 
+	mode = NETWORK_MODE_SERVER;
+
 	_userManager.Load();
 
 	log_verbose("Begin listening for clients");
 
 	assert(listening_socket == nullptr);
 	listening_socket = CreateTcpSocket();
-	listening_socket->Listen(address, port);
+	try
+	{
+		listening_socket->Listen(address, port);
+	}
+	catch (Exception ex)
+	{
+		Console::Error::WriteLine(ex.GetMsg());
+		Close();
+		return false;
+	}
 
 	ServerName = gConfigNetwork.server_name;
 	ServerDescription = gConfigNetwork.server_description;
@@ -304,7 +316,6 @@ bool Network::BeginServer(unsigned short port, const char* address)
 	printf("Ready for clients...\n");
 	network_chat_show_connected_message();
 
-	mode = NETWORK_MODE_SERVER;
 	status = NETWORK_STATUS_CONNECTED;
 	listening_port = port;
 	advertise_status = ADVERTISE_STATUS_DISABLED;
