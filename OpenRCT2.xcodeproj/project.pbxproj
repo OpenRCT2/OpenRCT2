@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		007A05CD1CFB2C8B00F419C3 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C01CFB2C8B00F419C3 /* NetworkAction.cpp */; };
-		007A05CE1CFB2C8B00F419C3 /* NetworkAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C21CFB2C8B00F419C3 /* NetworkAddress.cpp */; };
 		007A05CF1CFB2C8B00F419C3 /* NetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C41CFB2C8B00F419C3 /* NetworkConnection.cpp */; };
 		007A05D01CFB2C8B00F419C3 /* NetworkGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C61CFB2C8B00F419C3 /* NetworkGroup.cpp */; };
 		007A05D11CFB2C8B00F419C3 /* NetworkPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 007A05C81CFB2C8B00F419C3 /* NetworkPacket.cpp */; };
@@ -310,6 +309,7 @@
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
+		D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48A8D811D00272F00649DA7 /* TcpSocket.cpp */; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
@@ -339,8 +339,6 @@
 /* Begin PBXFileReference section */
 		007A05C01CFB2C8B00F419C3 /* NetworkAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkAction.cpp; sourceTree = "<group>"; };
 		007A05C11CFB2C8B00F419C3 /* NetworkAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkAction.h; sourceTree = "<group>"; };
-		007A05C21CFB2C8B00F419C3 /* NetworkAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkAddress.cpp; sourceTree = "<group>"; };
-		007A05C31CFB2C8B00F419C3 /* NetworkAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkAddress.h; sourceTree = "<group>"; };
 		007A05C41CFB2C8B00F419C3 /* NetworkConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkConnection.cpp; sourceTree = "<group>"; };
 		007A05C51CFB2C8B00F419C3 /* NetworkConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConnection.h; sourceTree = "<group>"; };
 		007A05C61CFB2C8B00F419C3 /* NetworkGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkGroup.cpp; sourceTree = "<group>"; };
@@ -901,6 +899,8 @@
 		D45A39581CF3007A00659A24 /* speexdsp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_types.h; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
+		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; };
+		D48A8D821D00272F00649DA7 /* TcpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TcpSocket.h; sourceTree = "<group>"; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
@@ -1347,8 +1347,6 @@
 			children = (
 				007A05C01CFB2C8B00F419C3 /* NetworkAction.cpp */,
 				007A05C11CFB2C8B00F419C3 /* NetworkAction.h */,
-				007A05C21CFB2C8B00F419C3 /* NetworkAddress.cpp */,
-				007A05C31CFB2C8B00F419C3 /* NetworkAddress.h */,
 				007A05C41CFB2C8B00F419C3 /* NetworkConnection.cpp */,
 				007A05C51CFB2C8B00F419C3 /* NetworkConnection.h */,
 				007A05C61CFB2C8B00F419C3 /* NetworkGroup.cpp */,
@@ -1366,6 +1364,8 @@
 				00EFEE711CF1D80B0035213B /* NetworkKey.h */,
 				C61FB7221CF86356004CE991 /* NetworkUser.cpp */,
 				C61FB7231CF86356004CE991 /* NetworkUser.h */,
+				D48A8D811D00272F00649DA7 /* TcpSocket.cpp */,
+				D48A8D821D00272F00649DA7 /* TcpSocket.h */,
 				D44271541CC81B3200D84D28 /* twitch.cpp */,
 				D44271551CC81B3200D84D28 /* twitch.h */,
 			);
@@ -1992,7 +1992,6 @@
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
 				C686F8B31CDBC37E009F9BFC /* surface.c in Sources */,
 				D442724E1CC81B3200D84D28 /* scenario_sources.c in Sources */,
-				007A05CE1CFB2C8B00F419C3 /* NetworkAddress.cpp in Sources */,
 				D442729A1CC81B3200D84D28 /* banner.c in Sources */,
 				C650B21C1CCABC4400B4D91C /* ConvertCommand.cpp in Sources */,
 				D44272211CC81B3200D84D28 /* viewport_interaction.c in Sources */,
@@ -2243,6 +2242,7 @@
 				D44272601CC81B3200D84D28 /* error.c in Sources */,
 				C686F8B41CDBC37E009F9BFC /* paint.c in Sources */,
 				D442728D1CC81B3200D84D28 /* title_exit.c in Sources */,
+				D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */,
 				D442722C1CC81B3200D84D28 /* user.c in Sources */,
 				C686F92F1CDBC3B7009F9BFC /* ferris_wheel.c in Sources */,
 				D44272301CC81B3200D84D28 /* marketing.c in Sources */,
