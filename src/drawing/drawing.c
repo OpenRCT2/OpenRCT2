@@ -39,8 +39,13 @@ uint8 _screenDirtyBlockShiftY;
 rct_drawpixelinfo gScreenDPI;
 rct_drawpixelinfo gWindowDPI;
 
+typedef struct rain_pixel {
+	uint32 position;
+	uint8 colour;
+} rain_pixel;
+
 #define MAX_RAIN_PIXELS 0xFFFE
-static uint32 _rainPixels[MAX_RAIN_PIXELS];
+static rain_pixel _rainPixels[MAX_RAIN_PIXELS];
 static uint32 _numRainPixels;
 
 uint8 gGamePalette[256 * 4];
@@ -322,9 +327,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
 
 	//Stores the colours of changed pixels
-	uint32 *pixel_store = _rainPixels;
-	pixel_store += _numRainPixels;
-
+	rain_pixel *pixel_store = &_rainPixels[_numRainPixels];
 	for (; height != 0; height--) {
 		uint8 pattern_x = pattern[pattern_y_pos * 2];
 		if (pattern_x != 0xFF) {
@@ -341,7 +344,7 @@ void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sin
 					_numRainPixels++;
 
 					// Store colour and position
-					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
+					*pixel_store++ = (rain_pixel){ x_pixel_offset, current_pixel };
 				}
 			}
 		}
@@ -364,15 +367,14 @@ void redraw_rain()
 
 		uint8 *screenPixels = gScreenDPI.bits;
 		for (uint32 i = 0; i < _numRainPixels; i++) {
-			uint32 pixel = _rainPixels[i];
-			uint32 pixelIndex = pixel >> 8;
+			rain_pixel rainPixel = _rainPixels[i];
 
 			// HACK
-			if (pixelIndex > numPixels) {
+			if (rainPixel.position > numPixels) {
 				log_verbose("Pixel error, skipping rain draw in this frame");
 				break;
 			}
-			screenPixels[pixelIndex] = pixel & 0xFF;
+			screenPixels[rainPixel.position] = rainPixel.colour;
 		}
 		_numRainPixels = 0;
 	}
