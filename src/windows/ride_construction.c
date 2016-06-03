@@ -1219,6 +1219,8 @@ static void window_ride_construction_resize(rct_window *w)
 		disabledWidgets &= ~(1ULL << WIDX_BANK_STRAIGHT);
 		disabledWidgets &= ~(1ULL << WIDX_BANK_RIGHT);
 	}
+	
+	disabledWidgets &=~(1ULL<<WIDX_CHAIN_LIFT);	
 
 	// Set and invalidate the changed widgets
 	uint64 currentDisabledWidgets = w->disabled_widgets;
@@ -2623,8 +2625,8 @@ static bool sub_6CA2DF(int *_trackType, int *_trackDirection, int *_rideIndex, i
 		do_loc_6CAF26 = true;
 	}
 
-	if (do_loc_6CAF26) {
-		edxRS16 &= 0xFFFE; // unsets 0x1
+	if (do_loc_6CAF26 && !gCheatsEnableChainLiftOnAllTrack) {
+		edxRS16 &= 0xFFFE; //unsets 0x1
 		_currentTrackLiftHill &= 0xFE;
 
 		if (trackType == TRACK_ELEM_LEFT_CURVED_LIFT_HILL || trackType == TRACK_ELEM_RIGHT_CURVED_LIFT_HILL) {
