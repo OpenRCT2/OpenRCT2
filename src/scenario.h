@@ -395,10 +395,6 @@ typedef struct scenario_highscore_entry {
 	money32 company_value;
 	datetime64 timestamp;
 } scenario_highscore_entry;
-// NOTE: Check if needed
-#ifdef PLATFORM_32BIT
-assert_struct_size(scenario_highscore_entry, 20);
-#endif
 
 typedef struct scenario_index_entry {
 	utf8 path[MAX_PATH];
