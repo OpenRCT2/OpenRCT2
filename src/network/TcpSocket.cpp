@@ -323,9 +323,9 @@ public:
                 {
                     req->Socket->_error = std::string(ex.GetMsg());
                 }
-                delete req;
 
                 SDL_UnlockMutex(req->Socket->_connectMutex);
+                delete req;
                 return 0;
             }, 0, req);
         }
