@@ -35,6 +35,7 @@ extern bool gCheatsDisableLittering;
 extern bool gCheatsNeverendingMarketing;
 extern bool gCheatsFreezeClimate;
 extern bool gCheatsDisableTrainLengthLimit;
+extern bool gCheatsDisablePlantAging;
 
 enum {
 	CHEAT_SANDBOXMODE,
@@ -60,6 +61,7 @@ enum {
 	CHEAT_GIVEALLGUESTS,
 	CHEAT_SETGRASSLENGTH,
 	CHEAT_WATERPLANTS,
+	CHEAT_DISABLEPLANTAGING,
 	CHEAT_FIXVANDALISM,
 	CHEAT_REMOVELITTER,
 	CHEAT_SETSTAFFSPEED,

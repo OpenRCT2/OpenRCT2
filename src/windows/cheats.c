@@ -105,6 +105,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_WATER_PLANTS,
 	WIDX_FIX_VANDALISM,
 	WIDX_REMOVE_LITTER,
+	WIDX_DISABLE_PLANT_AGING,
 	WIDX_FAST_STAFF,
 	WIDX_NORMAL_STAFF,
 	WIDX_RENEW_RIDES = 8,
@@ -220,14 +221,15 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_FREEZE_CLIMATE_TIP },			// Freeze climate
 	{ WWT_DROPDOWN,			1,		XPL(1),					WPL(1),					YPL(9) + 2,		YPL(9) + 13,	STR_NONE,							STR_FORCE_WEATHER_TOOLTIP },			// Force weather
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 11,			WPL(1) - 1,				YPL(9) + 3,		YPL(9) + 12,	STR_DROPDOWN_GLYPH,					STR_FORCE_WEATHER_TOOLTIP },			// Force weather
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(11),		HPL(15.5),		STR_CHEAT_STAFF_GROUP,				STR_NONE },								// Staff group
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(11),		HPL(16.5),		STR_CHEAT_STAFF_GROUP,				STR_NONE },								// Staff group
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(12), 		HPL(12),		STR_CHEAT_CLEAR_GRASS,				STR_NONE},								// Clear grass
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(12), 		HPL(12),		STR_CHEAT_MOWED_GRASS,				STR_NONE},								// Mowed grass
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(13), 		HPL(13),		STR_CHEAT_WATER_PLANTS,				STR_NONE},								// Water plants
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(13), 		HPL(13),		STR_CHEAT_FIX_VANDALISM,			STR_NONE},								// Fix vandalism
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(14), 		HPL(14),		STR_CHEAT_REMOVE_LITTER,			STR_NONE},								// Remove litter
-	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(15),		HPL(15),		STR_FAST,							STR_NONE },								// Fast staff
-	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(15),		HPL(15),		STR_NORMAL,							STR_NONE },								// Normal staff
+	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(15),		HPL(15),		STR_CHEAT_DISABLE_PLANT_AGING,		STR_CHEAT_DISABLE_PLANT_AGING_TIP},		// Disable plant aging
+	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(16),		HPL(16),		STR_FAST,							STR_NONE },								// Fast staff
+	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(16),		HPL(16),		STR_NORMAL,							STR_NONE },								// Normal staff
 
 
 	{ WIDGETS_END },
@@ -411,7 +413,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
 		(1ULL << WIDX_DISABLE_VANDALISM) | (1ULL << WIDX_DISABLE_LITTERING),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_FREEZE_CLIMATE) |
 		(1ULL << WIDX_OPEN_CLOSE_PARK) | (1ULL << WIDX_WEATHER) | (1ULL << WIDX_WEATHER_DROPDOWN_BUTTON) | (1ULL << WIDX_CLEAR_GRASS) | (1ULL << WIDX_MOWED_GRASS) |
-		(1ULL << WIDX_WATER_PLANTS) | (1ULL << WIDX_FIX_VANDALISM) | (1ULL << WIDX_REMOVE_LITTER) | (1ULL << WIDX_WIN_SCENARIO) | (1ULL << WIDX_HAVE_FUN) |
+		(1ULL << WIDX_WATER_PLANTS) | (1ULL << WIDX_DISABLE_PLANT_AGING) | (1ULL << WIDX_FIX_VANDALISM) | (1ULL << WIDX_REMOVE_LITTER) | (1ULL << WIDX_WIN_SCENARIO) | (1ULL << WIDX_HAVE_FUN) |
 		(1ULL << WIDX_NEVERENDING_MARKETING) | (1ULL << WIDX_UNLOCK_ALL_PRICES) | (1ULL << WIDX_SANDBOX_MODE) | (1ULL << WIDX_FAST_STAFF) | (1ULL << WIDX_NORMAL_STAFF) |
 		(1ULL << WIDX_PARK_PARAMETERS) | (1ULL << WIDX_FORCE_PARK_RATING) | (1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_RENEW_RIDES) |
@@ -631,6 +633,9 @@ static void window_cheats_misc_mouseup(rct_window *w, int widgetIndex)
 	case WIDX_REMOVE_LITTER:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_REMOVELITTER, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
+	case WIDX_DISABLE_PLANT_AGING:
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLEPLANTAGING, 0, GAME_COMMAND_CHEAT, 0, 0);
+		break;
 	case WIDX_WIN_SCENARIO:
 		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_WINSCENARIO, 0, GAME_COMMAND_CHEAT, 0, 0);
 		break;
@@ -796,6 +801,7 @@ static void window_cheats_invalidate(rct_window *w)
 		w->widgets[WIDX_SANDBOX_MODE].image = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
 		w->widgets[WIDX_FREEZE_CLIMATE].image = gCheatsFreezeClimate ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;
 		widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
+		widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
 		break;
 	case WINDOW_CHEATS_PAGE_RIDES:
 		set_format_arg(0, uint16, 255);
@@ -834,7 +840,7 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_CHEAT_CLEAR_LOAN_TIP,	NULL,				0, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
 	}
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
-		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(15) + TXTO);
+		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(16) + TXTO);
 		gfx_draw_string_left(dpi, STR_FORCE_WEATHER,				NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
 		gfx_draw_string_right(dpi, 5182,		&park_rating_spinner_value,	w->colours[2], w->x + WPL(1) - 10 - TXTO, w->y + YPL(4) + TXTO);
 	}

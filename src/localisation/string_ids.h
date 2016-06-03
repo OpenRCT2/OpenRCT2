@@ -2644,6 +2644,9 @@ enum {
 	STR_PROVIDER_WEBSITE = 5869,
 	STR_SHOW_SERVER_INFO_TIP = 5870,
 
+	STR_CHEAT_DISABLE_PLANT_AGING = 5871,
+	STR_CHEAT_DISABLE_PLANT_AGING_TIP = 5872,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
