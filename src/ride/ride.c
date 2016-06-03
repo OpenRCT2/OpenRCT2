@@ -1540,7 +1540,9 @@ void ride_construction_set_default_next_piece()
 		// Set track slope and lift hill
 		_currentTrackSlopeEnd = slope;
 		_previousTrackSlopeEnd = slope;
-		_currentTrackLiftHill = track_element_is_lift_hill(mapElement);
+		if (!gCheatsEnableChainLiftOnAllTrack) {
+			_currentTrackLiftHill = track_element_is_lift_hill(mapElement);
+		}
 		break;
 	}
 }
