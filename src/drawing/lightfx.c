@@ -39,7 +39,11 @@ static uint32	_lightPolution_front = 0;
 typedef struct lightlist_entry {
 	sint16	x, y, z;
 	uint8	lightType;
-	uint8	pad[3];
+	uint8	lightIntensity;
+	uint32	lightID;
+	uint16	lightIDqualifier;
+	uint8	lightLinger;
+	uint8	pad[1];
 } lightlist_entry;
 
 static lightlist_entry	_LightListA[16000];
@@ -78,7 +82,7 @@ uint8 calc_light_intensity_spot(sint32 x, sint32 y) {
 	light *= min(1.0, max(0.0f, 2.0 - sqrt(distance) / 64));
 	light *= 0.5f;
 
-	return (uint8)(min(255.0, light * 255.0)) >> 3;
+	return (uint8)(min(255.0, light * 255.0)) >> 4;
 }
 
 void calc_rescale_light_half( uint8 *target, uint8 *source,uint32 targetWidth, uint32 targetHeight) {
@@ -140,13 +144,16 @@ void lightfx_update_buffers(rct_drawpixelinfo *info)
 	memcpy(&_pixelInfo, info, sizeof(rct_drawpixelinfo));
 }
 
+extern void sub_68862C();
+extern void viewport_paint_setup();
+
 void lightfx_prepare_light_list()
 {
-
 	for (uint32 light = 0; light < LightListCurrentCountFront; light++) {
 		lightlist_entry *entry = &_LightListFront[light];
 
 		if (entry->z == 0x7FFF) {
+			entry->lightIntensity = 0xFF;
 			continue;
 		}
 
@@ -158,8 +165,189 @@ void lightfx_prepare_light_list()
 
 		rct_xy16 coord_2d = coordinate_3d_to_2d(&coord_3d, _current_view_rotation_front);
 
-		entry->x = coord_2d.x - _current_view_x_front;
-		entry->y = coord_2d.y - _current_view_y_front;
+		entry->x = coord_2d.x;// - (_current_view_x_front);
+		entry->y = coord_2d.y;// - (_current_view_y_front);
+
+		sint32 posOnScreenX = entry->x - _current_view_x_front;
+		sint32 posOnScreenY = entry->y - _current_view_y_front;
+
+		if ((posOnScreenX < -128) ||
+			(posOnScreenY < -128) ||
+			(posOnScreenX > _pixelInfo.width + 128) ||
+			(posOnScreenY > _pixelInfo.height + 128)) {
+			entry->lightIntensity = 0xFF;
+			continue;
+		}
+			
+
+	//	entry->x >>= _current_view_zoom_front;
+	//	entry->y >>= _current_view_zoom_front;
+
+		static sint16 offsetPattern[26]	= {		0, 0,		-7, 0,		0, -5,		7, 0,		0, 5,
+															-3, -1,		-1, -2,		3, 1,		1, 2,
+															-6, -4,		-6, 4,		6, -4,		6, 4	};
+
+		int mapFrontDiv = 1 << _current_view_zoom_front;
+
+		uint32 lightIntensityOccluded = 0x0;
+
+		sint32 dirVecX = 707;
+		sint32 dirVecY = 707;
+
+		switch (_current_view_rotation_front) {
+		case 0:
+			dirVecX	= 707;
+			dirVecY = 707;
+			break;
+		case 1:
+			dirVecX = -707;
+			dirVecY = 707;
+			break;
+		case 2:
+			dirVecX = -707;
+			dirVecY = -707;
+			break;
+		case 3:
+			dirVecX = 707;
+			dirVecY = -707;
+			break;
+		default:
+			dirVecX = 0;
+			dirVecY = 0;
+			break;
+		}
+
+		if (true) {
+			int totalSamplePoints = 1;
+			int lastSampleCount = 0;
+
+			for (int pat = 0; pat < totalSamplePoints; pat++) {
+				rct_xy16 mapCoord = { 0 };
+
+				rct_map_element *mapElement = 0;
+
+				int interactionType;
+
+				rct_window *w = window_get_main();
+				if (w != NULL) {
+				//	get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y + offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+
+					RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE & 0xFFFF;
+					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = _current_view_zoom_front;
+					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
+					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = entry->y + offsetPattern[1 + pat * 2] / mapFrontDiv;
+					rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
+					dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
+					dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t);
+					dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t);
+					dpi->height = 1;
+					dpi->width = 1;
+					RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
+					RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
+					painter_setup();
+					viewport_paint_setup();
+					sub_688217();
+					sub_68862C();
+
+				//	log_warning("[%i, %i]", dpi->x, dpi->y);
+
+					mapCoord.x = RCT2_GLOBAL(0x9AC14C, int16_t);
+					mapCoord.y = RCT2_GLOBAL(0x9AC14E, int16_t);
+					interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
+					mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
+
+					//RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
+					//RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
+					//RCT2_GLOBAL(0x9AC138 + 4, int16_t) = screenX;
+					//RCT2_GLOBAL(0x9AC138 + 6, int16_t) = screenY;
+					//if (screenX >= 0 && screenX < (int)myviewport->width && screenY >= 0 && screenY < (int)myviewport->height)
+					//{
+					//	screenX <<= myviewport->zoom;
+					//	screenY <<= myviewport->zoom;
+					//	screenX += (int)myviewport->view_x;
+					//	screenY += (int)myviewport->view_y;
+					//	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = myviewport->zoom;
+					//	screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+					//	screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+					//	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = screenX;
+					//	RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = screenY;
+					//	rct_drawpixelinfo* dpi = RCT2_ADDRESS(RCT2_ADDRESS_VIEWPORT_DPI, rct_drawpixelinfo);
+					//	dpi->y = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t);
+					//	dpi->height = 1;
+					//	dpi->zoom_level = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t);
+					//	dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
+					//	dpi->width = 1;
+					//	RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
+					//	RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
+					//	painter_setup();
+					//	viewport_paint_setup();
+					//	sub_688217();
+					//	sub_68862C();
+					//}
+				}	
+
+				sint32 minDist = 0;
+				sint32 baseHeight = -999;
+
+				if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && mapElement) {
+					baseHeight = mapElement->base_height;
+				}
+
+				minDist = ((baseHeight * 8) - coord_3d.z) / 2;
+
+				sint32 deltaX = mapCoord.x - coord_3d.x;
+				sint32 deltaY = mapCoord.y - coord_3d.y;
+
+				sint32 projDot = (dirVecX * deltaX + dirVecY * deltaY) / 1000;
+
+				projDot = max(minDist, projDot);
+
+				if (projDot < 5) {
+					lightIntensityOccluded	+= 100;
+				}
+				else {
+					lightIntensityOccluded	+= max(0, 200 - (projDot * 20));
+				}
+
+			//	log_warning("light %i [%i, %i, %i], [%i, %i] minDist to %i: %i; projdot: %i", light, coord_3d.x, coord_3d.y, coord_3d.z, mapCoord.x, mapCoord.y, baseHeight, minDist, projDot);
+
+			//	break;
+
+				if (pat == 0) {
+					if (_current_view_zoom_front > 3)
+						break;
+					totalSamplePoints += 4;
+				}
+				else if (pat == 4) {
+					if (_current_view_zoom_front > 2)
+						break;
+					if (lightIntensityOccluded == 0 || lightIntensityOccluded == 500)
+						break;
+					lastSampleCount = lightIntensityOccluded / 500;
+				//	break;
+					totalSamplePoints += 4;
+				}
+				else if (pat == 8) {
+					if (_current_view_zoom_front > 1)
+						break;
+					int newSampleCount = lightIntensityOccluded / 900;
+					if (abs(newSampleCount - lastSampleCount) < 10)
+						break;
+					totalSamplePoints += 4;
+				}
+			}
+
+			if (lightIntensityOccluded == 0) {
+				entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
+				continue;
+			}
+			
+		//	log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
+
+			entry->lightIntensity = min(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
+			 
+		//	log_warning("lightIntensityOccluded: %i, entry->lightIntensity: %i", lightIntensityOccluded, entry->lightIntensity);
+		}
 
 		if (_current_view_zoom_front > 0) {
 			if ((entry->lightType & 0x3) < _current_view_zoom_front) {
@@ -167,8 +355,6 @@ void lightfx_prepare_light_list()
 				continue;
 			}
 
-			entry->x >>= _current_view_zoom_front;
-			entry->y >>= _current_view_zoom_front;
 			entry->lightType -= _current_view_zoom_front;
 		}
 	}
@@ -222,7 +408,6 @@ void lightfx_render_lights_to_frontbuffer()
 //	log_warning("%i lights", LightListCurrentCountFront);
 
 	for (uint32 light = 0; light < LightListCurrentCountFront; light++) {
-
 		const uint8	*bufReadBase	= 0;
 		uint8		*bufWriteBase	= _light_rendered_buffer_front;
 		uint32		bufReadWidth, bufReadHeight;
@@ -231,6 +416,14 @@ void lightfx_render_lights_to_frontbuffer()
 		uint32		bufReadSkip, bufWriteSkip;
 
 		lightlist_entry	* entry = &_LightListFront[light];
+
+		uint32		inRectCentreX	= entry->x;
+		uint32		inRectCentreY	= entry->y;
+
+		if (entry->z != 0x7FFF) {
+			inRectCentreX -= _current_view_x_front;
+			inRectCentreY -= _current_view_y_front;
+		}
 
 		switch (entry->lightType) {
 			case LIGHTFX_LIGHT_TYPE_LANTERN_0:
@@ -277,8 +470,8 @@ void lightfx_render_lights_to_frontbuffer()
 				continue;
 		}
 
-		bufWriteX	= entry->x - bufReadWidth / 2;
-		bufWriteY	= entry->y - bufReadHeight / 2;
+		bufWriteX	= inRectCentreX - bufReadWidth / 2;
+		bufWriteY	= inRectCentreY - bufReadHeight / 2;
 
 		bufWriteWidth	= bufReadWidth;
 		bufWriteHeight	= bufReadHeight;
@@ -326,15 +519,29 @@ void lightfx_render_lights_to_frontbuffer()
 		bufReadSkip		= bufReadWidth - bufWriteWidth;
 		bufWriteSkip	= _pixelInfo.width - bufWriteWidth;
 
-		for (int y = 0; y < bufWriteHeight; y++) {
-			for (int x = 0; x < bufWriteWidth; x++) {
-				*bufWriteBase = min(0xFF, *bufWriteBase + *bufReadBase);
-				bufWriteBase++;
-				bufReadBase++;
-			}
+		if (entry->lightIntensity == 0xFF) {
+			for (int y = 0; y < bufWriteHeight; y++) {
+				for (int x = 0; x < bufWriteWidth; x++) {
+					*bufWriteBase = min(0xFF, *bufWriteBase + *bufReadBase);
+					bufWriteBase++;
+					bufReadBase++;
+				}
 
-			bufWriteBase	+= bufWriteSkip;
-			bufReadBase		+= bufReadSkip;
+				bufWriteBase	+= bufWriteSkip;
+				bufReadBase		+= bufReadSkip;
+			}
+		}
+		else {
+			for (int y = 0; y < bufWriteHeight; y++) {
+				for (int x = 0; x < bufWriteWidth; x++) {
+					*bufWriteBase = min(0xFF, *bufWriteBase + (((*bufReadBase) * (1 + entry->lightIntensity)) >> 8));
+					bufWriteBase++;
+					bufReadBase++;
+				}
+
+				bufWriteBase += bufWriteSkip;
+				bufReadBase += bufReadSkip;
+			}
 		}
 	}
 }
@@ -344,32 +551,45 @@ void* lightfx_get_front_buffer()
 	return _light_rendered_buffer_front;
 }
 
-void lightfx_add_3d_light(sint16 x, sint16 y, uint16 z, uint8 lightType)
+void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType)
 {
 	if (LightListCurrentCountBack == 15999) {
 		return;
 	}
 
+//	log_warning("%i lights in back", LightListCurrentCountBack);
+
 	for (uint32 i = 0; i < LightListCurrentCountBack; i++) {
 		lightlist_entry *entry = &_LightListBack[i];
-		if (entry->x != x)
+		if (entry->lightID != lightID)
 			continue;
-		if (entry->y != y)
+		if (entry->lightIDqualifier != lightIDqualifier)
 			continue;
-		if (entry->z != z)
-			continue;
-		if (entry->lightType != lightType)
-			continue;
+
+		entry->x = x;
+		entry->y = y;
+		entry->z = z;
+		entry->lightType = lightType;
+		entry->lightIntensity = 0xFF;
+		entry->lightID = lightID;
+		entry->lightIDqualifier = lightIDqualifier;
+		entry->lightLinger = 1;
 
 		return;
 	}
 
 	lightlist_entry *entry = &_LightListBack[LightListCurrentCountBack++];
 
-	entry->x			= x;
-	entry->y			= y;
-	entry->z			= z;
-	entry->lightType	= lightType;
+	entry->x				= x;
+	entry->y				= y;
+	entry->z				= z;
+	entry->lightType		= lightType;
+	entry->lightIntensity	= 0xFF;
+	entry->lightID			= lightID;
+	entry->lightIDqualifier = lightIDqualifier;
+	entry->lightLinger		= 1;
+
+//	log_warning("new 3d light");
 }
 
 void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
@@ -398,7 +618,7 @@ void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY
 		return;
 	}
 
-	lightfx_add_3d_light(x, y, offsetZ, lightType);
+	lightfx_add_3d_light((x << 16) | y, offsetZ, x, y, offsetZ, lightType);
 }
 
 uint32 lightfx_get_light_polution()

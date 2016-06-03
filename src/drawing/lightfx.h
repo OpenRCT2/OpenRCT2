@@ -39,6 +39,10 @@ enum LIGHTFX_LIGHT_TYPE {
 	LIGHTFX_LIGHT_TYPE_RESERVED_FF		= 0xFF
 };
 
+enum LIGHTFX_LIGHT_QUALIFIER {
+	LIGHTFX_LIGHT_QUALIFIER_VEHICLE		= 0x1
+};
+
 extern void lightfx_init();
 
 extern void lightfx_update_buffers(rct_drawpixelinfo*);
@@ -50,7 +54,7 @@ extern void lightfx_update_viewport_settings();
 
 extern void* lightfx_get_front_buffer();
 
-extern void lightfx_add_3d_light(sint16 x, sint16 y, uint16 z, uint8 lightType);
+extern void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sint16 y, uint16 z, uint8 lightType);
 
 extern void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType);
 
