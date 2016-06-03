@@ -121,7 +121,7 @@ void title_load()
 	window_guest_list_init_vars_b();
 	window_staff_list_init_vars();
 	map_update_tile_pointers();
-	reset_0x69EBE4();
+	reset_sprite_spatial_index();
 	audio_stop_ride_music();
 	audio_stop_crowd_sound();
 	//stop_other_sounds();

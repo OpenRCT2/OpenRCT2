@@ -31,8 +31,7 @@ void sprite_paint_setup(const uint16 eax, const uint16 ecx) {
 
 	if ((eax & 0xe000) | (ecx & 0xe000)) return;
 
-	const int idx = ((eax << 3) & 0xff00) | (ecx >> 5);
-	int sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[idx];
+	uint16 sprite_idx = sprite_get_first_in_quadrant(eax, ecx);
 	if (sprite_idx == SPRITE_INDEX_NULL) return;
 
 	if (RCT2_GLOBAL(0x9DEA6F, uint8) & 1) return;

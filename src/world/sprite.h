@@ -392,11 +392,12 @@ extern rct_sprite_entry* g_sprite_entries;
 
 extern uint16 *gSpriteListHead;
 extern uint16 *gSpriteListCount;
+extern uint16 *gSpriteSpatialIndex;
 
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void game_command_reset_sprites(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
-void reset_0x69EBE4();
+void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void sprite_misc_update_all();
