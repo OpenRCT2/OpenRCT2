@@ -19,10 +19,13 @@
 
 #include "../common.h"
 
+#pragma pack(push, 1)
 typedef struct rct_award {
 	uint16 time;
 	uint16 type;
 } rct_award;
+assert_struct_size(rct_award, 4);
+#pragma pack(pop)
 
 enum {
 	PARK_AWARD_MOST_UNTIDY,

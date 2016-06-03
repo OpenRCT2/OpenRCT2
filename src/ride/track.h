@@ -21,6 +21,7 @@
 #include "../object.h"
 #include "ride.h"
 
+#pragma pack(push, 1)
 typedef struct rct_trackdefinition {
 	uint8 type;
 	uint8 vangle_end;
@@ -30,6 +31,8 @@ typedef struct rct_trackdefinition {
 	uint8 special;
 	uint8 pad[2];
 } rct_trackdefinition;
+assert_struct_size(rct_trackdefinition, 8);
+#pragma pack(pop)
 
 /**
 * Size: 0x0A

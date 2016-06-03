@@ -659,6 +659,8 @@ static int RCT2_CALLPROC_EBPSAFE(int address)
  */
 int RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp);
 
+#pragma pack(push, 1)
+
 typedef struct registers {
 	union {
 		int eax;
@@ -705,6 +707,10 @@ typedef struct registers {
 		short bp;
 	};
 } registers;
+
+assert_struct_size(registers, 7 * 4);
+
+#pragma pack(pop)
 
 static int RCT2_CALLFUNC_Y(int address, registers *inOut)
 {

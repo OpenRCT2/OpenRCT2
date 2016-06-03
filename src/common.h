@@ -34,6 +34,12 @@
 #define PLATFORM_X86
 #endif
 
+#if defined(__LP64__) || defined(_WIN64)
+	#define PLATFORM_64BIT
+#else
+	#define PLATFORM_32BIT
+#endif
+
 // C99's restrict keywords guarantees the pointer in question, for the whole of its lifetime,
 // will be the only way to access a given memory region. In other words: there is no other pointer
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
@@ -53,6 +59,17 @@
 #endif
 #ifndef RESTRICT
 	#define RESTRICT
+#endif
+
+#ifdef __cplusplus
+#define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
+#else
+	// Visual Studio does not know _Static_assert
+	#if !defined(_MSC_VER)
+		#define assert_struct_size(x, y) _Static_assert(sizeof(x) == (y), "Improper struct size")
+	#else
+		#define assert_struct_size(x, y)
+	#endif // !defined(_MSC_VER)
 #endif
 
 #ifdef PLATFORM_X86

@@ -57,12 +57,6 @@ extern "C" {
 #define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
-// Fixes issues on OS X
-#if defined(_RCT2_H_) && !defined(_MSC_VER)
-// use similar struct packing as MSVC for our structs
-#pragma pack(1)
-#endif
-
 #ifdef __cplusplus
 
 #include <array>

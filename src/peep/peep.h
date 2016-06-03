@@ -370,12 +370,14 @@ enum PEEP_RIDE_DECISION {
 	PEEP_RIDE_DECISION_THINKING = 1 << 2
 };
 
+#pragma pack(push, 1)
 typedef struct rct_peep_thought {
 	uint8 type;		//0
 	uint8 item;		//1
 	uint8 var_2;	//2
 	uint8 var_3;	//3
 } rct_peep_thought;
+assert_struct_size(rct_peep_thought, 4);
 
 typedef struct rct_peep {
 	uint8 sprite_identifier;		// 0x00
@@ -546,6 +548,8 @@ typedef struct rct_peep {
 	uint8 pad_FB;
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
+assert_struct_size(rct_peep, 0x100);
+#pragma pack(pop)
 
 enum {
 	EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,

@@ -325,15 +325,6 @@ uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapEleme
 	return ebx | di;
 }
 
-typedef struct viewport_surface_paint_struct_0 {
-	uint32 var_00;
-	uint32 var_04;
-	uint32 var_08;
-	uint32 var_0C;
-	uint32 var_10;
-	uint32 pad[3];
-} viewport_surface_paint_struct_0;
-
 /**
  * rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */

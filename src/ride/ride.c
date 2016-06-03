@@ -5945,10 +5945,13 @@ foundRideEntry:
 	useDefaultName:
 		ride->name = STR_NONE;
 
+#pragma pack(push, 1)
 		struct {
 			uint16 type_name;
 			uint16 number;
 		} name_args;
+		assert_struct_size(name_args, 4);
+#pragma pack(pop)
 		name_args.type_name = 2 + ride->type;
 		name_args.number = 0;
 		do {
@@ -8516,10 +8519,13 @@ void ride_reset_all_names()
 	{
 		ride->name = STR_NONE;
 
+#pragma pack(push, 1)
 		struct {
 			uint16 type_name;
 			uint16 number;
 		} name_args;
+		assert_struct_size(name_args, 4);
+#pragma pack(pop)
 		name_args.type_name = 2 + ride->type;
 		name_args.number = 0;
 		do {

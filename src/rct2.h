@@ -111,11 +111,6 @@ typedef uint8 colour_t;
 #endif // __GNUC__
 #endif // __cplusplus
 
-#ifndef _MSC_VER
-// use similar struct packing as MSVC for our structs
-#pragma pack(1)
-#endif
-
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 #include <unistd.h>
 #define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
