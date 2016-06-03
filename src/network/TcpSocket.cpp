@@ -433,6 +433,7 @@ private:
         {
             memcpy(ss, result->ai_addr, result->ai_addrlen);
             *ss_len = result->ai_addrlen;
+            freeaddrinfo(result);
             return true;
         }
     }
