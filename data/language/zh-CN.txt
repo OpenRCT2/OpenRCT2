@@ -4183,6 +4183,10 @@ STR_5863    :{SMALLFONT}{BLACK}只允许拥有已知密码的用户加入.
 STR_5864    :本服务器只允许白名单用户连接.
 STR_5865    :保存聊天记录
 STR_5866    :{SMALLFONT}{BLACK}保存所有聊天记录到本地文件.
+STR_5867    :{WINDOW_COLOUR_2}服务器提供者姓名: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}服务器提供者E-mail: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}服务器提供者网站: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}显示服务器信息
 
 #############
 # Scenarios #

@@ -4176,6 +4176,10 @@ STR_5863    :{SMALLFONT}{BLACK}Seuls les joueurs ayant une clé connue peuvent r
 STR_5864    :Ce serveur n'autorise que les joueurs sur liste blanche à se connecter
 STR_5865    :Enregistrer un historique des conversations
 STR_5866    :{SMALLFONT}{BLACK}Enregistre toutes les conversations dans des fichiers de votre répertoire utilisateur
+STR_5867    :{WINDOW_COLOUR_2}Nom du fournisseur : {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}E-mail du fournisseur : {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Site web du fournisseur : {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}Affiche les informations du serveur
 
 #############
 # Scenarios #
