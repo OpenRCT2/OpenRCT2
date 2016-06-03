@@ -19,6 +19,7 @@
 #include "../common.h"
 #include "../localisation/localisation.h"
 #include "../scenario.h"
+#include "../cheats.h"
 #include "climate.h"
 #include "fountain.h"
 #include "map.h"
@@ -102,6 +103,11 @@ void scenery_update_age(int x, int y, rct_map_element *mapElement)
 	rct_scenery_entry *sceneryEntry;
 
 	sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
+	if (gCheatsDisablePlantAging &&
+		(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED)) {
+		return;
+	}
+
 	if (
 		!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
 		(gClimateCurrentWeather < WEATHER_RAIN) ||
