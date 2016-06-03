@@ -42,7 +42,7 @@ void screenshot_check()
 	if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) != 0) {
 		RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8)--;
 		if (RCT2_GLOBAL(RCT2_ADDRESS_SCREENSHOT_COUNTDOWN, uint8) == 0) {
-			update_rain_animation();
+			// update_rain_animation();
 			screenshotIndex = screenshot_dump();
 
 			if (screenshotIndex != -1) {
@@ -55,7 +55,7 @@ void screenshot_check()
 			}
 
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
-			redraw_rain();
+			// redraw_rain();
 		}
 	}
 }

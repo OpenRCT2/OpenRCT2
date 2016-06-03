@@ -18,34 +18,6 @@
 
 #include "../common.h"
 
-#include <SDL_video.h>
+interface IRainDrawer;
 
-struct rct_drawpixelinfo;
-
-interface IDrawingEngine
-{
-    virtual ~IDrawingEngine() { }
-
-    virtual void Initialise(SDL_Window * window)     abstract;
-    virtual void Resize(uint32 width, uint32 height) abstract;
-    virtual void SetPalette(SDL_Color * colours)     abstract;
-
-    virtual void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-    virtual void Draw() abstract;
-};
-
-namespace DrawingEngineFactory
-{
-    IDrawingEngine * CreateSoftware();
-};
-
-interface IRainDrawer
-{
-    virtual ~IRainDrawer() { }
-    virtual void Draw(sint32 x,
-                      sint32 y,
-                      sint32 width,
-                      sint32 height,
-                      sint32 xStart,
-                      sint32 yStart) abstract;
-};
+void DrawRain(IRainDrawer * rainDrawer);

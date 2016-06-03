@@ -485,7 +485,7 @@ static void title_update_showcase()
 				game_logic_update();
 			}
 			update_palette_effects();
-			update_rain_animation();
+			// update_rain_animation();
 		}
 	} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1);
 }

@@ -17,6 +17,7 @@
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
 #include "../IDrawingEngine.h"
+#include "../Rain.h"
 
 extern "C"
 {
@@ -36,6 +37,117 @@ struct DirtyGrid
     uint8 * Blocks;
 };
 
+class RainDrawer : public IRainDrawer
+{
+private:
+    struct RainPixel
+    {
+        uint32 Position;
+        uint8  Colour;
+    };
+
+    static constexpr uint32 MaxRainPixels = 0xFFFE;
+
+    size_t              _rainPixelsCapacity;
+    uint32              _rainPixelsCount;
+    RainPixel *         _rainPixels;
+    rct_drawpixelinfo * _screenDPI;
+
+public:
+    RainDrawer()
+    {
+        _rainPixelsCapacity = MaxRainPixels;
+        _rainPixelsCount = 0;
+        _rainPixels = new RainPixel[_rainPixelsCapacity];
+    }
+
+    ~RainDrawer()
+    {
+        delete _rainPixels;
+    }
+
+    void SetDPI(rct_drawpixelinfo * dpi)
+    {
+        _screenDPI = dpi;
+    }
+
+    void Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart)
+    {
+        static const uint8 RainPattern[] =
+        {
+            32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
+            0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
+            255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255,
+            0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
+        };
+
+        const uint8 * pattern = RainPattern;
+        uint8 patternXSpace = *pattern++;
+        uint8 patternYSpace = *pattern++;
+    
+        uint8 patternStartXOffset = xStart % patternXSpace;
+        uint8 patternStartYOffset = yStart % patternYSpace;
+    
+        uint32 pixelOffset = (_screenDPI->pitch + _screenDPI->width) * y + x;
+        uint8 patternYPos = patternStartYOffset % patternYSpace;
+
+        uint8 * screenBits = _screenDPI->bits;
+    
+        //Stores the colours of changed pixels
+        RainPixel * newPixels = &_rainPixels[_rainPixelsCount];
+        for (; height != 0; height--)
+        {
+            uint8 patternX = pattern[patternYPos * 2];
+            if (patternX != 0xFF)
+            {
+                if (_rainPixelsCount < (_rainPixelsCapacity - (uint32)width))
+                {
+                    uint32 finalPixelOffset = width + pixelOffset;
+
+                    uint32 xPixelOffset = pixelOffset;
+                    xPixelOffset += ((uint8)(patternX - patternStartXOffset)) % patternXSpace;
+
+                    uint8 patternPixel = pattern[patternYPos * 2 + 1];
+                    for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
+                    {
+                        uint8 current_pixel = screenBits[xPixelOffset];
+                        screenBits[xPixelOffset] = patternPixel;
+                        _rainPixelsCount++;
+
+                        // Store colour and position
+                        *newPixels++ = { xPixelOffset, current_pixel };
+                    }
+                }
+            }
+
+            pixelOffset += _screenDPI->pitch + _screenDPI->width;
+            patternYPos++;
+            patternYPos %= patternYSpace;
+        }
+    }
+
+    void Restore()
+    {
+        if (_rainPixelsCount > 0)
+        {
+            uint32  numPixels = (_screenDPI->width + _screenDPI->pitch) * _screenDPI->height;
+            uint8 * bits = _screenDPI->bits;
+            for (uint32 i = 0; i < _rainPixelsCount; i++)
+            {
+                RainPixel rainPixel = _rainPixels[i];
+                if (rainPixel.Position >= numPixels)
+                {
+                    // Pixel out of bounds, bail
+                    break;
+                }
+                
+                bits[rainPixel.Position] = rainPixel.Colour;
+            }
+            _rainPixelsCount = 0;
+        }
+    }
+};
+
 class SoftwareDrawingEngine : public IDrawingEngine
 {
 private:
@@ -53,6 +165,8 @@ private:
     DirtyGrid   _dirtyGrid  = { 0 };
 
     rct_drawpixelinfo _bitsDPI  = { 0 };
+
+    RainDrawer  _rainDrawer;
 
 public:
     SoftwareDrawingEngine()
@@ -150,12 +264,18 @@ public:
 
     void Draw() override
     {
-        redraw_rain();
+        _rainDrawer.SetDPI(&_bitsDPI);
+        _rainDrawer.Restore();
+        
+        gfx_invalidate_pickedup_peep();
+        gfx_draw_pickedup_peep();
 
         DrawAllDirtyBlocks();
         window_update_all_viewports();
         DrawAllDirtyBlocks();
         window_update_all();
+
+        DrawRain(&_rainDrawer);
 
         rct2_draw();
         Display();

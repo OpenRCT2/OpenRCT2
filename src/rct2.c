@@ -281,9 +281,9 @@ void rct2_draw()
 
 	// redraw_rain();
 	// window_update_all();
-	gfx_invalidate_pickedup_peep();
-	gfx_draw_pickedup_peep();
-	update_rain_animation();
+	// gfx_invalidate_pickedup_peep();
+	// gfx_draw_pickedup_peep();
+	// update_rain_animation();
 	update_palette_effects();
 
 	chat_draw();
