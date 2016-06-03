@@ -66,7 +66,7 @@ static void ride_update_station_blocksection(rct_ride *ride, int stationIndex)
 	if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != NULL && mapElement->flags & 0x20)) {
 		ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
-		if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement->properties.track.sequence & 0x80))
+		if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement != NULL && (mapElement->properties.track.sequence & 0x80)))
 			ride_invalidate_station_start(ride, stationIndex, 0);
 	} else {
 		if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
