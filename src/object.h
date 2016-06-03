@@ -60,7 +60,7 @@ typedef struct rct_object_entry {
 	char name[8];
 	uint32 checksum;
 } rct_object_entry;
-STATIC_ASSERT (sizeof(rct_object_entry) == 0x10, "Improper struct size");
+assert_struct_size(rct_object_entry, 0x10);
 
 /**
  * Object entry structure extended.
@@ -72,7 +72,7 @@ typedef struct rct_object_entry_extended {
 	uint32 checksum;
 	uint32 chunk_size;
 } rct_object_entry_extended;
-STATIC_ASSERT (sizeof(rct_object_entry_extended) == 0x14, "Improper struct size");
+assert_struct_size(rct_object_entry_extended, 0x14);
 
 extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
@@ -82,21 +82,21 @@ typedef struct rct_object_entry_group {
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(rct_object_entry_group) == 8, "Improper struct size");
+assert_struct_size(rct_object_entry_group, 8);
 #endif
 
 typedef struct rct_ride_filters {
 	uint8 category[2];
 	uint8 ride_type;
 } rct_ride_filters;
-STATIC_ASSERT (sizeof(rct_ride_filters) == 3, "Improper struct size");
+assert_struct_size(rct_ride_filters, 3);
 
 typedef struct rct_object_filters {
 	union {
 		rct_ride_filters ride;
 	};
 } rct_object_filters;
-STATIC_ASSERT (sizeof(rct_object_filters) == 3, "Improper struct size");
+assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
 extern rct_object_entry_group object_entry_groups[];

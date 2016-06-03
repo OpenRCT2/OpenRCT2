@@ -37,7 +37,7 @@ typedef struct rating_tuple {
 	ride_rating intensity;
 	ride_rating nausea;
 } rating_tuple;
-STATIC_ASSERT (sizeof(rating_tuple) == 6, "Improper struct size");
+assert_struct_size(rating_tuple, 6);
 
 /**
  * Couples a ride type and subtype together.
@@ -51,33 +51,33 @@ typedef struct ride_list_item {
 		uint16 ride_type_and_entry;
 	};
 } ride_list_item;
-STATIC_ASSERT (sizeof(ride_list_item) == 2, "Improper struct size");
+assert_struct_size(ride_list_item, 2);
 
 typedef struct track_colour {
 	uint8 main;
 	uint8 additional;
 	uint8 supports;
 } track_colour;
-STATIC_ASSERT (sizeof(track_colour) == 3, "Improper struct size");
+assert_struct_size(track_colour, 3);
 
 typedef struct vehicle_colour {
 	uint8 main;
 	uint8 additional_1;
 	uint8 additional_2;
 } vehicle_colour;
-STATIC_ASSERT (sizeof(vehicle_colour) == 3, "Improper struct size");
+assert_struct_size(vehicle_colour, 3);
 
 typedef struct track_colour_preset_list {
 	uint8 count;
 	track_colour list[256];
 } track_colour_preset_list;
-STATIC_ASSERT (sizeof(track_colour_preset_list) == (1 + 256 * 3), "Improper struct size");
+assert_struct_size(track_colour_preset_list, (1 + 256 * 3));
 
 typedef struct vehicle_colour_preset_list {
 	uint8 count;
 	vehicle_colour list[256];
 } vehicle_colour_preset_list;
-STATIC_ASSERT (sizeof(vehicle_colour_preset_list) == (1 + 256 * 3), "Improper struct size");
+assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
 
 /**
  * Ride type structure.
@@ -123,7 +123,7 @@ typedef struct rct_ride_entry {
 	uint8 shop_item_secondary;							// 0x1C1
 } rct_ride_entry;
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(rct_ride_entry) == 0x1c2, "Improper struct size");
+assert_struct_size(rct_ride_entry, 0x1c2);
 #endif
 
 /**
@@ -331,7 +331,7 @@ typedef struct rct_ride {
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
 } rct_ride;
-STATIC_ASSERT (sizeof(rct_ride) == 0x260, "Improper struct size");
+assert_struct_size(rct_ride, 0x260);
 
 #define RIDE_MEASUREMENT_MAX_ITEMS 4800
 
@@ -352,7 +352,7 @@ typedef struct rct_ride_measurement {
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
 	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
 } rct_ride_measurement;
-STATIC_ASSERT (sizeof(rct_ride_measurement) == 0x4b0c, "Improper struct size");
+assert_struct_size(rct_ride_measurement, 0x4b0c);
 
 typedef struct track_begin_end {
 	int begin_x;
@@ -366,7 +366,7 @@ typedef struct track_begin_end {
 	rct_map_element *end_element;
 } track_begin_end;
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(track_begin_end) == 36, "Improper struct size");
+assert_struct_size(track_begin_end, 36);
 #endif
 
 #pragma pack(pop)

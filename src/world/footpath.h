@@ -35,7 +35,7 @@ typedef struct rct_footpath_entry {
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
 } rct_footpath_entry;
-STATIC_ASSERT (sizeof(rct_footpath_entry) == 12, "Improper struct size");
+assert_struct_size(rct_footpath_entry, 12);
 #pragma pack(pop)
 
 enum {

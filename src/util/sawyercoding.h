@@ -25,7 +25,7 @@ typedef struct sawyercoding_chunk_header {
 	uint8 encoding;
 	uint32 length;
 } sawyercoding_chunk_header;
-STATIC_ASSERT (sizeof(sawyercoding_chunk_header) == 5, "Improper struct size");
+assert_struct_size(sawyercoding_chunk_header, 5);
 #pragma pack(pop)
 
 enum {

@@ -24,7 +24,7 @@ typedef struct rct_award {
 	uint16 time;
 	uint16 type;
 } rct_award;
-STATIC_ASSERT (sizeof(rct_award) == 4, "Improper struct size");
+assert_struct_size(rct_award, 4);
 #pragma pack(pop)
 
 enum {

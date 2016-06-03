@@ -25,7 +25,7 @@ typedef struct rct_vehicle_colour {
 	uint8 body_colour;
 	uint8 trim_colour;
 } rct_vehicle_colour;
-STATIC_ASSERT (sizeof(rct_vehicle_colour) == 2, "Improper struct size");
+assert_struct_size(rct_vehicle_colour, 2);
 
 /**
  * Ride type vehicle structure.
@@ -78,7 +78,7 @@ typedef struct rct_ride_entry_vehicle {
 	sint8* peep_loading_positions;	// 0x61 , 0x7B
 } rct_ride_entry_vehicle;
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(rct_ride_entry_vehicle) == 0x65, "Improper struct size");
+assert_struct_size(rct_ride_entry_vehicle, 0x65);
 #endif
 
 typedef struct rct_vehicle {
@@ -198,7 +198,7 @@ typedef struct rct_vehicle {
 	uint8 seat_rotation;			// 0xD8
 	uint8 target_seat_rotation;		// 0xD9
 } rct_vehicle;
-STATIC_ASSERT (sizeof(rct_vehicle) == 0xDA, "Improper struct size");
+assert_struct_size(rct_vehicle, 0xDA);
 #pragma pack(pop)
 
 typedef struct train_ref {

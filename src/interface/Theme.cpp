@@ -495,7 +495,7 @@ namespace ThemeManager
     {
         utf8 Path[MAX_PATH];
         utf8 Name[96];
-	};
+    };
 
     utf8 *               CurrentThemePath;
     UITheme *            CurrentTheme;

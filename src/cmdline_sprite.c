@@ -33,7 +33,7 @@ typedef struct rct_sprite_file_header {
 	uint32 total_size;
 } rct_sprite_file_header;
 
-STATIC_ASSERT (sizeof(rct_sprite_file_header) == 8, "Improper struct size");
+assert_struct_size(rct_sprite_file_header, 8);
 
 typedef struct rct_sprite_file_palette_entry {
     uint8 b, g, r, a;
@@ -44,11 +44,11 @@ typedef struct rle_code {
 	uint8 offset_x;
 } rle_code;
 
-STATIC_ASSERT (sizeof(rle_code) == 2, "Improper struct size");
+assert_struct_size(rle_code, 2);
 
 #pragma pack(pop)
 
-STATIC_ASSERT (sizeof(rct_sprite_file_palette_entry) == 4, "Improper struct size");
+assert_struct_size(rct_sprite_file_palette_entry, 4);
 
 rct_sprite_file_palette_entry spriteFilePalette[256];
 static rct_sprite_file_palette_entry _standardPalette[256];

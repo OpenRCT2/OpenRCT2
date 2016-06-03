@@ -31,7 +31,7 @@ typedef struct td_index_item {
 } td_index_item;
 // NOTE: this is our own struct and should not get packed, but it is stored in a file
 // so removing packing from it would require refactoring file access
-STATIC_ASSERT (sizeof(td_index_item) == 1 + 9 + 260, "Improper struct size");
+assert_struct_size(td_index_item, 1 + 9 + 260);
 #pragma pack(pop)
 
 static bool track_design_index_read_header(SDL_RWops *file, uint32 *tdidxCount);

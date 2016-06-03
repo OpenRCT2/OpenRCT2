@@ -33,7 +33,7 @@ typedef struct rct_banner {
 	uint8 x; //0x06
 	uint8 y; //0x07
 } rct_banner;
-STATIC_ASSERT (sizeof(rct_banner) == 8, "Improper struct size");
+assert_struct_size(rct_banner, 8);
 #pragma pack(pop)
 
 enum{

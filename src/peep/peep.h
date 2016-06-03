@@ -377,7 +377,7 @@ typedef struct rct_peep_thought {
 	uint8 var_2;	//2
 	uint8 var_3;	//3
 } rct_peep_thought;
-STATIC_ASSERT (sizeof(rct_peep_thought) == 4, "Improper struct size");
+assert_struct_size(rct_peep_thought, 4);
 
 typedef struct rct_peep {
 	uint8 sprite_identifier;		// 0x00
@@ -548,7 +548,7 @@ typedef struct rct_peep {
 	uint8 pad_FB;
 	uint32 item_standard_flags;		// 0xFC
 } rct_peep;
-STATIC_ASSERT (sizeof(rct_peep) == 0x100, "Improper struct size");
+assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
 
 enum {

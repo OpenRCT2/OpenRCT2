@@ -1887,7 +1887,7 @@ typedef struct rct_synchronised_vehicle {
 	uint8 station_id;
 	uint16 vehicle_id;
 } rct_synchronised_vehicle;
-STATIC_ASSERT (sizeof(rct_synchronised_vehicle) == 4, "Improper struct size");
+assert_struct_size(rct_synchronised_vehicle, 4);
 #pragma pack(pop)
 
 // 8 synchronised vehicle info

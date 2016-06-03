@@ -39,7 +39,7 @@ typedef struct rct_weather_transition {
 	sint8 distribution_size;
 	sint8 distribution[24];
 } rct_weather_transition;
-STATIC_ASSERT (sizeof(rct_weather_transition) == 26, "Improper struct size");
+assert_struct_size(rct_weather_transition, 26);
 #pragma pack(pop)
 
 static const rct_weather_transition* climate_transitions[4];

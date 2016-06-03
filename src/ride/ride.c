@@ -5950,7 +5950,7 @@ foundRideEntry:
 			uint16 type_name;
 			uint16 number;
 		} name_args;
-		STATIC_ASSERT (sizeof(name_args) == 4, "Improper struct size");
+		assert_struct_size(name_args, 4);
 #pragma pack(pop)
 		name_args.type_name = 2 + ride->type;
 		name_args.number = 0;
@@ -8524,7 +8524,7 @@ void ride_reset_all_names()
 			uint16 type_name;
 			uint16 number;
 		} name_args;
-		STATIC_ASSERT (sizeof(name_args) == 4, "Improper struct size");
+		assert_struct_size(name_args, 4);
 #pragma pack(pop)
 		name_args.type_name = 2 + ride->type;
 		name_args.number = 0;

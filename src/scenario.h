@@ -42,7 +42,7 @@ typedef struct rct_s6_header {
 	uint32 magic_number;		// 0x08
 	uint8 pad_0C[0x14];
 } rct_s6_header;
-STATIC_ASSERT (sizeof(rct_s6_header) == 0x20, "Improper struct size");
+assert_struct_size(rct_s6_header, 0x20);
 
 /**
  * SC6 information chunk
@@ -60,7 +60,7 @@ typedef struct rct_s6_info {
 	char details[256];			// 0x88
 	rct_object_entry entry;		// 0x188
 } rct_s6_info;
-STATIC_ASSERT (sizeof(rct_s6_info) == 0x198, "Improper struct size");
+assert_struct_size(rct_s6_info, 0x198);
 
 /**
  * Scenario scores file header.
@@ -72,7 +72,7 @@ typedef struct rct_scenario_scores_header {
 	uint32 var_8;
 	uint32 scenario_count;		// 0x0C
 } rct_scenario_scores_header;
-STATIC_ASSERT (sizeof(rct_scenario_scores_header) == 16, "Improper struct size");
+assert_struct_size(rct_scenario_scores_header, 16);
 
 typedef enum scenario_source {
 	SCENARIO_SOURCE_RCT1,
@@ -105,7 +105,7 @@ typedef struct rct_scenario_basic {
 	// uint8 source_game;			// new in OpenRCT2
 	// sint16 source_index;		// new in OpenRCT2
 } rct_scenario_basic;
-STATIC_ASSERT (sizeof(rct_scenario_basic) == 0x02B0, "Improper struct size");
+assert_struct_size(rct_scenario_basic, 0x02B0);
 
 typedef struct rct_stex_entry {
 	rct_string_id scenario_name;	// 0x00
@@ -113,12 +113,10 @@ typedef struct rct_stex_entry {
 	rct_string_id details;			// 0x04
 	uint8 var_06;
 } rct_stex_entry;
-STATIC_ASSERT (sizeof(rct_stex_entry) == 7, "Improper struct size");
-#pragma pack(pop)
+assert_struct_size(rct_stex_entry, 7);
 
 #define g_stexEntries ((rct_stex_entry**)object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].chunks)
 
-#pragma pack(push, 1)
 // This will be useful for backwards compatibility
 typedef struct rct_s6_data {
 	// SC6[0]
@@ -344,7 +342,7 @@ typedef struct rct_s6_data {
 	uint16 wide_path_tile_loop_y;
 	uint8 pad_13CE778[434];
 } rct_s6_data;
-STATIC_ASSERT (sizeof(rct_s6_data) == 0x46b44a, "Improper struct size");
+assert_struct_size(rct_s6_data, 0x46b44a);
 #pragma pack(pop)
 
 enum {
@@ -399,7 +397,7 @@ typedef struct scenario_highscore_entry {
 } scenario_highscore_entry;
 // NOTE: Check if needed
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(scenario_highscore_entry) == 20, "Improper struct size");
+assert_struct_size(scenario_highscore_entry, 20);
 #endif
 
 typedef struct scenario_index_entry {

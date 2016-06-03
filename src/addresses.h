@@ -708,7 +708,7 @@ typedef struct registers {
 	};
 } registers;
 
-STATIC_ASSERT (sizeof(registers) == 7 * 4, "Improper struct size");
+assert_struct_size(registers, 7 * 4);
 
 #pragma pack(pop)
 

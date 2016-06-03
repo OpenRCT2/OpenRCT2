@@ -31,7 +31,7 @@ typedef struct rct_trackdefinition {
 	uint8 special;
 	uint8 pad[2];
 } rct_trackdefinition;
-STATIC_ASSERT (sizeof(rct_trackdefinition) == 8, "Improper struct size");
+assert_struct_size(rct_trackdefinition, 8);
 #pragma pack(pop)
 
 /**

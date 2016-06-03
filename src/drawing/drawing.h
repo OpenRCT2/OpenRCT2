@@ -32,7 +32,7 @@ typedef struct rct_drawpixelinfo {
 	uint16 zoom_level;	// 0x0E
 } rct_drawpixelinfo;
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(rct_drawpixelinfo) == 0x10, "Improper struct size");
+assert_struct_size(rct_drawpixelinfo, 0x10);
 #endif
 
 // Size: 0x10
@@ -46,7 +46,7 @@ typedef struct rct_g1_element {
 	uint16 zoomed_offset;	// 0x0E
 } rct_g1_element;
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(rct_g1_element) == 0x10, "Improper struct size");
+assert_struct_size(rct_g1_element, 0x10);
 #endif
 
 enum {
@@ -65,7 +65,7 @@ typedef struct rct_g1_header {
 	uint32 num_entries;
 	uint32 total_size;
 } rct_g1_header;
-STATIC_ASSERT (sizeof(rct_g1_header) == 8, "Improper struct size");
+assert_struct_size(rct_g1_header, 8);
 
 typedef struct rct_gx {
 	rct_g1_header header;
@@ -73,7 +73,7 @@ typedef struct rct_gx {
 	void *data;
 } rct_gx;
 #ifdef PLATFORM_32BIT
-STATIC_ASSERT (sizeof(rct_gx) == 16, "Improper struct size");
+assert_struct_size(rct_gx, 16);
 #endif
 
 typedef struct rct_palette_entry {
@@ -82,7 +82,7 @@ typedef struct rct_palette_entry {
 	uint8 red;
 	uint8 alpha;
 } rct_palette_entry;
-STATIC_ASSERT (sizeof(rct_palette_entry) == 4, "Improper struct size");
+assert_struct_size(rct_palette_entry, 4);
 
 #pragma pack(pop)
 

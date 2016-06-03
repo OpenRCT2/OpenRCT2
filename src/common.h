@@ -62,13 +62,13 @@
 #endif
 
 #ifdef __cplusplus
-#define STATIC_ASSERT static_assert
+#define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
 #else
 	// Visual Studio does not know _Static_assert
 	#if !defined(_MSC_VER)
-		#define STATIC_ASSERT _Static_assert
+		#define assert_struct_size(x, y) _Static_assert(sizeof(x) == (y), "Improper struct size")
 	#else
-		#define STATIC_ASSERT(x, y)
+		#define assert_struct_size(x, y)
 	#endif // !defined(_MSC_VER)
 #endif
 

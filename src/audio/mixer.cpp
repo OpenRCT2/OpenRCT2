@@ -149,7 +149,7 @@ bool Source_Sample::LoadCSS1(const char *filename, unsigned int offset)
 		Uint16 extrasize;
 	} waveformat;
 #pragma pack(pop)
-	STATIC_ASSERT (sizeof(waveformat) == 18, "Improper struct size");
+	assert_struct_size(waveformat, 18);
 	SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
 	format.freq = waveformat.frequency;
 	format.format = AUDIO_S16LSB;
@@ -276,7 +276,7 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 		Uint16 bitspersample;
 	} waveformat;
 #pragma pack(pop)
-	STATIC_ASSERT (sizeof(waveformat) == 16, "Improper struct size");
+	assert_struct_size(waveformat, 16);
 	SDL_RWread(rw, &waveformat, sizeof(waveformat), 1);
 	SDL_RWseek(rw, chunkstart + fmtchunk_size, RW_SEEK_SET);
 	const Uint16 pcmformat = 0x0001;

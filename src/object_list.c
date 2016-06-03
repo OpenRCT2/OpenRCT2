@@ -39,7 +39,7 @@ typedef struct rct_plugin_header {
 	uint32 object_list_size;
 	uint32 object_list_no_items;
 } rct_plugin_header;
-STATIC_ASSERT (sizeof(rct_plugin_header) == 20, "Improper struct size");
+assert_struct_size(rct_plugin_header, 20);
 #pragma pack(pop)
 
 // 98DA00

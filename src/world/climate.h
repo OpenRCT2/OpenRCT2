@@ -43,7 +43,7 @@ typedef struct rct_weather {
 	sint8 rain_level;
 	uint32 sprite_id;
 } rct_weather;
-STATIC_ASSERT (sizeof(rct_weather) == 8, "Improper struct size");
+assert_struct_size(rct_weather, 8);
 #pragma pack(pop)
 
 #define gClimate						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8)

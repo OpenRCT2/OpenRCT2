@@ -25,7 +25,7 @@ typedef struct rct_research_item {
 	sint32 entryIndex;
 	uint8 category;
 } rct_research_item;
-STATIC_ASSERT (sizeof(rct_research_item) == 5, "Improper struct size");
+assert_struct_size(rct_research_item, 5);
 #pragma pack(pop)
 
 enum{

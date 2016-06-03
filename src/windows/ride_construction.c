@@ -449,7 +449,7 @@ union {
 		uint32 b;
 	};
 } _enabledRidePieces;
-STATIC_ASSERT (sizeof(_enabledRidePieces) == 8, "Improper struct size");
+assert_struct_size(_enabledRidePieces, 8);
 #pragma pack(pop)
 
 static bool	_trackPlaceCtrlState;

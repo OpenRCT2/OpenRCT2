@@ -33,7 +33,7 @@ typedef struct rct1_entrance {
 	uint16 z;
 	uint8 direction;
 } rct1_entrance;
-STATIC_ASSERT (sizeof(rct1_entrance) == 7, "Improper struct size");
+assert_struct_size(rct1_entrance, 7);
 
 /**
  * RCT1 ride structure
@@ -162,7 +162,7 @@ typedef struct rct1_ride {
 	uint8 entrance_style;
 	uint8 unk_17A[230];
 } rct1_ride;
-STATIC_ASSERT (sizeof(rct1_ride) == 0x260, "Improper struct size");
+assert_struct_size(rct1_ride, 0x260);
 
 typedef struct rct1_research_item {
 	uint8 item;
@@ -171,7 +171,7 @@ typedef struct rct1_research_item {
 	uint8 flags;
 	uint8 expenditure_area;
 } rct1_research_item;
-STATIC_ASSERT (sizeof(rct1_research_item) == 5, "Improper struct size");
+assert_struct_size(rct1_research_item, 5);
 
 /**
  * RCT1,AA,LL scenario / saved game structure.
@@ -344,7 +344,7 @@ typedef struct rct1_s4 {
 	uint8 unk_1F8358[432];
 	uint32 expansion_pack_checksum;
 } rct1_s4;
-STATIC_ASSERT (sizeof(rct1_s4) == 0x1F850C, "Improper struct size");
+assert_struct_size(rct1_s4, 0x1F850C);
 
 typedef struct rct_track_td4 {
 	uint8 type;										// 0x00
@@ -390,7 +390,7 @@ typedef struct rct_track_td4 {
 	uint8 pad_41[0x83];
 	uint16 start_track_data_AA_CF;					// 0xC4
 } rct_track_td4; // Information based off RCTTechDepot
-STATIC_ASSERT (sizeof(rct_track_td4) == 0xC9, "Improper struct size");
+assert_struct_size(rct_track_td4, 0xC9);
 #pragma pack(pop)
 
 enum {
