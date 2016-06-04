@@ -59,6 +59,8 @@ extern void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16
 
 extern void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType);
 
+extern void lightfx_add_lights_magic_vehicles();
+
 extern uint32 lightfx_get_light_polution();
 
 #endif
