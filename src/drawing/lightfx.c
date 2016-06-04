@@ -262,8 +262,8 @@ void lightfx_prepare_light_list()
 
 				//	log_warning("[%i, %i]", dpi->x, dpi->y);
 
-					mapCoord.x = RCT2_GLOBAL(0x9AC14C, int16_t);
-					mapCoord.y = RCT2_GLOBAL(0x9AC14E, int16_t);
+					mapCoord.x = RCT2_GLOBAL(0x9AC14C, int16_t) + tileOffsetX;
+					mapCoord.y = RCT2_GLOBAL(0x9AC14E, int16_t) + tileOffsetY;
 					interactionType = RCT2_GLOBAL(0x9AC148, uint8_t);
 					mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
 
