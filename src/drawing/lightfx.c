@@ -444,12 +444,14 @@ void lightfx_render_lights_to_frontbuffer()
 
 		lightlist_entry	* entry = &_LightListFront[light];
 
-		uint32		inRectCentreX	= entry->x;
-		uint32		inRectCentreY	= entry->y;
+		sint32		inRectCentreX	= entry->x;
+		sint32		inRectCentreY	= entry->y;
 
 		if (entry->z != 0x7FFF) {
 			inRectCentreX -= _current_view_x_front;
 			inRectCentreY -= _current_view_y_front;
+			inRectCentreX >>= _current_view_zoom_front;
+			inRectCentreY >>= _current_view_zoom_front;
 		}
 
 		switch (entry->lightType) {
