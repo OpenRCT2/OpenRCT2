@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 
 extern "C"
@@ -67,6 +68,18 @@ extern "C"
 
     void gfx_draw_all_dirty_blocks()
     {
-        
+    }
+
+    /**
+     * Clears the screen with the specified colour.
+     *  rct2: 0x00678A9F
+     */
+    void gfx_clear(rct_drawpixelinfo * dpi, int colour)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->Clear(colour);
+        }
     }
 }

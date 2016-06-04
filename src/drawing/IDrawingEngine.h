@@ -21,6 +21,7 @@
 #include <SDL_video.h>
 
 struct rct_drawpixelinfo;
+interface IDrawingContext;
 
 interface IDrawingEngine
 {
@@ -32,6 +33,8 @@ interface IDrawingEngine
 
     virtual void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
     virtual void Draw() abstract;
+
+    virtual IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
 };
 
 namespace DrawingEngineFactory

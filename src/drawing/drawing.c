@@ -114,22 +114,6 @@ const uint16 palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
 
 static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
 
-/**
- * Clears the screen with the specified colour.
- *  rct2: 0x00678A9F
- */
-void gfx_clear(rct_drawpixelinfo *dpi, int colour)
-{
-	int w = dpi->width >> dpi->zoom_level;
-	int h = dpi->height >> dpi->zoom_level;
-	uint8* ptr = dpi->bits;
-
-	for (int y = 0; y < h; y++) {
-		memset(ptr, colour, w);
-		ptr += w + dpi->pitch;
-	}
-}
-
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
 {
 	gfx_fill_rect(dpi, x, y, x, y, colour);

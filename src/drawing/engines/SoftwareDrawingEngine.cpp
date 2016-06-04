@@ -16,6 +16,7 @@
 
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
+#include "../IDrawingContext.h"
 #include "../IDrawingEngine.h"
 #include "../Rain.h"
 
@@ -25,6 +26,8 @@ extern "C"
     #include "../drawing.h"
     #include "../../interface/window.h"
 }
+
+class SoftwareDrawingEngine;
 
 struct DirtyGrid
 {
@@ -148,6 +151,25 @@ public:
     }
 };
 
+class SoftwareDrawingContext : public IDrawingContext
+{
+private:
+    SoftwareDrawingEngine * _engine;
+    rct_drawpixelinfo *     _dpi;
+
+public:
+    SoftwareDrawingContext(SoftwareDrawingEngine * engine);
+    ~SoftwareDrawingContext() override;
+
+    IDrawingEngine * GetEngine() override;
+
+    void Clear(uint32 colour) override;
+    void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
+    void DrawSprite(uint32 image, sint32 x, sint32 y) override;
+
+    void SetDPI(rct_drawpixelinfo * dpi);
+};
+
 class SoftwareDrawingEngine : public IDrawingEngine
 {
 private:
@@ -166,16 +188,18 @@ private:
 
     rct_drawpixelinfo _bitsDPI  = { 0 };
 
-    RainDrawer  _rainDrawer;
+    RainDrawer                  _rainDrawer;
+    SoftwareDrawingContext *    _drawingContext;
 
 public:
     SoftwareDrawingEngine()
     {
-
+        _drawingContext = new SoftwareDrawingContext(this);
     }
 
     ~SoftwareDrawingEngine() override
     {
+        delete _drawingContext;
         delete _dirtyGrid.Blocks;
         delete _bits;
         SDL_FreeSurface(_surface);
@@ -279,6 +303,17 @@ public:
 
         rct2_draw();
         Display();
+    }
+
+    IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override
+    {
+        _drawingContext->SetDPI(dpi);
+        return _drawingContext;
+    }
+
+    rct_drawpixelinfo * GetDPI()
+    {
+        return &_bitsDPI;
     }
 
 private:
@@ -486,4 +521,49 @@ private:
 IDrawingEngine * DrawingEngineFactory::CreateSoftware()
 {
     return new SoftwareDrawingEngine();
+}
+
+SoftwareDrawingContext::SoftwareDrawingContext(SoftwareDrawingEngine * engine)
+{
+    _engine = engine;
+}
+
+SoftwareDrawingContext::~SoftwareDrawingContext()
+{
+
+}
+
+IDrawingEngine * SoftwareDrawingContext::GetEngine()
+{
+    return _engine;
+}
+
+void SoftwareDrawingContext::Clear(uint32 colour)
+{
+    rct_drawpixelinfo * dpi = _dpi;
+
+    int w = dpi->width >> dpi->zoom_level;
+    int h = dpi->height >> dpi->zoom_level;
+    uint8 * ptr = dpi->bits;
+
+    for (int y = 0; y < h; y++)
+    {
+        Memory::Set(ptr, colour, w);
+        ptr += w + dpi->pitch;
+    }
+}
+
+void SoftwareDrawingContext::FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h)
+{
+
+}
+
+void SoftwareDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y)
+{
+
+}
+
+void SoftwareDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
+{
+    _dpi = dpi;
 }
