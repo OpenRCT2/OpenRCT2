@@ -229,10 +229,16 @@ void lightfx_prepare_light_list()
 		}
 
 		if (true) {
-			int totalSamplePoints = 1;
+			int totalSamplePoints = 5;
+			int startSamplePoint = 1;
 			int lastSampleCount = 0;
 
-			for (int pat = 0; pat < totalSamplePoints; pat++) {
+			if ((entry->lightIDqualifier & 0xF) == LIGHTFX_LIGHT_QUALIFIER_MAP) {
+				startSamplePoint = 0;
+				totalSamplePoints = 1;
+			}
+
+			for (int pat = startSamplePoint; pat < totalSamplePoints; pat++) {
 				rct_xy16 mapCoord = { 0 };
 
 				rct_map_element *mapElement = 0;
@@ -322,15 +328,16 @@ void lightfx_prepare_light_list()
 
 			//	log_warning("light %i [%i, %i, %i], [%i, %i] minDist to %i: %i; projdot: %i", light, coord_3d.x, coord_3d.y, coord_3d.z, mapCoord.x, mapCoord.y, baseHeight, minDist, projDot);
 
-			//	break;
 
 				if (pat == 0) {
-					if (_current_view_zoom_front > 3)
+					if (lightIntensityOccluded == 100)
+						break;
+					if (_current_view_zoom_front > 2)
 						break;
 					totalSamplePoints += 4;
 				}
 				else if (pat == 4) {
-					if (_current_view_zoom_front > 2)
+					if (_current_view_zoom_front > 1)
 						break;
 					if (lightIntensityOccluded == 0 || lightIntensityOccluded == 500)
 						break;
@@ -339,7 +346,8 @@ void lightfx_prepare_light_list()
 					totalSamplePoints += 4;
 				}
 				else if (pat == 8) {
-					if (_current_view_zoom_front > 1)
+					break;
+					if (_current_view_zoom_front > 0)
 						break;
 					int newSampleCount = lightIntensityOccluded / 900;
 					if (abs(newSampleCount - lastSampleCount) < 10)
@@ -347,6 +355,12 @@ void lightfx_prepare_light_list()
 					totalSamplePoints += 4;
 				}
 			}
+
+			totalSamplePoints -= startSamplePoint;
+
+		//	lightIntensityOccluded = totalSamplePoints * 100;
+		
+		//	log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded);
 
 			if (lightIntensityOccluded == 0) {
 				entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
