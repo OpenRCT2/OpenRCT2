@@ -19,6 +19,7 @@
 
 extern "C"
 {
+    #include "../config.h"
     #include "../platform/platform.h"
 }
 
@@ -29,8 +30,14 @@ extern "C"
     void drawing_engine_init()
     {
         assert(_drawingEngine == nullptr);
-        // _drawingEngine = DrawingEngineFactory::CreateSoftware();
-        _drawingEngine = DrawingEngineFactory::CreateOpenGL();
+        if (gConfigGeneral.hardware_display)
+        {
+            _drawingEngine = DrawingEngineFactory::CreateOpenGL();
+        }
+        else
+        {
+            _drawingEngine = DrawingEngineFactory::CreateSoftware();
+        }
         _drawingEngine->Initialise(gWindow);
     }
 

@@ -313,7 +313,7 @@ void platform_update_palette(const uint8* colours, int start_index, int num_colo
 		}
 	}
 
-	if (!gOpenRCT2Headless && !gHardwareDisplay) {
+	if (!gOpenRCT2Headless) {
 		drawing_engine_set_palette(gPalette);
 	}
 }
@@ -802,6 +802,11 @@ void platform_refresh_video()
 
 	log_verbose("HardwareDisplay: %s", gHardwareDisplay ? "true" : "false");
 
+	drawing_engine_dispose();
+	drawing_engine_init();
+	drawing_engine_resize(width, height);
+	drawing_engine_set_palette(gPalette);
+	gfx_invalidate_screen();
 }
 
 void platform_hide_cursor()
