@@ -292,14 +292,14 @@ public:
     {
         _rainDrawer.SetDPI(&_bitsDPI);
         _rainDrawer.Restore();
-        
-        gfx_invalidate_pickedup_peep();
-        gfx_draw_pickedup_peep();
 
         DrawAllDirtyBlocks();
         window_update_all_viewports();
         DrawAllDirtyBlocks();
         window_update_all();
+
+        gfx_draw_pickedup_peep(&_bitsDPI);
+        gfx_invalidate_pickedup_peep();
 
         DrawRain(&_rainDrawer);
 

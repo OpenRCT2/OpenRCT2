@@ -179,6 +179,8 @@ public:
         gfx_redraw_screen_rect(0, 0, _width - 1, _height - 1);
         window_update_all();
 
+        gfx_draw_pickedup_peep(&_bitsDPI);
+
         rct2_draw();
         Display();
     }
@@ -311,7 +313,16 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     }
 
     glDisable(GL_TEXTURE_2D);
-    glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
+
+    if (colour & 0x2000000)
+    {
+        glColor4f(paletteColour.r, paletteColour.g, paletteColour.b, 0.4f);
+    }
+    else
+    {
+        glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
+    }
+
     glBegin(GL_QUADS);
         glVertex2i(left,  top);
         glVertex2i(left,  bottom);
