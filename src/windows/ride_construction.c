@@ -1061,7 +1061,7 @@ static void window_ride_construction_resize(rct_window *w)
 	if (_currentTrackCurve != TRACK_CURVE_NONE && _currentTrackSlopeEnd == TRACK_SLOPE_DOWN_60) {
 		disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN);
 	}
-	if (_currentTrackLiftHill & 1) {
+	if ((_currentTrackLiftHill & 1) && !gCheatsEnableChainLiftOnAllTrack) {
 		if (_currentTrackSlopeEnd != TRACK_SLOPE_NONE && !is_track_enabled(TRACK_LIFT_HILL_CURVE)) {
 			disabledWidgets |=
 				(1ULL << WIDX_LEFT_CURVE_SMALL) |
@@ -1220,7 +1220,10 @@ static void window_ride_construction_resize(rct_window *w)
 		disabledWidgets &= ~(1ULL << WIDX_BANK_RIGHT);
 	}
 	
-	disabledWidgets &=~(1ULL<<WIDX_CHAIN_LIFT);	
+	//If chain lift cheat is enabled then show the chain lift widget no matter what
+	if(gCheatsEnableChainLiftOnAllTrack) {
+		disabledWidgets &=~(1ULL<<WIDX_CHAIN_LIFT);	
+	}
 
 	// Set and invalidate the changed widgets
 	uint64 currentDisabledWidgets = w->disabled_widgets;
@@ -3072,7 +3075,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	}
 
 	int x;
-	if (is_track_enabled(TRACK_LIFT_HILL) && _currentTrackCurve < 256) {
+	if ((is_track_enabled(TRACK_LIFT_HILL) && _currentTrackCurve < 256) || gCheatsEnableChainLiftOnAllTrack) {
 		window_ride_construction_widgets[WIDX_CHAIN_LIFT].type = WWT_FLATBTN;
 		x = 9;
 	} else {
