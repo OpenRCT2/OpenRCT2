@@ -1850,8 +1850,8 @@ STR_1843    :La preferita da: {COMMA16} visitatori
 STR_1844    :{SMALLFONT}{BLACK}Scegli il tipo di informazione da mostrare nella lista delle attrazioni
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} visitatori
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitatori
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitatori
 STR_1849    :{WINDOW_COLOUR_2}Suona la musica
 STR_1850    :{SMALLFONT}{BLACK}Scegli quale musica dev'essere suonata in quest'attrazione
 STR_1851    :{WINDOW_COLOUR_2}Costo mantenim.: {BLACK}{CURRENCY2DP} l'ora
@@ -1879,8 +1879,8 @@ STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Entrate: {BLACK}{CURRENCY} all'ora
 STR_1874    :{WINDOW_COLOUR_2}Profitto: {BLACK}{CURRENCY} all'ora
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Ispeziona attrazioni
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Aggiusta attrazioni
 STR_1878    :{WINDOW_COLOUR_2}Ispezione:
 STR_1879    :Ogni 10 minuti
 STR_1880    :Ogni 20 minuti
@@ -3619,8 +3619,8 @@ STR_5274    :{SMALLFONT}{BLACK}Percorso
 STR_5275    :Cerca per oggetti
 STR_5276    :Inserisci il nome di un oggetto da cercare
 STR_5277    :Pulisci
-STR_5278    :Sandbox mode
-STR_5279    :Sandbox mode off
+STR_5278    :Modalità Sandbox
+STR_5279    :Disattiva modalità sandbox
 STR_5280    :{SMALLFONT}{BLACK}Permetti la modifica delle impostazioni del terreno tramite la finestra Mappa e altre opzioni che sono solitamente non disponibili nella modifica Scenario
 STR_5281    :{SMALLFONT}{BLACK}Feature
 STR_5282    :RCT1 Ride Open/Close Lights
@@ -3918,7 +3918,7 @@ STR_5573    :Rimuovi dai Preferiti
 STR_5574    :Nome del Server:
 STR_5575    :Giocatori Massimi:
 STR_5576    :Porta:
-STR_5577    :South Korean Won (W)
+STR_5577    :Won sudcoreano (W)
 STR_5578    :Rubli Russi (R)
 STR_5579    :Window scale factor:
 STR_5580    :Corona Ceca (Kc)
@@ -4069,8 +4069,8 @@ STR_5756    :Password Sbagliata
 STR_5757    :Server Pieno
 STR_5758    :{OUTLINE}{GREEN}{STRING} é entrato in gioco
 STR_5759    :Scaricamento mappa ... ({INT32} / {INT32}) KiB
-STR_5760    :Hong Kong Dollars (HK$)
-STR_5761    :Nuovi Dollari Taiwan (NT$)
+STR_5760    :Dollari di Hong Kong (HK$)
+STR_5761    :Nuovi Dollari Taiwanesi (NT$)
 STR_5762    :Yuan Cinesi (CN{YEN})
 STR_5763    :Tutti i file
 STR_5764    :Tipo di corsa non valida
