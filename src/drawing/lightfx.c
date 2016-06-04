@@ -194,22 +194,33 @@ void lightfx_prepare_light_list()
 		sint32 dirVecX = 707;
 		sint32 dirVecY = 707;
 
+		sint32 tileOffsetX = 0;
+		sint32 tileOffsetY = 0;
+
 		switch (_current_view_rotation_front) {
 		case 0:
 			dirVecX	= 707;
 			dirVecY = 707;
+			tileOffsetX = 0;
+			tileOffsetY = 0;
 			break;
 		case 1:
 			dirVecX = -707;
 			dirVecY = 707;
+			tileOffsetX = 16;
+			tileOffsetY = 0;
 			break;
 		case 2:
 			dirVecX = -707;
 			dirVecY = -707;
+			tileOffsetX = 32;
+			tileOffsetY = 32;
 			break;
 		case 3:
 			dirVecX = 707;
 			dirVecY = -707;
+			tileOffsetX = 0;
+			tileOffsetY = 16;
 			break;
 		default:
 			dirVecX = 0;
