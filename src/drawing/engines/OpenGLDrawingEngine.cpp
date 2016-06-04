@@ -284,6 +284,11 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     right = Math::Min(right, _clipRight);
     bottom = Math::Min(bottom, _clipBottom);
 
+    if (right < left || bottom < top)
+    {
+        return;
+    }
+
     glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
     glBegin(GL_QUADS);
         glVertex2i(left,  top);
@@ -295,6 +300,14 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 
 void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
 {
+    int g1Id = image & 0x7FFFF;
+    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+
+    sint32 left = x + g1Element->x_offset;
+    sint32 top = y + g1Element->y_offset;
+    sint32 right = left + g1Element->width;
+    sint32 bottom = top + g1Element->height;
+    FillRect(g1Id & 0xFF, left, top, right, bottom);
 }
 
 void OpenGLDrawingContext::DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown)
@@ -317,8 +330,8 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
     _clipTop = bitsOffset / (screenDPI->width + screenDPI->pitch);
     _clipRight = _clipLeft + dpi->width;
     _clipBottom = _clipTop + dpi->height;
-    _offsetX = _clipLeft + dpi->x;
-    _offsetY = _clipTop + dpi->y;
+    _offsetX = _clipLeft - dpi->x;
+    _offsetY = _clipTop - dpi->y;
 
     _dpi = dpi;
 }
