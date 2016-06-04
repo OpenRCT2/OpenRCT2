@@ -472,6 +472,22 @@ static int cc_rides(const utf8 **argv, int argc)
 						ride->subtype = int_val[2];
 					}
 				}
+			} else if (strcmp(argv[1], "friction") == 0) {
+				bool int_valid[2] = { 0 };
+				int ride_index = console_parse_int(argv[2], &int_valid[0]);
+				int friction = console_parse_int(argv[3], &int_valid[1]);
+
+				if (int_valid[0] && int_valid[1] && (friction > 0) && (get_ride(ride_index)->type != RIDE_TYPE_NULL)) {
+					rct_ride *ride = get_ride(ride_index);
+					for (int i = 0; i < ride->num_vehicles; i++) {
+						uint16 vehicle_index = ride->vehicles[i];
+ 						do {
+							rct_vehicle *vehicle=GET_VEHICLE(vehicle_index);
+							vehicle->friction=friction;
+							vehicle_index=vehicle->next_vehicle_on_train;
+						}while (vehicle_index != SPRITE_INDEX_NULL);
+					}			
+				}
 			}
 		}
 	} else {
