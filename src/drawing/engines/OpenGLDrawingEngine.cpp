@@ -325,12 +325,39 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     int g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
+    if (_dpi->zoom_level != 0)
+    {
+        if (g1Element->flags & (1 << 4))
+        {
+            rct_drawpixelinfo zoomedDPI;
+            zoomedDPI.bits = _dpi->bits;
+            zoomedDPI.x = _dpi->x >> 1;
+            zoomedDPI.y = _dpi->y >> 1;
+            zoomedDPI.height = _dpi->height >> 1;
+            zoomedDPI.width = _dpi->width >> 1;
+            zoomedDPI.pitch = _dpi->pitch;
+            zoomedDPI.zoom_level = _dpi->zoom_level - 1;
+            SetDPI(&zoomedDPI);
+            DrawSprite((image << 28) | (g1Id - g1Element->zoomed_offset), x >> 1, y >> 1, tertiaryColour);
+            return;
+        }
+        if (g1Element->flags & (1 << 5))
+        {
+            return;
+        }
+    }
+
     GLuint texture = GetOrLoadImageTexture(image);
 
-    sint32 left = x + g1Element->x_offset;
-    sint32 top = y + g1Element->y_offset;
-    sint32 right = left + g1Element->width;
-    sint32 bottom = top + g1Element->height;
+    sint32 drawOffsetX = g1Element->x_offset;
+    sint32 drawOffsetY = g1Element->y_offset;
+    sint32 drawWidth = (uint16)g1Element->width >> _dpi->zoom_level;
+    sint32 drawHeight = (uint16)g1Element->height >> _dpi->zoom_level;
+
+    sint32 left = x + drawOffsetX;
+    sint32 top = y + drawOffsetY;
+    sint32 right = left + drawWidth;
+    sint32 bottom = top + drawHeight;
     // FillRect(g1Id & 0xFF, left, top, right, bottom);
 
     if (left > right)
@@ -410,6 +437,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
 void OpenGLDrawingContext::DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown)
 {
+    DrawSprite(image, x, y, 0);
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
@@ -426,6 +454,7 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
 
     _clipLeft = bitsOffset % (screenDPI->width + screenDPI->pitch);
     _clipTop = bitsOffset / (screenDPI->width + screenDPI->pitch);
+
     _clipRight = _clipLeft + dpi->width;
     _clipBottom = _clipTop + dpi->height;
     _offsetX = _clipLeft - dpi->x;
@@ -445,6 +474,12 @@ GLuint OpenGLDrawingContext::GetOrLoadImageTexture(uint32 image)
     GLuint texture = LoadImageTexture(image);
     _textures.push_back(texture);
     _imageTextureMap[image] = texture;
+
+    // if ((_textures.size() % 100) == 0)
+    // {
+    //     printf("Textures: %d\n", _textures.size());
+    // }
+
     return texture;
 }
 
