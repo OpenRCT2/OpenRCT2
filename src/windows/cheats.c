@@ -216,7 +216,7 @@ static rct_widget window_cheats_misc_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(4) + 8,		YPL(4) + 12,	STR_NUMERIC_DOWN,					STR_NONE },								// decrease rating
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(5), 		HPL(5),			STR_CHEAT_WIN_SCENARIO,				STR_NONE},								// Win scenario
 	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(5), 		HPL(5),			STR_CHEAT_HAVE_FUN,					STR_NONE},								// Have fun!
-	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(6),		HPL(6),		STR_CHEAT_NEVERENDING_MARKETING,			STR_CHEAT_NEVERENDING_MARKETING_TIP },	// never ending marketing campaigns
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(6),		HPL(6),		STR_CHEAT_NEVERENDING_MARKETING,			STR_CHEAT_NEVERENDING_MARKETING_TIP },	// never ending marketing campaigns
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(7.25),			HPL(9.5),		STR_CHEAT_CLIMATE_GROUP,			STR_NONE },							// Climate group
 	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_FREEZE_CLIMATE_TIP },			// Freeze climate
 	{ WWT_DROPDOWN,			1,		XPL(1),					WPL(1),					YPL(9) + 2,		YPL(9) + 13,	STR_NONE,							STR_FORCE_WEATHER_TOOLTIP },			// Force weather
