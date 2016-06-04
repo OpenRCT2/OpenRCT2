@@ -26,7 +26,7 @@ interface IDrawingContext
 
     virtual IDrawingEngine * GetEngine() abstract;
 
-    virtual void Clear(uint32 colour)                                            abstract;
-    virtual void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) abstract;
-    virtual void DrawSprite(uint32 image, sint32 x, sint32 y)                    abstract;
+    virtual void Clear(uint32 colour)                                                          abstract;
+    virtual void FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
+    virtual void DrawSprite(uint32 image, sint32 x, sint32 y)                                  abstract;
 };

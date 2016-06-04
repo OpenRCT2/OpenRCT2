@@ -82,4 +82,23 @@ extern "C"
             dc->Clear(colour);
         }
     }
+
+    /**
+     *
+     *  rct2: 0x00678AD4
+     * dpi (edi)
+     * left (ax)
+     * top (cx)
+     * right (bx)
+     * bottom (dx)
+     * colour (ebp)
+     */
+    void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->FillRect(colour, left, top, right, bottom);
+        }
+    }
 }

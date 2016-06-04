@@ -553,9 +553,200 @@ void SoftwareDrawingContext::Clear(uint32 colour)
     }
 }
 
-void SoftwareDrawingContext::FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h)
+void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
+    rct_drawpixelinfo * dpi = _dpi;
 
+    if (left > right) return;
+    if (top > bottom) return;
+    if (dpi->x > right) return;
+    if (left >= dpi->x + dpi->width) return;
+    if (bottom < dpi->y) return;
+    if (top >= dpi->y + dpi->height) return;
+
+    colour |= RCT2_GLOBAL(0x009ABD9C, uint32);
+
+    uint16 crossPattern = 0;
+
+    int startX = left - dpi->x;
+    if (startX < 0)
+    {
+        crossPattern ^= startX;
+        startX = 0;
+    }
+
+    int endX = right - dpi->x + 1;
+    if (endX > dpi->width)
+    {
+        endX = dpi->width;
+    }
+
+    int startY = top - dpi->y;
+    if (startY < 0)
+    {
+        crossPattern ^= startY;
+        startY = 0;
+    }
+
+    int endY = bottom - dpi->y + 1;
+    if (endY > dpi->height)
+    {
+        endY = dpi->height;
+    }
+
+    int width = endX - startX;
+    int height = endY - startY;
+
+    if (colour & 0x1000000)
+    {
+        // Cross hatching
+        uint8 * dst = (startY * (dpi->width + dpi->pitch)) + startX + dpi->bits;
+        for (int i = 0; i < height; i++)
+        {
+            uint8 * nextdst = dst + dpi->width + dpi->pitch;
+            uint32  p = ror32(crossPattern, 1);
+            p = (p & 0xFFFF0000) | width;
+
+            // Fill every other pixel with the colour
+            for (; (p & 0xFFFF) != 0; p--)
+            {
+                p = p ^ 0x80000000;
+                if (p & 0x80000000)
+                {
+                    *dst = colour & 0xFF;
+                }
+                dst++;
+            }
+            crossPattern ^= 1;
+            dst = nextdst;
+        }
+    }
+    else if (colour & 0x2000000)
+    {
+        //0x2000000
+        // 00678B7E   00678C83
+        // Location in screen buffer?
+        uint8 * dst = dpi->bits + (uint32)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (startX >> dpi->zoom_level));
+    
+        // Find colour in colour table?
+        uint16           g1Index = palette_to_g1_offset[colour & 0xFF];
+        rct_g1_element * g1Element = &g1Elements[g1Index];
+        uint8 *          g1Bits = g1Element->offset;
+    
+        // Fill the rectangle with the colours from the colour table
+        for (int i = 0; i < height >> dpi->zoom_level; i++)
+        {
+            uint8 * nextdst = dst + (dpi->width >> dpi->zoom_level) + dpi->pitch;
+            for (int j = 0; j < (width >> dpi->zoom_level); j++)
+            {
+                *dst = g1Bits[*dst];
+                dst++;
+            }
+            dst = nextdst;
+        }
+    }
+    else if (colour & 0x4000000)
+    {
+        uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
+    
+        // The pattern loops every 15 lines this is which
+        // part the pattern is on.
+        int patternY = (startY + dpi->y) % 16;
+    
+        // The pattern loops every 15 pixels this is which
+        // part the pattern is on.
+        int startPatternX = (startX + dpi->x) % 16;
+        int patternX = startPatternX;
+    
+        uint16 * patternsrc = RCT2_ADDRESS(0x0097FEFC, uint16*)[colour >> 28]; // or possibly uint8)[esi*4] ?
+    
+        for (int numLines = height; numLines > 0; numLines--)
+        {
+            uint8 * nextdst = dst + dpi->width + dpi->pitch;
+            uint16  pattern = patternsrc[patternY];
+    
+            for (int numPixels = width; numPixels > 0; numPixels--)
+            {
+                if (pattern & (1 << patternX))
+                {
+                    *dst = colour & 0xFF;
+                }    
+                patternX = (patternX + 1) % 16;
+                dst++;
+            }
+            patternX = startPatternX;
+            patternY = (patternY + 1) % 16;
+            dst = nextdst;
+        }
+    }
+    else if (colour & 0x8000000)
+    {
+        int esi = left - RCT2_GLOBAL(0x1420070, sint16);
+        RCT2_GLOBAL(0xEDF824, uint32) = esi;
+        esi = top - RCT2_GLOBAL(0x1420072, sint16);
+        RCT2_GLOBAL(0xEDF828, uint32) = esi;
+        left -= dpi->x;
+        if (left < 0)
+        {
+            RCT2_GLOBAL(0xEDF824, sint32) -= left;
+            left = 0;
+        }
+        right -= dpi->x;
+        right++;
+        if (right > dpi->width)
+        {
+            right = dpi->width;
+        }
+        right -= left;
+        top -= dpi->y;
+        if (top < 0)
+        {
+            RCT2_GLOBAL(0xEDF828, sint32) -= top;
+            top = 0;
+        }
+        bottom -= dpi->y;
+        bottom++;
+        if (bottom > dpi->height)
+        {
+            bottom = dpi->height;
+        }
+        bottom -= top;
+        RCT2_GLOBAL(0xEDF824, sint32) &= 0x3F;
+        RCT2_GLOBAL(0xEDF828, sint32) &= 0x3F;
+        esi = dpi->width;
+        esi += dpi->pitch;
+        esi *= top;
+        esi += left;
+        esi += (uint32)dpi->bits;
+        RCT2_GLOBAL(0xEDF82C, sint32) = right;
+        RCT2_GLOBAL(0xEDF830, sint32) = bottom;
+        left = dpi->width;
+        left += dpi->pitch;
+        left -= right;
+        RCT2_GLOBAL(0xEDF834, sint32) = left;
+        colour &= 0xFF;
+        colour--;
+        right = colour;
+        colour <<= 8;
+        right |= colour;
+        RCT2_GLOBAL(0xEDF838, sint32) = right;
+        //right <<= 4;
+        esi = RCT2_GLOBAL(0xEDF828, sint32);
+        esi *= 0x40;
+        left = 0;
+        esi += (uint32)g1Elements[right].offset;//???
+        //Not finished
+        //Start of loop
+    }
+    else
+    {
+        uint8 * dst = startY * (dpi->width + dpi->pitch) + startX + dpi->bits;
+        for (int i = 0; i < height; i++)
+        {
+            Memory::Set(dst, colour & 0xFF, width);
+            dst += dpi->width + dpi->pitch;
+        }
+    }
 }
 
 void SoftwareDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y)
