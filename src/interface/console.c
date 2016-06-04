@@ -474,13 +474,13 @@ static int cc_rides(const utf8 **argv, int argc)
 					console_printf("No ride entry found for given subtype");
 				} else {
 					rct_ride *ride = get_ride(ride_index);
-					if(ride->type != RIDE_TYPE_NULL) {
+					if (ride->type != RIDE_TYPE_NULL) {
 						ride->type = type;
 						if (int_valid[2]) {
 							ride->subtype = subtype;
 						}
 					} else {
-						console_printf("No ride found with index %d",ride_index);
+						console_printf("No ride found with index %d", ride_index);
 					}
 				}
 			}
