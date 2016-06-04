@@ -650,3 +650,131 @@ uint32 lightfx_get_light_polution()
 {
 	return _lightPolution_front;
 }
+
+void lightfx_add_lights_magic_vehicles()
+{
+	for (uint16 i = gSpriteListHead[SPRITE_LIST_VEHICLE]; i != SPRITE_INDEX_NULL; i = g_sprite_list[i].vehicle.next) {
+		uint32	vehicleID = i;
+
+		rct_vehicle *mother_vehicle = GET_VEHICLE(i);
+		rct_vehicle *vehicle = mother_vehicle;
+
+		rct_ride_entry *rideEntry = 0;
+		const rct_ride_entry_vehicle *vehicleEntry;
+
+		if (mother_vehicle->ride_subtype == 0xFF) {
+			continue;
+		}
+		else {
+			rideEntry = get_ride_entry(mother_vehicle->ride_subtype);
+			vehicleEntry = &rideEntry->vehicles[mother_vehicle->vehicle_type];
+		}
+
+		for (uint16 q = i; q != SPRITE_INDEX_NULL; ) {
+			rct_vehicle *vehicle = GET_VEHICLE(q);
+
+			vehicleID = q;
+			if (vehicle->next_vehicle_on_train == q)
+				break;
+			q = vehicle->next_vehicle_on_train;
+
+			sint16 place_x, place_y, place_z;
+
+			place_x = vehicle->x;
+			place_y = vehicle->y;
+			place_z = vehicle->z;
+
+			static const sint16 offsetLookup[32] = { 10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10 };
+
+			switch (vehicleEntry->car_visual) {
+				case VEHICLE_VISUAL_MINI_GOLF_PLAYER: {
+					place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32];
+					place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32];
+					lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+					break;
+				};
+				default: {
+					rct_ride *ride = get_ride(vehicle->ride);
+					switch (ride->type) {
+					case RIDE_TYPE_OBSERVATION_TOWER:
+						lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y + 16, vehicle->z, LIGHTFX_LIGHT_TYPE_SPOT_3);
+						lightfx_add_3d_light(vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x + 16, vehicle->y, vehicle->z, LIGHTFX_LIGHT_TYPE_SPOT_3);
+						lightfx_add_3d_light(vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x - 16, vehicle->y, vehicle->z, LIGHTFX_LIGHT_TYPE_SPOT_3);
+						lightfx_add_3d_light(vehicleID, 0x0300 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y - 16, vehicle->z, LIGHTFX_LIGHT_TYPE_SPOT_3);
+						break;
+					case RIDE_TYPE_MINE_TRAIN_COASTER:
+					case RIDE_TYPE_GHOST_TRAIN:
+						if (vehicle == vehicle_get_head(vehicle)) {
+							place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+							place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+							lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_3);
+						}
+						break;
+					case RIDE_TYPE_CHAIRLIFT:
+						lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z - 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+						break;
+					case RIDE_TYPE_BOAT_RIDE:
+					case RIDE_TYPE_CAR_RIDE:
+					case RIDE_TYPE_GO_KARTS:
+					case RIDE_TYPE_DODGEMS:
+					case RIDE_TYPE_MINI_HELICOPTERS:
+					case RIDE_TYPE_MONORAIL_CYCLES:
+					case RIDE_TYPE_SUBMARINE_RIDE:
+					case RIDE_TYPE_SPLASH_BOATS:
+					case RIDE_TYPE_WATER_COASTER: {
+						rct_vehicle *vehicle_draw = vehicle_get_head(vehicle);
+						if (vehicle_draw->next_vehicle_on_train != 0xFFFF) {
+							vehicle_draw = GET_VEHICLE(vehicle_draw->next_vehicle_on_train);
+						}
+						place_x = vehicle_draw->x;
+						place_y = vehicle_draw->y;
+						place_z = vehicle_draw->z;
+						place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
+						place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
+						lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
+						place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
+						place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
+						lightfx_add_3d_light(vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
+						break;
+					}
+					case RIDE_TYPE_MONORAIL:
+						lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y, vehicle->z + 12, LIGHTFX_LIGHT_TYPE_SPOT_2);
+						if (vehicle == vehicle_get_head(vehicle)) {
+							place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+							place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+							lightfx_add_3d_light(vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+							place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 3;
+							place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 3;
+							lightfx_add_3d_light(vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						}
+						if (vehicle == vehicle_get_tail(vehicle)) {
+							place_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+							place_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+							lightfx_add_3d_light(vehicleID, 0x0300 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+							place_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+							place_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+							lightfx_add_3d_light(vehicleID, 0x0400 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						}
+						break;
+					case RIDE_TYPE_MINIATURE_RAILWAY:
+						if (vehicle == vehicle_get_head(vehicle)) {
+							place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+							place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+							lightfx_add_3d_light(vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+							place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
+							place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
+							lightfx_add_3d_light(vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+
+						}
+						else {
+							lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+						}
+						break;
+					default:
+						break;
+					};
+				};
+			}
+		}
+	}
+}
