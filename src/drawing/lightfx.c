@@ -183,9 +183,9 @@ void lightfx_prepare_light_list()
 	//	entry->x >>= _current_view_zoom_front;
 	//	entry->y >>= _current_view_zoom_front;
 
-		static sint16 offsetPattern[26]	= {		0, 0,		-7, 0,		0, -5,		7, 0,		0, 5,
-															-3, -1,		-1, -2,		3, 1,		1, 2,
-															-6, -4,		-6, 4,		6, -4,		6, 4	};
+		static sint16 offsetPattern[26]	= {		0, 0,		-4, 0,		0, -3,		4, 0,		0, 3,
+															-2, -1,		-1, -1,		2, 1,		1, 1,
+															-3, -2,		-3, 2,		3, -2,		3, 2	};
 
 		int mapFrontDiv = 1 << _current_view_zoom_front;
 
