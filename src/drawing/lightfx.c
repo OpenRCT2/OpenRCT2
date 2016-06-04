@@ -243,7 +243,7 @@ void lightfx_prepare_light_list()
 				if (w != NULL) {
 				//	get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y + offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
 
-					RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE & 0xFFFF;
+					RCT2_GLOBAL(0x9AC154, uint16_t) = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
 					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_ZOOM, uint16_t) = _current_view_zoom_front;
 					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t) = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
 					RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_Y, int16_t) = entry->y + offsetPattern[1 + pat * 2] / mapFrontDiv;
