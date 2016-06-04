@@ -206,32 +206,30 @@ static rct_widget window_cheats_guests_widgets[] = {
 static rct_widget window_cheats_misc_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(0),			HPL(6.25),		STR_CHEAT_GENERAL_GROUP,			STR_NONE },								// General group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1), 		HPL(1),			STR_CHEAT_OPEN_PARK,				STR_CHEAT_OPEN_PARK_TIP },				// open / close park
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1), 				YPL(1), 		HPL(1),			STR_CHEAT_PARK_PARAMETERS,			STR_CHEAT_PARK_PARAMETERS_TIP},			// Park parameters
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0), 				YPL(2), 		HPL(2),			STR_CHEAT_SANDBOX_MODE,				STR_CHEAT_SANDBOX_MODE_TIP},			// Sandbox mode (edit land ownership in-game)
-	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL, 					YPL(3),			OHPL(3),		STR_CHEAT_UNLOCK_PRICES,			STR_CHEAT_UNLOCK_PRICES_TIP }, 			// Unlock all prices
-	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0), 				YPL(4), 		HPL(4),			STR_FORCE_PARK_RATING,				STR_NONE},								// Force park rating
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(1),			HPL(1),			STR_CHEAT_OPEN_PARK,				STR_CHEAT_OPEN_PARK_TIP },				// open / close park
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(1),			HPL(1),			STR_CHEAT_PARK_PARAMETERS,			STR_CHEAT_PARK_PARAMETERS_TIP },		// Park parameters
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(2),			HPL(2),			STR_CHEAT_SANDBOX_MODE,				STR_CHEAT_SANDBOX_MODE_TIP },			// Sandbox mode (edit land ownership in-game)
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(3),			OHPL(3),		STR_CHEAT_UNLOCK_PRICES,			STR_CHEAT_UNLOCK_PRICES_TIP },			// Unlock all prices
+	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(4),			HPL(4),			STR_FORCE_PARK_RATING,				STR_NONE },								// Force park rating
 	{ WWT_SPINNER,			1,		XPL(1),					WPL(1) - 10,			YPL(4) + 2,		HPL(4) - 3,		STR_NONE,							STR_NONE },								// park rating
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(4) + 3,		YPL(4) + 7,		STR_NUMERIC_UP,						STR_NONE },								// increase rating
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 10,			WPL(1),					YPL(4) + 8,		YPL(4) + 12,	STR_NUMERIC_DOWN,					STR_NONE },								// decrease rating
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(5), 		HPL(5),			STR_CHEAT_WIN_SCENARIO,				STR_NONE},								// Win scenario
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(5), 		HPL(5),			STR_CHEAT_HAVE_FUN,					STR_NONE},								// Have fun!
-	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(6),		HPL(6),		STR_CHEAT_NEVERENDING_MARKETING,			STR_CHEAT_NEVERENDING_MARKETING_TIP },	// never ending marketing campaigns
-	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(7.25),			HPL(9.5),		STR_CHEAT_CLIMATE_GROUP,			STR_NONE },							// Climate group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8), 		HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_FREEZE_CLIMATE_TIP },			// Freeze climate
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(5),			HPL(5),			STR_CHEAT_WIN_SCENARIO,				STR_NONE },								// Win scenario
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(5),			HPL(5),			STR_CHEAT_HAVE_FUN,					STR_NONE },								// Have fun!
+	{ WWT_CHECKBOX,			1,		XPL(0),					OWPL,					YPL(6),			HPL(6),			STR_CHEAT_NEVERENDING_MARKETING,	STR_CHEAT_NEVERENDING_MARKETING_TIP },	// never ending marketing campaigns
+	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(7.25),		HPL(9.5),		STR_CHEAT_CLIMATE_GROUP,			STR_NONE },								// Climate group
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(8),			HPL(8),			STR_CHEAT_FREEZE_CLIMATE,			STR_CHEAT_FREEZE_CLIMATE_TIP },			// Freeze climate
 	{ WWT_DROPDOWN,			1,		XPL(1),					WPL(1),					YPL(9) + 2,		YPL(9) + 13,	STR_NONE,							STR_FORCE_WEATHER_TOOLTIP },			// Force weather
 	{ WWT_DROPDOWN_BUTTON,	1,		WPL(1) - 11,			WPL(1) - 1,				YPL(9) + 3,		YPL(9) + 12,	STR_DROPDOWN_GLYPH,					STR_FORCE_WEATHER_TOOLTIP },			// Force weather
 	{ WWT_GROUPBOX,			1,		XPL(0) - GROUP_SPACE,	WPL(1) + GROUP_SPACE,	YPL(11),		HPL(16.5),		STR_CHEAT_STAFF_GROUP,				STR_NONE },								// Staff group
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(12), 		HPL(12),		STR_CHEAT_CLEAR_GRASS,				STR_NONE},								// Clear grass
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(12), 		HPL(12),		STR_CHEAT_MOWED_GRASS,				STR_NONE},								// Mowed grass
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(13), 		HPL(13),		STR_CHEAT_WATER_PLANTS,				STR_NONE},								// Water plants
-	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(13), 		HPL(13),		STR_CHEAT_FIX_VANDALISM,			STR_NONE},								// Fix vandalism
-	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(14), 		HPL(14),		STR_CHEAT_REMOVE_LITTER,			STR_NONE},								// Remove litter
-	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(15),		HPL(15),		STR_CHEAT_DISABLE_PLANT_AGING,		STR_CHEAT_DISABLE_PLANT_AGING_TIP},		// Disable plant aging
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(12),		HPL(12),		STR_CHEAT_CLEAR_GRASS,				STR_NONE },								// Clear grass
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(12),		HPL(12),		STR_CHEAT_MOWED_GRASS,				STR_NONE },								// Mowed grass
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(13),		HPL(13),		STR_CHEAT_WATER_PLANTS,				STR_NONE },								// Water plants
+	{ WWT_CLOSEBOX,			1,		XPL(1),					WPL(1),					YPL(13),		HPL(13),		STR_CHEAT_FIX_VANDALISM,			STR_NONE },								// Fix vandalism
+	{ WWT_CLOSEBOX,			1,		XPL(0),					WPL(0),					YPL(14),		HPL(14),		STR_CHEAT_REMOVE_LITTER,			STR_NONE },								// Remove litter
+	{ WWT_CHECKBOX,			1,		XPL(0),					WPL(0),					YPL(15),		HPL(15),		STR_CHEAT_DISABLE_PLANT_AGING,		STR_CHEAT_DISABLE_PLANT_AGING_TIP },	// Disable plant aging
 	{ WWT_CLOSEBOX,			1,		MAX_BTN_LEFT,			MAX_BTN_RIGHT,			YPL(16),		HPL(16),		STR_FAST,							STR_NONE },								// Fast staff
 	{ WWT_CLOSEBOX,			1,		MIN_BTN_LEFT,			MIN_BTN_RIGHT,			YPL(16),		HPL(16),		STR_NORMAL,							STR_NONE },								// Normal staff
-
-
 	{ WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] = {
