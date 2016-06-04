@@ -476,19 +476,28 @@ static int cc_rides(const utf8 **argv, int argc)
 				bool int_valid[2] = { 0 };
 				int ride_index = console_parse_int(argv[2], &int_valid[0]);
 				int friction = console_parse_int(argv[3], &int_valid[1]);
-
-				if (int_valid[0] && int_valid[1] && (friction > 0) && (get_ride(ride_index)->type != RIDE_TYPE_NULL)) {
-					rct_ride *ride = get_ride(ride_index);
-					for (int i = 0; i < ride->num_vehicles; i++) {
-						uint16 vehicle_index = ride->vehicles[i];
- 						while (vehicle_index != SPRITE_INDEX_NULL) {
-							rct_vehicle *vehicle=GET_VEHICLE(vehicle_index);
-							vehicle->friction=friction;
-							vehicle_index=vehicle->next_vehicle_on_train;
+					
+					if (ride_index < 0) {
+						console_printf("Ride index must not be negative");
+					} else if (!int_valid[0] || !int_valid[1]) {
+						console_printf("This command expects integer arguments");
+					} else {
+						rct_ride *ride = get_ride(ride_index);
+						if (friction <= 0) {
+							console_printf("Friction value must be strictly positive");
+						} else if (ride->type == RIDE_TYPE_NULL) {
+							console_printf("No ride found with index %d",ride_index);
+						} else {
+							for (int i = 0; i < ride->num_vehicles; i++) {
+								uint16 vehicle_index = ride->vehicles[i];
+ 								while (vehicle_index != SPRITE_INDEX_NULL) {
+									rct_vehicle *vehicle=GET_VEHICLE(vehicle_index);
+									vehicle->friction=friction;
+									vehicle_index=vehicle->next_vehicle_on_train;
+								}
+							}			
 						}
-					}			
-				}
-			}
+					}			}
 		}
 	} else {
 		console_printf("subcommands: list, set");
