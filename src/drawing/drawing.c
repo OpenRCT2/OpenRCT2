@@ -27,15 +27,6 @@
 int gLastDrawStringX;
 int gLastDrawStringY;
 
-uint8* _screenDirtyBlocks = NULL;
-int _screenDirtyBlocksSize = 0;
-uint16 _screenDirtyBlockWidth;
-uint16 _screenDirtyBlockHeight;
-uint16 _screenDirtyBlockColumns;
-uint16 _screenDirtyBlockRows;
-uint8 _screenDirtyBlockShiftX;
-uint8 _screenDirtyBlockShiftY;
-
 rct_drawpixelinfo gScreenDPI;
 rct_drawpixelinfo gWindowDPI;
 
@@ -111,8 +102,6 @@ const uint16 palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
 	0x13B0, 0x13B1, 0x13B2, 0x13B3,
 	0x13B4, 0x13B5, 0x13B6, 0x13B7,
 };
-
-static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
 
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
 {
@@ -291,14 +280,4 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi)
 	if (gPickupPeepImage != UINT32_MAX) {
 		gfx_draw_sprite(dpi, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
 	}
-}
-
-void gfx_configure_dirty_grid()
-{
-	_screenDirtyBlockShiftX = 7;
-	_screenDirtyBlockShiftY = 6;
-	_screenDirtyBlockWidth = 1 << _screenDirtyBlockShiftX;
-	_screenDirtyBlockHeight = 1 << _screenDirtyBlockShiftY;
-	_screenDirtyBlockColumns = (gScreenWidth >> _screenDirtyBlockShiftX) + 1;
-	_screenDirtyBlockRows = (gScreenHeight >> _screenDirtyBlockShiftY) + 1;
 }

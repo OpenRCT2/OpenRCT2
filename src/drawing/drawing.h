@@ -128,7 +128,6 @@ void gfx_transpose_palette(int pal, unsigned char product);
 void load_palette();
 
 // other
-void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start);
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
 void gfx_invalidate_pickedup_peep();
@@ -187,8 +186,6 @@ void ttf_dispose();
 // scrolling text
 void scrolling_text_initialise_bitmaps();
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
-
-void gfx_configure_dirty_grid();
 
 #include "NewDrawing.h"
 
