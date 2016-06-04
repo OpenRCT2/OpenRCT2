@@ -30,7 +30,6 @@ enum {
 enum {
 	NETWORK_STATUS_NONE,
 	NETWORK_STATUS_READY,
-	NETWORK_STATUS_RESOLVING,
 	NETWORK_STATUS_CONNECTING,
 	NETWORK_STATUS_CONNECTED
 };
@@ -55,14 +54,8 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "9"
+#define NETWORK_STREAM_VERSION "10"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
-
-// Fixes issues on OS X
-#if defined(_RCT2_H_) && !defined(_MSC_VER)
-// use similar struct packing as MSVC for our structs
-#pragma pack(1)
-#endif
 
 #ifdef __cplusplus
 
@@ -76,13 +69,13 @@ extern "C" {
 #include <SDL.h>
 #include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
-#include "NetworkAddress.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkKey.h"
 #include "NetworkPacket.h"
 #include "NetworkPlayer.h"
 #include "NetworkUser.h"
+#include "TcpSocket.h"
 
 class Network
 {
@@ -162,7 +155,7 @@ private:
 	bool ProcessConnection(NetworkConnection& connection);
 	void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
 	void ProcessGameCommandQueue();
-	void AddClient(SOCKET socket);
+	void AddClient(ITcpSocket * socket);
 	void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
 	NetworkPlayer* AddPlayer(const utf8 *name, const std::string &keyhash);
 	std::string MakePlayerNameUnique(const std::string &name);
@@ -187,11 +180,11 @@ private:
 
 	int mode = NETWORK_MODE_NONE;
 	int status = NETWORK_STATUS_NONE;
-	NetworkAddress server_address;
 	bool wsa_initialized = false;
-	SOCKET listening_socket = INVALID_SOCKET;
+	ITcpSocket * listening_socket = nullptr;
 	unsigned short listening_port = 0;
 	NetworkConnection server_connection;
+	SOCKET_STATUS _lastConnectStatus;
 	uint32 last_tick_sent_time = 0;
 	uint32 last_ping_sent_time = 0;
 	uint32 server_tick = 0;
@@ -241,6 +234,12 @@ private:
 	void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
 };
+
+namespace Convert
+{
+	uint16 HostToNetwork(uint16 value);
+	uint16 NetworkToHost(uint16 value);
+}
 
 #endif // __cplusplus
 #else /* DISABLE_NETWORK */

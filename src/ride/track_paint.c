@@ -836,8 +836,8 @@ void track_paint_util_spinning_tunnel_paint(sint8 thickness, sint16 height, uint
 	uint32 colourFlags = RCT2_GLOBAL(0x00F4419C, uint32);
 
 	uint32 colourFlags2 = RCT2_GLOBAL(0x00F44198, uint32);
-	if (colourFlags2 & (IMAGE_TYPE_UNKNOWN << 28)) {
-		colourFlags |= colourFlags2 & (IMAGE_TYPE_UNKNOWN << 28 | 0x1F << 24);
+	if (colourFlags2 & ((uint32)IMAGE_TYPE_UNKNOWN << 28)) {
+		colourFlags |= colourFlags2 & ((uint32)IMAGE_TYPE_UNKNOWN << 28 | 0x1F << 24);
 	}
 
 	uint32 imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][0][frame] | colourFlags;

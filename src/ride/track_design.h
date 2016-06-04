@@ -24,6 +24,7 @@
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 
+#pragma pack(push, 1)
 /* Maze Element entry   size: 0x04 */
 typedef struct rct_td6_maze_element {
 	union {
@@ -41,12 +42,14 @@ typedef struct rct_td6_maze_element {
 		};
 	};
 } rct_td6_maze_element;
+assert_struct_size(rct_td6_maze_element, 0x04);
 
 /* Track Element entry  size: 0x02 */
 typedef struct rct_td6_track_element {
 	uint8 type;							// 0x00
 	uint8 flags;						// 0x01
 } rct_td6_track_element;
+assert_struct_size(rct_td6_track_element, 0x02);
 
 /* Track Entrance entry size: 0x06 */
 typedef struct rct_td6_entrance_element {
@@ -55,6 +58,7 @@ typedef struct rct_td6_entrance_element {
 	sint16 x;							// 0x02
 	sint16 y;							// 0x04
 } rct_td6_entrance_element;
+assert_struct_size(rct_td6_entrance_element, 0x06);
 
 /* Track Scenery entry  size: 0x16 */
 typedef struct rct_td6_scenery_element {
@@ -66,6 +70,7 @@ typedef struct rct_td6_scenery_element {
 	uint8 primary_colour;				// 0x14
 	uint8 secondary_colour;				// 0x15
 } rct_td6_scenery_element;
+assert_struct_size(rct_td6_scenery_element, 0x16);
 
 /**
  * Track design structure.
@@ -141,11 +146,11 @@ typedef struct rct_track_td6 {
 
 	utf8 *name;
 } rct_track_td6;
-
-typedef struct rct_track_design {
-	rct_track_td6 track_td6;
-	uint8 preview[4][TRACK_PREVIEW_IMAGE_SIZE];		// 0xA3
-} rct_track_design;
+//Warning: improper struct size in comment
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_track_td6, 0xbf);
+#endif
+#pragma pack(pop)
 
 typedef struct track_design_file_ref {
 	utf8 *name;

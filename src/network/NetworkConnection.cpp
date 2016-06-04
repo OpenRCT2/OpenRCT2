@@ -16,6 +16,7 @@
 
 #ifndef DISABLE_NETWORK
 
+#include "network.h"
 #include "NetworkConnection.h"
 #include "../core/String.hpp"
 #include <SDL.h>
@@ -34,10 +35,7 @@ NetworkConnection::NetworkConnection()
 
 NetworkConnection::~NetworkConnection()
 {
-    if (Socket != INVALID_SOCKET)
-    {
-        closesocket(Socket);
-    }
+    delete Socket;
     if (_lastDisconnectReason)
     {
         delete[] _lastDisconnectReason;
@@ -49,22 +47,19 @@ int NetworkConnection::ReadPacket()
     if (InboundPacket.transferred < sizeof(InboundPacket.size))
     {
         // read packet size
-        int readBytes = recv(Socket, &((char*)&InboundPacket.size)[InboundPacket.transferred], sizeof(InboundPacket.size) - InboundPacket.transferred, 0);
-        if (readBytes == SOCKET_ERROR || readBytes == 0)
+        void * buffer = &((char*)&InboundPacket.size)[InboundPacket.transferred];
+        size_t bufferLength = sizeof(InboundPacket.size) - InboundPacket.transferred;
+        size_t readBytes;
+        NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
+        if (status != NETWORK_READPACKET_SUCCESS)
         {
-            if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN)
-            {
-                return NETWORK_READPACKET_DISCONNECTED;
-            }
-            else
-            {
-                return NETWORK_READPACKET_NO_DATA;
-            }
+            return status;
         }
+        
         InboundPacket.transferred += readBytes;
         if (InboundPacket.transferred == sizeof(InboundPacket.size))
         {
-            InboundPacket.size = ntohs(InboundPacket.size);
+            InboundPacket.size = Convert::NetworkToHost(InboundPacket.size);
             if (InboundPacket.size == 0) // Can't have a size 0 packet
             {
                 return NETWORK_READPACKET_DISCONNECTED;
@@ -77,21 +72,15 @@ int NetworkConnection::ReadPacket()
         // read packet data
         if (InboundPacket.data->capacity() > 0)
         {
-            int readBytes = recv(Socket,
-                                 (char*)&InboundPacket.GetData()[InboundPacket.transferred - sizeof(InboundPacket.size)],
-                                 sizeof(InboundPacket.size) + InboundPacket.size - InboundPacket.transferred,
-                                 0);
-            if (readBytes == SOCKET_ERROR || readBytes == 0)
+            void * buffer = &InboundPacket.GetData()[InboundPacket.transferred - sizeof(InboundPacket.size)];
+            size_t bufferLength = sizeof(InboundPacket.size) + InboundPacket.size - InboundPacket.transferred;
+            size_t readBytes;
+            NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
+            if (status != NETWORK_READPACKET_SUCCESS)
             {
-                if (LAST_SOCKET_ERROR() != EWOULDBLOCK && LAST_SOCKET_ERROR() != EAGAIN)
-                {
-                    return NETWORK_READPACKET_DISCONNECTED;
-                }
-                else
-                {
-                    return NETWORK_READPACKET_NO_DATA;
-                }
+                return status;
             }
+
             InboundPacket.transferred += readBytes;
         }
         if (InboundPacket.transferred == sizeof(InboundPacket.size) + InboundPacket.size)
@@ -105,25 +94,23 @@ int NetworkConnection::ReadPacket()
 
 bool NetworkConnection::SendPacket(NetworkPacket& packet)
 {
-    uint16 sizen = htons(packet.size);
+    uint16 sizen = Convert::HostToNetwork(packet.size);
     std::vector<uint8> tosend;
     tosend.reserve(sizeof(sizen) + packet.size);
     tosend.insert(tosend.end(), (uint8*)&sizen, (uint8*)&sizen + sizeof(sizen));
     tosend.insert(tosend.end(), packet.data->begin(), packet.data->end());
-    while (true)
+
+    const void * buffer = &tosend[packet.transferred];
+    size_t bufferSize = tosend.size() - packet.transferred;
+    if (Socket->SendData(buffer, bufferSize))
     {
-        int sentBytes = send(Socket, (const char*)&tosend[packet.transferred], tosend.size() - packet.transferred, FLAG_NO_PIPE);
-        if (sentBytes == SOCKET_ERROR)
-        {
-            return false;
-        }
-        packet.transferred += sentBytes;
-        if (packet.transferred == tosend.size())
-        {
-            return true;
-        }
+        packet.transferred += bufferSize;
+        return true;
     }
-    return false;
+    else
+    {
+        return false;
+    }
 }
 
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)
@@ -148,27 +135,6 @@ void NetworkConnection::SendQueuedPackets()
     {
         _outboundPackets.remove(_outboundPackets.front());
     }
-}
-
-bool NetworkConnection::SetTCPNoDelay(bool on)
-{
-    return setsockopt(Socket, IPPROTO_TCP, TCP_NODELAY, (const char*)&on, sizeof(on)) == 0;
-}
-
-bool NetworkConnection::SetNonBlocking(bool on)
-{
-    return SetNonBlocking(Socket, on);
-}
-
-bool NetworkConnection::SetNonBlocking(SOCKET socket, bool on)
-{
-#ifdef __WINDOWS__
-    u_long nonblocking = on;
-    return ioctlsocket(socket, FIONBIO, &nonblocking) == 0;
-#else
-    int flags = fcntl(socket, F_GETFL, 0);
-    return fcntl(socket, F_SETFL, on ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK)) == 0;
-#endif
 }
 
 void NetworkConnection::ResetLastPacketTime()

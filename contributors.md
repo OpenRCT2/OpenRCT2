@@ -48,6 +48,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
 * Kelson Blakewood (spacek531) - title sequence for 0.0.4
+* Hugo Wallenburg (Goddesen) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -102,6 +103,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gdabi); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
+* Norwegian - (Goddesen)
 
 ## Graphics
 * OpenRCT2 Logo - Yannic Geurts (xzbobzx)

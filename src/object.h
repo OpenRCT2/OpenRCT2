@@ -50,6 +50,7 @@ typedef enum{
 #define OBJECT_ENTRY_GROUP_COUNT 11
 #define OBJECT_ENTRY_COUNT 721
 
+#pragma pack(push, 1)
 /**
  * Object entry structure.
  * size: 0x10
@@ -59,6 +60,7 @@ typedef struct rct_object_entry {
 	char name[8];
 	uint32 checksum;
 } rct_object_entry;
+assert_struct_size(rct_object_entry, 0x10);
 
 /**
  * Object entry structure extended.
@@ -70,6 +72,7 @@ typedef struct rct_object_entry_extended {
 	uint32 checksum;
 	uint32 chunk_size;
 } rct_object_entry_extended;
+assert_struct_size(rct_object_entry_extended, 0x14);
 
 extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
@@ -78,17 +81,23 @@ typedef struct rct_object_entry_group {
 	uint8 **chunks;
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_object_entry_group, 8);
+#endif
 
 typedef struct rct_ride_filters {
 	uint8 category[2];
 	uint8 ride_type;
 } rct_ride_filters;
+assert_struct_size(rct_ride_filters, 3);
 
 typedef struct rct_object_filters {
 	union {
 		rct_ride_filters ride;
 	};
 } rct_object_filters;
+assert_struct_size(rct_object_filters, 3);
+#pragma pack(pop)
 
 extern rct_object_entry_group object_entry_groups[];
 extern void** gObjectList;

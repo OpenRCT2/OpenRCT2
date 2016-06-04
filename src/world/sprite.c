@@ -17,6 +17,7 @@
 #include "../addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
+#include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
@@ -31,10 +32,12 @@ rct_sprite_entry* g_sprite_entries = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_ENTRIES, r
 uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
 uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
 
+uint16 *gSpriteSpatialIndex = (uint16*)0xF1EF60;
+
 uint16 sprite_get_first_in_quadrant(int x, int y)
 {
 	int offset = ((x & 0x1FE0) << 3) | (y >> 5);
-	return RCT2_ADDRESS(0x00F1EF60, uint16)[offset];
+	return gSpriteSpatialIndex[offset];
 }
 
 static void invalidate_sprite_max_zoom(rct_sprite *sprite, int maxZoom)
@@ -121,7 +124,7 @@ void reset_sprite_list()
 
 	gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;
 
-	reset_0x69EBE4();
+	game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
 }
 
 /**
@@ -130,28 +133,33 @@ void reset_sprite_list()
  * This function looks as though it sets some sort of order for sprites.
  * Sprites can share thier position if this is the case.
  */
-void reset_0x69EBE4()
+void reset_sprite_spatial_index()
 {
-	memset((uint16*)0xF1EF60, -1, 0x10001*2);
-
+	memset(gSpriteSpatialIndex, -1, 0x10001 * sizeof(uint16));
 	for (size_t i = 0; i < MAX_SPRITES; i++) {
 		rct_sprite *spr = &g_sprite_list[i];
 		if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL) {
-			uint32 edi = spr->unknown.x;
+			uint32 index;
 			if (spr->unknown.x == SPRITE_LOCATION_NULL) {
-				edi = 0x10000;
+				index = 0x10000;
 			} else {
-				int ecx = spr->unknown.y;
-				ecx >>= 5;
-				edi &= 0x1FE0;
-				edi <<= 3;
-				edi |= ecx;
+				sint16 x = floor2(spr->unknown.x, 32);
+				uint8 tileY = spr->unknown.y >> 5;
+				index = (x << 3) | tileY;
 			}
-			uint16 ax = RCT2_ADDRESS(0xF1EF60, uint16)[edi];
-			RCT2_ADDRESS(0xF1EF60, uint16)[edi] = spr->unknown.sprite_index;
-			spr->unknown.next_in_quadrant = ax;
+			uint16 nextSpriteId = gSpriteSpatialIndex[index];
+			gSpriteSpatialIndex[index] = spr->unknown.sprite_index;
+			spr->unknown.next_in_quadrant = nextSpriteId;
 		}
 	}
+}
+
+void game_command_reset_sprites(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+		reset_sprite_spatial_index();
+	}
+	*ebx = 0;
 }
 
 /**
@@ -210,8 +218,8 @@ rct_sprite *create_sprite(uint8 bl)
 	sprite->flags = 0;
 	sprite->sprite_left = SPRITE_LOCATION_NULL;
 
-	sprite->next_in_quadrant = RCT2_ADDRESS(0xF1EF60, uint16)[0x10000];
-	RCT2_ADDRESS(0xF1EF60, uint16)[0x10000] = sprite->sprite_index;
+	sprite->next_in_quadrant = gSpriteSpatialIndex[0x10000];
+	gSpriteSpatialIndex[0x10000] = sprite->sprite_index;
 
 	return (rct_sprite*)sprite;
 }
@@ -435,7 +443,7 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 	}
 
 	if (new_position != current_position){
-		uint16* sprite_idx = &RCT2_ADDRESS(0xF1EF60, uint16)[current_position];
+		uint16* sprite_idx = &gSpriteSpatialIndex[current_position];
 		rct_sprite* sprite2 = &g_sprite_list[*sprite_idx];
 		while (sprite != sprite2){
 			sprite_idx = &sprite2->unknown.next_in_quadrant;
@@ -443,8 +451,8 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite* sprite){
 		}
 		*sprite_idx = sprite->unknown.next_in_quadrant;
 
-		int temp_sprite_idx = RCT2_ADDRESS(0xF1EF60, uint16)[new_position];
-		RCT2_ADDRESS(0xF1EF60, uint16)[new_position] = sprite->unknown.sprite_index;
+		int temp_sprite_idx = gSpriteSpatialIndex[new_position];
+		gSpriteSpatialIndex[new_position] = sprite->unknown.sprite_index;
 		sprite->unknown.next_in_quadrant = temp_sprite_idx;
 	}
 
@@ -501,7 +509,7 @@ void sprite_remove(rct_sprite *sprite)
 		quadrantIndex = (floor2(sprite->unknown.x, 32) << 3) | (sprite->unknown.y >> 5);
 	}
 
-	uint16 *spriteIndex = &RCT2_ADDRESS(0x00F1EF60, uint16)[quadrantIndex];
+	uint16 *spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
 	rct_sprite *quadrantSprite;
 	while ((quadrantSprite = &g_sprite_list[*spriteIndex]) != sprite) {
 		spriteIndex = &quadrantSprite->unknown.next_in_quadrant;

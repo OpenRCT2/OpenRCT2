@@ -19,23 +19,26 @@
 #include "../common.h"
 
 #include <exception>
+#include <string>
 
 class Exception : public std::exception
 {
 public:
     Exception() : Exception(nullptr) { }
 
-    Exception(const char * message) : std::exception()
+    Exception(const char * message) : Exception(std::string(message)) { }
+
+    Exception(const std::string &message) : std::exception()
     {
         _message = message;
     }
 
     virtual ~Exception() { }
 
-    const char * what()       const throw() override { return _message; }
-    const char * GetMessage() const                  { return _message; }
-    const char * GetMsg() const                      { return _message; }
+    const char * what()       const throw() override { return _message.c_str(); }
+    const char * GetMessage() const                  { return _message.c_str(); }
+    const char * GetMsg()     const                  { return _message.c_str(); }
 
 private:
-    const char * _message;
+    std::string _message;
 };

@@ -4173,6 +4173,12 @@ STR_5861    :Selhalo ověření klíče.
 STR_5862    :Blokovat neznámé hráče.
 STR_5863    :{SMALLFONT}{BLACK}Připojit se smí pouze hráči s ověřenými klíči.
 STR_5864    :K tomuto serveru se mohou připojit jen ověření hráči.
+STR_5865    :Archivovat historii chatu
+STR_5866    :{SMALLFONT}{BLACK}Archivovat všechny zprávy chatu do souborů v domovském adresáři.
+STR_5867    :{WINDOW_COLOUR_2}Jméno provozovatele: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}E-mail provozovatele: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Web provozovatele: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}Zobrazovat informace o serveru
 
 
 

@@ -43,6 +43,7 @@ enum SPRITE_LIST {
 	SPRITE_LIST_UNKNOWN,
 };
 
+#pragma pack(push, 1)
 typedef struct rct_unk_sprite {
 	uint8 sprite_identifier;		// 0x00
 	uint8 misc_identifier;			// 0x01
@@ -75,6 +76,7 @@ typedef struct rct_unk_sprite {
 	uint8 pad_2C[0x45];
 	uint8 var_71;
 } rct_unk_sprite;
+assert_struct_size(rct_unk_sprite, 0x72);
 
 typedef struct rct_litter {
 	uint8 sprite_identifier;		// 0x00
@@ -96,6 +98,7 @@ typedef struct rct_litter {
 	uint8 pad_1F[5];
 	uint32 creationTick;			// 0x24
 } rct_litter;
+assert_struct_size(rct_litter, 0x28);
 
 typedef struct rct_balloon {
 	uint8 sprite_identifier;		// 0x00
@@ -125,6 +128,7 @@ typedef struct rct_balloon {
 	uint8 colour;					// 0x2C
 	uint8 var_2D;
 } rct_balloon;
+assert_struct_size(rct_balloon, 0x2e);
 
 typedef struct rct_duck {
 	uint8 sprite_identifier;		// 0x00
@@ -151,6 +155,7 @@ typedef struct rct_duck {
 	uint8 pad_34[0x14];
 	uint8 state;					// 0x48
 } rct_duck;
+assert_struct_size(rct_duck, 0x49);
 
 typedef struct rct_jumping_fountain {
 	uint8 sprite_identifier;		// 0x00
@@ -185,6 +190,7 @@ typedef struct rct_jumping_fountain {
 	uint8 pad_34[0x12];
 	uint16 iteration;				// 0x46
 } rct_jumping_fountain;
+assert_struct_size(rct_jumping_fountain, 0x48);
 
 typedef struct rct_money_effect {
 	uint8 sprite_identifier;		// 0x00
@@ -209,6 +215,7 @@ typedef struct rct_money_effect {
 	sint16 offset_x;				// 0x44
 	uint16 wiggle;					// 0x46
 } rct_money_effect;
+assert_struct_size(rct_money_effect, 0x48);
 
 typedef struct rct_crashed_vehicle_particle {
 	uint8 sprite_identifier;		// 0x00
@@ -251,6 +258,7 @@ typedef struct rct_crashed_vehicle_particle {
 	uint8 pad_44[0x2D];
 	uint8 var_71;
 } rct_crashed_vehicle_particle;
+assert_struct_size(rct_crashed_vehicle_particle, 0x45 + 0x2D);
 
 typedef struct rct_crash_splash {
 	uint8 sprite_identifier;		// 0x00
@@ -280,6 +288,7 @@ typedef struct rct_crash_splash {
 	uint16 var_24;
 	uint16 frame;					// 0x26
 } rct_crash_splash;
+assert_struct_size(rct_crash_splash, 0x28);
 
 typedef struct rct_steam_particle {
 	uint8 sprite_identifier;		// 0x00
@@ -309,6 +318,7 @@ typedef struct rct_steam_particle {
 	uint16 var_24;
 	uint16 frame;					// 0x26
 } rct_steam_particle;
+assert_struct_size(rct_steam_particle, 0x28);
 
 /**
  * Sprite structure.
@@ -328,6 +338,7 @@ typedef union {
 	rct_crash_splash crash_splash;
 	rct_steam_particle steam_particle;
 } rct_sprite;
+assert_struct_size(rct_sprite, 0x100);
 
 typedef struct rct_sprite_bounds {
 	uint8 sprite_width;             // 0x00
@@ -335,16 +346,24 @@ typedef struct rct_sprite_bounds {
 	uint8 sprite_height_positive;   // 0x02
 	uint8 unused;                   // 0x03
 } rct_sprite_bounds;
+assert_struct_size(rct_sprite_bounds, 4);
 
 typedef struct rct_sprite_image {
 	uint32 base_image;   // 0x00
 	uint8* unkn_04;      // 0x04
 } rct_sprite_image;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_sprite_image, 8);
+#endif
 
 typedef struct rct_sprite_entry {
 	rct_sprite_image *sprite_image;      // 0x00
 	rct_sprite_bounds *sprite_bounds;    // 0x04
 } rct_sprite_entry;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_sprite_entry, 8);
+#endif
+#pragma pack(pop)
 
 enum {
 	SPRITE_MISC_STEAM_PARTICLE,
@@ -373,10 +392,12 @@ extern rct_sprite_entry* g_sprite_entries;
 
 extern uint16 *gSpriteListHead;
 extern uint16 *gSpriteListCount;
+extern uint16 *gSpriteSpatialIndex;
 
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
-void reset_0x69EBE4();
+void game_command_reset_sprites(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
+void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void move_sprite_to_list(rct_sprite *sprite, uint8 cl);
 void sprite_misc_update_all();

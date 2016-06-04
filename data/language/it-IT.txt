@@ -1850,8 +1850,8 @@ STR_1843    :La preferita da: {COMMA16} visitatori
 STR_1844    :{SMALLFONT}{BLACK}Scegli il tipo di informazione da mostrare nella lista delle attrazioni
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16} visitatori
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitatori
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitatori
 STR_1849    :{WINDOW_COLOUR_2}Suona la musica
 STR_1850    :{SMALLFONT}{BLACK}Scegli quale musica dev'essere suonata in quest'attrazione
 STR_1851    :{WINDOW_COLOUR_2}Costo mantenim.: {BLACK}{CURRENCY2DP} l'ora
@@ -1879,8 +1879,8 @@ STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Entrate: {BLACK}{CURRENCY} all'ora
 STR_1874    :{WINDOW_COLOUR_2}Profitto: {BLACK}{CURRENCY} all'ora
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Ispeziona attrazioni
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Aggiusta attrazioni
 STR_1878    :{WINDOW_COLOUR_2}Ispezione:
 STR_1879    :Ogni 10 minuti
 STR_1880    :Ogni 20 minuti
@@ -3606,37 +3606,37 @@ STR_5261    :Filtro
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Personalizzato
-STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
+STR_5265    :{SMALLFONT}{BLACK}Seleziona quali risorse sono visibili
 STR_5266    :{SMALLFONT}{BLACK}Display
-STR_5267    :{SMALLFONT}{BLACK}Culture and Units
+STR_5267    :{SMALLFONT}{BLACK}Cultura and Unità
 STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Controls and interface
-STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5269    :{SMALLFONT}{BLACK}Controlli e interfaccia
+STR_5270    :{SMALLFONT}{BLACK}Varie
 STR_5271    :{SMALLFONT}{BLACK}Twitch
-STR_5272    :{SMALLFONT}{BLACK}Small Scenery
-STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Footpath
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
+STR_5272    :{SMALLFONT}{BLACK}Sceneri piccoli
+STR_5273    :{SMALLFONT}{BLACK}Sceneri grandi
+STR_5274    :{SMALLFONT}{BLACK}Percorso
+STR_5275    :Cerca per oggetti
+STR_5276    :Inserisci il nome di un oggetto da cercare
 STR_5277    :Pulisci
-STR_5278    :Sandbox mode
-STR_5279    :Sandbox mode off
-STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
-STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5278    :Modalità Sandbox
+STR_5279    :Disattiva modalità sandbox
+STR_5280    :{SMALLFONT}{BLACK}Permetti la modifica delle impostazioni del terreno tramite la finestra Mappa e altre opzioni che sono solitamente non disponibili nella modifica Scenario
+STR_5281    :{SMALLFONT}{BLACK}Feature
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
-STR_5284    :RCT1 Scenario Selection Font
+STR_5284    :RCT1 Selezione Font Scenario
 STR_5285    :ESPLODE!!!
 STR_5286    :{SMALLFONT}{BLACK}Qualche visitatore esplode
-STR_5287    :Ride is already broken down
+STR_5287    :L'attrazione é già partita
 STR_5288    :Corsa chiusa
-STR_5289    :No breakdowns available for this ride
+STR_5289    :Nessun guasto per questa attrazione
 STR_5290    :Ripara corsa
-STR_5291    :Can't force breakdown
-STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
-STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
-STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
-STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
+STR_5291    :non puoi forzare un guasto
+STR_5292    :{SMALLFONT}{BLACK}Forza un guasto
+STR_5293    :{SMALLFONT}{BLACK}Chiudi attrazione
+STR_5294    :{SMALLFONT}{BLACK}Testa attrazione
+STR_5295    :{SMALLFONT}{BLACK}Apri attrazione
 STR_5296    :{SMALLFONT}{BLACK}Chiudi parco
 STR_5297    :{SMALLFONT}{BLACK}Apri parco
 STR_5298    :{RED}{STRINGID}
@@ -3644,7 +3644,7 @@ STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :{SMALLFONT}{BLACK}Licenzia velocemente lo staff
 STR_5301    :{MEDIUMFONT}{BLACK}Cancella il prestito
 STR_5302    :Azzera prestito
-STR_5303    :Allow building in pause mode
+STR_5303    :Permetti la costruzione in pausa
 STR_5304    :Sequenza Titolo:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
@@ -3652,7 +3652,7 @@ STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Casuale
-STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5311    :{SMALLFONT}{BLACK}Strumenti di debug
 STR_5312    :Mostra console
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
@@ -3664,23 +3664,23 @@ STR_5319    :Marziano
 STR_5320    :Checkerboard
 STR_5321    :Grass clumps
 STR_5322    :Ghiaccio
-STR_5323    :Grid (red)
-STR_5324    :Grid (yellow)
-STR_5325    :Grid (blue)
-STR_5326    :Grid (green)
-STR_5327    :Sabbia (dark)
-STR_5328    :Sabbia (light)
+STR_5323    :Griglia (rosso)
+STR_5324    :Griglia (giallo)
+STR_5325    :Griglia (blu)
+STR_5326    :Griglia (verde)
+STR_5327    :Sabbia (scuro)
+STR_5328    :Sabbia (chiaro)
 STR_5329    :Checkerboard (inverted)
 STR_5330    :Visione sotterranea
 STR_5331    :Roccia
-STR_5332    :Legno (red)
-STR_5333    :Legno (black)
+STR_5332    :Legno (rosso)
+STR_5333    :Legno (nero)
 STR_5334    :Ghiaccio
 STR_5335    :Entrata corsa
 STR_5336    :Uscita corsa
 STR_5337    :Entrata Parco
 STR_5338    :Tipo elemento
-STR_5339    :{SMALLFONT}{BLACK}Base height
+STR_5339    :{SMALLFONT}{BLACK}Altezza base
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
 STR_5341    :Bandiere
 STR_5342    :Scegli una mappatura
@@ -3703,22 +3703,22 @@ STR_5358    :{BLACK}Necessità Bagno:
 STR_5359    :Rimuovi Visitatori
 STR_5360    :{SMALLFONT}{BLACK}Rimuovi tutti i visitatori dalla mappa
 STR_5361    :Su titti i visitatori:
-STR_5362    :{BLACK}Imposta a tutti i visitatori l'intensità attrazione:
+STR_5362    :{BLACK}Imposta ai visitatori l'intensità attrazione:
 STR_5363    :Piu di 1
 STR_5364    :Meno di 15
 STR_5365    :{BLACK}Velocita staff:
 STR_5366    :Normale
 STR_5367    :Veloce
-STR_5368    :Reset crash status
+STR_5368    :Resetta lo stato dei crash
 STR_5369    :Parametri Parco...
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :Object Selection
-STR_5372    :Invert right mouse dragging
+STR_5370    :{SMALLFONT}{BLACK}Clicca questo pulsante per modificare il parco{NEWLINE}parametri come restrizione,{NEWLINE}generazione visitatori e soldi.
+STR_5371    :Selezione oggetti
+STR_5372    :Inverti il drag destra del mouse
 STR_5373    :Nome {STRINGID}
 STR_5374    :Data {STRINGID}
 STR_5375    :{UP}
 STR_5376    :{DOWN}
-STR_5377    :{SMALLFONT}{BLACK}Saves
+STR_5377    :{SMALLFONT}{BLACK}Salva
 STR_5378    :{SMALLFONT}{BLACK}Script
 STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
 STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
@@ -3779,11 +3779,11 @@ STR_5434    :Editor Comandi
 STR_5435    :Rinomina salvataggio
 STR_5436    :Modifica Sequenza dei Titoli...
 STR_5437    :Nessun salvataggio selezionato
-STR_5438    :Can't make changes while command editor is open
+STR_5438    :Non puoi fare modifiche mentre l'editor dei comandi é aperto
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimizza la schermata a tutto quando si perde il focus
 STR_5441    :{SMALLFONT}{BLACK}Identifica per tipologia,{NEWLINE}i veicoli possono essere diversi{NEWLINE}, come in RCT1.
-STR_5442    :Forza voto del parco:
+STR_5442    :Voto del parco:
 STR_5443    :Velocita{MOVE_X}{87}{STRINGID}
 STR_5444    :Velocita:
 STR_5445    :Velocita
@@ -3857,9 +3857,9 @@ STR_5512    :Salva Gioco Come
 STR_5513    :Salvataggio veloce
 STR_5514    :Disabilita vandalismo
 STR_5515    :{SMALLFONT}{BLACK}Disabilita il vandalismo quando i visitatori sono arrabbiati
-STR_5516    :{SMALLFONT}{BLACK}Black
-STR_5517    :{SMALLFONT}{BLACK}Grey
-STR_5518    :{SMALLFONT}{BLACK}White
+STR_5516    :{SMALLFONT}{BLACK}Nero
+STR_5517    :{SMALLFONT}{BLACK}Grigio
+STR_5518    :{SMALLFONT}{BLACK}Bianco
 STR_5519    :{SMALLFONT}{BLACK}Dark purple
 STR_5520    :{SMALLFONT}{BLACK}Light purple
 STR_5521    :{SMALLFONT}{BLACK}Bright purple
@@ -3918,7 +3918,7 @@ STR_5573    :Rimuovi dai Preferiti
 STR_5574    :Nome del Server:
 STR_5575    :Giocatori Massimi:
 STR_5576    :Porta:
-STR_5577    :South Korean Won (W)
+STR_5577    :Won sudcoreano (W)
 STR_5578    :Rubli Russi (R)
 STR_5579    :Window scale factor:
 STR_5580    :Corona Ceca (Kc)
@@ -4007,6 +4007,7 @@ STR_5662    :N/A
 STR_5663    :Pulisci Paesaggio
 STR_5664    :Trucchi
 STR_5665    :Toggle Scenery Cluster
+STR_5666    :Login senza password
 STR_5701    :{WINDOW_COLOUR_2}Ultima azione: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizza l'ultima azione del giocatore
 STR_5703    :Non puoi cacciare l'host
@@ -4068,8 +4069,8 @@ STR_5756    :Password Sbagliata
 STR_5757    :Server Pieno
 STR_5758    :{OUTLINE}{GREEN}{STRING} é entrato in gioco
 STR_5759    :Scaricamento mappa ... ({INT32} / {INT32}) KiB
-STR_5760    :Hong Kong Dollars (HK$)
-STR_5761    :Nuovi Dollari Taiwan (NT$)
+STR_5760    :Dollari di Hong Kong (HK$)
+STR_5761    :Nuovi Dollari Taiwanesi (NT$)
 STR_5762    :Yuan Cinesi (CN{YEN})
 STR_5763    :Tutti i file
 STR_5764    :Tipo di corsa non valida
@@ -4108,7 +4109,7 @@ STR_5796    :{SMALLFONT}{BLACK}Forza il parco a chiudere o riaprire
 STR_5797    :{SMALLFONT}{BLACK}Disattiva modifiche al tempo atmosferico{NEWLINE}e blocca quello attuale
 STR_5798    :{SMALLFONT}{BLACK}Permette di costruire mentre il gioco è in pausa
 STR_5799    :{SMALLFONT}{BLACK}Disattiva rotture dei freni nelle attrazioni
-STR_5800    :{SMALLFONT}{BLACK}Impedisce alle attrazioni di rompersi
+STR_5800    :{SMALLFONT}{BLACK}Impedisci alle attrazioni di rompersi
 STR_5801    :Disattiva spazzatura
 STR_5802    :{SMALLFONT}{BLACK}Impedisce ai visitatori di sporcare e vomitare
 STR_5803    :{SMALLFONT}{BLACK}Ruota elemento della mappa selezionato
@@ -4169,6 +4170,16 @@ STR_5856    :{SMALLFONT}{BLACK}Imposta la risoluzione del gioco quando a tutto s
 STR_5857    :{SMALLFONT}{BLACK}Opzioni del gioco
 STR_5858    :{SMALLFONT}{BLACK}Usa la GPU per la grafica invece della CPU. Migliora la compatibilità con i software per catturare le schermate. Potrebbe diminuire le performance.
 STR_5859    :{SMALLFONT}{BLACK}Abilita l'interpolazione{NEWLINE}morbida durante il gioco. Quando disabilitato,{NEWLINE}il gioco funzionerà a 40 FPS.
+STR_5861    :Verifica chiave fallita
+STR_5862    :Blocca giocatori sconosciuti.
+STR_5863    :{SMALLFONT}{BLACK}Solo giocatori con chiavi conosciute possono loggarsi.
+STR_5864    :Questo server é abilitato solo i per giocatori whitelisted.
+STR_5865    :Storico chat
+STR_5866    :{SMALLFONT}{BLACK}Salva i log della chat in un files nella tua cartella utente.
+STR_5867    :{WINDOW_COLOUR_2}Nome Provider: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}E-mail Provider: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Sito Provider: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}Mostra le informazioni del server
 
 #############
 # Scenarios #
@@ -4304,7 +4315,7 @@ STR_DTLS    :This abandoned mine already has the makings of a tourist attraction
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :Un vecchio ponte é tuo e deve diventare un parco meraviglioso
 
 <Funtopia>
 STR_SCNR    :Funtopia

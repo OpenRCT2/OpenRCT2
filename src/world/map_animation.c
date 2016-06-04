@@ -196,7 +196,7 @@ static bool map_animation_invalidate_small_scenery(int x, int y, int baseZ)
 				int x2 = x - TileDirectionDelta[direction].x;
 				int y2 = y - TileDirectionDelta[direction].y;
 
-				uint16 spriteIdx = RCT2_ADDRESS(0x00F1EF60, uint16)[((x2 & 0x1FE0) << 3) | (y2 >> 5)];
+				uint16 spriteIdx = sprite_get_first_in_quadrant(x2, y2);
 				for (; spriteIdx != 0xFFFF; spriteIdx = sprite->unknown.next_in_quadrant) {
 					sprite = &g_sprite_list[spriteIdx];
 					if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2)

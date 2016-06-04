@@ -3,97 +3,97 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Spiral Roller Coaster
-STR_0003    :Stand-up Roller Coaster
-STR_0004    :Suspended Swinging Coaster
-STR_0005    :Inverted Roller Coaster
-STR_0006    :Junior Roller Coaster
-STR_0007    :Miniature Railway
+STR_0002    :Spiral berg-og-dal-bane
+STR_0003    :Stående berg-og-dal-bane
+STR_0004    :Hengende, svingende bane
+STR_0005    :Invertert berg-og-dal-bane
+STR_0006    :Junior berg-og-dal-bane
+STR_0007    :Miniatyrtog
 STR_0008    :Monorail
-STR_0009    :Mini Suspended Coaster
-STR_0010    :Boat Ride
-STR_0011    :Wooden Wild Mouse
-STR_0012    :Steeplechase
-STR_0013    :Car Ride
-STR_0014    :Launched Freefall
-STR_0015    :Bobsleigh Coaster
-STR_0016    :Observation Tower
-STR_0017    :Looping Roller Coaster
-STR_0018    :Dinghy Slide
-STR_0019    :Mine Train Coaster
-STR_0020    :Chairlift
-STR_0021    :Corkscrew Roller Coaster
-STR_0022    :Maze
-STR_0023    :Spiral Slide
-STR_0024    :Go Karts
-STR_0025    :Log Flume
-STR_0026    :River Rapids
-STR_0027    :Dodgems
-STR_0028    :Pirate Ship
-STR_0029    :Swinging Inverter Ship
-STR_0030    :Food Stall
-STR_0031    :Unknown Stall (1D)
-STR_0032    :Drink Stall
-STR_0033    :Unknown Stall (1F)
-STR_0034    :Shop
-STR_0035    :Merry-Go-Round
-STR_0036    :Unknown Stall (22)
-STR_0037    :Information Kiosk
-STR_0038    :Toilets
-STR_0039    :Ferris Wheel
-STR_0040    :Motion Simulator
-STR_0041    :3D Cinema
-STR_0042    :Top Spin
-STR_0043    :Space Rings
-STR_0044    :Reverse Freefall Coaster
-STR_0045    :Lift
-STR_0046    :Vertical Drop Roller Coaster
-STR_0047    :Cash Machine
-STR_0048    :Twist
-STR_0049    :Haunted House
-STR_0050    :First Aid Room
-STR_0051    :Circus Show
-STR_0052    :Ghost Train
-STR_0053    :Steel Twister Roller Coaster
-STR_0054    :Wooden Roller Coaster
-STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
-STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Unknown Ride (38)
-STR_0059    :Flying Roller Coaster
-STR_0060    :Unknown Ride (3A)
-STR_0061    :Virginia Reel
-STR_0062    :Splash Boats
-STR_0063    :Mini Helicopters
-STR_0064    :Lay-down Roller Coaster
-STR_0065    :Suspended Monorail
-STR_0066    :Unknown Ride (40)
-STR_0067    :Reverser Roller Coaster
-STR_0068    :Heartline Twister Coaster
-STR_0069    :Mini Golf
-STR_0070    :Giga Coaster
-STR_0071    :Roto-Drop
-STR_0072    :Flying Saucers
-STR_0073    :Crooked House
-STR_0074    :Monorail Cycles
-STR_0075    :Compact Inverted Coaster
-STR_0076    :Water Coaster
-STR_0077    :Air Powered Vertical Coaster
-STR_0078    :Inverted Hairpin Coaster
-STR_0079    :Magic Carpet
-STR_0080    :Submarine Ride
-STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
+STR_0009    :Mini hengende bane
+STR_0010    :Båttur
+STR_0011    :Ville mus av tre
+STR_0012    :Hinderløp
+STR_0013    :Bilbane
+STR_0014    :Fritt fall
+STR_0015    :Bobbane
+STR_0016    :Observasjonstårn
+STR_0017    :Loopende berg-og-dal-bane
+STR_0018    :Gummibåtsklie
+STR_0019    :Gruvetogbane
+STR_0020    :Stolheis
+STR_0021    :Korketrekker berg-og-dal-bane
+STR_0022    :Labyrint
+STR_0023    :Spiralsklietårn
+STR_0024    :Go kart
+STR_0025    :Tømmerrenne
+STR_0026    :Elvestryk
+STR_0027    :Radiobiler
+STR_0028    :Piratskip
+STR_0029    :Roterende skip
+STR_0030    :Matbod
+STR_0031    :Ukjent bod (1D)
+STR_0032    :Drikkebod
+STR_0033    :Ukjent bod (1F)
+STR_0034    :Bod
+STR_0035    :Karusell
+STR_0036    :Ukjent bod (22)
+STR_0037    :Informasjonskiosk
+STR_0038    :Toaletter
+STR_0039    :Pariserhjul
+STR_0040    :Bevegelsessimulator
+STR_0041    :3D kino
+STR_0042    :Topp spinn
+STR_0043    :Romringer
+STR_0044    :Bakvendt fritt fall-bane
+STR_0045    :Heis
+STR_0046    :Vertikalt fall berg-og-dal-bane
+STR_0047    :Bankautomat
+STR_0048    :Twister
+STR_0049    :Spøkelseshus
+STR_0050    :Førstehjelp
+STR_0051    :Sirkusshow
+STR_0052    :Spøkelsestog
+STR_0053    :Ståltwister berg-og-dal-bane
+STR_0054    :Tre-berg-og-dal-bane
+STR_0055    :Side-friksjonsberg-og-dal-bane
+STR_0056    :Ville mus
+STR_0057    :Multidimensjonal berg-og-dal-bane
+STR_0058    :Ukjent attraksjon (38)
+STR_0059    :Flyvende berg-og-dal-bane
+STR_0060    :Ukjent attraksjon (3A)
+STR_0061    :Virginiaspinner
+STR_0062    :Splashbåter
+STR_0063    :Minihelikoptere
+STR_0064    :Liggende berg-og-dal-bane
+STR_0065    :Hengende monorail
+STR_0066    :Ukjent attraksjon (40)
+STR_0067    :Reverserende berg-og-dal-bane
+STR_0068    :Hjertetwisterbane
+STR_0069    :Minigolf
+STR_0070    :Gigabane
+STR_0071    :Rotofall
+STR_0072    :Flyvende tallerkner
+STR_0073    :Skjevt hus
+STR_0074    :Monorailsykler
+STR_0075    :Kompakt invertert berg-og-dal-bane
+STR_0076    :Vannbane
+STR_0077    :Lufttrykkdrevet vertikal bane
+STR_0078    :Invertert hårnålsbane
+STR_0079    :Flyvende teppe
+STR_0080    :Ubåtbane
+STR_0081    :Elveflåter
+STR_0082    :Ukjent attraksjon (50)
 STR_0083    :Enterprise
-STR_0084    :Unknown Ride (52)
-STR_0085    :Unknown Ride (53)
-STR_0086    :Unknown Ride (54)
-STR_0087    :Unknown Ride (55)
-STR_0088    :Inverted Impulse Coaster
-STR_0089    :Mini Roller Coaster
-STR_0090    :Mine Ride
-STR_0091    :Unknown Ride (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0084    :Ukjent attraksjon (52)
+STR_0085    :Ukjent attraksjon (53)
+STR_0086    :Ukjent attraksjon (54)
+STR_0087    :Ukjent attraksjon (55)
+STR_0088    :Invertert impulsbane
+STR_0089    :Miniberg-og-dal-bane
+STR_0090    :Gruvebane
+STR_0091    :Ukjent attraksjon (59)
+STR_0092    :LIM-berg-og-dal-bane
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -513,31 +513,31 @@ STR_0508    :
 STR_0509    :
 STR_0510    :
 STR_0511    :
-STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
-STR_0513    :A looping roller coaster where the riders ride in a standing position
-STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
-STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
-STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
-STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
-STR_0523    :Riders travel slowly in powered vehicles along a track-based route
-STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
-STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0512    :En kompakt berg-og-dal-bane med spiraltrekk og myke fall med vridninger
+STR_0513    :En loopende berg-og-dal-bane hvor passasjerene kjører stående
+STR_0514    :Tog som henger under berg-og-dal-banesporet svinger utover i svingene
+STR_0515    :En berg-og-dal-bane i stål hvor togene henger under banen, med komplekse og vridde baner
+STR_0516    :En rolig berg-og-dal-bane for dem som ikke enda tør våge seg på de større attraksjonene
+STR_0517    :Passasjerer kjører i miniatyrtog langs en smalsport togbane
+STR_0518    :Passasjerer reiser i elektriske tog lang en monorailbane
+STR_0519    :Passasjerer kjører i små vogner, hengende under en enkelt skinne, hvor de svinger fritt fra side til side i svingene
+STR_0520    :En brygge hvor gjester kan kjøre/ro personlige fartøy på vannet
+STR_0521    :En rask og forskrudd berg-og-dal-bane med skarpe svinger og bratte fall; høy intensitet er garantert
+STR_0522    :En liten berg-og-dal-bane hvor det ikke er noen vogn mellom passasjerene og banen
+STR_0523    :Passasjerer reiser sakte i motoriserte biler langs en bane
+STR_0524    :Fritt fall-vogner blir pneumatisk skutt opp et høyt ståltårn, for så å falle fritt ned igjen
+STR_0525    :Passasjerer raser ned en vridd bane, kun styrt av kurvaturen i svingene
+STR_0526    :Passasjerer blir løftet opp et høyt tårn i en roterende lukket observasjonsplatform
+STR_0527    :En myk stål-berg-og-dal-bane med mulighet for vertikale looper
+STR_0528    :Passasjerer sitter på oppblåsbare gummibåter mens de suser nedover en vridd halvsirkelformet, eller helt lukket, rørbane
+STR_0529    :Gruvetog-liknende berg-og-dal-banetog raser langs en stålbane som etterlikner gamle togskinner
+STR_0530    :Vogner henger fra en stålkabel som går mellom begge endene av attraksjonen
+STR_0531    :En kompakt berg-og-dal-bane i stål hvor togene går gjennom korketrekkere og looper
 STR_0532    :
 STR_0533    :
-STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0534    :Bensindrevne go karts gjester kan kjøre selv
+STR_0535    :Tømmerformede båter flyter langs kanaler, og suser ned bratte fall for å sprute vann på passasjerene
+STR_0536    :Sirkulære båter flyter rolig langs en bred kanal, og må traversere brusende stryk og fossefall
 STR_0537    :
 STR_0538    :
 STR_0539    :
@@ -555,20 +555,20 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
-STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
+STR_0554    :Vognen blir skutt ut av stasjonen langs en rett strekning ved hjelp av lineære induksjonsmotorer, for så å bli ledet rett opp et høyt tårn, hvor den faller fritt baklengs tilbake til stasjonen
+STR_0555    :Gjester reiser opp eller ned et vertikalt tårn for å komme fra ett nivå til et annet
+STR_0556    :Extra vide vogner kjører ned vertikale fall for en ultimat fritt fall-opplevelse
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0562    :Motoriserte biler reiser forbi skumle kulisser og spesialeffekter over flere etasjer
+STR_0563    :I komfortable vogner nyter passasjerene gigantiske myke fall og langvarig vektløshet over bakketoppene
+STR_0564    :Denne berg-og-dal-banen er laget i tre og er rask, røff og bråkete på en måte som gjør at toget føles som det er ute av kontroll
+STR_0565    :En enkel berg-og-dal-bane i tre hvor vognene kun holdes på sporet ved hjelp av tyngdekraften
+STR_0566    :Berg-og-dal-banevogner fyker rundt en trang bane preget av sikksakk-mønstre og korte, skarpe fall
+STR_0567    :I seter hengende utover siden av sporet fyker passasjerene hodestups ned bratte fall og diverse inversjoner
 STR_0568    :
 STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
 STR_0570    :
@@ -603,242 +603,242 @@ STR_0598    :Inverted roller coaster trains are accelerated out of the station t
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
-STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
-STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
+STR_0602    :Berg-og-dal-banetog blir akselerert ut av stasjonen med lineære induksjonsmotorer og gjennom en rekke vridde inversjoner
+STR_0603    :Gjest {INT32}
+STR_0604    :Gjest {INT32}
+STR_0605    :Gjest {INT32}
+STR_0606    :Gjest {INT32}
+STR_0607    :Gjest {INT32}
+STR_0608    :Gjest {INT32}
+STR_0609    :Gjest {INT32}
+STR_0610    :Gjest {INT32}
+STR_0611    :Gjest {INT32}
+STR_0612    :Gjest {INT32}
+STR_0613    :Gjest {INT32}
+STR_0614    :Gjest {INT32}
+STR_0615    :Gjest {INT32}
+STR_0616    :Gjest {INT32}
+STR_0617    :Gjest {INT32}
+STR_0618    :Gjest {INT32}
+STR_0619    :Gjest {INT32}
+STR_0620    :Gjest {INT32}
+STR_0621    :Gjest {INT32}
+STR_0622    :Gjest {INT32}
+STR_0623    :Gjest {INT32}
+STR_0624    :Gjest {INT32}
+STR_0625    :Gjest {INT32}
+STR_0626    :Gjest {INT32}
+STR_0627    :Gjest {INT32}
+STR_0628    :Gjest {INT32}
+STR_0629    :Gjest {INT32}
+STR_0630    :Gjest {INT32}
+STR_0631    :Gjest {INT32}
+STR_0632    :Gjest {INT32}
+STR_0633    :Gjest {INT32}
+STR_0634    :Gjest {INT32}
+STR_0635    :Gjest {INT32}
+STR_0636    :Gjest {INT32}
+STR_0637    :Gjest {INT32}
+STR_0638    :Gjest {INT32}
+STR_0639    :Gjest {INT32}
+STR_0640    :Gjest {INT32}
+STR_0641    :Gjest {INT32}
+STR_0642    :Gjest {INT32}
+STR_0643    :Gjest {INT32}
+STR_0644    :Gjest {INT32}
+STR_0645    :Gjest {INT32}
+STR_0646    :Gjest {INT32}
+STR_0647    :Gjest {INT32}
+STR_0648    :Gjest {INT32}
+STR_0649    :Gjest {INT32}
+STR_0650    :Gjest {INT32}
+STR_0651    :Gjest {INT32}
+STR_0652    :Gjest {INT32}
+STR_0653    :Gjest {INT32}
+STR_0654    :Gjest {INT32}
+STR_0655    :Gjest {INT32}
+STR_0656    :Gjest {INT32}
+STR_0657    :Gjest {INT32}
+STR_0658    :Gjest {INT32}
+STR_0659    :Gjest {INT32}
+STR_0660    :Gjest {INT32}
+STR_0661    :Gjest {INT32}
+STR_0662    :Gjest {INT32}
+STR_0663    :Gjest {INT32}
+STR_0664    :Gjest {INT32}
+STR_0665    :Gjest {INT32}
+STR_0666    :Gjest {INT32}
+STR_0667    :Gjest {INT32}
+STR_0668    :Gjest {INT32}
+STR_0669    :Gjest {INT32}
+STR_0670    :Gjest {INT32}
+STR_0671    :Gjest {INT32}
+STR_0672    :Gjest {INT32}
+STR_0673    :Gjest {INT32}
+STR_0674    :Gjest {INT32}
+STR_0675    :Gjest {INT32}
+STR_0676    :Gjest {INT32}
+STR_0677    :Gjest {INT32}
+STR_0678    :Gjest {INT32}
+STR_0679    :Gjest {INT32}
+STR_0680    :Gjest {INT32}
+STR_0681    :Gjest {INT32}
+STR_0682    :Gjest {INT32}
+STR_0683    :Gjest {INT32}
+STR_0684    :Gjest {INT32}
+STR_0685    :Gjest {INT32}
+STR_0686    :Gjest {INT32}
+STR_0687    :Gjest {INT32}
+STR_0688    :Gjest {INT32}
+STR_0689    :Gjest {INT32}
+STR_0690    :Gjest {INT32}
+STR_0691    :Gjest {INT32}
+STR_0692    :Gjest {INT32}
+STR_0693    :Gjest {INT32}
+STR_0694    :Gjest {INT32}
+STR_0695    :Gjest {INT32}
+STR_0696    :Gjest {INT32}
+STR_0697    :Gjest {INT32}
+STR_0698    :Gjest {INT32}
+STR_0699    :Gjest {INT32}
+STR_0700    :Gjest {INT32}
+STR_0701    :Gjest {INT32}
+STR_0702    :Gjest {INT32}
+STR_0703    :Gjest {INT32}
+STR_0704    :Gjest {INT32}
+STR_0705    :Gjest {INT32}
+STR_0706    :Gjest {INT32}
+STR_0707    :Gjest {INT32}
+STR_0708    :Gjest {INT32}
+STR_0709    :Gjest {INT32}
+STR_0710    :Gjest {INT32}
+STR_0711    :Gjest {INT32}
+STR_0712    :Gjest {INT32}
+STR_0713    :Gjest {INT32}
+STR_0714    :Gjest {INT32}
+STR_0715    :Gjest {INT32}
+STR_0716    :Gjest {INT32}
+STR_0717    :Gjest {INT32}
+STR_0718    :Gjest {INT32}
+STR_0719    :Gjest {INT32}
+STR_0720    :Gjest {INT32}
+STR_0721    :Gjest {INT32}
+STR_0722    :Gjest {INT32}
+STR_0723    :Gjest {INT32}
+STR_0724    :Gjest {INT32}
+STR_0725    :Gjest {INT32}
+STR_0726    :Gjest {INT32}
+STR_0727    :Gjest {INT32}
+STR_0728    :Gjest {INT32}
+STR_0729    :Gjest {INT32}
+STR_0730    :Gjest {INT32}
+STR_0731    :Gjest {INT32}
+STR_0732    :Gjest {INT32}
+STR_0733    :Gjest {INT32}
+STR_0734    :Gjest {INT32}
+STR_0735    :Gjest {INT32}
+STR_0736    :Gjest {INT32}
+STR_0737    :Gjest {INT32}
+STR_0738    :Gjest {INT32}
+STR_0739    :Gjest {INT32}
+STR_0740    :Gjest {INT32}
+STR_0741    :Gjest {INT32}
+STR_0742    :Gjest {INT32}
+STR_0743    :Gjest {INT32}
+STR_0744    :Gjest {INT32}
+STR_0745    :Gjest {INT32}
+STR_0746    :Gjest {INT32}
+STR_0747    :Gjest {INT32}
+STR_0748    :Gjest {INT32}
+STR_0749    :Gjest {INT32}
+STR_0750    :Gjest {INT32}
+STR_0751    :Gjest {INT32}
+STR_0752    :Gjest {INT32}
+STR_0753    :Gjest {INT32}
+STR_0754    :Gjest {INT32}
+STR_0755    :Gjest {INT32}
+STR_0756    :Gjest {INT32}
+STR_0757    :Gjest {INT32}
+STR_0758    :Gjest {INT32}
+STR_0759    :Gjest {INT32}
+STR_0760    :Gjest {INT32}
+STR_0761    :Gjest {INT32}
+STR_0762    :Gjest {INT32}
+STR_0763    :Gjest {INT32}
+STR_0764    :Gjest {INT32}
+STR_0765    :Gjest {INT32}
+STR_0766    :Gjest {INT32}
+STR_0767    :Gjest {INT32}
+STR_0768    :Vaktmester {INT32}
+STR_0769    :Reparatør {INT32}
+STR_0770    :Sikkerhetsvakt {INT32}
+STR_0771    :Underholder {INT32}
+STR_0772    :Navnløs park{POP16}{POP16}
+STR_0773    :Navnløs park{POP16}{POP16}
+STR_0774    :Navnløs park{POP16}{POP16}
+STR_0775    :Navnløs park{POP16}{POP16}
+STR_0776    :Navnløs park{POP16}{POP16}
+STR_0777    :Navnløs park{POP16}{POP16}
+STR_0778    :Skilt
+STR_0779    :1.
+STR_0780    :2.
+STR_0781    :3.
+STR_0782    :4.
+STR_0783    :5.
+STR_0784    :6.
+STR_0785    :7.
+STR_0786    :8.
+STR_0787    :9.
+STR_0788    :10.
+STR_0789    :11.
+STR_0790    :12.
+STR_0791    :13.
+STR_0792    :14.
+STR_0793    :15.
+STR_0794    :16.
+STR_0795    :17.
+STR_0796    :18.
+STR_0797    :19.
+STR_0798    :20.
+STR_0799    :21.
+STR_0800    :22.
+STR_0801    :23.
+STR_0802    :24.
+STR_0803    :25.
+STR_0804    :26.
+STR_0805    :27.
+STR_0806    :28.
+STR_0807    :29.
+STR_0808    :30.
+STR_0809    :31.
 STR_0810    :Jan
 STR_0811    :Feb
 STR_0812    :Mar
 STR_0813    :Apr
-STR_0814    :May
+STR_0814    :Mai
 STR_0815    :Jun
 STR_0816    :Jul
 STR_0817    :Aug
 STR_0818    :Sep
-STR_0819    :Oct
+STR_0819    :Okt
 STR_0820    :Nov
-STR_0821    :Dec
-STR_0822    :Unable to access graphic data file
-STR_0823    :Missing or inaccessible data file
+STR_0821    :Des
+STR_0822    :Klarer ikke åpne grafikk-datafilen
+STR_0823    :Manglende eller utilgjengelig datafil
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
-STR_0826    :Too many names defined
-STR_0827    :Not enough cash - requires {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
-STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialisation failed
-STR_0836    :Unable to start game in a minimised state
-STR_0837    :Unable to initialise graphics system
+STR_0825    :Navnet er allerede i bruk
+STR_0826    :For mange navn definert
+STR_0827    :Ikke nok penger - {CURRENCY2DP} trengs
+STR_0828    :{SMALLFONT}{BLACK}Lukk vindu
+STR_0829    :{SMALLFONT}{BLACK}Vindustittel - dra denne for å flytte vinduet
+STR_0830    :{SMALLFONT}{BLACK}Zoom inn
+STR_0831    :{SMALLFONT}{BLACK}Zoom ut
+STR_0832    :{SMALLFONT}{BLACK}Rotate kameravinkelen 90{DEGREE} med klokken
+STR_0833    :{SMALLFONT}{BLACK}Pause spillet
+STR_0834    :{SMALLFONT}{BLACK}Disk- og spillinnstillinger
+STR_0835    :Spillinitialisering mislyktes
+STR_0836    :Kunne ikke starte spillet i minimert tilstand
+STR_0837    :Kunne ikke initialisere grafikksystemet
 STR_0838    :<removed string - do not use>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
@@ -849,17 +849,17 @@ STR_0843    :<removed string - do not use>
 STR_0844    :<removed string - do not use>
 STR_0845    :<removed string - do not use>
 STR_0846    :<removed string - do not use>
-STR_0847    :About 'OpenRCT2'
+STR_0847    :Om 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
-STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
-STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:
-STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0849    :{WINDOW_COLOUR_2}Versjon 2.01.028
+STR_0850    :{WINDOW_COLOUR_2}Opphavsrett {COPYRIGHT} 2002 Chris Sawyer, alle rettigheter forbeholdt
+STR_0851    :{WINDOW_COLOUR_2}Designet og programmert av Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}Graphikk av Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Lyd og musikk av Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}Ytterligere lyder spilt inn av David Ellis
+STR_0855    :{WINDOW_COLOUR_2}Representasjon av Jacqui Lyons ved Marjacq AS
+STR_0856    :{WINDOW_COLOUR_2}Takk til:
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth og John Wardley
 STR_0858    :{WINDOW_COLOUR_2}
 STR_0859    :{WINDOW_COLOUR_2}
 STR_0860    :{WINDOW_COLOUR_2}
@@ -879,85 +879,85 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
-STR_0879    :Can't lower land here...
-STR_0880    :Can't raise land here...
-STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
-STR_0884    :Load Landscape
-STR_0885    :Save Landscape
-STR_0886    :Quit Game
-STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
-STR_0889    :Quit Track Designs Manager
+STR_0877    :For lavt !
+STR_0878    :For høyt !
+STR_0879    :Kan ikke senke land her...
+STR_0880    :Kan ikke heve land her...
+STR_0881    :Objekt i veien
+STR_0882    :Last inn spill
+STR_0883    :Lagre spill
+STR_0884    :Last inn landskap
+STR_0885    :Lagre landskap
+STR_0886    :Avslutt spill
+STR_0887    :Avslutt scenarioeditoren
+STR_0888    :Avslutt berg-og-dal-banedesigner
+STR_0889    :Avslutt spordesign-editoren
 STR_0890    :<removed string - do not use>
-STR_0891    :Screenshot
-STR_0892    :Screenshot saved to disk as '{STRINGID}'
-STR_0893    :Screenshot failed !
-STR_0894    :Landscape data area full !
-STR_0895    :Can't build partly above and partly below ground
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
-STR_0897    :Direction
-STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
-STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
-STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
-STR_0901    :{SMALLFONT}{BLACK}Right-hand curve (small radius)
-STR_0902    :{SMALLFONT}{BLACK}Left-hand curve (very small radius)
-STR_0903    :{SMALLFONT}{BLACK}Right-hand curve (very small radius)
-STR_0904    :{SMALLFONT}{BLACK}Left-hand curve (large radius)
-STR_0905    :{SMALLFONT}{BLACK}Right-hand curve (large radius)
-STR_0906    :{SMALLFONT}{BLACK}Straight
-STR_0907    :Slope
-STR_0908    :Roll/Banking
-STR_0909    :Seat Rot.
-STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
-STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
-STR_0912    :{SMALLFONT}{BLACK}No roll
-STR_0913    :{SMALLFONT}{BLACK}Move to previous section
-STR_0914    :{SMALLFONT}{BLACK}Move to next section
-STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
-STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
-STR_0917    :{SMALLFONT}{BLACK}Vertical drop
-STR_0918    :{SMALLFONT}{BLACK}Steep slope down
-STR_0919    :{SMALLFONT}{BLACK}Slope down
-STR_0920    :{SMALLFONT}{BLACK}Level
-STR_0921    :{SMALLFONT}{BLACK}Slope up
-STR_0922    :{SMALLFONT}{BLACK}Steep slope up
-STR_0923    :{SMALLFONT}{BLACK}Vertical rise
-STR_0924    :{SMALLFONT}{BLACK}Helix down
-STR_0925    :{SMALLFONT}{BLACK}Helix up
-STR_0926    :Can't remove this...
-STR_0927    :Can't construct this here...
-STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
-STR_0929    :'S' Bend (left)
-STR_0930    :'S' Bend (right)
-STR_0931    :Vertical Loop (left)
-STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Ride entrance in the way
-STR_0935    :Ride exit in the way
-STR_0936    :Park entrance in the way
-STR_0937    :{SMALLFONT}{BLACK}View options
-STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
-STR_0939    :Underground/Inside View
-STR_0940    :Remove Base Land
-STR_0941    :Remove Vertical Faces
-STR_0942    :See-Through Rides
-STR_0943    :See-Through Scenery
-STR_0944    :Save
-STR_0945    :Don't Save
-STR_0946    :Cancel
-STR_0947    :Save this before loading ?
-STR_0948    :Save this before quitting ?
-STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
-STR_0953    :Load Landscape
+STR_0891    :Skjermbilde
+STR_0892    :Skjermbilde lagret som '{STRINGID}'
+STR_0893    :Skjermbilde mislyktes !
+STR_0894    :Landskapets dataområde er fullt !
+STR_0895    :Kan ikke bygge delvis under bakken
+STR_0896    :{POP16}{POP16}{STRINGID} Konstruksjon
+STR_0897    :Retning
+STR_0898    :{SMALLFONT}{BLACK}Venstrekurve
+STR_0899    :{SMALLFONT}{BLACK}Høyrekurve
+STR_0900    :{SMALLFONT}{BLACK}Venstrekurve (liten radius)
+STR_0901    :{SMALLFONT}{BLACK}Høyrekurve (liten radius)
+STR_0902    :{SMALLFONT}{BLACK}Venstrekurve (veldig liten radius)
+STR_0903    :{SMALLFONT}{BLACK}Høyrekurve (veldig liten radius)
+STR_0904    :{SMALLFONT}{BLACK}Venstrekurve (stor radius)
+STR_0905    :{SMALLFONT}{BLACK}Høyrekurve (stor radius)
+STR_0906    :{SMALLFONT}{BLACK}Rett
+STR_0907    :Bakke
+STR_0908    :Rull/helling
+STR_0909    :Seterotasjon
+STR_0910    :{SMALLFONT}{BLACK}Rull for venstrekurve
+STR_0911    :{SMALLFONT}{BLACK}Rull for høyrekurve
+STR_0912    :{SMALLFONT}{BLACK}Ingen rull
+STR_0913    :{SMALLFONT}{BLACK}Flytt til forrige seksjon
+STR_0914    :{SMALLFONT}{BLACK}Flytt til neste seksjon
+STR_0915    :{SMALLFONT}{BLACK}Konstruer valgt seksjon
+STR_0916    :{SMALLFONT}{BLACK}Fjern markert seksjon
+STR_0917    :{SMALLFONT}{BLACK}Vertikalt fall
+STR_0918    :{SMALLFONT}{BLACK}Bratt fall ned
+STR_0919    :{SMALLFONT}{BLACK}Bakke ned
+STR_0920    :{SMALLFONT}{BLACK}Vannrett
+STR_0921    :{SMALLFONT}{BLACK}Bakke opp
+STR_0922    :{SMALLFONT}{BLACK}Bratt bakke opp
+STR_0923    :{SMALLFONT}{BLACK}Vertikal stigning
+STR_0924    :{SMALLFONT}{BLACK}Heliks ned
+STR_0925    :{SMALLFONT}{BLACK}Heliks opp
+STR_0926    :Denne kan ikke fjernes...
+STR_0927    :Denne kan ikke konstrueres her...
+STR_0928    :{SMALLFONT}{BLACK}Trekk, for å trekke vognene opp bakker
+STR_0929    :'S'-kurve (venstre)
+STR_0930    :'S'-kurve (høyre)
+STR_0931    :Vertikal loop (venstre)
+STR_0932    :Vertikal loop (høyre)
+STR_0933    :Hev eller senk bakken først
+STR_0934    :Inngang i veien
+STR_0935    :Utgang i veien
+STR_0936    :Parkinngang i veien
+STR_0937    :{SMALLFONT}{BLACK}Innstillinger
+STR_0938    :{SMALLFONT}{BLACK}Endre bakkehøyde og helning
+STR_0939    :Undergrunns-/innendørssyn
+STR_0940    :Fjern bakken
+STR_0941    :Fjern vertikale flater
+STR_0942    :Gjennomsiktige attraksjoner
+STR_0943    :Gjennomsiktig natur og pynt
+STR_0944    :Lagre
+STR_0945    :Ikke lagre
+STR_0946    :Avbryt
+STR_0947    :Lagre før du laster inn ?
+STR_0948    :Lagre før du avslutter ?
+STR_0949    :Lagre før du avslutter ?
+STR_0950    :Last inn spill
+STR_0951    :Avslutt spill
+STR_0952    :Avslutt spill
+STR_0953    :Last inn landskap
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0955    :{SMALLFONT}{BLACK}Velg seterotasjon for denne baneseksjonen
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -974,18 +974,18 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
+STR_0972    :Avbryt
 STR_0973    :OK
-STR_0974    :Rides
-STR_0975    :Shops and Stalls
-STR_0976    :Toilets and Information Kiosks
-STR_0977    :New Transport Rides
-STR_0978    :New Gentle Rides
-STR_0979    :New Roller Coasters
-STR_0980    :New Thrill Rides
-STR_0981    :New Water Rides
-STR_0982    :New Shops & Stalls
-STR_0983    :Research & Development
+STR_0974    :Attraksjoner
+STR_0975    :Boder
+STR_0976    :Toaletter og informasjonskiosker
+STR_0977    :Nye transportattraksjoner
+STR_0978    :Nye roliger attraksjoner
+STR_0979    :Nye berg-og-dal-baner
+STR_0980    :Nye spennende attraksjoner
+STR_0981    :Nye vannattraksjoner
+STR_0982    :Nye boder
+STR_0983    :Forskning og utvikling
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
@@ -1227,7 +1227,7 @@ STR_1221    :No entrance
 STR_1222    :No exit
 STR_1223    :{SMALLFONT}{BLACK}Transport rides
 STR_1224    :{SMALLFONT}{BLACK}Gentle rides
-STR_1225    :{SMALLFONT}{BLACK}Roller coasters
+STR_1225    :{SMALLFONT}{BLACK} coasters
 STR_1226    :{SMALLFONT}{BLACK}Thrill rides
 STR_1227    :{SMALLFONT}{BLACK}Water rides
 STR_1228    :{SMALLFONT}{BLACK}Shops & stalls
@@ -1367,24 +1367,24 @@ STR_1361    :Can't change speed...
 STR_1362    :Can't change launch speed...
 STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can't be extended any further!
-STR_1365    :In-line Twist (left)
-STR_1366    :In-line Twist (right)
+STR_1365    :In-line Twist (venstre)
+STR_1366    :In-line Twist (høyre)
 STR_1367    :Half Loop
-STR_1368    :Half Corkscrew (left)
-STR_1369    :Half Corkscrew (right)
-STR_1370    :Barrel Roll (left)
-STR_1371    :Barrel Roll (right)
+STR_1368    :Half Corkscrew (venstre)
+STR_1369    :Half Corkscrew (høyre)
+STR_1370    :Barrel Roll (venstre)
+STR_1371    :Barrel Roll (høyre)
 STR_1372    :Launched Lift Hill
-STR_1373    :Large Half Loop (left)
-STR_1374    :Large Half Loop (right)
+STR_1373    :Large Half Loop (venstre)
+STR_1374    :Large Half Loop (høyre)
 STR_1375    :Upper Transfer
 STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (left)
-STR_1378    :Heartline Roll (right)
-STR_1379    :Reverser (left)
-STR_1380    :Reverser (right)
-STR_1381    :Curved Lift Hill (left)
-STR_1382    :Curved Lift Hill (right)
+STR_1377    :Heartline Roll (venstre)
+STR_1378    :Heartline Roll (høyre)
+STR_1379    :Reverser (venstre)
+STR_1380    :Reverser (høyre)
+STR_1381    :Curved Lift Hill (venstre)
+STR_1382    :Curved Lift Hill (høyre)
 STR_1383    :Quarter Loop
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Other track configurations
@@ -1681,10 +1681,10 @@ STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
 STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
 STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
+STR_1679    :Helix up (venstre)
+STR_1680    :Helix up (høyre)
+STR_1681    :Helix down (venstre)
+STR_1682    :Helix down (høyre)
 STR_1683    :Base size 2 x 2
 STR_1684    :Base size 4 x 4
 STR_1685    :Base size 2 x 4
@@ -3152,11 +3152,11 @@ STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Show people on map
 STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} left
-STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} right
-STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} left fast
-STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} right fast
-STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} left/right
+STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} venstre
+STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} høyre
+STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} venstre fast
+STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} høyre fast
+STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} venstre/høyre
 STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} up
 STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} down
 STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} up fast
@@ -3808,9 +3808,9 @@ STR_5466    :Staff
 STR_5467    :ALT + 
 STR_5468    :Recent messages
 STR_5469    :Scroll map up
-STR_5470    :Scroll map left
+STR_5470    :Scroll map venstre
 STR_5471    :Scroll map down
-STR_5472    :Scroll map right
+STR_5472    :Scroll map høyre
 STR_5473    :Cycle day / night
 STR_5474    :Display text on banners in uppercase
 STR_5475    :{COMMA16} weeks
@@ -4134,7 +4134,7 @@ STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle t
 STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
 STR_5824    :{SMALLFONT}{BLACK}Disables lightning effect{NEWLINE}during a thunderstorm
 STR_5825    :{SMALLFONT}{BLACK}Keep the mouse cursor in the window
-STR_5826    :{SMALLFONT}{BLACK}Invert right mouse dragging of the viewport
+STR_5826    :{SMALLFONT}{BLACK}Invert høyre mouse dragging of the viewport
 STR_5827    :{SMALLFONT}{BLACK}Sets the colour scheme used for the GUI
 STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for distances, speed, etc.
 STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
@@ -4173,14 +4173,6 @@ STR_5861    :Key verification failure.
 STR_5862    :Block unknown players.
 STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
 STR_5864    :This server only allows whitelisted players to connect.
-STR_5865    :Log chat history
-STR_5866    :{SMALLFONT}{BLACK}Logs all chat history to files in your user directory.
-STR_5867    :{WINDOW_COLOUR_2}Provider Name: {BLACK}{STRING}
-STR_5868    :{WINDOW_COLOUR_2}Provider E-mail: {BLACK}{STRING}
-STR_5869    :{WINDOW_COLOUR_2}Provider Website: {BLACK}{STRING}
-STR_5870    :{SMALLFONT}{BLACK}Show server information
-STR_5871    :Plants don't age.
-STR_5872    :{SMALLFONT}{BLACK}Disable plant aging such that they don't wilt.
 
 #############
 # Scenarios #

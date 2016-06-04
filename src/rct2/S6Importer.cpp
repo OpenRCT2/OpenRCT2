@@ -16,6 +16,7 @@
 
 #include "../core/Exception.hpp"
 #include "../core/IStream.hpp"
+#include "../network/network.h"
 #include "S6Importer.h"
 
 extern "C"
@@ -378,7 +379,15 @@ void S6Importer::Import()
     }
     reset_loaded_objects();
     map_update_tile_pointers();
-    reset_0x69EBE4();
+    if (network_get_mode() == NETWORK_MODE_CLIENT)
+    {
+        reset_sprite_spatial_index();
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_RESET_SPRITES, 0, 0);
+    }
+    else
+    {
+        reset_sprite_spatial_index();
+    }
     game_convert_strings_to_utf8();
     if (FixIssues)
     {
@@ -518,6 +527,7 @@ extern "C"
         gCheatsDisableLittering = SDL_ReadU8(rw) != 0;
         gCheatsNeverendingMarketing = SDL_ReadU8(rw) != 0;
         gCheatsFreezeClimate = SDL_ReadU8(rw) != 0;
+        gCheatsDisablePlantAging = SDL_ReadU8(rw) != 0;
 
         gLastAutoSaveTick = SDL_GetTicks();
         return 1;

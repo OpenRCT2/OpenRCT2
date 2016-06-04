@@ -43,12 +43,12 @@ extern "C" {
 #include <speex/speex_resampler.h>
 }
 
-struct AudioFormat {
-	int BytesPerSample() const { return (SDL_AUDIO_BITSIZE(format)) / 8; };
+typedef struct AudioFormat {
+	int BytesPerSample() const { return (SDL_AUDIO_BITSIZE(format)) / 8; }
 	int freq;
 	SDL_AudioFormat format;
 	int channels;
-};
+} AudioFormat;
 
 class Source
 {

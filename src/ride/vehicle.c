@@ -1881,11 +1881,14 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle) {
 	}
 }
 
+#pragma pack(push, 1)
 typedef struct rct_synchronised_vehicle {
 	uint8 ride_id;
 	uint8 station_id;
 	uint16 vehicle_id;
 } rct_synchronised_vehicle;
+assert_struct_size(rct_synchronised_vehicle, 4);
+#pragma pack(pop)
 
 // 8 synchronised vehicle info
 rct_synchronised_vehicle *_synchronisedVehicles = (rct_synchronised_vehicle*)0x00F64E4C;
@@ -5289,7 +5292,7 @@ bool vehicle_update_bumper_car_collision(rct_vehicle *vehicle, sint16 x, sint16 
 
 	uint8 rideIndex = vehicle->ride;
 	for (sint32* ebp = RCT2_ADDRESS(0x009A37C4, sint32); ebp <= RCT2_ADDRESS(0x009A37E4, sint32); ebp++) {
-		uint16 spriteIdx = RCT2_ADDRESS(0xF1EF60, uint16)[location];
+		uint16 spriteIdx = gSpriteSpatialIndex[location];
 		for (rct_vehicle* vehicle2 = GET_VEHICLE(spriteIdx); spriteIdx != 0xFFFF; spriteIdx = vehicle2->next_in_quadrant) {
 			vehicle2 = GET_VEHICLE(spriteIdx);
 
@@ -6540,7 +6543,7 @@ static bool vehicle_update_motion_collision_detection(
 	uint16 collideId = 0xFFFF;
 	rct_vehicle* collideVehicle = NULL;
 	for(; ebp <= RCT2_ADDRESS(0x009A37E4, uint32); ebp++){
-		collideId = RCT2_ADDRESS(0x00F1EF60, uint16)[eax];
+		collideId = gSpriteSpatialIndex[eax];
 		for(; collideId != 0xFFFF; collideId = collideVehicle->next_in_quadrant){
 			collideVehicle = GET_VEHICLE(collideId);
 			if (collideVehicle == vehicle) continue;

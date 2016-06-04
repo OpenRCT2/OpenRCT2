@@ -774,15 +774,10 @@ void footpath_bridge_get_info_from_pos(int screenX, int screenY, int *x, int *y,
  */
 void footpath_remove_litter(int x, int y, int z)
 {
-	int index;
-	uint16 spriteIndex, nextSpriteIndex;
-	rct_litter *sprite;
-
-	index = (x & 0x1FE0) << 3 | (y >> 5);
-	spriteIndex = RCT2_ADDRESS(0x00F1EF60, uint16)[index];
+	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		sprite = &g_sprite_list[spriteIndex].litter;
-		nextSpriteIndex = sprite->next_in_quadrant;
+		rct_litter *sprite = &g_sprite_list[spriteIndex].litter;
+		uint16 nextSpriteIndex = sprite->next_in_quadrant;
 		if (sprite->linked_list_type_offset == SPRITE_LIST_LITTER * 2) {
 			int distanceZ = abs(sprite->z - z);
 			if (distanceZ <= 32) {
@@ -800,15 +795,10 @@ void footpath_remove_litter(int x, int y, int z)
  */
 void footpath_interrupt_peeps(int x, int y, int z)
 {
-	int index;
-	uint16 spriteIndex, nextSpriteIndex;
-	rct_peep *peep;
-
-	index = (x & 0x1FE0) << 3 | (y >> 5);
-	spriteIndex = RCT2_ADDRESS(0x00F1EF60, uint16)[index];
+	uint16 spriteIndex = sprite_get_first_in_quadrant(x, y);
 	while (spriteIndex != SPRITE_INDEX_NULL) {
-		peep = &g_sprite_list[spriteIndex].peep;
-		nextSpriteIndex = peep->next_in_quadrant;
+		rct_peep *peep = &g_sprite_list[spriteIndex].peep;
+		uint16 nextSpriteIndex = peep->next_in_quadrant;
 		if (peep->linked_list_type_offset == SPRITE_LIST_PEEP * 2) {
 			if (peep->state == PEEP_STATE_SITTING || peep->state == PEEP_STATE_WATCHING) {
 				if (peep->z == z) {

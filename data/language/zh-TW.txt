@@ -4174,6 +4174,12 @@ STR_5861    :金鑰驗證失敗.
 STR_5862    :封鎖未知的玩家.
 STR_5863    :{SMALLFONT}{BLACK}只允許已知金鑰的玩家加入.
 STR_5864    :此伺服器只允許白名單玩家連接.
+STR_5865    :記錄聊天記錄
+STR_5866    :{SMALLFONT}{BLACK}記錄所有聊天記錄到你的用戶資料夾中.
+STR_5867    :{WINDOW_COLOUR_2}提供者名稱: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}提供者電郵: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}提供者網站: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}顯示伺服器資訊
 
 #############
 # Scenarios #

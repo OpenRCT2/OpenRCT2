@@ -19,6 +19,7 @@
 
 #include "../common.h"
 
+#pragma pack(push, 1)
 /**
  * Animated object
  * size: 0x06
@@ -29,6 +30,8 @@ typedef struct rct_map_animation {
 	uint16 x;
 	uint16 y;
 } rct_map_animation;
+assert_struct_size(rct_map_animation, 6);
+#pragma pack(pop)
 
 enum {
 	MAP_ANIMATION_TYPE_RIDE_ENTRANCE,

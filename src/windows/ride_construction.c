@@ -441,6 +441,7 @@ rct_string_id RideConfigurationStringIds[] = {
 
 #pragma endregion
 
+#pragma pack(push, 1)
 union {
 	uint64 ab;
 	struct {
@@ -448,6 +449,8 @@ union {
 		uint32 b;
 	};
 } _enabledRidePieces;
+assert_struct_size(_enabledRidePieces, 8);
+#pragma pack(pop)
 
 static bool	_trackPlaceCtrlState;
 static int	_trackPlaceCtrlZ;

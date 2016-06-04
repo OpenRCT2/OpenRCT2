@@ -29,6 +29,7 @@ typedef fixed16_2dp ride_rating;
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
 #define RIDE_RATING(whole, fraction)	FIXED_2DP(whole, fraction)
 
+#pragma pack(push, 1)
 
 // Used for return values, for functions that modify all three.
 typedef struct rating_tuple {
@@ -36,6 +37,7 @@ typedef struct rating_tuple {
 	ride_rating intensity;
 	ride_rating nausea;
 } rating_tuple;
+assert_struct_size(rating_tuple, 6);
 
 /**
  * Couples a ride type and subtype together.
@@ -49,28 +51,33 @@ typedef struct ride_list_item {
 		uint16 ride_type_and_entry;
 	};
 } ride_list_item;
+assert_struct_size(ride_list_item, 2);
 
 typedef struct track_colour {
 	uint8 main;
 	uint8 additional;
 	uint8 supports;
 } track_colour;
+assert_struct_size(track_colour, 3);
 
 typedef struct vehicle_colour {
 	uint8 main;
 	uint8 additional_1;
 	uint8 additional_2;
 } vehicle_colour;
+assert_struct_size(vehicle_colour, 3);
 
 typedef struct track_colour_preset_list {
 	uint8 count;
 	track_colour list[256];
 } track_colour_preset_list;
+assert_struct_size(track_colour_preset_list, (1 + 256 * 3));
 
 typedef struct vehicle_colour_preset_list {
 	uint8 count;
 	vehicle_colour list[256];
 } vehicle_colour_preset_list;
+assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
 
 /**
  * Ride type structure.
@@ -115,6 +122,9 @@ typedef struct rct_ride_entry {
 	uint8 shop_item;									// 0x1C0
 	uint8 shop_item_secondary;							// 0x1C1
 } rct_ride_entry;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_ride_entry, 0x1c2);
+#endif
 
 /**
  * Ride structure.
@@ -321,6 +331,7 @@ typedef struct rct_ride {
 	uint16 queue_length[4];			// 0x200
 	uint8 pad_208[0x58];
 } rct_ride;
+assert_struct_size(rct_ride, 0x260);
 
 #define RIDE_MEASUREMENT_MAX_ITEMS 4800
 
@@ -341,6 +352,7 @@ typedef struct rct_ride_measurement {
 	uint8 velocity[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x258C
 	uint8 altitude[RIDE_MEASUREMENT_MAX_ITEMS];	// 0x384C
 } rct_ride_measurement;
+assert_struct_size(rct_ride_measurement, 0x4b0c);
 
 typedef struct track_begin_end {
 	int begin_x;
@@ -353,6 +365,11 @@ typedef struct track_begin_end {
 	int end_direction;
 	rct_map_element *end_element;
 } track_begin_end;
+#ifdef PLATFORM_32BIT
+assert_struct_size(track_begin_end, 36);
+#endif
+
+#pragma pack(pop)
 
 enum {
 	RIDE_CLASS_RIDE,

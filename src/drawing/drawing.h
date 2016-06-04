@@ -20,6 +20,7 @@
 #include "../common.h"
 #include "font.h"
 
+#pragma pack(push, 1)
 // Size: 0x10
 typedef struct rct_drawpixelinfo {
 	uint8* bits;		// 0x00
@@ -30,6 +31,9 @@ typedef struct rct_drawpixelinfo {
 	short pitch;		// 0x0C			note: this is actually (pitch - width)
 	uint16 zoom_level;	// 0x0E
 } rct_drawpixelinfo;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_drawpixelinfo, 0x10);
+#endif
 
 // Size: 0x10
 typedef struct rct_g1_element {
@@ -41,6 +45,9 @@ typedef struct rct_g1_element {
 	uint16 flags;			// 0x0C
 	uint16 zoomed_offset;	// 0x0E
 } rct_g1_element;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_g1_element, 0x10);
+#endif
 
 enum {
 	G1_FLAG_BMP = (1 << 0), //No invisible sections
@@ -58,12 +65,16 @@ typedef struct rct_g1_header {
 	uint32 num_entries;
 	uint32 total_size;
 } rct_g1_header;
+assert_struct_size(rct_g1_header, 8);
 
 typedef struct rct_gx {
 	rct_g1_header header;
 	rct_g1_element *elements;
 	void *data;
 } rct_gx;
+#ifdef PLATFORM_32BIT
+assert_struct_size(rct_gx, 16);
+#endif
 
 typedef struct rct_palette_entry {
 	uint8 blue;
@@ -71,6 +82,9 @@ typedef struct rct_palette_entry {
 	uint8 red;
 	uint8 alpha;
 } rct_palette_entry;
+assert_struct_size(rct_palette_entry, 4);
+
+#pragma pack(pop)
 
 typedef struct rct_palette {
 	rct_palette_entry entries[256];
@@ -135,7 +149,7 @@ void gfx_unload_g2();
 rct_g1_element* gfx_get_g1_element(int image_id);
 void sub_68371D();
 void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type);
-void FASTCALL gfx_rle_sprite_to_buffer(const uint8* source_bits_pointer, uint8* dest_bits_pointer, const uint8* palette_pointer, const rct_drawpixelinfo *dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
+void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
 void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);

@@ -35,6 +35,7 @@ enum{
 	WEATHER_THUNDER
 };
 
+#pragma pack(push, 1)
 typedef struct rct_weather {
 	sint8 temp_delta;
 	sint8 effect_level;
@@ -42,6 +43,8 @@ typedef struct rct_weather {
 	sint8 rain_level;
 	uint32 sprite_id;
 } rct_weather;
+assert_struct_size(rct_weather, 8);
+#pragma pack(pop)
 
 #define gClimate						RCT2_GLOBAL(RCT2_ADDRESS_CLIMATE, uint8)
 #define gClimateCurrentWeather			RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WEATHER, uint8)
