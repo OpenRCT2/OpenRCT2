@@ -373,8 +373,7 @@ void lightfx_prepare_light_list()
 		//	log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
 
 			entry->lightIntensity = min(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
-			 
-		//	log_warning("lightIntensityOccluded: %i, entry->lightIntensity: %i", lightIntensityOccluded, entry->lightIntensity);
+			entry->lightIntensity = max(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
 		}
 
 		if (_current_view_zoom_front > 0) {
