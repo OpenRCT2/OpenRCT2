@@ -374,6 +374,7 @@ void platform_draw()
 
 					gfx_invalidate_screen();
 
+					lightfx_add_lights_magic_vehicles();
 					lightfx_add_3d_light(0xFFFFFFFF, 0xFFFF, gCursorState.x, gCursorState.y, 0x7FFF, LIGHTFX_LIGHT_TYPE_LANTERN_3);
 
 					lightfx_update_viewport_settings();
