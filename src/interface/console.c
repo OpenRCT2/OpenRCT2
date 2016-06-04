@@ -465,10 +465,13 @@ static int cc_rides(const utf8 **argv, int argc)
 				if (argc > 4) {
 					subtype = console_parse_int(argv[4], &int_valid[2]);
 				}
-				if (!int_valid[0] || !int_valid[1] || (argc > 4 && !int_valid[2])) {
+				if (!int_valid[0] || !int_valid[1]) {
 					console_printf("This command expects integer arguments");
 				} else if (ride_index < 0) {
 					console_printf("Ride index must not be negative");
+				} else if (argc > 4 && (!int_valid[2] || (subtype < 0 || subtype >= object_entry_group_counts[OBJECT_TYPE_RIDE])))
+				{
+					console_printf("No ride entry found for given subtype");
 				} else {
 					rct_ride *ride = get_ride(ride_index);
 					if(ride->type != RIDE_TYPE_NULL) {
