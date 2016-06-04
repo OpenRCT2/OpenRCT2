@@ -2647,6 +2647,9 @@ enum {
 	STR_CHEAT_DISABLE_PLANT_AGING = 5871,
 	STR_CHEAT_DISABLE_PLANT_AGING_TIP = 5872,
 
+	STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK = 5873,
+	STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP = 5874,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
