@@ -1222,7 +1222,7 @@ static void window_ride_construction_resize(rct_window *w)
 	
 	//If chain lift cheat is enabled then show the chain lift widget no matter what
 	if(gCheatsEnableChainLiftOnAllTrack) {
-		disabledWidgets &=~(1ULL<<WIDX_CHAIN_LIFT);	
+		disabledWidgets &= ~(1ULL<<WIDX_CHAIN_LIFT);	
 	}
 
 	// Set and invalidate the changed widgets

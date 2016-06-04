@@ -432,7 +432,7 @@ void cheats_reset()
 	gCheatsShowAllOperatingModes = false;
 	gCheatsShowVehiclesFromOtherTrackTypes = false;
 	gCheatsDisableTrainLengthLimit = false;
-	gCheatsEnableChainLiftOnAllTrack=false;
+	gCheatsEnableChainLiftOnAllTrack = false;
 	gCheatsFastLiftHill = false;
 	gCheatsDisableBrakesFailure = false;
 	gCheatsDisableAllBreakdowns = false;
