@@ -171,6 +171,9 @@ void lightfx_prepare_light_list()
 		sint32 posOnScreenX = entry->x - _current_view_x_front;
 		sint32 posOnScreenY = entry->y - _current_view_y_front;
 
+		posOnScreenX >>= _current_view_zoom_front;
+		posOnScreenY >>= _current_view_zoom_front;
+
 		if ((posOnScreenX < -128) ||
 			(posOnScreenY < -128) ||
 			(posOnScreenX > _pixelInfo.width + 128) ||
