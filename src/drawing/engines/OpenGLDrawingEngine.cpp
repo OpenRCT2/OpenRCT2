@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <unordered_map>
+#include <vector>
 #include <SDL_platform.h>
 
 #ifdef __WINDOWS__
@@ -22,7 +24,6 @@
 #endif
 
 #include <gl/gl.h>
-#include <gl/glu.h>
 
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
@@ -38,6 +39,12 @@ extern "C"
 }
 
 class OpenGLDrawingEngine;
+
+struct vec2f
+{
+    union { float x; float s; float r; };
+    union { float y; float t; float g; };
+};
 
 struct vec4f
 {
@@ -60,6 +67,9 @@ private:
     sint32 _clipRight;
     sint32 _clipBottom;
 
+    std::vector<GLuint> _textures;
+    std::unordered_map<uint32, GLuint> _imageTextureMap;
+
 public:
     OpenGLDrawingContext(OpenGLDrawingEngine * engine);
     ~OpenGLDrawingContext() override;
@@ -73,6 +83,12 @@ public:
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
 
     void SetDPI(rct_drawpixelinfo * dpi);
+
+private:
+    GLuint GetOrLoadImageTexture(uint32 image);
+    GLuint LoadImageTexture(uint32 image);
+    void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
+    void FreeTextures();
 };
 
 class OpenGLDrawingEngine : public IDrawingEngine
@@ -92,7 +108,8 @@ private:
     OpenGLDrawingContext *    _drawingContext;
 
 public:
-    vec4f GLPalette[256];
+    SDL_Color Palette[256];
+    vec4f     GLPalette[256];
 
     OpenGLDrawingEngine()
     {
@@ -113,6 +130,9 @@ public:
 
         _context = SDL_GL_CreateContext(_window);
         SDL_GL_MakeCurrent(_window, _context);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -127,6 +147,7 @@ public:
         for (int i = 0; i < 256; i++)
         {
             SDL_Color colour = palette[i];
+            Palette[i] = colour;
             GLPalette[i] = { colour.r / 255.0f,
                              colour.g / 255.0f,
                              colour.b / 255.0f,
@@ -289,6 +310,7 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
         return;
     }
 
+    glDisable(GL_TEXTURE_2D);
     glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
     glBegin(GL_QUADS);
         glVertex2i(left,  top);
@@ -303,11 +325,87 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     int g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
+    GLuint texture = GetOrLoadImageTexture(image);
+
     sint32 left = x + g1Element->x_offset;
     sint32 top = y + g1Element->y_offset;
     sint32 right = left + g1Element->width;
     sint32 bottom = top + g1Element->height;
-    FillRect(g1Id & 0xFF, left, top, right, bottom);
+    // FillRect(g1Id & 0xFF, left, top, right, bottom);
+
+    if (left > right)
+    {
+        left ^= right;
+        right ^= left;
+        left ^= right;
+    }
+    if (top > bottom)
+    {
+        top ^= bottom;
+        bottom ^= top;
+        top ^= bottom;
+    }
+
+    left += _offsetX;
+    top += _offsetY;
+    right += _offsetX;
+    bottom += _offsetY;
+
+    vec2f texCoords[4] = { { 0, 0 },
+                           { 0, 1 },
+                           { 1, 1 },
+                           { 1, 0 } };
+
+    sint32 leftChop = _clipLeft - left;
+    if (leftChop > 0)
+    {
+        left += leftChop;
+        texCoords[0].x =
+        texCoords[1].x = (float)leftChop / g1Element->width;
+    }
+
+    sint32 rightChop = right - _clipRight;
+    if (rightChop > 0)
+    {
+        right -= rightChop;
+        texCoords[2].x =
+        texCoords[3].x = 1.0f - ((float)rightChop / g1Element->width);
+    }
+
+    sint32 topChop = _clipTop - top;
+    if (topChop > 0)
+    {
+        top += topChop;
+        texCoords[0].y =
+        texCoords[3].y = (float)topChop / g1Element->height;
+    }
+
+    sint32 bottomChop = bottom - _clipBottom;
+    if (bottomChop > 0)
+    {
+        bottom -= bottomChop;
+        texCoords[1].y =
+        texCoords[2].y = 1.0f - ((float)bottomChop / g1Element->height);
+    }
+
+    if (right < left || bottom < top)
+    {
+        return;
+    }
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glColor3f(1, 1, 1);
+    glBegin(GL_QUADS);
+        glTexCoord2f(texCoords[0].s, texCoords[0].t);
+        glVertex2i(left,  top);
+        glTexCoord2f(texCoords[1].s, texCoords[1].t);
+        glVertex2i(left,  bottom);
+        glTexCoord2f(texCoords[2].s, texCoords[2].t);
+        glVertex2i(right, bottom);
+        glTexCoord2f(texCoords[3].s, texCoords[3].t);
+        glVertex2i(right, top);
+    glEnd();
 }
 
 void OpenGLDrawingContext::DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown)
@@ -334,4 +432,94 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
     _offsetY = _clipTop - dpi->y;
 
     _dpi = dpi;
+}
+
+GLuint OpenGLDrawingContext::GetOrLoadImageTexture(uint32 image)
+{
+    auto kvp = _imageTextureMap.find(image);
+    if (kvp != _imageTextureMap.end())
+    {
+        return kvp->second;
+    }
+
+    GLuint texture = LoadImageTexture(image);
+    _textures.push_back(texture);
+    _imageTextureMap[image] = texture;
+    return texture;
+}
+
+GLuint OpenGLDrawingContext::LoadImageTexture(uint32 image)
+{
+    GLuint texture;
+    glGenTextures(1, &texture);
+
+    uint32 width, height;
+    void * pixels32 = GetImageAsARGB(image, 0, &width, &height);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
+
+    delete pixels32;
+
+    return texture;
+}
+
+void * OpenGLDrawingContext::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight)
+{
+    int g1Id = image & 0x7FFFF;
+    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+
+    uint32 width = (uint32)g1Element->width;
+    uint32 height = (uint32)g1Element->height;
+
+    size_t numPixels = width * height;
+    uint8 * pixels8 = new uint8[numPixels];
+    Memory::Set(pixels8, 0, numPixels);
+
+    rct_drawpixelinfo dpi;
+    dpi.bits = pixels8;
+    dpi.pitch = 0;
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = width;
+    dpi.height = height;
+    dpi.zoom_level = 0;
+    gfx_draw_sprite_software(&dpi, image, -g1Element->x_offset, -g1Element->y_offset, tertiaryColour);
+
+    uint8 * pixels32 = new uint8[width * height * 4];
+    uint8 * src = pixels8;
+    uint8 * dst = pixels32;
+    for (size_t i = 0; i < numPixels; i++)
+    {
+        uint8 paletteIndex = *src++;
+        if (paletteIndex == 0)
+        {
+            // Transparent
+            *dst++ = 0;
+            *dst++ = 0;
+            *dst++ = 0;
+            *dst++ = 0;
+        }
+        else
+        {
+            SDL_Color colour = _engine->Palette[paletteIndex];
+            *dst++ = colour.r;
+            *dst++ = colour.g;
+            *dst++ = colour.b;
+            *dst++ = 255;
+        }
+    }
+
+    delete pixels8;
+
+    *outWidth = width;
+    *outHeight = height;
+    return pixels32;
+}
+
+void OpenGLDrawingContext::FreeTextures()
+{
+    glDeleteTextures(_textures.size(), _textures.data());
 }
