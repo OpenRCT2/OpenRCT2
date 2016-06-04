@@ -178,7 +178,7 @@ void lightfx_prepare_light_list()
 			(posOnScreenY < -128) ||
 			(posOnScreenX > _pixelInfo.width + 128) ||
 			(posOnScreenY > _pixelInfo.height + 128)) {
-			entry->lightIntensity = 0xFF;
+			entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
 			continue;
 		}
 			
