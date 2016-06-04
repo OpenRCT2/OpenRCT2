@@ -384,6 +384,7 @@ void game_command_cheat(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* e
 			case CHEAT_DISABLEBRAKESFAILURE: gCheatsDisableBrakesFailure = !gCheatsDisableBrakesFailure; break;
 			case CHEAT_DISABLEALLBREAKDOWNS: gCheatsDisableAllBreakdowns = !gCheatsDisableAllBreakdowns; break;
 			case CHEAT_DISABLETRAINLENGTHLIMIT: gCheatsDisableTrainLengthLimit = !gCheatsDisableTrainLengthLimit; break;
+			case CHEAT_ENABLECHAINLIFTONALLTRACK: gCheatsEnableChainLiftOnAllTrack = !gCheatsEnableChainLiftOnAllTrack; break;
 			case CHEAT_UNLOCKALLPRICES: gCheatsUnlockAllPrices = !gCheatsUnlockAllPrices; window_invalidate_by_class(WC_RIDE); window_invalidate_by_class(WC_PARK_INFORMATION); break;
 			case CHEAT_BUILDINPAUSEMODE: gCheatsBuildInPauseMode = !gCheatsBuildInPauseMode; break;
 			case CHEAT_IGNORERIDEINTENSITY: gCheatsIgnoreRideIntensity = !gCheatsIgnoreRideIntensity; break;
@@ -430,6 +431,8 @@ void cheats_reset()
 	gCheatsDisableSupportLimits = false;
 	gCheatsShowAllOperatingModes = false;
 	gCheatsShowVehiclesFromOtherTrackTypes = false;
+	gCheatsDisableTrainLengthLimit = false;
+	gCheatsEnableChainLiftOnAllTrack=false;
 	gCheatsFastLiftHill = false;
 	gCheatsDisableBrakesFailure = false;
 	gCheatsDisableAllBreakdowns = false;
