@@ -643,7 +643,7 @@ void lightfx_add_3d_light_magic_from_drawing_tile(sint16 offsetX, sint16 offsetY
 		return;
 	}
 
-	lightfx_add_3d_light((x << 16) | y, offsetZ, x, y, offsetZ, lightType);
+	lightfx_add_3d_light((x << 16) | y, (offsetZ << 8) | LIGHTFX_LIGHT_QUALIFIER_MAP, x, y, offsetZ, lightType);
 }
 
 uint32 lightfx_get_light_polution()
