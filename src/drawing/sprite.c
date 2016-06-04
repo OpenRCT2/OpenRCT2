@@ -354,7 +354,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 	//For backwards compatibility
 	RCT2_GLOBAL(0x9ABDA4, uint8*) = palette_pointer;
 
-	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, unknown_pointer);
+	gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, unknown_pointer);
 }
 
 /*

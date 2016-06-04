@@ -53,7 +53,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, short left, short top, short ri
 		colour = colour | 0x2000000; //Transparent
 
 		if (flags & no_border) {
-			gfx_fill_rect(dpi, left, top, bottom, right, colour);
+			gfx_fill_rect(dpi, left, top, right, bottom, colour);
 		} else if (flags & pressed) {
 			// Draw outline of box
 			gfx_fill_rect(dpi, left, top, left, bottom, colour + 1);

@@ -42,6 +42,7 @@
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />
     <ClCompile Include="src\drawing\drawing_fast.cpp" />
+    <ClCompile Include="src\drawing\engines\OpenGLDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\font.c" />
     <ClCompile Include="src\drawing\line.c" />

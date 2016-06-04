@@ -6923,7 +6923,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int 
 	};
 
 	for (int i = 0; i < num_images; ++i){
-		gfx_draw_sprite(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
+		gfx_draw_sprite_software(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
 	}
 	int al = -1;
 	for (int i = 99; i != 0; --i){

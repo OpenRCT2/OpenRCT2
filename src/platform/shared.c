@@ -640,7 +640,7 @@ static void platform_create_window()
 
 	// Create window in window first rather than fullscreen so we have the display the window is on first
 	gWindow = SDL_CreateWindow(
-		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE
+		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
 	);
 
 	if (!gWindow) {

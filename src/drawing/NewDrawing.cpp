@@ -29,7 +29,8 @@ extern "C"
     void drawing_engine_init()
     {
         assert(_drawingEngine == nullptr);
-        _drawingEngine = DrawingEngineFactory::CreateSoftware();
+        // _drawingEngine = DrawingEngineFactory::CreateSoftware();
+        _drawingEngine = DrawingEngineFactory::CreateOpenGL();
         _drawingEngine->Initialise(gWindow);
     }
 

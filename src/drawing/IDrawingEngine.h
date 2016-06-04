@@ -40,6 +40,7 @@ interface IDrawingEngine
 namespace DrawingEngineFactory
 {
     IDrawingEngine * CreateSoftware();
+    IDrawingEngine * CreateOpenGL();
 };
 
 interface IRainDrawer
