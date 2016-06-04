@@ -42,6 +42,7 @@ bool gCheatsNeverendingMarketing = false;
 bool gCheatsFreezeClimate = false;
 bool gCheatsDisableTrainLengthLimit = false;
 bool gCheatsDisablePlantAging = false;
+bool gCheatsEnableChainLiftOnAllTrack = false;
 
 int park_rating_spinner_value;
 
