@@ -70,10 +70,6 @@ extern "C"
     {
     }
 
-    /**
-     * Clears the screen with the specified colour.
-     *  rct2: 0x00678A9F
-     */
     void gfx_clear(rct_drawpixelinfo * dpi, int colour)
     {
         if (_drawingEngine != nullptr)
@@ -83,22 +79,39 @@ extern "C"
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00678AD4
-     * dpi (edi)
-     * left (ax)
-     * top (cx)
-     * right (bx)
-     * bottom (dx)
-     * colour (ebp)
-     */
-    void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour)
+    void gfx_fill_rect(rct_drawpixelinfo * dpi, int left, int top, int right, int bottom, int colour)
     {
         if (_drawingEngine != nullptr)
         {
             IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
             dc->FillRect(colour, left, top, right, bottom);
+        }
+    }
+
+    void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, int image, int x, int y, uint32 tertiary_colour)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->DrawSprite(image, x, y, tertiary_colour);
+        }
+    }
+
+    void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 * palette, uint8 * unknown)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->DrawSpritePaletteSet(image, x, y, palette, unknown);
+        }
+    }
+
+    void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, int x, int y, int maskImage, int colourImage)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->DrawSpriteRawMasked(x, y, maskImage, colourImage);
         }
     }
 }
