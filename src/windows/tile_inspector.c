@@ -117,6 +117,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_PATH_CHECK_EDGE_N,
 
 	// Track
+	WIDX_TRACK_CHECK_APPLY_TO_ALL = PAGE_WIDGETS,
 
 	// Scenery
 
@@ -207,7 +208,7 @@ static rct_widget window_tile_inspector_widgets[] = {
 #define SUR_GBPB PADDING_BOTTOM					// Surface group box properties bottom
 #define SUR_GBPT (SUR_GBPB + 16 + 1 * 21)		// Surface group box properties top
 #define SUR_GBDB (SUR_GBPT + GROUPBOX_PADDING)	// Surface group box details bottom
-#define SUR_GBDT (SUR_GBDB + 20 + 3 * 11)		// Surface group box details top
+#define SUR_GBDT (SUR_GBDB + 20 + 4 * 11)		// Surface group box details top
 static rct_widget window_tile_inspector_widgets_surface[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_CLOSEBOX,		1,	GBB(WH - SUR_GBPT, 0, 0),	STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,	STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
@@ -241,6 +242,7 @@ static rct_widget window_tile_inspector_widgets_path[] = {
 #define TRA_GBDT (TRA_GBDB + 20 + 0 * 11)		// Path group box info top
 static rct_widget window_tile_inspector_widgets_track[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
+	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 1) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
 	{ WIDGETS_END },
 };
 
@@ -741,7 +743,6 @@ static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, in
 
 	gMapSelectType = MAP_SELECT_TYPE_FULL;
 	map_invalidate_selection_rect();
-
 }
 
 static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y)
@@ -971,10 +972,17 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 			rct_string_id terrain_name_id = TerrainTypes[map_element_get_terrain(mapElement)];
 			rct_string_id terrain_edge_name_id = TerrainEdgeTypes[map_element_get_terrain_edge(mapElement)];
+			rct_string_id land_ownership;
+			if (mapElement->properties.surface.ownership & OWNERSHIP_OWNED) land_ownership = STR_LAND_OWNED;
+			else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) land_ownership = STR_LAND_SALE;
+			else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) land_ownership = STR_CONSTRUCTION_RIGHTS_OWNED;
+			else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) land_ownership = STR_CONSTRUCTION_RIGHTS_SALE;
+			else land_ownership = STR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
 			int water_level = mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrain_name_id, 12, x, y);
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrain_edge_name_id, 12, x, y + 11);
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &water_level, 12, x, y + 22);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &land_ownership, 12, x, y + 22);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &water_level, 12, x, y + 33);
 			break;
 		}
 
