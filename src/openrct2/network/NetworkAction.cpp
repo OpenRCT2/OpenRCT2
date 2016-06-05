@@ -194,7 +194,7 @@ const std::vector<NetworkAction> NetworkActions::Actions =
     }, {
         STR_ACTION_KICK_PLAYER, "PERMISSION_KICK_PLAYER",
         {
-            GAME_COMMAND_KICK_PLAYER
+            -4
         }
     }, {
         STR_ACTION_MODIFY_GROUPS, "PERMISSION_MODIFY_GROUPS",

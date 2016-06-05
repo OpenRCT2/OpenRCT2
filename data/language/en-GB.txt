@@ -4321,6 +4321,19 @@ STR_6009    :{SMALLFONT}{BLACK}Select cut height
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
+STR_6013    :No reason
+STR_6014    :Vandalism
+STR_6015    :Spam
+STR_6016    :Harassment
+STR_6017    :Inappropriate content
+STR_6018    :Breaking server rules
+STR_6019    :Other reason
+STR_6020    :Enter custom kick reason:
+STR_6021    :Can't kick yourself
+STR_6022    :Kicked - {STRINGID} ({STRING})
+STR_6023    :Kicked - {STRING} ({STRING})
+STR_6024    :{BLACK}{STRING}
+STR_6025    :Player not found
 
 #############
 # Scenarios #
