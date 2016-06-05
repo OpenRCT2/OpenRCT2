@@ -128,6 +128,15 @@ extern "C"
         }
     }
 
+    void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->DrawLine(colour, x1, y1, x2, y2);
+        }
+    }
+
     void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, int image, int x, int y, uint32 tertiary_colour)
     {
         if (_drawingEngine != nullptr)

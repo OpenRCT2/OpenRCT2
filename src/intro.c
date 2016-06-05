@@ -196,12 +196,6 @@ void intro_draw(rct_drawpixelinfo *dpi)
 		// Draw Chris Sawyer logo
 		gfx_draw_sprite(dpi, SPR_INTRO_CHRIS_SAWYER_00, (screenWidth / 2) - 320 + 70, _introStateCounter, 0);
 		gfx_draw_sprite(dpi, SPR_INTRO_CHRIS_SAWYER_10, (screenWidth / 2) - 320 + 320, _introStateCounter, 0);
-
-		// Check if logo is off the screen...ish
-		if (_introStateCounter >= gScreenHeight + 40) {
-			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 0);
-			screen_intro_draw_logo(dpi);
-		}
 		break;
 	case INTRO_STATE_LOGO_FADE_IN:
 		if (_introStateCounter <= 0xFF00) {
@@ -265,6 +259,13 @@ static void screen_intro_draw_logo(rct_drawpixelinfo *dpi)
 	sint32 screenWidth = gScreenWidth;
 	sint32 imageWidth = 640;
 	sint32 imageX = (screenWidth - imageWidth) / 2;
+
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_00);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_10);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_20);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_01);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_11);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_21);
 
 	gfx_clear(dpi, BACKROUND_COLOUR_LOGO);
 	gfx_draw_sprite(dpi, SPR_INTRO_LOGO_00, imageX + 0,     0, 0);

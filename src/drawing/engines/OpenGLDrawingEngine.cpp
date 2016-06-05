@@ -75,6 +75,7 @@ public:
 
     void Clear(uint32 colour) override;
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
+    void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
     void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
     void DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown) override;
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
@@ -359,6 +360,16 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
         glVertex2i(left,  bottom + 1);
         glVertex2i(right + 1, bottom + 1);
         glVertex2i(right + 1, top);
+    glEnd();
+}
+
+void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
+{
+    vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
+    glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
+    glBegin(GL_LINES);
+        glVertex2i(x1, y1);
+        glVertex2i(x2, y2);
     glEnd();
 }
 

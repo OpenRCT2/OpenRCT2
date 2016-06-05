@@ -131,6 +131,7 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi);
 
 // line
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);
+void gfx_draw_line_software(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);
 
 // rect
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);

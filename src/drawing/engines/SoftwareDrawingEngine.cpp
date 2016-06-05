@@ -167,6 +167,7 @@ public:
 
     void Clear(uint32 colour) override;
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
+    void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
     void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
     void DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown) override;
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
@@ -815,6 +816,11 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
             dst += dpi->width + dpi->pitch;
         }
     }
+}
+
+void SoftwareDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
+{
+    gfx_draw_line_software(_dpi, x1, y1, x2, y2, colour);
 }
 
 void SoftwareDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
