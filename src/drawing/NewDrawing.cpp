@@ -90,6 +90,14 @@ extern "C"
         return result;
     }
 
+    void drawing_engine_invalidate_image(uint32 image)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            _drawingEngine->InvalidateImage(image);
+        }
+    }
+
     void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
     {
         if (_drawingEngine != nullptr)

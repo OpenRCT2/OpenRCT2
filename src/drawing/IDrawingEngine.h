@@ -50,6 +50,8 @@ interface IDrawingEngine
     virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
 
     virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
+
+    virtual void InvalidateImage(uint32 image) abstract;
 };
 
 namespace DrawingEngineFactory

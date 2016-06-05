@@ -376,6 +376,11 @@ public:
         return DEF_DIRTY_OPTIMISATIONS;
     }
 
+    void InvalidateImage(uint32 image) override
+    {
+        // Not applicable for this engine
+    }
+
     rct_drawpixelinfo * GetDPI()
     {
         return &_bitsDPI;

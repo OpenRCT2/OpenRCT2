@@ -80,6 +80,7 @@ public:
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
 
     void SetDPI(rct_drawpixelinfo * dpi);
+    void InvalidateImage(uint32 image);
 
 private:
     GLuint GetOrLoadImageTexture(uint32 image);
@@ -215,6 +216,11 @@ public:
     DRAWING_ENGINE_FLAGS GetFlags() override
     {
         return DEF_NONE;
+    }
+
+    void InvalidateImage(uint32 image) override
+    {
+        _drawingContext->InvalidateImage(image);
     }
 
     rct_drawpixelinfo * GetDPI()
@@ -588,6 +594,18 @@ void * OpenGLDrawingContext::GetImageAsARGB(uint32 image, uint32 tertiaryColour,
     *outWidth = width;
     *outHeight = height;
     return pixels32;
+}
+
+void OpenGLDrawingContext::InvalidateImage(uint32 image)
+{
+    auto kvp = _imageTextureMap.find(image);
+    if (kvp != _imageTextureMap.end())
+    {
+        GLuint texture = kvp->second;
+        glDeleteTextures(1, &texture);
+
+        _imageTextureMap.erase(kvp);
+    }
 }
 
 void OpenGLDrawingContext::FreeTextures()
