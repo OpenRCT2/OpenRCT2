@@ -1070,13 +1070,13 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 			sint16 ride_id = mapElement->properties.track.ride_index;
-			rct_string_id ride_type = 2 + get_ride(ride_id)->type; // The 'magic number' 2 is the first string ID (Spiral Roller Coaster)
+			rct_ride *ride = get_ride(ride_id);
+			rct_string_id ride_type = STR_RIDE_NAME_SPIRAL_ROLLER_COASTER + ride->type;
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &ride_type, 12, x, y);
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &ride_id, 12, x, y + 11);
-			utf8 *ride_name = (utf8*)malloc(USER_STRING_MAX_LENGTH);
-			format_string(ride_name, get_ride(ride_id)->name, USER_STRING_MAX_LENGTH, &get_ride(ride_id)->name_arguments);
-			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, &ride_name, 12, x, y + 22);
-			free(ride_name);
+			set_format_arg(0, rct_string_id, ride->name);
+			set_format_arg(0 + sizeof(rct_string_id), uint32, ride->name_arguments);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, 12, x, y + 22);
 
 			// Properties
 			// Raise / lower label
