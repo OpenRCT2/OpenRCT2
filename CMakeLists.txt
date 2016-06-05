@@ -39,17 +39,9 @@ if (DISABLE_HTTP_TWITCH)
 endif (DISABLE_HTTP_TWITCH)
 
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
-if (DISABLE_NETWORK)
-	add_definitions(-DDISABLE_NETWORK)
-else (DISABLE_NETWORK)
-	if (WIN32)
-		SET(NETWORKLIBS ${NETWORKLIBS} ws2_32)
-	endif (WIN32)
-endif (DISABLE_NETWORK)
-
 option(STATIC "Create a static build.")
-
 option(FORCE64 "Force native (x86-64) build. Do not use, for experimental purposes only.")
+
 if (FORCE64)
 	set(TARGET_M "-m64")
 	set(OBJ_FORMAT "elf64-x86-64")
@@ -60,6 +52,17 @@ else ()
 	set(OBJ_FORMAT "elf32-i386")
 	set(LINKER_SCRIPT "ld_script_i386.xc")
 endif ()
+
+if (DISABLE_NETWORK)
+	add_definitions(-DDISABLE_NETWORK)
+else (DISABLE_NETWORK)
+	if (WIN32)
+		SET(NETWORKLIBS ${NETWORKLIBS} ws2_32)
+	endif (WIN32)
+	# If you are on OS X, CMake might try using system-provided OpenSSL.
+	# This is too old and will not work.
+	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
+endif (DISABLE_NETWORK)
 
 PKG_CHECK_MODULES(PNG libpng>=1.6)
 if (NOT PNG_FOUND)
@@ -174,24 +177,21 @@ else (STATIC)
 endif (STATIC)
 
 if (STATIC)
-	SET(REQUIREDLIBS ${PNG_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES} ${ZLIB_STATIC_LIBRARIES})
+	SET(REQUIREDLIBS ${PNG_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES} ${ZLIB_STATIC_LIBRARIES} ${SSL_STATIC_LIBRARIES})
 else (STATIC)
-	SET(REQUIREDLIBS ${PNG_LIBRARIES} ${JANSSON_LIBRARIES} ${ZLIB_LIBRARIES})
+	SET(REQUIREDLIBS ${PNG_LIBRARIES} ${JANSSON_LIBRARIES} ${ZLIB_LIBRARIES} ${SSL_LIBRARIES})
 endif (STATIC)
 
 if (NOT DISABLE_HTTP_TWITCH)
 	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
-	# If you are on OS X, CMake might try using system-provided OpenSSL.
-	# This is too old and will not work.
-	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
 	if (WIN32)
 		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
 		set(WSLIBS ws2_32)
 	endif (WIN32)
 	if (STATIC)
-		SET(HTTPLIBS ${LIBCURL_STATIC_LIBRARIES} ${SSL_STATIC_LIBRARIES} ${WSLIBS})
+		SET(HTTPLIBS ${LIBCURL_STATIC_LIBRARIES} ${WSLIBS})
 	else (STATIC)
-		SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${SSL_LIBRARIES} ${WSLIBS})
+		SET(HTTPLIBS ${LIBCURL_LIBRARIES} ${WSLIBS})
 	endif (STATIC)
 endif (NOT DISABLE_HTTP_TWITCH)
 
