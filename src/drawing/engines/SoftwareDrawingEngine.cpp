@@ -23,8 +23,9 @@
 extern "C"
 {
     #include "../../config.h"
-    #include "../drawing.h"
     #include "../../interface/window.h"
+    #include "../../intro.h"
+    #include "../drawing.h"
 }
 
 class SoftwareDrawingEngine;
@@ -290,23 +291,27 @@ public:
 
     void Draw() override
     {
-        _rainDrawer.SetDPI(&_bitsDPI);
-        _rainDrawer.Restore();
+        if (gIntroState != INTRO_STATE_NONE) {
+            intro_draw(&_bitsDPI);
+        } else {
+            _rainDrawer.SetDPI(&_bitsDPI);
+            _rainDrawer.Restore();
 
-        // Redraw dirty regions before updating the viewports, otherwise
-        // when viewports get panned, they copy dirty pixels
-        DrawAllDirtyBlocks();
+            // Redraw dirty regions before updating the viewports, otherwise
+            // when viewports get panned, they copy dirty pixels
+            DrawAllDirtyBlocks();
 
-        window_update_all_viewports();
-        DrawAllDirtyBlocks();
-        window_update_all();
+            window_update_all_viewports();
+            DrawAllDirtyBlocks();
+            window_update_all();
 
-        gfx_draw_pickedup_peep(&_bitsDPI);
-        gfx_invalidate_pickedup_peep();
+            gfx_draw_pickedup_peep(&_bitsDPI);
+            gfx_invalidate_pickedup_peep();
 
-        DrawRain(&_bitsDPI, &_rainDrawer);
+            DrawRain(&_bitsDPI, &_rainDrawer);
 
-        rct2_draw(&_bitsDPI);
+            rct2_draw(&_bitsDPI);
+        }
         Display();
     }
 

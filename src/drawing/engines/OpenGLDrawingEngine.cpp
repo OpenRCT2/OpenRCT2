@@ -30,8 +30,9 @@
 extern "C"
 {
     #include "../../config.h"
-    #include "../drawing.h"
     #include "../../interface/window.h"
+    #include "../../intro.h"
+    #include "../drawing.h"
 }
 
 class OpenGLDrawingEngine;
@@ -175,13 +176,17 @@ public:
         glTranslatef(-1.0f, -1.0f, 0);
         glScalef(2.0f / _width, 2.0f / _height, 0);
 
-        window_update_all_viewports();
-        gfx_redraw_screen_rect(0, 0, _width - 1, _height - 1);
-        window_update_all();
+        if (gIntroState != INTRO_STATE_NONE) {
+            intro_draw(&_bitsDPI);
+        } else {
+            window_update_all_viewports();
+            gfx_redraw_screen_rect(0, 0, _width - 1, _height - 1);
+            window_update_all();
 
-        gfx_draw_pickedup_peep(&_bitsDPI);
+            gfx_draw_pickedup_peep(&_bitsDPI);
 
-        rct2_draw(&_bitsDPI);
+            rct2_draw(&_bitsDPI);
+        }
         Display();
     }
 
@@ -278,6 +283,7 @@ IDrawingEngine * OpenGLDrawingContext::GetEngine()
 
 void OpenGLDrawingContext::Clear(uint32 colour)
 {
+    FillRect(colour, _clipLeft, _clipTop, _clipRight, _clipBottom);
 }
 
 void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
