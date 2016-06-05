@@ -175,7 +175,6 @@ public:
         glTranslatef(-1.0f, -1.0f, 0);
         glScalef(2.0f / _width, 2.0f / _height, 0);
 
-        gfx_redraw_screen_rect(0, 0, _width - 1, _height - 1);
         window_update_all_viewports();
         gfx_redraw_screen_rect(0, 0, _width - 1, _height - 1);
         window_update_all();

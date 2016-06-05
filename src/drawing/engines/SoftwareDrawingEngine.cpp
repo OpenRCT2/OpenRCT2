@@ -293,7 +293,10 @@ public:
         _rainDrawer.SetDPI(&_bitsDPI);
         _rainDrawer.Restore();
 
+        // Redraw dirty regions before updating the viewports, otherwise
+        // when viewports get panned, they copy dirty pixels
         DrawAllDirtyBlocks();
+
         window_update_all_viewports();
         DrawAllDirtyBlocks();
         window_update_all();
