@@ -24,6 +24,7 @@ extern "C"
 
 #include "IDrawingEngine.h"
 #include "Rain.h"
+#include "../core/Math.hpp"
 
 typedef void (* DrawRainFunc)(IRainDrawer * rainDrawer, sint32 left, sint32 top, sint32 width, sint32 height);
 
@@ -59,10 +60,10 @@ static void CallDrawRainFunc(IRainDrawer * rainDrawer,
         return;
     }
 
-    left = max(left, vp->x);
-    right = min(right, vp->width);
-    top = max(top, vp->y);
-    bottom = min(bottom, vp->height);
+    left = Math::Max(left, vp->x);
+    right = Math::Min(right, vp->width);
+    top = Math::Max(top, vp->y);
+    bottom = Math::Min(bottom, vp->height);
     if (left >= right || top >= bottom)
     {
         return;

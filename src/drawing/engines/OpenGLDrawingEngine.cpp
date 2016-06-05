@@ -23,7 +23,7 @@
     #pragma comment(lib, "opengl32.lib")
 #endif
 
-#include <gl/gl.h>
+#include <sdl_opengl.h>
 
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
@@ -507,7 +507,7 @@ GLuint OpenGLDrawingContext::LoadImageTexture(uint32 image)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
 
-    delete pixels32;
+    delete (uint8 *) pixels32;
 
     return texture;
 }
@@ -558,7 +558,7 @@ void * OpenGLDrawingContext::GetImageAsARGB(uint32 image, uint32 tertiaryColour,
         }
     }
 
-    delete pixels8;
+    delete[] pixels8;
 
     *outWidth = width;
     *outHeight = height;
