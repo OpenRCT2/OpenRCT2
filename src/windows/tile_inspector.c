@@ -243,10 +243,10 @@ static rct_widget window_tile_inspector_widgets_path[] = {
 	{ WIDGETS_END },
 };
 
-#define TRA_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define TRA_GBPT (TRA_GBPB + 16 + 3 * 21)		// Path group box properties top
-#define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define TRA_GBDT (TRA_GBDB + 20 + 5 * 11)		// Path group box info top
+#define TRA_GBPB PADDING_BOTTOM					// Track group box properties bottom
+#define TRA_GBPT (TRA_GBPB + 16 + 3 * 21)		// Track group box properties top
+#define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)	// Track group box info bottom
+#define TRA_GBDT (TRA_GBDB + 20 + 5 * 11)		// Track group box info top
 static rct_widget window_tile_inspector_widgets_track[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_CHECKBOX,			1,	GBBF(WH - TRA_GBPT, 0, 0),	STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,	STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
@@ -257,55 +257,55 @@ static rct_widget window_tile_inspector_widgets_track[] = {
 	{ WIDGETS_END },
 };
 
-#define SCE_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define SCE_GBPT (SCE_GBPB + 16 + 0 * 21)		// Path group box properties top
-#define SCE_GBDB (SCE_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define SCE_GBDT (SCE_GBDB + 20 + 0 * 11)		// Path group box info top
+#define SCE_GBPB PADDING_BOTTOM					// Scenery group box properties bottom
+#define SCE_GBPT (SCE_GBPB + 16 + 0 * 21)		// Scenery group box properties top
+#define SCE_GBDB (SCE_GBPT + GROUPBOX_PADDING)	// Scenery group box info bottom
+#define SCE_GBDT (SCE_GBDB + 20 + 0 * 11)		// Scenery group box info top
 static rct_widget window_tile_inspector_widgets_scenery[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
 };
 
-#define ENT_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define ENT_GBPT (ENT_GBPB + 16 + 0 * 21)		// Path group box properties top
-#define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define ENT_GBDT (ENT_GBDB + 20 + 0 * 11)		// Path group box info top
+#define ENT_GBPB PADDING_BOTTOM					// Entrance group box properties bottom
+#define ENT_GBPT (ENT_GBPB + 16 + 0 * 21)		// Entrance group box properties top
+#define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)	// Entrance group box info bottom
+#define ENT_GBDT (ENT_GBDB + 20 + 0 * 11)		// Entrance group box info top
 static rct_widget window_tile_inspector_widgets_entrance[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
 };
 
-#define FEN_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define FEN_GBPT (FEN_GBPB + 16 + 0 * 21)		// Path group box properties top
-#define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define FEN_GBDT (FEN_GBDB + 20 + 0 * 11)		// Path group box info top
+#define FEN_GBPB PADDING_BOTTOM					// Fence group box properties bottom
+#define FEN_GBPT (FEN_GBPB + 16 + 0 * 21)		// Fence group box properties top
+#define FEN_GBDB (FEN_GBPT + GROUPBOX_PADDING)	// Fence group box info bottom
+#define FEN_GBDT (FEN_GBDB + 20 + 0 * 11)		// Fence group box info top
 static rct_widget window_tile_inspector_widgets_fence[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
 };
 
-#define LAR_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define LAR_GBPT (LAR_GBPB + 16 + 0 * 21)		// Path group box properties top
-#define LAR_GBDB (LAR_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define LAR_GBDT (LAR_GBDB + 20 + 0 * 11)		// Path group box info top
+#define LAR_GBPB PADDING_BOTTOM					// Large scenery group box properties bottom
+#define LAR_GBPT (LAR_GBPB + 16 + 0 * 21)		// Large scenery group box properties top
+#define LAR_GBDB (LAR_GBPT + GROUPBOX_PADDING)	// Large scenery group box info bottom
+#define LAR_GBDT (LAR_GBDB + 20 + 0 * 11)		// Large scenery group box info top
 static rct_widget window_tile_inspector_widgets_large_scenery[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
 };
 
-#define BAN_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define BAN_GBPT (BAN_GBPB + 16 + 0 * 21)		// Path group box properties top
-#define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define BAN_GBDT (BAN_GBDB + 20 + 0 * 11)		// Path group box info top
+#define BAN_GBPB PADDING_BOTTOM					// Banner group box properties bottom
+#define BAN_GBPT (BAN_GBPB + 16 + 0 * 21)		// Banner group box properties top
+#define BAN_GBDB (BAN_GBPT + GROUPBOX_PADDING)	// Banner group box info bottom
+#define BAN_GBDT (BAN_GBDB + 20 + 0 * 11)		// Banner group box info top
 static rct_widget window_tile_inspector_widgets_banner[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
 };
 
-#define COR_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define COR_GBPT (COR_GBPB + 16 + 0 * 21)		// Path group box properties top
-#define COR_GBDB (COR_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define COR_GBDT (COR_GBDB + 20 + 0 * 11)		// Path group box info top
+#define COR_GBPB PADDING_BOTTOM					// Corrupt element group box properties bottom
+#define COR_GBPT (COR_GBPB + 16 + 0 * 21)		// Corrupt element group box properties top
+#define COR_GBDB (COR_GBPT + GROUPBOX_PADDING)	// Corrupt element group box info bottom
+#define COR_GBDT (COR_GBDB + 20 + 0 * 11)		// Corrupt element group box info top
 static rct_widget window_tile_inspector_widgets_corrupt[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WIDGETS_END },
