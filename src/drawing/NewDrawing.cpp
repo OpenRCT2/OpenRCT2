@@ -49,6 +49,18 @@ extern "C"
             _drawingEngine = DrawingEngineFactory::CreateOpenGL();
             break;
         }
+
+        if (_drawingEngine == nullptr)
+        {
+            log_error("Unable to create drawing engine. Falling back to software.");
+
+            // Fallback to software
+            gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
+            config_save_default();
+
+            _drawingEngine = DrawingEngineFactory::CreateSoftware();
+        }
+
         _drawingEngine->Initialise(gWindow);
     }
 

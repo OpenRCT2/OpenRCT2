@@ -844,13 +844,20 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 			dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
 			break;
 		case WIDX_DRAWING_ENGINE_DROPDOWN:
-			for (int i = 0; i < 3; i++) {
+		{
+			int numItems = 3;
+#ifdef DISABLE_OPENGL
+			numItems = 2;
+#endif
+
+			for (int i = 0; i < numItems; i++) {
 				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 				gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
 			}
-			window_options_show_dropdown(w, widget, 3);
+			window_options_show_dropdown(w, widget, numItems);
 			dropdown_set_checked(gConfigGeneral.drawing_engine, true);
 			break;
+		}
 		case WIDX_SCALE_UP:
 			gConfigGeneral.window_scale += 0.25f;
 			config_save_default();

@@ -14,6 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifdef DISABLE_OPENGL
+
+#include "../IDrawingEngine.h"
+
+IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
+{
+    return nullptr;
+}
+
+#else
+
 #include <unordered_map>
 #include <vector>
 #include <SDL_platform.h>
@@ -623,3 +634,5 @@ void OpenGLDrawingContext::FreeTextures()
 {
     glDeleteTextures(_textures.size(), _textures.data());
 }
+
+#endif /* DISABLE_OPENGL */

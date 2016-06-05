@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_OPENGL
+
 #include <SDL_platform.h>
 
 #define NO_EXTERN_GLAPI
@@ -71,3 +73,4 @@ bool OpenGLAPI::Initialise()
     return true;
 }
 
+#endif /* DISABLE_OPENGL */
