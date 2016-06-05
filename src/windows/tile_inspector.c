@@ -246,7 +246,7 @@ static rct_widget window_tile_inspector_widgets_path[] = {
 #define TRA_GBPB PADDING_BOTTOM					// Path group box properties bottom
 #define TRA_GBPT (TRA_GBPB + 16 + 3 * 21)		// Path group box properties top
 #define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define TRA_GBDT (TRA_GBDB + 20 + 3 * 11)		// Path group box info top
+#define TRA_GBDT (TRA_GBDB + 20 + 5 * 11)		// Path group box info top
 static rct_widget window_tile_inspector_widgets_track[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
 	{ WWT_CHECKBOX,			1,	GBBF(WH - TRA_GBPT, 0, 0),	STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,	STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
@@ -1067,6 +1067,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 		case PAGE_TRACK: {
 			// Details
+			// Ride
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 			sint16 ride_id = mapElement->properties.track.ride_index;
@@ -1077,6 +1078,11 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			set_format_arg(0, rct_string_id, ride->name);
 			set_format_arg(0 + sizeof(rct_string_id), uint32, ride->name_arguments);
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, 12, x, y + 22);
+			// Track
+			sint16 track_type = mapElement->properties.track.type;
+			sint16 sequence_number = mapElement->properties.track.sequence & 0xF;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &track_type, 12, x, y + 33);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequence_number, 12, x, y + 44);
 
 			// Properties
 			// Raise / lower label
