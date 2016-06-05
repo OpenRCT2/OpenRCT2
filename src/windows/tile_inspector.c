@@ -17,13 +17,15 @@
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"
+#include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
-#include "../interface/viewport.h"
-#include "../world/scenery.h"
-#include "../world/map.h"
-#include "../world/footpath.h"
+#include "../localisation/localisation.h"
+#include "../ride/track.h"
 #include "../sprites.h"
+#include "../world/footpath.h"
+#include "../world/map.h"
+#include "../world/scenery.h"
 #include "../ride/ride_data.h"
 
 static const rct_string_id TerrainTypes[] = {
@@ -118,6 +120,10 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 
 	// Track
 	WIDX_TRACK_CHECK_APPLY_TO_ALL = PAGE_WIDGETS,
+	WIDX_TRACK_SPINNER_HEIGHT,
+	WIDX_TRACK_SPINNER_HEIGHT_INCREASE,
+	WIDX_TRACK_SPINNER_HEIGHT_DECREASE,
+	WIDX_TRACK_CHECK_CHAIN_LIFT,
 
 	// Scenery
 
@@ -133,10 +139,10 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 };
 
 #define WW 400
-#define WH 220
+#define WH 280
 #define MIN_WW WW
 #define MAX_WW WW
-#define MIN_WH 200
+#define MIN_WH 240
 #define MAX_WH 800
 
 #define BW (WW - 5)		// Button's right side
@@ -195,6 +201,7 @@ static rct_widget window_tile_inspector_widgets[] = {
 #define GBBT(GROUPTOP, row)		((GROUPTOP) + 14 + row * 21)
 #define GBBB(GROUPTOP, row)		(GBBT((GROUPTOP), row) + 17)
 #define GBB(GROUPTOP, col, row)	GBBL(col), GBBR(col), GBBT((GROUPTOP), row), GBBB((GROUPTOP), row)
+#define GBBF(GROUPTOP, col, row)GBBL(col), WW - 10, GBBT((GROUPTOP), row), GBBB((GROUPTOP), row) // Full width
 
 // Same, but for spinners and their increase/decrease buttons
 #define GBS(GBT, col, row)	GBBL(col), GBBR(col), GBBT(GBT, row) + 3, GBBB(GBT, row) - 3
@@ -202,7 +209,7 @@ static rct_widget window_tile_inspector_widgets[] = {
 #define GBSD(GBT, col, row)	GBBR(col) - 11, GBBR(col) - 1, GBBB(GBT, row) - 8, GBBB(GBT, row) - 4
 
 // Checkbox - given topleft corner
-#define CHK(x, y) x, x + 13, y, y + 13
+#define CHK(x, y) x, x + 13, y + 2, y + 15
 
 // Group boxes .top and .bottom for a given window height offsets from the bottom
 #define SUR_GBPB PADDING_BOTTOM					// Surface group box properties bottom
@@ -237,12 +244,16 @@ static rct_widget window_tile_inspector_widgets_path[] = {
 };
 
 #define TRA_GBPB PADDING_BOTTOM					// Path group box properties bottom
-#define TRA_GBPT (TRA_GBPB + 16 + 0 * 21)		// Path group box properties top
+#define TRA_GBPT (TRA_GBPB + 16 + 3 * 21)		// Path group box properties top
 #define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)	// Path group box info bottom
-#define TRA_GBDT (TRA_GBDB + 20 + 0 * 11)		// Path group box info top
+#define TRA_GBDT (TRA_GBDB + 20 + 3 * 11)		// Path group box info top
 static rct_widget window_tile_inspector_widgets_track[] = {
 	MAIN_TILE_INSPECTOR_WIDGETS,
-	{ WWT_CHECKBOX,			1,	CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 1) + 7 * 1),	STR_NONE,	STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
+	{ WWT_CHECKBOX,			1,	GBBF(WH - TRA_GBPT, 0, 0),	STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,	STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
+	{ WWT_SPINNER,			1,	GBS(WH - PAT_GBPT, 1, 1),	STR_NONE,										STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT
+	{ WWT_DROPDOWN_BUTTON,  1,	GBSI(WH - PAT_GBPT, 1, 1),	STR_NUMERIC_UP,									STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_INCREASE
+	{ WWT_DROPDOWN_BUTTON,  1,	GBSD(WH - PAT_GBPT, 1, 1),	STR_NUMERIC_DOWN,								STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_DECREASE
+	{ WWT_CHECKBOX,			1,	GBBF(WH - TRA_GBPT, 0, 2),	STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT,			STR_NONE }, // WIDX_TRACK_CHECK_CHAIN_LIFT
 	{ WIDGETS_END },
 };
 
@@ -333,9 +344,10 @@ static struct {
 
 static sint16 window_tile_inspector_highlighted_index = -1;
 
-static int window_tile_inspector_tile_x;
-static int window_tile_inspector_tile_y;
-static int window_tile_inspector_item_count;
+static int window_tile_inspector_tile_x = -1;
+static int window_tile_inspector_tile_y = -1;
+static int window_tile_inspector_item_count = 0;
+static bool window_tile_inspector_apply_to_all = false;
 
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
@@ -383,16 +395,16 @@ static rct_window_event_list window_tile_inspector_events = {
 };
 
 static uint64 window_tile_inspector_page_enabled_widgets[] = {
-	(1ULL << WIDX_CLOSE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE) /*| (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL)*/ | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE),
 };
 
 static uint64 window_tile_inspector_page_disabled_widgets[] = {
@@ -669,7 +681,6 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 		case WIDX_PATH_CHECK_EDGE_N:
 			widget_set_checkbox_value(w, widgetIndex, !widget_is_pressed(w, widgetIndex));
 			mapElement->properties.path.edges ^= (1 << (4 + (((widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2 - get_current_rotation() + 4) % 4))) & 0xF0;
-			printf("%d\n", (widgetIndex - WIDX_PATH_CHECK_EDGE_E) / 2);
 			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 			break;
 		case WIDX_PATH_CHECK_EDGE_NE:
@@ -680,10 +691,36 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 			mapElement->properties.path.edges ^= (1 << (((widgetIndex - WIDX_PATH_CHECK_EDGE_NE) / 2 - get_current_rotation() + 4) % 4)) & 0x0F;
 			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 			break;
-		} // switch widgetindex
+		} // switch widget index
 		break;
 
 	case PAGE_TRACK:
+		// Get track element
+		mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+		mapElement += w->selected_list_item;
+
+		switch (widgetIndex) {
+		case WIDX_TRACK_CHECK_APPLY_TO_ALL:
+			window_tile_inspector_apply_to_all ^= 1;
+			widget_invalidate(w, widgetIndex);
+			break;
+		case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
+			mapElement->base_height++;
+			mapElement->clearance_height++;
+			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			break;
+		case WIDX_TRACK_SPINNER_HEIGHT_DECREASE:
+			mapElement->base_height--;
+			mapElement->clearance_height--;
+			map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
+			break;
+		case WIDX_TRACK_CHECK_CHAIN_LIFT:
+			mapElement->type ^= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+			widget_invalidate(w, widgetIndex);
+			break;
+		} // switch widget index
+		break;
+
 	case PAGE_SCENERY:
 	case PAGE_ENTRANCE:
 	case PAGE_FENCE:
@@ -901,7 +938,21 @@ static void window_tile_inspector_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_PATH_CHECK_EDGE_N, mapElement->properties.path.edges & corner_flags[(3 + 4 - get_current_rotation()) % 4]);
 		break;
 	case PAGE_TRACK:
-
+		anchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
+		mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+		mapElement += w->selected_list_item;
+		w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(anchor, 0);
+		w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].bottom = GBBB(anchor, 0);
+		w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top = GBBT(anchor, 1) + 3;
+		w->widgets[WIDX_TRACK_SPINNER_HEIGHT].bottom = GBBB(anchor, 1) - 3;
+		w->widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].top = GBBT(anchor, 1) + 4;
+		w->widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].bottom = GBBT(anchor, 1) + 8;
+		w->widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].top = GBBB(anchor, 1) - 8;
+		w->widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].bottom = GBBB(anchor, 1) - 4;
+		w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(anchor, 2);
+		w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(anchor, 2);
+		widget_set_checkbox_value(w, WIDX_TRACK_CHECK_APPLY_TO_ALL, window_tile_inspector_apply_to_all);
+		widget_set_checkbox_value(w, WIDX_TRACK_CHECK_CHAIN_LIFT, track_element_is_lift_hill(mapElement));
 		break;
 	case PAGE_SCENERY:
 
@@ -966,8 +1017,8 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 		mapElement += w->selected_list_item;
 
-		switch (map_element_get_type(mapElement)) {
-		case MAP_ELEMENT_TYPE_SURFACE: {
+		switch (w->page) {
+		case PAGE_SURFACE: {
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 			rct_string_id terrain_name_id = TerrainTypes[map_element_get_terrain(mapElement)];
@@ -986,7 +1037,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			break;
 		}
 
-		case MAP_ELEMENT_TYPE_PATH: {
+		case PAGE_PATH: {
 			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
 			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
 			if (footpath_element_has_path_scenery(mapElement)) {
@@ -1013,7 +1064,32 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONECTED_EDGES, NULL, 12, x, y);
 			break;
 		}
+
+		case PAGE_TRACK: {
+			// Details
+			x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
+			y = w->y + w->widgets[WIDX_GROUPBOX_DETAILS].top + 14;
+			sint16 ride_id = mapElement->properties.track.ride_index;
+			rct_string_id ride_type = 2 + get_ride(ride_id)->type; // The 'magic number' 2 is the first string ID (Spiral Roller Coaster)
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &ride_type, 12, x, y);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &ride_id, 12, x, y + 11);
+			utf8 *ride_name = (utf8*)malloc(USER_STRING_MAX_LENGTH);
+			format_string(ride_name, get_ride(ride_id)->name, USER_STRING_MAX_LENGTH, &get_ride(ride_id)->name_arguments);
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, &ride_name, 12, x, y + 22);
+			free(ride_name);
+
+			// Properties
+			// Raise / lower label
+			y = w->y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
+			gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_RAISE_LOWER, NULL, 12, x, y);
+
+			// Current base height
+			x = w->x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
+			int base_height = mapElement->base_height;
+			gfx_draw_string_left(dpi, 5182, &base_height, 12, x, y);
+			break;
 		}
+		} // switch page
 	}
 }
 
@@ -1027,14 +1103,14 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	if (window_tile_inspector_tile_x == -1)
 		return;
 
-	rct_map_element *element = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+	rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	do {
-		int type = map_element_get_type(element);
+		int type = map_element_get_type(mapElement);
 		char *type_name;
-		int base_height = element->base_height;
-		int clearance_height = element->clearance_height;
+		int base_height = mapElement->base_height;
+		int clearance_height = mapElement->clearance_height;
 
 		// Fill colour for current list element
 		const int list_width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
@@ -1050,43 +1126,16 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			type_name = "Surface";
 			break;
 		case MAP_ELEMENT_TYPE_PATH:
-		{
-			const uint8 pathType = footpath_element_get_type(element);
-			const uint8 pathHasScenery = footpath_element_has_path_scenery(element);
-			const uint8 pathAdditionType = footpath_element_get_path_scenery_index(element);
-			if (footpath_element_is_queue(element)) {
-				snprintf(
-					buffer, sizeof(buffer), "Queue (%s)%s%s for (%d)",
-					language_get_string(get_footpath_entry(pathType)->string_idx), // Path name
-					pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
-					pathHasScenery ? language_get_string(get_footpath_item_entry(pathAdditionType)->name) : "", // Path addition name
-					element->properties.path.ride_index // Ride index for queue
-				);
-			}
-			else {
-				snprintf(
-					buffer, sizeof(buffer), "Path (%s)%s%s",
-					language_get_string(get_footpath_entry(pathType)->string_idx), // Path name
-					pathHasScenery ? " with " : "", // Adds " with " when there is something on the path
-					pathHasScenery ? language_get_string(get_footpath_item_entry(pathAdditionType)->name) : "" // Path addition name
-				);
-			}
-		}
-		type_name = buffer;
-		break;
+			type_name = footpath_element_is_queue(mapElement) ? "Queue" : "Footpath";
+			break;
 		case MAP_ELEMENT_TYPE_TRACK:
-			snprintf(
-				buffer, sizeof(buffer),
-				"Track (%s)",
-				language_get_string(STR_RIDE_NAME_SPIRAL_ROLLER_COASTER + get_ride(element->properties.track.ride_index)->type)
-			);
-			type_name = buffer;
+			type_name = "Track";
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY:
 			snprintf(
 				buffer, sizeof(buffer),
 				"Scenery (%s)",
-				language_get_string(get_small_scenery_entry(element->properties.scenery.type)->name)
+				language_get_string(get_small_scenery_entry(mapElement->properties.scenery.type)->name)
 			);
 			type_name = buffer;
 			break;
@@ -1094,16 +1143,16 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			snprintf(
 				buffer, sizeof(buffer),
 				"Entrance (%s)",
-				language_get_string(EntranceTypes[element->properties.entrance.type])
-				);
+				language_get_string(EntranceTypes[mapElement->properties.entrance.type])
+			);
 			type_name = buffer;
 			break;
 		case MAP_ELEMENT_TYPE_FENCE:
 			snprintf(
 				buffer, sizeof(buffer),
 				"Fence (%s)",
-				language_get_string(get_wall_entry(element->properties.scenery.type)->name)
-				);
+				language_get_string(get_wall_entry(mapElement->properties.scenery.type)->name)
+			);
 			type_name = buffer;
 			break;
 		case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
@@ -1113,7 +1162,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			snprintf(
 				buffer, sizeof(buffer),
 				"Banner (%d)",
-				element->properties.banner.index
+				mapElement->properties.banner.index
 			);
 			type_name = buffer;
 			break;
@@ -1126,9 +1175,9 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		// Undo relative scroll offset, but keep the 3 pixel padding
 		x = -w->widgets[WIDX_LIST].left;
-		const bool ghost = (element->flags & MAP_ELEMENT_FLAG_GHOST) != 0;
-		const bool broken = (element->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
-		const bool last = (element->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
+		const bool ghost = (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) != 0;
+		const bool broken = (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN) != 0;
+		const bool last = (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE) != 0;
 		gfx_draw_string(dpi, type_name, 12, x + COL_X_TYPE + 3, y); // 3px padding
 		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &base_height, 12, x + COL_X_BH, y);
 		gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clearance_height, 12, x + COL_X_CH, y);
@@ -1138,5 +1187,5 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
 		y -= LIST_ITEM_HEIGHT;
 		i++;
-	} while (!map_element_is_last_for_tile(element++));
+	} while (!map_element_is_last_for_tile(mapElement++));
 }

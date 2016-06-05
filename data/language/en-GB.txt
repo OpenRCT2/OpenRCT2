@@ -4238,23 +4238,24 @@ STR_5926    :Large scenery details
 STR_5927    :Banner details
 STR_5928    :Currupt element details
 STR_5929    :Properties
-STR_5930    :Terrain texture: {BLACK}{STRINGID}
-STR_5931    :Terrain edge: {BLACK}{STRINGID}
-STR_5932    :Land ownership: {BLACK}{STRINGID}
+STR_5930    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
+STR_5931    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
+STR_5932    :{WINDOW_COLOUR_2}Land ownership: {BLACK}{STRINGID}
 STR_5933    :Not owned and not for sale
-STR_5934    :Water level: {BLACK}{COMMA16}
+STR_5934    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
 STR_5935    :Remove park fences
 STR_5936    :Restore park fences
-STR_5937    :Raise / lower:
-STR_5938    :Path name: {BLACK}{STRINGID}
-STR_5939    :Additions: {BLACK}{STRINGID}
-STR_5940    :Additions: {BLACK}None
-STR_5941    :Connected edges:
-
-#TODO: Add and use those in strings_ids and tile_inspector.c
-STR_5942    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
-STR_5943    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Track piece sequence: {BLACK}{COMMA16}/{COMMA16}
+STR_5937    :{WINDOW_COLOUR_2}Raise / lower:
+STR_5938    :{WINDOW_COLOUR_2}Path name: {BLACK}{STRINGID}
+STR_5939    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
+STR_5940    :{WINDOW_COLOUR_2}Additions: {BLACK}None
+STR_5941    :{WINDOW_COLOUR_2}Connected edges:
+STR_5942    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5944    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
+STR_5945    :{WINDOW_COLOUR_2}Track piece sequence: {BLACK}{COMMA16}/{COMMA16}
+STR_5946    :{WINDOW_COLOUR_2}Chain lift
+STR_5947    :{WINDOW_COLOUR_2}Apply changes to entire track piece
 
 #TODO: Fix rebase
 STR_5920    :Render weather effects
