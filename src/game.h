@@ -87,7 +87,6 @@ enum GAME_COMMAND {
 	GAME_COMMAND_SET_SIGN_STYLE,
 	GAME_COMMAND_SET_PLAYER_GROUP,
 	GAME_COMMAND_MODIFY_GROUPS,
-	GAME_COMMAND_KICK_PLAYER,
 	GAME_COMMAND_CHEAT,
 	GAME_COMMAND_RESET_SPRITES,
 };
@@ -129,7 +128,7 @@ extern rct_string_id gGameCommandErrorText;
 extern uint8 gErrorType;
 extern uint16 gErrorStringId;
 
-extern GAME_COMMAND_POINTER* new_game_command_table[68];
+extern GAME_COMMAND_POINTER* new_game_command_table[67];
 
 #define gCurrentTicks				RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
 

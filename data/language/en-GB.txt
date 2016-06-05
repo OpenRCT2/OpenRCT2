@@ -4188,6 +4188,13 @@ STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
 STR_5877    :Software
 STR_5878    :Software (hardware display)
 STR_5879    :OpenGL
+STR_5880    :No reason
+STR_5881    :Vandalism
+STR_5882    :Spam
+STR_5883    :Harassment
+STR_5884    :Illegal content
+STR_5885    :Other reason
+STR_5886    :Enter custom kick reason:
 
 #############
 # Scenarios #

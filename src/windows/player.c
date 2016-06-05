@@ -42,6 +42,17 @@ enum WINDOW_PLAYER_PAGE {
 	WINDOW_PLAYER_PAGE_OVERVIEW,
 	WINDOW_PLAYER_PAGE_STATISTICS,
 };
+//The following list can be modified to contain more, less, or different options, as long as
+//STR_KICK_REASON_NO_REASON remains first and STR_KICK_REASON_OTHER_REASON remains last.
+const rct_string_id KickReasonStringIds[] = {
+	STR_KICK_REASON_NO_REASON,
+	STR_KICK_REASON_VANDALISM,
+	STR_KICK_REASON_SPAM,
+	STR_KICK_REASON_HARASSMENT,
+	STR_KICK_REASON_ILLEGAL_CONTENT,
+	STR_KICK_REASON_OTHER_REASON,
+};
+int KickReasonCount = sizeof(KickReasonStringIds) / sizeof(KickReasonStringIds[0]);
 
 #pragma region Widgets
 
@@ -98,6 +109,7 @@ void window_player_overview_resize(rct_window *w);
 void window_player_overview_mouse_down(int widgetIndex, rct_window *w, rct_widget *widget);
 void window_player_overview_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
 void window_player_overview_update(rct_window* w);
+void window_player_overview_textinput(rct_window* w, int widgetIndex, char* text);
 void window_player_overview_invalidate(rct_window *w);
 void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -121,7 +133,7 @@ static rct_window_event_list window_player_overview_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_player_overview_textinput,
 	NULL,
 	NULL,
 	NULL,
@@ -264,6 +276,59 @@ void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widge
 	dropdown_set_checked(network_get_group_index(network_get_player_group(player)), true);
 }
 
+void window_player_overview_show_kick_dropdown(rct_window *w, rct_widget *widget)
+{
+	rct_widget *dropdownWidget;
+	int numItems, i;
+	int player = network_get_player_index((uint8)w->number);
+	if (player == -1) {
+		return;
+	}
+
+	dropdownWidget = widget;
+
+	numItems = KickReasonCount;
+	for (i = 0; i < numItems; i++) {
+		gDropdownItemsFormat[i] = KickReasonStringIds[i];
+		gDropdownItemsArgs[i] = 0;
+	}
+	window_dropdown_show_text(
+		w->x + dropdownWidget->left,
+		w->y + dropdownWidget->top,
+		dropdownWidget->bottom - dropdownWidget->top + 1,
+		w->colours[1],
+		0,
+		numItems
+	);
+	gDropdownDefaultIndex = 0;
+	gDropdownHighlightedIndex = 0;
+}
+
+void window_player_overview_kick_player(rct_window* w, int strReasonIndex, const char* reason)
+{
+	uint8 playerid = (uint8)w->number;
+	int player = network_get_player_index(playerid);
+	if (player == -1) {
+		return;
+	}
+	char msg[128];
+	if (strReasonIndex == STR_KICK_REASON_NO_REASON) {
+		format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+	}
+	else if (strReasonIndex == STR_KICK_REASON_OTHER_REASON) {
+		if (!reason || strcmp(reason, "") == 0) {
+			format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+		}
+		else {
+			sprintf_s(msg, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE, reason);
+		}
+	}
+	else {
+		format_string(msg, strReasonIndex, NULL);
+	}
+	network_kick_player(playerid, msg);
+}
+
 void window_player_overview_close(rct_window *w)
 {
 
@@ -293,7 +358,7 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 		}
 	}break;
 	case WIDX_KICK:
-		game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
+		window_player_overview_kick_player(w, STR_KICK_REASON_NO_REASON, "");
 		break;
 	}
 }
@@ -304,6 +369,19 @@ void window_player_overview_mouse_down(int widgetIndex, rct_window *w, rct_widge
 	case WIDX_GROUP_DROPDOWN:
 		window_player_overview_show_group_dropdown(w, widget);
 		break;
+	case WIDX_KICK:
+		window_player_overview_show_kick_dropdown(w, widget);
+		break;
+	}
+}
+
+void window_player_overview_textinput(rct_window *w, int widgetIndex, char* text)
+{
+	if (!text) {
+		return;
+	}
+	if (widgetIndex == WIDX_KICK) {
+		window_player_overview_kick_player(w, STR_KICK_REASON_OTHER_REASON, _strdup(text));
 	}
 }
 
@@ -316,9 +394,19 @@ void window_player_overview_dropdown(rct_window *w, int widgetIndex, int dropdow
 	if (dropdownIndex == -1) {
 		return;
 	}
-	int group = network_get_group_id(dropdownIndex);
-	game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, group, GAME_COMMAND_SET_PLAYER_GROUP, 0, 0);
-	window_invalidate(w);
+	if (widgetIndex == WIDX_GROUP || widgetIndex == WIDX_GROUP_DROPDOWN) {
+		int group = network_get_group_id(dropdownIndex);
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, group, GAME_COMMAND_SET_PLAYER_GROUP, 0, 0);
+		window_invalidate(w);
+	}
+	else if (widgetIndex == WIDX_KICK) {
+		if (KickReasonStringIds[dropdownIndex] == STR_KICK_REASON_OTHER_REASON) {
+			window_text_input_open(w, widgetIndex, STR_ACTION_KICK_PLAYER, STR_ENTER_KICK_REASON_DESCRIPTION, STR_MULTIPLAYER_KICKED_REASON, 0, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE);
+		}
+		else {
+			window_player_overview_kick_player(w, KickReasonStringIds[dropdownIndex], "");
+		}
+	}
 }
 
 void window_player_overview_resize(rct_window *w)

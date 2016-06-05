@@ -856,6 +856,7 @@ static int cc_set(const utf8 **argv, int argc)
 	}
 	return 0;
 }
+
 static int cc_twitch(const utf8 **argv, int argc)
 {
 #ifdef DISABLE_TWITCH

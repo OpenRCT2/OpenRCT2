@@ -54,8 +54,12 @@ extern "C" {
 // This define specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "11"
+#define NETWORK_STREAM_VERSION "12"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
+
+#define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
+#define NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE 128
+#define NETWORK_USERNAME_MAX_SIZE 36
 
 #ifdef __cplusplus
 
@@ -99,7 +103,7 @@ public:
 	static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
 	void SendPacketToClients(NetworkPacket& packet, bool front = false);
 	bool CheckSRAND(uint32 tick, uint32 srand0);
-	void KickPlayer(int playerId);
+	bool KickPlayer(int playerId, const char* reason, const char* kickedBy);
 	void SetPassword(const char* password);
 	void ShutdownClient();
 	void AdvertiseRegister();
@@ -124,6 +128,8 @@ public:
 	void Server_Send_MAP(NetworkConnection* connection = nullptr);
 	void Client_Send_CHAT(const char* text);
 	void Server_Send_CHAT(const char* text);
+	void Client_Send_KICK(uint8 playerid, const char* reason);
+	bool Server_Send_KICK(uint8 playerid, const char* reason, const char* kickedBy);
 	void Client_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 callback);
 	void Server_Send_GAMECMD(uint32 eax, uint32 ebx, uint32 ecx, uint32 edx, uint32 esi, uint32 edi, uint32 ebp, uint8 playerid, uint8 callback);
 	void Server_Send_TICK();
@@ -218,6 +224,7 @@ private:
 	void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
+	void Server_Handle_KICK(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
 	void Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket& packet);
 	void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
@@ -283,7 +290,7 @@ int network_get_num_groups();
 const char* network_get_group_name(unsigned int index);
 void game_command_set_player_group(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_modify_groups(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
-void game_command_kick_player(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp);
+void network_kick_player(uint8 playerid, const char* reason);
 uint8 network_get_default_group();
 int network_get_num_actions();
 rct_string_id network_get_action_name_string_id(unsigned int index);

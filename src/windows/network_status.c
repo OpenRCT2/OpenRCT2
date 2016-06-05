@@ -20,7 +20,7 @@
 #include "../localisation/localisation.h"
 #include "../util/util.h"
 #include "../network/network.h"
-
+#define LINE_HEIGHT 15
 static char _password[33];
 
 enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
@@ -37,8 +37,9 @@ static rct_widget window_network_status_widgets[] = {
 	{ WIDGETS_END },
 };
 
-static char window_network_status_text[1024];
-
+#define STATUS_MAX_BUFFER 1024
+static char window_network_status_text[STATUS_MAX_BUFFER];
+int window_network_status_text_no_lines = 0;
 static void window_network_status_onclose(rct_window *w);
 static void window_network_status_mouseup(rct_window *w, int widgetIndex);
 static void window_network_status_update(rct_window *w);
@@ -82,28 +83,41 @@ static close_callback _onClose = NULL;
 void window_network_status_open(const char* text, close_callback onClose)
 {
 	_onClose = onClose;
-	safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
 
-	// Check if window is already open
-	rct_window *window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
-	if (window != NULL)
-		return;
+	//Write FORMAT_BLACK to text
+	int no_lines = 0, font_height = 0;
+	char str[STATUS_MAX_BUFFER];
+	char *buffer = str;
+	str[0] = 0;
+	buffer = utf8_write_codepoint(buffer, FORMAT_BLACK);
+	safe_strcpy(buffer, text, STATUS_MAX_BUFFER - 5);
+	
+	//Store text into memory before determining line count.
+	safe_strcpy(window_network_status_text, str, STATUS_MAX_BUFFER);
+	
+	//determine line count to help in sizing window
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+	gfx_wrap_string(str, 420 - (24 + 13), &no_lines, &font_height);
 
-	window = window_create_centred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
+	int height = max(90, 75 + (no_lines * LINE_HEIGHT));
+	int width = 420;
 
-	window->widgets = window_network_status_widgets;
-	window->enabled_widgets = 1 << WIDX_CLOSE;
-	window_init_scroll_widgets(window);
-	window->no_list_items = 0;
-	window->selected_list_item = -1;
-	window->frame_no = 0;
-	window->min_width = 320;
-	window->min_height = 90;
-	window->max_width = window->min_width;
-	window->max_height = window->min_height;
-
-	window->page = 0;
-	window->list_information_type = 0;
+	// Check if window is already open. if it is, see if height needs resized based on line count
+	rct_window *w = window_bring_to_front_by_class(WC_NETWORK_STATUS);
+	if (w == NULL) {
+		w = window_create_centred(width, height, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
+		w->widgets = window_network_status_widgets;
+		w->enabled_widgets = 1 << WIDX_CLOSE;
+		window_init_scroll_widgets(w);
+		w->no_list_items = 0;
+		w->selected_list_item = -1;
+	}
+	else {
+		width = w->width;
+		window_set_resize(w, width, height, width, height);
+		window_network_status_text_no_lines = no_lines;
+	}
+	
 }
 
 void window_network_status_close()
@@ -173,14 +187,45 @@ static void window_network_status_invalidate(rct_window *w)
 static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
 	window_draw_widgets(w, dpi);
-	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	char buffer[sizeof(window_network_status_text) + 10];
-	char* lineCh = buffer;
-	lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
-	strcpy(lineCh, window_network_status_text);
-	gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
+	
 	int x = w->x + (w->width / 2);
 	int y = w->y + (w->height / 2);
-	x -= gfx_get_string_width(buffer) / 2;
-	gfx_draw_string(dpi, buffer, 0, x, y);
+	int width = w->width - (24 + 13);
+	int colour = COLOUR_BLACK;
+
+	//Below is a modified version of gfx_draw_string_centred_wrapped
+	int font_height, line_height, line_width, line_y, num_lines;
+	char* buffer = RCT2_ADDRESS(0x009C383D, char);
+
+	if (gCurrentFontSpriteBase >= 0) {
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+	}
+
+	gfx_draw_string(dpi, buffer, colour, dpi->x, dpi->y);
+
+	buffer = RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char);
+	format_string_raw(buffer, window_network_status_text, NULL);
+
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+
+	// line_width unused here
+	line_width = gfx_wrap_string(buffer, width, &num_lines, &font_height);
+	line_height = LINE_HEIGHT;
+
+	if (*buffer == FORMAT_OUTLINE) {
+		line_height = line_height + 1;
+	}
+
+	font_height = (line_height / 2) * num_lines;
+	line_y = y - font_height;
+
+	gCurrentFontFlags = 0;
+
+	for (int line = 0; line <= num_lines; ++line) {
+		int half_width = gfx_get_string_width(buffer) / 2;
+		gfx_draw_string(dpi, buffer, 0xFE, x - half_width, line_y);
+
+		buffer = get_string_end(buffer) + 1;
+		line_y += line_height;
+	}
 }
