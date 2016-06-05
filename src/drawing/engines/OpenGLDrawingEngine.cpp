@@ -180,7 +180,7 @@ public:
             intro_draw(&_bitsDPI);
         } else {
             window_update_all_viewports();
-            window_draw_all(&_bitsDPI, 0, 0, _width - 1, _height - 1);
+            window_draw_all(&_bitsDPI, 0, 0, _width, _height);
             window_update_all();
 
             gfx_draw_pickedup_peep(&_bitsDPI);
@@ -350,9 +350,9 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 
     glBegin(GL_QUADS);
         glVertex2i(left,  top);
-        glVertex2i(left,  bottom);
-        glVertex2i(right, bottom);
-        glVertex2i(right, top);
+        glVertex2i(left,  bottom + 1);
+        glVertex2i(right + 1, bottom + 1);
+        glVertex2i(right + 1, top);
     glEnd();
 }
 
