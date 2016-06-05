@@ -43,7 +43,7 @@ extern "C"
             _drawingEngine = DrawingEngineFactory::CreateSoftware();
             break;
         case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-            _drawingEngine = DrawingEngineFactory::CreateSoftware();
+            _drawingEngine = DrawingEngineFactory::CreateSoftwareWithHardwareDisplay();
             break;
         case DRAWING_ENGINE_OPENGL:
             _drawingEngine = DrawingEngineFactory::CreateOpenGL();

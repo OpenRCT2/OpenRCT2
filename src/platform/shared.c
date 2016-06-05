@@ -171,39 +171,6 @@ void platform_get_closest_resolution(int inWidth, int inHeight, int *outWidth, i
 	}
 }
 
-static void read_center_pixel(int width, int height, uint32 *pixel) {
-	SDL_Rect centerPixelRegion = {width / 2, height / 2, 1, 1};
-	SDL_RenderReadPixels(gRenderer, &centerPixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32));
-}
-
-// Should be called before SDL_RenderPresent to capture frame buffer before Steam overlay is drawn.
-static void overlay_pre_render_check(int width, int height) {
-	read_center_pixel(width, height, &_pixelBeforeOverlay);
-}
-
-// Should be called after SDL_RenderPresent, when Steam overlay has had the chance to be drawn.
-static void overlay_post_render_check(int width, int height) {
-	static bool overlayActive = false;
-	static bool pausedBeforeOverlay = false;
-
-	read_center_pixel(width, height, &_pixelAfterOverlay);
-
-	// Detect an active Steam overlay by checking if the center pixel is changed by the gray fade.
-	// Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
-	bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
-
-	// Toggle game pause state consistently with base pause state
-	if (!overlayActive && newOverlayActive) {
-		pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
-
-		if (!pausedBeforeOverlay) pause_toggle();
-	} else if (overlayActive && !newOverlayActive && !pausedBeforeOverlay) {
-		pause_toggle();
-	}
-
-	overlayActive = newOverlayActive;
-}
-
 void platform_draw()
 {
 	if (!gOpenRCT2Headless) {
