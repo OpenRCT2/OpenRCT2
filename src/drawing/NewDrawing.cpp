@@ -66,6 +66,16 @@ extern "C"
         _drawingEngine = nullptr;
     }
 
+    bool drawing_engine_has_dirty_optimisations()
+    {
+        bool result = false;
+        if (_drawingEngine != nullptr)
+        {
+            result = (_drawingEngine->GetFlags() & DEF_DIRTY_OPTIMISATIONS);
+        }
+        return result;
+    }
+
     void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
     {
         if (_drawingEngine != nullptr)

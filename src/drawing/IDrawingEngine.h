@@ -23,6 +23,16 @@
 struct rct_drawpixelinfo;
 interface IDrawingContext;
 
+enum DRAWING_ENGINE_FLAGS
+{
+    DEF_NONE = 0,
+
+    /**
+     * Whether or not the engine will only draw changed blocks of the screen each frame.
+     */
+    DEF_DIRTY_OPTIMISATIONS = 1 << 0,
+};
+
 interface IDrawingEngine
 {
     virtual ~IDrawingEngine() { }
@@ -36,6 +46,8 @@ interface IDrawingEngine
     virtual sint32  Screenshot() abstract;
 
     virtual IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+
+    virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
 };
 
 namespace DrawingEngineFactory

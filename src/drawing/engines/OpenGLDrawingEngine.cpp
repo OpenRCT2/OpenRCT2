@@ -202,6 +202,11 @@ public:
         return _drawingContext;
     }
 
+    DRAWING_ENGINE_FLAGS GetFlags() override
+    {
+        return DEF_NONE;
+    }
+
     rct_drawpixelinfo * GetDPI()
     {
         return &_bitsDPI;

@@ -395,7 +395,8 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 	}
 }
 
-void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff){
+void viewport_shift_pixels(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
+{
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
 
@@ -430,7 +431,8 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_d
 	sub_6E7FF3(w, viewport, x_diff, y_diff);
 }
 
-void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
+void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
+{
 	uint8 zoom = (1 << viewport->zoom);
 
 	// Note: do not do the subtraction and then divide!
@@ -497,7 +499,9 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		return;
 	}
 
-	sub_6E7F34(w, viewport, x_diff, y_diff);
+	if (drawing_engine_has_dirty_optimisations()) {
+		viewport_shift_pixels(w, viewport, x_diff, y_diff);
+	}
 
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
@@ -625,7 +629,7 @@ void viewport_update_position(rct_window *window)
 		y += viewport->view_y;
 	}
 
-	sub_6E7DE1(x, y, window, viewport);
+	viewport_move(x, y, window, viewport);
 }
 
 void viewport_update_sprite_follow(rct_window *window)
@@ -641,7 +645,7 @@ void viewport_update_sprite_follow(rct_window *window)
 		int center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
-		sub_6E7DE1(center_x, center_y, window, window->viewport);
+		viewport_move(center_x, center_y, window, window->viewport);
 	}
 }
 

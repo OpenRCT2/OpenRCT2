@@ -27,6 +27,8 @@ void drawing_engine_set_palette(SDL_Color * colours);
 void drawing_engine_draw();
 void drawing_engine_dispose();
 
+bool drawing_engine_has_dirty_optimisations();
+
 #ifdef _cplusplus
 }
 #endif
