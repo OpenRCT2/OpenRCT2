@@ -533,7 +533,7 @@ bool sub_6A2ECC(int supportType, int special, int height, uint32 imageColourFlag
  */
 bool path_wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags)
 {
-	int eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
+	int eax = special, ebx = supportType, ecx = 0, edx = height, esi = 0, _edi = 0, ebp = imageColourFlags;
 	RCT2_CALLFUNC_X(0x006A326B, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
 	return eax & 0xFF;
 }

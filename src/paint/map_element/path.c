@@ -25,6 +25,7 @@
 #include "../../ride/track_paint.h"
 #include "../../localisation/localisation.h"
 #include "../../game.h"
+#include "../supports.h"
 
 // #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
 //        to use the old string arguments array. Remove when scrolling_text_setup is no
@@ -690,12 +691,12 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	if (dword_F3EF6C->var_0A == 0) {
 		loc_6A37C9(map_element, height, dword_F3EF6C, word_F3F038, dword_F3EF70, dword_F3EF74);
 	} else {
-		loc_6A3B57();
+		loc_6A3B57(map_element, height, dword_F3EF6C, word_F3F038, dword_F3EF70, dword_F3EF74);
 		RCT2_GLOBAL(0x00F3EF6C, uint32) = (uint32) dword_F3EF6C;
 		RCT2_GLOBAL(0x00F3F038, uint16) = word_F3F038;
 		RCT2_GLOBAL(0x00F3EF70, uint16) = dword_F3EF70;
 		RCT2_GLOBAL(0x00F3EF74, uint16) = dword_F3EF74;
-		RCT2_CALLPROC_X(0x6A3B57, 0, 0, get_current_rotation(), height, (int) map_element, 0, 0);
+		//RCT2_CALLPROC_X(0x6A3B57, 0, 0, get_current_rotation(), height, (int) map_element, 0, 0);
 	}
 	TempForScrollText = false;
 }
@@ -839,7 +840,134 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 
 }
 
-void loc_6A3B57()
+void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
 {
+	uint8 type = footpath_element_get_type(mapElement);
+	// Rol edges around rotation
+	uint8 edges = ((mapElement->properties.path.edges << get_current_rotation()) & 0xF) |
+		((mapElement->properties.path.edges << get_current_rotation()) >> 4);
+
+	rct_xy16 boundBoxOffset = {
+		.x = stru_98D804[edges][0],
+		.y = stru_98D804[edges][1]
+	};
+
+	rct_xy16 boundBoxSize = {
+		.x = stru_98D804[edges][2],
+		.y = stru_98D804[edges][3]
+	};
+
+	uint8 corners = (((mapElement->properties.path.edges >> 4) << get_current_rotation()) & 0xF) |
+		(((mapElement->properties.path.edges >> 4) << get_current_rotation()) >> 4);
+
+	uint16 edi = edges | (corners << 4);
+
+	uint32 imageId;
+	if (footpath_element_is_sloped(mapElement)) {
+		imageId = ((mapElement->properties.path.type + get_current_rotation()) & 3) + 16;
+	}
+	else {
+		imageId = byte_98D6E0[edi];
+	}
+
+
+	imageId += footpathEntry->image;
+	if (mapElement->type & 1) {
+		imageId += 51;
+	}
+
+	// Below Surface
+	if (!RCT2_GLOBAL(0x9DE57C, bool)) {
+		boundBoxOffset.x = 3;
+		boundBoxOffset.y = 3;
+		boundBoxSize.x = 26;
+		boundBoxSize.y = 26;
+	}
+
+	if (!hasFences || !RCT2_GLOBAL(0x9DE57C, bool)) {
+		sub_98197C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+	}
+	else {
+		uint32 bridgeImage;
+		if (footpath_element_is_sloped(mapElement)) {
+			bridgeImage = ((mapElement->properties.path.type + get_current_rotation()) & 3) + footpathEntry->bridge_image + 16;
+		}
+		else {
+			bridgeImage = edges + footpathEntry->bridge_image;
+			bridgeImage |= imageFlags;
+		}
+
+		sub_98197C(bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+
+		if ((mapElement->type & 1) || (footpathEntry->flags & 2)) {
+			sub_98199C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+		}
+	}
+
+	sub_6A3F61(mapElement, edi, height, footpathEntry, imageFlags, sceneryImageFlags, hasFences); // TODO: arguments
+
+	uint16 ax = 0;
+	if (footpath_element_is_sloped(mapElement)) {
+		ax = 8;
+	}
+
+	uint8 supports[] = {
+		6,
+		8,
+		7,
+		5
+	};
+
+	for (sint8 i = 3; i > -1; --i) {
+		if (!(edges & (1 << i))) {
+			path_wooden_a_supports_paint_setup(supports[i], ax, height, imageFlags);
+		}
+	}
+	
+	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
+
+	height += 32;
+	if (footpath_element_is_sloped(mapElement)) {
+		height += 16;
+	}
+
+	paint_util_set_general_support_height(height, 0x20);
+	
+	if ((mapElement->type & 1)
+	    || (mapElement->properties.path.edges != 0xFF && hasFences)
+		) {
+
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+		return;
+	}
+
+	//if (map_element->properties.path.edges == 0xFF) {
+	//	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
+	//	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
+	//	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
+	//	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
+	//	return;
+	//}
+
+	//RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
+
+	//// no idea whre bp comes from
+	//uint16 bp = 0;
+
+	//if (bp & 1) {
+	//	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
+	//}
+
+	//if (bp & 2) {
+	//	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
+	//}
+
+	//if (bp & 4) {
+	//	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
+	//}
+
+	//if (bp & 8) {
+	//	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
+	//}
 
 }
