@@ -186,8 +186,6 @@ int rct2_init()
 
 	if (!gOpenRCT2Headless) {
 		title_load();
-
-		gfx_clear(&gScreenDPI, 10);
 	}
 
 	log_verbose("initialising game finished");

@@ -29,8 +29,6 @@
 #include "screenshot.h"
 #include "viewport.h"
 
-static int screenshot_dump_png();
-
 /**
  *
  *  rct2: 0x006E3AEC
@@ -98,12 +96,7 @@ static int screenshot_get_next_path(char *path)
 	return -1;
 }
 
-int screenshot_dump()
-{
-	return screenshot_dump_png();
-}
-
-int screenshot_dump_png()
+int screenshot_dump_png(rct_drawpixelinfo *dpi)
 {
 	// Get a free screenshot path
 	int index;
@@ -111,8 +104,6 @@ int screenshot_dump_png()
 	if ((index = screenshot_get_next_path(path)) == -1) {
 		return -1;
 	}
-
-	rct_drawpixelinfo *dpi = &gScreenDPI;
 
 	rct_palette renderedPalette;
 	screenshot_get_rendered_palette(&renderedPalette);

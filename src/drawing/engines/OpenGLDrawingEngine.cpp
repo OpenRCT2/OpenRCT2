@@ -189,6 +189,12 @@ public:
         }
         Display();
     }
+    
+    sint32 Screenshot() override
+    {
+        // Not implemented
+        return -1;
+    }
 
     IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override
     {

@@ -31,8 +31,9 @@ interface IDrawingEngine
     virtual void Resize(uint32 width, uint32 height) abstract;
     virtual void SetPalette(SDL_Color * colours)     abstract;
 
-    virtual void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-    virtual void Draw() abstract;
+    virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
+    virtual void    Draw() abstract;
+    virtual sint32  Screenshot() abstract;
 
     virtual IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
 };

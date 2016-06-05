@@ -122,4 +122,13 @@ extern "C"
             dc->DrawSpriteRawMasked(x, y, maskImage, colourImage);
         }
     }
+
+    int screenshot_dump()
+    {
+        if (_drawingEngine != nullptr)
+        {
+            return _drawingEngine->Screenshot();
+        }
+        return false;
+    }
 }

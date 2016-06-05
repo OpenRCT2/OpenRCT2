@@ -23,6 +23,7 @@
 extern "C"
 {
     #include "../../config.h"
+    #include "../../interface/screenshot.h"
     #include "../../interface/window.h"
     #include "../../intro.h"
     #include "../drawing.h"
@@ -313,6 +314,11 @@ public:
             rct2_draw(&_bitsDPI);
         }
         Display();
+    }
+
+    sint32 Screenshot() override
+    {
+        return screenshot_dump_png(&_bitsDPI);
     }
 
     IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override
