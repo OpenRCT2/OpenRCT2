@@ -18,13 +18,9 @@
 #include <vector>
 #include <SDL_platform.h>
 
-#ifdef __WINDOWS__
-    #include <windows.h>
-    #pragma comment(lib, "opengl32.lib")
-#endif
+#include "OpenGLAPI.h"
 
-#include <sdl_opengl.h>
-
+#include "../../core/Exception.hpp"
 #include "../../core/Math.hpp"
 #include "../../core/Memory.hpp"
 #include "../IDrawingContext.h"
@@ -130,6 +126,11 @@ public:
 
         _context = SDL_GL_CreateContext(_window);
         SDL_GL_MakeCurrent(_window, _context);
+
+        if (!OpenGLAPI::Initialise())
+        {
+            throw Exception("Unable to initialise OpenGL.");
+        }
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

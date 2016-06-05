@@ -42,6 +42,7 @@
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />
     <ClCompile Include="src\drawing\drawing_fast.cpp" />
+    <ClCompile Include="src\drawing\engines\OpenGLAPI.cpp" />
     <ClCompile Include="src\drawing\engines\OpenGLDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\font.c" />
@@ -336,6 +337,7 @@
     <ClInclude Include="src\cursors.h" />
     <ClInclude Include="src\diagnostic.h" />
     <ClInclude Include="src\drawing\drawing.h" />
+    <ClInclude Include="src\drawing\engines\OpenGLAPI.h" />
     <ClInclude Include="src\drawing\font.h" />
     <ClInclude Include="src\drawing\IDrawingContext.h" />
     <ClInclude Include="src\drawing\IDrawingEngine.h" />
