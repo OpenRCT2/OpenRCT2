@@ -34,6 +34,7 @@ typedef struct rct_footpath_entry {
 	uint32 bridge_image;		// 0x06
 	uint8 var_0A;
 	uint8 flags;				// 0x0B
+	uint8 scrolling_mode;		// 0x0C
 } rct_footpath_entry;
 assert_struct_size(rct_footpath_entry, 12);
 #pragma pack(pop)

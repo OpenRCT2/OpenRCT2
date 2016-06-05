@@ -23,6 +23,8 @@
 #include "../paint.h"
 #include "surface.h"
 #include "../../ride/track_paint.h"
+#include "../../localisation/localisation.h"
+#include "../../game.h"
 
 // #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
 //        to use the old string arguments array. Remove when scrolling_text_setup is no
@@ -91,25 +93,6 @@ const unk_supports_desc_bound_box stru_98D8D4[] = {
 void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * dword_F3EF6C, bool word_F3F038, uint32 dword_F3EF70, uint32 dword_F3EF74);
 
 void loc_6A3B57();
-
-bool is_map_element_saved(rct_map_element * map_element)
-{
-//	rct_map_element ** savedMapElement = gTrackSavedMapElements;
-//	while (*gTrackSavedMapElements != (rct_map_element *) 0xFFFFFFFF) {
-//		if (*gTrackSavedMapElements == map_element) {
-//			return true;
-//		}
-//
-//		savedMapElement++;
-//	}
-
-	return false;
-}
-
-void loc_6A3FED()
-{
-
-}
 
 bool do_sub_6A2ECC(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * dword_F3EF6C, bool * underground)
 {
@@ -194,7 +177,7 @@ bool do_sub_6A2ECC(int supportType, int special, int height, uint32 imageColourF
  * @param ebp (ebp)
  * @param base_image_id (0x00F3EF78)
  */
-void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool word_F3F038, rct_footpath_entry * dword_F3EF6C, uint32 base_image_id)
+void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool word_F3F038, rct_footpath_entry * dword_F3EF6C, uint32 base_image_id, uint32 dword_F3EF70)
 {
 	if (map_element->type & 1) {
 		uint8 local_ebp = ebp & 0x0F;
@@ -273,8 +256,65 @@ void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool w
 			return;
 		}
 
+		uint8 direction = ((map_element->type & 0xC0) >> 6);
 		// Draw ride sign
-		RCT2_CALLPROC_X(0x006A4A71, 0, 0, get_current_rotation(), height, (int) map_element, 0, ebp);
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+		if (footpath_element_is_sloped(map_element)) {
+			if (footpath_element_get_slope_direction(map_element) == direction)
+				height += 16;
+		}
+		direction += get_current_rotation();
+		direction &= 3;
+
+		rct_xyz16 boundBoxOffsets = {
+			.x = RCT2_ADDRESS(0x0098D884, sint16)[direction * 4],
+			.y = RCT2_ADDRESS(0x0098D884 + 2, sint16)[direction * 4],
+			.z = height + 2
+		};
+
+		uint32 imageId = (direction << 1) + base_image_id + 101;
+		
+		sub_98197C(imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
+
+		boundBoxOffsets.x = RCT2_ADDRESS(0x98D888, sint16)[direction * 4];
+		boundBoxOffsets.y = RCT2_ADDRESS(0x98D888 + 2, sint16)[direction * 4];
+		imageId++;
+		sub_98197C(imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
+
+		direction--;
+		// If text shown
+		if (direction < 2 && map_element->properties.path.ride_index != 255 && dword_F3EF70 == 0) {
+			uint16 scrollingMode = dword_F3EF6C->scrolling_mode;
+			scrollingMode += direction;
+
+			set_format_arg(0, uint32, 0);
+			set_format_arg(4, uint32, 0);
+
+			rct_ride* ride = get_ride(map_element->properties.path.ride_index);
+			rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
+			if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
+				set_format_arg(0, uint16, ride->name);
+				set_format_arg(2, uint32, ride->name_arguments);
+				string_id = STR_RIDE_ENTRANCE_NAME;
+			}
+			if (gConfigGeneral.upper_case_banners) {
+				format_string_to_upper(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, gCommonFormatArgs);
+			} else {
+				format_string(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char), string_id, gCommonFormatArgs);
+			}
+
+			gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
+
+			uint16 string_width = gfx_get_string_width(RCT2_ADDRESS(RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER, char));
+			uint16 scroll = (gCurrentTicks / 2) % string_width;
+
+			sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
+		}
+
+		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+		if (dword_F3EF70 != 0) {
+			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+		}
 		return;
 	}
 
@@ -473,7 +513,7 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 		// Redundant zoom-level check removed
 		RCT2_GLOBAL(0xF3EF78, uint32) = dword_F3EF6C->image | dword_F3EF70;
 		//RCT2_CALLPROC_X(0x6A4101, 0, 0, 0, 0, (int) map_element, 0, 0);
-		sub_6A4101(map_element, height, bp, word_F3F038, dword_F3EF6C, dword_F3EF6C->image | dword_F3EF70);
+		sub_6A4101(map_element, height, bp, word_F3F038, dword_F3EF6C, dword_F3EF6C->image | dword_F3EF70, dword_F3EF70);
 	}
 
 	// This is about tunnel drawing
@@ -550,7 +590,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 			}
 		}
 
-		if (!is_map_element_saved(map_element)) {
+		if (!track_design_save_contains_map_element(map_element)) {
 			dword_F3EF70 = 0x21700000;
 		}
 	}
