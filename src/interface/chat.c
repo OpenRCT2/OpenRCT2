@@ -74,13 +74,12 @@ void chat_update()
 	_chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void chat_draw()
+void chat_draw(rct_drawpixelinfo * dpi)
 {
 	if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED || network_get_authstatus() != NETWORK_AUTH_OK) {
 		gChatOpen = false;
 		return;
 	}
-	rct_drawpixelinfo *dpi = &gScreenDPI;
 	_chatLeft = 10;
 	_chatTop = gScreenHeight - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
 	_chatRight = gScreenWidth - 10;

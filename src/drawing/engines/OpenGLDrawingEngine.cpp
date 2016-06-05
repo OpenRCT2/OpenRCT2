@@ -181,7 +181,7 @@ public:
 
         gfx_draw_pickedup_peep(&_bitsDPI);
 
-        rct2_draw();
+        rct2_draw(&_bitsDPI);
         Display();
     }
 

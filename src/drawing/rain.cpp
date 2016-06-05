@@ -152,13 +152,12 @@ static void DrawRainWindow(IRainDrawer * rainDrawer,
  *
  *  rct2: 0x00684266
  */
-static void DrawRainAnimation(IRainDrawer * rainDrawer, uint32 rainType)
+static void DrawRainAnimation(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer, uint32 rainType)
 {
-    rct_drawpixelinfo * screenDPI = &gScreenDPI;
-    sint32 left = screenDPI->x;
-    sint32 right = left + screenDPI->width;
-    sint32 top = screenDPI->y;
-    sint32 bottom = top + screenDPI->height;
+    sint32 left = dpi->x;
+    sint32 right = left + dpi->width;
+    sint32 top = dpi->y;
+    sint32 bottom = top + dpi->height;
 
     rct_window * newWindow = gWindowNextSlot;
     for (rct_window * w = g_window_list; w < newWindow; w++)
@@ -171,13 +170,13 @@ static void DrawRainAnimation(IRainDrawer * rainDrawer, uint32 rainType)
  *
  *  rct2: 0x00684218
  */
-void DrawRain(IRainDrawer * rainDrawer)
+void DrawRain(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer)
 {
     // Get rain draw function and draw rain
     uint32 rainType = gClimateCurrentRainLevel;
     if (rainType > 0 && !(RCT2_GLOBAL(0x009DEA6F, uint8) & 1))
     {
-        DrawRainAnimation(rainDrawer, rainType);
+        DrawRainAnimation(dpi, rainDrawer, rainType);
     }
 }
 

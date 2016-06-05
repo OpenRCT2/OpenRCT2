@@ -20,4 +20,4 @@
 
 interface IRainDrawer;
 
-void DrawRain(IRainDrawer * rainDrawer);
+void DrawRain(rct_drawpixelinfo * dpi, IRainDrawer * rainDrawer);

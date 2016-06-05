@@ -490,10 +490,9 @@ static void title_update_showcase()
 	} while (gTitleScriptSkipTo != -1 && gTitleScriptSkipLoad == -1);
 }
 
-void DrawOpenRCT2(int x, int y)
+void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
 {
 	utf8 buffer[256];
-	rct_drawpixelinfo *dpi = &gScreenDPI;
 
 	// Draw background
 	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, TRANSLUCENT(COLOUR_DARK_GREEN), 0x8);

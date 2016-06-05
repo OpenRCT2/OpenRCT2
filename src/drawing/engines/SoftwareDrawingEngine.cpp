@@ -304,9 +304,9 @@ public:
         gfx_draw_pickedup_peep(&_bitsDPI);
         gfx_invalidate_pickedup_peep();
 
-        DrawRain(&_rainDrawer);
+        DrawRain(&_bitsDPI, &_rainDrawer);
 
-        rct2_draw();
+        rct2_draw(&_bitsDPI);
         Display();
     }
 

@@ -28,7 +28,6 @@ int gLastDrawStringX;
 int gLastDrawStringY;
 
 rct_drawpixelinfo gScreenDPI;
-rct_drawpixelinfo gWindowDPI;
 
 uint8 gGamePalette[256 * 4];
 uint32 gPaletteEffectFrame;
@@ -181,23 +180,22 @@ void gfx_invalidate_screen()
 void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
 {
 	rct_drawpixelinfo *screenDPI = &gScreenDPI;
-	rct_drawpixelinfo *windowDPI = &gWindowDPI;
 
-	windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
-	windowDPI->x = left;
-	windowDPI->y = top;
-	windowDPI->width = right - left;
-	windowDPI->height = bottom - top;
-	windowDPI->pitch = screenDPI->width + screenDPI->pitch + left - right;
+	rct_drawpixelinfo windowDPI;
+	windowDPI.bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
+	windowDPI.x = left;
+	windowDPI.y = top;
+	windowDPI.width = right - left;
+	windowDPI.height = bottom - top;
+	windowDPI.pitch = screenDPI->width + screenDPI->pitch + left - right;
+	windowDPI.zoom_level = 0;
 
 	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
-		if (w->flags & WF_TRANSPARENT)
-			continue;
-		if (right <= w->x || bottom <= w->y)
-			continue;
-		if (left >= w->x + w->width || top >= w->y + w->height)
-			continue;
-		window_draw(w, left, top, right, bottom);
+		if (w->flags & WF_TRANSPARENT) continue;
+		if (right <= w->x || bottom <= w->y) continue;
+		if (left >= w->x + w->width || top >= w->y + w->height) continue;
+
+		window_draw(&windowDPI, w, left, top, right, bottom);
 	}
 }
 
