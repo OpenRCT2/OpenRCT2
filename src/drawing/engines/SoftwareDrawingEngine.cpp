@@ -316,6 +316,45 @@ public:
         Display();
     }
 
+    void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override
+    {
+        if (dx == 0 && dy == 0) return;
+
+        // Originally 0x00683359
+        // Adjust for move off screen
+        // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the 
+        // screen; hence the checks. This code should ultimately not be called when
+        // zooming because this function is specific to updating the screen on move
+        int lmargin = Math::Min(x - dx, 0);
+        int rmargin = Math::Min((sint32)_width - (x - dx + width), 0);
+        int tmargin = Math::Min(y - dy, 0);
+        int bmargin = Math::Min((sint32)_height - (y - dy + height), 0);
+        x -= lmargin;
+        y -= tmargin;
+        width += lmargin + rmargin;
+        height += tmargin + bmargin;
+
+        sint32  stride = _bitsDPI.width + _bitsDPI.pitch;
+        uint8 * to = _bitsDPI.bits + y * stride + x;
+        uint8 * from = _bitsDPI.bits + (y - dy) * stride + x - dx;
+
+        if (dy > 0)
+        {
+            // If positive dy, reverse directions
+            to += (height - 1) * stride;
+            from += (height - 1) * stride;
+            stride = -stride;
+        }
+
+        // Move bytes
+        for (int i = 0; i < height; i++)
+        {
+            memmove(to, from, width);
+            to += stride;
+            from += stride;
+        }
+    }
+
     sint32 Screenshot() override
     {
         return screenshot_dump_png(&_bitsDPI);
@@ -325,6 +364,11 @@ public:
     {
         _drawingContext->SetDPI(dpi);
         return _drawingContext;
+    }
+
+    rct_drawpixelinfo * GetDrawingPixelInfo() override
+    {
+        return &_bitsDPI;
     }
 
     DRAWING_ENGINE_FLAGS GetFlags() override
@@ -387,8 +431,6 @@ private:
         dpi->width = width;
         dpi->height = height;
         dpi->pitch = _pitch - width;
-
-        gScreenDPI = *dpi;
 
         ConfigureDirtyGrid();
     }
@@ -480,7 +522,7 @@ private:
         }
 
         // Draw region
-        gfx_redraw_screen_rect(left, top, right, bottom);
+        window_draw_all(&_bitsDPI, left, top, right, bottom);
     }
 
     void Display()

@@ -25,8 +25,10 @@ void drawing_engine_init();
 void drawing_engine_resize();
 void drawing_engine_set_palette(SDL_Color * colours);
 void drawing_engine_draw();
+void drawing_engine_copy_rect(int x, int y, int width, int height, int dx, int dy);
 void drawing_engine_dispose();
 
+rct_drawpixelinfo * drawing_engine_get_dpi();
 bool drawing_engine_has_dirty_optimisations();
 
 #ifdef _cplusplus

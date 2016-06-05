@@ -27,8 +27,6 @@
 int gLastDrawStringX;
 int gLastDrawStringY;
 
-rct_drawpixelinfo gScreenDPI;
-
 uint8 gGamePalette[256 * 4];
 uint32 gPaletteEffectFrame;
 
@@ -177,17 +175,15 @@ void gfx_invalidate_screen()
  * right (dx)
  * bottom (bp)
  */
-void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
+void window_draw_all(rct_drawpixelinfo *dpi, short left, short top, short right, short bottom)
 {
-	rct_drawpixelinfo *screenDPI = &gScreenDPI;
-
 	rct_drawpixelinfo windowDPI;
-	windowDPI.bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
+	windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
 	windowDPI.x = left;
 	windowDPI.y = top;
 	windowDPI.width = right - left;
 	windowDPI.height = bottom - top;
-	windowDPI.pitch = screenDPI->width + screenDPI->pitch + left - right;
+	windowDPI.pitch = dpi->width + dpi->pitch + left - right;
 	windowDPI.zoom_level = 0;
 
 	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {

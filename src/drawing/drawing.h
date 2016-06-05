@@ -113,13 +113,10 @@ extern sint32 gPickupPeepY;
 extern rct_g1_element *g1Elements;
 extern rct_gx g2;
 
-extern rct_drawpixelinfo gScreenDPI;
-
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);
 void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);
 void gfx_draw_all_dirty_blocks();
-void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
 void gfx_invalidate_screen();
 
 // palette

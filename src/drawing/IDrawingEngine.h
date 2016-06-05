@@ -43,9 +43,11 @@ interface IDrawingEngine
 
     virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
     virtual void    Draw() abstract;
+    virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
     virtual sint32  Screenshot() abstract;
 
-    virtual IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+    virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+    virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
 
     virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
 };

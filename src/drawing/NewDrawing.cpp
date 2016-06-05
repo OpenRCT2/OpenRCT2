@@ -60,10 +60,24 @@ extern "C"
         _drawingEngine->Draw();
     }
 
+    void drawing_engine_copy_rect(int x, int y, int width, int height, int dx, int dy)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            _drawingEngine->CopyRect(x, y, width, height, dx, dy);
+        }
+    }
+
     void drawing_engine_dispose()
     {
         delete _drawingEngine;
         _drawingEngine = nullptr;
+    }
+
+    rct_drawpixelinfo * drawing_engine_get_dpi()
+    {
+        assert(_drawingEngine != nullptr);
+        return _drawingEngine->GetDrawingPixelInfo();
     }
 
     bool drawing_engine_has_dirty_optimisations()

@@ -180,7 +180,7 @@ public:
             intro_draw(&_bitsDPI);
         } else {
             window_update_all_viewports();
-            gfx_redraw_screen_rect(0, 0, _width - 1, _height - 1);
+            window_draw_all(&_bitsDPI, 0, 0, _width - 1, _height - 1);
             window_update_all();
 
             gfx_draw_pickedup_peep(&_bitsDPI);
@@ -196,10 +196,20 @@ public:
         return -1;
     }
 
+    void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override
+    {
+        // Not applicable for this engine
+    }
+
     IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override
     {
         _drawingContext->SetDPI(dpi);
         return _drawingContext;
+    }
+
+    rct_drawpixelinfo * GetDrawingPixelInfo() override
+    {
+        return &_bitsDPI;
     }
 
     DRAWING_ENGINE_FLAGS GetFlags() override
@@ -262,8 +272,6 @@ private:
         dpi->width = width;
         dpi->height = height;
         dpi->pitch = _pitch - width;
-
-        gScreenDPI = *dpi;
     }
 
     void Display()
