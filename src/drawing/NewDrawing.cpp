@@ -20,23 +20,34 @@
 extern "C"
 {
     #include "../config.h"
+	#include "../localisation/string_ids.h"
     #include "../platform/platform.h"
 }
 
 static IDrawingEngine * _drawingEngine = nullptr;
+
+extern "C" rct_string_id DrawingEngineStringIds[] =
+{
+    STR_DRAWING_ENGINE_SOFTWARE,
+    STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
+    STR_DRAWING_ENGINE_OPENGL,
+};
 
 extern "C"
 {
     void drawing_engine_init()
     {
         assert(_drawingEngine == nullptr);
-        if (gConfigGeneral.hardware_display)
-        {
-            _drawingEngine = DrawingEngineFactory::CreateOpenGL();
-        }
-        else
-        {
+        switch (gConfigGeneral.drawing_engine) {
+        case DRAWING_ENGINE_SOFTWARE:
             _drawingEngine = DrawingEngineFactory::CreateSoftware();
+            break;
+        case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
+            _drawingEngine = DrawingEngineFactory::CreateSoftware();
+            break;
+        case DRAWING_ENGINE_OPENGL:
+            _drawingEngine = DrawingEngineFactory::CreateOpenGL();
+            break;
         }
         _drawingEngine->Initialise(gWindow);
     }

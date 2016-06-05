@@ -57,6 +57,7 @@ interface IDrawingEngine
 namespace DrawingEngineFactory
 {
     IDrawingEngine * CreateSoftware();
+    IDrawingEngine * CreateSoftwareWithHardwareDisplay();
     IDrawingEngine * CreateOpenGL();
 };
 

@@ -56,7 +56,6 @@ SDL_Texture *gBufferTexture = NULL;
 SDL_PixelFormat *gBufferTextureFormat = NULL;
 SDL_Color gPalette[256];
 uint32 gPaletteHWMapped[256];
-bool gHardwareDisplay;
 
 bool gSteamOverlayActive = false;
 
@@ -636,8 +635,6 @@ static void platform_create_window()
 
 	RCT2_GLOBAL(0x009E2D8C, sint32) = 0;
 
-	gHardwareDisplay = gConfigGeneral.hardware_display;
-
 	// Create window in window first rather than fullscreen so we have the display the window is on first
 	gWindow = SDL_CreateWindow(
 		"OpenRCT2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL
@@ -799,8 +796,6 @@ void platform_refresh_video()
 	int height = gScreenHeight;
 
 	SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
-
-	log_verbose("HardwareDisplay: %s", gHardwareDisplay ? "true" : "false");
 
 	drawing_engine_dispose();
 	drawing_engine_init();

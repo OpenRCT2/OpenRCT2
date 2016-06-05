@@ -178,6 +178,8 @@ public:
 class SoftwareDrawingEngine : public IDrawingEngine
 {
 private:
+    bool _hardwareDisplay;
+
     SDL_Window *    _window         = nullptr;
     SDL_Surface *   _surface        = nullptr;
     SDL_Surface *   _RGBASurface    = nullptr;
@@ -197,8 +199,9 @@ private:
     SoftwareDrawingContext *    _drawingContext;
 
 public:
-    SoftwareDrawingEngine()
+    SoftwareDrawingEngine(bool hardwareDisplay)
     {
+        _hardwareDisplay = hardwareDisplay;
         _drawingContext = new SoftwareDrawingContext(this);
     }
 
@@ -589,7 +592,12 @@ private:
 
 IDrawingEngine * DrawingEngineFactory::CreateSoftware()
 {
-    return new SoftwareDrawingEngine();
+    return new SoftwareDrawingEngine(false);
+}
+
+IDrawingEngine * DrawingEngineFactory::CreateSoftwareWithHardwareDisplay()
+{
+    return new SoftwareDrawingEngine(true);
 }
 
 SoftwareDrawingContext::SoftwareDrawingContext(SoftwareDrawingEngine * engine)

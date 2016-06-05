@@ -90,6 +90,13 @@ typedef struct config_section_definition {
 
 #pragma region Enum definitions
 
+config_enum_definition _drawingEngineFormatEnum[] = {
+	{ "SOFTWARE", DRAWING_ENGINE_SOFTWARE },
+	{ "SOFTWARE_HWD", DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY },
+	{ "OPENGL", DRAWING_ENGINE_OPENGL },
+	END_OF_ENUM
+};
+
 config_enum_definition _measurementFormatEnum[] = {
 	{ "IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL },
 	{ "METRIC", MEASUREMENT_FORMAT_METRIC },
@@ -180,7 +187,7 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, window_height),					"window_height",				CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
 	{ offsetof(general_configuration, window_snap_proximity),			"window_snap_proximity",		CONFIG_VALUE_TYPE_UINT8,		5,								NULL					},
 	{ offsetof(general_configuration, window_width),					"window_width",					CONFIG_VALUE_TYPE_SINT32,		-1,								NULL					},
-	{ offsetof(general_configuration, hardware_display),				"hardware_display",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
+	{ offsetof(general_configuration, drawing_engine),					"drawing_engine",				CONFIG_VALUE_TYPE_UINT8,		DRAWING_ENGINE_SOFTWARE,		_drawingEngineFormatEnum},
 	{ offsetof(general_configuration, uncap_fps),						"uncap_fps",					CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, test_unfinished_tracks),			"test_unfinished_tracks",		CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, no_test_crashes),					"no_test_crashes",				CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
