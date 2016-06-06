@@ -23,7 +23,7 @@
 
 #include <SDL_video.h>
 
-#include "../../core/Console.hpp"
+#include "../../../core/Console.hpp"
 
 template <typename T>
 static inline bool SetProc(T * func, const char * name)
@@ -58,6 +58,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glColor4f);
     SetupOpenGLFunction(glDeleteTextures);
     SetupOpenGLFunction(glDisable);
+    SetupOpenGLFunction(glDrawArrays);
     SetupOpenGLFunction(glEnable);
     SetupOpenGLFunction(glEnd);
     SetupOpenGLFunction(glGenTextures);
@@ -73,8 +74,33 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glViewport);
 
     // 2.0+ functions
+    SetupOpenGLFunction(glAttachShader);
+    SetupOpenGLFunction(glBindBuffer);
+    SetupOpenGLFunction(glBindVertexArray);
+    SetupOpenGLFunction(glBufferData);
+    SetupOpenGLFunction(glCompileShader);
+    SetupOpenGLFunction(glCreateProgram);
     SetupOpenGLFunction(glCreateShader);
+    SetupOpenGLFunction(glDeleteBuffers);
+    SetupOpenGLFunction(glDeleteProgram);
     SetupOpenGLFunction(glDeleteShader);
+    SetupOpenGLFunction(glDeleteVertexArrays);
+    SetupOpenGLFunction(glDetachShader);
+    SetupOpenGLFunction(glEnableVertexAttribArray);
+    SetupOpenGLFunction(glGetAttribLocation);
+    SetupOpenGLFunction(glGenBuffers);
+    SetupOpenGLFunction(glGetShaderInfoLog);
+    SetupOpenGLFunction(glGetShaderiv);
+    SetupOpenGLFunction(glGetUniformLocation);
+    SetupOpenGLFunction(glGenVertexArrays);
+    SetupOpenGLFunction(glLinkProgram);
+    SetupOpenGLFunction(glShaderSource);
+    SetupOpenGLFunction(glUniform1i);
+    SetupOpenGLFunction(glUniform2i);
+    SetupOpenGLFunction(glUniform4f);
+    SetupOpenGLFunction(glUniform4i);
+    SetupOpenGLFunction(glUseProgram);
+    SetupOpenGLFunction(glVertexAttribPointer);
 
     return nullptr;
 }

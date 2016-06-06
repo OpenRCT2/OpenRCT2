@@ -16,7 +16,7 @@
 
 #ifdef DISABLE_OPENGL
 
-#include "../IDrawingEngine.h"
+#include "../../IDrawingEngine.h"
 
 IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 {
@@ -29,44 +29,36 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include <vector>
 #include <SDL_platform.h>
 
+#include "GLSLTypes.h"
 #include "OpenGLAPI.h"
+#include "FillRectShader.h"
 
-#include "../../core/Exception.hpp"
-#include "../../core/Math.hpp"
-#include "../../core/Memory.hpp"
-#include "../IDrawingContext.h"
-#include "../IDrawingEngine.h"
-#include "../Rain.h"
+#include "../../../core/Console.hpp"
+#include "../../../core/Exception.hpp"
+#include "../../../core/Math.hpp"
+#include "../../../core/Memory.hpp"
+#include "../../IDrawingContext.h"
+#include "../../IDrawingEngine.h"
+#include "../../Rain.h"
 
 extern "C"
 {
-    #include "../../config.h"
-    #include "../../interface/window.h"
-    #include "../../intro.h"
-    #include "../drawing.h"
+    #include "../../../config.h"
+    #include "../../../interface/window.h"
+    #include "../../../intro.h"
+    #include "../../drawing.h"
 }
 
 class OpenGLDrawingEngine;
-
-struct vec2f
-{
-    union { float x; float s; float r; };
-    union { float y; float t; float g; };
-};
-
-struct vec4f
-{
-    union { float x; float s; float r; };
-    union { float y; float t; float g; };
-    union { float z; float p; float b; };
-    union { float w; float q; float a; };
-};
 
 class OpenGLDrawingContext : public IDrawingContext
 {
 private:
     OpenGLDrawingEngine *   _engine;
     rct_drawpixelinfo *     _dpi;
+
+    FillRectShader *    _fillRectShader = nullptr;
+    GLuint _vbo;
 
     sint32 _offsetX;
     sint32 _offsetY;
@@ -83,6 +75,8 @@ public:
     ~OpenGLDrawingContext() override;
 
     IDrawingEngine * GetEngine() override;
+
+    void Initialise();
 
     void Clear(uint32 colour) override;
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
@@ -145,6 +139,8 @@ public:
         {
             throw Exception("Unable to initialise OpenGL.");
         }
+
+        _drawingContext->Initialise();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -310,12 +306,17 @@ OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
 
 OpenGLDrawingContext::~OpenGLDrawingContext()
 {
-
+    delete _fillRectShader;
 }
 
 IDrawingEngine * OpenGLDrawingContext::GetEngine()
 {
     return _engine;
+}
+
+void OpenGLDrawingContext::Initialise()
+{
+    _fillRectShader = new FillRectShader();
 }
 
 void OpenGLDrawingContext::Clear(uint32 colour)
