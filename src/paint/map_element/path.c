@@ -21,6 +21,7 @@
 #include "../../world/footpath.h"
 #include "../../config.h"
 #include "../paint.h"
+#include "../../world/scenery.h"
 #include "surface.h"
 #include "../../ride/track_paint.h"
 #include "../../localisation/localisation.h"
@@ -501,7 +502,9 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 					RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
 				}
 
-				// loc_6A3F9A: No idea how what is happening here
+				// Draw additional path bits (i.e. bins)
+				rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
+				RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D8FC, uint32)[sceneryEntry->path_bit.var_08], 0, (int)sceneryEntry, get_current_rotation(), height, (int)map_element, 0, bp);
 
 				RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
@@ -687,18 +690,11 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	uint8 pathType = (map_element->properties.path.type & 0xF0) >> 4;
 	rct_footpath_entry * dword_F3EF6C = gFootpathEntries[pathType];
 
-	TempForScrollText = true;
 	if (dword_F3EF6C->var_0A == 0) {
 		loc_6A37C9(map_element, height, dword_F3EF6C, word_F3F038, dword_F3EF70, dword_F3EF74);
 	} else {
 		loc_6A3B57(map_element, height, dword_F3EF6C, word_F3F038, dword_F3EF70, dword_F3EF74);
-		RCT2_GLOBAL(0x00F3EF6C, uint32) = (uint32) dword_F3EF6C;
-		RCT2_GLOBAL(0x00F3F038, uint16) = word_F3F038;
-		RCT2_GLOBAL(0x00F3EF70, uint16) = dword_F3EF70;
-		RCT2_GLOBAL(0x00F3EF74, uint16) = dword_F3EF74;
-		//RCT2_CALLPROC_X(0x6A3B57, 0, 0, get_current_rotation(), height, (int) map_element, 0, 0);
 	}
-	TempForScrollText = false;
 }
 
 void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * dword_F3EF6C, bool word_F3F038, uint32 dword_F3EF70, uint32 dword_F3EF74)
@@ -918,6 +914,7 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 		5
 	};
 
+	RCT2_GLOBAL(0x00F3EF6C, rct_footpath_entry*) = footpathEntry;
 	for (sint8 i = 3; i > -1; --i) {
 		if (!(edges & (1 << i))) {
 			path_wooden_a_supports_paint_setup(supports[i], ax, height, imageFlags);
@@ -941,33 +938,27 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 		return;
 	}
 
-	//if (map_element->properties.path.edges == 0xFF) {
-	//	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	//	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	//	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	//	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-	//	return;
-	//}
+	if (mapElement->properties.path.edges == 0xFF) {
+		paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
+		return;
+	}
 
-	//RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
+	paint_util_set_segment_support_height(SEGMENT_C4, 0xFFFF, 0);
 
-	//// no idea whre bp comes from
-	//uint16 bp = 0;
+	if (edges & 1) {
+		paint_util_set_segment_support_height(SEGMENT_CC, 0xFFFF, 0);
+	}
 
-	//if (bp & 1) {
-	//	RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-	//}
+	if (edges & 2) {
+		paint_util_set_segment_support_height(SEGMENT_D4, 0xFFFF, 0);
+	}
 
-	//if (bp & 2) {
-	//	RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-	//}
+	if (edges & 4) {
+		paint_util_set_segment_support_height(SEGMENT_D0, 0xFFFF, 0);
+	}
 
-	//if (bp & 4) {
-	//	RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-	//}
-
-	//if (bp & 8) {
-	//	RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-	//}
+	if (edges & 8) {
+		paint_util_set_segment_support_height(SEGMENT_C8, 0xFFFF, 0);
+	}
 
 }
