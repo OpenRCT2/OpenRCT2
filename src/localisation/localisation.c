@@ -186,7 +186,7 @@ int utf8_get_format_code_arg_length(int codepoint)
 	}
 }
 
-void utf8_remove_formatting(utf8* string) {
+void utf8_remove_formatting(utf8* string, bool allowColours) {
 	utf8* readPtr = string;
 	utf8* writePtr = string;
 
@@ -196,8 +196,7 @@ void utf8_remove_formatting(utf8* string) {
 		if (code == 0) {
 			*writePtr = 0;
 			break;
-		}
-		else if (!utf8_is_format_code(code)) {
+		} else if (!utf8_is_format_code(code) || (allowColours && utf8_is_colour_code(code))) {
 			writePtr = utf8_write_codepoint(writePtr, code);
 		}
 	}

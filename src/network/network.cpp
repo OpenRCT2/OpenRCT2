@@ -920,7 +920,7 @@ void Network::AppendChatLog(const utf8 *text)
 			strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo);
 
 			String::Append(buffer, sizeof(buffer), text);
-			utf8_remove_formatting(buffer);
+			utf8_remove_formatting(buffer, false);
 			String::Append(buffer, sizeof(buffer), platform_get_new_line());
 
 			SDL_RWwrite(_chatLogStream, buffer, strlen(buffer), 1);
