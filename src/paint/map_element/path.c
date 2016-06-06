@@ -94,7 +94,7 @@ const unk_supports_desc_bound_box stru_98D8D4[] = {
 
 void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * dword_F3EF6C, bool word_F3F038, uint32 dword_F3EF70, uint32 dword_F3EF74);
 
-void loc_6A3B57();
+void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
 bool do_sub_6A2ECC(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * dword_F3EF6C, bool * underground)
 {
@@ -502,7 +502,7 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 					RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
 				}
 
-				// Draw additional path bits (i.e. bins)
+				// Draw additional path bits (bins, benchs, lamps, queue screens)
 				rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 				RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D8FC, uint32)[sceneryEntry->path_bit.var_08], 0, (int)sceneryEntry, get_current_rotation(), height, (int)map_element, 0, bp);
 
