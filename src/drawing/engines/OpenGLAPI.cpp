@@ -27,8 +27,6 @@
 
 #include "../../core/Console.hpp"
 
-#pragma comment(lib, "opengl32.lib")
-
 template <typename T>
 static inline bool SetProc(T * func, const char * name)
 {
@@ -52,6 +50,31 @@ static inline bool SetProc(T * func, const char * name)
 
 static const char * TryLoadAllProcAddresses()
 {
+    // 1.1 functions
+    SetupOpenGLFunction(glBegin);
+    SetupOpenGLFunction(glBindTexture);
+    SetupOpenGLFunction(glBlendFunc);
+    SetupOpenGLFunction(glClear);
+    SetupOpenGLFunction(glClearColor);
+    SetupOpenGLFunction(glColor3f);
+    SetupOpenGLFunction(glColor4f);
+    SetupOpenGLFunction(glDeleteTextures);
+    SetupOpenGLFunction(glDisable);
+    SetupOpenGLFunction(glEnable);
+    SetupOpenGLFunction(glEnd);
+    SetupOpenGLFunction(glGenTextures);
+    SetupOpenGLFunction(glLoadIdentity);
+    SetupOpenGLFunction(glMatrixMode);
+    SetupOpenGLFunction(glOrtho);
+    SetupOpenGLFunction(glScalef);
+    SetupOpenGLFunction(glTexCoord2f);
+    SetupOpenGLFunction(glTexImage2D);
+    SetupOpenGLFunction(glTexParameteri);
+    SetupOpenGLFunction(glTranslatef);
+    SetupOpenGLFunction(glVertex2i);
+    SetupOpenGLFunction(glViewport);
+
+    // 2.0+ functions
     SetupOpenGLFunction(glCreateShader);
     SetupOpenGLFunction(glDeleteShader);
 
