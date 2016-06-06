@@ -530,7 +530,7 @@ STR_0525    :Riders career down a twisting track guided only by the curvature an
 STR_0526    :I passeggeri viaggiano in una cabina di osservazione rotante mentre salgono su un'alta torre
 STR_0527    :Un rapido ottovolante d'acciaio caratterizzato da cadute verticali
 STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Il treno della miniera é una montagna russa a tema fatta in acciaio realizzata per ricordare una vecchia ferrovia
+STR_0529    :Il treno della miniera è una montagna russa a tema fatta in acciaio realizzata per ricordare una vecchia ferrovia
 STR_0530    :Le carrozze pendono da un cavo d'acciaio che fa avanti e indietro per tutto il tracciato
 STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_0532    :
@@ -582,7 +582,7 @@ STR_0577    :Bogied cars run on wooden tracks, turning around on special reversi
 STR_0578    :Le carrozze corrono per il tracciato caratterizzato da vari giri,  ripide discese e curve ondulanti
 STR_0579    :
 STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
-STR_0581    :Un anello di sedie é posizionato in cima alla torre mentre ruota piano, quindi precipita fermandosi gentilmente alla base tramite freni magnetici
+STR_0581    :Un anello di sedie è posizionato in cima alla torre mentre ruota piano, quindi precipita fermandosi gentilmente alla base tramite freni magnetici
 STR_0582    :
 STR_0583    :
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
@@ -1715,10 +1715,10 @@ STR_1708    :{SMALLFONT}{BLACK}Fissa la zona che questo dipendente deve controll
 STR_1709    :Licenzia il personale
 STR_1710    :Sì
 STR_1711    :{WINDOW_COLOUR_1}Sei sicuro di voler licenziare{NEWLINE}{STRINGID}?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Scopa per terra
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Annaffia i giardini
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Svuota i cassonetti
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Taglia l'erba
 STR_1716    :Non è un nome valido per il parco
 STR_1717    :Impossibile ribattezzare il parco...
 STR_1718    :Nome del parco
@@ -1879,8 +1879,8 @@ STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Entrate: {BLACK}{CURRENCY} all'ora
 STR_1874    :{WINDOW_COLOUR_2}Profitto: {BLACK}{CURRENCY} all'ora
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
-STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Ispeziona attrazioni
-STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Aggiusta attrazioni
+STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Ispeziona le attrazioni
+STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Ripara le attrazioni
 STR_1878    :{WINDOW_COLOUR_2}Ispezione:
 STR_1879    :Ogni 10 minuti
 STR_1880    :Ogni 20 minuti
@@ -3628,7 +3628,7 @@ STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Selezione Font Scenario
 STR_5285    :ESPLODE!!!
 STR_5286    :{SMALLFONT}{BLACK}Qualche visitatore esplode
-STR_5287    :L'attrazione é già partita
+STR_5287    :L'attrazione è già partita
 STR_5288    :Corsa chiusa
 STR_5289    :Nessun guasto per questa attrazione
 STR_5290    :Ripara corsa
@@ -3704,9 +3704,9 @@ STR_5359    :Rimuovi Visitatori
 STR_5360    :{SMALLFONT}{BLACK}Rimuovi tutti i visitatori dalla mappa
 STR_5361    :Su titti i visitatori:
 STR_5362    :{BLACK}Imposta ai visitatori l'intensità attrazione:
-STR_5363    :Piu di 1
+STR_5363    :Più di 1
 STR_5364    :Meno di 15
-STR_5365    :{BLACK}Velocita staff:
+STR_5365    :{BLACK}Velocità staff:
 STR_5366    :Normale
 STR_5367    :Veloce
 STR_5368    :Resetta lo stato dei crash
@@ -3745,7 +3745,7 @@ STR_5400    :Can't change this title sequence
 STR_5401    :Create a new title sequence to make changes to
 STR_5402    :Failed to load title sequence
 STR_5403    :There may be no Load or Wait command or a save may be invalid
-STR_5404    :Il nome é già utilizzato
+STR_5404    :Il nome è già utilizzato
 STR_5405    :Inserisci un nome per il salvataggio
 STR_5406    :Inserisci un nome per la sequenza del titolo
 STR_5407    :Aggiungi
@@ -3779,14 +3779,14 @@ STR_5434    :Editor Comandi
 STR_5435    :Rinomina salvataggio
 STR_5436    :Modifica Sequenza dei Titoli...
 STR_5437    :Nessun salvataggio selezionato
-STR_5438    :Non puoi fare modifiche mentre l'editor dei comandi é aperto
+STR_5438    :Non puoi fare modifiche mentre l'editor dei comandi è aperto
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimizza la schermata a tutto quando si perde il focus
 STR_5441    :{SMALLFONT}{BLACK}Identifica per tipologia,{NEWLINE}i veicoli possono essere diversi{NEWLINE}, come in RCT1.
 STR_5442    :Voto del parco:
-STR_5443    :Velocita{MOVE_X}{87}{STRINGID}
-STR_5444    :Velocita:
-STR_5445    :Velocita
+STR_5443    :Velocità{MOVE_X}{87}{STRINGID}
+STR_5444    :Velocità:
+STR_5445    :Velocità
 STR_5446    :Ottieni
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Corsa / Veicolo {STRINGID}
@@ -3894,17 +3894,17 @@ STR_5549    :Anno/Mese/Giorno
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Anno/Giorno/Mese
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Gioco in pausa quando l'overlay di Steam é aperto
+STR_5553    :Gioco in pausa quando l'overlay di Steam è aperto
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Mostra i veicoli di altre attrazioni
 STR_5556    :{SMALLFONT}{BLACK}Caccia giocatore
 STR_5557    :Rimani connesso dopo la desincronizzazione (Multiplayer)
-STR_5558    :Un riavvio é richiesto per questa opzione per essere attivata
+STR_5558    :Un riavvio è richiesto per questa opzione per essere attivata
 STR_5559    :ispezioni da 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
 STR_5561    :Caricamento lingua fallito
 STR_5562    :ATTENZIONE!
-STR_5563    :Questa funzionalità é instabile utilizzala con attenzione.
+STR_5563    :Questa funzionalità è instabile utilizzala con attenzione.
 STR_5564    :Inserisci Elemento Corrotto
 STR_5565    :{SMALLFONT}{BLACK}Inserisci un elemento della mappa corrotto. Questo nasconderà ogni elemento sopra l'elemento corrotto.
 STR_5566    :Password:
@@ -3918,7 +3918,7 @@ STR_5573    :Rimuovi dai Preferiti
 STR_5574    :Nome del Server:
 STR_5575    :Giocatori Massimi:
 STR_5576    :Porta:
-STR_5577    :Won sudcoreano (W)
+STR_5577    :Won sudcoreani (W)
 STR_5578    :Rubli Russi (R)
 STR_5579    :Window scale factor:
 STR_5580    :Corona Ceca (Kc)
@@ -3935,19 +3935,19 @@ STR_5590    :Premi del Parco
 STR_5591    :Campagna Marketing finita
 STR_5592    :Avvisi del Parco
 STR_5593    :Avvisi di votazione del Parco
-STR_5594    :La corsa é ripartita
-STR_5595    :La corsa é danneggiata
+STR_5594    :La corsa è ripartita
+STR_5595    :La corsa è danneggiata
 STR_5596    :Avvisi della Corsa
 STR_5597    :Corsa / scenario cercati
 STR_5598    :Avvisi Visitatori
-STR_5599    :Il visitatore si é perso
+STR_5599    :Il visitatore si è perso
 STR_5600    :Il visitatore ha lasciato il parco
 STR_5601    :Il visitatore sta aspettando la corsa
-STR_5602    :Il visitatore é sulla corsa
+STR_5602    :Il visitatore è sulla corsa
 STR_5603    :Il visitatore ha lasciato la corsa
 STR_5604    :Il visitatore ha comprato
 STR_5605    :Il visitatore usa con facilità
-STR_5606    :Il visitatore é morto
+STR_5606    :Il visitatore è morto
 STR_5607    :{SMALLFONT}{BLACK}Rimuovi forzatamente l'elemento della mappa selezionato.
 STR_5608    :BH
 STR_5609    :CH
@@ -4061,13 +4061,13 @@ STR_5748    :Cacciato
 STR_5749    :Esci dal server!
 STR_5750    :Connessione Chiusa
 STR_5751    :Nessun Dato
-STR_5752    :{OUTLINE}{RED}{STRING} si é disconnesso
-STR_5753    :{OUTLINE}{RED}{STRING} si é disconnesso ({STRING})
+STR_5752    :{OUTLINE}{RED}{STRING} si è disconnesso
+STR_5753    :{OUTLINE}{RED}{STRING} si è disconnesso ({STRING})
 STR_5754    :Nome Giocatore errato
 STR_5755    :Versione del Software errata (il Server usa {STRING})
 STR_5756    :Password Sbagliata
 STR_5757    :Server Pieno
-STR_5758    :{OUTLINE}{GREEN}{STRING} é entrato in gioco
+STR_5758    :{OUTLINE}{GREEN}{STRING} è entrato in gioco
 STR_5759    :Scaricamento mappa ... ({INT32} / {INT32}) KiB
 STR_5760    :Dollari di Hong Kong (HK$)
 STR_5761    :Nuovi Dollari Taiwanesi (NT$)
@@ -4120,7 +4120,7 @@ STR_5807    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
 STR_5810    :Disabilita limite di lunghezza del treno
-STR_5811    :{SMALLFONT}{BLACK}If selezionato, puoi avere{NEWLINE}255 macchine per treno
+STR_5811    :{SMALLFONT}{BLACK}Se selezionato, puoi avere{NEWLINE}255 macchine per treno
 STR_5812    :Mostra la finestra multiplayer
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
@@ -4128,9 +4128,9 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Mostra il contatore FPS in gioco
 STR_5816    :{SMALLFONT}{BLACK}Imposta la ratio del gioco.{NEWLINE}Molto utile quando si gioca ad{NEWLINE}alta risoluzione
 STR_5817    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Imposta la tipologia di scalatura UI
-STR_5818    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Utilizza la scalatura piŭ vicina {NEWLINE}quando il fattore di scalatura é{NEWLINE}un valore intero (1, 2, 3, ecc)
-STR_5819    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Gioco in pausa quando Steam{NEWLINE}é in overlay é aperto
-STR_5820    :{SMALLFONT}{BLACK}Minimizza il gioco se il focus é{NEWLINE}perso quando é a tutto schermo
+STR_5818    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Utilizza la scalatura più vicina {NEWLINE}quando il fattore di scalatura è{NEWLINE}un valore intero (1, 2, 3, ecc)
+STR_5819    :{SMALLFONT}{BLACK}[Richiedi hardware display]{NEWLINE}Gioco in pausa quando Steam{NEWLINE} in overlay è aperto
+STR_5820    :{SMALLFONT}{BLACK}Minimizza il gioco se il focus è{NEWLINE}perso quando è a tutto schermo
 STR_5821    :{SMALLFONT}{BLACK}Cambia il colore del marker della construzione con le attrazioni di corse,{NEWLINE}trattorie, negozi, scenari, ecc.
 STR_5822    :{SMALLFONT}{BLACK}Ciclo giorno e notte.{NEWLINE}Il ciclo completo dura un mese di gioco 
 STR_5823    :{SMALLFONT}{BLACK}Mostra gli avvisi in maiuscolo (RCT1)
@@ -4139,7 +4139,7 @@ STR_5825    :{SMALLFONT}{BLACK}Mantieni il cursore del mouse nella finestra
 STR_5826    :{SMALLFONT}{BLACK}Inverti il trascinamento del mouse
 STR_5827    :{SMALLFONT}{BLACK}Imposta il colore dello schema nella interfaccia
 STR_5828    :{SMALLFONT}{BLACK}Cambia le unità di misura usate per le distanze, velocità, ecc.
-STR_5829    :{SMALLFONT}{BLACK}Cambia la moneta utilizzata. Questo valore é solo visuale non cambia l'implementazione interna monetaria
+STR_5829    :{SMALLFONT}{BLACK}Cambia la moneta utilizzata. Questo valore è solo visuale e non cambia l'implementazione interna monetaria
 STR_5830    :{SMALLFONT}{BLACK}Cambia la lingua utilizzata
 STR_5831    :{SMALLFONT}{BLACK}Cambia il formato della{NEWLINE}temperatura visualizzata
 STR_5832    :{SMALLFONT}{BLACK}Mostra l'altezza in unita generiche invece del formato impostato in "Distanza e Velocità"
@@ -4154,7 +4154,7 @@ STR_5840    :{SMALLFONT}{BLACK}Mostra un pulsante differente per i trucchi nella
 STR_5841    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le novità nella barra
 STR_5842    :{SMALLFONT}{BLACK}Ordina gli scenari nelle schede per difficultà (RCT2) o nel sorgente del gioco (RCT1)
 STR_5843    :{SMALLFONT}{BLACK}Abilita lo sblocco dello scenario (RCT1)
-STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multiplayer {NEWLINE}anche se c'é il desync o errori
+STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multiplayer {NEWLINE}anche se c'è il desync o errori
 STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante{NEWLINE}per debuggare nella barra.{NEWLINE}Abilita le shortcut nellatastiera per la console sviluppatori
 STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spesso
 STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l'importazione degli scenari per funzionare
@@ -4173,7 +4173,7 @@ STR_5859    :{SMALLFONT}{BLACK}Abilita l'interpolazione{NEWLINE}morbida durante 
 STR_5861    :Verifica chiave fallita
 STR_5862    :Blocca giocatori sconosciuti.
 STR_5863    :{SMALLFONT}{BLACK}Solo giocatori con chiavi conosciute possono loggarsi.
-STR_5864    :Questo server é abilitato solo i per giocatori whitelisted.
+STR_5864    :Questo server è abilitato solo i per giocatori whitelisted.
 STR_5865    :Storico chat
 STR_5866    :{SMALLFONT}{BLACK}Salva i log della chat in un files nella tua cartella utente.
 STR_5867    :{WINDOW_COLOUR_2}Nome Provider: {BLACK}{STRING}
@@ -4305,7 +4305,7 @@ STR_DTLS    :Crea delle cascate in questo parco molto interessante
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :Al centro di questo grande parco in sviluppo si trova una gigantesca montagna russa in acciaio con tre tracciati
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
@@ -4315,7 +4315,7 @@ STR_DTLS    :This abandoned mine already has the makings of a tourist attraction
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :Un vecchio ponte é tuo e deve diventare un parco meraviglioso
+STR_DTLS    :Un vecchio ponte è tuo e deve diventare un parco meraviglioso
 
 <Funtopia>
 STR_SCNR    :Funtopia
@@ -4375,7 +4375,7 @@ STR_DTLS    :The area around a dam is available for you to develop into an amuse
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :Un vasto canyon è tuo per trasformare in un parco a tema
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
@@ -4390,7 +4390,7 @@ STR_DTLS    :The local authority won't allow you to build above tree height in t
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+STR_DTLS    :Sviluppa questo parco a tema romano aggiungendo attrazioni e montagne russe
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
@@ -4452,27 +4452,27 @@ STR_DTLS    :A large garden park needs turning into a thriving theme park
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :Questo ambizioso parco a tema è costituito da iceberg che creano un ambiente di tipo artico
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :Questa sfida di costruzione di montagne russe è ambientata presso un volcano addormentato
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Senza limiti finanziari, la tua sfida consiste in sviluppare questo parco deserto, mantenendo felici i tuoi visitatori
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Il tuo compito è costruire un gigantesco parco pieno di attrazioni presso Razor Rocks
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :Questo parco è ambientato in un grande lago all'interno di un antico cratere
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
@@ -4572,7 +4572,7 @@ STR_DTLS    :Un grande parco con un nuovo sistem adi trasporto lungo i confini
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :Questa grande isola é tutta tua pornta per diventare un parco bellissimo
+STR_DTLS    :Questa grande isola è tutta tua pornta per diventare un parco bellissimo
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
