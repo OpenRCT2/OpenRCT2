@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Exception.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 
@@ -24,21 +25,27 @@ extern "C"
     #include "../platform/platform.h"
 }
 
-static IDrawingEngine * _drawingEngine = nullptr;
+static sint32           _drawingEngineType  = DRAWING_ENGINE_SOFTWARE;
+static IDrawingEngine * _drawingEngine      = nullptr;
 
-extern "C" rct_string_id DrawingEngineStringIds[] =
+extern "C"
 {
-    STR_DRAWING_ENGINE_SOFTWARE,
-    STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
-    STR_DRAWING_ENGINE_OPENGL,
-};
+    rct_string_id DrawingEngineStringIds[] =
+    {
+        STR_DRAWING_ENGINE_SOFTWARE,
+        STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
+        STR_DRAWING_ENGINE_OPENGL,
+    };
+}
 
 extern "C"
 {
     void drawing_engine_init()
     {
         assert(_drawingEngine == nullptr);
-        switch (gConfigGeneral.drawing_engine) {
+
+        _drawingEngineType = gConfigGeneral.drawing_engine;
+        switch (_drawingEngineType) {
         case DRAWING_ENGINE_SOFTWARE:
             _drawingEngine = DrawingEngineFactory::CreateSoftware();
             break;
@@ -52,16 +59,47 @@ extern "C"
 
         if (_drawingEngine == nullptr)
         {
-            log_error("Unable to create drawing engine. Falling back to software.");
+            if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
+            {
+                _drawingEngineType = DRAWING_ENGINE_NONE;
+                log_fatal("Unable to create a drawing engine.");
+                exit(-1);
+            }
+            else
+            {
+                log_error("Unable to create drawing engine. Falling back to software.");
 
-            // Fallback to software
-            gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
-            config_save_default();
-
-            _drawingEngine = DrawingEngineFactory::CreateSoftware();
+                // Fallback to software
+                gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
+                config_save_default();
+                drawing_engine_init();
+            }
         }
+        else
+        {
+            try
+            {
+                _drawingEngine->Initialise(gWindow);
+            }
+            catch (Exception ex)
+            {
+                if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
+                {
+                    _drawingEngineType = DRAWING_ENGINE_NONE;
+                    log_fatal("Unable to initialise a drawing engine.");
+                    exit(-1);
+                }
+                else
+                {
+                    log_error("Unable to initialise drawing engine. Falling back to software.");
 
-        _drawingEngine->Initialise(gWindow);
+                    // Fallback to software
+                    gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
+                    config_save_default();
+                    drawing_engine_init();
+                }
+            }
+        }
     }
 
     void drawing_engine_resize()
