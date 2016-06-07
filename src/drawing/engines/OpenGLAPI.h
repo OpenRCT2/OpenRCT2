@@ -16,6 +16,8 @@
 
 #pragma once
 
+#if OPENGL_NO_LINK
+
 // BEGIN [Do not define 1.1 function signatures]
 #define glBegin             __static__glBegin
 #define glBindTexture       __static__glBindTexture
@@ -40,7 +42,11 @@
 #define glVertex2i          __static__glVertex2i
 #define glViewport          __static__glViewport
 
+#endif
+
 #include <SDL_opengl.h>
+
+#if OPENGL_NO_LINK
 
 // END [Do not define 1.1 function signatures]
 #undef glBegin
@@ -90,12 +96,12 @@ typedef void (APIENTRYP PFNGLTRANSLATEFPROC    )(GLfloat x, GLfloat y, GLfloat z
 typedef void (APIENTRYP PFNGLVERTEX2IPROC      )(GLint x, GLint y);
 typedef void (APIENTRYP PFNGLVIEWPORTPROC      )(GLint x, GLint y, GLsizei width, GLsizei height);
 
-#if __WINDOWS__
-
 #ifdef NO_EXTERN_GLAPI
+    // Defines the function pointers
     #define GLAPI_DECL
     #define GLAPI_SET   = nullptr
 #else
+    // Defines the functions as "extern"
     #define GLAPI_DECL  extern
     #define GLAPI_SET
 #endif
@@ -128,7 +134,7 @@ GLAPI_DECL PFNGLVIEWPORTPROC        glViewport          GLAPI_SET;
 GLAPI_DECL PFNGLCREATESHADERPROC    glCreateShader      GLAPI_SET;
 GLAPI_DECL PFNGLDELETESHADERPROC    glDeleteShader      GLAPI_SET;
 
-#endif /* __WINDOWS__ */
+#endif /* OPENGL_NO_LINK */
 
 namespace OpenGLAPI
 {

@@ -16,12 +16,10 @@
 
 #ifndef DISABLE_OPENGL
 
-#include <SDL_platform.h>
-
 #define NO_EXTERN_GLAPI
 #include "OpenGLAPI.h"
 
-#if __WINDOWS__
+#if OPENGL_NO_LINK
 
 #include <SDL_video.h>
 
@@ -81,11 +79,11 @@ static const char * TryLoadAllProcAddresses()
     return nullptr;
 }
 
-#endif /* __WINDOWS__ */
+#endif /* #if OPENGL_NO_LINK */
 
 bool OpenGLAPI::Initialise()
 {
-#if __WINDOWS__
+#ifdef OPENGL_NO_LINK
     const char * failedProcName = TryLoadAllProcAddresses();
     if (failedProcName != nullptr)
     {
