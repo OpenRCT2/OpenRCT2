@@ -515,6 +515,7 @@ extern "C"
         gCheatsDisableClearanceChecks = SDL_ReadU8(rw) != 0;
         gCheatsDisableSupportLimits = SDL_ReadU8(rw) != 0;
         gCheatsDisableTrainLengthLimit = SDL_ReadU8(rw) != 0;
+        gCheatsEnableChainLiftOnAllTrack = SDL_ReadU8(rw) != 0;
         gCheatsShowAllOperatingModes = SDL_ReadU8(rw) != 0;
         gCheatsShowVehiclesFromOtherTrackTypes = SDL_ReadU8(rw) != 0;
         gCheatsFastLiftHill = SDL_ReadU8(rw) != 0;

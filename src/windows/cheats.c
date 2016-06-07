@@ -120,6 +120,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_SHOW_ALL_OPERATING_MODES,
 	WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,
 	WIDX_DISABLE_TRAIN_LENGTH_LIMITS,
+	WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK
 };
 
 #pragma region MEASUREMENTS
@@ -246,6 +247,7 @@ static rct_widget window_cheats_rides_widgets[] = {
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(7),			OHPL(7),		STR_CHEAT_SHOW_ALL_OPERATING_MODES,	STR_NONE }, 							// Show all operating modes
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(6),			OHPL(6),		STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,	STR_NONE }, 				// Show vehicles from other track types
 	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(12),		OHPL(12),		STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,	STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP },	// Disable train length limits
+	{ WWT_CHECKBOX,			2,		XPL(0),					OWPL,					YPL(13),		OHPL(13),		STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,	STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },	// Enable chain lift on all track
 	{ WIDGETS_END },
 };
 
@@ -417,7 +419,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
 	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_RENEW_RIDES) |
 		(1ULL << WIDX_MAKE_DESTRUCTIBLE) | (1ULL << WIDX_FIX_ALL) | (1ULL << WIDX_FAST_LIFT_HILL) | (1ULL << WIDX_DISABLE_BRAKES_FAILURE) |
 		(1ULL << WIDX_DISABLE_ALL_BREAKDOWNS) | (1ULL << WIDX_BUILD_IN_PAUSE_MODE) | (1ULL << WIDX_RESET_CRASH_STATUS) | (1ULL << WIDX_10_MINUTE_INSPECTIONS) |
-		(1ULL << WIDX_SHOW_ALL_OPERATING_MODES) | (1ULL << WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES) |(1ULL << WIDX_DISABLE_TRAIN_LENGTH_LIMITS)
+		(1ULL << WIDX_SHOW_ALL_OPERATING_MODES) | (1ULL << WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES) | (1ULL << WIDX_DISABLE_TRAIN_LENGTH_LIMITS) | (1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK)
 };
 
 static rct_string_id window_cheats_page_titles[] = {
@@ -739,6 +741,9 @@ static void window_cheats_rides_mouseup(rct_window *w, int widgetIndex)
 			window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
 		}
 		break;
+	case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
+		game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ENABLECHAINLIFTONALLTRACK, 0, GAME_COMMAND_CHEAT, 0, 0);
+		break;
 	}
 }
 
@@ -810,6 +815,7 @@ static void window_cheats_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_SHOW_ALL_OPERATING_MODES, gCheatsShowAllOperatingModes);
 		widget_set_checkbox_value(w, WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gCheatsShowVehiclesFromOtherTrackTypes);
 		widget_set_checkbox_value(w, WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gCheatsDisableTrainLengthLimit);
+		widget_set_checkbox_value(w, WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gCheatsEnableChainLiftOnAllTrack);
 		break;
 	}
 

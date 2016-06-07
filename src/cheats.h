@@ -36,6 +36,8 @@ extern bool gCheatsNeverendingMarketing;
 extern bool gCheatsFreezeClimate;
 extern bool gCheatsDisableTrainLengthLimit;
 extern bool gCheatsDisablePlantAging;
+extern bool gCheatsEnableChainLiftOnAllTrack;
+
 
 enum {
 	CHEAT_SANDBOXMODE,
@@ -44,6 +46,7 @@ enum {
 	CHEAT_SHOWALLOPERATINGMODES,
 	CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES,
 	CHEAT_DISABLETRAINLENGTHLIMIT,
+	CHEAT_ENABLECHAINLIFTONALLTRACK,
 	CHEAT_FASTLIFTHILL,
 	CHEAT_DISABLEBRAKESFAILURE,
 	CHEAT_DISABLEALLBREAKDOWNS,

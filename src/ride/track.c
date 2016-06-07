@@ -653,7 +653,7 @@ static money32 track_place(int rideIndex, int type, int originX, int originY, in
 				return MONEY32_UNDEFINED;
 			}
 		}
-		if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP))) {
+		if ((edx_flags & (1 << 0)) && !(enabledTrackPieces & (1ULL << TRACK_LIFT_HILL_STEEP)) && !gCheatsEnableChainLiftOnAllTrack) {
 			if (RCT2_ADDRESS(0x0099423C, uint16)[type] & 0x400) {
 				gGameCommandErrorText = STR_TOO_STEEP_FOR_LIFT_HILL;
 				return MONEY32_UNDEFINED;

@@ -550,6 +550,7 @@ extern "C"
         SDL_WriteU8(rw, gCheatsDisableClearanceChecks);
         SDL_WriteU8(rw, gCheatsDisableSupportLimits);
         SDL_WriteU8(rw, gCheatsDisableTrainLengthLimit);
+        SDL_WriteU8(rw, gCheatsEnableChainLiftOnAllTrack);
         SDL_WriteU8(rw, gCheatsShowAllOperatingModes);
         SDL_WriteU8(rw, gCheatsShowVehiclesFromOtherTrackTypes);
         SDL_WriteU8(rw, gCheatsFastLiftHill);
