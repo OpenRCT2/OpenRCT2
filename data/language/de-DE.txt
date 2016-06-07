@@ -4000,6 +4000,7 @@ STR_5662    :N/A
 STR_5663    :Landschaft leeren
 STR_5664    :Cheats
 STR_5665    :Bau Szenerie-Objektgruppe ein-/ausschalten
+STR_5666    :Passwortloser Login
 STR_5701    :{WINDOW_COLOUR_2}Letzte Aktion: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Lokalisiert die letzte Aktion des Spielers
 STR_5703    :Host kann nicht entfernt werden
@@ -4159,6 +4160,16 @@ STR_5856    :{SMALLFONT}{BLACK}Die im Vollbildmodus verwendete{NEWLINE}Auflösun
 STR_5857    :{SMALLFONT}{BLACK}Spieloptionen
 STR_5858    :{SMALLFONT}{BLACK}GPU anstelle der CPU für die Anzeige verwenden. Verbessert die Kompatibilität mit Aufnahmeprogrammen. Möglicherweise wird die Leistung geringfügig beeinträchtigt
 STR_5859    :{SMALLFONT}{BLACK}Aktiviert Tweening für ein sichtbar flüssigeres Spielverhalten. Wenn deaktiviert läuft das Spiel mit 40 FPS
+STR_5861    :Schlüsselüberprüfung fehlgeschlagen.
+STR_5862    :Blockiere unbekannte Spieler.
+STR_5863    :{SMALLFONT}{BLACK}Erlaube nur Spieler, mit bekanntem Schlüssel, sich zu verbinden.
+STR_5864    :Dieser Server erlaubt nur Spieler,{NEWLINE}die auf der Whitelist / Positivliste stehen.
+STR_5865    :Logge Chatverlauf
+STR_5866    :{SMALLFONT}{BLACK}Speichert den gesamten Chatverlauf in deinem Benutzerverzeichnis.
+STR_5867    :{WINDOW_COLOUR_2}Providername: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}Provider-E-Mail-Adresse: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Providerwebseite: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}Informationen zum Server anzeigen
 
 #############
 # Scenarios #

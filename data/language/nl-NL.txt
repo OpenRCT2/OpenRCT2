@@ -3999,6 +3999,7 @@ STR_5662    :n.v.t.
 STR_5663    :Landschap leegmaken
 STR_5664    :Cheaten
 STR_5665    :Clusters van decoritems bouwen
+STR_5666    :Inloggen zonder wachtwoord
 STR_5701    :{WINDOW_COLOUR_2}Laatste actie: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Laatste actie van deze speler localiseren
 STR_5703    :De host kan niet worden verwijderd
@@ -4160,6 +4161,16 @@ STR_5856    :{SMALLFONT}{BLACK}Stelt de gebruikte schermresolutie bij volledig s
 STR_5857    :{SMALLFONT}{BLACK}Spelopties
 STR_5858    :{SMALLFONT}{BLACK}Leidt de grafische uitvoer door de GPU. Dit verbetert de compatibiliteit met schermopnamesoftware, maar kan de prestaties iets verminderen.
 STR_5859    :{SMALLFONT}{BLACK}Frame tweening gebruiken om de weergave vloeiender te maken. Als dit is uitgeschakeld zal het spel draaien op 40 FPS.
+STR_5861    :Kon de sleutel niet verifiëren.
+STR_5862    :Onbekende spelers blokkeren
+STR_5863    :{SMALLFONT}{BLACK}Alleen spelers met bekende sleutels toelaten.
+STR_5864    :Deze server laat enkel spelers toe die op de witte lijst staan.
+STR_5865    :Chatgeschiedenis bewaren
+STR_5866    :{SMALLFONT}{BLACK}Slaat de chatgeschiedenis op in je gebruikersmap.
+STR_5867    :{WINDOW_COLOUR_2}Naam provider: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}E-mailadres provider: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Website provider: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}Serverinformatie tonen
 
 #############
 # Scenarios #

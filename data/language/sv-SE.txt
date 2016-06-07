@@ -4181,6 +4181,8 @@ STR_5867    :{WINDOW_COLOUR_2}Ägarens Namn: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Ägarens E-post: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Ägarens Hemsida: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Visa server information
+STR_5871    :Växter åldras inte
+STR_5872    :{SMALLFONT}{BLACK}Avaktivera växterna från att åldras så dem inte visnar
 
 
 #############

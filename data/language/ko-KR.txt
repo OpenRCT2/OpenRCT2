@@ -4176,6 +4176,8 @@ STR_5867    :{WINDOW_COLOUR_2}서버 운영자: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}서버 전자우편: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}서버 웹사이트: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}서버 정보 보기
+STR_5871    :꽃이 시들지 않게 하기
+STR_5872    :{SMALLFONT}{BLACK}꽃이 시들지 않게 만듭니다.
 
 
 #############

@@ -570,38 +570,38 @@ STR_0565    :En enkel berg-og-dal-bane i tre hvor vognene kun holdes på sporet 
 STR_0566    :Berg-og-dal-banevogner fyker rundt en trang bane preget av sikksakk-mønstre og korte, skarpe fall
 STR_0567    :I seter hengende utover siden av sporet fyker passasjerene hodestups ned bratte fall og diverse inversjoner
 STR_0568    :
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
+STR_0569    :I spesialseler hengende under sporet opplever passasjerene en følelse av å fly gjennom luften
 STR_0570    :
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
-STR_0573    :Powered helicopter shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
-STR_0575    :Powered trains hanging from a single rail transport people around the park
+STR_0571    :Sirkulære vogner spinner mens de blir ledet gjennom en sikksakkbane av tre
+STR_0572    :Båter med høy kapasitet flyter langs en vid kanal, trukket opp bakker av et belte, hvor de fyker ned bratte fall for å gjøre passasjerene gjennomvåte
+STR_0573    :Helikopterformede vogner kjører langs en stålbane, drevet av pedalkraft
+STR_0574    :Passasjerer ligger i spesielle seler mens de raser gjennom vridde baner med inversjoner, enten på magen eller ryggen
+STR_0575    :Motoriserte tog hengende fra en skinne transporterer gjester rundt i parken
 STR_0576    :
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0577    :Vogner kjører på trebaner hvor de blir snudd rundt av spesielle baneseksjoner
+STR_0578    :Vogner kjører langs en bane lukket av ringer, hvor de blir ledet ned bratte bakker og gjennom vridninger
 STR_0579    :
-STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
-STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
+STR_0580    :En gigantisk stålberg-og-dal-bane med mulighet for myke fall og høyder på over 100 m
+STR_0581    :En ring med seter blir dratt til toppen av et høyt tårn mens den spinner rolig, for så å falle fritt ned til bakken hvor den blir stoppet av magnetiske bremser
 STR_0582    :
 STR_0583    :
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
+STR_0584    :Spesielle sykler kjører langs en stålskinne, drevet av pedalkraft
+STR_0585    :Passasjerer sitter i par, hengende under banen mens de looper og vrir gjennom skarpe inversjoner
+STR_0586    :Båtformede vogner kjører på berg-og-dal-banespor som tillater vridde kurver og skarpe fall, men også muligheten for å plaske ned i rolige elveseksjoner
+STR_0587    :Etter en spennende utskytning skyter toget opp en vertikal bakke, over toppen, og vertikalt ned og tilbake
+STR_0588    :Individuelle vogner kjører under en sikksakkbane med hårnålssvinger og skarpe fall
 STR_0589    :
-STR_0590    :Riders ride in a submerged submarine through an underwater course
-STR_0591    :Raft-shaped boats gently meander around a river track
+STR_0590    :Passasjerer kjører i en undervannsbåt gjennom en undervannsbane
+STR_0591    :Raftformede båter flyter rolig langs en elvebane
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
-STR_0600    :Powered mine trains career along a smooth and twisted track layout
+STR_0598    :Inverterte berg-og-dal-banetog blir akselerert ut fra stasjonen for å reise opp en 'pigg', for så å falle ned igjen, gjennom stasjonen, og opp en pigg på andre siden
+STR_0599    :En kompakt berg-og-dal-bane med indivuelle vogner og myke, vridde fall
+STR_0600    :Motoriserte minetog ruller langs et mykt og vridd spor
 STR_0601    :
 STR_0602    :Berg-og-dal-banetog blir akselerert ut av stasjonen med lineære induksjonsmotorer og gjennom en rekke vridde inversjoner
 STR_0603    :Gjest {INT32}
@@ -989,72 +989,72 @@ STR_0983    :Forskning og utvikling
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-STR_0987    :Too many rides/attractions
-STR_0988    :Can't create new ride/attraction...
+STR_0987    :For mange attraksjoner
+STR_0988    :Kan ikke konstruere ny attraksjon...
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}Construction
-STR_0991    :Station platform
-STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
-STR_0993    :Demolish ride/attraction
-STR_0994    :Demolish
-STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
-STR_0996    :Overall view
-STR_0997    :{SMALLFONT}{BLACK}View selection
-STR_0998    :No more stations allowed on this ride
-STR_0999    :Requires a station platform
-STR_1000    :Track is not a complete circuit
-STR_1001    :Track unsuitable for type of train
-STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
-STR_1006    :Must be closed first
-STR_1007    :Unable to create enough vehicles
-STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
-STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
-STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
-STR_1015    :Unable to operate with more than one station platform in this mode
-STR_1016    :Unable to operate with less than two stations in this mode
-STR_1017    :Can't change operating mode...
-STR_1018    :Can't make changes...
-STR_1019    :Can't make changes...
-STR_1020    :Can't make changes...
+STR_0990    :{SMALLFONT}{BLACK}Konstruksjon
+STR_0991    :Stasjonsplatform
+STR_0992    :{SMALLFONT}{BLACK}Riv hele attraksjonen
+STR_0993    :Riv attraksjon
+STR_0994    :Riv ned
+STR_0995    :{WINDOW_COLOUR_1}Er du sikker på at du vil rive {STRINGID}?
+STR_0996    :Oversiktsvisning
+STR_0997    :{SMALLFONT}{BLACK}Vis markering
+STR_0998    :Ingen flere stasjoner tillatt på denne attraksjonen
+STR_0999    :Krever stasjonsplatform
+STR_1000    :Banen er ikke en komplett krets
+STR_1001    :Banen er ikke egnet for den typen tog
+STR_1002    :Kan ikke åpne {POP16}{POP16}{POP16}{STRINGID}...
+STR_1003    :Kan ikke teste {POP16}{POP16}{POP16}{STRINGID}...
+STR_1004    :Kan ikke stenge {POP16}{POP16}{POP16}{STRINGID}...
+STR_1005    :Kan ikke starte konstruksjon på {POP16}{POP16}{POP16}{STRINGID}...
+STR_1006    :Må stenges først
+STR_1007    :Kunne ikke opprette nok vogner
+STR_1008    :{SMALLFONT}{BLACK}Åpne, steng eller test attraksjon
+STR_1009    :{SMALLFONT}{BLACK}Åpne, stenge eller teste alle attraksjoner
+STR_1010    :{SMALLFONT}{BLACK}Åpne eller stenge park
+STR_1011    :Steng alle
+STR_1012    :Åpne alle
+STR_1013    :Steng park
+STR_1014    :Åpne park
+STR_1015    :Kan ikke operere med mer enn én stasjon i denne modusen
+STR_1016    :Kan ikke operere med mindre enn to stasjoner i denne modusen
+STR_1017    :Kan ikke endre operasjonsmodus...
+STR_1018    :Kunne ikke utføre endringer...
+STR_1019    :Kunne ikke utføre endringer...
+STR_1020    :Kunne ikke utføre endringer...
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
-STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
-STR_1024    :{COMMA16} car per train
-STR_1025    :{COMMA16} cars per train
-STR_1026    :Station platform too long!
-STR_1027    :{SMALLFONT}{BLACK}Locate this on Main View
-STR_1028    :Off edge of map!
-STR_1029    :Cannot build partly above and partly below water!
-STR_1030    :Can only build this underwater!
-STR_1031    :Can't build this underwater!
-STR_1032    :Can only build this on water!
-STR_1033    :Can only build this above ground!
-STR_1034    :Can only build this on land!
-STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
-STR_1037    :Load Landscape
-STR_1038    :Convert saved game to scenario
-STR_1039    :Install new track design
-STR_1040    :Save Game
-STR_1041    :Save Scenario
-STR_1042    :Save Landscape
-STR_1043    :OpenRCT2 Saved Game
-STR_1044    :OpenRCT2 Scenario File
-STR_1045    :OpenRCT2 Landscape File
-STR_1046    :OpenRCT2 Track Design File
-STR_1047    :Game save failed!
-STR_1048    :Scenario save failed!
-STR_1049    :Landscape save failed!
-STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
-STR_1051    :Invisible Supports
-STR_1052    :Invisible People
+STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vogn per tog
+STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vogner per tog
+STR_1024    :{COMMA16} vogn per tog
+STR_1025    :{COMMA16} vogner per tog
+STR_1026    :Stasjonsplatform for lang!
+STR_1027    :{SMALLFONT}{BLACK}Finn denne lokasjonen i hovedvisning
+STR_1028    :Utenfor kartet!
+STR_1029    :Kan ikke bygge delvis under vann!
+STR_1030    :Kan kun bygges under vann!
+STR_1031    :Kan ikke bygges under vann!
+STR_1032    :Kan kun bygges på vann!
+STR_1033    :Kan kun bygges over bakken!
+STR_1034    :Kan kun bygges på land!
+STR_1035    :Lokalmyndighetene tillater ikke konstruksjon over trehøyde!
+STR_1036    :Last inn spill
+STR_1037    :Last inn landskap
+STR_1038    :Konverter lagret spill til scenario
+STR_1039    :Installer nytt spordesign
+STR_1040    :Lagre spill
+STR_1041    :Lagre scenario
+STR_1042    :Lagre landskap
+STR_1043    :OpenRCT2 lagret spill
+STR_1044    :OpenRCT2 scenariofil
+STR_1045    :OpenRCT2 landskapsfil
+STR_1046    :OpenRCT2 spordesign-fil
+STR_1047    :Klarte ikke lagre spill!
+STR_1048    :Klarte ikke lagre scenario!
+STR_1049    :Klarte ikke lagre landskap!
+STR_1050    :Klarte ikke laste inn...{NEWLINE}Filen inneholder ugyldig data!
+STR_1051    :Usynlige støtter
+STR_1052    :Usynlige mennesker
 STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
 STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
 STR_1055    :{SMALLFONT}{BLACK}Name person
@@ -4173,6 +4173,12 @@ STR_5861    :Key verification failure.
 STR_5862    :Block unknown players.
 STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
 STR_5864    :This server only allows whitelisted players to connect.
+STR_5865    :Loggfør chathistorie
+STR_5866    :{SMALLFONT}{BLACK}Loggfører all chathistorie til filer i din brukerkatalog.
+STR_5867    :{WINDOW_COLOUR_2}Leverandørens navn: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}Leverandørens epost: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Leverandørens nettside: {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}Vis serverinformasjon
 
 #############
 # Scenarios #
