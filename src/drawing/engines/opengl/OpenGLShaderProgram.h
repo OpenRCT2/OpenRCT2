@@ -52,5 +52,8 @@ public:
     GLuint  GetAttributeLocation(const char * name);
     GLuint  GetUniformLocation(const char * name);
     void    Use();
+
+private:
+    bool Link();
 };
 

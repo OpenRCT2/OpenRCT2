@@ -5,7 +5,7 @@ uniform ivec4 uClip;
 uniform int   uFlags;
 uniform vec4  uColour;
 
-in ivec2 fPosition;
+flat in ivec2 fPosition;
 
 layout (location = 0) out vec4 oColour;
 
@@ -16,6 +16,6 @@ void main()
     {
         discard;
     }
-
+    
     oColour = uColour;
 }

@@ -26,8 +26,10 @@ FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
     glGenVertexArrays(1, &_vao);
 
     Use();
-    glVertexAttribPointer(vPosition, 2, GL_INT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glBindVertexArray(_vao);
     glEnableVertexAttribArray(vPosition);
+    glVertexAttribIPointer(vPosition, 2, GL_INT, 0, 0);
 }
 
 FillRectShader::~FillRectShader()

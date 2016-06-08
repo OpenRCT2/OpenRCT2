@@ -62,6 +62,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glEnable);
     SetupOpenGLFunction(glEnd);
     SetupOpenGLFunction(glGenTextures);
+    SetupOpenGLFunction(glGetError);
     SetupOpenGLFunction(glLoadIdentity);
     SetupOpenGLFunction(glMatrixMode);
     SetupOpenGLFunction(glOrtho);
@@ -76,6 +77,7 @@ static const char * TryLoadAllProcAddresses()
     // 2.0+ functions
     SetupOpenGLFunction(glAttachShader);
     SetupOpenGLFunction(glBindBuffer);
+    SetupOpenGLFunction(glBindFragDataLocation);
     SetupOpenGLFunction(glBindVertexArray);
     SetupOpenGLFunction(glBufferData);
     SetupOpenGLFunction(glCompileShader);
@@ -89,6 +91,8 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glEnableVertexAttribArray);
     SetupOpenGLFunction(glGetAttribLocation);
     SetupOpenGLFunction(glGenBuffers);
+    SetupOpenGLFunction(glGetProgramInfoLog);
+    SetupOpenGLFunction(glGetProgramiv);
     SetupOpenGLFunction(glGetShaderInfoLog);
     SetupOpenGLFunction(glGetShaderiv);
     SetupOpenGLFunction(glGetUniformLocation);
@@ -100,7 +104,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glUniform4f);
     SetupOpenGLFunction(glUniform4i);
     SetupOpenGLFunction(glUseProgram);
-    SetupOpenGLFunction(glVertexAttribPointer);
+    SetupOpenGLFunction(glVertexAttribIPointer);
 
     return nullptr;
 }

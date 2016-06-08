@@ -32,6 +32,7 @@
 #define glEnable            __static__glEnable
 #define glEnd               __static__glEnd
 #define glGenTextures       __static__glGenTextures
+#define glGetError          __static__glGetError
 #define glLoadIdentity      __static__glLoadIdentity
 #define glMatrixMode        __static__glMatrixMode
 #define glOrtho             __static__glOrtho
@@ -63,6 +64,7 @@
 #undef glEnable
 #undef glEnd
 #undef glGenTextures
+#undef glGetError
 #undef glLoadIdentity
 #undef glMatrixMode
 #undef glOrtho
@@ -75,29 +77,30 @@
 #undef glViewport
 
 // 1.1 function signatures
-typedef void (APIENTRYP PFNGLBEGINPROC         )(GLenum mode);
-typedef void (APIENTRYP PFNGLBINDTEXTUREPROC   )(GLenum target, GLuint texture);
-typedef void (APIENTRYP PFNGLBLENDFUNCPROC     )(GLenum sfactor, GLenum dfactor);
-typedef void (APIENTRYP PFNGLCLEARPROC         )(GLbitfield mask);
-typedef void (APIENTRYP PFNGLCLEARCOLORPROC    )(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
-typedef void (APIENTRYP PFNGLCOLOR3FPROC       )(GLfloat red, GLfloat green, GLfloat blue);
-typedef void (APIENTRYP PFNGLCOLOR4FPROC       )(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
-typedef void (APIENTRYP PFNGLDELETETEXTURESPROC)(GLsizei n, const GLuint *textures);
-typedef void (APIENTRYP PFNGLDISABLEPROC       )(GLenum cap);
-typedef void (APIENTRYP PFNGLDRAWARRAYSPROC    )(GLenum mode, GLint first, GLsizei count);
-typedef void (APIENTRYP PFNGLENABLEPROC        )(GLenum cap);
-typedef void (APIENTRYP PFNGLENDPROC           )(void);
-typedef void (APIENTRYP PFNGLGENTEXTURESPROC   )(GLsizei n, GLuint *textures);
-typedef void (APIENTRYP PFNGLLOADIDENTITYPROC  )(void);
-typedef void (APIENTRYP PFNGLMATRIXMODEPROC    )(GLenum mode);
-typedef void (APIENTRYP PFNGLORTHOPROC         )(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble near_val, GLdouble far_val);
-typedef void (APIENTRYP PFNGLSCALEFPROC        )(GLfloat x, GLfloat y, GLfloat z);
-typedef void (APIENTRYP PFNGLTEXCOORD2FPROC    )(GLfloat s, GLfloat t);
-typedef void (APIENTRYP PFNGLTEXIMAGE2DPROC    )(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
-typedef void (APIENTRYP PFNGLTEXPARAMETERIPROC )(GLenum target, GLenum pname, GLint param);
-typedef void (APIENTRYP PFNGLTRANSLATEFPROC    )(GLfloat x, GLfloat y, GLfloat z);
-typedef void (APIENTRYP PFNGLVERTEX2IPROC      )(GLint x, GLint y);
-typedef void (APIENTRYP PFNGLVIEWPORTPROC      )(GLint x, GLint y, GLsizei width, GLsizei height);
+typedef void   (APIENTRYP PFNGLBEGINPROC         )(GLenum mode);
+typedef void   (APIENTRYP PFNGLBINDTEXTUREPROC   )(GLenum target, GLuint texture);
+typedef void   (APIENTRYP PFNGLBLENDFUNCPROC     )(GLenum sfactor, GLenum dfactor);
+typedef void   (APIENTRYP PFNGLCLEARPROC         )(GLbitfield mask);
+typedef void   (APIENTRYP PFNGLCLEARCOLORPROC    )(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
+typedef void   (APIENTRYP PFNGLCOLOR3FPROC       )(GLfloat red, GLfloat green, GLfloat blue);
+typedef void   (APIENTRYP PFNGLCOLOR4FPROC       )(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha);
+typedef void   (APIENTRYP PFNGLDELETETEXTURESPROC)(GLsizei n, const GLuint *textures);
+typedef void   (APIENTRYP PFNGLDISABLEPROC       )(GLenum cap);
+typedef void   (APIENTRYP PFNGLDRAWARRAYSPROC    )(GLenum mode, GLint first, GLsizei count);
+typedef void   (APIENTRYP PFNGLENABLEPROC        )(GLenum cap);
+typedef void   (APIENTRYP PFNGLENDPROC           )(void);
+typedef GLenum (APIENTRYP PFNGLGETERRORPROC      )(void);
+typedef void   (APIENTRYP PFNGLGENTEXTURESPROC   )(GLsizei n, GLuint *textures);
+typedef void   (APIENTRYP PFNGLLOADIDENTITYPROC  )(void);
+typedef void   (APIENTRYP PFNGLMATRIXMODEPROC    )(GLenum mode);
+typedef void   (APIENTRYP PFNGLORTHOPROC         )(GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble near_val, GLdouble far_val);
+typedef void   (APIENTRYP PFNGLSCALEFPROC        )(GLfloat x, GLfloat y, GLfloat z);
+typedef void   (APIENTRYP PFNGLTEXCOORD2FPROC    )(GLfloat s, GLfloat t);
+typedef void   (APIENTRYP PFNGLTEXIMAGE2DPROC    )(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
+typedef void   (APIENTRYP PFNGLTEXPARAMETERIPROC )(GLenum target, GLenum pname, GLint param);
+typedef void   (APIENTRYP PFNGLTRANSLATEFPROC    )(GLfloat x, GLfloat y, GLfloat z);
+typedef void   (APIENTRYP PFNGLVERTEX2IPROC      )(GLint x, GLint y);
+typedef void   (APIENTRYP PFNGLVIEWPORTPROC      )(GLint x, GLint y, GLsizei width, GLsizei height);
 
 #ifdef NO_EXTERN_GLAPI
     // Defines the function pointers
@@ -137,6 +140,7 @@ GLAPI_DECL PFNGLVIEWPORTPROC                    glViewport                  GLAP
 // 2.0+ function pointers
 GLAPI_DECL PFNGLATTACHSHADERPROC                glAttachShader              GLAPI_SET;
 GLAPI_DECL PFNGLBINDBUFFERPROC                  glBindBuffer                GLAPI_SET;
+GLAPI_DECL PFNGLBINDFRAGDATALOCATIONPROC        glBindFragDataLocation      GLAPI_SET;
 GLAPI_DECL PFNGLBINDVERTEXARRAYPROC             glBindVertexArray           GLAPI_SET;
 GLAPI_DECL PFNGLBUFFERDATAPROC                  glBufferData                GLAPI_SET;
 GLAPI_DECL PFNGLCOMPILESHADERPROC               glCompileShader             GLAPI_SET;
@@ -150,6 +154,9 @@ GLAPI_DECL PFNGLDETACHSHADERPROC                glDetachShader              GLAP
 GLAPI_DECL PFNGLENABLEVERTEXATTRIBARRAYPROC     glEnableVertexAttribArray   GLAPI_SET;
 GLAPI_DECL PFNGLGETATTRIBLOCATIONPROC           glGetAttribLocation         GLAPI_SET;
 GLAPI_DECL PFNGLGENBUFFERSPROC                  glGenBuffers                GLAPI_SET;
+GLAPI_DECL PFNGLGETERRORPROC                    glGetError                  GLAPI_SET;
+GLAPI_DECL PFNGLGETPROGRAMINFOLOGPROC           glGetProgramInfoLog         GLAPI_SET;
+GLAPI_DECL PFNGLGETPROGRAMIVPROC                glGetProgramiv              GLAPI_SET;
 GLAPI_DECL PFNGLGETSHADERINFOLOGPROC            glGetShaderInfoLog          GLAPI_SET;
 GLAPI_DECL PFNGLGETSHADERIVPROC                 glGetShaderiv               GLAPI_SET;
 GLAPI_DECL PFNGLGETUNIFORMLOCATIONPROC          glGetUniformLocation        GLAPI_SET;
@@ -161,7 +168,7 @@ GLAPI_DECL PFNGLUNIFORM2IPROC                   glUniform2i                 GLAP
 GLAPI_DECL PFNGLUNIFORM4FPROC                   glUniform4f                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4IPROC                   glUniform4i                 GLAPI_SET;
 GLAPI_DECL PFNGLUSEPROGRAMPROC                  glUseProgram                GLAPI_SET;
-GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAPI_SET;
+GLAPI_DECL PFNGLVERTEXATTRIBIPOINTERPROC        glVertexAttribIPointer      GLAPI_SET;
 
 #endif /* OPENGL_NO_LINK */
 

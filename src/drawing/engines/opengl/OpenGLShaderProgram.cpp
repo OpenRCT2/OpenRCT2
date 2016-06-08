@@ -103,11 +103,22 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char * name)
 {
     _vertexShader = new OpenGLShader(name, GL_VERTEX_SHADER);
     _fragmentShader = new OpenGLShader(name, GL_FRAGMENT_SHADER);
-    _id = glCreateProgram();
 
+    _id = glCreateProgram();
     glAttachShader(_id, _vertexShader->GetShaderId());
     glAttachShader(_id, _fragmentShader->GetShaderId());
-    glLinkProgram(_id);
+
+    if (!Link())
+    {
+        char buffer[512];
+        GLsizei length;
+        glGetProgramInfoLog(_id, sizeof(buffer), &length, buffer);
+
+        Console::Error::WriteFormat("Error linking %s\n", name);
+        Console::Error::WriteLine(buffer);
+
+        throw Exception("Failed to link OpenGL shader.");
+    }
 }
 
 OpenGLShaderProgram::~OpenGLShaderProgram()
@@ -138,6 +149,15 @@ GLuint OpenGLShaderProgram::GetUniformLocation(const char * name)
 void OpenGLShaderProgram::Use()
 {
     glUseProgram(_id);
+}
+
+bool OpenGLShaderProgram::Link()
+{
+    glLinkProgram(_id);
+
+    GLint linkStatus;
+    glGetProgramiv(_id, GL_LINK_STATUS, &linkStatus);
+    return linkStatus == GL_TRUE;
 }
 
 #endif /* DISABLE_OPENGL */

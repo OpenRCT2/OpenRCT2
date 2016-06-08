@@ -142,8 +142,8 @@ public:
 
         _drawingContext->Initialise();
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        // glEnable(GL_BLEND);
+        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -175,15 +175,15 @@ public:
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glMatrixMode(GL_PROJECTION_MATRIX);
-        glLoadIdentity();
-        glOrtho(0, _width, _height, 0, -1.0, 1.0);
+        // glMatrixMode(GL_PROJECTION_MATRIX);
+        // glLoadIdentity();
+        // glOrtho(0, _width, _height, 0, -1.0, 1.0);
 
-        glMatrixMode(GL_MODELVIEW_MATRIX);
-        glLoadIdentity();
-        glScalef(1, -1.0f, 0);
-        glTranslatef(-1.0f, -1.0f, 0);
-        glScalef(2.0f / _width, 2.0f / _height, 0);
+        // glMatrixMode(GL_MODELVIEW_MATRIX);
+        // glLoadIdentity();
+        // glScalef(1, -1.0f, 0);
+        // glTranslatef(-1.0f, -1.0f, 0);
+        // glScalef(2.0f / _width, 2.0f / _height, 0);
 
         if (gIntroState != INTRO_STATE_NONE) {
             intro_draw(&_bitsDPI);
@@ -328,6 +328,14 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 {
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
 
+    _fillRectShader->Use();
+    _fillRectShader->SetScreenSize(gScreenWidth, gScreenHeight);
+    _fillRectShader->SetColour(paletteColour);
+    _fillRectShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
+    _fillRectShader->Draw(left, top, right, bottom);
+
+    return;
+
     if (left > right)
     {
         left ^= right;
@@ -377,6 +385,8 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 
 void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
 {
+    return;
+
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
     glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
     glBegin(GL_LINES);
@@ -387,6 +397,8 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
 
 void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
 {
+    return;
+
     int g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
