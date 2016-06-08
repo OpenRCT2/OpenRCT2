@@ -928,7 +928,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
     }
     else if (colour & 0x8000000)
     {
-        int esi = left - RCT2_GLOBAL(0x1420070, sint16);
+        uintptr_t esi = left - RCT2_GLOBAL(0x1420070, sint16);
         RCT2_GLOBAL(0xEDF824, uint32) = esi;
         esi = top - RCT2_GLOBAL(0x1420072, sint16);
         RCT2_GLOBAL(0xEDF828, uint32) = esi;
@@ -964,7 +964,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
         esi += dpi->pitch;
         esi *= top;
         esi += left;
-        esi += (uint32)dpi->bits;
+        esi += (uintptr_t)dpi->bits;
         RCT2_GLOBAL(0xEDF82C, sint32) = right;
         RCT2_GLOBAL(0xEDF830, sint32) = bottom;
         left = dpi->width;
@@ -981,7 +981,7 @@ void SoftwareDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, si
         esi = RCT2_GLOBAL(0xEDF828, sint32);
         esi *= 0x40;
         left = 0;
-        esi += (uint32)g1Elements[right].offset;//???
+        esi += (uintptr_t)g1Elements[right].offset;//???
         //Not finished
         //Start of loop
     }

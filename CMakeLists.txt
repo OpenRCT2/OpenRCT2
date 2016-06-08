@@ -33,6 +33,8 @@ add_definitions(-DCURL_STATICLIB)
 
 INCLUDE(FindPkgConfig)
 
+# Options
+
 option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 if (DISABLE_HTTP_TWITCH)
 	add_definitions(-DDISABLE_HTTP -DDISABLE_TWITCH)
@@ -41,6 +43,7 @@ endif (DISABLE_HTTP_TWITCH)
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(STATIC "Create a static build.")
 option(FORCE64 "Force native (x86-64) build. Do not use, for experimental purposes only.")
+option(DISABLE_OPENGL "Disable OpenGL support.")
 
 if (FORCE64)
 	set(TARGET_M "-m64")
@@ -53,6 +56,10 @@ else ()
 	set(LINKER_SCRIPT "ld_script_i386.xc")
 endif ()
 
+if (DISABLE_OPENGL)
+	add_definitions(-DDISABLE_OPENGL)
+endif (DISABLE_OPENGL)
+
 if (DISABLE_NETWORK)
 	add_definitions(-DDISABLE_NETWORK)
 else (DISABLE_NETWORK)
@@ -63,6 +70,8 @@ else (DISABLE_NETWORK)
 	# This is too old and will not work.
 	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
 endif (DISABLE_NETWORK)
+
+# Start of library checks
 
 PKG_CHECK_MODULES(PNG libpng>=1.6)
 if (NOT PNG_FOUND)
@@ -148,14 +157,6 @@ if (MINGW)
 	set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
 endif ()
 
-if (STATIC)
-	if (WIN32)
-		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static")
-	else (WIN32)
-		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
-	endif (WIN32)
-endif ()
-
 option(WITH_BREAKPAD "Enable breakpad")
 if (WITH_BREAKPAD)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_BREAKPAD")
@@ -177,10 +178,21 @@ else (STATIC)
 endif (STATIC)
 
 if (STATIC)
+	set(STATIC_START "-static")
 	SET(REQUIREDLIBS ${PNG_STATIC_LIBRARIES} ${JANSSON_STATIC_LIBRARIES} ${ZLIB_STATIC_LIBRARIES} ${SSL_STATIC_LIBRARIES})
 else (STATIC)
 	SET(REQUIREDLIBS ${PNG_LIBRARIES} ${JANSSON_LIBRARIES} ${ZLIB_LIBRARIES} ${SSL_LIBRARIES})
 endif (STATIC)
+
+if (NOT DISABLE_OPENGL)
+	if (WIN32)
+		# Curl depends on openssl and ws2 in mingw builds, but is not wired up in pkg-config
+		set(GLLIBS opengl32)
+	else (WIN32)
+		PKG_CHECK_MODULES(GL REQUIRED gl)
+		set(GLLIBS ${GL_LIBRARIES})
+	endif (WIN32)
+endif (NOT DISABLE_OPENGL)
 
 if (NOT DISABLE_HTTP_TWITCH)
 	PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
@@ -241,7 +253,10 @@ endif (UNIX AND NOT APPLE)
 # libopenrct2.dll -> openrct2.dll
 set_target_properties(${PROJECT} PROPERTIES PREFIX "")
 
-TARGET_LINK_LIBRARIES(${PROJECT} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${REQUIREDLIBS} ${BREAKPAD_LIBS})
+# Link shared libs first
+TARGET_LINK_LIBRARIES(${PROJECT} ${GLLIBS})
+# if creating a static binary, precede libraries with -static, then name all the libs
+TARGET_LINK_LIBRARIES(${PROJECT} ${STATIC_START} ${SDL2LIBS} ${HTTPLIBS} ${NETWORKLIBS} ${SPEEX_LIBRARIES} ${DLLIB} ${REQUIREDLIBS} ${BREAKPAD_LIBS})
 
 if (APPLE OR STATIC)
 	FIND_LIBRARY(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
