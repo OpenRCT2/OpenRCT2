@@ -129,7 +129,7 @@ public:
     ~OpenGLDrawingEngine() override
     {
         delete _drawingContext;
-        delete _bits;
+        delete [] _bits;
 
         SDL_GL_DeleteContext(_context);
     }
@@ -274,7 +274,7 @@ private:
                     dst += pitch;
                 }
             }
-            delete _bits;
+            delete [] _bits;
         }
 
         _bits = newBits;
@@ -560,7 +560,7 @@ GLuint OpenGLDrawingContext::LoadImageTexture(uint32 image)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
 
-    delete (uint8 *) pixels32;
+    delete [] (uint8 *) pixels32;
 
     return texture;
 }
