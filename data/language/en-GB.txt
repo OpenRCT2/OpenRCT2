@@ -4183,6 +4183,11 @@ STR_5871    :Plants don't age
 STR_5872    :{SMALLFONT}{BLACK}Disable plant aging such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
+STR_5875    :Drawing Engine:
+STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
+STR_5877    :Software
+STR_5878    :Software (hardware display)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #

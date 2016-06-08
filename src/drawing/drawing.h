@@ -113,14 +113,10 @@ extern sint32 gPickupPeepY;
 extern rct_g1_element *g1Elements;
 extern rct_gx g2;
 
-extern rct_drawpixelinfo gScreenDPI;
-extern rct_drawpixelinfo gWindowDPI;
-
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);
 void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);
 void gfx_draw_all_dirty_blocks();
-void gfx_redraw_screen_rect(short left, short top, short right, short bottom);
 void gfx_invalidate_screen();
 
 // palette
@@ -128,14 +124,14 @@ void gfx_transpose_palette(int pal, unsigned char product);
 void load_palette();
 
 // other
-void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start);
 void gfx_clear(rct_drawpixelinfo *dpi, int colour);
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour);
 void gfx_invalidate_pickedup_peep();
-void gfx_draw_pickedup_peep();
+void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi);
 
 // line
 void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);
+void gfx_draw_line_software(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour);
 
 // rect
 void gfx_fill_rect(rct_drawpixelinfo *dpi, int left, int top, int right, int bottom, int colour);
@@ -148,11 +144,14 @@ void gfx_unload_g1();
 void gfx_unload_g2();
 rct_g1_element* gfx_get_g1_element(int image_id);
 void sub_68371D();
-void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type);
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
 void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);
+
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
+void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
+void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);
 
 // string
 int clip_text(char *buffer, int width);
@@ -181,14 +180,12 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, int availab
 bool ttf_initialise();
 void ttf_dispose();
 
-// rain
-void update_rain_animation();
-void redraw_rain();
-
 // scrolling text
 void scrolling_text_initialise_bitmaps();
 int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
-void gfx_configure_dirty_grid();
+void rct2_draw(rct_drawpixelinfo *dpi);
+
+#include "NewDrawing.h"
 
 #endif

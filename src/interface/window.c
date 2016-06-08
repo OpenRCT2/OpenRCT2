@@ -73,7 +73,8 @@ float window_scroll_locations[][2] = {
 
 static bool sub_6EA95D(int x, int y, int width, int height);
 static void window_all_wheel_input();
-static int window_draw_split(rct_window *w, int left, int top, int right, int bottom);
+static int window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);
+static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom);
 
 int window_get_widget_index(rct_window *w, rct_widget *widget)
 {
@@ -157,9 +158,9 @@ void window_update_all()
 {
 	RCT2_GLOBAL(0x009E3CD8, sint32)++;
 
-	gfx_draw_all_dirty_blocks();
-	window_update_all_viewports();
-	gfx_draw_all_dirty_blocks();
+	// gfx_draw_all_dirty_blocks();
+	// window_update_all_viewports();
+	// gfx_draw_all_dirty_blocks();
 
 	// 1000 tick update
 	RCT2_GLOBAL(RCT2_ADDRESS_WINDOW_UPDATE_TICKS, sint16) += gTicksSinceLastUpdate;
@@ -1461,14 +1462,10 @@ void window_zoom_out(rct_window *w)
  * right (dx)
  * bottom (bp)
  */
-void window_draw(rct_window *w, int left, int top, int right, int bottom)
+void window_draw(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom)
 {
-	rct_window* v;
-	rct_drawpixelinfo *dpi, copy;
-	int overflow;
-
 	// Split window into only the regions that require drawing
-	if (window_draw_split(w, left, top, right, bottom))
+	if (window_draw_split(dpi, w, left, top, right, bottom))
 		return;
 
 	// Clamp region
@@ -1476,71 +1473,15 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
 	top = max(top, w->y);
 	right = min(right, w->x + w->width);
 	bottom = min(bottom, w->y + w->height);
-	if (left >= right)
-		return;
-	if (top >= bottom)
-		return;
+	if (left >= right) return;
+	if (top >= bottom) return;
 
 	// Draw the window in this region
-	for (v = w; v < RCT2_NEW_WINDOW; v++) {
+	for (rct_window *v = w; v < RCT2_NEW_WINDOW; v++) {
 		// Don't draw overlapping opaque windows, they won't have changed
-		if (w != v && !(v->flags & WF_TRANSPARENT))
-			continue;
-
-		copy = gWindowDPI;
-		dpi = &copy;
-
-		// Clamp left to 0
-		overflow = left - dpi->x;
-		if (overflow > 0) {
-			dpi->x += overflow;
-			dpi->width -= overflow;
-			if (dpi->width <= 0)
-				continue;
-			dpi->pitch += overflow;
-			dpi->bits += overflow;
+		if (w == v || (v->flags & WF_TRANSPARENT)) {
+			window_draw_single(dpi, v, left, top, right, bottom);
 		}
-
-		// Clamp width to right
-		overflow = dpi->x + dpi->width - right;
-		if (overflow > 0) {
-			dpi->width -= overflow;
-			if (dpi->width <= 0)
-				continue;
-			dpi->pitch += overflow;
-		}
-
-		// Clamp top to 0
-		overflow = top - dpi->y;
-		if (overflow > 0) {
-			dpi->y += overflow;
-			dpi->height -= overflow;
-			if (dpi->height <= 0)
-				continue;
-			dpi->bits += (dpi->width + dpi->pitch) * overflow;
-		}
-
-		// Clamp height to bottom
-		overflow = dpi->y + dpi->height - bottom;
-		if (overflow > 0) {
-			dpi->height -= overflow;
-			if (dpi->height <= 0)
-				continue;
-		}
-
-		RCT2_GLOBAL(0x01420070, sint32) = v->x;
-
-		// Invalidate modifies the window colours so first get the correct
-		// colour before setting the global variables for the string painting
-		window_event_invalidate_call(v);
-
-		// Text colouring
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8) = v->colours[0] & 0x7F;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8) = v->colours[1] & 0x7F;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8) = v->colours[2] & 0x7F;
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = v->colours[3] & 0x7F;
-
-		window_event_paint_call(v, dpi);
 	}
 }
 
@@ -1548,7 +1489,7 @@ void window_draw(rct_window *w, int left, int top, int right, int bottom)
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
-static int window_draw_split(rct_window *w, int left, int top, int right, int bottom)
+static int window_draw_split(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom)
 {
 	rct_window* topwindow;
 
@@ -1565,20 +1506,20 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
 		// A window overlaps w, split up the draw into two regions where the window starts to overlap
 		if (topwindow->x > left) {
 			// Split draw at topwindow.left
-			window_draw(w, left, top, topwindow->x, bottom);
-			window_draw(w, topwindow->x, top, right, bottom);
+			window_draw(dpi, w, left, top, topwindow->x, bottom);
+			window_draw(dpi, w, topwindow->x, top, right, bottom);
 		} else if (topwindow->x + topwindow->width < right) {
 			// Split draw at topwindow.right
-			window_draw(w, left, top, topwindow->x + topwindow->width, bottom);
-			window_draw(w, topwindow->x + topwindow->width, top, right, bottom);
+			window_draw(dpi, w, left, top, topwindow->x + topwindow->width, bottom);
+			window_draw(dpi, w, topwindow->x + topwindow->width, top, right, bottom);
 		} else if (topwindow->y > top) {
 			// Split draw at topwindow.top
-			window_draw(w, left, top, right, topwindow->y);
-			window_draw(w, left, topwindow->y, right, bottom);
+			window_draw(dpi, w, left, top, right, topwindow->y);
+			window_draw(dpi, w, left, topwindow->y, right, bottom);
 		} else if (topwindow->y + topwindow->height < bottom) {
 			// Split draw at topwindow.bottom
-			window_draw(w, left, top, right, topwindow->y + topwindow->height);
-			window_draw(w, left, topwindow->y + topwindow->height, right, bottom);
+			window_draw(dpi, w, left, top, right, topwindow->y + topwindow->height);
+			window_draw(dpi, w, left, topwindow->y + topwindow->height, right, bottom);
 		}
 
 		// Drawing for this region should be done now, exit
@@ -1587,6 +1528,65 @@ static int window_draw_split(rct_window *w, int left, int top, int right, int bo
 
 	// No windows overlap
 	return 0;
+}
+
+static void window_draw_single(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom)
+{
+	// Copy dpi so we can crop it
+	rct_drawpixelinfo copy = *dpi;
+	dpi = &copy;
+
+	// Clamp left to 0
+	int overflow = left - dpi->x;
+	if (overflow > 0) {
+		dpi->x += overflow;
+		dpi->width -= overflow;
+		if (dpi->width <= 0)
+			return;
+		dpi->pitch += overflow;
+		dpi->bits += overflow;
+	}
+
+	// Clamp width to right
+	overflow = dpi->x + dpi->width - right;
+	if (overflow > 0) {
+		dpi->width -= overflow;
+		if (dpi->width <= 0)
+			return;
+		dpi->pitch += overflow;
+	}
+
+	// Clamp top to 0
+	overflow = top - dpi->y;
+	if (overflow > 0) {
+		dpi->y += overflow;
+		dpi->height -= overflow;
+		if (dpi->height <= 0)
+			return;
+		dpi->bits += (dpi->width + dpi->pitch) * overflow;
+	}
+
+	// Clamp height to bottom
+	overflow = dpi->y + dpi->height - bottom;
+	if (overflow > 0) {
+		dpi->height -= overflow;
+		if (dpi->height <= 0)
+			return;
+	}
+
+	RCT2_GLOBAL(0x01420070, sint32) = w->x;
+
+	// Invalidate modifies the window colours so first get the correct
+	// colour before setting the global variables for the string painting
+	window_event_invalidate_call(w);
+
+	// Text colouring
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_1, uint8) = w->colours[0] & 0x7F;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_2, uint8) = w->colours[1] & 0x7F;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_3, uint8) = w->colours[2] & 0x7F;
+	RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_WINDOW_COLOUR_4, uint8) = w->colours[3] & 0x7F;
+
+	window_event_paint_call(w, dpi);
 }
 
 /**

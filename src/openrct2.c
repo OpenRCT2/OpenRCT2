@@ -418,7 +418,6 @@ static void openrct2_loop()
 			}
 
 			if ((SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) == 0) {
-				rct2_draw();
 				platform_draw();
 			}
 
@@ -454,7 +453,6 @@ static void openrct2_loop()
 			rct2_update();
 
 			if ((SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) == 0) {
-				rct2_draw();
 				platform_draw();
 			}
 		}
@@ -591,11 +589,6 @@ bool openrct2_setup_rct2_segment()
  */
 static void openrct2_setup_rct2_hooks()
 {
-	addhook(0x006E732D, (int)gfx_set_dirty_blocks, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);			// remove when all callers are decompiled
-	addhook(0x006E7499, (int)gfx_redraw_screen_rect, 0, (int[]){ EAX, EBX, EDX, EBP, END }, 0, 0);			// remove when 0x6E7FF3 is decompiled
-	addhook(0x006B752C, (int)ride_crash, 0, (int[]){ EDX, EBX, END }, 0, 0);								// remove when all callers are decompiled
-	addhook(0x0069A42F, (int)peep_window_state_update, 0, (int[]){ ESI, END }, 0, 0);						// remove when all callers are decompiled
-	addhook(0x006BB76E, (int)audio_play_sound_panned, 0, (int[]){EAX, EBX, ECX, EDX, EBP, END}, 0, EAX);	// remove when all callers are decompiled
 	addhook(0x006C42D9, (int)scrolling_text_setup, 0, (int[]){EAX, ECX, EBP, END}, 0, EBX);					// remove when all callers are decompiled
 	addhook(0x006C2321, (int)gfx_get_string_width, 0, (int[]){ESI, END}, 0, ECX);							// remove when all callers are decompiled
 	addhook(0x006C2555, (int)format_string, 0, (int[]){EDI, EAX, ECX, END}, 0, 0);							// remove when all callers are decompiled

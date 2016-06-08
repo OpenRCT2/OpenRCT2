@@ -141,7 +141,6 @@
 		D442720A1CC81B3200D84D28 /* drawing_fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44271031CC81B3200D84D28 /* drawing_fast.cpp */; };
 		D442720B1CC81B3200D84D28 /* font.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271041CC81B3200D84D28 /* font.c */; };
 		D442720C1CC81B3200D84D28 /* line.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271061CC81B3200D84D28 /* line.c */; };
-		D442720D1CC81B3200D84D28 /* rain.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271071CC81B3200D84D28 /* rain.c */; };
 		D442720E1CC81B3200D84D28 /* rect.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271081CC81B3200D84D28 /* rect.c */; };
 		D442720F1CC81B3200D84D28 /* scrolling_text.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271091CC81B3200D84D28 /* scrolling_text.c */; };
 		D44272101CC81B3200D84D28 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = D442710A1CC81B3200D84D28 /* sprite.c */; };
@@ -308,8 +307,13 @@
 		D45A395D1CF300AF00659A24 /* libSDL2_ttf.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D45F046B1D07733900CBA2BA /* OpenGLAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D45F04691D07733900CBA2BA /* OpenGLAPI.cpp */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
 		D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48A8D811D00272F00649DA7 /* TcpSocket.cpp */; };
+		D49766821D03B9FE002222CD /* OpenGLDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766801D03B9FE002222CD /* OpenGLDrawingEngine.cpp */; };
+		D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */; };
+		D49766861D03BAA5002222CD /* NewDrawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766841D03BAA5002222CD /* NewDrawing.cpp */; };
+		D49766891D03BABB002222CD /* rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766871D03BABB002222CD /* rain.cpp */; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
@@ -518,7 +522,6 @@
 		D44271041CC81B3200D84D28 /* font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = font.c; sourceTree = "<group>"; };
 		D44271051CC81B3200D84D28 /* font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = font.h; sourceTree = "<group>"; };
 		D44271061CC81B3200D84D28 /* line.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = line.c; sourceTree = "<group>"; };
-		D44271071CC81B3200D84D28 /* rain.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rain.c; sourceTree = "<group>"; };
 		D44271081CC81B3200D84D28 /* rect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rect.c; sourceTree = "<group>"; };
 		D44271091CC81B3200D84D28 /* scrolling_text.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scrolling_text.c; sourceTree = "<group>"; };
 		D442710A1CC81B3200D84D28 /* sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
@@ -897,10 +900,20 @@
 		D45A39561CF3007A00659A24 /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
 		D45A39571CF3007A00659A24 /* speexdsp_config_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_config_types.h; sourceTree = "<group>"; };
 		D45A39581CF3007A00659A24 /* speexdsp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_types.h; sourceTree = "<group>"; };
+		D45F04691D07733900CBA2BA /* OpenGLAPI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLAPI.cpp; sourceTree = "<group>"; };
+		D45F046A1D07733900CBA2BA /* OpenGLAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLAPI.h; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; };
 		D48A8D821D00272F00649DA7 /* TcpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TcpSocket.h; sourceTree = "<group>"; };
+		D49766801D03B9FE002222CD /* OpenGLDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLDrawingEngine.cpp; sourceTree = "<group>"; };
+		D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoftwareDrawingEngine.cpp; sourceTree = "<group>"; };
+		D49766841D03BAA5002222CD /* NewDrawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NewDrawing.cpp; sourceTree = "<group>"; };
+		D49766851D03BAA5002222CD /* NewDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewDrawing.h; sourceTree = "<group>"; };
+		D49766871D03BABB002222CD /* rain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rain.cpp; sourceTree = "<group>"; };
+		D49766881D03BABB002222CD /* Rain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rain.h; sourceTree = "<group>"; };
+		D497668A1D03BAC8002222CD /* IDrawingContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDrawingContext.h; sourceTree = "<group>"; };
+		D497668B1D03BAC8002222CD /* IDrawingEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IDrawingEngine.h; sourceTree = "<group>"; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
@@ -1252,13 +1265,19 @@
 		D44271001CC81B3200D84D28 /* drawing */ = {
 			isa = PBXGroup;
 			children = (
+				D44271031CC81B3200D84D28 /* drawing_fast.cpp */,
 				D44271011CC81B3200D84D28 /* drawing.c */,
 				D44271021CC81B3200D84D28 /* drawing.h */,
-				D44271031CC81B3200D84D28 /* drawing_fast.cpp */,
+				D497667F1D03B9FE002222CD /* engines */,
 				D44271041CC81B3200D84D28 /* font.c */,
 				D44271051CC81B3200D84D28 /* font.h */,
+				D497668A1D03BAC8002222CD /* IDrawingContext.h */,
+				D497668B1D03BAC8002222CD /* IDrawingEngine.h */,
 				D44271061CC81B3200D84D28 /* line.c */,
-				D44271071CC81B3200D84D28 /* rain.c */,
+				D49766841D03BAA5002222CD /* NewDrawing.cpp */,
+				D49766851D03BAA5002222CD /* NewDrawing.h */,
+				D49766871D03BABB002222CD /* rain.cpp */,
+				D49766881D03BABB002222CD /* Rain.h */,
 				D44271081CC81B3200D84D28 /* rect.c */,
 				D44271091CC81B3200D84D28 /* scrolling_text.c */,
 				D442710A1CC81B3200D84D28 /* sprite.c */,
@@ -1739,6 +1758,17 @@
 			path = speex;
 			sourceTree = "<group>";
 		};
+		D497667F1D03B9FE002222CD /* engines */ = {
+			isa = PBXGroup;
+			children = (
+				D45F04691D07733900CBA2BA /* OpenGLAPI.cpp */,
+				D45F046A1D07733900CBA2BA /* OpenGLAPI.h */,
+				D49766801D03B9FE002222CD /* OpenGLDrawingEngine.cpp */,
+				D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */,
+			);
+			path = engines;
+			sourceTree = "<group>";
+		};
 		D497D06F1C20FD52002BF46A = {
 			isa = PBXGroup;
 			children = (
@@ -1987,6 +2017,7 @@
 				D44272A41CC81B3200D84D28 /* park.c in Sources */,
 				C686F9391CDBC3B7009F9BFC /* space_rings.c in Sources */,
 				C686F9371CDBC3B7009F9BFC /* monorail_cycles.c in Sources */,
+				D49766891D03BABB002222CD /* rain.cpp in Sources */,
 				D44272441CC81B3200D84D28 /* cable_lift.c in Sources */,
 				D442729C1CC81B3200D84D28 /* duck.c in Sources */,
 				C686F91D1CDBC3B7009F9BFC /* multi_dimension_roller_coaster.c in Sources */,
@@ -2059,6 +2090,7 @@
 				C686F9321CDBC3B7009F9BFC /* haunted_house.c in Sources */,
 				D442720A1CC81B3200D84D28 /* drawing_fast.cpp in Sources */,
 				C686F9521CDBC3B7009F9BFC /* river_rapids.c in Sources */,
+				D45F046B1D07733900CBA2BA /* OpenGLAPI.cpp in Sources */,
 				008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */,
 				C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */,
 				D44272191CC81B3200D84D28 /* colour.c in Sources */,
@@ -2076,6 +2108,7 @@
 				D44272971CC81B3200D84D28 /* viewport.c in Sources */,
 				C686F90F1CDBC3B7009F9BFC /* flying_roller_coaster.c in Sources */,
 				D44272661CC81B3200D84D28 /* install_track.c in Sources */,
+				D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */,
 				C686F9331CDBC3B7009F9BFC /* maze.c in Sources */,
 				C686F9241CDBC3B7009F9BFC /* suspended_swinging_coaster.c in Sources */,
 				C686F92D1CDBC3B7009F9BFC /* crooked_house.c in Sources */,
@@ -2151,7 +2184,6 @@
 				007A05D21CFB2C8B00F419C3 /* NetworkPlayer.cpp in Sources */,
 				D442725B1CC81B3200D84D28 /* editor_inventions_list.c in Sources */,
 				D44272311CC81B3200D84D28 /* news_item.c in Sources */,
-				D442720D1CC81B3200D84D28 /* rain.c in Sources */,
 				D44272011CC81B3200D84D28 /* Guard.cpp in Sources */,
 				D44272951CC81B3200D84D28 /* track_manage.c in Sources */,
 				D44272851CC81B3200D84D28 /* staff.c in Sources */,
@@ -2175,6 +2207,7 @@
 				D44272031CC81B3200D84D28 /* Path.cpp in Sources */,
 				C686F9301CDBC3B7009F9BFC /* flying_saucers.c in Sources */,
 				D44272401CC81B3200D84D28 /* windows.c in Sources */,
+				D49766821D03B9FE002222CD /* OpenGLDrawingEngine.cpp in Sources */,
 				D44272881CC81B3200D84D28 /* text_input.c in Sources */,
 				D442720F1CC81B3200D84D28 /* scrolling_text.c in Sources */,
 				D44271F51CC81B3200D84D28 /* addresses.c in Sources */,
@@ -2222,6 +2255,7 @@
 				D442727A1CC81B3200D84D28 /* research.c in Sources */,
 				D442722E1CC81B3200D84D28 /* award.c in Sources */,
 				D44272861CC81B3200D84D28 /* staff_fire_prompt.c in Sources */,
+				D49766861D03BAA5002222CD /* NewDrawing.cpp in Sources */,
 				C6B5A7D51CDFE4CB00C9C006 /* S6Importer.cpp in Sources */,
 				D44272221CC81B3200D84D28 /* widget.c in Sources */,
 				D44271F71CC81B3200D84D28 /* mixer.cpp in Sources */,
@@ -2291,7 +2325,11 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					OPENGL_NO_LINK,
+					DISABLE_OPENGL
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
@@ -2333,6 +2371,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					OPENGL_NO_LINK,
+					DISABLE_OPENGL
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;

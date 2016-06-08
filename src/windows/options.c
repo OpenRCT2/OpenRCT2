@@ -79,7 +79,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 	WIDX_SCALE,
 	WIDX_SCALE_UP,
 	WIDX_SCALE_DOWN,
-	WIDX_HARDWARE_DISPLAY_CHECKBOX,
+	WIDX_DRAWING_ENGINE,
+	WIDX_DRAWING_ENGINE_DROPDOWN,
 	WIDX_SCALE_QUALITY,
 	WIDX_SCALE_QUALITY_DROPDOWN,
 	WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX,
@@ -200,7 +201,8 @@ static rct_widget window_options_display_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	99,		103,	STR_NUMERIC_UP,			STR_NONE },					// Scale spinner up
 	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	104,	108,	STR_NUMERIC_DOWN,		STR_NONE },					// Scale spinner down
 
-	{ WWT_CHECKBOX,			1,	10,		290,	113,	124,	STR_HARDWARE_DISPLAY,	STR_HARDWARE_DISPLAY_TIP },	// Hardware display
+	{ WWT_DROPDOWN,			1,	155,	299,	113,	124,	STR_NONE,				STR_NONE },
+	{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	114,	123,	STR_DROPDOWN_GLYPH,		STR_DRAWING_ENGINE_TIP },
 
 		{ WWT_DROPDOWN,			1,	155,	299,	128,	139,	STR_NONE,						STR_NONE },							// Scaling quality hint
 		{ WWT_DROPDOWN_BUTTON,	1,	288,	298,	129,	138,	STR_DROPDOWN_GLYPH,				STR_SCALE_QUALITY_TIP },
@@ -406,7 +408,8 @@ static uint32 window_options_page_enabled_widgets[] = {
 	(1 << WIDX_FULLSCREEN_DROPDOWN) |
 	(1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
 	(1 << WIDX_GRIDLINES_CHECKBOX) |
-	(1 << WIDX_HARDWARE_DISPLAY_CHECKBOX) |
+	(1 << WIDX_DRAWING_ENGINE) |
+	(1 << WIDX_DRAWING_ENGINE_DROPDOWN) |
 	(1 << WIDX_UNCAP_FPS_CHECKBOX) |
 	(1 << WIDX_SHOW_FPS_CHECKBOX) |
 	(1 << WIDX_MINIMIZE_FOCUS_LOSS) |
@@ -545,21 +548,6 @@ static void window_options_mouseup(rct_window *w, int widgetIndex)
 	switch (w->page) {
 	case WINDOW_OPTIONS_PAGE_DISPLAY:
 		switch (widgetIndex) {
-		case WIDX_HARDWARE_DISPLAY_CHECKBOX:
-			gConfigGeneral.hardware_display ^= 1;
-#ifdef __WINDOWS__
-			// Windows is apparently able to switch to hardware rendering on the fly although
-			// using the same window in an unaccelerated and accelerated context is unsupported by SDL2
-			gHardwareDisplay = gConfigGeneral.hardware_display;
-			platform_refresh_video();
-#else
-			// Linux requires a restart. This could be improved in the future by recreating the window,
-			// https://github.com/OpenRCT2/OpenRCT2/issues/2015
-			window_error_open(STR_RESTART_REQUIRED, STR_NONE);
-#endif
-			config_save_default();
-			window_invalidate(w);
-			break;
 		case WIDX_UNCAP_FPS_CHECKBOX:
 			gConfigGeneral.uncap_fps ^= 1;
 			config_save_default();
@@ -855,6 +843,21 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
 			break;
+		case WIDX_DRAWING_ENGINE_DROPDOWN:
+		{
+			int numItems = 3;
+#ifdef DISABLE_OPENGL
+			numItems = 2;
+#endif
+
+			for (int i = 0; i < numItems; i++) {
+				gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+				gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
+			}
+			window_options_show_dropdown(w, widget, numItems);
+			dropdown_set_checked(gConfigGeneral.drawing_engine, true);
+			break;
+		}
 		case WIDX_SCALE_UP:
 			gConfigGeneral.window_scale += 0.25f;
 			config_save_default();
@@ -1126,6 +1129,22 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 				gfx_invalidate_screen();
 			}
 			break;
+		case WIDX_DRAWING_ENGINE_DROPDOWN:
+			if (dropdownIndex != gConfigGeneral.drawing_engine) {
+				gConfigGeneral.drawing_engine = (uint8)dropdownIndex;
+#ifdef __WINDOWS__
+				// Windows is apparently able to switch to hardware rendering on the fly although
+				// using the same window in an unaccelerated and accelerated context is unsupported by SDL2
+				platform_refresh_video();
+#else
+				// Linux requires a restart. This could be improved in the future by recreating the window,
+				// https://github.com/OpenRCT2/OpenRCT2/issues/2015
+				window_error_open(STR_RESTART_REQUIRED, STR_NONE);
+#endif
+				config_save_default();
+				window_invalidate(w);
+			}
+			break;
 		case WIDX_SCALE_QUALITY_DROPDOWN:
 			if (dropdownIndex != gConfigGeneral.scale_quality) {
 				gConfigGeneral.scale_quality = (uint8)dropdownIndex;
@@ -1332,7 +1351,7 @@ static void window_options_invalidate(rct_window *w)
 			w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
 		}
 
-		if (gConfigGeneral.hardware_display == false) {
+		if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE) {
 			w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
 			w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
 			w->disabled_widgets |= (1 << WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX);
@@ -1344,7 +1363,6 @@ static void window_options_invalidate(rct_window *w)
 			w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
 		}
 
-		widget_set_checkbox_value(w, WIDX_HARDWARE_DISPLAY_CHECKBOX, gConfigGeneral.hardware_display);
 		widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
 		widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
 		widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
@@ -1357,7 +1375,8 @@ static void window_options_invalidate(rct_window *w)
 		window_options_display_widgets[WIDX_RESOLUTION_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_FULLSCREEN].type = WWT_DROPDOWN;
 		window_options_display_widgets[WIDX_FULLSCREEN_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-		window_options_display_widgets[WIDX_HARDWARE_DISPLAY_CHECKBOX].type = WWT_CHECKBOX;
+		window_options_display_widgets[WIDX_DRAWING_ENGINE].type = WWT_DROPDOWN;
+		window_options_display_widgets[WIDX_DRAWING_ENGINE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 		window_options_display_widgets[WIDX_UNCAP_FPS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_SHOW_FPS_CHECKBOX].type = WWT_CHECKBOX;
 		window_options_display_widgets[WIDX_MINIMIZE_FOCUS_LOSS].type = WWT_CHECKBOX;
@@ -1606,11 +1625,23 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, colour, w->x + 10 + 15, w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
 		gfx_draw_string_left(dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE].top + 1);
 
+		gfx_draw_string_left(dpi, STR_DRAWING_ENGINE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1);
+		gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+		gfx_draw_string_left_clipped(
+			dpi,
+			DrawingEngineStringIds[gConfigGeneral.drawing_engine],
+			NULL,
+			w->colours[1],
+			w->x + window_options_culture_widgets[WIDX_DRAWING_ENGINE].left + 1,
+			w->y + window_options_culture_widgets[WIDX_DRAWING_ENGINE].top,
+			window_options_culture_widgets[WIDX_DRAWING_ENGINE].right - window_options_culture_widgets[WIDX_DRAWING_ENGINE].left - 11
+		);
+
 		int scale = (int)(gConfigGeneral.window_scale * 100);
 		gfx_draw_string_left(dpi, 3311, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
 
 		colour = w->colours[1];
-		if (gConfigGeneral.hardware_display == false) {
+		if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE) {
 			colour |= 0x40;
 		}
 		gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);

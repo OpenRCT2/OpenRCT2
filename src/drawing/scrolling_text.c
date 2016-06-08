@@ -56,7 +56,7 @@ void scrolling_text_initialise_bitmaps()
 
 	for (int i = 0; i < 224; i++) {
 		memset(drawingSurface, 0, sizeof(drawingSurface));
-		gfx_draw_sprite(&dpi, i + 0x10D5, -1, 0, 0);
+		gfx_draw_sprite_software(&dpi, i + 0x10D5, -1, 0, 0);
 
 		for (int x = 0; x < 8; x++) {
 			uint8 val = 0;
@@ -179,7 +179,9 @@ int scrolling_text_setup(rct_string_id stringId, uint16 scroll, uint16 scrolling
 		scrolling_text_set_bitmap_for_sprite(scrollString, scroll, scrollText->bitmap, scrollingModePositions);
 	}
 
-	return scrollIndex + 0x606;
+	uint32 imageId = 0x606 + scrollIndex;
+	drawing_engine_invalidate_image(imageId);
+	return imageId;
 }
 
 void scrolling_text_set_bitmap_for_sprite(utf8 *text, int scroll, uint8 *bitmap, sint16 *scrollPositionOffsets)

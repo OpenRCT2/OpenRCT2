@@ -282,7 +282,6 @@ extern sint32 gScreenHeight;
 int rct2_init();
 void rct2_dispose();
 void rct2_update();
-void rct2_draw();
 void substitute_path(char *dest, const char *path, const char *filename);
 int check_mutex();
 int check_file_paths();

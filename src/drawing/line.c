@@ -68,7 +68,7 @@ void gfx_draw_line_on_buffer(rct_drawpixelinfo *dpi, char colour, int y, int x, 
  * y2 (dx)
  * colour (ebp)
  */
-void gfx_draw_line(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
+void gfx_draw_line_software(rct_drawpixelinfo *dpi, int x1, int y1, int x2, int y2, int colour)
 {
 	// Check to make sure the line is within the drawing area
 	if ((x1 < dpi->x) && (x2 < dpi->x)){

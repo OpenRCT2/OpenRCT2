@@ -138,7 +138,7 @@ void sub_68371D()
  * image.
  *  rct2: 0x0067A690
  */
-void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
+static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, int height, int width, int image_type){
 	uint16 zoom_level = dest_dpi->zoom_level;
 	uint8 zoom_amount = 1 << zoom_level;
 	uint32 dest_line_width = (dest_dpi->width / zoom_amount) + dest_dpi->pitch;
@@ -282,7 +282,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_po
  * dpi (esi)
  * tertiary_colour (ebp)
  */
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour)
 {
 	int image_type = (image_id & 0xE0000000) >> 28;
 	int image_sub_type = (image_id & 0x1C000000) >> 26;
@@ -354,7 +354,7 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y
 	//For backwards compatibility
 	RCT2_GLOBAL(0x9ABDA4, uint8*) = palette_pointer;
 
-	gfx_draw_sprite_palette_set(dpi, image_id, x, y, palette_pointer, unknown_pointer);
+	gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, unknown_pointer);
 }
 
 /*
@@ -366,7 +366,7 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y
 * x (cx)
 * y (dx)
 */
-void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer)
+void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer)
 {
 	int image_element = image_id & 0x7FFFF;
 	int image_type = (image_id & 0xE0000000) >> 28;
@@ -543,6 +543,70 @@ void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, 
 	gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
 	free(new_source_pointer_start);
 	return;
+}
+
+/**
+ * Draws the given colour image masked out by the given mask image. This can currently only cope with bitmap formatted mask and
+ * colour images. Presumably the original game never used RLE images for masking. Colour 0 represents transparent.
+ *
+ *  rct2: 0x00681DE2
+ */
+void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage)
+{
+	int left, top, right, bottom, width, height;
+	rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
+	rct_g1_element *imgColour = &g1Elements[colourImage & 0x7FFFF];
+
+	assert(imgMask->flags & 1);
+	assert(imgColour->flags & 1);
+
+	if (dpi->zoom_level != 0) {
+		// TODO implement other zoom levels (probably not used though)
+		assert(false);
+		return;
+	}
+
+	width = min(imgMask->width, imgColour->width);
+	height = min(imgMask->height, imgColour->height);
+
+	x += imgMask->x_offset;
+	y += imgMask->y_offset;
+
+	left = max(dpi->x, x);
+	top = max(dpi->y, y);
+	right = min(dpi->x + dpi->width, x + width);
+	bottom = min(dpi->y + dpi->height, y + height);
+
+	width = right - left;
+	height = bottom - top;
+	if (width < 0 || height < 0)
+		return;
+
+	int skipX = left - x;
+	int skipY = top - y;
+
+	uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
+	uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
+	uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+
+	int maskWrap = imgMask->width - width;
+	int colourWrap = imgColour->width - width;
+	int dstWrap = ((dpi->width + dpi->pitch) - width);
+	for (int y = top; y < bottom; y++) {
+		for (int x = left; x < right; x++) {
+			uint8 colour = (*colourSrc) & (*maskSrc);
+			if (colour != 0) {
+				*dst = colour;
+			}
+
+			maskSrc++;
+			colourSrc++;
+			dst++;
+		}
+		maskSrc += maskWrap;
+		colourSrc += colourWrap;
+		dst += dstWrap;
+	}
 }
 
 rct_g1_element *gfx_get_g1_element(int image_id) {

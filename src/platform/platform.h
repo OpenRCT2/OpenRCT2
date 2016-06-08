@@ -115,8 +115,6 @@ extern SDL_Window *gWindow;
 
 extern SDL_Color gPalette[256];
 
-extern bool gHardwareDisplay;
-
 extern bool gSteamOverlayActive;
 
 // Platform shared definitions

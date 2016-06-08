@@ -224,58 +224,7 @@ void sub_683326(int left, int top, int right, int bottom)
 	RCT2_CALLPROC_X(0x00683359, left, top, right, bottom, 0, 0, 0);
 }
 
-/**
- * shifts pixels from the region in a direction. Used when a viewport moves;
- * consider putting in src/drawing/drawing.c or src/drawing/rect.c
- * 
- *  rct2: 0x00683359
- * ax = x
- * bx = y;
- * cx = width;
- * dx = height;
- * di = dx;
- * si = dy;
- */
-void gfx_move_screen_rect(int x, int y, int width, int height, int dx, int dy)
-{
-	// nothing to do
-	if (dx == 0 && dy == 0)
-		return;
-
-	// get screen info
-	rct_drawpixelinfo *screenDPI = &gScreenDPI;
-
-	// adjust for move off screen
-	// NOTE: when zooming, there can be x, y, dx, dy combinations that go off the 
-	// screen; hence the checks. This code should ultimately not be called when
-	// zooming because this function is specific to updating the screen on move
-	int lmargin = min(x - dx, 0);
-	int rmargin = min(gScreenWidth - (x - dx + width), 0);
-	int tmargin = min(y - dy, 0);
-	int bmargin = min(gScreenHeight - (y - dy + height), 0);
-	x -= lmargin;
-	y -= tmargin;
-	width  += lmargin + rmargin;
-	height += tmargin + bmargin;
-
-	sint32 stride = screenDPI->width + screenDPI->pitch;
-	uint8* to   = screenDPI->bits + y * stride + x;
-	uint8* from = screenDPI->bits + (y - dy) * stride + x - dx;
-
-	if (dy > 0)
-	{
-		// if positive dy, reverse directions
-		to   += (height - 1) * stride;
-		from += (height - 1) * stride;
-		stride = -stride;
-	}
-
-	// move bits
-	for (int i = 0; i < height; i++, to += stride, from += stride)
-		memmove(to, from, width);
-}
-
-void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
+void sub_6E7FF3(rct_drawpixelinfo *dpi, rct_window *window, rct_viewport *viewport, int x, int y)
 {
 	// sub-divide by intersecting windows
 	if (window < gWindowNextSlot)
@@ -286,7 +235,7 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 			viewport->x                    >= window->x + window->width ||
 			viewport->y + viewport->height <= window->y                 ||
 			viewport->y                    >= window->y + window->height){
-			sub_6E7FF3(window + 1, viewport, x, y);
+			sub_6E7FF3(dpi, window + 1, viewport, x, y);
 			return;
 		}
 
@@ -298,49 +247,49 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 		{
 			viewport->width = window->x - viewport->x;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 
 			viewport->x += viewport->width;
 			viewport->view_x += viewport->width << viewport->zoom;
 			viewport->width = view_copy.width - viewport->width;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 		}
 		else if (viewport->x + viewport->width > window->x + window->width)
 		{
 			viewport->width = window->x + window->width - viewport->x;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 
 			viewport->x += viewport->width;
 			viewport->view_x += viewport->width << viewport->zoom;
 			viewport->width = view_copy.width - viewport->width;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 		}
 		else if (viewport->y < window->y)
 		{
 			viewport->height = window->y - viewport->y;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 
 			viewport->y += viewport->height;
 			viewport->view_y += viewport->height << viewport->zoom;
 			viewport->height = view_copy.height - viewport->height;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 		}
 		else if (viewport->y + viewport->height > window->y + window->height)
 		{
 			viewport->height = window->y + window->height - viewport->y;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 
 			viewport->y += viewport->height;
 			viewport->view_y += viewport->height << viewport->zoom;
 			viewport->height = view_copy.height - viewport->height;
 			viewport->view_width = viewport->width << viewport->zoom;
-			sub_6E7FF3(window, viewport, x, y);
+			sub_6E7FF3(dpi, window, viewport, x, y);
 		}
 
 		// restore viewport
@@ -357,20 +306,20 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 		if (abs(x) < viewport->width && abs(y) < viewport->height)
 		{
 			// update whole block ?
-			gfx_move_screen_rect(viewport->x, viewport->y, viewport->width, viewport->height, x, y);
+			drawing_engine_copy_rect(viewport->x, viewport->y, viewport->width, viewport->height, x, y);
 
 			if (x > 0)
 			{
 				// draw left
 				sint16 _right = viewport->x + x;
-				gfx_redraw_screen_rect(left, top, _right, bottom);
+				window_draw_all(dpi, left, top, _right, bottom);
 				left += x;
 			}
 			else if (x < 0)
 			{
 				// draw right
 				sint16 _left = viewport->x + viewport->width + x;
-				gfx_redraw_screen_rect(_left, top, right, bottom);
+				window_draw_all(dpi, _left, top, right, bottom);
 				right += x;
 			}
 
@@ -378,24 +327,25 @@ void sub_6E7FF3(rct_window *window, rct_viewport *viewport, int x, int y)
 			{
 				// draw top
 				bottom = viewport->y + y;
-				gfx_redraw_screen_rect(left, top, right, bottom);
+				window_draw_all(dpi, left, top, right, bottom);
 			}
 			else if (y < 0)
 			{
 				// draw bottom
 				top = viewport->y + viewport->height + y;
-				gfx_redraw_screen_rect(left, top, right, bottom);
+				window_draw_all(dpi, left, top, right, bottom);
 			}
 		}
 		else
 		{
 			// redraw whole viewport
-			gfx_redraw_screen_rect(left, top, right, bottom);
+			window_draw_all(dpi, left, top, right, bottom);
 		}
 	}
 }
 
-void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff){
+void viewport_shift_pixels(rct_drawpixelinfo *dpi, rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_diff)
+{
 	rct_window* orignal_w = w;
 	int left = 0, right = 0, top = 0, bottom = 0;
 
@@ -423,14 +373,15 @@ void sub_6E7F34(rct_window* w, rct_viewport* viewport, sint16 x_diff, sint16 y_d
 		if (left >= right) continue;
 		if (top >= bottom) continue;
 
-		gfx_redraw_screen_rect(left, top, right, bottom);
+		window_draw_all(dpi, left, top, right, bottom);
 	}
 
 	w = orignal_w;
-	sub_6E7FF3(w, viewport, x_diff, y_diff);
+	sub_6E7FF3(dpi, w, viewport, x_diff, y_diff);
 }
 
-void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
+void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport)
+{
 	uint8 zoom = (1 << viewport->zoom);
 
 	// Note: do not do the subtraction and then divide!
@@ -454,8 +405,11 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		if (left >= right) return;
 		if (top >= bottom) return;
 
-		gfx_redraw_screen_rect(left, top, right, bottom);
-		return;
+		if (drawing_engine_has_dirty_optimisations()) {
+			rct_drawpixelinfo *dpi = drawing_engine_get_dpi();
+			window_draw_all(dpi, left, top, right, bottom);
+			return;
+		}
 	}
 
 	rct_viewport view_copy;
@@ -497,7 +451,10 @@ void sub_6E7DE1(sint16 x, sint16 y, rct_window* w, rct_viewport* viewport){
 		return;
 	}
 
-	sub_6E7F34(w, viewport, x_diff, y_diff);
+	if (drawing_engine_has_dirty_optimisations()) {
+		rct_drawpixelinfo *dpi = drawing_engine_get_dpi();
+		viewport_shift_pixels(dpi, w, viewport, x_diff, y_diff);
+	}
 
 	memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
@@ -625,7 +582,7 @@ void viewport_update_position(rct_window *window)
 		y += viewport->view_y;
 	}
 
-	sub_6E7DE1(x, y, window, viewport);
+	viewport_move(x, y, window, viewport);
 }
 
 void viewport_update_sprite_follow(rct_window *window)
@@ -641,7 +598,7 @@ void viewport_update_sprite_follow(rct_window *window)
 		int center_x, center_y;
 		center_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &center_x, &center_y, window->viewport);
 
-		sub_6E7DE1(center_x, center_y, window, window->viewport);
+		viewport_move(center_x, center_y, window, window->viewport);
 	}
 }
 

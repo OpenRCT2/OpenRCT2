@@ -17,8 +17,11 @@
 #ifndef _SCREENSHOT_H_
 #define _SCREENSHOT_H_
 
+#include "../drawing/drawing.h"
+
 void screenshot_check();
 int screenshot_dump();
+int screenshot_dump_png(rct_drawpixelinfo *dpi);
 
 void screenshot_giant();
 int cmdline_for_screenshot(const char **argv, int argc);

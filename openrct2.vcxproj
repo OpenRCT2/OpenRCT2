@@ -42,9 +42,13 @@
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />
     <ClCompile Include="src\drawing\drawing_fast.cpp" />
+    <ClCompile Include="src\drawing\engines\OpenGLAPI.cpp" />
+    <ClCompile Include="src\drawing\engines\OpenGLDrawingEngine.cpp" />
+    <ClCompile Include="src\drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\font.c" />
     <ClCompile Include="src\drawing\line.c" />
-    <ClCompile Include="src\drawing\rain.c" />
+    <ClCompile Include="src\drawing\NewDrawing.cpp" />
+    <ClCompile Include="src\drawing\Rain.cpp" />
     <ClCompile Include="src\drawing\rect.c" />
     <ClCompile Include="src\drawing\scrolling_text.c" />
     <ClCompile Include="src\drawing\sprite.c" />
@@ -333,7 +337,12 @@
     <ClInclude Include="src\cursors.h" />
     <ClInclude Include="src\diagnostic.h" />
     <ClInclude Include="src\drawing\drawing.h" />
+    <ClInclude Include="src\drawing\engines\OpenGLAPI.h" />
     <ClInclude Include="src\drawing\font.h" />
+    <ClInclude Include="src\drawing\IDrawingContext.h" />
+    <ClInclude Include="src\drawing\IDrawingEngine.h" />
+    <ClInclude Include="src\drawing\NewDrawing.h" />
+    <ClInclude Include="src\drawing\Rain.h" />
     <ClInclude Include="src\editor.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\hook.h" />
@@ -485,7 +494,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;DISABLE_OPENGL;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
@@ -512,7 +521,7 @@
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <OmitFramePointers />
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DISABLE_OPENGL;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>

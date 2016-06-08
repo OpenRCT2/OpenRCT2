@@ -467,9 +467,12 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 		*g1_dest = *g1_source++;
 		g1_dest->offset += (uint32)image_offset;
 		g1_dest++;
+
+		drawing_engine_invalidate_image(image_start_no + i);
 	}
 
 	*chunk = ((uint8*)g1_source) + length_of_data;
+
 	return image_start_no;
 }
 

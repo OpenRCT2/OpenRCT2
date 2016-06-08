@@ -41,14 +41,11 @@ static bool _chainLiftFinished;
 static void screen_intro_process_mouse_input();
 static void screen_intro_process_keyboard_input();
 static void screen_intro_skip_part();
-static void screen_intro_draw_logo();
+static void screen_intro_draw_logo(rct_drawpixelinfo *dpi);
 
 // rct2: 0x0068E966
 void intro_update()
 {
-	rct_drawpixelinfo *screenDPI = &gScreenDPI;
-	int screenWidth = gScreenWidth;
-
 	screen_intro_process_mouse_input();
 	screen_intro_process_keyboard_input();
 
@@ -58,7 +55,7 @@ void intro_update()
 		// Originally used for the disclaimer text
 		gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
 	case INTRO_STATE_PUBLISHER_BEGIN:
-		gfx_clear(screenDPI, BACKROUND_COLOUR_DARK);
+		load_palette();
 
 		// Set the Y for the Infogrammes logo
 		_introStateCounter = -580;
@@ -72,23 +69,8 @@ void intro_update()
 		// Move the Infogrammes logo down
 		_introStateCounter += 5;
 
-		gfx_clear(screenDPI, BACKROUND_COLOUR_DARK);
-
-		// Draw a white rectangle for the logo background (gives a bit of white margin)
-		gfx_fill_rect(screenDPI,
-			(screenWidth / 2) - 320 + 50, _introStateCounter + 50,
-			(screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425,
-			BORDER_COLOUR_PUBLISHER);
-
-		// Draw Infogrames logo
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_00, (screenWidth / 2) - 320 + 69, _introStateCounter + 69, 0);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_10, (screenWidth / 2) - 320 + 319, _introStateCounter + 69, 0);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_01, (screenWidth / 2) - 320 + 69, _introStateCounter + 319, 0);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_INFOGRAMES_11, (screenWidth / 2) - 320 + 319, _introStateCounter + 319, 0);
-
 		// Check if logo is off the screen...ish
 		if (_introStateCounter > gScreenHeight - 120) {
-			gfx_clear(screenDPI, BACKROUND_COLOUR_DARK);
 			_introStateCounter = -116;
 			gIntroState++;
 		}
@@ -96,8 +78,6 @@ void intro_update()
 		break;
 	case INTRO_STATE_DEVELOPER_BEGIN:
 		_introStateCounter += 5;
-		gfx_clear(screenDPI, BACKROUND_COLOUR_DARK);
-		gfx_transpose_palette(PALETTE_G1_IDX_DEVELOPER, 255);
 
 		// Set the Y for the Chris Sawyer logo
 		_introStateCounter = -116;
@@ -106,11 +86,6 @@ void intro_update()
 		break;
 	case INTRO_STATE_DEVELOPER_SCROLL:
 		_introStateCounter += 5;
-		gfx_clear(screenDPI, BACKROUND_COLOUR_DARK);
-
-		// Draw Chris Sawyer logo
-		gfx_draw_sprite(screenDPI, SPR_INTRO_CHRIS_SAWYER_00, (screenWidth / 2) - 320 + 70, _introStateCounter, 0);
-		gfx_draw_sprite(screenDPI, SPR_INTRO_CHRIS_SAWYER_10, (screenWidth / 2) - 320 + 320, _introStateCounter, 0);
 
 		// Check if logo is almost scrolled to the bottom
 		if (!_chainLiftFinished && _introStateCounter >= gScreenHeight + 40 - 421) {
@@ -128,10 +103,6 @@ void intro_update()
 
 		// Check if logo is off the screen...ish
 		if (_introStateCounter >= gScreenHeight + 40) {
-			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 0);
-
-			screen_intro_draw_logo();
-
 			// Stop the track friction sound
 			if (_soundChannel != NULL) {
 				Mixer_Stop_Channel(_soundChannel);
@@ -148,14 +119,10 @@ void intro_update()
 	case INTRO_STATE_LOGO_FADE_IN:
 		// Fade in, add 4 / 256 to fading
 		_introStateCounter += 0x400;
-		if (_introStateCounter <= 0xFF00) {
-			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
-		} else {
-			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 255);
+		if (_introStateCounter > 0xFF00) {
 			gIntroState++;
 			_introStateCounter = 0;
 		}
-		screen_intro_draw_logo();
 		break;
 	case INTRO_STATE_LOGO_WAIT:
 		// Wait 80 game ticks
@@ -166,23 +133,15 @@ void intro_update()
 
 			gIntroState++;
 		}
-		screen_intro_draw_logo();
 		break;
 	case INTRO_STATE_LOGO_FADE_OUT:
 		// Fade out, subtract 4 / 256 from fading
 		_introStateCounter -= 0x400;
-		if (_introStateCounter >= 0) {
-			// Do palette thing
-			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
-		} else {
-			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 0);
+		if (_introStateCounter < 0) {
 			gIntroState = INTRO_STATE_CLEAR;
 		}
-		screen_intro_draw_logo();
 		break;
 	case INTRO_STATE_CLEAR:
-		gfx_clear(screenDPI, BACKROUND_COLOUR_DARK);
-
 		// Stop any playing sound
 		if (_soundChannel != NULL) {
 			Mixer_Stop_Channel(_soundChannel);
@@ -197,6 +156,68 @@ void intro_update()
 		gIntroState = INTRO_STATE_NONE;
 		load_palette();
 		gfx_invalidate_screen();
+		break;
+	}
+}
+
+void intro_draw(rct_drawpixelinfo *dpi)
+{
+	int screenWidth = gScreenWidth;
+	
+	switch (gIntroState) {
+	case INTRO_STATE_DISCLAIMER_1:
+	case INTRO_STATE_DISCLAIMER_2:
+		break;
+	case INTRO_STATE_PUBLISHER_BEGIN:
+		gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+		break;
+	case INTRO_STATE_PUBLISHER_SCROLL:
+		gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+
+		// Draw a white rectangle for the logo background (gives a bit of white margin)
+		gfx_fill_rect(dpi,
+			(screenWidth / 2) - 320 + 50, _introStateCounter + 50,
+			(screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425,
+			BORDER_COLOUR_PUBLISHER);
+
+		// Draw Infogrames logo
+		gfx_draw_sprite(dpi, SPR_INTRO_INFOGRAMES_00, (screenWidth / 2) - 320 + 69, _introStateCounter + 69, 0);
+		gfx_draw_sprite(dpi, SPR_INTRO_INFOGRAMES_10, (screenWidth / 2) - 320 + 319, _introStateCounter + 69, 0);
+		gfx_draw_sprite(dpi, SPR_INTRO_INFOGRAMES_01, (screenWidth / 2) - 320 + 69, _introStateCounter + 319, 0);
+		gfx_draw_sprite(dpi, SPR_INTRO_INFOGRAMES_11, (screenWidth / 2) - 320 + 319, _introStateCounter + 319, 0);
+		break;
+	case INTRO_STATE_DEVELOPER_BEGIN:
+		gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+		gfx_transpose_palette(PALETTE_G1_IDX_DEVELOPER, 255);
+		break;
+	case INTRO_STATE_DEVELOPER_SCROLL:
+		gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+
+		// Draw Chris Sawyer logo
+		gfx_draw_sprite(dpi, SPR_INTRO_CHRIS_SAWYER_00, (screenWidth / 2) - 320 + 70, _introStateCounter, 0);
+		gfx_draw_sprite(dpi, SPR_INTRO_CHRIS_SAWYER_10, (screenWidth / 2) - 320 + 320, _introStateCounter, 0);
+		break;
+	case INTRO_STATE_LOGO_FADE_IN:
+		if (_introStateCounter <= 0xFF00) {
+			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+		} else {
+			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 255);
+		}
+		screen_intro_draw_logo(dpi);
+		break;
+	case INTRO_STATE_LOGO_WAIT:
+		screen_intro_draw_logo(dpi);
+		break;
+	case INTRO_STATE_LOGO_FADE_OUT:
+		if (_introStateCounter >= 0) {
+			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
+		} else {
+			gfx_transpose_palette(PALETTE_G1_IDX_LOGO, 0);
+		}
+		screen_intro_draw_logo(dpi);
+		break;
+	case INTRO_STATE_CLEAR:
+		gfx_clear(dpi, BACKROUND_COLOUR_DARK);
 		break;
 	}
 }
@@ -233,18 +254,24 @@ static void screen_intro_skip_part()
 	}
 }
 
-static void screen_intro_draw_logo()
+static void screen_intro_draw_logo(rct_drawpixelinfo *dpi)
 {
-	rct_drawpixelinfo *screenDPI = &gScreenDPI;
 	sint32 screenWidth = gScreenWidth;
 	sint32 imageWidth = 640;
 	sint32 imageX = (screenWidth - imageWidth) / 2;
 
-	gfx_clear(screenDPI, BACKROUND_COLOUR_LOGO);
-	gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_00, imageX + 0,     0, 0);
-	gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_10, imageX + 220,   0, 0);
-	gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_20, imageX + 440,   0, 0);
-	gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_01, imageX + 0,   240, 0);
-	gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_11, imageX + 220, 240, 0);
-	gfx_draw_sprite(screenDPI, SPR_INTRO_LOGO_21, imageX + 440, 240, 0);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_00);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_10);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_20);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_01);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_11);
+	drawing_engine_invalidate_image(SPR_INTRO_LOGO_21);
+
+	gfx_clear(dpi, BACKROUND_COLOUR_LOGO);
+	gfx_draw_sprite(dpi, SPR_INTRO_LOGO_00, imageX + 0,     0, 0);
+	gfx_draw_sprite(dpi, SPR_INTRO_LOGO_10, imageX + 220,   0, 0);
+	gfx_draw_sprite(dpi, SPR_INTRO_LOGO_20, imageX + 440,   0, 0);
+	gfx_draw_sprite(dpi, SPR_INTRO_LOGO_01, imageX + 0,   240, 0);
+	gfx_draw_sprite(dpi, SPR_INTRO_LOGO_11, imageX + 220, 240, 0);
+	gfx_draw_sprite(dpi, SPR_INTRO_LOGO_21, imageX + 440, 240, 0);
 }

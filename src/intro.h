@@ -17,6 +17,8 @@
 #ifndef _INTRO_H_
 #define _INTRO_H_
 
+#include "drawing/drawing.h"
+
 enum INTRO_STATE {
 	INTRO_STATE_NONE,
 	INTRO_STATE_PUBLISHER_BEGIN,
@@ -35,5 +37,6 @@ enum INTRO_STATE {
 extern uint8 gIntroState;
 
 void intro_update();
+void intro_draw(rct_drawpixelinfo *dpi);
 
 #endif

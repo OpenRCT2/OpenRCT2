@@ -27,22 +27,6 @@
 int gLastDrawStringX;
 int gLastDrawStringY;
 
-uint8* _screenDirtyBlocks = NULL;
-int _screenDirtyBlocksSize = 0;
-uint16 _screenDirtyBlockWidth;
-uint16 _screenDirtyBlockHeight;
-uint16 _screenDirtyBlockColumns;
-uint16 _screenDirtyBlockRows;
-uint8 _screenDirtyBlockShiftX;
-uint8 _screenDirtyBlockShiftY;
-
-rct_drawpixelinfo gScreenDPI;
-rct_drawpixelinfo gWindowDPI;
-
-#define MAX_RAIN_PIXELS 0xFFFE
-static uint32 _rainPixels[MAX_RAIN_PIXELS];
-static uint32 _numRainPixels;
-
 uint8 gGamePalette[256 * 4];
 uint32 gPaletteEffectFrame;
 
@@ -116,24 +100,6 @@ const uint16 palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
 	0x13B4, 0x13B5, 0x13B6, 0x13B7,
 };
 
-static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows);
-
-/**
- * Clears the screen with the specified colour.
- *  rct2: 0x00678A9F
- */
-void gfx_clear(rct_drawpixelinfo *dpi, int colour)
-{
-	int w = dpi->width >> dpi->zoom_level;
-	int h = dpi->height >> dpi->zoom_level;
-	uint8* ptr = dpi->bits;
-
-	for (int y = 0; y < h; y++) {
-		memset(ptr, colour, w);
-		ptr += w + dpi->pitch;
-	}
-}
-
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, int x, int y, int colour)
 {
 	gfx_fill_rect(dpi, x, y, x, y, colour);
@@ -201,130 +167,6 @@ void gfx_invalidate_screen()
 	gfx_set_dirty_blocks(0, 0, gScreenWidth, gScreenHeight);
 }
 
-uint8* gfx_get_dirty_blocks()
-{
-	int size = _screenDirtyBlockColumns * _screenDirtyBlockRows;
-	if (_screenDirtyBlocksSize != size) {
-		if (_screenDirtyBlocks) {
-			_screenDirtyBlocks = realloc(_screenDirtyBlocks, size);
-		} else {
-			_screenDirtyBlocks = malloc(size);
-		}
-		_screenDirtyBlocksSize = size;
-	}
-	return _screenDirtyBlocks;
-}
-
-/**
- *
- *  rct2: 0x006E732D
- * left (ax)
- * top (bx)
- * right (dx)
- * bottom (bp)
- */
-void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
-{
-	int x, y;
-	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
-
-	left = max(left, 0);
-	top = max(top, 0);
-	right = min(right, gScreenWidth);
-	bottom = min(bottom, gScreenHeight);
-
-	if (left >= right)
-		return;
-	if (top >= bottom)
-		return;
-
-	right--;
-	bottom--;
-
-	left >>= _screenDirtyBlockShiftX;
-	right >>= _screenDirtyBlockShiftX;
-	top >>= _screenDirtyBlockShiftY;
-	bottom >>= _screenDirtyBlockShiftY;
-
-	uint32 dirtyBlockColumns = _screenDirtyBlockColumns;
-	for (y = top; y <= bottom; y++) {
-		uint32 yOffset = y * dirtyBlockColumns;
-		for (x = left; x <= right; x++) {
-			screenDirtyBlocks[yOffset + x] = 0xFF;
-		}
-	}
-}
-
-/**
- *
- *  rct2: 0x006E73BE
- */
-void gfx_draw_all_dirty_blocks()
-{
-	uint32 x, y, xx, yy, columns, rows;
-	uint32 dirtyBlockColumns = _screenDirtyBlockColumns;
-	uint32 dirtyBlockRows = _screenDirtyBlockRows;
-	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
-
-	for (x = 0; x < dirtyBlockColumns; x++) {
-		for (y = 0; y < dirtyBlockRows; y++) {
-			uint32 yOffset = y * dirtyBlockColumns;
-			if (screenDirtyBlocks[yOffset + x] == 0) {
-				continue;
-			}
-
-			// Determine columns
-			for (xx = x; xx < dirtyBlockColumns; xx++) {
-				if (screenDirtyBlocks[yOffset + xx] == 0) {
-					break;
-				}
-			}
-			columns = xx - x;
-
-			// Check rows
-			for (yy = y; yy < dirtyBlockRows; yy++) {
-				uint32 yyOffset = yy * dirtyBlockColumns;
-				for (xx = x; xx < x + columns; xx++) {
-					if (screenDirtyBlocks[yyOffset + xx] == 0) {
-						goto endRowCheck;
-					}
-				}
-			}
-
-		endRowCheck:
-			rows = yy - y;
-			gfx_draw_dirty_blocks(x, y, columns, rows);
-		}
-	}
-}
-
-static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
-{
-	uint32 left, top, right, bottom;
-	uint32 dirtyBlockColumns = _screenDirtyBlockColumns;
-	uint8 *screenDirtyBlocks = gfx_get_dirty_blocks();
-
-	// Unset dirty blocks
-	for (top = y; top < y + (uint32)rows; top++) {
-		uint32 topOffset = top * dirtyBlockColumns;
-		for (left = x; left < x + (uint32)columns; left++) {
-			screenDirtyBlocks[topOffset + left] = 0;
-		}
-	}
-
-	// Determine region in pixels
-	left = max(0, x * _screenDirtyBlockWidth);
-	top = max(0, y * _screenDirtyBlockHeight);
-	right = min((uint32)gScreenWidth, left + (columns * _screenDirtyBlockWidth));
-	bottom = min((uint32)gScreenHeight, top + (rows * _screenDirtyBlockHeight));
-	if (right <= left || bottom <= top) {
-		return;
-	}
-
-	// Draw region
-	gfx_redraw_screen_rect(left, top, right, bottom);
-}
-
 /**
  *
  *  rct2: 0x006E7499
@@ -333,26 +175,23 @@ static void gfx_draw_dirty_blocks(int x, int y, int columns, int rows)
  * right (dx)
  * bottom (bp)
  */
-void gfx_redraw_screen_rect(short left, short top, short right, short bottom)
+void window_draw_all(rct_drawpixelinfo *dpi, short left, short top, short right, short bottom)
 {
-	rct_drawpixelinfo *screenDPI = &gScreenDPI;
-	rct_drawpixelinfo *windowDPI = &gWindowDPI;
-
-	windowDPI->bits = screenDPI->bits + left + ((screenDPI->width + screenDPI->pitch) * top);
-	windowDPI->x = left;
-	windowDPI->y = top;
-	windowDPI->width = right - left;
-	windowDPI->height = bottom - top;
-	windowDPI->pitch = screenDPI->width + screenDPI->pitch + left - right;
+	rct_drawpixelinfo windowDPI;
+	windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
+	windowDPI.x = left;
+	windowDPI.y = top;
+	windowDPI.width = right - left;
+	windowDPI.height = bottom - top;
+	windowDPI.pitch = dpi->width + dpi->pitch + left - right;
+	windowDPI.zoom_level = 0;
 
 	for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
-		if (w->flags & WF_TRANSPARENT)
-			continue;
-		if (right <= w->x || bottom <= w->y)
-			continue;
-		if (left >= w->x + w->width || top >= w->y + w->height)
-			continue;
-		window_draw(w, left, top, right, bottom);
+		if (w->flags & WF_TRANSPARENT) continue;
+		if (right <= w->x || bottom <= w->y) continue;
+		if (left >= w->x + w->width || top >= w->y + w->height) continue;
+
+		window_draw(&windowDPI, w, left, top, right, bottom);
 	}
 }
 
@@ -414,94 +253,6 @@ bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, i
 	return false;
 }
 
-/**
- *
- *  rct2: 0x00684027
- * ebp used to be a parameter but it is always zero
- * left   : eax
- * top    : ebx
- * width  : ecx
- * height : edx
- * x_start: edi
- * y_start: esi
- */
-void gfx_draw_rain(int left, int top, int width, int height, sint32 x_start, sint32 y_start)
-{
-	static const uint8 RainPattern[] = {
-		32, 32, 0, 12, 0, 14, 0, 16, -1, 0, -1, 0, -1, 0, -1, 0, -1,
-		0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0,
-		-1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1,
-		0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, -1, 0, 0, 0
-	};
-
-	const uint8 *pattern = RainPattern;
-	uint8 pattern_x_space = *pattern++;
-	uint8 pattern_y_space = *pattern++;
-
-	uint8 pattern_start_x_offset = x_start % pattern_x_space;
-	uint8 pattern_start_y_offset = y_start % pattern_y_space;
-
-	rct_drawpixelinfo *dpi = &gScreenDPI;
-	uint32 pixel_offset = (dpi->pitch + dpi->width) * top + left;
-	uint8 pattern_y_pos = pattern_start_y_offset % pattern_y_space;
-
-	//Stores the colours of changed pixels
-	uint32 *pixel_store = _rainPixels;
-	pixel_store += _numRainPixels;
-
-	for (; height != 0; height--) {
-		uint8 pattern_x = pattern[pattern_y_pos * 2];
-		if (pattern_x != 0xFF) {
-			if (_numRainPixels < (MAX_RAIN_PIXELS - (uint32)width)) {
-				int final_pixel_offset = width + pixel_offset;
-
-				int x_pixel_offset = pixel_offset;
-				x_pixel_offset += ((uint8)(pattern_x - pattern_start_x_offset)) % pattern_x_space;
-
-				uint8 pattern_pixel = pattern[pattern_y_pos * 2 + 1];
-				for (; x_pixel_offset < final_pixel_offset; x_pixel_offset += pattern_x_space){
-					uint8 current_pixel = dpi->bits[x_pixel_offset];
-					dpi->bits[x_pixel_offset] = pattern_pixel;
-					_numRainPixels++;
-
-					// Store colour and position
-					*pixel_store++ = (x_pixel_offset << 8) | current_pixel;
-				}
-			}
-		}
-
-		pixel_offset += dpi->pitch + dpi->width;
-		pattern_y_pos++;
-		pattern_y_pos %= pattern_y_space;
-	}
-}
-
-/**
- *
- *  rct2: 0x006843DC
- */
-void redraw_rain()
-{
-	if (_numRainPixels > 0) {
-		rct_window *window = window_get_main();
-		uint32 numPixels = window->width * window->height;
-
-		uint8 *screenPixels = gScreenDPI.bits;
-		for (uint32 i = 0; i < _numRainPixels; i++) {
-			uint32 pixel = _rainPixels[i];
-			uint32 pixelIndex = pixel >> 8;
-
-			// HACK
-			if (pixelIndex > numPixels) {
-				log_verbose("Pixel error, skipping rain draw in this frame");
-				break;
-			}
-			screenPixels[pixelIndex] = pixel & 0xFF;
-		}
-		_numRainPixels = 0;
-	}
-}
-
 void gfx_invalidate_pickedup_peep()
 {
 	uint32 sprite = gPickupPeepImage;
@@ -518,83 +269,9 @@ void gfx_invalidate_pickedup_peep()
 	}
 }
 
-void gfx_draw_pickedup_peep()
+void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi)
 {
 	if (gPickupPeepImage != UINT32_MAX) {
-		gfx_draw_sprite(&gScreenDPI, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
+		gfx_draw_sprite(dpi, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
 	}
-}
-
-/**
- * Draws the given colour image masked out by the given mask image. This can currently only cope with bitmap formatted mask and
- * colour images. Presumably the original game never used RLE images for masking. Colour 0 represents transparent.
- *
- *  rct2: 0x00681DE2
- */
-void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage)
-{
-	int left, top, right, bottom, width, height;
-	rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
-	rct_g1_element *imgColour = &g1Elements[colourImage & 0x7FFFF];
-
-	assert(imgMask->flags & 1);
-	assert(imgColour->flags & 1);
-
-	if (dpi->zoom_level != 0) {
-		// TODO implement other zoom levels (probably not used though)
-		assert(false);
-		return;
-	}
-
-	width = min(imgMask->width, imgColour->width);
-	height = min(imgMask->height, imgColour->height);
-
-	x += imgMask->x_offset;
-	y += imgMask->y_offset;
-
-	left = max(dpi->x, x);
-	top = max(dpi->y, y);
-	right = min(dpi->x + dpi->width, x + width);
-	bottom = min(dpi->y + dpi->height, y + height);
-
-	width = right - left;
-	height = bottom - top;
-	if (width < 0 || height < 0)
-		return;
-
-	int skipX = left - x;
-	int skipY = top - y;
-
-	uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
-	uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
-	uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
-
-	int maskWrap = imgMask->width - width;
-	int colourWrap = imgColour->width - width;
-	int dstWrap = ((dpi->width + dpi->pitch) - width);
-	for (int y = top; y < bottom; y++) {
-		for (int x = left; x < right; x++) {
-			uint8 colour = (*colourSrc) & (*maskSrc);
-			if (colour != 0) {
-				*dst = colour;
-			}
-
-			maskSrc++;
-			colourSrc++;
-			dst++;
-		}
-		maskSrc += maskWrap;
-		colourSrc += colourWrap;
-		dst += dstWrap;
-	}
-}
-
-void gfx_configure_dirty_grid()
-{
-	_screenDirtyBlockShiftX = 7;
-	_screenDirtyBlockShiftY = 6;
-	_screenDirtyBlockWidth = 1 << _screenDirtyBlockShiftX;
-	_screenDirtyBlockHeight = 1 << _screenDirtyBlockShiftY;
-	_screenDirtyBlockColumns = (gScreenWidth >> _screenDirtyBlockShiftX) + 1;
-	_screenDirtyBlockRows = (gScreenHeight >> _screenDirtyBlockShiftY) + 1;
 }

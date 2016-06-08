@@ -131,6 +131,13 @@ enum {
 	SCENARIO_SELECT_MODE_ORIGIN,
 };
 
+enum {
+	DRAWING_ENGINE_NONE = -1,
+	DRAWING_ENGINE_SOFTWARE,
+	DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
+	DRAWING_ENGINE_OPENGL,
+};
+
 typedef struct general_configuration {
 	uint8 play_intro;
 	uint8 confirmation_prompt;
@@ -156,7 +163,7 @@ typedef struct general_configuration {
 	uint16 language;
 	uint8 window_snap_proximity;
 	uint8 autosave_frequency;
-	uint8 hardware_display;
+	uint8 drawing_engine;
 	uint8 uncap_fps;
 	uint8 test_unfinished_tracks;
 	uint8 no_test_crashes;

@@ -121,7 +121,7 @@ void print_launch_information();
 int rct2_init_directories();
 int rct2_startup_checks();
 
-static void rct2_draw_fps();
+static void rct2_draw_fps(rct_drawpixelinfo *dpi);
 
 void rct2_quit()
 {
@@ -186,8 +186,6 @@ int rct2_init()
 
 	if (!gOpenRCT2Headless) {
 		title_load();
-
-		gfx_clear(&gScreenDPI, 10);
 	}
 
 	log_verbose("initialising game finished");
@@ -273,28 +271,28 @@ int rct2_startup_checks()
 	return 1;
 }
 
-void rct2_draw()
+void rct2_draw(rct_drawpixelinfo *dpi)
 {
 	if (gIntroState != INTRO_STATE_NONE) {
 		return;
 	}
 
-	redraw_rain();
-	window_update_all();
-	gfx_invalidate_pickedup_peep();
-	gfx_draw_pickedup_peep();
-	update_rain_animation();
+	// redraw_rain();
+	// window_update_all();
+	// gfx_invalidate_pickedup_peep();
+	// gfx_draw_pickedup_peep();
+	// update_rain_animation();
 	update_palette_effects();
 
-	chat_draw();
-	console_draw(&gScreenDPI);
+	chat_draw(dpi);
+	console_draw(dpi);
 
 	if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) {
-		DrawOpenRCT2(0, gScreenHeight - 20);
+		DrawOpenRCT2(dpi, 0, gScreenHeight - 20);
 	}
 
 	if (gConfigGeneral.show_fps) {
-		rct2_draw_fps();
+		rct2_draw_fps(dpi);
 	}
 
 	gCurrentDrawCount++;
@@ -317,9 +315,8 @@ static float rct2_measure_fps()
 	return _currentFPS;
 }
 
-static void rct2_draw_fps()
+static void rct2_draw_fps(rct_drawpixelinfo *dpi)
 {
-	rct_drawpixelinfo *dpi = &gScreenDPI;
 	int x = gScreenWidth / 2;
 	int y = 2;
 
