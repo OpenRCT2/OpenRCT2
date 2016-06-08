@@ -16,9 +16,9 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "FillRectShader.h"
+#include "DrawImageShader.h"
 
-FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
+DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
 {
     GetLocations();
 
@@ -34,7 +34,7 @@ FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, 0);
 }
 
-FillRectShader::~FillRectShader()
+DrawImageShader::~DrawImageShader()
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
@@ -42,44 +42,39 @@ FillRectShader::~FillRectShader()
     glBindVertexArray(_vao);
 }
 
-void FillRectShader::GetLocations()
+void DrawImageShader::GetLocations()
 {
     uScreenSize = GetUniformLocation("uScreenSize");
     uClip       = GetUniformLocation("uClip");
     uBounds     = GetUniformLocation("uBounds");
-    uFlags      = GetUniformLocation("uFlags");
-    uColour[0]  = GetUniformLocation("uColour[0]");
-    uColour[1]  = GetUniformLocation("uColour[1]");
+    uTexture    = GetUniformLocation("uTexture");
 
     vIndex      = GetAttributeLocation("vIndex");
 }
 
-void FillRectShader::SetScreenSize(sint32 width, sint32 height)
+void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
 {
     glUniform2i(uScreenSize, width, height);
 }
 
-void FillRectShader::SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void DrawImageShader::SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     glUniform4i(uClip, left, top, right, bottom);
 }
 
-void FillRectShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void DrawImageShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     glUniform4i(uBounds, left, top, right, bottom);
 }
 
-void FillRectShader::SetFlags(uint32 flags)
+void DrawImageShader::SetTexture(GLuint texture)
 {
-    glUniform1i(uFlags, flags);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(uTexture, 0);
 }
 
-void FillRectShader::SetColour(int index, vec4f colour)
-{
-    glUniform4f(uColour[index], colour.r, colour.g, colour.b, colour.a);
-}
-
-void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void DrawImageShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     SetBounds(left, top, right, bottom);
 

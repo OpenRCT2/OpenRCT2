@@ -6,6 +6,7 @@ uniform ivec4 uBounds;
 in int vIndex;
 
 out vec2 fPosition;
+out vec2 fTextureCoordinate;
 
 void main()
 {
@@ -13,15 +14,19 @@ void main()
     switch (vIndex) {
     case 0:
         pos = uBounds.xy;
+        fTextureCoordinate = vec2(0, 0);
         break;
     case 1:
         pos = uBounds.zy;
+        fTextureCoordinate = vec2(1, 0);
         break;
     case 2:
         pos = uBounds.zw;
+        fTextureCoordinate = vec2(1, 1);
         break;
     case 3:
         pos = uBounds.xw;
+        fTextureCoordinate = vec2(0, 1);
         break;
     }
 

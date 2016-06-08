@@ -19,6 +19,7 @@
 #if OPENGL_NO_LINK
 
 // BEGIN [Do not define 1.1 function signatures]
+#define glActiveTexture     __static__glActiveTexture
 #define glBegin             __static__glBegin
 #define glBindTexture       __static__glBindTexture
 #define glBlendFunc         __static__glBlendFunc
@@ -51,6 +52,7 @@
 #if OPENGL_NO_LINK
 
 // END [Do not define 1.1 function signatures]
+#undef glActiveTexture
 #undef glBegin
 #undef glBindTexture
 #undef glBlendFunc
@@ -113,6 +115,7 @@ typedef void   (APIENTRYP PFNGLVIEWPORTPROC      )(GLint x, GLint y, GLsizei wid
 #endif
 
 // 1.1 function pointers
+GLAPI_DECL PFNGLACTIVETEXTUREPROC               glActiveTexture             GLAPI_SET;
 GLAPI_DECL PFNGLBEGINPROC                       glBegin                     GLAPI_SET;
 GLAPI_DECL PFNGLBINDTEXTUREPROC                 glBindTexture               GLAPI_SET;
 GLAPI_DECL PFNGLBLENDFUNCPROC                   glBlendFunc                 GLAPI_SET;
@@ -126,6 +129,7 @@ GLAPI_DECL PFNGLDRAWARRAYSPROC                  glDrawArrays                GLAP
 GLAPI_DECL PFNGLENABLEPROC                      glEnable                    GLAPI_SET;
 GLAPI_DECL PFNGLENDPROC                         glEnd                       GLAPI_SET;
 GLAPI_DECL PFNGLGENTEXTURESPROC                 glGenTextures               GLAPI_SET;
+GLAPI_DECL PFNGLGETERRORPROC                    glGetError                  GLAPI_SET;
 GLAPI_DECL PFNGLLOADIDENTITYPROC                glLoadIdentity              GLAPI_SET;
 GLAPI_DECL PFNGLMATRIXMODEPROC                  glMatrixMode                GLAPI_SET;
 GLAPI_DECL PFNGLORTHOPROC                       glOrtho                     GLAPI_SET;
@@ -154,7 +158,6 @@ GLAPI_DECL PFNGLDETACHSHADERPROC                glDetachShader              GLAP
 GLAPI_DECL PFNGLENABLEVERTEXATTRIBARRAYPROC     glEnableVertexAttribArray   GLAPI_SET;
 GLAPI_DECL PFNGLGETATTRIBLOCATIONPROC           glGetAttribLocation         GLAPI_SET;
 GLAPI_DECL PFNGLGENBUFFERSPROC                  glGenBuffers                GLAPI_SET;
-GLAPI_DECL PFNGLGETERRORPROC                    glGetError                  GLAPI_SET;
 GLAPI_DECL PFNGLGETPROGRAMINFOLOGPROC           glGetProgramInfoLog         GLAPI_SET;
 GLAPI_DECL PFNGLGETPROGRAMIVPROC                glGetProgramiv              GLAPI_SET;
 GLAPI_DECL PFNGLGETSHADERINFOLOGPROC            glGetShaderInfoLog          GLAPI_SET;
@@ -169,6 +172,7 @@ GLAPI_DECL PFNGLUNIFORM4FPROC                   glUniform4f                 GLAP
 GLAPI_DECL PFNGLUNIFORM4IPROC                   glUniform4i                 GLAPI_SET;
 GLAPI_DECL PFNGLUSEPROGRAMPROC                  glUseProgram                GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBIPOINTERPROC        glVertexAttribIPointer      GLAPI_SET;
+GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAPI_SET;
 
 #endif /* OPENGL_NO_LINK */
 

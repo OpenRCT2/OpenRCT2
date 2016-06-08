@@ -31,6 +31,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 
 #include "GLSLTypes.h"
 #include "OpenGLAPI.h"
+#include "DrawImageShader.h"
 #include "FillRectShader.h"
 
 #include "../../../core/Console.hpp"
@@ -57,6 +58,7 @@ private:
     OpenGLDrawingEngine *   _engine;
     rct_drawpixelinfo *     _dpi;
 
+    DrawImageShader *   _drawImageShader = nullptr;
     FillRectShader *    _fillRectShader = nullptr;
     GLuint _vbo;
 
@@ -308,6 +310,7 @@ OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
 
 OpenGLDrawingContext::~OpenGLDrawingContext()
 {
+    delete _drawImageShader;
     delete _fillRectShader;
 }
 
@@ -318,6 +321,7 @@ IDrawingEngine * OpenGLDrawingContext::GetEngine()
 
 void OpenGLDrawingContext::Initialise()
 {
+    _drawImageShader = new DrawImageShader();
     _fillRectShader = new FillRectShader();
 }
 
@@ -358,8 +362,6 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
 
 void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
 {
-    return;
-
     int g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
@@ -416,61 +418,63 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     right += _offsetX;
     bottom += _offsetY;
 
-    vec2f texCoords[4] = { { 0, 0 },
-                           { 0, 1 },
-                           { 1, 1 },
-                           { 1, 0 } };
+    _drawImageShader->Use();
+    _drawImageShader->SetScreenSize(gScreenWidth, gScreenHeight);
+    _drawImageShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
+    _drawImageShader->SetTexture(texture);
+    _drawImageShader->Draw(left, top, right, bottom);
 
-    sint32 leftChop = _clipLeft - left;
-    if (leftChop > 0)
-    {
-        left += leftChop;
-        texCoords[0].x =
-        texCoords[1].x = (float)leftChop / g1Element->width;
-    }
 
-    sint32 rightChop = right - _clipRight;
-    if (rightChop > 0)
-    {
-        right -= rightChop;
-        texCoords[2].x =
-        texCoords[3].x = 1.0f - ((float)rightChop / g1Element->width);
-    }
-
-    sint32 topChop = _clipTop - top;
-    if (topChop > 0)
-    {
-        top += topChop;
-        texCoords[0].y =
-        texCoords[3].y = (float)topChop / g1Element->height;
-    }
-
-    sint32 bottomChop = bottom - _clipBottom;
-    if (bottomChop > 0)
-    {
-        bottom -= bottomChop;
-        texCoords[1].y =
-        texCoords[2].y = 1.0f - ((float)bottomChop / g1Element->height);
-    }
-
-    if (right < left || bottom < top)
-    {
-        return;
-    }
-
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glColor3f(1, 1, 1);
-    glBegin(GL_QUADS);
-        glTexCoord2f(texCoords[0].s, texCoords[0].t);
-        glVertex2i(left,  top);
-        glTexCoord2f(texCoords[1].s, texCoords[1].t);
-        glVertex2i(left,  bottom);
-        glTexCoord2f(texCoords[2].s, texCoords[2].t);
-        glVertex2i(right, bottom);
-        glTexCoord2f(texCoords[3].s, texCoords[3].t);
-        glVertex2i(right, top);
-    glEnd();
+    // sint32 leftChop = _clipLeft - left;
+    // if (leftChop > 0)
+    // {
+    //     left += leftChop;
+    //     texCoords[0].x =
+    //     texCoords[1].x = (float)leftChop / g1Element->width;
+    // }
+    // 
+    // sint32 rightChop = right - _clipRight;
+    // if (rightChop > 0)
+    // {
+    //     right -= rightChop;
+    //     texCoords[2].x =
+    //     texCoords[3].x = 1.0f - ((float)rightChop / g1Element->width);
+    // }
+    // 
+    // sint32 topChop = _clipTop - top;
+    // if (topChop > 0)
+    // {
+    //     top += topChop;
+    //     texCoords[0].y =
+    //     texCoords[3].y = (float)topChop / g1Element->height;
+    // }
+    // 
+    // sint32 bottomChop = bottom - _clipBottom;
+    // if (bottomChop > 0)
+    // {
+    //     bottom -= bottomChop;
+    //     texCoords[1].y =
+    //     texCoords[2].y = 1.0f - ((float)bottomChop / g1Element->height);
+    // }
+    // 
+    // if (right < left || bottom < top)
+    // {
+    //     return;
+    // }
+    // 
+    // glEnable(GL_TEXTURE_2D);
+    // glBindTexture(GL_TEXTURE_2D, texture);
+    // glColor3f(1, 1, 1);
+    // glBegin(GL_QUADS);
+    //     glTexCoord2f(texCoords[0].s, texCoords[0].t);
+    //     glVertex2i(left,  top);
+    //     glTexCoord2f(texCoords[1].s, texCoords[1].t);
+    //     glVertex2i(left,  bottom);
+    //     glTexCoord2f(texCoords[2].s, texCoords[2].t);
+    //     glVertex2i(right, bottom);
+    //     glTexCoord2f(texCoords[3].s, texCoords[3].t);
+    //     glVertex2i(right, top);
+    // glEnd();
 }
 
 void OpenGLDrawingContext::DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown)

@@ -19,14 +19,13 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 
-class FillRectShader : public OpenGLShaderProgram
+class DrawImageShader : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;
     GLuint uClip;
     GLuint uBounds;
-    GLuint uFlags;
-    GLuint uColour[2];
+    GLuint uTexture;
 
     GLuint vIndex;
 
@@ -34,14 +33,13 @@ private:
     GLuint _vao;
 
 public:
-    FillRectShader();
-    ~FillRectShader() override;
+    DrawImageShader();
+    ~DrawImageShader() override;
 
     void SetScreenSize(sint32 width, sint32 height);
     void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
-    void SetFlags(uint32 flags);
-    void SetColour(int index, vec4f colour);
+    void SetTexture(GLuint texture);
 
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
 

@@ -49,6 +49,7 @@ static inline bool SetProc(T * func, const char * name)
 static const char * TryLoadAllProcAddresses()
 {
     // 1.1 functions
+    SetupOpenGLFunction(glActiveTexture);
     SetupOpenGLFunction(glBegin);
     SetupOpenGLFunction(glBindTexture);
     SetupOpenGLFunction(glBlendFunc);
@@ -105,6 +106,7 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glUniform4i);
     SetupOpenGLFunction(glUseProgram);
     SetupOpenGLFunction(glVertexAttribIPointer);
+    SetupOpenGLFunction(glVertexAttribPointer);
 
     return nullptr;
 }

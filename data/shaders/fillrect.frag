@@ -1,7 +1,6 @@
 #version 330
 
 uniform ivec4 uClip;
-
 uniform int   uFlags;
 uniform vec4  uColour[2];
 
