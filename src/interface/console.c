@@ -674,6 +674,9 @@ static int cc_get(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "window_limit") == 0) {
 			console_printf("window_limit %d", gConfigGeneral.window_limit);
 		}
+		else if (strcmp(argv[0], "paint_bounds") == 0) {
+			console_printf("paint_bounds %d", gShowSupportSegmentHeights);
+		}
 		else {
 			console_writeline_warning("Invalid variable.");
 		}
@@ -850,6 +853,11 @@ static int cc_set(const utf8 **argv, int argc)
 		else if (strcmp(argv[0], "window_limit") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
 			window_set_window_limit(int_val[0]);
 			console_execute_silent("get window_limit");
+		}
+		else if (strcmp(argv[0], "paint_bounds") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+			gPaintBoundingBoxes = (bool)(int_val[0]);
+			gfx_invalidate_screen();
+			console_execute_silent("get paint_bounds");
 		}
 		else if (invalidArgs) {
 			console_writeline_error("Invalid arguments.");
@@ -1040,6 +1048,7 @@ utf8* console_variable_table[] = {
 	"window_scale",
 	"paint_segments",
 	"window_limit",
+	"paint_bounds",
 };
 utf8* console_window_table[] = {
 	"object_selection",

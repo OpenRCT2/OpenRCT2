@@ -114,6 +114,7 @@ enum PAINT_STRUCT_FLAGS {
 
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];
+extern bool gPaintBoundingBoxes;
 
 void painter_setup();
 
