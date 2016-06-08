@@ -83,6 +83,8 @@ extern "C"
             }
             catch (Exception ex)
             {
+                delete _drawingEngine;
+                _drawingEngine = nullptr;
                 if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                 {
                     _drawingEngineType = DRAWING_ENGINE_NONE;
