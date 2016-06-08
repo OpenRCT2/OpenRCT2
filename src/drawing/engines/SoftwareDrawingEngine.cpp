@@ -69,7 +69,7 @@ public:
 
     ~RainDrawer()
     {
-        delete _rainPixels;
+        delete [] _rainPixels;
     }
 
     void SetDPI(rct_drawpixelinfo * dpi)
@@ -221,8 +221,8 @@ public:
     ~SoftwareDrawingEngine() override
     {
         delete _drawingContext;
-        delete _dirtyGrid.Blocks;
-        delete _bits;
+        delete [] _dirtyGrid.Blocks;
+        delete [] _bits;
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
         SDL_FreePalette(_palette);
@@ -494,7 +494,7 @@ private:
                     dst += pitch;
                 }
             }
-            delete _bits;
+            delete [] _bits;
         }
 
         _bits = newBits;
@@ -523,7 +523,7 @@ private:
         _dirtyGrid.BlockColumns = (_width >> _dirtyGrid.BlockShiftX) + 1;
         _dirtyGrid.BlockRows = (_height >> _dirtyGrid.BlockShiftY) + 1;
 
-        delete _dirtyGrid.Blocks;
+        delete [] _dirtyGrid.Blocks;
         _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
     }
 
