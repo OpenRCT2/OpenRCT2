@@ -96,6 +96,140 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 
 void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
+/* rct2: 0x006A5AE5 */
+void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+	if (footpath_element_is_sloped(mapElement))
+		height += 8;
+
+	uint32 imageId;
+
+	if (!(edges & (1 << 0))) {
+		imageId = pathBitEntry->image + 1;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 2, 16, 1, 1, 23, height, 3, 16, height + 2, get_current_rotation());
+	}
+	if (!(edges & (1 << 1))) {
+		imageId = pathBitEntry->image + 2;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 16, 30, 1, 0, 23, height, 16, 29, height + 2, get_current_rotation());
+	}
+
+	if (!(edges & (1 << 2))) {
+		imageId = pathBitEntry->image + 3;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 30, 16, 0, 1, 23, height, 29, 16, height + 2, get_current_rotation());
+	}
+
+	if (!(edges & (1 << 3))) {
+		imageId = pathBitEntry->image + 4;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 16, 2, 1, 1, 23, height, 16, 3, height + 2, get_current_rotation());
+	}
+}
+
+/* rct2: 0x006A5C94 */
+void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+	if (footpath_element_is_sloped(mapElement))
+		height += 8;
+
+	uint32 imageId;
+
+	if (!(edges & (1 << 0))) {
+		imageId = pathBitEntry->image + 5;
+
+		imageId |= pathBitImageFlags;
+
+		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
+			imageId -= 4;
+			
+			if (!(mapElement->properties.path.addition_status & (0x3 << get_current_rotation())))
+				imageId += 8;
+		}
+		
+
+		sub_98197C(imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
+	}
+	if (!(edges & (1 << 1))) {
+		imageId = pathBitEntry->image + 6;
+
+		imageId |= pathBitImageFlags;
+
+		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
+			imageId -= 4;
+
+			if (!(mapElement->properties.path.addition_status & rol8(0xC, get_current_rotation())))
+				imageId += 8;
+		}
+		
+
+		sub_98197C(imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
+	}
+
+	if (!(edges & (1 << 2))) {
+		imageId = pathBitEntry->image + 7;
+
+		imageId |= pathBitImageFlags;
+
+		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
+			imageId -= 4;
+
+			if (!(mapElement->properties.path.addition_status & rol8(0x30, get_current_rotation())))
+				imageId += 8;
+		}
+		
+
+		sub_98197C(imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
+	}
+
+	if (!(edges & (1 << 3))) {
+		imageId = pathBitEntry->image + 8;
+
+		imageId |= pathBitImageFlags;
+
+		if (!(mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)) {
+			imageId -= 4;
+
+			if (!(mapElement->properties.path.addition_status & rol8(0xC0, get_current_rotation())))
+				imageId += 8;
+		}
+		
+
+		sub_98197C(imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2, get_current_rotation());
+	}
+}
+
+/* rct2: 0x006A5E81 */
+void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+	RCT2_GLOBAL(0x00F3EF74, uint32) = pathBitImageFlags;
+	RCT2_CALLPROC_X(0x006A5E81, 0, (int)pathBitEntry, get_current_rotation(), height, (int)mapElement, 0, edges);
+}
+
+/* rct2: 0x006A6008 */
+void path_bit_queue_screens_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
+	RCT2_GLOBAL(0x00F3EF74, uint32) = pathBitImageFlags;
+	RCT2_CALLPROC_X(0x006A6008, 0, (int)pathBitEntry, get_current_rotation(), height, (int)mapElement, 0, edges);
+}
+
 bool do_sub_6A2ECC(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * dword_F3EF6C, bool * underground)
 {
 	if (underground != NULL) {
@@ -504,8 +638,21 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 
 				// Draw additional path bits (bins, benchs, lamps, queue screens)
 				rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
-				RCT2_CALLPROC_X(RCT2_ADDRESS(0x0098D8FC, uint32)[sceneryEntry->path_bit.var_08], 0, (int)sceneryEntry, get_current_rotation(), height, (int)map_element, 0, bp);
-
+				switch (sceneryEntry->path_bit.var_08) {
+				case 0:
+					path_bit_lights_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
+					break;
+				case 1:
+					path_bit_bins_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
+					break;
+				case 2:
+					path_bit_benches_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
+					break;
+				case 3:
+					path_bit_queue_screens_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
+					break;
+				}
+				
 				RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
 				if (dword_F3EF74 != 0) {
