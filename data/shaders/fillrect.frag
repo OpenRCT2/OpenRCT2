@@ -3,9 +3,9 @@
 uniform ivec4 uClip;
 
 uniform int   uFlags;
-uniform vec4  uColour;
+uniform vec4  uColour[2];
 
-flat in ivec2 fPosition;
+in vec2 fPosition;
 
 layout (location = 0) out vec4 oColour;
 
@@ -16,6 +16,14 @@ void main()
     {
         discard;
     }
-    
-    oColour = uColour;
+
+    int posSum = int(fPosition.x) + int(fPosition.y);
+    if ((posSum % 2) == 0)
+    {
+        oColour = uColour[0];
+    }
+    else
+    {
+        oColour = uColour[1];
+    }
 }

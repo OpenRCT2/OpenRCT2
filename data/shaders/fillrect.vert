@@ -4,14 +4,14 @@ uniform ivec2 uScreenSize;
 
 in ivec2 vPosition;
 
-flat out ivec2 fPosition;
+out vec2 fPosition;
 
 void main()
 {
     fPosition = vPosition;
 
     // Transform screen coordinates to viewport
-    vec2 pos = vec2(vPosition);
+    vec2 pos = vPosition;
     pos.x = (pos.x * (2.0 / uScreenSize.x)) - 1.0;
     pos.y = (pos.y * (2.0 / uScreenSize.y)) - 1.0;
     pos.y *= -1;

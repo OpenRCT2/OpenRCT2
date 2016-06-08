@@ -45,7 +45,8 @@ void FillRectShader::GetLocations()
     uScreenSize = GetUniformLocation("uScreenSize");
     uClip       = GetUniformLocation("uClip");
     uFlags      = GetUniformLocation("uFlags");
-    uColour     = GetUniformLocation("uColour");
+    uColour[0]  = GetUniformLocation("uColour[0]");
+    uColour[1]  = GetUniformLocation("uColour[1]");
 
     vPosition   = GetAttributeLocation("vPosition");
 }
@@ -65,9 +66,9 @@ void FillRectShader::SetFlags(uint32 flags)
     glUniform1i(uFlags, flags);
 }
 
-void FillRectShader::SetColour(vec4f colour)
+void FillRectShader::SetColour(int index, vec4f colour)
 {
-    glUniform4f(uColour, colour.r, colour.g, colour.b, colour.a);
+    glUniform4f(uColour[index], colour.r, colour.g, colour.b, colour.a);
 }
 
 void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)

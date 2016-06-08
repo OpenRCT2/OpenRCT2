@@ -142,8 +142,8 @@ public:
 
         _drawingContext->Initialise();
 
-        // glEnable(GL_BLEND);
-        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -158,6 +158,8 @@ public:
         for (int i = 0; i < 256; i++)
         {
             SDL_Color colour = palette[i];
+            colour.a = 255;
+
             Palette[i] = colour;
             GLPalette[i] = { colour.r / 255.0f,
                              colour.g / 255.0f,
@@ -326,61 +328,20 @@ void OpenGLDrawingContext::Clear(uint32 colour)
 
 void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
-    vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
+    vec4f paletteColour[2];
+    paletteColour[0] = _engine->GLPalette[(colour >> 0) & 0xFF];
+    paletteColour[1] = paletteColour[0];
+    if (colour & 0x1000000)
+    {
+        paletteColour[1].a = 0;
+    }
 
     _fillRectShader->Use();
     _fillRectShader->SetScreenSize(gScreenWidth, gScreenHeight);
-    _fillRectShader->SetColour(paletteColour);
+    _fillRectShader->SetColour(0, paletteColour[0]);
+    _fillRectShader->SetColour(1, paletteColour[1]);
     _fillRectShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
-    _fillRectShader->Draw(left, top, right, bottom);
-
-    return;
-
-    if (left > right)
-    {
-        left ^= right;
-        right ^= left;
-        left ^= right;
-    }
-    if (top > bottom)
-    {
-        top ^= bottom;
-        bottom ^= top;
-        top ^= bottom;
-    }
-
-    left += _offsetX;
-    top += _offsetY;
-    right += _offsetX;
-    bottom += _offsetY;
-
-    left = Math::Max(left, _clipLeft);
-    top = Math::Max(top, _clipTop);
-    right = Math::Min(right, _clipRight);
-    bottom = Math::Min(bottom, _clipBottom);
-
-    if (right < left || bottom < top)
-    {
-        return;
-    }
-
-    glDisable(GL_TEXTURE_2D);
-
-    if (colour & 0x2000000)
-    {
-        glColor4f(paletteColour.r, paletteColour.g, paletteColour.b, 0.4f);
-    }
-    else
-    {
-        glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
-    }
-
-    glBegin(GL_QUADS);
-        glVertex2i(left,  top);
-        glVertex2i(left,  bottom + 1);
-        glVertex2i(right + 1, bottom + 1);
-        glVertex2i(right + 1, top);
-    glEnd();
+    _fillRectShader->Draw(left, top, right + 1, bottom + 1);
 }
 
 void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
