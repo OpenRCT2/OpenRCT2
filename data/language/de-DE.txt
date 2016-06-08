@@ -4161,15 +4161,17 @@ STR_5857    :{SMALLFONT}{BLACK}Spieloptionen
 STR_5858    :{SMALLFONT}{BLACK}GPU anstelle der CPU für die Anzeige verwenden. Verbessert die Kompatibilität mit Aufnahmeprogrammen. Möglicherweise wird die Leistung geringfügig beeinträchtigt
 STR_5859    :{SMALLFONT}{BLACK}Aktiviert Tweening für ein sichtbar flüssigeres Spielverhalten. Wenn deaktiviert läuft das Spiel mit 40 FPS
 STR_5861    :Schlüsselüberprüfung fehlgeschlagen.
-STR_5862    :Blockiere unbekannte Spieler.
-STR_5863    :{SMALLFONT}{BLACK}Erlaube nur Spieler, mit bekanntem Schlüssel, sich zu verbinden.
+STR_5862    :Blockiere unbekannte Spieler
+STR_5863    :{SMALLFONT}{BLACK}Erlaube nur Spieler, mit bekanntem{NEWLINE}Schlüssel, sich zu verbinden
 STR_5864    :Dieser Server erlaubt nur Spieler,{NEWLINE}die auf der Whitelist / Positivliste stehen.
-STR_5865    :Logge Chatverlauf
-STR_5866    :{SMALLFONT}{BLACK}Speichert den gesamten Chatverlauf in deinem Benutzerverzeichnis.
+STR_5865    :Chatverlauf protokollieren
+STR_5866    :{SMALLFONT}{BLACK}Speichert den gesamten Chatverlauf{NEWLINE}in Ihrem Benutzerverzeichnis
 STR_5867    :{WINDOW_COLOUR_2}Providername: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Provider-E-Mail-Adresse: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Providerwebseite: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Informationen zum Server anzeigen
+STR_5871    :Pflanzen altern nicht
+STR_5872    :{SMALLFONT}{BLACK}Deaktiviert das Altern von Pflanzen,{NEWLINE}sodass sie nicht verwelken
 
 #############
 # Scenarios #

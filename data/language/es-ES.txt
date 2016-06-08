@@ -2338,7 +2338,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distancia y Velocidad:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Marcas de altura:
 STR_2332    :Niveles relativos
-STR_2333    :Sonido
+STR_2333    :Efectos de sonido
 STR_2334    :Libras ({POUND})
 STR_2335    :Dólares ($)
 STR_2336    :Franco (F)
@@ -2805,7 +2805,7 @@ STR_2794    :{WINDOW_COLOUR_2}Completado por: {BLACK}{STRINGID}{NEWLINE}{WINDOW_
 STR_2795    :Ordenar
 STR_2796    :{SMALLFONT}{BLACK}Ordenar la lista de atracciones según el criterio seleccionedo
 STR_2797    :Desplazar mapa con el ratón al borde de la pantalla
-STR_2798    :{SMALLFONT}{BLACK}Selecciona si al mover el puntero del ratón al borde de la ventana, el mapa se desplazará
+STR_2798    :{SMALLFONT}{BLACK}Desplazar la vista cuando el puntero del ratón esté en el borde de la ventana
 STR_2799    :{SMALLFONT}{BLACK}Mirar o cambiar los atajos de teclado asignados
 STR_2800    :{WINDOW_COLOUR_2}Entradas: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Beneficios venta entradas: {BLACK}{CURRENCY2DP}
@@ -3504,15 +3504,15 @@ STR_5162    :Día/Mes/Año
 STR_5163    :Mes/Día/Año
 STR_5164    :Nombre del Canal Twitch
 STR_5165    :Nombrar visitantes como tus seguidores
-STR_5166    :{SMALLFONT}{BLACK}Nombrará a los visitantes de tu parque como tus seguidores en Twitch
+STR_5166    :{SMALLFONT}{BLACK}Nombrar a los visitantes de tu parque con los nombres de los seguidores de tu canal de Twitch.
 STR_5167    :Seguimiento de 'visitantes seguidores'
-STR_5168    :{SMALLFONT}{BLACK}Activará información de seguimiento de los visitantes que sean tus seguidores en Twitch
+STR_5168    :{SMALLFONT}{BLACK}Activar el seguimiento de visitantes que han sido nombrados con los nombres de los seguidores de tu canal de Twitch.
 STR_5169    :Nombrar visitantes como gente del chat de Twitch
-STR_5170    :{SMALLFONT}{BLACK}Nombrará a los visitantes de tu parque como la gente que hay conectada en el chat de Twitch
+STR_5170    :{SMALLFONT}{BLACK}Nombrar a los visitantes de tu parque con los nombres de las personas conectadas en tu canal de Twitch.
 STR_5171    :Seguimiento de 'visitantes del chat'
-STR_5172    :{SMALLFONT}{BLACK}Activará información de seguimiento de los visitantes que sean las personadas conectadas al chat de Twitch
+STR_5172    :{SMALLFONT}{BLACK}Activar el seguimiento de visitantes que han sido nombrados con los nombres de las personas conectadas en el chat de tu canal de Twitch.
 STR_5173    :Mostrar noticias del chat Twitch
-STR_5174    :{SMALLFONT}{BLACK}Los mensajes del chat de Twitch que comiencen por "!news" se mostrarán como notificaciones en el juego
+STR_5174    :{SMALLFONT}{BLACK}Mostrar mensajes del chat de Twitch precedido de "!news" en las notificaciones del juego.
 STR_5175    :Escribe el nombre de tu canal Twitch
 STR_5176    :Hab. integración Twitch
 STR_5177    :Modo de pantalla:
@@ -3779,7 +3779,7 @@ STR_5437    :Partida no seleccionada
 STR_5438    :No se pueden hacer cambios mientras el editor de comandos está abierto
 STR_5439    :Un comando de espera con al menos 4 segundos es necesario con un comando de reinicio
 STR_5440    :Minimizar desde pantalla completa al perder el foco
-STR_5441    :{SMALLFONT}{BLACK}Identifica atracciones por el tipo de pista,{NEWLINE}para que los vehículos puedan modificarse{NEWLINE}posteriormente, como en RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identifica atracciones por tipo de pista{NEWLINE}por lo que los vehículos pueden modificarse posteriormente.{NEWLINE}(Como en RCT1).
 STR_5442    :Forzar valoración:
 STR_5443    :Velocidad{MOVE_X}{87}{STRINGID}
 STR_5444    :Velocidad:
@@ -3847,7 +3847,7 @@ STR_5505    :No se pudo conectar al servidor.
 STR_5506    :Visitantes ignoran intensidad de atracc.
 STR_5507    :Los Jardineros cortan el césped por defecto
 STR_5508    :Permitir cargar ficheros dañados
-STR_5509    :{SMALLFONT}{BLACK}Permite cargar ficheros cuya suma de verificación no es correcta, como partidas guardadas de versiones de demostración y ficheros dañados
+STR_5509    :{SMALLFONT}{BLACK}Permite cargar escenarios y partidas que tengan una suma de comprobación incorrecta, como los escenarios de la demo o partidas dañadas.
 STR_5510    :Dispositivo de sonido predeterminado
 STR_5511    :(DESCONOCIDO)
 STR_5512    :Guardar Partida como...
@@ -3925,7 +3925,7 @@ STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Desbloquea los límites operativos de funcionamiento, permitiendo cosas como cadenas elevadoras a {VELOCITY}
 STR_5586    :Abrir automáticamente tiendas y puestos
-STR_5587    :{SMALLFONT}{BLACK}Si se activa las tiendas y puestos abrirán automáticamente al colocarse.
+STR_5587    :{SMALLFONT}{BLACK}Las Tiendas y Puestos se abrirán automáticamente después de su construcción.
 STR_5588    :{SMALLFONT}{BLACK}Jugar con otros jugadores
 STR_5589    :Configuración de notificaciones
 STR_5590    :Premios al parque
