@@ -106,6 +106,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		safe_strcpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
 		y = _chatBottom - 15;
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
+		gfx_fill_rect(dpi, x, y, x + _chatRight + 7, y + 12, 0x2000000 | 52);	// Textbox background
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 		if (_chatCaretTicks < 15) {
 			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
