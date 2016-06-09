@@ -688,17 +688,17 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 
 				// Draw additional path bits (bins, benchs, lamps, queue screens)
 				rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
-				switch (sceneryEntry->path_bit.var_08) {
-				case 0:
+				switch (sceneryEntry->path_bit.draw_type) {
+				case PATH_BIT_DRAW_TYPE_LIGHTS:
 					path_bit_lights_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
 					break;
-				case 1:
+				case PATH_BIT_DRAW_TYPE_BINS:
 					path_bit_bins_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
 					break;
-				case 2:
+				case PATH_BIT_DRAW_TYPE_BENCHES:
 					path_bit_benches_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
 					break;
-				case 3:
+				case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
 					path_bit_jumping_fountains_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74, dpi);
 					break;
 				}

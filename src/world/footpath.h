@@ -36,7 +36,7 @@ typedef struct rct_footpath_entry {
 	uint8 flags;				// 0x0B
 	uint8 scrolling_mode;		// 0x0C
 } rct_footpath_entry;
-assert_struct_size(rct_footpath_entry, 12);
+assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
 enum {
