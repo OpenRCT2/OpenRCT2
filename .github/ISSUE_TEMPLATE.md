@@ -14,7 +14,7 @@
 2. [step 2]
 
 **Dump file**
-[If you have a dump file, zip it and drag & drop it here.]
+[If you have a dump file: zip it before you drag & drop it here.]
 
 **Screenshots / Video:**
 [Drag & drop screenshots here. Use https://vid.me to upload video.]
