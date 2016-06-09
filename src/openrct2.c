@@ -340,8 +340,10 @@ void openrct2_dispose()
 	language_close_all();
 	rct2_dispose();
 	config_release();
+#ifdef __ANDROID__
 	munmap(segments, 16941056);
 	close(fdData);
+#endif
 	platform_free();
 }
 
@@ -529,18 +531,25 @@ bool openrct2_setup_rct2_segment()
 	int numPages = (len + pageSize - 1) / pageSize;
 	unsigned char *dummy = malloc(numPages);
 
-	fdData = open("openrct2_load", O_RDONLY);
+#ifdef __ANDROID__
+	errno = 0;
+	fdData = open("/sdcard/openrct2/openrct2_load", O_RDONLY);
 	if (fdData < 0)
 	{
-		log_fatal("failed to load rct2 data. cat openrct2_text openrct2_data > openrct2_load");
+		log_fatal("failed to load openrct2_load (%d)", errno);
 		exit(1);
 	}
-	segments = mmap((void*)0x401000, 16941056, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE, fdData, 0);
-	if (segments != (void*)0x401000)
+
+	// TODO: Figure out why PROT_EXEC doesn't seem to be needed
+	errno = 0;
+	segments = mmap((void *) 0x401000, 16941056, PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE, fdData, 0);
+	if (segments != (void *) 0x401000)
 	{
-		log_fatal("mmap failed");
+		log_fatal("mmap failed (%d)", errno);
 		exit(1);
 	}
+#endif
+
 	int err = mincore((void *)0x8a4000, len, dummy);
 	bool pagesMissing = false;
 	if (err != 0)
