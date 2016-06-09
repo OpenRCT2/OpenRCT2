@@ -53,7 +53,7 @@ public:
     virtual void Connect(const char * address, uint16 port)      abstract;
     virtual void ConnectAsync(const char * address, uint16 port) abstract;
 
-    virtual bool               SendData(const void * buffer, size_t size)                     abstract;
+    virtual size_t             SendData(const void * buffer, size_t size)                     abstract;
     virtual NETWORK_READPACKET ReceiveData(void * buffer, size_t size, size_t * sizeReceived) abstract;
 
     virtual void Disconnect() abstract;

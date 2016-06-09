@@ -102,15 +102,16 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
 
     const void * buffer = &tosend[packet.transferred];
     size_t bufferSize = tosend.size() - packet.transferred;
-    if (Socket->SendData(buffer, bufferSize))
+    size_t sent = Socket->SendData(buffer, bufferSize);
+    if (sent > 0)
     {
-        packet.transferred += bufferSize;
+        packet.transferred += sent;
+    }
+    if (packet.transferred == tosend.size())
+    {
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)

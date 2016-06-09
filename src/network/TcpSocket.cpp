@@ -339,7 +339,7 @@ public:
         }
     }
 
-    bool SendData(const void * buffer, size_t size) override
+    size_t SendData(const void * buffer, size_t size) override
     {
         if (_status != SOCKET_STATUS_CONNECTED)
         {
@@ -354,11 +354,11 @@ public:
             int sentBytes = send(_socket, (const char *)bufferStart, (int)remainingSize, FLAG_NO_PIPE);
             if (sentBytes == SOCKET_ERROR)
             {
-                return false;
+                return totalSent;
             }
             totalSent += sentBytes;
         } while (totalSent < size);
-        return true;
+        return totalSent;
     }
 
     NETWORK_READPACKET ReceiveData(void * buffer, size_t size, size_t * sizeReceived) override
