@@ -1202,6 +1202,9 @@ bool Network::ProcessConnection(NetworkConnection& connection)
 		case NETWORK_READPACKET_SUCCESS:
 			// done reading in packet
 			ProcessPacket(connection, connection.InboundPacket);
+			if (connection.Socket == nullptr) {
+				return false;
+			}
 			break;
 		case NETWORK_READPACKET_MORE_DATA:
 			// more data required to be read
@@ -1600,6 +1603,7 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
 			if (data == NULL)
 			{
 				log_warning("Failed to decompress data sent from server.");
+				Close();
 				return;
 			}
 		} else {

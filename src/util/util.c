@@ -409,6 +409,10 @@ unsigned char *util_zlib_inflate(unsigned char *data, size_t data_in_size, size_
 			log_error("Your build is shipped with broken zlib. Please use the official build.");
 			free(buffer);
 			return NULL;
+		} else if (ret < 0) {
+			log_error("Error uncompressing data.");
+			free(buffer);
+			return NULL;
 		}
 		ret = uncompress(buffer, &out_size, data, data_in_size);
 	} while (ret != Z_OK);
