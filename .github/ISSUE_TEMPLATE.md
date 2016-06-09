@@ -14,10 +14,10 @@
 2. [step 2]
 
 **Dump file**
-[If you have a dump file, zip it and drag / drop it here.]
+[If you have a dump file, zip it and drag & drop it here.]
 
 **Screenshots / Video:**
-[Drag / drop screenshots here. Use https://vid.me to upload video.]
+[Drag & drop screenshots here. Use https://vid.me to upload video.]
 
 **Save game:**
-[Change the file extension to .txt or package to a .zip so that it can be drag / dropped here...]
+[Change the file extension to .txt or package to a .zip so that it can be drag & dropped here...]
