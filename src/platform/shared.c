@@ -489,7 +489,7 @@ void platform_process_messages()
 				if (SDL_HasClipboardText()) {
 					utf8* text = SDL_GetClipboardText();
 
-					utf8_remove_formatting(text);
+					utf8_remove_formatting(text, false);
 					textinputbuffer_insert(&gTextInput, text);
 
 					SDL_free(text);
@@ -538,7 +538,7 @@ void platform_process_messages()
 
 			utf8* newText = e.text.text;
 
-			utf8_remove_formatting(newText);
+			utf8_remove_formatting(newText, false);
 			textinputbuffer_insert(&gTextInput, newText);
 
 			console_refresh_caret();
