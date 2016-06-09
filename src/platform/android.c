@@ -35,7 +35,6 @@ int mbtowc(wchar_t *__restrict pwc, const char *__restrict s, size_t n) {
 }
 
 bool platform_check_steam_overlay_attached() {
-    STUB();
     return false;
 }
 
