@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 {
 	core_init();
 
-	sint32 exitCode = cmdline_run(argv, argc);
+	sint32 exitCode = cmdline_run((const char **)argv, argc);
 	if (exitCode == 1)
 	{
 		openrct2_launch();
