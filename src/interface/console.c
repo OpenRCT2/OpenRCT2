@@ -458,18 +458,29 @@ static int cc_rides(const utf8 **argv, int argc)
 				return 0;
 			}
 			if (strcmp(argv[1], "type") == 0) {
-				int int_val[3];
+				int subtype;
 				bool int_valid[3] = { 0 };
-				int_val[0] = console_parse_int(argv[2], &int_valid[0]);
-				int_val[1] = console_parse_int(argv[3], &int_valid[1]);
+				int ride_index = console_parse_int(argv[2], &int_valid[0]);
+				int type = console_parse_int(argv[3], &int_valid[1]);
 				if (argc > 4) {
-					int_val[2] = console_parse_int(argv[4], &int_valid[2]);
+					subtype = console_parse_int(argv[4], &int_valid[2]);
 				}
-				if (int_valid[0] && int_valid[1] && (get_ride(int_val[0])->type != RIDE_TYPE_NULL)) {
-					rct_ride *ride = get_ride(int_val[0]);
-					ride->type = int_val[1];
-					if (int_valid[2]) {
-						ride->subtype = int_val[2];
+				if (!int_valid[0] || !int_valid[1]) {
+					console_printf("This command expects integer arguments");
+				} else if (ride_index < 0) {
+					console_printf("Ride index must not be negative");
+				} else if (argc > 4 && (!int_valid[2] || (subtype < 0 || subtype >= object_entry_group_counts[OBJECT_TYPE_RIDE])))
+				{
+					console_printf("No ride entry found for given subtype");
+				} else {
+					rct_ride *ride = get_ride(ride_index);
+					if (ride->type != RIDE_TYPE_NULL) {
+						ride->type = type;
+						if (int_valid[2]) {
+							ride->subtype = subtype;
+						}
+					} else {
+						console_printf("No ride found with index %d", ride_index);
 					}
 				}
 			} else if (strcmp(argv[1], "friction") == 0) {
