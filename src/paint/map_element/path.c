@@ -1013,7 +1013,7 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
 
 	// no idea whre bp comes from
-	uint16 bp = 0;
+	uint16 bp = edi;
 
 	if (bp & 1) {
 		RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
