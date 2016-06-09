@@ -220,14 +220,64 @@ void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapEl
 
 /* rct2: 0x006A5E81 */
 void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
-	RCT2_GLOBAL(0x00F3EF74, uint32) = pathBitImageFlags;
-	RCT2_CALLPROC_X(0x006A5E81, 0, (int)pathBitEntry, get_current_rotation(), height, (int)mapElement, 0, edges);
+	uint32 imageId;
+
+	if (!(edges & (1 << 0))) {
+		imageId = pathBitEntry->image + 1;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 7, 16, 0, 16, 7, height, 6, 8, height + 2, get_current_rotation());
+	}
+	if (!(edges & (1 << 1))) {
+		imageId = pathBitEntry->image + 2;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 16, 25, 16, 0, 7, height, 8, 23, height + 2, get_current_rotation());
+	}
+
+	if (!(edges & (1 << 2))) {
+		imageId = pathBitEntry->image + 3;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 25, 16, 0, 16, 7, height, 23, 8, height + 2, get_current_rotation());
+	}
+
+	if (!(edges & (1 << 3))) {
+		imageId = pathBitEntry->image + 4;
+
+		if (mapElement->flags & MAP_ELEMENT_FLAG_BROKEN)
+			imageId += 4;
+
+		imageId |= pathBitImageFlags;
+
+		sub_98197C(imageId, 16, 7, 16, 0, 7, height, 8, 6, height + 2, get_current_rotation());
+	}
 }
 
 /* rct2: 0x006A6008 */
-void path_bit_queue_screens_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags) {
-	RCT2_GLOBAL(0x00F3EF74, uint32) = pathBitImageFlags;
-	RCT2_CALLPROC_X(0x006A6008, 0, (int)pathBitEntry, get_current_rotation(), height, (int)mapElement, 0, edges);
+void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, int height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
+	if (dpi->zoom_level != 0)
+		return;
+
+	uint32 imageId = pathBitEntry->image;
+	imageId |= pathBitImageFlags;
+
+	sub_98197C(imageId + 1, 0, 0, 1, 1, 2, height, 3, 3, height + 2, get_current_rotation());
+	sub_98197C(imageId + 2, 0, 0, 1, 1, 2, height, 3, 29, height + 2, get_current_rotation());
+	sub_98197C(imageId + 3, 0, 0, 1, 1, 2, height, 29, 29, height + 2, get_current_rotation());
+	sub_98197C(imageId + 4, 0, 0, 1, 1, 2, height, 29, 3, height + 2, get_current_rotation());
 }
 
 bool do_sub_6A2ECC(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * dword_F3EF6C, bool * underground)
@@ -649,7 +699,7 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 					path_bit_benches_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
 					break;
 				case 3:
-					path_bit_queue_screens_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74);
+					path_bit_jumping_fountains_paint(sceneryEntry, map_element, height, (uint8)bp, dword_F3EF74, dpi);
 					break;
 				}
 				
