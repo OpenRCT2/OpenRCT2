@@ -4179,6 +4179,8 @@ STR_5869    :{WINDOW_COLOUR_2}Web proveedor: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Mostrar información del servidor.
 STR_5871    :Las plantas no se marchitan
 STR_5872    :{SMALLFONT}{BLACK}Evitar que las plantas se marchiten si estas no son regadas.
+STR_5873    :Cadena de elevación en todo el trayecto
+STR_5874    :{SMALLFONT}{BLACK}Permite que en cualquier pieza del trayecto se pueda colocar una cadena de elevación.
 
 ##############
 # Escenarios #

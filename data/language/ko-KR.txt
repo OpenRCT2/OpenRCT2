@@ -4178,6 +4178,8 @@ STR_5869    :{WINDOW_COLOUR_2}서버 웹사이트: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}서버 정보 보기
 STR_5871    :꽃이 시들지 않게 하기
 STR_5872    :{SMALLFONT}{BLACK}꽃이 시들지 않게 만듭니다.
+STR_5873    :모든 트랙에 체인 걸기 허용
+STR_5874    :{SMALLFONT}{BLACK}모든 트랙 조각에 체인 리프트를 걸 수 있도록 허용합니다.
 
 
 #############

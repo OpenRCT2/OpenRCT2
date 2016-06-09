@@ -842,13 +842,6 @@ STR_0837    :Kan inte initiera grafiksystemet
 STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<not used anymore>
-STR_0842    :<not used anymore>
-STR_0843    :<not used anymore>
-STR_0844    :<not used anymore>
-STR_0845    :<not used anymore>
-STR_0846    :<not used anymore>
 STR_0847    :Om 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
@@ -1065,7 +1058,6 @@ STR_1059    :Kan inte namnge åktur/attraktion...
 STR_1060    :Ogiltigt åktur/attraktionsnamn
 STR_1061    :Normalt läge
 STR_1062    :Kontinuerligt banläge
-#TODO
 STR_1063    :Backande kjedjelyfts start
 STR_1064    :Accelererad start (passerar station)
 STR_1065    :Pendlarläge
@@ -1654,9 +1646,6 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Hjälp! Släpp ner mig!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Jag börjar få slut på pengar!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Dom bygger en ny åktur!{ENDQUOTES}
-# Two removed inside jokes about Intamin and Phoenix
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...och nu är vi på {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Nyliga tankar:
 STR_1655    :{SMALLFONT}{BLACK}Bygg gångväg på land
@@ -1677,7 +1666,6 @@ STR_1669    :{WINDOW_COLOUR_2}Tillfredsställd: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Totalt antal kunder: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Total vinst: {BLACK}{CURRENCY2DP}
 STR_1672    :Bromsar
-#TODO
 STR_1673    :Snurr kontroll växlare
 STR_1674    :Bromshastighet
 STR_1675    :{POP16}{VELOCITY}
@@ -1897,10 +1885,6 @@ STR_1888    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}mer än 4 timma
 STR_1889    :{WINDOW_COLOUR_2}Dötid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
 STR_1891    :Ingen {STRINGID} i parken än!
-# The following two strings were used to display an error when the disc was missing.
-# This has been replaced in OpenRCT2.
-STR_1892    :<not used anymore>
-STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Bygg ny Åktur/attraktion
 STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inkomster
@@ -4183,7 +4167,13 @@ STR_5869    :{WINDOW_COLOUR_2}Ägarens Hemsida: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Visa server information
 STR_5871    :Växter åldras inte
 STR_5872    :{SMALLFONT}{BLACK}Avaktivera växterna från att åldras så dem inte visnar
-
+STR_5873    :Tillåt lyftkjedjor på alla spår
+STR_5874    :{SMALLFONT}{BLACK}Tillåter alla delar i berg-o-dal barnor att ha lyftkjedjor som drar vagnarna
+STR_5875    :Grafikmotor:
+STR_5876    :{SMALLFONT}{BLACK}Spelmotorn som ska används för att rita spelet.
+STR_5877    :Mjukvara
+STR_5878    :Mjukvara (hårdvaruhantering)
+STR_5879    :OpenGL
 
 #############
 # Scenarion #

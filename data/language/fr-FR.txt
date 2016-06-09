@@ -4180,6 +4180,10 @@ STR_5867    :{WINDOW_COLOUR_2}Nom du fournisseur : {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail du fournisseur : {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Site web du fournisseur : {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Affiche les informations du serveur
+STR_5871    :Les plantes ne vieillissent pas
+STR_5872    :{SMALLFONT}{BLACK}Désactive le vieillissement des plantes pour qu'elles ne fanent pas
+STR_5873    :Autoriser remontées à chaîne sur {NEWLINE}tous les éléments de voie
+STR_5874    :{SMALLFONT}{BLACK}Permet à tous les éléments de voie d'être équipés d'une remontée à chaîne
 
 #############
 # Scenarios #

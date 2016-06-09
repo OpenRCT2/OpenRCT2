@@ -4172,6 +4172,8 @@ STR_5869    :{WINDOW_COLOUR_2}Providerwebseite: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Informationen zum Server anzeigen
 STR_5871    :Pflanzen altern nicht
 STR_5872    :{SMALLFONT}{BLACK}Deaktiviert das Altern von Pflanzen,{NEWLINE}sodass sie nicht verwelken
+STR_5873    :Kettenlifte auf allen Streckenst. erlauben
+STR_5874    :{SMALLFONT}{BLACK}Erlaubt es jedes Streckenstück{NEWLINE}als Kettenlift zu verwenden
 
 #############
 # Scenarios #
