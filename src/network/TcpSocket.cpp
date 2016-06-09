@@ -349,7 +349,9 @@ public:
         size_t totalSent = 0;
         do
         {
-            int sentBytes = send(_socket, (const char *)buffer, (int)size, FLAG_NO_PIPE);
+            const char * bufferStart = (const char *)buffer + totalSent;
+            size_t remainingSize = size - totalSent;
+            int sentBytes = send(_socket, (const char *)bufferStart, (int)remainingSize, FLAG_NO_PIPE);
             if (sentBytes == SOCKET_ERROR)
             {
                 return false;
