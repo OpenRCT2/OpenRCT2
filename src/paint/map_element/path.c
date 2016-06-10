@@ -563,7 +563,7 @@ void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool w
 				break;
 			case 10:
 				sub_98197C(73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2, get_current_rotation());
-				sub_98197C(74 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
+				sub_98197C(73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
 				break;
 
 			case 3:
@@ -1038,7 +1038,7 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 	uint8 type = footpath_element_get_type(mapElement);
 	// Rol edges around rotation
 	uint8 edges = ((mapElement->properties.path.edges << get_current_rotation()) & 0xF) |
-		((mapElement->properties.path.edges << get_current_rotation()) >> 4);
+		(((mapElement->properties.path.edges & 0xF) << get_current_rotation()) >> 4);
 
 	rct_xy16 boundBoxOffset = {
 		.x = stru_98D804[edges][0],
