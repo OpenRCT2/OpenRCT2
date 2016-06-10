@@ -80,13 +80,13 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
  */
 void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
 {
-	uint8 _bl = *ebx & 0xFF, staff_type = (*ebx & 0xFF00) >> 8;
-	uint16 _ax = *eax & 0xFFFF, _cx = *ecx & 0xFFFF, _dx = *edx & 0xFFFF;
+	uint8 staff_type = (*ebx & 0xFF00) >> 8;
+	uint8 game_command_flags = *ebx & 0xFF;
 
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
-	gCommandPosition.x = _ax;
-	gCommandPosition.y = _cx;
-	gCommandPosition.z = _dx;
+	gCommandPosition.x = *eax & 0xFFFF;
+	gCommandPosition.y = *ecx & 0xFFFF;
+	gCommandPosition.z = *edx & 0xFFFF;
 
 	if (gSpriteListCount[SPRITE_LIST_NULL] < 400) {
 		*ebx = MONEY32_UNDEFINED;
@@ -107,12 +107,8 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 	}
 
 	int newStaffId = i;
-
-	int _eax, _ebx;
 	rct_sprite_bounds *spriteBounds;
-	_ebx = _bl;
-
-	rct_peep* newPeep = &(create_sprite(_bl)->peep);
+	rct_peep* newPeep = &(create_sprite(game_command_flags)->peep);
 
 	if (newPeep == NULL)
 	{
@@ -121,7 +117,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		return;
 	}
 
-	if (_bl == 0) {
+	if (game_command_flags == 0) {
 		sprite_remove((rct_sprite*)newPeep);
 	} else {
 		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LIST_PEEP * 2);
@@ -177,11 +173,11 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->id = newStaffIndex;
 		newPeep->staff_type = staff_type;
 
-		_eax = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
+		uint8 sprite_type = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
 		newPeep->name_string_idx = staff_type + 0x300;
-		newPeep->sprite_type = _eax;
+		newPeep->sprite_type = sprite_type;
 
-		spriteBounds = g_sprite_entries[_eax].sprite_bounds;
+		spriteBounds = g_sprite_entries[sprite_type].sprite_bounds;
 		newPeep->sprite_width = spriteBounds->sprite_width;
 		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
 		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
