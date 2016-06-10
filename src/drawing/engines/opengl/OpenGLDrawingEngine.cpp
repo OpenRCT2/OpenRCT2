@@ -51,6 +51,110 @@ extern "C"
     #include "../../drawing.h"
 }
 
+static const vec3f TransparentColourTable[144 - 44] =
+{
+    { 0.7f, 0.8f, 0.8f }, // 44
+    { 0.7f, 0.8f, 0.8f },
+    { 0.3f, 0.4f, 0.4f },
+    { 0.2f, 0.3f, 0.3f },
+    { 0.1f, 0.2f, 0.2f },
+    { 0.4f, 0.5f, 0.5f },
+    { 0.3f, 0.4f, 0.4f },
+    { 0.4f, 0.5f, 0.5f },
+    { 0.4f, 0.5f, 0.5f },
+    { 0.3f, 0.4f, 0.4f },
+    { 0.6f, 0.7f, 0.7f },
+    { 0.3f, 0.5f, 0.9f },
+    { 0.1f, 0.3f, 0.8f },
+    { 0.5f, 0.7f, 0.9f },
+    { 0.6f, 0.2f, 0.2f },
+    { 0.5f, 0.1f, 0.1f },
+    { 0.8f, 0.4f, 0.4f },
+    { 0.3f, 0.5f, 0.4f },
+    { 0.2f, 0.4f, 0.2f },
+    { 0.5f, 0.7f, 0.5f },
+    { 0.5f, 0.5f, 0.7f },
+    { 0.3f, 0.3f, 0.5f },
+    { 0.6f, 0.6f, 0.8f },
+    { 0.5f, 0.5f, 0.2f },
+    { 0.4f, 0.4f, 0.1f },
+    { 0.7f, 0.7f, 0.4f },
+    { 0.7f, 0.5f, 0.3f },
+    { 0.6f, 0.4f, 0.2f },
+    { 0.8f, 0.7f, 0.4f },
+    { 0.8f, 0.7f, 0.1f },
+    { 0.7f, 0.4f, 0.0f },
+    { 1.0f, 0.9f, 0.2f },
+    { 0.4f, 0.6f, 0.2f },
+    { 0.3f, 0.4f, 0.2f },
+    { 0.5f, 0.7f, 0.3f },
+    { 0.5f, 0.6f, 0.4f },
+    { 0.4f, 0.4f, 0.3f },
+    { 0.7f, 0.8f, 0.5f },
+    { 0.3f, 0.7f, 0.2f },
+    { 0.2f, 0.6f, 0.0f },
+    { 0.4f, 0.8f, 0.3f },
+    { 0.8f, 0.5f, 0.4f },
+    { 0.7f, 0.4f, 0.3f },
+    { 0.9f, 0.7f, 0.5f },
+    { 0.5f, 0.3f, 0.7f },
+    { 0.4f, 0.2f, 0.6f },
+    { 0.7f, 0.5f, 0.8f },
+    { 0.9f, 0.0f, 0.0f },
+    { 0.7f, 0.0f, 0.0f },
+    { 1.0f, 0.3f, 0.3f },
+    { 1.0f, 0.4f, 0.1f },
+    { 0.9f, 0.3f, 0.0f },
+    { 1.0f, 0.6f, 0.3f },
+    { 0.2f, 0.6f, 0.6f },
+    { 0.0f, 0.4f, 0.4f },
+    { 0.4f, 0.7f, 0.7f },
+    { 0.9f, 0.2f, 0.6f },
+    { 0.6f, 0.1f, 0.4f },
+    { 1.0f, 0.5f, 0.7f },
+    { 0.6f, 0.5f, 0.4f },
+    { 0.4f, 0.3f, 0.2f },
+    { 0.7f, 0.7f, 0.6f },
+    { 0.9f, 0.6f, 0.6f },
+    { 0.8f, 0.5f, 0.5f },
+    { 1.0f, 0.7f, 0.7f },
+    { 0.7f, 0.8f, 0.8f },
+    { 0.5f, 0.6f, 0.6f },
+    { 0.9f, 1.0f, 1.0f },
+    { 0.2f, 0.3f, 0.3f },
+    { 0.4f, 0.5f, 0.5f },
+    { 0.7f, 0.8f, 0.8f },
+    { 0.2f, 0.3f, 0.5f },
+    { 0.5f, 0.5f, 0.7f },
+    { 0.5f, 0.3f, 0.7f },
+    { 0.1f, 0.3f, 0.7f },
+    { 0.3f, 0.5f, 0.9f },
+    { 0.6f, 0.8f, 1.0f },
+    { 0.2f, 0.6f, 0.6f },
+    { 0.5f, 0.8f, 0.8f },
+    { 0.1f, 0.5f, 0.0f },
+    { 0.3f, 0.5f, 0.4f },
+    { 0.4f, 0.6f, 0.2f },
+    { 0.3f, 0.7f, 0.2f },
+    { 0.5f, 0.6f, 0.4f },
+    { 0.5f, 0.5f, 0.2f },
+    { 1.0f, 0.9f, 0.2f },
+    { 0.8f, 0.7f, 0.1f },
+    { 0.6f, 0.3f, 0.0f },
+    { 1.0f, 0.4f, 0.1f },
+    { 0.7f, 0.3f, 0.0f },
+    { 0.7f, 0.5f, 0.3f },
+    { 0.5f, 0.3f, 0.1f },
+    { 0.5f, 0.4f, 0.3f },
+    { 0.8f, 0.5f, 0.4f },
+    { 0.6f, 0.2f, 0.2f },
+    { 0.6f, 0.0f, 0.0f },
+    { 0.9f, 0.0f, 0.0f },
+    { 0.6f, 0.1f, 0.3f },
+    { 0.9f, 0.2f, 0.6f },
+    { 0.9f, 0.6f, 0.6f },
+};
+
 class OpenGLDrawingEngine;
 
 class OpenGLDrawingContext : public IDrawingContext
@@ -342,6 +446,20 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     if (colour & 0x1000000)
     {
         paletteColour[1].a = 0;
+    }
+    else if (colour & 0x2000000)
+    {
+        uint8 tableIndex = colour & 0xFF;
+        if (tableIndex <   44) return;
+        if (tableIndex >= 144) return;
+        tableIndex -= 44;
+
+        vec3f transformColour = TransparentColourTable[tableIndex];
+        paletteColour[0].r = transformColour.r;
+        paletteColour[0].g = transformColour.g;
+        paletteColour[0].b = transformColour.b;
+        paletteColour[0].a = 0.5f;
+        paletteColour[1] = paletteColour[0];
     }
 
     _fillRectShader->Use();
