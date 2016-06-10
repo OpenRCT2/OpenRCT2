@@ -156,7 +156,7 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 	}
 
 	int i;
-	for (i = 0; i < STAFF_MAX_COUNT; i++) {
+	for (i = 0; i < STAFF_MAX_COUNT; ++i) {
 		if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] & 1))
 			break;
 	}
@@ -197,9 +197,12 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 		newPeep->paid_on_souvenirs = 0;
 
 		if (staff_type == STAFF_TYPE_HANDYMAN)
-			newPeep->staff_orders = 7;
+			newPeep->staff_orders = STAFF_ORDERS_SWEEPING |
+									STAFF_ORDERS_WATER_FLOWERS |
+									STAFF_ORDERS_EMPTY_BINS;
 		else if (staff_type == STAFF_TYPE_MECHANIC)
-			newPeep->staff_orders = 3;
+			newPeep->staff_orders = STAFF_ORDERS_INSPECT_RIDES |
+									STAFF_ORDERS_FIX_RIDES;
 		else
 			newPeep->staff_orders = 0;
 
@@ -210,7 +213,7 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 		int newStaffIndex = 0;
 		for (;;) {
 			bool found = false;
-			newStaffIndex++;
+			++newStaffIndex;
 
 			FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
 				if (idSearchPeep->staff_type != staff_type)
@@ -243,7 +246,7 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
 
-			sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
+			sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite *)newPeep);
 			invalidate_sprite_2((rct_sprite *)newPeep);
 		}
 
@@ -253,7 +256,7 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 		newPeep->pathfind_goal.z = 0xFF;
 		newPeep->pathfind_goal.direction = 0xFF;
 
-		uint8 colour = gStaffColours[staff_type > 2 ? 2 : staff_type];
+		uint8 colour = gStaffColours[clamp(0, staff_type, STAFF_TYPE_SECURITY)];
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
@@ -268,15 +271,15 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[newStaffId] = STAFF_MODE_WALK;
 
-		for (int i = 0; i < 0x80; i++) {
+		for (int i = 0; i < 0x80; ++i) {
 			int addr = RCT2_ADDRESS_STAFF_PATROL_AREAS + (newStaffId << 9) + i * 4;
 			RCT2_GLOBAL(addr, uint32) = 0;
 		}
 	}
 
-	if((staff_type == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default) {
-		int newPeep_flags = ((newPeep->staff_orders ^ (1 << 3)) << 8) | 1;
-		game_do_command(newPeep->x, newPeep_flags, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, (int)newPeep, 0);
+	if ((staff_type == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default) {
+		uint8 new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
+		game_do_command(newPeep->x, ((int)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, (int)newPeep, 0);
 	}
 
 	*newPeep_sprite_index = newPeep->sprite_index;
