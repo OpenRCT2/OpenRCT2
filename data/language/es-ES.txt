@@ -4181,6 +4181,11 @@ STR_5871    :Las plantas no se marchitan
 STR_5872    :{SMALLFONT}{BLACK}Evitar que las plantas se marchiten si estas no son regadas.
 STR_5873    :Cadena de elevación en todo el trayecto
 STR_5874    :{SMALLFONT}{BLACK}Permite que en cualquier pieza del trayecto se pueda colocar una cadena de elevación.
+STR_5875    :Motor de dibujo:
+STR_5876    :{SMALLFONT}{BLACK}El software a utilizar para dibujar el juego.
+STR_5877    :Software
+STR_5878    :Software (vía hardware)
+STR_5879    :OpenGL
 
 ##############
 # Escenarios #

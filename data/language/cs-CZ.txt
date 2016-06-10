@@ -4183,6 +4183,11 @@ STR_5871    :Nevadnoucí květiny.
 STR_5872    :{SMALLFONT}{BLACK}Vypnout stárnutí a uvadání květin.
 STR_5873    :Povolit řetězové výtahy na všech částech trati
 STR_5874    :{SMALLFONT}{BLACK}Umožní použít řetězový výtah na jakékoliv části dráhy
+STR_5875    :Vykreslovací engine:
+STR_5876    :{SMALLFONT}{BLACK}Engine, který bude použit pro vykreslování hry.
+STR_5877    :Software
+STR_5878    :Software (hardwarové zobrazování)
+STR_5879    :OpenGL
 
 
 ###############################################################################

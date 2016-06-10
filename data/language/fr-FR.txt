@@ -3493,7 +3493,7 @@ STR_5151    :
 #Decimal separator
 STR_5152    :,
 STR_5153    :Thèmes...
-STR_5154    :Accélération matérielle
+STR_5154    :Affichage matériel
 STR_5155    :Autoriser le test de circuits incomplets
 STR_5156    :{SMALLFONT}{BLACK}Autorise le test de la plupart des attractions même si le circuit est incomplet. Ne s'applique pas aux modes à blocs de voie.
 STR_5157    :Débloquer tous les prix
@@ -4034,8 +4034,8 @@ STR_5724    :Orage
 STR_5725    :{BLACK}Forcer la météo :
 STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
-STR_5728    :Requiert l'option d'accélération matérielle
-STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'accélération matérielle
+STR_5728    :Requiert l'option d'affichage matériel
+STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'affichage matériel
 STR_5730    :Au plus proche
 STR_5731    :Linéaire
 STR_5732    :Anisotropique
@@ -4126,9 +4126,9 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Affiche le nombre d'images par seconde durant le jeu
 STR_5816    :{SMALLFONT}{BLACK}Définit le ratio de mise à l'échelle du jeu.{NEWLINE}Utile lors de l'utilisation de résolutions élevées
-STR_5817    :{SMALLFONT}{BLACK}[Requiert l'accélération matérielle]{NEWLINE}Définit le type de mise à l'échelle
-STR_5818    :{SMALLFONT}{BLACK}[Requiert l'accélération matérielle]{NEWLINE}Utilise l'échelle la plus proche quand le ratio de mise à l'échelle est un entier (1, 2, 3, etc.)
-STR_5819    :{SMALLFONT}{BLACK}[Requiert l'accélération matérielle]{NEWLINE}Met le jeu en pause quand l'overlay Steam est ouvert
+STR_5817    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Définit le type de mise à l'échelle
+STR_5818    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Utilise l'échelle la plus proche quand le ratio de mise à l'échelle est un entier (1, 2, 3, etc.)
+STR_5819    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Met le jeu en pause quand l'overlay Steam est ouvert
 STR_5820    :{SMALLFONT}{BLACK}Minimise le jeu si le focus est perdu en plein écran
 STR_5821    :{SMALLFONT}{BLACK}Change la couleur de la marque de construction pendant la construction d'attractions, allées, boutiques, éléments de décor, etc.
 STR_5822    :{SMALLFONT}{BLACK}Active le cycle jour / nuit.{NEWLINE}Chaque cycle dure un mois de jeu
@@ -4184,6 +4184,11 @@ STR_5871    :Les plantes ne vieillissent pas
 STR_5872    :{SMALLFONT}{BLACK}Désactive le vieillissement des plantes pour qu'elles ne fanent pas
 STR_5873    :Autoriser remontées à chaîne sur {NEWLINE}tous les éléments de voie
 STR_5874    :{SMALLFONT}{BLACK}Permet à tous les éléments de voie d'être équipés d'une remontée à chaîne
+STR_5875    :Moteur de dessin :
+STR_5876    :{SMALLFONT}{BLACK}Sélectionne le moteur à utiliser pour dessiner le jeu
+STR_5877    :Logiciel
+STR_5878    :Logiciel (aff. matériel)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #

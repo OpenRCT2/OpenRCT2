@@ -4174,6 +4174,11 @@ STR_5871    :Pflanzen altern nicht
 STR_5872    :{SMALLFONT}{BLACK}Deaktiviert das Altern von Pflanzen,{NEWLINE}sodass sie nicht verwelken
 STR_5873    :Kettenlifte auf allen Streckenst. erlauben
 STR_5874    :{SMALLFONT}{BLACK}Erlaubt es jedes Streckenstück{NEWLINE}als Kettenlift zu verwenden
+STR_5875    :Grafikschnittstelle:
+STR_5876    :{SMALLFONT}{BLACK}Die Grafikschnittstelle, die zur Darstellung{NEWLINE}des Spiels verwendet wird
+STR_5877    :Software
+STR_5878    :Software (Anzeige durch Hardware)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #
