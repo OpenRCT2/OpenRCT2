@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include "../../../common.h"
+
 #if OPENGL_NO_LINK
 
 // BEGIN [Do not define 1.1 function signatures]
@@ -155,4 +157,11 @@ GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAP
 namespace OpenGLAPI
 {
     bool Initialise();
+    void SetTexture2D(uint16 index, GLuint texture);
+}
+
+namespace OpenGLState
+{
+    extern uint16 ActiveTexture;
+    extern GLuint CurrentProgram;
 }

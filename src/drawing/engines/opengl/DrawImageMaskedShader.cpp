@@ -32,6 +32,10 @@ DrawImageMaskedShader::DrawImageMaskedShader() : OpenGLShaderProgram("drawimagem
     glBindVertexArray(_vao);
     glEnableVertexAttribArray(vIndex);
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, 0);
+
+    Use();
+    glUniform1i(uTextureMask, 0);
+    glUniform1i(uTextureColour, 1);
 }
 
 DrawImageMaskedShader::~DrawImageMaskedShader()
@@ -70,16 +74,12 @@ void DrawImageMaskedShader::SetBounds(sint32 left, sint32 top, sint32 right, sin
 
 void DrawImageMaskedShader::SetTextureMask(GLuint texture)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(uTextureMask, 0);
+    OpenGLAPI::SetTexture2D(0, texture);
 }
 
 void DrawImageMaskedShader::SetTextureColour(GLuint texture)
 {
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(uTextureColour, 1);
+    OpenGLAPI::SetTexture2D(1, texture);
 }
 
 void DrawImageMaskedShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)

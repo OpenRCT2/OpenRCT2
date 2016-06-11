@@ -148,7 +148,11 @@ GLuint OpenGLShaderProgram::GetUniformLocation(const char * name)
 
 void OpenGLShaderProgram::Use()
 {
-    glUseProgram(_id);
+    if (OpenGLState::CurrentProgram != _id)
+    {
+        OpenGLState::CurrentProgram = _id;
+        glUseProgram(_id);
+    }
 }
 
 bool OpenGLShaderProgram::Link()

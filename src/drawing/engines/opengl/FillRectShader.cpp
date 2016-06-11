@@ -36,6 +36,7 @@ FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
 
     Use();
     SetFlags(0);
+    glUniform1i(uSourceFramebuffer, 0);
 }
 
 FillRectShader::~FillRectShader()
@@ -85,9 +86,7 @@ void FillRectShader::SetColour(int index, vec4f colour)
 
 void FillRectShader::SetSourceFramebuffer(GLuint texture)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(uSourceFramebuffer, 0);
+    OpenGLAPI::SetTexture2D(0, texture);
 }
 
 void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)

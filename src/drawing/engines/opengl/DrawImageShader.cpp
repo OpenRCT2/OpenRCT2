@@ -36,6 +36,7 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     Use();
     SetFlags(0);
     SetTextureCoordinates(0, 0, 1, 1);
+    glUniform1i(uTexture, 0);
 }
 
 DrawImageShader::~DrawImageShader()
@@ -81,9 +82,7 @@ void DrawImageShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 righ
 
 void DrawImageShader::SetTexture(GLuint texture)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(uTexture, 0);
+    OpenGLAPI::SetTexture2D(0, texture);
 }
 
 void DrawImageShader::SetColour(vec4f colour)

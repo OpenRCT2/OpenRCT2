@@ -108,6 +108,21 @@ static const char * TryLoadAllProcAddresses()
     return nullptr;
 }
 
+namespace OpenGLState
+{
+    uint16 ActiveTexture = UINT16_MAX;
+    GLuint CurrentProgram = UINT32_MAX;
+}
+
+void OpenGLAPI::SetTexture2D(uint16 index, GLuint texture)
+{
+    if (OpenGLState::ActiveTexture != index)
+    {
+        glActiveTexture(GL_TEXTURE0 + index);
+    }
+    glBindTexture(GL_TEXTURE_2D, texture);
+}
+
 #endif /* #if OPENGL_NO_LINK */
 
 bool OpenGLAPI::Initialise()

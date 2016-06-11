@@ -191,6 +191,7 @@ public:
     TextureCache * GetTextureCache() const { return _textureCache; }
 
     void Initialise();
+    void Resize(sint32 width, sint32 height);
 
     void Clear(uint32 colour) override;
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
@@ -270,6 +271,7 @@ public:
     {
         ConfigureBits(width, height, width);
         ConfigureCanvas();
+        _drawingContext->Resize(width, height);
     }
 
     void SetPalette(SDL_Color * palette) override
@@ -483,6 +485,18 @@ void OpenGLDrawingContext::Initialise()
     _fillRectShader = new FillRectShader();
 }
 
+void OpenGLDrawingContext::Resize(sint32 width, sint32 height)
+{
+    _drawImageShader->Use();
+    _drawImageShader->SetScreenSize(width, height);
+    _drawImageMaskedShader->Use();
+    _drawImageMaskedShader->SetScreenSize(width, height);
+    _drawLineShader->Use();
+    _drawLineShader->SetScreenSize(width, height);
+    _fillRectShader->Use();
+    _fillRectShader->SetScreenSize(width, height);
+}
+
 void OpenGLDrawingContext::Clear(uint32 colour)
 {
     FillRect(colour, _clipLeft - _offsetX, _clipTop - _offsetY, _clipRight, _clipBottom);
@@ -530,7 +544,6 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
         _fillRectShader->SetFlags(0);
     }
 
-    _fillRectShader->SetScreenSize(gScreenWidth, gScreenHeight);
     _fillRectShader->SetColour(0, paletteColour[0]);
     _fillRectShader->SetColour(1, paletteColour[1]);
     _fillRectShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
@@ -547,7 +560,6 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
 
     _drawLineShader->Use();
-    _drawLineShader->SetScreenSize(gScreenWidth, gScreenHeight);
     _drawLineShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
     _drawLineShader->SetColour(paletteColour);
     _drawLineShader->Draw(x1, y1, x2, y2);
@@ -607,7 +619,6 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     bottom += _offsetY;
 
     _drawImageShader->Use();
-    _drawImageShader->SetScreenSize(gScreenWidth, gScreenHeight);
     _drawImageShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
     _drawImageShader->SetTexture(texture);
     _drawImageShader->Draw(left, top, right, bottom);
@@ -646,7 +657,6 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     bottom += _offsetY;
 
     _drawImageMaskedShader->Use();
-    _drawImageMaskedShader->SetScreenSize(gScreenWidth, gScreenHeight);
     _drawImageMaskedShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
     _drawImageMaskedShader->SetTextureMask(textureMask);
     _drawImageMaskedShader->SetTextureColour(textureColour);
@@ -687,7 +697,6 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     bottom += _offsetY;
 
     _drawImageShader->Use();
-    _drawImageShader->SetScreenSize(gScreenWidth, gScreenHeight);
     _drawImageShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
     _drawImageShader->SetTexture(texture);
     _drawImageShader->SetFlags(1);
@@ -728,7 +737,6 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
     bottom += _offsetY;
 
     _drawImageShader->Use();
-    _drawImageShader->SetScreenSize(gScreenWidth, gScreenHeight);
     _drawImageShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
     _drawImageShader->SetTexture(texture);
     _drawImageShader->Draw(left, top, right, bottom);

@@ -35,6 +35,7 @@ CopyFramebufferShader::CopyFramebufferShader() : OpenGLShaderProgram("copyframeb
 
     Use();
     SetTextureCoordinates(0, 0, 1, 1);
+    glUniform1i(uTexture, 0);
 }
 
 CopyFramebufferShader::~CopyFramebufferShader()
@@ -72,9 +73,7 @@ void CopyFramebufferShader::SetTextureCoordinates(sint32 left, sint32 top, sint3
 
 void CopyFramebufferShader::SetTexture(GLuint texture)
 {
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(uTexture, 0);
+    OpenGLAPI::SetTexture2D(0, texture);
 }
 
 void CopyFramebufferShader::Draw()
