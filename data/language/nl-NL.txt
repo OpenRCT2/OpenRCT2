@@ -4171,6 +4171,15 @@ STR_5867    :{WINDOW_COLOUR_2}Naam provider: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mailadres provider: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Website provider: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Serverinformatie tonen
+STR_5871    :Bloemen verwelken nooit
+STR_5872    :{SMALLFONT}{BLACK}Schakelt het verwelken van bloemen uit.
+STR_5873    :Kettingheuvels op elk onderdeel toestaan
+STR_5874    :{SMALLFONT}{BLACK}Maakt het gebruiken van kettingen op elk onderdeel mogelijk.
+STR_5875    :Renderengine:
+STR_5876    :{SMALLFONT}{BLACK}De engine die wordt gebruikt om het spel te renderen.
+STR_5877    :Software
+STR_5878    :Software (omgeleid via hardware)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #
@@ -4371,72 +4380,72 @@ STR_DTLS    :Je mag een enorme kloof ontwikkelen tot een attractiepark.
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :In dit park regent het zo vaak dat er een enorme piramide is gebouwd om overdekte attracties e kunnen bouwen.
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :De gemeenteraad staat bouwen boven boomniveau niet toe in dit park.
 
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+STR_DTLS    :Ontwikkel dit Romeinse themapark door achtbanen en andere attracties toe te voegen.
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Dit park is gedeeltelijk gebouwd op een serie kleine eilanden en heeft al een paar grote achtbanen als trekpleister.
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :Bouw een park dat de lokale bevolking, die op zoek is naar snelheid en spanning, aanspreekt.
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
 STR_PARK    :Utopia Park
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_DTLS    :Een oase midden in de woestijn vormt een ongebruikelijke gelegenheid tot het bouwen van een pretpark.
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
 STR_PARK    :Rotting Heights
-STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+STR_DTLS    :Dit park is overwoekerd en vervallen. Kun je het weer in ere herstellen?
 
 <Fiasco Forest>
 STR_SCNR    :Fiasco Forest
 STR_PARK    :Fiasco Forest
-STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+STR_DTLS    :Dit park staat vol met slecht ontworpen en gevaarlijke attracties. Je hebt een zeer beperkt budget en weinig tijd om het park weer op de rails te krijgen.
 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :Pickle Park
-STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+STR_DTLS    :De gemeenteraad staat geen enkele vorm van adverteren toe, dus dit park kan enkel slagen op basis van zijn reputatie.
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :De trekpleister van dit park is een duellerende Steeplechase met vier sporen naast elkaar.
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :Verander deze verlaten steengroeve in een park dat sensatiezoekende toeristen aanspreekt.
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+STR_DTLS    :Je hebt een beperkt budget om dit berggebied in een groot park vol achtbanen te veranderen, maar tijd speelt geen rol.
 
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+STR_DTLS    :Een piepklein park heeft een overeenkomst afgesloten met de gemeente om uit te breiden door de stad zelf.
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
-STR_DTLS    :A large garden park needs turning into a thriving theme park
+STR_DTLS    :Een groot tuinpark moet worden veranderd in een bloeiend themapark.
 
 
 ## Loopy Landscapes

@@ -4187,6 +4187,8 @@ STR_5867    :{WINDOW_COLOUR_2}服务器提供者姓名: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}服务器提供者E-mail: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}服务器提供者网站: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}显示服务器信息
+STR_5871    :植物不会枯萎.
+STR_5872    :{SMALLFONT}{BLACK}禁用植物随时间变化以便它们不会枯萎.
 
 #############
 # Scenarios #
