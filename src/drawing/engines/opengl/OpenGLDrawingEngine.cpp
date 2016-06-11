@@ -31,6 +31,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 
 #include "GLSLTypes.h"
 #include "OpenGLAPI.h"
+#include "OpenGLFramebuffer.h"
 #include "DrawImageShader.h"
 #include "DrawImageMaskedShader.h"
 #include "FillRectShader.h"
@@ -219,6 +220,10 @@ private:
 
     OpenGLDrawingContext *    _drawingContext;
 
+    DrawImageShader   * _drawImageShader    = nullptr;
+    OpenGLFramebuffer * _screenFramebuffer  = nullptr;
+    OpenGLFramebuffer * _canvasFramebuffer  = nullptr;
+
 public:
     SDL_Color Palette[256];
     vec4f     GLPalette[256];
@@ -230,6 +235,8 @@ public:
 
     ~OpenGLDrawingEngine() override
     {
+        delete _drawImageShader;
+
         delete _drawingContext;
         delete [] _bits;
 
@@ -252,13 +259,18 @@ public:
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        // Do not draw the unseen side of the primitives
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+
+        _drawImageShader = new DrawImageShader();
     }
 
     void Resize(uint32 width, uint32 height) override
     {
         ConfigureBits(width, height, width);
-
-        glViewport(0, 0, (GLsizei)width, (GLsizei)height);
+        ConfigureCanvas();
     }
 
     void SetPalette(SDL_Color * palette) override
@@ -282,18 +294,10 @@ public:
 
     void Draw() override
     {
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        assert(_screenFramebuffer != nullptr);
+        assert(_canvasFramebuffer != nullptr);
 
-        // glMatrixMode(GL_PROJECTION_MATRIX);
-        // glLoadIdentity();
-        // glOrtho(0, _width, _height, 0, -1.0, 1.0);
-
-        // glMatrixMode(GL_MODELVIEW_MATRIX);
-        // glLoadIdentity();
-        // glScalef(1, -1.0f, 0);
-        // glTranslatef(-1.0f, -1.0f, 0);
-        // glScalef(2.0f / _width, 2.0f / _height, 0);
+        _canvasFramebuffer->Bind();
 
         if (gIntroState != INTRO_STATE_NONE) {
             intro_draw(&_bitsDPI);
@@ -301,11 +305,24 @@ public:
             window_update_all_viewports();
             window_draw_all(&_bitsDPI, 0, 0, _width, _height);
             window_update_all();
-
+        
             gfx_draw_pickedup_peep(&_bitsDPI);
-
+        
             rct2_draw(&_bitsDPI);
         }
+
+        // Scale up to window
+        _screenFramebuffer->Bind();
+
+        sint32 width = _screenFramebuffer->GetWidth();
+        sint32 height = _screenFramebuffer->GetHeight();
+        _drawImageShader->Use();
+        _drawImageShader->SetScreenSize(width, height);
+        _drawImageShader->SetClip(0, 0, width, height);
+        _drawImageShader->SetTexture(_canvasFramebuffer->GetTexture());
+        _drawImageShader->SetTextureCoordinates(0, 1, 1, 0);
+        _drawImageShader->Draw(0, 0, width, height);
+
         Display();
     }
     
@@ -347,7 +364,6 @@ public:
     }
 
 private:
-
     void ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     {
         size_t  newBitsSize = pitch * height;
@@ -396,6 +412,22 @@ private:
         dpi->width = width;
         dpi->height = height;
         dpi->pitch = _pitch - width;
+    }
+
+    void ConfigureCanvas()
+    {
+        // Re-create screen framebuffer
+        delete _screenFramebuffer;
+        _screenFramebuffer = new OpenGLFramebuffer(_window);
+
+        // Re-create canvas framebuffer
+        delete _canvasFramebuffer;
+        _canvasFramebuffer = new OpenGLFramebuffer(_width, _height);
+
+        _drawImageShader->Use();
+        _drawImageShader->SetScreenSize(_width, _height);
+        _drawImageShader->SetClip(0, 0, _width, _height);
+        _drawImageShader->SetTexture(_canvasFramebuffer->GetTexture());
     }
 
     void Display()

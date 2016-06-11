@@ -31,7 +31,10 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
 
     glBindVertexArray(_vao);
     glEnableVertexAttribArray(vIndex);
-    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, 0);
+    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
+
+    Use();
+    SetTextureCoordinates(0, 0, 1, 1);
 }
 
 DrawImageShader::~DrawImageShader()
@@ -44,12 +47,13 @@ DrawImageShader::~DrawImageShader()
 
 void DrawImageShader::GetLocations()
 {
-    uScreenSize = GetUniformLocation("uScreenSize");
-    uClip       = GetUniformLocation("uClip");
-    uBounds     = GetUniformLocation("uBounds");
-    uTexture    = GetUniformLocation("uTexture");
+    uScreenSize         = GetUniformLocation("uScreenSize");
+    uClip               = GetUniformLocation("uClip");
+    uBounds             = GetUniformLocation("uBounds");
+    uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
+    uTexture            = GetUniformLocation("uTexture");
 
-    vIndex      = GetAttributeLocation("vIndex");
+    vIndex              = GetAttributeLocation("vIndex");
 }
 
 void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
@@ -65,6 +69,11 @@ void DrawImageShader::SetClip(sint32 left, sint32 top, sint32 right, sint32 bott
 void DrawImageShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     glUniform4i(uBounds, left, top, right, bottom);
+}
+
+void DrawImageShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom)
+{
+    glUniform4i(uTextureCoordinates, left, top, right, bottom);
 }
 
 void DrawImageShader::SetTexture(GLuint texture)

@@ -2,6 +2,7 @@
 
 uniform ivec2 uScreenSize;
 uniform ivec4 uBounds;
+uniform ivec4 uTextureCoordinates;
 
 in int vIndex;
 
@@ -14,19 +15,19 @@ void main()
     switch (vIndex) {
     case 0:
         pos = uBounds.xy;
-        fTextureCoordinate = vec2(0, 0);
+        fTextureCoordinate = uTextureCoordinates.xy;
         break;
     case 1:
         pos = uBounds.zy;
-        fTextureCoordinate = vec2(1, 0);
+        fTextureCoordinate = uTextureCoordinates.zy;
         break;
     case 2:
         pos = uBounds.zw;
-        fTextureCoordinate = vec2(1, 1);
+        fTextureCoordinate = uTextureCoordinates.zw;
         break;
     case 3:
         pos = uBounds.xw;
-        fTextureCoordinate = vec2(0, 1);
+        fTextureCoordinate = uTextureCoordinates.xw;
         break;
     }
 

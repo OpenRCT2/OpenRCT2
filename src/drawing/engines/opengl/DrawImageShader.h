@@ -25,6 +25,7 @@ private:
     GLuint uScreenSize;
     GLuint uClip;
     GLuint uBounds;
+    GLuint uTextureCoordinates;
     GLuint uTexture;
 
     GLuint vIndex;
@@ -39,6 +40,7 @@ public:
     void SetScreenSize(sint32 width, sint32 height);
     void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
+    void SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetTexture(GLuint texture);
 
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
