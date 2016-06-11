@@ -4258,6 +4258,7 @@ STR_5946    :{WINDOW_COLOUR_2}Chain lift
 STR_5947    :{WINDOW_COLOUR_2}Apply changes to entire track piece
 STR_5948    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
 STR_5949    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
+STR_5950    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
 
 #TODO: Fix rebase
 STR_5920    :Render weather effects

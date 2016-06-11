@@ -85,11 +85,12 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	WIDX_SPINNER_Y,
 	WIDX_SPINNER_Y_INCREASE,
 	WIDX_SPINNER_Y_DECREASE,
-	WIDX_CORRUPT,
-	WIDX_REMOVE,
-	WIDX_MOVE_DOWN,
-	WIDX_MOVE_UP,
-	WIDX_ROTATE,
+	WIDX_BUTTON_CORRUPT,
+	WIDX_BUTTON_REMOVE,
+	WIDX_BUTTON_MOVE_DOWN,
+	WIDX_BUTTON_MOVE_UP,
+	WIDX_BUTTON_ROTATE,
+	WIDX_BUTTON_SORT,
 	WIDX_COLUMN_TYPE,
 	WIDX_COLUMN_BASEHEIGHT,
 	WIDX_COLUMN_CLEARANCEHEIGHT,
@@ -180,6 +181,7 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
 	{ WWT_CLOSEBOX, 	1,	BX - BS * 2,	BW - BS * 2,		BY,				BY + 11, 	STR_UP,			  STR_MOVE_SELECTED_ELEMENT_UP_TIP },	/* Move down */				\
 	{ WWT_CLOSEBOX, 	1,	BX - BS * 2, 	BW - BS * 2,		BH - 11,		BH, 		STR_DOWN,		  STR_MOVE_SELECTED_ELEMENT_DOWN_TIP },	/* Move up */				\
 	{ WWT_FLATBTN,		1,  BX - BS * 3,	BW - BS * 3,		BY,				BH,			SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP },	/* Rotate button */			\
+	{ WWT_FLATBTN,		1,  BX - BS * 4,	BW - BS * 4,		BY,				BH,			SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP },	    /* Sort button */			\
 	/* Column headers */																																						\
 	{ WWT_13,			1, COL_X_TYPE,	COL_X_BH - 1, 	42,		42 + 13,	STR_NONE,	STR_NONE },													/* Type */					\
 	{ WWT_13,			1, COL_X_BH,	COL_X_CH - 1, 	42,		42 + 13,	STR_NONE,	STR_TILE_INSPECTOR_BASE_HEIGHT },							/* Base height */			\
@@ -361,6 +363,7 @@ static void window_tile_inspector_invalidate(rct_window *w);
 static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
+static void window_tile_inspector_set_page(rct_window *w, const page);
 static void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 static rct_window_event_list window_tile_inspector_events = {
@@ -395,29 +398,29 @@ static rct_window_event_list window_tile_inspector_events = {
 };
 
 static uint64 window_tile_inspector_page_enabled_widgets[] = {
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE) /*| (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL)*/ | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_ROTATE),
-	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_CORRUPT) | (1ULL << WIDX_REMOVE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) /*| (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL)*/ | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
+	(1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE),
 };
 
 static uint64 window_tile_inspector_page_disabled_widgets[] = {
-	(1 << WIDX_CORRUPT) | (1 << WIDX_MOVE_UP) | (1 << WIDX_MOVE_DOWN) | (1 << WIDX_REMOVE) | (1 << WIDX_ROTATE),
+	(1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE),
 	0,
 	0,
 	0,
 	0,
 	0,
 	0,
-	(1UL << WIDX_ROTATE),
+	(1ULL << WIDX_BUTTON_ROTATE),
 	0,
-	(1UL << WIDX_ROTATE),
+	(1ULL << WIDX_BUTTON_ROTATE),
 };
 
 void window_tile_inspector_open()
@@ -438,10 +441,7 @@ void window_tile_inspector_open()
 		WC_TILE_INSPECTOR,
 		WF_RESIZABLE
 	);
-	window->page = PAGE_DEFAULT;
-	window->widgets = window_tile_inspector_widgets;
-	window->enabled_widgets = window_tile_inspector_page_enabled_widgets[window->page];
-	window->disabled_widgets = window_tile_inspector_page_disabled_widgets[window->page];
+	window_tile_inspector_set_page(window, PAGE_DEFAULT);
 
 	window_init_scroll_widgets(window);
 	window->min_width = MIN_WW;
@@ -469,18 +469,11 @@ static void window_tile_inspector_load_tile(rct_window* w)
 	window_tile_inspector_item_count = numItems;
 
 	// Set default page
-	w->page = PAGE_DEFAULT;
-	w->widgets = tile_inspector_widgets[w->page];
-	w->enabled_widgets = window_tile_inspector_page_enabled_widgets[w->page];
-	w->disabled_widgets = window_tile_inspector_page_disabled_widgets[w->page];
+	window_tile_inspector_set_page(w, PAGE_DEFAULT);
 
-	// Enable 'insert corrupt element' button
-	w->enabled_widgets |= (1 << WIDX_CORRUPT);
-	w->disabled_widgets &= ~(1ULL << WIDX_CORRUPT);
 	// undo selection and buttons affecting it
 	w->selected_list_item = -1;
-	w->disabled_widgets |= (1ULL << WIDX_MOVE_UP) | (1ULL << WIDX_MOVE_DOWN) | (1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE);
-	w->enabled_widgets &= ~((1ULL << WIDX_MOVE_UP) | (1ULL << WIDX_MOVE_DOWN) | (1ULL << WIDX_REMOVE) | (1 << WIDX_ROTATE));
+	window_tile_inspector_auto_set_buttons(w);
 
 	w->scrolls[0].v_top = 0;
 	window_invalidate(w);
@@ -580,6 +573,27 @@ static void swap_elements(sint16 first, sint16 second)
 	map_invalidate_tile_full(window_tile_inspector_tile_x << 5, window_tile_inspector_tile_y << 5);
 }
 
+static void sort_elements(rct_window *w)
+{
+	const rct_map_element *const firstElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
+
+	// Bubble sort
+	for (int loop_start = 1; loop_start < window_tile_inspector_item_count; loop_start++)
+	{
+		int current_id = loop_start;
+		const rct_map_element *currentElement = firstElement + current_id;
+		const rct_map_element *otherElement = currentElement - 1;
+
+		while (current_id > 0 && otherElement->base_height > currentElement->base_height)
+		{
+			swap_elements(current_id - 1, current_id);
+			current_id--;
+			currentElement--;
+			otherElement--;
+		}
+	}
+}
+
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
@@ -607,30 +621,38 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 		window_tile_inspector_load_tile(w);
 		window_tile_inspector_auto_set_buttons(w);
 		break;
-	case WIDX_CORRUPT:
+	case WIDX_BUTTON_CORRUPT:
 		corrupt_element();
+		window_tile_inspector_set_page(w, PAGE_CORRUPT);
 		w->scrolls[0].v_top = 0;
 		w->selected_list_item = window_tile_inspector_item_count++;
 		window_tile_inspector_auto_set_buttons(w);
 		widget_invalidate(w, WIDX_LIST);
 		break;
-	case WIDX_REMOVE:
+	case WIDX_BUTTON_REMOVE:
 		remove_element(w->selected_list_item);
+		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		w->selected_list_item = -1;
+		window_tile_inspector_set_page(w, PAGE_DEFAULT);
 		window_tile_inspector_auto_set_buttons(w);
-		widget_invalidate(w, WIDX_LIST);
+		window_invalidate(w);
 		break;
-	case WIDX_ROTATE:
+	case WIDX_BUTTON_ROTATE:
 		rotate_element(w->selected_list_item);
 		window_invalidate(w);
 		break;
-	case WIDX_MOVE_DOWN:
+	case WIDX_BUTTON_SORT:
+		w->selected_list_item = -1;
+		sort_elements(w);
+		window_invalidate(w);
+		break;
+	case WIDX_BUTTON_MOVE_DOWN:
 		swap_elements(w->selected_list_item, w->selected_list_item + 1);
 		w->selected_list_item++;
 		window_tile_inspector_auto_set_buttons(w);
 		widget_invalidate(w, WIDX_LIST);
 		break;
-	case WIDX_MOVE_UP:
+	case WIDX_BUTTON_MOVE_UP:
 		swap_elements(w->selected_list_item - 1, w->selected_list_item);
 		w->selected_list_item--;
 		window_tile_inspector_auto_set_buttons(w);
@@ -807,6 +829,14 @@ static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, 
 	*height = window_tile_inspector_item_count * LIST_ITEM_HEIGHT;
 }
 
+static void window_tile_inspector_set_page(rct_window *w, const page)
+{
+	w->page = page;
+	w->widgets = tile_inspector_widgets[page];
+	w->enabled_widgets = window_tile_inspector_page_enabled_widgets[page];
+	w->disabled_widgets = window_tile_inspector_page_disabled_widgets[page];
+}
+
 static void window_tile_inspector_auto_set_buttons(rct_window *w)
 {
 	// X and Y spinners
@@ -816,39 +846,37 @@ static void window_tile_inspector_auto_set_buttons(rct_window *w)
 	widget_set_enabled(w, WIDX_SPINNER_Y_INCREASE, (tile_is_selected && (window_tile_inspector_tile_y < 255)));
 	widget_set_enabled(w, WIDX_SPINNER_Y_DECREASE, (tile_is_selected && (window_tile_inspector_tile_y > 0)));
 
-	// Remove button
-	widget_set_enabled(w, WIDX_REMOVE, (w->selected_list_item != -1));
-	widget_invalidate(w, WIDX_REMOVE);
+	// Sort buttons
+	widget_set_enabled(w, WIDX_BUTTON_SORT, (tile_is_selected && window_tile_inspector_item_count > 1));
 
 	// Move Up button
-	widget_set_enabled(w, WIDX_MOVE_UP, (w->selected_list_item > 0));
-	widget_invalidate(w, WIDX_MOVE_UP);
+	widget_set_enabled(w, WIDX_BUTTON_MOVE_UP, (w->selected_list_item > 0));
+	widget_invalidate(w, WIDX_BUTTON_MOVE_UP);
 
 	// Move Down button
-	widget_set_enabled(w, WIDX_MOVE_DOWN, (w->selected_list_item != -1 && w->selected_list_item != window_tile_inspector_item_count));
-	widget_invalidate(w, WIDX_MOVE_DOWN);
+	widget_set_enabled(w, WIDX_BUTTON_MOVE_DOWN, (w->selected_list_item != -1 && w->selected_list_item < window_tile_inspector_item_count - 1));
+	widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
 }
 
 static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y)
 {
-	// Because the list items are displayed in reverse order, subtract the number from the amount of elements
-	sint16 index = window_tile_inspector_item_count - (y - 1) / LIST_ITEM_HEIGHT - 1;
+	// Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
+	const sint16 index = window_tile_inspector_item_count - (y - 1) / LIST_ITEM_HEIGHT - 1;
+	int page;
 	if (index < 0 || index >= window_tile_inspector_item_count) {
 		w->selected_list_item = -1;
-		w->page = 0;
+		page = 0;
 	}
 	else {
 		w->selected_list_item = index;
 
-		// Pick widget layout
+		// Get type of selected map element to select the correct page
 		rct_map_element *mapElement = map_get_first_element_at(window_tile_inspector_tile_x, window_tile_inspector_tile_y);
 		mapElement += index;
-		w->page = (min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
+		page = (min(map_element_get_type(mapElement), MAP_ELEMENT_TYPE_CORRUPT) >> 2) + 1;
 	}
 
-	w->widgets = tile_inspector_widgets[w->page];
-	w->enabled_widgets = window_tile_inspector_page_enabled_widgets[w->page];
-	w->disabled_widgets = window_tile_inspector_page_disabled_widgets[w->page];
+	window_tile_inspector_set_page(w, page);
 
 	// Enable/disable buttons
 	window_tile_inspector_auto_set_buttons(w);
