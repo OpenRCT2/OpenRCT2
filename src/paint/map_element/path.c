@@ -27,6 +27,7 @@
 #include "../../localisation/localisation.h"
 #include "../../game.h"
 #include "../supports.h"
+#include "../../peep/staff.h"
 
 // #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
 //        to use the old string arguments array. Remove when scrolling_text_setup is no
@@ -355,7 +356,7 @@ void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool w
 
 		uint8 direction = ((map_element->type & 0xC0) >> 6);
 		// Draw ride sign
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_RIDE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 		if (footpath_element_is_sloped(map_element)) {
 			if (footpath_element_get_slope_direction(map_element) == direction)
 				height += 16;
@@ -408,9 +409,9 @@ void sub_6A4101(rct_map_element * map_element, uint16 height, uint32 ebp, bool w
 			sub_98199C(scrolling_text_setup(string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
 		}
 
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 		if (dword_F3EF70 != 0) {
-			RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+			gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		}
 		return;
 	}
@@ -592,9 +593,9 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 		if (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1)) {
 			uint8 additions = map_element->properties.path.additions & 0xF;
 			if (additions != 0) {
-				RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
+				gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
 				if (dword_F3EF74 != 0) {
-					RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+					gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 				}
 
 				// Draw additional path bits (bins, benchs, lamps, queue screens)
@@ -614,10 +615,10 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 					break;
 				}
 				
-				RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+				gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
 				if (dword_F3EF74 != 0) {
-					RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+					gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 				}
 			}
 		}
@@ -635,21 +636,13 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 
 	if (bp & 2) {
 		// Bottom right of tile is a tunnel
-		registers regs = {0};
-		regs.eax = 0xFFFFFFFF;
 		if (bl == 5) {
-			regs.ax = (height + 16) / 16;
-			regs.ah = 0x0A;
+			paint_util_push_tunnel_right(height + 16, TUNNEL_10);
 		} else if (bp & 1) {
-			regs.ax = height / 16;
-			regs.ah = 0x0B;
+			paint_util_push_tunnel_right(height, TUNNEL_11);
 		} else {
-			regs.ax = height / 16;
-			regs.ah = 0x0A;
-
+			paint_util_push_tunnel_right(height, TUNNEL_10);
 		}
-		RCT2_ADDRESS(0x009E30B6, uint32)[RCT2_GLOBAL(0x141F56B, uint8) / 2] = regs.eax;
-		RCT2_GLOBAL(0x141F56B, uint8)++;
 	}
 
 	if (!(bp & 4)) {
@@ -657,21 +650,13 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 	}
 
 	// Bottom left of the tile is a tunnel
-	registers regs = {0};
-	regs.eax = 0xFFFFFFFF;
 	if (bl == 6) {
-		regs.ax = (height + 16) / 16;
-		regs.ah = 0x0A;
+		paint_util_push_tunnel_left(height + 16, TUNNEL_10);
 	} else if (bp & 8) {
-		regs.ax = height / 16;
-		regs.ah = 0x0B;
+		paint_util_push_tunnel_left(height , TUNNEL_11);
 	} else {
-		regs.ax = height / 16;
-		regs.ah = 0x0A;
-
+		paint_util_push_tunnel_left(height , TUNNEL_10);
 	}
-	RCT2_ADDRESS(0x009E3138, uint32)[RCT2_GLOBAL(0x141F56A, uint8) / 2] = regs.eax;
-	RCT2_GLOBAL(0x141F56A, uint8)++;
 }
 
 /**
@@ -687,7 +672,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	}
 
 
-	RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
 	uint32 ecx = get_current_rotation();
 	bool word_F3F038 = false;
@@ -712,7 +697,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	}
 
 	if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) {
-		RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8) = VIEWPORT_INTERACTION_ITEM_NONE;
+		gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 		dword_F3EF70 = RCT2_ADDRESS(0x993CC4, uint32_t)[gConfigGeneral.construction_marker_colour];
 	}
 
@@ -739,8 +724,8 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 		}
 	}
 
-	if (RCT2_GLOBAL(0x009DEA50, sint16) != -1) {
-		sint32 staffIndex = RCT2_GLOBAL(0x009DEA50, sint16);
+	if (gStaffDrawPatrolAreas != 0xFFFF) {
+		sint32 staffIndex = gStaffDrawPatrolAreas;
 		uint8 staffType = staffIndex & 0x7FFF;
 		sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 
@@ -790,7 +775,7 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 			height += 8;
 		}
 		uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height / 16) | COLOUR_GREY << 19 | 0x20000000;
-		imageId += RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_HEIGHT_MARKERS, uint16);
+		imageId += get_height_marker_offset();
 		imageId -= RCT2_GLOBAL(0x01359208, uint16);
 		sub_98196C(imageId, 16, 16, 1, 1, 0, height, get_current_rotation());
 	}
@@ -893,55 +878,40 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 		height += 16;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
-		RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
-		RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
-	}
+	paint_util_set_general_support_height(height, 0x20);
 
 	if (map_element->type & 1
 	    || (map_element->properties.path.edges != 0xFF && word_F3F038)
 		) {
-		RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9B4, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9C0, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9B8, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9BC, uint16) = 0xFFFF;
+		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		return;
 	}
 
 	if (map_element->properties.path.edges == 0xFF) {
-		RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
-		RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
+		paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
 		return;
 	}
 
-	RCT2_GLOBAL(0x141E9C4, uint16) = 0xFFFF;
+	paint_util_set_segment_support_height(SEGMENT_C4, 0xFFFF, 0);
 
 	// no idea whre bp comes from
-	uint16 bp = edi;
+	uint16 edges = edi;
 
-	if (bp & 1) {
-		RCT2_GLOBAL(0x141E9CC, uint16) = 0xFFFF;
+	if (edges & 1) {
+		paint_util_set_segment_support_height(SEGMENT_CC, 0xFFFF, 0);
 	}
 
-	if (bp & 2) {
-		RCT2_GLOBAL(0x141E9D4, uint16) = 0xFFFF;
+	if (edges & 2) {
+		paint_util_set_segment_support_height(SEGMENT_D4, 0xFFFF, 0);
 	}
 
-	if (bp & 4) {
-		RCT2_GLOBAL(0x141E9D0, uint16) = 0xFFFF;
+	if (edges & 4) {
+		paint_util_set_segment_support_height(SEGMENT_D0, 0xFFFF, 0);
 	}
 
-	if (bp & 8) {
-		RCT2_GLOBAL(0x141E9C8, uint16) = 0xFFFF;
+	if (edges & 8) {
+		paint_util_set_segment_support_height(SEGMENT_C8, 0xFFFF, 0);
 	}
-
 }
 
 void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
