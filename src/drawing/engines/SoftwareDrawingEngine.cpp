@@ -170,9 +170,9 @@ public:
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
     void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
     void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
-    void DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown) override;
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
-    void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour);
+    void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
+    void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette) override;
 
     void SetDPI(rct_drawpixelinfo * dpi);
 };
@@ -1007,11 +1007,6 @@ void SoftwareDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32
     gfx_draw_sprite_software(_dpi, image, x, y, tertiaryColour);
 }
 
-void SoftwareDrawingContext::DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown)
-{
-    gfx_draw_sprite_palette_set_software(_dpi, image, x, y, palette, unknown);
-}
-
 void SoftwareDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
 {
     gfx_draw_sprite_raw_masked_software(_dpi, x, y, maskImage, colourImage);
@@ -1026,6 +1021,11 @@ void SoftwareDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, u
     RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
     image &= 0x7FFFF;
     gfx_draw_sprite_palette_set_software(_dpi, image | 0x20000000, x, y, palette, nullptr);
+}
+
+void SoftwareDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
+{
+    gfx_draw_sprite_palette_set_software(_dpi, image, x, y, palette, nullptr);
 }
 
 void SoftwareDrawingContext::SetDPI(rct_drawpixelinfo * dpi)

@@ -176,8 +176,6 @@ private:
 
     TextureCache * _textureCache = nullptr;
 
-    GLuint _vbo;
-
     sint32 _offsetX;
     sint32 _offsetY;
     sint32 _clipLeft;
@@ -198,9 +196,9 @@ public:
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
     void DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2) override;
     void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
-    void DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown) override;
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
     void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
+    void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette) override;
 
     void SetDPI(rct_drawpixelinfo * dpi);
 };
@@ -605,11 +603,6 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     _drawImageShader->Draw(left, top, right, bottom);
 }
 
-void OpenGLDrawingContext::DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown)
-{
-    DrawSprite(image, x, y, 0);
-}
-
 void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
 {
     rct_g1_element * g1ElementMask = gfx_get_g1_element(maskImage & 0x7FFFF);
@@ -689,6 +682,45 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     _drawImageShader->SetTexture(texture);
     _drawImageShader->SetFlags(1);
     _drawImageShader->SetColour(paletteColour);
+    _drawImageShader->Draw(left, top, right, bottom);
+    _drawImageShader->SetFlags(0);
+}
+
+void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
+{
+    int g1Id = image & 0x7FFFF;
+    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+
+    GLuint texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
+
+    sint32 drawOffsetX = g1Element->x_offset;
+    sint32 drawOffsetY = g1Element->y_offset;
+    sint32 drawWidth = (uint16)g1Element->width;
+    sint32 drawHeight = (uint16)g1Element->height;
+
+    sint32 left = x + drawOffsetX;
+    sint32 top = y + drawOffsetY;
+    sint32 right = left + drawWidth;
+    sint32 bottom = top + drawHeight;
+
+    if (left > right)
+    {
+        std::swap(left, right);
+    }
+    if (top > bottom)
+    {
+        std::swap(top, bottom);
+    }
+
+    left += _offsetX;
+    top += _offsetY;
+    right += _offsetX;
+    bottom += _offsetY;
+
+    _drawImageShader->Use();
+    _drawImageShader->SetScreenSize(gScreenWidth, gScreenHeight);
+    _drawImageShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
+    _drawImageShader->SetTexture(texture);
     _drawImageShader->Draw(left, top, right, bottom);
     _drawImageShader->SetFlags(0);
 }

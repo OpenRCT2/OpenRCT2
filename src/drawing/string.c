@@ -924,7 +924,7 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo *dpi, int codepoint, tex
 		if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT) {
 			y += *info->y_offset++;
 		}
-		gfx_draw_sprite_palette_set(dpi, sprite, x, y, info->palette, NULL);
+		gfx_draw_glpyh(dpi, sprite, x, y, info->palette);
 	}
 
 	info->x += characterWidth;

@@ -21,10 +21,40 @@
 #include "../../../common.h"
 #include "OpenGLAPI.h"
 
+struct rct_drawpixelinfo;
+
+struct GlyphId
+{
+    uint32 Image;
+    uint64 Palette;
+
+    struct Hash
+    {
+        size_t operator()(const GlyphId &k) const
+        {
+            size_t hash = 0x3154A85E;
+            hash = k.Image * 7;
+            hash += (k.Palette & 0xFFFFFFFF) * 13;
+            hash += (k.Palette >> 32) * 23;
+            return hash;
+        }
+    };
+ 
+    struct Equal
+    {
+        bool operator()(const GlyphId &lhs, const GlyphId &rhs) const
+        {
+           return lhs.Image == rhs.Image &&
+                  lhs.Palette == rhs.Palette;
+        }
+    };
+};
+
 class TextureCache
 {
 private:
     std::unordered_map<uint32, GLuint> _imageTextureMap;
+    std::unordered_map<GlyphId, GLuint, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
     SDL_Color _palette[256];
 
 public:
@@ -33,9 +63,16 @@ public:
     void SetPalette(const SDL_Color * palette);
     void InvalidateImage(uint32 image);
     GLuint GetOrLoadImageTexture(uint32 image);
+    GLuint GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
 
 private:
     GLuint LoadImageTexture(uint32 image);
+    GLuint LoadGlyphTexture(uint32 image, uint8 * palette);
     void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
+    void * GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight);
+    void * ConvertDPIto32bpp(const rct_drawpixelinfo * dpi);
     void FreeTextures();
+
+    static rct_drawpixelinfo * CreateDPI(sint32 width, sint32 height);
+    static void DeleteDPI(rct_drawpixelinfo * dpi);
 };

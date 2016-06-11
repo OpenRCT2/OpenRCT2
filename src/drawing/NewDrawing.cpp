@@ -209,12 +209,12 @@ extern "C"
         }
     }
 
-    void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 * palette, uint8 * unknown)
+    void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 * palette)
     {
         if (_drawingEngine != nullptr)
         {
             IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
-            dc->DrawSpritePaletteSet(image, x, y, palette, unknown);
+            dc->DrawGlyph(image, x, y, palette);
         }
     }
 

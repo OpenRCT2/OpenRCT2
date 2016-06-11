@@ -59,10 +59,23 @@ GLuint TextureCache::GetOrLoadImageTexture(uint32 image)
     GLuint texture = LoadImageTexture(image);
     _imageTextureMap[image] = texture;
 
-    // if ((_textures.size() % 100) == 0)
-    // {
-    //     printf("Textures: %d\n", _textures.size());
-    // }
+    return texture;
+}
+
+GLuint TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palette)
+{
+    GlyphId glyphId;
+    glyphId.Image = image;
+    Memory::Copy<void>(&glyphId.Palette, palette, sizeof(glyphId.Palette));
+
+    auto kvp = _glyphTextureMap.find(glyphId);
+    if (kvp != _glyphTextureMap.end())
+    {
+        return kvp->second;
+    }
+
+    GLuint texture = LoadGlyphTexture(image, palette);
+    _glyphTextureMap[glyphId] = texture;
 
     return texture;
 }
@@ -80,35 +93,66 @@ GLuint TextureCache::LoadImageTexture(uint32 image)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
 
-    delete [] (uint8 *) pixels32;
+    Memory::Free(pixels32);
 
     return texture;
 }
 
-void * TextureCache::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32* outWidth, uint32* outHeight)
+GLuint TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
 {
-    int g1Id = image & 0x7FFFF;
-    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+    GLuint texture;
+    glGenTextures(1, &texture);
 
-    uint32 width = (uint32)g1Element->width;
-    uint32 height = (uint32)g1Element->height;
+    uint32 width, height;
+    void * pixels32 = GetGlyphAsARGB(image, palette, &width, &height);
 
-    size_t numPixels = width * height;
-    uint8 * pixels8 = new uint8[numPixels];
-    Memory::Set(pixels8, 0, numPixels);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
 
-    rct_drawpixelinfo dpi;
-    dpi.bits = pixels8;
-    dpi.pitch = 0;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = width;
-    dpi.height = height;
-    dpi.zoom_level = 0;
-    gfx_draw_sprite_software(&dpi, image, -g1Element->x_offset, -g1Element->y_offset, tertiaryColour);
+    Memory::Free(pixels32);
 
-    uint8 * pixels32 = new uint8[width * height * 4];
-    uint8 * src = pixels8;
+    return texture;
+}
+
+void * TextureCache::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight)
+{
+    rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    sint32 width = g1Element->width;
+    sint32 height = g1Element->height;
+
+    rct_drawpixelinfo * dpi = CreateDPI(width, height);
+    gfx_draw_sprite_software(dpi, image, -g1Element->x_offset, -g1Element->y_offset, tertiaryColour);
+    void * pixels32 = ConvertDPIto32bpp(dpi);
+    DeleteDPI(dpi);
+
+    *outWidth = width;
+    *outHeight = height;
+    return pixels32;
+}
+
+void * TextureCache::GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight)
+{
+    rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    sint32 width = g1Element->width;
+    sint32 height = g1Element->height;
+
+    rct_drawpixelinfo * dpi = CreateDPI(width, height);
+    gfx_draw_sprite_palette_set_software(dpi, image, -g1Element->x_offset, -g1Element->y_offset, palette, nullptr);
+    void * pixels32 = ConvertDPIto32bpp(dpi);
+    DeleteDPI(dpi);
+
+    *outWidth = width;
+    *outHeight = height;
+    return pixels32;
+}
+
+void * TextureCache::ConvertDPIto32bpp(const rct_drawpixelinfo * dpi)
+{
+    size_t numPixels = dpi->width * dpi->height;
+    uint8 * pixels32 = Memory::Allocate<uint8>(numPixels * 4);
+    uint8 * src = dpi->bits;
     uint8 * dst = pixels32;
     for (size_t i = 0; i < numPixels; i++)
     {
@@ -130,22 +174,50 @@ void * TextureCache::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32*
             *dst++ = colour.a;
         }
     }
-
-    delete[] pixels8;
-
-    *outWidth = width;
-    *outHeight = height;
     return pixels32;
 }
 
 void TextureCache::FreeTextures()
 {
+    // Free images
     size_t numTextures = _imageTextureMap.size();
     auto textures = std::vector<GLuint>(numTextures);
     for (auto kvp : _imageTextureMap)
     {
         textures.push_back(kvp.second);
     }
-
     glDeleteTextures(textures.size(), textures.data());
+
+    // Free glyphs
+    numTextures = _glyphTextureMap.size();
+    textures.clear();
+    textures.reserve(numTextures);
+    for (auto kvp : _glyphTextureMap)
+    {
+        textures.push_back(kvp.second);
+    }
+    glDeleteTextures(textures.size(), textures.data());
+}
+
+rct_drawpixelinfo * TextureCache::CreateDPI(sint32 width, sint32 height)
+{
+    size_t numPixels = width * height;
+    uint8 * pixels8 = Memory::Allocate<uint8>(numPixels);
+    Memory::Set(pixels8, 0, numPixels);
+
+    rct_drawpixelinfo * dpi = new rct_drawpixelinfo();
+    dpi->bits = pixels8;
+    dpi->pitch = 0;
+    dpi->x = 0;
+    dpi->y = 0;
+    dpi->width = width;
+    dpi->height = height;
+    dpi->zoom_level = 0;
+    return dpi;
+}
+
+void TextureCache::DeleteDPI(rct_drawpixelinfo* dpi)
+{
+    Memory::Free(dpi->bits);
+    delete dpi;
 }
