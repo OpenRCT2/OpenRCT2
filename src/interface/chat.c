@@ -81,8 +81,8 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		return;
 	}
 	_chatLeft = 10;
-	_chatTop = gScreenHeight - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
-	_chatRight = gScreenWidth - 10;
+	_chatTop = gScreenHeight - 100 - ((CHAT_HISTORY_SIZE + 1) * 10);
+	_chatRight = gScreenWidth - 500;
 	_chatBottom = gScreenHeight - 45;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
@@ -99,11 +99,14 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 	}
 	if (gChatOpen) {
+		gfx_fill_rect(dpi, _chatLeft, _chatTop, _chatRight, _chatBottom, 0x2000000 | 50); 	// Background
+		
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
 		safe_strcpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
 		y = _chatBottom - 15;
 		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
+		gfx_fill_rect(dpi, x, y, x + _chatRight + 7, y + 12, 0x2000000 | 52);	// Textbox background
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 		if (_chatCaretTicks < 15) {
 			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
