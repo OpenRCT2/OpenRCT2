@@ -1,6 +1,8 @@
 #version 330
 
 uniform ivec4       uClip;
+uniform int         uFlags;
+uniform vec4        uColour;
 uniform sampler2D   uTexture;
 
 in vec2 fPosition;
@@ -16,5 +18,13 @@ void main()
         discard;
     }
 
-    oColour = texture(uTexture, fTextureCoordinate);
+    vec4 texel = texture(uTexture, fTextureCoordinate);
+    if ((uFlags & 1) != 0)
+    {
+        oColour = vec4(uColour.rgb, uColour.a * texel.a);
+    }
+    else
+    {
+        oColour = texel;
+    }
 }

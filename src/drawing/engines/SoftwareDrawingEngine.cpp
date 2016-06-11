@@ -172,6 +172,7 @@ public:
     void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
     void DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown) override;
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
+    void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour);
 
     void SetDPI(rct_drawpixelinfo * dpi);
 };
@@ -1014,6 +1015,17 @@ void SoftwareDrawingContext::DrawSpritePaletteSet(uint32 image, sint32 x, sint32
 void SoftwareDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
 {
     gfx_draw_sprite_raw_masked_software(_dpi, x, y, maskImage, colourImage);
+}
+
+void SoftwareDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
+{
+    uint8 palette[256];
+    memset(palette, colour, 256);
+    palette[0] = 0;
+
+    RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
+    image &= 0x7FFFF;
+    gfx_draw_sprite_palette_set_software(_dpi, image | 0x20000000, x, y, palette, nullptr);
 }
 
 void SoftwareDrawingContext::SetDPI(rct_drawpixelinfo * dpi)

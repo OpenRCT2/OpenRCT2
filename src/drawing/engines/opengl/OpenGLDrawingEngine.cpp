@@ -198,6 +198,7 @@ public:
     void DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour) override;
     void DrawSpritePaletteSet(uint32 image, sint32 x, sint32 y, uint8 * palette, uint8 * unknown) override;
     void DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage) override;
+    void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
 
     void SetDPI(rct_drawpixelinfo * dpi);
     void InvalidateImage(uint32 image);
@@ -646,6 +647,49 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     _drawImageMaskedShader->SetTextureMask(textureMask);
     _drawImageMaskedShader->SetTextureColour(textureColour);
     _drawImageMaskedShader->Draw(left, top, right, bottom);
+}
+
+void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
+{
+    vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
+
+    int g1Id = image & 0x7FFFF;
+    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+
+    GLuint texture = GetOrLoadImageTexture(image);
+
+    sint32 drawOffsetX = g1Element->x_offset;
+    sint32 drawOffsetY = g1Element->y_offset;
+    sint32 drawWidth = (uint16)g1Element->width;
+    sint32 drawHeight = (uint16)g1Element->height;
+
+    sint32 left = x + drawOffsetX;
+    sint32 top = y + drawOffsetY;
+    sint32 right = left + drawWidth;
+    sint32 bottom = top + drawHeight;
+
+    if (left > right)
+    {
+        std::swap(left, right);
+    }
+    if (top > bottom)
+    {
+        std::swap(top, bottom);
+    }
+
+    left += _offsetX;
+    top += _offsetY;
+    right += _offsetX;
+    bottom += _offsetY;
+
+    _drawImageShader->Use();
+    _drawImageShader->SetScreenSize(gScreenWidth, gScreenHeight);
+    _drawImageShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
+    _drawImageShader->SetTexture(texture);
+    _drawImageShader->SetFlags(1);
+    _drawImageShader->SetColour(paletteColour);
+    _drawImageShader->Draw(left, top, right, bottom);
+    _drawImageShader->SetFlags(0);
 }
 
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)

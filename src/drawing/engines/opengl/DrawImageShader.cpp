@@ -34,6 +34,7 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
 
     Use();
+    SetFlags(0);
     SetTextureCoordinates(0, 0, 1, 1);
 }
 
@@ -52,6 +53,8 @@ void DrawImageShader::GetLocations()
     uBounds             = GetUniformLocation("uBounds");
     uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
     uTexture            = GetUniformLocation("uTexture");
+    uColour             = GetUniformLocation("uColour");
+    uFlags              = GetUniformLocation("uFlags");
 
     vIndex              = GetAttributeLocation("vIndex");
 }
@@ -81,6 +84,16 @@ void DrawImageShader::SetTexture(GLuint texture)
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
     glUniform1i(uTexture, 0);
+}
+
+void DrawImageShader::SetColour(vec4f colour)
+{
+    glUniform4f(uColour, colour.r, colour.g, colour.b, colour.a);
+}
+
+void DrawImageShader::SetFlags(uint32 flags)
+{
+    glUniform1i(uFlags, flags);
 }
 
 void DrawImageShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)

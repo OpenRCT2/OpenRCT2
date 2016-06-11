@@ -227,6 +227,15 @@ extern "C"
         }
     }
 
+    void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 colour)
+    {
+        if (_drawingEngine != nullptr)
+        {
+            IDrawingContext * dc = _drawingEngine->GetDrawingContext(dpi);
+            dc->DrawSpriteSolid(image, x, y, colour);
+        }
+    }
+
     int screenshot_dump()
     {
         if (_drawingEngine != nullptr)

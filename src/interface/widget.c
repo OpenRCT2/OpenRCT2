@@ -859,23 +859,12 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 		// Draw greyed out (light border bottom right shadow)
 		colour = w->colours[widget->colour];
 		colour = ColourMapA[colour & 0x7F].lighter;
-
-		uint8 palette[256];
-		memset(palette, colour, 256);
-		palette[0] = 0;
-
-		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
-		image &= 0x7FFFF;
-		gfx_draw_sprite_palette_set(dpi, image | 0x20000000, l + 1, t + 1, palette, NULL);
+		gfx_draw_sprite_solid(dpi, image, l + 1, t + 1, colour);
 
 		// Draw greyed out (dark)
 		colour = w->colours[widget->colour];
 		colour = ColourMapA[colour & 0x7F].mid_light;
-		memset(palette, colour, 256);
-		palette[0] = 0;
-
-		RCT2_GLOBAL(0x00EDF81C, uint32) = 0x20000000;
-		gfx_draw_sprite_palette_set(dpi, image | 0x20000000, l, t, palette, NULL);
+		gfx_draw_sprite_solid(dpi, image, l, t, colour);
 	} else {
 		if (image & 0x80000000) {
 			// ?
