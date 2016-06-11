@@ -35,6 +35,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include "CopyFramebufferShader.h"
 #include "DrawImageShader.h"
 #include "DrawImageMaskedShader.h"
+#include "DrawLineShader.h"
 #include "FillRectShader.h"
 #include "SwapFramebuffer.h"
 
@@ -169,6 +170,7 @@ private:
 
     DrawImageShader *       _drawImageShader        = nullptr;
     DrawImageMaskedShader * _drawImageMaskedShader  = nullptr;
+    DrawLineShader *        _drawLineShader         = nullptr;
     FillRectShader *        _fillRectShader         = nullptr;
     GLuint _vbo;
 
@@ -464,6 +466,7 @@ OpenGLDrawingContext::~OpenGLDrawingContext()
 {
     delete _drawImageShader;
     delete _drawImageMaskedShader;
+    delete _drawLineShader;
     delete _fillRectShader;
 }
 
@@ -476,6 +479,7 @@ void OpenGLDrawingContext::Initialise()
 {
     _drawImageShader = new DrawImageShader();
     _drawImageMaskedShader = new DrawImageMaskedShader();
+    _drawLineShader = new DrawLineShader();
     _fillRectShader = new FillRectShader();
 }
 
@@ -530,14 +534,13 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 
 void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
 {
-    return;
-
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
-    glColor3f(paletteColour.r, paletteColour.g, paletteColour.b);
-    glBegin(GL_LINES);
-        glVertex2i(x1, y1);
-        glVertex2i(x2, y2);
-    glEnd();
+
+    _drawLineShader->Use();
+    _drawLineShader->SetScreenSize(gScreenWidth, gScreenHeight);
+    _drawLineShader->SetClip(_clipLeft, _clipTop, _clipRight, _clipBottom);
+    _drawLineShader->SetColour(paletteColour);
+    _drawLineShader->Draw(x1, y1, x2, y2);
 }
 
 void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)

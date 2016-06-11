@@ -22,6 +22,8 @@
     <None Include="data\shaders\drawimage.vert" />
     <None Include="data\shaders\drawimagemasked.frag" />
     <None Include="data\shaders\drawimagemasked.vert" />
+    <None Include="data\shaders\drawline.frag" />
+    <None Include="data\shaders\drawline.vert" />
     <None Include="data\shaders\fillrect.frag" />
     <None Include="data\shaders\fillrect.vert" />
     <None Include="openrct2.exe" />
@@ -53,6 +55,7 @@
     <ClCompile Include="src\drawing\engines\opengl\CopyFramebufferShader.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\DrawImageMaskedShader.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\DrawImageShader.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\DrawLineShader.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\FillRectShader.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\OpenGLAPI.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\OpenGLDrawingEngine.cpp" />
@@ -356,6 +359,7 @@
     <ClInclude Include="src\drawing\engines\opengl\CopyFramebufferShader.h" />
     <ClInclude Include="src\drawing\engines\opengl\DrawImageMaskedShader.h" />
     <ClInclude Include="src\drawing\engines\opengl\DrawImageShader.h" />
+    <ClInclude Include="src\drawing\engines\opengl\DrawLineShader.h" />
     <ClInclude Include="src\drawing\engines\opengl\FillRectShader.h" />
     <ClInclude Include="src\drawing\engines\opengl\GLSLTypes.h" />
     <ClInclude Include="src\drawing\engines\opengl\OpenGLAPI.h" />
