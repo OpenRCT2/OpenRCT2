@@ -47,6 +47,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 extern "C"
 {
     #include "../../../config.h"
+    #include "../../../interface/screenshot.h"
     #include "../../../interface/window.h"
     #include "../../../intro.h"
     #include "../../drawing.h"
@@ -328,8 +329,11 @@ public:
     
     sint32 Screenshot() override
     {
-        // Not implemented
-        return -1;
+        _canvasFramebuffer->Bind();
+        void * pixels = _canvasFramebuffer->GetPixels();
+        int result = screenshot_dump_png_32bpp(_width, _height, pixels);
+        Memory::Free(pixels);
+        return result;
     }
 
     void CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) override

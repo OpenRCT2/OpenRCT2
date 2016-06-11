@@ -115,6 +115,22 @@ int screenshot_dump_png(rct_drawpixelinfo *dpi)
 	}
 }
 
+int screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels)
+{
+	// Get a free screenshot path
+	int index;
+	char path[MAX_PATH] = "";
+	if ((index = screenshot_get_next_path(path)) == -1) {
+		return -1;
+	}
+
+	if (image_io_png_write_32bpp(width, height, pixels, path)) {
+		return index;
+	} else {
+		return -1;
+	}
+}
+
 void screenshot_giant()
 {
 	int originalRotation = get_current_rotation();

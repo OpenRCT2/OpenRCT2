@@ -39,4 +39,5 @@ public:
     GLuint GetTexture() const { return _texture; }
 
     void Bind();
+    void * GetPixels() const;
 };

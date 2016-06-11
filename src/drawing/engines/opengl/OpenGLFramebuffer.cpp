@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <SDL_video.h>
+#include "../../../core/Memory.hpp"
 #include "OpenGLFramebuffer.h"
 
 constexpr GLuint BACKBUFFER_ID = 0;
@@ -55,4 +56,25 @@ void OpenGLFramebuffer::Bind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _id);
     glViewport(0, 0, (GLsizei)_width, (GLsizei)_height);
+}
+
+void * OpenGLFramebuffer::GetPixels() const
+{
+    void * pixels = Memory::Allocate<void>(_width * _height * 4);
+    glReadPixels(0, 0, _width, _height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+
+    // Flip pixels vertically
+    void * flippedPixels = Memory::Allocate<void>(_width * _height * 4);
+    size_t stride = _width * 4;
+    uint8 * src = (uint8 *)pixels + ((_height - 1) * stride);
+    uint8 * dst = (uint8 *)flippedPixels;
+    for (sint32 y = 0; y < _height; y++)
+    {
+        Memory::Copy(dst, src, stride);
+        src -= stride;
+        dst += stride;
+    }
+    Memory::Free(pixels);
+
+    return flippedPixels;
 }
