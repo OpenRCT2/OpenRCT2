@@ -38,6 +38,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include "DrawLineShader.h"
 #include "FillRectShader.h"
 #include "SwapFramebuffer.h"
+#include "TextureCache.h"
 
 #include "../../../core/Console.hpp"
 #include "../../../core/Exception.hpp"
@@ -172,6 +173,9 @@ private:
     DrawImageMaskedShader * _drawImageMaskedShader  = nullptr;
     DrawLineShader *        _drawLineShader         = nullptr;
     FillRectShader *        _fillRectShader         = nullptr;
+
+    TextureCache * _textureCache = nullptr;
+
     GLuint _vbo;
 
     sint32 _offsetX;
@@ -181,14 +185,12 @@ private:
     sint32 _clipRight;
     sint32 _clipBottom;
 
-    std::vector<GLuint> _textures;
-    std::unordered_map<uint32, GLuint> _imageTextureMap;
-
 public:
-    OpenGLDrawingContext(OpenGLDrawingEngine * engine);
+    explicit OpenGLDrawingContext(OpenGLDrawingEngine * engine);
     ~OpenGLDrawingContext() override;
 
     IDrawingEngine * GetEngine() override;
+    TextureCache * GetTextureCache() const { return _textureCache; }
 
     void Initialise();
 
@@ -201,13 +203,6 @@ public:
     void DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour) override;
 
     void SetDPI(rct_drawpixelinfo * dpi);
-    void InvalidateImage(uint32 image);
-
-private:
-    GLuint GetOrLoadImageTexture(uint32 image);
-    GLuint LoadImageTexture(uint32 image);
-    void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
-    void FreeTextures();
 };
 
 class OpenGLDrawingEngine : public IDrawingEngine
@@ -292,6 +287,8 @@ public:
                              colour.b / 255.0f,
                              colour.a / 255.0f };
         }
+        _drawingContext->GetTextureCache()
+                       ->SetPalette(Palette);
     }
 
     void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override
@@ -366,7 +363,8 @@ public:
 
     void InvalidateImage(uint32 image) override
     {
-        _drawingContext->InvalidateImage(image);
+        _drawingContext->GetTextureCache()
+                       ->InvalidateImage(image);
     }
 
     rct_drawpixelinfo * GetDPI()
@@ -461,6 +459,7 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
 {
     _engine = engine;
+    _textureCache = new TextureCache();
 }
 
 OpenGLDrawingContext::~OpenGLDrawingContext()
@@ -469,6 +468,8 @@ OpenGLDrawingContext::~OpenGLDrawingContext()
     delete _drawImageMaskedShader;
     delete _drawLineShader;
     delete _fillRectShader;
+
+    delete _textureCache;
 }
 
 IDrawingEngine * OpenGLDrawingContext::GetEngine()
@@ -571,7 +572,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         }
     }
 
-    GLuint texture = GetOrLoadImageTexture(image);
+    GLuint texture = _textureCache->GetOrLoadImageTexture(image);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;
@@ -614,8 +615,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     rct_g1_element * g1ElementMask = gfx_get_g1_element(maskImage & 0x7FFFF);
     rct_g1_element * g1ElementColour = gfx_get_g1_element(colourImage & 0x7FFFF);
 
-    GLuint textureMask = GetOrLoadImageTexture(maskImage);
-    GLuint textureColour = GetOrLoadImageTexture(colourImage);
+    GLuint textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
+    GLuint textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
     sint32 drawOffsetX = g1ElementMask->x_offset;
     sint32 drawOffsetY = g1ElementMask->y_offset;
@@ -656,7 +657,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     int g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
-    GLuint texture = GetOrLoadImageTexture(image);
+    GLuint texture = _textureCache->GetOrLoadImageTexture(image);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;
@@ -709,114 +710,6 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
     _offsetY = _clipTop - dpi->y;
 
     _dpi = dpi;
-}
-
-GLuint OpenGLDrawingContext::GetOrLoadImageTexture(uint32 image)
-{
-    auto kvp = _imageTextureMap.find(image);
-    if (kvp != _imageTextureMap.end())
-    {
-        return kvp->second;
-    }
-
-    GLuint texture = LoadImageTexture(image);
-    _textures.push_back(texture);
-    _imageTextureMap[image] = texture;
-
-    // if ((_textures.size() % 100) == 0)
-    // {
-    //     printf("Textures: %d\n", _textures.size());
-    // }
-
-    return texture;
-}
-
-GLuint OpenGLDrawingContext::LoadImageTexture(uint32 image)
-{
-    GLuint texture;
-    glGenTextures(1, &texture);
-
-    uint32 width, height;
-    void * pixels32 = GetImageAsARGB(image, 0, &width, &height);
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
-
-    delete [] (uint8 *) pixels32;
-
-    return texture;
-}
-
-void * OpenGLDrawingContext::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight)
-{
-    int g1Id = image & 0x7FFFF;
-    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
-
-    uint32 width = (uint32)g1Element->width;
-    uint32 height = (uint32)g1Element->height;
-
-    size_t numPixels = width * height;
-    uint8 * pixels8 = new uint8[numPixels];
-    Memory::Set(pixels8, 0, numPixels);
-
-    rct_drawpixelinfo dpi;
-    dpi.bits = pixels8;
-    dpi.pitch = 0;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = width;
-    dpi.height = height;
-    dpi.zoom_level = 0;
-    gfx_draw_sprite_software(&dpi, image, -g1Element->x_offset, -g1Element->y_offset, tertiaryColour);
-
-    uint8 * pixels32 = new uint8[width * height * 4];
-    uint8 * src = pixels8;
-    uint8 * dst = pixels32;
-    for (size_t i = 0; i < numPixels; i++)
-    {
-        uint8 paletteIndex = *src++;
-        if (paletteIndex == 0)
-        {
-            // Transparent
-            *dst++ = 0;
-            *dst++ = 0;
-            *dst++ = 0;
-            *dst++ = 0;
-        }
-        else
-        {
-            SDL_Color colour = _engine->Palette[paletteIndex];
-            *dst++ = colour.r;
-            *dst++ = colour.g;
-            *dst++ = colour.b;
-            *dst++ = colour.a;
-        }
-    }
-
-    delete[] pixels8;
-
-    *outWidth = width;
-    *outHeight = height;
-    return pixels32;
-}
-
-void OpenGLDrawingContext::InvalidateImage(uint32 image)
-{
-    auto kvp = _imageTextureMap.find(image);
-    if (kvp != _imageTextureMap.end())
-    {
-        GLuint texture = kvp->second;
-        glDeleteTextures(1, &texture);
-
-        _imageTextureMap.erase(kvp);
-    }
-}
-
-void OpenGLDrawingContext::FreeTextures()
-{
-    glDeleteTextures(_textures.size(), _textures.data());
 }
 
 #endif /* DISABLE_OPENGL */

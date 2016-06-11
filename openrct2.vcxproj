@@ -62,6 +62,7 @@
     <ClCompile Include="src\drawing\engines\opengl\OpenGLFramebuffer.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\OpenGLShaderProgram.cpp" />
     <ClCompile Include="src\drawing\engines\opengl\SwapFramebuffer.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="src\drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\font.c" />
     <ClCompile Include="src\drawing\line.c" />
@@ -366,6 +367,7 @@
     <ClInclude Include="src\drawing\engines\opengl\OpenGLFramebuffer.h" />
     <ClInclude Include="src\drawing\engines\opengl\OpenGLShaderProgram.h" />
     <ClInclude Include="src\drawing\engines\opengl\SwapFramebuffer.h" />
+    <ClInclude Include="src\drawing\engines\opengl\TextureCache.h" />
     <ClInclude Include="src\drawing\font.h" />
     <ClInclude Include="src\drawing\IDrawingContext.h" />
     <ClInclude Include="src\drawing\IDrawingEngine.h" />
