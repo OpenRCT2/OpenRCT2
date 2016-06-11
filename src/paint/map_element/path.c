@@ -79,19 +79,6 @@ const uint8 byte_98D8A4[] = {
 	0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 
-typedef struct
-{
-	uint8 var_0, var_1, var_2, var_3, var_4, var_5, var_6, var_7;
-} unk_supports_desc_bound_box;
-
-const unk_supports_desc_bound_box stru_98D8D4[] = {
-	{0, 0, 0, 1, 1, 4, 0, 1},
-	{0, 0, 0, 1, 1, 4, 0, 1},
-	{0, 0, 0, 1, 1, 4, 0, 1},
-	{0, 0, 0, 1, 1, 4, 0, 1}
-};
-
-
 void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * dword_F3EF6C, bool word_F3F038, uint32 dword_F3EF70, uint32 dword_F3EF74);
 
 void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
@@ -278,82 +265,6 @@ void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_e
 	sub_98197C(imageId + 2, 0, 0, 1, 1, 2, height, 3, 29, height + 2, get_current_rotation());
 	sub_98197C(imageId + 3, 0, 0, 1, 1, 2, height, 29, 29, height + 2, get_current_rotation());
 	sub_98197C(imageId + 4, 0, 0, 1, 1, 2, height, 29, 3, height + 2, get_current_rotation());
-}
-
-bool do_sub_6A2ECC(int supportType, int special, int height, uint32 imageColourFlags, rct_footpath_entry * dword_F3EF6C, bool * underground)
-{
-	if (underground != NULL) {
-		*underground = false;
-	}
-
-	int eax = special, edx = height, _edi = supportType, ebp = imageColourFlags;
-
-	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
-		return false;
-	}
-
-	if (!(RCT2_GLOBAL(0x0141E9DB, uint8) & 1)) {
-		return false;
-	}
-
-	int z = floor2(RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) + 15, 16);
-	height -= z;
-	if (height < 0) {
-		if (underground != NULL) {
-			*underground = true;
-		}
-		return false;
-	}
-	height /= 16;
-
-	bool hasSupports = false;
-
-	// Draw base support (usually shaped to the slope)
-	int slope = RCT2_GLOBAL(0x0141E9DA, uint8);
-	if (slope & 0x20) {
-		uint32 image_id = (dword_F3EF6C->bridge_image + 48) | imageColourFlags;
-		sub_98196C(image_id, 0, 0, 32, 32, 0, z - 2, get_current_rotation());
-		hasSupports = true;
-	} else {
-
-	}
-
-	while (height != 0) {
-		if ((z & 16) == 0 && height >= 2 && z + 16 != RCT2_GLOBAL(0x00141E9DC, uint16)) {
-			// Full support
-			int imageId = (dword_F3EF6C->bridge_image + 22 + supportType * 24) | imageColourFlags;
-			uint8 ah = height == 2 ? 23 : 28; // weird
-			sub_98196C(imageId, 0, 0, 32, 32, ah, z, get_current_rotation());
-			hasSupports = true;
-			z += 32;
-			height -= 2;
-		} else {
-			// Half support
-			int imageId = (dword_F3EF6C->bridge_image + 23 + supportType * 24) | imageColourFlags;
-			uint8 ah = special == 1 ? 7 : 12;
-			sub_98196C(imageId, 0, 0, 32, 32, ah, z, get_current_rotation());
-			hasSupports = true;
-			z += 16;
-			height -= 1;
-		}
-	}
-
-	if (special == 0) {
-		return hasSupports;
-	}
-
-	special = (special - 1) & 0xFFFF;
-
-	uint32 imageId = (dword_F3EF6C->bridge_image + 55 + special) | imageColourFlags;
-
-
-	unk_supports_desc_bound_box stru = stru_98D8D4[special];
-	// var_6 is always zero.
-
-	sub_98197C(imageId, 0, 0, stru.var_3, stru.var_4, stru.var_5, z, stru.var_0, stru.var_1, z + stru.var_3, get_current_rotation());
-	hasSupports = true;
-
-	return hasSupports;
 }
 
 /**
@@ -969,9 +880,9 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 	ebx = ebp & 0xF;
 
 	if (byte_98D8A4[ebx] == 0) {
-		do_sub_6A2ECC(0, ax, height, dword_F3EF70, dword_F3EF6C, NULL);
+		path_a_supports_paint_setup(0, ax, height, dword_F3EF70, dword_F3EF6C, NULL);
 	} else {
-		do_sub_6A2ECC(1, ax, height, dword_F3EF70, dword_F3EF6C, NULL);
+		path_a_supports_paint_setup(1, ax, height, dword_F3EF70, dword_F3EF6C, NULL);
 	}
 
 
@@ -1114,7 +1025,7 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 	RCT2_GLOBAL(0x00F3EF6C, rct_footpath_entry*) = footpathEntry;
 	for (sint8 i = 3; i > -1; --i) {
 		if (!(edges & (1 << i))) {
-			path_wooden_a_supports_paint_setup(supports[i], ax, height, imageFlags);
+			path_b_supports_paint_setup(supports[i], ax, height, imageFlags);
 		}
 	}
 	
