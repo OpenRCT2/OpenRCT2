@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,9 +16,9 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "FillRectShader.h"
+#include "CopyFramebufferShader.h"
 
-FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
+CopyFramebufferShader::CopyFramebufferShader() : OpenGLShaderProgram("copyframebuffer")
 {
     GetLocations();
 
@@ -31,10 +31,13 @@ FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
 
     glBindVertexArray(_vao);
     glEnableVertexAttribArray(vIndex);
-    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, 0);
+    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
+
+    Use();
+    SetTextureCoordinates(0, 0, 1, 1);
 }
 
-FillRectShader::~FillRectShader()
+CopyFramebufferShader::~CopyFramebufferShader()
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
@@ -42,47 +45,40 @@ FillRectShader::~FillRectShader()
     glBindVertexArray(_vao);
 }
 
-void FillRectShader::GetLocations()
+void CopyFramebufferShader::GetLocations()
 {
-    uScreenSize = GetUniformLocation("uScreenSize");
-    uClip       = GetUniformLocation("uClip");
-    uBounds     = GetUniformLocation("uBounds");
-    uFlags      = GetUniformLocation("uFlags");
-    uColour[0]  = GetUniformLocation("uColour[0]");
-    uColour[1]  = GetUniformLocation("uColour[1]");
+    uScreenSize         = GetUniformLocation("uScreenSize");
+    uBounds             = GetUniformLocation("uBounds");
+    uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
+    uTexture            = GetUniformLocation("uTexture");
 
-    vIndex      = GetAttributeLocation("vIndex");
+    vIndex              = GetAttributeLocation("vIndex");
 }
 
-void FillRectShader::SetScreenSize(sint32 width, sint32 height)
+void CopyFramebufferShader::SetScreenSize(sint32 width, sint32 height)
 {
     glUniform2i(uScreenSize, width, height);
 }
 
-void FillRectShader::SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    glUniform4i(uClip, left, top, right, bottom);
-}
-
-void FillRectShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void CopyFramebufferShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     glUniform4i(uBounds, left, top, right, bottom);
 }
 
-void FillRectShader::SetFlags(uint32 flags)
+void CopyFramebufferShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
-    glUniform1i(uFlags, flags);
+    glUniform4i(uTextureCoordinates, left, top, right, bottom);
 }
 
-void FillRectShader::SetColour(int index, vec4f colour)
+void CopyFramebufferShader::SetTexture(GLuint texture)
 {
-    glUniform4f(uColour[index], colour.r, colour.g, colour.b, colour.a);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(uTexture, 0);
 }
 
-void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
+void CopyFramebufferShader::Draw()
 {
-    SetBounds(left, top, right, bottom);
-
     glBindVertexArray(_vao);
     glDrawArrays(GL_QUADS, 0, 4);
 }

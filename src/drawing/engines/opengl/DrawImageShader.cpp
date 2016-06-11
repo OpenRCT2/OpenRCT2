@@ -27,7 +27,7 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
 
     vec2i vertices[] = { 0, 1, 2, 3 };
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
     glEnableVertexAttribArray(vIndex);

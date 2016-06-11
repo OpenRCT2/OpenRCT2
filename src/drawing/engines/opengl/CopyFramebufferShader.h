@@ -16,28 +16,33 @@
 
 #pragma once
 
-#include "../../../common.h"
-#include "OpenGLAPI.h"
+#include "GLSLTypes.h"
+#include "OpenGLShaderProgram.h"
 
-struct SDL_Window;
-
-class OpenGLFramebuffer
+class CopyFramebufferShader : public OpenGLShaderProgram
 {
 private:
-    GLuint _id;
-    GLuint _texture;
-    sint32 _width;
-    sint32 _height;
+    GLuint uScreenSize;
+    GLuint uBounds;
+    GLuint uTextureCoordinates;
+    GLuint uTexture;
+
+    GLuint vIndex;
+
+    GLuint _vbo;
+    GLuint _vao;
 
 public:
-    explicit OpenGLFramebuffer(SDL_Window * window);
-    OpenGLFramebuffer(sint32 width, sint32 height);
-    ~OpenGLFramebuffer();
+    CopyFramebufferShader();
+    ~CopyFramebufferShader() override;
 
-    GLuint GetWidth() const { return _width; }
-    GLuint GetHeight() const { return _height; }
-    GLuint GetTexture() const { return _texture; }
+    void SetScreenSize(sint32 width, sint32 height);
+    void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
+    void SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom);
+    void SetTexture(GLuint texture);
 
-    void Bind() const;
-    void * GetPixels() const;
+    void Draw();
+
+private:
+    void GetLocations();
 };

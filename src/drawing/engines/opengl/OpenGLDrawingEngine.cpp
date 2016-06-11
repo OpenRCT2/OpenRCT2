@@ -32,9 +32,11 @@ IDrawingEngine * DrawingEngineFactory::CreateOpenGL()
 #include "GLSLTypes.h"
 #include "OpenGLAPI.h"
 #include "OpenGLFramebuffer.h"
+#include "CopyFramebufferShader.h"
 #include "DrawImageShader.h"
 #include "DrawImageMaskedShader.h"
 #include "FillRectShader.h"
+#include "SwapFramebuffer.h"
 
 #include "../../../core/Console.hpp"
 #include "../../../core/Exception.hpp"
@@ -221,9 +223,9 @@ private:
 
     OpenGLDrawingContext *    _drawingContext;
 
-    DrawImageShader   * _drawImageShader    = nullptr;
-    OpenGLFramebuffer * _screenFramebuffer  = nullptr;
-    OpenGLFramebuffer * _canvasFramebuffer  = nullptr;
+    CopyFramebufferShader * _copyFramebufferShader  = nullptr;
+    OpenGLFramebuffer *     _screenFramebuffer      = nullptr;
+    SwapFramebuffer *       _swapFramebuffer        = nullptr;
 
 public:
     SDL_Color Palette[256];
@@ -236,7 +238,7 @@ public:
 
     ~OpenGLDrawingEngine() override
     {
-        delete _drawImageShader;
+        delete _copyFramebufferShader;
 
         delete _drawingContext;
         delete [] _bits;
@@ -265,7 +267,7 @@ public:
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);
 
-        _drawImageShader = new DrawImageShader();
+        _copyFramebufferShader = new CopyFramebufferShader();
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -296,9 +298,9 @@ public:
     void Draw() override
     {
         assert(_screenFramebuffer != nullptr);
-        assert(_canvasFramebuffer != nullptr);
+        assert(_swapFramebuffer != nullptr);
 
-        _canvasFramebuffer->Bind();
+        _swapFramebuffer->Bind();
 
         if (gIntroState != INTRO_STATE_NONE) {
             intro_draw(&_bitsDPI);
@@ -308,6 +310,8 @@ public:
             window_update_all();
         
             gfx_draw_pickedup_peep(&_bitsDPI);
+
+            _swapFramebuffer->SwapCopy();
         
             rct2_draw(&_bitsDPI);
         }
@@ -317,20 +321,20 @@ public:
 
         sint32 width = _screenFramebuffer->GetWidth();
         sint32 height = _screenFramebuffer->GetHeight();
-        _drawImageShader->Use();
-        _drawImageShader->SetScreenSize(width, height);
-        _drawImageShader->SetClip(0, 0, width, height);
-        _drawImageShader->SetTexture(_canvasFramebuffer->GetTexture());
-        _drawImageShader->SetTextureCoordinates(0, 1, 1, 0);
-        _drawImageShader->Draw(0, 0, width, height);
+        _copyFramebufferShader->Use();
+        _copyFramebufferShader->SetTexture(_swapFramebuffer->GetTargetFramebuffer()
+                                                           ->GetTexture());
+        _copyFramebufferShader->Draw();
 
         Display();
     }
     
     sint32 Screenshot() override
     {
-        _canvasFramebuffer->Bind();
-        void * pixels = _canvasFramebuffer->GetPixels();
+        const OpenGLFramebuffer * framebuffer = _swapFramebuffer->GetTargetFramebuffer();
+        framebuffer->Bind();
+        void * pixels = framebuffer->GetPixels();
+        
         int result = screenshot_dump_png_32bpp(_width, _height, pixels);
         Memory::Free(pixels);
         return result;
@@ -425,13 +429,13 @@ private:
         _screenFramebuffer = new OpenGLFramebuffer(_window);
 
         // Re-create canvas framebuffer
-        delete _canvasFramebuffer;
-        _canvasFramebuffer = new OpenGLFramebuffer(_width, _height);
+        delete _swapFramebuffer;
+        _swapFramebuffer = new SwapFramebuffer(_width, _height);
 
-        _drawImageShader->Use();
-        _drawImageShader->SetScreenSize(_width, _height);
-        _drawImageShader->SetClip(0, 0, _width, _height);
-        _drawImageShader->SetTexture(_canvasFramebuffer->GetTexture());
+        _copyFramebufferShader->Use();
+        _copyFramebufferShader->SetScreenSize(_width, _height);
+        _copyFramebufferShader->SetBounds(0, 0, _width, _height);
+        _copyFramebufferShader->SetTextureCoordinates(0, 1, 1, 0);
     }
 
     void Display()
