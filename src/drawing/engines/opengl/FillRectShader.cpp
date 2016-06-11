@@ -17,6 +17,7 @@
 #ifndef DISABLE_OPENGL
 
 #include "FillRectShader.h"
+#include "OpenGLFramebuffer.h"
 
 FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
 {
@@ -32,6 +33,9 @@ FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
     glBindVertexArray(_vao);
     glEnableVertexAttribArray(vIndex);
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, 0);
+
+    Use();
+    SetFlags(0);
 }
 
 FillRectShader::~FillRectShader()
@@ -77,6 +81,13 @@ void FillRectShader::SetFlags(uint32 flags)
 void FillRectShader::SetColour(int index, vec4f colour)
 {
     glUniform4f(uColour[index], colour.r, colour.g, colour.b, colour.a);
+}
+
+void FillRectShader::SetSourceFramebuffer(GLuint texture)
+{
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(uSourceFramebuffer, 0);
 }
 
 void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)

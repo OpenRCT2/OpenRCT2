@@ -281,7 +281,7 @@ public:
         for (int i = 0; i < 256; i++)
         {
             SDL_Color colour = palette[i];
-            colour.a = 255;
+            colour.a = i == 0 ? 0 : 255;
 
             Palette[i] = colour;
             GLPalette[i] = { colour.r / 255.0f,
@@ -369,6 +369,12 @@ public:
     rct_drawpixelinfo * GetDPI()
     {
         return &_bitsDPI;
+    }
+
+    GLuint SwapCopyReturningSourceTexture()
+    {
+        _swapFramebuffer->SwapCopy();
+        return _swapFramebuffer->GetSourceTexture();
     }
 
 private:
@@ -486,6 +492,9 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     if (colour & 0x1000000)
     {
         paletteColour[1].a = 0;
+
+        _fillRectShader->Use();
+        _fillRectShader->SetFlags(0);
     }
     else if (colour & 0x2000000)
     {
@@ -498,11 +507,20 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
         paletteColour[0].r = transformColour.r;
         paletteColour[0].g = transformColour.g;
         paletteColour[0].b = transformColour.b;
-        paletteColour[0].a = 0.5f;
+        paletteColour[0].a = 1;
         paletteColour[1] = paletteColour[0];
+
+        GLuint srcTexture =  _engine->SwapCopyReturningSourceTexture();
+        _fillRectShader->Use();
+        _fillRectShader->SetFlags(1);
+        _fillRectShader->SetSourceFramebuffer(srcTexture);
+    }
+    else
+    {
+        _fillRectShader->Use();
+        _fillRectShader->SetFlags(0);
     }
 
-    _fillRectShader->Use();
     _fillRectShader->SetScreenSize(gScreenWidth, gScreenHeight);
     _fillRectShader->SetColour(0, paletteColour[0]);
     _fillRectShader->SetColour(1, paletteColour[1]);
@@ -726,7 +744,7 @@ void * OpenGLDrawingContext::GetImageAsARGB(uint32 image, uint32 tertiaryColour,
             *dst++ = colour.r;
             *dst++ = colour.g;
             *dst++ = colour.b;
-            *dst++ = 255;
+            *dst++ = colour.a;
         }
     }
 
