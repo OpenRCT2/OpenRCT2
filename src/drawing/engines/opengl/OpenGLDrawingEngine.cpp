@@ -485,11 +485,16 @@ void OpenGLDrawingContext::Initialise()
 
 void OpenGLDrawingContext::Clear(uint32 colour)
 {
-    FillRect(colour, _clipLeft, _clipTop, _clipRight, _clipBottom);
+    FillRect(colour, _clipLeft - _offsetX, _clipTop - _offsetY, _clipRight, _clipBottom);
 }
 
 void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
+    left += _offsetX;
+    top += _offsetY;
+    right += _offsetX;
+    bottom += _offsetY;
+
     vec4f paletteColour[2];
     paletteColour[0] = _engine->GLPalette[(colour >> 0) & 0xFF];
     paletteColour[1] = paletteColour[0];
@@ -534,6 +539,11 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
 
 void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
 {
+    x1 += _offsetX;
+    y1 += _offsetY;
+    x2 += _offsetX;
+    y2 += _offsetY;
+
     vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
 
     _drawLineShader->Use();
