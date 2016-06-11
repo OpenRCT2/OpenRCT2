@@ -494,9 +494,6 @@ void DrawOpenRCT2(rct_drawpixelinfo *dpi, int x, int y)
 {
 	utf8 buffer[256];
 
-	// Draw background
-	gfx_fill_rect_inset(dpi, x, y, x + 128, y + 20, TRANSLUCENT(COLOUR_DARK_GREEN), 0x8);
-
 	// Write format codes
 	utf8 *ch = buffer;
 	ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
