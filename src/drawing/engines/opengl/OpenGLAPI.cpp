@@ -55,8 +55,6 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glBlendFunc);
     SetupOpenGLFunction(glClear);
     SetupOpenGLFunction(glClearColor);
-    SetupOpenGLFunction(glColor3f);
-    SetupOpenGLFunction(glColor4f);
     SetupOpenGLFunction(glCullFace);
     SetupOpenGLFunction(glDeleteTextures);
     SetupOpenGLFunction(glDisable);
@@ -65,16 +63,9 @@ static const char * TryLoadAllProcAddresses()
     SetupOpenGLFunction(glEnd);
     SetupOpenGLFunction(glGenTextures);
     SetupOpenGLFunction(glGetError);
-    SetupOpenGLFunction(glLoadIdentity);
-    SetupOpenGLFunction(glMatrixMode);
-    SetupOpenGLFunction(glOrtho);
     SetupOpenGLFunction(glReadPixels);
-    SetupOpenGLFunction(glScalef);
-    SetupOpenGLFunction(glTexCoord2f);
     SetupOpenGLFunction(glTexImage2D);
     SetupOpenGLFunction(glTexParameteri);
-    SetupOpenGLFunction(glTranslatef);
-    SetupOpenGLFunction(glVertex2i);
     SetupOpenGLFunction(glViewport);
 
     // 2.0+ functions
