@@ -256,7 +256,7 @@ money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 comman
 		newPeep->pathfind_goal.z = 0xFF;
 		newPeep->pathfind_goal.direction = 0xFF;
 
-		uint8 colour = gStaffColours[clamp(0, staff_type, STAFF_TYPE_SECURITY)];
+		uint8 colour = gStaffColours[clamp(STAFF_TYPE_HANDYMAN, staff_type, STAFF_TYPE_SECURITY)];
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
