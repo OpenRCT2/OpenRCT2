@@ -107,6 +107,7 @@ static const char * TryLoadAllProcAddresses()
 
     return nullptr;
 }
+#endif /* #if OPENGL_NO_LINK */
 
 namespace OpenGLState
 {
@@ -123,7 +124,6 @@ void OpenGLAPI::SetTexture2D(uint16 index, GLuint texture)
     glBindTexture(GL_TEXTURE_2D, texture);
 }
 
-#endif /* #if OPENGL_NO_LINK */
 
 bool OpenGLAPI::Initialise()
 {

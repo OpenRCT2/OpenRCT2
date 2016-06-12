@@ -18,6 +18,7 @@
 
 #include "../../../core/Memory.hpp"
 #include "TextureCache.h"
+#include <vector>
 
 extern "C"
 {
