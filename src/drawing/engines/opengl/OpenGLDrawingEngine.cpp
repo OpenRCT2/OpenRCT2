@@ -247,6 +247,10 @@ public:
     {
         _window = window;
 
+
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
         _context = SDL_GL_CreateContext(_window);
         SDL_GL_MakeCurrent(_window, _context);
 
@@ -326,6 +330,7 @@ public:
                                                            ->GetTexture());
         _copyFramebufferShader->Draw();
 
+        CheckGLError();
         Display();
     }
     

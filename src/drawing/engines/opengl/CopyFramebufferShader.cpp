@@ -42,8 +42,6 @@ CopyFramebufferShader::~CopyFramebufferShader()
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
-
-    glBindVertexArray(_vao);
 }
 
 void CopyFramebufferShader::GetLocations()
@@ -79,7 +77,7 @@ void CopyFramebufferShader::SetTexture(GLuint texture)
 void CopyFramebufferShader::Draw()
 {
     glBindVertexArray(_vao);
-    glDrawArrays(GL_QUADS, 0, 4);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
 #endif /* DISABLE_OPENGL */
