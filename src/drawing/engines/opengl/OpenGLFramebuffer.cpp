@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_OPENGL
+
 #include <SDL_video.h>
 #include "../../../core/Memory.hpp"
 #include "OpenGLFramebuffer.h"
@@ -78,3 +80,5 @@ void * OpenGLFramebuffer::GetPixels() const
 
     return flippedPixels;
 }
+
+#endif /* DISABLE_OPENGL */

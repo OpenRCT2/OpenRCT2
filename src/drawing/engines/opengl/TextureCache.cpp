@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef DISABLE_OPENGL
+
 #include "../../../core/Memory.hpp"
 #include "TextureCache.h"
 
@@ -221,3 +223,5 @@ void TextureCache::DeleteDPI(rct_drawpixelinfo* dpi)
     Memory::Free(dpi->bits);
     delete dpi;
 }
+
+#endif /* DISABLE_OPENGL */
