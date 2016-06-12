@@ -74,55 +74,109 @@ void game_command_update_staff_colour(int *eax, int *ebx, int *ecx, int *edx, in
 	*ebx = 0;
 }
 
-/**
- *
- *  rct2: 0x006BEFA1
- */
-void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+static inline void staff_autoposition_new_staff_member(rct_peep *newPeep)
 {
-	uint8 _bl = *ebx & 0xFF, staff_type = (*ebx & 0xFF00) >> 8;
-	uint16 _ax = *eax & 0xFFFF, _cx = *ecx & 0xFFFF, _dx = *edx & 0xFFFF;
+	// Find a location to place new staff member
 
+	newPeep->state = PEEP_STATE_FALLING;
+
+	sint16 x, y, z;
+	uint32 count = 0;
+	uint16 sprite_index;
+	rct_peep *guest = NULL;
+
+	// Count number of walking guests
+	FOR_ALL_GUESTS(sprite_index, guest) {
+		if (guest->state == PEEP_STATE_WALKING)
+			++count;
+	}
+
+	if (count > 0) {
+		// Place staff at a random guest
+		uint32 rand = scenario_rand_max(count);
+		FOR_ALL_GUESTS(sprite_index, guest) {
+			if (guest->state == PEEP_STATE_WALKING) {
+				if (rand == 0)
+					break;
+				--rand;
+			}
+		}
+
+		x = guest->x;
+		y = guest->y;
+		z = guest->z;
+	} else {
+		// No walking guests; pick random park entrance
+		count = 0;
+		uint8 i;
+		for (i = 0; i < 4; ++i) {
+			if (gParkEntranceX[i] != SPRITE_LOCATION_NULL)
+				++count;
+		}
+
+		if (count > 0) {
+			uint32 rand = scenario_rand_max(count);
+			for (i = 0; i < 4; ++i) {
+				if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
+					if (rand == 0)
+						break;
+					--rand;
+				}
+			}
+
+			uint8 dir = gParkEntranceDirection[i];
+			x = gParkEntranceX[i];
+			y = gParkEntranceY[i];
+			z = gParkEntranceZ[i];
+			x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
+			y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
+		} else {
+			// No more options; user must pick a location
+			newPeep->state = PEEP_STATE_PICKED;
+			x = newPeep->x;
+			y = newPeep->y;
+			z = newPeep->z;
+		}
+	}
+
+	sprite_move(x, y, z + 16, (rct_sprite *)newPeep);
+	invalidate_sprite_2((rct_sprite *)newPeep);
+}
+
+money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 command_x, sint16 command_y, sint16 command_z, int *newPeep_sprite_index)
+{
 	gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
-	gCommandPosition.x = _ax;
-	gCommandPosition.y = _cx;
-	gCommandPosition.z = _dx;
+	gCommandPosition.x = command_x;
+	gCommandPosition.y = command_y;
+	gCommandPosition.z = command_z;
 
 	if (gSpriteListCount[SPRITE_LIST_NULL] < 400) {
-		*ebx = MONEY32_UNDEFINED;
 		gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
-		return;
+		return MONEY32_UNDEFINED;
 	}
 
 	int i;
-	for (i = 0; i < STAFF_MAX_COUNT; i++) {
+	for (i = 0; i < STAFF_MAX_COUNT; ++i) {
 		if (!(RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[i] & 1))
 			break;
 	}
 
 	if (i == STAFF_MAX_COUNT) {
-		*ebx = MONEY32_UNDEFINED;
 		gGameCommandErrorText = STR_TOO_MANY_STAFF_IN_GAME;
-		return;
+		return MONEY32_UNDEFINED;
 	}
 
 	int newStaffId = i;
-
-	int _eax, _ebx;
 	rct_sprite_bounds *spriteBounds;
-	_ebx = _bl;
+	rct_peep *newPeep = &(create_sprite(flags)->peep);
 
-	rct_peep* newPeep = &(create_sprite(_bl)->peep);
-
-	if (newPeep == NULL)
-	{
-		*ebx = MONEY32_UNDEFINED;
+	if (newPeep == NULL) {
 		gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
-		return;
+		return MONEY32_UNDEFINED;
 	}
 
-	if (_bl == 0) {
-		sprite_remove((rct_sprite*)newPeep);
+	if (flags == 0) {
+		sprite_remove((rct_sprite *)newPeep);
 	} else {
 		move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LIST_PEEP * 2);
 
@@ -142,109 +196,58 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->paid_on_food = 0;
 		newPeep->paid_on_souvenirs = 0;
 
-		newPeep->staff_orders = 0;
-		if (staff_type == 0) {
-			newPeep->staff_orders = 7;
-		}
-		else if (staff_type == 1) {
-			newPeep->staff_orders = 3;
-		}
+		if (staff_type == STAFF_TYPE_HANDYMAN)
+			newPeep->staff_orders = STAFF_ORDERS_SWEEPING |
+									STAFF_ORDERS_WATER_FLOWERS |
+									STAFF_ORDERS_EMPTY_BINS;
+		else if (staff_type == STAFF_TYPE_MECHANIC)
+			newPeep->staff_orders = STAFF_ORDERS_INSPECT_RIDES |
+									STAFF_ORDERS_FIX_RIDES;
+		else
+			newPeep->staff_orders = 0;
 
 		uint16 idSearchSpriteIndex;
-		rct_peep* idSearchPeep;
+		rct_peep *idSearchPeep;
 
 		// We search for the first available id for a given staff type
 		int newStaffIndex = 0;
 		for (;;) {
-			int found = 0;
-			newStaffIndex++;
+			bool found = false;
+			++newStaffIndex;
 
 			FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep) {
-				if (idSearchPeep->staff_type != staff_type) {
+				if (idSearchPeep->staff_type != staff_type)
 					continue;
-				}
 
 				if (idSearchPeep->id == newStaffIndex) {
-					found = 1;
+					found = true;
 					break;
 				}
 			}
 
-			if (found == 0)
+			if (!found)
 				break;
 		}
 
 		newPeep->id = newStaffIndex;
 		newPeep->staff_type = staff_type;
 
-		_eax = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
+		uint8 sprite_type = RCT2_ADDRESS(0x009929FC, uint8)[staff_type];
 		newPeep->name_string_idx = staff_type + 0x300;
-		newPeep->sprite_type = _eax;
+		newPeep->sprite_type = sprite_type;
 
-		spriteBounds = g_sprite_entries[_eax].sprite_bounds;
+		spriteBounds = g_sprite_entries[sprite_type].sprite_bounds;
 		newPeep->sprite_width = spriteBounds->sprite_width;
 		newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
 		newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
-		if ((gConfigGeneral.auto_staff_placement != 0) != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
-			newPeep->state = PEEP_STATE_FALLING;
-
-			sint16 x, y, z;
-			uint32 count = 0;
-			uint16 sprite_index;
-			rct_peep *guest = NULL;
-
-			FOR_ALL_GUESTS(sprite_index, guest)
-				if (guest->state == PEEP_STATE_WALKING) ++count;
-
-			if (count == 0) {
-				count = 0;
-				uint8 i;
-				for (i = 0; i < 4; ++i) {
-					if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) ++count;
-				}
-
-				if (count > 0) {
-					uint32 rand = scenario_rand_max(count);
-					for (i = 0; i < 4; ++i) {
-						if (gParkEntranceX[i] != SPRITE_LOCATION_NULL) {
-							if (rand == 0) break;
-							--rand;
-						}
-					}
-
-					uint8 dir = gParkEntranceDirection[i];
-					x = gParkEntranceX[i];
-					y = gParkEntranceY[i];
-					z = gParkEntranceZ[i];
-					x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
-					y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
-				} else {
-					newPeep->state = PEEP_STATE_PICKED;
-					x = newPeep->x;
-					y = newPeep->y;
-					z = newPeep->z;
-				}
-			} else {
-				uint32 rand = scenario_rand_max(count);
-				FOR_ALL_GUESTS(sprite_index, guest)
-					if (guest->state == PEEP_STATE_WALKING) {
-						if (rand == 0) break;
-						--rand;
-					}
-
-				x = guest->x;
-				y = guest->y;
-				z = guest->z;
-			}
-
-			sprite_move(x, y, z + 16, (rct_sprite*)newPeep);
-			invalidate_sprite_2((rct_sprite*)newPeep);
+		if (gConfigGeneral.auto_staff_placement != ((SDL_GetModState() & KMOD_SHIFT) != 0)) {
+			staff_autoposition_new_staff_member(newPeep);
 		} else {
 			newPeep->state = PEEP_STATE_PICKED;
 
-			sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
-			invalidate_sprite_2((rct_sprite*)newPeep);
+			sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite *)newPeep);
+			invalidate_sprite_2((rct_sprite *)newPeep);
 		}
 
 		newPeep->time_in_park = gDateMonthsElapsed;
@@ -253,7 +256,7 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 		newPeep->pathfind_goal.z = 0xFF;
 		newPeep->pathfind_goal.direction = 0xFF;
 
-		uint8 colour = gStaffColours[staff_type > 2 ? 2 : staff_type];
+		uint8 colour = gStaffColours[clamp(STAFF_TYPE_HANDYMAN, staff_type, STAFF_TYPE_SECURITY)];
 		newPeep->tshirt_colour = colour;
 		newPeep->trousers_colour = colour;
 
@@ -268,19 +271,33 @@ void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, 
 
 		RCT2_ADDRESS(RCT2_ADDRESS_STAFF_MODE_ARRAY, uint8)[newStaffId] = STAFF_MODE_WALK;
 
-		for (int edi = 0; edi < 0x80; edi++) {
-			int addr = RCT2_ADDRESS_STAFF_PATROL_AREAS + (newStaffId << 9) + edi * 4;
+		for (int i = 0; i < 0x80; ++i) {
+			int addr = RCT2_ADDRESS_STAFF_PATROL_AREAS + (newStaffId << 9) + i * 4;
 			RCT2_GLOBAL(addr, uint32) = 0;
 		}
 	}
 
-	if(staff_type == STAFF_TYPE_HANDYMAN && gConfigGeneral.handymen_mow_default) {
-		int flags = ((newPeep->staff_orders ^ (1 << 3)) << 8) | 1;
-		game_do_command(newPeep->x, flags, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, (int)newPeep, 0);
+	if ((staff_type == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default) {
+		uint8 new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
+		game_do_command(newPeep->x, ((int)new_orders << 8) | 1, newPeep->y, newPeep->sprite_index, GAME_COMMAND_SET_STAFF_ORDER, (int)newPeep, 0);
 	}
 
-	*ebx = 0;
-	*edi = newPeep->sprite_index;
+	*newPeep_sprite_index = newPeep->sprite_index;
+	return 0;
+}
+
+/**
+ *
+ *  rct2: 0x006BEFA1
+ */
+void game_command_hire_new_staff_member(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp)
+{
+	*ebx = staff_hire_new_staff_member((*ebx & 0xFF00) >> 8,
+									   *ebx & 0xFF,
+									   *eax & 0xFFFF,
+									   *ecx & 0xFFFF,
+									   *edx & 0xFFFF,
+									   edi);
 }
 
 /**
