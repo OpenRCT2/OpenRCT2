@@ -37,6 +37,7 @@ function Build-Data()
 
     # Create symlinks
     Symlink-or-Copy "$binDataPath\language" "$dataPath\language" > $null
+    Symlink-or-Copy "$binDataPath\shaders"  "$dataPath\shaders"  > $null
     Symlink-or-Copy "$binDataPath\title"    "$dataPath\title"    > $null
 
     return 0
