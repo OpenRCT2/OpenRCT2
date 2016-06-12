@@ -16,6 +16,7 @@
 
 #ifndef DISABLE_OPENGL
 
+#include <vector>
 #include "../../../core/Memory.hpp"
 #include "TextureCache.h"
 
