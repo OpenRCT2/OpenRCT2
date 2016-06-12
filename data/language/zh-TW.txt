@@ -1182,7 +1182,7 @@ STR_1176    :不能在此建造道路...
 STR_1177    :不能移除此處道路...
 STR_1178    :不適合的土地斜度
 STR_1179    :道路擋在路上
-STR_1180    :不能建造此於水底!
+STR_1180    :不能在水底建造此物件!
 STR_1181    :道路
 STR_1182    :類別
 STR_1183    :方向
@@ -1203,7 +1203,7 @@ STR_1197    :故障了
 STR_1198    :毀壞了!
 STR_1199    :{COMMA16}個遊客在這個遊樂設施上
 STR_1200    :{COMMA16}個遊客在這個遊樂設施上
-STR_1201    :無人在排隊
+STR_1201    :無遊客在排隊
 STR_1202    :1個遊客在排隊
 STR_1203    :{COMMA16}個遊客在排隊
 STR_1204    :{COMMA16}分鐘的輪候時間
@@ -1424,7 +1424,7 @@ STR_1418    :{WINDOW_COLOUR_2}橫向重力
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}從{POP16}{STRINGID}記錄資料中
+STR_1422    :{SMALLFONT}{BLACK}從{POP16}{STRINGID}記錄數據中
 STR_1423    :{SMALLFONT}{BLACK}輪侯區道路
 STR_1424    :{SMALLFONT}{BLACK}道路
 STR_1425    :道路
@@ -1540,7 +1540,7 @@ STR_1534    :{SMALLFONT}{OPENQUOTES}這隻由{STRINGID}購買的熱狗真的是�
 STR_1535    :{SMALLFONT}{OPENQUOTES}這隻由{STRINGID}購買的觸手真的是超值{ENDQUOTES}
 STR_1536    :{SMALLFONT}{OPENQUOTES}這頂由{STRINGID}購買的帽子真的是超值{ENDQUOTES}
 STR_1537    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的太妃蘋果糖真的是超值{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的T-shirt真的是超值{ENDQUOTES}
+STR_1538    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的T恤真的是超值{ENDQUOTES}
 STR_1539    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的甜甜圈真的是超值{ENDQUOTES}
 STR_1540    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的咖啡真的是超值{ENDQUOTES}
 STR_1541    :
@@ -1574,7 +1574,7 @@ STR_1568    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買�
 STR_1569    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買一隻觸手{ENDQUOTES}
 STR_1570    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買一頂帽子{ENDQUOTES}
 STR_1571    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買一個太妃蘋果糖{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買一件T-shirt{ENDQUOTES}
+STR_1572    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買一件T恤{ENDQUOTES}
 STR_1573    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買一件甜甜圈{ENDQUOTES}
 STR_1574    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去{STRINGID}購買一杯咖啡{ENDQUOTES}
 STR_1575    :
@@ -1709,7 +1709,7 @@ STR_1702    :僱用新的安全警衛
 STR_1703    :僱用新的表演人員
 STR_1704    :不能僱用新員工...
 STR_1705    :{SMALLFONT}{BLACK}解僱這位員工
-STR_1706    :{SMALLFONT}{BLACK}移動這個人物到新的位置
+STR_1706    :{SMALLFONT}{BLACK}移動這位人物到新的位置
 STR_1707    :遊戲中已有太多員工
 STR_1708    :{SMALLFONT}{BLACK}設置這位員工的巡邏位置
 STR_1709    :解僱員工
@@ -1862,14 +1862,14 @@ STR_1855    :{WINDOW_COLOUR_2}落成年份: {BLACK}{COMMA16}年前
 STR_1856    :{WINDOW_COLOUR_2}每件產品售出的利潤: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}每件產品售出的虧損: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}成本: {BLACK}每個月{CURRENCY2DP}
-STR_1859    :個清潔工人
-STR_1860    :個維修人員
-STR_1861    :個安全警衛
-STR_1862    :個表演人員
-STR_1863    :個清潔工人
-STR_1864    :個維修人員
-STR_1865    :個安全警衛
-STR_1866    :個表演人員
+STR_1859    :位清潔工人
+STR_1860    :位維修人員
+STR_1861    :位安全警衛
+STR_1862    :位表演人員
+STR_1863    :位清潔工人
+STR_1864    :位維修人員
+STR_1865    :位安全警衛
+STR_1866    :位表演人員
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :不能改變旋轉次數...
 STR_1869    :{WINDOW_COLOUR_2}旋轉次數:
@@ -1985,7 +1985,7 @@ STR_1976    :{WINDOW_COLOUR_2}熱狗價格:
 STR_1977    :{WINDOW_COLOUR_2}觸手價格:
 STR_1978    :{WINDOW_COLOUR_2}帽子價格:
 STR_1979    :{WINDOW_COLOUR_2}太妃蘋果糖價格:
-STR_1980    :{WINDOW_COLOUR_2}T-Shirt價格:
+STR_1980    :{WINDOW_COLOUR_2}T恤價格:
 STR_1981    :{WINDOW_COLOUR_2}甜甜圈價格:
 STR_1982    :{WINDOW_COLOUR_2}咖啡價格:
 STR_1983    :{WINDOW_COLOUR_2}
@@ -2013,7 +2013,7 @@ STR_2004    :熱狗
 STR_2005    :觸手
 STR_2006    :帽子
 STR_2007    :太妃蘋果糖
-STR_2008    :T-Shirt
+STR_2008    :T恤
 STR_2009    :甜甜圈
 STR_2010    :咖啡
 STR_2011    :空杯子
@@ -2041,7 +2041,7 @@ STR_2032    :熱狗
 STR_2033    :觸手
 STR_2034    :帽子
 STR_2035    :太妃蘋果糖
-STR_2036    :T-Shirt
+STR_2036    :T恤
 STR_2037    :甜甜圈
 STR_2038    :咖啡
 STR_2039    :空杯子
@@ -2069,7 +2069,7 @@ STR_2060    :一隻熱狗
 STR_2061    :一隻觸手
 STR_2062    :一頂帽子
 STR_2063    :一個太妃蘋果糖
-STR_2064    :一件T-shirt
+STR_2064    :一件T恤
 STR_2065    :一件甜甜圈
 STR_2066    :一杯咖啡
 STR_2067    :一個空杯子
@@ -2097,7 +2097,7 @@ STR_2088    :熱狗
 STR_2089    :觸手
 STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES}帽子
 STR_2091    :太妃蘋果糖
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
+STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES}T恤
 STR_2093    :甜甜圈
 STR_2094    :咖啡
 STR_2095    :空杯子
@@ -2329,7 +2329,7 @@ STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}遊樂設施/店鋪數目: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}員工數目: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}樂園大小: {BLACK}{COMMA32}m{SQUARED}
-STR_2324    :{WINDOW_COLOUR_2}樂園大小: {BLACK}{COMMA32}sq.ft.
+STR_2324    :{WINDOW_COLOUR_2}樂園大小: {BLACK}{COMMA32}平方英尺
 STR_2325    :{SMALLFONT}{BLACK}購買土地來擴展樂園
 STR_2326    :{SMALLFONT}{BLACK}購買建造權來准許在樂園範圍外的空中或地底建造物件
 STR_2327    :選項
@@ -2686,7 +2686,7 @@ STR_2676    :???
 STR_2677    :???
 STR_2678    :???
 STR_2679    :???
-STR_2680    :所有研發項目都已完成
+STR_2680    :所有項目都已研發完畢
 STR_2681    :{MEDIUMFONT}{BLACK}增加{CURRENCY}到你的金錢裡
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
@@ -2814,12 +2814,12 @@ STR_2802    :地圖
 STR_2803    :{SMALLFONT}{BLACK}將這些遊客高亮顯示於地圖中
 STR_2804    :{SMALLFONT}{BLACK}將這些員工高亮顯示於地圖中
 STR_2805    :{SMALLFONT}{BLACK}顯示樂園地圖
-STR_2806    :{RED}遊客都在投訴樂園裡的道路十分骯髒{NEWLINE}請檢查你的清潔工人位置所在, 並考慮以更好的方法管理他們
-STR_2807    :{RED}遊客都在投訴樂園裡隨地拋棄的垃圾十分多{NEWLINE}請檢查你的清潔工人位置所在, 並考慮以更好的方法管理他們
+STR_2806    :{RED}遊客都在投訴樂園裡的道路十分骯髒及噁心{NEWLINE}請檢查你的清潔工人位置所在, 並考慮以更好的方法管理他們
+STR_2807    :{RED}遊客都在投訴樂園裡十分多隨地拋棄的垃圾{NEWLINE}請檢查你的清潔工人位置所在, 並考慮以更好的方法管理他們
 STR_2808    :{RED}遊客都在投訴樂園裡的公物被毀壞{NEWLINE}請檢查你的安全警衛位置所在, 並考慮以更好的方法管理他們
 STR_2809    :{RED}遊客都餓了, 但他們找不到賣食物的店舖
 STR_2810    :{RED}遊客都渴了, 但他們找不到賣飲料的店舖
-STR_2811    :{RED}因為遊客都找不到樂園裡有廁所, 所以他們抱怨了
+STR_2811    :{RED}遊客都在抱怨於樂園裡找不到廁所
 STR_2812    :{RED}遊客都被卡住或迷失了{NEWLINE}請檢查樂園的道路設計是否需要改善, 以便遊客找到出路
 STR_2813    :{RED}你的樂園入場費太貴了!{NEWLINE}減低入場費或增加樂團價值來吸引更多遊客來訪
 STR_2814    :{WINDOW_COLOUR_2}最骯髒樂園獎
@@ -3057,11 +3057,11 @@ STR_3045    :{SMALLFONT}{BLACK}選擇要播放的音樂風格:
 STR_3046    :此遊樂設施不能被修改
 STR_3047    :當地政府禁止拆除或修改此遊樂設施
 STR_3048    :當地政府禁止所有推廣計劃進行
-STR_3049    :哥爾夫球洞A
-STR_3050    :哥爾夫球洞B
-STR_3051    :哥爾夫球洞C
-STR_3052    :哥爾夫球洞D
-STR_3053    :哥爾夫球洞E
+STR_3049    :高爾夫球洞A
+STR_3050    :高爾夫球洞B
+STR_3051    :高爾夫球洞C
+STR_3052    :高爾夫球洞D
+STR_3053    :高爾夫球洞E
 STR_3054    :載入中...
 STR_3055    :白色
 STR_3056    :透明
@@ -4180,6 +4180,15 @@ STR_5867    :{WINDOW_COLOUR_2}提供者名稱: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}提供者電郵: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}提供者網站: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}顯示伺服器資訊
+STR_5871    :植物不會老死
+STR_5872    :{SMALLFONT}{BLACK}禁止植物的老化, 令他們不會枯萎.
+STR_5873    :容許在所有軌道配置中使用鏈條
+STR_5874    :{SMALLFONT}{BLACK}容許將任何軌道變成有鏈條裝置的軌道
+STR_5875    :渲染引擎:
+STR_5876    :{SMALLFONT}{BLACK}選擇使用於渲染遊戲的引擎.
+STR_5877    :軟件渲染
+STR_5878    :軟件渲染 (使用硬體顯示)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #
@@ -4305,7 +4314,7 @@ STR_DTLS    :將這個海邊懸崖發展成一個很受歡迎的樂園
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :此發展中的大型樂園中部有三座互相競賽的鐵架旋轉式雲霄飛車
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
@@ -4457,7 +4466,7 @@ STR_DTLS    :A collection of icebergs make a cold setting for this ambitious the
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :此建造雲霄飛車挑戰設定於一座沉睡火山之中
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
@@ -4512,7 +4521,7 @@ STR_DTLS    :In a far-off world where money is not needed, you must build an ent
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :你需要在此沙漠中的樂園完成未建好的5座雲霄飛車
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
@@ -4522,7 +4531,7 @@ STR_DTLS    :This historical park is only allowed to build older-styled rides
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :發展此外星樂園並將其利潤最大化
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps

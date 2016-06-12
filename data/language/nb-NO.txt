@@ -1055,318 +1055,318 @@ STR_1049    :Klarte ikke lagre landskap!
 STR_1050    :Klarte ikke laste inn...{NEWLINE}Filen inneholder ugyldig data!
 STR_1051    :Usynlige støtter
 STR_1052    :Usynlige mennesker
-STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
-STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
-STR_1055    :{SMALLFONT}{BLACK}Name person
-STR_1056    :{SMALLFONT}{BLACK}Name staff member
-STR_1057    :Ride/attraction name
-STR_1058    :Enter new name for this ride/attraction:
-STR_1059    :Can't rename ride/attraction...
-STR_1060    :Invalid ride/attraction name
-STR_1061    :Normal mode
-STR_1062    :Continuous circuit mode
-STR_1063    :Reverse-Incline launched shuttle mode
-STR_1064    :Powered launch (passing station)
-STR_1065    :Shuttle mode
-STR_1066    :Boat hire mode
-STR_1067    :Upward launch
-STR_1068    :Rotating lift mode
-STR_1069    :Station to station mode
-STR_1070    :Single ride per admission
-STR_1071    :Unlimited rides per admission
-STR_1072    :Maze mode
-STR_1073    :Race mode
-STR_1074    :Bumper-car mode
-STR_1075    :Swing mode
-STR_1076    :Shop stall mode
-STR_1077    :Rotation mode
-STR_1078    :Forward rotation
-STR_1079    :Backward rotation
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
-STR_1082    :Space rings mode
-STR_1083    :Beginners mode
-STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
-STR_1088    :Intense mode
-STR_1089    :Berserk mode
-STR_1090    :Haunted house mode
-STR_1091    :Circus show mode
-STR_1092    :Downward launch
-STR_1093    :Crooked house mode
-STR_1094    :Freefall drop mode
-STR_1095    :Continuous circuit block sectioned mode
-STR_1096    :Powered launch (without passing station)
-STR_1097    :Powered launch block sectioned mode
-STR_1098    :Moving to end of {POP16}{STRINGID}
-STR_1099    :Waiting for passengers at {POP16}{STRINGID}
-STR_1100    :Waiting to depart {POP16}{STRINGID}
-STR_1101    :Departing {POP16}{STRINGID}
-STR_1102    :Travelling at {VELOCITY}
-STR_1103    :Arriving at {POP16}{STRINGID}
-STR_1104    :Unloading passengers at {POP16}{STRINGID}
-STR_1105    :Travelling at {VELOCITY}
-STR_1106    :Crashing!
-STR_1107    :Crashed!
-STR_1108    :Travelling at {VELOCITY}
-STR_1109    :Swinging
-STR_1110    :Rotating
-STR_1111    :Rotating
-STR_1112    :Operating
-STR_1113    :Showing film
-STR_1114    :Rotating
-STR_1115    :Operating
-STR_1116    :Operating
-STR_1117    :Doing circus show
-STR_1118    :Operating
-STR_1119    :Waiting for cable lift
-STR_1120    :Travelling at {VELOCITY}
-STR_1121    :Stopping
-STR_1122    :Waiting for passengers
-STR_1123    :Waiting to start
-STR_1124    :Starting
-STR_1125    :Operating
-STR_1126    :Stopping
-STR_1127    :Unloading passengers
-STR_1128    :Stopped by block brakes
-STR_1129    :All vehicles in same colours
-STR_1130    :Different colours per {STRINGID}
-STR_1131    :Different colours per vehicle
-STR_1132    :Vehicle {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :Vehicle {POP16}{COMMA16}
+STR_1053    :{SMALLFONT}{BLACK}Attraksjoner i park
+STR_1054    :{SMALLFONT}{BLACK}Navngi attraksjon
+STR_1055    :{SMALLFONT}{BLACK}Navngi person
+STR_1056    :{SMALLFONT}{BLACK}Navngi ansatt
+STR_1057    :Attraksjonsnavn
+STR_1058    :Skriv inn navn for denne attraksjonen:
+STR_1059    :Kan ikke navngi attraksjon...
+STR_1060    :Ugyldig attraksjonsnavn
+STR_1061    :Normal modus
+STR_1062    :Kretsmodus
+STR_1063    :Baklengs trekk
+STR_1064    :Utskytning (passerer stasjon)
+STR_1065    :Pendlermodus
+STR_1066    :Båtutleie
+STR_1067    :Oppskytning
+STR_1068    :Roterende heis
+STR_1069    :Stasjon-til-stasjon
+STR_1070    :Én tur per billett
+STR_1071    :Ubegrensede turer per billett
+STR_1072    :Labyrint
+STR_1073    :Løpsmodus
+STR_1074    :Radiobiler
+STR_1075    :Svingemodus
+STR_1076    :Bod
+STR_1077    :Roteringsmodus
+STR_1078    :Foroverrotasjon
+STR_1079    :Bakoverrotasjon
+STR_1080    :Film: {ENDQUOTES}Flyvere på hevntokt{ENDQUOTES}
+STR_1081    :3D film: {ENDQUOTES}Musehaler{ENDQUOTES}
+STR_1082    :Romringer
+STR_1083    :Nybegynnermodus
+STR_1084    :LIM-utskytning
+STR_1085    :Film: {ENDQUOTES}Fartsspenning{ENDQUOTES}
+STR_1086    :3D film: {ENDQUOTES}Stormjegere{ENDQUOTES}
+STR_1087    :3D film: {ENDQUOTES}Verdensromsraidere{ENDQUOTES}
+STR_1088    :Intens modus
+STR_1089    :Berserkmodus
+STR_1090    :Spøkelseshus
+STR_1091    :Sirkusshow
+STR_1092    :Fallende utskytning
+STR_1093    :Skjevt hus
+STR_1094    :Fritt fall
+STR_1095    :Blokkinndelt krets modus
+STR_1096    :Utskytning (passerer ikke stasjon)
+STR_1097    :Blokkinndelt utskytningsmodus
+STR_1098    :Beveger seg mot enden av {POP16}{STRINGID}
+STR_1099    :Venter på passasjerer ved {POP16}{STRINGID}
+STR_1100    :Venter på avgang ved {POP16}{STRINGID}
+STR_1101    :Drar fra {POP16}{STRINGID}
+STR_1102    :Kjører i {VELOCITY}
+STR_1103    :Ankommer ved {POP16}{STRINGID}
+STR_1104    :Slipper av passasjerer ved {POP16}{STRINGID}
+STR_1105    :Kjører i {VELOCITY}
+STR_1106    :Krasjer!
+STR_1107    :Krasjet!
+STR_1108    :Kjører i {VELOCITY}
+STR_1109    :Svinger
+STR_1110    :Roterer
+STR_1111    :Roterer
+STR_1112    :I drift
+STR_1113    :Viser film
+STR_1114    :Roterer
+STR_1115    :I drift
+STR_1116    :I drift
+STR_1117    :Sirkusshow
+STR_1118    :I drift
+STR_1119    :Venter på trekk
+STR_1120    :Kjører i {VELOCITY}
+STR_1121    :Stopper
+STR_1122    :Venter på passasjerer
+STR_1123    :Venter på å starte
+STR_1124    :Starter
+STR_1125    :I drift
+STR_1126    :Stopper
+STR_1127    :Slipper av passasjerer
+STR_1128    :Stoppet av blokkbremser
+STR_1129    :Alle vogner i like farger
+STR_1130    :Forskjellige farger per {STRINGID}
+STR_1131    :Forskjellige farger per kjøretøy
+STR_1132    :Kjøretøy {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
+STR_1133    :Kjøretøy {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}Select main colour
-STR_1137    :{SMALLFONT}{BLACK}Select additional colour 1
-STR_1138    :{SMALLFONT}{BLACK}Select additional colour 2
-STR_1139    :{SMALLFONT}{BLACK}Select support structure colour
-STR_1140    :{SMALLFONT}{BLACK}Select vehicle colour scheme option
-STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
+STR_1136    :{SMALLFONT}{BLACK}Velg hovedfarge
+STR_1137    :{SMALLFONT}{BLACK}Velg andre farge
+STR_1138    :{SMALLFONT}{BLACK}Velg tredje farge
+STR_1139    :{SMALLFONT}{BLACK}Velg farge for støttestrukturer
+STR_1140    :{SMALLFONT}{BLACK}Velg fargeoppsett for kjøretøy
+STR_1141    :{SMALLFONT}{BLACK}Velg hvilket kjøretøy/tog som skal modifiseres
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :Can't build/move entrance for this ride/attraction...
-STR_1145    :Can't build/move exit for this ride/attraction...
-STR_1146    :Entrance not yet built
-STR_1147    :Exit not yet built
-STR_1148    :Quarter load
-STR_1149    :Half load
-STR_1150    :Three-quarter load
-STR_1151    :Full load
-STR_1152    :Any load
-STR_1153    :Height Marks on Ride Tracks
-STR_1154    :Height Marks on Land
-STR_1155    :Height Marks on Paths
+STR_1144    :Kan ikke bygge/flytte inngang for denne attraksjonen...
+STR_1145    :Kan ikke bygge/flytte utgang for denne attraksjonen...
+STR_1146    :Inngang har ikke blitt bygget
+STR_1147    :Utgang har ikke blitt bygget
+STR_1148    :Kvartfullt
+STR_1149    :Halvfuult
+STR_1150    :Trekvartfullt
+STR_1151    :Fullt
+STR_1152    :Minst én person
+STR_1153    :Høydemerker på attraksjonsspor
+STR_1154    :Høydemerker på land
+STR_1155    :Høydemerker på gangveier
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
-STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
-STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :Can't position this here...
+STR_1158    :Kan ikke fjerne denne...
+STR_1159    :{SMALLFONT}{BLACK}Plasser kulisser, hager og annet tilbehør
+STR_1160    :{SMALLFONT}{BLACK}Lag/juster innsjøer og vann
+STR_1161    :Kan ikke plassere denne her...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
-STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
-STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
+STR_1163    :{STRINGID}{NEWLINE}(Høyreklikk for å modifisere)
+STR_1164    :{STRINGID}{NEWLINE}(Høyreklikk for å fjerne)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can't lower water level here...
-STR_1167    :Can't raise water level here...
-STR_1168    :Options
-STR_1169    :(None)
+STR_1166    :Kan ikke senke vannivå her...
+STR_1167    :Kan ikke heve vannivå her...
+STR_1168    :Valg
+STR_1169    :(Ingenting)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - - 
+STR_1171    :{RED}Stengt - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
-STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
-STR_1174    :Banner sign in the way
-STR_1175    :Can't build this on sloped footpath
-STR_1176    :Can't build footpath here...
-STR_1177    :Can't remove footpath from here...
-STR_1178    :Land slope unsuitable
-STR_1179    :Footpath in the way
-STR_1180    :Can't build this underwater!
-STR_1181    :Footpaths
+STR_1173    :{SMALLFONT}{BLACK}Bygg gangveier og køer
+STR_1174    :Skilt i veien
+STR_1175    :Kan ikke bygges på hellende gangvei
+STR_1176    :Kan ikke bygge gangvei her...
+STR_1177    :Kan ikke fjerne gangvei herfra...
+STR_1178    :Upassende bakkehelning
+STR_1179    :Gangvei i veien
+STR_1180    :Kan ikke bygges under vann!
+STR_1181    :Gangveier
 STR_1182    :Type
-STR_1183    :Direction
-STR_1184    :Slope
-STR_1185    :{SMALLFONT}{BLACK}Direction
-STR_1186    :{SMALLFONT}{BLACK}Slope down
-STR_1187    :{SMALLFONT}{BLACK}Level
-STR_1188    :{SMALLFONT}{BLACK}Slope up
-STR_1189    :{SMALLFONT}{BLACK}Construct the selected footpath section
-STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
+STR_1183    :Retning
+STR_1184    :Helning
+STR_1185    :{SMALLFONT}{BLACK}Retning
+STR_1186    :{SMALLFONT}{BLACK}Helning nedover
+STR_1187    :{SMALLFONT}{BLACK}Nivå
+STR_1188    :{SMALLFONT}{BLACK}Helning oppover
+STR_1189    :{SMALLFONT}{BLACK}Bygg valgt gangveisseksjon
+STR_1190    :{SMALLFONT}{BLACK}Fjern forrige gangveisseksjon
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
-STR_1194    :Closed
-STR_1195    :Test Run
-STR_1196    :Open
-STR_1197    :Broken Down
-STR_1198    :Crashed!
-STR_1199    :{COMMA16} person on ride
-STR_1200    :{COMMA16} people on ride
-STR_1201    :Nobody in queue line
-STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
-STR_1204    :{COMMA16} minute queue time
-STR_1205    :{COMMA16} minutes queue time
-STR_1206    :{WINDOW_COLOUR_2}Wait for:
-STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
-STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
-STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
-STR_1210    :{SMALLFONT}{BLACK}Select whether should leave if another vehicle arrives at the same station
-STR_1211    :{WINDOW_COLOUR_2}Minimum waiting time:
-STR_1212    :{WINDOW_COLOUR_2}Maximum waiting time:
-STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before departing
-STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
-STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
-STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronise departure with all adjacent stations (for 'racing')
-STR_1217    :{COMMA16} seconds
+STR_1194    :Stengt
+STR_1195    :Testkjøring
+STR_1196    :Åpen
+STR_1197    :Ødelagt
+STR_1198    :Krasjet!
+STR_1199    :{COMMA16} person på attraksjonen
+STR_1200    :{COMMA16} personer på attraksjonen
+STR_1201    :Ingen i køen
+STR_1202    :1 person i køen
+STR_1203    :{COMMA16} personer i køen
+STR_1204    :{COMMA16} minutt køtid
+STR_1205    :{COMMA16} minutter køtid
+STR_1206    :{WINDOW_COLOUR_2}Vent på:
+STR_1207    :{WINDOW_COLOUR_2}Dra hvis et annet tog ankommer stasjonen
+STR_1208    :{WINDOW_COLOUR_2}Dra hvis en annen båt ankommer stasjonen
+STR_1209    :{SMALLFONT}{BLACK}Velg om toget skal vente på passasjerer før avgang
+STR_1210    :{SMALLFONT}{BLACK}Velg om man skal dra dersom et annet kjøretøy ankommer stasjonen
+STR_1211    :{WINDOW_COLOUR_2}Minimum ventetid:
+STR_1212    :{WINDOW_COLOUR_2}Maksimum ventetid:
+STR_1213    :{SMALLFONT}{BLACK}Velg minste tid å vente før avgang
+STR_1214    :{SMALLFONT}{BLACK}Velg største tid å vente før avgang
+STR_1215    :{WINDOW_COLOUR_2}Synkroniser med stasjonen ved siden av
+STR_1216    :{SMALLFONT}{BLACK}Velg om avgang skal synkroniseres for alle tilliggende stasjoner (for 'løp')
+STR_1217    :{COMMA16} sekunder
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
-STR_1220    :Exit only
-STR_1221    :No entrance
-STR_1222    :No exit
-STR_1223    :{SMALLFONT}{BLACK}Transport rides
-STR_1224    :{SMALLFONT}{BLACK}Gentle rides
-STR_1225    :{SMALLFONT}{BLACK} coasters
-STR_1226    :{SMALLFONT}{BLACK}Thrill rides
-STR_1227    :{SMALLFONT}{BLACK}Water rides
-STR_1228    :{SMALLFONT}{BLACK}Shops & stalls
-STR_1229    :train
-STR_1230    :trains
-STR_1231    :Train
-STR_1232    :Trains
-STR_1233    :{COMMA16} train
-STR_1234    :{COMMA16} trains
-STR_1235    :Train {COMMA16}
-STR_1236    :boat
-STR_1237    :boats
-STR_1238    :Boat
-STR_1239    :Boats
-STR_1240    :{COMMA16} boat
-STR_1241    :{COMMA16} boats
-STR_1242    :Boat {COMMA16}
-STR_1243    :track
-STR_1244    :tracks
-STR_1245    :Track
-STR_1246    :Tracks
-STR_1247    :{COMMA16} track
-STR_1248    :{COMMA16} tracks
-STR_1249    :Track {COMMA16}
-STR_1250    :docking platform
-STR_1251    :docking platforms
-STR_1252    :Docking platform
-STR_1253    :Docking platforms
-STR_1254    :{COMMA16} docking platform
-STR_1255    :{COMMA16} docking platforms
-STR_1256    :Docking platform {COMMA16}
-STR_1257    :station
-STR_1258    :stations
-STR_1259    :Station
-STR_1260    :Stations
-STR_1261    :{COMMA16} station
-STR_1262    :{COMMA16} stations
-STR_1263    :Station {COMMA16}
-STR_1264    :car
-STR_1265    :cars
-STR_1266    :Car
-STR_1267    :Cars
-STR_1268    :{COMMA16} car
-STR_1269    :{COMMA16} cars
-STR_1270    :Car {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
-STR_1278    :structure
-STR_1279    :structures
-STR_1280    :Structure
-STR_1281    :Structures
-STR_1282    :{COMMA16} structure
-STR_1283    :{COMMA16} structures
-STR_1284    :Structure {COMMA16}
-STR_1285    :ship
-STR_1286    :ships
-STR_1287    :Ship
-STR_1288    :Ships
-STR_1289    :{COMMA16} ship
-STR_1290    :{COMMA16} ships
-STR_1291    :Ship {COMMA16}
-STR_1292    :cabin
-STR_1293    :cabins
-STR_1294    :Cabin
-STR_1295    :Cabins
-STR_1296    :{COMMA16} cabin
-STR_1297    :{COMMA16} cabins
+STR_1220    :Kun utgang
+STR_1221    :Ingen inngang
+STR_1222    :Ingen utgang
+STR_1223    :{SMALLFONT}{BLACK}Transportattraksjoner
+STR_1224    :{SMALLFONT}{BLACK}Rolige attraksjoner
+STR_1225    :{SMALLFONT}{BLACK}Berg-og-dal-baner
+STR_1226    :{SMALLFONT}{BLACK}Spennende attraksjoner
+STR_1227    :{SMALLFONT}{BLACK}Vannattraksjoner
+STR_1228    :{SMALLFONT}{BLACK}Boder
+STR_1229    :tog
+STR_1230    :tog
+STR_1231    :Tog
+STR_1232    :Tog
+STR_1233    :{COMMA16} tog
+STR_1234    :{COMMA16} tog
+STR_1235    :Tog {COMMA16}
+STR_1236    :båt
+STR_1237    :båter
+STR_1238    :Båt
+STR_1239    :Båter
+STR_1240    :{COMMA16} båt
+STR_1241    :{COMMA16} båter
+STR_1242    :Båt {COMMA16}
+STR_1243    :spor
+STR_1244    :spor
+STR_1245    :Spor
+STR_1246    :Spor
+STR_1247    :{COMMA16} spor
+STR_1248    :{COMMA16} spor
+STR_1249    :Spor {COMMA16}
+STR_1250    :brygge
+STR_1251    :brygger
+STR_1252    :Brygge
+STR_1253    :Brygger
+STR_1254    :{COMMA16} brygge
+STR_1255    :{COMMA16} brygger
+STR_1256    :Brygge {COMMA16}
+STR_1257    :stasjon
+STR_1258    :stasjoner
+STR_1259    :Stasjon
+STR_1260    :Stasjoner
+STR_1261    :{COMMA16} stasjon
+STR_1262    :{COMMA16} stasjoner
+STR_1263    :Stasjon {COMMA16}
+STR_1264    :vogn
+STR_1265    :vogner
+STR_1266    :Vogn
+STR_1267    :Vogner
+STR_1268    :{COMMA16} vogn
+STR_1269    :{COMMA16} vogner
+STR_1270    :Vogn {COMMA16}
+STR_1271    :bygning
+STR_1272    :bygninger
+STR_1273    :Bygning
+STR_1274    :Bygninger
+STR_1275    :{COMMA16} bygning
+STR_1276    :{COMMA16} bygninger
+STR_1277    :Bygning {COMMA16}
+STR_1278    :struktur
+STR_1279    :strukturer
+STR_1280    :Struktur
+STR_1281    :Strukturer
+STR_1282    :{COMMA16} struktur
+STR_1283    :{COMMA16} strukturer
+STR_1284    :Struktur {COMMA16}
+STR_1285    :skip
+STR_1286    :skip
+STR_1287    :Skip
+STR_1288    :Skip
+STR_1289    :{COMMA16} skip
+STR_1290    :{COMMA16} skip
+STR_1291    :Skip {COMMA16}
+STR_1292    :kabin
+STR_1293    :kabiner
+STR_1294    :Kabin
+STR_1295    :Kabiner
+STR_1296    :{COMMA16} kabin
+STR_1297    :{COMMA16} kabiner
 STR_1298    :Cabin {COMMA16}
-STR_1299    :wheel
-STR_1300    :wheels
-STR_1301    :Wheel
-STR_1302    :Wheels
-STR_1303    :{COMMA16} wheel
-STR_1304    :{COMMA16} wheels
-STR_1305    :Wheel {COMMA16}
+STR_1299    :hjul
+STR_1300    :hjul
+STR_1301    :Hjul
+STR_1302    :Hjul
+STR_1303    :{COMMA16} hjul
+STR_1304    :{COMMA16} hjul
+STR_1305    :Hjul {COMMA16}
 STR_1306    :ring
-STR_1307    :rings
+STR_1307    :ringer
 STR_1308    :Ring
-STR_1309    :Rings
+STR_1309    :Ringer
 STR_1310    :{COMMA16} ring
-STR_1311    :{COMMA16} rings
+STR_1311    :{COMMA16} ringer
 STR_1312    :Ring {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
-STR_1320    :course
-STR_1321    :courses
-STR_1322    :Course
-STR_1323    :Courses
-STR_1324    :{COMMA16} course
-STR_1325    :{COMMA16} courses
-STR_1326    :Course {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Rotate objects by 90{DEGREE}
-STR_1328    :Level land required
-STR_1329    :{WINDOW_COLOUR_2}Launch speed:
-STR_1330    :{SMALLFONT}{BLACK}Maximum speed when leaving station
+STR_1313    :spiller
+STR_1314    :spillere
+STR_1315    :Spiller
+STR_1316    :Spillere
+STR_1317    :{COMMA16} spiller
+STR_1318    :{COMMA16} spillere
+STR_1319    :Spiller {COMMA16}
+STR_1320    :bane
+STR_1321    :baner
+STR_1322    :Bane
+STR_1323    :Baner
+STR_1324    :{COMMA16} bane
+STR_1325    :{COMMA16} baner
+STR_1326    :Bane {COMMA16}
+STR_1327    :{SMALLFONT}{BLACK}Roter objekter 90{DEGREE}
+STR_1328    :Krever flatt land
+STR_1329    :{WINDOW_COLOUR_2}Utskytningsfart:
+STR_1330    :{SMALLFONT}{BLACK}Maksfart ved avgang
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
 STR_1334    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
-STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
-STR_1337    :{STRINGID} - Exit{POP16}{POP16}
-STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
-STR_1339    :{BLACK}No test results yet...
-STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
-STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1335    :{STRINGID} - Inngang{POP16}{POP16}
+STR_1336    :{STRINGID} - Inngang stasjon {POP16}{COMMA16}
+STR_1337    :{STRINGID} - Utgang{POP16}{POP16}
+STR_1338    :{STRINGID} - Utgang stasjon {POP16}{COMMA16}
+STR_1339    :{BLACK}Foreløpig ingen testresultater...
+STR_1340    :{WINDOW_COLOUR_2}Maksfart: {BLACK}{VELOCITY}
+STR_1341    :{WINDOW_COLOUR_2}Varighet: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
-STR_1344    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1344    :{WINDOW_COLOUR_2}Lengde: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
-STR_1347    :{WINDOW_COLOUR_2}Average speed: {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Max. positive vertical G's: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Max. negative vertical G's: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Max. negative vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1352    :{WINDOW_COLOUR_2}Max. lateral G's: {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Max. lateral G's: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1354    :{WINDOW_COLOUR_2}Highest drop height: {BLACK}{LENGTH}
-STR_1355    :{WINDOW_COLOUR_2}Drops: {BLACK}{COMMA16}
-STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
-STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
-STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
-STR_1361    :Can't change speed...
-STR_1362    :Can't change launch speed...
-STR_1363    :Too high for supports!
-STR_1364    :Supports for track above can't be extended any further!
+STR_1347    :{WINDOW_COLOUR_2}Gjennomsnittsfart: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}Maks positive vertikale g: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}Maks positive vertikale g: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}Maks negative vertikale g: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}Maks negative vertikale g: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}Maks sideveis g: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}Maks sideveis g: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}Høyeste fall: {BLACK}{LENGTH}
+STR_1355    :{WINDOW_COLOUR_2}Antall fall: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}Antall inversjoner: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Hull: {BLACK}{COMMA16}
+STR_1358    :{WINDOW_COLOUR_2}Total tid vektløs: {BLACK}{COMMA2DP32}sek.
+STR_1359    :{WINDOW_COLOUR_2}Ventetid: {BLACK}{COMMA16} minutt
+STR_1360    :{WINDOW_COLOUR_2}Ventetid: {BLACK}{COMMA16} minutter
+STR_1361    :Kan ikke endre hastighet...
+STR_1362    :Kan ikke endre utskytningshastighet...
+STR_1363    :For høyt for støttestrukturer!
+STR_1364    :Støttestrukturer for bane kan ikke forlenges!
 STR_1365    :In-line Twist (venstre)
 STR_1366    :In-line Twist (høyre)
 STR_1367    :Half Loop
@@ -4179,6 +4179,15 @@ STR_5867    :{WINDOW_COLOUR_2}Leverandørens navn: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Leverandørens epost: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Leverandørens nettside: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Vis serverinformasjon
+STR_5871    :Planter eldes ikke
+STR_5872    :{SMALLFONT}{BLACK}Hindre planter i å eldes slik at de ikke visner
+STR_5873    :Tillat trekk på alle deler av banen
+STR_5874    :{SMALLFONT}{BLACK}Gjør slik at hver del av banen kan brukes som trekk
+STR_5875    :Grafikkmotor
+STR_5876    :{SMALLFONT}{BLACK}Motoren som bruker for å tegne spillgrafikk
+STR_5877    :Software
+STR_5878    :Software (hardware rendering)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #
