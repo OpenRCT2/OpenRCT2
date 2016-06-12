@@ -330,6 +330,7 @@ public:
                                                            ->GetTexture());
         _copyFramebufferShader->Draw();
 
+        CheckGLError();
         Display();
     }
     

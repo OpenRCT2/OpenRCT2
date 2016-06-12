@@ -154,6 +154,16 @@ GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAP
 
 #endif /* OPENGL_NO_LINK */
 
+inline void CheckGLError()
+{
+    GLenum error = glGetError();
+    while (error != GL_NO_ERROR)
+    {
+        log_error("OpenGL Error 0x%04X", error);
+        error = glGetError();
+    }
+}
+
 namespace OpenGLAPI
 {
     bool Initialise();

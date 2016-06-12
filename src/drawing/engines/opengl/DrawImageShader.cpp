@@ -100,7 +100,7 @@ void DrawImageShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
     SetBounds(left, top, right, bottom);
 
     glBindVertexArray(_vao);
-    glDrawArrays(GL_QUADS, 0, 4);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
 #endif /* DISABLE_OPENGL */
