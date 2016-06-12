@@ -49,14 +49,15 @@ FillRectShader::~FillRectShader()
 
 void FillRectShader::GetLocations()
 {
-    uScreenSize = GetUniformLocation("uScreenSize");
-    uClip       = GetUniformLocation("uClip");
-    uBounds     = GetUniformLocation("uBounds");
-    uFlags      = GetUniformLocation("uFlags");
-    uColour[0]  = GetUniformLocation("uColour[0]");
-    uColour[1]  = GetUniformLocation("uColour[1]");
+    uScreenSize         = GetUniformLocation("uScreenSize");
+    uClip               = GetUniformLocation("uClip");
+    uBounds             = GetUniformLocation("uBounds");
+    uFlags              = GetUniformLocation("uFlags");
+    uColour[0]          = GetUniformLocation("uColour[0]");
+    uColour[1]          = GetUniformLocation("uColour[1]");
+    uSourceFramebuffer  = GetUniformLocation("uSourceFramebuffer");
 
-    vIndex      = GetAttributeLocation("vIndex");
+    vIndex              = GetAttributeLocation("vIndex");
 }
 
 void FillRectShader::SetScreenSize(sint32 width, sint32 height)
