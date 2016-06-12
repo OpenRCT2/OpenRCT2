@@ -38,7 +38,7 @@ OpenGLShader::OpenGLShader(const char * name, GLenum type)
     char * sourceCode = ReadSourceCode(path);
 
     _id = glCreateShader(type);
-    glShaderSource(_id, 1, &sourceCode, nullptr);
+    glShaderSource(_id, 1, (const GLchar**)&sourceCode, nullptr);
     glCompileShader(_id);
 
     Memory::Free(sourceCode);
