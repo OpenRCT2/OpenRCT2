@@ -49,7 +49,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
 * Kelson Blakewood (spacek531) - title sequence for 0.0.4
 * Hugo Wallenburg (Goddesen) - Misc.
-* (Nubbie) - Misc, user friendlyness
+* (Nubbie) - Misc, user-friendliness
 
 ## Bug fixes
 * (halfbro)
