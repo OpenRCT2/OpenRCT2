@@ -58,6 +58,9 @@ endif ()
 
 if (DISABLE_OPENGL)
 	add_definitions(-DDISABLE_OPENGL)
+else (DISABLE_OPENGL)
+	# Makes OpenGL function get queried in run-time rather than linked-in
+	add_definitions(-DOPENGL_NO_LINK)
 endif (DISABLE_OPENGL)
 
 if (DISABLE_NETWORK)

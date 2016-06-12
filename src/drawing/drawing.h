@@ -146,8 +146,9 @@ rct_g1_element* gfx_get_g1_element(int image_id);
 void sub_68371D();
 void FASTCALL gfx_rle_sprite_to_buffer(const uint8* RESTRICT source_bits_pointer, uint8* RESTRICT dest_bits_pointer, const uint8* RESTRICT palette_pointer, const rct_drawpixelinfo * RESTRICT dpi, int image_type, int source_y_start, int height, int source_x_start, int width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
-void FASTCALL gfx_draw_sprite_palette_set(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);
+void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8 * palette);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo *dpi, int x, int y, int maskImage, int colourImage);
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, int image, int x, int y, uint8 colour);
 
 void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint32 tertiary_colour);
 void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int image_id, int x, int y, uint8* palette_pointer, uint8* unknown_pointer);

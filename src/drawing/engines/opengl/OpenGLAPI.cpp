@@ -23,7 +23,7 @@
 
 #include <SDL_video.h>
 
-#include "../../core/Console.hpp"
+#include "../../../core/Console.hpp"
 
 template <typename T>
 static inline bool SetProc(T * func, const char * name)
@@ -49,37 +49,81 @@ static inline bool SetProc(T * func, const char * name)
 static const char * TryLoadAllProcAddresses()
 {
     // 1.1 functions
+    SetupOpenGLFunction(glActiveTexture);
     SetupOpenGLFunction(glBegin);
     SetupOpenGLFunction(glBindTexture);
     SetupOpenGLFunction(glBlendFunc);
     SetupOpenGLFunction(glClear);
     SetupOpenGLFunction(glClearColor);
-    SetupOpenGLFunction(glColor3f);
-    SetupOpenGLFunction(glColor4f);
+    SetupOpenGLFunction(glCullFace);
     SetupOpenGLFunction(glDeleteTextures);
     SetupOpenGLFunction(glDisable);
+    SetupOpenGLFunction(glDrawArrays);
     SetupOpenGLFunction(glEnable);
     SetupOpenGLFunction(glEnd);
     SetupOpenGLFunction(glGenTextures);
-    SetupOpenGLFunction(glLoadIdentity);
-    SetupOpenGLFunction(glMatrixMode);
-    SetupOpenGLFunction(glOrtho);
-    SetupOpenGLFunction(glScalef);
-    SetupOpenGLFunction(glTexCoord2f);
+    SetupOpenGLFunction(glGetError);
+    SetupOpenGLFunction(glReadPixels);
     SetupOpenGLFunction(glTexImage2D);
     SetupOpenGLFunction(glTexParameteri);
-    SetupOpenGLFunction(glTranslatef);
-    SetupOpenGLFunction(glVertex2i);
     SetupOpenGLFunction(glViewport);
 
     // 2.0+ functions
+    SetupOpenGLFunction(glAttachShader);
+    SetupOpenGLFunction(glBindBuffer);
+    SetupOpenGLFunction(glBindFragDataLocation);
+    SetupOpenGLFunction(glBindFramebuffer);
+    SetupOpenGLFunction(glBindVertexArray);
+    SetupOpenGLFunction(glBufferData);
+    SetupOpenGLFunction(glCompileShader);
+    SetupOpenGLFunction(glCreateProgram);
     SetupOpenGLFunction(glCreateShader);
+    SetupOpenGLFunction(glDeleteBuffers);
+    SetupOpenGLFunction(glDeleteFramebuffers);
+    SetupOpenGLFunction(glDeleteProgram);
     SetupOpenGLFunction(glDeleteShader);
+    SetupOpenGLFunction(glDeleteVertexArrays);
+    SetupOpenGLFunction(glDetachShader);
+    SetupOpenGLFunction(glEnableVertexAttribArray);
+    SetupOpenGLFunction(glFramebufferTexture2D);
+    SetupOpenGLFunction(glGetAttribLocation);
+    SetupOpenGLFunction(glGenBuffers);
+    SetupOpenGLFunction(glGenFramebuffers);
+    SetupOpenGLFunction(glGetProgramInfoLog);
+    SetupOpenGLFunction(glGetProgramiv);
+    SetupOpenGLFunction(glGetShaderInfoLog);
+    SetupOpenGLFunction(glGetShaderiv);
+    SetupOpenGLFunction(glGetUniformLocation);
+    SetupOpenGLFunction(glGenVertexArrays);
+    SetupOpenGLFunction(glLinkProgram);
+    SetupOpenGLFunction(glShaderSource);
+    SetupOpenGLFunction(glUniform1i);
+    SetupOpenGLFunction(glUniform2i);
+    SetupOpenGLFunction(glUniform4f);
+    SetupOpenGLFunction(glUniform4i);
+    SetupOpenGLFunction(glUseProgram);
+    SetupOpenGLFunction(glVertexAttribIPointer);
+    SetupOpenGLFunction(glVertexAttribPointer);
 
     return nullptr;
 }
 
 #endif /* #if OPENGL_NO_LINK */
+
+namespace OpenGLState
+{
+    uint16 ActiveTexture = UINT16_MAX;
+    GLuint CurrentProgram = UINT32_MAX;
+}
+
+void OpenGLAPI::SetTexture2D(uint16 index, GLuint texture)
+{
+    if (OpenGLState::ActiveTexture != index)
+    {
+        glActiveTexture(GL_TEXTURE0 + index);
+    }
+    glBindTexture(GL_TEXTURE_2D, texture);
+}
 
 bool OpenGLAPI::Initialise()
 {

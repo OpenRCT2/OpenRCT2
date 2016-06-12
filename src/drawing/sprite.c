@@ -383,7 +383,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(rct_drawpixelinfo *dpi, int i
 			.pitch = dpi->pitch,
 			.zoom_level = dpi->zoom_level - 1
 		};
-		gfx_draw_sprite_palette_set(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+		gfx_draw_sprite_palette_set_software(&zoomed_dpi, (image_type << 28) | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
 		return;
 	}
 

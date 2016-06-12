@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,15 +14,35 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _IMAGE_IO_H_
-#define _IMAGE_IO_H_
+#pragma once
 
-#include "common.h"
-#include "drawing/drawing.h"
+#include "GLSLTypes.h"
+#include "OpenGLShaderProgram.h"
 
-bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8 *path);
+class DrawLineShader : public OpenGLShaderProgram
+{
+private:
+    GLuint uScreenSize;
+    GLuint uClip;
+    GLuint uBounds;
+    GLuint uColour;
 
-bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette, const utf8 *path);
-bool image_io_png_write_32bpp(sint32 width, sint32 height, const void *pixels, const utf8 *path);
+    GLuint vIndex;
 
-#endif
+    GLuint _vbo;
+    GLuint _vao;
+
+public:
+    DrawLineShader();
+    ~DrawLineShader() override;
+
+    void SetScreenSize(sint32 width, sint32 height);
+    void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
+    void SetBounds(sint32 x0, sint32 y0, sint32 x1, sint32 y1);
+    void SetColour(vec4f colour);
+
+    void Draw(sint32 x0, sint32 y0, sint32 x1, sint32 y1);
+
+private:
+    void GetLocations();
+};

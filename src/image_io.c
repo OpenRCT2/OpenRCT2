@@ -171,6 +171,67 @@ bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette
 	return true;
 }
 
+static void image_io_png_warning(png_structp png_ptr, const char *b)
+{
+    log_warning(b);
+}
+
+static void image_io_png_error(png_structp png_ptr, const char *b)
+{
+    log_error(b);
+}
+
+bool image_io_png_write_32bpp(sint32 width, sint32 height, const void *pixels, const utf8 *path)
+{
+	// Setup PNG
+	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, image_io_png_error, image_io_png_warning);
+	if (png_ptr == NULL) {
+		return false;
+	}
+
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	if (info_ptr == NULL) {
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		return false;
+	}
+
+	// Open file for writing
+	SDL_RWops *file = SDL_RWFromFile(path, "wb");
+	if (file == NULL) {
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		return false;
+	}
+	png_set_write_fn(png_ptr, file, my_png_write_data, my_png_flush);
+
+	// Set error handler
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		SDL_RWclose(file);
+		return false;
+	}
+
+	// Write header
+	png_set_IHDR(
+		png_ptr, info_ptr, width, height, 8,
+		PNG_COLOR_TYPE_RGB_ALPHA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
+	);
+	png_write_info(png_ptr, info_ptr);
+
+	// Write pixels
+	uint8 *bits = (uint8*)pixels;
+	for (int y = 0; y < height; y++) {
+		png_write_row(png_ptr, (png_byte *)bits);
+		bits += width * 4;
+	}
+
+	// Finish
+	png_write_end(png_ptr, NULL);
+	SDL_RWclose(file);
+
+	png_destroy_write_struct(&png_ptr, &info_ptr);
+	return true;
+}
+
 static void my_png_read_data(png_structp png_ptr, png_bytep data, png_size_t length)
 {
 	SDL_RWops *file = (SDL_RWops*)png_get_io_ptr(png_ptr);

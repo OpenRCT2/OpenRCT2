@@ -22,6 +22,7 @@
 void screenshot_check();
 int screenshot_dump();
 int screenshot_dump_png(rct_drawpixelinfo *dpi);
+int screenshot_dump_png_32bpp(sint32 width, sint32 height, const void *pixels);
 
 void screenshot_giant();
 int cmdline_for_screenshot(const char **argv, int argc);

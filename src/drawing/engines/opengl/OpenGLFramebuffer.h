@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,15 +14,30 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _IMAGE_IO_H_
-#define _IMAGE_IO_H_
+#pragma once
 
-#include "common.h"
-#include "drawing/drawing.h"
+#include "../../../common.h"
+#include "OpenGLAPI.h"
 
-bool image_io_png_read(uint8 **pixels, uint32 *width, uint32 *height, const utf8 *path);
+struct SDL_Window;
 
-bool image_io_png_write(const rct_drawpixelinfo *dpi, const rct_palette *palette, const utf8 *path);
-bool image_io_png_write_32bpp(sint32 width, sint32 height, const void *pixels, const utf8 *path);
+class OpenGLFramebuffer
+{
+private:
+    GLuint _id;
+    GLuint _texture;
+    sint32 _width;
+    sint32 _height;
 
-#endif
+public:
+    explicit OpenGLFramebuffer(SDL_Window * window);
+    OpenGLFramebuffer(sint32 width, sint32 height);
+    ~OpenGLFramebuffer();
+
+    GLuint GetWidth() const { return _width; }
+    GLuint GetHeight() const { return _height; }
+    GLuint GetTexture() const { return _texture; }
+
+    void Bind() const;
+    void * GetPixels() const;
+};

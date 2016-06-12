@@ -16,6 +16,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="curl-ca-bundle.crt" />
+    <None Include="data\shaders\copyframebuffer.frag" />
+    <None Include="data\shaders\copyframebuffer.vert" />
+    <None Include="data\shaders\drawimage.frag" />
+    <None Include="data\shaders\drawimage.vert" />
+    <None Include="data\shaders\drawimagemasked.frag" />
+    <None Include="data\shaders\drawimagemasked.vert" />
+    <None Include="data\shaders\drawline.frag" />
+    <None Include="data\shaders\drawline.vert" />
+    <None Include="data\shaders\fillrect.frag" />
+    <None Include="data\shaders\fillrect.vert" />
     <None Include="openrct2.exe" />
   </ItemGroup>
   <ItemGroup>
@@ -42,8 +52,17 @@
     <ClCompile Include="src\diagnostic.c" />
     <ClCompile Include="src\drawing\drawing.c" />
     <ClCompile Include="src\drawing\drawing_fast.cpp" />
-    <ClCompile Include="src\drawing\engines\OpenGLAPI.cpp" />
-    <ClCompile Include="src\drawing\engines\OpenGLDrawingEngine.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\CopyFramebufferShader.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\DrawImageMaskedShader.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\DrawImageShader.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\DrawLineShader.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\FillRectShader.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\OpenGLAPI.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\OpenGLDrawingEngine.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\OpenGLFramebuffer.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\OpenGLShaderProgram.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\SwapFramebuffer.cpp" />
+    <ClCompile Include="src\drawing\engines\opengl\TextureCache.cpp" />
     <ClCompile Include="src\drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="src\drawing\font.c" />
     <ClCompile Include="src\drawing\line.c" />
@@ -338,6 +357,17 @@
     <ClInclude Include="src\diagnostic.h" />
     <ClInclude Include="src\drawing\drawing.h" />
     <ClInclude Include="src\drawing\engines\OpenGLAPI.h" />
+    <ClInclude Include="src\drawing\engines\opengl\CopyFramebufferShader.h" />
+    <ClInclude Include="src\drawing\engines\opengl\DrawImageMaskedShader.h" />
+    <ClInclude Include="src\drawing\engines\opengl\DrawImageShader.h" />
+    <ClInclude Include="src\drawing\engines\opengl\DrawLineShader.h" />
+    <ClInclude Include="src\drawing\engines\opengl\FillRectShader.h" />
+    <ClInclude Include="src\drawing\engines\opengl\GLSLTypes.h" />
+    <ClInclude Include="src\drawing\engines\opengl\OpenGLAPI.h" />
+    <ClInclude Include="src\drawing\engines\opengl\OpenGLFramebuffer.h" />
+    <ClInclude Include="src\drawing\engines\opengl\OpenGLShaderProgram.h" />
+    <ClInclude Include="src\drawing\engines\opengl\SwapFramebuffer.h" />
+    <ClInclude Include="src\drawing\engines\opengl\TextureCache.h" />
     <ClInclude Include="src\drawing\font.h" />
     <ClInclude Include="src\drawing\IDrawingContext.h" />
     <ClInclude Include="src\drawing\IDrawingEngine.h" />
@@ -494,7 +524,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;DISABLE_OPENGL;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DEBUG;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
@@ -521,7 +551,7 @@
       <TreatSpecificWarningsAsErrors>4013</TreatSpecificWarningsAsErrors>
       <OmitFramePointers />
       <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);DISABLE_OPENGL;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(OpenRCT2_DEFINES);OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;CURL_STATICLIB;SDL_MAIN_HANDLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\%(RelativeDir)</ObjectFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>

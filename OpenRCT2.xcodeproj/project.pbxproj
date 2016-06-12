@@ -117,6 +117,18 @@
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
 		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
+		D43407D61D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */; };
+		D43407D71D0E14BE00C2B3D4 /* DrawImageMaskedShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C21D0E14BE00C2B3D4 /* DrawImageMaskedShader.cpp */; };
+		D43407D81D0E14BE00C2B3D4 /* DrawImageShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */; };
+		D43407D91D0E14BE00C2B3D4 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C61D0E14BE00C2B3D4 /* DrawLineShader.cpp */; };
+		D43407DA1D0E14BE00C2B3D4 /* FillRectShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407C81D0E14BE00C2B3D4 /* FillRectShader.cpp */; };
+		D43407DB1D0E14BE00C2B3D4 /* OpenGLAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407CB1D0E14BE00C2B3D4 /* OpenGLAPI.cpp */; };
+		D43407DC1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407CD1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp */; };
+		D43407DD1D0E14BE00C2B3D4 /* OpenGLFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407CE1D0E14BE00C2B3D4 /* OpenGLFramebuffer.cpp */; };
+		D43407DE1D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407D01D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp */; };
+		D43407DF1D0E14BE00C2B3D4 /* SwapFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407D21D0E14BE00C2B3D4 /* SwapFramebuffer.cpp */; };
+		D43407E01D0E14BE00C2B3D4 /* TextureCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D43407D41D0E14BE00C2B3D4 /* TextureCache.cpp */; };
+		D43407E21D0E14CE00C2B3D4 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = D43407E11D0E14CE00C2B3D4 /* shaders */; };
 		D44271F51CC81B3200D84D28 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270CD1CC81B3200D84D28 /* addresses.c */; };
 		D44271F61CC81B3200D84D28 /* audio.c in Sources */ = {isa = PBXBuildFile; fileRef = D44270D01CC81B3200D84D28 /* audio.c */; };
 		D44271F71CC81B3200D84D28 /* mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44270D21CC81B3200D84D28 /* mixer.cpp */; };
@@ -307,10 +319,8 @@
 		D45A395D1CF300AF00659A24 /* libSDL2_ttf.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D45F046B1D07733900CBA2BA /* OpenGLAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D45F04691D07733900CBA2BA /* OpenGLAPI.cpp */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
 		D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48A8D811D00272F00649DA7 /* TcpSocket.cpp */; };
-		D49766821D03B9FE002222CD /* OpenGLDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766801D03B9FE002222CD /* OpenGLDrawingEngine.cpp */; };
 		D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */; };
 		D49766861D03BAA5002222CD /* NewDrawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766841D03BAA5002222CD /* NewDrawing.cpp */; };
 		D49766891D03BABB002222CD /* rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766871D03BABB002222CD /* rain.cpp */; };
@@ -468,6 +478,29 @@
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/osx/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CopyFramebufferShader.cpp; sourceTree = "<group>"; };
+		D43407C11D0E14BE00C2B3D4 /* CopyFramebufferShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyFramebufferShader.h; sourceTree = "<group>"; };
+		D43407C21D0E14BE00C2B3D4 /* DrawImageMaskedShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawImageMaskedShader.cpp; sourceTree = "<group>"; };
+		D43407C31D0E14BE00C2B3D4 /* DrawImageMaskedShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawImageMaskedShader.h; sourceTree = "<group>"; };
+		D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawImageShader.cpp; sourceTree = "<group>"; };
+		D43407C51D0E14BE00C2B3D4 /* DrawImageShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawImageShader.h; sourceTree = "<group>"; };
+		D43407C61D0E14BE00C2B3D4 /* DrawLineShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawLineShader.cpp; sourceTree = "<group>"; };
+		D43407C71D0E14BE00C2B3D4 /* DrawLineShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawLineShader.h; sourceTree = "<group>"; };
+		D43407C81D0E14BE00C2B3D4 /* FillRectShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FillRectShader.cpp; sourceTree = "<group>"; };
+		D43407C91D0E14BE00C2B3D4 /* FillRectShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FillRectShader.h; sourceTree = "<group>"; };
+		D43407CA1D0E14BE00C2B3D4 /* GLSLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLSLTypes.h; sourceTree = "<group>"; };
+		D43407CB1D0E14BE00C2B3D4 /* OpenGLAPI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLAPI.cpp; sourceTree = "<group>"; };
+		D43407CC1D0E14BE00C2B3D4 /* OpenGLAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLAPI.h; sourceTree = "<group>"; };
+		D43407CD1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLDrawingEngine.cpp; sourceTree = "<group>"; };
+		D43407CE1D0E14BE00C2B3D4 /* OpenGLFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLFramebuffer.cpp; sourceTree = "<group>"; };
+		D43407CF1D0E14BE00C2B3D4 /* OpenGLFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLFramebuffer.h; sourceTree = "<group>"; };
+		D43407D01D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLShaderProgram.cpp; sourceTree = "<group>"; };
+		D43407D11D0E14BE00C2B3D4 /* OpenGLShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLShaderProgram.h; sourceTree = "<group>"; };
+		D43407D21D0E14BE00C2B3D4 /* SwapFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwapFramebuffer.cpp; sourceTree = "<group>"; };
+		D43407D31D0E14BE00C2B3D4 /* SwapFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwapFramebuffer.h; sourceTree = "<group>"; };
+		D43407D41D0E14BE00C2B3D4 /* TextureCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureCache.cpp; sourceTree = "<group>"; };
+		D43407D51D0E14BE00C2B3D4 /* TextureCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureCache.h; sourceTree = "<group>"; };
+		D43407E11D0E14CE00C2B3D4 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shaders; path = data/shaders; sourceTree = SOURCE_ROOT; };
 		D44270CD1CC81B3200D84D28 /* addresses.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = addresses.c; path = src/addresses.c; sourceTree = "<group>"; };
 		D44270CE1CC81B3200D84D28 /* addresses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = addresses.h; path = src/addresses.h; sourceTree = "<group>"; };
 		D44270D01CC81B3200D84D28 /* audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = audio.c; sourceTree = "<group>"; };
@@ -900,13 +933,10 @@
 		D45A39561CF3007A00659A24 /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
 		D45A39571CF3007A00659A24 /* speexdsp_config_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_config_types.h; sourceTree = "<group>"; };
 		D45A39581CF3007A00659A24 /* speexdsp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_types.h; sourceTree = "<group>"; };
-		D45F04691D07733900CBA2BA /* OpenGLAPI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLAPI.cpp; sourceTree = "<group>"; };
-		D45F046A1D07733900CBA2BA /* OpenGLAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLAPI.h; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; };
 		D48A8D821D00272F00649DA7 /* TcpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TcpSocket.h; sourceTree = "<group>"; };
-		D49766801D03B9FE002222CD /* OpenGLDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLDrawingEngine.cpp; sourceTree = "<group>"; };
 		D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoftwareDrawingEngine.cpp; sourceTree = "<group>"; };
 		D49766841D03BAA5002222CD /* NewDrawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NewDrawing.cpp; sourceTree = "<group>"; };
 		D49766851D03BAA5002222CD /* NewDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewDrawing.h; sourceTree = "<group>"; };
@@ -1199,6 +1229,35 @@
 			);
 			name = Libraries;
 			path = libxc;
+			sourceTree = "<group>";
+		};
+		D43407BF1D0E14BE00C2B3D4 /* opengl */ = {
+			isa = PBXGroup;
+			children = (
+				D43407C01D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp */,
+				D43407C11D0E14BE00C2B3D4 /* CopyFramebufferShader.h */,
+				D43407C21D0E14BE00C2B3D4 /* DrawImageMaskedShader.cpp */,
+				D43407C31D0E14BE00C2B3D4 /* DrawImageMaskedShader.h */,
+				D43407C41D0E14BE00C2B3D4 /* DrawImageShader.cpp */,
+				D43407C51D0E14BE00C2B3D4 /* DrawImageShader.h */,
+				D43407C61D0E14BE00C2B3D4 /* DrawLineShader.cpp */,
+				D43407C71D0E14BE00C2B3D4 /* DrawLineShader.h */,
+				D43407C81D0E14BE00C2B3D4 /* FillRectShader.cpp */,
+				D43407C91D0E14BE00C2B3D4 /* FillRectShader.h */,
+				D43407CA1D0E14BE00C2B3D4 /* GLSLTypes.h */,
+				D43407CB1D0E14BE00C2B3D4 /* OpenGLAPI.cpp */,
+				D43407CC1D0E14BE00C2B3D4 /* OpenGLAPI.h */,
+				D43407CD1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp */,
+				D43407CE1D0E14BE00C2B3D4 /* OpenGLFramebuffer.cpp */,
+				D43407CF1D0E14BE00C2B3D4 /* OpenGLFramebuffer.h */,
+				D43407D01D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp */,
+				D43407D11D0E14BE00C2B3D4 /* OpenGLShaderProgram.h */,
+				D43407D21D0E14BE00C2B3D4 /* SwapFramebuffer.cpp */,
+				D43407D31D0E14BE00C2B3D4 /* SwapFramebuffer.h */,
+				D43407D41D0E14BE00C2B3D4 /* TextureCache.cpp */,
+				D43407D51D0E14BE00C2B3D4 /* TextureCache.h */,
+			);
+			path = opengl;
 			sourceTree = "<group>";
 		};
 		D44270CF1CC81B3200D84D28 /* audio */ = {
@@ -1761,9 +1820,7 @@
 		D497667F1D03B9FE002222CD /* engines */ = {
 			isa = PBXGroup;
 			children = (
-				D45F04691D07733900CBA2BA /* OpenGLAPI.cpp */,
-				D45F046A1D07733900CBA2BA /* OpenGLAPI.h */,
-				D49766801D03B9FE002222CD /* OpenGLDrawingEngine.cpp */,
+				D43407BF1D0E14BE00C2B3D4 /* opengl */,
 				D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */,
 			);
 			path = engines;
@@ -1804,6 +1861,7 @@
 			children = (
 				D4EC48E31C2637710024B507 /* g2.dat */,
 				D4EC48E41C2637710024B507 /* language */,
+				D43407E11D0E14CE00C2B3D4 /* shaders */,
 				D4EC48E51C2637710024B507 /* title */,
 			);
 			name = data;
@@ -1913,6 +1971,7 @@
 				D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */,
 				D4EC48E61C2637710024B507 /* g2.dat in Resources */,
 				D4EC48E71C2637710024B507 /* language in Resources */,
+				D43407E21D0E14CE00C2B3D4 /* shaders in Resources */,
 				D45A38BB1CF3006400659A24 /* engines in Resources */,
 				D4EC48E81C2637710024B507 /* title in Resources */,
 			);
@@ -2062,6 +2121,7 @@
 				C686F9421CDBC3B7009F9BFC /* magic_carpet.c in Sources */,
 				D44272021CC81B3200D84D28 /* Json.cpp in Sources */,
 				D44272591CC81B3200D84D28 /* dropdown.c in Sources */,
+				D43407DF1D0E14BE00C2B3D4 /* SwapFramebuffer.cpp in Sources */,
 				C686F8AF1CDBC37E009F9BFC /* map_element.c in Sources */,
 				D44272081CC81B3200D84D28 /* diagnostic.c in Sources */,
 				D44272A51CC81B3200D84D28 /* particle.c in Sources */,
@@ -2082,6 +2142,7 @@
 				D442725A1CC81B3200D84D28 /* editor_bottom_toolbar.c in Sources */,
 				D442729D1CC81B3200D84D28 /* footpath.c in Sources */,
 				D44272501CC81B3200D84D28 /* title.c in Sources */,
+				D43407DD1D0E14BE00C2B3D4 /* OpenGLFramebuffer.cpp in Sources */,
 				D442721D1CC81B3200D84D28 /* screenshot.c in Sources */,
 				D44272381CC81B3200D84D28 /* openrct2.c in Sources */,
 				C686F92C1CDBC3B7009F9BFC /* circus_show.c in Sources */,
@@ -2090,7 +2151,6 @@
 				C686F9321CDBC3B7009F9BFC /* haunted_house.c in Sources */,
 				D442720A1CC81B3200D84D28 /* drawing_fast.cpp in Sources */,
 				C686F9521CDBC3B7009F9BFC /* river_rapids.c in Sources */,
-				D45F046B1D07733900CBA2BA /* OpenGLAPI.cpp in Sources */,
 				008BF72C1CDAA5C30019A2AD /* track_design.c in Sources */,
 				C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */,
 				D44272191CC81B3200D84D28 /* colour.c in Sources */,
@@ -2116,8 +2176,10 @@
 				C686F93C1CDBC3B7009F9BFC /* misc.c in Sources */,
 				D442723A1CC81B3200D84D28 /* staff.c in Sources */,
 				D44272931CC81B3200D84D28 /* top_toolbar.c in Sources */,
+				D43407DA1D0E14BE00C2B3D4 /* FillRectShader.cpp in Sources */,
 				D44271F61CC81B3200D84D28 /* audio.c in Sources */,
 				D442728A1CC81B3200D84D28 /* tile_inspector.c in Sources */,
+				D43407D91D0E14BE00C2B3D4 /* DrawLineShader.cpp in Sources */,
 				C686F9411CDBC3B7009F9BFC /* launched_freefall.c in Sources */,
 				D44272571CC81B3200D84D28 /* clear_scenery.c in Sources */,
 				D442727D1CC81B3200D84D28 /* ride_list.c in Sources */,
@@ -2185,6 +2247,7 @@
 				D442725B1CC81B3200D84D28 /* editor_inventions_list.c in Sources */,
 				D44272311CC81B3200D84D28 /* news_item.c in Sources */,
 				D44272011CC81B3200D84D28 /* Guard.cpp in Sources */,
+				D43407E01D0E14BE00C2B3D4 /* TextureCache.cpp in Sources */,
 				D44272951CC81B3200D84D28 /* track_manage.c in Sources */,
 				D44272851CC81B3200D84D28 /* staff.c in Sources */,
 				D442725F1CC81B3200D84D28 /* editor_scenario_options.c in Sources */,
@@ -2207,14 +2270,15 @@
 				D44272031CC81B3200D84D28 /* Path.cpp in Sources */,
 				C686F9301CDBC3B7009F9BFC /* flying_saucers.c in Sources */,
 				D44272401CC81B3200D84D28 /* windows.c in Sources */,
-				D49766821D03B9FE002222CD /* OpenGLDrawingEngine.cpp in Sources */,
 				D44272881CC81B3200D84D28 /* text_input.c in Sources */,
 				D442720F1CC81B3200D84D28 /* scrolling_text.c in Sources */,
 				D44271F51CC81B3200D84D28 /* addresses.c in Sources */,
 				D44272041CC81B3200D84D28 /* Stopwatch.cpp in Sources */,
+				D43407D81D0E14BE00C2B3D4 /* DrawImageShader.cpp in Sources */,
 				007A05D01CFB2C8B00F419C3 /* NetworkGroup.cpp in Sources */,
 				C686F9491CDBC3B7009F9BFC /* chairlift.c in Sources */,
 				C686F9501CDBC3B7009F9BFC /* log_flume.c in Sources */,
+				D43407D61D0E14BE00C2B3D4 /* CopyFramebufferShader.cpp in Sources */,
 				D44272241CC81B3200D84D28 /* intro.c in Sources */,
 				D44272631CC81B3200D84D28 /* game_bottom_toolbar.c in Sources */,
 				008BF72A1CDAA5C30019A2AD /* track_design_index.c in Sources */,
@@ -2227,6 +2291,7 @@
 				C686F9311CDBC3B7009F9BFC /* ghost_train.c in Sources */,
 				D44272821CC81B3200D84D28 /* shortcut_key_change.c in Sources */,
 				D442722A1CC81B3200D84D28 /* localisation.c in Sources */,
+				D43407D71D0E14BE00C2B3D4 /* DrawImageMaskedShader.cpp in Sources */,
 				D44272731CC81B3200D84D28 /* new_ride.c in Sources */,
 				D442721A1CC81B3200D84D28 /* console.c in Sources */,
 				D44271FB1CC81B3200D84D28 /* ScreenshotCommands.cpp in Sources */,
@@ -2238,6 +2303,8 @@
 				C686F9351CDBC3B7009F9BFC /* mini_golf.c in Sources */,
 				D44272541CC81B3200D84D28 /* banner.c in Sources */,
 				D44272A31CC81B3200D84D28 /* money_effect.c in Sources */,
+				D43407DE1D0E14BE00C2B3D4 /* OpenGLShaderProgram.cpp in Sources */,
+				D43407DC1D0E14BE00C2B3D4 /* OpenGLDrawingEngine.cpp in Sources */,
 				D44272761CC81B3200D84D28 /* options.c in Sources */,
 				C686F93D1CDBC3B7009F9BFC /* shop.c in Sources */,
 				C686F8AD1CDBC37E009F9BFC /* entrance.c in Sources */,
@@ -2282,6 +2349,7 @@
 				D44272301CC81B3200D84D28 /* marketing.c in Sources */,
 				D44272321CC81B3200D84D28 /* research.c in Sources */,
 				D442725D1CC81B3200D84D28 /* editor_object_selection.c in Sources */,
+				D43407DB1D0E14BE00C2B3D4 /* OpenGLAPI.cpp in Sources */,
 				D44272981CC81B3200D84D28 /* water.c in Sources */,
 				D442726C1CC81B3200D84D28 /* map_tooltip.c in Sources */,
 				C686F9281CDBC3B7009F9BFC /* wild_mouse.c in Sources */,
@@ -2328,7 +2396,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					OPENGL_NO_LINK,
-					DISABLE_OPENGL
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2371,10 +2438,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					OPENGL_NO_LINK,
-					DISABLE_OPENGL
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = OPENGL_NO_LINK;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
