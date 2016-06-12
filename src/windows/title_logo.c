@@ -80,7 +80,7 @@ void window_title_logo_open()
 		WC_TITLE_LOGO,
 		WF_STICK_TO_BACK | WF_TRANSPARENT
 	);
-	window->widgets = (rct_widget*)0x9A9638; // mouse move bug in original game, keep this address and no crash happens
+	window->widgets = (rct_widget*)0x009A9658; // mouse move bug in original game, keep this address and no crash happens
 	window_init_scroll_widgets(window);
 	window->colours[0] = 129;
 	window->colours[1] = 129;
