@@ -35,6 +35,10 @@ matrix:
           env: OPENRCT2_CMAKE_OPTS="-DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON" TARGET=docker32
           services:
             - docker
+        - os: linux
+          env: OPENRCT2_CMAKE_OPTS="-DDISABLE_OPENGL=ON" TARGET=docker32
+          services:
+            - docker
         - os: osx
           osx_image: xcode7.3
           env:
