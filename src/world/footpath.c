@@ -243,7 +243,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 				return MONEY32_UNDEFINED;
 			}
 
-			if ((unk6 & PAHT_BIT_FLAG_IS_QUEUE_SCREEN) && !footpath_element_is_queue(mapElement)) {
+			if ((unk6 & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !footpath_element_is_queue(mapElement)) {
 				gGameCommandErrorText = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
 				return MONEY32_UNDEFINED;
 			}
