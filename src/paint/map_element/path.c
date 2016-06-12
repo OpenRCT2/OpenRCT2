@@ -80,7 +80,7 @@ const uint8 byte_98D8A4[] = {
 	0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 
-void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * dword_F3EF6C, bool word_F3F038, uint32 dword_F3EF70, uint32 dword_F3EF74);
+void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * dword_F3EF6C, bool hasFences, uint32 dword_F3EF70, uint32 dword_F3EF74);
 
 void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
@@ -790,12 +790,12 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 	}
 }
 
-void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * dword_F3EF6C, bool word_F3F038, uint32 dword_F3EF70, uint32 dword_F3EF74)
+void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * dword_F3EF6C, bool hasFences, uint32 dword_F3EF70, uint32 dword_F3EF74)
 {
 	// esi: mapElement
 	// ecx: get_current_rotation();
 	registers regs = {0};
-	regs.al = map_element->properties.path.edges;
+	regs.al = mapElement->properties.path.edges;
 	regs.ah = regs.al << 4;
 
 	uint8 edi_index = rol16(regs.ax, get_current_rotation()) & 0xF;
@@ -807,15 +807,15 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 	rct_xy16 boundBoxOffset = {.x =stru_98D804[edi_index][0], .y = stru_98D804[edi_index][1]};
 	rct_xy16 boundBoxSize = {.x =stru_98D804[edi_index][2], .y = stru_98D804[edi_index][3]};
 
-	regs.al = map_element->properties.path.edges;
+	regs.al = mapElement->properties.path.edges;
 	regs.ah = regs.al >> 4;
 	regs.ax = (rol16(regs.ax, get_current_rotation()) >> 4) & 0xF0;
 
 	uint16 edi = edi_index | regs.ax;
 
 	uint32 ebx;
-	if (map_element->properties.path.type & 0x04) {
-		ebx = ((map_element->properties.path.type + get_current_rotation()) & 3) + 16;
+	if (mapElement->properties.path.type & 0x04) {
+		ebx = ((mapElement->properties.path.type + get_current_rotation()) & 3) + 16;
 	} else {
 		ebx = byte_98D6E0[edi];
 	}
@@ -823,7 +823,7 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 	// save edi
 
 	ebx += dword_F3EF6C->image;
-	if (map_element_get_direction(map_element) & 1) {
+	if (map_element_get_direction(mapElement) & 1) {
 		ebx += 51;
 	}
 
@@ -834,19 +834,19 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 		boundBoxSize.y = 26;
 	}
 
-	if (!word_F3F038 || !RCT2_GLOBAL(0x9DE57C, bool)) {
+	if (!hasFences || !RCT2_GLOBAL(0x9DE57C, bool)) {
 		sub_98197C(ebx | dword_F3EF70, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 	} else {
 		uint32 image_id;
-		if (map_element->properties.path.type & 0x04) {
-			image_id = ((map_element->properties.path.type + get_current_rotation()) & 3) + dword_F3EF6C->bridge_image + 51;
+		if (mapElement->properties.path.type & 0x04) {
+			image_id = ((mapElement->properties.path.type + get_current_rotation()) & 3) + dword_F3EF6C->bridge_image + 51;
 		} else {
 			image_id = byte_98D8A4[edi_index] + dword_F3EF6C->bridge_image + 49;
 		}
 
 		sub_98197C(image_id | dword_F3EF70, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 
-		if (!(map_element->type & 1) && !(dword_F3EF6C->flags & 2)) {
+		if (!(mapElement->type & 1) && !(dword_F3EF6C->flags & 2)) {
 			// don't draw
 		} else {
 			sub_98199C(ebx | dword_F3EF70, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
@@ -854,11 +854,11 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 	}
 
 
-	sub_6A3F61(map_element, edi, height, dword_F3EF6C, dword_F3EF70, dword_F3EF74, word_F3F038); // TODO: arguments
+	sub_6A3F61(mapElement, edi, height, dword_F3EF6C, dword_F3EF70, dword_F3EF74, hasFences); // TODO: arguments
 
 	uint16 ax = 0;
-	if (map_element->properties.path.type & 0x04) {
-		ax = ((map_element->properties.path.type + get_current_rotation()) & 0x3) + 1;
+	if (mapElement->properties.path.type & 0x04) {
+		ax = ((mapElement->properties.path.type + get_current_rotation()) & 0x3) + 1;
 	}
 
 	uint32 ebp = edi;
@@ -871,31 +871,31 @@ void loc_6A37C9(rct_map_element * map_element, int height, rct_footpath_entry * 
 	}
 
 
+
+	// no idea whre bp comes from
+	uint16 edges = edi;
 	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 
 	height += 32;
-	if (map_element->properties.path.type & 0x04) {
+	if (footpath_element_is_sloped(mapElement)) {
 		height += 16;
 	}
 
 	paint_util_set_general_support_height(height, 0x20);
 
-	if (map_element->type & 1
-	    || (map_element->properties.path.edges != 0xFF && word_F3F038)
+	if ((mapElement->type & 1)
+	    || (mapElement->properties.path.edges != 0xFF && hasFences)
 		) {
 		paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 		return;
 	}
 
-	if (map_element->properties.path.edges == 0xFF) {
+	if (mapElement->properties.path.edges == 0xFF) {
 		paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
 		return;
 	}
 
 	paint_util_set_segment_support_height(SEGMENT_C4, 0xFFFF, 0);
-
-	// no idea whre bp comes from
-	uint16 edges = edi;
 
 	if (edges & 1) {
 		paint_util_set_segment_support_height(SEGMENT_CC, 0xFFFF, 0);
