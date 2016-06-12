@@ -18,6 +18,7 @@
 
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
+#include <SDL_pixels.h>
 
 class DrawImageMaskedShader : public OpenGLShaderProgram
 {
@@ -27,6 +28,7 @@ private:
     GLuint uBounds;
     GLuint uTextureMask;
     GLuint uTextureColour;
+    GLuint uPalette;
 
     GLuint vIndex;
 
@@ -42,6 +44,7 @@ public:
     void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetTextureMask(GLuint texture);
     void SetTextureColour(GLuint texture);
+    void SetPalette(const vec4f *glPalette);
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
 
 private:

@@ -35,6 +35,7 @@
 #define glEnd               __static__glEnd
 #define glGenTextures       __static__glGenTextures
 #define glGetError          __static__glGetError
+#define glPixelStorei       __static__glPixelStorei
 #define glReadPixels        __static__glReadPixels
 #define glTexImage2D        __static__glTexImage2D
 #define glTexParameteri     __static__glTexParameteri
@@ -61,6 +62,7 @@
 #undef glEnd
 #undef glGenTextures
 #undef glGetError
+#undef glPixelStorei
 #undef glReadPixels
 #undef glTexImage2D
 #undef glTexParameteri
@@ -80,6 +82,7 @@ typedef void   (APIENTRYP PFNGLENABLEPROC        )(GLenum cap);
 typedef void   (APIENTRYP PFNGLENDPROC           )(void);
 typedef GLenum (APIENTRYP PFNGLGETERRORPROC      )(void);
 typedef void   (APIENTRYP PFNGLGENTEXTURESPROC   )(GLsizei n, GLuint *textures);
+typedef void   (APIENTRYP PFNGLPIXELSTOREIPROC   )(GLenum pname, GLint param);
 typedef void   (APIENTRYP PFNGLREADPIXELSPROC    )(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * pixels);
 typedef void   (APIENTRYP PFNGLTEXIMAGE2DPROC    )(GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels);
 typedef void   (APIENTRYP PFNGLTEXPARAMETERIPROC )(GLenum target, GLenum pname, GLint param);
@@ -110,6 +113,7 @@ GLAPI_DECL PFNGLENABLEPROC                      glEnable                    GLAP
 GLAPI_DECL PFNGLENDPROC                         glEnd                       GLAPI_SET;
 GLAPI_DECL PFNGLGENTEXTURESPROC                 glGenTextures               GLAPI_SET;
 GLAPI_DECL PFNGLGETERRORPROC                    glGetError                  GLAPI_SET;
+GLAPI_DECL PFNGLPIXELSTOREIPROC                 glPixelStorei               GLAPI_SET;
 GLAPI_DECL PFNGLREADPIXELSPROC                  glReadPixels                GLAPI_SET;
 GLAPI_DECL PFNGLTEXIMAGE2DPROC                  glTexImage2D                GLAPI_SET;
 GLAPI_DECL PFNGLTEXPARAMETERIPROC               glTexParameteri             GLAPI_SET;
@@ -148,6 +152,7 @@ GLAPI_DECL PFNGLUNIFORM1IPROC                   glUniform1i                 GLAP
 GLAPI_DECL PFNGLUNIFORM2IPROC                   glUniform2i                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4FPROC                   glUniform4f                 GLAPI_SET;
 GLAPI_DECL PFNGLUNIFORM4IPROC                   glUniform4i                 GLAPI_SET;
+GLAPI_DECL PFNGLUNIFORM4FVPROC                  glUniform4fv                GLAPI_SET;
 GLAPI_DECL PFNGLUSEPROGRAMPROC                  glUseProgram                GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBIPOINTERPROC        glVertexAttribIPointer      GLAPI_SET;
 GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAPI_SET;

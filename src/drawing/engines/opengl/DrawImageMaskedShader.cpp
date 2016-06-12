@@ -25,7 +25,7 @@ DrawImageMaskedShader::DrawImageMaskedShader() : OpenGLShaderProgram("drawimagem
     glGenBuffers(1, &_vbo);
     glGenVertexArrays(1, &_vao);
 
-    vec2i vertices[] = { 0, 1, 2, 3 };
+    GLuint vertices[] = { 0, 1, 2, 2, 1, 3 };
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -53,6 +53,7 @@ void DrawImageMaskedShader::GetLocations()
     uBounds         = GetUniformLocation("uBounds");
     uTextureMask    = GetUniformLocation("uTextureMask");
     uTextureColour  = GetUniformLocation("uTextureColour");
+    uPalette        = GetUniformLocation("uPalette");
 
     vIndex          = GetAttributeLocation("vIndex");
 }
@@ -82,12 +83,17 @@ void DrawImageMaskedShader::SetTextureColour(GLuint texture)
     OpenGLAPI::SetTexture2D(1, texture);
 }
 
+void DrawImageMaskedShader::SetPalette(const vec4f *glPalette)
+{
+    glUniform4fv(uPalette, 256, (const GLfloat *) glPalette);
+}
+
 void DrawImageMaskedShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
     SetBounds(left, top, right, bottom);
 
     glBindVertexArray(_vao);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 #endif /* DISABLE_OPENGL */

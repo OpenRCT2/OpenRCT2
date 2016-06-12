@@ -1,13 +1,14 @@
-#version 330
+#version 150
 
 uniform ivec4       uClip;
-uniform sampler2D   uTextureMask;
-uniform sampler2D   uTextureColour;
+uniform usampler2D  uTextureMask;
+uniform usampler2D  uTextureColour;
+uniform vec4        uPalette[256];
 
 in vec2 fPosition;
 in vec2 fTextureCoordinate;
 
-layout (location = 0) out vec4 oColour;
+out vec4 oColour;
 
 void main()
 {
@@ -17,7 +18,7 @@ void main()
         discard;
     }
 
-    vec4 mask = texture(uTextureMask, fTextureCoordinate);
-    vec4 colour = texture(uTextureColour, fTextureCoordinate);
+    vec4 mask = uPalette[texture(uTextureMask, fTextureCoordinate).r];
+    vec4 colour = uPalette[texture(uTextureColour, fTextureCoordinate).r];
     oColour = colour * mask;
 }

@@ -1,9 +1,9 @@
-#version 330
+#version 150
 
 uniform ivec2 uScreenSize;
 uniform ivec4 uBounds;
 
-in int vIndex;
+in uint vIndex;
 
 out vec2 fPosition;
 
@@ -11,17 +11,17 @@ void main()
 {
     vec2 pos;
     switch (vIndex) {
-    case 0:
+    case 0u:
         pos = uBounds.xy;
         break;
-    case 1:
+    case 1u:
         pos = uBounds.zy;
         break;
-    case 2:
-        pos = uBounds.zw;
-        break;
-    case 3:
+    case 2u:
         pos = uBounds.xw;
+        break;
+    case 3u:
+        pos = uBounds.zw;
         break;
     }
 

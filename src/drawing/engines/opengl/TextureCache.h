@@ -69,7 +69,9 @@ private:
     GLuint LoadImageTexture(uint32 image);
     GLuint LoadGlyphTexture(uint32 image, uint8 * palette);
     void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
+    rct_drawpixelinfo * GetImageAsDPI(uint32 image, uint32 tertiaryColour);
     void * GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight);
+    rct_drawpixelinfo * GetGlyphAsDPI(uint32 image, uint8 * palette);
     void * ConvertDPIto32bpp(const rct_drawpixelinfo * dpi);
     void FreeTextures();
 

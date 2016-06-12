@@ -26,7 +26,7 @@ DrawLineShader::DrawLineShader() : OpenGLShaderProgram("drawline")
     glGenBuffers(1, &_vbo);
     glGenVertexArrays(1, &_vao);
 
-    vec2i vertices[] = { 0, 1 };
+    GLuint vertices[] = { 0, 1 };
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
