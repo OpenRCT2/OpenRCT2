@@ -396,12 +396,13 @@ static rct_xy16 window_multiplayer_information_get_size()
 
 	int width = 450;
 	int height = 110;
-	char * buffer = gConfigNetwork.server_description;
+	int numLines, fontSpriteBase;
 
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-	int numLines, fontSpriteBase;
+	utf8 * buffer = _strdup(network_get_server_description());
 	gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+	free(buffer);
+
 	int lineHeight = font_get_line_height(fontSpriteBase);
 	height += (numLines + 1) * lineHeight;
 
