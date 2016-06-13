@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../cheats.h"
 #include "../../common.h"
-#include "surface.h"
-#include "../../interface/viewport.h"
-#include "../paint.h"
 #include "../../config.h"
+#include "../../interface/viewport.h"
 #include "../../peep/staff.h"
 #include "../../world/map.h"
+#include "../paint.h"
 #include "map_element.h"
+#include "surface.h"
 
 const uint8 byte_97B444[] = {
 	0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -1150,9 +1151,9 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	}
 
 	// Draw Peep Spawns
-	if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR
-	    && gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
-
+	if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
+		gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
+	) {
 		rct_xy16 pos = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 		for (int i = 0; i < 2; ++i) {
 			rct2_peep_spawn * spawn = &gPeepSpawns[i];
