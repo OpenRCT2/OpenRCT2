@@ -972,7 +972,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 	uint16 zoomLevel = dpi->zoom_level;
 
 	const uint8 rotation = get_current_rotation();
-	uint32 terrain_type = ((mapElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (mapElement->properties.surface.terrain >> 5);
+	uint32 terrain_type = map_element_get_terrain(mapElement);
 	uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, rotation);
 
 	rct_xy16 base = {
@@ -1011,7 +1011,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 		}
 
 		tileDescriptors[i + 1].map_element = surfaceElement;
-		tileDescriptors[i + 1].terrain = ((surfaceElement->type & MAP_ELEMENT_DIRECTION_MASK) << 3) | (surfaceElement->properties.surface.terrain >> 5);
+		tileDescriptors[i + 1].terrain = map_element_get_terrain(surfaceElement);
 		uint32 ebx = viewport_surface_paint_setup_get_relative_slope(surfaceElement, rotation);
 		tileDescriptors[i + 1].slope = ebx;
 
@@ -1317,7 +1317,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 
 		uint32 eax = al_edgeStyle + di_type * 2;
 		if (eax != 32 && eax != 0 && eax != 96 && eax != 64) {
-			log_info("eax: %d", eax);
+			log_verbose("eax: %d", eax);
 		}
 
 		for (int i = 0; i <= 0x7C; i += 4) {
