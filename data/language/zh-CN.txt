@@ -4189,6 +4189,13 @@ STR_5869    :{WINDOW_COLOUR_2}服务器提供者网站: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}显示服务器信息
 STR_5871    :植物不会枯萎.
 STR_5872    :{SMALLFONT}{BLACK}禁用植物随时间变化以便它们不会枯萎.
+STR_5873    :允许在所有轨道配置中使用链式牵引
+STR_5874    :{SMALLFONT}{BLACK}允许将任何轨道变成链式牵引轨道
+STR_5875    :渲染引擎:
+STR_5876    :{SMALLFONT}{BLACK}渲染游戏图像的引擎.
+STR_5877    :软件渲染
+STR_5878    :软件渲染(硬件显示)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #

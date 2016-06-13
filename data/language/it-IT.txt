@@ -1443,9 +1443,9 @@ STR_1437    :A {STRINGID}
 STR_1438    :Seduto
 STR_1439    :(scegli il luogo)
 STR_1440    :Sta tagliando l'erba
-STR_1441    :Sta scopando per terra
-STR_1442    :Sta svuotando i cassonetti
-STR_1443    :Sta innaffiando i giardini
+STR_1441    :Sta spazzando per terra
+STR_1442    :Sta svuotando i cestini
+STR_1443    :Sta innaffiando i fiori
 STR_1444    :Sta guardando {STRINGID}
 STR_1445    :Sta guardano la costruzione di: {STRINGID}
 STR_1446    :Sta guardando lo scenario
@@ -1715,9 +1715,9 @@ STR_1708    :{SMALLFONT}{BLACK}Fissa la zona che questo dipendente deve controll
 STR_1709    :Licenzia il personale
 STR_1710    :Sì
 STR_1711    :{WINDOW_COLOUR_1}Sei sicuro di voler licenziare{NEWLINE}{STRINGID}?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Scopa per terra
-STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Annaffia i giardini
-STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Svuota i cassonetti
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Spazza per terra
+STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Annaffia i fiori
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Svuota i cestini
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Taglia l'erba
 STR_1716    :Non è un nome valido per il parco
 STR_1717    :Impossibile ribattezzare il parco...
@@ -3904,140 +3904,140 @@ STR_5559    :ispezioni da 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
 STR_5561    :Caricamento lingua fallito
 STR_5562    :ATTENZIONE!
-STR_5563    :Questa funzionalità è instabile utilizzala con attenzione.
+STR_5563    :Questa funzionalità è instabile, utilizzarla con attenzione.
 STR_5564    :Inserisci Elemento Corrotto
 STR_5565    :{SMALLFONT}{BLACK}Inserisci un elemento della mappa corrotto. Questo nasconderà ogni elemento sopra l'elemento corrotto.
 STR_5566    :Password:
-STR_5567    :Pubblicita
-STR_5568    :Password Richiesta
+STR_5567    :Pubblicità
+STR_5568    :Password necessaria
 STR_5569    :Questo server richiede una password
-STR_5570    :Scarica i Server
-STR_5571    :Entra in Gioco
-STR_5572    :Aggiungi ai Preferiti
-STR_5573    :Rimuovi dai Preferiti
-STR_5574    :Nome del Server:
-STR_5575    :Giocatori Massimi:
+STR_5570    :Scarica i server
+STR_5571    :Entra in gioco
+STR_5572    :Aggiungi ai preferiti
+STR_5573    :Rimuovi dai preferiti
+STR_5574    :Nome del server:
+STR_5575    :Massimo numero giocatori:
 STR_5576    :Porta:
 STR_5577    :Won sudcoreani (W)
-STR_5578    :Rubli Russi (R)
+STR_5578    :Rubli russi (R)
 STR_5579    :Window scale factor:
-STR_5580    :Corona Ceca (Kc)
+STR_5580    :Corona ceca (Kc)
 STR_5581    :Mostra FPS
 STR_5582    :Blocca il mouse nella finestra
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Sblocca i limiti delle attrazioni, permettendo cose come la {VELOCITY} nelle salite
-STR_5586    :Automaticamente apri i negozi e code
-STR_5587    :{SMALLFONT}{BLACK}Negozi e attività saranno automaticamente aperti dopo la creazione
+STR_5586    :Apri automaticamente negozi e chioschi
+STR_5587    :{SMALLFONT}{BLACK}Negozi e chioschi saranno aperti automaticamente dopo la costruzione
 STR_5588    :{SMALLFONT}{BLACK}Gioca con altri giocatori
-STR_5589    :Impostazioni Notifiche
-STR_5590    :Premi del Parco
-STR_5591    :Campagna Marketing finita
-STR_5592    :Avvisi del Parco
-STR_5593    :Avvisi di votazione del Parco
-STR_5594    :La corsa è ripartita
-STR_5595    :La corsa è danneggiata
-STR_5596    :Avvisi della Corsa
-STR_5597    :Corsa / scenario cercati
-STR_5598    :Avvisi Visitatori
+STR_5589    :Impostazioni notifiche
+STR_5590    :Premi del parco
+STR_5591    :Campagna di marketing finita
+STR_5592    :Avvisi del parco
+STR_5593    :Avvisi sulla valutazione del parco
+STR_5594    :L'attrazione si è rotta
+STR_5595    :L'attrazione ha avuto un incidente
+STR_5596    :Avvisi attrazione
+STR_5597    :Ricerca completata per attrazione/scenario
+STR_5598    :Avvisi visitatori
 STR_5599    :Il visitatore si è perso
 STR_5600    :Il visitatore ha lasciato il parco
-STR_5601    :Il visitatore sta aspettando la corsa
-STR_5602    :Il visitatore è sulla corsa
-STR_5603    :Il visitatore ha lasciato la corsa
-STR_5604    :Il visitatore ha comprato
-STR_5605    :Il visitatore usa con facilità
+STR_5601    :Il visitatore è in fila per l'attrazione
+STR_5602    :Il visitatore è sull'attrazione
+STR_5603    :Il visitatore ha lasciato l'attrazione
+STR_5604    :Il visitatore ha acquistato un oggetto
+STR_5605    :Il visitatore ha usato un servizio
 STR_5606    :Il visitatore è morto
 STR_5607    :{SMALLFONT}{BLACK}Rimuovi forzatamente l'elemento della mappa selezionato.
 STR_5608    :BH
 STR_5609    :CH
-STR_5610    :{SMALLFONT}{BLACK}Rimuovi l'elemento selezionato dalla mappa. Questo forzerà la rimozione ma i soldi non verranno influenzati da questa zione. Usa con cautela.
+STR_5610    :{SMALLFONT}{BLACK}Rimuove l'elemento selezionato dalla mappa in modo forzato, senza quindi spendere o incassare denaro. Usare con cautela.
 STR_5611    :G
-STR_5612    :{SMALLFONT}{BLACK}Bandiera fantasma
+STR_5612    :{SMALLFONT}{BLACK}Flag fantasma
 STR_5613    :B
-STR_5614    :{SMALLFONT}{BLACK}Bandiera rotta
+STR_5614    :{SMALLFONT}{BLACK}Flag rotto
 STR_5615    :L
-STR_5616    :{SMALLFONT}{BLACK}Ultimo elemento per le piastrelle
+STR_5616    :{SMALLFONT}{BLACK}Flag ultimo elemento per riquadro
 STR_5617    :{SMALLFONT}{BLACK}Sposta l'elemento selezionato in alto.
 STR_5618    :{SMALLFONT}{BLACK}Sposta l'elemento selezionato in basso.
 STR_5619    :RollerCoaster Tycoon
-STR_5620    :Attrazioni aggiunte
+STR_5620    :Added Attractions
 STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :Parchi {OPENQUOTES}Reali{ENDQUOTES}
-STR_5626    :Altri Parchi
-STR_5627    :Gruppo scenario per:
-STR_5628    :Codice del gioco
-STR_5629    :Livello difficoltà
-STR_5630    :Abilita Lo sblocco degli scenario
-STR_5631    :DLC Parchi Originali
+STR_5625    :Parchi {OPENQUOTES}veri{ENDQUOTES}
+STR_5626    :Altri parchi
+STR_5627    :Raggruppa lista scenari per:
+STR_5628    :Gioco di origine
+STR_5629    :Livello di difficoltà
+STR_5630    :Attiva sblocco degli scenari
+STR_5631    :Parchi scaricabili originali
 STR_5632    :Costruisci il tuo...
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}Soldi spesi: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Comandi eseguiti: {BLACK}{COMMA16}
-STR_5637    :Non puoi farlo...
-STR_5638    :Permissi negati
-STR_5639    :{SMALLFONT}{BLACK}Mostra lista di giocatore
-STR_5640    :{SMALLFONT}{BLACK}Gestisci Gruppo
-STR_5641    :Gruppo Predefinito:
+STR_5637    :Non è possibile effettuarlo...
+STR_5638    :Permesso negato
+STR_5639    :{SMALLFONT}{BLACK}Mostra lista dei giocatori
+STR_5640    :{SMALLFONT}{BLACK}Gestisci gruppo
+STR_5641    :Gruppo predefinito:
 STR_5642    :Gruppo:
-STR_5643    :Aggiungi Gruppo
-STR_5644    :Rimuovi Gruppo
+STR_5643    :Aggiungi gruppo
+STR_5644    :Rimuovi gruppo
 STR_5645    :Chat
-STR_5646    :Terraform
-STR_5647    :Vai in Pausa
-STR_5648    :Imposta Livello Acqua
-STR_5649    :Crea Corsa
-STR_5650    :Rimuovi Corsa
-STR_5651    :Costruisci Corsa
-STR_5652    :Proprietà corsa
+STR_5646    :Creazione terreno
+STR_5647    :Attivare/disattivare pausa
+STR_5648    :Impostare altezza acqua
+STR_5649    :Creare attrazione
+STR_5650    :Rimuovere attrazione
+STR_5651    :Costruire attrazione
+STR_5652    :Proprietà attrazione
 STR_5653    :Scenario
-STR_5654    :Percorso
-STR_5655    :Visitatori
+STR_5654    :Sentiero
+STR_5655    :Visitatore
 STR_5656    :Staff
-STR_5657    :Proprietà Parco
-STR_5658    :Fondi del Parco
-STR_5659    :Caccia Giocatore
-STR_5660    :Modifica Gruppo
-STR_5661    :Imposta Gruppo Giocatore
-STR_5662    :N/A
-STR_5663    :Pulisci Paesaggio
+STR_5657    :Proprietà del parco
+STR_5658    :Fondi del parco
+STR_5659    :Rimuovi giocatore
+STR_5660    :Modifica gruppo
+STR_5661    :Imposta gruppo giocatori
+STR_5662    :N.D.
+STR_5663    :Pulisci paesaggio
 STR_5664    :Trucchi
 STR_5665    :Toggle Scenery Cluster
-STR_5666    :Login senza password
+STR_5666    :Accesso senza password
 STR_5701    :{WINDOW_COLOUR_2}Ultima azione: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localizza l'ultima azione del giocatore
-STR_5703    :Non puoi cacciare l'host
-STR_5704    :Ultima Azione:
-STR_5705    :Non puoi impostare questo gruppo
-STR_5706    :Non puoi rimuovere il gruppo a cui appartengono i giocatori
+STR_5703    :Non è possibile rimuovere l'host
+STR_5704    :Ultima azione:
+STR_5705    :Non è possibile impostarlo a questo gruppo
+STR_5706    :Non è possibile rimuovere un gruppo che contiene giocatori
 STR_5707    :Questo gruppo non può essere modificato
-STR_5708    :Non puoi modificare il gruppo al quale appartiene host
-STR_5709    :Rinomina Gruppo
+STR_5708    :Non è possibile modificare il gruppo al quale appartiene l'host
+STR_5709    :Rinomina gruppo
 STR_5710    :Nome gruppo
-STR_5711    :Inserisci un nuovo nome per questo gruppo:
-STR_5712    :Non puoi modificare i permessi che non possiedi
-STR_5713    :Caccia giocatore
+STR_5711    :Inserire un nuovo nome per questo gruppo:
+STR_5712    :Non è possibile modificare i permessi che non si possiedono
+STR_5713    :Rimuovi giocatore
 STR_5714    :Mostra finestra opzioni
-STR_5715    :Nuovo Gioco
-STR_5716    :Non permettere la modalità multiplayer
+STR_5715    :Nuovo gioco
+STR_5716    :Non permesso in modalità multigiocatore
 # For identifying client network version in server list window
 STR_5717    :Versione della rete: {STRING}
 STR_5718    :{SMALLFONT}{BLACK}Versione della rete: {STRING}
 STR_5719    :Soleggiato
-STR_5720    :Parzialmente Nuvoloso
+STR_5720    :Parzialmente nuvoloso
 STR_5721    :Nuvoloso
 STR_5722    :Piovoso
-STR_5723    :Fortemente Piovoso
+STR_5723    :Fortemente piovoso
 STR_5724    :Tempesta
 STR_5725    :{BLACK}Forza clima:
-STR_5726    :{SMALLFONT}{BLACK}Imposta il tempo corrente nel parco
-STR_5727    :Regola qualità
-STR_5728    :Richiede opzioni visuali per hardware
-STR_5729    :{SMALLFONT}{BLACK}Richiede opzioni visuali per hardware
+STR_5726    :{SMALLFONT}{BLACK}Imposta il clima attuale nel parco
+STR_5727    :Qualità ridimensionamento
+STR_5728    :Richiede la visualizzazione hardware
+STR_5729    :{SMALLFONT}{BLACK}Richiede la visualizzazione hardware
 STR_5730    :Nearest neighbour
 STR_5731    :Lineare
 STR_5732    :Anisotropico
@@ -4046,37 +4046,37 @@ STR_5733    :Usa NN scaling come valori interi
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Stato della rete
 STR_5736    :Giocatore
-STR_5737    :Chiuso, ma {COMMA16} persone sono sulla corsa
-STR_5738    :Chiuso, ma {COMMA16} persone sono sulla corsa
+STR_5737    :Chiuso, ma {COMMA16} persone sono sull'attrazione
+STR_5738    :Chiuso, ma {COMMA16} persone sono sull'attrazione
 STR_5739    :{WINDOW_COLOUR_2}Clienti nelle attrazioni: {BLACK}{COMMA16}
 STR_5740    :Campagne di Marketing senza fine
-STR_5741    :{SMALLFONT}{BLACK}Campagna di Marketing infinita
-STR_5742    :Autenticazione ...
-STR_5743    :Connessione ...
-STR_5744    :Risoluzione ...
-STR_5745    :Desync della rete identificato
+STR_5741    :{SMALLFONT}{BLACK}Campagna di marketing infinita
+STR_5742    :Autenticazione...
+STR_5743    :Connessione...
+STR_5744    :Risoluzione indirizzo...
+STR_5745    :Rilevata asincronia rete
 STR_5746    :Disconnesso
 STR_5747    :Disconnesso: {STRING}
-STR_5748    :Cacciato
+STR_5748    :Rimosso
 STR_5749    :Esci dal server!
-STR_5750    :Connessione Chiusa
+STR_5750    :Connessione chiusa
 STR_5751    :Nessun Dato
 STR_5752    :{OUTLINE}{RED}{STRING} si è disconnesso
 STR_5753    :{OUTLINE}{RED}{STRING} si è disconnesso ({STRING})
-STR_5754    :Nome Giocatore errato
-STR_5755    :Versione del Software errata (il Server usa {STRING})
-STR_5756    :Password Sbagliata
-STR_5757    :Server Pieno
+STR_5754    :Nome giocatore errato
+STR_5755    :Versione del software errata (il server usa {STRING})
+STR_5756    :Password errata
+STR_5757    :Server pieno
 STR_5758    :{OUTLINE}{GREEN}{STRING} è entrato in gioco
 STR_5759    :Scaricamento mappa ... ({INT32} / {INT32}) KiB
 STR_5760    :Dollari di Hong Kong (HK$)
-STR_5761    :Nuovi Dollari Taiwanesi (NT$)
-STR_5762    :Yuan Cinesi (CN{YEN})
+STR_5761    :Nuovi dollari taiwanesi (NT$)
+STR_5762    :Yuan cinesi (CN{YEN})
 STR_5763    :Tutti i file
-STR_5764    :Tipo di corsa non valida
-STR_5765    :Non puoi modificare attrazioni di tipologia errata
+STR_5764    :Tipo di attrazione non valida
+STR_5765    :Non è possibile modificare attrazioni non valide
 STR_5766    :<available string id>
-STR_5767    :Guadagno
+STR_5767    :Fatturato
 STR_5768    :Clienti totali
 STR_5769    :Profitto totale
 STR_5770    :Clienti all'ora
@@ -4091,11 +4091,11 @@ STR_5778    :Costruito: {COMMA16} anni fa
 STR_5779    :Guadagno: {CURRENCY2DP} all'ora
 STR_5780    :Costo mantenimento: {CURRENCY2DP} all'ora
 STR_5781    :Costo mantenimento: Sconosciuto
-STR_5782    :Ora sei connesso. Premi "{STRING}" per chattare.
+STR_5782    :Ora si è connessi. Premere "{STRING}" per chattare.
 STR_5783    :{WINDOW_COLOUR_2}Scenario bloccato
-STR_5784    :{BLACK}Completa gli scenari precedenti per sbloccare questo.
+STR_5784    :{BLACK}Completare gli scenari precedenti per sbloccare questo.
 STR_5785    :Impossibile rinominare il gruppo...
-STR_5786    :Nome di gruppo invalido
+STR_5786    :Nome di gruppo non valido
 STR_5787    :{COMMA32} giocatori connessi
 STR_5788    :Intervallo ispezioni predefinito:
 STR_5789    :Disattiva effetto fulmine
@@ -4120,8 +4120,8 @@ STR_5807    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Numero di negozi e chioschi: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLACK}{COMMA16}
 STR_5810    :Disabilita limite di lunghezza del treno
-STR_5811    :{SMALLFONT}{BLACK}Se selezionato, puoi avere{NEWLINE}255 macchine per treno
-STR_5812    :Mostra la finestra multiplayer
+STR_5811    :{SMALLFONT}{BLACK}Se selezionato, si possono avere{NEWLINE}255 macchine per treno
+STR_5812    :Mostra la finestra multigiocatore
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
@@ -4168,20 +4168,28 @@ STR_5854    :{SMALLFONT}{BLACK}Abilita/Disabilita le musiche delle attrazioni
 STR_5855    :{SMALLFONT}{BLACK}Imposta a tutto schermo, senza bordi della finestra{NEWLINE}o come finestra
 STR_5856    :{SMALLFONT}{BLACK}Imposta la risoluzione del gioco quando a tutto schermo
 STR_5857    :{SMALLFONT}{BLACK}Opzioni del gioco
-STR_5858    :{SMALLFONT}{BLACK}Usa la GPU per la grafica invece della CPU. Migliora la compatibilità con i software per catturare le schermate. Potrebbe diminuire le performance.
-STR_5859    :{SMALLFONT}{BLACK}Abilita l'interpolazione{NEWLINE}morbida durante il gioco. Quando disabilitato,{NEWLINE}il gioco funzionerà a 40 FPS.
+STR_5858    :{SMALLFONT}{BLACK}Usa la GPU per la grafica invece della CPU. Migliora la compatibilità con i programmi di cattura schermate. Potrebbe peggiorare le prestazioni.
+STR_5859    :{SMALLFONT}{BLACK}Attiva l'interpolazione dei fotogrammi{NEWLINE}per un gioco più fluido. Se disabilitato,{NEWLINE}il gioco sarà eseguito a 40 FPS.
+STR_5860    :Cambia tra il sistema di disegno dei tracciati originale e quello decompilato
 STR_5861    :Verifica chiave fallita
 STR_5862    :Blocca giocatori sconosciuti.
-STR_5863    :{SMALLFONT}{BLACK}Solo giocatori con chiavi conosciute possono loggarsi.
-STR_5864    :Questo server è abilitato solo i per giocatori whitelisted.
+STR_5863    :{SMALLFONT}{BLACK}Permetti solo ai giocatori con chiavi conosciute di unirsi.
+STR_5864    :Questo server è abilitato solo per i giocatori permessi.
 STR_5865    :Storico chat
-STR_5866    :{SMALLFONT}{BLACK}Salva i log della chat in un files nella tua cartella utente.
-STR_5867    :{WINDOW_COLOUR_2}Nome Provider: {BLACK}{STRING}
-STR_5868    :{WINDOW_COLOUR_2}E-mail Provider: {BLACK}{STRING}
-STR_5869    :{WINDOW_COLOUR_2}Sito Provider: {BLACK}{STRING}
+STR_5866    :{SMALLFONT}{BLACK}Salva i log della chat in un file nella propria cartella utente.
+STR_5867    :{WINDOW_COLOUR_2}Nome provider: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}E-mail provider: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Sito provider: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Mostra le informazioni del server
-STR_5871    :Le piante non invecchiano.
+STR_5871    :Le piante non invecchiano
 STR_5872    :{SMALLFONT}{BLACK}Disabilità l'invecchiamento delle piante.
+STR_5873    :Permetti catena di traino su tutti i pezzi del tracciato
+STR_5874    :{SMALLFONT}{BLACK}Permette di rendere qualsiasi pezzo del tracciato una catena di traino
+STR_5875    :Motore di rendering:
+STR_5876    :{SMALLFONT}{BLACK}Il motore usato per mostrare la grafica del gioco.
+STR_5877    :Software
+STR_5878    :Software (display hardware)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #
@@ -4302,77 +4310,77 @@ STR_DTLS    :Divertimento puro!
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Crea delle cascate in questo parco molto interessante
+STR_DTLS    :Sviluppa le cascate in un fiorente parco a tema
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Al centro di questo grande parco in sviluppo si trova una gigantesca montagna russa in acciaio con tre tracciati
+STR_DTLS    :Al centro di questo grande parco in sviluppo c'è un gigantesco ottovolante in acciaio a tre tracciati gareggianti
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :Questa miniera abbandonata ha già la stoffa di una attrazione turistica con la sua ferrovia in miniatura e un paio di montagne russe 
+STR_DTLS    :Questa miniera abbandonata ha già la stoffa di un'attrazione turistica con la sua ferrovia in miniatura e un paio di ottovolanti a caduta verticale
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :Un vecchio ponte è tuo e deve diventare un parco meraviglioso
+STR_DTLS    :Un vecchio ponte superfluo è pronto per essere trasformato in un parco a tema
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Trovandosi da ambo i lati di una autostrada, questo parco ha gia delle attrazioni operative
+STR_DTLS    :Un parco ai bordi di un'autostrada, con alcune attrazioni già operative
 
 <Haunted Harbor>
 STR_SCNR    :Haunted Harbor
 STR_PARK    :Haunted Harbor
-STR_DTLS    :L'ente locale ha accettato di vendere un terreno sul mare a buon mercat,o a condizione di preservare delle attrazioni
+STR_DTLS    :L'autorità locale ha accettato di svendere i terreni confinanti a questo piccolo parco sul mare, a condizione che alcune attrazioni vengano mantenute
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :Questo castello é tutto tuo pronto per diventare in un parco a tema
+STR_DTLS    :Un castello pronto per diventare un parco a tema
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :QUesto parco futuristico a molto spazio per nuove attrazioni con il suo panorama alieno
+STR_DTLS    :Questo parco futuristico dal tema alieno ha molto spazio per nuove attrazioni
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :La populazione locale preferisce attrazioni calme e rilassanti, quindi datti da fare per espandere il parco seguendo i loro gusti
+STR_DTLS    :La popolazione locale preferisce attrazioni tranquille e rilassanti, il tuo compito è di espandere il parco per soddisfarla
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Nella profondità della giungla c'é un'ampia area di terreno pronta a diventare un parco a tema
+STR_DTLS    :Nel profondo della giungla si trova una larga zona di terreno pronta per essere trasformata in un parco a tema
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :Una serie di laghi a scale sono la base di questo parco
+STR_DTLS    :Una serie di laghi a cascata sono la base per questo nuovo parco
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :Questo parco antico ha molte attrazione storiche ma é in rosso
+STR_DTLS    :Questo vecchio parco ha molte attrazioni storiche ma è in crisi finanziaria
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :Una grande area di terreno é stata pulita e pronta per diventare un parco a tema paesaggistico
+STR_DTLS    :Una larga area di terreno è stata appiattita e parzialmente tematizzata per essere trasformata in un parco a tema paesaggistico
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :Un fiorente fattoria fruttifera ha costruito una ferrovia per aumentare il suo reddito, il tuo compito è quello di sviluppare in un parco di divertimenti come si deve
+STR_DTLS    :Una fiorente fattoria ha costruito una ferrovia per aumentare il suo reddito, il tuo compito è quello di svilupparla in vero parco a tema
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :Questa area intorno una diga é pronta per te per diventare un parco di divertimenti spettacolare
+STR_DTLS    :Quest'area intorno a una diga è pronta per diventare un parco a tema
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
@@ -4392,7 +4400,7 @@ STR_DTLS    :The local authority won't allow you to build above tree height in t
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Sviluppa questo parco a tema romano aggiungendo attrazioni e montagne russe
+STR_DTLS    :Sviluppa questo parco a tema romano aggiungendo attrazioni e ottovolanti
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
@@ -4459,12 +4467,12 @@ STR_DTLS    :Questo ambizioso parco a tema è costituito da iceberg che creano u
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :Questa sfida di costruzione di montagne russe è ambientata presso un volcano addormentato
+STR_DTLS    :Questa sfida di costruzione di montagne russe è ambientata presso un vulcano addormentato
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Senza limiti finanziari, la tua sfida consiste in sviluppare questo parco deserto, mantenendo felici i tuoi visitatori
+STR_DTLS    :Senza limiti finanziari, la tua sfida consiste nello sviluppare questo parco deserto, mantenendo felici i tuoi visitatori
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
@@ -4559,22 +4567,22 @@ STR_DTLS    :An icy landscape needs turning into a thriving theme park
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :Un parco nel deserto con alcuni ottimi ottovolanti necessita di espansione
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :In questo piccolo parco devi finire cinque montagne russe preesistenti
+STR_DTLS    :In questo parco occorre completare la costruzione di cinque ottovolanti già esistenti
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :Un grande parco con un nuovo sistem adi trasporto lungo i confini
+STR_DTLS    :Un grande parco con un nuovo sistema di trasporto lungo i suoi confini
 
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :Questa grande isola è tutta tua pornta per diventare un parco bellissimo
+STR_DTLS    :Questa larga isola è pronta per essere sviluppata in un parco a tema
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
@@ -4633,4 +4641,4 @@ STR_DTLS    :
 [CONDORRD]
 STR_NAME    :Condor Ride
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 passeggeri per macchina
+STR_CPTY    :4 passeggeri per carrozza
