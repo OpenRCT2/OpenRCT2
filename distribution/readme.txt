@@ -69,7 +69,7 @@ following information in your bug report:
 3.0) Supported platforms
 ---- -------------------
 OpenRCT2 is currently supported on Windows Vista and above, many distributions of
-Linux and OSX 10.7. OpenRCT2 will only work on x86 architectures as the
+Linux and macOS 10.7. OpenRCT2 will only work on x86 architectures as the
 original RollerCoaster Tycoon 2 binary is still required to run the game.
 Further instructions can be found on GitHub.
 

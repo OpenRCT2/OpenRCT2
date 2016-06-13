@@ -31,7 +31,7 @@
 	#define OPENRCT2_PLATFORM		"Linux"
 #endif
 #ifdef __MACOSX__
-	#define OPENRCT2_PLATFORM		"OS X"
+	#define OPENRCT2_PLATFORM		"macOS"
 #endif
 #ifndef OPENRCT2_PLATFORM
 	#error Unknown platform!

@@ -199,7 +199,7 @@
 		D442723A1CC81B3200D84D28 /* staff.c in Sources */ = {isa = PBXBuildFile; fileRef = D442715E1CC81B3200D84D28 /* staff.c */; };
 		D442723B1CC81B3200D84D28 /* crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D44271611CC81B3200D84D28 /* crash.cpp */; };
 		D442723C1CC81B3200D84D28 /* linux.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271631CC81B3200D84D28 /* linux.c */; };
-		D442723D1CC81B3200D84D28 /* osx.m in Sources */ = {isa = PBXBuildFile; fileRef = D44271641CC81B3200D84D28 /* osx.m */; };
+		D442723D1CC81B3200D84D28 /* macos.m in Sources */ = {isa = PBXBuildFile; fileRef = D44271641CC81B3200D84D28 /* macos.m */; };
 		D442723E1CC81B3200D84D28 /* posix.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271661CC81B3200D84D28 /* posix.c */; };
 		D442723F1CC81B3200D84D28 /* shared.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271671CC81B3200D84D28 /* shared.c */; };
 		D44272401CC81B3200D84D28 /* windows.c in Sources */ = {isa = PBXBuildFile; fileRef = D44271681CC81B3200D84D28 /* windows.c */; };
@@ -639,7 +639,7 @@
 		D44271611CC81B3200D84D28 /* crash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crash.cpp; sourceTree = "<group>"; };
 		D44271621CC81B3200D84D28 /* crash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crash.h; sourceTree = "<group>"; };
 		D44271631CC81B3200D84D28 /* linux.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = linux.c; sourceTree = "<group>"; };
-		D44271641CC81B3200D84D28 /* osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = osx.m; sourceTree = "<group>"; };
+		D44271641CC81B3200D84D28 /* macos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = macos.m; sourceTree = "<group>"; };
 		D44271651CC81B3200D84D28 /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		D44271661CC81B3200D84D28 /* posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = posix.c; sourceTree = "<group>"; };
 		D44271671CC81B3200D84D28 /* shared.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shared.c; sourceTree = "<group>"; };
@@ -1469,7 +1469,7 @@
 				D44271611CC81B3200D84D28 /* crash.cpp */,
 				D44271621CC81B3200D84D28 /* crash.h */,
 				D44271631CC81B3200D84D28 /* linux.c */,
-				D44271641CC81B3200D84D28 /* osx.m */,
+				D44271641CC81B3200D84D28 /* macos.m */,
 				D44271651CC81B3200D84D28 /* platform.h */,
 				D44271661CC81B3200D84D28 /* posix.c */,
 				D44271671CC81B3200D84D28 /* shared.c */,
@@ -2326,7 +2326,7 @@
 				C6B5A7D51CDFE4CB00C9C006 /* S6Importer.cpp in Sources */,
 				D44272221CC81B3200D84D28 /* widget.c in Sources */,
 				D44271F71CC81B3200D84D28 /* mixer.cpp in Sources */,
-				D442723D1CC81B3200D84D28 /* osx.m in Sources */,
+				D442723D1CC81B3200D84D28 /* macos.m in Sources */,
 				D44271FF1CC81B3200D84D28 /* Console.cpp in Sources */,
 				D44272781CC81B3200D84D28 /* player.c in Sources */,
 				C686F9161CDBC3B7009F9BFC /* lay_down_roller_coaster.c in Sources */,
