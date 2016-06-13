@@ -14,13 +14,7 @@ if [[ ! -d build ]]; then
 fi
 
 if [[ $TARGET != "linux" && $TARGET != "docker32" && $SYSTEM != "Darwin" ]]; then
-	# keep in sync with version in install.sh
-	if [[ $SYSTEM == "Darwin" ]]; then
-		# keep in sync with version in Xcode project
-		sha256sum=a02f3708b880714888f0ddaaa2bf2ca22a866f894c983d0f8dbb3f7e1effe846
-	else
-		sha256sum=f124c954bbd0b58c93e5fba46902806bd3637d3a1c5fb8e4b67441052f182df2
-	fi
+	sha256sum=f124c954bbd0b58c93e5fba46902806bd3637d3a1c5fb8e4b67441052f182df2
 	libVFile="./libversion"
 	libdir="./lib"
 	currentversion=0
