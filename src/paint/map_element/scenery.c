@@ -106,8 +106,8 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 	}
 	// 6E007F:
 	boxlength.z = entry->small_scenery.height - 4;
-	if (boxlength.z < 0) {
-		boxlength.z = -128;
+	if (boxlength.z > 128) {
+		boxlength.z = 128;
 	}
 	if (entry->small_scenery.flags & SMALL_SCENERY_FLAG6) {
 		if (mapElement->properties.scenery.age >= 40) {
