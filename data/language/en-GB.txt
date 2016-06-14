@@ -942,8 +942,8 @@ STR_0936    :Park entrance in the way
 STR_0937    :{SMALLFONT}{BLACK}View options
 STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
 STR_0939    :Underground/Inside View
-STR_0940    :Remove Base Land
-STR_0941    :Remove Vertical Faces
+STR_0940    :Hide Base Land
+STR_0941    :Hide Vertical Faces
 STR_0942    :See-Through Rides
 STR_0943    :See-Through Scenery
 STR_0944    :Save
@@ -2506,8 +2506,8 @@ STR_2498    :Zoom view in
 STR_2499    :Rotate view clockwise
 STR_2500    :Rotate construction object
 STR_2501    :Underground view toggle
-STR_2502    :Remove base land toggle
-STR_2503    :Remove vertical land toggle
+STR_2502    :Hide base land toggle
+STR_2503    :Hide vertical land toggle
 STR_2504    :See-through rides toggle
 STR_2505    :See-through scenery toggle
 STR_2506    :Invisible supports toggle
