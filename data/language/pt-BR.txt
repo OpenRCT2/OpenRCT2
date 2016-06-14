@@ -4179,6 +4179,15 @@ STR_5867    :{WINDOW_COLOUR_2}Nome do Provedor: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail do Provedor: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Website do Provedor: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Mostra informações do servidor
+STR_5871    :Plantas não envelhecem
+STR_5872    :{SMALLFONT}{BLACK}Desabilita o envelhecimento das plantas para que elas não murchem.
+STR_5873    :Permitir corrente de elevação em todas as peças de pista
+STR_5874    :{SMALLFONT}{BLACK}Permite que qualquer parte da pista tenha corrente de elevação
+STR_5875    :Engine de desenho:
+STR_5876    :{SMALLFONT}{BLACK}Engine que será usada para desenhar o jogo.
+STR_5877    :Software
+STR_5878    :Software (exibição por hardware)
+STR_5879    :OpenGL
 
 #############
 # Scenarios #

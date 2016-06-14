@@ -839,16 +839,9 @@ STR_0834    :{SMALLFONT}{BLACK}Opciones de juego
 STR_0835    :Falló la inicialización del juego
 STR_0836    :No se ha podido iniciar el juego en estado minimizado
 STR_0837    :No se ha podido iniciar el sistema gráfico
-STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<not used anymore>
-STR_0842    :<not used anymore>
-STR_0843    :<not used anymore>
-STR_0844    :<not used anymore>
-STR_0845    :<not used anymore>
-STR_0846    :<not used anymore>
 STR_0847    :Sobre 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
@@ -892,7 +885,6 @@ STR_0886    :Salir del juego
 STR_0887    :Salir del editor de escenarios
 STR_0888    :Salir del editor de Montañas Rusas
 STR_0889    :Salir del editor de Vías
-STR_0890    :<removed string - do not use>
 STR_0891    :Tomar captura de pantalla
 STR_0892    :Captura de pantalla guardada como '{STRINGID}'
 STR_0893    :¡No se pudo tomar la Captura de pantalla!
@@ -1653,9 +1645,6 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}¡Ayuda! ¡Bájame!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}¡Me estoy quedando sin dinero!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}¡Wow! ¡Están construyendo una nueva atracción!{ENDQUOTES}
-# Two removed inside jokes about Intamin and Phoenix
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}... ¡y aquí estamos en {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensamientos recientes:
 STR_1655    :{SMALLFONT}{BLACK}Construir camino a nivel del suelo.
@@ -1895,10 +1884,6 @@ STR_1888    :{WINDOW_COLOUR_2}Tiempo desde la última inspección: {BLACK}más d
 STR_1889    :{WINDOW_COLOUR_2}Tiempo averiado: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Selecciona con qué frecuencia un mecánico debe inspeccionar esta atracción
 STR_1891    :¡Ningún {STRINGID} en el parque todavía!
-# The following two strings were used to display an error when the disc was missing.
-# This has been replaced in OpenRCT2.
-STR_1892    :<not used anymore>
-STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} vendidos: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Construir nueva atracción
 STR_1896    :{WINDOW_COLOUR_2}Gastos/Ingresos
@@ -2322,10 +2307,6 @@ STR_2313    :{WINDOW_COLOUR_2}Nivel de náuseas: {BLACK}{COMMA2DP32} (aprox.)
 STR_2314    :{WINDOW_COLOUR_2}Longitud de vía: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Coste: {BLACK}alrededor de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espacio requerido: {BLACK}{COMMA16} x {COMMA16} bloques
-STR_2317    :<not used anymore>
-STR_2318    :<not used anymore>
-STR_2319    :<not used anymore>
-STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Número de atracciones: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}m{SQUARED}
@@ -2442,12 +2423,6 @@ STR_2433    :{BLACK}Cupones para {STRINGID} gratis
 STR_2434    :{BLACK}Campaña de publicidad de {STRINGID}
 STR_2435    :{BLACK}Campaña de publicidad de {STRINGID}
 STR_2436    :1 semana
-STR_2437    :<not used anymore>
-STR_2438    :<not used anymore>
-STR_2439    :<not used anymore>
-STR_2440    :<not used anymore>
-STR_2441    :<not used anymore>
-STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Coste por semana: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Coste total: {BLACK}{CURRENCY2DP}
 STR_2445    :Lanzar esta campaña de márketing
@@ -2687,8 +2662,6 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :Investigación Completa
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa tu dinero en {CURRENCY}
-STR_2682    :<not used anymore>
-STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Llega un gran grupo de visitantes
 STR_2685    :Simplex Noise Parameters
 STR_2686    :{WINDOW_COLOUR_2}Bajo:
@@ -2767,10 +2740,7 @@ STR_2758    :Forzar tormenta
 STR_2759    :Zero Clearance
 # New strings used in the cheats window previously these were ???
 STR_2760    :+{CURRENCY}
-STR_2761    :<not used anymore>
-STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :<not used anymore>
 STR_2765    :Grupo de visitantes
 STR_2766    :Ganar escenario
 STR_2767    :Mantener clima
@@ -2976,8 +2946,6 @@ STR_2965    :{WINDOW_COLOUR_2}
 STR_2966    :
 STR_2967    :
 STR_2968    :
-STR_2969    :<not used anymore>
-STR_2970    :<not used anymore>
 STR_2971    :Esquema de color principal
 STR_2972    :Esquema de color alternativo 1
 STR_2973    :Esquema de color alternativo 2
@@ -3168,7 +3136,6 @@ STR_3157    :mapa
 STR_3158    :gráfica
 STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Selecciona el número de circuitos por paseo.
-STR_3161    :<not used anymore>
 STR_3162    :No se puede asignar memoria suficiente
 STR_3163    :Instalar nuevo dato: 
 STR_3164    :{BLACK}{COMMA16} seleccionados (máximo {COMMA16})
@@ -3344,7 +3311,6 @@ STR_3333    :Exportar complementos al guardar el juego
 STR_3334    :{SMALLFONT}{BLACK}Selecciona si los complementos adicionales (datos no distribuídos con el juego principal) utilizados en un escenario deben exportarse al guardar el juego, lo que permite que otros jugadores que no tengan esos complementos puedan abrirlo.
 STR_3335    :Diseñador de Montañas Rusas - Selecciona el tipo de Atracción y Vehículo
 STR_3336    :Gestor de Diseños de vías - Elige tipo de atracción 
-STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Recorrido personalizado
 STR_3339    :{BLACK}{COMMA16} diseño disponible, o recorrido personalizado
 STR_3340    :{BLACK}{COMMA16} diseños disponibles, o recorrido personalizado
@@ -3369,8 +3335,6 @@ STR_3358    :No se puede eliminar el diseño da vía...
 STR_3359    :{BLACK}Sin diseños de vías para esta atracción
 STR_3360    :¡Advertencia!
 STR_3361    :Demasiados diseños de vía - Algunos no se listarán.
-STR_3362    :<not used anymore>
-STR_3363    :<not used anymore>
 STR_3364    :Avanzado
 STR_3365    :{SMALLFONT}{BLACK}Permitir la selección de escenario además de grupos de escenarios.
 STR_3366    :{BLACK}= Atracción
@@ -3462,7 +3426,6 @@ STR_5120    :Finanzas
 STR_5121    :Investigación
 STR_5122    :Selecciona atracciones por tipo (como en RCT1)
 STR_5123    :Renueva atracciones
-STR_5124    :<not used anymore>
 STR_5125    :Todo editable
 STR_5126    :Música aleatoria
 STR_5127    :{SMALLFONT}{BLACK}Pintar el terreno en lugar de cambiar la elevación mientras se arrastra.
@@ -3832,7 +3795,6 @@ STR_5490    :Silenciar al perder el foco
 STR_5491    :Lista de inventos
 STR_5492    :Opciones de escenario
 STR_5493    :Enviar mensaje
-STR_5494    :<not used anymore>
 STR_5495    :Lista de jugadores
 STR_5496    :Jugador:
 STR_5497    :Ping:

@@ -79,7 +79,7 @@ STR_0074    :Monorail Cycles
 STR_0075    :Ottovolante invertito compatto
 STR_0076    :Attrazione acquatica
 STR_0077    :Ottovolante verticale ad aria
-STR_0078    :Inverted Hairpin Coaster
+STR_0078    :Ottovolante sottile invertito
 STR_0079    :Tappeto magico
 STR_0080    :Corsa sottomarina
 STR_0081    :River Rafts
@@ -591,7 +591,7 @@ STR_0586    :Carrozze a forma di barca viaggiano lungo l'ottovolante, caratteriz
 STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
 STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
 STR_0589    :
-STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0590    :I visitatori viaggiano in un sottomarino attraverso una percorso sottacqua
 STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :
 STR_0593    :
@@ -879,8 +879,8 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Troppo basso!!
-STR_0878    :Troppo alto!!
+STR_0877    :Troppo basso!
+STR_0878    :Troppo alto!
 STR_0879    :Non posso abbassare il terreno in questo punto...
 STR_0880    :Non posso innalzare il terreno in questo punto...
 STR_0881    :Un oggetto è d'intralcio
@@ -895,8 +895,8 @@ STR_0889    :Abbandona il programma di progettazione dei tracciati
 STR_0890    :<removed string - do not use>
 STR_0891    :Schermata
 STR_0892    :Schermata salvata su disco come '{STRINGID}'
-STR_0893    :Cattura della schermata fallita!!
-STR_0894    :Area dati per i paesaggi piena!!
+STR_0893    :Cattura della schermata fallita!
+STR_0894    :Area dati per i paesaggi piena!
 STR_0895    :Non si può costruire contemporaneamente sopra e sotto il livello del terreno
 STR_0896    :{POP16}{POP16}{STRINGID} Costruzione
 STR_0897    :Direzione
@@ -1028,16 +1028,16 @@ STR_1022    :{POP16}{POP16}{POP16}{COMMA16} carrozza per treno
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} carrozze per treno
 STR_1024    :{COMMA16} carrozza per treno
 STR_1025    :{COMMA16} carrozze per treno
-STR_1026    :Piattaforma della stazione troppo lunga!!
+STR_1026    :Piattaforma della stazione troppo lunga!
 STR_1027    :{SMALLFONT}{BLACK}Individualo nella visuale principale
-STR_1028    :Fuori dalla mappa!!
-STR_1029    :Non si può costruire contemporaneamente sopra e sotto l'acqua!!
-STR_1030    :Si può costruire solo sott'acqua!!
-STR_1031    :Non può essere costruito sott'acqua!!
-STR_1032    :Si può costruire solo sopra l'acqua!!
-STR_1033    :Si può costruire solo sopra il terreno!!
-STR_1034    :Si può costruire solo sul terreno!!
-STR_1035    :Le autorità locali non permetteranno la costruzione a un'altezza superiore alle cime degli alberi!!
+STR_1028    :Fuori dalla mappa!
+STR_1029    :Non si può costruire contemporaneamente sopra e sotto l'acqua!
+STR_1030    :Si può costruire solo sott'acqua!
+STR_1031    :Non può essere costruito sott'acqua!
+STR_1032    :Si può costruire solo sopra l'acqua!
+STR_1033    :Si può costruire solo sopra il terreno!
+STR_1034    :Si può costruire solo sul terreno!
+STR_1035    :Le autorità locali non permetteranno la costruzione a un'altezza superiore alle cime degli alberi!
 STR_1036    :Carica una partita
 STR_1037    :Carica un paesaggio
 STR_1038    :Converti la partita salvata in uno scenario
@@ -1182,7 +1182,7 @@ STR_1176    :Impossibile costruire un sentiero in questo punto...
 STR_1177    :Impossibile cancellare il sentiero da questo punto...
 STR_1178    :Pendenza del terreno inadatta
 STR_1179    :Un sentiero è d'intralcio
-STR_1180    :Impossibile costruirlo sott'acqua!!
+STR_1180    :Impossibile costruirlo sott'acqua!
 STR_1181    :Sentieri
 STR_1182    :Tipo
 STR_1183    :Direzione
@@ -1200,7 +1200,7 @@ STR_1194    :Chiuso
 STR_1195    :Giro di prova
 STR_1196    :Aperto
 STR_1197    :Guasto
-STR_1198    :Schiantato!!
+STR_1198    :Schiantato!
 STR_1199    :{COMMA16} persona a bordo
 STR_1200    :{COMMA16} persone a bordo
 STR_1201    :Niente fila
@@ -1365,8 +1365,8 @@ STR_1359    :{WINDOW_COLOUR_2}Tempo d'attesa: {BLACK}{COMMA16} minuti.
 STR_1360    :{WINDOW_COLOUR_2}Tempo d'attesa: {BLACK}{COMMA16} minuti.
 STR_1361    :Impossibile cambiare la velocità...
 STR_1362    :Impossibile cambiare la velocità di lancio...
-STR_1363    :Troppo in alto per i supporti!!
-STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!!
+STR_1363    :Troppo in alto per i supporti!
+STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!
 STR_1365    :Curva in-linea (sx)
 STR_1366    :Curva in-linea (dx)
 STR_1367    :Mezzo giro della morte
@@ -1497,8 +1497,8 @@ STR_1491    :{SMALLFONT}{OPENQUOTES}Ho già: {STRINGID}{ENDQUOTES}
 STR_1492    :{SMALLFONT}{OPENQUOTES}Non posso permettermi: {STRINGID}{ENDQUOTES}
 STR_1493    :{SMALLFONT}{OPENQUOTES}Non ho fame{ENDQUOTES}
 STR_1494    :{SMALLFONT}{OPENQUOTES}Non ho sete{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Aiuto!! Sto annegando!!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}Mi sono perso!!{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}Aiuto!!! Sto annegando!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}Mi sono perso!{ENDQUOTES}
 STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} è stato divertentissimo{ENDQUOTES}
 STR_1498    :{SMALLFONT}{OPENQUOTES}Sono in fila per {STRINGID} da secoli{ENDQUOTES}
 STR_1499    :{SMALLFONT}{OPENQUOTES}Sono stanco{ENDQUOTES}
@@ -1552,7 +1552,7 @@ STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!!{ENDQUOTES}
+STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}Ho la strana sensazione che qualcuno mi stia osservando{ENDQUOTES}
 STR_1552    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un palloncino da {STRINGID}{ENDQUOTES}
 STR_1553    :{SMALLFONT}{OPENQUOTES}Non pagherò quella cifra per un peluche da {STRINGID}{ENDQUOTES}
@@ -1650,13 +1650,13 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Aiuto!! Voglio scendere!!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}Sto finendo i soldi!!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow!! Presto ci sarà una nuova attrazione!!{ENDQUOTES}
+STR_1648    :{SMALLFONT}{OPENQUOTES}Aiuto! Voglio scendere!{ENDQUOTES}
+STR_1649    :{SMALLFONT}{OPENQUOTES}Sto finendo i soldi!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Presto ci sarà una nuova attrazione!{ENDQUOTES}
 # Two removed inside jokes about Intamin and Phoenix
 STR_1651    :<removed string - do not use>
 STR_1652    :<removed string - do not use>
-STR_1653    :{SMALLFONT}{OPENQUOTES}...e qui siamo su {STRINGID}!!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...e qui siamo su {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensieri più recenti:
 STR_1655    :{SMALLFONT}{BLACK}Costruisci un sentiero sul terreno
 STR_1656    :{SMALLFONT}{BLACK}Costruisci un ponte o una galleria
@@ -1729,10 +1729,10 @@ STR_1722    :Parco aperto
 STR_1723    :Impossibile aprire il parco...
 STR_1724    :Impossibile chiudere il parco...
 STR_1725    :Impossibile comprare il terreno...
-STR_1726    :Il terreno non è in vendita!!
-STR_1727    :I diritti di costruzione non sono in vendita!!
+STR_1726    :Il terreno non è in vendita!
+STR_1727    :I diritti di costruzione non sono in vendita!
 STR_1728    :Impossibile comprare i diritti di costruzione qui...
-STR_1729    :Questo terreno non è di proprietà del parco!!
+STR_1729    :Questo terreno non è di proprietà del parco!
 STR_1730    :{RED}Chiuso - - 
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Costruisci
@@ -1744,7 +1744,7 @@ STR_1737    :{COMMA16}
 STR_1738    :Impossibile cambiare il numero di giri...
 STR_1739    :Corsa vinta dal visitatore {INT32}
 STR_1740    :Corsa vinta da {STRINGID}
-STR_1741    :Ancora non è costruito!!
+STR_1741    :Ancora non è costruito!
 STR_1742    :{WINDOW_COLOUR_2}Max. persone a bordo:
 STR_1743    :{SMALLFONT}{BLACK}Numero massimo di persone che possono salire contemporaneamente su quest'attrazione
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1894,7 +1894,7 @@ STR_1887    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}{COMMA16} minu
 STR_1888    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}più di 4 ore
 STR_1889    :{WINDOW_COLOUR_2}Tempi morti: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Scegli la frequenza con cui un meccanico deve controllare quest'attrazione
-STR_1891    :Ancora non ci sono {STRINGID} nel parco!!
+STR_1891    :Ancora non ci sono {STRINGID} nel parco!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1892    :<not used anymore>
@@ -1923,9 +1923,9 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Prestito:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :La banca non concede ulteriori prestiti!!
-STR_1919    :Fondi insufficienti!!
-STR_1920    :Il prestito non può essere restituito!!
+STR_1918    :La banca non concede ulteriori prestiti!
+STR_1919    :Fondi insufficienti!
+STR_1920    :Il prestito non può essere restituito!
 STR_1921    :{SMALLFONT}{BLACK}Inizia una nuova partita
 STR_1922    :{SMALLFONT}{BLACK}Continua a giocare alla partita salvata
 STR_1923    :{SMALLFONT}{BLACK}Mostra l'esercitazione
@@ -1933,7 +1933,7 @@ STR_1924    :{SMALLFONT}{BLACK}Esci
 STR_1925    :Impossibile collocare una persona qui...
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} si è guastato/a
-STR_1928    :{RED}{STRINGID} ha avuto un incidente!!
+STR_1928    :{RED}{STRINGID} ha avuto un incidente!
 STR_1929    :{RED}{STRINGID} ancora non è stato riparato{NEWLINE}Guarda dove si trovano i tuoi meccanici e prendi in considerazione l'idea di organizzarli meglio
 STR_1930    :{SMALLFONT}{BLACK}Attiva/disattiva le informazioni in tempo reale su questo visitatore - (se l'opzione è attivata, i movimenti del visitatore saranno visualizzati nell'area messaggi)
 STR_1931    :{STRINGID} è in fila d'attesa per {STRINGID}
@@ -2219,11 +2219,11 @@ STR_2210    :{SMALLFONT}{BLACK}Mostra la lista dei tuttofare del parco
 STR_2211    :{SMALLFONT}{BLACK}Mostra la lista dei meccanici del parco
 STR_2212    :{SMALLFONT}{BLACK}Mostra la lista dei vigilanti del parco
 STR_2213    :{SMALLFONT}{BLACK}Mostra la lista degli intrattenitori del parco
-STR_2214    :Non è possibile costruire quando il gioco è in pausa!!
+STR_2214    :Non è possibile costruire quando il gioco è in pausa!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
-STR_2218    :{RED}{STRINGID} sull'attrazione {STRINGID} non ha ancora fatto ritorno presso: {STRINGID} !!{NEWLINE}Controlla se si è bloccato o se è entrato in stallo
+STR_2218    :{RED}{STRINGID} sull'attrazione {STRINGID} non ha ancora fatto ritorno presso: {STRINGID}!{NEWLINE}Controlla se si è bloccato o se è entrato in stallo
 STR_2219    :{RED}{COMMA16} persone sono rimaste uccise in un incidente su {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valutazione del parco: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valutazione del parco: {COMMA16}
@@ -2256,8 +2256,8 @@ STR_2247    :Dicembre
 STR_2248    :Impossibile demolire l'attrazione...
 STR_2249    :{BABYBLUE}È disponibile una nuova attrazione: {NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}È disponibile un nuovo scenario/tema: {NEWLINE}{STRINGID}
-STR_2251    :Può essere costruito solo su un percorso!!
-STR_2252    :Può essere costruito solo attraverso un percorso!!
+STR_2251    :Può essere costruito solo su un percorso!
+STR_2252    :Può essere costruito solo attraverso un percorso!
 STR_2253    :Attrazioni di trasporto
 STR_2254    :Attrazioni tranquille
 STR_2255    :Ottovolanti
@@ -2338,7 +2338,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distanza e velocità:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Indicazioni altezza:
 STR_2332    :Unità
-STR_2333    :Impostazioni Audio
+STR_2333    :Impostazioni audio
 STR_2334    :Sterline ({POUND})
 STR_2335    :Dollari ($)
 STR_2336    :Franchi (F)
@@ -2352,7 +2352,7 @@ STR_2343    :Euro ({EURO})
 STR_2344    :Imperiale
 STR_2345    :Metrico
 STR_2346    :Video
-STR_2347    :{RED}{STRINGID} è annegato!!
+STR_2347    :{RED}{STRINGID} è annegato!
 STR_2348    :{SMALLFONT}{BLACK}Mostra le statistiche di questo dipendente
 STR_2349    :{WINDOW_COLOUR_2}Stipendio: {BLACK}{CURRENCY} al mese
 STR_2350    :{WINDOW_COLOUR_2}Assunto: {BLACK}{MONTHYEAR}
@@ -2370,7 +2370,7 @@ STR_2361    :Addolcimento del paesaggio
 STR_2362    :{SMALLFONT}{BLACK}Attiva/disattiva l'addolcimento degli spigoli delle mattonelle del paesaggio
 STR_2363    :Griglia sovrapposta al paesaggio
 STR_2364    :{SMALLFONT}{BLACK}Attiva/disattiva la griglia sovrapposta al paesaggio
-STR_2365    :La banca si è rifiutata di concederti altri prestiti!!
+STR_2365    :La banca si rifiuta di concedere altri prestiti!
 STR_2366    :Celsius ({DEGREE}C)
 STR_2367    :Fahrenheit ({DEGREE}F)
 STR_2368    :Nessuno
@@ -2393,10 +2393,10 @@ STR_2384    :{WINDOW_COLOUR_2}Il tuo obiettivo:
 STR_2385    :{BLACK}Nessuno
 STR_2386    :{BLACK}Avere almeno {COMMA16} visitatori nel parco entro la fine di {MONTHYEAR}, con una valutazione del parco di almeno 600
 STR_2387    :{BLACK}Far raggiungere al parco un valore di almeno {POP16}{POP16}{CURRENCY} entro la fine di  {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
-STR_2388    :{BLACK}Divertitevii!!
-STR_2389    :{BLACK}Costruisci il migliore {STRINGID} che puoi!!
+STR_2388    :{BLACK}Divertirsi!
+STR_2389    :{BLACK}Costruire il migliore {STRINGID} si possa!
 STR_2390    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno con un livello di divertimento di almeno 6.00
-STR_2391    :{BLACK}Avere almeno {COMMA16} visitatori nel parco. E non devi mai avere una valutazione del parco inferiore a 700!!
+STR_2391    :{BLACK}Avere almeno {COMMA16} visitatori nel parco. E non devi mai avere una valutazione del parco inferiore a 700!
 STR_2392    :{BLACK}Incassare mensilmente tramite i biglietti delle attrazioni almeno {POP16}{POP16}{CURRENCY}
 STR_2393    :{BLACK}Avere 10 tipi diversi di ottovolante nel parco, ognuno della lunghezza minima di {LENGTH} e un livello di divertimento di almeno 7.00
 STR_2394    :{BLACK}Finire di costruire tutti e cinque gli ottovolanti parzialmente costruiti in questo parco, facendo loro raggiungere un livello di divertimento di almeno {POP16}{POP16}{COMMA2DP32} ciascuno
@@ -2794,17 +2794,17 @@ STR_2784    :Modifica la scorciatoia
 STR_2785    :{WINDOW_COLOUR_2}Premi il nuovo tasto-scorciatoia per : {NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2786    :{SMALLFONT}{BLACK}Clicca sulla descrizione della scorciatoia per selezionare un nuovo tasto
 STR_2787    :{WINDOW_COLOUR_2}Valore del parco: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}Congratulazioni!!{NEWLINE}{BLACK}Hai raggiunto il tuo obiettivo: una società del valore di {CURRENCY} !!
-STR_2789    :{WINDOW_COLOUR_2}Non hai raggiunto il tuo obiettivo!!
-STR_2790    :Digita il tuo nome in classifica
-STR_2791    :Digita il tuo nome
-STR_2792    :Digita il tuo nome per la classifica degli scenari:
+STR_2788    :{WINDOW_COLOUR_2}Congratulazioni!{NEWLINE}{BLACK}Hai raggiunto il tuo obiettivo: una società del valore di {CURRENCY}!
+STR_2789    :{WINDOW_COLOUR_2}Non hai raggiunto il tuo obiettivo!
+STR_2790    :Inserimento nome nella classifica scenari
+STR_2791    :Inserire il nome
+STR_2792    :Digitare il proprio nome per la classifica degli scenari:
 STR_2793    :{SMALLFONT}(Completato da {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completato da: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} con un valore societario di: {BLACK}{CURRENCY}
 STR_2795    :Ordina
 STR_2796    :{SMALLFONT}{BLACK}Ordina la lista delle attrazioni secondo il tipo di informazioni visualizzate
-STR_2797    :Scorri lo schermo col puntatore sul bordo
-STR_2798    :{SMALLFONT}{BLACK}Seleziona se vuoi che lo schermo scorra quando il puntatore si trova ai bordi dello schermo
+STR_2797    :Sposta la visuale con il puntatore sui bordi
+STR_2798    :{SMALLFONT}{BLACK}Sposta la visuale quando il puntatore tocca i bordi dello schermo
 STR_2799    :{SMALLFONT}{BLACK}Vedi o modifica le funzioni di comando dei tasti
 STR_2800    :{WINDOW_COLOUR_2}Ingressi totali: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Entrate dagli ingressi: {BLACK}{CURRENCY2DP}
@@ -2819,7 +2819,7 @@ STR_2809    :{RED}I visitatori hanno fame e non riescono a trovare un posto dove
 STR_2810    :{RED}I visitatori hanno sete e non riescono a trovare un posto dove comprare delle bevande
 STR_2811    :{RED}I visitatori si lamentano perché non riescono a trovare dei servizi igienici nel parco
 STR_2812    :{RED}I visitatori si perdono e rimangono bloccati{NEWLINE}Controlla se è il caso di migliorare la disposizione dei sentieri per aiutare i tuoi visitatori a orientarsi più facilmente
-STR_2813    :{RED}Il prezzo del biglietto d'ingresso per il parco è troppo alto!!{NEWLINE}Riduci il prezzo del biglietto o fai in modo di aumentare il valore del parco per attrarre più visitatori
+STR_2813    :{RED}Il prezzo del biglietto d'ingresso per il parco è troppo alto!{NEWLINE}Riduci il prezzo del biglietto o fai in modo di aumentare il valore del parco per attrarre più visitatori
 STR_2814    :{WINDOW_COLOUR_2}Premio parco più sporco
 STR_2815    :{WINDOW_COLOUR_2}Premio parco più pulito
 STR_2816    :{WINDOW_COLOUR_2}Premio parco con il miglior ottovolante
@@ -2837,31 +2837,31 @@ STR_2827    :{WINDOW_COLOUR_2}Premio migliori attrazioni personalizzate
 STR_2828    :{WINDOW_COLOUR_2}Premio colori più sgargianti
 STR_2829    :{WINDOW_COLOUR_2}Premio parco più confuso
 STR_2830    :{WINDOW_COLOUR_2}Premio migliori attrazioni tranquille
-STR_2831    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più sporco del paese'!!
-STR_2832    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più pulito del paese'!!
-STR_2833    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con i migliori ottovolanti'!!
-STR_2834    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Miglior parco del paese'!!
-STR_2835    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più bello del paese'!!
-STR_2836    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Peggior parco del paese'!!
-STR_2837    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più sicuro del paese'!!
-STR_2838    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con il miglior personale'!!
-STR_2839    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con il miglior cibo in tutto il paese'!!
-STR_2840    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con il peggior cibo in tutto il paese'!!
-STR_2841    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con i migliori servizi igienici in tutto il paese'!!
-STR_2842    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più deludente del paese'!!
-STR_2843    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con le migliori attrazioni acquatiche del paese'!!
-STR_2844    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con le migliori attrazioni personalizzate del paese'!!
-STR_2845    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con i colori più sconvolgenti di tutto paese'!!
-STR_2846    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco più confuso'!!
-STR_2847    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il 'Parco con le migliori attrazioni tranquille del paese'!!
+STR_2831    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco più sporco del paese"!
+STR_2832    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco più pulito del paese"!
+STR_2833    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con i migliori ottovolanti"!
+STR_2834    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Miglior parco del paese"!
+STR_2835    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco più bello del paese"!
+STR_2836    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Peggior parco del paese"!
+STR_2837    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco più sicuro del paese"!
+STR_2838    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con il miglior personale"!
+STR_2839    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con il miglior cibo in tutto il paese"!
+STR_2840    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con il peggior cibo in tutto il paese"!
+STR_2841    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con i migliori servizi igienici in tutto il paese"!
+STR_2842    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco più deludente del paese"!
+STR_2843    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con le migliori attrazioni acquatiche del paese"!
+STR_2844    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con le migliori attrazioni personalizzate del paese"!
+STR_2845    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con i colori più sconvolgenti di tutto paese"!
+STR_2846    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco più confuso"!
+STR_2847    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il "Parco con le migliori attrazioni tranquille del paese"!
 STR_2848    :{WINDOW_COLOUR_2}Nessun premio di recente
 STR_2849    :Installazione del nuovo scenario eseguita correttamente
 STR_2850    :Installazione del nuovo progetto di tracciato eseguita correttamente
 STR_2851    :Scenario già installato
 STR_2852    :Progetto di tracciato già installato
-STR_2853    :Vietato dalle autorità locali!!
+STR_2853    :Vietato dalle autorità locali!
 STR_2854    :{RED}I visitatori non riescono a raggiungere l'entrata a {STRINGID} !{NEWLINE}Costruisci un percorso fino all'entrata
-STR_2855    :{RED}{STRINGID} non è dotato di un percorso alla sua uscita!!{NEWLINE}Costruisci un percorso che parta dall'uscita dell'attrazione
+STR_2855    :{RED}{STRINGID} non è dotato di un percorso alla sua uscita!{NEWLINE}Costruisci un percorso che parta dall'uscita dell'attrazione
 STR_2856    :{WINDOW_COLOUR_2}Esercitazione
 STR_2857    :{WINDOW_COLOUR_2}(Premi un tasto o un pulsante del mouse per assumere il controllo)
 STR_2858    :Impossibile avviare la campagna di marketing...
@@ -3079,11 +3079,11 @@ STR_3069    :Sezione superiore
 STR_3070    :Pendio a livellare
 STR_3071    :{WINDOW_COLOUR_2}Stesso prezzo in tutto il parco
 STR_3072    :{SMALLFONT}{BLACK}Scegli se imporre questo prezzo in tutto il parco
-STR_3073    :{RED}ATTENZIONE: La valutazione del parco è scesa sotto!!{NEWLINE}Se non farai alzare il punteggio entro 4 settimane, il parco verrà fatto chiudere
-STR_3074    :{RED}ATTENZIONE: La valutazione del parco è ancora sotto 700!!{NEWLINE}Hai ancora 3 settimane per rimediare
-STR_3075    :{RED}ATTENZIONE: La valutazione del parco è sempre sotto 700!!{NEWLINE}Hai appena 2 settimane per alzare il punteggio, poi il parco verrà fatto chiudere
-STR_3076    :{RED}ULTIMO AVVERTIMENTO: La valutazione del parco è rimasta sotto 700!!{NEWLINE}Hai 7 giorni di tempo, poi il parco verrà fatto chiudere se il punteggio non tornerà sopra 700
-STR_3077    :{RED}AVVISO DI CHIUSURA: Hanno fatto chiudere il tuo parco!!
+STR_3073    :{RED}ATTENZIONE: La valutazione del parco è scesa sotto!{NEWLINE}Se non farai alzare il punteggio entro 4 settimane, il parco verrà fatto chiudere
+STR_3074    :{RED}ATTENZIONE: La valutazione del parco è ancora sotto a 700!{NEWLINE}Hai ancora 3 settimane per rimediare
+STR_3075    :{RED}ATTENZIONE: La valutazione del parco è sempre sotto a 700!{NEWLINE}Hai soltanto 2 settimane per alzare il punteggio, poi il parco verrà fatto chiudere
+STR_3076    :{RED}ULTIMO AVVERTIMENTO: La valutazione del parco è rimasta sotto 700!{NEWLINE}Hai 7 giorni di tempo, poi il parco verrà fatto chiudere se il punteggio non tornerà sopra a 700
+STR_3077    :{RED}AVVISO DI CHIUSURA: Hanno fatto chiudere il tuo parco!
 STR_3078    :Entrata semplice
 STR_3079    :Entrata di legno
 STR_3080    :Entrata a tenda
@@ -3097,8 +3097,8 @@ STR_3087    :Entrata nevosa/ghiacciata
 STR_3088    :Entrata a pagoda
 STR_3089    :Entrata spaziale
 STR_3090    :{SMALLFONT}{BLACK}Scegli lo stile dell'entrata, dell'uscita e della stazione
-STR_3091    :Non ti è permesso cancellare questa sezione!!
-STR_3092    :Non ti è permesso spostare o modificare la stazione di quest'attrazione!!
+STR_3091    :Non ti è permesso cancellare questa sezione!
+STR_3092    :Non ti è permesso spostare o modificare la stazione di quest'attrazione!
 STR_3093    :{WINDOW_COLOUR_2}Preferito: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Vel. catena di traino:
@@ -3233,7 +3233,7 @@ STR_3223    :{SMALLFONT}{BLACK}Il terreno potrà essere comprato dal parco
 STR_3224    :{SMALLFONT}{BLACK}I diritti di costruzione potranno essere comprati dal parco
 STR_3225    :{SMALLFONT}{BLACK}Attiva/disattiva la costruzione casuale di un gruppo di oggetti intorno alla punto selezionato
 STR_3226    :{SMALLFONT}{BLACK}Costruisci l'entrata del parco
-STR_3227    :Ci sono troppe entrate per il parco!!
+STR_3227    :Ci sono troppe entrate per il parco!
 STR_3228    :{SMALLFONT}{BLACK}Fissa le posizioni iniziali delle persone
 STR_3229    :I freni di blocco non possono essere usati immediatamente dopo la stazione
 STR_3230    :I freni di blocco non possono essere usati l'uno immediatamente dopo l'altro
@@ -3254,14 +3254,14 @@ STR_3244    :Vieta le campagne di marketing
 STR_3245    :{SMALLFONT}{BLACK}Vieta la pubblicità, le campagne promozionali e le altre campagne di marketing
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
-STR_3248    :Impossibile aumentare ulteriormente il denaro iniziale!!
-STR_3249    :Impossibile ridurre ulteriormente il denaro iniziale!!
-STR_3250    :Impossibile aumentare ulteriormente il prestito iniziale!!
-STR_3251    :Impossibile ridurre ulteriormente il prestito iniziale!!
-STR_3252    :Impossibile aumentare ulteriormente il prestito massimo!!
-STR_3253    :Impossibile ridurre ulteriormente il prestito massimo!!
-STR_3254    :Impossibile aumentare ulteriormente il tasso d'interessi!!
-STR_3255    :Impossibile ridurre ulteriormente il tasso d'interessi!!
+STR_3248    :Impossibile aumentare ulteriormente il denaro iniziale!
+STR_3249    :Impossibile ridurre ulteriormente il denaro iniziale!
+STR_3250    :Impossibile aumentare ulteriormente il prestito iniziale!
+STR_3251    :Impossibile ridurre ulteriormente il prestito iniziale!
+STR_3252    :Impossibile aumentare ulteriormente il prestito massimo!
+STR_3253    :Impossibile ridurre ulteriormente il prestito massimo!
+STR_3254    :Impossibile aumentare ulteriormente il tasso d'interessi!
+STR_3255    :Impossibile ridurre ulteriormente il tasso d'interessi!
 STR_3256    :Attrazioni meno intense preferite
 STR_3257    :{SMALLFONT}{BLACK}Stabilisci se i visitatori in generale dovrebbero preferire solo le attrazioni meno intense
 STR_3258    :Attrazioni più intense preferite
@@ -3270,8 +3270,8 @@ STR_3260    :{WINDOW_COLOUR_2}Denaro per visitatore (media):
 STR_3261    :{WINDOW_COLOUR_2}Felicità iniziale visitat.:
 STR_3262    :{WINDOW_COLOUR_2}Fame iniziale visitat.:
 STR_3263    :{WINDOW_COLOUR_2}Sete iniziale visitat.:
-STR_3264    :Impossibile aumentarlo ulteriormente!!
-STR_3265    :Impossibile ridurlo ulteriormente!!
+STR_3264    :Impossibile aumentarlo ulteriormente!
+STR_3265    :Impossibile ridurlo ulteriormente!
 STR_3266    :{SMALLFONT}{BLACK}Stabilisci il prezzo dell'ingresso e delle attrazioni
 STR_3267    :Vieta la rimozione degli alberi
 STR_3268    :{SMALLFONT}{BLACK}Vieta la rimozione degli alberi alti
@@ -3380,7 +3380,7 @@ STR_3370    :{BLACK}= Chiosco inform.
 STR_3371    :{BLACK}= Pronto soccorso
 STR_3372    :{BLACK}= A.T.M.
 STR_3373    :{BLACK}= Servizi igien.
-STR_3374    :Attenzione: hai selezionato troppi oggetti!!
+STR_3374    :Attenzione: hai selezionato troppi oggetti!
 STR_3375    :Non è stato possibile selezionare tutti gli oggetti di questo gruppo di scenari
 STR_3376    :Installa un nuovo progetto di tracciato...
 STR_3377    :{SMALLFONT}{BLACK}Installa un nuovo file di progetti di tracciato
@@ -3429,7 +3429,7 @@ STR_3418    :{SMALLFONT}{BLACK}La nostra nuova attrazione non è molto eccitante
 STR_3419    :{SMALLFONT}{BLACK}Per costruire uno scenario sopra un altro scenario o a mezz'aria, tieni premuto SHIFT e sposta il mouse per selezionare l'altezza...
 STR_3420    :{SMALLFONT}{BLACK}Alcuni tipi di scenario possono essere ridipinti dopo che li si è costruiti...
 STR_3421    :{SMALLFONT}{BLACK}Aggiungiamo della musica all'attrazione...
-STR_3422    :{SMALLFONT}{BLACK}Costruiamo un ottovolante!!
+STR_3422    :{SMALLFONT}{BLACK}Costruiamo un ottovolante!
 STR_3423    :{SMALLFONT}{BLACK}Ci sono parecchi ottovolanti già progettati, ma ora noi ne cotruiremo uno personalizzato...
 STR_3424    :{SMALLFONT}{BLACK}Ecco costruita la piattaforma della stazione. Ora dobbiamo costruire una salita di traino...
 STR_3425    :{SMALLFONT}{BLACK}I treni degli ottovolanti non hanno un motore, per cui è necessaria una 'catena da traino' per far salire il treno sulla prima salita...
@@ -3441,7 +3441,7 @@ STR_3430    :{SMALLFONT}{BLACK}Per far sì che il treno possa arrivare fino alla
 STR_3431    :{SMALLFONT}{BLACK}Così va meglio - ora il nostro treno dovrebbe farcela! Ora proviamo con un tracciato più contorto...
 STR_3432    :{SMALLFONT}{BLACK}Dovremo rallentare la corsa del treno prima dell'ultima curva e della stazione, per cui aggiungiamo dei freni...
 STR_3433    :{SMALLFONT}{BLACK}E infine aggiungeremo i 'freni di blocco', che permettono a due treni di operare nel circuito con maggior sicurezza...
-STR_3434    :{SMALLFONT}{BLACK}Ora proviamo l'attrazione e vediamo se funziona!!
+STR_3434    :{SMALLFONT}{BLACK}Ora proviamo l'attrazione e vediamo se funziona!
 STR_3435    :{SMALLFONT}{BLACK}Fantastico - ha funzionato! Ora aggiungiamo i sentieri e facciamo accomodare i visitatori sul nostro nuovo ottovolante...
 STR_3436    :{SMALLFONT}{BLACK}Mentre aspettiamo i nostri primi passeggeri, potremmo personalizzare un po' l'attrazione...
 # End of tutorial strings
@@ -3505,9 +3505,9 @@ STR_5162    :Giorno/Mese/Anno
 STR_5163    :Mese/Giorno/Anno
 STR_5164    :Nome canale Twitch
 STR_5165    :Nomina i visitatori come i follower
-STR_5166    :{SMALLFONT}{BLACK}I visitatori del parco hanno i nomi dei follower su Twitch
+STR_5166    :{SMALLFONT}{BLACK}Nomina i visitatori come i follower{NEWLINE}del proprio canale Twitch
 STR_5167    :Segui i visitatori follower
-STR_5168    :{SMALLFONT}{BLACK}Attiva informazioni per seguire i visitatori che si chiamano come i follower su Twitch
+STR_5168    :{SMALLFONT}{BLACK}Segui i visitatori che si chiamano come i follower su Twitch
 STR_5169    :Nomina i visitatori come gli utenti in chat su Twitch
 STR_5170    :{SMALLFONT}{BLACK}I visitatori del parco hanno i nomi degli utenti in chat su Twitch
 STR_5171    :Segui i visitatori della chat
@@ -3782,7 +3782,7 @@ STR_5437    :Nessun salvataggio selezionato
 STR_5438    :Non puoi fare modifiche mentre l'editor dei comandi è aperto
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimizza la schermata a tutto quando si perde il focus
-STR_5441    :{SMALLFONT}{BLACK}Identifica per tipologia,{NEWLINE}i veicoli possono essere diversi{NEWLINE}, come in RCT1.
+STR_5441    :{SMALLFONT}{BLACK}Identifica le attrazioni in base al percorso{NEWLINE}in modo che si possano sostituirne successivamente{NEWLINE}i veicoli (come in RCT1)
 STR_5442    :Voto del parco:
 STR_5443    :Velocità{MOVE_X}{87}{STRINGID}
 STR_5444    :Velocità:
@@ -3846,67 +3846,67 @@ STR_5501    :Avvia Server
 STR_5502    :Multiplayer
 STR_5503    :Inserisci hostname o indirizzo IP:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
-STR_5505    :Connessione al server non possibile.
+STR_5505    :Impossibile connettersi al server.
 STR_5506    :I visitatori ignorano l'intensità
-STR_5507    :Il tuttofare taglia l'erba di default
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :{SMALLFONT}{BLACK}Permetti il caricamenti di scenari e salvataggi{NEWLINE}che hanno un checksum errato,{NEWLINE}come gli scenari del demo{NEWLINE}o salvataggi danneggiati.
+STR_5507    :Il tuttofare taglia l'erba in modo predefinito
+STR_5508    :Permetti caricamento file con checksum errato
+STR_5509    :{SMALLFONT}{BLACK}Permetti il caricamento di scenari e salvataggi{NEWLINE}che hanno un codice di controllo errato,{NEWLINE}come ad esempio gli scenari della demo{NEWLINE}o i salvataggi danneggiati.
 STR_5510    :Scheda audio predefinita
 STR_5511    :(UNKNOWN)
-STR_5512    :Salva Gioco Come
+STR_5512    :Salva gioco con nome...
 STR_5513    :Salvataggio veloce
-STR_5514    :Disabilita vandalismo
-STR_5515    :{SMALLFONT}{BLACK}Disabilita il vandalismo quando i visitatori sono arrabbiati
+STR_5514    :Disattiva vandalismi
+STR_5515    :{SMALLFONT}{BLACK}Impedisce ai visitatori di vandalizzare il parco quando sono arrabbiati
 STR_5516    :{SMALLFONT}{BLACK}Nero
 STR_5517    :{SMALLFONT}{BLACK}Grigio
 STR_5518    :{SMALLFONT}{BLACK}Bianco
-STR_5519    :{SMALLFONT}{BLACK}Dark purple
-STR_5520    :{SMALLFONT}{BLACK}Light purple
-STR_5521    :{SMALLFONT}{BLACK}Bright purple
-STR_5522    :{SMALLFONT}{BLACK}Dark blue
-STR_5523    :{SMALLFONT}{BLACK}Light blue
-STR_5524    :{SMALLFONT}{BLACK}Icy blue
-STR_5525    :{SMALLFONT}{BLACK}Dark water
-STR_5526    :{SMALLFONT}{BLACK}Light water
-STR_5527    :{SMALLFONT}{BLACK}Saturated green
-STR_5528    :{SMALLFONT}{BLACK}Dark green
-STR_5529    :{SMALLFONT}{BLACK}Moss green
-STR_5530    :{SMALLFONT}{BLACK}Bright green
-STR_5531    :{SMALLFONT}{BLACK}Olive green
-STR_5532    :{SMALLFONT}{BLACK}Dark olive green
-STR_5533    :{SMALLFONT}{BLACK}Bright yellow
-STR_5534    :{SMALLFONT}{BLACK}Yellow
-STR_5535    :{SMALLFONT}{BLACK}Dark yellow
-STR_5536    :{SMALLFONT}{BLACK}Light orange
-STR_5537    :{SMALLFONT}{BLACK}Dark orange
-STR_5538    :{SMALLFONT}{BLACK}Light brown
-STR_5539    :{SMALLFONT}{BLACK}Saturated brown
-STR_5540    :{SMALLFONT}{BLACK}Dark brown
-STR_5541    :{SMALLFONT}{BLACK}Salmon pink
-STR_5542    :{SMALLFONT}{BLACK}Bordeaux red
-STR_5543    :{SMALLFONT}{BLACK}Saturated red
-STR_5544    :{SMALLFONT}{BLACK}Bright red
-STR_5545    :{SMALLFONT}{BLACK}Dark pink
-STR_5546    :{SMALLFONT}{BLACK}Bright pink
-STR_5547    :{SMALLFONT}{BLACK}Light pink
-STR_5548    :Mostra tutti i modi operativi
+STR_5519    :{SMALLFONT}{BLACK}Viola scuro
+STR_5520    :{SMALLFONT}{BLACK}Viola chiaro
+STR_5521    :{SMALLFONT}{BLACK}Viola acceso
+STR_5522    :{SMALLFONT}{BLACK}Blu
+STR_5523    :{SMALLFONT}{BLACK}Azzurro
+STR_5524    :{SMALLFONT}{BLACK}Azzurro ghiaccio
+STR_5525    :{SMALLFONT}{BLACK}Acqua scura
+STR_5526    :{SMALLFONT}{BLACK}Acqua chiara
+STR_5527    :{SMALLFONT}{BLACK}Verde acceso
+STR_5528    :{SMALLFONT}{BLACK}Verde scuro
+STR_5529    :{SMALLFONT}{BLACK}Verde erba
+STR_5530    :{SMALLFONT}{BLACK}Verde chiaro
+STR_5531    :{SMALLFONT}{BLACK}Verde oliva
+STR_5532    :{SMALLFONT}{BLACK}Verde oliva scuro
+STR_5533    :{SMALLFONT}{BLACK}Giallo acceso
+STR_5534    :{SMALLFONT}{BLACK}Giallo
+STR_5535    :{SMALLFONT}{BLACK}Giallo scuro
+STR_5536    :{SMALLFONT}{BLACK}Arancione chiaro
+STR_5537    :{SMALLFONT}{BLACK}Arancione scuro
+STR_5538    :{SMALLFONT}{BLACK}Marrone chiaro
+STR_5539    :{SMALLFONT}{BLACK}Marrone acceso
+STR_5540    :{SMALLFONT}{BLACK}Marrone scuro
+STR_5541    :{SMALLFONT}{BLACK}Rosa salmone
+STR_5542    :{SMALLFONT}{BLACK}Bordeaux
+STR_5543    :{SMALLFONT}{BLACK}Rosso acceso
+STR_5544    :{SMALLFONT}{BLACK}Rosso chiaro
+STR_5545    :{SMALLFONT}{BLACK}Rosa scuro
+STR_5546    :{SMALLFONT}{BLACK}Rosa acceso
+STR_5547    :{SMALLFONT}{BLACK}Rosa chiaro
+STR_5548    :Mostra tutte le modalità operative
 STR_5549    :Anno/Mese/Giorno
-STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5550    :{POP16}{POP16}Anno {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Anno/Giorno/Mese
-STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5552    :{POP16}{POP16}Anno {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Gioco in pausa quando l'overlay di Steam è aperto
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Mostra i veicoli di altre attrazioni
 STR_5556    :{SMALLFONT}{BLACK}Caccia giocatore
-STR_5557    :Rimani connesso dopo la desincronizzazione (Multiplayer)
-STR_5558    :Un riavvio è richiesto per questa opzione per essere attivata
-STR_5559    :ispezioni da 10 min.
-STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5557    :Rimani connesso dopo la desincronizzazione (multigiocatore)
+STR_5558    :È necessario riavviare il gioco per attivare questa opzione
+STR_5559    :Ispezioni ogni 10 minuti
+STR_5560    :{SMALLFONT}{BLACK}Imposta l'intervallo di ispezione a "Ogni 10 minuti" su tutte le attrazioni
 STR_5561    :Caricamento lingua fallito
 STR_5562    :ATTENZIONE!
 STR_5563    :Questa funzionalità è instabile, utilizzarla con attenzione.
-STR_5564    :Inserisci Elemento Corrotto
-STR_5565    :{SMALLFONT}{BLACK}Inserisci un elemento della mappa corrotto. Questo nasconderà ogni elemento sopra l'elemento corrotto.
+STR_5564    :Inserisci elemento corrotto
+STR_5565    :{SMALLFONT}{BLACK}Inserisce un elemento della mappa corrotto, nascondendo ogni elemento sopra l'elemento corrotto.
 STR_5566    :Password:
 STR_5567    :Pubblicità
 STR_5568    :Password necessaria
@@ -3988,7 +3988,7 @@ STR_5643    :Aggiungi gruppo
 STR_5644    :Rimuovi gruppo
 STR_5645    :Chat
 STR_5646    :Creazione terreno
-STR_5647    :Attivare/disattivare pausa
+STR_5647    :Attivare/disattivare la pausa
 STR_5648    :Impostare altezza acqua
 STR_5649    :Creare attrazione
 STR_5650    :Rimuovere attrazione
@@ -4175,8 +4175,8 @@ STR_5861    :Verifica chiave fallita
 STR_5862    :Blocca giocatori sconosciuti.
 STR_5863    :{SMALLFONT}{BLACK}Permetti solo ai giocatori con chiavi conosciute di unirsi.
 STR_5864    :Questo server è abilitato solo per i giocatori permessi.
-STR_5865    :Storico chat
-STR_5866    :{SMALLFONT}{BLACK}Salva i log della chat in un file nella propria cartella utente.
+STR_5865    :Salva cronologia chat
+STR_5866    :{SMALLFONT}{BLACK}Salva la cronologia della chat in un file nella propria cartella utente.
 STR_5867    :{WINDOW_COLOUR_2}Nome provider: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail provider: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Sito provider: {BLACK}{STRING}
