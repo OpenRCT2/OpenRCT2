@@ -942,8 +942,8 @@ STR_0936    :Parkinngang i veien
 STR_0937    :{SMALLFONT}{BLACK}Innstillinger
 STR_0938    :{SMALLFONT}{BLACK}Endre bakkehøyde og helning
 STR_0939    :Undergrunns-/innendørssyn
-STR_0940    :Fjern bakken
-STR_0941    :Fjern vertikale flater
+STR_0940    :Skjul bakken
+STR_0941    :Skjul vertikale flater
 STR_0942    :Gjennomsiktige attraksjoner
 STR_0943    :Gjennomsiktig natur og pynt
 STR_0944    :Lagre
@@ -2506,8 +2506,8 @@ STR_2498    :Zoom view in
 STR_2499    :Rotate view clockwise
 STR_2500    :Rotate construction object
 STR_2501    :Underground view toggle
-STR_2502    :Remove base land toggle
-STR_2503    :Remove vertical land toggle
+STR_2502    :Skjul bakken
+STR_2503    :Skjul vertikale flater
 STR_2504    :See-through rides toggle
 STR_2505    :See-through scenery toggle
 STR_2506    :Invisible supports toggle

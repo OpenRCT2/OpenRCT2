@@ -941,8 +941,8 @@ STR_0936    :Parkeingang im Weg
 STR_0937    :{SMALLFONT}{BLACK}Ansichtsoptionen
 STR_0938    :{SMALLFONT}{BLACK}Landhöhe und -neigung anpassen
 STR_0939    :Untergrund-/Innenansicht
-STR_0940    :Grundflächenland entfernen
-STR_0941    :Vertikale Flächen entfernen
+STR_0940    :Grundfläche ausblenden
+STR_0941    :Vertikale Flächen ausblenden
 STR_0942    :Bahnen ausblenden
 STR_0943    :Szenerie ausblenden
 STR_0944    :Speichern
@@ -2506,7 +2506,7 @@ STR_2499    :Ansicht im Uhrzeigersinn drehen
 STR_2500    :Bauobjekt drehen
 STR_2501    :Sicht auf Untergrund ein/aus
 STR_2502    :Grundfläche ein/aus
-STR_2503    :Senkrechte Wand ein/aus
+STR_2503    :Vertikale Flächen ein/aus
 STR_2504    :Drahtmodelle Bahnen ein/aus
 STR_2505    :Drahtmodelle Szenerie ein/aus
 STR_2506    :Unsichtbare Stützen

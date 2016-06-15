@@ -769,7 +769,7 @@ STR_0764    :Visitante {INT32}
 STR_0765    :Visitante {INT32}
 STR_0766    :Visitante {INT32}
 STR_0767    :Visitante {INT32}
-STR_0768    :Jardinero {INT32}
+STR_0768    :Manita {INT32}
 STR_0769    :Mecánico {INT32}
 STR_0770    :Guardia {INT32}
 STR_0771    :Animador {INT32}
@@ -831,8 +831,8 @@ STR_0826    :Demasiados nombres están usados
 STR_0827    :No hay suficiente dinero - requiere {CURRENCY2DP}
 STR_0828    :{SMALLFONT}{BLACK}Cerrar ventana
 STR_0829    :{SMALLFONT}{BLACK}Título de la ventana - Arrastra para moverla
-STR_0830    :{SMALLFONT}{BLACK}Acercar zoom
-STR_0831    :{SMALLFONT}{BLACK}Alejar zoom
+STR_0830    :{SMALLFONT}{BLACK}Acercar vista
+STR_0831    :{SMALLFONT}{BLACK}Alejar vista
 STR_0832    :{SMALLFONT}{BLACK}Rota la cámara 90{DEGREE} en el sentido de las agujas del reloj
 STR_0833    :{SMALLFONT}{BLACK}Pausar juego
 STR_0834    :{SMALLFONT}{BLACK}Opciones de juego
@@ -934,10 +934,10 @@ STR_0936    :Entrada del parque interfiere
 STR_0937    :{SMALLFONT}{BLACK}Opciones de visualización
 STR_0938    :{SMALLFONT}{BLACK}Movimientos de tierra
 STR_0939    :Vista subterránea
-STR_0940    :Tierra invisible
-STR_0941    :Acantilados invisibles
-STR_0942    :Atracciones invisibles
-STR_0943    :Decorado invisible
+STR_0940    :Ocultar tierra base
+STR_0941    :Ocultar acantilados
+STR_0942    :Ver a través de atracciones
+STR_0943    :Ver a través de escenarios
 STR_0944    :Guardar
 STR_0945    :No guardar
 STR_0946    :Cancelar
@@ -1505,8 +1505,8 @@ STR_1507    :{SMALLFONT}{OPENQUOTES}No puedo encontrar la salida{ENDQUOTES}
 STR_1508    :{SMALLFONT}{OPENQUOTES}Quiero bajarme de {STRINGID}{ENDQUOTES}
 STR_1509    :{SMALLFONT}{OPENQUOTES}Quiero salir de {STRINGID}{ENDQUOTES}
 STR_1510    :{SMALLFONT}{OPENQUOTES}No voy a subir a {STRINGID}, no es seguro{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}Este camino es repugnante{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}Está atestado{ENDQUOTES}
+STR_1511    :{SMALLFONT}{OPENQUOTES}Este sendero es repugnante{ENDQUOTES}
+STR_1512    :{SMALLFONT}{OPENQUOTES}Hay demasiada gente aquí{ENDQUOTES}
 STR_1513    :{SMALLFONT}{OPENQUOTES}El vandalismo es terrible{ENDQUOTES}
 STR_1514    :{SMALLFONT}{OPENQUOTES}¡El paisaje es estupendo!{ENDQUOTES}
 STR_1515    :{SMALLFONT}{OPENQUOTES}Este parque está realmente limpio y ordenado{ENDQUOTES}
@@ -1692,7 +1692,7 @@ STR_1696    :{SMALLFONT}{BLACK}Información de clientes
 STR_1697    :No se puede colocar en la fila de espera
 STR_1698    :Solo se puede colocar en la fila de espera
 STR_1699    :Mucha gente en la partida.
-STR_1700    :Contratar nuevo jardinero
+STR_1700    :Contratar nuevo manitas
 STR_1701    :Contratar nuevo mecánico
 STR_1702    :Contratar nuevo guarda
 STR_1703    :Contratar nuevo animador
@@ -1851,13 +1851,13 @@ STR_1855    :{WINDOW_COLOUR_2}Construido: {BLACK}Hace {COMMA16} años
 STR_1856    :{WINDOW_COLOUR_2}Beneficio por ítem: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Pérdidas por ítem: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Coste: {BLACK}{CURRENCY} al mes
-STR_1859    :jardineros
+STR_1859    :manitas
 STR_1860    :mecánicos
-STR_1861    :guardas de seguridad
+STR_1861    :guardias de seguridad
 STR_1862    :animadores
-STR_1863    :jardinero
+STR_1863    :manita
 STR_1864    :mecánico
-STR_1865    :guarda de seguridad
+STR_1865    :guardia de seguridad
 STR_1866    :animador
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :No puedes cambiar el número de vueltas...
@@ -2200,10 +2200,10 @@ STR_2206    :Cartón de bebida vacío
 STR_2207    :Taza de Bebida vacía
 STR_2208    :Salchicha asada
 STR_2209    :Tazón Vacío
-STR_2210    :{SMALLFONT}{BLACK}Mostrar lista de jardineros del parque
-STR_2211    :{SMALLFONT}{BLACK}Mostrar lista de mecánicos del parque
-STR_2212    :{SMALLFONT}{BLACK}Mostrar lista de guardas de seguridad del parque
-STR_2213    :{SMALLFONT}{BLACK}Mostrar lista de animadores del parque
+STR_2210    :{SMALLFONT}{BLACK}Mostrar lista de manitas en el parque
+STR_2211    :{SMALLFONT}{BLACK}Mostrar lista de mecánicos en el parque
+STR_2212    :{SMALLFONT}{BLACK}Mostrar lista de guardias de seguridad en el parque
+STR_2213    :{SMALLFONT}{BLACK}Mostrar lista de animadores en el parque
 STR_2214    :¡No es posible construir mientras el juego está pausado!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
@@ -2783,8 +2783,8 @@ STR_2802    :Mapa
 STR_2803    :{SMALLFONT}{BLACK}Mostrar a estos visitantes marcados en el mapa
 STR_2804    :{SMALLFONT}{BLACK}Mostrar estos empleados marcados en el mapa
 STR_2805    :{SMALLFONT}{BLACK}Mostrar mapa del parque
-STR_2806    :{RED}Los visitantes se quejan del mal estado de los senderos{NEWLINE}Comprueba donde están tus jardineros y organizalos mejor.
-STR_2807    :{RED}Los visitantes se quejan de la basura en el parque{NEWLINE}Comprueba donde están tus jardineros y organizalos mejor.
+STR_2806    :{RED}Los visitantes se quejan del mal estado de los senderos{NEWLINE}Comprueba donde están tus manitas y organizalos mejor.
+STR_2807    :{RED}Los visitantes se quejan de la basura en el parque{NEWLINE}Comprueba donde están tus manitas y organizalos mejor.
 STR_2808    :{RED}Los visitantes se quejan del vandalismo en el parque{NEWLINE}Comprueba donde están tus guardias y organizalos mejor.
 STR_2809    :{RED}Los visitantes estan hambrientos y no encuentran donde comprar comida.
 STR_2810    :{RED}Los visitantes tienen sed y no encuentran donde comprar bebidas.
@@ -3807,7 +3807,7 @@ STR_5503    :Escribe el nombre del host o la IP:
 STR_5504    :{SMALLFONT}{BLACK}Mostrar estado multijugador
 STR_5505    :No se pudo conectar al servidor.
 STR_5506    :Visitantes ignoran intensidad de atracc.
-STR_5507    :Los Jardineros cortan el césped por defecto
+STR_5507    :Los Manitas cortan el césped por defecto
 STR_5508    :Permitir cargar ficheros dañados
 STR_5509    :{SMALLFONT}{BLACK}Permite cargar escenarios y partidas que tengan una suma de comprobación incorrecta, como los escenarios de la demo o partidas dañadas.
 STR_5510    :Dispositivo de sonido predeterminado
@@ -4119,7 +4119,7 @@ STR_5846    :{SMALLFONT}{BLACK}Establece con cuanta frecuencia OpenRCT2 guarda l
 STR_5847    :{SMALLFONT}{BLACK}Selecciona la secuencia del parque usada en el menú principal. Secuencias de RCT1/RCT2 requieren la importación de los escenarios para funcionar.
 STR_5848    :{SMALLFONT}{BLACK}Crea o modifica las secuencias del menú principal.
 STR_5849    :{SMALLFONT}{BLACK}Colocar automáticamente los nuevos empleados contratados.
-STR_5850    :{SMALLFONT}{BLACK}Los nuevos jardineros contratados cortan el césped por defecto. (como en RCT1)
+STR_5850    :{SMALLFONT}{BLACK}Los nuevos manitas contratados cortan el césped por defecto. (como en RCT1)
 STR_5851    :{SMALLFONT}{BLACK}Establece el tiempo de inspección por defecto en las atracciones nuevas.
 STR_5852    :{SMALLFONT}{BLACK}Establece el nombre del canal TwitchTV que se utilizará para la integración de Twitch.
 STR_5853    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar efectos de sonido.
