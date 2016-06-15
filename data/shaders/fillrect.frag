@@ -1,4 +1,4 @@
-#version 330
+#version 150
 
 uniform ivec2       uScreenSize;
 uniform ivec4       uClip;
@@ -9,7 +9,7 @@ uniform ivec4       uBounds;
 
 in vec2 fPosition;
 
-layout (location = 0) out vec4 oColour;
+out vec4 oColour;
 
 float getluma(vec3 colour)
 {

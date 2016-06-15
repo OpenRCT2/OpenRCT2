@@ -18,6 +18,7 @@
 
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
+#include <SDL_pixels.h>
 
 class DrawImageShader : public OpenGLShaderProgram
 {
@@ -29,11 +30,14 @@ private:
     GLuint uTexture;
     GLuint uColour;
     GLuint uFlags;
+    GLuint uPalette;
 
     GLuint vIndex;
 
     GLuint _vbo;
     GLuint _vao;
+    
+    SDL_Color _palette[256];
 
 public:
     DrawImageShader();
@@ -46,7 +50,7 @@ public:
     void SetTexture(GLuint texture);
     void SetColour(vec4f colour);
     void SetFlags(uint32 flags);
-
+    void SetPalette(const vec4f *glPalette);
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
 
 private:

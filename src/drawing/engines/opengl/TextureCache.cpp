@@ -1,4 +1,4 @@
-﻿#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -53,14 +53,14 @@ void TextureCache::InvalidateImage(uint32 image)
 
 GLuint TextureCache::GetOrLoadImageTexture(uint32 image)
 {
-    auto kvp = _imageTextureMap.find(image);
+    auto kvp = _imageTextureMap.find(image & 0x7FFFF);
     if (kvp != _imageTextureMap.end())
     {
         return kvp->second;
     }
 
     GLuint texture = LoadImageTexture(image);
-    _imageTextureMap[image] = texture;
+    _imageTextureMap[image & 0x7FFFF] = texture;
 
     return texture;
 }
@@ -88,15 +88,15 @@ GLuint TextureCache::LoadImageTexture(uint32 image)
     GLuint texture;
     glGenTextures(1, &texture);
 
-    uint32 width, height;
-    void * pixels32 = GetImageAsARGB(image, 0, &width, &height);
+    rct_drawpixelinfo * dpi = GetImageAsDPI(image, 0);
 
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
-
-    Memory::Free(pixels32);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, dpi->width, dpi->height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi->bits);
+    
+    DeleteDPI(dpi);
 
     return texture;
 }
@@ -106,15 +106,15 @@ GLuint TextureCache::LoadGlyphTexture(uint32 image, uint8 * palette)
     GLuint texture;
     glGenTextures(1, &texture);
 
-    uint32 width, height;
-    void * pixels32 = GetGlyphAsARGB(image, palette, &width, &height);
+    rct_drawpixelinfo * dpi = GetGlyphAsDPI(image, palette);
 
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels32);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, dpi->width, dpi->height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi->bits);
 
-    Memory::Free(pixels32);
+    DeleteDPI(dpi);
 
     return texture;
 }
@@ -135,6 +135,17 @@ void * TextureCache::GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 
     return pixels32;
 }
 
+rct_drawpixelinfo * TextureCache::GetImageAsDPI(uint32 image, uint32 tertiaryColour)
+{
+    rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    sint32 width = g1Element->width;
+    sint32 height = g1Element->height;
+    
+    rct_drawpixelinfo * dpi = CreateDPI(width, height);
+    gfx_draw_sprite_software(dpi, image, -g1Element->x_offset, -g1Element->y_offset, tertiaryColour);
+    return dpi;
+}
+
 void * TextureCache::GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight)
 {
     rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
@@ -149,6 +160,17 @@ void * TextureCache::GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outW
     *outWidth = width;
     *outHeight = height;
     return pixels32;
+}
+
+rct_drawpixelinfo * TextureCache::GetGlyphAsDPI(uint32 image, uint8 * palette)
+{
+    rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    sint32 width = g1Element->width;
+    sint32 height = g1Element->height;
+    
+    rct_drawpixelinfo * dpi = CreateDPI(width, height);
+    gfx_draw_sprite_palette_set_software(dpi, image, -g1Element->x_offset, -g1Element->y_offset, palette, nullptr);
+    return dpi;
 }
 
 void * TextureCache::ConvertDPIto32bpp(const rct_drawpixelinfo * dpi)

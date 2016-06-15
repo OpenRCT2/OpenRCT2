@@ -1,4 +1,4 @@
-#version 330
+#version 150
 
 uniform ivec2   uScreenSize;
 uniform ivec4   uClip;
@@ -6,7 +6,7 @@ uniform vec4    uColour;
 
 in vec2 fPosition;
 
-layout (location = 0) out vec4 oColour;
+out vec4 oColour;
 
 void main()
 {

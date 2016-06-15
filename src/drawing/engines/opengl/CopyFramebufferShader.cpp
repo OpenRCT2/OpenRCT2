@@ -25,7 +25,7 @@ CopyFramebufferShader::CopyFramebufferShader() : OpenGLShaderProgram("copyframeb
     glGenBuffers(1, &_vbo);
     glGenVertexArrays(1, &_vao);
 
-    vec2i vertices[] = { 0, 1, 2, 3 };
+    GLuint vertices[] = { 0, 1, 2, 2, 1, 3 };
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -77,7 +77,7 @@ void CopyFramebufferShader::SetTexture(GLuint texture)
 void CopyFramebufferShader::Draw()
 {
     glBindVertexArray(_vao);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 #endif /* DISABLE_OPENGL */

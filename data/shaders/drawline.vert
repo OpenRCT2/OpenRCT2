@@ -1,16 +1,16 @@
-#version 330
+#version 150
 
 uniform ivec2 uScreenSize;
 uniform ivec4 uBounds;
 
-in int vIndex;
+in uint vIndex;
 
 out vec2 fPosition;
 
 void main()
 {
     vec2 pos;
-    if (vIndex == 0)
+    if (vIndex == 0u)
     {
         pos = uBounds.xy;
     }
