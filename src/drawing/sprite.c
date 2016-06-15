@@ -51,7 +51,9 @@ int gfx_load_g1()
 			header.num_entries = 29294;
 
 			// Read element headers
+#if NO_RCT2
 			g1Elements = calloc(324206, sizeof(rct_g1_element));
+#endif
 			SDL_RWread(file, g1Elements, header.num_entries * sizeof(rct_g1_element), 1);
 
 			// Read element data
@@ -78,7 +80,9 @@ int gfx_load_g1()
 void gfx_unload_g1()
 {
 	SafeFree(_g1Buffer);
+#if NO_RCT2
 	SafeFree(g1Elements);
+#endif
 }
 
 void gfx_unload_g2()
