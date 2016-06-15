@@ -151,7 +151,7 @@ http_json_response *http_request_json(const http_json_request *request)
 	curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
 #ifdef __WINDOWS__
-	// On GNU/Linux (and OS X), curl will use the system certs by default
+	// On GNU/Linux (and macOS), curl will use the system certs by default
 	curl_easy_setopt(curl, CURLOPT_CAINFO, _caBundlePath);
 #endif
 	curl_easy_setopt(curl, CURLOPT_URL, request->url);

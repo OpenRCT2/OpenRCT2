@@ -380,7 +380,7 @@ void platform_process_messages()
 				break;
 			}
 			break;
-// Apple sends touchscreen events for trackpads, so ignore these events on OS X
+// Apple sends touchscreen events for trackpads, so ignore these events on macOS
 #ifndef __MACOSX__
 		case SDL_FINGERMOTION:
 			RCT2_GLOBAL(0x0142406C, int) = (int)(e.tfinger.x * gScreenWidth);
@@ -438,7 +438,7 @@ void platform_process_messages()
 			// Text input
 			if (gTextInput.buffer == NULL) break;
 
-			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (OS X)
+			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (macOS)
 			if (e.key.keysym.sym == SDLK_BACKSPACE && (e.key.keysym.mod & KEYBOARD_PRIMARY_MODIFIER)) {
 				textinputbuffer_clear(&gTextInput);
 				console_refresh_caret();

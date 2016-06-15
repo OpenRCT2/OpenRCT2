@@ -114,7 +114,7 @@ function install_pkg_config {
 	cat /usr/local/bin/i686-w64-mingw32-pkg-config
 }
 
-function os_x_install_mingw_32 {
+function mac_os_install_mingw_32 {
 	local mingw_name="mingw-w32-bin_i686-darwin"
 	local mingw_tar="${mingw_name}_20130531.tar.bz2"
 	local mingw_path="/usr/local/$mingw_name"
@@ -150,7 +150,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
 
 	if [[ $TARGET == "windows" ]]; then
 		brew install wine
-		os_x_install_mingw_32
+		mac_os_install_mingw_32
 	else
 		brew install jansson sdl2 sdl2_ttf speex --universal
 	fi

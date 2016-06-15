@@ -135,7 +135,7 @@ typedef uint8 colour_t;
 	char *strndup(const char *src, size_t size);
 #endif // !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
 
-// BSD and OS X has MAP_ANON instead of MAP_ANONYMOUS
+// BSD and macOS have MAP_ANON instead of MAP_ANONYMOUS
 #ifndef MAP_ANONYMOUS
 	#define MAP_ANONYMOUS MAP_ANON
 #endif

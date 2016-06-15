@@ -2,7 +2,7 @@
 An open source re-implementation of Roller Coaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
 
 ### Build Status
-|             | Windows | Linux / OSX | Download |
+|             | Windows | Linux / Mac | Download |
 |-------------|---------|-------------|----------|
 | **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/master?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/stable-v0.0.4-green.svg)](https://openrct2.org/downloads/master/latest) |
 | **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.0.5-blue.svg)](https://openrct2.org/downloads/develop/latest) |
@@ -71,10 +71,10 @@ OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bo
 - Visual Studio 2015 Update 2 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
 - [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
 
-### Mac OS X:
+### Mac:
 - [Homebrew](http://brew.sh)
 
-### Mac OS X / Linux:
+### Mac / Linux:
 - sdl2
 - sdl2-ttf
 - speexdsp
@@ -95,8 +95,8 @@ All libs listed here (bar cmake) required in 32 bit variants.
 
 These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have use the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such ```g2.dat``` or language files.
 
-### Mac OS X:
-We support native builds OS X (limited to i386 only for now).
+### Mac:
+We support native builds on macOS (limited to i386 only for now).
 Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build OpenRCT2.
 ```
 # Install libraries

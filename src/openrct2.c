@@ -482,7 +482,7 @@ void openrct2_reset_object_tween_locations()
  */
 bool openrct2_setup_rct2_segment()
 {
-	// OpenRCT2 on Linux and OS X is wired to have the original Windows PE sections loaded
+	// OpenRCT2 on Linux and macOS is wired to have the original Windows PE sections loaded
 	// necessary. Windows does not need to do this as OpenRCT2 runs as a DLL loaded from the Windows PE.
 #if defined(__unix__)
 	#define RDATA_OFFSET 0x004A4000
