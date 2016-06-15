@@ -127,7 +127,7 @@ static void cheat_remove_litter()
 			continue;
 
 		sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(it.element));
-		if(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BIN)
+		if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
 			it.element->properties.path.addition_status = 0xFF;
 
 	} while (map_element_iterator_next(&it));

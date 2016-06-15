@@ -238,13 +238,12 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 				return MONEY32_UNDEFINED;
 			}
 
-			uint16 jfMask = PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW;
-			if (!(unk6 & jfMask) && (mapElement->properties.path.edges & 0x0F) == 0x0F) {
+			if (!(unk6 & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)) && (mapElement->properties.path.edges & 0x0F) == 0x0F) {
 				gGameCommandErrorText = STR_NONE;
 				return MONEY32_UNDEFINED;
 			}
 
-			if ((unk6 & PATH_BIT_FLAG_QUEUE_MONITOR) && !footpath_element_is_queue(mapElement)) {
+			if ((unk6 & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !footpath_element_is_queue(mapElement)) {
 				gGameCommandErrorText = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
 				return MONEY32_UNDEFINED;
 			}
@@ -282,7 +281,7 @@ static money32 footpath_element_update(int x, int y, rct_map_element *mapElement
 		mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
 		if (pathItemType != 0) {
 			rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
-			if (scenery_entry->path_bit.flags & PATH_BIT_FLAG_BIN) {
+			if (scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) {
 				mapElement->properties.path.addition_status = 255;
 			}
 		}

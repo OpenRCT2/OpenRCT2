@@ -136,7 +136,7 @@ typedef enum {
 
 typedef struct rct_path_bit_scenery_entry {
 	uint16 flags;			// 0x06
-	uint8 pad_08;
+	uint8 draw_type;		// 0x08
 	uint8 tool_id;			// 0x09
 	sint16 price;			// 0x0A
 	uint8 scenery_tab_id;	// 0x0C
@@ -180,15 +180,22 @@ assert_struct_size(rct_scenery_set_entry, 14 + 2 * 0x80);
 #pragma pack(pop)
 
 enum {
-	PATH_BIT_FLAG_BIN						= 1 << 0,
-	PATH_BIT_FLAG_BENCH						= 1 << 1,
+	PATH_BIT_FLAG_IS_BIN					= 1 << 0,
+	PATH_BIT_FLAG_IS_BENCH					= 1 << 1,
 	PATH_BIT_FLAG_BREAKABLE					= 1 << 2,
 	PATH_BIT_FLAG_LAMP						= 1 << 3,
 	PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER	= 1 << 4,
 	PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW		= 1 << 5,
 	PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE		= 1 << 6,
 	PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE		= 1 << 7,
-	PATH_BIT_FLAG_QUEUE_MONITOR				= 1 << 8,
+	PATH_BIT_FLAG_IS_QUEUE_SCREEN			= 1 << 8
+};
+
+enum {
+	PATH_BIT_DRAW_TYPE_LIGHTS,
+	PATH_BIT_DRAW_TYPE_BINS,
+	PATH_BIT_DRAW_TYPE_BENCHES,
+	PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS
 };
 
 enum {
