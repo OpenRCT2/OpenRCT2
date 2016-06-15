@@ -78,7 +78,7 @@ extern int object_entry_group_counts[];
 extern int object_entry_group_encoding[];
 
 typedef struct rct_object_entry_group {
-	uint8 **chunks;
+	void **chunks;
 	rct_object_entry_extended *entries;
 } rct_object_entry_group;
 #ifdef PLATFORM_32BIT
@@ -99,8 +99,7 @@ typedef struct rct_object_filters {
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
-extern rct_object_entry_group object_entry_groups[];
-extern void** gObjectList;
+extern const rct_object_entry_group object_entry_groups[];
 extern char gTempObjectLoadName[9];
 
 extern uint32 gInstalledObjectsCount;

@@ -208,16 +208,6 @@ enum {
 
 #define SCENERY_ENTRIES_BY_TAB 128
 
-#define gSmallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].chunks)
-#define gLargeSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].chunks)
-#define gWallSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_WALLS].chunks)
-#define gBannerSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_BANNERS].chunks)
-
-// Often 0x009ADA50 is used for pathBits this is 1 entry before g_pathBitSceneryEntries and is used
-// because 0 represents no path bits on a path. So remember to remove 1 when using it for 0x009ADA50
-#define gPathBitSceneryEntries ((rct_scenery_entry**)object_entry_groups[OBJECT_TYPE_PATH_BITS].chunks)
-#define gScenerySetEntries ((rct_scenery_set_entry**)object_entry_groups[OBJECT_TYPE_SCENERY_SETS].chunks)
-
 extern uint8 gWindowSceneryActiveTabIndex;
 extern uint16 gWindowSceneryTabSelections[20];
 extern uint8 gWindowSceneryClusterEnabled;

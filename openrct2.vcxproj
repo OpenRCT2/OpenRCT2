@@ -415,6 +415,7 @@
     <ClInclude Include="src\network\network.h" />
     <ClInclude Include="src\network\NetworkKey.h" />
     <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\object_list.h" />
     <ClInclude Include="src\openrct2.h" />
     <ClInclude Include="src\paint\map_element\map_element.h" />
     <ClInclude Include="src\paint\map_element\surface.h" />

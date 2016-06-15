@@ -46,8 +46,6 @@ enum {
 	FOOTPATH_SEARCH_TOO_COMPLEX
 };
 
-#define gFootpathEntries ((rct_footpath_entry**)object_entry_groups[OBJECT_TYPE_PATHS].chunks)
-
 extern uint8 gFootpathProvisionalFlags;
 extern rct_xyz16 gFootpathProvisionalPosition;
 extern uint8 gFootpathConstructionMode;

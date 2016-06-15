@@ -16,18 +16,19 @@
 
 #include "addresses.h"
 #include "config.h"
+#include "drawing/drawing.h"
 #include "localisation/localisation.h"
 #include "object.h"
+#include "object_list.h"
 #include "platform/platform.h"
-#include "ride/ride.h"
-#include "util/sawyercoding.h"
-#include "drawing/drawing.h"
-#include "world/footpath.h"
-#include "world/water.h"
-#include "world/entrance.h"
-#include "world/scenery.h"
-#include "scenario.h"
 #include "rct1.h"
+#include "ride/ride.h"
+#include "scenario.h"
+#include "util/sawyercoding.h"
+#include "world/entrance.h"
+#include "world/footpath.h"
+#include "world/scenery.h"
+#include "world/water.h"
 
 char gTempObjectLoadName[9] = { 0 };
 
@@ -117,9 +118,9 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		return 0;
 	}
 
-	uint8** chunk_list = object_entry_groups[objectType].chunks;
+	void** chunk_list = object_entry_groups[objectType].chunks;
 	if (groupIndex == -1) {
-		for (groupIndex = 0; chunk_list[groupIndex] != (uint8*)-1; groupIndex++) {
+		for (groupIndex = 0; chunk_list[groupIndex] != (void*)-1; groupIndex++) {
 			if (groupIndex + 1 >= object_entry_group_counts[objectType]) {
 				log_error("Object Load failed due to too many objects of a certain type.");
 				free(chunk);
@@ -1708,7 +1709,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			// This is being changed to force the images to be loaded into a different
 			// image id.
 			RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0x726E;
-			RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, uint32) = (int)chunk;
+			gStexTempChunk = (rct_stex_entry*)chunk;
 			// Not used anywhere.
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_OBJECT, rct_object_entry) = openedEntry;
 
@@ -1739,9 +1740,9 @@ int object_get_scenario_text(rct_object_entry *entry)
  */
 void object_free_scenario_text()
 {
-	if (RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) != NULL) {
-		free(RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*));
-		RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, void*) = NULL;
+	if (gStexTempChunk != NULL) {
+		free(gStexTempChunk);
+		gStexTempChunk = NULL;
 	}
 }
 

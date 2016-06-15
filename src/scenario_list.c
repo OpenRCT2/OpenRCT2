@@ -17,6 +17,7 @@
 #include "addresses.h"
 #include "config.h"
 #include "localisation/localisation.h"
+#include "object_list.h"
 #include "platform/platform.h"
 #include "scenario.h"
 #include "util/util.h"
@@ -196,7 +197,7 @@ static void scenario_translate(scenario_index_entry *scenarioEntry, const rct_ob
 		// Checks for a scenario string object (possibly for localisation)
 		if ((stexObjectEntry->flags & 0xFF) != 255) {
 			if (object_get_scenario_text((rct_object_entry*)stexObjectEntry)) {
-				rct_stex_entry* stex_entry = RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_CHUNK, rct_stex_entry*);
+				rct_stex_entry* stex_entry = gStexTempChunk;
 				format_string(scenarioEntry->name, stex_entry->scenario_name, NULL);
 				format_string(scenarioEntry->details, stex_entry->details, NULL);
 				object_free_scenario_text();
