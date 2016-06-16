@@ -79,7 +79,7 @@ int gfx_load_g1()
 
 			rct_g1_element_32bit *g1Elements32 = calloc(324206, sizeof(rct_g1_element_32bit));
 			SDL_RWread(file, g1Elements32, header.num_entries * sizeof(rct_g1_element_32bit), 1);
-			for (int i = 0; i < header.num_entries; i++) {
+			for (uint32 i = 0; i < header.num_entries; i++) {
 				g1Elements[i].offset        = (uint8*)g1Elements32[i].offset;
 				g1Elements[i].width         = g1Elements32[i].width;
 				g1Elements[i].height        = g1Elements32[i].height;

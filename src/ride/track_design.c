@@ -1810,12 +1810,12 @@ static map_backup *track_design_preview_backup_map()
 	if (backup != NULL) {
 		memcpy(
 			backup->map_elements,
-			RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element),
+			gMapElements,
 			sizeof(backup->map_elements)
 		);
 		memcpy(
 			backup->tile_pointers,
-			RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*),
+			gMapElementTilePointers,
 			sizeof(backup->tile_pointers)
 		);
 		backup->next_free_map_element = gNextFreeMapElement;
@@ -1834,12 +1834,12 @@ static map_backup *track_design_preview_backup_map()
 static void track_design_preview_restore_map(map_backup *backup)
 {
 	memcpy(
-		RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element),
+		gMapElements,
 		backup->map_elements,
 		sizeof(backup->map_elements)
 	);
 	memcpy(
-		RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*),
+		gMapElementTilePointers,
 		backup->tile_pointers,
 		sizeof(backup->tile_pointers)
 	);
@@ -1866,7 +1866,7 @@ static void track_design_preview_clear_map()
 
 	rct_map_element* map_element;
 	for (int i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
-		map_element = GET_MAP_ELEMENT(i);
+		map_element = &gMapElements[i];
 		map_element->type = MAP_ELEMENT_TYPE_SURFACE;
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 2;
