@@ -333,8 +333,13 @@ extern uint8		gMapSelectArrowDirection;
 
 extern uint8 gMapGroundFlags;
 
+#ifdef NO_RCT2
+extern rct_map_element gMapElements[];
+extern rct_map_element *gMapElementTilePointers[];
+#else
 extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;
+#endif
 
 extern rct_xy16 *gMapSelectionTiles;
 extern rct2_peep_spawn *gPeepSpawns;

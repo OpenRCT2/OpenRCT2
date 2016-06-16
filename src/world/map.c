@@ -62,8 +62,8 @@ uint8			gMapSelectArrowDirection;
 uint8 gMapGroundFlags;
 
 #if defined(NO_RCT2)
-rct_map_element *gMapElements = NULL;
-rct_map_element **gMapElementTilePointers = NULL;
+rct_map_element gMapElements[MAX_MAP_ELEMENTS];
+rct_map_element *gMapElementTilePointers[MAX_TILE_MAP_ELEMENT_POINTERS];
 #else
 rct_map_element *gMapElements = (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS;
 rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
@@ -327,12 +327,6 @@ void map_init(int size)
 	rct_map_element *map_element;
 
 
-#if defined(NO_RCT2)
-	if (gMapElements == NULL) {
-		gMapElements = malloc(sizeof(rct_map_element) * MAX_MAP_ELEMENTS);
-		// TODO: free this pointer
-	}
-#endif
 	date_reset();
 	gNumMapAnimations = 0;
 	RCT2_GLOBAL(0x010E63B8, sint32) = 0;
@@ -360,12 +354,6 @@ void map_init(int size)
 	gMapSize = size;
 	gMapSizeMaxXY = size * 32 - 33;
 	RCT2_GLOBAL(0x01359208, sint16) = 7;
-#if defined(NO_RCT2)
-	if (gMapElementTilePointers == NULL) {
-		gMapElementTilePointers = malloc(sizeof(rct_map_element*) * MAX_TILE_MAP_ELEMENT_POINTERS);
-		// TODO: free this pointer
-	}
-#endif
 	map_update_tile_pointers();
 	map_remove_out_of_range_elements();
 	climate_reset(CLIMATE_WARM);
