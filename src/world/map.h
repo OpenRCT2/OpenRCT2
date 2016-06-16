@@ -333,8 +333,13 @@ extern uint8		gMapSelectArrowDirection;
 
 extern uint8 gMapGroundFlags;
 
+#ifdef NO_RCT2
+extern rct_map_element gMapElements[];
+extern rct_map_element *gMapElementTilePointers[];
+#else
 extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;
+#endif
 
 extern rct_xy16 *gMapSelectionTiles;
 extern rct2_peep_spawn *gPeepSpawns;
@@ -435,9 +440,6 @@ void game_command_set_banner_name(int* eax, int* ebx, int* ecx, int* edx, int* e
 void game_command_set_sign_name(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_set_banner_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
 void game_command_set_sign_style(int* eax, int* ebx, int* ecx, int* edx, int* esi, int* edi, int* ebp);
-
-#define GET_MAP_ELEMENT(x) (&(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element)[x]))
-#define TILE_MAP_ELEMENT_POINTER(x) (RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[x])
 
 typedef struct map_element_iterator {
 	int x;

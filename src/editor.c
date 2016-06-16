@@ -339,8 +339,8 @@ static int editor_read_s6(const char *path)
 		sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_CURRENT_MONTH_YEAR);
 
 		// Read map elements
-		memset((void*)RCT2_ADDRESS_MAP_ELEMENTS, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
-		sawyercoding_read_chunk(rw, (uint8*)RCT2_ADDRESS_MAP_ELEMENTS);
+		memset((void*)gMapElements, 0, MAX_MAP_ELEMENTS * sizeof(rct_map_element));
+		sawyercoding_read_chunk(rw, (uint8*)gMapElements);
 
 		// Read game data, including sprites
 		sawyercoding_read_chunk(rw, (uint8*)0x010E63B8);

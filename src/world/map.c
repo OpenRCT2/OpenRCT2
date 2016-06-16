@@ -61,8 +61,13 @@ uint8			gMapSelectArrowDirection;
 
 uint8 gMapGroundFlags;
 
+#if defined(NO_RCT2)
+rct_map_element gMapElements[MAX_MAP_ELEMENTS];
+rct_map_element *gMapElementTilePointers[MAX_TILE_MAP_ELEMENT_POINTERS];
+#else
 rct_map_element *gMapElements = (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS;
 rct_map_element **gMapElementTilePointers = (rct_map_element**)RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
+#endif
 rct_xy16 *gMapSelectionTiles = (rct_xy16*)0x009DE596;
 rct2_peep_spawn *gPeepSpawns = (rct2_peep_spawn*)RCT2_ADDRESS_PEEP_SPAWNS;
 
@@ -85,7 +90,6 @@ money32 gWaterToolLowerCost;
 
 rct_xyz16 gCommandPosition;
 
-static void tiles_init();
 static void map_update_grass_length(int x, int y, rct_map_element *mapElement);
 static void map_set_grass_length(int x, int y, rct_map_element *mapElement, int length);
 static void clear_elements_at(int x, int y);
@@ -186,7 +190,7 @@ rct_map_element *map_get_first_element_at(int x, int y)
 		log_error("Trying to access element outside of range");
 		return NULL;
 	}
-	return TILE_MAP_ELEMENT_POINTER(x + y * 256);
+	return gMapElementTilePointers[x + y * 256];
 }
 
 void map_set_tile_elements(int x, int y, rct_map_element *elements)
@@ -195,7 +199,7 @@ void map_set_tile_elements(int x, int y, rct_map_element *elements)
 		log_error("Trying to access element outside of range");
 		return;
 	}
-	TILE_MAP_ELEMENT_POINTER(x + y * 256) = elements;
+	gMapElementTilePointers[x + y * 256] = elements;
 }
 
 int map_element_is_last_for_tile(const rct_map_element *element)
@@ -322,12 +326,13 @@ void map_init(int size)
 	int i;
 	rct_map_element *map_element;
 
+
 	date_reset();
 	gNumMapAnimations = 0;
 	RCT2_GLOBAL(0x010E63B8, sint32) = 0;
 
 	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
-		map_element = GET_MAP_ELEMENT(i);
+		map_element = &gMapElements[i];
 		map_element->type = (MAP_ELEMENT_TYPE_SURFACE << 2);
 		map_element->flags = MAP_ELEMENT_FLAG_LAST_TILE;
 		map_element->base_height = 14;
@@ -362,11 +367,12 @@ void map_update_tile_pointers()
 {
 	int i, x, y;
 
-	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++)
-		TILE_MAP_ELEMENT_POINTER(i) = TILE_UNDEFINED_MAP_ELEMENT;
+	for (i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++) {
+		gMapElementTilePointers[i] = TILE_UNDEFINED_MAP_ELEMENT;
+	}
 
-	rct_map_element *mapElement = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
-	rct_map_element **tile = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
+	rct_map_element *mapElement = gMapElements;
+	rct_map_element **tile = gMapElementTilePointers;
 	for (y = 0; y < 256; y++) {
 		for (x = 0; x < 256; x++) {
 			*tile++ = mapElement;
@@ -537,13 +543,13 @@ void sub_68B089()
 		i++;
 		if (i >= MAX_TILE_MAP_ELEMENT_POINTERS)
 			i = 0;
-	} while (TILE_MAP_ELEMENT_POINTER(i) == TILE_UNDEFINED_MAP_ELEMENT);
+	} while (gMapElementTilePointers[i] == TILE_UNDEFINED_MAP_ELEMENT);
 	RCT2_GLOBAL(0x0010E63B8, uint32) = i;
 
-	mapElementFirst = mapElement = TILE_MAP_ELEMENT_POINTER(i);
+	mapElementFirst = mapElement = gMapElementTilePointers[i];
 	do {
 		mapElement--;
-		if (mapElement < (rct_map_element*)RCT2_ADDRESS_MAP_ELEMENTS)
+		if (mapElement < gMapElements)
 			break;
 	} while (mapElement->base_height == 255);
 	mapElement++;
@@ -552,7 +558,7 @@ void sub_68B089()
 		return;
 
 	//
-	TILE_MAP_ELEMENT_POINTER(i) = mapElement;
+	gMapElementTilePointers[i] = mapElement;
 	do {
 		*mapElement = *mapElementFirst;
 		mapElementFirst->base_height = 255;
@@ -3951,8 +3957,8 @@ void map_reorganise_elements()
 	}
 
 	num_elements = (new_elements_pointer - new_map_elements);
-	memcpy(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element), new_map_elements, num_elements * sizeof(rct_map_element));
-	memset(RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element) + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
+	memcpy(gMapElements, new_map_elements, num_elements * sizeof(rct_map_element));
+	memset(gMapElements + num_elements, 0, (0x30000 - num_elements) * sizeof(rct_map_element));
 
 	free(new_map_elements);
 
@@ -3965,18 +3971,18 @@ void map_reorganise_elements()
  */
 int sub_68B044()
 {
-	if (gNextFreeMapElement <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (gNextFreeMapElement <= gMapElements + MAX_MAP_ELEMENTS)
 		return 1;
 
 	for (int i = 1000; i != 0; --i)
 		sub_68B089();
 
-	if (gNextFreeMapElement <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (gNextFreeMapElement <= gMapElements + MAX_MAP_ELEMENTS)
 		return 1;
 
 	map_reorganise_elements();
 
-	if (gNextFreeMapElement <= RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS_END, rct_map_element))
+	if (gNextFreeMapElement <= gMapElements + MAX_MAP_ELEMENTS)
 		return 1;
 	else{
 		gGameCommandErrorText = 894;
@@ -3998,10 +4004,10 @@ rct_map_element *map_element_insert(int x, int y, int z, int flags)
 	}
 
 	newMapElement = gNextFreeMapElement;
-	originalMapElement = TILE_MAP_ELEMENT_POINTER(y * 256 + x);
+	originalMapElement = gMapElementTilePointers[y * 256 + x];
 
 	// Set tile index pointer to point to new element block
-	TILE_MAP_ELEMENT_POINTER(y * 256 + x) = newMapElement;
+	gMapElementTilePointers[y * 256 + x] = newMapElement;
 
 	// Copy all elements that are below the insert height
 	while (z >= originalMapElement->base_height) {

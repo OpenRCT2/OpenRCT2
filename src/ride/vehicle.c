@@ -346,10 +346,8 @@ void vehicle_update_sound_params(rct_vehicle* vehicle)
 							i->id = vehicle->sprite_index;
 							i->volume = 0;
 							if (vehicle->x != (sint16)0x8000) {
-								int tile_idx = (((vehicle->y & 0xFFE0) * 256) + (vehicle->x & 0xFFE0)) / 32;
-								rct_map_element* map_element;
-								for (map_element = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*)[tile_idx]; map_element->type & MAP_ELEMENT_TYPE_MASK; map_element++);
-								if (map_element->base_height * 8 > vehicle->z) { // vehicle underground
+								rct_map_element* map_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
+								if (map_element != NULL && map_element->base_height * 8 > vehicle->z) { // vehicle underground
 									i->volume = 0x30;
 								}
 							}
