@@ -231,15 +231,18 @@ void S6Exporter::Export()
     for (int i = 0; i < 721; i++)
     {
         rct_object_entry_extended *entry = &(RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)[i]);
-
+// FIXME: not sure what's going on in here
+/*
         if (gObjectList[i] == (void *)0xFFFFFFFF)
         {
             memset(&_s6.objects[i], 0xFF, sizeof(rct_object_entry));
         }
         else
+*/
         {
             _s6.objects[i] = *((rct_object_entry*)entry);
         }
+
     }
 
     _s6.elapsed_months = gDateMonthsElapsed;

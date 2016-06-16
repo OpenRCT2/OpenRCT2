@@ -41,6 +41,11 @@
 
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 
+#if NO_RCT2
+paint_struct *unk_EE7884;
+paint_struct *unk_EE7888;
+#endif
+
 /**
  * This is not a viewport function. It is used to setup many variables for
  * multiple things.
@@ -741,7 +746,7 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int left, in
 			gfx_clear(dpi2, colour);
 		}
 		RCT2_GLOBAL(0xEE7880, uint32) = 0xF1A4CC;
-		RCT2_GLOBAL(0x140E9A8, uint32) = (int)dpi2;
+		unk_140E9A8 = dpi2;
 		painter_setup();
 		viewport_paint_setup();
 		sub_688217();
@@ -1019,7 +1024,7 @@ static bool sub_679236_679662_679B0D_679FF1(uint32 ebx, rct_g1_element *image, u
 	}
 
 	if (ebx & 0x20000000) {
-		uint8 *ebx_palette = RCT2_GLOBAL(0x009ABDA4, uint8*);
+		uint8 *ebx_palette = unk_9ABDA4;
 
 		uint8 al = *esi;
 		uint8 al2 = *(al + ebx_palette);
@@ -1288,7 +1293,7 @@ void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
 			index &= 0x1F;
 		}
 		int g1Index = RCT2_ADDRESS(0x0097FCBC, uint32)[index];
-		RCT2_GLOBAL(0x009ABDA4, uint8*) = g1Elements[g1Index].offset;
+		unk_9ABDA4 = g1Elements[g1Index].offset;
 	} else {
 		RCT2_GLOBAL(0x00EDF81C, uint32) = 0;
 	}
@@ -1301,8 +1306,8 @@ void sub_679023(rct_drawpixelinfo *dpi, int imageId, int x, int y)
  */
 void sub_68862C()
 {
-	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
-	paint_struct *ps = RCT2_GLOBAL(0x00EE7884, paint_struct*), *old_ps, *next_ps;
+	rct_drawpixelinfo *dpi = unk_140E9A8;
+	paint_struct *ps = unk_EE7884, *old_ps, *next_ps;
 
 	while ((ps = ps->next_quadrant_ps) != NULL) {
 		old_ps = ps;
@@ -1372,7 +1377,7 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
 			dpi->x = RCT2_GLOBAL(RCT2_ADDRESS_VIEWPORT_PAINT_X, int16_t);
 			dpi->width = 1;
 			RCT2_GLOBAL(0xEE7880, uint32_t) = 0xF1A4CC;
-			RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*) = dpi;
+			unk_140E9A8 = dpi;
 			painter_setup();
 			viewport_paint_setup();
 			sub_688217();

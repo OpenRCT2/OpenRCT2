@@ -905,7 +905,7 @@ void vehicle_sprite_paint(rct_vehicle *vehicle, int ebx, int ecx, int z, const r
 	if (ps != NULL) {
 		ps->tertiary_colour = vehicle->colours_extended;
 	}
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo* dpi = unk_140E9A8;
 	if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0) {
 		baseImage_id += vehicleEntry->no_vehicle_images;
 		for (int i = 0; i < 8; i++){

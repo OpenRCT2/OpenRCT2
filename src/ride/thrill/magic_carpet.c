@@ -136,7 +136,7 @@ static void paint_magic_carpet_vehicle(rct_ride *ride, uint8 direction, uint32 s
 	sub_98199C(vehicleImageId | imageColourFlags, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 
 	// Riders
-	rct_drawpixelinfo *dpi = RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo *dpi = unk_140E9A8;
 	if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
 		rct_vehicle *vehicle = get_first_vehicle(ride);
 		if (vehicle != NULL) {

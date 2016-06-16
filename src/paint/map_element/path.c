@@ -28,6 +28,7 @@
 #include "../../game.h"
 #include "../supports.h"
 #include "../../peep/staff.h"
+#include "../../object_list.h"
 
 // #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
 //        to use the old string arguments array. Remove when scrolling_text_setup is no
@@ -586,7 +587,7 @@ void sub_6A3F61(rct_map_element * map_element, uint16 bp, uint16 height, rct_foo
 
 	// Probably drawing benches etc.
 
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 
 	if (dpi->zoom_level <= 1) {
 		if (!(RCT2_GLOBAL(0x9DEA6F, uint8) & 1)) {

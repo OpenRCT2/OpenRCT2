@@ -16,16 +16,20 @@
 
 #include "../addresses.h"
 #include "../common.h"
+#include "../openrct2.h"
+#include "../platform/platform.h"
 #include "../sprites.h"
 #include "drawing.h"
-#include "../platform/platform.h"
-#include "../openrct2.h"
 
 void *_g1Buffer = NULL;
 
 rct_gx g2;
 
-rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
+#if NO_RCT2
+	rct_g1_element *g1Elements = NULL;
+#else
+	rct_g1_element *g1Elements = (rct_g1_element*)RCT2_ADDRESS_G1_ELEMENTS;
+#endif
 
 /**
  *
@@ -47,6 +51,9 @@ int gfx_load_g1()
 			header.num_entries = 29294;
 
 			// Read element headers
+#if NO_RCT2
+			g1Elements = calloc(324206, sizeof(rct_g1_element));
+#endif
 			SDL_RWread(file, g1Elements, header.num_entries * sizeof(rct_g1_element), 1);
 
 			// Read element data
@@ -73,6 +80,9 @@ int gfx_load_g1()
 void gfx_unload_g1()
 {
 	SafeFree(_g1Buffer);
+#if NO_RCT2
+	SafeFree(g1Elements);
+#endif
 }
 
 void gfx_unload_g2()
@@ -126,11 +136,10 @@ int gfx_load_g2()
  */
 void sub_68371D()
 {
-	uint8 **unk_9E3CE4 = (uint8**)0x009E3CE4;
-
 	unk_9E3CE4[0] = NULL;
-	for (int i = 1; i < 8; i++)
+	for (int i = 1; i < 8; i++) {
 		unk_9E3CE4[i] = g1Elements[23199 + i].offset;
+	}
 }
 
 /**
@@ -228,7 +237,7 @@ static void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unk
 		return;
 	}
 
-	if (RCT2_GLOBAL(0x9E3CDC, uint32) != 0){//Not tested. I can't actually work out when this code runs.
+	if (unk_9E3CDC != NULL) { //Not tested. I can't actually work out when this code runs.
 		unknown_pointer += source_pointer - source_image->offset;
 
 		for (; height > 0; height -= zoom_amount){
@@ -291,14 +300,14 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 
 	RCT2_GLOBAL(0x00EDF81C, uint32) = image_id & 0xE0000000;
 
-	uint8* unknown_pointer = (uint8*)(RCT2_ADDRESS(0x9E3CE4, uint32*)[image_sub_type]);
-	RCT2_GLOBAL(0x009E3CDC, uint32) = (uint32)unknown_pointer;
+	uint8* unknown_pointer = (uint8*)unk_9E3CE4[image_sub_type];
+	unk_9E3CDC = unknown_pointer;
 
 	if (image_type && !(image_type & IMAGE_TYPE_UNKNOWN)) {
 		uint8 palette_ref = (image_id >> 19) & 0xFF;
 		if (image_type & IMAGE_TYPE_MIX_BACKGROUND){
 			unknown_pointer = NULL;
-			RCT2_GLOBAL(0x009E3CDC, uint32) = 0;
+			unk_9E3CDC = NULL;
 		}
 		else{
 			palette_ref &= 0x7F;
@@ -308,7 +317,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 		palette_pointer = g1Elements[palette_offset].offset;
 	}
 	else if (image_type && !(image_type & IMAGE_TYPE_USE_PALETTE)){
-		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
+		unk_9E3CDC = NULL;
 		unknown_pointer = NULL;
 		palette_pointer = RCT2_ADDRESS(0x9ABF0C, uint8);
 
@@ -333,7 +342,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 		image_id |= IMAGE_TYPE_USE_PALETTE << 28;
 	}
 	else if (image_type){
-		RCT2_GLOBAL(0x9E3CDC, uint32) = 0;
+		unk_9E3CDC = NULL;
 		unknown_pointer = NULL;
 
 		palette_pointer = RCT2_ADDRESS(0x9ABE0C, uint8);
@@ -352,7 +361,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo *dpi, int image_id, int
 	}
 
 	//For backwards compatibility
-	RCT2_GLOBAL(0x9ABDA4, uint8*) = palette_pointer;
+	unk_9ABDA4 = palette_pointer;
 
 	gfx_draw_sprite_palette_set_software(dpi, image_id, x, y, palette_pointer, unknown_pointer);
 }

@@ -44,6 +44,7 @@ option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(STATIC "Create a static build.")
 option(FORCE64 "Force native (x86-64) build. Do not use, for experimental purposes only.")
 option(DISABLE_OPENGL "Disable OpenGL support.")
+option(DISABLE_RCT2 "WIP: Try building without using code and data segments from vanilla.")
 
 if (FORCE64)
 	set(TARGET_M "-m64")
@@ -73,6 +74,10 @@ else (DISABLE_NETWORK)
 	# This is too old and will not work.
 	PKG_CHECK_MODULES(SSL REQUIRED openssl>=1.0.0)
 endif (DISABLE_NETWORK)
+
+if (DISABLE_RCT2)
+	add_definitions(-DNO_RCT2)
+endif (DISABLE_RCT2)
 
 # Start of library checks
 

@@ -132,10 +132,10 @@ void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryEntry, u
  */
 void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 {
-    rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
-    rct_scenery_entry * sceneryEntry = gWallSceneryEntries[map_element->properties.fence.type];
+	rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.fence.type);
     uint32 frameNum = 0;
 
     if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG_5) {

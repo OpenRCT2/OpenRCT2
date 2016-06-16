@@ -34,6 +34,12 @@ uint32 gPickupPeepImage;
 sint32 gPickupPeepX;
 sint32 gPickupPeepY;
 
+void *unk_9ABDA4;
+void *unk_9E3CDC;
+void *unk_9E3CE4[8];
+#if NO_RCT2
+rct_drawpixelinfo *unk_140E9A8;
+#endif
 
 //Originally 0x9ABE0C, 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
 const uint8 peep_palette[0x100] = {

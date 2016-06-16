@@ -241,7 +241,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 				return;
 			}
 		}
-		rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+		rct_drawpixelinfo* dpi = unk_140E9A8;
 		if (dpi->zoom_level > 1) {
 			scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
 			return;
@@ -324,7 +324,7 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 		}
 		return;
 	}
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo* dpi = unk_140E9A8;
 	if (dpi->zoom_level > 0) {
 		scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
 		return;

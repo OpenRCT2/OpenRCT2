@@ -29,7 +29,7 @@
 int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _edx, int _esi, int _edi, int _ebp)
 {
 	int result = 0;
-#ifdef PLATFORM_X86
+#if defined(PLATFORM_X86) && !defined(NO_RCT2)
 	#ifdef _MSC_VER
 	__asm {
 		push ebp
@@ -81,7 +81,7 @@ int DISABLE_OPT RCT2_CALLPROC_X(int address, int _eax, int _ebx, int _ecx, int _
 int DISABLE_OPT RCT2_CALLFUNC_X(int address, int *_eax, int *_ebx, int *_ecx, int *_edx, int *_esi, int *_edi, int *_ebp)
 {
 	int result = 0;
-#ifdef PLATFORM_X86
+#if defined(PLATFORM_X86) && !defined(NO_RCT2)
 	#ifdef _MSC_VER
 	__asm {
 		// Store C's base pointer

@@ -36,7 +36,7 @@ const uint32 vehicle_particle_base_sprites[] = {
  */
 void misc_paint(rct_sprite *misc, int imageDirection)
 {
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 
 	switch (misc->steam_particle.misc_identifier) {
 		case SPRITE_MISC_STEAM_PARTICLE: // 0

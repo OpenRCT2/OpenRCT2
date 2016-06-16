@@ -30,7 +30,7 @@
 void banner_paint(uint8 direction, int height, rct_map_element* map_element)
 {
 	uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
-	rct_drawpixelinfo* dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo*);
+	rct_drawpixelinfo* dpi = unk_140E9A8;
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 

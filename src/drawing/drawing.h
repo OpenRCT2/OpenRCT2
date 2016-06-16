@@ -113,6 +113,18 @@ extern sint32 gPickupPeepY;
 extern rct_g1_element *g1Elements;
 extern rct_gx g2;
 
+extern rct_drawpixelinfo gScreenDPI;
+extern rct_drawpixelinfo gWindowDPI;
+
+extern void *unk_9ABDA4;
+extern void *unk_9E3CDC;
+extern void *unk_9E3CE4[8];
+#if NO_RCT2
+extern rct_drawpixelinfo *unk_140E9A8;
+#else
+#define unk_140E9A8 RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*)
+#endif
+
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, int x, int y, int width, int height);
 void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);

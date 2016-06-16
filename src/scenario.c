@@ -29,6 +29,7 @@
 #include "management/news_item.h"
 #include "network/network.h"
 #include "object.h"
+#include "object_list.h"
 #include "openrct2.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
@@ -688,9 +689,10 @@ int scenario_get_num_packed_objects_to_write()
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 
 	for (i = 0; i < OBJECT_ENTRY_COUNT; i++, entry++) {
-		if (gObjectList[i] == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
+		void *entryData = get_loaded_object_entry(i);
+		if (entryData == (void*)0xFFFFFFFF || (entry->flags & 0xF0)) {
 			continue;
-
+		}
 		count++;
 	}
 
@@ -706,11 +708,13 @@ int scenario_write_packed_objects(SDL_RWops* rw)
 	int i;
 	rct_object_entry_extended *entry = (rct_object_entry_extended*)0x00F3F03C;
 	for (i = 0; i < OBJECT_ENTRY_COUNT; i++, entry++) {
-		if (gObjectList[i] == (void *)0xFFFFFFFF || (entry->flags & 0xF0))
+		void *entryData = get_loaded_object_entry(i);
+		if (entryData == (void*)0xFFFFFFFF || (entry->flags & 0xF0)) {
 			continue;
-
-		if (!write_object_file(rw, (rct_object_entry*)entry))
+		}
+		if (!write_object_file(rw, (rct_object_entry*)entry)) {
 			return 0;
+		}
 	}
 
 	return 1;
@@ -746,10 +750,12 @@ int scenario_write_available_objects(FILE *file)
 	rct_object_entry_extended *srcEntry = (rct_object_entry_extended*)0x00F3F03C;
 	rct_object_entry *dstEntry = (rct_object_entry*)buffer;
 	for (i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		if (gObjectList[i] == (void *)0xFFFFFFFF)
+		void *entryData = get_loaded_object_entry(i);
+		if (entryData == (void*)0xFFFFFFFF) {
 			memset(dstEntry, 0xFF, sizeof(rct_object_entry));
-		else
+		} else {
 			*dstEntry = *((rct_object_entry*)srcEntry);
+		}
 
 		srcEntry++;
 		dstEntry++;

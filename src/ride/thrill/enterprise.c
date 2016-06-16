@@ -51,7 +51,7 @@ static void paint_enterprise_structure(rct_ride * ride, sint8 xOffset, sint8 yOf
 	uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
 	sub_98197C(imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height, get_current_rotation());
 
-	rct_drawpixelinfo * dpi = RCT2_GLOBAL(0x140E9A8, rct_drawpixelinfo *);
+	rct_drawpixelinfo * dpi = unk_140E9A8;
 
 	if (dpi->zoom_level == 0
 	    && imageOffset < 12
