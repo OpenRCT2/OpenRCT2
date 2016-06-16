@@ -943,8 +943,8 @@ STR_0936    :Entrée du parc dans le passage
 STR_0937    :{SMALLFONT}{BLACK}Options d'affichage
 STR_0938    :{SMALLFONT}{BLACK}Ajuster hauteur et inclinaison du terrain
 STR_0939    :Vue souterraine/intérieure
-STR_0940    :Supprimer surface de base
-STR_0941    :Supprimer surfaces verticales
+STR_0940    :Masquer terrain
+STR_0941    :Masquer surfaces verticales
 STR_0942    :Attractions transparentes
 STR_0943    :Décor transparent
 STR_0944    :Sauvegarder
@@ -2508,8 +2508,8 @@ STR_2498    :Zoom avant
 STR_2499    :Pivoter vue
 STR_2500    :Pivoter objet construction
 STR_2501    :Vue souterraine
-STR_2502    :Supprimer surface
-STR_2503    :Supprimer terrain vertical
+STR_2502    :Masquer terrain
+STR_2503    :Masquer surfaces verticales
 STR_2504    :Attractions transparentes
 STR_2505    :Décor transparent
 STR_2506    :Supports invisibles

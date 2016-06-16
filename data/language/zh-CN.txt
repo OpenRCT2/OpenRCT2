@@ -947,8 +947,8 @@ STR_0936    :游乐场的入口挡在此处
 STR_0937    :{SMALLFONT}{BLACK}查看选项
 STR_0938    :{SMALLFONT}{BLACK}调整地势高低及陡峭程度
 STR_0939    :地下/内部 视图模式
-STR_0940    :移除地表
-STR_0941    :移除垂直地面
+STR_0940    :隐藏地表
+STR_0941    :隐藏垂直地面
 STR_0942    :半透明游乐设施
 STR_0943    :半透明景观
 STR_0944    :保存
@@ -2512,8 +2512,8 @@ STR_2498    :Zoom view in
 STR_2499    :Rotate view clockwise
 STR_2500    :Rotate construction object
 STR_2501    :Underground view toggle
-STR_2502    :Remove base land toggle
-STR_2503    :Remove vertical land toggle
+STR_2502    :开关'隐藏地表'选项
+STR_2503    :开关'隐藏垂直地面'选项
 STR_2504    :See-through rides toggle
 STR_2505    :See-through scenery toggle
 STR_2506    :Invisible supports toggle
