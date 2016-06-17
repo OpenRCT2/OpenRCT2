@@ -916,20 +916,22 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
 
-		num_items = 6;
+		num_items = 7;
 		gDropdownItemsFormat[0] = 1156;
 		gDropdownItemsFormat[1] = 1156;
 		gDropdownItemsFormat[2] = 1156;
 		gDropdownItemsFormat[3] = 1156;
-		gDropdownItemsFormat[4] = 1156;
+		gDropdownItemsFormat[4] = 0;
 		gDropdownItemsFormat[5] = 1156;
+		gDropdownItemsFormat[6] = 1156;
 		gDropdownItemsArgs[0] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
 		gDropdownItemsArgs[1] = STR_OBJECT_FILTER_WW;
 		gDropdownItemsArgs[2] = STR_OBJECT_FILTER_TT;
 		gDropdownItemsArgs[3] = STR_OBJECT_FILTER_CUSTOM;
-		gDropdownItemsArgs[4] = STR_SELECTED_ONLY;
-		gDropdownItemsArgs[5] = STR_NON_SELECTED_ONLY;
-
+		gDropdownItemsArgs[4] = STR_NONE;
+		gDropdownItemsArgs[5] = STR_SELECTED_ONLY;
+		gDropdownItemsArgs[6] = STR_NON_SELECTED_ONLY;
+		
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
@@ -940,8 +942,8 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 			);
 
 		gDropdownItemsChecked = _filter_flags & 0xF;
-		dropdown_set_checked(4, _filter_selected);
-		dropdown_set_checked(5, _filter_nonselected);
+		dropdown_set_checked(5, _filter_selected);
+		dropdown_set_checked(6, _filter_nonselected);
 
 		break;
 
@@ -955,13 +957,13 @@ static void window_editor_object_selection_dropdown(rct_window *w, int widgetInd
 
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
-		if (dropdownIndex == 4) {
+		if (dropdownIndex == 5) {
 			_filter_selected = !_filter_selected;
 			if (_filter_selected && _filter_nonselected) {
 				_filter_nonselected = false;
 			}
 		}
-		else if (dropdownIndex == 5) {
+		else if (dropdownIndex == 6) {
 			_filter_nonselected = !_filter_nonselected;
 			if (_filter_nonselected && _filter_selected) {
 				_filter_selected = false;
