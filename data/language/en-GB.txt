@@ -4192,9 +4192,10 @@ STR_5880    :No reason
 STR_5881    :Vandalism
 STR_5882    :Spam
 STR_5883    :Harassment
-STR_5884    :Illegal content
-STR_5885    :Other reason
-STR_5886    :Enter custom kick reason:
+STR_5884    :Breaking Server Rules
+STR_5885    :Innapropriate content
+STR_5886    :Other reason
+STR_5887    :Enter custom kick reason:
 
 #############
 # Scenarios #

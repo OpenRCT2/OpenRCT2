@@ -1075,7 +1075,6 @@ void Network::Client_Send_KICK(uint8 playerid, const char* reason) {
 
 bool Network::Server_Send_KICK(uint8 playerid, const char* reason, const char* kickedBy) {
 	NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-	assert(player);
 	if (player && player->flags & NETWORK_PLAYER_FLAG_ISSERVER) {
 		gGameCommandErrorTitle = STR_CANT_DO_THIS;
 		gGameCommandErrorText = STR_CANT_KICK_THE_HOST;
@@ -1705,13 +1704,16 @@ void Network::Server_Handle_KICK(NetworkConnection& connection, NetworkPacket& p
 			return;
 		}
 	}
-	assert(connection.Player);
 	uint8 playerid;
 	packet >> playerid;
 	const char* reason = packet.ReadString();
 	auto name = connection.Player->name;
 	if (!reason) {
 		reason = language_get_string(STR_MULTIPLAYER_KICKED_REASON);
+	}
+	if (connection.Player->id == playerid) {
+		Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_CANT_DO_THIS);
+		return;
 	}
 	if (!Server_Send_KICK(playerid, reason, name.c_str())) {
 		Server_Send_SHOWERROR(connection, gGameCommandErrorTitle, gGameCommandErrorText);

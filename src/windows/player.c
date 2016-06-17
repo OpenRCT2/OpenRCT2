@@ -42,6 +42,7 @@ enum WINDOW_PLAYER_PAGE {
 	WINDOW_PLAYER_PAGE_OVERVIEW,
 	WINDOW_PLAYER_PAGE_STATISTICS,
 };
+
 //The following list can be modified to contain more, less, or different options, as long as
 //STR_KICK_REASON_NO_REASON remains first and STR_KICK_REASON_OTHER_REASON remains last.
 const rct_string_id KickReasonStringIds[] = {
@@ -49,7 +50,8 @@ const rct_string_id KickReasonStringIds[] = {
 	STR_KICK_REASON_VANDALISM,
 	STR_KICK_REASON_SPAM,
 	STR_KICK_REASON_HARASSMENT,
-	STR_KICK_REASON_ILLEGAL_CONTENT,
+	STR_KICK_REASON_BREAKING_SERVER_RULES,
+	STR_KICK_REASON_INNAPROPRIATE_CONTENT,
 	STR_KICK_REASON_OTHER_REASON,
 };
 int KickReasonCount = sizeof(KickReasonStringIds) / sizeof(KickReasonStringIds[0]);
@@ -401,7 +403,7 @@ void window_player_overview_dropdown(rct_window *w, int widgetIndex, int dropdow
 	}
 	else if (widgetIndex == WIDX_KICK) {
 		if (KickReasonStringIds[dropdownIndex] == STR_KICK_REASON_OTHER_REASON) {
-			window_text_input_open(w, widgetIndex, STR_ACTION_KICK_PLAYER, STR_ENTER_KICK_REASON_DESCRIPTION, STR_MULTIPLAYER_KICKED_REASON, 0, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE);
+			window_text_input_open(w, widgetIndex, STR_ACTION_KICK_PLAYER, STR_ENTER_KICK_REASON_DESCRIPTION, STR_NONE, 0, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE);
 		}
 		else {
 			window_player_overview_kick_player(w, KickReasonStringIds[dropdownIndex], "");
