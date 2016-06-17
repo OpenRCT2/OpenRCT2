@@ -56,6 +56,9 @@ enum {
 	FILTER_ALL = 0x7EF,
 } FILTER_FLAGS;
 
+bool _filter_selected = false;
+bool _filter_nonselected = false;
+
 uint32 _filter_flags;
 uint16 _filter_object_counts[11];
 uint8 _filter_ride_tab;
@@ -219,6 +222,7 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 static int get_object_from_object_selection(uint8 object_type, int y, uint8 *object_selection_flags, rct_object_entry **installed_entry);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
+static bool filter_selected(uint8* objectFlags);
 static bool filter_string(rct_object_entry *entry, rct_object_filters *filter);
 static bool filter_source(rct_object_entry *entry);
 static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter);
@@ -333,7 +337,7 @@ static void visible_list_refresh(rct_window *w)
 	for (int i = 0; i < numObjects; i++) {
 		rct_object_filters *filter = get_object_filter(i);
 		int type = entry->flags & 0x0F;
-		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry, filter) && filter_chunks(entry, filter)) {
+		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry, filter) && filter_chunks(entry, filter) && filter_selected(itemFlags)) {
 			currentListItem->entry = entry;
 			currentListItem->filter = filter;
 			currentListItem->flags = itemFlags;
@@ -912,15 +916,19 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
 
-		num_items = 4;
+		num_items = 6;
 		gDropdownItemsFormat[0] = 1156;
 		gDropdownItemsFormat[1] = 1156;
 		gDropdownItemsFormat[2] = 1156;
 		gDropdownItemsFormat[3] = 1156;
+		gDropdownItemsFormat[4] = 1156;
+		gDropdownItemsFormat[5] = 1156;
 		gDropdownItemsArgs[0] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
 		gDropdownItemsArgs[1] = STR_OBJECT_FILTER_WW;
 		gDropdownItemsArgs[2] = STR_OBJECT_FILTER_TT;
 		gDropdownItemsArgs[3] = STR_OBJECT_FILTER_CUSTOM;
+		gDropdownItemsArgs[4] = STR_SELECTED_ONLY;
+		gDropdownItemsArgs[5] = STR_NON_SELECTED_ONLY;
 
 		window_dropdown_show_text(
 			w->x + widget->left,
@@ -932,6 +940,9 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 			);
 
 		gDropdownItemsChecked = _filter_flags & 0xF;
+		dropdown_set_checked(4, _filter_selected);
+		dropdown_set_checked(5, _filter_nonselected);
+
 		break;
 
 	}
@@ -944,8 +955,22 @@ static void window_editor_object_selection_dropdown(rct_window *w, int widgetInd
 
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
-		_filter_flags ^= (1 << dropdownIndex);
-		gConfigInterface.object_selection_filter_flags = _filter_flags;
+		if (dropdownIndex == 4) {
+			_filter_selected = !_filter_selected;
+			if (_filter_selected && _filter_nonselected) {
+				_filter_nonselected = false;
+			}
+		}
+		else if (dropdownIndex == 5) {
+			_filter_nonselected = !_filter_nonselected;
+			if (_filter_nonselected && _filter_selected) {
+				_filter_selected = false;
+			}
+		}
+		else {
+			_filter_flags ^= (1 << dropdownIndex);
+			gConfigInterface.object_selection_filter_flags = _filter_flags;
+		}
 		config_save_default();
 
 		filter_update_counts();
@@ -1013,6 +1038,12 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 
 		window_error_open(error_title, gGameCommandErrorText);
 		return;
+	}
+
+	if (_filter_selected != _filter_nonselected) {
+		filter_update_counts();
+		visible_list_refresh(w);
+		window_invalidate(w);
 	}
 
 	if (!RCT2_GLOBAL(0xF43411, uint8) & 1)
@@ -2052,6 +2083,21 @@ static void window_editor_object_selection_textinput(rct_window *w, int widgetIn
 	window_invalidate(w);
 }
 
+static bool filter_selected(uint8* objectFlag) {
+	if (_filter_selected == _filter_nonselected) {
+		return true;
+	}
+	if (_filter_selected && *objectFlag & OBJECT_SELECTION_FLAG_SELECTED) {
+		return true;
+	}
+	else if (_filter_nonselected && !(*objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
 {
 	// Nothing to search for
@@ -2116,19 +2162,22 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
+		int numObjects = gInstalledObjectsCount;
 		rct_object_entry *installed_entry = gInstalledObjects;
 		rct_object_filters *filter;
+		uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 		uint8 type;
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
-		for (int i = gInstalledObjectsCount; i > 0; --i) {
-			filter = get_object_filter(gInstalledObjectsCount - i);
+		for (int i = 0; i < numObjects; i++) {
+			filter = get_object_filter(i);
 			type = installed_entry->flags & 0xF;
-			if (filter_source(installed_entry) && filter_string(installed_entry, filter) && filter_chunks(installed_entry, filter)) {
+			if (filter_source(installed_entry) && filter_string(installed_entry, filter) && filter_chunks(installed_entry, filter) && filter_selected(objectFlag)) {
 				_filter_object_counts[type]++;
 			}
 			installed_entry = object_get_next(installed_entry);
+			objectFlag++;
 		}
 	}
 }
