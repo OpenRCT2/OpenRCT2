@@ -229,6 +229,7 @@ static void object_list_examine()
  */
 void reset_loaded_objects()
 {
+	return;
 	reset_type_to_ride_entry_index_map();
 
 	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
@@ -237,7 +238,7 @@ void reset_loaded_objects()
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_load(type, chunk, j);
+				object_load(type, chunk, j, NULL);
 		}
 	}
 }
