@@ -122,9 +122,7 @@ typedef struct rct_ride_entry {
 	uint8 shop_item;									// 0x1C0
 	uint8 shop_item_secondary;							// 0x1C1
 } rct_ride_entry;
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_ride_entry, 0x1c2);
-#endif
+// FIXME: unpack
 
 /**
  * Ride structure.

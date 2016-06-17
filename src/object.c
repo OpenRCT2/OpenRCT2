@@ -523,6 +523,7 @@ typedef struct object_type_vtable {
 // Ride (rct2: 0x006E6E2A)
 ///////////////////////////////////////////////////////////////////////////////
 
+#pragma pack(push, 1)
 /**
  * Ride type vehicle structure.
  * size: 0x65
@@ -573,6 +574,7 @@ typedef struct rct_ride_entry_vehicle_32bit {
 	uint8 special_frames;			// 0x60 , 0x7A
 	uint32 peep_loading_positions;	// 0x61 , 0x7B note: uint32
 } rct_ride_entry_vehicle_32bit;
+assert_struct_size(rct_ride_entry_vehicle_32bit, 0x65);
 
 /**
  * Ride type structure.
@@ -617,6 +619,8 @@ typedef struct rct_ride_entry_32bit {
 	uint8 shop_item;									// 0x1C0
 	uint8 shop_item_secondary;							// 0x1C1
 } rct_ride_entry_32bit;
+assert_struct_size(rct_ride_entry_32bit, 0x1c2);
+#pragma pack(pop)
 
 static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
@@ -1317,6 +1321,7 @@ static const object_type_vtable object_type_ride_vtable[] = {
 // Small Scenery (rct2: 0x006E3466)
 ///////////////////////////////////////////////////////////////////////////////
 
+#pragma pack(push, 1)
 typedef struct rct_large_scenery_entry_32bit {
 	uint8 tool_id;			// 0x06
 	uint8 flags;			// 0x07
@@ -1328,6 +1333,7 @@ typedef struct rct_large_scenery_entry_32bit {
 	uint32 text;
 	uint32 text_image;
 } rct_large_scenery_entry_32bit;
+assert_struct_size(rct_large_scenery_entry_32bit, 20);
 
 typedef struct rct_small_scenery_entry_32bit {
 	uint32 flags;			// 0x06
@@ -1339,6 +1345,7 @@ typedef struct rct_small_scenery_entry_32bit {
 	uint8 pad_14[0x06];
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry_32bit;
+assert_struct_size(rct_small_scenery_entry_32bit, 21);
 
 typedef struct rct_scenery_entry_32bit {
 	rct_string_id name;		// 0x00
@@ -1351,6 +1358,8 @@ typedef struct rct_scenery_entry_32bit {
 		rct_banner_scenery_entry banner;
 	};
 } rct_scenery_entry_32bit;
+assert_struct_size(rct_scenery_entry_32bit, 6 + 21);
+#pragma pack(pop)
 
 static uint8* object_type_small_scenery_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
