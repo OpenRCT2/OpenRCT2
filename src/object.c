@@ -568,7 +568,7 @@ typedef struct rct_ride_entry_vehicle_32bit {
 	uint8 powered_acceleration;		// 0x5B , 0x75
 	uint8 powered_max_speed;		// 0x5C , 0x76
 	uint8 car_visual;				// 0x5D , 0x77
-	uint8 pad_5E;
+	uint8 effect_visual;
 	uint8 draw_order;
 	uint8 special_frames;			// 0x60 , 0x7A
 	uint32 peep_loading_positions;	// 0x61 , 0x7B note: uint32
@@ -869,7 +869,7 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 			outVehicleEntry->powered_acceleration = vehicleEntry->powered_acceleration;
 			outVehicleEntry->powered_max_speed = vehicleEntry->powered_max_speed;
 			outVehicleEntry->car_visual = vehicleEntry->car_visual;
-			outVehicleEntry->pad_5E = vehicleEntry->pad_5E;
+			outVehicleEntry->effect_visual = vehicleEntry->effect_visual;
 			outVehicleEntry->draw_order = vehicleEntry->draw_order;
 			outVehicleEntry->special_frames = vehicleEntry->special_frames;
 
@@ -1634,7 +1634,7 @@ static void object_type_large_scenery_reset(void *objectEntry, uint32 entryIndex
 
 	extendedEntryData += sizeof(rct_object_entry);
 	if (sceneryEntry->large_scenery.flags & (1 << 2)) {
-		sceneryEntry->large_scenery.var_12 = (uintptr_t)extendedEntryData;
+		sceneryEntry->large_scenery.text = (rct_large_scenery_text *)extendedEntryData;
 		extendedEntryData += 1038;
 	}
 
@@ -1649,9 +1649,9 @@ static void object_type_large_scenery_reset(void *objectEntry, uint32 entryIndex
 
 	int imageId = object_chunk_load_image_directory(&extendedEntryData);
 	if (sceneryEntry->large_scenery.flags & (1 << 2)){
-		sceneryEntry->large_scenery.var_16 = imageId;
+		sceneryEntry->large_scenery.text_image = imageId;
 
-		uint8* edx = (uint8*)sceneryEntry->large_scenery.var_12;
+		uint8* edx = (uint8*)sceneryEntry->large_scenery.text;
 		if (!(edx[0xC] & 1)) {
 			imageId += edx[0xD] * 4;
 		} else{
@@ -1907,7 +1907,7 @@ static const object_type_vtable object_type_banner_vtable[] = {
 // Path (rct2: 0x006A8621)
 ///////////////////////////////////////////////////////////////////////////////
 
-static uint8* object_type_path_load(void *objectEntry, uint32 entryIndex)
+static uint8* object_type_path_load(void *objectEntry, uint32 entryIndex, int *chunkSize)
 {
 	rct_footpath_entry *pathEntry = (rct_footpath_entry*)objectEntry;
 	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x0E);
@@ -1931,7 +1931,7 @@ static uint8* object_type_path_load(void *objectEntry, uint32 entryIndex)
 	}
 
 	// rct_path_Type has no pointer, its size does not change, safe to memcpy
-	memcpy(outPathEntry, pathEntry, sizeof(rct_path_type));
+	memcpy(outPathEntry, pathEntry, sizeof(rct_footpath_entry));
 
 	return (uint8*)outPathEntry;
 }
@@ -1965,8 +1965,8 @@ static rct_string_id object_type_path_desc(void *objectEntry)
 
 static void object_type_path_reset(void *objectEntry, uint32 entryIndex)
 {
-	rct_path_type *pathEntry = (rct_path_type*)objectEntry;
-	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_path_type));
+	rct_footpath_entry *pathEntry = (rct_footpath_entry*)objectEntry;
+	uint8 *extendedEntryData = (uint8*)((size_t)objectEntry + sizeof(rct_footpath_entry));
 
 	pathEntry->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATHS, entryIndex, 0);
 
@@ -1982,8 +1982,8 @@ static void object_type_path_reset(void *objectEntry, uint32 entryIndex)
 	gFootpathSelectedId = 0;
 	// Set the default path for when opening footpath window
 	for (int i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++) {
-		rct_path_type *pathEntry2 = (rct_path_type*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
-		if (pathEntry2 == (rct_path_type*)-1) {
+		rct_footpath_entry *pathEntry2 = (rct_footpath_entry*)object_entry_groups[OBJECT_TYPE_PATHS].chunks[i];
+		if (pathEntry2 == (rct_footpath_entry*)-1) {
 			continue;
 		}
 		if (!(pathEntry2->flags & 4)) {
@@ -2038,8 +2038,8 @@ static uint8* object_type_path_bit_load(void *objectEntry, uint32 entryIndex, in
 
 	outSceneryEntry->name = sceneryEntry->name;
 	outSceneryEntry->image = sceneryEntry->image;
-	outSceneryEntry->path_bit.var_06 = sceneryEntry->path_bit.var_06;
-	outSceneryEntry->path_bit.pad_08 = sceneryEntry->path_bit.pad_08;
+	outSceneryEntry->path_bit.flags = sceneryEntry->path_bit.flags;
+	outSceneryEntry->path_bit.draw_type = sceneryEntry->path_bit.draw_type;
 	outSceneryEntry->path_bit.tool_id = sceneryEntry->path_bit.tool_id;
 	outSceneryEntry->path_bit.price = sceneryEntry->path_bit.price;
 	outSceneryEntry->path_bit.scenery_tab_id = sceneryEntry->path_bit.scenery_tab_id;
@@ -2559,6 +2559,7 @@ bool object_test(int type, void *objectEntry)
 {
 	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
 	const object_type_vtable *vtable = object_type_vtables[type];
+	log_warning("type = %d", type);
 	return vtable->test(objectEntry);
 }
 
