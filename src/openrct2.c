@@ -369,7 +369,8 @@ static void openrct2_loop()
 
 	_finished = 0;
 	do {
-		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4 && !gOpenRCT2Headless) {
+		bool is_minimised = (SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) != 0;
+		if (gConfigGeneral.uncap_fps && gGameSpeed <= 4 && !gOpenRCT2Headless && !is_minimised) {
 			currentTick = SDL_GetTicks();
 			if (uncapTick == 0) {
 				// Reset sprite locations
@@ -421,9 +422,7 @@ static void openrct2_loop()
 				invalidate_sprite_2(&g_sprite_list[i]);
 			}
 
-			if ((SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) == 0) {
-				platform_draw();
-			}
+			platform_draw();
 
 			fps++;
 			if (SDL_GetTicks() - secondTick >= 1000) {
@@ -456,7 +455,7 @@ static void openrct2_loop()
 
 			rct2_update();
 
-			if ((SDL_GetWindowFlags(gWindow) & (SDL_WINDOW_MINIMIZED | SDL_WINDOW_HIDDEN)) == 0) {
+			if (!is_minimised) {
 				platform_draw();
 			}
 		}
