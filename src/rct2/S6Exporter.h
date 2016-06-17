@@ -21,6 +21,7 @@
 extern "C"
 {
     #include "../scenario.h"
+    #include "../object_list.h"
 }
 
 /**
