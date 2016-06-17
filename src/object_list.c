@@ -486,6 +486,11 @@ int check_object_entry(rct_object_entry *entry)
  */
 void object_create_identifier_name(char* string_buffer, const rct_object_entry* object)
 {
+	if (object == NULL) {
+		strcat(string_buffer, "NULL_ID");
+		return;
+	}
+
 	for (uint8 i = 0; i < 8; ++i){
 		if (object->name[i] != ' '){
 			*string_buffer++ = object->name[i];
@@ -517,7 +522,14 @@ void set_load_objects_fail_reason()
 	rct_object_entry *object;
 	memcpy(&object, gCommonFormatArgs, sizeof(rct_object_entry*));
 	
-	int expansion = (object->flags & 0xFF) >> 4;
+	int expansion;
+	if (object != NULL) {
+		expansion = (object->flags & 0xFF) >> 4;
+	}
+	else {
+		expansion = 0;
+	}
+
 	if (expansion == 0 ||
 		expansion == 8 ||
 		RCT2_GLOBAL(RCT2_ADDRESS_EXPANSION_FLAGS, uint16) & (1 << expansion)
