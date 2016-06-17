@@ -633,7 +633,6 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 	assert(outRideEntry != NULL);
 	uint8 *extendedEntryData = (uint8*)((size_t)outRideEntry + sizeof(rct_ride_entry));
 	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
-	log_warning("loading ride %p", objectEntry);
 
 	// After rideEntry is 3 string tables
 	rideEntry->name = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_RIDE, entryIndex, 0);
@@ -1010,7 +1009,6 @@ static void object_type_ride_unload(void *objectEntry)
 
 static bool object_type_ride_test(void *objectEntry)
 {
-	log_warning("testing ride");
 	rct_ride_entry_32bit* rideEntry = (rct_ride_entry_32bit*)objectEntry;
 	if (rideEntry->excitement_multipler > 75) return false;
 	if (rideEntry->intensity_multipler > 75) return false;
@@ -2568,7 +2566,6 @@ bool object_test(int type, void *objectEntry)
 {
 	assert(type >= OBJECT_TYPE_RIDE && type <= OBJECT_TYPE_SCENARIO_TEXT);
 	const object_type_vtable *vtable = object_type_vtables[type];
-	log_warning("type = %d", type);
 	return vtable->test(objectEntry);
 }
 
