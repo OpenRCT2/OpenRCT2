@@ -902,8 +902,8 @@ STR_0891    :截图
 STR_0892    :截图 '{STRINGID}' 已保存
 STR_0893    :截图失败!
 STR_0894    :Landscape data area full !
-STR_0895    :Can't build partly above and partly below ground
-STR_0896    :{POP16}{POP16}{STRINGID} Construction
+STR_0895    :无法在一半地上一半地下的地形中建造
+STR_0896    :{POP16}{POP16}{STRINGID} 建造
 STR_0897    :方向
 STR_0898    :{SMALLFONT}{BLACK}左转
 STR_0899    :{SMALLFONT}{BLACK}右转
@@ -962,7 +962,7 @@ STR_0951    :退出游戏
 STR_0952    :退出游戏
 STR_0953    :载入地形
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
+STR_0955    :{SMALLFONT}{BLACK}选择此轨道的座位旋转角度
 STR_0956    :-180{DEGREE}
 STR_0957    :-135{DEGREE}
 STR_0958    :-90{DEGREE}
@@ -1022,12 +1022,12 @@ STR_1011    :关闭所有游乐设施
 STR_1012    :开启所有游乐设施
 STR_1013    :关闭游乐园
 STR_1014    :开放游乐园
-STR_1015    :Unable to operate with more than one station platform in this mode
-STR_1016    :Unable to operate with less than two stations in this mode
+STR_1015    :在此模式下, 多于一个车站的游乐设施将无法运行
+STR_1016    :在此模式下, 少于两个车站的游乐设施将无法运行
 STR_1017    :不能改变运行模式...
-STR_1018    :Can't make changes...
-STR_1019    :Can't make changes...
-STR_1020    :Can't make changes...
+STR_1018    :不能做出改变...
+STR_1019    :不能做出改变...
+STR_1020    :不能做出改变...
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} car per train
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} cars per train
@@ -2523,16 +2523,16 @@ STR_2509    :Height marks on ride tracks toggle
 STR_2510    :Height marks on paths toggle
 STR_2511    :Adjust land
 STR_2512    :Adjust water
-STR_2513    :Build scenery
-STR_2514    :Build paths
-STR_2515    :Build new ride
-STR_2516    :Show financial information
-STR_2517    :Show research information
-STR_2518    :Show rides list
-STR_2519    :Show park information
-STR_2520    :Show guest list
-STR_2521    :Show staff list
-STR_2522    :Show recent messages
+STR_2513    :建造景观
+STR_2514    :建造道路
+STR_2515    :建造新的游乐设施
+STR_2516    :显示财务信息
+STR_2517    :显示研发信息
+STR_2518    :显示设施列表
+STR_2519    :显示游乐园信息
+STR_2520    :显示游客列表
+STR_2521    :显示职员列表
+STR_2522    :显示最近信息
 STR_2523    :显示地图
 STR_2524    :截图
 ### The following need to be reordered to match SDL_keycode layout.
@@ -3037,23 +3037,23 @@ STR_3017    :Jungle drums style
 STR_3018    :Egyptian style
 STR_3019    :Toyland style
 STR_3020    :
-STR_3021    :Space style
-STR_3022    :Horror style
+STR_3021    :太空风格
+STR_3022    :恐怖风格
 STR_3023    :Techno style
-STR_3024    :Gentle style
-STR_3025    :Summer style
+STR_3024    :温和风格
+STR_3025    :夏日风格
 STR_3026    :Water style
-STR_3027    :Wild west style
-STR_3028    :Jurassic style
-STR_3029    :Rock style
-STR_3030    :Ragtime style
-STR_3031    :Fantasy style
-STR_3032    :Rock style 2
-STR_3033    :Ice style
-STR_3034    :Snow style
-STR_3035    :Custom music 1
-STR_3036    :Custom music 2
-STR_3037    :Medieval style
+STR_3027    :西部荒野风格
+STR_3028    :侏罗纪风格
+STR_3029    :摇滚风格
+STR_3030    :拉格泰姆风格
+STR_3031    :梦幻风格
+STR_3032    :摇滚风格2
+STR_3033    :冰封风格
+STR_3034    :雪地风格
+STR_3035    :自定义音乐1
+STR_3036    :自定义音乐2
+STR_3037    :中世纪风格
 STR_3038    :Urban style
 STR_3039    :Organ style
 STR_3040    :Mechanical style
@@ -3065,12 +3065,12 @@ STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
 STR_3046    :This ride cannot be modified
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
-STR_3049    :Golf hole A
-STR_3050    :Golf hole B
-STR_3051    :Golf hole C
-STR_3052    :Golf hole D
-STR_3053    :Golf hole E
-STR_3054    :Loading...
+STR_3049    :高尔夫球洞A
+STR_3050    :高尔夫球洞B
+STR_3051    :高尔夫球洞C
+STR_3052    :高尔夫球洞D
+STR_3053    :高尔夫球洞E
+STR_3054    :加载中...
 STR_3055    :白色
 STR_3056    :半透明    
 STR_3057    :{WINDOW_COLOUR_2}建造标记:
