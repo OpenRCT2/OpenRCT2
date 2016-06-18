@@ -934,8 +934,7 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 				return;
 			}
 		}
-		if (rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER)
-		{
+		if (rideType == RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER) {
 			switch(trackType) {
 			case TRACK_ELEM_HALF_LOOP_UP:
 			case TRACK_ELEM_HALF_LOOP_DOWN:
@@ -959,8 +958,7 @@ void track_paint(uint8 direction, int height, rct_map_element *mapElement)
 				break;
 			}
 		}
-		if (rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER)
-		{
+		if (rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER) {
 			switch(trackType) {
 			case TRACK_ELEM_FLAT_TO_60_DEG_UP:
 			case TRACK_ELEM_60_DEG_UP_TO_FLAT:
