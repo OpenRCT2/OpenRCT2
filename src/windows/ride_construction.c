@@ -3075,7 +3075,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 	}
 
 	int x;
-	if ((is_track_enabled(TRACK_LIFT_HILL) && _currentTrackCurve < 256) || gCheatsEnableChainLiftOnAllTrack) {
+	if ((is_track_enabled(TRACK_LIFT_HILL) && _currentTrackCurve < 256) || (gCheatsEnableChainLiftOnAllTrack && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))) {
 		window_ride_construction_widgets[WIDX_CHAIN_LIFT].type = WWT_FLATBTN;
 		x = 9;
 	} else {
