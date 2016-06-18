@@ -120,40 +120,41 @@ void climate_update()
 		cur_rain = gClimateCurrentRainLevel,
 		next_rain = gClimateNextRainLevel;
 
-	if (gCheatsFreezeClimate) //for cheats
-		return;
-
 	if (screen_flags & (~SCREEN_FLAGS_PLAYING)) // only normal play mode gets climate
 		return;
 
-	if (gClimateUpdateTimer) {
-		if (gClimateUpdateTimer == 960) {
-			gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-		}
-		gClimateUpdateTimer--;
-	} else if (!(gCurrentTicks & 0x7F)) {
-		if (temperature == target_temperature) {
-			if (cur_gloom == next_gloom) {
-				gClimateCurrentWeatherEffect = gClimateNextWeatherEffect;
-				_thunderTimer = 0;
-				_lightningTimer = 0;
+	if (!gCheatsFreezeClimate) {
 
-				if (cur_rain == next_rain) {
-					gClimateCurrentWeather = gClimateNextWeather;
-					climate_determine_future_weather(scenario_rand());
-					gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
-				} else if (next_rain <= 2) { // Safe-guard
-					gClimateCurrentRainLevel = step_weather_level(cur_rain, next_rain);
-				}
-			} else {
-				gClimateCurrentWeatherGloom = step_weather_level(cur_gloom, next_gloom);
-				gfx_invalidate_screen();
+		if (gClimateUpdateTimer) {
+			if (gClimateUpdateTimer == 960) {
+				gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
 			}
+			gClimateUpdateTimer--;
+		} else if (!(gCurrentTicks & 0x7F)) {
+			if (temperature == target_temperature) {
+				if (cur_gloom == next_gloom) {
+					gClimateCurrentWeatherEffect = gClimateNextWeatherEffect;
+					_thunderTimer = 0;
+					_lightningTimer = 0;
 
-		} else {
-			gClimateCurrentTemperature = step_weather_level(temperature, target_temperature);
-			gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+					if (cur_rain == next_rain) {
+						gClimateCurrentWeather = gClimateNextWeather;
+						climate_determine_future_weather(scenario_rand());
+						gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+					} else if (next_rain <= 2) { // Safe-guard
+						gClimateCurrentRainLevel = step_weather_level(cur_rain, next_rain);
+					}
+				} else {
+					gClimateCurrentWeatherGloom = step_weather_level(cur_gloom, next_gloom);
+					gfx_invalidate_screen();
+				}
+
+			} else {
+				gClimateCurrentTemperature = step_weather_level(temperature, target_temperature);
+				gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+			}
 		}
+
 	}
 
 	if (_thunderTimer != 0) {
