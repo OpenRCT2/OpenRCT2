@@ -2,7 +2,7 @@
 
 **OS:** [e.g. Windows 10]
 **Version:** [e.g. 0.0.5]
-**Commit/Build:** [e.g. 7b421c8 You can find it at the left bottom corner of the main menu]
+**Commit/Build:** [e.g. 7b421c8 Only neccesary when you're not using a stable build. You can find it at the left bottom corner of the main menu.]
 
 [Explanation of the issue...]
 
