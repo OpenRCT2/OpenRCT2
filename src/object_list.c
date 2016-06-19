@@ -231,7 +231,7 @@ void reset_loaded_objects()
 {
 	reset_type_to_ride_entry_index_map();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
+	gTotalNoImages = 0xF26E;
 
 	for (int type = 0; type < 11; ++type){
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
@@ -782,7 +782,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	*((uint16*)(installed_entry_pointer + 9)) = 0;
 	*((uint32*)(installed_entry_pointer + 11)) = 0;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
+	gTotalNoImages = 0xF26E;
 
 	gInstalledObjectsCount++;
 
@@ -835,7 +835,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	// This is deceptive. Due to setting the total no images earlier to 0xF26E
 	// this is actually the no_images in this entry.
-	*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) - 0xF26E;
+	*((uint32*)installed_entry_pointer) = gTotalNoImages - 0xF26E;
 	installed_entry_pointer += 4;
 
 	uint8* esi = RCT2_ADDRESS(0x00F42BDB, uint8);

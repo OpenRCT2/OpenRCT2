@@ -31,6 +31,7 @@
 #include "world/water.h"
 
 char gTempObjectLoadName[9] = { 0 };
+uint32 gTotalNoImages = 0;
 
 int object_load_entry(const utf8 *path, rct_object_entry *outEntry)
 {
@@ -112,7 +113,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		return 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
+	if (gTotalNoImages >= 0x4726E){
 		log_error("Object Load failed due to too many images loaded.");
 		free(chunk);
 		return 0;
@@ -293,7 +294,7 @@ int object_load_packed(SDL_RWops* rw)
 		return 0;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) >= 0x4726E){
+	if (gTotalNoImages >= 0x4726E){
 		log_error("Packed object has too many images.");
 		free(chunk);
 		return 0;
@@ -447,7 +448,7 @@ int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, 
  */
 int object_chunk_load_image_directory(uint8_t** chunk)
 {
-	int image_start_no = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t);
+	int image_start_no = gTotalNoImages;
 
 	// First dword of chunk is no_images
 	int no_images = *((uint32_t*)(*chunk));
@@ -456,7 +457,7 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 	int length_of_data = *((uint32_t*)(*chunk));
 	*chunk += 4;
 
-	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32_t) = no_images + image_start_no;
+	gTotalNoImages = no_images + image_start_no;
 
 	rct_g1_element* g1_dest = &g1Elements[image_start_no];
 
@@ -2650,12 +2651,12 @@ int object_get_scenario_text(rct_object_entry *entry)
 			}
 
 			// Save the real total images.
-			int total_no_images = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32);
+			int total_no_images = gTotalNoImages;
 
 			// This is being changed to force the images to be loaded into a different
 			// image id.
 			chunk = object_load(openedEntry.flags & 0x0F, chunk, 0, &chunkSize);
-			RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0x726E;
+			gTotalNoImages = 0x726E;
 			gStexTempChunk = (rct_stex_entry*)chunk;
 			// Not used anywhere.
 			RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TEXT_TEMP_OBJECT, rct_object_entry) = openedEntry;
@@ -2669,7 +2670,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			RCT2_GLOBAL(0x009ADAFC, uint8) = 0;
 			// Not used??
 			RCT2_GLOBAL(0x009ADAFD, uint8) = 0;
-			RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = total_no_images;
+			gTotalNoImages = total_no_images;
 			return 1;
 		}
 		log_error("Opened object didn't match.");

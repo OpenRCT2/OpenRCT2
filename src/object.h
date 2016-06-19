@@ -106,6 +106,7 @@ extern uint32 gInstalledObjectsCount;
 extern rct_object_entry *gInstalledObjects;
 extern uint32 gNumInstalledRCT2Objects;
 extern uint32 gNumInstalledCustomObjects;
+extern uint32 gTotalNoImages;
 
 extern void *gLastLoadedObjectChunkData;
 
