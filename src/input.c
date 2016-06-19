@@ -253,7 +253,11 @@ static void input_scroll_drag_continue(int x, int y, rct_window* w)
 
 	widget_scroll_update_thumbs(w, widgetIndex);
 	window_invalidate_by_number(w->classification, w->number);
-	platform_set_cursor_position(gInputDragLastX, gInputDragLastY);
+
+	int fixedCursorPositionX = (int) ceilf(gInputDragLastX * gConfigGeneral.window_scale);
+	int fixedCursorPositionY = (int) ceilf(gInputDragLastY * gConfigGeneral.window_scale);
+	
+	platform_set_cursor_position(fixedCursorPositionX, fixedCursorPositionY);
 }
 
 /**
