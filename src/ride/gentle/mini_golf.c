@@ -1012,7 +1012,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
 		return;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
 		return;
 	}
 
@@ -1041,7 +1041,7 @@ void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_
 		return;
 	}
 
-	if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint16) & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
+	if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
 		return;
 	}
 
