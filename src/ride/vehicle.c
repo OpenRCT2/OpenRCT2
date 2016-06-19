@@ -7465,7 +7465,7 @@ loc_6DC462:
 loc_6DC476:
 	if (vehicle->mini_golf_flags & (1 << 2)) {
 		uint8 nextFrame = vehicle->var_C5 + 1;
-		if (nextFrame < mini_golf_peep_animation_lengths[vehicle->var_D4]) {
+		if (nextFrame < mini_golf_peep_animation_lengths[vehicle->mini_golf_current_animation]) {
 			vehicle->var_C5 = nextFrame;
 			goto loc_6DC985;
 		}
@@ -7644,7 +7644,7 @@ loc_6DC743:
 					z = 8;
 				}
 			}
-			vehicle->var_D4 = (uint8)z;
+			vehicle->mini_golf_current_animation = (uint8)z;
 			vehicle->var_C5 = 0;
 			vehicle->track_progress++;
 			break;

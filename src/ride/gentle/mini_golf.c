@@ -1036,7 +1036,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
 	rct_ride_entry *rideType = get_ride_entry(get_ride(vehicle->ride)->subtype);
 	rct_sprite *sprite = &g_sprite_list[vehicle->peep[0]];
 
-	uint8 frame = mini_golf_peep_animation_frames[vehicle->var_D4][vehicle->var_C5];
+	uint8 frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->var_C5];
 	uint32 ebx = (frame << 2) + (imageDirection >> 3);
 
 	uint32 image_id = rideType->vehicles[0].base_image_id + 1 + ebx;
@@ -1049,7 +1049,7 @@ void vehicle_visual_mini_golf_player(int x, int imageDirection, int y, int z, rc
  */
 void vehicle_visual_mini_golf_ball(int x, int imageDirection, int y, int z, rct_vehicle *vehicle, int rct2VehiclePtrFormat)
 {
-	if (vehicle->var_D4 != 1) {
+	if (vehicle->mini_golf_current_animation != 1) {
 		return;
 	}
 

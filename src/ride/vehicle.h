@@ -191,7 +191,7 @@ typedef struct rct_vehicle {
 	uint16 lost_time_out;			// 0xD0
 	sint8 vertical_drop_countdown;	// 0xD1
 	uint8 var_D3;
-	uint8 var_D4;
+	uint8 mini_golf_current_animation;
 	uint8 mini_golf_flags;			// 0xD5
 	uint8 ride_subtype;				// 0xD6
 	uint8 colours_extended;			// 0xD7
