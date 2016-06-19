@@ -371,39 +371,56 @@ static const uint32 mini_golf_track_sprites_hole_e[][3][2] = {
 	},
 };
 
-static const uint8 byte_933471[] = {0, 1, 2, 3, 4, 5};
-static const uint8 byte_933478[] = {12, 13, 14, 15};
-static const uint8 byte_93347D[] = {6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8, 8, 8, 8, 9};
-static const uint8 byte_93348D[] = {12, 13, 14, 15, 14, 13, 12};
-static const uint8 byte_933495[] = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
-static const uint8 byte_9334A5[] = {15, 14, 13, 12};
-static const uint8 byte_9334AA[] = {10, 11, 11, 11, 11, 11, 10, 10, 10, 10};
-static const uint8 byte_9334B5[] = {31, 31, 31, 31, 31, 31, 31, 31, 31, 32, 33, 33, 33, 33, 34};
-static const uint8 byte_9334C5[] = {35, 36, 36, 36, 36, 36, 35, 35, 35, 35};
+/** rct2: 0x00933471 */
+static const uint8 mini_golf_peep_animation_frames_walk[] = {0, 1, 2, 3, 4, 5};
+
+/** rct2: 0x00933478 */
+static const uint8 mini_golf_peep_animation_frames_move_down[] = {12, 13, 14, 15};
+
+/** rct2: 0x009334B5 */
+static const uint8 mini_golf_peep_animation_frames_swing[] = {31, 31, 31, 31, 31, 31, 31, 31, 31, 32, 33, 33, 33, 33, 34};
+
+/** rct2: 0x0093347D */
+static const uint8 mini_golf_peep_animation_frames_swing_left[] = {6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8, 8, 8, 8, 9};
+
+/** rct2: 0x0093348D */
+static const uint8 mini_golf_peep_animation_frames_3[] = {12, 13, 14, 15, 14, 13, 12};
+
+/** rct2: 0x00933495 */
+static const uint8 mini_golf_peep_animation_frames_jump[] = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+
+/** rct2: 0x009334A5 */
+static const uint8 mini_golf_peep_animation_frames_move_up[] = {15, 14, 13, 12};
+
+/** rct2: 0x009334C5 */
+static const uint8 mini_golf_peep_animation_frames_put[] = {35, 36, 36, 36, 36, 36, 35, 35, 35, 35};
+
+/** rct2: 0x009334AA */
+static const uint8 mini_golf_peep_animation_frames_put_left[] = {10, 11, 11, 11, 11, 11, 10, 10, 10, 10};
 
 /** rct2: 0x008B8F74 */
 static const uint8 * mini_golf_peep_animation_frames[] = {
-	byte_933471,
-	byte_933478,
-	byte_93347D,
-	byte_93348D,
-	byte_933495,
-	byte_9334A5,
-	byte_9334AA,
-	byte_9334B5,
-	byte_9334C5,
+	mini_golf_peep_animation_frames_walk,
+	mini_golf_peep_animation_frames_move_down,
+	mini_golf_peep_animation_frames_swing_left,
+	mini_golf_peep_animation_frames_3,
+	mini_golf_peep_animation_frames_jump,
+	mini_golf_peep_animation_frames_move_up,
+	mini_golf_peep_animation_frames_put_left,
+	mini_golf_peep_animation_frames_swing,
+	mini_golf_peep_animation_frames_put,
 };
 
 const uint8 mini_golf_peep_animation_lengths[] = {
-	countof(byte_933471),
-	countof(byte_933478),
-	countof(byte_93347D),
-	countof(byte_93348D),
-	countof(byte_933495),
-	countof(byte_9334A5),
-	countof(byte_9334AA),
-	countof(byte_9334B5),
-	countof(byte_9334C5),
+	countof(mini_golf_peep_animation_frames_walk),
+	countof(mini_golf_peep_animation_frames_move_down),
+	countof(mini_golf_peep_animation_frames_swing_left),
+	countof(mini_golf_peep_animation_frames_3),
+	countof(mini_golf_peep_animation_frames_jump),
+	countof(mini_golf_peep_animation_frames_move_up),
+	countof(mini_golf_peep_animation_frames_put_left),
+	countof(mini_golf_peep_animation_frames_swing),
+	countof(mini_golf_peep_animation_frames_put),
 };
 
 static paint_struct * mini_golf_paint_util_7c(
