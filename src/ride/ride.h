@@ -369,6 +369,8 @@ assert_struct_size(track_begin_end, 36);
 
 #pragma pack(pop)
 
+extern uint8 gTypeToRideEntryIndexMap[];
+
 enum {
 	RIDE_CLASS_RIDE,
 	RIDE_CLASS_SHOP_OR_STALL,

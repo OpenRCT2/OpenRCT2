@@ -903,7 +903,7 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 				continue;
 			}
 
-			uint8 *typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
+			uint8 *typeToRideEntryIndexMap = gTypeToRideEntryIndexMap;
 			while (dl >= 0) {
 				if (*typeToRideEntryIndexMap++ == 0xFF) {
 					dl--;
@@ -1275,7 +1275,7 @@ static void object_type_ride_reset(void *objectEntry, uint32 entryIndex)
 				continue;
 			}
 
-			uint8 *typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
+			uint8 *typeToRideEntryIndexMap = gTypeToRideEntryIndexMap;
 			while (dl >= 0) {
 				if (*typeToRideEntryIndexMap++ == 0xFF) {
 					dl--;
