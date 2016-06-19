@@ -66,6 +66,21 @@ char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
 uint32 gLastAutoSaveTick = 0;
 
+#if defined(NO_RCT2)
+uint32 gScenarioTicks;
+#endif
+uint32 gScenarioSrand0;
+uint32 gScenarioSrand1;
+
+uint8 gScenarioObjectiveType;
+uint8 gScenarioObjectiveYear;
+uint16 gScenarioObjectiveNumGuests;
+money32 gScenarioObjectiveCurrency;
+
+uint16 gScenarioParkRatingWarningDays;
+money32 gScenarioCompletedCompanyValue;
+money32 gScenarioCompanyValueRecord;
+
 static int scenario_create_ducks();
 static void scenario_objective_check();
 
