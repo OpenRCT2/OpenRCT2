@@ -2,16 +2,16 @@
 ------------------------------------------------------------------------
 - Feature: OpenGL renderengine added.
 - Feature: Ability to rotate map elements with the tile inspector.
-- Feature: Added cheat to disable littering.
-- Feature: Addded ride console command for diagnostics and changing vehicle type.
+- Feature: Add cheat to disable littering.
+- Feature: Add ride console command for diagnostics and changing vehicle type.
 - Feature: Allow setting ownership of map edges.
 - Feature: Allow up to 255 cars per train.
 - Feature: Importing SV4 and SC4 files with rides.
-- Feature: Added Norwegian translation and currency.
+- Feature: Add Norwegian translation and currency.
 - Feature: Cheat to disable plant aging.
 - Feature: Chain cheat that allows any piece to be made into a track piece.
-- Feature: Added console command to set vehicle friction.
-- Feature: Added console command to set scenario initial cash.
+- Feature: Add console command to set vehicle friction.
+- Feature: Add console command to set scenario initial cash.
 - Change: Allow raising terrain to 64 in-game units.
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
