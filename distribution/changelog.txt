@@ -1,18 +1,24 @@
 0.0.5 (in development)
 ------------------------------------------------------------------------
+- Feature: OpenGL renderengine added.
 - Feature: Ability to rotate map elements with the tile inspector.
-- Feature: Add cheat to disable littering.
-- Feature: Add ride console command for diagnostics and changing vehicle type.
+- Feature: Added cheat to disable littering.
+- Feature: Addded ride console command for diagnostics and changing vehicle type.
 - Feature: Allow setting ownership of map edges.
 - Feature: Allow up to 255 cars per train.
 - Feature: Importing SV4 and SC4 files with rides.
-- Feature: Added Norwegian translation
+- Feature: Added Norwegian translation and currency.
 - Feature: Cheat to disable plant aging.
+- Feature: Chain cheat that allows any piece to be made into a track piece.
+- Feature: Added console command to set vehicle friction.
+- Feature: Added console command to set scenario initial cash.
+- Change: Allow raising terrain to 64 in-game units.
 - Removed: BMP screenshots.
+- Removed: Intamin and Phoenix easter eggs.
 - Technical: [#3699] Assymmetric-key-based authorisation and assignment storage
 - Technical: Mulitplayer groups are now stored in JSON format
 - Fix: [#1038] Guest List is out of order.
-- Fix: [#3282] Launched Freefall ride ratings are fixed for Downward Launch.
+- Fix: [#3282] Launched Freefall ride ratings are fixed for Downward Launch (original bug).
 - Fix: [#3307] Ride music and sound has degraded since RCT2.
 - Fix: [#3344] Build new ride window can be opened in scenario editor.
 - Fix: [#3347] Ride windows are auto-positioned below the HUD when using RCT1 lights.
@@ -22,6 +28,18 @@
 - Fix: [#3451] Renaming staff is a guest command.
 - Fix: [#3210] Scenery window scrolls too far.
 - Fix: [#3635] Inspecting sidewalk path crashes game.
+- Fix: [#2754] Dragging scrollview fails when scaled.
+- Fix: [#3859] Scenery bounding box corrected.
+- Fix: [#3858] Tooltip showed when hovering over title logo.
+- Fix: [#3856] Save Game causes Crash.
+- Fix: [#3825] Selecting players button while on a multiplayer game crashes the game.
+- Fix: [#3824] Segfault when passing invalid arguments to ride set type.
+- Fix: [#3811] Multiplayer Crash on join. 
+- Fix: [#3771] Crash when kicking player in multiplayer.
+- Fix: [#3717] Tunnels incorrectly drawn when paths underneath.
+- Fix: [#3734] RCT1 Import money bug.
+- Fix: [#3735] Advertisement campaign window bug.
+- Fix: [#3718] Fence height incorrect.
 
 0.0.4-beta (2016-04-15)
 ------------------------------------------------------------------------
