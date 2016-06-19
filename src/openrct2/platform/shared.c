@@ -41,7 +41,8 @@ typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 openrct2_cursor gCursorState;
 const uint8 *gKeysState;
-uint8 *gKeysPressed;
+keypress *gKeysPressed;
+sint32 gNumKeysPressed;
 uint32 gLastKeyPressed;
 textinputbuffer gTextInput;
 
@@ -294,6 +295,7 @@ void platform_process_messages()
 	SDL_Event e;
 
 	gLastKeyPressed = 0;
+	gNumKeysPressed = 0;
 	// gCursorState.wheel = 0;
 	gCursorState.left &= ~CURSOR_CHANGED;
 	gCursorState.middle &= ~CURSOR_CHANGED;
@@ -437,10 +439,17 @@ void platform_process_messages()
 			if (e.key.keysym.sym == SDLK_KP_ENTER){
 				// Map Keypad enter to regular enter.
 				e.key.keysym.scancode = SDL_SCANCODE_RETURN;
+				e.key.keysym.sym = SDLK_RETURN;
 			}
 
 			gLastKeyPressed = e.key.keysym.sym;
-			gKeysPressed[e.key.keysym.scancode] = 1;
+
+			if (gNumKeysPressed < KEYBOARD_KEYPRESSES_PER_UPDATE) {
+				// Handle only KEYBOARD_KEYPRESSES_PER_UPDATE keypresses per update
+				gKeysPressed[gNumKeysPressed] = (keypress){ e.key.keysym.sym, e.key.keysym.mod };
+				++gNumKeysPressed;
+				log_verbose("%s: keypress: sym:0x%08x mod:0x%08x, #:%2d", __func__, e.key.keysym.sym, e.key.keysym.mod, gNumKeysPressed);
+			}
 
 			// Text input
 			if (gTextInput.buffer == NULL) break;
@@ -569,8 +578,7 @@ static void platform_close_window()
 void platform_init()
 {
 	platform_create_window();
-	gKeysPressed = malloc(sizeof(uint8) * 256);
-	memset(gKeysPressed, 0, sizeof(uint8) * 256);
+	gKeysPressed = calloc(sizeof(keypress), KEYBOARD_KEYPRESSES_PER_UPDATE);
 
 	// Set the highest palette entry to white.
 	// This fixes a bug with the TT:rainbow road due to the

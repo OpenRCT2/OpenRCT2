@@ -180,17 +180,17 @@ void chat_history_add(const char *src)
 	network_append_chat_log(src);
 }
 
-void chat_input(sint32 c)
+void chat_input(SDL_Keycode key)
 {
-	switch (c) {
-	case SDL_SCANCODE_RETURN:
+	switch (key) {
+	case SDLK_RETURN:
 		if (strlen(_chatCurrentLine) > 0) {
 			network_send_chat(_chatCurrentLine);
 		}
 		chat_clear_input();
 		chat_close();
 		return;
-	case SDL_SCANCODE_ESCAPE:
+	case SDLK_ESCAPE:
 		chat_close();
 		return;
 	}

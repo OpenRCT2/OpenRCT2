@@ -28,78 +28,77 @@ extern "C"
 }
 
 // Current keyboard shortcuts
-uint16 gShortcutKeys[SHORTCUT_COUNT];
+keypress gShortcutKeys[SHORTCUT_COUNT];
 
 namespace KeyboardShortcuts
 {
     // Default keyboard shortcuts
-    static const uint16 _defaultShortcutKeys[SHORTCUT_COUNT] =
-    {
-        SDL_SCANCODE_BACKSPACE,                     // SHORTCUT_CLOSE_TOP_MOST_WINDOW
-        SHIFT | SDL_SCANCODE_BACKSPACE,             // SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS
-        SDL_SCANCODE_ESCAPE,                        // SHORTCUT_CANCEL_CONSTRUCTION_MODE
-        SDL_SCANCODE_PAUSE,                         // SHORTCUT_PAUSE_GAME
-        SDL_SCANCODE_PAGEUP,                        // SHORTCUT_ZOOM_VIEW_OUT
-        SDL_SCANCODE_PAGEDOWN,                      // SHORTCUT_ZOOM_VIEW_IN
-        SDL_SCANCODE_RETURN,                        // SHORTCUT_ROTATE_VIEW_CLOCKWISE
-        SHIFT | SDL_SCANCODE_RETURN,                // SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE
-        SDL_SCANCODE_Z,                             // SHORTCUT_ROTATE_CONSTRUCTION_OBJECT
-        SDL_SCANCODE_1,                             // SHORTCUT_UNDERGROUND_VIEW_TOGGLE
-        SDL_SCANCODE_H,                             // SHORTCUT_REMOVE_BASE_LAND_TOGGLE
-        SDL_SCANCODE_V,                             // SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE
-        SDL_SCANCODE_3,                             // SHORTCUT_SEE_THROUGH_RIDES_TOGGLE
-        SDL_SCANCODE_4,                             // SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE
-        SDL_SCANCODE_5,                             // SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE
-        SDL_SCANCODE_6,                             // SHORTCUT_INVISIBLE_PEOPLE_TOGGLE
-        SDL_SCANCODE_8,                             // SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE
-        SDL_SCANCODE_9,                             // SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE
-        SDL_SCANCODE_0,                             // SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE
-        SDL_SCANCODE_F1,                            // SHORTCUT_ADJUST_LAND
-        SDL_SCANCODE_F2,                            // SHORTCUT_ADJUST_WATER
-        SDL_SCANCODE_F3,                            // SHORTCUT_BUILD_SCENERY
-        SDL_SCANCODE_F4,                            // SHORTCUT_BUILD_PATHS
-        SDL_SCANCODE_F5,                            // SHORTCUT_BUILD_NEW_RIDE
-        SDL_SCANCODE_F,                             // SHORTCUT_SHOW_FINANCIAL_INFORMATION
-        SDL_SCANCODE_D,                             // SHORTCUT_SHOW_RESEARCH_INFORMATION
-        SDL_SCANCODE_R,                             // SHORTCUT_SHOW_RIDES_LIST
-        SDL_SCANCODE_P,                             // SHORTCUT_SHOW_PARK_INFORMATION
-        SDL_SCANCODE_G,                             // SHORTCUT_SHOW_GUEST_LIST
-        SDL_SCANCODE_S,                             // SHORTCUT_SHOW_STAFF_LIST
-        SDL_SCANCODE_M,                             // SHORTCUT_SHOW_RECENT_MESSAGES
-        SDL_SCANCODE_TAB,                           // SHORTCUT_SHOW_MAP
-        PLATFORM_MODIFIER | SDL_SCANCODE_S,         // SHORTCUT_SCREENSHOT
-        SDL_SCANCODE_MINUS,                         // SHORTCUT_REDUCE_GAME_SPEED,
-        SDL_SCANCODE_EQUALS,                        // SHORTCUT_INCREASE_GAME_SPEED,
-        PLATFORM_MODIFIER | ALT | SDL_SCANCODE_C,   // SHORTCUT_OPEN_CHEAT_WINDOW,
-        SDL_SCANCODE_T,                             // SHORTCUT_REMOVE_TOP_BOTTOM_TOOLBAR_TOGGLE,
-        SDL_SCANCODE_UP,                            // SHORTCUT_SCROLL_MAP_UP
-        SDL_SCANCODE_LEFT,                          // SHORTCUT_SCROLL_MAP_LEFT
-        SDL_SCANCODE_DOWN,                          // SHORTCUT_SCROLL_MAP_DOWN
-        SDL_SCANCODE_RIGHT,                         // SHORTCUT_SCROLL_MAP_RIGHT
-        SDL_SCANCODE_C,                             // SHORTCUT_OPEN_CHAT_WINDOW
-        PLATFORM_MODIFIER | SDL_SCANCODE_F10,       // SHORTCUT_QUICK_SAVE_GAME
-        SHORTCUT_UNDEFINED,                         // SHORTCUT_SHOW_OPTIONS
-        SHORTCUT_UNDEFINED,                         // SHORTCUT_MUTE_SOUND
-        ALT | SDL_SCANCODE_RETURN,                  // SHORTCUT_WINDOWED_MODE_TOGGLE
-        SHORTCUT_UNDEFINED,                         // SHORTCUT_SHOW_MULTIPLAYER
-        SHORTCUT_UNDEFINED,                         // SHORTCUT_PAINT_ORIGINAL_TOGGLE
-        SHORTCUT_UNDEFINED,                         // SHORTCUT_DEBUG_PAINT_TOGGLE
-        SHORTCUT_UNDEFINED,                         // SHORTCUT_SEE_THROUGH_PATHS_TOGGLE
-        SDL_SCANCODE_KP_4,                          // SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT
-        SDL_SCANCODE_KP_6,                          // SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT
-        SDL_SCANCODE_KP_5,                          // SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT
-        SDL_SCANCODE_KP_2,                          // SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN
-        SDL_SCANCODE_KP_8,                          // SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP
-        SDL_SCANCODE_KP_PLUS,                       // SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE
-        SDL_SCANCODE_KP_1,                          // SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT
-        SDL_SCANCODE_KP_3,                          // SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT
-        SDL_SCANCODE_KP_7,                          // SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK
-        SDL_SCANCODE_KP_9,                          // SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK
-        SDL_SCANCODE_KP_0,                          // SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT
-        SDL_SCANCODE_KP_MINUS,                      // SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT
+    static const keypress _defaultShortcutKeys[SHORTCUT_COUNT] = {
+        { SDLK_BACKSPACE,   KMOD_NONE },                        // SHORTCUT_CLOSE_TOP_MOST_WINDOW
+        { SDLK_BACKSPACE,   KMOD_SHIFT },                       // SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS
+        { SDLK_ESCAPE,      KMOD_NONE },                        // SHORTCUT_CANCEL_CONSTRUCTION_MODE
+        { SDLK_PAUSE,       KMOD_NONE },                        // SHORTCUT_PAUSE_GAME
+        { SDLK_PAGEUP,      KMOD_NONE },                        // SHORTCUT_ZOOM_VIEW_OUT
+        { SDLK_PAGEDOWN,    KMOD_NONE },                        // SHORTCUT_ZOOM_VIEW_IN
+        { SDLK_RETURN,      KMOD_NONE },                        // SHORTCUT_ROTATE_VIEW_CLOCKWISE
+        { SDLK_RETURN,      KMOD_SHIFT },                       // SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE
+        { SDLK_z,           KMOD_NONE },                        // SHORTCUT_ROTATE_CONSTRUCTION_OBJECT
+        { SDLK_1,           KMOD_NONE },                        // SHORTCUT_UNDERGROUND_VIEW_TOGGLE
+        { SDLK_h,           KMOD_NONE },                        // SHORTCUT_REMOVE_BASE_LAND_TOGGLE
+        { SDLK_v,           KMOD_NONE },                        // SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE
+        { SDLK_3,           KMOD_NONE },                        // SHORTCUT_SEE_THROUGH_RIDES_TOGGLE
+        { SDLK_4,           KMOD_NONE },                        // SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE
+        { SDLK_5,           KMOD_NONE },                        // SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE
+        { SDLK_6,           KMOD_NONE },                        // SHORTCUT_INVISIBLE_PEOPLE_TOGGLE
+        { SDLK_8,           KMOD_NONE },                        // SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE
+        { SDLK_9,           KMOD_NONE },                        // SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE
+        { SDLK_0,           KMOD_NONE },                        // SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE
+        { SDLK_F1,          KMOD_NONE },                        // SHORTCUT_ADJUST_LAND
+        { SDLK_F2,          KMOD_NONE },                        // SHORTCUT_ADJUST_WATER
+        { SDLK_F3,          KMOD_NONE },                        // SHORTCUT_BUILD_SCENERY
+        { SDLK_F4,          KMOD_NONE },                        // SHORTCUT_BUILD_PATHS
+        { SDLK_F5,          KMOD_NONE },                        // SHORTCUT_BUILD_NEW_RIDE
+        { SDLK_f,           KMOD_NONE },                        // SHORTCUT_SHOW_FINANCIAL_INFORMATION
+        { SDLK_d,           KMOD_NONE },                        // SHORTCUT_SHOW_RESEARCH_INFORMATION
+        { SDLK_r,           KMOD_NONE },                        // SHORTCUT_SHOW_RIDES_LIST
+        { SDLK_p,           KMOD_NONE },                        // SHORTCUT_SHOW_PARK_INFORMATION
+        { SDLK_g,           KMOD_NONE },                        // SHORTCUT_SHOW_GUEST_LIST
+        { SDLK_s,           KMOD_NONE },                        // SHORTCUT_SHOW_STAFF_LIST
+        { SDLK_m,           KMOD_NONE },                        // SHORTCUT_SHOW_RECENT_MESSAGES
+        { SDLK_TAB,         KMOD_NONE },                        // SHORTCUT_SHOW_MAP
+        { SDLK_s,           PLATFORM_MODIFIER },                // SHORTCUT_SCREENSHOT
+        { SDLK_MINUS,       KMOD_NONE },                        // SHORTCUT_REDUCE_GAME_SPEED,
+        { SDLK_EQUALS,      KMOD_NONE },                        // SHORTCUT_INCREASE_GAME_SPEED,
+        { SDLK_c,           PLATFORM_MODIFIER | KMOD_ALT },     // SHORTCUT_OPEN_CHEAT_WINDOW,
+        { SDLK_t,           KMOD_NONE },                        // SHORTCUT_REMOVE_TOP_BOTTOM_TOOLBAR_TOGGLE,
+        { SDLK_UP,          KMOD_NONE },                        // SHORTCUT_SCROLL_MAP_UP
+        { SDLK_LEFT,        KMOD_NONE },                        // SHORTCUT_SCROLL_MAP_LEFT
+        { SDLK_DOWN,        KMOD_NONE },                        // SHORTCUT_SCROLL_MAP_DOWN
+        { SDLK_RIGHT,       KMOD_NONE },                        // SHORTCUT_SCROLL_MAP_RIGHT
+        { SDLK_c,           KMOD_NONE },                        // SHORTCUT_OPEN_CHAT_WINDOW
+        { SDLK_F10,         PLATFORM_MODIFIER },                // SHORTCUT_QUICK_SAVE_GAME
+        SHORTCUT_UNDEFINED,                                     // SHORTCUT_SHOW_OPTIONS
+        SHORTCUT_UNDEFINED,                                     // SHORTCUT_MUTE_SOUND
+        { SDLK_RETURN,      KMOD_ALT },                         // SHORTCUT_WINDOWED_MODE_TOGGLE
+        SHORTCUT_UNDEFINED,                                     // SHORTCUT_SHOW_MULTIPLAYER
+        SHORTCUT_UNDEFINED,                                     // SHORTCUT_PAINT_ORIGINAL_TOGGLE
+        SHORTCUT_UNDEFINED,                                     // SHORTCUT_DEBUG_PAINT_TOGGLE
+        SHORTCUT_UNDEFINED,                                     // SHORTCUT_SEE_THROUGH_PATHS_TOGGLE
+        { SDLK_KP_4,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT
+        { SDLK_KP_6,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT
+        { SDLK_KP_5,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT
+        { SDLK_KP_2,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN
+        { SDLK_KP_8,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP
+        { SDLK_KP_PLUS,     KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE
+        { SDLK_KP_1,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT
+        { SDLK_KP_3,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT
+        { SDLK_KP_7,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK
+        { SDLK_KP_9,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK
+        { SDLK_KP_0,        KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT
+        { SDLK_KP_MINUS,    KMOD_NONE },                        // SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT
     };
 
-    constexpr sint32 CURRENT_FILE_VERSION = 1;
+    constexpr sint32 CURRENT_FILE_VERSION = 2;
 
     static void Reset()
     {
@@ -135,7 +134,7 @@ extern "C"
             {
                 for (sint32 i = 0; i < SHORTCUT_COUNT; i++)
                 {
-                    gShortcutKeys[i] = fs.ReadValue<uint16>();
+                    gShortcutKeys[i] = fs.ReadValue<keypress>();
                 }
                 result = true;
             }
@@ -161,7 +160,7 @@ extern "C"
             fs.WriteValue<uint16>(KeyboardShortcuts::CURRENT_FILE_VERSION);
             for (sint32 i = 0; i < SHORTCUT_COUNT; i++)
             {
-                fs.WriteValue<uint16>(gShortcutKeys[i]);
+                fs.WriteValue<keypress>(gShortcutKeys[i]);
             }
             result = true;
         }

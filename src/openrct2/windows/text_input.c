@@ -329,12 +329,10 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 }
 
-void window_text_input_key(rct_window* w, sint32 key)
+void window_text_input_key(rct_window* w, SDL_Keycode key)
 {
-	char new_char = platform_scancode_to_rct_keycode(0xFF&key);
-
 	// If the return button is pressed stop text input
-	if (new_char == '\r'){
+	if (key == SDLK_RETURN){
 		platform_stop_text_input();
 		window_close(w);
 		rct_window* calling_w = window_find_by_number(calling_class, calling_number);

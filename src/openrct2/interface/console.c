@@ -248,14 +248,14 @@ void console_draw(rct_drawpixelinfo *dpi)
 	gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, 12);
 }
 
-void console_input(sint32 c)
+void console_input(SDL_Keycode key)
 {
-	switch (c) {
-	case SDL_SCANCODE_ESCAPE:
+	switch (key) {
+	case SDLK_ESCAPE:
 		console_clear_input();
 		console_refresh_caret();
 		break;
-	case SDL_SCANCODE_RETURN:
+	case SDLK_RETURN:
 		if (_consoleCurrentLine[0] != 0) {
 			console_history_add(_consoleCurrentLine);
 			console_execute(_consoleCurrentLine);
@@ -264,7 +264,7 @@ void console_input(sint32 c)
 			console_refresh_caret();
 		}
 		break;
-	case SDL_SCANCODE_UP:
+	case SDLK_UP:
 		if (_consoleHistoryIndex > 0) {
 			_consoleHistoryIndex--;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
@@ -272,7 +272,7 @@ void console_input(sint32 c)
 		textinputbuffer_recalculate_length(&gTextInput);
 		gTextInput.selection_offset = strlen(_consoleCurrentLine);
 		break;
-	case SDL_SCANCODE_DOWN:
+	case SDLK_DOWN:
 		if (_consoleHistoryIndex < _consoleHistoryCount - 1) {
 			_consoleHistoryIndex++;
 			memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], 256);
