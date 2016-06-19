@@ -2,7 +2,7 @@
 
 **OS:** [e.g. Windows 10]
 **Version:** [e.g. 0.0.5]
-**Commit/Build:** [e.g. 426e106]
+**Commit/Build:** [e.g. 426e106 You can find it at the left bottom corner of the main menu]
 
 [Explanation of the issue...]
 
@@ -13,8 +13,8 @@
 1. [step 1]
 2. [step 2]
 
-**Dump file**
-[If you have a dump file: zip it before you drag & drop it here.]
+**Dump file:**
+[In case the game asked you to provide one after the game crashed: zip it before you drag & drop it here. You can find it at %userprofile%\documents\OpenRCT2 Look for the latest .DMP file]
 
 **Screenshots / Video:**
 [Drag & drop screenshots here. Use https://vid.me to upload video.]
