@@ -783,7 +783,7 @@ bool game_load_save(const utf8 *path)
 	log_verbose("loading saved game, %s", path);
 
 	safe_strcpy((char*)0x0141EF68, path, MAX_PATH);
-	safe_strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path, MAX_PATH);
+	safe_strcpy((char*)gRCT2AddressSavedGamesPath2, path, MAX_PATH);
 
 	safe_strcpy(gScenarioSavePath, path, MAX_PATH);
 

@@ -57,7 +57,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	char path[MAX_PATH];
 	SDL_RWops* rw;
 
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), (char*)installedObject + 16);
+	substitute_path(path, gRCT2AddressObjectDataPath, (char*)installedObject + 16);
 
 	log_verbose("loading object, %s", path);
 
@@ -345,7 +345,7 @@ int object_load_packed(SDL_RWops* rw)
 			objectPath[i] = '\0';
 	}
 
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+	substitute_path(path, gRCT2AddressObjectDataPath, objectPath);
 	// Require pointer to start of filename
 	char* last_char = path + strlen(path);
 	strcat(path, ".DAT");
@@ -355,7 +355,7 @@ int object_load_packed(SDL_RWops* rw)
 	for (; platform_file_exists(path);){
 		for (char* curr_char = last_char - 1;; --curr_char){
 			if (*curr_char == '\\'){
-				substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "00000000.DAT");
+				substitute_path(path, gRCT2AddressObjectDataPath, "00000000.DAT");
 				break;
 			}
 			if (*curr_char < '0') *curr_char = '0';
@@ -2608,7 +2608,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 
 	char path[MAX_PATH];
 	char *objectPath = (char*)installedObject + 16;
-	substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), objectPath);
+	substitute_path(path, gRCT2AddressObjectDataPath, objectPath);
 
 	rct_object_entry openedEntry;
 	SDL_RWops* rw = SDL_RWFromFile(path, "rb");
