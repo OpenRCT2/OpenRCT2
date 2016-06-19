@@ -279,6 +279,13 @@ extern uint8 gSavePromptMode;
 extern sint32 gScreenWidth;
 extern sint32 gScreenHeight;
 
+extern char gRCT2AddressSavedGamesPath[];
+extern char gRCT2AddressSavedGamesPath2[];
+extern char gRCT2AddressScenariosPath[];
+extern char gRCT2AddressLandscapesPath[];
+extern char gRCT2AddressObjectDataPath[];
+extern char gRCT2AddressTracksPath[];
+
 int rct2_init();
 void rct2_dispose();
 void rct2_update();

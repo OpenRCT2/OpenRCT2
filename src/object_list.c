@@ -252,7 +252,7 @@ static int object_list_query_directory(int *outTotalFiles, uint64 *outTotalFileS
 	fileDateModifiedChecksum = 0;
 
 	// Enumerate through each object in the directory
-	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
+	enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
 	if (enumFileHandle == INVALID_HANDLE)
 		return 0;
 
@@ -320,7 +320,7 @@ void object_list_load()
 		_installedObjectFilters = NULL;
 	}
 
-	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
+	enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
 	if (enumFileHandle != INVALID_HANDLE) {
 		size_t installedObjectsCapacity = 4096;
 		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
@@ -337,7 +337,7 @@ void object_list_load()
 			}
 
 			char path[MAX_PATH];
-			substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
+			substitute_path(path, gRCT2AddressObjectDataPath, enumFileInfo.path);
 
 			rct_object_entry entry;
 			if (object_load_entry(path, &entry)) {

@@ -237,7 +237,7 @@ rct_window *window_loadsave_open(int type, char *defaultName)
 		}
 		*/
 
-		safe_strcpy(path, RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), MAX_PATH);
+		safe_strcpy(path, gRCT2AddressTracksPath, MAX_PATH);
 		ch = strchr(path, '*');
 		if (ch != NULL)
 			*ch = 0;
