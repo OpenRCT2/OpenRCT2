@@ -79,14 +79,13 @@ static sint32 keyboard_shortcut_get_from_key(keypress key)
 void keyboard_shortcut_handle(sint32 key)
 {
 	sint32 shortcut = keyboard_shortcut_get_from_key(key);
-	if (shortcut != -1) {
+	if (shortcut != -1)
 		keyboard_shortcut_handle_command(shortcut);
-	}
 }
 
 void keyboard_shortcut_handle_command(sint32 shortcutIndex)
 {
-	if (shortcutIndex >= 0 && shortcutIndex < countof(shortcut_table)) {
+	if (shortcutIndex >= 0 && shortcutIndex < SHORTCUT_COUNT) {
 		shortcut_action action = shortcut_table[shortcutIndex];
 		if (action != NULL) {
 			action();
