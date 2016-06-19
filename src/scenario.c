@@ -66,6 +66,21 @@ char gScenarioSavePath[MAX_PATH];
 int gFirstTimeSave = 1;
 uint32 gLastAutoSaveTick = 0;
 
+#if defined(NO_RCT2)
+uint32 gScenarioTicks;
+#endif
+uint32 gScenarioSrand0;
+uint32 gScenarioSrand1;
+
+uint8 gScenarioObjectiveType;
+uint8 gScenarioObjectiveYear;
+uint16 gScenarioObjectiveNumGuests;
+money32 gScenarioObjectiveCurrency;
+
+uint16 gScenarioParkRatingWarningDays;
+money32 gScenarioCompletedCompanyValue;
+money32 gScenarioCompanyValueRecord;
+
 static int scenario_create_ducks();
 static void scenario_objective_check();
 
@@ -229,9 +244,9 @@ void scenario_begin()
 	strncat(gScenarioSavePath, parkName, sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
 	strncat(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath) - strlen(gScenarioSavePath) - 1);
 
-	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, (char*)RCT2_ADDRESS_SAVED_GAMES_PATH);
-	strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2 + strlen((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2), gScenarioSavePath);
-	strcat((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, ".SV6");
+	strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath);
+	strcpy(gRCT2AddressSavedGamesPath2 + strlen(gRCT2AddressSavedGamesPath2), gScenarioSavePath);
+	strcat(gRCT2AddressSavedGamesPath2, ".SV6");
 
 	memset((void*)0x001357848, 0, 56);
 	gCurrentExpenditure = 0;
@@ -284,7 +299,7 @@ void scenario_end()
 
 void scenario_set_filename(const char *value)
 {
-	substitute_path(_scenarioPath, RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), value);
+	substitute_path(_scenarioPath, gRCT2AddressScenariosPath, value);
 	_scenarioFileName = path_get_filename(_scenarioPath);
 }
 

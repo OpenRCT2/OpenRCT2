@@ -106,6 +106,7 @@ extern uint32 gInstalledObjectsCount;
 extern rct_object_entry *gInstalledObjects;
 extern uint32 gNumInstalledRCT2Objects;
 extern uint32 gNumInstalledCustomObjects;
+extern uint32 gTotalNoImages;
 
 extern void *gLastLoadedObjectChunkData;
 
@@ -139,10 +140,11 @@ char *object_get_name(rct_object_entry *entry);
 
 rct_object_filters *get_object_filter(int index);
 
-bool object_load(int type, void *objectEntry, uint32 entryIndex);
+uint8* object_load(int type, void *objectEntry, uint32 entryIndex, int *chunkSize);
 void object_unload(int type, void *objectEntry);
 bool object_test(int type, void *objectEntry);
 void object_paint(int type, void *objectEntry, rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 rct_string_id object_desc(int type, void *objectEntry);
+void object_reset(int type, void *objectEntry, uint32 entryIndex);
 
 #endif

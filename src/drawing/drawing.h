@@ -24,8 +24,9 @@
 #ifndef NO_RCT2
 #pragma pack(push, 1)
 #endif
-// Size: 0x10
-typedef struct rct_g1_element {
+
+// Size: 0x10 or more
+typedef struct {
 	uint8* offset;			// 0x00
 	sint16 width;			// 0x04
 	sint16 height;			// 0x06
@@ -57,7 +58,19 @@ typedef struct rct_drawpixelinfo {
 assert_struct_size(rct_drawpixelinfo, 0x10);
 #endif
 
-enum {
+// Size: 0x10
+typedef struct rct_g1_element_32bit {
+		uint32 offset;                  // 0x00 note: uint32 always!
+		sint16 width;                   // 0x04
+		sint16 height;                  // 0x06
+		sint16 x_offset;                // 0x08
+		sint16 y_offset;                // 0x0A
+		uint16 flags;                   // 0x0C
+		uint16 zoomed_offset;   // 0x0E
+} rct_g1_element_32bit;
+assert_struct_size(rct_g1_element_32bit, 0x10);
+
+enum{
 	G1_FLAG_BMP = (1 << 0), //No invisible sections
 	G1_FLAG_RLE_COMPRESSION = (1<<2),
 };

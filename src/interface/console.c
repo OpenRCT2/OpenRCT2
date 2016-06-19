@@ -893,7 +893,7 @@ static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
 		utf8 path[MAX_PATH];
 
-		substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), argv[0]);
+		substitute_path(path, gRCT2AddressObjectDataPath, argv[0]);
 		strcat(path, ".DAT\0");
 
 		rct_object_entry entry;

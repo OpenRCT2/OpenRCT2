@@ -427,18 +427,22 @@ typedef struct source_desc {
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
+#if defined(NO_RCT2)
+extern uint32 gScenarioTicks;
+#else
 #define gScenarioTicks						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)
-#define gScenarioSrand0						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_0, uint32)
-#define gScenarioSrand1						RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_SRAND_1, uint32)
+#endif
+extern uint32 gScenarioSrand0;
+extern uint32 gScenarioSrand1;
 
-#define gScenarioObjectiveType				RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_TYPE, uint8)
-#define gScenarioObjectiveYear				RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_YEAR, uint8)
-#define gScenarioObjectiveNumGuests			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_NUM_GUESTS, uint16)
-#define gScenarioObjectiveCurrency			RCT2_GLOBAL(RCT2_ADDRESS_OBJECTIVE_CURRENCY, money32)
+extern uint8 gScenarioObjectiveType;
+extern uint8 gScenarioObjectiveYear;
+extern uint16 gScenarioObjectiveNumGuests;
+extern money32 gScenarioObjectiveCurrency;
 
-#define gScenarioParkRatingWarningDays		RCT2_GLOBAL(RCT2_ADDRESS_PARK_RATING_WARNING_DAYS, uint16)
-#define gScenarioCompletedCompanyValue		RCT2_GLOBAL(RCT2_ADDRESS_COMPLETED_COMPANY_VALUE, money32)
-#define gScenarioCompanyValueRecord			RCT2_GLOBAL(RCT2_ADDRESS_COMPANY_VALUE_RECORD, money32)
+extern uint16 gScenarioParkRatingWarningDays;
+extern money32 gScenarioCompletedCompanyValue;
+extern money32 gScenarioCompanyValueRecord;
 
 // Scenario list
 extern int gScenarioListCount;

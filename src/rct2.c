@@ -114,6 +114,13 @@ uint8 gSavePromptMode;
 sint32 gScreenWidth;
 sint32 gScreenHeight;
 
+char gRCT2AddressSavedGamesPath[MAX_PATH];
+char gRCT2AddressSavedGamesPath2[MAX_PATH];
+char gRCT2AddressScenariosPath[MAX_PATH];
+char gRCT2AddressLandscapesPath[MAX_PATH];
+char gRCT2AddressObjectDataPath[MAX_PATH];
+char gRCT2AddressTracksPath[MAX_PATH];
+
 typedef struct tm tm_t;
 
 void print_launch_information();
@@ -213,41 +220,36 @@ int rct2_init_directories()
 
 	char separator[] = {platform_get_path_separator(), 0};
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char), gConfigGeneral.game_path);
+	char gRCT2AddressAppPath[MAX_PATH] = { 0 };
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH_SLASH, char), separator);
+	strcpy(gRCT2AddressAppPath, gConfigGeneral.game_path);
+	strcat(gRCT2AddressAppPath, separator);
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), "Saved Games");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char), separator);
+	strcpy(gRCT2AddressSavedGamesPath, gRCT2AddressAppPath);
+	strcat(gRCT2AddressSavedGamesPath, "Saved Games");
+	strcat(gRCT2AddressSavedGamesPath, separator);
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "Scenarios");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_SCENARIOS_PATH, char), "*.SC6");
+	strcpy(gRCT2AddressScenariosPath, gRCT2AddressAppPath);
+	strcat(gRCT2AddressScenariosPath, "Scenarios");
+	strcat(gRCT2AddressScenariosPath, separator);
+	strcat(gRCT2AddressScenariosPath, "*.SC6");
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "Landscapes");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_LANDSCAPES_PATH, char), "*.SC6");
+	strcpy(gRCT2AddressLandscapesPath, gRCT2AddressAppPath);
+	strcat(gRCT2AddressLandscapesPath, "Landscapes");
+	strcat(gRCT2AddressLandscapesPath, separator);
+	strcat(gRCT2AddressLandscapesPath, "*.SC6");
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "ObjData");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), "*.DAT");
+	strcpy(gRCT2AddressObjectDataPath, gRCT2AddressAppPath);
+	strcat(gRCT2AddressObjectDataPath, "ObjData");
+	strcat(gRCT2AddressObjectDataPath, separator);
+	strcat(gRCT2AddressObjectDataPath, "*.DAT");
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), RCT2_ADDRESS(RCT2_ADDRESS_APP_PATH, char));
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "Tracks");
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), separator);
-	strcat(RCT2_ADDRESS(RCT2_ADDRESS_TRACKS_PATH, char), "*.TD?");
+	strcpy(gRCT2AddressTracksPath, gRCT2AddressAppPath);
+	strcat(gRCT2AddressTracksPath, "Tracks");
+	strcat(gRCT2AddressTracksPath, separator);
+	strcat(gRCT2AddressTracksPath, "*.TD?");
 
-	strcpy(RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH_2, char), RCT2_ADDRESS(RCT2_ADDRESS_SAVED_GAMES_PATH, char));
+	strcpy(gRCT2AddressSavedGamesPath2, gRCT2AddressSavedGamesPath);
 	return 1;
 }
 
@@ -351,7 +353,7 @@ bool rct2_open_file(const char *path)
 	extension++;
 
 	if (_stricmp(extension, "sv6") == 0) {
-		strcpy((char*)RCT2_ADDRESS_SAVED_GAMES_PATH_2, path);
+		strcpy((char*)gRCT2AddressSavedGamesPath2, path);
 		game_load_save(path);
 		gFirstTimeSave = 0;
 		return true;

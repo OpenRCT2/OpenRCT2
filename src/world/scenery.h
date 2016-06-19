@@ -21,7 +21,6 @@
 #include "../object.h"
 #include "../world/map.h"
 
-#pragma pack(push, 1)
 typedef struct rct_small_scenery_entry {
 	uint32 flags;			// 0x06
 	uint8 height;			// 0x0A
@@ -34,7 +33,6 @@ typedef struct rct_small_scenery_entry {
 	uint16 var_18;
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry;
-assert_struct_size(rct_small_scenery_entry, 21);
 
 typedef enum {
 	SMALL_SCENERY_FLAG_FULL_TILE = (1 << 0),					// 0x1
@@ -67,6 +65,7 @@ typedef enum {
 	SMALL_SCENERY_FLAG27 = (1 << 27),							// 0x8000000
 } SMALL_SCENERY_FLAGS;
 
+#pragma pack(push, 1)
 typedef struct rct_large_scenery_tile {
 	sint16 x_offset;
 	sint16 y_offset;
@@ -104,9 +103,7 @@ typedef struct rct_large_scenery_entry {
 	rct_large_scenery_text* text; // 0x12
 	uint32 text_image;	// 0x16
 } rct_large_scenery_entry;
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_large_scenery_entry, 20);
-#endif
+// FIXME: unpack
 
 typedef struct rct_wall_scenery_entry {
 	uint8 tool_id;			// 0x06
@@ -162,9 +159,7 @@ typedef struct rct_scenery_entry {
 		rct_banner_scenery_entry banner;
 	};
 } rct_scenery_entry;
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_scenery_entry, 6 + 21);
-#endif
+// FIXME: unpack?
 
 typedef struct rct_scenery_set_entry {
 	rct_string_id name;				// 0x00
