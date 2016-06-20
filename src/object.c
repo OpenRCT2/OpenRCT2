@@ -913,7 +913,7 @@ static uint8* object_type_ride_load(void *objectEntry, uint32 entryIndex, int *c
 
 			typeToRideEntryIndexMap--;
 			uint8 previous_entry = entryIndex;
-			while (typeToRideEntryIndexMap < RCT2_ADDRESS(0x9E34E4, uint8)){
+			while (typeToRideEntryIndexMap < gTypeToRideEntryIndexMap + countof(gTypeToRideEntryIndexMap)){
 				uint8 backup_entry = *typeToRideEntryIndexMap;
 				*typeToRideEntryIndexMap++ = previous_entry;
 				previous_entry = backup_entry;
@@ -1285,7 +1285,7 @@ static void object_type_ride_reset(void *objectEntry, uint32 entryIndex)
 
 			typeToRideEntryIndexMap--;
 			uint8 previous_entry = entryIndex;
-			while (typeToRideEntryIndexMap < RCT2_ADDRESS(0x9E34E4, uint8)){
+			while (typeToRideEntryIndexMap < gTypeToRideEntryIndexMap + countof(gTypeToRideEntryIndexMap)){
 				uint8 backup_entry = *typeToRideEntryIndexMap;
 				*typeToRideEntryIndexMap++ = previous_entry;
 				previous_entry = backup_entry;

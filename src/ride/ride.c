@@ -121,7 +121,7 @@ const uint8 gRideClassifications[255] = {
 	RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE
 };
 
-uint8 gTypeToRideEntryIndexMap[91];
+uint8 gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
 
 #pragma endregion
 

@@ -369,7 +369,14 @@ assert_struct_size(track_begin_end, 36);
 
 #pragma pack(pop)
 
-extern uint8 gTypeToRideEntryIndexMap[];
+/*
+ * This array should probably be only 91 + 128 * 3 = 475 bytes long.
+ * It was originally stored at address 0x009E32F8 and continued until 0x009E34E3
+ * (inclusive). 0x009E34E4 is the address of s6 header, so it's likely it had
+ * some padding at the end as well.
+ */
+#define TYPE_TO_RIDE_ENTRY_SLOTS 492
+extern uint8 gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
 
 enum {
 	RIDE_CLASS_RIDE,
