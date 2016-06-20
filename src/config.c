@@ -952,6 +952,7 @@ bool config_find_or_browse_install_directory()
  */
 void config_apply_to_old_addresses()
 {
+#if !defined(NO_RCT2)
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_EDGE_SCROLLING, sint8) = gConfigGeneral.edge_scrolling;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_CURRENCY, sint8) = gConfigGeneral.currency_format;
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_METRIC, sint8) = gConfigGeneral.measurement_format;
@@ -970,6 +971,7 @@ void config_apply_to_old_addresses()
 		configFlags |= CONFIG_FLAG_SAVE_PLUGIN_DATA;
 
 	RCT2_GLOBAL(RCT2_ADDRESS_CONFIG_FLAGS, uint8) = configFlags;
+#endif // !defined(NO_RCT2)
 }
 
 #pragma endregion
