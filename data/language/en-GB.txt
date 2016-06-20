@@ -1504,7 +1504,7 @@ STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{EN
 STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
 STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
 STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the toilet{ENDQUOTES}
 STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
 STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
 STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
@@ -1669,7 +1669,7 @@ STR_1663    :{WINDOW_COLOUR_2}Nausea:
 STR_1664    :{WINDOW_COLOUR_2}Energy:
 STR_1665    :{WINDOW_COLOUR_2}Hunger:
 STR_1666    :{WINDOW_COLOUR_2}Thirst:
-STR_1667    :{WINDOW_COLOUR_2}Bathroom:
+STR_1667    :{WINDOW_COLOUR_2}Toilet:
 STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
 STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
@@ -3696,7 +3696,7 @@ STR_5354    :{BLACK}Hunger:
 STR_5355    :{BLACK}Thirst:
 STR_5356    :{BLACK}Nausea:
 STR_5357    :{BLACK}Nausea tolerance:
-STR_5358    :{BLACK}Bathroom:
+STR_5358    :{BLACK}Toilet:
 STR_5359    :Remove guests
 STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
 STR_5361    :Give all guests:
