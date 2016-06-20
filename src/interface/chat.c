@@ -81,7 +81,14 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		return;
 	}
 	_chatLeft = 10;
-	_chatTop = gScreenHeight - 40 - ((CHAT_HISTORY_SIZE + 1) * 10);
+	_chatTop = gScreenHeight - 45;
+	if (_chatHistoryIndex < CHAT_HISTORY_SIZE && _chatHistoryIndex > 5) {
+		_chatTop -= ((_chatHistoryIndex + 1) * 15);
+	} else if (_chatHistoryIndex <= 5) {
+		_chatTop -= 90;
+	} else {
+		_chatTop -= ((CHAT_HISTORY_SIZE + 1) * 15);
+	}
 	_chatRight = gScreenWidth - 10;
 	_chatBottom = gScreenHeight - 45;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
@@ -90,6 +97,15 @@ void chat_draw(rct_drawpixelinfo * dpi)
 	int y = _chatBottom - (15 * 2);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gCurrentFontFlags = 0;
+
+	if (gChatOpen) {
+		gfx_set_dirty_blocks(_chatLeft - 3, _chatTop - 3, _chatRight + 3, _chatBottom + 3); //Background area + Textbox
+		gfx_fill_rect(dpi, _chatLeft - 3, _chatTop - 3, _chatRight + 3, _chatBottom - 15, 0x2000000 | 46); 	//Draw background below text only if the chat is opened.
+		gfx_fill_rect(dpi, _chatLeft - 3, _chatTop - 3, _chatRight + 3, _chatTop - 2, 11); //Border top
+		gfx_fill_rect(dpi, _chatLeft - 3, _chatBottom + 2, _chatRight + 3, _chatBottom + 3, 11); //Border bottom
+		gfx_fill_rect(dpi, _chatRight + 2, _chatTop - 3, _chatRight + 3, _chatBottom + 3, 11); //Border right
+		gfx_fill_rect(dpi, _chatLeft - 3, _chatTop - 3, _chatLeft - 2, _chatBottom + 3, 11); //Border left
+	}
 	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
 		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
 			break;
@@ -103,13 +119,15 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
 		safe_strcpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
 		y = _chatBottom - 15;
-		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer) + 7, y + 12);
-		gfx_draw_string(dpi, lineBuffer, 255, x, y);
+
+		gfx_fill_rect(dpi, x - 1, y, _chatRight + 1, y + 16, 0x2000000 | 46);	// Textbox background
+		gfx_fill_rect(dpi, x - 3, y - 1, _chatRight + 3, y, 10); //Textbox border top
+		gfx_draw_string(dpi, lineBuffer, 255, x, y + 3);
 		if (_chatCaretTicks < 15) {
 			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
 			lineBuffer[gTextInput.selection_offset] = 0;
 			int caretX = x + gfx_get_string_width(lineBuffer);
-			int caretY = y + 15;
+			int caretY = y + 14;
 
 			gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, 0x38);
 		}
