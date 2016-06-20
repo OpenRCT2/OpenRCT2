@@ -232,7 +232,8 @@ static void screen_intro_process_mouse_input()
  */
 static void screen_intro_process_keyboard_input()
 {
-	if (gLastKeyPressed != 0) {
+	// Skip intro part if any key is pressed
+	if (!platform_keypress_equals(gLastKeyPressed, (keypress)KEYBOARD_KEYPRESS_UNDEFINED)) {
 		screen_intro_skip_part();
 	}
 }

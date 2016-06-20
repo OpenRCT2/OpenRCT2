@@ -108,6 +108,6 @@ enum {
 	SHORTCUT_COUNT
 };
 
-extern uint16 gShortcutKeys[SHORTCUT_COUNT];
+extern keypress gShortcutKeys[SHORTCUT_COUNT];
 
 #endif

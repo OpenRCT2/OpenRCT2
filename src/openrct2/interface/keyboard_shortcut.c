@@ -49,7 +49,7 @@ void keyboard_shortcut_set(keypress key)
 
 	// Unmap shortcut that already uses this key
 	for (i = 0; i < SHORTCUT_COUNT; i++) {
-		if (platform_compare_keypress(key, gShortcutKeys[i])) {
+		if (platform_keypress_equals(key, gShortcutKeys[i])) {
 			gShortcutKeys[i] = (keypress)SHORTCUT_UNDEFINED;
 			break;
 		}
@@ -100,7 +100,7 @@ void keyboard_shortcut_format_string(char *buffer, size_t size, keypress shortcu
 	if (size == 0)
 		return;
 	*buffer = 0;
-	if (platform_shortcut_is_undefined(shortcut_key))
+	if (platform_keypress_equals(shortcut_key, (keypress)SHORTCUT_UNDEFINED))
 		return;
 	if (shortcutKey & KMOD_SHIFt) {
 		format_string(formatBuffer, 256, STR_SHIFT_PLUS, NULL);

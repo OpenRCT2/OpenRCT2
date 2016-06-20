@@ -125,10 +125,10 @@ typedef struct {
 } keypress;
 
 extern openrct2_cursor gCursorState;
-extern const unsigned char *gKeysState;
 extern keypress *gKeysPressed;
+extern bool gKeysHeld[]; // Some shortcuts (map scroll) check if keys are held
 extern sint32 gNumKeysPressed;
-extern uint32 gLastKeyPressed;
+extern keypress gLastKeyPressed;
 
 extern textinputbuffer gTextInput;
 extern bool gTextInputCompositionActive;
@@ -159,16 +159,24 @@ void platform_toggle_windowed_mode();
 void platform_set_cursor(uint8 cursor);
 void platform_refresh_video();
 void platform_process_messages();
+<<<<<<< HEAD:src/openrct2/platform/platform.h
 sint32 platform_scancode_to_rct_keycode(sint32 sdl_key);
 void platform_start_text_input(utf8 *buffer, sint32 max_length);
+=======
+void platform_start_text_input(utf8 *buffer, int max_length);
+>>>>>>> 72f796e... Removed all usage of scancodes. Old global modifier state worked into new system.:src/platform/platform.h
 void platform_stop_text_input();
 bool platform_is_input_active();
 void platform_get_date_utc(rct2_date *out_date);
 void platform_get_time_utc(rct2_time *out_time);
 void platform_get_date_local(rct2_date *out_date);
 void platform_get_time_local(rct2_time *out_time);
-#define platform_compare_keypress(k1, k2) (((k1).keycode == (k2).keycode) && (((k1).mod == (k2).mod)))
-#define platform_shortcut_is_undefined(k) platform_compare_keypress((k), (keypress)SHORTCUT_UNDEFINED)
+bool platform_keypress_equals(keypress k1, keypress k2);
+bool platform_check_alt(void);
+bool platform_check_ctrl(void);
+bool platform_check_gui(void);
+bool platform_check_shift(void);
+bool platform_check_mode(void);
 
 // Platform specific definitions
 void platform_get_exe_path(utf8 *outPath, size_t outSize);
