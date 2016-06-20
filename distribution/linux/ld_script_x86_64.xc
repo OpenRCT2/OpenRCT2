@@ -54,6 +54,8 @@ SECTIONS
   .plt            : { *(.plt) *(.iplt) }
 .plt.got        : { *(.plt.got) }
 .plt.bnd        : { *(.plt.bnd) }
+.rct2_text      0x401000 : { *(.rct2_text) }
+.rct2_data               : { *(.rct2_data) }
   .text           :
   {
     *(.text.unlikely .text.*_unlikely .text.unlikely.*)
