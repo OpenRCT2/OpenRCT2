@@ -41,6 +41,7 @@ typedef void(*update_palette_func)(const uint8*, sint32, sint32);
 
 openrct2_cursor gCursorState;
 bool gKeysHeld[SHORTCUT_NUM_HELD] = { 0 };
+bool gModsHeld[MODS_NUM_HELD] = { 0 };
 keypress *gKeysPressed;
 sint32 gNumKeysPressed;
 keypress gLastKeyPressed;
@@ -300,6 +301,8 @@ void platform_process_messages()
 	gLastKeyPressed = key;
 	gNumKeysPressed = 0;
 
+	int mod_held_idx;
+
 	// gCursorState.wheel = 0;
 	gCursorState.left &= ~CURSOR_CHANGED;
 	gCursorState.middle &= ~CURSOR_CHANGED;
@@ -341,8 +344,8 @@ void platform_process_messages()
 
 			if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
 				// Reset held keys to make up for lost KEYUP events to clear them while unfocused
-				for (int i = 0; i < SHORTCUT_NUM_HELD; ++i)
-					gKeysHeld[i] = false;
+				memset(gKeysHeld, 0x0, sizeof(gKeysHeld));
+				memset(gModsHeld, 0x0, sizeof(gModsHeld));
 			}
 
 			break;
@@ -457,17 +460,22 @@ void platform_process_messages()
 				// Handle only KEYBOARD_KEYPRESSES_PER_UPDATE keypresses per update
 				gKeysPressed[gNumKeysPressed] = gLastKeyPressed;
 				++gNumKeysPressed;
-				log_verbose("%s: keypress: sym:0x%08x mod:0x%08x, #:%2d", __func__, e.key.keysym.sym, e.key.keysym.mod, gNumKeysPressed);
 			}
 
 			// Handle shortcut keys that can be held
 			for (int i = 0; i < 4; ++i) {
+				// NOTE: Must compare entire keypress (not just keycode) to
+				// account for shortcuts with modifiers
 				if (platform_keypress_equals(key, gShortcutKeys[SHORTCUT_SCROLL_MAP_UP + i])) {
-					log_verbose("Depressed held key: %d", i);
 					gKeysHeld[i] = true;
 					break;
 				}
 			}
+
+			// Handle modifiers
+			mod_held_idx = key.keycode - SDLK_LCTRL;
+			if ((mod_held_idx >= 0) && (mod_held_idx < MODS_NUM_HELD))
+				gModsHeld[mod_held_idx] = true;
 
 			// Case done if we are not in text input mode
 			if (gTextInput.buffer == NULL)
@@ -542,13 +550,19 @@ void platform_process_messages()
 			// Handle keyup for held keys
 			key = (keypress){ e.key.keysym.sym, e.key.keysym.mod };
 			platform_filter_keypress(&key);
+
+			// Held shortcuts
 			for (int i = 0; i < SHORTCUT_NUM_HELD; ++i) {
 				if (platform_keypress_equals(key, gShortcutKeys[SHORTCUT_SCROLL_MAP_UP + i])) {
-					log_verbose("Released held key: %d", i);
 					gKeysHeld[i] = false;
 					break;
 				}
 			}
+
+			// Modifiers
+			mod_held_idx = key.keycode - SDLK_LCTRL;
+			if ((mod_held_idx >= 0) && (mod_held_idx < MODS_NUM_HELD))
+				gModsHeld[mod_held_idx] = false;
 
 			break;
 		case SDL_MULTIGESTURE:
@@ -818,46 +832,28 @@ bool platform_keypress_equals(keypress k1, keypress k2)
 	return (k1.keycode == k2.keycode) && (k1.mod == k2.mod);
 }
 
-bool platform_keypress_in_update(keypress k)
-{
-	for (int i = 0; i < gNumKeysPressed; ++i) {
-		if (platform_keypress_equals(k, gKeysPressed[i]))
-			return true;
-	}
-
-	return false;
-}
-
 /**
  * Check if the last pressed key was the modifier, or if the last pressed
  * key had the modifier set.
  */
 bool platform_check_alt(void)
 {
-	return (gLastKeyPressed.keycode == SDLK_LALT) ||
-		   (gLastKeyPressed.keycode == SDLK_RALT) ||
-		   (gLastKeyPressed.mod & KMOD_ALT);
+	return gModsHeld[SDLK_LALT - SDLK_LCTRL] || gModsHeld[SDLK_RALT - SDLK_LCTRL];
 }
 
 bool platform_check_ctrl(void)
 {
-	return (gLastKeyPressed.keycode == SDLK_LCTRL) ||
-		   (gLastKeyPressed.keycode == SDLK_RCTRL) ||
-		   (gLastKeyPressed.mod & KMOD_CTRL);
+	return gModsHeld[SDLK_LCTRL - SDLK_LCTRL] || gModsHeld[SDLK_RCTRL - SDLK_LCTRL];
 }
 
 bool platform_check_gui(void)
 {
-	return (gLastKeyPressed.keycode == SDLK_LGUI) ||
-		   (gLastKeyPressed.keycode == SDLK_RGUI) ||
-		   (gLastKeyPressed.mod & KMOD_GUI);
+	return gModsHeld[SDLK_LGUI - SDLK_LCTRL] || gModsHeld[SDLK_RGUI - SDLK_LCTRL];
 }
 
 bool platform_check_shift(void)
 {
-	return (gLastKeyPressed.keycode == SDLK_LSHIFT) ||
-		   (gLastKeyPressed.keycode == SDLK_RSHIFT) ||
-		   (gLastKeyPressed.mod & KMOD_SHIFT);
+	return gModsHeld[SDLK_LSHIFT - SDLK_LCTRL] || gModsHeld[SDLK_RSHIFT - SDLK_LCTRL];
 }
 
 /**

@@ -44,6 +44,9 @@
 #define KEYBOARD_KEYPRESS_UNDEFINED { SDLK_UNKNOWN, KMOD_NONE }
 #define KEYBOARD_KEYPRESSES_PER_UPDATE 16
 
+// Number of modifier keys - 2xA, 2xC, 2xGUI, 2xS
+#define MODS_NUM_HELD (SDLK_RGUI - SDLK_LCTRL + 1)
+
 #define INVALID_HANDLE -1
 
 #define TOUCH_DOUBLE_TIMEOUT 300
@@ -127,7 +130,9 @@ typedef struct {
 extern openrct2_cursor gCursorState;
 extern keypress *gKeysPressed;
 extern bool gKeysHeld[]; // Some shortcuts (map scroll) check if keys are held
+extern bool gModsHeld[];
 extern sint32 gNumKeysPressed;
+extern sint32 gCurKeyNum;
 extern keypress gLastKeyPressed;
 
 extern textinputbuffer gTextInput;
@@ -159,12 +164,7 @@ void platform_toggle_windowed_mode();
 void platform_set_cursor(uint8 cursor);
 void platform_refresh_video();
 void platform_process_messages();
-<<<<<<< HEAD:src/openrct2/platform/platform.h
-sint32 platform_scancode_to_rct_keycode(sint32 sdl_key);
 void platform_start_text_input(utf8 *buffer, sint32 max_length);
-=======
-void platform_start_text_input(utf8 *buffer, int max_length);
->>>>>>> 72f796e... Removed all usage of scancodes. Old global modifier state worked into new system.:src/platform/platform.h
 void platform_stop_text_input();
 bool platform_is_input_active();
 void platform_get_date_utc(rct2_date *out_date);
@@ -176,7 +176,6 @@ bool platform_check_alt(void);
 bool platform_check_ctrl(void);
 bool platform_check_gui(void);
 bool platform_check_shift(void);
-bool platform_check_mode(void);
 
 // Platform specific definitions
 void platform_get_exe_path(utf8 *outPath, size_t outSize);
