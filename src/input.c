@@ -628,10 +628,10 @@ static void input_scroll_begin(rct_window *w, int widgetIndex, int x, int y)
 		scroll->h_left = min(scroll->h_left + 3, widget_content_width);
 		break;
 	case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
-		scroll->h_left = max(scroll->h_left - widget_content_width, 0);
+		scroll->h_left = max(scroll->h_left - widget_width, 0);
 		break;
 	case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
-		scroll->h_left = min(scroll->h_left + widget_content_width, widget_content_width);
+		scroll->h_left = min(scroll->h_left + widget_width, widget_content_width);
 		break;
 	case SCROLL_PART_VSCROLLBAR_TOP:
 		scroll->v_top = max(scroll->v_top - 3, 0);
