@@ -518,7 +518,7 @@ bool openrct2_setup_rct2_segment()
 	// could have already taken the space we need.
 
 	// TODO: UGLY, UGLY HACK!
-	off_t file_size = 6750208;
+	//off_t file_size = 6750208;
 
 	int len = 0x01429000 - 0x8a4000; // 0xB85000, 12079104 bytes or around 11.5MB
 	int pageSize = getpagesize();

@@ -49,19 +49,19 @@ void peep_paint(rct_peep * peep, int imageDirection)
 	sub_98197C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
 
 	if (baseImageId >= 10717 && baseImageId < 10749) {
-		imageId = baseImageId + 32 | peep->hat_colour << 19 | 0x20000000;
+		imageId = (baseImageId + 32) | peep->hat_colour << 19 | 0x20000000;
 		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
 		return;
 	}
 
 	if (baseImageId >= 10781 && baseImageId < 10813) {
-		imageId = baseImageId + 32 | peep->balloon_colour << 19 | 0x20000000;
+		imageId = (baseImageId + 32) | peep->balloon_colour << 19 | 0x20000000;
 		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
 		return;
 	}
 
 	if (baseImageId >= 11197 && baseImageId < 11229) {
-		imageId = baseImageId + 32 | peep->umbrella_colour << 19 | 0x20000000;
+		imageId = (baseImageId + 32) | peep->umbrella_colour << 19 | 0x20000000;
 		sub_98199C(imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
 		return;
 	}

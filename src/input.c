@@ -1662,7 +1662,9 @@ void game_handle_key_scroll()
 		const int SHIFT = 0x100;
 		const int CTRL = 0x200;
 		const int ALT = 0x400;
+#ifdef __MACOSX__
 		const int CMD = 0x800;
+#endif
 
 		uint16 shortcutKey = gShortcutKeys[shortcutId];
 		uint8 scancode = shortcutKey & 0xFF;

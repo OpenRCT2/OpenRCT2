@@ -1508,7 +1508,7 @@ int S4Importer::GetSCNumber()
         utf8 digitBuffer[maxDigits + 1];
         utf8 * dst = digitBuffer;
         const utf8 * src = fileName + 2;
-        for (int i = 0; i < maxDigits && *src != '.'; i++)
+		for (size_t i = 0; i < maxDigits && *src != '.'; i++)
         {
             *dst++ = *src++;
         }

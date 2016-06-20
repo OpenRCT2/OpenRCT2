@@ -64,9 +64,6 @@ static const int _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FU
 static unsigned int _lastGestureTimestamp;
 static float _gestureRadius;
 
-static uint32 _pixelBeforeOverlay;
-static uint32 _pixelAfterOverlay;
-
 static void platform_create_window();
 static void platform_load_cursors();
 static void platform_unload_cursors();

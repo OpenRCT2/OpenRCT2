@@ -7277,12 +7277,6 @@ bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *vehicle, u
 	vehicle->track_direction |= direction;
 	vehicle->break_speed = (mapElement->properties.track.sequence >> 4) << 1;
 
-	const rct_vehicle_info* moveInfo = vehicle_get_move_info(
-		vehicle->var_CD,
-		vehicle->track_type,
-		0
-		);
-
 	// There are two bytes before the move info list
 	uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
 	*progress = trackTotalProgress - 1;

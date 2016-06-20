@@ -294,8 +294,6 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	// Resolve the absolute ltrb
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
-	int r = w->x + widget->right;
-	int b = w->y + widget->bottom;
 
 	// Get the colour and image
 	uint8 colour = w->colours[widget->colour] & 0x7F;
@@ -387,8 +385,6 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	// Resolve the absolute ltrb
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
-	int r = w->x + widget->right;
-	int b = w->y + widget->bottom;
 
 	int stringId = widget->image;
 	if (stringId == -1)
@@ -441,7 +437,6 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
 	int r = w->x + widget->right;
-	int b = w->y + widget->bottom;
 
 	if (widget->image == (uint32)-2 || widget->image == (uint32)-1)
 		return;
@@ -845,8 +840,6 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	// Resolve the absolute ltrb
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
-	int r = w->x + widget->right;
-	int b = w->y + widget->bottom;
 
 	// Get the colour
 	uint8 colour = w->colours[widget->colour] & 0x7F;

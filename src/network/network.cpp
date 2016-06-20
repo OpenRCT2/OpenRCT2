@@ -1428,7 +1428,9 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 
 void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
-	packet >> (uint32&)connection.AuthStatus >> (uint8&)player_id;
+	uint32 auth_status;
+	packet >> auth_status >> (uint8&)player_id;
+	connection.AuthStatus = (NETWORK_AUTH)auth_status;
 	switch(connection.AuthStatus) {
 	case NETWORK_AUTH_OK:
 		Client_Send_GAMEINFO();
@@ -2347,7 +2349,7 @@ void network_send_password(const char* password)
 	const std::string pubkey = gNetwork.key.PublicKeyString();
 	size_t sigsize;
 	char *signature;
-	bool ok = gNetwork.key.Sign(gNetwork.challenge.data(), gNetwork.challenge.size(), &signature, &sigsize);
+	gNetwork.key.Sign(gNetwork.challenge.data(), gNetwork.challenge.size(), &signature, &sigsize);
 	// Don't keep private key in memory. There's no need and it may get leaked
 	// when process dump gets collected at some point in future.
 	gNetwork.key.Unload();
