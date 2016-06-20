@@ -89,7 +89,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
 	} else {
 		_chatTop -= ((CHAT_HISTORY_SIZE + 1) * 15);
 	}
-	_chatRight		= gScreenWidth - 10;
+	_chatRight = gScreenWidth - 10;
 	_chatBottom = gScreenHeight - 45;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
