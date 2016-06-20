@@ -1,4 +1,4 @@
-[**Only use development builds for testing and reporting a bug!** Fill in the placeholders below. Delete any headings and placeholders that you do not fill in. Delete this line as well]
+[**Only use development builds for testing and reporting a bug!** Fill in the placeholders below. Delete any headings and placeholders that you do not fill in. Delete this line as well.]
 
 **OS:** [e.g. Windows 10]
 **Version:** [e.g. 0.0.5]
@@ -14,7 +14,7 @@
 2. [step 2]
 
 **Dump file:**
-[In case the game asked you to provide one after the game crashed: You can find it at %userprofile%\documents\OpenRCT2 Look for the latest .DMP file. Zip it before you drag & drop it here.]
+[In case the game asked you to provide one after the game crashed: You can find it at `%userprofile%\documents\OpenRCT2` Look for the latest .DMP file, zip it and drag & drop it here.]
 
 **Screenshots / Video:**
 [Drag & drop screenshots here. Use https://vid.me to upload video.]
