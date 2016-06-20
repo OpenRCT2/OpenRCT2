@@ -1,8 +1,8 @@
-[Fill in the placeholders below. Delete any headings and placeholders that you do not fill in. Delete this line as well]
+[**Only use development builds for testing and reporting a bug!** Fill in the placeholders below. Delete any headings and placeholders that you do not fill in. Delete this line as well]
 
 **OS:** [e.g. Windows 10]
 **Version:** [e.g. 0.0.5]
-**Commit/Build:** [e.g. 7b421c8 Only neccesary when you're not using a stable build. You can find it at the left bottom corner of the main menu.]
+**Commit/Build:** [e.g. 7b421c8 It can be found at the left bottom corner of the main menu.]
 
 [Explanation of the issue...]
 
