@@ -139,7 +139,7 @@ void scenery_multiple_sign_paint_line(const utf8 *str, rct_large_scenery_text *t
 				}
 			}
 		}
-		int image_id = textImage + glyph_offset + glyph_type | textColour;
+		int image_id = (textImage + glyph_offset + glyph_type) | textColour;
 		if (direction == 3) {
 			paint_attach_to_previous_ps(image_id, x_offset, -div_to_minus_infinity(acc, 2));
 		} else {
@@ -255,7 +255,6 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 			textColour = COLOUR_GREY;
 		}
 		textColour = (textColour << 19) | 0x20000000;
-		uint32 dword_F4388A = textColour;
 		uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
 		rct_banner *banner = &gBanners[bannerIndex];
 		rct_string_id stringId = banner->string_idx;
@@ -293,7 +292,6 @@ void scenery_multiple_paint(uint8 direction, uint16 height, rct_map_element *map
 					for (int i = 0; i < 2; i++) {
 						utf8 str1[64] = {0};
 						utf8 *dst = str1;
-						const utf8 *dstend = dst + sizeof(str1);
 						utf8 *srcold = src;
 						utf8 *spacesrc = 0;
 						utf8 *spacedst = 0;

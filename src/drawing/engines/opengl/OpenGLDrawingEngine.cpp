@@ -319,9 +319,6 @@ public:
 
         // Scale up to window
         _screenFramebuffer->Bind();
-
-        sint32 width = _screenFramebuffer->GetWidth();
-        sint32 height = _screenFramebuffer->GetHeight();
         _copyFramebufferShader->Use();
         _copyFramebufferShader->SetTexture(_swapFramebuffer->GetTargetFramebuffer()
                                                            ->GetTexture());

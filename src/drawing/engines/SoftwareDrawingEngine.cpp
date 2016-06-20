@@ -668,7 +668,7 @@ private:
         {
             uint8 * src = _bits;
             int padding = pitch - (_width * 4);
-            if (pitch == _width * 4) {
+            if ((uint32)pitch == _width * 4) {
                 uint32 * dst = (uint32 *)pixels;
                 for (int i = _width * _height; i > 0; i--)
                 {
@@ -677,7 +677,7 @@ private:
             }
             else
             {
-                if (pitch == (_width * 2) + padding)
+                if ((uint32)pitch == (_width * 2) + padding)
                 {
                     uint16 * dst = (uint16 *)pixels;
                     for (sint32 y = (sint32)_height; y > 0; y--) {
@@ -691,7 +691,7 @@ private:
                 }
                 else
                 {
-                    if (pitch == _width + padding)
+                    if ((uint32)pitch == _width + padding)
                     {
                         uint8 * dst = (uint8 *)pixels;
                         for (sint32 y = (sint32)_height; y > 0; y--) {

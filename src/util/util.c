@@ -153,9 +153,8 @@ bool readentirefile(const utf8 *path, void **outBuffer, int *outLength)
 
 int bitscanforward(int source)
 {
-	int i;
-
 	#if _MSC_VER >= 1400 // Visual Studio 2005
+		int i;
 		uint8 success = _BitScanForward(&i, source);
 		return success != 0 ? i : -1;
 	#elif __GNUC__
@@ -166,7 +165,7 @@ int bitscanforward(int source)
 	// This is a low-hanging optimisation boost, check if your compiler offers
 	// any intrinsic.
 	// cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
-	for (i = 0; i < 32; i++)
+	for (int i = 0; i < 32; i++)
 		if (source & (1u << i))
 			return i;
 

@@ -1163,7 +1163,7 @@ void surface_paint(uint8 direction, uint16 height, rct_map_element * mapElement)
 				sub_98196C(2624, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
 
 				int offset = ((spawn->direction ^ 2) + rotation) & 3;
-				uint32 image_id = 3111 + offset | 0x20380000;
+				uint32 image_id = (3111 + offset) | 0x20380000;
 				sub_98196C(image_id, 0, 0, 32, 32, 19, spawn->z * 16, rotation);
 			}
 		}

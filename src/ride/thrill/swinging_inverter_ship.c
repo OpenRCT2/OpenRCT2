@@ -121,7 +121,6 @@ static void paint_swinging_inverter_ship(uint8 rideIndex, uint8 trackSequence, u
 	uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
 	rct_ride * ride = get_ride(rideIndex);
-	rct_xy16 position = {RCT2_GLOBAL(0x009DE56A, sint16), RCT2_GLOBAL(0x009DE56E, sint16)};
 
 	uint32 imageId;
 

@@ -106,8 +106,6 @@ void S6Importer::LoadScenario(const utf8 * path)
 
 void S6Importer::LoadSavedGame(SDL_RWops *rw)
 {
-    auto meh = SDL_RWtell(rw);
-
     sawyercoding_read_chunk_safe(rw, &_s6.header, sizeof(_s6.header));
     if (_s6.header.type != S6_TYPE_SAVEDGAME)
     {

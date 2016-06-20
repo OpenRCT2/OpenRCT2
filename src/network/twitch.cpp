@@ -468,7 +468,7 @@ namespace Twitch
             size_t memberIndex = SIZE_MAX;
             FOR_ALL_GUESTS(spriteIndex, peep)
             {
-                int originalMemberIndex = memberIndex;
+                size_t originalMemberIndex = memberIndex;
                 for (size_t i = memberIndex + 1; i < members.GetCount(); i++)
                 {
                     if (!members[i].Exists)

@@ -252,6 +252,7 @@ bool Source_SampleStream::LoadWAV(SDL_RWops* rw)
 		return false;
 	}
 	Uint32 chunk_size = SDL_ReadLE32(rw);
+	(void)chunk_size;
 	Uint32 chunk_format = SDL_ReadLE32(rw);
 	const Uint32 WAVE = 0x45564157;
 	if (chunk_format != WAVE) {

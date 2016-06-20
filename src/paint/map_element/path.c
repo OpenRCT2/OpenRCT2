@@ -674,7 +674,6 @@ void path_paint(uint8 direction, uint16 height, rct_map_element * map_element)
 
 	gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
-	uint32 ecx = get_current_rotation();
 	bool word_F3F038 = false;
 
 	uint32 sceneryImageFlags = 0;
@@ -846,8 +845,6 @@ void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * f
 		path_a_supports_paint_setup(1, ax, height, imageFlags, footpathEntry, NULL);
 	}
 
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
-
 	height += 32;
 	if (footpath_element_is_sloped(mapElement)) {
 		height += 16;
@@ -888,7 +885,6 @@ void loc_6A37C9(rct_map_element * mapElement, int height, rct_footpath_entry * f
 
 void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
 {
-	uint8 type = footpath_element_get_type(mapElement);
 	// Rol edges around rotation
 	uint8 edges = ((mapElement->properties.path.edges << get_current_rotation()) & 0xF) |
 		(((mapElement->properties.path.edges & 0xF) << get_current_rotation()) >> 4);
@@ -970,8 +966,6 @@ void loc_6A3B57(rct_map_element* mapElement, sint16 height, rct_footpath_entry* 
 			path_b_supports_paint_setup(supports[i], ax, height, imageFlags);
 		}
 	}
-	
-	sint16 x = RCT2_GLOBAL(0x009DE56A, sint16), y = RCT2_GLOBAL(0x009DE56E, sint16);
 
 	height += 32;
 	if (footpath_element_is_sloped(mapElement)) {

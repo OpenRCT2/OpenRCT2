@@ -132,7 +132,6 @@ void fence_paint_wall(uint32 frameNum, const rct_scenery_entry * sceneryEntry, u
  */
 void fence_paint(uint8 direction, int height, rct_map_element * map_element)
 {
-	rct_drawpixelinfo * dpi = unk_140E9A8;
     gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
 	rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.fence.type);
@@ -158,7 +157,6 @@ void fence_paint(uint8 direction, int height, rct_map_element * map_element)
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
-    int clearanceHeight = ceil2(map_element->clearance_height * 8 + 15, 16);
     if (RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) < height) {
         RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, sint16) = height;
         RCT2_GLOBAL(0x141E9DA, uint8) = 0x20;
