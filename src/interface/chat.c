@@ -81,8 +81,13 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		gChatOpen = false;
 		return;
 	}
+
 	_chatLeft = 10;
 	_chatTop = gScreenHeight - 45;
+	_chatRight = gScreenWidth - 10;
+	_chatBottom = gScreenHeight - 45;
+
+	//Dynamic background (auto-resizable, depending of the chat history).
 	if (_chatHistoryIndex < CHAT_HISTORY_SIZE && _chatHistoryIndex > 5) {
 		_chatTop -= ((_chatHistoryIndex + 1) * 15);
 	} else if (_chatHistoryIndex <= 5) {
@@ -91,20 +96,16 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		_chatTop -= ((CHAT_HISTORY_SIZE + 1) * 15);
 	}
 
-	_chatRight = gScreenWidth - 10;
+	//Max width
 	if (_chatRight > 500) {
-		_chatRight = 500; //max width
+		_chatRight = 500;
 	}
-	_chatBottom = gScreenHeight - 45;
-	char lineBuffer[CHAT_INPUT_SIZE + 10];
-	char* lineCh = lineBuffer;
-	int x = _chatLeft + 5;
-	int y = _chatBottom - (15 * 2);
+
 	uint8 chatBackgroundColor = theme_get_colour(WC_CHAT, 0);
-	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-	gCurrentFontFlags = 0;
+
 	if (gChatOpen) {
 		gfx_set_dirty_blocks(_chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5); //Background area + Textbox
+		//TODO: Cleanup
 		gfx_fill_rect(
 			dpi,
 			_chatLeft,
@@ -150,6 +151,14 @@ void chat_draw(rct_drawpixelinfo * dpi)
 			0x30
 		); //Textbox
 	}
+	
+	char lineBuffer[CHAT_INPUT_SIZE + 10];
+	char* lineCh = lineBuffer;
+	int x = _chatLeft + 5;
+	int y = _chatBottom - (15 * 2);
+	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+	gCurrentFontFlags = 0;
+
 	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
 		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
 			break;
@@ -159,9 +168,10 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		
 		gfx_clip_string(lineBuffer, _chatRight - _chatLeft - 10);
 
-		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer), y + 12);
+		gfx_set_dirty_blocks(x, y, x + gfx_get_string_width(lineBuffer), y + 12); //clipping text not yet implemented, this is still required
 		gfx_draw_string(dpi, lineBuffer, 255, x, y);
 	}
+
 	if (gChatOpen) {
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
