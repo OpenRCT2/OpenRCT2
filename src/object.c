@@ -1580,6 +1580,8 @@ static uint8* object_type_large_scenery_load(void *objectEntry, uint32 entryInde
 		*((uint16*)some_pointer) = 0;
 	}
 
+	outSceneryEntry->name = sceneryEntry->name;
+	outSceneryEntry->image = sceneryEntry->image;
 	outSceneryEntry->large_scenery.tool_id = sceneryEntry->large_scenery.tool_id;
 	outSceneryEntry->large_scenery.flags = sceneryEntry->large_scenery.flags;
 	outSceneryEntry->large_scenery.price = sceneryEntry->large_scenery.price;
