@@ -2172,7 +2172,6 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
-		int numObjects = gInstalledObjectsCount;
 		rct_object_entry *installed_entry = gInstalledObjects;
 		rct_object_filters *filter;
 		uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
@@ -2180,7 +2179,7 @@ static void filter_update_counts()
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
-		for (int i = 0; i < numObjects; i++) {
+		for (uint32 i = 0; i < gInstalledObjectsCount; i++) {
 			filter = get_object_filter(i);
 			type = installed_entry->flags & 0xF;
 			if (filter_source(installed_entry) 
