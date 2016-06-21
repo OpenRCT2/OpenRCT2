@@ -52,12 +52,11 @@ enum {
 	FILTER_RIDE_WATER = (1 << 9),
 	FILTER_RIDE_STALL = (1 << 10),
 
+	FILTER_SELECTED = (1 << 12),
+	FILTER_NONSELECTED = (1 << 13),
 
 	FILTER_ALL = 0x7EF,
 } FILTER_FLAGS;
-
-bool _filter_selected = false;
-bool _filter_nonselected = false;
 
 uint32 _filter_flags;
 uint16 _filter_object_counts[11];
@@ -70,6 +69,8 @@ char _filter_string[41];
 #define _FILTER_WW (_filter_flags & FILTER_WW)
 #define _FILTER_TT (_filter_flags & FILTER_TT)
 #define _FILTER_CUSTOM (_filter_flags & FILTER_CUSTOM)
+#define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
+#define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
 
 enum {
 	WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS,
@@ -910,6 +911,7 @@ static void window_editor_object_selection_resize(rct_window *w)
 {
 	window_set_resize(w, 600, 400, 1200, 1000);
 }
+
 #define FILTER_DROPDOWN_POSITION_SELECTED 5
 #define FILTER_DROPDOWN_POSITION_NONSELECTED 6
 void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
@@ -952,8 +954,8 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 
 		gDropdownItemsChecked = _filter_flags & 0xF;
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
-			dropdown_set_checked(FILTER_DROPDOWN_POSITION_SELECTED, _filter_selected);
-			dropdown_set_checked(FILTER_DROPDOWN_POSITION_NONSELECTED, _filter_nonselected);
+			dropdown_set_checked(FILTER_DROPDOWN_POSITION_SELECTED, _FILTER_SELECTED);
+			dropdown_set_checked(FILTER_DROPDOWN_POSITION_NONSELECTED, _FILTER_NONSELECTED);
 		}
 		break;
 
@@ -968,12 +970,12 @@ static void window_editor_object_selection_dropdown(rct_window *w, int widgetInd
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
 		if (dropdownIndex == FILTER_DROPDOWN_POSITION_SELECTED) {
-			_filter_selected = !_filter_selected;
-			_filter_nonselected = false;
+			_filter_flags ^= FILTER_SELECTED;
+			_filter_flags &= ~FILTER_NONSELECTED;
 		}
 		else if (dropdownIndex == FILTER_DROPDOWN_POSITION_NONSELECTED) {
-			_filter_nonselected = !_filter_nonselected;
-			_filter_selected = false;
+			_filter_flags ^= FILTER_NONSELECTED;
+			_filter_flags &= ~FILTER_SELECTED;
 		}
 		else {
 			_filter_flags ^= (1 << dropdownIndex);
@@ -1048,7 +1050,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 		return;
 	}
 
-	if (_filter_selected != _filter_nonselected) {
+	if (_FILTER_SELECTED || _FILTER_NONSELECTED) {
 		filter_update_counts();
 		visible_list_refresh(w);
 		window_invalidate(w);
@@ -2092,13 +2094,13 @@ static void window_editor_object_selection_textinput(rct_window *w, int widgetIn
 }
 
 static bool filter_selected(uint8* objectFlag) {
-	if (_filter_selected == _filter_nonselected) {
+	if (_FILTER_SELECTED == _FILTER_NONSELECTED) {
 		return true;
 	}
-	if (_filter_selected && *objectFlag & OBJECT_SELECTION_FLAG_SELECTED) {
+	if (_FILTER_SELECTED && *objectFlag & OBJECT_SELECTION_FLAG_SELECTED) {
 		return true;
 	}
-	else if (_filter_nonselected && !(*objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
+	else if (_FILTER_NONSELECTED && !(*objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
 		return true;
 	}
 	else {
@@ -2170,6 +2172,7 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
+		int numObjects = gInstalledObjectsCount;
 		rct_object_entry *installed_entry = gInstalledObjects;
 		rct_object_filters *filter;
 		uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
@@ -2177,7 +2180,7 @@ static void filter_update_counts()
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
-		for (int i = 0; i < gInstalledObjectsCount; i++) {
+		for (int i = 0; i < numObjects; i++) {
 			filter = get_object_filter(i);
 			type = installed_entry->flags & 0xF;
 			if (filter_source(installed_entry) 
