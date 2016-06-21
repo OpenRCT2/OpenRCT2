@@ -337,12 +337,16 @@ static void visible_list_refresh(rct_window *w)
 	for (int i = 0; i < numObjects; i++) {
 		rct_object_filters *filter = get_object_filter(i);
 		int type = entry->flags & 0x0F;
-		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) && filter_source(entry) && filter_string(entry, filter) && filter_chunks(entry, filter) && filter_selected(itemFlags)) {
-			currentListItem->entry = entry;
-			currentListItem->filter = filter;
-			currentListItem->flags = itemFlags;
-			currentListItem++;
-			_numListItems++;
+		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) 
+			&& filter_source(entry) 
+			&& filter_string(entry, filter) 
+			&& filter_chunks(entry, filter) 
+			&& filter_selected(itemFlags)) {
+				currentListItem->entry = entry;
+				currentListItem->filter = filter;
+				currentListItem->flags = itemFlags;
+				currentListItem++;
+				_numListItems++;
 		}
 
 		entry = object_get_next(entry);
@@ -906,7 +910,8 @@ static void window_editor_object_selection_resize(rct_window *w)
 {
 	window_set_resize(w, 600, 400, 1200, 1000);
 }
-
+#define FILTER_DROPDOWN_POSITION_SELECTED 5
+#define FILTER_DROPDOWN_POSITION_NONSELECTED 6
 void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int num_items;
@@ -925,15 +930,15 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 		gDropdownItemsArgs[1] = STR_OBJECT_FILTER_WW;
 		gDropdownItemsArgs[2] = STR_OBJECT_FILTER_TT;
 		gDropdownItemsArgs[3] = STR_OBJECT_FILTER_CUSTOM;
-		//Track manager cannot select multiple, show show selection filters if not in track manager
+		//Track manager cannot select multiple, so only show selection filters if not in track manager
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 			num_items = 7;
 			gDropdownItemsFormat[4] = 0;
-			gDropdownItemsFormat[5] = 1156;
-			gDropdownItemsFormat[6] = 1156;
+			gDropdownItemsFormat[FILTER_DROPDOWN_POSITION_SELECTED] = 1156;
+			gDropdownItemsFormat[FILTER_DROPDOWN_POSITION_NONSELECTED] = 1156;
 			gDropdownItemsArgs[4] = STR_NONE;
-			gDropdownItemsArgs[5] = STR_SELECTED_ONLY;
-			gDropdownItemsArgs[6] = STR_NON_SELECTED_ONLY;
+			gDropdownItemsArgs[FILTER_DROPDOWN_POSITION_SELECTED] = STR_SELECTED_ONLY;
+			gDropdownItemsArgs[FILTER_DROPDOWN_POSITION_NONSELECTED] = STR_NON_SELECTED_ONLY;
 		}
 
 		window_dropdown_show_text(
@@ -947,8 +952,8 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 
 		gDropdownItemsChecked = _filter_flags & 0xF;
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
-			dropdown_set_checked(5, _filter_selected);
-			dropdown_set_checked(6, _filter_nonselected);
+			dropdown_set_checked(FILTER_DROPDOWN_POSITION_SELECTED, _filter_selected);
+			dropdown_set_checked(FILTER_DROPDOWN_POSITION_NONSELECTED, _filter_nonselected);
 		}
 		break;
 
@@ -962,22 +967,18 @@ static void window_editor_object_selection_dropdown(rct_window *w, int widgetInd
 
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
-		if (dropdownIndex == 5) {
+		if (dropdownIndex == FILTER_DROPDOWN_POSITION_SELECTED) {
 			_filter_selected = !_filter_selected;
-			if (_filter_selected && _filter_nonselected) {
-				_filter_nonselected = false;
-			}
+			_filter_nonselected = false;
 		}
-		else if (dropdownIndex == 6) {
+		else if (dropdownIndex == FILTER_DROPDOWN_POSITION_NONSELECTED) {
 			_filter_nonselected = !_filter_nonselected;
-			if (_filter_nonselected && _filter_selected) {
-				_filter_selected = false;
-			}
+			_filter_selected = false;
 		}
 		else {
 			_filter_flags ^= (1 << dropdownIndex);
-			gConfigInterface.object_selection_filter_flags = _filter_flags;
 		}
+		gConfigInterface.object_selection_filter_flags = _filter_flags;
 		config_save_default();
 
 		filter_update_counts();
@@ -2169,7 +2170,6 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
-		int numObjects = gInstalledObjectsCount;
 		rct_object_entry *installed_entry = gInstalledObjects;
 		rct_object_filters *filter;
 		uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
@@ -2177,11 +2177,14 @@ static void filter_update_counts()
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
-		for (int i = 0; i < numObjects; i++) {
+		for (int i = 0; i < gInstalledObjectsCount; i++) {
 			filter = get_object_filter(i);
 			type = installed_entry->flags & 0xF;
-			if (filter_source(installed_entry) && filter_string(installed_entry, filter) && filter_chunks(installed_entry, filter) && filter_selected(objectFlag)) {
-				_filter_object_counts[type]++;
+			if (filter_source(installed_entry) 
+				&& filter_string(installed_entry, filter) 
+				&& filter_chunks(installed_entry, filter) 
+				&& filter_selected(objectFlag)) {
+					_filter_object_counts[type]++;
 			}
 			installed_entry = object_get_next(installed_entry);
 			objectFlag++;
