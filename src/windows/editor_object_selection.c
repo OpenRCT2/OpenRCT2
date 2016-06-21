@@ -916,22 +916,26 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
 
-		num_items = 7;
+		num_items = 4;
 		gDropdownItemsFormat[0] = 1156;
 		gDropdownItemsFormat[1] = 1156;
 		gDropdownItemsFormat[2] = 1156;
 		gDropdownItemsFormat[3] = 1156;
-		gDropdownItemsFormat[4] = 0;
-		gDropdownItemsFormat[5] = 1156;
-		gDropdownItemsFormat[6] = 1156;
 		gDropdownItemsArgs[0] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
 		gDropdownItemsArgs[1] = STR_OBJECT_FILTER_WW;
 		gDropdownItemsArgs[2] = STR_OBJECT_FILTER_TT;
 		gDropdownItemsArgs[3] = STR_OBJECT_FILTER_CUSTOM;
-		gDropdownItemsArgs[4] = STR_NONE;
-		gDropdownItemsArgs[5] = STR_SELECTED_ONLY;
-		gDropdownItemsArgs[6] = STR_NON_SELECTED_ONLY;
-		
+		//Track manager cannot select multiple, show show selection filters if not in track manager
+		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
+			num_items = 7;
+			gDropdownItemsFormat[4] = 0;
+			gDropdownItemsFormat[5] = 1156;
+			gDropdownItemsFormat[6] = 1156;
+			gDropdownItemsArgs[4] = STR_NONE;
+			gDropdownItemsArgs[5] = STR_SELECTED_ONLY;
+			gDropdownItemsArgs[6] = STR_NON_SELECTED_ONLY;
+		}
+
 		window_dropdown_show_text(
 			w->x + widget->left,
 			w->y + widget->top,
@@ -942,9 +946,10 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 			);
 
 		gDropdownItemsChecked = _filter_flags & 0xF;
-		dropdown_set_checked(5, _filter_selected);
-		dropdown_set_checked(6, _filter_nonselected);
-
+		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
+			dropdown_set_checked(5, _filter_selected);
+			dropdown_set_checked(6, _filter_nonselected);
+		}
 		break;
 
 	}
