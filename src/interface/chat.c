@@ -94,39 +94,48 @@ void chat_draw(rct_drawpixelinfo * dpi)
 	_chatBottom = gScreenHeight - 45;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
-	int x = _chatLeft;
+	int x = _chatLeft + 5;
 	int y = _chatBottom - (15 * 2);
 	uint8 chatBackgroundColor = theme_get_colour(WC_CHAT, 0);
 	gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 	gCurrentFontFlags = 0;
 	if (gChatOpen) {
-		gfx_set_dirty_blocks(_chatLeft - 5, _chatTop - 5, _chatRight + 5, _chatBottom + 5); //Background area + Textbox
+		gfx_set_dirty_blocks(_chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5); //Background area + Textbox
 		gfx_fill_rect(
 			dpi,
-			_chatLeft - 5,
+			_chatLeft,
 			_chatTop - 5,
-			_chatRight + 5,
+			_chatRight,
 			_chatBottom + 5,
 			0x2000000 | 51
 		); //Simulate window background (gray background).
 		gfx_fill_rect_inset(
 			dpi, 
-			_chatLeft - 5, 
+			_chatLeft, 
 			_chatTop - 5, 
-			_chatRight + 5, 
+			_chatRight, 
 			_chatBottom + 5, 
 			chatBackgroundColor,
 			0x10
 		);
 		gfx_fill_rect_inset(
 			dpi, 
-			_chatLeft - 4, 
+			_chatLeft + 1, 
 			_chatTop - 4, 
-			_chatRight + 4, 
+			_chatRight - 1, 
 			_chatBottom + 4, 
 			chatBackgroundColor,
 			0x20
 		);
+		gfx_fill_rect_inset(
+			dpi, 
+			x - 1, 
+			_chatBottom - 15,
+			_chatRight + 1, 
+			_chatBottom + 1,
+			chatBackgroundColor, 
+			0x20
+		); //Textbox
 	}
 	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= 15) {
 		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
@@ -141,7 +150,6 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
 		safe_strcpy(lineCh, _chatCurrentLine, CHAT_INPUT_SIZE);
 		y = _chatBottom - 15;
-		gfx_fill_rect_inset(dpi, x - 1, y, _chatRight + 1, y + 16, chatBackgroundColor, 0x20);
 		gfx_draw_string(dpi, lineBuffer, 255, x, y + 3);
 		if (_chatCaretTicks < 15) {
 			memcpy(lineBuffer, _chatCurrentLine, gTextInput.selection_offset);
