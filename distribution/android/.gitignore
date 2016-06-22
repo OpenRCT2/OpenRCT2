@@ -40,5 +40,6 @@ captures/
 
 
 # Dependencies
-external/
-app/src/main/assets/
+/libs
+/app/src/main/libs/
+/app/src/main/assets/

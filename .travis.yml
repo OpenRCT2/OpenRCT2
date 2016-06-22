@@ -85,6 +85,45 @@ matrix:
               curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-macos.zip" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=3" --form "file=@openrct2-macos.zip" "https://openrct2.org/altapi/?command=push-build"; else
               curl --progress-bar --upload-file openrct2-macos.zip https://transfer.sh/openrct2-macos.zip -o link && cat link;
               fi
+        - os: linux
+          language: android
+          dist: precise
+          before_install:
+            - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+            - sudo apt-get -qq update
+            - sudo apt-get install -y libstdc++6
+          android:
+            components:
+              - tools # to get the new `repository-11.xml`
+              - tools # to install Android SDK tools 25.1.x (x = 7 right now)
+              - platform-tools
+              - build-tools-24.0.0
+              - android-23
+              - extra-android-m2repository
+          jdk: oraclejdk8
+          before_script:
+            # Install the NDK.
+            - pushd ~
+            - wget http://dl.google.com/android/repository/android-ndk-r12b-linux-x86_64.zip
+            - unzip -qo android-ndk-r12b-linux-x86_64.zip
+            - export ANDROID_NDK_HOME="$HOME/android-ndk-r12b"
+            - popd
+
+            # Install Cmake
+            - pushd "$ANDROID_HOME"
+            - mkdir cmake
+            - cd cmake
+            - wget https://dl.google.com/android/repository/cmake-3.4.2909474-linux-x86_64.zip
+            - unzip -qo cmake-3.4.2909474-linux-x86_64.zip
+            - popd
+
+            - 'cd distribution/android'
+          env:
+            - TERM=dumb # Makes Gradle use 'boring' output
+          script:
+            - './gradlew app:assembleDebug'
+          after_success:
+            - curl --progress-bar --upload-file app/build/outputs/apk/app-debug.apk  https://transfer.sh/openrct2-android.apk -o link && cat link
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux

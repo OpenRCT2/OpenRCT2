@@ -89,18 +89,16 @@ public class MainActivity extends SDLActivity {
     @Override
     protected String[] getLibraries() {
         return new String[]{
-                "c++_shared",
+                "speexdsp",
+                "jansson",
+                "png16d",
 
-                "libspeexdsp",
-                "libjansson",
-                "libpng",
+                "SDL2-2.0",
 
-                "SDL2",
-
-                "freetype",
+                "freetyped",
                 "SDL2_ttf",
 
-                "main"
+                "openrct2"
         };
     }
 

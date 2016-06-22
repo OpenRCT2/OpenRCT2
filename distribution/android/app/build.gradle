@@ -1,117 +1,137 @@
-apply plugin: 'com.android.model.application'
+apply plugin: 'com.android.application'
 
-model {
-  android {
+def platformVersion = 16
+
+android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
-    ndk {
-      moduleName "main"
-      CFlags.addAll("-DGL_GLEXT_PROTOTYPES", "-std=gnu99", "-fno-omit-frame-pointer", "-fno-pie", "-fstrict-aliasing", "-Werror=strict-aliasing", "-DDISABLE_HTTP", "-DDISABLE_NETWORK", "-DDISABLE_TWITCH", "-fPIC")
-      cppFlags.addAll("-std=gnu++11", "-fno-omit-frame-pointer", "-fno-pie", "-fstrict-aliasing", "-Werror=strict-aliasing", "-DDISABLE_HTTP", "-DDISABLE_NETWORK", "-DDISABLE_OPENGL", "-fexceptions", "-DDISABLE_TWITCH", "-fPIC")
-      ldLibs.addAll(["dl", "GLESv1_CM", "GLESv2", "log", "android", "z"])
-      cppFlags.add("-DDEBUG=0")
-      CFlags.add("-DDEBUG=0")
-      stl 'c++_shared'
-      abiFilters.addAll(["armeabi", "armeabi-v7a", "x86"])
-      platformVersion 16
-    }
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
-      applicationId "org.openrct.android"
-      minSdkVersion.apiLevel 16
-      targetSdkVersion.apiLevel 23
-      versionCode 1
-      versionName "1.0"
+        applicationId "org.openrct.android"
+        minSdkVersion 16
+        targetSdkVersion 23
 
-      buildConfigFields {
-        create() {
-          type "int"
-          name "VALUE"
-          value "1"
+        cmake {
+            arguments "-DTARGET_PLATFORM_VERSION=${platformVersion}"
+            abiFilters 'x86', 'armeabi', 'armeabi-v7a'
         }
-      }
     }
+
     buildTypes {
-      release {
-        minifyEnabled false
-        //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-      }
+        release {
+            minifyEnabled false
+        }
     }
-  }
 
-  android.sources {
-    main {
-      jni {
-        source {
-          srcDir "../../../src"
-          //exclude "platform/posix.c"
+    externalNativeBuild {
+        cmake {
+            path 'src/main/CMakeLists.txt'
         }
-        dependencies {
-          project ":sdl"
-          project ":sdl-ttf"
-          project ":libjansson"
-          project ":libpng"
-          project ":libspeexdsp"
-        }
-      }
     }
-  }
 }
 
+apply plugin: 'de.undercouch.download'
+
+
+def downloadLibrarySources(name, url, md5, archiveRoot) {
+    tasks.create(name: "downloadLibraries:${name}") {
+        def tempFile = new File(buildDir, "libs/${md5}.tar.gz")
+        def destDir = new File(projectDir, "/../libs/${name}")
+        outputs.dir destDir
+
+        doLast {
+            if (!tempFile.exists()) {
+                download {
+                    src url
+                    dest tempFile
+                    overwrite true
+                }
+            }
+
+            copy {
+                from tarTree(resources.gzip(tempFile))
+                into temporaryDir
+            }
+
+            copy {
+                from new File(temporaryDir, archiveRoot)
+                into destDir
+            }
+        }
+    }
+}
+
+task downloadLibraries {
+    downloadLibrarySources('sdl','http://hg.libsdl.org/SDL/archive/6ad89111cb4f.tar.gz' ,'550e74892c81ec705c5ac44542bc96bb','SDL-6ad89111cb4f')
+    downloadLibrarySources('sdl-ttf','http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.14.tar.gz' ,'34c5fdc8508c7e14356579477f9ca2b0d6c06ffc','SDL2_ttf-2.0.14')
+    downloadLibrarySources('freetype','http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.gz','8b0c80b64042b7c39b9fa9debe6305c3','freetype-2.6.3')
+    downloadLibrarySources('speexdsp','https://github.com/xiph/speexdsp/archive/SpeexDSP-1.2rc3.tar.gz','ef6d9b7f74f038e3e8a4840255b968e19728cd3c','speexdsp-SpeexDSP-1.2rc3')
+    downloadLibrarySources('png', 'http://prdownloads.sourceforge.net/libpng/libpng-1.6.23.tar.gz?download', 'a49e4cc48d968c79def53d082809c9f2', 'libpng-1.6.23')
+    downloadLibrarySources('jansson', 'https://github.com/akheron/jansson/archive/v2.7.tar.gz', '0f0f818af0bfa5e07c4ddcc7a4e0ded9c4e62caf', 'jansson-2.7')
+
+    dependsOn {
+        tasks.findAll { task -> task.name.startsWith('downloadLibraries:') }
+    }
+}
+
+
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  testCompile 'junit:junit:4.12'
-  compile 'commons-io:commons-io:2.5'
-  compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'commons-io:commons-io:2.5'
+    compile 'com.android.support:appcompat-v7:23.3.0'
 }
 
 task createSegmentFile() {
-  ext.srcFile = file('../../../openrct2.exe')
-  ext.destFile = new File(buildDir, "openrct2_load")
-  inputs.file srcFile
-  outputs.file destFile
+    ext.srcFile = file('../../../openrct2.exe')
+    ext.destFile = new File(buildDir, "openrct2_load")
+    inputs.file srcFile
+    outputs.file destFile
 
-  doLast {
-    delete(destFile)
-    exec {
-      executable "dd"
-      args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1", "count=1187"
+    doLast {
+        delete(destFile)
+        exec {
+            executable "dd"
+            args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1", "count=1187"
+        }
+        exec {
+            executable "dd"
+            args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1188", "seek=1187", "count=318"
+        }
+        exec {
+            executable "dd"
+            args "if=/dev/zero", "of=${destFile}", "bs=4096", "seek=1505", "count=2630", "conv=notrunc"
+        }
+        exec {
+            executable "dd"
+            args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1506", "seek=4135", "count=1", "conv=notrunc"
+        }
     }
-    exec {
-      executable "dd"
-      args "if=${srcFile}", "of=${destFile}", "bs=4096", "skip=1188", "seek=1187", "count=318"
-    }
-    exec {
-      executable "dd"
-      args "if=/dev/zero", "of=${destFile}", "bs=4096", "seek=1505", "count=2630", "conv=notrunc"
-    }
-    exec {
-      executable "dd"
-      args "if=/dev/zero", "of=${destFile}", "bs=4096", "skip=1506", "seek=4135", "count=1", "conv=notrunc"
-    }
-  }
 }
 
 task copySegmentFile(type: Copy) {
-  from '/Users/Marijn/temp/openrct2_load'
-  into 'src/main/assets'
+    from createSegmentFile
+    into 'src/main/assets'
 }
 
 task copyLanguageAssets(type: Copy) {
-  from '../../../data'
-  into 'src/main/assets/data'
+    from '../../../data'
+    into 'src/main/assets/data'
 }
 
-tasks.whenTaskAdded { mergeAssetsTask ->
-  if (!mergeAssetsTask.hasProperty("variantName") || mergeAssetsTask.variantName == null) {
-    return;
-  }
+project.afterEvaluate {
+    mergeDebugAssets.dependsOn copyLanguageAssets
+    mergeDebugAssets.dependsOn copySegmentFile
 
-  String variant = mergeAssetsTask.variantName.capitalize()
-  if (mergeAssetsTask.name != "merge${variant}Assets") {
-    return;
-  }
+    mergeReleaseAssets.dependsOn copyLanguageAssets
+    mergeReleaseAssets.dependsOn copySegmentFile
+}
 
-  mergeAssetsTask.dependsOn copyLanguageAssets
-  mergeAssetsTask.dependsOn copySegmentFile
+project.afterEvaluate {
+    // Download the licenses when (actually: just before) the
+    // resources are generated (for both the "debug" and the
+    // "release" build types).
+
+    // If you add/change build types, you have to add to/change
+    // these task names.
+    preBuild.dependsOn tasks['downloadLibraries']
+    preDebugBuild.dependsOn tasks['downloadLibraries']
 }
