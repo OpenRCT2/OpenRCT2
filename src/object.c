@@ -2641,7 +2641,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			}
 			else {
 				chunk = (uint8*)malloc(chunkSize);
-				sawyercoding_read_chunk(rw, chunk);
+				sawyercoding_read_chunk_with_size(rw, chunk, chunkSize);
 			}
 			SDL_RWclose(rw);
 

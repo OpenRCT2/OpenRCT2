@@ -141,6 +141,52 @@ size_t sawyercoding_read_chunk(SDL_RWops* rw, uint8 *buffer)
 }
 
 /**
+ *
+ *  rct2: 0x0067685F
+ * buffer (esi)
+ */
+size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const size_t buffer_size)
+{
+	sawyercoding_chunk_header chunkHeader;
+
+	// Read chunk header
+	if (SDL_RWread(rw, &chunkHeader, sizeof(sawyercoding_chunk_header), 1) != 1) {
+		log_error("Unable to read chunk header!");
+		return -1;
+	}
+
+	uint8* src_buffer = malloc(chunkHeader.length);
+
+	// Read chunk data
+	if (SDL_RWread(rw, src_buffer, chunkHeader.length, 1) != 1) {
+		free(src_buffer);
+		log_error("Unable to read chunk data!");
+		return -1;
+	}
+
+	// Decode chunk data
+	switch (chunkHeader.encoding) {
+	case CHUNK_ENCODING_NONE:
+		assert(chunkHeader.length <= buffer_size);
+		memcpy(buffer, src_buffer, chunkHeader.length);
+		break;
+	case CHUNK_ENCODING_RLE:
+		chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		break;
+	case CHUNK_ENCODING_RLECOMPRESSED:
+		chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
+		break;
+	case CHUNK_ENCODING_ROTATE:
+		memcpy(buffer, src_buffer, chunkHeader.length);
+		decode_chunk_rotate(buffer, chunkHeader.length);
+		break;
+	}
+	free(src_buffer);
+	return chunkHeader.length;
+}
+
+/**
 *
 *  rct2: 0x006762E1
 *
