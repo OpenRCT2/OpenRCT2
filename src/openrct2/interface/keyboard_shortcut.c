@@ -60,6 +60,7 @@ void keyboard_shortcut_set(keypress key)
 	window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 	window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
 	config_shortcut_keys_save();
+	platform_map_keys_stack_clear();
 }
 
 static sint32 keyboard_shortcut_get_from_key(keypress key)

@@ -1470,10 +1470,14 @@ void game_handle_keyboard_input()
 				console_toggle();
 			}
 			continue;
-		} else if (gConsoleOpen) {
+		}
+
+		if (gConsoleOpen) {
 			console_input(key.keycode);
 			continue;
-		} else if (gChatOpen) {
+		}
+
+		if (gChatOpen) {
 			chat_input(key.keycode);
 			continue;
 		}
@@ -1481,13 +1485,17 @@ void game_handle_keyboard_input()
 		w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 		if (w != NULL) {
 			keyboard_shortcut_set(key);
-		} else {
-			w = window_find_by_class(WC_TEXTINPUT);
-			if (w != NULL) {
-				window_text_input_key(w, key.keycode);
-			} else if (!gUsingWidgetTextBox) {
-				keyboard_shortcut_handle(key);
-			}
+			continue;
+		}
+
+		w = window_find_by_class(WC_TEXTINPUT);
+		if (w != NULL) {
+			window_text_input_key(w, key.keycode);
+			continue;
+		}
+
+		if (!gUsingWidgetTextBox) {
+			keyboard_shortcut_handle(key);
 		}
 	}
 }
@@ -1615,21 +1623,28 @@ void game_handle_key_scroll()
 	rct_window *textWindow;
 
 	textWindow = window_find_by_class(WC_TEXTINPUT);
-	if (textWindow || gUsingWidgetTextBox) return;
-	if (gChatOpen) return;
+	if (textWindow || gUsingWidgetTextBox)
+		return;
+	if (gChatOpen)
+		return;
 
 	scrollX = 0;
 	scrollY = 0;
 
-	if (gKeysHeld[0])
-		scrollY = -1;
-	else if (gKeysHeld[2])
-		scrollY = 1;
-
-	if (gKeysHeld[1])
-		scrollX = -1;
-	else if (gKeysHeld[3])
-		scrollX = 1;
+	for (int i = 0; i < 4 && gMapKeysStack[i] != 0; i++) {
+		int val = gMapKeysStack[i];
+		if (val == SHORTCUT_SCROLL_MAP_UP || val == SHORTCUT_SCROLL_MAP_DOWN) {
+			scrollY = val - SHORTCUT_SCROLL_MAP_UP - 1;
+			break;
+		}
+	}
+	for (int i = 0; i < 4 && gMapKeysStack[i] != 0; i++) {
+		int val = gMapKeysStack[i];
+		if (val == SHORTCUT_SCROLL_MAP_LEFT || val == SHORTCUT_SCROLL_MAP_RIGHT) {
+			scrollX = val - SHORTCUT_SCROLL_MAP_LEFT - 1;
+			break;
+		}
+	}
 
 	// Scroll viewport
 	if (scrollX != 0) {
