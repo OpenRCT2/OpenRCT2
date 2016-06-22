@@ -1341,7 +1341,9 @@ typedef struct rct_small_scenery_entry_32bit {
 	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
 	uint32 var_10;			// note: uint32!
-	uint8 pad_14[0x06];
+	uint16 var_14;
+	uint16 var_16;
+	uint16 var_18;
 	uint8 scenery_tab_id;	// 0x1A
 } rct_small_scenery_entry_32bit;
 assert_struct_size(rct_small_scenery_entry_32bit, 21);
@@ -1404,7 +1406,9 @@ static uint8* object_type_small_scenery_load(void *objectEntry, uint32 entryInde
 	outSceneryEntry->small_scenery.price = sceneryEntry->small_scenery.price;
 	outSceneryEntry->small_scenery.removal_price = sceneryEntry->small_scenery.removal_price;
 	// var10 already set
-	// pad_14 not needed set
+	outSceneryEntry->small_scenery.var_14 = sceneryEntry->small_scenery.var_14;
+	outSceneryEntry->small_scenery.var_16 = sceneryEntry->small_scenery.var_16;
+	outSceneryEntry->small_scenery.var_18 = sceneryEntry->small_scenery.var_18;
 	outSceneryEntry->small_scenery.scenery_tab_id = sceneryEntry->small_scenery.scenery_tab_id;
 
 	return (uint8*)outSceneryEntry;
@@ -1576,6 +1580,8 @@ static uint8* object_type_large_scenery_load(void *objectEntry, uint32 entryInde
 		*((uint16*)some_pointer) = 0;
 	}
 
+	outSceneryEntry->name = sceneryEntry->name;
+	outSceneryEntry->image = sceneryEntry->image;
 	outSceneryEntry->large_scenery.tool_id = sceneryEntry->large_scenery.tool_id;
 	outSceneryEntry->large_scenery.flags = sceneryEntry->large_scenery.flags;
 	outSceneryEntry->large_scenery.price = sceneryEntry->large_scenery.price;

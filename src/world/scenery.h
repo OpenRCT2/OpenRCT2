@@ -27,7 +27,7 @@ typedef struct rct_small_scenery_entry {
 	uint8 tool_id;			// 0x0B
 	sint16 price;			// 0x0C
 	sint16 removal_price;	// 0x0E
-	uint32 var_10;
+	uintptr_t var_10;
 	uint16 var_14;
 	uint16 var_16;
 	uint16 var_18;
