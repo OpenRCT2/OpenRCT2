@@ -4148,6 +4148,7 @@ STR_5876    :{SMALLFONT}{BLACK}El software a utilizar para dibujar el juego.
 STR_5877    :Software
 STR_5878    :Software (vía hardware)
 STR_5879    :OpenGL
+STR_5880	:Moneda personalizada
 
 ##############
 # Escenarios #

@@ -2658,6 +2658,9 @@ enum {
 
 	STR_SELECTED_ONLY = 5880,
 	STR_NON_SELECTED_ONLY = 5881,
+
+	STR_CUSTOM_CURRENCY = 5882,
+
 	// Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
 	STR_COUNT = 32768
 };
