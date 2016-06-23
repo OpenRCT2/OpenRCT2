@@ -41,7 +41,6 @@ typedef struct rct_plugin_header {
 	uint32 object_list_size;
 	uint32 object_list_no_items;
 } rct_plugin_header;
-assert_struct_size(rct_plugin_header, 20);
 
 // 98DA00
 int object_entry_group_counts[] = {
