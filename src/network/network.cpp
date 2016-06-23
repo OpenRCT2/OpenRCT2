@@ -1515,9 +1515,9 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
 		} else {
 			const char *signature = (const char *)packet.Read(sigsize);
 			SDL_RWops *pubkey_rw = SDL_RWFromConstMem(pubkey, strlen(pubkey));
-			if (pubkey_rw == nullptr) {
+			if (signature == nullptr || pubkey_rw == nullptr) {
 				connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
-				log_verbose("Signature verification failed!");
+				log_verbose("Signature verification failed, invalid data!");
 			} else {
 				connection.Key.LoadPublic(pubkey_rw);
 				SDL_RWclose(pubkey_rw);
