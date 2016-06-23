@@ -4189,6 +4189,7 @@ STR_5877    :Software
 STR_5878    :Software (hardware display)
 STR_5879    :OpenGL
 STR_5880    :Chat
+STR_5881    :{SMALLFONT}{BLACK}Chat - Drag this to move
 
 #############
 # Scenarios #

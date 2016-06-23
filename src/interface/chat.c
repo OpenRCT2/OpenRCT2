@@ -23,9 +23,17 @@
 #include "chat.h"
 #include "../util/util.h"
 #include "../interface/themes.h"
+#include "../interface/window.h"
+#include "../interface/widget.h"
+#include "../interface/colour.h"
 
-#define CHAT_HISTORY_SIZE 10
+#define CHAT_HISTORY_SIZE 100
 #define CHAT_INPUT_SIZE 256
+
+#define CHAT_MIN_WIDTH 300
+#define CHAT_MIN_HEIGHT 100
+#define CHAT_MAX_WIDTH 700
+#define CHAT_MAX_HEIGHT 300
 
 bool gChatOpen = false;
 char _chatCurrentLine[200]; //Limit 200 characters
@@ -43,6 +51,59 @@ int _chatHeight;
 static const char* chat_history_get(unsigned int index);
 static uint32 chat_history_get_time(unsigned int index);
 static void chat_clear_input();
+
+enum WINDOW_GUEST_WIDGET_IDX {
+	WIDX_BACKGROUND,
+	WIDX_TITLE,
+	WIDX_RESIZE,
+	WIDX_CHAT_HISTORY
+};
+
+static rct_widget window_chat_widgets[] = {
+	{ WWT_FRAME,	0, 0,	99,		0,		99,		STR_NONE,		STR_NONE },					// Background
+	{ WWT_CAPTION,	0, 1,	98,		1,		14,		STR_NONE,		STR_CHAT_TITLE_TIP },		// Title
+	{ WWT_RESIZE,	0, 0,	99,		15,		99,		0x0FFFFFFFF,	STR_NONE },					// Resize
+	{ WWT_SCROLL,	0, 3,	96,		16,		80,		2,				STR_NONE },					// Chat history
+	{ WIDGETS_END },
+};
+
+static void window_chat_resize(rct_window *w);
+static void window_chat_update(rct_window *w);
+static void window_chat_invalidate(rct_window *w);
+static void window_chat_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_chat_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
+static void window_chat_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
+
+static rct_window_event_list window_chat_events = {
+	NULL,
+	NULL,
+	window_chat_resize,
+	NULL,
+	NULL,
+	NULL,
+	window_chat_update,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_chat_scrollgetsize,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	window_chat_invalidate,
+	window_chat_paint,
+	window_chat_scrollpaint
+};
 
 void chat_open()
 {
@@ -83,6 +144,18 @@ void chat_draw(rct_drawpixelinfo * dpi)
 		gChatOpen = false;
 		return;
 	}
+
+	//TEST
+	if (window_find_by_class(WC_CHAT) == NULL) {
+		rct_window *chatWindow = window_create(50, 50, 100, 100, &window_chat_events, WC_CHAT, WF_RESIZABLE | WF_NO_AUTO_CLOSE);
+		chatWindow->widgets = window_chat_widgets;
+		window_init_scroll_widgets(chatWindow);
+		chatWindow->min_width = CHAT_MIN_WIDTH;
+		chatWindow->min_height = CHAT_MIN_HEIGHT;
+		chatWindow->max_width = CHAT_MAX_WIDTH;
+		chatWindow->max_height = CHAT_MAX_HEIGHT;
+	}
+	return;
 
 	_chatLeft = 10;
 	_chatRight = gScreenWidth - 10;
@@ -267,9 +340,6 @@ int chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int x, int y, i
 	gCurrentFontFlags = 0;
 
 	int expectedY = y - (numLines * lineHeight);
-	if (expectedY < 50) {
-		return (numLines * lineHeight); //Skip drawing, return total height.
-	}
 
 	lineY = y;
 	for (int line = 0; line <= numLines; ++line) {
@@ -305,4 +375,68 @@ int chat_string_wrapped_get_height(void *args, int width)
 	}
 
 	return lineY;
+}
+
+static void window_chat_paint(rct_window *w, rct_drawpixelinfo *dpi) 
+{
+	window_draw_widgets(w, dpi);
+}
+
+static void window_chat_invalidate(rct_window *w)
+{
+	colour_scheme_update(w);
+
+	window_chat_widgets[WIDX_BACKGROUND].right = w->width - 1;
+	window_chat_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+	window_chat_widgets[WIDX_TITLE].right = w->width - 2;
+
+	window_chat_widgets[WIDX_RESIZE].right = w->width - 1;
+	window_chat_widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+	window_chat_widgets[WIDX_CHAT_HISTORY].right = w->width - 3;
+	window_chat_widgets[WIDX_CHAT_HISTORY].bottom = w->height - 19;
+}
+
+static void window_chat_resize(rct_window *w)
+{
+	window_set_resize(w, CHAT_MIN_WIDTH, CHAT_MIN_HEIGHT, CHAT_MAX_WIDTH, CHAT_MAX_HEIGHT);
+}
+
+static void window_chat_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
+{
+	char lineBuffer[CHAT_INPUT_SIZE + 10];
+	char* lineCh = lineBuffer;
+
+	for (int i = 0; i < CHAT_HISTORY_SIZE; i++) {
+		if (strlen(chat_history_get(i)) == 0) 
+			continue;
+
+		safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+		*height += chat_string_wrapped_get_height((void*)&lineCh, w->width - 20);
+	}
+
+}
+
+static void window_chat_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
+{
+	int y = dpi->y + dpi->height - 30;
+	int stringHeight = 0;
+	char lineBuffer[CHAT_INPUT_SIZE + 10];
+	char* lineCh = lineBuffer;
+
+	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= stringHeight) {
+		if (y < -50) {
+			break;
+		}
+
+		safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
+
+		stringHeight = chat_history_draw_string(dpi, (void*)&lineCh, 0, y, w->width - 20) + 5;
+	}
+}
+
+static void window_chat_update(rct_window *w)
+{
+	window_invalidate(w);
 }
