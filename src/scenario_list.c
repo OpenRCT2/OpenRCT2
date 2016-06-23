@@ -340,6 +340,12 @@ static bool scenario_scores_legacy_load(const utf8 *path)
 		return false;
 	}
 
+	Sint64 fileSize = SDL_RWsize(file);
+	if (fileSize <= 4) {
+		// Initial value of scores for RCT2, just ignore
+		return false;
+	}
+
 	// Load header
 	rct_scenario_scores_header header;
 	if (SDL_RWread(file, &header, 16, 1) != 1) {
