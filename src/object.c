@@ -1548,7 +1548,7 @@ static uint8* object_type_large_scenery_load(void *objectEntry, uint32 entryInde
 		}
 	}
 
-	extendedEntryData += sizeof(rct_scenery_entry_32bit);
+	extendedEntryData += sizeof(rct_object_entry);
 	if (sceneryEntry->large_scenery.flags & (1 << 2)) {
 		outSceneryEntry->large_scenery.text = (rct_large_scenery_text*)extendedEntryData;
 		extendedEntryData += 1038;
