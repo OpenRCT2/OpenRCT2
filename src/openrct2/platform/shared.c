@@ -69,6 +69,7 @@ static const sint32 _fullscreen_modes[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW
 static uint32 _lastGestureTimestamp;
 static float _gestureRadius;
 
+static void platform_process_text_input_special_keys(keypress key);
 static void platform_create_window();
 
 static void platform_filter_keypress(keypress *key);
@@ -453,16 +454,19 @@ void platform_process_messages()
 			if (gTextInputCompositionActive)
 				break;
 
-			// We don't want repeat events (repeats from key being held down)
-			if (e.key.repeat)
-				break;
-
 			// Ignore unknown keys
 			if ((e.key.keysym.sym & ~(1<<30)) == SDLK_UNKNOWN)
 				break;
 
 			key = (keypress){ e.key.keysym.sym, e.key.keysym.mod };
 			platform_filter_keypress(&key);
+
+			if (gTextInput.buffer != NULL)
+				platform_process_text_input_special_keys(key);
+
+			// We don't want repeat events (repeats from key being held down)
+			if (e.key.repeat)
+				break;
 
 			// Handle modifiers
 			mod_held_idx = key.keycode - SDLK_LCTRL;
@@ -487,74 +491,6 @@ void platform_process_messages()
 				if (platform_keypress_equals(key, gShortcutKeys[i])) {
 					platform_map_keys_stack_insert(i);
 					break;
-				}
-			}
-
-			// Case done if we are not in text input mode
-			if (gTextInput.buffer == NULL)
-				break;
-
-			if (key.keycode == SDLK_BACKSPACE) {
-				if (key.mod & KEYBOARD_PRIMARY_MODIFIER) {
-					// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (macOS)
-					textinputbuffer_clear(&gTextInput);
-					console_refresh_caret();
-					window_update_textbox();
-
-				// If we have input text with a cursor position none zero
-				} else if (gTextInput.selection_offset > 0) {
-					size_t endOffset = gTextInput.selection_offset;
-					textinputbuffer_cursor_left(&gTextInput);
-					gTextInput.selection_size = endOffset - gTextInput.selection_offset;
-					textinputbuffer_remove_selected(&gTextInput);
-
-					console_refresh_caret();
-					window_update_textbox();
-				}
-			}
-
-			if (key.keycode == SDLK_HOME) {
-				textinputbuffer_cursor_home(&gTextInput);
-				console_refresh_caret();
-			}
-
-			if (key.keycode == SDLK_END) {
-				textinputbuffer_cursor_end(&gTextInput);
-				console_refresh_caret();
-			}
-
-			if (key.keycode == SDLK_DELETE) {
-				size_t startOffset = gTextInput.selection_offset;
-				textinputbuffer_cursor_right(&gTextInput);
-				gTextInput.selection_size = gTextInput.selection_offset - startOffset;
-				gTextInput.selection_offset = startOffset;
-				textinputbuffer_remove_selected(&gTextInput);
-				console_refresh_caret();
-				window_update_textbox();
-			}
-
-			if (key.keycode == SDLK_RETURN) {
-				window_cancel_textbox();
-			}
-
-			if (key.keycode == SDLK_LEFT) {
-				textinputbuffer_cursor_left(&gTextInput);
-				console_refresh_caret();
-
-			} else if (key.keycode == SDLK_RIGHT) {
-				textinputbuffer_cursor_right(&gTextInput);
-				console_refresh_caret();
-
-			} else if (platform_keypress_equals(key, (keypress){ SDLK_v, KEYBOARD_PRIMARY_MODIFIER })) {
-				if (SDL_HasClipboardText()) {
-					utf8* text = SDL_GetClipboardText();
-
-					utf8_remove_formatting(text, false);
-					textinputbuffer_insert(&gTextInput, text);
-
-					SDL_free(text);
-
-					window_update_textbox();
 				}
 			}
 
@@ -628,6 +564,73 @@ void platform_process_messages()
 	}
 
 	gCursorState.any = gCursorState.left | gCursorState.middle | gCursorState.right;
+}
+
+static void platform_process_text_input_special_keys(keypress key)
+{
+	if (key.keycode == SDLK_BACKSPACE) {
+		if (key.mod & KEYBOARD_PRIMARY_MODIFIER) {
+			// Clear the input on <CTRL>Backspace (Windows/Linux) or <MOD>Backspace (macOS)
+			textinputbuffer_clear(&gTextInput);
+			console_refresh_caret();
+			window_update_textbox();
+
+			// If we have input text with a cursor position none zero
+		} else if (gTextInput.selection_offset > 0) {
+			size_t endOffset = gTextInput.selection_offset;
+			textinputbuffer_cursor_left(&gTextInput);
+			gTextInput.selection_size = endOffset - gTextInput.selection_offset;
+			textinputbuffer_remove_selected(&gTextInput);
+
+			console_refresh_caret();
+			window_update_textbox();
+		}
+	}
+
+	if (key.keycode == SDLK_HOME) {
+		textinputbuffer_cursor_home(&gTextInput);
+		console_refresh_caret();
+	}
+
+	if (key.keycode == SDLK_END) {
+		textinputbuffer_cursor_end(&gTextInput);
+		console_refresh_caret();
+	}
+
+	if (key.keycode == SDLK_DELETE) {
+		size_t startOffset = gTextInput.selection_offset;
+		textinputbuffer_cursor_right(&gTextInput);
+		gTextInput.selection_size = gTextInput.selection_offset - startOffset;
+		gTextInput.selection_offset = startOffset;
+		textinputbuffer_remove_selected(&gTextInput);
+		console_refresh_caret();
+		window_update_textbox();
+	}
+
+	if (key.keycode == SDLK_RETURN) {
+		window_cancel_textbox();
+	}
+
+	if (key.keycode == SDLK_LEFT) {
+		textinputbuffer_cursor_left(&gTextInput);
+		console_refresh_caret();
+
+	} else if (key.keycode == SDLK_RIGHT) {
+		textinputbuffer_cursor_right(&gTextInput);
+		console_refresh_caret();
+
+	} else if (platform_keypress_equals(key, (keypress){ SDLK_v, KEYBOARD_PRIMARY_MODIFIER })) {
+		if (SDL_HasClipboardText()) {
+			utf8* text = SDL_GetClipboardText();
+
+			utf8_remove_formatting(text, false);
+			textinputbuffer_insert(&gTextInput, text);
+
+			SDL_free(text);
+
+			window_update_textbox();
+		}
+	}
 }
 
 static void platform_close_window()
