@@ -82,6 +82,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	if (*chunkSize == 0xFFFFFFFF) {
 		chunk = (uint8*)malloc(0x600000);
+		assert(chunk != NULL);
 		*chunkSize = sawyercoding_read_chunk(rw, chunk);
 		chunk = realloc(chunk, *chunkSize);
 	}
@@ -131,7 +132,9 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	}
 
 	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0) {
-		chunk = object_load(objectType, chunk, groupIndex, chunkSize);
+		uint8 *oldChunk = chunk;
+		chunk = object_load(objectType, oldChunk, groupIndex, chunkSize);
+		free(oldChunk);
 	}
 
 	chunk_list[groupIndex] = chunk;
