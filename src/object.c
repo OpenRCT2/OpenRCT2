@@ -1929,11 +1929,11 @@ static uint8* object_type_path_load(void *objectEntry, uint32 entryIndex, int *c
 	rct_footpath_entry *pathEntry = (rct_footpath_entry*)objectEntry;
 	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x0E);
 	const size_t extendedDataSize = *chunkSize - 0x0E;
-	*chunkSize = *chunkSize + sizeof(rct_footpath_entry) - 0x0E;
+	*chunkSize = *chunkSize + 0x0E - 0x0E;
 	assert(*chunkSize > 0);
 	rct_footpath_entry* outPathEntry = malloc(*chunkSize);
 	assert(outPathEntry != NULL);
-	uint8 *extendedEntryData = (uint8*)((size_t)outPathEntry + sizeof(rct_footpath_entry));
+	uint8 *extendedEntryData = (uint8*)((size_t)outPathEntry + 0x0E);
 	memcpy(extendedEntryData, origExtendedEntryData, extendedDataSize);
 
 	pathEntry->string_idx = object_get_localised_text(&extendedEntryData, OBJECT_TYPE_PATHS, entryIndex, 0);
