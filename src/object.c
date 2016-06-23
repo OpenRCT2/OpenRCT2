@@ -83,12 +83,12 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	if (*chunkSize == 0xFFFFFFFF) {
 		chunk = (uint8*)malloc(0x600000);
 		assert(chunk != NULL);
-		*chunkSize = sawyercoding_read_chunk(rw, chunk);
+		*chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
 		chunk = realloc(chunk, *chunkSize);
 	}
 	else {
 		chunk = (uint8*)malloc(*chunkSize);
-		*chunkSize = sawyercoding_read_chunk(rw, chunk);
+		*chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, *chunkSize);
 	}
 	SDL_RWclose(rw);
 	if (chunk == NULL) {
