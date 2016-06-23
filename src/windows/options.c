@@ -930,7 +930,11 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			window_options_show_dropdown(w, widget, num_items);
 
-			dropdown_set_checked(gConfigGeneral.currency_format, true);
+			if(gConfigGeneral.currency_format == CURRENCY_CUSTOM){
+				dropdown_set_checked(gConfigGeneral.currency_format+1, true);
+			} else {
+				dropdown_set_checked(gConfigGeneral.currency_format, true);
+			}
 			break;
 		case WIDX_DISTANCE_DROPDOWN:
 			gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -1190,9 +1194,10 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 		case WIDX_CURRENCY_DROPDOWN:
 			if(dropdownIndex == CURRENCY_CUSTOM+1) { // Add 1 because the separator occupies a position
 				gConfigGeneral.currency_format = (sint8)dropdownIndex-1;
+				window_custom_currency_open();
 			} else {
 				gConfigGeneral.currency_format = (sint8)dropdownIndex;
-			}
+			} // TODO: Save current custom currency rate
 			config_save_default();
 			gfx_invalidate_screen();
 			break;
