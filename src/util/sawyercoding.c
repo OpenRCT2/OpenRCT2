@@ -175,7 +175,7 @@ size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const siz
 		chunkHeader.length = decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
 		break;
 	case CHUNK_ENCODING_RLECOMPRESSED:
-		chunkHeader.length = decode_chunk_rle(src_buffer, buffer, chunkHeader.length);
+		chunkHeader.length = decode_chunk_rle_with_size(src_buffer, buffer, chunkHeader.length, buffer_size);
 		chunkHeader.length = decode_chunk_repeat(buffer, chunkHeader.length);
 		break;
 	case CHUNK_ENCODING_ROTATE:
@@ -377,6 +377,7 @@ static size_t decode_chunk_rle_with_size(const uint8* src_buffer, uint8* dst_buf
 		if (rleCodeByte & 128) {
 			i++;
 			count = 257 - rleCodeByte;
+			assert(dst + count <= dst_buffer + dstSize);
 			memset(dst, src_buffer[i], count);
 			dst = (uint8*)((uintptr_t)dst + count);
 		} else {
