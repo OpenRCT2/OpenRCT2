@@ -30,10 +30,11 @@
 #include "world/scenery.h"
 #include "world/water.h"
 
+#define PLUGIN_VERSION 4
 #define FILTER_VERSION 1
 
-#pragma pack(push, 1)
 typedef struct rct_plugin_header {
+	uint16 version;
 	uint32 total_files;
 	uint32 total_file_size;
 	uint32 date_modified_checksum;
@@ -41,7 +42,6 @@ typedef struct rct_plugin_header {
 	uint32 object_list_no_items;
 } rct_plugin_header;
 assert_struct_size(rct_plugin_header, 20);
-#pragma pack(pop)
 
 // 98DA00
 int object_entry_group_counts[] = {
@@ -389,6 +389,7 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 	if (SDL_RWread(file, &pluginHeader, sizeof(rct_plugin_header), 1) == 1) {
 		// Check if object repository has changed in anyway
 		if (
+			pluginHeader.version == PLUGIN_VERSION &&
 			pluginHeader.total_files == totalFiles &&
 			pluginHeader.total_file_size == totalFileSize &&
 			pluginHeader.date_modified_checksum == fileDateModifiedChecksum
@@ -420,6 +421,9 @@ static int object_list_cache_load(int totalFiles, uint64 totalFileSize, int file
 				}
 				log_info("Filter version updated... updating object list cache");
 			}
+		}
+		else if (pluginHeader.version != PLUGIN_VERSION) {
+			log_info("Object list cache version different... updating");
 		}
 		else if (pluginHeader.total_files != totalFiles) {
 			int fileCount = totalFiles - pluginHeader.total_files;
@@ -453,6 +457,7 @@ static int object_list_cache_save(int fileCount, uint64 totalFileSize, int fileD
 
 	log_verbose("saving object list cache (plugin.dat)");
 
+	pluginHeader.version = PLUGIN_VERSION;
 	pluginHeader.total_files = fileCount | 0x01000000;
 	pluginHeader.total_file_size = (uint32)totalFileSize;
 	pluginHeader.date_modified_checksum = fileDateModifiedChecksum;
