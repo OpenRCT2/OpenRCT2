@@ -2472,11 +2472,11 @@ static uint8* object_type_stex_load(void *objectEntry, uint32 entryIndex, int *c
 	rct_stex_entry *stexEntry = (rct_stex_entry*)objectEntry;
 	const uint8 *origExtendedEntryData = (uint8*)((size_t)objectEntry + 0x08);
 	const size_t extendedDataSize = *chunkSize - 0x08;
-	*chunkSize = *chunkSize + sizeof(rct_stex_entry) - 0x08;
+	*chunkSize = *chunkSize + 0x08 - 0x08;
 	assert(*chunkSize > 0);
 	rct_stex_entry* outStexEntry = malloc(*chunkSize);
 	assert(outStexEntry != NULL);
-	uint8 *stringTable = (uint8*)((size_t)outStexEntry + sizeof(rct_stex_entry));
+	uint8 *stringTable = (uint8*)((size_t)outStexEntry + 0x08);
 	memcpy(stringTable, origExtendedEntryData, extendedDataSize);
 	
 	stexEntry->scenario_name = object_get_localised_text(&stringTable, OBJECT_TYPE_SCENARIO_TEXT, entryIndex, 0);
