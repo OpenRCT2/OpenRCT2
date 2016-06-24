@@ -50,6 +50,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Kelson Blakewood (spacek531) - title sequence for 0.0.4
 * Hugo Wallenburg (Goddesen) - Misc.
 * (Nubbie) - Misc, UX
+* Daniel Trujillo Viedma (gDanix) - Custom currency.
 
 ## Bug fixes
 * (halfbro)
@@ -101,7 +102,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Portuguese (BR) - (kaudy), (renansimoes)
 * Russian - (Soosisya)
 * Simplified Chinese - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30)
-* Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gdabi); small fixes: (teapartycthulu)
+* Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
 * Norwegian - (Goddesen)
