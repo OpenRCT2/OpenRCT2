@@ -251,14 +251,12 @@ rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
 *  rct2: 0x006DED68
 */
 void reset_type_to_ride_entry_index_map(){
-	uint8* typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
-	memset(typeToRideEntryIndexMap, 0xFF, 91);
+	memset(gTypeToRideEntryIndexMap, 0xFF, 91);
 }
 
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
 {
-	uint8 *typeToRideEntryIndexMap = (uint8*)0x009E32F8;
-	uint8 *entryIndexList = typeToRideEntryIndexMap;
+	uint8 *entryIndexList = gTypeToRideEntryIndexMap;
 	while (rideType > 0) {
 		do {
 			entryIndexList++;
