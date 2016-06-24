@@ -476,9 +476,9 @@ void format_currency(char **dest, long long value)
 	}
 }
 
-void format_any_currency_2dp(char **dest, long long value, int currencyIndex)
+void format_currency_2dp(char **dest, long long value)
 {
-	const currency_descriptor *currencyDesc = &CurrencyDescriptors[currencyIndex];
+	const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
 	int rate = currencyDesc->rate;
 	value *= rate;
@@ -515,11 +515,6 @@ void format_any_currency_2dp(char **dest, long long value, int currencyIndex)
 		safe_strcpy(*dest, symbol, CURRENCY_SYMBOL_MAX_SIZE);
 		*dest += strlen(*dest);
 	}
-}
-
-void format_currency_2dp(char **dest, long long value)
-{
-	format_any_currency_2dp(dest, value, gConfigGeneral.currency_format);
 }
 
 void format_date(char **dest, uint16 value)
