@@ -132,9 +132,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	}
 
 	if (RCT2_GLOBAL(0x9ADAFD, uint8) != 0) {
-		uint8 *oldChunk = chunk;
-		chunk = object_load(objectType, oldChunk, groupIndex, chunkSize);
-		free(oldChunk);
+		chunk = object_load(objectType, chunk, groupIndex, chunkSize);
 	}
 
 	chunk_list[groupIndex] = chunk;
