@@ -49,7 +49,14 @@ typedef enum {
 	WWT_TEXT_BOX = 27,
 	WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;
+
 #define WIDGETS_END		WWT_LAST, 0, 0, 0, 0, 0, 0, 0
+
+enum WIDGET_FLAGS {
+	WIDF_NO_BACKGROUND = (1 << 0),
+	WIDF_SCROLLBAR_NO_INTERACT = (1 << 1),
+	WIDF_TEXT_INPUT_DRAW_LEFT_WRAPPED = (1 << 2),
+};
 
 void widget_scroll_update_thumbs(rct_window *w, int widget_index);
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex);

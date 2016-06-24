@@ -294,6 +294,8 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	// Resolve the absolute ltrb
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
+	int r = w->x + widget->right;
+	int b = w->y + widget->bottom;
 
 	// Get the colour and image
 	uint8 colour = w->colours[widget->colour] & 0x7F;
@@ -385,6 +387,8 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	// Resolve the absolute ltrb
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
+	int r = w->x + widget->right;
+	int b = w->y + widget->bottom;
 
 	int stringId = widget->image;
 	if (stringId == -1)
@@ -437,6 +441,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
 	int r = w->x + widget->right;
+	int b = w->y + widget->bottom;
 
 	if (widget->image == (uint32)-2 || widget->image == (uint32)-1)
 		return;
@@ -721,7 +726,8 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, int widget
 	uint8 colour = w->colours[widget->colour];
 
 	// Draw the border
-	gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
+	if (!(widget->flags & WIDF_NO_BACKGROUND))
+		gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x60);
 
 	// Inflate by -1
 	l++;
@@ -840,6 +846,8 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 	// Resolve the absolute ltrb
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
+	int r = w->x + widget->right;
+	int b = w->y + widget->bottom;
 
 	// Get the colour
 	uint8 colour = w->colours[widget->colour] & 0x7F;
@@ -1045,6 +1053,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	int no_lines = 0;
 	int font_height = 0;
 	char wrapped_string[512];
+	char* lineCh = wrapped_string;
 
 	// Get the widget
 	rct_widget *widget = &w->widgets[widgetIndex];
@@ -1072,8 +1081,12 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 
 		if (w->widgets[widgetIndex].image != 0) {
 			safe_strcpy(wrapped_string, (char*)w->widgets[widgetIndex].image, 512);
-			gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
-			gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
+			if (widget->flags & WIDF_TEXT_INPUT_DRAW_LEFT_WRAPPED) {
+				gfx_draw_string_left_wrapped(dpi, (void*) &lineCh, l + 2, t, r - l - 5, STR_STRING, COLOUR_WHITE);
+			} else {
+				gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
+				gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
+			}
 		}
 		return;
 	}
@@ -1081,13 +1094,14 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 
 	safe_strcpy(wrapped_string, gTextBoxInput, 512);
 
-	// String length needs to add 12 either side of box
-	// +13 for cursor when max length.
-	gfx_wrap_string(wrapped_string, r - l - 5 - 6, &no_lines, &font_height);
-
-
-	gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
-
+	if (widget->flags & WIDF_TEXT_INPUT_DRAW_LEFT_WRAPPED) {
+		gfx_draw_string_left_wrapped(dpi, (void*) &lineCh, l + 2, t, r - l - 5 - 6, STR_STRING, COLOUR_WHITE);
+	} else {
+		// String length needs to add 12 either side of box
+		// +13 for cursor when max length.
+		gfx_wrap_string(wrapped_string, r - l - 5 - 6, &no_lines, &font_height);
+		gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
+	}
 
 	int string_length = get_string_size(wrapped_string) - 1;
 

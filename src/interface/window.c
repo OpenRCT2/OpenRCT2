@@ -814,13 +814,15 @@ rct_window *window_find_from_point(int x, int y)
 	for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
 		if (x < w->x || x >= w->x + w->width || y < w->y || y >= w->y + w->height)
 			continue;
-
 		if (w->flags & WF_NO_BACKGROUND) {
 			widget_index = window_find_widget_from_point(w, x, y);
 			if (widget_index == -1)
 				continue;
 
 			widget = &w->widgets[widget_index];
+
+			if (widget->flags & WIDF_SCROLLBAR_NO_INTERACT)
+				continue;
 		}
 
 		return w;

@@ -26,6 +26,8 @@
 #include "../interface/window.h"
 #include "../interface/widget.h"
 #include "../interface/colour.h"
+#include "../config.h"
+#include "../input.h"
 
 #define CHAT_HISTORY_SIZE 100
 #define CHAT_INPUT_SIZE 256
@@ -56,27 +58,31 @@ enum WINDOW_GUEST_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
 	WIDX_RESIZE,
+	WIDX_CHAT_INPUT,
 	WIDX_CHAT_HISTORY
 };
 
 static rct_widget window_chat_widgets[] = {
-	{ WWT_FRAME,	0, 0,	99,		0,		99,		STR_NONE,		STR_NONE },					// Background
-	{ WWT_CAPTION,	0, 1,	98,		1,		14,		STR_NONE,		STR_CHAT_TITLE_TIP },		// Title
-	{ WWT_RESIZE,	0, 0,	99,		15,		99,		0x0FFFFFFFF,	STR_NONE },					// Resize
-	{ WWT_SCROLL,	0, 3,	96,		16,		80,		2,				STR_NONE },					// Chat history
+	{ WWT_FRAME,		0, 0,	CHAT_MIN_WIDTH - 1,		0,		CHAT_MIN_HEIGHT - 1,		STR_NONE,		STR_NONE },					// Background
+	{ WWT_CAPTION,		0, 1,	CHAT_MIN_WIDTH - 2,		1,		10,							STR_NONE,		STR_CHAT_TITLE_TIP },		// Title
+	{ WWT_RESIZE,		0, 0,	CHAT_MIN_WIDTH - 1,		11,		CHAT_MIN_HEIGHT - 1,		0x0FFFFFFFF,	STR_NONE },					// Resize
+	{ WWT_TEXT_BOX,		0, 2,	CHAT_MIN_WIDTH - 3,		12,		27,							STR_NONE,		STR_NONE },
+	{ WWT_SCROLL,		0, 3,	CHAT_MIN_WIDTH - 4,		28,		CHAT_MIN_HEIGHT - 2,		2,				STR_NONE },					// Chat history
 	{ WIDGETS_END },
 };
 
+static void window_chat_mouseup(rct_window *w, int widgetIndex);
 static void window_chat_resize(rct_window *w);
 static void window_chat_update(rct_window *w);
 static void window_chat_invalidate(rct_window *w);
+static void window_chat_textinput(rct_window *w, int widgetIndex, char *text);
 static void window_chat_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_chat_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
 static void window_chat_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex);
 
 static rct_window_event_list window_chat_events = {
 	NULL,
-	NULL,
+	window_chat_mouseup,
 	window_chat_resize,
 	NULL,
 	NULL,
@@ -94,7 +100,7 @@ static rct_window_event_list window_chat_events = {
 	NULL,
 	NULL,
 	NULL,
-	NULL,
+	window_chat_textinput,
 	NULL,
 	NULL,
 	NULL,
@@ -108,13 +114,20 @@ static rct_window_event_list window_chat_events = {
 void chat_open()
 {
 	gChatOpen = true;
-	platform_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));
+	//platform_start_text_input(_chatCurrentLine, sizeof(_chatCurrentLine));}
+	rct_window *chatWindow = window_find_by_class(WC_CHAT);
+	if (chatWindow != NULL) {
+		window_start_textbox(chatWindow, WIDX_CHAT_INPUT, 1170, (uint32)_chatCurrentLine, 200);
+	}
 }
 
 void chat_close()
 {
 	gChatOpen = false;
-	platform_stop_text_input();
+	rct_window *chatWindow = window_find_by_class(WC_CHAT);
+	if (chatWindow != NULL) {
+		window_cancel_textbox();
+	}
 }
 
 void chat_toggle()
@@ -147,8 +160,10 @@ void chat_draw(rct_drawpixelinfo * dpi)
 
 	//TEST
 	if (window_find_by_class(WC_CHAT) == NULL) {
-		rct_window *chatWindow = window_create(50, 50, 100, 100, &window_chat_events, WC_CHAT, WF_RESIZABLE | WF_NO_AUTO_CLOSE);
+		rct_window *chatWindow = window_create(25, gScreenHeight - 200, 500, 150, &window_chat_events, WC_CHAT, WF_RESIZABLE | WF_NO_AUTO_CLOSE);
+		window_chat_widgets[WIDX_CHAT_INPUT].image = (uint32)_chatCurrentLine;
 		chatWindow->widgets = window_chat_widgets;
+		chatWindow->enabled_widgets = (1 << WIDX_CHAT_INPUT);
 		window_init_scroll_widgets(chatWindow);
 		chatWindow->min_width = CHAT_MIN_WIDTH;
 		chatWindow->min_height = CHAT_MIN_HEIGHT;
@@ -303,6 +318,11 @@ void chat_input(int c)
 		chat_close();
 		return;
 	}
+
+	rct_window *chatWindow = window_find_by_class(WC_CHAT);
+	if (chatWindow != NULL)
+		window_text_input_key(chatWindow, c);
+	return;
 }
 
 static const char* chat_history_get(unsigned int index)
@@ -386,16 +406,66 @@ static void window_chat_invalidate(rct_window *w)
 {
 	colour_scheme_update(w);
 
-	window_chat_widgets[WIDX_BACKGROUND].right = w->width - 1;
-	window_chat_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+	//Textbox always uses the colour 1 for the text.
+	//Translucent flag makes the text invisible.
+	if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) {
+		w->colours[1] =  w->colours[0] & ~COLOUR_FLAG_TRANSLUCENT;
+	} else {
+		w->colours[1] = w->colours[0];
+	}
 
-	window_chat_widgets[WIDX_TITLE].right = w->width - 2;
+	if (gChatOpen) {
+		w->flags &= ~WF_NO_BACKGROUND;
 
-	window_chat_widgets[WIDX_RESIZE].right = w->width - 1;
-	window_chat_widgets[WIDX_RESIZE].bottom = w->height - 1;
+		window_chat_widgets[WIDX_BACKGROUND].type = WWT_FRAME;
+		window_chat_widgets[WIDX_TITLE].type = WWT_CAPTION;
+		window_chat_widgets[WIDX_RESIZE].type = WWT_RESIZE;
+		window_chat_widgets[WIDX_CHAT_INPUT].type = WWT_TEXT_BOX;
 
-	window_chat_widgets[WIDX_CHAT_HISTORY].right = w->width - 3;
-	window_chat_widgets[WIDX_CHAT_HISTORY].bottom = w->height - 19;
+		window_chat_widgets[WIDX_CHAT_INPUT].flags = WIDF_TEXT_INPUT_DRAW_LEFT_WRAPPED;
+		window_chat_widgets[WIDX_CHAT_HISTORY].flags &= ~WIDF_NO_BACKGROUND & ~WIDF_SCROLLBAR_NO_INTERACT;
+
+		w->scrolls[0].flags |= VSCROLLBAR_VISIBLE;
+
+		window_chat_widgets[WIDX_BACKGROUND].right = w->width - 1;
+		window_chat_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+
+		window_chat_widgets[WIDX_TITLE].right = w->width - 2;
+
+		window_chat_widgets[WIDX_RESIZE].right = w->width - 1;
+		window_chat_widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+		char input_buffer[512];
+		char* input_string = input_buffer;
+
+		int l = w->x + window_chat_widgets[WIDX_CHAT_INPUT].left;
+		int r = w->x + window_chat_widgets[WIDX_CHAT_INPUT].right;
+
+		safe_strcpy(input_buffer, (char*)window_chat_widgets[WIDX_CHAT_INPUT].image, 512);
+
+		int input_height = chat_string_wrapped_get_height((void*)&input_string, r - l - 5 - 6);
+
+		window_chat_widgets[WIDX_CHAT_HISTORY].top = input_height + 18;
+		window_chat_widgets[WIDX_CHAT_HISTORY].right = w->width - 3;
+		window_chat_widgets[WIDX_CHAT_HISTORY].bottom = w->height - 15;
+
+		window_chat_widgets[WIDX_CHAT_INPUT].right = w->width - 3;
+		window_chat_widgets[WIDX_CHAT_INPUT].bottom = 15 + input_height;
+
+		if (!gUsingWidgetTextBox) {
+			window_start_textbox(w, WIDX_CHAT_INPUT, 1170, (uint32)_chatCurrentLine, 200);
+		}
+	} else {
+		w->flags |= WF_NO_BACKGROUND;
+
+		window_chat_widgets[WIDX_BACKGROUND].type = WWT_EMPTY;
+		window_chat_widgets[WIDX_TITLE].type = WWT_EMPTY;
+		window_chat_widgets[WIDX_RESIZE].type = WWT_EMPTY;
+		window_chat_widgets[WIDX_CHAT_INPUT].type = WWT_EMPTY;
+		window_chat_widgets[WIDX_CHAT_HISTORY].flags = WIDF_NO_BACKGROUND | WIDF_SCROLLBAR_NO_INTERACT;
+		window_chat_widgets[WIDX_CHAT_HISTORY].top = 28;
+		w->scrolls[0].flags &= ~VSCROLLBAR_VISIBLE;
+	}
 }
 
 static void window_chat_resize(rct_window *w)
@@ -413,30 +483,56 @@ static void window_chat_scrollgetsize(rct_window *w, int scrollIndex, int *width
 			continue;
 
 		safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
-		*height += chat_string_wrapped_get_height((void*)&lineCh, w->width - 20);
+		*height += chat_string_wrapped_get_height((void*)&lineCh, w->width - 20) + 5;
 	}
+
+	*height += 10;
 
 }
 
 static void window_chat_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int y = dpi->y + dpi->height - 30;
-	int stringHeight = 0;
+	int y = 5;
 	char lineBuffer[CHAT_INPUT_SIZE + 10];
 	char* lineCh = lineBuffer;
 
-	for (int i = 0; i < CHAT_HISTORY_SIZE; i++, y -= stringHeight) {
+	for (int i = 0; i < CHAT_HISTORY_SIZE; i++) {
 		if (y < -50) {
+			break;
+		}
+		
+		if (!gChatOpen && SDL_TICKS_PASSED(SDL_GetTicks(), chat_history_get_time(i) + 10000)) {
 			break;
 		}
 
 		safe_strcpy(lineBuffer, chat_history_get(i), CHAT_INPUT_SIZE + 10);
 
-		stringHeight = chat_history_draw_string(dpi, (void*)&lineCh, 0, y, w->width - 20) + 5;
+		y += gfx_draw_string_left_wrapped(dpi, (void*)&lineCh, 0, y, w->width - 20, STR_STRING, COLOUR_WHITE) + 5;
 	}
 }
 
 static void window_chat_update(rct_window *w)
 {
+	if (gCurrentTextBox.window.classification == w->classification &&
+		gCurrentTextBox.window.number == w->number) {
+		window_update_textbox_caret();
+	}
+
 	window_invalidate(w);
+}
+
+static void window_chat_mouseup(rct_window *w, int widgetIndex)
+{
+	if (widgetIndex == WIDX_CHAT_INPUT) {
+		window_start_textbox(w, widgetIndex, 1170, (uint32)_chatCurrentLine, 200);
+	}
+}
+
+static void window_chat_textinput(rct_window *w, int widgetIndex, char *text)
+{
+	if (widgetIndex == WIDX_CHAT_INPUT) {
+		if (text != NULL) {
+			strcpy(_chatCurrentLine, text);
+		}
+	}
 }
