@@ -30,7 +30,7 @@
 #include "world/scenery.h"
 #include "world/water.h"
 
-#define PLUGIN_VERSION 5
+#define PLUGIN_VERSION 4
 #define FILTER_VERSION 1
 
 typedef struct rct_plugin_header {
