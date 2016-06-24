@@ -16,6 +16,7 @@
 
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
+#include "../interface/window.h"
 #include "../config.h"
 #include "dropdown.h"
 
