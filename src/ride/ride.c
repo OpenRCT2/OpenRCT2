@@ -31,7 +31,6 @@
 #include "../management/news_item.h"
 #include "../network/network.h"
 #include "../object_list.h"
-#include "../openrct2.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../rct1.h"
@@ -6923,10 +6922,8 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int 
 		.zoom_level = 0
 	};
 
-	if (!gOpenRCT2Headless) {
-		for (int i = 0; i < num_images; ++i){
-			gfx_draw_sprite_software(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
-		}
+	for (int i = 0; i < num_images; ++i){
+		gfx_draw_sprite_software(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
 	}
 	int al = -1;
 	for (int i = 99; i != 0; --i){

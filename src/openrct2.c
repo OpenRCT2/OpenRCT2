@@ -571,7 +571,7 @@ bool openrct2_setup_rct2_segment()
 	}
 #endif // defined(__unix__)
 
-#if !defined(NO_RCT2) && !defined(__WINDOWS__)
+#if !defined(NO_RCT2) || !defined(__WINDOWS__)
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
 	// calls, which can be changed by windows/wine loader.

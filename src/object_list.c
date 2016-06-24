@@ -30,7 +30,7 @@
 #include "world/scenery.h"
 #include "world/water.h"
 
-#define PLUGIN_VERSION 5
+#define PLUGIN_VERSION 4
 #define FILTER_VERSION 1
 
 typedef struct rct_plugin_header {
@@ -236,7 +236,7 @@ void reset_loaded_objects()
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_reset(type, chunk, j);
+				object_load(type, chunk, j);
 		}
 	}
 }

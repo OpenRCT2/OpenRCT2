@@ -144,7 +144,7 @@ void load_palette(){
 
 	uint32 palette = 0x5FC;
 
-	if ((uintptr_t)water_type != (uint32)-1){
+	if ((sint32)water_type != -1){
 		palette = water_type->image_id;
 	}
 
