@@ -323,6 +323,11 @@ void openrct2_launch()
 		}
 #endif // DISABLE_NETWORK
 
+		// Set custom currency properties
+		CurrencyDescriptors[CURRENCY_CUSTOM].rate = gConfigGeneral.custom_currency_rate;
+		CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = gConfigGeneral.custom_currency_affix;
+		strncpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol, CURRENCY_SYMBOL_MAX_SIZE);
+
 		openrct2_loop();
 	}
 	openrct2_dispose();

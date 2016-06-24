@@ -1197,7 +1197,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 				window_custom_currency_open();
 			} else {
 				gConfigGeneral.currency_format = (sint8)dropdownIndex;
-			} // TODO: Save current custom currency rate
+			}
 			config_save_default();
 			gfx_invalidate_screen();
 			break;

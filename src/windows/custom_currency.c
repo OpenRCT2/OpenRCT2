@@ -16,6 +16,7 @@
 
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
+#include "../config.h"
 #include "dropdown.h"
 
 enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
@@ -134,14 +135,18 @@ static void window_custom_currency_mousedown(int widgetIndex, rct_window*w, rct_
 
 	case WIDX_RATE_UP:
 		CurrencyDescriptors[CURRENCY_CUSTOM].rate += 1;
+		gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
+		config_save_default();
 		invalidate_money_widgets();
 		break;
 
 	case WIDX_RATE_DOWN:
 		if(CurrencyDescriptors[CURRENCY_CUSTOM].rate > 1) {
 			CurrencyDescriptors[CURRENCY_CUSTOM].rate -= 1;
+			gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
+			config_save_default();
+			invalidate_money_widgets();
 		}
-		invalidate_money_widgets();
 		break;
 
 	case WIDX_AFFIX_DROPDOWN_BUTTON:
@@ -161,7 +166,7 @@ static void window_custom_currency_mousedown(int widgetIndex, rct_window*w, rct_
 			widget->right - widget->left - 3
 		);
 
-		if(CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii == CURRENCY_PREFIX) {
+		if(CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX) {
 			dropdown_set_checked(0, true);
 		} else {
 			dropdown_set_checked(1, true);
@@ -197,6 +202,10 @@ static void window_custom_currency_dropdown(rct_window *w, int widgetIndex, int 
 			CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii = CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = CURRENCY_SUFFIX;
 		}
 
+
+		gConfigGeneral.custom_currency_affix = CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode;
+		config_save_default();
+
 		invalidate_money_widgets();
 
 	}
@@ -205,6 +214,8 @@ static void window_custom_currency_dropdown(rct_window *w, int widgetIndex, int 
 static void window_custom_currency_text_input(struct rct_window *w, int windgetIndex, char *text) {
 	if(text != NULL) {
 		strncpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, text, CURRENCY_SYMBOL_MAX_SIZE);
+		strncpy(gConfigGeneral.custom_currency_symbol, CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
+		config_save_default();
 		invalidate_money_widgets();
 	}
 }
