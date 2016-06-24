@@ -67,6 +67,7 @@ typedef struct rct_widget {
 	sint16 bottom;					// 0x08
 	uint32 image;					// 0x0A
 	uint16 tooltip;					// 0x0E
+	uint16 flags;
 } rct_widget;
 
 /**
@@ -458,6 +459,7 @@ enum {
 	WC_STAFF = 220,
 	WC_EDITOR_TRACK_BOTTOM_TOOLBAR = 221,
 	WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR = 222,
+	WC_CHAT = 223,
 };
 
 enum PROMPT_MODE {

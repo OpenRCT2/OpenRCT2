@@ -323,15 +323,12 @@ static void game_handle_input_mouse(int x, int y, int state)
 			}
 
 			if (widgetIndex != -1) {
-				switch (widget->type) {
-				case WWT_VIEWPORT:
+				if (widget->type == WWT_VIEWPORT) {
 					if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))) {
 						input_viewport_drag_begin(w, x, y);
 					}
-					break;
-				case WWT_SCROLL:
+				} else if (widget->type == WWT_SCROLL) {
 					input_scroll_drag_begin(x, y, w, widget, widgetIndex);
-					break;
 				}
 			}
 			break;
