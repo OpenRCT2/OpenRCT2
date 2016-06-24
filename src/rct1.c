@@ -78,11 +78,7 @@ bool rct1_read_sv4(const char *path, rct1_s4 *s4)
 	return success;
 }
 
-/**
- * Only to be used when loading 32 bit items from files, otherwise use
- * rideTypeShouldLoseSeparateFlag.
- */
-bool rideTypeShouldLoseSeparateFlagByRideType(uint8 ride_type[3])
+bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *rideEntry)
 {
 	if (!gConfigInterface.select_by_track_type) {
 		return false;
@@ -90,19 +86,14 @@ bool rideTypeShouldLoseSeparateFlagByRideType(uint8 ride_type[3])
 
 	bool remove_flag = true;
 	for (int j = 0; j < 3; j++) {
-		if (ride_type_has_flag(ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE)) {
+		if (ride_type_has_flag(rideEntry->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE)) {
 			remove_flag = false;
 		}
-		if (ride_type[j] == RIDE_TYPE_MAZE || ride_type[j] == RIDE_TYPE_MINI_GOLF) {
+		if (rideEntry->ride_type[j] == RIDE_TYPE_MAZE || rideEntry->ride_type[j] == RIDE_TYPE_MINI_GOLF) {
 			remove_flag = false;
 		}
 	}
 	return remove_flag;
-}
-
-bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *rideEntry)
-{
-	return rideTypeShouldLoseSeparateFlagByRideType(rideEntry->ride_type);
 }
 
 const uint8 gRideCategories[] = {

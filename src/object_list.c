@@ -230,13 +230,13 @@ void reset_loaded_objects()
 {
 	reset_type_to_ride_entry_index_map();
 
-	gTotalNoImages = 0xF26E;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
 	for (int type = 0; type < 11; ++type){
 		for (int j = 0; j < object_entry_group_counts[type]; j++){
 			uint8* chunk = object_entry_groups[type].chunks[j];
 			if (chunk != (uint8*)-1)
-				object_reset(type, chunk, j);
+				object_load(type, chunk, j);
 		}
 	}
 }
@@ -252,7 +252,7 @@ static int object_list_query_directory(int *outTotalFiles, uint64 *outTotalFileS
 	fileDateModifiedChecksum = 0;
 
 	// Enumerate through each object in the directory
-	enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
+	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
 	if (enumFileHandle == INVALID_HANDLE)
 		return 0;
 
@@ -320,7 +320,7 @@ void object_list_load()
 		_installedObjectFilters = NULL;
 	}
 
-	enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
+	enumFileHandle = platform_enumerate_files_begin(RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char));
 	if (enumFileHandle != INVALID_HANDLE) {
 		size_t installedObjectsCapacity = 4096;
 		while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo)) {
@@ -337,7 +337,7 @@ void object_list_load()
 			}
 
 			char path[MAX_PATH];
-			substitute_path(path, gRCT2AddressObjectDataPath, enumFileInfo.path);
+			substitute_path(path, RCT2_ADDRESS(RCT2_ADDRESS_OBJECT_DATA_PATH, char), enumFileInfo.path);
 
 			rct_object_entry entry;
 			if (object_load_entry(path, &entry)) {
@@ -786,7 +786,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 	*((uint16*)(installed_entry_pointer + 9)) = 0;
 	*((uint32*)(installed_entry_pointer + 11)) = 0;
 
-	gTotalNoImages = 0xF26E;
+	RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) = 0xF26E;
 
 	gInstalledObjectsCount++;
 
@@ -839,7 +839,7 @@ static uint32 install_object_entry(rct_object_entry* entry, rct_object_entry* in
 
 	// This is deceptive. Due to setting the total no images earlier to 0xF26E
 	// this is actually the no_images in this entry.
-	*((uint32*)installed_entry_pointer) = gTotalNoImages - 0xF26E;
+	*((uint32*)installed_entry_pointer) = RCT2_GLOBAL(RCT2_ADDRESS_TOTAL_NO_IMAGES, uint32) - 0xF26E;
 	installed_entry_pointer += 4;
 
 	uint8* esi = RCT2_ADDRESS(0x00F42BDB, uint8);

@@ -746,7 +746,6 @@ void rct1_import_s4(rct1_s4 *s4);
 void rct1_fix_landscape();
 int vehicle_preference_compare(uint8 rideType, const char * a, const char * b);
 bool rideTypeShouldLoseSeparateFlag(rct_ride_entry *rideEntry);
-bool rideTypeShouldLoseSeparateFlagByRideType(uint8 ride_type[3]);
 
 bool rct1_load_saved_game(const char *path);
 bool rct1_load_scenario(const char *path);

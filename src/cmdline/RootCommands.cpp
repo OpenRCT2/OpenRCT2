@@ -411,9 +411,6 @@ static void PrintVersion()
     openrct2_write_full_version_info(buffer, sizeof(buffer));
     Console::WriteLine(buffer);
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-#if NO_RCT2
-    Console::Write(" (NO_RCT2)");
-#endif
     Console::WriteLine();
 }
 

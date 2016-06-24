@@ -31,7 +31,6 @@
 #include "../management/news_item.h"
 #include "../network/network.h"
 #include "../object_list.h"
-#include "../openrct2.h"
 #include "../peep/peep.h"
 #include "../peep/staff.h"
 #include "../rct1.h"
@@ -252,12 +251,14 @@ rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride)
 *  rct2: 0x006DED68
 */
 void reset_type_to_ride_entry_index_map(){
-	memset(gTypeToRideEntryIndexMap, 0xFF, 91);
+	uint8* typeToRideEntryIndexMap = RCT2_ADDRESS(0x009E32F8, uint8);
+	memset(typeToRideEntryIndexMap, 0xFF, 91);
 }
 
 uint8 *get_ride_entry_indices_for_ride_type(uint8 rideType)
 {
-	uint8 *entryIndexList = gTypeToRideEntryIndexMap;
+	uint8 *typeToRideEntryIndexMap = (uint8*)0x009E32F8;
+	uint8 *entryIndexList = typeToRideEntryIndexMap;
 	while (rideType > 0) {
 		do {
 			entryIndexList++;
@@ -6923,10 +6924,8 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int 
 		.zoom_level = 0
 	};
 
-	if (!gOpenRCT2Headless) {
-		for (int i = 0; i < num_images; ++i){
-			gfx_draw_sprite_software(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
-		}
+	for (int i = 0; i < num_images; ++i){
+		gfx_draw_sprite_software(&dpi, vehicle_type->base_image_id + i, 0, 0, 0);
 	}
 	int al = -1;
 	for (int i = 99; i != 0; --i){

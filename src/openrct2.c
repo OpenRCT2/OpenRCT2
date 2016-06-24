@@ -166,10 +166,10 @@ static void openrct2_copy_original_user_files_over()
 	utf8 path[MAX_PATH];
 
 	platform_get_user_directory(path, "save");
-	openrct2_copy_files_over((utf8*)gRCT2AddressSavedGamesPath, path, ".sv6");
+	openrct2_copy_files_over((utf8*)RCT2_ADDRESS_SAVED_GAMES_PATH, path, ".sv6");
 
 	platform_get_user_directory(path, "landscape");
-	openrct2_copy_files_over((utf8*)gRCT2AddressLandscapesPath, path, ".sc6");
+	openrct2_copy_files_over((utf8*)RCT2_ADDRESS_LANDSCAPES_PATH, path, ".sc6");
 }
 
 bool openrct2_initialise()
@@ -571,7 +571,6 @@ bool openrct2_setup_rct2_segment()
 	}
 #endif // defined(__unix__)
 
-#if !defined(NO_RCT2) && !defined(__WINDOWS__)
 	// Check that the expected data is at various addresses.
 	// Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
 	// calls, which can be changed by windows/wine loader.
@@ -584,7 +583,6 @@ bool openrct2_setup_rct2_segment()
 		log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
 		return false;
 	}
-#endif
 
 	return true;
 }
