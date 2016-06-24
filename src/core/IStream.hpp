@@ -89,6 +89,9 @@ interface IStream : public IDisposable
     {
         Write(&value);
     }
+
+    utf8 * ReadString();
+    void WriteString(utf8 * str);
 };
 
 class IOException : public Exception

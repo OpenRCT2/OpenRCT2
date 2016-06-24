@@ -43,6 +43,7 @@
     <ClCompile Include="src\core\Console.cpp" />
     <ClCompile Include="src\core\Diagnostics.cpp" />
     <ClCompile Include="src\core\Guard.cpp" />
+    <ClCompile Include="src\core\IStream.cpp" />
     <ClCompile Include="src\core\Json.cpp" />
     <ClCompile Include="src\core\Path.cpp" />
     <ClCompile Include="src\core\Stopwatch.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="src\network\TcpSocket.cpp" />
     <ClCompile Include="src\network\twitch.cpp" />
     <ClCompile Include="src\object.c" />
+    <ClCompile Include="src\object\ObjectCache.cpp" />
     <ClCompile Include="src\object_list.c" />
     <ClCompile Include="src\openrct2.c" />
     <ClCompile Include="src\paint\map_element\banner.c" />
@@ -416,6 +418,7 @@
     <ClInclude Include="src\network\network.h" />
     <ClInclude Include="src\network\NetworkKey.h" />
     <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\object\ObjectCache.h" />
     <ClInclude Include="src\object_list.h" />
     <ClInclude Include="src\openrct2.h" />
     <ClInclude Include="src\paint\map_element\map_element.h" />
