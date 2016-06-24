@@ -453,6 +453,7 @@ enum {
 	WC_NETWORK_STATUS = 126,
 	WC_SERVER_LIST = 127,
 	WC_SERVER_START = 128,
+	WC_CUSTOM_CURRENCY_CONFIG = 129,
 
 	// Only used for colour schemes
 	WC_STAFF = 220,
@@ -628,6 +629,8 @@ rct_window *window_maze_construction_open();
 void ride_construction_toolupdate_entrance_exit(int screenX, int screenY);
 void ride_construction_toolupdate_construct(int screenX, int screenY);
 void ride_construction_tooldown_construct(int screenX, int screenY);
+
+void window_custom_currency_open();
 
 void window_maze_construction_update_pressed_widgets();
 void window_track_place_open(const track_design_file_ref *tdFileRef);

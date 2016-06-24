@@ -4148,7 +4148,16 @@ STR_5876    :{SMALLFONT}{BLACK}El software a utilizar para dibujar el juego.
 STR_5877    :Software
 STR_5878    :Software (vía hardware)
 STR_5879    :OpenGL
+
 STR_5880	:Moneda personalizada
+STR_5881	:Configuración de la moneda personalizada
+STR_5882	:{WINDOW_COLOUR_2}Tasa de cambio:
+STR_5883	:{WINDOW_COLOUR_2}es equivalente a {COMMA2DP32} libras
+STR_5884	:{WINDOW_COLOUR_2}Símbolo monetario:
+STR_5885	:Prefijo
+STR_5886	:Sufijo
+STR_5887	:Símbolo de moneda personalizada
+STR_5888	:Introduzca el símbolo de la moneda a mostrar
 
 ##############
 # Escenarios #
