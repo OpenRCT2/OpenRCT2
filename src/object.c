@@ -460,17 +460,23 @@ int object_chunk_load_image_directory(uint8_t** chunk)
 	rct_g1_element* g1_dest = &g1Elements[image_start_no];
 
 	// After length of data is the start of all g1 element structs
-	rct_g1_element* g1_source = (rct_g1_element*)(*chunk);
+	rct_g1_element_32bit* g1_source = (rct_g1_element_32bit*)(*chunk);
 
 	// After the g1 element structs is the actual images.
-	uint8* image_offset = no_images * sizeof(rct_g1_element) + (uint8*)g1_source;
+	uintptr_t image_offset = no_images * sizeof(rct_g1_element_32bit) + (uintptr_t)g1_source;
 
-	for (int i = 0; i < no_images; ++i){
-		*g1_dest = *g1_source++;
-		g1_dest->offset += (uint32)image_offset;
+	for (int i = 0; i < no_images; ++i) {
+		g1_dest->offset        = (uint8*)(g1_source->offset + image_offset);
+		g1_dest->width         = g1_source->width;
+		g1_dest->height        = g1_source->height;
+		g1_dest->x_offset      = g1_source->x_offset;
+		g1_dest->y_offset      = g1_source->y_offset;
+		g1_dest->flags         = g1_source->flags;
+		g1_dest->zoomed_offset = g1_source->zoomed_offset;
 		g1_dest++;
 
 		drawing_engine_invalidate_image(image_start_no + i);
+		g1_source++;
 	}
 
 	*chunk = ((uint8*)g1_source) + length_of_data;
