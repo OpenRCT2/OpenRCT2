@@ -17,6 +17,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
+#include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
@@ -79,6 +80,9 @@ namespace ObjectFactory
             break;
         case OBJECT_TYPE_WALLS:
             result = new WallObject(entry);
+            break;
+        case OBJECT_TYPE_BANNERS:
+            result = new BannerObject(entry);
             break;
         case OBJECT_TYPE_PATHS:
             result = new FootpathObject(entry);

@@ -118,6 +118,7 @@
     <ClCompile Include="src\network\TcpSocket.cpp" />
     <ClCompile Include="src\network\twitch.cpp" />
     <ClCompile Include="src\object.c" />
+    <ClCompile Include="src\object\BannerObject.cpp" />
     <ClCompile Include="src\object\EntranceObject.cpp" />
     <ClCompile Include="src\object\FootpathItemObject.cpp" />
     <ClCompile Include="src\object\FootpathObject.cpp" />
@@ -431,6 +432,7 @@
     <ClInclude Include="src\network\network.h" />
     <ClInclude Include="src\network\NetworkKey.h" />
     <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\object\BannerObject.h" />
     <ClInclude Include="src\object\EntranceObject.h" />
     <ClInclude Include="src\object\FootpathItemObject.h" />
     <ClInclude Include="src\object\FootpathObject.h" />
