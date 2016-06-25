@@ -338,6 +338,19 @@ IObjectRepository * GetObjectRepository()
     return _objectRepository;
 }
 
+Object * _loadedObjects[721] = { nullptr };
+
+int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
+{
+    int result = 0;
+    for (uint8 i = 0; i < objectType; i++)
+    {
+        result += object_entry_group_counts[i];
+    }
+    result += entryIndex;
+    return result;
+}
+
 extern "C"
 {
     void object_list_load()
@@ -378,8 +391,26 @@ extern "C"
         Memory::Copy<void>(extendedEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
         extendedEntry->chunk_size = 0;
 
-        object->Load();
+        int loadedObjectIndex = GetObjectEntryIndex(objectType, groupIndex);
+        delete _loadedObjects[loadedObjectIndex];
+        _loadedObjects[loadedObjectIndex] = object;
         return 1;
+    }
+
+    void reset_loaded_objects()
+    {
+        reset_type_to_ride_entry_index_map();
+
+        gTotalNoImages = 0xF26E;
+
+        for (int i = 0; i < 721; i++)
+        {
+            Object * object = _loadedObjects[i];
+            if (object != nullptr)
+            {
+                object->Load();
+            }
+        }
     }
 
     void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)

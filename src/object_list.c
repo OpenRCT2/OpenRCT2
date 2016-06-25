@@ -226,7 +226,7 @@ static void object_list_examine()
  *
  *  rct2: 0x006A9FC0
  */
-void reset_loaded_objects()
+void reset_loaded_objects_old()
 {
 	reset_type_to_ride_entry_index_map();
 
