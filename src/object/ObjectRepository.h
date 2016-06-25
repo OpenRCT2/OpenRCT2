@@ -52,7 +52,8 @@ interface IObjectRepository
 {
     virtual ~IObjectRepository() { }
     
-    virtual const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) abstract;
+    virtual const ObjectRepositoryItem *    FindObject(const rct_object_entry * objectEntry) abstract;
+    virtual Object *                        LoadObject(const rct_object_entry * objectEntry) abstract;
 };
 
 IObjectRepository * GetObjectRepository();

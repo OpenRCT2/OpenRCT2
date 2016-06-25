@@ -20,6 +20,7 @@
 #include "EntranceObject.h"
 #include "Object.h"
 #include "ObjectFactory.h"
+#include "StexObject.h"
 
 extern "C"
 {
@@ -29,7 +30,7 @@ extern "C"
 
 namespace ObjectFactory
 {
-    Object * CreateObjectFromLegacyFile(utf8 * path)
+    Object * CreateObjectFromLegacyFile(const utf8 * path)
     {
         Object * result = nullptr;
 
@@ -63,6 +64,9 @@ namespace ObjectFactory
         switch (objectType) {
         case OBJECT_TYPE_PARK_ENTRANCE:
             result = new EntranceObject(entry);
+            break;
+        case OBJECT_TYPE_SCENARIO_TEXT:
+            result = new StexObject(entry);
             break;
         }
 

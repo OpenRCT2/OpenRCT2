@@ -490,6 +490,8 @@ bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
 bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
 void scenario_normalise_name(utf8 *name);
 
+void scenario_translate(scenario_index_entry *scenarioEntry, const rct_object_entry *stexObjectEntry);
+
 // RCT1 scenario index map
 enum {
 	SC_UNIDENTIFIED = 255,

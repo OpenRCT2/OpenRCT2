@@ -149,7 +149,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
  *
  *  rct2: 0x006A985D
  */
-int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunkSize)
+int object_load_chunk_old(int groupIndex, rct_object_entry *entry, int* chunkSize)
 {
 	// Alow chunkSize to be null
 	int tempChunkSize;

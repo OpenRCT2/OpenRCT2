@@ -36,5 +36,7 @@ private:
 public:
     ~ImageTable();
 
-    void Read(IStream * stream);
+    void                    Read(IStream * stream);
+    const rct_g1_element *  GetImages() const { return _entries.data(); }
+    uint32                  GetCount() const { return _entries.size(); };
 };

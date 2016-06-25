@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "../common.h"
+#include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -26,11 +27,14 @@
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectRepository.h"
+#include "StexObject.h"
 
 extern "C"
 {
+    #include "../localisation/localisation.h"
     #include "../object.h"
     #include "../platform/platform.h"
+    #include "../scenario.h"
 }
 
 constexpr uint16 OBJECT_REPOSITORY_VERSION = 6;
@@ -85,6 +89,17 @@ public:
             }
         }
         return nullptr;
+    }
+
+    Object * LoadObject(const rct_object_entry * objectEntry) override
+    {
+        Object * object = nullptr;
+        const ObjectRepositoryItem * item = FindObject(objectEntry);
+        if (item != nullptr)
+        {
+            object = ObjectFactory::CreateObjectFromLegacyFile(item->Path);
+        }
+        return object;
     }
 
 private:
@@ -328,5 +343,78 @@ extern "C"
     void object_list_load()
     {
         IObjectRepository * objRepo = GetObjectRepository();
+    }
+
+    int object_load_chunk(int groupIndex, rct_object_entry * entry, int * chunkSize)
+    {
+        IObjectRepository * objRepo = GetObjectRepository();
+        Object * object = objRepo->LoadObject(entry);
+        if (object == nullptr)
+        {
+            utf8 objName[9] = { 0 };
+            Memory::Copy(objName, entry->name, 8);
+            Console::Error::WriteFormat("[%s]: Object not found or could not be loaded.", objName);
+            Console::Error::WriteLine();
+            return 0;
+        }
+
+        uint8 objectType = object->GetObjectType();
+        void * * chunkList = object_entry_groups[objectType].chunks;
+        if (groupIndex == -1)
+        {
+            for (groupIndex = 0; chunkList[groupIndex] != (void*)-1; groupIndex++)
+            {
+                if (groupIndex + 1 >= object_entry_group_counts[objectType])
+                {
+                    log_error("Object Load failed due to too many objects of a certain type.");
+                    delete object;
+                    return 0;
+                }
+            }
+        }
+        chunkList[groupIndex] = object->GetLegacyData();
+
+        rct_object_entry_extended * extendedEntry = &object_entry_groups[objectType].entries[groupIndex];
+        Memory::Copy<void>(extendedEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
+        extendedEntry->chunk_size = 0;
+
+        object->Load();
+        return 1;
+    }
+
+    void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)
+    {
+        rct_string_id localisedStringIds[3];
+        if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
+        {
+            if (localisedStringIds[0] != STR_NONE)
+            {
+                String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), language_get_string(localisedStringIds[0]));
+            }
+            if (localisedStringIds[2] != STR_NONE)
+            {
+                String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), language_get_string(localisedStringIds[2]));
+            }
+        }
+        else
+        {
+            // Checks for a scenario string object (possibly for localisation)
+            if ((stexObjectEntry->flags & 0xFF) != 255)
+            {
+                IObjectRepository * objRepo = GetObjectRepository();
+                Object * object = objRepo->LoadObject(stexObjectEntry);
+                if (object != nullptr)
+                {
+                    StexObject * stexObject = static_cast<StexObject*>(object);
+                    const utf8 * scenarioName = stexObject->GetScenarioName();
+                    const utf8 * scenarioDetails = stexObject->GetScenarioDetails();
+
+                    String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName);
+                    String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails);
+
+                    delete object;
+                }
+            }
+        }
     }
 }

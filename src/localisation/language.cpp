@@ -455,4 +455,17 @@ bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_s
 		outStringIds[2] != STR_NONE;
 }
 
+static rct_string_id _nextObjectStringId = NONSTEX_BASE_STRING_ID;
+
+rct_string_id language_allocate_object_string(const utf8 * target)
+{
+	rct_string_id stringId = _nextObjectStringId++;
+	_languageCurrent->SetString(stringId, target);
+	return stringId;
+}
+
+void language_free_object_string(rct_string_id stringId)
+{
+}
+
 }

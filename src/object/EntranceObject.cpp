@@ -17,6 +17,12 @@
 #include "../core/IStream.hpp"
 #include "EntranceObject.h"
 
+extern "C"
+{
+    #include "../drawing/drawing.h"
+    #include "../localisation/localisation.h"
+}
+
 enum OBJ_STRING_ID
 {
     OBJ_STRING_ID_NAME,
@@ -35,12 +41,13 @@ void EntranceObject::ReadLegacy(IStream * stream)
 
 void EntranceObject::Load()
 {
-
+    _legacyType.string_idx = language_allocate_object_string(GetName());
+    _legacyType.image_id = gfx_object_allocate_images(ImageTable.GetImages(), ImageTable.GetCount());
 }
 
 void EntranceObject::Unload()
 {
-
+    language_free_object_string(_legacyType.string_idx);
 }
 
 const utf8 * EntranceObject::GetName()

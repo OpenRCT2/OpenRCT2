@@ -16,12 +16,30 @@
 
 #pragma once
 
-#include "../common.h"
+#include "Object.h"
 
-class Object;
-
-namespace ObjectFactory
+extern "C"
 {
-    Object * CreateObjectFromLegacyFile(const utf8 * path);
-    Object * CreateObject(const rct_object_entry &entry);
+    #include "../scenario.h"
 }
+
+class StexObject : public Object
+{
+private:
+    rct_stex_entry  _legacyType;
+
+public:
+    explicit StexObject(const rct_object_entry &entry) : Object(entry) { };
+
+    void * GetLegacyData()  override { return &_legacyType; }
+
+    void ReadLegacy(IStream * stream) override;
+    void Load() override;
+    void Unload() override;
+
+    const utf8 * GetName() override;
+
+    const utf8 * GetScenarioName();
+    const utf8 * GetScenarioDetails();
+    const utf8 * GetParkName();
+};

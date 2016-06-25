@@ -48,5 +48,6 @@ public:
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual const utf8 * GetName() abstract;
+    virtual uint8           GetObjectType() { return _objectEntry.flags & 0x0F; }
+    virtual const utf8 *    GetName() abstract;
 };
