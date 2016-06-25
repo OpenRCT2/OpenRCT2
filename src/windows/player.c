@@ -322,7 +322,11 @@ void window_player_overview_kick_player(rct_window* w, int strReasonIndex, const
 			format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
 		}
 		else {
+#ifndef DISABLE_NETWORK
 			sprintf_s(msg, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE, reason);
+#else
+			format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+#endif // !DISABLE_NETWORK
 		}
 	}
 	else {
