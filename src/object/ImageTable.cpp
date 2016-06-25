@@ -14,9 +14,44 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/IStream.hpp"
+#include "../core/Memory.hpp"
 #include "ImageTable.h"
+
+ImageTable::~ImageTable()
+{
+    Memory::Free(_data);
+    _data = nullptr;
+    _dataSize = 0;
+}
 
 void ImageTable::Read(IStream * stream)
 {
-    // TODO
+    uint32 numImages = stream->ReadValue<uint32>();
+    uint32 imageDataSize = stream->ReadValue<uint32>();
+
+    _dataSize = imageDataSize;
+    _data = Memory::Reallocate(_data, _dataSize);
+
+    // Read g1 element headers
+    uintptr_t imageDataBase = (uintptr_t)_data;
+    for (uint32 i = 0; i < numImages; i++)
+    {
+        rct_g1_element g1Element;
+
+        uintptr_t imageDataOffset = (uintptr_t)stream->ReadValue<uint32>();
+        g1Element.offset = (uint8*)(imageDataBase + imageDataOffset);
+
+        g1Element.width = stream->ReadValue<sint16>();
+        g1Element.height = stream->ReadValue<sint16>();
+        g1Element.x_offset = stream->ReadValue<sint16>();
+        g1Element.y_offset = stream->ReadValue<sint16>();
+        g1Element.flags = stream->ReadValue<uint16>();
+        g1Element.zoomed_offset = stream->ReadValue<uint16>();
+
+        _entries.push_back(g1Element);
+    }
+
+    // Read g1 element data
+    stream->Read(_data, _dataSize);
 }

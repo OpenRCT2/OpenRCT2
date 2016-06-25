@@ -16,12 +16,25 @@
 
 #pragma once
 
+#include <vector>
 #include "../common.h"
+
+extern "C"
+{
+    #include "../drawing/drawing.h"
+}
 
 interface IStream;
 
 class ImageTable
 {
+private:
+    std::vector<rct_g1_element> _entries;
+    void *                      _data       = nullptr;
+    size_t                      _dataSize   = 0;
+
 public:
+    ~ImageTable();
+
     void Read(IStream * stream);
 };
