@@ -22,6 +22,7 @@
 #include "FootpathObject.h"
 #include "Object.h"
 #include "ObjectFactory.h"
+#include "RideObject.h"
 #include "SmallSceneryObject.h"
 #include "StexObject.h"
 
@@ -65,6 +66,9 @@ namespace ObjectFactory
 
         uint8 objectType = entry.flags & 0x0F;
         switch (objectType) {
+        case OBJECT_TYPE_RIDE:
+            result = new RideObject(entry);
+            break;
         case OBJECT_TYPE_SMALL_SCENERY:
             result = new SmallSceneryObject(entry);
             break;

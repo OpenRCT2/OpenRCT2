@@ -18,6 +18,7 @@
 
 #include "../common.h"
 #include "Exception.hpp"
+#include "Memory.hpp"
 
 enum {
     STREAM_SEEK_BEGIN,
@@ -86,6 +87,20 @@ interface IStream
     void WriteValue(const T value)
     {
         Write(&value);
+    }
+
+    template<typename T>
+    T * ReadArray(size_t count)
+    {
+        T * buffer = Memory::AllocateArray<T>(count);
+        Read(buffer, sizeof(T) * count);
+        return buffer;
+    }
+
+    template<typename T>
+    void WriteArray(T * buffer, size_t count)
+    {
+        Write(buffer, sizeof(T) * count);
     }
 
     utf8 * ReadString();
