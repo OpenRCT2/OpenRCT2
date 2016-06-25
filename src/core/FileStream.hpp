@@ -68,11 +68,6 @@ public:
 
     ~FileStream()
     {
-        Dispose();
-    }
-
-    void Dispose() override
-    {
         if (!_disposed)
         {
             _disposed = true;

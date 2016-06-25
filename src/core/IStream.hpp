@@ -17,9 +17,7 @@
 #pragma once
 
 #include "../common.h"
-
 #include "Exception.hpp"
-#include "IDisposable.hpp"
 
 enum {
     STREAM_SEEK_BEGIN,
@@ -30,12 +28,12 @@ enum {
 /**
  * Represents a stream that can be read or written to. Implemented by types such as FileStream, NetworkStream or MemoryStream.
  */
-interface IStream : public IDisposable
+interface IStream
 {
     ///////////////////////////////////////////////////////////////////////////
     // Interface methods
     ///////////////////////////////////////////////////////////////////////////
-    // virtual ~IStream()                                           abstract;
+    virtual ~IStream() { }
 
     virtual bool    CanRead()                                 const abstract;
     virtual bool    CanWrite()                                const abstract;

@@ -45,6 +45,7 @@
     <ClCompile Include="src\core\Guard.cpp" />
     <ClCompile Include="src\core\IStream.cpp" />
     <ClCompile Include="src\core\Json.cpp" />
+    <ClCompile Include="src\core\MemoryStream.cpp" />
     <ClCompile Include="src\core\Path.cpp" />
     <ClCompile Include="src\core\Stopwatch.cpp" />
     <ClCompile Include="src\core\String.cpp" />
@@ -345,12 +346,12 @@
     <ClInclude Include="src\core\Exception.hpp" />
     <ClInclude Include="src\core\FileStream.hpp" />
     <ClInclude Include="src\core\Guard.hpp" />
-    <ClInclude Include="src\core\IDisposable.hpp" />
     <ClInclude Include="src\core\IStream.hpp" />
     <ClInclude Include="src\core\Json.hpp" />
     <ClInclude Include="src\core\List.hpp" />
     <ClInclude Include="src\core\Math.hpp" />
     <ClInclude Include="src\core\Memory.hpp" />
+    <ClInclude Include="src\core\MemoryStream.h" />
     <ClInclude Include="src\core\Nullable.hpp" />
     <ClInclude Include="src\core\Path.hpp" />
     <ClInclude Include="src\core\stopwatch.h" />
