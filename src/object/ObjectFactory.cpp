@@ -18,6 +18,7 @@
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "EntranceObject.h"
+#include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -65,6 +66,9 @@ namespace ObjectFactory
         switch (objectType) {
         case OBJECT_TYPE_PATHS:
             result = new FootpathObject(entry);
+            break;
+        case OBJECT_TYPE_PATH_BITS:
+            result = new FootpathItemObject(entry);
             break;
         case OBJECT_TYPE_PARK_ENTRANCE:
             result = new EntranceObject(entry);

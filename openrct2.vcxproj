@@ -119,6 +119,7 @@
     <ClCompile Include="src\network\twitch.cpp" />
     <ClCompile Include="src\object.c" />
     <ClCompile Include="src\object\EntranceObject.cpp" />
+    <ClCompile Include="src\object\FootpathItemObject.cpp" />
     <ClCompile Include="src\object\FootpathObject.cpp" />
     <ClCompile Include="src\object\ImageTable.cpp" />
     <ClCompile Include="src\object\Object.cpp" />
@@ -427,6 +428,7 @@
     <ClInclude Include="src\network\NetworkKey.h" />
     <ClInclude Include="src\object.h" />
     <ClInclude Include="src\object\EntranceObject.h" />
+    <ClInclude Include="src\object\FootpathItemObject.h" />
     <ClInclude Include="src\object\FootpathObject.h" />
     <ClInclude Include="src\object\ImageTable.h" />
     <ClInclude Include="src\object\Object.h" />

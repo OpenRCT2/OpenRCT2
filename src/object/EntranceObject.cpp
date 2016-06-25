@@ -48,6 +48,7 @@ void EntranceObject::Load()
 void EntranceObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
+    gfx_object_free_images(_legacyType.image_id, ImageTable.GetCount());
 }
 
 const utf8 * EntranceObject::GetName()

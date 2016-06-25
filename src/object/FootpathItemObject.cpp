@@ -15,13 +15,12 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "FootpathObject.h"
+#include "FootpathItemObject.h"
 
 extern "C"
 {
     #include "../drawing/drawing.h"
     #include "../localisation/localisation.h"
-    #include "../world/footpath.h"
 }
 
 enum OBJ_STRING_ID
@@ -29,34 +28,47 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_NAME,
 };
 
-void FootpathObject::ReadLegacy(IStream * stream)
+void FootpathItemObject::ReadLegacy(IStream * stream)
 {
-    _legacyType.string_idx = stream->ReadValue<rct_string_id>();
-    _legacyType.image = stream->ReadValue<rct_string_id>();
-    _legacyType.bridge_image = stream->ReadValue<uint32>();
-    _legacyType.var_0A = stream->ReadValue<uint8>();
-    _legacyType.flags = stream->ReadValue<uint8>();
-    _legacyType.scrolling_mode = stream->ReadValue<uint8>();
-    stream->Seek(1, STREAM_SEEK_BEGIN);
+    _legacyType.name = stream->ReadValue<rct_string_id>();
+    _legacyType.image = stream->ReadValue<uint32>();
+    _legacyType.path_bit.flags = stream->ReadValue<uint16>();
+    _legacyType.path_bit.draw_type = stream->ReadValue<uint8>();
+    _legacyType.path_bit.tool_id = stream->ReadValue<uint8>();
+    _legacyType.path_bit.price = stream->ReadValue<sint16>();
+    _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
+    stream->Seek(0, STREAM_SEEK_BEGIN);
 
     StringTable.Read(stream, OBJ_STRING_ID_NAME);
+
+    _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
+
     ImageTable.Read(stream);
 }
 
-void FootpathObject::Load()
+void FootpathItemObject::Load()
 {
-    _legacyType.string_idx = language_allocate_object_string(GetName());
+    _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(ImageTable.GetImages(), ImageTable.GetCount());
-    _legacyType.bridge_image = _legacyType.image + 109;
+
+    _legacyType.path_bit.scenery_tab_id = 0xFF;
+    if ((_sceneryTabEntry.flags & 0xFF) != 0xFF)
+    {
+        uint8 entryType, entryIndex;
+        if (find_object_in_entry_group(&_sceneryTabEntry, &entryType, &entryIndex))
+        {
+            _legacyType.path_bit.scenery_tab_id = entryIndex;
+        }
+    }
 }
 
-void FootpathObject::Unload()
+void FootpathItemObject::Unload()
 {
-    language_free_object_string(_legacyType.string_idx);
+    language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, ImageTable.GetCount());
 }
 
-const utf8 * FootpathObject::GetName()
+const utf8 * FootpathItemObject::GetName()
 {
     return StringTable.GetString(OBJ_STRING_ID_NAME);
 }
