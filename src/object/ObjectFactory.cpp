@@ -29,6 +29,7 @@
 #include "SmallSceneryObject.h"
 #include "StexObject.h"
 #include "WallObject.h"
+#include "WaterObject.h"
 
 extern "C"
 {
@@ -96,6 +97,9 @@ namespace ObjectFactory
             break;
         case OBJECT_TYPE_PARK_ENTRANCE:
             result = new EntranceObject(entry);
+            break;
+        case OBJECT_TYPE_WATER:
+            result = new WaterObject(entry);
             break;
         case OBJECT_TYPE_SCENARIO_TEXT:
             result = new StexObject(entry);
