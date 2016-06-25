@@ -434,7 +434,14 @@ int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, 
 		checksum ^= entryBytePtr[i];
 		checksum = rol32(checksum, 11);
 	}
-	for (int i = 0; i < dataLength; i++) {
+	const int dataLength32 = dataLength - (dataLength & 31);
+	for (int i = 0; i < 32; i++) {
+		for (int j = i; j < dataLength32; j+= 32) {
+			checksum ^= data[j];
+		}
+		checksum = rol32(checksum, 11);
+	}
+	for (int i = dataLength32; i < dataLength; i++) {
 		checksum ^= data[i];
 		checksum = rol32(checksum, 11);
 	}
