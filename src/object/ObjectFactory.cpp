@@ -25,6 +25,7 @@
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "RideObject.h"
+#include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
 #include "StexObject.h"
 #include "WallObject.h"
@@ -89,6 +90,9 @@ namespace ObjectFactory
             break;
         case OBJECT_TYPE_PATH_BITS:
             result = new FootpathItemObject(entry);
+            break;
+        case OBJECT_TYPE_SCENERY_SETS:
+            result = new SceneryGroupObject(entry);
             break;
         case OBJECT_TYPE_PARK_ENTRANCE:
             result = new EntranceObject(entry);

@@ -128,6 +128,7 @@
     <ClCompile Include="src\object\ObjectFactory.cpp" />
     <ClCompile Include="src\object\ObjectRepository.cpp" />
     <ClCompile Include="src\object\RideObject.cpp" />
+    <ClCompile Include="src\object\SceneryGroupObject.cpp" />
     <ClCompile Include="src\object\SmallSceneryObject.cpp" />
     <ClCompile Include="src\object\StexObject.cpp" />
     <ClCompile Include="src\object\StringTable.cpp" />
@@ -442,6 +443,7 @@
     <ClInclude Include="src\object\ObjectFactory.h" />
     <ClInclude Include="src\object\ObjectRepository.h" />
     <ClInclude Include="src\object\RideObject.h" />
+    <ClInclude Include="src\object\SceneryGroupObject.h" />
     <ClInclude Include="src\object\SmallSceneryObject.h" />
     <ClInclude Include="src\object\StexObject.h" />
     <ClInclude Include="src\object\StringTable.h" />
