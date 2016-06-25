@@ -319,6 +319,7 @@
 		D45A395D1CF300AF00659A24 /* libSDL2_ttf.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B71CF3006400659A24 /* libSDL2_ttf.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395E1CF300AF00659A24 /* libSDL2.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D45B202D1D1E92DB00B67CC7 /* custom_currency.c in Sources */ = {isa = PBXBuildFile; fileRef = D45B202C1D1E92DB00B67CC7 /* custom_currency.c */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
 		D48A8D831D00272F00649DA7 /* TcpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48A8D811D00272F00649DA7 /* TcpSocket.cpp */; };
 		D49766831D03B9FE002222CD /* SoftwareDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D49766811D03B9FE002222CD /* SoftwareDrawingEngine.cpp */; };
@@ -933,6 +934,7 @@
 		D45A39561CF3007A00659A24 /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speex_resampler.h; sourceTree = "<group>"; };
 		D45A39571CF3007A00659A24 /* speexdsp_config_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_config_types.h; sourceTree = "<group>"; };
 		D45A39581CF3007A00659A24 /* speexdsp_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = speexdsp_types.h; sourceTree = "<group>"; };
+		D45B202C1D1E92DB00B67CC7 /* custom_currency.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = custom_currency.c; sourceTree = "<group>"; };
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/osx/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48A8D811D00272F00649DA7 /* TcpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TcpSocket.cpp; sourceTree = "<group>"; usesTabs = 0; };
@@ -1524,6 +1526,7 @@
 				D44271911CC81B3200D84D28 /* changelog.c */,
 				D44271921CC81B3200D84D28 /* cheats.c */,
 				D44271931CC81B3200D84D28 /* clear_scenery.c */,
+				D45B202C1D1E92DB00B67CC7 /* custom_currency.c */,
 				D44271941CC81B3200D84D28 /* demolish_ride_prompt.c */,
 				D44271951CC81B3200D84D28 /* dropdown.c */,
 				D44271961CC81B3200D84D28 /* dropdown.h */,
@@ -2094,6 +2097,7 @@
 				007A05CF1CFB2C8B00F419C3 /* NetworkConnection.cpp in Sources */,
 				C686F9341CDBC3B7009F9BFC /* merry_go_round.c in Sources */,
 				C686F8B81CDBC37E009F9BFC /* sprite.c in Sources */,
+				D45B202D1D1E92DB00B67CC7 /* custom_currency.c in Sources */,
 				C686F9221CDBC3B7009F9BFC /* stand_up_roller_coaster.c in Sources */,
 				C686F94F1CDBC3B7009F9BFC /* dingy_slide.c in Sources */,
 				D44272341CC81B3200D84D28 /* network.cpp in Sources */,
