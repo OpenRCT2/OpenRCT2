@@ -21,6 +21,7 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "ObjectRepository.h"
 
@@ -56,7 +57,8 @@ class ObjectRepository : public IObjectRepository
 public:
     void LoadOrConstruct()
     {
-        _queryDirectoryResult = QueryDirectory();
+        ClearItems();
+        QueryDirectory();
         if (!Load())
         {
             Construct();
@@ -79,9 +81,67 @@ public:
     }
 
 private:
+    void ClearItems()
+    {
+        for (uint32 i = 0; i < _items.size(); i++)
+        {
+            FreeItem(&_items[i]);
+        }
+        _items.clear();
+    }
+
+    void QueryDirectory()
+    {
+        QueryDirectoryResult * result = &_queryDirectoryResult;
+
+        // Enumerate through each object in the directory
+        int enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
+        if (enumFileHandle != INVALID_HANDLE)
+        {
+            file_info enumFileInfo;
+            while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo))
+            {
+                result->TotalFiles++;
+                result->TotalFileSize += enumFileInfo.size;
+                result->FileDateModifiedChecksum ^=
+                    (uint32)(enumFileInfo.last_modified >> 32) ^
+                    (uint32)(enumFileInfo.last_modified & 0xFFFFFFFF);
+                result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
+            }
+            platform_enumerate_files_end(enumFileHandle);
+        }
+    }
+
     void Construct()
     {
-        // TODO
+        utf8 objectDirectory[MAX_PATH];
+        Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
+
+        int enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
+        if (enumFileHandle != INVALID_HANDLE)
+        {
+            file_info enumFileInfo;
+            while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo))
+            {
+                utf8 objectPath[MAX_PATH];
+                String::Set(objectPath, sizeof(objectPath), objectDirectory);
+                Path::Append(objectPath, sizeof(objectPath), enumFileInfo.path);
+
+                ScanObject(objectPath);
+            }
+            platform_enumerate_files_end(enumFileHandle);
+        }
+    }
+
+    void ScanObject(utf8 * path)
+    {
+        rct_object_entry entry;
+        if (!object_load_entry(path, &entry))
+        {
+            return;
+        }
+
+        __nop();
     }
 
     bool Load()
@@ -236,30 +296,6 @@ private:
         platform_get_user_directory(buffer, nullptr);
         strcat(buffer, "objects.idx");
     }
-
-    static QueryDirectoryResult QueryDirectory()
-    {
-        QueryDirectoryResult result = { 0 };
-
-        // Enumerate through each object in the directory
-        int enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
-        if (enumFileHandle != INVALID_HANDLE)
-        {
-            file_info enumFileInfo;
-            while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo))
-            {
-                result.TotalFiles++;
-                result.TotalFileSize += enumFileInfo.size;
-                result.FileDateModifiedChecksum ^=
-                    (uint32)(enumFileInfo.last_modified >> 32) ^
-                    (uint32)(enumFileInfo.last_modified & 0xFFFFFFFF);
-                result.FileDateModifiedChecksum = ror32(result.FileDateModifiedChecksum, 5);
-            }
-            platform_enumerate_files_end(enumFileHandle);
-        }
-
-        return result;
-    }
 };
 
 static ObjectRepository * _objectRepository = nullptr;
@@ -272,4 +308,12 @@ IObjectRepository * GetObjectRepository()
         _objectRepository->LoadOrConstruct();
     }
     return _objectRepository;
+}
+
+extern "C"
+{
+    void object_list_load()
+    {
+        IObjectRepository * objRepo = GetObjectRepository();
+    }
 }

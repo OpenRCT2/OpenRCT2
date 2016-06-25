@@ -276,7 +276,7 @@ static int object_list_query_directory(int *outTotalFiles, uint64 *outTotalFileS
  *
  *  rct2: 0x006A8B40
  */
-void object_list_load()
+void object_list_load_old()
 {
 	int enumFileHandle, totalFiles, fileDateModifiedChecksum;
 	uint64 totalFileSize;
