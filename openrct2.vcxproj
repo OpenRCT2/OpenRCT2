@@ -125,6 +125,7 @@
     <ClCompile Include="src\object\Object.cpp" />
     <ClCompile Include="src\object\ObjectFactory.cpp" />
     <ClCompile Include="src\object\ObjectRepository.cpp" />
+    <ClCompile Include="src\object\SmallSceneryObject.cpp" />
     <ClCompile Include="src\object\StexObject.cpp" />
     <ClCompile Include="src\object\StringTable.cpp" />
     <ClCompile Include="src\object_list.c" />
@@ -434,6 +435,7 @@
     <ClInclude Include="src\object\Object.h" />
     <ClInclude Include="src\object\ObjectFactory.h" />
     <ClInclude Include="src\object\ObjectRepository.h" />
+    <ClInclude Include="src\object\SmallSceneryObject.h" />
     <ClInclude Include="src\object\StexObject.h" />
     <ClInclude Include="src\object\StringTable.h" />
     <ClInclude Include="src\object_list.h" />

@@ -15,7 +15,8 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "FootpathItemObject.h"
+#include "../core/Memory.hpp"
+#include "SmallSceneryObject.h"
 
 extern "C"
 {
@@ -28,46 +29,75 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_NAME,
 };
 
-void FootpathItemObject::ReadLegacy(IStream * stream)
+SmallSceneryObject::~SmallSceneryObject()
+{
+    Memory::Free(_var10data);
+}
+
+void SmallSceneryObject::ReadLegacy(IStream * stream)
 {
     _legacyType.name = stream->ReadValue<rct_string_id>();
     _legacyType.image = stream->ReadValue<uint32>();
-    _legacyType.path_bit.flags = stream->ReadValue<uint16>();
-    _legacyType.path_bit.draw_type = stream->ReadValue<uint8>();
-    _legacyType.path_bit.tool_id = stream->ReadValue<uint8>();
-    _legacyType.path_bit.price = stream->ReadValue<sint16>();
-    _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
+
+    _legacyType.small_scenery.flags = stream->ReadValue<uint32>();
+    _legacyType.small_scenery.height = stream->ReadValue<uint8>();
+    _legacyType.small_scenery.tool_id = stream->ReadValue<uint8>();
+    _legacyType.small_scenery.price = stream->ReadValue<sint16>();
+    _legacyType.small_scenery.removal_price = stream->ReadValue<sint16>();
+    _legacyType.small_scenery.var_10 = stream->ReadValue<uint32>();
+    _legacyType.small_scenery.var_14 = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.var_16 = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.var_18 = stream->ReadValue<uint16>();
+    _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
     StringTable.Read(stream, OBJ_STRING_ID_NAME);
 
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
+    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG16)
+    {
+        _var10data = ReadVar10(stream);
+    }
+
     ImageTable.Read(stream);
 }
 
-void FootpathItemObject::Load()
+void SmallSceneryObject::Load()
 {
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(ImageTable.GetImages(), ImageTable.GetCount());
 
-    _legacyType.path_bit.scenery_tab_id = 0xFF;
+    _legacyType.small_scenery.scenery_tab_id = 0xFF;
     if ((_sceneryTabEntry.flags & 0xFF) != 0xFF)
     {
         uint8 entryType, entryIndex;
         if (find_object_in_entry_group(&_sceneryTabEntry, &entryType, &entryIndex))
         {
-            _legacyType.path_bit.scenery_tab_id = entryIndex;
+            _legacyType.small_scenery.scenery_tab_id = entryIndex;
         }
     }
 }
 
-void FootpathItemObject::Unload()
+void SmallSceneryObject::Unload()
 {
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, ImageTable.GetCount());
 }
 
-const utf8 * FootpathItemObject::GetName()
+const utf8 * SmallSceneryObject::GetName()
 {
     return StringTable.GetString(OBJ_STRING_ID_NAME);
+}
+
+uint8 * SmallSceneryObject::ReadVar10(IStream * stream)
+{
+    uint8 b;
+    auto data = std::vector<uint8>();
+    data.push_back(stream->ReadValue<uint8>());
+    while ((b = stream->ReadValue<uint8>()) != 0xFF)
+    {
+        data.push_back(b);
+    }
+    data.push_back(b);
+    return Memory::Duplicate(data.data(), data.size());
 }
