@@ -26,6 +26,7 @@
 #include "RideObject.h"
 #include "SmallSceneryObject.h"
 #include "StexObject.h"
+#include "WallObject.h"
 
 extern "C"
 {
@@ -75,6 +76,9 @@ namespace ObjectFactory
             break;
         case OBJECT_TYPE_LARGE_SCENERY:
             result = new LargeSceneryObject(entry);
+            break;
+        case OBJECT_TYPE_WALLS:
+            result = new WallObject(entry);
             break;
         case OBJECT_TYPE_PATHS:
             result = new FootpathObject(entry);

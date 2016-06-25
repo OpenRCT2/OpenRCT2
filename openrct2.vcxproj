@@ -130,6 +130,7 @@
     <ClCompile Include="src\object\SmallSceneryObject.cpp" />
     <ClCompile Include="src\object\StexObject.cpp" />
     <ClCompile Include="src\object\StringTable.cpp" />
+    <ClCompile Include="src\object\WallObject.cpp" />
     <ClCompile Include="src\object_list.c" />
     <ClCompile Include="src\openrct2.c" />
     <ClCompile Include="src\paint\map_element\banner.c" />
@@ -442,6 +443,7 @@
     <ClInclude Include="src\object\SmallSceneryObject.h" />
     <ClInclude Include="src\object\StexObject.h" />
     <ClInclude Include="src\object\StringTable.h" />
+    <ClInclude Include="src\object\WallObject.h" />
     <ClInclude Include="src\object_list.h" />
     <ClInclude Include="src\openrct2.h" />
     <ClInclude Include="src\paint\map_element\map_element.h" />
