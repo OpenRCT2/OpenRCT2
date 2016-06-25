@@ -122,6 +122,7 @@
     <ClCompile Include="src\object\FootpathItemObject.cpp" />
     <ClCompile Include="src\object\FootpathObject.cpp" />
     <ClCompile Include="src\object\ImageTable.cpp" />
+    <ClCompile Include="src\object\LargeSceneryObject.cpp" />
     <ClCompile Include="src\object\Object.cpp" />
     <ClCompile Include="src\object\ObjectFactory.cpp" />
     <ClCompile Include="src\object\ObjectRepository.cpp" />
@@ -433,6 +434,7 @@
     <ClInclude Include="src\object\FootpathItemObject.h" />
     <ClInclude Include="src\object\FootpathObject.h" />
     <ClInclude Include="src\object\ImageTable.h" />
+    <ClInclude Include="src\object\LargeSceneryObject.h" />
     <ClInclude Include="src\object\Object.h" />
     <ClInclude Include="src\object\ObjectFactory.h" />
     <ClInclude Include="src\object\ObjectRepository.h" />

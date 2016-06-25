@@ -20,6 +20,7 @@
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
+#include "LargeSceneryObject.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "RideObject.h"
@@ -71,6 +72,9 @@ namespace ObjectFactory
             break;
         case OBJECT_TYPE_SMALL_SCENERY:
             result = new SmallSceneryObject(entry);
+            break;
+        case OBJECT_TYPE_LARGE_SCENERY:
+            result = new LargeSceneryObject(entry);
             break;
         case OBJECT_TYPE_PATHS:
             result = new FootpathObject(entry);
