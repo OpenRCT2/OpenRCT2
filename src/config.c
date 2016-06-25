@@ -177,7 +177,7 @@ config_property_definition _generalDefinitions[] = {
 	{ offsetof(general_configuration, confirmation_prompt),				"confirmation_prompt",			CONFIG_VALUE_TYPE_BOOLEAN,		false,							NULL					},
 	{ offsetof(general_configuration, construction_marker_colour),		"construction_marker_colour",	CONFIG_VALUE_TYPE_UINT8,		false,							NULL					},
 	{ offsetof(general_configuration, currency_format),					"currency_format",				CONFIG_VALUE_TYPE_UINT8,		CURRENCY_POUNDS,				_currencyEnum			},
-	{ offsetof(general_configuration, custom_currency_rate),			"custom_currency_rate",			CONFIG_VALUE_TYPE_SINT32,		1,								NULL					},
+	{ offsetof(general_configuration, custom_currency_rate),			"custom_currency_rate",			CONFIG_VALUE_TYPE_SINT32,		10,								NULL					},
 	{ offsetof(general_configuration, custom_currency_affix),			"custom_currency_affix",		CONFIG_VALUE_TYPE_SINT8,		CURRENCY_SUFFIX,				_currencySymbolAffixEnum},
 	{ offsetof(general_configuration, custom_currency_symbol),			"custom_currency_symbol",		CONFIG_VALUE_TYPE_STRING,		{ .value_string = "Ctm" },		NULL					},
 	{ offsetof(general_configuration, edge_scrolling),					"edge_scrolling",				CONFIG_VALUE_TYPE_BOOLEAN,		true,							NULL					},
