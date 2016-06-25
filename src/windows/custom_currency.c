@@ -254,7 +254,7 @@ static void window_custom_currency_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     gfx_draw_string_left(dpi, STR_RATE, NULL, w->colours[1], x, y);
 
-    sint32 baseExchange = 100*CurrencyDescriptors[CURRENCY_POUNDS].rate;
+    sint32 baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
     set_format_arg(0, sint32, baseExchange);
     gfx_draw_string_left(dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], x+200, y);
 
