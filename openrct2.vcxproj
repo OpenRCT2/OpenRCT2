@@ -117,7 +117,11 @@
     <ClCompile Include="src\network\TcpSocket.cpp" />
     <ClCompile Include="src\network\twitch.cpp" />
     <ClCompile Include="src\object.c" />
+    <ClCompile Include="src\object\EntranceObject.cpp" />
+    <ClCompile Include="src\object\ImageTable.cpp" />
+    <ClCompile Include="src\object\Object.cpp" />
     <ClCompile Include="src\object\ObjectRepository.cpp" />
+    <ClCompile Include="src\object\StringTable.cpp" />
     <ClCompile Include="src\object_list.c" />
     <ClCompile Include="src\openrct2.c" />
     <ClCompile Include="src\paint\map_element\banner.c" />
@@ -418,7 +422,11 @@
     <ClInclude Include="src\network\network.h" />
     <ClInclude Include="src\network\NetworkKey.h" />
     <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\object\EntranceObject.h" />
+    <ClInclude Include="src\object\ImageTable.h" />
+    <ClInclude Include="src\object\Object.h" />
     <ClInclude Include="src\object\ObjectRepository.h" />
+    <ClInclude Include="src\object\StringTable.h" />
     <ClInclude Include="src\object_list.h" />
     <ClInclude Include="src\openrct2.h" />
     <ClInclude Include="src\paint\map_element\map_element.h" />
