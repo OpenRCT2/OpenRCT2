@@ -257,6 +257,7 @@
     <ClCompile Include="src\windows\banner.c" />
     <ClCompile Include="src\windows\cheats.c" />
     <ClCompile Include="src\windows\clear_scenery.c" />
+    <ClCompile Include="src\windows\custom_currency.c" />
     <ClCompile Include="src\windows\demolish_ride_prompt.c" />
     <ClCompile Include="src\windows\dropdown.c" />
     <ClCompile Include="src\windows\editor_bottom_toolbar.c" />
