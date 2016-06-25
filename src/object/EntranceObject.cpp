@@ -17,7 +17,7 @@
 #include "../core/IStream.hpp"
 #include "EntranceObject.h"
 
-void EntranceObject::Load(IStream * stream)
+void EntranceObject::ReadLegacy(IStream * stream)
 {
     _legacyType.string_idx = stream->ReadValue<rct_string_id>();
     _legacyType.image_id = stream->ReadValue<uint32>();
@@ -26,4 +26,14 @@ void EntranceObject::Load(IStream * stream)
 
     LoadStringTable(stream, 0);
     LoadImageTable(stream);
+}
+
+void EntranceObject::Load()
+{
+
+}
+
+void EntranceObject::Unload()
+{
+
 }

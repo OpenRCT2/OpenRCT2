@@ -33,6 +33,7 @@ public:
     const rct_object_entry * GetObjectEntry() override { return &_objectEntry; }
     void *                   GetLegacyData()  override { return &_legacyType; }
 
-protected:
-    void Load(IStream * stream) override;
+    void ReadLegacy(IStream * stream) override;
+    void Load() override;
+    void Unload() override;
 };

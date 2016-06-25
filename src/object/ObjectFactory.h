@@ -17,34 +17,11 @@
 #pragma once
 
 #include "../common.h"
-#include "ImageTable.h"
-#include "StringTable.h"
 
-extern "C"
+class Object;
+
+namespace ObjectFactory
 {
-    #include "../object.h"
+    Object * CreateObjectFromLegacyFile(utf8 * path);
+    Object * CreateObject(uint8 type);
 }
-
-interface IStream;
-
-class Object
-{
-private:
-    StringTable     _stringTable;
-    ImageTable      _imageTable;
-
-public:
-    virtual ~Object() { }
-
-    // Legacy data structures
-    virtual const rct_object_entry *  GetObjectEntry()  abstract;
-    virtual void *                    GetLegacyData()   abstract;
-
-    virtual void ReadLegacy(IStream * stream) abstract;
-    virtual void Load() abstract;
-    virtual void Unload() abstract;
-
-protected:
-    void LoadStringTable(IStream * stream, uint8 id);
-    void LoadImageTable(IStream * stream);
-};

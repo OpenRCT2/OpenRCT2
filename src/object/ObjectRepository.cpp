@@ -23,6 +23,8 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "Object.h"
+#include "ObjectFactory.h"
 #include "ObjectRepository.h"
 
 extern "C"
@@ -135,13 +137,11 @@ private:
 
     void ScanObject(utf8 * path)
     {
-        rct_object_entry entry;
-        if (!object_load_entry(path, &entry))
+        Object * object = ObjectFactory::CreateObjectFromLegacyFile(path);
+        if (object != nullptr)
         {
-            return;
+            // TODO
         }
-
-        __nop();
     }
 
     bool Load()

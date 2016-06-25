@@ -34,6 +34,7 @@ private:
     std::vector<StringTableEntry> _strings;
 
 public:
+    ~StringTable();
     void Read(IStream * stream, uint8 id);
 
 private:

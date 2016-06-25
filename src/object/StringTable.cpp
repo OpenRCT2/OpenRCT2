@@ -36,6 +36,14 @@ bool StringIsBlank(utf8 * str)
     return true;
 }
 
+StringTable::~StringTable()
+{
+    for (auto entry : _strings)
+    {
+        Memory::Free(entry.Text);
+    }
+}
+
 void StringTable::Read(IStream * stream, uint8 id)
 {
     uint8 languageId;
@@ -58,24 +66,36 @@ void StringTable::Read(IStream * stream, uint8 id)
 
 void StringTable::Sort()
 {
-    std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry &a, const StringTableEntry &b) -> int
+    std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry &a, const StringTableEntry &b) -> bool
     {
         if (a.Id == b.Id)
         {
             if (a.LanguageId == b.LanguageId)
             {
-                return _strcmpi(a.Text, b.Text);
+                return _strcmpi(a.Text, b.Text) == -1;
             }
-            if (a.LanguageId == LanguagesDescriptors[gCurrentLanguage].rct2_original_id)
+
+            uint8 currentLanguage = LanguagesDescriptors[gCurrentLanguage].rct2_original_id;
+            if (a.LanguageId == currentLanguage)
             {
-                return -1;
+                return true;
             }
+            if (b.LanguageId == currentLanguage)
+            {
+                return false;
+            }
+
             if (a.LanguageId == RCT2_LANGUAGE_ID_ENGLISH_UK)
             {
-                return -1;
+                return true;
             }
-            return 1;
+            if (b.LanguageId == RCT2_LANGUAGE_ID_ENGLISH_UK)
+            {
+                return false;
+            }
+
+            return a.LanguageId < b.LanguageId;
         }
-        return a.Id - b.Id;
+        return a.Id < b.Id;
     });
 }
