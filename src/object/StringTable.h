@@ -35,7 +35,9 @@ private:
 
 public:
     ~StringTable();
-    void Read(IStream * stream, uint8 id);
+
+    void            Read(IStream * stream, uint8 id);
+    const utf8 *    GetString(uint8 id);
 
 private:
     void Sort();

@@ -57,6 +57,11 @@ class ObjectRepository : public IObjectRepository
     QueryDirectoryResult                _queryDirectoryResult;
 
 public:
+    ~ObjectRepository()
+    {
+        ClearItems();
+    }
+
     void LoadOrConstruct()
     {
         ClearItems();
@@ -140,7 +145,11 @@ private:
         Object * object = ObjectFactory::CreateObjectFromLegacyFile(path);
         if (object != nullptr)
         {
-            // TODO
+            ObjectRepositoryItem item = { 0 };
+            Memory::Copy<void>(&item.ObjectEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
+            item.Path = String::Duplicate(path);
+            item.Name = String::Duplicate(object->GetName());
+            _items.push_back(item);
         }
     }
 
@@ -197,7 +206,7 @@ private:
             // Write items
             for (uint32 i = 0; i < header.NumItems; i++)
             {
-                fs.WriteValue(_items[i]);
+                WriteItem(&fs, _items[i]);
             }
         }
         catch (IOException ex)
@@ -285,8 +294,12 @@ private:
 
     static void FreeItem(ObjectRepositoryItem * item)
     {
+        Memory::Free(item->Path);
+        Memory::Free(item->Name);
         Memory::Free(item->RequiredObjects);
         Memory::Free(item->ThemeObjects);
+        item->Path = nullptr;
+        item->Name = nullptr;
         item->RequiredObjects = nullptr;
         item->ThemeObjects = nullptr;
     }

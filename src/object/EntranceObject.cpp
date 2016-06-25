@@ -17,6 +17,11 @@
 #include "../core/IStream.hpp"
 #include "EntranceObject.h"
 
+enum OBJ_STRING_ID
+{
+    OBJ_STRING_ID_NAME,
+};
+
 void EntranceObject::ReadLegacy(IStream * stream)
 {
     _legacyType.string_idx = stream->ReadValue<rct_string_id>();
@@ -24,8 +29,8 @@ void EntranceObject::ReadLegacy(IStream * stream)
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     _legacyType.text_height = stream->ReadValue<uint8>();
 
-    LoadStringTable(stream, 0);
-    LoadImageTable(stream);
+    StringTable.Read(stream, OBJ_STRING_ID_NAME);
+    ImageTable.Read(stream);
 }
 
 void EntranceObject::Load()
@@ -36,4 +41,9 @@ void EntranceObject::Load()
 void EntranceObject::Unload()
 {
 
+}
+
+const utf8 * EntranceObject::GetName()
+{
+    return StringTable.GetString(OBJ_STRING_ID_NAME);
 }

@@ -23,5 +23,5 @@ class Object;
 namespace ObjectFactory
 {
     Object * CreateObjectFromLegacyFile(utf8 * path);
-    Object * CreateObject(uint8 type);
+    Object * CreateObject(const rct_object_entry &entry);
 }

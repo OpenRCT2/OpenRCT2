@@ -26,14 +26,16 @@ extern "C"
 class EntranceObject : public Object
 {
 private:
-    rct_object_entry    _objectEntry;
     rct_entrance_type   _legacyType;
 
 public:
-    const rct_object_entry * GetObjectEntry() override { return &_objectEntry; }
-    void *                   GetLegacyData()  override { return &_legacyType; }
+    explicit EntranceObject(const rct_object_entry &entry) : Object(entry) { };
+
+    void * GetLegacyData()  override { return &_legacyType; }
 
     void ReadLegacy(IStream * stream) override;
     void Load() override;
     void Unload() override;
+
+    const utf8 * GetName() override;
 };

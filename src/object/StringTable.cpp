@@ -64,6 +64,18 @@ void StringTable::Read(IStream * stream, uint8 id)
     Sort();
 }
 
+const utf8 * StringTable::GetString(uint8 id)
+{
+    for (auto &string : _strings)
+    {
+        if (string.Id == id)
+        {
+            return string.Text;
+        }
+    }
+    return nullptr;
+}
+
 void StringTable::Sort()
 {
     std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry &a, const StringTableEntry &b) -> bool

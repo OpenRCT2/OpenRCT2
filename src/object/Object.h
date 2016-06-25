@@ -30,21 +30,23 @@ interface IStream;
 class Object
 {
 private:
-    StringTable     _stringTable;
-    ImageTable      _imageTable;
+    rct_object_entry    _objectEntry;
+
+protected:
+    StringTable         StringTable;
+    ImageTable          ImageTable;
 
 public:
+    explicit Object(const rct_object_entry &entry);
     virtual ~Object() { }
 
     // Legacy data structures
-    virtual const rct_object_entry *  GetObjectEntry()  abstract;
-    virtual void *                    GetLegacyData()   abstract;
+    const rct_object_entry *    GetObjectEntry() const { return &_objectEntry; }
+    virtual void *              GetLegacyData() abstract;
 
     virtual void ReadLegacy(IStream * stream) abstract;
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-protected:
-    void LoadStringTable(IStream * stream, uint8 id);
-    void LoadImageTable(IStream * stream);
+    virtual const utf8 * GetName() abstract;
 };

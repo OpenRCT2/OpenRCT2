@@ -16,12 +16,7 @@
 
 #include "Object.h"
 
-void Object::LoadStringTable(IStream * stream, uint8 id)
+Object::Object(const rct_object_entry &entry)
 {
-    _stringTable.Read(stream, id);
-}
-
-void Object::LoadImageTable(IStream * stream)
-{
-    _imageTable.Read(stream);
+    _objectEntry = entry;
 }

@@ -39,8 +39,7 @@ namespace ObjectFactory
             rct_object_entry entry;
             if (SDL_RWread(file, &entry, sizeof(entry), 1) == 1)
             {
-                uint8 objectType = entry.flags & 0x0F;
-                result = CreateObject(objectType);
+                result = CreateObject(entry);
                 if (result != nullptr)
                 {
                     size_t bufferSize = 0x600000;
@@ -56,13 +55,14 @@ namespace ObjectFactory
         return result;
     }
 
-    Object * CreateObject(uint8 type)
+    Object * CreateObject(const rct_object_entry &entry)
     {
         Object * result = nullptr;
 
-        switch (type) {
+        uint8 objectType = entry.flags & 0x0F;
+        switch (objectType) {
         case OBJECT_TYPE_PARK_ENTRANCE:
-            result = new EntranceObject();
+            result = new EntranceObject(entry);
             break;
         }
 
