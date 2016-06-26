@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
@@ -57,7 +58,17 @@ namespace ObjectFactory
                     bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
                     buffer = Memory::Reallocate(buffer, bufferSize);
                     auto ms = MemoryStream(buffer, bufferSize);
-                    result->ReadLegacy(&ms);
+                    try
+                    {
+                        result->ReadLegacy(&ms);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console::Error::WriteFormat("Error reading object: '%s'", path);
+                        Console::Error::WriteLine();
+                        delete result;
+                        result = nullptr;
+                    }
                 }
             }
             SDL_RWclose(file);
