@@ -413,6 +413,28 @@ extern "C"
         }
     }
 
+    void object_unload_all()
+    {
+        for (int i = 0; i < 721; i++)
+        {
+            Object * object = _loadedObjects[i];
+            if (object != nullptr)
+            {
+                object->Unload();
+                delete object;
+                _loadedObjects[i] = nullptr;
+            }
+        }
+        for (int i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
+        {
+            for (int j = 0; j < object_entry_group_counts[i]; j++)
+            {
+                memset(&object_entry_groups[i].entries[j], 0xFF, sizeof(rct_object_entry_extended));
+                object_entry_groups[i].chunks[j] = (uint8*)0xFFFFFFFF;
+            }
+        }
+    }
+
     void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)
     {
         rct_string_id localisedStringIds[3];

@@ -616,7 +616,7 @@ bool object_load_entries(rct_object_entry* entries)
  *
  *  rct2: 0x006A9CE8
  */
-void object_unload_all()
+void object_unload_all_old()
 {
 	int i, j;
 
