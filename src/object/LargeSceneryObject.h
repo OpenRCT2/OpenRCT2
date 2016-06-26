@@ -28,8 +28,8 @@ class LargeSceneryObject : public Object
 private:
     rct_scenery_entry           _legacyType;
     rct_object_entry            _sceneryTabEntry;
-    rct_large_scenery_text *    _3dFont;
-    rct_large_scenery_tile *    _tiles;
+    rct_large_scenery_text *    _3dFont = nullptr;
+    rct_large_scenery_tile *    _tiles = nullptr;
 
 public:
     explicit LargeSceneryObject(const rct_object_entry &entry) : Object(entry) { };
