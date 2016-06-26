@@ -35,23 +35,24 @@ void EntranceObject::ReadLegacy(IStream * stream)
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     _legacyType.text_height = stream->ReadValue<uint8>();
 
-    GetStringTable().Read(stream, OBJ_STRING_ID_NAME);
-    GetImageTable().Read(stream);
+    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
+    GetImageTable()->Read(stream);
 }
 
 void EntranceObject::Load()
 {
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image_id = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image_id = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 }
 
 void EntranceObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
-    gfx_object_free_images(_legacyType.image_id, GetImageTable().GetCount());
+    gfx_object_free_images(_legacyType.image_id, GetImageTable()->GetCount());
 }
 
 const utf8 * EntranceObject::GetName()
 {
-    return GetStringTable().GetString(OBJ_STRING_ID_NAME);
+    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
+    return name != nullptr ? name : "";
 }

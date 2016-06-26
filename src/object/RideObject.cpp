@@ -43,15 +43,15 @@ void RideObject::ReadLegacy(IStream * stream)
 {
     stream->Read(&_legacyType);
 
-    GetStringTable().Read(stream, OBJ_STRING_ID_NAME);
-    GetStringTable().Read(stream, OBJ_STRING_ID_DESCRIPTION);
+    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(stream, OBJ_STRING_ID_DESCRIPTION);
 
     // TODO: Move to its own function when ride construction window is merged.
     if (gConfigInterface.select_by_track_type) {
         _legacyType.enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
     }
 
-    GetStringTable().Read(stream, OBJ_STRING_ID_CAPACITY);
+    GetStringTable()->Read(stream, OBJ_STRING_ID_CAPACITY);
 
     // Read preset colours, by default there are 32
     _presetColours.count = stream->ReadValue<uint8>();
@@ -75,14 +75,14 @@ void RideObject::ReadLegacy(IStream * stream)
         _peepLoadingPositions[i] = stream->ReadArray<sint8>(numPeepLoadingPositions);
     }
 
-    GetImageTable().Read(stream);
+    GetImageTable()->Read(stream);
 }
 
 void RideObject::Load()
 {
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.description = language_allocate_object_string(GetDescription());
-    _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 
     int cur_vehicle_images_offset = _legacyType.images_offset + 3;
     for (int i = 0; i < 4; i++)
@@ -329,20 +329,23 @@ void RideObject::Unload()
 {
     language_free_object_string(_legacyType.name);
     language_free_object_string(_legacyType.description);
-    gfx_object_free_images(_legacyType.images_offset, GetImageTable().GetCount());
+    gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
 }
 
 const utf8 * RideObject::GetName()
 {
-    return GetStringTable().GetString(OBJ_STRING_ID_NAME);
+    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
+    return name != nullptr ? name : "";
 }
 
 const utf8 * RideObject::GetDescription()
 {
-    return GetStringTable().GetString(OBJ_STRING_ID_DESCRIPTION);
+    const utf8 * description = GetStringTable()->GetString(OBJ_STRING_ID_DESCRIPTION);
+    return description != nullptr ? description : "";
 }
 
 const utf8 * RideObject::GetCapacity()
 {
-    return GetStringTable().GetString(OBJ_STRING_ID_CAPACITY);
+    const utf8 * capacity = GetStringTable()->GetString(OBJ_STRING_ID_CAPACITY);
+    return capacity != nullptr ? capacity : "";
 }

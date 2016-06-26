@@ -35,8 +35,8 @@ private:
     ImageTable          _imageTable;
 
 protected:
-    StringTable GetStringTable() { return _stringTable; }
-    ImageTable  GetImageTable() { return _imageTable; }
+    StringTable *   GetStringTable() { return &_stringTable; }
+    ImageTable  *   GetImageTable() { return &_imageTable; }
 
 public:
     explicit Object(const rct_object_entry &entry);

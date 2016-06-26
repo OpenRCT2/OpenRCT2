@@ -50,7 +50,7 @@ void SmallSceneryObject::ReadLegacy(IStream * stream)
     _legacyType.small_scenery.var_18 = stream->ReadValue<uint16>();
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
-    GetStringTable().Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
 
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
@@ -59,13 +59,13 @@ void SmallSceneryObject::ReadLegacy(IStream * stream)
         _var10data = ReadVar10(stream);
     }
 
-    GetImageTable().Read(stream);
+    GetImageTable()->Read(stream);
 }
 
 void SmallSceneryObject::Load()
 {
     _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
 
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
     if ((_sceneryTabEntry.flags & 0xFF) != 0xFF)
@@ -86,12 +86,13 @@ void SmallSceneryObject::Load()
 void SmallSceneryObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
 const utf8 * SmallSceneryObject::GetName()
 {
-    return GetStringTable().GetString(OBJ_STRING_ID_NAME);
+    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
+    return name != nullptr ? name : "";
 }
 
 uint8 * SmallSceneryObject::ReadVar10(IStream * stream)
