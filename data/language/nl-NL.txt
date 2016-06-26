@@ -4452,42 +4452,42 @@ STR_DTLS    :Een groot tuinpark moet worden veranderd in een bloeiend themapark.
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :Een hele verzameling ijsbergen vormt de ijzige achtergrond van dit ambitieuze themapark.
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :De achtergrond van deze vlammende achtbaanuitdaging is een slapende vulkaan.
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Het is je taak dit woestijnpark te ontwikkelen terwijl je de gasten tevreden houdt. Geld speelt geen rol!
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Het is je taak een park vol met achtbanen te bouwen tussen de Razor Rocks.
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :De achtergrond van dit park wordt gevormd door een groot meer in oude krater.
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :Dit park heeft al een uitstekende hypercoaster, maar je taak is om de winst flink te verhogen.
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
 STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Paradise Pier heeft extra pieren bijgebouwd, en het is je taak om het park erlangs uit te breiden.
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :Deze baai vormt de achtergrond van deze achtbaanuitdaging.
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
@@ -5609,9 +5609,9 @@ STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes die vrijuit kunnen
 STR_CPTY    :4 passagiers per karretje
 # End of Suspended Swinging Coaster / Omgekeerde schommelachtbaan
 
-# Submarine ride / Onderzeeërattractie
+# Submarine ride / Onderzeeër-attractie
 [SUBMAR]
-STR_NAME    :Onderzeeërattractie
+STR_NAME    :Onderzeeër-attractie
 STR_DESC    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
 STR_CPTY    :4 passagiers per onderzeeër
 
@@ -5626,7 +5626,7 @@ STR_CPTY    :5 passagiers per onderzeeër
 STR_NAME    :Orka-onderzeeërs
 STR_DESC    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
 STR_CPTY    :5 passagiers per onderzeeër
-# End of Submarine ride / Onderzeeërattractie
+# End of Submarine ride / Onderzeeër-attractie
 
 # Splash boats / Plonsboten
 [SPBOAT]
