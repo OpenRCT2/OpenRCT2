@@ -119,7 +119,6 @@ int object_load_packed(SDL_RWops* rw);
 void object_unload_all();
 
 int check_object_entry(rct_object_entry *entry);
-int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSize, const rct_object_entry *installedObject);
 int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunk_size);
 void object_unload_chunk(rct_object_entry *entry);
 int object_get_scenario_text(rct_object_entry *entry);

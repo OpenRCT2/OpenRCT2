@@ -194,6 +194,7 @@ uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
 
 void gfx_object_free_images(uint32 baseImageId, uint32 count)
 {
+	_nextImageId = 29294;
 }
 
 /**

@@ -70,6 +70,8 @@ void LargeSceneryObject::Load()
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(ImageTable.GetImages(), ImageTable.GetCount());
 
+    _legacyType.large_scenery.tiles = _tiles;
+
     _legacyType.large_scenery.scenery_tab_id = 0xFF;
     if ((_sceneryTabEntry.flags & 0xFF) != 0xFF)
     {

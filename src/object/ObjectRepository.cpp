@@ -102,6 +102,21 @@ public:
         }
     }
 
+    const ObjectRepositoryItem * FindObject(const utf8 * name) override
+    {
+        rct_object_entry entry = { 0 };
+        utf8 entryName[9] = { ' ' };
+        String::Set(entryName, sizeof(entryName), name);
+        Memory::Copy<void>(entry.name, entryName, 8);
+
+        auto kvp = _itemMap.find(entry);
+        if (kvp != _itemMap.end())
+        {
+            return &_items[kvp->second];
+        }
+        return nullptr;
+    }
+
     const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) override
     {
         auto kvp = _itemMap.find(*objectEntry);
@@ -384,6 +399,20 @@ int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
 
 extern "C"
 {
+    rct_object_entry * object_list_find(rct_object_entry * entry)
+    {
+        IObjectRepository * objRepo = GetObjectRepository();
+        const ObjectRepositoryItem * item = objRepo->FindObject(entry);
+        return (rct_object_entry *)&item->ObjectEntry;
+    }
+
+    rct_object_entry * object_list_find_by_name(const char * name)
+    {
+        IObjectRepository * objRepo = GetObjectRepository();
+        const ObjectRepositoryItem * item = objRepo->FindObject(name);
+        return (rct_object_entry *)&item->ObjectEntry;
+    }
+
     void object_list_load()
     {
         IObjectRepository * objRepo = GetObjectRepository();

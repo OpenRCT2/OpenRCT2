@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stack>
 #include "LanguagePack.h"
 
 extern "C" {
@@ -455,17 +456,33 @@ bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_s
 		outStringIds[2] != STR_NONE;
 }
 
-static rct_string_id _nextObjectStringId = NONSTEX_BASE_STRING_ID;
+static bool							_availableObjectStringIdsInitialised = false;
+static std::stack<rct_string_id>	_availableObjectStringIds;
 
 rct_string_id language_allocate_object_string(const utf8 * target)
 {
-	rct_string_id stringId = _nextObjectStringId++;
+	if (!_availableObjectStringIdsInitialised)
+	{
+		_availableObjectStringIdsInitialised = true;
+		for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID; stringId--)
+		{
+			_availableObjectStringIds.push(stringId);
+		}
+	}
+	
+	rct_string_id stringId = _availableObjectStringIds.top();
+	_availableObjectStringIds.pop();
 	_languageCurrent->SetString(stringId, target);
 	return stringId;
 }
 
 void language_free_object_string(rct_string_id stringId)
 {
+	if (_languageCurrent != nullptr)
+	{
+		_languageCurrent->SetString(stringId, nullptr);
+	}
+	_availableObjectStringIds.push(stringId);
 }
 
 }
