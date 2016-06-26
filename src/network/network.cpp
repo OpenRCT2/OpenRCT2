@@ -607,7 +607,7 @@ bool Network::KickPlayer(int playerId, const char* reason, const char* kickedBy)
 			// Disconnect the client gracefully
 			char str_disconnect_msg[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
 			const char* kickedText = language_get_string(STR_MULTIPLAYER_KICKED);
-			sprintf_s(str_disconnect_msg, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, "%s: %s (%s)", kickedText, reason, kickedBy);
+			snprintf(str_disconnect_msg, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, "%s: %s (%s)", kickedText, reason, kickedBy);
 			
 			//Message shown in notification
 			(*it)->SetLastDisconnectReason((utf8*)str_disconnect_msg);
