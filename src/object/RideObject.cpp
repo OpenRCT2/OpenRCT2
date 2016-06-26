@@ -36,7 +36,10 @@ enum OBJ_STRING_ID
 
 RideObject::~RideObject()
 {
-    Memory::FreeArray(_peepLoadingPositions, 4);
+    for (int i = 0; i < 4; i++)
+    {
+        Memory::Free(_peepLoadingPositions[i]);
+    }
 }
 
 void RideObject::ReadLegacy(IStream * stream)
