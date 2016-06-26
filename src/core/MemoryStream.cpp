@@ -69,7 +69,7 @@ MemoryStream::MemoryStream(const void * data, size_t dataSize)
 
 MemoryStream::~MemoryStream()
 {
-    if (MEMORY_ACCESS_OWNER)
+    if (_access & MEMORY_ACCESS_OWNER)
     {
         Memory::Free(_data);
     }

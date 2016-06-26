@@ -55,19 +55,36 @@ namespace ObjectFactory
                 {
                     size_t bufferSize = 0x600000;
                     void * buffer = Memory::Allocate<void>(bufferSize);
-                    bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
-                    buffer = Memory::Reallocate(buffer, bufferSize);
-                    auto ms = MemoryStream(buffer, bufferSize);
-                    try
+                    if (buffer == nullptr)
                     {
-                        result->ReadLegacy(&ms);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console::Error::WriteFormat("Error reading object: '%s'", path);
-                        Console::Error::WriteLine();
+                        log_error("Unable to allocate data buffer.");
                         delete result;
                         result = nullptr;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
+                            if (bufferSize == SIZE_MAX)
+                            {
+                                throw IOException("Error decoding data.");
+                            }
+
+                            buffer = Memory::Reallocate(buffer, bufferSize);
+                            auto ms = MemoryStream(buffer, bufferSize);
+                            result->ReadLegacy(&ms);
+
+                            Memory::Free(buffer);
+                        }
+                        catch (Exception ex)
+                        {
+                            Memory::Free(buffer);
+                            Console::Error::WriteFormat("Error reading object: '%s'", path);
+                            Console::Error::WriteLine();
+                            delete result;
+                            result = nullptr;
+                        }
                     }
                 }
             }

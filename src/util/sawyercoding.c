@@ -96,6 +96,20 @@ bool sawyercoding_read_chunk_safe(SDL_RWops *rw, void *dst, size_t dstLength)
 	}
 }
 
+bool sawyercoding_skip_chunk(SDL_RWops *rw)
+{
+	// Read chunk header
+	sawyercoding_chunk_header chunkHeader;
+	if (SDL_RWread(rw, &chunkHeader, sizeof(sawyercoding_chunk_header), 1) != 1) {
+		log_error("Unable to read chunk header!");
+		return false;
+	}
+
+	// Skip chunk data
+	SDL_RWseek(rw, chunkHeader.length, RW_SEEK_CUR);
+	return true;
+}
+
 /**
  *
  *  rct2: 0x0067685F
@@ -157,6 +171,10 @@ size_t sawyercoding_read_chunk_with_size(SDL_RWops* rw, uint8 *buffer, const siz
 	}
 
 	uint8* src_buffer = malloc(chunkHeader.length);
+	if (src_buffer == NULL) {
+		log_error("Unable to read chunk data!");
+		return -1;
+	}
 
 	// Read chunk data
 	if (SDL_RWread(rw, src_buffer, chunkHeader.length, 1) != 1) {

@@ -156,6 +156,8 @@ public:
             }
         }
 
+        // TODO append checksum match bytes
+
         utf8 path[MAX_PATH];
         GetPathForNewObject(path, sizeof(path), objectName);
 
@@ -408,9 +410,29 @@ private:
 
     static void SaveObject(const utf8 * path, const rct_object_entry * entry, const void * data, size_t dataSize)
     {
-        // TODO
-        // auto fs = FileStream(path, FILE_MODE_WRITE);
-        // fs.Write(entry, sizeof(entry));
+        uint8 objectType = entry->flags & 0x0F;
+
+        // Encode data
+        sawyercoding_chunk_header chunkHeader;
+        chunkHeader.encoding = object_entry_group_encoding[objectType];
+        chunkHeader.length = dataSize;
+        uint8 * encodedDataBuffer = Memory::Allocate<uint8>(0x600000);
+        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8 *)data, chunkHeader);
+
+        // Save to file
+        try
+        {
+            auto fs = FileStream(path, FILE_MODE_WRITE);
+            fs.Write(entry, sizeof(rct_object_entry));
+            fs.Write(encodedDataBuffer, encodedDataSize);
+
+            Memory::Free(encodedDataBuffer);
+        }
+        catch (Exception ex)
+        {
+            Memory::Free(encodedDataBuffer);
+            throw;
+        }
     }
 
     static void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
@@ -618,28 +640,38 @@ extern "C"
 
     int object_load_packed(SDL_RWops * rw)
     {
+        IObjectRepository * objRepo = GetObjectRepository();
+
         rct_object_entry entry;
         SDL_RWread(rw, &entry, 16, 1);
 
-        uint8 * chunk = Memory::Allocate<uint8>(0x600000);
-        if (chunk == nullptr)
+        // Check if we already have this object
+        if (objRepo->FindObject(&entry) != nullptr)
         {
-            log_error("Failed to allocate buffer for packed object.");
-            return 0;
+            sawyercoding_skip_chunk(rw);
         }
-
-        uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
-        chunk = Memory::Reallocate(chunk, chunkSize);
-        if (chunk == nullptr)
+        else
         {
-            log_error("Failed to reallocate buffer for packed object.");
-            return 0;
+            // Read object and save to new file
+            uint8 * chunk = Memory::Allocate<uint8>(0x600000);
+            if (chunk == nullptr)
+            {
+                log_error("Failed to allocate buffer for packed object.");
+                return 0;
+            }
+
+            uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
+            chunk = Memory::Reallocate(chunk, chunkSize);
+            if (chunk == nullptr)
+            {
+                log_error("Failed to reallocate buffer for packed object.");
+                return 0;
+            }
+
+            objRepo->AddObject(&entry, chunk, chunkSize);
+
+            Memory::Free(chunk);
         }
-
-        IObjectRepository * objRepo = GetObjectRepository();
-        objRepo->AddObject(&entry, chunk, chunkSize);
-
-        Memory::Free(chunk);
         return 1;
     }
 }
