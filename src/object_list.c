@@ -247,8 +247,8 @@ bool object_load_entries(rct_object_entry* entries)
 
 		// Load the obect
 		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
-			log_error("failed to load entry: %.8s", entries[i].name);
-			memcpy(gCommonFormatArgs, &entries[i], sizeof(rct_object_entry));
+			// log_error("failed to load entry: %.8s", entries[i].name);
+			// memcpy(gCommonFormatArgs, &entries[i], sizeof(rct_object_entry));
 			loadFailed = true;
 		}
 	}

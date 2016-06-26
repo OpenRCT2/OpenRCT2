@@ -24,6 +24,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
+#include "../core/Stopwatch.hpp"
 #include "../core/String.hpp"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -176,6 +177,11 @@ private:
         utf8 objectDirectory[MAX_PATH];
         Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
 
+        Console::WriteLine("Scanning objects...");
+
+        auto stopwatch = Stopwatch();
+        stopwatch.Start();
+
         int enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
         if (enumFileHandle != INVALID_HANDLE)
         {
@@ -190,6 +196,9 @@ private:
             }
             platform_enumerate_files_end(enumFileHandle);
         }
+
+        stopwatch.Stop();
+        Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
     }
 
     void ScanObject(utf8 * path)
@@ -228,7 +237,7 @@ private:
                 }
                 return true;
             }
-            log_info("Object repository is out of date.");
+            Console::WriteLine("Object repository is out of date.");
             return false;
         }
         catch (IOException ex)
