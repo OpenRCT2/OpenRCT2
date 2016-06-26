@@ -49,7 +49,7 @@ void LargeSceneryObject::ReadLegacy(IStream * stream)
     _legacyType.large_scenery.var_11 = stream->ReadValue<uint8>();
     stream->Seek(5, STREAM_SEEK_CURRENT);
 
-    StringTable.Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(stream, OBJ_STRING_ID_NAME);
 
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
@@ -62,13 +62,13 @@ void LargeSceneryObject::ReadLegacy(IStream * stream)
 
     _tiles = ReadTiles(stream);
 
-    ImageTable.Read(stream);
+    GetImageTable().Read(stream);
 }
 
 void LargeSceneryObject::Load()
 {
     _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(ImageTable.GetImages(), ImageTable.GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 
     _legacyType.large_scenery.tiles = _tiles;
 
@@ -99,12 +99,12 @@ void LargeSceneryObject::Load()
 void LargeSceneryObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, ImageTable.GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
 }
 
 const utf8 * LargeSceneryObject::GetName()
 {
-    return StringTable.GetString(OBJ_STRING_ID_NAME);
+    return GetStringTable().GetString(OBJ_STRING_ID_NAME);
 }
 
 rct_large_scenery_tile * LargeSceneryObject::ReadTiles(IStream * stream)

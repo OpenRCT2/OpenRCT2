@@ -37,9 +37,9 @@ void StexObject::ReadLegacy(IStream * stream)
     _legacyType.var_06 = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
-    StringTable.Read(stream, OBJ_STRING_ID_SCENARIO_NAME);
-    StringTable.Read(stream, OBJ_STRING_ID_PARK_NAME);
-    StringTable.Read(stream, OBJ_STRING_ID_SCENARIO_DETAILS);
+    GetStringTable().Read(stream, OBJ_STRING_ID_SCENARIO_NAME);
+    GetStringTable().Read(stream, OBJ_STRING_ID_PARK_NAME);
+    GetStringTable().Read(stream, OBJ_STRING_ID_SCENARIO_DETAILS);
 }
 
 void StexObject::Load()
@@ -63,15 +63,15 @@ const utf8 * StexObject::GetName()
 
 const utf8 * StexObject::GetScenarioName()
 {
-    return StringTable.GetString(OBJ_STRING_ID_SCENARIO_NAME);
+    return GetStringTable().GetString(OBJ_STRING_ID_SCENARIO_NAME);
 }
 
 const utf8 * StexObject::GetScenarioDetails()
 {
-    return StringTable.GetString(OBJ_STRING_ID_SCENARIO_DETAILS);
+    return GetStringTable().GetString(OBJ_STRING_ID_SCENARIO_DETAILS);
 }
 
 const utf8 * StexObject::GetParkName()
 {
-    return StringTable.GetString(OBJ_STRING_ID_PARK_NAME);
+    return GetStringTable().GetString(OBJ_STRING_ID_PARK_NAME);
 }

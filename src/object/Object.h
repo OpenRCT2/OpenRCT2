@@ -31,10 +31,12 @@ class Object
 {
 private:
     rct_object_entry    _objectEntry;
+    StringTable         _stringTable;
+    ImageTable          _imageTable;
 
 protected:
-    StringTable         StringTable;
-    ImageTable          ImageTable;
+    StringTable GetStringTable() { return _stringTable; }
+    ImageTable  GetImageTable() { return _imageTable; }
 
 public:
     explicit Object(const rct_object_entry &entry);

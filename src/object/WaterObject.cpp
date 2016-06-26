@@ -36,14 +36,14 @@ void WaterObject::ReadLegacy(IStream * stream)
     _legacyType.var_0A = stream->ReadValue<uint32>();
     _legacyType.var_0E = stream->ReadValue<uint16>();
 
-    StringTable.Read(stream, OBJ_STRING_ID_NAME);
-    ImageTable.Read(stream);
+    GetStringTable().Read(stream, OBJ_STRING_ID_NAME);
+    GetImageTable().Read(stream);
 }
 
 void WaterObject::Load()
 {
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image_id = gfx_object_allocate_images(ImageTable.GetImages(), ImageTable.GetCount());
+    _legacyType.image_id = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.var_06 = _legacyType.image_id + 1;
     _legacyType.var_0A = _legacyType.image_id + 4;
 
@@ -61,5 +61,5 @@ void WaterObject::Unload()
 
 const utf8 * WaterObject::GetName()
 {
-    return StringTable.GetString(OBJ_STRING_ID_NAME);
+    return GetStringTable().GetString(OBJ_STRING_ID_NAME);
 }

@@ -45,9 +45,9 @@ void SceneryGroupObject::ReadLegacy(IStream * stream)
     _legacyType.pad_109 = stream->ReadValue<uint8>();
     _legacyType.var_10A = stream->ReadValue<uint32>();
 
-    StringTable.Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(stream, OBJ_STRING_ID_NAME);
     ReadItems(stream);
-    ImageTable.Read(stream);
+    GetImageTable().Read(stream);
 
     _legacyType.var_107 = _numItems;
 }
@@ -55,7 +55,7 @@ void SceneryGroupObject::ReadLegacy(IStream * stream)
 void SceneryGroupObject::Load()
 {
     _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(ImageTable.GetImages(), ImageTable.GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 
     _legacyType.entry_count = 0;
     for (uint32 i = 0; i < _numItems; i++)
@@ -82,12 +82,12 @@ void SceneryGroupObject::Load()
 void SceneryGroupObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, ImageTable.GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
 }
 
 const utf8 * SceneryGroupObject::GetName()
 {
-    return StringTable.GetString(OBJ_STRING_ID_NAME);
+    return GetStringTable().GetString(OBJ_STRING_ID_NAME);
 }
 
 void SceneryGroupObject::ReadItems(IStream * stream)
