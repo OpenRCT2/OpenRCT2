@@ -76,6 +76,11 @@ void SmallSceneryObject::Load()
             _legacyType.small_scenery.scenery_tab_id = entryIndex;
         }
     }
+
+    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG16)
+    {
+        _legacyType.small_scenery.var_10 = (uint32)_var10data;
+    }
 }
 
 void SmallSceneryObject::Unload()

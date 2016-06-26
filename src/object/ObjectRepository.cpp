@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <unordered_map>
 #include <vector>
 
 #include "../common.h"
@@ -55,10 +56,34 @@ struct QueryDirectoryResult
     uint32  FileDateModifiedChecksum;
 };
 
+struct ObjectEntryHash
+{
+    size_t operator()(const rct_object_entry &entry) const
+    {
+        uint32 hash = 5381;
+        for (int i = 0; i < 8; i++)
+        {
+            hash = ((hash << 5) + hash) + entry.name[i];
+        }
+        return hash;
+    }
+};
+ 
+struct ObjectEntryEqual
+{
+    bool operator()(const rct_object_entry &lhs, const rct_object_entry &rhs) const
+    {
+        return memcmp(&lhs.name, &rhs.name, 8) == 0;
+    }
+};
+
+using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
+
 class ObjectRepository : public IObjectRepository
 {
     std::vector<ObjectRepositoryItem>   _items;
     QueryDirectoryResult                _queryDirectoryResult;
+    ObjectEntryMap                      _itemMap;
 
 public:
     ~ObjectRepository()
@@ -79,14 +104,10 @@ public:
 
     const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) override
     {
-        for (uint32 i = 0; i < _items.size(); i++)
+        auto kvp = _itemMap.find(*objectEntry);
+        if (kvp != _itemMap.end())
         {
-            ObjectRepositoryItem * item = &_items[i];
-            rct_object_entry * itemEntry = (rct_object_entry*)&item->ObjectEntry;
-            if (object_entry_compare(itemEntry, objectEntry))
-            {
-                return item;
-            }
+            return &_items[kvp->second];
         }
         return nullptr;
     }
@@ -110,6 +131,7 @@ private:
             FreeItem(&_items[i]);
         }
         _items.clear();
+        _itemMap.clear();
     }
 
     void QueryDirectory()
@@ -164,7 +186,7 @@ private:
             Memory::Copy<void>(&item.ObjectEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
             item.Path = String::Duplicate(path);
             item.Name = String::Duplicate(object->GetName());
-            _items.push_back(item);
+            AddItem(&item);
         }
     }
 
@@ -187,7 +209,7 @@ private:
                 for (uint32 i = 0; i < header.NumItems; i++)
                 {
                     ObjectRepositoryItem item = ReadItem(&fs);
-                    _items.push_back(item);
+                    AddItem(&item);
                 }
                 return true;
             }
@@ -228,6 +250,15 @@ private:
         {
             log_error("Unable to write object repository index.");
         }
+    }
+
+    void AddItem(ObjectRepositoryItem * item)
+    {
+        _items.push_back(*item);
+        size_t index = _items.size() - 1;
+        rct_object_entry entry;
+        Memory::Copy<void>(&entry, &item->ObjectEntry, sizeof(rct_object_entry));
+        _itemMap[entry] = index;
     }
 
     static ObjectRepositoryItem ReadItem(IStream * stream)
