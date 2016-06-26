@@ -168,6 +168,8 @@ void object_create_identifier_name(char* string_buffer, const rct_object_entry* 
  */
 void set_load_objects_fail_reason()
 {
+	return;
+
 	rct_object_entry *object;
 	memcpy(&object, gCommonFormatArgs, sizeof(rct_object_entry*));
 	
