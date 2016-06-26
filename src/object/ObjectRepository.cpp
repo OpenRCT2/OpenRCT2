@@ -33,10 +33,12 @@
 
 extern "C"
 {
+    #include "../config.h"
     #include "../localisation/localisation.h"
     #include "../object.h"
     #include "../platform/platform.h"
     #include "../scenario.h"
+    #include "../util/sawyercoding.h"
 }
 
 constexpr uint16 OBJECT_REPOSITORY_VERSION = 6;
@@ -137,6 +139,36 @@ public:
             object = ObjectFactory::CreateObjectFromLegacyFile(item->Path);
         }
         return object;
+    }
+
+    void AddObject(const rct_object_entry * objectEntry, const void * data, size_t dataSize) override
+    {
+        char objectName[9] = { 0 };
+        Memory::Copy(objectName, objectEntry->name, 8);
+
+        int realChecksum = object_calculate_checksum(objectEntry, (const uint8 *)data, (int)dataSize);
+        if (realChecksum != objectEntry->checksum)
+        {
+            log_error("Checksum mismatch from packed object: %.8s", objectName);
+            if (!gConfigGeneral.allow_loading_with_incorrect_checksum)
+            {
+                return;
+            }
+        }
+
+        utf8 path[MAX_PATH];
+        GetPathForNewObject(path, sizeof(path), objectName);
+
+        Console::WriteLine("Adding object: [%s]", objectName);
+        try
+        {
+            SaveObject(path, objectEntry, data, dataSize);
+            ScanObject(path);
+        }
+        catch (Exception ex)
+        {
+            Console::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
+        }
     }
 
 private:
@@ -374,6 +406,50 @@ private:
         item->ThemeObjects = nullptr;
     }
 
+    static void SaveObject(const utf8 * path, const rct_object_entry * entry, const void * data, size_t dataSize)
+    {
+        // TODO
+        // auto fs = FileStream(path, FILE_MODE_WRITE);
+        // fs.Write(entry, sizeof(entry));
+    }
+
+    static void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
+    {
+        char normalisedName[9] = { 0 };
+        for (int i = 0; i < 8; i++)
+        {
+            if (name[i] != ' ')
+            {
+                normalisedName[i] = toupper(name[i]);
+            }
+            else
+            {
+                normalisedName[i] = '\0';
+            }
+        }
+
+        substitute_path(buffer, gRCT2AddressObjectDataPath, normalisedName);
+        char * lastCh = buffer + strlen(buffer);
+        strcat(buffer, ".DAT");
+
+        for (; platform_file_exists(buffer);)
+        {
+            for (char * ch = lastCh - 1; ; ch--)
+            {
+                if (*ch == '\\')
+                {
+                    substitute_path(buffer, gRCT2AddressObjectDataPath, "00000000.DAT");
+                    break;
+                }
+                if (*ch < '0') *ch = '0';
+                else if (*ch == '9') *ch = 'A';
+                else if (*ch == 'Z') *ch = '0';
+                else (*ch)++;
+                if (*ch != '0') break;
+            }
+        }
+    }
+
     static void GetRepositoryPath(utf8 * buffer, size_t bufferSize)
     {
         platform_get_user_directory(buffer, nullptr);
@@ -538,5 +614,32 @@ extern "C"
                 }
             }
         }
+    }
+
+    int object_load_packed(SDL_RWops * rw)
+    {
+        rct_object_entry entry;
+        SDL_RWread(rw, &entry, 16, 1);
+
+        uint8 * chunk = Memory::Allocate<uint8>(0x600000);
+        if (chunk == nullptr)
+        {
+            log_error("Failed to allocate buffer for packed object.");
+            return 0;
+        }
+
+        uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
+        chunk = Memory::Reallocate(chunk, chunkSize);
+        if (chunk == nullptr)
+        {
+            log_error("Failed to reallocate buffer for packed object.");
+            return 0;
+        }
+
+        IObjectRepository * objRepo = GetObjectRepository();
+        objRepo->AddObject(&entry, chunk, chunkSize);
+
+        Memory::Free(chunk);
+        return 1;
     }
 }

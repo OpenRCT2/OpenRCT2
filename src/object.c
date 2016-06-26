@@ -132,7 +132,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 *
 *  rct2: 0x006AA2B7
 */
-int object_load_packed(SDL_RWops* rw)
+int object_load_packed_old(SDL_RWops* rw)
 {
 	object_unload_all();
 
