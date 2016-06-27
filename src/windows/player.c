@@ -318,8 +318,11 @@ void window_player_overview_kick_player(rct_window* w, int strReasonID, const ch
 	if (strReasonID == STR_KICK_REASON_OTHER_REASON && (reason && strcmp(reason, "") != 0)) {
 		strncpy(msg, reason, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE);
 	}
+	else if (strReasonID == STR_KICK_REASON_NO_REASON || strReasonID == STR_KICK_REASON_OTHER_REASON) {
+		format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+	}
 	else {
-		format_string(msg, strReasonID == STR_KICK_REASON_NO_REASON || strReasonID == STR_KICK_REASON_OTHER_REASON ? STR_MULTIPLAYER_KICKED_REASON : strReasonID, NULL);
+		format_string(msg, strReasonID, NULL);
 	}
 #else
 	char msg[128];
@@ -400,7 +403,11 @@ void window_player_overview_dropdown(rct_window *w, int widgetIndex, int dropdow
 	}
 	else if (widgetIndex == WIDX_KICK) {
 		if (KickReasonStringIds[dropdownIndex] == STR_KICK_REASON_OTHER_REASON) {
+#ifdef DISABLE_NETWORK
 			window_text_input_open(w, widgetIndex, STR_ACTION_KICK_PLAYER, STR_ENTER_KICK_REASON_DESCRIPTION, STR_NONE, 0, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE);
+#else
+			window_text_input_open(w, widgetIndex, STR_ACTION_KICK_PLAYER, STR_ENTER_KICK_REASON_DESCRIPTION, STR_NONE, 0, 128);
+#endif
 		}
 		else {
 			window_player_overview_kick_player(w, KickReasonStringIds[dropdownIndex], "");
