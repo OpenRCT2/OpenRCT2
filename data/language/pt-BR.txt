@@ -942,8 +942,8 @@ STR_0936    :Entrada do parque no caminho
 STR_0937    :{SMALLFONT}{BLACK}Opções de visão
 STR_0938    :{SMALLFONT}{BLACK}Ajuste de altura do solo e inclinação
 STR_0939    :Subterrâneo/Visão interna
-STR_0940    :Remover terreno base
-STR_0941    :Remover faces verticais
+STR_0940    :Esconder Terreno Base
+STR_0941    :Esconder Faces Verticais
 STR_0942    :Ver Através dos Brinquedos
 STR_0943    :Ver Através dos Cenários
 STR_0944    :Salvar
@@ -2505,16 +2505,16 @@ STR_2497    :Afastar vista
 STR_2498    :Aproximar vista
 STR_2499    :Rotacionar vista no sentido horário
 STR_2500    :Rotacionar objeto de construção
-STR_2501    :Vista subterrânea
-STR_2502    :Terreno base invisível
-STR_2503    :Terreno vertical invisível
-STR_2504    :Brinquedos invisíveis
-STR_2505    :Cenários invisíveis
-STR_2506    :Suportes invisíveis
-STR_2507    :Pessoas invisíveis
-STR_2508    :Marcas de altura no terreno
-STR_2509    :Marcas de altura nos trilhos
-STR_2510    :Marcas de altura nos caminhos
+STR_2501    :Alternar vista subterrânea
+STR_2502    :Alternar terreno base escondido
+STR_2503    :Alternar terreno vertical escondido
+STR_2504    :Alternar ver através dos brinquedos 
+STR_2505    :Alternar ver através dos cenários 
+STR_2506    :Alternar suportes invisíveis
+STR_2507    :Alternar pessoas invisíveis
+STR_2508    :Alternar marcas de altura no terreno
+STR_2509    :Alternar marcas de altura nos trilhos
+STR_2510    :Alternar marcas de altura nos caminhos
 STR_2511    :Ajustar terreno
 STR_2512    :Ajustar água
 STR_2513    :Construir cenário
