@@ -49,6 +49,7 @@ struct ObjectRepositoryHeader
     uint32  TotalFiles;
     uint64  TotalFileSize;
     uint32  FileDateModifiedChecksum;
+    uint32  PathChecksum;
     uint32  NumItems;
 };
 
@@ -57,6 +58,7 @@ struct QueryDirectoryResult
     uint32  TotalFiles;
     uint64  TotalFileSize;
     uint32  FileDateModifiedChecksum;
+    uint32  PathChecksum;
 };
 
 struct ObjectEntryHash
@@ -97,7 +99,15 @@ public:
     void LoadOrConstruct()
     {
         ClearItems();
-        QueryDirectory();
+
+        _queryDirectoryResult = { 0 };
+
+        utf8 path[MAX_PATH];
+        GetRCT2ObjectPath(path, sizeof(path));
+        QueryDirectory(&_queryDirectoryResult, path);
+        GetUserObjectPath(path, sizeof(path));
+        QueryDirectory(&_queryDirectoryResult, path);
+        
         if (!Load())
         {
             Construct();
@@ -184,12 +194,15 @@ private:
         _itemMap.clear();
     }
 
-    void QueryDirectory()
+    void QueryDirectory(QueryDirectoryResult * result, const utf8 * directory)
     {
-        QueryDirectoryResult * result = &_queryDirectoryResult;
-
         // Enumerate through each object in the directory
-        int enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
+        utf8 * pattern = Memory::Allocate<utf8>(MAX_PATH);
+        String::Set(pattern, MAX_PATH, directory);
+        Path::Append(pattern, MAX_PATH, "*.dat");
+
+        // Query files
+        int enumFileHandle = platform_enumerate_files_begin(pattern);
         if (enumFileHandle != INVALID_HANDLE)
         {
             file_info enumFileInfo;
@@ -201,8 +214,30 @@ private:
                     (uint32)(enumFileInfo.last_modified >> 32) ^
                     (uint32)(enumFileInfo.last_modified & 0xFFFFFFFF);
                 result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
+                result->PathChecksum += GetPathChecksum(directory, enumFileInfo.path);
             }
             platform_enumerate_files_end(enumFileHandle);
+        }
+
+        Memory::Free(pattern);
+
+        // Query sub-directories
+        int enumDirectoryHandle = platform_enumerate_directories_begin(directory);
+        if (enumDirectoryHandle != INVALID_HANDLE)
+        {
+            utf8 * directoryAbs = Memory::Allocate<utf8>(MAX_PATH);
+            utf8 * directoryRel = Memory::Allocate<utf8>(MAX_PATH);
+
+            while (platform_enumerate_directories_next(enumDirectoryHandle, directoryRel))
+            {
+                String::Set(directoryAbs, MAX_PATH, directory);
+                Path::Append(directoryAbs, MAX_PATH, directoryRel);
+                QueryDirectory(result, directoryAbs);
+            }
+            platform_enumerate_directories_end(enumDirectoryHandle);
+
+            Memory::Free(directoryRel);
+            Memory::Free(directoryAbs);
         }
     }
 
@@ -216,26 +251,64 @@ private:
         auto stopwatch = Stopwatch();
         stopwatch.Start();
 
-        int enumFileHandle = platform_enumerate_files_begin(gRCT2AddressObjectDataPath);
-        if (enumFileHandle != INVALID_HANDLE)
-        {
-            file_info enumFileInfo;
-            while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo))
-            {
-                utf8 objectPath[MAX_PATH];
-                String::Set(objectPath, sizeof(objectPath), objectDirectory);
-                Path::Append(objectPath, sizeof(objectPath), enumFileInfo.path);
-
-                ScanObject(objectPath);
-            }
-            platform_enumerate_files_end(enumFileHandle);
-        }
+        utf8 path[MAX_PATH];
+        GetRCT2ObjectPath(path, sizeof(path));
+        ScanDirectory(path);
+        GetUserObjectPath(path, sizeof(path));
+        ScanDirectory(path);
 
         stopwatch.Stop();
         Console::WriteLine("Scanning complete in %.2f seconds.", stopwatch.GetElapsedMilliseconds() / 1000.0f);
     }
 
-    void ScanObject(utf8 * path)
+    void ScanDirectory(const utf8 * directory)
+    {
+        // Enumerate through each object in the directory
+        utf8 * pattern = Memory::Allocate<utf8>(MAX_PATH);
+        String::Set(pattern, MAX_PATH, directory);
+        Path::Append(pattern, MAX_PATH, "*.dat");
+
+        // Query files
+        int enumFileHandle = platform_enumerate_files_begin(pattern);
+        if (enumFileHandle != INVALID_HANDLE)
+        {
+            utf8 * pathAbs = Memory::Allocate<utf8>(MAX_PATH);
+
+            file_info enumFileInfo;
+            while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo))
+            {
+                String::Set(pathAbs, MAX_PATH, directory);
+                Path::Append(pathAbs, MAX_PATH, enumFileInfo.path);
+                ScanObject(pathAbs);
+            }
+            platform_enumerate_files_end(enumFileHandle);
+
+            Memory::Free(pathAbs);
+        }
+
+        Memory::Free(pattern);
+
+        // Query sub-directories
+        int enumDirectoryHandle = platform_enumerate_directories_begin(directory);
+        if (enumDirectoryHandle != INVALID_HANDLE)
+        {
+            utf8 * directoryAbs = Memory::Allocate<utf8>(MAX_PATH);
+            utf8 * directoryRel = Memory::Allocate<utf8>(MAX_PATH);
+
+            while (platform_enumerate_directories_next(enumDirectoryHandle, directoryRel))
+            {
+                String::Set(directoryAbs, MAX_PATH, directory);
+                Path::Append(directoryAbs, MAX_PATH, directoryRel);
+                ScanDirectory(directoryAbs);
+            }
+            platform_enumerate_directories_end(enumDirectoryHandle);
+
+            Memory::Free(directoryRel);
+            Memory::Free(directoryAbs);
+        }
+    }
+
+    void ScanObject(const utf8 * path)
     {
         Object * object = ObjectFactory::CreateObjectFromLegacyFile(path);
         if (object != nullptr)
@@ -245,6 +318,8 @@ private:
             item.Path = String::Duplicate(path);
             item.Name = String::Duplicate(object->GetName());
             AddItem(&item);
+
+            delete object;
         }
     }
 
@@ -261,7 +336,8 @@ private:
             if (header.Version == OBJECT_REPOSITORY_VERSION &&
                 header.TotalFiles == _queryDirectoryResult.TotalFiles &&
                 header.TotalFileSize == _queryDirectoryResult.TotalFileSize &&
-                header.FileDateModifiedChecksum == _queryDirectoryResult.FileDateModifiedChecksum)
+                header.FileDateModifiedChecksum == _queryDirectoryResult.FileDateModifiedChecksum &&
+                header.PathChecksum == _queryDirectoryResult.PathChecksum)
             {
                 // Header matches, so the index is not out of date
                 for (uint32 i = 0; i < header.NumItems; i++)
@@ -295,6 +371,7 @@ private:
             header.TotalFiles = _queryDirectoryResult.TotalFiles;
             header.TotalFileSize = _queryDirectoryResult.TotalFileSize;
             header.FileDateModifiedChecksum = _queryDirectoryResult.FileDateModifiedChecksum;
+            header.PathChecksum = _queryDirectoryResult.PathChecksum;
             header.NumItems = _items.size();
             fs.WriteValue(header);
 
@@ -310,13 +387,27 @@ private:
         }
     }
 
-    void AddItem(ObjectRepositoryItem * item)
+    bool AddItem(ObjectRepositoryItem * item)
     {
-        _items.push_back(*item);
-        size_t index = _items.size() - 1;
         rct_object_entry entry;
         Memory::Copy<void>(&entry, &item->ObjectEntry, sizeof(rct_object_entry));
-        _itemMap[entry] = index;
+
+        const ObjectRepositoryItem * conflict = FindObject(&entry);
+        if (conflict == nullptr)
+        {
+            _items.push_back(*item);
+            size_t index = _items.size() - 1;
+            _itemMap[entry] = index;
+            return true;
+        }
+        else
+        {
+            Console::Error::WriteFormat("Object conflict: '%s'", conflict->Path);
+            Console::Error::WriteLine();
+            Console::Error::WriteFormat("               : '%s'", item->Path);
+            Console::Error::WriteLine();
+            return false;
+        }
     }
 
     static ObjectRepositoryItem ReadItem(IStream * stream)
@@ -476,6 +567,41 @@ private:
     {
         platform_get_user_directory(buffer, nullptr);
         strcat(buffer, "objects.idx");
+    }
+
+    static void GetRCT2ObjectPath(utf8 * buffer, size_t bufferSize)
+    {
+        Path::GetDirectory(buffer, bufferSize, gRCT2AddressObjectDataPath);
+    }
+
+    static void GetUserObjectPath(utf8 * buffer, size_t bufferSize)
+    {
+        platform_get_user_directory(buffer, "object");
+    }
+
+    static uint32 GetPathChecksum(const utf8 * directory, const utf8 * file)
+    {
+        uint32 hashA = 0xD8430DED;
+        for (const utf8 * ch = directory; *ch != '\0'; ch++)
+        {
+            hashA += (*ch);
+            hashA += (hashA << 10);
+            hashA ^= (hashA >> 6);
+        }
+
+        uint32 hashB = 0xAA7F8EA9;
+        for (const utf8 * ch = file; *ch != '\0'; ch++)
+        {
+            hashB += (*ch);
+            hashB += (hashB << 10);
+            hashB ^= (hashB >> 6);
+        }
+
+        uint32 hash = hashA ^ hashB;
+        hash += (hash << 3);
+        hash ^= (hash >> 11);
+        hash += (hash << 15);
+        return hash;
     }
 };
 
