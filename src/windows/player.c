@@ -306,32 +306,25 @@ void window_player_overview_show_kick_dropdown(rct_window *w, rct_widget *widget
 	gDropdownHighlightedIndex = 0;
 }
 
-void window_player_overview_kick_player(rct_window* w, int strReasonIndex, const char* reason)
+void window_player_overview_kick_player(rct_window* w, int strReasonID, const char* reason)
 {
 	uint8 playerid = (uint8)w->number;
 	int player = network_get_player_index(playerid);
 	if (player == -1) {
 		return;
 	}
-	char msg[128];
-	if (strReasonIndex == STR_KICK_REASON_NO_REASON) {
-		format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
-	}
-	else if (strReasonIndex == STR_KICK_REASON_OTHER_REASON) {
-		if (!reason || strcmp(reason, "") == 0) {
-			format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
-		}
-		else {
 #ifndef DISABLE_NETWORK
-			snprintf(msg, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE, reason);
-#else
-			format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
-#endif // !DISABLE_NETWORK
-		}
+	char msg[NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE];
+	if (strReasonID == STR_KICK_REASON_OTHER_REASON && (reason && strcmp(reason, "") != 0)) {
+		strncpy(msg, reason, NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE);
 	}
 	else {
-		format_string(msg, strReasonIndex, NULL);
+		format_string(msg, strReasonID == STR_KICK_REASON_NO_REASON || strReasonID == STR_KICK_REASON_OTHER_REASON ? STR_MULTIPLAYER_KICKED_REASON : strReasonID, NULL);
 	}
+#else
+	char msg[128];
+	format_string(msg, STR_MULTIPLAYER_KICKED_REASON, NULL);
+#endif // !DISABLE_NETWORK
 	network_kick_player(playerid, msg);
 }
 
@@ -387,7 +380,7 @@ void window_player_overview_textinput(rct_window *w, int widgetIndex, char* text
 		return;
 	}
 	if (widgetIndex == WIDX_KICK) {
-		window_player_overview_kick_player(w, STR_KICK_REASON_OTHER_REASON, _strdup(text));
+		window_player_overview_kick_player(w, STR_KICK_REASON_OTHER_REASON, text);
 	}
 }
 
