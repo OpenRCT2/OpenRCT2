@@ -541,25 +541,22 @@ private:
             }
         }
 
-        substitute_path(buffer, gRCT2AddressObjectDataPath, normalisedName);
-        char * lastCh = buffer + strlen(buffer);
-        strcat(buffer, ".DAT");
+        GetUserObjectPath(buffer, bufferSize);
+        platform_ensure_directory_exists(buffer);
+
+        Path::Append(buffer, bufferSize, normalisedName);
+        String::Append(buffer, bufferSize, ".DAT");
 
         for (; platform_file_exists(buffer);)
         {
-            for (char * ch = lastCh - 1; ; ch--)
-            {
-                if (*ch == '\\')
-                {
-                    substitute_path(buffer, gRCT2AddressObjectDataPath, "00000000.DAT");
-                    break;
-                }
-                if (*ch < '0') *ch = '0';
-                else if (*ch == '9') *ch = 'A';
-                else if (*ch == 'Z') *ch = '0';
-                else (*ch)++;
-                if (*ch != '0') break;
-            }
+            uint32 counter = 2;
+            utf8 counterString[8];
+            snprintf(counterString, sizeof(counterString), "-%02X", counter);
+
+            GetUserObjectPath(buffer, bufferSize);
+            Path::Append(buffer, bufferSize, normalisedName);
+            String::Append(buffer, bufferSize, counterString);
+            String::Append(buffer, bufferSize, ".DAT");
         }
     }
 
