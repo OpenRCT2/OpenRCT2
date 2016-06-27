@@ -211,7 +211,7 @@ private:
         utf8 objectDirectory[MAX_PATH];
         Path::GetDirectory(objectDirectory, sizeof(objectDirectory), gRCT2AddressObjectDataPath);
 
-        Console::WriteLine("Scanning objects...");
+        Console::WriteLine("Scanning %lu objects...", _queryDirectoryResult.TotalFiles);
 
         auto stopwatch = Stopwatch();
         stopwatch.Start();
