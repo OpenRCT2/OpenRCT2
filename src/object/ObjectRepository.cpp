@@ -19,6 +19,7 @@
 
 #include "../common.h"
 #include "../core/Console.hpp"
+#include "../core/FileEnumerator.h"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -196,48 +197,23 @@ private:
 
     void QueryDirectory(QueryDirectoryResult * result, const utf8 * directory)
     {
-        // Enumerate through each object in the directory
-        utf8 * pattern = Memory::Allocate<utf8>(MAX_PATH);
-        String::Set(pattern, MAX_PATH, directory);
-        Path::Append(pattern, MAX_PATH, "*.dat");
+        utf8 pattern[MAX_PATH];
+        String::Set(pattern, sizeof(pattern), directory);
+        Path::Append(pattern, sizeof(pattern), "*.dat");
 
-        // Query files
-        int enumFileHandle = platform_enumerate_files_begin(pattern);
-        if (enumFileHandle != INVALID_HANDLE)
+        auto fileEnumerator = FileEnumerator(pattern, true);
+        while (fileEnumerator.Next())
         {
-            file_info enumFileInfo;
-            while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo))
-            {
-                result->TotalFiles++;
-                result->TotalFileSize += enumFileInfo.size;
-                result->FileDateModifiedChecksum ^=
-                    (uint32)(enumFileInfo.last_modified >> 32) ^
-                    (uint32)(enumFileInfo.last_modified & 0xFFFFFFFF);
-                result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
-                result->PathChecksum += GetPathChecksum(directory, enumFileInfo.path);
-            }
-            platform_enumerate_files_end(enumFileHandle);
-        }
+            const file_info * enumFileInfo = fileEnumerator.GetFileInfo();
+            const utf8 * enumPath = fileEnumerator.GetPath();
 
-        Memory::Free(pattern);
-
-        // Query sub-directories
-        int enumDirectoryHandle = platform_enumerate_directories_begin(directory);
-        if (enumDirectoryHandle != INVALID_HANDLE)
-        {
-            utf8 * directoryAbs = Memory::Allocate<utf8>(MAX_PATH);
-            utf8 * directoryRel = Memory::Allocate<utf8>(MAX_PATH);
-
-            while (platform_enumerate_directories_next(enumDirectoryHandle, directoryRel))
-            {
-                String::Set(directoryAbs, MAX_PATH, directory);
-                Path::Append(directoryAbs, MAX_PATH, directoryRel);
-                QueryDirectory(result, directoryAbs);
-            }
-            platform_enumerate_directories_end(enumDirectoryHandle);
-
-            Memory::Free(directoryRel);
-            Memory::Free(directoryAbs);
+            result->TotalFiles++;
+            result->TotalFileSize += enumFileInfo->size;
+            result->FileDateModifiedChecksum ^=
+                (uint32)(enumFileInfo->last_modified >> 32) ^
+                (uint32)(enumFileInfo->last_modified & 0xFFFFFFFF);
+            result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
+            result->PathChecksum += GetPathChecksum(enumPath);
         }
     }
 
@@ -263,48 +239,15 @@ private:
 
     void ScanDirectory(const utf8 * directory)
     {
-        // Enumerate through each object in the directory
-        utf8 * pattern = Memory::Allocate<utf8>(MAX_PATH);
-        String::Set(pattern, MAX_PATH, directory);
-        Path::Append(pattern, MAX_PATH, "*.dat");
+        utf8 pattern[MAX_PATH];
+        String::Set(pattern, sizeof(pattern), directory);
+        Path::Append(pattern, sizeof(pattern), "*.dat");
 
-        // Query files
-        int enumFileHandle = platform_enumerate_files_begin(pattern);
-        if (enumFileHandle != INVALID_HANDLE)
+        auto fileEnumerator = FileEnumerator(pattern, true);
+        while (fileEnumerator.Next())
         {
-            utf8 * pathAbs = Memory::Allocate<utf8>(MAX_PATH);
-
-            file_info enumFileInfo;
-            while (platform_enumerate_files_next(enumFileHandle, &enumFileInfo))
-            {
-                String::Set(pathAbs, MAX_PATH, directory);
-                Path::Append(pathAbs, MAX_PATH, enumFileInfo.path);
-                ScanObject(pathAbs);
-            }
-            platform_enumerate_files_end(enumFileHandle);
-
-            Memory::Free(pathAbs);
-        }
-
-        Memory::Free(pattern);
-
-        // Query sub-directories
-        int enumDirectoryHandle = platform_enumerate_directories_begin(directory);
-        if (enumDirectoryHandle != INVALID_HANDLE)
-        {
-            utf8 * directoryAbs = Memory::Allocate<utf8>(MAX_PATH);
-            utf8 * directoryRel = Memory::Allocate<utf8>(MAX_PATH);
-
-            while (platform_enumerate_directories_next(enumDirectoryHandle, directoryRel))
-            {
-                String::Set(directoryAbs, MAX_PATH, directory);
-                Path::Append(directoryAbs, MAX_PATH, directoryRel);
-                ScanDirectory(directoryAbs);
-            }
-            platform_enumerate_directories_end(enumDirectoryHandle);
-
-            Memory::Free(directoryRel);
-            Memory::Free(directoryAbs);
+            const utf8 * enumPath = fileEnumerator.GetPath();
+            ScanObject(enumPath);
         }
     }
 
@@ -576,25 +519,15 @@ private:
         platform_get_user_directory(buffer, "object");
     }
 
-    static uint32 GetPathChecksum(const utf8 * directory, const utf8 * file)
+    static uint32 GetPathChecksum(const utf8 * path)
     {
-        uint32 hashA = 0xD8430DED;
-        for (const utf8 * ch = directory; *ch != '\0'; ch++)
+        uint32 hash = 0xD8430DED;
+        for (const utf8 * ch = path; *ch != '\0'; ch++)
         {
-            hashA += (*ch);
-            hashA += (hashA << 10);
-            hashA ^= (hashA >> 6);
+            hash += (*ch);
+            hash += (hash << 10);
+            hash ^= (hash >> 6);
         }
-
-        uint32 hashB = 0xAA7F8EA9;
-        for (const utf8 * ch = file; *ch != '\0'; ch++)
-        {
-            hashB += (*ch);
-            hashB += (hashB << 10);
-            hashB ^= (hashB >> 6);
-        }
-
-        uint32 hash = hashA ^ hashB;
         hash += (hash << 3);
         hash ^= (hash >> 11);
         hash += (hash << 15);
