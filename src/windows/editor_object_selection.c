@@ -911,9 +911,16 @@ static void window_editor_object_selection_resize(rct_window *w)
 {
 	window_set_resize(w, 600, 400, 1200, 1000);
 }
-
-#define FILTER_DROPDOWN_POSITION_SELECTED 5
-#define FILTER_DROPDOWN_POSITION_NONSELECTED 6
+enum
+{
+	DDIX_FILTER_RCT2,
+	DDIX_FILTER_WW,
+	DDIX_FILTER_TT,
+	DDIX_FILTER_CUSTOM,
+	DDIX_FILTER_SEPERATOR,
+	DDIX_FILTER_SELECTED,
+	DDIX_FILTER_NONSELECTED,
+};
 void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int num_items;
@@ -924,23 +931,23 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 	case WIDX_FILTER_DROPDOWN:
 
 		num_items = 4;
-		gDropdownItemsFormat[0] = 1156;
-		gDropdownItemsFormat[1] = 1156;
-		gDropdownItemsFormat[2] = 1156;
-		gDropdownItemsFormat[3] = 1156;
-		gDropdownItemsArgs[0] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
-		gDropdownItemsArgs[1] = STR_OBJECT_FILTER_WW;
-		gDropdownItemsArgs[2] = STR_OBJECT_FILTER_TT;
-		gDropdownItemsArgs[3] = STR_OBJECT_FILTER_CUSTOM;
+		gDropdownItemsFormat[DDIX_FILTER_RCT2] = 1156;
+		gDropdownItemsFormat[DDIX_FILTER_WW] = 1156;
+		gDropdownItemsFormat[DDIX_FILTER_TT] = 1156;
+		gDropdownItemsFormat[DDIX_FILTER_CUSTOM] = 1156;
+		gDropdownItemsArgs[DDIX_FILTER_RCT2] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
+		gDropdownItemsArgs[DDIX_FILTER_WW] = STR_OBJECT_FILTER_WW;
+		gDropdownItemsArgs[DDIX_FILTER_TT] = STR_OBJECT_FILTER_TT;
+		gDropdownItemsArgs[DDIX_FILTER_CUSTOM] = STR_OBJECT_FILTER_CUSTOM;
 		//Track manager cannot select multiple, so only show selection filters if not in track manager
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
 			num_items = 7;
-			gDropdownItemsFormat[4] = 0;
-			gDropdownItemsFormat[FILTER_DROPDOWN_POSITION_SELECTED] = 1156;
-			gDropdownItemsFormat[FILTER_DROPDOWN_POSITION_NONSELECTED] = 1156;
-			gDropdownItemsArgs[4] = STR_NONE;
-			gDropdownItemsArgs[FILTER_DROPDOWN_POSITION_SELECTED] = STR_SELECTED_ONLY;
-			gDropdownItemsArgs[FILTER_DROPDOWN_POSITION_NONSELECTED] = STR_NON_SELECTED_ONLY;
+			gDropdownItemsFormat[DDIX_FILTER_SEPERATOR] = 0;
+			gDropdownItemsFormat[DDIX_FILTER_SELECTED] = 1156;
+			gDropdownItemsFormat[DDIX_FILTER_NONSELECTED] = 1156;
+			gDropdownItemsArgs[DDIX_FILTER_SEPERATOR] = STR_NONE;
+			gDropdownItemsArgs[DDIX_FILTER_SELECTED] = STR_SELECTED_ONLY;
+			gDropdownItemsArgs[DDIX_FILTER_NONSELECTED] = STR_NON_SELECTED_ONLY;
 		}
 
 		window_dropdown_show_text(
@@ -954,8 +961,8 @@ void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct
 
 		gDropdownItemsChecked = _filter_flags & 0xF;
 		if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
-			dropdown_set_checked(FILTER_DROPDOWN_POSITION_SELECTED, _FILTER_SELECTED);
-			dropdown_set_checked(FILTER_DROPDOWN_POSITION_NONSELECTED, _FILTER_NONSELECTED);
+			dropdown_set_checked(DDIX_FILTER_SELECTED, _FILTER_SELECTED);
+			dropdown_set_checked(DDIX_FILTER_NONSELECTED, _FILTER_NONSELECTED);
 		}
 		break;
 
@@ -969,11 +976,11 @@ static void window_editor_object_selection_dropdown(rct_window *w, int widgetInd
 
 	switch (widgetIndex) {
 	case WIDX_FILTER_DROPDOWN:
-		if (dropdownIndex == FILTER_DROPDOWN_POSITION_SELECTED) {
+		if (dropdownIndex == DDIX_FILTER_SELECTED) {
 			_filter_flags ^= FILTER_SELECTED;
 			_filter_flags &= ~FILTER_NONSELECTED;
 		}
-		else if (dropdownIndex == FILTER_DROPDOWN_POSITION_NONSELECTED) {
+		else if (dropdownIndex == DDIX_FILTER_NONSELECTED) {
 			_filter_flags ^= FILTER_NONSELECTED;
 			_filter_flags &= ~FILTER_SELECTED;
 		}
