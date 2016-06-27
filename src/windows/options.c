@@ -1194,7 +1194,7 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 		case WIDX_CURRENCY_DROPDOWN:
 			if(dropdownIndex == CURRENCY_CUSTOM+1) { // Add 1 because the separator occupies a position
 				gConfigGeneral.currency_format = (sint8)dropdownIndex-1;
-				window_custom_currency_open();
+				custom_currency_window_open();
 			} else {
 				gConfigGeneral.currency_format = (sint8)dropdownIndex;
 			}

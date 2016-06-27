@@ -630,7 +630,7 @@ void ride_construction_toolupdate_entrance_exit(int screenX, int screenY);
 void ride_construction_toolupdate_construct(int screenX, int screenY);
 void ride_construction_tooldown_construct(int screenX, int screenY);
 
-void window_custom_currency_open();
+void custom_currency_window_open();
 
 void window_maze_construction_update_pressed_widgets();
 void window_track_place_open(const track_design_file_ref *tdFileRef);
