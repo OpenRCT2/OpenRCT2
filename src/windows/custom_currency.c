@@ -19,10 +19,10 @@
  */
 
 #include "../config.h"
-#include "dropdown.h"
 #include "../localisation/localisation.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
+#include "dropdown.h"
 
 enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
 	WIDX_BACKGROUND,
@@ -48,6 +48,15 @@ rct_widget window_custom_currency_widgets[] = {
 	{ WWT_DROPDOWN_BUTTON,	1,	339,	349,	51,		59,	STR_DROPDOWN_GLYPH,					STR_NONE },
 	{ WIDGETS_END },
 };
+
+
+static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
+static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
+static void custom_currency_window_text_input(struct rct_window *w, int windgetIndex, char *text);
+static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
+
+static void custom_currency_invalidate_money_widgets();
+
 
 static rct_window_event_list _windowCustomCurrencyEvents = {
 	NULL,
@@ -80,17 +89,7 @@ static rct_window_event_list _windowCustomCurrencyEvents = {
 	NULL
 };
 
-static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct_widget *widget);
-static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex);
-static void custom_currency_window_text_input(struct rct_window *w, int windgetIndex, char *text);
-static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void custom_currency_invalidate_money_widgets();
-
-/**
- *
- *	rct2: 0x0066D2AC
- */
 void custom_currency_window_open()
 {
 	rct_window* window;
@@ -139,7 +138,7 @@ static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct
 		CurrencyDescriptors[CURRENCY_CUSTOM].rate += 1;
 		gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
 		config_save_default();
-		custom_currency_invalidate_money_widgets();
+		window_invalidate_all();
 		break;
 
 	case WIDX_RATE_DOWN:
@@ -147,7 +146,7 @@ static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct
 			CurrencyDescriptors[CURRENCY_CUSTOM].rate -= 1;
 			gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
 			config_save_default();
-			custom_currency_invalidate_money_widgets();
+			window_invalidate_all();
 		}
 		break;
 
@@ -209,7 +208,7 @@ static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int 
 		gConfigGeneral.custom_currency_affix = CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode;
 		config_save_default();
 
-		custom_currency_invalidate_money_widgets();
+		window_invalidate_all();
 
 	}
 }
@@ -230,15 +229,13 @@ static void custom_currency_window_text_input(struct rct_window *w, int windgetI
 		);
 
 		config_save_default();
-		custom_currency_invalidate_money_widgets();
+		window_invalidate_all();
 	}
 }
 
 static void custom_currency_invalidate_money_widgets()
 {
-//	widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, 2 /*WIDX_MONEY (not accesible)*/);
-	widget_invalidate_by_class(WC_CUSTOM_CURRENCY_CONFIG, WIDX_RATE);
-
+	window_invalidate_all();
 }
 
 
