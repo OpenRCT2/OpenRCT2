@@ -125,10 +125,6 @@ void custom_currency_window_open()
 
 
 
-/**
-*
-*  rct2: 0x006BB01B
-*/
 static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct_widget *widget)
 {
 	widget = &w->widgets[widgetIndex - 1];
@@ -194,10 +190,6 @@ static void custom_currency_window_mousedown(int widgetIndex, rct_window *w, rct
 	}
 }
 
-/**
-*
-*  rct2: 0x006BB076
-*/
 static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int dropdownIndex)
 {
 	if(dropdownIndex == -1)
