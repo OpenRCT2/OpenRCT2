@@ -4188,6 +4188,8 @@ STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
 STR_5877    :Software
 STR_5878    :Software (hardware display)
 STR_5879    :OpenGL
+STR_5880    :Selected only
+STR_5881    :Non-selected only
 
 #############
 # Scenarios #

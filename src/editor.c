@@ -565,7 +565,7 @@ static bool editor_check_object_group_at_least_one_selected(int objectType)
 	rct_object_entry *entry = gInstalledObjects;
 	uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	for (uint32 i = 0; i < numObjects; i++) {
-		if ((entry->flags & 0x0F) == objectType && (*objectFlag & 1)) {
+		if ((entry->flags & 0x0F) == objectType && (*objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
 			return true;
 		}
 		entry = object_get_next(entry);
