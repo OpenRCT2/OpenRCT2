@@ -55,8 +55,6 @@ static void custom_currency_window_dropdown(rct_window *w, int widgetIndex, int 
 static void custom_currency_window_text_input(struct rct_window *w, int windgetIndex, char *text);
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void custom_currency_invalidate_money_widgets();
-
 
 static rct_window_event_list _windowCustomCurrencyEvents = {
 	NULL,
@@ -231,11 +229,6 @@ static void custom_currency_window_text_input(struct rct_window *w, int windgetI
 		config_save_default();
 		window_invalidate_all();
 	}
-}
-
-static void custom_currency_invalidate_money_widgets()
-{
-	window_invalidate_all();
 }
 
 
