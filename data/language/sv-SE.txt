@@ -4174,6 +4174,8 @@ STR_5876    :{SMALLFONT}{BLACK}Spelmotorn som ska används för att rita spelet.
 STR_5877    :Mjukvara
 STR_5878    :Mjukvara (hårdvaruhantering)
 STR_5879    :OpenGL
+STR_5880    :Ibockade objekt
+STR_5881    :Obockade objekt
 
 #############
 # Scenarion #

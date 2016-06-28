@@ -4180,6 +4180,8 @@ STR_5876    :{SMALLFONT}{BLACK}De engine die wordt gebruikt om het spel te rende
 STR_5877    :Software
 STR_5878    :Software (omgeleid via hardware)
 STR_5879    :OpenGL
+STR_5880    :Geselecteerd
+STR_5881    :Niet-geselecteerd
 
 #############
 # Scenarios #
@@ -4492,112 +4494,112 @@ STR_DTLS    :Deze baai vormt de achtergrond van deze achtbaanuitdaging.
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+STR_DTLS    :Een kasteel met twee achtbanen moet worden ontwikkeld tot een groot themapark.
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :Een park waarin de meeste voetpaden en achtbanen onder de grond liggen.
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :Je mag een vallei met een gletsjer ontwikkelen tot een themapark.
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :In een verre wereld waar geld geen rol speelt moet je een park bouwen om de mensen te vermaken.
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :In dit woestijnpark staan vijf achtbanen die moeten worden afgemaakt.
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled rides
+STR_DTLS    :Dit historische park mag alleen oudere soorten attracties bouwen.
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Ontwikkel dit buitenaardse park om de winst zo groot mogelijk te maken.
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+STR_DTLS    :Dit goed gethematiseerde pretpark heeft al diverse attracties, maar nog voldoende ruimte voor uitbreiding.
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :Een eng park met een grote achtbaan als trekpleister.
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :Het fundament van dit themapark wordt gevormd door twee enorme rotsen die in het zand staan.
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :In dit grote moet je tien grote achtbanen ontwerpen en bouwen.
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :Dit lange, smalle eiland is een uitdagende locatie om een aantal achtbanen te bouwen.
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :An icy landscape needs turning into a thriving theme park
+STR_DTLS    :Een ijzig landschap moet worden veranderd in een bloeiend themapark.
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :Je mag een woestijnpark met enkele slim ontwerpen achtbanen verder ontwikkelen.
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :In this tiny park you must finish building the five existing coasters
+STR_DTLS    :In dit kleine park moet je de vijf bestaande achtbanen afmaken.
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :A large park with a novel transporation system around its edge
+STR_DTLS    :Een groot park dat omringd wordt door een bijzonder transportsysteem.
 
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :This large island is all yours to develop as an amusement park
+STR_DTLS    :Je mag dit grote eiland ontwikkelen tot een pretpark.
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
 STR_PARK    :Urban Jungle
-STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme park developer
+STR_DTLS    :Deze enorme verlaten wolkenkrabber is een unieke kans voor een pretparkontwikkelaar.
 
 <Terror Town>
 STR_SCNR    :Terror Town
 STR_PARK    :Terror Town
-STR_DTLS    :This urban area is all yours to develop into as an amusement park
+STR_DTLS    :Je mag deze stedelijke omgeving ontwikkelen tot een pretpark.
 
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
 STR_PARK    :Megaworld Park
-STR_DTLS    :A giant park already packed full of rides needs improving
+STR_DTLS    :Een enorm park dat al tjokvol attracties staaat moet worden verbeterd.
 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
 STR_PARK    :Venus Ponds
-STR_DTLS    :On a far-away planet this area of land needs turning into a theme park
+STR_DTLS    :Dit stuk land op een verre planet moet worden veranderd in een themapark.
 
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Je moet proberen met kleine winstgevende pretpark ter wereld te bouwen.
 
 ## Real Parks from RCT1
 # None of them had details
@@ -4759,6 +4761,12 @@ STR_DTLS    :Maak je eigen Six Flags-park, door gebruik te maken van attracties 
 STR_SCNR    :  Mythologie - Animatronic-filmset
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Je moet een bestaand pretpark, gebouwd op een oude filmset, beheren en verbeteren. Bouw een eerbetoon aan de pioniers van de stop-motionanimatie, die de wezens uit de mythologie tot leven brachten op het witte doek.
+
+#OCC
+<Panda World>
+STR_SCNR    :Panda World
+STR_PARK    :Panda World
+STR_DTLS    :Voeg meer attracties toe aan dit park met pandathema, en trek meer bezoekers aan.
 
 ##################################
 # Rides/attractions / Attracties #

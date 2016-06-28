@@ -4191,6 +4191,8 @@ STR_5876    :{SMALLFONT}{BLACK}Il motore grafico usato per mostrare la grafica d
 STR_5877    :Software
 STR_5878    :Software (display hardware)
 STR_5879    :OpenGL
+STR_5880    :Solo selezionati
+STR_5881    :Solo non selezionati
 
 #############
 # Scenarios #
