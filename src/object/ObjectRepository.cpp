@@ -622,8 +622,6 @@ extern "C"
 
     void reset_loaded_objects()
     {
-        reset_type_to_ride_entry_index_map();
-
         gTotalNoImages = 0xF26E;
 
         for (int i = 0; i < 721; i++)
@@ -634,6 +632,8 @@ extern "C"
                 object->Load();
             }
         }
+
+        reset_type_to_ride_entry_index_map();
     }
 
     void object_unload_all()
