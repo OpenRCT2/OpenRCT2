@@ -79,6 +79,7 @@ bool FileEnumerator::Next()
                 Path::Append(pattern, sizeof(pattern), _pattern);
 
                 _fileHandle = platform_enumerate_files_begin(pattern);
+                break;
             }
             else
             {
@@ -105,14 +106,17 @@ bool FileEnumerator::Next()
         }
 
         // Next file
-        if (platform_enumerate_files_next(_fileHandle, _fileInfo))
+        if (_fileHandle != INVALID_HANDLE)
         {
-            String::Set(_path, MAX_PATH, _directoryStack.top().Directory);
-            Path::Append(_path, MAX_PATH, _fileInfo->path);
-            return true;
+            if (platform_enumerate_files_next(_fileHandle, _fileInfo))
+            {
+                String::Set(_path, MAX_PATH, _directoryStack.top().Directory);
+                Path::Append(_path, MAX_PATH, _fileInfo->path);
+                return true;
+            }
+            platform_enumerate_files_end(_fileHandle);
+            _fileHandle = INVALID_HANDLE;
         }
-        platform_enumerate_files_end(_fileHandle);
-        _fileHandle = INVALID_HANDLE;
 
         if (_recurse)
         {
