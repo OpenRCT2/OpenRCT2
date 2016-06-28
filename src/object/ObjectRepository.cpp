@@ -116,7 +116,17 @@ public:
         }
     }
 
-    const ObjectRepositoryItem * FindObject(const utf8 * name) override
+    const size_t GetNumObjects() const override
+    {
+        return _items.size();
+    }
+
+    const ObjectRepositoryItem * GetObjects() const override
+    {
+        return _items.data();
+    }
+
+    const ObjectRepositoryItem * FindObject(const utf8 * name) const override
     {
         rct_object_entry entry = { 0 };
         utf8 entryName[9] = { ' ' };
@@ -131,7 +141,7 @@ public:
         return nullptr;
     }
 
-    const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) override
+    const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) const override
     {
         auto kvp = _itemMap.find(*objectEntry);
         if (kvp != _itemMap.end())
@@ -729,5 +739,17 @@ extern "C"
             Memory::Free(chunk);
         }
         return 1;
+    }
+
+    size_t object_repository_get_items_count()
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        return objectRepository->GetNumObjects();
+    }
+
+    const ObjectRepositoryItem * object_repository_get_items()
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        return objectRepository->GetObjects();
     }
 }

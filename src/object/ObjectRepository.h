@@ -18,12 +18,16 @@
 
 #include "../common.h"
 
+#ifdef __cplusplus
 extern "C"
 {
+#endif
     #include "../object.h"
+#ifdef __cplusplus
 }
+#endif
 
-struct ObjectRepositoryItem
+typedef struct ObjectRepositoryItem
 {
     rct_object_entry_extended   ObjectEntry;
     utf8 *                      Path;
@@ -46,14 +50,19 @@ struct ObjectRepositoryItem
             uint8   RideType[3];
         };
     };
-};
+} ObjectRepositoryItem;
+
+#ifdef __cplusplus
 
 interface IObjectRepository
 {
     virtual ~IObjectRepository() { }
-    
-    virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) abstract;
-    virtual const ObjectRepositoryItem *    FindObject(const rct_object_entry * objectEntry) abstract;
+
+    virtual const size_t                    GetNumObjects() const abstract;
+    virtual const ObjectRepositoryItem *    GetObjects() const abstract;
+    virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;
+    virtual const ObjectRepositoryItem *    FindObject(const rct_object_entry * objectEntry) const abstract;
+
     virtual Object *                        LoadObject(const rct_object_entry * objectEntry) abstract;
     virtual void                            AddObject(const rct_object_entry * objectEntry,
                                                       const void * data,
@@ -61,3 +70,10 @@ interface IObjectRepository
 };
 
 IObjectRepository * GetObjectRepository();
+
+#else
+
+size_t                          object_repository_get_items_count();
+const ObjectRepositoryItem *    object_repository_get_items();
+
+#endif
