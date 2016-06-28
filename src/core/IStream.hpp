@@ -47,6 +47,8 @@ interface IStream
     virtual void    Read(void * buffer, uint64 length)              abstract;
     virtual void    Write(const void * buffer, uint64 length)       abstract;
 
+    virtual uint64  TryRead(void * buffer, uint64 length)           abstract;
+
     ///////////////////////////////////////////////////////////////////////////
     // Helper methods
     ///////////////////////////////////////////////////////////////////////////

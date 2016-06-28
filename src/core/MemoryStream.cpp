@@ -149,6 +149,14 @@ void MemoryStream::Read(void * buffer, uint64 length)
     _position = (void*)((uintptr_t)_position + length);
 }
 
+uint64 MemoryStream::TryRead(void * buffer, uint64 length)
+{
+    uint64 remainingBytes = GetLength() - GetPosition();
+    uint64 bytesToRead = Math::Min(length, remainingBytes);
+    Read(buffer, bytesToRead);
+    return bytesToRead;
+}
+
 void MemoryStream::Write(const void * buffer, uint64 length)
 {
     uint64 position = GetPosition();

@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Console.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "ImageTable.h"
@@ -53,5 +54,16 @@ void ImageTable::Read(IStream * stream)
     }
 
     // Read g1 element data
-    stream->Read(_data, _dataSize);
+    size_t readBytes = (size_t)stream->TryRead(_data, _dataSize);
+
+    // If data is shorter than expected (some custom objects are unfortunately like that)
+    size_t unreadBytes = _dataSize - readBytes;
+    if (unreadBytes > 0)
+    {
+        void * ptr = (void*)(((uintptr_t)_data) + readBytes);
+        Memory::Set(ptr, 0, unreadBytes);
+
+        Console::Error::WriteFormat("Warning: Image table size shorter than expected.");
+        Console::Error::WriteLine();
+    }
 }
