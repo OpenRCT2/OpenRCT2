@@ -609,7 +609,7 @@ extern "C"
         IObjectRepository * objRepo = GetObjectRepository();
     }
 
-    int object_load_chunk(int groupIndex, rct_object_entry * entry, int * chunkSize)
+    int object_load_chunk(int groupIndex, const rct_object_entry * entry, int * chunkSize)
     {
         IObjectRepository * objRepo = GetObjectRepository();
         Object * object = objRepo->LoadObject(entry);
@@ -662,6 +662,11 @@ extern "C"
         }
 
         reset_type_to_ride_entry_index_map();
+    }
+
+    void object_repository_unload(size_t itemIndex)
+    {
+        // TODO
     }
 
     void object_unload_all()

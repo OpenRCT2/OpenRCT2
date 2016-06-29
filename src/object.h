@@ -124,7 +124,7 @@ int object_load_packed(SDL_RWops* rw);
 void object_unload_all();
 
 int check_object_entry(rct_object_entry *entry);
-int object_load_chunk(int groupIndex, rct_object_entry *entry, int* chunk_size);
+int object_load_chunk(int groupIndex, const rct_object_entry *entry, int* chunk_size);
 void object_unload_chunk(rct_object_entry *entry);
 int object_get_scenario_text(rct_object_entry *entry);
 void object_free_scenario_text();
@@ -134,7 +134,7 @@ int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, 
 rct_object_entry *object_get_next(const rct_object_entry *entry);
 int write_object_file(SDL_RWops* rw, rct_object_entry* entry);
 void reset_loaded_objects();
-int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
+int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, const rct_object_entry* object);
 
 rct_object_entry *object_list_find_by_name(const char *name);

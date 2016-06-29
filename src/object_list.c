@@ -268,7 +268,7 @@ bool object_load_entries(rct_object_entry* entries)
  * bl = entry_index
  * ecx = entry_type
  */
-int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
+int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
 	*entry_type = entry->flags & 0xF;
 
 	rct_object_entry_group entry_group = object_entry_groups[*entry_type];

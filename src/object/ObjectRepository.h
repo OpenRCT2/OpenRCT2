@@ -77,5 +77,6 @@ IObjectRepository * GetObjectRepository();
 
 size_t                          object_repository_get_items_count();
 const ObjectRepositoryItem *    object_repository_get_items();
+void                            object_repository_unload(size_t itemIndex);
 
 #endif

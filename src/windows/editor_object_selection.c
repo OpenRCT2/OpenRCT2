@@ -445,63 +445,38 @@ void window_editor_object_selection_open()
  *
  *  rct2: 0x006ABCD1
  */
-static void setup_track_manager_objects(){
+static void setup_track_manager_objects()
+{
 	uint8 ride_list[128] = { 0 };
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-	uint16 num_objects = 0;
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
+	int numObjects = object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = numObjects; i > 0; --i) {
+		const ObjectRepositoryItem * item = &items[i];
+		uint8 object_type = item->ObjectEntry.flags & 0xF;
 		if (object_type == OBJECT_TYPE_RIDE){
 			*selection_flags |= OBJECT_SELECTION_FLAG_6;
 
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			// Skip required objects
-			pos += *pos * 16 + 1;
-
-			// Skip theme objects
-			pos += *pos * 16 + 1;
-
-			for (uint8 j = 0; j < 3; j++){
-				uint8 ride_type = pos[j];
+			for (uint8 j = 0; j < 3; j++) {
+				uint8 ride_type = item->RideType[j];
 				if (ride_type == 0xFF)
 					continue;
 
 				if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK))
 					continue;
 
-				if (pos[3] & (1 << 0)){
+				if (item->RideType[3] & (1 << 0)) {
 					*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
-				}
-				else if (ride_list[ride_type] & (1 << 0)){
+				} else if (ride_list[ride_type] & (1 << 0)) {
 					continue;
-				}
-				else{
+				} else {
 					ride_list[ride_type] |= (1 << 0);
 					*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
 				}
-				num_objects++;
 				break;
 			}
 		}
-
-		installedObject = object_get_next(installedObject);
 		selection_flags++;
 	}
 }
@@ -510,40 +485,19 @@ static void setup_track_manager_objects(){
  *
  *  rct2: 0x006ABC1E
  */
-static void setup_track_designer_objects(){
+static void setup_track_designer_objects()
+{
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-	uint16 num_objects = 0;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
+	int numObjects = object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = numObjects; i > 0; --i) {
+		const ObjectRepositoryItem * item = &items[i];
+		uint8 object_type = item->ObjectEntry.flags & 0xF;
 		if (object_type == OBJECT_TYPE_RIDE){
 			*selection_flags |= OBJECT_SELECTION_FLAG_6;
 
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			// Skip required objects
-			pos += *pos * 16 + 1;
-
-			// Skip theme objects
-			pos += *pos * 16 + 1;
-
-			for (uint8 j = 0; j < 3; j++){
-				uint8 ride_type = pos[j];
+			for (uint8 j = 0; j < 3; j++) {
+				uint8 ride_type = item->RideType[j];
 				if (ride_type == 0xFF)
 					continue;
 
@@ -551,12 +505,9 @@ static void setup_track_designer_objects(){
 					continue;
 
 				*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
-				num_objects++;
 				break;
 			}
 		}
-
-		installedObject = object_get_next(installedObject);
 		selection_flags++;
 	}
 }
@@ -647,13 +598,15 @@ static void setup_in_use_selection_flags(){
 	}
 
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = numObjects; i > 0; --i) {
+		const ObjectRepositoryItem * item = &items[i];
 		*selection_flags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
 		uint8 entry_type, entry_index;
-		if (find_object_in_entry_group(installedObject, &entry_type, &entry_index)){
+		if (find_object_in_entry_group(&item->ObjectEntry, &entry_type, &entry_index)) {
 			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 0)){
 				*selection_flags |=
 					OBJECT_SELECTION_FLAG_IN_USE |
@@ -663,7 +616,6 @@ static void setup_in_use_selection_flags(){
 				*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
 			}
 		}
-		installedObject = object_get_next(installedObject);
 		selection_flags++;
 	}
 }
@@ -672,29 +624,27 @@ static void setup_in_use_selection_flags(){
  *
  *  rct2: 0x006AB211
  */
-static int sub_6AB211(){
-	uint32 total_objects = gInstalledObjectsCount;
+static int sub_6AB211()
+{
+	int numObjects = (int)object_repository_get_items_count();
 
-	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = malloc(total_objects);
+	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = malloc(numObjects);
 
 	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
 		log_error("Failed to allocate memory for object flag list.");
 		return 0;
 	}
 
-	memset(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*), 0, total_objects);
+	memset(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*), 0, numObjects);
 	for (uint8 object_type = 0; object_type < 11; object_type++){
 		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
 		RCT2_ADDRESS(0x00F433E1, uint16)[object_type] = 0;
 	}
 
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = numObjects; i > 0; --i) {
+		uint8 object_type = items[i].ObjectEntry.flags & 0xF;
 		RCT2_ADDRESS(0x00F433E1, uint16)[object_type]++;
-
-		installedObject = object_get_next(installedObject);
 	}
 
 	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER){
@@ -734,7 +684,7 @@ static void editor_object_flags_free()
  *
  *  rct2: 0x00685791
  */
-void remove_selected_objects_from_research(rct_object_entry* installedObject){
+void remove_selected_objects_from_research(const rct_object_entry* installedObject){
 	uint8 entry_type, entry_index;
 	if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
 		return;
@@ -754,17 +704,18 @@ void remove_selected_objects_from_research(rct_object_entry* installedObject){
  *
  *  rct2: 0x006ABB66
  */
-void unload_unselected_objects(){
+void unload_unselected_objects()
+{
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
+	int numItems = object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = numItems; i > 0; --i) {
 		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
-			remove_selected_objects_from_research(installedObject);
-			object_unload_chunk(installedObject);
+			remove_selected_objects_from_research(&items[i].ObjectEntry);
+			object_repository_unload(i);
 		}
 		selection_flags++;
-		installedObject = object_get_next(installedObject);
 	}
 }
 
@@ -1618,84 +1569,34 @@ static void window_editor_object_selection_select_required_objects()
  *
  *  rct2: 0x006AA770
  */
-void reset_selected_object_count_and_size(){
-	for (uint8 object_type = 0; object_type < 11; object_type++){
+void reset_selected_object_count_and_size()
+{
+	for (uint8 object_type = 0; object_type < 11; object_type++) {
 		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
 	}
-
-	uint32 total_object_size = 0;
-
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		uint8 object_type = installedObject->flags & 0xF;
-
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			uint32 size_of_chunk = *((uint32*)pos);
-			RCT2_ADDRESS(0x00F433F7, uint16)[object_type]++;
-			total_object_size += size_of_chunk;
-		}
-		selection_flags++;
-		installedObject = object_get_next(installedObject);
-	}
-
-	RCT2_GLOBAL(RCT2_ADDRESS_SELECTED_OBJECTS_FILE_SIZE, uint32) = total_object_size;
 }
 
 /**
  *
  *  rct2: 0x006AB863
  */
-void set_required_object_flags(rct_object_entry* required_object){
+void set_required_object_flags(rct_object_entry* required_object)
+{
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
-
-	for (int i = gInstalledObjectsCount; i > 0; --i){
-		if (object_entry_compare(required_object, installedObject)){
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = numObjects; i > 0; --i) {
+		const ObjectRepositoryItem * item = &items[i];
+		if (object_entry_compare(required_object, &item->ObjectEntry)) {
 			*selection_flags |= OBJECT_SELECTION_FLAG_REQUIRED;
 
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			uint8 no_required_objects = *pos++;
-
-			required_object = (rct_object_entry*)pos;
-			for (; no_required_objects > 0; no_required_objects--){
-				set_required_object_flags(required_object);
-				required_object++;
+			uint16 no_required_objects = item->NumRequiredObjects;
+			for (; no_required_objects > 0; no_required_objects--) {
+				set_required_object_flags(&item->RequiredObjects[i]);
 			}
 			return;
 		}
-
 		selection_flags++;
-		installedObject = object_get_next(installedObject);
 	}
 }
 
@@ -1703,46 +1604,29 @@ void set_required_object_flags(rct_object_entry* required_object){
  *
  *  rct2: 0x006AB923
  */
-void reset_required_object_flags(){
+void reset_required_object_flags()
+{
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+
 	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	for (int i = gInstalledObjectsCount; i > 0; --i){
+	for (int i = numObjects; i > 0; --i) {
 		*selection_flags &= ~OBJECT_SELECTION_FLAG_REQUIRED;
 		selection_flags++;
 	}
 
 	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry* installedObject = gInstalledObjects;
 
-	for (int i = gInstalledObjectsCount; i > 0; --i){
+	for (int i = numObjects; i > 0; --i){
+		const ObjectRepositoryItem * item = &items[i];
 		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
-			uint8* pos = (uint8*)installedObject;
-			// Skip sizeof(rct_object_entry)
-			pos += 16;
-
-			// Skip filename
-			while (*pos++);
-
-			// Skip no of images
-			pos += 4;
-
-			// Skip name
-			while (*pos++);
-
-			// Skip size of chunk
-			pos += 4;
-
-			uint8 no_required_objects = *pos++;
-
-			rct_object_entry* required_object = (rct_object_entry*)pos;
+			uint16 no_required_objects = item->NumRequiredObjects;
 			for (; no_required_objects > 0; no_required_objects--){
-				set_required_object_flags(required_object);
-				required_object++;
+				set_required_object_flags(&item->RequiredObjects[i]);
 			}
-
 		}
 
 		selection_flags++;
-		installedObject = object_get_next(installedObject);
 	}
 }
 
@@ -2024,24 +1908,22 @@ static void window_editor_object_selection_manage_tracks()
 static void editor_load_selected_objects()
 {
 	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = gInstalledObjects;
 
-	if (gInstalledObjectsCount == 0)
-		return;
-
-	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = numObjects; i != 0; i--, selection_flags++) {
 		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED) {
 			uint8 entry_index, entry_type;
-			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
+			if (!find_object_in_entry_group(&items[i].ObjectEntry, &entry_type, &entry_index)) {
 				int chunk_size;
-				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
-					log_error("Failed to load entry %.8s", installed_entry->name);
+				if (!object_load_chunk(-1, &items[i].ObjectEntry, &chunk_size)) {
+					log_error("Failed to load entry %.8s", items->Name);
 				}
 
 				// For in game use (cheat)
 				if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
 					// Defaults selected items to researched.
-					if (find_object_in_entry_group(installed_entry, &entry_type, &entry_index)) {
+					if (find_object_in_entry_group(&items[i].ObjectEntry, &entry_type, &entry_index)) {
 						if (entry_type == OBJECT_TYPE_RIDE) {
 							rct_ride_entry* rideType = get_ride_entry(entry_index);
 							research_insert(1, 0x10000 | (rideType->ride_type[0] << 8) | entry_index, rideType->category[0]);
@@ -2053,8 +1935,6 @@ static void editor_load_selected_objects()
 				}
 			}
 		}
-
-		installed_entry = object_get_next(installed_entry);
 	}
 }
 
