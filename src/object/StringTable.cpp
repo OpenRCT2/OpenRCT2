@@ -52,12 +52,17 @@ void StringTable::Read(IStream * stream, uint8 id)
         StringTableEntry entry;
         entry.Id = id;
         entry.LanguageId = languageId;
-        entry.Text = stream->ReadString();
 
-        if (StringIsBlank(entry.Text))
+        char * win1252 = stream->ReadString();
+        if (StringIsBlank(win1252))
         {
             entry.LanguageId = RCT2_LANGUAGE_ID_BLANK;
         }
+
+        entry.Text = win1252_to_utf8_alloc(win1252);
+        Memory::Free(win1252);
+
+        String::Trim(entry.Text);
 
         _strings.push_back(entry);
     }
