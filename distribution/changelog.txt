@@ -6,14 +6,15 @@
 - Feature: Allow setting ownership of map edges.
 - Feature: Allow up to 255 cars per train.
 - Feature: Importing SV4 and SC4 files with rides.
+- Feature: Filter Object Selection Window by "Selected only" and "Non-selected only"
+- Feature: Allow raising terrain to 64 in-game units.
+- Feature: Assymmetric-key-based authorisation and assignment storage.
 - Feature: Add Norwegian translation.
 - Feature: Add cheat to disable littering.
 - Feature: Add Cheat to disable plant aging.
 - Feature: Add Cheat that allows any track piece to use a chain lift.
 - Feature: Add Console command to set vehicle friction.
 - Feature: Add console command to set scenario initial cash.
-- Changed: Allow raising terrain to 64 in-game units.
-- Improved: Restore horizontal and vertical scrollbar behavior from RCT2 when clicking on one of the scrollbars.
 - Removed: BMP screenshots.
 - Removed: Intamin and Phoenix easter eggs.
 - Fix: [#1038] Guest List is out of order.
@@ -32,7 +33,7 @@
 - Fix: [#3771] Crash when kicking player in multiplayer.
 - Fix: [#3824] Segfault when passing invalid arguments to ride set type.
 - Fix: [#3858] Tooltip shown when hovering over title logo.
-- Technical: [#3699] Assymmetric-key-based authorisation and assignment storage.
+- Fix: [#3915] Restore horizontal and vertical scrollbar behavior from RCT2 when clicking on one of the scrollbars.
 - Technical: Mulitplayer groups are now stored in JSON format.
 
 0.0.4-beta (2016-04-15)
