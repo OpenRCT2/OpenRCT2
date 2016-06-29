@@ -4589,7 +4589,7 @@ STR_DTLS    :Je mag deze stedelijke omgeving ontwikkelen tot een pretpark.
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
 STR_PARK    :Megaworld Park
-STR_DTLS    :Een enorm park dat al tjokvol attracties staaat moet worden verbeterd.
+STR_DTLS    :Een enorm park dat al tjokvol attracties staat moet worden verbeterd.
 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
@@ -4599,7 +4599,7 @@ STR_DTLS    :Dit stuk land op een verre planet moet worden veranderd in een them
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Je moet proberen met kleine winstgevende pretpark ter wereld te bouwen.
+STR_DTLS    :Je moet proberen het kleinste winstgevende pretpark ter wereld te bouwen.
 
 ## Real Parks from RCT1
 # None of them had details
