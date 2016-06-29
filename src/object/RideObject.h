@@ -44,6 +44,8 @@ public:
     const utf8 * GetDescription();
     const utf8 * GetCapacity();
 
+    void SetRepositoryItem(ObjectRepositoryItem * item) const;
+
 private:
 
 };

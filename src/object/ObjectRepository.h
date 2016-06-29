@@ -54,6 +54,8 @@ typedef struct ObjectRepositoryItem
 
 #ifdef __cplusplus
 
+class Object;
+
 interface IObjectRepository
 {
     virtual ~IObjectRepository() { }

@@ -17,6 +17,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
+#include "ObjectRepository.h"
 #include "RideObject.h"
 
 extern "C"
@@ -317,15 +318,6 @@ void RideObject::Load()
             }
         }
     }
-
-    // TODO sort out this filter stuff
-    int di = _legacyType.ride_type[0] | (_legacyType.ride_type[1] << 8) | (_legacyType.ride_type[2] << 16);
-    if ((_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) &&
-        !rideTypeShouldLoseSeparateFlag(&_legacyType))
-    {
-        di |= 0x1000000;
-    }
-    RCT2_GLOBAL(0xF433DD, uint32) = di;
 }
 
 void RideObject::Unload()
@@ -351,4 +343,24 @@ const utf8 * RideObject::GetCapacity()
 {
     const utf8 * capacity = GetStringTable()->GetString(OBJ_STRING_ID_CAPACITY);
     return capacity != nullptr ? capacity : "";
+}
+
+void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
+{
+    for (int i = 0; i < 3; i++)
+    {
+        item->RideType[i] = _legacyType.ride_type[i];
+    }
+    for (int i = 0; i < 2; i++)
+    {
+        item->RideCategory[i] = _legacyType.category[i];
+    }
+
+    uint8 flags = 0;
+    if ((_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) &&
+        !rideTypeShouldLoseSeparateFlag(&_legacyType))
+    {
+        flags |= 0x1000000;
+    }
+    item->RideFlags = flags;
 }

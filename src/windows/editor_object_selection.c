@@ -27,6 +27,7 @@
 #include "../management/research.h"
 #include "../object.h"
 #include "../object_list.h"
+#include "../object/ObjectRepository.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
@@ -224,9 +225,9 @@ static int get_object_from_object_selection(uint8 object_type, int y, uint8 *obj
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
 static bool filter_selected(uint8* objectFlags);
-static bool filter_string(rct_object_entry *entry, rct_object_filters *filter);
-static bool filter_source(rct_object_entry *entry);
-static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter);
+static bool filter_string(const ObjectRepositoryItem * item);
+static bool filter_source(const ObjectRepositoryItem * item);
+static bool filter_chunks(const ObjectRepositoryItem * item);
 static void filter_update_counts();
 
 void reset_selected_object_count_and_size();
@@ -282,6 +283,7 @@ enum {
 };
 
 typedef struct list_item {
+	const ObjectRepositoryItem * repositoryItem;
 	rct_object_entry *entry;
 	rct_object_filters *filter;
 	uint8 *flags;
@@ -305,8 +307,8 @@ static int visible_list_sort_ride_name(const void *rawA, const void *rawB)
 	list_item *a = (list_item*)rawA;
 	list_item *b = (list_item*)rawB;
 
-	const char *nameA = object_get_name(a->entry);
-	const char *nameB = object_get_name(b->entry);
+	const char *nameA = a->repositoryItem->Name;
+	const char *nameB = b->repositoryItem->Name;
 	return strcmp(nameA, nameB);
 }
 
@@ -315,8 +317,8 @@ static int visible_list_sort_ride_type(const void *rawA, const void *rawB)
 	list_item *a = (list_item*)rawA;
 	list_item *b = (list_item*)rawB;
 
-	const char *rideTypeA = language_get_string(2 + a->filter->ride.ride_type);
-	const char *rideTypeB = language_get_string(2 + b->filter->ride.ride_type);
+	const char *rideTypeA = language_get_string(2 + a->repositoryItem->RideType[0]);
+	const char *rideTypeB = language_get_string(2 + b->repositoryItem->RideType[0]);
 	int result = strcmp(rideTypeA, rideTypeB);
 	if (result != 0)
 		return result;
@@ -326,31 +328,32 @@ static int visible_list_sort_ride_type(const void *rawA, const void *rawB)
 
 static void visible_list_refresh(rct_window *w)
 {
-	int numObjects = gInstalledObjectsCount;
+	int numObjects = (int)object_repository_get_items_count();
 
 	visible_list_dispose();
 	_listItems = malloc(numObjects * sizeof(list_item));
 	_numListItems = 0;
 
 	list_item *currentListItem = &_listItems[0];
-	rct_object_entry *entry = gInstalledObjects;
+	const ObjectRepositoryItem *items = object_repository_get_items();
 	uint8 *itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	for (int i = 0; i < numObjects; i++) {
-		rct_object_filters *filter = get_object_filter(i);
-		int type = entry->flags & 0x0F;
-		if (type == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) 
-			&& filter_source(entry) 
-			&& filter_string(entry, filter) 
-			&& filter_chunks(entry, filter) 
-			&& filter_selected(itemFlags)) {
-				currentListItem->entry = entry;
-				currentListItem->filter = filter;
-				currentListItem->flags = itemFlags;
-				currentListItem++;
-				_numListItems++;
+		const ObjectRepositoryItem * item = &items[i];
+		uint8 objectType = item->ObjectEntry.flags & 0x0F;
+		if (objectType == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) &&
+			filter_source(item) &&
+			filter_string(item) &&
+			filter_chunks(item) &&
+			filter_selected(itemFlags)
+		) {
+			rct_object_filters * filter = calloc(1, sizeof(rct_object_filters));
+			currentListItem->repositoryItem = item;
+			currentListItem->entry = (rct_object_entry *)&item->ObjectEntry;
+			currentListItem->filter = filter;
+			currentListItem->flags = itemFlags;
+			currentListItem++;
+			_numListItems++;
 		}
-
-		entry = object_get_next(entry);
 		itemFlags++;
 	}
 
@@ -1534,13 +1537,13 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 			if (ridePage) {
 				// Draw ride type
-				strcpy(buffer, language_get_string(2 + listItem->filter->ride.ride_type));
+				strcpy(buffer, language_get_string(2 + listItem->repositoryItem->RideType[0]));
 				gfx_draw_string(dpi, bufferWithColour, colour, x, y);
 				x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
 			}
 
 			// Draw text
-			strcpy(buffer, object_get_name(listItem->entry));
+			strcpy(buffer, listItem->repositoryItem->Name);
 			if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 				while (*buffer != 0 && *buffer != 9)
 					buffer++;
@@ -2115,26 +2118,26 @@ static bool filter_selected(uint8* objectFlag) {
 	}
 }
 
-static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
+static bool filter_string(const ObjectRepositoryItem * item)
 {
 	// Nothing to search for
 	if (_filter_string[0] == '\0')
 		return true;
 
 	// Object doesn't have a name
-	char *name = object_get_name(entry);
-	if (name[0] == '\0')
+	utf8 *name = item->Name;
+	if (name == NULL || name[0] == '\0')
 		return false;
 
 	// Get ride type
-	const char *ride_type = language_get_string(2 + filter->ride.ride_type);
+	const char *rideTypeName = language_get_string(2 + item->RideType[0]);
 
 	// Get object name (ride/vehicle for rides) and type name (rides only)
 	char name_lower[MAX_PATH];
 	char type_lower[MAX_PATH];
 	char filter_lower[sizeof(_filter_string)];
 	safe_strcpy(name_lower, name, MAX_PATH);
-	safe_strcpy(type_lower, ride_type, MAX_PATH);
+	safe_strcpy(type_lower, rideTypeName, MAX_PATH);
 	safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
 
 	// Make use of lowercase characters only
@@ -2145,30 +2148,30 @@ static bool filter_string(rct_object_entry *entry, rct_object_filters *filter)
 	for (int i = 0; filter_lower[i] != '\0'; i++)
 		filter_lower[i] = (char)tolower(filter_lower[i]);
 
-	return strstr(name_lower, filter_lower) != NULL || (((entry->flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != NULL);
+	return strstr(name_lower, filter_lower) != NULL || (((item->ObjectEntry.flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != NULL);
 }
 
-static bool filter_source(rct_object_entry *entry)
+static bool filter_source(const ObjectRepositoryItem * item)
 {
 	if (_FILTER_ALL)
 		return true;
 
-	uint8 source = (entry->flags & 0xF0) >> 4;
+	uint8 source = (item->ObjectEntry.flags & 0xF0) >> 4;
 	return (_FILTER_RCT2 && source == 8) || (_FILTER_WW && source == 1) || (_FILTER_TT && source == 2) || (_FILTER_CUSTOM && source != 8 && source != 1 && source != 2);
 }
 
-static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
+static bool filter_chunks(const ObjectRepositoryItem * item)
 {
-	switch (entry->flags & 0x0F) {
+	switch (item->ObjectEntry.flags & 0x0F) {
 	case OBJECT_TYPE_RIDE:
 		if(!gConfigInterface.select_by_track_type) {
-			if (_filter_flags & (1 << (filter->ride.category[0] + 5)))
+			if (_filter_flags & (1 << (item->RideCategory[0] + 5)))
 				return true;
-			if (_filter_flags & (1 << (filter->ride.category[1] + 5)))
+			if (_filter_flags & (1 << (item->RideCategory[1] + 5)))
 				return true;
 		}
 		else {
-			if (_filter_flags & (1 << (gRideCategories[filter->ride.ride_type] + 5)))
+			if (_filter_flags & (1 << (gRideCategories[item->RideType[0]] + 5)))
 				return true;
 		}
 		return false;
@@ -2179,23 +2182,23 @@ static bool filter_chunks(rct_object_entry *entry, rct_object_filters *filter)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
-		rct_object_entry *installed_entry = gInstalledObjects;
-		rct_object_filters *filter;
 		uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-		uint8 type;
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
-		for (uint32 i = 0; i < gInstalledObjectsCount; i++) {
-			filter = get_object_filter(i);
-			type = installed_entry->flags & 0xF;
-			if (filter_source(installed_entry) 
-				&& filter_string(installed_entry, filter) 
-				&& filter_chunks(installed_entry, filter) 
-				&& filter_selected(objectFlag)) {
-					_filter_object_counts[type]++;
+
+		size_t numObjects = object_repository_get_items_count();
+		const ObjectRepositoryItem * items = object_repository_get_items();
+		for (size_t i = 0; i < numObjects; i++) {
+			const ObjectRepositoryItem * item = &items[i];
+			if (filter_source(item) &&
+				filter_string(item) &&
+				filter_chunks(item) &&
+				filter_selected(objectFlag)
+			) {
+				uint8 objectType = item->ObjectEntry.flags & 0xF;
+				_filter_object_counts[objectType]++;
 			}
-			installed_entry = object_get_next(installed_entry);
 			objectFlag++;
 		}
 	}

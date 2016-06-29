@@ -26,6 +26,7 @@ extern "C"
 }
 
 interface IStream;
+struct    ObjectRepositoryItem;
 
 class Object
 {
@@ -52,4 +53,6 @@ public:
 
     virtual uint8           GetObjectType() { return _objectEntry.flags & 0x0F; }
     virtual const utf8 *    GetName() abstract;
+
+    virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 };

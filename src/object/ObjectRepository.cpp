@@ -273,6 +273,7 @@ private:
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = String::Duplicate(path);
             item.Name = String::Duplicate(object->GetName());
+            object->SetRepositoryItem(&item);
             AddItem(&item);
 
             delete object;
