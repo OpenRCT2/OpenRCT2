@@ -67,10 +67,15 @@ assert_struct_size(rct_object_entry, 0x10);
  * size: 0x14
  */
 typedef struct rct_object_entry_extended {
-	uint32 flags;
-	char name[8];
-	uint32 checksum;
-	uint32 chunk_size;
+	union {
+		rct_object_entry entry;
+		struct {
+			uint32 flags;
+			char name[8];
+			uint32 checksum;
+			uint32 chunk_size;
+		};
+	};
 } rct_object_entry_extended;
 assert_struct_size(rct_object_entry_extended, 0x14);
 

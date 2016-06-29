@@ -29,19 +29,19 @@ extern "C"
 
 typedef struct ObjectRepositoryItem
 {
-    rct_object_entry_extended   ObjectEntry;
-    utf8 *                      Path;
-    uint32                      NumImages;
-    utf8 *                      Name;
-    size_t                      ChunkSize;
-    uint16                      NumRequiredObjects;
-    rct_object_entry_extended * RequiredObjects;
+    rct_object_entry   ObjectEntry;
+    utf8 *             Path;
+    uint32             NumImages;
+    utf8 *             Name;
+    size_t             ChunkSize;
+    uint16             NumRequiredObjects;
+    rct_object_entry * RequiredObjects;
     union
     {
         struct
         {
-            uint16                      NumThemeObjects;
-            rct_object_entry_extended * ThemeObjects;
+            uint16             NumThemeObjects;
+            rct_object_entry * ThemeObjects;
         };
         struct
         {

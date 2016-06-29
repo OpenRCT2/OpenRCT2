@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <unordered_map>
 #include <vector>
 
@@ -114,6 +115,8 @@ public:
             Construct();
             Save();
         }
+
+        // SortItems();
     }
 
     const size_t GetNumObjects() const override
@@ -267,7 +270,7 @@ private:
         if (object != nullptr)
         {
             ObjectRepositoryItem item = { 0 };
-            Memory::Copy<void>(&item.ObjectEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
+            item.ObjectEntry = *object->GetObjectEntry();
             item.Path = String::Duplicate(path);
             item.Name = String::Duplicate(object->GetName());
             AddItem(&item);
@@ -340,17 +343,31 @@ private:
         }
     }
 
+    void SortItems()
+    {
+        std::sort(_items.begin(), _items.end(), [](const ObjectRepositoryItem &a,
+                                                   const ObjectRepositoryItem &b) -> bool
+        {
+            return strcmp(a.Name, b.Name) < 0;
+        });
+
+        // Rebuild item map
+        _itemMap.clear();
+        for (size_t i = 0; i < _items.size(); i++)
+        {
+            rct_object_entry entry = _items[i].ObjectEntry;
+            _itemMap[entry] = i;
+        }
+    }
+
     bool AddItem(ObjectRepositoryItem * item)
     {
-        rct_object_entry entry;
-        Memory::Copy<void>(&entry, &item->ObjectEntry, sizeof(rct_object_entry));
-
-        const ObjectRepositoryItem * conflict = FindObject(&entry);
+        const ObjectRepositoryItem * conflict = FindObject(&item->ObjectEntry);
         if (conflict == nullptr)
         {
             _items.push_back(*item);
             size_t index = _items.size() - 1;
-            _itemMap[entry] = index;
+            _itemMap[item->ObjectEntry] = index;
             return true;
         }
         else
@@ -367,17 +384,17 @@ private:
     {
         ObjectRepositoryItem item = { 0 };
 
-        item.ObjectEntry = stream->ReadValue<rct_object_entry_extended>();
+        item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadString();
         item.NumImages = stream->ReadValue<uint32>();
         item.Name = stream->ReadString();
         item.ChunkSize = stream->ReadValue<size_t>();
         item.NumRequiredObjects = stream->ReadValue<uint16>();
             
-        item.RequiredObjects = Memory::AllocateArray<rct_object_entry_extended>(item.NumRequiredObjects);
+        item.RequiredObjects = Memory::AllocateArray<rct_object_entry>(item.NumRequiredObjects);
         for (uint16 i = 0; i < item.NumRequiredObjects; i++)
         {
-            item.RequiredObjects[i] = stream->ReadValue<rct_object_entry_extended>();
+            item.RequiredObjects[i] = stream->ReadValue<rct_object_entry>();
         }
 
         switch (item.ObjectEntry.flags & 0x0F) {
@@ -394,10 +411,10 @@ private:
             break;
         case OBJECT_TYPE_SCENERY_SETS:
             item.NumThemeObjects = stream->ReadValue<uint16>();
-            item.ThemeObjects = Memory::AllocateArray<rct_object_entry_extended>(item.NumThemeObjects);
+            item.ThemeObjects = Memory::AllocateArray<rct_object_entry>(item.NumThemeObjects);
             for (uint16 i = 0; i < item.NumThemeObjects; i++)
             {
-                item.ThemeObjects[i] = stream->ReadValue<rct_object_entry_extended>();
+                item.ThemeObjects[i] = stream->ReadValue<rct_object_entry>();
             }
             break;
         }
@@ -434,7 +451,7 @@ private:
             stream->WriteValue<uint16>(item.NumThemeObjects);
             for (uint16 i = 0; i < item.NumThemeObjects; i++)
             {
-                stream->WriteValue<rct_object_entry_extended>(item.ThemeObjects[i]);
+                stream->WriteValue<rct_object_entry>(item.ThemeObjects[i]);
             }
             break;
         }
