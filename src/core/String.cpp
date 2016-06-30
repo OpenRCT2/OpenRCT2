@@ -251,7 +251,7 @@ namespace String
             assert(newStringSize < currentStringSize);
 #endif
 
-            Memory::Copy(str, firstNonWhitespace, newStringSize);
+            Memory::Move(str, firstNonWhitespace, newStringSize);
             str[newStringSize] = '\0';
         }
         else
