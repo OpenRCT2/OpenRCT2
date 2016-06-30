@@ -4188,6 +4188,8 @@ STR_5876    :{SMALLFONT}{BLACK}Motoren som bruker for å tegne spillgrafikk
 STR_5877    :Software
 STR_5878    :Software (hardware rendering)
 STR_5879    :OpenGL
+STR_5880    :Valgte objekter
+STR_5881    :Ikke valgte objekter
 
 #############
 # Scenarios #
