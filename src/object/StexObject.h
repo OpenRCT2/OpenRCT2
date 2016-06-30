@@ -37,9 +37,9 @@ public:
     void Load() override;
     void Unload() override;
 
-    const utf8 * GetName() override;
+    const utf8 * GetName() const override;
 
-    const utf8 * GetScenarioName();
-    const utf8 * GetScenarioDetails();
-    const utf8 * GetParkName();
+    const utf8 * GetScenarioName() const;
+    const utf8 * GetScenarioDetails() const;
+    const utf8 * GetParkName() const;
 };

@@ -56,24 +56,24 @@ void StexObject::Unload()
     language_free_object_string(_legacyType.details);
 }
 
-const utf8 * StexObject::GetName()
+const utf8 * StexObject::GetName() const
 {
     return GetScenarioName();
 }
 
-const utf8 * StexObject::GetScenarioName()
+const utf8 * StexObject::GetScenarioName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_SCENARIO_NAME);
     return name != nullptr ? name : "";
 }
 
-const utf8 * StexObject::GetScenarioDetails()
+const utf8 * StexObject::GetScenarioDetails() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_SCENARIO_DETAILS);
     return name != nullptr ? name : "";
 }
 
-const utf8 * StexObject::GetParkName()
+const utf8 * StexObject::GetParkName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_PARK_NAME);
     return name != nullptr ? name : "";

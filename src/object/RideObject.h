@@ -40,9 +40,9 @@ public:
     void Load() override;
     void Unload() override;
 
-    const utf8 * GetName() override;
-    const utf8 * GetDescription();
-    const utf8 * GetCapacity();
+    const utf8 * GetName() const override;
+    const utf8 * GetDescription() const;
+    const utf8 * GetCapacity() const;
 
     void SetRepositoryItem(ObjectRepositoryItem * item) const;
 

@@ -67,7 +67,7 @@ void FootpathItemObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
-const utf8 * FootpathItemObject::GetName()
+const utf8 * FootpathItemObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
     return name != nullptr ? name : "";

@@ -31,6 +31,7 @@
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectRepository.h"
+#include "RideObject.h"
 #include "StexObject.h"
 
 extern "C"
@@ -664,6 +665,12 @@ extern "C"
         reset_type_to_ride_entry_index_map();
     }
 
+    void * object_repository_load_object(const rct_object_entry * objectEntry)
+    {
+        IObjectRepository * objRepository = GetObjectRepository();
+        return (void *)objRepository->LoadObject(objectEntry);
+    }
+
     void object_repository_unload(size_t itemIndex)
     {
         // TODO
@@ -780,5 +787,29 @@ extern "C"
     {
         IObjectRepository * objectRepository = GetObjectRepository();
         return objectRepository->FindObject(entry);
+    }
+
+    void object_delete(void * object)
+    {
+        delete ((Object *)object);
+    }
+
+    const utf8 * object_get_description(const void * object)
+    {
+        const Object * baseObject = (const Object *)object;
+        switch (baseObject->GetObjectType()) {
+        case OBJECT_TYPE_RIDE:
+        {
+            const RideObject * rideObject = static_cast<const RideObject *>(baseObject);
+            return rideObject->GetDescription();
+        }
+        case OBJECT_TYPE_SCENARIO_TEXT:
+        {
+            const StexObject * stexObject = static_cast<const StexObject *>(baseObject);
+            return stexObject->GetScenarioDetails();
+        }
+        default:
+            return "";
+        }
     }
 }

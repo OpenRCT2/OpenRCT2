@@ -102,7 +102,7 @@ void LargeSceneryObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
-const utf8 * LargeSceneryObject::GetName()
+const utf8 * LargeSceneryObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
     return name != nullptr ? name : "";

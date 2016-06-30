@@ -38,5 +38,5 @@ public:
     void Load() override;
     void Unload() override;
 
-    const utf8 * GetName() override;
+    const utf8 * GetName() const override;
 };

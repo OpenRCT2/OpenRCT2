@@ -36,8 +36,9 @@ private:
     ImageTable          _imageTable;
 
 protected:
-    StringTable *   GetStringTable() { return &_stringTable; }
-    ImageTable  *   GetImageTable() { return &_imageTable; }
+    StringTable *       GetStringTable() { return &_stringTable; }
+    const StringTable * GetStringTable() const { return &_stringTable; }
+    ImageTable  *       GetImageTable() { return &_imageTable; }
 
 public:
     explicit Object(const rct_object_entry &entry);
@@ -51,8 +52,8 @@ public:
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual uint8           GetObjectType() { return _objectEntry.flags & 0x0F; }
-    virtual const utf8 *    GetName() abstract;
+    virtual uint8           GetObjectType() const { return _objectEntry.flags & 0x0F; }
+    virtual const utf8 *    GetName() const abstract;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 };

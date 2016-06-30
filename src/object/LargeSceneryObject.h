@@ -41,7 +41,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    const utf8 * GetName() override;
+    const utf8 * GetName() const override;
 
 private:
     static rct_large_scenery_tile * ReadTiles(IStream * stream);

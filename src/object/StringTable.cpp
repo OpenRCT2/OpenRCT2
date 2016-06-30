@@ -69,7 +69,7 @@ void StringTable::Read(IStream * stream, uint8 id)
     Sort();
 }
 
-const utf8 * StringTable::GetString(uint8 id)
+const utf8 * StringTable::GetString(uint8 id) const
 {
     for (auto &string : _strings)
     {

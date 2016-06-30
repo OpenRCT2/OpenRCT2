@@ -59,7 +59,7 @@ void WaterObject::Unload()
     language_free_object_string(_legacyType.string_idx);
 }
 
-const utf8 * WaterObject::GetName()
+const utf8 * WaterObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
     return name != nullptr ? name : "";

@@ -327,19 +327,19 @@ void RideObject::Unload()
     gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
 }
 
-const utf8 * RideObject::GetName()
+const utf8 * RideObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
     return name != nullptr ? name : "";
 }
 
-const utf8 * RideObject::GetDescription()
+const utf8 * RideObject::GetDescription() const
 {
     const utf8 * description = GetStringTable()->GetString(OBJ_STRING_ID_DESCRIPTION);
     return description != nullptr ? description : "";
 }
 
-const utf8 * RideObject::GetCapacity()
+const utf8 * RideObject::GetCapacity() const
 {
     const utf8 * capacity = GetStringTable()->GetString(OBJ_STRING_ID_CAPACITY);
     return capacity != nullptr ? capacity : "";

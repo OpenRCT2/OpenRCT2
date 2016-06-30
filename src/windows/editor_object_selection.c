@@ -282,6 +282,16 @@ enum {
 	RIDE_SORT_RIDE
 };
 
+enum {
+	DDIX_FILTER_RCT2,
+	DDIX_FILTER_WW,
+	DDIX_FILTER_TT,
+	DDIX_FILTER_CUSTOM,
+	DDIX_FILTER_SEPERATOR,
+	DDIX_FILTER_SELECTED,
+	DDIX_FILTER_NONSELECTED,
+};
+
 typedef struct list_item {
 	const ObjectRepositoryItem * repositoryItem;
 	rct_object_entry *entry;
@@ -295,6 +305,7 @@ static int _numListItems = 0;
 static list_item *_listItems = NULL;
 static int _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
+static void * _loadedObject = NULL;
 
 static void visible_list_dispose()
 {
@@ -865,16 +876,7 @@ static void window_editor_object_selection_resize(rct_window *w)
 {
 	window_set_resize(w, 600, 400, 1200, 1000);
 }
-enum
-{
-	DDIX_FILTER_RCT2,
-	DDIX_FILTER_WW,
-	DDIX_FILTER_TT,
-	DDIX_FILTER_CUSTOM,
-	DDIX_FILTER_SEPERATOR,
-	DDIX_FILTER_SELECTED,
-	DDIX_FILTER_NONSELECTED,
-};
+
 void window_editor_object_selection_mousedown(int widgetIndex, rct_window*w, rct_widget* widget)
 {
 	int num_items;
@@ -973,10 +975,12 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 	window_close_all_except_class(WC_EDITOR_OBJECT_SELECTION);
 
 	int selected_object = get_object_from_object_selection((w->selected_tab & 0xFF), y);
+	if (selected_object == -1)
+		return;
 
 	list_item * listItem = &_listItems[selected_object];
 	uint8 object_selection_flags = *listItem->flags;
-	if (selected_object == -1 || (object_selection_flags & OBJECT_SELECTION_FLAG_6))
+	if (object_selection_flags & OBJECT_SELECTION_FLAG_6)
 		return;
 
 	window_invalidate(w);
@@ -1031,19 +1035,27 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 static void window_editor_object_selection_scroll_mouseover(rct_window *w, int scrollIndex, int x, int y)
 {
 	int selectedObject = get_object_from_object_selection(w->selected_tab & 0xFF, y);
-	list_item * listItem = &_listItems[selectedObject];
-	uint8 objectSelectionFlags = *listItem->flags;
-	if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6) {
-		selectedObject = -1;
+	if (selectedObject != -1) {
+		list_item * listItem = &_listItems[selectedObject];
+		uint8 objectSelectionFlags = *listItem->flags;
+		if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6) {
+			selectedObject = -1;
+		}
 	}
-
 	if (selectedObject != w->selected_list_item) {
 		w->selected_list_item = selectedObject;
-		w->object_entry = listItem->entry;
-		object_free_scenario_text();
-		if (selectedObject != -1) {
-			// Load object
 
+		if (_loadedObject != NULL) {
+			object_delete(_loadedObject);
+			_loadedObject = NULL;
+		}
+
+		list_item * listItem = &_listItems[selectedObject];
+		if (selectedObject == -1) {
+			w->object_entry = NULL;
+		} else {
+			w->object_entry = listItem->entry;
+			_loadedObject = object_repository_load_object(listItem->entry);
 		}
 
 		window_invalidate(w);
@@ -1216,8 +1228,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	rct_widget *widget;
 	rct_object_entry *highlightedEntry;
 	rct_string_id stringId;
-	uint8 *text, source;
-	char *datName, *name, *stringBuffer;
+	uint8 source;
+	char *stringBuffer;
 
 	/*if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		gfx_fill_rect_inset(dpi,
@@ -1297,26 +1309,6 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 	rct_stex_entry* stex_entry = gStexTempChunk;
 
-	/*gfx_fill_rect_inset(dpi,
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left,
-		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].right,
-		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].bottom,
-		w->colours[1],
-		0x30
-		);
-
-	set_format_arg(0, uint32, (uint32)&_filter_string);
-	gfx_draw_string_left_clipped(
-		dpi,
-		1170,
-		gCommonFormatArgs,
-		w->colours[1],
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].left + 1,
-		w->y + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].top,
-		w->x + window_editor_object_selection_widgets[WIDX_FILTER_STRING_BUTTON].right
-		);*/
-
 	// Draw sort button text
 	widget = &w->widgets[WIDX_LIST_SORT_TYPE];
 	if (widget->type != WWT_EMPTY) {
@@ -1329,8 +1321,10 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1, widget->right - widget->left);
 	}
 
-	if (w->selected_list_item == -1 || stex_entry == NULL)
+	if (w->selected_list_item == -1 || _loadedObject == NULL)
 		return;
+
+	list_item *listItem = &_listItems[w->selected_list_item];
 
 	highlightedEntry = w->object_entry;
 	type = highlightedEntry->flags & 0x0F;
@@ -1339,53 +1333,21 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	widget = &w->widgets[WIDX_PREVIEW];
 	x = w->x + (widget->left + widget->right) / 2 + 1;
 	y = w->y + (widget->top + widget->bottom) / 2 + 1;
-	object_paint(type, stex_entry, dpi, x, y);
+	// object_paint(type, stex_entry, dpi, x, y);
 
 	// Draw name of object
 	x = w->x + (widget->left + widget->right) / 2 + 1;
 	y = w->y + widget->bottom + 3;
 	width = w->width - w->widgets[WIDX_LIST].right - 6;
 
-	// Skip object dat name
-	text = (uint8*)(highlightedEntry + 1);
-	datName = (char*)text;
-	do {
-		text++;
-	} while (*(text - 1) != 0);
-	text += 4;
-	name = (char*)text;
-
 	RCT2_GLOBAL(0x009BC677, uint8) = 14;
-
 	stringId = STR_PLACEHOLDER;
 	stringBuffer = (char*)language_get_string(STR_PLACEHOLDER) + 1;
-	if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
-		// Skip name
-		do {
-			text++;
-		} while (*(text - 1) != 0);
-		text += 4;
-		text += *text * 16 + 1;
-		text += *text * 16 + 1;
-
-		if (RCT2_GLOBAL(text, uint32) & 0x1000000) {
-			strcpy(stringBuffer, name);
-		} else {
-			int eax = *text;
-			if (*text == 0xFF) {
-				eax = *(text + 1);
-				if (*(text + 1) == 0xFF)
-					eax = *(text + 2);
-			}
-			format_string(stringBuffer, eax + 2, NULL);
-		}
-	} else {
-		strcpy(stringBuffer, name);
-	}
+	strcpy(stringBuffer, listItem->repositoryItem->Name);
 	gfx_draw_string_centred_clipped(dpi, stringId, NULL, 0, x, y, width);
 
 	// Draw description of object
-	stringId = object_desc(type, stex_entry);
+	strcpy(stringBuffer, object_get_description(_loadedObject));
 	if (stringId != STR_NONE) {
 		x = w->x + w->widgets[WIDX_LIST].right + 4;
 		y += 15;
@@ -1411,14 +1373,13 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		y = w->y + w->height - 3 - 12 - 14 - 14;
 
-		rct_ride_entry *rideType = (rct_ride_entry*)stex_entry;
 		for (int i = 0; i < 3; i++) {
-			if (rideType->ride_type[i] == 255)
-				continue;
-
-			stringId = 2 + rideType->ride_type[i];
-			gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
-			y -= 11;
+			uint8 rideType = listItem->repositoryItem->RideType[i];
+			if (rideType != 255) {
+				stringId = 2 + rideType;
+				gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
+				y -= 11;
+			}
 		}
 	}
 
@@ -1427,7 +1388,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 	// Draw object dat name
 	stringId = STR_PLACEHOLDER;
-	strcpy(stringBuffer, datName);
+	strcpy(stringBuffer, path_get_filename(listItem->repositoryItem->Path));
 	gfx_draw_string_right(dpi, stringId, NULL, 0, w->x + w->width - 5, w->y + w->height - 3 - 12);
 }
 

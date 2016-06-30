@@ -40,7 +40,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    const utf8 * GetName() override;
+    const utf8 * GetName() const override;
 
 private:
     static uint8 * ReadVar10(IStream * stream);
