@@ -775,4 +775,10 @@ extern "C"
         IObjectRepository * objectRepository = GetObjectRepository();
         return objectRepository->GetObjects();
     }
+
+    const ObjectRepositoryItem * object_repository_find_object_by_entry(const rct_object_entry * entry)
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        return objectRepository->FindObject(entry);
+    }
 }
