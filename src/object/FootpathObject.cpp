@@ -32,12 +32,12 @@ enum OBJ_STRING_ID
 void FootpathObject::ReadLegacy(IStream * stream)
 {
     _legacyType.string_idx = stream->ReadValue<rct_string_id>();
-    _legacyType.image = stream->ReadValue<rct_string_id>();
+    _legacyType.image = stream->ReadValue<uint32>();
     _legacyType.bridge_image = stream->ReadValue<uint32>();
     _legacyType.var_0A = stream->ReadValue<uint8>();
     _legacyType.flags = stream->ReadValue<uint8>();
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
-    stream->Seek(1, STREAM_SEEK_BEGIN);
+    stream->Seek(1, STREAM_SEEK_CURRENT);
 
     GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
     GetImageTable()->Read(stream);
