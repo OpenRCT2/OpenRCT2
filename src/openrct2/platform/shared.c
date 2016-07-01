@@ -313,7 +313,13 @@ void platform_process_messages()
 	gCursorState.old = 0;
 	gCursorState.touch = false;
 
+	bool skip = false;
 	while (SDL_PollEvent(&e)) {
+
+		// Multiple window events per update must be handled; ignore inputs.
+		if (skip && (e.type != SDL_WINDOWEVENT))
+			continue;
+
 		switch (e.type) {
 		case SDL_QUIT:
 // 			rct2_finish();
@@ -332,24 +338,32 @@ void platform_process_messages()
 					SDL_RestoreWindow(gWindow);
 					SDL_SetWindowFullscreen(gWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 				}
-			}
 
-			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-				platform_resize(e.window.data1, e.window.data2);
-			if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
-				if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED) {
+				if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
 					Mixer_SetVolume(1);
 				}
-				if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
-					Mixer_SetVolume(0);
-				}
+
+				skip = true;
+			}
+
+			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+				platform_resize(e.window.data1, e.window.data2);
 			}
 
 			if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
 				// Reset held keys to make up for lost KEYUP events during lost focus
 				platform_map_keys_stack_clear();
 				memset(gModsHeld, 0x0, sizeof(gModsHeld));
+
+				if (gConfigSound.audio_focus && gConfigSound.sound_enabled) {
+					Mixer_SetVolume(0);
+				}
+
+				skip = true;
 			}
+
+			// Handle no input during window events.
+			memset(gKeysPressed, 0x0, sizeof(keypress) * KEYBOARD_KEYPRESSES_PER_UPDATE);
 
 			break;
 		case SDL_MOUSEMOTION:
