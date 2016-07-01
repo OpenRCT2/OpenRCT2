@@ -356,6 +356,7 @@ void window_player_overview_mouse_up(rct_window *w, int widgetIndex)
 	}break;
 	case WIDX_KICK:
 		window_player_overview_kick_player(w, STR_KICK_REASON_NO_REASON, "");
+
 		break;
 	}
 }
