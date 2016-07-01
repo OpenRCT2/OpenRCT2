@@ -26,6 +26,7 @@
 #include "interface/window.h"
 #include "interface/viewport.h"
 #include "intro.h"
+#include "localisation/currency.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "network/network.h"
@@ -260,6 +261,8 @@ bool openrct2_initialise()
 		}
 	}
 
+	currency_load_custom_currency_config();
+
 	return true;
 }
 
@@ -322,11 +325,6 @@ void openrct2_launch()
 			network_begin_client(gNetworkStartHost, gNetworkStartPort);
 		}
 #endif // DISABLE_NETWORK
-
-		// Set custom currency properties
-		CurrencyDescriptors[CURRENCY_CUSTOM].rate = gConfigGeneral.custom_currency_rate;
-		CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = gConfigGeneral.custom_currency_affix;
-		strncpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol, CURRENCY_SYMBOL_MAX_SIZE);
 
 		openrct2_loop();
 	}
