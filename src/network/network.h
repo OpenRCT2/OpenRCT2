@@ -49,6 +49,7 @@ extern "C" {
 
 #include "NetworkTypes.h"
 
+#define NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE 128
 #ifndef DISABLE_NETWORK
 
 // This define specifies which version of network stream current build uses.
@@ -58,7 +59,6 @@ extern "C" {
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 #define NETWORK_DISCONNECT_REASON_BUFFER_SIZE 256
-#define NETWORK_DISCONNECT_KICK_REASON_MAX_SIZE 128
 #define NETWORK_USERNAME_MAX_SIZE 36
 
 #ifdef __cplusplus
