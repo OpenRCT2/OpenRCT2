@@ -1,4 +1,4 @@
-package org.openrct.android;
+package org.openrct2.android;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
