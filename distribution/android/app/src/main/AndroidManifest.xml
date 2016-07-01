@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.openrct.android">
+          package="org.openrct2.android">
 
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -12,7 +12,7 @@
       android:supportsRtl="true"
       android:largeHeap="true"
       android:theme="@style/AppTheme">
-    <activity android:name=".MainActivity">
+    <activity android:name="org.openrct2.android.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 

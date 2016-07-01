@@ -43,3 +43,4 @@ captures/
 /libs
 /app/src/main/libs/
 /app/src/main/assets/
+!/app/src/main/java/org/openrct2

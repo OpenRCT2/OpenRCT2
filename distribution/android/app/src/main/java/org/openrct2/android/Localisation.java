@@ -1,10 +1,10 @@
-package org.openrct.android;
+package org.openrct2.android;
 
 import java.io.UnsupportedEncodingException;
 
 public class Localisation {
 
-    static String tag = Localisation.class.getSimpleName();
+    static final String TAG = Localisation.class.getSimpleName();
 
     public static String win1252ToUtf8(byte[] src) {
         try {
