@@ -87,6 +87,47 @@ public:
 
 namespace ObjectFactory
 {
+    void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
+    {
+        try
+        {
+            object->ReadLegacy(context, stream);
+        }
+        catch (IOException ex)
+        {
+            // TODO check that ex is really EOF and not some other error
+            context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
+        }
+        catch (Exception ex)
+        {
+            context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
+        }
+    }
+
+    MemoryStream * GetDecodedChunkStream(IReadObjectContext * context, SDL_RWops * file)
+    {
+        size_t bufferSize = 0x600000;
+        void * buffer = Memory::Allocate<void>(bufferSize);
+        if (buffer == nullptr)
+        {
+            log_error("Unable to allocate data buffer.");
+            return nullptr;
+        }
+        
+        bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
+        if (bufferSize == SIZE_MAX)
+        {
+            context->LogError(OBJECT_ERROR_BAD_ENCODING, "Unable to decode chunk.");
+            Memory::Free(buffer);
+            return nullptr;
+        }
+        else
+        {
+            buffer = Memory::Reallocate(buffer, bufferSize);
+            return new MemoryStream(buffer, bufferSize, MEMORY_ACCESS_READ | MEMORY_ACCESS_OWNER);
+        }
+    }
+
     Object * CreateObjectFromLegacyFile(const utf8 * path)
     {
         Object * result = nullptr;
@@ -100,53 +141,24 @@ namespace ObjectFactory
                 result = CreateObject(entry);
                 if (result != nullptr)
                 {
-                    size_t bufferSize = 0x600000;
-                    void * buffer = Memory::Allocate<void>(bufferSize);
-                    if (buffer == nullptr)
+                    utf8 objectName[9] = { 0 };
+                    Memory::Copy(objectName, entry.name, 8);
+
+                    auto readContext = ReadObjectContext(objectName);
+                    auto chunkStream = GetDecodedChunkStream(&readContext, file);
+                    if (chunkStream != nullptr)
                     {
-                        log_error("Unable to allocate data buffer.");
+                        ReadObjectLegacy(result, &readContext, chunkStream);
+                        delete chunkStream;
+                    }
+
+                    if (readContext.WasError())
+                    {
+                        Console::Error::WriteFormat("Error reading object: '%s'", path);
+                        Console::Error::WriteLine();
+
                         delete result;
                         result = nullptr;
-                    }
-                    else
-                    {
-                        utf8 objectName[9] = { 0 };
-                        Memory::Copy(objectName, entry.name, 8);
-
-                        auto readContext = ReadObjectContext(objectName);
-                        try
-                        {
-                            bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
-                            if (bufferSize == SIZE_MAX)
-                            {
-                                readContext.LogError(OBJECT_ERROR_BAD_ENCODING, "Unable to decode chunk.");
-                            }
-                            else
-                            {
-                                buffer = Memory::Reallocate(buffer, bufferSize);
-                                auto ms = MemoryStream(buffer, bufferSize);
-                                result->ReadLegacy(&readContext, &ms);
-                            }
-                        }
-                        catch (IOException ex)
-                        {
-                            // TODO check that ex is really EOF and not some other error
-                            readContext.LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
-                        }
-                        catch (Exception ex)
-                        {
-                            readContext.LogError(OBJECT_ERROR_UNKNOWN, nullptr);
-                        }
-                        
-                        Memory::Free(buffer);
-                        if (readContext.WasError())
-                        {
-                            Console::Error::WriteFormat("Error reading object: '%s'", path);
-                            Console::Error::WriteLine();
-
-                            delete result;
-                            result = nullptr;
-                        }
                     }
                 }
             }

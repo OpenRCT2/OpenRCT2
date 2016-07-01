@@ -53,7 +53,7 @@ MemoryStream::MemoryStream(size_t capacity)
     _position = _data;
 }
 
-MemoryStream::MemoryStream(void * data, size_t dataSize, MEMORY_ACCESS access)
+MemoryStream::MemoryStream(void * data, size_t dataSize, uint32 access)
 {
     _access = access;
     _dataCapacity = dataSize;

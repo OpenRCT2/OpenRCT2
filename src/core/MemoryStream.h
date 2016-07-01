@@ -42,7 +42,7 @@ public:
     MemoryStream();
     MemoryStream(const MemoryStream &copy);
     explicit MemoryStream(size_t capacity);
-    MemoryStream(void * data, size_t dataSize, MEMORY_ACCESS access = MEMORY_ACCESS_READ);
+    MemoryStream(void * data, size_t dataSize, uint32 access = MEMORY_ACCESS_READ);
     MemoryStream(const void * data, size_t dataSize);
     virtual ~MemoryStream();
 
