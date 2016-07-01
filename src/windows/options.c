@@ -924,14 +924,14 @@ static void window_options_mousedown(int widgetIndex, rct_window*w, rct_widget* 
 
 			gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
 
-			gDropdownItemsFormat[num_ordinary_currencies+1] = STR_DROPDOWN_MENU_LABEL;
-			gDropdownItemsArgs[num_ordinary_currencies+1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
+			gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
+			gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
 
 
 			window_options_show_dropdown(w, widget, num_items);
 
 			if(gConfigGeneral.currency_format == CURRENCY_CUSTOM){
-				dropdown_set_checked(gConfigGeneral.currency_format+1, true);
+				dropdown_set_checked(gConfigGeneral.currency_format + 1, true);
 			} else {
 				dropdown_set_checked(gConfigGeneral.currency_format, true);
 			}
@@ -1192,8 +1192,8 @@ static void window_options_dropdown(rct_window *w, int widgetIndex, int dropdown
 			window_options_update_height_markers();
 			break;
 		case WIDX_CURRENCY_DROPDOWN:
-			if(dropdownIndex == CURRENCY_CUSTOM+1) { // Add 1 because the separator occupies a position
-				gConfigGeneral.currency_format = (sint8)dropdownIndex-1;
+			if(dropdownIndex == CURRENCY_CUSTOM + 1) { // Add 1 because the separator occupies a position
+				gConfigGeneral.currency_format = (sint8)dropdownIndex - 1;
 				custom_currency_window_open();
 			} else {
 				gConfigGeneral.currency_format = (sint8)dropdownIndex;
