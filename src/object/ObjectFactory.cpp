@@ -18,6 +18,8 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
+#include "../core/String.hpp"
+#include "../core/Path.hpp"
 #include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
@@ -37,6 +39,51 @@ extern "C"
     #include "../object.h"
     #include "../util/sawyercoding.h"
 }
+
+class ReadObjectContext : public IReadObjectContext
+{
+private:
+    utf8 *  _objectName;
+    bool    _wasWarning = false;
+    bool    _wasError = false;
+
+public:
+    bool WasWarning() const { return _wasWarning; }
+    bool WasError() const { return _wasError; }
+
+    ReadObjectContext(const utf8 * objectFileName)
+    {
+        _objectName = String::Duplicate(objectFileName);
+    }
+
+    ~ReadObjectContext() override
+    {
+        Memory::Free(_objectName);
+        _objectName = nullptr;
+    }
+
+    void LogWarning(uint32 code, const utf8 * text) override
+    {
+        _wasWarning = true;
+
+        if (!String::IsNullOrEmpty(text))
+        {
+            Console::Error::WriteFormat("[%s] Warning: %s", _objectName, text);
+            Console::Error::WriteLine();
+        }
+    }
+
+    void LogError(uint32 code, const utf8 * text) override
+    {
+        _wasError = true;
+
+        if (!String::IsNullOrEmpty(text))
+        {
+            Console::Error::WriteFormat("[%s] Error: %s", _objectName, text);
+            Console::Error::WriteLine();
+        }
+    }
+};
 
 namespace ObjectFactory
 {
@@ -63,25 +110,40 @@ namespace ObjectFactory
                     }
                     else
                     {
+                        utf8 objectName[9] = { 0 };
+                        Memory::Copy(objectName, entry.name, 8);
+
+                        auto readContext = ReadObjectContext(objectName);
                         try
                         {
                             bufferSize = sawyercoding_read_chunk_with_size(file, (uint8 *)buffer, bufferSize);
                             if (bufferSize == SIZE_MAX)
                             {
-                                throw IOException("Error decoding data.");
+                                readContext.LogError(OBJECT_ERROR_BAD_ENCODING, "Unable to decode chunk.");
                             }
-
-                            buffer = Memory::Reallocate(buffer, bufferSize);
-                            auto ms = MemoryStream(buffer, bufferSize);
-                            result->ReadLegacy(&ms);
-
-                            Memory::Free(buffer);
+                            else
+                            {
+                                buffer = Memory::Reallocate(buffer, bufferSize);
+                                auto ms = MemoryStream(buffer, bufferSize);
+                                result->ReadLegacy(&readContext, &ms);
+                            }
+                        }
+                        catch (IOException ex)
+                        {
+                            // TODO check that ex is really EOF and not some other error
+                            readContext.LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
                         }
                         catch (Exception ex)
                         {
-                            Memory::Free(buffer);
+                            readContext.LogError(OBJECT_ERROR_UNKNOWN, nullptr);
+                        }
+                        
+                        Memory::Free(buffer);
+                        if (readContext.WasError())
+                        {
                             Console::Error::WriteFormat("Error reading object: '%s'", path);
                             Console::Error::WriteLine();
+
                             delete result;
                             result = nullptr;
                         }

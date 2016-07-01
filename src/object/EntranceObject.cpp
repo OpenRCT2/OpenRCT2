@@ -28,15 +28,15 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_NAME,
 };
 
-void EntranceObject::ReadLegacy(IStream * stream)
+void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.string_idx = stream->ReadValue<rct_string_id>();
     _legacyType.image_id = stream->ReadValue<uint32>();
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     _legacyType.text_height = stream->ReadValue<uint8>();
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
-    GetImageTable()->Read(stream);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
+    GetImageTable()->Read(context, stream);
 }
 
 void EntranceObject::Load()

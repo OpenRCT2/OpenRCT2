@@ -28,6 +28,14 @@ extern "C"
 interface IStream;
 struct    ObjectRepositoryItem;
 
+interface IReadObjectContext
+{
+    virtual ~IReadObjectContext() { }
+
+    virtual void LogWarning(uint32 code, const utf8 * text) abstract;
+    virtual void LogError(uint32 code, const utf8 * text) abstract;
+};
+
 class Object
 {
 private:
@@ -48,7 +56,7 @@ public:
     const rct_object_entry *    GetObjectEntry() const { return &_objectEntry; }
     virtual void *              GetLegacyData() abstract;
 
-    virtual void ReadLegacy(IStream * stream) abstract;
+    virtual void ReadLegacy(IReadObjectContext * context, IStream * stream) abstract;
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
@@ -56,4 +64,15 @@ public:
     virtual const utf8 *    GetName() const abstract;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
+};
+
+enum OBJECT_ERROR : uint32
+{
+    OBJECT_ERROR_OK,
+    OBJECT_ERROR_UNKNOWN,
+    OBJECT_ERROR_BAD_ENCODING,
+    OBJECT_ERROR_INVALID_PROPERTY,
+    OBJECT_ERROR_BAD_STRING_TABLE,
+    OBJECT_ERROR_BAD_IMAGE_TABLE,
+    OBJECT_ERROR_UNEXPECTED_EOF,
 };

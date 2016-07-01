@@ -35,7 +35,7 @@ LargeSceneryObject::~LargeSceneryObject()
     Memory::Free(_tiles);
 }
 
-void LargeSceneryObject::ReadLegacy(IStream * stream)
+void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.name = stream->ReadValue<rct_string_id>();
     _legacyType.image = stream->ReadValue<uint32>();
@@ -49,7 +49,7 @@ void LargeSceneryObject::ReadLegacy(IStream * stream)
     _legacyType.large_scenery.var_11 = stream->ReadValue<uint8>();
     stream->Seek(5, STREAM_SEEK_CURRENT);
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
@@ -62,7 +62,7 @@ void LargeSceneryObject::ReadLegacy(IStream * stream)
 
     _tiles = ReadTiles(stream);
 
-    GetImageTable()->Read(stream);
+    GetImageTable()->Read(context, stream);
 }
 
 void LargeSceneryObject::Load()

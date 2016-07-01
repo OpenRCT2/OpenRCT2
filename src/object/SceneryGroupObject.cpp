@@ -34,7 +34,7 @@ SceneryGroupObject::~SceneryGroupObject()
     Memory::Free(_items);
 }
 
-void SceneryGroupObject::ReadLegacy(IStream * stream)
+void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.name = stream->ReadValue<rct_string_id>();
     _legacyType.image = stream->ReadValue<uint32>();
@@ -45,9 +45,9 @@ void SceneryGroupObject::ReadLegacy(IStream * stream)
     _legacyType.pad_109 = stream->ReadValue<uint8>();
     _legacyType.var_10A = stream->ReadValue<uint32>();
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     ReadItems(stream);
-    GetImageTable()->Read(stream);
+    GetImageTable()->Read(context, stream);
 
     _legacyType.var_107 = _numItems;
 }

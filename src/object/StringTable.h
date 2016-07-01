@@ -19,6 +19,7 @@
 #include <vector>
 #include "../common.h"
 
+interface IReadObjectContext;
 interface IStream;
 
 struct StringTableEntry
@@ -36,7 +37,7 @@ private:
 public:
     ~StringTable();
 
-    void            Read(IStream * stream, uint8 id);
+    void            Read(IReadObjectContext * context, IStream * stream, uint8 id);
     const utf8 *    GetString(uint8 id) const;
 
 private:

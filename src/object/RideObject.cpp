@@ -43,19 +43,19 @@ RideObject::~RideObject()
     }
 }
 
-void RideObject::ReadLegacy(IStream * stream)
+void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Read(&_legacyType);
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
-    GetStringTable()->Read(stream, OBJ_STRING_ID_DESCRIPTION);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
 
     // TODO: Move to its own function when ride construction window is merged.
     if (gConfigInterface.select_by_track_type) {
         _legacyType.enabledTrackPieces = 0xFFFFFFFFFFFFFFFF;
     }
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_CAPACITY);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_CAPACITY);
 
     // Read preset colours, by default there are 32
     _presetColours.count = stream->ReadValue<uint8>();
@@ -79,7 +79,7 @@ void RideObject::ReadLegacy(IStream * stream)
         _peepLoadingPositions[i] = stream->ReadArray<sint8>(numPeepLoadingPositions);
     }
 
-    GetImageTable()->Read(stream);
+    GetImageTable()->Read(context, stream);
 }
 
 void RideObject::Load()

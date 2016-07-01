@@ -34,7 +34,7 @@ SmallSceneryObject::~SmallSceneryObject()
     Memory::Free(_var10data);
 }
 
-void SmallSceneryObject::ReadLegacy(IStream * stream)
+void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.name = stream->ReadValue<rct_string_id>();
     _legacyType.image = stream->ReadValue<uint32>();
@@ -50,7 +50,7 @@ void SmallSceneryObject::ReadLegacy(IStream * stream)
     _legacyType.small_scenery.var_18 = stream->ReadValue<uint16>();
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
@@ -59,7 +59,7 @@ void SmallSceneryObject::ReadLegacy(IStream * stream)
         _var10data = ReadVar10(stream);
     }
 
-    GetImageTable()->Read(stream);
+    GetImageTable()->Read(context, stream);
 }
 
 void SmallSceneryObject::Load()

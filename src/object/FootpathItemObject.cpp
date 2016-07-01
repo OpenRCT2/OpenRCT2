@@ -28,7 +28,7 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_NAME,
 };
 
-void FootpathItemObject::ReadLegacy(IStream * stream)
+void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.name = stream->ReadValue<rct_string_id>();
     _legacyType.image = stream->ReadValue<uint32>();
@@ -38,11 +38,11 @@ void FootpathItemObject::ReadLegacy(IStream * stream)
     _legacyType.path_bit.price = stream->ReadValue<sint16>();
     _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
-    GetImageTable()->Read(stream);
+    GetImageTable()->Read(context, stream);
 }
 
 void FootpathItemObject::Load()

@@ -28,7 +28,7 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_NAME,
 };
 
-void WaterObject::ReadLegacy(IStream * stream)
+void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.string_idx = stream->ReadValue<rct_string_id>();
     _legacyType.image_id = stream->ReadValue<uint32>();
@@ -36,8 +36,8 @@ void WaterObject::ReadLegacy(IStream * stream)
     _legacyType.var_0A = stream->ReadValue<uint32>();
     _legacyType.var_0E = stream->ReadValue<uint16>();
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
-    GetImageTable()->Read(stream);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
+    GetImageTable()->Read(context, stream);
 }
 
 void WaterObject::Load()

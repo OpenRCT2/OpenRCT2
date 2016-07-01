@@ -18,6 +18,7 @@
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
+#include "Object.h"
 #include "StringTable.h"
 
 constexpr uint8 RCT2_LANGUAGE_ID_ENGLISH_UK = 0;
@@ -44,27 +45,35 @@ StringTable::~StringTable()
     }
 }
 
-void StringTable::Read(IStream * stream, uint8 id)
+void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
 {
-    uint8 languageId;
-    while ((languageId = stream->ReadValue<uint8>()) != RCT2_LANGUAGE_ID_END)
+    try
     {
-        StringTableEntry entry;
-        entry.Id = id;
-        entry.LanguageId = languageId;
-
-        char * win1252 = stream->ReadString();
-        if (StringIsBlank(win1252))
+        uint8 languageId;
+        while ((languageId = stream->ReadValue<uint8>()) != RCT2_LANGUAGE_ID_END)
         {
-            entry.LanguageId = RCT2_LANGUAGE_ID_BLANK;
+            StringTableEntry entry;
+            entry.Id = id;
+            entry.LanguageId = languageId;
+
+            char * win1252 = stream->ReadString();
+            if (StringIsBlank(win1252))
+            {
+                entry.LanguageId = RCT2_LANGUAGE_ID_BLANK;
+            }
+
+            entry.Text = win1252_to_utf8_alloc(win1252);
+            Memory::Free(win1252);
+
+            String::Trim(entry.Text);
+
+            _strings.push_back(entry);
         }
-
-        entry.Text = win1252_to_utf8_alloc(win1252);
-        Memory::Free(win1252);
-
-        String::Trim(entry.Text);
-
-        _strings.push_back(entry);
+    }
+    catch (Exception ex)
+    {
+        context->LogError(OBJECT_ERROR_BAD_STRING_TABLE, "Bad string table.");
+        throw;
     }
     Sort();
 }

@@ -33,7 +33,7 @@ public:
 
     void * GetLegacyData()  override { return &_legacyType; }
 
-    void ReadLegacy(IStream * stream) override;
+    void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
     void Load() override;
     void Unload() override;
 

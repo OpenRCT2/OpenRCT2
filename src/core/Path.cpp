@@ -74,6 +74,8 @@ namespace Path
 
     utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
+        path = GetFileName(path);
+
         const utf8 * lastDot = nullptr;
         const utf8 * ch = path;
         for (; *ch != '\0'; ch++)

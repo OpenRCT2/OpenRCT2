@@ -24,6 +24,7 @@ extern "C"
     #include "../drawing/drawing.h"
 }
 
+interface IReadObjectContext;
 interface IStream;
 
 class ImageTable
@@ -36,7 +37,7 @@ private:
 public:
     ~ImageTable();
 
-    void                    Read(IStream * stream);
+    void                    Read(IReadObjectContext * context, IStream * stream);
     const rct_g1_element *  GetImages() const { return _entries.data(); }
     uint32                  GetCount() const { return _entries.size(); };
 };

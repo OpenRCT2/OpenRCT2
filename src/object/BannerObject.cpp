@@ -29,7 +29,7 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_NAME,
 };
 
-void BannerObject::ReadLegacy(IStream * stream)
+void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.name = stream->ReadValue<rct_string_id>();
     _legacyType.image = stream->ReadValue<uint32>();
@@ -39,11 +39,11 @@ void BannerObject::ReadLegacy(IStream * stream)
     _legacyType.banner.price = stream->ReadValue<uint8>();
     _legacyType.banner.scenery_tab_id = stream->ReadValue<uint8>();
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
-    GetImageTable()->Read(stream);
+    GetImageTable()->Read(context, stream);
 }
 
 void BannerObject::Load()

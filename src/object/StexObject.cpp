@@ -29,7 +29,7 @@ enum OBJ_STRING_ID
     OBJ_STRING_ID_SCENARIO_DETAILS,
 };
 
-void StexObject::ReadLegacy(IStream * stream)
+void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     _legacyType.scenario_name = stream->ReadValue<rct_string_id>();
     _legacyType.park_name = stream->ReadValue<rct_string_id>();
@@ -37,9 +37,9 @@ void StexObject::ReadLegacy(IStream * stream)
     _legacyType.var_06 = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
-    GetStringTable()->Read(stream, OBJ_STRING_ID_SCENARIO_NAME);
-    GetStringTable()->Read(stream, OBJ_STRING_ID_PARK_NAME);
-    GetStringTable()->Read(stream, OBJ_STRING_ID_SCENARIO_DETAILS);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_SCENARIO_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_PARK_NAME);
+    GetStringTable()->Read(context, stream, OBJ_STRING_ID_SCENARIO_DETAILS);
 }
 
 void StexObject::Load()
