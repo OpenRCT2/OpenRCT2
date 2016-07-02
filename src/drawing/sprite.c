@@ -173,30 +173,6 @@ int gfx_load_g2()
 	return 0;
 }
 
-static uint32 _nextImageId = 29294;
-
-uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
-{
-	uint32 baseImageId = _nextImageId;
-	for (uint32 i = 0; i < count; i++) {
-		uint32 imageId = _nextImageId;
-		if (imageId >= 291438) {
-			log_error("Reached maximum image limit.");
-			break;
-		}
-
-		g1Elements[imageId] = images[i];
-		drawing_engine_invalidate_image(imageId);
-		_nextImageId++;
-	}
-	return baseImageId;
-}
-
-void gfx_object_free_images(uint32 baseImageId, uint32 count)
-{
-	_nextImageId = 29294;
-}
-
 /**
  * This function looks like it initialises the 0x009E3CE4 array which references sprites used for background / palette mixing or
  * something. Further investigation is needed.
