@@ -866,29 +866,6 @@ static int cc_twitch(const utf8 **argv, int argc)
 	return 0;
 }
 
-static void editor_load_selected_objects_console()
-{
-	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	rct_object_entry *installed_entry = gInstalledObjects;
-
-	if (gInstalledObjectsCount == 0)
-		return;
-
-	for (int i = gInstalledObjectsCount; i != 0; i--, selection_flags++) {
-		if (*selection_flags & 1) {
-			uint8 entry_index, entry_type;
-			if (!find_object_in_entry_group(installed_entry, &entry_type, &entry_index)){
-				int chunk_size;
-				if (!object_load_chunk(-1, installed_entry, &chunk_size)) {
-					log_error("Failed to load entry %.8s", installed_entry->name);
-				}
-			}
-		}
-
-		installed_entry = object_get_next(installed_entry);
-	}
-}
-
 static int cc_load_object(const utf8 **argv, int argc) {
 	if (argc > 0) {
 		utf8 path[MAX_PATH];

@@ -220,11 +220,11 @@ static void window_editor_object_set_page(rct_window *w, int page);
 static void window_editor_object_selection_set_pressed_tab(rct_window *w);
 static void window_editor_object_selection_select_default_objects();
 static void window_editor_object_selection_select_required_objects();
-static int window_editor_object_selection_select_object(uint8 bh, int flags, rct_object_entry *entry);
+static int window_editor_object_selection_select_object(uint8 bh, int flags, const rct_object_entry *entry);
 static int get_object_from_object_selection(uint8 object_type, int y);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
-static bool filter_selected(uint8* objectFlags);
+static bool filter_selected(uint8 objectFlags);
 static bool filter_string(const ObjectRepositoryItem * item);
 static bool filter_source(const ObjectRepositoryItem * item);
 static bool filter_chunks(const ObjectRepositoryItem * item);
@@ -308,6 +308,10 @@ static list_item *_listItems = NULL;
 static int _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
 static void * _loadedObject = NULL;
+static uint8 * _objectSelectionFlags = NULL;
+static int _numSelectedObjectsForType[11];
+static int _numAvailableObjectsForType[11];
+static bool _maxObjectsWasHit;
 
 static void visible_list_dispose()
 {
@@ -349,25 +353,24 @@ static void visible_list_refresh(rct_window *w)
 
 	list_item *currentListItem = &_listItems[0];
 	const ObjectRepositoryItem *items = object_repository_get_items();
-	uint8 *itemFlags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	for (int i = 0; i < numObjects; i++) {
+		uint8 selectionFlags = _objectSelectionFlags[i];
 		const ObjectRepositoryItem * item = &items[i];
 		uint8 objectType = item->ObjectEntry.flags & 0x0F;
-		if (objectType == w->selected_tab && !(*itemFlags & OBJECT_SELECTION_FLAG_6) &&
+		if (objectType == w->selected_tab && !(selectionFlags & OBJECT_SELECTION_FLAG_6) &&
 			filter_source(item) &&
 			filter_string(item) &&
 			filter_chunks(item) &&
-			filter_selected(itemFlags)
+			filter_selected(selectionFlags)
 		) {
 			rct_object_filters * filter = calloc(1, sizeof(rct_object_filters));
 			currentListItem->repositoryItem = item;
 			currentListItem->entry = (rct_object_entry *)&item->ObjectEntry;
 			currentListItem->filter = filter;
-			currentListItem->flags = itemFlags;
+			currentListItem->flags = &_objectSelectionFlags[i];
 			currentListItem++;
 			_numListItems++;
 		}
-		itemFlags++;
 	}
 
 	_listItems = realloc(_listItems, _numListItems * sizeof(list_item));
@@ -461,36 +464,35 @@ void window_editor_object_selection_open()
 static void setup_track_manager_objects()
 {
 	uint8 ride_list[128] = { 0 };
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 
 	int numObjects = object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = numObjects; i > 0; --i) {
+	for (int i = 0; i < numObjects; i++) {
+		uint8 * selectionFlags = &_objectSelectionFlags[i];
 		const ObjectRepositoryItem * item = &items[i];
 		uint8 object_type = item->ObjectEntry.flags & 0xF;
 		if (object_type == OBJECT_TYPE_RIDE){
-			*selection_flags |= OBJECT_SELECTION_FLAG_6;
+			*selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
 			for (uint8 j = 0; j < 3; j++) {
-				uint8 ride_type = item->RideType[j];
-				if (ride_type == 0xFF)
+				uint8 rideType = item->RideType[j];
+				if (rideType == 0xFF)
 					continue;
 
-				if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK))
+				if (!ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK))
 					continue;
 
 				if (item->RideType[3] & (1 << 0)) {
-					*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
-				} else if (ride_list[ride_type] & (1 << 0)) {
+					*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
+				} else if (ride_list[rideType] & (1 << 0)) {
 					continue;
 				} else {
-					ride_list[ride_type] |= (1 << 0);
-					*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
+					ride_list[rideType] |= (1 << 0);
+					*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
 				}
 				break;
 			}
 		}
-		selection_flags++;
 	}
 }
 
@@ -500,28 +502,25 @@ static void setup_track_manager_objects()
  */
 static void setup_track_designer_objects()
 {
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	int numObjects = object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = numObjects; i > 0; --i) {
+	for (int i = 0; i < numObjects; i++) {
+		uint8 * selectionFlags = &_objectSelectionFlags[i];
 		const ObjectRepositoryItem * item = &items[i];
-		uint8 object_type = item->ObjectEntry.flags & 0xF;
-		if (object_type == OBJECT_TYPE_RIDE){
-			*selection_flags |= OBJECT_SELECTION_FLAG_6;
+		uint8 objectType = item->ObjectEntry.flags & 0xF;
+		if (objectType == OBJECT_TYPE_RIDE){
+			*selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
 			for (uint8 j = 0; j < 3; j++) {
-				uint8 ride_type = item->RideType[j];
-				if (ride_type == 0xFF)
-					continue;
-
-				if (!(RideData4[ride_type].flags & RIDE_TYPE_FLAG4_11))
-					continue;
-
-				*selection_flags &= ~OBJECT_SELECTION_FLAG_6;
-				break;
+				uint8 rideType = item->RideType[j];
+				if (rideType != 0xFF) {
+					if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_11) {
+						*selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
+						break;
+					}
+				}
 			}
 		}
-		selection_flags++;
 	}
 }
 
@@ -529,8 +528,8 @@ static void setup_track_designer_objects()
  *
  *  rct2: 0x006AA82B
  */
-static void setup_in_use_selection_flags(){
-
+static void setup_in_use_selection_flags()
+{
 	for (uint8 object_type = 0; object_type < 11; object_type++){
 		for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
 			RCT2_ADDRESS(0x0098DA38, uint8*)[object_type][i] = 0;
@@ -601,35 +600,32 @@ static void setup_in_use_selection_flags(){
 		}
 	} while (map_element_iterator_next(&iter));
 
-	for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++){
+	for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++) {
 		rct_ride* ride = get_ride(ride_index);
-		if (ride->type == RIDE_TYPE_NULL)
-			continue;
-
-		uint8 type = ride->subtype;
-		RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+		if (ride->type != RIDE_TYPE_NULL) {
+			uint8 type = ride->subtype;
+			RCT2_ADDRESS(0x0098DA38, uint8*)[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+		}
 	}
-
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 
 	int numObjects = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = numObjects; i > 0; --i) {
+	for (int i = 0; i < numObjects; i++) {
+		uint8 *selectionFlags = &_objectSelectionFlags[i];
 		const ObjectRepositoryItem * item = &items[i];
-		*selection_flags &= ~OBJECT_SELECTION_FLAG_IN_USE;
+		*selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-		uint8 entry_type, entry_index;
-		if (find_object_in_entry_group(&item->ObjectEntry, &entry_type, &entry_index)) {
-			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 0)){
-				*selection_flags |=
+		uint8 entryType, entryIndex;
+		if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex)) {
+			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entryType][entryIndex] & (1 << 0)) {
+				*selectionFlags |=
 					OBJECT_SELECTION_FLAG_IN_USE |
 					OBJECT_SELECTION_FLAG_SELECTED;
 			}
-			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entry_type][entry_index] & (1 << 1)){
-				*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
+			if (RCT2_ADDRESS(0x0098DA38, uint8*)[entryType][entryIndex] & (1 << 1)) {
+				*selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
 			}
 		}
-		selection_flags++;
 	}
 }
 
@@ -640,43 +636,41 @@ static void setup_in_use_selection_flags(){
 static int sub_6AB211()
 {
 	int numObjects = (int)object_repository_get_items_count();
-
-	RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) = malloc(numObjects);
-
-	if (RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*) == NULL){
+	_objectSelectionFlags = (uint8*)calloc(numObjects, sizeof(uint8));
+	if (_objectSelectionFlags == NULL){
 		log_error("Failed to allocate memory for object flag list.");
 		return 0;
 	}
 
-	memset(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*), 0, numObjects);
-	for (uint8 object_type = 0; object_type < 11; object_type++){
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
-		RCT2_ADDRESS(0x00F433E1, uint16)[object_type] = 0;
+	for (uint8 objectType = 0; objectType < 11; objectType++) {
+		_numSelectedObjectsForType[objectType] = 0;
+		_numAvailableObjectsForType[objectType] = 0;
 	}
 
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = numObjects; i > 0; --i) {
-		uint8 object_type = items[i].ObjectEntry.flags & 0xF;
-		RCT2_ADDRESS(0x00F433E1, uint16)[object_type]++;
+	for (int i = 0; i < numObjects; i++) {
+		uint8 objectType = items[i].ObjectEntry.flags & 0xF;
+		_numAvailableObjectsForType[objectType]++;
 	}
 
-	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
 		setup_track_designer_objects();
 	}
 
-	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER){
+	if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
 		setup_track_manager_objects();
 	}
 
 	setup_in_use_selection_flags();
 	reset_selected_object_count_and_size();
 
-	if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))){
+	if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
 		window_editor_object_selection_select_required_objects();
 
 		// To prevent it breaking in scenario mode.
-		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+		if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
 			window_editor_object_selection_select_default_objects();
+		}
 	}
 
 	reset_required_object_flags();
@@ -690,7 +684,7 @@ static int sub_6AB211()
  */
 static void editor_object_flags_free()
 {
-	SafeFree(RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*));
+	SafeFree(_objectSelectionFlags);
 }
 
 /**
@@ -719,16 +713,13 @@ void remove_selected_objects_from_research(const rct_object_entry* installedObje
  */
 void unload_unselected_objects()
 {
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-
 	int numItems = object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = numItems; i > 0; --i) {
-		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED)){
+	for (int i = 0; i < numItems; i++) {
+		if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
 			remove_selected_objects_from_research(&items[i].ObjectEntry);
 			object_repository_unload(i);
 		}
-		selection_flags++;
 	}
 }
 
@@ -1008,7 +999,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 	if (!(object_selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
 		ebx = 7;
 
-	RCT2_GLOBAL(0xF43411, uint8) = 0;
+	_maxObjectsWasHit = false;
 	if (!window_editor_object_selection_select_object(0, ebx, listItem->entry)) {
 		rct_string_id error_title = ebx & 1 ?
 			STR_UNABLE_TO_SELECT_THIS_OBJECT :
@@ -1024,10 +1015,9 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, int s
 		window_invalidate(w);
 	}
 
-	if (!RCT2_GLOBAL(0xF43411, uint8) & 1)
-		return;
-
-	window_error_open(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
+	if (_maxObjectsWasHit) {
+		window_error_open(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
+	}
 }
 
 /**
@@ -1299,7 +1289,7 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		x = w->x + 3;
 		y = w->y + w->height - 13;
 
-		numSelected = RCT2_ADDRESS(0x00F433F7, uint16)[w->selected_tab];
+		numSelected = _numSelectedObjectsForType[w->selected_tab];
 		totalSelectable = object_entry_group_counts[w->selected_tab];
 		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
 			totalSelectable = 4;
@@ -1508,13 +1498,11 @@ static void window_editor_object_selection_set_pressed_tab(rct_window *w)
 */
 static void window_editor_object_selection_select_default_objects()
 {
-	int i;
-
-	if (RCT2_GLOBAL(0x00F433F7, uint16) != 0)
-		return;
-
-	for (i = 0; i < countof(DefaultSelectedObjects); i++)
-		window_editor_object_selection_select_object(0, 7, &DefaultSelectedObjects[i]);
+	if (_numSelectedObjectsForType[0] == 0) {
+		for (int i = 0; i < countof(DefaultSelectedObjects); i++) {
+			window_editor_object_selection_select_object(0, 7, &DefaultSelectedObjects[i]);
+		}
+	}
 }
 
 /**
@@ -1535,8 +1523,17 @@ static void window_editor_object_selection_select_required_objects()
  */
 void reset_selected_object_count_and_size()
 {
-	for (uint8 object_type = 0; object_type < 11; object_type++) {
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type] = 0;
+	for (uint8 objectType = 0; objectType < 11; objectType++) {
+		_numSelectedObjectsForType[objectType] = 0;
+	}
+
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		uint8 objectType = items[i].ObjectEntry.flags & 0xF;
+		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
+			_numSelectedObjectsForType[objectType]++;
+		}
 	}
 }
 
@@ -1546,21 +1543,19 @@ void reset_selected_object_count_and_size()
  */
 void set_required_object_flags(rct_object_entry* required_object)
 {
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
 	int numObjects = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = numObjects; i > 0; --i) {
+	for (int i = 0; i < numObjects; i++) {
 		const ObjectRepositoryItem * item = &items[i];
 		if (object_entry_compare(required_object, &item->ObjectEntry)) {
-			*selection_flags |= OBJECT_SELECTION_FLAG_REQUIRED;
+			_objectSelectionFlags[i] |= OBJECT_SELECTION_FLAG_REQUIRED;
 
-			uint16 no_required_objects = item->NumRequiredObjects;
-			for (; no_required_objects > 0; no_required_objects--) {
-				set_required_object_flags(&item->RequiredObjects[i]);
+			uint16 numRequiredObjects = item->NumRequiredObjects;
+			for (uint16 j = 0; j < numRequiredObjects; j++) {
+				set_required_object_flags(&item->RequiredObjects[j]);
 			}
-			return;
+			break;
 		}
-		selection_flags++;
 	}
 }
 
@@ -1573,24 +1568,19 @@ void reset_required_object_flags()
 	int numObjects = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
 
-	uint8* selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	for (int i = numObjects; i > 0; --i) {
-		*selection_flags &= ~OBJECT_SELECTION_FLAG_REQUIRED;
-		selection_flags++;
+	for (int i = 0; i < numObjects; i++) {
+		_objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_REQUIRED;
 	}
 
-	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-
-	for (int i = numObjects; i > 0; --i){
+	for (int i = 0; i < numObjects; i++) {
 		const ObjectRepositoryItem * item = &items[i];
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED){
-			uint16 no_required_objects = item->NumRequiredObjects;
-			for (; no_required_objects > 0; no_required_objects--){
-				set_required_object_flags(&item->RequiredObjects[i]);
+
+		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
+			uint16 numRequiredObjects = item->NumRequiredObjects;
+			for (uint16 j = 0; j < numRequiredObjects; j++) {
+				set_required_object_flags(&item->RequiredObjects[j]);
 			}
 		}
-
-		selection_flags++;
 	}
 }
 
@@ -1610,7 +1600,7 @@ void set_object_selection_error(uint8 is_master_object, rct_string_id error_msg)
  *
  *  rct2: 0x006AB54F
  */
-static int window_editor_object_selection_select_object(uint8 bh, int flags, rct_object_entry *entry)
+static int window_editor_object_selection_select_object(uint8 bh, int flags, const rct_object_entry *entry)
 {
 	int numObjects = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * item = object_repository_find_object_by_entry(entry);
@@ -1619,29 +1609,33 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 		return 0;
 	}
 
-	uint8 * selection_flags;
-	selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-	for (int i = numObjects; i > 0; --i) {
-		selection_flags++;
+	// Get repository item index
+	int index = -1;
+	const ObjectRepositoryItem * items = object_repository_get_items();
+	for (int i = 0; i < numObjects; i++) {
+		if (&items[i] == item) {
+			index = i;
+		}
 	}
 
-	if (!(flags & 1)){
-		if (!(*selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
+	uint8 * selectionFlags = &_objectSelectionFlags[index];
+	if (!(flags & 1)) {
+		if (!(*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED))
 		{
 			if (bh == 0){
 				reset_required_object_flags();
 			}
 			return 1;
 		}
-		else if (*selection_flags & OBJECT_SELECTION_FLAG_IN_USE){
+		else if (*selectionFlags & OBJECT_SELECTION_FLAG_IN_USE){
 			set_object_selection_error(bh, 3173);
 			return 0;
 		}
-		else if (*selection_flags & OBJECT_SELECTION_FLAG_REQUIRED){
+		else if (*selectionFlags & OBJECT_SELECTION_FLAG_REQUIRED){
 			set_object_selection_error(bh, 3174);
 			return 0;
 		}
-		else if (*selection_flags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED){
+		else if (*selectionFlags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED){
 			set_object_selection_error(bh, 3175);
 			return 0;
 		}
@@ -1655,9 +1649,9 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 			}
 		}
 
-		uint8 object_type = item->ObjectEntry.flags & 0xF;
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]--;
-		*selection_flags &= ~OBJECT_SELECTION_FLAG_SELECTED;
+		uint8 objectType = item->ObjectEntry.flags & 0xF;
+		_numSelectedObjectsForType[objectType]--;
+		*selectionFlags &= ~OBJECT_SELECTION_FLAG_SELECTED;
 		if (bh == 0) {
 			reset_required_object_flags();
 		}
@@ -1665,48 +1659,44 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 	} else {
 		if (bh == 0) {
 			if (flags & (1 << 3)) {
-				*selection_flags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
+				*selectionFlags |= OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED;
 			}
 		}
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED) {
+		if (*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED) {
 			if (bh == 0) {
 				reset_required_object_flags();
 			}
 			return 1;
 		}
 
-		uint8 object_type = item->ObjectEntry.flags & 0xF;
-		uint16 no_objects = object_entry_group_counts[object_type];
+		uint8 objectType = item->ObjectEntry.flags & 0xF;
+		uint16 maxObjects = object_entry_group_counts[objectType];
 		if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
-			no_objects = 4;
+			maxObjects = 4;
 		}
 
-		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]) {
+		if (maxObjects <= _numSelectedObjectsForType[objectType]) {
 			set_object_selection_error(bh, 3171);
 			return 0;
 		}
 
-		uint16 numRequiredObjects = item->NumRequiredObjects;
-		rct_object_entry * required_objects = item->RequiredObjects;
-		for (; numRequiredObjects != 0; numRequiredObjects--) {
-			if (!window_editor_object_selection_select_object(++bh, flags, required_objects)) {
+		for (uint16 j = 0; j < item->NumRequiredObjects; j++) {
+			if (!window_editor_object_selection_select_object(++bh, flags, &item->RequiredObjects[j])) {
 				if (bh != 0) {
 					reset_selected_object_count_and_size();
 				}
 				return 0;
 			}
-			required_objects++;
 		}
 
-		uint16 numThemeObjects = item->NumThemeObjects;
-		rct_object_entry * theme_object = item->RequiredObjects;
-		for (; numThemeObjects != 0; numThemeObjects--) {
-			if (flags & (1 << 2)) {
-				if (!window_editor_object_selection_select_object(++bh, flags, theme_object)) {
-					RCT2_GLOBAL(0x00F43411, uint8) |= 1;
+		if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+			for (uint16 j = 0; j < item->NumThemeObjects; j++) {
+				if (flags & (1 << 2)) {
+					if (!window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j])) {
+						_maxObjectsWasHit = true;
+					}
 				}
 			}
-			theme_object++;
 		}
 
 		if (bh != 0 && !(flags & (1 << 1))) {
@@ -1716,14 +1706,14 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, rct
 			return 0;
 		}
 
-		if (no_objects <= RCT2_ADDRESS(0x00F433F7, uint16)[object_type]) {
+		if (maxObjects <= _numSelectedObjectsForType[objectType]) {
 			set_object_selection_error(bh, 3171);
 			return 0;
 		}
 
-		RCT2_ADDRESS(0x00F433F7, uint16)[object_type]++;
+		_numSelectedObjectsForType[objectType]++;
 
-		*selection_flags |= OBJECT_SELECTION_FLAG_SELECTED;
+		*selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
 		if (bh == 0) {
 			reset_required_object_flags();
 		}
@@ -1798,12 +1788,10 @@ static void window_editor_object_selection_manage_tracks()
  */
 static void editor_load_selected_objects()
 {
-	uint8 *selection_flags = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
-
 	int numObjects = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = numObjects; i != 0; i--, selection_flags++) {
-		if (*selection_flags & OBJECT_SELECTION_FLAG_SELECTED) {
+	for (int i = 0; i < numObjects; i++) {
+		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(&items[i].ObjectEntry, &entry_type, &entry_index)) {
 				int chunk_size;
@@ -1874,14 +1862,15 @@ static void window_editor_object_selection_textinput(rct_window *w, int widgetIn
 	window_invalidate(w);
 }
 
-static bool filter_selected(uint8* objectFlag) {
+static bool filter_selected(uint8 objectFlag)
+{
 	if (_FILTER_SELECTED == _FILTER_NONSELECTED) {
 		return true;
 	}
-	if (_FILTER_SELECTED && *objectFlag & OBJECT_SELECTION_FLAG_SELECTED) {
+	if (_FILTER_SELECTED && objectFlag & OBJECT_SELECTION_FLAG_SELECTED) {
 		return true;
 	}
-	else if (_FILTER_NONSELECTED && !(*objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
+	else if (_FILTER_NONSELECTED && !(objectFlag & OBJECT_SELECTION_FLAG_SELECTED)) {
 		return true;
 	}
 	else {
@@ -1960,7 +1949,7 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
 static void filter_update_counts()
 {
 	if (!_FILTER_ALL || strlen(_filter_string) > 0) {
-		uint8 *objectFlag = RCT2_GLOBAL(RCT2_ADDRESS_EDITOR_OBJECT_FLAGS_LIST, uint8*);
+		uint8 *selectionFlags = _objectSelectionFlags;
 		for (int i = 0; i < 11; i++) {
 			_filter_object_counts[i] = 0;
 		}
@@ -1972,12 +1961,12 @@ static void filter_update_counts()
 			if (filter_source(item) &&
 				filter_string(item) &&
 				filter_chunks(item) &&
-				filter_selected(objectFlag)
+				filter_selected(*selectionFlags)
 			) {
 				uint8 objectType = item->ObjectEntry.flags & 0xF;
 				_filter_object_counts[objectType]++;
 			}
-			objectFlag++;
+			selectionFlags++;
 		}
 	}
 }
@@ -1993,4 +1982,18 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
 		}
 	}
 	return result;
+}
+
+bool editor_check_object_group_at_least_one_selected(int objectType)
+{
+	int numObjects = (int)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+
+	for (int i = 0; i < numObjects; i++) {
+		uint8 objectType = items[i].ObjectEntry.flags & 0x0F;
+		if (objectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
+			return true;
+		}
+	}
+	return false;
 }
