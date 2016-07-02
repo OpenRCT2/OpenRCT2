@@ -476,10 +476,9 @@ bool config_open_default()
 	config_get_default_path(path);
 	if (config_open(path)) {
 		config_apply_to_old_addresses();
+		currency_load_custom_currency_config();
 		return true;
 	}
-
-	currency_load_custom_currency_config();
 
 	return false;
 }
