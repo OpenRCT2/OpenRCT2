@@ -986,7 +986,7 @@ void window_scenery_invalidate(rct_window *w)
 		} else if (tabSelectedSceneryId < 0x100) {
 			sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 
-			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG10)) {
+			if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS)) {
 				window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
 				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
@@ -1210,7 +1210,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrol
 					gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}
 
-				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
+				if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ANIMATED_FG) {
 					imageId = (sceneryEntry->image + gWindowSceneryRotation) + 4;
 					gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 				}

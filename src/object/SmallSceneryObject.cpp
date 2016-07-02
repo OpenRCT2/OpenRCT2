@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
+#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "SmallSceneryObject.h"
 
@@ -88,6 +89,58 @@ void SmallSceneryObject::Unload()
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
+
+void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    // rct_drawpixelinfo clipDPI;
+    // if (!clip_drawpixelinfo(&clipDPI, dpi, x - 56, y - 56, 112, 112)) {
+    //     return;
+    // }
+
+    uint32 flags = _legacyType.small_scenery.flags;
+    uint32 imageId = _legacyType.image;
+    if (flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+    {
+        imageId |= 0x20D00000;
+        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        {
+            imageId |= 0x92000000;
+        }
+    }
+
+    int x = dpi->width / 2;
+    int y = (dpi->height / 2) + (_legacyType.small_scenery.height / 2);
+    y = Math::Min(y, dpi->height - 16);
+
+    if ((flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
+        (flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+    {
+        y -= 12;
+    }
+
+    gfx_draw_sprite(dpi, imageId, x, y, 0);
+
+    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_GLASS)
+    {
+        imageId = _legacyType.image + 0x44500004;
+        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        {
+            imageId |= 0x92000000;
+        }
+        gfx_draw_sprite(dpi, imageId, x, y, 0);
+    }
+
+    if (flags & SMALL_SCENERY_FLAG_ANIMATED_FG)
+    {
+        imageId = _legacyType.image + 4;
+        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        {
+            imageId |= 0x92000000;
+        }
+        gfx_draw_sprite(dpi, imageId, x, y, 0);
+    }
+}
+
 
 const utf8 * SmallSceneryObject::GetName() const
 {

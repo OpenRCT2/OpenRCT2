@@ -809,7 +809,7 @@ static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo
 	}
 
 	gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
-	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG10) {
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_GLASS) {
 		imageId = sceneryEntry->image + 0x44500004;
 		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
 			imageId |= 0x92000000;
@@ -818,7 +818,7 @@ static void object_type_small_scenery_paint(void *objectEntry, rct_drawpixelinfo
 		gfx_draw_sprite(&clipDPI, imageId, x, y, 0);
 	}
 
-	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG8) {
+	if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ANIMATED_FG) {
 		imageId = sceneryEntry->image + 4;
 		if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
 			imageId |= 0x92000000;

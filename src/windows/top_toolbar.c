@@ -910,7 +910,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, sint16 widgetIndex){
 		// If can't repaint
 		if (!(scenery_entry->small_scenery.flags &
 			(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR |
-			SMALL_SCENERY_FLAG10)))
+			SMALL_SCENERY_FLAG_HAS_GLASS)))
 			return;
 
 		gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;

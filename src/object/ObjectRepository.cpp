@@ -668,7 +668,9 @@ extern "C"
     void * object_repository_load_object(const rct_object_entry * objectEntry)
     {
         IObjectRepository * objRepository = GetObjectRepository();
-        return (void *)objRepository->LoadObject(objectEntry);
+        Object * object = objRepository->LoadObject(objectEntry);
+        object->Load();
+        return (void *)object;
     }
 
     void object_repository_unload(size_t itemIndex)
@@ -791,7 +793,9 @@ extern "C"
 
     void object_delete(void * object)
     {
-        delete ((Object *)object);
+        Object * baseObject = (Object *)object;
+        baseObject->Unload();
+        delete baseObject;
     }
 
     const utf8 * object_get_description(const void * object)

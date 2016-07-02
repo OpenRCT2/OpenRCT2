@@ -44,9 +44,9 @@ typedef enum {
 	SMALL_SCENERY_FLAG_ANIMATED = (1 << 4),						// 0x10
 	SMALL_SCENERY_FLAG6 = (1 << 5),								// 0x20
 	SMALL_SCENERY_FLAG_CAN_BE_WATERED = (1 << 6),				// 0x40
-	SMALL_SCENERY_FLAG8 = (1 << 7),								// 0x80
+	SMALL_SCENERY_FLAG_ANIMATED_FG = (1 << 7),					// 0x80
 	SMALL_SCENERY_FLAG9 = (1 << 8),								// 0x100
-	SMALL_SCENERY_FLAG10 = (1 << 9),							// 0x200
+	SMALL_SCENERY_FLAG_HAS_GLASS = (1 << 9),					// 0x200
 	SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 10),			// 0x400
 	SMALL_SCENERY_FLAG12 = (1 << 11),							// 0x800
 	SMALL_SCENERY_FLAG13 = (1 << 12),							// 0x1000
