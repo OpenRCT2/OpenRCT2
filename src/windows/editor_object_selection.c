@@ -299,6 +299,8 @@ typedef struct list_item {
 	uint8 *flags;
 } list_item;
 
+static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item);
+
 typedef int (*sortFunc)(const void *, const void *);
 
 static int _numListItems = 0;
@@ -328,8 +330,8 @@ static int visible_list_sort_ride_type(const void *rawA, const void *rawB)
 	list_item *a = (list_item*)rawA;
 	list_item *b = (list_item*)rawB;
 
-	const char *rideTypeA = language_get_string(2 + a->repositoryItem->RideType[0]);
-	const char *rideTypeB = language_get_string(2 + b->repositoryItem->RideType[0]);
+	const char *rideTypeA = language_get_string(get_ride_type_string_id(a->repositoryItem));
+	const char *rideTypeB = language_get_string(get_ride_type_string_id(b->repositoryItem));
 	int result = strcmp(rideTypeA, rideTypeB);
 	if (result != 0)
 		return result;
@@ -1331,9 +1333,16 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
 	// Draw preview
 	widget = &w->widgets[WIDX_PREVIEW];
-	x = w->x + (widget->left + widget->right) / 2 + 1;
-	y = w->y + (widget->top + widget->bottom) / 2 + 1;
-	// object_paint(type, stex_entry, dpi, x, y);
+	{
+		rct_drawpixelinfo clipDPI;
+		x = w->x + widget->left;
+		y = w->y + widget->top;
+		int width = widget->right - widget->left;
+		int height = widget->bottom - widget->top;
+		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
+			object_draw_preview(_loadedObject, &clipDPI);
+		}
+	}
 
 	// Draw name of object
 	x = w->x + (widget->left + widget->right) / 2 + 1;
@@ -1372,15 +1381,9 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	//
 	if (w->selected_tab == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		y = w->y + w->height - 3 - 12 - 14 - 14;
-
-		for (int i = 0; i < 3; i++) {
-			uint8 rideType = listItem->repositoryItem->RideType[i];
-			if (rideType != 255) {
-				stringId = 2 + rideType;
-				gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
-				y -= 11;
-			}
-		}
+		stringId = get_ride_type_string_id(listItem->repositoryItem);
+		gfx_draw_string_right(dpi, stringId, NULL, 2, w->x + w->width - 5, y);
+		y -= 11;
 	}
 
 	//stringId = highlightedEntry->checksum
@@ -1448,7 +1451,8 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 
 			if (ridePage) {
 				// Draw ride type
-				strcpy(buffer, language_get_string(2 + listItem->repositoryItem->RideType[0]));
+				rct_string_id rideTypeStringId = get_ride_type_string_id(listItem->repositoryItem);
+				strcpy(buffer, language_get_string(rideTypeStringId));
 				gfx_draw_string(dpi, bufferWithColour, colour, x, y);
 				x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
 			}
@@ -1897,7 +1901,7 @@ static bool filter_string(const ObjectRepositoryItem * item)
 		return false;
 
 	// Get ride type
-	const char *rideTypeName = language_get_string(2 + item->RideType[0]);
+	const char *rideTypeName = language_get_string(get_ride_type_string_id(item));
 
 	// Get object name (ride/vehicle for rides) and type name (rides only)
 	char name_lower[MAX_PATH];
@@ -1938,7 +1942,14 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
 				return true;
 		}
 		else {
-			if (_filter_flags & (1 << (gRideCategories[item->RideType[0]] + 5)))
+			uint8 rideType = 0;
+			for (int i = 0; i < 3; i++) {
+				if (item->RideType[i] != 255) {
+					rideType = item->RideType[i];
+					break;
+				}
+			}
+			if (_filter_flags & (1 << (gRideCategories[get_ride_type_string_id(item)] + 5)))
 				return true;
 		}
 		return false;
@@ -1969,4 +1980,17 @@ static void filter_update_counts()
 			objectFlag++;
 		}
 	}
+}
+
+static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
+{
+	rct_string_id result = STR_NONE;
+	for (int i = 0; i < 3; i++) {
+		uint8 rideType = item->RideType[i];
+		if (rideType != 255) {
+			result = 2 + rideType;
+			break;
+		}
+	}
+	return result;
 }

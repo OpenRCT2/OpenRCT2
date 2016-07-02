@@ -812,4 +812,10 @@ extern "C"
             return "";
         }
     }
+
+    void object_draw_preview(const void * object, rct_drawpixelinfo * dpi)
+    {
+        const Object * baseObject = (const Object *)object;
+        baseObject->DrawPreview(dpi);
+    }
 }

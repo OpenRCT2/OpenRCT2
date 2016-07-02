@@ -59,6 +59,15 @@ void WaterObject::Unload()
     language_free_object_string(_legacyType.string_idx);
 }
 
+void WaterObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    // Write (no image)
+    int x = dpi->width / 2;
+    int y = dpi->height / 2;
+    gfx_draw_string_centred(dpi, 3326, x, y, 0, nullptr);
+}
+
+
 const utf8 * WaterObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);

@@ -83,5 +83,6 @@ void                            object_repository_unload(size_t itemIndex);
 
 void            object_delete(void * object);
 const utf8 *    object_get_description(const void * object);
+void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi);
 
 #endif

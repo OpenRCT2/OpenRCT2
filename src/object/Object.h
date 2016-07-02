@@ -27,6 +27,7 @@ extern "C"
 
 interface IStream;
 struct    ObjectRepositoryItem;
+struct    rct_drawpixelinfo;
 
 interface IReadObjectContext
 {
@@ -59,6 +60,8 @@ public:
     virtual void ReadLegacy(IReadObjectContext * context, IStream * stream) abstract;
     virtual void Load() abstract;
     virtual void Unload() abstract;
+
+    virtual void DrawPreview(rct_drawpixelinfo * dpi) const { }
 
     virtual uint8           GetObjectType() const { return _objectEntry.flags & 0x0F; }
     virtual const utf8 *    GetName() const abstract;
