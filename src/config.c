@@ -479,6 +479,8 @@ bool config_open_default()
 		return true;
 	}
 
+	currency_load_custom_currency_config();
+
 	return false;
 }
 

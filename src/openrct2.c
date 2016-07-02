@@ -261,8 +261,6 @@ bool openrct2_initialise()
 		}
 	}
 
-	currency_load_custom_currency_config();
-
 	return true;
 }
 
