@@ -1294,8 +1294,6 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 		gfx_draw_string_left(dpi, 3164, gCommonFormatArgs, 0, x, y);
 	}
 
-	rct_stex_entry* stex_entry = gStexTempChunk;
-
 	// Draw sort button text
 	widget = &w->widgets[WIDX_LIST_SORT_TYPE];
 	if (widget->type != WWT_EMPTY) {

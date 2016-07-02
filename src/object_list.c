@@ -91,45 +91,6 @@ const rct_object_entry_group object_entry_groups[] = {
 	(void**)(gStexEntries				), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text	0x009ADAE4, 0xF4287C
 };
 
-static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object_filters* filter);
-
-static rct_object_filters *_installedObjectFilters = NULL;
-
-rct_stex_entry *gStexTempChunk;
-
-uint32 gInstalledObjectsCount;
-rct_object_entry *gInstalledObjects;
-uint32 gNumInstalledRCT2Objects;
-uint32 gNumInstalledCustomObjects;
-
-void *gLastLoadedObjectChunkData;
-
-static uint32 object_list_count_custom_objects()
-{
-	size_t numObjects = object_repository_get_items_count();
-	const ObjectRepositoryItem * items = object_repository_get_items();
-
-	uint32 numCustomObjects = 0;
-	for (size_t i = 0; i < numObjects; i++) {
-		if ((items[i].ObjectEntry.flags & 0xF0) == 0) {
-			numCustomObjects++;
-		}
-	}
-
-	gNumInstalledCustomObjects = numCustomObjects;
-	return numCustomObjects;
-}
-
-/**
- *
- *  rct2: 0x006A93CD
- */
-static void object_list_examine()
-{
-	object_list_count_custom_objects();
-	// object_list_sort();
-}
-
 int check_object_entry(rct_object_entry *entry)
 {
 	uint32 *dwords = (uint32*)entry;
@@ -287,71 +248,6 @@ int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type,
 
 	if (*entry_index == object_entry_group_counts[*entry_type])return 0;
 	return 1;
-}
-
-rct_string_id object_get_name_string_id(rct_object_entry *entry, const void *chunk)
-{
-	int objectType = entry->flags & 0x0F;
-	switch (objectType) {
-	case OBJECT_TYPE_RIDE:
-		return ((rct_ride_entry*)chunk)->name;
-	case OBJECT_TYPE_SMALL_SCENERY:
-	case OBJECT_TYPE_LARGE_SCENERY:
-	case OBJECT_TYPE_WALLS:
-	case OBJECT_TYPE_BANNERS:
-	case OBJECT_TYPE_PATH_BITS:
-		return ((rct_scenery_entry*)chunk)->name;
-	case OBJECT_TYPE_PATHS:
-		return ((rct_footpath_entry*)chunk)->string_idx;
-	case OBJECT_TYPE_SCENERY_SETS:
-		return ((rct_scenery_set_entry*)chunk)->name;
-	case OBJECT_TYPE_PARK_ENTRANCE:
-		return ((rct_entrance_type*)chunk)->string_idx;
-	case OBJECT_TYPE_WATER:
-		return ((rct_water_type*)chunk)->string_idx;
-	case OBJECT_TYPE_SCENARIO_TEXT:
-		return ((rct_stex_entry*)chunk)->scenario_name;
-	default:
-		return STR_NONE;
-	}
-}
-
-static void load_object_filter(rct_object_entry* entry, uint8* chunk, rct_object_filters* filter)
-{
-	rct_ride_entry *rideType;
-	rct_ride_filters *rideFilter;
-
-	switch (entry->flags & 0xF) {
-	case OBJECT_TYPE_RIDE:
-		rideType = ((rct_ride_entry*)chunk);
-		rideFilter = &(filter->ride);
-
-		rideFilter->category[0] = rideType->category[0];
-		rideFilter->category[1] = rideType->category[1];
-
-		for (int i = 0; i < 3; i++) {
-			rideFilter->ride_type = rideType->ride_type[i];
-			if (rideFilter->ride_type != 255)
-				break;
-		}
-		break;
-	case OBJECT_TYPE_SMALL_SCENERY:
-	case OBJECT_TYPE_LARGE_SCENERY:
-	case OBJECT_TYPE_WALLS:
-	case OBJECT_TYPE_BANNERS:
-	case OBJECT_TYPE_PATHS:
-	case OBJECT_TYPE_PATH_BITS:
-	case OBJECT_TYPE_SCENERY_SETS:
-	case OBJECT_TYPE_PARK_ENTRANCE:
-	case OBJECT_TYPE_WATER:
-	case OBJECT_TYPE_SCENARIO_TEXT:
-		break;
-	}
-}
-
-rct_object_filters *get_object_filter(int index)
-{
-	return &_installedObjectFilters[index];
 }
 
 void object_list_init()
