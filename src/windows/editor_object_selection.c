@@ -231,7 +231,6 @@ static bool filter_chunks(const ObjectRepositoryItem * item);
 static void filter_update_counts();
 
 void reset_selected_object_count_and_size();
-void reset_required_object_flags();
 static int sub_6AB211();
 
 static rct_object_entry RequiredSelectedObjects[] = {
@@ -673,7 +672,6 @@ static int sub_6AB211()
 		}
 	}
 
-	reset_required_object_flags();
 	reset_selected_object_count_and_size();
 	return 1;
 }
@@ -1420,7 +1418,7 @@ static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpi
 				x = 2;
 				gCurrentFontSpriteBase = colour == 14 ? -2 : -1;
 				colour2 = w->colours[1] & 0x7F;
-				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_REQUIRED | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+				if (*listItem->flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
 					colour2 |= 0x40;
 
 				gfx_draw_string(dpi, (char*)CheckBoxMarkString, colour2, x, y);
@@ -1538,53 +1536,6 @@ void reset_selected_object_count_and_size()
 }
 
 /**
- *
- *  rct2: 0x006AB863
- */
-void set_required_object_flags(rct_object_entry* required_object)
-{
-	int numObjects = (int)object_repository_get_items_count();
-	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = 0; i < numObjects; i++) {
-		const ObjectRepositoryItem * item = &items[i];
-		if (object_entry_compare(required_object, &item->ObjectEntry)) {
-			_objectSelectionFlags[i] |= OBJECT_SELECTION_FLAG_REQUIRED;
-
-			uint16 numRequiredObjects = item->NumRequiredObjects;
-			for (uint16 j = 0; j < numRequiredObjects; j++) {
-				set_required_object_flags(&item->RequiredObjects[j]);
-			}
-			break;
-		}
-	}
-}
-
-/**
- *
- *  rct2: 0x006AB923
- */
-void reset_required_object_flags()
-{
-	int numObjects = (int)object_repository_get_items_count();
-	const ObjectRepositoryItem * items = object_repository_get_items();
-
-	for (int i = 0; i < numObjects; i++) {
-		_objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_REQUIRED;
-	}
-
-	for (int i = 0; i < numObjects; i++) {
-		const ObjectRepositoryItem * item = &items[i];
-
-		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
-			uint16 numRequiredObjects = item->NumRequiredObjects;
-			for (uint16 j = 0; j < numRequiredObjects; j++) {
-				set_required_object_flags(&item->RequiredObjects[j]);
-			}
-		}
-	}
-}
-
-/**
  * Master objects are objects that are not
  * optional / required dependants of an
  * object.
@@ -1620,41 +1571,27 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, con
 
 	uint8 * selectionFlags = &_objectSelectionFlags[index];
 	if (!(flags & 1)) {
-		if (!(*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED))
-		{
-			if (bh == 0){
-				reset_required_object_flags();
-			}
+		if (!(*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED)) {
 			return 1;
 		}
-		else if (*selectionFlags & OBJECT_SELECTION_FLAG_IN_USE){
+		else if (*selectionFlags & OBJECT_SELECTION_FLAG_IN_USE) {
 			set_object_selection_error(bh, 3173);
 			return 0;
 		}
-		else if (*selectionFlags & OBJECT_SELECTION_FLAG_REQUIRED){
-			set_object_selection_error(bh, 3174);
-			return 0;
-		}
-		else if (*selectionFlags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED){
+		else if (*selectionFlags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED) {
 			set_object_selection_error(bh, 3175);
 			return 0;
 		}
 
-		uint16 numThemeObjects = item->NumThemeObjects;
-		if (numThemeObjects != 0 && flags & (1 << 2)) {
-			rct_object_entry* theme_object = item->ThemeObjects;
-			for (; numThemeObjects > 0; numThemeObjects--) {
-				window_editor_object_selection_select_object(++bh, flags, theme_object);
-				theme_object++;
+		if (flags & (1 << 2)) {
+			for (int j = 0; j < item->NumThemeObjects; j++) {
+				window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j]);
 			}
 		}
 
 		uint8 objectType = item->ObjectEntry.flags & 0xF;
 		_numSelectedObjectsForType[objectType]--;
 		*selectionFlags &= ~OBJECT_SELECTION_FLAG_SELECTED;
-		if (bh == 0) {
-			reset_required_object_flags();
-		}
 		return 1;
 	} else {
 		if (bh == 0) {
@@ -1663,9 +1600,6 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, con
 			}
 		}
 		if (*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED) {
-			if (bh == 0) {
-				reset_required_object_flags();
-			}
 			return 1;
 		}
 
@@ -1680,21 +1614,10 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, con
 			return 0;
 		}
 
-		for (uint16 j = 0; j < item->NumRequiredObjects; j++) {
-			if (!window_editor_object_selection_select_object(++bh, flags, &item->RequiredObjects[j])) {
-				if (bh != 0) {
-					reset_selected_object_count_and_size();
-				}
-				return 0;
-			}
-		}
-
-		if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+		if (objectType == OBJECT_TYPE_SCENERY_SETS && (flags & (1 << 2))) {
 			for (uint16 j = 0; j < item->NumThemeObjects; j++) {
-				if (flags & (1 << 2)) {
-					if (!window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j])) {
-						_maxObjectsWasHit = true;
-					}
+				if (!window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j])) {
+					_maxObjectsWasHit = true;
 				}
 			}
 		}
@@ -1714,9 +1637,6 @@ static int window_editor_object_selection_select_object(uint8 bh, int flags, con
 		_numSelectedObjectsForType[objectType]++;
 
 		*selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
-		if (bh == 0) {
-			reset_required_object_flags();
-		}
 		return 1;
 	}
 }

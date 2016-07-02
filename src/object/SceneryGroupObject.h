@@ -23,6 +23,8 @@ extern "C"
     #include "../world/scenery.h"
 }
 
+struct ObjectRepositoryItem;
+
 class SceneryGroupObject : public Object
 {
 private:
@@ -43,6 +45,8 @@ public:
     void DrawPreview(rct_drawpixelinfo * dpi) const override;
 
     const utf8 * GetName() const override;
+
+    void SetRepositoryItem(ObjectRepositoryItem * item) const override;
 
 private:
     void ReadItems(IStream * stream);

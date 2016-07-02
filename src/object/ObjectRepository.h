@@ -34,8 +34,6 @@ typedef struct ObjectRepositoryItem
     uint32             NumImages;
     utf8 *             Name;
     size_t             ChunkSize;
-    uint16             NumRequiredObjects;
-    rct_object_entry * RequiredObjects;
     union
     {
         struct

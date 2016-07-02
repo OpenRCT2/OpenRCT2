@@ -44,7 +44,7 @@ extern "C"
     #include "../util/sawyercoding.h"
 }
 
-constexpr uint16 OBJECT_REPOSITORY_VERSION = 6;
+constexpr uint16 OBJECT_REPOSITORY_VERSION = 7;
 
 struct ObjectRepositoryHeader
 {
@@ -391,13 +391,6 @@ private:
         item.NumImages = stream->ReadValue<uint32>();
         item.Name = stream->ReadString();
         item.ChunkSize = stream->ReadValue<size_t>();
-        item.NumRequiredObjects = stream->ReadValue<uint16>();
-            
-        item.RequiredObjects = Memory::AllocateArray<rct_object_entry>(item.NumRequiredObjects);
-        for (uint16 i = 0; i < item.NumRequiredObjects; i++)
-        {
-            item.RequiredObjects[i] = stream->ReadValue<rct_object_entry>();
-        }
 
         switch (item.ObjectEntry.flags & 0x0F) {
         case OBJECT_TYPE_RIDE:
@@ -430,12 +423,6 @@ private:
         stream->WriteValue(item.NumImages);
         stream->WriteString(item.Name);
         stream->WriteValue(item.ChunkSize);
-            
-        stream->WriteValue(item.NumRequiredObjects);
-        for (uint16 i = 0; i < item.NumRequiredObjects; i++)
-        {
-            stream->WriteValue(item.RequiredObjects[i]);
-        }
 
         switch (item.ObjectEntry.flags & 0x0F) {
         case OBJECT_TYPE_RIDE:
@@ -463,11 +450,9 @@ private:
     {
         Memory::Free(item->Path);
         Memory::Free(item->Name);
-        Memory::Free(item->RequiredObjects);
         Memory::Free(item->ThemeObjects);
         item->Path = nullptr;
         item->Name = nullptr;
-        item->RequiredObjects = nullptr;
         item->ThemeObjects = nullptr;
     }
 

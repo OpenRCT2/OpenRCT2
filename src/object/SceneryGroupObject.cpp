@@ -16,6 +16,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
 
 extern "C"
@@ -98,6 +99,18 @@ const utf8 * SceneryGroupObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
     return name != nullptr ? name : "";
+}
+
+void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem * item) const
+{
+    Memory::Free(item->ThemeObjects);
+
+    item->NumThemeObjects = _numItems;
+    item->ThemeObjects = Memory::AllocateArray<rct_object_entry>(_numItems);
+    for (uint32 i = 0; i < _numItems; i++)
+    {
+        item->ThemeObjects[i] = _items[i];
+    }
 }
 
 void SceneryGroupObject::ReadItems(IStream * stream)
