@@ -26,7 +26,6 @@
 #include "interface/window.h"
 #include "interface/viewport.h"
 #include "intro.h"
-#include "localisation/currency.h"
 #include "localisation/localisation.h"
 #include "network/http.h"
 #include "network/network.h"
