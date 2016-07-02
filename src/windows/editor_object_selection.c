@@ -1335,8 +1335,8 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 	widget = &w->widgets[WIDX_PREVIEW];
 	{
 		rct_drawpixelinfo clipDPI;
-		x = w->x + widget->left;
-		y = w->y + widget->top;
+		x = w->x + widget->left + 1;
+		y = w->y + widget->top + 1;
 		int width = widget->right - widget->left;
 		int height = widget->bottom - widget->top;
 		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
@@ -1949,7 +1949,7 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
 					break;
 				}
 			}
-			if (_filter_flags & (1 << (gRideCategories[get_ride_type_string_id(item)] + 5)))
+			if (_filter_flags & (1 << (gRideCategories[rideType] + 5)))
 				return true;
 		}
 		return false;

@@ -327,6 +327,20 @@ void RideObject::Unload()
     gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
 }
 
+void RideObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    uint32 imageId = _legacyType.images_offset;
+    if (_legacyType.ride_type[0] == 0xFF)
+    {
+        imageId++;
+        if (_legacyType.ride_type[1] == 0xFF)
+        {
+            imageId++;
+        }
+    }
+    gfx_draw_sprite(dpi, imageId, 0, 0, 0);
+}
+
 const utf8 * RideObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
