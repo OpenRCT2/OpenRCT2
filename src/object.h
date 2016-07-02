@@ -105,11 +105,7 @@ assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
 extern const rct_object_entry_group object_entry_groups[];
-extern char gTempObjectLoadName[9];
 
-extern uint32 gTotalNoImages;
-
-int object_load_entry(const utf8 *path, rct_object_entry *outEntry);
 void object_list_load();
 void set_load_objects_fail_reason();
 bool object_read_and_load_entries(SDL_RWops* rw);
@@ -120,8 +116,8 @@ void object_unload_all();
 
 int check_object_entry(rct_object_entry *entry);
 bool object_load_chunk(int groupIndex, const rct_object_entry * entry, int * outGroupIndex);
-int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength);
+bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
+int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
 void reset_loaded_objects();
 int find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, const rct_object_entry* object);

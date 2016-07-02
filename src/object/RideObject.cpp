@@ -304,35 +304,6 @@ void RideObject::Load()
             vehicleEntry->peep_loading_positions = _peepLoadingPositions[i];
         }
     }
-
-	// 0x6DEB71
-    if (RCT2_GLOBAL(0x9ADAFD, uint8) == 0)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            sint16 rideType = _legacyType.ride_type[i];
-            if (rideType != RIDE_TYPE_NULL)
-            {
-                uint8 * typeToRideEntryIndexMap = gTypeToRideEntryIndexMap;
-                while (rideType >= 0)
-                {
-                    if (*typeToRideEntryIndexMap++ == 0xFF)
-                    {
-                        rideType--;
-                    }
-                }
-
-                typeToRideEntryIndexMap--;
-                uint8 previous_entry = 0;       // TODO set this to entryIndex
-                while (typeToRideEntryIndexMap < gTypeToRideEntryIndexMap + Util::CountOf(gTypeToRideEntryIndexMap))
-                {
-                    uint8 backup_entry = *typeToRideEntryIndexMap;
-                    *typeToRideEntryIndexMap++ = previous_entry;
-                    previous_entry = backup_entry;
-                }
-            }
-        }
-    }
 }
 
 void RideObject::Unload()

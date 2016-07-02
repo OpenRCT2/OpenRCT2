@@ -118,7 +118,6 @@
     <ClCompile Include="src\network\NetworkUser.cpp" />
     <ClCompile Include="src\network\TcpSocket.cpp" />
     <ClCompile Include="src\network\twitch.cpp" />
-    <ClCompile Include="src\object.c" />
     <ClCompile Include="src\object\BannerObject.cpp" />
     <ClCompile Include="src\object\EntranceObject.cpp" />
     <ClCompile Include="src\object\FootpathItemObject.cpp" />

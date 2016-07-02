@@ -69,8 +69,6 @@ const char *language_get_string(rct_string_id id);
 bool language_open(int id);
 void language_close_all();
 
-rct_string_id object_get_localised_text(uint8_t** pStringTable/*ebp*/, int type/*ecx*/, int index/*ebx*/, int tableindex/*edx*/);
-
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
 utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
 int utf8_insert_codepoint(utf8 *dst, uint32 codepoint);

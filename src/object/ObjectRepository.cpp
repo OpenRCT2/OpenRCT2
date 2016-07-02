@@ -640,8 +640,6 @@ extern "C"
 
     void reset_loaded_objects()
     {
-        gTotalNoImages = 0xF26E;
-
         for (int i = 0; i < 721; i++)
         {
             Object * object = _loadedObjects[i];
@@ -880,5 +878,62 @@ extern "C"
     {
         const Object * baseObject = (const Object *)object;
         baseObject->DrawPreview(dpi);
+    }
+
+    bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b)
+    {
+        // If an official object don't bother checking checksum
+        if ((a->flags & 0xF0) || (b->flags & 0xF0))
+        {
+            if ((a->flags & 0x0F) != (b->flags & 0x0F))
+            {
+                return 0;
+            }
+            int match = memcmp(a->name, b->name, 8);
+            if (match)
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            if (a->flags != b->flags)
+            {
+                return 0;
+            }
+            int match = memcmp(a->name, b->name, 8);
+            if (match)
+            {
+                return 0;
+            }
+            if (a->checksum != b->checksum)
+            {
+                return 0;
+            }
+        }
+        return 1;
+    }
+
+    int object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
+    {
+        const uint8 *entryBytePtr = (uint8*)entry;
+
+        uint32 checksum = 0xF369A75B;
+        checksum ^= entryBytePtr[0];
+        checksum = rol32(checksum, 11);
+        for (int i = 4; i < 12; i++)
+        {
+            checksum ^= entryBytePtr[i];
+            checksum = rol32(checksum, 11);
+        }
+
+        uint8 * dataBytes = (uint8 *)data;
+        for (size_t i = 0; i < dataLength; i++)
+        {
+            checksum ^= dataBytes[i];
+            checksum = rol32(checksum, 11);
+        }
+
+        return (int)checksum;
     }
 }

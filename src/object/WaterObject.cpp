@@ -47,11 +47,8 @@ void WaterObject::Load()
     _legacyType.var_06 = _legacyType.image_id + 1;
     _legacyType.var_0A = _legacyType.image_id + 4;
 
-    if (RCT2_GLOBAL(0x009ADAFD, uint8) == 0)
-    {
-        load_palette();
-        gfx_invalidate_screen();
-    }
+    load_palette();
+    gfx_invalidate_screen();
 }
 
 void WaterObject::Unload()
