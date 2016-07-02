@@ -102,6 +102,15 @@ void LargeSceneryObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
+void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    int x = dpi->width / 2;
+    int y = (dpi->height / 2) - 39;
+
+    uint32 imageId = 0xB2D00000 | _legacyType.image;
+    gfx_draw_sprite(dpi, imageId, x, y, 0);
+}
+
 const utf8 * LargeSceneryObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);

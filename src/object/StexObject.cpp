@@ -56,6 +56,14 @@ void StexObject::Unload()
     language_free_object_string(_legacyType.details);
 }
 
+void StexObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    // Write (no image)
+    int x = dpi->width / 2;
+    int y = dpi->height / 2;
+    gfx_draw_string_centred(dpi, 3326, x, y, 0, nullptr);
+}
+
 const utf8 * StexObject::GetName() const
 {
     return GetScenarioName();

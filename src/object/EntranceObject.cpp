@@ -51,6 +51,17 @@ void EntranceObject::Unload()
     gfx_object_free_images(_legacyType.image_id, GetImageTable()->GetCount());
 }
 
+void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    int x = dpi->width / 2;
+    int y = dpi->height / 2;
+
+    uint32 imageId = _legacyType.image_id;
+    gfx_draw_sprite(dpi, imageId + 1, x - 32, y + 14, 0);
+    gfx_draw_sprite(dpi, imageId + 0, x +  0, y + 28, 0);
+    gfx_draw_sprite(dpi, imageId + 2, x + 32, y + 44, 0);
+}
+
 const utf8 * EntranceObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);

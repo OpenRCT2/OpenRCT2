@@ -38,5 +38,7 @@ public:
     void Load() override;
     void Unload() override;
 
+    void DrawPreview(rct_drawpixelinfo * dpi) const override;
+
     const utf8 * GetName() const override;
 };

@@ -85,6 +85,15 @@ void SceneryGroupObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
+void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    int x = dpi->width / 2;
+    int y = dpi->height / 2;
+
+    uint32 imageId = _legacyType.image + 0x20600001;
+    gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
+}
+
 const utf8 * SceneryGroupObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);

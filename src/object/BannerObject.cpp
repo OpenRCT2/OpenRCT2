@@ -68,6 +68,16 @@ void BannerObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
+void BannerObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    int x = dpi->width / 2;
+    int y = dpi->height / 2;
+
+    uint32 imageId = 0x20D00000 | _legacyType.image;
+    gfx_draw_sprite(dpi, imageId + 0, x - 12, y + 8, 0);
+    gfx_draw_sprite(dpi, imageId + 1, x - 12, y + 8, 0);
+}
+
 const utf8 * BannerObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);

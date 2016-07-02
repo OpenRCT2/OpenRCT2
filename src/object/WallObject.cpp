@@ -71,6 +71,34 @@ void WallObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
+void WallObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    int x = dpi->width / 2;
+    int y = dpi->height / 2;
+
+    x += 14;
+    y += (_legacyType.wall.height * 2) + 16;
+
+    uint32 imageId = 0x20D00000 | _legacyType.image;
+    if (_legacyType.wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+    {
+        imageId |= 0x92000000;
+    }
+
+    gfx_draw_sprite(dpi, imageId, x, y, 0);
+
+    if (_legacyType.wall.flags & WALL_SCENERY_FLAG2)
+    {
+        imageId = _legacyType.image + 0x44500006;
+        gfx_draw_sprite(dpi, imageId, x, y, 0);
+    }
+    else if (_legacyType.wall.flags & WALL_SCENERY_IS_DOOR)
+    {
+        imageId++;
+        gfx_draw_sprite(dpi, imageId, x, y, 0);
+    }
+}
+
 const utf8 * WallObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);

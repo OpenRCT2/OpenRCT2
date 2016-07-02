@@ -56,6 +56,14 @@ void FootpathObject::Unload()
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
 }
 
+void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi) const
+{
+    int x = dpi->width / 2;
+    int y = dpi->height / 2;
+    gfx_draw_sprite(dpi, _legacyType.image + 71, x - 49, y - 17, 0);
+    gfx_draw_sprite(dpi, _legacyType.image + 72, x + 4, y - 17, 0);
+}
+
 const utf8 * FootpathObject::GetName() const
 {
     const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
