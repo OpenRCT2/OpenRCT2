@@ -14,10 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../config.h"
 #include "currency.h"
 #include "string_ids.h"
 
-const currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
+currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
 	{	"GBP",	10,		CURRENCY_PREFIX,	"\xC2\xA3",		CURRENCY_SUFFIX,	"GBP",	STR_POUNDS			},	// British Pound
 	{	"USD",	10,		CURRENCY_PREFIX,	"$",			CURRENCY_PREFIX,	"$",	STR_DOLLARS			},	// US Dollar
 	{	"FRF",	10,		CURRENCY_SUFFIX,	"F",			CURRENCY_SUFFIX,	"F",	STR_FRANC			},	// French Franc
@@ -34,4 +35,12 @@ const currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
 	{	"HKD",	100,	CURRENCY_PREFIX,	"$",			CURRENCY_PREFIX,	"HKD",	STR_HONG_KONG_DOLLAR},	// Hong Kong Dollar
 	{	"TWD",	1000,	CURRENCY_PREFIX,	"NT$",			CURRENCY_PREFIX,	"NT$",	STR_NEW_TAIWAN_DOLLAR},	// New Taiwan Dollar
 	{	"CNY",	100,	CURRENCY_PREFIX,	"CN\xC2\xA5",	CURRENCY_PREFIX,	"CNY",	STR_CHINESE_YUAN	},	// Chinese Yuan
+	{	"CTM",	10,		CURRENCY_PREFIX,	"Ctm",			CURRENCY_PREFIX,	"Ctm",	STR_CUSTOM_CURRENCY	},	// Customizable currency
 };
+
+void currency_load_custom_currency_config()
+{
+	CurrencyDescriptors[CURRENCY_CUSTOM].rate = gConfigGeneral.custom_currency_rate;
+	CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = gConfigGeneral.custom_currency_affix;
+	strncpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol, CURRENCY_SYMBOL_MAX_SIZE);
+}

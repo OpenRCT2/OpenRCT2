@@ -146,6 +146,9 @@ typedef struct general_configuration {
 	sint8 measurement_format;
 	sint8 temperature_format;
 	sint8 currency_format;
+	sint32 custom_currency_rate;
+	sint8 custom_currency_affix;
+	utf8string custom_currency_symbol;
 	sint8 construction_marker_colour;
 	sint8 edge_scrolling;
 	sint8 always_show_gridlines;

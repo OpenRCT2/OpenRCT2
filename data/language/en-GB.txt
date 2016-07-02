@@ -4190,6 +4190,15 @@ STR_5878    :Software (hardware display)
 STR_5879    :OpenGL
 STR_5880    :Selected only
 STR_5881    :Non-selected only
+STR_5882    :Custom currency
+STR_5883    :Custom currency configuration
+STR_5884    :{WINDOW_COLOUR_2}Exchange rate: 
+STR_5885    :{WINDOW_COLOUR_2}is equivalent to {COMMA32} GBP (£)
+STR_5886    :{WINDOW_COLOUR_2}Currency symbol:
+STR_5887    :Prefix
+STR_5888    :Suffix
+STR_5889    :Custom currency symbol
+STR_5890    :Enter the currency symbol to display
 
 #############
 # Scenarios #

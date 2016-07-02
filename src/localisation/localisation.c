@@ -504,7 +504,7 @@ void format_currency_2dp(char **dest, long long value)
 	}
 
 	// Drop the pennies for "large" currencies
-	if (rate > 10) {
+	if (rate >= 100) {
 		format_comma_separated_integer(dest, value / 100);
 	} else {
 		format_comma_separated_fixed_2dp(dest, value);
