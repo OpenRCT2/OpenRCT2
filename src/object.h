@@ -119,7 +119,7 @@ bool object_saved_packed(SDL_RWops* rw, const rct_object_entry * entry);
 void object_unload_all();
 
 int check_object_entry(rct_object_entry *entry);
-int object_load_chunk(int groupIndex, const rct_object_entry *entry, int* chunk_size);
+bool object_load_chunk(int groupIndex, const rct_object_entry * entry, int * outGroupIndex);
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
 int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength);
 void reset_loaded_objects();

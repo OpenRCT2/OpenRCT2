@@ -595,7 +595,7 @@ extern "C"
         IObjectRepository * objRepo = GetObjectRepository();
     }
 
-    int object_load_chunk(int groupIndex, const rct_object_entry * entry, int * chunkSize)
+    bool object_load_chunk(int groupIndex, const rct_object_entry * entry, int * outGroupIndex)
     {
         IObjectRepository * objRepo = GetObjectRepository();
         Object * object = objRepo->LoadObject(entry);
@@ -623,6 +623,10 @@ extern "C"
             }
         }
         chunkList[groupIndex] = object->GetLegacyData();
+        if (outGroupIndex != nullptr)
+        {
+            *outGroupIndex = groupIndex;
+        }
 
         rct_object_entry_extended * extendedEntry = &object_entry_groups[objectType].entries[groupIndex];
         Memory::Copy<void>(extendedEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
@@ -656,6 +660,23 @@ extern "C"
         Object * object = objRepository->LoadObject(objectEntry);
         object->Load();
         return (void *)object;
+    }
+
+    void * object_repository_find_loaded_object(const rct_object_entry * objectEntry)
+    {
+        for (size_t i = 0; i < 721; i++)
+        {
+            Object * object = _loadedObjects[i];
+            if (object != nullptr)
+            {
+                const rct_object_entry * entry = object->GetObjectEntry();
+                if (memcmp(objectEntry->name, entry->name, 8) == 0)
+                {
+                    return (void *)object;
+                }
+            }
+        }
+        return nullptr;
     }
 
     void * object_repository_get_loaded_object(uint8 objectType, uint8 entryIndex)
@@ -818,6 +839,12 @@ extern "C"
     {
         IObjectRepository * objectRepository = GetObjectRepository();
         return objectRepository->FindObject(entry);
+    }
+
+    const ObjectRepositoryItem * object_repository_find_object_by_name(const char * name)
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        return objectRepository->FindObject(name);
     }
 
     void object_delete(void * object)

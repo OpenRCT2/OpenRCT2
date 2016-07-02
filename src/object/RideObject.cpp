@@ -101,6 +101,7 @@ void RideObject::Load()
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.description = language_allocate_object_string(GetDescription());
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.vehicle_preset_list = &_presetColours;
 
     int cur_vehicle_images_offset = _legacyType.images_offset + 3;
     for (int i = 0; i < 4; i++)

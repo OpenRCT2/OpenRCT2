@@ -1708,8 +1708,7 @@ static void editor_load_selected_objects()
 		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
 			uint8 entry_index, entry_type;
 			if (!find_object_in_entry_group(&items[i].ObjectEntry, &entry_type, &entry_index)) {
-				int chunk_size;
-				if (!object_load_chunk(-1, &items[i].ObjectEntry, &chunk_size)) {
+				if (!object_load_chunk(-1, &items[i].ObjectEntry, NULL)) {
 					log_error("Failed to load entry %.8s", items->Name);
 				}
 
