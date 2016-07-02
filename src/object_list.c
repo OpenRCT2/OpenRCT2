@@ -20,6 +20,7 @@
 #include "localisation/localisation.h"
 #include "object.h"
 #include "object_list.h"
+#include "object/ObjectRepository.h"
 #include "platform/platform.h"
 #include "rct1.h"
 #include "ride/track.h"
@@ -105,13 +106,14 @@ void *gLastLoadedObjectChunkData;
 
 static uint32 object_list_count_custom_objects()
 {
+	size_t numObjects = object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+
 	uint32 numCustomObjects = 0;
-	rct_object_entry *object = gInstalledObjects;
-	for (uint32 i = 0; i < gInstalledObjectsCount; i++) {
-		if ((object->flags & 0xF0) == 0) {
+	for (size_t i = 0; i < numObjects; i++) {
+		if ((items[i].ObjectEntry.flags & 0xF0) == 0) {
 			numCustomObjects++;
 		}
-		object = object_get_next(object);
 	}
 
 	gNumInstalledCustomObjects = numCustomObjects;

@@ -124,15 +124,6 @@ void editor_convert_save_to_scenario_callback(int result)
 	s6Info->objective_arg_3 = gScenarioObjectiveNumGuests;
 	climate_reset(gClimate);
 
-	rct_stex_entry* stex = g_stexEntries[0];
-	if ((int)stex != 0xFFFFFFFF) {
-		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-		reset_loaded_objects();
-
-		format_string(s6Info->details, STR_NO_DETAILS_YET, NULL);
-		s6Info->name[0] = 0;
-	}
-
 	gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
 	s6Info->editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
 	s6Info->category = SCENARIO_CATEGORY_OTHER;
@@ -468,15 +459,6 @@ static void editor_clear_map_for_editing()
 	}
 
 	climate_reset(gClimate);
-
-	rct_stex_entry* stex = g_stexEntries[0];
-	if ((int)stex != 0xFFFFFFFF) {
-		object_unload_chunk((rct_object_entry*)&object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0]);
-		reset_loaded_objects();
-
-		format_string(gS6Info->details, STR_NO_DETAILS_YET, NULL);
-		gS6Info->name[0] = 0;
-	}
 
 	news_item_init_queue();
 }

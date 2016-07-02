@@ -727,7 +727,7 @@ int scenario_write_packed_objects(SDL_RWops* rw)
 		if (entryData == (void*)0xFFFFFFFF || (entry->flags & 0xF0)) {
 			continue;
 		}
-		if (!write_object_file(rw, (rct_object_entry*)entry)) {
+		if (!object_saved_packed(rw, (rct_object_entry*)entry)) {
 			return 0;
 		}
 	}

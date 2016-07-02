@@ -17,16 +17,17 @@
 #include "../addresses.h"
 #include "../cursors.h"
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../interface/widget.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/research.h"
 #include "../object.h"
-#include "../world/scenery.h"
-#include "../interface/themes.h"
+#include "../object/ObjectRepository.h"
 #include "../rct1.h"
-#include "../util/util.h"
 #include "../sprites.h"
+#include "../util/util.h"
+#include "../world/scenery.h"
 
 #pragma region Widgets
 
@@ -772,9 +773,6 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 		return;
 
 	// Preview image
-	x = w->x + ((widget->left + widget->right) / 2) + 1;
-	y = w->y + ((widget->top + widget->bottom) / 2) + 1;
-
 	int objectEntryType = 7;
 	int eax = researchItem->entryIndex & 0xFFFFFF;
 	if (eax >= 0x10000)
@@ -785,7 +783,19 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
 	if (chunk == NULL || chunk == (void*)0xFFFFFFFF)
 		return;
 
-	object_paint(objectEntryType, chunk, dpi, x, y);
+	// Draw preview
+	widget = &w->widgets[WIDX_PREVIEW];
+	void * object = object_repository_get_loaded_object(objectEntryType, researchItem->entryIndex & 0xFF);
+	if (object != NULL) {
+		rct_drawpixelinfo clipDPI;
+		x = w->x + widget->left + 1;
+		y = w->y + widget->top + 1;
+		int width = widget->right - widget->left;
+		int height = widget->bottom - widget->top;
+		if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
+			object_draw_preview(object, &clipDPI);
+		}
+	}
 
 	// Item name
 	x = w->x + ((widget->left + widget->right) / 2) + 1;

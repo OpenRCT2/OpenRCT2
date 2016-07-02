@@ -658,6 +658,12 @@ extern "C"
         return (void *)object;
     }
 
+    void * object_repository_get_loaded_object(uint8 objectType, uint8 entryIndex)
+    {
+        int index = GetObjectEntryIndex(objectType, entryIndex);
+        return (void *)_loadedObjects[index];
+    }
+
     void object_repository_unload(size_t itemIndex)
     {
         // TODO
@@ -758,6 +764,44 @@ extern "C"
         return 1;
     }
 
+    bool object_saved_packed(SDL_RWops * rw, const rct_object_entry * entry)
+    {
+        IObjectRepository * objectRepository = GetObjectRepository();
+        const ObjectRepositoryItem * item = objectRepository->FindObject(entry);
+        if (item == nullptr)
+        {
+            return false;
+        }
+
+        auto fs = FileStream(item->Path, FILE_MODE_OPEN);
+        rct_object_entry fileEntry = fs.ReadValue<rct_object_entry>();
+        if (!object_entry_compare(entry, &fileEntry))
+        {
+            return false;
+        }
+
+        sawyercoding_chunk_header chunkHeader = fs.ReadValue<sawyercoding_chunk_header>();
+        uint8 * chunkData = fs.ReadArray<uint8>(chunkHeader.length);
+
+        if (SDL_RWwrite(rw, entry, sizeof(rct_object_entry), 1) != 1)
+        {
+            Memory::Free(chunkData);
+            return false;
+        }
+        if (SDL_RWwrite(rw, &chunkHeader, sizeof(sawyercoding_chunk_header), 1) != 1)
+        {
+            Memory::Free(chunkData);
+            return false;
+        }
+        if (SDL_RWwrite(rw, chunkData, chunkHeader.length, 1) != 1)
+        {
+            Memory::Free(chunkData);
+            return false;
+        }
+
+        return true;
+    }
+
     size_t object_repository_get_items_count()
     {
         IObjectRepository * objectRepository = GetObjectRepository();
@@ -778,9 +822,12 @@ extern "C"
 
     void object_delete(void * object)
     {
-        Object * baseObject = (Object *)object;
-        baseObject->Unload();
-        delete baseObject;
+        if (object != nullptr)
+        {
+            Object * baseObject = (Object *)object;
+            baseObject->Unload();
+            delete baseObject;
+        }
     }
 
     const utf8 * object_get_description(const void * object)

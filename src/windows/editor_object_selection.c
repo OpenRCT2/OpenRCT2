@@ -733,8 +733,10 @@ static void window_editor_object_selection_close(rct_window *w)
 	unload_unselected_objects();
 	editor_load_selected_objects();
 	reset_loaded_objects();
-	object_free_scenario_text();
 	editor_object_flags_free();
+
+	object_delete(_loadedObject);
+	_loadedObject = NULL;
 
 	if (gScreenFlags & SCREEN_FLAGS_EDITOR) {
 		research_populate_list_random();
@@ -793,7 +795,6 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		w->selected_list_item = -1;
 		w->object_entry = (rct_object_entry *) 0xFFFFFFFF;
 		w->scrolls[0].v_top = 0;
-		object_free_scenario_text();
 		window_invalidate(w);
 		break;
 	case WIDX_FILTER_RIDE_TAB_TRANSPORT:
@@ -813,7 +814,6 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 		w->selected_list_item = -1;
 		w->object_entry = (rct_object_entry *) 0xFFFFFFFF;
 		w->scrolls[0].v_top = 0;
-		object_free_scenario_text();
 		window_invalidate(w);
 		break;
 
@@ -825,7 +825,6 @@ static void window_editor_object_selection_mouseup(rct_window *w, int widgetInde
 	case WIDX_INSTALL_TRACK:
 		if (w->selected_list_item != -1) {
 			w->selected_list_item = -1;
-			object_free_scenario_text();
 		}
 		window_invalidate(w);
 
@@ -1035,10 +1034,8 @@ static void window_editor_object_selection_scroll_mouseover(rct_window *w, int s
 	if (selectedObject != w->selected_list_item) {
 		w->selected_list_item = selectedObject;
 
-		if (_loadedObject != NULL) {
-			object_delete(_loadedObject);
-			_loadedObject = NULL;
-		}
+		object_delete(_loadedObject);
+		_loadedObject = NULL;
 
 		list_item * listItem = &_listItems[selectedObject];
 		if (selectedObject == -1) {
@@ -1468,7 +1465,6 @@ static void window_editor_object_set_page(rct_window *w, int page)
 	w->selected_list_item = -1;
 	w->object_entry = (rct_object_entry *)0xFFFFFFFF;
 	w->scrolls[0].v_top = 0;
-	object_free_scenario_text();
 
 	if (page == WINDOW_OBJECT_SELECTION_PAGE_RIDE_VEHICLES_ATTRACTIONS) {
 		_listSortType = RIDE_SORT_TYPE;

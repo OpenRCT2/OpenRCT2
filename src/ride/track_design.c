@@ -319,16 +319,6 @@ void track_design_dispose(rct_track_td6 *td6)
 	}
 }
 
-uint32 *sub_6AB49A(rct_object_entry* entry)
-{
-	rct_object_entry* object_list_entry = object_list_find(entry);
-
-	if (object_list_entry == NULL) return NULL;
-
-	// Return the address of the last value of the list entry
-	return (((uint32*)object_get_next(object_list_entry)) - 1);
-}
-
 /**
  *
  *  rct2: 0x006ABDB0
