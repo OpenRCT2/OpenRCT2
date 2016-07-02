@@ -1,5 +1,6 @@
 0.0.5 (in development)
 ------------------------------------------------------------------------
+- Feature: Implementation of the user-defined currency
 - Feature: Add OpenGL drawing engine.
 - Feature: Add ability to rotate map elements with the tile inspector.
 - Feature: Add ride console command for diagnostics and changing vehicle type.
