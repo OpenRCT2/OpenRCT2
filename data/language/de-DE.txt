@@ -4179,6 +4179,8 @@ STR_5876    :{SMALLFONT}{BLACK}Die Grafikschnittstelle, die zur Darstellung{NEWL
 STR_5877    :Software
 STR_5878    :Software (Anzeige durch Hardware)
 STR_5879    :OpenGL
+STR_5880    :Ausgewählte
+STR_5881    :Nicht ausgewählte
 
 #############
 # Scenarios #
