@@ -43,6 +43,12 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _sceneryTabEntry = stream->ReadValue<rct_object_entry>();
 
     GetImageTable()->Read(context, stream);
+
+    // Validate properties
+    if (_legacyType.large_scenery.price <= 0)
+    {
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+    }
 }
 
 void FootpathItemObject::Load()

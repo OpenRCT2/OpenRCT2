@@ -61,6 +61,21 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     }
 
     GetImageTable()->Read(context, stream);
+
+    // Validate properties
+    if (_legacyType.small_scenery.price <= 0)
+    {
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+    }
+    if (_legacyType.small_scenery.removal_price <= 0)
+    {
+        // Make sure you don't make a profit when placing then removing.
+        money16 reimbursement = _legacyType.small_scenery.removal_price;
+        if (reimbursement > _legacyType.small_scenery.price)
+        {
+            context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Sell price can not be more than buy price.");
+        }
+    }
 }
 
 void SmallSceneryObject::Load()

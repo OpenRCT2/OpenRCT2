@@ -80,6 +80,20 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     }
 
     GetImageTable()->Read(context, stream);
+
+    // Validate properties
+    if (_legacyType.excitement_multipler > 75)
+    {
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Excitement multiplier too high.");
+    }
+    if (_legacyType.intensity_multipler > 75)
+    {
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Intensity multiplier too high.");
+    }
+    if (_legacyType.nausea_multipler > 75)
+    {
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
+    }
 }
 
 void RideObject::Load()

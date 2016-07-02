@@ -41,6 +41,12 @@ void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetImageTable()->Read(context, stream);
+
+    // Validate properties
+    if (_legacyType.var_0A > 1)
+    {
+        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "VAR_0A can not be greater than 1.");
+    }
 }
 
 void FootpathObject::Load()
