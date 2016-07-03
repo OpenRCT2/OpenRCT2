@@ -347,6 +347,7 @@ static void visible_list_refresh(rct_window *w)
 	int numObjects = (int)object_repository_get_items_count();
 
 	visible_list_dispose();
+	w->selected_list_item = -1;
 	_listItems = malloc(numObjects * sizeof(list_item));
 	_numListItems = 0;
 

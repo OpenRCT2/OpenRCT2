@@ -187,44 +187,6 @@ bool object_read_and_load_entries(SDL_RWops* rw)
 	return result;
 }
 
-bool object_load_entries(rct_object_entry* entries)
-{
-	log_verbose("loading required objects");
-
-	object_unload_all();
-
-	bool loadFailed = false;
-	// Load each object
-	for (int i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-		if (!check_object_entry(&entries[i])) {
-			continue;
-		}
-
-		// Get entry group index
-		int entryGroupIndex = i;
-		for (int j = 0; j < countof(object_entry_group_counts); j++) {
-			if (entryGroupIndex < object_entry_group_counts[j])
-				break;
-			entryGroupIndex -= object_entry_group_counts[j];
-		}
-
-		// Load the obect
-		if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
-			// log_error("failed to load entry: %.8s", entries[i].name);
-			// memcpy(gCommonFormatArgs, &entries[i], sizeof(rct_object_entry));
-			loadFailed = true;
-		}
-	}
-
-	if (loadFailed) {
-		object_unload_all();
-		return false;
-	}
-
-	log_verbose("finished loading required objects");
-	return true;
-}
-
 /**
  *
  *  rct2: 0x006A9DA2

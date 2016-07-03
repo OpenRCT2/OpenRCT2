@@ -27,32 +27,35 @@ extern "C"
 }
 #endif
 
+#ifdef __cplusplus
+    class Object;
+#else
+    typedef struct Object Object;
+#endif
+
 typedef struct ObjectRepositoryItem
 {
     rct_object_entry   ObjectEntry;
     utf8 *             Path;
-    uint32             NumImages;
     utf8 *             Name;
-    size_t             ChunkSize;
+    Object *           LoadedObject;
     union
     {
-        struct
-        {
-            uint16             NumThemeObjects;
-            rct_object_entry * ThemeObjects;
-        };
         struct
         {
             uint8   RideFlags;
             uint8   RideCategory[2];
             uint8   RideType[3];
         };
+        struct
+        {
+            uint16             NumThemeObjects;
+            rct_object_entry * ThemeObjects;
+        };
     };
 } ObjectRepositoryItem;
 
 #ifdef __cplusplus
-
-class Object;
 
 interface IObjectRepository
 {
@@ -63,7 +66,7 @@ interface IObjectRepository
     virtual const ObjectRepositoryItem *    FindObject(const utf8 * name) const abstract;
     virtual const ObjectRepositoryItem *    FindObject(const rct_object_entry * objectEntry) const abstract;
 
-    virtual Object *                        LoadObject(const rct_object_entry * objectEntry) abstract;
+    virtual Object *                        LoadObject(const ObjectRepositoryItem * ori) abstract;
     virtual void                            AddObject(const rct_object_entry * objectEntry,
                                                       const void * data,
                                                       size_t dataSize) abstract;

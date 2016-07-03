@@ -114,16 +114,9 @@ void S6Importer::LoadSavedGame(SDL_RWops *rw)
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
-    if (_s6.header.num_packed_objects > 0) {
-        int j = 0;
-        for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
-        {
-            j += object_load_packed(rw);
-        }
-        if (j > 0)
-        {
-            object_list_load();
-        }
+    for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
+    {
+        object_load_packed(rw);
     }
 
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));
@@ -144,16 +137,9 @@ void S6Importer::LoadScenario(SDL_RWops *rw)
 
     // Read packed objects
     // TODO try to contain this more and not store objects until later
-    if (_s6.header.num_packed_objects > 0) {
-        int j = 0;
-        for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
-        {
-            j += object_load_packed(rw);
-        }
-        if (j > 0)
-        {
-            object_list_load();
-        }
+    for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
+    {
+        object_load_packed(rw);
     }
 
     sawyercoding_read_chunk_safe(rw, &_s6.objects, sizeof(_s6.objects));

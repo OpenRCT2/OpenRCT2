@@ -44,7 +44,7 @@ extern "C"
     #include "../util/sawyercoding.h"
 }
 
-constexpr uint16 OBJECT_REPOSITORY_VERSION = 7;
+constexpr uint16 OBJECT_REPOSITORY_VERSION = 8;
 
 struct ObjectRepositoryHeader
 {
@@ -155,14 +155,11 @@ public:
         return nullptr;
     }
 
-    Object * LoadObject(const rct_object_entry * objectEntry) override
+    Object * LoadObject(const ObjectRepositoryItem * ori) override
     {
-        Object * object = nullptr;
-        const ObjectRepositoryItem * item = FindObject(objectEntry);
-        if (item != nullptr)
-        {
-            object = ObjectFactory::CreateObjectFromLegacyFile(item->Path);
-        }
+        Guard::ArgumentNotNull(ori);
+
+        Object * object = ObjectFactory::CreateObjectFromLegacyFile(ori->Path);
         return object;
     }
 
@@ -388,9 +385,7 @@ private:
 
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadString();
-        item.NumImages = stream->ReadValue<uint32>();
         item.Name = stream->ReadString();
-        item.ChunkSize = stream->ReadValue<size_t>();
 
         switch (item.ObjectEntry.flags & 0x0F) {
         case OBJECT_TYPE_RIDE:
@@ -420,9 +415,7 @@ private:
     {
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
-        stream->WriteValue(item.NumImages);
         stream->WriteString(item.Name);
-        stream->WriteValue(item.ChunkSize);
 
         switch (item.ObjectEntry.flags & 0x0F) {
         case OBJECT_TYPE_RIDE:
@@ -597,15 +590,25 @@ extern "C"
 
     bool object_load_chunk(int groupIndex, const rct_object_entry * entry, int * outGroupIndex)
     {
-        IObjectRepository * objRepo = GetObjectRepository();
-        Object * object = objRepo->LoadObject(entry);
+        IObjectRepository * objectRepository = GetObjectRepository();
+        const ObjectRepositoryItem * ori = objectRepository->FindObject(entry);
+        if (ori == nullptr)
+        {
+            utf8 objName[9] = { 0 };
+            Memory::Copy(objName, ori->ObjectEntry.name, 8);
+            Console::Error::WriteFormat("[%s]: Object not found.", objName);
+            Console::Error::WriteLine();
+            return false;
+        }
+
+        Object * object = objectRepository->LoadObject(ori);
         if (object == nullptr)
         {
             utf8 objName[9] = { 0 };
-            Memory::Copy(objName, entry->name, 8);
-            Console::Error::WriteFormat("[%s]: Object not found or could not be loaded.", objName);
+            Memory::Copy(objName, ori->ObjectEntry.name, 8);
+            Console::Error::WriteFormat("[%s]: Object could not be loaded.", objName);
             Console::Error::WriteLine();
-            return 0;
+            return false;
         }
 
         uint8 objectType = object->GetObjectType();
@@ -618,7 +621,7 @@ extern "C"
                 {
                     log_error("Object Load failed due to too many objects of a certain type.");
                     delete object;
-                    return 0;
+                    return false;
                 }
             }
         }
@@ -635,7 +638,50 @@ extern "C"
         int loadedObjectIndex = GetObjectEntryIndex(objectType, groupIndex);
         delete _loadedObjects[loadedObjectIndex];
         _loadedObjects[loadedObjectIndex] = object;
-        return 1;
+        return true;
+    }
+
+    bool object_load_entries(rct_object_entry * entries)
+    {
+        log_verbose("loading required objects");
+
+        object_unload_all();
+
+        bool loadFailed = false;
+
+        // Load each object
+        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        {
+            if (check_object_entry(&entries[i]))
+            {
+                // Get entry group index
+                int entryGroupIndex = i;
+                for (int j = 0; j < OBJECT_ENTRY_GROUP_COUNT; j++)
+                {
+                    if (entryGroupIndex < object_entry_group_counts[j])
+                    {
+                        break;
+                    }
+                    entryGroupIndex -= object_entry_group_counts[j];
+                }
+
+                // Load the obect
+                if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
+                    // log_error("failed to load entry: %.8s", entries[i].name);
+                    // memcpy(gCommonFormatArgs, &entries[i], sizeof(rct_object_entry));
+                    loadFailed = true;
+                }
+            }
+        }
+
+        if (loadFailed)
+        {
+            object_unload_all();
+            return false;
+        }
+
+        log_verbose("finished loading required objects");
+        return true;
     }
 
     void reset_loaded_objects()
@@ -655,9 +701,17 @@ extern "C"
 
     void * object_repository_load_object(const rct_object_entry * objectEntry)
     {
+        Object * object = nullptr;
         IObjectRepository * objRepository = GetObjectRepository();
-        Object * object = objRepository->LoadObject(objectEntry);
-        object->Load();
+        const ObjectRepositoryItem * ori = objRepository->FindObject(objectEntry);
+        if (ori != nullptr)
+        {
+            object = objRepository->LoadObject(ori);
+            if (object != nullptr)
+            {
+                object->Load();
+            }
+        }
         return (void *)object;
     }
 
@@ -730,18 +784,22 @@ extern "C"
             // Checks for a scenario string object (possibly for localisation)
             if ((stexObjectEntry->flags & 0xFF) != 255)
             {
-                IObjectRepository * objRepo = GetObjectRepository();
-                Object * object = objRepo->LoadObject(stexObjectEntry);
-                if (object != nullptr)
+                IObjectRepository * objectRepository = GetObjectRepository();
+                const ObjectRepositoryItem * ori = objectRepository->FindObject(stexObjectEntry);
+                if (ori != nullptr)
                 {
-                    StexObject * stexObject = static_cast<StexObject*>(object);
-                    const utf8 * scenarioName = stexObject->GetScenarioName();
-                    const utf8 * scenarioDetails = stexObject->GetScenarioDetails();
+                    Object * object = objectRepository->LoadObject(ori);
+                    if (object != nullptr)
+                    {
+                        StexObject * stexObject = static_cast<StexObject*>(object);
+                        const utf8 * scenarioName = stexObject->GetScenarioName();
+                        const utf8 * scenarioDetails = stexObject->GetScenarioDetails();
 
-                    String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName);
-                    String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails);
+                        String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName);
+                        String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails);
 
-                    delete object;
+                        delete object;
+                    }
                 }
             }
         }
