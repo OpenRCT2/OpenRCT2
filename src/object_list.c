@@ -259,19 +259,37 @@ void object_list_init()
 	}
 }
 
-void *get_loaded_object_entry(size_t index)
+void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)
 {
 	uint8 objectType = OBJECT_TYPE_RIDE;
 	for (size_t i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++) {
 		size_t groupCount = object_entry_group_counts[i];
 		if (index >= groupCount) {
-			index -= object_entry_group_counts[i];
+			index -= groupCount;
 			objectType++;
 		} else {
 			break;
 		}
 	}
 
-	void *entry = object_entry_groups[objectType].chunks[index];
+	if (outObjectType != NULL) *outObjectType = objectType;
+	if (outEntryIndex != NULL) *outEntryIndex = (uint8)index;
+}
+
+const rct_object_entry * get_loaded_object_entry(size_t index)
+{
+	uint8 objectType, entryIndex;
+	get_type_entry_index(index, &objectType, &entryIndex);
+
+	rct_object_entry * entry = (rct_object_entry *)&(object_entry_groups[objectType].entries[entryIndex]);
+	return entry;
+}
+
+void * get_loaded_object_chunk(size_t index)
+{
+	uint8 objectType, entryIndex;
+	get_type_entry_index(index, &objectType, &entryIndex);
+
+	void *entry = object_entry_groups[objectType].chunks[entryIndex];
 	return entry;
 }

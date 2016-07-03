@@ -561,7 +561,7 @@ IObjectRepository * GetObjectRepository()
     return _objectRepository;
 }
 
-Object * _loadedObjects[721] = { nullptr };
+Object * _loadedObjects[OBJECT_ENTRY_COUNT] = { nullptr };
 
 int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
 {
@@ -640,7 +640,7 @@ extern "C"
 
     void reset_loaded_objects()
     {
-        for (int i = 0; i < 721; i++)
+        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             Object * object = _loadedObjects[i];
             if (object != nullptr)
@@ -662,7 +662,7 @@ extern "C"
 
     void * object_repository_find_loaded_object(const rct_object_entry * objectEntry)
     {
-        for (size_t i = 0; i < 721; i++)
+        for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             Object * object = _loadedObjects[i];
             if (object != nullptr)
@@ -690,7 +690,7 @@ extern "C"
 
     void object_unload_all()
     {
-        for (int i = 0; i < 721; i++)
+        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
         {
             Object * object = _loadedObjects[i];
             if (object != nullptr)
