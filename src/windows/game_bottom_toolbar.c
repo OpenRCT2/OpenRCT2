@@ -224,11 +224,11 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, int widgetIndex, r
 		set_format_arg(0, short, gParkRating);
 		break;
 	case WIDX_DATE:
-		month = gDateMonthsElapsed & 7;
+		month = gDateMonthsElapsed % 8;
 		day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
-		set_format_arg(0, short, STR_DATE_DAY_1 + day);
-		set_format_arg(2, short, STR_MONTH_MARCH + month);
+		set_format_arg(0, rct_string_id, DateDayNames[day]);
+		set_format_arg(2, rct_string_id, DateGameMonthNames[month]);
 		break;
 	}
 }
@@ -382,7 +382,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		set_format_arg(0, money32, cash);
 		gfx_draw_string_centred(
 			dpi,
-			(cash < 0 ? 1391 : 1390),
+			(cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH),
 			x, y - 3,
 			(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY ? COLOUR_WHITE : w->colours[0] & 0x7F),
 			gCommonFormatArgs
@@ -390,10 +390,16 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
 		y += 7;
 	}
 
+	static const rct_string_id guestCountFormats[] = {
+		STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
+		STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
+		STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
+	};
+
 	// Draw guests
 	gfx_draw_string_centred(
 		dpi,
-		STR_NUM_GUESTS + gGuestChangeModifier,
+		guestCountFormats[gGuestChangeModifier],
 		x, y,
 		(gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS ? COLOUR_WHITE : w->colours[0] & 0x7F),
 		&gNumGuestsInPark
@@ -454,7 +460,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 	int day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
 	rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
-	set_format_arg(0, short, STR_DATE_DAY_1 + day);
+	set_format_arg(0, short, DateDayNames[day]);
 	set_format_arg(2, short, month);
 	set_format_arg(4, short, year);
 	gfx_draw_string_centred(
@@ -499,7 +505,6 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w)
 {
 	int x, y, width;
-	rct_string_id stringId;
 	rct_news_item *newsItem;
 	rct_widget *middleOutsetWidget;
 
@@ -518,12 +523,11 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 	);
 
 	// Text
-	stringId = 5485;
 	utf8 *newsItemText = newsItem->text;
 	x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
 	y = w->y + middleOutsetWidget->top + 11;
 	width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
-	gfx_draw_string_centred_wrapped_partial(dpi, x, y, width, 14, stringId, &newsItemText, newsItem->ticks);
+	gfx_draw_string_centred_wrapped_partial(dpi, x, y, width, 14, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->ticks);
 
 	x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
 	y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
@@ -582,7 +586,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 		gfx_draw_sprite(dpi, SPR_FINANCE, x, y, 0);
 		break;
 	case NEWS_ITEM_RESEARCH:
-		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_RIDE : SPR_SCENERY), x, y, 0);
+		gfx_draw_sprite(dpi, (newsItem->assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), x, y, 0);
 		break;
 	case NEWS_ITEM_PEEPS:
 		gfx_draw_sprite(dpi, SPR_GUESTS, x, y, 0);

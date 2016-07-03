@@ -89,7 +89,7 @@ static rct_window_event_list window_text_input_events = {
 	NULL
 };
 
-int input_text_description;
+rct_string_id input_text_description;
 char text_input[512] = { 0 };
 rct_windowclass calling_class = 0;
 rct_windownumber calling_number = 0;
@@ -143,7 +143,7 @@ void window_text_input_open(rct_window* call_w, int call_widget, rct_string_id t
 	w->widgets = window_text_input_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1<<WIDX_CANCEL) | (1<<WIDX_OKAY);
 
-	window_text_input_widgets[WIDX_TITLE].image = title;
+	window_text_input_widgets[WIDX_TITLE].text = title;
 
 	// Save calling window details so that the information
 	// can be passed back to the correct window & widget
@@ -204,7 +204,7 @@ void window_text_input_raw_open(rct_window* call_w, int call_widget, rct_string_
 	w->widgets = window_text_input_widgets;
 	w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_OKAY);
 
-	window_text_input_widgets[WIDX_TITLE].image = title;
+	window_text_input_widgets[WIDX_TITLE].text = title;
 
 	// Save calling window details so that the information
 	// can be passed back to the correct window & widget

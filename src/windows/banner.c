@@ -28,6 +28,7 @@
 #include "dropdown.h"
 #include "../drawing/drawing.h"
 #include "../interface/themes.h"
+#include "../sprites.h"
 
 #define WW 113
 #define WH 96
@@ -45,17 +46,34 @@ enum WINDOW_BANNER_WIDGET_IDX {
 	WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
+static const rct_string_id BannerColouredTextFormats[] = {
+	STR_TEXT_COLOR_BLACK,
+	STR_TEXT_COLOR_GREY,
+	STR_TEXT_COLOR_WHITE,
+	STR_TEXT_COLOR_RED,
+	STR_TEXT_COLOR_GREEN,
+	STR_TEXT_COLOR_YELLOW,
+	STR_TEXT_COLOR_TOPAZ,
+	STR_TEXT_COLOR_CELADON,
+	STR_TEXT_COLOR_BABYBLUE,
+	STR_TEXT_COLOR_PALELAVENDER,
+	STR_TEXT_COLOR_PALEGOLD,
+	STR_TEXT_COLOR_LIGHTPINK,
+	STR_TEXT_COLOR_PEARLAQUA,
+	STR_TEXT_COLOR_PALESILVER,
+};
+
 rct_widget window_banner_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,	65535},								// panel / background
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			0xBA9,			STR_WINDOW_TITLE_TIP},				// title bar
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			0x338,			STR_CLOSE_WINDOW_TIP},				// close x button
-	{ WWT_VIEWPORT,			1,	3,			WW - 26,17,		WH - 20,	0x0FFFFFFFE,	65535},								// tab content panel
-	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	19,		42,			0x1430,			STR_CHANGE_BANNER_TEXT_TIP},		// change banner button
-	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	43,		66,			0x143A,			STR_SET_AS_NO_ENTRY_BANNER_TIP},	// no entry button
-	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	67,		90,			0x142D,			STR_DEMOLISH_BANNER_TIP},			// demolish button
-	{ WWT_COLOURBTN,		1,	5,			16,		WH - 16,WH - 5,		0x0FFFFFFFF,	STR_SELECT_MAIN_SIGN_COLOUR_TIP},	// high money
-	{ WWT_DROPDOWN,			1,	43,			81,		WH - 16,WH - 5,		0x0FFFFFFFF,	65535},								// high money
-	{ WWT_DROPDOWN_BUTTON,	1,	70,			80,		WH - 15,WH - 6,		0x36C,			STR_SELECT_TEXT_COLOUR_TIP},		// high money
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0xFFFFFFFF,					STR_NONE},								// panel / background
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_BANNER_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP},				// title bar
+	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP},				// close x button
+	{ WWT_VIEWPORT,			1,	3,			WW - 26,17,		WH - 20,	0x0FFFFFFFE,				STR_NONE},								// tab content panel
+	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	19,		42,			SPR_RENAME,					STR_CHANGE_BANNER_TEXT_TIP},		// change banner button
+	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	43,		66,			SPR_NO_ENTRY,				STR_SET_AS_NO_ENTRY_BANNER_TIP},	// no entry button
+	{ WWT_FLATBTN,			1,	WW - 25,	WW - 2,	67,		90,			SPR_DEMOLISH,				STR_DEMOLISH_BANNER_TIP},			// demolish button
+	{ WWT_COLOURBTN,		1,	5,			16,		WH - 16,WH - 5,		0xFFFFFFFF,					STR_SELECT_MAIN_SIGN_COLOUR_TIP},	// high money
+	{ WWT_DROPDOWN,			1,	43,			81,		WH - 16,WH - 5,		0xFFFFFFFF,					STR_NONE},								// high money
+	{ WWT_DROPDOWN_BUTTON,	1,	70,			80,		WH - 15,WH - 6,		STR_DROPDOWN_GLYPH,			STR_SELECT_TEXT_COLOUR_TIP},		// high money
 	{ WIDGETS_END },
 };
 
@@ -219,7 +237,7 @@ static void window_banner_mousedown(int widgetIndex, rct_window*w, rct_widget* w
 
 		for( int i = 0; i < 13; ++i){
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-			gDropdownItemsArgs[i] = STR_TEXT_COLOR_GREY + i;
+			gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
 		}
 
 		//Switch to the dropdown box widget.
@@ -307,10 +325,10 @@ static void window_banner_invalidate(rct_window *w)
 			(1ULL<<WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
 	}
 
-	colour_btn->image = (banner->colour << 19) + 0x600013C3;
+	colour_btn->image = (banner->colour << 19) | 0x60000000 | SPR_PALETTE_BTN;
 
 	rct_widget* drop_down_widget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-	drop_down_widget->image = banner->text_colour + STR_TEXT_COLOR_BLACK;
+	drop_down_widget->text = BannerColouredTextFormats[banner->text_colour];
 }
 
 /* rct2: 0x006BA4C5 */

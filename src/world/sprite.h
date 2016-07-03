@@ -68,7 +68,7 @@ typedef struct rct_unk_sprite {
 	sint16 sprite_bottom;			// 0x1C
 	uint8  sprite_direction; //direction of sprite? 0x1e
 	uint8 pad_1F[3]; // 0x1f
-	uint16 name_string_idx;			// 0x22
+	rct_string_id name_string_idx;	// 0x22
 	uint16 var_24;
 	uint16 frame;					// 0x26
 	uint8 var_28[3];

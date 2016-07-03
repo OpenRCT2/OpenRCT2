@@ -39,15 +39,15 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 };
 
 rct_widget window_clear_scenery_widgets[] = {
-	{ WWT_FRAME,	0,	0,	97,	0,	93,	-1,										STR_NONE },							// panel / background
-	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_CLEAR_SCENERY,						STR_WINDOW_TITLE_TIP },				// title bar
-	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,	STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },				// close x button
-	{ WWT_IMGBTN,	0,	27,	70,	17,	48,	SPR_LAND_TOOL_SIZE_0,					STR_NONE },							// preview box
-	{ WWT_TRNBTN,	1,	28,	43,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,	STR_ADJUST_SMALLER_LAND_TIP },		// decrement size
-	{ WWT_TRNBTN,	1,	54,	69,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,	STR_ADJUST_LARGER_LAND_TIP },		// increment size
-	{ WWT_FLATBTN,  1,	7,	30,	53,	76,	0x20000000 | SPR_G2_BUTTON_TREES,			5272 }, // small scenery
-	{ WWT_FLATBTN,	1,	37,	60,	53,	76,	0x20000000 | SPR_G2_BUTTON_LARGE_SCENERY,	5273 }, // large scenery
-	{ WWT_FLATBTN,	1,	67,	90,	53,	76,	0x20000000 | SPR_G2_BUTTON_FOOTPATH,		5274 }, // footpaths
+	{ WWT_FRAME,	0,	0,	97,	0,	93,	0xFFFFFFFF,									STR_NONE },							// panel / background
+	{ WWT_CAPTION,	0,	1,	96,	1,	14,	STR_CLEAR_SCENERY,							STR_WINDOW_TITLE_TIP },				// title bar
+	{ WWT_CLOSEBOX,	0,	85,	95,	2,	13,	STR_CLOSE_X,								STR_CLOSE_WINDOW_TIP },				// close x button
+	{ WWT_IMGBTN,	0,	27,	70,	17,	48,	SPR_LAND_TOOL_SIZE_0,						STR_NONE },							// preview box
+	{ WWT_TRNBTN,	1,	28,	43,	18,	33,	0x20000000 | SPR_LAND_TOOL_DECREASE,		STR_ADJUST_SMALLER_LAND_TIP },		// decrement size
+	{ WWT_TRNBTN,	1,	54,	69,	32,	47,	0x20000000 | SPR_LAND_TOOL_INCREASE,		STR_ADJUST_LARGER_LAND_TIP },		// increment size
+	{ WWT_FLATBTN,  1,	7,	30,	53,	76,	0x20000000 | SPR_G2_BUTTON_TREES,			STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP }, // small scenery
+	{ WWT_FLATBTN,	1,	37,	60,	53,	76,	0x20000000 | SPR_G2_BUTTON_LARGE_SCENERY,	STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP }, // large scenery
+	{ WWT_FLATBTN,	1,	67,	90,	53,	76,	0x20000000 | SPR_G2_BUTTON_FOOTPATH,		STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP }, // footpaths
 	{ WIDGETS_END },
 };
 
@@ -192,7 +192,7 @@ static void window_clear_scenery_inputsize(rct_window *w)
 {
 	TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
 	TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
-	window_text_input_open(w, WIDX_PREVIEW, 5128, 5129, STR_NONE, STR_NONE, 3);
+	window_text_input_open(w, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, STR_NONE, STR_NONE, 3);
 }
 
 /**
@@ -246,7 +246,7 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2 + w->x;
 	y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->y + 5 + 27;
 	if (RCT2_GLOBAL(0x00F1AD62, uint32) != MONEY32_UNDEFINED && RCT2_GLOBAL(0x00F1AD62, uint32) != 0)
-		gfx_draw_string_centred(dpi, 986, x, y, 0, (void*)0x00F1AD62);
+		gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, 0, (void*)0x00F1AD62);
 }
 
 /**

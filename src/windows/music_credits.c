@@ -27,10 +27,10 @@ enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
 };
 
 rct_widget window_music_credits_widgets[] = {
-	{ WWT_FRAME,	0,	0,		509,	0,	313,	0x0FFFFFFFF,				STR_NONE },				// panel / background
+	{ WWT_FRAME,	0,	0,		509,	0,	313,	0xFFFFFFFF,					STR_NONE },				// panel / background
 	{ WWT_CAPTION,	0,	1,		508,	1,	14,		STR_MUSIC_ACKNOWLEDGEMENTS,	STR_WINDOW_TITLE_TIP },	// title bar
 	{ WWT_CLOSEBOX,	0,	497,	507,	2,	13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_SCROLL,	0,	4,		505,	18,	309,	2,							STR_NONE },				// scroll
+	{ WWT_SCROLL,	0,	4,		505,	18,	309,	SCROLL_VERTICAL,							STR_NONE },				// scroll
 	{ WIDGETS_END },
 };
 
@@ -138,10 +138,11 @@ static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
+	// TODO: Clean up string addition
 	int x = 245;
 
 	int y = 2;
-	int string = 0xB30;
+	int string = STR_MUSIC_ACKNOWLEDGEMENTS_LINE_0;
 	for (int i = 0; i < 12; i++) {
 		gfx_draw_string_centred(dpi, string, x, y, 0, 0);
 		y += 10;

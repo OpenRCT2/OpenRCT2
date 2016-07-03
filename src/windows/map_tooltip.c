@@ -21,7 +21,7 @@
 #include "../interface/window.h"
 
 static rct_widget window_map_tooltip_widgets[] = {
-	{ WWT_IMGBTN, 0, 0, 199, 0, 29, 0x0FFFFFFFF, STR_NONE },
+	{ WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },
 	{ WIDGETS_END }
 };
 
@@ -152,5 +152,5 @@ static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		return;
 	}
 
-	gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, w->x + (w->width / 2), w->y + (w->height / 2), w->width, 1162, 0);
+	gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, w->x + (w->width / 2), w->y + (w->height / 2), w->width, STR_MAP_TOOLTIP_STRINGID, 0);
 }

@@ -71,7 +71,7 @@ static rct_widget window_server_list_widgets[] = {
 	{ WWT_FRAME,			0,	0,		340,	0,		90,		0xFFFFFFFF,					STR_NONE },					// panel / background
 	{ WWT_CAPTION,			0,	1,		338,	1,		14,		STR_SERVER_LIST,			STR_WINDOW_TITLE_TIP },		// title bar
 	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },		// close x button
-	{ WWT_TEXT_BOX,			1,	100,	344,	20,		31,		STR_NONE,						STR_NONE },					// player name text box
+	{ WWT_TEXT_BOX,			1,	100,	344,	20,		31,		STR_NONE,					STR_NONE },					// player name text box
 	{ WWT_SCROLL,			1,	6,		337,	37,		50,		STR_NONE,					STR_NONE },					// server list
 	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	53,		64,		STR_FETCH_SERVERS,			STR_NONE },					// fetch servers button
 	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	53,		64,		STR_ADD_SERVER,				STR_NONE },					// add server button
@@ -159,7 +159,7 @@ void window_server_list_open()
 
 	window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
 
-	window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].image = (uint32)_playerName;
+	window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
 	window->widgets = window_server_list_widgets;
 	window->enabled_widgets = (
 		(1 << WIDX_CLOSE) |
@@ -210,7 +210,7 @@ static void window_server_list_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_PLAYER_NAME_INPUT:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_playerName, 63);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_playerName, 63);
 		break;
 	case WIDX_LIST:{
 		int serverIndex = w->selected_list_item;

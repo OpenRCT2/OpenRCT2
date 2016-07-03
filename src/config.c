@@ -431,7 +431,7 @@ void config_set_defaults()
 				if (username) {
 					destValue->value_string = _strdup(username);
 				} else {
-					destValue->value_string = _strdup(language_get_string(STR_PLAYER_DEFAULT_NAME));
+					destValue->value_string = _strdup(language_get_string(STR_RIDE_COMPONENT_PLAYER_CAPITALISED));
 				}				
 			}
 			else {
@@ -1150,23 +1150,23 @@ void title_sequences_set_default()
 
 	// RCT1 title sequence
 	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1", sep);
-	title_sequence_open(path, language_get_string(5305));
+	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT1));
 
 	// RCT1 (AA) title sequence
 	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1aa", sep);
-	title_sequence_open(path, language_get_string(5306));
+	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT1_AA));
 
 	// RCT1 (AA + LL) title sequence
 	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct1aall", sep);
-	title_sequence_open(path, language_get_string(5307));
+	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT1_AA_LL));
 
 	// RCT2 title sequence
 	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "rct2", sep);
-	title_sequence_open(path, language_get_string(5308));
+	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_RCT2));
 
 	// OpenRCT2 title sequence
 	sprintf(path, "%s%c%s%c%s%c", dataPath, sep, "title", sep, "openrct2", sep);
-	title_sequence_open(path, language_get_string(5309));
+	title_sequence_open(path, language_get_string(STR_TITLE_SEQUENCE_OPENRCT2));
 }
 
 void title_sequences_load_presets()

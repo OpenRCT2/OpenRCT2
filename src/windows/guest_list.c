@@ -50,23 +50,43 @@ enum WINDOW_GUEST_LIST_WIDGET_IDX {
 
 enum {
 	VIEW_ACTIONS,
-	VIEW_THOUGHTS
+	VIEW_THOUGHTS,
+	VIEW_COUNT
+};
+
+static const rct_string_id pageNames[] = {
+	STR_PAGE_1,
+	STR_PAGE_2,
+	STR_PAGE_3,
+	STR_PAGE_4,
+	STR_PAGE_5,
+};
+
+static const rct_string_id filterNames[] = {
+	STR_GUESTS_FILTER,
+	STR_GUESTS_FILTER_THINKING,
+	STR_GUESTS_FILTER_THINKING_ABOUT,
+};
+
+static const rct_string_id viewNames[VIEW_COUNT] = {
+	STR_ACTIONS,
+	STR_THOUGHTS,
 };
 
 static rct_widget window_guest_list_widgets[] = {
-	{ WWT_FRAME,			0,	0,		349,	0,	329,	0x0FFFFFFFF,	STR_NONE },						// panel / background
-	{ WWT_CAPTION,			0,	1,		348,	1,	14,		STR_GUESTS,		STR_WINDOW_TITLE_TIP },			// title bar
-	{ WWT_CLOSEBOX,			0,	337,	347,	2,	13,		STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },			// close x button
-	{ WWT_RESIZE,			1,	0,		349,	43,	329,	0x0FFFFFFFF,	STR_NONE },						// tab content panel
-	{ WWT_DROPDOWN,			1,	5,		84,		59,	70,		STR_PAGE_1,		STR_NONE },						// page dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	73,		83,		60,	69, 	876,			STR_NONE },						// page dropdown button
-	{ WWT_DROPDOWN,			1,	120,	295,	59,	70, 	0x0FFFFFFFF,	STR_INFORMATION_TYPE_TIP },		// information type dropdown
-	{ WWT_DROPDOWN_BUTTON,	1,	284,	294,	60,	69, 	876,			STR_INFORMATION_TYPE_TIP },		// information type dropdown button
-	{ WWT_FLATBTN,			1,	297,	320,	46,	69, 	SPR_MAP,		STR_SHOW_GUESTS_ON_MAP_TIP },	// map
-	{ WWT_FLATBTN,			1,	321,	344,	46,	69,		SPR_TRACK_PEEP,	STR_TRACKED_GUESTS_ONLY_TIP },	// tracking
-	{ WWT_TAB,				1,	3,		33,		17,	43, 	0x02000144E,	STR_INDIVIDUAL_GUESTS_TIP },	// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,	43, 	0x02000144E,	STR_SUMMARISED_GUESTS_TIP },	// tab 2
-	{ WWT_SCROLL,			1,	3,		346,	72,	326,	3,				STR_NONE },						// guest list
+	{ WWT_FRAME,			0,	0,		349,	0,	329,	0xFFFFFFFF,	        	STR_NONE },						// panel / background
+	{ WWT_CAPTION,			0,	1,		348,	1,	14,		STR_GUESTS,		        STR_WINDOW_TITLE_TIP },			// title bar
+	{ WWT_CLOSEBOX,			0,	337,	347,	2,	13,		STR_CLOSE_X,	        STR_CLOSE_WINDOW_TIP },			// close x button
+	{ WWT_RESIZE,			1,	0,		349,	43,	329,	0xFFFFFFFF,	        	STR_NONE },						// tab content panel
+	{ WWT_DROPDOWN,			1,	5,		84,		59,	70,		STR_PAGE_1,		        STR_NONE },						// page dropdown
+	{ WWT_DROPDOWN_BUTTON,	1,	73,		83,		60,	69, 	STR_DROPDOWN_GLYPH,		STR_NONE },						// page dropdown button
+	{ WWT_DROPDOWN,			1,	120,	295,	59,	70, 	0xFFFFFFFF,	        	STR_INFORMATION_TYPE_TIP },		// information type dropdown
+	{ WWT_DROPDOWN_BUTTON,	1,	284,	294,	60,	69, 	STR_DROPDOWN_GLYPH,		STR_INFORMATION_TYPE_TIP },		// information type dropdown button
+	{ WWT_FLATBTN,			1,	297,	320,	46,	69, 	SPR_MAP,		        STR_SHOW_GUESTS_ON_MAP_TIP },	// map
+	{ WWT_FLATBTN,			1,	321,	344,	46,	69,		SPR_TRACK_PEEP,	        STR_TRACKED_GUESTS_ONLY_TIP },	// tracking
+	{ WWT_TAB,				1,	3,		33,		17,	43, 	0x20000000 | SPR_TAB,	STR_INDIVIDUAL_GUESTS_TIP },	// tab 1
+	{ WWT_TAB,				1,	34,		64,		17,	43, 	0x20000000 | SPR_TAB,	STR_SUMMARISED_GUESTS_TIP },	// tab 2
+	{ WWT_SCROLL,			1,	3,		346,	72,	326,	SCROLL_BOTH,		    STR_NONE },						// guest list
 	{ WIDGETS_END },
 };
 
@@ -211,10 +231,10 @@ void window_guest_list_open_with_filter(int type, int index)
 	case 0:
 		_window_guest_list_selected_filter = 0;
 
-		eax = (eax << 16) + 1435;
+		eax = (eax << 16) + STR_ON_RIDE;
 
 		if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
-			eax++;
+			eax = (eax << 16) + STR_IN_RIDE;
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
 		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
@@ -226,7 +246,7 @@ void window_guest_list_open_with_filter(int type, int index)
 	case 1:
 		_window_guest_list_selected_filter = 0;
 
-		eax = (eax << 16) + 1433;
+		eax = (eax << 16) + STR_QUEUING_FOR;
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
 		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
@@ -238,7 +258,7 @@ void window_guest_list_open_with_filter(int type, int index)
 	case 2:
 		_window_guest_list_selected_filter = 1;
 
-		eax = (eax << 16) + 0xFFFF;
+		eax = (eax << 16) + STR_NONE;
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = eax;
 		RCT2_GLOBAL(0x00F1EDFA, uint32) = edx;
@@ -250,7 +270,7 @@ void window_guest_list_open_with_filter(int type, int index)
 	case 3:
 		_window_guest_list_selected_filter = 1;
 
-		index = (index & 0x000000FF) + 1480;
+		index = PeepThoughts[(index & 0x000000FF)];
 
 		RCT2_GLOBAL(0x00F1EDF6, uint32) = index;
 		RCT2_GLOBAL(0x00F1EDFA, uint32) = 0;
@@ -346,16 +366,16 @@ static void window_guest_list_mousedown(int widgetIndex, rct_window*w, rct_widge
 
 		for (i = 0; i < _window_guest_list_num_pages; i++) {
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-			gDropdownItemsArgs[i] = STR_PAGE_1 + i;
+			gDropdownItemsArgs[i] = pageNames[i];
 		}
 		dropdown_set_checked(_window_guest_list_selected_page, true);
 		break;
 	case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
 		widget = &w->widgets[widgetIndex - 1];
 
-		for (i = 0; i < 2; i++) {
+		for (i = 0; i < VIEW_COUNT; i++) {
 			gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-			gDropdownItemsArgs[i] = STR_ACTIONS + i;
+			gDropdownItemsArgs[i] = viewNames[i];
 		}
 
 		window_dropdown_show_text_custom_width(
@@ -561,7 +581,7 @@ static void window_guest_list_invalidate(rct_window *w)
 	w->pressed_widgets &= ~(1 << WIDX_TAB_2);
 	w->pressed_widgets |= (1LL << (_window_guest_list_selected_tab + WIDX_TAB_1));
 
-	window_guest_list_widgets[WIDX_INFO_TYPE_DROPDOWN].image = STR_ACTIONS + _window_guest_list_selected_view;
+	window_guest_list_widgets[WIDX_INFO_TYPE_DROPDOWN].text = viewNames[_window_guest_list_selected_view];
 	window_guest_list_widgets[WIDX_MAP].type = WWT_EMPTY;
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL && _window_guest_list_selected_filter != -1)
 		window_guest_list_widgets[WIDX_MAP].type = WWT_FLATBTN;
@@ -575,7 +595,7 @@ static void window_guest_list_invalidate(rct_window *w)
 	window_guest_list_widgets[WIDX_CLOSE].right = w->width - 3;
 	window_guest_list_widgets[WIDX_GUEST_LIST].right = w->width - 4;
 	window_guest_list_widgets[WIDX_GUEST_LIST].bottom = w->height - 15;
-	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].image = _window_guest_list_selected_page + 3440;
+	window_guest_list_widgets[WIDX_PAGE_DROPDOWN].text = pageNames[_window_guest_list_selected_page];
 	window_guest_list_widgets[WIDX_TRACKING].left = 321 - 350 + w->width;
 	window_guest_list_widgets[WIDX_TRACKING].right = 344 - 350 + w->width;
 
@@ -594,7 +614,8 @@ static void window_guest_list_invalidate(rct_window *w)
  */
 static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-	int i, x, y, format;
+	int i, x, y;
+	rct_string_id format;
 
 	// Widgets
 	window_draw_widgets(w, dpi);
@@ -624,7 +645,7 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL) {
 		if (_window_guest_list_selected_filter != -1) {
 			if (RCT2_GLOBAL(0x00F1EDF6, sint16) != -1)
-				format = STR_GUESTS_FILTER + _window_guest_list_selected_filter;
+				format = filterNames[_window_guest_list_selected_filter]; // Not sure whether the index will ever be 2
 			else
 				format = STR_GUESTS_FILTER_THINKING_ABOUT;
 		} else {
@@ -650,7 +671,8 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int scrollIndex)
 {
-	int spriteIndex, format, numGuests, i, j, y;
+	int spriteIndex, numGuests, i, j, y;
+	rct_string_id format;
 	rct_peep *peep;
 	rct_peep_thought *thought;
 	uint32 argument_1, argument_2;
@@ -687,7 +709,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				format = STR_BLACK_STRING;
 				if (i == _window_guest_list_highlighted_index) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
-					format = STR_WINDOW_COLOUR_2_STRING;
+					format = STR_WINDOW_COLOUR_2_STRINGID;
 				}
 
 				// Guest name
@@ -754,7 +776,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 				format = STR_BLACK_STRING;
 				if (i == _window_guest_list_highlighted_index) {
 					gfx_fill_rect(dpi, 0, y, 800, y + 20, 0x02000031);
-					format = STR_WINDOW_COLOUR_2_STRING;
+					format = STR_WINDOW_COLOUR_2_STRINGID;
 				}
 
 				// Draw guest faces

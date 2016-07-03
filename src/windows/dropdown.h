@@ -29,7 +29,7 @@ enum
 extern int gAppropriateImageDropdownItemsPerRow[];
 
 extern int gDropdownNumItems;
-extern uint16 gDropdownItemsFormat[64];
+extern rct_string_id gDropdownItemsFormat[64];
 extern sint64 gDropdownItemsArgs[64];
 extern uint64 gDropdownItemsChecked;
 extern uint64 gDropdownItemsDisabled;

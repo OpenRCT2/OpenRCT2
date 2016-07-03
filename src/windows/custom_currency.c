@@ -37,14 +37,14 @@ enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
 };
 
 rct_widget window_custom_currency_widgets[] = {
-	{ WWT_FRAME,			0,	0,		399,	0,		99,	0x0FFFFFFFF,						STR_NONE },
+	{ WWT_FRAME,			0,	0,		399,	0,		99,	0xFFFFFFFF,							STR_NONE },
 	{ WWT_CAPTION,			0,	1,		398,	1,		14,	STR_CUSTOM_CURRENCY_WINDOW_TITLE,	STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	387,	397,	2,		13,	STR_CLOSE_X,						STR_CLOSE_WINDOW_TIP },
-	{ WWT_SPINNER,			1,	100,	200,	30,		40,	5462,								STR_NONE },
+	{ WWT_SPINNER,			1,	100,	200,	30,		40,	STR_CHEAT_CURRENCY_FORMAT,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	189,	199,	31,		35,	STR_NUMERIC_UP,						STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	189,	199,	36,		40,	STR_NUMERIC_DOWN,					STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	120,	200,	50,		60,	0,									STR_NONE },
-	{ WWT_DROPDOWN,			1,	220,	350,	50,		60,	865,								STR_NONE },
+	{ WWT_DROPDOWN,			1,	220,	350,	50,		60,	STR_STRINGID,						STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	339,	349,	51,		59,	STR_DROPDOWN_GLYPH,					STR_NONE },
 	{ WIDGETS_END },
 };
@@ -117,9 +117,9 @@ void custom_currency_window_open()
 
 	window->hold_down_widgets = (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN);
 	window_init_scroll_widgets(window);
-	window->colours[0] = 22;
-	window->colours[1] = 22;
-	window->colours[2] = 22;
+	window->colours[0] = COLOUR_LIGHT_BROWN;
+	window->colours[1] = COLOUR_LIGHT_BROWN;
+	window->colours[2] = COLOUR_LIGHT_BROWN;
 }
 
 

@@ -34,9 +34,9 @@ enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_shortcut_change_widgets[] = {
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		STR_NONE,		STR_NONE },
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_OPTIONS,	STR_WINDOW_TITLE_TIP },
-	{ WWT_CLOSEBOX,			0,	WW-13,		WW - 3,	2,		13,			STR_CLOSE_X,	STR_CLOSE_WINDOW_TIP },
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		STR_NONE,					STR_NONE },
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_SHORTCUT_CHANGE_TITLE,	STR_WINDOW_TITLE_TIP },
+	{ WWT_CLOSEBOX,			0,	WW-13,		WW - 3,	2,		13,			STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },
 	{ WIDGETS_END }
 };
 
@@ -118,5 +118,5 @@ static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	int y = w->y + 30;
 
 	set_format_arg(0, uint16, ShortcutStringIds[RCT2_GLOBAL(0x009DE511, uint8)]);
-	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, 2785, RCT2_GLOBAL(0x9DEB8D, uint8));
+	gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, RCT2_GLOBAL(0x9DEB8D, uint8));
 }

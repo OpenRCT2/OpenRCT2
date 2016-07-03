@@ -67,8 +67,8 @@ static rct_widget window_research_development_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		298,	1,		14,		STR_RESEARCH_AND_DEVELOPMENT,			STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	287,	297,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		299,	43,		195,	0xFFFFFFFF,								STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_RESEARCH_AND_DEVELOPMENT_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,								STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_RESEARCH_AND_DEVELOPMENT_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_RESEARCH_TIP },
 	{ WWT_GROUPBOX,			2,	3,		292,	47,		116,	STR_CURRENTLY_IN_DEVELOPMENT,			STR_NONE },
 	{ WWT_GROUPBOX,			2,	3,		292,	124,	188,	STR_LAST_DEVELOPMENT,					STR_NONE },
 	{ WWT_FLATBTN,			2,	265,	288,	161,	184,	0xFFFFFFFF,								STR_RESEARCH_SHOW_DETAILS_TIP },
@@ -80,19 +80,19 @@ static rct_widget window_research_funding_widgets[] = {
 	{ WWT_CAPTION,			0,	1,		318,	1,		14,		STR_RESEARCH_FUNDING,					STR_WINDOW_TITLE_TIP },
 	{ WWT_CLOSEBOX,			0,	307,	317,	2,		13,		STR_CLOSE_X,							STR_CLOSE_WINDOW_TIP },
 	{ WWT_RESIZE,			1,	0,		319,	43,		206,	0xFFFFFFFF,								STR_NONE },
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,								STR_RESEARCH_AND_DEVELOPMENT_TIP },
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,								STR_FINANCES_RESEARCH_TIP },
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,					STR_RESEARCH_AND_DEVELOPMENT_TIP },
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,					STR_FINANCES_RESEARCH_TIP },
 	{ WWT_GROUPBOX,			2,	3,		316,	47,		91,		STR_RESEARCH_FUNDING_,					STR_NONE },
 	{ WWT_DROPDOWN,			2,	8,		167,	59,		70,		0xFFFFFFFF,								STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-	{ WWT_DROPDOWN_BUTTON,	2,	156,	166,	60,		69,		876,									STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
+	{ WWT_DROPDOWN_BUTTON,	2,	156,	166,	60,		69,		STR_DROPDOWN_GLYPH,						STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
 	{ WWT_GROUPBOX,			2,	3,		316,	96,		202,	STR_RESEARCH_PRIORITIES,				STR_NONE },
-	{ WWT_CHECKBOX,			2,	8,		311,	108,	119,	STR_RESEARCH_TRANSPORT_RIDES,			STR_RESEARCH_NEW_TRANSPORT_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	121,	132,	STR_RESEARCH_GENTLE_RIDES,				STR_RESEARCH_NEW_GENTLE_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	134,	145,	STR_RESEARCH_ROLLER_COASTERS,			STR_RESEARCH_NEW_ROLLER_COASTERS },
-	{ WWT_CHECKBOX,			2,	8,		311,	147,	158,	STR_RESEARCH_THRILL_RIDES,				STR_RESEARCH_NEW_THRILL_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	160,	171,	STR_RESEARCH_WATER_RIDES,				STR_RESEARCH_NEW_WATER_RIDES },
-	{ WWT_CHECKBOX,			2,	8,		311,	173,	184,	STR_RESEARCH_SHOPS_AND_STALLS,			STR_RESEARCH_NEW_SHOPS_AND_STALLS },
-	{ WWT_CHECKBOX,			2,	8,		311,	186,	197,	STR_RESEARCH_SCENERY_AND_THEMING,		STR_RESEARCH_NEW_SCENERY_AND_THEMING },
+	{ WWT_CHECKBOX,			2,	8,		311,	108,	119,	STR_RESEARCH_NEW_TRANSPORT_RIDES,		STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	121,	132,	STR_RESEARCH_NEW_GENTLE_RIDES,			STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	134,	145,	STR_RESEARCH_NEW_ROLLER_COASTERS,		STR_RESEARCH_NEW_ROLLER_COASTERS_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	147,	158,	STR_RESEARCH_NEW_THRILL_RIDES,			STR_RESEARCH_NEW_THRILL_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	160,	171,	STR_RESEARCH_NEW_WATER_RIDES,			STR_RESEARCH_NEW_WATER_RIDES_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	173,	184,	STR_RESEARCH_NEW_SHOPS_AND_STALLS,		STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP },
+	{ WWT_CHECKBOX,			2,	8,		311,	186,	197,	STR_RESEARCH_NEW_SCENERY_AND_THEMING,	STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP },
 	{ WIDGETS_END },
 };
 
@@ -214,6 +214,23 @@ static uint32 window_research_page_enabled_widgets[] = {
 
 const int window_research_tab_animation_loops[] = { 16, 16 };
 
+static const rct_string_id ResearchCategoryNames[] = {
+	STR_RESEARCH_CATEGORY_TRANSPORT,
+	STR_RESEARCH_CATEGORY_GENTLE,
+	STR_RESEARCH_CATEGORY_ROLLERCOASTER,
+	STR_RESEARCH_CATEGORY_THRILL,
+	STR_RESEARCH_CATEGORY_WATER,
+	STR_RESEARCH_CATEGORY_SHOP,
+	STR_RESEARCH_CATEGORY_SCENERYSET,
+};
+
+static const rct_string_id ResearchStageNames[] = {
+	STR_RESEARCH_STAGE_INITIAL_RESEARCH,
+	STR_RESEARCH_STAGE_DESIGNING,
+	STR_RESEARCH_STAGE_COMPLETING_DESIGN,
+	STR_RESEARCH_STAGE_UNKNOWN,
+};
+
 static void window_research_set_page(rct_window *w, int page);
 static void window_research_set_pressed_tab(rct_window *w);
 static void window_research_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
@@ -302,7 +319,7 @@ static void window_research_development_invalidate(rct_window *w)
 	uint32 typeId = gResearchLastItemSubject;
 	if (typeId != 0xFFFFFFFF) {
 		window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-		window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? 5189 : 5191;
+		window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
 	}
 }
 
@@ -332,17 +349,17 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 		y += 25;
 
 		// Progress
-		stringId = 2680;
+		stringId = STR_RESEARCH_COMPLETED_AL;
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
 		y += 15;
 
-		set_format_arg(0, uint16, STR_UNKNOWN);
+		set_format_arg(0, uint16, STR_RESEARCH_STAGE_UNKNOWN);
 		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, 0, x, y);
 	} else {
 		// Research type
 		stringId = STR_RESEARCH_UNKNOWN;
 		if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH) {
-			stringId = STR_TRANSPORT_RIDE + gResearchNextCategory;
+			stringId = ResearchCategoryNames[gResearchNextCategory];
 			if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING) {
 				uint32 typeId = gResearchNextItem;
 				if (typeId >= 0x10000) {
@@ -359,18 +376,19 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 		y += 25;
 
 		// Progress
-		stringId = 2285 + gResearchProgressStage;
+		stringId = ResearchStageNames[gResearchProgressStage];
 		gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, 0);
 		y += 15;
 
 		// Expected
-		set_format_arg(0, uint16, STR_UNKNOWN);
+		set_format_arg(0, uint16, STR_RESEARCH_STAGE_UNKNOWN);
 		if (gResearchProgressStage != 0) {
 			uint16 expectedDay = gResearchExpectedDay;
 			if (expectedDay != 255) {
-				set_format_arg(0, uint16, 2289);
-				set_format_arg(2, uint16, STR_DATE_DAY_1 + expectedDay);
-				set_format_arg(4, uint16, STR_MONTH_MARCH + gResearchExpectedMonth);
+				// TODO: Should probably use game date format setting
+				set_format_arg(0, rct_string_id, STR_RESEARCH_EXPECTED_FORMAT);
+				set_format_arg(2, rct_string_id, DateDayNames[expectedDay]);
+				set_format_arg(4, rct_string_id, DateGameMonthNames[gResearchExpectedMonth]);
 			}
 		}
 		gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, 0, x, y);
@@ -381,7 +399,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 	y = w->y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
 	uint32 typeId = gResearchLastItemSubject;
-	int lastDevelopmentFormat;
+	rct_string_id lastDevelopmentFormat;
 	if (typeId != 0xFFFFFFFF) {
 		if (typeId >= 0x10000) {
 			rct_ride_entry *rideEntry = get_ride_entry(typeId & 0xFF);
@@ -448,7 +466,7 @@ static void window_research_funding_mousedown(int widgetIndex, rct_window *w, rc
 
 	for (i = 0; i < 4; i++) {
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-		gDropdownItemsArgs[i] = STR_NO_FUNDING + i;
+		gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -516,7 +534,7 @@ static void window_research_funding_invalidate(rct_window *w)
 
 		// Current funding
 		int currentResearchLevel = gResearchFundingLevel;
-		window_research_funding_widgets[WIDX_RESEARCH_FUNDING].image = STR_NO_FUNDING + currentResearchLevel;
+		window_research_funding_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
 	}
 
 	// Checkboxes

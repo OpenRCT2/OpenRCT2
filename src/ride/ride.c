@@ -819,7 +819,7 @@ void ride_get_status(int rideIndex, int *formatSecondary, int *argument)
 	}
 	rct_peep *peep = GET_PEEP(ride->race_winner);
 	if (ride->mode == RIDE_MODE_RACE && !(ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && ride->race_winner != 0xFFFF && peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP) {
-		if (peep->name_string_idx == STR_GUEST) {
+		if (peep->name_string_idx == STR_GUEST_X) {
 			*argument = peep->id;
 			*formatSecondary = STR_RACE_WON_BY_GUEST;
 		} else {
@@ -971,7 +971,7 @@ int ride_create_ride(ride_list_item listItem)
 	esi = 0;
 	ebp = 0;
 
-	gGameCommandErrorTitle = 0x3DC;
+	gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
 
 	esi = GAME_COMMAND_CREATE_RIDE;
 	game_do_command_p(esi, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
@@ -3004,8 +3004,8 @@ rct_ride_measurement *ride_get_measurement(int rideIndex, rct_string_id *message
 		if (message != NULL) *message = 0;
 		return measurement;
 	} else {
-		set_format_arg(0, uint16, RideNameConvention[ride->type].vehicle_name);
-		set_format_arg(2, uint16, RideNameConvention[ride->type].station_name);
+		set_format_arg(0, uint16, RideComponentNames[RideNameConvention[ride->type].vehicle].singular);
+		set_format_arg(2, uint16, RideComponentNames[RideNameConvention[ride->type].station].singular);
 		if (message != NULL) *message = STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES;
 		return NULL;
 	}
@@ -3278,8 +3278,8 @@ static void ride_track_set_map_tooltip(rct_map_element *mapElement)
 	rideIndex = mapElement->properties.track.ride_index;
 	ride = get_ride(rideIndex);
 
-	set_map_tooltip_format_arg(0, uint16, 2215);
-	set_map_tooltip_format_arg(2, uint16, ride->name);
+	set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+	set_map_tooltip_format_arg(2, rct_string_id, ride->name);
 	set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
 
 	int arg0, arg1;
@@ -3301,11 +3301,11 @@ static void ride_station_set_map_tooltip(rct_map_element *mapElement)
 		if (ride->station_starts[i] == 0xFFFF)
 			stationIndex--;
 
-	set_map_tooltip_format_arg(0, uint16, 2215);
-	set_map_tooltip_format_arg(2, uint16, ride->num_stations <= 1 ? 1333 : 1334);
-	set_map_tooltip_format_arg(4, uint16, ride->name);
+	set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+	set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
+	set_map_tooltip_format_arg(4, rct_string_id, ride->name);
 	set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
-	set_map_tooltip_format_arg(10, uint16, RideNameConvention[ride->type].station_name + 2);
+	set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 	set_map_tooltip_format_arg(12, uint16, stationIndex + 1);
 
 	int arg0, arg1;
@@ -3334,17 +3334,17 @@ static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
 		if (ride->entrances[stationIndex] != 0xFFFF)
 			queueLength = ride->queue_length[stationIndex];
 
-		set_map_tooltip_format_arg(0, uint16, 2215);
-		set_map_tooltip_format_arg(2, uint16, ride->num_stations <= 1 ? 1335 : 1336);
-		set_map_tooltip_format_arg(4, uint16, ride->name);
+		set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+		set_map_tooltip_format_arg(2, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
+		set_map_tooltip_format_arg(4, rct_string_id, ride->name);
 		set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
 		set_map_tooltip_format_arg(12, uint16, stationIndex + 1);
 		if (queueLength == 0) {
-			set_map_tooltip_format_arg(14, uint16, 1201);
+			set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_EMPTY);
 		} else if (queueLength == 1) {
-			set_map_tooltip_format_arg(14, uint16, 1202);
+			set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_ONE_PERSON);
 		} else {
-			set_map_tooltip_format_arg(14, uint16, 1203);
+			set_map_tooltip_format_arg(14, rct_string_id, STR_QUEUE_PEOPLE);
 		}
 		set_map_tooltip_format_arg(16, uint16, queueLength);
 	} else {
@@ -3354,8 +3354,8 @@ static void ride_entrance_set_map_tooltip(rct_map_element *mapElement)
 			if (ride->station_starts[i] == 0xFFFF)
 				stationIndex--;
 
-		set_map_tooltip_format_arg(0, uint16, ride->num_stations <= 1 ? 1337 : 1338);
-		set_map_tooltip_format_arg(2, uint16, ride->name);
+		set_map_tooltip_format_arg(0, rct_string_id, ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+		set_map_tooltip_format_arg(2, rct_string_id, ride->name);
 		set_map_tooltip_format_arg(4, uint32, ride->name_arguments);
 		set_map_tooltip_format_arg(10, uint16, stationIndex + 1);
 	}
@@ -6341,7 +6341,7 @@ void game_command_demolish_ride(int *eax, int *ebx, int *ecx, int *edx, int *esi
 				rct_banner *banner = &gBanners[i];
 				if(banner->type != BANNER_NULL && banner->flags & BANNER_FLAG_2 && banner->colour == ride_id){
 					banner->flags &= 0xFB;
-					banner->string_idx = 778;
+					banner->string_idx = STR_DEFAULT_SIGN;
 				}
 			}
 

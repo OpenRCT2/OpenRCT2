@@ -54,10 +54,10 @@ static rct_widget window_server_start_widgets[] = {
 	{ WWT_TEXT_BOX,			1,	120,	WW-8,	20,			32,		STR_NONE,				STR_NONE },					// port text box
 	{ WWT_TEXT_BOX,			1,	120,	WW-8,	36,			48,		STR_NONE,				STR_NONE },					// name text box
 	{ WWT_TEXT_BOX,			1,	120,	WW-8,	52,			64,		STR_NONE,				STR_NONE },					// password text box
-	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		1871,					STR_NONE },					// max players
+	{ WWT_SPINNER,			1,	120,	WW-8,	68,			77,		STR_ARG18_COMMA16,				STR_NONE },					// max players
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	68,			72,		STR_NUMERIC_UP,			STR_NONE },
 	{ WWT_DROPDOWN_BUTTON,	1,	WW-18,	WW-8,	72,			76,		STR_NUMERIC_DOWN,		STR_NONE },
-	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,			STR_ADVERTISE_SERVER_TIP },			// advertise checkbox
+	{ WWT_CHECKBOX,			1,	6,		WW-8,	85,			91,		STR_ADVERTISE,			STR_ADVERTISE_SERVER_TIP },	// advertise checkbox
 	{ WWT_DROPDOWN_BUTTON,	1,	6,		106,	WH-6-11,	WH-6,	STR_NEW_GAME,			STR_NONE },					// start server button
 	{ WWT_DROPDOWN_BUTTON,	1,	112,	212,	WH-6-11,	WH-6,	STR_LOAD_GAME,			STR_NONE },
 	{ WIDGETS_END },
@@ -112,9 +112,9 @@ void window_server_start_open()
 
 	window = window_create_centred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
 
-	window_server_start_widgets[WIDX_PORT_INPUT].image = (uint32)_port;
-	window_server_start_widgets[WIDX_NAME_INPUT].image = (uint32)_name;
-	window_server_start_widgets[WIDX_PASSWORD_INPUT].image = (uint32)_password;
+	window_server_start_widgets[WIDX_PORT_INPUT].string = _port;
+	window_server_start_widgets[WIDX_NAME_INPUT].string = _name;
+	window_server_start_widgets[WIDX_PASSWORD_INPUT].string = _password;
 	window->widgets = window_server_start_widgets;
 	window->enabled_widgets = (
 		(1 << WIDX_CLOSE) |
@@ -173,13 +173,13 @@ static void window_server_start_mouseup(rct_window *w, int widgetIndex)
 		window_close(w);
 		break;
 	case WIDX_PORT_INPUT:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_port, 6);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_port, 6);
 		break;
 	case WIDX_NAME_INPUT:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_name, 64);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_name, 64);
 		break;
 	case WIDX_PASSWORD_INPUT:
-		window_start_textbox(w, widgetIndex, 1170, (uint32)_password, 32);
+		window_start_textbox(w, widgetIndex, STR_STRING, (uint32)_password, 32);
 		break;
 	case WIDX_MAXPLAYERS_INCREASE:
 		if (gConfigNetwork.maxplayers < 255) {

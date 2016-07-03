@@ -295,11 +295,11 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, int widgetInd
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
 
-	// Get the colour and image
+	// Get the colour and disabled image
 	uint8 colour = w->colours[widget->colour] & 0x7F;
 	uint32 image = widget->image + 2;
 
-	// Draw coloured image
+	// Draw disabled image
 	gfx_draw_sprite(dpi, image | (colour << 19), l, t, 0);
 }
 
@@ -386,11 +386,12 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	int l = w->x + widget->left;
 	int t = w->y + widget->top;
 
-	int stringId = widget->image;
-	if (stringId == -1)
+	rct_string_id stringId = widget->text;
+	if (stringId == STR_NONE)
 		return;
 
 	if (widget->type == WWT_11 && (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex)))
+		// TODO: remove string addition
 		stringId++;
 
 	if (widget->type == WWT_13) {
@@ -438,12 +439,13 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, int widgetIndex)
 	int t = w->y + widget->top;
 	int r = w->x + widget->right;
 
-	if (widget->image == (uint32)-2 || widget->image == (uint32)-1)
+	// TODO: -2 seems odd
+	if (widget->text == (rct_string_id)0xFFFFFFFE || widget->text == STR_NONE)
 		return;
 
 	if (widget_is_disabled(w, widgetIndex))
 		colour |= 0x40;
-	gfx_draw_string_left_clipped(dpi, widget->image, gCommonFormatArgs, colour, l + 1, t, r - l);
+	gfx_draw_string_left_clipped(dpi, widget->text, gCommonFormatArgs, colour, l + 1, t, r - l);
 }
 
 /**
@@ -514,11 +516,11 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	int textRight = l;
 
 	// Text
-	if (widget->image != (uint32)-1) {
+	if (widget->text != STR_NONE) {
 		uint8 colour = w->colours[widget->colour] & 0x7F;
 		if (widget_is_disabled(w, widgetIndex))
 			colour |= 0x40;
-		gfx_draw_string_left(dpi, widget->image, gCommonFormatArgs, colour, l, t);
+		gfx_draw_string_left(dpi, widget->text, gCommonFormatArgs, colour, l, t);
 		textRight = l + gfx_get_string_width((char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER) + 1;
 	}
 
@@ -605,7 +607,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 	}
 
 	// Draw text
-	if (widget->image == (uint32)-1)
+	if (widget->text == STR_NONE)
 		return;
 
 	l = widget->left + w->x + 2;
@@ -617,7 +619,7 @@ static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, int widge
 			width -= 10;
 	}
 	l += width / 2;
-	gfx_draw_string_centred_clipped(dpi, widget->image, gCommonFormatArgs, 34, l, t, width);
+	gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, 34, l, t, width);
 }
 
 /**
@@ -648,7 +650,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	// Draw the button
 	gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
-	if (widget->image == -1)
+	if (widget->text == STR_NONE)
 		return;
 
 	l = w->x + (widget->left + widget->right) / 2 - 1;
@@ -657,7 +659,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	if (widget_is_disabled(w, widgetIndex))
 		colour |= 0x40;
 
-	gfx_draw_string_centred_clipped(dpi, widget->image, gCommonFormatArgs, colour, l, t, widget->right - widget->left - 2);
+	gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, l, t, widget->right - widget->left - 2);
 }
 
 /**
@@ -690,14 +692,14 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 	}
 
 	// draw the text
-	if (widget->image == -1)
+	if (widget->text == STR_NONE)
 		return;
 
 	if (widget_is_disabled(w, widgetIndex)) {
 		colour |= 0x40;
 	}
 
-	gfx_draw_string_left_centred(dpi, (rct_string_id)widget->image, gCommonFormatArgs, colour, l + 14, yMid);
+	gfx_draw_string_left_centred(dpi, widget->text, gCommonFormatArgs, colour, l + 14, yMid);
 }
 
 /**
@@ -834,7 +836,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, int widgetI
 
 	// Get the image
 	int image = widget->image;
-	if (image == -1)
+	if (image == SPR_NONE)
 		return;
 
 	// Resolve the absolute ltrb
@@ -1070,8 +1072,8 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, int widg
 
 	if (!active) {
 
-		if (w->widgets[widgetIndex].image != 0) {
-			safe_strcpy(wrapped_string, (char*)w->widgets[widgetIndex].image, 512);
+		if (w->widgets[widgetIndex].text != 0) {
+			safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
 			gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
 			gfx_draw_string(dpi, wrapped_string, w->colours[1], l + 2, t);
 		}

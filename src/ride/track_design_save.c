@@ -683,7 +683,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 		y /= 32;
 
 		if (x > 127 || y > 127 || x < -126 || y < -126){
-			window_error_open(3346, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
+			window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
 			SafeFree(td6->scenery_elements);
 			return false;
 		}
@@ -694,7 +694,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 		int z = scenery->z * 8 - gTrackPreviewOrigin.z;
 		z /= 8;
 		if (z > 127 || z < -126) {
-			window_error_open(3346, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
+			window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
 			SafeFree(td6->scenery_elements);
 			return false;
 		}

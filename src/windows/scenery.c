@@ -31,6 +31,7 @@
 #include "../interface/themes.h"
 #include "../network/network.h"
 #include "error.h"
+#include "../sprites.h"
 
 #define WINDOW_SCENERY_WIDTH	634
 #define WINDOW_SCENERY_HEIGHT	142
@@ -146,33 +147,33 @@ static rct_widget window_scenery_widgets[] = {
 	{ WWT_CAPTION, 0, 1, 632, 1, 14, 0xFFFFFFFF, STR_WINDOW_TITLE_TIP },				// 2				0x009DE2A8
 	{ WWT_CLOSEBOX, 0, 621, 631, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },			// 4				0x009DE2B8
 	{ WWT_RESIZE, 1, 0, 633, 43, 141, 0xFFFFFFFF, STR_NONE },							// 8				0x009DE2C8
-	{ WWT_TAB, 1, 3, 33, 17, 43, 0xFFFFFFFF, 1812 },									// 10				0x009DE2D8
-	{ WWT_TAB, 1, 34, 64, 17, 43, 0xFFFFFFFF, 1812 },									// 20				0x009DE2E8
-	{ WWT_TAB, 1, 65, 95, 17, 43, 0xFFFFFFFF, 1812 },									// 40				0x009DE2F8
-	{ WWT_TAB, 1, 96, 126, 17, 43, 0xFFFFFFFF, 1812 },									// 80				0x009DE308
-	{ WWT_TAB, 1, 127, 157, 17, 43, 0xFFFFFFFF, 1812 },									// 100				0x009DE318
-	{ WWT_TAB, 1, 158, 188, 17, 43, 0xFFFFFFFF, 1812 },									// 200				0x009DE328
-	{ WWT_TAB, 1, 189, 219, 17, 43, 0xFFFFFFFF, 1812 },									// 400				0x009DE338
-	{ WWT_TAB, 1, 220, 250, 17, 43, 0xFFFFFFFF, 1812 },									// 800				0x009DE348
-	{ WWT_TAB, 1, 251, 281, 17, 43, 0xFFFFFFFF, 1812 },									// 1000				0x009DE358
-	{ WWT_TAB, 1, 282, 312, 17, 43, 0xFFFFFFFF, 1812 },									// 2000				0x009DE368
-	{ WWT_TAB, 1, 313, 343, 17, 43, 0xFFFFFFFF, 1812 },									// 4000				0x009DE378
-	{ WWT_TAB, 1, 344, 374, 17, 43, 0xFFFFFFFF, 1812 },									// 8000				0x009DE388
-	{ WWT_TAB, 1, 375, 405, 17, 43, 0xFFFFFFFF, 1812 },									// 10000			0x009DE398
-	{ WWT_TAB, 1, 406, 436, 17, 43, 0xFFFFFFFF, 1812 },									// 20000			0x009DE3A8
-	{ WWT_TAB, 1, 437, 467, 17, 43, 0xFFFFFFFF, 1812 },									// 40000			0x009DE3B8
-	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, 1812 },									// 80000			0x009DE3C8
-	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, 1812 },									// 100000			0x009DE3D8
-	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, 1812 },									// 200000			0x009DE3E8
-	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, 1812 },									// 400000			0x009DE3F8
-	{ WWT_TAB, 1, 468, 498, 17, 43, 0x20001598, 1812 },									// 800000			0x009DE408
-	{ WWT_SCROLL, 1, 2, 608, 47, 126, 2, STR_NONE },									// 1000000			0x009DE418
-	{ WWT_FLATBTN, 1, 609, 632, 44, 67, 5169, STR_ROTATE_OBJECTS_90 },					// 2000000			0x009DE428
-	{ WWT_FLATBTN, 1, 609, 632, 68, 91, 5173, 3102 },									// 4000000			0x009DE438
+	{ WWT_TAB, 1, 3, 33, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 10				0x009DE2D8
+	{ WWT_TAB, 1, 34, 64, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 20				0x009DE2E8
+	{ WWT_TAB, 1, 65, 95, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 40				0x009DE2F8
+	{ WWT_TAB, 1, 96, 126, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 80				0x009DE308
+	{ WWT_TAB, 1, 127, 157, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 100				0x009DE318
+	{ WWT_TAB, 1, 158, 188, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 200				0x009DE328
+	{ WWT_TAB, 1, 189, 219, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 400				0x009DE338
+	{ WWT_TAB, 1, 220, 250, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 800				0x009DE348
+	{ WWT_TAB, 1, 251, 281, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 1000				0x009DE358
+	{ WWT_TAB, 1, 282, 312, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 2000				0x009DE368
+	{ WWT_TAB, 1, 313, 343, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 4000				0x009DE378
+	{ WWT_TAB, 1, 344, 374, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 8000				0x009DE388
+	{ WWT_TAB, 1, 375, 405, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 10000			0x009DE398
+	{ WWT_TAB, 1, 406, 436, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 20000			0x009DE3A8
+	{ WWT_TAB, 1, 437, 467, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 40000			0x009DE3B8
+	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 80000			0x009DE3C8
+	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 100000			0x009DE3D8
+	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 200000			0x009DE3E8
+	{ WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },									// 400000			0x009DE3F8
+	{ WWT_TAB, 1, 468, 498, 17, 43, 0x20000000 | SPR_TAB_QUESTION, STR_STRING_DEFINED_TOOLTIP },									// 800000			0x009DE408
+	{ WWT_SCROLL, 1, 2, 608, 47, 126, SCROLL_VERTICAL, STR_NONE },									// 1000000			0x009DE418
+	{ WWT_FLATBTN, 1, 609, 632, 44, 67, SPR_ROTATE_ARROW, STR_ROTATE_OBJECTS_90 },					// 2000000			0x009DE428
+	{ WWT_FLATBTN, 1, 609, 632, 68, 91, SPR_PAINTBRUSH, STR_SCENERY_PAINTBRUSH_TIP },									// 4000000			0x009DE438
 	{ WWT_COLOURBTN, 1, 615, 626, 93, 104, 0xFFFFFFFF, STR_SELECT_COLOUR },				// 8000000			0x009DE448
 	{ WWT_COLOURBTN, 1, 615, 626, 105, 116, 0xFFFFFFFF, STR_SELECT_SECONDARY_COLOUR },	// 10000000			0x009DE458
 	{ WWT_COLOURBTN, 1, 615, 626, 117, 128, 0xFFFFFFFF, STR_SELECT_TERNARY_COLOUR },		// 20000000			0x009DE468
-	{ WWT_FLATBTN, 1, 609, 632, 117, 140, 5172, 3225 },									// 40000000			0x009DE478
+	{ WWT_FLATBTN, 1, 609, 632, 117, 140, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP },									// 40000000			0x009DE478
 	{ WIDGETS_END },
 };
 
@@ -306,7 +307,7 @@ void init_scenery()
 	}
 
 	for (int widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
-		window_scenery_widgets[widgetIndex].type = 0;
+		window_scenery_widgets[widgetIndex].type = WWT_EMPTY;
 
 	uint8 tabIndexes[20];
 	uint8 order[20];
@@ -378,9 +379,9 @@ void init_scenery()
 void scenery_set_default_placement_configuration()
 {
 	gWindowSceneryRotation = 3;
-	gWindowSceneryPrimaryColour = 26;
-	gWindowScenerySecondaryColour = 18;
-	gWindowSceneryTertiaryColour = 24;
+	gWindowSceneryPrimaryColour = COLOUR_BORDEAUX_RED;
+	gWindowScenerySecondaryColour = COLOUR_YELLOW;
+	gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
 	init_scenery();
 
 	for (int i = 0; i < 20; i++)
@@ -864,7 +865,7 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 {
 	switch (widgetIndex) {
 	case WIDX_SCENERY_LIST:
-		set_format_arg(0, uint16, 3159);
+		set_format_arg(0, uint16, STR_LIST);
 		break;
 	case WIDX_SCENERY_TAB_1:
 	case WIDX_SCENERY_TAB_2:
@@ -888,7 +889,7 @@ void window_scenery_tooltip(rct_window* w, int widgetIndex, rct_string_id *strin
 		set_format_arg(0, uint16, get_scenery_group_entry(widgetIndex - WIDX_SCENERY_TAB_1)->name);
 		break;
 	case WIDX_SCENERY_TAB_20:
-		set_format_arg(0, uint16, 1813);
+		set_format_arg(0, uint16, STR_MISCELLANEOUS);
 		break;
 	}
 }
@@ -902,11 +903,11 @@ void window_scenery_invalidate(rct_window *w)
 	colour_scheme_update(w);
 
 	uint16 tabIndex = gWindowSceneryActiveTabIndex;
-	uint32 titleStringId = 1813;
+	uint32 titleStringId = STR_MISCELLANEOUS;
 	if (tabIndex < 19)
 		titleStringId = get_scenery_group_entry(tabIndex)->name;
 
-	window_scenery_widgets[WIDX_SCENERY_TITLE].image = titleStringId;
+	window_scenery_widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
 	w->pressed_widgets = (((uint32)w->pressed_widgets & 0xFF00000F) | (1 << (tabIndex + 4))) & 0xBBFFFFFF;
 
@@ -936,11 +937,11 @@ void window_scenery_invalidate(rct_window *w)
 	}
 
 	window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image =
-		(gWindowSceneryPrimaryColour << 19) + 0x600013C3;
+		(gWindowSceneryPrimaryColour << 19) | 0x60000000 | SPR_PALETTE_BTN;
 	window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image =
-		(gWindowScenerySecondaryColour << 19) + 0x600013C3;
+		(gWindowScenerySecondaryColour << 19) | 0x60000000 | SPR_PALETTE_BTN;
 	window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image =
-		(gWindowSceneryTertiaryColour << 19) + 0x600013C3;
+		(gWindowSceneryTertiaryColour << 19) | 0x60000000 | SPR_PALETTE_BTN;
 
 	window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
 	window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_EMPTY;
@@ -1078,7 +1079,7 @@ void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	}
 
 	set_format_arg(0, uint16, sceneryEntry->name);
-	gfx_draw_string_left_clipped(dpi, 0x4A7, gCommonFormatArgs, 0,
+	gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, 0,
 		w->x + 3, w->y + w->height - 13, w->width - 19);
 }
 

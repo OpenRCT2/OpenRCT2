@@ -60,7 +60,7 @@ int create_new_banner(uint8 flags)
 
 		banner->flags = 0;
 		banner->type = 0;
-		banner->string_idx = 778;
+		banner->string_idx = STR_DEFAULT_SIGN;
 		banner->colour = 2;
 		banner->text_colour = 2;
 	}

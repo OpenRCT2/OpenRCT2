@@ -49,7 +49,7 @@ void screenshot_check()
 				// TODO use a more obvious sound like a camera shutter
 				audio_play_sound(SOUND_CLICK_1, 0, gScreenWidth / 2);
 			} else {
-				window_error_open(STR_SCREENSHOT_FAILED, -1);
+				window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
 			}
 
 			RCT2_GLOBAL(0x009A8C29, uint8) &= ~1;
@@ -221,8 +221,8 @@ void screenshot_giant()
 	// Show user that screenshot saved successfully
 	rct_string_id stringId = STR_PLACEHOLDER;
 	strcpy((char*)language_get_string(stringId), path_get_filename(path));
-	set_format_arg(0, uint16, stringId);
-	window_error_open(STR_SCREENSHOT_SAVED_AS, -1);
+	set_format_arg(0, rct_string_id, stringId);
+	window_error_open(STR_SCREENSHOT_SAVED_AS, STR_NONE);
 }
 
 int cmdline_for_screenshot(const char **argv, int argc)

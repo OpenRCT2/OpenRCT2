@@ -403,7 +403,7 @@ typedef struct rct_peep {
 	sint16 sprite_bottom;			// 0x1C
 	uint8 sprite_direction;			// 0x1E
 	uint8 pad_1F[3];
-	uint16 name_string_idx;			// 0x22
+	rct_string_id name_string_idx;	// 0x22
 	uint16 next_x;					// 0x24
 	uint16 next_y;					// 0x26
 	uint8 next_z;					// 0x28

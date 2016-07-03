@@ -31,7 +31,8 @@
 enum {
 	PAGE_RIDES,
 	PAGE_SHOPS_AND_STALLS,
-	PAGE_KIOSKS_AND_FACILITIES
+	PAGE_KIOSKS_AND_FACILITIES,
+	PAGE_COUNT
 };
 
 enum WINDOW_RIDE_LIST_WIDGET_IDX {
@@ -52,18 +53,18 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 };
 
 static rct_widget window_ride_list_widgets[] = {
-	{ WWT_FRAME,			0,	0,		339,	0,		239,	0x0FFFFFFFF,				65535 },									// panel / background
-	{ WWT_CAPTION,			0,	1,		338,	1,		14,		0x0FFFFFFFF,				STR_WINDOW_TITLE_TIP },						// title bar
+	{ WWT_FRAME,			0,	0,		339,	0,		239,	0xFFFFFFFF,					STR_NONE },									// panel / background
+	{ WWT_CAPTION,			0,	1,		338,	1,		14,		0xFFFFFFFF,					STR_WINDOW_TITLE_TIP },						// title bar
 	{ WWT_CLOSEBOX,			0,	327,	337,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },						// close x button
-	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0x0FFFFFFFF,				65535 },									// tab page background
+	{ WWT_RESIZE,			1,	0,		339,	43,		239,	0xFFFFFFFF,					STR_NONE },									// tab page background
 	{ WWT_FLATBTN,			1,	315,	338,	60,		83,		SPR_TOGGLE_OPEN_CLOSE,		STR_OPEN_OR_CLOSE_ALL_RIDES },				// open / close all toggle
-	{ WWT_DROPDOWN,			1,	150,	273,	46,		57,		0x0FFFFFFFF,				65535 },									// current information type
-	{ WWT_DROPDOWN_BUTTON,	1,	262,	272,	47,		56,		876,						STR_RIDE_LIST_INFORMATION_TYPE_TIP },		// information type dropdown button
+	{ WWT_DROPDOWN,			1,	150,	273,	46,		57,		0xFFFFFFFF,					STR_NONE },									// current information type
+	{ WWT_DROPDOWN_BUTTON,	1,	262,	272,	47,		56,		STR_DROPDOWN_GLYPH,			STR_RIDE_LIST_INFORMATION_TYPE_TIP },		// information type dropdown button
 	{ WWT_DROPDOWN_BUTTON,	1,	280,	333,	46,		57,		STR_SORT,					STR_RIDE_LIST_SORT_TIP },					// sort button
-	{ WWT_TAB,				1,	3,		33,		17,		43,		0x2000144E,					STR_LIST_RIDES_TIP },						// tab 1
-	{ WWT_TAB,				1,	34,		64,		17,		43,		0x2000144E,					STR_LIST_SHOPS_AND_STALLS_TIP },			// tab 2
-	{ WWT_TAB,				1,	65,		95,		17,		43,		0x2000144E,					STR_LIST_KIOSKS_AND_FACILITIES_TIP },		// tab 3
-	{ WWT_SCROLL,			1,	3,		336,	60,		236,	2,							65535 },									// list
+	{ WWT_TAB,				1,	3,		33,		17,		43,		0x20000000 | SPR_TAB,		STR_LIST_RIDES_TIP },						// tab 1
+	{ WWT_TAB,				1,	34,		64,		17,		43,		0x20000000 | SPR_TAB,		STR_LIST_SHOPS_AND_STALLS_TIP },			// tab 2
+	{ WWT_TAB,				1,	65,		95,		17,		43,		0x20000000 | SPR_TAB,		STR_LIST_KIOSKS_AND_FACILITIES_TIP },		// tab 3
+	{ WWT_SCROLL,			1,	3,		336,	60,		236,	SCROLL_VERTICAL,							STR_NONE },									// list
 	{ WWT_IMGBTN,			1,	320,	333,	62,		75,		SPR_G2_RCT1_CLOSE_BUTTON_0,	STR_NONE },
 	{ WWT_IMGBTN,			1,	320,	333,	76,		89,		SPR_G2_RCT1_OPEN_BUTTON_0,	STR_NONE },
 	{ WIDGETS_END },
@@ -132,7 +133,7 @@ enum {
 	DROPDOWN_LIST_COUNT
 };
 
-uint32 ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
 	STR_STATUS,
 	STR_POPULARITY,
 	STR_SATISFACTION,
@@ -148,6 +149,12 @@ uint32 ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
 	STR_RELIABILITY,
 	STR_DOWN_TIME,
 	STR_GUESTS_FAVOURITE
+};
+
+static const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
+	STR_NUMBER_RIDES,
+	STR_NUMBER_SHOPS_AND_STALLS,
+	STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
 
 bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
@@ -166,6 +173,12 @@ bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
 	false,
 	false,
 	false
+};
+
+static const rct_string_id page_names[] = {
+	STR_RIDES,
+	STR_SHOPS_AND_STALLS,
+	STR_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
 
 static int _window_ride_list_information_type;
@@ -438,14 +451,14 @@ static void window_ride_list_invalidate(rct_window *w)
 
 	colour_scheme_update(w);
 
-	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].image = ride_info_type_string_mapping[_window_ride_list_information_type];
+	window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_window_ride_list_information_type];
 
 	// Set correct active tab
 	for (i = 0; i < 3; i++)
 		w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 
-	window_ride_list_widgets[WIDX_TITLE].image = STR_RIDES + w->page;
+	window_ride_list_widgets[WIDX_TITLE].text = page_names[w->page];
 
 	w->widgets[WIDX_BACKGROUND].right = w->width - 1;
 	w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -502,7 +515,7 @@ static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	window_ride_list_draw_tab_images(dpi, w);
 
 	// Draw number of attractions on bottom
-	gfx_draw_string_left(dpi, STR_NUMBER_RIDES + w->page, &w->no_list_items, 0, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
+	gfx_draw_string_left(dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, 0, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
 }
 
 /**
@@ -523,7 +536,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 		// Background highlight
 		if (i == w->selected_list_item) {
 			gfx_fill_rect(dpi, 0, y, 800, y + 9, 0x02000031);
-			format = STR_WINDOW_COLOUR_2_STRING;
+			format = STR_WINDOW_COLOUR_2_STRINGID;
 		}
 
 		// Get ride
@@ -645,7 +658,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 
 		// Make test red and bold if broken down or crashed
 		if (formatSecondary == STR_BROKEN_DOWN || formatSecondary == STR_CRASHED)
-			format = 1192;
+			format = STR_RED_OUTLINED_STRING;
 
 		set_format_arg(0, uint16, formatSecondary);
 		gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, 0, 160, y - 1, 157);

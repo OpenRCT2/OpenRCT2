@@ -6169,7 +6169,7 @@ rct_peep *peep_generate(int x, int y, int z)
 	peep->no_of_rides = 0;
 	memset(&peep->ride_types_been_on, 0, 16);
 	peep->id = gNextGuestNumber++;
-	peep->name_string_idx = 767;
+	peep->name_string_idx = STR_GUEST_X;
 
 	money32 cash = (scenario_rand() & 0x3) * 100 - 100 + gGuestInitialCash;
 	if (cash < 0) cash = 0;
@@ -6377,13 +6377,14 @@ void get_arguments_from_thought(rct_peep_thought thought, uint32* argument_1, ui
 		rct_ride* ride = get_ride(thought.item);
 		esi = (int)(&(ride->name));
 	} else if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 2) {
-		RCT2_GLOBAL(0x009AC86C, uint16) = ShopItemStringIds[thought.item].singular;
+		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].singular;
 	} else if ((RCT2_ADDRESS(0x00981DB1, uint16)[thought.type] & 0xFF) & 4) {
-		RCT2_GLOBAL(0x009AC86C, uint16) = ShopItemStringIds[thought.item].indefinite;
+		RCT2_GLOBAL(0x009AC86C, rct_string_id) = ShopItemStringIds[thought.item].indefinite;
 	} else {
 		esi = 0x009AC864; //No thought?
 	}
-	*argument_1 = (((thought.type + STR_THOUGHT_START) & 0xFFFF) | (((uint32)*((uint16*)esi)) << 16));
+
+	*argument_1 = ((PeepThoughts[thought.type] & 0xFFFF) | (((uint32)*((uint16*)esi)) << 16));
 	*argument_2 = *((uint32*)(esi + 2)); //Always 0 apart from on rides?
 }
 
@@ -6429,9 +6430,9 @@ const int face_sprite_small[] = {
 };
 
 const int face_sprite_large[] = {
-	SPR_PEEP_LARGE_FACE_ANGRY,
-	SPR_PEEP_LARGE_FACE_VERY_VERY_SICK,
-	SPR_PEEP_LARGE_FACE_VERY_SICK,
+	SPR_PEEP_LARGE_FACE_ANGRY_0,
+	SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0,
+	SPR_PEEP_LARGE_FACE_VERY_SICK_0,
 	SPR_PEEP_LARGE_FACE_SICK,
 	SPR_PEEP_LARGE_FACE_VERY_TIRED,
 	SPR_PEEP_LARGE_FACE_TIRED,
@@ -6747,9 +6748,9 @@ static void peep_stop_purchase_thought(rct_peep* peep, uint8 ride_type){
 void peep_set_map_tooltip(rct_peep *peep)
 {
 	if (peep->type == PEEP_TYPE_GUEST) {
-		set_map_tooltip_format_arg(0, uint16, peep->peep_flags & PEEP_FLAGS_TRACKING ? 1450 : 1449);
+		set_map_tooltip_format_arg(0, rct_string_id, peep->peep_flags & PEEP_FLAGS_TRACKING ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
 		set_map_tooltip_format_arg(2, uint32, get_peep_face_sprite_small(peep));
-		set_map_tooltip_format_arg(6, uint16, peep->name_string_idx);
+		set_map_tooltip_format_arg(6, rct_string_id, peep->name_string_idx);
 		set_map_tooltip_format_arg(8, uint32, peep->id);
 
 		uint32 arg0, arg1;
@@ -6757,8 +6758,8 @@ void peep_set_map_tooltip(rct_peep *peep)
 		set_map_tooltip_format_arg(12, uint32, arg0);
 		set_map_tooltip_format_arg(16, uint32, arg1);
 	} else {
-		set_map_tooltip_format_arg(0, uint16, 1451);
-		set_map_tooltip_format_arg(2, uint16, peep->name_string_idx);
+		set_map_tooltip_format_arg(0, rct_string_id, STR_STAFF_MAP_TIP);
+		set_map_tooltip_format_arg(2, rct_string_id, peep->name_string_idx);
 		set_map_tooltip_format_arg(4, uint32, peep->id);
 
 		uint32 arg0, arg1;
@@ -9052,9 +9053,9 @@ loc_69B221:
 	peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 	peep_update_sprite_type(peep);
 	if (peep->peep_flags & PEEP_FLAGS_TRACKING) {
-		set_format_arg(0, uint16, peep->name_string_idx);
+		set_format_arg(0, rct_string_id, peep->name_string_idx);
 		set_format_arg(2, uint32, peep->id);
-		set_format_arg(6, uint16, (shopItem >= 32 ? STR_SHOP_ITEM_INDEFINITE_PHOTO2 + (shopItem - 32) : STR_SHOP_ITEM_INDEFINITE_BALLOON + shopItem));
+		set_format_arg(6, rct_string_id, ShopItemStringIds[shopItem].indefinite);
 		if (gConfigNotifications.guest_bought_item) {
 			news_item_add_to_queue(2, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, peep->sprite_index);
 		}
@@ -10489,7 +10490,7 @@ void peep_update_names(bool realNames)
 		rct_peep *peep;
 		uint16 spriteIndex;
 		FOR_ALL_GUESTS(spriteIndex, peep) {
-			if (peep->name_string_idx == 767) {
+			if (peep->name_string_idx == STR_GUEST_X) {
 				peep_give_real_name(peep);
 			}
 		}
@@ -10499,7 +10500,7 @@ void peep_update_names(bool realNames)
 		uint16 spriteIndex;
 		FOR_ALL_GUESTS(spriteIndex, peep) {
 			if (peep->name_string_idx >= 0xA000 && peep->name_string_idx < 0xE000) {
-				peep->name_string_idx = 767;
+				peep->name_string_idx = STR_GUEST_X;
 			}
 		}
 	}
@@ -10551,7 +10552,7 @@ money32 set_peep_name(int flags, int state, uint16 sprite_index, uint8* text_1, 
 		return 0;
 
 	if (*fullText == '\0') {
-		gGameCommandErrorText = 1455;
+		gGameCommandErrorText = STR_ERR_INVALID_NAME_FOR_GUEST;
 		return MONEY32_UNDEFINED;
 	}
 

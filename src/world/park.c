@@ -78,7 +78,7 @@ void park_init()
 	int i;
 
 	RCT2_GLOBAL(0x013CA740, uint8) = 0;
-	gParkName = 777;
+	gParkName = STR_UNNAMED_PARK;
 	gStaffHandymanColour = COLOUR_BRIGHT_RED;
 	gStaffMechanicColour = COLOUR_LIGHT_BLUE;
 	gStaffSecurityColour = COLOUR_YELLOW;

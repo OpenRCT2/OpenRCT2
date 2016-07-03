@@ -42,8 +42,8 @@ enum {
 
 static rct_widget window_viewport_widgets[] = {
 	{ WWT_FRAME,			0,	0,	0,	0,	0,	0xFFFFFFFF,			STR_NONE				},	// panel / background
-	{ WWT_CAPTION,			0,	1,	0,	1,	14,	2779,				STR_WINDOW_TITLE_TIP	},	// title bar
-	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	0x338,				STR_CLOSE_WINDOW_TIP	},	// close x button
+	{ WWT_CAPTION,			0,	1,	0,	1,	14,	STR_VIEWPORT_NO,	STR_WINDOW_TITLE_TIP	},	// title bar
+	{ WWT_CLOSEBOX,			0,	0,	0,	2,	13,	STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP	},	// close x button
 	{ WWT_RESIZE,			1,	0,	0,	14,	0,	0xFFFFFFFF,			STR_NONE				},	// resize
 	{ WWT_VIEWPORT,			0,	3,	0,	17,	0,	0xFFFFFFFF,			STR_NONE				},	// viewport
 

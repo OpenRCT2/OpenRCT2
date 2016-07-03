@@ -167,6 +167,7 @@ void window_track_manage_open(track_design_file_ref *tdFileRef)
 		trackDesignListWindow->track_list.var_484 |= 1;
 	}
 
+	// TODO: 3155 appears to be empty. What is this supposed to do?
 	utf8 *title = (utf8*)language_get_string(3155);
 	format_string(title, STR_TRACK_LIST_NAME_FORMAT, &tdFileRef->name);
 

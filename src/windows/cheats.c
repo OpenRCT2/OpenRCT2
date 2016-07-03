@@ -44,6 +44,15 @@ enum {
 	WINDOW_CHEATS_PAGE_RIDES,
 };
 
+static const rct_string_id WeatherTypes[] = {
+	STR_SUNNY,
+	STR_PARTIALLY_CLOUDY,
+	STR_CLOUDY,
+	STR_RAIN,
+	STR_HEAVY_RAIN,
+	STR_THUNDERSTORM,
+};
+
 enum WINDOW_CHEATS_WIDGET_IDX {
 	WIDX_BACKGROUND,
 	WIDX_TITLE,
@@ -154,14 +163,14 @@ enum WINDOW_CHEATS_WIDGET_IDX {
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
-	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0x0FFFFFFFF,		STR_NONE },					/* panel / background	*/ \
-	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_CHEAT_TITLE,	STR_WINDOW_TITLE_TIP },		/* title bar			*/ \
-	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,		STR_CLOSE_WINDOW_TIP },		/* close x button		*/ \
-	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0x0FFFFFFFF,		STR_NONE },					/* tab content panel	*/ \
-	{ WWT_TAB,				1,	3,			33,		17,		43,			0x2000144E,			STR_FINANCIAL_CHEATS_TIP },	/* tab 1				*/ \
-	{ WWT_TAB,				1,	34,			64,		17,		43,			0x2000144E,			STR_GUEST_CHEATS_TIP },		/* tab 2				*/ \
-	{ WWT_TAB,				1,	65,			95,		17,		43,			0x2000144E,			STR_PARK_CHEATS_TIP },		/* tab 3				*/ \
-	{ WWT_TAB,				1,	96,			126,	17,		43,			0x2000144E,			STR_RIDE_CHEATS_TIP }		/* tab 4				*/
+	{ WWT_FRAME,			0,	0,			WW - 1,	0,		WH - 1,		0xFFFFFFFF,				STR_NONE },					/* panel / background	*/ \
+	{ WWT_CAPTION,			0,	1,			WW - 2,	1,		14,			STR_CHEAT_TITLE,		STR_WINDOW_TITLE_TIP },		/* title bar			*/ \
+	{ WWT_CLOSEBOX,			0,	WW - 13,	WW - 3,	2,		13,			STR_CLOSE_X,			STR_CLOSE_WINDOW_TIP },		/* close x button		*/ \
+	{ WWT_IMGBTN,			1,	0,			WW - 1,	43,		WH - 1,		0xFFFFFFFF,				STR_NONE },					/* tab content panel	*/ \
+	{ WWT_TAB,				1,	3,			33,		17,		43,			0x20000000 | SPR_TAB,	STR_FINANCIAL_CHEATS_TIP },	/* tab 1				*/ \
+	{ WWT_TAB,				1,	34,			64,		17,		43,			0x20000000 | SPR_TAB,	STR_GUEST_CHEATS_TIP },		/* tab 2				*/ \
+	{ WWT_TAB,				1,	65,			95,		17,		43,			0x20000000 | SPR_TAB,	STR_PARK_CHEATS_TIP },		/* tab 3				*/ \
+	{ WWT_TAB,				1,	96,			126,	17,		43,			0x20000000 | SPR_TAB,	STR_RIDE_CHEATS_TIP }		/* tab 4				*/
 
 static rct_widget window_cheats_money_widgets[] = {
 	MAIN_CHEATS_WIDGETS,
@@ -462,7 +471,7 @@ static void window_cheats_misc_mousedown(int widgetIndex, rct_window *w, rct_wid
 
 	for (i = 0; i < 6; i++) {
 		gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-		gDropdownItemsArgs[i] = STR_SUNNY + i;
+		gDropdownItemsArgs[i] = WeatherTypes[i];
 	}
 	window_dropdown_show_text_custom_width(
 		w->x + dropdownWidget->left,
@@ -797,12 +806,12 @@ static void window_cheats_invalidate(rct_window *w)
 		widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
 		break;
 	case WINDOW_CHEATS_PAGE_MISC:
-		w->widgets[WIDX_OPEN_CLOSE_PARK].image = gParkFlags & PARK_FLAGS_PARK_OPEN ?
+		w->widgets[WIDX_OPEN_CLOSE_PARK].text = gParkFlags & PARK_FLAGS_PARK_OPEN ?
 			STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
 		widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gCheatsUnlockAllPrices);
 		widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
-		w->widgets[WIDX_SANDBOX_MODE].image = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
-		w->widgets[WIDX_FREEZE_CLIMATE].image = gCheatsFreezeClimate ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;
+		w->widgets[WIDX_SANDBOX_MODE].text = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
+		w->widgets[WIDX_FREEZE_CLIMATE].text = gCheatsFreezeClimate ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;
 		widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
 		widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
 		break;
@@ -825,12 +834,11 @@ static void window_cheats_invalidate(rct_window *w)
 	w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 
 	// Set title
-	w->widgets[WIDX_TITLE].image = window_cheats_page_titles[w->page];
+	w->widgets[WIDX_TITLE].text = window_cheats_page_titles[w->page];
 
 
 	// Current weather
-	int currentWeather = gClimateCurrentWeather;
-	window_cheats_misc_widgets[WIDX_WEATHER].image = STR_SUNNY + currentWeather;
+	window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrentWeather];
 }
 
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -846,7 +854,7 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	else if(w->page == WINDOW_CHEATS_PAGE_MISC){
 		gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,			NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(16) + TXTO);
 		gfx_draw_string_left(dpi, STR_FORCE_WEATHER,				NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
-		gfx_draw_string_right(dpi, 5182,		&park_rating_spinner_value,	w->colours[2], w->x + WPL(1) - 10 - TXTO, w->y + YPL(4) + TXTO);
+		gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,		&park_rating_spinner_value,	w->colours[2], w->x + WPL(1) - 10 - TXTO, w->y + YPL(4) + TXTO);
 	}
 	else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
 		gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,		NULL,	0, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);

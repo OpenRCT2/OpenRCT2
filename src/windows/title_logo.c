@@ -117,6 +117,7 @@ static void window_title_logo_draw_expansion_packs(rct_drawpixelinfo *dpi)
 	buffer = (char*)RCT2_ADDRESS_COMMON_STRING_FORMAT_BUFFER;
 	while (packs != 0) {
 		if (packs & 1) {
+			// TODO: Should probably be localisable
 			// Prefix for expansion name
 			buffer[0] = '\n';
 			buffer[1] = '\v';

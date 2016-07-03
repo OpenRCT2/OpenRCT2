@@ -85,7 +85,7 @@ int game_command_playerid = -1;
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
 uint8 gErrorType;
-uint16 gErrorStringId;
+rct_string_id gErrorStringId;
 
 int game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
@@ -457,7 +457,7 @@ int game_do_command_p(int command, int *eax, int *ebx, int *ecx, int *edx, int *
 	}
 
 	flags = *ebx;
-	gGameCommandErrorText = 0xFFFF;
+	gGameCommandErrorText = STR_NONE;
 
 	if (gGameCommandNestLevel == 0) {
 		gGameCommandIsNetworked = (flags & GAME_COMMAND_FLAG_NETWORKED) != 0;

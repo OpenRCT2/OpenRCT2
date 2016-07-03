@@ -67,20 +67,31 @@ enum {
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
-	{ WWT_FRAME,	0,	0,		733,	0,		333,	-1,						STR_NONE },				// panel / background
-	{ WWT_CAPTION,	0,	1,		732,	1,		14,		STR_SELECT_SCENARIO,	STR_WINDOW_TITLE_TIP },	// title bar
-	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		824,					STR_CLOSE_WINDOW_TIP },	// close x button
-	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	-1,						STR_NONE },				// tab content panel
-	{ WWT_TAB,		1,	3,		93,		17,		50,		0x200015BC,				STR_NONE },				// tab 1
-	{ WWT_TAB,		1,	94,		184,	17,		50,		0x200015BC,				STR_NONE },				// tab 2
-	{ WWT_TAB,		1,	185,	275,	17,		50,		0x200015BC,				STR_NONE },				// tab 3
-	{ WWT_TAB,		1,	276,	366,	17,		50,		0x200015BC,				STR_NONE },				// tab 4
-	{ WWT_TAB,		1,	367,	457,	17,		50,		0x200015BC,				STR_NONE },				// tab 5
-	{ WWT_TAB,		1,	458,	593,	17,		50,		0x200015BC,				STR_NONE },				// tab 6
-	{ WWT_TAB,		1,	594,	684,	17,		50,		0x200015BC,				STR_NONE },				// tab 7
-	{ WWT_TAB,		1,	685,	775,	17,		50,		0x200015BC,				STR_NONE },				// tab 8
-	{ WWT_SCROLL,	1,	3,		555,	54,		329,	2,						STR_NONE },				// level list
+	{ WWT_FRAME,	0,	0,		733,	0,		333,	0xFFFFFFFF,					STR_NONE },				// panel / background
+	{ WWT_CAPTION,	0,	1,		732,	1,		14,		STR_SELECT_SCENARIO,	    STR_WINDOW_TITLE_TIP },	// title bar
+	{ WWT_CLOSEBOX,	0,	721,	731,	2,		13,		STR_CLOSE_X,				STR_CLOSE_WINDOW_TIP },	// close x button
+	{ WWT_IMGBTN,	1,	0,		733,	50,		333,	0xFFFFFFFF,					STR_NONE },				// tab content panel
+	{ WWT_TAB,		1,	3,		93,		17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 1
+	{ WWT_TAB,		1,	94,		184,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 2
+	{ WWT_TAB,		1,	185,	275,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 3
+	{ WWT_TAB,		1,	276,	366,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 4
+	{ WWT_TAB,		1,	367,	457,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 5
+	{ WWT_TAB,		1,	458,	593,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 6
+	{ WWT_TAB,		1,	594,	684,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 7
+	{ WWT_TAB,		1,	685,	775,	17,		50,		0x20000000 | SPR_TAB_LARGE,	STR_NONE },				// tab 8
+	{ WWT_SCROLL,	1,	3,		555,	54,		329,	SCROLL_VERTICAL,		    STR_NONE },				// level list
 	{ WIDGETS_END },
+};
+
+static const rct_string_id ScenarioOriginStringIds[] = {
+	STR_SCENARIO_CATEGORY_RCT1,
+	STR_SCENARIO_CATEGORY_RCT1_AA,
+	STR_SCENARIO_CATEGORY_RCT1_LL,
+	STR_SCENARIO_CATEGORY_RCT2,
+	STR_SCENARIO_CATEGORY_RCT2_WW,
+	STR_SCENARIO_CATEGORY_RCT2_TT,
+	STR_SCENARIO_CATEGORY_REAL_PARKS,
+	STR_SCENARIO_CATEGORY_OTHER_PARKS,
 };
 
 static void window_scenarioselect_init_tabs(rct_window *w);
@@ -358,7 +369,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	window_draw_widgets(w, dpi);
 
-	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5138 : STR_WINDOW_COLOUR_2_STRING;
+	format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
 
 	// Text for each tab
 	for (i = 0; i < 8; i++) {
@@ -370,7 +381,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 		y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
 		if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-			set_format_arg(0, short, STR_SCENARIO_CATEGORY_RCT1 + i);
+			set_format_arg(0, short, ScenarioOriginStringIds[i]);
 		} else { // old-style
 			set_format_arg(0, short, ScenarioCategoryStringIds[i]);
 		}
@@ -407,16 +418,16 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 	y = w->y + window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5;
 	safe_strcpy((char*)0x009BC677, scenario->name, 64);
 	set_format_arg(0, short, STR_PLACEHOLDER); // empty string
-	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRING, gCommonFormatArgs, 0, x + 85, y, 170);
+	gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, x + 85, y, 170);
 	y += 15;
 
 	// Scenario details
 	safe_strcpy((char*)0x009BC677, scenario->details, 256);
-	set_format_arg(0, short, STR_PLACEHOLDER); // empty string
+	set_format_arg(0, rct_string_id, STR_PLACEHOLDER); // empty string
 	y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_BLACK_STRING, 0) + 5;
 
 	// Scenario objective
-	set_format_arg(0, short, scenario->objective_type + STR_OBJECTIVE_NONE);
+	set_format_arg(0, rct_string_id, ObjectiveNames[scenario->objective_type]);
 	set_format_arg(2, short, scenario->objective_arg_3);
 	set_format_arg(4, short, date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
 	set_format_arg(6, int, scenario->objective_arg_2);
@@ -424,6 +435,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 	// Scenario score
 	if (scenario->highscore != NULL) {
+		// TODO: Should probably be translateable
 		const utf8 *completedByName = "???";
 		if (!str_is_null_or_empty(scenario->highscore->name)) {
 			completedByName = scenario->highscore->name;
@@ -441,8 +453,8 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 	colour = (colour << 24) | (colour << 16) | (colour << 8) | colour;
 	gfx_clear(dpi, colour);
 
-	int highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : STR_WINDOW_COLOUR_2_STRING;
-	int unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? 5139 : STR_BLACK_STRING;
+	rct_string_id highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+	rct_string_id unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_WHITE_STRING : STR_BLACK_STRING;
 
 	bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
 
@@ -475,7 +487,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			// Draw scenario name
 			rct_string_id placeholderStringId = STR_PLACEHOLDER;
 			safe_strcpy((char*)language_get_string(placeholderStringId), scenario->name, 64);
-			int format = isDisabled ? 865 : (isHighlighted ? highlighted_format : unhighlighted_format);
+			rct_string_id format = isDisabled ? STR_STRINGID : (isHighlighted ? highlighted_format : unhighlighted_format);
 			colour = isDisabled ? w->colours[1] | 0x40 : COLOUR_BLACK;
 			if (isDisabled) {
 				gCurrentFontSpriteBase = -1;
@@ -485,7 +497,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 			// Check if scenario is completed
 			if (isCompleted) {
 				// Draw completion tick
-				gfx_draw_sprite(dpi, 0x5A9F, wide ? 500 : 395, y + 1, 0);
+				gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, wide ? 500 : 395, y + 1, 0);
 
 				// Draw completion score
 				const utf8 *completedByName = "???";
@@ -493,7 +505,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
 					completedByName = scenario->highscore->name;
 				}
 				safe_strcpy((char*)language_get_string(placeholderStringId), completedByName, 64);
-				set_format_arg(0, rct_string_id, 2793);
+				set_format_arg(0, rct_string_id, STR_COMPLETED_BY);
 				set_format_arg(2, rct_string_id, placeholderStringId);
 				gfx_draw_string_centred(dpi, format, wide ? 270 : 210, y + 11, 0, gCommonFormatArgs);
 			}
@@ -566,7 +578,7 @@ static void initialise_list_items(rct_window *w)
 			if (w->selected_tab <= SCENARIO_CATEGORY_EXPERT) {
 				if (currentHeading != scenario->source_game) {
 					currentHeading = scenario->source_game;
-					headingStringId = STR_SCENARIO_CATEGORY_RCT1 + currentHeading;
+					headingStringId = ScenarioOriginStringIds[currentHeading];
 				}
 			} else if (w->selected_tab == SCENARIO_CATEGORY_OTHER) {
 				int category = scenario->category;

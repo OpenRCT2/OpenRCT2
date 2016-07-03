@@ -90,7 +90,7 @@ void editor_load()
 	gfx_invalidate_screen();
 	gScreenAge = 0;
 
-	safe_strcpy(gScenarioName, language_get_string(2749), 64);
+	safe_strcpy(gScenarioName, language_get_string(STR_MY_NEW_SCENARIO), 64);
 }
 
 /**

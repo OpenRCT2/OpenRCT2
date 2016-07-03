@@ -1435,6 +1435,7 @@ money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, uint8 r
 
 	if ((z & 0xF) != 0) {
 		// ‘Can't construct this here…’
+		// TODO: This string is empty
 		gGameCommandErrorText = 954;
 		return MONEY32_UNDEFINED;
 	}
