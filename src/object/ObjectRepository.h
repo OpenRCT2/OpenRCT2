@@ -35,6 +35,7 @@ extern "C"
 
 typedef struct ObjectRepositoryItem
 {
+    size_t             Id;
     rct_object_entry   ObjectEntry;
     utf8 *             Path;
     utf8 *             Name;
@@ -67,6 +68,9 @@ interface IObjectRepository
     virtual const ObjectRepositoryItem *    FindObject(const rct_object_entry * objectEntry) const abstract;
 
     virtual Object *                        LoadObject(const ObjectRepositoryItem * ori) abstract;
+    virtual void                            RegisterLoadedObject(const ObjectRepositoryItem * ori, Object * object) abstract;
+    virtual void                            UnregisterLoadedObject(const ObjectRepositoryItem * ori, Object * object) abstract;
+
     virtual void                            AddObject(const rct_object_entry * objectEntry,
                                                       const void * data,
                                                       size_t dataSize) abstract;

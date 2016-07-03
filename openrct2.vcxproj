@@ -127,6 +127,7 @@
     <ClCompile Include="src\object\LargeSceneryObject.cpp" />
     <ClCompile Include="src\object\Object.cpp" />
     <ClCompile Include="src\object\ObjectFactory.cpp" />
+    <ClCompile Include="src\object\ObjectManager.cpp" />
     <ClCompile Include="src\object\ObjectRepository.cpp" />
     <ClCompile Include="src\object\RideObject.cpp" />
     <ClCompile Include="src\object\SceneryGroupObject.cpp" />
@@ -444,6 +445,7 @@
     <ClInclude Include="src\object\LargeSceneryObject.h" />
     <ClInclude Include="src\object\Object.h" />
     <ClInclude Include="src\object\ObjectFactory.h" />
+    <ClInclude Include="src\object\ObjectManager.h" />
     <ClInclude Include="src\object\ObjectRepository.h" />
     <ClInclude Include="src\object\RideObject.h" />
     <ClInclude Include="src\object\SceneryGroupObject.h" />

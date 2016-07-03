@@ -91,7 +91,7 @@ const rct_object_entry_group object_entry_groups[] = {
 	(void**)(gStexEntries				), (rct_object_entry_extended*)(0x00F3F03C + (720 * 20))	// scenario text	0x009ADAE4, 0xF4287C
 };
 
-int check_object_entry(rct_object_entry *entry)
+int check_object_entry(const rct_object_entry *entry)
 {
 	uint32 *dwords = (uint32*)entry;
 	return (0xFFFFFFFF & dwords[0] & dwords[1] & dwords[2] & dwords[3]) + 1 != 0;

@@ -30,6 +30,7 @@
 #include "../core/String.hpp"
 #include "Object.h"
 #include "ObjectFactory.h"
+#include "ObjectManager.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
 #include "StexObject.h"
@@ -39,6 +40,7 @@ extern "C"
     #include "../config.h"
     #include "../localisation/localisation.h"
     #include "../object.h"
+    #include "../object_list.h"
     #include "../platform/platform.h"
     #include "../scenario.h"
     #include "../util/sawyercoding.h"
@@ -86,6 +88,8 @@ struct ObjectEntryEqual
 };
 
 using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
+
+static void ReportMissingObject(const rct_object_entry * entry);
 
 class ObjectRepository : public IObjectRepository
 {
@@ -161,6 +165,23 @@ public:
 
         Object * object = ObjectFactory::CreateObjectFromLegacyFile(ori->Path);
         return object;
+    }
+
+    void RegisterLoadedObject(const ObjectRepositoryItem * ori, Object * object) override
+    {
+        ObjectRepositoryItem * item = &_items[ori->Id];
+
+        Guard::Assert(item->LoadedObject == nullptr);
+        item->LoadedObject = object;
+    }
+
+    void UnregisterLoadedObject(const ObjectRepositoryItem * ori, Object * object) override
+    {
+        ObjectRepositoryItem * item = &_items[ori->Id];
+        if (item->LoadedObject == object)
+        {
+            item->LoadedObject = nullptr;
+        }
     }
 
     void AddObject(const rct_object_entry * objectEntry, const void * data, size_t dataSize) override
@@ -364,8 +385,9 @@ private:
         const ObjectRepositoryItem * conflict = FindObject(&item->ObjectEntry);
         if (conflict == nullptr)
         {
+            size_t index = _items.size();
+            item->Id = index;
             _items.push_back(*item);
-            size_t index = _items.size() - 1;
             _itemMap[item->ObjectEntry] = index;
             return true;
         }
@@ -554,9 +576,7 @@ IObjectRepository * GetObjectRepository()
     return _objectRepository;
 }
 
-Object * _loadedObjects[OBJECT_ENTRY_COUNT] = { nullptr };
-
-int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
+static int GetObjectEntryIndex(uint8 objectType, uint8 entryIndex)
 {
     int result = 0;
     for (uint8 i = 0; i < objectType; i++)
@@ -590,95 +610,62 @@ extern "C"
 
     bool object_load_chunk(int groupIndex, const rct_object_entry * entry, int * outGroupIndex)
     {
-        IObjectRepository * objectRepository = GetObjectRepository();
-        const ObjectRepositoryItem * ori = objectRepository->FindObject(entry);
-        if (ori == nullptr)
-        {
-            utf8 objName[9] = { 0 };
-            Memory::Copy(objName, ori->ObjectEntry.name, 8);
-            Console::Error::WriteFormat("[%s]: Object not found.", objName);
-            Console::Error::WriteLine();
-            return false;
-        }
+        return false;
 
-        Object * object = objectRepository->LoadObject(ori);
-        if (object == nullptr)
-        {
-            utf8 objName[9] = { 0 };
-            Memory::Copy(objName, ori->ObjectEntry.name, 8);
-            Console::Error::WriteFormat("[%s]: Object could not be loaded.", objName);
-            Console::Error::WriteLine();
-            return false;
-        }
-
-        uint8 objectType = object->GetObjectType();
-        void * * chunkList = object_entry_groups[objectType].chunks;
-        if (groupIndex == -1)
-        {
-            for (groupIndex = 0; chunkList[groupIndex] != (void*)-1; groupIndex++)
-            {
-                if (groupIndex + 1 >= object_entry_group_counts[objectType])
-                {
-                    log_error("Object Load failed due to too many objects of a certain type.");
-                    delete object;
-                    return false;
-                }
-            }
-        }
-        chunkList[groupIndex] = object->GetLegacyData();
-        if (outGroupIndex != nullptr)
-        {
-            *outGroupIndex = groupIndex;
-        }
-
-        rct_object_entry_extended * extendedEntry = &object_entry_groups[objectType].entries[groupIndex];
-        Memory::Copy<void>(extendedEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
-        extendedEntry->chunk_size = 0;
-
-        int loadedObjectIndex = GetObjectEntryIndex(objectType, groupIndex);
-        delete _loadedObjects[loadedObjectIndex];
-        _loadedObjects[loadedObjectIndex] = object;
-        return true;
+        // IObjectRepository * objectRepository = GetObjectRepository();
+        // const ObjectRepositoryItem * ori = objectRepository->FindObject(entry);
+        // if (ori == nullptr)
+        // {
+        //     ReportMissingObject(entry);
+        //     return false;
+        // }
+        // 
+        // Object * object = objectRepository->LoadObject(ori);
+        // if (object == nullptr)
+        // {
+        //     utf8 objName[9] = { 0 };
+        //     Memory::Copy(objName, ori->ObjectEntry.name, 8);
+        //     Console::Error::WriteFormat("[%s]: Object could not be loaded.", objName);
+        //     Console::Error::WriteLine();
+        //     return false;
+        // }
+        // 
+        // uint8 objectType = object->GetObjectType();
+        // void * * chunkList = object_entry_groups[objectType].chunks;
+        // if (groupIndex == -1)
+        // {
+        //     for (groupIndex = 0; chunkList[groupIndex] != (void*)-1; groupIndex++)
+        //     {
+        //         if (groupIndex + 1 >= object_entry_group_counts[objectType])
+        //         {
+        //             log_error("Object Load failed due to too many objects of a certain type.");
+        //             delete object;
+        //             return false;
+        //         }
+        //     }
+        // }
+        // chunkList[groupIndex] = object->GetLegacyData();
+        // if (outGroupIndex != nullptr)
+        // {
+        //     *outGroupIndex = groupIndex;
+        // }
+        // 
+        // rct_object_entry_extended * extendedEntry = &object_entry_groups[objectType].entries[groupIndex];
+        // Memory::Copy<void>(extendedEntry, object->GetObjectEntry(), sizeof(rct_object_entry));
+        // extendedEntry->chunk_size = 0;
+        // 
+        // int loadedObjectIndex = GetObjectEntryIndex(objectType, groupIndex);
+        // delete _loadedObjects[loadedObjectIndex];
+        // _loadedObjects[loadedObjectIndex] = object;
+        // return true;
     }
 
     bool object_load_entries(rct_object_entry * entries)
     {
         log_verbose("loading required objects");
 
-        object_unload_all();
-
-        bool loadFailed = false;
-
-        // Load each object
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
-        {
-            if (check_object_entry(&entries[i]))
-            {
-                // Get entry group index
-                int entryGroupIndex = i;
-                for (int j = 0; j < OBJECT_ENTRY_GROUP_COUNT; j++)
-                {
-                    if (entryGroupIndex < object_entry_group_counts[j])
-                    {
-                        break;
-                    }
-                    entryGroupIndex -= object_entry_group_counts[j];
-                }
-
-                // Load the obect
-                if (!object_load_chunk(entryGroupIndex, &entries[i], NULL)) {
-                    // log_error("failed to load entry: %.8s", entries[i].name);
-                    // memcpy(gCommonFormatArgs, &entries[i], sizeof(rct_object_entry));
-                    loadFailed = true;
-                }
-            }
-        }
-
-        if (loadFailed)
-        {
-            object_unload_all();
-            return false;
-        }
+        IObjectManager * objectManger = GetObjectManager();
+        objectManger->LoadObjects(entries, OBJECT_ENTRY_COUNT);
 
         log_verbose("finished loading required objects");
         return true;
@@ -686,17 +673,20 @@ extern "C"
 
     void reset_loaded_objects()
     {
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
-        {
-            Object * object = _loadedObjects[i];
-            if (object != nullptr)
-            {
-                object->Unload();
-                object->Load();
-            }
-        }
-
-        reset_type_to_ride_entry_index_map();
+        // if (_loadedObjects != nullptr)
+        // {
+        //     for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        //     {
+        //         Object * object = _loadedObjects[i];
+        //         if (object != nullptr)
+        //         {
+        //             object->Unload();
+        //             object->Load();
+        //         }
+        //     }
+        // }
+        // 
+        // reset_type_to_ride_entry_index_map();
     }
 
     void * object_repository_load_object(const rct_object_entry * objectEntry)
@@ -717,25 +707,24 @@ extern "C"
 
     void * object_repository_find_loaded_object(const rct_object_entry * objectEntry)
     {
-        for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+        Object * object = nullptr;
+
+        IObjectRepository * objectRepository = GetObjectRepository();
+        const ObjectRepositoryItem * ori = objectRepository->FindObject(objectEntry);
+        if (ori != nullptr)
         {
-            Object * object = _loadedObjects[i];
-            if (object != nullptr)
-            {
-                const rct_object_entry * entry = object->GetObjectEntry();
-                if (memcmp(objectEntry->name, entry->name, 8) == 0)
-                {
-                    return (void *)object;
-                }
-            }
+            object = ori->LoadedObject;
         }
-        return nullptr;
+
+        return (void *)object;
     }
 
     void * object_repository_get_loaded_object(uint8 objectType, uint8 entryIndex)
     {
         int index = GetObjectEntryIndex(objectType, entryIndex);
-        return (void *)_loadedObjects[index];
+
+        IObjectManager * objectManager = GetObjectManager();
+        return (void *)objectManager->GetLoadedObject(index);
     }
 
     void object_repository_unload(size_t itemIndex)
@@ -745,24 +734,8 @@ extern "C"
 
     void object_unload_all()
     {
-        for (int i = 0; i < OBJECT_ENTRY_COUNT; i++)
-        {
-            Object * object = _loadedObjects[i];
-            if (object != nullptr)
-            {
-                object->Unload();
-                delete object;
-                _loadedObjects[i] = nullptr;
-            }
-        }
-        for (int i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
-        {
-            for (int j = 0; j < object_entry_group_counts[i]; j++)
-            {
-                memset(&object_entry_groups[i].entries[j], 0xFF, sizeof(rct_object_entry_extended));
-                object_entry_groups[i].chunks[j] = (uint8*)0xFFFFFFFF;
-            }
-        }
+        IObjectManager * objectManager = GetObjectManager();
+        objectManager->UnloadAll();
     }
 
     void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)
@@ -995,4 +968,12 @@ extern "C"
 
         return (int)checksum;
     }
+}
+
+static void ReportMissingObject(const rct_object_entry * entry)
+{
+    utf8 objName[9] = { 0 };
+    Memory::Copy(objName, entry->name, 8);
+    Console::Error::WriteFormat("[%s]: Object not found.", objName);
+    Console::Error::WriteLine();
 }
