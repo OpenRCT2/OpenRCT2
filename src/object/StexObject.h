@@ -26,7 +26,7 @@ extern "C"
 class StexObject : public Object
 {
 private:
-    rct_stex_entry  _legacyType;
+    rct_stex_entry _legacyType = { 0 };
 
 public:
     explicit StexObject(const rct_object_entry &entry) : Object(entry) { };

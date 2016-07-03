@@ -31,9 +31,7 @@ enum OBJ_STRING_ID
 
 void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.scenario_name = stream->ReadValue<rct_string_id>();
-    _legacyType.park_name = stream->ReadValue<rct_string_id>();
-    _legacyType.details = stream->ReadValue<rct_string_id>();
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.var_06 = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
@@ -54,6 +52,10 @@ void StexObject::Unload()
     language_free_object_string(_legacyType.scenario_name);
     language_free_object_string(_legacyType.park_name);
     language_free_object_string(_legacyType.details);
+
+    _legacyType.scenario_name = 0;
+    _legacyType.park_name = 0;
+    _legacyType.details = 0;
 }
 
 void StexObject::DrawPreview(rct_drawpixelinfo * dpi) const

@@ -26,7 +26,7 @@ extern "C"
 class EntranceObject : public Object
 {
 private:
-    rct_entrance_type   _legacyType;
+    rct_entrance_type _legacyType = { 0 };
 
 public:
     explicit EntranceObject(const rct_object_entry &entry) : Object(entry) { };

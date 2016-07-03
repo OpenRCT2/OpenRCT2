@@ -30,8 +30,7 @@ enum OBJ_STRING_ID
 
 void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.string_idx = stream->ReadValue<rct_string_id>();
-    _legacyType.image_id = stream->ReadValue<uint32>();
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.var_06 = stream->ReadValue<uint32>();
     _legacyType.var_0A = stream->ReadValue<uint32>();
     _legacyType.var_0E = stream->ReadValue<uint16>();
@@ -54,6 +53,8 @@ void WaterObject::Load()
 void WaterObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
+
+    _legacyType.string_idx = 0;
 }
 
 void WaterObject::DrawPreview(rct_drawpixelinfo * dpi) const

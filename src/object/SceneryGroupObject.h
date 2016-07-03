@@ -28,9 +28,9 @@ struct ObjectRepositoryItem;
 class SceneryGroupObject : public Object
 {
 private:
-    rct_scenery_set_entry   _legacyType;
-    uint32                  _numItems;
-    rct_object_entry *      _items;
+    rct_scenery_set_entry   _legacyType = { 0 };
+    uint32                  _numItems = 0;
+    rct_object_entry *      _items = nullptr;
 
 public:
     explicit SceneryGroupObject(const rct_object_entry &entry) : Object(entry) { };

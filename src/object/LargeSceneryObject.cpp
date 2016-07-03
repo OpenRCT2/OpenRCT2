@@ -37,9 +37,7 @@ LargeSceneryObject::~LargeSceneryObject()
 
 void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.name = stream->ReadValue<rct_string_id>();
-    _legacyType.image = stream->ReadValue<uint32>();
-
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.tool_id = stream->ReadValue<uint8>();
     _legacyType.large_scenery.flags = stream->ReadValue<uint8>();
     _legacyType.large_scenery.price = stream->ReadValue<sint16>();
@@ -115,6 +113,9 @@ void LargeSceneryObject::Unload()
 {
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+
+    _legacyType.name = 0;
+    _legacyType.image = 0;
 }
 
 void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const

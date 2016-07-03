@@ -26,8 +26,8 @@ extern "C"
 class SmallSceneryObject : public Object
 {
 private:
-    rct_scenery_entry   _legacyType;
-    rct_object_entry    _sceneryTabEntry;
+    rct_scenery_entry   _legacyType = { 0 };
+    rct_object_entry    _sceneryTabEntry = { 0 };
     uint8 *             _var10data = nullptr;
 
 public:

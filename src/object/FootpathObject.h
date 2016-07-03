@@ -26,7 +26,7 @@ extern "C"
 class FootpathObject : public Object
 {
 private:
-    rct_footpath_entry  _legacyType;
+    rct_footpath_entry _legacyType = { 0 };
 
 public:
     explicit FootpathObject(const rct_object_entry &entry) : Object(entry) { };

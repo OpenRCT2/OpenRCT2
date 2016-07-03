@@ -37,8 +37,7 @@ SceneryGroupObject::~SceneryGroupObject()
 
 void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.name = stream->ReadValue<rct_string_id>();
-    _legacyType.image = stream->ReadValue<uint32>();
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
     _legacyType.entry_count = stream->ReadValue<uint8>();
     _legacyType.var_107 = stream->ReadValue<uint8>();
@@ -84,6 +83,9 @@ void SceneryGroupObject::Unload()
 {
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+
+    _legacyType.name = 0;
+    _legacyType.image = 0;
 }
 
 void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi) const

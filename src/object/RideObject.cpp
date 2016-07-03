@@ -46,6 +46,9 @@ RideObject::~RideObject()
 void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
     stream->Read(&_legacyType);
+    _legacyType.name = 0;
+    _legacyType.description = 0;
+    _legacyType.images_offset = 0;
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
@@ -311,6 +314,10 @@ void RideObject::Unload()
     language_free_object_string(_legacyType.name);
     language_free_object_string(_legacyType.description);
     gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
+
+    _legacyType.name = 0;
+    _legacyType.description = 0;
+    _legacyType.images_offset = 0;
 }
 
 void RideObject::DrawPreview(rct_drawpixelinfo * dpi) const

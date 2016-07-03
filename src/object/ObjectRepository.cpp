@@ -645,6 +645,7 @@ extern "C"
             Object * object = _loadedObjects[i];
             if (object != nullptr)
             {
+                object->Unload();
                 object->Load();
             }
         }

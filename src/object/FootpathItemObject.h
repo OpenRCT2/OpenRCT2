@@ -26,8 +26,8 @@ extern "C"
 class FootpathItemObject : public Object
 {
 private:
-    rct_scenery_entry   _legacyType;
-    rct_object_entry    _sceneryTabEntry;
+    rct_scenery_entry   _legacyType = { 0 };
+    rct_object_entry    _sceneryTabEntry = { 0 };
 
 public:
     explicit FootpathItemObject(const rct_object_entry &entry) : Object(entry) { };

@@ -31,9 +31,7 @@ enum OBJ_STRING_ID
 
 void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.name = stream->ReadValue<rct_string_id>();
-    _legacyType.image = stream->ReadValue<uint32>();
-
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.banner.scrolling_mode = stream->ReadValue<uint8>();
     _legacyType.banner.flags = stream->ReadValue<uint8>();
     _legacyType.banner.price = stream->ReadValue<uint8>();
@@ -72,6 +70,9 @@ void BannerObject::Unload()
 {
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+
+    _legacyType.name = 0;
+    _legacyType.image = 0;
 }
 
 void BannerObject::DrawPreview(rct_drawpixelinfo * dpi) const

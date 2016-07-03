@@ -30,8 +30,7 @@ enum OBJ_STRING_ID
 
 void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.string_idx = stream->ReadValue<rct_string_id>();
-    _legacyType.image_id = stream->ReadValue<uint32>();
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     _legacyType.text_height = stream->ReadValue<uint8>();
 
@@ -49,6 +48,9 @@ void EntranceObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
     gfx_object_free_images(_legacyType.image_id, GetImageTable()->GetCount());
+
+    _legacyType.string_idx = 0;
+    _legacyType.image_id = 0;
 }
 
 void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi) const

@@ -355,11 +355,14 @@ rct_string_id language_allocate_object_string(const utf8 * target)
 
 void language_free_object_string(rct_string_id stringId)
 {
-	if (_languageCurrent != nullptr)
+	if (stringId != 0)
 	{
-		_languageCurrent->SetString(stringId, nullptr);
+		if (_languageCurrent != nullptr)
+		{
+			_languageCurrent->SetString(stringId, nullptr);
+		}
+		_availableObjectStringIds.push(stringId);
 	}
-	_availableObjectStringIds.push(stringId);
 }
 
 }

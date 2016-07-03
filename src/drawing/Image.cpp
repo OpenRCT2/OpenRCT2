@@ -66,6 +66,7 @@ static uint32 AllocateImageList(uint32 count)
 static void FreeImageList(uint32 baseImageId, uint32 count)
 {
     Guard::Assert(_initialised);
+    Guard::Assert(baseImageId >= BASE_IMAGE_ID);
 
     // TODO validate that this was an allocated list
     _freeLists.push_back({ baseImageId, count });
@@ -95,6 +96,9 @@ extern "C"
 
     void gfx_object_free_images(uint32 baseImageId, uint32 count)
     {
-        FreeImageList(baseImageId, count);
+        if (baseImageId != 0)
+        {
+            FreeImageList(baseImageId, count);
+        }
     }
 }

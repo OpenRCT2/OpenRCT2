@@ -30,8 +30,7 @@ enum OBJ_STRING_ID
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.name = stream->ReadValue<rct_string_id>();
-    _legacyType.image = stream->ReadValue<uint32>();
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.path_bit.flags = stream->ReadValue<uint16>();
     _legacyType.path_bit.draw_type = stream->ReadValue<uint8>();
     _legacyType.path_bit.tool_id = stream->ReadValue<uint8>();
@@ -71,6 +70,9 @@ void FootpathItemObject::Unload()
 {
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+
+    _legacyType.name = 0;
+    _legacyType.image = 0;
 }
 
 void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi) const

@@ -37,9 +37,7 @@ SmallSceneryObject::~SmallSceneryObject()
 
 void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
-    _legacyType.name = stream->ReadValue<rct_string_id>();
-    _legacyType.image = stream->ReadValue<uint32>();
-
+    stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.flags = stream->ReadValue<uint32>();
     _legacyType.small_scenery.height = stream->ReadValue<uint8>();
     _legacyType.small_scenery.tool_id = stream->ReadValue<uint8>();
@@ -103,15 +101,13 @@ void SmallSceneryObject::Unload()
 {
     language_free_object_string(_legacyType.name);
     gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+
+    _legacyType.name = 0;
+    _legacyType.image = 0;
 }
 
 void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
 {
-    // rct_drawpixelinfo clipDPI;
-    // if (!clip_drawpixelinfo(&clipDPI, dpi, x - 56, y - 56, 112, 112)) {
-    //     return;
-    // }
-
     uint32 flags = _legacyType.small_scenery.flags;
     uint32 imageId = _legacyType.image;
     if (flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)

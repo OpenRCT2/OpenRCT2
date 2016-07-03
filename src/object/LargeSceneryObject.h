@@ -26,8 +26,8 @@ extern "C"
 class LargeSceneryObject : public Object
 {
 private:
-    rct_scenery_entry           _legacyType;
-    rct_object_entry            _sceneryTabEntry;
+    rct_scenery_entry           _legacyType = { 0 };
+    rct_object_entry            _sceneryTabEntry = { 0 };
     rct_large_scenery_text *    _3dFont = nullptr;
     rct_large_scenery_tile *    _tiles = nullptr;
 
