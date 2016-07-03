@@ -372,7 +372,8 @@ void S6Importer::Import()
     // pad_13CE778
 
     // Fix and set dynamic variables
-    if (!object_load_entries(_s6.objects)) {
+    if (!object_load_entries(_s6.objects))
+    {
         throw ObjectLoadException();
     }
     reset_loaded_objects();
