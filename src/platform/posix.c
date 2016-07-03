@@ -724,7 +724,7 @@ void platform_resolve_openrct_data_path()
 
 	if (gCustomOpenrctDataPath[0] != 0) {
 		if (realpath(gCustomOpenrctDataPath, _openrctDataDirectoryPath)) {
-			log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
+			log_error("Could not resolve path \"%s\"", gCustomOpenrctDataPath);
 			return;
 		}
 

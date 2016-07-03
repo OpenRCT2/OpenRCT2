@@ -65,6 +65,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Josué Acevedo (Wirlie)
 * Martin Černáč (octaroot)
 * (marcovmun)
+* Sven Slootweg (joepie91)
 
 ## Toolchain
 * (Balletie) - OSX
