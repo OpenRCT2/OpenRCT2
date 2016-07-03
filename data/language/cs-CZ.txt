@@ -4190,6 +4190,15 @@ STR_5878    :Software (hardwarové zobrazování)
 STR_5879    :OpenGL
 STR_5880    :Pouze vybrané
 STR_5881    :Pouze nevybrané
+STR_5882    :Vlastní měna
+STR_5883    :Nastavení vlastních měn
+STR_5884    :{WINDOW_COLOUR_2}Kurz: 
+STR_5885    :{WINDOW_COLOUR_2}je ekvivalentní {COMMA32} GBP (£)
+STR_5886    :{WINDOW_COLOUR_2}Značka měny:
+STR_5887    :Předpona
+STR_5888    :Přípona
+STR_5889    :Značka vlastní měny
+STR_5890    :Zadejte symbol měny
 
 
 ###############################################################################

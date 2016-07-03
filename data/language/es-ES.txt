@@ -4150,6 +4150,15 @@ STR_5878    :Software (vía hardware)
 STR_5879    :OpenGL
 STR_5880    :Sólo Seleccionados
 STR_5881    :Sólo No seleccionados
+STR_5882    :Moneda personalizada
+STR_5883    :Configuración de la moneda personalizada
+STR_5884    :{WINDOW_COLOUR_2}Tasa de cambio: 
+STR_5885    :{WINDOW_COLOUR_2}es equivalente a {COMMA32} Libras (£)
+STR_5886    :{WINDOW_COLOUR_2}Símbolo monetario:
+STR_5887    :Prefijo
+STR_5888    :Sufijo
+STR_5889    :Símbolo de la moneda personalizada
+STR_5890    :Introduce el símbolo de la moneda personalizada
 
 ##############
 # Escenarios #
