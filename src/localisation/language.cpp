@@ -322,6 +322,15 @@ static bool rct2_language_is_multibyte_charset(int languageId)
 	}
 }
 
+utf8 *rct2_language_string_to_utf8(const char *src, int languageId)
+{
+    if (rct2_language_is_multibyte_charset(languageId)) {
+        return convert_multibyte_charset(src, languageId);
+    } else {
+        return win1252_to_utf8_alloc(src);
+    }
+}
+
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
 {
 	outStringIds[0] = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename, 0);

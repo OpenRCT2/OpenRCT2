@@ -56,17 +56,17 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
             entry.Id = id;
             entry.LanguageId = languageId;
 
-            char * win1252 = stream->ReadString();
-            if (StringIsBlank(win1252))
+            char * stringAsWin1252 = stream->ReadString();
+            utf8 * stringAsUtf8 = rct2_language_string_to_utf8(stringAsWin1252, languageId);
+            Memory::Free(stringAsWin1252);
+
+            if (StringIsBlank(stringAsUtf8))
             {
                 entry.LanguageId = RCT2_LANGUAGE_ID_BLANK;
             }
+            String::Trim(stringAsUtf8);
 
-            entry.Text = win1252_to_utf8_alloc(win1252);
-            Memory::Free(win1252);
-
-            String::Trim(entry.Text);
-
+            entry.Text = stringAsUtf8;
             _strings.push_back(entry);
         }
     }
