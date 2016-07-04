@@ -146,7 +146,7 @@ void window_dispatch_update_all()
 void window_update_all_viewports()
 {
 	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-		if (w->viewport != NULL)
+		if (w->viewport != NULL && window_is_visible(w))
 			viewport_update_position(w);
 }
 
@@ -2476,4 +2476,33 @@ void window_update_textbox()
 		widget_invalidate(w, gCurrentTextBox.widget_index);
 		window_event_textinput_call(w, gCurrentTextBox.widget_index, gTextBoxInput);
 	}
+}
+
+bool window_is_visible(rct_window* w)
+{
+	if (w->viewport == NULL)
+	{
+		// default to previous behavior
+		return true;
+	}
+
+	// consider main window always visible
+	if (w->classification == WC_MAIN_WINDOW)
+		return true;
+
+	for (rct_window *w_other = g_window_list; w < RCT2_NEW_WINDOW; w_other++)
+	{
+		// if covered by a higher window, no rendering needed
+		if (w_other > w
+			&& w_other->x <= w->x
+			&& w_other->y <= w->y
+			&& (w_other->x + w_other->width) >= (w->x + w->width)
+			&& (w_other->y + w_other->height) >= (w->y + w->height))
+		{
+			return false;
+		}
+	}
+
+	// default to previous behavior
+	return true;
 }
