@@ -46,11 +46,12 @@ extern "C"
     #include "../util/sawyercoding.h"
 }
 
-constexpr uint16 OBJECT_REPOSITORY_VERSION = 8;
+constexpr uint16 OBJECT_REPOSITORY_VERSION = 9;
 
 struct ObjectRepositoryHeader
 {
     uint16  Version;
+    uint16  LanguageId;
     uint32  TotalFiles;
     uint64  TotalFileSize;
     uint32  FileDateModifiedChecksum;
@@ -96,6 +97,7 @@ class ObjectRepository : public IObjectRepository
     std::vector<ObjectRepositoryItem>   _items;
     QueryDirectoryResult                _queryDirectoryResult;
     ObjectEntryMap                      _itemMap;
+    uint16                              _languageId;
 
 public:
     ~ObjectRepository()
@@ -103,7 +105,7 @@ public:
         ClearItems();
     }
 
-    void LoadOrConstruct()
+    void LoadOrConstruct() override
     {
         ClearItems();
 
@@ -117,6 +119,8 @@ public:
         
         if (!Load())
         {
+            _languageId = gCurrentLanguage;
+
             Construct();
             Save();
         }
@@ -310,6 +314,7 @@ private:
             auto header = fs.ReadValue<ObjectRepositoryHeader>();
 
             if (header.Version == OBJECT_REPOSITORY_VERSION &&
+                header.LanguageId == gCurrentLanguage &&
                 header.TotalFiles == _queryDirectoryResult.TotalFiles &&
                 header.TotalFileSize == _queryDirectoryResult.TotalFileSize &&
                 header.FileDateModifiedChecksum == _queryDirectoryResult.FileDateModifiedChecksum &&
@@ -344,6 +349,7 @@ private:
             // Write header
             ObjectRepositoryHeader header;
             header.Version = OBJECT_REPOSITORY_VERSION;
+            header.LanguageId = _languageId;
             header.TotalFiles = _queryDirectoryResult.TotalFiles;
             header.TotalFileSize = _queryDirectoryResult.TotalFileSize;
             header.FileDateModifiedChecksum = _queryDirectoryResult.FileDateModifiedChecksum;
@@ -571,7 +577,6 @@ IObjectRepository * GetObjectRepository()
     if (_objectRepository == nullptr)
     {
         _objectRepository = new ObjectRepository();
-        _objectRepository->LoadOrConstruct();
     }
     return _objectRepository;
 }
@@ -605,7 +610,8 @@ extern "C"
 
     void object_list_load()
     {
-        IObjectRepository * objRepo = GetObjectRepository();
+        IObjectRepository * objectRepository = GetObjectRepository();
+        objectRepository->LoadOrConstruct();
     }
 
     bool object_load_chunk(int groupIndex, const rct_object_entry * entry, int * outGroupIndex)

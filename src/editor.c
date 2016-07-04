@@ -60,6 +60,7 @@ void editor_load()
 	audio_pause_sounds();
 	audio_unpause_sounds();
 	object_unload_all();
+	object_list_load();
 	map_init(150);
 	banner_init();
 	reset_park_entrances();
@@ -146,6 +147,7 @@ void trackdesigner_load()
 	gScreenAge = 0;
 
 	object_unload_all();
+	object_list_load();
 	map_init(150);
 	set_all_land_owned();
 	banner_init();
@@ -184,6 +186,7 @@ void trackmanager_load()
 	gScreenAge = 0;
 
 	object_unload_all();
+	object_list_load();
 	map_init(150);
 	set_all_land_owned();
 	banner_init();
