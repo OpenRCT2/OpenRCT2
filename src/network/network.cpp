@@ -830,6 +830,30 @@ void Network::SaveGroups()
 	}
 }
 
+void Network::SetupDefaultGroups()
+{
+	std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
+	admin->SetName("Admin");
+	admin->ActionsAllowed.fill(0xFF);
+	admin->Id = 0;
+	group_list.push_back(std::move(admin));
+	std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
+	spectator->SetName("Spectator");
+	spectator->ToggleActionPermission(0); // Chat
+	spectator->Id = 1;
+	group_list.push_back(std::move(spectator));
+	std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
+	user->SetName("User");
+	user->ActionsAllowed.fill(0xFF);
+	user->ToggleActionPermission(15); // Kick Player
+	user->ToggleActionPermission(16); // Modify Groups
+	user->ToggleActionPermission(17); // Set Player Group
+	user->ToggleActionPermission(18); // Cheat
+	user->Id = 2;
+	group_list.push_back(std::move(user));
+	SetDefaultGroup(1);
+}
+
 void Network::LoadGroups()
 {
 	group_list.clear();
@@ -839,32 +863,15 @@ void Network::LoadGroups()
 	platform_get_user_directory(path, NULL);
 	strcat(path, "groups.json");
 
-	if (!platform_file_exists(path)) {
+	json_t * json = nullptr;
+	try {
+		json = Json::ReadFromFile(path);
+	} catch (const Exception& e) {
+		log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMsg());
 		// Hardcoded permission groups
-		std::unique_ptr<NetworkGroup> admin(new NetworkGroup()); // change to make_unique in c++14
-		admin->SetName("Admin");
-		admin->ActionsAllowed.fill(0xFF);
-		admin->Id = 0;
-		group_list.push_back(std::move(admin));
-		std::unique_ptr<NetworkGroup> spectator(new NetworkGroup()); // change to make_unique in c++14
-		spectator->SetName("Spectator");
-		spectator->ToggleActionPermission(0); // Chat
-		spectator->Id = 1;
-		group_list.push_back(std::move(spectator));
-		std::unique_ptr<NetworkGroup> user(new NetworkGroup()); // change to make_unique in c++14
-		user->SetName("User");
-		user->ActionsAllowed.fill(0xFF);
-		user->ToggleActionPermission(15); // Kick Player
-		user->ToggleActionPermission(16); // Modify Groups
-		user->ToggleActionPermission(17); // Set Player Group
-		user->ToggleActionPermission(18); // Cheat
-		user->Id = 2;
-		group_list.push_back(std::move(user));
-		SetDefaultGroup(1);
+		SetupDefaultGroups();
 		return;
 	}
-
-	json_t * json = Json::ReadFromFile(path);
 
 	json_t * json_groups = json_object_get(json, "groups");
 	size_t groupCount = (size_t)json_array_size(json_groups);
