@@ -162,6 +162,7 @@ private:
 	void PrintError();
 	const char* GetMasterServerUrl();
 	std::string GenerateAdvertiseKey();
+	void SetupDefaultGroups();
 
 	struct GameCommand
 	{
