@@ -42,7 +42,6 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi) const override;
 
-    const utf8 * GetName() const override;
     const utf8 * GetDescription() const;
     const utf8 * GetCapacity() const;
 

@@ -44,8 +44,6 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi) const override;
 
-    const utf8 * GetName() const override;
-
 private:
     static rct_large_scenery_tile * ReadTiles(IStream * stream);
 };

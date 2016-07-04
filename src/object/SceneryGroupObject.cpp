@@ -97,12 +97,6 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo * dpi) const
     gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
 }
 
-const utf8 * SceneryGroupObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}
-
 void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 {
     Memory::Free(item->ThemeObjects);

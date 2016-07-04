@@ -152,13 +152,6 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
     }
 }
 
-
-const utf8 * SmallSceneryObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}
-
 uint8 * SmallSceneryObject::ReadVar10(IStream * stream)
 {
     uint8 b;

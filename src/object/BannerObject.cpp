@@ -84,9 +84,3 @@ void BannerObject::DrawPreview(rct_drawpixelinfo * dpi) const
     gfx_draw_sprite(dpi, imageId + 0, x - 12, y + 8, 0);
     gfx_draw_sprite(dpi, imageId + 1, x - 12, y + 8, 0);
 }
-
-const utf8 * BannerObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}

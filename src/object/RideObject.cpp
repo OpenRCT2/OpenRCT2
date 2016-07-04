@@ -334,22 +334,14 @@ void RideObject::DrawPreview(rct_drawpixelinfo * dpi) const
     gfx_draw_sprite(dpi, imageId, 0, 0, 0);
 }
 
-const utf8 * RideObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}
-
 const utf8 * RideObject::GetDescription() const
 {
-    const utf8 * description = GetStringTable()->GetString(OBJ_STRING_ID_DESCRIPTION);
-    return description != nullptr ? description : "";
+    return GetString(OBJ_STRING_ID_DESCRIPTION);
 }
 
 const utf8 * RideObject::GetCapacity() const
 {
-    const utf8 * capacity = GetStringTable()->GetString(OBJ_STRING_ID_CAPACITY);
-    return capacity != nullptr ? capacity : "";
+    return GetString(OBJ_STRING_ID_CAPACITY);
 }
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const

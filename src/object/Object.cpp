@@ -14,9 +14,58 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Memory.hpp"
+#include "../core/String.hpp"
 #include "Object.h"
+
+extern "C"
+{
+    #include "../localisation/localisation.h"
+}
+
+enum OBJ_STRING_ID
+{
+    OBJ_STRING_ID_NAME,
+};
 
 Object::Object(const rct_object_entry &entry)
 {
     _objectEntry = entry;
+
+    char name[9] = { 0 };
+    Memory::Copy(name, entry.name, 8);
+    _identifier = String::Duplicate(name);
+}
+
+Object::~Object()
+{
+    Memory::Free(_identifier);
+}
+
+const utf8 * Object::GetOverrideString(uint8 index) const
+{
+    const char * identifier = GetIdentifier();
+    rct_string_id stringId = language_get_object_override_string_id(identifier, index);
+
+    const utf8 * result = nullptr;
+    if (stringId != STR_NONE)
+    {
+        result = language_get_string(stringId);
+    }
+    return result;
+}
+
+const utf8 * Object::GetString(uint8 index) const
+{
+    const utf8 * sz = GetOverrideString(index);
+    if (sz == nullptr)
+    {
+        sz = GetStringTable()->GetString(index);
+    }
+    return sz != nullptr ? sz : "";
+}
+
+const utf8 * Object::GetName() const
+{
+    return GetString(OBJ_STRING_ID_NAME);
 }

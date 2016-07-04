@@ -63,9 +63,3 @@ void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi) const
     gfx_draw_sprite(dpi, imageId + 0, x +  0, y + 28, 0);
     gfx_draw_sprite(dpi, imageId + 2, x + 32, y + 44, 0);
 }
-
-const utf8 * EntranceObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}

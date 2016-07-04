@@ -128,12 +128,6 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi) const
     gfx_draw_sprite(dpi, imageId, x, y, 0);
 }
 
-const utf8 * LargeSceneryObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}
-
 rct_large_scenery_tile * LargeSceneryObject::ReadTiles(IStream * stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();

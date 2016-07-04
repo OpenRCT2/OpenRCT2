@@ -81,9 +81,3 @@ void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi) const
     int y = dpi->height / 2;
     gfx_draw_sprite(dpi, _legacyType.image, x - 22, y - 24, 0);
 }
-
-const utf8 * FootpathItemObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}

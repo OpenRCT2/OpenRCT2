@@ -40,6 +40,7 @@ interface IReadObjectContext
 class Object
 {
 private:
+    char *              _identifier;
     rct_object_entry    _objectEntry;
     StringTable         _stringTable;
     ImageTable          _imageTable;
@@ -49,11 +50,15 @@ protected:
     const StringTable * GetStringTable() const { return &_stringTable; }
     ImageTable  *       GetImageTable() { return &_imageTable; }
 
+    const utf8 *        GetOverrideString(uint8 index) const;
+    const utf8 *        GetString(uint8 index) const;
+
 public:
     explicit Object(const rct_object_entry &entry);
-    virtual ~Object() { }
+    virtual ~Object();
 
     // Legacy data structures
+    const char *                GetIdentifier() const { return _identifier; }
     const rct_object_entry *    GetObjectEntry() const { return &_objectEntry; }
     virtual void *              GetLegacyData() abstract;
 
@@ -64,7 +69,7 @@ public:
     virtual void DrawPreview(rct_drawpixelinfo * dpi) const { }
 
     virtual uint8           GetObjectType() const { return _objectEntry.flags & 0x0F; }
-    virtual const utf8 *    GetName() const abstract;
+    virtual const utf8 *    GetName() const;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 };

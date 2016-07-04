@@ -42,8 +42,6 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi) const override;
 
-    const utf8 * GetName() const override;
-
 private:
     static uint8 * ReadVar10(IStream * stream);
 };

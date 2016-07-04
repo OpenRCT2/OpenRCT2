@@ -82,5 +82,6 @@ utf8 *widechar_to_utf8(const wchar_t *src);
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
 rct_string_id language_allocate_object_string(const utf8 * target);
 void language_free_object_string(rct_string_id stringId);
+rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index);
 
 #endif

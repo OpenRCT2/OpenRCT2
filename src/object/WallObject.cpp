@@ -105,9 +105,3 @@ void WallObject::DrawPreview(rct_drawpixelinfo * dpi) const
         gfx_draw_sprite(dpi, imageId, x, y, 0);
     }
 }
-
-const utf8 * WallObject::GetName() const
-{
-    const utf8 * name = GetStringTable()->GetString(OBJ_STRING_ID_NAME);
-    return name != nullptr ? name : "";
-}
