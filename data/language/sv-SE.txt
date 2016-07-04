@@ -4176,6 +4176,15 @@ STR_5878    :Mjukvara (hårdvaruhantering)
 STR_5879    :OpenGL
 STR_5880    :Ibockade objekt
 STR_5881    :Obockade objekt
+STR_5882    :Skapa valuta
+STR_5883    :Inställnigar för egen valuta
+STR_5884    :{WINDOW_COLOUR_2}Valutakurs: 
+STR_5885    :{WINDOW_COLOUR_2}är lika med {COMMA32} GBP (Pund £)
+STR_5886    :{WINDOW_COLOUR_2}Valutatecken:
+STR_5887    :Prefix
+STR_5888    :Suffix
+STR_5889    :Skriv in valutatecken
+STR_5890    :Skriv in vilket valutatecken som ska visas
 
 #############
 # Scenarion #
