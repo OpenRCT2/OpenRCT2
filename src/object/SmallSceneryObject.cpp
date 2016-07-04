@@ -43,7 +43,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.small_scenery.tool_id = stream->ReadValue<uint8>();
     _legacyType.small_scenery.price = stream->ReadValue<sint16>();
     _legacyType.small_scenery.removal_price = stream->ReadValue<sint16>();
-    _legacyType.small_scenery.var_10 = stream->ReadValue<uint32>();
+    stream->Seek(4, STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.var_14 = stream->ReadValue<uint16>();
     _legacyType.small_scenery.var_16 = stream->ReadValue<uint16>();
     _legacyType.small_scenery.var_18 = stream->ReadValue<uint16>();
@@ -93,7 +93,7 @@ void SmallSceneryObject::Load()
 
     if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG16)
     {
-        _legacyType.small_scenery.var_10 = (uint32)_var10data;
+        _legacyType.small_scenery.var_10 = _var10data;
     }
 }
 

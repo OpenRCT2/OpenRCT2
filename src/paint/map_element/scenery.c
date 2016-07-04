@@ -230,7 +230,7 @@ void scenery_paint(uint8 direction, int height, rct_map_element* mapElement) {
 				esi &= entry->small_scenery.var_16;
 				int image_id = 0;
 				if (esi < entry->small_scenery.var_18) {
-					image_id = ((uint8*)entry->small_scenery.var_10)[esi];
+					image_id = entry->small_scenery.var_10[esi];
 				}
 				image_id = (image_id * 4) + direction + entry->image;
 				if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG21 | SMALL_SCENERY_FLAG17)) {
