@@ -1898,14 +1898,14 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
 	return result;
 }
 
-bool editor_check_object_group_at_least_one_selected(int objectType)
+bool editor_check_object_group_at_least_one_selected(int checkObjectType)
 {
 	int numObjects = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
 
 	for (int i = 0; i < numObjects; i++) {
 		uint8 objectType = items[i].ObjectEntry.flags & 0x0F;
-		if (objectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
+		if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
 			return true;
 		}
 	}

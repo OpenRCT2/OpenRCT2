@@ -367,7 +367,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     if ((_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) &&
         !rideTypeShouldLoseSeparateFlag(&_legacyType))
     {
-        flags |= 0x1000000;
+        flags |= ORI_RIDE_FLAG_SEPARATE;
     }
     item->RideFlags = flags;
 }

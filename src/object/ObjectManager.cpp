@@ -62,6 +62,7 @@ public:
         auto requiredObjects = new const ObjectRepositoryItem *[OBJECT_ENTRY_COUNT];
         if (!GetRequiredObjects(entries, requiredObjects, &numRequiredObjects))
         {
+            delete[] requiredObjects;
             return false;
         }
 
@@ -69,7 +70,7 @@ public:
         size_t numNewLoadedObjects;
         Object * * loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
 
-        delete requiredObjects;
+        delete[] requiredObjects;
 
         if (loadedObjects == nullptr)
         {

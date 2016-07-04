@@ -94,3 +94,8 @@ const utf8 *    object_get_description(const void * object);
 void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi);
 
 #endif
+
+enum ORI_RIDE_FLAG
+{
+    ORI_RIDE_FLAG_SEPARATE = 1 << 0,
+};
