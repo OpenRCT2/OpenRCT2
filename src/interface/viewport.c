@@ -1396,6 +1396,23 @@ void get_map_coordinates_from_pos(int screenX, int screenY, int flags, sint16 *x
  */
 void viewport_invalidate(rct_viewport *viewport, int left, int top, int right, int bottom)
 {
+	// if unknown viewport visibility, use the containing window to discover the status
+	if (viewport->visibility == VC_UNKNOWN)
+	{
+		for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+		{
+			if (w->classification != WC_MAIN_WINDOW && w->viewport != NULL && w->viewport == viewport)
+			{
+				// note, window_is_visible will update viewport->visibility, so this should have a low hit count
+				if (!window_is_visible(w)) {
+					return;
+				}
+			}
+		}
+	}
+
+	if (viewport->visibility == VC_COVERED) return;
+
 	int viewportLeft = viewport->view_x;
 	int viewportTop = viewport->view_y;
 	int viewportRight = viewport->view_x + viewport->view_width;
