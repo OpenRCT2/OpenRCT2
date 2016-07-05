@@ -423,7 +423,7 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 	return 1;
 }
 
-uint32 object_calculate_checksum(const rct_object_entry *__restrict__ entry, const uint8 *__restrict__ data, int dataLength)
+uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const uint8 *RESTRICT data, int dataLength)
 {
 	const uint8 *entry_bytes = (uint8 *)entry;
 	uint32 checksum = 0xF369A75B;
