@@ -96,7 +96,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		return 0;
 	}
 
-	int calculatedChecksum = object_calculate_checksum(&openedEntry, chunk, *chunkSize);
+	uint32 calculatedChecksum = object_calculate_checksum(&openedEntry, chunk, *chunkSize);
 
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
@@ -207,7 +207,7 @@ int write_object_file(SDL_RWops *rw, rct_object_entry* entry)
 
 
 	//Check if content of object file matches the stored checksum. If it does not, then fix it.
-	int calculated_checksum = object_calculate_checksum(entry, chunk, installed_entry->chunk_size);
+	uint32 calculated_checksum = object_calculate_checksum(entry, chunk, installed_entry->chunk_size);
 	if(entry->checksum != calculated_checksum) {
 		//Store the current length of the header - it's the offset at which we will write the extra bytes
 		int salt_offset = chunkHeader.length;
