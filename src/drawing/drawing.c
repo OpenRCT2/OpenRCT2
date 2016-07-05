@@ -196,6 +196,7 @@ void window_draw_all(rct_drawpixelinfo *dpi, short left, short top, short right,
 		if (w->flags & WF_TRANSPARENT) continue;
 		if (right <= w->x || bottom <= w->y) continue;
 		if (left >= w->x + w->width || top >= w->y + w->height) continue;
+		if (!window_is_visible(w)) continue;
 
 		window_draw(&windowDPI, w, left, top, right, bottom);
 	}
