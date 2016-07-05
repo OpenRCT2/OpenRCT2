@@ -27,14 +27,27 @@ extern "C"
 }
 #endif
 
+#ifdef __cplusplus
+
 interface IObjectManager
 {
     virtual ~IObjectManager() { }
 
     virtual Object * GetLoadedObject(size_t index) abstract;
+    virtual Object * GetLoadedObject(const rct_object_entry * entry) abstract;
+    virtual uint8    GetLoadedObjectEntryIndex(const Object * object) abstract;
 
-    virtual bool LoadObjects(const rct_object_entry * entries, size_t count) abstract;
-    virtual void UnloadAll() abstract;
+    virtual Object *    LoadObject(const rct_object_entry * entry) abstract;
+    virtual bool        LoadObjects(const rct_object_entry * entries, size_t count) abstract;
+    virtual void        UnloadAll() abstract;
 };
 
 IObjectManager * GetObjectManager();
+
+#else
+
+void *  object_manager_get_loaded_object(const rct_object_entry * entry);
+uint8   object_manager_get_loaded_object_entry_index(const void * loadedObject);
+void *  object_manager_load_object(const rct_object_entry * entry);
+
+#endif

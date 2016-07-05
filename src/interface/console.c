@@ -30,6 +30,7 @@
 #include "../input.h"
 #include "../network/twitch.h"
 #include "../object.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../world/banner.h"
 #include "../world/climate.h"
@@ -883,19 +884,18 @@ static int cc_load_object(const utf8 **argv, int argc) {
 		}
 
 		const rct_object_entry * entry = &ori->ObjectEntry;
-		void * loadedObject = object_repository_find_loaded_object(entry);
+		void * loadedObject = object_manager_get_loaded_object(entry);
 		if (loadedObject != NULL) {
 			console_writeline_error("Object is already in scenario.");
 			return 1;
 		}
 
-		int groupIndex;
-		if (!object_load_chunk(-1, entry, &groupIndex)) {
+		loadedObject = object_manager_load_object(entry);
+		if (loadedObject == NULL) {
 			console_writeline_error("Unable to load object.");
 			return 1;
 		}
-
-		reset_loaded_objects();
+		int groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
 		uint8 objectType = entry->flags & 0x0F;
 		if (objectType == OBJECT_TYPE_RIDE) {

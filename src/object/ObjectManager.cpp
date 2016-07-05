@@ -53,6 +53,60 @@ public:
         return _loadedObjects[index];
     }
 
+    Object * GetLoadedObject(const rct_object_entry * entry) override
+    {
+        Object * loadedObject = nullptr;
+        const ObjectRepositoryItem * ori = _objectRepository->FindObject(entry);
+        if (ori != nullptr)
+        {
+            loadedObject = ori->LoadedObject;
+        }
+        return loadedObject;
+    }
+
+    uint8 GetLoadedObjectEntryIndex(const Object * object) override
+    {
+        uint8 result = UINT8_MAX;
+        if (_loadedObjects != nullptr)
+        {
+            for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+            {
+                if (_loadedObjects[i] == object)
+                {
+                    get_type_entry_index(i, nullptr, &result);
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    Object * LoadObject(const rct_object_entry * entry) override
+    {
+        Object * loadedObject = nullptr;
+        const ObjectRepositoryItem * ori = _objectRepository->FindObject(entry);
+        if (ori != nullptr)
+        {
+            loadedObject = ori->LoadedObject;
+            if (loadedObject == nullptr)
+            {
+                uint8 objectType = entry->flags & 0x0F;
+                sint32 slot = FindSpareSlot(objectType);
+                if (slot != -1)
+                {
+                    loadedObject = GetOrLoadObject(ori);
+                    if (loadedObject != nullptr)
+                    {
+                        _loadedObjects[slot] = loadedObject;
+                        UpdateLegacyLoadedObjectList();
+                        reset_type_to_ride_entry_index_map();
+                    }
+                }
+            }
+        }
+        return loadedObject;
+    }
+
     bool LoadObjects(const rct_object_entry * entries, size_t count) override
     {
         IObjectRepository * objectRepository = GetObjectRepository();
@@ -102,6 +156,23 @@ public:
     }
 
 private:
+    sint32 FindSpareSlot(uint8 objectType)
+    {
+        if (_loadedObjects != nullptr)
+        {
+            sint32 firstIndex = GetIndexFromTypeEntry(objectType, 0);
+            sint32 endIndex = firstIndex + object_entry_group_counts[objectType];
+            for (sint32 i = firstIndex; i < endIndex; i++)
+            {
+                if (_loadedObjects[i] == nullptr)
+                {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
     void SetNewLoadedObjectList(Object * * newLoadedObjects)
     {
         if (newLoadedObjects == nullptr)
@@ -243,22 +314,15 @@ private:
                 loadedObject = ori->LoadedObject;
                 if (loadedObject == nullptr)
                 {
-                    // Try to load object
-                    loadedObject = _objectRepository->LoadObject(ori);
+                    loadedObject = GetOrLoadObject(ori);
                     if (loadedObject == nullptr)
                     {
                         ReportObjectLoadProblem(&ori->ObjectEntry);
                         Memory::Free(loadedObjects);
                         return nullptr;
-                    }
-                    else
-                    {
-                        loadedObject->Load();
+                    } else {
                         newObjectsLoaded++;
                     }
-
-                    // Connect the ori to the registered object
-                    _objectRepository->RegisterLoadedObject(ori, loadedObject);
                 }
             }
             loadedObjects[i] = loadedObject;
@@ -268,6 +332,24 @@ private:
             *outNewObjectsLoaded = newObjectsLoaded;
         }
         return loadedObjects;
+    }
+
+    Object * GetOrLoadObject(const ObjectRepositoryItem * ori)
+    {
+        Object * loadedObject = ori->LoadedObject;
+        if (loadedObject == nullptr)
+        {
+            // Try to load object
+            loadedObject = _objectRepository->LoadObject(ori);
+            if (loadedObject != nullptr)
+            {
+                loadedObject->Load();
+
+                // Connect the ori to the registered object
+                _objectRepository->RegisterLoadedObject(ori, loadedObject);
+            }
+        }
+        return loadedObject;
     }
 
     static void ReportMissingObject(const rct_object_entry * entry)
@@ -285,6 +367,17 @@ private:
         Console::Error::WriteFormat("[%s]: Object could not be loaded.", objName);
         Console::Error::WriteLine();
     }
+
+    static sint32 GetIndexFromTypeEntry(uint8 objectType, uint8 entryIndex)
+    {
+        int result = 0;
+        for (uint8 i = 0; i < objectType; i++)
+        {
+            result += object_entry_group_counts[i];
+        }
+        result += entryIndex;
+        return result;
+    }
 };
 
 ObjectManager * _objectManager;
@@ -297,4 +390,29 @@ IObjectManager * GetObjectManager()
         _objectManager = new ObjectManager(objectRepository);
     }
     return _objectManager;
+}
+
+extern "C"
+{
+    void * object_manager_get_loaded_object(const rct_object_entry * entry)
+    {
+        IObjectManager * objectManager = GetObjectManager();
+        Object * loadedObject = objectManager->GetLoadedObject(entry);
+        return (void *)loadedObject;
+    }
+
+    uint8 object_manager_get_loaded_object_entry_index(const void * loadedObject)
+    {
+        IObjectManager * objectManager = GetObjectManager();
+        const Object * object = (const Object *)loadedObject;
+        uint8 entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
+        return entryIndex;
+    }
+
+    void * object_manager_load_object(const rct_object_entry * entry)
+    {
+        IObjectManager * objectManager = GetObjectManager();
+        Object * loadedObject = objectManager->LoadObject(entry);
+        return (void *)loadedObject;
+    }
 }

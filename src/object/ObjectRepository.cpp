@@ -711,20 +711,6 @@ extern "C"
         return (void *)object;
     }
 
-    void * object_repository_find_loaded_object(const rct_object_entry * objectEntry)
-    {
-        Object * object = nullptr;
-
-        IObjectRepository * objectRepository = GetObjectRepository();
-        const ObjectRepositoryItem * ori = objectRepository->FindObject(objectEntry);
-        if (ori != nullptr)
-        {
-            object = ori->LoadedObject;
-        }
-
-        return (void *)object;
-    }
-
     void * object_repository_get_loaded_object(uint8 objectType, uint8 entryIndex)
     {
         int index = GetObjectEntryIndex(objectType, entryIndex);
