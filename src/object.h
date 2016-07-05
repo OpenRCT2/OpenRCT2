@@ -126,7 +126,7 @@ int object_get_scenario_text(rct_object_entry *entry);
 void object_free_scenario_text();
 uintptr_t object_get_length(const rct_object_entry *entry);
 int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-int object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength);
+uint32 object_calculate_checksum(const rct_object_entry *entry, const uint8 *data, int dataLength);
 rct_object_entry *object_get_next(const rct_object_entry *entry);
 int write_object_file(SDL_RWops* rw, rct_object_entry* entry);
 void reset_loaded_objects();
