@@ -82,7 +82,7 @@ public:
             SetNewLoadedObjectList(loadedObjects);
             UpdateLegacyLoadedObjectList();
             reset_type_to_ride_entry_index_map();
-            Console::WriteLine("%u / %u new objects loaded", numNewLoadedObjects, numRequiredObjects);
+            // Console::WriteLine("%u / %u new objects loaded", numNewLoadedObjects, numRequiredObjects);
             return true;
         }
     }
@@ -168,7 +168,7 @@ private:
             }
         }
 
-        Console::WriteLine("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
+        // Console::WriteLine("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
     void UpdateLegacyLoadedObjectList()
