@@ -497,9 +497,9 @@ enum {
 
 enum VISIBILITY_CACHE
 {
-	VC_UNKNOWN = 0,
-	VC_VISIBLE = 1,
-	VC_COVERED = 2
+	VC_UNKNOWN,
+	VC_VISIBLE,
+	VC_COVERED
 };
 
 typedef void (*modal_callback)(int result);
