@@ -4193,6 +4193,15 @@ STR_5878    :Software (display hardware)
 STR_5879    :OpenGL
 STR_5880    :Solo selezionati
 STR_5881    :Solo non selezionati
+STR_5882    :Valuta personalizzata
+STR_5883    :Configurazione valuta personalizzata
+STR_5884    :{WINDOW_COLOUR_2}Tasso di cambio: 
+STR_5885    :{WINDOW_COLOUR_2}equivale a {COMMA32} sterline (£)
+STR_5886    :{WINDOW_COLOUR_2}Simbolo valuta:
+STR_5887    :Prefisso
+STR_5888    :Suffisso
+STR_5889    :Simbolo valuta personalizzato
+STR_5890    :Inserire il simbolo della valuta da visualizzare
 
 #############
 # Scenarios #

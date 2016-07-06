@@ -4190,6 +4190,15 @@ STR_5878    :Software (hardware rendering)
 STR_5879    :OpenGL
 STR_5880    :Valgte objekter
 STR_5881    :Ikke valgte objekter
+STR_5882    :Egendefinert valuta
+STR_5883    :Valg for egendefinert valuta
+STR_5884    :{WINDOW_COLOUR_2}Kurs: 
+STR_5885    :{WINDOW_COLOUR_2}tilsvarer {COMMA32} GBP (£)
+STR_5886    :{WINDOW_COLOUR_2}Valutasymbol:
+STR_5887    :Prefiks
+STR_5888    :Suffiks
+STR_5889    :Symbol for egendefinert valuta
+STR_5890    :Skriv inn valutasymbol
 
 #############
 # Scenarios #

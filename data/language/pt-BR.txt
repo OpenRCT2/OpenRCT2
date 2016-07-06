@@ -4188,6 +4188,17 @@ STR_5876    :{SMALLFONT}{BLACK}Engine que será usada para desenhar o jogo.
 STR_5877    :Software
 STR_5878    :Software (exibição por hardware)
 STR_5879    :OpenGL
+STR_5880    :Somente selecionados
+STR_5881    :Somente não selecionados
+STR_5882    :Moeda Personalizada
+STR_5883    :Configuração de moeda personalizada
+STR_5884    :{WINDOW_COLOUR_2}Taxa de Câmbio: 
+STR_5885    :{WINDOW_COLOUR_2}é equivalente a {COMMA32} GBP (£)
+STR_5886    :{WINDOW_COLOUR_2}Símbolo da moeda:
+STR_5887    :Prefixo
+STR_5888    :Sufixo
+STR_5889    :Símbolo de moeda personalizada
+STR_5890    :Insira o símbolo da moeda para exibir
 
 #############
 # Scenarios #

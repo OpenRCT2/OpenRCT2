@@ -835,7 +835,7 @@ STR_0830    :{SMALLFONT}{BLACK}放大檢視區域
 STR_0831    :{SMALLFONT}{BLACK}縮小檢視區域
 STR_0832    :{SMALLFONT}{BLACK}將檢視區域順時針旋轉90{DEGREE}
 STR_0833    :{SMALLFONT}{BLACK}暫停遊戲
-STR_0834    :{SMALLFONT}{BLACK}硬碟及遊戲設定
+STR_0834    :{SMALLFONT}{BLACK}硬碟及遊戲選項
 STR_0835    :遊戲初始化失敗
 STR_0836    :無法於最小化的狀態下啟動遊戲
 STR_0837    :無法初始化繪製圖像系統
@@ -3929,7 +3929,7 @@ STR_5585    :{SMALLFONT}{BLACK}移除遊樂設施的運行限制, 例如容許�
 STR_5586    :自動開啟商店及攤販
 STR_5587    :{SMALLFONT}{BLACK}商店及攤販將會於建造後自動開啟
 STR_5588    :{SMALLFONT}{BLACK}與其他玩家一起遊玩
-STR_5589    :消息設定
+STR_5589    :消息選項
 STR_5590    :樂園獎項
 STR_5591    :推廣計劃已完結
 STR_5592    :有關樂園的警告
@@ -4020,7 +4020,7 @@ STR_5710    :組別名稱
 STR_5711    :請輸入這個組別的新名稱:
 STR_5712    :無法修改你沒有的權限
 STR_5713    :踢除玩家
-STR_5714    :顯示設定視窗
+STR_5714    :顯示選項視窗
 STR_5715    :開新遊戲
 STR_5716    :無法於多人連線模式中使用
 # For identifying client network version in server list window
@@ -4191,6 +4191,15 @@ STR_5878    :軟件渲染 (使用硬體顯示)
 STR_5879    :OpenGL
 STR_5880    :只顯示已選擇的物件
 STR_5881    :只顯示未選擇的物件
+STR_5882    :自訂貨幣
+STR_5883    :自訂貨幣選項
+STR_5884    :{WINDOW_COLOUR_2}匯率: 
+STR_5885    :{WINDOW_COLOUR_2}相等於英鎊 (£) {COMMA32}
+STR_5886    :{WINDOW_COLOUR_2}貨幣符號:
+STR_5887    :前綴
+STR_5888    :後綴
+STR_5889    :自訂貨幣符號
+STR_5890    :請輸入用於顯示的貨幣符號Enter the currency symbol to display
 
 #############
 # Scenarios #
