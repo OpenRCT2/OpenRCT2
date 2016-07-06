@@ -71,7 +71,7 @@ utf8 *path_get_directory(const utf8 *path)
 	if (filename == NULL)
 		return NULL;
 	
-	char *directory = strdup(path);
+	char *directory = _strdup(path);
 	safe_strtrunc(directory, strlen(path) - strlen(filename) + 2);
 	
 	return directory;
