@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdlib.h>
 #include "addresses.h"
 #include "config.h"
 #include "drawing/drawing.h"
@@ -78,18 +79,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	// Read chunk size
 	*chunkSize = *((uint32*)installedObject_pointer);
-	uint8 *chunk;
-
-	if (*chunkSize == 0xFFFFFFFF) {
-		chunk = (uint8*)malloc(0x600000);
-		assert(chunk != NULL);
-		*chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, 0x600000);
-		chunk = realloc(chunk, *chunkSize);
-	}
-	else {
-		chunk = (uint8*)malloc(*chunkSize);
-		*chunkSize = sawyercoding_read_chunk_with_size(rw, chunk, *chunkSize);
-	}
+	uint8 *chunk = object_alloc_chunk(rw, chunkSize);
 	SDL_RWclose(rw);
 	if (chunk == NULL) {
 		log_error("Failed to load object from %s of size %d", path, *chunkSize);
@@ -100,7 +90,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
-		log_error("Object Load failed due to checksum failure: calculated checksum %d, object says %d.", calculatedChecksum, (int)openedEntry.checksum);
+		log_error("Object Load failed due to checksum failure: calculated checksum 0x%08x, object says 0x%08x.", calculatedChecksum, openedEntry.checksum);
 		free(chunk);
 		return 0;
 			
@@ -265,14 +255,8 @@ int object_load_packed(SDL_RWops* rw)
 
 	SDL_RWread(rw, &entry, 16, 1);
 
-	uint8* chunk = (uint8*)malloc(0x600000);
-	uint32 chunkSize = sawyercoding_read_chunk(rw, chunk);
-	chunk = realloc(chunk, chunkSize);
-
-	if (chunk == NULL){
-		log_error("Failed to allocate memory for packed object.");
-		return 0;
-	}
+	int chunkSize = -1;
+	uint8 *chunk = object_alloc_chunk(rw, &chunkSize);
 
 	if (object_calculate_checksum(&entry, chunk, chunkSize) != entry.checksum){
 	
@@ -425,10 +409,11 @@ int object_entry_compare(const rct_object_entry *a, const rct_object_entry *b)
 
 uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const uint8 *RESTRICT data, int dataLength)
 {
-	const uint8 *entry_bytes = (uint8 *)entry;
+	uint8 *entry_bytes = (uint8 *)entry;
 	uint32 checksum = 0xF369A75B;
 
-	int i = 0;
+	int dataLength_padded = (dataLength + 31) ^ 0x1F;
+
 	uint8 tmp[32] = { 0 };
 
 	// Insert entry data "backwards" and "rewind" checksum rotations so that
@@ -438,19 +423,12 @@ uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const u
 	for (int j = 4; j < 12; ++j)
 		tmp[20 + j] = entry_bytes[j];
 
-	if (i <= (dataLength-32)) {
-		do {
-			for (int j = 0; j < 32; ++j) {
-				tmp[j] ^= data[i + j];
-			}
-			i += 32;
-		} while (i <= (dataLength-32));
-	}
-	for (; i < dataLength; ++i) {
-		tmp[i % 32] ^= data[i];
+	for (int i = 0; i <= (dataLength_padded - 32); i += 32) {
+		for (int j = 0; j < 32; ++j) {
+			tmp[j] ^= data[i + j];
+		}
 	}
 
-	uint32 tmp_checksum = 0;
 	// Shuffle bytes such that they can be rotated in unison as uint32s.
 	const uint8 tmp2[32] = { tmp[0], tmp[8], tmp[16], tmp[24],
 							 tmp[1], tmp[9], tmp[17], tmp[25],
@@ -460,14 +438,12 @@ uint32 object_calculate_checksum(const rct_object_entry *RESTRICT entry, const u
 							 tmp[5], tmp[13], tmp[21], tmp[29],
 							 tmp[6], tmp[14], tmp[22], tmp[30],
 							 tmp[7], tmp[15], tmp[23], tmp[31] };
-	for (int j = 0; j < 8; ++j) {
-		tmp_checksum ^= ror32(((uint32 *)tmp2)[j], (11 * j) % 32);
+	for (int i = 0; i < 8; ++i) {
+		checksum ^= ror32(((uint32 *)tmp2)[i], (11 * i) % 32);
 	}
 
-	checksum ^= tmp_checksum;
-
 	// Rotate checksum to account for misaligned data.
-	checksum = rol32(checksum, (11 * (i % 32)) % 32);
+	checksum = rol32(checksum, (11 * (dataLength % 32)) % 32);
 
 	return checksum;
 }
@@ -1716,16 +1692,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 			// Read chunk
 			int chunkSize = *((uint32*)pos);
 
-			uint8 *chunk;
-			if (chunkSize == 0xFFFFFFFF) {
-				chunk = (uint8*)malloc(0x600000);
-				chunkSize = sawyercoding_read_chunk(rw, chunk);
-				chunk = realloc(chunk, chunkSize);
-			}
-			else {
-				chunk = (uint8*)malloc(chunkSize);
-				sawyercoding_read_chunk_with_size(rw, chunk, chunkSize);
-			}
+			uint8 *chunk = object_alloc_chunk(rw, &chunkSize);
 			SDL_RWclose(rw);
 
 			// Calculate and check checksum
@@ -1836,3 +1803,64 @@ char *object_get_name(rct_object_entry *entry)
 
 	return (char *)pos;
 }
+
+void *object_aligned_alloc(size_t alignment, size_t size)
+{
+	void *ptr;
+#if defined(__WINDOWS__)
+	ptr = _aligned_alloc(size, alignment);
+	if (ptr == NULL) {
+#else
+	int ret = posix_memalign(&ptr, alignment, size);
+	if (ret != 0) {
+#endif
+		log_error("Failed to allocate memory for object.");
+		assert(false);
+	}
+	// TODO: Fix this for 64-bit
+	if ((uint32)ptr % alignment != 0) {
+		log_error("Failed to allocate aligned memory for object.");
+		assert(false);
+	}
+
+	return ptr;
+}
+
+uint8 *object_alloc_chunk(SDL_RWops *rw, int *size)
+{
+	size_t zero_pad;
+	void *ptr;
+
+	if (*size == -1) {
+		ptr = object_aligned_alloc(32, 0x600000);
+
+		*size = sawyercoding_read_chunk(rw, ptr);
+		zero_pad = (*size % 32 > 0) ? (32 - (*size % 32)) : 0;
+
+		ptr = realloc(ptr, *size + zero_pad);
+		if (ptr == NULL) {
+			log_error("Failed to reallocate memory for object.");
+			assert(false);
+		}
+
+		// realloc moved the data (fine) to a non-32 aligned location (not fine)
+		if ((uint32)ptr % 32 != 0) {
+			void *new_ptr = object_aligned_alloc(32, *size + zero_pad);
+
+			memcpy(new_ptr, ptr, *size);
+			free(ptr);
+
+			ptr = new_ptr;
+		}
+
+	} else {
+		zero_pad = (*size % 32 > 0) ? (32 - (*size % 32)) : 0;
+		ptr = object_aligned_alloc(32, *size + zero_pad);
+		*size = sawyercoding_read_chunk(rw, ptr);
+	}
+
+	memset(ptr + *size, 0x00, zero_pad);
+
+	return (uint8 *)ptr;
+}
+
