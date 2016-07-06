@@ -62,7 +62,7 @@ bool filename_valid_characters(const utf8 *filename)
 	return true;
 }
 
-utf8 *path_get_directory(const utf8 *path)
+const utf8 *path_get_directory(const utf8 *path)
 {
 	// Find the last slash or backslash in the path
 	char *filename = strrchr(path, platform_get_path_separator());
