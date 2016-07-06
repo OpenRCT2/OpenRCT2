@@ -146,7 +146,7 @@ void window_dispatch_update_all()
 void window_update_all_viewports()
 {
 	for (rct_window *w = g_window_list; w < RCT2_NEW_WINDOW; w++)
-		if (w->viewport != NULL)
+		if (w->viewport != NULL && window_is_visible(w))
 			viewport_update_position(w);
 }
 
@@ -1464,6 +1464,8 @@ void window_zoom_out(rct_window *w)
  */
 void window_draw(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int right, int bottom)
 {
+	if (!window_is_visible(w)) return;
+
 	// Split window into only the regions that require drawing
 	if (window_draw_split(dpi, w, left, top, right, bottom))
 		return;
@@ -1479,7 +1481,7 @@ void window_draw(rct_drawpixelinfo *dpi, rct_window *w, int left, int top, int r
 	// Draw the window in this region
 	for (rct_window *v = w; v < RCT2_NEW_WINDOW; v++) {
 		// Don't draw overlapping opaque windows, they won't have changed
-		if (w == v || (v->flags & WF_TRANSPARENT)) {
+		if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v)) {
 			window_draw_single(dpi, v, left, top, right, bottom);
 		}
 	}
@@ -2476,4 +2478,40 @@ void window_update_textbox()
 		widget_invalidate(w, gCurrentTextBox.widget_index);
 		window_event_textinput_call(w, gCurrentTextBox.widget_index, gTextBoxInput);
 	}
+}
+
+bool window_is_visible(rct_window* w)
+{
+	// w->visibility is used to prevent repeat calculations within an iteration by caching the result
+
+	if (w->visibility == VC_VISIBLE) return true;
+	if (w->visibility == VC_COVERED) return false;
+
+	// only consider viewports, consider the main window always visible
+	if (w == NULL || w->viewport == NULL || w->classification == WC_MAIN_WINDOW)
+	{
+		// default to previous behaviour
+		w->visibility = VC_VISIBLE;
+		return true;
+	}
+
+	// start from the window above the current
+	for (rct_window *w_other = (w+1); w_other < RCT2_NEW_WINDOW; w_other++)
+	{
+		// if covered by a higher window, no rendering needed
+		if (w_other->x <= w->x
+			&& w_other->y <= w->y
+			&& w_other->x + w_other->width >= w->x + w->width
+			&& w_other->y + w_other->height >= w->y + w->height)
+		{
+			w->visibility = VC_COVERED;
+			w->viewport->visibility = VC_COVERED;
+			return false;
+		}
+	}
+
+	// default to previous behaviour
+	w->visibility = VC_VISIBLE;
+	w->viewport->visibility = VC_VISIBLE;
+	return true;
 }

@@ -365,6 +365,8 @@ public:
             _rainDrawer.SetDPI(&_bitsDPI);
             _rainDrawer.Restore();
 
+            ResetWindowVisbilities();
+
             // Redraw dirty regions before updating the viewports, otherwise
             // when viewports get panned, they copy dirty pixels
             DrawAllDirtyBlocks();
@@ -526,6 +528,16 @@ private:
 
         delete [] _dirtyGrid.Blocks;
         _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
+    }
+
+    static void ResetWindowVisbilities()
+    {
+        // reset window visibilty status to unknown
+        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        {
+            w->visibility = VC_UNKNOWN;
+            if (w->viewport != NULL) w->viewport->visibility = VC_UNKNOWN;
+        }
     }
 
     void DrawAllDirtyBlocks()

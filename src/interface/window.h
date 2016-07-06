@@ -85,6 +85,7 @@ typedef struct rct_viewport {
 	uint8 zoom;						// 0x10
 	uint8 var_11;
 	uint16 flags;					// 0x12
+	uint8 visibility;				// VISIBILITY_CACHE
 } rct_viewport;
 
 /**
@@ -288,6 +289,7 @@ typedef struct rct_window {
 	sint8 var_4B8;
 	sint8 var_4B9;
 	uint8 colours[6];			// 0x4BA
+	uint8 visibility;			// VISIBILITY_CACHE
 } rct_window;
 
 #define RCT_WINDOW_RIGHT(w) (w->x + w->width)
@@ -491,6 +493,13 @@ enum {
 	MODAL_RESULT_FAIL = -1,
 	MODAL_RESULT_CANCEL,
 	MODAL_RESULT_OK
+};
+
+enum VISIBILITY_CACHE
+{
+	VC_UNKNOWN,
+	VC_VISIBLE,
+	VC_COVERED
 };
 
 typedef void (*modal_callback)(int result);
@@ -728,6 +737,8 @@ void window_start_textbox(rct_window *call_w, int call_widget, rct_string_id exi
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
+
+bool window_is_visible(rct_window* w);
 
 bool land_tool_is_active();
 
