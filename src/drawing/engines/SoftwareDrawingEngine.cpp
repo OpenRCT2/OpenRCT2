@@ -530,14 +530,14 @@ private:
         _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
     }
 
-	static void ResetWindowVisbilities()
+    static void ResetWindowVisbilities()
     {
-		// reset window visibilty status to unknown
-		for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
-		{
-			w->visibility = VC_UNKNOWN;
-			if (w->viewport != NULL) w->viewport->visibility = VC_UNKNOWN;
-		}
+        // reset window visibilty status to unknown
+        for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
+        {
+            w->visibility = VC_UNKNOWN;
+            if (w->viewport != NULL) w->viewport->visibility = VC_UNKNOWN;
+        }
     }
 
     void DrawAllDirtyBlocks()
