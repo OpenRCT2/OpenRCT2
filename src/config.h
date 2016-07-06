@@ -192,6 +192,10 @@ typedef struct general_configuration {
 	uint8 scenario_select_mode;
 	uint8 scenario_unlocking_enabled;
 	uint8 scenario_hide_mega_park;
+	utf8string last_save_game_directory;
+	utf8string last_save_landscape_directory;
+	utf8string last_save_scenario_directory;
+	utf8string last_save_track_directory;
 } general_configuration;
 
 typedef struct interface_configuration {

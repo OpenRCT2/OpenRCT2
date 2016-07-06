@@ -28,6 +28,7 @@ int mph_to_dmps(int mph);
 
 bool filename_valid_characters(const utf8 *filename);
 
+char *path_get_directory(const utf8 *path);
 const char *path_get_filename(const utf8 *path);
 const char *path_get_extension(const utf8 *path);
 void path_set_extension(utf8 *path, const utf8 *newExtension);
