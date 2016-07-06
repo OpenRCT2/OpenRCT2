@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../addresses.h"
+#include "../input.h"
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
@@ -99,13 +100,11 @@ static int window_tile_inspector_tile_x;
 static int window_tile_inspector_tile_y;
 static int window_tile_inspector_item_count;
 
-static void window_tile_inspector_close(rct_window *w);
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
-static void window_title_editor_update(rct_window *w);
+static void window_tile_inspector_update(rct_window *w);
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y);
-static void window_tile_inspector_tool_abort(rct_window *w, int widgetIndex);
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
 static void window_tile_inspector_scrollmousedown(rct_window *w, int scrollIndex, int x, int y);
 static void window_tile_inspector_scrollmouseover(rct_window *w, int scrollIndex, int x, int y);
@@ -116,20 +115,20 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 static void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 static rct_window_event_list window_tile_inspector_events = {
-	window_tile_inspector_close,
+	NULL,
 	window_tile_inspector_mouseup,
 	window_tile_inspector_resize,
 	NULL,
 	NULL,
 	NULL,
-	window_title_editor_update,
+	window_tile_inspector_update,
 	NULL,
 	NULL,
 	window_tile_inspector_tool_update,
 	window_tile_inspector_tool_down,
 	NULL,
 	NULL,
-	window_tile_inspector_tool_abort,
+	NULL,
 	NULL,
 	window_tile_inspector_scrollgetsize,
 	window_tile_inspector_scrollmousedown,
@@ -179,11 +178,6 @@ void window_tile_inspector_open()
 	window_tile_inspector_tile_y = -1;
 
 	tool_set(window, WIDX_BACKGROUND, 12);
-}
-
-static void window_tile_inspector_close(rct_window *w)
-{
-	tool_cancel();
 }
 
 static void corrupt_element() {
@@ -285,6 +279,7 @@ static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex)
 {
 	switch (widgetIndex) {
 	case WIDX_CLOSE:
+		tool_cancel();
 		window_close(w);
 		break;
 	case WIDX_CORRUPT:
@@ -332,7 +327,7 @@ static void window_tile_inspector_resize(rct_window *w)
 	}
 }
 
-static void window_title_editor_update(rct_window *w)
+static void window_tile_inspector_update(rct_window *w)
 {
 	// Check if the mouse is hovering over the list
 	if (!widget_is_highlighted(w, WIDX_LIST))
@@ -340,6 +335,9 @@ static void window_title_editor_update(rct_window *w)
 		window_tile_inspector_highlighted_index = -1;
 		widget_invalidate(w, WIDX_LIST);
 	}
+
+	if(gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
+		window_close(w);
 }
 
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y)
@@ -401,11 +399,6 @@ static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int 
 
 	w->scrolls[0].v_top = 0;
 	window_invalidate(w);
-}
-
-static void window_tile_inspector_tool_abort(rct_window *w, int widgetIndex)
-{
-	window_close(w);
 }
 
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height)
