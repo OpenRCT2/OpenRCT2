@@ -1693,8 +1693,6 @@ static void window_editor_object_selection_manage_tracks()
 	int entry_index = 0;
 	for (; ((int)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);
 
-	RCT2_GLOBAL(0xF44157, uint8) = entry_index;
-
 	rct_ride_entry* ride_entry = get_ride_entry(entry_index);
 	uint8* ride_type_array = &ride_entry->ride_type[0];
 

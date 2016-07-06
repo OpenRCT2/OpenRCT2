@@ -462,4 +462,10 @@ extern "C"
         IObjectManager * objectManager = GetObjectManager();
         objectManager->UnloadObjects(entries, count);
     }
+
+    void object_manager_unload_all_objects()
+    {
+        IObjectManager * objectManager = GetObjectManager();
+        objectManager->UnloadAll();
+    }
 }

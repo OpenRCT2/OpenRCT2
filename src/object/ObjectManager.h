@@ -53,5 +53,6 @@ void *  object_manager_get_loaded_object(const rct_object_entry * entry);
 uint8   object_manager_get_loaded_object_entry_index(const void * loadedObject);
 void *  object_manager_load_object(const rct_object_entry * entry);
 void    object_manager_unload_objects(const rct_object_entry * entries, size_t count);
+void    object_manager_unload_all_objects();
 
 #endif
