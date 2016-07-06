@@ -132,7 +132,10 @@ int write_object_file(SDL_RWops* rw, rct_object_entry* entry);
 void reset_loaded_objects();
 int find_object_in_entry_group(rct_object_entry* entry, uint8* entry_type, uint8* entry_index);
 void object_create_identifier_name(char* string_buffer, const rct_object_entry* object);
+void *object_aligned_alloc_pad(size_t alignment, size_t size);
+void *object_realloc_chunk(void *chunk, size_t size);
 uint8 *object_alloc_chunk(SDL_RWops *rw, int *size);
+void object_free_chunk(void *chunk);
 
 rct_object_entry *object_list_find_by_name(const char *name);
 rct_object_entry *object_list_find(rct_object_entry *entry);

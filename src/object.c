@@ -91,7 +91,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 	// Calculate and check checksum
 	if (calculatedChecksum != openedEntry.checksum && !gConfigGeneral.allow_loading_with_incorrect_checksum) {
 		log_error("Object Load failed due to checksum failure: calculated checksum 0x%08x, object says 0x%08x.", calculatedChecksum, openedEntry.checksum);
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 			
 	}
@@ -100,13 +100,13 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 
 	if (!object_test(objectType, chunk)) {
 		log_error("Object Load failed due to paint failure.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
 	if (gTotalNoImages >= 0x4726E){
 		log_error("Object Load failed due to too many images loaded.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
@@ -115,7 +115,7 @@ int object_load_file(int groupIndex, const rct_object_entry *entry, int* chunkSi
 		for (groupIndex = 0; chunk_list[groupIndex] != (void*)-1; groupIndex++) {
 			if (groupIndex + 1 >= object_entry_group_counts[objectType]) {
 				log_error("Object Load failed due to too many objects of a certain type.");
-				free(chunk);
+				object_free_chunk(chunk);
 				return 0;
 			}
 		}
@@ -264,7 +264,7 @@ int object_load_packed(SDL_RWops* rw)
 			log_warning("Checksum mismatch from packed object: %.8s", entry.name);
 		} else {
 			log_error("Checksum mismatch from packed object: %.8s", entry.name);
-			free(chunk);
+			object_free_chunk(chunk);
 			return 0;
 		}
 	}
@@ -273,13 +273,13 @@ int object_load_packed(SDL_RWops* rw)
 
 	if (!object_test(type, chunk)) {
 		log_error("Packed object failed paint test.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
 	if (gTotalNoImages >= 0x4726E){
 		log_error("Packed object has too many images.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
@@ -296,7 +296,7 @@ int object_load_packed(SDL_RWops* rw)
 		// This should never occur. Objects are not loaded before installing a
 		// packed object. So there is only one object loaded at this point.
 		log_error("Too many objects of the same type loaded.");
-		free(chunk);
+		object_free_chunk(chunk);
 		return 0;
 	}
 
@@ -379,7 +379,7 @@ void object_unload_chunk(rct_object_entry *entry)
 
 	object_unload(object_type, chunk);
 
-	free(chunk);
+	object_free_chunk(chunk);
 	memset(&object_entry_groups[object_type].entries[object_index], 0, sizeof(rct_object_entry_extended));
 	object_entry_groups[object_type].chunks[object_index] = (uint8*)-1;
 }
@@ -1698,14 +1698,14 @@ int object_get_scenario_text(rct_object_entry *entry)
 			// Calculate and check checksum
 			if (object_calculate_checksum(&openedEntry, chunk, chunkSize) != openedEntry.checksum) {
 				log_error("Opened object failed calculated checksum.");
-				free(chunk);
+				object_free_chunk(chunk);
 				return 0;
 			}
 
 			if (!object_test(openedEntry.flags & 0x0F, chunk)) {
 				// This is impossible for STEX entries to fail.
 				log_error("Opened object failed paint test.");
-				free(chunk);
+				object_free_chunk(chunk);
 				return 0;
 			}
 
@@ -1747,7 +1747,7 @@ int object_get_scenario_text(rct_object_entry *entry)
 void object_free_scenario_text()
 {
 	if (gStexTempChunk != NULL) {
-		free(gStexTempChunk);
+		object_free_chunk(gStexTempChunk);
 		gStexTempChunk = NULL;
 	}
 }
@@ -1804,63 +1804,88 @@ char *object_get_name(rct_object_entry *entry)
 	return (char *)pos;
 }
 
-void *object_aligned_alloc(size_t alignment, size_t size)
+void *object_aligned_alloc_pad(size_t alignment, size_t size)
 {
-	void *ptr;
-#if defined(__WINDOWS__)
-	ptr = _aligned_alloc(size, alignment);
+	int remainder = size % alignment;
+	size_t zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
+
+	// Allocate enough space for ...:
+	//  - the alignment
+	//  - a pointer to the original return value (needed for free)
+	//  - the object
+	//  - extra zero-padded space to bring object size to a multiple of 32
+	//  - extra space for alignment
+	void *ptr = (uint8 *)malloc(sizeof(size_t) + sizeof(void *) + size + alignment - 1 + zero_pad);
 	if (ptr == NULL) {
-#else
-	int ret = posix_memalign(&ptr, alignment, size);
-	if (ret != 0) {
-#endif
 		log_error("Failed to allocate memory for object.");
 		assert(false);
 	}
-	// TODO: Fix this for 64-bit
-	if ((uint32)ptr % alignment != 0) {
-		log_error("Failed to allocate aligned memory for object.");
-		assert(false);
-	}
 
-	return ptr;
+	// Align chunk pointer on boundary.
+	void *ptr_aligned = (void *)((uint8 *)ptr + sizeof(size_t) + sizeof(void *) + alignment - 1 - (size % alignment));
+
+	// Save alignment for realloc
+	((size_t *)ptr_aligned)[-2] = alignment;
+	// Save original pointer for free
+	((void **)ptr_aligned)[-1] = ptr;
+
+	// Zero-pad object up to a multiple of alignment
+	memset(ptr_aligned + size, 0x00, zero_pad);
+
+	return ptr_aligned;
 }
 
 uint8 *object_alloc_chunk(SDL_RWops *rw, int *size)
 {
-	size_t zero_pad;
 	void *ptr;
 
 	if (*size == -1) {
-		ptr = object_aligned_alloc(32, 0x600000);
-
+		ptr = object_aligned_alloc_pad(32, 0x600000);
 		*size = sawyercoding_read_chunk(rw, ptr);
-		zero_pad = (*size % 32 > 0) ? (32 - (*size % 32)) : 0;
-
-		ptr = realloc(ptr, *size + zero_pad);
-		if (ptr == NULL) {
-			log_error("Failed to reallocate memory for object.");
-			assert(false);
-		}
-
-		// realloc moved the data (fine) to a non-32 aligned location (not fine)
-		if ((uint32)ptr % 32 != 0) {
-			void *new_ptr = object_aligned_alloc(32, *size + zero_pad);
-
-			memcpy(new_ptr, ptr, *size);
-			free(ptr);
-
-			ptr = new_ptr;
-		}
-
+		ptr = object_realloc_chunk(ptr, *size);
 	} else {
-		zero_pad = (*size % 32 > 0) ? (32 - (*size % 32)) : 0;
-		ptr = object_aligned_alloc(32, *size + zero_pad);
+		ptr = object_aligned_alloc_pad(32, *size);
 		*size = sawyercoding_read_chunk(rw, ptr);
 	}
 
-	memset(ptr + *size, 0x00, zero_pad);
-
 	return (uint8 *)ptr;
+}
+
+void *object_realloc_chunk(void *chunk, size_t size)
+{
+	void *ptr_new;
+	void *ptr_old = ((void **)chunk)[-1];
+
+	int alignment = ((size_t *)chunk)[-2];
+	int remainder = size % alignment;
+	int zero_pad = (remainder > 0) ? (alignment - remainder) : 0;
+	int offset = (uint8 *)chunk - (uint8 *)ptr_old;
+
+	ptr_new = realloc(ptr_old, offset + size + zero_pad);
+	if (ptr_new == NULL) {
+		log_error("Failed to reallocate memory for object.");
+		assert(false);
+	}
+
+	// Turn ptr_new into a "chunk pointer"
+	ptr_new = (void *)((uint8 *)ptr_new + offset);
+	memset((uint8 *)ptr_new + size, 0x00, zero_pad);
+
+	// realloc moved the data (fine) to a non-aligned location (not fine)
+	if ((uint32)ptr_new % alignment > 0) {
+		void *tmp = object_aligned_alloc_pad(32, size);
+
+		memcpy(tmp, ptr_new, size);
+		object_free_chunk(ptr_new);
+
+		ptr_new = tmp;
+	}
+
+	return ptr_new;
+}
+
+void object_free_chunk(void *chunk)
+{
+	free(((void **)chunk)[-1]);
 }
 
