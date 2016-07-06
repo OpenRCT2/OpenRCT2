@@ -102,7 +102,7 @@ static int window_tile_inspector_item_count;
 
 static void window_tile_inspector_mouseup(rct_window *w, int widgetIndex);
 static void window_tile_inspector_resize(rct_window *w);
-static void window_title_editor_update(rct_window *w);
+static void window_tile_inspector_update(rct_window *w);
 static void window_tile_inspector_tool_update(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_tool_down(rct_window* w, int widgetIndex, int x, int y);
 static void window_tile_inspector_scrollgetsize(rct_window *w, int scrollIndex, int *width, int *height);
@@ -121,7 +121,7 @@ static rct_window_event_list window_tile_inspector_events = {
 	NULL,
 	NULL,
 	NULL,
-	window_title_editor_update,
+	window_tile_inspector_update,
 	NULL,
 	NULL,
 	window_tile_inspector_tool_update,
@@ -327,7 +327,7 @@ static void window_tile_inspector_resize(rct_window *w)
 	}
 }
 
-static void window_title_editor_update(rct_window *w)
+static void window_tile_inspector_update(rct_window *w)
 {
 	// Check if the mouse is hovering over the list
 	if (!widget_is_highlighted(w, WIDX_LIST))
