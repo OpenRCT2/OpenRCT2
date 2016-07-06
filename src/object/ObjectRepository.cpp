@@ -711,11 +711,6 @@ extern "C"
         return (void *)object;
     }
 
-    void object_repository_unload(size_t itemIndex)
-    {
-        // TODO
-    }
-
     void object_unload_all()
     {
         IObjectManager * objectManager = GetObjectManager();

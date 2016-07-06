@@ -86,7 +86,6 @@ const ObjectRepositoryItem *    object_repository_get_items();
 const ObjectRepositoryItem *    object_repository_find_object_by_entry(const rct_object_entry * entry);
 const ObjectRepositoryItem *    object_repository_find_object_by_name(const char * name);
 void *                          object_repository_load_object(const rct_object_entry * objectEntry);
-void                            object_repository_unload(size_t itemIndex);
 
 void            object_delete(void * object);
 const utf8 *    object_get_description(const void * object);

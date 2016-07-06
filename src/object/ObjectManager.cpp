@@ -67,16 +67,10 @@ public:
     uint8 GetLoadedObjectEntryIndex(const Object * object) override
     {
         uint8 result = UINT8_MAX;
-        if (_loadedObjects != nullptr)
+        size_t index = GetLoadedObjectIndex(object);
+        if (index != SIZE_MAX)
         {
-            for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
-            {
-                if (_loadedObjects[i] == object)
-                {
-                    get_type_entry_index(i, nullptr, &result);
-                    break;
-                }
-            }
+            get_type_entry_index(index, nullptr, &result);
         }
         return result;
     }
@@ -141,6 +135,36 @@ public:
         }
     }
 
+    void UnloadObjects(const rct_object_entry * entries, size_t count) override
+    {
+        // TODO there are two performance issues here:
+        //        - FindObject for every entry which is a dictionary lookup
+        //        - GetLoadedObjectIndex for every entry which enumerates _loadedList
+
+        size_t numObjectsUnloaded = 0;
+        for (size_t i = 0; i < count; i++)
+        {
+            const rct_object_entry * entry = &entries[i];
+            const ObjectRepositoryItem * ori = _objectRepository->FindObject(entry);
+            if (ori != nullptr)
+            {
+                Object * loadedObject = ori->LoadedObject;
+                size_t index = GetLoadedObjectIndex(loadedObject);
+                
+                UnloadObject(loadedObject);
+                _loadedObjects[index] = nullptr;
+
+                numObjectsUnloaded++;
+            }
+        }
+
+        if (numObjectsUnloaded > 0)
+        {
+            UpdateLegacyLoadedObjectList();
+            reset_type_to_ride_entry_index_map();
+        }
+    }
+
     void UnloadAll() override
     {
         if (_loadedObjects != nullptr)
@@ -171,6 +195,23 @@ private:
             }
         }
         return -1;
+    }
+
+    size_t GetLoadedObjectIndex(const Object * object)
+    {
+        size_t result = SIZE_MAX;
+        if (_loadedObjects != nullptr)
+        {
+            for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+            {
+                if (_loadedObjects[i] == object)
+                {
+                    result = i;
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
     void SetNewLoadedObjectList(Object * * newLoadedObjects)
@@ -414,5 +455,11 @@ extern "C"
         IObjectManager * objectManager = GetObjectManager();
         Object * loadedObject = objectManager->LoadObject(entry);
         return (void *)loadedObject;
+    }
+
+    void object_manager_unload_objects(const rct_object_entry * entries, size_t count)
+    {
+        IObjectManager * objectManager = GetObjectManager();
+        objectManager->UnloadObjects(entries, count);
     }
 }

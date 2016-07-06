@@ -27,6 +27,7 @@
 #include "../management/research.h"
 #include "../object.h"
 #include "../object_list.h"
+#include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
@@ -714,12 +715,21 @@ void unload_unselected_objects()
 {
 	int numItems = object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
+
+	size_t numObjectsToUnload = 0;
+	rct_object_entry * objectsToUnload = (rct_object_entry *)malloc(numItems * sizeof(rct_object_entry));
+
 	for (int i = 0; i < numItems; i++) {
 		if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) {
-			remove_selected_objects_from_research(&items[i].ObjectEntry);
-			object_repository_unload(i);
+			const rct_object_entry * entry = &items[i].ObjectEntry;
+
+			remove_selected_objects_from_research(entry);
+			objectsToUnload[numObjectsToUnload++] = *entry;
 		}
 	}
+
+	object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
+	free(objectsToUnload);
 }
 
 /**
@@ -1703,27 +1713,28 @@ static void window_editor_object_selection_manage_tracks()
  */
 static void editor_load_selected_objects()
 {
-	int numObjects = (int)object_repository_get_items_count();
+	int numItems = (int)object_repository_get_items_count();
 	const ObjectRepositoryItem * items = object_repository_get_items();
-	for (int i = 0; i < numObjects; i++) {
+	for (int i = 0; i < numItems; i++) {
 		if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED) {
-			uint8 entry_index, entry_type;
-			if (!find_object_in_entry_group(&items[i].ObjectEntry, &entry_type, &entry_index)) {
-				if (!object_load_chunk(-1, &items[i].ObjectEntry, NULL)) {
-					log_error("Failed to load entry %.8s", items->Name);
+			const ObjectRepositoryItem * item = &items[i];
+			const rct_object_entry * entry = &item->ObjectEntry;
+			void * loadedObject = object_manager_get_loaded_object(entry);
+			if (loadedObject == NULL) {
+				loadedObject = object_manager_load_object(entry);
+				if (loadedObject == NULL) {
+					log_error("Failed to load entry %.8s", entry->name);
 				}
-
-				// For in game use (cheat)
-				if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
-					// Defaults selected items to researched.
-					if (find_object_in_entry_group(&items[i].ObjectEntry, &entry_type, &entry_index)) {
-						if (entry_type == OBJECT_TYPE_RIDE) {
-							rct_ride_entry* rideType = get_ride_entry(entry_index);
-							research_insert(1, 0x10000 | (rideType->ride_type[0] << 8) | entry_index, rideType->category[0]);
-						}
-						else if (entry_type == OBJECT_TYPE_SCENERY_SETS) {
-							research_insert(1, entry_index, RESEARCH_CATEGORY_SCENERYSET);
-						}
+				else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
+					// Defaults selected items to researched (if in-game)
+					uint8 objectType = entry->flags & 0x0F;
+					uint8 entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+					if (objectType == OBJECT_TYPE_RIDE) {
+						rct_ride_entry *rideType = get_ride_entry(entryIndex);
+						research_insert(1, 0x10000 | (rideType->ride_type[0] << 8) | entryIndex, rideType->category[0]);
+					}
+					else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+						research_insert(1, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
 					}
 				}
 			}
