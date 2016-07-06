@@ -29,6 +29,8 @@ extern "C"
 
 #ifdef __cplusplus
 
+class Object;
+
 interface IObjectManager
 {
     virtual ~IObjectManager() { }

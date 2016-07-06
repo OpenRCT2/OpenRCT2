@@ -22,6 +22,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
+#include "../object/ObjectManager.h"
 #include "Tables.h"
 
 extern "C"
@@ -740,6 +741,8 @@ void S4Importer::LoadObjects()
 
 void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)
 {
+    IObjectManager * objectManager = GetObjectManager();
+
     uint32 entryIndex = 0;
     for (const char * objectName : entries)
     {
@@ -747,8 +750,9 @@ void S4Importer::LoadObjects(uint8 objectType, List<const char *> entries)
         entry.flags = 0x00008000 + objectType;
         Memory::Copy(entry.name, objectName, 8);
         entry.checksum = 0;
-        
-        if (!object_load_chunk(entryIndex, &entry, NULL))
+
+        Object * object = objectManager->LoadObject(&entry);
+        if (object == nullptr)
         {
             log_error("Failed to load %s.", objectName);
             throw Exception("Failed to load object.");
