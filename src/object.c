@@ -1815,14 +1815,14 @@ void *object_aligned_alloc_pad(size_t alignment, size_t size)
 	//  - the object
 	//  - extra zero-padded space to bring object size to a multiple of 32
 	//  - extra space for alignment
-	void *ptr = (uint8 *)malloc(sizeof(size_t) + sizeof(void *) + size + alignment - 1 + zero_pad);
+	void *ptr = (uint8 *)malloc(sizeof(size_t) + sizeof(uint8 *) + size + alignment - 1 + zero_pad);
 	if (ptr == NULL) {
 		log_error("Failed to allocate memory for object.");
 		assert(false);
 	}
 
 	// Align chunk pointer on boundary.
-	void *ptr_aligned = (void *)((uint8 *)ptr + sizeof(size_t) + sizeof(void *) + alignment - 1 - (size % alignment));
+	void *ptr_aligned = (void *)((uint8 *)ptr + sizeof(size_t) + sizeof(uint8 *) + alignment - 1 - (size % alignment));
 
 	// Save alignment for realloc
 	((size_t *)ptr_aligned)[-2] = alignment;
@@ -1830,7 +1830,7 @@ void *object_aligned_alloc_pad(size_t alignment, size_t size)
 	((void **)ptr_aligned)[-1] = ptr;
 
 	// Zero-pad object up to a multiple of alignment
-	memset(ptr_aligned + size, 0x00, zero_pad);
+	memset((uint8 *)ptr_aligned + size, 0x00, zero_pad);
 
 	return ptr_aligned;
 }
