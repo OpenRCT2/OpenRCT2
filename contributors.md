@@ -7,26 +7,26 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michael Steenbeek (Gymnasiast) - Developer, issue management, translation management
 * Michał Janiszewski (janisozaur) - Developer, CI, Linux management, issue management
 * Lewis Fox (LRFLEW) - Developer, OSX management
-* Yaroslav Tretyakov (zsilencer) - Developer
+* (zsilencer) - Developer
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)
 * Duncan Frost (duncanspumpkin)
 * Peter Hill (ZedThree) - String handling, misc.
-* Dániel Tar (qcz) - Scenery window, misc.
+* (qcz) - Scenery window, misc.
 * Matthias Lanzinger (lnz) - Climate, finance, scenario, ride reachability
-* Yaroslav Tretyakov (zsilencer) - Audio, multiplayer, misc.
+* (zsilencer) - Audio, multiplayer, misc.
 * Adrian Wielgosik (adrian17) - Misc.
 * (hexdec) - Misc.
 * Dennis Devriendt (ddevrien) - Misc.
 * Maciek Baron (MaciekBaron) - Misc.
-* Angelo Geels (AngeloG) - Scrollbar input, misc.
-* Jackson Davis (jcdavis) - Misc.
-* Marco Costa (marcotc) - Rain drawing, misc.
-* Tom van der Kleij (vanderkleij) - Misc.
+* (AngeloG) - Scrollbar input, misc.
+* (jcdavis) - Misc.
+* (marcotc) - Rain drawing, misc.
+* (vanderkleij) - Misc.
 * Ben Pye (benpye) - Misc.
-* Jeroen Sack (JeroenSack) - Misc.
-* Sijmen Schoon (SijmenSchoon) - Misc.
+* (JeroenSack) - Misc.
+* (Vijfhoek) - Misc.
 * (wolfreak99) - Misc.
 * Inseok Lee (dlunch) - Original command line
 * Lewis Fox (LRFLEW) - Misc.
@@ -41,7 +41,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Jørn Lomax (jvlomax) - User configuration
 * (KingHual) - Housecleaning
 * Alexander Overvoorde (Overv) - Misc.
-* Nick Whitlock (eezstreet) - Misc.
+* (eezstreet) - Misc.
 * Thomas den Hollander (ThomasdenH) - Misc.
 * James Robertson (rd3k) - Misc.
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
@@ -49,13 +49,13 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
 * Kelson Blakewood (spacek531) - title sequence for 0.0.4
 * Hugo Wallenburg (Goddesen) - Misc.
-* Matte A (Nubbie) - Misc, UX
+* (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 
 ## Bug fixes
 * (halfbro)
-* Greg. T. (Myrtle)
-* Neranjen (nean)
+* (Myrtle)
+* (nean)
 * Ed Foley (e-foley)
 * Michael Pham (nightroan)
 * Hielke Morsink (Broxzier)
@@ -68,7 +68,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Sven Slootweg (joepie91)
 
 ## Toolchain
-* Skip (Balletie) - OSX
+* (Balletie) - OSX
 * Kevin Burke (kevinburke) - OSX, Unix
 * Miso Zmiric (mzmiric5) - OSX
 * Jarno Veuger (JarnoVgr) - Windows build server
@@ -77,36 +77,36 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Lewis Fox (LRFLEW) - OSX
 
 ## Documentation
-* Jan Hořava (honzi)
+* (honzi)
 * Kevin Burke (kevinburke)
 * James Robertson (rd3k)
 * Max Boße (MakaHost)
-* Max Bareiss (MaxBareiss)
+* (MaxBareiss)
 * Mithun Hunsur (Philpax)
 * (RollingStar)
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
-* Reviewing and merging: Michael Steenbeek (Gymnasiast), Matte A (Nubbie), Rune Laenen (runelaenen)
+* Reviewing and merging: Michael Steenbeek (Gymnasiast), (Nubbie), Rune Laenen (runelaenen)
 * Fixing unmaintained languages: Michael Steenbeek (Gymnasiast)
 * Miscellaneous fixes: Alexander Overvoorde (Overv), Ed Foley (e-foley)
-* English (UK) - Ted John (IntelOrca), Robert James Dennington (Tinytimrob)
-* English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: Lewis Fox (LRFLEW), Mike Koch (mike-koch), Harry Lam (daihakken)
+* English (UK) - Ted John (IntelOrca), (Tinytimrob)
+* English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: (LRFLEW), (mike-koch), Harry Lam (daihakken)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
-* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), Maarten Peters (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van de Werf (marijnvdwerf); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), Skip (Balletie) and Sijmen Schoon (SijmenSchoon).
-* Finnish - (DJHasis), Joonas Tuominen (Zode), (TheWing)
-* French - Fabien Bourigault (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum)
-* German - (danidoedel), (atmaxinger), Gabriel Huber (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
+* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van de Werf (marijnvdwerf); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (Vijfhoek).
+* Finnish - (DJHasis), (Zode), (TheWing)
+* French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rvgr),  (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum)
+* German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
-* Korean - "TELK" (telk5093), (NeverDruid); small fixes: Chanwoong Kim (kexplo)
+* Korean - "TELK" (telk5093), (NeverDruid); small fixes: (kexplo)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes)
 * Russian - (Soosisya)
-* Simplified Chinese - Naiji Ma (naijim), Zhang Fei (izhangfei), Eric Zhao (sczyh30)
-* Spanish - Miguel (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
-* Swedish - Lucas Åström (Jinxit), (mharrys), (Slimeyo), Matte A (Nubbie)
+* Simplified Chinese - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30)
+* Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
+* Swedish - (Jinxit), (mharrys), (Slimeyo), (Nubbie)
 * Traditional Chinese - Harry Lam (daihakken)
-* Norwegian - Hugo Wallenburg (Goddesen)
+* Norwegian - (Goddesen)
 
 ## Graphics
 * OpenRCT2 Logo - Yannic Geurts (xzbobzx)
